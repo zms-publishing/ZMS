@@ -391,7 +391,13 @@ class ZMS(
     The root element of the site.
     """
     def getRootElement(self):
-      return self.breadcrumbs_obj_path()[0]
+      doc_elmnt = self
+      while True:
+        portal_mstr = doc_elmnt.getPortalMaster()
+        if portal_mstr is None:
+          break
+        doc_elmnt = portal_mstr
+      return doc_elmnt
 
     # --------------------------------------------------------------------------
     #  ZMS.getAbsoluteHome

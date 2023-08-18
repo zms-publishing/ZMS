@@ -132,7 +132,10 @@ class ZMSObject(ZMSItem.ZMSItem,
       self.setSortId(sort_id)
 
     def getPath(self, *args, **kwargs):
-      return '/'.join(self.getPhysicalPath())
+      ids = self.getPhysicalPath()
+      # avoid content/content (seen in xml-import of zms-default-content)
+      ids = [ids[x] for x in range(len(ids)) if x == 0 or not ids[x-1] == ids[x]] 
+      return '/'.join(ids)
 
     """
     Check if feature toggle is set.
@@ -925,7 +928,6 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  Used to keep ZMS-users in configured subdomain-context.
     # --------------------------------------------------------------------------
     def getAbsoluteUrlInContext(self, context, abs_url=None, forced=False):
-      request = self.REQUEST
       context = standard.nvl(context,self)
       if abs_url is None:
         abs_url = self.absolute_url()

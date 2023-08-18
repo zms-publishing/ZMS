@@ -1010,11 +1010,11 @@ class AccessManager(AccessableContainer):
     # --------------------------------------------------------------------------
     def toggleUserActive(self, id):
       active = self.getUserAttr(id, 'attrActive', 1)
-      attrActiveStart = self.parseLangFmtDate(self.getUserAttr(id, 'attrActiveStart', None))
+      attrActiveStart = standard.parseLangFmtDate(self.getUserAttr(id, 'attrActiveStart', None))
       if attrActiveStart is not None:
         dt = DateTime(time.mktime(attrActiveStart))
         active = active and dt.isPast()
-      attrActiveEnd = self.parseLangFmtDate(self.getUserAttr(id, 'attrActiveEnd', None))
+      attrActiveEnd = standard.parseLangFmtDate(self.getUserAttr(id, 'attrActiveEnd', None))
       if attrActiveEnd is not None:
         dt = DateTime(time.mktime(attrActiveEnd))
         active = active and (dt.isFuture() or (dt.equalTo(dt.earliestTime()) and dt.latestTime().isFuture()))
@@ -1224,8 +1224,8 @@ class AccessManager(AccessableContainer):
               updateUserPassword(self, user, password, confirm)
             self.setUserAttr(id, 'forceChangePassword', REQUEST.get('forceChangePassword', 0))
             self.setUserAttr(id, 'attrActive', newAttrActive)
-            self.setUserAttr(id, 'attrActiveStart', self.parseLangFmtDate(REQUEST.get('attrActiveStart')))
-            self.setUserAttr(id, 'attrActiveEnd', self.parseLangFmtDate(REQUEST.get('attrActiveEnd')))
+            self.setUserAttr(id, 'attrActiveStart', standard.parseLangFmtDate(REQUEST.get('attrActiveStart')))
+            self.setUserAttr(id, 'attrActiveEnd', standard.parseLangFmtDate(REQUEST.get('attrActiveEnd')))
             for key in ['email','profile','user_id']:
               if key in REQUEST.keys():  
                 value = REQUEST.get(key, '').strip()

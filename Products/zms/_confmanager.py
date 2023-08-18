@@ -27,6 +27,7 @@ from OFS.Image import Image
 from OFS.Folder import Folder
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import OFS.misc_
+import base64
 import configparser
 import importlib
 import io
@@ -500,7 +501,6 @@ class ConfManager(
       """ ConfManager.getConfProperties """
       d = self.get_conf_properties()
       if REQUEST is not None:
-        import base64
         prefix = str(base64.b64decode(prefix),'utf-8')
         r = {x:d[x] for x in d if x.startswith(prefix+'.')}
         return json.dumps(r)
@@ -561,13 +561,7 @@ class ConfManager(
       default = kwargs.get('default')
       REQUEST = kwargs.get('REQUEST')
       if REQUEST is not None:
-        import base64
-        try:
-          #Py3
-          key = str(base64.b64decode(key),'utf-8')
-        except:
-          #Py2
-          key = base64.b64decode(key)
+        key = str(base64.b64decode(key),'utf-8')
       if hasattr(OFS.misc_.misc_,'zms'):
         if key in OFS.misc_.misc_.zms['confdict']:
           default = OFS.misc_.misc_.zms['confdict'].get(key)

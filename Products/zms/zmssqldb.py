@@ -248,7 +248,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
           return "NULL"
       elif col['type'] in ['date', 'datetime', 'time']:
         try:
-          d = self.parseLangFmtDate(v)
+          d = standard.parseLangFmtDate(v)
           if d is None:
             raise zExceptions.InternalError
           return "'%s'"%self.getLangFmtDate(d, 'eng', '%s_FMT'%col['type'].upper())

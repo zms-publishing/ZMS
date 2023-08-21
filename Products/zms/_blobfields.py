@@ -23,7 +23,7 @@ from OFS.Image import Image, File
 # from mimetools import choose_boundary
 from email.generator import _make_boundary as choose_boundary
 import base64
-import io
+import json
 import re
 import time
 import warnings
@@ -824,6 +824,18 @@ class MyBlob(object):
                      DeprecationWarning, 
                      stacklevel=2)
       return '/++resource++zms_/img/' + _mimetypes.dctMimeType.get( self.getContentType(), _mimetypes.content_unknown)
+
+
+    def toJson(self):
+        """
+        Serialize this blob to JSON-string.
+        """
+        d = {}
+        d['filename'] = self.getFilename()
+        d['content_type'] = self.getContentType()
+        d['size'] = self.get_size()
+        d['icon'] = standard.getMimeTypeIconSrc(self.getContentType())
+        return json.dumps(d) # json.dumps(self, default=lambda o: o.__dict__)
 
 
 ################################################################################

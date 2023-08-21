@@ -826,18 +826,6 @@ class MyBlob(object):
       return '/++resource++zms_/img/' + _mimetypes.dctMimeType.get( self.getContentType(), _mimetypes.content_unknown)
 
 
-    def toJson(self):
-        """
-        Serialize this blob to JSON-string.
-        """
-        d = {}
-        d['filename'] = self.getFilename()
-        d['content_type'] = self.getContentType()
-        d['size'] = self.get_size()
-        d['icon'] = standard.getMimeTypeIconSrc(self.getContentType())
-        return json.dumps(d) # json.dumps(self, default=lambda o: o.__dict__)
-
-
 ################################################################################
 ################################################################################
 

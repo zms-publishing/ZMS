@@ -99,7 +99,7 @@ def get_attr(node, id):
     return value
 
 
-def get_attrs(self, node):
+def get_attrs(node):
     request = _get_request(node)
     monolang, langs = _get_context(node)
     data = get_meta_data(node)
@@ -129,6 +129,7 @@ def get_attrs(self, node):
                     data[id if monolang else '%s_%s'%(id,lang)] = get_attr(node,id)
             else:
                 data[id] = get_attr(node,id)
+    #print("data",data)
     return data
 
 
@@ -160,7 +161,7 @@ class RestApiController(object):
     def __call__(self, REQUEST=None, **kw):
         """"""
         if self.method == 'GET':
-            content_type, data = 'text/plain', {}
+            decoration, data = {'content_type':'text/plain'}, {}
             if self.context.meta_type == 'ZMSIndex':
                 decoration, data = self.zmsindex(self.context, content_type=True)
             elif self.context.meta_type == 'ZMSMetamodelProvider':
@@ -204,7 +205,7 @@ class RestApiController(object):
 
     @api(tag="content", pattern="/{path}", method="GET", content_type="application/json")
     def get(self, context):
-        return get_attrs(self, context)
+        return get_attrs(context)
 
     @api(tag="content", pattern="/{path}/get_body_content", method="GET", content_type="text/html")
     def get_body_content(self, context):
@@ -235,7 +236,7 @@ class RestApiController(object):
     @api(tag="navigation", pattern="/{path}/get_parent_nodes", method="GET", content_type="application/json")
     def get_parent_nodes(self, context):
         nodes = context.breadcrumbs_obj_path()
-        return [get_attrs(self, x) for x in nodes]
+        return [get_attrs(x) for x in nodes]
 
     @api(tag="navigation", pattern="/{path}/get_child_nodes", method="GET", content_type="application/json")
     def get_child_nodes(self, context):
@@ -245,10 +246,10 @@ class RestApiController(object):
         nodes = context.getObjChildren(id_prefix,  request, meta_types)
         if context.meta_type == 'ZMS':
             nodes.extend(context.getPortalClients())
-        return [get_attrs(self, x) for x in nodes]
+        return [get_attrs(x) for x in nodes]
 
     @api(tag="navigation", pattern="/{path}/get_tree_nodes", method="GET", content_type="application/json")
     def get_tree_nodes(self, context):
         request = _get_request(context)
         nodes = context.getTreeNodes(request)
-        return [get_attrs(self, x) for x in nodes]
+        return [get_attrs(x) for x in nodes]

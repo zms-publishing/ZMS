@@ -142,14 +142,16 @@ class RestApiController(object):
         if context and TraversalRequest:
             self.context = context
             self.method = TraversalRequest['REQUEST_METHOD']
-            self.ids = copy.copy(TraversalRequest['path_to_handle'][1:])
+            self.path_to_handle = copy.copy(TraversalRequest['path_to_handle']) 
+            self.ids = [x for x in self.path_to_handle if x != '++rest_api'] # remove ++rest_api as first element
             while self.ids:
                 id = self.ids[0]
+                print(id,context)
                 if id.startswith('uid:'):
                   context = context.getLinkObj('{$%s}'%id)
                 elif id not in context.getPhysicalPath():
                   context = getattr(self.context, id, None)
-                if context is None:
+                if context is None or not getattr(context,'meta_type',None):
                     break
                 self.context = context
                 self.ids.remove(id)
@@ -160,28 +162,31 @@ class RestApiController(object):
     __call____roles__ = None
     def __call__(self, REQUEST=None, **kw):
         """"""
+        standard.writeBlock(self.context,'__call__: %s'%str(self.ids))
         if self.method == 'GET':
             decoration, data = {'content_type':'text/plain'}, {}
-            if self.context.meta_type == 'ZMSIndex':
+            if  self.ids == [] and self.context.meta_type == 'ZMSIndex':
                 decoration, data = self.zmsindex(self.context, content_type=True)
-            elif self.context.meta_type == 'ZMSMetamodelProvider':
+            elif self.ids == [] and self.context.meta_type == 'ZMSMetamodelProvider':
                 decoration, data = self.metaobj_manager(self.context, content_type=True)
-            elif self.ids and self.ids[0] == 'get_body_content':
+            elif self.ids == ['get_body_content']:
                 decoration, data = self.get_body_content(self.context, content_type=True)
-            elif self.ids and self.ids[0] == 'list_parent_nodes':
+            elif self.ids == ['list_parent_nodes']:
                 decoration, data = self.list_parent_nodes(self.context, content_type=True)
-            elif self.ids and self.ids[0] == 'list_child_nodes':
+            elif self.ids == ['list_child_nodes']:
                 decoration, data = self.list_child_nodes(self.context, content_type=True)
-            elif self.ids and self.ids[0] == 'list_tree_nodes':
+            elif self.ids == ['list_tree_nodes']:
                 decoration, data = self.list_tree_nodes(self.context, content_type=True)
-            elif self.ids and self.ids[0] == 'get_parent_nodes':
+            elif self.ids == ['get_parent_nodes']:
                 decoration, data = self.get_parent_nodes(self.context, content_type=True)
-            elif self.ids and self.ids[0] == 'get_child_nodes':
+            elif self.ids == ['get_child_nodes']:
                 decoration, data = self.get_child_nodes(self.context, content_type=True)
-            elif self.ids and self.ids[0] == 'get_tree_nodes':
+            elif self.ids == ['get_tree_nodes']:
                 decoration, data = self.get_tree_nodes(self.context, content_type=True)
-            else:
+            elif self.ids == [] or self.ids == ['get']:
                 decoration, data = self.get(self.context, content_type=True)
+            else:
+                data = {'ERROR':'Not Found','context':str(self.context),'path_to_handle':self.path_to_handle,'ids':self.ids}
             REQUEST.RESPONSE.setHeader('Content-Type',decoration['content_type'])
             return json.dumps(data)
         return None

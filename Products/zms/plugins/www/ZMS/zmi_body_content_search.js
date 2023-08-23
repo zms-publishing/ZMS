@@ -122,7 +122,7 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
 	p['page_size'] = pageSize;
 	p['page_index'] = pageIndex;
 	var fq = [];
-	if ('home_id' in zmiParams && zmiParams['home_id'].length > 0) {
+	if (typeof zmiParams === 'object' && typeof zmiParams['home_id'] === 'object' && zmiParams['home_id'].length > 0) {
 		fq.push('home_id_s:'+zmiParams['home_id']);
 	}
 	p['fq'] = fq;

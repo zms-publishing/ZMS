@@ -61,7 +61,7 @@ function openWindow(url) {
 				onclick="return zmiFuncIndex('manage_test');">Test
 			</button>
 			<button name="btn" class="btn btn-danger" style="margin-right:1em"
-				title="RESYNC: Validating and refreshing link objects, inline links and backlink on the selected node (default: full hierarchy)."
+				title="RESYNC: Validating and refreshing link objects, inline links and backlinks (not uid- but path-syntax) on the selected node (default: full hierarchy)."
 				onclick="return zmiFuncIndex('manage_resync');">Resync
 			</button>
 			<div class="input-group">

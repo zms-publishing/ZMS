@@ -395,9 +395,10 @@ class ZReferableItem(object):
           path = url.replace('@','/content/')
           l = path.split('/') 
           ob = self.getDocumentElement()
-          [l.pop(0) for x in ob.getPhysicalPath() if l[0] == x]
-          for id in [x for x in l if x]:
-            ob = getattr(ob,id,None)
+          if l[0] != '':
+            [l.pop(0) for x in ob.getPhysicalPath() if l[0] == x]
+            for id in [x for x in l if x]:
+              ob = getattr(ob,id,None)
       # Prepare request
       ids = self.getPhysicalPath()
       if ob is not None and ob.id not in ids:

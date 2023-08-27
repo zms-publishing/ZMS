@@ -1691,10 +1691,13 @@ table.table-sm tr.row_insert td .btn-add {
 	font-weight: normal;
 	cursor: default;
 }
-
 .zmi.metas table.meta-access .breadcrumb {
 	font-size:10px;
 	padding-left: 0;
+	flex-wrap: nowrap;
+}
+.zmi.metas table.meta-access .breadcrumb i {
+	font-size:11px;
 }
 
 

@@ -385,19 +385,20 @@ class ZReferableItem(object):
           q = catalog({'get_uid':url})
           for r in q:
             path  = '%s/'%r['getPath']
-            l = path.split('/')
+            l = [x for x in path.split('/') if x] 
             ob = self.getRootElement()
-            [l.pop(0) for x in ob.getPhysicalPath() if l[0] == x]
-            for id in [x for x in l if x]:
-              ob = getattr(ob,id,None)
+            if l:
+              [l.pop(0) for x in ob.getPhysicalPath() if l[0] == x]
+              for id in l:
+                ob = getattr(ob,id,None)
             break
         elif not url.startswith('__'):
           path = url.replace('@','/content/')
-          l = path.split('/') 
+          l = [x for x in path.split('/') if x] 
           ob = self.getDocumentElement()
-          if l[0] != '':
+          if l:
             [l.pop(0) for x in ob.getPhysicalPath() if l[0] == x]
-            for id in [x for x in l if x]:
+            for id in l:
               ob = getattr(ob,id,None)
       # Prepare request
       ids = self.getPhysicalPath()

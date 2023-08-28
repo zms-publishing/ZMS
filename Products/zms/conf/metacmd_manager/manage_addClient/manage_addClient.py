@@ -53,7 +53,7 @@ def manage_addClient(self):
 		html += '<label for="titlealt" class="col-sm-3 control-label">%s</label>'%(self.getZMILangStr('TAB_CONFIGURATION'))
 		html += '<div class="col-sm-9"><input name="acquire:int" type="checkbox" value="1" checked="checked"> %s</div>'%(self.getZMILangStr('BTN_ACQUIRE'))
 		html += '</div><!-- .form-group -->'
-		html += '<div class="form-row">'
+		html += '<div class="form-group row">'
 		html += '<div class="controls save">'
 		html += '<button type="submit" name="btn" class="btn btn-primary" value="BTN_INSERT">%s</button>'%self.getZMILangStr('BTN_INSERT')
 		html += '<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CANCEL">%s</button>'%self.getZMILangStr('BTN_CANCEL')

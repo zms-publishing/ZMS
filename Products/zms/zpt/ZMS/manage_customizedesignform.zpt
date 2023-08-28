@@ -27,11 +27,11 @@
 				<label for="_meta_name" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_TITLE')">Title</span></label>
 				<div class="col-lg-10"><input type="text" id="newTitle" name="newTitle" class="form-control form-control-sm" /></div>
 			</div><!-- .form-group -->
-			<div class="form-row">
+			<div class="form-group row">
 				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-primary" value="BTN_INSERT" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
 				</div><!-- .controls.save -->
-			</div><!-- .form-row -->
+			</div><!-- .form-group -->
 		</form>
 	</div><!-- .inner -->
 </div><!-- #insertObj -->
@@ -184,7 +184,7 @@
 									<!-- ACE Editor -->
 									<tal:block tal:on-error="string:ace" tal:content="structure python:here.zmi_ace_editor(here,request,name=css_id,ob=css,text=str(css),content_type='text/css')">ACE Editor</tal:block>
 									<!-- /ACE Editor -->
-									<div class="form-row">
+									<div class="form-group row">
 										<div class="controls save">
 											<button type="submit" name="btn" class="btn btn-primary" value="BTN_SAVE"
 												tal:attributes="
@@ -274,7 +274,7 @@
 									<!-- ACE Editor -->
 									<tal:block tal:on-error="string:ace" tal:content="structure python:here.zmi_ace_editor(here,request,name=js_id,ob=js,text=str(js),content_type='application/javascript')">ACE Editor</tal:block>
 									<!-- /ACE Editor -->
-									<div class="form-row">
+									<div class="form-group row">
 										<div class="controls save">
 											<button type="submit" name="btn" class="btn btn-primary" value="BTN_SAVE"
 												tal:attributes="

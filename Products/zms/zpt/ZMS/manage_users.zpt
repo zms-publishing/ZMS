@@ -186,7 +186,7 @@ function zmiModalInsertUserOpen(context) {
 					tal:define="roles_optpl python:len([x for x in request['AUTHENTICATED_USER'].getRolesInContext(here) if x in ['Manager','ZMSAdminstrator']]) > 0 and roles_optpl or roles_optpl[1:]"
 					tal:content="structure python:here.zmi_input_multiselect(here,name='roles',value=[],lang_str='ATTR_ROLES',options=roles_optpl)">the control</div><!-- .col-sm-10 -->
 			</div>
-			<div class="form-row">
+			<div class="form-group row">
 				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-primary" value="BTN_INSERT" tal:content="python:here.getZMILangStr('BTN_INSERT')">Save</button>
 				</div>
@@ -288,7 +288,7 @@ function zmiModalInsertUserOpen(context) {
 				</a>
 			</legend>
 			<div class="card-body">
-				<div class="form-row">
+				<div class="form-group row">
 					<div class="controls save"
 							tal:define="
 								security_roles python:here.getRootElement().getSecurityRoles().get(request['id'],{});
@@ -543,7 +543,7 @@ function zmiModalInsertUserOpen(context) {
 					</div>
 				</div>
 			</tal:block>
-			<div class="form-row">
+			<div class="form-group row">
 				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-primary" value="BTN_INSERT" tal:content="python:here.getZMILangStr('BTN_INSERT')" onclick="btnClick(this,'obj');">Insert</button>
 				</div>

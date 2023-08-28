@@ -135,7 +135,7 @@
 			</div><!-- .card-body -->
 		</div><!-- .collapse -->
 		<hr />
-		<div class="form-row">
+		<div class="form-group row">
 			<div class="controls save">
 				<button type="submit" name="btn" class="btn btn-primary" value="BTN_COMPARE">
 					<i class="fas fa-random"></i>

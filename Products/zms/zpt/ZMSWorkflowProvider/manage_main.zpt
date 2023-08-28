@@ -232,15 +232,15 @@
 			<input type="hidden" name="id" tal:attributes="value request/id"/>
 			<div class="form-group form-group-sm row inpId">
 				<label for="inpId" class="col-sm-2 col-form-label control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
-				<div class="col-sm-8"><input class="form-control form-control-sm" type="text" id="inpId" name="inpId" tal:attributes="value activity/id"/></div><!-- .col-lg-10 -->
+				<div class="col-sm-10"><input class="form-control form-control-sm" type="text" id="inpId" name="inpId" tal:attributes="value activity/id"/></div><!-- .col-lg-10 -->
 			</div>
 			<div class="form-group form-group-sm row inpName">
 				<label for="inpName" class="col-sm-2 col-form-label control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
-				<div class="col-sm-8"><input class="form-control form-control-sm" type="text" id="inpName" name="inpName" tal:attributes="value activity/name"/></div><!-- .col-lg-10 -->
+				<div class="col-sm-10"><input class="form-control form-control-sm" type="text" id="inpName" name="inpName" tal:attributes="value activity/name"/></div><!-- .col-lg-10 -->
 			</div>
 			<div class="form-group form-group-sm row inpIconClazz">
 				<label for="inpIconClazz" class="col-sm-2 col-form-label control-label"><span>Icon</span></label>
-				<div class="col-sm-8">
+				<div class="col-sm-10">
 					<input class="form-control form-control-sm zmi-input-icon-clazz" type="text" id="inpIconClazz" name="inpIconClazz" tal:attributes="value python:activity.get('icon_clazz','')"/>
 				</div>
 			</div><!-- .form-group -->
@@ -253,7 +253,7 @@
 					<input class="btn btn-file" type="file" id="inpIcon" name="inpIcon" />
 				</div>
 			</div><!-- .form-group -->
-			<div class="form-row">
+			<div class="form-group row mt-3">
 				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-primary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 				</div><!-- .controls.save -->
@@ -326,7 +326,7 @@
 						<textarea name="inpData" title="Doubleclick for ACE-Editor"
 							data-content_type="text/html"
 							class="form-control-ace-editor form-control form-control-sm zpt"
-							style="min-height: 20rem;"
+							style="min-height:20rem;overflow-y:scroll"
 							ondblclick="show_ace_editor(this,true)"
 							tal:attributes="id python:'wftransition_%s'%(ob.getId())" 
 							tal:content="python:zopeutil.readObject(here,ob.getId())">
@@ -336,7 +336,7 @@
 				</div>
 				<script type="text/javascript" defer charset="UTF-8" src="/++resource++zms_/common/zmi_ace_editor.js"></script>
 			</tal:block>
-			<div class="form-row mt-3">
+			<div class="form-group row mt-3">
 				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-primary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 				</div><!-- .controls.save -->
@@ -395,7 +395,7 @@
 					</select>
 				</div>
 			</div><!-- .form-group -->
-			<div class="form-row">
+			<div class="form-group row">
 				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-primary" value="BTN_INSERT" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
 				</div><!-- .controls.save -->

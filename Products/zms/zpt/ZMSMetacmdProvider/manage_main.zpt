@@ -113,12 +113,12 @@
 				</tbody>
 				</table>
 			</div><!-- .form-group -->
-			<div class="form-row">
+			<div class="form-group row">
 				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-primary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 					<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CLOSE" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
 				</div>
-			</div><!-- .form-row -->
+			</div><!-- .form-group -->
 		</form>
 	</div><!-- #editObj.inner -->
 </div><!-- .d-none -->

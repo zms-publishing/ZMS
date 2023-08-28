@@ -125,7 +125,7 @@ html += '<span class="btn btn-secondary"><input name="recursive" type="checkbox"
 html += '</div><!--.col-sm-10 -->'
 html += '</div>'
 
-html += '<div class="form-row">'
+html += '<div class="form-group row">'
 html += '<div class="controls save">'
 html += '<button type="submit" name="btn" class="btn btn-primary" value="BTN_EXECUTE">%s</button> '%context.getZMILangStr('BTN_EXECUTE')
 html += '<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CANCEL">%s</button> '%context.getZMILangStr('BTN_CANCEL')

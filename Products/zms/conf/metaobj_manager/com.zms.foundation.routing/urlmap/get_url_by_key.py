@@ -4,7 +4,7 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=url_key='',zmscontext=None
+##parameters=url_key='',zmscontext=None,error_404_url=None
 ##title=Using URL-Map for URL Resolving
 ##
 request = container.REQUEST
@@ -16,7 +16,7 @@ if url_key=='':
 # Check both just a final keyword or whole URL is used for redirecting
 req_id = url_key.split('/')[-1]
 req_url = url_key
-new_url = 'url_mapping/error_404?key=%s'%(url_key)
+new_url = error_404_url and error_404_url or 'url_mapping/error_404?key=%s'%(url_key)
 
 urlmap = container.get_urlmap(zmscontext=zmscontext)
 

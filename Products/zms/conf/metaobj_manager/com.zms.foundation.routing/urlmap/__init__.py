@@ -102,6 +102,15 @@ class urlmap:
 			,"repetitive":0
 			,"type":"Script (Python)"}
 
+		url_mapping_get_urlmap_test = {"default":""
+			,"id":"url_mapping/get_urlmap_test"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"url_mapping/get_urlmap_test"
+			,"repetitive":0
+			,"type":"Script (Python)"}
+
 		url_mapping_get_path_by_id = {"default":""
 			,"id":"url_mapping/get_path_by_id"
 			,"keys":[]
@@ -126,15 +135,6 @@ class urlmap:
 			,"mandatory":0
 			,"multilang":0
 			,"name":"url_mapping/get_url_by_key"
-			,"repetitive":0
-			,"type":"Script (Python)"}
-
-		url_mapping_test_urlmap = {"default":""
-			,"id":"url_mapping/test_urlmap"
-			,"keys":[]
-			,"mandatory":0
-			,"multilang":0
-			,"name":"url_mapping/test_urlmap"
 			,"repetitive":0
 			,"type":"Script (Python)"}
 

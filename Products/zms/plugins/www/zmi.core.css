@@ -1197,8 +1197,7 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	padding-top:.1rem;
 	width: max-content;
 }
-
-.zmi table td > nav > ol.breadcrumb {
+.zmi table.table td nav > ol.breadcrumb {
 	padding: 0;
 }
 

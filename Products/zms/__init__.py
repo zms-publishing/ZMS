@@ -92,9 +92,15 @@ def registerDirectory(_context, name, directory=None, recursive=False,
 zcml.registerDirectory = registerDirectory
 #################################################################################################################
 
+# Additional Registration of FileExtensions 
+# will get obsolete with 
+# https://github.com/zopefoundation/Products.CMFCore/pull/130
+# https://github.com/zopefoundation/Zope/pull/1146
+
 try:
   from Products.CMFCore.DirectoryView import registerFileExtension
   from Products.CMFCore.FSFile import FSFile
+  from Products.CMFCore.FSImage import FSImage
   registerFileExtension('xlsx', FSFile)
   registerFileExtension('xls', FSFile)
   registerFileExtension('doc', FSFile)
@@ -102,7 +108,7 @@ try:
   registerFileExtension('ppt', FSFile)
   registerFileExtension('pptx', FSFile)
   registerFileExtension('map', FSFile)
-  registerFileExtension('svg', FSFile)
+  registerFileExtension('svg', FSImage)
   registerFileExtension('ttf', FSFile)
   registerFileExtension('eot', FSFile)
   registerFileExtension('woff', FSFile)

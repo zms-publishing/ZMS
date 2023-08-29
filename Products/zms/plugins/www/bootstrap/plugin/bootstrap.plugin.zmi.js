@@ -2147,7 +2147,7 @@ ZMI.prototype.initUrlInput = function(context) {
 		if ($input.prop("disabled")) {
 			$inputgroup.append(''
 					+ '<div class="input-group-append">'
-						+ '<span class="input-group-text"><i class="fas fa-ban-circle"></i></span>'
+						+ '<span class="input-group-text"><i class="fas fa-ban"></i></span>'
 					+ '</div>'
 				);
 		} else {

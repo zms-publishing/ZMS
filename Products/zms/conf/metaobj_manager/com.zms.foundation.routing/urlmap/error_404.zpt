@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ERROR 404: Page not found</title>
+        <meta charset="utf-8" />
+        <style>
+            body.error-page {
+              font-family: arial,helvetica,sans-serif;
+              background:#354f67;
+              height:100vh;
+              margin:0;
+              padding:3rem 10vw;
+              width:100vw;
+              color:white;
+              line-height:2;
+              letter-spacing:.015em;
+            }
+            body.error-page hr, 
+            body.error-page a {
+              color:white;
+            }
+        </style>
+    </head>
+    <body class="error-page">
+        <h1>
+            <svg
+               width="129.29216"
+               height="70.320602"
+               version="1.1"
+               viewBox="0 0 36.119891 19.645217"
+               id="svg14"
+               xmlns="http://www.w3.org/2000/svg"
+               xmlns:svg="http://www.w3.org/2000/svg">
+              <g
+                 fill="#07aee9ff"
+                 stroke-width="0"
+                 style="font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal"
+                 aria-label="ZMS"
+                 id="g8"
+                 transform="matrix(1.6875,0,0,1.6875,-29.221931,-231.16894)">
+                <path
+                   d="m 22.986,148.52 h -5.6693 v -1.4512 l 2.7669,-8.492 h -2.5994 v -1.4911 h 5.3105 v 1.507 l -2.7509,8.4601 h 2.9423 z"
+                   style="font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal"
+                   id="path2" />
+                <path
+                   d="m 32.313,148.52 h -2.2406 v -6.4189 l -1.3077,6.4189 h -1.7303 l -1.4991,-6.4189 v 6.4189 h -1.9615 v -11.434 h 3.2294 l 1.1482,5.9325 0.99672,-5.9325 h 3.3649 z"
+                   style="font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal"
+                   id="path4" />
+                <path
+                   d="m 33.004,143.95 h 2.2885 v 2.6234 q 0,0.39071 0.47045,0.39071 0.4545,0 0.4545,-0.39071 v -1.3555 q 0,-0.62195 -0.82927,-1.4592 -1.6027,-1.5549 -1.9934,-2.0891 -0.39071,-0.53424 -0.39071,-1.1721 v -1.2838 q 0,-2.2247 2.9024,-2.2247 2.5994,0 2.5994,2.0253 v 1.9775 h -2.2885 v -2.1051 q 0,-0.34287 -0.37477,-0.34287 -0.43856,0 -0.43856,0.66182 l 0.04784,0.74156 q 0,0.6379 0.84522,1.4831 1.5708,1.507 1.9934,2.1051 0.43058,0.59804 0.43058,1.3555 v 1.4592 q 0,2.2805 -2.9104,2.2805 -2.8068,0 -2.8068,-2.0732 z"
+                   style="font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal"
+                   id="path6" />
+              </g>
+            </svg>
+        </h1>
+        <h2>ERROR 404: Page not found</h2>
+        <p>
+            Sorry, the requested page does not exists.<br/>
+            Back to <a href="/">Homepage</a>
+        </p>
+    </body>
+</html>

@@ -23,7 +23,7 @@
 
 	<tal:block tal:content="structure python:here.zmi_manage_tabs_message(here,request)">zmi_manage_tabs_message</tal:block>
 
-	<form class="form-horizontal card-body" action="manage_changeProperties" method="post" enctype="multipart/form-data"
+	<form class="form-horizontal card-body pt-4" action="manage_changeProperties" method="post" enctype="multipart/form-data"
 		tal:define="global dummy0 python:acquireObjs.sort()">
 
 		<input type="hidden" name="lang" tal:attributes="value request/lang" />
@@ -32,8 +32,8 @@
 		<!-- Step-1: SELECT configuration file -->
 		<tal:block tal:condition="python:request.get('section')!='acquire'">
 			<div title="Step-1: SELECT configuration file"
-				class="badge badge-dark" 
-				style="position:absolute;top:0;right:1.5rem"
+				class="badge badge-dark position-absolute mr-1"
+				style="top:0;right:0"
 				tal:define="msg python:standard.get_session_value(here,'manage_tabs_message','') or request.get('manage_tabs_message','')"
 				tal:condition="python:msg!=''">
 				Step-1
@@ -58,16 +58,23 @@
 		<!-- Step-2: ACQUIRE configuration file -->
 		<tal:block tal:condition="python:request.get('section')=='acquire'">
 			<div title="Step-2: ACQUIRE configuration file"
-				class="badge badge-dark" 
-				style="position:absolute;top:0;right:1.5rem">
+				class="badge badge-dark position-absolute mr-1"
+				style="top:0;right:0">
 				Step-2
 			</div>
 			<input type="hidden" name="immediately:int" value="1" />
-			<tal:block tal:define="global temp_ids python:request.get('temp_ids').split(',')"
-				><tal:block tal:repeat="acquireObj acquireObjs"
-					><div class="form-group row"
+			<div class="form-group row my-3 pb-3 border-bottom d-flex justify-content-between align-items-center">
+				<span class="btn btn-secondary" 
+					onclick="zmiToggleSelectionButtonClick(this)"
+					tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))">
+					<i class="fas fa-check-square" style="min-width:unset"></i>
+				</span>
+			</div>
+			<tal:block tal:define="temp_ids python:request.get('temp_ids').split(',')">
+				<tal:block tal:repeat="acquireObj acquireObjs">
+					<div class="form-group row flex-nowrap mb-2 overflow-hidden text-truncate"
 						tal:condition="python:acquireObj[1] in temp_ids" 
-						tal:define="global masterMetaObj python:master.getMetaobj(acquireObj[1]); metaObj python:here.getMetaobj(acquireObj[1])">
+						tal:define="masterMetaObj python:master.getMetaobj(acquireObj[1]); metaObj python:here.getMetaobj(acquireObj[1])">
 						<input type="checkbox" name="aq_ids:list" tal:attributes="value masterMetaObj/id; title masterMetaObj/id" checked="checked" />
 						<i tal:condition="python:masterMetaObj['id'] not in metaObjIds" class="fas fa-plus"></i>
 						<i tal:condition="python:masterMetaObj['type']=='ZMSPackage'" class="fas fa-briefcase"></i>

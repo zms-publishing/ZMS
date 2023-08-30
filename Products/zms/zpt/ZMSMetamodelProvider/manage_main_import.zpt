@@ -40,7 +40,7 @@
 					</select>
 				</div>
 			</div><!-- .form-group -->
-			<div class="badge badge-dark" style="position:absolute;top:0;right:1.5rem">Step-1</div>
+			<div class="badge badge-dark position-absolute mr-1" style="top:0;right:0">Step-1</div>
 			<div class="form-group row">
 				<div class="controls save mt-3">
 					<button type="submit" name="btn" class="btn btn-primary" value="BTN_IMPORT" 
@@ -79,11 +79,13 @@
 						</tal:block>
 					</tal:block>
 					<tal:block tal:define="global dummy0 python:packages.sort()"></tal:block>
-					<div class="btn-group">
-						<span class="btn btn-secondary" onclick="zmiToggleSelectionButtonClick(this)"
-							tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))"
-							><i class="fas fa-check-square"></i></span>
-						<legend tal:content="f/title_or_id">title_or_id</legend>
+					<div class="form-group row my-3 pb-3 border-bottom d-flex justify-content-between align-items-center">
+						<span class="btn btn-secondary" 
+							onclick="zmiToggleSelectionButtonClick(this)"
+							tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))">
+							<i class="fas fa-check-square" style="min-width:unset"></i>
+						</span>
+						<legend class="text-muted w-auto mb-0 pl-2 overflow-hidden text-truncate" tal:content="f/title_or_id">title_or_id</legend>
 					</div>
 					<tal:block tal:repeat="package packages">
 						<tal:block tal:define="global package_id python:standard.id_quote(package)">
@@ -109,7 +111,7 @@
 					</tal:block>
 				</tal:block>
 			</tal:block>
-			<div class="badge badge-dark" style="position:absolute;top:0;right:1.5rem">Step-2</div>
+			<div class="badge badge-dark position-absolute mr-1" style="top:0;right:0">Step-2</div>
 			<div class="form-group row">
 				<div class="controls save mt-3">
 					<button type="submit" name="btn" class="btn btn-primary" value="BTN_IMPORT"

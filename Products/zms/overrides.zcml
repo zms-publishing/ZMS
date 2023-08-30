@@ -13,7 +13,7 @@
       xmlns:zcml="http://namespaces.zope.org/zcml"
       zcml:condition="installed Products.CMFCore"
       >
-    <cmf:registerDirectory name="assets" directory="../../../../frontend/web/estatico-handlebars/src/assets" recursive="True" />
+    <cmf:registerDirectory name="assets" directory="../../../../frontend/web/estatico-handlebars/dist/assets" recursive="True" />
 
   </configure>
 

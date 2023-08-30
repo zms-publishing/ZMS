@@ -27,7 +27,7 @@ class urlmap:
 	name = "URL-Map"
 
 	# Package
-	package = "com.zms.foundation.routing"
+	package = "com.zms.routing"
 
 	# Revision
 	revision = "5.0.0"

@@ -1,22 +1,22 @@
 class com_zms_foundation_routing:
 	"""
-	python-representation of com.zms.foundation.routing
+	python-representation of com.zms.routing
 	"""
 
 	# Enabled
 	enabled = 1
 
 	# Id
-	id = "com.zms.foundation.routing"
+	id = "com.zms.routing"
 
 	# Name
-	name = "com.zms.foundation.routing"
+	name = "com.zms.routing"
 
 	# Package
 	package = ""
 
 	# Revision
-	revision = "0.0.0"
+	revision = "5.0.0"
 
 	# Type
 	type = "ZMSPackage"

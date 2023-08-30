@@ -2087,9 +2087,6 @@ body.lazy_select_form footer .controls {
 .zmi.metas_import input[type="checkbox"] {
 	margin: 0 0.8rem;
 }
-.zmi.metas_import  .btn {
-	margin-bottom:1rem;
-}
 .zmi.metas_import .btn-group legend {
 	display: inline-block !important;
 	width: auto;

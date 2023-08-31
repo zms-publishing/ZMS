@@ -1272,18 +1272,18 @@ class ZMSMetaobjManager(object):
           immediately = REQUEST.get('immediately', 0)
           overwrite = []
           ids = REQUEST.get('aq_ids', [])
-          for id in ids:
-            if not immediately and id in self.getMetaobjIds():
-              overwrite.append( id)
-            else:
-              self.acquireMetaobj( id)
+          if immediately:
+            for id in ids:
+              self.acquireMetaobj(id)
+            id = ''
+            message = self.getZMILangStr('MSG_INSERTED')%str(len(ids))
+          else:
+            for id in ids:
+              overwrite.append(id)
           if overwrite:
             id = ''
             extra['section'] = 'acquire'
             extra['temp_ids'] = ','.join(overwrite)
-          else:
-            # Return with message.
-            message = self.getZMILangStr('MSG_INSERTED')%str(len(ids))
         
         # Import.
         # -------

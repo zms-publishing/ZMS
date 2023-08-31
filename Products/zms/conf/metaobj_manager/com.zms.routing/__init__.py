@@ -1,4 +1,4 @@
-class com_zms_foundation_routing:
+class com_zms_routing:
 	"""
 	python-representation of com.zms.routing
 	"""

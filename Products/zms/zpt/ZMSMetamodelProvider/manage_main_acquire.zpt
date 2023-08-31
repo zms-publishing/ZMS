@@ -23,14 +23,12 @@
 
 	<tal:block tal:content="structure python:here.zmi_manage_tabs_message(here,request)">zmi_manage_tabs_message</tal:block>
 
-	<form class="form-horizontal card-body pt-4" action="manage_changeProperties" method="post" enctype="multipart/form-data"
-		tal:define="global dummy0 python:acquireObjs.sort()">
-
-		<input type="hidden" name="lang" tal:attributes="value request/lang" />
-		<input type="hidden" name="target" tal:attributes="value python:request['URL'].split('/')[-1]" />
-
-		<!-- Step-1: SELECT configuration file -->
-		<tal:block tal:condition="python:request.get('section')!='acquire'">
+	<!-- Step-1: SELECT configuration file -->
+	<tal:block tal:condition="python:request.get('section')!='acquire'">
+		<form class="form-horizontal card-body pt-4" action="manage_changeProperties" method="post" enctype="multipart/form-data"
+			tal:define="dummy0 python:acquireObjs.sort()">
+			<input type="hidden" name="lang" tal:attributes="value request/lang" />
+			<input type="hidden" name="target" tal:attributes="value python:request['URL'].split('/')[-1]" />
 			<div title="Step-1: SELECT configuration file"
 				class="badge badge-dark position-absolute mr-1"
 				style="top:0;right:0"
@@ -53,16 +51,20 @@
 					</button>
 				</div>
 			</div><!-- .form-group -->
-		</tal:block>
+		</form>
+	</tal:block>
 
-		<!-- Step-2: ACQUIRE configuration file -->
-		<tal:block tal:condition="python:request.get('section')=='acquire'">
+	<!-- Step-2: ACQUIRE configuration file -->
+	<tal:block tal:condition="python:request.get('section')=='acquire'">
+		<form class="form-horizontal card-body pt-4" action="manage_changeProperties" method="post" enctype="multipart/form-data" target="_parent"
+			tal:define="dummy0 python:acquireObjs.sort()">
+			<input type="hidden" name="lang" tal:attributes="value request/lang" />
+			<input type="hidden" name="immediately:int" value="1" />
 			<div title="Step-2: ACQUIRE configuration file"
 				class="badge badge-dark position-absolute mr-1"
 				style="top:0;right:0">
 				Step-2
 			</div>
-			<input type="hidden" name="immediately:int" value="1" />
 			<div class="form-group row my-3 pb-3 border-bottom d-flex justify-content-between align-items-center">
 				<span class="btn btn-secondary" 
 					onclick="zmiToggleSelectionButtonClick(this)"
@@ -101,9 +103,8 @@
 					</button>
 				</div>
 			</div>
-		</tal:block>
-
-	</form>
+		</form>
+	</tal:block>
 
 </body>
 </html>

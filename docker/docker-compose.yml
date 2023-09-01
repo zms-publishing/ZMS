@@ -1,0 +1,14 @@
+version: "3.7"
+services:
+  zms5:
+    build: .
+    image: zms5:latest
+    ports:
+      - 8080:8080 # Expose Zope Server
+      - 5678:5678 # Expose debugpy port
+    environment:
+      - PYTHONUNBUFFERED=true
+      - ZMS_CUSTOM_VERSION=dev-local
+    # volumes:
+    #   - /home/zope/instance/zms5:/home/zope/instance/zms5
+    #   - /home/zope/src/zms-publishing/ZMS5/:src

@@ -1,5 +1,8 @@
 FROM python:3.10-alpine
 
+EXPOSE 8080
+EXPOSE 5678
+
 WORKDIR /home/zope/
 
 RUN apk add python3 make gcc g++ git
@@ -7,6 +10,7 @@ RUN apk update && apk add mariadb-dev openldap-dev
 
 RUN python3 -m venv venv
 RUN venv/bin/pip install --upgrade pip wheel setuptools
+RUN venv/bin/pip install https://github.com/zms-publishing/ZMS/archive/refs/heads/main.zip
 RUN venv/bin/pip install -r https://raw.githubusercontent.com/zms-publishing/ZMS5/master/requirements-full.txt
 RUN venv/bin/pip install itsdangerous
 RUN venv/bin/pip install debugpy

@@ -9,6 +9,9 @@ services:
     environment:
       - PYTHONUNBUFFERED=true
       - ZMS_CUSTOM_VERSION=dev-local
+
+    # command:  /home/zope/venv/bin/runwsgi --debug --verbose /home/zope/venv/instance/zms5/etc/zope.ini debug-mode=on
+
     # volumes:
     #   - /home/zope/instance/zms5:/home/zope/instance/zms5
     #   - /home/zope/src/zms-publishing/ZMS5/:src

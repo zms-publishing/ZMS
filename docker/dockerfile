@@ -33,4 +33,4 @@ COPY Data.fs venv/instance/zms5/var/
 COPY start.sh venv/instance/zms5/
 
 # Finally Start ZEO/Zope by Script
-# CMD ["/home/zope/venv/instance/zms5/start.sh"]
+# ENTRYPOINT ["/home/zope/venv/instance/zms5/start.sh"]

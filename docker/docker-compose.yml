@@ -16,7 +16,8 @@ services:
       - PYTHON="/home/zope/venv/bin/python"
       - SOFTWARE_HOME="/home/zope/venv/bin"
 
-    command:  /home/zope/venv/bin/runwsgi --debug --verbose /home/zope/venv/instance/zms5/etc/zope.ini debug-mode=on http_port=8086
+    command: tail -f /dev/null
+    # command: /home/zope/venv/instance/zms5/start.sh
 
     # volumes:
     #   - /home/zope/instance/zms5:/home/zope/instance/zms5

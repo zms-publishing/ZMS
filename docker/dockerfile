@@ -35,10 +35,12 @@ COPY zeo.conf venv/instance/zms5/etc/
 COPY Data.fs venv/instance/zms5/var/
 COPY start.sh venv/instance/zms5/
 
+EXPOSE 8085
+EXPOSE 8086
 EXPOSE 8080
 EXPOSE 5678
 
 # Finally Start ZEO/Zope by Script
 HEALTHCHECK --interval=10s --timeout=5s --start-period=30s CMD wget -q http://127.0.0.1:8080/ok -O - | grep OK || exit 1
 ENTRYPOINT ["/home/zope/venv/instance/zms5/start.sh"]
-# CMD [""]
+CMD [""]

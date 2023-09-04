@@ -4,6 +4,8 @@ services:
     build: .
     image: zms5:latest
     ports:
+      - 8085:8085
+      - 8086:8086
       - 8080:8080
       - 5678:5678
     environment:

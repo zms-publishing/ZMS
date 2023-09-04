@@ -4,21 +4,21 @@
 			"name": "ZMS5",
 			"path": "../"
 		},
-		{
-			"name": "Zope 5",
-			"path": "/home/zope/src/zopefoundation/Zope"
-		},
-		{
-			"name": "ZMS5 Dev Instance",
-			"path": "/home/zope/instance/zms5_dev"
-		},
-		{
-			"name": "Zope-WebDAV Access",
-			"uri": "webdav://admin:admin@localhost:8091/"
-		},
-		{
-			"path": "../../../../vpy38/lib/python3.8/site-packages/pydoctor"
-		}
+		// {
+		// 	"name": "Zope 5",
+		// 	"path": "/home/zope/src/zopefoundation/Zope"
+		// },
+		// {
+		// 	"name": "ZMS5 Dev Instance",
+		// 	"path": "/home/zope/instance/zms5_dev"
+		// },
+		// {
+		// 	"name": "Zope-WebDAV Access",
+		// 	"uri": "webdav://admin:admin@localhost:8091/"
+		// },
+		// {
+		// 	"path": "../../../../vpy38/lib/python3.8/site-packages/pydoctor"
+		// }
 	],
 	"settings": {
 		"python.defaultInterpreterPath": "~/vpy38/bin/python",

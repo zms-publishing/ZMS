@@ -4,11 +4,15 @@ services:
     build: .
     image: zms5:latest
     ports:
-      - 8080:8080 # Expose Zope Server
-      - 5678:5678 # Expose debugpy port
+      - 8080:8080
+      - 5678:5678
     environment:
-      - PYTHONUNBUFFERED=true
-      - ZMS_CUSTOM_VERSION=dev-local
+      - PYTHONUNBUFFERED="1"
+      - CONFIG_FILE="/home/zope/venv/instance/zms5/etc/zope.ini"
+      - INSTANCE_HOME="/home/zope/venv/instance/zms5"
+      - CLIENT_HOME="/home/zope/venv/instance/zms5"
+      - PYTHON="/home/zope/venv/bin/python"
+      - SOFTWARE_HOME="/home/zope/venv/bin"
 
     # command:  /home/zope/venv/bin/runwsgi --debug --verbose /home/zope/venv/instance/zms5/etc/zope.ini debug-mode=on
 

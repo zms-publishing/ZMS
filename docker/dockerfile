@@ -1,24 +1,44 @@
-FROM python:3.10-alpine
+ARG PYTHON_VERSION=3.10
+FROM python:${PYTHON_VERSION}-slim-bullseye
 
-EXPOSE 8080
-EXPOSE 5678
-
-RUN apk add python3 make gcc g++ git
-RUN apk update && apk add mariadb-dev openldap-dev
+RUN set -eux; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends \
+        curl \
+        wget \
+        git \
+        build-essential \
+        libxml2-dev \
+        mariadb-server \
+        libmariadb-dev;
 
 # https://stackoverflow.com/questions/49955097/how-do-i-add-a-user-when-im-using-alpine-as-a-base-image 
-RUN addgroup -S zope && adduser --disabled-password -S zope -G zope
-USER zope
+# RUN addgroup -S zope && adduser --disabled-password -S zope -G zope
+# USER zope
 WORKDIR /home/zope/
 
 RUN python3 -m venv venv
-RUN venv/bin/pip install --upgrade pip wheel setuptools
-RUN venv/bin/pip install https://github.com/zms-publishing/ZMS/archive/refs/heads/main.zip
-RUN venv/bin/pip install -r https://raw.githubusercontent.com/zms-publishing/ZMS5/master/requirements-full.txt
+RUN venv/bin/pip install -U pip wheel setuptools
+RUN venv/bin/pip install -U -e git+https://github.com/zms-publishing/ZMS.git#egg=ZMS
+# RUN venv/bin/pip install -r https://raw.githubusercontent.com/zms-publishing/ZMS5/master/requirements-full.txt
+RUN venv/bin/pip install ZEO
 RUN venv/bin/pip install itsdangerous
 RUN venv/bin/pip install debugpy
 
 # Create Zope Instance
 RUN venv/bin/mkwsgiinstance -d venv/instance/zms5 -u admin:admin
-# Start Zope Server
-CMD ["venv/bin/runwsgi", "--debug",  "--verbose", "venv/instance/zms5/etc/zope.ini", "debug-mode=on"]
+
+# Add Zope/ZEO Confs
+COPY zope.conf venv/instance/zms5/etc/
+COPY zope.ini venv/instance/zms5/etc/
+COPY zeo.conf venv/instance/zms5/etc/
+COPY Data.fs venv/instance/zms5/var/
+COPY start.sh venv/instance/zms5/
+
+EXPOSE 8080
+EXPOSE 5678
+
+# Finally Start ZEO/Zope by Script
+HEALTHCHECK --interval=10s --timeout=5s --start-period=30s CMD wget -q http://127.0.0.1:8080/ok -O - | grep OK || exit 1
+ENTRYPOINT ["/home/zope/venv/instance/zms5/start.sh"]
+# CMD [""]

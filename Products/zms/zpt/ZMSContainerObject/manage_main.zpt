@@ -5,6 +5,7 @@
 	data-path python:here.getRootElement().getRefObjPath(here);
 	data-root python:here.getRootElement().getHome().id;
 	data-client python:here.getHome().id;
+	data-level python:here.getLevel();
 	id python:'zmsid_%s'%(here.id);
 	class python:here.zmi_body_class(id='properties')">
 <header tal:replace="structure python:here.zmi_body_header(here,request)">zmi_body_header</header>

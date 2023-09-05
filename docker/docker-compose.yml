@@ -15,10 +15,8 @@ services:
       - CLIENT_HOME="/home/zope/venv/instance/zms5"
       - PYTHON="/home/zope/venv/bin/python"
       - SOFTWARE_HOME="/home/zope/venv/bin"
+    volumes:
+      - ./etc/:/home/zope/venv/instance/zms5/etc/
+      - ./var/:/home/zope/venv/instance/zms5/var/
 
-    command: tail -f /dev/null
-    # command: /home/zope/venv/instance/zms5/start.sh
-
-    # volumes:
-    #   - /home/zope/instance/zms5:/home/zope/instance/zms5
-    #   - /home/zope/src/zms-publishing/ZMS5/:src
+    command: /home/zope/venv/instance/zms5/etc/start.sh

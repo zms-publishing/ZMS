@@ -10,27 +10,23 @@ RUN apk add python3 make gcc g++ git
 RUN apk update && apk add python3-dev git mariadb-dev openldap-dev  curl bash
 
 # https://stackoverflow.com/questions/49955097/how-do-i-add-a-user-when-im-using-alpine-as-a-base-image 
-# RUN addgroup -S zope && adduser --disabled-password -S zope -G zope
-# USER zope
+RUN addgroup -S zope && adduser --disabled-password -S zope -G zope
+USER zope
 WORKDIR /home/zope/
+ENV VIRTUAL_ENV=/home/zope/venv
 
 RUN python3 -m venv venv
-RUN venv/bin/pip install -U pip wheel setuptools
-RUN venv/bin/pip install -U -e git+https://github.com/zms-publishing/ZMS.git#egg=ZMS
-RUN venv/bin/pip install -r https://raw.githubusercontent.com/zms-publishing/ZMS5/master/requirements-full.txt
-RUN venv/bin/pip install ZEO
-RUN venv/bin/pip install itsdangerous
-RUN venv/bin/pip install debugpy
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+RUN pip install -U pip wheel setuptools
+RUN pip install -U -e git+https://github.com/zms-publishing/ZMS.git#egg=ZMS
+RUN pip install -r https://raw.githubusercontent.com/zms-publishing/ZMS5/master/requirements-full.txt
+RUN pip install ZEO
+RUN pip install itsdangerous
+RUN pip install debugpy
 
 # Create Zope Instance
-RUN venv/bin/mkwsgiinstance -d venv/instance/zms5 -u admin:admin
-
-# Add Zope/ZEO Confs
-COPY zope.conf venv/instance/zms5/etc/
-COPY zope.ini venv/instance/zms5/etc/
-COPY zeo.conf venv/instance/zms5/etc/
-COPY Data.fs venv/instance/zms5/var/
-COPY start.sh venv/instance/zms5/
+RUN mkwsgiinstance -d venv/instance/zms5 -u admin:admin
 
 # Finally Start ZEO/Zope by Script
-# ENTRYPOINT ["/home/zope/venv/instance/zms5/start.sh"]
+# ENTRYPOINT ["bin/sh -c"]
+# CMD ["/home/zope/venv/instance/zms5/etc/start.sh"]

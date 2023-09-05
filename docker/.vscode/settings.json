@@ -1,0 +1,15 @@
+{
+	"python.defaultInterpreterPath": "/home/zope/venv/bin/python3",
+	"python.linting.enabled": false,
+	"python.formatting.provider": "none",
+
+	// "python.testing.pytestEnabled": false,
+	// "python.testing.unittestEnabled": true,
+	// "python.testing.unittestArgs": [
+	// 	"-v",
+	// 	"-s",
+	// 	"./tests",
+	// 	"-p",
+	// 	"test*.py"
+	// ],
+}

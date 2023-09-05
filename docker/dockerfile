@@ -18,7 +18,7 @@ ENV VIRTUAL_ENV=/home/zope/venv
 RUN python3 -m venv venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 RUN pip install -U pip wheel setuptools
-RUN pip install -U -e git+https://github.com/zms-publishing/ZMS.git#egg=ZMS
+RUN pip install -U -e git+https://github.com/zms-publishing/ZMS.git@fb_docker#egg=ZMS
 RUN pip install -r https://raw.githubusercontent.com/zms-publishing/ZMS5/master/requirements-full.txt
 RUN pip install ZEO
 RUN pip install itsdangerous
@@ -27,6 +27,9 @@ RUN pip install debugpy
 # Create Zope Instance
 RUN mkwsgiinstance -d venv/instance/zms5 -u admin:admin
 
+COPY ./etc venv/instance/zms5/etc
+COPY ./var venv/instance/zms5/var
+
 # Finally Start ZEO/Zope by Script
-# ENTRYPOINT ["bin/sh -c"]
-# CMD ["/home/zope/venv/instance/zms5/etc/start.sh"]
+# ENTRYPOINT ["/bin/sh -c"]
+CMD ["/home/zope/venv/instance/zms5/etc/start.sh"]

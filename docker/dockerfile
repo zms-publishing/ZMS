@@ -7,7 +7,7 @@ EXPOSE 5678
 
 # Install Zope/ZEO Dependencies
 RUN apk add python3 make gcc g++ git
-RUN apk update && apk add python3-dev git mariadb-dev openldap-dev  curl bash
+RUN apk update && apk add python3-dev git mariadb-dev openldap-dev curl bash
 
 # https://stackoverflow.com/questions/49955097/how-do-i-add-a-user-when-im-using-alpine-as-a-base-image 
 RUN addgroup -S zope && adduser --disabled-password -S zope -G zope
@@ -18,7 +18,7 @@ ENV VIRTUAL_ENV=/home/zope/venv
 RUN python3 -m venv venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 RUN pip install -U pip wheel setuptools
-RUN pip install -U -e git+https://github.com/zms-publishing/ZMS.git@fb_docker#egg=ZMS
+RUN pip install -U -e git+https://github.com/zms-publishing/ZMS.git#egg=ZMS
 RUN pip install -r https://raw.githubusercontent.com/zms-publishing/ZMS5/master/requirements-full.txt
 RUN pip install ZEO
 RUN pip install itsdangerous

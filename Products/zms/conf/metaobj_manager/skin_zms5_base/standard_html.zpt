@@ -62,6 +62,7 @@
 	data-path python:zmscontext.getRootElement().getRefObjPath(here);
 	data-root python:zmscontext.getRootElement().getHome().id;
 	data-client python:zmsclient.getHome().id;
+	data-level python:zmscontext.getLevel();
 	id python:'zmsid_%s'%(zmscontext.id);
 	class python:'zms web %s %s'%(zmscontext.meta_id, attr_dc_type)">
 	<span id="header_nav_toggler" class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#header_nav" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

@@ -6,8 +6,4 @@ Products/zms/overrides.zcml
 .vscode/
 dist/
 build/
-docker/var/log/*
-docker/var/cache/*
-docker/var/Data.fs.*
-docker/var/Z4.pid
-docker/var/zeosocket
+docker/var/*

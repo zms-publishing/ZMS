@@ -1,6 +1,0 @@
-2023-09-05T17:42:09 PID file '"/home/zope/venv/instance/zms5"/var/ZEO.pid' cannot be opened
-2023-09-05T17:42:09 (7) opening storage 'main' using FileStorage
-2023-09-05T17:42:09 StorageServer created RW with storages: main:RW:/home/zope/venv/instance/zms5/var/Data.fs
-2023-09-05T17:42:09 listening on /home/zope/venv/instance/zms5/var/zeosocket
-2023-09-05T17:42:10 Connected ZEO.asyncio.server.ServerProtocol('/home/zope/venv/instance/zms5/var/zeosocket')
-2023-09-05T17:42:10 received handshake 'Z5'

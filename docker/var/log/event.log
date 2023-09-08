@@ -1,8 +1,0 @@
-2023-09-05 17:42:10 INFO [ZEO.ClientStorage:274][MainThread] zeostorage Data.fs ClientStorage (pid=8) created RW/normal for storage: 'main'
-2023-09-05 17:42:10 INFO [ZEO.cache:209][MainThread] created temporary cache file 5
-2023-09-05 17:42:10 INFO [ZEO.asyncio.base:107][zeostorage Data.fs zeo client networking thread] Connected ZEO.asyncio.client.Protocol('/home/zope/venv/instance/zms5/var/zeosocket', 'main', False)
-2023-09-05 17:42:10 INFO [ZEO.ClientStorage:448][zeostorage Data.fs zeo client networking thread] zeostorage Data.fs Connected to storage: /home/zope/venv/instance/zms5/var/zeosocket
-2023-09-05 17:42:10 INFO [chameleon.config:39][MainThread] directory cache: /home/zope/venv/instance/zms5/var/cache.
-2023-09-05 17:42:11 INFO [Zope:42][MainThread] Ready to handle requests
-2023-09-05 17:42:11 INFO [waitress:486][MainThread] Serving on http://0.0.0.0:8085
-2023-09-05 17:42:11 INFO [waitress:486][MainThread] Serving on http://0.0.0.0:8085

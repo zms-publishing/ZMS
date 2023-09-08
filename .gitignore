@@ -7,3 +7,4 @@ Products/zms/overrides.zcml
 dist/
 build/
 docker/var/*
+docker/var/log/

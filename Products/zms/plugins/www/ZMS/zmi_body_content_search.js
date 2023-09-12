@@ -42,7 +42,7 @@ function GetURLParameter(sParam, sDefault) {
  */
 function AssembleUrlParameter(url,d) {
 	if (url.indexOf("?") > 0) {
-		var sPageURL = url.substr(url.indexOf("?")+1);
+		var sPageURL = url.substring(url.indexOf("?")+1);
 		var sURLVariables = sPageURL.split('&');
 		for (var i = 0; i < sURLVariables.length; i++) {
 			var sURLVariable = sURLVariables[i].split('=');
@@ -52,7 +52,7 @@ function AssembleUrlParameter(url,d) {
 				d[sParameterName] = sParameterValue;
 			}
 		}
-		url = url.substr(0,url.indexOf("?"));
+		url = url.substring(0,url.indexOf("?"));
 	}
 	var dl = "?";
 	for (var sParameterName in d) {
@@ -97,7 +97,7 @@ function GetPagination(fn, size, pageSize, pageIndex) {
 		}
 		html += ''
 			+ '<li class="page-item last' + (pageIndex==pageCount-1?" disabled":"") + '">'
-			+ '<a	class="page-link" href="'+(pageIndex==pageCount-1?'javascript:;':fn(pageIndex+1))+'">'+$ZMI.icon('fa fa-chevron-right icon-chevron-right')+'</a>'
+			+ '<a class="page-link" href="'+(pageIndex==pageCount-1?'javascript:;':fn(pageIndex+1))+'">'+$ZMI.icon('fa fa-chevron-right icon-chevron-right')+'</a>'
 			+ '</li>'
 			+ '</ul>'
 			+ '</nav><!-- .pagination -->';
@@ -122,7 +122,7 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
 	p['page_size'] = pageSize;
 	p['page_index'] = pageIndex;
 	var fq = [];
-	if ('home_id' in zmiParams && zmiParams['home_id'].length > 0) {
+	if (typeof zmiParams === 'object' && typeof zmiParams['home_id'] === 'object' && zmiParams['home_id'].length > 0) {
 		fq.push('home_id_s:'+zmiParams['home_id']);
 	}
 	p['fq'] = fq;
@@ -136,7 +136,7 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
 		}
 	}
 	if (baseurl.indexOf("/content")>0) {
-		baseurl = baseurl.substr(0,baseurl.indexOf("/content")+"/content".length);
+		baseurl = baseurl.substring(0,baseurl.indexOf("/content")+"/content".length);
 	}
 	var adapter = $ZMI.getConfProperty('zms.search.adapter.id','zcatalog_adapter');
 	var connector = $ZMI.getConfProperty('zms.search.connector.id','zcatalog_connector');
@@ -191,9 +191,9 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
 						var snippet = getattr("standard_html");
 						var custom = getattr("custom");
 						if (snippet.length > p['hl.fragsize']) {
-							snippet = snippet.substr(0,p['hl.fragsize']);
+							snippet = snippet.substring(0,p['hl.fragsize']);
 							while (!snippet.lastIndexOf(" ")==snippet.length-1) {
-								snippet = snippet.substr(0,snippet.length-2);
+								snippet = snippet.substring(0,snippet.length-2);
 							}
 						}
 						var $hl = $("lst[name="+did+"]",$highlighting);

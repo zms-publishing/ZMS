@@ -39,7 +39,7 @@ class ZMSZCatalogOpensearchConnector(
     # Properties.
     # -----------
     meta_type = 'ZMSZCatalogOpensearchConnector'
-    icon = "++resource++zms_/img/solr.png"
+    zmi_icon = "fas fa-search"
 
     # Management Interface.
     # ---------------------

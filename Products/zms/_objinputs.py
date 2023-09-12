@@ -56,7 +56,7 @@ class ObjInputs(object):
     if not isinstance(value, str):
       fmt = {'DATE_FMT':'%Y-%m-%d','DATETIME_FMT':'%Y-%m-%dT%H:%M','TIME_FMT':'%H:%M'}
       value = self.getLangFmtDate(value, manage_lang, fmt.get(fmt_str))
-    if value is not None and self.parseLangFmtDate(value) is None:
+    if value is not None and standard.parseLangFmtDate(value) is None:
       value = ''
     placeholder = self.getZMILangStr(fmt_str)
     if fmt_str == 'DATE_FMT':

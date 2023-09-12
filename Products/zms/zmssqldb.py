@@ -63,7 +63,7 @@ def manage_addZMSSqlDb(self, lang, _sort_id, REQUEST, RESPONSE):
   
   # Return with message.
   if REQUEST.RESPONSE:
-    message = self.getZMILangStr('MSG_INSERTED')%obj.display_type(REQUEST)
+    message = self.getZMILangStr('MSG_INSERTED')%obj.display_type()
     REQUEST.RESPONSE.redirect('%s/%s/manage_main?lang=%s&manage_tabs_message=%s'%(self.absolute_url(), obj.id, lang, standard.url_quote(message)))
 
 
@@ -248,7 +248,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
           return "NULL"
       elif col['type'] in ['date', 'datetime', 'time']:
         try:
-          d = self.parseLangFmtDate(v)
+          d = standard.parseLangFmtDate(v)
           if d is None:
             raise zExceptions.InternalError
           return "'%s'"%self.getLangFmtDate(d, 'eng', '%s_FMT'%col['type'].upper())

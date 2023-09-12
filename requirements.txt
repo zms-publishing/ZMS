@@ -18,3 +18,4 @@ zope.untrustedpython
 zope.error
 ZopeUndo
 Pillow
+xmltodict

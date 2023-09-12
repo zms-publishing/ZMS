@@ -383,12 +383,11 @@ class Exportable(_filtermanager.FilterItem):
     # --------------------------------------------------------------------------
     #  Exportable.toXml:
     # --------------------------------------------------------------------------
-    def toXml(self, REQUEST, deep=True, data2hex=False):
+    def toXml(self, REQUEST, deep=True, data2hex=False, multilang=True):
       xml = ''
       xml += _xmllib.xml_header()
-      xml += _xmllib.getObjToXml( self, REQUEST, deep, base_path='', data2hex=data2hex)
+      xml += _xmllib.getObjToXml( self, REQUEST, deep, base_path='', data2hex=data2hex, multilang=multilang)
       return xml 
-
 
     # --------------------------------------------------------------------------
     #  Exportable.exportRessources:
@@ -566,7 +565,7 @@ class Exportable(_filtermanager.FilterItem):
       REQUEST.set('ZMS_HTML_EXPORT', 1)
       
       #-- Create temporary folder.
-      tempfolder = tempfile.mktemp()
+      tempfolder = tempfile.mkdtemp()
       ressources = self.exportRessources( tempfolder, REQUEST, from_zms=self.getLevel()==0, from_home=True)
       
       #-- Download HTML-pages.
@@ -592,7 +591,7 @@ class Exportable(_filtermanager.FilterItem):
     def toZippedXml(self, REQUEST, get_data=True):
 
       #-- Create temporary folder.
-      tempfolder = tempfile.mktemp()
+      tempfolder = tempfile.mkdtemp()
       ressources = self.exportRessources( tempfolder, REQUEST)
       
       #-- Get xml-export.

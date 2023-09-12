@@ -436,7 +436,7 @@ class ZMSRepositoryManager(
       
       if btn == 'save':
         self.auto_update = REQUEST.get('auto_update','')!=''
-        self.last_update = self.parseLangFmtDate(REQUEST.get('last_update',''))
+        self.last_update = standard.parseLangFmtDate(REQUEST.get('last_update',''))
         self.ignore_orphans = REQUEST.get('ignore_orphans','')!=''
         self.setConfProperty('ZMS.conf.path',REQUEST.get('basepath',''))
         self.update_direction = REQUEST.get('update_direction','Loading')

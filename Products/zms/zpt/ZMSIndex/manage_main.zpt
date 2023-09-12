@@ -61,7 +61,7 @@ function openWindow(url) {
 				onclick="return zmiFuncIndex('manage_test');">Test
 			</button>
 			<button name="btn" class="btn btn-danger" style="margin-right:1em"
-				title="RESYNC: Validating and refreshing link objects, inline links and backlink on the selected node (default: full hierarchy)."
+				title="RESYNC: Validating and refreshing link objects, inline links and backlinks (not uid- but path-syntax) on the selected node (default: full hierarchy)."
 				onclick="return zmiFuncIndex('manage_resync');">Resync
 			</button>
 			<div class="input-group">
@@ -250,20 +250,24 @@ function zmiExpandObjectTree(max) {
 $(function() {
 	// Sitemap
 	set_progress( 0, func_name='test');
-	var href = $ZMI.getPhysicalPath();
+	var href = $ZMI.get_document_element_url($ZMI.getPhysicalPath());
 	$ZMI.objectTree.init(".zmi-sitemap",href,{
-		'params':{meta_types:'ZMS'},
-		'init.href':'ajaxGetNode',
-		'init.callback':function() {
+		filter: x => x.meta_id === 'ZMS',
+		'init.callback': function() {
 				zmiExpandObjectTree(1);
 			},
-		'addPages.callback':function() {
+		'addPages.callback': function() {
 				console.log('addPages.callback')
 				$(".zmi-sitemap a:not(.checkboxed)").each(function() {
 						var $a = $(this);
-						$a.addClass("checkboxed");
-						var phys_path = $a.attr('data-page-physical-path');
-						var uid = '{'+'$'+phys_path.substr(1).replace(/\/content/gi,'@')+'}'; // $a.attr('data-uid');
+						var phys_path = $a.attr('href');
+						var href_manage = phys_path + '/manage';
+						$a.addClass("checkboxed")
+							.removeAttr('onclick')
+							.attr('target','_blank')
+							.attr('href',href_manage)
+							.attr('title',href_manage);
+						var uid = '{'+'$'+phys_path.substring(1).replace(/\/content/gi,'@')+'}'; // $a.attr('data-uid');
 						$a.before('<input name="home_ids:list" type="checkbox" title="'+uid+'" value="'+uid+'" checked="checked" /> ');
 					});
 			},

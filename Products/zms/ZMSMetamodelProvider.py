@@ -47,7 +47,6 @@ class ZMSMetamodelProvider(
     # Properties.
     # -----------
     meta_type = 'ZMSMetamodelProvider'
-    icon = "++resource++zms_/img/ZMSMetamodelProvider.png"
     icon_clazz = "icon-briefcase"
 
     # Management Options.

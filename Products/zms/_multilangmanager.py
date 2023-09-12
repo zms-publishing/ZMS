@@ -19,6 +19,7 @@
 # Imports.
 from App.Common import package_home
 import OFS.misc_
+import json
 from zope.interface import implementer
 # Product Imports.
 from Products.zms import IZMSLocale
@@ -280,12 +281,13 @@ class MultiLanguageManager(object):
         return d[key][lang]
       
       # Return system value.
-      d = OFS.misc_.misc_.zms['langdict'].get_langdict()
-      if key in d:
-        if lang not in d[key]:
-          lang = 'eng'
-        if lang in d[key]:
-          return d[key][lang]
+      if hasattr(OFS.misc_.misc_,'zms'):
+        d = OFS.misc_.misc_.zms['langdict'].get_langdict()
+        if key in d:
+          if lang not in d[key]:
+            lang = 'eng'
+          if lang in d[key]:
+            return d[key][lang]
       
       return key
 
@@ -570,8 +572,8 @@ class MultiLanguageManager(object):
       self.storeReqBuff( reqBuffId, d)
       if REQUEST is not None:
         REQUEST.RESPONSE.setHeader('Cache-Control', 'public, max-age=3600')
-        REQUEST.RESPONSE.setHeader('Content-Type', 'text/plain; charset=utf-8')
-        return self.str_json(d)
+        REQUEST.RESPONSE.setHeader('Content-Type', 'application/json; charset=utf-8')
+        return json.dumps(d)
       
       return d
 

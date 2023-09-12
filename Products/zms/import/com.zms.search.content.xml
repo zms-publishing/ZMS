@@ -39,8 +39,8 @@
 		</div><!-- .form-group -->
 		<div class="form-group row" tal:condition="python:here.getPortalMaster() is not None or len(here.getPortalClients())>0">
 			<div class="control-label col-md-12" tal:define="home_id python:here.getHome().id">
-				<input type="hidden" name="home_id" tal:attributes="value python:request.get('home_id',home_id); data-value home_id">
-				<input type="checkbox" class="form-check-input" onchange="var $i=$('input[name=home_id]');$i.val(this.checked?$i.attr('data-value'):'');" tal:attributes="checked python:['','checked'][request.get('home_id',home_id)==home_id]">
+				<input type="hidden" name="home_id" tal:attributes="value python:request.get('home_id',home_id); data-value home_id" />
+				<input type="checkbox" class="form-check-input" onchange="var $i=$('input[name=home_id]');$i.val(this.checked?$i.attr('data-value'):'');" tal:attributes="checked python:['','checked'][request.get('home_id',home_id)==home_id]" />
 				<label class="form-check-label control-label">
 					<strong tal:content="home_id">the home-id</strong> (local)
 				</label>

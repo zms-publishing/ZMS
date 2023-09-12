@@ -10,12 +10,36 @@ Array.prototype.lastIndexOf = function(obj) {this.reverse();var i,idx=-1;for(i=0
 Array.prototype.contains = function(obj) {var i,listed=false;for(i=0;i<this.length;i++){if(this[i]==obj){listed=true;break;}}return listed;};
 
 /**
+ * Get Document Element URL.
+ */
+ZMI.prototype.get_document_element_url = function(url) {
+	let i;
+    if (url.indexOf('/content') >= 0) {
+        i = url.indexOf('/content')+'/content'.length;
+	}
+    else if (url.indexOf('://') >= 0) {
+        i = url.indexOf('://')+'://'.length;
+        i = i+url.substring(i).indexOf('/');
+}
+    return url.substring(0,i);
+}
+
+/**
+ * Get REST API URL.
+ */
+ZMI.prototype.get_rest_api_url = function(url) {
+	const document_element_url = this.get_document_element_url(url);
+	const i = document_element_url.length;
+    return document_element_url+'/++rest_api'+url.substring(i);
+}
+
+/**
  * Parse url-params.
  */
 ZMI.prototype.parseURLParams = function(url) {
 	var qd = {};
-	var search = url.indexOf("?")>0?url.substr(url.indexOf("?")):"?";
-	search.substr(1).split("&").forEach(function(item) {
+	var search = url.indexOf("?")>0?url.substring(url.indexOf("?")):"?";
+	search.substring(1).split("&").forEach(function(item) {
 				var s = item.split("="),
 					k = s[0],
 					v = s[1] && decodeURIComponent(s[1]);
@@ -36,15 +60,15 @@ $ZMI.registerReady(function(){
 		var delimiter = delimiter_list[h];
 		var i = base_url.indexOf(delimiter);
 		if (i > 0) {
-			base_url = base_url.substr(0,i);
+			base_url = base_url.substring(0,i);
 		}
 		var i = href.indexOf(delimiter);
 		if (i > 0) {
-			var query_string = href.substr(i+1);
+			var query_string = href.substring(i+1);
 			if (h < delimiter_list.length-1) {
 				i = query_string.indexOf(delimiter_list[h+1]);
 				if (i > 0) {
-					query_string = query_string.substr(0,i);
+					query_string = query_string.substring(0,i);
 				}
 			}
 			var l = query_string.split('&');
@@ -53,8 +77,8 @@ $ZMI.registerReady(function(){
 				if (i < 0) {
 					break;
 				}
-				if (typeof zmiParams[l[j].substr(0,i)] == "undefined") {
-					zmiParams[l[j].substr(0,i)] = unescape(l[j].substr(i+1));
+				if (typeof zmiParams[l[j].substring(0,i)] == "undefined") {
+					zmiParams[l[j].substring(0,i)] = unescape(l[j].substring(i+1));
 				}
 			}
 		}
@@ -177,6 +201,7 @@ ZMI.prototype.icon = function(name,extra) {
 	icon += '></' + tag + '>';
  	return icon;
 }
+// Obsolete: helps updating old ZMS3/BS3 class names
 ZMI.prototype.icon_clazz = function(name) {
 	return name.replace(/icon-/,'fas fa-');
 }
@@ -249,10 +274,8 @@ ZMI.prototype.getLangStr = function(key, lang) {
 		var url = this.getBaseUrl();
 		v = $.ajax({
 			url: url+'/get_lang_dict',
-			datatype: 'json',
-			contentType:'text/plain; charset=UTF-8',
 			async: false
-			}).responseText;
+			}).responseJSON;
 		this.setCachedValue(k,v);
 	};
 	if (typeof lang=="undefined") {
@@ -268,8 +291,14 @@ ZMI.prototype.getLangStr = function(key, lang) {
 /**
  * Cache Ajax requests.
  */
-ZMI.prototype.getCachedValue = function(k) {var v = localStorage["zmiCache["+k+"]"]; return typeof v=='undefined'?v:JSON.parse(v);}
-ZMI.prototype.setCachedValue = function(k,v) {localStorage.setItem("zmiCache["+k+"]",JSON.stringify(v));return v;}
+ZMI.prototype.getCachedValue = function(k) {
+	var v = localStorage["zmiCache["+k+"]"]; 
+	return (typeof v=='undefined' || v=='undefined') ? v : JSON.parse(v);
+}
+ZMI.prototype.setCachedValue = function(k,v) {
+	localStorage.setItem("zmiCache["+k+"]",JSON.stringify(v));
+	return v;
+}
 
 /**
  * Returns request-property.
@@ -282,7 +311,7 @@ ZMI.prototype.getReqProperty = function(key, defaultValue) {
 	};
 	var url = this.getPhysicalPath();
 	if (url.indexOf('/content/')>0 || url.slice(-8)=='/content' ) {
-		url = url.substr(0,url.indexOf('/content')+'/content'.length);
+		url = url.substring(0,url.indexOf('/content')+'/content'.length);
 	} else {
 		url='';
 	};
@@ -301,7 +330,7 @@ ZMI.prototype.getReqProperty = function(key, defaultValue) {
 ZMI.prototype.getBaseUrl = function(key, defaultValue) {
 		var url = this.getPhysicalPath();
 		if (url.indexOf('/content/')>0 || url.slice(-8)=='/content' ) {
-			url = url.substr(0,url.indexOf('/content')+'/content'.length);
+			url = url.substring(0,url.indexOf('/content')+'/content'.length);
 		} else {
 			url='';
 		};
@@ -335,7 +364,6 @@ ZMI.prototype.getConfProperty = function(key, defaultValue) {
 /**
  * Returns conf-properties.
  */
-
 ZMI.prototype.getConfProperties = function(prefix) {
 	var r = this.getCachedValue(prefix);
 	if (typeof r=="undefined") {
@@ -364,7 +392,7 @@ ZMI.prototype.display_icon = function(meta_type) {
 		data['meta_type'] = meta_type;
 		var url = this.getPhysicalPath();
 		if (url.indexOf('/content/')>0 || url.slice(-8)=='/content' ) {
-			url = url.substr(0,url.indexOf('/content')+'/content'.length);
+			url = url.substring(0,url.indexOf('/content')+'/content'.length);
 		} else {
 			url='';
 		}

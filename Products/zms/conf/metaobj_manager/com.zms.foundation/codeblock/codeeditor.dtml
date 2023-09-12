@@ -30,7 +30,7 @@
 		var content_type = $("input#content_type").val();
 		if (typeof content_type == "undefined" || content_type == null || content_type == '' || content_type == 'text/x-unknown-content-type') {
 			var absolute_url = $("span#absolute_url").text();
-			var id = absolute_url.substr(absolute_url.lastIndexOf("/")+1);
+			var id = absolute_url.substring(absolute_url.lastIndexOf("/")+1);
 			if (id.endsWith(".css")) {
 				content_type = "text/css";
 			}

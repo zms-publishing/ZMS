@@ -206,7 +206,7 @@ $(function(){
 								><option tal:attributes="value meta_type; selected python:['','selected'][int(meta_type in filter.get('meta_types',[]))]" tal:content="meta_type">meta_type</option>
 							</tal:block
 							><tal:block tal:repeat="meta_type python:here.getMetaobjIds(sort=True)"
-								><option tal:attributes="value meta_type; selected python:['','selected'][int(meta_type in filter.get('meta_types',[]))]" tal:content="python:here.display_type(request,meta_type)">meta_type</option>
+								><option tal:attributes="value meta_type; selected python:['','selected'][int(meta_type in filter.get('meta_types',[]))]" tal:content="python:here.display_type(meta_id=meta_type)">meta_type</option>
 							</tal:block
 							><tal:block tal:repeat="objtype python:here.metaobj_manager.valid_objtypes"
 								><tal:block tal:define="global meta_type python:'type(%s)'%objtype"
@@ -298,11 +298,11 @@ $(function(){
 					<input class="form-control" type="text" tal:attributes="value process/type" disabled="disabled"/>
 				</div>
 			</div><!-- .form-group -->
-			<div class="form-row">
+			<div class="form-group row">
 				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-primary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 				</div><!-- .controls.save -->
-			</div><!-- .form-row -->
+			</div><!-- .form-group -->
 			<div class="form-group row inpCommand">
 				<div class="col-md-12">
 					<input type="hidden" name="el_method" tal:attributes="value process/id" />
@@ -348,11 +348,11 @@ $(function(){
 					</select>
 				</div>
 			</div><!-- .form-group -->
-			<div class="form-row">
+			<div class="form-group row">
 				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-primary" value="BTN_INSERT" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
 				</div>
-			</div><!-- .form-row -->
+			</div><!-- .form-group -->
 		</form>
 	</div><!-- .inner -->
 </div><!-- #insertFilter -->
@@ -380,11 +380,11 @@ $(function(){
 					</select>
 				</div>
 			</div><!-- .form-group -->
-			<div class="form-row">
+			<div class="form-group row">
 				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-primary" value="BTN_INSERT" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
 				</div>
-			</div><!-- .form-row -->
+			</div><!-- .form-group -->
 		</form>
 	</div><!-- .inner -->
 </div><!-- #insertProcess -->

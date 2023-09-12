@@ -55,12 +55,8 @@ class ZMSTrashcan(zmscontainerobject.ZMSContainerObject):
         'manage_ajaxDragDrop', 'manage_ajaxZMIActions',
         'manage_userForm', 'manage_user',
         )
-    __viewPermissions__ = (
-        'manage_ajaxGetChildNodes',
-        )
     __ac_permissions__=(
         ('ZMS Author', __authorPermissions__),
-        ('View', __viewPermissions__),
         )
 
     # Management Interface.
@@ -191,6 +187,6 @@ class ZMSTrashcan(zmscontainerobject.ZMSContainerObject):
     #  ZMSTrashcan.getTitle
     # --------------------------------------------------------------------------
     def getTitle(self, REQUEST):
-      return self.display_type(REQUEST) + " (" + str(len(self.getChildNodes(REQUEST))) + " " + self.getLangStr('ATTR_OBJECTS', REQUEST['lang']) + ")"
+      return self.display_type() + " (" + str(len(self.getChildNodes(REQUEST))) + " " + self.getLangStr('ATTR_OBJECTS', REQUEST['lang']) + ")"
 
 ################################################################################

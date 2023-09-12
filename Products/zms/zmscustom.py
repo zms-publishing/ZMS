@@ -113,7 +113,7 @@ def manage_addZMSCustom(self, meta_id, lang, _sort_id, btn, REQUEST, RESPONSE):
       # Normalize Sort-Ids
       self.normalizeSortIds(id_prefix)
       # Message
-      message = self.getZMILangStr('MSG_INSERTED')%obj.display_type(REQUEST)
+      message = self.getZMILangStr('MSG_INSERTED')%obj.display_type(meta_id=obj.meta_id)
     except:
       message = standard.writeError(self, "[manage_addZMSCustom]")
       messagekey = 'manage_tabs_error_message'
@@ -176,7 +176,6 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
     # -----------------------
     __viewPermissions__ = (
         'manage', 'manage_main', 'manage_container', 'manage_workspace', 'manage_menu',
-        'manage_ajaxGetChildNodes',
         )
     __authorPermissions__ = (
         'manage_addZMSModule',
@@ -699,7 +698,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
       
       else:
         ob = _importable.importFile( self, file, REQUEST, _importable.importContent)
-        message = self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%ob.display_type(REQUEST))
+        message = self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%ob.display_type())
       
       # Return with message.
       if RESPONSE is not None:

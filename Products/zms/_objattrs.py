@@ -480,7 +480,7 @@ class ObjAttrs(object):
               fmt_str = 'DATE_FMT'
             elif datatype == _globals.DT_TIME:
               fmt_str = 'TIME_FMT'
-            value = self.parseLangFmtDate(value)
+            value = standard.parseLangFmtDate(value)
           elif not isinstance(value, time.struct_time):
             value = standard.getDateTime(value)
       
@@ -628,11 +628,11 @@ class ObjAttrs(object):
     def evalExtensionPoint(self, *args, **kwargs):
       key = args[0]
       default = args[1]
-      root = self.getRootElement()
-      ep = root.getConfProperty(key, None)
+      ep = self.getConfProperty(key)
       if ep is not None:
         id = ep[:ep.find('.')]
         key = ep[ep.find('.')+1:]
+        root = self.getRootElement()
         return root.getMetaobjManager().evalMetaobjAttr(id, key, zmscontext=self, options=kwargs)
       else:
         return default(self, kwargs)

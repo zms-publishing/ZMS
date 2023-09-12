@@ -57,7 +57,6 @@ from Products.zms import _mimetypes
 security = ModuleSecurityInfo('Products.zms.standard')
 
 security.declarePublic('pystr')
-pystr_ = str
 def pystr(v, encoding='utf-8', errors='strict'):
   if isinstance(v, bytes):
     v = v.decode(encoding, errors)
@@ -67,6 +66,102 @@ def pystr(v, encoding='utf-8', errors='strict'):
     except:
       v = str(v)
   return v
+
+
+# Umlauts
+umlaut_map = {
+        # German
+        u'ä': 'ae',
+        u'ö': 'oe',
+        u'ü': 'ue',
+        u'Ä': 'Ae',
+        u'Ö': 'Oe',
+        u'Ü': 'Ue',
+        u'ß': 'ss',
+        # Cyrillic
+        u'а': 'a',
+        u'б': 'b',
+        u'в': 'v',
+        u'г': 'g',
+        u'д': 'd',
+        u'е': 'e',
+        u'ё': 'e',
+        u'ж': 'zh',
+        u'з': 'z',
+        u'и': 'i',
+        u'й': 'j',
+        u'к': 'k',
+        u'л': 'l',
+        u'м': 'm',
+        u'н': 'n',
+        u'о': 'o',
+        u'п': 'p',
+        u'р': 'r',
+        u'с': 's',
+        u'т': 't',
+        u'у': 'u',
+        u'ф': 'f',
+        u'х': 'h',
+        u'ц': 'c',
+        u'ч': 'ch',
+        u'ш': 'sh',
+        u'щ': 'sch',
+        u'ы': 'y',
+        u'ь': "'",
+        u'э': 'e',
+        u'ю': 'ju',
+        u'я': 'ja',
+        u'А': 'A',
+        u'Б': 'B',
+        u'В': 'V',
+        u'Г': 'G',
+        u'Д': 'D',
+        u'Е': 'E',
+        u'Ё': 'E',
+        u'Ж': 'ZH',
+        u'З': 'Z',
+        u'И': 'I',
+        u'Й': 'J',
+        u'К': 'K',
+        u'Л': 'L',
+        u'М': 'M',
+        u'Н': 'N',
+        u'О': 'O',
+        u'П': 'P',
+        u'Р': 'R',
+        u'С': 'S',
+        u'Т': 'T',
+        u'У': 'U',
+        u'Ф': 'F',
+        u'Х': 'H',
+        u'Ц': 'C',
+        u'Ч': 'CH',
+        u'Ш': 'SH',
+        u'Щ': 'SCH',
+        u'Ъ': "'",
+        u'Ы': 'Y',
+        u'Ь': "'",
+        u'Э': 'E',
+        u'Ю': 'JU',
+        u'Я': 'JA',}
+
+security.declarePublic('umlaut_quote')
+def umlaut_quote(s, mapping={}):
+  """
+  Replace umlauts in s using given mapping.
+  @param s: String
+  @type s: C{str}
+  @param mapping: Mapping
+  @type mapping: C{dict}
+  @return: Quoted string
+  @rtype: C{str}
+  """
+  s = pystr(s)
+  mapping.update(umlaut_map)
+  for key in mapping:
+    try: s = s.replace(key, mapping[key])
+    except: pass
+  return s
 
 
 security.declarePublic('addZMSCustom')
@@ -112,10 +207,10 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   
   ##### Add ZMS ####
   from Products.zms import zms
-  zms.initZMS(homeElmnt, 'content', titlealt, title, lang, manage_lang, REQUEST)
-  zms.initContent(homeElmnt.content, 'content.default.zip', REQUEST)
+  content = zms.initZMS(homeElmnt, 'content', titlealt, title, lang, manage_lang, REQUEST)
+  zms.initContent(content, 'content.default.zip', REQUEST)
 
-  return "initZMS"
+  return content
 
 security.declarePublic('getPRODUCT_HOME')
 def getPRODUCT_HOME():
@@ -281,26 +376,6 @@ def get_installed_packages(pip_cmd='freeze'):
   return packages
 
 
-security.declarePublic('umlaut_quote')
-def umlaut_quote(s, mapping={}):
-  """
-  Replace umlauts in s using given mapping.
-  @param s: String
-  @type s: C{str}
-  @param mapping: Mapping
-  @type mapping: C{dict}
-  @return: Quoted string
-  @rtype: C{str}
-  """
-  if not isinstance(s,str):
-    s = str(s)
-  for x in _globals.umlaut_map:
-    mapping[x] = _globals.umlaut_map[x]
-  for key in mapping:
-    s = s.replace(key, str(mapping[key]))
-  return s
-
-
 security.declarePublic('url_append_params')
 def url_append_params(url, dict, sep='&'):
   """
@@ -406,10 +481,12 @@ def string_maxlen(s, maxlen=20, etc='...', encoding=None):
   else:
     s = str(s)
   # remove all tags.
-  s = re.sub(r'<!--(.*?)-->', '', s)
-  s = re.sub(r'<script((.|\n|\r|\t)*?)>((.|\n|\r|\t)*?)</script>', '', s)
-  s = re.sub(r'<style((.|\n|\r|\t)*?)>((.|\n|\r|\t)*?)</style>', '', s)
-  s = re.sub(r'<((.|\n|\r|\t)*?)>', '', s)
+  # @see https://stackoverflow.com/questions/8554035/remove-all-javascript-tags-and-style-tags-from-html-with-python-and-the-lxml-mod
+  s = re.sub(r'<[\S\s]*!--.*?--[\S\s]*>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
+  s = re.sub(r'<[\S\s]*?script[\S\s]*?\/[\S\s]*?script[\S\s]*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
+  s = re.sub(r'<[\S\s]*style.*?\/[\S\s]*style[\S\s]*>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
+  s = re.sub(r'<[\S\s]*meta.*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
+  s = re.sub(r'<[\S\s]*?>', '', s)
   if len(s) > maxlen:
     if s[:maxlen].rfind('&') >= 0 and not s[:maxlen].rfind('&') < s[:maxlen].rfind(';') and \
        s[maxlen:].find(';') >= 0 and not s[maxlen:].find(';') > s[maxlen:].find('&'):
@@ -504,9 +581,12 @@ def remove_tags(s):
   s = pystr(s)
   for x in d:
     s = s.replace(x,d[x])
-  s = re_sub('<script(.*?)>(.|\\n|\\r|\\t)*?</script>', ' ', s)
-  s = re_sub('<style(.*?)>(.|\\n|\\r|\\t)*?</style>', ' ', s)
-  s = re_sub('<[^>]*>', ' ', s)
+  # @see https://stackoverflow.com/questions/8554035/remove-all-javascript-tags-and-style-tags-from-html-with-python-and-the-lxml-mod
+  s = re.sub(r'<[\S\s]*!--.*?--[\S\s]*>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
+  s = re.sub(r'<[\S\s]*?script[\S\s]*?\/[\S\s]*?script[\S\s]*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
+  s = re.sub(r'<[\S\s]*style.*?\/[\S\s]*style[\S\s]*>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
+  s = re.sub(r'<[\S\s]*meta.*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
+  s = re.sub(r'<[\S\s]*?>', '', s)
   while s.find('\t') >= 0:
     s = s.replace('\t', ' ')
   while s.find('\n') >= 0:
@@ -1788,6 +1868,19 @@ def distinct_list(l, i=None):
   return k
 
 
+def sort_item( i):
+    if isinstance(i, float):
+        pass
+    elif isinstance(i, time.struct_time):
+        i = time.strftime('%Y%m%d%H%M%S',i)
+    elif i is None or i == '':
+        i = 0
+    elif isinstance(i, bool):
+        i = int(i)
+    elif not isinstance(i, int):
+        i = umlaut_quote(i)
+    return i
+
 security.declarePublic('sort_list')
 def sort_list(l, qorder=None, qorderdir='asc', ignorecase=1):
   """
@@ -1798,18 +1891,14 @@ def sort_list(l, qorder=None, qorderdir='asc', ignorecase=1):
   if qorder is None:
     tl = [(x, x) for x in l]
   elif isinstance(qorder, str):
-    tl = [(_globals.sort_item(x.get(qorder, None)), x) for x in l]
+    tl = [(sort_item(x.get(qorder, None)), x) for x in l]
   elif isinstance(qorder, list):
-    tl = [([_globals.sort_item(x[y]) for y in qorder], x) for x in l]
+    tl = [([sort_item(x[y]) for y in qorder], x) for x in l]
   else:
-    tl = [(_globals.sort_item(x[qorder]), x) for x in l]
+    tl = [(sort_item(x[qorder]), x) for x in l]
   if ignorecase and len(tl) > 0 and isinstance(tl[0][0], str):
     tl = [(str(x[0]).upper(), x[1]) for x in tl]
-  try:
-    tl = sorted(tl,key=lambda x:x[0])
-  except:
-    writeError(context, '[sort_list]: mixed datatypes normalized to strings')
-    tl = sorted(tl,key=lambda x:str(x[0]))
+  tl = sorted(tl,key=lambda x:x[0])
   tl = [x[1] for x in tl]
   if qorderdir == 'desc':
     tl.reverse()
@@ -2387,7 +2476,7 @@ def sendMail(context, mto, msubject, mbody, REQUEST=None, mattach=None):
           part = MIMEAudio(filedata, fileextn)
         else:
           part = MIMEApplication(filedata)
-        part.add_header('Content-Disposition', 'attachment; filename="%s"'%filename)
+        part.add_header('Content-Disposition', 'attachment; filename="%s"'%umlaut_quote(filename))
         mime_msg.attach(part)
 
   # Get MailHost.

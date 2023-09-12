@@ -19,8 +19,8 @@
 	<tal:block tal:content="structure python:here.zmi_navbar_brand(here,request)">zmi_navbar_brand</tal:block>
 	<div class="text-right">
 		&nbsp;|&nbsp;<a tal:attributes="href python:'manage_main?lang=%s'%request['lang']" target="_parent">
-			<tal:block tal:content="python:'%s %s %s'%(here.getZMILangStr('BACK'),here.getZMILangStr('TO'),here.display_type(request))">back to display_type</tal:block>
-			<tal:block tal:condition="python:here.display_type(request)!=here.getTitlealt(request)" tal:content="python:': %s'%standard.string_maxlen(here.getTitlealt(request),25)">: titlealt</tal:block>
+			<tal:block tal:content="python:'%s %s %s'%(here.getZMILangStr('BACK'),here.getZMILangStr('TO'),here.display_type())">back to display_type</tal:block>
+			<tal:block tal:condition="python:here.display_type()!=here.getTitlealt(request)" tal:content="python:': %s'%standard.string_maxlen(here.getTitlealt(request),25)">: titlealt</tal:block>
 		</a>
 		&nbsp;|&nbsp;<a class="zmi-top-active" href="javascript:;" tal:attributes="onclick python:'open_partner(this,\'%s/$ZMS_HOME/apidocs/zms.standard.html\')'%here.getDocumentElement().absolute_url()">
 			ZMS API

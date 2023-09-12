@@ -46,7 +46,7 @@ if request.form.get('btn')=='BTN_DELETE':
 # ---------------------------------
 else:
 	print('<div class="alert alert-danger">Do you really want to remove ZMS-Client?</div>')
-	print('<div class="form-row">')
+	print('<div class="form-group row">')
 	print('<div class="controls save">')
 	print('<button type="submit" name="btn" class="btn btn-primary" value="BTN_DELETE">%s</button> '%(context.getZMILangStr('BTN_DELETE')))
 	print('<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CANCEL">%s</button> '%(context.getZMILangStr('BTN_CANCEL')))

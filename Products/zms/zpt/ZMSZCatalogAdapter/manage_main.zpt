@@ -210,8 +210,8 @@ function toggleMetaobj() {
 			for (var i = 0; i < dataAttrs.length; i++) {
 				var dataAttr = dataAttrs[i];
 				var metaObjAttr = {
-					id:dataAttr.substr(0,dataAttr.indexOf("(")),
-					type:dataAttr.substr(dataAttr.indexOf("(")+1,dataAttr.indexOf(")")-(dataAttr.indexOf("(")+1))
+					id:dataAttr.substring(0,dataAttr.indexOf("(")),
+					type:dataAttr.substring(dataAttr.indexOf("(")+1,dataAttr.indexOf(")")-(dataAttr.indexOf("(")+1))
 				};
 				if (typeof metaObjAttrs[metaObjAttr.id] == 'undefined') {
 					metaObjAttrs[metaObjAttr.id] = metaObjAttr;
@@ -364,21 +364,25 @@ $(function() {
 	toggleMetaobj();
 
 	// Sitemap
-	var href = $ZMI.getPhysicalPath();
+	var href = $ZMI.get_document_element_url($ZMI.getPhysicalPath());
 	$ZMI.objectTree.init(".zmi-sitemap",href,{
-		'params':{meta_types:'ZMS'},
-		'init.href':'ajaxGetNode',
-		'init.callback':function() {
+		filter: x => x.meta_id === 'ZMS',
+		'init.callback': function() {
 				zmiExpandObjectTree(1);
 			},
-		'addPages.callback':function() {
+		'addPages.callback': function() {
 				console.log('addPages.callback')
 				$(".zmi-sitemap a:not(.checkboxed)").each(function() {
 						var $a = $(this);
-						$a.addClass("checkboxed");
-						var phys_path = $a.attr('data-page-physical-path');
-						var uid = '{'+'$'+phys_path.substr(1).replace(/\/content/gi,'@')+'}'; // $a.attr('data-uid');
-						$a.before('<input name="home_ids:list" type="checkbox" title="'+uid+'" value="'+uid+'" checked="checked" /> ');
+						var phys_path = $a.attr('href');
+						var href_manage = phys_path + '/manage';
+						$a.addClass("checkboxed")
+							.removeAttr('onclick')
+							.attr('target','_blank')
+							.attr('href',href_manage)
+							.attr('title',href_manage);
+						var uid = '{'+'$'+phys_path.substring(1).replace(/\/content/gi,'@')+'}'; // $a.attr('data-uid');
+						$a.before('<input name="home_id:list" type="checkbox" title="'+uid+'" value="'+uid+'" checked="checked" /> ');
 					});
 			},
 		});

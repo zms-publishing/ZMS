@@ -254,7 +254,6 @@ class ZMS(
     # -----------------------
     __viewPermissions__ = (
         'manage', 'manage_main', 'manage_container', 'manage_workspace', 'manage_menu',
-        'manage_ajaxGetChildNodes',
         )
     __administratorPermissions__ = (
         'manage_customize',
@@ -304,6 +303,8 @@ class ZMS(
 
     # Interface.
     # ----------
+    swagger_ui = PageTemplateFile('zpt/ZMS/swagger-ui', globals()) # swagger-ui
+    openapi_yaml = PageTemplateFile('zpt/ZMS/openapi_yaml', globals()) # openapi.yaml
     index_html = PageTemplateFile('zpt/ZMS/index', globals()) # index_html
     f_index_html = PageTemplateFile('zpt/ZMS/index', globals()) # index_html
     f_headDoctype = PageTemplateFile('zpt/ZMS/f_headdoctype', globals()) # Head.DOCTYPE
@@ -421,7 +422,13 @@ class ZMS(
     The root element of the site.
     """
     def getRootElement(self):
-      return self.breadcrumbs_obj_path()[0]
+      doc_elmnt = self
+      while True:
+        portal_mstr = doc_elmnt.getPortalMaster()
+        if portal_mstr is None:
+          break
+        doc_elmnt = portal_mstr
+      return doc_elmnt
 
     # --------------------------------------------------------------------------
     #  ZMS.getAbsoluteHome

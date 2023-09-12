@@ -10,4 +10,6 @@ Products/zms/plugins/www/i18n/*.js
 /.vscode/
 dist/
 build/
+docker/var/*
+docker/var/log/
 /revisions.txt

@@ -88,7 +88,7 @@ $(function() {
 	// always collapse last-modified-accordion
 	$(".attr_last_modified a.card-toggle").each(function(){
 			var data_root = $("body").attr('data-root');
-			var id = $(this).attr('href').substr(1);
+			var id = $(this).attr('href').substring(1);
 			var key = "ZMS."+data_root+".collapse-"+id;
 			console.log("$ZMILocalStorageAPI.set("+key+",0)");
 			$ZMILocalStorageAPI.set(key,'0');
@@ -139,7 +139,7 @@ $(function() {
 			for (var i in localStorage) {
 				if (i.indexOf(prefix)==0) {
 					console.log("i="+i);
-					params[i.substr(prefix.length)] = localStorage[i];
+					params[i.substring(prefix.length)] = localStorage[i];
 				}
 			}
 			// Force to ZMI language

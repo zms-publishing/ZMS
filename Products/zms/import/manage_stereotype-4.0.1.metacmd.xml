@@ -94,7 +94,7 @@ for meta_id in context.getMetaobjIds(sort=True):
 	if metaObj['type'] in ['ZMSDocument','ZMSObject']:
 		data_attrs = [context.getMetaobjAttr(metaObj['id'],x['id']) for x in metaObj['attrs'] if x['id'] not in ['icon','icon_clazz','levelnfc'] and x['type'] not in ['constant','delimiter','hint','interface','method','py','resource','zpt']]
 		data_attrs= ','.join(['%s(%s)'%(x['id'],x['type']) for x in data_attrs])
-		html += '<option value="%s" data-attrs="%s"%s>%s (%s)</option>'%(metaObj['id'],data_attrs,['',' selected="selected"'][int(request.get('src_meta_id',context.meta_id)==metaObj['id'])],str(context.display_type(request,metaObj['id'])),metaObj['id'])
+		html += '<option value="%s" data-attrs="%s"%s>%s (%s)</option>'%(metaObj['id'],data_attrs,['',' selected="selected"'][int(request.get('src_meta_id',context.meta_id)==metaObj['id'])],str(context.display_type(meta_id=metaObj['id'])),metaObj['id'])
 html += '</select><!-- .form-control -->'
 html += '</div>'
 html += '<div class="col-sm-6">'
@@ -105,7 +105,7 @@ for meta_id in context.getMetaobjIds(sort=True):
 	if metaObj['type'] in ['ZMSDocument','ZMSObject']:
 		data_attrs = [context.getMetaobjAttr(metaObj['id'],x['id']) for x in metaObj['attrs'] if x['id'] not in ['icon','icon_clazz','levelnfc'] and x['type'] not in ['constant','delimiter','hint','interface','method','py','resource','zpt']]
 		data_attrs= ','.join(['%s(%s)'%(x['id'],x['type']) for x in data_attrs])
-		html += '<option value="%s" data-attrs="%s"%s>%s (%s)</option>'%(metaObj['id'],data_attrs,['',' selected="selected"'][int(request.get('meta_id',context.meta_id)==metaObj['id'])],str(context.display_type(request,metaObj['id'])),metaObj['id'])
+		html += '<option value="%s" data-attrs="%s"%s>%s (%s)</option>'%(metaObj['id'],data_attrs,['',' selected="selected"'][int(request.get('meta_id',context.meta_id)==metaObj['id'])],str(context.display_type(meta_id=metaObj['id'])),metaObj['id'])
 html += '</select><!-- .form-control -->'
 html += '</div>'
 html += '</div>'
@@ -125,7 +125,7 @@ html += '<span class="btn btn-secondary"><input name="recursive" type="checkbox"
 html += '</div><!--.col-sm-10 -->'
 html += '</div>'
 
-html += '<div class="form-row">'
+html += '<div class="form-group row">'
 html += '<div class="controls save">'
 html += '<button type="submit" name="btn" class="btn btn-primary" value="BTN_EXECUTE">%s</button> '%context.getZMILangStr('BTN_EXECUTE')
 html += '<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CANCEL">%s</button> '%context.getZMILangStr('BTN_CANCEL')
@@ -149,9 +149,9 @@ function onSelectMetaIdChange() {
 	var html = "";
 	for (var i = 0; i < attrsSrc.length; i++) {
 		var src = attrsSrc[i];
-		var name = src.substr(0,src.indexOf('('));
-		var type = src.substr(src.indexOf('(')+1);
-		type = type.substr(0,type.indexOf(')'));
+		var name = src.substring(0,src.indexOf('('));
+		var type = src.substring(src.indexOf('(')+1);
+		type = type.substring(0,type.indexOf(')'));
 		html += '<div class="form-group row">'
 		html += '<label class="col-sm-6 control-label text-right">' + src+'</label>';
 		html += '<div class="col-sm-6">';

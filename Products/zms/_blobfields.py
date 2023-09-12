@@ -23,7 +23,7 @@ from OFS.Image import Image, File
 # from mimetools import choose_boundary
 from email.generator import _make_boundary as choose_boundary
 import base64
-import io
+import json
 import re
 import time
 import warnings

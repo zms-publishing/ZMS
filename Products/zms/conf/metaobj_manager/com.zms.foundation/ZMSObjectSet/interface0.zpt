@@ -5,7 +5,7 @@
 
 <code title="HTML-Consistency: Pre-Closing 1" tal:replace="structure string:</div>"></code>
 		<div class="card-body">
-			<div class="form-row">
+			<div class="form-group row">
 				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:zmscontext.getZMILangStr('BTN_SAVE')" tal:content="python:zmscontext.getZMILangStr('BTN_SAVE')">Action</button>
 					<button type="submit" name="btn" class="btn btn-secondary" tal:attributes="value python:zmscontext.getZMILangStr('BTN_CANCEL')" tal:content="python:zmscontext.getZMILangStr('BTN_CANCEL')">Cancel</button>
@@ -80,7 +80,7 @@ tr.inactive > td.data > * {
 						</div>
 					</div><!-- .form-row -->
 				</tal:block>
-				<div class="form-row">
+				<div class="form-group">
 					<button type="submit" id="btn-search" class="btn btn-primary" name="btn" tal:attributes="value python:zmscontext.getZMILangStr('BTN_REFRESH')">
 						<i class="fas fa-search"></i>
 						<tal:block tal:content="python:zmscontext.getZMILangStr('BTN_SEARCH')">Search</tal:block>

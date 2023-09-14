@@ -14,7 +14,7 @@ Markdown
 pyScss
 xmltodict
 
-sqlalchemy
+sqlalchemy==1.4.41
 Products.ZMySQLDA
 Products.ZSQLMethods
 

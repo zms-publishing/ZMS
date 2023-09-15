@@ -5,7 +5,7 @@
 -e git+https://github.com/zms-publishing/Products.zms-skins.git#egg=Products.zms-skins
 
 # SQL
-Products.ZMySQLDA
+SQLAlchemy==1.4.49
 Products.SQLAlchemyDA
 Products.ZSQLMethods
 # 2.2 is incompatible with mariadb 5.5.68 which is installed standard on centos 7

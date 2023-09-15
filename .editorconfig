@@ -30,7 +30,7 @@ indent_size = 4
 
 [*.{yml,zpt,pt,dtml,zcml}]
 # 2 space indentation
-indent_size = 2
+indent_size = 4
 
 [{Makefile,.gitmodules}]
 # Tab indentation (no size specified, but view as 4 spaces)

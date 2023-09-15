@@ -325,10 +325,7 @@
 				<div class="form-group row">
 					<label class="col-sm-2 control-label">ZMS Version</label>
 					<div class="col-sm-10">
-						<a title="ZMS commits on github.com" target="_blank"
-							href="https://github.com/zms-publishing/ZMS/commits/main">
-							<samp tal:content="structure python:here.zms_version(custom=True)">zms_version</samp>
-						</a>
+                        <samp tal:content="structure python:here.zms_version(custom=True)">zms_version</samp>
 					</div>
 				</div><!-- .form-group -->
 				<div class="form-group row">

@@ -366,7 +366,7 @@ class ZMS(
       file.close()
       zms_custom_version = os.environ.get('ZMS_CUSTOM_VERSION', '')
       if custom and zms_custom_version != '':
-        rtn += f'<samp>({zms_custom_version})</samp>'
+        rtn += f'&nbsp;(<samp id="zms_custom_version">{zms_custom_version}</samp>)'
         # container built by unibe-cms/build.sh gathering commit hashes of git submodules
         revisions1 = _fileutil.getOSPath('/app/zms-core/revisions.txt')
         revisions2 = _fileutil.getOSPath('/opt/zope/src/zms/revisions.txt')  # fallback for unibe-cms-deployments
@@ -388,13 +388,21 @@ class ZMS(
                 </span>
                 <script>
                     $(function () {{
-                        $('[data-toggle="popover"]').popover()
+                        $('[data-toggle="popover"]').popover();
+                        // CAVEAT: Slicing below relies on commit hashes at https://github.com/idasm-unibe-ch/unibe-cms/tree/...
+                        const zms_custom_version = $('#zms_custom_version').text().replaceAll('(', '').replaceAll(')', '');
+                        const github_link = zms_custom_version.substr(zms_custom_version.indexOf('https://github.com'), zms_custom_version.length);
+                        const version_str = zms_custom_version.substr(0, zms_custom_version.indexOf('https://github.com')).trim();
+                        if (github_link.indexOf('https://github.com') == 0) {{
+                            $('#zms_custom_version').html('<a href="'+github_link+'" title="'+github_link.slice(0, 58)+'" target="_blank">'+version_str+'</a>');
+                        }}
                     }})
                 </script>
                 <style>
                     .popover-body {{
                         white-space: break-spaces;
-                        width: max-content;
+                        width: auto;
+                        font-size: smaller;
                     }}
                 </style>
                 """

@@ -2,7 +2,7 @@
 	"python.defaultInterpreterPath": "~/vpy38/bin/python3",
 	"python.linting.enabled": false,
 	"[python]": {
-		"editor.defaultFormatter": "ms-python.autopep8"
+		"editor.defaultFormatter": "ms-python.python"
 	},
 	"python.formatting.provider": "none",
 

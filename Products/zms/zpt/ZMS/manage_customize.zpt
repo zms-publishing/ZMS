@@ -327,7 +327,7 @@
 					<div class="col-sm-10">
 						<a title="ZMS commits on github.com" target="_blank"
 							href="https://github.com/zms-publishing/ZMS/commits/main">
-							<samp tal:content="structure python:here.zms_version(custom=True)">zms_version</samp>
+							<samp id="zms_custom_version" tal:content="structure python:here.zms_version(custom=True)">zms_version</samp>
 						</a>
 					</div>
 				</div><!-- .form-group -->

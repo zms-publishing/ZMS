@@ -2473,7 +2473,7 @@ def sendMail(context, mto, msubject, mbody, REQUEST=None, mattach=None):
           part = MIMEAudio(filedata, fileextn)
         else:
           part = MIMEApplication(filedata)
-        part.add_header('Content-Disposition', 'attachment; filename="%s"'%umlaut_quote(filename))
+        part.add_header('Content-Disposition', 'attachment; filename="%s"'%umlaut_quote(filename).replace(' ','_'))
         mime_msg.attach(part)
 
   # Get MailHost.

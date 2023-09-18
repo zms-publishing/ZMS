@@ -1299,6 +1299,9 @@ ZMIObjectTree.prototype.addPages = function(nodes) {
 		if (node.restricted) {
 			css.push("restricted");
 		};
+		if (node.attr_dc_type) {
+			css.push('type-' + node.attr_dc_type);
+		};
 		html += `<ul data-id="${node.uid}" class="zmi-page ${node.meta_id}${node.is_page_element ? ' is_page_element' :''}">`;
 		html += `<li class="${css.join(' ')}">`;
 		html += `<i class="fas fa-caret-right toggle" title="+" onclick="$ZMI.objectTree.toggleClick(this ${typeof callback=='undefined' ? '' : ',' + callback})"></i> `;

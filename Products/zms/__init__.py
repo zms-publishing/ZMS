@@ -40,7 +40,7 @@ from Products.zms import zmslinkelement
 # ### Allow additional Python modules in restricted context
 # ### Use with:
 # ### import pdb; pdb.set_trace()
-# 
+#
 # from AccessControl import allow_module
 # allow_module('pdb')
 
@@ -141,7 +141,7 @@ try:
   registerFileExtension('ppt', FSFile)
   registerFileExtension('pptx', FSFile)
   registerFileExtension('map', FSFile)
-  registerFileExtension('svg', FSImage)
+  registerFileExtension('svg', FSFile)
   registerFileExtension('ttf', FSFile)
   registerFileExtension('eot', FSFile)
   registerFileExtension('woff', FSFile)
@@ -156,12 +156,12 @@ except:
 # Define the initialize() function.
 ################################################################################
 
-def initialize(context): 
+def initialize(context):
     """Initialize the product."""
-    
-    try: 
+
+    try:
         """Try to register the product."""
-        
+
         context.registerClass(
             zms.ZMS,
             permission = 'Add ZMSs',
@@ -204,21 +204,21 @@ def initialize(context):
             constructors = (_zmsattributecontainer.manage_addZMSAttributeContainer, _zmsattributecontainer.manage_addZMSAttributeContainer),
             container_filter = _zmsattributecontainer.containerFilter,
             )
-        
+
         # register deprecated classes
         dummy_constructors = (zmscustom.manage_addZMSCustomForm, zmscustom.manage_addZMSCustom,)
         dummy_permission = 'Add ZMSs'
         zms.NoETagAdapter.register()
-        
+
         # automated registration of language-dictionary
         if not hasattr(OFS.misc_.misc_,'zms'):
           OFS.misc_.misc_.zms = {}
         OFS.misc_.misc_.zms['langdict']=_multilangmanager.langdict()
-        
+
         # automated registration of configuration
         confdict = _confmanager.ConfDict.get()
         OFS.misc_.misc_.zms['confdict']=confdict
-        
+
         # automated minification
         confkeys = confdict.keys()
         for confkey in [x for x in confkeys if x.startswith('gen.') and x+'.include' in confkeys]:
@@ -284,7 +284,7 @@ def initialize(context):
                 standard.writeStdout(context, "add %s (Packed: %i -> %i Bytes)"%(fn, l0, l1))
               fileobj.write(fc)
             fileobj.close()
-        
+
         # automated generation of language JavaScript
         from xml.dom import minidom
         filename = os.sep.join([package_home(globals())]+['import', '_language.xml'])
@@ -332,17 +332,17 @@ def initialize(context):
               fileobj.write('\'')
           fileobj.write('};')
           fileobj.close()
-    
+
     except:
-        """If you can't register the product, dump error. 
-        
+        """If you can't register the product, dump error.
+
         Zope will sometimes provide you with access to "broken product" and
-        a backtrace of what went wrong, but not always; I think that only 
-        works for errors caught in your main product module. 
-        
-        This code provides traceback for anything that happened in 
+        a backtrace of what went wrong, but not always; I think that only
+        works for errors caught in your main product module.
+
+        This code provides traceback for anything that happened in
         registerClass(), assuming you're running Zope in debug mode."""
-        
+
         import sys, traceback
         type, val, tb = sys.exc_info()
         sys.stderr.write(''.join(traceback.format_exception(type, val, tb)))

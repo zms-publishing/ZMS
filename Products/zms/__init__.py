@@ -50,19 +50,6 @@ __doc__ = """initialization module."""
 # Version string.
 __version__ = '0.1'
 
-# if running with "debug-mode on" in zope.conf (or e.g. "python3 -m Zope2.Startup.serve --debug -v etc/zope.ini")
-# and no local pydev debugger is connected
-if getConfiguration().debug_mode and sys.gettrace() is None:
-    try:
-        print("Init PyCharm remote debugging: pydevd_pycharm.settrace('127.0.0.1', port=5678)")
-        print("Prerequisites on localhost:")
-        print("- Reverse SSH tunnel as remote port forwarding enabled: ssh -R 5678:127.0.0.1:5678 user@remotehost")
-        print("- Python Debug Server in PyCharm started: Run/Debug Configuration with path mapping local/remote")
-        import pydevd_pycharm
-        pydevd_pycharm.settrace('127.0.0.1', port=5678, stdoutToServer=True, stderrToServer=True, suspend=False)
-    except (ModuleNotFoundError, ConnectionRefusedError, AttributeError) as error:
-        print("Error on init remote debugging: {}".format(error))
-        pass
 
 #################################################################################################################
 # Memcached: Monkey patched Product.mcdutils

@@ -126,9 +126,11 @@ def get_attrs(node):
             if metaobj_attr['multilang']:
                 for lang in langs:
                     request.set('lang',lang)
-                    data[id if monolang else '%s_%s'%(id,lang)] = get_attr(node,id)
+                    if get_attr(node,id):
+                        data[id if monolang else '%s_%s'%(id,lang)] = get_attr(node,id)
             else:
-                data[id] = get_attr(node,id)
+                if get_attr(node,id):
+                    data[id] = get_attr(node,id)
     #print("data",data)
     return data
 
@@ -142,7 +144,7 @@ class RestApiController(object):
         if context and TraversalRequest:
             self.context = context
             self.method = TraversalRequest['REQUEST_METHOD']
-            self.path_to_handle = copy.copy(TraversalRequest['path_to_handle']) 
+            self.path_to_handle = copy.copy(TraversalRequest['path_to_handle'])
             self.ids = [x for x in self.path_to_handle if x != '++rest_api'] # remove ++rest_api as first element
             while self.ids:
                 id = self.ids[0]
@@ -190,7 +192,7 @@ class RestApiController(object):
             REQUEST.RESPONSE.setHeader('Content-Type',decoration['content_type'])
             return json.dumps(data)
         return None
-    
+
     @api(tag="zmsindex", pattern="/zmsindex", content_type="application/json")
     def zmsindex(self, context):
         request = _get_request(context)

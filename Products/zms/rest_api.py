@@ -118,20 +118,19 @@ def get_attrs(node):
     data['home_id'] = node.getHome().id
     data['level'] = node.getLevel()
     data['restricted'] = node.hasRestrictedAccess()
+    general_keys = data.keys()
     obj_attrs = node.getObjAttrs()
     metaobj_attrs = node.getMetaobjManager().getMetaobjAttrs(node.meta_id)
     for metaobj_attr in metaobj_attrs:
         id = metaobj_attr['id']
-        if id in obj_attrs:
+        if id in obj_attrs and not id in general_keys:
             if metaobj_attr['multilang']:
                 for lang in langs:
                     request.set('lang',lang)
-                    if get_attr(node,id):
-                        data[id if monolang else '%s_%s'%(id,lang)] = get_attr(node,id)
+                    data[id if monolang else '%s_%s'%(id,lang)] = get_attr(node,id)
             else:
-                if get_attr(node,id):
-                    data[id] = get_attr(node,id)
-    #print("data",data)
+                data[id] = get_attr(node,id)
+    # print("data",data)
     return data
 
 

@@ -371,3 +371,28 @@ for r in q:
 In addition ZMS offers useful API functions to make the code short and use it TAL :
 1. zmscontext.get_uid(): returns UID of the context object, eg. `uid:d67ef401-db9b-46bd-9108-35f3c8d959a0`
 2. zmscontext.getLinkObj(url): if url written in ZMS-internal url syntax `{$...}`, the targeted object will be returned, eg. this call `zmscontext.getLinkObj('{$uid:d67ef401-db9b-46bd-9108-35f3c8d959a0}')` will return the object. *Hint*: make sure, that the uid follows the syntax like this `'{$%s}'%(uid)` 
+
+## 9. Using the `internal_dict`-Attribute
+The invisible multilingual attribute `internal_dict` is a ZMS-default python dictionary of any content object and can be used to store any additional technical data. A typical use case is adding new CSS-Classes to the body-element of a specific ZMS-GUI node for customizing it's GUI (aka ZMI):
+the ZMS-action *manage_css_classes* can be imported via ZMS configuration and will appear in the contextual action menu. It triggers an External Python Method and adds the key `css_classes` to the internal_dict of the current node. The value can be a list of arbitray CSS-classnames the action will provide to the ZMI as a select list to the ZMS-user, e.g. ZMS-rolenames plus a suffix "_special":
+
+```python	
+# GENERATE CSS LIST (Example Code)
+css_classes = list(self.getRootElement().getSecurityRoles().keys())
+css_classes.extend(['ZMSAdministrator','ZMSEditor','ZMSAuthor','ZMSSubscriber','ZMSUserAdministrator'])
+css_classes = map(lambda r: [str(r)+'_special',str(r)+'_special'],css_classes)
+```
+Ref: *[Full Source on Github](https://github.com/zms-publishing/ZMS/blob/main/Products/zms/conf/metacmd_manager/manage_css_classes/manage_css_classes.py#L64-L69)*
+
+With a CSS snippet injected via admininstration menu *Design* as *Additional ZMI CSS* the ZMS-GUI easily can be customized for specific user roles like this:
+
+```css 
+body.ZMSAuthor_special .zmi-action .dropdown-menu a.dropdown-item {
+	display:none;
+}
+body.ZMSAuthor_special .zmi-action .dropdown-menu a.dropdown-item[title='ZMSFile'],
+body.ZMSAuthor_special .zmi-action .dropdown-menu a.dropdown-item[title='ZMSLinkElement'] {
+	display:block;
+}
+```
+For the ZMSAuthor the CSS snippet hides all the menu items besides "ZMSFile" and "ZMSLinkElement".

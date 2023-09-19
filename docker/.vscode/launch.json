@@ -6,23 +6,23 @@
             "name": "ZMS5-Docker",
             "type": "python",
             "request": "launch",
-            "program": "/home/zope/venv/bin/runwsgi",
+            "program": "/app/zope/bin/runwsgi",
             "justMyCode": false,
             "console": "integratedTerminal",
             "args": [
                 "--debug",
                 "--verbose",
-                "/home/zope/venv/instance/zms5/etc/zope.ini",
+                "/app/zope/etc/zope.ini",
                 "debug-mode=on",
-                "http_port=8086",
+                "http_port=8087",
             ],
             "env": {
                 "PYTHONUNBUFFERED":"1",
-                "CONFIG_FILE": "/home/zope/venv/instance/zms5etc/zope.ini",
-                "INSTANCE_HOME": "/home/zope/venv/instance/zms5",
-                "CLIENT_HOME": "/home/zope/venv/instance/zms5",
-                "PYTHON": "/home/zope/venv/bin/python",
-                "SOFTWARE_HOME": "/home/zope/venv/bin/"
+                "CONFIG_FILE": "/app/zope/etc/zope.ini",
+                "INSTANCE_HOME": "/app/zope",
+                "CLIENT_HOME": "/app/zope",
+                "PYTHON": "/app/zope/bin/python",
+                "SOFTWARE_HOME": "/app/zope/bin/"
             },
             "serverReadyAction":{
                 "pattern":"Serving on http://0.0.0.0:8086",

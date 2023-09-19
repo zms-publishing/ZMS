@@ -396,3 +396,16 @@ body.ZMSAuthor_special .zmi-action .dropdown-menu a.dropdown-item[title='ZMSLink
 }
 ```
 For the ZMSAuthor the CSS snippet hides all the menu items besides "ZMSFile" and "ZMSLinkElement".
+
+### Other Attributes for Customizing the ZMI
+As an alternative to the ZMS-Action *manage_css_classes* the meta-attribute `attr_dc_type` can be used to add a specific style to the ZMI. The attribute value will be added as a CSS-class systematically as `data-type`- attribute to the body-element of the ZMI. This is useful if the CSS-class is static and does not need to be changed by the ZMS-User.
+
+```css 
+body[data-type='News'] .zmi-action .dropdown-menu a.dropdown-item {
+	display:none;
+}
+body[data-type='News'] .zmi-action .dropdown-menu a.dropdown-item[title='News-Article'],
+body[data-type='News'] .zmi-action .dropdown-menu a.dropdown-item[title='ZMSFolder'] {
+	display:block;
+}
+```

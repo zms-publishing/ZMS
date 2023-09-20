@@ -103,6 +103,7 @@ header.navbar-nav .navbar-brand .slogan {
 }
 header.navbar-nav ul.navbar-nav {
 	background: #354f67;
+	flex-wrap: nowrap;
 }
 /* Show Debug Mode: ZMS.debug=1 */
 header.zmsdebug .navbar-brand .slogan {

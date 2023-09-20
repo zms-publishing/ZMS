@@ -204,7 +204,7 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   homeElmnt = Folder(id)
   self._setObject(homeElmnt.id, homeElmnt)
   homeElmnt = [x for x in self.objectValues() if x.id == homeElmnt.id][0]
-  
+
   ##### Add ZMS ####
   from Products.zms import zms
   content = zms.initZMS(homeElmnt, 'content', titlealt, title, lang, manage_lang, REQUEST)
@@ -2543,7 +2543,7 @@ def getTempFile( context, id):
        b += data.data
        data=data.next
   return b
-  
+
 
 security.declarePublic('raiseError')
 def raiseError(error_type, error_value):

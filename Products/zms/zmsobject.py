@@ -1241,8 +1241,8 @@ class ZMSObject(ZMSItem.ZMSItem,
       if metaCmd is not None:
         # Execute directly.
         ob = zopeutil.getObject(self, id)
-        value = zopeutil.callObject(ob, zmscontext=self)
         if not metaCmd['id'].startswith('manage_tab_') and metaCmd.get('execution', 0) == 1:
+          value = zopeutil.callObject(ob, zmscontext=self)
           if isinstance(value, str):
             message = value
           elif isinstance(value, tuple):
@@ -1256,8 +1256,7 @@ class ZMSObject(ZMSItem.ZMSItem,
             status = 201 # Turbolinks
             RESPONSE.setHeader('Location',loc)
             RESPONSE.setHeader('Turbolinks-Location',loc)
-          RESPONSE.redirect(loc,status=status)
-          return value
+          return RESPONSE.redirect(loc,status=status)
 
       # Return with message.
       message = standard.url_quote(message)

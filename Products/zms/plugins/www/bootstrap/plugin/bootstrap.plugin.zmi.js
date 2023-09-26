@@ -116,7 +116,7 @@ $ZMI.registerReady(function(){
 	// Toggle: Classical Sitemap Icon
 	$('a#navbar-sitemap').each(function() {
 		var $a = $(this);
-		if (self.window.parent.frames.length > 1 && typeof self.window.parent != "undefined" && (self.window.parent.location+"").indexOf('dtpref_sitemap=1') > 0) {
+		if (self.window.parent.frames.length > 1 && typeof self.window.parent != "undefined") {
 			$a.attr('target','_top');
 		}
 		else {

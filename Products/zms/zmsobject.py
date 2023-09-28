@@ -1239,16 +1239,17 @@ class ZMSObject(ZMSItem.ZMSItem,
       # METACMD
       metaCmd = self.getMetaCmd(id)
       if metaCmd is not None:
-        # Execute directly.
+        # Execute metacmd.
         ob = zopeutil.getObject(self, id)
-        if not metaCmd['id'].startswith('manage_tab_') and metaCmd.get('execution', 0) == 1:
-          value = zopeutil.callObject(ob, zmscontext=self)
+        value = zopeutil.callObject(ob, zmscontext=self)
+        # Proceed with generating message for executed metacmd.
+        if not metaCmd['id'].startswith('manage_tab_') and bool(metaCmd.get('execution', 0)) == True:
           if isinstance(value, str):
             message = value
           elif isinstance(value, tuple):
             target = value[0]
             message = value[1]
-        # Execute redirect.
+        # Proceed with redirecting to tab view.
         else:
           loc = '%s/%s?lang=%s'%(target.absolute_url(),metaCmd['id'],lang)
           status = 302
@@ -1256,7 +1257,8 @@ class ZMSObject(ZMSItem.ZMSItem,
             status = 201 # Turbolinks
             RESPONSE.setHeader('Location',loc)
             RESPONSE.setHeader('Turbolinks-Location',loc)
-          return RESPONSE.redirect(loc,status=status)
+          RESPONSE.redirect(loc,status=status)
+          return value
 
       # Return with message.
       message = standard.url_quote(message)

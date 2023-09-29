@@ -1116,7 +1116,14 @@ input.btn.btn-file {
 .zmi.modal-open.fullScreen .modal-dialog {
 	transform:none !important;
 }
-
+.zmi.modal-open.fullScreen .modal-body .controls.save {
+	right: 32px;
+	position: fixed;
+	bottom: 0;
+	top: calc(100vh - 64px);
+	z-index: 1000000;
+	display: block;
+}
 div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	margin-left:1em;
 }

@@ -126,6 +126,7 @@ except:
 def initialize(context): 
     """Initialize the product."""
     
+    create_session_storage_if_neccessary(context)
     try: 
         """Try to register the product."""
         
@@ -338,3 +339,25 @@ def translate_path(s):
   if s.startswith('/++resource++zms_/'):
     l = ['plugins', 'www']+s.split('/')[2:]
   return os.sep.join([ZMS_HOME]+l)
+
+def create_session_storage_if_neccessary(context):
+  """
+  Ensure containers for temporary data.
+  """
+  from OFS.Folder import Folder
+  from Products.Transience.Transience import TransientObjectContainer
+
+  app = context.getApplication()
+  if not 'temp_folder' in app:
+    # Adding a 'folder' is a just fallback
+    # if a 'mount_point' is not available 
+    # like usually configured via zope.conf
+    temp_folder = Folder('temp_folder')
+    app._setObject('temp_folder', temp_folder)
+  if not 'session_data' in app.temp_folder:
+    container = TransientObjectContainer(
+        'session_data',
+        title='Session Data Container',
+        timeout_mins=20
+    )
+    app.temp_folder._setObject('session_data', container)

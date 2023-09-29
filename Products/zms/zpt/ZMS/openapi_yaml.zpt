@@ -36,7 +36,7 @@ paths:
           description: Records from ZMSIndex.
           content:
             application/json:
-              schema: 
+              schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/ZMSIndexRecord'
@@ -51,7 +51,7 @@ paths:
           description: Meta-model
           content:
             application/json:
-              schema: 
+              schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/MetaModelRecord'
@@ -81,7 +81,7 @@ paths:
           description: ZMS-Object
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/responses/ZMSObjectResponse'
   /{path}/list_parent_nodes:
     get:
@@ -102,7 +102,7 @@ paths:
           description: A JSON array of Parent Objects Meta-Data
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/responses/ZMSObjectResponse'
   /{path}/list_child_nodes:
     get:
@@ -123,7 +123,7 @@ paths:
           description: A JSON array of Children Objects Meta-Data
           content:
             application/json:
-              schema: 
+              schema:
                 type: array
                 items:
                   $ref: '#/components/responses/ZMSObjectResponse'
@@ -146,7 +146,7 @@ paths:
           description: A JSON array of Tree Objects Meta-Data
           content:
             application/json:
-              schema: 
+              schema:
                 type: array
                 items:
                   $ref: '#/components/responses/ZMSObjectResponse'
@@ -169,7 +169,7 @@ paths:
           description: A JSON array of Parent Objects Content
           content:
             application/json:
-              schema: 
+              schema:
                 type: array
                 items:
                   $ref: '#/components/responses/ZMSObjectResponse'
@@ -192,7 +192,7 @@ paths:
           description: A JSON array of Children Objects Content
           content:
             application/json:
-              schema: 
+              schema:
                 type: array
                 items:
                   $ref: '#/components/responses/ZMSObjectResponse'
@@ -215,7 +215,7 @@ paths:
           description: A JSON array of Object-Tree
           content:
             application/json:
-              schema: 
+              schema:
                 type: array
                 items:
                   $ref: '#/components/responses/ZMSObjectResponse'
@@ -238,7 +238,7 @@ paths:
           description: A JSON array of user names
           content:
             text/html:
-              type: string 
+              type: string
 components:
   responses:
     ZMSObjectResponse:
@@ -247,9 +247,9 @@ components:
           schema:
             oneOf:<tal:block tal:repeat="metaObjId python:here.getMetaobjIds(sort=True)"
               ><tal:block tal:define="
-                metaObj python:here.getMetaobj(metaObjId); 
-                metaObjAttrIds python:here.getMetaobjAttrIds(metaObjId); 
-                objAttrs python:here.getObjAttrs(metaObjId); 
+                metaObj python:here.getMetaobj(metaObjId);
+                metaObjAttrIds python:here.getMetaobjAttrIds(metaObjId);
+                objAttrs python:here.getObjAttrs(metaObjId);
                 properties python:[x for x in metaObjAttrIds if x in objAttrs];"
                 ><tal:block tal:condition="properties">
               - $ref: '#/components/schemas/<tal:block tal:content="metaObjId">The Name:</tal:block>'</tal:block
@@ -261,7 +261,7 @@ components:
     ZMSIndexRecord:
       description: ZMSIndex-Record
       type: object
-      required: 
+      required:
         - id
         - meta_id
         - uid
@@ -282,7 +282,7 @@ components:
     MetaModelRecord:
       description: Meta-Model-Record
       type: object
-      required: 
+      required:
         - icon_clazz
       properties:
         icon_clazz:
@@ -290,13 +290,13 @@ components:
           type: string
     <tal:block tal:repeat="metaObjId python:here.getMetaobjIds(sort=True)"
     ><tal:block tal:define="
-      metaObj python:here.getMetaobj(metaObjId); 
-      metaObjAttrIds python:here.getMetaobjAttrIds(metaObjId); 
-      objAttrs python:here.getObjAttrs(metaObjId); 
+      metaObj python:here.getMetaobj(metaObjId);
+      metaObjAttrIds python:here.getMetaobjAttrIds(metaObjId);
+      objAttrs python:here.getObjAttrs(metaObjId);
       properties python:[x for x in metaObjAttrIds if x in objAttrs];"
     ><tal:block tal:condition="properties">
     <tal:block tal:content="metaObjId">the name</tal:block>:
-      description: <tal:block tal:content="metaObj/name">the description</tal:block> 
+      description: <tal:block tal:content="metaObj/name">the description</tal:block>
       type: object
       required:
         - id
@@ -325,7 +325,7 @@ components:
         <tal:block tal:repeat="property properties"
         ><tal:block tal:define="metaObjAttr python:here.getMetaobjAttr(metaObjId,property)"
         ><tal:block tal:content="python:property=='id' and 'attr_id' or property">the property id</tal:block>:
-          description: <tal:block tal:content="python:standard.re_sub(pattern='<[^>]*>|\042', replacement='', subject=metaObjAttr.get('name'))">it's description</tal:block>
+          description: <tal:block tal:content="python:standard.re_sub(pattern='<[^>]*>|\042|:', replacement='', subject=metaObjAttr.get('name'))">it's description</tal:block>
           type: <tal:block tal:content="metaObjAttr/type">it's type</tal:block>
         </tal:block
         ></tal:block

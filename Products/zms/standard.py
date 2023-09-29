@@ -827,36 +827,8 @@ def get_session(context):
   """
   Get http-session.
   """
-  request = getattr( context, 'REQUEST', None)
-  if request.get('SESSION', None) == None:
-    create_session_storage_if_neccessary(context)
-  session = request.get('SESSION',request.environ.get('beaker.session',None))
-  return session
-
-security.declarePublic('create_session_storage_if_neccessary')
-def create_session_storage_if_neccessary(context):
-  """
-  Ensure containers for temporary data.
-  """
-  from OFS.Folder import Folder
-  from Products.Transience.Transience import TransientObjectContainer
-
-  root = context.getPhysicalRoot()
-  if not 'temp_folder' in root:
-    # Adding a 'folder' is a just fallback
-    # if a 'mount_point' is not available 
-    # like usually configured via zope.conf
-    temp_folder = Folder('temp_folder')
-    root._setObject('temp_folder', temp_folder)
-    # writeLog( context, 'Missing temp_folder added')
-  if not 'session_data' in root.temp_folder:
-    container = TransientObjectContainer(
-        'session_data',
-        title='Session Data Container',
-        timeout_mins=20
-    )
-    root.temp_folder._setObject('session_data', container)
-    # writeLog( context, 'Missing session_data-container added')
+  request = context.REQUEST
+  return request.get('SESSION',request.environ.get('beaker.session',None))
 
 security.declarePublic('get_session_value')
 def get_session_value(context, key, defaultValue=None):
@@ -2473,7 +2445,7 @@ def sendMail(context, mto, msubject, mbody, REQUEST=None, mattach=None):
           part = MIMEAudio(filedata, fileextn)
         else:
           part = MIMEApplication(filedata)
-        part.add_header('Content-Disposition', 'attachment; filename="%s"'%umlaut_quote(filename).replace(' ','_'))
+        part.add_header('Content-Disposition', 'attachment; filename="%s"'%url_quote(umlaut_quote(filename).replace(' ','_')))
         mime_msg.attach(part)
 
   # Get MailHost.

@@ -116,7 +116,7 @@ $ZMI.registerReady(function(){
 	// Toggle: Classical Sitemap Icon
 	$('a#navbar-sitemap').each(function() {
 		var $a = $(this);
-		if (self.window.parent.frames.length > 1 && typeof self.window.parent != "undefined" && (self.window.parent.location+"").indexOf('dtpref_sitemap=1') > 0) {
+		if (self.window.parent.frames.length > 1 && typeof self.window.parent != "undefined") {
 			$a.attr('target','_top');
 		}
 		else {
@@ -1280,6 +1280,7 @@ ZMIObjectTree.prototype.addPages = function(nodes) {
 	// Ensure nodes as list type
 	nodes = nodes.length==undefined ? [nodes] : nodes;
 	nodes.forEach(node => {
+		var data_id = '{$'+node.uid+'}';
 		var link_url = node.index_html;
 		var icon = that.metamodel[node.meta_id] ? $ZMI.icon(that.metamodel[node.meta_id].icon_clazz) : $ZMI.icon('far fa-file');
 		var anchor = '';
@@ -1287,11 +1288,11 @@ ZMIObjectTree.prototype.addPages = function(nodes) {
 		var callback = that.p['toggleClick.callback'];
 
 		if (node.meta_id == 'ZMSGraphic' && link_url) {
-			link_url = `<img data-id=&quot;${node.uid}&quot; src=&quot;${link_url}&quot;>`;
+			link_url = `<img data-id=&quot;${data_id}&quot; src=&quot;${link_url}&quot;>`;
 		} else if (node.meta_id == 'ZMSFile' && link_url) {
 			var $path_elements = link_url.split('/');
 			var $fname = $path_elements[$path_elements.length -1 ].split('?')[0];
-			link_url = `<a data-id=&quot;${node.uid}&quot; src=&quot;${link_url}&quot; target=&quot;_blank&quot;>${$fname}</a>`; 
+			link_url = `<a data-id=&quot;${data_id}&quot; src=&quot;${link_url}&quot; target=&quot;_blank&quot;>${$fname}</a>`; 
 		};
 		if (!node.active) {
 			css.push("inactive");

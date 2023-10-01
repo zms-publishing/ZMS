@@ -118,6 +118,8 @@ def get_attrs(node):
     data['home_id'] = node.getHome().id
     data['level'] = node.getLevel()
     data['restricted'] = node.hasRestrictedAccess()
+    if node.meta_id == 'ZMS':
+        data['has_portal_clients'] = node.getPortalClients() != []
     general_keys = data.keys()
     obj_attrs = node.getObjAttrs()
     metaobj_attrs = node.getMetaobjManager().getMetaobjAttrs(node.meta_id)

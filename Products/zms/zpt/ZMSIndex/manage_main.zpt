@@ -1,6 +1,6 @@
 <tal:block tal:define="
-	dummy0 python:here.zmi_page_request(here,request); 
-	global standard modules/Products.zms/standard; 
+	dummy0 python:here.zmi_page_request(here,request);
+	global standard modules/Products.zms/standard;
 	global zopeutil modules/Products/zms/zopeutil;
 	global session python:standard.get_session(here);"></tal:block
 ><tal:block tal:condition="python:standard.get_session_value(here,'zmi-manage-system',0)==1"><tal:block tal:content="structure python:here.manage_system(here,request)"></tal:block></tal:block
@@ -42,11 +42,11 @@ function openWindow(url) {
 					<i class="fas fa-search"></i> zcatalog_index
 			</a>
 			<div class="btn-group" style="margin-right:1em">
-				<button name="btn" class="btn btn-warning" 
+				<button name="btn" class="btn btn-warning"
 					title="REINDEX: Rebuilding the ZCatalog index of all selected (multisite) hierarchy objects."
 					onclick="return zmiFuncIndex('manage_reindex');">Reindex
 				</button>
-				<div class="btn btn-default btn-secondary" 
+				<div class="btn btn-default btn-secondary"
 					title="UID RENEWAL: Apply with care; all links may get invalid!!"
 					onclick="if( $('#regenerate_duplicates').prop('checked') ){ $('#regenerate_duplicates').prop('checked', false) } else { alert('UID RENEWAL: Apply with care; all links may get invalid!!');$('#regenerate_duplicates').prop('checked', true) }">
 					UID Renewal:
@@ -66,7 +66,7 @@ function openWindow(url) {
 			</button>
 			<div class="input-group">
 				<div class="input-group-prepend">
-					<select class="form-control" id="loglevel" name="loglevel" 
+					<select class="form-control" id="loglevel" name="loglevel"
 						title="Select the Debug-Level for Logging Messages while Indexing">
 						<option tal:repeat="loglevel loglevels" tal:attributes="selected python:['','selected'][int(loglevel=='INFO')]" tal:content="loglevel">the loglevel</option>
 					</select>
@@ -83,19 +83,19 @@ function openWindow(url) {
 		<label class="col-sm-2 control-label">&nbsp;</label>
 		<div class="col-sm-10">
 			<div class="btn-group zmi-sitemap-controls">
-				<div title="De-/Select All" 
+				<div title="De-/Select All"
 					class="btn btn-secondary">
 					<input id="zmi-sitemap-select" type="checkbox" checked="checked"
-						onclick="if( this.checked ){ $('.zmi-sitemap ul input').prop('checked', true) } else { $('.zmi-sitemap ul input').prop('checked', false) }" 
+						onclick="if( this.checked ){ $('.zmi-sitemap ul input').prop('checked', true) } else { $('.zmi-sitemap ul input').prop('checked', false) }"
 					/>
 				</div>
-				<div title="Expand Object Tree (Hint: Mind System Load in Case!)" 
-					class="btn btn-secondary" 
+				<div title="Expand Object Tree (Hint: Mind System Load in Case!)"
+					class="btn btn-secondary"
 					onclick="return zmiExpandObjectTree(-1);">
 					<i class="fas fa-plus-square"></i>
 				</div>
 				<div title="Expand/Compress Sitemap View"
-					class="btn btn-secondary" id="zmi-sitemap-expand" 
+					class="btn btn-secondary" id="zmi-sitemap-expand"
 					onclick="$('.zmi-sitemap-container').toggleClass('full');$('#zmi-sitemap-expand i').toggleClass('fa-expand-arrows-alt fa-compress-arrows-alt')">
 					<i class="fas fa-expand-arrows-alt"></i>
 				</div>
@@ -127,7 +127,7 @@ function openWindow(url) {
 					<button class="btn btn-primary" name="btn" value="save"
 						onclick="$(this).parents('form').attr({action:self.location.href})">
 						<i class="icon-save fas fa-save"></i>
-						<tal:block tal:content="python:here.getZMILangStr('BTN_SAVE')"></tal:block>  
+						<tal:block tal:content="python:here.getZMILangStr('BTN_SAVE')"></tal:block>
 					</button>
 				</div>
 			</div><!-- .input-group -->
@@ -251,7 +251,8 @@ $(function() {
 	// Sitemap
 	set_progress( 0, func_name='test');
 	var href = $ZMI.get_document_element_url($ZMI.getPhysicalPath());
-	$ZMI.objectTree.init(".zmi-sitemap",href,{
+	$ZMI.objectTree.init('.zmi-sitemap', href, {
+		params: {'meta_types':'ZMS'},
 		filter: x => x.meta_id === 'ZMS',
 		'init.callback': function() {
 				zmiExpandObjectTree(1);

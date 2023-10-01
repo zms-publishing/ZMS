@@ -154,7 +154,7 @@ $ZMI.registerReady(function(){
 		}
 	});
 
-	// Titleimage: Video-Preview on Hover 
+	// Titleimage: Video-Preview on Hover
 	if ($('.object_has_titleimage')) {
 		$('.object_has_titleimage i.preview_on_hover').each( function() {
 			var media_url = $(this).data('preview_url');
@@ -252,7 +252,7 @@ $ZMI.registerReady(function(){
 		var $single_line = $(this);
 		var $textarea = $('textarea',this);
 		$textarea.prop({rows:1,wrap:'off'});
-		
+
 		if ($single_line.hasClass("zmi-code")) {
 			$('textarea',$single_line).on('focus', function() {
 				if ( !$(this).hasClass('open-zmi-code') ) {
@@ -293,7 +293,7 @@ $ZMI.registerReady(function(){
 			});
 			return;
 		}
-		
+
 		if ($single_line.hasClass("zmi-nodes")) {
 			$textarea.prop({title:getZMILangStr('ATTR_NODE')});
 		}
@@ -368,7 +368,7 @@ $ZMI.registerReady(function(){
 			}
 			if (!(href==null || typeof href=="undefined")) {
 				self.location.href = href;
-			} 
+			}
 		})
 		.attr( "title", "Double-click to edit!");
 
@@ -693,7 +693,7 @@ ZMI.prototype.initInputFields = function(container) {
 						}
 					}
 					else if (nodeName=="select") {
-						isBlank =  (($("option:selected",$control).length==0) 
+						isBlank =  (($("option:selected",$control).length==0)
 							|| ($("option:selected",$control).length==1 && $("option:selected",$control).attr("value")==""))
 							&& !$control.attr("disabled")=="disabled";
 					}
@@ -1292,7 +1292,7 @@ ZMIObjectTree.prototype.addPages = function(nodes) {
 		} else if (node.meta_id == 'ZMSFile' && link_url) {
 			var $path_elements = link_url.split('/');
 			var $fname = $path_elements[$path_elements.length -1 ].split('?')[0];
-			link_url = `<a data-id=&quot;${data_id}&quot; src=&quot;${link_url}&quot; target=&quot;_blank&quot;>${$fname}</a>`; 
+			link_url = `<a data-id=&quot;${data_id}&quot; src=&quot;${link_url}&quot; target=&quot;_blank&quot;>${$fname}</a>`;
 		};
 		if (!node.active) {
 			css.push("inactive");
@@ -1305,7 +1305,11 @@ ZMIObjectTree.prototype.addPages = function(nodes) {
 		};
 		html += `<ul data-id="${node.uid}" class="zmi-page ${node.meta_id}${node.is_page_element ? ' is_page_element' :''}">`;
 		html += `<li class="${css.join(' ')}">`;
-		html += `<i class="fas fa-caret-right toggle" title="+" onclick="$ZMI.objectTree.toggleClick(this ${typeof callback=='undefined' ? '' : ',' + callback})"></i> `;
+		if (!(that.p.params.meta_types == 'ZMS' && node.meta_id == 'ZMS' && !node.has_portal_clients)) {
+			html += `<i class="fas fa-caret-right toggle" title="+" onclick="$ZMI.objectTree.toggleClick(this ${typeof callback=='undefined' ? '' : ',' + callback})"></i> `;
+		} else {
+			html += `<i class="fas fa-caret-right toggle" title="-" style="visibility:hidden"></i> `;
+		};
 		if (node.is_page_element) {
 			if (node.meta_id == 'ZMSGraphic' && node.index_html) {
 				html += `<span class="preview_on_hover preview_image preview_ready" style="--preview_url:url(${node.index_html});cursor:help" title="${getZMILangStr('TAB_PREVIEW')}">${icon}</span> `;
@@ -1313,9 +1317,9 @@ ZMIObjectTree.prototype.addPages = function(nodes) {
 				html += `<span class="preview_on_hover preview_text" style="cursor:help" data-preview_text="Loading ..." onmouseover="$ZMI.objectTree.preview_load(this)" title="${getZMILangStr('TAB_PREVIEW')}">${icon}</span> `;
 			}
 		}
-		html += `<a href="${node.getPath}" 
-			data-link-url="${link_url}" 
-			data-uid="${node.uid}" 
+		html += `<a href="${node.getPath}"
+			data-link-url="${link_url}"
+			data-uid="${node.uid}"
 			data-anchor="${anchor}"
 			data-page-titlealt="${node.titlealt.replace(/"/g,'&quot;').replace(/'/g,'&apos;')}"
 			onclick="return zmiSelectObject(this);return false;">`;
@@ -1593,7 +1597,7 @@ ZMIActionList.prototype.exec = function(sender, label, target, meta_id='') {
 		data['id_prefix'] = id_prefix;
 		var title = '<i class="fas fa-plus-sign"></i> ' + getZMILangStr('BTN_INSERT') + ':&nbsp;' + label;
 		// debugger;
-		if (meta_id!='') { 
+		if (meta_id!='') {
 			data['meta_id'] = meta_id;
 		}
 		$('<li id="manage_addProduct" class="zmi-item zmi-highlighted"><div class="center">'+title+'</div></li>').insertAfter($el.parents(".zmi-item"));
@@ -1615,7 +1619,7 @@ ZMIActionList.prototype.exec = function(sender, label, target, meta_id='') {
 					zmiModal("hide");
 				});
 				// Auto-Insert on models without attributes but not ZMSSqlDb or ZMSTable
-				if ( ['ZMSSqlDb','ZMSTable'].indexOf($('#ZMS_INSERT').val())==-1 && 
+				if ( ['ZMSSqlDb','ZMSTable'].indexOf($('#ZMS_INSERT').val())==-1 &&
 					$('#zmiIframeAddDialog .form-group:not([class*="activity"]) .form-control').length==0 ) {
 					$('#addInsertBtn').click();
 				}
@@ -1778,7 +1782,7 @@ function zmiBrowseObjsApplyUrlValue(fmName, elName, elValue, elTitle) {
 		$('form[name='+fmName+'] input[name^=title]:text').each(function() {
 			if ($(this).val()=='') {
 				$(this).val(elTitle).change();
-			} 
+			}
 		});
 	}
 }
@@ -1864,7 +1868,7 @@ function untagSelected(tag, leftDelimiter, rightDelimiter) {
 	var tagName = tag.indexOf(" ")>0?tag.substring(0,tag.indexOf(" ")):tag;
 	var startTag = leftDelimiter + tag + rightDelimiter;
 	var startRe = new RegExp(leftDelimiter + tag + "(.*?)" + rightDelimiter, "gi");
-	var endTag = leftDelimiter + "/" + tagName + rightDelimiter; 
+	var endTag = leftDelimiter + "/" + tagName + rightDelimiter;
 	var endRe = new RegExp(leftDelimiter + "/" + tag + rightDelimiter, "gi");
 	var preMatch = pre.match(startRe);
 	var postMatch = post.match(endRe);
@@ -1906,11 +1910,11 @@ function tagSelected(tag, leftDelimiter, rightDelimiter) {
 	}
 	if (tagName == 'a' && tagAttrs == '') {
 		zmiBrowseObjs('','',getZMILang());
-	} 
+	}
 	else {
 		var startTag = leftDelimiter + tagName + tagAttrs + rightDelimiter;
 		var endTag = leftDelimiter + "/" + tagName + rightDelimiter;
-		var newRange = startTag + range + endTag; 
+		var newRange = startTag + range + endTag;
 		$(selectedInput).val(pre+newRange+post);
 		// Set selection.
 		var offset = startTag.length;
@@ -2031,7 +2035,7 @@ $ZMI.registerReady(function(){
 		} else {
 			$('.scroller-right').hide();
 		}
-		
+
 		if (getLeftPosi()<0) {
 			$('.scroller-left').show();
 		} else {
@@ -2141,7 +2145,7 @@ function zmiExpandConfFiles(el, pattern) {
 //  Url-Input
 // /////////////////////////////////////////////////////////////////////////////
 
-ZMI.prototype.initUrlInput = function(context) { 
+ZMI.prototype.initUrlInput = function(context) {
 	var fn_url_input_each = function() {
 		var $input = $(this);
 		var fmName = $input.parents("form").attr("name");
@@ -2232,28 +2236,28 @@ ZMI.prototype.initUrlInput = function(context) {
 /**
  * Remove option from multiselect
  */
-ZMI.prototype.removeFromMultiselect = function(src) { 
+ZMI.prototype.removeFromMultiselect = function(src) {
 	if (typeof src == "string") {
 		src = document.getElementById(src);
 	}
-	var selected = new Array(); 
-	var index = 0; 
-	while (index < src.options.length) { 
-		if (src.options[index].selected) { 
-			selected[index] = src.options[index].selected; 
-		} 
-		index++; 
+	var selected = new Array();
+	var index = 0;
+	while (index < src.options.length) {
+		if (src.options[index].selected) {
+			selected[index] = src.options[index].selected;
+		}
+		index++;
 	}
-	index = 0; 
-	var count = 0; 
-	while (index < selected.length) { 
-		if (selected[index]) 
-			src.options[count] = null; 
-		else 
-			count++; 
-		index++; 
-	} 
-	sortOptions(src); 
+	index = 0;
+	var count = 0;
+	while (index < selected.length) {
+		if (selected[index])
+			src.options[count] = null;
+		else
+			count++;
+		index++;
+	}
+	sortOptions(src);
 }
 
 /**
@@ -2342,7 +2346,7 @@ function addOption( object, name, value, selectedValue) {
 	var selected = value.length > 0 && value == selectedValue;
 	object.options[object.length] = new Option( name, value, defaultSelected, selected);
 }
-	
+
 /**
  * Sort options.
  */

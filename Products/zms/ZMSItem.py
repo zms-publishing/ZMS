@@ -130,6 +130,7 @@ class ZMSItem(
       RESPONSE.setHeader('Content-Type', 'text/html;charset=%s'%request['ZMS_CHARSET'])
       if not request.get( 'preview'):
         request.set( 'preview', 'preview')
+        request.set( 'is_zmi', True)
       langs = self.getLanguages(request)
       if request.get('lang') not in langs:
         request.set('lang', langs[0])

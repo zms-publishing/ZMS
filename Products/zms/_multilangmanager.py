@@ -237,23 +237,20 @@ class MultiLanguageManager(object):
       """
       manage_lang = None
       req = getattr( self, 'REQUEST', None)
-      # Debug
-      req.set('get_manage_lang_cnt', req.get('get_manage_lang_cnt',0)+1)
-      standard.writeBlock( self, 'get_manage_lang_cnt: %s'%(req.get('get_manage_lang_cnt',0)))
-      # /Debug
-      if req is not None and req.get('URL').find('/manage') > 0:
-        sess = standard.get_session(self)
-        if 'manage_lang' in req:
-          manage_lang = req.get('manage_lang')
-        else:
-          if sess is not None and 'reset_manage_lang' not in req.form:
-            manage_lang = sess.get('manage_lang')
-          if manage_lang is None:
-            lang = req.get('lang')
-            if lang in self.getLangIds():
-              manage_lang = self.getLang(lang).get('manage')
-        if sess is not None:
-          sess.set('manage_lang', manage_lang)
+      if req.get( 'is_zmi', False):
+        if req is not None:
+          sess = standard.get_session(self)
+          if 'manage_lang' in req:
+            manage_lang = req.get('manage_lang')
+          else:
+            if sess is not None and 'reset_manage_lang' not in req.form:
+              manage_lang = sess.get('manage_lang')
+            if manage_lang is None:
+              lang = req.get('lang')
+              if lang in self.getLangIds():
+                manage_lang = self.getLang(lang).get('manage')
+          if sess is not None:
+            sess.set('manage_lang', manage_lang)
       if manage_lang is None:
         manage_lang = 'eng'
       return manage_lang

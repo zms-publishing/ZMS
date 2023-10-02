@@ -237,7 +237,11 @@ class MultiLanguageManager(object):
       """
       manage_lang = None
       req = getattr( self, 'REQUEST', None)
-      if req is not None and [x for x in req.get('URL','/manage').split('/') if x.find('manage')]:
+      # Debug
+      req.set('get_manage_lang_cnt', req.get('get_manage_lang_cnt',0)+1)
+      standard.writeBlock( self, 'get_manage_lang_cnt: %s'%(req.get('get_manage_lang_cnt',0)))
+      # /Debug
+      if req is not None and req.get('URL').find('/manage') > 0:
         sess = standard.get_session(self)
         if 'manage_lang' in req:
           manage_lang = req.get('manage_lang')

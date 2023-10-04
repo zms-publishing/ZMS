@@ -158,7 +158,8 @@ except:
 
 def initialize(context):
     """Initialize the product."""
-create_session_storage_if_neccessary(context)
+
+    create_session_storage_if_neccessary(context)
     try:
         """Try to register the product."""
 

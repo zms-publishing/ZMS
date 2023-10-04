@@ -1308,7 +1308,11 @@ ZMIObjectTree.prototype.addPages = function(nodes) {
 		};
 		html += `<ul data-id="${node.uid}" class="zmi-page ${node.meta_id}${node.is_page_element ? ' is_page_element' :''}">`;
 		html += `<li class="${css.join(' ')}">`;
-		html += `<i class="fas fa-caret-right toggle" title="+" onclick="$ZMI.objectTree.toggleClick(this ${typeof callback=='undefined' ? '' : ',' + callback})"></i> `;
+		if (!(that.p.params.meta_types == 'ZMS' && node.meta_id == 'ZMS' && !node.has_portal_clients)) {
+			html += `<i class="fas fa-caret-right toggle" title="+" onclick="$ZMI.objectTree.toggleClick(this ${typeof callback=='undefined' ? '' : ',' + callback})"></i> `;
+		} else {
+			html += `<i class="fas fa-caret-right toggle" title="-" style="visibility:hidden"></i> `;
+		};
 		if (node.is_page_element) {
 			if (node.meta_id == 'ZMSGraphic' && node.index_html) {
 				html += `<span class="preview_on_hover preview_image preview_ready" style="--preview_url:url(${node.index_html});cursor:help" title="${getZMILangStr('TAB_PREVIEW')}">${icon}</span> `;

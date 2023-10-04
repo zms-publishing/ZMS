@@ -45,9 +45,9 @@ class ZMSItem(
 
     # Documentation string.
     __doc__ = """ZMS product module."""
-    # Version string. 
-    __version__ = '0.1' 
-    
+    # Version string.
+    __version__ = '0.1'
+
     # Management Permissions.
     # -----------------------
     __viewPermissions__ = (
@@ -119,7 +119,7 @@ class ZMSItem(
         if request['ZMS_ROOT'].startswith(base):
           request.set( 'ZMS_ROOT', request['ZMS_ROOT'][len(base):])
           request.set( 'ZMS_COMMON', request['ZMS_COMMON'][len(base):])
-    
+
     def zmi_page_request(self, *args, **kwargs):
       request = self.REQUEST
       RESPONSE = request.RESPONSE
@@ -130,6 +130,7 @@ class ZMSItem(
       RESPONSE.setHeader('Content-Type', 'text/html;charset=%s'%request['ZMS_CHARSET'])
       if not request.get( 'preview'):
         request.set( 'preview', 'preview')
+        request.set( 'is_zmi', True)
       langs = self.getLanguages(request)
       if request.get('lang') not in langs:
         request.set('lang', langs[0])

@@ -118,6 +118,8 @@ def get_attrs(node):
     data['home_id'] = node.getHome().id
     data['level'] = node.getLevel()
     data['restricted'] = node.hasRestrictedAccess()
+    if node.meta_id == 'ZMS':
+        data['has_portal_clients'] = node.getPortalClients() != []
     general_keys = data.keys()
     obj_attrs = node.getObjAttrs()
     metaobj_attrs = node.getMetaobjManager().getMetaobjAttrs(node.meta_id)
@@ -226,9 +228,9 @@ class RestApiController(object):
     @api(tag="navigation", pattern="/{path}/list_child_nodes", method="GET", content_type="application/json")
     def list_child_nodes(self, context):
         request = _get_request(context)
-        id_prefix = request.get('id_prefix','e')
+        id_prefix = request.get('id_prefix','')
         meta_types = [context.PAGES if str(x)==str(context.PAGES) else context.PAGEELEMENTS if str(x)==str(context.PAGEELEMENTS) else x for x in request.get('meta_types').split(',')] if request.get('meta_types') else None
-        nodes = context.getObjChildren(id_prefix,  request, meta_types)
+        nodes = context.getObjChildren(id_prefix, request, meta_types)
         if context.meta_type == 'ZMS':
             nodes.extend(context.getPortalClients())
         return [get_meta_data(x) for x in nodes]
@@ -247,9 +249,9 @@ class RestApiController(object):
     @api(tag="navigation", pattern="/{path}/get_child_nodes", method="GET", content_type="application/json")
     def get_child_nodes(self, context):
         request = _get_request(context)
-        id_prefix = request.get('id_prefix','e')
+        id_prefix = request.get('id_prefix','')
         meta_types = [context.PAGES if str(x)==str(context.PAGES) else context.PAGEELEMENTS if str(x)==str(context.PAGEELEMENTS) else x for x in request.get('meta_types').split(',')] if request.get('meta_types') else None
-        nodes = context.getObjChildren(id_prefix,  request, meta_types)
+        nodes = context.getObjChildren(id_prefix, request, meta_types)
         if context.meta_type == 'ZMS':
             nodes.extend(context.getPortalClients())
         return [get_attrs(x) for x in nodes]

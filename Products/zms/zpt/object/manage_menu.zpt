@@ -30,5 +30,33 @@
 
 <tal:block tal:content="structure python:here.zmi_html_foot(here,request)">zmi_html_foot</tal:block>
 <script type="text/javascript" charset="UTF-8" src="/++resource++zms_/object/manage_menu.js"></script>
+<script>
+	// <!--
+	// #############################
+	// @work: to be async-ed
+	// #############################
+	function zmi_objecttree_expand() {
+		pathbase = window.location.pathname.split('/content/')[0]
+		pathfragments = window.location.pathname.split(pathbase+'/')[1].split('/')
+		pathfragments.pop(0);
+		pth = pathbase;
+		var i = 0;
+		(function click_head(i) {
+			setTimeout(function(){
+				pth += `/${pathfragments[i]}`;
+				console.log(pth);
+				$(`ul[data-path="${pth}"] > li:first`).addClass('active');
+				$(`ul[data-path="${pth}"] > li:first > i`).click();
+				if (i < pathfragments.length - 1 ) {
+					click_head(i+1);
+				}
+			}, 1000);
+		})(i)
+	};
+	$(function(){
+		zmi_objecttree_expand();
+	});
+	// -->
+</script>
 </body>
 </html>

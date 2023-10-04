@@ -1303,7 +1303,7 @@ ZMIObjectTree.prototype.addPages = function(nodes) {
 		if (node.attr_dc_type) {
 			css.push('type-' + node.attr_dc_type);
 		};
-		html += `<ul data-id="${node.uid}" class="zmi-page ${node.meta_id}${node.is_page_element ? ' is_page_element' :''}">`;
+		html += `<ul data-id="${node.uid}" data-path="${node.getPath}" class="zmi-page ${node.meta_id}${node.is_page_element ? ' is_page_element' :''}">`;
 		html += `<li class="${css.join(' ')}">`;
 		if (!(that.p.params.meta_types == 'ZMS' && node.meta_id == 'ZMS' && !node.has_portal_clients)) {
 			html += `<i class="fas fa-caret-right toggle" title="+" onclick="$ZMI.objectTree.toggleClick(this ${typeof callback=='undefined' ? '' : ',' + callback})"></i> `;

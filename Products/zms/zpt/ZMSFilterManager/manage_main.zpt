@@ -9,118 +9,19 @@
 ><tal:block tal:condition="not:python:standard.get_session_value(here,'zmi-manage-system',0)==1"
 ><!DOCTYPE html>
 <html lang="en">
-<head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
+<head tal:replace="structure python:here.zmi_html_head(here,request)">
+	zmi_html_head
+</head>
 <body tal:attributes="class python:here.zmi_body_class(id='filter config')">
 <header tal:replace="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</header>
-<div id="zmi-tab">
-<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[{'label':'TAB_FILTER','action':'manage_main'}])">zmi_breadcrumbs</tal:block>
-
-<style>
-	.filterProcess,
-	.filterDelimiter,
-	.filterProcessFile {
-		background-color:#D0FFD0;
-		border:1px navy solid;
-		border-radius:4px;
-		margin:.1em;
-		max-width:30vw;
-		width:20rem;
-		text-align:center;
-		padding:.3rem;
-		overflow:hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-	}
-	.filterDelimiter {
-		background-color:#D0D0FF;
-	}
-	.filterProcessFile {
-		text-align:left;
-		background-color:white;
-		border:1px #CCC solid;
-		padding: .3rem .75rem;
-		width:auto;
-	}
-	.filterProcesses .layoutTable {
-		margin-bottom:1rem;
-	}
-	.layoutTable tr {
-		background: transparent !important;
-	}
-	.layoutTable th, .layoutTable td {
-		padding:0;
-		vertical-align:top;
-		border:0 !important;
-		text-align:center;
-	}
-	.layoutTable td {
-		padding:0 !important;
-	}
-	.layoutTable td hr {
-		margin:1rem 0;
-		width:5rem;
-		border-top:1px solid #888;
-		padding:0;
-	}
-	.zmi .modal .modal-dialog {
-		min-width:600px;
-		width:90vw !important;
-		max-width: 90vw !important;
-	}
-	@media (min-width: 1200px) {
-		.zmi div:not(#zmiModalupdateEntity) .modal-dialog {
-			max-width: 90vw !important;
-		}
-	}
-	.filterProcesses i.fa-long-arrow-alt-down {
-		color: #0088cc80;
-	}
-</style>
-
-<script>
-//<!--
-	// Export xml.
-	function zmiExportBtnClick(sender) {
-		var fm = $(sender).parents("form")[0];
-		var href = fm.action+'?lang='+getZMILang()+'&btn=BTN_EXPORT';
-		$('input[name="ids:list"]:checked').each(function(){
-				href += '&'+$(this).attr("name")+'='+$(this).val();
-			});
-		window.open(href);
-		return false;
-	}
-	// Delete object.
-	function zmiDeleteObjBtnClick(sender,d) {
-		if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
-			zmiFormSubmit(sender,d);
-		}
-	}
-	// Submit form with given parameters.
-	function zmiFormSubmit(sender,d) {
-		var $fm = $(sender).closest("form");
-		var html = '';
-		for (var i in d) {
-			$('input[name="' + i + '"]',$fm).remove();
-			html += '<input type="hidden" name="' + i + '" value="' + d[i] +'"/>';
-		}
-		$fm
-			.append(html)
-			.submit();
-	}
-	$(function(){
-		zmiModal('#updateFilter',{title:getZMILangStr('TAB_PROPERTIES')+': '+getZMILangStr('ATTR_FILTER'),minWidth:800,remove:true});
-		zmiModal('#updateProcess',{title:getZMILangStr('TAB_PROPERTIES')+': '+getZMILangStr('ATTR_PROCESSES'),minWidth:800,remove:true});
-	});
-//-->
-</script>
-
-<tal:block tal:define="global
-	action python:'manage_changeFilter';
+<div id="zmi-tab" tal:define="action python:'manage_changeFilter';
 	filterIds python:here.getFilterIds();
 	filters python:[here.getFilter(x) for x in filterIds];
 	processIds python:here.getProcessIds();
 	processes python:[here.getProcess(x) for x in processIds];
 	filterFormats python:[ ['import', 'Import' ], ['export', 'Export' ], ['XML', 'XML-Export' ], ['XHTML', 'XHTML-Export' ]]+ [[],['myXML',standard.operator_getattr(here,'getObjToXml_DocElmnt',here).title_or_id()]][int(standard.operator_getattr(here,'getObjToXml_DocElmnt',None) is not None)]">
+
+<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[{'label':'TAB_FILTER','action':'manage_main'}])">zmi_breadcrumbs</tal:block>
 
 <div class="d-none">
 	<div id="importConf" class="inner">
@@ -299,31 +200,6 @@
 					<textarea tal:replace="structure python:here.zmi_ace_editor(here,request,name='inpCommand',id='filtercmd_%s'%(process.get('id')),ob=None,text=process.get('command',''))">
 						ACE Editor
 					</textarea>
-
-					<!-- ACE-ALTERNATIVE -->
-					<tal:block tal:replace="nothing">
-						<div class="control-label-ace-editor w-100 mb-1">
-							<a target="_blank" class="w-100" title="Link to Zope Object"
-								tal:attributes="href python:'%s/manage_main'%process.get('id'); title process/id" 
-								tal:content="python:process.get('id')">
-								id
-							</a> 
-						</div>
-						<div class="single-line zmi-code">
-							<textarea name="inpCommand" title="Doubleclick for ACE-Editor"
-								data-content_type="text/html"
-								class="form-control-ace-editor form-control form-control-sm zpt"
-								style="min-height:20rem;overflow-y:scroll"
-								ondblclick="show_ace_editor(this,true)"
-								tal:attributes="id python:'filtercmd_%s'%(process.get('id'))" 
-								tal:content="python:process.get('command','')">
-								code data
-							</textarea>
-						</div>
-						<script type="text/javascript" defer charset="UTF-8" src="/++resource++zms_/common/zmi_ace_editor.js"></script>
-					</tal:block>
-					<!-- /ACE-ALTERNATIVE -->
-
 				</div>
 			</div><!-- .form-group -->
 		</form>
@@ -535,10 +411,109 @@
 	</table>
 </form>
 
-</tal:block>
-
 </div><!-- #zmi-tab -->
+
 <footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
+
+<style>
+	.filterProcess,
+	.filterDelimiter,
+	.filterProcessFile {
+		background-color:#D0FFD0;
+		border:1px navy solid;
+		border-radius:4px;
+		margin:.1em;
+		max-width:30vw;
+		width:20rem;
+		text-align:center;
+		padding:.3rem;
+		overflow:hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	.filterDelimiter {
+		background-color:#D0D0FF;
+	}
+	.filterProcessFile {
+		text-align:left;
+		background-color:white;
+		border:1px #CCC solid;
+		padding: .3rem .75rem;
+		width:auto;
+	}
+	.filterProcesses .layoutTable {
+		margin-bottom:1rem;
+	}
+	.layoutTable tr {
+		background: transparent !important;
+	}
+	.layoutTable th, .layoutTable td {
+		padding:0;
+		vertical-align:top;
+		border:0 !important;
+		text-align:center;
+	}
+	.layoutTable td {
+		padding:0 !important;
+	}
+	.layoutTable td hr {
+		margin:1rem 0;
+		width:5rem;
+		border-top:1px solid #888;
+		padding:0;
+	}
+	.zmi .modal .modal-dialog {
+		min-width:600px;
+		width:90vw !important;
+		max-width: 90vw !important;
+	}
+	@media (min-width: 1200px) {
+		.zmi div:not(#zmiModalupdateEntity) .modal-dialog {
+			max-width: 90vw !important;
+		}
+	}
+	.filterProcesses i.fa-long-arrow-alt-down {
+		color: #0088cc80;
+	}
+</style>
+
+<script>
+//<!--
+	// Export xml.
+	function zmiExportBtnClick(sender) {
+		var fm = $(sender).parents("form")[0];
+		var href = fm.action+'?lang='+getZMILang()+'&btn=BTN_EXPORT';
+		$('input[name="ids:list"]:checked').each(function(){
+				href += '&'+$(this).attr("name")+'='+$(this).val();
+			});
+		window.open(href);
+		return false;
+	}
+	// Delete object.
+	function zmiDeleteObjBtnClick(sender,d) {
+		if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
+			zmiFormSubmit(sender,d);
+		}
+	}
+	// Submit form with given parameters.
+	function zmiFormSubmit(sender,d) {
+		var $fm = $(sender).closest("form");
+		var html = '';
+		for (var i in d) {
+			$('input[name="' + i + '"]',$fm).remove();
+			html += '<input type="hidden" name="' + i + '" value="' + d[i] +'"/>';
+		}
+		$fm
+			.append(html)
+			.submit();
+	}
+	$(function(){
+		zmiModal('#updateFilter',{title:getZMILangStr('TAB_PROPERTIES')+': '+getZMILangStr('ATTR_FILTER'),minWidth:800,remove:true});
+		zmiModal('#updateProcess',{title:getZMILangStr('TAB_PROPERTIES')+': '+getZMILangStr('ATTR_PROCESSES'),minWidth:800,remove:true});
+	});
+//-->
+</script>
+
 </body>
 </html>
 </tal:block>

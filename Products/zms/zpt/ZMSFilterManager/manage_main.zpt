@@ -309,6 +309,31 @@ $(function(){
 					<textarea tal:replace="structure python:here.zmi_ace_editor(here,request,name='inpCommand',id='filtercmd_%s'%(process.get('id')),ob=None,text=process.get('command',''))">
 						ACE Editor
 					</textarea>
+
+					<!-- ACE-ALTERNATIVE -->
+					<tal:block tal:replace="nothing">
+						<div class="control-label-ace-editor w-100 mb-1">
+							<a target="_blank" class="w-100" title="Link to Zope Object"
+								tal:attributes="href python:'%s/manage_main'%process.get('id'); title process/id" 
+								tal:content="python:process.get('id')">
+								id
+							</a> 
+						</div>
+						<div class="single-line zmi-code">
+							<textarea name="inpCommand" title="Doubleclick for ACE-Editor"
+								data-content_type="text/html"
+								class="form-control-ace-editor form-control form-control-sm zpt"
+								style="min-height:20rem;overflow-y:scroll"
+								ondblclick="show_ace_editor(this,true)"
+								tal:attributes="id python:'filtercmd_%s'%(process.get('id'))" 
+								tal:content="python:process.get('command','')">
+								code data
+							</textarea>
+						</div>
+						<script type="text/javascript" defer charset="UTF-8" src="/++resource++zms_/common/zmi_ace_editor.js"></script>
+					</tal:block>
+					<!-- /ACE-ALTERNATIVE -->
+
 				</div>
 			</div><!-- .form-group -->
 		</form>

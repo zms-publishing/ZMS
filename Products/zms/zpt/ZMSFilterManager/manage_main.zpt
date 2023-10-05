@@ -111,8 +111,8 @@
 					<label for="inpDescription" class="col-md-2 control-label"><span tal:content="python:here.getZMILangStr('ATTR_DESCRIPTION')">Description</span></label>
 					<div class="col-md-10"><textarea class="form-control" name="inpDescription" tal:content="python:filter.get('description','')">the description</textarea></div>
 				</div><!-- .form-group -->
-			<legend tal:content="python:here.getZMILangStr('ATTR_PROCESS')">Process</legend>
-			<table class="table table-sm table-striped zmi-sortable">
+			<legend tal:content="python:'%s - %s'%(here.getZMILangStr('ATTR_PROCESS'),here.getZMILangStr('ATTR_SEQUENCE'))">Process Sequence</legend>
+			<table class="table table-sm table-striped zmi-sortable" id="processsequence">
 			<tbody tal:define="global filterProcesses python:here.getFilterProcesses(filter['id'])">
 			<tr tal:repeat="index python:range(len(filterProcesses))">
 			<tal:block tal:define="global filterProcess python:filterProcesses[index]; process python:here.getProcess(filterProcess['id'])">
@@ -151,8 +151,13 @@
 				</td>
 			</tal:block>
 			</tr>
+			<!-- INSERT NEW ROW -->
 			<tr class="row_insert">
-				<td class="text-right"><span class="btn"><i class="fas fa-plus"></i></span></td>
+				<td class="meta-sort text-right">
+					<span class="btn btn-add mr-1">
+						<i class="fas fa-plus"></i>
+					</span>
+				</td>
 				<td>
 					<select class="form-control form-control" tal:attributes="name python:'newFilterProcessId_%i'%len(filterProcesses)">
 						<option value="" tal:content="python:'--- %s ---'%here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_TYPE')">--- Select type ---</option>
@@ -510,6 +515,64 @@
 	$(function(){
 		zmiModal('#updateFilter',{title:getZMILangStr('TAB_PROPERTIES')+': '+getZMILangStr('ATTR_FILTER'),minWidth:800,remove:true});
 		zmiModal('#updateProcess',{title:getZMILangStr('TAB_PROPERTIES')+': '+getZMILangStr('ATTR_PROCESSES'),minWidth:800,remove:true});
+
+
+		// ++++++++++++
+		// Add rows to table processsequence
+		// ++++++++++++
+		let new_row_counter = $('#processsequence tr').length - 2;
+
+		// Add click event function to add-buttons
+		$(".row_insert .btn-add").click(function(){
+			new_row_counter++;
+
+			// Where to insert the new row 
+			let $where_insert = $(this).closest('tr');
+
+			// Set variables
+			let table_id = $(this).closest('table').attr('id'); // meta_properties or meta_languages
+			let new_row_name = `new_row_${table_id}_${new_row_counter}`;
+			let new_btn_html = `
+				<span class="btn btn-default btn-sm mr-1" style="color:#999" 
+					onclick="javascript:$(this).closest('tr').remove()">
+					<i class="fas fa-times"></i>
+				</span>
+				`;
+
+			// Clone(true) to get a deep copy including select options
+			let $new_row = $where_insert.clone(true);
+
+			// Process table cells of the clone like "old" row
+			$new_row.find('td').each(function() {
+				$(this).find('select').each(function() {
+					let defname = $(this).attr('name')
+					let newname = defname.split('_')[0] + '_' + new_row_counter;
+					let newval  = $(this).val();
+
+					$(this).attr('name',newname);
+
+					// #### VALUES: Transfer initially entered values from template to clone
+					let selected = $("option:selected", $('.row_insert select')).val();
+					if (selected!='') {
+						$('option[value="' + selected +'"]',$(this)).prop('selected', true);
+					};
+				});
+			});
+
+			// Process td:first-child of the clone
+			$new_row.find('td.meta-sort').html(new_btn_html);
+			$new_row.removeAttr('class').attr('id',new_row_name);
+
+			// Insert the new row
+			$new_row.insertBefore($where_insert);
+			// Reset the clone template
+			$where_insert.find('select').each(function() {
+				$(this).val(undefined);
+				let defname = $(this).attr('name');
+				$(this).attr('name',defname.split('_')[0] + '_' + (new_row_counter + 1))
+			});
+		});
+
 	});
 //-->
 </script>

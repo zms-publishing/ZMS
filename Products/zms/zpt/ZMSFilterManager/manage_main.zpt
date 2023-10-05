@@ -75,62 +75,52 @@
 	.filterProcesses i.fa-long-arrow-alt-down {
 		color: #0088cc80;
 	}
-
 </style>
 
 <script>
-
-/**
- * Export xml.
- */
-function zmiExportBtnClick(sender) {
-	var fm = $(sender).parents("form")[0];
-	var href = fm.action+'?lang='+getZMILang()+'&btn=BTN_EXPORT';
-	$('input[name="ids:list"]:checked').each(function(){
-			href += '&'+$(this).attr("name")+'='+$(this).val();
-		});
-	window.open(href);
-	return false;
-}
-
-/**
- * Delete object.
- */
-function zmiDeleteObjBtnClick(sender,d) {
-	if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
-		zmiFormSubmit(sender,d);
+//<!--
+	// Export xml.
+	function zmiExportBtnClick(sender) {
+		var fm = $(sender).parents("form")[0];
+		var href = fm.action+'?lang='+getZMILang()+'&btn=BTN_EXPORT';
+		$('input[name="ids:list"]:checked').each(function(){
+				href += '&'+$(this).attr("name")+'='+$(this).val();
+			});
+		window.open(href);
+		return false;
 	}
-}
-
-/**
- * Submit form with given parameters.
- */
-function zmiFormSubmit(sender,d) {
-	var $fm = $(sender).closest("form");
-	var html = '';
-	for (var i in d) {
-		$('input[name="' + i + '"]',$fm).remove();
-		html += '<input type="hidden" name="' + i + '" value="' + d[i] +'"/>';
+	// Delete object.
+	function zmiDeleteObjBtnClick(sender,d) {
+		if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
+			zmiFormSubmit(sender,d);
+		}
 	}
-	$fm
-		.append(html)
-		.submit();
-}
-
-$(function(){
+	// Submit form with given parameters.
+	function zmiFormSubmit(sender,d) {
+		var $fm = $(sender).closest("form");
+		var html = '';
+		for (var i in d) {
+			$('input[name="' + i + '"]',$fm).remove();
+			html += '<input type="hidden" name="' + i + '" value="' + d[i] +'"/>';
+		}
+		$fm
+			.append(html)
+			.submit();
+	}
+	$(function(){
 		zmiModal('#updateFilter',{title:getZMILangStr('TAB_PROPERTIES')+': '+getZMILangStr('ATTR_FILTER'),minWidth:800,remove:true});
 		zmiModal('#updateProcess',{title:getZMILangStr('TAB_PROPERTIES')+': '+getZMILangStr('ATTR_PROCESSES'),minWidth:800,remove:true});
 	});
-
+//-->
 </script>
 
 <tal:block tal:define="global
-		action python:'manage_changeFilter';
-		filterIds python:here.getFilterIds();
-		filters python:[here.getFilter(x) for x in filterIds];
-		processIds python:here.getProcessIds();
-		processes python:[here.getProcess(x) for x in processIds];
-		filterFormats python:[ ['import', 'Import' ], ['export', 'Export' ], ['XML', 'XML-Export' ], ['XHTML', 'XHTML-Export' ]]+ [[],['myXML',standard.operator_getattr(here,'getObjToXml_DocElmnt',here).title_or_id()]][int(standard.operator_getattr(here,'getObjToXml_DocElmnt',None) is not None)]">
+	action python:'manage_changeFilter';
+	filterIds python:here.getFilterIds();
+	filters python:[here.getFilter(x) for x in filterIds];
+	processIds python:here.getProcessIds();
+	processes python:[here.getProcess(x) for x in processIds];
+	filterFormats python:[ ['import', 'Import' ], ['export', 'Export' ], ['XML', 'XML-Export' ], ['XHTML', 'XHTML-Export' ]]+ [[],['myXML',standard.operator_getattr(here,'getObjToXml_DocElmnt',here).title_or_id()]][int(standard.operator_getattr(here,'getObjToXml_DocElmnt',None) is not None)]">
 
 <div class="d-none">
 	<div id="importConf" class="inner">

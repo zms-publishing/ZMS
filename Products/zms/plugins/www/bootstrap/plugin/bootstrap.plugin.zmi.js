@@ -1244,9 +1244,9 @@ ZMIObjectTree.prototype.init = function(s,href,p) {
 	// Init preselected active.
 	that.active = [];
 	$(s).html('<i class="fas fa-spinner fa-spin"></i>&nbsp;'+getZMILangStr('MSG_LOADING'));
-	var href = $ZMI.get_document_element_url($ZMI.getPhysicalPath());
+	var doc_href = $ZMI.get_document_element_url($ZMI.getPhysicalPath());
 	that.metamodel = $.ajax({
-		url: $ZMI.get_rest_api_url(href)+'/metaobj_manager',
+		url: $ZMI.get_rest_api_url(doc_href)+'/metaobj_manager',
 		async: false
 		}).responseJSON;
 	that.p.params.lang = getZMILang();

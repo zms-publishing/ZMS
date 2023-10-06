@@ -349,11 +349,15 @@ def create_session_storage_if_neccessary(context):
 
   app = context.getApplication()
   if not 'temp_folder' in app:
-    # Adding a 'folder' is a just fallback
-    # if a 'mount_point' is not available 
-    # like usually configured via zope.conf
-    temp_folder = Folder('temp_folder')
-    app._setObject('temp_folder', temp_folder)
+    try:
+      from Products.ZODBMountPoint.MountedObject import manage_addMounts
+      manage_addMounts(app, paths=('/temp_folder',))
+    except:
+      # Adding a 'folder' is a just fallback
+      # if a 'mount_point' is not available
+      # like usually configured via zope.conf
+      temp_folder = Folder('temp_folder')
+      app._setObject('temp_folder', temp_folder)
   if not 'session_data' in app.temp_folder:
     container = TransientObjectContainer(
         'session_data',

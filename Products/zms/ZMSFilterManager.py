@@ -593,10 +593,14 @@ class ZMSFilterManager(
           self.setFilterProcess(id, index, newProcessId, newProcessFile)
           index += 1
         # New Filter Process?
-        newProcessId = REQUEST.get('newFilterProcessId_%i'%index, '').strip()
-        newProcessFile = REQUEST.get('newFilterProcessFile_%i'%index)
-        if newProcessId:
-          self.setFilterProcess(id, newProcessId, newProcessFile)
+        while True:
+          newProcessId = REQUEST.get('newFilterProcessId_%i'%index, '').strip()
+          newProcessFile = REQUEST.get('newFilterProcessFile_%i'%index)
+          if newProcessId: 
+            self.setFilterProcess(id, index, newProcessId, newProcessFile)
+          else:
+            break
+          index += 1
         # Return with message.
         message = self.getZMILangStr('MSG_CHANGED')
       

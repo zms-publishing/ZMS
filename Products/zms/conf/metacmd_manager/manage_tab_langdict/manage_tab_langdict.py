@@ -54,7 +54,7 @@ else:
 		prt.append('</tr>')
 	prt.append('</tbody>')
 	prt.append('</table>')
-	prt.append('<div class="form-row">')
+	prt.append('<div class="form-group row">')
 	prt.append('<div class="controls save">')
 	prt.append('<button type="submit" name="btn" class="btn btn-primary" value="BTN_SAVE">%s</button> '%context.getZMILangStr('BTN_SAVE'))
 	prt.append('<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CANCEL">%s</button> '%context.getZMILangStr('BTN_CANCEL'))

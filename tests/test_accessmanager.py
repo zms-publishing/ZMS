@@ -6,7 +6,8 @@ import time
 import unittest
 
 # Product imports.
-from .zms_test_util import *
+from tests.zms_test_util import *
+from Products.zms import mock_http
 from Products.zms import zms
 
 # /ZMS> python3 -m unittest discover -s tests
@@ -17,7 +18,7 @@ class AccessManagerTest(ZMSTestCase):
 
   def setUp(self):
     folder = Folder('myzmsx')
-    folder.REQUEST = HTTPRequest({'lang':'eng','preview':'preview'})
+    folder.REQUEST = mock_http.MockHTTPRequest({'lang':'eng','preview':'preview'})
     zmscontext = zms.initZMS(folder, 'content', 'titlealt', 'title', 'eng', 'eng', folder.REQUEST)
     self.context = zmscontext
 
@@ -28,4 +29,3 @@ class AccessManagerTest(ZMSTestCase):
     context.setUserAttr('johndoe','foo',expected)
     v = context.getUserAttr('johndoe','foo')
     self.assertEqual(expected,v)
-

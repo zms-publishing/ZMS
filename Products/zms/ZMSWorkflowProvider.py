@@ -26,9 +26,7 @@ from Products.zms import standard
 from Products.zms import IZMSConfigurationProvider, IZMSRepositoryProvider
 from Products.zms import IZMSWorkflowProvider, ZMSWorkflowActivitiesManager, ZMSWorkflowTransitionsManager
 from Products.zms import ZMSItem
-from Products.zms import zopeutil
 from Products.zms import _accessmanager
-from Products.zms import _fileutil
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

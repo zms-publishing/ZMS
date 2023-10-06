@@ -1,35 +1,46 @@
-##############################################################################
-#
-# Copyright (c) 2011 Zope Foundation and Contributors
-#
-# This software is subject to the provisions of the Zope Public License,
-# Version 2.1 (ZPL).  A copy of the ZPL should accompany this
-# distribution.
-# THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
-# WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-# WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
-# FOR A PARTICULAR PURPOSE.
-#
-##############################################################################
+# encoding: utf-8
+
 import unittest
 from unittest.mock import Mock, MagicMock, patch
 from Products.zms import standard
 from Products.zms import zms
 
-class StandardTests(unittest.TestCase):
+# /Products/zms> python -m unittest discover -s unit_tests
+# /Products/zms> python -m unittest tests.test_standard.StandardTest
+class StandardTest(unittest.TestCase):
 
     def test_pystr(self):
-        self.assertEquals(standard.pystr('ABC'),'ABC')
-        self.assertEquals(standard.pystr_('ABC'),'ABC')
-        self.assertEquals(standard.pystr(b'ABC'),'ABC')
-        self.assertEquals(standard.pystr_(b'ABC'),'b\'ABC\'')
-        self.assertEquals(standard.pystr(123),'123')
-        self.assertEquals(standard.pystr_(123),'123')
+        self.assertEqual(standard.pystr('ABC'),'ABC')
+        self.assertEqual(standard.pystr(b'ABC'),'ABC')
+        self.assertEqual(standard.pystr(123),'123')
 
     def test_url_append_params(self):
         expected = 'index.html?a=b&c=d&e=1&f:list=1&f:list=2&f:list=3'
         v = standard.url_append_params('index.html?a=b',{'c':'d','e':1,'f':[1,2,3]})
         self.assertEqual(expected,v)
+
+    def test_remove_tags(self):
+        self.assertEqual('foo bar',standard.remove_tags('foo\n<\tscript\ttype="javascript"\n>window.onload(\'<script>\')</script\t\n>bar'))
+        self.assertEqual('foo bar',standard.remove_tags('foo\n<\tstyle\t\n>body {}</style\t\n>bar'))
+
+    def test_string_maxlen(self):
+        self.assertEqual('foo\nbar',standard.string_maxlen('foo\n<\tscript\ttype="javascript"\n>window.onload(\'<script>\')</script\t\n>bar'))
+        self.assertEqual('foo\nbar',standard.string_maxlen('foo\n<\tstyle\t\n>body {}</style\t\n>bar'))
+
+    def test_sort_item(self):
+        self.assertEqual(0.1,standard.sort_item(0.1))
+        self.assertEqual(0,standard.sort_item(None))
+        self.assertEqual(0,standard.sort_item(''))
+        self.assertEqual(0,standard.sort_item(False))
+        self.assertEqual(1,standard.sort_item(True))
+        self.assertEqual('foo',standard.sort_item('foo'))
+        self.assertEqual('bar',standard.sort_item('bar'))
+        self.assertEqual('aeoeue',standard.sort_item(u'äöü'))
+
+    def test_sort_list(self):
+        self.assertEqual([1,2,3],standard.sort_list([3,1,2]))
+        self.assertEqual([{'sort_id':1,'value':'C'},{'sort_id':2,'value':'B'},{'sort_id':3,'value':'A'}],standard.sort_list([{'sort_id':3,'value':'A'},{'sort_id':1,'value':'C'},{'sort_id':2,'value':'B'}],'sort_id'))
+
 
     class FakeHTTPConnection:
         def __init__(self, status=200, reason='OK'):

@@ -17,9 +17,9 @@
 ################################################################################
 
 # Imports.
-from __future__ import absolute_import
-from App.Common import package_home
-import tempfile
+from AccessControl import ClassSecurityInfo
+from AccessControl.class_init import InitializeClass
+import re
 # Product Imports.
 from Products.zms import _fileutil
 from Products.zms import _xmllib
@@ -42,6 +42,11 @@ def warn(self,old,new=None):
 ################################################################################
 class DeprecatedAPI(object):
 
+  # Create a SecurityInfo for this class. We will use this
+  # in the rest of our class definition to make security
+  # assertions.
+  security = ClassSecurityInfo()
+
   f_bo_area = '' 
   f_eo_area = '' 
   f_submitBtn = '' 
@@ -62,7 +67,7 @@ class DeprecatedAPI(object):
 
   def f_selectInput(self, *args, **kwargs):
     warn(self, 'f_selectInput', 'getSelect')
-    return here.getSelect(fmName=kwargs['fmName'], elName=kwargs['elName'], value=kwargs['value'], inputtype=kwargs['inputtype'], lang_str=kwargs['lang_str'], required=kwargs['required'], optpl=kwargs['optpl'], enabled=kwargs['enabled'])
+    return self.getSelect(fmName=kwargs['fmName'], elName=kwargs['elName'], value=kwargs['value'], inputtype=kwargs['inputtype'], lang_str=kwargs['lang_str'], required=kwargs['required'], optpl=kwargs['optpl'], enabled=kwargs['enabled'])
 
   def f_headline(self, *args, **kwargs):
     warn(self, 'f_headline', 'None')
@@ -81,7 +86,7 @@ class DeprecatedAPI(object):
     return self.getObjProperty('file', REQUEST)
 
   def getFormat(self, REQUEST):
-    warnings.warn("[getFormat]: @deprecated: returns \"getObjProperty('format',REQUEST)\" for compatibility reasons!")
+    warn("[getFormat]: @deprecated: returns \"getObjProperty('format',REQUEST)\" for compatibility reasons!")
     return self.getObjProperty('format', REQUEST)
 
   def meta_id_or_type(self):
@@ -175,7 +180,7 @@ class DeprecatedAPI(object):
       data = stylesheet.raw
     elif stylesheet.meta_type in ['File']:
       data = stylesheet.data
-    data = re.sub( '/\*(.*?)\*/', '', data)
+    data = re.sub(r'/\*(.*?)\*/', '', data)
     value = {}
     for elmnt in data.split('}'):
       i = elmnt.find('{')
@@ -479,3 +484,226 @@ class DeprecatedAPI(object):
   def getLangFmtDate(self, t, lang=None, fmt_str='SHORTDATETIME_FMT'):
     warn(self, 'getLangFmtDate', 'Products.zms.standard.getLangFmtDate')
     return standard.getLangFmtDate(self, t, lang, fmt_str)
+
+  # --------------------------------------------------------------------------
+  #  ZMSObject.ajaxGetNodes:
+  # --------------------------------------------------------------------------
+  security.declareProtected('View', 'ajaxGetNodes')
+  def ajaxGetNodes(self, context=None, lang=None, xml_header=True, REQUEST=None):
+    """ ZMSObject.ajaxGetNodes """
+    warn(self, 'ajaxGetNodes', '++rest_api')
+    context = standard.nvl(context, self)
+    refs = REQUEST.get('refs', [])
+    if len(refs)==0:
+      for key in REQUEST.keys():
+        if key.startswith('ref') and key[3:].isdigit():
+          refs.append((int(key[3:]), REQUEST[key]))
+      refs.sort()
+      refs = [x[1] for x in refs]
+    # Build xml.
+    xml = ''
+    if xml_header:
+      RESPONSE = REQUEST.RESPONSE
+      content_type = 'text/plain; charset=utf-8'
+      filename = 'ajaxGetNodes.xml'
+      RESPONSE.setHeader('Content-Type', content_type)
+      RESPONSE.setHeader('Content-Disposition', 'inline;filename="%s"'%filename)
+      RESPONSE.setHeader('Cache-Control', 'no-cache')
+      RESPONSE.setHeader('Pragma', 'no-cache')
+      self.f_standard_html_request( self, REQUEST)
+      xml += self.getXmlHeader()
+    xml += '<pages>'
+    for ref in refs:
+      ob = self.getLinkObj(ref)
+      if ob is None:
+        xml += '<page ref="%s" not_found="1"/>'%ref
+      else:
+        xml += ob.ajaxGetNode(context=context, lang=lang, xml_header=False, REQUEST=REQUEST)
+    xml += "</pages>"
+    return xml
+
+  # --------------------------------------------------------------------------
+  #  ZMSObject.ajaxGetNode:
+  # --------------------------------------------------------------------------
+  security.declareProtected('View', 'ajaxGetNode')
+  def ajaxGetNode(self, context=None, lang=None, xml_header=True, meta_types=None, REQUEST=None):
+    """ ZMSObject.ajaxGetNode """
+    warn(self, 'ajaxGetNode', '++rest_api')
+    # Build xml.
+    xml = ''
+    if xml_header:
+      RESPONSE = REQUEST.RESPONSE
+      content_type = 'text/xml; charset=utf-8'
+      filename = 'ajaxGetNode.xml'
+      RESPONSE.setHeader('Content-Type', content_type)
+      RESPONSE.setHeader('Content-Disposition', 'inline;filename="%s"'%filename)
+      RESPONSE.setHeader('Cache-Control', 'no-cache')
+      RESPONSE.setHeader('Pragma', 'no-cache')
+      self.f_standard_html_request( self, REQUEST)
+      xml += self.getXmlHeader()
+    xml += '<page'
+    xml += " absolute_url=\"%s\""%str(self.getAbsoluteUrlInContext(context))
+    xml += " physical_path=\"%s\""%('/'.join(self.getPhysicalPath()))
+    xml += " access=\"%s\""%str(int(self.hasAccess(REQUEST)))
+    xml += " active=\"%s\""%str(int(self.isActive(REQUEST)))
+    try:
+      xml += " zmi_icon=\"%s\""%self.zmi_icon()
+    except:
+      xml += " zmi_icon=\"%s\""%self.zmi_icon
+    xml += " display_type=\"%s\""%str(self.display_type())
+    xml += " uid=\"{$%s}\""%(self.get_uid())
+    xml += " id=\"%s_%s\""%(self.getHome().id, self.id)
+    xml += " home_id=\"%s\""%(self.getHome().id)
+    xml += " index_html=\"%s\""%standard.html_quote(self.getHref2IndexHtmlInContext(context,REQUEST=REQUEST))
+    xml += " is_page=\"%s\""%str(int(self.isPage()))
+    xml += " is_pageelement=\"%s\""%str(int(self.isPageElement()))
+    xml += " meta_id=\"%s\""%(self.meta_id)
+    xml += " title=\"%s\""%standard.html_quote(self.getTitle(REQUEST))
+    xml += " titlealt=\"%s\""%standard.html_quote(self.getTitlealt(REQUEST))
+    xml += " restricted=\"%s\""%str(self.hasRestrictedAccess())
+    xml += " attr_dc_type=\"%s\""%(self.attr('attr_dc_type'))
+    xml += ">"
+    if REQUEST.form.get('get_attrs', 0):
+      obj_attrs = self.getObjAttrs()
+      for key in [x for x in obj_attrs if x not in ['title', 'titlealt', 'change_dt', 'change_uid', 'change_history', 'created_dt', 'created_uid', 'attr_dc_coverage', 'attr_cacheable', 'work_dt', 'work_uid']]:
+        obj_attr = obj_attrs[ key]
+        if obj_attr['datatype_key'] in _globals.DT_TEXTS or \
+            obj_attr['datatype_key'] in _globals.DT_NUMBERS or \
+            obj_attr['datatype_key'] in _globals.DT_DATETIMES:
+          v = self.attr(key)
+          if v:
+            xml += "<%s>%s</%s>"%(key, standard.toXmlString(self,v).encode('utf-8'), key)
+        elif obj_attr['datatype_key'] in _globals.DT_BLOBS:
+          v = self.attr(key)
+          if v:
+            xml += "<%s>"%key
+            xml += "<href>%s</href>"%standard.html_quote(v.getHref(REQUEST))
+            xml += "<filename>%s</filename>"%standard.html_quote(v.getFilename())
+            xml += "<content_type>%s</content_type>"%standard.html_quote(v.getContentType())
+            xml += "<size>%s</size>"%standard.getDataSizeStr(v.get_size())
+            xml += "<icon>%s</icon>"%standard.getMimeTypeIconSrc(v.getContentType())
+            xml += "</%s>"%key
+    xml += "</page>"
+    return xml
+
+  # --------------------------------------------------------------------------
+  #  ZMSObject.ajaxGetParentNodes:
+  # --------------------------------------------------------------------------
+  security.declareProtected('View', 'ajaxGetParentNodes')
+  def ajaxGetParentNodes(self, lang, xml_header=True, meta_types=None, REQUEST=None):
+    """ ZMSObject.ajaxGetParentNodes """
+    warn(self, 'ajaxGetParentNodes', '++rest_api')
+    # Get context.
+    context = self
+    for id in REQUEST.get('physical_path', '').split('/'):
+      if id and context is not None:
+        context = getattr(context, id, None)
+        if context is None:
+          context = self
+          break
+    # Build xml.
+    xml = ''
+    if xml_header:
+      RESPONSE = REQUEST.RESPONSE
+      content_type = 'text/xml; charset=utf-8'
+      filename = 'ajaxGetParentNodes.xml'
+      RESPONSE.setHeader('Content-Type', content_type)
+      RESPONSE.setHeader('Content-Disposition', 'inline;filename="%s"'%filename)
+      RESPONSE.setHeader('Cache-Control', 'no-cache')
+      RESPONSE.setHeader('Pragma', 'no-cache')
+      self.f_standard_html_request( self, REQUEST)
+      xml += self.getXmlHeader()
+    # Start-tag.
+    xml += "<pages"
+    for key in REQUEST.form.keys():
+      if key.find('get_') < 0 and key not in ['lang', 'preview', 'http_referer', 'meta_types']:
+        xml += " %s=\"%s\""%(key, str(REQUEST.form.get(key)))
+    xml += " level=\"%i\""%self.getLevel()
+    xml += ">\n"
+    # Process nodes.
+    for node in self.breadcrumbs_obj_path():
+      nodexml = node.ajaxGetNode( context=context, lang=lang, xml_header=False, meta_types=meta_types, REQUEST=REQUEST)
+      try:
+        xml += str(nodexml, 'utf-8', errors='ignore')
+      except:
+        xml += nodexml
+    # End-tag.
+    xml += "</pages>"
+    # Return xml.
+    return xml
+
+  # --------------------------------------------------------------------------
+  #  ZMSObject.ajaxGetChildNodes:
+  # --------------------------------------------------------------------------
+  security.declareProtected('View', 'ajaxGetChildNodes')
+  def ajaxGetChildNodes(self, lang, xml_header=True, meta_types=None, REQUEST=None):
+    """ ZMSObject.ajaxGetChildNodes """
+    warn(self, 'ajaxGetChildNodes', '++rest_api')
+    # Get context.
+    context = self
+    for id in REQUEST.get('physical_path', '').split('/'):
+      if id and context is not None:
+        context = getattr(context, id, None)
+        if context is None:
+          context = self
+          break
+    # Build xml.
+    xml = ''
+    if xml_header:
+      RESPONSE = REQUEST.RESPONSE
+      content_type = 'text/xml; charset=utf-8'
+      filename = 'ajaxGetChildNodes.xml'
+      RESPONSE.setHeader('Content-Type', content_type)
+      RESPONSE.setHeader('Content-Disposition', 'inline;filename="%s"'%filename)
+      RESPONSE.setHeader('Cache-Control', 'no-cache')
+      RESPONSE.setHeader('Pragma', 'no-cache')
+      self.f_standard_html_request( self, REQUEST)
+      xml += self.getXmlHeader()
+    xml += "<pages"
+    for key in REQUEST.form.keys():
+      if key.find('get_') < 0 and key not in ['lang', 'preview', 'http_referer', 'meta_types']:
+        xml += " %s=\"%s\""%(key, str(REQUEST.form.get(key)))
+    xml += " level=\"%i\""%self.getLevel()
+    xml += ">\n"
+    if isinstance(meta_types, str) and meta_types.find(',') > 0:
+      meta_types = meta_types.split(',')
+    if isinstance(meta_types, list):
+      new_meta_types = []
+      for meta_type in meta_types:
+        try:
+          new_meta_types.append( int( meta_type))
+        except:
+          new_meta_types.append( meta_type)
+      meta_types = new_meta_types
+    if REQUEST.form.get('http_referer'):
+      REQUEST.set('URL', REQUEST.form.get('http_referer'))
+    # Add child-nodes.
+    obs = []
+    childNodes = self.getChildNodes(REQUEST, meta_types)
+    # Exclude meta-ids.
+    excludeMetaIds = self.getConfProperty('ZMS.ajaxGetChildNodes.excludeMetaIds','').split(',')
+    childNodes = [x for x in childNodes if x.meta_id not in excludeMetaIds]
+    # Sort.
+    sortedChildNodes = self.evalMetaobjAttr('sortChildNodes',childNodes=childNodes)
+    if isinstance(sortedChildNodes,list):
+      childNodes = sortedChildNodes
+    obs.extend(childNodes)
+    # Add trashcan.
+    if ( self.meta_type == 'ZMS') and \
+        ( ( isinstance(meta_types, list) and 'ZMSTrashcan' in meta_types) or \
+          ( isinstance(meta_types, str) and 'ZMSTrashcan' == meta_types)):
+      obs.append( self.getTrashcan())
+    if self.meta_type == 'ZMS':
+      obs.extend( self.getPortalClients())
+    for ob in obs:
+      xml += ob.ajaxGetNode( context=context, lang=lang, xml_header=False, meta_types=meta_types, REQUEST=REQUEST)
+    xml += "</pages>"
+    if REQUEST.RESPONSE.getHeader('Location'):
+      del REQUEST.RESPONSE.headers['location']
+    return xml  
+
+# call this to initialize framework classes, which
+# does the right thing with the security assertions.
+InitializeClass(DeprecatedAPI)
+
+################################################################################

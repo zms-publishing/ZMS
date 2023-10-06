@@ -19,10 +19,7 @@
 ################################################################################
 
 from Zope2.App.startup import getConfiguration
-try:
-  from Products.zms import standard as _globals
-except:
-  from Products.zms import _globals
+from Products.zms import standard
 import time
 import requests
 from sqlalchemy import *
@@ -188,13 +185,13 @@ class ZMSFormulator_class:
         self.this.REQUEST.set('lang', lang)
         return True
       else:
-        _globals.writeBlock(self.thisMaster, "[ZMSFormulator.clearData] zodb.isReadOnly")
+        standard.writeBlock(self.thisMaster, "[ZMSFormulator.clearData] zodb.isReadOnly")
         return False
 
   def setData(self, receivedData):
 
     if type(receivedData) is not dict:
-      _globals.writeError(self.thisMaster, "[ZMSFormulator.setData] unexpected data (not dict)")
+      standard.writeError(self.thisMaster, "[ZMSFormulator.setData] unexpected data (not dict)")
       return False
 
     for timestamp in receivedData:
@@ -216,7 +213,7 @@ class ZMSFormulator_class:
         ZMS_FRM_RES = self.this.str_item(val).strip()
 
         # handle response value for first item found in content model
-        item = list(filter(lambda x: self.this.id_quote(x.titlealt).upper() == itemkey, self.items))
+        item = list(filter(lambda x: standard.id_quote(x.titlealt).upper() == itemkey, self.items))
         if len(item)>0:
           itemobj = item[0]
           if itemobj.type == 'email':
@@ -291,7 +288,7 @@ class ZMSFormulator_class:
         self.this.REQUEST.set('lang', lang)
         return True
       else:
-        _globals.writeBlock(self.thisMaster, "[ZMSFormulator.setData] zodb.isReadOnly")
+        standard.writeBlock(self.thisMaster, "[ZMSFormulator.setData] zodb.isReadOnly")
         return False
 
   def receiveData(self, data=None):
@@ -356,15 +353,15 @@ class ZMSFormulator_class:
         return True
 
       elif error:
-        _globals.writeError(self.thisMaster, "[ZMSFormulator.receiveData] error occurred while using reCAPTCHA service by Google: %s"%error)
+        standard.writeError(self.thisMaster, "[ZMSFormulator.receiveData] error occurred while using reCAPTCHA service by Google: %s"%error)
         return False
 
       else:
-        _globals.writeError(self.thisMaster, "[ZMSFormulator.receiveData] input by robot detected")
+        standard.writeError(self.thisMaster, "[ZMSFormulator.receiveData] input by robot detected")
         return False
 
     else:
-      _globals.writeError(self.thisMaster, "[ZMSFormulator.receiveData] unexpected data received")
+      standard.writeError(self.thisMaster, "[ZMSFormulator.receiveData] unexpected data received")
       return False
 
   def sendData(self, receivedData):
@@ -395,7 +392,7 @@ class ZMSFormulator_class:
 
       rtn = self.thisMaster.sendMail(mheadTo, msubj, mbodyTo, self.this.REQUEST, self.mailAttchmnt)
       if rtn < 0:
-        _globals.writeError(self.thisMaster, "[ZMSFormulator.sendData] failed to send mail")
+        standard.writeError(self.thisMaster, "[ZMSFormulator.sendData] failed to send mail")
 
       # [CC] send confirmation mail to form sender
       if self.copyAddress is not None:
@@ -417,9 +414,9 @@ class ZMSFormulator_class:
         mbodyCc = mtemp
         rtn = self.thisMaster.sendMail(mheadCc, msubj, mbodyCc, self.this.REQUEST)
         if rtn < 0:
-          _globals.writeError(self.thisMaster, "[ZMSFormulator.sendData] failed to send mail as copy")
+          standard.writeError(self.thisMaster, "[ZMSFormulator.sendData] failed to send mail as copy")
     else:
-      _globals.writeError(self.thisMaster, "[ZMSFormulator.sendData] no mail address specified")
+      standard.writeError(self.thisMaster, "[ZMSFormulator.sendData] no mail address specified")
 
   def printDataRaw(self, receivedData=None, frmt='txt'):
 
@@ -449,7 +446,7 @@ class ZMSFormulator_class:
             i1, i2 = i
             outstr = self.this.str_item(i2)
             outstr = outstr.replace('\n',', ')
-            output.append(_globals.html_quote(outstr))
+            output.append(standard.html_quote(outstr))
           s1 += '#/#'.join(output) + '\n'
 
         # data header
@@ -515,7 +512,7 @@ class ZMSFormulator_class:
           if h in key:
             outstr = key[h]
             outstr = outstr.replace('\n',', ')
-            rec.append(_globals.html_quote(outstr))
+            rec.append(standard.html_quote(outstr))
           elif (h!='TIMESTAMP'):
             rec.append('')
         output.append('\n'+str(tst))
@@ -548,7 +545,7 @@ class ZMSFormulator_class:
       formtitles = ['TIMESTAMP']
       objs = list(filter(lambda ob: ob.isActive(self.this.REQUEST), self.this.getObjChildren('formulatorItems', self.this.REQUEST, ['ZMSFormulatorItem'])))
       for obj in objs:
-        formnames.append(self.this.id_quote(obj.attr('titlealt')).upper())
+        formnames.append(standard.id_quote(obj.attr('titlealt')).upper())
         formtitles.append(obj.attr('title'))
 
       if len(output)>=len(header):
@@ -619,7 +616,7 @@ class ZMSFormulatorItem:
     lang = this.REQUEST.get('lang', this.getPrimaryLanguage())
     this.REQUEST.set('lang', this.getPrimaryLanguage())
     # titlealt_ remove square brackets, whitespaces etc. from user inputs to be used as key which does not interfere with formfield names
-    self.titlealt     = this.id_quote(this.attr('titlealt')).upper()
+    self.titlealt     = standard.id_quote(this.attr('titlealt')).upper()
     this.REQUEST.set('lang', lang)
 
     self.title        = this.attr('title')

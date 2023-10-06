@@ -20,22 +20,14 @@
 # Imports.
 from distutils.version import LooseVersion
 import ZPublisher.HTTPRequest
-import collections
 import copy
 import io
-import os
-import sys
 import time
-import zExceptions
-import zope.interface
 # Product Imports.
-from Products.zms import IZMSRepositoryProvider
 from Products.zms import standard
 from Products.zms import zopeutil
 from Products.zms import _blobfields
-from Products.zms import _fileutil
 from Products.zms import _globals
-from Products.zms import _multilangmanager
 from Products.zms import _ziputil
 
 
@@ -115,34 +107,40 @@ class ZMSMetaobjManager(object):
         ids = valid_ids
       for id in [x for x in ids if x in valid_ids]:
         o = self.getMetaobj(id)
-        if o and not o.get('acquired', 0):
-          d = copy.deepcopy(o)
-          attrs = d.get('attrs',[])
-          package = d.get('package','')
-          mandatory_keys = ['access','enabled','id','name','package','revision','type']
-          for key in list(d):
-            if key not in mandatory_keys:
-              del d[key]
-          d['__filename__'] = [[],[package]][len(package)>0]+[id,'__init__.py']
-          # Lang-Dict.
-          lang_dict = self.get_lang_dict()
-          # (1) lang-dict entry must start with id
-          # (2) and id must match prefix separated by exactly or must not be element of other ids
-          other_ids = [x for x in valid_ids if x != id]
-          l = [x for x in lang_dict if x.startswith('%s.'%id) and (x[:x.rfind('.')]==id or not x[:x.rfind('.')] in other_ids)]
-          if l:
-            d['lang_dict'] = {x:lang_dict[x] for x in l}
-          for attr in attrs:
-            syncZopeMetaobjAttr(self, d, attr)
-            mandatory_keys = ['id', 'name', 'type', 'meta_type', 'default', 'keys', 'mandatory', 'multilang', 'ob', 'repetitive']
-            if attr['type']=='interface':
-              attr['name'] = attr['id']
-            if (o['type'] == 'ZMSRecordSet' and attr.get('custom')) or attr['type'] == 'constant':
-              mandatory_keys += ['custom']
-            for key in list(attr):
-              if not key in mandatory_keys:
-                del attr[key]
-          d['Attrs'] = attrs
+        if o:
+          d = {}
+          package = o.get('package','')
+          if o.get('acquired'):
+            d['id'] = id
+            d['__filename__'] = [[],[package]][len(package)>0]+[id,'__acquired__.py']
+            d['acquired'] = o['acquired']
+          else:
+            d = copy.deepcopy(o)
+            attrs = d.get('attrs',[])
+            mandatory_keys = ['access','enabled','id','name','package','revision','type']
+            for key in list(d):
+              if key not in mandatory_keys:
+                del d[key]
+            d['__filename__'] = [[],[package]][len(package)>0]+[id,'__init__.py']
+            # Lang-Dict.
+            lang_dict = self.get_lang_dict()
+            # (1) lang-dict entry must start with id
+            # (2) and id must match prefix separated by exactly or must not be element of other ids
+            other_ids = [x for x in valid_ids if x != id]
+            l = [x for x in lang_dict if x.startswith('%s.'%id) and (x[:x.rfind('.')]==id or not x[:x.rfind('.')] in other_ids)]
+            if l:
+              d['lang_dict'] = {x:lang_dict[x] for x in l}
+            for attr in attrs:
+              syncZopeMetaobjAttr(self, d, attr)
+              mandatory_keys = ['id', 'name', 'type', 'meta_type', 'default', 'keys', 'mandatory', 'multilang', 'ob', 'repetitive']
+              if attr['type']=='interface':
+                attr['name'] = attr['id']
+              if (o['type'] == 'ZMSRecordSet' and attr.get('custom')) or attr['type'] == 'constant':
+                mandatory_keys += ['custom']
+              for key in list(attr):
+                if not key in mandatory_keys:
+                  del attr[key]
+            d['Attrs'] = attrs
           r[id] = d
 
     """
@@ -502,7 +500,7 @@ class ZMSMetaobjManager(object):
         ids = [x for x in ids if x not in excl_ids]
       # sort
       if sort == True:
-        ids = sorted(ids,key=lambda x:self.display_type(self.REQUEST, x))
+        ids = sorted(ids,key=lambda x:self.display_type(meta_id=x))
       elif sort == False:
         ids = sorted(ids,key=lambda x:obs[x].get('name',x))
       return ids
@@ -547,7 +545,7 @@ class ZMSMetaobjManager(object):
     # --------------------------------------------------------------------------
     def getMetaobjId(self, name):
       for id in self.getMetaobjIds():
-        if name == self.display_type(meta_type=id):
+        if name == self.display_type(meta_id=id):
           return id
       return None
 
@@ -1095,300 +1093,287 @@ class ZMSMetaobjManager(object):
         target = REQUEST.get('target', 'manage_main')
         REQUEST.set( '__get_metaobjs__', True)
         
-        #try:
-        if True:
-          sync_id = []
-          
-          # Delete.
-          # -------
-          # Delete Object.
-          if btn == 'BTN_DELETE' and key == 'obj':
-            if id:
-              meta_ids = [id]
-            else:
-              meta_ids = REQUEST.get('ids', [])
-            for meta_id in meta_ids:
-              metaObj = self.getMetaobj( meta_id)
-              if metaObj.get('type','') == 'ZMSPackage':
-                for pkgMetaObjId in self.getMetaobjIds():
-                  pkgMetaObj = self.getMetaobj( pkgMetaObjId)
-                  if pkgMetaObj.get('package') == metaObj.get('id'):
-                    if pkgMetaObjId not in meta_ids:
-                      meta_ids.append( pkgMetaObjId)
-            for meta_id in meta_ids:
-              self.delMetaobj(meta_id)
-            id = ''
-            message = self.getZMILangStr('MSG_DELETED')%len(meta_ids)
-          # Delete Attribute.
-          elif btn == 'BTN_DELETE' and key == 'attr':
-            attr_id = REQUEST['attr_id']
-            self.delMetaobjAttr( id, attr_id)
-          
-          # Change.
-          # -------
-          elif key == 'all' and btn == 'BTN_SAVE':
-            savedAttrs = copy.copy(self.getMetaobj(id)['attrs'])
-            # Change object.
-            newValue = {}
-            newValue['id'] = id.strip()
-            newValue['name'] = REQUEST['obj_name'].strip()
-            newValue['revision'] = REQUEST.get('obj_revision', '').strip()
-            newValue['type'] = REQUEST['obj_type'].strip()
-            newValue['package'] = REQUEST.get('obj_package', '').strip()
-            newValue['attrs'] = savedAttrs
-            newValue['enabled'] = REQUEST.get('obj_enabled', 0)
-            newValue['access'] = {
-             'insert_deny': REQUEST.get( 'access_insert_deny', []),
-             'insert_custom': REQUEST.get( 'access_insert_custom', ''),
-             'delete_deny': REQUEST.get( 'access_delete_deny', []),
-             'delete_custom': REQUEST.get( 'access_delete_custom', ''),
-            }
-            self.setMetaobj( newValue)
-            # Change attributes.
-            for old_id in REQUEST.get('old_ids', []):
-              attr_id = REQUEST['attr_id_%s'%old_id].strip()
-              newName = REQUEST.get('attr_name_%s'%old_id, '').strip()
-              newMandatory = REQUEST.get( 'attr_mandatory_%s'%old_id, 0)
-              newMultilang = REQUEST.get( 'attr_multilang_%s'%old_id, 0)
-              newRepetitive = REQUEST.get( 'attr_repetitive_%s'%old_id, 0)
-              newType = REQUEST.get( 'attr_type_%s'%old_id)
-              newKeys = standard.string_list(REQUEST.get('attr_keys_%s'%old_id, ''), trim=False)
-              newCustom = REQUEST.get('attr_custom_%s'%old_id, '')
-              newDefault = REQUEST.get('attr_default_%s'%old_id, '')
-              # Upload resource.
-              if newType in self.valid_uploadtypes or isinstance(newCustom, ZPublisher.HTTPRequest.FileUpload):
-                  if len(getattr(newCustom, 'filename', '')):
-                      newCustom = _blobfields.createBlobField( self, _blobfields.MyFile, newCustom)
-                  else:
-                      REQUEST.set('attr_custom_%s_modified'%old_id, '0')
-              # Restore resource.
-              if REQUEST.get('attr_custom_%s_modified'%old_id, '1') == '0' and \
-                 REQUEST.get('attr_custom_%s_active'%old_id, '0') == '1':
+        sync_id = []
+        
+        # Delete.
+        # -------
+        # Delete Object.
+        if btn == 'BTN_DELETE' and key == 'obj':
+          if id:
+            meta_ids = [id]
+          else:
+            meta_ids = REQUEST.get('ids', [])
+          for meta_id in meta_ids:
+            metaObj = self.getMetaobj( meta_id)
+            if metaObj.get('type','') == 'ZMSPackage':
+              for pkgMetaObjId in self.getMetaobjIds():
+                pkgMetaObj = self.getMetaobj( pkgMetaObjId)
+                if pkgMetaObj.get('package') == metaObj.get('id'):
+                  if pkgMetaObjId not in meta_ids:
+                    meta_ids.append( pkgMetaObjId)
+          for meta_id in meta_ids:
+            self.delMetaobj(meta_id)
+          id = ''
+          message = self.getZMILangStr('MSG_DELETED')%len(meta_ids)
+        # Delete Attribute.
+        elif btn == 'BTN_DELETE' and key == 'attr':
+          attr_id = REQUEST['attr_id']
+          self.delMetaobjAttr( id, attr_id)
+        
+        # Change.
+        # -------
+        elif key == 'all' and btn == 'BTN_SAVE':
+          savedAttrs = copy.copy(self.getMetaobj(id)['attrs'])
+          # Change object.
+          newValue = {}
+          newValue['id'] = id.strip()
+          newValue['name'] = REQUEST['obj_name'].strip()
+          newValue['revision'] = REQUEST.get('obj_revision', '').strip()
+          newValue['type'] = REQUEST['obj_type'].strip()
+          newValue['package'] = REQUEST.get('obj_package', '').strip()
+          newValue['attrs'] = savedAttrs
+          newValue['enabled'] = REQUEST.get('obj_enabled', 0)
+          newValue['access'] = {
+            'insert_deny': REQUEST.get( 'access_insert_deny', []),
+            'insert_custom': REQUEST.get( 'access_insert_custom', ''),
+            'delete_deny': REQUEST.get( 'access_delete_deny', []),
+            'delete_custom': REQUEST.get( 'access_delete_custom', ''),
+          }
+          self.setMetaobj( newValue)
+          # Change attributes.
+          for old_id in REQUEST.get('old_ids', []):
+            attr_id = REQUEST['attr_id_%s'%old_id].strip()
+            newName = REQUEST.get('attr_name_%s'%old_id, '').strip()
+            newMandatory = REQUEST.get( 'attr_mandatory_%s'%old_id, 0)
+            newMultilang = REQUEST.get( 'attr_multilang_%s'%old_id, 0)
+            newRepetitive = REQUEST.get( 'attr_repetitive_%s'%old_id, 0)
+            newType = REQUEST.get( 'attr_type_%s'%old_id)
+            newKeys = standard.string_list(REQUEST.get('attr_keys_%s'%old_id, ''), trim=False)
+            newCustom = REQUEST.get('attr_custom_%s'%old_id, '')
+            newDefault = REQUEST.get('attr_default_%s'%old_id, '')
+            # Upload resource.
+            if newType in self.valid_uploadtypes or isinstance(newCustom, ZPublisher.HTTPRequest.FileUpload):
+                if len(getattr(newCustom, 'filename', '')):
+                    newCustom = _blobfields.createBlobField( self, _blobfields.MyFile, newCustom)
+                else:
                   savedAttr = [x for x in savedAttrs if x['id'] == old_id][0]
                   syncZopeMetaobjAttr( self, newValue, savedAttr)
-                  if savedAttr['ob']:
+                  if savedAttr.get('ob'):
                     filename = savedAttr['ob'].title
                     data = bytes(zopeutil.readData(savedAttr['ob']))
                     newCustom = _blobfields.createBlobField( self, _blobfields.MyFile, {'filename':filename,'data':data})
-              # Change attribute.
-              message += self.setMetaobjAttr( id, old_id, attr_id, newName, newMandatory, newMultilang, newRepetitive, newType, newKeys, newCustom, newDefault)
-            # Return with message.
-            message += self.getZMILangStr('MSG_CHANGED')
-            # Insert attribute.
-            attr_id = REQUEST.get('attr_id', '').strip()
-            newName = REQUEST.get('attr_name', '').strip()
-            newMandatory = REQUEST.get('_mandatory', 0)
-            newMultilang = REQUEST.get('_multilang', 0)
-            newRepetitive = REQUEST.get('_repetitive', 0)
-            newType = REQUEST.get('_type', 'string')
-            newKeys = REQUEST.get('_keys', [])
-            newCustom = REQUEST.get('_custom', '')
-            newDefault = REQUEST.get('_default', '')
-            if (len(attr_id) > 0 and len(newName) > 0 and len(newType) > 0) or newType in self.getMetadictAttrs():
-              message += self.setMetaobjAttr( id, None, attr_id, newName, newMandatory, newMultilang, newRepetitive, newType, newKeys, newCustom, newDefault)
-              message += self.getZMILangStr('MSG_INSERTED')%attr_id
-            # Lang-Dict.
-            for key in REQUEST.form.keys():
-              if key.startswith('_lang_dict_key_'):
-                i = int(key[len('_lang_dict_key_'):])
-                if REQUEST[key]:
-                  lang_dict = self.get_lang_dict()
-                  k = '%s.%s'%(id,REQUEST[key].strip())
-                  lang_dict[k] = {}
-                  for key2 in REQUEST.form.keys():
-                    if key2.startswith('_lang_dict_value_%i_'%i):
-                      lang_id = key2[len('_lang_dict_value_%i_'%i):]
-                      lang_dict[k][lang_id] = REQUEST[key2].strip()
-                  self.set_lang_dict(lang_dict)
-          elif key == 'obj' and btn == 'BTN_SAVE':
-            # Change Acquired-Object.
-            subobjects = REQUEST.get('obj_subobjects', 0)
-            self.acquireMetaobj( id, subobjects)
-            # Return with message.
-            message += self.getZMILangStr('MSG_CHANGED')
-          
-          # Copy.
-          # -----
-          elif btn == 'BTN_COPY':
-            metaOb = self.getMetaobj(id)
-            if metaOb.get('acquired', 0) == 1:
-              package = metaOb.get('package', '')
-              if package:
-                metaPkg = self.getMetaobj(package)
-                if metaPkg.get('acquired', 0) == 1:
-                  metaPkg['acquired'] = 0
-                  self.setMetaobj(metaPkg)
-              xml = self.exportMetaobjXml([id])
-              self.importMetaobjXml(xml=xml)
-              message = self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%id)
-          
-          # Export.
-          # -------
-          elif btn == 'BTN_EXPORT':
-            ids = REQUEST.get('ids', [])
-            return self.exportMetaobjXml(ids, REQUEST, RESPONSE)
-          
-          # Insert.
-          # -------
-          elif btn == 'BTN_INSERT':
-            # Insert Object.
-            if key == 'obj':
-              id = REQUEST['_meta_id'].strip()
-              newValue = {}
-              newValue['id'] = id
-              newValue['name'] = REQUEST.get('_meta_name').strip()
-              newValue['type'] = REQUEST.get('_meta_type').strip()
-              self.setMetaobj( newValue)
-              # Insert Attributes.
-              if newValue['type'] == 'ZMSDocument':
-                message += self.setMetaobjAttr(id, None, newId='icon_clazz', newName='Icon (Class)', newType='constant', newCustom='fas fa-file-alt')
-                message += self.setMetaobjAttr(id, None, newId='titlealt', newType='titlealt')
-                message += self.setMetaobjAttr(id, None, newId='title', newType='title')
-              elif newValue['type'] == 'ZMSTeaserElement':
-                message += self.setMetaobjAttr(id, None, newId='titlealt', newType='titlealt')
-                message += self.setMetaobjAttr(id, None, 'attr_penetrance', self.getZMILangStr('ATTR_PENETRANCE'), 1, 1, 0, 'select', ['this', 'sub_nav', 'sub_all'])
-              elif newValue['type'] == 'ZMSRecordSet':
-                message += self.setMetaobjAttr(id, None, 'records', self.getZMILangStr('ATTR_RECORDS'), 1, 1, 0, 'list')
-                message += self.setMetaobjAttr(id, None, '_grid', 'Grid?', 1, 0, 0, 'boolean', [], 0)
-                message += self.setMetaobjAttr(id, None, 'col_id', 'COL_ID', 1, 0, 0, 'identifier', [], 0)
-                message += self.setMetaobjAttr(id, None, 'col_1', 'COL_1', 0, 0, 0, 'string', [], 1)
-                message += self.setMetaobjAttr(id, None, 'col_2', 'COL_2', 0, 0, 0, 'string', [], 1)
-              elif newValue['type'] == 'ZMSModule':
-                message += self.setMetaobjAttr(id, None, 'zexp', 'ZEXP', 0, 0, 0, 'resource')
-              # Insert Template.
-              if newValue['type'] not in [ 'ZMSModule', 'ZMSPackage']:
-                tmpltId = 'standard_html'
-                tmpltName = 'Template: %s'%newValue['name']
-                tmpltCustom = []
-                tmpltCustom.append('<!-- %s.%s -->\n'%(id, tmpltId))
-                tmpltCustom.append('\n')
-                tmpltCustom.append('<tal:block tal:define="\n')
-                tmpltCustom.append('\t\tzmscontext options/zmscontext">\n')
-                if newValue['type'] == 'ZMSRecordSet':
-                  tmpltCustom.append('\t<h2 tal:content="python:zmscontext.getTitlealt(request)">The title.alt</h2>\n')
-                  tmpltCustom.append('\t<p class="description" tal:content="python:\'%i %s\'%(len(zmscontext.attr(zmscontext.getMetaobj(zmscontext.meta_id)[\'attrs\'][0][\'id\'])),zmscontext.getLangStr(\'ATTR_RECORDS\',request[\'lang\']))">#N records</p>\n')
-                tmpltCustom.append('</tal:block>\n')
-                tmpltCustom.append('\n')
-                tmpltCustom.append('<!-- /%s.%s -->\n'%(id, tmpltId))
-                tmpltCustom = ''.join(tmpltCustom)
-                message += self.setMetaobjAttr(id, None, tmpltId, tmpltName, 0, 0, 0, 'zpt', [], tmpltCustom)
-              message += self.getZMILangStr('MSG_INSERTED')%id
-          
-          # Acquire.
-          # --------
-          elif btn == 'BTN_ACQUIRE':
-            immediately = REQUEST.get('immediately', 0)
-            overwrite = []
-            ids = REQUEST.get('aq_ids', [])
+            # Change attribute.
+            message += self.setMetaobjAttr( id, old_id, attr_id, newName, newMandatory, newMultilang, newRepetitive, newType, newKeys, newCustom, newDefault)
+          # Return with message.
+          message += self.getZMILangStr('MSG_CHANGED')
+          # Insert attribute.
+          attr_id = REQUEST.get('attr_id', '').strip()
+          newName = REQUEST.get('attr_name', '').strip()
+          newMandatory = REQUEST.get('_mandatory', 0)
+          newMultilang = REQUEST.get('_multilang', 0)
+          newRepetitive = REQUEST.get('_repetitive', 0)
+          newType = REQUEST.get('_type', 'string')
+          newKeys = REQUEST.get('_keys', [])
+          newCustom = REQUEST.get('_custom', '')
+          newDefault = REQUEST.get('_default', '')
+          if (len(attr_id) > 0 and len(newName) > 0 and len(newType) > 0) or newType in self.getMetadictAttrs():
+            message += self.setMetaobjAttr( id, None, attr_id, newName, newMandatory, newMultilang, newRepetitive, newType, newKeys, newCustom, newDefault)
+            message += self.getZMILangStr('MSG_INSERTED')%attr_id
+          # Lang-Dict.
+          for key in REQUEST.form.keys():
+            if key.startswith('_lang_dict_key_'):
+              i = int(key[len('_lang_dict_key_'):])
+              if REQUEST[key]:
+                lang_dict = self.get_lang_dict()
+                k = '%s.%s'%(id,REQUEST[key].strip())
+                lang_dict[k] = {}
+                for key2 in REQUEST.form.keys():
+                  if key2.startswith('_lang_dict_value_%i_'%i):
+                    lang_id = key2[len('_lang_dict_value_%i_'%i):]
+                    lang_dict[k][lang_id] = REQUEST[key2].strip()
+                self.set_lang_dict(lang_dict)
+        elif key == 'obj' and btn == 'BTN_SAVE':
+          # Change Acquired-Object.
+          subobjects = REQUEST.get('obj_subobjects', 0)
+          self.acquireMetaobj( id, subobjects)
+          # Return with message.
+          message += self.getZMILangStr('MSG_CHANGED')
+        
+        # Copy.
+        # -----
+        elif btn == 'BTN_COPY':
+          metaOb = self.getMetaobj(id)
+          if metaOb.get('acquired', 0) == 1:
+            package = metaOb.get('package', '')
+            if package:
+              metaPkg = self.getMetaobj(package)
+              if metaPkg.get('acquired', 0) == 1:
+                metaPkg['acquired'] = 0
+                self.setMetaobj(metaPkg)
+            xml = self.exportMetaobjXml([id])
+            self.importMetaobjXml(xml=xml)
+            message = self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%id)
+        
+        # Export.
+        # -------
+        elif btn == 'BTN_EXPORT':
+          ids = REQUEST.get('ids', [])
+          return self.exportMetaobjXml(ids, REQUEST, RESPONSE)
+        
+        # Insert.
+        # -------
+        elif btn == 'BTN_INSERT':
+          # Insert Object.
+          if key == 'obj':
+            id = REQUEST['_meta_id'].strip()
+            newValue = {}
+            newValue['id'] = id
+            newValue['name'] = REQUEST.get('_meta_name').strip()
+            newValue['type'] = REQUEST.get('_meta_type').strip()
+            self.setMetaobj( newValue)
+            # Insert Attributes.
+            if newValue['type'] == 'ZMSDocument':
+              message += self.setMetaobjAttr(id, None, newId='icon_clazz', newName='Icon (Class)', newType='constant', newCustom='fas fa-file-alt')
+              message += self.setMetaobjAttr(id, None, newId='titlealt', newType='titlealt')
+              message += self.setMetaobjAttr(id, None, newId='title', newType='title')
+            elif newValue['type'] == 'ZMSTeaserElement':
+              message += self.setMetaobjAttr(id, None, newId='titlealt', newType='titlealt')
+              message += self.setMetaobjAttr(id, None, 'attr_penetrance', self.getZMILangStr('ATTR_PENETRANCE'), 1, 1, 0, 'select', ['this', 'sub_nav', 'sub_all'])
+            elif newValue['type'] == 'ZMSRecordSet':
+              message += self.setMetaobjAttr(id, None, 'records', self.getZMILangStr('ATTR_RECORDS'), 1, 1, 0, 'list')
+              message += self.setMetaobjAttr(id, None, '_grid', 'Grid?', 1, 0, 0, 'boolean', [], 0)
+              message += self.setMetaobjAttr(id, None, 'col_id', 'COL_ID', 1, 0, 0, 'identifier', [], 0)
+              message += self.setMetaobjAttr(id, None, 'col_1', 'COL_1', 0, 0, 0, 'string', [], 1)
+              message += self.setMetaobjAttr(id, None, 'col_2', 'COL_2', 0, 0, 0, 'string', [], 1)
+            elif newValue['type'] == 'ZMSModule':
+              message += self.setMetaobjAttr(id, None, 'zexp', 'ZEXP', 0, 0, 0, 'resource')
+            # Insert Template.
+            if newValue['type'] not in [ 'ZMSModule', 'ZMSPackage']:
+              tmpltId = 'standard_html'
+              tmpltName = 'Template: %s'%newValue['name']
+              tmpltCustom = []
+              tmpltCustom.append('<!-- %s.%s -->\n'%(id, tmpltId))
+              tmpltCustom.append('\n')
+              tmpltCustom.append('<tal:block tal:define="\n')
+              tmpltCustom.append('\t\tzmscontext options/zmscontext">\n')
+              if newValue['type'] == 'ZMSRecordSet':
+                tmpltCustom.append('\t<h2 tal:content="python:zmscontext.getTitlealt(request)">The title.alt</h2>\n')
+                tmpltCustom.append('\t<p class="description" tal:content="python:\'%i %s\'%(len(zmscontext.attr(zmscontext.getMetaobj(zmscontext.meta_id)[\'attrs\'][0][\'id\'])),zmscontext.getLangStr(\'ATTR_RECORDS\',request[\'lang\']))">#N records</p>\n')
+              tmpltCustom.append('</tal:block>\n')
+              tmpltCustom.append('\n')
+              tmpltCustom.append('<!-- /%s.%s -->\n'%(id, tmpltId))
+              tmpltCustom = ''.join(tmpltCustom)
+              message += self.setMetaobjAttr(id, None, tmpltId, tmpltName, 0, 0, 0, 'zpt', [], tmpltCustom)
+            message += self.getZMILangStr('MSG_INSERTED')%id
+        
+        # Acquire.
+        # --------
+        elif btn == 'BTN_ACQUIRE':
+          immediately = REQUEST.get('immediately', 0)
+          overwrite = []
+          ids = REQUEST.get('aq_ids', [])
+          if immediately:
             for id in ids:
-              if not immediately and id in self.getMetaobjIds():
-                overwrite.append( id)
-              else:
-                self.acquireMetaobj( id)
-            if overwrite:
-              id = ''
-              extra['section'] = 'acquire'
-              extra['temp_ids'] = ','.join(overwrite)
-            else:
-              # Return with message.
-              message = self.getZMILangStr('MSG_INSERTED')%str(len(ids))
-          
-          # Import.
-          # -------
-          elif btn == 'BTN_IMPORT':
-            immediately = False
-            xmlfile = None
-            temp_folder = getattr(self,'temp_folder',None)
-            temp_id = self.id + '_' + REQUEST['AUTHENTICATED_USER'].getId() + '.xml'
-            if temp_folder is None:
+              self.acquireMetaobj(id)
+            id = ''
+            message = self.getZMILangStr('MSG_INSERTED')%str(len(ids))
+          else:
+            for id in ids:
+              overwrite.append(id)
+          if overwrite:
+            id = ''
+            extra['section'] = 'acquire'
+            extra['temp_ids'] = ','.join(overwrite)
+        
+        # Import.
+        # -------
+        elif btn == 'BTN_IMPORT':
+          immediately = False
+          xmlfile = None
+          temp_folder = getattr(self,'temp_folder',None)
+          temp_id = self.id + '_' + REQUEST['AUTHENTICATED_USER'].getId() + '.xml'
+          if temp_folder is None:
+            immediately = True
+          elif REQUEST.get('temp_import_file_id')==temp_id and temp_id in temp_folder.objectIds():
+            if temp_id in temp_folder.objectIds():
+              filename = str(getattr( temp_folder, temp_id).title)
+              xmlfile = standard.getTempFile(self,temp_id)
+              temp_folder.manage_delObjects([temp_id])
               immediately = True
-            elif REQUEST.get('temp_import_file_id')==temp_id and temp_id in temp_folder.objectIds():
+          if REQUEST.get('file'):
+            f = REQUEST['file']
+            filename = f.filename
+            xmlfile = f
+          if REQUEST.get('init'):
+            file = REQUEST['init']
+            filename,xmlfile = self.getConfXmlFile( file)
+          if xmlfile is not None:
+            # extract xml from zip
+            if filename.endswith('.zip'):
+                import zipfile
+                zip_buffer = zipfile.ZipFile(xmlfile,"r")
+                for name in zip_buffer.namelist():
+                  if name.endswith(".xml"):
+                    filename = name
+                    xmlfile = io.BytesIO(zip_buffer.read(filename))
+                    break
+            # parse xml
+            if not immediately:
+              xml = xmlfile.read()
+              # open string-io.
+              xmlfile = io.BytesIO(xml)
+              v = standard.parseXmlString(xmlfile)
+              xmlfile = io.BytesIO(xml)
+              if not isinstance(v,list):
+                v = []
               if temp_id in temp_folder.objectIds():
-                filename = str(getattr( temp_folder, temp_id).title)
-                xmlfile = standard.getTempFile(self,temp_id)
                 temp_folder.manage_delObjects([temp_id])
-                immediately = True
-            if REQUEST.get('file'):
-              f = REQUEST['file']
-              filename = f.filename
-              xmlfile = f
-            if REQUEST.get('init'):
-              file = REQUEST['init']
-              filename,xmlfile = self.getConfXmlFile( file)
-            if xmlfile is not None:
-              # extract xml from zip
-              if filename.endswith('.zip'):
-                 import zipfile
-                 zip_buffer = zipfile.ZipFile(xmlfile,"r")
-                 for name in zip_buffer.namelist():
-                   if name.endswith(".xml"):
-                     filename = name
-                     xmlfile = io.BytesIO(zip_buffer.read(filename))
-                     break
-              # parse xml
-              if not immediately:
-                xml = xmlfile.read()
-                # open string-io.
-                xmlfile = io.BytesIO(xml)
-                v = standard.parseXmlString(xmlfile)
-                xmlfile = io.BytesIO(xml)
-                if not isinstance(v,list):
-                  v = []
-                if temp_id in temp_folder.objectIds():
-                  temp_folder.manage_delObjects([temp_id])
-                file = zopeutil.addFile(temp_folder, temp_id, filename, xmlfile)
-                extra['section'] = 'import'
-                extra['temp_import_file_id'] = temp_id
+              file = zopeutil.addFile(temp_folder, temp_id, filename, xmlfile)
+              extra['section'] = 'import'
+              extra['temp_import_file_id'] = temp_id
+            else:
+              createIdsFilter = REQUEST.get('createIdsFilter')
+              ids = self.importMetaobjXml(xmlfile, createIdsFilter=createIdsFilter)
+              if isinstance(ids, list):
+                sync_id.extend(ids)
               else:
-                createIdsFilter = REQUEST.get('createIdsFilter')
-                ids = self.importMetaobjXml(xmlfile, createIdsFilter=createIdsFilter)
-                if isinstance(ids, list):
-                  sync_id.extend(ids)
-                else:
-                  sync_id.append(ids)
-                message = self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%filename)
-          
-          # Move to.
-          # --------
-          elif key == 'attr' and btn == 'move_to':
-            pos = REQUEST['pos']
-            attr_id = REQUEST['attr_id']
-            self.moveMetaobjAttr( id, attr_id, pos)
-            message = self.getZMILangStr('MSG_MOVEDOBJTOPOS')%(("<em>%s</em>"%attr_id), (pos+1))
-          
-          ##### SYNCHRONIZE ####
-          types = self.valid_types+[self.metas[x*2] for x in range(len(self.metas)//2)]
-          for k in self.getMetaobjIds():
-            if k not in sync_id:
-              if k in self.model and k in old_model:
-                d = self.model[k]
-                types_attrs = [(x['id'], x) for x in d.get('attrs', []) if x['type'] in types]
-                d = old_model[k]
-                old_types_attrs = [(x['id'], x) for x in d.get('attrs', []) if x['type'] in types]
-                if types_attrs != old_types_attrs:
-                  sync_id.append(k)
-              else:
+                sync_id.append(ids)
+              message = self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%filename)
+        
+        # Move to.
+        # --------
+        elif key == 'attr' and btn == 'move_to':
+          pos = REQUEST['pos']
+          attr_id = REQUEST['attr_id']
+          self.moveMetaobjAttr( id, attr_id, pos)
+          message = self.getZMILangStr('MSG_MOVEDOBJTOPOS')%(("<em>%s</em>"%attr_id), (pos+1))
+        
+        ##### SYNCHRONIZE ####
+        types = self.valid_types+[self.metas[x*2] for x in range(len(self.metas)//2)]
+        for k in self.getMetaobjIds():
+          if k not in sync_id:
+            if k in self.model and k in old_model:
+              d = self.model[k]
+              types_attrs = [(x['id'], x) for x in d.get('attrs', []) if x['type'] in types]
+              d = old_model[k]
+              old_types_attrs = [(x['id'], x) for x in d.get('attrs', []) if x['type'] in types]
+              if types_attrs != old_types_attrs:
                 sync_id.append(k)
-          if len(sync_id) > 0:
-            self.synchronizeObjAttrs( sync_id)
-        
-          # Sync with repository.
-          self.getRepositoryManager().exec_auto_commit(self, id)
-        
-        # Handle exception.
-        try:
-          pass
-        except:
-          message = standard.writeError(self, "[manage_changeProperties]")
-          messagekey = 'manage_tabs_error_message'
+            else:
+              sync_id.append(k)
+        if len(sync_id) > 0:
+          self.synchronizeObjAttrs( sync_id)
+      
+        # Sync with repository.
+        self.getRepositoryManager().exec_auto_commit(self, id)
         
         # Return with message.
         if RESPONSE:
           if len( message) > 0:
             message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
-            target = self.url_append_params( target, { messagekey: message}, sep='&')
-          target = self.url_append_params( target, { 'lang': lang, 'id':id, 'attr_id':REQUEST.get('attr_id', '')}, sep='&')
-          target = self.url_append_params( target, extra, sep='&')
+            target = standard.url_append_params( target, { messagekey: message}, sep='&')
+          target = standard.url_append_params( target, { 'lang': lang, 'id':id, 'attr_id':REQUEST.get('attr_id', '')}, sep='&')
+          target = standard.url_append_params( target, extra, sep='&')
           if 'inp_id_name' in REQUEST:
             target += '&inp_id_name=%s'%REQUEST.get('inp_id_name')
             target += '&inp_name_name=%s'%REQUEST.get('inp_name_name')

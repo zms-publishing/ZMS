@@ -17,14 +17,10 @@
 ################################################################################
 
 # Imports.
-from __future__ import absolute_import
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import base64
-import copy
 import re
 # Product Imports.
-from Products.zms import _confmanager
-from Products.zms import _objattrs
 from Products.zms import standard
 
 # ------------------------------------------------------------------------------
@@ -57,7 +53,7 @@ def getInternalLinkDict(self, url):
   ref_params = {}
   if url.find(';') > 0:
     anchor = url[url.find(';'):-1]
-    ref_params = dict(re.findall(';(\w*)=(\w*)', anchor))
+    ref_params = dict(re.findall(r';(\w*)=(\w*)', anchor))
     url = '{$%s}'%url[2:url.find(';')]
   # Anchor.
   ref_anchor = ''
@@ -372,25 +368,10 @@ class ZReferableItem(object):
   def getLinkObj(self, url, REQUEST=None):
     ob = None
     if isInternalLink(url):
-      def default(*args, **kwargs):
-        self = args[0]
-        url = args[1]['url']
-        ob = None
-        if not url.startswith('{$__'):
-          # Find document-element.
-          zmspath = url[2:-1].replace('@', '/content/')
-          l = zmspath.split('/') 
-          ob = self
-          try:
-            for id in [x for x in l if x]:
-              ob = getattr(ob, id, None)
-          except:
-            pass
-        return ob
       # Params.
       ref_params = {}
       if url.find(';') > 0:
-        ref_params = dict(re.findall(';(\w*)=(\w*)', url[url.find(';'):-1]))
+        ref_params = dict(re.findall(r';(\w*)=(\w*)', url[url.find(';'):-1]))
         url = '{$%s}'%url[2:url.find(';')]
       # Get object.
       if url.startswith('{$') and url.endswith('}'):
@@ -403,26 +384,25 @@ class ZReferableItem(object):
           catalog = self.getZMSIndex().get_catalog()
           q = catalog({'get_uid':url})
           for r in q:
-            zmspath  = '%s/'%r['getPath']
-            l = zmspath[1:-1].split('/')
-            ob = self
-            try:
-              for id in [x for x in l if x]:
+            path  = '%s/'%r['getPath']
+            l = [x for x in path.split('/') if x] 
+            ob = self.getRootElement()
+            if l:
+              [l.pop(0) for x in ob.getPhysicalPath() if l[0] == x]
+              for id in l:
                 ob = getattr(ob,id,None)
-              break
-            except:
-              pass
+            break
         elif not url.startswith('__'):
-          url = url.replace('@','/content/')
-          l = url.split('/') 
-          ob =self.getDocumentElement()
-          try:
-            for id in [x for x in l if x]:
+          path = url.replace('@','/content/')
+          l = [x for x in path.split('/') if x] 
+          ob = self.getDocumentElement()
+          if l:
+            [l.pop(0) for x in ob.getPhysicalPath() if l[0] == x]
+            for id in l:
               ob = getattr(ob,id,None)
-          except:
-            pass
       # Prepare request
-      if ob is not None and ob.id not in self.getPhysicalPath():
+      ids = self.getPhysicalPath()
+      if ob is not None and ob.id not in ids:
         request = self.REQUEST
         ob.set_request_context(request, ref_params)
     return ob
@@ -439,7 +419,7 @@ class ZReferableItem(object):
       # Params.
       ref_params = {}
       if url.find(';') > 0:
-        ref_params = dict(re.findall(';(\w*)=(\w*)', url[url.find(';'):-1]))
+        ref_params = dict(re.findall(r';(\w*)=(\w*)', url[url.find(';'):-1]))
         url = '{$%s}'%url[2:url.find(';')]
       # Anchor.
       ref_anchor = ''

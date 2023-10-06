@@ -39,10 +39,10 @@ CKEDITOR.editorConfig = function( config ) {
 	var confProperties = $ZMI.getConfProperties(prefix);
 	for (var k in confProperties) {
 		var v = confProperties[k];
-		var k = k.substr((prefix+".").length);
+		var k = k.substring((prefix+".").length);
 		// Toolbar
 		if (k.indexOf("toolbar.")==0) {
-			var name = k.substr("toolbar.".length);
+			var name = k.substring("toolbar.".length);
 			for (var ck in config) {
 				if (ck.indexOf("toolbar_")==0) {
 					var found = false;

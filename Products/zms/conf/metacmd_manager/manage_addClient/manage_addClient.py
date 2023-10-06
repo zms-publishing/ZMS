@@ -1,4 +1,5 @@
 from Products.PythonScripts.standard import html_quote
+from Products.zms import standard
 
 def manage_addClient(self):
 	request = self.REQUEST
@@ -31,7 +32,7 @@ def manage_addClient(self):
 				zms_inst.metaobj_manager.acquireMetaobj(id)
 		self.setConfProperty('Portal.Clients',self.getConfProperty('Portal.Clients',[])+[request['id']])
 		message.append(self.getZMILangStr('MSG_INSERTED')%request['id'])
-		request.response.redirect(self.url_append_params('%s/manage_main'%zms_inst.absolute_url(),{'lang':request['lang'],'manage_tabs_message':'<br/>'.join(message)}))
+		request.response.redirect(standard.url_append_params('%s/manage_main'%zms_inst.absolute_url(),{'lang':request['lang'],'manage_tabs_message':'<br/>'.join(message)}))
 
 	# --- Display initial insert form.
 	# ---------------------------------
@@ -52,7 +53,7 @@ def manage_addClient(self):
 		html += '<label for="titlealt" class="col-sm-3 control-label">%s</label>'%(self.getZMILangStr('TAB_CONFIGURATION'))
 		html += '<div class="col-sm-9"><input name="acquire:int" type="checkbox" value="1" checked="checked"> %s</div>'%(self.getZMILangStr('BTN_ACQUIRE'))
 		html += '</div><!-- .form-group -->'
-		html += '<div class="form-row">'
+		html += '<div class="form-group row">'
 		html += '<div class="controls save">'
 		html += '<button type="submit" name="btn" class="btn btn-primary" value="BTN_INSERT">%s</button>'%self.getZMILangStr('BTN_INSERT')
 		html += '<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CANCEL">%s</button>'%self.getZMILangStr('BTN_CANCEL')

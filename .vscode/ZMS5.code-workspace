@@ -4,6 +4,10 @@
 			"name": "ZMS5",
 			"path": "../"
 		},
+		// {
+		// 	"name": "ZMS4",
+		// 	"path": "../../ZMS4"
+		// },
 		{
 			"name": "Zope 5",
 			"path": "/home/zope/src/zopefoundation/Zope"

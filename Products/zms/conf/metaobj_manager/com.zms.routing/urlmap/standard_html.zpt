@@ -1,0 +1,31 @@
+<!-- urlmap.standard_html -->
+<div title="urlmap.standard_html" 
+	tal:define="zmscontext options/zmscontext;
+		id python:zmscontext.getId();
+		css_class python:zmscontext.meta_id;
+		records python:zmscontext.attr('records');
+		lang python:request.get('lang',zmscontext.getPrimaryLanguage())"
+	tal:attributes="id id;class css_class">
+	<p class="description" tal:content="python:'%s %s'%(len(list(records)),zmscontext.getLangStr('ATTR_RECORDS',lang))"></p>
+	<ol class="objMap">
+		<tal:block tal:repeat="urlmap_item records">
+			<li style="margin:auto;padding:auto;font-size:12px;font-weight:normal;font-family:courier">
+				<tal:block tal:condition="python:zmscontext.getLinkObj(urlmap_item['url'],request)">
+					<span tal:content="urlmap_item/key">KEY</span>
+					:
+					<a target="_blank"
+						tal:attributes="href python:'%s/manage'%(zmscontext.getLinkObj(urlmap_item['url'],request).absolute_url())" 
+						tal:content="python:zmscontext.getLinkObj(urlmap_item['url'],request).getTitle(request)">
+						URL
+					</a>
+				</tal:block>
+				<tal:block tal:condition="python:not zmscontext.getLinkObj(urlmap_item['url'],request)">
+					<span tal:content="urlmap_item/key">KEY</span>
+					:
+					<span tal:content="urlmap_item/url">URL</span>
+				</tal:block>
+			</li>
+		</tal:block>
+	</ol>
+</div>
+<!-- urlmap.standard_html -->

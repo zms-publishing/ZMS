@@ -20,9 +20,9 @@
 import copy
 import re
 # Product Imports.
+from Products.zms import rest_api
 from Products.zms import standard
 from Products.zms import _blobfields
-from Products.zms import _confmanager
 from Products.zms import _fileutil
 from Products.zms import _globals
 
@@ -33,23 +33,23 @@ from Products.zms import _globals
 #  Validates id against list of possible declarative id.
 # ------------------------------------------------------------------------------
 def validateId(self, id, REQUEST):
-  langs = []
-  lang = REQUEST.get( 'lang')
-  if lang is None:
-    for lang in self.getLanguages():
-      request = { 'lang': lang, 'preview': REQUEST.get('preview', '')}
-      decl_id = self.getDeclId(request)
-      if id == decl_id:
-        langs.append( lang)
-    if len( langs) == 1:
-      self.REQUEST.set( 'lang', langs[0])
-  else:
-    decl_id = self.getDeclId( REQUEST)
-    if id == decl_id:
-      langs.append( lang)
-  if len( langs) > 0:
-    return True
-  return False
+    langs = []
+    lang = REQUEST.get( 'lang')
+    if lang is None:
+        for lang in self.getLanguages():
+            request = { 'lang': lang, 'preview': REQUEST.get('preview', '')}
+            decl_id = self.getDeclId(request)
+            if id == decl_id:
+                langs.append( lang)
+        if len( langs) == 1:
+            self.REQUEST.set( 'lang', langs[0])
+    else:
+        decl_id = self.getDeclId( REQUEST)
+        if id == decl_id:
+            langs.append( lang)
+    if len( langs) > 0:
+        return True
+    return False
 
 
 # ------------------------------------------------------------------------------
@@ -126,7 +126,7 @@ class PathHandler(object):
       if 'path_to_handle' not in TraversalRequest:
         
         # Make a reversed copy of the TraversalRequestNameStack
-        TraversalRequestNameStackReversed=copy.copy(TraversalRequest['TraversalRequestNameStack'])
+        TraversalRequestNameStackReversed = copy.copy(TraversalRequest['TraversalRequestNameStack'])
         TraversalRequestNameStackReversed.reverse()
         
         # Set path_to_handle in the TraversalRequest.
@@ -168,6 +168,12 @@ class PathHandler(object):
       else:
         standard.writeLog( self, '[__bobo_traverse__]: otherwise do some magic')
         
+        # REST-API.
+        if name == '++rest_api':
+          request.RESPONSE.setHeader('Content-Type','application/json; charset=utf-8')
+          return rest_api.RestApiController(self, TraversalRequest)
+
+        # Default Language.
         if request.get('lang') is None:
           lang = self.getPrimaryLanguage()
           request.set('lang', lang)
@@ -198,7 +204,7 @@ class PathHandler(object):
           # Recursive inclusions.
           thisOb = standard.nvl( filterId( self, name, request), self)
           if thisOb.meta_type == 'ZMSLinkElement':
-            recursive = thisOb.isEmbeddedRecursive(request)
+            recursive = thisOb.isEmbeddedRecursive()
             if recursive:
               ob = thisOb.getRefObj()
               proxy = thisOb.initProxy( thisOb.aq_parent, thisOb.absolute_url(), ob, recursive)

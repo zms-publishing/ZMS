@@ -121,7 +121,7 @@
 			cached = cache[url],
 			caching = (defaults.cache === true || defaults.cache == 'true');
 		if(extension.indexOf('?')>0) {
-			extension = extension.substr(0,extension.indexOf('?'));
+			extension = extension.substring(0,extension.indexOf('?'));
 		}
 		if(extension != 'css' && extension != 'js') {
 			throw new Error( '$.plugin.getFile(url) - Invalid extension:'+ extension + '\n\t'+url); return this;}
@@ -142,7 +142,7 @@
 	// Note: External files are not cached
 		if(caching && cached && cached != 'undefined') {
 			if(extension == 'css') {
-				var base_url = url.substr(0,url.lastIndexOf('/')+1);
+				var base_url = url.substring(0,url.lastIndexOf('/')+1);
 				this.target.append('<style type="text\/css" rel="stylesheet" data-file-id="'+fileId+'">'+cached+'<\/style>');
 			}
 			else if(extension == 'js') {
@@ -159,7 +159,7 @@
 		// Handle Styles	
 			if(extension == 'css') {
 				$.get(url,function(response) {
-						var base_url = url.substr(0,url.lastIndexOf('/')+1);
+						var base_url = url.substring(0,url.lastIndexOf('/')+1);
 						response = response.replace(/url\(\'/g,'url(\''+base_url);
 						response = response.replace(/AlphaImageLoader\(src\=\'/g,'AlphaImageLoader(src=\''+base_url);
 						that.loaded[url] = true;

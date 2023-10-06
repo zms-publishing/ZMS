@@ -1,6 +1,6 @@
 <tal:block tal:define="
-	dummy0 python:here.zmi_page_request(here,request); 
-	global standard modules/Products.zms/standard; 
+	dummy0 python:here.zmi_page_request(here,request);
+	global standard modules/Products.zms/standard;
 	global zopeutil modules/Products/zms/zopeutil;
 	global session python:standard.get_session(here);"></tal:block
 ><tal:block tal:condition="python:standard.get_session_value(here,'zmi-manage-system',0)==1"><tal:block tal:content="structure python:here.manage_system(here,request)"></tal:block></tal:block
@@ -37,25 +37,16 @@ function openWindow(url) {
 	<div class="form-group zms4-row">
 		<div class="col-sm-2"></div>
 		<div class="col-sm-10 form-inline">
-			<div class="btn-group" style="margin-right:1em">
-				<div class="btn btn-default btn-secondary">
-					<input id="zmi-sitemap-select" type="checkbox" checked="checked"
-						onclick="if( this.checked ){ $('.zmi-sitemap ul input').prop('checked', true) } else { $('.zmi-sitemap ul input').prop('checked', false) }" />
-				</div>
-				<a class="btn btn-default btn-secondary" target="_blank" href="javascript:;" onclick="return zmiExpandObjectTree(-1);">
-						<i class="fas fa-plus-square"></i>
-				</a>
-			</div>
 			<a class="btn btn-default btn-secondary" target="_blank" style="margin-right:1em"
 				tal:attributes="href python:'%s/manage_catalogView?filterpath=/'%zmscontext.zcatalog_index.absolute_url()">
 					<i class="fas fa-search"></i> zcatalog_index
 			</a>
 			<div class="btn-group" style="margin-right:1em">
-				<button name="btn" class="btn btn-warning" 
+				<button name="btn" class="btn btn-warning"
 					title="REINDEX: Rebuilding the ZCatalog index of all selected (multisite) hierarchy objects."
 					onclick="return zmiFuncIndex('manage_reindex');">Reindex
 				</button>
-				<div class="btn btn-default btn-secondary" 
+				<div class="btn btn-default btn-secondary"
 					title="UID RENEWAL: Apply with care; all links may get invalid!!"
 					onclick="if( $('#regenerate_duplicates').prop('checked') ){ $('#regenerate_duplicates').prop('checked', false) } else { alert('UID RENEWAL: Apply with care; all links may get invalid!!');$('#regenerate_duplicates').prop('checked', true) }">
 					UID Renewal:
@@ -70,12 +61,12 @@ function openWindow(url) {
 				onclick="return zmiFuncIndex('manage_test');">Test
 			</button>
 			<button name="btn" class="btn btn-danger" style="margin-right:1em"
-				title="RESYNC: Validating and refreshing link objects, inline links and backlink on the selected node (default: full hierarchy)."
+				title="RESYNC: Validating and refreshing link objects, inline links and backlinks (not uid- but path-syntax) on the selected node (default: full hierarchy)."
 				onclick="return zmiFuncIndex('manage_resync');">Resync
 			</button>
 			<div class="input-group">
 				<div class="input-group-prepend">
-					<select class="form-control" id="loglevel" name="loglevel" 
+					<select class="form-control" id="loglevel" name="loglevel"
 						title="Select the Debug-Level for Logging Messages while Indexing">
 						<option tal:repeat="loglevel loglevels" tal:attributes="selected python:['','selected'][int(loglevel=='INFO')]" tal:content="loglevel">the loglevel</option>
 					</select>
@@ -91,8 +82,23 @@ function openWindow(url) {
 	<div class="form-group zms4-row">
 		<label class="col-sm-2 control-label">&nbsp;</label>
 		<div class="col-sm-10">
-			<div class="zmi-sitemap-expand" onclick="$('#zmsindex .zmi-sitemap-container').toggleClass('full');$('#zmsindex .zmi-sitemap-expand i').toggleClass('icon-resize-small')">
-				<i class="icon icon-resize-full fas fa-expand-arrows-alt" title="Seitenanfang"></i>
+			<div class="btn-group zmi-sitemap-controls">
+				<div title="De-/Select All"
+					class="btn btn-secondary">
+					<input id="zmi-sitemap-select" type="checkbox" checked="checked"
+						onclick="if( this.checked ){ $('.zmi-sitemap ul input').prop('checked', true) } else { $('.zmi-sitemap ul input').prop('checked', false) }"
+					/>
+				</div>
+				<div title="Expand Object Tree (Hint: Mind System Load in Case!)"
+					class="btn btn-secondary"
+					onclick="return zmiExpandObjectTree(-1);">
+					<i class="fas fa-plus-square"></i>
+				</div>
+				<div title="Expand/Compress Sitemap View"
+					class="btn btn-secondary" id="zmi-sitemap-expand"
+					onclick="$('.zmi-sitemap-container').toggleClass('full');$('#zmi-sitemap-expand i').toggleClass('fa-expand-arrows-alt fa-compress-arrows-alt')">
+					<i class="fas fa-expand-arrows-alt"></i>
+				</div>
 			</div>
 			<div class="zmi-sitemap-container">
 				<div class="progress">
@@ -101,7 +107,7 @@ function openWindow(url) {
 						<span></span>
 					</div>
 				</div>
-				<div class="zmi-sitemap"></div><!-- .zmi-sitemap -->
+				<div class="zmi-sitemap"><!-- .zmi-sitemap --></div>
 			</div>
 		</div><!-- .col-sm-10 -->
 	</div><!-- .form-group -->
@@ -121,7 +127,7 @@ function openWindow(url) {
 					<button class="btn btn-primary" name="btn" value="save"
 						onclick="$(this).parents('form').attr({action:self.location.href})">
 						<i class="icon-save fas fa-save"></i>
-						<tal:block tal:content="python:here.getZMILangStr('BTN_SAVE')"></tal:block>  
+						<tal:block tal:content="python:here.getZMILangStr('BTN_SAVE')"></tal:block>
 					</button>
 				</div>
 			</div><!-- .input-group -->
@@ -244,20 +250,25 @@ function zmiExpandObjectTree(max) {
 $(function() {
 	// Sitemap
 	set_progress( 0, func_name='test');
-	var href = $ZMI.getPhysicalPath();
-	$ZMI.objectTree.init(".zmi-sitemap",href,{
-		'params':{meta_types:'ZMS'},
-		'init.href':'ajaxGetNode',
-		'init.callback':function() {
+	var href = $ZMI.get_document_element_url($ZMI.getPhysicalPath());
+	$ZMI.objectTree.init('.zmi-sitemap', href, {
+		params: {'meta_types':'ZMS'},
+		filter: x => x.meta_id === 'ZMS',
+		'init.callback': function() {
 				zmiExpandObjectTree(1);
 			},
-		'addPages.callback':function() {
+		'addPages.callback': function() {
 				console.log('addPages.callback')
 				$(".zmi-sitemap a:not(.checkboxed)").each(function() {
 						var $a = $(this);
-						$a.addClass("checkboxed");
-						var phys_path = $a.attr('data-page-physical-path');
-						var uid = '{'+'$'+phys_path.substr(1).replace(/\/content/gi,'@')+'}'; // $a.attr('data-uid');
+						var phys_path = $a.attr('href');
+						var href_manage = phys_path + '/manage';
+						$a.addClass("checkboxed")
+							.removeAttr('onclick')
+							.attr('target','_blank')
+							.attr('href',href_manage)
+							.attr('title',href_manage);
+						var uid = '{'+'$'+phys_path.substring(1).replace(/\/content/gi,'@')+'}'; // $a.attr('data-uid');
 						$a.before('<input name="home_ids:list" type="checkbox" title="'+uid+'" value="'+uid+'" checked="checked" /> ');
 					});
 			},
@@ -265,159 +276,6 @@ $(function() {
 	$('#zmsindex .zmi-sitemap-container').removeClass('loading');
 });
 </script>
-<style>
-/* Make BS4-row work with ZMS4 */
-/*
-	#zmsindex .zms4-row {
-		display: -ms-flexbox;
-		display: flex;
-		-ms-flex-wrap: wrap;
-		flex-wrap: wrap;
-		margin-right: -15px;
-		margin-left: -15px;
-	}
-*/
-
-	#zmsindex select.form-control:not([size]):not([multiple]) {
-		height: inherit;
-	}
-	#zmsindex .zmi-sitemap-container {
-		width:100%;
-		max-height: 30rem;
-		height: fit-content;
-		min-height: 6rem;
-		overflow-y: scroll;
-		overflow-x: hidden;
-		background: #e8f3fb;
-		margin: 0;
-		direction: rtl;
-		display: block;
-		padding: 10px 12px;
-		line-height: 1.42857143;
-		background-image: none;
-		border: 1px solid #ccc;
-		border-radius: 4px;
-		-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-		box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-		-webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
-		-o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-		transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-		clear:both !important;
-	}
-	#zmsindex .zmi-sitemap-container.full {
-		max-height: unset;
-	}
-	#zmsindex .zmi-sitemap-container.loading {
-		background:#b1bbc1;
-	}
-	#zmsindex .zmi-sitemap-container.loading a,
-	#zmsindex .zmi-sitemap-container.loading .toggle,
-	#zmsindex .zmi-sitemap-container.loading div#loading,
-	.zmi #zmsindex .zmi-sitemap-container.loading div#loading .fa-spinner {
-		color: #fff !important;
-	}
-	#zmsindex .zmi-sitemap-container.loading ul li > * {
-	color:#ccc !important
-	}
-	#zmsindex .zmi-sitemap-container .progress {
-		padding-left:0;
-		margin-right: 30px;
-		background: #337ab740;
-		height:1.25rem;
-		direction: ltr;
-	}
-	#zmsindex .zmi-sitemap-container .progress .progress-bar {
-		width:0%;
-		text-align:right;
-	}
-	#zmsindex .zmi-sitemap-container .progress .progress-bar.active {
-		min-width:5em;
-    	width: fit-content;
-	}
-	#zmsindex .zmi-sitemap-container .progress .progress-bar span {
-		margin:0 1em;
-	}
-	#zmsindex .zmi-sitemap-container.loading .progress .progress-bar {
-		width:100%;
-	}
-	#zmsindex .zmi-sitemap-container .progress.error .progress-bar {
-		background-color:#9C27B0
-	}
-	#zmsindex .zmi-sitemap-container .progress.error:after {
-		content:"INDEXING ERROR occured: details see event-log";
-		display:block;
-		color:#9C27B0;
-		position:absolute;
-		margin-top:1.5em;
-	}
-	#zmsindex .zmi-sitemap > ul {
-		margin-top:10px;
-		direction: ltr;
-	}
-	#zmsindex .zmi-sitemap-expand {
-		display: block;
-		top:0;
-		position: absolute;
-		color: #333;
-		right: 16px;
-		background: #ccc;
-		padding: .35em .65em;
-		border-radius: 4px;
-		border-top-left-radius: 0;
-		border-bottom-right-radius: 0;
-		cursor: pointer;
-	}
-	#zmsindex .zmi-sitemap div#loading,
-	#zmsindex .zmi-sitemap div#loading .fa-spinner {
-		color: #08c !important;
-	}
-	#zmsindex .zmi-sitemap .fa-spinner.fa-spin {
-		zoom: 1.5;
-	}
-	#zmsindex .response.text-success,
-	#zmsindex .response.text-danger {
-		display: block;
-		position: fixed;
-		z-index: 1000;
-		left: 125px;
-		top: 125px;
-		width: calc(100% - 250px);
-		height: calc(100vw - 250px);
-		overflow: scroll;
-		font-size:80%;
-		white-space:pre;
-		background: #dff0d8;
-	}
-	#zmsindex .response.text-success .close,
-	#zmsindex .response.text-danger .close {
-		display:block;
-		padding: .5em;
-		position: absolute;
-		opacity: .5;
-		right: 0;
-		top: 0;
-		background: #dff0d8;
-	}
-	#zmsindex .response.text-danger,
-	#zmsindex .response.text-danger .close {
-		background-color: #f2dede;
-	}
-
-	/* ZMS4+ specifics */
-	body.zmi.zms #zmsindex .icon.icon-resize-full:before {
-		font-family: 'Font Awesome 5 Free';
-		font-weight: 900;
-		font-style:normal;
-		content: "\f31e";
-	}
-	body.zmi.zms #zmsindex .icon.icon-resize-small:before {
-		font-family: 'Font Awesome 5 Free';
-		font-weight: 900;
-		font-style:normal;
-		content: "\f78c";
-	}
-
-</style>
 
 </tal:block>
 

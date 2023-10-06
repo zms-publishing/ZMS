@@ -84,19 +84,19 @@ def manage_checkLinks( self):
   
   def handleInline(node,v): 
     l = []
-    p = '<a(.*?)>(.*?)<\\/a>'
+    p = r'<a(.*?)>(.*?)<\\/a>'
     r = re.compile(p)
     for f in r.findall(v):
       internal = False
       ref = None
-      d = dict(re.findall('\\s(.*?)="(.*?)"',f[0]))
+      d = dict(re.findall(r'\s(.*?)="(.*?)"',f[0]))
       if d.get('data-id',None)!=None:
         data_id = d['data-id']
         ref = node.getLinkObj(data_id)
         internal = True
       if ref is None and d.get('href',None)!=None:
         href = d['href']
-        href = re.sub('http://localhost:(\\d)*/','',href)
+        href = re.sub(r'http://localhost:(\d)*/','',href)
         for prefix in [request['SERVER_URL'],self.getConfProperty('ASP.ip_or_domain','?')]:
           if href.startswith(prefix):
             href = href[len(prefix):]

@@ -47,6 +47,7 @@
 			};
 			const refreshLinks = function() {
 				links = [];
+				$table = $("#tr_links_interface0 table");
 				$("tr.url-inputs",$table).each(function() {
 						var $tr = $(this);
 						var record = {url:$("input[name^='links_url_']",$tr).val(),label:$("input[name^='links_label_']",$tr).val()};
@@ -68,7 +69,7 @@
 						html += '<option value="'+j+'"' + (j==i?' selected="selected"':'') + '>'+(j+1)+'<'+'/option>\n';
 					}
 					html += '</select>\n';
-					html += '<a class="btn btn-secondary btn-delete" href="javascript:;"><i class="fas fa-times"></i></a>';
+					html += '<div class="input-group-append"><a class="btn btn-secondary btn-delete" href="javascript:;"><i class="fas fa-times"></i></a></div>';
 					html += '</div>\n';
 					html += '</td>\n';
 					html += '<td class="meta-label">\n';
@@ -116,7 +117,6 @@
 					$this_row.insertAfter($target_row);
 				};
 				// Refresh XML-List from Re-Ordered Table
-				$table = $("#tr_links_interface0 table");
 				refreshLinks();
 			})
 

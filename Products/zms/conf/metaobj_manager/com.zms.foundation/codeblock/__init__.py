@@ -26,7 +26,7 @@ class codeblock:
 	package = "com.zms.foundation"
 
 	# Revision
-	revision = "5.0.0"
+	revision = "5.0.1"
 
 	# Type
 	type = "ZMSObject"
@@ -45,7 +45,7 @@ class codeblock:
 		text = {"default":""
 			,"id":"text"
 			,"keys":[]
-			,"mandatory":0
+			,"mandatory":1
 			,"multilang":1
 			,"name":"Code"
 			,"repetitive":0

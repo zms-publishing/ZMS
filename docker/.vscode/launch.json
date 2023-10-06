@@ -1,0 +1,34 @@
+{
+    "version": "0.2.0",
+
+    "configurations": [
+        {
+            "name": "ZMS5-Docker",
+            "type": "python",
+            "request": "launch",
+            "program": "/app/zope/bin/runwsgi",
+            "justMyCode": false,
+            "console": "integratedTerminal",
+            "args": [
+                "--debug",
+                "--verbose",
+                "/app/zope/etc/zope.ini",
+                "debug-mode=on",
+                "http_port=8087",
+            ],
+            "env": {
+                "PYTHONUNBUFFERED":"1",
+                "CONFIG_FILE": "/app/zope/etc/zope.ini",
+                "INSTANCE_HOME": "/app/zope",
+                "CLIENT_HOME": "/app/zope",
+                "PYTHON": "/app/zope/bin/python",
+                "SOFTWARE_HOME": "/app/zope/bin/"
+            },
+            "serverReadyAction":{
+                "pattern":"Serving on http://0.0.0.0:8086",
+                "uriFormat": "http://127.0.0.1:8086/manage_main",
+                "action": "openExternally",
+            },
+        },
+    ]
+}

@@ -17,7 +17,6 @@
 ################################################################################
 
 # Imports.
-from __future__ import absolute_import
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from OFS.userfolder import UserFolder
 import copy
@@ -27,8 +26,6 @@ import sys
 import time
 import zExceptions
 # Product Imports.
-from Products.zms import _confmanager
-from Products.zms import _globals
 from Products.zms import _xmllib
 from Products.zms import standard
 
@@ -350,11 +347,11 @@ class AccessableObject(object):
                 v = creds[x]
                 if self.getUserAttr(auth_user,name,v) != v:
                   self.setUserAttr(auth_user,name,v)
-      # manage must not be accessible for Anonymous
+      # manage must not be accessible for Anonymous (cave: <UnrestrictedUser>.has_role()==1 )
       if request['URL0'].find('/manage') >= 0:
         lower = self.getUserAttr(auth_user,'attrActiveStart','')
         upper = self.getUserAttr(auth_user,'attrActiveEnd','')
-        if not standard.todayInRange(lower, upper) or auth_user.has_role('Anonymous'):
+        if not standard.todayInRange(lower, upper) or ('Anonymous' in request['AUTHENTICATED_USER'].getRolesInContext(request)):
           import zExceptions
           raise zExceptions.Unauthorized
       # manage may be registrable for Authenticated without permissions
@@ -415,7 +412,7 @@ class AccessableObject(object):
       # AccessableObject and ZMSContainerObject is inherited from 
       # AccessableContainer!
       restricted = self.hasRestrictedAccess()
-      if self is not None and self.meta_type == 'ZMSLinkElement' and self.isEmbedded( self.REQUEST):
+      if self is not None and self.meta_type == 'ZMSLinkElement' and self.isEmbedded():
         ob = self.getRefObj()
         if ob is not None:
           for item in ob.breadcrumbs_obj_path():
@@ -743,8 +740,8 @@ class AccessManager(AccessableContainer):
         for userName in userFldr.getUserNames():
           if without_node_check or (local_userFldr == userFldr) or self.get_local_roles_for_userid(userName):
             if (exact_match and search_term==userName) or \
-               search_term == '' or \
-               search_term.find(userName) >= 0:
+              search_term == '' or \
+              str(search_term).find(userName) >= 0:
               users.append({'name':userName})
       for user in users:
         login_name = user[login_attr]
@@ -1013,11 +1010,11 @@ class AccessManager(AccessableContainer):
     # --------------------------------------------------------------------------
     def toggleUserActive(self, id):
       active = self.getUserAttr(id, 'attrActive', 1)
-      attrActiveStart = self.parseLangFmtDate(self.getUserAttr(id, 'attrActiveStart', None))
+      attrActiveStart = standard.parseLangFmtDate(self.getUserAttr(id, 'attrActiveStart', None))
       if attrActiveStart is not None:
         dt = DateTime(time.mktime(attrActiveStart))
         active = active and dt.isPast()
-      attrActiveEnd = self.parseLangFmtDate(self.getUserAttr(id, 'attrActiveEnd', None))
+      attrActiveEnd = standard.parseLangFmtDate(self.getUserAttr(id, 'attrActiveEnd', None))
       if attrActiveEnd is not None:
         dt = DateTime(time.mktime(attrActiveEnd))
         active = active and (dt.isFuture() or (dt.equalTo(dt.earliestTime()) and dt.latestTime().isFuture()))
@@ -1165,7 +1162,7 @@ class AccessManager(AccessableContainer):
       # Return with message.
       if RESPONSE:
         target = REQUEST.get( 'manage_target', 'manage_users')
-        target = self.url_append_params( target, { 'lang': lang, messagekey: message, 'id':id})
+        target = standard.url_append_params( target, { 'lang': lang, messagekey: message, 'id':id})
         return RESPONSE.redirect(target)
 
 
@@ -1227,8 +1224,8 @@ class AccessManager(AccessableContainer):
               updateUserPassword(self, user, password, confirm)
             self.setUserAttr(id, 'forceChangePassword', REQUEST.get('forceChangePassword', 0))
             self.setUserAttr(id, 'attrActive', newAttrActive)
-            self.setUserAttr(id, 'attrActiveStart', self.parseLangFmtDate(REQUEST.get('attrActiveStart')))
-            self.setUserAttr(id, 'attrActiveEnd', self.parseLangFmtDate(REQUEST.get('attrActiveEnd')))
+            self.setUserAttr(id, 'attrActiveStart', standard.parseLangFmtDate(REQUEST.get('attrActiveStart')))
+            self.setUserAttr(id, 'attrActiveEnd', standard.parseLangFmtDate(REQUEST.get('attrActiveEnd')))
             for key in ['email','profile','user_id']:
               if key in REQUEST.keys():  
                 value = REQUEST.get(key, '').strip()
@@ -1348,7 +1345,7 @@ class AccessManager(AccessableContainer):
               except:
                 xml += '<nodeurl></nodeurl>'
               try:  
-                title = re.sub('&.*;', '', self.getLinkObj(nodekey).getTitle(REQUEST).strip())
+                title = re.sub(r'&.*;', '', self.getLinkObj(nodekey).getTitle(REQUEST).strip())
                 xml += '<nodetitle><![CDATA[%s]]></nodetitle>'%title
               except:
                 xml += '<nodetitle></nodetitle>'
@@ -1421,7 +1418,7 @@ class AccessManager(AccessableContainer):
       # Return with message.
       if RESPONSE:
         target = REQUEST.get( 'manage_target', 'manage_users')
-        target = self.url_append_params( target, { 'lang': lang, messagekey: message, 'id':id})
+        target = standard.url_append_params( target, { 'lang': lang, messagekey: message, 'id':id})
         return RESPONSE.redirect(target)
 
 ################################################################################

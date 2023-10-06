@@ -53,7 +53,7 @@ def process_images(docbookxml):
     q = pq[1]
     r = re.compile(p)
     for f in r.findall(docbookxml):
-      d = dict(re.findall('\\s(.*?)=&quot;(.*?)&quot;',f))
+      d = dict(re.findall(r'\s(.*?)=&quot;(.*?)&quot;',f))
       read_image(d)
       index = len(images)
       name = d['src'].split('/')[-1]
@@ -294,7 +294,7 @@ def process_paragraphs(html):
   return docbookxml
 
 def html2docbook(html):
-  r = re.compile('<(.*?)>')
+  r = re.compile(r'<(.*?)>')
   for f in r.findall(html):
     n = f
     if n.find(' ') > 0:
@@ -307,11 +307,11 @@ def html2docbook(html):
       html = html.replace('<%s>'%f,'')
     elif regions[n]['type']=='drawing':
       html = html.replace('<%s>'%f,'[[%s]]'%f)
-  html = re.sub('<a .*?href="javascript:.*?".*?>((\\S|\\s)*?)<\\/a>','\\1',html)
-  html = re.sub('<!--(.*?)-->','',html)
-  html = re.sub('&nbsp;',' ',html)
-  html = re.sub('&sect;','§',html)
-  html = re.sub('&(.*?);','&amp;\\1;',html)
+  html = re.sub(r'<a .*?href="javascript:.*?".*?>((\S|\s)*?)<\/a>','\\1',html)
+  html = re.sub(r'<!--(.*?)-->','',html)
+  html = re.sub(r'&nbsp;',' ',html)
+  html = re.sub(r'&sect;','§',html)
+  html = re.sub(r'&(.*?);','&amp;\\1;',html)
   html = html.replace('\n',' ')
   html = html.replace('\r',' ')
   html = html.replace('\t',' ')
@@ -323,7 +323,7 @@ def html2docbook(html):
 
 def manage_exportDocx( self):
   request = self.REQUEST
-  tempfolder = tempfile.mktemp()
+  tempfolder = tempfile.mkdtemp()
   request.set('URL',self.absolute_url())
   env['self'] = self
   env['server_url'] = request['SERVER_URL']
@@ -479,7 +479,7 @@ def manage_importDocx( self):
                   rc.append(nd)
         return ''.join(rc).strip()
     result = []
-    tempfolder = tempfile.mktemp()
+    tempfolder = tempfile.mkdtemp()
     f = request['file']
     filename = os.path.join(tempfolder,f.filename)
     _fileutil.exportObj(f,filename)
@@ -507,12 +507,12 @@ def manage_importDocx( self):
   html += '<label class="control-label col-sm-2" for="file"><span>%s</span></label>'%self.getZMILangStr('ATTR_FILE')
   html += '<div class="col-sm-10"><input class="btn btn-file" size="25" name="file" type="file"/></div>'
   html += '</div><!-- .form-group -->'
-  html += '<div class="form-row">'
+  html += '<div class="form-group row">'
   html += '<div class="controls save">'
   html += '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button> '%(self.getZMILangStr('BTN_IMPORT'),self.getZMILangStr('BTN_IMPORT'))
   html += '<button type="button" name="btn" class="btn btn-secondary" value="return %s" onclick="btn_execute_click()">%s</button> '%(self.getZMILangStr('BTN_EXECUTE'),self.getZMILangStr('BTN_EXECUTE'))
   html += '</div>'
-  html += '</div><!-- .form-row -->'
+  html += '</div><!-- .form-group -->'
   
   # ---------------------------------
   

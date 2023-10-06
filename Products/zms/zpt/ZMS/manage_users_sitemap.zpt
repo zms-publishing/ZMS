@@ -85,7 +85,7 @@
 		</tbody>
 	</table>
 
-	<div class="form-row">
+	<div class="form-group row">
 		<div class="controls save">
 			<a class="btn btn-secondary" href="manage_users" title="Back"
 					tal:attributes="href python:'manage_users?lang=%s'%(request['lang']);title python:here.getZMILangStr('TAB_USERS')"

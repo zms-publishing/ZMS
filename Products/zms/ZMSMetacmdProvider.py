@@ -20,12 +20,9 @@
 # Imports.
 from DateTime import DateTime
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-from Products.PageTemplates import ZopePageTemplate
 import copy
-import os
 from zope.interface import implementer
 # Product Imports.
-from Products.zms import _fileutil
 from Products.zms import standard
 from Products.zms import zopeutil
 from Products.zms import IZMSMetacmdProvider, IZMSConfigurationProvider, IZMSRepositoryProvider
@@ -140,19 +137,23 @@ class ZMSMetacmdProvider(
         ids = self.getMetaCmdIds()
       for id in ids:
         o = self.getMetaCmd(id)
-        if o and not o.get('acquired', 0):
+        if o:
           d = {}
-          for k in [x for x in o if x not in ['bobobase_modification_time', 'data', 'home', 'meta_type']]:
-            d[k] = o[k]
-          ob = getattr(self, id)
-          if ob:
-            d['__icon__'] = ob.zmi_icon() if 'zmi_icon' in ob.__dict__ else 'fas fa-cog'
-            d['__description__'] = ob.meta_type
-            attr = {}
-            attr['id'] = id
-            attr['ob'] = ob
-            attr['type'] = ob.meta_type
-            d['Impl'] = [attr]
+          if o.get('acquired'):
+            d['id'] = id
+            d['acquired'] = o['acquired']
+          else:
+            for k in [x for x in o if x not in ['bobobase_modification_time', 'data', 'home', 'meta_type']]:
+              d[k] = o[k]
+            ob = getattr(self, id)
+            if ob:
+              d['__icon__'] = ob.zmi_icon() if 'zmi_icon' in ob.__dict__ else 'fas fa-cog'
+              d['__description__'] = ob.meta_type
+              attr = {}
+              attr['id'] = id
+              attr['ob'] = ob
+              attr['type'] = ob.meta_type
+              d['Impl'] = [attr]
           r[id] = d
       return r
 
@@ -409,11 +410,13 @@ class ZMSMetacmdProvider(
         if metaCmd.get('acquired', 0)==1:
           if portalMasterMetaCmds is None:
             portalMaster = self.getPortalMaster()
-            portalMasterMetaCmds = portalMaster.getMetaCmds(stereotype=stereotype)
-          l = [x for x in portalMasterMetaCmds if x['id']==metaCmd['id']]
-          if len(l) > 0:
-            metaCmd = l[0]
-            metaCmd['acquired'] = 1
+            if portalMaster is not None:
+              portalMasterMetaCmds = portalMaster.getMetaCmds(stereotype=stereotype)
+          if portalMasterMetaCmds is not None:
+            l = [x for x in portalMasterMetaCmds if x['id']==metaCmd['id']]
+            if len(l) > 0:
+              metaCmd = l[0]
+              metaCmd['acquired'] = 1
         else:
           metaCmd = metaCmd.copy()
           metaCmd['home'] = self.aq_parent
@@ -535,6 +538,7 @@ class ZMSMetacmdProvider(
               metaCmd = self.getMetaCmd(id)
               revision = metaCmd.get('revision', '0.0.0')
               el_id = metaCmd['id']
+              el_package = metaCmd.get('package')
               el_name = metaCmd['name']
               el_title = metaCmd.get('title', '')
               el_meta_type = metaCmd['meta_type']
@@ -545,7 +549,7 @@ class ZMSMetacmdProvider(
               el_execution = metaCmd['execution']
               el_data = zopeutil.readObject(metaCmd['home'], metaCmd['id'])
               # Value.
-              value.append({'id':el_id,'revision':revision,'name':el_name,'title':el_title,'description':el_description,'meta_types':el_meta_types,'roles':el_roles,'execution':el_execution,'icon_clazz':el_icon_clazz,'meta_type':el_meta_type,'data':el_data})
+              value.append({'id':el_id,'package':el_package,'revision':revision,'name':el_name,'title':el_title,'description':el_description,'meta_types':el_meta_types,'roles':el_roles,'execution':el_execution,'icon_clazz':el_icon_clazz,'meta_type':el_meta_type,'data':el_data})
           # XML.
           if len(ids)==1:
             filename = '%s-%s.metacmd.xml'%(ids[0], revision)
@@ -567,7 +571,7 @@ class ZMSMetacmdProvider(
           else:
             filename = REQUEST['init']
             self.importConf(filename)
-          message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%f.filename)
+          message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%filename)
         
         # Insert.
         # -------

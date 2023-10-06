@@ -22,14 +22,12 @@ from AccessControl.class_init import InitializeClass
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
 import operator
-import sys
 import time
 import zExceptions
 # Product Imports.
 from Products.zms import standard
 from Products.zms import zopeutil 
 from Products.zms import _blobfields
-from Products.zms import _confmanager
 from Products.zms import _globals
 from Products.zms import _zmsattributecontainer
 
@@ -1088,7 +1086,7 @@ class VersionManagerContainer(object):
       if self.isPage():
         b = self.isPageContainer()
         if not b:
-          b = self.meta_id == 'ZMSLinkElement' and self.isEmbedded(self.REQUEST)
+          b = self.meta_id == 'ZMSLinkElement' and self.isEmbedded()
         if not b:
           parent = self.getParentNode()
           b = parent is not None and parent.isPageContainer()

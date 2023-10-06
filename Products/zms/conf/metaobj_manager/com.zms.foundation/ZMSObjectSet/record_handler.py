@@ -16,7 +16,7 @@ class EntityRecordHandler():
     childNode = getattr(zmscontext,id)
     objectset = childNode.attr('objectset')
     if not objectset:
-      objectset = '<span class=\042label label-default zmi-info %s\042><a href=\042%s/manage_main?lang=%s\042>%s %s</a></span>'%(['','active'][int(childNode.isActive(request))],childNode.absolute_url(),request['lang'],childNode.display_icon(request),childNode.display_type(request))
+      objectset = '<span class=\042label label-default zmi-info %s\042><a href=\042%s/manage_main?lang=%s\042>%s %s</a></span>'%(['','active'][int(childNode.isActive(request))],childNode.absolute_url(),request['lang'],childNode.display_icon(),childNode.display_type())
     r['objectset'] = objectset
     return r
 record_handler = EntityRecordHandler()

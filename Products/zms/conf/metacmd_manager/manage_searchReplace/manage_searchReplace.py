@@ -170,7 +170,7 @@ def renderHtml():
 			</div>
 		</div><!-- .form-group -->
 
-		<div class="form-row">
+		<div class="form-group row">
 			<div class="controls save">
 				<button type="submit" name="btn" class="btn btn-primary" value="BTN_EXECUTE">%s</button> 
 				<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CANCEL">%s</button>

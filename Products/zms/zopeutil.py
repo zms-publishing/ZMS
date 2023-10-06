@@ -277,7 +277,11 @@ def addExternalMethod(container, id, title, data):
         if os.path.exists(filepath):
           break
         context = context.getParentNode()
-  ExternalMethod.manage_addExternalMethod( container, id, title, m, f)
+  try:
+    ExternalMethod.manage_addExternalMethod( container, id, title, m, f)
+  except:
+    standard.writeError(container,"[addExternalMethod]: %s does not exist.\n"%id)
+    pass
 
 def addPageTemplate(container, id, title, data):
   """
@@ -326,7 +330,7 @@ def addZSqlMethod(container, id, title, data):
     d['max_cache'] = ob.max_cache_
     d['cache_time'] = ob.cache_time_
     for key in d:
-      f = re.findall('<%s>((.|\s)*?)</%s>\n'%(key,key),data)
+      f = re.findall(r'<%s>((.|\s)*?)</%s>\n'%(key,key),data)
       if f:
         value = f[0][0]
         d[key] = value

@@ -121,7 +121,7 @@
 				<input type="text" name="comment" class="form-control form-control-sm" />
 			</div><!-- .controls -->
 		</div><!-- .form-group -->
-		<div class="form-group">
+		<div class="form-group row">
 			<div class="controls save">
 				<button name="btn" class="btn btn-primary" value="BTN_SEND" tal:content="python:here.getZMILangStr('BTN_SEND')">Send</button>
 				<button name="btn" class="btn btn-secondary" value="BTN_CANCEL" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
@@ -140,7 +140,7 @@
 		mbody python:[];
 		dummy0 python:mbody.append(''
 			+ 'INFO: Folgendes Objekt wude publiziert:\n'
-			+ '%s: \t'%zmscontext.display_type(request)
+			+ '%s: \t'%zmscontext.display_type()
 			+ '>> '.join([x.getTitlealt(request) for x in zmscontext.breadcrumbs_obj_path()]) + '\n'
 			+ 'MANAGE: \t%s/manage\n'%zmscontext.absolute_url()
 			+ 'PREVIEW: \t%s/preview_html\n\n'%zmscontext.absolute_url()
@@ -248,7 +248,7 @@
 				<input type="text" name="comment" class="form-control" />
 			</div><!-- .controls -->
 		</div><!-- .form-group.row -->
-		<div class="form-group">
+		<div class="form-group row">
 			<div class="controls save">
 				<button name="btn" class="btn btn-primary" value="BTN_SEND" tal:content="python:here.getZMILangStr('BTN_SEND')">Send</button>
 				<button name="btn" class="btn btn-secondary" value="BTN_CANCEL" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
@@ -268,7 +268,7 @@
 		global mbody python:[];
 		dummy0 python:mbody.append(''
 			+ 'INFO: Bitte publizieren Sie folgende Ãnderungen\n'
-			+ '%s: \t'%zmscontext.display_type(request)
+			+ '%s: \t'%zmscontext.display_type()
 			+ '>> '.join([x.getTitlealt(request) for x in zmscontext.breadcrumbs_obj_path()]) + '\n'
 			+ 'MANAGE: \t%s/manage\n'%zmscontext.absolute_url()
 			+ 'PREVIEW: \t%s/preview_html\n\n'%zmscontext.absolute_url()
@@ -277,7 +277,7 @@
 	<tal:block tal:repeat="childNode python:[x for x in [zmscontext]+zmscontext.getChildNodes(request) if x.isObjModified(request)]">
 		<tal:block tal:define="global
 			dummy0 python:mbody.append(''
-				+ '- %s '%(zmscontext.display_type(request))
+				+ '- %s '%zmscontext.display_type()
 					+ '[' + ','.join([here.getZMILangStr(x) for x in ['STATE_NEW','STATE_MODIFIED','STATE_DELETED'] if childNode.inObjStates(x,request)]) + '] '
 				+ '%s '%(childNode.getLangFmtDate(childNode.attr('change_dt')))
 				+ '%s %s '%(childNode.getZMILangStr('BY'),childNode.attr('change_uid'))
@@ -368,7 +368,7 @@
 				<input type="text" name="comment" class="form-control" />
 			</div>
 		</div><!-- .form-group.row -->
-		<div class="form-group">
+		<div class="form-group row">
 			<div class="controls save">
 				<button name="btn" class="btn btn-primary" value="BTN_SEND" tal:content="python:here.getZMILangStr('BTN_SEND')">Send</button>
 				<button name="btn" class="btn btn-secondary" value="BTN_CANCEL" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
@@ -388,7 +388,7 @@
 		global mbody python:[];
 		dummy0 python:mbody.append(''
 			+ 'INFO: Publikation der Ãnderungen wurde leider abgelehnt.\n'
-			+ '%s: \t'%zmscontext.display_type(request)
+			+ '%s: \t'%zmscontext.display_type()
 			+ '>> '.join([x.getTitlealt(request) for x in zmscontext.breadcrumbs_obj_path()]) + '\n'
 			+ 'MANAGE: \t%s/manage\n'%zmscontext.absolute_url()
 			+ 'PREVIEW: \t%s/preview_html\n\n'%zmscontext.absolute_url()
@@ -397,7 +397,7 @@
 	<tal:block tal:repeat="childNode python:[x for x in [zmscontext]+zmscontext.getChildNodes(request) if x.isObjModified(request)]">
 		<tal:block tal:define="global
 			dummy0 python:mbody.append(''
-				+ '- %s '%(zmscontext.display_type(request))
+				+ '- %s '%zmscontext.display_type()
 				+ '[' + ','.join([here.getZMILangStr(x) for x in ['STATE_NEW','STATE_MODIFIED','STATE_DELETED'] if childNode.inObjStates(x,request)]) + '] '
 				+ '%s '%(childNode.getLangFmtDate(childNode.attr('change_dt')))
 				+ '%s %s '%(childNode.getZMILangStr('BY'),childNode.attr('change_uid'))

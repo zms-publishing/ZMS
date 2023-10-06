@@ -20,7 +20,6 @@
 import ZPublisher.HTTPRequest
 import copy
 # Product Imports.
-from Products.zms import IZMSRepositoryProvider
 from Products.zms import standard
 from Products.zms import _blobfields
 

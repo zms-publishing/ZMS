@@ -24,8 +24,8 @@
 
 		<div class="form-group row" tal:condition="python:here.getPortalMaster() is not None or len(here.getPortalClients())>0">
 			<div class="control-label col-md-12" tal:define="home_id python:here.getHome().id">
-				<input type="hidden" name="home_id" tal:attributes="value python:request.get('home_id',home_id); data-value home_id">
-				<input type="checkbox" class="form-check-input" onchange="var $i=$('input[name=home_id]');$i.val(this.checked?$i.attr('data-value'):'');" tal:attributes="checked python:['','checked'][request.get('home_id',home_id)==home_id]">
+				<input type="hidden" name="home_id" tal:attributes="value python:request.get('home_id',home_id); data-value home_id" />
+				<input type="checkbox" class="form-check-input" onchange="var $i=$('input[name=home_id]');$i.val(this.checked?$i.attr('data-value'):'');" tal:attributes="checked python:['','checked'][request.get('home_id',home_id)==home_id]" />
 				<label class="form-check-label control-label">
 					<strong tal:content="home_id">the home-id</strong> (local)
 				</label>
@@ -34,7 +34,7 @@
 
 
 		<tal:comment replace="nothing">
-			<div class="form-group row" tal:define="global optpl python:[ [x, here.display_type(request,x)] for x in here.getMetaobjIds(excl_ids=['ZMS']) ]">
+			<div class="form-group row" tal:define="global optpl python:[ [x, here.display_type(meta_id=x)] for x in here.getMetaobjIds(excl_ids=['ZMS']) ]">
 				<div class="col-sm-9 col-md-10" tal:content="structure python:here.zmi_input_multiselect(here,name='search_meta_types',value=request.get('search_meta_types',[]),type='multiselect',lang_str='ATTR_TYPE',options=optpl)">the control</div>
 			</div><!-- .form-group -->
 		</tal:comment>

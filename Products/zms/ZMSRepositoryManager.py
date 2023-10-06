@@ -20,7 +20,6 @@
 from DateTime import DateTime
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
-import inspect
 import os
 import re
 import time
@@ -259,7 +258,8 @@ class ZMSRepositoryManager(
       local = provider.provideRepository(ids)
       for id in local:
         o = local[id]
-        filename = o.get('__filename__', [id, '__init__.py'])
+        acquired = int(o.get('acquired',0))
+        filename = o.get('__filename__', [id, '__%s__.py'%['init','acquired'][acquired]])
         # Write python-representation.
         py = []
         py.append('class %s:'%id.replace('.','_').replace('-','_'))
@@ -280,7 +280,7 @@ class ZMSRepositoryManager(
             py.append('\t# %s'%k.capitalize())
             py.append('\tclass %s:'%standard.id_quote(k).capitalize())
             # Are there duplicated ids after id-quoting?
-            id_list = [ self.id_quote(i['id']) for i in v if i.get('ob') is None ] 
+            id_list = [ standard.id_quote(i['id']) for i in v if i.get('ob') is None ] 
             id_duplicates =  [ i for i in id_list if id_list.count(i) > 1 ]
             for i in v:
               if 'id' in i:
@@ -303,7 +303,7 @@ class ZMSRepositoryManager(
                   del i['ob']
                 try:
                   # Prevent id-quoting if duplicates may result
-                  id_quoted = ( i['id'].startswith('_') and ( self.id_quote(i['id']) in id_duplicates) ) and i['id'] or self.id_quote(i['id'])
+                  id_quoted = ( i['id'].startswith('_') and ( standard.id_quote(i['id']) in id_duplicates) ) and i['id'] or standard.id_quote(i['id'])
                   py.append('\t\t%s = %s'%(id_quoted, standard.str_json(i, encoding="utf-8", formatted=True, level=3, allow_booleans=False)))
                 except:
                   py.append('\t\t# ERROR: '+standard.writeError(self,'can\'t localFiles \'%s\''%i['id']))
@@ -318,7 +318,7 @@ class ZMSRepositoryManager(
           d['version'] = [int(x) for x in o.get('revision', '0.0.0').split('.')]
         except:
           # version schmeme 0.0.0 must not contain strings
-          d['version'] = list(map(int, re.findall('\d+', o.get('revision', '0.0.0'))))
+          d['version'] = list(map(int, re.findall(r'\d+', o.get('revision', '0.0.0'))))
         d['meta_type'] = 'Script (Python)'
         l[d['filename']] = d
       return l
@@ -363,7 +363,7 @@ class ZMSRepositoryManager(
                   standard.writeLog(self,"[commitChanges]: remove file %s"%filepath)
                   _fileutil.remove(filepath)
             # Clear folders.
-            dir = list(set([os.path.join(basepath,x[:x.rfind(os.path.sep)]) for x in files if x.endswith('__init__.py')]))
+            dir = list(set([os.path.join(basepath,x[:x.rfind(os.path.sep)]) for x in files if x.endswith('__.py')]))
             dir = [x for x in dir if x.split(os.path.sep)[-1] in [y.split(':')[-1] for y in ids]]
             [[os.remove(z) for z in [os.path.join(x,y) for y in os.listdir(x)] if os.path.isfile(z)] for x in dir if os.path.isdir(x)]
             # Write files.
@@ -436,7 +436,7 @@ class ZMSRepositoryManager(
       
       if btn == 'save':
         self.auto_update = REQUEST.get('auto_update','')!=''
-        self.last_update = self.parseLangFmtDate(REQUEST.get('last_update',''))
+        self.last_update = standard.parseLangFmtDate(REQUEST.get('last_update',''))
         self.ignore_orphans = REQUEST.get('ignore_orphans','')!=''
         self.setConfProperty('ZMS.conf.path',REQUEST.get('basepath',''))
         self.update_direction = REQUEST.get('update_direction','Loading')

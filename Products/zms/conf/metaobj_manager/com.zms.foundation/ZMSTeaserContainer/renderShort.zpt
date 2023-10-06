@@ -6,8 +6,8 @@
 	    tal:attributes="class python:teaserElmnt.isActive(request)==False and 'ZMSTeaserElement inactive' or default">
 		<a tal:attributes="
 						href python:'%s/manage_main?lang=%s'%(teaserElmnt.absolute_url(),request['lang']); 
-						title python:zmscontext.getZMILangStr('CAPTION_EDIT')%teaserElmnt.display_type(request)"
-				tal:content="structure python:teaserElmnt.display_icon(request)">
+						title python:zmscontext.getZMILangStr('CAPTION_EDIT')%teaserElmnt.display_type()"
+				tal:content="structure python:teaserElmnt.display_icon()">
 			the internal link
 		</a>
 		<tal:block 

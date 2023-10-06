@@ -19,7 +19,7 @@
 # Imports.
 from App.Common import package_home
 import OFS.misc_
-import copy
+import json
 from zope.interface import implementer
 # Product Imports.
 from Products.zms import IZMSLocale
@@ -237,19 +237,20 @@ class MultiLanguageManager(object):
       """
       manage_lang = None
       req = getattr( self, 'REQUEST', None)
-      if req is not None:
-        sess = standard.get_session(self)
-        if 'manage_lang' in req:
-          manage_lang = req.get('manage_lang')
-        else:
-          if sess is not None and 'reset_manage_lang' not in req.form:
-            manage_lang = sess.get('manage_lang')
-          if manage_lang is None:
-            lang = req.get('lang')
-            if lang in self.getLangIds():
-              manage_lang = self.getLang(lang).get('manage')
-        if sess is not None:
-          sess.set('manage_lang', manage_lang)
+      if req.get( 'is_zmi', False):
+        if req is not None:
+          sess = standard.get_session(self)
+          if 'manage_lang' in req:
+            manage_lang = req.get('manage_lang')
+          else:
+            if sess is not None and 'reset_manage_lang' not in req.form:
+              manage_lang = sess.get('manage_lang')
+            if manage_lang is None:
+              lang = req.get('lang')
+              if lang in self.getLangIds():
+                manage_lang = self.getLang(lang).get('manage')
+          if sess is not None:
+            sess.set('manage_lang', manage_lang)
       if manage_lang is None:
         manage_lang = 'eng'
       return manage_lang
@@ -281,12 +282,13 @@ class MultiLanguageManager(object):
         return d[key][lang]
       
       # Return system value.
-      d = OFS.misc_.misc_.zms['langdict'].get_langdict()
-      if key in d:
-        if lang not in d[key]:
-          lang = 'eng'
-        if lang in d[key]:
-          return d[key][lang]
+      if hasattr(OFS.misc_.misc_,'zms'):
+        d = OFS.misc_.misc_.zms['langdict'].get_langdict()
+        if key in d:
+          if lang not in d[key]:
+            lang = 'eng'
+          if lang in d[key]:
+            return d[key][lang]
       
       return key
 
@@ -571,8 +573,8 @@ class MultiLanguageManager(object):
       self.storeReqBuff( reqBuffId, d)
       if REQUEST is not None:
         REQUEST.RESPONSE.setHeader('Cache-Control', 'public, max-age=3600')
-        REQUEST.RESPONSE.setHeader('Content-Type', 'text/plain; charset=utf-8')
-        return self.str_json(d)
+        REQUEST.RESPONSE.setHeader('Content-Type', 'application/json; charset=utf-8')
+        return json.dumps(d)
       
       return d
 

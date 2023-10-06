@@ -17,12 +17,9 @@
 ################################################################################
 
 # Imports.
-from __future__ import absolute_import
-from App.Common import package_home
 from OFS.role import RoleManager
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-from OFS.CopySupport import _cb_decode, _cb_encode, CopyError # TODO , eNoData, eNotFound, eInvalid
-import copy
+from OFS.CopySupport import _cb_decode, _cb_encode
 import re
 import sys
 import time
@@ -30,9 +27,7 @@ import time
 from Products.zms import zmsobject
 from Products.zms import standard
 from Products.zms import _accessmanager
-from Products.zms import _confmanager
 from Products.zms import _fileutil
-from Products.zms import _objattrs
 from Products.zms import _versionmanager
 from Products.zms import _zmi_actions_util
 
@@ -85,7 +80,6 @@ def getNextSibling(self, REQUEST, incResource=False):
           return ob
         i = i + 1
   return None
-
 
 
 ################################################################################
@@ -461,7 +455,6 @@ class ZMSContainerObject(
       xml += "</result>\n"
       return xml
 
-
     ############################################################################
     ###
     ###  Page-Navigation
@@ -529,7 +522,7 @@ class ZMSContainerObject(
       ob = None
       root = standard.nvl(root, self.getDocumentElement())
       while True:
-        children = self.filteredChildNodes(REQUEST, self.PAGES)
+        children = [childNode for childNode in self.filteredChildNodes(REQUEST, self.PAGES) if ((incResource==False and not childNode.isResource(REQUEST)) or incResource==True) ]
         if len(children) > 0:
           ob = children[0]
         else:
@@ -750,6 +743,25 @@ class ZMSContainerObject(
     ###
     ############################################################################
 
+    def get_next_node(self, allow_children=True):
+      # children
+      if allow_children:
+        if self.meta_id != 'ZMSLinkElement':
+          children = self.getChildNodes()
+          if children:
+            return children[0]
+      # siblings
+      parent  = self.getParentNode()
+      if parent:
+        siblings = parent.getChildNodes()
+        index = siblings.index(self)
+        if index < len(siblings) - 1:
+          return siblings[index+1]
+        # parent
+        return parent.get_next_node(allow_children=False)
+      # none
+      return None
+
     # --------------------------------------------------------------------------
     #  ZMSContainerObject.filteredTreeNodes:
     #
@@ -871,10 +883,9 @@ class ZMSContainerObject(
         obs = [x for x in obs if pattern.match( x.id)]
       # Get all object-items.
       if REQUEST is None:
-        childNodes = [( getattr( x, 'sort_id', ''), x) for x in obs]
+        childNodes = obs
       # Get selected object-items.
       else:
-        prim_lang = self.getPrimaryLanguage()
         lang = REQUEST.get('lang', None)
         # Get coverages.
         coverages = [ '', 'obligation', None]
@@ -887,16 +898,12 @@ class ZMSContainerObject(
             obj_vers = ob.getObjVersion( REQUEST)
             coverage = getattr( obj_vers, 'attr_dc_coverage', '')
           if coverage in coverages:
-            proxy = ob.__proxy__()
-            if proxy is not None:
-              sort_id = getattr( ob, 'sort_id', '')
-              if ob.isPage():
-                sort_id = 's' + sort_id
-              childNodes.append( ( sort_id, proxy))
-      # Sort child-nodes.
-      childNodes.sort()
+            childNodes.append(ob)
       # Return child-nodes in correct sort-order.
-      return [x[1] for x in childNodes]
+      childNodes = sorted(childNodes, key=lambda x:'%s_%s'%(standard.id_prefix(x.id),getattr(x,'sort_id','')))
+      childNodes = [x.__proxy__() for x in childNodes]
+      childNodes = [x for x in childNodes if x]
+      return childNodes
 
 
     ############################################################################

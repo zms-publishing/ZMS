@@ -4,6 +4,7 @@
   <item type="dictionary">
     <dictionary>
       <item key="data"><![CDATA[from Products.PythonScripts.standard import html_quote
+from Products.zms import standard
 
 def manage_addZIPMultiUpload(self):
 	request = self.REQUEST
@@ -48,7 +49,7 @@ def manage_addZIPMultiUpload(self):
 				root = file['local_filename'][:max(file['local_filename'].rfind('/'),file['local_filename'].rfind('\\'))]
 			if file['isdir']:
 				containers.append(file['local_filename'])
-				html += '<ol style="list-style-type:none;"><li style="list-style-type:none;"><input type="checkbox" name="ids:list" value="%s" checked="checked"/>%s %s</li>'%(file['local_filename'][len(root):],self.display_icon(request,'ZMSFolder'),file['filename'])
+				html += '<ol style="list-style-type:none;"><li style="list-style-type:none;"><input type="checkbox" name="ids:list" value="%s" checked="checked"/>%s %s</li>'%(file['local_filename'][len(root):],self.display_icon(meta_id='ZMSFolder'),file['filename'])
 			else:
 				if containers:
 					if base != containers[-1]:
@@ -59,14 +60,14 @@ def manage_addZIPMultiUpload(self):
 					meta_id = 'ZMSTextarea'
 				elif file['content_type'].startswith('image/'):
 					meta_id = 'ZMSGraphic'
-				html += '<li style="list-style-type:none;"><input type="checkbox" name="ids:list" value="%s" checked="checked"/>&nbsp;%s %s (%s)</li>'%(file['local_filename'][len(root):],self.display_icon(request,meta_id),file['filename'],self.getDataSizeStr(file['size']))
+				html += '<li style="list-style-type:none;"><input type="checkbox" name="ids:list" value="%s" checked="checked"/>&nbsp;%s %s (%s)</li>'%(file['local_filename'][len(root):],self.display_icon(meta_id=meta_id),file['filename'],self.getDataSizeStr(file['size']))
 		for base in containers:
 			html += '</ol>'
 
 		html += '</div><!-- .form-group -->'
 
 
-		html += '<div class="form-row">'
+		html += '<div class="form-group row">'
 		html += '<div class="controls save">'
 		html += '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>'%(self.getZMILangStr('BTN_IMPORT'),self.getZMILangStr('BTN_IMPORT'))
 		html += '<button type="submit" name="btn" class="btn btn-secondary" value="%s">%s</button>'%(self.getZMILangStr('BTN_CANCEL'),self.getZMILangStr('BTN_CANCEL'))
@@ -132,7 +133,7 @@ def manage_addZIPMultiUpload(self):
 														},request)
 				c += 1
 		message.append(self.getZMILangStr('MSG_IMPORTED')%temp_filename+' [%i/%i]'%(c,len(files)))
-		request.response.redirect(self.url_append_params('%s/manage_main'%self.absolute_url(),{'lang':request['lang'],'manage_tabs_message':'<br/>'.join(message)}))
+		request.response.redirect(standard.url_append_params('%s/manage_main'%self.absolute_url(),{'lang':request['lang'],'manage_tabs_message':'<br/>'.join(message)}))
 
 	# --- Display initial import form.
 	# ---------------------------------
@@ -143,12 +144,12 @@ def manage_addZIPMultiUpload(self):
 		html += '<input class="form-control" name="file" type="file" size="25" />'
 		html += '</div><!-- .form-group -->'
 
-		html += '<div class="form-row">'
+		html += '<div class="form-group row">'
 		html += '<div class="controls save">'
 		html += '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button> '%(self.getZMILangStr('BTN_IMPORT'),self.getZMILangStr('BTN_IMPORT'))
 		html += '<button type="submit" name="btn" class="btn btn-secondary" value="%s">%s</button> '%(self.getZMILangStr('BTN_CANCEL'),self.getZMILangStr('BTN_CANCEL'))
 		html += '</div><!-- .controls.save -->'
-		html += '</div><!-- .form-row -->'
+		html += '</div><!-- .form-group -->'
 
 	# ---------------------------------
 

@@ -120,7 +120,7 @@ $(function() {
 	$(".zmi-image,.zmi-file").each(function() {
 			$(this).addClass("d-flex align-items-center");
 			var elName = $(this).attr("id");
-			elName = elName.substr(elName.lastIndexOf("-")+1);
+			elName = elName.substring(elName.lastIndexOf("-")+1);
 			zmiRegisterBlob(elName);
 			$("#delete_btn_"+elName,this).attr("href","javascript:zmiDelBlobBtnClick('"+elName+"')");
 			$("#undo_btn_"+elName,this).attr("href","javascript:zmiUndoBlobBtnClick('"+elName+"')");

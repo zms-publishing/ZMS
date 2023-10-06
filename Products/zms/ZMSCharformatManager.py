@@ -17,12 +17,9 @@
 ################################################################################
 
 # Imports.
-from __future__ import absolute_import
-import ZPublisher.HTTPRequest
 import copy
 # Product Imports.
 from Products.zms import standard
-from Products.zms import _blobfields
 
 
 ################################################################################
@@ -47,7 +44,7 @@ class ZMSCharformatManager(object):
     # --------------------------------------------------------------------------
 
     def _importCharformatXml(self, item):
-        newId = self.id_quote(item.get('display', ''))
+        newId = standard.id_quote(item.get('display', ''))
         if len(newId) == 0:
           newId = self.getNewId('fmt')
         newId = item.get('id', newId)
@@ -61,7 +58,7 @@ class ZMSCharformatManager(object):
         self.charformats = copy.deepcopy(self.charformats)
 
     def importCharformatXml(self, xml):
-      v = self.parseXmlString(xml)
+      v = standard.parseXmlString(xml)
       if isinstance(v, list):
         for item in v:
           self._importCharformatXml(item)

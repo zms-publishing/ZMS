@@ -38,7 +38,7 @@
 	></tal:block>
 
 	<legend class="navbar navbar-nav navbar-expand navbar-dark" 
-		tal:content="python:'%s (%s)'%(meta_id,here.display_type(request,meta_id))">the display-type</legend>
+		tal:content="python:'%s (%s)'%(meta_id,here.display_type(meta_id=meta_id))">the display-type</legend>
 
 	<table class="table">
 		<thead>

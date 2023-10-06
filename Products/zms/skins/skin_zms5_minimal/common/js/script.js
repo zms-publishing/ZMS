@@ -2,7 +2,7 @@
 
 function GetSearchBaseUrl() {
   var baseurl = self.location.href;
-  baseurl = baseurl.substr(0,baseurl.indexOf('/content/'))+'/content/';
+  baseurl = baseurl.substring(0,baseurl.indexOf('/content/'))+'/content/';
   return baseurl;
 }
 
@@ -35,8 +35,8 @@ function htmlReplace($context, exp, newvalue) {
 					}
 					else {
 						html = html
-							+ raw[i].substr(0,j+1)
-							+ raw[i].substr(j+1).replace( regexp, newvalue);
+							+ raw[i].substring(0,j+1)
+							+ raw[i].substring(j+1).replace( regexp, newvalue);
 					}
 				}
 				$(this).parent().html(html);
@@ -87,7 +87,7 @@ function GetURLParameter(sParam, sDefault) {
  */
 function AssembleUrlParameter(url,d) {
   if (url.indexOf("?") > 0) {
-    var sPageURL = url.substr(url.indexOf("?")+1);
+    var sPageURL = url.substring(url.indexOf("?")+1);
     var sURLVariables = sPageURL.split('&');
     for (var i = 0; i < sURLVariables.length; i++) {
       var sURLVariable = sURLVariables[i].split('=');
@@ -97,7 +97,7 @@ function AssembleUrlParameter(url,d) {
         d[sParameterName] = sParameterValue;
       }
     }
-    url = url.substr(0,url.indexOf("?"));
+    url = url.substring(0,url.indexOf("?"));
   }
   var dl = "?";
   for (var sParameterName in d) {
@@ -152,7 +152,7 @@ $(function() {
 
 // ********** ZOOM img for ZMSGraphic **********
 var src = zmiParams.base_url;
-src = src.substr(0,src.lastIndexOf("/"));
+src = src.substring(0,src.lastIndexOf("/"));
 src = src + "/common/js/images/zoomImg.png";
 $('div.graphic>a.fancybox>img.img').after('<div class="zoomImg"><img src="'+src+'" /></div>');
 

@@ -17,18 +17,13 @@
 ################################################################################
 
 # Imports.
-from __future__ import absolute_import
 from App.Common import package_home
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from OFS.Folder import Folder
-from sys import *
 import collections
-import copy
 import os
-import shutil
 import sys
 import time
-import transaction
 import zExceptions
 # Product imports.
 from Products.zms import standard
@@ -40,14 +35,10 @@ from Products.zms import _fileutil
 from Products.zms import _importable
 from Products.zms import _mediadb
 from Products.zms import _objattrs
-from Products.zms import _xmllib
 from Products.zms import _zcatalogmanager
-from Products.zms import _zmsattributecontainer
-from Products.zms import ZMSMetacmdProvider, ZMSMetamodelProvider, ZMSFormatProvider, ZMSWorkflowProvider
+from Products.zms import ZMSMetacmdProvider, ZMSMetamodelProvider, ZMSFormatProvider
 from Products.zms.zmscustom import ZMSCustom
-from Products.zms.zmslinkcontainer import ZMSLinkContainer
 from Products.zms.zmslinkelement import ZMSLinkElement
-from Products.zms.zmsindex import ZMSIndex
 from Products.zms.zmslog import ZMSLog
 from Products.zms.zmsobject import ZMSObject
 from Products.zms.zmssqldb import ZMSSqlDb
@@ -263,7 +254,6 @@ class ZMS(
     # -----------------------
     __viewPermissions__ = (
         'manage', 'manage_main', 'manage_container', 'manage_workspace', 'manage_menu',
-        'manage_ajaxGetChildNodes',
         )
     __administratorPermissions__ = (
         'manage_customize',
@@ -313,6 +303,8 @@ class ZMS(
 
     # Interface.
     # ----------
+    swagger_ui = PageTemplateFile('zpt/ZMS/swagger-ui', globals()) # swagger-ui
+    openapi_yaml = PageTemplateFile('zpt/ZMS/openapi_yaml', globals()) # openapi.yaml
     index_html = PageTemplateFile('zpt/ZMS/index', globals()) # index_html
     f_index_html = PageTemplateFile('zpt/ZMS/index', globals()) # index_html
     f_headDoctype = PageTemplateFile('zpt/ZMS/f_headdoctype', globals()) # Head.DOCTYPE
@@ -399,7 +391,13 @@ class ZMS(
     The root element of the site.
     """
     def getRootElement(self):
-      return self.breadcrumbs_obj_path()[0]
+      doc_elmnt = self
+      while True:
+        portal_mstr = doc_elmnt.getPortalMaster()
+        if portal_mstr is None:
+          break
+        doc_elmnt = portal_mstr
+      return doc_elmnt
 
     # --------------------------------------------------------------------------
     #  ZMS.getAbsoluteHome
@@ -461,11 +459,11 @@ class ZMS(
     """
     def getPortalMaster(self):
       v = self.get_conf_properties().get('Portal.Master', '')
-      if len(v) > 0:
+      if v:
         try:
           return getattr( self, v).content
         except:
-          standard.writeError(self, '[getPortalMaster]: %s not found!'%str(v))
+          pass
       return None
 
     """
@@ -474,13 +472,13 @@ class ZMS(
     def getPortalClients(self):
       docElmnts = []
       v = self.get_conf_properties().get('Portal.Clients', [])
-      if len(v) > 0:
-        thisHome = self.getHome()
+      if v:
+        home = self.getHome()
         for id in v:
           try:
-            docElmnts.append(getattr(thisHome, id).content)
+            docElmnts.append(getattr(home, id).content)
           except:
-            standard.writeError(self, '[getPortalClients]: %s not found!'%str(id))
+            pass
       return docElmnts
 
 

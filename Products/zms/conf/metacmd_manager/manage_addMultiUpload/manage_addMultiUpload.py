@@ -134,7 +134,7 @@ def manage_addMultiUpload(self):
 
 		msg.append('<br/>')
 		html += '<div class="alert alert-success">%s</div><!-- .alert.alert-success -->'%('<br/>')
-		request.response.redirect(self.url_append_params('%s/manage_main'%self.absolute_url(),{'lang':request['lang'],'manage_tabs_message':'<br/>'.join(msg)}))
+		request.response.redirect(standard.url_append_params('%s/manage_main'%self.absolute_url(),{'lang':request['lang'],'manage_tabs_message':'<br/>'.join(msg)}))
 
 	# --- Display initial import form.
 	# ---------------------------------
@@ -146,7 +146,7 @@ def manage_addMultiUpload(self):
 					<input id="file" style="height:2.55rem;" name="file" type="file" class="form-control file" multiple="true" data-show-upload="false" data-show-caption="true" />
 				</div>'
 			</div><!-- .form-group -->
-			<div class="form-row">
+			<div class="form-group row">
 				<div class="controls save py-3 px-1">
 					<button type="submit" name="btn" class="btn btn-primary" value="BTN_UPLOAD">%s</button>
 					<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CANCEL">%s</button>

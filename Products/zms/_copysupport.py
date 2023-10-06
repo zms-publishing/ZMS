@@ -17,11 +17,9 @@
 ################################################################################
 
 # Imports.
-from __future__ import absolute_import
-import copy
 import time
 from OFS import Moniker
-from OFS.CopySupport import _cb_decode, _cb_encode, CopyError # TODO , eNoData, eNotFound, eInvalid
+from OFS.CopySupport import _cb_decode, _cb_encode, CopyError
 # Product Imports.
 from Products.zms import standard
 
@@ -117,13 +115,12 @@ class CopySupport(object):
         if REQUEST and '__cp' in REQUEST:
           cp=REQUEST['__cp']
       if cp is None:
-        raise CopyError(eNoData)
+        raise CopyError('No Data')
       
       try: 
         cp=_cb_decode(cp)
       except: 
-        standard.writeError( self, '[CopySupport._get_cb_copy_data]: eInvalid')
-        raise CopyError(eInvalid)
+        raise CopyError('Invalid')
       
       return cp
 
@@ -136,8 +133,7 @@ class CopySupport(object):
         try: 
           cp=_cb_decode(cp)
         except: 
-          standard.writeError( self, '[CopySupport._get_obs]: eInvalid')
-          #raise CopyError, eInvalid
+          raise CopyError('Invalid')
         
         oblist=[]
         op=cp[0]
@@ -148,8 +144,7 @@ class CopySupport(object):
           try: 
             ob = m.bind(app)
           except: 
-            standard.writeError( self, '[CopySupport._get_obs]: eNotFound')
-            #raise CopyError, eNotFound
+            raise CopyError('Not Found')
           self._verifyObjectPaste(ob)
           oblist.append(ob)
         

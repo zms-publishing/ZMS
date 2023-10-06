@@ -17,11 +17,8 @@
 ################################################################################
 
 # Imports.
-from __future__ import absolute_import
 from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
-from App.Common import package_home
-from OFS.Image import Image
 import codecs
 import copy
 import tempfile
@@ -160,7 +157,7 @@ def localIndexHtml(self, obj, level, html, xhtml=False):
    url = url[url.find('/'):]
    base_url = doc_url
    base_url = base_url[ : base_url.find(url)]
-   html = re.sub( '"([^("\')]*?)'+url+'([^("\')]*?)"', '"'+base_url+url+'\\2"', standard.pystr(html))
+   html = re.sub(r'"([^("\')]*?)'+url+'([^("\')]*?)"', '"'+base_url+url+'\\2"', standard.pystr(html))
    
    # Process absolute URLs.
    s_new = '%s'%sRoot
@@ -265,7 +262,7 @@ class Exportable(_filtermanager.FilterItem):
     def manage_export(self, export_format, lang, REQUEST, RESPONSE):
       """ Exportable.manage_export """
       
-      title = self.getHome().id + '_' + self.id_quote( self.getTitlealt( REQUEST))
+      title = self.getHome().id + '_' + standard.id_quote( self.getTitlealt( REQUEST))
       
       # Get export format.
       try:
@@ -307,7 +304,7 @@ class Exportable(_filtermanager.FilterItem):
       # Export Filter.
       elif export_format in self.getFilterManager().getFilterIds():
         if REQUEST.get('debug'):
-          url = self.url_append_params( 'manage_importexportDebugFilter', { 'lang': lang, 'filterId': export_format, 'debug': 1})
+          url = standard.url_append_params( 'manage_importexportDebugFilter', { 'lang': lang, 'filterId': export_format, 'debug': 1})
           return RESPONSE.redirect( url)
         else:
           filename, export, content_type = _filtermanager.exportFilter(self, export_format, REQUEST)
@@ -320,7 +317,7 @@ class Exportable(_filtermanager.FilterItem):
       else:
         message = 'Exported to %s (%s)'%(export, content_type)
         url = '%s/manage_importexport'%self.absolute_url()
-        url = self.url_append_params( url, { 'lang': lang, 'manage_tabs_message': message})
+        url = standard.url_append_params( url, { 'lang': lang, 'manage_tabs_message': message})
         RESPONSE.redirect( url)
 
 
@@ -386,12 +383,11 @@ class Exportable(_filtermanager.FilterItem):
     # --------------------------------------------------------------------------
     #  Exportable.toXml:
     # --------------------------------------------------------------------------
-    def toXml(self, REQUEST, deep=True, data2hex=False):
+    def toXml(self, REQUEST, deep=True, data2hex=False, multilang=True):
       xml = ''
       xml += _xmllib.xml_header()
-      xml += _xmllib.getObjToXml( self, REQUEST, deep, base_path='', data2hex=data2hex)
+      xml += _xmllib.getObjToXml( self, REQUEST, deep, base_path='', data2hex=data2hex, multilang=multilang)
       return xml 
-
 
     # --------------------------------------------------------------------------
     #  Exportable.exportRessources:
@@ -569,7 +565,7 @@ class Exportable(_filtermanager.FilterItem):
       REQUEST.set('ZMS_HTML_EXPORT', 1)
       
       #-- Create temporary folder.
-      tempfolder = tempfile.mktemp()
+      tempfolder = tempfile.mkdtemp()
       ressources = self.exportRessources( tempfolder, REQUEST, from_zms=self.getLevel()==0, from_home=True)
       
       #-- Download HTML-pages.
@@ -595,7 +591,7 @@ class Exportable(_filtermanager.FilterItem):
     def toZippedXml(self, REQUEST, get_data=True):
 
       #-- Create temporary folder.
-      tempfolder = tempfile.mktemp()
+      tempfolder = tempfile.mkdtemp()
       ressources = self.exportRessources( tempfolder, REQUEST)
       
       #-- Get xml-export.

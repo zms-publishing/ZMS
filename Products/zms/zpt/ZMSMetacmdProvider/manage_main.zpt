@@ -100,7 +100,7 @@
 								><option tal:attributes="value meta_type; selected python:['','selected'][int(meta_type in metaCmd.get('meta_types',[]))]" tal:content="meta_type">meta_type</option>
 							</tal:block
 							><tal:block tal:repeat="meta_type python:here.getMetaobjIds(sort=True)"
-								><option tal:attributes="value meta_type; selected python:['','selected'][int(meta_type in metaCmd.get('meta_types',[]))]" tal:content="python:here.display_type(request,meta_type)">meta_type</option>
+								><option tal:attributes="value meta_type; selected python:['','selected'][int(meta_type in metaCmd.get('meta_types',[]))]" tal:content="python:here.display_type(meta_id=meta_type)">meta_type</option>
 							</tal:block
 							><tal:block tal:repeat="objtype python:here.metaobj_manager.valid_objtypes"
 								><tal:block tal:define="global meta_type python:'type(%s)'%objtype"
@@ -113,12 +113,12 @@
 				</tbody>
 				</table>
 			</div><!-- .form-group -->
-			<div class="form-row">
+			<div class="form-group row">
 				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-primary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 					<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CLOSE" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
 				</div>
-			</div><!-- .form-row -->
+			</div><!-- .form-group -->
 		</form>
 	</div><!-- #editObj.inner -->
 </div><!-- .d-none -->

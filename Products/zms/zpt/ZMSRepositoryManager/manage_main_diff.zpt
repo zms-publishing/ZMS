@@ -80,7 +80,7 @@
 							<a href="#" 
 								tal:define="attr_id python:[id,filename.replace(id+'/','').split('.')[0]][len(filename.split(id+'/'))>0]"
 								tal:attributes="
-									onclick python:'javascript:focus_anchorid(\'#%s\');;return false'%(here.id_quote(filename));
+									onclick python:'javascript:focus_anchorid(\'#%s\');;return false'%(standard.id_quote(filename));
 									ondblclick python:'javascript:window.open(\'%s/manage_%s?lang=%s&id=%s&attr_id=%s\', target=\'_blank\')'%(provider.absolute_url(), id=='__metas__' and 'metas' or 'main',request['lang'],id, attr_id);" 
 								tal:content="python:filename">the filename
 							</a>
@@ -111,7 +111,7 @@
 							lversion python: same_type(l.get('version',[0,0,0]),[0]) and '.'.join(str(i) for i in l.get('version',[0,0,0])) or l.get('version','0.0.0');
 							rversion python: same_type(r.get('version',[0,0,0]),[0]) and '.'.join(str(i) for i in r.get('version',[0,0,0])) or r.get('version','0.0.0');
 							is_incoming python:is_modified and ( lversion < rversion );"
-						><table class="repo-changeset table table-borderless" tal:condition="is_modified" tal:attributes="id python:here.id_quote(filename)">
+						><table class="repo-changeset table table-borderless" tal:condition="is_modified" tal:attributes="id python:standard.id_quote(filename)">
 							<tr>
 								<td>
 									<span class="file_name">

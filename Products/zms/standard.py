@@ -897,9 +897,8 @@ def isManagementInterface(REQUEST):
   @rtype: C{Bool}
   """
   return REQUEST is not None and \
-         REQUEST.get('URL', '').find('/manage') >= 0 and \
-         isPreviewRequest(REQUEST)
-
+         REQUEST.get('AUTHENTICATED_USER') and \
+         REQUEST.get('URL', '').find('/manage') >= 0
 
 
 security.declarePublic('isPreviewRequest')

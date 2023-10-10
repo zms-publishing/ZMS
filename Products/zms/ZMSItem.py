@@ -86,7 +86,6 @@ class ZMSItem(
       l = ['zmi','zms', 'loading']
       l.append(request.get('lang'))
       l.append('lang-%s'%(request.get('lang')))
-      l.append('manage_lang-%s'%(request.get('manage_lang')))
       l.extend(kwargs.values())
       l.append(self.meta_id)
       # FOR EVALUATION: adding node specific css classes [list]
@@ -130,12 +129,9 @@ class ZMSItem(
       RESPONSE.setHeader('Content-Type', 'text/html;charset=%s'%request['ZMS_CHARSET'])
       if not request.get( 'preview'):
         request.set( 'preview', 'preview')
-        request.set( 'is_zmi', True)
       langs = self.getLanguages(request)
       if request.get('lang') not in langs:
         request.set('lang', langs[0])
-      if request.get('manage_lang') not in self.getLocale().get_manage_langs():
-        request.set('manage_lang', self.get_manage_lang())
       if not request.get('manage_tabs_message'):
         request.set( 'manage_tabs_message', self.getConfProperty('ZMS.manage_tabs_message', ''))
       if 'zmi-manage-system' in request.form:
@@ -159,8 +155,6 @@ class ZMSItem(
       self._zmi_page_request()
       if not request.get( 'lang'):
         request.set( 'lang', self.getLanguage(request))
-      if not request.get('manage_lang') in self.getLocale().get_manage_langs():
-        request.set( 'manage_lang', self.get_manage_lang())
 
 
     # --------------------------------------------------------------------------

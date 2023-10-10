@@ -22,7 +22,6 @@ import OFS.misc_
 import json
 from zope.interface import implementer
 # Product Imports.
-from Products.zms import IZMSLocale
 from Products.zms import _fileutil
 from Products.zms import _xmllib
 from Products.zms import standard
@@ -222,7 +221,6 @@ class MultiLanguageObject(object):
 ###
 ################################################################################
 ################################################################################
-@implementer(IZMSLocale.IZMSLocale)
 class MultiLanguageManager(object):
 
     def get_manage_langs(self):
@@ -237,7 +235,7 @@ class MultiLanguageManager(object):
       """
       manage_lang = None
       req = getattr( self, 'REQUEST', None)
-      if req.get( 'is_zmi', False):
+      if standard.isManagementInterface(req):
         if req is not None:
           sess = standard.get_session(self)
           if 'manage_lang' in req:

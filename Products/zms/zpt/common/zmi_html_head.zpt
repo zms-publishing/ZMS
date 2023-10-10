@@ -28,7 +28,7 @@
 	<tal:block tal:repeat="src python:here.getConfProperty('plugins.zmi.js').split(',')"
 		><script type="text/javascript" charset="UTF-8" tal:attributes="src src"></script>
 	</tal:block>
-	<script type="text/javascript" charset="UTF-8" tal:attributes="src python:'/++resource++zms_/i18n/%s.js'%request['manage_lang']"></script>
+	<script type="text/javascript" charset="UTF-8" tal:attributes="src python:'/++resource++zms_/i18n/%s.js'%here.get_manage_lang()"></script>
 	<tal:block tal:repeat="src python:list(zmi_paths['js_paths'])+[here.getConfProperty(x) for x in here.getConfProperty('bootstrap.libs').split(',')]"
 		><script type="text/javascript" charset="UTF-8" tal:condition="src" tal:attributes="src src"></script>
 	</tal:block>

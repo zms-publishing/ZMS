@@ -30,6 +30,7 @@ RUN mkwsgiinstance -d venv/instance/zms5 -u admin:admin
 COPY ./etc venv/instance/zms5/etc
 COPY ./var venv/instance/zms5/var
 
+
 # Finally Start ZEO/Zope by Script
 # ENTRYPOINT ["/bin/sh -c"]
 CMD ["/home/zope/venv/instance/zms5/etc/start.sh"]

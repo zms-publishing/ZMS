@@ -17,6 +17,8 @@ services:
       - SOFTWARE_HOME="/home/zope/venv/bin"
     volumes:
       - ./etc/:/home/zope/venv/instance/zms5/etc/
+      - ./Extensions/:/home/zope/venv/instance/zms5/Extensions/:rw
       - ./var/:/home/zope/venv/instance/zms5/var/
+      - ./.vscode:/home/zope/venv/src/zms/.vscode:rw
 
     # command: /home/zope/venv/instance/zms5/etc/start.sh

@@ -29,6 +29,7 @@ RUN mkwsgiinstance -d venv/instance/zms5 -u admin:admin
 
 COPY ./etc venv/instance/zms5/etc
 COPY ./var venv/instance/zms5/var
+COPY ./Extensions venv/instance/zms5/Extensions
 
 
 # Finally Start ZEO/Zope by Script

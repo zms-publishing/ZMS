@@ -124,7 +124,7 @@
 											<input type="checkbox" name="ids:list" tal:attributes="value python:obj_version.id; checked python:['','checked'][selected]"/> <strong tal:content="python:obj_version.getVersionNr()">version_nr</strong>
 										</span>
 										<div class="zmi-manage-main-change">
-											<tal:block tal:content="structure python:here.getLangFmtDate(obj_version.attr('change_dt'),request['manage_lang'],'BOBOBASE_MODIFICATION_FMT')">version_dt</tal:block>
+											<tal:block tal:content="structure python:here.getLangFmtDate(obj_version.attr('change_dt'),fmt_str='BOBOBASE_MODIFICATION_FMT')">version_dt</tal:block>
 										</div><!-- .zmi-manage-main-change -->
 									</div><!-- .right -->
 									<div class="clearboth"></div>

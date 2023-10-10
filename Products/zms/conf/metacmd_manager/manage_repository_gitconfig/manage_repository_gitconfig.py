@@ -8,9 +8,6 @@ def manage_repository_gitconfig(self, request=None):
 	git_url = self.getConfProperty('ZMSRepository.git.server.url','git@github.com:myname/myproject.git')
 	if request.get('lang',None) is None:
 		request['lang'] = 'ger'
-	if request.get('manage_lang',None) is None:
-		request['manage_lang'] = 'ger'
-	RESPONSE =  request.RESPONSE
 	btn = request.form.get('btn')
 	came_from = request.get('came_from',request['HTTP_REFERER'])
 	if came_from.find('?') > 0:

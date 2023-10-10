@@ -263,6 +263,7 @@ class ZMS(
         'manage_customizeDesign', 'manage_customizeDesignForm',
         )
     __authorPermissions__ = (
+        'preview_html', 'preview_top_html',
         'manage_addZMSModule',
         'manage_deleteObjs', 'manage_undoObjs',
         'manage_moveObjUp', 'manage_moveObjDown', 'manage_moveObjToPos',

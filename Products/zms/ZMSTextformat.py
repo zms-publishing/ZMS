@@ -133,10 +133,9 @@ class ZMSTextformat(object):
   # ----------------------------------------------------------------------------
   def __init__(self, id, ob, REQUEST):
     self.setId(id)
-    if REQUEST is not None and \
-       'manage_lang' in REQUEST and \
-       REQUEST['manage_lang'] in ob['display']:
-      self.setDisplay(ob['display'][REQUEST['manage_lang']])
+    lang = REQUEST is not None and REQUEST.get('manage_lang', REQUEST.get('lang'))
+    if (lang is not None) and (lang in ob['display']):
+      self.setDisplay(ob['display'][lang])
     else:
       self.setDisplay(id)
     self.setTag(ob['tag'])

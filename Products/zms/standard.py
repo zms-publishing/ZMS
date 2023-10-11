@@ -896,10 +896,10 @@ def isManagementInterface(REQUEST):
   Returns true if current context is management-interface, false else.
   @rtype: C{Bool}
   """
-  return REQUEST is not None and \
-         REQUEST.get('AUTHENTICATED_USER') and \
-         REQUEST.get('URL', '').find('/manage') >= 0
-
+  return ( REQUEST is not None and \
+           REQUEST.get('AUTHENTICATED_USER') and \
+           REQUEST.get('URL', '').find('/manage') >= 0 ) or \
+           REQUEST.get('is_zmi', False)
 
 security.declarePublic('isPreviewRequest')
 def isPreviewRequest(REQUEST):

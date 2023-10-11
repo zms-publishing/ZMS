@@ -899,9 +899,9 @@ def isManagementInterface(self):
   request = self.REQUEST
   if not 'is_zmi' in request:
     permissions = set(sum([list(x[1]) for x in self.__ac_permissions__],[]))
-    request.set('is_zmi', request is not None and \
-         request.get('AUTHENTICATED_USER') and \
-         request.get('URL', '').split('/')[-1] in permissions)
+    current = request.get('URL', '').split('/')[-1]
+    request.set('is_zmi', request.get('AUTHENTICATED_USER') and \
+         (current.startswith('manage_') or current in permissions))
   return request.get('is_zmi')
 
 

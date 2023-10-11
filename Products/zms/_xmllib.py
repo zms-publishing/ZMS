@@ -316,7 +316,13 @@ def xmlOnUnknownEndTag(self, sTagName):
       else:
         item = self.dValueStack.pop()
       values = self.dValueStack.pop()
-      values[lang] = item
+      try:
+        values[lang] = item
+      except:
+        # empty values
+        standard.writeBlock(self, "[values]: WARNING - Skip %s" % str(values))
+        values = {}
+        values[lang] = item
       self.dValueStack.append(values)
 
     # -- OBJECT-ATTRIBUTES --

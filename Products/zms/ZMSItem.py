@@ -127,6 +127,7 @@ class ZMSItem(
       RESPONSE.setHeader('Cache-Control', 'no-cache')
       RESPONSE.setHeader('Pragma', 'no-cache')
       RESPONSE.setHeader('Content-Type', 'text/html;charset=%s'%request['ZMS_CHARSET'])
+      request.set( 'is_zmi', True)
       if not request.get( 'preview'):
         request.set( 'preview', 'preview')
       langs = self.getLanguages(request)

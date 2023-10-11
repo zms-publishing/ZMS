@@ -25,7 +25,7 @@ from Products.zms import standard
 # ------------------------------------------------------------------------------
 #  br_quote
 # ------------------------------------------------------------------------------
-def br_quote(text, subtag, REQUEST):
+def br_quote(self, text, subtag):
   if len(subtag) == 0:
     return text
   if type(text) not in [str, str]:
@@ -34,8 +34,8 @@ def br_quote(text, subtag, REQUEST):
   qcr = ''
   qtab = '&nbsp;'*6
   
-  if standard.isManagementInterface(REQUEST):
-    if 'format' not in REQUEST:
+  if standard.isManagementInterface(self):
+    if 'format' not in self.REQUEST:
       qcr = '<span class="unicode">&crarr;</span>'
       qtab = '<span class="unicode">&rarr;</span>' + '&nbsp;' * 5
   
@@ -131,13 +131,9 @@ class ZMSTextformat(object):
   #
   #  Constructor.
   # ----------------------------------------------------------------------------
-  def __init__(self, id, ob, REQUEST):
+  def __init__(self, id, ob, manage_lang):
     self.setId(id)
-    lang = REQUEST is not None and REQUEST.get('manage_lang', REQUEST.get('lang'))
-    if (lang is not None) and (lang in ob['display']):
-      self.setDisplay(ob['display'][lang])
-    else:
-      self.setDisplay(id)
+    self.setDisplay(ob['display'].get(manage_lang,id))
     self.setTag(ob['tag'])
     self.setSubTag(ob['subtag'])
     self.setAttrs(ob['attrs'])
@@ -271,12 +267,12 @@ class ZMSTextformat(object):
   #  Render text.
   # ----------------------------------------------------------------------------
   renderText__roles__ = None
-  def renderText(self, text, REQUEST, id=None, clazz=None, encoding='utf-8', errors='strict'):
+  def renderText(self, context, text, id=None, clazz=None, encoding='utf-8', errors='strict'):
     html = ''
     # Open tag.
     html += self.getStartTag( id, clazz)
     # Sub tag.
-    text = br_quote( text, self.getSubTag(), REQUEST)
+    text = br_quote( context, text, self.getSubTag())
     # Value.
     try:
       html += str(text, encoding, errors)

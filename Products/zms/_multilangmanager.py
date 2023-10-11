@@ -235,7 +235,7 @@ class MultiLanguageManager(object):
       """
       manage_lang = None
       request = self.REQUEST
-      if standard.isManagementInterface(request):
+      if standard.isManagementInterface(self):
         manage_langs = self.get_manage_langs()
         # get manage_lang from request.form
         if 'manage_lang' in request.form and request.form['manage_lang'] in manage_langs:

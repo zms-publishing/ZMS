@@ -891,15 +891,19 @@ def triggerEvent(context, *args, **kwargs):
 
 
 security.declarePublic('isManagementInterface')
-def isManagementInterface(REQUEST):
+def isManagementInterface(self):
   """
   Returns true if current context is management-interface, false else.
   @rtype: C{Bool}
   """
-  return ( REQUEST is not None and \
-           REQUEST.get('AUTHENTICATED_USER') and \
-           REQUEST.get('URL', '').find('/manage') >= 0 ) or \
-           REQUEST.get('is_zmi', False)
+  request = self.REQUEST
+  if not 'is_zmi' in request:
+    permissions = set(sum([list(x[1]) for x in self.__ac_permissions__],[]))
+    current = request.get('URL', '').split('/')[-1]
+    request.set('is_zmi', request.get('AUTHENTICATED_USER') and \
+         (current.startswith('manage_') or current in permissions))
+  return request.get('is_zmi')
+
 
 security.declarePublic('isPreviewRequest')
 def isPreviewRequest(REQUEST):

@@ -596,7 +596,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       else:
         meta_id = kwargs.get('meta_id', kwargs.get('meta_type', meta_id))
       name = 'fas fa-exclamation-triangle'
-      title = self.display_type(meta_id=meta_id)
+      title = meta_id!='' and self.display_type(meta_id=meta_id) or 'Unknown Meta-ID!'
       extra = ''
       if meta_id in self.getMetaobjIds( sort=False) + ['ZMSTrashcan']:
         name = self.evalMetaobjAttr( '%s.%s'%(meta_id, 'icon_clazz'))
@@ -619,7 +619,7 @@ class ZMSObject(ZMSItem.ZMSItem,
               title += '; '+'; '.join(['RESTRICTION: '+x[1] for x in constraints['RESTRICTIONS']])
       else:
         name = 'fas fa-exclamation-triangle constraint-error'
-        title = '%s not found!'%str(meta_id)
+        title = '%s not found!'%str(meta_id!='' and meta_id  or 'Meta-ID')
       return '<i class="%s" title="%s"%s></i>'%(name,title,extra)
 
 

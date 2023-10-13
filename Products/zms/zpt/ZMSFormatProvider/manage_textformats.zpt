@@ -155,7 +155,7 @@
 				</a>
 			</td>
 			<td class="p-2">
-				<div class="preview_textformat" tal:content="structure python:format.renderText(format.getDisplay(),request)">Render</div>
+				<div class="preview_textformat" tal:content="structure python:format.renderText(zmscontext,format.getDisplay())">Render</div>
 			</td>
 		</tr>
 	</tal:block>

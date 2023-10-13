@@ -8,9 +8,6 @@ def manage_repository_gitstatus( self ):
 	git_branch = self.getConfProperty('ZMSRepository.git.server.branch','main')
 	if request.get('lang',None) is None:
 		request['lang'] = 'ger'
-	if request.get('manage_lang',None) is None:
-		request['manage_lang'] = 'ger'
-	RESPONSE =  request.RESPONSE
 	btn = request.form.get('btn')
 	came_from = request.get('came_from',request['HTTP_REFERER'])
 	if came_from.find('?') > 0:

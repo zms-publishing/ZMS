@@ -1101,33 +1101,6 @@ class ConfManager(
       return adapter
 
 
-    ############################################################################
-    ###
-    ###   Interface IZMSLocale: delegate
-    ###
-    ############################################################################
-
-    def getLocale(self):
-      return self
-
-    """
-    def get_manage_langs(self):
-      return self.getLocale().get_manage_langs()
-
-    def get_manage_lang(self):
-      return self.getLocale().get_manage_lang()
-
-    def getZMILangStr(self, key, REQUEST=None, RESPONSE=None):
-      return self.getLocale().getZMILangStr( key)
-
-    def getLangStr(self, key, lang=None):
-      return self.getLocale().getLangStr( key, lang)
-
-    def getPrimaryLanguage(self):
-      return self.getLocale().getPrimaryLanguage()
-    """
-
-
 # call this to initialize framework classes, which
 # does the right thing with the security assertions.
 InitializeClass(ConfManager)

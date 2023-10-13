@@ -97,6 +97,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
     # Management Permissions.
     # -----------------------
     __authorPermissions__ = (
+        'preview_html', 'preview_top_html',
         'manage', 'manage_main', 'manage_workspace',
         'manage_moveObjUp', 'manage_moveObjDown', 'manage_moveObjToPos',
         'manage_cutObjects', 'manage_copyObjects', 'manage_pasteObjs',

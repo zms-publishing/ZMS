@@ -31,7 +31,7 @@
 						tal:condition="not:python:request.get('ZMS_INSERT',False)" 
 						tal:define="change_uid python:here.attr('change_uid');change_dt python:here.attr('change_dt')">
 						<tal:block tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')">changed by</tal:block>
-					<span class="zmi-change-dt" tal:content="structure python:here.getLangFmtDate(change_dt,request['manage_lang'],'DATETIME_FMT')">the change-dt</span>
+					<span class="zmi-change-dt" tal:content="structure python:here.getLangFmtDate(change_dt,fmt_str='DATETIME_FMT')">the change-dt</span>
 					<tal:block tal:content="python:here.getZMILangStr('BY')">by</tal:block>
 					<span class="zmi-change-uid" tal:content="change_uid">the change-uid</span>
 					<tal:block tal:content="structure python:here.zmi_version_object_state(here,request)">zmi_version_object_state</tal:block>
@@ -71,7 +71,7 @@
 					<span class="btn pl-0" style="white-space: normal;text-align: left;">
 						<tal:block tal:condition="python:here.attr('created_dt') and here.attr('created_uid')">
 							<tal:block tal:content="python:here.getZMILangStr('ATTR_CREATED')+':'">created:</tal:block>
-							<span class="zmi-created-dt" tal:content="python:here.getLangFmtDate(here.attr('created_dt'),request['manage_lang'],'DATETIME_FMT')">the created_dt</span>
+							<span class="zmi-created-dt" tal:content="python:here.getLangFmtDate(here.attr('created_dt'),fmt_str='DATETIME_FMT')">the created_dt</span>
 							<tal:block tal:content="python:here.getZMILangStr('BY')">by</tal:block>
 							<span class="zmi-created-uid" tal:content="python:here.attr('created_uid')">the created_uid</span>,
 						</tal:block>

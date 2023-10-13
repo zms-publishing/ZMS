@@ -596,7 +596,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       else:
         meta_id = kwargs.get('meta_id', kwargs.get('meta_type', meta_id))
       name = 'fas fa-exclamation-triangle'
-      title = meta_id!='' and self.display_type(meta_id=meta_id) or 'Unknown Meta-ID!'
+      title = meta_id!='' and self.display_type(meta_id=meta_id) or self.meta_id
       extra = ''
       if meta_id in self.getMetaobjIds( sort=False) + ['ZMSTrashcan']:
         name = self.evalMetaobjAttr( '%s.%s'%(meta_id, 'icon_clazz'))

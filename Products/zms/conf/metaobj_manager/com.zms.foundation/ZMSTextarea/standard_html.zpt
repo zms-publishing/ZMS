@@ -2,9 +2,8 @@
 
 <tal:block tal:define="
 	zmscontext options/zmscontext;
+	text          python:zmscontext.getText(request);
 	format        python:zmscontext.attr('format');
-	text_obj_attr python:zmscontext.getObjAttr('text');
-	text          python:format=='markdown' and zmscontext.getObjAttrValue(text_obj_attr, request) or zmscontext.getText(request);
 	renderedText  python:zmscontext.renderText(format,'text',text,request,zmscontext.id)"
 	tal:content="structure renderedText">
 	The text

@@ -88,7 +88,7 @@ class TextFormatObject(object):
     if format is not None:
       textformat = self.getTextFormat( format, REQUEST)
       if textformat is not None and len( text) > 0:
-        text = textformat.renderText( text, REQUEST, id, clazz)
+        text = textformat.renderText( self, text, id, clazz)
     # Custom hook.
     try:
       name = 'renderCustomText'

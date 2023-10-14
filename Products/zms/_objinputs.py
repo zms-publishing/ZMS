@@ -50,12 +50,11 @@ class ObjInputs(object):
   #	@return String
   # ----------------------------------------------------------------------------
   def getDateTimeInput(self, fmName, elName, size=8, value=None, enabled=True, fmt_str='DATETIME_FMT', css='form-control'):
-    manage_lang = self.REQUEST.get('manage_lang', self.getPrimaryLanguage())
     html = []
     input_type = 'date'
     if not isinstance(value, str):
       fmt = {'DATE_FMT':'%Y-%m-%d','DATETIME_FMT':'%Y-%m-%dT%H:%M','TIME_FMT':'%H:%M'}
-      value = self.getLangFmtDate(value, manage_lang, fmt.get(fmt_str))
+      value = standard.getLangFmtDate(self, value, fmt_str=fmt.get(fmt_str))
     if value is not None and standard.parseLangFmtDate(value) is None:
       value = ''
     placeholder = self.getZMILangStr(fmt_str)

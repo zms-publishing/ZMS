@@ -29,12 +29,13 @@ or referenced as *volume mounts* from the *container* (on composing):
 
 ## Overview of Docker- and all Zope config-files
 
-*Hint: to ease the file access from the container the config files are not restricted*
+*Hint: to ease the file access from the container the config files are not restricted:* `chmod -r 777`
 ```
 $ tree -p
 .
 ├── [-rw-r--r--]  docker-compose.yml
 ├── [-rw-r--r--]  dockerfile
+├── [drwxrwxrwx]  Extensions
 ├── [drwxrwxrwx]  etc
 │   ├── [-rwxrwxrwx]  start.sh
 │   ├── [-rwxrwxrwx]  zeo.conf
@@ -61,6 +62,7 @@ The VSCode Docker Extension [ms-azuretools.vscode-docker](https://marketplace.vi
 ![Running the ZMS Container with VSCode](../docs/images/admin_docker_run.gif)
 
 ## Attach VSCode to the ZMS Container
-Another right click on the running container-ID allows to intrude the container with VSCode and launch a new Zope instance in debugging mode. Hint: For this purpose the ./docker/.vscode folder contains a prepared VSCode-config file  [launch.json](https://github.com/zms-publishing/ZMS/blob/main/docker/.vscode/launch.json). The thus launched Zope instance for debugging will run port 8086.
+Another right click on the running container-ID allows to intrude the container with VSCode and launch a new Zope instance in debugging mode. 
+Hint: For this purpose the  docker-container folder `/home/zope/venv/src/zms/docker/.vscode/` contains a prepared VSCode-workspace file and a launch file for starting Zope in debug-mode within the container  [launch.json](https://github.com/zms-publishing/ZMS/blob/main/docker/.vscode/launch.json). The thus launched Zope instance will run port 8087.
 
 ![Attach VSCode to the ZMS Container](../docs/images/admin_docker_debug_zeo.gif)

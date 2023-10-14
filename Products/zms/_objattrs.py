@@ -181,20 +181,19 @@ class ObjAttrs(object):
     #  ObjAttrs.getObjAttrLabel:
     # --------------------------------------------------------------------------
     def getObjAttrLabel(self, obj_attr):
-      lang = self.REQUEST.get('manage_lang', self.REQUEST.get('lang', self.getPrimaryLanguage()))
       for key in [ 'name', 'id']:
         if key in obj_attr:
           name = obj_attr.get( key)
           lang_key = name
-          lang_str = self.getLangStr( lang_key, lang)
+          lang_str = self.getZMILangStr( lang_key)
           if lang_key != lang_str:
             return lang_str
           lang_key = name.upper()
-          lang_str = self.getLangStr( lang_key, lang)
+          lang_str = self.getZMILangStr( lang_key)
           if lang_key != lang_str:
             return lang_str
           lang_key = ('attr_'+name).upper()
-          lang_str = self.getLangStr( lang_key, lang)
+          lang_str = self.getZMILangStr( lang_key)
           if lang_key != lang_str:
             return lang_str
       return obj_attr.get('name', obj_attr['id'].capitalize())

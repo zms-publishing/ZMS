@@ -62,10 +62,9 @@
 				<i tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])"></i>
 				<span class="objid" tal:content="id">the id</span>
 				<span class="objname" title="Display Name"
-					tal:define="l python:request.get('manage_lang','ger');
-						n python:metaObj.get('name','');
-						nstr python:here.getZMILangStr(n,l);
-						tstr python:here.getZMILangStr('TYPE_%s'%(n.upper()),l);"
+					tal:define="n python:metaObj.get('name','');
+						nstr python:here.getZMILangStr(n);
+						tstr python:here.getZMILangStr('TYPE_%s'%n.upper());"
 					tal:content="python:' = %s'%([tstr,nstr][tstr=='TYPE_%s'%(n.upper())])">the name
 				</span>
 				</a>

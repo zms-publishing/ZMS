@@ -51,7 +51,7 @@
 
 <div class="d-none" tal:condition="python:request.get('id') in filterIds">
 	<div id="updateFilter" class="inner" tal:define="global filter python:here.getFilter(request['id'])">
-		<form class="form-horizontal" action="manage_changeFilter" method="post" enctype="multipart/form-data">
+		<form class="form-horizontal card" action="manage_changeFilter" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 			<input type="hidden" name="id" tal:attributes="value request/id"/>
 				<div class="form-group row inpId">
@@ -111,8 +111,8 @@
 					<label for="inpDescription" class="col-md-2 control-label"><span tal:content="python:here.getZMILangStr('ATTR_DESCRIPTION')">Description</span></label>
 					<div class="col-md-10"><textarea class="form-control" name="inpDescription" tal:content="python:filter.get('description','')">the description</textarea></div>
 				</div><!-- .form-group -->
-			<legend tal:content="python:here.getZMILangStr('ATTR_PROCESS')">Process</legend>
-			<table class="table table-sm table-striped zmi-sortable">
+			<legend tal:content="python:'%s - %s'%(here.getZMILangStr('ATTR_PROCESS'),here.getZMILangStr('ATTR_SEQUENCE'))">Process Sequence</legend>
+			<table class="table table-sm table-striped table-bordered zmi-sortable" id="processsequence">
 			<tbody tal:define="global filterProcesses python:here.getFilterProcesses(filter['id'])">
 			<tr tal:repeat="index python:range(len(filterProcesses))">
 			<tal:block tal:define="global filterProcess python:filterProcesses[index]; process python:here.getProcess(filterProcess['id'])">
@@ -130,15 +130,15 @@
 					</div>
 				</td>
 				<td>
-					<select class="form-control form-control" tal:attributes="name python:'newFilterProcessId_%i'%index">
+					<select class="form-control filterProcess" tal:attributes="name python:'newFilterProcessId_%i'%index">
 						<tal:block tal:repeat="process python:[here.getProcess(x) for x in processIds]">
 							<option tal:attributes="value process/id; selected python:['','selected'][int(filterProcess['id']==process['id'])]" tal:content="process/name">the process</option>
 						</tal:block>
 					</select>
 				</td>
-				<td>
+				<td width="100%">
 					<tal:block tal:condition="python:process.get('type','process') in ['DTML Method','External Method','Script (Python)'] or process.get('command','').find('{trans}')>=0">
-							<code style="display:inline-block;margin-right:1em;">{trans}</code>
+							<code class="ml-2 mr-3">{trans}</code>
 							<input style="display:inline-block;" class="btn btn-file" type="file" tal:attributes="name python:'newFilterProcessFile_%i'%index" />
 						<tal:block tal:condition="python:filterProcess.get('file_filename',None)">
 							<input type="checkbox" checked="checked"/>
@@ -151,8 +151,13 @@
 				</td>
 			</tal:block>
 			</tr>
+			<!-- INSERT NEW ROW -->
 			<tr class="row_insert">
-				<td class="text-right"><span class="btn"><i class="fas fa-plus"></i></span></td>
+				<td class="meta-sort text-right">
+					<span class="btn btn-add mr-1">
+						<i class="fas fa-plus"></i>
+					</span>
+				</td>
 				<td>
 					<select class="form-control form-control" tal:attributes="name python:'newFilterProcessId_%i'%len(filterProcesses)">
 						<option value="" tal:content="python:'--- %s ---'%here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_TYPE')">--- Select type ---</option>
@@ -475,6 +480,37 @@
 	.filterProcesses i.fa-long-arrow-alt-down {
 		color: #0088cc80;
 	}
+	table#processsequence td {
+		white-space:nowrap;
+		overflow:hidden;
+	}
+	table#processsequence tr td:nth-child(2) select {
+		min-width:10rem;
+		max-width:13rem;
+		width: unset;
+		text-align: unset;
+		padding:.375rem .75rem;
+	}
+	table#processsequence .btn.btn-file {
+		max-width:9rem;
+		color:transparent;
+		background:transparent;
+		padding: 0;
+	}
+	table#processsequence .btn.btn-file.form-modified {
+		max-width:unset;
+		width:calc(100% - 4rem);
+		background:#337ab73d;
+		color:unset;
+	}
+	table#processsequence  tr td:nth-child(3) a {
+		display:inline-block;
+		max-width:12rem;
+		text-overflow:ellipsis;
+		overflow:hidden;
+		vertical-align:text-bottom;
+		padding:0 0 0 .25rem;
+	}
 </style>
 
 <script>
@@ -510,6 +546,63 @@
 	$(function(){
 		zmiModal('#updateFilter',{title:getZMILangStr('TAB_PROPERTIES')+': '+getZMILangStr('ATTR_FILTER'),minWidth:800,remove:true});
 		zmiModal('#updateProcess',{title:getZMILangStr('TAB_PROPERTIES')+': '+getZMILangStr('ATTR_PROCESSES'),minWidth:800,remove:true});
+
+		// ++++++++++++
+		// Add rows to table processsequence
+		// ++++++++++++
+		let new_row_counter = $('#processsequence tr').length - 2;
+
+		// Add click event function to add-buttons
+		$(".row_insert .btn-add").click(function(){
+			new_row_counter++;
+
+			// Where to insert the new row 
+			let $where_insert = $(this).closest('tr');
+
+			// Set variables
+			let table_id = $(this).closest('table').attr('id'); // meta_properties or meta_languages
+			let new_row_name = `new_row_${table_id}_${new_row_counter}`;
+			let new_btn_html = `
+				<span class="btn btn-default btn-sm mr-1" style="color:#999" 
+					onclick="javascript:$(this).closest('tr').remove()">
+					<i class="fas fa-times"></i>
+				</span>
+				`;
+
+			// Clone(true) to get a deep copy including select options
+			let $new_row = $where_insert.clone(true);
+
+			// Process table cells of the clone like "old" row
+			$new_row.find('td').each(function() {
+				$(this).find('select').each(function() {
+					let defname = $(this).attr('name')
+					let newname = defname.split('_')[0] + '_' + new_row_counter;
+					let newval  = $(this).val();
+
+					$(this).attr('name',newname);
+
+					// #### VALUES: Transfer initially entered values from template to clone
+					let selected = $("option:selected", $('.row_insert select')).val();
+					if (selected!='') {
+						$('option[value="' + selected +'"]',$(this)).prop('selected', true);
+					};
+				});
+			});
+
+			// Process td:first-child of the clone
+			$new_row.find('td.meta-sort').html(new_btn_html);
+			$new_row.removeAttr('class').attr('id',new_row_name);
+
+			// Insert the new row
+			$new_row.insertBefore($where_insert);
+			// Reset the clone template
+			$where_insert.find('select').each(function() {
+				$(this).val(undefined);
+				let defname = $(this).attr('name');
+				$(this).attr('name',defname.split('_')[0] + '_' + (new_row_counter + 1))
+			});
+		});
+
 	});
 //-->
 </script>

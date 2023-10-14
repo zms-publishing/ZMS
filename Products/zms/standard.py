@@ -2220,11 +2220,9 @@ def processData(context, processId, data, trans=None):
 ############################################################################
 
 security.declarePublic('dt_executable')
-def dt_executable(context, v):
+def dt_executable(v):
   """
   Returns if given value is executable.
-  @param context: the context
-  @type context: C{ZMSObject}
   @param v: the executable code
   @type v: C{str}
   @return:

@@ -38,7 +38,7 @@
 //-->
 </script>
 <style>
-/*<!-- ### Remove this CSS for Hiding HTML Validity Info ### */
+/*<!-- ### Removing this CSS hides the HTML Validity Info ### */
 	.zmi-richtext:after {
 		content:attr(data-msg);
 		display:block;

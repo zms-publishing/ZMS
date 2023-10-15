@@ -30,11 +30,12 @@
 				<div class="btn zmi-changes"
 						tal:condition="not:python:request.get('ZMS_INSERT',False)" 
 						tal:define="change_uid python:here.attr('change_uid');change_dt python:here.attr('change_dt')">
-						<tal:block tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')">changed by</tal:block>
+					<tal:block tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')">changed by</tal:block>
 					<span class="zmi-change-dt" tal:content="structure python:here.getLangFmtDate(change_dt,fmt_str='DATETIME_FMT')">the change-dt</span>
 					<tal:block tal:content="python:here.getZMILangStr('BY')">by</tal:block>
 					<span class="zmi-change-uid" tal:content="change_uid">the change-uid</span>
 					<tal:block tal:content="structure python:here.zmi_version_object_state(here,request)">zmi_version_object_state</tal:block>
+					<span title="Readme" tal:condition="python:here.attr('readme')" class="zmi-readme text-primary zmi-state" onclick="zmiModal('#readme',{title:$('#readme').attr('title')});return false"><i class="far fa-question-circle"></i></span>
 				</div>
 			</div>
 			<div class="zmi-action loaded btn-group pull-right dropleft" tal:condition="not:python: request.get('ZMS_INSERT',False)">
@@ -299,6 +300,15 @@
 			</tal:block>
 		</tal:block>
 	</div><!-- .card -->
+
+	<!-- Readme: markdown formatted, optional 'readme' attribute will be rendered as HTML -->
+	<div id="readme" class="modal" 
+		tal:define="readme python:here.attr('readme')"
+		tal:condition="readme"
+		tal:attributes="title python:here.meta_id" 
+		tal:content="structure python:here.renderText('markdown','text',readme,request,here.id)">
+		readme
+	</div>
 
 </tal:block>
 

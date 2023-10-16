@@ -191,14 +191,18 @@
 		metaobj_recordset_main_grid
 	</tal:block>
 </tal:block>
-<!-- Readme: markdown formatted, optional 'readme' attribute will be rendered as HTML -->
-<div id="readme" class="modal" 
-	tal:define="readme python:here.attr('readme')"
-	tal:condition="readme"
-	tal:attributes="title python:here.meta_id" 
-	tal:content="structure python:here.renderText('markdown','text',readme,request,here.id)">
-	readme
-</div>
+<tal:block tal:define="readme python:here.attr('readme')" tal:condition="readme">
+<!-- Readme: markdown formatted, optional 'readme' resource attribute will be rendered as HTML -->
+	<div id="readme" class="modal" tal:define="
+			readme_txt python:readme.getData().decode('utf-8');
+			readme_filemame python:readme.getFilename();
+			readme_url python:'%s/%s'%(here.content.metaobj_manager.absolute_url(),readme_filemame)"
+		tal:attributes="title python:here.meta_id; data-readme readme_url" 
+		tal:content="structure python:here.renderText('markdown','text',readme_txt,request,here.id)"
+		tal:on-error="string:No readme resource found.">
+		readme
+	</div>
+</tal:block>
 </tal:block>
 
 <tal:block tal:condition="python:request.get('action')=='updateForm'">

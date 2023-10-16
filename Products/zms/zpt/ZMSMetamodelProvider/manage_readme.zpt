@@ -1,0 +1,5 @@
+<tal:block tal:define="readme_txt python:context.data.decode('utf-8')"
+	tal:replace="structure python:context.content.renderText('markdown','text',readme_txt,request,here.id)"
+	tal:on-error="string:No readme file found.">
+	<!-- Readme: markdown formatted, optional 'readme' resource attribute rendered as HTML -->
+</tal:block>

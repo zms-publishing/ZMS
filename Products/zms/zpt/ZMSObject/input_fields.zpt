@@ -301,18 +301,21 @@
 		</tal:block>
 	</div><!-- .card -->
 
-	<tal:block tal:define="readme python:here.attr('readme')" tal:condition="readme">
-	<!-- Readme: markdown formatted, optional 'readme' resource attribute will be rendered as HTML -->
-	<div id="readme" class="modal" tal:define="
-				readme_txt python:readme.getData().decode('utf-8');
-				readme_filemame python:readme.getFilename();
-				readme_url python:'%s/%s'%(here.content.metaobj_manager.absolute_url(),readme_filemame)"
-			tal:attributes="title python:here.meta_id; data-readme readme_url" 
-			tal:content="structure python:here.renderText('markdown','text',readme_txt,request,here.id)"
-			tal:on-error="string:No readme resource found.">
-			readme
-		</div>
-	</tal:block>
+	<!-- Readme: markdown formatted optional 'readme' resource attribute rendered as HTML -->
+	<div id="readme" class="modal" tal:condition="readme"
+		tal:define="readme python:here.attr('readme');
+			readme_url python:'%s/%s.readme/manage_readme'%(here.content.metaobj_manager.absolute_url(),here.meta_id)"
+		tal:attributes="title python:here.meta_id; data-readme readme_url">
+		<script>
+		//<!--
+			$(function() {
+				$.get($('#readme').data('readme'),'',function(data) {
+					$('#readme').html(data);
+				});
+			});
+		//-->
+		</script>
+	</div>
 
 </tal:block>
 

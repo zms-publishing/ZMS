@@ -413,6 +413,7 @@ footer .back-to-top.hide {
 #zmi-tab .card .card-header.btn-collapse .zmi-changes,
 #zmiIframeAddDialog .card .card-header.btn-collapse .zmi-changes {
 	opacity:0.5;
+	cursor:help;
 }
 @media (max-width: 546px) {
 	#zmi-tab .card .card-header.btn-collapse .zmi-changes,
@@ -966,7 +967,8 @@ li.zmi-item span.zmi-ids {
 	content:attr(title);
 	font-family:var(--font-family-sans-serif);
 	font-weight: 400;
-	margin-left:.5rem
+	margin-left:.5rem;
+	line-height: 1.5;
 }
 .zmi.properties .card > .zmi-children {
 	background: #F5F5F5;
@@ -2708,6 +2710,33 @@ ul.pagination .page-item {
 		margin-top: 1.75rem;
 	}
 }
+#zmiModalreadme .modal-title:before {
+	content: "\f059";
+	font-family: 'Font Awesome 5 Free';
+	font-weight: 400;    
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-font-smoothing: antialiased;
+	display: inline-block;
+	font-style: normal;
+	font-variant: normal;
+	text-rendering: auto;
+	line-height: 1;
+	box-sizing: border-box;
+	color: #007bff!important;
+	margin-right:.5rem;
+}
+#zmiModalreadme .modal-body h1 {
+	display: none !important;
+}
+#zmiModalreadme .modal-body h2 {
+	font-size: 18px !important;
+	font-weight: bold !important;
+}
+.zmi-readme i.fa-question-circle {
+	cursor:pointer !important;
+}
+
+
 /* ++++++++++++++++++++++++++ */
 /* ZMSTextarea                */
 /* ++++++++++++++++++++++++++ */

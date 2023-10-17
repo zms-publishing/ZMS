@@ -99,7 +99,10 @@
 			<a class="btn card-toggle text-left" data-toggle="collapse" href="#attrActivity" aria-expanded="false"
 				><i class="fas fa-caret-right"></i> <tal:block tal:content="python:here.getZMILangStr('ATTR_ACTIVITY')">Activity</tal:block
 			></a>
-			<div class="btn zmi-changes" tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')+' '+here.getLangFmtDate(here.attr('change_dt'))+' '+here.getZMILangStr('BY')+' '+here.attr('change_uid')">change_dt by change_uid</div>
+			<div class="btn zmi-changes">
+				<span tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')+' '+here.getLangFmtDate(here.attr('change_dt'))+' '+here.getZMILangStr('BY')+' '+here.attr('change_uid')">change_dt by change_uid</span>
+				<span title="Readme" tal:condition="python:here.attr('readme')" class="zmi-readme text-primary zmi-state" onclick="zmiModal('#readme',{title:$('#readme').attr('title')});return false"><i class="far fa-question-circle"></i></span>
+			</div>
 		</div><!-- .card-header -->
 		<div id="attrActivity" class="collapse">
 			<div class="card-body">
@@ -188,7 +191,28 @@
 		metaobj_recordset_main_grid
 	</tal:block>
 </tal:block>
-
+<!-- Readme: markdown formatted optional 'readme' resource attribute rendered as HTML -->
+<div id="readme" class="modal" 
+	tal:condition="readme"
+	tal:define="readme python:here.attr('readme'); 
+		readme_url python:'%s/%s.readme/manage_readme'%(here.content.metaobj_manager.absolute_url(),here.meta_id)"
+	tal:attributes="title python:here.meta_id; data-readme readme_url">
+	<script>
+	//<!--
+		$(function() {
+			$(window).on('show.bs.modal', function (event) { 
+				if ( $('#readme script').length > 0 ) {
+					$.get($('#readme').data('readme'),'',function(data) {
+						$('#readme').html(data);
+						// Needed for 1st show
+						$('#zmiModalreadme .modal-body').html(data);
+					});
+				}
+			});
+		});
+	//-->
+	</script>
+</div>
 </tal:block>
 
 <tal:block tal:condition="python:request.get('action')=='updateForm'">

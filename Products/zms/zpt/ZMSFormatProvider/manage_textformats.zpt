@@ -144,7 +144,7 @@
 	<tbody>
 	<tal:block tal:repeat="format formats"
 		><tr tal:attributes="class python:['','text-info bg-info'][int(format.getId()==here.getTextFormatDefault())];title python:['','Default'][int(format.getId()==here.getTextFormatDefault())]">
-			<td class="meta-sort text-center">
+			<td class="meta-sort text-center align-middle">
 				<input type="checkbox" name="ids:list" tal:attributes="value python:format.getId()" />
 			</td>
 			<td class="text-nowrap align-middle">

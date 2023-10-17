@@ -139,7 +139,7 @@
 	<tbody>
 	<tal:block tal:repeat="format formats">
 		<tr>
-			<td class="meta-sort text-center">
+			<td class="meta-sort text-center align-middle">
 				<input type="checkbox" name="ids:list" tal:attributes="value python:format.get('id','')" />
 			</td>
 			<td>

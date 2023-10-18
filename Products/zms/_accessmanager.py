@@ -1119,7 +1119,7 @@ class AccessManager(AccessableContainer):
               security_roles[id] = d
               root.setConfProperty('ZMS.security.roles', security_roles)
               #-- Set permissions in node.
-              node.synchronizeRolesAccess()
+              node.synchronizePublicAccess()
               #-- Assemble message.
               message = self.getZMILangStr('MSG_INSERTED')%self.getZMILangStr('ATTR_NODE')
           
@@ -1151,7 +1151,7 @@ class AccessManager(AccessableContainer):
                 #-- Set permissions in node.
                 node = self.getLinkObj(nodekey)
                 if node is not None:
-                  node.synchronizeRolesAccess()
+                  node.synchronizePublicAccess()
             #-- Assemble message.
             message = self.getZMILangStr('MSG_DELETED')%int(1)
       

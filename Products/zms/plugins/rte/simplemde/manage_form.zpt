@@ -28,13 +28,15 @@ function zmiStandardOnSubmitEventHandler(fm) {
 }
 
 function zmiRichtextOnSubmitEventHandler(fm) {
-	var data = simplemde.value();
-	$('#' + elName).val(data);
+    var el = document.getElementById('zmiRichtextEditor'+elName);
+	if ( el != null && el.style.display != 'none' && el.style.visibility != 'hidden') {
+	    var data = simplemde.value();
+	    $('#' + elName).val(data);
+	}
 }
 
 function zmiRichtextInit(id) {
-	var data = simplemde.value();
-	$('#' + elName).val(data);
+
 }
 
 <tal:block tal:content="structure python:'</script>'"></tal:block>

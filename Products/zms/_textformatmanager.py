@@ -88,7 +88,7 @@ class TextFormatObject(object):
     if format is not None:
       textformat = self.getTextFormat( format, REQUEST)
       if textformat is not None and len( text) > 0:
-        text = textformat.renderText( text, REQUEST, id, clazz)
+        text = textformat.renderText( self, text, id, clazz)
     # Custom hook.
     try:
       name = 'renderCustomText'
@@ -96,7 +96,7 @@ class TextFormatObject(object):
         text = getattr(self, name)(context=self, key=key, text=text, REQUEST=REQUEST)
     except:
       standard.writeError( self, '[renderText]: can\'t %s'%name)
-    if self.getConfProperty('ZMS.richtext.plugin', '') == 'simplemde':
+    if format == 'markdown':  # and self.getConfProperty('ZMS.richtext.plugin', '') == 'simplemde'
       try:
         import markdown
         text = markdown.markdown(text)

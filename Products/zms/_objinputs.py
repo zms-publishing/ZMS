@@ -50,12 +50,11 @@ class ObjInputs(object):
   #	@return String
   # ----------------------------------------------------------------------------
   def getDateTimeInput(self, fmName, elName, size=8, value=None, enabled=True, fmt_str='DATETIME_FMT', css='form-control'):
-    manage_lang = self.get_manage_lang()
     html = []
     input_type = 'date'
     if not isinstance(value, str):
       fmt = {'DATE_FMT':'%Y-%m-%d','DATETIME_FMT':'%Y-%m-%dT%H:%M','TIME_FMT':'%H:%M'}
-      value = self.getLangFmtDate(value, manage_lang, fmt.get(fmt_str))
+      value = standard.getLangFmtDate(self, value, fmt_str=fmt.get(fmt_str))
     if value is not None and standard.parseLangFmtDate(value) is None:
       value = ''
     placeholder = self.getZMILangStr(fmt_str)
@@ -160,7 +159,7 @@ class ObjInputs(object):
   #	@param btn    Appear as Bootstrap Button
   #	@return String
   #
-  # Hint: In order to avoid multiple identical ids (HTML5 conformance) 
+  # Hint: In order to avoid multiple identical ids (HTML5 conformance)
   # call getCheckbox(..., elId='', ...) with an empty string for elId
   # ----------------------------------------------------------------------------
   def getCheckbox(self, fmName, elName, elId=None, value=None, enabled=True, hidden=True, css='', btn=False, options=[0, 1]):
@@ -187,7 +186,7 @@ class ObjInputs(object):
     html.append(' type="checkbox"')
     if not enabled:
       html.append(' disabled="disabled"')
-    if checked: 
+    if checked:
       html.append(' checked="checked"')
     html.append(' onclick="if(this.checked){$(this)%s.prev().val(\'%s\')}else{$(this)%s.prev().val(\'%s\')}"'%(['', '.parent()'][btn], options[1], ['', '.parent()'][btn], options[0]))
     html.append(' />')

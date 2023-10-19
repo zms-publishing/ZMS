@@ -155,10 +155,10 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   obj.setObjProperty('titlealt', titlealt, lang)
   obj.setObjProperty('title', title, lang)
   obj.onChangeObj(REQUEST, forced=1)
-  
+
   # Init Object-Children
   obj.initObjChildren(REQUEST)
-  
+
   ### Return new ZMS instance.
   return obj
 
@@ -189,12 +189,12 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
     homeElmnt = Folder(REQUEST['folder_id'])
     self._setObject(homeElmnt.id, homeElmnt)
     homeElmnt = [x for x in self.objectValues() if x.id == homeElmnt.id][0]
-    
+
     ##### Add ZMS ####
     titlealt = 'ZMS home'
     title = 'ZMS - Python-based Content Management System for Science, Technology and Medicine'
     obj = initZMS(homeElmnt, 'content', titlealt, title, lang, manage_lang, REQUEST)
-    
+
     ##### Add Theme ####
     themeId = importTheme(obj,REQUEST['theme'])
     obj.setConfProperty('ZMS.theme',themeId)
@@ -263,6 +263,7 @@ class ZMS(
         'manage_customizeDesign', 'manage_customizeDesignForm',
         )
     __authorPermissions__ = (
+        'preview_html', 'preview_top_html',
         'manage_addZMSModule',
         'manage_deleteObjs', 'manage_undoObjs',
         'manage_moveObjUp', 'manage_moveObjDown', 'manage_moveObjToPos',

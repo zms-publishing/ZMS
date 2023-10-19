@@ -15,7 +15,6 @@ thisobj = context.this()
 # aselected = request.get('aselected',None)
 # mode = request.get('mode',None)
 # request.set('lang',request.get('lang','eng'))
-request.set('manage_lang', request.get('manage_lang', request.get('lang','eng')))
 request.set('ZMI_TIME', DateTime().timeTime())
 request.set('quickrun', int(request.get('quickrun', 0)))
 

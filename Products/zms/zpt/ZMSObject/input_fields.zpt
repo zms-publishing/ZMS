@@ -20,7 +20,7 @@
 	<input type="hidden" id="meta_id" name="meta_id" tal:attributes="value meta_id" />
 	<input type="hidden" id="ZMS_INSERT" name="ZMS_INSERT" tal:condition="python:request.get('ZMS_INSERT',False)" tal:attributes="value python:request.get('ZMS_INSERT','')" />
 
-	<div class="card" 
+	<div class="card"
 		tal:condition="python:metaObj['type'] != 'ZMSRecordSet' or command.lower() != 'insert'"
 		tal:attributes="class python:'card input_fields_%s'%(meta_id)">
 		<div class="card-header attr_last_modified clearfix btn-collapse">
@@ -28,13 +28,14 @@
 				<a id="zmi-toggle-activity-btn" class="btn card-toggle" data-toggle="collapse" href="#attrActivity"
 					><i class="fas fa-invisible"></i> <tal:block tal:content="python:here.getZMILangStr('ATTR_ACTIVITY')">Activity</tal:block></a>
 				<div class="btn zmi-changes"
-						tal:condition="not:python:request.get('ZMS_INSERT',False)" 
+						tal:condition="not:python:request.get('ZMS_INSERT',False)"
 						tal:define="change_uid python:here.attr('change_uid');change_dt python:here.attr('change_dt')">
-						<tal:block tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')">changed by</tal:block>
-					<span class="zmi-change-dt" tal:content="structure python:here.getLangFmtDate(change_dt,request['manage_lang'],'DATETIME_FMT')">the change-dt</span>
+					<tal:block tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')">changed by</tal:block>
+					<span class="zmi-change-dt" tal:content="structure python:here.getLangFmtDate(change_dt,fmt_str='DATETIME_FMT')">the change-dt</span>
 					<tal:block tal:content="python:here.getZMILangStr('BY')">by</tal:block>
 					<span class="zmi-change-uid" tal:content="change_uid">the change-uid</span>
 					<tal:block tal:content="structure python:here.zmi_version_object_state(here,request)">zmi_version_object_state</tal:block>
+					<span title="Readme" tal:condition="python:here.attr('readme')" class="zmi-readme text-primary zmi-state" onclick="zmiModal('#readme',{title:$('#readme').attr('title')});return false"><i class="far fa-question-circle"></i></span>
 				</div>
 			</div>
 			<div class="zmi-action loaded btn-group pull-right dropleft" tal:condition="not:python: request.get('ZMS_INSERT',False)">
@@ -71,7 +72,7 @@
 					<span class="btn pl-0" style="white-space: normal;text-align: left;">
 						<tal:block tal:condition="python:here.attr('created_dt') and here.attr('created_uid')">
 							<tal:block tal:content="python:here.getZMILangStr('ATTR_CREATED')+':'">created:</tal:block>
-							<span class="zmi-created-dt" tal:content="python:here.getLangFmtDate(here.attr('created_dt'),request['manage_lang'],'DATETIME_FMT')">the created_dt</span>
+							<span class="zmi-created-dt" tal:content="python:here.getLangFmtDate(here.attr('created_dt'),fmt_str='DATETIME_FMT')">the created_dt</span>
 							<tal:block tal:content="python:here.getZMILangStr('BY')">by</tal:block>
 							<span class="zmi-created-uid" tal:content="python:here.attr('created_uid')">the created_uid</span>,
 						</tal:block>
@@ -87,9 +88,9 @@
 							<tal:block tal:condition="python:request.get('refresh_catalog')">
 								<tal:block tal:define="dummy0 python:standard.triggerEvent(here,'*.ObjectMoved')"></tal:block>
 							</tal:block>
-							<a tal:condition="not:cataloged" 
+							<a tal:condition="not:cataloged"
 								href="javascript:;" title="Refresh Catalog Item"
-								onclick="if(confirm('Really Refresh Catalog Item?')){self.location.href='?refresh_catalog=True'}return false;" 
+								onclick="if(confirm('Really Refresh Catalog Item?')){self.location.href='?refresh_catalog=True'}return false;"
 								class="btn btn-danger ml-2">
 								<i title="Refresh catalog" class="fas fa-sync-alt"></i>
 							</a>
@@ -187,7 +188,7 @@
 				</tal:block>
 			</div><!-- .card-body -->
 		</div><!-- .collapse -->
-		<tal:block 
+		<tal:block
 			tal:define="constraints python:here.attr('check_constraints')"
 			tal:condition="constraints">
 			<tal:block tal:on-error="nothing" tal:repeat="category python:list(constraints)">
@@ -206,7 +207,7 @@
 			<div class="card-body">
 				<div class="form-group row">
 					<div class="controls save">
-						<div class="form-check form-check-inline align-middle" 
+						<div class="form-check form-check-inline align-middle"
 							title="Menu Pin: Stay in the menu after clicking the save button.">
 							<input type="checkbox" id="menulock" name="menulock:int" onclick="$ZMILocalStorageAPI.set('ZMS.menulock',this.checked)" value="1" /><i class="fas fa-thumbtack pl-2"></i>
 						</div>
@@ -232,7 +233,7 @@
 		</form>
 
 		<tal:block tal:repeat="metaObjAttr python:[x for x in [here.getMetaobjAttr(metaObj['id'],x) for x in metaObjAttrIds] if x]"
-			><tal:block tal:define="global 
+			><tal:block tal:define="global
 					elName python:here.getObjAttrName(metaObjAttr,request['lang']);
 					elLabel python:here.getObjAttrLabel(metaObjAttr)"
 				><tal:block tal:condition="python:not metaObjAttr['id'].startswith('_') and not (metaObjAttr['id']=='e' and metaObjAttr['type']=='*') and not (metaObjAttr['id'] in request.get('ZMS_HIDE_ELEMENTS',[]))"
@@ -264,7 +265,7 @@
 									<tal:block tal:repeat="childNode objChildren">
 										<li tal:attributes="id python:'zmi_item_%s'%childNode.id; class python:' '.join([childNode.meta_id,'zmi-item','zmi-selectable']+[['pageelement'],['page']][int(childNode.isPage())] + [[],['is-new']][int(childNode.inObjStates(['STATE_NEW'],request))] + [[],['is-modified']][int(childNode.inObjStates(['STATE_MODIFIED'],request))] + [[],['is-deleted']][int(childNode.inObjStates(['STATE_DELETED'],request))])">
 											<div class="center"
-												tal:on-error="structure string: <code style='display:block'>ERROR: childNode.renderShort(request)</code>"  
+												tal:on-error="structure string: <code style='display:block'>ERROR: childNode.renderShort(request)</code>"
 												tal:attributes="class python:'center%s'%([' inactive',''][childNode.isActive(request)])"
 												tal:content="structure python:childNode.renderShort(request)">
 												the rendered child-node
@@ -299,6 +300,29 @@
 			</tal:block>
 		</tal:block>
 	</div><!-- .card -->
+
+	<!-- Readme: markdown formatted optional 'readme' resource attribute rendered as HTML -->
+	<div id="readme" class="modal"
+		tal:condition="readme"
+		tal:define="readme python:here.attr('readme');
+			readme_url python:'%s/%s.readme/manage_readme'%(here.content.metaobj_manager.absolute_url(),here.meta_id)"
+		tal:attributes="title python:here.meta_id; data-readme readme_url">
+		<script>
+		//<!--
+			$(function() {
+				$(window).on('show.bs.modal', function (event) {
+					if ( $('#readme script').length > 0 ) {
+						$.get($('#readme').data('readme'),'',function(data) {
+							$('#readme').html(data);
+							// Needed for 1st show
+							$('#zmiModalreadme .modal-body').html(data);
+						});
+					}
+				});
+			});
+		//-->
+		</script>
+	</div>
 
 </tal:block>
 

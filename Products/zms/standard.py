@@ -890,15 +890,18 @@ def triggerEvent(context, *args, **kwargs):
 
 
 security.declarePublic('isManagementInterface')
-def isManagementInterface(REQUEST):
+def isManagementInterface(self):
   """
   Returns true if current context is management-interface, false else.
   @rtype: C{Bool}
   """
-  return REQUEST is not None and \
-         REQUEST.get('URL', '').find('/manage') >= 0 and \
-         isPreviewRequest(REQUEST)
-
+  request = self.REQUEST
+  if not 'is_zmi' in request:
+    permissions = set(sum([list(x[1]) for x in self.__ac_permissions__],[]))
+    current = request.get('URL', '').split('/')[-1]
+    request.set('is_zmi', request.get('AUTHENTICATED_USER') and \
+         (current.startswith('manage_') or current in permissions))
+  return request.get('is_zmi')
 
 
 security.declarePublic('isPreviewRequest')
@@ -2217,18 +2220,16 @@ def processData(context, processId, data, trans=None):
 ############################################################################
 
 security.declarePublic('dt_executable')
-def dt_executable(context, v):
+def dt_executable(v):
   """
   Returns if given value is executable.
-  @param context: the context
-  @type context: C{ZMSObject}
   @param v: the executable code
   @type v: C{str}
   @return:
   @rtype: C{Bool}
   """
   if isinstance(v, bytes) or isinstance(v, str):
-    if v.startswith('##'):
+    if v.startswith('##') and v.find('return ') > 0:
       return 'py'
     elif v.find('<tal:') >= 0:
       return 'zpt'
@@ -2250,7 +2251,7 @@ def dt_exec(context, v, o={}):
   @rtype: C{any}
   """
   if type(v) is str:
-    if v.startswith('##'):
+    if v.startswith('##') and v.find('return ') > 0:
       v = dt_py(context, v, o)
     elif v.find('<tal:') >= 0:
       v = dt_tal(context, v, dict(o))

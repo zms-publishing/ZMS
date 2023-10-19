@@ -22,7 +22,6 @@ import OFS.misc_
 import json
 from zope.interface import implementer
 # Product Imports.
-from Products.zms import IZMSLocale
 from Products.zms import _fileutil
 from Products.zms import _xmllib
 from Products.zms import standard
@@ -222,7 +221,6 @@ class MultiLanguageObject(object):
 ###
 ################################################################################
 ################################################################################
-@implementer(IZMSLocale.IZMSLocale)
 class MultiLanguageManager(object):
 
     def get_manage_langs(self):
@@ -236,20 +234,26 @@ class MultiLanguageManager(object):
       Returns preferred of manage-language for current content-language.
       """
       manage_lang = None
-      req = getattr( self, 'REQUEST', None)
-      if req is not None:
-        sess = standard.get_session(self)
-        if 'manage_lang' in req:
-          manage_lang = req.get('manage_lang')
+      request = self.REQUEST
+      if standard.isManagementInterface(self):
+        manage_langs = self.get_manage_langs()
+        # get manage_lang from request.form
+        if 'manage_lang' in request.form and request.form['manage_lang'] in manage_langs:
+          manage_lang = request.form['manage_lang']
+          # save manage_lang from request.form in session
+          standard.set_session_value(self, 'manage_lang', manage_lang)
         else:
-          if sess is not None and 'reset_manage_lang' not in req.form:
-            manage_lang = sess.get('manage_lang')
-          if manage_lang is None:
-            lang = req.get('lang')
+          # get manage_lang from request or session
+          manage_lang = request.get('manage_lang', standard.get_session_value(self, 'manage_lang'))
+          if manage_lang not in manage_langs:
+            # get manage_lang from request.lang
+            manage_lang = None
+            lang = request.get('lang')
             if lang in self.getLangIds():
               manage_lang = self.getLang(lang).get('manage')
-        if sess is not None:
-          sess.set('manage_lang', manage_lang)
+              # save manage_lang from request.lang in session
+              standard.set_session_value(self, 'manage_lang', manage_lang)
+      # default manage_lang to English
       if manage_lang is None:
         manage_lang = 'eng'
       return manage_lang

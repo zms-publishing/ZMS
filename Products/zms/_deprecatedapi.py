@@ -435,7 +435,7 @@ class DeprecatedAPI(object):
 
   def dt_executable(self, v):
     warn(self, 'dt_executable', 'Products.zms.standard.dt_executable')
-    return standard.dt_executable(self, v)
+    return standard.dt_executable(v)
 
   def dt_exec(self, v, o={}):
     warn(self, 'dt_exec', 'Products.zms.standard.dt_exec')

@@ -145,7 +145,7 @@ class ConfManager(
     #  ConfManager.importConfPackage:
     # --------------------------------------------------------------------------
     def importConfPackage(self, file):
-      
+
       if isinstance(file, str):
         if file.startswith('http://') or file.startswith('https://'):
           file = StringIO( self.http_import(file))
@@ -269,7 +269,7 @@ class ConfManager(
                   r = _repositoryutil.readRepository(self, path, deep=False)
                   for k in r:
                       v = r[k]
-                      filenames['conf:%s/%s'%(filename,k)] = '%s-%s'%(k,v.get('revision','0.0.0'))   
+                      filenames['conf:%s/%s'%(filename,k)] = '%s-%s'%(k,v.get('revision','0.0.0'))
       # Return.
       if REQUEST is not None and RESPONSE is not None:
           RESPONSE = REQUEST.RESPONSE
@@ -454,8 +454,8 @@ class ConfManager(
     """
     def getConfPropertiesDefaults(self):
       return [
-        {'key':'ZMS.conf.path','title':'ZMS conf-path','desc':'ZMS conf-path','datatype':'string','default':'$INSTANCE_HOME/var/$HOME_ID'}, 
-        {'key':'ZMS.debug','title':'ZMS debug','desc':'ZMS debug','datatype':'boolean','default':0}, 
+        {'key':'ZMS.conf.path','title':'ZMS conf-path','desc':'ZMS conf-path','datatype':'string','default':'$INSTANCE_HOME/var/$HOME_ID'},
+        {'key':'ZMS.debug','title':'ZMS debug','desc':'ZMS debug','datatype':'boolean','default':0},
         {'key':'ZMSAdministrator.email','title':'Admin e-Mail','desc':'Administrators e-mail address.','datatype':'string'},
         {'key':'ASP.protocol','title':'ASP Protocol','desc':'ASP Protocol.','datatype':'string','options':['http', 'https'],'default':'http'},
         {'key':'ASP.ip_or_domain','title':'ASP IP/Domain','desc':'ASP IP/Domain.','datatype':'string'},
@@ -470,7 +470,7 @@ class ConfManager(
         {'key':'ZMS.password.regexp','title':'Password Regular Expression','desc':'Regular Expression for validation of new passwords.','datatype':'string','default':''},
         {'key':'ZMS.password.hint','title':'Password Hint','desc':'Hint for validation of new passwords.','datatype':'string','default':''},
         {'key':'ZMS.pathhandler','title':'Declarative URLs','desc':'ZMS can use declarative URLs based on DC.Identifier.Url.Node (or DC.Title.Alt).','datatype':'boolean'},
-        {'key':'EmailMandatory','title':'Email Mandatory?','desc':'Email for users','datatype':'boolean','default':0}, 
+        {'key':'EmailMandatory','title':'Email Mandatory?','desc':'Email for users','datatype':'boolean','default':0},
         {'key':'ZMS.pathhandler.id_quote.mapping','title':'Declarative IDs-Mapping','desc':'ZMS can map characters in DC.Title.Alt to declarative IDs.','datatype':'string','default':' _-_/_'},
         {'key':'ZMS.preview.contentEditable','title':'Content-Editable Preview','desc':'Make content in ZMS preview editable','datatype':'boolean','default':1},
         {'key':'ZMS.pathcropping','title':'Crop URLs','desc':'ZMS can crop the SERVER_NAME from URLs.','datatype':'boolean'},
@@ -494,7 +494,7 @@ class ConfManager(
         {'key':'ZMSIndexZCatalog.ObjectImported.resync','title':'Resync ZMSIndex on content import','desc':'Please be aware that activating implicit ZMSIndex-resync on content import can block bigger sites for a while','datatype':'boolean','default':0},
         {'key':'ZReferableItem.validateLinkObj','title':'Auto-correct inline-links on save','desc':'Ensure valid inline-links by text-parsing and using ZMSIndex for refreshing target urls on save event','datatype':'boolean','default':1},
       ]
-    
+
     """
     Returns property from configuration.
     @rtype: C{dict}
@@ -518,7 +518,7 @@ class ConfManager(
 
     """
     Removes property from configuration.
-    
+
     @param key: The key.
     @type key: C{string}
     @return None
@@ -530,7 +530,7 @@ class ConfManager(
     """
     Returns property from request (used to get zope-request-properties,
     e.g. SERVER_URL oder AUTHENTICATED_USER).
-    
+
     @param key: The key.
     @type key: C{string}
     @param default: The default-value.
@@ -547,7 +547,7 @@ class ConfManager(
 
     """
     Returns property from configuration.
-    
+
     @param key: The key.
     @type key: C{string}
     @param default: The default-value.
@@ -581,7 +581,7 @@ class ConfManager(
           else:
             for default in [x for x in self.getConfPropertiesDefaults() if x['key'] == key]:
               value = default.get('default', None)
-      return value 
+      return value
 
     def getConfProperty(self, key, default=None, REQUEST=None):
       """ ConfManager.getConfProperty """
@@ -590,7 +590,7 @@ class ConfManager(
 
     """
     Sets property into configuration.
-    
+
     @param key: The key.
     @type key: C{string}
     @param value: The value.
@@ -623,10 +623,10 @@ class ConfManager(
     ############################################################################
     def manage_customizeSystem(self, btn, key, lang, REQUEST, RESPONSE=None):
       """ ConfManager.manage_customizeSystem """
-      
+
       message = ''
       params = []
-      
+
       ##### Import ####
       if key == 'Import':
         if btn == 'Import':
@@ -640,7 +640,7 @@ class ConfManager(
           else:
             filename = 'ERROR: No File found!'
           message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%filename)
-      
+
       ##### History ####
       elif key == 'History':
         old_active = self.getConfProperty('ZMS.Version.active', 0)
@@ -659,7 +659,7 @@ class ConfManager(
           if ob is not None:
             message += '[%s: %i]'%(node, ob.packHistory())
         message = self.getZMILangStr('MSG_CHANGED')+message
-      
+
       ##### Clients ####
       elif key == 'Clients':
         if btn == 'Change':
@@ -681,7 +681,7 @@ class ConfManager(
                 l.append(id)
           self.setConfProperty('Portal.Clients', l)
           message = self.getZMILangStr('MSG_CHANGED')
-      
+
       ##### MediaDb ####
       elif key == 'MediaDb':
         if btn == 'Create':
@@ -695,7 +695,7 @@ class ConfManager(
           message = _mediadb.manage_packMediaDb(self)
         elif btn == 'Remove':
           message = _mediadb.manage_delMediaDb(self)
-      
+
       ##### Custom ####
       elif key == 'Custom':
         k = REQUEST.get( 'conf_key', '')
@@ -720,7 +720,7 @@ class ConfManager(
             for portalClient in self.getPortalClients():
               portalClient.delConfProperty( k)
           message = self.getZMILangStr('MSG_DELETED')%int(1)
-      
+
       ##### Configuration ####
       elif key == 'Configuration':
         if btn == 'Change':
@@ -728,7 +728,7 @@ class ConfManager(
           self.setConfProperty('InstalledProducts.pil.thumbnail.max', REQUEST.get('pil_thumbnail_max', self.getConfProperty('InstalledProducts.pil.thumbnail.max')))
           self.setConfProperty('InstalledProducts.pil.hires.thumbnail.max', REQUEST.get('pil_hires_thumbnail_max', self.getConfProperty('InstalledProducts.pil.hires.thumbnail.max')))
           message = self.getZMILangStr('MSG_CHANGED')
-      
+
       ##### Manager ####
       elif key == 'Manager':
         if btn == 'Add':
@@ -750,19 +750,19 @@ class ConfManager(
           if ids:
             message = 'Removed '+', '.join(ids)
             self.manage_delObjects(ids=ids)
-      
+
       # Return with message.
       if RESPONSE:
         d = {'lang': lang,'manage_tabs_message': message}
         for param in params:
           d[param] = REQUEST.get( param, '')
         return RESPONSE.redirect( standard.url_append_params( 'manage_customize', d) + '#%s'%key)
-      
+
       return message
 
 
     ############################################################################
-    #  ConfManager.manage_customizeDesign: 
+    #  ConfManager.manage_customizeDesign:
     #
     #  Customize design properties.
     ############################################################################
@@ -771,7 +771,7 @@ class ConfManager(
       message = ''
       home = self.getHome()
       section = REQUEST.get('section','')
-      
+
       # Save css.
       # -----
       if btn == 'BTN_SAVE' and section == 'added':
@@ -790,27 +790,27 @@ class ConfManager(
         if ob is not None:
           ob.manage_edit(title=ob.title, content_type=ob.content_type, filedata=REQUEST[added_id])
         message = self.getZMILangStr('MSG_CHANGED')
-      
+
       # Save theme.
       # -----
       elif btn == 'BTN_SAVE':
         id = REQUEST.get('id', '')
         self.setConfProperty('ZMS.theme', id)
         message = self.getZMILangStr('MSG_CHANGED')
-      
+
       # Delete theme.
       # -------
       elif btn == 'BTN_DELETE':
         ids = REQUEST.get('ids', [])
         home.manage_delObjects(ids)
         message = self.getZMILangStr('MSG_DELETED')%int(len(ids))
-      
+
       # Copy theme.
       # -----
       elif btn == 'BTN_COPY':
         self.metaobj_manager.importTheme(id)
         message = self.getZMILangStr('MSG_IMPORTED')%('<code class="alert-success">'+id+'</code>')
-      
+
       # Import theme.
       # -------
       elif btn == 'BTN_IMPORT':
@@ -822,7 +822,7 @@ class ConfManager(
         home.manage_importObject(filename)
         _fileutil.remove( filepath)
         message = self.getZMILangStr('MSG_IMPORTED')%('<code class="alert-success">'+filename+'</code>')
-      
+
       # Insert theme.
       # -------
       elif btn == 'BTN_INSERT':
@@ -832,7 +832,7 @@ class ConfManager(
         folder = getattr(home, newId)
         zopeutil.addPageTemplate(folder, id='standard_html', title='', data='<!DOCTYPE html>\n<html tal:define="zmscontext options/zmscontext">\n</html>')
         message = self.getZMILangStr('MSG_INSERTED')%newId
-      
+
       # Return with message.
       message = standard.url_quote(message)
       return RESPONSE.redirect('manage_customizeDesignForm?lang=%s&manage_tabs_message=%s'%(lang, message))
@@ -960,7 +960,7 @@ class ConfManager(
 
     def getMetaobjRevision(self, id):
       return self.getMetaobjManager().getMetaobjRevision( id)
-    
+
     def getMetaobjId(self, name):
       return self.getMetaobjManager().getMetaobjId( name)
 
@@ -1103,33 +1103,6 @@ class ConfManager(
       return adapter
 
 
-    ############################################################################
-    ###
-    ###   Interface IZMSLocale: delegate
-    ###
-    ############################################################################
-
-    def getLocale(self):
-      return self
-
-    """
-    def get_manage_langs(self):
-      return self.getLocale().get_manage_langs()
-
-    def get_manage_lang(self):
-      return self.getLocale().get_manage_lang()
-
-    def getZMILangStr(self, key, REQUEST=None, RESPONSE=None):
-      return self.getLocale().getZMILangStr( key)
-
-    def getLangStr(self, key, lang=None):
-      return self.getLocale().getLangStr( key, lang)
-
-    def getPrimaryLanguage(self):
-      return self.getLocale().getPrimaryLanguage()
-    """
-
-
 # call this to initialize framework classes, which
 # does the right thing with the security assertions.
 InitializeClass(ConfManager)
@@ -1150,3 +1123,4 @@ def getRegistry():
 getRegistry()
 
 ################################################################################
+

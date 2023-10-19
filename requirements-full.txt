@@ -24,6 +24,10 @@ pyScss
 ftfy
 pdfminer.six
 
+# OpenSearch
+opensearch-py
+rich
+
 # PAS
 Products.PluggableAuthService
 Products.PluginRegistry

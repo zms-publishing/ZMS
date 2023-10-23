@@ -1,4 +1,5 @@
 # ZMS Dependencies
+pyyaml
 docutils
 configparser
 requests

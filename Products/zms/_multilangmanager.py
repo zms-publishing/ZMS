@@ -20,72 +20,28 @@
 from App.Common import package_home
 import OFS.misc_
 import json
-from zope.interface import implementer
+import yaml
 # Product Imports.
 from Products.zms import _fileutil
-from Products.zms import _xmllib
 from Products.zms import standard
 
 
 # ------------------------------------------------------------------------------
 #  importXml
 # ------------------------------------------------------------------------------
-def _importXml(self, item):
-    key = item['key']
-    lang_dict = self.get_lang_dict()
-    lang_dict[key] = {}
-    for langId in self.getLangIds():
-      if langId in item:
-        lang_dict[key][langId] = item[langId]
-    self.setConfProperty('ZMS.custom.langs.dict', lang_dict.copy())
+def importYaml(self, f):
+  if not isinstance(f, str):
+    f = f.read()
+  lang_dict = self.get_lang_dict()
+  data = yaml.safe_load(f)
+  # Merge dicts.
+  lang_dict.update(data)
+  self.setConfProperty('ZMS.custom.langs.dict', lang_dict.copy())
 
-def importXml(self, xml):
-  if not isinstance(xml, str):
-    xml = xml.read()
-  value = standard.parseXmlString(xml)
-  if value is None:
-    value = []
-    builder = _xmllib.XmlBuilder()
-    nWorkbook = builder.parse(xml)
-    for nWorksheet in _xmllib.xmlNodeSet(nWorkbook, 'Worksheet'):
-      for nTable in _xmllib.xmlNodeSet(nWorksheet, 'Table'):
-        r = 0
-        keys = []
-        for nRow in _xmllib.xmlNodeSet(nTable, 'Row'):
-          c = 0
-          for nCell in _xmllib.xmlNodeSet(nRow, 'Cell'):
-            for nData in _xmllib.xmlNodeSet(nCell, 'Data'):
-              if r == 0:
-                if c == 0:
-                  key = 'key'
-                else:
-                  key = nData.get('cdata', '')
-                keys.append(key)
-              else:
-                if c == 0:
-                  value.append({})
-                value[-1][keys[c]] = nData.get('cdata', '')
-              c += 1
-          r += 1
-  if isinstance(value, list):
-    for item in value:
-      _importXml( self, item)
-  else:
-    _importXml( self, value)
-
-def exportXml(self, ids, REQUEST=None, RESPONSE=None):
-  value = []
-  d = self.get_lang_dict()
-  for id in d:
-    item = d[id].copy()
-    item['key'] = id
-    if id in ids or len(ids) == 0:
-      value.append(item)
-  filename = 'export.langdict.xml'
-  # Export value with filename.
-  content_type = 'text/xml; charset=utf-8'
-  processing_instruction = '<?zms version=\'%s\'?>'%(self.zms_version())
-  export = self.getXmlHeader() + processing_instruction + standard.toXmlString(self, value, xhtml=True)
+def exportYaml(self, ids, REQUEST=None, RESPONSE=None):
+  filename = 'export.langdict.yaml'
+  content_type = 'text/plain; charset=utf-8'
+  export = yaml.dump(self.get_lang_dict(),allow_unicode=True)
   if RESPONSE:
     RESPONSE.setHeader('Content-Type', content_type)
     RESPONSE.setHeader('Content-Disposition', 'attachment;filename="%s"'%filename)
@@ -121,45 +77,16 @@ def getDescLangs(self, id, langs):
 ################################################################################
 class langdict(object):
 
-    def __init__(self, filename='_language.xml'):
+    def __init__(self, filename='default.langdict.yaml'):
       """
       Constructor 
       """
-      manage_langs = []
-      lang_dict = {}
       filepath = package_home(globals())+'/import/'
-      xmlfile = open(_fileutil.getOSPath(filepath+filename), 'rb')
-      builder = _xmllib.XmlBuilder()
-      nWorkbook = builder.parse(xmlfile)
-      for nWorksheet in _xmllib.xmlNodeSet(nWorkbook, 'Worksheet'):
-        for nTable in _xmllib.xmlNodeSet(nWorksheet, 'Table'):
-          for nRow in _xmllib.xmlNodeSet(nTable, 'Row'):
-            lRow = []
-            currIndex = 0
-            for nCell in _xmllib.xmlNodeSet(nRow, 'Cell'):
-              ssIndex = int(nCell.get('attrs', {}).get('ss:Index', currIndex+1))
-              currData = None
-              for i in range(currIndex+1, ssIndex):
-                lRow.append(currData)
-              for nData in _xmllib.xmlNodeSet(nCell, 'Data'):
-                currData = nData['cdata']
-              lRow.append(currData)
-              currIndex = ssIndex
-            if len(manage_langs) == 0:
-              del lRow[0]
-              manage_langs = lRow
-            else:
-              if len(lRow) > 0:
-                key = lRow[0]
-                value = {}
-                for i in range(len(manage_langs)):
-                  if i+1 < len(lRow):
-                    if lRow[i+1] is not None:
-                      value[manage_langs[i]] = lRow[i+1]
-                lang_dict[key] = value
-      xmlfile.close()
-      self.manage_langs = manage_langs
-      self.langdict = lang_dict
+      f = open(_fileutil.getOSPath(filepath+filename), 'rb')
+      data = yaml.safe_load(f.read())
+      f.close()
+      self.manage_langs = ['ger','eng','fra','esp','ita','ned','chi','ara','rus','hin','fas','vie']
+      self.langdict = data
 
     def get_manage_langs(self):
       """
@@ -651,7 +578,7 @@ class MultiLanguageManager(object):
         # -------
         elif btn == 'BTN_EXPORT':
           ids = REQUEST.get('ids', [])
-          return exportXml(self, ids, REQUEST, RESPONSE)
+          return exportYaml(self, ids, REQUEST, RESPONSE)
         
         # Import.
         # -------
@@ -659,7 +586,7 @@ class MultiLanguageManager(object):
           f = REQUEST['file']
           if f:
             filename = f.filename
-            importXml(self, xml=f)
+            importYaml(self, yaml=f)
           else:
             filename = REQUEST['init']
             self.importConf(filename)

@@ -1,0 +1,18 @@
+DC.Title.Alt:
+  ger: Kurztitel
+  eng: Short title
+DC.Title:
+  ger: Titel
+  eng: Title
+DC.Description:
+  ger: Zusammenfassung
+  eng: Description
+DC.Subject:
+  ger: Schlagworte
+  eng: Subject
+DC.Type:
+  ger: Typ
+  eng: Type
+DC.Creator:
+  ger: Autor
+  eng: Creator

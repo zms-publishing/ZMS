@@ -158,13 +158,13 @@ class ConfManager(
 
 
     # --------------------------------------------------------------------------
-    #  ConfManager.getConfXmlFile:
+    #  ConfManager.getConfFile
     # --------------------------------------------------------------------------
-    def getConfXmlFile(self, file):
+    def getConfFile(self, file):
       if isinstance(file, dict):
           filename = file['filename']
-          xml = file['data']
-          xmlfile = StringIO( xml)
+          data = file['data']
+          f = StringIO( data)
       elif isinstance(file, str) and (file.startswith('conf:')):
           filename = file[file.find(':')+1:]
           basepath = _repositoryutil.get_system_conf_basepath()
@@ -176,13 +176,13 @@ class ConfManager(
               l = container.translateRepositoryModel(r)
               xml = standard.toXmlString(self, l)
               xml = bytes(xml, "utf-8")
-              xmlfile = io.BytesIO( xml)
+              f = io.BytesIO( xml)
           else:
-              standard.writeError(self,'[getConfXmlFile]: container %s not found'%container_id)
+              standard.writeError(self,'[getConfFile]: container %s not found'%container_id)
       else:
           filename = _fileutil.extractFilename(file)
-          xmlfile = open(_fileutil.getOSPath(file), 'rb')
-      return filename, xmlfile
+          f = open(_fileutil.getOSPath(file), 'rb')
+      return filename, f
 
 
     # --------------------------------------------------------------------------
@@ -191,28 +191,28 @@ class ConfManager(
     def importConf(self, file, syncIfNecessary=True):
       message = ''
       syncNecessary = False
-      filename, xmlfile = self.getConfXmlFile( file)
+      filename, f = self.getConfFile( file)
       standard.writeBlock( self, '[importConf]: filename='+filename)
       if not filename.startswith('._'): # ignore hidden files in ZIP created by MacOSX
         if filename.find('.charfmt.') > 0:
-          self.format_manager.importCharformatXml(xmlfile)
+          self.format_manager.importCharformatXml(f)
         elif filename.find('.filter.') > 0 or filename.startswith('filter_manager'):
-          self.getFilterManager().importXml(xmlfile)
+          self.getFilterManager().importXml(f)
         elif filename.find('.metadict.') > 0:
-          self.getMetaobjManager().importMetadictXml(xmlfile)
+          self.getMetaobjManager().importMetadictXml(f)
           syncNecessary = True
         elif filename.find('.metaobj.') > 0 or filename.startswith('metaobj_manager'):
-          self.getMetaobjManager().importMetaobjXml(xmlfile)
+          self.getMetaobjManager().importMetaobjXml(f)
           syncNecessary = True
         elif filename.find('.workflow.') > 0 or filename.startswith('workflow_manager'):
-          self.getWorkflowManager().importXml(xmlfile)
+          self.getWorkflowManager().importXml(f)
         elif filename.find('.metacmd.') > 0 or filename.startswith('metacmd_manager'):
-          self.getMetacmdManager().importXml(xmlfile)
+          self.getMetacmdManager().importXml(f)
         elif filename.find('.langdict.') > 0:
-          _multilangmanager.importXml(self, xmlfile)
+          _multilangmanager.importYaml(self, f)
         elif filename.find('.textfmt.') > 0:
-          self.format_manager.importTextformatXml(xmlfile)
-        xmlfile.close()
+          self.format_manager.importTextformatXml(f)
+        f.close()
       if syncIfNecessary and syncNecessary:
         self.synchronizeObjAttrs()
       return message

@@ -1306,7 +1306,7 @@ class ZMSMetaobjManager(object):
             xmlfile = f
           if REQUEST.get('init'):
             file = REQUEST['init']
-            filename,xmlfile = self.getConfXmlFile( file)
+            filename,xmlfile = self.getConfFile( file)
           if xmlfile is not None:
             # extract xml from zip
             if filename.endswith('.zip'):

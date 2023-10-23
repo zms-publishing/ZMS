@@ -253,39 +253,12 @@ def initialize(context):
               fileobj.write(fc)
             fileobj.close()
         
-        # automated generation of language JavaScript
-        from xml.dom import minidom
-        filename = os.sep.join([package_home(globals())]+['import', '_language.xml'])
-        standard.writeStdout(context, "automated generation of language JavaScript: %s"%filename)
-        xmldoc = minidom.parse(filename)
-        langs = None
-        d = {}
-        for row in xmldoc.getElementsByTagName('Row'):
-          cells = row.getElementsByTagName('Cell')
-          if langs is None:
-            langs = []
-            for cell in cells:
-              data = getData(cell)
-              if data is not None:
-                langs.append(data)
-          else:
-            l = []
-            for cell in cells:
-              data = getData(cell)
-              if cell.attributes.get('ss:Index') is not None:
-                while len(l) < int(cell.attributes['ss:Index'].value) - 1:
-                  l.append(None)
-              l.append(data)
-            if len(l) > 1:
-              k = l[0]
-              d[k] = {}
-              for i in range(len(l)-1):
-                d[k][langs[i]] = l[i+1]
-
         # populate language-strings to i18n-js
         path = os.sep.join([package_home(globals())]+['plugins', 'www', 'i18n'])
         if not os.path.exists(path):
           os.mkdir(path)
+        d = _multilangmanager.langdict().get_langdict()
+        langs = _multilangmanager.langdict().get_manage_langs()
         for lang in langs:
           filename = os.sep.join([path, '%s.js'%lang])
           standard.writeStdout(context, "generate: %s"%filename)

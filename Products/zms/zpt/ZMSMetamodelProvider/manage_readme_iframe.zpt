@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html lang="en" tal:define="zmscontext python:here.getSelf(); standard modules/Products.zms/standard">
+<tal:block tal:content="structure python:zmscontext.zmi_html_head(here,request)">zmi_html_head</tal:block>
+<body id="zmiIframereadme"
+	tal:attributes="class python:zmscontext.zmi_body_class(id='container')"
+	tal:content="structure python:context.manage_readme(context,request)">
+	<!-- Readme: markdown formatted, optional 'readme' resource attribute rendered as HTML -->
+</body>
+</html>

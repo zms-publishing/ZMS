@@ -2716,6 +2716,7 @@ ul.pagination .page-item {
 		margin-top: 1.75rem;
 	}
 }
+#zmiIframereadme h1:before,
 #zmiModalreadme .modal-title:before {
 	content: "\f059";
 	font-family: 'Font Awesome 5 Free';
@@ -2734,6 +2735,14 @@ ul.pagination .page-item {
 #zmiModalreadme .modal-body h1 {
 	display: none !important;
 }
+#zmiIframereadme h1 {
+	font-size: 18px !important;
+	border-bottom:1px solid silver;
+	font-weight: bold !important;
+	padding:.75rem 0;
+	margin:1.25rem 0 1rem;
+}
+#zmiIframereadme h2,
 #zmiModalreadme .modal-body h2 {
 	font-size: 18px !important;
 	font-weight: bold !important;

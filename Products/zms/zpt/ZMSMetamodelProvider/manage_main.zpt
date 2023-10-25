@@ -267,7 +267,7 @@
 								</tal:block>
 							</div>
 							<span tal:condition="python:objAttr['id']=='readme'" 
-								title="Readme" class="zmi-readme text-info float-right pt-1 pr-3 d-none d-lg-block"
+								title="Readme" class="zmi-readme text-info float-right btn-sm mr-2 d-none d-lg-block"
 								tal:attributes="onclick python:'window.open(\'./metaobj_manager/%s.readme/manage_readme_iframe\')'%(id)">
 								<i class="far fa-question-circle"></i>
 							</span>
@@ -796,7 +796,7 @@ $(function(){
 
 }
 // Add Execute Button for TAL-Code-Regeneration om a ZPT-Method named standard_html
-var zmi_code_default_btn = '<i onclick="set_zmi_code_default(event)" title=\"Replace by Default-Code-Template\" class=\"zmi-code-default d-block position-absolute fas fa-sync text-primary pt-2 pr-3 mr-2\" style=\"cursor:pointer;right:0\"></i>';
+var zmi_code_default_btn = '<i onclick="set_zmi_code_default(event)" title=\"Replace by Default-Code-Template\" class=\"zmi-code-default fas fa-sync text-primary btn-lg mr-2 position-absolute\" style=\"cursor:pointer;right:0\"></i>';
 
 // Execute on DOM-Ready
 $(function(){

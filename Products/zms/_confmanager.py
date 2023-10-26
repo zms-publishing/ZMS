@@ -269,7 +269,7 @@ class ConfManager(
                   r = _repositoryutil.readRepository(self, path, deep=False)
                   for k in r:
                       v = r[k]
-                      filenames['conf:%s/%s'%(filename,k)] = '%s-%s'%(k,v.get('revision','0.0.0'))   
+                      filenames['conf:%s/%s'%(filename,k)] = '%s.%s-%s'%(v.get('package','[.]'),k,v.get('revision','0.0.0'))   
       # Return.
       if REQUEST is not None and RESPONSE is not None:
           RESPONSE = REQUEST.RESPONSE

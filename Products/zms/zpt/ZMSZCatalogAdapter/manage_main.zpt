@@ -31,10 +31,9 @@
 			##parameters=zmscontext<br/>
 			##title=py: Catalog-Index<br/>
 			##<br/>
+			<br/>
 			return [{<br/>
-			<tal:block tal:repeat="attr_id python:here.getAttrIds()">
-			&nbsp;&nbsp;&nbsp;'<code><tal:block tal:content="attr_id">the attribute-id</tal:block></code>' : ...<br/>
-			</tal:block>
+				<code tal:repeat="attr_id python:here.getAttrIds()" tal:content="structure python:'&nbsp;&nbsp;\'%s\':\'...\',<br/>'%(attr_id)" />
 			}]
 		</div>
 	</div>

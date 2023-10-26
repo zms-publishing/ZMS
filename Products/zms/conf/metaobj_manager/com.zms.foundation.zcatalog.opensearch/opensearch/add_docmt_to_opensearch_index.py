@@ -8,6 +8,9 @@ from bs4 import BeautifulSoup
 def add_docmt_to_opensearch_index(self):
 	request = self.REQUEST
 	self.zmi_page_request(self,request)
+	# Determine the page to be indexed
+	this_page = [e for e in self.breadcrumbs_obj_path() if e.isPage()][-1]
+	self = this_page
 	docmt_id = self.get_uid()
 
 	url = self.getConfProperty('opensearch.url', 'https://localhost:9200')

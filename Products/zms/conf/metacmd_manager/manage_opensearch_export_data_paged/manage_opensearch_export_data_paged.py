@@ -51,11 +51,12 @@ def traverse(data, root_node, node, handler, page_size=100):
 # ${opensearch.ssl.verify:}
 def get_opensearch_client(self):
   from opensearchpy import OpenSearch
-  url = self.getConfProperty('opensearch.url', 'https://localhost:9200')
+  url = self.getConfProperty('opensearch.url', 'http://localhost:9200')
   username = self.getConfProperty('opensearch.username', 'admin')
   password = self.getConfProperty('opensearch.password', 'admin')
-  verify = bool(self.getConfProperty('opensearch.ssl.verify', ''))
-  url = url[len('https://'):]
+  verify = bool(self.getConfProperty('opensearch.ssl.verify', False))
+  use_ssl = url.find('https://')>-1
+  url = url.split('://')[-1]
   host = url[:url.find(':')]
   port = int(url[url.find(':')+1:])
   auth = (username, password)
@@ -64,7 +65,7 @@ def get_opensearch_client(self):
     hosts = [{'host': host, 'port': port}],
     http_compress = True, # enables gzip compression for request bodies
     http_auth = auth,
-    use_ssl = True,
+    use_ssl = use_ssl,
     verify_certs = verify,
     ssl_assert_hostname = False,
     ssl_show_warn = False,

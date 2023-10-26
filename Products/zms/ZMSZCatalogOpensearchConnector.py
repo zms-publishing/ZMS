@@ -81,6 +81,17 @@ class ZMSZCatalogOpensearchConnector(
       id = self.id
       d = {'id':id,'revision':'0.0.0','__filename__':['__init__.py']}
       r[id] = d
+      home_id = self.getHome().id
+      filename = '%s.schema.json'%home_id
+      r[id]['Opensearch'] = [{
+        'id':'schema',
+        'ob': {
+          'filename':filename,
+          'data':self.getConfProperty('opensearch.schema','{}'),
+          'version':'0.0.0',
+          'meta_type':'File',
+        }
+      }]
       return r
 
     """

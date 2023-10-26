@@ -254,9 +254,7 @@ class ZMSRepositoryManager(
         [repo_providers.append(x) for x in children if IZMSRepositoryProvider.IZMSRepositoryProvider in list(providedBy(x))]
         [repo_providers.extend(get_repo_providers(x)) for x in children if IZMSConfigurationProvider.IZMSConfigurationProvider in list(providedBy(x))]
         return repo_providers
-      repo_providers = get_repo_providers(self.getDocumentElement())
-      print(repo_providers)
-      return repo_providers
+      return get_repo_providers(self.getDocumentElement())
 
 
     def localFiles(self, provider, ids=None):

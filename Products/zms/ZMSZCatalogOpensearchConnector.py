@@ -21,7 +21,9 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from zope.interface import implementer
 # Product Imports.
 from Products.zms import IZMSCatalogConnector
+from Products.zms import IZMSRepositoryProvider
 from Products.zms import ZMSItem
+from Products.zms import standard
 
 
 ################################################################################
@@ -32,7 +34,8 @@ from Products.zms import ZMSItem
 ################################################################################
 ################################################################################
 @implementer(
-        IZMSCatalogConnector.IZMSCatalogConnector)
+        IZMSCatalogConnector.IZMSCatalogConnector,
+        IZMSRepositoryProvider.IZMSRepositoryProvider,)
 class ZMSZCatalogOpensearchConnector(
         ZMSItem.ZMSItem):
 
@@ -61,6 +64,38 @@ class ZMSZCatalogOpensearchConnector(
     ############################################################################
     def __init__(self):
       self.id = 'zcatalog_opensearch_connector'
+
+
+    ############################################################################
+    #
+    #  IRepositoryProvider
+    #
+    ############################################################################
+
+    """
+    @see IRepositoryProvider
+    """
+    def provideRepository(self, r, ids=None):
+      standard.writeBlock(self, "[provideRepository]: ids=%s"%str(ids))
+      r = {}
+      id = self.id
+      d = {'id':id,'revision':'0.0.0','__filename__':['__init__.py']}
+      r[id] = d
+      return r
+
+    """
+    @see IRepositoryProvider
+    """
+    def updateRepository(self, r):
+      id = r['id']
+      return id
+
+    """
+    @see IRepositoryProvider
+    """
+    def translateRepositoryModel(self, r):
+      d = {}
+      return d
 
 
     # --------------------------------------------------------------------------

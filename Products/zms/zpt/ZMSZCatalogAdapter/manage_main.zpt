@@ -1,4 +1,13 @@
-<!DOCTYPE html>
+<tal:block tal:define="
+	dummy0 python:here.zmi_page_request(here,request); 
+	standard modules/Products.zms/standard; 
+	zopeutil modules/Products.zms/zopeutil;
+	session python:standard.get_session(here);"
+><tal:block tal:condition="python:standard.get_session_value(here,'zmi-manage-system',0)==1"
+	><tal:block tal:content="structure python:here.manage_system(here,request)"></tal:block
+></tal:block
+><tal:block tal:condition="not:python:standard.get_session_value(here,'zmi-manage-system',0)==1"
+><!DOCTYPE html>
 <html lang="en" tal:define="zmscontext python:here.getSelf(); standard modules/Products.zms/standard">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
 <style>
@@ -394,3 +403,5 @@ $(function() {
 <footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 </body>
 </html>
+</tal:block>
+</tal:block>

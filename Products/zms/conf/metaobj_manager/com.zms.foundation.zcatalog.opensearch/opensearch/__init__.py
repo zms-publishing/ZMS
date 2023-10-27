@@ -106,7 +106,7 @@ class opensearch:
 			,"repetitive":0
 			,"type":"External Method"}
 
-		beforeCommitObjChangesEvt = {"default":""
+		beforecommitobjchangesevt = {"default":""
 			,"id":"beforeCommitObjChangesEvt"
 			,"keys":[]
 			,"mandatory":0

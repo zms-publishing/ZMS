@@ -149,7 +149,7 @@ class ZMSZCatalogOpensearchConnector(
       index_id = REQUEST.get('opensearch_index_id',root_id)
       username = self.getConfProperty('opensearch.username', 'admin')
       password = self.getConfProperty('opensearch.password', 'admin')
-      verify = bool(self.getConfProperty('opensearch.ssl.verify', ''))
+      verify = bool(self.getConfProperty('opensearch.ssl.verify', False))
       auth = HTTPBasicAuth(username,password)
       response = requests.get('%s/%s/_search?pretty=true'%(url,index_id),auth=auth,json=d,verify=verify)
       response.raise_for_status()

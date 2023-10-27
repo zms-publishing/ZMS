@@ -17,11 +17,14 @@
 		<label class="col-sm-2 control-label" for="opensearch_password"><span>Password</span></label>
 		<div class="col-sm-10"><input type="password" class="form-control" name="opensearch_password" value="********"></div>
 	</div>
-	<div class="form-group row">
+	<div class="form-group row" id="tr_opensearch_schema">
 		<label class="col-sm-2 control-label" for="opensearch_schema"><span>Schema</span></label>
 		<div class="col-sm-10">
 			<div class="single-line zmi-code">
-				<textarea class="form-control form-control-sm open-zmi-code" name="opensearch_schema" tal:content="opensearch_schema"></textarea>
+				<textarea id="opensearch_schema" name="opensearch_schema" 
+					class="form-control form-control-sm" placeholder="{}"
+					data-dblclickhandler="show_ace_editor(e=this, toggle=true)"
+					tal:content="opensearch_schema"></textarea>
 			</div>
 		</div>
 	</div>
@@ -108,10 +111,52 @@
 	.ZMSZCatalogConnector .response.alert-danger {
 		max-height: 4.75rem;
 		overflow-y: auto;
+		font-size:smaller !important;
+		margin-top: .35rem;
+		margin-bottom: 1rem;
+		padding: .25em .5rem;
 	}
 	.ZMSZCatalogConnector .response.alert-success.full,
 	.ZMSZCatalogConnector .response.alert-danger.full {
-		max-height: unset;
+		max-height: 100%;
+		transition: max-height 0.5s ease-in-out;
+	}
+	.ZMSZCatalogConnector span.response.alert-success.zmi-code:before {
+		content: "\f077";
+		font-weight: 900;
+		font-family: 'Font Awesome 5 Free';
+		font-size:15px;
+		display:block;
+		width:calc(100% - 1rem);
+		text-align:right;
+		font-style: normal;
+		font-variant: normal;
+		text-rendering: auto;
+		line-height: 1.35;
+		position:absolute;
+		-moz-osx-font-smoothing: grayscale;
+		-webkit-font-smoothing: antialiased;
+	}
+	.ZMSZCatalogConnector span.response.alert-success.full.zmi-code:before {
+		content: "\f0c5";
+		font-weight: 400;
+	}
+	.ZMSZCatalogConnector #tr_opensearch_schema .zmi-code:before {
+		content:"JSON";
+		position:absolute;
+		padding:calc(0.325rem - 1px);
+		display:block;
+		background:#e8f3fb;
+		color:#75a7c0;
+		border:1px #ced4da solid;
+		border-top-left-radius:4px;
+		border-bottom-left-radius:4px;
+		z-index:1;
+	}
+	.ZMSZCatalogConnector #tr_opensearch_schema .zmi-code textarea {
+		padding-left:3rem;
+		padding-top: .35rem;
+		font-size:smaller !important;
 	}
 /*-->*/
 </style>

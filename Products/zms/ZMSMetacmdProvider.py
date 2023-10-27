@@ -569,9 +569,15 @@ class ZMSMetacmdProvider(
             filename = f.filename
             self.importXml(xml=f)
           else:
-            filename = REQUEST['init']
-            self.importConf(filename)
-          message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%filename)
+            if isinstance(REQUEST['init'], list):
+              for filename in list(REQUEST['init']):
+                self.importConf(filename)
+              msg_str = ', '.join(REQUEST['init'])
+            else:
+              filename = REQUEST['init']
+              self.importConf(filename)
+              msg_str = filename
+          message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%(msg_str))
         
         # Insert.
         # -------

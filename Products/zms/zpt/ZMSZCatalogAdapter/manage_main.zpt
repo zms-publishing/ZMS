@@ -219,7 +219,7 @@ function toggleMetaobj() {
 				var dataAttr = dataAttrs[i];
 				var metaObjAttr = {
 					id:dataAttr.substring(0,dataAttr.indexOf("(")),
-					type:dataAttr.substring(dataAttr.indexOf("(")+1,dataAttr.indexOf(")")-(dataAttr.indexOf("(")+1))
+					type:dataAttr.substring(dataAttr.indexOf("(")+1,dataAttr.indexOf(")"))
 				};
 				if (typeof metaObjAttrs[metaObjAttr.id] == 'undefined') {
 					metaObjAttrs[metaObjAttr.id] = metaObjAttr;

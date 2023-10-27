@@ -196,7 +196,7 @@
 					</select>
 				</div>
 				<style>
-				/*<!-*/
+				/*<!--*/
 					#init { 
 						height:2rem;
 						overflow:unset !important;

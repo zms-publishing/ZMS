@@ -410,6 +410,10 @@ footer .back-to-top.hide {
 	padding:0;
 	background: #EAEDEF;
 }
+#zmi-tab .card .card-header .zmi-action.btn-group.pull-right,
+#zmiIframeAddDialog .card .card-header .zmi-action.btn-group.pull-right {
+	padding-top:0.25rem;
+}
 #zmi-tab .card .card-header.btn-collapse .zmi-changes,
 #zmiIframeAddDialog .card .card-header.btn-collapse .zmi-changes {
 	opacity:0.5;
@@ -455,6 +459,8 @@ footer .back-to-top.hide {
 #zmi-tab .card .card-header.btn-collapse #zmi-toggle-activity,
 #zmiIframeAddDialog .card .card-header.btn-collapse #zmi-toggle-activity {
 	margin-left:0.6rem;
+	margin-top: -2px;
+	display: inline-block;
 }
 .btn-group.managing, .btn-group.packaging {
 	margin-right:0.2rem;
@@ -821,7 +827,7 @@ body.zmi .dropleft .dropdown-toggle::before {
 body.zmi .zmi-action .btn.split-right:before {
 	content: "";
 	position: absolute;
-	top: .55rem;
+	top: .60rem;
 	left: .25rem;
 	margin:0;
 	display: inline-block;
@@ -2711,10 +2717,11 @@ ul.pagination .page-item {
 		margin-top: 1.75rem;
 	}
 }
+#zmiIframereadme h1:before,
 #zmiModalreadme .modal-title:before {
 	content: "\f059";
 	font-family: 'Font Awesome 5 Free';
-	font-weight: 400;    
+	font-weight: 400;
 	-moz-osx-font-smoothing: grayscale;
 	-webkit-font-smoothing: antialiased;
 	display: inline-block;
@@ -2723,12 +2730,20 @@ ul.pagination .page-item {
 	text-rendering: auto;
 	line-height: 1;
 	box-sizing: border-box;
-	color: #007bff!important;
+	color: #17a2b8!important;
 	margin-right:.5rem;
 }
 #zmiModalreadme .modal-body h1 {
 	display: none !important;
 }
+#zmiIframereadme h1 {
+	font-size: 18px !important;
+	border-bottom:1px solid silver;
+	font-weight: bold !important;
+	padding:.75rem 0;
+	margin:1.25rem 0 1rem;
+}
+#zmiIframereadme h2,
 #zmiModalreadme .modal-body h2 {
 	font-size: 18px !important;
 	font-weight: bold !important;

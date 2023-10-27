@@ -318,13 +318,13 @@
 				</td>
 				<td>
 					<i tal:condition="python:filter.get('acquired')" class="icon-share fas fa-share mr-2" title="acquired"></i>
-					<a href="javascript:;" onclick="$('i',this).toggleClass('fa-chevron-right fa-chevron-down');$(this).siblings('.filterProcesses').toggle('normal');"><i class="fas fa-chevron-right"></i></a>
+					<a href="javascript:;" class="d-inline-block ml-1" style="width:1rem" onclick="$('i',this).toggleClass('fa-chevron-right fa-chevron-down');$(this).siblings('.filterProcesses').toggle('normal');"><i class="fas fa-chevron-right"></i></a>
 					<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],filterId); title python:here.getZMILangStr('BTN_EDIT')+'...'"
 						data-turbolinks="false">
 						<i class="fas fa-filter"></i>
 						<tal:block tal:content="python:filter.get('name','Missing filter name')">the filter-name</tal:block>
 					</a>
-					<div class="filterProcesses" style="display:none">
+					<div class="filterProcesses mt-2 ml-3" style="display:none">
 						<table class="layoutTable">
 						<tr><td><div class="filterDelimiter">
 							<tal:block tal:condition="python:filter.get('format','Missing filter format')=='import'">
@@ -394,7 +394,7 @@
 				<td class="meta-sort text-center">
 					<input type="checkbox" name="ids:list" tal:attributes="value processId">
 				</td>
-				<td style="white-space:nowrap">
+				<td style="white-space:nowrap" class="pl-3">
 					<i tal:condition="python:process.get('acquired')" class="icon-share fas fa-share mr-2" title="acquired"></i>
 					<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],processId); title python:here.getZMILangStr('BTN_EDIT')+'...'"
 						data-turbolinks="false">

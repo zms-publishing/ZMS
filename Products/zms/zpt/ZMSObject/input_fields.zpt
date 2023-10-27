@@ -24,7 +24,7 @@
 		tal:condition="python:metaObj['type'] != 'ZMSRecordSet' or command.lower() != 'insert'"
 		tal:attributes="class python:'card input_fields_%s'%(meta_id)">
 		<div class="card-header attr_last_modified clearfix btn-collapse">
-			<div class="btn-group">
+			<div class="btn-group align-items-center">
 				<a id="zmi-toggle-activity-btn" class="btn card-toggle" data-toggle="collapse" href="#attrActivity"
 					><i class="fas fa-invisible"></i> <tal:block tal:content="python:here.getZMILangStr('ATTR_ACTIVITY')">Activity</tal:block></a>
 				<div class="btn zmi-changes"
@@ -35,8 +35,8 @@
 					<tal:block tal:content="python:here.getZMILangStr('BY')">by</tal:block>
 					<span class="zmi-change-uid" tal:content="change_uid">the change-uid</span>
 					<tal:block tal:content="structure python:here.zmi_version_object_state(here,request)">zmi_version_object_state</tal:block>
-					<span title="Readme" tal:condition="python:here.attr('readme')" class="zmi-readme text-primary zmi-state" onclick="zmiModal('#readme',{title:$('#readme').attr('title')});return false"><i class="far fa-question-circle"></i></span>
 				</div>
+				<span title="Readme" tal:condition="python:here.attr('readme')" class="zmi-readme text-info" onclick="zmiModal('#readme',{title:$('#readme').attr('title')});return false"><i class="far fa-question-circle"></i></span>
 			</div>
 			<div class="zmi-action loaded btn-group pull-right dropleft" tal:condition="not:python: request.get('ZMS_INSERT',False)">
 				<tal:block tal:define="
@@ -305,8 +305,8 @@
 	<div id="readme" class="modal"
 		tal:condition="readme"
 		tal:define="readme python:here.attr('readme');
-			readme_url python:'%s/%s.readme/manage_readme'%(here.content.metaobj_manager.absolute_url(),here.meta_id)"
-		tal:attributes="title python:here.meta_id; data-readme readme_url">
+			readme_url python:'%s/%s.readme/manage_readme'%(here.content.metaobj_manager.absolute_url(),meta_id)"
+		tal:attributes="title python:meta_id; data-readme readme_url">
 		<script>
 		//<!--
 			$(function() {

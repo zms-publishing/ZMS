@@ -1,0 +1,16 @@
+# SimpleSearch powered by Lunr
+
+This is a demo how to easily display [Lunr.js](https://lunrjs.com/) index using javascript and generic styling using [pico css](https://picocss.com/). It expects documents to be composed of fields `title` and `text`.
+
+To search your data just [Build a `search_index.json`](http://127.0.0.1:8080/myzmsx/content/zcatalog_adapter/manage_main?lang=ger#ZMSZCatalogLunrConnector) powered by [Lunr.py](https://lunr.readthedocs.io/en/latest/).
+
+It is inspired by [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/) and utilizes [ZMS REST API](http://127.0.0.1:8080/myzmsx/content/swagger_ui) to fetch the content nodes. Intended use cases are self-contained (micro)sites, where complex search backend services are overkill.
+
+It's feature in a tutorial article [Creating Search Engine for any Website using Web Scraping](https://scrapfly.io/blog/search-engine-using-web-scraping/) so take a look at that for full instructions on how to use this.
+
+Source: [https://github.com/Granitosaurus/simple-lunrjs-display](https://github.com/Granitosaurus/simple-lunrjs-display)
+
+
+
+
+

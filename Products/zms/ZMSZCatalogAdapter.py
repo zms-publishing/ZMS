@@ -107,7 +107,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
 
 
     ############################################################################
-    #  Initialize 
+    #  Initialize
     ############################################################################
     def initialize(self):
       self.setIds(['ZMSFolder', 'ZMSDocument', 'ZMSFile'])
@@ -199,7 +199,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     #  ZMSZCatalogAdapter.getConnectorMetaTypes
     # --------------------------------------------------------------------------
     def getConnectorMetaTypes(self):
-      return ['ZMSZCatalogConnector', 'ZMSZCatalogSolrConnector', 'ZMSZCatalogOpensearchConnector']
+      return ['ZMSZCatalogConnector', 'ZMSZCatalogLunrConnector', 'ZMSZCatalogSolrConnector', 'ZMSZCatalogOpensearchConnector']
 
 
     # --------------------------------------------------------------------------
@@ -287,7 +287,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
           if attr_type in ['date', 'datetime']:
             value = self.getLangFmtDate(value, 'eng', 'ISO8601')
           elif type(value) in (dict, list):
-            value = standard.str_item(value,f=True)  
+            value = standard.str_item(value,f=True)
           d[attr_id] = standard.remove_tags(value)
         cb(node, d)
 

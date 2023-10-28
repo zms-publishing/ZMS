@@ -5,8 +5,12 @@
 requests
 requests-oauthlib
 
+# OpenSearch
 opensearch-py
 rich
+
+# SimpleSearch
+lunr
 
 chardet
 ftfy

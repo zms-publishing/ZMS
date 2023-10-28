@@ -20,7 +20,7 @@ class opensearch:
 	id = "opensearch"
 
 	# Name
-	name = "Opensearch"
+	name = "OpenSearch"
 
 	# Package
 	package = "com.zms.foundation.zcatalog.opensearch"
@@ -120,6 +120,6 @@ class opensearch:
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
-			,"name":"Template: Opensearch"
+			,"name":"Template: OpenSearch"
 			,"repetitive":0
 			,"type":"zpt"}

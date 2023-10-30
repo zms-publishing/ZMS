@@ -1,9 +1,11 @@
 <tal:block tal:define="dummy0 python:here.zmi_page_request(here,request);
 	zmscontext python:here.getSelf();
 	standard modules/Products.zms/standard;
-	packageId python:request.get('id');
+	given_id python:request.get('id');
 	metaObjIds python:here.getMetaobjIds();
-	metaObjs python:[here.getMetaobj(x) for x in metaObjIds if (here.getMetaobj(x)['package']==packageId or packageId==None)];
+	metaObjs python:[here.getMetaobj(x) for x in metaObjIds if (here.getMetaobj(x)['package']==given_id or given_id==None)];
+	given_id_is_metaObj python:metaObjs == [];
+	metaObjs python:given_id_is_metaObj and [here.getMetaobj(given_id)] or metaObjs;
 	sort_on python:(('package', 'cmp', 'asc'),('id','cmp','asc'));"
 ><tal:block tal:condition="python:request.get('content_type','html')=='json'"
 	><tal:block 
@@ -17,36 +19,42 @@
 	<head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
 <body tal:attributes="class python:here.zmi_body_class(id='bigpicture')" data-template-ids="manage_bigpicture">
 <form class="form-horizontal card" 
-	tal:attributes="class python:'form-horizontal card %s'%(packageId and 'single-package' or 'all-packages')">
+	tal:attributes="class python:'form-horizontal card %s'%(given_id and 'single-package' or 'all-packages')">
 	<legend class="navbar navbar-nav navbar-expand navbar-dark">
-		<tal:block tal:content="python:'BigPicture :: LogicalView :: %s'%(packageId or 'all')"></tal:block>
-		<a href="./manage_bigpicture" class="ml-3 text-light" tal:condition="packageId" title="Show All Packages"><i class="fas fa-plus"></i></a>
-		
+		<a href="./manage_bigpicture" class="text-light" title="Show all Packages"><span class="d-none d-md-inline">Big Picture of ZMS Meta-Model: </span> All Packages</a>
+		<span tal:condition="not:given_id_is_metaObj" class="text-light font-weight-normal" title="This Package" tal:content="given_id">ZMSPackage-ID</span>
+		<a tal:condition="given_id_is_metaObj" tal:attributes="href python:'./manage_bigpicture?id=%s'%(metaObjs[0].get('package'))" class="text-light" title="Show this Package" tal:content="python:metaObjs[0].get('package')">ZMSPackage-ID</a>
+		<span tal:condition="given_id_is_metaObj" class="text-light font-weight-normal" title="This Meta-Object" tal:content="given_id">Meta-Object</span>
 	</legend>
-	<i id="toggle_menu" title="Toggle Menu" class="fas fa-times"></i>
-	<ol id="toc" class="objlist">
-		<tal:block tal:repeat="metaObj python:sequence.sort(metaObjs, sort_on, mapping=1)"
-			><tal:block tal:define="
-				id python:metaObj.get('id','');
-				package_id python:metaObj.get('package');
-				objtype python:metaObj.get('type');
-				oname python:metaObj.get('name','');
-				odisplay python:id!=oname and '({})'.format(oname) or '';"
-				tal:condition="python:objtype!='ZMSPackage'">
-				<header class="package_id" role="separator" tal:condition="python:package_id!=request.get('package_id')"><a href="#" 
-						tal:attributes="href python:'./manage_bigpicture?id=%s'%(metaObj.get('package'))" 
-						tal:content="python:'ZMSPackage %s'%(metaObj.get('package'))"></a></header>
-				<li class="meta_id">
-					<a data-turbolinks="false" 
-						tal:attributes="href python:'#%s'%(id); title python:'%s :: %s'%(metaObj.get('package'),metaObj.get('name'));"
-						tal:content="python:id">the name</a>
-					<span tal:replace="odisplay"></span>
-				</li>
-				<tal:block tal:define="set_req_package_id python:request.set('package_id',package_id);"></tal:block>
+	<tal:block tal:condition="not:given_id_is_metaObj">
+		<i id="toggle_menu" title="Toggle Menu" class="fas fa-times"></i>
+		<ol id="toc" class="objlist">
+			<tal:block tal:repeat="metaObj python:sequence.sort(metaObjs, sort_on, mapping=1)"
+				><tal:block tal:define="
+					id python:metaObj.get('id','');
+					package_id python:metaObj.get('package');
+					objtype python:metaObj.get('type');
+					oname python:metaObj.get('name','');
+					odisplay python:id!=oname and '({})'.format(oname) or '';"
+					tal:condition="python:objtype!='ZMSPackage'">
+					<header class="package_id" role="separator" tal:condition="python:package_id!=request.get('package_id')">
+						<a data-turbolinks="false" 
+							tal:attributes="href python:'./manage_bigpicture?id=%s'%(metaObj.get('package'))" 
+							tal:content="python:'ZMSPackage %s'%(metaObj.get('package'))">
+							ZMSPackage-ID
+						</a>
+					</header>
+					<li class="meta_id">
+						<a data-turbolinks="false" 
+							tal:attributes="href python:'#%s'%(id); title python:'%s :: %s'%(metaObj.get('package'),metaObj.get('name'));"
+							tal:content="python:id">the name</a>
+						<span tal:replace="odisplay"></span>
+					</li>
+					<tal:block tal:define="set_req_package_id python:request.set('package_id',package_id);"></tal:block>
+				</tal:block>
 			</tal:block>
-		</tal:block>
-	</ol>
-
+		</ol>
+	</tal:block>
 	<tal:block tal:repeat="metaObj python:sequence.sort(metaObjs, sort_on, mapping=1)">
 		<div class="box"
 			tal:define="
@@ -141,6 +149,14 @@
 </script>
 
 <style>
+.zmi.bigpicture form.card legend > a:after {
+	content:"/";
+	display:inline-block;
+	margin:0 1em;
+}
+.zmi.bigpicture form.card legend > span {
+	letter-spacing:1px;
+}
 .zmi.bigpicture form.card legend,
 #toggle_menu  {
 	color:white;

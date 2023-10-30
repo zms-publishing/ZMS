@@ -198,7 +198,7 @@ class ZMSZCatalogOpensearchConnector(
             self.setConfProperty('opensearch.username', REQUEST['opensearch_username'])
             self.setConfProperty('opensearch.password', REQUEST['opensearch_password'])
           self.setConfProperty('opensearch.schema', REQUEST['opensearch_schema'])
-        
+          self.setConfProperty('opensearch.parser', REQUEST['opensearch_parser'])
         return message
 
 ################################################################################

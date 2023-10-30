@@ -94,6 +94,12 @@ class ZMSZCatalogLunrConnector(
     ############################################################################
     def manage_changeProperties(self, selected, btn, lang, REQUEST):
         message = ''
+
+        # Save.
+        # -----
+        if btn == 'Save':
+          self.setConfProperty('lunr.url', REQUEST['lunr_url'])
+ 
         return message
 
 ################################################################################

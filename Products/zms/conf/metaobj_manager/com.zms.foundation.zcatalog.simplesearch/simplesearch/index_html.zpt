@@ -2,8 +2,9 @@
 
 <head>
   <link rel="stylesheet" href="css/pico.min.css">
-  <script>
-    var base_url = "http://127.0.0.1:8080/myzmsx/simplesearch/"
+  <script
+     tal:define="base_url python:container.absolute_url()"
+     tal:content="python:'var base_url = \042%s\042'%(base_url)">
   </script>
   <script src="js/main.js"></script>
 </head>

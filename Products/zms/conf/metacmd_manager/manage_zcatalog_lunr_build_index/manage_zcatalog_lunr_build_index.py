@@ -17,24 +17,25 @@ def build_index(docs: List[dict]):
 
     page_dicts = {"docs": docs, "config": config}
 
-    idx = lunr(
-        ref="location",
-        fields=[dict(field_name='title', boost=10), 'text'],
-        documents=docs,
-    )
-
-    page_dicts["index"] = idx.serialize()
-
-    return json.dumps(page_dicts, sort_keys=True, separators=(",", ":"), indent=2)
+    if bool(docs[0]):
+        idx = lunr(
+            ref="location",
+            fields=[dict(field_name='title', boost=10), 'text'],
+            documents=docs,
+        )
+        page_dicts["index"] = idx.serialize()
+        return json.dumps(page_dicts, sort_keys=True, separators=(",", ":"), indent=2)
+    else:
+        return json.dumps({})
 
 
 def manage_zcatalog_lunr_build_index(self):
 
     documents = []
-
-    for node in requests.get('http://127.0.0.1:8080/myzmsx/content/++rest_api/content/get_tree_nodes').json():
+    root_url = self.getHome().content.absolute_url()
+    for node in requests.get('%s/++rest_api/content/get_tree_nodes'%(root_url)).json():
         documents.append({
-            "location": node["index_html"].replace("./../..", "http://127.0.0.1:8080/myzmsx/content"),
+            "location": node["index_html"].replace("./../..", root_url),
             "title": "title" in node and node["title"] or "",
             "text": "text" in node and node["text"] or (
                     "attr_dc_description" in node and node["attr_dc_description"] or ""

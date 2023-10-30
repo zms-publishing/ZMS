@@ -1,10 +1,19 @@
 <tal:block tal:define="zmscontext python:here.getSelf(); standard modules/Products.zms/standard;">
 
-<div class="ZMSZCatalogConnector ZMSZCatalogLunrConnector">
+<div class="ZMSZCatalogConnector ZMSZCatalogLunrConnector"
+	tal:define="lunr_url python:here.getConfProperty('lunr.url','http://127.0.0.1:8080/myzmsx/simplesearch/');">
     <div class="form-group row">
 		<label class="col-sm-2 control-label" for="admin_url"><span>Search GUI</span></label>
-		<div class="col-sm-10"><a href="http://127.0.0.1:8080/myzmsx/simplesearch/" target="_blank">http://127.0.0.1:8080/myzmsx/simplesearch/</a></div>
+		<div class="col-sm-10"><input type="text" class="form-control" name="lunr_url" tal:attributes="value lunr_url"></div>
 	</div>
+	<div class="form-group row">
+		<div class="col-sm-2"></div>
+		<div class="col-sm-10">
+			<button name="btn" type="submit" class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_SAVE')" value="Save">
+				<tal:block tal:content="structure python:here.getZMILangStr('BTN_SAVE')"></tal:block>
+			</button>
+		</div><!-- .col-sm-10 -->
+	</div><!-- .form-group -->
 	<div class="form-group row">
 		<div class="col-sm-2">&nbsp;</div>
 		<div class="col-sm-10">

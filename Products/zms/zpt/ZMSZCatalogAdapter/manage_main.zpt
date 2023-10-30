@@ -115,7 +115,7 @@
 															<tr tal:condition="python:len([x for x in metaObjs if x.get('package')==metaObjPackage])>0" tal:define="global metaObj python:here.getMetaobj(metaObjPackage)">
 																<td colspan="2">
 																	<tal:block tal:condition="python:metaObjPackage">
-																		<a href="#" class="mr-1" target="_blank" title="Show Content Package Details (Big Picture)"
+																		<a href="#" class="mr-1" target="_blank" title="Show Content Class Package Details (Big Picture)"
 																			tal:attributes="href python:'../metaobj_manager/manage_bigpicture?lang=%s&id=%s'%(request.get('lang','ger'),metaObjPackage)"
 																		><i class="fas fa-briefcase"></i></a>
 																		<strong tal:content="metaObjPackage">the id</strong>
@@ -146,7 +146,9 @@
 																		disabled python:['','disabled'][int('catalog_index' in [x['id'] for x in metaObj['attrs']])]" onclick="toggleMetaobj()"/>
 																</td>
 																<td>
-																	<i tal:on-error="string:ERROR icon" tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])"></i>&nbsp;
+																	<a href="#" class="mr-1" target="_blank" title="Show Content Class Details (Big Picture)"
+																		tal:attributes="href python:'../metaobj_manager/manage_bigpicture?lang=%s&id=%s'%(request.get('lang','ger'),metaObj['id'])"
+																	><i tal:on-error="string:ERROR icon" tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])"></i></a>&nbsp;
 																	<span tal:on-error="string:ERROR" tal:content="metaObj/name">the name</span>
 																	<span>(<tal:block tal:content="python:here.getZMILangStr('SOTYPE_%s'%metaObj['type'].upper())">the type</tal:block>)</span>
 																</td>

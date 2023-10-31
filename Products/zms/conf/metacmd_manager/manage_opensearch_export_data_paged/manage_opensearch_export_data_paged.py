@@ -8,24 +8,38 @@ class IHandler:
 
 # Implementation of Opensearch Handler
 class OpensearchHandler(IHandler):
-    def __init__(self, catalog_adapter, client, index, meta_ids):
+    def __init__(self, catalog_adapter, opensearch_client, opensearch_index_name, meta_ids):
+       """
+       @param catalog_adapter: the ZMSCatalogAdapter
+       @param opensearch_client: the OpenSearch-Client
+       @param opensearch_index_name: the name of the OpenSearch-Index
+       @param meta_ids: the meta-ids to be indexed
+       """
        self.catalog_adapter = catalog_adapter
-       self.client = client
-       self.index = index
+       self.opensearch_client = opensearch_client
+       self.opensearch_index_name = opensearch_index_name
        self.meta_ids = meta_ids
     def handle(self, node):
         # Node in Meta-IDs of ZCatalog-Adapter
         if not self.meta_ids or node.meta_id in self.meta_ids:
+          # Initialize response.
           response = [None]
-          # Callback for document
+          # Callback for node
           def callback(node, document):
-            response.append(self.client.index(
-                index = self.index,
+            """
+            @param node: the current node to be indexed
+            @param document the document to be indexed
+            """
+            # Index single document and add to response.
+            response.append(self.opensearch_client.index(
+                index = self.opensearch_index_name,
                 body = document,
                 id = node.get_uid(),
                 refresh = True
             ))
+          # Get sitemap for for single (recursive=False) document.
           document = self.catalog_adapter.get_sitemap(callback, node, recursive=False)
+          # Return last response.
           return response[-1]
         return None
 

@@ -25,7 +25,7 @@ def manage_addClient(self):
 		home.manage_addFolder(id=request['id'],title=request['title'])
 		folder_inst = getattr(home,request['id'])
 		request.set('lang_label',self.getLanguageLabel(request['lang']))
-		zms_inst = self.initZMS(folder_inst, 'content', request['titlealt'], request['title'], request['lang'], request['manage_lang'], request)
+		zms_inst = self.initZMS(folder_inst, 'content', request['titlealt'], request['title'], request['lang'], self.get_manage_lang(), request)
 		zms_inst.setConfProperty('Portal.Master',home.id)
 		if request.get('acquire'):
 			for id in [id for id in self.getMetaobjIds() if id not in ['ZMSIndexZCatalog','com.zms.index']]:

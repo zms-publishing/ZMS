@@ -17,12 +17,16 @@
 			"path": "/home/zope/instance/zms5_dev"
 		},
 		{
-			"name": "Zope-WebDAV Access",
-			"uri": "webdav://admin:admin@localhost:8091/"
+			"name": "OpenSearchServer",
+			"path": "/home/zope/src/sntl-projects/opensearch_demo"
 		},
-		{
-			"path": "../../../../vpy38/lib/python3.8/site-packages/pydoctor"
-		}
+		// {
+		// 	"name": "Zope-WebDAV Access",
+		// 	"uri": "webdav://admin:admin@localhost:8091/"
+		// },
+		// {
+		// 	"path": "../../../../vpy38/lib/python3.8/site-packages/pydoctor"
+		// }
 	],
 	"settings": {
 		"python.defaultInterpreterPath": "~/vpy38/bin/python",

@@ -22,16 +22,48 @@ def add_docmt_to_opensearch_index(self):
 	verify = bool(self.getConfProperty('opensearch.ssl.verify', ''))
 	auth = HTTPBasicAuth(username,password)
 
-	attrs = ['title','standard_html']
+	zca = self.getCatalogAdapter()
+	attrs = zca.getAttrs()
 	content_obj = {}
 	for a in attrs:
-		html = self.attr(a)
-		soup = BeautifulSoup(html, features="html.parser")
-		text = soup.get_text() \
-			.replace('\n',' ') \
-			.replace('\t',' ') \
-			.replace('\"',' ')
-		text = ' '.join(text.split())
+		if self.meta_id == 'ZMSFile' and a == 'standard_html':
+			try:
+				# pdfminer.six (https://github.com/pdfminer/pdfminer.six)
+				# Pdfminer.six is a community maintained fork of the original PDFMiner. 
+				# It is a tool for extracting information from PDF documents. It focuses
+				# on getting and analyzing text data. Pdfminer.six extracts the text 
+				# from a page directly from the sourcecode of the PDF. 
+				# pip install pdfminer.six
+				from io import BytesIO, StringIO
+				from pdfminer.converter import TextConverter
+				from pdfminer.layout import LAParams
+				from pdfminer.pdfdocument import PDFDocument
+				from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
+				from pdfminer.pdfpage import PDFPage
+				from pdfminer.pdfparser import PDFParser
+				output_string = StringIO()
+				ob_file = self.attr('file')
+				in_file = BytesIO(ob_file.getData())
+				parser = PDFParser(in_file)
+				standard.writeError(self,"pdfminer: doc")
+				doc = PDFDocument(parser)
+				rsrcmgr = PDFResourceManager()
+				device = TextConverter(rsrcmgr, output_string, laparams=LAParams())
+				interpreter = PDFPageInterpreter(rsrcmgr, device)
+				for page in PDFPage.create_pages(doc):
+					interpreter.process_page(page)
+				text = output_string.getvalue()
+			except:
+				standard.writeError(self,"can't pdfminer")
+				text = '@@%s:%s'%('/'.join(self.getPhysicalPath()),'file')
+		else:	
+			html = self.attr(a)
+			soup = BeautifulSoup(html, features="html.parser")
+			text = soup.get_text() \
+				.replace('\n',' ') \
+				.replace('\t',' ') \
+				.replace('\"',' ')
+			text = ' '.join(text.split())
 		content_obj[a] = text
 	content_obj['meta_id'] = self.meta_id
 

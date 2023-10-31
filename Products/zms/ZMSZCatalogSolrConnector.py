@@ -109,12 +109,12 @@ class ZMSZCatalogSolrConnector(
     # --------------------------------------------------------------------------
     #  ZMSZCatalogSolrConnector.suggest_xml:
     # --------------------------------------------------------------------------
-    def suggest_xml(self, q, debug=0, REQUEST=None, RESPONSE=None):
+    def suggest_xml(self, q, debug=False, REQUEST=None, RESPONSE=None):
       """ ZMSZCatalogSolrConnector.suggest_xml """
       # Check constraints.
       RESPONSE = REQUEST.RESPONSE
       content_type = 'text/xml; charset=utf-8'
-      debug = int(debug)
+      debug = standard.pybool(debug)
       if debug:
         content_type = 'text/plain; charset=utf-8'
       RESPONSE.setHeader('Content-Type', content_type)
@@ -144,7 +144,7 @@ class ZMSZCatalogSolrConnector(
       return k
 
 
-    def __get_add_xml(self, node, recursive, xmlattrs={}):
+    def __get_add_xml(self, node, recursive, fileparsing=True, xmlattrs={}):
       results = []
       zcm = self.getCatalogAdapter()
       attrs = zcm.getAttrs()
@@ -172,7 +172,7 @@ class ZMSZCatalogSolrConnector(
           results.extend(xml)
         except:
           standard.writeError(node,"can't cb")
-      zcm.get_sitemap(cb, node, recursive)
+      zcm.get_sitemap(cb, node, recursive, fileparsing)
       results.insert(0, '<?xml version="1.0"?>')
       results.insert(1, '<add'+' '.join(['']+['%s="%s"'%(x, str(xmlattrs[x])) for x in xmlattrs])+'>')
       results.append('</add>')

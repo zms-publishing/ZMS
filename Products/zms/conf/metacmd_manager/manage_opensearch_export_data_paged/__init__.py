@@ -34,7 +34,7 @@ class manage_opensearch_export_data_paged:
 	package = "com.zms.foundation.zcatalog.opensearch"
 
 	# Revision
-	revision = "0.0.2"
+	revision = "0.1.0"
 
 	# Roles
 	roles = ["ZMSAdministrator"]

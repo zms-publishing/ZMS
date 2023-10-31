@@ -18,6 +18,7 @@
 
 <tal:block tal:define="
 		zmscontext context;
+		catalog python:zmscontext.get_catalog();
 		oid python:zmscontext.get_oid();
 		uid python:request.form.get('uid','');
 		loglevels python:['DEBUG','INFO','ERROR'];">
@@ -38,7 +39,7 @@ function openWindow(url) {
 		<div class="col-sm-2"></div>
 		<div class="col-sm-10 form-inline">
 			<a class="btn btn-default btn-secondary" target="_blank" style="margin-right:1em"
-				tal:attributes="href python:'%s/manage_catalogView?filterpath=/'%zmscontext.zcatalog_index.absolute_url()">
+				tal:attributes="href python:'%s/manage_catalogView?filterpath=/'%catalog.absolute_url()">
 					<i class="fas fa-search"></i> zcatalog_index
 			</a>
 			<div class="btn-group" style="margin-right:1em">

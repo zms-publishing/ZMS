@@ -490,7 +490,7 @@ class ZMSZCatalogConnector(
     # --------------------------------------------------------------------------
     #  ZMSZCatalogConnector.reindex_all:
     # --------------------------------------------------------------------------
-    def reindex_all(self):
+    def reindex_all(self, fileparsing=True):
       result = []
       zcm = self.getCatalogAdapter()
       request = self.REQUEST
@@ -504,7 +504,7 @@ class ZMSZCatalogConnector(
           self._update(node, d)
         for root in [container]+self.getPortalClients():
           rcm = standard.nvl(root.getCatalogAdapter(),zcm)
-          result.append(rcm.get_sitemap(cb, root, recursive=True))
+          result.append(rcm.get_sitemap(cb, root, recursive=True, fileparsing=fileparsing))
       result = [x for x in result if x]
       return ', '.join([x for x in result])
 
@@ -512,7 +512,7 @@ class ZMSZCatalogConnector(
     # --------------------------------------------------------------------------
     #  ZMSZCatalogConnector.reindex_self:
     # --------------------------------------------------------------------------
-    def reindex_self(self, uid):
+    def reindex_self(self, uid, fileparsing=True):
       result = []
       zcm = self.getCatalogAdapter()
       request = self.REQUEST
@@ -539,7 +539,7 @@ class ZMSZCatalogConnector(
           def cb(node, d):
             self._update(node, d)
           rcm = standard.nvl(container.getCatalogAdapter(),zcm)
-          lresult.append(rcm.get_sitemap(cb, container, recursive=True))
+          lresult.append(rcm.get_sitemap(cb, container, recursive=True, fileparsing=fileparsing))
           lresult = [x for x in lresult if x]
           result.extend(lresult)
           # Log changes.
@@ -553,16 +553,16 @@ class ZMSZCatalogConnector(
     # --------------------------------------------------------------------------
     #  ZMSZCatalogConnector.reindex_node:
     # --------------------------------------------------------------------------
-    def reindex_node(self, node):
+    def reindex_node(self, node, fileparsing=True):
       standard.writeLog( node, '[ZMSZCatalogConnector.reindex_node]')
       zcm = self.getCatalogAdapter()
       # Reindex item to catalog.
       def cb(node, d):
         self._update(node, d)
-      zcm.get_sitemap(cb, node, recursive=False)
+      zcm.get_sitemap(cb, node, recursive=False, fileparsing=fileparsing)
 
 
-    def get_sitemap(self):
+    def get_sitemap(self, fileparsing=True):
       """
       Returns sitemap.
       @rtype: C{str}
@@ -574,7 +574,7 @@ class ZMSZCatalogConnector(
       l = []
       def cb(node, d):
         l.append(d)
-      zcm.get_sitemap(cb, self.getDocumentElement(), recursive=True)
+      zcm.get_sitemap(cb, self.getDocumentElement(), recursive=True, fileparsing=fileparsing)
       return self.str_json(l)
 
 

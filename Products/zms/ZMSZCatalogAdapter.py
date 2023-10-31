@@ -26,6 +26,7 @@ import time
 import zope.interface
 # Product Imports.
 from Products.zms import standard
+from Products.zms import content_analysis
 from Products.zms import IZMSCatalogAdapter, IZMSConfigurationProvider
 from Products.zms import ZMSItem
 
@@ -289,6 +290,12 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
           elif type(value) in (dict, list):
             value = standard.str_item(value,f=True)  
           d[attr_id] = standard.remove_tags(value)
+        if self.meta_id == 'ZMSFile':
+          try:
+            text = catalog_analysis.catalog_analysis(self, self.attr('file').getData())
+            d['standard_html'] = text
+          except:
+            standard.writeError( self, "can't catalog_analysis")
         cb(node, d)
 
       # Traverse tree.

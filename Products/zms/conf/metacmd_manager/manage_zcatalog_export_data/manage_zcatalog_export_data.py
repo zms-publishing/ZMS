@@ -26,13 +26,6 @@ def manage_zcatalog_export_data( self):
   zca = zmscontext.getCatalogAdapter()
   attrs = zca.getAttrs()
   def cb(node, d):
-    if node.meta_id in ['ZMSFile']:
-      try:
-        text = catalog_analysis.catalog_analysis(node, node.attr('file').getData())
-        d['standard_html'] = text
-      except:
-        standard.writeError(node,"can't catalog_analysis")
-        d['standard_html'] = '@@%s:%s'%('/'.join(node.getPhysicalPath()),'file')
     dindex = {"index":{"_index":root_id,"_id":node.get_uid()}}
     for k in ['id','custom']:
       if k in d:

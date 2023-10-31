@@ -107,7 +107,7 @@
 							ld python:[l.get('data'),''][l.get('data') is None];
 							rd python:[r.get('data'),''][r.get('data') is None];
 							is_modified python:len(ld)>0 and len(rd)>0;
-							is_text python:mt.startswith('text/') or mt in ['application/javascript'] or '/xml' in mt;
+							is_text python:mt.startswith('text/') or mt in ['application/javascript'] or '/json' in mt or '/xml' in mt or '/yml' in mt or '/yaml' in mt;
 							lversion python: same_type(l.get('version',[0,0,0]),[0]) and '.'.join(str(i) for i in l.get('version',[0,0,0])) or l.get('version','0.0.0');
 							rversion python: same_type(r.get('version',[0,0,0]),[0]) and '.'.join(str(i) for i in r.get('version',[0,0,0])) or r.get('version','0.0.0');
 							is_incoming python:is_modified and ( lversion < rversion );"

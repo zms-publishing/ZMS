@@ -30,6 +30,7 @@ def manage_zcatalog_export_schema( self):
   root_id = self.getRootElement().getHome().id
   username = self.getConfProperty('opensearch.username', 'admin')
   password = self.getConfProperty('opensearch.password', 'admin')
+  self.setConfProperty('opensearch.schema', json.dumps(dictionary, indent=2))
   verify = bool(self.getConfProperty('opensearch.ssl.verify', ''))
   auth = HTTPBasicAuth(username,password)
   headers = {'Content-type': 'application/x-ndjson'}

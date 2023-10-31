@@ -21,7 +21,9 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from zope.interface import implementer
 # Product Imports.
 from Products.zms import IZMSCatalogConnector
+from Products.zms import IZMSRepositoryProvider
 from Products.zms import ZMSItem
+from Products.zms import standard
 
 
 ################################################################################
@@ -32,7 +34,8 @@ from Products.zms import ZMSItem
 ################################################################################
 ################################################################################
 @implementer(
-        IZMSCatalogConnector.IZMSCatalogConnector)
+        IZMSCatalogConnector.IZMSCatalogConnector,
+        IZMSRepositoryProvider.IZMSRepositoryProvider,)
 class ZMSZCatalogOpensearchConnector(
         ZMSItem.ZMSItem):
 
@@ -61,6 +64,48 @@ class ZMSZCatalogOpensearchConnector(
     ############################################################################
     def __init__(self):
       self.id = 'zcatalog_opensearch_connector'
+
+
+    ############################################################################
+    #
+    #  IRepositoryProvider
+    #
+    ############################################################################
+
+    """
+    @see IRepositoryProvider
+    """
+    def provideRepository(self, r, ids=None):
+      standard.writeBlock(self, "[provideRepository]: ids=%s"%str(ids))
+      r = {}
+      id = self.id
+      d = {'id':id,'revision':'0.0.0','__filename__':['__init__.py']}
+      r[id] = d
+      r[id]['Opensearch'] = [{
+        'id':'schema',
+        'ob': {
+          'filename':'schema.json',
+          'data':self.getConfProperty('opensearch.schema','{}'),
+          'version':'0.0.0',
+          'meta_type':'File',
+        }
+      }]
+      return r
+
+    """
+    @see IRepositoryProvider
+    """
+    def updateRepository(self, r):
+      id = r['id']
+      [self.setConfProperty('opensearch.schema',x['data']) for x in r['Opensearch'] if x['id'] == 'schema']
+      return id
+
+    """
+    @see IRepositoryProvider
+    """
+    def translateRepositoryModel(self, r):
+      d = {}
+      return d
 
 
     # --------------------------------------------------------------------------
@@ -104,7 +149,7 @@ class ZMSZCatalogOpensearchConnector(
       index_id = REQUEST.get('opensearch_index_id',root_id)
       username = self.getConfProperty('opensearch.username', 'admin')
       password = self.getConfProperty('opensearch.password', 'admin')
-      verify = bool(self.getConfProperty('opensearch.ssl.verify', ''))
+      verify = bool(self.getConfProperty('opensearch.ssl.verify', False))
       auth = HTTPBasicAuth(username,password)
       response = requests.get('%s/%s/_search?pretty=true'%(url,index_id),auth=auth,json=d,verify=verify)
       response.raise_for_status()
@@ -152,7 +197,8 @@ class ZMSZCatalogOpensearchConnector(
           if REQUEST.get('opensearch_password','********') != '********':
             self.setConfProperty('opensearch.username', REQUEST['opensearch_username'])
             self.setConfProperty('opensearch.password', REQUEST['opensearch_password'])
-        
+          self.setConfProperty('opensearch.schema', REQUEST['opensearch_schema'])
+          self.setConfProperty('opensearch.parser', REQUEST['opensearch_parser'])
         return message
 
 ################################################################################

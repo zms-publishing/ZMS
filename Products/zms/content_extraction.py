@@ -68,7 +68,7 @@ def extract_content_tika(context, b, content_type=None):
         headers = {'Accept': 'application/json'}
         try:
             import requests
-            r = requests.put(tika_url, headers=headers, data=f)
+            r = requests.put(tika_url, headers=headers, data=b)
             html = r.json().get('X-TIKA:content')
             return extract_text_from_html(html)
         except:

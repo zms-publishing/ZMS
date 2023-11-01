@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-# content_analysis.py
+# content_extraction.py
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -19,30 +19,30 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ################################################################################
 
-"""ZMS content analysis toolkit module
+"""ZMS content extraction toolkit module
 
 This module provides helpful functions and classes for use in Python
 Scripts.  It can be accessed from Python with the statement
-"import Products.zms.content_analysis"
+"import Products.zms.content_extraction"
 """
 # Imports.
 from AccessControl.SecurityInfo import ModuleSecurityInfo
 # Product Imports.
 from Products.zms import standard
 
-security = ModuleSecurityInfo('Products.zms.content_analysis')
+security = ModuleSecurityInfo('Products.zms.content_extraction')
 
-security.declarePublic('content_analysis')
-def content_analysis(context, b, content_type=None):
+security.declarePublic('extract_content')
+def extract_content(context, b, content_type=None):
     """
     @param context: the ZMS-context
     @type b: C{ZMS}
     @param b: the bytes
     @type b: C{bytes}
     """
-    text = content_analysis_tika( context, b, content_type)
+    text = extract_content_tika( context, b, content_type)
     if text is None:
-        text = content_analysis_pdfminer( context, b, content_type)
+        text = extract_content_pdfminer( context, b, content_type)
     return text
 
 
@@ -58,7 +58,7 @@ def extract_text_from_html(html):
     return text
 
 
-def content_analysis_tika(context, b, content_type=None):
+def extract_content_tika(context, b, content_type=None):
     """
     Apache Tika - a content analysis toolkit
     @see https://tika.apache.org/
@@ -72,11 +72,11 @@ def content_analysis_tika(context, b, content_type=None):
             html = r.json().get('X-TIKA:content')
             return extract_text_from_html(html)
         except:
-            standard.writeError( context, "can't content_analysis_tika")
+            standard.writeError( context, "can't extract_content_tika")
     return None
 
 
-def content_analysis_pdfminer(context, b, content_type=None):
+def extract_content_pdfminer(context, b, content_type=None):
     try:
         # pdfminer.six (https://github.com/pdfminer/pdfminer.six)
         # Pdfminer.six is a community maintained fork of the original PDFMiner. 
@@ -103,7 +103,7 @@ def content_analysis_pdfminer(context, b, content_type=None):
             interpreter.process_page(page)
         return extract_text_from_html(output_string.getvalue())
     except:
-        standard.writeError( context, "can't content_analysis_pdfminer")
+        standard.writeError( context, "can't extract_content_pdfminer")
     return None
 
 security.apply(globals())

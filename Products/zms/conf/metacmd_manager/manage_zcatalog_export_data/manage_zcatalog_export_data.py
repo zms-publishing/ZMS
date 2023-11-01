@@ -2,7 +2,6 @@
 
 import json
 from Products.zms import standard
-from Products.zms import catalog_analysis
 
 def manage_zcatalog_export_data( self):
   msg = []

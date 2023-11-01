@@ -1,4 +1,4 @@
-from Products.zms import content_analysis
+from Products.zms import content_extraction
 import json
 import requests
 from requests.auth import HTTPBasicAuth
@@ -30,9 +30,9 @@ def add_docmt_to_opensearch_index(self):
 		html = ''
 		text = ''
 		if self.meta_id == 'ZMSFile' and a == 'standard_html':
-			text = content_analysis.content_analysis(self, self.attr('file').getData())
+			text = content_extraction.extract_content(self, self.attr('file').getData())
 		else:	
-			text = content_analysis.extract_text_from_html(self.attr(a))
+			text = content_extraction.extract_text_from_html(self.attr(a))
 		content_obj[a] = text
 	content_obj['meta_id'] = self.meta_id
 

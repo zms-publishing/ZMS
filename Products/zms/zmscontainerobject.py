@@ -765,12 +765,15 @@ class ZMSContainerObject(
         if children: 
           return children[0]
         else:
-          parent = self.getPortalMaster()
-          if parent:
-            siblings = parent.getPortalClients()
-            index = siblings.index(self.getDocumentElement())
-            if index < len(siblings) - 1:
-              return siblings[index+1]
+          here = self.getDocumentElement()
+          while here:
+            parent = here.getPortalMaster()
+            if parent:
+              siblings = parent.getPortalClients()
+              index = siblings.index(here)
+              if index < len(siblings) - 1:
+                return siblings[index+1]
+            here = parent
       # none
       return None
 

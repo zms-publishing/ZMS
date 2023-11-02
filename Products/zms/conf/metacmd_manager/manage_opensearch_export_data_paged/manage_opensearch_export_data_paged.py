@@ -55,7 +55,7 @@ def traverse(data, root_node, clients, node, handler, page_size=100):
     log['action'] = handler.handle(node);
     data['log'].append(log)
     node = node.get_next_node(clients)
-    if node and not '/'.join(node.getPhysicalPath()).startswith(root_path): node = None
+    if node and not node.meta_id == 'ZMS' and not clients and not '/'.join(node.getPhysicalPath()).startswith(root_path): node = None
     data['next_node'] = None if not node else '{$%s}'%node.get_uid()
     count += 1
 
@@ -102,7 +102,7 @@ def manage_opensearch_export_data_paged( self):
     import json
     request.RESPONSE.setHeader("Content-Type","text/json")
     root_node = self.getLinkObj(request['root_node'])
-    clients = request['clients']
+    clients = request['clients'] in [True,'true','True',1]
     data = {'pid':self.Control_Panel.process_id(),'root_node':request['root_node'],'clients':request['clients']}
     # REST Endpoint: ajaxCount
     if request.get('count'):

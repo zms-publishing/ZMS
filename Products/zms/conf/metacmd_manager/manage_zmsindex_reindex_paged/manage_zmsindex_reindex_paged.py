@@ -44,7 +44,7 @@ def manage_zmsindex_reindex_paged( self):
     import json
     request.RESPONSE.setHeader("Content-Type","text/json")
     root_node = self.getLinkObj(request['root_node'])
-    clients = request['clients']
+    clients = request['clients'] in [True,'true','True',1]
     data = {'pid':self.Control_Panel.process_id(),'root_node':request['root_node'],'clients':request['clients']}
     # REST Endpoint: ajaxCount
     if request.get('count'):

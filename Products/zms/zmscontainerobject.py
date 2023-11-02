@@ -771,7 +771,6 @@ class ZMSContainerObject(
             index = siblings.index(self.getDocumentElement())
             if index < len(siblings) - 1:
               return siblings[index+1]
-            return parent.get_next_node(clients, allow_children=False)
       # none
       return None
 

@@ -141,8 +141,12 @@ def manage_opensearch_export_data_paged( self):
   prt.append('</div><!-- .form-group -->')
   prt.append('<div class="form-group row">')
   prt.append('<label class="col-sm-2 control-label">Root</label>')
-  prt.append('<div class="col-sm-5">')
+  prt.append('<div class="col-sm-3">')
   prt.append('<input class="form-control url-input" id="root_node" name="root_node" type="text" value="{$}">')
+  prt.append('</div>')
+  prt.append('<div class="col-sm-2">')
+  if self.getPortalClients():
+    prt.append('<input class="form-check-input" id="clients" name="clients:int" type="checkbox" value="1" checked="checked"> Clients')
   prt.append('</div>')
   prt.append('</div><!-- .form-group -->')
   prt.append('<div class="form-group row d-none">')
@@ -246,7 +250,8 @@ function progress() {
 
 function ajaxCount(cb) {
     const root_node = $('#root_node').val();
-    const params = {'json':true,'count':true,'root_node':root_node};
+    const clients = $('#clients').prop('checked')?true:false;
+    const params = {'json':true,'count':true,'root_node':root_node,'clients':clients};
     $.get('manage_opensearch_export_data_paged',params,function(data) {
         $('#uid').val(root_node);
         var html = '';
@@ -274,9 +279,10 @@ function ajaxCount(cb) {
 
 function ajaxTraverse() {
     const root_node = $('#root_node').val();
+    const clients = $('#clients').prop('checked')?true:false;
     const uid = $('#uid').val();
     const page_size = $("input#page_size").val();
-    const params = {'json':true,'traverse':true,'root_node':root_node,'uid':uid,'page_size':page_size};
+    const params = {'json':true,'traverse':true,'root_node':root_node,'clients':clients,'uid':uid,'page_size':page_size};
     $.get('manage_opensearch_export_data_paged',params,function(data) {
         $(".alert.alert-info").html($('<pre/>',{text:JSON.stringify(data,null,2)}))
         if (!stopped && !paused) {

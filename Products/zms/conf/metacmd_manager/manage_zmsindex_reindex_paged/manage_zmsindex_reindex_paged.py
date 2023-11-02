@@ -15,7 +15,7 @@ class ZMSIndexReindexHandler(IHandler):
       return '\n'.join(self.zmsindex.reindex_node(node, self.catalog))
 
 # Traverse and handle nodes of this page.
-def traverse(data, root_node, node, handler, page_size=100):
+def traverse(data, root_node, clients, node, handler, page_size=100):
   count = 0
   root_path = '/'.join(root_node.getPhysicalPath())
   while node and count < page_size:
@@ -23,7 +23,7 @@ def traverse(data, root_node, node, handler, page_size=100):
     log = {'index':count,'path':path,'meta_id':node.meta_id}
     log['action'] = handler.handle(node);
     data['log'].append(log)
-    node = node.get_next_node()
+    node = node.get_next_node(clients)
     if node and not '/'.join(node.getPhysicalPath()).startswith(root_path): node = None
     data['next_node'] = None
     if node:
@@ -44,7 +44,8 @@ def manage_zmsindex_reindex_paged( self):
     import json
     request.RESPONSE.setHeader("Content-Type","text/json")
     root_node = self.getLinkObj(request['root_node'])
-    data = {'pid':self.Control_Panel.process_id(),'root_node':request['root_node']}
+    clients = request['clients']
+    data = {'pid':self.Control_Panel.process_id(),'root_node':request['root_node'],'clients':request['clients']}
     # REST Endpoint: ajaxCount
     if request.get('count'):
       path = '/'.join(root_node.getPhysicalPath())
@@ -58,7 +59,7 @@ def manage_zmsindex_reindex_paged( self):
       data['log'] = []
       data['next_node'] = None
       handler = ZMSIndexReindexHandler(zmsindex,catalog)
-      traverse(data,root_node,node,handler,page_size)
+      traverse(data,root_node,clients,node,handler,page_size)
     return json.dumps(data)
   
   home_id = self.getHome().id
@@ -82,8 +83,12 @@ def manage_zmsindex_reindex_paged( self):
   prt.append('</div><!-- .form-group -->')
   prt.append('<div class="form-group row">')
   prt.append('<label class="col-sm-2 control-label">Root</label>')
-  prt.append('<div class="col-sm-5">')
+  prt.append('<div class="col-sm-3">')
   prt.append('<input class="form-control url-input" id="root_node" name="root_node" type="text" value="{$}">')
+  prt.append('</div>')
+  prt.append('<div class="col-sm-2">')
+  if self.getPortalClients():
+    prt.append('<input class="form-check-input" id="clients" name="clients:int" type="checkbox" value="1" checked="checked"> Clients')
   prt.append('</div>')
   prt.append('</div><!-- .form-group -->')
   prt.append('<div class="form-group row d-none">')
@@ -188,7 +193,8 @@ function progress() {
 
 function ajaxCount(cb) {
     const root_node = $('#root_node').val();
-    const params = {'json':true,'count':true,'root_node':root_node};
+    const clients = $('#clients').prop('checked')?true:false;
+    const params = {'json':true,'count':true,'root_node':root_node,'clients':clients};
     $.get('manage_zmsindex_reindex_paged',params,function(data) {
         $('#uid').val(root_node);
         var html = '';
@@ -216,9 +222,10 @@ function ajaxCount(cb) {
 
 function ajaxTraverse() {
     const root_node = $('#root_node').val();
+    const clients = $('#clients').prop('checked')?true:false;
     const uid = $('#uid').val();
     const page_size = $("input#page_size").val();
-    const params = {'json':true,'traverse':true,'root_node':root_node,'uid':uid,'page_size':page_size};
+    const params = {'json':true,'traverse':true,'root_node':root_node,'clients':clients,'uid':uid,'page_size':page_size};
     $.get('manage_zmsindex_reindex_paged',params,function(data) {
         $(".alert.alert-info").html($('<pre/>',{text:JSON.stringify(data,null,2)}))
         if (!stopped && !paused) {

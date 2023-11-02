@@ -743,7 +743,7 @@ class ZMSContainerObject(
     ###
     ############################################################################
 
-    def get_next_node(self, allow_children=True):
+    def get_next_node(self, clients=False, allow_children=True):
       # children
       if allow_children:
         if self.meta_id != 'ZMSLinkElement':
@@ -758,7 +758,20 @@ class ZMSContainerObject(
         if index < len(siblings) - 1:
           return siblings[index+1]
         # parent
-        return parent.get_next_node(allow_children=False)
+        return parent.get_next_node(clients, allow_children=False)
+      # portal
+      if clients:
+        children = self.getPortalClients()
+        if children: 
+          return children[0]
+        else:
+          parent = self.getPortalMaster()
+          if parent:
+            siblings = parent.getPortalClients()
+            index = siblings.index(self.getDocumentElement())
+            if index < len(siblings) - 1:
+              return siblings[index+1]
+            return parent.get_next_node(clients, allow_children=False)
       # none
       return None
 

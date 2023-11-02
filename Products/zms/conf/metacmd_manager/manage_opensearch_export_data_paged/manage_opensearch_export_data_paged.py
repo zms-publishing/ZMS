@@ -44,7 +44,7 @@ class OpensearchHandler(IHandler):
         return None
 
 # Traverse and handle nodes of this page.
-def traverse(data, root_node, node, handler, page_size=100):
+def traverse(data, root_node, clients, node, handler, page_size=100):
   count = 0
   root_path = '/'.join(root_node.getPhysicalPath())
   while node and count < page_size:
@@ -52,7 +52,7 @@ def traverse(data, root_node, node, handler, page_size=100):
     log = {'index':count,'path':path,'meta_id':node.meta_id}
     log['action'] = handler.handle(node);
     data['log'].append(log)
-    node = node.get_next_node()
+    node = node.get_next_node(clients)
     if node and not '/'.join(node.getPhysicalPath()).startswith(root_path): node = None
     data['next_node'] = None if not node else '{$%s}'%node.get_uid()
     count += 1
@@ -98,7 +98,8 @@ def manage_opensearch_export_data_paged( self):
     import json
     request.RESPONSE.setHeader("Content-Type","text/json")
     root_node = self.getLinkObj(request['root_node'])
-    data = {'pid':self.Control_Panel.process_id(),'root_node':request['root_node']}
+    clients = request['clients']
+    data = {'pid':self.Control_Panel.process_id(),'root_node':request['root_node'],'clients':request['clients']}
     # REST Endpoint: ajaxCount
     if request.get('count'):
       path = '/'.join(root_node.getPhysicalPath())
@@ -117,7 +118,7 @@ def manage_opensearch_export_data_paged( self):
       opensearch_client = get_opensearch_client(self)
       root_id = self.getRootElement().getHome().id
       handler = OpensearchHandler(catalog_adapter, opensearch_client, root_id, ids)
-      traverse(data,root_node,node,handler,page_size)
+      traverse(data,root_node,clients,node,handler,page_size)
     return json.dumps(data)
   
   home_id = self.getHome().id

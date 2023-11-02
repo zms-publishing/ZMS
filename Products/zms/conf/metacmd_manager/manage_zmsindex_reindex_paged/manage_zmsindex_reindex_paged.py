@@ -14,7 +14,7 @@ class ZMSIndexReindexHandler(IHandler):
     def handle(self, node):
       return '\n'.join(self.zmsindex.reindex_node(node, self.catalog))
 
-# Traverse and handle nodes of this page.
+# Process nodes of this page.
 def traverse(data, root_node, clients, node, handler, page_size=100):
   count = 0
   root_path = '/'.join(root_node.getPhysicalPath())
@@ -24,7 +24,10 @@ def traverse(data, root_node, clients, node, handler, page_size=100):
     log['action'] = handler.handle(node);
     data['log'].append(log)
     node = node.get_next_node(clients)
-    if node and not '/'.join(node.getPhysicalPath()).startswith(root_path): node = None
+    if node \
+      and not '/'.join(node.getPhysicalPath()).startswith(root_path) \
+      and not node.meta_id == 'ZMS' and not clients:
+      node = None
     data['next_node'] = None
     if node:
       root_element = node.getRootElement()
@@ -48,7 +51,7 @@ def manage_zmsindex_reindex_paged( self):
     data = {'pid':self.Control_Panel.process_id(),'root_node':request['root_node'],'clients':request['clients']}
     # REST Endpoint: ajaxCount
     if request.get('count'):
-      path = '/'.join(root_node.getPhysicalPath())
+      path = '/'.join((root_node.aq_parent if clients else root_node).getPhysicalPath())
       data['count'] = {}
       r = catalog(path={'query':path})
       data['total'] = len(r)
@@ -62,7 +65,6 @@ def manage_zmsindex_reindex_paged( self):
       traverse(data,root_node,clients,node,handler,page_size)
     return json.dumps(data)
   
-  home_id = self.getHome().id
   prt = []
   prt.append('<!DOCTYPE html>')
   prt.append('<html lang="en">')

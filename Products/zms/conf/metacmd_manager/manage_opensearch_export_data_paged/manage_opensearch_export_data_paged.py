@@ -1,61 +1,38 @@
 from Products.zms import standard
+from opensearchpy import OpenSearch
+from opensearchpy.helpers import bulk
 from abc import abstractmethod
 
-# Abstract Interface for Handler
-class IHandler:
-    @abstractmethod
-    def handle(self): raise NotImplementedError
+def get_catalog_source(catalog_adapter, node):
+  # Initialize sources.
+  sources = [None]
+  # Callback for node: add dict to sources
+  def callback(node, d):
+    sources.append(d)
+  # Get sitemap for for single (recursive=False) document.
+  catalog_adapter.get_sitemap(callback, node, recursive=False)
+  # Return source (or None).
+  return sources[-1]
 
-# Implementation of Opensearch Handler
-class OpensearchHandler(IHandler):
-    def __init__(self, catalog_adapter, opensearch_client, opensearch_index_name, meta_ids):
-       """
-       @param catalog_adapter: the ZMSCatalogAdapter
-       @param opensearch_client: the OpenSearch-Client
-       @param opensearch_index_name: the name of the OpenSearch-Index
-       @param meta_ids: the meta-ids to be indexed
-       """
-       self.catalog_adapter = catalog_adapter
-       self.opensearch_client = opensearch_client
-       self.opensearch_index_name = opensearch_index_name
-       self.meta_ids = meta_ids
-    def handle(self, node):
-        # Node in Meta-IDs of ZCatalog-Adapter
-        if not self.meta_ids or node.meta_id in self.meta_ids:
-          # Initialize response.
-          response = [None]
-          # Callback for node
-          def callback(node, document):
-            """
-            @param node: the current node to be indexed
-            @param document the document to be indexed
-            """
-            # Index single document and add to response.
-            if self.opensearch_client:
-              response.append(self.opensearch_client.index(
-                  index = self.opensearch_index_name,
-                  body = document,
-                  id = node.get_uid(),
-                  refresh = True
-              ))
-            else: response.append({"DEBUG":document})
-          # Get sitemap for for single (recursive=False) document.
-          document = self.catalog_adapter.get_sitemap(callback, node, recursive=False)
-          # Return last response.
-          return response[-1]
-        return None
-
-# Traverse and handle nodes of this page.
-def traverse(data, root_node, clients, node, handler, page_size=100):
+# Process nodes of this page.
+def traverse(data, root_node, clients, node, page_size=100):
+  catalog_adapter = root_node.getCatalogAdapter()
+  meta_ids = catalog_adapter.getIds()
   count = 0
   root_path = '/'.join(root_node.getPhysicalPath())
   while node and count < page_size:
     path = '/'.join(node.getPhysicalPath())
     log = {'index':count,'path':path,'meta_id':node.meta_id}
-    log['action'] = handler.handle(node);
+    if node.meta_id in meta_ids:
+      source = get_catalog_source(catalog_adapter, node)
+      if source:
+        log['source'] = source
     data['log'].append(log)
     node = node.get_next_node(clients)
-    if node and not node.meta_id == 'ZMS' and not clients and not '/'.join(node.getPhysicalPath()).startswith(root_path): node = None
+    if node \
+      and not '/'.join(node.getPhysicalPath()).startswith(root_path) \
+      and not node.meta_id == 'ZMS' and not clients:
+      node = None
     data['next_node'] = None if not node else '{$%s}'%node.get_uid()
     count += 1
 
@@ -66,7 +43,6 @@ def traverse(data, root_node, clients, node, handler, page_size=100):
 # ${opensearch.password:admin}
 # ${opensearch.ssl.verify:}
 def get_opensearch_client(self):
-  from opensearchpy import OpenSearch
   url = self.getConfProperty('opensearch.url')
   if not url:
     return None
@@ -89,10 +65,17 @@ def get_opensearch_client(self):
     ssl_show_warn = False,
   ) 
 
+def bulk_opensearch_index(self, sources):
+  client = get_opensearch_client(self)
+  index = self.getRootElement().getHome().id
+  actions = [{"_op_type":"index", "_index":index, "_id":x['id'], "source":x} for x in sources]
+  if client: 
+    return bulk(client, actions)
+  return 0, len(actions)
+
+
 def manage_opensearch_export_data_paged( self):
   request = self.REQUEST
-  RESPONSE =  request.RESPONSE
-  lang = self.getPrimaryLanguage()
   catalog = self.getZMSIndex().get_catalog()
   catalog_adapter = self.getCatalogAdapter()
   ids = catalog_adapter.getIds()
@@ -106,7 +89,7 @@ def manage_opensearch_export_data_paged( self):
     data = {'pid':self.Control_Panel.process_id(),'root_node':request['root_node'],'clients':request['clients']}
     # REST Endpoint: ajaxCount
     if request.get('count'):
-      path = '/'.join(root_node.getPhysicalPath())
+      path = '/'.join((root_node.aq_parent if clients else root_node).getPhysicalPath())
       data['count'] = {}
       for meta_id in ids:
         r = catalog({'meta_id':meta_id}, path={'query':path})
@@ -119,14 +102,13 @@ def manage_opensearch_export_data_paged( self):
       page_size = int(request['page_size'])
       data['log'] = []
       data['next_node'] = None
-      opensearch_client = get_opensearch_client(self)
-      root_id = self.getRootElement().getHome().id
-      handler = OpensearchHandler(catalog_adapter, opensearch_client, root_id, ids)
-      traverse(data,root_node,clients,node,handler,page_size)
+      traverse(data,root_node,clients,node,page_size)
+      sources = [x['source'] for x in data['log'] if x.get('source')]
+      success, failed = bulk_opensearch_index(self, sources)
+      data['success'] =  success
+      data['failed'] = failed
     return json.dumps(data)
   
-  home_id = self.getHome().id
-
   prt = []
   prt.append('<!DOCTYPE html>')
   prt.append('<html lang="en">')
@@ -302,7 +284,7 @@ function ajaxTraverse() {
         if (!stopped && !paused) {
           const log = data['log'];
           if (log) {
-            log.filter(x => x['action']).forEach(x =>  {
+            log.filter(x => x['source']).forEach(x =>  {
               // increase counter
               const meta_id = x['meta_id'];
               map[meta_id] = map[meta_id] + 1;

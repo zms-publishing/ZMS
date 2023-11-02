@@ -33,7 +33,7 @@ from Products.zms import standard
 security = ModuleSecurityInfo('Products.zms.content_extraction')
 
 security.declarePublic('extract_content')
-def extract_content(context, b, content_type=None):
+def extract_content(context, b, content_type=''):
     """
     @param context: the ZMS-context
     @type b: C{ZMS}
@@ -41,8 +41,10 @@ def extract_content(context, b, content_type=None):
     @type b: C{bytes}
     """
     text = extract_content_tika( context, b, content_type)
-    if text is None:
+    if text is None and [x for x in ['application/pdf'] if content_type.startswith(x)]:
         text = extract_content_pdfminer( context, b, content_type)
+    if text is None and [x for x in ['text/','application/css','application/javascript','image/svg'] if content_type.startswith(x)]:
+        text = standard.pystr(b)
     return text
 
 

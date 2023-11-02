@@ -290,9 +290,10 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
           elif type(value) in (dict, list):
             value = standard.str_item(value,f=True)  
           d[attr_id] = standard.remove_tags(value)
-        if self.meta_id == 'ZMSFile':
+        if node.meta_id == 'ZMSFile':
           try:
-            text = catalog_extraction.extract_content(self, self.attr('file').getData())
+            file = node.attr('file')
+            text = content_extraction.extract_content(node, file.getData(), file.getContentType())
             d['standard_html'] = text
           except:
             standard.writeError( self, "can't catalog_analysis")

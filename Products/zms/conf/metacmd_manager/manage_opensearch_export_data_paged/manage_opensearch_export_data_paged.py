@@ -31,12 +31,14 @@ class OpensearchHandler(IHandler):
             @param document the document to be indexed
             """
             # Index single document and add to response.
-            response.append(self.opensearch_client.index(
-                index = self.opensearch_index_name,
-                body = document,
-                id = node.get_uid(),
-                refresh = True
-            ))
+            if self.opensearch_client:
+              response.append(self.opensearch_client.index(
+                  index = self.opensearch_index_name,
+                  body = document,
+                  id = node.get_uid(),
+                  refresh = True
+              ))
+            else: response.append({"DEBUG":document})
           # Get sitemap for for single (recursive=False) document.
           document = self.catalog_adapter.get_sitemap(callback, node, recursive=False)
           # Return last response.
@@ -65,7 +67,9 @@ def traverse(data, root_node, clients, node, handler, page_size=100):
 # ${opensearch.ssl.verify:}
 def get_opensearch_client(self):
   from opensearchpy import OpenSearch
-  url = self.getConfProperty('opensearch.url', 'http://localhost:9200')
+  url = self.getConfProperty('opensearch.url')
+  if not url:
+    return None
   username = self.getConfProperty('opensearch.username', 'admin')
   password = self.getConfProperty('opensearch.password', 'admin')
   verify = bool(self.getConfProperty('opensearch.ssl.verify', False))

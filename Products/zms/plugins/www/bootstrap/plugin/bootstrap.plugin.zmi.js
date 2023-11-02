@@ -255,7 +255,7 @@ $ZMI.registerReady(function(){
 
 		if ($single_line.hasClass("zmi-code")) {
 			$('textarea',$single_line).on('focus', function() {
-				if ( !$(this).hasClass('open-zmi-code') ) {
+				if ( !$(this).hasClass('open-zmi-code') && !($(this).val()=='') ) {
 					$(this)
 						.addClass('open-zmi-code')
 						.removeClass('alert-warning')

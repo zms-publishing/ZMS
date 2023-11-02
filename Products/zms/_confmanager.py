@@ -106,7 +106,7 @@ def initConf(self, pattern):
     for filename in files:
         if filename.startswith(prefix):
             label = files[filename]
-            if fnmatch(label,'%s-*'%pattern):
+            if fnmatch(label,'*%s-*'%pattern):
                 standard.writeBlock( self, '[initConf]: filename='+filename)
                 if filename.endswith('.zip'):
                     self.importConfPackage(filename)
@@ -269,7 +269,13 @@ class ConfManager(
                   r = _repositoryutil.readRepository(self, path, deep=False)
                   for k in r:
                       v = r[k]
-                      filenames['conf:%s/%s'%(filename,k)] = '%s-%s'%(k,v.get('revision','0.0.0'))
+                      # Get qualified name.
+                      qn = k
+                      package = v.get('package','')
+                      if package and not qn.startswith(package):
+                        qn = '%s.%s'%(package,qn)
+                      revision = v.get('revision','0.0.0')
+                      filenames['conf:%s/%s'%(filename,k)] = '%s-%s'%(qn,revision)
       # Return.
       if REQUEST is not None and RESPONSE is not None:
           RESPONSE = REQUEST.RESPONSE

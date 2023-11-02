@@ -26,14 +26,15 @@ def manage_zcatalog_export_schema( self):
   mappings = {'properties':properties}
   dictionary = {'mappings':mappings}
 
-  url = self.getConfProperty('opensearch.url', 'https://localhost:9200')
-  root_id = self.getRootElement().getHome().id
+  url = self.getConfProperty('opensearch.url')
   username = self.getConfProperty('opensearch.username', 'admin')
   password = self.getConfProperty('opensearch.password', 'admin')
+  self.setConfProperty('opensearch.schema', json.dumps(dictionary, indent=2))
   verify = bool(self.getConfProperty('opensearch.ssl.verify', ''))
   auth = HTTPBasicAuth(username,password)
   headers = {'Content-type': 'application/x-ndjson'}
   # pdb.set_trace()
+  root_id = self.getRootElement().getHome().id
   response = requests.delete('%s/%s'%(url,root_id),auth=auth,verify=verify)
   response = requests.put('%s/%s'%(url,root_id),auth=auth,headers=headers,json=dictionary,verify=verify)
   response.raise_for_status()

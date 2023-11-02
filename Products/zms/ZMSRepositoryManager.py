@@ -248,8 +248,13 @@ class ZMSRepositoryManager(
 
 
     def getRepositoryProviders(self):
-      obs = self.getDocumentElement().objectValues()
-      return [x for x in obs if IZMSRepositoryProvider.IZMSRepositoryProvider in list(providedBy(x))]
+      def get_repo_providers(context):
+        children = context.objectValues()
+        repo_providers = []
+        [repo_providers.append(x) for x in children if IZMSRepositoryProvider.IZMSRepositoryProvider in list(providedBy(x))]
+        [repo_providers.extend(get_repo_providers(x)) for x in children if IZMSConfigurationProvider.IZMSConfigurationProvider in list(providedBy(x))]
+        return repo_providers
+      return get_repo_providers(self.getDocumentElement())
 
 
     def localFiles(self, provider, ids=None):
@@ -286,18 +291,23 @@ class ZMSRepositoryManager(
               if 'id' in i:
                 ob = i.get('ob')
                 if ob is not None:
-                  fileexts = {'DTML Method':'.dtml', 'DTML Document':'.dtml', 'External Method':'.py', 'Page Template':'.zpt', 'Script (Python)':'.py', 'Z SQL Method':'.zsql'}
-                  fileprefix = i['id'].split('/')[-1]
-                  data = zopeutil.readData(ob)
-                  version = ''
-                  if hasattr(ob,'_p_mtime'):
-                    version = standard.getLangFmtDate(DateTime(ob._p_mtime).timeTime(), 'eng')
                   d = {}
+                  # Someone is so kind to pass us a file-like Object with {filename,data,version,meta_type} as dict.
+                  if type(ob) is dict:
+                    d = ob
+                  # Otherwise we have a Zope-Object and determine everything by ourselves.
+                  else:
+                    fileexts = {'DTML Method':'.dtml', 'DTML Document':'.dtml', 'External Method':'.py', 'Page Template':'.zpt', 'Script (Python)':'.py', 'Z SQL Method':'.zsql'}
+                    fileprefix = i['id'].split('/')[-1]
+                    data = zopeutil.readData(ob)
+                    version = ''
+                    if hasattr(ob,'_p_mtime'):
+                      version = standard.getLangFmtDate(DateTime(ob._p_mtime).timeTime(), 'eng')
+                    d['filename'] = os.path.sep.join(filename[:-1]+['%s%s'%(fileprefix, fileexts.get(ob.meta_type, ''))])
+                    d['data'] = data
+                    d['version'] = version
+                    d['meta_type'] = ob.meta_type
                   d['id'] = id
-                  d['filename'] = os.path.sep.join(filename[:-1]+['%s%s'%(fileprefix, fileexts.get(ob.meta_type, ''))])
-                  d['data'] = data
-                  d['version'] = version
-                  d['meta_type'] = ob.meta_type
                   l[d['filename']] = d
                 if 'ob' in i:
                   del i['ob']
@@ -344,8 +354,9 @@ class ZMSRepositoryManager(
       standard.triggerEvent(self,'beforeCommitRepositoryEvt')
       success = []
       failure = []
+      providers = self.getRepositoryProviders()
       for provider_id in list(set([x.split(':')[0] for x in ids])):
-        provider = getattr(self, provider_id)
+        provider = [x for x in providers if x.id == provider_id][0]
         basepath = self.get_conf_basepath(provider.id)
         for id in list(set([x.split(':')[1] for x in ids if x.split(':')[0]==provider_id])):
           try:
@@ -403,11 +414,12 @@ class ZMSRepositoryManager(
       success = []
       failure = []
       repositories = {}
+      providers = self.getRepositoryProviders()
       for i in ids:
         # Initialize.
         provider_id = i[:i.find(':')]
         id = i[i.find(':')+1:]
-        provider = getattr(self, provider_id)
+        provider = [x for x in providers if x.id == provider_id][0]
         # Read repositories for provider.
         if provider_id not in repositories:
           repositories[provider_id] = self.readRepository(provider)

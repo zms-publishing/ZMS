@@ -25,37 +25,6 @@ def manage_zcatalog_export_data( self):
   zca = zmscontext.getCatalogAdapter()
   attrs = zca.getAttrs()
   def cb(node, d):
-    if node.meta_id in ['ZMSFile']:
-      try:
-        # pdfminer.six (https://github.com/pdfminer/pdfminer.six)
-        # Pdfminer.six is a community maintained fork of the original PDFMiner. 
-        # It is a tool for extracting information from PDF documents. It focuses
-        # on getting and analyzing text data. Pdfminer.six extracts the text 
-        # from a page directly from the sourcecode of the PDF. 
-        # pip install pdfminer.six
-        from io import BytesIO, StringIO
-        from pdfminer.converter import TextConverter
-        from pdfminer.layout import LAParams
-        from pdfminer.pdfdocument import PDFDocument
-        from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
-        from pdfminer.pdfpage import PDFPage
-        from pdfminer.pdfparser import PDFParser
-        output_string = StringIO()
-        ob_file = node.attr('file')
-        in_file = BytesIO(ob_file.getData())
-        parser = PDFParser(in_file)
-        standard.writeError(node,"pdfminer: doc")
-        doc = PDFDocument(parser)
-        rsrcmgr = PDFResourceManager()
-        device = TextConverter(rsrcmgr, output_string, laparams=LAParams())
-        interpreter = PDFPageInterpreter(rsrcmgr, device)
-        for page in PDFPage.create_pages(doc):
-            interpreter.process_page(page)
-        v = output_string.getvalue()
-        d['standard_html'] = v
-      except:
-        standard.writeError(node,"can't pdfminer")
-        d['standard_html'] = '@@%s:%s'%('/'.join(node.getPhysicalPath()),'file')
     dindex = {"index":{"_index":root_id,"_id":node.get_uid()}}
     for k in ['id','custom']:
       if k in d:
@@ -79,4 +48,4 @@ def manage_zcatalog_export_data( self):
   msg.append("Done!")
   return '\n'.join(msg)
 
-# --// /manage_zcatalog_create_sitemap //--
+# --// /manage_zcatalog_export_data //--

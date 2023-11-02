@@ -126,6 +126,7 @@ def manage_opensearch_export_data_paged( self):
     return json.dumps(data)
   
   home_id = self.getHome().id
+
   prt = []
   prt.append('<!DOCTYPE html>')
   prt.append('<html lang="en">')
@@ -140,48 +141,56 @@ def manage_opensearch_export_data_paged( self):
   prt.append('<div class="card-body">')
   prt.append('<div class="form-group row">')
   prt.append('<label class="col-sm-2 control-label">Page-Size</label>')
-  prt.append('<div class="col-sm-5">')
+  prt.append('<div class="col-sm-10">')
   prt.append('<input class="form-control" id="page_size"  name="page_size:int" type="number" value="100">')
   prt.append('</div>')
   prt.append('</div><!-- .form-group -->')
   prt.append('<div class="form-group row">')
   prt.append('<label class="col-sm-2 control-label">Root</label>')
-  prt.append('<div class="col-sm-3">')
+  prt.append('<div class="col-sm-10">')
   prt.append('<input class="form-control url-input" id="root_node" name="root_node" type="text" value="{$}">')
-  prt.append('</div>')
-  prt.append('<div class="col-sm-2">')
-  if self.getPortalClients():
-    prt.append('<input class="form-check-input" id="clients" name="clients:int" type="checkbox" value="1" checked="checked"> Clients')
   prt.append('</div>')
   prt.append('</div><!-- .form-group -->')
   prt.append('<div class="form-group row d-none">')
   prt.append('<label class="col-sm-2 control-label">Node</label>')
-  prt.append('<div class="col-sm-5">')
+  prt.append('<div class="col-sm-10">')
   prt.append('<input class="form-control url-input" id="uid" name="uid" type="text" readonly="readonly">')
   prt.append('</div>')
   prt.append('</div><!-- .form-group -->')
+
+  prt.append('<div class="form-group row" title="Under Construction">')
+  prt.append('<label class="col-sm-2 control-label"><i class="fas fa-hammer fa-lg mr-2"></i> Options</label>')
+  prt.append('<div class="col-sm-10">')
+  if self.getPortalClients():
+    prt.append('<div class="form-check form-check-inline">')
+    prt.append('<input class="form-check-input" id="clients" name="clients:int" type="checkbox" value="1" checked="checked">')
+    prt.append('<label class="form-check-label text-black-50">Recursive ZMS-Cients</label>')
+    prt.append('</div>')
+  prt.append('<div class="form-check form-check-inline">')
+  prt.append('<input class="form-check-input" id="fileparsing" name="fileparsing:int" type="checkbox" value="1" checked="checked">')
+  prt.append('<label class="form-check-label text-black-50">Parse Binary-Files</label>')
+  prt.append('</div>')
+  prt.append('</div>')
+  prt.append('</div><!-- .form-group -->')
+
   prt.append('<div class="form-group row">')
-  prt.append('<label class="col-sm-2 control-label"></label>')
-  prt.append('<div class="col-sm-5">')
-  prt.append('<button id="start-button" class="btn btn-secondary mr-2">')
-  prt.append('<i class="fas fa-play text-success"></i>')
-  prt.append('</button>')
-  prt.append('<button id="stop-button" class="btn btn-secondary" disabled="disabled">')
-  prt.append('<i class="fas fa-stop"></i>')
-  prt.append('</button>')
+  prt.append('<label class="col-sm-2 control-label">Start</label>')
+  prt.append('<div class="col-sm-10">')
+  prt.append('<button id="start-button" class="btn btn-secondary mr-2"><i class="fas fa-play text-success"></i></button>')
+  prt.append('<button id="stop-button" class="btn btn-secondary" disabled="disabled"><i class="fas fa-stop"></i></button>')
   prt.append('</div>')
   prt.append('</div><!-- .form-group -->')
   prt.append('<div class="form-group row">')
   prt.append('<label class="col-sm-2 control-label"></label>')
-  prt.append('<div class="col-sm-5">')
+  prt.append('<div class="col-sm-10">')
   prt.append('<div id="count">')
   prt.append('</div>')
   prt.append('</div>')
   prt.append('</div><!-- .form-group -->')
-  prt.append('<div class="d-none progress mx-3">')
+  prt.append('<div class="d-none progress">')
   prt.append('<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>')
   prt.append('</div>')
-  prt.append('<div class="d-none alert alert-info" role="alert">')
+  prt.append('<div class="d-none alert alert-info mx-0" role="alert">')
   prt.append('</div>')
   prt.append('</div><!-- .card-body -->')
   prt.append('</form><!-- .form-horizontal -->')
@@ -260,7 +269,7 @@ function ajaxCount(cb) {
     $.get('manage_opensearch_export_data_paged',params,function(data) {
         $('#uid').val(root_node);
         var html = '';
-        html += '<table id="count_table" class="table table-bordered">';
+        html += '<table id="count_table" class="table table-sm table-bordered">';
         Object.entries(data['count']).forEach((k,v) => {
           html += '<tr class="' + k[0] + '">';
           html += '<td class="id">' + k[0] + '</td>';
@@ -271,7 +280,7 @@ function ajaxCount(cb) {
         html += '<tr class="Total">';
         html += '<td class="id"><strong>Total</strong></td>';
         html += '<td class="total">' + data['total'] + '</td>';
-        html += '<td class="count">' + 0 + '</td>';
+        html += '<td class="count" width="100%">' + 0 + '</td>';
         html += '</tr>';
         html += '</table>';
         $("#count").html(html);

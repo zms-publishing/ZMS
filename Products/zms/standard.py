@@ -56,6 +56,10 @@ from Products.zms import _mimetypes
 
 security = ModuleSecurityInfo('Products.zms.standard')
 
+security.declarePublic('pybool')
+def pybool(v):
+  return v in [True,'true','True',1]
+
 security.declarePublic('pystr')
 def pystr(v, encoding='utf-8', errors='strict'):
   if isinstance(v, bytes):

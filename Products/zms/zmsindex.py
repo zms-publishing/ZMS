@@ -112,9 +112,9 @@ class ZMSIndex(ZMSItem.ZMSItem):
       def traverse(node):
         # Refresh index: add and remove.
         query = {'get_uid':node.get_uid()}
-        row = catalog(query)
-        for r in row:
-          catalog.uncatalog_object(r['getPath'])
+        r = catalog(query)
+        for i in r:
+          catalog.uncatalog_object(i['getPath'])
         self.catalog_object(catalog,node)
         # Traverse.
         for childNode in node.getChildNodes():
@@ -144,7 +144,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
     ##############################################################################
     # Get Catalog
     ##############################################################################
-    def get_catalog(self, createIfNotExists=True):
+    def get_catalog(self):
       # Create catalog.
       zmsroot = self.getRootElement()
       home = zmsroot.getHome()
@@ -194,8 +194,8 @@ class ZMSIndex(ZMSItem.ZMSItem):
       path = node.getPath()
       # Sanity check: if uid is already catalogued we have to generate new uid
       uid = node.get_uid()
-      q = catalog({'get_uid':uid})
-      if len(q) > 0:
+      r = catalog({'get_uid':uid})
+      if len(r) > 0:
         if regenerate_duplicates:
           node.get_uid(forced=True)
         printed.append('ERROR %s'%standard.writeError(node,'[ZMSIndex] WARNING duplicate uid: %s->%s'%(uid,node.get_uid())))
@@ -227,7 +227,9 @@ class ZMSIndex(ZMSItem.ZMSItem):
       log = []
       if node.meta_id == 'ZMS':
         # Clear catalog
-        for i in catalog({'path':'/'.join(node.getPhysicalPath())}):
+        path = '/'.join(node.getPhysicalPath())
+        r = catalog(path={'query':path})
+        for i in r:
           path = i['getPath']
           log.append('INFO %s'%standard.writeBlock(self,'[ZMSIndex] uncatalog_object %s'%path))
           catalog.uncatalog_object(path)
@@ -238,36 +240,34 @@ class ZMSIndex(ZMSItem.ZMSItem):
     ##############################################################################
     # Reindex
     ##############################################################################
-    def manage_reindex(self, regenerate_duplicates=False):
+    def manage_reindex(self, regenerate_duplicates=False, REQUEST=None):
       """ ZMSIndex.manage_reindex """
-      request = self.REQUEST
-      response = request.RESPONSE
-      log = []
-
-      zmsroot = self.getRootElement()
-      home = zmsroot.getHome()
-      catalog = getattr(home,self.catalog_id,None)
-      regenerate_duplicates = regenerate_duplicates or catalog is None
 
       # Visit tree
-      def visit(node):
+      def visit(node, regenerate_all=False):
         l = []
         l.append(1)
         log.extend(self.reindex_node(node,catalog,regenerate_duplicates))
         for childNode in node.getChildNodes():
-          l.extend(visit(childNode))
+          l.extend(visit(childNode, regenerate_all))
+        if regenerate_all and node.meta_id == 'ZMS':
+          for portal_client in node.getPortalClients():
+            visit(portal_client, regenerate_all)
         return l
       
-      urls = [x for x in request.get('url').split(',') if x]
+      log = []
+      catalog = self.get_catalog()
+      regenerate_all = len(catalog) == 0
+      regenerate_duplicates = regenerate_all or standard.pybool(regenerate_duplicates)
+      urls = [x for x in REQUEST.get('url').split(',') if x]
       for url in urls:
-        catalog = self.get_catalog()
         log.append('INFO %s'%standard.writeBlock(self,'[ZMSIndex] ### reindex for %s'%url))
         t0 = time.time()
         base = self.getLinkObj(url)
         if base is not None:
-          count = visit(base.getDocumentElement())
+          count = visit(base.getDocumentElement(), regenerate_all)
           log.append('INFO %s'%standard.writeBlock(self,'[ZMSIndex] reindex for %s done: %i in %.2fsecs.'%(url,len(count),time.time()-t0)))
-      return self.get_log(log,request)
+      return self.get_log(log,REQUEST)
 
     ##############################################################################
     # Test

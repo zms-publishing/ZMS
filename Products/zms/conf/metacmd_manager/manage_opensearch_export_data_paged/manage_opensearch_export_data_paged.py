@@ -141,8 +141,8 @@ def manage_opensearch_export_data_paged( self):
   prt.append('</div>')
   prt.append('</div><!-- .form-group -->')
 
-  prt.append('<div class="form-group row" title="Under Construction">')
-  prt.append('<label class="col-sm-2 control-label"><i class="fas fa-hammer fa-lg mr-2"></i> Options</label>')
+  prt.append('<div class="form-group row">')
+  prt.append('<label class="col-sm-2 control-label">Options</label>')
   prt.append('<div class="col-sm-10">')
   if self.getPortalClients():
     prt.append('<div class="form-check form-check-inline">')

@@ -138,7 +138,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
     # Get Log
     ##############################################################################
     def get_log(self, log, request):
-      loglevel = request.get('loglevel','<NONE>')
+      loglevel = request.get('loglevel','<NONE>') if request else '<NONE>'
       return '\n'.join([x for x in log if x.startswith('%s '%loglevel)])
 
     ##############################################################################

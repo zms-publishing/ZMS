@@ -3,19 +3,19 @@ from opensearchpy import OpenSearch
 from opensearchpy.helpers import bulk
 from abc import abstractmethod
 
-def get_catalog_source(catalog_adapter, node):
+def get_catalog_source(catalog_adapter, node, fileparsing=True):
   # Initialize sources.
   sources = [None]
   # Callback for node: add dict to sources
   def callback(node, d):
     sources.append(d)
   # Get sitemap for for single (recursive=False) document.
-  catalog_adapter.get_sitemap(callback, node, recursive=False)
+  catalog_adapter.get_sitemap(callback, node, recursive=False, fileparsing=fileparsing)
   # Return source (or None).
   return sources[-1]
 
 # Process nodes of this page.
-def traverse(data, root_node, clients, node, page_size=100):
+def traverse(data, root_node, clients, fileparsing, node, page_size=100):
   catalog_adapter = root_node.getCatalogAdapter()
   meta_ids = catalog_adapter.getIds()
   count = 0
@@ -24,7 +24,7 @@ def traverse(data, root_node, clients, node, page_size=100):
     path = '/'.join(node.getPhysicalPath())
     log = {'index':count,'path':path,'meta_id':node.meta_id}
     if node.meta_id in meta_ids:
-      source = get_catalog_source(catalog_adapter, node)
+      source = get_catalog_source(catalog_adapter, node, fileparsing)
       if source:
         log['source'] = source
     data['log'].append(log)
@@ -85,7 +85,7 @@ def manage_opensearch_export_data_paged( self):
     import json
     request.RESPONSE.setHeader("Content-Type","text/json")
     root_node = self.getLinkObj(request['root_node'])
-    clients = standard.pybool(request['clients'])
+    clients = standard.pybool(request.get('clients'))
     data = {'pid':self.Control_Panel.process_id(),'root_node':request['root_node'],'clients':request['clients']}
     # REST Endpoint: ajaxCount
     if request.get('count'):
@@ -98,11 +98,12 @@ def manage_opensearch_export_data_paged( self):
       data['total'] = len(r)
     # REST Endpoint: ajaxTraverse
     if request.get('traverse'):
+      fileparsing = standard.pybool(request.get('fileparsing'))
       node = self.getLinkObj(request['uid'])
       page_size = int(request['page_size'])
       data['log'] = []
       data['next_node'] = None
-      traverse(data,root_node,clients,node,page_size)
+      traverse(data,root_node,clients,fileparsing,node,page_size)
       sources = [x['source'] for x in data['log'] if x.get('source')]
       success, failed = bulk_opensearch_index(self, sources)
       data['success'] =  success
@@ -276,9 +277,10 @@ function ajaxCount(cb) {
 function ajaxTraverse() {
     const root_node = $('#root_node').val();
     const clients = $('#clients').prop('checked')?true:false;
+    const fileparsing = $('#fileparsing').prop('checked')?true:false;
     const uid = $('#uid').val();
     const page_size = $("input#page_size").val();
-    const params = {'json':true,'traverse':true,'root_node':root_node,'clients':clients,'uid':uid,'page_size':page_size};
+    const params = {'json':true,'traverse':true,'root_node':root_node,'clients':clients,'fileparsing':fileparsing,'uid':uid,'page_size':page_size};
     $.get('manage_opensearch_export_data_paged',params,function(data) {
         $(".alert.alert-info").html($('<pre/>',{text:JSON.stringify(data,null,2)}))
         if (!stopped && !paused) {

@@ -7,6 +7,7 @@ def manage_zcatalog_export_data( self):
   msg = []
   request = self.REQUEST
   RESPONSE =  request.RESPONSE
+  fileparsing = standard.pybool(request.get('fileparsing'))
   zmscontext = self.getLinkObj(request.get('uid','{$}'))
   root_id = zmscontext.getRootElement().getHome().id
   home = zmscontext.getDocumentElement()
@@ -31,7 +32,7 @@ def manage_zcatalog_export_data( self):
         del d[k]
     data.append(json.dumps(dindex))
     data.append(json.dumps(d))
-  zca.get_sitemap(cb, zmscontext, recursive=True)
+  zca.get_sitemap(cb, zmscontext, recursive=True, fileparsing=fileparsing)
   data = '\n'.join([standard.pystr(x) for x in data])+'\n'
   data = data.replace(zmscontext.getHref2IndexHtml(request),zmscontext.absolute_url()[len(request['SERVER_URL']):]+'/')
   

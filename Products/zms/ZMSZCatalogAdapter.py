@@ -227,7 +227,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     #  @param self
     #  @param  cb  callback
     # --------------------------------------------------------------------------
-    def get_sitemap(self, cb, root, recursive):
+    def get_sitemap(self, cb, root, recursive, fileparsing=True):
       result = []
       request = self.REQUEST
 
@@ -290,7 +290,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
           elif type(value) in (dict, list):
             value = standard.str_item(value,f=True)  
           d[attr_id] = standard.remove_tags(value)
-        if node.meta_id == 'ZMSFile':
+        if fileparsing and node.meta_id == 'ZMSFile':
           try:
             file = node.attr('file')
             text = content_extraction.extract_content(node, file.getData(), file.getContentType())

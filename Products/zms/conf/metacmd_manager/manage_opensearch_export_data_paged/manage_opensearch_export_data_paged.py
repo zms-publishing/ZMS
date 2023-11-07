@@ -199,7 +199,7 @@ var stopped = false;
 
 function start() {
     stopped = false;
-    $(".progress .progress-bar").removeClass("bg-danger bg-warning bg-success");
+    $(".progress .progress-bar").addClass("progress-bar-striped").removeClass("bg-danger bg-warning bg-success");
     $("#stop-button").prop("disabled","");
     $(".progress.d-none").removeClass("d-none");
     $(".alert.alert-info").removeClass("d-none");
@@ -231,7 +231,7 @@ function start() {
 function stop() {
     started = false;
     stopped = true;
-    $(".progress .progress-bar").removeClass("bg-success bg-warning bg-success");
+    $(".progress .progress-bar").removeClass("bg-success bg-warning");
     $("#start-button i").removeClass("fa-pause").addClass("fa-play");
     $("#stop-button").prop("disabled","disabled");
     $(".progress .progress-bar").addClass("bg-warning");
@@ -257,13 +257,13 @@ function ajaxCount(cb) {
           html += '<tr class="' + k[0] + '">';
           html += '<td class="id">' + k[0] + '</td>';
           html += '<td class="total">' + k[1] + '</td>';
-          html += '<td class="count">' + 0 + '</td>';
+          html += '<td class="count w-100">' + 0 + '</td>';
           html += '</tr>';
         });
         html += '<tr class="Total">';
         html += '<td class="id"><strong>Total</strong></td>';
         html += '<td class="total">' + data['total'] + '</td>';
-        html += '<td class="count" width="100%">' + 0 + '</td>';
+        html += '<td class="count w-100">' + 0 + '</td>';
         html += '</tr>';
         html += '</table>';
         $("#count").html(html);

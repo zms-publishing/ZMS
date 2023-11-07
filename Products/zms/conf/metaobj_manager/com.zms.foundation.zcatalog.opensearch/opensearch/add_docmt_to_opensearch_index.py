@@ -21,8 +21,8 @@ def add_docmt_to_opensearch_index(self):
 	verify = bool(self.getConfProperty('opensearch.ssl.verify', ''))
 	auth = HTTPBasicAuth(username,password)
 
-	zca = self.getCatalogAdapter()
-	attrs = zca.getAttrs()
+	# Get attribute schema from ZCatalog adapter and 
+	# the attribute content from the context node (self)
 	zca = self.getCatalogAdapter()
 	attrs = zca.getAttrs()
 	content_obj = {}

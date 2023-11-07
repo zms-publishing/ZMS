@@ -23,6 +23,8 @@ def add_docmt_to_opensearch_index(self):
 
 	zca = self.getCatalogAdapter()
 	attrs = zca.getAttrs()
+	zca = self.getCatalogAdapter()
+	attrs = zca.getAttrs()
 	content_obj = {}
 	for a in attrs:
 		html = ''

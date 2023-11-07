@@ -236,6 +236,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
         request.set('ZMS_CONTEXT_URL', True)
         d = {}
         d['id'] = node.id
+        d['uid'] = node.get_uid()
         d['home_id'] = node.getHome().id
         d['loc'] = '/'.join(node.getPhysicalPath())
         d['index_html'] = node.getHref2IndexHtmlInContext(node.getRootElement(), REQUEST=request)

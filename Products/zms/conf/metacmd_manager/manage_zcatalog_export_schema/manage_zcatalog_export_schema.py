@@ -7,6 +7,9 @@ requests.packages.urllib3.disable_warnings(requests.packages.urllib3.exceptions.
 def manage_zcatalog_export_schema( self):
   zmscontext = self
   properties = {}
+  properties['id'] = {'type':'text'}
+  properties['zmsid'] = {'type':'text'}
+  properties['uid'] = {'type':'text'}
   properties['loc'] = {'type':'text'}
   properties['index_html'] = {'type':'text'}
   properties['meta_id'] = {'type':'keyword'}

@@ -71,7 +71,9 @@ def bulk_opensearch_index(self, sources):
   actions = []
   # actions = [{"_op_type":"index", "_index":index, "_id":x['id'], "source":x} for x in sources]
   for x in sources:
-    d = {"_op_type":"index", "_index":index, "_id":x['id']}
+    d = {"_op_type":"index", "_index":index, "_id":x['uid']}
+    x['zmsid'] = x['id']
+    x['id'] = x['uid']
     d.update(x)
     actions.append(d)
   if client: 

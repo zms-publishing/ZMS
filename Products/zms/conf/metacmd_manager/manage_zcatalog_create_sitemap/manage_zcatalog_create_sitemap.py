@@ -1,7 +1,7 @@
 # --// manage_zcatalog_create_sitemap //--
 
 from Products.zms import standard
-from Products.zms import catalog_analysis
+from Products.zms import content_extraction
 
 def manage_zcatalog_create_sitemap( self):
   msg = []
@@ -29,10 +29,10 @@ def manage_zcatalog_create_sitemap( self):
   def cb(node, d):
     if node.meta_id in ['ZMSFile']:
       try:
-        text = catalog_analysis.catalog_analysis(node, node.attr('file').getData())
+        text = content_extraction.extract_content(node, node.attr('file').getData())
         d['standard_html'] = text
       except:
-        standard.writeError(node,"can't catalog_analysis")
+        standard.writeError(node,"can't extract_content")
         d['standard_html'] = '@@%s:%s'%('/'.join(node.getPhysicalPath()),'file')
     doc =  []
     doc.append('<doc>')

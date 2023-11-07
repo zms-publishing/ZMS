@@ -296,7 +296,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
             text = content_extraction.extract_content(node, file.getData(), file.getContentType())
             d['standard_html'] = text
           except:
-            standard.writeError( self, "can't catalog_analysis")
+            standard.writeError( self, "can't extract_content")
         cb(node, d)
 
       # Traverse tree.

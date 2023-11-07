@@ -1,45 +1,38 @@
 from Products.zms import standard
+from opensearchpy import OpenSearch
+from opensearchpy.helpers import bulk
 from abc import abstractmethod
 
-# Abstract Interface for Handler
-class IHandler:
-    @abstractmethod
-    def handle(self): raise NotImplementedError
+def get_catalog_source(catalog_adapter, node, fileparsing=True):
+  # Initialize sources.
+  sources = [None]
+  # Callback for node: add dict to sources
+  def callback(node, d):
+    sources.append(d)
+  # Get sitemap for for single (recursive=False) document.
+  catalog_adapter.get_sitemap(callback, node, recursive=False, fileparsing=fileparsing)
+  # Return source (or None).
+  return sources[-1]
 
-# Implementation of Opensearch Handler
-class OpensearchHandler(IHandler):
-    def __init__(self, catalog_adapter, client, index, meta_ids):
-       self.catalog_adapter = catalog_adapter
-       self.client = client
-       self.index = index
-       self.meta_ids = meta_ids
-    def handle(self, node):
-        # Node in Meta-IDs of ZCatalog-Adapter
-        if not self.meta_ids or node.meta_id in self.meta_ids:
-          response = [None]
-          # Callback for document
-          def callback(node, document):
-            response.append(self.client.index(
-                index = self.index,
-                body = document,
-                id = node.get_uid(),
-                refresh = True
-            ))
-          document = self.catalog_adapter.get_sitemap(callback, node, recursive=False)
-          return response[-1]
-        return None
-
-# Traverse and handle nodes of this page.
-def traverse(data, root_node, node, handler, page_size=100):
+# Process nodes of this page.
+def traverse(data, root_node, clients, fileparsing, node, page_size=100):
+  catalog_adapter = root_node.getCatalogAdapter()
+  meta_ids = catalog_adapter.getIds()
   count = 0
   root_path = '/'.join(root_node.getPhysicalPath())
   while node and count < page_size:
     path = '/'.join(node.getPhysicalPath())
     log = {'index':count,'path':path,'meta_id':node.meta_id}
-    log['action'] = handler.handle(node);
+    if node.meta_id in meta_ids:
+      source = get_catalog_source(catalog_adapter, node, fileparsing)
+      if source:
+        log['source'] = source
     data['log'].append(log)
-    node = node.get_next_node()
-    if node and not '/'.join(node.getPhysicalPath()).startswith(root_path): node = None
+    node = node.get_next_node(clients)
+    if node \
+      and not '/'.join(node.getPhysicalPath()).startswith(root_path) \
+      and not node.meta_id == 'ZMS' and not clients:
+      node = None
     data['next_node'] = None if not node else '{$%s}'%node.get_uid()
     count += 1
 
@@ -50,8 +43,9 @@ def traverse(data, root_node, node, handler, page_size=100):
 # ${opensearch.password:admin}
 # ${opensearch.ssl.verify:}
 def get_opensearch_client(self):
-  from opensearchpy import OpenSearch
-  url = self.getConfProperty('opensearch.url', 'http://localhost:9200')
+  url = self.getConfProperty('opensearch.url')
+  if not url:
+    return None
   username = self.getConfProperty('opensearch.username', 'admin')
   password = self.getConfProperty('opensearch.password', 'admin')
   verify = bool(self.getConfProperty('opensearch.ssl.verify', False))
@@ -71,10 +65,17 @@ def get_opensearch_client(self):
     ssl_show_warn = False,
   ) 
 
+def bulk_opensearch_index(self, sources):
+  client = get_opensearch_client(self)
+  index = self.getRootElement().getHome().id
+  actions = [{"_op_type":"index", "_index":index, "_id":x['id'], "source":x} for x in sources]
+  if client: 
+    return bulk(client, actions)
+  return 0, len(actions)
+
+
 def manage_opensearch_export_data_paged( self):
   request = self.REQUEST
-  RESPONSE =  request.RESPONSE
-  lang = self.getPrimaryLanguage()
   catalog = self.getZMSIndex().get_catalog()
   catalog_adapter = self.getCatalogAdapter()
   ids = catalog_adapter.getIds()
@@ -84,10 +85,11 @@ def manage_opensearch_export_data_paged( self):
     import json
     request.RESPONSE.setHeader("Content-Type","text/json")
     root_node = self.getLinkObj(request['root_node'])
-    data = {'pid':self.Control_Panel.process_id(),'root_node':request['root_node']}
+    clients = standard.pybool(request.get('clients'))
+    data = {'pid':self.Control_Panel.process_id(),'root_node':request['root_node'],'clients':request['clients']}
     # REST Endpoint: ajaxCount
     if request.get('count'):
-      path = '/'.join(root_node.getPhysicalPath())
+      path = '/'.join((root_node.aq_parent if clients else root_node).getPhysicalPath())
       data['count'] = {}
       for meta_id in ids:
         r = catalog({'meta_id':meta_id}, path={'query':path})
@@ -96,17 +98,18 @@ def manage_opensearch_export_data_paged( self):
       data['total'] = len(r)
     # REST Endpoint: ajaxTraverse
     if request.get('traverse'):
+      fileparsing = standard.pybool(request.get('fileparsing'))
       node = self.getLinkObj(request['uid'])
       page_size = int(request['page_size'])
       data['log'] = []
       data['next_node'] = None
-      opensearch_client = get_opensearch_client(self)
-      root_id = self.getRootElement().getHome().id
-      handler = OpensearchHandler(catalog_adapter, opensearch_client, root_id, ids)
-      traverse(data,root_node,node,handler,page_size)
+      traverse(data,root_node,clients,fileparsing,node,page_size)
+      sources = [x['source'] for x in data['log'] if x.get('source')]
+      success, failed = bulk_opensearch_index(self, sources)
+      data['success'] =  success
+      data['failed'] = failed
     return json.dumps(data)
   
-  home_id = self.getHome().id
   prt = []
   prt.append('<!DOCTYPE html>')
   prt.append('<html lang="en">')
@@ -121,44 +124,56 @@ def manage_opensearch_export_data_paged( self):
   prt.append('<div class="card-body">')
   prt.append('<div class="form-group row">')
   prt.append('<label class="col-sm-2 control-label">Page-Size</label>')
-  prt.append('<div class="col-sm-5">')
+  prt.append('<div class="col-sm-10">')
   prt.append('<input class="form-control" id="page_size"  name="page_size:int" type="number" value="100">')
   prt.append('</div>')
   prt.append('</div><!-- .form-group -->')
   prt.append('<div class="form-group row">')
   prt.append('<label class="col-sm-2 control-label">Root</label>')
-  prt.append('<div class="col-sm-5">')
+  prt.append('<div class="col-sm-10">')
   prt.append('<input class="form-control url-input" id="root_node" name="root_node" type="text" value="{$}">')
   prt.append('</div>')
   prt.append('</div><!-- .form-group -->')
   prt.append('<div class="form-group row d-none">')
   prt.append('<label class="col-sm-2 control-label">Node</label>')
-  prt.append('<div class="col-sm-5">')
+  prt.append('<div class="col-sm-10">')
   prt.append('<input class="form-control url-input" id="uid" name="uid" type="text" readonly="readonly">')
   prt.append('</div>')
   prt.append('</div><!-- .form-group -->')
+
   prt.append('<div class="form-group row">')
-  prt.append('<label class="col-sm-2 control-label"></label>')
-  prt.append('<div class="col-sm-5">')
-  prt.append('<button id="start-button" class="btn btn-secondary mr-2">')
-  prt.append('<i class="fas fa-play text-success"></i>')
-  prt.append('</button>')
-  prt.append('<button id="stop-button" class="btn btn-secondary" disabled="disabled">')
-  prt.append('<i class="fas fa-stop"></i>')
-  prt.append('</button>')
+  prt.append('<label class="col-sm-2 control-label">Options</label>')
+  prt.append('<div class="col-sm-10">')
+  if self.getPortalClients():
+    prt.append('<div class="form-check form-check-inline">')
+    prt.append('<input class="form-check-input" id="clients" name="clients:int" type="checkbox" value="1" checked="checked">')
+    prt.append('<label class="form-check-label text-black-50">Recursive ZMS-Cients</label>')
+    prt.append('</div>')
+  prt.append('<div class="form-check form-check-inline">')
+  prt.append('<input class="form-check-input" id="fileparsing" name="fileparsing:int" type="checkbox" value="1" checked="checked">')
+  prt.append('<label class="form-check-label text-black-50">Parse Binary-Files</label>')
+  prt.append('</div>')
+  prt.append('</div>')
+  prt.append('</div><!-- .form-group -->')
+
+  prt.append('<div class="form-group row">')
+  prt.append('<label class="col-sm-2 control-label">Start</label>')
+  prt.append('<div class="col-sm-10">')
+  prt.append('<button id="start-button" class="btn btn-secondary mr-2"><i class="fas fa-play text-success"></i></button>')
+  prt.append('<button id="stop-button" class="btn btn-secondary" disabled="disabled"><i class="fas fa-stop"></i></button>')
   prt.append('</div>')
   prt.append('</div><!-- .form-group -->')
   prt.append('<div class="form-group row">')
   prt.append('<label class="col-sm-2 control-label"></label>')
-  prt.append('<div class="col-sm-5">')
+  prt.append('<div class="col-sm-10">')
   prt.append('<div id="count">')
   prt.append('</div>')
   prt.append('</div>')
   prt.append('</div><!-- .form-group -->')
-  prt.append('<div class="d-none progress mx-3">')
+  prt.append('<div class="d-none progress">')
   prt.append('<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>')
   prt.append('</div>')
-  prt.append('<div class="d-none alert alert-info" role="alert">')
+  prt.append('<div class="d-none alert alert-info mx-0" role="alert">')
   prt.append('</div>')
   prt.append('</div><!-- .card-body -->')
   prt.append('</form><!-- .form-horizontal -->')
@@ -184,7 +199,7 @@ var stopped = false;
 
 function start() {
     stopped = false;
-    $(".progress .progress-bar").removeClass("bg-danger bg-warning bg-success");
+    $(".progress .progress-bar").addClass("progress-bar-striped").removeClass("bg-danger bg-warning bg-success");
     $("#stop-button").prop("disabled","");
     $(".progress.d-none").removeClass("d-none");
     $(".alert.alert-info").removeClass("d-none");
@@ -216,7 +231,7 @@ function start() {
 function stop() {
     started = false;
     stopped = true;
-    $(".progress .progress-bar").removeClass("bg-success bg-warning bg-success");
+    $(".progress .progress-bar").removeClass("bg-success bg-warning");
     $("#start-button i").removeClass("fa-pause").addClass("fa-play");
     $("#stop-button").prop("disabled","disabled");
     $(".progress .progress-bar").addClass("bg-warning");
@@ -232,22 +247,23 @@ function progress() {
 
 function ajaxCount(cb) {
     const root_node = $('#root_node').val();
-    const params = {'json':true,'count':true,'root_node':root_node};
+    const clients = $('#clients').prop('checked')?true:false;
+    const params = {'json':true,'count':true,'root_node':root_node,'clients':clients};
     $.get('manage_opensearch_export_data_paged',params,function(data) {
         $('#uid').val(root_node);
         var html = '';
-        html += '<table id="count_table" class="table table-bordered">';
+        html += '<table id="count_table" class="table table-sm table-bordered">';
         Object.entries(data['count']).forEach((k,v) => {
           html += '<tr class="' + k[0] + '">';
           html += '<td class="id">' + k[0] + '</td>';
           html += '<td class="total">' + k[1] + '</td>';
-          html += '<td class="count">' + 0 + '</td>';
+          html += '<td class="count w-100">' + 0 + '</td>';
           html += '</tr>';
         });
         html += '<tr class="Total">';
         html += '<td class="id"><strong>Total</strong></td>';
         html += '<td class="total">' + data['total'] + '</td>';
-        html += '<td class="count">' + 0 + '</td>';
+        html += '<td class="count w-100">' + 0 + '</td>';
         html += '</tr>';
         html += '</table>';
         $("#count").html(html);
@@ -260,15 +276,17 @@ function ajaxCount(cb) {
 
 function ajaxTraverse() {
     const root_node = $('#root_node').val();
+    const clients = $('#clients').prop('checked')?true:false;
+    const fileparsing = $('#fileparsing').prop('checked')?true:false;
     const uid = $('#uid').val();
     const page_size = $("input#page_size").val();
-    const params = {'json':true,'traverse':true,'root_node':root_node,'uid':uid,'page_size':page_size};
+    const params = {'json':true,'traverse':true,'root_node':root_node,'clients':clients,'fileparsing':fileparsing,'uid':uid,'page_size':page_size};
     $.get('manage_opensearch_export_data_paged',params,function(data) {
         $(".alert.alert-info").html($('<pre/>',{text:JSON.stringify(data,null,2)}))
         if (!stopped && !paused) {
           const log = data['log'];
           if (log) {
-            log.filter(x => x['action']).forEach(x =>  {
+            log.filter(x => x['source']).forEach(x =>  {
               // increase counter
               const meta_id = x['meta_id'];
               map[meta_id] = map[meta_id] + 1;

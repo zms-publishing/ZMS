@@ -14,8 +14,8 @@ class ZMSIndexReindexHandler(IHandler):
     def handle(self, node):
       return '\n'.join(self.zmsindex.reindex_node(node, self.catalog))
 
-# Traverse and handle nodes of this page.
-def traverse(data, root_node, node, handler, page_size=100):
+# Process nodes of this page.
+def traverse(data, root_node, clients, node, handler, page_size=100):
   count = 0
   root_path = '/'.join(root_node.getPhysicalPath())
   while node and count < page_size:
@@ -23,8 +23,11 @@ def traverse(data, root_node, node, handler, page_size=100):
     log = {'index':count,'path':path,'meta_id':node.meta_id}
     log['action'] = handler.handle(node);
     data['log'].append(log)
-    node = node.get_next_node()
-    if node and not '/'.join(node.getPhysicalPath()).startswith(root_path): node = None
+    node = node.get_next_node(clients)
+    if node \
+      and not '/'.join(node.getPhysicalPath()).startswith(root_path) \
+      and not node.meta_id == 'ZMS' and not clients:
+      node = None
     data['next_node'] = None
     if node:
       root_element = node.getRootElement()
@@ -44,10 +47,11 @@ def manage_zmsindex_reindex_paged( self):
     import json
     request.RESPONSE.setHeader("Content-Type","text/json")
     root_node = self.getLinkObj(request['root_node'])
-    data = {'pid':self.Control_Panel.process_id(),'root_node':request['root_node']}
+    clients = standard.pybool(request['clients'])
+    data = {'pid':self.Control_Panel.process_id(),'root_node':request['root_node'],'clients':request['clients']}
     # REST Endpoint: ajaxCount
     if request.get('count'):
-      path = '/'.join(root_node.getPhysicalPath())
+      path = '/'.join((root_node.aq_parent if clients else root_node).getPhysicalPath())
       data['count'] = {}
       r = catalog(path={'query':path})
       data['total'] = len(r)
@@ -58,10 +62,9 @@ def manage_zmsindex_reindex_paged( self):
       data['log'] = []
       data['next_node'] = None
       handler = ZMSIndexReindexHandler(zmsindex,catalog)
-      traverse(data,root_node,node,handler,page_size)
+      traverse(data,root_node,clients,node,handler,page_size)
     return json.dumps(data)
   
-  home_id = self.getHome().id
   prt = []
   prt.append('<!DOCTYPE html>')
   prt.append('<html lang="en">')
@@ -76,25 +79,29 @@ def manage_zmsindex_reindex_paged( self):
   prt.append('<div class="card-body">')
   prt.append('<div class="form-group row">')
   prt.append('<label class="col-sm-2 control-label">Page-Size</label>')
-  prt.append('<div class="col-sm-5">')
+  prt.append('<div class="col-sm-10">')
   prt.append('<input class="form-control" id="page_size"  name="page_size:int" type="number" value="100">')
   prt.append('</div>')
   prt.append('</div><!-- .form-group -->')
   prt.append('<div class="form-group row">')
   prt.append('<label class="col-sm-2 control-label">Root</label>')
-  prt.append('<div class="col-sm-5">')
+  prt.append('<div class="col-sm-10">')
   prt.append('<input class="form-control url-input" id="root_node" name="root_node" type="text" value="{$}">')
+  prt.append('</div>')
+  prt.append('<div class="col-sm-2">')
+  if self.getPortalClients():
+    prt.append('<input class="form-check-input" id="clients" name="clients:int" type="checkbox" value="1" checked="checked"> Clients')
   prt.append('</div>')
   prt.append('</div><!-- .form-group -->')
   prt.append('<div class="form-group row d-none">')
   prt.append('<label class="col-sm-2 control-label">Node</label>')
-  prt.append('<div class="col-sm-5">')
+  prt.append('<div class="col-sm-10">')
   prt.append('<input class="form-control url-input" id="uid" name="uid" type="text" readonly="readonly">')
   prt.append('</div>')
   prt.append('</div><!-- .form-group -->')
   prt.append('<div class="form-group row">')
   prt.append('<label class="col-sm-2 control-label"></label>')
-  prt.append('<div class="col-sm-5">')
+  prt.append('<div class="col-sm-10">')
   prt.append('<button id="start-button" class="btn btn-secondary mr-2">')
   prt.append('<i class="fas fa-play text-success"></i>')
   prt.append('</button>')
@@ -105,15 +112,15 @@ def manage_zmsindex_reindex_paged( self):
   prt.append('</div><!-- .form-group -->')
   prt.append('<div class="form-group row">')
   prt.append('<label class="col-sm-2 control-label"></label>')
-  prt.append('<div class="col-sm-5">')
+  prt.append('<div class="col-sm-10">')
   prt.append('<div id="count">')
   prt.append('</div>')
   prt.append('</div>')
   prt.append('</div><!-- .form-group -->')
-  prt.append('<div class="d-none progress mx-3">')
+  prt.append('<div class="d-none progress">')
   prt.append('<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>')
   prt.append('</div>')
-  prt.append('<div class="d-none alert alert-info" role="alert">')
+  prt.append('<div class="d-none alert alert-info mx-0" role="alert">')
   prt.append('</div>')
   prt.append('</div><!-- .card-body -->')
   prt.append('</form><!-- .form-horizontal -->')
@@ -139,7 +146,7 @@ var stopped = false;
 
 function start() {
     stopped = false;
-    $(".progress .progress-bar").removeClass("bg-danger bg-warning bg-success");
+    $(".progress .progress-bar").addClass("progress-bar-striped").removeClass("bg-danger bg-warning bg-success");
     $("#stop-button").prop("disabled","");
     $(".progress.d-none").removeClass("d-none");
     $(".alert.alert-info").removeClass("d-none");
@@ -171,7 +178,7 @@ function start() {
 function stop() {
     started = false;
     stopped = true;
-    $(".progress .progress-bar").removeClass("bg-success bg-warning bg-success");
+    $(".progress .progress-bar").removeClass("bg-success bg-warning");
     $("#start-button i").removeClass("fa-pause").addClass("fa-play");
     $("#stop-button").prop("disabled","disabled");
     $(".progress .progress-bar").addClass("bg-warning");
@@ -188,7 +195,8 @@ function progress() {
 
 function ajaxCount(cb) {
     const root_node = $('#root_node').val();
-    const params = {'json':true,'count':true,'root_node':root_node};
+    const clients = $('#clients').prop('checked')?true:false;
+    const params = {'json':true,'count':true,'root_node':root_node,'clients':clients};
     $.get('manage_zmsindex_reindex_paged',params,function(data) {
         $('#uid').val(root_node);
         var html = '';
@@ -197,13 +205,13 @@ function ajaxCount(cb) {
           html += '<tr class="' + k[0] + '">';
           html += '<td class="id">' + k[0] + '</td>';
           html += '<td class="total">' + k[1] + '</td>';
-          html += '<td class="count">' + 0 + '</td>';
+          html += '<td class="count w-100">' + 0 + '</td>';
           html += '</tr>';
         });
         html += '<tr class="Total">';
         html += '<td class="id"><strong>Total</strong></td>';
         html += '<td class="total">' + data['total'] + '</td>';
-        html += '<td class="count">' + 0 + '</td>';
+        html += '<td class="count w-100">' + 0 + '</td>';
         html += '</tr>';
         html += '</table>';
         $("#count").html(html);
@@ -216,9 +224,10 @@ function ajaxCount(cb) {
 
 function ajaxTraverse() {
     const root_node = $('#root_node').val();
+    const clients = $('#clients').prop('checked')?true:false;
     const uid = $('#uid').val();
     const page_size = $("input#page_size").val();
-    const params = {'json':true,'traverse':true,'root_node':root_node,'uid':uid,'page_size':page_size};
+    const params = {'json':true,'traverse':true,'root_node':root_node,'clients':clients,'uid':uid,'page_size':page_size};
     $.get('manage_zmsindex_reindex_paged',params,function(data) {
         $(".alert.alert-info").html($('<pre/>',{text:JSON.stringify(data,null,2)}))
         if (!stopped && !paused) {
@@ -243,7 +252,7 @@ function ajaxTraverse() {
           }
           else {
             stop();
-            $(".progress .progress-bar").removeClass("bg-warning").addClass("bg-success")
+            $(".progress .progress-bar").removeClass("bg-warning progress-bar-striped").addClass("bg-success")
           }
         }
     })

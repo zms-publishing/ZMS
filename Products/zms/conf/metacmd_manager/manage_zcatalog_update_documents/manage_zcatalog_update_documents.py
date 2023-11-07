@@ -84,9 +84,9 @@ def manage_zcatalog_update_documents( self):
     if i >= 0:
       body = doc[i+len('">@@'):]
       body = body[:body.find('</field>')]
-      id = standard.re_search('<field name="id"(.*?)>(.*?)<\/field>', doc)[1]
+      id = standard.re_search(r'<field name="id"(.*?)>(.*?)<\/field>', doc)[1]
       bins.append({'id':id,'body':body})
-      doc = standard.re_sub('<field name="(.*?)_t"(.*?)>@@(.*?)<\/field>','<field name="\\1_t"\\2></field>',doc)
+      doc = standard.re_sub(r'<field name="(.*?)_t"(.*?)>@@(.*?)<\/field>','<field name="\\1_t"\\2></field>',doc)
     buff.append(doc)
     docs.remove(docs[0])
   msg.append(update("commit", get_command_xml('commit')))

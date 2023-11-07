@@ -71,7 +71,6 @@ def bulk_opensearch_index(self, sources):
   actions = []
   # actions = [{"_op_type":"index", "_index":index, "_id":x['id'], "source":x} for x in sources]
   for x in sources:
-    x['id'] = x['meta_id']
     d = {"_op_type":"index", "_index":index, "_id":x['id']}
     d.update(x)
     actions.append(d)

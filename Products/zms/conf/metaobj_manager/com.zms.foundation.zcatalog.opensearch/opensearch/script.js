@@ -58,7 +58,7 @@ $(function() {
 					hit['snippet'] = highlight['standard_html'];
 				}
 			}
-			if ( typeof hit['snippet'] == 'undefined') {
+			if ( typeof hit['snippet'] == 'undefined' || hit['snippet']=='' ) {
 				if (typeof source['attr_dc_description'] == 'undefined') {
 					hit['snippet'] = '';
 				} else {

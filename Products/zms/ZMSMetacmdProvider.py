@@ -145,7 +145,10 @@ class ZMSMetacmdProvider(
           else:
             for k in [x for x in o if x not in ['bobobase_modification_time', 'data', 'home', 'meta_type']]:
               d[k] = o[k]
-            ob = getattr(self, id)
+            try:
+              ob = getattr(self, id)
+            except:
+              ob = None
             if ob:
               d['__icon__'] = ob.zmi_icon() if 'zmi_icon' in ob.__dict__ else 'fas fa-cog'
               d['__description__'] = ob.meta_type

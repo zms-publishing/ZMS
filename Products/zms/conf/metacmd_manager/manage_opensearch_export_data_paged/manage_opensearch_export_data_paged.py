@@ -3,19 +3,19 @@ from opensearchpy import OpenSearch
 from opensearchpy.helpers import bulk
 from abc import abstractmethod
 
-def get_catalog_source(catalog_adapter, node):
+def get_catalog_source(catalog_adapter, node, fileparsing=True):
   # Initialize sources.
   sources = [None]
   # Callback for node: add dict to sources
   def callback(node, d):
     sources.append(d)
   # Get sitemap for for single (recursive=False) document.
-  catalog_adapter.get_sitemap(callback, node, recursive=False)
+  catalog_adapter.get_sitemap(callback, node, recursive=False, fileparsing=fileparsing)
   # Return source (or None).
   return sources[-1]
 
 # Process nodes of this page.
-def traverse(data, root_node, clients, node, page_size=100):
+def traverse(data, root_node, clients, fileparsing, node, page_size=100):
   catalog_adapter = root_node.getCatalogAdapter()
   meta_ids = catalog_adapter.getIds()
   count = 0
@@ -24,7 +24,7 @@ def traverse(data, root_node, clients, node, page_size=100):
     path = '/'.join(node.getPhysicalPath())
     log = {'index':count,'path':path,'meta_id':node.meta_id}
     if node.meta_id in meta_ids:
-      source = get_catalog_source(catalog_adapter, node)
+      source = get_catalog_source(catalog_adapter, node, fileparsing)
       if source:
         log['source'] = source
     data['log'].append(log)
@@ -63,13 +63,20 @@ def get_opensearch_client(self):
     verify_certs = verify,
     ssl_assert_hostname = False,
     ssl_show_warn = False,
-  ) 
+  )
 
 def bulk_opensearch_index(self, sources):
   client = get_opensearch_client(self)
   index = self.getRootElement().getHome().id
-  actions = [{"_op_type":"index", "_index":index, "_id":x['id'], "source":x} for x in sources]
-  if client: 
+  actions = []
+  # actions = [{"_op_type":"index", "_index":index, "_id":x['id'], "source":x} for x in sources]
+  for x in sources:
+    d = {"_op_type":"index", "_index":index, "_id":x['uid']}
+    x['zmsid'] = x['id']
+    x['id'] = x['uid']
+    d.update(x)
+    actions.append(d)
+  if client:
     return bulk(client, actions)
   return 0, len(actions)
 
@@ -80,12 +87,12 @@ def manage_opensearch_export_data_paged( self):
   catalog_adapter = self.getCatalogAdapter()
   ids = catalog_adapter.getIds()
 
-  # REST Endpoints  
+  # REST Endpoints
   if request.get('json'):
     import json
     request.RESPONSE.setHeader("Content-Type","text/json")
     root_node = self.getLinkObj(request['root_node'])
-    clients = standard.pybool(request['clients'])
+    clients = standard.pybool(request.get('clients'))
     data = {'pid':self.Control_Panel.process_id(),'root_node':request['root_node'],'clients':request['clients']}
     # REST Endpoint: ajaxCount
     if request.get('count'):
@@ -98,17 +105,18 @@ def manage_opensearch_export_data_paged( self):
       data['total'] = len(r)
     # REST Endpoint: ajaxTraverse
     if request.get('traverse'):
+      fileparsing = standard.pybool(request.get('fileparsing'))
       node = self.getLinkObj(request['uid'])
       page_size = int(request['page_size'])
       data['log'] = []
       data['next_node'] = None
-      traverse(data,root_node,clients,node,page_size)
+      traverse(data,root_node,clients,fileparsing,node,page_size)
       sources = [x['source'] for x in data['log'] if x.get('source')]
       success, failed = bulk_opensearch_index(self, sources)
       data['success'] =  success
       data['failed'] = failed
     return json.dumps(data)
-  
+
   prt = []
   prt.append('<!DOCTYPE html>')
   prt.append('<html lang="en">')
@@ -140,8 +148,8 @@ def manage_opensearch_export_data_paged( self):
   prt.append('</div>')
   prt.append('</div><!-- .form-group -->')
 
-  prt.append('<div class="form-group row" title="Under Construction">')
-  prt.append('<label class="col-sm-2 control-label"><i class="fas fa-hammer fa-lg mr-2"></i> Options</label>')
+  prt.append('<div class="form-group row">')
+  prt.append('<label class="col-sm-2 control-label">Options</label>')
   prt.append('<div class="col-sm-10">')
   if self.getPortalClients():
     prt.append('<div class="form-check form-check-inline">')
@@ -198,7 +206,7 @@ var stopped = false;
 
 function start() {
     stopped = false;
-    $(".progress .progress-bar").removeClass("bg-danger bg-warning bg-success");
+    $(".progress .progress-bar").addClass("progress-bar-striped").removeClass("bg-danger bg-warning bg-success");
     $("#stop-button").prop("disabled","");
     $(".progress.d-none").removeClass("d-none");
     $(".alert.alert-info").removeClass("d-none");
@@ -230,7 +238,7 @@ function start() {
 function stop() {
     started = false;
     stopped = true;
-    $(".progress .progress-bar").removeClass("bg-success bg-warning bg-success");
+    $(".progress .progress-bar").removeClass("bg-success bg-warning");
     $("#start-button i").removeClass("fa-pause").addClass("fa-play");
     $("#stop-button").prop("disabled","disabled");
     $(".progress .progress-bar").addClass("bg-warning");
@@ -256,13 +264,13 @@ function ajaxCount(cb) {
           html += '<tr class="' + k[0] + '">';
           html += '<td class="id">' + k[0] + '</td>';
           html += '<td class="total">' + k[1] + '</td>';
-          html += '<td class="count">' + 0 + '</td>';
+          html += '<td class="count w-100">' + 0 + '</td>';
           html += '</tr>';
         });
         html += '<tr class="Total">';
         html += '<td class="id"><strong>Total</strong></td>';
         html += '<td class="total">' + data['total'] + '</td>';
-        html += '<td class="count" width="100%">' + 0 + '</td>';
+        html += '<td class="count w-100" width="100%">' + 0 + '</td>';
         html += '</tr>';
         html += '</table>';
         $("#count").html(html);
@@ -276,9 +284,10 @@ function ajaxCount(cb) {
 function ajaxTraverse() {
     const root_node = $('#root_node').val();
     const clients = $('#clients').prop('checked')?true:false;
+    const fileparsing = $('#fileparsing').prop('checked')?true:false;
     const uid = $('#uid').val();
     const page_size = $("input#page_size").val();
-    const params = {'json':true,'traverse':true,'root_node':root_node,'clients':clients,'uid':uid,'page_size':page_size};
+    const params = {'json':true,'traverse':true,'root_node':root_node,'clients':clients,'fileparsing':fileparsing,'uid':uid,'page_size':page_size};
     $.get('manage_opensearch_export_data_paged',params,function(data) {
         $(".alert.alert-info").html($('<pre/>',{text:JSON.stringify(data,null,2)}))
         if (!stopped && !paused) {
@@ -303,7 +312,7 @@ function ajaxTraverse() {
           }
           else {
             stop();
-            $(".progress .progress-bar").removeClass("bg-warning").addClass("bg-success")
+            $(".progress .progress-bar").removeClass("bg-warning progress-bar-striped").addClass("bg-success")
           }
         }
     })
@@ -330,5 +339,5 @@ $(function() {
   ''')
   prt.append('</body>')
   prt.append('</html>')
-  
+
   return '\n'.join(prt)

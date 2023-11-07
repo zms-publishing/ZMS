@@ -227,7 +227,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     #  @param self
     #  @param  cb  callback
     # --------------------------------------------------------------------------
-    def get_sitemap(self, cb, root, recursive):
+    def get_sitemap(self, cb, root, recursive, fileparsing=True):
       result = []
       request = self.REQUEST
 
@@ -236,6 +236,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
         request.set('ZMS_CONTEXT_URL', True)
         d = {}
         d['id'] = node.id
+        d['uid'] = node.get_uid()
         d['home_id'] = node.getHome().id
         d['loc'] = '/'.join(node.getPhysicalPath())
         d['index_html'] = node.getHref2IndexHtmlInContext(node.getRootElement(), REQUEST=request)
@@ -290,13 +291,13 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
           elif type(value) in (dict, list):
             value = standard.str_item(value,f=True)  
           d[attr_id] = standard.remove_tags(value)
-        if node.meta_id == 'ZMSFile':
+        if fileparsing and node.meta_id == 'ZMSFile':
           try:
             file = node.attr('file')
             text = content_extraction.extract_content(node, file.getData(), file.getContentType())
             d['standard_html'] = text
           except:
-            standard.writeError( self, "can't catalog_analysis")
+            standard.writeError( self, "can't extract_content")
         cb(node, d)
 
       # Traverse tree.

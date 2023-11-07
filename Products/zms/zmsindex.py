@@ -138,7 +138,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
     # Get Log
     ##############################################################################
     def get_log(self, log, request):
-      loglevel = request.get('loglevel','<NONE>')
+      loglevel = request.get('loglevel','<NONE>') if request else '<NONE>'
       return '\n'.join([x for x in log if x.startswith('%s '%loglevel)])
 
     ##############################################################################
@@ -259,7 +259,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
       catalog = self.get_catalog()
       regenerate_all = len(catalog) == 0
       regenerate_duplicates = regenerate_all or standard.pybool(regenerate_duplicates)
-      urls = [x for x in REQUEST.get('url').split(',') if x]
+      urls = [x for x in REQUEST.get('url').split(',') if x] if REQUEST else []
       for url in urls:
         log.append('INFO %s'%standard.writeBlock(self,'[ZMSIndex] ### reindex for %s'%url))
         t0 = time.time()

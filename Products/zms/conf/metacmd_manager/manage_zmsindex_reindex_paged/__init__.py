@@ -34,7 +34,7 @@ class manage_zmsindex_reindex_paged:
 	package = "com.zms.index"
 
 	# Revision
-	revision = "0.0.3"
+	revision = "0.1.0"
 
 	# Roles
 	roles = ["ZMSAdministrator"]

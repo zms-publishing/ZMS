@@ -19,6 +19,7 @@ zmsindex = zmscontext.getZMSIndex()
 
 catalog =zmsindex.get_catalog()
 q = catalog({ cat_attr_name : str(id) })
+obj_path = []
 for r in q:
 	uid = r['get_uid']
 	pth = r['getPath']
@@ -29,6 +30,5 @@ for r in q:
 
 # Return HTML for Ajax-Requests
 return '\n'.join(['<li><a href="%s">%s</a></li>'%(obj.getHref2IndexHtml(request), obj.attr('titlealt')) for obj in obj_path])
-
 
 # --// /get_breadcrumbs_by_uuid //--

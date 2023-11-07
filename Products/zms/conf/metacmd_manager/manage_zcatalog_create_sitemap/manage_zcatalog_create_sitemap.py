@@ -1,12 +1,13 @@
 # --// manage_zcatalog_create_sitemap //--
 
 from Products.zms import standard
-from Products.zms import catalog_analysis
+from Products.zms import content_extraction
 
 def manage_zcatalog_create_sitemap( self):
   msg = []
   request = self.REQUEST
   RESPONSE =  request.RESPONSE
+  fileparsing = standard.pybool(request.get('fileparsing'))
   zmscontext = self.getLinkObj(request.get('uid','{$}'))
   home = zmscontext.getDocumentElement()
   home_id = home.getPhysicalPath()
@@ -28,10 +29,10 @@ def manage_zcatalog_create_sitemap( self):
   def cb(node, d):
     if node.meta_id in ['ZMSFile']:
       try:
-        text = catalog_analysis.catalog_analysis(node, node.attr('file').getData())
+        text = content_extraction.extract_content(node, node.attr('file').getData())
         d['standard_html'] = text
       except:
-        standard.writeError(node,"can't catalog_analysis")
+        standard.writeError(node,"can't extract_content")
         d['standard_html'] = '@@%s:%s'%('/'.join(node.getPhysicalPath()),'file')
     doc =  []
     doc.append('<doc>')
@@ -55,7 +56,7 @@ def manage_zcatalog_create_sitemap( self):
     doc.append('<field name="text_t"><![CDATA[%s]]></field>'%(standard.remove_tags(' '.join([x for x in text if x]))))
     doc.append('</doc>')
     xml.extend(doc)
-  zca.get_sitemap(cb, zmscontext, recursive=True)
+  zca.get_sitemap(cb, zmscontext, recursive=True, fileparsing=fileparsing)
   xml.append('</add>')
   xml = '\n'.join([standard.pystr(x) for x in xml])
   xml = xml.replace(zmscontext.getHref2IndexHtml(request),zmscontext.absolute_url()[len(request['SERVER_URL']):]+'/')

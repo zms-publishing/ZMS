@@ -68,6 +68,10 @@
 					><input type="hidden" class="content_type" name="el_method" tal:attributes="value ob/meta_type"
 					/><textarea tal:replace="structure python:here.zmi_ace_editor(here,request,name='el_data',id='cmd_%s'%(ob.getId()),ob=ob,text=metaCmd['data'])">ACE Editor</textarea
 				></tal:block
+				><tal:block tal:condition="python:ob is None"
+					><input type="hidden" class="content_type" name="el_method"
+					/><textarea tal:replace="structure python:here.zmi_ace_editor(here,request,name='el_data',id='cmd',ob=ob,text='# An error occurred.')">ACE Editor</textarea
+				></tal:block
 			></tal:block>
 			<!-- /ACE Editor -->
 
@@ -208,6 +212,9 @@
 						transition: height 0.5s ease-in-out;
 						height:20rem;
 					}
+					#meta_commands tbody tr:not(.table-danger):hover {
+						background-color: rgba(0,0,0,.1);
+					}
 				/*-->*/
 				</style>
 			</div><!-- .form-group -->
@@ -227,15 +234,15 @@
 		tal:content="python:here.getZMILangStr('TAB_METACMD')">
 		Metacmd
 	</legend>
-	<table id="meta_commands" class="table table-sm table-striped table-bordered table-hover mb-0">
+	<table id="meta_commands" class="table table-sm table-striped table-bordered mb-0">
 	<thead>
 		<tr tal:condition="python:here.meta_type=='ZMSMetacmdProvider'">
-			<th class="meta-ids">
+			<th class="meta-ids text-center">
 				<div class="btn-group">
 					<button class="btn btn-secondary" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this);return false"><i class="fas fa-check-square"></i></button>
 				</div>
 			</th>
-			<th colspan="4">
+			<th colspan="4" class="w-100">
 				<div class="btn-toolbar" role="toolbar">
 					<div class="btn-group managing">
 						<button class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="zmiModal('#insertObj',{title:$(this).attr('title')});return false"><i class="fas fa-plus"></i></button>
@@ -250,7 +257,7 @@
 			</th>
 		</tr>
 		<tr>
-			<th class="meta-ids"></th>
+			<th class="meta-ids text-center"></th>
 			<th colspan="2" tal:content="python:here.getZMILangStr('ATTR_NAME')">Name</th>
 			<th tal:content="python:here.getZMILangStr('ATTR_SIZE')">Size</th>
 			<th tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')">Last Modified</th>
@@ -269,59 +276,66 @@
 			</td>
 		</tr>
 		<tal:block tal:repeat="metaCmd python:[x for x in metaCmds if x.get('package','')==package]">
-			<tr class="zmi-selectable" 
-				tal:attributes="data-package package"
-				tal:define="ob python:getattr(here,metaCmd['id'],None);
+			<tal:block tal:define="
+					ob python:getattr(here,metaCmd['id'],None);
 					revision python:metaCmd.get('revision','0.0.0');">
-				<td class="meta-ids">
-					<input type="checkbox" name="ids:list" tal:attributes="value metaCmd/id" />
-				</td>
-				<td class="meta-space"></td>
-				<td>
-					<tal:block tal:condition="python:ob is not None">
-						<tal:block tal:condition="python:metaCmd.get('acquired',False)">
-							<a target="_blank" data-turbolinks="false"
-								tal:attributes="
-									href python:'%s/metacmd_manager/manage_main?lang=%s&id=%s'%(context.getRootElement().absolute_url(),request['lang'],metaCmd['id']);
-									title python:'acquired from: %s (%s)'%(context.getRootElement().getHome().id, context.getRootElement().attr('titlealt'))"
-								><i class="fas fa-share"></i></a>
-							<i tal:condition="python:metaCmd.get('icon_clazz',False)" tal:attributes="class python:metaCmd.get('icon_clazz')"></i>&nbsp;&nbsp;
-							<strong tal:content="python:metaCmd['id']">the id</strong> ( <tal:block tal:content="python:here.getZMILangStr(metaCmd['name'])">Name</tal:block> )
+				<tr class="zmi-selectable" 
+					tal:attributes="
+						data-package package; 
+						class python:(ob is None) and 'text-danger table-danger' or '';
+						title python:(ob is None) and '%s not found'%metaCmd['id'] or ''">
+					<td class="meta-ids text-center">
+						<input type="checkbox" name="ids:list" tal:attributes="value metaCmd/id" />
+					</td>
+					<td class="meta-space"></td>
+					<td>
+						<tal:block tal:condition="python:ob is not None">
+							<tal:block tal:condition="python:metaCmd.get('acquired',False)">
+								<a target="_blank" data-turbolinks="false"
+									tal:attributes="
+										href python:'%s/metacmd_manager/manage_main?lang=%s&id=%s'%(context.getRootElement().absolute_url(),request['lang'],metaCmd['id']);
+										title python:'acquired from: %s (%s)'%(context.getRootElement().getHome().id, context.getRootElement().attr('titlealt'))"
+									><i class="fas fa-share"></i></a>
+								<i tal:condition="python:metaCmd.get('icon_clazz',False)" tal:attributes="class python:metaCmd.get('icon_clazz')"></i>&nbsp;&nbsp;
+								<strong tal:content="python:metaCmd['id']">the id</strong> ( <tal:block tal:content="python:here.getZMILangStr(metaCmd['name'])">Name</tal:block> )
+							</tal:block>
+							<tal:block tal:condition="not:python:metaCmd.get('acquired',False)">
+								<a data-turbolinks="false"
+									tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaCmd['id']); title python:'%s (%s)'%(ob.id,ob.meta_type)">
+									<i tal:condition="python:metaCmd.get('icon_clazz',False)" tal:attributes="class python:metaCmd.get('icon_clazz')"></i>
+									<strong tal:content="python:metaCmd['id']">the id</strong>
+									(<tal:block tal:content="python:here.getZMILangStr(metaCmd['name'])">the name</tal:block>)
+								</a>
+							</tal:block>
+							<tal:block tal:content="revision">the version</tal:block> 
+							(<tal:block tal:content="python:metaCmd['meta_type']">the type</tal:block>)
 						</tal:block>
-						<tal:block tal:condition="not:python:metaCmd.get('acquired',False)">
-							<a data-turbolinks="false"
-								tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaCmd['id']); title python:'%s (%s)'%(ob.id,ob.meta_type)">
-								<i tal:condition="python:metaCmd.get('icon_clazz',False)" tal:attributes="class python:metaCmd.get('icon_clazz')"></i>
-								<strong tal:content="python:metaCmd['id']">the id</strong>
-								(<tal:block tal:content="python:here.getZMILangStr(metaCmd['name'])">the name</tal:block>)
-							</a>
+						<tal:block tal:condition="python:ob is None"
+							><tal:block tal:condition="python:metaCmd.get('acquired',False)"
+								><a tal:attributes="href python:'/'.join([here.getPortalMaster().absolute_url()]+request['URL'].split('/')[-2:])" target="_blank"
+									><i class="fas fa-share" title="acquired"></i></a
+							></tal:block
+							><a data-turbolinks="false" class="text-danger"
+								tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaCmd['id'])"
+								><i class="fas fa-exclamation-triangle"></i>
+								<strong tal:content="python:metaCmd['name']">the name</strong
+							></a>
 						</tal:block>
-						<tal:block tal:content="revision">the version</tal:block> 
-						(<tal:block tal:content="python:metaCmd['meta_type']">the type</tal:block>)
-					</tal:block>
-					<div class="text-danger alert-danger" tal:condition="python:ob is None">
-						<i class="fas fa-exclamation-triangle" tal:attributes="title python:'%s not found'%metaCmd['id']"></i>
-						<tal:block tal:condition="python:metaCmd.get('acquired',False)"
-							><a tal:attributes="href python:'/'.join([here.getPortalMaster().absolute_url()]+request['URL'].split('/')[-2:])" target="_blank"
-								><i class="fas fa-share" title="acquired"></i></a>
-						</tal:block
-						><i tal:condition="python:metaCmd.get('icon_clazz',False)" tal:attributes="class python:metaCmd.get('icon_clazz')"></i>
-						<tal:block tal:content="python:metaCmd['name']">the name</tal:block>
-					</div>
-				</td>
-				<td>
-					<tal:block tal:condition="python:metaCmd.get('data') is not None"
-						><tal:block tal:content="python:here.getDataSizeStr(len(metaCmd['data']))">the size</tal:block
-					></tal:block
-					><tal:block tal:condition="python:metaCmd.get('data') is None">N/A</tal:block>
-				</td>
-				<td>
-					<tal:block tal:condition="python:metaCmd.get('bobobase_modification_time') is not None"
-						><tal:block tal:content="python:here.getLangFmtDate(metaCmd['bobobase_modification_time'])">the modification-time</tal:block
-					></tal:block
-					><tal:block tal:condition="python:metaCmd.get('bobobase_modification_time') is None">N/A </tal:block>
-				</td>
-			</tr>
+					</td>
+					<td>
+						<tal:block tal:condition="python:metaCmd.get('data') is not None"
+							><tal:block tal:content="python:here.getDataSizeStr(len(metaCmd['data']))">the size</tal:block
+						></tal:block
+						><tal:block tal:condition="python:metaCmd.get('data') is None">N/A</tal:block>
+					</td>
+					<td>
+						<tal:block tal:condition="python:metaCmd.get('bobobase_modification_time') is not None"
+							><tal:block tal:content="python:here.getLangFmtDate(metaCmd['bobobase_modification_time'])">the modification-time</tal:block
+						></tal:block
+						><tal:block tal:condition="python:metaCmd.get('bobobase_modification_time') is None">N/A </tal:block>
+					</td>
+				</tr>
+			</tal:block>
 		</tal:block>
 	</tal:block>
 	</tbody>

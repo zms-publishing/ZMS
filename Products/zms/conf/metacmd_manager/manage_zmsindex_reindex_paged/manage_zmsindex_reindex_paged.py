@@ -79,13 +79,13 @@ def manage_zmsindex_reindex_paged( self):
   prt.append('<div class="card-body">')
   prt.append('<div class="form-group row">')
   prt.append('<label class="col-sm-2 control-label">Page-Size</label>')
-  prt.append('<div class="col-sm-5">')
+  prt.append('<div class="col-sm-10">')
   prt.append('<input class="form-control" id="page_size"  name="page_size:int" type="number" value="100">')
   prt.append('</div>')
   prt.append('</div><!-- .form-group -->')
   prt.append('<div class="form-group row">')
   prt.append('<label class="col-sm-2 control-label">Root</label>')
-  prt.append('<div class="col-sm-3">')
+  prt.append('<div class="col-sm-10">')
   prt.append('<input class="form-control url-input" id="root_node" name="root_node" type="text" value="{$}">')
   prt.append('</div>')
   prt.append('<div class="col-sm-2">')
@@ -95,13 +95,13 @@ def manage_zmsindex_reindex_paged( self):
   prt.append('</div><!-- .form-group -->')
   prt.append('<div class="form-group row d-none">')
   prt.append('<label class="col-sm-2 control-label">Node</label>')
-  prt.append('<div class="col-sm-5">')
+  prt.append('<div class="col-sm-10">')
   prt.append('<input class="form-control url-input" id="uid" name="uid" type="text" readonly="readonly">')
   prt.append('</div>')
   prt.append('</div><!-- .form-group -->')
   prt.append('<div class="form-group row">')
   prt.append('<label class="col-sm-2 control-label"></label>')
-  prt.append('<div class="col-sm-5">')
+  prt.append('<div class="col-sm-10">')
   prt.append('<button id="start-button" class="btn btn-secondary mr-2">')
   prt.append('<i class="fas fa-play text-success"></i>')
   prt.append('</button>')
@@ -112,15 +112,15 @@ def manage_zmsindex_reindex_paged( self):
   prt.append('</div><!-- .form-group -->')
   prt.append('<div class="form-group row">')
   prt.append('<label class="col-sm-2 control-label"></label>')
-  prt.append('<div class="col-sm-5">')
+  prt.append('<div class="col-sm-10">')
   prt.append('<div id="count">')
   prt.append('</div>')
   prt.append('</div>')
   prt.append('</div><!-- .form-group -->')
-  prt.append('<div class="d-none progress mx-3">')
+  prt.append('<div class="d-none progress">')
   prt.append('<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>')
   prt.append('</div>')
-  prt.append('<div class="d-none alert alert-info" role="alert">')
+  prt.append('<div class="d-none alert alert-info mx-0" role="alert">')
   prt.append('</div>')
   prt.append('</div><!-- .card-body -->')
   prt.append('</form><!-- .form-horizontal -->')
@@ -146,7 +146,7 @@ var stopped = false;
 
 function start() {
     stopped = false;
-    $(".progress .progress-bar").removeClass("bg-danger bg-warning bg-success");
+    $(".progress .progress-bar").addClass("progress-bar-striped").removeClass("bg-danger bg-warning bg-success");
     $("#stop-button").prop("disabled","");
     $(".progress.d-none").removeClass("d-none");
     $(".alert.alert-info").removeClass("d-none");
@@ -178,7 +178,7 @@ function start() {
 function stop() {
     started = false;
     stopped = true;
-    $(".progress .progress-bar").removeClass("bg-success bg-warning bg-success");
+    $(".progress .progress-bar").removeClass("bg-success bg-warning");
     $("#start-button i").removeClass("fa-pause").addClass("fa-play");
     $("#stop-button").prop("disabled","disabled");
     $(".progress .progress-bar").addClass("bg-warning");
@@ -205,13 +205,13 @@ function ajaxCount(cb) {
           html += '<tr class="' + k[0] + '">';
           html += '<td class="id">' + k[0] + '</td>';
           html += '<td class="total">' + k[1] + '</td>';
-          html += '<td class="count">' + 0 + '</td>';
+          html += '<td class="count w-100">' + 0 + '</td>';
           html += '</tr>';
         });
         html += '<tr class="Total">';
         html += '<td class="id"><strong>Total</strong></td>';
         html += '<td class="total">' + data['total'] + '</td>';
-        html += '<td class="count">' + 0 + '</td>';
+        html += '<td class="count w-100">' + 0 + '</td>';
         html += '</tr>';
         html += '</table>';
         $("#count").html(html);
@@ -252,7 +252,7 @@ function ajaxTraverse() {
           }
           else {
             stop();
-            $(".progress .progress-bar").removeClass("bg-warning").addClass("bg-success")
+            $(".progress .progress-bar").removeClass("bg-warning progress-bar-striped").addClass("bg-success")
           }
         }
     })

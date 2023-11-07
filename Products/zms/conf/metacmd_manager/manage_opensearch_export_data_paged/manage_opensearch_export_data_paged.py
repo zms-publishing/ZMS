@@ -305,7 +305,7 @@ function ajaxTraverse() {
           }
           else {
             stop();
-            $(".progress .progress-bar").removeClass("bg-warning").addClass("bg-success")
+            $(".progress .progress-bar").removeClass("bg-warning progress-bar-striped").addClass("bg-success")
           }
         }
     })

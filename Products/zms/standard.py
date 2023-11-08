@@ -176,7 +176,7 @@ def addZMSCustom(self, meta_id=None, values={}, REQUEST=None):
 
   @param meta_id: the meta-id / type of the new ZMSObject
   @type meta_id: C{str}
-  @param values: the dictionary of initial attribut-values assigned to the new ZMSObject 
+  @param values: the dictionary of initial attribut-values assigned to the new ZMSObject
   @type values: C{dict}
   @param REQUEST: the triggering request
   @type REQUEST: C{ZPublisher.HTTPRequest}
@@ -208,7 +208,7 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   homeElmnt = Folder(id)
   self._setObject(homeElmnt.id, homeElmnt)
   homeElmnt = [x for x in self.objectValues() if x.id == homeElmnt.id][0]
-  
+
   ##### Add ZMS ####
   from Products.zms import zms
   content = zms.initZMS(homeElmnt, 'content', titlealt, title, lang, manage_lang, REQUEST)
@@ -329,7 +329,7 @@ def set_response_headers_cache(context, request=None, cache_max_age=24*3600, cac
       request.RESPONSE.setHeader('Pragma', 'no-cache')
     else:
       cache_s_maxage = cache_s_maxage==-1 and cache_max_age or cache_s_maxage
-      request.RESPONSE.setHeader('Cache-Control', 
+      request.RESPONSE.setHeader('Cache-Control',
         's-maxage={}, max-age={}, public, must-revalidate, proxy-revalidate'.format(cache_s_maxage, cache_max_age))
 
       now = time.time()
@@ -356,7 +356,7 @@ def once(key, request):
   @param key: the key
   @param request: the request
   @returns: Boolean execute once
-  @retype: C{boolean} 
+  @retype: C{boolean}
   """
   req_key = 'f_%s'%key
   req_val = request.get(req_key,True)
@@ -368,7 +368,7 @@ security.declarePublic('get_installed_packages')
 def get_installed_packages(pip_cmd='freeze'):
   import subprocess
   pip_cmds = {
-      'list':'/pip list', 
+      'list':'/pip list',
       'freeze':'/pip freeze --all'
     }
   cmd = pip_cmds.get(pip_cmd,'freeze')
@@ -486,12 +486,11 @@ def string_maxlen(s, maxlen=20, etc='...', encoding=None):
   else:
     s = str(s)
   # remove all tags.
-  # @see https://stackoverflow.com/questions/8554035/remove-all-javascript-tags-and-style-tags-from-html-with-python-and-the-lxml-mod
-  s = re.sub(r'<[\S\s]*!--.*?--[\S\s]*>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
-  s = re.sub(r'<[\S\s]*?script[\S\s]*?\/[\S\s]*?script[\S\s]*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
-  s = re.sub(r'<[\S\s]*style.*?\/[\S\s]*style[\S\s]*>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
-  s = re.sub(r'<[\S\s]*meta.*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
-  s = re.sub(r'<[\S\s]*?>', '', s)
+  # @fix https://stackoverflow.com/questions/8554035/remove-all-javascript-tags-and-style-tags-from-html-with-python-and-the-lxml-mod
+  s = re.sub(r'<!--(.*?)-->', '', s)
+  s = re.sub(r'<script((.|\n|\r|\t)*?)>((.|\n|\r|\t)*?)</script>', '', s)
+  s = re.sub(r'<style((.|\n|\r|\t)*?)>((.|\n|\r|\t)*?)</style>', '', s)
+  s = re.sub(r'<((.|\n|\r|\t)*?)>', '', s)
   if len(s) > maxlen:
     if s[:maxlen].rfind('&') >= 0 and not s[:maxlen].rfind('&') < s[:maxlen].rfind(';') and \
        s[maxlen:].find(';') >= 0 and not s[maxlen:].find(';') > s[maxlen:].find('&'):
@@ -531,7 +530,7 @@ def guess_content_type(filename, data):
   @rtype: C{tuple}
   """
   import zope.contenttype
-  # MIME-type guessing based on Zope-like filename syntax 
+  # MIME-type guessing based on Zope-like filename syntax
   # using underscore as a delimiter for the filename extension
   f_exts = {
     '_css':'text/css',
@@ -586,12 +585,10 @@ def remove_tags(s):
   s = pystr(s)
   for x in d:
     s = s.replace(x,d[x])
-  # @see https://stackoverflow.com/questions/8554035/remove-all-javascript-tags-and-style-tags-from-html-with-python-and-the-lxml-mod
-  s = re.sub(r'<[\S\s]*!--.*?--[\S\s]*>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
-  s = re.sub(r'<[\S\s]*?script[\S\s]*?\/[\S\s]*?script[\S\s]*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
-  s = re.sub(r'<[\S\s]*style.*?\/[\S\s]*style[\S\s]*>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
-  s = re.sub(r'<[\S\s]*meta.*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
-  s = re.sub(r'<[\S\s]*?>', '', s)
+  # @fix https://stackoverflow.com/questions/8554035/remove-all-javascript-tags-and-style-tags-from-html-with-python-and-the-lxml-mod
+  s = re_sub('<script(.*?)>(.|\\n|\\r|\\t)*?</script>', ' ', s)
+  s = re_sub('<style(.*?)>(.|\\n|\\r|\\t)*?</style>', ' ', s)
+  s = re_sub('<[^>]*>', ' ', s)
   while s.find('\t') >= 0:
     s = s.replace('\t', ' ')
   while s.find('\n') >= 0:
@@ -870,7 +867,7 @@ def triggerEvent(context, *args, **kwargs):
     for node in root.objectValues():
       m = getattr(node,name[2:],None)
       if m is not None:
-        m(context) 
+        m(context)
 
   # Always call local trigger for global triggers.
   if name.startswith('*.'):
@@ -1250,37 +1247,37 @@ def re_findall( pattern, text, ignorecase=False):
 # 8  daylight savings flag 0, 1 or -1; see below
 # ==========================================================================
 # C-Style Format Strings
-# %a   An abbreviation for the day of the week. 
-# %A   The full name for the day of the week. 
-# %b   An abbreviation for the month name. 
-# %B   The full name of the month. 
-# %c   A string representing the complete date and time; on my 
-#      computer it's in the form: 10/22/99 19:03:23 
-# %d   The day of the month, formatted with two digits. 
-# %H   The hour (on a 24-hour clock), formatted with two digits. 
-# %I   The hour (on a 12-hour clock), formatted with two digits. 
-# %j   The count of days in the year, formatted with three digits 
-#      (from 001 to 366). 
-# %m   The month number, formatted with two digits. 
-# %M   The minute, formatted with two digits. 
-# %p   Either AM or PM as appropriate. 
-# %S   The second, formatted with two digits. 
-# %U   The week number, formatted with two digits (from 00 to 53; 
+# %a   An abbreviation for the day of the week.
+# %A   The full name for the day of the week.
+# %b   An abbreviation for the month name.
+# %B   The full name of the month.
+# %c   A string representing the complete date and time; on my
+#      computer it's in the form: 10/22/99 19:03:23
+# %d   The day of the month, formatted with two digits.
+# %H   The hour (on a 24-hour clock), formatted with two digits.
+# %I   The hour (on a 12-hour clock), formatted with two digits.
+# %j   The count of days in the year, formatted with three digits
+#      (from 001 to 366).
+# %m   The month number, formatted with two digits.
+# %M   The minute, formatted with two digits.
+# %p   Either AM or PM as appropriate.
+# %S   The second, formatted with two digits.
+# %U   The week number, formatted with two digits (from 00 to 53;
 #      week number 1 is taken as beginning with the first Sunday
-#      in a year). See also %W. 
-# %w   A single digit representing the day of the week: 
+#      in a year). See also %W.
+# %w   A single digit representing the day of the week:
 #      Sunday is day 0.
-# %W   Another version of the week number: like %U, but 
-#      counting week 1 as beginning with the first Monday in a year. 
-# %x   A string representing the complete date; on my computer 
+# %W   Another version of the week number: like %U, but
+#      counting week 1 as beginning with the first Monday in a year.
+# %x   A string representing the complete date; on my computer
 #      it's in the format 10/22/99.
-# %X   A string representing the full time of day (hours, minutes, 
+# %X   A string representing the full time of day (hours, minutes,
 #      and seconds), in a format like the following example: 13:13:13
-# %y   The last two digits of the year. 
-# %Y   The full year, formatted with four digits to include 
-#      the century. 
-# %Z   Defined by ANSI C as eliciting the time zone, if available; 
-#      it is not available in this implementation (which accepts %Z 
+# %y   The last two digits of the year.
+# %Y   The full year, formatted with four digits to include
+#      the century.
+# %Z   Defined by ANSI C as eliciting the time zone, if available;
+#      it is not available in this implementation (which accepts %Z
 #      but generates no output for it).
 # ==========================================================================
 
@@ -2169,7 +2166,7 @@ def toXmlString(context, v, xhtml=False, encoding='utf-8'):
   @type context: C{zmsobject.ZMSObject}
   @param v: content node
   @type v: C{zmsobject.ZMSObject}
-  @param xhtml: 
+  @param xhtml:
   @type xhtml
   @param encoding
   @type encoding
@@ -2517,7 +2514,7 @@ def getTempFile( context, id):
        b += data.data
        data=data.next
   return b
-  
+
 
 security.declarePublic('raiseError')
 def raiseError(error_type, error_value):

@@ -69,9 +69,12 @@ def bulk_opensearch_index(self, sources):
   client = get_opensearch_client(self)
   index = self.getRootElement().getHome().id
   actions = []
-  # actions = [{"_op_type":"index", "_index":index, "_id":x['id'], "source":x} for x in sources]
+  # Name adaption to opensearch schema
   for x in sources:
-    d = {"_op_type":"index", "_index":index, "_id":x['uid']}
+    # Create language specific opensearch id
+    _id = "%s:%s"%(x['uid'],x.get('lang',self.getPrimaryLanguage()))
+    d = {"_op_type":"index", "_index":index, "_id":_id}
+    # Differenciate zms-object id and uid
     x['zmsid'] = x['id']
     x['id'] = x['uid']
     d.update(x)

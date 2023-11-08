@@ -49,7 +49,7 @@ $(function() {
 		res['hits']['hits'].forEach(x => {
 			var source = x['_source'];
 			var highlight = x['highlight'];
-			var hit = { 'path':x['_id'], 'href':source['loc'], 'title':source['title'], 'snippet':source['standard_html'] }; 
+			var hit = { 'path':source['uid'], 'href':source['loc'], 'title':source['title'], 'snippet':source['standard_html'] }; 
 			if (typeof highlight !== 'undefined') {
 				if (typeof highlight['title'] !== 'undefined') {
 					hit['title'] = highlight['title'];

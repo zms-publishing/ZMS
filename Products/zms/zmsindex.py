@@ -72,7 +72,8 @@ class ZMSIndex(ZMSItem.ZMSItem):
     #  Initialize 
     ############################################################################
     def initialize(self):
-      catalog = self.get_catalog()
+      self.get_catalog()
+      self.manage_reindex(regenerate_duplicates=True)
 
     ##############################################################################
     # Event: Object Imported
@@ -259,7 +260,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
       catalog = self.get_catalog()
       regenerate_all = len(catalog) == 0
       regenerate_duplicates = regenerate_all or standard.pybool(regenerate_duplicates)
-      urls = [x for x in REQUEST.get('url').split(',') if x] if REQUEST else []
+      urls = [x for x in REQUEST.get('url').split(',') if x] if REQUEST else ['{$}']
       for url in urls:
         log.append('INFO %s'%standard.writeBlock(self,'[ZMSIndex] ### reindex for %s'%url))
         t0 = time.time()

@@ -482,10 +482,10 @@ def string_maxlen(s, maxlen=20, etc='...', encoding=None):
     s = str(s)
   # remove all tags.
   # @see https://stackoverflow.com/questions/8554035/remove-all-javascript-tags-and-style-tags-from-html-with-python-and-the-lxml-mod
-  s = re.sub(r'<[\S\s]*!--.*?--[\S\s]*>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
-  s = re.sub(r'<[\S\s]*?script[\S\s]*?\/[\s]*?script[\S\s]*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
-  s = re.sub(r'<[\S\s]*?style[\S\s]*?\/[\s]*?style[\S\s]*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
-  s = re.sub(r'<[\S\s]*meta.*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
+  s = re.sub(r'<[\s]*!--[\S\s]*?--[\s]*>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
+  s = re.sub(r'<[\s]*?script[\S\s]*?\/[\s]*?script[\S\s]*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
+  s = re.sub(r'<[\s]*?style[\S\s]*?\/[\s]*?style[\S\s]*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
+  s = re.sub(r'<[\s]*meta.*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
   s = re.sub(r'<[\S\s]*?>', '', s)
   if len(s) > maxlen:
     if s[:maxlen].rfind('&') >= 0 and not s[:maxlen].rfind('&') < s[:maxlen].rfind(';') and \
@@ -582,10 +582,10 @@ def remove_tags(s):
   for x in d:
     s = s.replace(x,d[x])
   # @see https://stackoverflow.com/questions/8554035/remove-all-javascript-tags-and-style-tags-from-html-with-python-and-the-lxml-mod
-  s = re.sub(r'<[\S\s]*!--.*?--[\S\s]*>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
-  s = re.sub(r'<[\S\s]*?script[\S\s]*?\/[\s]*?script[\S\s]*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
-  s = re.sub(r'<[\S\s]*?style[\S\s]*?\/[\s]*?style[\S\s]*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
-  s = re.sub(r'<[\S\s]*meta.*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
+  s = re.sub(r'<[\s]*!--[\S\s]*?--[\s]*>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
+  s = re.sub(r'<[\s]*?script[\S\s]*?\/[\s]*?script[\S\s]*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
+  s = re.sub(r'<[\s]*?style[\S\s]*?\/[\s]*?style[\S\s]*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
+  s = re.sub(r'<[\s]*meta.*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
   s = re.sub(r'<[\S\s]*?>', '', s)
   while s.find('\t') >= 0:
     s = s.replace('\t', ' ')

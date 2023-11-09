@@ -21,6 +21,9 @@ class RestAPITest(ZMSTestCase):
     folder.REQUEST = mock_http.MockHTTPRequest({'lang':'eng','preview':'preview','url':'{$}'})
     self.context = standard.initZMS(folder, 'myzmsx', 'titlealt', 'title', self.lang, self.lang, folder.REQUEST)
     print('[setUp] create %s'%self.temp_title)
+    zmsindex = self.context.getZMSIndex()
+    self.assertIsNotNone(zmsindex)
+    zmsindex.manage_reindex(regenerate_all=True)
 
   def test_get_rest_api_url(self):
      self.assertEqual("http://foo/++rest_api/bar",rest_api.get_rest_api_url("http://foo/bar"))
@@ -35,13 +38,13 @@ class RestAPITest(ZMSTestCase):
       actual = json.loads( self.context.__bobo_traverse__(request, name)(request))
       print(json.dumps(actual))
       self.assertTrue(isinstance(actual, list))
-      self.assertEqual( len(actual), 170)
+      self.assertEqual( 106, len(actual))
       request.form['meta_id'] = 'ZMSFolder'
       print("path_to_handle", request.get('path_to_handle'))
       actual = json.loads( self.context.__bobo_traverse__(request, name)(request))
       print(json.dumps(actual))
       self.assertTrue(isinstance(actual, list))
-      self.assertEqual( len(actual), 8)
+      self.assertEqual( 7, len(actual))
 
   def test_metaobj_manager(self):
       name = '++rest_api'

@@ -22,6 +22,41 @@ class StandardTest(unittest.TestCase):
     def test_remove_tags(self):
         self.assertEqual('foo bar',standard.remove_tags('foo\n<\tscript\ttype="javascript"\n>window.onload(\'<script>\')</script\t\n>bar'))
         self.assertEqual('foo bar',standard.remove_tags('foo\n<\tstyle\t\n>body {}</style\t\n>bar'))
+        self.assertEqual('foo bar',standard.remove_tags('''
+            <!DOCTYPE html>
+            <meta name="description" content="Test regular expressions">
+            
+            <!--	###comment
+            --><body>	
+            	foo	
+            </body><!-- -->
+
+                <script	type="text/javascript"
+                nonce="Ow7cULQDb0b483xVnZngrwRoCICLoMVI8GOprsWtvWU=">
+                	try {
+                		window._pageTimings = window._pageTimings || {};
+                		window._pageTimings["TTJSStart"] = Math.round(performance.now());
+                	} catch (e) {
+                		console.error("Error in adding TTJSStart marker");
+                	}
+                </script 
+                bar>
+            bar</em>
+                <script type="text/javascript">
+                </script	>
+                
+                <style>
+                /* style */
+            .dropdown-submenu {
+                position: relative;
+            }
+            .dropdown-submenu>.dropdown-menu>li>a:hover {
+                background-color: #F5F5F5;
+                border-left-width: 5px;
+                padding-left: 15px;
+            }
+            </style>
+        '''))
 
     def test_string_maxlen(self):
         self.assertEqual('foo\nbar',standard.string_maxlen('foo\n<\tscript\ttype="javascript"\n>window.onload(\'<script>\')</script\t\n>bar'))

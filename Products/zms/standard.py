@@ -483,8 +483,8 @@ def string_maxlen(s, maxlen=20, etc='...', encoding=None):
   # remove all tags.
   # @see https://stackoverflow.com/questions/8554035/remove-all-javascript-tags-and-style-tags-from-html-with-python-and-the-lxml-mod
   s = re.sub(r'<[\S\s]*!--.*?--[\S\s]*>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
-  s = re.sub(r'<[\S\s]*?script[\S\s]*?\/[\S\s]*?script[\S\s]*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
-  s = re.sub(r'<[\S\s]*style.*?\/[\S\s]*style[\S\s]*>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
+  s = re.sub(r'<[\S\s]*?script[\S\s]*?\/[\s]*?script[\S\s]*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
+  s = re.sub(r'<[\S\s]*?style[\S\s]*?\/[\s]*?style[\S\s]*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
   s = re.sub(r'<[\S\s]*meta.*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
   s = re.sub(r'<[\S\s]*?>', '', s)
   if len(s) > maxlen:
@@ -583,8 +583,8 @@ def remove_tags(s):
     s = s.replace(x,d[x])
   # @see https://stackoverflow.com/questions/8554035/remove-all-javascript-tags-and-style-tags-from-html-with-python-and-the-lxml-mod
   s = re.sub(r'<[\S\s]*!--.*?--[\S\s]*>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
-  s = re.sub(r'<[\S\s]*?script[\S\s]*?\/[\S\s]*?script[\S\s]*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
-  s = re.sub(r'<[\S\s]*style.*?\/[\S\s]*style[\S\s]*>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
+  s = re.sub(r'<[\S\s]*?script[\S\s]*?\/[\s]*?script[\S\s]*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
+  s = re.sub(r'<[\S\s]*?style[\S\s]*?\/[\s]*?style[\S\s]*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
   s = re.sub(r'<[\S\s]*meta.*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
   s = re.sub(r'<[\S\s]*?>', '', s)
   while s.find('\t') >= 0:

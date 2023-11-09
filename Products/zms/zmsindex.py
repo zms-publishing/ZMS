@@ -72,7 +72,8 @@ class ZMSIndex(ZMSItem.ZMSItem):
     #  Initialize 
     ############################################################################
     def initialize(self):
-      catalog = self.get_catalog()
+      self.get_catalog()
+      self.manage_reindex(regenerate_duplicates=True)
 
     ##############################################################################
     # Event: Object Imported
@@ -240,7 +241,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
     ##############################################################################
     # Reindex
     ##############################################################################
-    def manage_reindex(self, regenerate_duplicates=False, REQUEST=None):
+    def manage_reindex(self, regenerate_all=None, regenerate_duplicates=None, REQUEST=None):
       """ ZMSIndex.manage_reindex """
 
       # Visit tree
@@ -257,9 +258,9 @@ class ZMSIndex(ZMSItem.ZMSItem):
       
       log = []
       catalog = self.get_catalog()
-      regenerate_all = len(catalog) == 0
-      regenerate_duplicates = regenerate_all or standard.pybool(regenerate_duplicates)
-      urls = [x for x in REQUEST.get('url').split(',') if x] if REQUEST else []
+      regenerate_all = standard.pybool(regenerate_all) or len(catalog) == 0
+      regenerate_duplicates = standard.pybool(regenerate_duplicates) or regenerate_all
+      urls = [x for x in REQUEST.get('url').split(',') if x] if REQUEST else ['{$}']
       for url in urls:
         log.append('INFO %s'%standard.writeBlock(self,'[ZMSIndex] ### reindex for %s'%url))
         t0 = time.time()

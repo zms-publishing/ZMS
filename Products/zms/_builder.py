@@ -270,9 +270,6 @@ class Builder(object):
             # notify current node
             self.oCurrNode.xmlOnEndElement()
 
-            # notify index
-            standard.triggerEvent(self.oCurrNode, "*.ObjectAdded")
-
             parent = self.oCurrNode.xmlGetParent()
             
             # set parent node as current node

@@ -1,6 +1,23 @@
 <div class="ZMSZCatalogConnector" 
 	tal:define="zmscontext python:here.getSelf();zcatalogs python:here.getDocumentElement().objectValues(['ZCatalog'])">
-	<div tal:condition="python:len(zcatalogs)==0" class="alert alert-warning mx-0 mb-4">No local ZCatalog objects available.</div>
+	<div tal:condition="python:len(zcatalogs)==0" class="alert alert-warning mx-0 mb-4">
+		<tal:block tal:condition="python:len(here.getRootElement().getPortalClients())>0 and here.getPortalMaster() is not None">
+			<tal:block tal:condition="python:here.getRootElement().objectValues(['ZCatalog'])">
+				Portalmaster ZCatalog is connected:
+				<a tal:repeat="portal_zcatalog python:here.getRootElement().objectValues(['ZCatalog'])"
+					tal:attributes="
+						href python:'%s/manage_main'%portal_zcatalog.absolute_url();
+						title python:portal_zcatalog.absolute_url()"
+					tal:content="structure python:'<i class=\042fas fa-link fa-rotate-270 ml-2\042></i> %s'%portal_zcatalog.id"
+					target="_blank">
+					portal_zcatalog.id
+				</a>.
+			</tal:block>
+		</tal:block>
+		<tal:block tal:condition="python:here.getPortalMaster() is None">
+			Refresh the content index to make ZCatalog objects available.
+		</tal:block>
+	</div>
 	<tal:block tal:condition="python:len(zcatalogs)>0">
 		<div class="form-group row align-items-baseline">
 			<label class="col-sm-2 control-label" for="zcatalog_objectIds"><span>ZCatalogs</span></label>

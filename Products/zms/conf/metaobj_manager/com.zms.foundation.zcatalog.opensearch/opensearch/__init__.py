@@ -26,7 +26,7 @@ class opensearch:
 	package = "com.zms.foundation.zcatalog.opensearch"
 
 	# Revision
-	revision = "0.1.2"
+	revision = "0.2.0"
 
 	# Type
 	type = "ZMSDocument"

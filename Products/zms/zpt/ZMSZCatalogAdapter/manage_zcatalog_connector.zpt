@@ -1,126 +1,244 @@
-<div class="ZMSZCatalogConnector" 
-	tal:define="zmscontext python:here.getSelf();zcatalogs python:here.getDocumentElement().objectValues(['ZCatalog'])">
-	<div tal:condition="python:len(zcatalogs)==0" class="alert alert-warning mx-0 mb-4">
-		<tal:block tal:condition="python:len(here.getRootElement().getPortalClients())>0 and here.getPortalMaster() is not None">
-			<tal:block tal:condition="python:here.getRootElement().objectValues(['ZCatalog'])">
-				Portalmaster ZCatalog is connected:
-				<a tal:repeat="portal_zcatalog python:here.getRootElement().objectValues(['ZCatalog'])"
-					tal:attributes="
-						href python:'%s/manage_main'%portal_zcatalog.absolute_url();
-						title python:portal_zcatalog.absolute_url()"
-					tal:content="structure python:'<i class=\042fas fa-link fa-rotate-270 ml-2\042></i> %s'%portal_zcatalog.id"
-					target="_blank">
-					portal_zcatalog.id
-				</a>.
-			</tal:block>
-		</tal:block>
-		<tal:block tal:condition="python:here.getPortalMaster() is None">
-			Refresh the content index to make ZCatalog objects available.
-		</tal:block>
-	</div>
-	<tal:block tal:condition="python:len(zcatalogs)>0">
-		<div class="form-group row align-items-baseline">
-			<label class="col-sm-2 control-label" for="zcatalog_objectIds"><span>ZCatalogs</span></label>
-			<div class="col-sm-10">
-				<div tal:repeat="si zcatalogs">
-					<label tal:define="is_client_derived python:si.id.split('_')[-1] in here.getLangIds()">
-						<span class="btn btn-secondary">
-							<input type="checkbox" name="zcatalog_objectIds:list" tal:attributes="value python:si.id" />
-						</span>
-						&nbsp;
-						<a target="_blank" 
-							tal:attributes="href python:'%s/manage_main'%si.absolute_url();title python:is_client_derived and 'Client-Derived' or 'Multisite-Derived' " 
-							tal:content="python:'%s (%s)'%(si.id,here.getZMILangStr(si.meta_type))">id (meta_type)</a>
-					</label>
-				</div>
-				<div>
-					<button name="btn" type="submit" class="btn btn-secondary" value="Remove">
-						<span class="fas fa-times text-danger"></span>
-						Remove
-					</button>
-				</div>
+<!DOCTYPE html>
+<html lang="en" tal:define="
+	standard modules/Products.zms/standard;
+	zopeutil modules/Products.zms/zopeutil;
+	properties python:here.getProperties();
+	actions python:here.getActions();">
+<head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
+<body tal:attributes="class python:here.zmi_body_class(id='ZMSZCatalogConnector catalog-connector config')">
+<header tal:replace="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</header>
+<div id="zmi-tab">
+<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[{'action':'../manage_main','label':here.getZMILangStr('TAB_SEARCH')},{'action':'manage_main','label':here.id}])">zmi_breadcrumbs</tal:block>
+
+<form class="card form-horizontal" method="post" action="manage_changeProperties">
+<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
+
+<legend>Sitemap</legend>
+<div class="card-body">
+	<div class="form-group">
+		<div class="btn-group zmi-sitemap-controls">
+			<div title="De-/Select All" 
+				class="btn btn-secondary">
+				<input id="zmi-sitemap-select" type="checkbox" checked="checked"
+					onclick="if( this.checked ){ $('.zmi-sitemap ul input').prop('checked', true) } else { $('.zmi-sitemap ul input').prop('checked', false) }" 
+				/>
 			</div>
-		</div><!-- .form-group -->
-		<div class="form-group row">
-			<label class="col-sm-2 control-label" for="zcatalog_qsearch"><span>Query</span></label>
-			<div class="col-sm-10">
-				<div class="input-group">
-					<input type="text" class="form-control" id="zcatalog_qsearch" name="q" tal:attributes="value python:request.get('q','*')">
-					<div class="input-group-append">
-						<button class="btn btn-primary" 
-							tal:attributes="onclick python:'javascript:$ZMI.iframe(\'%s/search_xml\',{q:$(\'#ZMSZCatalogConnector #zcatalog_qsearch\').val(),debug:0,pretty:1},{iframe:true,title:\'ZCatalog: Query <kbd style=\042cursor:pointer\042 class=\042badge-primary\042 title=\042Reopen as XML\042 onclick=\042open_as_xml()\042><i class=\042fas fa-external-link-square-alt\042></i> xml</kbd>\',id:\'connector_results\'});;return false'%(here.absolute_url())"
-							><i class="fas fa-external-link-alt"></i></button>
-					</div>
-				</div>
+			<div title="Expand Object Tree (Hint: Mind System Load in Case!)" 
+				class="btn btn-secondary" 
+				onclick="return zmiExpandObjectTree(-1);">
+				<i class="fas fa-plus-square"></i>
 			</div>
-		</div><!-- .form-group -->
-		<div class="form-group row">
-			<label class="col-sm-2 control-label" for="zcatalog_qsuggest"><span>Suggest</span></label>
-			<div class="col-sm-10">
-				<div class="input-group">
-					<input type="text" class="form-control" id="zcatalog_qsuggest" name="q" tal:attributes="value python:request.get('q','*')">
-					<div class="input-group-append">
-						<button class="btn btn-primary"
-							tal:attributes="onclick python:'javascript:$ZMI.iframe(\'%s/suggest_xml\',{q:$(\'#ZMSZCatalogConnector #zcatalog_qsuggest\').val(),debug:0,pretty:1},{iframe:true,title:\'ZCatalog: Suggest <kbd style=\042cursor:pointer\042 class=\042badge-primary\042 title=\042Reopen as XML\042 onclick=\042open_as_xml()\042><i class=\042fas fa-external-link-square-alt\042></i> xml</kbd>\',id:\'connector_results\'});;return false'%(here.absolute_url())"
-							><i class="fas fa-external-link-alt"></i></button>
-					</div>
-				</div>
+			<div title="Expand/Compress Sitemap View"
+				class="btn btn-secondary" id="zmi-sitemap-expand" 
+				onclick="$('.zmi-sitemap-container').toggleClass('full');$('#zmi-sitemap-expand i').toggleClass('fa-expand-arrows-alt fa-compress-arrows-alt')">
+				<i class="fas fa-expand-arrows-alt"></i>
 			</div>
-		</div><!-- .form-group -->
-	</tal:block>
-	<div class="form-group row">
-		<div class="col-sm-2">&nbsp;</div>
-		<div class="col-sm-10">
-			<div>
-				<div class="btn-group zmi-sitemap-controls">
-					<div title="De-/Select All" 
-						class="btn btn-secondary">
-						<input id="zmi-sitemap-select" type="checkbox" checked="checked"
-							onclick="if( this.checked ){ $('.zmi-sitemap ul input').prop('checked', true) } else { $('.zmi-sitemap ul input').prop('checked', false) }" 
-						/>
-					</div>
-					<div title="Expand Object Tree (Hint: Mind System Load in Case!)" 
-						class="btn btn-secondary" 
-						onclick="$('.card:not(\042#ZMSZCatalogConnector\042) .zmi-sitemap > ul').remove(); $('.card:not(\042#ZMSZCatalogConnector\042) .zmi-sitemap').html('<div class=\042 alert alert-danger mx-0\042>Please reload ...</div>'); return zmiExpandObjectTree(-1);">
-						<i class="fas fa-plus-square"></i>
-					</div>
-					<div title="Expand/Compress Sitemap View"
-						class="btn btn-secondary" id="zmi-sitemap-expand" 
-						onclick="$('.zmi-sitemap-container').toggleClass('full');$('#zmi-sitemap-expand i').toggleClass('fa-expand-arrows-alt fa-compress-arrows-alt')">
-						<i class="fas fa-expand-arrows-alt"></i>
-					</div>
-				</div>
-				<div class="zmi-sitemap-container">
-					<div class="zmi-sitemap mb-0"><!-- .zmi-sitemap --></div>
-				</div>
-			</div>
-		</div><!-- .col-sm-10 -->
+		</div>
+		<div class="zmi-sitemap-container">
+			<div class="zmi-sitemap mb-0"><!-- .zmi-sitemap --></div>
+		</div>
 	</div><!-- .form-group -->
-	<div class="form-group row">
-		<div class="col-sm-2"></div>
-		<div class="col-sm-10">
-			<div class="btn-group">
-				<span class="btn btn-warning" tal:attributes="title python:here.getZMILangStr('BTN_REFRESH'); data-id here/id" onclick="return zmiReindexCatalog()">
-					<i class="fas fa-sync"></i>
-					<tal:block tal:content="python:here.getZMILangStr('BTN_REFRESH')"></tal:block>
-				</span>
+	<div class="form-group">
+		<div class="btn-group">
+			<span class="btn btn-light" tal:attributes="title python:here.getZMILangStr('BTN_REFRESH'); data-id here/id" onclick="return zmiReindexCatalog(this)">
+				<i class="fas fa-sync"></i>
+				<tal:block tal:content="python:here.getZMILangStr('BTN_REFRESH')"></tal:block>
+			</span>
+		</div>
+		<div class="btn-group dropdown" tal:condition="actions" tal:attributes="title python:'%s.%s'%(here.getMetaobj(here.id)['package'],here.id)">
+			<button class="btn btn-light dropdown-toggle" type="button" id="apiDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<tal:block tal:content="python:'----- %s -----'%here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_ACTION')">ZCatalog-Interaction</tal:block>
+			</button>
+			<div class="dropdown-menu" aria-labelledby="apiDropdownMenuButton">
+				<tal:block tal:repeat="action actions">
+					<tal:block tal:define="data python:zopeutil.readData(action.get('ob'))">
+						<tal:block tal:condition="python:data.replace(' ','').find('%s(self):'%action['id'])>0">
+							<a class="dropdown-item" href="javascript:;"
+								tal:attributes="title python:action['name'].split(':')[-1]; data-url python:'%s/%s'%(here.getRootElement().absolute_url(),action['id'])" onclick="return zmiExecuteCatalog(this)">
+								<tal:block tal:content="python:here.getZMILangStr(action['name'].split(':')[0])"></tal:block>
+							</a>
+						</tal:block>
+					</tal:block>
+				</tal:block>
 			</div>
-		</div><!-- .col-sm-10 -->
+		</div>
 	</div><!-- .form-group -->
-</div>
+</div><!-- .card-body -->
+
+<tal:block tal:condition="properties">
+	<legend tal:content="python:here.getZMILangStr('TAB_PROPERTIES')">the properties</legend>
+	<div class="card-body">
+		<div class="form-group row" tal:repeat="property properties">
+			<label class="col-sm-2 control-label"><span><span tal:content="property/label">the label</span></label>
+			<div class="col-sm-10" tal:define="value python:here.getConfProperty(property['id'],property.get('defaultValue',''))">
+				<tal:block tal:condition="python:property.get('type','string')=='string'">
+					<input class="form-control" type="text" tal:attributes="name property/id; value value">
+				</tal:block>
+				<tal:block tal:condition="python:property.get('type','string')=='password'">
+					<input class="form-control" type="password" tal:attributes="name property/id;" placeholder="*****">
+				</tal:block>
+				<tal:block tal:condition="python:property.get('type','string')=='text'">
+					<textarea tal:attributes="name property/id; placeholder python:property.get('defaultValue','')" 
+						class="form-control form-control-sm" 
+						data-dblclickhandler="show_ace_editor(e=this, toggle=true)"
+						tal:content="value"></textarea>
+				</tal:block>
+			</div>
+		</div><!-- .form-group.row -->
+		<div class="form-group row">
+			<div class="col-sm-2"></div>
+			<div class="col-sm-10">
+				<button name="btn" type="submit" class="btn btn-primary" 
+					tal:attributes="title python:here.getZMILangStr('BTN_SAVE')" value="Save">
+					<tal:block tal:content="structure python:here.getZMILangStr('BTN_SAVE')"></tal:block>
+				</button>
+			</div><!-- .col-sm-10 -->
+		</div><!-- .form-group -->
+	</div><!-- .card-body -->
+</tal:block>
+
 <script>
-//<!--
-	function open_as_xml() {
-		var src = $('iframe').attr('src');
-		src = src.replace(/\&debug=./i,'').replace(/\&pretty=./i,'');
-		window.open(src, name='_blank');
+function zmiExecuteCatalog(sender) {
+	var title = $(sender).attr("title");
+	if (confirm("Do you really want to\n" + title)) {
+		var url = $(sender).attr("data-url");
+		$.ajax({
+			url:url,
+			error: function (xhr, ajaxOptions, thrownError) {
+				alert(thrownError);
+			},
+			success:function(response) {
+				alert(response);
+			}
+		});
 	}
-//-->
+}
+
+function zmiReindexCatalog(sender) {
+	$(".zmi-sitemap .response").remove();
+	var connector_id = $(sender).attr("data-id");
+ 	var $inputs = $(".zmi-sitemap input:checked");
+	var i = 0;
+	var fn = function() {
+		if (i < $inputs.length) {
+			var $input = $($inputs[i]);
+			var uid = $input.val();
+			var data = {uid: uid, connector_id: connector_id};
+			var $a = $input.next("a");
+			$a.after(`<span class="response alert zmi-code"><i class="fas fa-spinner fa-spin"></i></span>`);
+			$.ajax({
+				url:"manage_reindex",
+				data:data,
+				error: function (xhr, ajaxOptions, thrownError) {
+					$a.next('.response').addClass('alert-danger').html(thrownError);
+					i++;
+					fn();
+				},
+				success:function(response) {
+					$a.next('.response').addClass('alert-success').html(response);
+					i++;
+					fn();
+				}
+			});
+		}
+	}
+	fn();
+	return false;
+}
+
+function zmiSelectObject() {
+	return false;
+}
+
+function zmiExpandObjectTree(max) {
+	var fn = function() {
+		var done = false;
+		$(".zmi-sitemap .toggle[title='+']").each(function() {
+			var $toggle = $(this);
+			var $parents = $toggle.parentsUntil(".zmi-sitemap","ul");
+			var $container = $($toggle.parents("li")[0]);
+			var level = $parents.length - 1;
+			if (level < max || -1 == max) {
+				$ZMI.objectTree.toggleClick($toggle,fn);
+				done = true;
+			}
+		});
+	}
+	fn();
+	return false;
+}
+
+$(function() {
+	// Sitemap
+	var href = $ZMI.get_document_element_url($ZMI.getPhysicalPath());
+	$ZMI.objectTree.init(".zmi-sitemap",href,{
+		filter: x => x.meta_id === 'ZMS',
+		'init.callback': function() {
+				zmiExpandObjectTree(1);
+			},
+		'addPages.callback': function() {
+				console.log('addPages.callback')
+				$(".zmi-sitemap a:not(.checkboxed)").each(function() {
+						var $a = $(this);
+						var phys_path = $a.attr('href');
+						var href_manage = phys_path + '/manage';
+						$a.addClass("checkboxed")
+							.removeAttr('onclick')
+							.attr('target','_blank')
+							.attr('href',href_manage)
+							.attr('title',href_manage);
+						var uid = '{'+'$'+phys_path.substring(1).replace(/\/content/gi,'@')+'}'; // $a.attr('data-uid');
+						$a.before('<input name="home_id:list" type="checkbox" title="'+uid+'" value="'+uid+'" checked="checked" /> ');
+					});
+			},
+		});
+	$('#zmsindex .zmi-sitemap-container').removeClass('loading');
+});
 </script>
 <style>
-/*<!--*/
-	.zmi-sitemap .response.zmi-code {
-		white-space:pre;
+	.ZMSZCatalogConnector .response.alert-success,
+	.ZMSZCatalogConnector .response.alert-danger {
+		max-height: 4.75rem;
+		overflow-y: auto;
+		font-size:smaller !important;
+		margin-top: .35rem;
+		margin-bottom: 1rem;
+		padding: .25em .5rem;
 	}
-/*-->*/
+	.ZMSZCatalogConnector .response.alert-success.full,
+	.ZMSZCatalogConnector .response.alert-danger.full {
+		max-height: 100%;
+		transition: max-height 0.5s ease-in-out;
+	}
+	.ZMSZCatalogConnector span.response.alert-success.zmi-code:before {
+		content: "\f077";
+		font-weight: 900;
+		font-family: 'Font Awesome 5 Free';
+		font-size:15px;
+		display:block;
+		width:calc(100% - 1rem);
+		text-align:right;
+		font-style: normal;
+		font-variant: normal;
+		text-rendering: auto;
+		line-height: 1.35;
+		position:absolute;
+		-moz-osx-font-smoothing: grayscale;
+		-webkit-font-smoothing: antialiased;
+	}
+	.ZMSZCatalogConnector span.response.alert-success.full.zmi-code:before {
+		content: "\f0c5";
+		font-weight: 400;
+	}
+	.ZMSZCatalogConnector .zmi-code textarea {
+		padding-left:3rem;
+		padding-top: .35rem;
+		font-size:smaller !important;
+	}
 </style>
+
+</form>
+</div><!-- #zmi-tab -->
+<footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
+</body>
+</html>

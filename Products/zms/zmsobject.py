@@ -1222,20 +1222,22 @@ class ZMSObject(ZMSItem.ZMSItem,
     #
     #  Execute Meta-Command.
     ############################################################################
-    def manage_executeMetacmd(self, lang, REQUEST, RESPONSE=None):
+    def manage_executeMetacmd(self, id, REQUEST, RESPONSE=None, context=None):
       """ MetacmdObject.manage_executeMetacmd """
-      id = REQUEST.get('id')
-      RESPONSE.setHeader('Cache-Control', 'no-cache')
-      RESPONSE.setHeader('Pragma', 'no-cache')
+      if RESPONSE:
+        RESPONSE.setHeader('Cache-Control', 'no-cache')
+        RESPONSE.setHeader('Pragma', 'no-cache')
+      lang = REQUEST.get('lang')
       value = None
       message = ''
       target = self
+      zmscontext = standard.nvl(context, self)
 
       # METAOBJ
-      metaObjAttr = self.getMetaobjAttr(self.meta_id, id)
+      metaObjAttr = zmscontext.getMetaobjAttr(zmscontext.meta_id, id)
       if metaObjAttr is not None:
         # Execute directly.
-        return self.attr(id)
+        return zmscontext.attr(id)
 
       # METACMD
       metaCmd = self.getMetaCmd(id)
@@ -1244,7 +1246,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         ob = zopeutil.getObject(self, id)
         # Proceed with generating message for executed metacmd.
         if bool(metaCmd.get('execution')) and not metaCmd['id'].startswith('manage_tab_'):
-          value = zopeutil.callObject(ob, zmscontext=self)
+          value = zopeutil.callObject(ob, zmscontext=zmscontext)
           if isinstance(value, str):
             message = value
           elif isinstance(value, tuple):
@@ -1255,16 +1257,18 @@ class ZMSObject(ZMSItem.ZMSItem,
           loc = '%s/%s?lang=%s'%(target.absolute_url(),metaCmd['id'],lang)
           status = 302
           if REQUEST.method == 'GET':
-            value = zopeutil.callObject(ob, zmscontext=self)
+            value = zopeutil.callObject(ob, zmscontext=zmscontext)
             status = 201 # Turbolinks
             RESPONSE.setHeader('Location',loc)
             RESPONSE.setHeader('Turbolinks-Location',loc)
-          RESPONSE.redirect(loc,status=status)
+          if RESPONSE:
+            RESPONSE.redirect(loc,status=status)
           return value
 
       # Return with message.
-      message = standard.url_quote(message)
-      return RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s'%(target.absolute_url(), lang, message))
+      if RESPONSE:
+        message = standard.url_quote(message)
+        return RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s'%(target.absolute_url(), lang, message))
 
 
     # --------------------------------------------------------------------------

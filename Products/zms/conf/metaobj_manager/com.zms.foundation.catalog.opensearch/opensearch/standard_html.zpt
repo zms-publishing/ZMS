@@ -30,7 +30,7 @@
 	{{#each hits}}
 		<article class="hit">
 			<ul class="path" data-id="{{this.path}}">&nbsp;</ul>
-			<a title="{{this.path}}" href={{this.href}}" target="_blank">{{{this.title}}}</a>
+			<a title="{{this.path}}" href="{{this.href}}" target="_blank">{{{this.title}}}</a>
 			<br/>
 			<p>{{{this.snippet}}}</p>
 		</article>

@@ -720,7 +720,7 @@ class ZMSMetaobjManager(object):
         elif metaObjAttr['type'] in self.valid_zopeattrs:
           ob = metaObjAttr.get('ob', None)
           if ob:
-            value = zopeutil.callObject(ob, zmscontext, options)
+            value = zopeutil.callObject(ob, zmscontext=zmscontext, options=options)
       # Return value.
       return value
 

@@ -2126,13 +2126,12 @@ function zmiExpandConfFiles(el, pattern) {
 				if (first!=null) {
 					$("option:first",el).html(first);
 				}
-				var items = $("item",data);
-				for (var i = 0; i < items.length; i++) {
-					var item = $(items[i]);
-					var value = item.attr("key");
-					var label = item.text();
-					$(el).append('<option value="'+value+'">'+label+'</option>');
-				}
+				Object.keys(data)
+					.map(k => ([k, data[k]]))
+					.sort((a, b) => (a[1].localeCompare(b[1])))
+					.forEach(option => {
+						$(el).append('<option value="'+option[0]+'">'+option[1]+'</option>');
+					});
 				zmiExpandConfFilesProgress = false;
 				// Reset wait-cursor.
 				$ZMI.setCursorAuto("zmiExpandConfFiles");

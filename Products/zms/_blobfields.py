@@ -556,7 +556,7 @@ class MyBlob(object):
           try:
             name = 'hasCustomAccess'
             if hasattr(parent,name):
-              v = zopeutil.callObject(getattr(parent,name),parent)
+              v = zopeutil.callObject(getattr(parent,name),zmscontext=parent)
               if type( v) is bool:
                 access = access and v
               elif type( v) is int and v == 404:
@@ -577,7 +577,7 @@ class MyBlob(object):
         try:
           name = 'getCustomBlobResponseHeaders'
           if hasattr(parent,name):
-            zopeutil.callObject(getattr(parent,name),parent)
+            zopeutil.callObject(getattr(parent,name),zmscontext=parent)
         except:
           standard.writeError(parent,'[__call__]: can\'t %s'%name)
         

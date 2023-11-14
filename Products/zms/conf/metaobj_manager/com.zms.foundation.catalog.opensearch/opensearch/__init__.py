@@ -7,9 +7,15 @@ class opensearch:
 	access = {"delete_custom":""
 		,"delete_deny":[""
 			,""
+			,""
+			,""
+			,""
 			,""]
 		,"insert_custom":"{$}"
 		,"insert_deny":[""
+			,""
+			,""
+			,""
 			,""
 			,""]}
 
@@ -20,13 +26,13 @@ class opensearch:
 	id = "opensearch"
 
 	# Name
-	name = "Opensearch"
+	name = "Opensearch-Page"
 
 	# Package
-	package = "com.zms.foundation.zcatalog.opensearch"
+	package = "com.zms.foundation.catalog.opensearch"
 
 	# Revision
-	revision = "0.2.0"
+	revision = "0.2.2"
 
 	# Type
 	type = "ZMSDocument"

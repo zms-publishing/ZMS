@@ -208,9 +208,6 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
     #-- Search
     initContent(obj, 'com.zms.search.content.xml', REQUEST)
 
-    # Initialize catalogs.
-    obj.getCatalogAdapter().reindex_all()
-
     # Initialize access.
     obj.synchronizePublicAccess()
 

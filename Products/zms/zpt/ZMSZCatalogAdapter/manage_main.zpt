@@ -10,14 +10,10 @@
 ><!DOCTYPE html>
 <html lang="en" tal:define="zmscontext python:here.getSelf(); standard modules/Products.zms/standard">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
-<style>
-
-</style>
 <body tal:attributes="class python:here.zmi_body_class(id='zcatalog config')">
 <header tal:replace="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</header>
 <div id="zmi-tab">
-<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
-<tal:block tal:define="meta_types python:here.getConnectorMetaTypes(); connectors python:here.getConnectors()">
+<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[{'action':'manage_main','label':here.getZMILangStr('TAB_SEARCH')}])">zmi_breadcrumbs</tal:block>
 
 <div class="help d-none" data-for="catalog_awareness_active">
 	<div class="well">On every change the content is automatically indexed in the catalog.</div>
@@ -48,163 +44,157 @@
 	</div>
 </div>
 
-<form action="manage_changeProperties" method="post" tal:define="zcatalogs python:here.getDocumentElement().objectValues(['ZCatalog'])">
+<form class="form-horizontal card" action="manage_changeProperties" method="post" tal:define="zcatalogs python:here.getDocumentElement().objectValues(['ZCatalog'])">
 	<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
 	<input type="hidden" name="tab" value="" />
 	<input type="hidden" id="getIds" tal:attributes="value python:','.join(here.getIds())" />
 	<span class="d-none" id="getAttrs" tal:content="python:here.str_json(here.getAttrs())"></span>
 
-	<nav id="subTab">
-		<ul class="nav nav-tabs" role="tablist">
-			<li class="nav-item">
-				<a class="nav-link active show" tal:attributes="href python:'#%s'%here.meta_type" data-toggle="tab">Adapter</a>
-			</li>
-			<li class="nav-item" tal:repeat="si connectors">
-				<a class="nav-link" tal:attributes="href python:'#%s'%si.meta_type" data-toggle="tab">
-					<i class="fas fa-times" tal:attributes="onclick python:'if (confirm(getZMILangStr(\'MSG_CONFIRM_DELOBJ\')))$(this).closest(\'form\').append(\'<input type=hidden name=btn value=Delete:%s>\').submit()'%si.getId();"></i>
-					<tal:block tal:content="python:si.meta_type">Connector</tal:block>
-				</a>
-			</li>
-		</ul>
-	</nav>
+	<legend>Connectors</legend>
+	<div class="card-body" tal:define="
+		connectors python:here.getConnectors();
+		available python:sorted([y for y in [here.getMetaobj(x) for x in here.getMetaobjIds()] if y['id'].endswith('_interface') and y['type'] in ['ZMSLibrary']],key=lambda x:x['id']);
+		exists python:[x.id for x in connectors];
+		addable python:[x for x in available if x['id'] not in exists];">
+		<div class="col-12 form-group mb-4" tal:condition="addable">
+			<div class="btn-group">
+				<select class="form-control" name="api">
+					<option value="" tal:content="python:'----- %s -----'%here.getZMILangStr('ACTION_SELECT')%'API'">Select</option>
+					<tal:block tal:repeat="metaObj addable">
+						<option tal:attributes="value metaObj/id" tal:content="python:'%s.%s'%(metaObj['package'],metaObj['id'])">the conf</option>
+					</tal:block>
+				</select>
+				<button name="btn" type="submit" class="btn btn-secondary btn" value="Add">Add</button>
+			</div>
+		</div><!-- .form-group -->
+		<tal:block tal:repeat="si connectors">
+		<div class="form-group col-12 text-truncate">
+			<label>
+				<span class="btn btn-secondary">
+					<i tal:on-error="structure string:<i class='fas fa-ban' title='Icon Error'></i>"
+						tal:attributes="class python:si.zmi_icon"
+						></i>&nbsp;&nbsp;<input type="checkbox" name="objectIds:list" tal:attributes="value python:si.id; disabled python:si.id=='zmsindex' and 'disabled' or None" />
+				</span>
+				<i class="fas fa-times text-danger" tal:condition="python:si.id not in [x['id'] for x in available]"></i>
+				<a tal:attributes="href python:'%s/manage_main'%si.id" tal:content="python:'%s (%s)'%(si.id,here.getZMILangStr(si.meta_type))">id (meta_type)</a>
+			</label>
+		</div><!-- .form-group -->
+		</tal:block>
+		<div class="form-group col-sm-12" tal:condition="connectors">
+			<button name="btn" type="submit" class="btn btn-secondary" value="Remove">
+				<span class="icon icon-times text-danger"></span>
+				Remove
+			</button>
+		</div>
+	</div><!-- .card-body -->
 
-	<div class="tab-content">
-		<div class="tab-pane fade active card show" tal:attributes="id here/meta_type">
-			<div class="form-horizontal">
-				<div class="form-group row">
-					<label class="col-sm-2 control-label" for="connectors"><span>Connectors</span></label>
-					<div class="col-sm-4">
-							<div class="input-group">
-								<select class="form-control" id="meta_type" name="meta_type"
-										onchange="if ($(this).val()!=''){document.getElementById('addMetaTypeBtn').click();}">
-									<option value="">Select type to add...</option>
-									<tal:block tal:repeat="meta_type meta_types">
-										<option tal:condition="python:len([x for x in connectors if x.meta_type==meta_type])==0" tal:attributes="value meta_type" tal:content="meta_type">the meta_type</option>
-									</tal:block>
-								</select>
-								<div class="input-group-append">
-									<button id="addMetaTypeBtn" name="btn" type="submit" class="btn btn-secondary" value="Add"><i class="fas fa-plus"></i></button>
-								</div>
-							</div>
-					</div><!-- .col-sm-10 -->
-				</div><!-- .form-group -->
-				<div class="form-group row">
-					<label class="col-sm-2 control-label" for="catalog_awareness_active"><span>Awareness</span></label>
-					<div class="col-sm-10">
-						<input type="checkbox" value="1" id="catalog_awareness_active" name="catalog_awareness_active:int" tal:attributes="checked python:['','checked'][int(here.getConfProperty('ZMS.CatalogAwareness.active',1)==1)]"/>
-					</div><!-- .col-sm-10 -->
-				</div><!-- .form-group -->
-				<div class="form-group row align-items-baseline">
-					<label class="col-sm-2 control-label" for="catalog_model"><span>Model</span></label>
-					<div class="col-sm-10"
-						tal:define="metaObjIds python:here.getMetaobjIds();
-							metaObjs python:[x for x in [here.getMetaobj(y) for y in metaObjIds] if x['id'] not in ['X_ZMS'] and x['type'] in ['ZMSPackage','ZMSDocument','ZMSObject','ZMSRecordSet']];
-							metaObjPackages python:here.sort_list(['']+[x['id'] for x in metaObjs if x['type']=='ZMSPackage']);
-							metaObjPackages2 python:[x.get('package') for x in metaObjs if x.get('package') not in metaObjPackages]">
+	<legend>Schema</legend>
+	<div class="card-body">
+		<div class="form-group row">
+			<label class="col-sm-2 control-label" for="catalog_awareness_active"><span>Awareness</span></label>
+			<div class="col-sm-10">
+				<input type="checkbox" value="1" id="catalog_awareness_active" name="catalog_awareness_active:int" tal:attributes="checked python:['','checked'][int(here.getConfProperty('ZMS.CatalogAwareness.active',1)==1)]"/>
+			</div><!-- .col-sm-10 -->
+		</div><!-- .form-group -->
+		<div class="form-group row align-items-baseline">
+			<label class="col-sm-2 control-label" for="catalog_model"><span>Model</span></label>
+			<div class="col-sm-10"
+				tal:define="metaObjIds python:here.getMetaobjIds();
+					metaObjs python:[x for x in [here.getMetaobj(y) for y in metaObjIds] if x['id'] not in ['X_ZMS'] and x['type'] in ['ZMSPackage','ZMSDocument','ZMSObject','ZMSRecordSet']];
+					metaObjPackages python:here.sort_list(['']+[x['id'] for x in metaObjs if x['type']=='ZMSPackage']);
+					metaObjPackages2 python:[x.get('package') for x in metaObjs if x.get('package') not in metaObjPackages]">
 
-							<table class="table table-sm">
-								<colgroup>
-									<col width="50%"/>
-									<col width="50%"/>
-								</colgroup>
-								<thead>
-									<tr>
-										<th tal:content="python:here.getZMILangStr('ATTR_OBJECTS')">the objects</th>
-										<th tal:content="python:here.getZMILangStr('ATTR_ATTRS')">the attributes</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-										<td class="p-0">
+					<table class="table table-sm">
+						<colgroup>
+							<col width="50%"/>
+							<col width="50%"/>
+						</colgroup>
+						<thead>
+							<tr>
+								<th tal:content="python:here.getZMILangStr('ATTR_OBJECTS')">the objects</th>
+								<th tal:content="python:here.getZMILangStr('ATTR_ATTRS')">the attributes</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="p-0">
 
-											<table class="table table-sm table-borderless" id="meta_types">
-												<tbody>
-													<tal:block tal:repeat="metaObjPackage python:here.sort_list(metaObjPackages+metaObjPackages2)">
-														<tal:block tal:condition="python:metaObjPackage in metaObjPackages">
-															<tr tal:condition="python:len([x for x in metaObjs if x.get('package')==metaObjPackage])>0" tal:define="global metaObj python:here.getMetaobj(metaObjPackage)">
-																<td colspan="2">
-																	<tal:block tal:condition="python:metaObjPackage">
-																		<a href="#" class="mr-1" target="_blank" title="Show Content Class Package Details (Big Picture)"
-																			tal:attributes="href python:'../metaobj_manager/manage_bigpicture?lang=%s&id=%s'%(request.get('lang','ger'),metaObjPackage)"
-																		><i class="fas fa-briefcase"></i></a>
-																		<strong tal:content="metaObjPackage">the id</strong>
-																	</tal:block>
-																	<tal:block tal:condition="python:not metaObjPackage">
-																		<i class="fas fa-briefcase mr-1"></i>
-																		<strong>[default package]</strong>
-																	</tal:block>
-																</td>
-															</tr>
-														</tal:block>
-														<tal:block tal:condition="not:python:metaObjPackage in metaObjPackages">
-															<tr>
-																<td colspan="2" style="text-decoration:line-through">
-																	<i class="fas fa-briefcase"></i>
-																	<strong tal:content="metaObjPackage">the id</strong>
-																</td>
-															</tr>
-														</tal:block>
-														<tal:block tal:repeat="metaObj metaObjs">
-															<tr tal:condition="python:metaObj['type']!='ZMSPackage' and metaObj.get('package')==metaObjPackage">
-																<td style="text-align:center;">
-																	<input type="checkbox" name="ids:list" tal:attributes="value metaObj/id;
-																		data-attrs python:','.join(
-																			['%s(%s)'%(xx['id'],xx['type']) for xx in
-																				[here.getMetaobjAttr(metaObj['id'],x['id']) for x in metaObj['attrs'] if x['type'] not in ['*','constant','delimiter','file','hint','image','interface']]]);
-																		checked python:['','checked'][int('catalog_index' in [x['id'] for x in metaObj['attrs']])];
-																		disabled python:['','disabled'][int('catalog_index' in [x['id'] for x in metaObj['attrs']])]" onclick="toggleMetaobj()"/>
-																</td>
-																<td>
-																	<a href="#" class="mr-1" target="_blank" title="Show Content Class Details (Big Picture)"
-																		tal:attributes="href python:'../metaobj_manager/manage_bigpicture?lang=%s&id=%s'%(request.get('lang','ger'),metaObj['id'])"
-																	><i tal:on-error="string:ERROR icon" tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])"></i></a>&nbsp;
-																	<span tal:on-error="string:ERROR" tal:content="metaObj/name">the name</span>
-																	<span>(<tal:block tal:content="python:here.getZMILangStr('SOTYPE_%s'%metaObj['type'].upper())">the type</tal:block>)</span>
-																</td>
-															</tr>
-														</tal:block>
-													</tal:block>
-												</tbody>
-											</table>
+									<table class="table table-sm table-borderless" id="meta_types">
+										<tbody>
+											<tal:block tal:repeat="metaObjPackage python:here.sort_list(metaObjPackages+metaObjPackages2)">
+												<tal:block tal:condition="python:metaObjPackage in metaObjPackages">
+													<tr tal:condition="python:len([x for x in metaObjs if x.get('package')==metaObjPackage])>0" tal:define="global metaObj python:here.getMetaobj(metaObjPackage)">
+														<td colspan="2">
+															<tal:block tal:condition="python:metaObjPackage">
+																<a href="#" class="mr-1" target="_blank" title="Show Content Class Package Details (Big Picture)"
+																	tal:attributes="href python:'../metaobj_manager/manage_bigpicture?lang=%s&id=%s'%(request.get('lang','ger'),metaObjPackage)"
+																><i class="fas fa-briefcase"></i></a>
+																<strong tal:content="metaObjPackage">the id</strong>
+															</tal:block>
+															<tal:block tal:condition="python:not metaObjPackage">
+																<i class="fas fa-briefcase mr-1"></i>
+																<strong>[default package]</strong>
+															</tal:block>
+														</td>
+													</tr>
+												</tal:block>
+												<tal:block tal:condition="not:python:metaObjPackage in metaObjPackages">
+													<tr>
+														<td colspan="2" style="text-decoration:line-through">
+															<i class="fas fa-briefcase"></i>
+															<strong tal:content="metaObjPackage">the id</strong>
+														</td>
+													</tr>
+												</tal:block>
+												<tal:block tal:repeat="metaObj metaObjs">
+													<tr tal:condition="python:metaObj['type']!='ZMSPackage' and metaObj.get('package')==metaObjPackage">
+														<td style="text-align:center;">
+															<input type="checkbox" name="ids:list" tal:attributes="value metaObj/id;
+																data-attrs python:','.join(
+																	['%s(%s)'%(xx['id'],xx['type']) for xx in
+																		[here.getMetaobjAttr(metaObj['id'],x['id']) for x in metaObj['attrs'] if x['type'] not in ['*','constant','delimiter','file','hint','image','interface']]]);
+																checked python:['','checked'][int('catalog_index' in [x['id'] for x in metaObj['attrs']])];
+																disabled python:['','disabled'][int('catalog_index' in [x['id'] for x in metaObj['attrs']])]" onclick="toggleMetaobj()"/>
+														</td>
+														<td>
+															<a href="#" class="mr-1" target="_blank" title="Show Content Class Details (Big Picture)"
+																tal:attributes="href python:'../metaobj_manager/manage_bigpicture?lang=%s&id=%s'%(request.get('lang','ger'),metaObj['id'])"
+															><i tal:on-error="string:ERROR icon" tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])"></i></a>&nbsp;
+															<span tal:on-error="string:ERROR" tal:content="metaObj/name">the name</span>
+															<span>(<tal:block tal:content="python:here.getZMILangStr('SOTYPE_%s'%metaObj['type'].upper())">the type</tal:block>)</span>
+														</td>
+													</tr>
+												</tal:block>
+											</tal:block>
+										</tbody>
+									</table>
 
-										</td>
-										<td class="p-0">
-											<table class="table table-sm table-borderless" id="indexes">
-												<!-- filled by script -->
-											</table>
-										</td>
-									</tr>
-								</tbody>
-							</table>
+								</td>
+								<td class="p-0">
+									<table class="table table-sm table-borderless" id="indexes">
+										<!-- filled by script -->
+									</table>
+								</td>
+							</tr>
+						</tbody>
+					</table>
 
-					</div><!-- .col-sm-10 -->
-				</div><!-- .form-group -->
+			</div><!-- .col-sm-10 -->
+		</div><!-- .form-group -->
 
-				<div class="form-group row">
-					<div class="col-sm-2">&nbsp;</div>
-					<div class="col-sm-10">
-						<button name="btn" type="submit" class="btn btn-primary" value="Save">Save</button>
-					</div><!-- .col-sm-10 -->
-				</div><!-- .form-group -->
-			</div><!-- .form-horizontal -->
-		</div><!-- .tab-pane -->
-
-		<div class="tab-pane fade card" tal:repeat="si connectors" tal:attributes="id si/meta_type">
-			<div class="form-horizontal">
-				<tal:block tal:content="structure python:si.manage_input_form(here,request)">
-					the zmi input-form
-				</tal:block>
-			</div><!-- .form-horizontal -->
-		</div><!-- .tab-pane -->
-	</div><!-- .tab-content -->
+		<div class="form-group row">
+			<div class="col-sm-2">&nbsp;</div>
+			<div class="col-sm-10">
+				<button name="btn" type="submit" class="btn btn-primary" value="Save">Save</button>
+			</div><!-- .col-sm-10 -->
+		</div><!-- .form-group -->
+	</div><!-- .card-body -->
 
 </form>
 
-</tal:block>
 </div><!-- #zmi-tab -->
 
 <script>
-//<!--
 function toggleMetaobj() {
 	var selected = {};
 	$("table#indexes input:checked").each(function() {
@@ -304,66 +294,7 @@ function zmiExecuteCatalog(url) {
 	return false;
 }
 
-function zmiReindexCatalog() {
-	$(".zmi-sitemap .response").remove();
-	var $inputs = $(".card.active .zmi-sitemap input:checked");
-	var i = 0;
-	var fn = function() {
-		if (i < $inputs.length) {
-			var $input = $($inputs[i]);
-			var uid = $input.val();
-			var data = {uid:uid};
-			var $a = $input.next("a");
-			$a.after(`<span class="response alert zmi-code"><i class="fas fa-spinner fa-spin"></i></span>`);
-			$.ajax({
-				url:"manage_reindex",
-				data:data,
-				error: function (xhr, ajaxOptions, thrownError) {
-					$a.next('.response').addClass('alert-danger').html(thrownError);
-					i++;
-					fn();
-				},
-				success:function(response) {
-					$a.next('.response').addClass('alert-success').html(response);
-					i++;
-					fn();
-				}
-			});
-		}
-	}
-	fn();
-	return false;
-}
-
-function zmiSelectObject() {
-	return false;
-}
-
-function zmiExpandObjectTree(max) {
-	var fn = function() {
-		var done = false;
-		$(".zmi-sitemap .toggle[title='+']").each(function() {
-			var $toggle = $(this);
-			var $parents = $toggle.parentsUntil(".zmi-sitemap","ul");
-			var $container = $($toggle.parents("li")[0]);
-			var level = $parents.length - 1;
-			if (level < max || -1 == max) {
-				$ZMI.objectTree.toggleClick($toggle,fn);
-				done = true;
-			}
-		});
-	}
-	fn();
-	return false;
-}
-
 $(function() {
-
-	// select tab
-	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-			$("input[name=tab]:hidden").val($(e.target).text().trim());
-		});
-
 	var ids = $('#getIds').val().split(",");
 	for (var i = 0; i < ids.length; i++) {
 		$('input[name="ids:list"][value="'+ids[i]+'"]').prop("checked",true);
@@ -403,7 +334,6 @@ $(function() {
 	$('#zmsindex .zmi-sitemap-container').removeClass('loading');
 
 });
-//-->
 </script>
 
 <footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>

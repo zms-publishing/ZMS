@@ -7,6 +7,7 @@ requests-oauthlib
 
 opensearch-py
 rich
+pdfminer.six
 
 chardet
 ftfy
@@ -26,4 +27,4 @@ Products.PluginRegistry
 
 zeo
 
-pydevd-pycharm~=232.10072.31  # Debugger for PyCharm 2023.2.3 (Professional Edition) built on October 12, 2023
+pydevd-pycharm~=232.10227.11  # Debugger for PyCharm 2023.2.5 (Professional Edition) built on November 14, 2023

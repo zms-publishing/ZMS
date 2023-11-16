@@ -65,16 +65,19 @@ def extract_content_tika(context, b, content_type=None):
     Apache Tika - a content analysis toolkit
     @see https://tika.apache.org/
     """
-    tika_url = context.getConfProperty('tika.url', '') # http://localhost:9998/tika
-    if tika_url:
+
+    parser_url = context.getConfProperty('opensearch.parser', context.getConfProperty('tika.url', '')) # http://localhost:9998/tika
+    if parser_url:
         headers = {'Accept': 'application/json'}
         try:
             import requests
-            r = requests.put(tika_url, headers=headers, data=b)
+            r = requests.put(parser_url, headers=headers, data=b)
             html = r.json().get('X-TIKA:content')
             return extract_text_from_html(html)
         except:
             standard.writeError( context, "can't extract_content_tika")
+    else:
+        standard.writeError( context, "config parameter opensearch.parser or tika.url are not set")
     return None
 
 

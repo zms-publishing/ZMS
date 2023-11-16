@@ -201,7 +201,7 @@ def renderHtml():
 				} else {
 					$('#btn_quickrun').attr('class','btn btn-danger');
 					$('#quickrun').val(1);
-					alert('Quickrun is activated: All accompanying events on content changes like commits, reindexing or onObjChangeEvent-methods are not executed.')
+					alert('Quickrun is activated: All accompanying events on content changes like commits, reindexing or onChangeObjEvent-methods are not executed.')
 				};
 			}
 		</script>

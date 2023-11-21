@@ -239,6 +239,11 @@
 								<div class="single-line zmi-code" 
 									tal:condition="python:objAttr.get('ob') is not None"
 									tal:define="zopetype python:objAttr['type'] in here.valid_zopetypes; ob python:objAttr.get('ob')">
+									<code class="debug" title="Class Products.zms.zopeutil.MissingArtefactProxy" 
+										tal:condition="python:objAttr.get('ob').absolute_url()=='#'"
+										tal:content="python:'ERROR: Object not created %s'%(objAttr.get('ob'))">
+										ERROR: Object not created 
+									</code>
 									<textarea class="form-control-ace-editor form-control form-control-sm"
 										tal:attributes="name python:'attr_custom_%s'%objAttr['id']; 
 											id  python:'attr_custom_%s'%(str(objAttr['id']).replace('/','__'));

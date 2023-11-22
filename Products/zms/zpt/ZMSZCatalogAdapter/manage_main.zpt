@@ -279,7 +279,7 @@ function zmiExecuteCatalog(url) {
 			var uid = $input.val();
 			var data = {uid:uid};
 			var $a = $input.next("a");
-			$a.after(`<span title="Double-click for expanding and copying text to clipboard." ondblclick="$(this).toggleClass('full');$ZMI.CopyToClipboard($(this).text())" class="response alert zmi-code text-truncate"><i class="fas fa-spinner fa-spin"></i></span>`);
+			$a.after(`<span title="Double-click for expanding and copying text to clipboard." ondblclick="$(this).toggleClass('full');$ZMI.CopyToClipboard($(this).text().substring($(this).text().indexOf("//SCHEMA") + 1))" class="response alert zmi-code text-truncate"><i class="fas fa-spinner fa-spin"></i></span>`);
 			$.ajax({
 				url:url,
 				data:data,
@@ -288,11 +288,15 @@ function zmiExecuteCatalog(url) {
 					i++;
 					fn();
 				},
-				success:function(response) {
-					$a.next('.response').addClass('alert-success').html(response);
+				success:function(response, textStatus, xhr) {
+					// console.log('STATUS: ' + xhr.status);
+					if ( xhr.status == 200 ) {
+						$a.next('.response').addClass('alert-success').html(response);
+					} else {
+						$a.next('.response').addClass('alert-danger').html(response);
+					}
 					i++;
 					fn();
-				}
 			});
 		}
 	}

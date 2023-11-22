@@ -30,4 +30,14 @@
       <item key="tag">span</item>
     </dictionary>
   </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="attrs"></item>
+      <item key="display">Zitat</item>
+      <item key="icon_clazz"><![CDATA[fas fa-quote-right text-dark]]></item>
+      <item key="id">charfmt_quote</item>
+      <item key="js"></item>
+      <item key="tag">q</item>
+    </dictionary>
+  </item>
 </list>

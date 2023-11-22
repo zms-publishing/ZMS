@@ -34,7 +34,7 @@ class manage_zcatalog_export_schema:
 	package = "com.zms.foundation.zcatalog.opensearch"
 
 	# Revision
-	revision = "0.0.1"
+	revision = "0.0.2"
 
 	# Roles
 	roles = ["*"]

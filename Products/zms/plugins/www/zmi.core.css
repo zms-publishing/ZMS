@@ -3036,3 +3036,42 @@ ul.pagination .page-item {
 .zmi .form-group.row .ZMSSqlDbForm-multimultiselect .input-group .control-group {
 	width:calc(50% - 38.5px)
 }
+
+/* ############################################## */
+/* QUOTE-Formats  ############################### */
+/* ############################################## */
+
+p.blockquote {
+	font-size: inherit;
+	padding: 0 0 0 3rem;
+	margin:1rem 0;	
+	border-left:5px solid silver;
+	font-size: inherit;
+	letter-spacing:.025em;
+}
+p.blockquote q {
+	font-style:italic;
+	font-size:large;
+	display:inline-block;
+	letter-spacing:0px !important;
+}
+html.cke_panel_container p.blockquote {
+	font-size: inherit;
+	padding: 0 0 0 1rem;
+	margin:0;
+	letter-spacing:unset;
+}
+html.cke_panel_container q {
+	padding: 0 0 0 1rem;
+	font-size: inherit;
+	quotes:'»' '«';
+}
+body.zmi.fra q {
+	quotes:'« ' ' »';
+}
+body.zmi.ger q {
+	quotes:'»' '«';
+}
+body.zmi.eng q {
+	quotes:'“' '”';
+}

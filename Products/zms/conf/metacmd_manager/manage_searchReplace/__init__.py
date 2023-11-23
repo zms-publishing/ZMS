@@ -35,7 +35,7 @@ class manage_searchReplace:
 	package = ""
 
 	# Revision
-	revision = "5.3.1"
+	revision = "5.4.0"
 
 	# Roles
 	roles = ["ZMSAdministrator"
@@ -51,4 +51,4 @@ class manage_searchReplace:
 	# Impl
 	class Impl:
 		manage_searchreplace = {"id":"manage_searchReplace"
-			,"type":"Script (Python)"}
+			,"type":"External Method"}

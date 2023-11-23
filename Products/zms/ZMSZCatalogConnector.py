@@ -46,7 +46,8 @@ class ZMSZCatalogConnector(
 
     # Management Interface.
     # ---------------------
-    manage = manage_main = PageTemplateFile('zpt/ZMSZCatalogAdapter/manage_zcatalog_connector', globals())
+    manage = PageTemplateFile('zpt/ZMSZCatalogAdapter/manage_zcatalog_connector', globals())
+    manage_main = PageTemplateFile('zpt/ZMSZCatalogAdapter/manage_zcatalog_connector', globals())
 
     # Management Permissions.
     # -----------------------
@@ -122,10 +123,28 @@ class ZMSZCatalogConnector(
       return [root.getMetaobjAttr(self.id, x['id']) for x in metaobjAttrs if x['id'].startswith('manage_') and x['type'] in ['py','External Method','Script (Python)']]
 
     # --------------------------------------------------------------------------
+    #  ZMSZCatalogConnector.manage_init
+    # --------------------------------------------------------------------------
+    def manage_init(self):
+      [x['ob'](self) for x in self.getActions() if x['id'].endswith('_init')]
+
+    # --------------------------------------------------------------------------
     #  ZMSZCatalogConnector.manage_object_add
     # --------------------------------------------------------------------------
     def manage_object_add(self, node, data):
       [x['ob'](self, node, data) for x in self.getActions() if x['id'].endswith('_object_add')]
+
+    # --------------------------------------------------------------------------
+    #  ZMSZCatalogConnector.manage_object_remove
+    # --------------------------------------------------------------------------
+    def manage_object_remove(self, node):
+      [x['ob'](self, node) for x in self.getActions() if x['id'].endswith('_object_remove')]
+
+    # --------------------------------------------------------------------------
+    #  ZMSZCatalogConnector.manage_destroy
+    # --------------------------------------------------------------------------
+    def manage_destroy(self):
+      [x['ob'](self) for x in self.getActions() if x['id'].endswith('_destroy')]
 
     ############################################################################
     #  ZMSZCatalogConnector.manage_changeProperties:

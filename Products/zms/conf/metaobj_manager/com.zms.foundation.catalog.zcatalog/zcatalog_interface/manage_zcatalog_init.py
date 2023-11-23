@@ -44,12 +44,6 @@ def getZCatalog(context, lang):
   zcatalog = getattr(root, cat_id, None)
   return zcatalog
 
-def get_extra_column_ids(context):
-  properties = standard.parse_json(context.evalMetaobjAttr('%s.properties'%id))
-  property = ([x for x in properties if x['id'] == 'extra_column_ids']+[{}])[0]
-  extra_column_ids = [x for x in context.getConfProperty('ZMSZCatalogConnector.extra_column_ids',property.get('defaultValue','')).split(',')]
-  return extra_column_ids
-
 def recreateZCatalog(context, lang):
   
   # Create catalog
@@ -66,8 +60,7 @@ def recreateZCatalog(context, lang):
   addLexicon( context, zcatalog)
   
   # Add columns
-  extra_column_ids = get_extra_column_ids(context)
-  for index_name in ['id', 'meta_id']+['zcat_column_%s'%x for x in extra_column_ids]:
+  for index_name in ['id', 'meta_id', 'home_id', 'index_html']:
     zcatalog.manage_addColumn(index_name)
   
   # Add Indexes (incl. Columns)

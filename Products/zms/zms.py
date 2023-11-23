@@ -208,6 +208,12 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
     #-- Search
     initContent(obj, 'com.zms.search.content.xml', REQUEST)
 
+    # Initialize catalog adapter / connector.
+    catalog_adapter = obj.getCatalogAdapter() 
+    catalog_connector = catalog_adapter.addConnector('zcatalog_interface')
+    catalog_connector.manage_init()
+    catalog_adapter.reindex(catalog_connector, obj, recursive=True)
+
     # Initialize access.
     obj.synchronizePublicAccess()
 

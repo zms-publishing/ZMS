@@ -96,7 +96,6 @@
 				<input tal:condition="python:metaObj.get('acquired')" type="hidden" name="id" tal:attributes="value metaObj/id">
 				<button class="btn btn-default" data-toggle="dropdown">
 					<i class="fas fa-caret-down mr-2"></i>
-					<i tal:condition="python:metaObj.get('acquired')" class="fas fa-share mr-2" title="acquired"></i>
 					<i tal:on-error="string:ERROR icon" tal:attributes="class python:'%s mr-2'%(zmscontext.zmi_icon(metaObj['id']))"></i>
 					<span tal:content="python:metaObj.get('name')">Name</span>
 				</button>
@@ -126,7 +125,12 @@
 					</tal:block>
 				</div>
 			</div>
-			<a class="btn btn-secondary" target="_blank" value="BTN_SEARCH" 
+            <a tal:condition="python:metaObj.get('acquired',None)" class="btn btn-secondary" target="_blank"
+                tal:attributes="
+                    href python:'%s/metaobj_manager/manage_main?lang=%s&id=%s'%(context.getRootElement().absolute_url(),request['lang'],metaObj['id']);
+                    title python:'acquired YYY from: %s (%s)'%(context.getRootElement().getHome().id, context.getRootElement().attr('titlealt'))"
+                ><i class="fas fa-share" title="acquired"></i></a>
+			<a class="btn btn-secondary" target="_blank" value="BTN_SEARCH"
 				tal:attributes="
 					href python:'manage_analyze?lang=%s&id=%s'%(request['lang'],metaObj['id']); 
 					title python:'Click for content analysis of \042%s\042. Please, apply carefully!'%metaObj['id']"

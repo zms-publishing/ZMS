@@ -2477,6 +2477,10 @@ body.lazy_select_form footer .controls {
 	right: 15px;
 	position: absolute;
 }
+.ZMSZCatalogConnector .zmi-sitemap-controls {
+	top:unset;
+	right:20px;
+}
 .zmi-sitemap-controls > div:first-child {
 	border-top-left-radius: 0;
 }

@@ -58,34 +58,32 @@
 		addable python:[x for x in available if x['id'] not in exists];">
 		<div class="col-12 form-group mb-4" tal:condition="addable">
 			<div class="btn-group">
+				<button name="btn" type="submit" class="btn btn-secondary" value="BTN_ADD" 
+					tal:content="structure python:here.getZMILangStr('BTN_ADD')">Add
+				</button>
 				<select class="form-control" name="api">
 					<option value="" tal:content="python:'----- %s -----'%here.getZMILangStr('ACTION_SELECT')%'API'">Select</option>
 					<tal:block tal:repeat="metaObj addable">
 						<option tal:attributes="value metaObj/id" tal:content="python:'%s.%s'%(metaObj['package'],metaObj['id'])">the conf</option>
 					</tal:block>
 				</select>
-				<button name="btn" type="submit" class="btn btn-secondary btn" value="Add">Add</button>
 			</div>
 		</div><!-- .form-group -->
 		<tal:block tal:repeat="si connectors">
-		<div class="form-group col-12 text-truncate">
-			<label>
-				<span class="btn btn-secondary">
-					<i tal:on-error="structure string:<i class='fas fa-ban' title='Icon Error'></i>"
-						tal:attributes="class python:si.zmi_icon"
-						></i>&nbsp;&nbsp;<input type="checkbox" name="objectIds:list" tal:attributes="value python:si.id; disabled python:si.id=='zmsindex' and 'disabled' or None" />
+			<div class="form-group col">
+				<span class="btn btn-secondary mr-2" title="Delete"
+					tal:attributes="
+						disabled python:si.id=='zmsindex' and 'disabled' or None; 
+						title python:here.getZMILangStr('BTN_DELETE');
+						value python:si.id;
+						onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'BTN_DELETE\',key:\'objectIds:list\',attr_id:\'%s\'})'%(si.id)">
+					<i class="fas fa-times text-danger"></i>
 				</span>
-				<i class="fas fa-times text-danger" tal:condition="python:si.id not in [x['id'] for x in available]"></i>
+				<input type="hidden" name="objectIds:list" tal:attributes="value python:si.id;" />
+				<i class="fas fa-ban text-danger mr-2" tal:condition="python:si.id not in [x['id'] for x in available]"></i>
 				<a tal:attributes="href python:'%s/manage_main'%si.id" tal:content="python:'%s (%s)'%(si.id,here.getZMILangStr(si.meta_type))">id (meta_type)</a>
-			</label>
-		</div><!-- .form-group -->
+			</div><!-- .form-group -->
 		</tal:block>
-		<div class="form-group col-sm-12" tal:condition="connectors">
-			<button name="btn" type="submit" class="btn btn-secondary" value="Remove">
-				<span class="icon icon-times text-danger"></span>
-				Remove
-			</button>
-		</div>
 	</div><!-- .card-body -->
 
 	<legend>Schema</legend>
@@ -181,13 +179,12 @@
 
 			</div><!-- .col-sm-10 -->
 		</div><!-- .form-group -->
-
 		<div class="form-group row">
-			<div class="col-sm-2">&nbsp;</div>
-			<div class="col-sm-10">
-				<button name="btn" type="submit" class="btn btn-primary" value="Save">Save</button>
-			</div><!-- .col-sm-10 -->
-		</div><!-- .form-group -->
+			<div class="controls save">
+				<button type="submit" name="btn" class="btn btn-primary" value="BTN_SAVE" tal:content="structure python:here.getZMILangStr('BTN_SAVE')">Save</button> 
+				<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CANCEL" tal:content="structure python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
+			</div><!-- .controls.save -->
+		</div><!-- .form-group.row -->
 	</div><!-- .card-body -->
 
 </form>
@@ -195,6 +192,8 @@
 </div><!-- #zmi-tab -->
 
 <script>
+// <!--
+
 function toggleMetaobj() {
 	var selected = {};
 	$("table#indexes input:checked").each(function() {
@@ -273,6 +272,31 @@ $(function() {
 	}
 	toggleMetaobj();
 });
+
+/* Delete object.
+ */
+function zmiDeleteObjBtnClick(sender,d) {
+	if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
+		zmiFormSubmit(sender,d);
+	}
+}
+
+/**
+ * Submit form with given parameters.
+ */
+function zmiFormSubmit(sender,d) {
+	var $fm = $(sender).closest("form");
+	var html = '';
+	for (var i in d) {
+		$('input[name="' + i + '"]',$fm).remove();
+		html += '<input type="hidden" name="' + i + '" value="' + d[i] +'"/>';
+	}
+	$fm
+		.append(html)
+		.submit();
+}
+
+//-->
 </script>
 
 <footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>

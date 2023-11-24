@@ -304,21 +304,21 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
 
         # Add.
         # ----
-        if btn == 'Add':
+        if btn == 'BTN_ADD':
           api = REQUEST['api']
           connector = self.addConnector(api)
           message += 'Added ' + connector.id
 
-        # Remove.
+        # Delete.
         # -------
-        elif btn == 'Remove':
+        elif btn == 'BTN_DELETE':
           if len(ids) > 0:
             self.manage_delObjects(ids)
             message += self.getZMILangStr('MSG_DELETED')%len(ids)
 
         # Save.
         # -----
-        elif btn == 'Save':
+        elif btn == 'BTN_SAVE':
           self.setConfProperty('ZMS.CatalogAwareness.active', REQUEST.get('catalog_awareness_active')==1)
           self._ids = REQUEST.get('ids', [])
           attrs = {}
@@ -326,6 +326,9 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
             attrs[attr_id] = {'boost':float(REQUEST.get('boost_%s'%attr_id, '1.0')),'type':REQUEST.get('type_%s'%attr_id, 'text')}
           self.setAttrs(attrs)
           message += self.getZMILangStr('MSG_CHANGED')
+
+        elif btn == 'BTN_CANCEL':
+          pass
 
         # Return with message.
         message = standard.url_quote(message)

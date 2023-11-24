@@ -159,7 +159,7 @@ class ZMSZCatalogConnector(
         
         # Save.
         # -----
-        if btn == 'Save':
+        if btn == 'BTN_SAVE':
           properties = self.getProperties()
           for property in properties:
             id = property['id']
@@ -171,6 +171,9 @@ class ZMSZCatalogConnector(
             else:
               self.setConfProperty(id, value)
           message += self.getZMILangStr('MSG_CHANGED')
+
+        elif btn == 'BTN_CANCEL':
+          pass
 
         # Return with message.
         message = standard.url_quote(message)

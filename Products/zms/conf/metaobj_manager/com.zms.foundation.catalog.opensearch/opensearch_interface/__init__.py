@@ -44,7 +44,7 @@ class opensearch_interface:
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
-			,"name":"Schematize"
+			,"name":"Schematize: Generate Schema"
 			,"repetitive":0
 			,"type":"External Method"}
 
@@ -53,7 +53,7 @@ class opensearch_interface:
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
-			,"name":"Init"
+			,"name":"Init: Put Schema"
 			,"repetitive":0
 			,"type":"External Method"}
 
@@ -72,6 +72,15 @@ class opensearch_interface:
 			,"mandatory":0
 			,"multilang":0
 			,"name":"Object: Delete Opensearch"
+			,"repetitive":0
+			,"type":"External Method"}
+
+		manage_opensearch_destroy = {"default":""
+			,"id":"manage_opensearch_destroy"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"Destroy: Delete Schema"
 			,"repetitive":0
 			,"type":"External Method"}
 

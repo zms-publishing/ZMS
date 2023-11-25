@@ -312,9 +312,10 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
         # Delete.
         # -------
         elif btn == 'BTN_DELETE':
-          if len(ids) > 0:
+          n = len(ids)
+          if n > 0:
             self.manage_delObjects(ids)
-            message += self.getZMILangStr('MSG_DELETED')%len(ids)
+            message += self.getZMILangStr('MSG_DELETED')%n
 
         # Save.
         # -----

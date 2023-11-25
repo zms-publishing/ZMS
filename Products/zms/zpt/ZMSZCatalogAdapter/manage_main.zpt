@@ -76,7 +76,7 @@
 						disabled python:si.id=='zmsindex' and 'disabled' or None; 
 						title python:here.getZMILangStr('BTN_DELETE');
 						value python:si.id;
-						onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'BTN_DELETE\',key:\'objectIds:list\',attr_id:\'%s\'})'%(si.id)">
+						onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'BTN_DELETE\',\'objectIds:list\':\'%s\'})'%si.id">
 					<i class="fas fa-times text-danger"></i>
 				</span>
 				<input type="hidden" name="objectIds:list" tal:attributes="value python:si.id;" />

@@ -35,7 +35,13 @@
 			</div>
 		</div>
 		<div class="zmi-sitemap-container">
-			<div class="zmi-sitemap mb-0"><!-- .zmi-sitemap --></div>
+			<div class="progress">
+				<div class="progress-bar progress-bar-striped progress-bar-animated active"
+					role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+					<span></span>
+				</div>
+			</div>
+			<div class="zmi-sitemap"><!-- .zmi-sitemap --></div>
 		</div>
 	</div><!-- .form-group -->
 	<div class="form-group">
@@ -95,6 +101,36 @@
 </tal:block>
 
 <script>
+function set_progress( v, func_name ) {
+	var perc = Math.round(v * 10000) / 100;
+	var bar_type_dict = {'reindex':'warning','test':'info','resync':'danger'};
+	var bar_type = bar_type_dict[func_name];
+	$('.zmi-sitemap-container .progress .progress-bar')
+		.addClass('active')
+		.addClass('bg-' + bar_type)
+		.attr('aria-valuenow',perc)
+		.css('width',perc + '%')
+		.find('span').text( perc + '%' );
+	if ( perc == 100 ) {
+		$('.zmi-sitemap-container .progress .progress-bar')
+			.removeClass('active')
+			.removeClass('progress-bar-animated')
+			.removeClass('progress-bar-striped');
+	}
+}
+function reset_progress() {
+	$('.zmi-sitemap-container .progress .progress-bar')
+		.addClass('progress-bar-striped')
+		.addClass('progress-bar-animated')
+		.removeClass('bg-info')
+		.removeClass('bg-warning')
+		.removeClass('bg-danger')
+		.removeClass('active')
+		.attr('aria-valuenow',0)
+		.css('width','0%')
+		.find('span').text( 'Loading Sitemap ... ' );
+		$('.zmi-sitemap-container').removeClass('loading');
+}
 function zmiExecuteCatalog(sender) {
 	var title = $(sender).attr("title");
 	if (confirm("Do you really want to\n" + title)) {
@@ -161,6 +197,9 @@ function zmiExpandObjectTree(max) {
 				done = true;
 			}
 		});
+		if (!done) {
+			reset_progress()
+		}
 	}
 	fn();
 	return false;
@@ -168,8 +207,10 @@ function zmiExpandObjectTree(max) {
 
 $(function() {
 	// Sitemap
+	set_progress( 0, func_name='test');
 	var href = $ZMI.get_document_element_url($ZMI.getPhysicalPath());
-	$ZMI.objectTree.init(".zmi-sitemap",href,{
+	$ZMI.objectTree.init('.zmi-sitemap', href, {
+		params: {'meta_types':'ZMS'},
 		filter: x => x.meta_id === 'ZMS',
 		'init.callback': function() {
 				zmiExpandObjectTree(1);
@@ -186,7 +227,7 @@ $(function() {
 							.attr('href',href_manage)
 							.attr('title',href_manage);
 						var uid = '{'+'$'+phys_path.substring(1).replace(/\/content/gi,'@')+'}'; // $a.attr('data-uid');
-						$a.before('<input name="home_id:list" type="checkbox" title="'+uid+'" value="'+uid+'" checked="checked" /> ');
+						$a.before('<input name="home_ids:list" type="checkbox" title="'+uid+'" value="'+uid+'" checked="checked" /> ');
 					});
 			},
 		});

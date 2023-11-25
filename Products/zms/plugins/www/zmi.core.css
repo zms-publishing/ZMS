@@ -2402,8 +2402,7 @@ body.lazy_select_form footer .controls {
 #zmsindex select.form-control:not([size]):not([multiple]) {
 	height: inherit;
 }
-.ZMSZCatalogConnector .zmi-sitemap-container,
-#zmsindex .zmi-sitemap-container {
+.zmi-sitemap-container {
 	width:100%;
 	max-height: 30rem;
 	height: fit-content;
@@ -2426,49 +2425,47 @@ body.lazy_select_form footer .controls {
 	transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 	clear:both !important;
 }
-#zmsindex .zmi-sitemap-container {
+.zmi-sitemap-container {
 	margin: 0 0 3rem 0;
 }
-.ZMSZCatalogConnector .zmi-sitemap-container.full,
-#zmsindex .zmi-sitemap-container.full  {
+.zmi-sitemap-container.full  {
 	max-height: unset !important;
 }
-#zmsindex .zmi-sitemap-container.loading ul li > * {
+.zmi-sitemap-container.loading ul li > * {
 	color:#ccc !important
 }
-#zmsindex .zmi-sitemap-container .progress {
+.zmi-sitemap-container .progress {
 	padding-left:0;
 	margin-right: 7rem;
 	background: #337ab740;
 	height:1.25rem;
 	direction: ltr;
 }
-#zmsindex .zmi-sitemap-container .progress .progress-bar {
+.zmi-sitemap-container .progress .progress-bar {
 	width:0%;
 	text-align:right;
 }
-#zmsindex .zmi-sitemap-container .progress .progress-bar.active {
+.zmi-sitemap-container .progress .progress-bar.active {
 	min-width:5em;
 	width: fit-content;
 }
-#zmsindex .zmi-sitemap-container .progress .progress-bar span {
+.zmi-sitemap-container .progress .progress-bar span {
 	margin:0 1em;
 }
-#zmsindex .zmi-sitemap-container.loading .progress .progress-bar {
+.zmi-sitemap-container.loading .progress .progress-bar {
 	width:100%;
 }
-#zmsindex .zmi-sitemap-container .progress.error .progress-bar {
+.zmi-sitemap-container .progress.error .progress-bar {
 	background-color:#9C27B0
 }
-#zmsindex .zmi-sitemap-container .progress.error:after {
+.zmi-sitemap-container .progress.error:after {
 	content:"INDEXING ERROR occured: details see event-log";
 	display:block;
 	color:#9C27B0;
 	position:absolute;
 	margin-top:1.5em;
 }
-.ZMSZCatalogConnector .zmi-sitemap > ul,
-#zmsindex .zmi-sitemap > ul {
+.zmi-sitemap-container .zmi-sitemap > ul {
 	margin-top:10px;
 	direction: ltr;
 }
@@ -2490,12 +2487,8 @@ body.lazy_select_form footer .controls {
 .zmi-sitemap.full {
 	max-height: unset;
 }
-.ZMSZCatalogConnector .response.alert-success,
-.ZMSZCatalogConnector .response.alert-danger {
-	display: block;
-}
-#zmsindex .response.text-success,
-#zmsindex .response.text-danger {
+.zmi-sitemap-container .response.text-success,
+.zmi-sitemap-container .response.text-danger {
 	display: block;
 	position: fixed;
 	z-index: 1000;
@@ -2508,8 +2501,8 @@ body.lazy_select_form footer .controls {
 	white-space:pre;
 	background: #dff0d8;
 }
-#zmsindex .response.text-success .close,
-#zmsindex .response.text-danger .close {
+.zmi-sitemap-container .response.text-success .close,
+.zmi-sitemap-container .response.text-danger .close {
 	display:block;
 	padding: .5em;
 	position: absolute;
@@ -2518,8 +2511,8 @@ body.lazy_select_form footer .controls {
 	top: 0;
 	background: #dff0d8;
 }
-#zmsindex .response.text-danger,
-#zmsindex .response.text-danger .close {
+.zmi-sitemap-container .response.text-danger,
+.zmi-sitemap-container .response.text-danger .close {
 	background-color: #f2dede;
 }
 

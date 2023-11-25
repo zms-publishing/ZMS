@@ -143,21 +143,21 @@ function set_progress( v, func_name ) {
 	var perc = Math.round(v * 10000) / 100;
 	var bar_type_dict = {'reindex':'warning','test':'info','resync':'danger'};
 	var bar_type = bar_type_dict[func_name];
-	$('#zmsindex .progress .progress-bar')
+	$('.zmi-sitemap-container .progress .progress-bar')
 		.addClass('active')
 		.addClass('bg-' + bar_type)
 		.attr('aria-valuenow',perc)
 		.css('width',perc + '%')
 		.find('span').text( perc + '%' );
 	if ( perc == 100 ) {
-		$('#zmsindex .progress .progress-bar')
+		$('.zmi-sitemap-container .progress .progress-bar')
 			.removeClass('active')
 			.removeClass('progress-bar-animated')
 			.removeClass('progress-bar-striped');
 	}
 }
 function reset_progress() {
-	$('#zmsindex .progress .progress-bar')
+	$('.zmi-sitemap-container .progress .progress-bar')
 		.addClass('progress-bar-striped')
 		.addClass('progress-bar-animated')
 		.removeClass('bg-info')

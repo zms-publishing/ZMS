@@ -55,7 +55,7 @@
 						<tal:block tal:condition="python:data.replace(' ','').find('%s(self):'%action['id'])>0">
 							<a class="dropdown-item" href="javascript:;"
 								tal:attributes="title python:action['name'].split(':')[-1]; data-url python:'%s/%s'%(here.getRootElement().absolute_url(),action['id'])" onclick="return zmiExecuteCatalog(this)">
-								<tal:block tal:content="python:here.getZMILangStr(action['name'].split(':')[0])"></tal:block>
+								<tal:block tal:content="python:here.getZMILangStr('BTN_%s'%action['name'].split(':')[0].upper())"></tal:block>
 							</a>
 						</tal:block>
 					</tal:block>

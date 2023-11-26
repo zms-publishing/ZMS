@@ -15,6 +15,12 @@ class opensearch_interface:
 	# Id
 	id = "opensearch_interface"
 
+	# Lang_dict
+	lang_dict = {"opensearch_interface.BTN_DESTROY":{"eng":"Delete Index"
+			,"ger":"Index löschen"}
+		,"opensearch_interface.BTN_SCHEMATIZE":{"eng":"Create Schema (JSON)"
+			,"ger":"Schema erzeugen (JSON)"}}
+
 	# Name
 	name = "Opensearch-Interface"
 
@@ -29,7 +35,7 @@ class opensearch_interface:
 
 	# Attrs
 	class Attrs:
-		properties = {"custom":"[\r\n  {\r\n    \"id\": \"opensearch.url\",\r\n    \"type\": \"string\",\r\n    \"label\": \"URL\",\r\n    \"defaultValue\": \"https://localhost:9200\"\r\n  },\r\n  {\r\n    \"id\": \"opensearch.username\",\r\n    \"type\": \"string\",\r\n    \"label\": \"Username\",\r\n    \"defaultValue\": \"admin\"\r\n  },\r\n  {\r\n    \"id\": \"opensearch.password\",\r\n    \"type\": \"password\",\r\n    \"label\": \"Password\",\r\n    \"defaultValue\": \"admin\"\r\n  },\r\n  {\r\n    \"id\": \"opensearch.schema\",\r\n    \"type\": \"text\",\r\n    \"label\": \"Schema\",\r\n    \"defaultValue\": \"{}\"\r\n  },\r\n  {\r\n    \"id\": \"opensearch.parser\",\r\n    \"type\": \"string\",\r\n    \"label\": \"Parser\",\r\n    \"defaultValue\": \"http://localhost:9998/tika\"\r\n  }\r\n]"
+		properties = {"custom":"[\r\n  {\r\n    \"id\": \"opensearch.url\",\r\n    \"type\": \"string\",\r\n    \"label\": \"URL\",\r\n    \"default_value\": \"https://localhost:9200\",\r\n    \"is_target_of\": \"\"\r\n  },\r\n  {\r\n    \"id\": \"opensearch.username\",\r\n    \"type\": \"string\",\r\n    \"label\": \"Username\",\r\n    \"default_value\": \"admin\",\r\n    \"is_target_of\": \"\"\r\n  },\r\n  {\r\n    \"id\": \"opensearch.password\",\r\n    \"type\": \"password\",\r\n    \"label\": \"Password\",\r\n    \"default_value\": \"admin\",\r\n    \"is_target_of\": \"\"\r\n  },\r\n  {\r\n    \"id\": \"opensearch.schema\",\r\n    \"type\": \"text\",\r\n    \"label\": \"Schema\",\r\n    \"default_value\": \"{}\",\r\n    \"is_target_of\": \"schematize\"\r\n  },\r\n  {\r\n    \"id\": \"opensearch.parser\",\r\n    \"type\": \"string\",\r\n    \"label\": \"Parser\",\r\n    \"default_value\": \"http://localhost:9998/tika\",\r\n    \"is_target_of\": \"\"\r\n  }\r\n]"
 			,"default":""
 			,"id":"properties"
 			,"keys":[]

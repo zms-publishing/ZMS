@@ -76,19 +76,30 @@
 	<div class="card-body">
 		<div class="form-group row" tal:repeat="property properties">
 			<label class="col-sm-2 control-label"><span><span tal:content="property/label">the label</span></label>
-			<div class="col-sm-10" tal:define="value python:here.getConfProperty(property['id'],property.get('defaultValue',''))">
+			<div class="col-sm-10" tal:define="
+					value python:here.getConfProperty(property['id'],property.get('default_value',''));
+					is_target_of python:property.get('is_target_of','')">
 				<tal:block tal:condition="python:property.get('type','string')=='string'">
-					<input class="form-control" type="text" tal:attributes="name property/id; value value">
+					<input class="form-control" type="text" tal:attributes="
+						name property/id; 
+						value value; 
+						data-is_target_of is_target_of">
 				</tal:block>
 				<tal:block tal:condition="python:property.get('type','string')=='password'">
-					<input class="form-control" type="password" tal:attributes="name property/id;" placeholder="*****">
+					<input class="form-control" type="password" placeholder="*****" tal:attributes="name property/id;">
 				</tal:block>
-				<tal:block tal:condition="python:property.get('type','string')=='text'">
-					<textarea tal:attributes="name property/id; placeholder python:property.get('defaultValue','')" 
-						class="form-control form-control-sm" 
-						data-dblclickhandler="show_ace_editor(e=this, toggle=true)"
-						tal:content="value"></textarea>
-				</tal:block>
+				<div class="single-line zmi-code" tal:condition="python:property.get('type','string')=='text'">
+					<textarea title="Doubleclick for ACE-Editor"
+						tal:attributes="name property/id; 
+							id property/id;
+							placeholder python:property.get('default_value','');
+							data-is_target_of is_target_of"
+						data-content_type="application/javascript"
+						class="form-control-ace-editor form-control js"
+						ondblclick ="show_ace_editor(e=this, toggle=true)"
+						tal:content="value">
+					</textarea>
+				</div>
 			</div>
 		</div><!-- .form-group.row -->
 		<div class="form-group row">
@@ -135,6 +146,8 @@ function zmiExecuteCatalog(sender) {
 	var title = $(sender).attr("title");
 	if (confirm("Do you really want to\n" + title)) {
 		var url = $(sender).attr("data-url");
+		var is_target_of = url.split("_").pop();
+		var $is_target_of = $('.card-body [data-is_target_of=' + is_target_of + ']');
 		$.ajax({
 			url:url,
 			error: function (xhr, ajaxOptions, thrownError) {
@@ -142,7 +155,11 @@ function zmiExecuteCatalog(sender) {
 			},
 			success:function(response) {
 				console.log(response);
-				alert(response);
+				if ($is_target_of) {
+					$is_target_of.val(response);
+					$is_target_of.focus();
+				}
+				alert(response);;
 			}
 		});
 	}
@@ -279,5 +296,6 @@ $(function() {
 </form>
 </div><!-- #zmi-tab -->
 <footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
+<script type="text/javascript" defer charset="UTF-8" src="/++resource++zms_/common/zmi_ace_editor.js"></script>
 </body>
 </html>

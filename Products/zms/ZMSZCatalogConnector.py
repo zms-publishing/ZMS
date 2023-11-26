@@ -163,8 +163,8 @@ class ZMSZCatalogConnector(
           properties = self.getProperties()
           for property in properties:
             id = property['id']
-            defaultValue = property['defaultValue']
-            value = REQUEST.get(id,defaultValue)
+            default_value = property['default_value']
+            value = REQUEST.get(id,default_value)
             if property.get('type','string') == 'password':
               if value:
                 self.setConfProperty(id, value)

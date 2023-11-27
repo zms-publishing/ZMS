@@ -176,7 +176,7 @@ function zmiReindexCatalog(sender) {
 			var uid = $input.val();
 			var data = {uid: uid, connector_id: connector_id};
 			var $a = $input.next("a");
-			$a.after(`<span class="response alert zmi-code"><i class="fas fa-spinner fa-spin"></i></span>`);
+			$a.after(`<span class="response"><i class="fas fa-spinner fa-spin text-primary"></i></span>`);
 			$.ajax({
 				url:"manage_reindex",
 				data:data,
@@ -252,45 +252,49 @@ $(function() {
 });
 </script>
 <style>
+	/*<!--*/
 	.ZMSZCatalogConnector .response.alert-success,
 	.ZMSZCatalogConnector .response.alert-danger {
-		max-height: 4.75rem;
 		overflow-y: auto;
 		font-size:smaller !important;
-		margin-top: .35rem;
+		margin: .35rem;
 		margin-bottom: 1rem;
 		padding: .25em .5rem;
+		border:0;
+		background:none;
 	}
-	.ZMSZCatalogConnector .response.alert-success.full,
-	.ZMSZCatalogConnector .response.alert-danger.full {
-		max-height: 100%;
-		transition: max-height 0.5s ease-in-out;
+	.ZMSZCatalogConnector span.response.alert-success:before {
+		content: "\f058";
+		color:#4CAF50;
 	}
-	.ZMSZCatalogConnector span.response.alert-success.zmi-code:before {
-		content: "\f077";
+	.ZMSZCatalogConnector span.response.alert-danger:before  {
+		content: "\f06a";
+		color:#E91E63;
+	}
+	.ZMSZCatalogConnector span.response.alert-success:before,
+	.ZMSZCatalogConnector span.response.alert-danger:before {
 		font-weight: 900;
 		font-family: 'Font Awesome 5 Free';
-		font-size:15px;
-		display:block;
-		width:calc(100% - 1rem);
-		text-align:right;
+		display:inline-block;
+		margin-right:.35rem;
 		font-style: normal;
 		font-variant: normal;
 		text-rendering: auto;
-		line-height: 1.35;
-		position:absolute;
 		-moz-osx-font-smoothing: grayscale;
 		-webkit-font-smoothing: antialiased;
 	}
-	.ZMSZCatalogConnector span.response.alert-success.full.zmi-code:before {
-		content: "\f0c5";
-		font-weight: 400;
+	.ZMSZCatalogConnector .card .dropdown-menu {
+		max-width: unset;
 	}
-	.ZMSZCatalogConnector .zmi-code textarea {
-		padding-left:3rem;
-		padding-top: .35rem;
-		font-size:smaller !important;
+	.ZMSZCatalogConnector .response .fa-spinner {
+		margin: 0 1rem;
+		padding: 0;
+		line-height: 1;
+		display: inline-block;
+		font-size: 1rem;
+		position: absolute;
 	}
+	/*-->*/
 </style>
 
 </form>

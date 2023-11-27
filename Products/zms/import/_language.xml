@@ -3302,12 +3302,12 @@
    </Row>
    <Row>
     <Cell><Data ss:Type="String">BTN_SCHEMATIZE</Data></Cell>
-    <Cell><Data ss:Type="String">Index-Schema erzeugen (JSON)</Data></Cell>
-    <Cell><Data ss:Type="String">Create Index Schema (JSON)</Data></Cell>
-    <Cell><Data ss:Type="String">Indexschema (JSON) maken</Data></Cell>
-    <Cell><Data ss:Type="String">Créer un schéma d'index (JSON)</Data></Cell>
-    <Cell><Data ss:Type="String">Creare lo schema dell'indice (JSON)</Data></Cell>
-    <Cell><Data ss:Type="String">Crear esquema de índice (JSON)</Data></Cell>
+    <Cell><Data ss:Type="String">Schema erzeugen (JSON)</Data></Cell>
+    <Cell><Data ss:Type="String">Create Schema (JSON)</Data></Cell>
+    <Cell><Data ss:Type="String">Schema (JSON) maken</Data></Cell>
+    <Cell><Data ss:Type="String">Créer un schéma (JSON)</Data></Cell>
+    <Cell><Data ss:Type="String">Creare lo schema  (JSON)</Data></Cell>
+    <Cell><Data ss:Type="String">Crear esquema (JSON)</Data></Cell>
     <Cell><Data ss:Type="String">创建索引模式（JSON）</Data></Cell>
     <Cell><Data ss:Type="String">ایجاد طرح نمایه (JSON)</Data></Cell>
     <Cell><Data ss:Type="String">Создание схемы индекса (JSON)</Data></Cell>

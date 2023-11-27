@@ -24,6 +24,7 @@ def catalog_object(zcatalog, adapter, node, data):
   for attr_id in attr_ids:
     attr_name = 'zcat_index_%s'%attr_id
     delattr(node, attr_name)
+  return 1
 
 def manage_zcatalog_objects_add( self, objects):
   request = self.REQUEST
@@ -32,6 +33,7 @@ def manage_zcatalog_objects_add( self, objects):
     request['ZMS_ENV_ZCATALOG'] = getZCatalog(self, lang)
   zcatalog = request['ZMS_ENV_ZCATALOG']
   adapter = self.getCatalogAdapter()
+  success, failed = 0, 0
   for (node, data) in objects:
-    catalog_object(zcatalog, adapter, node, data)
-  return 1
+    success += catalog_object(zcatalog, adapter, node, data)
+  return success, failed

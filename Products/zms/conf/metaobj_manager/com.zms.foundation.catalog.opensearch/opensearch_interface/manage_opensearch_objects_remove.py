@@ -50,4 +50,4 @@ def bulk_opensearch_delete(self, sources):
 def manage_opensearch_objects_remove( self, nodes):
 	sources = [{'uid':x.get_uid()} for x in nodes]
 	success, failed = bulk_opensearch_delete(self, sources)
-	return json.dumps({'success':success, 'failed':failed})
+	return success, failed

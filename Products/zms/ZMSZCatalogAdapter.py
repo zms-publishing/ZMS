@@ -57,7 +57,7 @@ def get_file(node, d, fileparsing=True):
     except:
       standard.writeError( node, "can't extract_content")
 
-def object_add(adapter, connector, node, d, fileparsing=True):
+def get_catalog_objects(adapter, connector, node, d, fileparsing=True):
   request = node.REQUEST
   lang = request.get('lang')
   # Additional defaults.
@@ -68,7 +68,8 @@ def object_add(adapter, connector, node, d, fileparsing=True):
   # ZMSFile.file to standard_html?
   get_file(node, d, fileparsing)
   # Add data via connector.
-  connector.manage_objects_add(((node, d)))
+  return (node, d)
+    
 
 ################################################################################
 ################################################################################
@@ -196,9 +197,15 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
       return sorted(self.objectValues(self.getConnectorMetaTypes()),key=lambda x:x.id)
 
     # --------------------------------------------------------------------------
+    #  ZMSZCatalogAdapter.get_connector
+    # --------------------------------------------------------------------------
+    def get_connector(self, id):
+      return [[x for x in root.getCatalogAdapter().getConnectors() if x.id == id]+[None]][0]
+
+    # --------------------------------------------------------------------------
     #  Add connector.
     # --------------------------------------------------------------------------
-    def addConnector(self, id):
+    def add_connector(self, id):
       from Products.zms import ZMSZCatalogConnector 
       connector = ZMSZCatalogConnector.ZMSZCatalogConnector(id)
       self._setObject(connector.id, connector)
@@ -235,8 +242,8 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     # --------------------------------------------------------------------------
     #  Get object data and add via connector.
     # --------------------------------------------------------------------------
-    def object_add(self, connector, node, fileparsing=True):
-      l = []
+    def get_catalog_objects(self, connector, node, fileparsing=True):
+      objects = []
       indexable = True
       # Custom hook:
       # if catalog_indexable is in node-attributes, then retrieve value for it. 
@@ -246,30 +253,31 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
         # Custom hook:
         # if catalog_index is in node-attributes, then retrieve value for it. 
         if 'catalog_index' in self.getMetaobjAttrIds(node.meta_id):
-          for d in node.attr('catalog_index'):
-            object_add(self, connector, node, d, fileparsing)
-            l.append(1)
+          for data in node.attr('catalog_index'):
+            objects.append(get_catalog_objects(self, connector, node, data, fileparsing))
         # Catalog only desired meta-ids.
         if node.meta_id in self.getIds():
-          d = get_default_data(node)
-          object_add(self, connector, node, d, fileparsing)
-          l.append(1)
-      return l
+          data = get_default_data(node)
+          objects.append(get_catalog_objects(self, connector, node, data, fileparsing))
+      return objects
 
     # --------------------------------------------------------------------------
     #  Reindex
     # --------------------------------------------------------------------------
     def reindex(self, connector, base, recursive=True, fileparsing=True):
       def traverse(node, recursive):
-        l = self.object_add(connector, node, fileparsing)
+        objects = self.get_catalog_objects(connector, node, fileparsing)
+        success, failed = connector.manage_objects_add(objects)
         if recursive:
           for childNode in node.filteredChildNodes(request):
-            l.extend(traverse(childNode, recursive))
-        return l
+            childSuccess, childFailed = traverse(childNode, recursive)
+            success += childSuccess
+            failed += childFailed
+        return success, failed 
       request = self.REQUEST
       request.set('lang', self.REQUEST.get('lang', self.getPrimaryLanguage()))
       result = []
-      result.append('%i objects cataloged'%len(traverse(base, recursive)))
+      result.append('%i objects cataloged (%i failed)'%traverse(base, recursive))
       return ', '.join([x for x in result if x])
 
 
@@ -306,7 +314,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
         # ----
         if btn == 'BTN_ADD':
           api = REQUEST['api']
-          connector = self.addConnector(api)
+          connector = self.add_connector(api)
           message += 'Added ' + connector.id
 
         # Delete.

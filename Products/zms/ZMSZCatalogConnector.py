@@ -133,18 +133,22 @@ class ZMSZCatalogConnector(
     #
     #  @param objects ((node, data), (node, data), (node, data), ...)
     #  @type  objects list|tuple 
+    #  @return success, failed
+    #  @rtype  tuple
     # --------------------------------------------------------------------------
     def manage_objects_add(self, objects):
-      [x['ob'](self, objects) for x in self.getActions() if x['id'].endswith('_objects_add')]
+      return [x['ob'](self, objects) for x in self.getActions() if x['id'].endswith('_objects_add')][0]
 
     # --------------------------------------------------------------------------
     #  ZMSZCatalogConnector.manage_objects_remove
     # 
-    #  @param nodes
-    #  @type  nodes list|tuple 
+    #  @param   nodes
+    #  @type    nodes list|tuple 
+    #  @return  success, failed
+    #  @rtype   tuple
     # --------------------------------------------------------------------------
     def manage_objects_remove(self, nodes):
-      [x['ob'](self, nodes) for x in self.getActions() if x['id'].endswith('_objects_remove')]
+      return [x['ob'](self, nodes) for x in self.getActions() if x['id'].endswith('_objects_remove')][0]
 
     # --------------------------------------------------------------------------
     #  ZMSZCatalogConnector.manage_destroy

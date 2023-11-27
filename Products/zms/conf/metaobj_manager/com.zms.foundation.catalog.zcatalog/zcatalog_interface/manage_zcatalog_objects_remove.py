@@ -12,8 +12,12 @@ def manage_zcatalog_objects_remove( self, nodes):
   if 'ZMS_ENV_ZCATALOG' not in request:
     request['ZMS_ENV_ZCATALOG'] = getZCatalog(self, lang)
   zcatalog = request['ZMS_ENV_ZCATALOG']
+  success, failed = 0, 0
   for node in nodes:
     path = node.getPath()
     if zcatalog.getrid(path):
       zcatalog.uncatalog_object(path)
-  return "%i cataloged"%len(nodes)
+      success += 1
+    else:
+      failed += 1
+  return success, failed

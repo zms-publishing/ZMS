@@ -1,32 +1,17 @@
 from Products.zms import standard
-from opensearchpy import OpenSearch
-from opensearchpy.helpers import bulk
-from abc import abstractmethod
-
-def get_catalog_source(catalog_adapter, node, fileparsing=True):
-  # Initialize sources.
-  sources = [None]
-  # Callback for node: add dict to sources
-  def callback(node, d):
-    sources.append(d)
-  # Get sitemap for for single (recursive=False) document.
-  catalog_adapter.get_sitemap(callback, node, recursive=False, fileparsing=fileparsing)
-  # Return source (or None).
-  return sources[-1]
 
 # Process nodes of this page.
-def traverse(data, root_node, clients, fileparsing, node, page_size=100):
-  catalog_adapter = root_node.getCatalogAdapter()
-  meta_ids = catalog_adapter.getIds()
+def traverse(data, root_node, adapter, connector, clients, fileparsing, node, page_size=100):
+  meta_ids = adapter.getIds()
   count = 0
   root_path = '/'.join(root_node.getPhysicalPath())
   while node and count < page_size:
     path = '/'.join(node.getPhysicalPath())
     log = {'index':count,'path':path,'meta_id':node.meta_id}
     if node.meta_id in meta_ids:
-      source = get_catalog_source(catalog_adapter, node, fileparsing)
-      if source:
-        log['source'] = source
+      objects = adapter.get_catalog_objects(connector, node, fileparsing)
+      if objects:
+        log['objects'] = objects
     data['log'].append(log)
     node = node.get_next_node(clients)
     if node \
@@ -36,59 +21,12 @@ def traverse(data, root_node, clients, fileparsing, node, page_size=100):
     data['next_node'] = None if not node else '{$%s}'%node.get_uid()
     count += 1
 
-# Get Opensearch Client:
-#
-# ${opensearch.url:https://localhost:9200}
-# ${opensearch.username:admin}
-# ${opensearch.password:admin}
-# ${opensearch.ssl.verify:}
-def get_opensearch_client(self):
-  url = self.getConfProperty('opensearch.url')
-  if not url:
-    return None
-  username = self.getConfProperty('opensearch.username', 'admin')
-  password = self.getConfProperty('opensearch.password', 'admin')
-  verify = bool(self.getConfProperty('opensearch.ssl.verify', False))
-  use_ssl = url.find('https://')>-1
-  url = url.split('://')[-1]
-  host = url[:url.find(':')]
-  port = int(url[url.find(':')+1:])
-  auth = (username, password)
-  standard.writeBlock(self, "host=%s, port=%i, username=%s, password=%s"%(host,port,username,password))
-  return OpenSearch(
-    hosts = [{'host': host, 'port': port}],
-    http_compress = True, # enables gzip compression for request bodies
-    http_auth = auth,
-    use_ssl = use_ssl,
-    verify_certs = verify,
-    ssl_assert_hostname = False,
-    ssl_show_warn = False,
-  ) 
-
-def bulk_opensearch_index(self, sources):
-  client = get_opensearch_client(self)
-  index = self.getRootElement().getHome().id
-  actions = []
-  # Name adaption to opensearch schema
-  for x in sources:
-    # Create language specific opensearch id
-    _id = "%s:%s"%(x['uid'],x.get('lang',self.getPrimaryLanguage()))
-    d = {"_op_type":"index", "_index":index, "_id":_id}
-    # Differenciate zms-object id and uid
-    x['zmsid'] = x['id']
-    x['id'] = x['uid']
-    d.update(x)
-    actions.append(d)
-  if client: 
-    return bulk(client, actions)
-  return 0, len(actions)
-
-
 def manage_opensearch_export_data_paged( self):
   request = self.REQUEST
-  catalog = self.getZMSIndex().get_catalog()
-  catalog_adapter = self.getCatalogAdapter()
-  ids = catalog_adapter.getIds()
+  root_node = self.getRootElement()
+  catalog = root_node.getZMSIndex().get_catalog()
+  adapter = root_node.getCatalogAdapter()
+  ids = adapter.getIds()
 
   # REST Endpoints  
   if request.get('json'):
@@ -113,9 +51,11 @@ def manage_opensearch_export_data_paged( self):
       page_size = int(request['page_size'])
       data['log'] = []
       data['next_node'] = None
-      traverse(data,root_node,clients,fileparsing,node,page_size)
-      sources = [x['source'] for x in data['log'] if x.get('source')]
-      success, failed = bulk_opensearch_index(self, sources)
+      connector = adapter.get_connector('opensearch_interface')
+      traverse(data, root_node, adapter, connector, clients, fileparsing, node, page_size)
+      objects = []
+      [objects.extend(x['objects']) for x in data['log'] if x.get('source')]
+      success, failed = connector.manage_objects_add(objects)
       data['success'] =  success
       data['failed'] = failed
     return json.dumps(data)

@@ -1,9 +1,21 @@
 # Managing ZMS-Content-Index with Opensearch
-ZMS offer an Opensearch interface for the crucial tasks of index management:
+ZMS offer an Opensearch interface for the crucial tasks of index management. 
+Before letting Opensearch create an index Opensearch needs to know how to index the content. That is why a content "schema" (a list of fields) is needed. ZMS catalog manager helps creating that schema and define which contents shall be indexed by showing a list of all
+1. content types and
+2. attributes 
 
-1. Generating the schema of the index in JSON format
-2. Creating an index (initialisation) on the Opensearch server
-3. Indexing / Reindexing the ZMS client as a whole
-4. Deleting the index on the Opensearch server
+Any content type (usually pages) and attributes can be selected to be indexed. Usually the _standard_html_-attributes provides the full text wheras other attributes can be added specifically like _title_, _titlealt_, _description_. The content of attributes may be applied when search results are listed. 
 
-... to be continued
+ZMS will send only the content of the by ZMS catalog manager selected contenttypes and its selected attributes to the index. So before starting, please makre sure that the selections in the  ZMS catalog manager gui is correct. 
+Because here ist starts always with "Create Schema": based on the ZMS catalog manager selections ZMS will save a small JSON file as a configuration parameter. The second step is "Initialisation", which leads to an empty index according to that content schema. After this is done the content can be primarily indexed with "Refresh". 
+
+Menu items for managing the index:
+1. Create Schema: Generating the field schema of the index in JSON format
+2. Initialisation: Creating an index on the Opensearch server
+3. Refresh: Indexing / Reindexing the ZMS client as a whole
+4. Deleting: Removing the index on the Opensearch server
+
+After this initial indexing the contentwill be index incrementally on any content change.
+
+Important hint: "Initialisation" creates/recreates always an **empty** index based on the selected attribute schema. So if a schema is changed and the index initialised, all indexed items are gone and a new full reindex will be necessary.
+

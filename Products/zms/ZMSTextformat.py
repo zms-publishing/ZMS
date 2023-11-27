@@ -98,8 +98,8 @@ def br_quote(self, text, subtag):
     
     if subtag == 'br':
       rtn += line+qcr
-      # if c < len( ts):
-      #   rtn += '<%s />'%subtag
+      if c < len( ts):
+        rtn += '<%s />'%subtag
     elif len(line) > 0:
       rtn += '<%s'%subtag
       rtn += '>'

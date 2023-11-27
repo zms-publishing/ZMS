@@ -1,0 +1,9 @@
+# Managing ZMS-Content-Index with Opensearch
+ZMS offer an Opensearch interface for the crucial tasks of index management:
+
+1. Generating the schema of the index in JSON format
+2. Creating an index (initialisation) on the Opensearch server
+3. Indexing / Reindexing the ZMS client as a whole
+4. Deleting the index on the Opensearch server
+
+... to be continued

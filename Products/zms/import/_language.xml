@@ -3302,19 +3302,19 @@
    </Row>
    <Row>
     <Cell><Data ss:Type="String">BTN_SCHEMATIZE</Data></Cell>
-    <Cell><Data ss:Type="String">Schema erzeugen (JSON)</Data></Cell>
-    <Cell><Data ss:Type="String">Create Schema (JSON)</Data></Cell>
-    <Cell><Data ss:Type="String">Schema (JSON) maken</Data></Cell>
-    <Cell><Data ss:Type="String">Créer un schéma (JSON)</Data></Cell>
-    <Cell><Data ss:Type="String">Creare lo schema  (JSON)</Data></Cell>
-    <Cell><Data ss:Type="String">Crear esquema (JSON)</Data></Cell>
-    <Cell><Data ss:Type="String">创建索引模式（JSON）</Data></Cell>
-    <Cell><Data ss:Type="String">ایجاد طرح نمایه (JSON)</Data></Cell>
-    <Cell><Data ss:Type="String">Создание схемы индекса (JSON)</Data></Cell>
-    <Cell><Data ss:Type="String">अनुक्रमणिका स्कीमा बनाएँ (JSON)</Data></Cell>
-    <Cell><Data ss:Type="String">إنشاء مخطط فهرس (JSON)</Data></Cell>
-    <Cell><Data ss:Type="String">Tạo lược đồ chỉ mục (JSON)</Data></Cell>
-    <Cell><Data ss:Type="String">יצירת סכימת אינדקס (JSON)</Data></Cell>
+    <Cell><Data ss:Type="String">Schema erzeugen</Data></Cell>
+    <Cell><Data ss:Type="String">Create Schema</Data></Cell>
+    <Cell><Data ss:Type="String">Schema maken</Data></Cell>
+    <Cell><Data ss:Type="String">Créer un schéma</Data></Cell>
+    <Cell><Data ss:Type="String">Creare lo schema</Data></Cell>
+    <Cell><Data ss:Type="String">Crear esquema</Data></Cell>
+    <Cell><Data ss:Type="String">创建索引模式</Data></Cell>
+    <Cell><Data ss:Type="String">ایجاد طرح نمایه</Data></Cell>
+    <Cell><Data ss:Type="String">Создание схемы индекса</Data></Cell>
+    <Cell><Data ss:Type="String">अनुक्रमणिका स्कीमा बनाएँ</Data></Cell>
+    <Cell><Data ss:Type="String">إنشاء مخطط فهرس</Data></Cell>
+    <Cell><Data ss:Type="String">Tạo lược đồ chỉ mục</Data></Cell>
+    <Cell><Data ss:Type="String">יצירת סכימת אינדקס</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">BTN_SEARCH</Data></Cell>

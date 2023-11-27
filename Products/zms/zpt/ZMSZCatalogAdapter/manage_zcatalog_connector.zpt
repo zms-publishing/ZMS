@@ -51,7 +51,6 @@
 			</button>
 			<div class="dropdown-menu" aria-labelledby="apiDropdownMenuButton">
 				<a class="dropdown-item" href="javascript:;" tal:attributes="title python:here.getZMILangStr('BTN_REFRESH'); data-id here/id" onclick="return zmiReindexCatalog(this)">
-					<i class="fas fa-sync"></i>
 					<tal:block tal:content="python:here.getZMILangStr('BTN_REFRESH')"></tal:block>
 				</a>
 				<tal:block tal:repeat="action actions" tal:condition="actions">
@@ -66,6 +65,11 @@
 				</tal:block>
 			</div>
 		</div>
+		<span tal:condition="python:here.getMetaobjAttr(here.id,'readme')"
+			title="Readme" class="zmi-readme text-info float-Cright cursor-help btn"
+			tal:attributes="onclick python:'window.open(\'./metaobj_manager/%s.readme/manage_readme_iframe\')'%(here.id)">
+			<i class="far fa-question-circle"></i>
+		</span>
 	</div><!-- .form-group -->
 </div><!-- .card-body -->
 

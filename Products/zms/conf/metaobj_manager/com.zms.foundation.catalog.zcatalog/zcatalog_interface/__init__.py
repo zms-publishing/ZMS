@@ -48,8 +48,8 @@ class zcatalog_interface:
 			,"repetitive":0
 			,"type":"External Method"}
 
-		manage_zcatalog_object_add = {"default":""
-			,"id":"manage_zcatalog_object_add"
+		manage_zcatalog_objects_add = {"default":""
+			,"id":"manage_zcatalog_objects_add"
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
@@ -57,8 +57,8 @@ class zcatalog_interface:
 			,"repetitive":0
 			,"type":"External Method"}
 
-		manage_zcatalog_object_remove = {"default":""
-			,"id":"manage_zcatalog_object_remove"
+		manage_zcatalog_objects_remove = {"default":""
+			,"id":"manage_zcatalog_objects_remove"
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0

@@ -25,12 +25,13 @@ def catalog_object(zcatalog, adapter, node, data):
     attr_name = 'zcat_index_%s'%attr_id
     delattr(node, attr_name)
 
-def manage_zcatalog_object_add( self, node, data):
+def manage_zcatalog_objects_add( self, objects):
   request = self.REQUEST
   lang = standard.nvl(request.get('lang'), self.getPrimaryLanguage())
   if 'ZMS_ENV_ZCATALOG' not in request:
     request['ZMS_ENV_ZCATALOG'] = getZCatalog(self, lang)
   zcatalog = request['ZMS_ENV_ZCATALOG']
   adapter = self.getCatalogAdapter()
-  catalog_object(zcatalog, adapter, node, data)
+  for (node, data) in objects:
+    catalog_object(zcatalog, adapter, node, data)
   return 1

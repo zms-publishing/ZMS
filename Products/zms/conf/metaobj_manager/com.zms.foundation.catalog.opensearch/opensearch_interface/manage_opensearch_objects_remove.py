@@ -33,7 +33,7 @@ def get_opensearch_client(self):
 	)
 	return client
 
-def bulk_opensearch_index(self, sources):
+def bulk_opensearch_delete(self, sources):
 	client = get_opensearch_client(self)
 	index_name = self.getRootElement().getHome().id
 	actions = []
@@ -41,17 +41,13 @@ def bulk_opensearch_index(self, sources):
 	for x in sources:
 		# Create language specific opensearch id
 		_id = "%s:%s"%(x['uid'],x.get('lang',self.getPrimaryLanguage()))
-		d = {"_op_type":"index", "_index":index_name, "_id":_id}
-		# Differenciate zms-object id and uid
-		x['zmsid'] = x['id']
-		x['id'] = x['uid']
-		d.update(x)
+		d = {"_op_type":"delete", "_index":index_name, "_id":_id}
 		actions.append(d)
 	if client: 
 		return bulk(client, actions)
 	return 0, len(actions)
 
-def manage_opensearch_object_add( self, node, data):
-	sources = [data]
-	success, failed = bulk_opensearch_index(self, sources)
+def manage_opensearch_objects_remove( self, nodes):
+	sources = [{'uid':x.get_uid()} for x in nodes]
+	success, failed = bulk_opensearch_delete(self, sources)
 	return json.dumps({'success':success, 'failed':failed})

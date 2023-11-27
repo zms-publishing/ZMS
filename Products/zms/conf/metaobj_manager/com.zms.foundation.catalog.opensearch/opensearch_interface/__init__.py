@@ -63,8 +63,8 @@ class opensearch_interface:
 			,"repetitive":0
 			,"type":"External Method"}
 
-		manage_opensearch_object_add = {"default":""
-			,"id":"manage_opensearch_object_add"
+		manage_opensearch_objects_add = {"default":""
+			,"id":"manage_opensearch_objects_add"
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
@@ -72,8 +72,8 @@ class opensearch_interface:
 			,"repetitive":0
 			,"type":"External Method"}
 
-		manage_opensearch_object_remove = {"default":""
-			,"id":"manage_opensearch_object_remove"
+		manage_opensearch_objects_remove = {"default":""
+			,"id":"manage_opensearch_objects_remove"
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0

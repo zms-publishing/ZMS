@@ -68,7 +68,7 @@ def object_add(adapter, connector, node, d, fileparsing=True):
   # ZMSFile.file to standard_html?
   get_file(node, d, fileparsing)
   # Add data via connector.
-  connector.manage_object_add(node, d)
+  connector.manage_objects_add(((node, d)))
 
 ################################################################################
 ################################################################################

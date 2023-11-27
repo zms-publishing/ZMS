@@ -6,7 +6,7 @@ def getZCatalog(context, lang):
   root = context.getRootElement()
   return getattr(root, cat_id, None)
 
-def manage_zcatalog_object_remove( self, nodes):
+def manage_zcatalog_objects_remove( self, nodes):
   request = self.REQUEST
   lang = standard.nvl(request.get('lang'), self.getPrimaryLanguage())
   if 'ZMS_ENV_ZCATALOG' not in request:

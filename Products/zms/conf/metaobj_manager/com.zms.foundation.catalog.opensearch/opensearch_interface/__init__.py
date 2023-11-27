@@ -98,3 +98,12 @@ class opensearch_interface:
 			,"name":"Query"
 			,"repetitive":0
 			,"type":"External Method"}
+
+		readme = {"default":""
+			,"id":"readme"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"readme.md"
+			,"repetitive":0
+			,"type":"resource"}

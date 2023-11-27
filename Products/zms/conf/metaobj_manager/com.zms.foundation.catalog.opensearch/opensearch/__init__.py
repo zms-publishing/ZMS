@@ -129,12 +129,3 @@ class opensearch:
 			,"name":"Template: Opensearch"
 			,"repetitive":0
 			,"type":"zpt"}
-
-		readme = {"default":""
-			,"id":"readme"
-			,"keys":[]
-			,"mandatory":0
-			,"multilang":0
-			,"name":"readme.md"
-			,"repetitive":0
-			,"type":"resource"}

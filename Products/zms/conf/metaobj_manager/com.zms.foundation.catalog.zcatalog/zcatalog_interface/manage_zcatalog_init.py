@@ -59,7 +59,7 @@ def recreateZCatalog(context, lang):
   addLexicon( context, zcatalog)
   
   # Add columns
-  for index_name in ['id', 'meta_id']:
+  for index_name in ['id', 'meta_id', 'get_uid']:
     zcatalog.manage_addColumn(index_name)
   
   # Add Indexes (incl. Columns)

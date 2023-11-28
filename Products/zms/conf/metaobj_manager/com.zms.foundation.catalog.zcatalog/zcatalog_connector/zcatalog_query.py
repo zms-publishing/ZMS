@@ -1,4 +1,3 @@
-id = 'zcatalog_connector'
 from Products.zms import standard
 import copy
 
@@ -15,12 +14,8 @@ def intValue(v):
   return i
 
 def zcatalog_query( self, request):
-  standard.writeLog( self, "[zcatalog_query]")
-
-  # ZCatalog.
-  q = request['q']
+  q = request.get('q','')
   fq = request.get('fq','')
-  order = request.get('order','')
   lang = standard.nvl(request.get('lang'), self.getPrimaryLanguage())
   root = self.getRootElement()
   zcatalog = getattr(root, 'catalog_%s'%lang)

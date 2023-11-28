@@ -34,15 +34,12 @@ def get_opensearch_client(self):
 	return client
 
 
-def opensearch_query( self , q = None):
-	REQUEST = self.REQUEST
-	if not q:
-		q = REQUEST.get('q','')
-	qpage_index = REQUEST.get('pageIndex',0)
-	qsize = REQUEST.get('size', 10)
-	qfrom = REQUEST.get('from', qpage_index*qsize)
+def opensearch_query( self, request):
+	q = request.get('q','')
+	qpage_index = request.get('pageIndex',0)
+	qsize = request.get('size', 10)
+	qfrom = request.get('from', qpage_index*qsize)
 	index_name = self.getRootElement().getHome().id
-	resp_text = ''
 
 	query = {
 		"size": qsize,
@@ -72,10 +69,8 @@ def opensearch_query( self , q = None):
 
 	try:
 		response = client.search(body = json.dumps(query), index = index_name)
-		resp_text = json.dumps(response)
 	except opensearchpy.exceptions.RequestError as e:
-		resp_text = '//%s'%(e.error)
-
-	REQUEST.RESPONSE.setHeader('Content-Type','application/json; charset=utf-8')
-	return resp_text
+		response = '//%s'%(e.error)
+	
+	return response
 

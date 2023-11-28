@@ -24,6 +24,11 @@ from Products.zms import IZMSCatalogConnector
 from Products.zms import IZMSRepositoryProvider
 from Products.zms import ZMSItem
 from Products.zms import standard
+import json
+from urllib.parse import urlparse
+import opensearchpy
+from opensearchpy import OpenSearch
+
 
 
 ################################################################################
@@ -107,21 +112,50 @@ class ZMSZCatalogOpensearchConnector(
       d = {}
       return d
 
+    # --------------------------------------------------------------------------
+    #  ZMSZCatalogOpensearchConnector.get_client:
+    # --------------------------------------------------------------------------
+    def get_client(self):
+      # ${opensearch.url:https://localhost:9200}
+      # ${opensearch.username:admin}
+      # ${opensearch.password:admin}
+      # ${opensearch.ssl.verify:}
+      url = self.getConfProperty('opensearch.url')
+      if not url:
+        return None
+      host = urlparse(url).hostname
+      port = urlparse(url).port
+      ssl = urlparse(url).scheme=='https' and True or False
+      verify = bool(self.getConfProperty('opensearch.ssl.verify', False))
+      username = self.getConfProperty('opensearch.username', 'admin')
+      password = self.getConfProperty('opensearch.password', 'admin')
+      auth = (username,password)
+      
+      client = OpenSearch(
+        hosts = [{'host': host, 'port': port}],
+        http_compress = False, # enables gzip compression for request bodies
+        http_auth = auth,
+        use_ssl = ssl,
+        verify_certs = verify,
+        ssl_assert_hostname = False,
+        ssl_show_warn = False,
+      )
+      return client
+
 
     # --------------------------------------------------------------------------
     #  ZMSZCatalogOpensearchConnector.search_json:
     # --------------------------------------------------------------------------
     def search_json(self, q, REQUEST, RESPONSE=None):
       """ ZMSZCatalogOpensearchConnector.search_json """
-      import requests
-      from requests.auth import HTTPBasicAuth
-      import json
 
       qpage_index = REQUEST.get('pageIndex',0)
       qsize = REQUEST.get('size', 10)
       qfrom = REQUEST.get('from', qpage_index*qsize)
+      index_name = self.getRootElement().getHome().id
+      resp_text = ''
 
-      d = {
+      query = {
         "size": qsize,
         "from":qfrom,
         "query":{
@@ -143,20 +177,18 @@ class ZMSZCatalogOpensearchConnector(
         }
       }
 
-      url = self.getConfProperty('opensearch.url', 'https://localhost:9200')
-      # ID of opensearch index is ZMS multisite root node id or explicitly given by request variable 'opensearch_index_id'
-      root_id = self.getRootElement().getHome().id
-      index_id = REQUEST.get('opensearch_index_id',root_id)
-      username = self.getConfProperty('opensearch.username', 'admin')
-      password = self.getConfProperty('opensearch.password', 'admin')
-      verify = bool(self.getConfProperty('opensearch.ssl.verify', False))
-      auth = HTTPBasicAuth(username,password)
-      response = requests.get('%s/%s/_search?pretty=true'%(url,index_id),auth=auth,json=d,verify=verify)
-      response.raise_for_status()
-      json_obj = response.json()
-      data = json.dumps(json_obj, separators=(",", ":"), indent=4)
-      REQUEST.RESPONSE.setHeader('Content-Type','text/json; charset=utf-8')
-      return data
+      client = self.get_client()
+      if not client:
+        return '{"error":"No client"}'
+
+      try:
+        response = client.search(body = json.dumps(query), index = index_name)
+        resp_text = json.dumps(response)
+      except opensearchpy.exceptions.RequestError as e:
+        resp_text = '//%s'%(e.error)
+
+      REQUEST.RESPONSE.setHeader('Content-Type','application/json; charset=utf-8')
+      return resp_text
 
 
     # --------------------------------------------------------------------------

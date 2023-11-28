@@ -45,7 +45,6 @@ def getZCatalog(context, lang):
   return zcatalog
 
 def recreateZCatalog(context, lang):
-  
   # Create catalog
   cat_id = 'catalog_%s'%lang
   root = context.getRootElement()
@@ -60,7 +59,7 @@ def recreateZCatalog(context, lang):
   addLexicon( context, zcatalog)
   
   # Add columns
-  for index_name in ['id', 'meta_id', 'home_id', 'index_html']:
+  for index_name in ['id', 'meta_id']:
     zcatalog.manage_addColumn(index_name)
   
   # Add Indexes (incl. Columns)
@@ -74,7 +73,7 @@ def recreateZCatalog(context, lang):
         break
     index_name = 'zcat_index_%s'%attr_id
     index_type = context.getConfProperty('ZCatalog.TextIndexType','ZCTextIndex')
-    if index_name == 'zcat_index_home_id':
+    if index_name in ['zcat_index_home_id','zcat_index_meta_id']:
       index_type = KeywordIndex(index_name)
     elif attr_type == 'date':
       index_type = DateIndex(attr_id)

@@ -279,7 +279,13 @@ function zmiExecuteCatalog(url) {
 			var uid = $input.val();
 			var data = {uid:uid};
 			var $a = $input.next("a");
-			$a.after(`<span title="Double-click for expanding and copying text to clipboard." ondblclick="$(this).toggleClass('full');$ZMI.CopyToClipboard($(this).text().substring($(this).text().indexOf("//SCHEMA") + 1))" class="response alert zmi-code text-truncate"><i class="fas fa-spinner fa-spin"></i></span>`);
+			var response_element = `
+				<span class="response alert zmi-code text-truncate"
+					title="Double-click for expanding and copying text to clipboard." 
+					ondblclick="$(this).toggleClass('full');$ZMI.CopyToClipboard($(this).text().substring($(this).text().indexOf('//SCHEMA') + 9))" >
+					<i class="fas fa-spinner fa-spin"></i>
+				</span>`;
+			$a.after(response_element);
 			$.ajax({
 				url:url,
 				data:data,

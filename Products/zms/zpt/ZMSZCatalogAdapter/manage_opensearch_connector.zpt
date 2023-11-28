@@ -123,6 +123,7 @@
 		margin-top: .35rem;
 		margin-bottom: 1rem;
 		padding: .25em .5rem;
+		white-space: pre !important;
 	}
 	.ZMSZCatalogConnector .response.alert-success.full,
 	.ZMSZCatalogConnector .response.alert-danger.full {

@@ -36,14 +36,7 @@ def manage_zcatalog_export_schema(self):
 	'text',
 	'token_count'
 ]
-  properties['id'] = {'type':'text'}
-  properties['zmsid'] = {'type':'text'}
-  properties['uid'] = {'type':'text'}
-  properties['loc'] = {'type':'text'}
-  properties['index_html'] = {'type':'text'}
-  properties['meta_id'] = {'type':'keyword'}
-  properties['lang'] = {'type':'keyword'}
-  properties['home_id'] = {'type':'keyword'}
+
   zca = zmscontext.getCatalogAdapter()
   attrs = zca.getAttrs()
   for attr_id in zca._getAttrIds():
@@ -56,7 +49,17 @@ def manage_zcatalog_export_schema(self):
     property = {}
     property['type'] = attr_type
     properties[attr_id] = property
+
+  # Force default properties types
+  properties['id'] = {'type':'text'}
+  properties['zmsid'] = {'type':'text'}
+  properties['uid'] = {'type':'text'}
+  properties['loc'] = {'type':'text'}
+  properties['index_html'] = {'type':'text'}
+  properties['meta_id'] = {'type':'keyword'}
+  properties['lang'] = {'type':'keyword'}
   properties['home_id'] = {'type':'keyword'}
+
   mappings = {'properties':properties}
   dictionary = {'mappings':mappings}
 
@@ -72,7 +75,7 @@ def manage_zcatalog_export_schema(self):
   try:
     response = requests.delete('%s/%s'%(url,root_id),auth=auth,verify=verify)
     response = requests.put('%s/%s'%(url,root_id),auth=auth,headers=headers,json=dictionary,verify=verify)
-    resp_text += json.dumps(response.json(), separators=(",", ":"), indent=2)
+    resp_text += json.dumps(response.json())
     response.raise_for_status()
   except:
     standard.writeError(self,'Error: %s'%(resp_text))
@@ -82,5 +85,5 @@ def manage_zcatalog_export_schema(self):
   resp_text += '\n\n'
   resp_text += '//SCHEMA\n'
 
-  resp_text += json.dumps(mappings, indent=2)
+  resp_text += json.dumps(mappings)
   return resp_text

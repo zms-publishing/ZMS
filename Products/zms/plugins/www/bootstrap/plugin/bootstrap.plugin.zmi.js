@@ -1215,6 +1215,9 @@ ZMI.prototype.iframe = function(href, data, opt) {
 				href = href.substring(0,href.indexOf("?"))+"?lang="+getZMILang()+"&manage_tabs_message="+manage_tabs_message;
 				self.location.href = href;
 			} else {
+				if (opt['json']) {
+					result = '<pre>'+JSON.stringify(result)+'</pre>';
+				}
 				opt['body'] = result;
 				if (typeof opt['title'] == "undefined") {
 					var title = $("div.zmi",result).attr("title");

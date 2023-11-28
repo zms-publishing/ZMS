@@ -25,6 +25,7 @@ from platform import python_version
 from zExceptions import NotFound
 import OFS.SimpleItem
 import Acquisition
+import json
 import os
 import shutil
 import time
@@ -167,7 +168,7 @@ def manage_packMediaDb(self, REQUEST=None, RESPONSE=None):
   path = mediadb.getLocation()
 
   # Get filenames.
-  filenames = mediadb.valid_filenames()
+  filenames = [x[1] for x in mediadb.valid_filenames()]
   standard.writeLog( self, "[manage_packMediaDb]: filenames %s"%str(filenames))
   tempfolder = tempfile.mkdtemp()
   os.makedirs(tempfolder, exist_ok=True)
@@ -461,6 +462,7 @@ class MediaDb(
           obj_attr = obj.getObjAttr(si)
           for lang in obj.getLangIds():
             for obj_vers in obj.getObjVersions():
+              obj_attr_name = '%s_%s'%(si,lang)
               v = _objattrs.getobjattr(obj,obj_vers,obj_attr,lang)
               for r in v:
                 for k in r:
@@ -470,7 +472,7 @@ class MediaDb(
                     filenamesFromValue = getFilenamesFromValue( u)
                     for filename in filenamesFromValue:
                       if filename not in filenames:
-                        filenames.append( filename)
+                        filenames.append(('/'.join(obj.getPhysicalPath())+'#'+obj_attr_name, filename))
         # Process object.
         else:
           obj_attrs = obj.getObjAttrs()
@@ -491,9 +493,32 @@ class MediaDb(
                   filenamesFromValue = getFilenamesFromValue( v)
                   for filename in filenamesFromValue:
                     if filename not in filenames:
-                      filenames.append( filename)
+                      filenames.append(('/'.join(obj.getPhysicalPath())+'#'+obj_attr_name, filename))
       return filenames
 
+    ############################################################################
+    #  MediaDb.manage_test:
+    ############################################################################
+    def manage_test(self, REQUEST, RESPONSE):
+      """ manage_test """
+      RESPONSE.setHeader('Cache-Control', 'no-cache')
+      RESPONSE.setHeader('Content-Type', 'application/json; charset=utf-8')
+      def traverse(path):
+        files = []
+        for filename in os.listdir(path):
+          filepath = os.path.join(path,filename)
+          if os.path.isdir(filepath):
+            files.extend(traverse(filepath))
+          elif os.path.isfile(filepath):
+            files.append(filename)
+        return files
+      # Get filenames.
+      path_filenames = traverse(self.getLocation())
+      valid_filenames = self.valid_filenames()
+      l = []
+      l.extend([(attr, filename, 'OK' if filename in path_filenames else 'MISSING') for (attr, filename) in valid_filenames])
+      l.extend([(None, filename, 'MISSING') for filename in path_filenames if filename not in [y[1] for y in valid_filenames]])
+      return json.dumps(l, indent=2)
 
     """
     ############################################################################

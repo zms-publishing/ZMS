@@ -1,4 +1,4 @@
-id = 'zcatalog_interface'
+id = 'zcatalog_connector'
 from Products.zms import standard
 from Products.ZCatalog import ZCatalog
 from Products.PluginIndexes.DateIndex.DateIndex import DateIndex

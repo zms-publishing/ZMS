@@ -1,4 +1,4 @@
-id = 'zcatalog_interface'
+id = 'zcatalog_connector'
 from Products.zms import standard
 
 def getZCatalog(context, lang):

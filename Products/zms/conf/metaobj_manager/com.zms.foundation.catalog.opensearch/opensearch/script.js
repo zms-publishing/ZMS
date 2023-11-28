@@ -14,7 +14,7 @@ $(function() {
 	show_results = async (q, pageIndex) => {
 		$('.search-results').html(hb_spinner_tmpl(q));
 		// debugger;
-		const qurl = `zcatalog_adapter/opensearch_interface/opensearch_query?q=${q}&pageIndex:int=${pageIndex}`;
+		const qurl = `zcatalog_adapter/opensearch_connector/opensearch_query?q=${q}&pageIndex:int=${pageIndex}`;
 		const response = await fetch(qurl);
 		const res = await response.json();
 		const res_processed = postprocess_results(q, res);

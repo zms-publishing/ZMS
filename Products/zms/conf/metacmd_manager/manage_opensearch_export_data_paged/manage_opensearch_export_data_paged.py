@@ -51,7 +51,7 @@ def manage_opensearch_export_data_paged( self):
       page_size = int(request['page_size'])
       data['log'] = []
       data['next_node'] = None
-      connector = adapter.get_connector('opensearch_interface')
+      connector = adapter.get_connector('opensearch_connector')
       traverse(data, root_node, adapter, connector, clients, fileparsing, node, page_size)
       objects = []
       [objects.extend(x['objects']) for x in data['log'] if x.get('source')]

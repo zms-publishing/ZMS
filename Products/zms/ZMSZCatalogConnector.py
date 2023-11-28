@@ -19,6 +19,8 @@
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from zope.interface import implementer
+import json
+import re
 # Product Imports.
 from Products.zms import standard
 from Products.zms import IZMSCatalogConnector
@@ -117,16 +119,19 @@ class ZMSZCatalogConnector(
     # --------------------------------------------------------------------------
     #  ZMSZCatalogConnector.getActions
     # --------------------------------------------------------------------------
-    def getActions(self):
+    def getActions(self, pattern=None):
       root = self.getRootElement()
       metaobjAttrs = root.getMetaobjAttrs(self.id)
-      return [root.getMetaobjAttr(self.id, x['id']) for x in metaobjAttrs if x['id'].startswith('manage_') and x['type'] in ['py','External Method','Script (Python)']]
+      actions = [root.getMetaobjAttr(self.id, x['id']) for x in metaobjAttrs if x['type'] in ['py','External Method','Script (Python)']]
+      if pattern:
+        actions = [x for x in actions if re.match(pattern,x['id'])]
+      return actions
 
     # --------------------------------------------------------------------------
     #  ZMSZCatalogConnector.manage_init
     # --------------------------------------------------------------------------
     def manage_init(self):
-      [x['ob'](self) for x in self.getActions() if x['id'].endswith('_init')]
+      [x['ob'](self) for x in self.getActions(r'^manage_(.*?)_init$')]
 
     # --------------------------------------------------------------------------
     #  ZMSZCatalogConnector.manage_objects_add
@@ -137,7 +142,7 @@ class ZMSZCatalogConnector(
     #  @rtype  tuple
     # --------------------------------------------------------------------------
     def manage_objects_add(self, objects):
-      return [x['ob'](self, objects) for x in self.getActions() if x['id'].endswith('_objects_add')][0]
+      return [x['ob'](self, objects) for x in self.getActions(r'^manage_(.*?)_objects_add$')][0]
 
     # --------------------------------------------------------------------------
     #  ZMSZCatalogConnector.manage_objects_remove
@@ -148,13 +153,24 @@ class ZMSZCatalogConnector(
     #  @rtype   tuple
     # --------------------------------------------------------------------------
     def manage_objects_remove(self, nodes):
-      return [x['ob'](self, nodes) for x in self.getActions() if x['id'].endswith('_objects_remove')][0]
+      return [x['ob'](self, nodes) for x in self.getActions(r'^manage_(.*?)_objects_remove$')][0]
 
     # --------------------------------------------------------------------------
     #  ZMSZCatalogConnector.manage_destroy
     # --------------------------------------------------------------------------
     def manage_destroy(self):
-      [x['ob'](self) for x in self.getActions() if x['id'].endswith('_destroy')]
+      [x['ob'](self) for x in self.getActions(r'^manage_(.*?)_destroy$')]
+
+    # --------------------------------------------------------------------------
+    #  ZMSZCatalogConnector.search_json
+    # --------------------------------------------------------------------------
+    def search_json(self, REQUEST, RESPONSE):
+      """ search_json """
+      RESPONSE.setHeader('Cache-Control', 'no-cache')
+      RESPONSE.setHeader('Content-Type', 'application/json; charset=utf-8')
+      result = [x['ob'](self, REQUEST) for x in self.getActions(r'(.*?)_query$')][0]
+      return json.dumps(result, indent=2)
+
 
     ############################################################################
     #  ZMSZCatalogConnector.manage_changeProperties:

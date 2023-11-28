@@ -14,9 +14,13 @@ def intValue(v):
     i = 0
   return i
 
-def zcatalog_query( self, q, fq='', order=None):
+def zcatalog_query( self, request):
+  standard.writeLog( self, "[zcatalog_query]")
+
   # ZCatalog.
-  request = self.REQUEST
+  q = request['q']
+  fq = request.get('fq','')
+  order = request.get('order','')
   lang = standard.nvl(request.get('lang'), self.getPrimaryLanguage())
   root = self.getRootElement()
   zcatalog = getattr(root, 'catalog_%s'%lang)

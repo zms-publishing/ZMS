@@ -53,7 +53,7 @@
 	<legend>Connectors</legend>
 	<div class="card-body" tal:define="
 		connectors python:here.getConnectors();
-		available python:sorted([y for y in [here.getMetaobj(x) for x in here.getMetaobjIds()] if y['id'].endswith('_interface') and y['type'] in ['ZMSLibrary']],key=lambda x:x['id']);
+		available python:sorted([y for y in [here.getMetaobj(x) for x in here.getMetaobjIds()] if y['id'].endswith('_connector') and y['type'] in ['ZMSLibrary']],key=lambda x:x['id']);
 		exists python:[x.id for x in connectors];
 		addable python:[x for x in available if x['id'] not in exists];">
 		<div class="col form-group mb-4" tal:condition="addable">

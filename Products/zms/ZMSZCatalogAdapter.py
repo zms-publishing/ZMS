@@ -200,6 +200,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     #  ZMSZCatalogAdapter.get_connector
     # --------------------------------------------------------------------------
     def get_connector(self, id):
+      root = self.getRootElement()
       return [[x for x in root.getCatalogAdapter().getConnectors() if x.id == id]+[None]][0]
 
     # --------------------------------------------------------------------------

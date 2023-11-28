@@ -1,6 +1,6 @@
-class zcatalog_interface:
+class zcatalog_connector:
 	"""
-	python-representation of zcatalog_interface
+	python-representation of zcatalog_connector
 	"""
 
 	# Access
@@ -13,10 +13,14 @@ class zcatalog_interface:
 	enabled = 0
 
 	# Id
-	id = "zcatalog_interface"
+	id = "zcatalog_connector"
+
+	# Lang_dict
+	lang_dict = {"zcatalog_connector.BTN_DESTROY":{"eng":"Delete ZCatalog"
+			,"ger":"ZCatalog löschen"}}
 
 	# Name
-	name = "ZCatalog-Interface"
+	name = "ZCatalog-Connector"
 
 	# Package
 	package = "com.zms.foundation.catalog.zcatalog"

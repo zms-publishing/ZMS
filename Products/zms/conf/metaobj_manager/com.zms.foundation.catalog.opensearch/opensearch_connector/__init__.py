@@ -1,6 +1,6 @@
-class opensearch_interface:
+class opensearch_connector:
 	"""
-	python-representation of opensearch_interface
+	python-representation of opensearch_connector
 	"""
 
 	# Access
@@ -13,16 +13,16 @@ class opensearch_interface:
 	enabled = 0
 
 	# Id
-	id = "opensearch_interface"
+	id = "opensearch_connector"
 
 	# Lang_dict
-	lang_dict = {"opensearch_interface.BTN_DESTROY":{"eng":"Delete Index"
+	lang_dict = {"opensearch_connector.BTN_DESTROY":{"eng":"Delete Index"
 			,"ger":"Index löschen"}
-		,"opensearch_interface.BTN_SCHEMATIZE":{"eng":"Create Schema (JSON)"
+		,"opensearch_connector.BTN_SCHEMATIZE":{"eng":"Create Schema (JSON)"
 			,"ger":"Schema erzeugen (JSON)"}}
 
 	# Name
-	name = "Opensearch-Interface"
+	name = "Opensearch-Connector"
 
 	# Package
 	package = "com.zms.foundation.catalog.opensearch"

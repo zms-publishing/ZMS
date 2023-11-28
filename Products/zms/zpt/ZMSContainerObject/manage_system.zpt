@@ -72,7 +72,8 @@
 		</tal:block>
 	</td>
 	<td class="zmi-object-id">
-		<a target="_blank" tal:attributes="href python:'%s/manage_workspace'%item[1].absolute_url()">
+		<a target="_blank" tal:on-error="string:Error: No URL Found!" 
+			tal:attributes="href python:'%s/manage_workspace'%item[1].absolute_url()">
 			<tal:block tal:content="python:item[0]">the id</tal:block>
 			<tal:block tal:condition="python:item[1].title_or_id()">
 				(<tal:block tal:content="python:item[1].title_or_id()">the title</tal:block>)

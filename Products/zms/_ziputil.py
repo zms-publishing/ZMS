@@ -19,6 +19,7 @@
 # Imports.
 from io import BytesIO
 import zipfile
+from Products.zms import standard
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 _ziputil.exportZodb2Zip:

@@ -56,17 +56,25 @@
 		available python:sorted([y for y in [here.getMetaobj(x) for x in here.getMetaobjIds()] if y['id'].endswith('_interface') and y['type'] in ['ZMSLibrary']],key=lambda x:x['id']);
 		exists python:[x.id for x in connectors];
 		addable python:[x for x in available if x['id'] not in exists];">
-		<div class="col-12 form-group mb-4" tal:condition="addable">
-			<div class="btn-group">
-				<button name="btn" type="submit" class="btn btn-secondary" value="BTN_ADD" 
-					tal:content="structure python:here.getZMILangStr('BTN_ADD')">Add
-				</button>
+		<div class="col form-group mb-4" tal:condition="addable">
+			<div class="input-group justify-content-start">
+				<div class="input-group-prepend">
+					<span class="input-group-text" 
+						style="padding:.375rem .65rem;color:#354f67a6">
+						<i class="fas fa-plus"></i>
+					</span>
+				</div>
 				<select class="form-control" name="api">
 					<option value="" tal:content="python:'----- %s -----'%here.getZMILangStr('ACTION_SELECT')%'API'">Select</option>
 					<tal:block tal:repeat="metaObj addable">
 						<option tal:attributes="value metaObj/id" tal:content="python:'%s.%s'%(metaObj['package'],metaObj['id'])">the conf</option>
 					</tal:block>
 				</select>
+				<div class="input-group-append">
+					<button name="btn" type="submit" class="btn btn-secondary" value="BTN_ADD" 
+						tal:content="structure python:here.getZMILangStr('BTN_ADD')">Add
+					</button>
+				</div>
 			</div>
 		</div><!-- .form-group -->
 		<tal:block tal:repeat="si connectors">

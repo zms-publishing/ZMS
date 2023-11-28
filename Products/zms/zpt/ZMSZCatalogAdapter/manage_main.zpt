@@ -297,6 +297,7 @@ function zmiExecuteCatalog(url) {
 					}
 					i++;
 					fn();
+				}
 			});
 		}
 	}

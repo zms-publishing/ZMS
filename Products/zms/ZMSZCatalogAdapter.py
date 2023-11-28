@@ -139,13 +139,14 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     def reindex_node(self, node, forced=False):
       try:
         if self.getConfProperty('ZMS.CatalogAwareness.active', 1) or forced:
+          fileparsing = bool( self.getConfProperty('ZMS.CatalogAwareness.fileparsing', 1))
           for connector in self.getConnectors():
             # Check meta-id.
             nodes = node.breadcrumbs_obj_path()
             nodes.reverse()
             for node in nodes:
               if node.meta_id in self.getIds():
-                connector.reindex_node(node)
+                self.reindex(connector, node, recursive=False, fileparsing=fileparsing)
                 break
         return True
       except:

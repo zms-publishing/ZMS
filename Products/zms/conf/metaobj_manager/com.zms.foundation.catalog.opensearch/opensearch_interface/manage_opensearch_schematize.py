@@ -31,14 +31,6 @@ def manage_opensearch_schematize( self):
 		'text',
 		'token_count'
 	]
-	properties['id'] = {'type':'text'}
-	properties['zmsid'] = {'type':'text'}
-	properties['uid'] = {'type':'text'}
-	properties['loc'] = {'type':'text'}
-	properties['index_html'] = {'type':'text'}
-	properties['meta_id'] = {'type':'keyword'}
-	properties['lang'] = {'type':'keyword'}
-	properties['home_id'] = {'type':'keyword'}
 	adapter = zmscontext.getCatalogAdapter()
 	attrs = adapter.getAttrs()
 	for attr_id in adapter._getAttrIds():
@@ -51,6 +43,17 @@ def manage_opensearch_schematize( self):
 		property = {}
 		property['type'] = attr_type
 		properties[attr_id] = property
+
+	# Force default properties types
+	properties['id'] = {'type':'text'}
+	properties['zmsid'] = {'type':'text'}
+	properties['uid'] = {'type':'text'}
+	properties['loc'] = {'type':'text'}
+	properties['index_html'] = {'type':'text'}
+	properties['meta_id'] = {'type':'keyword'}
+	properties['lang'] = {'type':'keyword'}
+	properties['home_id'] = {'type':'keyword'}
+
 	mappings = {'properties':properties}
 	dictionary = {'mappings':mappings}
 	schema = json.dumps(dictionary, indent=2)

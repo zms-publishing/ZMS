@@ -277,7 +277,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
       request = self.REQUEST
       request.set('lang', self.REQUEST.get('lang', self.getPrimaryLanguage()))
       result = []
-      result.append('%i objects cataloged (%i failed)'%traverse(base, recursive))
+      result.append('%i objects cataloged (%s failed)'%traverse(base, recursive))
       return ', '.join([x for x in result if x])
 
 

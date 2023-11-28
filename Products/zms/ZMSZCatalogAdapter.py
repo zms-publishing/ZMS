@@ -134,23 +134,41 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
       self.setAttrIds(['title', 'titlealt', 'attr_dc_description', 'standard_html'])
 
     # --------------------------------------------------------------------------
-    #  ZMSZCatalogAdapter.reindex_node:
+    #  ZMSZCatalogAdapter.reindex_node
     # --------------------------------------------------------------------------
     def reindex_node(self, node, forced=False):
+      standard.writeBlock(node, "[reindex_node]")
       try:
         if self.getConfProperty('ZMS.CatalogAwareness.active', 1) or forced:
-          fileparsing = bool( self.getConfProperty('ZMS.CatalogAwareness.fileparsing', 1))
-          for connector in self.getConnectors():
-            # Check meta-id.
-            nodes = node.breadcrumbs_obj_path()
-            nodes.reverse()
-            for node in nodes:
-              if node.meta_id in self.getIds():
+          nodes = node.breadcrumbs_obj_path()
+          nodes.reverse()
+          for node in nodes:
+            if node.meta_id in self.getIds():
+              fileparsing = bool( self.getConfProperty('ZMS.CatalogAwareness.fileparsing', 1))
+              for connector in self.getConnectors():
                 self.reindex(connector, node, recursive=False, fileparsing=fileparsing)
                 break
         return True
       except:
         standard.writeError( self, "can't reindex_node")
+        return False
+
+    # --------------------------------------------------------------------------
+    #  ZMSZCatalogAdapter.unindex_node
+    # --------------------------------------------------------------------------
+    def unindex_node(self, node, forced=False):
+      standard.writeBlock(node, "[unindex_node]")
+      try:
+        if self.getConfProperty('ZMS.CatalogAwareness.active', 1) or forced:
+          nodes = node.breadcrumbs_obj_path()
+          nodes.reverse()
+          for node in nodes:
+            if node.meta_id in self.getIds():
+              for connector in self.getConnectors():
+                connector.manage_objects_remove([node])
+            break
+      except:
+        standard.writeError( self, "can't unindex_node")
         return False
 
     # --------------------------------------------------------------------------

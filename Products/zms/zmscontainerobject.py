@@ -266,6 +266,8 @@ class ZMSContainerObject(
       trashcan.manage_pasteObjects(cb_copy_data=_cb_encode(cb_copy_data))
       trashcan.normalizeSortIds()
       trashcan.run_garbage_collection(forced=1)
+      # Synchronize search.
+      self.getCatalogAdapter().unindex_node(self)
       # Sort-IDs.
       self.normalizeSortIds()
       [standard.triggerEvent(child,'afterDeleteObjsEvt') for child in children]

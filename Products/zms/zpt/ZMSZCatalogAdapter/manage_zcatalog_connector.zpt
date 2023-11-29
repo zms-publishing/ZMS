@@ -2,6 +2,7 @@
 <html lang="en" tal:define="
 	standard modules/Products.zms/standard;
 	zopeutil modules/Products.zms/zopeutil;
+	adapter python:here.getCatalogAdapter();
 	properties python:here.getProperties();
 	actions python:here.getActions();">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
@@ -50,8 +51,8 @@
 				<tal:block tal:content="python:'----- %s -----'%here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_ACTION')">ZCatalog-Interaction</tal:block>
 			</button>
 			<div class="dropdown-menu" aria-labelledby="apiDropdownMenuButton">
-				<a class="dropdown-item" href="javascript:;" tal:attributes="title python:here.getZMILangStr('BTN_REFRESH'); data-id here/id" onclick="return zmiReindexCatalog(this)">
-					<tal:block tal:content="python:here.getZMILangStr('BTN_REFRESH')"></tal:block>
+				<a class="dropdown-item bg-warning" href="javascript:;" tal:attributes="title python:here.getZMILangStr('BTN_REFRESH'); data-id here/id; onclick python:'return zmiReindexCatalog(this,%s)'%str(adapter.getIds())">
+					<i class="fas fa-redo-alt"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_REFRESH')"></tal:block>
 				</a>
 				<tal:block tal:repeat="action actions" tal:condition="actions">
 					<tal:block tal:define="data python:zopeutil.readData(action.get('ob'))">
@@ -228,32 +229,40 @@
 		}
 	}
 
-	function zmiReindexCatalog(sender) {
+	function zmiReindexCatalog(sender, meta_ids) {
 		$(".zmi-sitemap .response").remove();
 		var connector_id = $(sender).attr("data-id");
 		var $inputs = $(".zmi-sitemap input:checked");
+		var n = $inputs.length;
 		var i = 0;
 		var fn = function() {
-			if (i < $inputs.length) {
+			if (i < n) {
+				set_progress( (i/n), func_name='test');
 				var $input = $($inputs[i]);
 				var uid = $input.val();
 				var data = {uid: uid, connector_id: connector_id};
 				var $a = $input.next("a");
 				$a.after(`<span class="response"><i class="fas fa-spinner fa-spin text-primary"></i></span>`);
-				$.ajax({
-					url:"manage_reindex",
-					data:data,
-					error: function (xhr, ajaxOptions, thrownError) {
-						$a.next('.response').addClass('alert-danger').html(thrownError);
-						i++;
-						fn();
-					},
-					success:function(response) {
-						$a.next('.response').addClass('alert-success').html(response);
-						i++;
-						fn();
-					}
+				$.get($ZMI.get_rest_api_url($ZMI.getPhysicalPath())+'/zmsindex',{meta_id:meta_ids},function(zmsindex) {
+					console.log("zmsindex",zmsindex);
+					$.ajax({
+						url:"manage_reindex",
+						data:data,
+						error: function (xhr, ajaxOptions, thrownError) {
+							$a.next('.response').addClass('alert-danger').html(thrownError);
+							i++;
+							fn();
+						},
+						success:function(response) {
+							$a.next('.response').addClass('alert-success').html(response);
+							i++;
+							fn();
+						}
+					});
 				});
+			}
+			else {
+				reset_progress();
 			}
 		}
 		fn();

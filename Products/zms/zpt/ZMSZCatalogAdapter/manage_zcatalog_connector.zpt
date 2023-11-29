@@ -66,8 +66,8 @@
 			</div>
 		</div>
 		<span tal:condition="python:here.getMetaobjAttr(here.id,'readme')"
-			title="Readme" class="zmi-readme text-info float-Cright cursor-help btn"
-			tal:attributes="onclick python:'window.open(\'./metaobj_manager/%s.readme/manage_readme_iframe\')'%(here.id)">
+			title="Readme" class="zmi-readme text-info cursor-help btn"
+			tal:attributes="onclick python:'javascript:$ZMI.iframe(\'./metaobj_manager/%s.readme/manage_readme\',{ },{id:\'readme\',json:false,title:\'<i class=\042far fa-question-circle text-info mr-2\042></i> Readme\' });;return false'%(here.id)">
 			<i class="far fa-question-circle"></i>
 		</span>
 	</div><!-- .form-group -->
@@ -172,148 +172,148 @@
 </div><!-- .card-body -->
 
 <script>
-function open_as_json() {
-	window.open($('iframe').attr('src'), name='_blank');
-}
-	
-function set_progress( v, func_name ) {
-	var perc = Math.round(v * 10000) / 100;
-	var bar_type_dict = {'reindex':'warning','test':'info','resync':'danger'};
-	var bar_type = bar_type_dict[func_name];
-	$('.zmi-sitemap-container .progress .progress-bar')
-		.addClass('active')
-		.addClass('bg-' + bar_type)
-		.attr('aria-valuenow',perc)
-		.css('width',perc + '%')
-		.find('span').text( perc + '%' );
-	if ( perc == 100 ) {
+//<!--
+	function set_progress( v, func_name ) {
+		var perc = Math.round(v * 10000) / 100;
+		var bar_type_dict = {'reindex':'warning','test':'info','resync':'danger'};
+		var bar_type = bar_type_dict[func_name];
 		$('.zmi-sitemap-container .progress .progress-bar')
-			.removeClass('active')
-			.removeClass('progress-bar-animated')
-			.removeClass('progress-bar-striped');
+			.addClass('active')
+			.addClass('bg-' + bar_type)
+			.attr('aria-valuenow',perc)
+			.css('width',perc + '%')
+			.find('span').text( perc + '%' );
+		if ( perc == 100 ) {
+			$('.zmi-sitemap-container .progress .progress-bar')
+				.removeClass('active')
+				.removeClass('progress-bar-animated')
+				.removeClass('progress-bar-striped');
+		}
 	}
-}
-function reset_progress() {
-	$('.zmi-sitemap-container .progress .progress-bar')
-		.addClass('progress-bar-striped')
-		.addClass('progress-bar-animated')
-		.removeClass('bg-info')
-		.removeClass('bg-warning')
-		.removeClass('bg-danger')
-		.removeClass('active')
-		.attr('aria-valuenow',0)
-		.css('width','0%')
-		.find('span').text( 'Loading Sitemap ... ' );
-		$('.zmi-sitemap-container').removeClass('loading');
-}
-function zmiExecuteCatalog(sender) {
-	var title = $(sender).attr("title");
-	if (confirm("Do you really want to\n" + title)) {
-		var url = $(sender).attr("data-url");
-		var is_target_of = url.split("_").pop();
-		var $is_target_of = $('.card-body [data-is_target_of=' + is_target_of + ']');
-		$.ajax({
-			url:url,
-			error: function (xhr, ajaxOptions, thrownError) {
-				alert(thrownError);
-			},
-			success:function(response) {
-				console.log(response);
-				if ($is_target_of) {
-					$is_target_of.val(response);
-					$is_target_of.focus();
-				}
-				alert(response);;
-			}
-		});
-	}
-}
 
-function zmiReindexCatalog(sender) {
-	$(".zmi-sitemap .response").remove();
-	var connector_id = $(sender).attr("data-id");
- 	var $inputs = $(".zmi-sitemap input:checked");
-	var i = 0;
-	var fn = function() {
-		if (i < $inputs.length) {
-			var $input = $($inputs[i]);
-			var uid = $input.val();
-			var data = {uid: uid, connector_id: connector_id};
-			var $a = $input.next("a");
-			$a.after(`<span class="response"><i class="fas fa-spinner fa-spin text-primary"></i></span>`);
+	function reset_progress() {
+		$('.zmi-sitemap-container .progress .progress-bar')
+			.addClass('progress-bar-striped')
+			.addClass('progress-bar-animated')
+			.removeClass('bg-info')
+			.removeClass('bg-warning')
+			.removeClass('bg-danger')
+			.removeClass('active')
+			.attr('aria-valuenow',0)
+			.css('width','0%')
+			.find('span').text( 'Loading Sitemap ... ' );
+			$('.zmi-sitemap-container').removeClass('loading');
+	}
+
+	function zmiExecuteCatalog(sender) {
+		var title = $(sender).attr("title");
+		if (confirm("Do you really want to\n" + title)) {
+			var url = $(sender).attr("data-url");
+			var is_target_of = url.split("_").pop();
+			var $is_target_of = $('.card-body [data-is_target_of=' + is_target_of + ']');
 			$.ajax({
-				url:"manage_reindex",
-				data:data,
+				url:url,
 				error: function (xhr, ajaxOptions, thrownError) {
-					$a.next('.response').addClass('alert-danger').html(thrownError);
-					i++;
-					fn();
+					alert(thrownError);
 				},
 				success:function(response) {
-					$a.next('.response').addClass('alert-success').html(response);
-					i++;
-					fn();
+					console.log(response);
+					if ($is_target_of) {
+						$is_target_of.val(response);
+						$is_target_of.focus();
+					}
+					alert(response);;
 				}
 			});
 		}
 	}
-	fn();
-	return false;
-}
 
-function zmiSelectObject() {
-	return false;
-}
-
-function zmiExpandObjectTree(max) {
-	var fn = function() {
-		var done = false;
-		$(".zmi-sitemap .toggle[title='+']").each(function() {
-			var $toggle = $(this);
-			var $parents = $toggle.parentsUntil(".zmi-sitemap","ul");
-			var $container = $($toggle.parents("li")[0]);
-			var level = $parents.length - 1;
-			if (level < max || -1 == max) {
-				$ZMI.objectTree.toggleClick($toggle,fn);
-				done = true;
+	function zmiReindexCatalog(sender) {
+		$(".zmi-sitemap .response").remove();
+		var connector_id = $(sender).attr("data-id");
+		var $inputs = $(".zmi-sitemap input:checked");
+		var i = 0;
+		var fn = function() {
+			if (i < $inputs.length) {
+				var $input = $($inputs[i]);
+				var uid = $input.val();
+				var data = {uid: uid, connector_id: connector_id};
+				var $a = $input.next("a");
+				$a.after(`<span class="response"><i class="fas fa-spinner fa-spin text-primary"></i></span>`);
+				$.ajax({
+					url:"manage_reindex",
+					data:data,
+					error: function (xhr, ajaxOptions, thrownError) {
+						$a.next('.response').addClass('alert-danger').html(thrownError);
+						i++;
+						fn();
+					},
+					success:function(response) {
+						$a.next('.response').addClass('alert-success').html(response);
+						i++;
+						fn();
+					}
+				});
 			}
-		});
-		if (!done) {
-			reset_progress()
 		}
+		fn();
+		return false;
 	}
-	fn();
-	return false;
-}
 
-$(function() {
-	// Sitemap
-	set_progress( 0, func_name='test');
-	var href = $ZMI.get_document_element_url($ZMI.getPhysicalPath());
-	$ZMI.objectTree.init('.zmi-sitemap', href, {
-		params: {'meta_types':'ZMS'},
-		filter: x => x.meta_id === 'ZMS',
-		'init.callback': function() {
-				zmiExpandObjectTree(1);
-			},
-		'addPages.callback': function() {
-				console.log('addPages.callback')
-				$(".zmi-sitemap a:not(.checkboxed)").each(function() {
-						var $a = $(this);
-						var phys_path = $a.attr('href');
-						var href_manage = phys_path + '/manage';
-						$a.addClass("checkboxed")
-							.removeAttr('onclick')
-							.attr('target','_blank')
-							.attr('href',href_manage)
-							.attr('title',href_manage);
-						var uid = '{'+'$'+phys_path.substring(1).replace(/\/content/gi,'@')+'}'; // $a.attr('data-uid');
-						$a.before('<input name="home_ids:list" type="checkbox" title="'+uid+'" value="'+uid+'" checked="checked" /> ');
-					});
-			},
-		});
-	$('#zmsindex .zmi-sitemap-container').removeClass('loading');
-});
+	function zmiSelectObject() {
+		return false;
+	}
+
+	function zmiExpandObjectTree(max) {
+		var fn = function() {
+			var done = false;
+			$(".zmi-sitemap .toggle[title='+']").each(function() {
+				var $toggle = $(this);
+				var $parents = $toggle.parentsUntil(".zmi-sitemap","ul");
+				var $container = $($toggle.parents("li")[0]);
+				var level = $parents.length - 1;
+				if (level < max || -1 == max) {
+					$ZMI.objectTree.toggleClick($toggle,fn);
+					done = true;
+				}
+			});
+			if (!done) {
+				reset_progress()
+			}
+		}
+		fn();
+		return false;
+	}
+
+	$(function() {
+		// Sitemap
+		set_progress( 0, func_name='test');
+		var href = $ZMI.get_document_element_url($ZMI.getPhysicalPath());
+		$ZMI.objectTree.init('.zmi-sitemap', href, {
+			params: {'meta_types':'ZMS'},
+			filter: x => x.meta_id === 'ZMS',
+			'init.callback': function() {
+					zmiExpandObjectTree(1);
+				},
+			'addPages.callback': function() {
+					console.log('addPages.callback')
+					$(".zmi-sitemap a:not(.checkboxed)").each(function() {
+							var $a = $(this);
+							var phys_path = $a.attr('href');
+							var href_manage = phys_path + '/manage';
+							$a.addClass("checkboxed")
+								.removeAttr('onclick')
+								.attr('target','_blank')
+								.attr('href',href_manage)
+								.attr('title',href_manage);
+							var uid = '{'+'$'+phys_path.substring(1).replace(/\/content/gi,'@')+'}'; // $a.attr('data-uid');
+							$a.before('<input name="home_ids:list" type="checkbox" title="'+uid+'" value="'+uid+'" checked="checked" /> ');
+						});
+				},
+			});
+		$('#zmsindex .zmi-sitemap-container').removeClass('loading');
+	});
+//-->
 </script>
 <style>
 	/*<!--*/
@@ -357,6 +357,11 @@ $(function() {
 		display: inline-block;
 		font-size: 1rem;
 		position: absolute;
+	}
+	.ZMSZCatalogConnector #readme .modal-body h1 {
+		font-size: 1.25rem;
+		font-weight: normal;
+		margin: .25rem 0 1rem;
 	}
 	/*-->*/
 </style>

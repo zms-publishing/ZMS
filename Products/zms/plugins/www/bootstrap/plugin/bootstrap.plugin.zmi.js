@@ -1216,7 +1216,7 @@ ZMI.prototype.iframe = function(href, data, opt) {
 				self.location.href = href;
 			} else {
 				if (opt['json']) {
-					result = '<pre>'+JSON.stringify(result)+'</pre>';
+					result = `<pre class="zmi-code json">${JSON.stringify(result, null, space=4)}</pre>`;
 				}
 				opt['body'] = result;
 				if (typeof opt['title'] == "undefined") {

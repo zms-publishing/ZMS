@@ -243,7 +243,9 @@
 				var data = {uid: uid, connector_id: connector_id};
 				var $a = $input.next("a");
 				$a.after(`<span class="response"><i class="fas fa-spinner fa-spin text-primary"></i></span>`);
-				$.get($ZMI.get_rest_api_url($ZMI.getPhysicalPath())+'/zmsindex',{meta_id:meta_ids},function(zmsindex) {
+				const path = uid.substr(2,uid.length-4)+'/content';
+				console.log("path",path);
+				$.get($ZMI.get_rest_api_url($ZMI.getPhysicalPath())+'/zmsindex',{path:path,meta_id:meta_ids},function(zmsindex) {
 					console.log("zmsindex",zmsindex);
 					$.ajax({
 						url:"manage_reindex",

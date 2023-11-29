@@ -46,14 +46,18 @@
 		</div>
 	</div><!-- .form-group -->
 	<div class="form-group">
+		<div class="btn-group">
+			<button id="start-button" class="btn btn-secondary mr-2" tal:attributes="
+				title python:here.getZMILangStr('BTN_REFRESH');
+				data-id here/id; 
+				onclick python:'return zmiReindexCatalog(this,%s)'%str(adapter.getIds());"><i class="fas fa-play text-success"></i></button>
+			<button id="stop-button" class="btn btn-secondary" disabled="disabled"><i class="fas fa-stop"></i></button>
+		</div>
 		<div class="btn-group dropdown" tal:condition="actions" tal:attributes="title python:'%s.%s'%(here.getMetaobj(here.id)['package'],here.id)">
 			<button class="btn btn-secondary dropdown-toggle" type="button" id="apiDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				<tal:block tal:content="python:'----- %s -----'%here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_ACTION')">ZCatalog-Interaction</tal:block>
 			</button>
 			<div class="dropdown-menu" aria-labelledby="apiDropdownMenuButton">
-				<a class="dropdown-item bg-warning" href="javascript:;" tal:attributes="title python:here.getZMILangStr('BTN_REFRESH'); data-id here/id; onclick python:'return zmiReindexCatalog(this,%s)'%str(adapter.getIds())">
-					<i class="fas fa-redo-alt"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_REFRESH')"></tal:block>
-				</a>
 				<tal:block tal:repeat="action actions" tal:condition="actions">
 					<tal:block tal:define="data python:zopeutil.readData(action.get('ob'))">
 						<tal:block tal:condition="python:data.replace(' ','').find('%s(self):'%action['id'])>0">
@@ -71,6 +75,9 @@
 			tal:attributes="onclick python:'javascript:$ZMI.iframe(\'./metaobj_manager/%s.readme/manage_readme\',{ },{id:\'readme\',json:false,title:\'<i class=\042far fa-question-circle text-info mr-2\042></i> Readme\' });;return false'%(here.id)">
 			<i class="far fa-question-circle"></i>
 		</span>
+	</div><!-- .form-group -->
+	<div class="form-group">
+		<textarea id="log" class="form-control zmi-code form-control-sm" rows="10"></textarea>
 	</div><!-- .form-group -->
 </div><!-- .card-body -->
 
@@ -229,6 +236,15 @@
 		}
 	}
 
+	function log(s) {
+		const getTime = ()=>{
+			const d = new Date();
+			const dd = [d.getHours(), d.getMinutes(), d.getSeconds()].map((a)=>(a < 10 ? '0' + a : a));
+			return dd.join(':');
+		};		
+		$("#log").html("[" + getTime() + "] " + s + "\n" + $("#log").html());
+	}
+
 	function zmiReindexCatalog(sender, meta_ids) {
 		$(".zmi-sitemap .response").remove();
 		var connector_id = $(sender).attr("data-id");
@@ -244,9 +260,9 @@
 				var $a = $input.next("a");
 				$a.after(`<span class="response"><i class="fas fa-spinner fa-spin text-primary"></i></span>`);
 				const path = uid.substr(2,uid.length-4)+'/content';
-				console.log("path",path);
+				log("Reindex " + path);
 				$.get($ZMI.get_rest_api_url($ZMI.getPhysicalPath())+'/zmsindex',{path:path,meta_id:meta_ids},function(zmsindex) {
-					console.log("zmsindex",zmsindex);
+					log("Found " + zmsindex.length + " objects to reindex");
 					$.ajax({
 						url:"manage_reindex",
 						data:data,

@@ -169,7 +169,7 @@ class ZMSZCatalogConnector(
       RESPONSE.setHeader('Cache-Control', 'no-cache')
       RESPONSE.setHeader('Content-Type', 'application/json; charset=utf-8')
       result = [x['ob'](self, REQUEST) for x in self.getActions(r'(.*?)_query$')][0]
-      return json.dumps(result, indent=2)
+      return result
 
 
     ############################################################################

@@ -67,10 +67,12 @@ def opensearch_query( self, request):
 	if not client:
 		return '{"error":"No client"}'
 
+	resp_text = ''
 	try:
 		response = client.search(body = json.dumps(query), index = index_name)
+		resp_text = json.dumps(response)
 	except opensearchpy.exceptions.RequestError as e:
-		response = '//%s'%(e.error)
+		resp_text = '//%s'%(e.error)
 	
-	return response
+	return resp_text
 

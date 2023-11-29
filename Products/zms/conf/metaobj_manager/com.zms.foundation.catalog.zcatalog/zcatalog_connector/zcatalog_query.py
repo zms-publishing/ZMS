@@ -1,5 +1,6 @@
 from Products.zms import standard
 import copy
+import json
 
 def umlaut_quote(self, v):
   if int(self.getConfProperty('ZMSZCatalogConnector.umlaut_quote', 0)):
@@ -65,5 +66,6 @@ def zcatalog_query( self, request):
   results.reverse()
   
   # Return list of search-results in correct sort-order.
-  return [x[1] for x in results]
+  response = [x[1] for x in results]
+  return json.dumps(response)
 

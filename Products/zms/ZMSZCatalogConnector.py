@@ -181,22 +181,18 @@ class ZMSZCatalogConnector(
       adapter = self.getCatalogAdapter()
       count = 0
       node = self.getLinkObj(uid)
-      root_node = self.getRootElement()
-      root_path = '/'.join(root_node.getPhysicalPath())
       result = {'log':[]}
       objects = []
       while node and count < page_size:
         path = '/'.join(node.getPhysicalPath())
-        log = {'index':count,'path':path,'meta_id':node.meta_id}
-        objects.extend(adapter.get_catalog_objects(self, node, fileparsing))
+        node_objects = adapter.get_catalog_objects(self, node, fileparsing)
+        objects.extend(node_objects)
+        log = {'index':count,'path':path,'meta_id':node.meta_id,'objects':len(node_objects)}
         result['log'].append(log)
         node = node.get_next_node(clients)
-        if node \
-          and not '/'.join(node.getPhysicalPath()).startswith(root_path) \
-          and not node.meta_id == 'ZMS' and not clients:
-          node = None
         result['next_node'] = None if not node else '{$%s}'%node.get_uid()
         count += 1
+      result['success'], result['failed'] = self.manage_objects_add(objects)
       return json.dumps(result,indent=2)
 
     ############################################################################

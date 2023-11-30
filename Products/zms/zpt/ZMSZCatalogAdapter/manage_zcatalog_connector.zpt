@@ -52,6 +52,12 @@
 				data-id here/id; 
 				onclick python:'return zmiReindexCatalog(this,%s)'%str(adapter.getIds());"><i class="fas fa-play text-success"></i></button>
 			<button id="stop-button" class="btn btn-secondary" disabled="disabled"><i class="fas fa-stop"></i></button>
+			<select class="form-control" id="page_size" name="page_size" title="Page-Size">
+			<tal:block tal:repeat="x python:[5,10,20,50,100,500,1000]">
+			<option tal:attributes="value x" tal:content="x">the page_size</option>
+			</tal:block>
+			</select>
+			<input class="form-control" type="text" id="uid" name="uid" title="Current Node" readonly="readonly"/>
 		</div>
 		<div class="btn-group dropdown" tal:condition="actions" tal:attributes="title python:'%s.%s'%(here.getMetaobj(here.id)['package'],here.id)">
 			<button class="btn btn-secondary dropdown-toggle" type="button" id="apiDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -245,42 +251,73 @@
 		$("#log").html("[" + getTime() + "] " + s + "\n" + $("#log").html());
 	}
 
+	function zmiReindexPaged($response, callback, stats) {
+		stats = typeof stats === "undefined" ? {success:0, failed:0} : stats;
+	    const uid = $('#uid').val();
+    	const page_size = $("#page_size").val();
+	    const params = {'uid':uid,'page_size:int':page_size,'clients:int':0,'fileparsing:int':1};
+    	$.get('reindex_page',params,function(data) {
+			log("Success: " + data.success + " / Failed: " + data.failed);
+			stats.success += data.success;
+			stats.failed += data.failed;
+			const next_node = data['next_node'];
+			if (next_node) {
+				$('#uid').val(next_node);
+				zmiReindexPaged($response, callback, stats);
+			}
+			else {
+				$response.addClass('alert-success').html("Success: " + stats.success + " / Failed: " + stats.failed);
+				callback();
+			}
+		});
+	}
+
+	function zmiReindexAll(connector_id, $response, callback) {
+	    const uid = $('#uid').val();
+		const data = {uid: uid, connector_id: connector_id};
+		$.ajax({
+			url:'../manage_reindex',
+			data:data,
+			error: function (xhr, ajaxOptions, thrownError) {
+				$response.addClass('alert-danger').html(thrownError);
+				log("Error");
+				callback();
+			},
+			success:function(response) {
+				$response.addClass('alert-success').html(response);
+				log("Success");
+				callback();
+			}
+		});
+	}
+
 	function zmiReindexCatalog(sender, meta_ids) {
+		$("#log").html("");
 		$(".zmi-sitemap .response").remove();
 		var connector_id = $(sender).attr("data-id");
 		var $inputs = $(".zmi-sitemap input:checked");
 		var n = $inputs.length;
-		var i = 0;
+		var i = -1;
 		var fn = function() {
-			if (i < n) {
-				set_progress( (i/n), func_name='test');
+			i++;
+			if (i >= n) {
+				$("#uid").val("");
+				reset_progress();
+			}
+			else {
 				var $input = $($inputs[i]);
 				var uid = $input.val();
-				var data = {uid: uid, connector_id: connector_id};
+				$("#uid").val(uid);
+				set_progress( (i/n), func_name='test');
 				var $a = $input.next("a");
 				$a.after(`<span class="response"><i class="fas fa-spinner fa-spin text-primary"></i></span>`);
 				const path = uid.substr(2,uid.length-4)+'/content';
-				log("Reindex " + path);
+				log("#" + (i + 1) + " Reindex " + path);
 				$.get($ZMI.get_rest_api_url($ZMI.getPhysicalPath())+'/zmsindex',{path:path,meta_id:meta_ids},function(zmsindex) {
 					log("Found " + zmsindex.length + " objects to reindex");
-					$.ajax({
-						url:"manage_reindex",
-						data:data,
-						error: function (xhr, ajaxOptions, thrownError) {
-							$a.next('.response').addClass('alert-danger').html(thrownError);
-							i++;
-							fn();
-						},
-						success:function(response) {
-							$a.next('.response').addClass('alert-success').html(response);
-							i++;
-							fn();
-						}
-					});
+					//zmiReindexAll(connector_id, $a.next('.response'), fn);
+					zmiReindexPaged($a.next('.response'), fn);
 				});
-			}
-			else {
-				reset_progress();
 			}
 		}
 		fn();

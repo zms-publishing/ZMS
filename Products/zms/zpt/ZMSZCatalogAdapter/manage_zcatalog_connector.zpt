@@ -324,6 +324,7 @@
 			i++;
 			if (i >= n) {
 				$("#uid").val("");
+				$("#stop-button").attr("disabled","disabled").removeClass('text-danger');
 				reset_progress();
 			}
 			else {
@@ -340,10 +341,6 @@
 					//zmiReindexAll(connector_id, $a.next('.response'), fn);
 					zmiReindexPaged($a.next('.response'), fn);
 				});
-			}
-			else {
-				reset_progress();
-				$("#stop-button").attr("disabled","disabled").removeClass('text-danger');
 			}
 		}
 		fn();

@@ -59,13 +59,13 @@
 					onclick="alert('Still in Development'); return false">
 					<i class="fas fa-stop"></i>
 				</button>
-				<select class="form-control" id="page_size" name="page_size" title="Page-Size">
-			<tal:block tal:repeat="x python:[5,10,20,50,100,500,1000]">
-			<option tal:attributes="value x" tal:content="x">the page_size</option>
-			</tal:block>
-			</select>
-			<input class="form-control" type="text" id="uid" name="uid" title="Current Node" readonly="readonly"/>
-		</div>
+				<select class="form-control" id="page_size" name="page_size:int" title="Page-Size">
+				<tal:block tal:repeat="x python:[1,2,5,10,20,50,100,500,1000]">
+				<option tal:attributes="value x; selected python:x==request.get('page_size',5)" tal:content="x">the page_size</option>
+				</tal:block>
+				</select>
+				<input class="form-control" type="text" id="uid" name="uid" title="Current Node" readonly="readonly"/>
+			</div>
 			<div class="btn-group dropdown" tal:condition="actions" tal:attributes="title python:'%s.%s'%(here.getMetaobj(here.id)['package'],here.id)">
 				<button class="btn btn-secondary dropdown-toggle" type="button" id="apiDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					<tal:block tal:content="python:'----- %s -----'%here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_ACTION')">ZCatalog-Interaction</tal:block>
@@ -203,6 +203,15 @@
 
 <script>
 //<!--
+	function log(s) {
+		const getTime = ()=>{
+			const d = new Date();
+			const dd = [d.getHours(), d.getMinutes(), d.getSeconds()].map((a)=>(a < 10 ? '0' + a : a));
+			return dd.join(':');
+		};		
+		$("#log").html("[" + getTime() + "] " + s + "\n" + $("#log").html());
+	}
+
 	function set_progress( v, func_name ) {
 		var perc = Math.round(v * 10000) / 100;
 		var bar_type_dict = {'reindex':'warning','test':'info','resync':'danger'};
@@ -262,50 +271,24 @@
 		}
 	}
 
-	function log(s) {
-		const getTime = ()=>{
-			const d = new Date();
-			const dd = [d.getHours(), d.getMinutes(), d.getSeconds()].map((a)=>(a < 10 ? '0' + a : a));
-			return dd.join(':');
-		};		
-		$("#log").html("[" + getTime() + "] " + s + "\n" + $("#log").html());
-	}
-
-	function zmiReindexPaged($response, callback, stats) {
+	function zmiReindexPaged(progress, $response, callback, stats) {
 		stats = typeof stats === "undefined" ? {success:0, failed:0} : stats;
 	    const uid = $('#uid').val();
     	const page_size = $("#page_size").val();
 	    const params = {'uid':uid,'page_size:int':page_size,'clients:int':0,'fileparsing:int':1};
     	$.get('reindex_page',params,function(data) {
-			log("Success: " + data.success + " / Failed: " + data.failed);
 			stats.success += data.success;
 			stats.failed += data.failed;
+			progress.actual += data.success + data.failed;
+			log("Success: " + data.success + " / Failed: " + data.failed + " ( Total: " + progress.actual + " / " + progress.expected + " )");
+			set_progress( progress.v + progress.n * progress.actual / Math.max(progress.expected, 1), func_name='test');
 			const next_node = data['next_node'];
 			if (next_node) {
 				$('#uid').val(next_node);
-				zmiReindexPaged($response, callback, stats);
+				zmiReindexPaged(progress, $response, callback, stats);
 			}
 			else {
 				$response.addClass('alert-success').html("Success: " + stats.success + " / Failed: " + stats.failed);
-				callback();
-			}
-		});
-	}
-
-	function zmiReindexAll(connector_id, $response, callback) {
-	    const uid = $('#uid').val();
-		const data = {uid: uid, connector_id: connector_id};
-		$.ajax({
-			url:'../manage_reindex',
-			data:data,
-			error: function (xhr, ajaxOptions, thrownError) {
-				$response.addClass('alert-danger').html(thrownError);
-				log("Error");
-				callback();
-			},
-			success:function(response) {
-				$response.addClass('alert-success').html(response);
-				log("Success");
 				callback();
 			}
 		});
@@ -338,8 +321,7 @@
 				log("#" + (i + 1) + " Reindex " + path);
 				$.get($ZMI.get_rest_api_url($ZMI.getPhysicalPath())+'/zmsindex',{path:path,meta_id:meta_ids},function(zmsindex) {
 					log("Found " + zmsindex.length + " objects to reindex");
-					//zmiReindexAll(connector_id, $a.next('.response'), fn);
-					zmiReindexPaged($a.next('.response'), fn);
+					zmiReindexPaged({v:i/n, n:1/n, actual:0, expected:zmsindex.length}, $a.next('.response'), fn);
 				});
 			}
 		}

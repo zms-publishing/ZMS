@@ -193,6 +193,8 @@ class ZMSZCatalogConnector(
         result['next_node'] = None if not node else '{$%s}'%node.get_uid()
         count += 1
       result['success'], result['failed'] = self.manage_objects_add(objects)
+      import time
+      time.sleep(0.5)
       return json.dumps(result,indent=2)
 
     ############################################################################

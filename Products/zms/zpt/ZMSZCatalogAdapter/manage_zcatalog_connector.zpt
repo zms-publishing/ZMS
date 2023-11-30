@@ -246,7 +246,11 @@
 						$is_target_of.val(response);
 						$is_target_of.focus();
 					}
-					alert(response);;
+					alert(response);
+					// Refresh GUI on DESTROY or INIT
+					if (is_target_of=='destroy' || is_target_of=='init') {
+						window.location.reload();
+					}
 				}
 			});
 		}

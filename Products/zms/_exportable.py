@@ -481,8 +481,9 @@ class Exportable(_filtermanager.FilterItem):
       REQUEST.set('ZMS_PATH_HANDLER', True)
       try:
         
-        # Remember others.
-        others = copy.copy(REQUEST.other.keys())
+        # Remember others to remove them later.
+        # Note: REQUEST.other.keys() reveals not a list but a dict_keys-object!
+        others = copy.copy(list(REQUEST.other.keys()))
         
         root = getattr( obj, '__root__', None)
         if root is not None:
@@ -492,7 +493,7 @@ class Exportable(_filtermanager.FilterItem):
           html = obj.f_index_html( obj, REQUEST)
         
         # Remove new others.
-        for rk in REQUEST.other.keys():
+        for rk in list(REQUEST.other.keys()):
           if rk not in others:
             try:
               del REQUEST.other[rk]

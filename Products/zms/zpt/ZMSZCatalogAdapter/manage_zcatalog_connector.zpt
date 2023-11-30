@@ -279,6 +279,9 @@
 				that.clientCount = that.$inputs.length;
 				that.nextClient();
 			},
+			continue: () => {
+				log("To be implemented");
+			},
 			nextClient: () => {
 				if (that.controller.stopped || that.controller.paused) return;
 				that.clientIndex++;
@@ -330,16 +333,15 @@
 		return that;
 	}
 
-	const Controller = (start) => {
-		console.log("Controller(start=" + typeof start + ")");
+	const Controller = () => {
 		var that = {
 			started: false,
 			paused: false,
 			stopped: false,
 			run: () => {
-				$("#log").fadeIn("slow");
 				that.stopped = false;
 				if (!that.started) {
+					$("#log").html("").fadeIn("slow");
 					log("[START]");
 					that.started = true;
 					that.paused = false;
@@ -357,6 +359,7 @@
 					log("[CONTINUE]");
 					that.paused = false;
 					$("#start-button i").removeClass("fa-play text-success").addClass("fa-pause text-info");
+					that.continue();
 				}
 				return false;
 			},
@@ -429,6 +432,7 @@
 		const connector = Connector();
 		const controller = Controller();
 		controller.start = connector.reindex;
+		controller.continue = connector.continue;
 		connector.controller = controller;
 	});
 //-->

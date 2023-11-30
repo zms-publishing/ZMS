@@ -84,7 +84,7 @@
 			</span>
 		</div><!-- .form-group -->
 		<div class="form-group">
-			<textarea id="log" class="form-control zmi-code form-control-sm" rows="10"></textarea>
+			<pre id="log" class="zmi-log" style="display:none;min-height:3.75rem"></pre>
 		</div><!-- .form-group -->
 	</form><!-- form -->
 </div><!-- .card-body -->
@@ -164,9 +164,9 @@
 						<div class="col-sm-10">
 							<div tal:repeat="si zcatalogs">
 								<label tal:define="is_client_derived python:si.id.split('_')[-1] in here.getLangIds()">
-									<a target="_blank" class="btn btn-light"
+									<a target="_blank" class="btn btn-secondary"
 										tal:attributes="href python:'%s/manage_main'%si.absolute_url();title python:is_client_derived and 'Client-Derived' or 'Multisite-Derived' ">
-										<i class="fas fa-search text-muted mr-2"></i>
+										<i class="fas fa-search mr-2 icon_zcatalog"></i>
 										<span tal:replace="python:'%s (%s)'%(si.id,here.getZMILangStr(si.meta_type))">id (meta_type)</span>
 									</a>
 								</label>
@@ -267,6 +267,7 @@
 
 	function zmiReindexCatalog(sender, meta_ids) {
 		$(".zmi-sitemap .response").remove();
+		$("#log").fadeIn("slow");
 		$("#stop-button").removeAttr("disabled").addClass('text-danger');
 		var connector_id = $(sender).attr("data-id");
 		var $inputs = $(".zmi-sitemap input:checked");
@@ -411,6 +412,12 @@
 		font-size: 1.25rem;
 		font-weight: normal;
 		margin: .25rem 0 1rem;
+	}
+	.ZMSZCatalogConnector .btn.btn-secondary .icon_zcatalog {
+		color:#999;
+	}
+	.ZMSZCatalogConnector .btn.btn-secondary:hover .icon_zcatalog {
+		color:#fff;
 	}
 	/*-->*/
 </style>

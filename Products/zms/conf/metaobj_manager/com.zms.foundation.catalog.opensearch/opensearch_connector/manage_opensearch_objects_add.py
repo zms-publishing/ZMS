@@ -54,4 +54,4 @@ def bulk_opensearch_index(self, sources):
 def manage_opensearch_objects_add( self, objects):
 	sources = [data for (node, data) in objects]
 	success, failed = bulk_opensearch_index(self, sources)
-	return success, failed
+	return success, failed or 0

@@ -14,7 +14,8 @@ def intValue(v):
     i = 0
   return i
 
-def zcatalog_query( self, request):
+def zcatalog_query( self, REQUEST=None):
+  request = self.REQUEST
   q = request.get('q','')
   fq = request.get('fq','')
   lang = standard.nvl(request.get('lang'), self.getPrimaryLanguage())

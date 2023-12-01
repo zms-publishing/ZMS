@@ -34,7 +34,7 @@ def get_opensearch_client(self):
 	return client
 
 
-def opensearch_query( self):
+def opensearch_query( self, REQUEST=None):
 	request = self.REQUEST
 	q = request.get('q','')
 	qpage_index = request.get('pageIndex',0)

@@ -48,45 +48,67 @@
 			</div>
 		</div><!-- .form-group -->
 		<div class="form-group">
-			<div class="btn-group mr-2">
-				<button id="start-button" class="btn btn-secondary" 
-					tal:attributes="
-						title python:here.getZMILangStr('BTN_REFRESH');
-						data-id here/id;">
-						<i class="fas fa-play text-success"></i>
-				</button>
-				<button id="stop-button" title="Stop Reindexing" class="btn btn-secondary" disabled="disabled">
-					<i class="fas fa-stop"></i>
-				</button>
-				<select class="form-control" id="page_size" name="page_size:int" title="Page-Size">
-				<tal:block tal:repeat="x python:[1,2,5,10,20,50,100,500,1000]">
-				<option tal:attributes="value x; selected python:x==request.get('page_size',5)" tal:content="x">the page_size</option>
-				</tal:block>
-				</select>
-				<input class="form-control" type="text" id="uid" name="uid" title="Current Node" readonly="readonly"/>
-			</div>
-			<div class="btn-group dropdown" tal:condition="actions" tal:attributes="title python:'%s.%s'%(here.getMetaobj(here.id)['package'],here.id)">
-				<button class="btn btn-secondary dropdown-toggle" type="button" id="apiDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					<tal:block tal:content="python:'----- %s -----'%here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_ACTION')">ZCatalog-Interaction</tal:block>
-				</button>
-				<div class="dropdown-menu" aria-labelledby="apiDropdownMenuButton">
-					<tal:block tal:repeat="action actions" tal:condition="actions">
-						<tal:block tal:define="data python:zopeutil.readData(action.get('ob'))">
-							<tal:block tal:condition="python:data.replace(' ','').find('%s(self):'%action['id'])>0">
-								<a class="dropdown-item" href="javascript:;"
-									tal:attributes="title python:action['name'].split(':')[-1]; data-url python:'%s/%s'%(here.getRootElement().absolute_url(),action['id'])" onclick="return zmiExecuteCatalog(this)">
-									<tal:block tal:content="python:here.getZMILangStr('BTN_%s'%action['name'].split(':')[0].upper())"></tal:block>
-								</a>
+			<div class="navbar p-0">
+				<div class="input-group-prepend">
+					<div class="btn-group dropdown mr-3" tal:condition="actions" tal:attributes="title python:'%s.%s'%(here.getMetaobj(here.id)['package'],here.id)">
+						<button class="btn btn-secondary dropdown-toggle" type="button" id="apiDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<tal:block tal:content="python:'----- %s -----'%here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_ACTION')">ZCatalog-Interaction</tal:block>
+						</button>
+						<div class="dropdown-menu" aria-labelledby="apiDropdownMenuButton">
+							<a class="dropdown-item" href="javascript:;" title="Refresh Index"
+								onclick="$('#btn-group-reindex').fadeIn('slow')"
+								tal:content="python:here.getZMILangStr('BTN_REFRESH')">
+								Refresh Index
+							</a>
+							<tal:block tal:repeat="action actions" tal:condition="actions">
+								<tal:block tal:define="data python:zopeutil.readData(action.get('ob'))">
+									<tal:block tal:condition="python:data.replace(' ','').find('%s(self):'%action['id'])>0">
+										<a class="dropdown-item" href="javascript:;"
+											tal:attributes="title python:action['name'].split(':')[-1]; data-url python:'%s/%s'%(here.getRootElement().absolute_url(),action['id'])" 
+											onclick="$('#btn-group-reindex').css('display','none'); return zmiExecuteCatalog(this)"
+											tal:content="python:here.getZMILangStr('BTN_%s'%action['name'].split(':')[0].upper())">
+											ACTION_NAME
+										</a>
+									</tal:block>
+								</tal:block>
 							</tal:block>
-						</tal:block>
-					</tal:block>
+						</div>
+						<span tal:condition="python:here.getMetaobjAttr(here.id,'readme')"
+							title="Readme" class="zmi-readme text-info btn btn-secondary"
+							tal:attributes="onclick python:'javascript:$ZMI.iframe(\'./metaobj_manager/%s.readme/manage_readme\',{ },{id:\'readme\',json:false,title:\'<i class=\042far fa-question-circle text-info mr-2\042></i> Readme\' });;return false'%(here.id)">
+							<i class="far fa-question-circle"></i>
+						</span>
+					</div>
 				</div>
+				<div class="btn-group" id="btn-group-reindex" style="display: none;">
+					<button class="btn btn-secondary" id="start-button" 
+						tal:attributes="
+							title python:here.getZMILangStr('BTN_REFRESH');
+							data-id here/id;">
+							<i class="fas fa-play text-success"></i>
+					</button>
+					<button class="btn btn-secondary" id="stop-button" 
+						title="Stop Reindexing" disabled="disabled">
+						<i class="fas fa-stop"></i>
+					</button>
+					<select class="btn btn-secondary" id="page_size" name="page_size:int" 
+						title="Stack Size: amount of content nodes which are processed per transaction.">
+						<option 
+							tal:repeat="x python:[1,2,5,10,20,50,100,500,1000]"
+							tal:attributes="value x; selected python:x==request.get('page_size',100)" 
+							tal:content="x">the page_size
+						</option>
+					</select>
+					<div class="input-group-append">
+						<input class="form-control zmi-code" type="text" id="uid" name="uid" title="Current Node" 
+							readonly="readonly" disabled="disabled"
+							placeholder="Please, select stack size and start reindexing"
+							style="width: calc(100vw - 30rem);"
+						/>
+					</div>
+				</div>
+
 			</div>
-			<span tal:condition="python:here.getMetaobjAttr(here.id,'readme')"
-				title="Readme" class="zmi-readme text-info cursor-help btn"
-				tal:attributes="onclick python:'javascript:$ZMI.iframe(\'./metaobj_manager/%s.readme/manage_readme\',{ },{id:\'readme\',json:false,title:\'<i class=\042far fa-question-circle text-info mr-2\042></i> Readme\' });;return false'%(here.id)">
-				<i class="far fa-question-circle"></i>
-			</span>
 		</div><!-- .form-group -->
 		<div class="form-group">
 			<pre id="log" class="zmi-log" style="display:none;min-height:3.75rem"></pre>

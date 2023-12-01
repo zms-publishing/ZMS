@@ -2761,6 +2761,9 @@ ul.pagination .page-item {
 .zmi-readme i.fa-question-circle {
 	cursor:pointer !important;
 }
+.zmi-readme.btn.btn-secondary:hover i.fa-question-circle {
+	color:white !important;
+}
 
 
 /* ++++++++++++++++++++++++++ */

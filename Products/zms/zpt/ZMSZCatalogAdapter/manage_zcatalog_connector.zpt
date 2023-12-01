@@ -57,7 +57,7 @@
 						<div class="dropdown-menu" aria-labelledby="apiDropdownMenuButton">
 							<a class="dropdown-item" href="javascript:;" title="Refresh Index"
 								onclick="$('#btn-group-reindex').fadeIn('slow')"
-								tal:content="python:here.getZMILangStr('BTN_REFRESH')">
+								tal:content="python:'Index %s'%here.getZMILangStr('BTN_REFRESH')">
 								Refresh Index
 							</a>
 							<tal:block tal:repeat="action actions" tal:condition="actions">

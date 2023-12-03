@@ -1,40 +1,30 @@
 from Products.zms import standard
-import json
 from urllib.parse import urlparse
-import opensearchpy
-from opensearchpy import OpenSearch
-from opensearchpy.helpers import bulk
+import json
+import pysolr
 
-
-def get_opensearch_client(self):
-	# ${opensearch.url:https://localhost:9200}
-	# ${opensearch.username:admin}
-	# ${opensearch.password:admin}
-	# ${opensearch.ssl.verify:}
-	url = self.getConfProperty('opensearch.url')
+def get_solr_client(self):
+	# ${solr.url:https://localhost:8983/solr}
+	# ${solr.username:admin}
+	# ${solr.password:admin}
+	# ${solr.ssl.verify:}
+	url = self.getConfProperty('solr.url')
 	if not url:
 		return None
 	host = urlparse(url).hostname
 	port = urlparse(url).port
 	ssl = urlparse(url).scheme=='https' and True or False
-	verify = bool(self.getConfProperty('opensearch.ssl.verify', False))
-	username = self.getConfProperty('opensearch.username', 'admin')
-	password = self.getConfProperty('opensearch.password', 'admin')
+	verify = bool(self.getConfProperty('solr.ssl.verify', False))
+	username = self.getConfProperty('solr.username', 'admin')
+	password = self.getConfProperty('solr.password', 'admin')
 	auth = (username,password)
-	
-	client = OpenSearch(
-		hosts = [{'host': host, 'port': port}],
-		http_compress = False, # enables gzip compression for request bodies
-		http_auth = auth,
-		use_ssl = ssl,
-		verify_certs = verify,
-		ssl_assert_hostname = False,
-		ssl_show_warn = False,
-	)
+
+	client = pysolr.Solr(url, auth=auth, verify=verify)
 	return client
 
 
-def opensearch_query( self, REQUEST=None):
+
+def solr_query( self, REQUEST=None):
 	request = self.REQUEST
 	q = request.get('q','')
 	qpage_index = request.get('pageIndex',0)

@@ -25,7 +25,7 @@ class solr_connector:
 	name = "Solr-Connector"
 
 	# Package
-	package = "com.zms.foundation.catalog.zcatalog"
+	package = "com.zms.foundation.catalog.solr"
 
 	# Revision
 	revision = "0.0.0"

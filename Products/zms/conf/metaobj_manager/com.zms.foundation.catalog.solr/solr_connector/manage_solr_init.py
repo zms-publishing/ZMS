@@ -1,17 +1,19 @@
-from Products.zms import standard
+from urllib import *
 from urllib.parse import urlparse
 import json
-import pysolr
+import requests
 
 
-def get_solr_client(self):
-	# ${solr.url:http://localhost:8983/solr}
-	# ${solr.username:admin}
-	# ${solr.password:admin}
-	# ${solr.ssl.verify:}
-	url = self.getConfProperty('solr.url')
+def manage_solr_init( self):
+	# Set connection variables
+	index_name = self.getRootElement().getHome().id
+	schema = self.getConfProperty('solr.schema','{}')
+	url = self.getConfProperty('solr.url','http://localhost:8983/solr/')
 	if not url:
 		return None
+	else:
+		if url.endswith('/'):
+			url = url[:-1]	# Remove trailing slash
 	host = urlparse(url).hostname
 	port = urlparse(url).port
 	ssl = urlparse(url).scheme=='https' and True or False
@@ -20,31 +22,37 @@ def get_solr_client(self):
 	password = self.getConfProperty('solr.password', 'admin')
 	auth = (username,password)
 
-	client = pysolr.Solr(url, auth=auth, verify=verify)
-	return client
+	resp = []
 
-def manage_solr_init( self):
-	index_name = self.getRootElement().getHome().id
-	schema = self.getConfProperty('solr.schema','{}')
-	resp_text = '//RESPONSE\n'
-	client = get_solr_client(self)
-	# Create Solr index
-	try:
-		resp_text += 'Deleting Solr index: %s\n' % index_name
-		client.delete_index(index_name)
-	except pysolr.SolrError:
-		pass
+	# Define the headers for the POST schema request.
+	headers = {'Content-type': 'application/json'}
+	# Send the POST schema request.
+	response = requests.post('%s/%s/schema'%(url,index_name), data=json.dumps(schema), headers=headers)
 
-	resp_text += 'Creating Solr index: %s\n' % index_name
-	client.create_index(index_name)
-	# Create Solr schema
-	resp_text += 'Creating Solr schema: %s\n' % schema
-	client.schema.create(json.loads(schema))
+	# Check the response.
+	if response.status_code == 200:
+		resp.append('Schema added successfully.')
+	else:
+		resp.append('Failed to add field. Response: %s'%(response.text))
 
 
+	# Define the parameters for the CREATE index request.
+	params = {
+		'action': 'CREATE',
+		'name': index_name,
+		'instanceDir': index_name,
+		'config': 'solrconfig.xml',
+		'schema': 'schema.xml',
+		'dataDir': 'data'
+	}
 
+	# Send the CREATE request.
+	response = requests.get('%s/admin/cores'%url, params=params)
 
+	# Check the response.
+	if response.status_code == 200:
+		resp.append('Core created successfully.')
+	else:
+		resp.append('Failed to create core. Response: %s'%(response.text))
 
-
-
-	return resp_text
+	return '\n'.join(resp)

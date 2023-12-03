@@ -2,6 +2,7 @@ from urllib import *
 from urllib.parse import urlparse
 import json
 import requests
+import os
 
 
 def manage_solr_init( self):
@@ -23,6 +24,17 @@ def manage_solr_init( self):
 	auth = (username,password)
 
 	resp = []
+
+	# DUMMY: Use solrconfig.xml from the extension.
+	# ##############
+	solrconfig_src = os.path.join('/home/zope/src/zms-publishing/ZMS5/docker/solr/solrconfig.xml')
+	solrconfig_dst = os.path.join('/home/zope/src/zms-publishing/ZMS5/docker/var/solr/data', index_name, 'conf', 'solrconfig.xml')
+	if not os.path.exists(solrconfig_dst):
+		os.makedirs(os.path.dirname(solrconfig_dst), exist_ok=True)
+		with open(solrconfig_src, 'r') as f:
+			with open(solrconfig_dst, 'w') as g:
+				g.write(f.read())
+	# ##############
 
 	# Define the headers for the POST schema request.
 	headers = {'Content-type': 'application/json'}

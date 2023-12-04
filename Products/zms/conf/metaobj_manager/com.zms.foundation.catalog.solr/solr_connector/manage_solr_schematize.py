@@ -5,14 +5,15 @@ def manage_solr_schematize( self):
 	add_field = []
 
 	# Force default properties types
-	add_field.append({'name':'id', 'type':'string','multiValued':False,'indexed':True,'required':True,'stored':True})
-	add_field.append({'name':'uid', 'type':'uuid','multiValued':False,'indexed':True,'required':True,'stored':True})
+	# Hint: Solr sets id as default uniqueKey 
+	# add_field.append({'name':'id', 'type':'string','multiValued':False,'indexed':True,'required':True,'stored':True})
+	add_field.append({'name':'uid', 'type':'string','multiValued':False,'indexed':True,'required':True,'stored':True})
 	add_field.append({'name':'zmsid', 'type':'string','multiValued':False,'indexed':False,'required':True,'stored':True})
 	add_field.append({'name':'loc', 'type':'string','multiValued':False,'indexed':False,'required':False,'stored':True})
 	add_field.append({'name':'index_html', 'type':'text_general','multiValued':False,'indexed':False,'required':False,'stored':True})
-	add_field.append({'name':'meta_id', 'type':'keyword','multiValued':False,'indexed':True,'required':False,'stored':True})
-	add_field.append({'name':'lang', 'type':'keyword','multiValued':False,'indexed':True,'required':False,'stored':True})
-	add_field.append({'name':'home_id', 'type':'keyword','multiValued':False,'indexed':True,'required':False,'stored':True})
+	add_field.append({'name':'meta_id', 'type':'string','multiValued':False,'indexed':True,'required':False,'stored':True})
+	add_field.append({'name':'lang', 'type':'string','multiValued':False,'indexed':True,'required':False,'stored':True})
+	add_field.append({'name':'home_id', 'type':'string','multiValued':False,'indexed':True,'required':False,'stored':True})
 
 	# SOLR field types
 	allowed_types = [
@@ -42,14 +43,27 @@ def manage_solr_schematize( self):
 	adapter = zmscontext.getCatalogAdapter()
 	attrs = adapter.getAttrs()
 	for attr_id in adapter._getAttrIds():
-		add_field.append({
-				'name':attr_id, 
-				'type':'text_general',
-				'multiValued':False,
-				'indexed':False,
-				'required':False,
-				'stored':True
-			})
+		if attr_id not in ['id', 'uid', 'zmsid', 'loc', 'index_html', 'meta_id', 'lang', 'home_id']:
+			attr = attrs[attr_id]
+			attr_type = attr.get('type')
+			if attr_type in allowed_types:
+				add_field.append({
+					'name':attr_id, 
+					'type':attr_type,
+					'multiValued':False,
+					'indexed':True,
+					'required':False,
+					'stored':True
+				})
+			else:
+				add_field.append({
+						'name':attr_id, 
+						'type':'text_general',
+						'multiValued':False,
+						'indexed':False,
+						'required':False,
+						'stored':True
+					})
 
 	schema = json.dumps(dict({'add-field':list(add_field)}), indent=2)
 	self.setConfProperty('solr.schema', schema)

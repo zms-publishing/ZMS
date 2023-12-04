@@ -2,7 +2,6 @@ from urllib import *
 from urllib.parse import urlparse
 import json
 import requests
-import os
 
 
 def manage_solr_init( self):
@@ -25,46 +24,17 @@ def manage_solr_init( self):
 
 	resp = []
 
-	# DUMMY: Use solrconfig.xml from the extension.
-	# ##############
-	solrconfig_src = os.path.join('/home/zope/src/zms-publishing/ZMS5/docker/solr/solrconfig.xml')
-	solrconfig_dst = os.path.join('/home/zope/src/zms-publishing/ZMS5/docker/var/solr/data', index_name, 'conf', 'solrconfig.xml')
-	if not os.path.exists(solrconfig_dst):
-		os.makedirs(os.path.dirname(solrconfig_dst), exist_ok=True)
-		with open(solrconfig_src, 'r') as f:
-			with open(solrconfig_dst, 'w') as g:
-				g.write(f.read())
-	# ##############
-
+	# Define the URL of the Solr Schema API.
+	schema_url = '{}/{}/schema'.format(url, index_name)
 	# Define the headers for the POST schema request.
 	headers = {'Content-type': 'application/json'}
 	# Send the POST schema request.
-	response = requests.post('%s/%s/schema'%(url,index_name), data=json.dumps(schema), headers=headers)
-
+	schema = json.loads(schema)
+	response = requests.post(schema_url, data=json.dumps(schema), headers=headers)
 	# Check the response.
 	if response.status_code == 200:
 		resp.append('Schema added successfully.')
 	else:
-		resp.append('Failed to add field. Response: %s'%(response.text))
-
-
-	# Define the parameters for the CREATE index request.
-	params = {
-		'action': 'CREATE',
-		'name': index_name,
-		'instanceDir': index_name,
-		'config': 'solrconfig.xml',
-		'schema': 'schema.xml',
-		'dataDir': 'data'
-	}
-
-	# Send the CREATE request.
-	response = requests.get('%s/admin/cores'%url, params=params)
-
-	# Check the response.
-	if response.status_code == 200:
-		resp.append('Core created successfully.')
-	else:
-		resp.append('Failed to create core. Response: %s'%(response.text))
+		resp.append('Failed to add schema. Please check, whether corresponding Solr core %s exists. Otherwise one has to be created by shell script \'./solr create -c %s \'.\nRESPONSE:\n%s'%(index_name, index_name, response.text))
 
 	return '\n'.join(resp)

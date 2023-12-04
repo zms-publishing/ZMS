@@ -2,41 +2,23 @@ from Products.zms import standard
 import json
 from urllib.parse import urlparse
 
+def manage_solr_destroy( self):
 
-def get_solr_client(self):
-	# ${solr.url:https://localhost:9200}
+	# ${solr.url:http://localhost:8983/solr}
 	# ${solr.username:admin}
 	# ${solr.password:admin}
 	# ${solr.ssl.verify:}
 	url = self.getConfProperty('solr.url')
 	if not url:
 		return None
-	host = urlparse(url).hostname
-	port = urlparse(url).port
-	ssl = urlparse(url).scheme=='https' and True or False
-	verify = bool(self.getConfProperty('solr.ssl.verify', False))
 	username = self.getConfProperty('solr.username', 'admin')
 	password = self.getConfProperty('solr.password', 'admin')
 	auth = (username,password)
-	
-	client = OpenSearch(
-		hosts = [{'host': host, 'port': port}],
-		http_compress = False, # enables gzip compression for request bodies
-		http_auth = auth,
-		use_ssl = ssl,
-		verify_certs = verify,
-		ssl_assert_hostname = False,
-		ssl_show_warn = False,
-	)
-	return client
 
-def manage_solr_destroy( self):
+	import requests
 	index_name = self.getRootElement().getHome().id
-	client = get_solr_client(self)
-	resp_text = '//RESPONSE\n'
-	try:
-		response = client.indices.delete(index_name)
-	except opensearchpy.exceptions.RequestError as e:
-		resp_text += '//%s\n'%(e.error)
+	response = requests.post('%s/%s/update'%(url,index_name), auth=auth, json={'delete':{"query":"*"}, 'commit':{}})
+	print(f"Status Code: {response.status_code}, Response: {response.json()}")
+
 	resp_text += json.dumps(response, indent=2)
 	return resp_text

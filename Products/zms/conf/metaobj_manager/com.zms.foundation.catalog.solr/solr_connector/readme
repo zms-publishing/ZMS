@@ -1,6 +1,17 @@
 # Managing ZMS-Content-Index with Solr
-ZMS offers an [Solr](https://solr.apache.org/) connector for the crucial tasks of index management. 
-Before letting Solr create an index, Solr needs to know how to index the content. Therefore Solr needs to get the content "schema" (as a JSON-based list of typed fields). By listing  
+ZMS offers an [Solr](https://solr.apache.org/) connector for content indexing. Because current Solr software cannot create schema/cores via web-API, this has to be done offsite by shell commands. So, before starting with ZMS please create a new core that has the identical name like the ZMS root id, e.g. 'myzmsearch':
+
+```sh
+solr@d79a814e7e88:/opt/solr-8.11.2/bin$ ./solr create -c myzmsearch
+```
+
+Deleting the core is done in a similar way:
+
+```sh
+solr@d79a814e7e88:/opt/solr-8.11.2/bin$ ./solr delete -c myzmsearch
+```
+
+Then Solr needs to know how to index the content. Therefore Solr needs to get the content "schema" (as a JSON-based list of typed fields). By listing 
 
 1. all ZMS content types and
 2. the attributes of these types
@@ -19,14 +30,13 @@ The second step is _Initialisation_, which leads to an empty index based on that
 
 _GUI elements for managing the index:_
 
-1. **Refresh** button: Re-/Indexing the selected ZMS client(s) or the multisite-tree
-2. **Create Schema** menu item: Generating the field schema of the index in JSON format
-3. **Initialisation** menu item: Creating an index on the Solr server
-4. **Deleting** menu item: Removing the index on the Solr server
+1. **Index Refresh**: Re-/Indexing the selected ZMS client(s) or the multisite-tree
+2. **Create Schema**: Generating the field schema of the index in JSON format
+3. **Initialisation**: Creating an index schema on the Solr server (IMPORTANT NOTE: Solr expects a name-identical pre-created core.)
+4. **Deleting**: Removing the index on the Solr server
 
 ---
 
 After the initial indexing new content will be added to the index incrementally on any content insert or change.
 
-_Important hint_: The action "Initialisation" creates/recreates always an **empty** index based on the selected attribute schema. So if a schema is changed and the index initialised, all indexed items are gone and a new full reindexing will be necessary.
 

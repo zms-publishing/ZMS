@@ -19,10 +19,10 @@ The second step is _Initialisation_, which leads to an empty index based on that
 
 _GUI elements for managing the index:_
 
-1. **Refresh** button: Re-/Indexing the selected ZMS client(s) or the multisite-tree
-2. **Create Schema** menu item: Generating the field schema of the index in JSON format
-3. **Initialisation** menu item: Creating an index on the Opensearch server
-4. **Deleting** menu item: Removing the index on the Opensearch server
+1. **Index Refresh**: Re-/Indexing the selected ZMS client(s) or the multisite-tree
+2. **Create Schema**: Generating the field schema of the index in JSON format
+3. **Initialisation**: Creating an index on the Opensearch server
+4. **Deleting**: Removing the index on the Opensearch server
 
 ---
 

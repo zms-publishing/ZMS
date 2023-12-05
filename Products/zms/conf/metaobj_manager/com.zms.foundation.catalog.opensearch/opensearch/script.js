@@ -5,7 +5,7 @@ var show_results;
 var winloc = new URL(window.location);
 //# ######################################
 $(function() {
-
+	const root_url=$('form#site-search-content').attr('data-root-url');
 	//# Compile HB templ on docready into global var
 	const hb_results_tmpl = Handlebars.compile( $('#hb_results_html').html() );
 	const hb_spinner_tmpl = Handlebars.compile( $('#hb_spinner_html').html() );
@@ -14,7 +14,7 @@ $(function() {
 	show_results = async (q, pageIndex) => {
 		$('.search-results').html(hb_spinner_tmpl(q));
 		// debugger;
-		const qurl = `opensearch_query?q=${q}&pageIndex:int=${pageIndex}`;
+		const qurl = `${root_url}/opensearch_query?q=${q}&pageIndex:int=${pageIndex}`;
 		const response = await fetch(qurl);
 		const res = await response.json();
 		const res_processed = postprocess_results(q, res);
@@ -78,7 +78,7 @@ $(function() {
 	};
 
 	const show_breadcrumbs = (el) => {
-		$.get(url='get_breadcrumbs_by_uuid', data={ 'id' : el.dataset.id }, function(data, status) {
+		$.get(url=`${root_url}/get_breadcrumbs_by_uuid`, data={ 'id' : el.dataset.id }, function(data, status) {
 			$(el).html(data);
 		});
 	}

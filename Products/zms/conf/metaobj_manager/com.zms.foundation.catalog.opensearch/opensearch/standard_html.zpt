@@ -43,7 +43,8 @@
 	<div class="container-fluid skin-bg-gray">
 		<div class="container">
 			<section class="search-form">
-				 <form id="site-search-content" action="#" method="get" data-ajax-url="ajax/search" >
+				 <form id="site-search-content" action="#" method="get" 
+				 	tal:attributes="data-root-url python:zmscontext.getRootElement().absolute_url()">
 					<div class="row skin-gutter-wide search-form no-margin-bottom">
 						<div class="col-lg-6">
 							<h2 class="small-font">Suche nach Stichworten</h2>

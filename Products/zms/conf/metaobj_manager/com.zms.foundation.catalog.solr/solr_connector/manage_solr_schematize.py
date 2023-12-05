@@ -7,13 +7,13 @@ def manage_solr_schematize( self):
 	# Force default properties types
 	# Hint: Solr sets id as default uniqueKey 
 	# add_field.append({'name':'id', 'type':'string','multiValued':False,'indexed':True,'required':True,'stored':True})
-	add_field.append({'name':'uid', 'type':'string','multiValued':False,'indexed':True,'required':True,'stored':True})
-	add_field.append({'name':'zmsid', 'type':'string','multiValued':False,'indexed':False,'required':True,'stored':True})
-	add_field.append({'name':'loc', 'type':'string','multiValued':False,'indexed':False,'required':False,'stored':True})
-	add_field.append({'name':'index_html', 'type':'text_general','multiValued':False,'indexed':False,'required':False,'stored':True})
-	add_field.append({'name':'meta_id', 'type':'string','multiValued':False,'indexed':True,'required':False,'stored':True})
-	add_field.append({'name':'lang', 'type':'string','multiValued':False,'indexed':True,'required':False,'stored':True})
-	add_field.append({'name':'home_id', 'type':'string','multiValued':False,'indexed':True,'required':False,'stored':True})
+	add_field.append({'name':'uid', 'type':'string','indexed':True,'required':True})
+	add_field.append({'name':'zmsid', 'type':'string','multiValued':False,'required':True})
+	add_field.append({'name':'loc', 'type':'string','multiValued':False,'required':False})
+	add_field.append({'name':'index_html', 'type':'text_general','multiValued':False,'required':False})
+	add_field.append({'name':'meta_id', 'type':'string','multiValued':False,'indexed':True,'required':False})
+	add_field.append({'name':'lang', 'type':'string','multiValued':False,'indexed':True,'required':False})
+	add_field.append({'name':'home_id', 'type':'string','multiValued':False,'indexed':True,'required':False})
 
 	# SOLR field types
 	allowed_types = [
@@ -51,18 +51,12 @@ def manage_solr_schematize( self):
 					'name':attr_id, 
 					'type':attr_type,
 					'multiValued':False,
-					'indexed':True,
-					'required':False,
-					'stored':True
 				})
 			else:
 				add_field.append({
 						'name':attr_id, 
 						'type':'text_general',
 						'multiValued':False,
-						'indexed':False,
-						'required':False,
-						'stored':True
 					})
 
 	schema = json.dumps(dict({'add-field':list(add_field)}), indent=2)

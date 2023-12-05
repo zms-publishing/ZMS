@@ -147,7 +147,6 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
               fileparsing = bool( self.getConfProperty('ZMS.CatalogAwareness.fileparsing', 1))
               for connector in self.getConnectors():
                 self.reindex(connector, node, recursive=False, fileparsing=fileparsing)
-                break
         return True
       except:
         standard.writeError( self, "can't reindex_node")

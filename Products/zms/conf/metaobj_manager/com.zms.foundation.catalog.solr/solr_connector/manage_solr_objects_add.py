@@ -1,6 +1,7 @@
 from Products.zms import standard
 import json
 from urllib.parse import urlparse
+import requests
 
 def bulk_solr_add_documents(self, sources):
 	actions = []
@@ -26,7 +27,6 @@ def bulk_solr_add_documents(self, sources):
 	password = self.getConfProperty('solr.password', 'admin')
 	auth = (username,password)
 
-	import requests
 	index_name = self.getRootElement().getHome().id
 	response = requests.post('%s/%s/update'%(url,index_name), auth=auth, json=actions)
 	print(f"Status Code: {response.status_code}, Response: {response.json()}")
@@ -37,5 +37,5 @@ def bulk_solr_add_documents(self, sources):
 
 def manage_solr_objects_add( self, objects):
 	sources = [data for (node, data) in objects]
-	success, failed = bulk_solr_add_documents(self, sources)
+	failed, success = bulk_solr_add_documents(self, sources)
 	return success, failed or 0

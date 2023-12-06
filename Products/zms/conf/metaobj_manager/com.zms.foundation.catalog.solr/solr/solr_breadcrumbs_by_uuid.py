@@ -1,4 +1,4 @@
-## Script (Python) "get_breadcrumbs_by_uuid"
+## Script (Python) "solr_breadcrumbs_obj_path"
 ##bind container=container
 ##bind context=context
 ##bind namespace=
@@ -7,7 +7,7 @@
 ##parameters=id='uid:3a0e21e5-998b-42e3-9337-ede65fe96780'
 ##title=py: Get Object Path from ZMSIndex as HTML
 ##
-# --// get_breadcrumbs_by_uuid //--
+# --// solr_breadcrumbs_obj_path //--
 request = container.REQUEST
 response =  request.response
 zmscontext = context.content
@@ -31,4 +31,4 @@ for r in q:
 # Return HTML for Ajax-Requests
 return '\n'.join(['<li><a href="%s">%s</a></li>'%(obj.getHref2IndexHtml(request), obj.attr('titlealt')) for obj in obj_path])
 
-# --// /get_breadcrumbs_by_uuid //--
+# --// /solr_breadcrumbs_obj_path //--

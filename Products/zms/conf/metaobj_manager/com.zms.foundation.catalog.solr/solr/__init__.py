@@ -1,6 +1,6 @@
-class opensearch:
+class solr:
 	"""
-	python-representation of opensearch
+	python-representation of solr
 	"""
 
 	# Access
@@ -23,23 +23,23 @@ class opensearch:
 	enabled = 1
 
 	# Id
-	id = "opensearch"
+	id = "solr"
 
 	# Name
-	name = "Opensearch-Page"
+	name = "Solr-Page"
 
 	# Package
-	package = "com.zms.foundation.catalog.opensearch"
+	package = "com.zms.foundation.catalog.solr"
 
 	# Revision
-	revision = "0.3.1"
+	revision = "0.3.0"
 
 	# Type
 	type = "ZMSDocument"
 
 	# Attrs
 	class Attrs:
-		icon_clazz = {"custom":"fas fa-search text-danger"
+		icon_clazz = {"custom":"fas fa-sun text-danger"
 			,"default":""
 			,"id":"icon_clazz"
 			,"keys":[]
@@ -94,8 +94,8 @@ class opensearch:
 			,"repetitive":0
 			,"type":"resource"}
 
-		opensearch_breadcrumbs_obj_path = {"default":""
-			,"id":"opensearch_breadcrumbs_obj_path"
+		solr_breadcrumbs_obj_path = {"default":""
+			,"id":"solr_breadcrumbs_obj_path"
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
@@ -108,6 +108,6 @@ class opensearch:
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
-			,"name":"Template: Opensearch"
+			,"name":"Template: solr"
 			,"repetitive":0
 			,"type":"zpt"}

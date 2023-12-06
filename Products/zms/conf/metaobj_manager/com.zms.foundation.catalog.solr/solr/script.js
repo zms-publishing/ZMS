@@ -14,7 +14,7 @@ $(function() {
 	show_results = async (q, pageIndex) => {
 		$('.search-results').html(hb_spinner_tmpl(q));
 		// debugger;
-		const qurl = `${root_url}/opensearch_query?q=${q}&pageIndex:int=${pageIndex}`;
+		const qurl = `${root_url}/solr_query?q=${q}&pageIndex:int=${pageIndex}`;
 		const response = await fetch(qurl);
 		const res = await response.json();
 		const res_processed = postprocess_results(q, res);
@@ -37,34 +37,14 @@ $(function() {
 	};
 
 	const postprocess_results = (q, res) => {
-		var total = res.hits.total.value;
-		var buckets = []
-		try {
-			buckets = res.aggregations.response_codes.buckets;
-		} catch {
-			log.console('INFO: Result does not contain buckets-element')
-		}
-		var res_processed = { 'hits':[], 'total':total, 'query':q, 'buckets':buckets};
+		var total = res.response.numFound.value;
+		var facets = []; // res.facets;
+		var res_processed = { 'hits':[], 'total':total, 'query':q, 'facets':facets};
 
-		res['hits']['hits'].forEach(x => {
-			var source = x['_source'];
-			var highlight = x['highlight'];
+		res['response']['docs'].forEach(x => {
+			var source = x;
 			var hit = { 'path':source['uid'], 'href':source['loc'], 'title':source['title'], 'snippet':source['standard_html'] }; 
-			if (typeof highlight !== 'undefined') {
-				if (typeof highlight['title'] !== 'undefined') {
-					hit['title'] = highlight['title'];
-				}
-				if (typeof highlight['standard_html'] !== 'undefined') {
-					hit['snippet'] = highlight['standard_html'];
-				}
-			}
-			if ( typeof hit['snippet'] == 'undefined' || hit['snippet']=='' ) {
-				if (typeof source['attr_dc_description'] == 'undefined') {
-					hit['snippet'] = '';
-				} else {
-					hit['snippet'] = source['attr_dc_description'];
-				}
-			}
+			// Snippet: field-name = 'standard_html'
 			// Attachment: field-name = 'data'
 			if ( typeof source['attachment'] !== 'undefined' && hit['snippet']=='' ) {
 				hit['snippet'] = source['attachment']['content'];
@@ -78,7 +58,7 @@ $(function() {
 	};
 
 	const show_breadcrumbs = (el) => {
-		$.get(url=`${root_url}/opensearch_breadcrumbs_obj_path`, data={ 'id' : el.dataset.id }, function(data, status) {
+		$.get(url=`${root_url}/solr_breadcrumbs_obj_path`, data={ 'id' : el.dataset.id }, function(data, status) {
 			$(el).html(data);
 		});
 	}

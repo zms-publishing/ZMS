@@ -1,13 +1,15 @@
 from Products.zms import standard
 from urllib.parse import urlparse
 import json
-import pysolr
+import requests
 
-def get_solr_client(self):
-	# ${solr.url:https://localhost:8983/solr}
-	# ${solr.username:admin}
-	# ${solr.password:admin}
-	# ${solr.ssl.verify:}
+
+
+def solr_query( self, REQUEST=None):
+	request = self.REQUEST
+	index_name = self.getRootElement().getHome().id
+
+
 	url = self.getConfProperty('solr.url')
 	if not url:
 		return None
@@ -19,51 +21,36 @@ def get_solr_client(self):
 	password = self.getConfProperty('solr.password', 'admin')
 	auth = (username,password)
 
-	client = pysolr.Solr(url, auth=auth, verify=verify)
-	return client
+	# Define the URL of the Solr select API.
+	query_url = '{}/{}/select'.format(url, index_name)
 
 
-
-def solr_query( self, REQUEST=None):
-	request = self.REQUEST
 	q = request.get('q','')
 	qpage_index = request.get('pageIndex',0)
 	qsize = request.get('size', 10)
 	qfrom = request.get('from', qpage_index*qsize)
 	index_name = self.getRootElement().getHome().id
 
-	query = {
-		"size": qsize,
-		"from":qfrom,
-		"query":{
-			"query_string":{"query":q}
-		},
-		"highlight": {
-			"fields": {
-				"title": { "type": "plain"},
-				"standard_html": { "type": "plain"}
-			}
-		},
-		"aggs": {
-			"response_codes": {
-				"terms": {
-					"field": "meta_id",
-					"size": 5
-				}
-			}
-		}
+	query_params = {
+		'q': 'standard_html:%s'%(q),
+		'wt': 'json',
+		'hl': 'false',
+		'hl.fl': 'standard_html',
+		'hl.simple.pre': '<b>',
+		'hl.simple.post': '</b>',
+		'hl.fragsize': 100, # Number of characters to return
+		'hl.snippets': 10,	# Number of fragments to return
+		'start': qfrom,
+		'rows': qsize,
+		'hl.usePhraseHighlighter': 'true'
 	}
 
-	client = get_opensearch_client(self)
-	if not client:
-		return '{"error":"No client"}'
+	# Define the headers for the POST schema request.
+	headers = {'Content-type': 'application/json'}
+	# Send the GET request.
+	response = requests.get(query_url, params=query_params, headers=headers)
 
-	resp_text = ''
-	try:
-		response = client.search(body = json.dumps(query), index = index_name)
-		resp_text = json.dumps(response)
-	except opensearchpy.exceptions.RequestError as e:
-		resp_text = '//%s'%(e.error)
+	# Parse the response.
+	data = response.json()
 	
-	return resp_text
-
+	return json.dumps(data, indent=4, sort_keys=False)

@@ -1,9 +1,9 @@
 from Products.zms import standard
 import json
 from urllib.parse import urlparse
-import elasticsearchpy
-from elasticsearchpy import elasticsearch
-from elasticsearchpy.helpers import bulk
+import opensearchpy
+from opensearchpy import OpenSearch
+from opensearchpy.helpers import bulk
 
 
 def get_elasticsearch_client(self):
@@ -22,7 +22,7 @@ def get_elasticsearch_client(self):
 	password = self.getConfProperty('elasticsearch.password', 'admin')
 	auth = (username,password)
 	
-	client = elasticsearch(
+	client = OpenSearch(
 		hosts = [{'host': host, 'port': port}],
 		http_compress = False, # enables gzip compression for request bodies
 		http_auth = auth,
@@ -39,7 +39,7 @@ def manage_elasticsearch_destroy( self):
 	resp_text = '//RESPONSE\n'
 	try:
 		response = client.indices.delete(index_name)
-	except elasticsearchpy.exceptions.RequestError as e:
+	except opensearchpy.exceptions.RequestError as e:
 		resp_text += '//%s\n'%(e.error)
 	resp_text += json.dumps(response, indent=2)
 	return resp_text

@@ -1,9 +1,9 @@
 from Products.zms import standard
 import json
 from urllib.parse import urlparse
-import elasticsearchpy
-from elasticsearchpy import elasticsearch
-from elasticsearchpy.helpers import bulk
+import opensearchpy
+from opensearchpy import OpenSearch
+from opensearchpy.helpers import bulk
 
 # import pdb
 # pdb.set_trace()
@@ -24,7 +24,7 @@ def get_elasticsearch_client(self):
 	password = self.getConfProperty('elasticsearch.password', 'admin')
 	auth = (username,password)
 	
-	client = elasticsearch(
+	client = OpenSearch(
 		hosts = [{'host': host, 'port': port}],
 		http_compress = False, # enables gzip compression for request bodies
 		http_auth = auth,
@@ -42,7 +42,7 @@ def manage_elasticsearch_init( self):
 	client = get_elasticsearch_client(self)
 	try:
 		response = client.indices.create(index_name, body=schema)
-	except elasticsearchpy.exceptions.RequestError as e:
+	except opensearchpy.exceptions.RequestError as e:
 		if 'resource_already_exists_exception' != e.error:
 			raise
 		else:

@@ -1,6 +1,6 @@
-class elasticsearch:
+class solr:
 	"""
-	python-representation of elasticsearch_page
+	python-representation of solr_page
 	"""
 
 	# Access
@@ -23,23 +23,23 @@ class elasticsearch:
 	enabled = 1
 
 	# Id
-	id = "elasticsearch_page"
+	id = "solr_page"
 
 	# Name
-	name = "elasticsearch-Page"
+	name = "Solr-Page"
 
 	# Package
-	package = "com.zms.foundation.catalog.elasticsearch"
+	package = "com.zms.catalog.solr"
 
 	# Revision
-	revision = "0.3.1"
+	revision = "1.0.0"
 
 	# Type
 	type = "ZMSDocument"
 
 	# Attrs
 	class Attrs:
-		icon_clazz = {"custom":"fas fa-search text-danger"
+		icon_clazz = {"custom":"fas fa-sun text-danger"
 			,"default":""
 			,"id":"icon_clazz"
 			,"keys":[]
@@ -94,8 +94,8 @@ class elasticsearch:
 			,"repetitive":0
 			,"type":"resource"}
 
-		elasticsearch_breadcrumbs_obj_path = {"default":""
-			,"id":"elasticsearch_breadcrumbs_obj_path"
+		solr_breadcrumbs_obj_path = {"default":""
+			,"id":"solr_breadcrumbs_obj_path"
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
@@ -108,6 +108,6 @@ class elasticsearch:
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
-			,"name":"Template: elasticsearch"
+			,"name":"Template: solr"
 			,"repetitive":0
 			,"type":"zpt"}

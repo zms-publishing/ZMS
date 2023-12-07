@@ -25,10 +25,10 @@ class opensearch_connector:
 	name = "Opensearch-Connector"
 
 	# Package
-	package = "com.zms.foundation.catalog.opensearch"
+	package = "com.zms.catalog.opensearch"
 
 	# Revision
-	revision = "0.3.1"
+	revision = "1.0.0"
 
 	# Type
 	type = "ZMSLibrary"

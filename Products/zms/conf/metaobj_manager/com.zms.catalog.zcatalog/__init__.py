@@ -1,6 +1,6 @@
 class com_zms_foundation_catalog_zcatalog:
 	"""
-	python-representation of com.zms.foundation.catalog.zcatalog
+	python-representation of com.zms.catalog.zcatalog
 	"""
 
 	# Access
@@ -13,16 +13,16 @@ class com_zms_foundation_catalog_zcatalog:
 	enabled = 0
 
 	# Id
-	id = "com.zms.foundation.catalog.zcatalog"
+	id = "com.zms.catalog.zcatalog"
 
 	# Name
-	name = "com.zms.foundation.catalog.zcatalog"
+	name = "com.zms.catalog.zcatalog"
 
 	# Package
 	package = ""
 
 	# Revision
-	revision = "0.0.1"
+	revision = "1.0.0"
 
 	# Type
 	type = "ZMSPackage"

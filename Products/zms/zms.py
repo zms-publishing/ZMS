@@ -136,6 +136,7 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
 
   ### Init ZMS default content-model.
   _confmanager.initConf(obj, 'conf:com.zms.foundation*')
+  _confmanager.initConf(obj, 'conf:com.zms.catalog.zcatalog')
 
   ### Init ZMS index.
   obj.getZMSIndex()

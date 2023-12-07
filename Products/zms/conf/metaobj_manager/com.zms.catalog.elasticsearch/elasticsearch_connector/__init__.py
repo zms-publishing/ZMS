@@ -25,10 +25,10 @@ class elasticsearch_connector:
 	name = "elasticsearch-Connector"
 
 	# Package
-	package = "com.zms.foundation.catalog.elasticsearch"
+	package = "com.zms.catalog.elasticsearch"
 
 	# Revision
-	revision = "0.3.1"
+	revision = "1.0.0"
 
 	# Type
 	type = "ZMSLibrary"

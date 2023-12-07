@@ -23,10 +23,10 @@ class zcatalog_connector:
 	name = "ZCatalog-Connector"
 
 	# Package
-	package = "com.zms.foundation.catalog.zcatalog"
+	package = "com.zms.catalog.zcatalog"
 
 	# Revision
-	revision = "0.0.0"
+	revision = "1.0.0"
 
 	# Type
 	type = "ZMSLibrary"

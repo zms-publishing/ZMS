@@ -151,7 +151,8 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
 				+ '<code>' + xhr.status + ': ' + thrownError + '</code>');
 		},
 		success:function(result) {
-			var total = result.length;
+			var total = result['numFound'];
+			var docs = result['docs']
 			var html = "";
 			if (total == 0) {
 				$("#search_results .small-head").html(getZMILangStr('SEARCH_YOURQUERY').replace('%s','<span id="q"></span>')+' '+getZMILangStr('SEARCH_NORESULTS'));
@@ -160,16 +161,16 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
 			else {
 				$("#search_results .small-head").html(getZMILangStr('SEARCH_YOURQUERY').replace('%s','<span id="q"></span>')+' '+getZMILangStr('SEARCH_RETURNEDRESULTS')+':');
 				$("#search_results .small-head #q").text(q);
-				result.forEach(record => {
+				docs.forEach(doc => {
 					var href = '';
 					if (zmi) {
-						if (href=='') href = record.loc;
-						if (href=='') href = record.absolute_url;
+						if (href=='') href = doc.loc;
+						if (href=='') href = doc.absolute_url;
 						href += '/manage';
 					} else {
-						href = record.index_html;
+						href = doc.index_html;
 					}
-					var snippet = record.standard_html;
+					var snippet = doc.standard_html;
 					if (snippet.length > p['hl.fragsize']) {
 						snippet = snippet.substring(0,p['hl.fragsize']);
 						while (!snippet.lastIndexOf(" ")==snippet.length-1) {
@@ -179,7 +180,7 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
 					html += ''
 						+ '<div class="line row">'
 						+ '<div class="col-sm-12">'
-						+ '<h2 class="'+record.meta_id+'"><a href="'+record.href+'">'+record.title+'</a></h2>'
+						+ '<h2 class="'+doc.meta_id+'"><a href="'+doc.href+'">'+doc.title+'</a></h2>'
 						+ '<p>'+snippet+'</p>'
 						+ '</div>'
 						+ '</div><!-- .line.row -->';

@@ -66,7 +66,16 @@ def zcatalog_query( self, REQUEST=None):
   results = sorted( results, key=lambda x: x[0])
   results.reverse()
   
+  # Limit search-results.
+  num_found = len(results)
+  page_index = int(REQUEST.get('page_index',0))
+  page_size = int(REQUEST.get('page_size',20))
+  start = page_index*page_size
+  if num_found > page_size:
+    results = results[start:start+page_size]
+
   # Return list of search-results in correct sort-order.
-  response = [x[1] for x in results]
+  docs = [x[1] for x in results]
+  response = {'status':0, 'numFound':num_found, 'start': start, 'docs':docs}
   return json.dumps(response)
 

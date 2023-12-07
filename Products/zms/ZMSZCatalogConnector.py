@@ -169,8 +169,8 @@ class ZMSZCatalogConnector(
       """ search_json """
       RESPONSE.setHeader('Cache-Control', 'no-cache')
       RESPONSE.setHeader('Content-Type', 'application/json; charset=utf-8')
-      results = [x['ob'](self, REQUEST) for x in self.getActions(r'(.*?)_query$')][0]
-      return results
+      result = [x['ob'](self, REQUEST) for x in self.getActions(r'(.*?)_query$')][0]
+      return result
 
     # --------------------------------------------------------------------------
     #  ZMSZCatalogConnector.search_xml
@@ -179,11 +179,12 @@ class ZMSZCatalogConnector(
       """ search_xml """
       RESPONSE.setHeader('Cache-Control', 'no-cache')
       RESPONSE.setHeader('Content-Type', 'text/xml; charset=utf-8')
-      results = json.load([x['ob'](self, REQUEST) for x in self.getActions(r'(.*?)_query$')][0])
+      result = json.load([x['ob'](self, REQUEST) for x in self.getActions(r'(.*?)_query$')][0])
       # Assemble xml.
-      status = 0
-      page_index = int(REQUEST.get('page_index',0))
-      page_size = int(REQUEST.get('page_size',20))
+      status = result['status']
+      num_found = result['numFound']
+      start = result['start']
+      docs = result['docs']
       xml = self.getXmlHeader()
       xml += '<response>'
       xml += '<lst name="responseHeader">'
@@ -195,14 +196,12 @@ class ZMSZCatalogConnector(
       xml += '</lst>'
       xmlr = ''
       if status <= 0:
-        xmlr += '<result name="response" numFound="%i" start="%i">'%(len(results), page_index*page_size)
-        if len(results) > page_size:
-          results = results[page_index*page_size:(page_index+1)*page_size]
-        for result in results:
+        xmlr += '<result name="response" numFound="%i" start="%i">'%(num_found, start)
+        for doc in docs:
           xmlr += '<doc>'
-          for k in result.keys():
+          for k in doc:
             try:
-              v = result[k]
+              v = doc[k]
               if k == 'zcat_column_loc':
                 k = 'loc'
               elif k == 'zcat_column_index_html':

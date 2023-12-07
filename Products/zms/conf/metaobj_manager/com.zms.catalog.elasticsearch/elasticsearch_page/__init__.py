@@ -1,4 +1,4 @@
-class elasticsearch:
+class elasticsearch_page:
 	"""
 	python-representation of elasticsearch_page
 	"""

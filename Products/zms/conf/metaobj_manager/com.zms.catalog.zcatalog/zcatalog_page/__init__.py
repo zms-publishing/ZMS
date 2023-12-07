@@ -1,4 +1,4 @@
-class solr:
+class zcatalog_page:
 	"""
 	python-representation of zcatalog_page
 	"""
@@ -126,6 +126,6 @@ class solr:
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
-			,"name":"Template: solr"
+			,"name":"Template: ZCatalog-Page"
 			,"repetitive":0
 			,"type":"zpt"}

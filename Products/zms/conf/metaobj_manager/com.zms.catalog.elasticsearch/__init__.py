@@ -1,4 +1,4 @@
-class com_zms_foundation_catalog_elasticsearch:
+class com_zms_catalog_elasticsearch:
 	"""
 	python-representation of com.zms.catalog.elasticsearch
 	"""

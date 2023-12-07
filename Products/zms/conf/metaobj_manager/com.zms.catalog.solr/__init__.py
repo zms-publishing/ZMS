@@ -1,4 +1,4 @@
-class com_zms_foundation_catalog_zcatalog:
+class com_zms_catalog_zcatalog:
 	"""
 	python-representation of com.zms.catalog.solr
 	"""

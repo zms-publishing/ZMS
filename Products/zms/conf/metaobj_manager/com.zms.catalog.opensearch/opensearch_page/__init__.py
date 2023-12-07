@@ -1,4 +1,4 @@
-class opensearch:
+class opensearch_page:
 	"""
 	python-representation of opensearch_page
 	"""

@@ -14,7 +14,7 @@ $(function() {
 	show_results = async (q, pageIndex) => {
 		$('.search-results').html(hb_spinner_tmpl(q));
 		// debugger;
-		const qurl = `${root_url}/solr_query?q=${q}&pageIndex:int=${pageIndex}`;
+		const qurl = `${root_url}/zcatalog_query?q=${q}&pageIndex:int=${pageIndex}`;
 		const response = await fetch(qurl);
 		const res = await response.json();
 		const res_processed = postprocess_results(q, res);
@@ -58,7 +58,7 @@ $(function() {
 	};
 
 	const show_breadcrumbs = (el) => {
-		$.get(url=`${root_url}/solr_breadcrumbs_obj_path`, data={ 'id' : el.dataset.id }, function(data, status) {
+		$.get(url=`${root_url}/zcatalog_breadcrumbs_obj_path`, data={ 'id' : el.dataset.id }, function(data, status) {
 			$(el).html(data);
 		});
 	}

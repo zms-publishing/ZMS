@@ -1,4 +1,4 @@
-class com_zms_foundation_catalog_opensearch:
+class com_zms_catalog_opensearch:
 	"""
 	python-representation of com.zms.catalog.opensearch
 	"""

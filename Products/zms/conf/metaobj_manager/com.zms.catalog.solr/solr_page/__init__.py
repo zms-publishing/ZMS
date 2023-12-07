@@ -1,4 +1,4 @@
-class solr:
+class solr_page:
 	"""
 	python-representation of solr_page
 	"""

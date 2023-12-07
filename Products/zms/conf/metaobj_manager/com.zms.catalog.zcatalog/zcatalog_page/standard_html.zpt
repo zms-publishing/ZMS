@@ -1,4 +1,4 @@
-<!-- solr.standard_html -->
+<!-- zcatalog.standard_html -->
 
 <template id="hb_spinner_html" type="text/x-handlebars-template">
 	{{#.}}
@@ -78,4 +78,4 @@
 
 </tal:block>
 
-<!-- /solr.standard_html -->
+<!-- /zcatalog.standard_html -->

@@ -8,7 +8,7 @@ def bulk_solr_add_documents(self, sources):
 	# Name adaption to solr schema
 	for x in sources:
 		# Create language specific solr id
-		_id = "%s:%s"%(x['uid'],x.get('lang',self.getPrimaryLanguage()))
+		_id = "%s:%s"%(x['uid'], x.get('lang',self.getPrimaryLanguage()))
 		d = {"_id":_id}
 		# Differenciate zms-object id and uid
 		x['zmsid'] = x['id']
@@ -29,13 +29,16 @@ def bulk_solr_add_documents(self, sources):
 
 	index_name = self.getRootElement().getHome().id
 	response = requests.post('%s/%s/update'%(url,index_name), auth=auth, json=actions)
-	print(f"Status Code: {response.status_code}, Response: {response.json()}")
+	# print(f"Status Code: {response.status_code}, Response: {response.json()}")
 	response = requests.post('%s/%s/update'%(url,index_name), auth=auth, json={'commit':{}})
-	print(f"Status Code: {response.status_code}, Response: {response.json()}")
+	# print(f"Status Code: {response.status_code}, Response: {response.json()}")
 
 	return 0, len(actions)
 
 def manage_solr_objects_add( self, objects):
+	# Function applies to:
+	#	ZMSZCatalogConnector.manage_objects_add 
+	#	ZMSZCatalogConnector.reindex_page
 	sources = [data for (node, data) in objects]
 	failed, success = bulk_solr_add_documents(self, sources)
 	return success, failed or 0

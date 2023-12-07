@@ -2,18 +2,66 @@ import json
 
 def manage_solr_schematize( self):
 	zmscontext = self
-	add_field = []
 
-	# Force default properties types
-	# Hint: Solr sets id as default uniqueKey 
-	# add_field.append({'name':'id', 'type':'string','multiValued':False,'indexed':True,'required':True,'stored':True})
-	add_field.append({'name':'uid', 'type':'string','indexed':True,'required':True})
-	add_field.append({'name':'zmsid', 'type':'string','multiValued':False,'required':True})
-	add_field.append({'name':'loc', 'type':'string','multiValued':False,'required':False})
-	add_field.append({'name':'index_html', 'type':'text_general','multiValued':False,'required':False})
-	add_field.append({'name':'meta_id', 'type':'string','multiValued':False,'indexed':True,'required':False})
-	add_field.append({'name':'lang', 'type':'string','multiValued':False,'indexed':True,'required':False})
-	add_field.append({'name':'home_id', 'type':'string','multiValued':False,'indexed':True,'required':False})
+	# Default properties types
+	# https://solr.apache.org/guide/8_11/schema-api.html#SchemaAPI-AddaNewField
+	# https://solr.apache.org/guide/8_11/defining-fields.html#optional-field-type-override-properties
+
+	add_field = [
+		# HINT: The field 'id' is not allowed to be added by the Solr schema API
+		# {
+		#	'name':'id',
+		#	'type':'string',
+		#	'multiValued':False,
+		#	'required':True
+		# },
+		{
+			'name':'zmsid',
+			'type':'string',
+			'multiValued':False,
+			'required':True
+		},
+		{
+			'name':'uid',
+			'type':'string',
+			'multiValued':False,
+			'indexed':True,
+			'required':True
+		},
+		{
+			'name':'loc',
+			'type':'string',
+			'multiValued':False,
+			'required':False
+		},
+		{
+			'name':'index_html',
+			'type':'text_general',
+			'multiValued':False,
+			'required':False
+		},
+		{
+			'name':'meta_id',
+			'type':'string',
+			'multiValued':False,
+			'indexed':True,
+			'required':False
+		},
+		{
+			'name':'lang',
+			'type':'string',
+			'multiValued':False,
+			'indexed':True,
+			'required':False
+		},
+		{
+			'name':'home_id',
+			'type':'string',
+			'multiValued':False,
+			'indexed':True,
+			'required':False
+		}
+	]
 
 	# SOLR field types
 	allowed_types = [

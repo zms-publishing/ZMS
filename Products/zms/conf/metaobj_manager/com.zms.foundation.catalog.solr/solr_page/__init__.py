@@ -1,6 +1,6 @@
 class solr:
 	"""
-	python-representation of solr
+	python-representation of solr_page
 	"""
 
 	# Access
@@ -23,7 +23,7 @@ class solr:
 	enabled = 1
 
 	# Id
-	id = "solr"
+	id = "solr_page"
 
 	# Name
 	name = "Solr-Page"

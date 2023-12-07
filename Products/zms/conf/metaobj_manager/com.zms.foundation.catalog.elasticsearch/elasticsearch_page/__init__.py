@@ -1,6 +1,6 @@
 class elasticsearch:
 	"""
-	python-representation of elasticsearch
+	python-representation of elasticsearch_page
 	"""
 
 	# Access
@@ -23,7 +23,7 @@ class elasticsearch:
 	enabled = 1
 
 	# Id
-	id = "elasticsearch"
+	id = "elasticsearch_page"
 
 	# Name
 	name = "elasticsearch-Page"

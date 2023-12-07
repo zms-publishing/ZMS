@@ -1,6 +1,6 @@
 class opensearch:
 	"""
-	python-representation of opensearch
+	python-representation of opensearch_page
 	"""
 
 	# Access
@@ -23,7 +23,7 @@ class opensearch:
 	enabled = 1
 
 	# Id
-	id = "opensearch"
+	id = "opensearch_page"
 
 	# Name
 	name = "Opensearch-Page"
@@ -39,7 +39,7 @@ class opensearch:
 
 	# Attrs
 	class Attrs:
-		icon_clazz = {"custom":"fas fa-search text-danger"
+		icon_clazz = {"custom":"fas fa-search text-primary"
 			,"default":""
 			,"id":"icon_clazz"
 			,"keys":[]

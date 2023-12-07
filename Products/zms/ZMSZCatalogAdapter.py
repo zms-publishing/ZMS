@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-# _globals.py
+# ZMSZCatalogAdapter.py
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -43,6 +43,7 @@ def get_default_data(node):
   d['home_id'] = node.getHome().id
   d['meta_id'] = node.meta_id
   d['index_html'] = node.getHref2IndexHtmlInContext(node.getRootElement(), REQUEST=request)
+  d['lang'] = request.get('lang',node.getPrimaryLanguage())
   return d
 
 def get_file(node, d, fileparsing=True):
@@ -59,7 +60,7 @@ def get_file(node, d, fileparsing=True):
 
 def get_catalog_objects(adapter, connector, node, d, fileparsing=True):
   request = node.REQUEST
-  lang = request.get('lang')
+  lang = request.get('lang', node.getPrimaryLanguage())
   # Additional defaults.
   d['id'] = '%s_%s'%(node.id,lang)
   d['lang'] = lang
@@ -235,7 +236,8 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     # --------------------------------------------------------------------------
     def get_attr_data(self, node, d, fileparsing=True):
       request = node.REQUEST
-      lang = request.get('lang')
+      # Is request['lang'] set?
+      lang = request.get('lang', d.get('lang', node.getPrimaryLanguage()))
       # Additional defaults.
       d['id'] = '%s_%s'%(node.id,lang)
       d['lang'] = lang

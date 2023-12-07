@@ -30,5 +30,9 @@ def bulk_solr_delete_documents(self, sources):
 
 def manage_solr_objects_remove( self, nodes):
 	sources = [{'uid':x.get_uid()} for x in nodes]
-	success, failed = bulk_solr_delete_documents(self, sources)
-	return success, failed
+	try:
+		failed, success = bulk_solr_delete_documents(self, sources)
+	except Exception as e:
+		print(e)
+		return 0, len(sources)
+	return success, failed or 0

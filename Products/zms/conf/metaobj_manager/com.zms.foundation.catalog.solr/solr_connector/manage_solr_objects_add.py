@@ -40,5 +40,9 @@ def manage_solr_objects_add( self, objects):
 	#	ZMSZCatalogConnector.manage_objects_add 
 	#	ZMSZCatalogConnector.reindex_page
 	sources = [data for (node, data) in objects]
-	failed, success = bulk_solr_add_documents(self, sources)
+	try:
+		failed, success = bulk_solr_add_documents(self, sources)
+	except Exception as e:
+		print(e)
+		return 0, len(sources)
 	return success, failed or 0

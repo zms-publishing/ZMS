@@ -49,5 +49,9 @@ def bulk_opensearch_delete(self, sources):
 
 def manage_opensearch_objects_remove( self, nodes):
 	sources = [{'uid':x.get_uid()} for x in nodes]
-	success, failed = bulk_opensearch_delete(self, sources)
-	return success, failed
+	try:
+		success, failed = bulk_opensearch_delete(self, sources)
+	except Exception as e:
+		print(e)
+		return 0, len(sources)
+	return success, failed or 0

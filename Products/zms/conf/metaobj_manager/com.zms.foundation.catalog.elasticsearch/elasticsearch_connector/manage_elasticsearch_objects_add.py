@@ -52,6 +52,13 @@ def bulk_elasticsearch_index(self, sources):
 	return 0, len(actions)
 
 def manage_elasticsearch_objects_add( self, objects):
+	# Function applies to:
+	#	ZMSZCatalogConnector.manage_objects_add 
+	#	ZMSZCatalogConnector.reindex_page
 	sources = [data for (node, data) in objects]
-	success, failed = bulk_elasticsearch_index(self, sources)
+	try:
+		success, failed = bulk_elasticsearch_index(self, sources)
+	except Exception as e:
+		print(e)
+		return 0, len(sources)
 	return success, failed or 0

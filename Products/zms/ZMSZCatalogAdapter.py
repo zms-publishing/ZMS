@@ -27,6 +27,7 @@ import zope.interface
 # Product Imports.
 from Products.zms import standard
 from Products.zms import content_extraction
+from Products.zms import _confmanager
 from Products.zms import IZMSCatalogAdapter, IZMSConfigurationProvider
 from Products.zms import ZMSItem
 
@@ -127,6 +128,11 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     def __init__(self):
       self.id = 'zcatalog_adapter'
 
+    def ensure_zcatalog_connector_is_initialized(self):
+      if 'zcatalog_connector' not in self.getMetaobjIds():
+        root = self.getRootElement()
+        _confmanager.initConf(root, 'conf:com.zms.catalog.zcatalog')
+
     ############################################################################
     #  Initialize 
     ############################################################################
@@ -210,9 +216,16 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
       return ['ZMSZCatalogConnector', 'ZMSZCatalogOpensearchConnector']
 
     # --------------------------------------------------------------------------
+    #  ZMSZCatalogAdapter.get_available_connector_ids
+    # --------------------------------------------------------------------------
+    def get_available_connector_ids(self):
+      return sorted([y for y in [self.getMetaobj(x) for x in self.getMetaobjIds()] if y['id'].endswith('_connector') and y['type'] in ['ZMSLibrary']],key=lambda x:x['id']);
+
+    # --------------------------------------------------------------------------
     #  ZMSZCatalogAdapter.getConnectors
     # --------------------------------------------------------------------------
     def getConnectors(self):
+      self.ensure_zcatalog_connector_is_initialized()
       return sorted(self.objectValues(self.getConnectorMetaTypes()),key=lambda x:x.id)
 
     # --------------------------------------------------------------------------

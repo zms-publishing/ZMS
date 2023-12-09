@@ -180,7 +180,7 @@ class ZMSZCatalogConnector(
       self.ensure_zcatalog_connector_is_initialized()
       RESPONSE.setHeader('Cache-Control', 'no-cache')
       RESPONSE.setHeader('Content-Type', 'text/xml; charset=utf-8')
-      result = json.load([x['ob'](self, REQUEST) for x in self.getActions(r'(.*?)_query$')][0])
+      result = json.loads([x['ob'](self, REQUEST) for x in self.getActions(r'(.*?)_query$')][0])
       # Assemble xml.
       status = result['status']
       num_found = result['numFound']
@@ -236,8 +236,9 @@ class ZMSZCatalogConnector(
         xmlr += '</lst>'
       xml += str(xmlr)
       xml += '</response>'
-      if pretty!=0:
+      if standard.pybool(REQUEST.get('pretty')):
         # Prettify xml
+        import minidom
         xml = minidom.parseString(xml).toprettyxml(indent='  ')
       return xml
 

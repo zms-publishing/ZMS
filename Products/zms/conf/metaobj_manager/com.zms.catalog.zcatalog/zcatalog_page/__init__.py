@@ -103,24 +103,6 @@ class zcatalog_page:
 			,"repetitive":0
 			,"type":"Script (Python)"}
 
-		search_xml = {"default":""
-			,"id":"search_xml"
-			,"keys":[]
-			,"mandatory":0
-			,"multilang":0
-			,"name":"Get Search Result as XML"
-			,"repetitive":0
-			,"type":"External Method"}
-
-		suggest_xml = {"default":""
-			,"id":"suggest_xml"
-			,"keys":[]
-			,"mandatory":0
-			,"multilang":0
-			,"name":"Get Autosuggest-Result as XML"
-			,"repetitive":0
-			,"type":"External Method"}
-
 		standard_html = {"default":""
 			,"id":"standard_html"
 			,"keys":[]

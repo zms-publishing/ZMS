@@ -21,4 +21,6 @@ def zcatalog_suggest(self, REQUEST=None):
       break
 
   # Return list of suggestions.
-  return rtn
+  request.RESPONSE.setHeader('Cache-Control', 'no-cache')
+  request.RESPONSE.setHeader('Content-Type', 'application/json; charset=utf-8')
+  return json.dumps(rtn)

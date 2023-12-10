@@ -76,6 +76,18 @@ def zcatalog_query( self, REQUEST=None):
 
   # Return list of search-results in correct sort-order.
   docs = [x[1] for x in results]
+
+  # Force all result values to string type
+  docs_list = []
+  for doc in docs:
+    doc_item = {}
+    for k in list(doc.keys()):
+      try:
+        doc_item[k] = str(doc[k])
+      except:
+        doc_item[k] = 'TypeError'
+    docs_list.append(doc_item)
+
   response = {'status':0, 'numFound':num_found, 'start': start, 'docs':docs}
   return json.dumps(response)
 

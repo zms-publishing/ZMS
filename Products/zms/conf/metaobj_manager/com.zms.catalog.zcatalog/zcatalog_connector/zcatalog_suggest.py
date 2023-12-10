@@ -1,4 +1,5 @@
 from Products.zms import standard
+import json
 
 def zcatalog_suggest(self, REQUEST=None):
   request = self.REQUEST

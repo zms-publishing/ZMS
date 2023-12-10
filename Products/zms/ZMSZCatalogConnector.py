@@ -178,9 +178,9 @@ class ZMSZCatalogConnector(
     def search_xml(self, REQUEST, RESPONSE):
       """ search_xml """
       self.ensure_zcatalog_connector_is_initialized()
+      result = json.loads(self.search_json(REQUEST, RESPONSE))
       RESPONSE.setHeader('Cache-Control', 'no-cache')
       RESPONSE.setHeader('Content-Type', 'text/xml; charset=utf-8')
-      result = json.loads([x['ob'](self, REQUEST) for x in self.getActions(r'(.*?)_query$')][0])
       # Assemble xml.
       status = result['status']
       num_found = result['numFound']
@@ -228,13 +228,65 @@ class ZMSZCatalogConnector(
               break
           xmlr += '</doc>'
         xmlr += '</result>'
-      if status > 0:
+      else:
+        msg = result.get('msg','ERROR')
         xmlr = ''
         xmlr += '<lst name="error">'
         xmlr += '<str name="msg">%s</str>'%standard.html_quote(msg)
         xmlr += '<int name="code">%i</int>'%status
         xmlr += '</lst>'
       xml += str(xmlr)
+      xml += '</response>'
+      if standard.pybool(REQUEST.get('pretty')):
+        # Prettify xml
+        import minidom
+        xml = minidom.parseString(xml).toprettyxml(indent='  ')
+      return xml
+
+
+    # --------------------------------------------------------------------------
+    #  ZMSZCatalogConnector.suggest_json
+    # --------------------------------------------------------------------------
+    def suggest_json(self, REQUEST, RESPONSE):
+      """ suggest_json """
+      self.ensure_zcatalog_connector_is_initialized()
+      RESPONSE.setHeader('Cache-Control', 'no-cache')
+      RESPONSE.setHeader('Content-Type', 'application/json; charset=utf-8')
+      result = [x['ob'](self, REQUEST) for x in self.getActions(r'(.*?)_suggest$')][0]
+      return result
+
+    # --------------------------------------------------------------------------
+    #  ZMSZCatalogConnector.suggest_xml
+    # --------------------------------------------------------------------------
+    def suggest_xml(self, REQUEST, RESPONSE):
+      """ suggest_xml """
+      self.ensure_zcatalog_connector_is_initialized()
+      result = json.loads(self.suggest_json(REQUEST, RESPONSE))
+      RESPONSE.setHeader('Cache-Control', 'no-cache')
+      RESPONSE.setHeader('Content-Type', 'text/xml; charset=utf-8')
+      # Assemble xml.
+      status = result['status']
+      xml = self.getXmlHeader()
+      xml += '<response>'
+      xml += '<lst name="responseHeader">'
+      xml += '<int name="status">%i</int>'%status
+      xml += '</lst>'
+      if status <= 0:
+        xml += '<lst>'
+        xml += '<lst name="suggestions">'
+        xml += '<int name="numFound">%i</int>'%len(results)
+        xml += '<arr name="suggestion">'
+        for result in results:
+          xml += '<str>%s</str>'%result
+        xml += '</arr>'
+        xml += '</lst>'
+        xml += '</lst>'
+      else:
+        msg = result.get('msg','ERROR')
+        xml += '<lst name="error">'
+        xml += '<str name="msg">%s</str>'%standard.html_quote(msg)
+        xml += '<int name="code">%i</int>'%status
+        xml += '</lst>'
       xml += '</response>'
       if standard.pybool(REQUEST.get('pretty')):
         # Prettify xml

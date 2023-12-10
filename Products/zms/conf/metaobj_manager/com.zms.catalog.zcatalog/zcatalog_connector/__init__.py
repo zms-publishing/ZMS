@@ -87,3 +87,12 @@ class zcatalog_connector:
 			,"name":"Query"
 			,"repetitive":0
 			,"type":"External Method"}
+
+		zcatalog_suggest = {"default":""
+			,"id":"zcatalog_suggest"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":1
+			,"name":"Suggest"
+			,"repetitive":0
+			,"type":"External Method"}

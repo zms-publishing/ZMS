@@ -170,7 +170,7 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
 					} else {
 						href = doc.index_html;
 					}
-					var snippet = doc.standard_html;
+					var snippet = doc.attr_dc_description || doc.standard_html || '';
 					if (snippet.length > p['hl.fragsize']) {
 						snippet = snippet.substring(0,p['hl.fragsize']);
 						while (!snippet.lastIndexOf(" ")==snippet.length-1) {

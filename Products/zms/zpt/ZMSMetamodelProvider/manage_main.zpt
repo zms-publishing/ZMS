@@ -125,11 +125,11 @@
 					</tal:block>
 				</div>
 			</div>
-            <a tal:condition="python:metaObj.get('acquired',None)" class="btn btn-secondary" target="_blank"
-                tal:attributes="
-                    href python:'%s/metaobj_manager/manage_main?lang=%s&id=%s'%(context.getRootElement().absolute_url(),request['lang'],metaObj['id']);
-                    title python:'acquired YYY from: %s (%s)'%(context.getRootElement().getHome().id, context.getRootElement().attr('titlealt'))"
-                ><i class="fas fa-share" title="acquired"></i></a>
+			<a tal:condition="python:metaObj.get('acquired',None)" class="btn btn-secondary" target="_blank"
+				tal:attributes="
+					href python:'%s/metaobj_manager/manage_main?lang=%s&id=%s'%(context.getRootElement().absolute_url(),request['lang'],metaObj['id']);
+					title python:'acquired YYY from: %s (%s)'%(context.getRootElement().getHome().id, context.getRootElement().attr('titlealt'))"
+				><i class="fas fa-share" title="acquired"></i></a>
 			<a class="btn btn-secondary" target="_blank" value="BTN_SEARCH"
 				tal:attributes="
 					href python:'manage_analyze?lang=%s&id=%s'%(request['lang'],metaObj['id']); 

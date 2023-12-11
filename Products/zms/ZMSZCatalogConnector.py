@@ -16,167 +16,17 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ################################################################################
 
-
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-from Products.ZCatalog import ZCatalog
-from Products.PluginIndexes.DateIndex.DateIndex import DateIndex
-from Products.PluginIndexes.KeywordIndex.KeywordIndex import KeywordIndex
 from zope.interface import implementer
-import copy
+import json
+import re
 import sys
-import time
-from xml.dom import minidom
 # Product Imports.
 from Products.zms import standard
 from Products.zms import IZMSCatalogConnector
+from Products.zms import IZMSRepositoryProvider
 from Products.zms import ZMSItem
-
-
-# ------------------------------------------------------------------------------
-#  ZMSZCatalogConnector.extra_column_ids:
-# ------------------------------------------------------------------------------
-extra_column_ids = ['loc', 'index_html', 'custom']
-
-
-# ------------------------------------------------------------------------------
-#  ZMSZCatalogConnector.umlaut_quote:
-# ------------------------------------------------------------------------------
-def umlaut_quote(self, v):
-  if int(self.getConfProperty('ZMSZCatalogConnector.umlaut_quote', 0)):
-    return standard.umlaut_quote(v)
-  return v
-
-
-# ------------------------------------------------------------------------------
-#  ZMSZCatalogConnector.intValue:
-# ------------------------------------------------------------------------------
-def intValue(v):
-  try:
-    i = int(v)
-  except:
-    i = 0
-  return i
-
-
-# ------------------------------------------------------------------------------
-#  ZMSZCatalogConnector.Empty:
-# ------------------------------------------------------------------------------
-class Empty(object): 
-  pass
-
-
-# ------------------------------------------------------------------------------
-#  ZMSZCatalogConnector.addLexicon:
-# ------------------------------------------------------------------------------
-def addLexicon( container, cat):
-  
-  # Remove Lexicon
-  ids = cat.objectIds( ['ZCTextIndex Lexicon', 'ZCTextIndex Unicode Lexicon'])
-  if len( ids) > 0:
-    cat.manage_delObjects( ids)
-  
-  # Add Lexicon
-  index_type = container.getConfProperty('ZCatalog.TextIndexType', 'ZCTextIndex')
-  if index_type == 'ZCTextIndex':
-    elements = []
-    wordSplitter = Empty()
-    wordSplitter.group = 'Word Splitter'
-    wordSplitter.name = 'HTML aware splitter'
-    elements.append(wordSplitter)
-    caseNormalizer = Empty()
-    caseNormalizer.group = 'Case Normalizer'
-    caseNormalizer.name = 'Case Normalizer'
-    elements.append(caseNormalizer)
-    stopWords = Empty()
-    stopWords.group = 'Stop Words'
-    stopWords.name = 'Remove listed and single char words'
-    elements.append(stopWords)
-    try:
-      cat.manage_addProduct['ZCTextIndex'].manage_addLexicon('Lexicon', 'Default lexicon', elements)
-    except:
-      pass
-
-
-# ------------------------------------------------------------------------------
-#  ZMSZCatalogConnector.getZCatalog:
-# ------------------------------------------------------------------------------
-def getZCatalog(self, lang):
-  cat_id = 'catalog_%s'%lang
-  root = self.getRootElement()
-  # remove deprecated local catalog from client
-  if root != self and cat_id in self.objectIds():
-    self.manage_delObjects([cat_id])
-  zcatalog = getattr(root, cat_id, None)
-  return zcatalog
-
-
-# ------------------------------------------------------------------------------
-#  ZMSZCatalogConnector.writeChangesLog:
-# ------------------------------------------------------------------------------
-def writeChangesLog(zcatalog, info):
-  if not zcatalog.hasProperty('changes_log'):
-    zcatalog.manage_addProperty('changes_log', '', 'text')
-  changes_log = zcatalog.getProperty('changes_log')
-  changes_log += '\n' + zcatalog.getLangFmtDate(time.time(), 'eng') + ' ' + zcatalog.writeBlock(info)
-  zcatalog.manage_changeProperties({'changes_log':changes_log})
-
-
-# ------------------------------------------------------------------------------
-#  ZMSZCatalogConnector.recreateCatalog:
-# ------------------------------------------------------------------------------
-def recreateCatalog(self, zcm, lang):
-  
-  #-- Create catalog
-  cat_id = 'catalog_%s'%lang
-  root = self.getRootElement()
-  if cat_id in root.objectIds():
-    root.manage_delObjects([cat_id])
-  cat_title = 'Default catalog'
-  zcatalog = ZCatalog.ZCatalog(id=cat_id, title=cat_title, container=root)
-  root._setObject(zcatalog.id, zcatalog)
-  zcatalog = getZCatalog(self, lang)
-  writeChangesLog(zcatalog, '[recreateCatalog]: '+self.getZMILangStr('MSG_INSERTED')%zcatalog.meta_type)
-  
-  #-- Add lexicon
-  addLexicon( self, zcatalog)
-  
-  #-- Add columns
-  for index_name in ['id', 'meta_id']+['zcat_column_%s'%x for x in extra_column_ids]:
-    zcatalog.manage_addColumn(index_name)
-  
-  #-- Add Indexes (incl. Columns)
-  for attr_id in zcm._getAttrIds():
-    attr_type = 'string'
-    for meta_id in self.getMetaobjIds():
-      meta_obj_attr = self.getMetaobjAttr(meta_id,attr_id)
-      if meta_obj_attr:
-        attr_type = meta_obj_attr['type']
-        break
-    index_name = 'zcat_index_%s'%attr_id
-    index_type = zcm.getConfProperty('ZCatalog.TextIndexType','ZCTextIndex')
-    if index_name == 'zcat_index_home_id':
-      index_type = KeywordIndex(index_name)
-    elif attr_type == 'date':
-      index_type = DateIndex(attr_id)
-    extra = None
-    if index_type == 'ZCTextIndex':
-      extra = Empty()
-      extra.doc_attr = index_name
-      extra.index_type = 'Okapi BM25 Rank'
-      extra.lexicon_id = 'Lexicon'
-    elif index_type != 'KeywordIndex':
-      extra = {}
-      extra['default_encoding'] = 'utf-8'
-      extra['indexed_fields'] = index_name
-      extra['fields'] = [index_name]
-      extra['near_distance'] = 5
-      extra['splitter_casefolding'] = 1
-      extra['splitter_max_len'] = 64
-      extra['splitter_separators'] = '.+-_@'
-      extra['splitter_single_chars'] = 0
-    zcatalog.manage_addColumn(index_name)
-    zcatalog.manage_addIndex(index_name, index_type, extra)
 
 
 ################################################################################
@@ -187,7 +37,8 @@ def recreateCatalog(self, zcm, lang):
 ################################################################################
 ################################################################################
 @implementer(
-        IZMSCatalogConnector.IZMSCatalogConnector)
+        IZMSCatalogConnector.IZMSCatalogConnector,
+        IZMSRepositoryProvider.IZMSRepositoryProvider,)
 class ZMSZCatalogConnector(
         ZMSItem.ZMSItem):
 
@@ -198,7 +49,8 @@ class ZMSZCatalogConnector(
 
     # Management Interface.
     # ---------------------
-    manage_input_form = PageTemplateFile('zpt/ZMSZCatalogAdapter/manage_zcatalog_connector', globals())
+    manage = PageTemplateFile('zpt/ZMSZCatalogAdapter/manage_zcatalog_connector', globals())
+    manage_main = PageTemplateFile('zpt/ZMSZCatalogAdapter/manage_zcatalog_connector', globals())
 
     # Management Permissions.
     # -----------------------
@@ -214,39 +66,126 @@ class ZMSZCatalogConnector(
     #
     #  Constructor.
     ############################################################################
-    def __init__(self):
-      self.id = 'zcatalog_connector'
+    def __init__(self, id):
+      self.id = id
 
+    ############################################################################
+    #
+    #  IRepositoryProvider
+    #
+    ############################################################################
+
+    """
+    @see IRepositoryProvider
+    """
+    def provideRepository(self, r, ids=None):
+      standard.writeBlock(self, "[provideRepository]: ids=%s"%str(ids))
+      r = {}
+      id = self.id
+      d = {'id':id,'revision':'0.0.0','__filename__':['__init__.py']}
+      r[id] = d
+      r[id]['Opensearch'] = [{
+        'id':'schema',
+        'ob': {
+          'filename':'schema.json',
+          'data':self.getConfProperty('opensearch.schema','{}'),
+          'version':'0.0.0',
+          'meta_type':'File',
+        }
+      }]
+      return r
+
+    """
+    @see IRepositoryProvider
+    """
+    def updateRepository(self, r):
+      id = r['id']
+      [self.setConfProperty('opensearch.schema',x['data']) for x in r['Opensearch'] if x['id'] == 'schema']
+      return id
+
+    """
+    @see IRepositoryProvider
+    """
+    def translateRepositoryModel(self, r):
+      d = {}
+      return d
 
     # --------------------------------------------------------------------------
-    #  ZMSZCatalogConnector.search_xml:
+    #  ZMSZCatalogConnector.getProperties
     # --------------------------------------------------------------------------
-    def search_xml(self, q, page_index=0, page_size=10, debug=0, pretty=0, REQUEST=None, RESPONSE=None):
-      """ ZMSZCatalogConnector.search_xml """
-      # Check constraints.
-      page_index = int(page_index)
-      page_size = int(page_size)
-      REQUEST.set('lang', REQUEST.get('lang', self.getPrimaryLanguage()))
-      RESPONSE = REQUEST.RESPONSE
-      content_type = 'text/xml; charset=utf-8'
-      if debug!=0:
-        content_type = 'text/plain; charset=utf-8'
-      RESPONSE.setHeader('Content-Type', content_type)
+    def getProperties(self):
+      return standard.parse_json(self.evalMetaobjAttr('%s.properties'%self.id))
+
+    # --------------------------------------------------------------------------
+    #  ZMSZCatalogConnector.getActions
+    # --------------------------------------------------------------------------
+    def getActions(self, pattern=None):
+      root = self.getRootElement()
+      metaobjAttrs = root.getMetaobjAttrs(self.id)
+      actions = [root.getMetaobjAttr(self.id, x['id']) for x in metaobjAttrs if x['type'] in ['py','External Method','Script (Python)']]
+      if pattern:
+        actions = [x for x in actions if re.match(pattern,x['id'])]
+      return actions
+
+    # --------------------------------------------------------------------------
+    #  ZMSZCatalogConnector.manage_init
+    # --------------------------------------------------------------------------
+    def manage_init(self):
+      [x['ob'](self) for x in self.getActions(r'^manage_(.*?)_init$')]
+
+    # --------------------------------------------------------------------------
+    #  ZMSZCatalogConnector.manage_objects_add
+    #
+    #  @param objects ((node, data), (node, data), (node, data), ...)
+    #  @type  objects list|tuple 
+    #  @return success, failed
+    #  @rtype  tuple
+    # --------------------------------------------------------------------------
+    def manage_objects_add(self, objects):
+      return [x['ob'](self, objects) for x in self.getActions(r'^manage_(.*?)_objects_add$')][0]
+
+    # --------------------------------------------------------------------------
+    #  ZMSZCatalogConnector.manage_objects_remove
+    # 
+    #  @param   nodes
+    #  @type    nodes list|tuple 
+    #  @return  success, failed
+    #  @rtype   tuple
+    # --------------------------------------------------------------------------
+    def manage_objects_remove(self, nodes):
+      return [x['ob'](self, nodes) for x in self.getActions(r'^manage_(.*?)_objects_remove$')][0]
+
+    # --------------------------------------------------------------------------
+    #  ZMSZCatalogConnector.manage_destroy
+    # --------------------------------------------------------------------------
+    def manage_destroy(self):
+      [x['ob'](self) for x in self.getActions(r'^manage_(.*?)_destroy$')]
+
+    # --------------------------------------------------------------------------
+    #  ZMSZCatalogConnector.search_json
+    # --------------------------------------------------------------------------
+    def search_json(self, REQUEST, RESPONSE):
+      """ search_json """
+      self.ensure_zcatalog_connector_is_initialized()
       RESPONSE.setHeader('Cache-Control', 'no-cache')
-      RESPONSE.setHeader('Pragma', 'no-cache')
-      RESPONSE.setHeader('Access-Control-Allow-Origin', '*')
-      # Execute query.
-      status = 0
-      msg = ''
-      results = []
-      try: 
-        results = self.search(q, REQUEST.get('fq[]', ''))
-      except:
-        standard.writeError(self, '[search_xml]')
-        t, v, tb = sys.exc_info()
-        status = 400
-        msg = v
+      RESPONSE.setHeader('Content-Type', 'application/json; charset=utf-8')
+      result = [x['ob'](self, REQUEST) for x in self.getActions(r'(.*?)_query$')][0]
+      return result
+
+    # --------------------------------------------------------------------------
+    #  ZMSZCatalogConnector.search_xml
+    # --------------------------------------------------------------------------
+    def search_xml(self, REQUEST, RESPONSE):
+      """ search_xml """
+      self.ensure_zcatalog_connector_is_initialized()
+      result = json.loads(self.search_json(REQUEST, RESPONSE))
+      RESPONSE.setHeader('Cache-Control', 'no-cache')
+      RESPONSE.setHeader('Content-Type', 'text/xml; charset=utf-8')
       # Assemble xml.
+      status = result['status']
+      num_found = result['numFound']
+      start = result['start']
+      docs = result['docs']
       xml = self.getXmlHeader()
       xml += '<response>'
       xml += '<lst name="responseHeader">'
@@ -258,14 +197,12 @@ class ZMSZCatalogConnector(
       xml += '</lst>'
       xmlr = ''
       if status <= 0:
-        xmlr += '<result name="response" numFound="%i" start="%i">'%(len(results), page_index*page_size)
-        if len(results) > page_size:
-          results = results[page_index*page_size:(page_index+1)*page_size]
-        for result in results:
+        xmlr += '<result name="response" numFound="%i" start="%i">'%(num_found, start)
+        for doc in docs:
           xmlr += '<doc>'
-          for k in result.keys():
+          for k in doc:
             try:
-              v = result[k]
+              v = doc[k]
               if k == 'zcat_column_loc':
                 k = 'loc'
               elif k == 'zcat_column_index_html':
@@ -291,7 +228,8 @@ class ZMSZCatalogConnector(
               break
           xmlr += '</doc>'
         xmlr += '</result>'
-      if status > 0:
+      else:
+        msg = result.get('msg','ERROR')
         xmlr = ''
         xmlr += '<lst name="error">'
         xmlr += '<str name="msg">%s</str>'%standard.html_quote(msg)
@@ -299,49 +237,41 @@ class ZMSZCatalogConnector(
         xmlr += '</lst>'
       xml += str(xmlr)
       xml += '</response>'
-      if pretty!=0:
+      if standard.pybool(REQUEST.get('pretty')):
         # Prettify xml
+        import minidom
         xml = minidom.parseString(xml).toprettyxml(indent='  ')
       return xml
 
 
     # --------------------------------------------------------------------------
-    #  ZMSZCatalogConnector.suggest_xml:
+    #  ZMSZCatalogConnector.suggest_json
     # --------------------------------------------------------------------------
-    def suggest_xml(self, q, fq='', limit=5, debug=0, pretty=0, REQUEST=None, RESPONSE=None):
-      """ ZMSZCatalogConnector.suggest_xml """
-      # Check constraints.
-      REQUEST.set('lang', REQUEST.get('lang', self.getPrimaryLanguage()))
-      RESPONSE = REQUEST.RESPONSE
-      content_type = 'text/xml;charset=utf-8'
-      if debug!=0:
-        content_type = 'text/plain; charset=utf-8'
-      RESPONSE.setHeader('Content-Type', content_type)
+    def suggest_json(self, REQUEST, RESPONSE):
+      """ suggest_json """
+      self.ensure_zcatalog_connector_is_initialized()
       RESPONSE.setHeader('Cache-Control', 'no-cache')
-      RESPONSE.setHeader('Pragma', 'no-cache')
-      # Execute query.
-      status = 0
-      msg = ''
-      results = []
-      try: 
-        results = self.suggest(q, limit)
-      except:
-        standard.writeError(self, '[suggest_xml]')
-        t, v, tb = sys.exc_info()
-        status = 400
-        msg = v
+      RESPONSE.setHeader('Content-Type', 'application/json; charset=utf-8')
+      result = [x['ob'](self, REQUEST) for x in self.getActions(r'(.*?)_suggest$')][0]
+      return result
+
+    # --------------------------------------------------------------------------
+    #  ZMSZCatalogConnector.suggest_xml
+    # --------------------------------------------------------------------------
+    def suggest_xml(self, REQUEST, RESPONSE):
+      """ suggest_xml """
+      self.ensure_zcatalog_connector_is_initialized()
+      result = json.loads(self.suggest_json(REQUEST, RESPONSE))
+      RESPONSE.setHeader('Cache-Control', 'no-cache')
+      RESPONSE.setHeader('Content-Type', 'text/xml; charset=utf-8')
       # Assemble xml.
+      status = result['status']
       xml = self.getXmlHeader()
       xml += '<response>'
       xml += '<lst name="responseHeader">'
       xml += '<int name="status">%i</int>'%status
       xml += '</lst>'
-      if status > 0:
-        xml += '<lst name="error">'
-        xml += '<int name="msg">%s</int>'%msg
-        xml += '<int name="code">%i</int>'%status
-        xml += '</lst>'
-      else:
+      if status <= 0:
         xml += '<lst>'
         xml += '<lst name="suggestions">'
         xml += '<int name="numFound">%i</int>'%len(results)
@@ -351,249 +281,75 @@ class ZMSZCatalogConnector(
         xml += '</arr>'
         xml += '</lst>'
         xml += '</lst>'
+      else:
+        msg = result.get('msg','ERROR')
+        xml += '<lst name="error">'
+        xml += '<str name="msg">%s</str>'%standard.html_quote(msg)
+        xml += '<int name="code">%i</int>'%status
+        xml += '</lst>'
       xml += '</response>'
-      if pretty!=0:
+      if standard.pybool(REQUEST.get('pretty')):
         # Prettify xml
+        import minidom
         xml = minidom.parseString(xml).toprettyxml(indent='  ')
       return xml
 
 
     # --------------------------------------------------------------------------
-    #  ZMSZCatalogConnector.search:
+    #  ZMSZCatalogConnector.reindex_page
     # --------------------------------------------------------------------------
-    def search(self, q, fq='', order=None):
-      rtn = []
-      
-      # ZCatalog.
-      request = self.REQUEST
-      lang = standard.nvl(request.get('lang'), self.getPrimaryLanguage())
-      zcatalog = getZCatalog(self, lang)
-      
-      # Find search-results.
-      items = []
-      prototype = {}
-      for fqs in fq.split(','):
-        attr_id = fqs[:fqs.find(':')]
-        if attr_id.endswith('_s'):
-          attr_id = attr_id[:-2]
-        fqk = 'zcat_index_%s'%attr_id
-        if fqk in zcatalog.indexes():
-          fqv = fqs[fqs.find(':')+1:]
-          fqv = umlaut_quote(self, fqv)
-          prototype[fqk] = fqv
-      for index in zcatalog.indexes():
-        if index.find('zcat_index_')==0:
-          query = copy.deepcopy(prototype)
-          query[index] = umlaut_quote(self, q)
-          qr = zcatalog(query)
-          standard.writeLog( self, "[search]: %s=%i"%(str(query), len(qr)))
-          for item in qr:
-            if item not in items:
-              items.append( item.aq_base )
-      
-      # Process search-results.
-      results = []
-      for item in items:
-        data_record_id = item.data_record_id_
-        path = zcatalog.getpath(data_record_id)
-        # Append to valid results.
-        if len([x for x in results if x[1]['path']==path]) == 0:
-          result = {}
-          result['path'] = path
-          result['score'] = intValue(item.data_record_score_)
-          result['normscore'] = intValue(item.data_record_normalized_score_)
-          for column in zcatalog.schema():
-            k = column
-            if k.find('zcat_index_')==0:
-              k = k[len('zcat_index_'):]
-            result[k] = getattr(item, column, None)
-          results.append((item.data_record_score_, result))
-      
-      # Sort search-results.
-      results = sorted( results, key=lambda x: x[0])
-      results.reverse()
-      
-      # Append search-results.
-      rtn.extend([x[1] for x in results])
-      
-      # Return list of search-results in correct sort-order.
-      return rtn
-
-
-    # --------------------------------------------------------------------------
-    #  ZMSZCatalogConnector.suggest:
-    # --------------------------------------------------------------------------
-    def suggest(self, q, limit=5):
-      rtn = []
-      
-      # ZCatalog.
-      request = self.REQUEST
-      lang = standard.nvl(request.get('lang'), self.getPrimaryLanguage())
-      zcatalog = getZCatalog(self, lang)
-      
-      # Lexicon.
-      lexicon = zcatalog.Lexicon
-      for w in lexicon.words():
-        if w[0] not in ['_', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] and w.lower().find(q) >= 0 and w not in rtn:
-          rtn.append(w)
-        if len(rtn) >= limit:
-          break
-      
-      # Return list of suggestions.
-      return rtn
-
-
-    # --------------------------------------------------------------------------
-    #  ZMSZCatalogConnector._update:
-    # --------------------------------------------------------------------------
-    def _update(self, node, d):
-      zcm = self.getCatalogAdapter()
-      # Prepare object.
-      for attr_id in extra_column_ids:
-        attr_name = 'zcat_column_%s'%attr_id
-        value = d.get(attr_id)
-        setattr(node, attr_name, value)
-      for attr_id in zcm._getAttrIds():
-        attr_name = 'zcat_index_%s'%attr_id
-        value = d.get(attr_id)
-        if value == 'None':
-          value = None
-        if value:
-          value = umlaut_quote(self, value)
-        setattr(node, attr_name, value)
-      # Reindex object.
-      request = self.REQUEST
-      lang = standard.nvl(request.get('lang'), self.getPrimaryLanguage())
-      zcatalog = getZCatalog(self, lang)
-      if zcatalog is not None:
-        path = node.getPath()
-        if zcatalog.getrid(path):
-          zcatalog.uncatalog_object(path)
-        zcatalog.catalog_object(node, path)
-      # Unprepare object.
-      for attr_id in extra_column_ids:
-        attr_name = 'zcat_column_%s'%attr_id
-        delattr(node, attr_name)
-      for attr_id in zcm._getAttrIds():
-        attr_name = 'zcat_index_%s'%attr_id
-        delattr(node, attr_name)
-      # premature commit
-      req_key = 'ZMSZCatalogConnector._update.transaction_count'
-      cfg_key = 'ZMSZCatalogConnector._update.transaction_size'
-      if request.get(req_key, 0)>=int(self.getConfProperty(cfg_key, 999)):
-        import transaction
-        transaction.commit()
-      request.set(req_key, request.get(req_key, 0)+1)
-
-
-
-    # --------------------------------------------------------------------------
-    #  ZMSZCatalogConnector.reindex_all:
-    # --------------------------------------------------------------------------
-    def reindex_all(self, fileparsing=True):
-      result = []
-      zcm = self.getCatalogAdapter()
-      request = self.REQUEST
-      container = self.getDocumentElement()
-      for lang in container.getLangIds():
-        request.set('lang', lang)
-        # Recreate catalog.
-        result.append(recreateCatalog(container, self.aq_parent, lang))
-        # Reindex items to catalog.
-        def cb(node, d):
-          self._update(node, d)
-        for root in [container]+self.getPortalClients():
-          rcm = standard.nvl(root.getCatalogAdapter(),zcm)
-          result.append(rcm.get_sitemap(cb, root, recursive=True, fileparsing=fileparsing))
-      result = [x for x in result if x]
-      return ', '.join([x for x in result])
-
-
-    # --------------------------------------------------------------------------
-    #  ZMSZCatalogConnector.reindex_self:
-    # --------------------------------------------------------------------------
-    def reindex_self(self, uid, fileparsing=True):
-      result = []
-      zcm = self.getCatalogAdapter()
-      request = self.REQUEST
-      request.set('btn', 'Reindex') # backwards-compatibility (UzK)
-      container = self.getLinkObj(uid)
-      home_id = container.getHome().id
-      try:
-        for lang in container.getLangIds():
-          request.set('lang', lang)
-          lresult = []
-          lresult.append('language: %s'%lang)
-          # Clear catalog.
-          zcatalog = getZCatalog(self, lang)
-          if zcatalog is None:
-            lresult.append(recreateCatalog(container, self.aq_parent, lang))
-          else:
-            qr = zcatalog({'zcat_index_home_id':home_id})
-            lresult.append('%i objects removed from catalog'%len(qr))
-            for item in qr:
-              data_record_id = item.data_record_id_
-              path = zcatalog.getpath(data_record_id)
-              zcatalog.uncatalog_object(path)
-          # Reindex items to catalog.
-          def cb(node, d):
-            self._update(node, d)
-          rcm = standard.nvl(container.getCatalogAdapter(),zcm)
-          lresult.append(rcm.get_sitemap(cb, container, recursive=True, fileparsing=fileparsing))
-          lresult = [x for x in lresult if x]
-          result.extend(lresult)
-          # Log changes.
-          zcatalog = getZCatalog(self, lang)
-          writeChangesLog(zcatalog, '[reindex_self]: '+'\n'.join([x for x in lresult]))
-      except:
-        result.append(standard.writeError(self, 'can\'t reindex_self'))
-      return ', '.join([x for x in result if x])
-
-
-    # --------------------------------------------------------------------------
-    #  ZMSZCatalogConnector.reindex_node:
-    # --------------------------------------------------------------------------
-    def reindex_node(self, node, fileparsing=True):
-      standard.writeLog( node, '[ZMSZCatalogConnector.reindex_node]')
-      zcm = self.getCatalogAdapter()
-      # Reindex item to catalog.
-      def cb(node, d):
-        self._update(node, d)
-      zcm.get_sitemap(cb, node, recursive=False, fileparsing=fileparsing)
-
-
-    def get_sitemap(self, fileparsing=True):
-      """
-      Returns sitemap.
-      @rtype: C{str}
-      """
-      zcm = self.getCatalogAdapter()
-      request = self.REQUEST
-      RESPONSE = request.RESPONSE
-      RESPONSE.setHeader('Content-Type', 'text/plain; charset=utf-8')
-      l = []
-      def cb(node, d):
-        l.append(d)
-      zcm.get_sitemap(cb, self.getDocumentElement(), recursive=True, fileparsing=fileparsing)
-      return self.str_json(l)
-
+    def reindex_page(self, uid, page_size, clients=False, fileparsing=True, REQUEST=None, RESPONSE=None):
+      """ reindex_page """
+      RESPONSE.setHeader('Cache-Control', 'no-cache')
+      RESPONSE.setHeader('Content-Type', 'application/json; charset=utf-8')
+      adapter = self.getCatalogAdapter()
+      count = 0
+      node = self.getLinkObj(uid)
+      result = {'log':[]}
+      objects = []
+      while node and count < page_size:
+        path = '/'.join(node.getPhysicalPath())
+        node_objects = adapter.get_catalog_objects(self, node, fileparsing)
+        objects.extend(node_objects)
+        log = {'index':count,'path':path,'meta_id':node.meta_id,'objects':len(node_objects)}
+        result['log'].append(log)
+        node = node.get_next_node(clients)
+        result['next_node'] = None if not node else '{$%s}'%node.get_uid()
+        count += 1
+      result['success'], result['failed'] = self.manage_objects_add(objects)
+      return json.dumps(result,indent=2)
 
     ############################################################################
     #  ZMSZCatalogConnector.manage_changeProperties:
     #
     #  Change properties.
     ############################################################################
-    def manage_changeProperties(self, selected, btn, lang, REQUEST):
+    def manage_changeProperties(self, btn, lang, REQUEST, RESPONSE):
+        """
+        manage_changeProperties
+        """
         message = ''
         
-        # Remove.
-        # -------
-        if btn == 'Remove':
-          ids = REQUEST.get('zcatalog_objectIds', [])
-          if len(ids) > 0:
-            self.getDocumentElement().manage_delObjects(ids)
-            message += self.getZMILangStr('MSG_DELETED')%len(ids)
-        
-        return message
+        # Save.
+        # -----
+        if btn == 'BTN_SAVE':
+          properties = self.getProperties()
+          for property in properties:
+            id = property['id']
+            default_value = property['default_value']
+            value = REQUEST.get(id,default_value)
+            if property.get('type','string') == 'password':
+              if value:
+                self.setConfProperty(id, value)
+            else:
+              self.setConfProperty(id, value)
+          message += self.getZMILangStr('MSG_CHANGED')
+
+        elif btn == 'BTN_CANCEL':
+          pass
+
+        # Return with message.
+        message = standard.url_quote(message)
+        return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s#%s'%(lang, message, REQUEST.get('tab')))
 
 ################################################################################

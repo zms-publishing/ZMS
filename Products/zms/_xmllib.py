@@ -319,6 +319,13 @@ def xmlOnUnknownEndTag(self, sTagName):
       values[lang] = item
       self.dValueStack.append(values)
 
+    # -- COMF-PROPERTY --
+    #--------------------
+    elif sTagName.startswith('conf:'):
+      key = sTagName[len('conf:'):]
+      self.setConfProperty(key,cdata)
+      self.dValueStack.clear()
+
     # -- OBJECT-ATTRIBUTES --
     #-----------------------
     elif sTagName in self.getObjAttrs():
@@ -671,6 +678,13 @@ def getObjToXml(self, REQUEST, deep=True, base_path='', data2hex=False, multilan
     xml.append(' id="%s"' % id)
     xml.append(' id_prefix="%s"' % standard.id_prefix(id))
   xml.append('>\n')
+  # [Issue-219] Special content-like conf-properties edited in interfaces (ZMS.interface_permalinks).
+  if self.meta_id == 'ZMS':
+    attr_ids = [re.sub(r'^interface_(.*?)(s)','\\1',x) for x in self.getMetaobjAttrIds(self.meta_id,types=['interface'])]
+    d = self.get_conf_properties()
+    for k in d:
+      if [x for x in attr_ids if k.startswith('%s.%s'%(self.meta_id,x))]:
+        xml.append('%s<conf:%s>%s</conf:%s>\n'%(((indentlevel+1)*INDENTSTR),k,d[k],k))
   # Attributes.
   keys = self.getObjAttrs().keys()
   if self.getType() == 'ZMSRecordSet':

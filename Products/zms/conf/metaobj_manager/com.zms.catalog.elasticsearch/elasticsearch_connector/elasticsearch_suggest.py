@@ -2,22 +2,23 @@ import json
 from urllib.parse import urlparse
 import opensearchpy
 from opensearchpy import OpenSearch
+from opensearchpy.helpers import bulk
 
 
-def get_opensearch_client(self):
-	# ${opensearch.url:https://localhost:9200}
-	# ${opensearch.username:admin}
-	# ${opensearch.password:admin}
-	# ${opensearch.ssl.verify:}
-	url = self.getConfProperty('opensearch.url')
+def get_elasticsearch_client(self):
+	# ${elasticsearch.url:https://localhost:9200}
+	# ${elasticsearch.username:admin}
+	# ${elasticsearch.password:admin}
+	# ${elasticsearch.ssl.verify:}
+	url = self.getConfProperty('elasticsearch.url')
 	if not url:
 		return None
 	host = urlparse(url).hostname
 	port = urlparse(url).port
 	ssl = urlparse(url).scheme=='https' and True or False
-	verify = bool(self.getConfProperty('opensearch.ssl.verify', False))
-	username = self.getConfProperty('opensearch.username', 'admin')
-	password = self.getConfProperty('opensearch.password', 'admin')
+	verify = bool(self.getConfProperty('elasticsearch.ssl.verify', False))
+	username = self.getConfProperty('elasticsearch.username', 'admin')
+	password = self.getConfProperty('elasticsearch.password', 'admin')
 	auth = (username,password)
 	
 	client = OpenSearch(
@@ -32,17 +33,15 @@ def get_opensearch_client(self):
 	return client
 
 
-def opensearch_query( self, REQUEST=None):
+def elasticsearch_suggest( self, REQUEST=None):
 	request = self.REQUEST
 	q = request.get('q','')
-	qpage_index = request.get('pageIndex',0)
-	qsize = request.get('size', 10)
-	qfrom = request.get('from', qpage_index*qsize)
+	limit = int(REQUEST.get('limit',5))
 	index_name = self.getRootElement().getHome().id
 
+	# TODO: implement suggest!
 	query = {
-		"size": qsize,
-		"from":qfrom,
+		"size": limit,
 		"query":{
 			"query_string":{"query":q}
 		},
@@ -62,7 +61,7 @@ def opensearch_query( self, REQUEST=None):
 		}
 	}
 
-	client = get_opensearch_client(self)
+	client = get_elasticsearch_client(self)
 	if not client:
 		return '{"error":"No client"}'
 
@@ -74,4 +73,3 @@ def opensearch_query( self, REQUEST=None):
 		resp_text = '//%s'%(e.error)
 	
 	return resp_text
-

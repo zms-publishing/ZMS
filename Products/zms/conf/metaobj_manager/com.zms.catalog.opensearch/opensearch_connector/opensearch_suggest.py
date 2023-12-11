@@ -32,17 +32,15 @@ def get_opensearch_client(self):
 	return client
 
 
-def opensearch_query( self, REQUEST=None):
+def opensearch_suggest( self, REQUEST=None):
 	request = self.REQUEST
 	q = request.get('q','')
-	qpage_index = request.get('pageIndex',0)
-	qsize = request.get('size', 10)
-	qfrom = request.get('from', qpage_index*qsize)
+	limit = int(REQUEST.get('limit',5))
 	index_name = self.getRootElement().getHome().id
 
+	# TODO: implement suggest!
 	query = {
-		"size": qsize,
-		"from":qfrom,
+		"size": limit,
 		"query":{
 			"query_string":{"query":q}
 		},

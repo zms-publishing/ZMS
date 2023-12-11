@@ -99,6 +99,15 @@ class elasticsearch_connector:
 			,"repetitive":0
 			,"type":"External Method"}
 
+		elasticsearch_suggest = {"default":""
+			,"id":"elasticsearch_suggest"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"Suggest"
+			,"repetitive":0
+			,"type":"External Method"}
+
 		readme = {"default":""
 			,"id":"readme"
 			,"keys":[]

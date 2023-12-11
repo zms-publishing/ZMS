@@ -99,6 +99,15 @@ class solr_connector:
 			,"repetitive":0
 			,"type":"External Method"}
 
+		solr_suggest = {"default":""
+			,"id":"solr_suggest"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"Suggest"
+			,"repetitive":0
+			,"type":"External Method"}
+
 		readme = {"default":""
 			,"id":"readme"
 			,"keys":[]

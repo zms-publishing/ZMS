@@ -56,6 +56,11 @@
 		available python:here.get_available_connector_ids();
 		exists python:[x.id for x in connectors];
 		addable python:[x for x in available if x['id'] not in exists];">
+		<div class="alert alert-warning mx-0" tal:condition="python:len(connectors)==0 and len(available)==0">
+			No connectors available. Please check whether a catalog-connector ZMSLibrary is installed in the 
+			master client of a multi-site. If not, please install the catalog-connector of your choice via 
+			<a href="../metaobj_manager/manage_main">import</a> of the corresponding ZMSLibrary.
+		</div>
 		<div class="col form-group mb-4" tal:condition="addable">
 			<div class="input-group justify-content-start">
 				<div class="input-group-prepend">

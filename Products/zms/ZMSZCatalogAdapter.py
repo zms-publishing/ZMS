@@ -213,7 +213,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     #  ZMSZCatalogAdapter.getConnectorMetaTypes
     # --------------------------------------------------------------------------
     def getConnectorMetaTypes(self):
-      return ['ZMSZCatalogConnector', 'ZMSZCatalogOpensearchConnector']
+      return ['ZMSZCatalogConnector']
 
     # --------------------------------------------------------------------------
     #  ZMSZCatalogAdapter.get_available_connector_ids
@@ -226,7 +226,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     # --------------------------------------------------------------------------
     def getConnectors(self):
       self.ensure_zcatalog_connector_is_initialized()
-      return sorted(self.objectValues(self.getConnectorMetaTypes()),key=lambda x:x.id)
+      return list(sorted([x for x in self.objectValues(self.getConnectorMetaTypes()) if x.__name__!='broken object']))
 
     # --------------------------------------------------------------------------
     #  ZMSZCatalogAdapter.get_connector

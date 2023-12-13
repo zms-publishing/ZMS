@@ -568,9 +568,11 @@ class ZMSMetacmdProvider(
         # -------
         elif btn == 'BTN_IMPORT':
           f = REQUEST['file']
+          msg_str = ''
           if f:
             filename = f.filename
             self.importXml(xml=f)
+            msg_str = filename
           else:
             if isinstance(REQUEST['init'], list):
               for filename in list(REQUEST['init']):

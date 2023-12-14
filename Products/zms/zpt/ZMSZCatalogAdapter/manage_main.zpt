@@ -52,7 +52,7 @@
 
 	<legend>Connectors</legend>
 	<div class="card-body" tal:define="
-		connectors python:here.getConnectors();
+		connectors python:here.get_connectors();
 		available python:here.get_available_connector_ids();
 		exists python:[x.id for x in connectors];
 		addable python:[x for x in available if x['id'] not in exists];">

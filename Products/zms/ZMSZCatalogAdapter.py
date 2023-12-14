@@ -152,7 +152,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
           for node in nodes:
             if node.meta_id in self.getIds():
               fileparsing = bool( self.getConfProperty('ZMS.CatalogAwareness.fileparsing', 1))
-              for connector in self.getConnectors():
+              for connector in self.get_connectors():
                 self.reindex(connector, node, recursive=False, fileparsing=fileparsing)
         return True
       except:
@@ -170,7 +170,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
           nodes.reverse()
           for node in nodes:
             if node.meta_id in self.getIds():
-              for connector in self.getConnectors():
+              for connector in self.get_connectors():
                 connector.manage_objects_remove([node])
             break
       except:
@@ -210,30 +210,24 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
       setattr(self, '_attrs', attrs)
 
     # --------------------------------------------------------------------------
-    #  ZMSZCatalogAdapter.getConnectorMetaTypes
-    # --------------------------------------------------------------------------
-    def getConnectorMetaTypes(self):
-      return ['ZMSZCatalogConnector']
-
-    # --------------------------------------------------------------------------
     #  ZMSZCatalogAdapter.get_available_connector_ids
     # --------------------------------------------------------------------------
     def get_available_connector_ids(self):
       return sorted([y for y in [self.getMetaobj(x) for x in self.getMetaobjIds()] if y['id'].endswith('_connector') and y['type'] in ['ZMSLibrary']],key=lambda x:x['id']);
 
     # --------------------------------------------------------------------------
-    #  ZMSZCatalogAdapter.getConnectors
+    #  ZMSZCatalogAdapter.get_connectors
     # --------------------------------------------------------------------------
-    def getConnectors(self):
+    def get_connectors(self):
       self.ensure_zcatalog_connector_is_initialized()
-      return list(sorted([x for x in self.objectValues(self.getConnectorMetaTypes()) if x.__name__!='broken object']))
+      return list(sorted([x for x in self.objectValues(['ZMSZCatalogConnector']) if x.__name__!='broken object']))
 
     # --------------------------------------------------------------------------
     #  ZMSZCatalogAdapter.get_connector
     # --------------------------------------------------------------------------
     def get_connector(self, id):
       root = self.getRootElement()
-      return [[x for x in root.getCatalogAdapter().getConnectors() if x.id == id]+[None]][0]
+      return [[x for x in root.getCatalogAdapter().get_connectors() if x.id == id]+[None]][0]
 
     # --------------------------------------------------------------------------
     #  Add connector.
@@ -326,7 +320,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
         t0 = time.time()
         root = self.getRootElement()
         adapter = root.getCatalogAdapter()
-        for connector in adapter.getConnectors():
+        for connector in adapter.get_connectors():
           if connector.id ==  connector_id or not connector_id: 
             base = self.getLinkObj(uid)
             result.append(connector.id + "\n" + adapter.reindex(connector, base, recursive=True, fileparsing=True))

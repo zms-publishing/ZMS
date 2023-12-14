@@ -136,6 +136,7 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
 
   ### Init ZMS default content-model.
   _confmanager.initConf(obj, 'conf:com.zms.foundation')
+  _confmanager.initConf(obj, 'conf:com.zms.catalog.zcatalog')
 
   ### Init ZMS index.
   obj.getZMSIndex()
@@ -208,8 +209,11 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
     #-- Search
     initContent(obj, 'com.zms.search.content.xml', REQUEST)
 
-    # Initialize catalogs.
-    obj.getCatalogAdapter().reindex_all()
+    # Initialize catalog adapter / connector.
+    catalog_adapter = obj.getCatalogAdapter()
+    catalog_connector = catalog_adapter.add_connector('zcatalog_connector')
+    catalog_connector.manage_init()
+    catalog_adapter.reindex(catalog_connector, obj, recursive=True)
 
     # Initialize access.
     obj.synchronizePublicAccess()

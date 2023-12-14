@@ -1,0 +1,32 @@
+# Managing ZMS-Content-Index with elasticsearch
+ZMS offers an [elasticsearch](https://elasticsearch.org/) connector for the crucial tasks of index management. 
+Before letting elasticsearch create an index, elasticsearch needs to know how to index the content. Therefore elasticsearch needs to get the content "schema" (as a JSON-based list of typed fields). By listing  
+
+1. all ZMS content types and
+2. the attributes of these types
+
+the _ZMS Catalog Adapter GUI_ helps creating that schema: any content types (usually _pages_) and attributes can be selected to get indexed. Usually the _standard_html_-attribute provides the full text whereas other attributes can be added specifically like _title_, _titlealt_, _description_. Their content may be applied when search results are listed. 
+
+ZMS will send to the index only the content of the by _ZMS Catalog Adapter_ selected contenttypes and its selected attributes. So before starting, please makre sure that the selections in the _ZMS Catalog Adapter GUI_  is correct. 
+
+###### Start with _Create Schema_ !
+
+So the first step to prepare elasticsearch is _Create Schema_: based on the  _ZMS Catalog Adapter_ selections ZMS will save a small JSON file as a configuration parameter. (Not: if elasticsearch gets no, incomplete or wrong schema, it will guess one from the the transferred content; usually elasticsearch is not able to guess the keywords types correctly; so this will end up in defect result responses.) 
+
+The second step is _Initialisation_, which leads to an empty index based on that content schema. After this is done the content can be primarily indexed with "Refresh". 
+
+---
+
+_GUI elements for managing the index:_
+
+1. **Index Refresh**: Re-/Indexing the selected ZMS client(s) or the multisite-tree
+2. **Create Schema**: Generating the field schema of the index in JSON format
+3. **Initialisation**: Creating an index on the elasticsearch server
+4. **Deleting**: Removing the index on the elasticsearch server
+
+---
+
+After the initial indexing new content will be added to the index incrementally on any content insert or change.
+
+_Important hint_: The action "Initialisation" creates/recreates always an **empty** index based on the selected attribute schema. So if a schema is changed and the index initialised, all indexed items are gone and a new full reindexing will be necessary.
+

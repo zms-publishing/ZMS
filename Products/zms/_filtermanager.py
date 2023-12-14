@@ -85,7 +85,7 @@ def processMethod(self, processId, filename, trans, REQUEST):
   try:
       process = self.getFilterManager().getProcess(processId) 
       ob = process['ob'] 
-      value = zopeutil.callObject( ob, self)
+      value = zopeutil.callObject( ob, zmscontext=self)
   except:
       value = standard.writeError( self, '[processMethod]: processId=%s'%processId)
   outfilename = REQUEST.get( 'ZMS_FILTER_OUT')

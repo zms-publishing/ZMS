@@ -862,10 +862,10 @@ def triggerEvent(context, *args, **kwargs):
   """
   l = []
   name = args[0]
+  root = context.getRootElement()
 
   # Object triggers.
   if name.startswith('*.Object'):
-    root = context.getRootElement()
     for node in root.objectValues():
       m = getattr(node,name[2:],None)
       if m is not None:
@@ -878,9 +878,15 @@ def triggerEvent(context, *args, **kwargs):
   # Pass custom event to zope ObjectModifiedEvent event.
   notify(ObjectModifiedEvent(context, name))
 
+  # Process global meta-command-triggers (e.g. uncatalog_object).
+  for metaCmdId in root.getMetaCmdIds():
+    if metaCmdId.endswith('_%s'%name):
+      v = root.manage_executeMetacmd(metaCmdId, context.REQUEST, context=context)
+      writeLog( root, "[triggerEvent]: %s=%s"%(metaCmdId, str(v)))
+
+  # Process meta-object-triggers.
   metaObj = context.getMetaobj( context.meta_id)
   if metaObj:
-    # Process meta-object-triggers.
     context = context
     v = context.evalMetaobjAttr(name, kwargs)
     writeLog( context, "[triggerEvent]: %s=%s"%(name, str(v)))
@@ -890,6 +896,7 @@ def triggerEvent(context, *args, **kwargs):
     m = getattr(context, name, None)
     if m is not None:
       m(context=context, REQUEST=context.REQUEST)
+
   return l
 
 

@@ -50,6 +50,7 @@
 	<input type="hidden" id="getIds" tal:attributes="value python:','.join(here.getIds())" />
 	<span class="d-none" id="getAttrs" tal:content="python:here.str_json(here.getAttrs())"></span>
 
+	<tal:block tal:condition="python:here.getLevel()==0">
 	<legend>Connectors</legend>
 	<div class="card-body" tal:define="
 		connectors python:here.get_connectors();
@@ -111,6 +112,7 @@
 			</div><!-- .form-group -->
 		</tal:block>
 	</div><!-- .card-body -->
+	</tal:block>
 
 	<legend>Schema</legend>
 	<div class="card-body">

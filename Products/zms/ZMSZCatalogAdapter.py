@@ -54,8 +54,13 @@ def get_file(node, d, fileparsing=True):
   if fileparsing and node.meta_id == 'ZMSFile':
     try:
       file = node.attr('file')
-      text = content_extraction.extract_content(node, file.getData(), file.getContentType())
-      d['standard_html'] = text
+      data = file.getData()
+      if data:
+        content_type = file.getContentType()
+        text = content_extraction.extract_content(node, data, content_type)
+        d['standard_html'] = text
+      else:
+        standard.writeError( node, "WARN - extract_content: file.data is empty")
     except:
       standard.writeError( node, "can't extract_content")
 

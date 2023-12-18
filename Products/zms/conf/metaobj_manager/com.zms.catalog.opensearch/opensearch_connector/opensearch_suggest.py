@@ -1,75 +1,82 @@
+import requests
 import json
-from urllib.parse import urlparse
-import opensearchpy
-from opensearchpy import OpenSearch
+from requests.auth import HTTPBasicAuth
+import urllib3
+import re
+# Disable warning
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
-def get_opensearch_client(self):
-	# ${opensearch.url:https://localhost:9200}
-	# ${opensearch.username:admin}
-	# ${opensearch.password:admin}
-	# ${opensearch.ssl.verify:}
+def get_suggest_terms(self, q='Lorem', index_name='myzms', field_names=['title','attr_dc_subject'], size=10, debug=False):
 	url = self.getConfProperty('opensearch.url')
 	if not url:
 		return None
-	host = urlparse(url).hostname
-	port = urlparse(url).port
-	ssl = urlparse(url).scheme=='https' and True or False
-	verify = bool(self.getConfProperty('opensearch.ssl.verify', False))
+	url += '/_plugins/_sql'
 	username = self.getConfProperty('opensearch.username', 'admin')
 	password = self.getConfProperty('opensearch.password', 'admin')
-	auth = (username,password)
-	
-	client = OpenSearch(
-		hosts = [{'host': host, 'port': port}],
-		http_compress = False, # enables gzip compression for request bodies
-		http_auth = auth,
-		use_ssl = ssl,
-		verify_certs = verify,
-		ssl_assert_hostname = False,
-		ssl_show_warn = False,
-	)
-	return client
+	auth = HTTPBasicAuth(username,password)
+	verify = bool(self.getConfProperty('opensearch.ssl.verify', False))
+
+	# Assemble SQL Query
+	sql_tmpl = 'SELECT %s AS keywords FROM %s WHERE %s LIMIT %s'
+	sel_val = 'CONCAT(%s)'%(', \' \','.join(field_names))
+	whr_val = ' OR '.join(['(%s LIKE \'%%%s%%\')'%(fn,q) for fn in field_names])
+	if index_name=='unitel':
+		whr_val = '%s LIKE \'%%%s%%\''%(sel_val, q)
+	sql = sql_tmpl%(sel_val, index_name, whr_val, size)
+
+	# #########################
+	# DEBUG-INFO: SQL Query
+	if bool(debug): print(10*'#' + '\n# OPENSEARCH SQL: %s\n'%sql +10*'#')
+	# #########################
+
+	# Prepare HTTP Request
+	headers = {"Content-Type": "application/json"}
+	data = {
+		"query": sql
+	}
+	# Execute HTTP Request
+	response = requests.post(url, headers=headers, data=json.dumps(data),auth=auth, verify=verify)
+
+	# Postprocess Response
+	datarows = response.json().get('datarows') or []
+	if index_name=='unitel':
+		# #########################
+		# UNIBE-CUSTOM: UNITEL
+		#  Suggest words (fullname) shall not get splitted into single words
+		# #########################
+		terms = [row[0] for row in datarows]
+	else:
+		# MYZMS: Suggest words (keywords) shall get splitted into single, stripped words
+		terms = [re.sub(r'[^\w\s]','',w) for row in datarows for w in re.split('; |,| ',row[0]) if q in w ]
+	terms = sorted(set(terms), key=lambda x: x.lower()) # remove duplicates and sort
+
+	# #########################
+	# DEBUG-INFO: Result-List
+	if bool(debug): print('OPENSEARCH RESULT: %s'%(terms))
+	# #########################
+
+	return list(terms)
 
 
-def opensearch_suggest( self, REQUEST=None):
+def opensearch_suggest(self, REQUEST=None):
 	request = self.REQUEST
 	q = request.get('q','')
-	limit = int(REQUEST.get('limit',5))
+	debug = bool(int(request.get('debug',0)))
 	index_name = self.getRootElement().getHome().id
-
-	# TODO: implement suggest!
-	query = {
-		"size": limit,
-		"query":{
-			"query_string":{"query":q}
-		},
-		"highlight": {
-			"fields": {
-				"title": { "type": "plain"},
-				"standard_html": { "type": "plain"}
-			}
-		},
-		"aggs": {
-			"response_codes": {
-				"terms": {
-					"field": "meta_id",
-					"size": 5
-				}
-			}
-		}
-	}
-
-	client = get_opensearch_client(self)
-	if not client:
-		return '{"error":"No client"}'
-
 	resp_text = ''
-	try:
-		response = client.search(body = json.dumps(query), index = index_name)
-		resp_text = json.dumps(response)
-	except opensearchpy.exceptions.RequestError as e:
-		resp_text = '//%s'%(e.error)
-	
-	return resp_text
+	suggest_terms = []
+	# Get suggest terms from $index_name
+	suggest_terms.extend(get_suggest_terms(self, q=q, index_name=index_name, field_names=['title','attr_dc_subject','attr_dc_description'], size=20, debug=debug))
 
+	# #########################
+	# UNIBE-CUSTOM:
+	# Add another index "unitel" to get more suggest terms (names from university phonebook)
+	# #########################
+	suggest_terms.extend(get_suggest_terms(self, q=q, index_name='unitel', field_names=['Vorname','Nachname'], size=10, debug=debug))
+	# #########################
+
+	# Finally sort all terms and return as JSON-text
+	suggest_terms = sorted(set(suggest_terms), key=lambda x: x.lower())
+	resp_text = json.dumps(suggest_terms, indent=2)
+	return resp_text

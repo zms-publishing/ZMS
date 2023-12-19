@@ -17,13 +17,13 @@ def get_suggest_terms(self, q='Lorem', index_name='myzms', field_names=['title',
 	auth = HTTPBasicAuth(username,password)
 	verify = bool(self.getConfProperty('opensearch.ssl.verify', False))
 
-	# Assemble SQL Query
-	sql_tmpl = 'SELECT %s AS keywords FROM %s WHERE %s LIMIT %s'
-	sel_val = 'CONCAT(%s)'%(', \' \','.join(field_names))
-	whr_val = ' OR '.join(['(%s LIKE \'%%%s%%\')'%(fn,q) for fn in field_names])
-	if index_name=='unitel':
-		whr_val = '%s LIKE \'%%%s%%\''%(sel_val, q)
-	sql = sql_tmpl%(sel_val, index_name, whr_val, size)
+	# Assemble SQL Query using f-strings
+	sql_tmpl = "SELECT CONCAT({}) AS keywords FROM {} WHERE {} LIMIT {}"
+	sel_fields = ", ' ', ".join(field_names)
+	whr_clause = " OR ".join([f"({field_name} LIKE '%{q}%')" for field_name in field_names])
+	if index_name == "unitel":
+		whr_clause = f"CONCAT({sel_fields}) LIKE '%{q}%'"
+	sql = sql_tmpl.format(sel_fields, index_name, whr_clause, size)
 
 	# #########################
 	# DEBUG-INFO: SQL Query
@@ -32,9 +32,8 @@ def get_suggest_terms(self, q='Lorem', index_name='myzms', field_names=['title',
 
 	# Prepare HTTP Request
 	headers = {"Content-Type": "application/json"}
-	data = {
-		"query": sql
-	}
+	data = { "query": sql }
+
 	# Execute HTTP Request
 	response = requests.post(url, headers=headers, data=json.dumps(data),auth=auth, verify=verify)
 

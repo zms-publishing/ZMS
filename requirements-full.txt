@@ -28,6 +28,9 @@ pdfminer.six
 opensearch-py
 rich
 
+# SimpleSearch
+lunr
+
 # PAS
 Products.PluggableAuthService
 Products.PluginRegistry

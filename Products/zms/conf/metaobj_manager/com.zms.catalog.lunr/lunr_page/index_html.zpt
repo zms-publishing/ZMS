@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+
+<head>
+  <link rel="stylesheet" href="css/pico.min.css">
+  <script
+     tal:define="base_url python:container.absolute_url()"
+     tal:content="python:'var base_url = \042%s\042'%(base_url)">
+  </script>
+  <script src="js/main.js"></script>
+</head>
+
+<body>
+<main class="container">
+  <input id="search-query" placeholder="enter search query here"></input>
+  <div id="search-results"></div>
+</main>
+</body>

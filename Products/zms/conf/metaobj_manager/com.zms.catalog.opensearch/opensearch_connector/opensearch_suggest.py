@@ -7,7 +7,7 @@ import re
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
-def get_suggest_terms(self, q='Lorem', index_name='myzms', field_names=['title','attr_dc_subject'], size=10, debug=False):
+def get_suggest_terms(self, q='Lorem', index_name='myzms', field_names=['title','attr_dc_subject'], qsize=10, debug=False):
 	url = self.getConfProperty('opensearch.url')
 	if not url:
 		return None
@@ -23,7 +23,7 @@ def get_suggest_terms(self, q='Lorem', index_name='myzms', field_names=['title',
 	whr_clause = " OR ".join([f"({field_name} LIKE '%{q}%')" for field_name in field_names])
 	if index_name == "unitel":
 		whr_clause = f"CONCAT({sel_fields}) LIKE '%{q}%'"
-	sql = sql_tmpl.format(sel_fields, index_name, whr_clause, size)
+	sql = sql_tmpl.format(sel_fields, index_name, whr_clause, qsize)
 
 	# #########################
 	# DEBUG-INFO: SQL Query
@@ -58,23 +58,35 @@ def get_suggest_terms(self, q='Lorem', index_name='myzms', field_names=['title',
 	return list(terms)
 
 
+def get_suggest_fieldsets(self):
+	# Get configured json-list-formatted field sets opensearch.suggest.fields.$index_name for any index name
+	# E.g. opensearch.suggest.fields.myzms = ["title","attr_dc_subject","attr_dc_description"]
+	# At least one fieldset with index_name = zms root element id and a default fieldset will be returned
+	key_prefix = 'opensearch.suggest.fields.'
+	default = '["title","attr_dc_subject","attr_dc_description"]'
+	# Define default fieldset for index_name = zms root element id
+	fieldsets = { self.getRootElement().getHome().id : json.loads(default) }
+	# Get all configured fieldsets (maybe overwrite default fieldset)
+	property_names = [k for k in list(self.getConfProperties().keys()) if k.lower().startswith(key_prefix)]
+	for property_name in property_names:
+		index_name = property_name[len(key_prefix):]
+		fieldsets[index_name] = json.loads(self.getConfProperty(property_name, default).replace('\'','\"'))
+	return fieldsets
+
+
 def opensearch_suggest(self, REQUEST=None):
 	request = self.REQUEST
-	q = request.get('q','')
+	q = request.get('q','Lorem')
+	qsize = request.get('qsize', 12)
 	debug = bool(int(request.get('debug',0)))
-	index_name = self.getRootElement().getHome().id
+	# Get configured or default fieldsets that are used for extracting suggest terms
+	fieldsets = get_suggest_fieldsets(self)
 	resp_text = ''
 	suggest_terms = []
-	# Get suggest terms from $index_name
-	suggest_terms.extend(get_suggest_terms(self, q=q, index_name=index_name, field_names=['title','attr_dc_subject','attr_dc_description'], size=20, debug=debug))
-
-	# #########################
-	# UNIBE-CUSTOM:
-	# Add another index "unitel" to get more suggest terms (names from university phonebook)
-	# #########################
-	suggest_terms.extend(get_suggest_terms(self, q=q, index_name='unitel', field_names=['Vorname','Nachname'], size=10, debug=debug))
-	# #########################
-
+	# Get suggest terms for any configured opensearch.suggest.fields.$index_name
+	# Example: opensearch.suggest.fields.unitel = ['Vorname','Nachname']
+	for index_name, field_names in fieldsets.items():
+		suggest_terms.extend(get_suggest_terms(self, q=q, index_name=index_name, field_names=field_names, qsize=qsize, debug=debug))
 	# Finally sort all terms and return as JSON-text
 	suggest_terms = sorted(set(suggest_terms), key=lambda x: x.lower())
 	resp_text = json.dumps(suggest_terms, indent=2)

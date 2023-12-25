@@ -368,16 +368,10 @@ class ZMS(
       zms_custom_version = os.environ.get('ZMS_CUSTOM_VERSION', '')
       if custom and zms_custom_version != '':
         rtn += f'&nbsp;(<samp id="zms_custom_version">{zms_custom_version}</samp>)'
-        # container built by unibe-cms/build.sh gathering commit hashes of git submodules
-        revisions1 = _fileutil.getOSPath('/app/zms-core/revisions.txt')
-        revisions2 = _fileutil.getOSPath('/opt/zope/src/zms/revisions.txt')  # fallback for unibe-cms-deployments
-        if os.path.exists(revisions1):
-            revisions = revisions1
-        elif os.path.exists(revisions2):
-            revisions = revisions2
-        else:
-            revisions = None
-        if revisions is not None:
+        # Generate revisions and custom version gathering commit hashes of git submodules
+        # see Lines 37-46 unibe-cms/.github/workflows/build-and-push.yml
+        revisions = _fileutil.getOSPath('/app/zms-core/revisions.txt')
+        if os.path.exists(revisions):
             file = open(revisions, 'r')
             zms_submodule_revisions = file.read()
             file.close()

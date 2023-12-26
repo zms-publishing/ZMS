@@ -47,7 +47,7 @@ def get_suggest_terms(self, q='Lorem', index_name='myzms', field_names=['title',
 		terms = [row[0] for row in datarows]
 	else:
 		# MYZMS: Suggest words (keywords) shall get splitted into single, stripped words
-		terms = [re.sub(r'[^\w\s]','',w) for row in datarows for w in re.split('; |,| ',row[0]) if q in w ]
+		terms = [ re.sub(r'[^\w\s]','',w) for row in datarows for w in re.split('; |,| ',row[0]) if q.lower() in w.lower() ]
 	terms = sorted(set(terms), key=lambda x: x.lower()) # remove duplicates and sort
 
 	# #########################
@@ -68,6 +68,10 @@ def get_suggest_fieldsets(self):
 	fieldsets = { self.getRootElement().getHome().id : json.loads(default) }
 	# Get all configured fieldsets (maybe overwrite default fieldset)
 	property_names = [k for k in list(self.getConfProperties().keys()) if k.lower().startswith(key_prefix)]
+	# If there are no client conf data check if there are any properties in the portal conf
+	# TODO: Remove this fallback to portal conf and take the next parent node with zcatalog_adapters
+	if not property_names:
+		property_names = [k for k in list(self.getPortalMaster().getConfProperties().keys()) if k.lower().startswith(key_prefix)]
 	for property_name in property_names:
 		index_name = property_name[len(key_prefix):]
 		fieldsets[index_name] = json.loads(self.getConfProperty(property_name, default).replace('\'','\"'))

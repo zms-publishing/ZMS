@@ -86,15 +86,15 @@ body:not(.zms.web) .pagination i.fas.fa-chevron-left:after {
 body:not(.zms.web) .pagination i.fas.fa-chevron-right:after {
 	content: "\e602";
 }
-.pagination > li > a, 
+.pagination > li > a,
 .pagination > li > span {
 	color: #d6002b;
 }
-.pagination > .active > a, 
-.pagination > .active > span, 
-.pagination > .active > a:hover, 
-.pagination > .active > span:hover, 
-.pagination > .active > a:focus, 
+.pagination > .active > a,
+.pagination > .active > span,
+.pagination > .active > a:hover,
+.pagination > .active > span:hover,
+.pagination > .active > a:focus,
 .pagination > .active > span:focus {
 	background-color: #d6002b;
 	border-color: #d6002b;
@@ -114,7 +114,7 @@ body.zms.web #search_results ul.path li {
 	margin-right:.25rem;
 }
 body.zms.web #search_results  ul.path li a {
-	text-decoration:none !important;  
+	text-decoration:none !important;
 }
 body.zms.web #search_results ul.path li a:before {
 	content:"/";
@@ -133,3 +133,26 @@ body.zms.web #search_results .pagination i.fas.fa-chevron-right:after {
 body.zms.web #search_results .nav-tabs {
 	display: none;
 }
+
+/* Fix Auto-Display Autosuggest */
+/*
+	#form-keyword-container:hover datalist#suggests {
+		color:#999;
+		display:block;
+		position:absolute;
+		z-index:1000;
+		background:#fff;
+		margin:0 2px;
+		padding:0 .6rem;
+		min-width:280px;
+		box-shadow:1rem 1rem 2rem -.5rem #0002
+	}
+	datalist#suggests option {
+		cursor: pointer;
+		user-select: none;
+	}
+	datalist#suggests option:hover {
+		color:#000;
+		background:aliceblue;
+	}
+*/

@@ -4,6 +4,13 @@
 var show_results;
 var winloc = new URL(window.location);
 //# ######################################
+
+// GUI Search Term Selection if Brower Autocomplete Element is not supported
+function complete_searchterm(el) {
+	$('#form-keyword').val(el.value);
+	$("#suggests").empty(); // remove any existing options
+}
+
 $(function() {
 	const root_url=$('form#site-search-content').attr('data-root-url');
 	//# Compile HB templ on docready into global var
@@ -21,7 +28,7 @@ $(function() {
 		var total = res_processed.total;
 		var hb_results_html = hb_results_tmpl(res_processed);
 		$('.search-results').html( hb_results_html );
-	
+
 		//# Add pagination ###################
 		var fn = (pageIndex) => {
 			return `javascript:show_results('${q}',${pageIndex})`
@@ -49,7 +56,7 @@ $(function() {
 		res['hits']['hits'].forEach(x => {
 			var source = x['_source'];
 			var highlight = x['highlight'];
-			var hit = { 'path':source['uid'], 'href':source['loc'], 'title':source['title'], 'snippet':source['standard_html'] }; 
+			var hit = { 'path':source['uid'], 'href':source['loc'], 'title':source['title'], 'snippet':source['standard_html'] };
 			if (typeof highlight !== 'undefined') {
 				if (typeof highlight['title'] !== 'undefined') {
 					hit['title'] = highlight['title'];
@@ -98,4 +105,28 @@ $(function() {
 		$('.search-form form').trigger('submit');
 	}
 
+	//# Autocomplete
+	$('#form-keyword').keyup(function() {
+		var input = $(this).val();
+		if(input.length > 2) {
+			$.ajax({
+				url: './opensearch_suggest',
+				type: 'GET',
+				dataType: "json",
+				data: {'q': input},
+				success: function(data) {
+					var dataList = $("#suggests");
+					dataList.empty(); // remove any existing options
+					$.each(data, function(index, value) {
+						// create new option element and append it to datalist
+						$('<option onclick="complete_searchterm(this)">')
+								.attr('title', 'Search '+ value)
+								.val(value)
+								.text(value)
+								.appendTo(dataList);
+					});
+				}
+			});
+		}
+	});
 });

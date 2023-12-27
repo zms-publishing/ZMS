@@ -134,7 +134,7 @@ body.zms.web #search_results .nav-tabs {
 	display: none;
 }
 
-/* Fix Auto-Display Autosuggest */
+/* Custom-Autofill-GUI */
 /*
 	#form-keyword-container:hover datalist#suggests {
 		color:#999;

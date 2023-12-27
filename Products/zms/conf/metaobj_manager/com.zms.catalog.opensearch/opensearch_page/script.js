@@ -5,7 +5,10 @@ var show_results;
 var winloc = new URL(window.location);
 //# ######################################
 
-// GUI Search Term Selection if Brower Autocomplete Element is not supported
+// Custom-Autofill-GUI: if brower autofill element is not wanted
+// References:
+// https://html.spec.whatwg.org/multipage/input.html#the-list-attribute
+// https://html.spec.whatwg.org/multipage/forms.html#enabling-client-side-automatic-filling-of-form-controls
 function complete_searchterm(el) {
 	$('#form-keyword').val(el.value);
 	$("#suggests").empty(); // remove any existing options
@@ -119,8 +122,8 @@ $(function() {
 					dataList.empty(); // remove any existing options
 					$.each(data, function(index, value) {
 						// create new option element and append it to datalist
+						// function complete_searchterm() may used for custom-autofill-gui
 						$('<option onclick="complete_searchterm(this)">')
-								.attr('title', 'Search '+ value)
 								.val(value)
 								.text(value)
 								.appendTo(dataList);

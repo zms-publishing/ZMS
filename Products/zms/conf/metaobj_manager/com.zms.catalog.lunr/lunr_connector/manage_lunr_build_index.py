@@ -7,7 +7,7 @@ import requests
 
 
 # Taken from https://scrapfly.io/blog/search-engine-using-web-scraping/#building-index
-def build_index(docs: List[dict]):
+def build_index(docs: List[dict], fields: List[dict]):
 
     config = {
         "lang": ["en"],
@@ -19,7 +19,7 @@ def build_index(docs: List[dict]):
     if bool(docs[0]):
         idx = lunr(
             ref="location",
-            fields=[dict(field_name='title', boost=10), 'text'],
+            fields=fields,
             documents=docs,
         )
         page_dicts["index"] = idx.serialize()
@@ -31,22 +31,42 @@ def build_index(docs: List[dict]):
 def manage_lunr_build_index(self):
 
     documents = []
+    fields = []
+    attr_ids = []
     root_url = self.getHome().content.absolute_url()
-    for node in requests.get('%s/++rest_api/content/get_tree_nodes'%(root_url)).json():
-        html = "text" in node and node["text"] or (
-            "attr_dc_description" in node and node["attr_dc_description"] or ""
-        )
-        soup = BeautifulSoup(html)
-        text = soup.get_text()
+    adapter = self.getCatalogAdapter()
+    attrs = adapter.getAttrs()
 
-        documents.append({
-            "location": node["index_html"].replace("./../..", root_url),
-            "title": "title" in node and node["title"] or "",
-            "text": text
-        })
+    for attr_id in adapter._getAttrIds():
+        attr = attrs.get(attr_id, {})
+        attr_boost = attr.get('boost')
+        if attr_boost is not None:
+            fields.append(dict(field_name=attr_id, boost=attr_boost))
+            attr_ids.append(attr_id)
+
+    for node in requests.get(f'{root_url}/++rest_api/content/get_tree_nodes').json():
+        if node.get('meta_id') not in adapter.getIds():
+            continue
+
+        field = {"location": node["index_html"].replace("./../..", root_url),
+                 "content": ""}  # TODO: remove this aggregated field as workaround for search frontend
+
+        for attr_id in attr_ids:
+            html = attr_id in node and node[attr_id] or ""
+            field[attr_id] = BeautifulSoup(html).get_text()
+        if "title" not in field:
+            field["title"] = "titlealt" in field and field["titlealt"] or ""
+
+        # aggregate field attributes into "content" to be processed in main.js (L43) and worker.js (L80+L123)
+        # TODO: keep field attributes in python and adapt processing in javascript according to split values
+        for key, val in field.items():
+            if key not in ['location', 'title', 'titlealt']:
+                field["content"] += val
+
+        documents.append(field)
 
     index_file = 'search_index.json'
-    index_data = build_index(documents)
+    index_data = build_index(documents, fields)
     index_path = self.lunr_page
 
     if index_file in index_path:

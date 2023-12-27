@@ -77,7 +77,7 @@ function onScriptsLoaded() {
         this.use(lunr.multiLanguage.apply(null, lang)); // spread operator not supported in all browsers: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_operator#Browser_compatibility
       }
       this.field('title');
-      this.field('text');
+      this.field('content');
       this.ref('location');
 
       for (var i = 0; i < data.docs.length; i++) {
@@ -120,7 +120,7 @@ function search(query) {
   for (var i = 0; i < results.length; i++) {
     var result = results[i];
     doc = documents[result.ref];
-    doc.summary = doc.text.substring(0, 200);
+    doc.summary = doc.content.substring(0, 200);
     resultDocuments.push(doc);
   }
   return resultDocuments;

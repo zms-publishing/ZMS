@@ -40,7 +40,7 @@ function displayResults(results) {
   if (results.length > 0) {
     for (var i = 0; i < results.length; i++) {
       var result = results[i];
-      var html = formatResult(result.location, result.title, result.text);
+      var html = formatResult(result.location, result.title, result.content);
       search_results.insertAdjacentHTML('beforeend', html);
     }
   } else {

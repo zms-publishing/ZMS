@@ -300,8 +300,6 @@ class ZMSZCatalogConnector(
     # --------------------------------------------------------------------------
     def reindex_page(self, uid, page_size, clients=False, fileparsing=True, REQUEST=None, RESPONSE=None):
       """ reindex_page """
-      RESPONSE.setHeader('Cache-Control', 'no-cache')
-      RESPONSE.setHeader('Content-Type', 'application/json; charset=utf-8')
       adapter = self.getCatalogAdapter()
       count = 0
       node = self.getLinkObj(uid)
@@ -317,6 +315,8 @@ class ZMSZCatalogConnector(
         result['next_node'] = None if not node else '{$%s}'%node.get_uid()
         count += 1
       result['success'], result['failed'] = self.manage_objects_add(objects)
+      RESPONSE.setHeader('Cache-Control', 'no-cache')
+      RESPONSE.setHeader('Content-Type', 'application/json; charset=utf-8')
       return json.dumps(result,indent=2)
 
     ############################################################################

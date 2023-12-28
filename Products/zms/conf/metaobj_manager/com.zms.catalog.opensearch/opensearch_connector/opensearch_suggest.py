@@ -74,7 +74,9 @@ def get_suggest_fieldsets(self):
 		property_names = [k for k in list(self.getPortalMaster().getConfProperties().keys()) if k.lower().startswith(key_prefix)]
 	for property_name in property_names:
 		index_name = property_name[len(key_prefix):]
-		fieldsets[index_name] = json.loads(self.getConfProperty(property_name, default).replace('\'','\"'))
+		if not isinstance(property_value, list):
+			property_value = json.loads(str(property_value).replace('\'','\"'))
+		fieldsets[index_name] = property_value
 	return fieldsets
 
 

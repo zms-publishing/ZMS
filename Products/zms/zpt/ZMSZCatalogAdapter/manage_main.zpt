@@ -50,9 +50,10 @@
 	<input type="hidden" id="getIds" tal:attributes="value python:','.join(here.getIds())" />
 	<span class="d-none" id="getAttrs" tal:content="python:here.str_json(here.getAttrs())"></span>
 
+	<tal:block tal:condition="python:here.getLevel()==0">
 	<legend>Connectors</legend>
 	<div class="card-body" tal:define="
-		connectors python:here.getConnectors();
+		connectors python:here.get_connectors();
 		available python:here.get_available_connector_ids();
 		exists python:[x.id for x in connectors];
 		addable python:[x for x in available if x['id'] not in exists];">
@@ -111,6 +112,7 @@
 			</div><!-- .form-group -->
 		</tal:block>
 	</div><!-- .card-body -->
+	</tal:block>
 
 	<legend>Schema</legend>
 	<div class="card-body">

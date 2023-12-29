@@ -14,11 +14,15 @@
 	{{#if buckets}}
 		<ul class="nav nav-tabs responsive" role="tablist">
 			{{#each buckets}}
-				<li id="tab-label-{{@index}}" data-tabid="pane_{{this.doc_key}}" 
+				<li id="tab-label-{{@index}}" data-tabid="pane_{{this.doc_key}}"
 					aria-controls="tab-pane-{{@index}}" role="tab"
 					class="{{#if @first}}active{{/if}}"
 					><a data-toggle="tab" href="#tab-pane-{{@index}}">
-						{{{this.key}}}
+						{{#compareStrings this.key "unitel"}}
+							Personen
+						{{else}}
+							Inhalte
+						{{/compareStrings}}
 						<span class="badge badge-tabs">{{{this.doc_count}}}</span>
 						<span class="sr-only">Treffer</span>
 					</a>
@@ -28,7 +32,7 @@
 	{{/if}}
 	<div class="pagination" style="margin-bottom: 0em;"></div>
 	{{#each hits}}
-		<article class="hit">
+		<article class="hit {{this.index_name}}">
 			<ul class="path" data-id="{{this.path}}">&nbsp;</ul>
 			<a title="{{this.path}}" href="{{this.href}}" target="_blank">{{{this.title}}}</a>
 			<br/>
@@ -43,15 +47,16 @@
 	<div class="container-fluid skin-bg-gray">
 		<div class="container">
 			<section class="search-form">
-				 <form id="site-search-content" action="#" method="get" 
-				 	tal:attributes="data-root-url python:zmscontext.getRootElement().absolute_url()">
+				<form id="site-search-content" action="#" method="get" autocomplete="off"
+					 tal:attributes="data-root-url python:zmscontext.getRootElement().absolute_url()">
 					<div class="row skin-gutter-wide search-form no-margin-bottom">
-						<div class="col-lg-6">
+						<div class="col-lg-6" id="form-keyword-container">
 							<h2 class="small-font">Suche nach Stichworten</h2>
 							<label for="form-keyword" class="sr-only">Stichwort</label>
-							<input type="text" name="q" id="form-keyword" 
-								class="form-control" value="" autofocus
+							<input type="text" name="q" id="form-keyword" list="suggests"
+								class="form-control" autofocus value=""
 								tal:attributes="value python:request.get('q','')" />
+							<datalist id="suggests"></datalist>
 						</div>
 					</div>
 					<div class="row skin-gutter-wide search-form">
@@ -65,6 +70,7 @@
 	</div>
 
 	<div class="container-fluid">
+
 		<div class="container">
 			<section id="search_results" class="search-results content-tabs">
 			</section>

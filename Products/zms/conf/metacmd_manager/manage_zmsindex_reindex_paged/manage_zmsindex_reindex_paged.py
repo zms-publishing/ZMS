@@ -45,7 +45,6 @@ def manage_zmsindex_reindex_paged( self):
   # REST Endpoints  
   if request.get('json'):
     import json
-    request.RESPONSE.setHeader("Content-Type","text/json")
     root_node = self.getLinkObj(request['root_node'])
     clients = standard.pybool(request['clients'])
     data = {'pid':self.Control_Panel.process_id(),'root_node':request['root_node'],'clients':request['clients']}
@@ -63,6 +62,7 @@ def manage_zmsindex_reindex_paged( self):
       data['next_node'] = None
       handler = ZMSIndexReindexHandler(zmsindex,catalog)
       traverse(data,root_node,clients,node,handler,page_size)
+    request.RESPONSE.setHeader("Content-Type","text/json")
     return json.dumps(data)
   
   prt = []

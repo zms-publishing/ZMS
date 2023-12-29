@@ -28,7 +28,7 @@ class opensearch_connector:
 	package = "com.zms.catalog.opensearch"
 
 	# Revision
-	revision = "1.0.3"
+	revision = "1.1.0"
 
 	# Type
 	type = "ZMSLibrary"

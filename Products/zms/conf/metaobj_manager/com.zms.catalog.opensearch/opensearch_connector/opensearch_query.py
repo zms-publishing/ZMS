@@ -39,23 +39,27 @@ def opensearch_query( self, REQUEST=None):
 	qsize = request.get('size', 10)
 	qfrom = request.get('from', qpage_index*qsize)
 	index_name = self.getRootElement().getHome().id
+	index_names = []
+	index_names = [k.split('.')[-1] for k in list(self.getConfProperties().keys()) if k.lower().startswith('opensearch.suggest.fields.')]
+	if index_name not in index_names:
+		index_names.append(index_names)
+
+	# Refs: query on multiple indexes and composite aggregation
+	# https://discuss.elastic.co/t/query-multiple-indexes-but-apply-queries-to-specific-index/127858
+	# https://opster.com/guides/opensearch/opensearch-search-apis/opensearch-composite-aggregation/
 
 	query = {
 		"size": qsize,
-		"from":qfrom,
-		"query":{
-			"query_string":{"query":q}
-		},
-		"highlight": {
-			"fields": {
-				"title": { "type": "plain"},
-				"standard_html": { "type": "plain"}
+		"from": qfrom,
+		"query": {
+			"query_string": {
+				"query": q
 			}
 		},
 		"aggs": {
 			"response_codes": {
 				"terms": {
-					"field": "meta_id",
+					"field": "_index",
 					"size": 5
 				}
 			}
@@ -68,10 +72,9 @@ def opensearch_query( self, REQUEST=None):
 
 	resp_text = ''
 	try:
-		response = client.search(body = json.dumps(query), index = index_name)
+		response = client.search(body = json.dumps(query), index = index_names)
 		resp_text = json.dumps(response)
 	except opensearchpy.exceptions.RequestError as e:
 		resp_text = '//%s'%(e.error)
 	
 	return resp_text
-

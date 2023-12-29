@@ -1,4 +1,11 @@
 //# ######################################
+//# Handlebars Helper
+//# ######################################
+Handlebars.registerHelper("compareStrings", function (p, q, options) {
+	return p == q ? options.fn(this) : options.inverse(this);
+})
+
+//# ######################################
 //# Init function show_results() as global
 //# ######################################
 var show_results;
@@ -57,30 +64,67 @@ $(function() {
 		var res_processed = { 'hits':[], 'total':total, 'query':q, 'buckets':buckets};
 
 		res['hits']['hits'].forEach(x => {
+			var index_name = x['_index'];
 			var source = x['_source'];
-			var highlight = x['highlight'];
-			var hit = { 'path':source['uid'], 'href':source['loc'], 'title':source['title'], 'snippet':source['standard_html'] };
-			if (typeof highlight !== 'undefined') {
-				if (typeof highlight['title'] !== 'undefined') {
-					hit['title'] = highlight['title'];
+			// UNIBE
+			if ( index_name != 'unitel' ) {
+				var highlight = x['highlight'];
+				var hit = { 
+					'path':source['uid'], 
+					'href':source['loc'], 
+					'title':source['title'], 
+					'snippet':source['standard_html'],
+					'index_name':index_name
+					
+				};
+				if (typeof highlight !== 'undefined') {
+					if (typeof highlight['title'] !== 'undefined') {
+						hit['title'] = highlight['title'];
+					}
+					if (typeof highlight['standard_html'] !== 'undefined') {
+						hit['snippet'] = highlight['standard_html'];
+					}
 				}
-				if (typeof highlight['standard_html'] !== 'undefined') {
-					hit['snippet'] = highlight['standard_html'];
+				if ( typeof hit['snippet'] == 'undefined' || hit['snippet'] == '' || hit['snippet'] == null ) {
+					if (typeof source['attr_dc_description'] == 'undefined') {
+						hit['snippet'] = '';
+					} else {
+						hit['snippet'] = source['attr_dc_description'];
+					}
 				}
-			}
-			if ( typeof hit['snippet'] == 'undefined' || hit['snippet']=='' ) {
-				if (typeof source['attr_dc_description'] == 'undefined') {
-					hit['snippet'] = '';
+				// Attachment: field-name = 'data'
+				if ( typeof source['attachment'] !== 'undefined' && hit['snippet']=='' ) {
+					hit['snippet'] = source['attachment']['content'];
+				}
+				if (hit['snippet'].length > 200) {
+					hit['snippet'] = hit['snippet'].substring(0,200) + '...';
+				}
+			} else {
+			// UNITEL
+				var title = `${source['Vorname']}  ${source['Nachname']}`;
+				var href = '';
+				var EMail = '';
+				var Adresse = '';
+				if (Array.isArray(source['Adresse'])) {
+					console.log('Adresse object is a list');
+					EMail = source['Adresse'][0]['EMail'];
+					source['Adresse'].forEach(d => {
+						Adresse += `<dl>${stringify_address(d)}</dl>`;
+					});
 				} else {
-					hit['snippet'] = source['attr_dc_description'];
+					console.log('Adresse object is a dictionary');
+					EMail = source['Adresse']['EMail'];
+					d = source['Adresse'];
+					Adresse += `<dl>${stringify_address(d)}</dl>`;
 				}
-			}
-			// Attachment: field-name = 'data'
-			if ( typeof source['attachment'] !== 'undefined' && hit['snippet']=='' ) {
-				hit['snippet'] = source['attachment']['content'];
-			}
-			if (hit['snippet'].length > 200) {
-				hit['snippet'] = hit['snippet'].substring(0,200) + '...';
+				href = `mailto:${EMail}?subject=Anfrage%20via%20Website&body=Guten%20Tag,`;
+				var hit = { 
+					'path':source['uid'],
+					'href':href,
+					'title':title, 
+					'snippet':Adresse,
+					'index_name':index_name
+				}; 
 			}
 			res_processed.hits.push(hit)
 		})
@@ -88,9 +132,20 @@ $(function() {
 	};
 
 	const show_breadcrumbs = (el) => {
-		$.get(url=`${root_url}/opensearch_breadcrumbs_obj_path`, data={ 'id' : el.dataset.id }, function(data, status) {
-			$(el).html(data);
+		if ( el.dataset.id.startsWith('uid') ) {
+			$.get(url=`${root_url}/opensearch_breadcrumbs_obj_path`, data={ 'id' : el.dataset.id }, function(data, status) {
+				$(el).html(data);
+			});
+		}
+	}
+
+	const stringify_address = (d) => {
+		var s = '';
+		Object.keys(d).forEach(k => {
+			s += `<dt class="${k}">${k}</dt>`;
+			s += `<dd class="${k}">${d[k]}</dd>`;
 		});
+		return s
 	}
 
 	//# Execute on submit event

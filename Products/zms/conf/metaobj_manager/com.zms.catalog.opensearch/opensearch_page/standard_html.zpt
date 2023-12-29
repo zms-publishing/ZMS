@@ -18,7 +18,11 @@
 					aria-controls="tab-pane-{{@index}}" role="tab"
 					class="{{#if @first}}active{{/if}}"
 					><a data-toggle="tab" href="#tab-pane-{{@index}}">
-						{{{this.key}}}
+						{{#compareStrings this.key "unitel"}}
+							Personen
+						{{else}}
+							Inhalte
+						{{/compareStrings}}
 						<span class="badge badge-tabs">{{{this.doc_count}}}</span>
 						<span class="sr-only">Treffer</span>
 					</a>
@@ -28,7 +32,7 @@
 	{{/if}}
 	<div class="pagination" style="margin-bottom: 0em;"></div>
 	{{#each hits}}
-		<article class="hit">
+		<article class="hit {{this.index_name}}">
 			<ul class="path" data-id="{{this.path}}">&nbsp;</ul>
 			<a title="{{this.path}}" href="{{this.href}}" target="_blank">{{{this.title}}}</a>
 			<br/>

@@ -7,6 +7,11 @@
 
 <textarea tal:attributes="id python:'editor_%s'%request['elName']; name python:'editor_%s'%request['elName']"></textarea>
 
+<div id="attr_url_markdown_div" class="d-none">
+    <input type="text" id="attr_url_markdown" name="attr_url_markdown" class="form-control url-input">
+    <div id="attr_url_dummy"></div>
+</div>
+
 <tal:block tal:condition="python:request.get('f_zmiRichtextOnSubmitEventHandler',True)">
 
 <link rel="stylesheet" href="/++resource++zms_/simplemde/simplemde.min.css">
@@ -19,7 +24,40 @@ var elName = "text_" + getZMILang();
 $("textarea#editor_" + elName).val($("textarea#" + elName).val());
 
 var simplemde = new SimpleMDE({
-	element: document.getElementById("editor_" + elName)
+	element: document.getElementById("editor_" + elName),
+    toolbar: [
+        "bold", "italic", "strikethrough", "heading", "|",
+        "code", "quote", "unordered-list", "ordered-list", "|", {
+            name: "custom",
+            action: function customFunction(editor) {
+                zmiBrowseObjs('form0','attr_url_markdown',getZMILang());
+            },
+            className: "fa fa-link",
+            title: "Create Link"
+        },
+        "image", "table", "horizontal-rule", "clean-block", "|",
+        "preview", "side-by-side", "fullscreen", "guide"
+    ],
+});
+
+$('#attr_url_markdown').on("change", function() {
+	var data = simplemde.value();
+    var link_href = $('#attr_url_markdown').val();
+    $.ajax({
+        url: 'zmi_breadcrumbs_obj_path',
+        data: {
+            lang: getZMILang(),
+            zmi_breadcrumbs_ref_obj_path: link_href
+        },
+        datatype: 'text',
+        success: function(response) {
+            $('#attr_url_dummy').html(response.trim());
+            var link_text = $('#attr_url_dummy .breadcrumb').text().trim().replaceAll('\n', ' /');
+            if (link_href !== '') {
+                simplemde.value(`$${data}\n[$${link_text}]($${link_href})`);
+            }
+        }
+    });
 });
 
 function zmiStandardOnSubmitEventHandler(fm) {

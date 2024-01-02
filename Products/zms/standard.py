@@ -368,11 +368,10 @@ def get_installed_packages(pip_cmd='freeze'):
     }
   cmd = pip_cmds.get(pip_cmd,'freeze')
   pth = getPACKAGE_HOME().rsplit('/lib/')[0] + '/bin'
-  packages = ''
   output = subprocess.Popen(pth + cmd,
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                             shell=True, cwd=pth, universal_newlines=True)
-  packages = f'# {pth}{cmd}\n\n{output.communicate()[0].strip()}'
+  packages = f'# {pth}{cmd}\n\nPython {sys.version}\n\n{output.communicate()[0].strip()}'
   return packages
 
 

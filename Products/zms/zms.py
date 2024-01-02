@@ -370,7 +370,7 @@ class ZMS(
         rtn += f'&nbsp;(<samp id="zms_custom_version">{zms_custom_version}</samp>)'
         # Generate revisions and custom version gathering commit hashes of git submodules
         # see Lines 37-46 unibe-cms/.github/workflows/build-and-push.yml
-        revisions = _fileutil.getOSPath('/app/zms-core/revisions.txt')
+        revisions = _fileutil.getOSPath('/app/revisions.txt')
         if os.path.exists(revisions):
             file = open(revisions, 'r')
             zms_submodule_revisions = file.read()

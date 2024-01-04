@@ -1,3 +1,8 @@
+import logging
+
+LOGGER = logging.getLogger('SearchReplace')
+
+
 def manage_searchReplace(self):
 	from Products.zms import standard
 	request = self.REQUEST
@@ -44,7 +49,11 @@ def manage_searchReplace(self):
 					objAttrVal = here.operator_getattr(objVers,objAttrName,None)
 					if objAttrVal:
 						# Important: our replace() differs data type: string, list and dict
-						newVal = replace(objAttrVal,old,new)
+						try:
+							newVal = replace(objAttrVal,old,new)
+						except TypeError:
+							newVal = objAttrVal
+							LOGGER.log(logging.ERROR, f'{key} {here.absolute_url()}')
 						if newVal != objAttrVal:
 							if request.get('replace'):
 								# Do only replace if checkbox 'replace' was clicked

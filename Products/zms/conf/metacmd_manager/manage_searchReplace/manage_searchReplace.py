@@ -53,7 +53,7 @@ def manage_searchReplace(self):
 							newVal = replace(objAttrVal,old,new)
 						except TypeError:
 							newVal = objAttrVal
-							LOGGER.log(logging.ERROR, f'{key} {here.absolute_url()}')
+							LOGGER.log(logging.ERROR, f'{key} {here.absolute_url()}/manage')
 						if newVal != objAttrVal:
 							if request.get('replace'):
 								# Do only replace if checkbox 'replace' was clicked
@@ -314,6 +314,74 @@ def manage_searchReplace(self):
 			</script>
 		''')
 
+		html.append('''
+            <style>
+                .loader-wrapper {
+                  width: 100%;
+                  height: 100%;
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  background-color: #40617e;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  z-index: 10;
+                  opacity: 0.8;
+                }
+                .loader {
+                  display: inline-block;
+                  width: 30px;
+                  height: 30px;
+                  position: relative;
+                  border: 4px solid #fff;
+                  animation: loader 2s infinite ease;
+                }
+                .loader-inner {
+                  vertical-align: top;
+                  display: inline-block;
+                  width: 100%;
+                  background-color: #fff;
+                  animation: loader-inner 2s infinite ease-in;
+                }
+                @keyframes loader {
+                  0% { transform: rotate(0deg); }
+                  25% { transform: rotate(180deg); }
+                  50% { transform: rotate(180deg); }
+                  75% { transform: rotate(360deg); }
+                  100% { transform: rotate(360deg); }
+                }
+                @keyframes loader-inner {
+                  0% { height: 0%; }
+                  25% { height: 0%; }
+                  50% { height: 100%; }
+                  75% { height: 100%; }
+                  100% { height: 0%; }
+                }
+            </style>
+            <div class="loader-wrapper">
+                <span class="loader"><span class="loader-inner"></span></span>
+            </div>
+            <script>
+                // https://redstapler.co/add-loading-animation-to-website/
+                // https://codepen.io/tashfene/pen/raEqrJ
+                $(window).on("load", function() {
+                  $(".loader-wrapper").fadeOut("slow");
+                });
+                $(document).ready(function() {
+                  $(".loader-wrapper").fadeOut("slow");
+                  $("#form_searchreplace").submit(function() {
+                      $.ajax({
+                          method: "POST",
+                          url: "manage_searchReplace",
+                          dataType: "html",
+                          beforeSend: function() {
+                              $(".loader-wrapper").show();
+                          }
+                      });
+                  });
+              });
+            </script>''')
 		html.append('</body>')
 		html.append('</html>')
 		return '\n'.join(list(html))

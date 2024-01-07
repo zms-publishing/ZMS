@@ -96,10 +96,20 @@ def manage_searchReplace(self):
 	# FUNCTION Render CONTENT-Selector
 	#################################################
 	def renderContentClassSelector():
+		meta_obids = context.getMetaobjIds(excl_ids=excl_ids)
+		meta_lists = standard.sort_list(filter(lambda x: context.getMetaobj(x)['type'] in [
+			'ZMSDocument', 'ZMSObject', 'ZMSTeaserElement', 'ZMSRecordSet'], meta_obids))
+		meta_packs = standard.sort_list(filter(lambda x: context.getMetaobj(x)['type'] in [
+			'ZMSPackage'], meta_obids))
+
 		s='<select class="form-control" id="cselected" name="cselected" title="Content Class Name" onchange="javascript:ajaxAttrSelector(this.options[selectedIndex].value); return true;">\n'
 		s+='<option value="">Choose Content Class ...</option>\n'
-		for i in context.getMetaobjIds(excl_ids=excl_ids):
-			s+='<option value="%s" %s>%s</option>\n'%(i, i==cselected and 'selected="selected"' or '', i) 
+		for package in meta_packs:
+			s += f'<optgroup label="{package}">'
+			for obj in list(filter(lambda x: context.getMetaobj(x)['package']==package, meta_lists)):
+				selected = obj == cselected and 'selected="selected"' or ''
+				s += f'<option value="{obj}" {selected}>{obj}</option>'
+			s += '</optgroup>'
 		s+='</select>'
 		return s
 
@@ -127,7 +137,7 @@ def manage_searchReplace(self):
 		html.append('<html lang="en">')
 		html.append(context.zmi_html_head(context,request))
 		html.append('<body class="%s">'%(' '.join(['zmi',request['lang'],'search_replace',did_replace and 'replaced' or '', context.meta_id])))
-		html.append(context.zmi_body_header(context,request,options=[{'action':'#','label':'Search+Replace...'}]))
+		html.append(context.zmi_body_header(context,request))
 		html.append('<div id="zmi-tab">')
 		html.append(context.zmi_breadcrumbs(context,request))
 

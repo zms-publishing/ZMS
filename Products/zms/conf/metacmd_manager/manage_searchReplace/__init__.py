@@ -35,7 +35,7 @@ class manage_searchReplace:
 	package = ""
 
 	# Revision
-	revision = "5.4.1"
+	revision = "5.5.0"
 
 	# Roles
 	roles = ["ZMSAdministrator"

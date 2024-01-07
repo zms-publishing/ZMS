@@ -1,4 +1,5 @@
 import logging
+import re
 
 LOGGER = logging.getLogger('SearchReplace')
 
@@ -17,11 +18,14 @@ def manage_searchReplace(self):
 	aselected = request.form.get('aselected',None)
 	lselected = request.form.get('lselected','')
 	mode = request.form.get('mode','html')
+	case_sensitive = str(request.form.get('upperlower',0))=='1'
 	did_replace = str(request.form.get('replace',0))=='1'
 	did_filter = str(request.form.get('filter',0))=='1'
 
 	def replace(o, old, new):
 		if isinstance(o,(str,bytes)):
+			if not case_sensitive:
+				return re.sub(re.compile(old, re.IGNORECASE), new, o)
 			return o.replace(old,new)
 		elif standard.operator_gettype(o) is standard.operator_gettype({}):
 			for k in o:
@@ -150,10 +154,16 @@ def manage_searchReplace(self):
 		# --- Display insert form.
 		# ---------------------------------
 		html.append('''
-			<div class="form-group row">
+			<div class="form-group row" id="caseindicator">
 				<label for="old" class="col-sm-2 control-label mandatory">Search for</label>
 				<div class="col-sm-10">
-					<input class="form-control" name="old" type="text" size="25" value="%s" />
+					<div class="input-group" title="Consider upper and lower case">
+						<div class="input-group-prepend btn bg-light" style="border: 1px solid #ced4da;">
+							<input type="checkbox" name="upperlower" value="1" class="mt-1" %s onclick="javascript:toggle_caseindicator()">
+						</div>
+						<input class="form-control" name="old" type="text" size="25" value="%s" title="" />
+						<span class="fas fa-spell-check case-indicator"></span>
+					</div>
 				</div>
 			</div><!-- .form-group -->
 			<div class="form-group row">
@@ -172,7 +182,7 @@ def manage_searchReplace(self):
 				<label for="new" class="col-sm-2 control-label">Attribute Filter</label>
 				<div class="col-sm-10">
 					<div class="input-group">
-					<div class="input-group-prepend btn bg-secondary">
+					<div class="input-group-prepend btn bg-light" style="border: 1px solid #ced4da;">
 						<input type="checkbox" name="filter" value="1" class="mt-1" %s onclick="javascript:toggle_filterset()">
 					</div>
 					%s
@@ -184,18 +194,18 @@ def manage_searchReplace(self):
 
 			<div class="form-group row">
 				<div class="controls save">
-					<button type="submit" name="btn" class="btn btn-primary" value="BTN_EXECUTE">%s</button> 
+					<button type="submit" name="btn" class="btn btn-primary" value="BTN_EXECUTE">%s</button>
 					<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CANCEL">%s</button>
 				</div><!-- .controls.save -->
 			</div>
-		'''%(	old, 
-				did_replace and 'checked="checked"' or '', 
-				new, did_filter and 'checked="checked"' or '', 
-				renderContentClassSelector(), 
-				renderAttrSelector(cselected), 
-				renderLangSelector(), 
-				btn_text_exec, 
-				btn_text_cncl 
+		'''%(	case_sensitive and 'checked="checked"' or '',
+				old, did_replace and '' or '',
+				new, did_filter and 'checked="checked"' or '',
+				renderContentClassSelector(),
+				renderAttrSelector(cselected),
+				renderLangSelector(),
+				btn_text_exec,
+				btn_text_cncl
 			)
 		)
 
@@ -205,15 +215,26 @@ def manage_searchReplace(self):
 			message = []
 			res = run(context,old,new)
 			if did_replace:
-				message.append('<p>%s Results found for <em>%s</em> and changed to <i>%s</i>.</p>'%(len(res),old,new))
+				message.append('<p>%s results found for <em>%s</em>&nbsp;&rarr;&nbsp;replaced by <i>%s</i></p>'%(len(res),old,
+																									   new))
 			else:
-				message.append('<p>%s Results found for <em>%s</em> and NOT changed.</p>'%(len(res),old))
+				message.append('<p>%s results found for <em>%s</em>&nbsp;&rarr;&nbsp;<u>not</u> replaced</p>'%(len(res),old))
+			if case_sensitive:
+				message.append('<small>(case-sensitive search)</small>')
+			else:
+				message.append('<small>(case-insensitive search)</small>')
 			message.append('<ol>')
 			for e in res:
 				node_url = e['node'].absolute_url()
 				node_meta = e['node'].meta_id
 				node_attr = e['attr_name']
-				node_text = str(standard.remove_tags(e['text'])).replace('\"','').replace(old,'<em>%s</em><i>%s</i>'%(old,new))
+				node_text = str(standard.remove_tags(e['text'])).replace('\"', '')
+				if not case_sensitive:
+					found_case_insensitive = re.findall(re.compile(old, re.IGNORECASE), node_text)
+					for found in found_case_insensitive:
+						node_text = node_text.replace(found, f'<em>{found}</em><i>{new}</i>')
+				else:
+					node_text = node_text.replace(old, f'<em>{old}</em><i>{new}</i>')
 				message.append('<li title="Found Item"><a title="<b>%s.%s</b> %s" class="found_item" data-toggle="tooltip" data-html="true" data-placement="left" href="%s/manage_main" target="_blank">%s</a></li>'%( node_meta, node_attr, node_text, node_url, node_url))
 			message.append('</ol>')
 			html.append('''
@@ -258,6 +279,7 @@ def manage_searchReplace(self):
 				div.tooltip div.tooltip-inner em {
 					font-style:normal;
 					font-weight:normal;
+					font-family: monospace;
 					background-color: #f8d7da!important;
 				}
 				.zmi.replaced > p > em,
@@ -268,6 +290,7 @@ def manage_searchReplace(self):
 				div.tooltip div.tooltip-inner i {
 					font-style:normal;
 					font-weight:normal;
+					font-family: monospace;
 					background-color: #d4edda!important;
 				}
 				div.alert > p > i {
@@ -295,16 +318,37 @@ def manage_searchReplace(self):
 				div#ObjList pre {
 					margin-top:1em;
 				}
+				span.case-indicator {
+					float: right;
+					margin: 6px;
+					position: relative;
+					z-index: 2;
+				}
+				div.alert small {
+					margin-top: -1rem;
+					margin-bottom: 1rem;
+					display: block;
+				}
 			</style>
 			<script>
 				$(function() {
 					toggle_filterset();
+					toggle_caseindicator();
 				})
 				function toggle_filterset() {
 					if ($('#filterset input[type="checkbox"]').prop('checked')) {
 						$('#filterset select').removeAttr('disabled');
 					} else {
 						$('#filterset select').attr('disabled','disabled');
+					}
+				};
+				function toggle_caseindicator() {
+					if ($('#caseindicator input[type="checkbox"]').prop('checked')) {
+						$('#caseindicator span.case-indicator').attr('style','color:#000');
+						$('#caseindicator span.case-indicator').attr('title','case-sensitive');
+					} else {
+						$('#caseindicator span.case-indicator').attr('style','color:#ddd');
+						$('#caseindicator span.case-indicator').attr('title','case-insensitive');
 					}
 				};
 				function ajaxAttrSelector(cselected) {

@@ -1,3 +1,8 @@
+import logging
+
+LOGGER = logging.getLogger('SearchReplace')
+
+
 def manage_searchReplace(self):
 	from Products.zms import standard
 	request = self.REQUEST
@@ -44,7 +49,11 @@ def manage_searchReplace(self):
 					objAttrVal = here.operator_getattr(objVers,objAttrName,None)
 					if objAttrVal:
 						# Important: our replace() differs data type: string, list and dict
-						newVal = replace(objAttrVal,old,new)
+						try:
+							newVal = replace(objAttrVal,old,new)
+						except TypeError:
+							newVal = objAttrVal
+							LOGGER.log(logging.ERROR, f'{key} {here.absolute_url()}/manage')
 						if newVal != objAttrVal:
 							if request.get('replace'):
 								# Do only replace if checkbox 'replace' was clicked
@@ -87,10 +96,20 @@ def manage_searchReplace(self):
 	# FUNCTION Render CONTENT-Selector
 	#################################################
 	def renderContentClassSelector():
+		meta_obids = context.getMetaobjIds(excl_ids=excl_ids)
+		meta_lists = standard.sort_list(filter(lambda x: context.getMetaobj(x)['type'] in [
+			'ZMSDocument', 'ZMSObject', 'ZMSTeaserElement', 'ZMSRecordSet'], meta_obids))
+		meta_packs = standard.sort_list(filter(lambda x: context.getMetaobj(x)['type'] in [
+			'ZMSPackage'], meta_obids))
+
 		s='<select class="form-control" id="cselected" name="cselected" title="Content Class Name" onchange="javascript:ajaxAttrSelector(this.options[selectedIndex].value); return true;">\n'
 		s+='<option value="">Choose Content Class ...</option>\n'
-		for i in context.getMetaobjIds(excl_ids=excl_ids):
-			s+='<option value="%s" %s>%s</option>\n'%(i, i==cselected and 'selected="selected"' or '', i) 
+		for package in meta_packs:
+			s += f'<optgroup label="{package}">'
+			for obj in list(filter(lambda x: context.getMetaobj(x)['package']==package, meta_lists)):
+				selected = obj == cselected and 'selected="selected"' or ''
+				s += f'<option value="{obj}" {selected}>{obj}</option>'
+			s += '</optgroup>'
 		s+='</select>'
 		return s
 
@@ -118,7 +137,7 @@ def manage_searchReplace(self):
 		html.append('<html lang="en">')
 		html.append(context.zmi_html_head(context,request))
 		html.append('<body class="%s">'%(' '.join(['zmi',request['lang'],'search_replace',did_replace and 'replaced' or '', context.meta_id])))
-		html.append(context.zmi_body_header(context,request,options=[{'action':'#','label':'Search+Replace...'}]))
+		html.append(context.zmi_body_header(context,request))
 		html.append('<div id="zmi-tab">')
 		html.append(context.zmi_breadcrumbs(context,request))
 
@@ -305,6 +324,74 @@ def manage_searchReplace(self):
 			</script>
 		''')
 
+		html.append('''
+            <style>
+                .loader-wrapper {
+                  width: 100%;
+                  height: 100%;
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  background-color: #40617e;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  z-index: 10;
+                  opacity: 0.8;
+                }
+                .loader {
+                  display: inline-block;
+                  width: 30px;
+                  height: 30px;
+                  position: relative;
+                  border: 4px solid #fff;
+                  animation: loader 2s infinite ease;
+                }
+                .loader-inner {
+                  vertical-align: top;
+                  display: inline-block;
+                  width: 100%;
+                  background-color: #fff;
+                  animation: loader-inner 2s infinite ease-in;
+                }
+                @keyframes loader {
+                  0% { transform: rotate(0deg); }
+                  25% { transform: rotate(180deg); }
+                  50% { transform: rotate(180deg); }
+                  75% { transform: rotate(360deg); }
+                  100% { transform: rotate(360deg); }
+                }
+                @keyframes loader-inner {
+                  0% { height: 0%; }
+                  25% { height: 0%; }
+                  50% { height: 100%; }
+                  75% { height: 100%; }
+                  100% { height: 0%; }
+                }
+            </style>
+            <div class="loader-wrapper">
+                <span class="loader"><span class="loader-inner"></span></span>
+            </div>
+            <script>
+                // https://redstapler.co/add-loading-animation-to-website/
+                // https://codepen.io/tashfene/pen/raEqrJ
+                $(window).on("load", function() {
+                  $(".loader-wrapper").fadeOut("slow");
+                });
+                $(document).ready(function() {
+                  $(".loader-wrapper").fadeOut("slow");
+                  $("#form_searchreplace").submit(function() {
+                      $.ajax({
+                          method: "POST",
+                          url: "manage_searchReplace",
+                          dataType: "html",
+                          beforeSend: function() {
+                              $(".loader-wrapper").show();
+                          }
+                      });
+                  });
+              });
+            </script>''')
 		html.append('</body>')
 		html.append('</html>')
 		return '\n'.join(list(html))

@@ -191,7 +191,7 @@ class RestApiController(object):
             else:
                 data = {'ERROR':'Not Found','context':str(self.context),'path_to_handle':self.path_to_handle,'ids':self.ids}
             REQUEST.RESPONSE.setHeader('Content-Type',decoration['content_type'])
-            return json.dumps(data)
+            return json.dumps(data, default=lambda x: str(x))
         return None
 
     @api(tag="zmsindex", pattern="/zmsindex", content_type="application/json")

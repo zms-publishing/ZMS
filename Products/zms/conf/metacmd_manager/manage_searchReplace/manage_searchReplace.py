@@ -1,3 +1,9 @@
+import logging
+import re
+
+LOGGER = logging.getLogger('SearchReplace')
+
+
 def manage_searchReplace(self):
 	from Products.zms import standard
 	request = self.REQUEST
@@ -12,11 +18,14 @@ def manage_searchReplace(self):
 	aselected = request.form.get('aselected',None)
 	lselected = request.form.get('lselected','')
 	mode = request.form.get('mode','html')
+	case_sensitive = str(request.form.get('upperlower',0))=='1'
 	did_replace = str(request.form.get('replace',0))=='1'
 	did_filter = str(request.form.get('filter',0))=='1'
 
 	def replace(o, old, new):
 		if isinstance(o,(str,bytes)):
+			if not case_sensitive:
+				return re.sub(re.compile(old, re.IGNORECASE), new, o)
 			return o.replace(old,new)
 		elif standard.operator_gettype(o) is standard.operator_gettype({}):
 			for k in o:
@@ -44,7 +53,11 @@ def manage_searchReplace(self):
 					objAttrVal = here.operator_getattr(objVers,objAttrName,None)
 					if objAttrVal:
 						# Important: our replace() differs data type: string, list and dict
-						newVal = replace(objAttrVal,old,new)
+						try:
+							newVal = replace(objAttrVal,old,new)
+						except TypeError:
+							newVal = objAttrVal
+							LOGGER.log(logging.ERROR, f'{key} {here.absolute_url()}/manage')
 						if newVal != objAttrVal:
 							if request.get('replace'):
 								# Do only replace if checkbox 'replace' was clicked
@@ -87,10 +100,20 @@ def manage_searchReplace(self):
 	# FUNCTION Render CONTENT-Selector
 	#################################################
 	def renderContentClassSelector():
+		meta_obids = context.getMetaobjIds(excl_ids=excl_ids)
+		meta_lists = standard.sort_list(filter(lambda x: context.getMetaobj(x)['type'] in [
+			'ZMSDocument', 'ZMSObject', 'ZMSTeaserElement', 'ZMSRecordSet'], meta_obids))
+		meta_packs = standard.sort_list(filter(lambda x: context.getMetaobj(x)['type'] in [
+			'ZMSPackage'], meta_obids))
+
 		s='<select class="form-control" id="cselected" name="cselected" title="Content Class Name" onchange="javascript:ajaxAttrSelector(this.options[selectedIndex].value); return true;">\n'
 		s+='<option value="">Choose Content Class ...</option>\n'
-		for i in context.getMetaobjIds(excl_ids=excl_ids):
-			s+='<option value="%s" %s>%s</option>\n'%(i, i==cselected and 'selected="selected"' or '', i) 
+		for package in meta_packs:
+			s += f'<optgroup label="{package}">'
+			for obj in list(filter(lambda x: context.getMetaobj(x)['package']==package, meta_lists)):
+				selected = obj == cselected and 'selected="selected"' or ''
+				s += f'<option value="{obj}" {selected}>{obj}</option>'
+			s += '</optgroup>'
 		s+='</select>'
 		return s
 
@@ -118,7 +141,7 @@ def manage_searchReplace(self):
 		html.append('<html lang="en">')
 		html.append(context.zmi_html_head(context,request))
 		html.append('<body class="%s">'%(' '.join(['zmi',request['lang'],'search_replace',did_replace and 'replaced' or '', context.meta_id])))
-		html.append(context.zmi_body_header(context,request,options=[{'action':'#','label':'Search+Replace...'}]))
+		html.append(context.zmi_body_header(context,request))
 		html.append('<div id="zmi-tab">')
 		html.append(context.zmi_breadcrumbs(context,request))
 
@@ -131,10 +154,16 @@ def manage_searchReplace(self):
 		# --- Display insert form.
 		# ---------------------------------
 		html.append('''
-			<div class="form-group row">
+			<div class="form-group row" id="caseindicator">
 				<label for="old" class="col-sm-2 control-label mandatory">Search for</label>
 				<div class="col-sm-10">
-					<input class="form-control" name="old" type="text" size="25" value="%s" />
+					<div class="input-group" title="Consider upper and lower case">
+						<div class="input-group-prepend btn bg-light" style="border: 1px solid #ced4da;">
+							<input type="checkbox" name="upperlower" value="1" class="mt-1" %s onclick="javascript:toggle_caseindicator()">
+						</div>
+						<input class="form-control" name="old" type="text" size="25" value="%s" title="" />
+						<span class="fas fa-spell-check case-indicator"></span>
+					</div>
 				</div>
 			</div><!-- .form-group -->
 			<div class="form-group row">
@@ -153,7 +182,7 @@ def manage_searchReplace(self):
 				<label for="new" class="col-sm-2 control-label">Attribute Filter</label>
 				<div class="col-sm-10">
 					<div class="input-group">
-					<div class="input-group-prepend btn bg-secondary">
+					<div class="input-group-prepend btn bg-light" style="border: 1px solid #ced4da;">
 						<input type="checkbox" name="filter" value="1" class="mt-1" %s onclick="javascript:toggle_filterset()">
 					</div>
 					%s
@@ -165,18 +194,18 @@ def manage_searchReplace(self):
 
 			<div class="form-group row">
 				<div class="controls save">
-					<button type="submit" name="btn" class="btn btn-primary" value="BTN_EXECUTE">%s</button> 
+					<button type="submit" name="btn" class="btn btn-primary" value="BTN_EXECUTE">%s</button>
 					<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CANCEL">%s</button>
 				</div><!-- .controls.save -->
 			</div>
-		'''%(	old, 
-				did_replace and 'checked="checked"' or '', 
-				new, did_filter and 'checked="checked"' or '', 
-				renderContentClassSelector(), 
-				renderAttrSelector(cselected), 
-				renderLangSelector(), 
-				btn_text_exec, 
-				btn_text_cncl 
+		'''%(	case_sensitive and 'checked="checked"' or '',
+				old, did_replace and '' or '',
+				new, did_filter and 'checked="checked"' or '',
+				renderContentClassSelector(),
+				renderAttrSelector(cselected),
+				renderLangSelector(),
+				btn_text_exec,
+				btn_text_cncl
 			)
 		)
 
@@ -186,15 +215,26 @@ def manage_searchReplace(self):
 			message = []
 			res = run(context,old,new)
 			if did_replace:
-				message.append('<p>%s Results found for <em>%s</em> and changed to <i>%s</i>.</p>'%(len(res),old,new))
+				message.append('<p>%s results found for <em>%s</em>&nbsp;&rarr;&nbsp;replaced by <i>%s</i></p>'%(len(res),old,
+																									   new))
 			else:
-				message.append('<p>%s Results found for <em>%s</em> and NOT changed.</p>'%(len(res),old))
+				message.append('<p>%s results found for <em>%s</em>&nbsp;&rarr;&nbsp;<u>not</u> replaced</p>'%(len(res),old))
+			if case_sensitive:
+				message.append('<small>(case-sensitive search)</small>')
+			else:
+				message.append('<small>(case-insensitive search)</small>')
 			message.append('<ol>')
 			for e in res:
 				node_url = e['node'].absolute_url()
 				node_meta = e['node'].meta_id
 				node_attr = e['attr_name']
-				node_text = str(standard.remove_tags(e['text'])).replace('\"','').replace(old,'<em>%s</em><i>%s</i>'%(old,new))
+				node_text = str(standard.remove_tags(e['text'])).replace('\"', '')
+				if not case_sensitive:
+					found_case_insensitive = re.findall(re.compile(old, re.IGNORECASE), node_text)
+					for found in found_case_insensitive:
+						node_text = node_text.replace(found, f'<em>{found}</em><i>{new}</i>')
+				else:
+					node_text = node_text.replace(old, f'<em>{old}</em><i>{new}</i>')
 				message.append('<li title="Found Item"><a title="<b>%s.%s</b> %s" class="found_item" data-toggle="tooltip" data-html="true" data-placement="left" href="%s/manage_main" target="_blank">%s</a></li>'%( node_meta, node_attr, node_text, node_url, node_url))
 			message.append('</ol>')
 			html.append('''
@@ -239,6 +279,7 @@ def manage_searchReplace(self):
 				div.tooltip div.tooltip-inner em {
 					font-style:normal;
 					font-weight:normal;
+					font-family: monospace;
 					background-color: #f8d7da!important;
 				}
 				.zmi.replaced > p > em,
@@ -249,6 +290,7 @@ def manage_searchReplace(self):
 				div.tooltip div.tooltip-inner i {
 					font-style:normal;
 					font-weight:normal;
+					font-family: monospace;
 					background-color: #d4edda!important;
 				}
 				div.alert > p > i {
@@ -276,16 +318,37 @@ def manage_searchReplace(self):
 				div#ObjList pre {
 					margin-top:1em;
 				}
+				span.case-indicator {
+					float: right;
+					margin: 6px;
+					position: relative;
+					z-index: 2;
+				}
+				div.alert small {
+					margin-top: -1rem;
+					margin-bottom: 1rem;
+					display: block;
+				}
 			</style>
 			<script>
 				$(function() {
 					toggle_filterset();
+					toggle_caseindicator();
 				})
 				function toggle_filterset() {
 					if ($('#filterset input[type="checkbox"]').prop('checked')) {
 						$('#filterset select').removeAttr('disabled');
 					} else {
 						$('#filterset select').attr('disabled','disabled');
+					}
+				};
+				function toggle_caseindicator() {
+					if ($('#caseindicator input[type="checkbox"]').prop('checked')) {
+						$('#caseindicator span.case-indicator').attr('style','color:#000');
+						$('#caseindicator span.case-indicator').attr('title','case-sensitive');
+					} else {
+						$('#caseindicator span.case-indicator').attr('style','color:#ddd');
+						$('#caseindicator span.case-indicator').attr('title','case-insensitive');
 					}
 				};
 				function ajaxAttrSelector(cselected) {
@@ -305,6 +368,74 @@ def manage_searchReplace(self):
 			</script>
 		''')
 
+		html.append('''
+            <style>
+                .loader-wrapper {
+                  width: 100%;
+                  height: 100%;
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  background-color: #40617e;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  z-index: 10;
+                  opacity: 0.8;
+                }
+                .loader {
+                  display: inline-block;
+                  width: 30px;
+                  height: 30px;
+                  position: relative;
+                  border: 4px solid #fff;
+                  animation: loader 2s infinite ease;
+                }
+                .loader-inner {
+                  vertical-align: top;
+                  display: inline-block;
+                  width: 100%;
+                  background-color: #fff;
+                  animation: loader-inner 2s infinite ease-in;
+                }
+                @keyframes loader {
+                  0% { transform: rotate(0deg); }
+                  25% { transform: rotate(180deg); }
+                  50% { transform: rotate(180deg); }
+                  75% { transform: rotate(360deg); }
+                  100% { transform: rotate(360deg); }
+                }
+                @keyframes loader-inner {
+                  0% { height: 0%; }
+                  25% { height: 0%; }
+                  50% { height: 100%; }
+                  75% { height: 100%; }
+                  100% { height: 0%; }
+                }
+            </style>
+            <div class="loader-wrapper">
+                <span class="loader"><span class="loader-inner"></span></span>
+            </div>
+            <script>
+                // https://redstapler.co/add-loading-animation-to-website/
+                // https://codepen.io/tashfene/pen/raEqrJ
+                $(window).on("load", function() {
+                  $(".loader-wrapper").fadeOut("slow");
+                });
+                $(document).ready(function() {
+                  $(".loader-wrapper").fadeOut("slow");
+                  $("#form_searchreplace").submit(function() {
+                      $.ajax({
+                          method: "POST",
+                          url: "manage_searchReplace",
+                          dataType: "html",
+                          beforeSend: function() {
+                              $(".loader-wrapper").show();
+                          }
+                      });
+                  });
+              });
+            </script>''')
 		html.append('</body>')
 		html.append('</html>')
 		return '\n'.join(list(html))

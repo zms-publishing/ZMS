@@ -116,9 +116,9 @@ def getXmlType(v):
 def getXmlTypeSaveValue(v, attrs):
   # Strip.
   if isinstance(v, str):
-    while len(v) > 0 and v[0] <= ' ':
+    while len(v) > 0 and v[0] <= ' ' and v[0] != '\t':
       v = v[1:]
-    while len(v) > 0 and v[-1] <= ' ':
+    while len(v) > 0 and v[-1] <= ' ' and v[-1] != '\t':
       v = v[:-1]
   # Type.
   t = attrs.get('type', '?')

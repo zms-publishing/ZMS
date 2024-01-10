@@ -191,7 +191,7 @@ class RestApiController(object):
             else:
                 data = {'ERROR':'Not Found','context':str(self.context),'path_to_handle':self.path_to_handle,'ids':self.ids}
             REQUEST.RESPONSE.setHeader('Content-Type',decoration['content_type'])
-            return json.dumps(data, default=lambda x: str(x))
+            return json.dumps(data)
         return None
 
     @api(tag="zmsindex", pattern="/zmsindex", content_type="application/json")
@@ -200,7 +200,7 @@ class RestApiController(object):
         catalog = context.get_catalog()
         q = {k.replace('[]',''):v for k,v in request.form.items() if v != ''}
         l = catalog(q)
-        return [{item_name:r[item_name] for item_name in catalog.schema()} for r in l]
+        return [{item_name:(r[item_name] or '') for item_name in catalog.schema()} for r in l]
 
     @api(tag="metamodel", pattern="/metaobj_manager", content_type="application/json")
     def metaobj_manager(self, context):

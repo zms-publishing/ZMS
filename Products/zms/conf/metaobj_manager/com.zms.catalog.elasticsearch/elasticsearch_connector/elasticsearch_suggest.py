@@ -1,75 +1,99 @@
+import requests
 import json
-from urllib.parse import urlparse
-import opensearchpy
-from opensearchpy import OpenSearch
-from opensearchpy.helpers import bulk
+from requests.auth import HTTPBasicAuth
+import urllib3
+import re
+# Disable warning
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
-def get_elasticsearch_client(self):
-	# ${elasticsearch.url:https://localhost:9200}
-	# ${elasticsearch.username:admin}
-	# ${elasticsearch.password:admin}
-	# ${elasticsearch.ssl.verify:}
+def get_suggest_terms(self, q='Lorem', index_name='myzms', field_names=['title','attr_dc_subject'], qsize=10, debug=False):
 	url = self.getConfProperty('elasticsearch.url')
 	if not url:
 		return None
-	host = urlparse(url).hostname
-	port = urlparse(url).port
-	ssl = urlparse(url).scheme=='https' and True or False
-	verify = bool(self.getConfProperty('elasticsearch.ssl.verify', False))
+	url += '/_plugins/_sql'
 	username = self.getConfProperty('elasticsearch.username', 'admin')
 	password = self.getConfProperty('elasticsearch.password', 'admin')
-	auth = (username,password)
-	
-	client = OpenSearch(
-		hosts = [{'host': host, 'port': port}],
-		http_compress = False, # enables gzip compression for request bodies
-		http_auth = auth,
-		use_ssl = ssl,
-		verify_certs = verify,
-		ssl_assert_hostname = False,
-		ssl_show_warn = False,
-	)
-	return client
+	auth = HTTPBasicAuth(username,password)
+	verify = bool(self.getConfProperty('elasticsearch.ssl.verify', False))
+
+	# Assemble SQL Query using f-strings
+	sql_tmpl = "SELECT CONCAT({}) AS keywords FROM {} WHERE {} LIMIT {}"
+	sel_fields = ", ' ', ".join(field_names)
+	whr_clause = " OR ".join([f"({field_name} LIKE '%{q}%')" for field_name in field_names])
+	if index_name == "unitel":
+		whr_clause = f"CONCAT({sel_fields}) LIKE '%{q}%'"
+	sql = sql_tmpl.format(sel_fields, index_name, whr_clause, qsize)
+
+	# #########################
+	# DEBUG-INFO: SQL Query
+	if bool(debug): print(10*'#' + '\n# ELASTICEARCH SQL: %s\n'%sql +10*'#')
+	# #########################
+
+	# Prepare HTTP Request
+	headers = {"Content-Type": "application/json"}
+	data = { "query": sql }
+
+	# Execute HTTP Request
+	response = requests.post(url, headers=headers, data=json.dumps(data),auth=auth, verify=verify)
+
+	# Postprocess Response
+	datarows = response.json().get('datarows') or []
+	if index_name=='unitel':
+		# #########################
+		# UNIBE-CUSTOM: UNITEL
+		#  Suggest words (fullname) shall not get splitted into single words
+		# #########################
+		terms = [row[0] for row in datarows]
+	else:
+		# MYZMS: Suggest words (keywords) shall get splitted into single, stripped words
+		terms = [ re.sub(r'[^\w\s]','',w) for row in datarows for w in re.split('; |,| ',row[0]) if q.lower() in w.lower() ]
+	terms = sorted(set(terms), key=lambda x: x.lower()) # remove duplicates and sort
+
+	# #########################
+	# DEBUG-INFO: Result-List
+	if bool(debug): print('ELASTICEARCH RESULT: %s'%(terms))
+	# #########################
+
+	return list(terms)
 
 
-def elasticsearch_suggest( self, REQUEST=None):
+def get_suggest_fieldsets(self):
+	# Get configured json-list-formatted field sets elasticsearch.suggest.fields.$index_name for any index name
+	# E.g. elasticsearch.suggest.fields.myzms = ["title","attr_dc_subject","attr_dc_description"]
+	# At least one fieldset with index_name = zms root element id and a default fieldset will be returned
+	key_prefix = 'elasticsearch.suggest.fields.'
+	default = '["title","attr_dc_subject","attr_dc_description"]'
+	# Define default fieldset for index_name = zms root element id
+	fieldsets = { self.getRootElement().getHome().id : json.loads(default) }
+	# Get all configured fieldsets (maybe overwrite default fieldset)
+	property_names = [k for k in list(self.getConfProperties().keys()) if k.lower().startswith(key_prefix)]
+	# If there are no client conf data check if there are any properties in the portal conf
+	# TODO: Remove this fallback to portal conf and take the next parent node with zcatalog_adapters
+	if not property_names:
+		property_names = [k for k in list(self.getPortalMaster().getConfProperties().keys()) if k.lower().startswith(key_prefix)]
+	for property_name in property_names:
+		index_name = property_name[len(key_prefix):]
+		if not isinstance(property_value, list):
+			property_value = json.loads(str(property_value).replace('\'','\"'))
+		fieldsets[index_name] = property_value
+	return fieldsets
+
+
+def elasticsearch_suggest(self, REQUEST=None):
 	request = self.REQUEST
-	q = request.get('q','')
-	limit = int(REQUEST.get('limit',5))
-	index_name = self.getRootElement().getHome().id
-
-	# TODO: implement suggest!
-	query = {
-		"size": limit,
-		"query":{
-			"query_string":{"query":q}
-		},
-		"highlight": {
-			"fields": {
-				"title": { "type": "plain"},
-				"standard_html": { "type": "plain"}
-			}
-		},
-		"aggs": {
-			"response_codes": {
-				"terms": {
-					"field": "meta_id",
-					"size": 5
-				}
-			}
-		}
-	}
-
-	client = get_elasticsearch_client(self)
-	if not client:
-		return '{"error":"No client"}'
-
+	q = request.get('q','Lorem')
+	qsize = request.get('qsize', 12)
+	debug = bool(int(request.get('debug',0)))
+	# Get configured or default fieldsets that are used for extracting suggest terms
+	fieldsets = get_suggest_fieldsets(self)
 	resp_text = ''
-	try:
-		response = client.search(body = json.dumps(query), index = index_name)
-		resp_text = json.dumps(response)
-	except opensearchpy.exceptions.RequestError as e:
-		resp_text = '//%s'%(e.error)
-	
+	suggest_terms = []
+	# Get suggest terms for any configured elasticsearch.suggest.fields.$index_name
+	# Example: elasticsearch.suggest.fields.unitel = ['Vorname','Nachname']
+	for index_name, field_names in fieldsets.items():
+		suggest_terms.extend(get_suggest_terms(self, q=q, index_name=index_name, field_names=field_names, qsize=qsize, debug=debug))
+	# Finally sort all terms and return as JSON-text
+	suggest_terms = sorted(set(suggest_terms), key=lambda x: x.lower())
+	resp_text = json.dumps(suggest_terms, indent=2)
 	return resp_text

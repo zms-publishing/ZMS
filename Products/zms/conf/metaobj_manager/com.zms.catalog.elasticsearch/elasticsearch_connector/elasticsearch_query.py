@@ -3,7 +3,6 @@ import json
 from urllib.parse import urlparse
 import opensearchpy
 from opensearchpy import OpenSearch
-from opensearchpy.helpers import bulk
 
 
 def get_elasticsearch_client(self):
@@ -41,12 +40,22 @@ def elasticsearch_query( self, REQUEST=None):
 	qsize = request.get('size', 10)
 	qfrom = request.get('from', qpage_index*qsize)
 	index_name = self.getRootElement().getHome().id
+	index_names = []
+	index_names = [k.split('.')[-1] for k in list(self.getConfProperties().keys()) if k.lower().startswith('elasticsearch.suggest.fields.')]
+	if index_name not in index_names:
+		index_names.append(index_names)
+
+	# Refs: query on multiple indexes and composite aggregation
+	# https://discuss.elastic.co/t/query-multiple-indexes-but-apply-queries-to-specific-index/127858
+	# https://opster.com/guides/opensearch/opensearch-search-apis/opensearch-composite-aggregation/
 
 	query = {
 		"size": qsize,
-		"from":qfrom,
-		"query":{
-			"query_string":{"query":q}
+		"from": qfrom,
+		"query": {
+			"query_string": {
+				"query":q
+			}
 		},
 		"highlight": {
 			"fields": {
@@ -70,7 +79,7 @@ def elasticsearch_query( self, REQUEST=None):
 
 	resp_text = ''
 	try:
-		response = client.search(body = json.dumps(query), index = index_name)
+		response = client.search(body = json.dumps(query), index = index_names)
 		resp_text = json.dumps(response)
 	except opensearchpy.exceptions.RequestError as e:
 		resp_text = '//%s'%(e.error)

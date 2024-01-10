@@ -72,11 +72,17 @@
 					if ($('#attr_dc_type').val() === 'User Journey') {
 						$('#reference_mermaid_href').attr('href', 'https://mermaid.js.org/syntax/userJourney.html');
 					}
+					if ($('#attr_dc_type').val() === 'Quadrant Chart') {
+						$('#reference_mermaid_href').attr('href', 'https://mermaid.js.org/syntax/quadrantChart.html ');
+					}
 					if ($('#attr_dc_type').val() === 'Gantt Chart') {
 						$('#reference_mermaid_href').attr('href', 'https://mermaid.js.org/syntax/gantt.html');
 					}
 					if ($('#attr_dc_type').val() === 'Pie Chart') {
 						$('#reference_mermaid_href').attr('href', 'https://mermaid.js.org/syntax/pie.html');
+					}
+					if ($('#attr_dc_type').val() === 'XY Chart') {
+						$('#reference_mermaid_href').attr('href', 'https://mermaid.js.org/syntax/xyChart.html ');
 					}
 					if ($('#attr_dc_type').val() === 'Flowchart') {
 						$('#reference_mermaid_href').attr('href', 'https://mermaid.js.org/syntax/flowchart.html');
@@ -100,8 +106,8 @@
 			});
 		//-->
 			(function () {
-				var url = '<tal:block tal:condition="diagram_file" tal:replace="python:'%s/%s'%(zmscontext.absolute_url(), zmscontext.attr('diagram_file').getFilename())"></tal:block>?preview=preview';
-				openFromUrl(url);
+				var url = '<tal:block tal:condition="diagram_file" tal:replace="python:'%s/%s'%(zmscontext.absolute_url(), zmscontext.attr('diagram_file').getFilename())"></tal:block>';
+				if (url !== '') openFromUrl(url + '?preview=preview');
 			})();
 		</script>
 		<style>

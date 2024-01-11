@@ -696,9 +696,9 @@
   </item>
   <item type="dictionary">
     <dictionary>
-      <item key="eng"><![CDATA[Clinics & Institutes]]></item>
-      <item key="fra"><![CDATA[Cliniques et instituts]]></item>
-      <item key="ger"><![CDATA[Kliniken & Institute]]></item>
+      <item key="eng"><![CDATA[Institutes, clinics & centers]]></item>
+      <item key="fra"><![CDATA[Instituts, cliniques & centres]]></item>
+      <item key="ger"><![CDATA[Institute, Kliniken & Zentren]]></item>
       <item key="ita"></item>
       <item key="key">OE_DEPARTMENTSINSTITUTES_fak_medizin</item>
     </dictionary>

@@ -40,7 +40,7 @@ def opensearch_query( self, REQUEST=None):
 	qfrom = request.get('from', qpage_index*qsize)
 	index_name = self.getRootElement().getHome().id
 	index_names = []
-	index_names = [k.split('.')[-1] for k in list(self.getConfProperties().keys()) if k.lower().startswith('opensearch.suggest.fields.')]
+	index_names = [k.split('.')[-1] for k in list(self.getConfProperties(inherited=True)) if k.lower().startswith('opensearch.suggest.fields.')]
 	if index_name not in index_names:
 		index_names.append(index_names)
 

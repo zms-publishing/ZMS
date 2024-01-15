@@ -312,7 +312,13 @@ class ZMSZCatalogConnector(
         log = {'index':count,'path':path,'meta_id':node.meta_id,'objects':len(node_objects)}
         result['log'].append(log)
         node = node.get_next_node(clients)
-        result['next_node'] = None if not node else '{$%s}'%node.get_uid()
+        result['next_node'] = None
+        if node:
+          root_element = node.getRootElement()
+          root = '/'.join(root_element.getHome().getPhysicalPath())
+          path = path[len(root):]
+          i = path.find('/content')
+          result['next_node'] = '{$%s@%s}'%(path[:i],path[i+len('/content')+1:])        
         count += 1
       result['success'], result['failed'] = self.manage_objects_add(objects)
       RESPONSE.setHeader('Cache-Control', 'no-cache')

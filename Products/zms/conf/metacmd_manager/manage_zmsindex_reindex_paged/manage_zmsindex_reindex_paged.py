@@ -1,40 +1,21 @@
 from Products.zms import standard
-from abc import abstractmethod
 
-# Abstract Interface for Handler
-class IHandler:
-    @abstractmethod
-    def handle(self): raise NotImplementedError
-
-# Implementation of ZMSIndexReindex Handler
-class ZMSIndexReindexHandler(IHandler):
-    def __init__(self, zmsindex, catalog):
-       self.zmsindex = zmsindex
-       self.catalog = catalog
-    def handle(self, node):
-      return '\n'.join(self.zmsindex.reindex_node(node, self.catalog))
-
-# Process nodes of this page.
-def traverse(data, root_node, clients, node, handler, page_size=100):
+def reindex_page(self, result, uid, clients, zmsindex, catalog, page_size=100):
   count = 0
-  root_path = '/'.join(root_node.getPhysicalPath())
+  node = self.getLinkObj(uid)
   while node and count < page_size:
     path = '/'.join(node.getPhysicalPath())
     log = {'index':count,'path':path,'meta_id':node.meta_id}
-    log['action'] = handler.handle(node);
-    data['log'].append(log)
+    log['action'] = zmsindex.reindex_node(node, catalog)
+    result['log'].append(log)
     node = node.get_next_node(clients)
-    if node \
-      and not '/'.join(node.getPhysicalPath()).startswith(root_path) \
-      and not node.meta_id == 'ZMS' and not clients:
-      node = None
-    data['next_node'] = None
+    result['next_node'] = None
     if node:
       root_element = node.getRootElement()
       root = '/'.join(root_element.getHome().getPhysicalPath())
       path = path[len(root):]
       i = path.find('/content')
-      data['next_node'] = '{$%s@%s}'%(path[:i],path[i+len('/content')+1:])
+      result['next_node'] = '{$%s@%s}'%(path[:i],path[i+len('/content')+1:])        
     count += 1
 
 def manage_zmsindex_reindex_paged( self):
@@ -56,12 +37,10 @@ def manage_zmsindex_reindex_paged( self):
       data['total'] = len(r)
     # REST Endpoint: ajaxTraverse
     if request.get('traverse'):
-      node = self.getLinkObj(request['uid'])
+      uid = request['uid']
       page_size = int(request['page_size'])
       data['log'] = []
-      data['next_node'] = None
-      handler = ZMSIndexReindexHandler(zmsindex,catalog)
-      traverse(data,root_node,clients,node,handler,page_size)
+      reindex_page(self, data, uid, clients, zmsindex, catalog, page_size)
     request.RESPONSE.setHeader("Content-Type","text/json")
     return json.dumps(data)
   

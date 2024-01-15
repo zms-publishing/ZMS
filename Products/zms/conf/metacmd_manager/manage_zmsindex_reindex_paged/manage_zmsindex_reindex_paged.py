@@ -1,69 +1,56 @@
 from Products.zms import standard
-from abc import abstractmethod
 
-# Abstract Interface for Handler
-class IHandler:
-    @abstractmethod
-    def handle(self): raise NotImplementedError
-
-# Implementation of ZMSIndexReindex Handler
-class ZMSIndexReindexHandler(IHandler):
-    def __init__(self, zmsindex, catalog):
-       self.zmsindex = zmsindex
-       self.catalog = catalog
-    def handle(self, node):
-      return '\n'.join(self.zmsindex.reindex_node(node, self.catalog))
-
-# Process nodes of this page.
-def traverse(data, root_node, clients, node, handler, page_size=100):
+def reindex_page(self, uid, clients, zmsindex, catalog, page_size=100):
   count = 0
-  root_path = '/'.join(root_node.getPhysicalPath())
-  while node and count < page_size:
+  node = self.getLinkObj(uid)
+  result = {'log':[]}
+  while node and count - 1 < page_size:
+    count += 1
     path = '/'.join(node.getPhysicalPath())
-    log = {'index':count,'path':path,'meta_id':node.meta_id}
-    log['action'] = handler.handle(node);
-    data['log'].append(log)
+    if count - 1 < page_size:
+      log = {'index':count - 1,'path':path,'meta_id':node.meta_id}
+      log['action'] = zmsindex.reindex_node(node, catalog, regenerate_duplicates=True)
+      result['log'].append(log)
     node = node.get_next_node(clients)
-    if node \
-      and not '/'.join(node.getPhysicalPath()).startswith(root_path) \
-      and not node.meta_id == 'ZMS' and not clients:
-      node = None
-    data['next_node'] = None
+    result['next_node'] = None
     if node:
       root_element = node.getRootElement()
       root = '/'.join(root_element.getHome().getPhysicalPath())
       path = path[len(root):]
       i = path.find('/content')
-      data['next_node'] = '{$%s@%s}'%(path[:i],path[i+len('/content')+1:])
-    count += 1
+      result['next_node'] = '{$%s@%s}'%(path[:i],path[i+len('/content')+1:])
+  return result        
 
 def manage_zmsindex_reindex_paged( self):
   request = self.REQUEST
+  RESPONSE = request.RESPONSE
   zmsindex = self.getZMSIndex()
-  catalog = zmsindex.get_catalog()
 
   # REST Endpoints  
   if request.get('json'):
     import json
     root_node = self.getLinkObj(request['root_node'])
     clients = standard.pybool(request['clients'])
-    data = {'pid':self.Control_Panel.process_id(),'root_node':request['root_node'],'clients':request['clients']}
+    result = {}
     # REST Endpoint: ajaxCount
     if request.get('count'):
       path = '/'.join((root_node.aq_parent if clients else root_node).getPhysicalPath())
-      data['count'] = {}
+      catalog = zmsindex.get_catalog()
       r = catalog(path={'query':path})
-      data['total'] = len(r)
+      result['count'] = {}
+      ## for i in r:
+      ##    meta_id = i['meta_id']
+      ##    result['count'][meta_id] += 1
+      result['total'] = len(r)
     # REST Endpoint: ajaxTraverse
     if request.get('traverse'):
-      node = self.getLinkObj(request['uid'])
+      uid = request['uid']
+      catalog = zmsindex.get_catalog(uid == '{$}')
       page_size = int(request['page_size'])
-      data['log'] = []
-      data['next_node'] = None
-      handler = ZMSIndexReindexHandler(zmsindex,catalog)
-      traverse(data,root_node,clients,node,handler,page_size)
-    request.RESPONSE.setHeader("Content-Type","text/json")
-    return json.dumps(data)
+      result = reindex_page(self, uid, clients, zmsindex, catalog, page_size)
+    RESPONSE.setHeader('Cache-Control', 'no-cache')
+    RESPONSE.setHeader('Content-Type', 'application/json; charset=utf-8')
+    return json.dumps(result,indent=2)
   
   prt = []
   prt.append('<!DOCTYPE html>')

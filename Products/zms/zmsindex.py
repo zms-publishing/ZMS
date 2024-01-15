@@ -145,11 +145,15 @@ class ZMSIndex(ZMSItem.ZMSItem):
     ##############################################################################
     # Get Catalog
     ##############################################################################
-    def get_catalog(self):
-      # Create catalog.
+    def get_catalog(self, recreate=False):
       zmsroot = self.getRootElement()
       home = zmsroot.getHome()
       catalog = getattr(home,self.catalog_id,None)
+      # Delete catalog.
+      if catalog is not None and recreate:
+        home.manage_delObjects([catalog.id])
+        catalog = None
+      # Create catalog.
       if catalog is None:
         catalog = ZCatalog.ZCatalog(id=self.catalog_id, title=self.meta_id, container=home)
         home._setObject(catalog.id, catalog)
@@ -226,14 +230,6 @@ class ZMSIndex(ZMSItem.ZMSItem):
     # --------------------------------------------------------------------------
     def reindex_node(self, node, catalog, regenerate_duplicates=False):
       log = []
-      if node.meta_id == 'ZMS':
-        # Clear catalog
-        path = '/'.join(node.getPhysicalPath())
-        r = catalog(path={'query':path})
-        for i in r:
-          path = i['getPath']
-          log.append('INFO %s'%standard.writeBlock(self,'[ZMSIndex] uncatalog_object %s'%path))
-          catalog.uncatalog_object(path)
       log.append('INFO %s'%standard.writeBlock(self,'[ZMSIndex] catalog_object %s %s'%(node.getPath(),str(node.get_uid()))))
       self.catalog_object(catalog,node,regenerate_duplicates)
       return log
@@ -248,7 +244,16 @@ class ZMSIndex(ZMSItem.ZMSItem):
       def visit(node, regenerate_all=False):
         l = []
         l.append(1)
-        log.extend(self.reindex_node(node,catalog,regenerate_duplicates))
+        # Cleanup indexed nodes for client.
+        if not regenerate_all and node.meta_id == 'ZMS':
+          path = '/'.join(node.getPhysicalPath())
+          r = catalog(path={'query':path})
+          for i in r:
+            path = i['getPath']
+            log.append('INFO %s'%standard.writeBlock(self,'[ZMSIndex] uncatalog_object %s'%path))
+            catalog.uncatalog_object(path)
+        # Reindex node.
+        log.extend(self.reindex_node(node, catalog, regenerate_duplicates))
         for childNode in node.getChildNodes():
           l.extend(visit(childNode, regenerate_all))
         if regenerate_all and node.meta_id == 'ZMS':

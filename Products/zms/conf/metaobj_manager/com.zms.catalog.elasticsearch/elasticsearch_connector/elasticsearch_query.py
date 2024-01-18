@@ -10,7 +10,7 @@ def get_elasticsearch_client(self):
 	# ${elasticsearch.username:admin}
 	# ${elasticsearch.password:admin}
 	# ${elasticsearch.ssl.verify:}
-	url = self.getConfProperty('elasticsearch.url')
+	url = self.getConfProperty('elasticsearch.url').rstrip('/')
 	if not url:
 		return None
 	host = urlparse(url).hostname

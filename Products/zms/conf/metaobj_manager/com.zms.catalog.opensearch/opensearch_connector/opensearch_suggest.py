@@ -8,7 +8,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 def get_suggest_terms(self, q='Lorem', index_name='myzms', field_names=['title','attr_dc_subject'], qsize=10, debug=False):
-	url = self.getConfProperty('opensearch.url')
+	url = self.getConfProperty('opensearch.url').rstrip('/')
 	if not url:
 		return None
 	url += '/_plugins/_sql'

@@ -13,7 +13,7 @@ def get_opensearch_client(self):
 	# ${opensearch.username:admin}
 	# ${opensearch.password:admin}
 	# ${opensearch.ssl.verify:}
-	url = self.getConfProperty('opensearch.url')
+	url = self.getConfProperty('opensearch.url').rstrip('/')
 	if not url:
 		return None
 	host = urlparse(url).hostname

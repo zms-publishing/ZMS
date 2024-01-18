@@ -43,7 +43,12 @@ $(function() {
 
 		res['response']['docs'].forEach(x => {
 			var source = x;
-			var hit = { 'path':source['uid'], 'href':source['loc'], 'title':source['title'], 'snippet':source['standard_html'] }; 
+			var hit = { 
+				'path':source['uid'], 
+				'href':source['index_html'], 
+				'title':source['title'], 
+				'snippet':source['standard_html']
+			}; 
 			// Snippet: field-name = 'standard_html'
 			// Attachment: field-name = 'data'
 			if ( typeof source['attachment'] !== 'undefined' && hit['snippet']=='' ) {

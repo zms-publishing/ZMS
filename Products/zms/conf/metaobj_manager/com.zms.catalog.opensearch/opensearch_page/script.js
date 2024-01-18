@@ -71,11 +71,10 @@ $(function() {
 				var highlight = x['highlight'];
 				var hit = { 
 					'path':source['uid'], 
-					'href':source['loc'], 
+					'href':source['index_html'], 
 					'title':source['title'], 
 					'snippet':source['standard_html'],
 					'index_name':index_name
-					
 				};
 				if (typeof highlight !== 'undefined') {
 					if (typeof highlight['title'] !== 'undefined') {

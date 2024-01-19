@@ -31,10 +31,10 @@ class manage_addClient:
 	nodes = "{$}"
 
 	# Package
-	package = ""
+	package = "com.zms.foundation.metacmd.test.data.bulk"
 
 	# Revision
-	revision = "5.0.0"
+	revision = "1.0.0"
 
 	# Roles
 	roles = ["ZMSAdministrator"]

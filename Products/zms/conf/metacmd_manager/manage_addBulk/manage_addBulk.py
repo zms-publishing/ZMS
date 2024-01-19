@@ -49,15 +49,19 @@ def manage_addBulk(self):
 	else:
 		html += '<div class="form-group row">'
 		html += '<label for="depth" class="col-sm-3 control-label mandatory">Depth</label>'
-		html += '<div class="col-sm-9"><input class="form-control" name="depth:int" type="number" value="5"></div>'
+		html += '<div class="col-sm-9"><input class="form-control" id="depth" name="depth:int" type="number" value="5"></div>'
 		html += '</div><!-- .form-group -->'
 		html += '<div class="form-group row">'
 		html += '<label for="page_elements" class="col-sm-3 control-label mandatory">Page-Elements</label>'
-		html += '<div class="col-sm-9"><input class="form-control" name="page_elements:int" type="number" value="5"></div>'
+		html += '<div class="col-sm-9"><input class="form-control" id="page_elements" name="page_elements:int" type="number" value="5"></div>'
 		html += '</div><!-- .form-group -->'
 		html += '<div class="form-group row">'
 		html += '<label for="pages" class="col-sm-3 control-label mandatory">Pages</label>'
-		html += '<div class="col-sm-9"><input class="form-control" name="pages:int" type="number" value="5"></div>'
+		html += '<div class="col-sm-9"><input class="form-control" id="pages" name="pages:int" type="number" value="5"></div>'
+		html += '</div><!-- .form-group -->'
+		html += '<div class="form-group row">'
+		html += '<label for="pages" class="col-sm-3 control-label mandatory">Objects</label>'
+		html += '<div class="col-sm-9"><input class="form-control" id="objects" name="objects:int" type="number" readonly="readonly"></div>'
 		html += '</div><!-- .form-group -->'
 		html += '<div class="form-group row">'
 		html += '<div class="controls save">'
@@ -65,6 +69,26 @@ def manage_addBulk(self):
 		html += '<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CANCEL">%s</button>'%self.getZMILangStr('BTN_CANCEL')
 		html += '</div><!-- .controls.save -->'
 		html += '</div><!-- .form-group -->'
+		html += """<script>
+		$(function() {
+			function count_objects() {
+				const maxdepth = parseInt($('#depth').val());
+				const pages = parseInt($('#pages').val());
+				const page_elements = parseInt($('#page_elements').val());
+				function traverse(seq) {
+					let count = 0;
+					count += page_elements;
+					if (seq + 1 < maxdepth) {
+						count += pages * (1 + traverse(seq+1));
+					}
+					return count;
+				}
+				$('#objects').val(traverse(0));
+			}
+			$('input.form-control[type=number]').change(count_objects);
+			count_objects();
+		});
+	</script>"""
 
 	# ---------------------------------
 

@@ -1,25 +1,14 @@
 from Products.zms import standard
 
 def reindex_page(self, uid, zmsindex, catalog, page_size=100, regenerate_duplicates=False):
-  count = 0
-  node = self.getLinkObj(uid)
-  result = {'log':[]}
-  while node and count - 1 < page_size:
-    count += 1
-    path = '/'.join(node.getPhysicalPath())
-    if count - 1 < page_size:
-      log = {'index':count - 1,'path':path,'meta_id':node.meta_id}
-      log['action'] = zmsindex.reindex_node(node, catalog, regenerate_duplicates)
-      result['log'].append(log)
-    node = node.get_next_node(clients=True)
-    result['next_node'] = None
-    if node:
-      root_element = node.getRootElement()
-      root = '/'.join(root_element.getHome().getPhysicalPath())
-      path = path[len(root):]
-      i = path.find('/content')
-      result['next_node'] = '{$%s@%s}'%(path[:i],path[i+len('/content')+1:])
-  return result        
+  log = []
+  nodes, next_node = self.get_next_page(uid, page_size, clients=True) 
+  for node in nodes:
+    log.append({'index':nodes.index(node),
+      'path':'/'.join(node.getPhysicalPath()),
+      'meta_id':node.meta_id,
+      'action':zmsindex.reindex_node(node, catalog, regenerate_duplicates)})
+  return {'log':log, 'next_node':next_node}        
 
 def manage_zmsindex_reindex_paged( self):
   request = self.REQUEST

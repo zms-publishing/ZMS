@@ -302,26 +302,17 @@ class ZMSZCatalogConnector(
       """ reindex_page """
       adapter = self.getCatalogAdapter()
       objects = []
-      count = 0
-      node = self.getLinkObj(uid)
-      result = {'log':[]}
-      while node and count - 1 < page_size:
-        count += 1
-        path = '/'.join(node.getPhysicalPath())
-        if count - 1 < page_size:
-          node_objects = adapter.get_catalog_objects(self, node, fileparsing)
-          objects.extend(node_objects)
-          log = {'index':count,'path':path,'meta_id':node.meta_id,'objects':len(node_objects)}
-          result['log'].append(log)
-        node = node.get_next_node(clients)
-        result['next_node'] = None
-        if node:
-          root_element = node.getRootElement()
-          root = '/'.join(root_element.getHome().getPhysicalPath())
-          path = path[len(root):]
-          i = path.find('/content')
-          result['next_node'] = '{$%s@%s}'%(path[:i],path[i+len('/content')+1:])        
+      nodes, next_node = self.get_next_page(uid, page_size, clients) 
+      log = []
+      for node in nodes:
+        node_objects = adapter.get_catalog_objects(self, node, fileparsing)
+        objects.extend(node_objects)
+        log.append({'index':nodes.index(node),
+          'path':'/'.join(node.getPhysicalPath()),
+          'meta_id':node.meta_id,
+          'objects':len(node_objects)})
       result['success'], result['failed'] = self.manage_objects_add(objects)
+      result['log'], result['next_node'] = log, next_node
       RESPONSE.setHeader('Cache-Control', 'no-cache')
       RESPONSE.setHeader('Content-Type', 'application/json; charset=utf-8')
       return json.dumps(result,indent=2)

@@ -24,19 +24,35 @@ def manage_addBulk(self):
 		maxdepth = request['depth']
 		page_elements = request['page_elements']
 		pages = request['pages']
+		duplicates = request['duplicates']
+		uids = []
+		def duplicate(context):
+			import random
+			seed = int(duplicates * 10)
+			if random.randint(seed, 1000) >= seed:
+				i = random.randint(0, len(uids) - 1)
+				new_uid = uids[i]
+				standard.writeBlock(context,"manage_addBulk: duplicate %s %s -> %s"%(context.meta_id,context.get_uid(),new_uid))
+				context._uid = new_uid 
 		def traverse(context, seq):
 			l = []
 			for page_element in range(page_elements):
 				l.append(1)
 				textarea = context.manage_addZMSCustom(meta_id='ZMSTextarea', values={'text':'<p><strong>Lorem ipsum dolor&nbsp;</strong></p>\n<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.'}, REQUEST=request)
-				standard.writeBlock(textarea,"manage_addBulk: added page-element")
+				uid = textarea.get_uid()
+				uids.append(uid)
+				standard.writeBlock(textarea,"manage_addBulk: added %s %s"%(context.meta_id,uid))
+				duplicate(textarea)
 			if len(seq) < maxdepth:
 				for page in range(pages):
 					l.append(1)
 					seq[-1] = seq[-1] - 1
 					seqno = '.'.join([str(x) for x in seq])
 					folder = context.manage_addZMSCustom(meta_id='ZMSFolder', values={'title':'Bulk test-data %s'%seqno, 'titlealt':'Bulk test-data %s'%seqno, 'attr_dc_description':'Bulk test-data'}, REQUEST=request)
-					standard.writeBlock(folder,"manage_addBulk: added page")
+					uid = folder.get_uid()
+					uids.append(uid)
+					standard.writeBlock(folder,"manage_addBulk: added %s %s"%(context.meta_id,uid))
+					duplicate(folder)
 					l.extend(traverse(folder, seq+[pages]))
 			return l
 		container = self.manage_addZMSCustom(meta_id='ZMSFolder', values={'title':'Bulk test-data', 'titlealt':'Bulk test-data', 'attr_dc_description':'Bulk test-data'}, REQUEST=request)
@@ -53,11 +69,15 @@ def manage_addBulk(self):
 		html += '</div><!-- .form-group -->'
 		html += '<div class="form-group row">'
 		html += '<label for="page_elements" class="col-sm-3 control-label mandatory">Page-Elements</label>'
-		html += '<div class="col-sm-9"><input class="form-control" id="page_elements" name="page_elements:int" type="number" value="5"></div>'
+		html += '<div class="col-sm-9"><input class="form-control" id="page_elements" name="page_elements:int" type="number" value="5" min="1"></div>'
 		html += '</div><!-- .form-group -->'
 		html += '<div class="form-group row">'
 		html += '<label for="pages" class="col-sm-3 control-label mandatory">Pages</label>'
-		html += '<div class="col-sm-9"><input class="form-control" id="pages" name="pages:int" type="number" value="5"></div>'
+		html += '<div class="col-sm-9"><input class="form-control" id="pages" name="pages:int" type="number" value="5" min="1"></div>'
+		html += '</div><!-- .form-group -->'
+		html += '<div class="form-group row">'
+		html += '<label for="pages" class="col-sm-3 control-label mandatory">Duplicates [%]</label>'
+		html += '<div class="col-sm-9"><input class="form-control" id="duplicates" name="duplicates:float" type="number" value="2.0" step="0.1" min="0"></div>'
 		html += '</div><!-- .form-group -->'
 		html += '<div class="form-group row">'
 		html += '<label for="pages" class="col-sm-3 control-label mandatory">Objects</label>'

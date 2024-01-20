@@ -1,6 +1,6 @@
 from Products.zms import standard
 
-def reindex_page(self, uid, clients, zmsindex, catalog, page_size=100):
+def reindex_page(self, uid, zmsindex, catalog, page_size=100, regenerate_duplicates=False):
   count = 0
   node = self.getLinkObj(uid)
   result = {'log':[]}
@@ -9,9 +9,9 @@ def reindex_page(self, uid, clients, zmsindex, catalog, page_size=100):
     path = '/'.join(node.getPhysicalPath())
     if count - 1 < page_size:
       log = {'index':count - 1,'path':path,'meta_id':node.meta_id}
-      log['action'] = zmsindex.reindex_node(node, catalog, regenerate_duplicates=True)
+      log['action'] = zmsindex.reindex_node(node, catalog, regenerate_duplicates)
       result['log'].append(log)
-    node = node.get_next_node(clients)
+    node = node.get_next_node(clients=True)
     result['next_node'] = None
     if node:
       root_element = node.getRootElement()
@@ -30,11 +30,10 @@ def manage_zmsindex_reindex_paged( self):
   if request.get('json'):
     import json
     root_node = self.getLinkObj(request['root_node'])
-    clients = standard.pybool(request['clients'])
     result = {}
     # REST Endpoint: ajaxCount
     if request.get('count'):
-      path = '/'.join((root_node.aq_parent if clients else root_node).getPhysicalPath())
+      path = '/'.join((root_node.aq_parent).getPhysicalPath())
       catalog = zmsindex.get_catalog()
       r = catalog(path={'query':path})
       result['count'] = {}
@@ -47,7 +46,8 @@ def manage_zmsindex_reindex_paged( self):
       uid = request['uid']
       catalog = zmsindex.get_catalog(uid == '{$}')
       page_size = int(request['page_size'])
-      result = reindex_page(self, uid, clients, zmsindex, catalog, page_size)
+      regenerate_duplicates = standard.pybool(request['regenerate_duplicates'])
+      result = reindex_page(self, uid, zmsindex, catalog, page_size, regenerate_duplicates)
     RESPONSE.setHeader('Cache-Control', 'no-cache')
     RESPONSE.setHeader('Content-Type', 'application/json; charset=utf-8')
     return json.dumps(result,indent=2)
@@ -71,18 +71,17 @@ def manage_zmsindex_reindex_paged( self):
   prt.append('</div>')
   prt.append('</div><!-- .form-group -->')
   prt.append('<div class="form-group row">')
+  prt.append('<label class="col-sm-2 control-label">Duplicates</label>')
+  prt.append('<div class="col-sm-10">')
+  prt.append('<input class="btn btn-secondary mr-2" id="regenerate_duplicates" name="regenerate_duplicates:int" type="checkbox" value="1" checked="checked" /> Regenerate')
+  prt.append('</div>')
+  prt.append('</div><!-- .form-group -->')
+  prt.append('<div class="form-group row">')
   prt.append('<label class="col-sm-2 control-label">Root</label>')
   prt.append('<div class="col-sm-10">')
   prt.append('<input class="form-control url-input" id="root_node" name="root_node" type="text" value="{$}">')
   prt.append('</div>')
   prt.append('</div><!-- .form-group -->')
-  if self.getPortalClients():
-    prt.append('<div class="form-group row mb-4">')
-    prt.append('<label class="col-sm-2 control-label">Traversing</label>')
-    prt.append('<div class="col-sm-10">')
-    prt.append('<input class="btn btn-secondary mr-2" id="clients" name="clients:int" type="checkbox" value="1" checked="checked" /> All Clients')
-    prt.append('</div>')
-    prt.append('</div><!-- .form-group -->')
   prt.append('<div class="form-group row d-none">')
   prt.append('<label class="col-sm-2 control-label">Node</label>')
   prt.append('<div class="col-sm-10">')
@@ -185,8 +184,7 @@ function progress() {
 
 function ajaxCount(cb) {
     const root_node = $('#root_node').val();
-    const clients = $('#clients').prop('checked')?true:false;
-    const params = {'json':true,'count':true,'root_node':root_node,'clients':clients};
+    const params = {'json':true,'count':true,'root_node':root_node};
     $.get('manage_zmsindex_reindex_paged',params,function(data) {
         $('#uid').val(root_node);
         var html = '';
@@ -214,10 +212,10 @@ function ajaxCount(cb) {
 
 function ajaxTraverse() {
     const root_node = $('#root_node').val();
-    const clients = $('#clients').prop('checked')?true:false;
     const uid = $('#uid').val();
     const page_size = $("input#page_size").val();
-    const params = {'json':true,'traverse':true,'root_node':root_node,'clients':clients,'uid':uid,'page_size':page_size};
+    const regenerate_duplicates = $('#regenerate_duplicates').prop('checked')?true:false;
+    const params = {'json':true,'traverse':true,'root_node':root_node,'uid':uid,'page_size':page_size,'regenerate_duplicates':regenerate_duplicates};
     $.get('manage_zmsindex_reindex_paged',params,function(data) {
         $(".alert.alert-info").html($('<pre/>',{text:JSON.stringify(data,null,2)}))
         if (!stopped && !paused) {

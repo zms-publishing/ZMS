@@ -88,11 +88,14 @@ def manage_zmsindex_reindex_paged( self):
   prt.append('<div class="col-sm-10">')
   prt.append('<input class="form-control url-input" id="root_node" name="root_node" type="text" value="{$}">')
   prt.append('</div>')
-  prt.append('<div class="col-sm-2">')
-  if self.getPortalClients():
-    prt.append('<input class="form-check-input" id="clients" name="clients:int" type="checkbox" value="1" checked="checked"> Clients')
-  prt.append('</div>')
   prt.append('</div><!-- .form-group -->')
+  if self.getPortalClients():
+    prt.append('<div class="form-group row mb-4">')
+    prt.append('<label class="col-sm-2 control-label">Traversing</label>')
+    prt.append('<div class="col-sm-10">')
+    prt.append('<input class="btn btn-secondary mr-2" id="clients" name="clients:int" type="checkbox" value="1" checked="checked" /> All Clients')
+    prt.append('</div>')
+    prt.append('</div><!-- .form-group -->')
   prt.append('<div class="form-group row d-none">')
   prt.append('<label class="col-sm-2 control-label">Node</label>')
   prt.append('<div class="col-sm-10">')

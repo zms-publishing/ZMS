@@ -11,6 +11,7 @@ def reindex_page(self, uid, zmsindex, catalog, page_size=100, regenerate_duplica
   return {'log':log, 'next_node':next_node}        
 
 def manage_zmsindex_reindex_paged( self):
+  self = self.getZMSIndex()
   request = self.REQUEST
   RESPONSE = request.RESPONSE
   zmsindex = self.getZMSIndex()
@@ -46,25 +47,33 @@ def manage_zmsindex_reindex_paged( self):
   prt.append('<html lang="en">')
   prt.append(self.zmi_html_head(self,request))
   prt.append('<body class="%s">'%self.zmi_body_class(id='manage_zmsindex_reindex_paged'))
-  prt.append(self.zmi_body_header(self,request))
+  prt.append(self.zmi_body_header(self,request,options=self.manage_options()))
   prt.append('<div id="zmi-tab">')
-  prt.append(self.zmi_breadcrumbs(self,request))
+  prt.append(self.zmi_breadcrumbs(self,request,extra=[{'label':'Index','action':'manage_main'}]))
   prt.append('<form class="form-horizontal card" name="form0" method="post" enctype="multipart/form-data">')
   prt.append('<input type="hidden" name="lang" value="%s"/>'%request['lang'])
   prt.append('<legend>ZMSIndex: Paged reindex</legend>')
   prt.append('<div class="card-body">')
-  prt.append('<div class="form-group row">')
-  prt.append('<label class="col-sm-2 control-label">Page-Size</label>')
-  prt.append('<div class="col-sm-10">')
-  prt.append('<input class="form-control" id="page_size"  name="page_size:int" type="number" value="100">')
-  prt.append('</div>')
-  prt.append('</div><!-- .form-group -->')
-  prt.append('<div class="form-group row">')
-  prt.append('<label class="col-sm-2 control-label">Duplicates</label>')
-  prt.append('<div class="col-sm-10">')
-  prt.append('<input class="btn btn-secondary mr-2" id="regenerate_duplicates" name="regenerate_duplicates:int" type="checkbox" value="1" checked="checked" /> Regenerate')
-  prt.append('</div>')
-  prt.append('</div><!-- .form-group -->')
+  prt.append("""
+    <div class="form-group row">
+      <label class="col-sm-2 control-label">Page-Size</label>
+      <div class="col-sm-4">
+        <input class="form-control" id="page_size"  name="page_size:int" type="number" value="100">
+      </div>
+      <div class="col-sm-6">
+        <div class="btn-group" style="margin-right:1em">
+          <div class="btn btn-default btn-secondary"
+            title="UID RENEWAL: Apply with care; all links may get invalid!!"
+            onclick="if( $('#regenerate_duplicates').prop('checked') ){ $('#regenerate_duplicates').prop('checked', false) } else { alert('UID RENEWAL: Apply with care; all links may get invalid!!');$('#regenerate_duplicates').prop('checked', true) }">
+            UID Renewal:
+            <input id="regenerate_duplicates" name="regenerate_duplicates" type="checkbox" value="1" checked="checked"
+              style="display:block;margin:0.25rem 0 0 0.5rem;float:right;"
+              onclick="if( $('#regenerate_duplicates').prop('checked') ){ $('#regenerate_duplicates').prop('checked', false) } else { $('#regenerate_duplicates').prop('checked', true) }"
+            />
+          </div>
+        </div>
+      </div>
+    </div><!-- .form-group -->""")
   prt.append('<div class="form-group row">')
   prt.append('<label class="col-sm-2 control-label">Root</label>')
   prt.append('<div class="col-sm-10">')

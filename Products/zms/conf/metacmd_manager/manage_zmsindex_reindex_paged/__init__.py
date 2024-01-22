@@ -25,7 +25,7 @@ class manage_zmsindex_reindex_paged:
 	meta_types = ["ZMS"]
 
 	# Name
-	name = "ZMSIndex: Reindex paged"
+	name = "Reindex paged..."
 
 	# Nodes
 	nodes = "{$}"
@@ -34,7 +34,7 @@ class manage_zmsindex_reindex_paged:
 	package = "com.zms.index"
 
 	# Revision
-	revision = "0.2.0"
+	revision = "1.0.0"
 
 	# Roles
 	roles = ["ZMSAdministrator"]
@@ -43,7 +43,7 @@ class manage_zmsindex_reindex_paged:
 	stereotype = ""
 
 	# Title
-	title = "ZMSIndex: Reindex paged"
+	title = "Reindex paged"
 
 	# Impl
 	class Impl:

@@ -1,4 +1,4 @@
-class manage_addClient:
+class manage_addBulk:
 	"""
 	python-representation of manage_addBulk
 	"""

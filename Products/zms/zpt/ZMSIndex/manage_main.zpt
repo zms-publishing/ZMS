@@ -8,7 +8,7 @@
 ><!DOCTYPE html>
 <html lang="en" tal:define="standard modules/Products.zms/standard">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
-<body tal:attributes="class python:here.zmi_body_class(id='filter config')">
+<body tal:attributes="class python:here.zmi_body_class(id='zmsindex config')">
 <header tal:replace="structure python:here.zmi_body_header(here,request,options=here.manage_options())">zmi_body_header</header>
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[{'label':'Index','action':'manage_main'}])">zmi_breadcrumbs</tal:block>
@@ -38,15 +38,45 @@ function openWindow(url) {
 	<div class="form-group zms4-row">
 		<div class="col-sm-2"></div>
 		<div class="col-sm-10 form-inline">
-			<a class="btn btn-default btn-secondary" target="_blank" style="margin-right:1em"
-				tal:attributes="href python:'%s/manage_catalogView?filterpath=/'%catalog.absolute_url()">
-					<i class="fas fa-search"></i> zcatalog_index
-			</a>
-			<div class="btn-group" style="margin-right:1em">
-				<button name="btn" class="btn btn-warning"
-					title="REINDEX: Rebuilding the ZCatalog index of all selected (multisite) hierarchy objects."
-					onclick="return zmiFuncIndex('manage_reindex');">Reindex
+
+			<div class="btn-group dropdown mr-3">
+				<button class="btn btn-secondary dropdown-toggle" type="button" id="apiDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<tal:block tal:content="python:'----- %s -----'%here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_ACTION')">ZCatalog-Interaction</tal:block>
 				</button>
+				<div class="dropdown-menu" aria-labelledby="apiDropdownMenuButton"
+					tal:define="zmsindex_metacmd_ids python:[]">
+					<a class="dropdown-item" target="_blank"
+						tal:attributes="href python:'%s/manage_catalogView?filterpath=/'%catalog.absolute_url()">
+						Show zcatalog_index
+					</a>
+					<tal:block tal:repeat="meta_cmd python:here.getMetaCmds(here,'zmsindex')">
+						<a class="dropdown-item" tal:attributes="href python:meta_cmd['action']%''; title meta_cmd/title"
+							tal:define="zmsindex_metacmd_ids python:zmsindex_metacmd_ids.append(meta_cmd['id'])"
+							tal:content="meta_cmd/name">
+							Meta-Cmd Name
+						</a>
+					</tal:block>
+					<a class="dropdown-item" href="javascript:;"
+						tal:attributes="data-debug zmsindex_metacmd_ids"
+						tal:condition="python:'manage_zmsindex_reindex' not in zmsindex_metacmd_ids"
+						onclick="return zmiFuncIndex('REINDEX: Do you really want to reindex selected ZMS clients ?','manage_reindex');" 
+						title="Re-Index: Rebuilding the ZCatalog index of all selected ZMS clients.">
+						Re-Index ZMS Clients
+					</a>
+					<a class="dropdown-item" href="javascript:;"
+						onclick="return zmiFuncIndex('TEST: Do you really want to test the ZMS-Index ?','manage_test');" 
+						title="Test the ZMS-Index (zcatalog_index).">
+						Test ZMS-Index
+					</a>
+					<a class="dropdown-item" href="javascript:;"
+						onclick="return zmiFuncIndex('RESYNC: Do you really want to refresh link objects, inline links and backlinks not uid- but path-based ?','manage_resync');" 
+						title="Resync - Apply with Care: Validating and refreshing link objects, inline links and backlinks (not uid- but path-syntax) on the full client hierarchy (or selected nodes).">
+						Path-based Resync
+					</a>
+			</div>
+			</div>
+
+			<div class="btn-group" style="margin-right:1em">
 				<div class="btn btn-default btn-secondary"
 					title="UID RENEWAL: Apply with care; all links may get invalid!!"
 					onclick="if( $('#regenerate_duplicates').prop('checked') ){ $('#regenerate_duplicates').prop('checked', false) } else { alert('UID RENEWAL: Apply with care; all links may get invalid!!');$('#regenerate_duplicates').prop('checked', true) }">
@@ -57,24 +87,14 @@ function openWindow(url) {
 					/>
 				</div>
 			</div>
-			<button name="btn" class="btn btn-info" style="margin-right:1em"
-				title="TEST: Test the ZCatalog index."
-				onclick="return zmiFuncIndex('manage_test');">Test
-			</button>
-			<button name="btn" class="btn btn-danger" style="margin-right:1em"
-				title="RESYNC: Validating and refreshing link objects, inline links and backlinks (not uid- but path-syntax) on the selected node (default: full hierarchy)."
-				onclick="return zmiFuncIndex('manage_resync');">Resync
-			</button>
 			<div class="input-group">
-				<div class="input-group-prepend">
-					<select class="form-control" id="loglevel" name="loglevel"
-						title="Select the Debug-Level for Logging Messages while Indexing">
-						<option tal:repeat="loglevel loglevels" tal:attributes="selected python:['','selected'][int(loglevel=='INFO')]" tal:content="loglevel">the loglevel</option>
-					</select>
-				</div>
-				<div class="btn btn-default btn-secondary input-group-addon"
+				<select class="form-control" id="loglevel" name="loglevel"
+					title="Select the Debug-Level for Logging Messages while Indexing">
+					<option tal:repeat="loglevel loglevels" tal:attributes="selected python:['','selected'][int(loglevel=='INFO')]" tal:content="loglevel">the loglevel</option>
+				</select>
+				<div class="btn btn-default btn-secondary input-group-append"
 					title="Show all Logging Info Directly ">
-					<input id="logshow" name="logshow" type="checkbox" />
+					<input id="logshow" name="logshow" type="checkbox"  class="input-group-text" />
 				</div>
 			</div>
 		</div>
@@ -169,7 +189,10 @@ function reset_progress() {
 		.find('span').text( 'Loading Sitemap ... ' );
 		$('#zmsindex .zmi-sitemap-container').removeClass('loading');
 }
-function zmiFuncIndex(func_) {
+function zmiFuncIndex(msg, func_) {
+	if (!confirm(msg)) {
+		return false;
+	}
 	$(".zmi-sitemap .response").remove();
 	reset_progress();
 	var $inputs = $(".zmi-sitemap input:checked");

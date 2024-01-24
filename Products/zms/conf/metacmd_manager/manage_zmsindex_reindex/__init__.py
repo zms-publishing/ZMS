@@ -1,13 +1,13 @@
-class manage_zmsindex_reindex_paged:
+class manage_zmsindex_reindex:
 	"""
-	python-representation of manage_zmsindex_reindex_paged
+	python-representation of manage_zmsindex_reindex
 	"""
 
 	# Acquired
 	acquired = 0
 
 	# Action
-	action = "%smanage_executeMetacmd?id=manage_zmsindex_reindex_paged"
+	action = "%smanage_executeMetacmd?id=manage_zmsindex_reindex"
 
 	# Description
 	description = ""
@@ -19,13 +19,13 @@ class manage_zmsindex_reindex_paged:
 	icon_clazz = "fas fa-cogs"
 
 	# Id
-	id = "manage_zmsindex_reindex_paged"
+	id = "manage_zmsindex_reindex"
 
 	# Meta_types
 	meta_types = ["ZMS"]
 
 	# Name
-	name = "Reindex paged..."
+	name = "Re-Indexing (incremental)"
 
 	# Nodes
 	nodes = "{$}"
@@ -43,9 +43,9 @@ class manage_zmsindex_reindex_paged:
 	stereotype = ""
 
 	# Title
-	title = "Reindex paged"
+	title = "Re-Indexing in customisable increments"
 
 	# Impl
 	class Impl:
-		manage_zmsindex_reindex_paged = {"id":"manage_zmsindex_reindex_paged"
+		manage_zmsindex_reindex = {"id":"manage_zmsindex_reindex"
 			,"type":"External Method"}

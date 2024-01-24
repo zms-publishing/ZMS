@@ -43,31 +43,35 @@ function openWindow(url) {
 				<button class="btn btn-secondary dropdown-toggle" type="button" id="apiDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					<tal:block tal:content="python:'----- %s -----'%here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_ACTION')">ZCatalog-Interaction</tal:block>
 				</button>
-				<div class="dropdown-menu" aria-labelledby="apiDropdownMenuButton">
-					<a class="dropdown-item btn-secondary" target="_blank"
+				<div class="dropdown-menu" aria-labelledby="apiDropdownMenuButton"
+					tal:define="zmsindex_metacmd_ids python:[]">
+					<a class="dropdown-item" target="_blank"
 						tal:attributes="href python:'%s/manage_catalogView?filterpath=/'%catalog.absolute_url()">
-							<i class="fas fa-search"></i> zcatalog_index
+						Show zcatalog_index
 					</a>
 					<tal:block tal:repeat="meta_cmd python:here.getMetaCmds(here,'zmsindex')">
-						<a class="dropdown-item" tal:attributes="href python:meta_cmd['action']%''; title meta_cmd/title">
-							<i tal:attributes="class meta_cmd/icon_clazz"></i>
-							<tal:block tal:content="meta_cmd/name"></tal:block>
+						<a class="dropdown-item" tal:attributes="href python:meta_cmd['action']%''; title meta_cmd/title"
+							tal:define="zmsindex_metacmd_ids python:zmsindex_metacmd_ids.append(meta_cmd['id'])"
+							tal:content="meta_cmd/name">
+							Meta-Cmd Name
 						</a>
 					</tal:block>
-					<a class="dropdown-item bg-warning" href="javascript:;"
-						onclick="return zmiFuncIndex('Do you really want to reindex?','manage_reindex');" 
-						title="REINDEX: Rebuilding the ZCatalog index of all selected (multisite) hierarchy objects.">
-						<i class="fas fa-exclamation-triangle"></i> Reindex...
+					<a class="dropdown-item" href="javascript:;"
+						tal:attributes="data-debug zmsindex_metacmd_ids"
+						tal:condition="python:'manage_zmsindex_reindex' not in zmsindex_metacmd_ids"
+						onclick="return zmiFuncIndex('REINDEX: Do you really want to reindex selected ZMS clients ?','manage_reindex');" 
+						title="Re-Index: Rebuilding the ZCatalog index of all selected ZMS clients.">
+						Re-Index ZMS Clients
 					</a>
-					<a class="dropdown-item bg-primary text-light" href="javascript:;"
-						onclick="return zmiFuncIndex('Do you really want to test the ZCatalog index?','manage_test');" 
-						title="TEST: Test the ZCatalog index.">
-						<i class="fas fa-info-circle"></i> Test...
+					<a class="dropdown-item" href="javascript:;"
+						onclick="return zmiFuncIndex('TEST: Do you really want to test the ZMS-Index ?','manage_test');" 
+						title="Test the ZMS-Index (zcatalog_index).">
+						Test ZMS-Index
 					</a>
-					<a class="dropdown-item bg-danger text-light" href="javascript:;"
-						onclick="return zmiFuncIndex('Do you really want to validate and refresh link objects, inline links and backlinks (not uid- but path-syntax) on the selected node (default: full hierarchy).?','manage_resync');" 
-						title="RESYNC: Validating and refreshing link objects, inline links and backlinks (not uid- but path-syntax) on the selected node (default: full hierarchy).">
-						<i class="fas fa-exclamation-triangle"></i> Resync...
+					<a class="dropdown-item" href="javascript:;"
+						onclick="return zmiFuncIndex('RESYNC: Do you really want to refresh link objects, inline links and backlinks not uid- but path-based ?','manage_resync');" 
+						title="Resync - Apply with Care: Validating and refreshing link objects, inline links and backlinks (not uid- but path-syntax) on the full client hierarchy (or selected nodes).">
+						Path-based Resync
 					</a>
 			</div>
 			</div>
@@ -84,15 +88,13 @@ function openWindow(url) {
 				</div>
 			</div>
 			<div class="input-group">
-				<div class="input-group-prepend">
-					<select class="form-control" id="loglevel" name="loglevel"
-						title="Select the Debug-Level for Logging Messages while Indexing">
-						<option tal:repeat="loglevel loglevels" tal:attributes="selected python:['','selected'][int(loglevel=='INFO')]" tal:content="loglevel">the loglevel</option>
-					</select>
-				</div>
-				<div class="btn btn-default btn-secondary input-group-addon"
+				<select class="form-control" id="loglevel" name="loglevel"
+					title="Select the Debug-Level for Logging Messages while Indexing">
+					<option tal:repeat="loglevel loglevels" tal:attributes="selected python:['','selected'][int(loglevel=='INFO')]" tal:content="loglevel">the loglevel</option>
+				</select>
+				<div class="btn btn-default btn-secondary input-group-append"
 					title="Show all Logging Info Directly ">
-					<input id="logshow" name="logshow" type="checkbox" />
+					<input id="logshow" name="logshow" type="checkbox"  class="input-group-text" />
 				</div>
 			</div>
 		</div>

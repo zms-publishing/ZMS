@@ -47,9 +47,16 @@ $(function() {
 		var res_processed = { 'hits':[], 'total':total, 'query':q, 'buckets':buckets};
 
 		res['hits']['hits'].forEach(x => {
+			var index_name = x['_index'];
 			var source = x['_source'];
 			var highlight = x['highlight'];
-			var hit = { 'path':source['uid'], 'href':source['loc'], 'title':source['title'], 'snippet':source['standard_html'] }; 
+			var hit = { 
+				'path':source['uid'], 
+				'href':source['index_html'], 
+				'title':source['title'], 
+				'snippet':source['standard_html'],
+				'index_name':index_name
+			}; 
 			if (typeof highlight !== 'undefined') {
 				if (typeof highlight['title'] !== 'undefined') {
 					hit['title'] = highlight['title'];

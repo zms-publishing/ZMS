@@ -71,11 +71,10 @@ $(function() {
 				var highlight = x['highlight'];
 				var hit = { 
 					'path':source['uid'], 
-					'href':source['loc'], 
+					'href':source['index_html'], 
 					'title':source['title'], 
 					'snippet':source['standard_html'],
 					'index_name':index_name
-					
 				};
 				if (typeof highlight !== 'undefined') {
 					if (typeof highlight['title'] !== 'undefined') {
@@ -142,8 +141,10 @@ $(function() {
 	const stringify_address = (d) => {
 		var s = '';
 		Object.keys(d).forEach(k => {
-			s += `<dt class="${k}">${k}</dt>`;
-			s += `<dd class="${k}">${d[k]}</dd>`;
+			if (d[k]) {
+				s += `<dt class="${k}">${k}</dt>`;
+				s += `<dd class="${k}">${d[k]}</dd>`;
+			};
 		});
 		return s
 	}

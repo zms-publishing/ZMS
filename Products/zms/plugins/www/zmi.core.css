@@ -2400,9 +2400,6 @@ body.lazy_select_form footer .controls {
 #ZMSZCatalogAdapter #indexes td {
 	padding:.3rem;
 }
-#zmsindex select.form-control:not([size]):not([multiple]) {
-	height: inherit;
-}
 .zmi-sitemap-container {
 	width:100%;
 	max-height: 30rem;

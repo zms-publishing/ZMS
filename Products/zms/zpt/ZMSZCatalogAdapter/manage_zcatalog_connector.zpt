@@ -244,220 +244,221 @@
 
 <script>
 //<!--
-	$(function() {
-		// #########################
-		// FUNCTIONS
-		// #########################
-		function log(s) {
-			const getTime = ()=>{
-				const d = new Date();
-				const dd = [d.getHours(), d.getMinutes(), d.getSeconds()].map((a)=>(a < 10 ? '0' + a : a));
-				return dd.join(':');
-			};
-			$("#log").html("[" + getTime() + "] " + s + "\n" + $("#log").html());
-		}
 
-		function set_progress( v, func_name ) {
-			var perc = Math.round(v * 10000) / 100;
-			var bar_type_dict = {'reindex':'warning','test':'info','resync':'danger'};
-			var bar_type = bar_type_dict[func_name];
-			$('.zmi-sitemap-container .progress .progress-bar')
-				.addClass('active')
-				.addClass('bg-' + bar_type)
-				.attr('aria-valuenow',perc)
-				.css('width',perc + '%')
-				.find('span').text( perc + '%' );
-			if ( perc == 100 ) {
-				$('.zmi-sitemap-container .progress .progress-bar')
-					.removeClass('active')
-					.removeClass('progress-bar-animated')
-					.removeClass('progress-bar-striped');
-			}
-		}
+	// #########################
+	// FUNCTIONS
+	// #########################
+	function log(s) {
+		const getTime = ()=>{
+			const d = new Date();
+			const dd = [d.getHours(), d.getMinutes(), d.getSeconds()].map((a)=>(a < 10 ? '0' + a : a));
+			return dd.join(':');
+		};
+		$("#log").html("[" + getTime() + "] " + s + "\n" + $("#log").html());
+	}
 
-		function reset_progress() {
+	function set_progress( v, func_name ) {
+		var perc = Math.round(v * 10000) / 100;
+		var bar_type_dict = {'reindex':'warning','test':'info','resync':'danger'};
+		var bar_type = bar_type_dict[func_name];
+		$('.zmi-sitemap-container .progress .progress-bar')
+			.addClass('active')
+			.addClass('bg-' + bar_type)
+			.attr('aria-valuenow',perc)
+			.css('width',perc + '%')
+			.find('span').text( perc + '%' );
+		if ( perc == 100 ) {
 			$('.zmi-sitemap-container .progress .progress-bar')
-				.addClass('progress-bar-striped')
-				.addClass('progress-bar-animated')
-				.removeClass('bg-info')
-				.removeClass('bg-warning')
-				.removeClass('bg-danger')
 				.removeClass('active')
-				.attr('aria-valuenow',0)
-				.css('width','0%')
-				.find('span').text( 'Loading Sitemap ... ' );
-				$('.zmi-sitemap-container').removeClass('loading');
+				.removeClass('progress-bar-animated')
+				.removeClass('progress-bar-striped');
 		}
+	}
 
-		function zmiExecuteCatalog(sender) {
-			var title = $(sender).attr("title");
-			if (confirm("Do you really want to\n" + title)) {
-				var url = $(sender).attr("data-url");
-				var is_target_of = url.split("_").pop();
-				var $is_target_of = $('.card-body [data-is_target_of=' + is_target_of + ']');
-				$.ajax({
-					url:url,
-					error: function (xhr, ajaxOptions, thrownError) {
-						alert(thrownError);
-					},
-					success:function(response) {
-						console.log(response);
-						if ($is_target_of) {
-							$is_target_of.val(response);
-							$is_target_of.focus();
-						}
-						alert(response);
-						// Refresh GUI on DESTROY or INIT
-						if (is_target_of=='destroy' || is_target_of=='init') {
-							window.location.reload();
-						}
+	function reset_progress() {
+		$('.zmi-sitemap-container .progress .progress-bar')
+			.addClass('progress-bar-striped')
+			.addClass('progress-bar-animated')
+			.removeClass('bg-info')
+			.removeClass('bg-warning')
+			.removeClass('bg-danger')
+			.removeClass('active')
+			.attr('aria-valuenow',0)
+			.css('width','0%')
+			.find('span').text( 'Loading Sitemap ... ' );
+			$('.zmi-sitemap-container').removeClass('loading');
+	}
+
+	function zmiExecuteCatalog(sender) {
+		var title = $(sender).attr("title");
+		if (confirm("Do you really want to\n" + title)) {
+			var url = $(sender).attr("data-url");
+			var is_target_of = url.split("_").pop();
+			var $is_target_of = $('.card-body [data-is_target_of=' + is_target_of + ']');
+			$.ajax({
+				url:url,
+				error: function (xhr, ajaxOptions, thrownError) {
+					alert(thrownError);
+				},
+				success:function(response) {
+					console.log(response);
+					if ($is_target_of) {
+						$is_target_of.val(response);
+						$is_target_of.focus();
 					}
-				});
-			}
+					alert(response);
+					// Refresh GUI on DESTROY or INIT
+					if (is_target_of=='destroy' || is_target_of=='init') {
+						window.location.reload();
+					}
+				}
+			});
 		}
+	}
 
-		const Connector = () => {
-			var that = {
-				reindex: () => {
-					$(".zmi-sitemap .response").remove();
-					that.$inputs = $(".zmi-sitemap input:checked");
-					that.clientIndex = -1;
-					that.clientCount = that.$inputs.length;
-					that.nextClient();
-				},
-				continue: () => {
-					that.context();
-				},
-				nextClient: () => {
-					if (that.controller.stopped || that.controller.paused) {
-						that.context = that.nextClient;
-						return;
-					}
-					that.clientIndex++;
-					if (that.clientIndex >= that.clientCount) {
-						$("#uid").val("");
-						reset_progress();
-						that.controller.stop();
-					}
-					else {
-						var $input = $(that.$inputs[that.clientIndex]);
-						var uid = $input.val();
-						$("#uid").val(uid);
-						set_progress( that.clientIndex / that.clientCount, func_name='test');
-						var $a = $input.next("a");
-						$a.after(`<span class="response"><i class="fas fa-spinner fa-spin text-primary"></i></span>`);
-						that.$response = $a.next('.response');
-						const path = uid.substr(2,uid.length-4)+'/content';
-						const meta_ids = $("#meta_ids").val().split(",");
-						log("#" + (that.clientIndex + 1) + " Reindex " + path);
-						$.get($ZMI.get_rest_api_url($ZMI.getPhysicalPath())+'/zmsindex',{path:path,meta_id:meta_ids},function(zmsindex) {
-							that.pageExpected = zmsindex.length;
-							that.pageSuccess = 0;
-							that.pageFailed = 0;
-							log("Found " + that.pageExpected + " objects to reindex");
-							that.nextPage();
-						});
-					}
-				},
-				nextPage: () => {
-					if (that.controller.stopped || that.controller.paused) {
-						that.context = that.nextPage;
-						return;
-					}
-					const uid = $('#uid').val();
-					const page_size = $("#page_size").val();
-					const params = {'uid':uid,'page_size:int':page_size,'clients:int':0,'fileparsing:int':1};
-					$.get('reindex_page',params,function(data) {
-						that.pageSuccess += data.success;
-						that.pageFailed += data.failed;
-						log("Success: " + data.success + " / Failed: " + data.failed + " ( Total: " + (that.pageSuccess + that.pageFailed) + " / " + that.pageExpected + " )");
-						set_progress( that.clientIndex / that.clientCount + (that.pageSuccess + that.pageFailed) / Math.max(that.pageExpected, 1) / that.clientCount, func_name='test');
-						const next_node = data['next_node'];
-						if (next_node) {
-							$('#uid').val(next_node);
-							that.nextPage();
-						}
-						else {
-							that.$response.addClass('alert-success').html("Success: " + that.pageSuccess + " / Failed: " + that.pageFailed + " ( Total: " + (that.pageSuccess + that.pageFailed) + " / " + that.pageExpected + " )");
-							that.nextClient();
-						}
+	const Connector = () => {
+		var that = {
+			reindex: () => {
+				$(".zmi-sitemap .response").remove();
+				that.$inputs = $(".zmi-sitemap input:checked");
+				that.clientIndex = -1;
+				that.clientCount = that.$inputs.length;
+				that.nextClient();
+			},
+			continue: () => {
+				that.context();
+			},
+			nextClient: () => {
+				if (that.controller.stopped || that.controller.paused) {
+					that.context = that.nextClient;
+					return;
+				}
+				that.clientIndex++;
+				if (that.clientIndex >= that.clientCount) {
+					$("#uid").val("");
+					reset_progress();
+					that.controller.stop();
+				}
+				else {
+					var $input = $(that.$inputs[that.clientIndex]);
+					var uid = $input.val();
+					$("#uid").val(uid);
+					set_progress( that.clientIndex / that.clientCount, func_name='test');
+					var $a = $input.next("a");
+					$a.after(`<span class="response"><i class="fas fa-spinner fa-spin text-primary"></i></span>`);
+					that.$response = $a.next('.response');
+					const path = uid.substr(2,uid.length-4)+'/content';
+					const meta_ids = $("#meta_ids").val().split(",");
+					log("#" + (that.clientIndex + 1) + " Reindex " + path);
+					$.get($ZMI.get_rest_api_url($ZMI.getPhysicalPath())+'/zmsindex',{path:path,meta_id:meta_ids},function(zmsindex) {
+						that.pageExpected = zmsindex.length;
+						that.pageSuccess = 0;
+						that.pageFailed = 0;
+						log("Found " + that.pageExpected + " objects to reindex");
+						that.nextPage();
 					});
 				}
-			};
-			return that;
-		}
-
-		const Controller = () => {
-			var that = {
-				started: false,
-				paused: false,
-				stopped: false,
-				run: () => {
-					that.stopped = false;
-					if (!that.started) {
-						$("#log").html("").fadeIn("slow");
-						log("[START]");
-						that.started = true;
-						that.paused = false;
-						$("#start-button i").removeClass("fa-play text-success").addClass("fa-pause text-info");
-						$("#stop-button").addClass("text-danger").prop("disabled","");
-						that.start();
-					}
-					else if (!that.paused) {
-						log("[PAUSE]");
-						that.paused = true;
-						$("#start-button i").removeClass("fa-pause text-info").addClass("fa-play text-success");
-						$(".progress .progress-bar").addClass("bg-warning");
+			},
+			nextPage: () => {
+				if (that.controller.stopped || that.controller.paused) {
+					that.context = that.nextPage;
+					return;
+				}
+				const uid = $('#uid').val();
+				const page_size = $("#page_size").val();
+				const params = {'uid':uid,'page_size:int':page_size,'clients:int':0,'fileparsing:int':1};
+				$.get('reindex_page',params,function(data) {
+					that.pageSuccess += data.success;
+					that.pageFailed += data.failed;
+					log("Success: " + data.success + " / Failed: " + data.failed + " ( Total: " + (that.pageSuccess + that.pageFailed) + " / " + that.pageExpected + " )");
+					set_progress( that.clientIndex / that.clientCount + (that.pageSuccess + that.pageFailed) / Math.max(that.pageExpected, 1) / that.clientCount, func_name='test');
+					const next_node = data['next_node'];
+					if (next_node) {
+						$('#uid').val(next_node);
+						that.nextPage();
 					}
 					else {
-						log("[CONTINUE]");
-						that.paused = false;
-						$("#start-button i").removeClass("fa-play text-success").addClass("fa-pause text-info");
-						that.continue();
-					}
-					return false;
-				},
-				stop: () => {
-					log("[STOP]");
-					that.started = false;
-					that.stopped = true;
-					$("#start-button i").removeClass("fa-pause").addClass("fa-play");
-					$("#stop-button").removeClass("text-danger").prop("disabled","disabled");
-				}
-			};
-			$('#start-button').click(that.run);
-			$('#stop-button').click(that.stop);
-			return that;
-		}
-
-		function zmiSelectObject() {
-			return false;
-		}
-
-		function zmiExpandObjectTree(max) {
-			var fn = function() {
-				var done = false;
-				$(".zmi-sitemap .toggle[title='+']").each(function() {
-					var $toggle = $(this);
-					var $parents = $toggle.parentsUntil(".zmi-sitemap","ul");
-					var $container = $($toggle.parents("li")[0]);
-					var level = $parents.length - 1;
-					if (level < max || -1 == max) {
-						$ZMI.objectTree.toggleClick($toggle,fn);
-						done = true;
+						that.$response.addClass('alert-success').html("Success: " + that.pageSuccess + " / Failed: " + that.pageFailed + " ( Total: " + (that.pageSuccess + that.pageFailed) + " / " + that.pageExpected + " )");
+						that.nextClient();
 					}
 				});
-				if (!done) {
-					reset_progress()
-				}
 			}
-			fn();
-			return false;
-		}
+		};
+		return that;
+	}
 
-		// #########################
-		// MAIN / Init Sitemap
-		// #########################
+	const Controller = () => {
+		var that = {
+			started: false,
+			paused: false,
+			stopped: false,
+			run: () => {
+				that.stopped = false;
+				if (!that.started) {
+					$("#log").html("").fadeIn("slow");
+					log("[START]");
+					that.started = true;
+					that.paused = false;
+					$("#start-button i").removeClass("fa-play text-success").addClass("fa-pause text-info");
+					$("#stop-button").addClass("text-danger").prop("disabled","");
+					that.start();
+				}
+				else if (!that.paused) {
+					log("[PAUSE]");
+					that.paused = true;
+					$("#start-button i").removeClass("fa-pause text-info").addClass("fa-play text-success");
+					$(".progress .progress-bar").addClass("bg-warning");
+				}
+				else {
+					log("[CONTINUE]");
+					that.paused = false;
+					$("#start-button i").removeClass("fa-play text-success").addClass("fa-pause text-info");
+					that.continue();
+				}
+				return false;
+			},
+			stop: () => {
+				log("[STOP]");
+				that.started = false;
+				that.stopped = true;
+				$("#start-button i").removeClass("fa-pause").addClass("fa-play");
+				$("#stop-button").removeClass("text-danger").prop("disabled","disabled");
+			}
+		};
+		$('#start-button').click(that.run);
+		$('#stop-button').click(that.stop);
+		return that;
+	}
+
+	function zmiSelectObject() {
+		return false;
+	}
+
+	function zmiExpandObjectTree(max) {
+		var fn = function() {
+			var done = false;
+			$(".zmi-sitemap .toggle[title='+']").each(function() {
+				var $toggle = $(this);
+				var $parents = $toggle.parentsUntil(".zmi-sitemap","ul");
+				var $container = $($toggle.parents("li")[0]);
+				var level = $parents.length - 1;
+				if (level < max || -1 == max) {
+					$ZMI.objectTree.toggleClick($toggle,fn);
+					done = true;
+				}
+			});
+			if (!done) {
+				reset_progress()
+			}
+		}
+		fn();
+		return false;
+	}
+
+// #########################
+// MAIN / Init Sitemap
+// #########################
+	$(function() {
 		set_progress( 0, func_name='test');
 		var href = $ZMI.get_document_element_url($ZMI.getPhysicalPath());
 		$ZMI.objectTree.init('.zmi-sitemap', href, {

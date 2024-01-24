@@ -8,7 +8,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 def get_suggest_terms(self, q='Lorem', index_name='myzms', field_names=['title','attr_dc_subject'], qsize=10, debug=False):
-	url = self.getConfProperty('opensearch.url')
+	url = self.getConfProperty('opensearch.url').rstrip('/')
 	if not url:
 		return None
 	url += '/_plugins/_sql'
@@ -67,13 +67,14 @@ def get_suggest_fieldsets(self):
 	# Define default fieldset for index_name = zms root element id
 	fieldsets = { self.getRootElement().getHome().id : json.loads(default) }
 	# Get all configured fieldsets (maybe overwrite default fieldset)
-	property_names = [k for k in list(self.getConfProperties().keys()) if k.lower().startswith(key_prefix)]
+	property_names = [k for k in list(self.getConfProperties(inherited=True)) if k.lower().startswith(key_prefix)]
 	# If there are no client conf data check if there are any properties in the portal conf
 	# TODO: Remove this fallback to portal conf and take the next parent node with zcatalog_adapters
 	if not property_names:
 		property_names = [k for k in list(self.getPortalMaster().getConfProperties().keys()) if k.lower().startswith(key_prefix)]
 	for property_name in property_names:
 		index_name = property_name[len(key_prefix):]
+		property_value = self.getConfProperty(property_name, default)
 		if not isinstance(property_value, list):
 			property_value = json.loads(str(property_value).replace('\'','\"'))
 		fieldsets[index_name] = property_value

@@ -33,8 +33,19 @@
 	line-height: .5;
 	font-size: 200%;
 }
+.search-results .path li {
+	display:inline-block;
+	white-space:nowrap;
+	max-width:16rem;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	border:0 !important;
+	margin:0 !important;
+}
 .search-results .path li a {
 	color:#aaa;
+	border:0 !important;
+	margin:0 !important;
 }
 .search-results .hit em {
 	font-style: normal;
@@ -194,4 +205,10 @@ article.unitel.hit dd {
 	flex-grow: 1;
 	margin: 0;
 	padding: 2px 0 2px 8px;
+}
+article.unitel.hit dd.WWWInstitution {
+	white-space:nowrap;
+	max-width:92%;
+	overflow:hidden;
+	text-overflow:ellipsis;
 }

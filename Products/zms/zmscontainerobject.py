@@ -745,6 +745,22 @@ class ZMSContainerObject(
     ###
     ############################################################################
 
+    def get_next_page(self, uid, page_size=100, clients=False):
+      nodes, next = [], None
+      node = self.getLinkObj(uid)
+      while node and len(nodes) < page_size:
+        nodes.append(node)
+        node = node.get_next_node(clients)
+      if node:
+        root_element = node.getRootElement()
+        root = '/'.join(root_element.getHome().getPhysicalPath())
+        path = '/'.join(node.getPhysicalPath())
+        path = path[len(root):]
+        i = path.find('/content')
+        next = '{$%s@%s}'%(path[:i],path[i+len('/content')+1:])
+      return nodes, next        
+
+
     def get_next_node(self, clients=False, allow_children=True):
       # children
       if allow_children:

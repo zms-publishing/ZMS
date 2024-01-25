@@ -672,14 +672,14 @@ ZMI.prototype.initInputFields = function(container) {
 				var labelText = $label.text().basicTrim();
 				var $controlGroup = $label.parents(".form-group");
 				var $controls = $("div:first",$controlGroup);
-				var $control = $('input[name='+forName+'],select:not([name^="zms_mms_src_"])',$controls);
+				var $control = $('input[name='+forName+'],textarea[name='+forName+'],select:not([name^="zms_mms_src_"])',$controls);
 				$label.attr("title","");
 				$control.attr("title","");
 				if ($control.length==1) {
 					var isBlank = false;
 					var nodeName = $control.prop("nodeName").toLowerCase();
 					var nodeType = $control.prop("type").toLowerCase();
-					if (nodeName=="input") {
+					if (nodeName=="input" || nodeName=="textarea") {
 						if ($control.val().basicTrim().length==0 && typeof $control.attr("data-value-attr")!="undefined") {
 							$control.val($control.attr($control.attr("data-value-attr")));
 						}

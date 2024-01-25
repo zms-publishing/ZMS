@@ -301,6 +301,7 @@ class ZMSZCatalogConnector(
     def reindex_page(self, uid, page_size, clients=False, fileparsing=True, REQUEST=None, RESPONSE=None):
       """ reindex_page """
       adapter = self.getCatalogAdapter()
+      result = []
       objects = []
       nodes, next_node = self.get_next_page(uid, page_size, clients) 
       log = []

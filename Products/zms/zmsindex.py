@@ -22,19 +22,28 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.ZCatalog import ZCatalog
 from Products.PluginIndexes.FieldIndex.FieldIndex import FieldIndex
 from Products.PluginIndexes.PathIndex.PathIndex import PathIndex
+import copy
 import re
-import sys
 import time
+import zope.interface
 # Product Imports.
+from Products.zms import IZMSConfigurationProvider
 from Products.zms import standard
 from Products.zms import ZMSItem
 
 
 ################################################################################
+################################################################################
 ###
 ###   Class
 ###
 ################################################################################
+################################################################################
+
+@zope.interface.implementer(
+    IZMSConfigurationProvider.IZMSConfigurationProvider,
+)
+
 class ZMSIndex(ZMSItem.ZMSItem):
 
     # Properties.
@@ -44,10 +53,13 @@ class ZMSIndex(ZMSItem.ZMSItem):
     icon_clazz = zmi_icon
 
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    Management Options
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    # Management Options.
+    # -------------------
+    manage_options_default_action = '../manage_customize'
     def manage_options(self):
+      return [self.operator_setitem( x, 'action', '../'+x['action']) for x in copy.deepcopy(self.aq_parent.manage_options())]
+
+    def manage_sub_options(self):
       return (
         {'label': 'ZMSIndex','action': 'manage_main'},
         )

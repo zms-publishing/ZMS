@@ -208,7 +208,9 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
           value = 'manage_addZMSCustomDefault'
         else:
           value = 'manage_addProduct/zms/manage_addzmscustomform'
-        action = (container.display_type(meta_id=meta_id), value, container.display_icon(meta_id=meta_id), meta_id)
+        tooltip_key = '%s.TOOLTIP'%meta_id
+        tooltip_val = context.getZMILangStr(tooltip_key)
+        action = (container.display_type(meta_id=meta_id), value, container.display_icon(meta_id=meta_id), tooltip_val if tooltip_val != tooltip_key else meta_id)
         if action not in actions:
           actions.append( action)
   

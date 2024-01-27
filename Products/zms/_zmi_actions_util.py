@@ -209,7 +209,7 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
         else:
           value = 'manage_addProduct/zms/manage_addzmscustomform'
         tooltip_key = '%s.TOOLTIP'%meta_id
-        tooltip_val = context.getZMILangStr(tooltip_key)
+        tooltip_val = context.getLangStr(tooltip_key)
         tooltip_val = tooltip_val if tooltip_val != tooltip_key else meta_id
         action = (meta_id, container.display_type(meta_id=meta_id), value, container.display_icon(meta_id=meta_id), tooltip_val)
         if action not in actions:
@@ -224,10 +224,14 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
   #-- Sort by custom-sort-id.
   def get_sort(x):
     sort_key = '%s.SORT'%x[1]
-    try:
-      sort_val = int(context.getZMILangStr(sort_key))
-    except:
-      sort_val = x[0]
+    # Default sort value is display-label
+    sort_val = x[0]
+    # If SORT key (integer!) found, use it.
+    if context.getLangStr(sort_key) != sort_key:
+      try:
+        sort_val = int(context.getLangStr(sort_key))
+      except:
+        pass
     return sort_val
   actions = [[get_sort(x)]+x[2:] for x in actions]
   actions.sort()

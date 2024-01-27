@@ -79,44 +79,50 @@
 		</script>
 
 		<div class="form-group row">
-			<label class="col-sm-2 control-label mandatory"><span tal:content="structure python:here.getZMILangStr('ATTR_COLS')">Cols</span></label>
+			<label class="col-sm-2 control-label mandatory">
+				<span tal:content="structure python:here.getZMILangStr('ATTR_COLS')">Cols</span>
+			</label>
 			<div class="col-sm-2" tal:content="structure python:here.getTextInput(fmName=request['fmName'],elName='cols',value='3',size=2)">Input</div>
-			<label class="col-sm-1 control-label mandatory"><span tal:content="structure python:here.getZMILangStr('ATTR_ROWS')">Rows</span></label>
+		</div>
+		<div class="form-group row">
+			<label class="col-sm-2 control-label mandatory">
+				<span tal:content="structure python:here.getZMILangStr('ATTR_ROWS')">Rows</span>
+			</label>
 			<div class="col-sm-2" tal:content="structure python:here.getTextInput(fmName=request['fmName'],elName='rows',value='3',size=2)">Input</div>
 		</div>
 
 		<div class="form-group row">
 			<label class="col-sm-2 control-label mandatory" tal:content="python:here.getZMILangStr('ATTR_TYPE')">the type-label</label>
 			<div class="col-sm-10 form-group row">
-				<div class="mr-4" title="Type 1">
-					<input type="radio" name="type:int" value="1" checked="checked" /> <tal:block tal:content="python:here.getZMILangStr('HORIZONTAL')"></tal:block>
-					<table class="ZMSTable table table-sm table-bordered">
-						<thead>
-							<tr><th>Firstname</th><th>Lastname</th><th>Age</th></tr>
-						</thead>
-						<tbody>
-							<tr><td>Jill</td><td>Smith</td><td>50</td></tr>
-							<tr><td>John</td><td>Doe</td><td>38</td></tr>
-						</tbody>
-					</table>
+				<div class="col-12 row">
+					<div class="col-6" title="Type 1">
+						<input type="radio" name="type:int" value="1" checked="checked" /> <tal:block tal:content="python:here.getZMILangStr('HORIZONTAL')"></tal:block>
+						<table class="ZMSTable table table-sm table-bordered">
+							<thead>
+								<tr><th>Firstname</th><th>Lastname</th><th>Age</th></tr>
+							</thead>
+							<tbody>
+								<tr><td>Jill</td><td>Smith</td><td>50</td></tr>
+								<tr><td>John</td><td>Doe</td><td>38</td></tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="col-3" title="Type 3">
+						<input type="radio" name="type:int" value="3" /> <tal:block tal:content="python:here.getZMILangStr('VERTICAL')"></tal:block>
+						<table class="ZMSTable table table-sm table-bordered">
+							<tbody>
+								<tr><th>Firstname</th><td>Jill</td><td>John</td></tr>
+								<tr><th>Lastname</th><td>Smith</td><td>Doe</td></tr>
+								<tr><th>Age</th><td>50</td><td>38</td></tr>
+							</tbody>
+						</table>
+					</div>
 				</div>
-				<div class="mr-2" title="Type 3">
-					<input type="radio" name="type:int" value="3" /> <tal:block tal:content="python:here.getZMILangStr('VERTICAL')"></tal:block>
-					<table class="ZMSTable table table-sm table-bordered">
-						<tbody>
-							<tr><th>Firstname</th><td>Jill</td><td>John</td></tr>
-							<tr><th>Lastname</th><td>Smith</td><td>Doe</td></tr>
-							<tr><th>Age</th><td>50</td><td>38</td></tr>
-						</tbody>
-					</table>
+				<div class="form-group col" style="font-size: small;color: #999;"
+					tal:content="python:here.getZMILangStr('MSG_ZMSTABLE_TYPE')">Note: Type can not be changed later
 				</div>
 			</div>
 		</div>
-
-		<div class="form-group col-sm-12 col-sm-push-2" style="font-size: small;color: #999;"
-			tal:content="python:here.getZMILangStr('MSG_ZMSTABLE_TYPE')">Note: Type can not be changed later
-		</div>
-
 	</tal:block>
 
 	<!-- ###################################### -->
@@ -210,7 +216,7 @@
 				<div class="d-none">
 					<div id="div_table_cell_editor">
 						<tal:block tal:content="structure python:here.f_selectRichtext(ob=here,fmName=request['fmName'],elName='content_editor',cols=25,rows=10,value='',key='cell',enabled=True,lang=request['lang'],lang_str=here.getZMILangStr('ACTION_EDIT_CELL'),custom_str=custom,REQUEST=request,wrap='virtual',format='')"></tal:block>
-						<div class="form-group row">
+						<div class="form-row">
 							<div class="controls save">
 								<button class="btn btn-primary" type="submit" value="BTN_CHANGE" onclick="return table_cell_change();" tal:content="python:here.getZMILangStr('BTN_CHANGE')"></button>
 								<button class="btn btn-secondary" type="submit" value="BTN_CANCEL" onclick="return table_cell_cancel();" tal:content="python:here.getZMILangStr('BTN_CANCEL')"></button>
@@ -789,11 +795,13 @@
 			</table>
 			<div class="form-group row">
 				<div class="col-sm-12">
-					<small class="form-text text-muted"><i class="fas fa-info-circle text-primary mr-1"></i>
-						<span class="badge badge-dark">Click</span> cell to edit,
-						<span class="badge badge-dark">Double-click</span> cell to open WYSIWYG-editor,
-						<span class="badge badge-dark">Right-click</span> to insert, move or delete cells.
-					</small>
+					<tal:block tal:replace="structure python:here.getZMILangStr('ZMSTable.MSG_ZMSTABLE_EDITOR')">
+						<small class="form-text text-muted">HINTS:
+							<span class="badge badge-dark">Click</span> cell to edit,
+							<span class="badge badge-dark">Double-click</span> cell to open WYSIWYG-editor,
+							<span class="badge badge-dark">Right-click</span> to insert, move or delete cells.
+						</small>
+					</tal:block>
 				</div>
 			</div>
 			<input type="hidden" id="cols" tal:attributes="value table_cols" />

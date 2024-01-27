@@ -21,6 +21,16 @@ function complete_searchterm(el) {
 	$("#suggests").empty(); // remove any existing options
 }
 
+function show_results_facet(e) {
+	var q = $('#site-search-content input').val();
+	var facet = $(e).attr('data-facet');
+	winloc.searchParams.set('q', q);
+	winloc.searchParams.set('facet', facet);
+	history.pushState({}, '', winloc);
+	show_results(q, 0, facet);
+	return false;
+}
+
 $(function() {
 	const root_url=$('form#site-search-content').attr('data-root-url');
 	//# Compile HB templ on docready into global var
@@ -28,20 +38,31 @@ $(function() {
 	const hb_spinner_tmpl = Handlebars.compile( $('#hb_spinner_html').html() );
 
 	// Finally define show_results() on ready
-	show_results = async (q, pageIndex) => {
-		$('.search-results').html(hb_spinner_tmpl(q));
-		// debugger;
-		const qurl = `${root_url}/opensearch_query?q=${q}&pageIndex:int=${pageIndex}`;
+	show_results = async (q, pageIndex, facet) => {
+		if ( facet==undefined ) { facet=='all' };
+		if (facet=='all') {
+			// Replace whole tab-content
+			$('.search-results').html(hb_spinner_tmpl(q));
+		} else {
+			// Replace only tab-pane
+			$('.search-results .tab-content').html(hb_spinner_tmpl(q));
+		};
+		const qurl = `${root_url}/opensearch_query?q=${q}&pageIndex:int=${pageIndex}&facet=${facet}`;
 		const response = await fetch(qurl);
 		const res = await response.json();
-		const res_processed = postprocess_results(q, res);
+		const res_processed = postprocess_results(q, res, facet);
 		var total = res_processed.total;
 		var hb_results_html = hb_results_tmpl(res_processed);
-		$('.search-results').html( hb_results_html );
-
+		if (facet=='all') {
+			// Replace whole tab-content
+			$('.search-results').html( hb_results_html );
+		} else {
+			// Replace only tab-pane
+			$('.search-results .tab-content').html( hb_results_html );
+		}
 		//# Add pagination ###################
 		var fn = (pageIndex) => {
-			return `javascript:show_results('${q}',${pageIndex})`
+			return `javascript:show_results('${q}',${pageIndex},'${facet}')`
 		};
 		GetPagination(fn, total, 10, pageIndex);
 		//# ##################################
@@ -50,19 +71,19 @@ $(function() {
 		$('ul.path').each(function() {
 			show_breadcrumbs(this);
 		})
-
 	};
 
-	const postprocess_results = (q, res) => {
+	const postprocess_results = (q, res, facet) => {
 		var total = res.hits.total.value;
 		var buckets = []
-		try {
-			buckets = res.aggregations.response_codes.buckets;
-		} catch {
-			log.console('INFO: Result does not contain buckets-element')
-		}
+		if (facet=='all') {
+			try {
+				buckets = res.aggregations.response_codes.buckets;
+			} catch {
+				log.console('INFO: Result does not contain buckets-element');
+			}
+		};
 		var res_processed = { 'hits':[], 'total':total, 'query':q, 'buckets':buckets};
-
 		res['hits']['hits'].forEach(x => {
 			var index_name = x['_index'];
 			var source = x['_source'];
@@ -107,16 +128,22 @@ $(function() {
 				if (Array.isArray(source['Adresse'])) {
 					console.log('Adresse object is a list');
 					EMail = source['Adresse'][0]['EMail'];
+					URL = source['Adresse'][0]['WWWInstitution'];
 					source['Adresse'].forEach(d => {
 						Adresse += `<dl>${stringify_address(d)}</dl>`;
 					});
 				} else {
 					console.log('Adresse object is a dictionary');
 					EMail = source['Adresse']['EMail'];
+					URL = source['Adresse']['WWWInstitution'];
 					d = source['Adresse'];
 					Adresse += `<dl>${stringify_address(d)}</dl>`;
 				}
-				href = `mailto:${EMail}?subject=Anfrage%20via%20Website&body=Guten%20Tag,`;
+				if (URL) {
+					href = URL;
+				} else {
+					href = `mailto:${EMail}?subject=Anfrage%20via%20Website&body=Guten%20Tag,`;
+				};
 				var hit = { 
 					'path':source['uid'],
 					'href':href,
@@ -152,9 +179,10 @@ $(function() {
 	//# Execute on submit event
 	$('.search-form form').submit(function() {
 		var q = $('input',this).val();
+		var facet = 'all';
 		winloc.searchParams.set('q', q);
 		history.pushState({}, '', winloc);
-		show_results(q, 0);
+		show_results(q, 0, facet);
 		return false;
 	});
 

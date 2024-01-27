@@ -1,2 +1,13 @@
 # ZMSTable
-ZMSTable is the standard element for table blocks. It offers a grid of input boxes for entering text...(to be continued)
+ZMSTable is the standard content element for table blocks.
+A table contains of
+
+1. two descriptive metadata fields: a mandatory _caption_ (headline) and a _description_
+2. a select option _alignment_ for placing the descriptive metadata in the table layout (top vs. bottom)
+3. technincal features: _sortable_ for making table columns alphabetical sortable and _colgroup_ for defining a columns percentage of the total table width.
+4. amount of columns and rows
+5. the type _vertical_ placing table header cells on top of the columns or _horizontal_ placing the table header cells into the first column of the rows. (Note: table _type_ cannot be changed after inserting.)
+
+After inserting a new ZMSTable object its GUI provides a grid that offers an input box for any table cell.
+Thus the table can be filled quickly with content. If the content is expected as more complex (in some cells), on mouse-double-click on any cell can call a popup-wysiwyg-editor-GUI that allows the same formatting options like the ZMSTextarea standard object.
+The mouse-right-click reveals a content menu for inserting, deleting and moving columns or rows.

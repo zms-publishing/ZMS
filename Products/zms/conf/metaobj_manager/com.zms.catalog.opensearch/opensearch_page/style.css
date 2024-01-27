@@ -113,6 +113,12 @@ body:not(.zms.web) .pagination i.fas.fa-chevron-right:after {
 .search-results .nav-tabs > li {
 	margin-bottom: 2px;
 }
+.search-results .tab-content h2 {
+	display: none;
+}
+.search-results .tab-content .spin {
+	margin-top: 2em;
+}
 
 /* ZMS-Demo-Theme */
 body.zms.web .container-fluid.skin-bg-gray {

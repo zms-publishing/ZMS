@@ -38,11 +38,16 @@ def opensearch_query( self, REQUEST=None):
 	qpage_index = request.get('pageIndex',0)
 	qsize = request.get('size', 10)
 	qfrom = request.get('from', qpage_index*qsize)
-	index_name = self.getRootElement().getHome().id
 	index_names = []
-	index_names = [k.split('.')[-1] for k in list(self.getConfProperties(inherited=True)) if k.lower().startswith('opensearch.suggest.fields.')]
-	if index_name not in index_names:
-		index_names.append(index_names)
+	# Search in a specific index given by Request-parameter facet
+	if request.get('facet') not in ['all','undefined', None, '']:
+		index_names.append(request.get('facet'))
+	else:
+	# Search in all configured indexes
+		index_name = self.getRootElement().getHome().id
+		index_names = [k.split('.')[-1] for k in list(self.getConfProperties(inherited=True)) if k.lower().startswith('opensearch.suggest.fields.')]
+		if index_name not in index_names:
+			index_names.append(index_names)
 
 	# Refs: query on multiple indexes and composite aggregation
 	# https://discuss.elastic.co/t/query-multiple-indexes-but-apply-queries-to-specific-index/127858
@@ -78,3 +83,4 @@ def opensearch_query( self, REQUEST=None):
 		resp_text = '//%s'%(e.error)
 	
 	return resp_text
+

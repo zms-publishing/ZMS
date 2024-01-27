@@ -14,10 +14,12 @@
 	{{#if buckets}}
 		<ul class="nav nav-tabs responsive" role="tablist">
 			{{#each buckets}}
-				<li id="tab-label-{{@index}}" data-tabid="pane_{{this.doc_key}}"
+				<li id="tab-label-{{@index}}" data-tabid="pane_{{this.key}}"
 					aria-controls="tab-pane-{{@index}}" role="tab"
 					class="{{#if @first}}active{{/if}}"
-					><a data-toggle="tab" href="#tab-pane-{{@index}}">
+					><a class="facet" data-toggle="tab" 
+						data-facet="{{this.key}}" onclick="show_results_facet(this)" 
+						href="#tab-pane-{{@index}}">
 						{{#compareStrings this.key "unitel"}}
 							Personen
 						{{else}}
@@ -30,16 +32,20 @@
 			{{/each}}
 		</ul>
 	{{/if}}
-	<div class="pagination" style="margin-bottom: 0em;"></div>
-	{{#each hits}}
-		<article class="hit {{this.index_name}}">
-			<ul class="path" data-id="{{this.path}}">&nbsp;</ul>
-			<a title="{{this.path}}" href="{{this.href}}" target="_blank">{{{this.title}}}</a>
-			<br/>
-			<p>{{{this.snippet}}}</p>
-		</article>
-	{{/each}}
-	<div class="pagination"></div>
+	<div class="tab-content">
+		<div class="tab-pane show active" role="tabpanel">
+			<div class="pagination" style="margin-bottom: 0em;"></div>
+			{{#each hits}}
+				<article class="hit {{this.index_name}}">
+					<ul class="path" data-id="{{this.path}}">&nbsp;</ul>
+					<a title="{{this.path}}" href="{{this.href}}" target="_blank">{{{this.title}}}</a>
+					<br/>
+					<p>{{{this.snippet}}}</p>
+				</article>
+			{{/each}}
+			<div class="pagination"></div>
+		</div>
+	</div>
 </template>
 
 <tal:block tal:define="zmscontext options/zmscontext">

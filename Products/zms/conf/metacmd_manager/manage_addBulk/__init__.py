@@ -31,7 +31,7 @@ class manage_addBulk:
 	nodes = "{$}"
 
 	# Package
-	package = "com.zms.foundation.metacmd.test.data.bulk"
+	package = ""
 
 	# Revision
 	revision = "1.0.0"

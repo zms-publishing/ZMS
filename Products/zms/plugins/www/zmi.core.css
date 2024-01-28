@@ -2422,9 +2422,6 @@ body.lazy_select_form footer .controls {
 	transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 	clear:both !important;
 }
-.zmi-sitemap-container {
-	margin: 0 0 3rem 0;
-}
 .zmi-sitemap-container.full  {
 	max-height: unset !important;
 }

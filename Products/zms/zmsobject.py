@@ -1291,6 +1291,13 @@ class ZMSObject(ZMSItem.ZMSItem,
       rtn = self._getBodyContentContentEditable(self.metaobj_manager.renderTemplate( self))
       return rtn
 
+    security.declareProtected('View', 'ajaxGetBodyContent')
+    def ajaxGetBodyContent(self, REQUEST, forced=False):
+      """
+      HTML presentation in body-content. 
+      """
+      return self.getBodyContent(REQUEST, forced)
+
     def getBodyContent(self, REQUEST, forced=False):
       html = ''
       if forced or self.isVisible( REQUEST):

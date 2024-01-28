@@ -1511,7 +1511,8 @@ ZMIActionList.prototype.over = function(el, e, cb) {
 			var optlabel = action[0];
 			var optvalue = action[1];
 			var opticon = action.length>2?action[2]:'';
-			var opttitle = action.length>3?action[3]:'';
+			var optid = action.length>3?action[3]:'';
+			var opttitle = action.length>4?action[4]:'';
 			if (optlabel.indexOf("-----") == 0 && optlabel.lastIndexOf("-----") > 0) {
 				opticon = '<i class="fas fa-caret-down"></i>';
 				optlabel = optlabel.substring("-----".length);
@@ -1524,11 +1525,6 @@ ZMIActionList.prototype.over = function(el, e, cb) {
 					opticon = $ZMI.icon(opticon);
 				}
 				var html = '';
-				var optid = '';
-				if (optvalue.toLowerCase().indexOf('manage_addproduct/')==0) {
-					// opttitle is meta_id in case of insertable content objects
-					optid = opttitle;
-				}
 				html += '<a class="dropdown-item" title="'+opttitle+'" href="javascript:$ZMI.actionList.exec($(\'li.zmi-item' + (id==''?':first':'#zmi_item_'+id) + '\'),\'' + optlabel + '\',\'' + optvalue + '\',\'' + optid + '\')">';
 				html += opticon+' <span>'+optlabel+'</span>';
 				html += '</a>';

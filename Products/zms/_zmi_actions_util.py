@@ -211,7 +211,7 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
         tooltip_key = '%s.TOOLTIP'%meta_id
         tooltip_val = context.getLangStr(tooltip_key)
         tooltip_val = tooltip_val if tooltip_val != tooltip_key else meta_id
-        action = (meta_id, container.display_type(meta_id=meta_id), value, container.display_icon(meta_id=meta_id), tooltip_val)
+        action = (meta_id, container.display_type(meta_id=meta_id), value, container.display_icon(meta_id=meta_id), meta_id, tooltip_val)
         if action not in actions:
           actions.append( action)
   

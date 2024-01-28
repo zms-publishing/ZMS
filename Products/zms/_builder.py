@@ -206,16 +206,14 @@ class Builder(object):
             # Get new sort-id.
             sort_id = self.oCurrNode.getNewSortId()
             
+            ##### Uid ####
+            uid = '!%s'%attrs.get('uid') if 'uid' in attrs else ''
+            
             ##### Init ####
-            newNode = constructor(id, sort_id, meta_id)
+            newNode = constructor(id, sort_id, meta_id, uid)
             self.oCurrNode._setObject(newNode.id, newNode)
             newNode = getattr(self.oCurrNode, newNode.id)
             standard.writeLog( self, "[Builder.OnStartElement]: object with id " + str(newNode.id) + " of class " + str(newNode.__class__) + " created in " + str(self.oCurrNode.__class__))
-          
-          ##### Uid ####
-          if 'uid' in attrs:
-            uid = attrs['uid']
-            newNode.set_uid(uid)
           
           ##### Object State ####
           newNode.initializeWorkVersion()
@@ -257,8 +255,7 @@ class Builder(object):
     # IN: name  = element name (=tag name)
     ############################################################################
     def OnEndElement(self, name):
-      """ Builder.OnEndElement """
-      if True:
+        """ Builder.OnEndElement """
         standard.writeLog( self, "[Builder.OnEndElement(" + str(name) + ")]")
         skip = self.oCurrNode is not None and len([x for x in self.oCurrNode.dTagStack if x.get('skip')]) > 0
         if not skip and name == self.oCurrNode.meta_id:
@@ -269,9 +266,6 @@ class Builder(object):
             
             # notify current node
             self.oCurrNode.xmlOnEndElement()
-
-            # notify index
-            standard.triggerEvent(self.oCurrNode, "*.ObjectAdded")
 
             parent = self.oCurrNode.xmlGetParent()
             

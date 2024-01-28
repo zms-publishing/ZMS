@@ -39,7 +39,7 @@ from zope.interface import implementer, providedBy
 # Product imports.
 from .IZMSConfigurationProvider import IZMSConfigurationProvider
 from Products.zms import standard
-from Products.zms import ZMSFilterManager, IZMSMetamodelProvider, IZMSFormatProvider, IZMSCatalogAdapter, ZMSZCatalogAdapter, IZMSRepositoryManager
+from Products.zms import ZMSFilterManager, IZMSMetamodelProvider, IZMSFormatProvider, IZMSRepositoryManager
 from Products.zms import _fileutil
 from Products.zms import _repositoryutil
 from Products.zms import _mediadb
@@ -277,15 +277,11 @@ class ConfManager(
                       revision = v.get('revision','0.0.0')
                       filenames['conf:%s/%s'%(filename,k)] = '%s-%s'%(qn,revision)   
       # Return.
-      if REQUEST is not None and RESPONSE is not None:
-          RESPONSE = REQUEST.RESPONSE
-          content_type = 'text/xml; charset=utf-8'
-          filename = 'getConfFiles.xml'
-          RESPONSE.setHeader('Content-Type', content_type)
-          RESPONSE.setHeader('Content-Disposition', 'inline;filename="%s"'%filename)
+      if RESPONSE is not None:
+          RESPONSE.setHeader('Content-Type', 'application/json')
           RESPONSE.setHeader('Cache-Control', 'no-cache')
           RESPONSE.setHeader('Pragma', 'no-cache')
-          return self.getXmlHeader() + self.toXmlString( filenames)
+          return json.dumps( filenames)
       return filenames
 
 
@@ -1097,6 +1093,7 @@ class ConfManager(
     ############################################################################
 
     def getCatalogAdapter(self):
+      from Products.zms import IZMSCatalogAdapter, ZMSZCatalogAdapter
       for ob in self.objectValues():
         if IZMSCatalogAdapter.IZMSCatalogAdapter in list(providedBy(ob)):
           return ob

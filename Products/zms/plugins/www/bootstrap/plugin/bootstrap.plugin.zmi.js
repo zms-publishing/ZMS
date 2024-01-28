@@ -672,14 +672,14 @@ ZMI.prototype.initInputFields = function(container) {
 				var labelText = $label.text().basicTrim();
 				var $controlGroup = $label.parents(".form-group");
 				var $controls = $("div:first",$controlGroup);
-				var $control = $('input[name='+forName+'],select:not([name^="zms_mms_src_"])',$controls);
+				var $control = $('input[name='+forName+'],textarea[name='+forName+'],select:not([name^="zms_mms_src_"])',$controls);
 				$label.attr("title","");
 				$control.attr("title","");
 				if ($control.length==1) {
 					var isBlank = false;
 					var nodeName = $control.prop("nodeName").toLowerCase();
 					var nodeType = $control.prop("type").toLowerCase();
-					if (nodeName=="input") {
+					if (nodeName=="input" || nodeName=="textarea") {
 						if ($control.val().basicTrim().length==0 && typeof $control.attr("data-value-attr")!="undefined") {
 							$control.val($control.attr($control.attr("data-value-attr")));
 						}
@@ -1215,6 +1215,9 @@ ZMI.prototype.iframe = function(href, data, opt) {
 				href = href.substring(0,href.indexOf("?"))+"?lang="+getZMILang()+"&manage_tabs_message="+manage_tabs_message;
 				self.location.href = href;
 			} else {
+				if (opt['json']) {
+					result = `<pre class="zmi-code json">${JSON.stringify(result, null, space=4)}</pre>`;
+				}
 				opt['body'] = result;
 				if (typeof opt['title'] == "undefined") {
 					var title = $("div.zmi",result).attr("title");
@@ -2126,13 +2129,12 @@ function zmiExpandConfFiles(el, pattern) {
 				if (first!=null) {
 					$("option:first",el).html(first);
 				}
-				var items = $("item",data);
-				for (var i = 0; i < items.length; i++) {
-					var item = $(items[i]);
-					var value = item.attr("key");
-					var label = item.text();
-					$(el).append('<option value="'+value+'">'+label+'</option>');
-				}
+				Object.keys(data)
+					.map(k => ([k, data[k]]))
+					.sort((a, b) => (a[1].localeCompare(b[1])))
+					.forEach(option => {
+						$(el).append('<option value="'+option[0]+'">'+option[1]+'</option>');
+					});
 				zmiExpandConfFilesProgress = false;
 				// Reset wait-cursor.
 				$ZMI.setCursorAuto("zmiExpandConfFiles");

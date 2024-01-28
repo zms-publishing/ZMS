@@ -1,0 +1,55 @@
+# Managing ZMS-Content-Index with Elasticsearch
+ZMS offers an [Elasticsearch](https://elasticsearch.org/) connector for the crucial tasks of index management. 
+Before letting Elasticsearch create an index, Elasticsearch needs to know how to index the content. Therefore Elasticsearch needs to get the content "schema" (as a JSON-based list of typed fields). By listing  
+
+1. all ZMS content types and
+2. the attributes of these types
+
+the _ZMS Catalog Adapter GUI_ helps creating that schema: any content types (usually _pages_) and attributes can be selected to get indexed. Usually the _standard_html_-attribute provides the full text whereas other attributes can be added specifically like _title_, _titlealt_, _description_. Their content may be applied when search results are listed. 
+
+ZMS will send to the index only the content of the by _ZMS Catalog Adapter_ selected contenttypes and its selected attributes. So before starting, please makre sure that the selections in the _ZMS Catalog Adapter GUI_  is correct. 
+
+###### Start with _Create Schema_ !
+
+So the first step to prepare Elasticsearch is _Create Schema_: based on the  _ZMS Catalog Adapter_ selections ZMS will save a small JSON file as a configuration parameter. (Note: if Elasticsearch gets no, incomplete or wrong schema, it will guess one from the the transferred content; usually Elasticsearch is not able to guess the keywords types correctly; so this will end up in defect result responses.) 
+
+The second step is _Initialisation_, which leads to an empty index based on that content schema  and named according to the ZMS root name. After this is done the content can be primarily indexed with "Refresh". 
+
+---
+
+_GUI elements for managing the index:_
+
+1. **Index Refresh**: Re-/Indexing the selected ZMS client(s) or the multisite-tree
+2. **Create Schema**: Generating the field schema of the index in JSON format
+3. **Initialisation**: Creating an index on the Elasticsearch server
+4. **Deleting**: Removing the index on the Elasticsearch server
+
+---
+
+After the initial indexing new content will be added to the index incrementally on any content insert or change.
+
+_Important hint_: The action "Initialisation" creates/recreates always an **empty** index based on the selected attribute schema. So if a schema is changed and the index initialised, all indexed items are gone and a new full reindexing will be necessary.
+
+###### Autocomplete Suggestion Terms
+
+Since the autocomplete concept of Opensearch in general does not provide any word lists, but matching hits, a list of field names is needed that are explicitly named in the schema to get a basis for extracting words from the content. A typical set of meaningful fields may be:
+
+1. title
+2. attr_dc_subject
+3. attr_dc_description
+
+To define a custom set of these meaningful properties a new ZMS configuration property shall be defined with a prefix `elasticsearch.suggest.fields` and a dot-separated name of the index as suffix (usually this is the ZMS root name); two examples:
+
+<pre>
+elasticsearch.suggest.fields.myzms = [
+    "title",
+    "attr_dc_subject",
+    "attr_dc_description"
+    ]
+
+elasticsearch.suggest.fields.addresses = [
+    "firstname",
+    "lastname",
+    "city"
+    ]
+</pre>

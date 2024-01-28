@@ -266,6 +266,8 @@ class ZMSContainerObject(
       trashcan.manage_pasteObjects(cb_copy_data=_cb_encode(cb_copy_data))
       trashcan.normalizeSortIds()
       trashcan.run_garbage_collection(forced=1)
+      # Synchronize search.
+      self.getCatalogAdapter().unindex_node(self)
       # Sort-IDs.
       self.normalizeSortIds()
       [standard.triggerEvent(child,'afterDeleteObjsEvt') for child in children]
@@ -742,6 +744,22 @@ class ZMSContainerObject(
     ###   DOM-Methods
     ###
     ############################################################################
+
+    def get_next_page(self, uid, page_size=100, clients=False):
+      nodes, next = [], None
+      node = self.getLinkObj(uid)
+      while node and len(nodes) < page_size:
+        nodes.append(node)
+        node = node.get_next_node(clients)
+      if node:
+        root_element = node.getRootElement()
+        root = '/'.join(root_element.getHome().getPhysicalPath())
+        path = '/'.join(node.getPhysicalPath())
+        path = path[len(root):]
+        i = path.find('/content')
+        next = '{$%s@%s}'%(path[:i],path[i+len('/content')+1:])
+      return nodes, next        
+
 
     def get_next_node(self, clients=False, allow_children=True):
       # children

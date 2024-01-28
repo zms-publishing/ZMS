@@ -200,11 +200,14 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     def get_uid(self, forced=False):
       import uuid
+      uid = getattr(self,'_uid','')
       if forced \
           or '_uid' not in self.__dict__ \
-          or len(getattr(self,'_uid','')) == 0 \
-          or len(getattr(self,'_uid','').split('-')) < 5:
+          or len(uid) == 0 \
+          or len(uid.split('-')) < 5:
         new_uid = str(uuid.uuid4())
+        if uid.startswith('!uid:'):
+          new_uid = uid[len('!uid:'):]
         self._uid = new_uid
       return 'uid:%s'%self._uid
 
@@ -1222,20 +1225,22 @@ class ZMSObject(ZMSItem.ZMSItem,
     #
     #  Execute Meta-Command.
     ############################################################################
-    def manage_executeMetacmd(self, lang, REQUEST, RESPONSE=None):
+    def manage_executeMetacmd(self, id, REQUEST, RESPONSE=None, context=None):
       """ MetacmdObject.manage_executeMetacmd """
-      id = REQUEST.get('id')
-      RESPONSE.setHeader('Cache-Control', 'no-cache')
-      RESPONSE.setHeader('Pragma', 'no-cache')
+      if RESPONSE:
+        RESPONSE.setHeader('Cache-Control', 'no-cache')
+        RESPONSE.setHeader('Pragma', 'no-cache')
+      lang = REQUEST.get('lang')
       value = None
       message = ''
       target = self
+      zmscontext = standard.nvl(context, self)
 
       # METAOBJ
-      metaObjAttr = self.getMetaobjAttr(self.meta_id, id)
+      metaObjAttr = zmscontext.getMetaobjAttr(zmscontext.meta_id, id)
       if metaObjAttr is not None:
         # Execute directly.
-        return self.attr(id)
+        return zmscontext.attr(id)
 
       # METACMD
       metaCmd = self.getMetaCmd(id)
@@ -1244,7 +1249,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         ob = zopeutil.getObject(self, id)
         # Proceed with generating message for executed metacmd.
         if bool(metaCmd.get('execution')) and not metaCmd['id'].startswith('manage_tab_'):
-          value = zopeutil.callObject(ob, zmscontext=self)
+          value = zopeutil.callObject(ob, zmscontext=zmscontext)
           if isinstance(value, str):
             message = value
           elif isinstance(value, tuple):
@@ -1255,15 +1260,19 @@ class ZMSObject(ZMSItem.ZMSItem,
           loc = '%s/%s?lang=%s'%(target.absolute_url(),metaCmd['id'],lang)
           status = 302
           if REQUEST.method == 'GET':
-            value = zopeutil.callObject(ob, zmscontext=self)
+            value = zopeutil.callObject(ob, zmscontext=zmscontext)
             status = 201 # Turbolinks
             RESPONSE.setHeader('Location',loc)
             RESPONSE.setHeader('Turbolinks-Location',loc)
-          RESPONSE.redirect(loc,status=status)
+          if RESPONSE:
+            RESPONSE.redirect(loc,status=status)
           return value
 
       # Return with message.
-      message = standard.url_quote(message)
+      if RESPONSE:
+        message = standard.url_quote(message)
+        if message == 'ERROR':
+          return RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_error_message=ERROR'%(target.absolute_url(), lang))
       return RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s'%(target.absolute_url(), lang, message))
 
 

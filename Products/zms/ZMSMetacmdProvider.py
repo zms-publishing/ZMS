@@ -405,7 +405,12 @@ class ZMSMetacmdProvider(
     #  Returns list of actions.
     # --------------------------------------------------------------------------
     def getMetaCmds(self, context=None, stereotype='', sort=True):
-      stereotypes = {'insert':'manage_add','tab':'manage_tab','repository':'manage_repository','zcatalog':'manage_zcatalog'}
+      stereotypes = {
+        'insert':'manage_add',
+        'tab':'manage_tab',
+        'repository':'manage_repository',
+        'zcatalog':'manage_zcatalog',
+        'zmsindex':'manage_zmsindex'}
       metaCmds = []
       portalMasterMetaCmds = None
       for metaCmd in [x for x in self.commands if x['id'].startswith(stereotypes.get(stereotype, ''))]:
@@ -568,9 +573,11 @@ class ZMSMetacmdProvider(
         # -------
         elif btn == 'BTN_IMPORT':
           f = REQUEST['file']
+          msg_str = ''
           if f:
             filename = f.filename
             self.importXml(xml=f)
+            msg_str = filename
           else:
             if isinstance(REQUEST['init'], list):
               for filename in list(REQUEST['init']):

@@ -242,7 +242,7 @@
 					<button class="btn btn-secondary" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this);return false"><i class="fas fa-check-square"></i></button>
 				</div>
 			</th>
-			<th colspan="4" class="w-100">
+			<th colspan="5" class="w-100">
 				<div class="btn-toolbar" role="toolbar">
 					<div class="btn-group managing">
 						<button class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="zmiModal('#insertObj',{title:$(this).attr('title')});return false"><i class="fas fa-plus"></i></button>
@@ -259,6 +259,7 @@
 		<tr>
 			<th class="meta-ids text-center"></th>
 			<th colspan="2" tal:content="python:here.getZMILangStr('ATTR_NAME')">Name</th>
+			<th>Execution</th>
 			<th tal:content="python:here.getZMILangStr('ATTR_SIZE')">Size</th>
 			<th tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')">Last Modified</th>
 		</tr>
@@ -269,7 +270,7 @@
 			<td class="meta-check text-center">
 				<input type="checkbox" name="ids:list" tal:attributes="value package"/>
 			</td>
-			<td colspan="4">
+			<td colspan="5">
 				<i class="fas fa-briefcase "></i>&nbsp;&nbsp;
 				<strong tal:condition="not:package">[default package]</strong>
 				<strong tal:condition="package" tal:content="package">the package</strong>
@@ -321,6 +322,9 @@
 								<strong tal:content="python:metaCmd['name']">the name</strong
 							></a>
 						</tal:block>
+					</td>
+					<td>
+						<tal:block tal:content="python:' '.join([x[1] for x in execution_options if int(metaCmd['execution'])==x[0]])">execution</tal:block>
 					</td>
 					<td>
 						<tal:block tal:condition="python:metaCmd.get('data') is not None"

@@ -198,9 +198,9 @@ class RestApiController(object):
     def zmsindex(self, context):
         request = _get_request(context)
         catalog = context.get_catalog()
-        q = {k:v for k,v in request.form.items() if v != ''}
+        q = {k.replace('[]',''):v for k,v in request.form.items() if v != ''}
         l = catalog(q)
-        return [{item_name:r[item_name] for item_name in catalog.schema()} for r in l]
+        return [{item_name:(r[item_name] or '') for item_name in catalog.schema()} for r in l]
 
     @api(tag="metamodel", pattern="/metaobj_manager", content_type="application/json")
     def metaobj_manager(self, context):

@@ -63,7 +63,6 @@ header .navbar-brand {
 	color: #96ebff;
 	margin:0;
 }
-
 .navbar-nav > ul > li > a {
 	color: silver;
 	text-decoration:none;
@@ -2509,6 +2508,29 @@ body.lazy_select_form footer .controls {
 .zmi-sitemap-container .response.text-danger .close {
 	background-color: #f2dede;
 }
+
+/* --------------------- */
+/* ZMI-Search Results    */
+/* manage_tab_search     */
+/* --------------------- */
+.zmi.search #search_results .header {
+	margin-bottom:1.5rem;
+}
+.zmi.search #search_results .line.row {
+	margin-top:1rem;
+}
+.zmi.search #search_results .line.row h2,
+.zmi.search #search_results .line.row p {
+	margin:0;
+	padding:0;
+}
+.zmi.search #search_results .line.row p {
+	max-width:640px;
+}
+.zmi.search #search_results .line.row h2 {
+	font-size:120%;
+}
+
 
 /* --------------------- */
 /* ZMI-Log               */

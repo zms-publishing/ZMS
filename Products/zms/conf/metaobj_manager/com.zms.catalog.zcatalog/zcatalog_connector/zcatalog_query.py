@@ -81,13 +81,13 @@ def zcatalog_query( self, REQUEST=None):
   docs_list = []
   for doc in docs:
     doc_item = {}
-    for k in list(doc.keys()):
+    for k in list(doc):
       try:
         doc_item[k] = str(doc[k])
       except:
         doc_item[k] = 'TypeError'
     docs_list.append(doc_item)
 
-  response = {'status':0, 'numFound':num_found, 'start': start, 'docs':docs}
+  response = {'status':0, 'numFound':num_found, 'start': start, 'docs':docs_list}
   return json.dumps(response)
 

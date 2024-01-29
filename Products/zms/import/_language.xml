@@ -5639,17 +5639,17 @@
    </Row>
    <Row>
     <Cell><Data ss:Type="String">SEARCH_YOURQUERY</Data></Cell>
-    <Cell><Data ss:Type="String">Ihre Suche nach dem Begriff: '%s'</Data></Cell>
-    <Cell><Data ss:Type="String">Your search for: '%s'</Data></Cell>
-    <Cell><Data ss:Type="String">Uw zoek naar: '%s'</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">La ricerca del termine: '%s'</Data></Cell>
+    <Cell><Data ss:Type="String">Ihre Suche nach dem Begriff: %s</Data></Cell>
+    <Cell><Data ss:Type="String">Your search for: %s</Data></Cell>
+    <Cell><Data ss:Type="String">Uw zoek naar: %s</Data></Cell>
+    <Cell ss:Index="6"><Data ss:Type="String">La ricerca del termine: %s</Data></Cell>
     <Cell ss:Index="8"><Data ss:Type="String">%s 濜索结果</Data></Cell>
     <Cell/>
-    <Cell><Data ss:Type="String">ваш поиск слова: '%s'</Data></Cell>
-    <Cell><Data ss:Type="String">आपका खोज '%s'  का</Data></Cell>
-    <Cell><Data ss:Type="String">بحثك عن '%s'</Data></Cell>
-    <Cell><Data ss:Type="String">Tìm kiếm của bạn cho:'%s'</Data></Cell>
-    <Cell><Data ss:Type="String">חיפוש שלך עבור:  '%s'</Data></Cell>
+    <Cell><Data ss:Type="String">ваш поиск слова: %s</Data></Cell>
+    <Cell><Data ss:Type="String">आपका खोज %s  का</Data></Cell>
+    <Cell><Data ss:Type="String">بحثك عن %s</Data></Cell>
+    <Cell><Data ss:Type="String">Tìm kiếm của bạn cho:%s</Data></Cell>
+    <Cell><Data ss:Type="String">חיפוש שלך עבור:  %s</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">SHORTDATETIME_FMT</Data></Cell>

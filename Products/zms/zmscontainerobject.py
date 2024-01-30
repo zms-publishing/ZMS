@@ -262,7 +262,7 @@ class ZMSContainerObject(
       # Move (Cut & Paste).
       children = [getattr(self,x) for x in ids]
       [standard.triggerEvent(child,'beforeDeleteObjsEvt') for child in children]
-      cb_copy_data = _cb_decode(self.manage_cutObjects(ids))
+      cb_copy_data = _cb_decode(self.manage_cutObjects(ids), maxsize=0)
       trashcan.manage_pasteObjects(cb_copy_data=_cb_encode(cb_copy_data))
       trashcan.normalizeSortIds()
       trashcan.run_garbage_collection(forced=1)

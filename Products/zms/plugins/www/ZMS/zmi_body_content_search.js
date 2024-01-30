@@ -155,17 +155,18 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
 			var docs = result['docs']
 			var html = "";
 			if (total == 0) {
-				$("#search_results .small-head").html(getZMILangStr('SEARCH_YOURQUERY').replace('%s','<span id="q"></span>')+' '+getZMILangStr('SEARCH_NORESULTS'));
+				$("#search_results .small-head").html(getZMILangStr('SEARCH_YOURQUERY').replace('%s','<span id="q" class="badge badge-danger fa-1x"></span>')+' '+getZMILangStr('SEARCH_NORESULTS'));
 				$("#search_results .small-head #q").text(q);
 			}
 			else {
-				$("#search_results .small-head").html(getZMILangStr('SEARCH_YOURQUERY').replace('%s','<span id="q"></span>')+' '+getZMILangStr('SEARCH_RETURNEDRESULTS')+':');
+				$("#search_results .small-head").html(getZMILangStr('SEARCH_YOURQUERY').replace('%s','<span id="q" class="badge badge-info fa-1x"></span>')+' '+getZMILangStr('SEARCH_RETURNEDRESULTS')+':');
 				$("#search_results .small-head #q").text(q);
 				docs.forEach(doc => {
 					var href = '';
 					if (zmi) {
-						if (href=='') href = doc.loc;
-						if (href=='') href = doc.absolute_url;
+						if (href=='' || href==undefined) href = doc.loc;
+						if (href=='' || href==undefined) href = doc.absolute_url;
+						if (href=='' || href==undefined) href = doc.path;
 						href += '/manage';
 					} else {
 						href = doc.index_html;
@@ -177,13 +178,16 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
 							snippet = snippet.substring(0,snippet.length-2);
 						}
 					}
-					html += ''
-						+ '<div class="line row">'
-						+ '<div class="col-sm-12">'
-						+ '<h2 class="'+doc.meta_id+'"><a href="'+doc.href+'">'+doc.title+'</a></h2>'
-						+ '<p>'+snippet+'</p>'
-						+ '</div>'
-						+ '</div><!-- .line.row -->';
+					html += `
+						<div class="line row" data-uid="${doc.uid}" data-id="${doc.id}">
+							<div class="col-sm-12">
+								<h2 class="${doc.meta_id}">
+									<a target="_blank" href="${href}">${doc.title}</a>
+								</h2>
+								<p>${snippet}</p>
+							</div>
+						</div>
+					`;
 				});
 				// Pagination
 				var fn = function(pageIndex) {

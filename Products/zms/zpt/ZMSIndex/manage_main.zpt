@@ -9,7 +9,7 @@
 <html lang="en" tal:define="standard modules/Products.zms/standard">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
 <body tal:attributes="class python:here.zmi_body_class(id='zmsindex config')">
-<header tal:replace="structure python:here.zmi_body_header(here,request,options=here.manage_options())">zmi_body_header</header>
+<header tal:replace="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</header>
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[{'label':'Index','action':'manage_main'}])">zmi_breadcrumbs</tal:block>
 <form class="form-horizontal" id="form0" name="form0" method="post" enctype="multipart/form-data">
@@ -35,10 +35,40 @@ function openWindow(url) {
 <legend>ZMSIndex</legend>
 <div id="zmsindex" class="collapse show">
 <div class="card-body">
-	<div class="form-group zms4-row">
-		<div class="col-sm-2"></div>
-		<div class="col-sm-10 form-inline">
+	<div class="form-group zms4-row mb-0">
+		<div class="col-sm-12" data-label="ZMS-Clients">
+			<div class="btn-group zmi-sitemap-controls">
+				<div title="De-/Select All"
+					class="btn btn-secondary">
+					<input id="zmi-sitemap-select" type="checkbox" checked="checked"
+						onclick="if( this.checked ){ $('.zmi-sitemap ul input').prop('checked', true) } else { $('.zmi-sitemap ul input').prop('checked', false) }"
+					/>
+				</div>
+				<div title="Expand Object Tree (Hint: Mind System Load in Case!)"
+					class="btn btn-secondary"
+					onclick="return zmiExpandObjectTree(-1);">
+					<i class="fas fa-plus-square"></i>
+				</div>
+				<div title="Expand/Compress Sitemap View"
+					class="btn btn-secondary" id="zmi-sitemap-expand"
+					onclick="$('.zmi-sitemap-container').toggleClass('full');$('#zmi-sitemap-expand i').toggleClass('fa-expand-arrows-alt fa-compress-arrows-alt')">
+					<i class="fas fa-expand-arrows-alt"></i>
+				</div>
+			</div>
+			<div class="zmi-sitemap-container">
+				<div class="progress">
+					<div class="progress-bar progress-bar-striped progress-bar-animated active"
+						role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+						<span></span>
+					</div>
+				</div>
+				<div class="zmi-sitemap"><!-- .zmi-sitemap --></div>
+			</div>
+		</div><!-- .col-sm-10 -->
+	</div><!-- .form-group -->
 
+	<div class="form-group zms4-row">
+		<div class="col-sm-12 form-inline">
 			<div class="btn-group dropdown mr-3">
 				<button class="btn btn-secondary dropdown-toggle" type="button" id="apiDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					<tal:block tal:content="python:'----- %s -----'%here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_ACTION')">ZCatalog-Interaction</tal:block>
@@ -73,9 +103,8 @@ function openWindow(url) {
 						title="Resync - Apply with Care: Validating and refreshing link objects, inline links and backlinks (not uid- but path-syntax) on the full client hierarchy (or selected nodes).">
 						Path-based Resync
 					</a>
+				</div>
 			</div>
-			</div>
-
 			<div class="btn-group" style="margin-right:1em">
 				<div class="btn btn-default btn-secondary"
 					title="UID RENEWAL: Apply with care; all links may get invalid!!"
@@ -99,42 +128,15 @@ function openWindow(url) {
 			</div>
 		</div>
 	</div><!-- .form-group -->
-
-	<div class="form-group zms4-row">
-		<label class="col-sm-2 control-label">&nbsp;</label>
-		<div class="col-sm-10">
-			<div class="btn-group zmi-sitemap-controls">
-				<div title="De-/Select All"
-					class="btn btn-secondary">
-					<input id="zmi-sitemap-select" type="checkbox" checked="checked"
-						onclick="if( this.checked ){ $('.zmi-sitemap ul input').prop('checked', true) } else { $('.zmi-sitemap ul input').prop('checked', false) }"
-					/>
-				</div>
-				<div title="Expand Object Tree (Hint: Mind System Load in Case!)"
-					class="btn btn-secondary"
-					onclick="return zmiExpandObjectTree(-1);">
-					<i class="fas fa-plus-square"></i>
-				</div>
-				<div title="Expand/Compress Sitemap View"
-					class="btn btn-secondary" id="zmi-sitemap-expand"
-					onclick="$('.zmi-sitemap-container').toggleClass('full');$('#zmi-sitemap-expand i').toggleClass('fa-expand-arrows-alt fa-compress-arrows-alt')">
-					<i class="fas fa-expand-arrows-alt"></i>
-				</div>
-			</div>
-			<div class="zmi-sitemap-container">
-				<div class="progress">
-					<div class="progress-bar progress-bar-striped progress-bar-animated active"
-						role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-						<span></span>
-					</div>
-				</div>
-				<div class="zmi-sitemap"><!-- .zmi-sitemap --></div>
-			</div>
-		</div><!-- .col-sm-10 -->
+	<div class="form-group">
+		<pre id="log" class="zmi-log" style="display:none;min-height:3.75rem"></pre>
 	</div><!-- .form-group -->
+</div><!-- .card-body -->
 
+<legend title="Add more content attributes to ZMSIndex for special needs like DOI">Extending Schema</legend>
+<div class="card-body">
 	<div class="form-group zms4-row">
-		<label class="col-sm-2 control-label">Attributes</label>
+		<label class="col-sm-2 control-label">Add Attributes</label>
 		<div class="col-sm-5">
 			<div class="input-group">
 				<tal:block tal:condition="python:'zmsindex_index_names' in request.keys()">
@@ -196,9 +198,11 @@ function zmiFuncIndex(msg, func_) {
 	$(".zmi-sitemap .response").remove();
 	reset_progress();
 	var $inputs = $(".zmi-sitemap input:checked");
-	var $regenerate_duplicates = $("#regenerate_duplicates:checked")
+	var $regenerate_duplicates = $("#regenerate_duplicates:checked");
+	var $log = $("#log");
+	$log.empty().hide();
 	var i = 0;
-	var n = $inputs.length
+	var n = $inputs.length;
 	var fn = function() {
 		if (i < n ) {
 			var $input = $($inputs[i]);
@@ -219,29 +223,34 @@ function zmiFuncIndex(msg, func_) {
 				url:func_,
 				data:data,
 				error: function (xhr, ajaxOptions, thrownError) {
-						$a.next('.response').addClass('alert modal-content alert-danger text-danger').html( btn_close + '( '+thrownError+' )' );
-						if ( !$('#logshow').prop('checked') ) {
-							$(".zmi-sitemap .response").remove();
-						}
-						i++;
-						console.log('Indexing Client No.' + i + ': ERROR');
-						$('#zmsindex .progress').addClass('error');
-						set_progress( v=(i/n), func_name=func_ );
-						fn();
-					},
+					if ( $('#logshow').prop('checked') ) {
+						$log.show();
+						$log.append(thrownError + '\n' );
+					};
+					$(".zmi-sitemap .response").remove();
+					i++;
+					console.log('Indexing Client No.' + i + ': ERROR');
+					$('#zmsindex .progress').addClass('error');
+					set_progress( v=(i/n), func_name=func_ );
+					fn();
+				},
 				success:function(response) {
-						$a.next('.response').addClass('alert modal-content alert-success text-success').html( btn_close + '( '+response+' )' );
-						if ( !$('#logshow').prop('checked') ) {
-							$(".zmi-sitemap .response").remove();
-						}
-						i++;
-						console.log('Indexing Client No.' + i + ': done');
-						set_progress( v=(i/n), func_name=func_ );
-						fn();
+					if ( $('#logshow').prop('checked') ) {
+						$log.show();
+						if ( response == undefined || response == '' ) {
+							response = 'NO RESPONSE (undefined)';
+						};
+						$log.append(response + '\n' );
 					}
-				});
-			}
-		}
+					$(".zmi-sitemap .response").remove();
+					i++;
+					console.log('Indexing Client No.' + i + ': done');
+					set_progress( v=(i/n), func_name=func_ );
+					fn();
+				}
+			});
+		};
+	};
 	fn();
 	return false;
 }

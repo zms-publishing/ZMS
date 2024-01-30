@@ -672,14 +672,14 @@ ZMI.prototype.initInputFields = function(container) {
 				var labelText = $label.text().basicTrim();
 				var $controlGroup = $label.parents(".form-group");
 				var $controls = $("div:first",$controlGroup);
-				var $control = $('input[name='+forName+'],select:not([name^="zms_mms_src_"])',$controls);
+				var $control = $('input[name='+forName+'],textarea[name='+forName+'],select:not([name^="zms_mms_src_"])',$controls);
 				$label.attr("title","");
 				$control.attr("title","");
 				if ($control.length==1) {
 					var isBlank = false;
 					var nodeName = $control.prop("nodeName").toLowerCase();
 					var nodeType = $control.prop("type").toLowerCase();
-					if (nodeName=="input") {
+					if (nodeName=="input" || nodeName=="textarea") {
 						if ($control.val().basicTrim().length==0 && typeof $control.attr("data-value-attr")!="undefined") {
 							$control.val($control.attr($control.attr("data-value-attr")));
 						}
@@ -1514,7 +1514,8 @@ ZMIActionList.prototype.over = function(el, e, cb) {
 			var optlabel = action[0];
 			var optvalue = action[1];
 			var opticon = action.length>2?action[2]:'';
-			var opttitle = action.length>3?action[3]:'';
+			var optid = action.length>3?action[3]:'';
+			var opttitle = action.length>4?action[4]:'';
 			if (optlabel.indexOf("-----") == 0 && optlabel.lastIndexOf("-----") > 0) {
 				opticon = '<i class="fas fa-caret-down"></i>';
 				optlabel = optlabel.substring("-----".length);
@@ -1527,11 +1528,6 @@ ZMIActionList.prototype.over = function(el, e, cb) {
 					opticon = $ZMI.icon(opticon);
 				}
 				var html = '';
-				var optid = '';
-				if (optvalue.toLowerCase().indexOf('manage_addproduct/')==0) {
-					// opttitle is meta_id in case of insertable content objects
-					optid = opttitle;
-				}
 				html += '<a class="dropdown-item" title="'+opttitle+'" href="javascript:$ZMI.actionList.exec($(\'li.zmi-item' + (id==''?':first':'#zmi_item_'+id) + '\'),\'' + optlabel + '\',\'' + optvalue + '\',\'' + optid + '\')">';
 				html += opticon+' <span>'+optlabel+'</span>';
 				html += '</a>';

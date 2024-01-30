@@ -4,14 +4,16 @@ class ZMSNote:
 	"""
 
 	# Access
-	access = {"delete":["ZMSAdministrator"
-			,"ZMSAuthor"
-			,"ZMSEditor"]
-		,"delete_custom":""
-		,"insert":["ZMSAdministrator"
-			,"ZMSAuthor"
-			,"ZMSEditor"]
-		,"insert_custom":"{$}"}
+	access = {"delete_custom":""
+		,"delete_deny":[""
+			,""
+			,""
+			,""]
+		,"insert_custom":"{$}"
+		,"insert_deny":[""
+			,""
+			,""
+			,""]}
 
 	# Enabled
 	enabled = 1
@@ -26,7 +28,7 @@ class ZMSNote:
 	package = "com.zms.foundation"
 
 	# Revision
-	revision = "5.0.0"
+	revision = "5.1.0"
 
 	# Type
 	type = "ZMSObject"
@@ -43,19 +45,10 @@ class ZMSNote:
 			,"repetitive":0
 			,"type":"constant"}
 
-		zmsnote_bggif = {"default":""
-			,"id":"zmsnote_bg.gif"
-			,"keys":[]
-			,"mandatory":0
-			,"multilang":0
-			,"name":"Resource: Background"
-			,"repetitive":0
-			,"type":"resource"}
-
 		text = {"default":""
 			,"id":"text"
 			,"keys":[]
-			,"mandatory":0
+			,"mandatory":1
 			,"multilang":1
 			,"name":"Memotext"
 			,"repetitive":0
@@ -69,16 +62,6 @@ class ZMSNote:
 			,"name":"interface"
 			,"repetitive":0
 			,"type":"interface"}
-
-		catalogtext = {"custom":""
-			,"default":""
-			,"id":"catalogText"
-			,"keys":[]
-			,"mandatory":0
-			,"multilang":0
-			,"name":"Hook: Catalog-Text"
-			,"repetitive":0
-			,"type":"constant"}
 
 		rendershort = {"default":""
 			,"id":"renderShort"

@@ -208,15 +208,35 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
           value = 'manage_addZMSCustomDefault'
         else:
           value = 'manage_addProduct/zms/manage_addzmscustomform'
-        action = (container.display_type(meta_id=meta_id), value, container.display_icon(meta_id=meta_id), meta_id)
+        tooltip_key = '%s.TOOLTIP'%meta_id
+        tooltip_val = context.getLangStr(tooltip_key)
+        tooltip_val = tooltip_val if tooltip_val != tooltip_key else meta_id
+        icon_clazz = container.display_icon(meta_id=meta_id)
+        action = (meta_id, container.display_type(meta_id=meta_id), value, icon_clazz, meta_id, tooltip_val)
         if action not in actions:
           actions.append( action)
   
   #-- Insert Commands.
   actions.extend(zmi_command_actions(container, stereotype='insert'))
   
-  #-- Sort.
+  #-- Pre-Sort by display-label.
+  actions.sort(key=lambda x: x[1])
+  actions = [[len(actions)+actions.index(x)]+list(x) for x in actions]
+  #-- Sort by custom-sort-id.
+  def get_sort(x):
+    sort_key = '%s.SORT'%x[1]
+    # Default sort value is display-label
+    sort_val = x[0]
+    # If SORT key (integer!) found, use it.
+    if context.getLangStr(sort_key) != sort_key:
+      try:
+        sort_val = int(context.getLangStr(sort_key))
+      except:
+        pass
+    return sort_val
+  actions = [[get_sort(x)]+x[2:] for x in actions]
   actions.sort()
+  actions = [tuple(x[1:]) for x in actions]
   
   #-- Headline.
   if len(actions) > 0:
@@ -235,11 +255,7 @@ def zmi_command_actions(context, stereotype='', objPath=''):
   #-- Context Commands.
   if context is not None:
     for metaCmd in [x for x in context.getMetaCmds(context, stereotype) if x['stereotype']==stereotype]:
-      l = [metaCmd['name'], metaCmd['action'].replace('%s',objPath)]
-      if metaCmd.get('icon_clazz'):
-        l.append(metaCmd.get('icon_clazz'))
-      if metaCmd.get('title'):
-        l.append(metaCmd.get('title'))
+      l = [metaCmd['name'], metaCmd['action'].replace('%s',objPath),metaCmd.get('icon_clazz','fas fa-cog'),metaCmd['id'],metaCmd['title']]
       actions.append(tuple(l))
   
   #-- Sort.

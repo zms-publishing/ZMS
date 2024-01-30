@@ -413,6 +413,9 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
               key = dictitem.get('@key')
               typ = dictitem.get('@type')
               val = dictitem.get('#text')
+              # filter out internal attributes not to be exposed
+              if key in ('_change_dt', '_change_uid', '_grid'):
+                  continue
               if key not in keys:
                 keys.append(key)
               if typ == 'list' and dictitem.get('list') is not None:
@@ -426,7 +429,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
                 obj = self.getLinkObj(val, REQUEST)
                 if obj is not None:
                   try:
-                    lang = self.getPrimaryLanguage()
+                    lang = REQUEST.get('lang', self.getPrimaryLanguage())
                     if ';lang=' in val:
                       lang = self.re_sub(r'{\$(.*);lang=(\w*)}', r'\2', val)
                     val = self.UniBE_zeix_('getHref2SubdomainHtml', item=obj, lang=lang)

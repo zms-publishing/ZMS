@@ -13,7 +13,7 @@ ZMS will send to the index only the content of the by _ZMS Catalog Adapter_ sele
 
 So the first step to prepare Elasticsearch is _Create Schema_: based on the  _ZMS Catalog Adapter_ selections ZMS will save a small JSON file as a configuration parameter. (Note: if Elasticsearch gets no, incomplete or wrong schema, it will guess one from the the transferred content; usually Elasticsearch is not able to guess the keywords types correctly; so this will end up in defect result responses.) 
 
-The second step is _Initialisation_, which leads to an empty index based on that content schema  and named according to the ZMS root name. After this is done the content can be primarily indexed with "Refresh". 
+The second step is _Initialisation_, which leads to an empty index based on that content schema and named according to the ZMS root name. After this is done the content can be primarily indexed with "Refresh".
 
 ---
 

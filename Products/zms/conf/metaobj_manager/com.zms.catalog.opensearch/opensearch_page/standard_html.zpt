@@ -54,7 +54,7 @@
 		<div class="container">
 			<section class="search-form">
 				<form id="site-search-content" action="#" method="get" autocomplete="off"
-					 tal:attributes="data-root-url python:zmscontext.getRootElement().absolute_url()">
+					tal:attributes="data-root-url python:zmscontext.getRootElement().absolute_url()">
 					<div class="row skin-gutter-wide search-form no-margin-bottom">
 						<div class="col-lg-6" id="form-keyword-container">
 							<h2 class="small-font">Suche nach Stichworten</h2>
@@ -67,7 +67,7 @@
 					</div>
 					<div class="row skin-gutter-wide search-form">
 						<div class="col-lg-12">
-						 <br> <button class="btn btn-primary btn-lg" type="submit">Suchen</button>
+						<br> <button class="btn btn-primary btn-lg" type="submit">Suchen</button>
 						</div>
 					</div>
 				</form>
@@ -76,7 +76,6 @@
 	</div>
 
 	<div class="container-fluid">
-
 		<div class="container">
 			<section id="search_results" class="search-results content-tabs">
 			</section>

@@ -2228,38 +2228,6 @@ body.lazy_select_form footer .controls {
 }
 .zmi.ZMSSysFolder table.objectItems {
 	margin:2rem -1.5rem;
-	width:calc(100% + 3rem);
-}
-.zmi.zms  table.objectItems .zmi-object-check,
-.zmi.zms  table.objectItems .zmi-object-type  {
-	width: 2rem;
-	text-align:center;
-}
-.zmi.zms table.objectItems .zmi-object-id a { 
-	text-overflow: ellipsis;
-	display: inline-block;
-	max-width: 50vw;
-	overflow: hidden;
-}
-.zmi.ZMSSysFolder table.objectItems .zmi-object-last_modified {
-	padding-right:1.5rem;
-}
-.zmi.zms table.objectItems .zmi-object-last_modified {
-	padding-left:2rem;
-}
-.zmi.zms table.objectItems .zmi-object-size,
-.zmi.zms table.objectItems .zmi-object-last_modified {
-	text-align:right;
-	max-width:5rem;
-}
-/* ---- System View: Object Items Table ------- */
-
-.zmi.zms table.objectItems th,
-.zmi.zms table.objectItems td {
-	white-space:nowrap
-}
-.zmi.ZMSSysFolder table.objectItems {
-	margin:2rem -1.5rem;
 	width:calc(100% + 2.8rem);
 }
 .zmi.zms  table.objectItems .zmi-object-check,
@@ -2282,7 +2250,7 @@ body.lazy_select_form footer .controls {
 .zmi.zms table.objectItems .zmi-object-size,
 .zmi.zms table.objectItems .zmi-object-last_modified {
 	text-align:right;
-	max-width:5rem;
+	max-width:6rem;
 }
 
 

@@ -4,10 +4,13 @@ def reindex_page(self, uid, zmsindex, catalog, page_size=100, regenerate_duplica
   log = []
   nodes, next_node = self.get_next_page(uid, page_size, clients=True) 
   for node in nodes:
+    printed, duplicate, regenerate = zmsindex.reindex_node(node, catalog, regenerate_duplicates)
     log.append({'index':nodes.index(node),
       'path':'/'.join(node.getPhysicalPath()),
       'meta_id':node.meta_id,
-      'action':zmsindex.reindex_node(node, catalog, regenerate_duplicates)})
+      'action':printed,
+      'duplicate': duplicate, 
+      'regenerate': regenerate})
   return {'log':log, 'next_node':next_node}
 
 def manage_zmsindex_reindex( self):
@@ -203,6 +206,13 @@ def manage_zmsindex_reindex( self):
               html += '<td class="count w-100">' + 0 + '</td>';
               html += '</tr>';
             });
+            ['duplicate','regenerate'].forEach(x => {
+              html += '<tr class="' + x + '">';
+              html += '<td class="id"><strong>' + x + '<strong></td>';
+              html += '<td class="total">' + 0 + '</td>';
+              html += '<td class="count w-100">' + 0 + '</td>';
+              html += '</tr>';
+            });
             html += '<tr class="Total">';
             html += '<td class="id"><strong>Total</strong></td>';
             html += '<td class="total">' + data['total'] + '</td>';
@@ -230,9 +240,15 @@ def manage_zmsindex_reindex( self):
               if (log) {
                 log.filter(x => x['action']).forEach(x =>  {
                   // increase counter
-                  const meta_id = x['meta_id'];
-                  map[meta_id] = map[meta_id] + 1;
-                  $("#count_table tr." + meta_id + " .count").html(map[meta_id]);
+                  ['meta_id','duplicate','regenerate'].forEach(y => {
+                    const l = x[y];
+                    if (l) {
+                      // regenerate|duplicate=true|false or meta_id=<l>
+                      const k = typeof l === 'boolean' ? y : l; 
+                      map[k] = map[k] + 1;
+                      $("#count_table tr." + k + " .count").html(map[k]);
+                    }
+                  });
                 });
                 // absolute total
                 map['Total'] = map['Total'] + log.length;

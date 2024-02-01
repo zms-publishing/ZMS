@@ -765,13 +765,13 @@ class ZMSContainerObject(
       # children
       if allow_children:
         if self.meta_id != 'ZMSLinkElement':
-          children = self.getChildNodes()
+          children = self.objectValues(list(self.dGlobalAttrs))
           if children:
             return children[0]
       # siblings
       parent  = self.getParentNode()
       if parent:
-        siblings = parent.getChildNodes()
+        siblings = parent.objectValues(list(parent.dGlobalAttrs))
         index = siblings.index(self)
         if index < len(siblings) - 1:
           return siblings[index+1]

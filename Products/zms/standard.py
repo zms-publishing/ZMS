@@ -1161,7 +1161,7 @@ def writeError(context, info):
       zms_log.LOG( severity, info)
     t = t.__name__.upper()
   except:
-    pass
+    t = info
   return '%s: %s'%(t, v)
 
 #)

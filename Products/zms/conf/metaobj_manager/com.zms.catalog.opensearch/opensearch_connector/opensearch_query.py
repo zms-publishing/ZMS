@@ -57,8 +57,9 @@ def opensearch_query( self, REQUEST=None):
 		"size": qsize,
 		"from": qfrom,
 		"query": {
-			"query_string": {
-				"query": q
+			"simple_query_string": {
+				"query": q,
+				"default_operator": "AND"
 			}
 		},
 		"aggs": {

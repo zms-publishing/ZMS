@@ -5,10 +5,8 @@ def reindex_page(self, uid, zmsindex, catalog, page_size=100, regenerate_duplica
   nodes, next_node = self.get_next_page(uid, page_size, clients=True) 
   for node in nodes:
     printed, duplicate, regenerate = zmsindex.reindex_node(node, catalog, regenerate_duplicates)
-    log.append({'index':nodes.index(node),
+    log.append({'meta_id':node.meta_id,
       'path':'/'.join(node.getPhysicalPath()),
-      'meta_id':node.meta_id,
-      'action':printed,
       'duplicate': duplicate, 
       'regenerate': regenerate})
   return {'log':log, 'next_node':next_node}
@@ -70,26 +68,11 @@ def manage_zmsindex_reindex( self):
         <input class="form-control url-input" id="root_node" name="root_node" type="text" value="{$}" />
       </div>
     </div><!-- .form-group -->
-    """)
-
-  if self.getPortalClients():
-    prt.append("""
-      <div class="form-group row">
-        <label class="col-sm-2 control-label">Traversing</label>
-        <div class="col-sm-10">
-          <input class="btn btn-secondary mr-2" id="clients" name="clients:int" type="checkbox" value="1" checked="checked" />
-          All Clients
-        </div>
-      </div><!-- .form-group -->
-      """)
-
-  prt.append("""
     <div class="form-group row mb-4">
       <label class="col-sm-2 control-label">UID-Handling</label>
       <div class="col-sm-10">
-        <input class="btn btn-secondary mr-2" id="regenerate_duplicates" name="regenerate_duplicates" type="checkbox" value="1" checked="0"
-          onclick="if( $('#regenerate_duplicates').prop('checked') ){ $('#regenerate_duplicates').prop('checked', false) } else { $('#regenerate_duplicates').prop('checked', true) }"/>
-        Regenerate UID Doublicates
+        <input class="btn btn-secondary mr-2" id="regenerate_duplicates" name="regenerate_duplicates" type="checkbox">
+        Regenerate UID Duplicates
       </div>
     </div><!-- .form-group -->
     <div class="form-group row d-none">
@@ -218,6 +201,11 @@ def manage_zmsindex_reindex( self):
             html += '<td class="total">' + data['total'] + '</td>';
             html += '<td class="count w-100">' + 0 + '</td>';
             html += '</tr>';
+            html += '<tr class="Time">';
+            html += '<td class="id"><strong>Time</strong></td>';
+            html += '<td class="time">' + 0 + '</td>';
+            html += '<td class="count w-100">' + 0 + '</td>';
+            html += '</tr>';
             html += '</table>';
             $("#count").html(html);
             // show progress
@@ -233,7 +221,9 @@ def manage_zmsindex_reindex( self):
         const page_size = $("input#page_size").val();
         const regenerate_duplicates = $('#regenerate_duplicates').prop('checked')?true:false;
         const params = {'json':true,'traverse':true,'root_node':root_node,'uid':uid,'page_size':page_size,'regenerate_duplicates':regenerate_duplicates};
+        const start = new Date().getTime(); 
         $.get('manage_zmsindex_reindex',params,function(data) {
+            const duration = new Date().getTime() - start; 
             $(".alert.alert-info").html($('<pre/>',{text:JSON.stringify(data,null,2)}))
             if (!stopped && !paused) {
               const log = data['log'];
@@ -253,6 +243,10 @@ def manage_zmsindex_reindex( self):
                 // absolute total
                 map['Total'] = map['Total'] + log.length;
                 $("#count_table tr." + 'Total' + " .count").html(map['Total']);
+                // absolute time
+                map['Time'] = map['Time'] + duration;
+                $("#count_table tr." + 'Time' + " .time").html((Math.floor(1000.0*map['Total']/map['Time']))+"/sec");
+                $("#count_table tr." + 'Time' + " .count").html(map['Time']/1000.0+"sec");
                 // show progress
                 progress();
               }

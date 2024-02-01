@@ -204,10 +204,10 @@ class ZMSIndex(ZMSItem.ZMSItem):
     def duplicate_object(self, catalog, node, regenerate_duplicates=False):
       printed, duplicate, regenerate = [], False, False
       if regenerate_duplicates:
-        path = node.getPath()
         uid = node.get_uid()
         r = catalog({'get_uid':uid})
         if len(r) > 0:
+          path = node.getPath()
           # others
           o = [i for i in r if i['id'] != node.id or i['meta_id'] != node.meta_id or i['getPath'] != path]
           if len(o) > 0:

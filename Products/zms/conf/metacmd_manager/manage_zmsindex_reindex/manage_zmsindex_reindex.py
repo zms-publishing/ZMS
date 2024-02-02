@@ -61,7 +61,7 @@ def manage_zmsindex_reindex( self):
     <div class="form-group row">
       <label for="page_size" class="col-sm-2 control-label" title="Page Size" >Increment Size</label>
       <div class="col-sm-10">
-        <input class="form-control" id="page_size" name="page_size:int" type="number" value="100" />
+        <input class="form-control" id="page_size" name="page_size:int" type="number" value="200" />
       </div>
     </div><!-- .form-group -->
     <div class="form-group row">

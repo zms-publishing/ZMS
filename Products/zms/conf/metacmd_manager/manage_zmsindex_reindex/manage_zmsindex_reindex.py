@@ -217,7 +217,7 @@ def manage_zmsindex_reindex( self):
         });
     }
 
-    function ajaxTraverse() {
+    async function ajaxTraverse() {
         const root_node = $('#root_node').val();
         const uid = $('#uid').val();
         const page_size = $("input#page_size").val();
@@ -228,6 +228,11 @@ def manage_zmsindex_reindex( self):
             const duration = new Date().getTime() - start; 
             $(".alert.alert-info").html($('<pre/>',{text:JSON.stringify(data,null,2)}))
             if (!stopped && !paused) {
+              const next_node = data['next_node'];
+              if (next_node) {
+                $('#uid').val(next_node);
+                ajaxTraverse();
+              }
               const log = data['log'];
               if (log) {
                 log.forEach(x => {
@@ -253,12 +258,7 @@ def manage_zmsindex_reindex( self):
                 // show progress
                 progress();
               }
-              const next_node = data['next_node'];
-              if (next_node) {
-                $('#uid').val(next_node);
-                ajaxTraverse();
-              }
-              else {
+              if (!next_node) {
                 stop();
                 $(".progress .progress-bar").removeClass("bg-warning progress-bar-striped").addClass("bg-success")
               }

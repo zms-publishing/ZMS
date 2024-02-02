@@ -226,42 +226,42 @@ def manage_zmsindex_reindex( self):
         const start = new Date().getTime(); 
         $.get('manage_zmsindex_reindex',params,function(data) {
             const duration = new Date().getTime() - start; 
-            $(".alert.alert-info").html($('<pre/>',{text:JSON.stringify(data,null,2)}))
+            const next_node = data['next_node'];
             if (!stopped && !paused) {
-              const next_node = data['next_node'];
               if (next_node) {
                 $('#uid').val(next_node);
                 ajaxTraverse();
               }
-              const log = data['log'];
-              if (log) {
-                log.forEach(x => {
-                  // increase counter
-                  const id = x[0];
-                  const meta_id = x[1];
-                  map[meta_id] = map[meta_id] + 1;
-                  $("#count_table tr." + meta_id + " .count").html(map[meta_id]);
-                  ['duplicate','regenerate'].forEach(k => {
-                    if (x.includes('@'+k)) {
-                      map[k] = map[k] + 1;
-                      $("#count_table tr." + k + " .count").html(map[k]);
-                    }
-                  });
+            }
+            $(".alert.alert-info").html($('<pre/>',{text:JSON.stringify(data,null,2)}))
+            const log = data['log'];
+            if (log) {
+              log.forEach(x => {
+                // increase counter
+                const id = x[0];
+                const meta_id = x[1];
+                map[meta_id] = map[meta_id] + 1;
+                $("#count_table tr." + meta_id + " .count").html(map[meta_id]);
+                ['duplicate','regenerate'].forEach(k => {
+                  if (x.includes('@'+k)) {
+                    map[k] = map[k] + 1;
+                    $("#count_table tr." + k + " .count").html(map[k]);
+                  }
                 });
-                // absolute total
-                map['Total'] = map['Total'] + log.length;
-                $("#count_table tr." + 'Total' + " .count").html(map['Total']);
-                // absolute time
-                map['Time'] = map['Time'] + duration;
-                $("#count_table tr." + 'Time' + " .time").html((Math.floor(1000.0*map['Total']/map['Time']))+"/sec");
-                $("#count_table tr." + 'Time' + " .count").html(map['Time']/1000.0+"sec");
-                // show progress
-                progress();
-              }
-              if (!next_node) {
-                stop();
-                $(".progress .progress-bar").removeClass("bg-warning progress-bar-striped").addClass("bg-success")
-              }
+              });
+              // absolute total
+              map['Total'] = map['Total'] + log.length;
+              $("#count_table tr." + 'Total' + " .count").html(map['Total']);
+              // absolute time
+              map['Time'] = map['Time'] + duration;
+              $("#count_table tr." + 'Time' + " .time").html((Math.floor(1000.0*map['Total']/map['Time']))+"/sec");
+              $("#count_table tr." + 'Time' + " .count").html(map['Time']/1000.0+"sec");
+              // show progress
+              progress();
+            }
+            if (!next_node) {
+              stop();
+              $(".progress .progress-bar").removeClass("bg-warning progress-bar-striped").addClass("bg-success")
             }
         })
         .fail(function(e) {

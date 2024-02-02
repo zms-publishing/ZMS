@@ -2,13 +2,15 @@ from Products.zms import standard
 
 def reindex_page(self, uid, zmsindex, catalog, page_size=100, regenerate_duplicates=False):
   log = []
-  nodes, next_node = self.get_next_page(uid, page_size, clients=True) 
+  nodes, next_node = self.get_next_page(uid, page_size, clients=True)
   for node in nodes:
+    l = [node.id, node.meta_id]
     printed, duplicate, regenerate = zmsindex.reindex_node(node, catalog, regenerate_duplicates)
-    log.append({'meta_id':node.meta_id,
-      'path':'/'.join(node.getPhysicalPath()),
-      'duplicate': duplicate, 
-      'regenerate': regenerate})
+    if duplicate: 
+      l.append('@duplicate')
+    if regenerate: 
+      l.append('@regenerate')
+    log.append(l)
   return {'log':log, 'next_node':next_node}
 
 def manage_zmsindex_reindex( self):
@@ -41,7 +43,7 @@ def manage_zmsindex_reindex( self):
       result = reindex_page(self, uid, zmsindex, catalog, page_size, regenerate_duplicates)
     RESPONSE.setHeader('Cache-Control', 'no-cache')
     RESPONSE.setHeader('Content-Type', 'application/json; charset=utf-8')
-    return json.dumps(result,indent=2)
+    return json.dumps(result)
   
   prt = []
   prt.append('<!DOCTYPE html>')
@@ -228,13 +230,14 @@ def manage_zmsindex_reindex( self):
             if (!stopped && !paused) {
               const log = data['log'];
               if (log) {
-                log.filter(x => x['action']).forEach(x =>  {
+                log.forEach(x => {
                   // increase counter
-                  ['meta_id','duplicate','regenerate'].forEach(y => {
-                    const l = x[y];
-                    if (l) {
-                      // regenerate|duplicate=true|false or meta_id=<l>
-                      const k = typeof l === 'boolean' ? y : l; 
+                  const id = x[0];
+                  const meta_id = x[1];
+                  map[meta_id] = map[meta_id] + 1;
+                  $("#count_table tr." + meta_id + " .count").html(map[meta_id]);
+                  ['duplicate','regenerate'].forEach(k => {
+                    if (x.includes('@'+k)) {
                       map[k] = map[k] + 1;
                       $("#count_table tr." + k + " .count").html(map[k]);
                     }

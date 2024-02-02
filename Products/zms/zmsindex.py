@@ -202,7 +202,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
     # Sanity check: if uid is already catalogued we have to generate new uid
     ##############################################################################
     def duplicate_object(self, catalog, node, regenerate_duplicates=False):
-      printed, duplicate, regenerate = [], False, False
+      duplicate, regenerate = False, False
       if regenerate_duplicates:
         uid = node.get_uid()
         r = catalog({'get_uid':uid})
@@ -214,45 +214,34 @@ class ZMSIndex(ZMSItem.ZMSItem):
             duplicate = True
             if len(node.getRefByObjs()) == 0:
               new_uid = node.get_uid(forced=True)
-              printed.append('INFO %s'%standard.writeError(node,'[ZMSIndex] INFO auto-fixed duplicate uid: %s[%i]->%s'%(uid,len(o),new_uid)))
+              standard.writeBlock(node,'[ZMSIndex] auto-fixed duplicate uid: %s[%i]->%s'%(uid,len(o),new_uid))
               regenerate = True
             else:
-              printed.append('ERROR %s'%standard.writeError(node,'[ZMSIndex] ERROR duplicate uid: %s[%i]'%(uid,len(o))))
+              standard.writeError(node,'[ZMSIndex] duplicate uid: %s[%i]'%(uid,len(o)))
       # return printed
-      return printed, duplicate, regenerate
+      return duplicate, regenerate
 
     ##############################################################################
     # Catalog Object
     ##############################################################################
     def catalog_object(self, catalog, node, regenerate_duplicates=False):
       # Duplicate object.
-      printed, duplicate, regenerate = self.duplicate_object(catalog, node, regenerate_duplicates)
+      duplicate, regenerate = self.duplicate_object(catalog, node, regenerate_duplicates)
       # Catalog object.
       path = node.getPath()
       catalog.catalog_object(node, path)
       # return printed
-      return printed, duplicate, regenerate
+      return duplicate, regenerate
 
     ##############################################################################
     # Uncatalog Object
     ##############################################################################
     def uncatalog_object(self, catalog, node):
-      printed = []
       # Prepare object.
       path = node.getPath()
       # Uncatalog object.
       catalog.uncatalog_object(node, path)
-      # return printed
-      return printed
 
-    # --------------------------------------------------------------------------
-    #  ZMSIndex.reindex_node:
-    # --------------------------------------------------------------------------
-    def reindex_node(self, node, catalog, regenerate_duplicates=False):
-      printed, duplicate, regenerate = self.catalog_object(catalog,node,regenerate_duplicates)
-      printed.insert(0, 'INFO %s'%standard.writeBlock(self,'[ZMSIndex] catalog_object %s %s'%(node.getPath(),str(node.get_uid()))))
-      return printed, duplicate, regenerate
-    
     ##############################################################################
     # Reindex
     ##############################################################################
@@ -269,11 +258,9 @@ class ZMSIndex(ZMSItem.ZMSItem):
           r = catalog(path={'query':path})
           for i in r:
             path = i['getPath']
-            log.append('INFO %s'%standard.writeBlock(self,'[ZMSIndex] uncatalog_object %s'%path))
             catalog.uncatalog_object(path)
         # Reindex node.
-        printed, duplicate, regenerate = self.reindex_node(node, catalog, regenerate_duplicates)
-        log.extend(printed)
+        duplicate, regenerate = self.catalog_object(catalog, node, regenerate_duplicates)
         for childNode in node.getChildNodes():
           l.extend(visit(childNode, regenerate_all))
         if regenerate_all and node.meta_id == 'ZMS':

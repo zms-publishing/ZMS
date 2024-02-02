@@ -5,7 +5,7 @@ def reindex_page(self, uid, zmsindex, catalog, page_size=100, regenerate_duplica
   nodes, next_node = self.get_next_page(uid, page_size, clients=True)
   for node in nodes:
     l = [node.id, node.meta_id]
-    printed, duplicate, regenerate = zmsindex.reindex_node(node, catalog, regenerate_duplicates)
+    duplicate, regenerate = zmsindex.catalog_object(catalog, node, regenerate_duplicates)
     if duplicate: 
       l.append('@duplicate')
     if regenerate: 

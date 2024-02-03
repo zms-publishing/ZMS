@@ -2,12 +2,15 @@ from Products.zms import standard
 
 def reindex_page(self, uid, zmsindex, catalog, page_size=100, regenerate_duplicates=False):
   log = []
-  nodes, next_node = self.get_next_page(uid, page_size, clients=True) 
+  nodes, next_node = self.get_next_page(uid, page_size, clients=True)
   for node in nodes:
-    log.append({'index':nodes.index(node),
-      'path':'/'.join(node.getPhysicalPath()),
-      'meta_id':node.meta_id,
-      'action':zmsindex.reindex_node(node, catalog, regenerate_duplicates)})
+    l = [node.id, node.meta_id]
+    duplicate, regenerate = zmsindex.catalog_object(catalog, node, regenerate_duplicates)
+    if duplicate: 
+      l.append('@duplicate')
+    if regenerate: 
+      l.append('@regenerate')
+    log.append(l)
   return {'log':log, 'next_node':next_node}
 
 def manage_zmsindex_reindex( self):
@@ -40,7 +43,7 @@ def manage_zmsindex_reindex( self):
       result = reindex_page(self, uid, zmsindex, catalog, page_size, regenerate_duplicates)
     RESPONSE.setHeader('Cache-Control', 'no-cache')
     RESPONSE.setHeader('Content-Type', 'application/json; charset=utf-8')
-    return json.dumps(result,indent=2)
+    return json.dumps(result)
   
   prt = []
   prt.append('<!DOCTYPE html>')
@@ -58,7 +61,7 @@ def manage_zmsindex_reindex( self):
     <div class="form-group row">
       <label for="page_size" class="col-sm-2 control-label" title="Page Size" >Increment Size</label>
       <div class="col-sm-10">
-        <input class="form-control" id="page_size" name="page_size:int" type="number" value="100" />
+        <input class="form-control" id="page_size" name="page_size:int" type="number" value="200" />
       </div>
     </div><!-- .form-group -->
     <div class="form-group row">
@@ -67,26 +70,11 @@ def manage_zmsindex_reindex( self):
         <input class="form-control url-input" id="root_node" name="root_node" type="text" value="{$}" />
       </div>
     </div><!-- .form-group -->
-    """)
-
-  if self.getPortalClients():
-    prt.append("""
-      <div class="form-group row">
-        <label class="col-sm-2 control-label">Traversing</label>
-        <div class="col-sm-10">
-          <input class="btn btn-secondary mr-2" id="clients" name="clients:int" type="checkbox" value="1" checked="checked" />
-          All Clients
-        </div>
-      </div><!-- .form-group -->
-      """)
-
-  prt.append("""
     <div class="form-group row mb-4">
       <label class="col-sm-2 control-label">UID-Handling</label>
       <div class="col-sm-10">
-        <input class="btn btn-secondary mr-2" id="regenerate_duplicates" name="regenerate_duplicates" type="checkbox" value="1" checked="0"
-          onclick="if( $('#regenerate_duplicates').prop('checked') ){ $('#regenerate_duplicates').prop('checked', false) } else { $('#regenerate_duplicates').prop('checked', true) }"/>
-        Regenerate UID Doublicates
+        <input class="btn btn-secondary mr-2" id="regenerate_duplicates" name="regenerate_duplicates" type="checkbox">
+        Regenerate UID Duplicates
       </div>
     </div><!-- .form-group -->
     <div class="form-group row d-none">
@@ -203,9 +191,21 @@ def manage_zmsindex_reindex( self):
               html += '<td class="count w-100">' + 0 + '</td>';
               html += '</tr>';
             });
+            ['duplicate','regenerate'].forEach(x => {
+              html += '<tr class="' + x + '">';
+              html += '<td class="id"><strong>' + x + '<strong></td>';
+              html += '<td class="total">' + 0 + '</td>';
+              html += '<td class="count w-100">' + 0 + '</td>';
+              html += '</tr>';
+            });
             html += '<tr class="Total">';
             html += '<td class="id"><strong>Total</strong></td>';
             html += '<td class="total">' + data['total'] + '</td>';
+            html += '<td class="count w-100">' + 0 + '</td>';
+            html += '</tr>';
+            html += '<tr class="Time">';
+            html += '<td class="id"><strong>Time</strong></td>';
+            html += '<td class="time">' + 0 + '</td>';
             html += '<td class="count w-100">' + 0 + '</td>';
             html += '</tr>';
             html += '</table>';
@@ -217,39 +217,50 @@ def manage_zmsindex_reindex( self):
         });
     }
 
-    function ajaxTraverse() {
+    async function ajaxTraverse() {
         const root_node = $('#root_node').val();
         const uid = $('#uid').val();
         const page_size = $("input#page_size").val();
         const regenerate_duplicates = $('#regenerate_duplicates').prop('checked')?true:false;
         const params = {'json':true,'traverse':true,'root_node':root_node,'uid':uid,'page_size':page_size,'regenerate_duplicates':regenerate_duplicates};
+        const start = new Date().getTime(); 
         $.get('manage_zmsindex_reindex',params,function(data) {
-            $(".alert.alert-info").html($('<pre/>',{text:JSON.stringify(data,null,2)}))
-            if (!stopped && !paused) {
-              const log = data['log'];
-              if (log) {
-                log.filter(x => x['action']).forEach(x =>  {
-                  // increase counter
-                  const meta_id = x['meta_id'];
-                  map[meta_id] = map[meta_id] + 1;
-                  $("#count_table tr." + meta_id + " .count").html(map[meta_id]);
-                });
-                // absolute total
-                map['Total'] = map['Total'] + log.length;
-                $("#count_table tr." + 'Total' + " .count").html(map['Total']);
-                // show progress
-                progress();
-              }
-              const next_node = data['next_node'];
-              if (next_node) {
+            const duration = new Date().getTime() - start; 
+            const next_node = data['next_node'];
+            if (next_node) {
+              if (!stopped && !paused) {
                 $('#uid').val(next_node);
                 ajaxTraverse();
               }
-              else {
-                stop();
-                $(".progress .progress-bar").removeClass("bg-warning progress-bar-striped").addClass("bg-success")
-              }
             }
+            else {
+              stop();
+              $(".progress .progress-bar").removeClass("bg-warning progress-bar-striped").addClass("bg-success")
+            }
+            $(".alert.alert-info").html($('<pre/>',{text:JSON.stringify(data,null,2)}))
+            const log = data['log'];
+            log.forEach(x => {
+              // increase counter
+              const id = x[0];
+              const meta_id = x[1];
+              map[meta_id] = map[meta_id] + 1;
+              $("#count_table tr." + meta_id + " .count").html(map[meta_id]);
+              ['duplicate','regenerate'].forEach(k => {
+                if (x.includes('@'+k)) {
+                  map[k] = map[k] + 1;
+                  $("#count_table tr." + k + " .count").html(map[k]);
+                }
+              });
+            });
+            // absolute total
+            map['Total'] = map['Total'] + log.length;
+            $("#count_table tr." + 'Total' + " .count").html(map['Total']);
+            // absolute time
+            map['Time'] = map['Time'] + duration;
+            $("#count_table tr." + 'Time' + " .time").html((Math.floor(1000.0*map['Total']/map['Time']))+"/sec");
+            $("#count_table tr." + 'Time' + " .count").html(map['Time']/1000.0+"sec");
+            // show progress
+            progress();
         })
         .fail(function(e) {
           stop();

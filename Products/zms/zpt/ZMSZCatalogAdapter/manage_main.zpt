@@ -172,6 +172,10 @@
 														</td>
 													</tr>
 												</tal:block>
+												<tr tal:condition="not:metaObjPackage" tal:repeat="value python:['type(ZMSDocument)','type(ZMSObject)']">
+													<td><input type="checkbox" name="ids:list" tal:attributes="value value"></td>
+													<td><tal:block tal:content="value"></tal:block></td>
+												</tr>
 												<tal:block tal:repeat="metaObj metaObjs">
 													<tr tal:condition="python:metaObj['type']!='ZMSPackage' and metaObj.get('package')==metaObjPackage">
 														<td style="text-align:center;">

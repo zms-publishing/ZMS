@@ -50,7 +50,7 @@
 	<input type="hidden" id="getIds" tal:attributes="value python:','.join(here.getIds())" />
 	<span class="d-none" id="getAttrs" tal:content="python:here.str_json(here.getAttrs())"></span>
 
-	<tal:block tal:condition="python:here.getLevel()==0">
+	<tal:block tal:condition="python:here.breadcrumbs_obj_path().index(here.getDocumentElement())==0">
 	<legend>Connectors</legend>
 	<div class="card-body" tal:define="
 		connectors python:here.get_connectors();
@@ -144,7 +144,6 @@
 						<tbody>
 							<tr>
 								<td class="p-0">
-
 									<table class="table table-sm table-borderless" id="meta_types">
 										<tbody>
 											<tal:block tal:repeat="metaObjPackage python:here.sort_list(metaObjPackages+metaObjPackages2)">
@@ -198,7 +197,6 @@
 											</tal:block>
 										</tbody>
 									</table>
-
 								</td>
 								<td class="p-0">
 									<table class="table table-sm table-borderless" id="indexes">
@@ -208,7 +206,6 @@
 							</tr>
 						</tbody>
 					</table>
-
 			</div><!-- .col-sm-10 -->
 		</div><!-- .form-group -->
 		<div class="form-group row">
@@ -218,13 +215,11 @@
 			</div><!-- .controls.save -->
 		</div><!-- .form-group.row -->
 	</div><!-- .card-body -->
-
 </form>
 
 </div><!-- #zmi-tab -->
 
 <script>
-// <!--
 
 function toggleMetaobj() {
 	var selected = {};
@@ -236,7 +231,7 @@ function toggleMetaobj() {
 	});
 	var metaObjAttrs = {};
 	$("form input[name='ids:list']:checked").each(function() {
-		if(!$(this).prop("disabled")) {
+		if(!$(this).prop("disabled") && $(this).attr("data-attrs")) {
 			var dataAttrs = $(this).attr("data-attrs").split(",");
 			for (var i = 0; i < dataAttrs.length; i++) {
 				var dataAttr = dataAttrs[i];
@@ -244,7 +239,7 @@ function toggleMetaobj() {
 					id:dataAttr.substring(0,dataAttr.indexOf("(")),
 					type:dataAttr.substring(dataAttr.indexOf("(")+1,dataAttr.indexOf(")"))
 				};
-				if (typeof metaObjAttrs[metaObjAttr.id] == 'undefined') {
+				if (!metaObjAttr.id.indexOf("_") == 0 && typeof metaObjAttrs[metaObjAttr.id] == 'undefined') {
 					metaObjAttrs[metaObjAttr.id] = metaObjAttr;
 				}
 			}

@@ -288,8 +288,8 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
         if 'catalog_index' in self.getMetaobjAttrIds(node.meta_id):
           for data in node.attr('catalog_index'):
             objects.append(get_catalog_objects(self, connector, node, data, fileparsing))
-        # Catalog only desired meta-ids.
-        if node.meta_id in self.getIds():
+        # Catalog only desired typed meta-ids (resolves type(ZNS...)).
+        if node.meta_id in self.getMetaobjManager().getTypedMetaIds(self.getIds()):
           data = get_default_data(node)
           objects.append(get_catalog_objects(self, connector, node, data, fileparsing))
       return objects

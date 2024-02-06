@@ -155,8 +155,8 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
           nodes = node.breadcrumbs_obj_path()
           nodes.reverse()
           for node in nodes:
-            if node.meta_id in self.getIds():
-              fileparsing = bool( self.getConfProperty('ZMS.CatalogAwareness.fileparsing', 1))
+            if self.matches_ids_filter(node):
+              fileparsing = standard.pybool( self.getConfProperty('ZMS.CatalogAwareness.fileparsing', 1))
               for connector in self.get_connectors():
                 self.reindex(connector, node, recursive=False, fileparsing=fileparsing)
         return True
@@ -174,7 +174,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
           nodes = node.breadcrumbs_obj_path()
           nodes.reverse()
           for node in nodes:
-            if node.meta_id in self.getIds():
+            if self.matches_ids_filter(node):
               for connector in self.get_connectors():
                 connector.manage_objects_remove([node])
             break
@@ -182,6 +182,12 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
         standard.writeError( self, "can't unindex_node")
         return False
 
+    # --------------------------------------------------------------------------
+    #  ZMSZCatalogAdapter.matches_ids_filter: 
+    # --------------------------------------------------------------------------
+    def matches_ids_filter(self, node):
+      return standard.dt_py(node, self.getCustomFilterFunction(), {'meta_ids':self.getMetaobjManager().getTypedMetaIds(self.getIds())})
+    
     # --------------------------------------------------------------------------
     #  ZMSZCatalogAdapter.ids: 
     #  getter and setter for meta-ids, that can be cataloged
@@ -191,6 +197,16 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
 
     def setIds(self, ids):
       setattr(self, '_ids', ids)
+
+    # --------------------------------------------------------------------------
+    #  ZMSZCatalogAdapter.custom_filter_function: 
+    #  getter and setter for custom filter-function
+    # --------------------------------------------------------------------------
+    def getCustomFilterFunction(self):
+      return getattr(self, '_custom_filter_function', '##\nreturn context.meta_id in meta_ids')
+
+    def setCustomFilterFunction(self, custom_filter_function):
+      setattr(self, '_custom_filter_function', custom_filter_function)
 
     # --------------------------------------------------------------------------
     #  ZMSZCatalogAdapter.attr_ids:
@@ -288,8 +304,8 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
         if 'catalog_index' in self.getMetaobjAttrIds(node.meta_id):
           for data in node.attr('catalog_index'):
             objects.append(get_catalog_objects(self, connector, node, data, fileparsing))
-        # Catalog only desired typed meta-ids (resolves type(ZNS...)).
-        if node.meta_id in self.getMetaobjManager().getTypedMetaIds(self.getIds()):
+        # Catalog only desired typed meta-ids (resolves type(ZMS...)).
+        if self.matches_ids_filter(node):
           data = get_default_data(node)
           objects.append(get_catalog_objects(self, connector, node, data, fileparsing))
       return objects
@@ -361,7 +377,8 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
         # Save.
         # -----
         elif btn == 'BTN_SAVE':
-          self.setConfProperty('ZMS.CatalogAwareness.active', REQUEST.get('catalog_awareness_active')==1)
+          self.setConfProperty('ZMS.CatalogAwareness.active', standard.pybool(REQUEST.get('catalog_awareness_active')))
+          self.setCustomFilterFunction(REQUEST.get('custom_filter_function'))
           self._ids = REQUEST.get('ids', [])
           attrs = {}
           for attr_id in REQUEST.get('attr_ids', []):

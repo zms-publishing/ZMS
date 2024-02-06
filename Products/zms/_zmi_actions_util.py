@@ -159,7 +159,7 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
       # dynamic list of types
       if standard.dt_executable('\n'.join(meta_keys)):
         meta_keys = standard.dt_exec(container, '\n'.join(meta_keys))
-      # typed meta-ids (resolves type(ZNS...))
+      # typed meta-ids (resolves type(ZMS...))
       meta_ids = container.getMetaobjManager().getTypedMetaIds(meta_keys)
     else:
       meta_ids.append( objAttr['type'])

@@ -122,6 +122,12 @@
 				<input type="checkbox" value="1" id="catalog_awareness_active" name="catalog_awareness_active:int" tal:attributes="checked python:['','checked'][int(here.getConfProperty('ZMS.CatalogAwareness.active',1)==1)]"/>
 			</div><!-- .col-sm-10 -->
 		</div><!-- .form-group -->
+		<div class="form-group row align-items-start">
+			<label class="col-sm-2 control-label" for="custom_filter_function"><span>Custom Filter-Function</span></label>
+			<div class="col-sm-10">
+				<textarea tal:replace="structure python:here.zmi_ace_editor(here,request,name='custom_filter_function',id='custom_filter_function',text=here.getCustomFilterFunction())">ACE Editor</textarea>
+			</div>
+		</div>
 		<div class="form-group row align-items-baseline">
 			<label class="col-sm-2 control-label" for="catalog_model"><span>Model</span></label>
 			<div class="col-sm-10"

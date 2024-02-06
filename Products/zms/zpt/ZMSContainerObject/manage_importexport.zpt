@@ -71,7 +71,20 @@ function onExportFormatChange(el) {
 			</div>
 		</div><!-- .form-group -->
 		<div class="form-group row">
-			<div class="col-md-2">&nbsp;</div>
+			<label class="col-md-2 control-label" for="export_format"><span tal:content="python:here.getZMILangStr('ATTR_OPTIONS')">options</span></label>
+			<div class="col-md-10">
+				<div>
+					<input type="checkbox" name="ignore_uids:int" value="1" tal:attributes="checked python:['','checked'][int(request.get('ignore_uids',1)==1)]" onclick="this.form.target='_blank'" />
+					Ignore uids and always create new uids.
+				</div>
+				<div>
+					<input type="checkbox" name="ignore_ids:int" value="1" tal:attributes="checked python:['','checked'][int(request.get('ignore_ids',1)==1)]" onclick="this.form.target='_blank'" />
+					Ignore ids and always create new ids.
+				</div>
+			</div>
+		</div>
+		<div class="form-group row">
+			<div class="col-md-2"></div>
 			<div class="col-md-10">
 				<button type="submit" class="btn btn-primary" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
 			</div>

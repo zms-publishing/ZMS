@@ -185,18 +185,16 @@ class Builder(object):
             if self.oRootTag == 'ZMS' and 'id' in attrs:
               id = attrs.get( 'id')
               prefix = standard.id_prefix(id)
-              self.getNewId(prefix) # force sequence to generate new-id
-            elif 'id_fix' in attrs:
-              id = attrs.get( 'id_fix')
-              prefix = standard.id_prefix(id)
-              self.getNewId(prefix) # force sequence to generate new-id
+              new_id = self.getNewId(prefix) # force sequence to generate new-id
             elif 'id_prefix' in attrs:
               prefix = attrs.get( 'id_prefix')
               id = self.getNewId(prefix)
             elif 'id' in attrs:
               id = attrs.get( 'id')
               prefix = standard.id_prefix(id)
-              id = self.getNewId(prefix)
+              new_id = self.getNewId(prefix) # force sequence to generate new-id
+              if standard.pybool(self.REQUEST.get('ignore_id')):
+                 id = new_id
             
             # Assure new id does not already exists.
             while id is None or id in self.oCurrNode.objectIds():
@@ -208,6 +206,8 @@ class Builder(object):
             
             ##### Uid ####
             uid = '!%s'%attrs.get('uid') if 'uid' in attrs else ''
+            if standard.pybool(self.REQUEST.get('ignore_uid')):
+              uid = ''
             
             ##### Init ####
             newNode = constructor(id, sort_id, meta_id, uid)

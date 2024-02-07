@@ -74,11 +74,11 @@ function onExportFormatChange(el) {
 			<label class="col-md-2 control-label"><span tal:content="python:here.getZMILangStr('ATTR_OPTIONS')">options</span></label>
 			<div class="col-md-10">
 				<div class="form-group mb-1">
-					<input type="checkbox" class="form-check-input ml-0" id="import_ignore_uids" name="ignore_uids:int" value="1" tal:attributes="checked python:['','checked'][int(request.get('ignore_uids',1)==1)]" onclick="this.form.target='_blank'" />
+					<input type="checkbox" class="form-check-input ml-0" id="import_ignore_uids" name="ignore_uids:int" value="1" tal:attributes="checked python:['','checked'][int(request.get('ignore_uids',1)==1)]"/>
 					<label for="import_ignore_uids" class="ml-4">Ignore Zope-UIDs and always create new UIDs.</label>
 				</div>
 				<div class="form-group mb-1">
-					<input type="checkbox" class="form-check-input ml-0" id="import_ignore_ids" name="ignore_ids:int" value="1" tal:attributes="checked python:['','checked'][int(request.get('ignore_ids',1)==1)]" onclick="this.form.target='_blank'" />
+					<input type="checkbox" class="form-check-input ml-0" id="import_ignore_ids" name="ignore_ids:int" value="1" tal:attributes="checked python:['','checked'][int(request.get('ignore_ids',1)==1)]"/>
 					<label for="import_ignore_ids" class="ml-4">Ignore ZMS-IDs and always create new IDs.</label>
 				</div>
 			</div>

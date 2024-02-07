@@ -193,7 +193,7 @@ class Builder(object):
               id = attrs.get( 'id')
               prefix = standard.id_prefix(id)
               new_id = self.getNewId(prefix) # force sequence to generate new-id
-              if standard.pybool(self.REQUEST.get('ignore_id')):
+              if standard.pybool(self.REQUEST.get('ignore_ids')):
                  id = new_id
             
             # Assure new id does not already exists.
@@ -206,9 +206,9 @@ class Builder(object):
             
             ##### Uid ####
             uid = '!%s'%attrs.get('uid') if 'uid' in attrs else ''
-            if standard.pybool(self.REQUEST.get('ignore_uid')):
+            if standard.pybool(self.REQUEST.get('ignore_uids')):
               uid = ''
-            
+
             ##### Init ####
             newNode = constructor(id, sort_id, meta_id, uid)
             self.oCurrNode._setObject(newNode.id, newNode)

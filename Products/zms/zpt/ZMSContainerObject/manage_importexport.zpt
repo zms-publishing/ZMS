@@ -73,13 +73,13 @@ function onExportFormatChange(el) {
 		<div class="form-group row">
 			<label class="col-md-2 control-label"><span tal:content="python:here.getZMILangStr('ATTR_OPTIONS')">options</span></label>
 			<div class="col-md-10">
-				<div>
-					<input type="checkbox" name="ignore_uids:int" value="1" tal:attributes="checked python:['','checked'][int(request.get('ignore_uids',1)==1)]"/>
-					Ignore uids and always create new uids.
+				<div class="form-group mb-1">
+					<input type="checkbox" class="form-check-input ml-0" id="import_ignore_uids" name="ignore_uids:int" value="1" tal:attributes="checked python:['','checked'][int(request.get('ignore_uids',1)==1)]" onclick="this.form.target='_blank'" />
+					<label for="import_ignore_uids" class="ml-4">Ignore Zope-UIDs and always create new UIDs.</label>
 				</div>
-				<div>
-					<input type="checkbox" name="ignore_ids:int" value="1" tal:attributes="checked python:['','checked'][int(request.get('ignore_ids',1)==1)]"/>
-					Ignore ids and always create new ids.
+				<div class="form-group mb-1">
+					<input type="checkbox" class="form-check-input ml-0" id="import_ignore_ids" name="ignore_ids:int" value="1" tal:attributes="checked python:['','checked'][int(request.get('ignore_ids',1)==1)]" onclick="this.form.target='_blank'" />
+					<label for="import_ignore_ids" class="ml-4">Ignore ZMS-IDs and always create new IDs.</label>
 				</div>
 			</div>
 		</div>
@@ -115,25 +115,25 @@ function onExportFormatChange(el) {
 			</div><!-- .col-lg-3 -->
 			<div id="div_debug" class="col-md-2" style="display:none;">
 				<tal:block tal:condition="python:'zms_log' in here.getDocumentElement().objectIds()">
-					<input type="checkbox" name="debug:int" value="1" tal:attributes="checked python:['','checked'][int(request.get('debug',1)==1)]">
-					Debug
+					<input type="checkbox" class="form-check-input ml-0" id="export_debug" name="debug:int" value="1" tal:attributes="checked python:['','checked'][int(request.get('debug',0)==1)]">
+					<label for="export_debug" class="ml-4">Debug</label>
 				</tal:block>
 			</div>
 		</div><!-- .form-group -->
 		<div class="form-group row">
 			<label class="col-md-2 control-label" for="export_format"><span tal:content="python:here.getZMILangStr('ATTR_OPTIONS')">options</span></label>
-			<div class="col-md-5">
-				<div>
-					<input type="radio" name="download:int" value="1" tal:attributes="checked python:['','checked'][int(request.get('download',1)==1)]" onclick="this.form.target='_blank'" />
-					Download to local machine
+			<div class="col-md-10">
+				<div class="form-group mb-1">
+					<input type="radio" class="form-check-input ml-0" id="export_download_local" name="download:int" value="1" tal:attributes="checked python:['','checked'][int(request.get('download',1)==1)]" onclick="this.form.target='_blank'" />
+					<label for="export_download_local" class="ml-4">Download to local machine</label>
 				</div>
-				<div>
-					<input type="radio" name="download:int" value="0" tal:attributes="checked python:['','checked'][int(request.get('download',1)==0)]" onclick="this.form.target='_blank'" />
-					Save to file on server
+				<div class="form-group mb-1">
+					<input type="radio" class="form-check-input ml-0" id="export_download_server" name="download:int" value="0" tal:attributes="checked python:['','checked'][int(request.get('download',1)==0)]" onclick="this.form.target='_blank'" />
+					<label for="export_download_server" class="ml-4">Save to file on server</label>
 				</div>
-				<div>
-					<input type="checkbox" name="preview" value="preview">
-					Preview
+				<div class="form-group mb-1">
+					<input type="checkbox" id="export_preview" class="form-check-input ml-0" name="preview" value="preview" />
+					<label for="export_preview" class="ml-4">Preview (preliminary content in case of active workflow)</label>
 				</div>
 			</div>
 		</div><!-- .form-group -->

@@ -201,13 +201,15 @@ class ZMSObject(ZMSItem.ZMSItem,
     def get_uid(self, forced=False):
       import uuid
       uid = getattr(self,'_uid','')
+      new_uid = None
       if forced \
           or '_uid' not in self.__dict__ \
           or len(uid) == 0 \
           or len(uid.split('-')) < 5:
         new_uid = str(uuid.uuid4())
-        if uid.startswith('!uid:'):
-          new_uid = uid[len('!uid:'):]
+      if uid.startswith('!uid:'):
+        new_uid = uid[len('!uid:'):]
+      if new_uid:
         self._uid = new_uid
       return 'uid:%s'%self._uid
 

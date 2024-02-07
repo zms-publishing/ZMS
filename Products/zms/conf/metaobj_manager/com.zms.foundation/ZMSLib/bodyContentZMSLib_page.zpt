@@ -1,15 +1,15 @@
 <!-- bodyContentZMSLib_page -->
 
-	<tal:block tal:condition="python:here.meta_id in ['ZMS','ZMSFolder','ZMSDocument']" tal:define="global 
-		childNodes python:[ob for ob in here.getObjChildren('e',request,here.PAGEELEMENTS) if ob.meta_id not in ['bt_carousel']]">
-    <tal:block tal:repeat="childNode childNodes" tal:content="structure python:childNode.getBodyContent(request)">
-      The page-element body-content
-    </tal:block>
+<tal:block tal:condition="python:here.meta_id in ['ZMS','ZMSFolder','ZMSDocument']" 
+	tal:define="global childNodes python:[ob for ob in here.getObjChildren('e',request,here.PAGEELEMENTS) if ob.meta_id not in ['bt_carousel']]">
+	<tal:block tal:repeat="childNode childNodes" tal:content="structure python:childNode.getBodyContent(request)">
+		The page-element body-content
 	</tal:block>
-	<tal:block tal:condition="python:here.meta_id not in ['ZMS','ZMSFolder','ZMSDocument']">
-		<tal:block tal:content="structure python:here.getBodyContent(request)">
-			The body-content
-		</tal:block>
+</tal:block>
+<tal:block tal:condition="python:here.meta_id not in ['ZMS','ZMSFolder','ZMSDocument']">
+	<tal:block tal:content="structure python:here.getBodyContent(request)">
+		The body-content
 	</tal:block>
+</tal:block>
 
 <!-- /bodyContentZMSLib_page -->

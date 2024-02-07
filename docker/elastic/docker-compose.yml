@@ -31,5 +31,12 @@ services:
     networks:
       - elastic
 
+  tika:
+    image: apache/tika:2.9.0.0
+    ports:
+      - 9998:9998
+    networks:
+      - elastic
+
 networks:
   elastic:

@@ -33,8 +33,19 @@
 	line-height: .5;
 	font-size: 200%;
 }
+.search-results .path li {
+	display:inline-block;
+	white-space:nowrap;
+	max-width:16rem;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	border:0 !important;
+	margin:0 !important;
+}
 .search-results .path li a {
 	color:#aaa;
+	border:0 !important;
+	margin:0 !important;
 }
 .search-results .hit em {
 	font-style: normal;
@@ -86,21 +97,27 @@ body:not(.zms.web) .pagination i.fas.fa-chevron-left:after {
 body:not(.zms.web) .pagination i.fas.fa-chevron-right:after {
 	content: "\e602";
 }
-.pagination > li > a, 
+.pagination > li > a,
 .pagination > li > span {
 	color: #d6002b;
 }
-.pagination > .active > a, 
-.pagination > .active > span, 
-.pagination > .active > a:hover, 
-.pagination > .active > span:hover, 
-.pagination > .active > a:focus, 
+.pagination > .active > a,
+.pagination > .active > span,
+.pagination > .active > a:hover,
+.pagination > .active > span:hover,
+.pagination > .active > a:focus,
 .pagination > .active > span:focus {
 	background-color: #d6002b;
 	border-color: #d6002b;
 }
 .search-results .nav-tabs > li {
 	margin-bottom: 2px;
+}
+.search-results .tab-content h2 {
+	display: none;
+}
+.search-results .tab-content .spin {
+	margin-top: 2em;
 }
 
 /* ZMS-Demo-Theme */
@@ -114,7 +131,7 @@ body.zms.web #search_results ul.path li {
 	margin-right:.25rem;
 }
 body.zms.web #search_results  ul.path li a {
-	text-decoration:none !important;  
+	text-decoration:none !important;
 }
 body.zms.web #search_results ul.path li a:before {
 	content:"/";
@@ -132,4 +149,72 @@ body.zms.web #search_results .pagination i.fas.fa-chevron-right:after {
 }
 body.zms.web #search_results .nav-tabs {
 	display: none;
+}
+
+/* Custom-Autofill-GUI */
+/*
+	#form-keyword-container:hover datalist#suggests {
+		color:#999;
+		display:block;
+		position:absolute;
+		z-index:1000;
+		background:#fff;
+		margin:0 2px;
+		padding:0 .6rem;
+		min-width:280px;
+		box-shadow:1rem 1rem 2rem -.5rem #0002
+	}
+	datalist#suggests option {
+		cursor: pointer;
+		user-select: none;
+	}
+	datalist#suggests option:hover {
+		color:#000;
+		background:aliceblue;
+	}
+*/
+
+
+/* UNITEL */
+
+article.unitel.hit a {
+	display:inline-block;
+	padding:0 0 .5rem 0;
+}
+article.unitel.hit p,
+article.unitel.hit .Reihenfolge,
+article.unitel.hit .Hauptadresse,
+article.unitel.hit .InstitutionGUID {
+	display:none;
+}
+
+article.unitel.hit dl {
+	display: flex;
+	flex-flow: row wrap;
+	min-width:960px;
+	border: solid #eee;
+	border-width: 0 0 0 0;
+	padding-bottom:1rem;
+}
+article.unitel.hit dt {
+	flex-basis: 20%;
+	padding: 2px 12px 2px 0;
+	background: #f9f2f4;
+	text-align: right;
+	margin: 0;
+	color:#888;
+	border: solid #888;
+	border-width: 0 0 0 0;
+}
+article.unitel.hit dd {
+	flex-basis: 80%;
+	flex-grow: 1;
+	margin: 0;
+	padding: 2px 0 2px 8px;
+}
+article.unitel.hit dd.WWWInstitution {
+	white-space:nowrap;
+	max-width:92%;
+	overflow:hidden;
+	text-overflow:ellipsis;
 }

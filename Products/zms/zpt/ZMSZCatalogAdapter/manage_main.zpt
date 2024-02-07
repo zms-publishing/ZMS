@@ -19,6 +19,33 @@
 	<div class="well">On every change the content is automatically indexed in the catalog.</div>
 </div>
 
+<div class="help d-none" data-for="custom_filter_function">
+	<div class="well">
+		<p>
+			The indexing filter consists of python code that works with two parameters: <br/>
+			1. <code>context</code> is the currently iterated object to be indexed<br/>
+			2. <code>meta_ids</code> is the list of content-classes that should be indexed. <br/>
+			<br/>
+			The applied code can define rules based on the context's attributes values whether indexing shall happen or not. 
+			The returning value of the filter rules must be <code>True</code> or <code>False</code>.
+			A simple example will illustrate how it can be applied; the intention would be 
+			"<i>Do not index any ZMSFolder having a title "Folder" and even not its children</i>".
+			<div class="zmi-code card p-2 highlight">
+				##<br/>
+				return (context.meta_id in meta_ids) \<br/>
+				&nbsp;&nbsp;and context.attr('title')!='Folder' \<br/>
+				&nbsp;&nbsp;and context.getParentNode().attr('title')!='Folder'<br/>
+			</div>
+			<br/>
+			<p class="small">
+				HINT: The introducing ##-comments marks the code as Python for the editor gui.
+				Actually only Python code will work here. 
+			</p>
+		</p>
+	</div>
+</div>
+
+
 <div class="help d-none" data-for="catalog_model">
 	<div class="well">
 		<p>
@@ -38,7 +65,7 @@
 			##<br/>
 			<br/>
 			return [{<br/>
-				<code tal:repeat="attr_id python:here.getAttrIds()" tal:content="structure python:'&nbsp;&nbsp;\'%s\':\'...\',<br/>'%(attr_id)" />
+			<code tal:repeat="attr_id python:here.getAttrIds()" tal:content="structure python:'&nbsp;&nbsp;\'%s\':\'...\',<br/>'%(attr_id)" />
 			}]
 		</div>
 	</div>

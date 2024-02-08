@@ -180,21 +180,19 @@ class Builder(object):
           if constructor is None:
             newNode = self
           else:
-            # Get new id.
+            # Get id.
             id = None
-            if self.oRootTag == 'ZMS' and 'id' in attrs:
-              id = attrs.get( 'id')
-              prefix = standard.id_prefix(id)
-              new_id = self.getNewId(prefix) # force sequence to generate new-id
-            elif 'id_prefix' in attrs:
-              prefix = attrs.get( 'id_prefix')
-              id = self.getNewId(prefix)
-            elif 'id' in attrs:
-              id = attrs.get( 'id')
-              prefix = standard.id_prefix(id)
-              new_id = self.getNewId(prefix) # force sequence to generate new-id
+            if 'id' in attrs:
+              id = attrs.get('id')
               if standard.pybool(self.REQUEST.get('ignore_ids')):
-                 id = new_id
+                # If id values should be ignored, generate a new one.
+                prefix = standard.id_prefix(id)
+                new_id = self.getNewId(prefix)
+                id = new_id
+            elif 'id_prefix' in attrs:
+              # If no id is given, a new one must be created.
+              prefix = attrs.get('id_prefix')
+              id = self.getNewId(prefix)
             
             # Assure new id does not already exists.
             while id is None or id in self.oCurrNode.objectIds():
@@ -205,7 +203,7 @@ class Builder(object):
             sort_id = self.oCurrNode.getNewSortId()
             
             ##### Uid ####
-            uid = '!%s'%attrs.get('uid') if 'uid' in attrs else ''
+            uid = '%s'%attrs.get('uid') if 'uid' in attrs else ''
             if standard.pybool(self.REQUEST.get('ignore_uids')):
               uid = ''
 
@@ -213,6 +211,9 @@ class Builder(object):
             newNode = constructor(id, sort_id, meta_id, uid)
             self.oCurrNode._setObject(newNode.id, newNode)
             newNode = getattr(self.oCurrNode, newNode.id)
+            if uid and not standard.pybool(self.REQUEST.get('ignore_uids',False)):
+              # Restore given uid.
+              newNode.set_uid(uid)
             standard.writeLog( self, "[Builder.OnStartElement]: object with id " + str(newNode.id) + " of class " + str(newNode.__class__) + " created in " + str(self.oCurrNode.__class__))
           
           ##### Object State ####
@@ -228,10 +229,10 @@ class Builder(object):
               newNode.setObjProperty('active', 1, lang)
             if len( langs) == 1:
               dt = time.time()
-              uid = self.REQUEST['AUTHENTICATED_USER'].getId()
-              newNode.setObjProperty('created_uid',uid,lang)
+              userid = self.REQUEST['AUTHENTICATED_USER'].getId()
+              newNode.setObjProperty('created_uid',userid,lang)
               newNode.setObjProperty('created_dt',dt,lang)
-              newNode.setObjProperty('change_uid',uid,lang)
+              newNode.setObjProperty('change_uid',userid,lang)
               newNode.setObjProperty('change_dt',dt,lang)
           
           # notify new node

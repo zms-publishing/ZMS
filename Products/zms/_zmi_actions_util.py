@@ -159,19 +159,8 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
       # dynamic list of types
       if standard.dt_executable('\n'.join(meta_keys)):
         meta_keys = standard.dt_exec(container, '\n'.join(meta_keys))
-      # iterate types
-      metaobj_manager = container.getMetaobjManager()
-      for meta_id in meta_keys:
-        if meta_id.startswith('type(') and meta_id.endswith(')'):
-          meta_obj_type = meta_id[5:-1]
-          for metaObjId in metaObjIds:
-            metaObj = metaobj_manager.getMetaobj( metaObjId, aq_attrs=['enabled'])
-            if metaObj['type'] == meta_obj_type and metaObj['enabled']:
-              meta_ids.append( metaObj['id'])
-        elif meta_id in metaObjIds:
-          meta_ids.append( meta_id)
-        else:
-          container.writeError( '[zmi_insert_actions]: %s.%s contains invalid meta_id \'%s\''%(container.meta_id, objAttr['id'], meta_id))
+      # typed meta-ids (resolves type(ZMS...))
+      meta_ids = container.getMetaobjManager().getTypedMetaIds(meta_keys)
     else:
       meta_ids.append( objAttr['type'])
     for meta_id in meta_ids:

@@ -745,7 +745,7 @@ class ZMSContainerObject(
     ###
     ############################################################################
 
-    def get_next_page(self, uid, page_size=100, clients=False):
+    def get_next_page(self, uid, page_size=100, clients=False, filter_function=None):
       nodes, next = [], None
       meta_types = list(self.dGlobalAttrs)
       child_nodes = {}
@@ -754,6 +754,8 @@ class ZMSContainerObject(
         key = str(self)
         if key not in child_nodes:
           child_nodes[key] = self.objectValues(meta_types)
+          if filter_function:
+            child_nodes[key] = [x for x in child_nodes[key] if filter_function(x)]
         return child_nodes[key]
 
       def get_next_node(self, allow_children=True):

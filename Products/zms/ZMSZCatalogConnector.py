@@ -303,7 +303,9 @@ class ZMSZCatalogConnector(
       adapter = self.getCatalogAdapter()
       result = {'success':0,'failed':0,'log':[],'next_node':None}
       objects = []
-      nodes, next_node = self.get_next_page(uid, page_size, clients) 
+      def filter_function(x):
+        return x.isActive(REQUEST)
+      nodes, next_node = self.get_next_page(uid, page_size, clients, filter_function) 
       log = []
       for node in nodes:
         node_objects = adapter.get_catalog_objects(self, node, fileparsing)

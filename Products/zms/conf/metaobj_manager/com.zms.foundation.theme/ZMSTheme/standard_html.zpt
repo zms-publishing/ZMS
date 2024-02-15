@@ -1,5 +1,12 @@
-<tal:block
-		tal:define="zmstheme python:getattr(here,here.getConfProperty('ZMS.theme'))"
+<tal:block tal:define="
+	zmstheme_id python:here.getConfProperty('ZMS.theme');
+	zmstheme python:getattr(here,zmstheme_id);
+	is_zmstheme python:bool([n for n in zmstheme.objectValues() if n.getId()=='standard_html'])"
+	><tal:block tal:condition="is_zmstheme" 
 		tal:content="structure python:zmstheme.standard_html(zmscontext=here)">
-	the ZMS-theme
+		ZMS-Theme
+	</tal:block>
+	<tal:block tal:condition="not:is_zmstheme">
+		<code tal:content="structure python:f'ERROR: ZMS-Theme-Folder <a href=\042{zmstheme.absolute_url()}/manage_main\042>{zmstheme.absolute_url()}</a> does not contain a master-template.'"></code>
+	</tal:block>
 </tal:block>

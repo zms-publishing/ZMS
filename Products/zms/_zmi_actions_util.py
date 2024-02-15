@@ -244,7 +244,7 @@ def zmi_command_actions(context, stereotype='', objPath=''):
   #-- Context Commands.
   if context is not None:
     for metaCmd in [x for x in context.getMetaCmds(context, stereotype) if x['stereotype']==stereotype]:
-      action = (metaCmd['id'], metaCmd['name'], metaCmd['action'].replace('%s',objPath),metaCmd.get('icon_clazz','fas fa-cog'),metaCmd['id'],metaCmd['title'])
+      action = (metaCmd['id'], metaCmd['name'], metaCmd['action'].replace('%s',objPath),metaCmd.get('icon_clazz','fas fa-cog'),metaCmd['id'],metaCmd.get('title'))
       actions.append(action)
   
   #-- Sort.

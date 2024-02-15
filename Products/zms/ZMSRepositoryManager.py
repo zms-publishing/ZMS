@@ -17,11 +17,9 @@
 ################################################################################
 
 # Imports.
-from DateTime import DateTime
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
 import os
-import re
 import time
 from zope.interface import implementer
 # Product Imports.
@@ -32,7 +30,6 @@ from Products.zms import ZMSItem
 from Products.zms import _fileutil
 from Products.zms import repositoryutil
 from Products.zms import standard
-from Products.zms import zopeutil
 
 
 ################################################################################
@@ -201,123 +198,6 @@ class ZMSRepositoryManager(
               self.updateChanges(ids, override=True)
             self.last_update = standard.getDateTime(current_time)
         standard.writeLog(self,"[exec_auto_update]: %s seconds needed"%(str(time.time()-current_time)))
-
-
-    def getDiffs(self, local, remote, ignore=True):
-      diff = []
-      filenames = sorted(set(list(local)+list(remote)))
-      for filename in filenames:
-        if ignore and filename not in local.keys():
-          # ignore orphaned files in filesystem
-          # if there are no references in model
-          continue
-        l = local.get(filename, {})
-        l_data = l.get('data')
-        r = remote.get(filename, {})
-        r_data = r.get('data')
-        # Check whether any bytes data are decodeable as utf-8 text
-        if isinstance(l_data, bytes):
-          try:
-            l['data'] = l_data.decode('utf-8')
-          except: # data is no text, but image etc.
-            pass
-        if isinstance(r_data, bytes):
-          try:
-            r['data'] = r_data.decode('utf-8')
-          except:
-            pass
-        # If text then normalize Windows CR+LF line break to Unix LF
-        # and ignore leading/trailing whitespace since Zope removes 
-        # and github adds them
-        if isinstance(l.get('data'), str):
-          l['data'] = l['data'].replace('\r','').strip()
-        if isinstance(r.get('data'), str):
-          r['data'] = r['data'].replace('\r','').strip()
-        # Only if text is not equal add to diff list
-        if l.get('data') != r.get('data'):
-          data = l_data or r_data
-          if isinstance(data, str):
-            data = data.encode('utf-8')
-          mt, enc = standard.guess_content_type(filename.split('/')[-1], data)
-          diff.append((filename, mt, l.get('id', r.get('id', '?')), l, r))
-      return diff
-
-
-    def localFiles(self, provider, ids=None):
-      standard.writeLog(self,"[localFiles]: provider=%s"%str(provider))
-      l = {}
-      local = provider.provideRepository(ids)
-      for id in local:
-        o = local[id]
-        acquired = int(o.get('acquired',0))
-        filename = o.get('__filename__', [id, '__%s__.py'%['init','acquired'][acquired]])
-        # Write python-representation.
-        py = []
-        py.append('class %s:'%id.replace('.','_').replace('-','_'))
-        py.append('\t"""')
-        py.append('\tpython-representation of %s'%o['id'])
-        py.append('\t"""')
-        py.append('')
-        e = sorted([x for x in o if not x.startswith('__') and x==x.capitalize() and isinstance(o[x], list)])
-        keys = sorted([x for x in o if not x.startswith('__') and x not in e])
-        for k in keys:
-          v = o.get(k)
-          py.append('\t# %s'%k.capitalize())
-          py.append('\t%s = %s'%(standard.id_quote(k), standard.str_json(v, encoding="utf-8", formatted=True, level=2, allow_booleans=False)))
-          py.append('')
-        for k in e:
-          v = o.get(k)
-          if v and isinstance(v, list):
-            py.append('\t# %s'%k.capitalize())
-            py.append('\tclass %s:'%standard.id_quote(k).capitalize())
-            # Are there duplicated ids after id-quoting?
-            id_list = [ standard.id_quote(i['id']) for i in v if i.get('ob') is None ] 
-            id_duplicates =  [ i for i in id_list if id_list.count(i) > 1 ]
-            for i in v:
-              if 'id' in i:
-                ob = i.get('ob')
-                if ob is not None:
-                  d = {}
-                  # Someone is so kind to pass us a file-like Object with {filename,data,version,meta_type} as dict.
-                  if type(ob) is dict:
-                    d = ob
-                  # Otherwise we have a Zope-Object and determine everything by ourselves.
-                  else:
-                    fileexts = {'DTML Method':'.dtml', 'DTML Document':'.dtml', 'External Method':'.py', 'Page Template':'.zpt', 'Script (Python)':'.py', 'Z SQL Method':'.zsql'}
-                    fileprefix = i['id'].split('/')[-1]
-                    data = zopeutil.readData(ob)
-                    version = ''
-                    if hasattr(ob,'_p_mtime'):
-                      version = standard.getLangFmtDate(DateTime(ob._p_mtime).timeTime(), 'eng')
-                    d['filename'] = os.path.sep.join(filename[:-1]+['%s%s'%(fileprefix, fileexts.get(ob.meta_type, ''))])
-                    d['data'] = data
-                    d['version'] = version
-                    d['meta_type'] = ob.meta_type
-                  d['id'] = id
-                  l[d['filename']] = d
-                if 'ob' in i:
-                  del i['ob']
-                try:
-                  # Prevent id-quoting if duplicates may result
-                  id_quoted = ( i['id'].startswith('_') and ( standard.id_quote(i['id']) in id_duplicates) ) and i['id'] or standard.id_quote(i['id'])
-                  py.append('\t\t%s = %s'%(id_quoted, standard.str_json(i, encoding="utf-8", formatted=True, level=3, allow_booleans=False)))
-                except:
-                  py.append('\t\t# ERROR: '+standard.writeError(self,'can\'t localFiles \'%s\''%i['id']))
-                py.append('')
-        d = {}
-        d['__icon__'] = o.get('__icon__')
-        d['__description__'] = o.get('__description__')
-        d['id'] = id
-        d['filename'] = os.path.sep.join(filename)
-        d['data'] = '\n'.join(py)
-        try:
-          d['version'] = [int(x) for x in o.get('revision', '0.0.0').split('.')]
-        except:
-          # version schmeme 0.0.0 must not contain strings
-          d['version'] = list(map(int, re.findall(r'\d+', o.get('revision', '0.0.0'))))
-        d['meta_type'] = 'Script (Python)'
-        l[d['filename']] = d
-      return l
 
 
     def remoteFiles(self, provider):

@@ -605,9 +605,6 @@ class ZMSMetacmdProvider(
           id = self.setMetacmd(None, newId, newAcquired, newPackage, newRevision, newName, newTitle, newMethod, newData, newExecution, newIconClazz=newIconClazz)
           message = self.getZMILangStr('MSG_INSERTED')%id
         
-        # Sync with repository.
-        self.getRepositoryManager().exec_auto_commit(self, id)
-        
         # Return with message.
         message = standard.url_quote(message)
         return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s&id=%s'%(lang, message, id))

@@ -24,7 +24,6 @@ import time
 from zope.interface import implementer
 # Product Imports.
 from Products.zms import IZMSConfigurationProvider
-from Products.zms import IZMSDaemon
 from Products.zms import IZMSRepositoryManager
 from Products.zms import ZMSItem
 from Products.zms import _fileutil
@@ -41,7 +40,6 @@ from Products.zms import standard
 ################################################################################
 @implementer(
         IZMSConfigurationProvider.IZMSConfigurationProvider,
-        IZMSDaemon.IZMSDaemon,
         IZMSRepositoryManager.IZMSRepositoryManager)
 class ZMSRepositoryManager(
         ZMSItem.ZMSItem):
@@ -97,24 +95,10 @@ class ZMSRepositoryManager(
     """
     Returns direction of copying config files: 
     Loading from file system (coloring ZMS changes) vs.
-	Saving to file system (coloring filesystem changes)
+    Saving to file system (coloring filesystem changes)
     """
     def get_update_direction(self):
       return getattr(self,'update_direction','Loading')
-
-
-    """
-    Returns auto-update.
-    """
-    def get_auto_update(self):
-      return getattr(self, 'auto_update', False)
-
-
-    """
-    Returns last-update.
-    """
-    def get_last_update(self):
-      return getattr(self, 'last_update', 0)
 
 
     """
@@ -134,70 +118,6 @@ class ZMSRepositoryManager(
       basepath = basepath.replace("/", os.path.sep)
       basepath = os.path.join(basepath, id)
       return basepath
-
-    """
-    @see IZMSDaemon
-    """
-    def startDaemon(self):
-      standard.writeLog(self,"[startDaemon]")
-      self.exec_auto_update()
-
-
-    """
-    @see IZMSRepositoryManager
-    """
-    def exec_auto_commit(self, provider, id):
-      if self.get_auto_update():
-        ids = [':'.join([provider.id, id])]
-        standard.writeLog(self,"[exec_auto_commit]: Run... %s"%str(ids))
-        self.commitChanges(ids)
-
-
-    """
-    @see IZMSRepositoryManager
-    """
-    def exec_auto_update(self):
-      #-- [ReqBuff]: Fetch buffered value from Http-Request.
-      reqBuffId = 'ZMSRepositoryManager.exec_auto_update'
-      try: 
-        return self.fetchReqBuff(reqBuffId)
-      except:
-        #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
-        self.storeReqBuff(reqBuffId, True)
-        # Execute once.
-        standard.writeLog(self,"[exec_auto_update]")
-        current_time = time.time()
-        if self.get_auto_update():
-          last_update = self.get_last_update()
-          if (not last_update or standard.getDateTime(last_update)<standard.getDateTime(self.Control_Panel.process_start)) and self.getConfProperty('ZMS.debug',0):
-            standard.writeLog(self,"[exec_auto_update]: Run...")
-            def traverse(path):
-              l = []
-              if os.path.exists(path):
-                for file in os.listdir(path):
-                  filepath = os.path.join(path, file)
-                  if os.path.isdir(filepath):
-                    l.extend(traverse(filepath))
-                  else:
-                    l.append((os.path.getmtime(filepath), filepath))
-              return l
-            basepath = self.get_conf_basepath()
-            files = traverse(basepath)
-            mtime = max([x[0] for x in files]+[0])
-            standard.writeLog(self,"[exec_auto_update]: %s - %s < %s"%(str(standard.getDateTime(last_update) < standard.getDateTime(mtime)),standard.format_datetime_iso(standard.getDateTime(last_update)), standard.format_datetime_iso(standard.getDateTime(mtime))))
-            if not last_update or standard.getDateTime(last_update) < standard.getDateTime(mtime):
-              update_files = [x[1][len(basepath):] for x in files if not last_update or standard.getDateTime(x[0])>standard.getDateTime(last_update)]
-              temp_files = [x.split(os.path.sep) for x in update_files]
-              temp_files = \
-                [[x[0], x[-1].replace('.py', '')] for x in temp_files if len(x)==2] + \
-                [[x[0], x[-2]] for x in temp_files if len(x)>2]
-              # avoid processing of hidden files, e.g. .DS_Store on macOS
-              temp_files = [x for x in temp_files if not x[-1].startswith('.')]
-              ids = list(set([':'.join(x) for x in temp_files]))
-              standard.writeLog(self,"[exec_auto_update]: %s"%str(ids))
-              self.updateChanges(ids, override=True)
-            self.last_update = standard.getDateTime(current_time)
-        standard.writeLog(self,"[exec_auto_update]: %s seconds needed"%(str(time.time()-current_time)))
 
 
     def remoteFiles(self, provider):
@@ -313,8 +233,6 @@ class ZMSRepositoryManager(
       error_message = ''
       
       if btn == 'save':
-        self.auto_update = REQUEST.get('auto_update','')!=''
-        self.last_update = standard.parseLangFmtDate(REQUEST.get('last_update',''))
         self.ignore_orphans = REQUEST.get('ignore_orphans','')!=''
         self.setConfProperty('ZMS.conf.path',REQUEST.get('basepath',''))
         self.update_direction = REQUEST.get('update_direction','Loading')

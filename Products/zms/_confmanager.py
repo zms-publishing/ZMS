@@ -1028,22 +1028,6 @@ class ConfManager(
 
     ############################################################################
     ###
-    ###   Interface IZMSRepositoryManager: delegate
-    ###
-    ############################################################################
-
-    def getRepositoryManager(self):
-      manager = [x for x in self.getDocumentElement().objectValues() if IZMSRepositoryManager.IZMSRepositoryManager in list(providedBy(x))]
-      if len(manager)==0:
-        class DefaultManager(object):
-          def exec_auto_commit(self, provider, id): return True
-          def exec_auto_update(self): return True
-        manager = [DefaultManager()]
-      return manager[0]
-
-
-    ############################################################################
-    ###
     ###   Interface IZMSWorkflowProvider: delegate
     ###
     ############################################################################

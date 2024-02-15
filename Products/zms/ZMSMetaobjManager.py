@@ -1384,9 +1384,6 @@ class ZMSMetaobjManager(object):
               sync_id.append(k)
         if len(sync_id) > 0:
           self.synchronizeObjAttrs( sync_id)
-      
-        # Sync with repository.
-        self.getRepositoryManager().exec_auto_commit(self, id)
         
         # Return with message.
         if RESPONSE:

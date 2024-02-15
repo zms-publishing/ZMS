@@ -6,16 +6,21 @@
 		,'/++resource++zms_/ZMSRepositoryManager/manage_main_diff.js'
 		]);
 	standard modules/Products.zms/standard;
-	provider_diffs python:[(x,here.getDiffs(x,here.get_ignore_orphans())) for x in here.getRepositoryProviders()];
+	repositoryutil modules/Products.zms/repositoryutil;
+	ignore python:here.get_ignore_orphans();
+	providers python:repositoryutil.get_providers(here);
+	local python:{x:here.localFiles(x) for x in providers};
+	remote python:{x:here.remoteFiles(x) for x in providers};
+	provider_diffs python:[(x,here.getDiffs(local[x],remote[x],ignore)) for x in providers];
 	provider_diffs_count python:sum([len(x[1]) for x in provider_diffs]+[0])">
 
 	<tal:block tal:condition="not:provider_diffs_count">
-		<div class="form-group filelist row" tal:repeat="provider python:here.getRepositoryProviders()">
+		<div class="form-group filelist row" tal:repeat="provider providers">
 			<label class="col-sm-2 control-label zms-component">
 				<a tal:attributes="href python:'%s/manage_main?lang=%s'%(provider.absolute_url(),request['lang'])" target="_blank"><tal:block tal:content="python:provider.id">the provider</tal:block></a>
 			</label>
 			<div class="col-sm-10" tal:define="
-					local_files python:list(here.localFiles(provider).values());
+					local_files python:list(local[provider].values());
 					ids python:standard.distinct_list([x['id'] for x in local_files]);
 					ids_sorting python:ids.sort();">
 				<div tal:repeat="id ids">
@@ -33,7 +38,7 @@
 	><tal:block
 		tal:define="zmscontext python:here.getSelf();
 			provider python:provider_diff[0];
-			local_files python:list(here.localFiles(provider).values());
+			local_files python:list(local[provider].values());
 			diffs python:provider_diff[1];
 			ids python:standard.distinct_list([x[2] for x in diffs]);
 			ids_sorting python:ids.sort();"

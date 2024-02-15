@@ -25,10 +25,13 @@ Scripts.  It can be accessed from Python with the statement
 # Imports.
 from AccessControl.SecurityInfo import ModuleSecurityInfo
 from App.Common import package_home
+from zope.interface import providedBy
 import inspect
 import os
 import re
 # Product Imports.
+from Products.zms import IZMSConfigurationProvider
+from Products.zms import IZMSRepositoryProvider
 from Products.zms import standard
 
 security = ModuleSecurityInfo('Products.zms.repositoryutil')
@@ -39,6 +42,20 @@ Returns system conf-basepath.
 security.declarePublic('get_system_conf_basepath')
 def get_system_conf_basepath():
     return package_home(globals())+'/conf'
+
+
+"""
+Returns list of repository-providers.
+"""
+security.declarePublic('get_providers')
+def get_providers(self):
+  def get_repo_providers(context):
+    children = context.objectValues()
+    repo_providers = []
+    [repo_providers.append(x) for x in children if IZMSRepositoryProvider.IZMSRepositoryProvider in list(providedBy(x))]
+    [repo_providers.extend(get_repo_providers(x)) for x in children if IZMSConfigurationProvider.IZMSConfigurationProvider in list(providedBy(x))]
+    return repo_providers
+  return get_repo_providers(self.getDocumentElement())
 
 
 """

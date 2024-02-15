@@ -23,12 +23,11 @@ import copy
 import os
 import re
 import time
-from zope.interface import implementer, providedBy
+from zope.interface import implementer
 # Product Imports.
 from Products.zms import IZMSConfigurationProvider
 from Products.zms import IZMSDaemon
 from Products.zms import IZMSRepositoryManager
-from Products.zms import IZMSRepositoryProvider
 from Products.zms import ZMSItem
 from Products.zms import _fileutil
 from Products.zms import repositoryutil
@@ -204,11 +203,8 @@ class ZMSRepositoryManager(
         standard.writeLog(self,"[exec_auto_update]: %s seconds needed"%(str(time.time()-current_time)))
 
 
-    def getDiffs(self, provider, ignore=True):
-      standard.writeLog(self,"[getDiffs]: provider=%s"%str(provider))
+    def getDiffs(self, local, remote, ignore=True):
       diff = []
-      local = self.localFiles(provider)
-      remote = self.remoteFiles(provider)
       filenames = sorted(set(list(local)+list(remote)))
       for filename in filenames:
         if ignore and filename not in local.keys():
@@ -245,16 +241,6 @@ class ZMSRepositoryManager(
           mt, enc = standard.guess_content_type(filename.split('/')[-1], data)
           diff.append((filename, mt, l.get('id', r.get('id', '?')), l, r))
       return diff
-
-
-    def getRepositoryProviders(self):
-      def get_repo_providers(context):
-        children = context.objectValues()
-        repo_providers = []
-        [repo_providers.append(x) for x in children if IZMSRepositoryProvider.IZMSRepositoryProvider in list(providedBy(x))]
-        [repo_providers.extend(get_repo_providers(x)) for x in children if IZMSConfigurationProvider.IZMSConfigurationProvider in list(providedBy(x))]
-        return repo_providers
-      return get_repo_providers(self.getDocumentElement())
 
 
     def localFiles(self, provider, ids=None):
@@ -354,7 +340,7 @@ class ZMSRepositoryManager(
       standard.triggerEvent(self,'beforeCommitRepositoryEvt')
       success = []
       failure = []
-      providers = self.getRepositoryProviders()
+      providers = repositoryutil.get_providers(self)
       for provider_id in list(set([x.split(':')[0] for x in ids])):
         provider = [x for x in providers if x.id == provider_id][0]
         basepath = self.get_conf_basepath(provider.id)
@@ -414,7 +400,7 @@ class ZMSRepositoryManager(
       success = []
       failure = []
       repositories = {}
-      providers = self.getRepositoryProviders()
+      providers = repositoryutil.get_providers(self)
       for i in ids:
         # Initialize.
         provider_id = i[:i.find(':')]

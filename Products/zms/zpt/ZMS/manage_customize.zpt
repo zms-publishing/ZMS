@@ -21,6 +21,7 @@
 			<li class="nav-item"><a class="nav-link" id="Custom-tab" href="#Custom" data-toggle="tab" role="tab">System-Properties</a></li>
 			<li class="nav-item"><a class="nav-link" id="MediaDb-tab" href="#MediaDb" data-toggle="tab" role="tab">Media-Folder</a></li>
 			<li class="nav-item"><a class="nav-link" id="Info-tab" href="#Info" data-toggle="tab" role="tab">System-Info</a></li>
+			<li class="nav-item"><a class="nav-link" id="Updates-tab" href="#Updates" data-toggle="tab" role="tab">Updates</a></li>
 		</ul>
 	</nav>
 	<div class="tab-content">
@@ -401,6 +402,23 @@
 				</div><!-- .form-group -->
 			</form>
 		</div>
+
+		<div class="tab-pane fade card" id="Updates" role="tabpanel" tal:define="
+				repositoryutil modules/Products.zms/repositoryutil;
+				basepath python:repositoryutil.get_system_conf_basepath()+'/metaobj_manager';">
+			<form class="form-horizontal card" title="Updates" name="UpdatesForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
+				get_system_conf_basepath=<tal:block tal:content="basepath"></tal:block>
+				<div class="form-group row" tal:define="rr python:repositoryutil.readRepository(here,basepath)">
+					<ul>
+					<li tal:repeat="id rr">
+						<tal:block tal:content="python:rr[id].get('name',id+'?NAME')"></tal:block>
+						<tal:block tal:content="python:rr[id].get('revision','?REVISION')"></tal:block>
+					</li>
+					</ul>
+				</div>
+			</form>
+		</div>
+
 	</div>
 
 </div><!-- #zmi-tab -->

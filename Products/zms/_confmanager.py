@@ -41,10 +41,10 @@ from .IZMSConfigurationProvider import IZMSConfigurationProvider
 from Products.zms import standard
 from Products.zms import ZMSFilterManager, IZMSMetamodelProvider, IZMSFormatProvider, IZMSRepositoryManager
 from Products.zms import _fileutil
-from Products.zms import _repositoryutil
 from Products.zms import _mediadb
 from Products.zms import _multilangmanager
 from Products.zms import _sequence
+from Products.zms import repositoryutil
 from Products.zms import standard
 from Products.zms import zopeutil
 from Products.zms import zmsindex
@@ -167,9 +167,9 @@ class ConfManager(
           xmlfile = StringIO( xml)
       elif isinstance(file, str) and (file.startswith('conf:')):
           filename = file[file.find(':')+1:]
-          basepath = _repositoryutil.get_system_conf_basepath()
+          basepath = repositoryutil.get_system_conf_basepath()
           path = os.path.join(basepath, filename)
-          r = _repositoryutil.readRepository(self, path)
+          r = repositoryutil.readRepository(self, path)
           container_id = filename.split('/')[0]
           container = zopeutil.getObject(self,container_id)
           if container is not None:
@@ -261,12 +261,12 @@ class ConfManager(
             v = v[:v.find(pattern)]+v[i:]
             filenames[k] = v
       # Repository.
-      basepath = _repositoryutil.get_system_conf_basepath()
+      basepath = repositoryutil.get_system_conf_basepath()
       for filename in os.listdir(basepath):
           path = os.path.join(basepath, filename)
           if os.path.isdir(path):
               if pattern is None or filename.startswith(pattern[1:-1]):
-                  r = _repositoryutil.readRepository(self, path, deep=False)
+                  r = repositoryutil.readRepository(self, path, deep=False)
                   for k in r:
                       v = r[k]
                       # Get qualified name.

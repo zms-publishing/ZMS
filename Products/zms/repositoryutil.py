@@ -1,5 +1,5 @@
 ################################################################################
-# _repositoryutil.py
+# repositoryutil.py
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -16,7 +16,14 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ################################################################################
 
+"""ZMS repository utility module
+
+This module provides helpful functions and classes for use in Python
+Scripts.  It can be accessed from Python with the statement
+"import Products.zms.repository"
+"""
 # Imports.
+from AccessControl.SecurityInfo import ModuleSecurityInfo
 from App.Common import package_home
 import inspect
 import os
@@ -24,9 +31,12 @@ import re
 # Product Imports.
 from Products.zms import standard
 
+security = ModuleSecurityInfo('Products.zms.repositoryutil')
+
 """
 Returns system conf-basepath.
 """
+security.declarePublic('get_system_conf_basepath')
 def get_system_conf_basepath():
     return package_home(globals())+'/conf'
 
@@ -43,16 +53,17 @@ def get_class(py):
 """
 Read repository from base-path.
 """
-def remoteFiles(self, basepath):
-      standard.writeLog(self,"[remoteFiles]: basepath=%s"%basepath)
-      r = {}
-      if os.path.exists(basepath):
-        def traverse(base, path):
+security.declarePublic('remoteFiles')
+def remoteFiles(self, basepath, deep=True):
+    standard.writeLog(self,"[remoteFiles]: basepath=%s"%basepath)
+    r = {}
+    if os.path.exists(basepath):
+        def traverse(base, path, level=0):
           names = os.listdir(path)
           for name in names:
             filepath = os.path.join(path, name)
-            if os.path.isdir(filepath):
-              traverse(base,filepath)
+            if os.path.isdir(filepath) and (deep or level == 0):
+              traverse(base, filepath, level+1)
             elif name.startswith('__') and name.endswith('__.py'):
               # Read python-representation of repository-object
               standard.writeLog(self,"[remoteFiles]: read %s"%filepath)
@@ -65,8 +76,9 @@ def remoteFiles(self, basepath):
                   c = get_class(py)
                   d = c.__dict__
               except:
-                  d['revision'] = standard.writeError(self,"[traverse]: can't analyze filepath=%s"%filepath)
+                  d['revision'] = standard.writeError(self,"[remoteFiles.traverse]: can't analyze filepath=%s"%filepath)
               id = d.get('id',name)
+              ### Different from remoteFiles()
               rd = {}
               rd['id'] = id
               rd['filename'] = filepath[len(base)+1:]
@@ -88,12 +100,13 @@ def remoteFiles(self, basepath):
                     rd['version'] = self.getLangFmtDate(os.path.getmtime(artefact),'eng')
                     r[rd['filename']] = rd
         traverse(basepath,basepath)
-      return r
+    return r
 
 
 """
 Read repository from base-path.
 """
+security.declarePublic('readRepository')
 def readRepository(self, basepath, deep=True):
     standard.writeLog(self,"[readRepository]: basepath=%s"%basepath)
     r = {}
@@ -116,8 +129,9 @@ def readRepository(self, basepath, deep=True):
                   c = get_class(py)
                   d = c.__dict__
               except:
-                  d['revision'] = standard.writeError(self,"[readRepository]: ")
+                  d['revision'] = standard.writeError(self,"[readRepository.traverse]: can't analyze filepath=%s"%filepath)
               id = d.get('id',name)
+              ### Different from remoteFiles()
               r[id] = {}
               for k in [x for x in d if not x.startswith('__')]:
                 v = d[k]
@@ -148,3 +162,5 @@ def readRepository(self, basepath, deep=True):
                 r[id][k] = v
         traverse(basepath, basepath)
     return r
+
+security.apply(globals())

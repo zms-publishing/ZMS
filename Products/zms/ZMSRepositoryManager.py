@@ -31,7 +31,7 @@ from Products.zms import IZMSRepositoryManager
 from Products.zms import IZMSRepositoryProvider
 from Products.zms import ZMSItem
 from Products.zms import _fileutil
-from Products.zms import _repositoryutil
+from Products.zms import repositoryutil
 from Products.zms import standard
 from Products.zms import zopeutil
 
@@ -337,13 +337,13 @@ class ZMSRepositoryManager(
     def remoteFiles(self, provider):
       standard.writeLog(self,"[remoteFiles]: provider=%s"%str(provider))
       basepath = self.get_conf_basepath(provider.id)
-      return _repositoryutil.remoteFiles(self, basepath)
+      return repositoryutil.remoteFiles(self, basepath)
 
 
     def readRepository(self, provider):
       standard.writeLog(self,"[readRepository]: provider=%s"%str(provider))
       basepath = self.get_conf_basepath(provider.id)
-      return _repositoryutil.readRepository(self, basepath)
+      return repositoryutil.readRepository(self, basepath)
 
 
     """

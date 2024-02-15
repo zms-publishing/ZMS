@@ -29,6 +29,8 @@ for r in q:
 	obj_path = zmscontext.getLinkObj(zms_data_id).breadcrumbs_obj_path()
 
 # Return HTML for Ajax-Requests
+if len(obj_path) > 2:
+	obj_path = obj_path[:-1]
 return '\n'.join(['<li><a href="%s">%s</a></li>'%(obj.getHref2IndexHtml(request), obj.attr('titlealt')) for obj in obj_path])
 
 # --// /elasticsearch_breadcrumbs_obj_path //--

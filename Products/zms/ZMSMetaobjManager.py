@@ -486,6 +486,27 @@ class ZMSMetaobjManager(object):
       ob = obs.get( id)
       return ob
 
+    # --------------------------------------------------------------------------
+    #  ZMSMetaobjManager.getTypedMetaIds:
+    #
+    #  Returns list of all typed meta-ids in model.
+    # --------------------------------------------------------------------------
+    def getTypedMetaIds(self, meta_ids):
+      metaObjIds = self.getMetaobjIds()
+      typed_meta_ids = []
+      # iterate types
+      for meta_id in meta_ids:
+        if meta_id.startswith('type(') and meta_id.endswith(')'):
+          meta_obj_type = meta_id[5:-1]
+          for metaObjId in metaObjIds:
+            metaObj = self.getMetaobj( metaObjId, aq_attrs=['enabled'])
+            if metaObj['type'] == meta_obj_type and metaObj['enabled']:
+              typed_meta_ids.append( metaObj['id'])
+        elif meta_id in metaObjIds:
+          typed_meta_ids.append( meta_id)
+        else:
+          standard.writeError( self, "[getMetaIds]: invalid meta_id \'%s\'"%meta_id)
+      return typed_meta_ids
 
     # --------------------------------------------------------------------------
     #  ZMSMetaobjManager.getMetaobjIds:

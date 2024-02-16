@@ -292,9 +292,9 @@ def get_diffs(local, remote, ignore=True):
     # and ignore leading/trailing whitespace since Zope removes 
     # and github adds them
     if isinstance(l.get('data'), str):
-      l['data'] = l['data'].replace('\r','').strip()
+      l['data'] = l['data'].replace('\\r','').replace('\r','').strip()
     if isinstance(r.get('data'), str):
-      r['data'] = r['data'].replace('\r','').strip()
+      r['data'] = r['data'].replace('\\r','').replace('\r','').strip()
     # Only if text is not equal add to diff list
     if l.get('data') != r.get('data'):
       data = l_data or r_data

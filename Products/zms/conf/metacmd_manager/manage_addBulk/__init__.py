@@ -13,7 +13,7 @@ class manage_addBulk:
 	description = ""
 
 	# Execution
-	execution = 0
+	execution = False
 
 	# Icon_clazz
 	icon_clazz = "fas fa-home"

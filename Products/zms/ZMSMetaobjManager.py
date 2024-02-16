@@ -932,7 +932,7 @@ class ZMSMetaobjManager(object):
         i = ids.index(newId)
         attrs[i] = attr
       # Always append new methods at the end.
-      elif newType in method_types:
+      elif oldId is not None or (oldId is None and newType in method_types):
         attrs.append( attr)
       # Insert new attributes before methods
       else:

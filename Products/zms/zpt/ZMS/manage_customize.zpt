@@ -408,11 +408,12 @@
 			basepath python:repositoryutil.get_system_conf_basepath();
 			ignore python:True;
 			direction python:'Loading';
-			providers python:repositoryutil.get_providers(here);
+			providers python:[x for x in repositoryutil.get_providers(here) if x.id not in ['zcatalog_connector']];
 			remote python:{x:repositoryutil.remoteFiles(here,basepath+'/'+x.id) for x in providers};
 			ids python:sorted(set([item['id'] for sublist in remote.values() for item in sublist.values()]));
 			local python:{x:repositoryutil.localFiles(here,x,ids=ids) for x in providers};">
 			<tal:block tal:content="structure python:here.manage_main_diff(here,request,
+					providers=providers,
 					ignore=True,
 					direction='Loading',
 					remote=remote,

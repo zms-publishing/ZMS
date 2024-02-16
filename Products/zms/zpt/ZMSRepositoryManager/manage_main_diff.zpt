@@ -7,12 +7,12 @@
 		]);
 	standard modules/Products.zms/standard;
 	repositoryutil modules/Products.zms/repositoryutil;
+	providers options/providers;
 	ignore options/ignore;
 	direction options/direction;
 	remote options/remote;
 	local options/local;
-	providers python:repositoryutil.get_providers(here);
-	provider_diffs python:[(x,repositoryutil.get_diffs(local[x],remote[x],ignore)) for x in providers];
+	provider_diffs python:[(x,repositoryutil.get_diffs(local.get(x,{}),remote.get(x,{}),ignore)) for x in providers];
 	provider_diffs_count python:sum([len(x[1]) for x in provider_diffs]+[0])">
 
 	<div class="form-group row mb-5 diffcoloring">

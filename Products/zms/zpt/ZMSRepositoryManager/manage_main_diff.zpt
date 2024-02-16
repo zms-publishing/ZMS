@@ -9,8 +9,8 @@
 	repositoryutil modules/Products.zms/repositoryutil;
 	ignore python:here.get_ignore_orphans();
 	providers python:repositoryutil.get_providers(here);
-	local python:{x:repositoryutil.localFiles(here,x) for x in providers};
 	remote python:{x:here.remoteFiles(x) for x in providers};
+	local python:{x:repositoryutil.localFiles(here,x) for x in providers};
 	provider_diffs python:[(x,repositoryutil.get_diffs(local[x],remote[x],ignore)) for x in providers];
 	provider_diffs_count python:sum([len(x[1]) for x in provider_diffs]+[0])">
 

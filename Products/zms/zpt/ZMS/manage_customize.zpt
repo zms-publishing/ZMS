@@ -404,19 +404,102 @@
 		</div>
 
 		<div class="tab-pane fade card" id="Updates" role="tabpanel" tal:define="
-				repositoryutil modules/Products.zms/repositoryutil;
-				basepath python:repositoryutil.get_system_conf_basepath()+'/metaobj_manager';">
-			<form class="form-horizontal card" title="Updates" name="UpdatesForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
-				get_system_conf_basepath=<tal:block tal:content="basepath"></tal:block>
-				<div class="form-group row" tal:define="rr python:repositoryutil.readRepository(here,basepath)">
-					<ul>
-					<li tal:repeat="id rr">
-						<tal:block tal:content="python:rr[id].get('name',id+'?NAME')"></tal:block>
-						<tal:block tal:content="python:rr[id].get('revision','?REVISION')"></tal:block>
-					</li>
-					</ul>
+			repositoryutil modules/Products.zms/repositoryutil;
+			basepath python:repositoryutil.get_system_conf_basepath();
+			ignore python:True;
+			providers python:repositoryutil.get_providers(here);
+			remote python:{x:repositoryutil.remoteFiles(here,basepath) for x in providers};
+			ids python:sorted(set([item['id'] for sublist in remote.values() for item in sublist.values()]));
+			local python:{x:repositoryutil.localFiles(here,x,ids=ids) for x in providers};
+			provider_diffs python:[(x,repositoryutil.get_diffs(local[x],remote[x],ignore)) for x in providers];
+			provider_diffs_count python:sum([len(x[1]) for x in provider_diffs]+[0])">
+
+			<tal:block tal:condition="not:provider_diffs_count">
+				<div class="form-group filelist row" tal:repeat="provider providers">
+					<label class="col-sm-2 control-label zms-component">
+						<a tal:attributes="href python:'%s/manage_main?lang=%s'%(provider.absolute_url(),request['lang'])" target="_blank"><tal:block tal:content="python:provider.id">the provider</tal:block></a>
+					</label>
+					<div class="col-sm-10" tal:define="
+							local_files python:list(local[provider].values());
+							ids python:standard.distinct_list([x['id'] for x in local_files]);
+							ids_sorting python:ids.sort();">
+						<div tal:repeat="id ids">
+							<i class="fas fa-check-circle text-success"></i>
+							<a tal:attributes="href python:'%s/manage_%s?lang=%s&id=%s'%(provider.absolute_url(), id=='__metas__' and 'metas' or 'main',request['lang'],id)" target="_blank">
+								<tal:block tal:content="id">id</tal:block>
+							</a>
+						</div>
+					</div>
 				</div>
-			</form>
+			</tal:block>
+
+			<tal:block tal:condition="provider_diffs_count"
+			><tal:block tal:repeat="provider_diff provider_diffs"
+			><tal:block
+				tal:define="zmscontext python:here.getSelf();
+					provider python:provider_diff[0];
+					local_files python:list(local[provider].values());
+					diffs python:provider_diff[1];
+					ids python:standard.distinct_list([x[2] for x in diffs]);
+					ids_sorting python:ids.sort();"
+			><div class="form-group row" tal:condition="ids">
+				<label class="col-sm-2 control-label zms-component">
+					<a tal:attributes="href python:'%s/manage_main?lang=%s'%(provider.absolute_url(),request['lang'])" target="_blank"
+						tal:content="python:provider.id">the provider_diff
+					</a>
+				</label>
+				<div class="col-sm-10">
+					<table class="table repo-diff-files table-sm table-hover">
+					<tal:block tal:repeat="id ids">
+						<tr>
+							<td class="meta-ids"><input type="checkbox" name="ids:list" tal:attributes="value python:'%s:%s'%(provider.id,id)" checked="checked"></td>
+							<td>
+								<a tal:attributes="href python:'%s/manage_%s?lang=%s&id=%s'%(provider.absolute_url(), id=='__metas__' and 'metas' or 'main',request['lang'],id)" target="_blank">
+									<i tal:on-error="string:" style="text-align:center;width:2em;" tal:attributes="class python:zmscontext.zmi_icon(id)"></i>
+									<strong tal:content="id">the id</strong>
+								</a>
+							</td>
+							<td>
+							<div style="white-space: nowrap;" 
+								tal:repeat="diff python:[x for x in diffs if x[2]==id]">
+								<tal:block 
+									tal:on-error="structure python:'<code><i class=\042fa fa-exclamation-triangle\042></i> PROCESSING-ERROR: %s</code>'%(diff[0])"
+									tal:define="
+										filename python:diff[0];
+										mt python:diff[1];
+										l python:diff[3];
+										r python:diff[4];
+										ld python:[l.get('data'),''][l.get('data') is None];
+										rd python:[r.get('data'),''][r.get('data') is None];
+										is_new python:len(ld)==0 and len(rd)>0;
+										is_modified python:len(ld)>0 and len(rd)>0;
+										is_removed python:len(ld)>0 and len(rd)==0;
+										filestate python:is_new and 'new' or (is_modified and 'modified' or (is_removed and 'removed' or ''));
+										filestate_css python:{'new':'success','modified':'warning','removed':'danger','':'info'}[filestate];">
+									<i tal:condition="python:l and l.get('data') is None" class="fa fa-exclamation-triangle text-danger" title="not found!"></i>
+									<span title="State"
+										tal:condition="not:python:l and l.get('data') is None"
+										tal:attributes="class python:'state alert-%s'%(filestate_css);
+											title python:'State: %s'%(filestate)">&nbsp;
+									</span>
+									<a href="#" 
+										tal:define="attr_id python:[id,filename.replace(id+'/','').split('.')[0]][len(filename.split(id+'/'))>0]"
+										tal:attributes="
+											onclick python:'javascript:focus_anchorid(\'#%s\');;return false'%(standard.id_quote(filename));
+											ondblclick python:'javascript:window.open(\'%s/manage_%s?lang=%s&id=%s&attr_id=%s\', target=\'_blank\')'%(provider.absolute_url(), id=='__metas__' and 'metas' or 'main',request['lang'],id, attr_id);" 
+										tal:content="python:filename">the filename
+									</a>
+								</tal:block>
+							</div>
+							</td>
+						</tr>
+					</tal:block>
+					</table>
+				</div><!-- .col-sm-10 -->
+			</div><!-- .form-group -->
+			</tal:block>
+			</tal:block>
+
 		</div>
 
 	</div>

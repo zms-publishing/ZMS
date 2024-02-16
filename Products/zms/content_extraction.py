@@ -65,9 +65,10 @@ def extract_content_tika(context, b, content_type=None):
     Apache Tika - a content analysis toolkit
     @see https://tika.apache.org/
     """
-
-    parser_url = context.getConfProperty('opensearch.parser', context.getConfProperty('tika.url', '')) # http://localhost:9998/tika
-    if parser_url:
+    parser_names = [k for k in list(context.getConfProperties(inherited=True)) if k.lower() == 'tika.url' or k.lower().endswith('.parser')]
+    if parser_names:
+        parser_name = parser_names[0]
+        parser_url = context.getConfProperty(parser_name,'http://localhost:9998/tika')
         headers = {'Accept': 'application/json'}
         try:
             import requests

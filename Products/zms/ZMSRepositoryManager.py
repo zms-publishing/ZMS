@@ -146,7 +146,7 @@ class ZMSRepositoryManager(
         for id in list(set([x.split(':')[1] for x in ids if x.split(':')[0]==provider_id])):
           try:
             # Read local-files from provider.
-            files = self.localFiles(provider, [id])
+            files = repositoryutil.localFiles(self, provider, [id])
             # Recreate folder.
             if os.path.exists(basepath):
               for name in os.listdir(basepath):

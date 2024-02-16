@@ -69,7 +69,6 @@ class ZMSRepositoryManager(
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     manage = PageTemplateFile('zpt/ZMSRepositoryManager/manage_main', globals())
     manage_main = PageTemplateFile('zpt/ZMSRepositoryManager/manage_main', globals())
-    manage_main_diff = PageTemplateFile('zpt/ZMSRepositoryManager/manage_main_diff', globals())
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     Management Permissions

@@ -2,7 +2,9 @@
 <html lang="en" tal:define="
 	dummy0 python:here.zmi_page_request(here,request);
 	zmscontext python:here.getSelf();
-	standard modules/Products.zms/standard">
+	standard modules/Products.zms/standard;
+	repositoryutil modules/Products.zms/repositoryutil;
+	providers python:repositoryutil.get_providers(here);">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
 <body tal:attributes="class python:here.zmi_body_class(id='repository_manager_main config')">
 <header tal:replace="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</header>
@@ -75,22 +77,12 @@
 				</div>
 			</div>
 		</div>
-		<div class="form-group row mb-5 diffcoloring"
-			title="Double-Click to change the coloring">
-			<label class="col-sm-2 control-label">Working Mode</label>
-			<div class="col-sm-10">
-				<div class="form-control" readonly="readonly" style="user-select:none;background:#f5f5f5"
-					ondblclick="javascript:$('a#nav-link-properties').click();$('#update_direction').focus()">
-					<span class="selected" tal:content="python:here.get_update_direction()=='Loading' and 'Import Mode: Show changes in Filesystem compared to ZMS (Default)' or 'Export Mode: Show changes in ZMS compared to Filesystem'">Loading Mode</span>
-					<small style="float:right;padding-top:0.2em">
-						<span class="state alert-success">&nbsp;</span> <tal:block tal:content="python:here.getZMILangStr('STATE_NEW')"></tal:block>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<span class="state alert-warning">&nbsp;</span> <tal:block tal:content="python:here.getZMILangStr('STATE_MODIFIED')"></tal:block>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<span class="state alert-danger">&nbsp;</span> <tal:block tal:content="python:here.getZMILangStr('STATE_DELETED')"></tal:block>&nbsp;
-					</small>
-				</div>
-			</div><!-- .col-sm-10 -->
-		</div><!-- .form-group -->
-		<tal:block tal:content="structure python:here.manage_main_diff(here,request)">
+		<tal:block tal:content="structure python:here.manage_main_diff(here,request,
+				ignore=here.get_ignore_orphans(),
+				direction=here.get_update_direction(),
+				remote={x:here.remoteFiles(x) for x in providers},
+				local={x:repositoryutil.localFiles(here,x) for x in providers}
+				)">
 			the diff
 		</tal:block>
 		</form>

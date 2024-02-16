@@ -139,6 +139,7 @@ class ConfManager(
     manage_customizeInstalledProducts = PageTemplateFile('zpt/ZMS/manage_customizeinstalledproducts', globals())
     manage_customizeLanguagesForm = PageTemplateFile('zpt/ZMS/manage_customizelanguagesform', globals())
     manage_customizeDesignForm = PageTemplateFile('zpt/ZMS/manage_customizedesignform', globals())
+    manage_main_diff = PageTemplateFile('zpt/ZMSRepositoryManager/manage_main_diff', globals())
 
 
     # --------------------------------------------------------------------------

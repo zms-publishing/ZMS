@@ -408,11 +408,19 @@
 			basepath python:repositoryutil.get_system_conf_basepath();
 			ignore python:True;
 			providers python:repositoryutil.get_providers(here);
-			remote python:{x:repositoryutil.remoteFiles(here,basepath) for x in providers};
+			remote python:{x:repositoryutil.remoteFiles(here,basepath+'/'+x.id) for x in providers};
 			ids python:sorted(set([item['id'] for sublist in remote.values() for item in sublist.values()]));
 			local python:{x:repositoryutil.localFiles(here,x,ids=ids) for x in providers};
 			provider_diffs python:[(x,repositoryutil.get_diffs(local[x],remote[x],ignore)) for x in providers];
 			provider_diffs_count python:sum([len(x[1]) for x in provider_diffs]+[0])">
+
+			ids=<tal:block tal:content="ids"></tal:block>
+			<hr>
+			providers=<tal:block tal:content="python:[x.id for x in providers]"></tal:block>
+			<hr>
+			local=<tal:block tal:content="python:sorted(list(list(local.values())[0].keys()))"></tal:block>
+			<hr>
+			remote=<tal:block tal:content="python:sorted(list(list(remote.values())[0].keys()))"></tal:block>
 
 			<tal:block tal:condition="not:provider_diffs_count">
 				<div class="form-group filelist row" tal:repeat="provider providers">
@@ -476,6 +484,10 @@
 										is_removed python:len(ld)>0 and len(rd)==0;
 										filestate python:is_new and 'new' or (is_modified and 'modified' or (is_removed and 'removed' or ''));
 										filestate_css python:{'new':'success','modified':'warning','removed':'danger','':'info'}[filestate];">
+								<tal:block tal:condition="python:id=='ZMSDocument'">
+								<div>l=<tal:block tal:content="ld"></tal:block></div>
+								<div>r=<tal:block tal:content="rd"></tal:block></div>
+								</tal:block>
 									<i tal:condition="python:l and l.get('data') is None" class="fa fa-exclamation-triangle text-danger" title="not found!"></i>
 									<span title="State"
 										tal:condition="not:python:l and l.get('data') is None"

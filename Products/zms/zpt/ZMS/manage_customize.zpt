@@ -21,7 +21,6 @@
 			<li class="nav-item"><a class="nav-link" id="Custom-tab" href="#Custom" data-toggle="tab" role="tab">System-Properties</a></li>
 			<li class="nav-item"><a class="nav-link" id="MediaDb-tab" href="#MediaDb" data-toggle="tab" role="tab">Media-Folder</a></li>
 			<li class="nav-item"><a class="nav-link" id="Info-tab" href="#Info" data-toggle="tab" role="tab">System-Info</a></li>
-			<li class="nav-item"><a class="nav-link" id="Updates-tab" href="#Updates" data-toggle="tab" role="tab">Updates</a></li>
 		</ul>
 	</nav>
 	<div class="tab-content">
@@ -402,29 +401,7 @@
 				</div><!-- .form-group -->
 			</form>
 		</div>
-
-		<div class="tab-pane fade card zmi repository_manager_main" id="Updates" role="tabpanel" tal:define="
-			repositoryutil modules/Products.zms/repositoryutil;
-			basepath python:repositoryutil.get_system_conf_basepath();
-			ignore python:True;
-			direction python:'Loading';
-			providers python:[x for x in repositoryutil.get_providers(here) if x.id not in ['zcatalog_connector']];
-			remote python:{x:repositoryutil.remoteFiles(here,basepath+'/'+x.id) for x in providers};
-			ids python:sorted(set([item['id'] for sublist in remote.values() for item in sublist.values()]));
-			local python:{x:repositoryutil.localFiles(here,x,ids=ids) for x in providers};">
-			<tal:block tal:content="structure python:here.manage_main_diff(here,request,
-					providers=providers,
-					ignore=True,
-					direction='Loading',
-					remote=remote,
-					local=local
-					)">
-				the diff
-			</tal:block>
-		</div>
-
 	</div>
-
 </div><!-- #zmi-tab -->
 <footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 </body>

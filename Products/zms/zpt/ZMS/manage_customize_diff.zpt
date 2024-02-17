@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" 
+	tal:define="standard modules/Products.zms/standard;
+		zmscontext python:here.getSelf(); 
+		bnobody python:int(request.get('ZMS_NO_BODY','')!='');">
+	<head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
+	<style>
+	.zmi.repository_manager_main .row,
+	.zmi.repository_manager_main .diff,
+	.zmi.repository_manager_main #repo-changesets {
+		font-size:smaller;
+	}
+	</style>
+	<body tal:define="
+			repositoryutil modules/Products.zms/repositoryutil;
+			basepath python:repositoryutil.get_system_conf_basepath();
+			ignore python:True;
+			direction python:'Loading';
+			providers python:[x for x in repositoryutil.get_providers(here) if x.id == request.get('provider_id')];
+			remote python:{x:repositoryutil.remoteFiles(here,basepath+'/'+x.id) for x in providers};
+			ids python:sorted(set([item['id'] for sublist in remote.values() for item in sublist.values()]));
+			local python:{x:repositoryutil.localFiles(here,x,ids=ids) for x in providers};"
+		tal:attributes="class python:here.zmi_body_class(id='repository_manager_main')">
+			<tal:block tal:content="structure python:here.manage_main_diff(here,request,
+					providers=providers,
+					ignore=True,
+					direction='Loading',
+					remote=remote,
+					local=local
+					)">
+				the diff
+			</tal:block>
+		<tal:block tal:content="structure python:here.zmi_html_foot(here,request)">zmi_html_foot</tal:block>
+	</body>
+</html>

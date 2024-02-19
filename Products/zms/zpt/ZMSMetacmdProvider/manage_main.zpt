@@ -221,6 +221,11 @@
 			<div class="form-group row mt-5">
 				<div class="controls save">
 					<button name="btn" type="submit" class="btn btn-primary" value="BTN_IMPORT" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
+					<a class="btn btn-secondary ml-1" 
+						title="Check-Up: Compare working content model with the current ZMS source files."
+						href="./manage_customize_diff?provider_id=metacmd_manager" target="_blank">
+						<i class="fas fa-stethoscope"></i>
+					</a>
 				</div>
 			</div>
 		</form>
@@ -253,9 +258,6 @@
 						<button class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).attr('title')});return false"><i class="fas fa-upload"></i></button>
 						<button class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this);return false"><i class="fas fa-download"></i></button>
 					</div><!-- .btn-group -->
-					<div class="btn-group check-for-updates">
-						<button class="btn btn-secondary" title="ZMS: Check for updates..." onclick="$ZMI.iframe('manage_customize_diff',{provider_id:'metacmd_manager'},{iframe:true,height:'600',title:$(this).attr('title')});return false"><i class="fas fa-redo text-muted" style="font-size:smaller"></i> <span class="badge badge-info">ZMS</span></button>
-					</div>
 				</div><!-- .btn-toolbar -->
 			</th>
 		</tr>

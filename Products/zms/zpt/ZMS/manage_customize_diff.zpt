@@ -14,7 +14,6 @@
 	<body tal:define="
 			repositoryutil modules/Products.zms/repositoryutil;
 			basepath python:repositoryutil.get_system_conf_basepath();
-			ignore python:True;
 			direction python:'Loading';
 			providers python:[x for x in repositoryutil.get_providers(here) if x.id == request['provider_id']];
 			remote python:{x:repositoryutil.remoteFiles(here,basepath+'/'+x.id) for x in providers};
@@ -29,16 +28,52 @@
 					<button type="submit" name="btn" class="btn btn-secondary" onclick="return self.window.parent.zmiModal('hide');" value="BTN_CLOSE" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
 				</div>
 			</div><!-- .form-group -->
+            <div class="form-group row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-10">
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="ignore_switch" />
+                        <label class="custom-control-label" for="ignore_switch">Display new elements</label>
+                    </div>
+                </div>
+            </div>
 			<tal:block tal:content="structure python:here.manage_main_diff(here,request,
 					ids_name='init',
 					providers=providers,
-					ignore=True,
+					ignore=standard.pybool(request.get('ignore', 'True')),
 					direction='Loading',
 					remote=remote,
 					local=local
 					)">
 				the diff
 			</tal:block>
+            <script>
+                $('#ignore_switch').click(() => {
+                    let url;
+                    if (location.href.search('ignore=False') > 0) {
+                        url = location.href.replace('ignore=False', 'ignore=True');
+                    }
+                    else if (location.href.search('ignore=True') > 0) {
+                        url = location.href.replace('ignore=True', 'ignore=False');
+                    }
+                    else {
+                        if ($('#ignore_switch').is(':checked')) {
+                            url = location.href + 'ignore=False';
+                        }
+                        else {
+                            url = location.href + 'ignore=True';
+                        }
+                    }
+                    location.replace(url);
+                });
+
+                if (location.href.search('ignore=False') > 0) {
+                    $('#ignore_switch').prop('checked', true);
+                }
+                else {
+                    $('#ignore_switch').prop('checked', false);
+                }
+            </script>
 		</form>
 		<tal:block tal:content="structure python:here.zmi_html_foot(here,request)">zmi_html_foot</tal:block>
 	</body>

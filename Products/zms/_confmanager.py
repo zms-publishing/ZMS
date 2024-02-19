@@ -735,16 +735,14 @@ class ConfManager(
           meta_type = REQUEST.get('meta_type', '')
           if meta_type == 'Sequence':
             obj = _sequence.Sequence()
-            self._setObject(obj.id, obj)
-            message = 'Added '+meta_type
           elif meta_type == 'ZMSLog':
             obj = zmslog.ZMSLog()
-            self._setObject(obj.id, obj)
-            message = 'Added '+meta_type
+          elif meta_type == 'ZMSIndex':
+            obj = zmsindex.ZMSIndex()
           else:
             obj = ConfDict.forName(meta_type+'.'+meta_type)()
-            self._setObject(obj.id, obj)
-            message = 'Added '+meta_type
+          self._setObject(obj.id, obj)
+          message = 'Added '+meta_type
         elif btn == 'Remove':
           ids = REQUEST.get('ids', [])
           if ids:

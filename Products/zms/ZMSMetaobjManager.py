@@ -1326,8 +1326,11 @@ class ZMSMetaobjManager(object):
             filename = f.filename
             xmlfile = f
           if REQUEST.get('init'):
-            file = REQUEST['init']
-            filename,xmlfile = self.getConfXmlFile( file)
+            init = REQUEST['init']
+            if isinstance(init, list):
+              message = "@TODO implement here"
+            else:
+              filename, xmlfile = self.getConfXmlFile( init)
           if xmlfile is not None:
             # extract xml from zip
             if filename.endswith('.zip'):
@@ -1344,11 +1347,11 @@ class ZMSMetaobjManager(object):
               # open string-io.
               xmlfile = io.BytesIO(xml)
               v = standard.parseXmlString(xmlfile)
-              xmlfile = io.BytesIO(xml)
               if not isinstance(v,list):
                 v = []
               if temp_id in temp_folder.objectIds():
                 temp_folder.manage_delObjects([temp_id])
+              xmlfile = io.BytesIO(xml)
               file = zopeutil.addFile(temp_folder, temp_id, filename, xmlfile)
               extra['section'] = 'import'
               extra['temp_import_file_id'] = temp_id

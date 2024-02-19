@@ -16,12 +16,21 @@
 			basepath python:repositoryutil.get_system_conf_basepath();
 			ignore python:True;
 			direction python:'Loading';
-			providers python:[x for x in repositoryutil.get_providers(here) if x.id == request.get('provider_id')];
+			providers python:[x for x in repositoryutil.get_providers(here) if x.id == request['provider_id']];
 			remote python:{x:repositoryutil.remoteFiles(here,basepath+'/'+x.id) for x in providers};
 			ids python:sorted(set([item['id'] for sublist in remote.values() for item in sublist.values()]));
 			local python:{x:repositoryutil.localFiles(here,x,ids=ids) for x in providers};"
 		tal:attributes="class python:here.zmi_body_class(id='repository_manager_main')">
+		<form method="post" tal:attributes="action request/action" target="_parent">
+			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
+			<div class="form-group row">
+				<div class="controls save">
+					<button type="submit" name="btn" class="btn btn-primary" value="BTN_IMPORT" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
+					<button type="submit" name="btn" class="btn btn-secondary" onclick="return self.window.parent.zmiModal('hide');" value="BTN_CLOSE" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
+				</div>
+			</div><!-- .form-group -->
 			<tal:block tal:content="structure python:here.manage_main_diff(here,request,
+					ids_name='init',
 					providers=providers,
 					ignore=True,
 					direction='Loading',
@@ -30,6 +39,7 @@
 					)">
 				the diff
 			</tal:block>
+		</form>
 		<tal:block tal:content="structure python:here.zmi_html_foot(here,request)">zmi_html_foot</tal:block>
 	</body>
 </html>

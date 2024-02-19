@@ -78,6 +78,7 @@
 			</div>
 		</div>
 		<tal:block tal:content="structure python:here.manage_main_diff(here,request,
+				ids_name='ids',
 				providers=providers,
 				ignore=here.get_ignore_orphans(),
 				direction=here.get_update_direction(),

@@ -223,7 +223,7 @@
 					<button name="btn" type="submit" class="btn btn-primary" value="BTN_IMPORT" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
 					<a class="btn btn-secondary ml-1" 
 						title="Check-Up: Compare working content model with the current ZMS source files."
-						href="./manage_customize_diff?provider_id=metacmd_manager" target="_blank">
+						tal:attributes="href python:'./manage_customize_diff?action=%s&lang=%s&provider_id=metacmd_manager'%(action,request['lang'])" target="_blank">
 						<i class="fas fa-stethoscope"></i>
 					</a>
 				</div>

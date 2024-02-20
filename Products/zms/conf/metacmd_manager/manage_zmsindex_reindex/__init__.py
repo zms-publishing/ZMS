@@ -34,7 +34,7 @@ class manage_zmsindex_reindex:
 	package = "com.zms.index"
 
 	# Revision
-	revision = "3.0.0"
+	revision = "3.2.0"
 
 	# Roles
 	roles = ["ZMSAdministrator"]

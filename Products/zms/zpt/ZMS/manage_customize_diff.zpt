@@ -5,11 +5,37 @@
 		bnobody python:int(request.get('ZMS_NO_BODY','')!='');">
 	<head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
 	<style>
-	.zmi.repository_manager_main .row,
-	.zmi.repository_manager_main .diff,
-	.zmi.repository_manager_main #repo-changesets {
-		font-size:smaller;
-	}
+	/*<!--*/
+	/*
+		.zmi.repository_manager_main .row,
+		.zmi.repository_manager_main .diff,
+		.zmi.repository_manager_main #repo-changesets {
+			font-size:smaller;
+		}
+	*/
+		.form-group.row.mb-5.diffcoloring {
+			margin:0 !important;
+		}
+		.form-group.row.mb-5.diffcoloring .form-control {
+			background: none !important;
+			border:none;
+			text-align: right;
+			display:block;
+			padding: 0;
+		}
+		.form-group.row.mb-5.diffcoloring label {
+			visibility: hidden;
+		}
+		.form-group.row.mb-5.diffcoloring span.selected {
+			display: none;
+		}
+		button#ignore_switch {
+			width: 7rem;
+		}
+		button#ignore_switch i {
+			font-size:16px
+		}
+	/*-->*/
 	</style>
 	<body tal:define="
 			repositoryutil modules/Products.zms/repositoryutil;
@@ -25,18 +51,23 @@
 			<div class="form-group row">
 				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-primary" value="BTN_IMPORT" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
+					<button type="button" name="ignore" class="btn btn-secondary" style="box-shadow:none!important" id="ignore_switch" value="False" 
+						title="Display new elements of current ZMS source files compared to working content model">Display New</button>
 					<button type="submit" name="btn" class="btn btn-secondary" onclick="return self.window.parent.zmiModal('hide');" value="BTN_CLOSE" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
 				</div>
 			</div><!-- .form-group -->
-            <div class="form-group row">
-                <div class="col-sm-2"></div>
-                <div class="col-sm-10">
-                    <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input" id="ignore_switch" />
-                        <label class="custom-control-label" for="ignore_switch">Display new elements</label>
-                    </div>
-                </div>
-            </div>
+			<div class="form-group row">
+				<div class="col-sm-2"></div>
+				<div class="col-sm-10">
+					<div class="form-group row justify-content-between m-0">
+						<span class="btn btn-secondary" 
+							onclick="zmiToggleSelectionButtonClick(this)" 
+							tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))">
+							<i class="fas fa-check-square" style="min-width:unset"></i>
+						</span>
+					</div>
+				</div>
+			</div>
 			<tal:block tal:content="structure python:here.manage_main_diff(here,request,
 					ids_name='init',
 					providers=providers,
@@ -47,33 +78,36 @@
 					)">
 				the diff
 			</tal:block>
-            <script>
-                $('#ignore_switch').click(() => {
-                    let url;
-                    if (location.href.search('ignore=False') > 0) {
-                        url = location.href.replace('ignore=False', 'ignore=True');
-                    }
-                    else if (location.href.search('ignore=True') > 0) {
-                        url = location.href.replace('ignore=True', 'ignore=False');
-                    }
-                    else {
-                        if ($('#ignore_switch').is(':checked')) {
-                            url = location.href + 'ignore=False';
-                        }
-                        else {
-                            url = location.href + 'ignore=True';
-                        }
-                    }
-                    location.replace(url);
-                });
+			<script>
+			//<!--
+				$('#ignore_switch').click(() => {
+					$('#ignore_switch').html('<i class="fas fa-spinner fa-spin"></i>');
+					let url;
+					if (location.href.search('ignore=False') > 0) {
+						url = location.href.replace('ignore=False', 'ignore=True');
+					}
+					else if (location.href.search('ignore=True') > 0) {
+						url = location.href.replace('ignore=True', 'ignore=False');
+					}
+					else {
+						if ($('#ignore_switch').is(':checked')) {
+							url = location.href + 'ignore=False';
+						}
+						else {
+							url = location.href + 'ignore=True';
+						}
+					}
+					location.replace(url);
+				});
 
-                if (location.href.search('ignore=False') > 0) {
-                    $('#ignore_switch').prop('checked', true);
-                }
-                else {
-                    $('#ignore_switch').prop('checked', false);
-                }
-            </script>
+				if (location.href.search('ignore=False') > 0) {
+					$('#ignore_switch').prop('checked', true);
+				}
+				else {
+					$('#ignore_switch').prop('checked', false);
+				}
+			//-->
+			</script>
 		</form>
 		<tal:block tal:content="structure python:here.zmi_html_foot(here,request)">zmi_html_foot</tal:block>
 	</body>

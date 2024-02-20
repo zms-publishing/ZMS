@@ -40,6 +40,7 @@ from zope.interface import implementer, providedBy
 from .IZMSConfigurationProvider import IZMSConfigurationProvider
 from Products.zms import standard
 from Products.zms import ZMSFilterManager, IZMSMetamodelProvider, IZMSFormatProvider, IZMSRepositoryManager
+from Products.zms import _conf
 from Products.zms import _fileutil
 from Products.zms import _repositoryutil
 from Products.zms import _mediadb
@@ -447,6 +448,7 @@ class ConfManager(
     Returns conf-properties.
     """
     def get_conf_properties(self):
+      self.getZMSSysConf()
       return getattr( self, '__attr_conf_dict__', {})
 
 
@@ -834,6 +836,22 @@ class ConfManager(
       # Return with message.
       message = standard.url_quote(message)
       return RESPONSE.redirect('manage_customizeDesignForm?lang=%s&manage_tabs_message=%s'%(lang, message))
+
+
+    ############################################################################
+    ###
+    ###   Component ZMSSysConf
+    ###
+    ############################################################################
+
+    def getZMSSysConf(self):
+      sys_conf = getattr(self,"sys_conf",None)
+      if sys_conf is None:
+        sys_conf = _conf.ZMSSysConf()
+        self._setObject(sys_conf.id, sys_conf)
+        sys_conf = getattr(self, sys_conf.id, None)
+        sys_conf.initialize()
+      return sys_conf
 
 
     ############################################################################

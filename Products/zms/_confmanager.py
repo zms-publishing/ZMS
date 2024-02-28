@@ -1047,7 +1047,7 @@ class ConfManager(
     ############################################################################
 
     def getWorkflowManager(self):
-      manager = [x for x in self.getDocumentElement().objectValues() if x.getId() == 'workflow_manager']
+      manager = [x for x in self.getDocumentElement().objectItems() if type(x)!=tuple and x.getId() == 'workflow_manager']
       if len(manager) == 0:
         class DefaultManager(object):
           def importXml(self, xml): pass

@@ -345,9 +345,9 @@
   </item>
   <item type="dictionary">
     <dictionary>
-      <item key="eng"><![CDATA[Follow us on Twitter]]></item>
-      <item key="fra"><![CDATA[Suivez-nous sur Twitter]]></item>
-      <item key="ger"><![CDATA[Folge uns auf Twitter]]></item>
+      <item key="eng"><![CDATA[Follow us on <strong>&Xopf;</strong>]]></item>
+      <item key="fra"><![CDATA[Suivez-nous sur <strong>&Xopf;</strong>]]></item>
+      <item key="ger"><![CDATA[Folge uns auf <strong>&Xopf;</strong>]]></item>
       <item key="ita"></item>
       <item key="key"><![CDATA[Folge uns auf Twitter]]></item>
     </dictionary>

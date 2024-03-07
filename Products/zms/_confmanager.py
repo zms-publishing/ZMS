@@ -1047,8 +1047,8 @@ class ConfManager(
     ############################################################################
 
     def getWorkflowManager(self):
-      manager = [x for x in self.getDocumentElement().objectValues() if x.getId() == 'workflow_manager']
-      if len(manager) == 0:
+      manager = getattr(self.getDocumentElement(),'workflow_manager',None)
+      if manager is None:
         class DefaultManager(object):
           def importXml(self, xml): pass
           def getAutocommit(self): return True
@@ -1058,8 +1058,8 @@ class ConfManager(
           def getActivityDetails(self, id): return None
           def getTransitions(self): return []
           def getTransitionIds(self): return []
-        manager = [DefaultManager()]
-      return manager[0]
+        manager = DefaultManager()
+      return manager
 
 
     ############################################################################

@@ -687,6 +687,9 @@ class ObjAttrs(object):
           # Start time.
           elif key == 'attr_active_start':
             if value is not None:
+              if isinstance(value, time.struct_time):
+                # Convert time.struct_time to datetime tuple.
+                value = tuple(value[:8]) + (0,)
               dt = datetime.datetime.fromtimestamp(time.mktime(value))
               b = b and now > dt
               if dt > now and self.REQUEST.get('ZMS_CACHE_EXPIRE_DATETIME', dt) >= dt:
@@ -694,6 +697,9 @@ class ObjAttrs(object):
           # End time.
           elif key == 'attr_active_end':
             if value is not None:
+              if isinstance(value, time.struct_time):
+                # Convert time.struct_time to datetime tuple.
+                value = tuple(value[:8]) + (0,)
               dt = datetime.datetime.fromtimestamp(time.mktime(value))
               b = b and dt > now
               if dt > now and self.REQUEST.get('ZMS_CACHE_EXPIRE_DATETIME', dt) >= dt:

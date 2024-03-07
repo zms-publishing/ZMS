@@ -66,7 +66,7 @@ def get_file(node, d, fileparsing=True):
 
 def get_catalog_objects(adapter, connector, node, d, fileparsing=True):
   request = node.REQUEST
-  lang = request.get('lang', node.getPrimaryLanguage())
+  lang = standard.nvl(request.get('lang'), node.getPrimaryLanguage())
   # Additional defaults.
   d['id'] = '%s_%s'%(node.id,lang)
   d['lang'] = lang

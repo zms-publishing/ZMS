@@ -13,7 +13,7 @@ def manage_zcatalog_objects_clear( self, home_id):
     request['ZMS_ENV_ZCATALOG'] = getZCatalog(self, lang)
   zcatalog = request['ZMS_ENV_ZCATALOG']
   success, failed = 0, 0
-  query = {'zcatalog_index_home_id':home_id}
+  query = {'zcat_index_home_id':home_id}
   items = zcatalog(query)
   for item in items:
     data_record_id = item.data_record_id_

@@ -39,6 +39,9 @@ def get_suggest_terms(self, q='Lorem', index_name='myzms', field_names=['title',
 
 	# Postprocess Response
 	datarows = response.json().get('datarows') or []
+	if datarows:
+		# Remove empty rows
+		datarows = [row for row in datarows if row[0] is not None]
 	if index_name=='unitel':
 		# #########################
 		# UNIBE-CUSTOM: UNITEL

@@ -1,7 +1,5 @@
-from Products.zms import standard
 import json
 from urllib.parse import urlparse
-import opensearchpy
 from opensearchpy import OpenSearch
 from opensearchpy.helpers import bulk
 
@@ -33,26 +31,23 @@ def get_opensearch_client(self):
 	)
 	return client
 
-def bulk_opensearch_delete(self, sources):
+def bulk_opensearch_delete(self, actions):
 	client = get_opensearch_client(self)
-	index_name = self.getRootElement().getHome().id
-	actions = []
-	# Name adaption to opensearch schema
-	for x in sources:
-		# Create language specific opensearch id
-		_id = "%s:%s"%(x['uid'],x.get('lang',self.getPrimaryLanguage()))
-		d = {"_op_type":"delete", "_index":index_name, "_id":_id}
-		actions.append(d)
 	if client: 
 		return bulk(client, actions)
 	return 0, len(actions)
 
 def manage_opensearch_objects_clear( self, home_id):
-	nodes = [] # TODO get nodes for home_id
-	sources = [{'uid':x.get_uid()} for x in nodes]
-	try:
-		success, failed = bulk_opensearch_delete(self, sources)
-	except Exception as e:
-		print(e)
-		return 0, len(sources)
+	query = {
+		"query": {
+			"query_string": {
+				"query": "home_id: \"%s\""%home_id
+			}
+		}
+	}
+	client = get_opensearch_client(self)
+	response = client.search(body = json.dumps(query), index = [], size=10000, _source_includes=['home_id'])
+	hits = response["hits"]["hits"]
+	actions = [{"_op_type":"delete", "_index":x['_index'], "_id":x['_id']} for x in hits]
+	success, failed = bulk_opensearch_delete(self, actions)
 	return success, failed or 0

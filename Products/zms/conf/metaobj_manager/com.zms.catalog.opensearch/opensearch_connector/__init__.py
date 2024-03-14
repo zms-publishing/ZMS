@@ -81,6 +81,15 @@ class opensearch_connector:
 			,"repetitive":0
 			,"type":"External Method"}
 
+		manage_opensearch_objects_clear = {"default":""
+			,"id":"manage_opensearch_objects_clear"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"Objects: Clear Client from Opensearch"
+			,"repetitive":0
+			,"type":"External Method"}
+
 		manage_opensearch_destroy = {"default":""
 			,"id":"manage_opensearch_destroy"
 			,"keys":[]

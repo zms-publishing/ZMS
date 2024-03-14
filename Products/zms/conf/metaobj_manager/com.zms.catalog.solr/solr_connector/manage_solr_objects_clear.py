@@ -25,7 +25,8 @@ def bulk_solr_delete_documents(self, sources):
 
 	return 0, len(ids)
 
-def manage_solr_objects_remove( self, nodes):
+def manage_solr_objects_clear( self, home_id):
+	nodes = [] # TODO get nodes for home_id
 	sources = [{'uid':x.get_uid()} for x in nodes]
 	try:
 		failed, success = bulk_solr_delete_documents(self, sources)

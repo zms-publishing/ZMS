@@ -16,7 +16,7 @@ class com_zms_foundation_theme:
 	package = ""
 
 	# Revision
-	revision = "5.0.0"
+	revision = "5.0.1"
 
 	# Type
 	type = "ZMSPackage"

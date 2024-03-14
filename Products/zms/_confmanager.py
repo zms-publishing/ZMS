@@ -735,16 +735,14 @@ class ConfManager(
           meta_type = REQUEST.get('meta_type', '')
           if meta_type == 'Sequence':
             obj = _sequence.Sequence()
-            self._setObject(obj.id, obj)
-            message = 'Added '+meta_type
           elif meta_type == 'ZMSLog':
             obj = zmslog.ZMSLog()
-            self._setObject(obj.id, obj)
-            message = 'Added '+meta_type
+          elif meta_type == 'ZMSIndex':
+            obj = zmsindex.ZMSIndex()
           else:
             obj = ConfDict.forName(meta_type+'.'+meta_type)()
-            self._setObject(obj.id, obj)
-            message = 'Added '+meta_type
+          self._setObject(obj.id, obj)
+          message = 'Added '+meta_type
         elif btn == 'Remove':
           ids = REQUEST.get('ids', [])
           if ids:
@@ -1049,8 +1047,8 @@ class ConfManager(
     ############################################################################
 
     def getWorkflowManager(self):
-      manager = [x for x in self.getDocumentElement().objectValues() if x.getId() == 'workflow_manager']
-      if len(manager) == 0:
+      manager = getattr(self.getDocumentElement(),'workflow_manager',None)
+      if manager is None:
         class DefaultManager(object):
           def importXml(self, xml): pass
           def getAutocommit(self): return True
@@ -1060,8 +1058,8 @@ class ConfManager(
           def getActivityDetails(self, id): return None
           def getTransitions(self): return []
           def getTransitionIds(self): return []
-        manager = [DefaultManager()]
-      return manager[0]
+        manager = DefaultManager()
+      return manager
 
 
     ############################################################################

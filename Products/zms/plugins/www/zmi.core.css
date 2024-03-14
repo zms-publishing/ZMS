@@ -1725,10 +1725,18 @@ table.table-sm tr.row_insert td .btn-add {
 	display:inline-block;
 	text-align:right;
 	padding:0 4px 0 4px;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 .zmi.repository_manager_main .line-number.line-changed {
 	background:#101010;
 	color:#FEFEFE;
+}
+.zmi.repository_manager_main .diff del {
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 .zmi.repository_manager_main .state {
 	display:inline-block;

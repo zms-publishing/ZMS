@@ -156,6 +156,17 @@ class ZMSZCatalogConnector(
       return [x['ob'](self, nodes) for x in self.getActions(r'^manage_(.*?)_objects_remove$')][0]
 
     # --------------------------------------------------------------------------
+    #  ZMSZCatalogConnector.manage_objects_clear
+    #
+    #  @param home_id
+    #  @type  objects list|tuple 
+    #  @return success, failed
+    #  @rtype  tuple
+    # --------------------------------------------------------------------------
+    def manage_objects_clear(self, home_id):
+      return [x['ob'](self, home_id) for x in self.getActions(r'^manage_(.*?)_objects_clear$')][0]
+
+    # --------------------------------------------------------------------------
     #  ZMSZCatalogConnector.manage_destroy
     # --------------------------------------------------------------------------
     def manage_destroy(self):
@@ -303,6 +314,11 @@ class ZMSZCatalogConnector(
       adapter = self.getCatalogAdapter()
       result = {'success':0,'failed':0,'log':[],'next_node':None}
       objects = []
+      node = self.findObject(uid)
+      if node.meta_id == 'ZMS':
+        home_id = node.getHome().id
+        result['home_id'] = home_id
+        result['cleared'] = self.manage_objects_clear(home_id)[0]
       nodes, next_node = self.get_next_page(uid, page_size, clients) 
       log = []
       for node in nodes:

@@ -1,4 +1,3 @@
-from Products.zms import standard
 import json
 from urllib.parse import urlparse
 import opensearchpy
@@ -20,7 +19,7 @@ def get_elasticsearch_client(self):
 	username = self.getConfProperty('elasticsearch.username', 'admin')
 	password = self.getConfProperty('elasticsearch.password', 'admin')
 	auth = (username,password)
-	
+
 	client = OpenSearch(
 		hosts = [{'host': host, 'port': port}],
 		http_compress = False, # enables gzip compression for request bodies
@@ -39,11 +38,18 @@ def elasticsearch_query( self, REQUEST=None):
 	qpage_index = request.get('pageIndex',0)
 	qsize = request.get('size', 10)
 	qfrom = request.get('from', qpage_index*qsize)
-	index_name = self.getRootElement().getHome().id
 	index_names = []
-	index_names = [k.split('.')[-1] for k in list(self.getConfProperties().keys()) if k.lower().startswith('elasticsearch.suggest.fields.')]
-	if index_name not in index_names:
-		index_names.append(index_names)
+	# Search in a specific index given by Request-parameter 'facet'
+	if request.get('facet') not in ['all','undefined', None, '']:
+		index_names.append(request.get('facet'))
+	else:
+	# Search in all configured indexes
+		root_name = self.getRootElement().getHome().id
+		index_names.append(root_name)
+		# suggest.fields may be configured explicitly for any index, like 'elasticsearch.suggest.fields.persons = ['lastname','firstname']'
+		for index_name in [k.split('.')[-1] for k in list(self.getConfProperties(inherited=True)) if k.lower().startswith('elasticsearch.suggest.fields.')]:
+			if index_name != root_name:
+				index_names.append(index_name)
 
 	# Refs: query on multiple indexes and composite aggregation
 	# https://discuss.elastic.co/t/query-multiple-indexes-but-apply-queries-to-specific-index/127858
@@ -84,5 +90,5 @@ def elasticsearch_query( self, REQUEST=None):
 		resp_text = json.dumps(response)
 	except opensearchpy.exceptions.RequestError as e:
 		resp_text = '//%s'%(e.error)
-	
+
 	return resp_text

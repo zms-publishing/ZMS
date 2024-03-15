@@ -11,27 +11,26 @@
 	{{#.}}
 		<h2>{{{this.total}}} Treffer f&uuml;r <code>{{{this.query}}}</code></h2>
 	{{/.}}
+	<!-- //-->
 	{{#if buckets}}
 		<ul class="nav nav-tabs responsive" role="tablist">
 			{{#each buckets}}
 				<li id="tab-label-{{@index}}" data-tabid="pane_{{this.key}}"
 					aria-controls="tab-pane-{{@index}}" role="tab"
-					class="{{#if @first}}active{{/if}}"
-					><a class="facet" data-toggle="tab" 
-						data-facet="{{this.key}}" onclick="show_results_facet(this)" 
-						href="#tab-pane-{{@index}}">
-						{{#compareStrings this.key "unitel"}}
-							Personen
-						{{else}}
-							Inhalte
-						{{/compareStrings}}
-						<span class="badge badge-tabs">{{{this.doc_count}}}</span>
+					class="nav-item {{#if @first}}active{{/if}}"
+					><a class="nav-link facet" data-toggle="tab"
+						data-facet="{{this.key}}" onclick="show_results_facet(this)"
+						href="#tab-pane-{{@index}}"
+						aria-current="{{#if @first}}page{{/if}}">
+						{{{this.key}}}
+						<span class="badge badge-tabs bg-primary">{{{this.doc_count}}}</span>
 						<span class="sr-only">Treffer</span>
 					</a>
 				</li>
 			{{/each}}
 		</ul>
 	{{/if}}
+	<!-- //-->
 	<div class="tab-content">
 		<div class="tab-pane show active" role="tabpanel">
 			<div class="pagination" style="margin-bottom: 0em;"></div>

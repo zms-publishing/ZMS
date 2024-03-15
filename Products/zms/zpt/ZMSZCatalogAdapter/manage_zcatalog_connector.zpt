@@ -369,6 +369,9 @@
 				const fileparsing = $("#fileparsing").prop("checked")?1:0;
 				const params = {'uid':uid,'page_size:int':page_size,'clients:int':0,'fileparsing:int':fileparsing};
 				$.get('reindex_page',params,function(data) {
+					if (typeof data.cleared !== 'undefined') {
+						log("Cleared " + data.home_id + ": " + data.cleared);
+					}
 					that.pageSuccess += data.success;
 					that.pageFailed += data.failed;
 					log("Success: " + data.success + " / Failed: " + data.failed + " ( Total: " + (that.pageSuccess + that.pageFailed) + " / " + that.pageExpected + " )");

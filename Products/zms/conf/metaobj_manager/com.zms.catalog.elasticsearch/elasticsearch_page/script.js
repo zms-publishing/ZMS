@@ -90,10 +90,10 @@ $(function() {
 			// UNIBE
 			if ( index_name != 'unitel' ) {
 				var highlight = x['highlight'];
-				var hit = { 
-					'path':source['uid'], 
-					'href':source['index_html'], 
-					'title':source['title'], 
+				var hit = {
+					'path':source['uid'],
+					'href':source['index_html'],
+					'title':source['title'],
 					'snippet':source['standard_html'],
 					'index_name':index_name
 				};
@@ -144,13 +144,13 @@ $(function() {
 				} else {
 					href = `mailto:${EMail}?subject=Anfrage%20via%20Website&body=Guten%20Tag,`;
 				};
-				var hit = { 
+				var hit = {
 					'path':source['uid'],
 					'href':href,
-					'title':title, 
+					'title':title,
 					'snippet':Adresse,
 					'index_name':index_name
-				}; 
+				};
 			}
 			res_processed.hits.push(hit)
 		})
@@ -197,7 +197,7 @@ $(function() {
 		var input = $(this).val();
 		if(input.length > 2) {
 			$.ajax({
-				url: './opensearch_suggest',
+				url: './elasticsearch_suggest',
 				type: 'GET',
 				dataType: "json",
 				data: {'q': input},

@@ -28,8 +28,7 @@ class elasticsearch_connector:
 	package = "com.zms.catalog.elasticsearch"
 
 	# Revision
-	revision = "1.0.0"
-
+	revision = "1.1.1"
 	# Type
 	type = "ZMSLibrary"
 
@@ -89,7 +88,7 @@ class elasticsearch_connector:
 			,"name":"Objects: Clear Client from elasticsearch"
 			,"repetitive":0
 			,"type":"External Method"}
-		
+
 		manage_elasticsearch_destroy = {"default":""
 			,"id":"manage_elasticsearch_destroy"
 			,"keys":[]

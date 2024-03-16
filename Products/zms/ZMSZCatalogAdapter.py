@@ -186,11 +186,13 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     #  ZMSZCatalogAdapter.matches_ids_filter: 
     # --------------------------------------------------------------------------
     def matches_ids_filter(self, node):
+      # Meta-Ids in context of current node.
+      meta_ids = node.getMetaobjManager().getTypedMetaIds(self.getIds())
       if self.getCustomFilterFunction()=='':
         # Default filter-function.
-        return node.meta_id in self.getMetaobjManager().getTypedMetaIds(self.getIds())
+        return node.meta_id in meta_ids
       else:
-        return standard.dt_py(node, self.getCustomFilterFunction(), {'meta_ids':self.getMetaobjManager().getTypedMetaIds(self.getIds())})
+        return standard.dt_py(node, self.getCustomFilterFunction(), {'meta_ids':meta_ids})
     
     # --------------------------------------------------------------------------
     #  ZMSZCatalogAdapter.ids: 

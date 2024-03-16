@@ -73,7 +73,7 @@ def elasticsearch_query( self, REQUEST=None):
 		"aggs": {
 			"response_codes": {
 				"terms": {
-					"field": "meta_id",
+					"field": "home_id",
 					"size": 5
 				}
 			}

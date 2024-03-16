@@ -85,72 +85,49 @@ $(function() {
 		};
 		var res_processed = { 'hits':[], 'total':total, 'query':q, 'buckets':buckets};
 		res['hits']['hits'].forEach(x => {
-			var index_name = x['_index'];
-			var source = x['_source'];
-			// UNIBE
-			if ( index_name != 'unitel' ) {
-				var highlight = x['highlight'];
-				var hit = {
-					'path':source['uid'],
-					'href':source['index_html'],
-					'title':source['title'],
-					'snippet':source['standard_html'],
-					'index_name':index_name
-				};
-				if (typeof highlight !== 'undefined') {
-					if (typeof highlight['title'] !== 'undefined') {
-						hit['title'] = highlight['title'];
-					}
-					if (typeof highlight['standard_html'] !== 'undefined') {
-						hit['snippet'] = highlight['standard_html'];
-					}
+			let index_name = x['_index'];
+			let source = x['_source'];
+			let highlight = x['highlight'];
+			let body = source['standard_html'];
+			let title = source['title'];
+			// Remove repeating title string from beginning of snippet
+			let snippet = body.startsWith(title) ? body.substr(title.length).trim() : body;
+			var hit = { 
+				'path':source['uid'], 
+				'href':source['index_html'], 
+				'title':title, 
+				'snippet':snippet,
+				'index_name':index_name
+			};
+			if (typeof highlight !== 'undefined') {
+				if (typeof highlight['title'] !== 'undefined') {
+					hit['title'] = highlight['title'];
 				}
-				if ( typeof hit['snippet'] == 'undefined' || hit['snippet'] == '' || hit['snippet'] == null ) {
-					if (typeof source['attr_dc_description'] == 'undefined') {
-						hit['snippet'] = '';
-					} else {
-						hit['snippet'] = source['attr_dc_description'];
-					}
+				if (typeof highlight['standard_html'] !== 'undefined') {
+				    // Highlight-text may start with repeating title:
+				    // For checking first remove html elements and then 
+				    // split title string if hightlight-snippet is starting with it
+				    let highlight_html = highlight['standard_html'][0];
+				    let highlight_txt = highlight_html.replace(/(<([^>]+)>)/gi, '');
+				    let snippet_text = highlight_txt.startsWith(title) ? highlight_txt.substr(title.length).trim() : highlight_txt;
+				    // Determine strings after title (cave: may fail if html-elements block splitting)
+				    highlight_html = highlight_html.substr( highlight_html.indexOf(snippet_text.substr(0,12)) );
+					hit['snippet'] = highlight_html;
 				}
-				// Attachment: field-name = 'data'
-				if ( typeof source['attachment'] !== 'undefined' && hit['snippet']=='' ) {
-					hit['snippet'] = source['attachment']['content'];
-				}
-				if (hit['snippet'].length > 200) {
-					hit['snippet'] = hit['snippet'].substring(0,200) + '...';
-				}
-			} else {
-			// UNITEL
-				var title = `${source['Vorname']}  ${source['Nachname']}`;
-				var href = '';
-				var EMail = '';
-				var Adresse = '';
-				if (Array.isArray(source['Adresse'])) {
-					console.log('Adresse object is a list');
-					EMail = source['Adresse'][0]['EMail'];
-					URL = source['Adresse'][0]['WWWInstitution'];
-					source['Adresse'].forEach(d => {
-						Adresse += `<dl>${stringify_address(d)}</dl>`;
-					});
+			}
+			if ( typeof hit['snippet'] == 'undefined' || hit['snippet'] == '' || hit['snippet'] == null ) {
+				if (typeof source['attr_dc_description'] == 'undefined') {
+					hit['snippet'] = '';
 				} else {
-					console.log('Adresse object is a dictionary');
-					EMail = source['Adresse']['EMail'];
-					URL = source['Adresse']['WWWInstitution'];
-					d = source['Adresse'];
-					Adresse += `<dl>${stringify_address(d)}</dl>`;
+					hit['snippet'] = source['attr_dc_description'];
 				}
-				if (URL) {
-					href = URL;
-				} else {
-					href = `mailto:${EMail}?subject=Anfrage%20via%20Website&body=Guten%20Tag,`;
-				};
-				var hit = {
-					'path':source['uid'],
-					'href':href,
-					'title':title,
-					'snippet':Adresse,
-					'index_name':index_name
-				};
+			}
+			// Attachment: field-name = 'data'
+			if ( typeof source['attachment'] !== 'undefined' && hit['snippet']=='' ) {
+				hit['snippet'] = source['attachment']['content'];
+			}
+			if (hit['snippet'].length > 200) {
+				hit['snippet'] = hit['snippet'].substring(0,200) + '...';
 			}
 			res_processed.hits.push(hit)
 		})

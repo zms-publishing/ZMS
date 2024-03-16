@@ -29,6 +29,7 @@ class elasticsearch_connector:
 
 	# Revision
 	revision = "1.1.1"
+
 	# Type
 	type = "ZMSLibrary"
 
@@ -43,6 +44,15 @@ class elasticsearch_connector:
 			,"name":"Property-Definitions (JSON)"
 			,"repetitive":0
 			,"type":"constant"}
+
+		readme = {"default":""
+			,"id":"readme"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"readme.md"
+			,"repetitive":0
+			,"type":"resource"}
 
 		manage_elasticsearch_schematize = {"default":""
 			,"id":"manage_elasticsearch_schematize"
@@ -115,12 +125,3 @@ class elasticsearch_connector:
 			,"name":"Suggest"
 			,"repetitive":0
 			,"type":"External Method"}
-
-		readme = {"default":""
-			,"id":"readme"
-			,"keys":[]
-			,"mandatory":0
-			,"multilang":0
-			,"name":"readme.md"
-			,"repetitive":0
-			,"type":"resource"}

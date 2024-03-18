@@ -16,20 +16,17 @@
 		.form-group.row.mb-5.diffcoloring {
 			margin:0 !important;
 		}
+		.form-group.row.mb-5.diffcoloring label {
+			visibility: hidden;
+		}
 		.form-group.row.mb-5.diffcoloring .form-control {
 			background: none !important;
 			border:none;
 			padding-left: 0;
 			padding-right: 0;
+			justify-content: flex-end;
 		}
-		.form-group.row.mb-5.diffcoloring .form-control .selected {
-			margin-left: -.25rem;
-			color: #aaa;
-		}
-		.form-group.row.mb-5.diffcoloring label {
-			visibility: hidden;
-		}
-		.form-group.row.mb-5.diffcoloring span.selected {
+		.form-group.row.mb-5.diffcoloring .form-control span.selected {
 			display: none;
 		}
 		button#ignore_switch {

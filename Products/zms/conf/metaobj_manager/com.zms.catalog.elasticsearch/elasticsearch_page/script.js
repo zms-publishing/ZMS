@@ -4,6 +4,9 @@
 Handlebars.registerHelper("compareStrings", function (p, q, options) {
 	return p == q ? options.fn(this) : options.inverse(this);
 })
+Handlebars.registerHelper('hide_tabs', function (length) {
+	return length < 2 ? 'hidden' : 'not_hidden';
+});
 
 //# ######################################
 //# Init function show_results() as global
@@ -22,7 +25,7 @@ function complete_searchterm(el) {
 }
 
 function show_results_facet(e) {
-	var q = $('#site-search-content input').val();
+	var q = decodeURI($('#site-search-content input[name="q"]').val());
 	var facet = $(e).attr('data-facet');
 	winloc.searchParams.set('q', q);
 	winloc.searchParams.set('facet', facet);
@@ -47,7 +50,10 @@ $(function() {
 			// Replace only tab-pane
 			$('.search-results .tab-content').html(hb_spinner_tmpl(q));
 		};
-		const qurl = `${root_url}/elasticsearch_query?q=${q}&pageIndex:int=${pageIndex}`;
+		const home_id = $('#home_id').attr('value') || '';
+		const multisite_search = $('#multisite_search').attr('value') || 1;
+		const multisite_exclusions = $('#multisite_exclusions').attr('value') || '';
+		const qurl = `${root_url}/elasticsearch_query?q=${q}&pageIndex:int=${pageIndex}&facet=${facet}&home_id=${home_id}&multisite_search=${multisite_search}&multisite_exclusions=${multisite_exclusions}`;
 		const response = await fetch(qurl);
 		const res = await response.json();
 		const res_processed = postprocess_results(q, res, facet);
@@ -155,7 +161,7 @@ $(function() {
 
 	//# Execute on submit event
 	$('.search-form form').submit(function() {
-		var q = $('input',this).val();
+		var q = decodeURI($('input[name="q"]',this).val());
 		var facet = 'all';
 		winloc.searchParams.set('q', q);
 		history.pushState({}, '', winloc);

@@ -67,6 +67,33 @@ class elasticsearch_page:
 			,"repetitive":0
 			,"type":"title"}
 
+		multisite_search = {"default":"1"
+			,"id":"multisite_search"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"Multisite-Search"
+			,"repetitive":0
+			,"type":"boolean"}
+
+		multisite_exclusions = {"default":""
+			,"id":"multisite_exclusions"
+			,"keys":["##"
+				,"master = context.unibe.content"
+				,"zmsclientids = []"
+				,"def getZMSPortalClients(zmsclient):"
+				,"  zmsclientids.append(zmsclient.getHome().id)"
+				,"  for zmsclientid in zmsclient.getPortalClients():"
+				,"    getZMSPortalClients(zmsclientid)"
+				,"  zmsclientids.sort()"
+				,"  return list(zmsclientids)"
+				,"return [(id,id) for id in getZMSPortalClients(zmsclient=master)]"]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"Multisite-Exclusions"
+			,"repetitive":0
+			,"type":"multiautocomplete"}
+
 		scriptjs = {"default":""
 			,"id":"script.js"
 			,"keys":[]

@@ -79,7 +79,7 @@ class elasticsearch_page:
 		multisite_exclusions = {"default":""
 			,"id":"multisite_exclusions"
 			,"keys":["##"
-				,"master = context.unibe.content"
+				,"master = context.sites.content"
 				,"zmsclientids = []"
 				,"def getZMSPortalClients(zmsclient):"
 				,"	zmsclientids.append(zmsclient.getHome().id)"

@@ -17,9 +17,13 @@ class opensearch_connector:
 
 	# Lang_dict
 	lang_dict = {"opensearch_connector.BTN_DESTROY":{"eng":"Delete Index"
-			,"ger":"Index löschen"}
+			,"fra":"Supprimer l'index"
+			,"ger":"Index löschen"
+			,"ita":"Eliminare l'indice"}
 		,"opensearch_connector.BTN_SCHEMATIZE":{"eng":"Create Schema (JSON)"
-			,"ger":"Schema erzeugen (JSON)"}}
+			,"fra":"Créer le schéma (JSON)"
+			,"ger":"Schema erzeugen (JSON)"
+			,"ita":"Creare lo schema (JSON)"}}
 
 	# Name
 	name = "Opensearch-Connector"
@@ -28,7 +32,7 @@ class opensearch_connector:
 	package = "com.zms.catalog.opensearch"
 
 	# Revision
-	revision = "1.1.0"
+	revision = "1.5.0"
 
 	# Type
 	type = "ZMSLibrary"
@@ -44,6 +48,15 @@ class opensearch_connector:
 			,"name":"Property-Definitions (JSON)"
 			,"repetitive":0
 			,"type":"constant"}
+
+		readme = {"default":""
+			,"id":"readme"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"readme.md"
+			,"repetitive":0
+			,"type":"resource"}
 
 		manage_opensearch_schematize = {"default":""
 			,"id":"manage_opensearch_schematize"
@@ -68,7 +81,7 @@ class opensearch_connector:
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
-			,"name":"Object: Index Opensearch"
+			,"name":"Objects: Index Opensearch"
 			,"repetitive":0
 			,"type":"External Method"}
 
@@ -77,7 +90,7 @@ class opensearch_connector:
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
-			,"name":"Object: Delete Opensearch"
+			,"name":"Objects: Delete Opensearch"
 			,"repetitive":0
 			,"type":"External Method"}
 
@@ -116,12 +129,3 @@ class opensearch_connector:
 			,"name":"Suggest"
 			,"repetitive":0
 			,"type":"External Method"}
-
-		readme = {"default":""
-			,"id":"readme"
-			,"keys":[]
-			,"mandatory":0
-			,"multilang":0
-			,"name":"readme.md"
-			,"repetitive":0
-			,"type":"resource"}

@@ -3,7 +3,10 @@
 //# ######################################
 Handlebars.registerHelper("compareStrings", function (p, q, options) {
 	return p == q ? options.fn(this) : options.inverse(this);
-})
+});
+Handlebars.registerHelper('hide_tabs', function (length) {
+	return length < 2 ? 'hidden' : 'not_hidden';
+});
 
 //# ######################################
 //# Init function show_results() as global
@@ -22,7 +25,7 @@ function complete_searchterm(el) {
 }
 
 function show_results_facet(e) {
-	var q = $('#site-search-content input').val();
+	var q = decodeURI($('#site-search-content input[name="q"]').val());
 	var facet = $(e).attr('data-facet');
 	winloc.searchParams.set('q', q);
 	winloc.searchParams.set('facet', facet);
@@ -36,6 +39,7 @@ $(function() {
 	//# Compile HB templ on docready into global var
 	const hb_results_tmpl = Handlebars.compile( $('#hb_results_html').html() );
 	const hb_spinner_tmpl = Handlebars.compile( $('#hb_spinner_html').html() );
+	const hb_topresults_tmpl = Handlebars.compile( $('#hb_topresults_html').html() );
 
 	// Finally define show_results() on ready
 	show_results = async (q, pageIndex, facet) => {
@@ -47,7 +51,10 @@ $(function() {
 			// Replace only tab-pane
 			$('.search-results .tab-content').html(hb_spinner_tmpl(q));
 		};
-		const qurl = `${root_url}/opensearch_query?q=${q}&pageIndex:int=${pageIndex}&facet=${facet}`;
+		const home_id = $('#home_id').attr('value') || '';
+		const multisite_search = $('#multisite_search').attr('value') || 1;
+		const multisite_exclusions = $('#multisite_exclusions').attr('value') || '';
+		const qurl = `${root_url}/opensearch_query?q=${q}&pageIndex:int=${pageIndex}&facet=${facet}&home_id=${home_id}&multisite_search=${multisite_search}&multisite_exclusions=${multisite_exclusions}`;
 		const response = await fetch(qurl);
 		const res = await response.json();
 		const res_processed = postprocess_results(q, res, facet);
@@ -70,7 +77,11 @@ $(function() {
 		// Add object path on UUID/ZMSIndex
 		$('ul.path').each(function() {
 			show_breadcrumbs(this);
-		})
+		});
+		// debugger;
+		var topresults_json = await add_adword_targets(q);
+		var hb_topresults_html = hb_topresults_tmpl(topresults_json);
+		$('#top_results').html(hb_topresults_html);
 	};
 
 	const postprocess_results = (q, res, facet) => {
@@ -85,77 +96,63 @@ $(function() {
 		};
 		var res_processed = { 'hits':[], 'total':total, 'query':q, 'buckets':buckets};
 		res['hits']['hits'].forEach(x => {
-			var index_name = x['_index'];
-			var source = x['_source'];
-			// UNIBE
-			if ( index_name != 'unitel' ) {
-				var highlight = x['highlight'];
-				var hit = { 
-					'path':source['uid'], 
-					'href':source['index_html'], 
-					'title':source['title'], 
-					'snippet':source['standard_html'],
-					'index_name':index_name
-				};
-				if (typeof highlight !== 'undefined') {
-					if (typeof highlight['title'] !== 'undefined') {
-						hit['title'] = highlight['title'];
-					}
-					if (typeof highlight['standard_html'] !== 'undefined') {
-						hit['snippet'] = highlight['standard_html'];
-					}
+			let index_name = x['_index'];
+			let source = x['_source'];
+			let body = source['standard_html'];
+			let title = source['title'];
+			// Remove repeating title string from beginning of snippet
+			let snippet = body.startsWith(title) ? body.substr(title.length).trim() : body;
+			let highlight = x['highlight'];
+			var hit = { 
+				'path':source['uid'], 
+				'href':source['index_html'], 
+				'title':title, 
+				'snippet':snippet,
+				'index_name':index_name
+			};
+			if (typeof highlight !== 'undefined') {
+				if (typeof highlight['title'] !== 'undefined') {
+					hit['title'] = highlight['title'];
 				}
-				if ( typeof hit['snippet'] == 'undefined' || hit['snippet'] == '' || hit['snippet'] == null ) {
-					if (typeof source['attr_dc_description'] == 'undefined') {
-						hit['snippet'] = '';
-					} else {
-						hit['snippet'] = source['attr_dc_description'];
-					}
+				if (typeof highlight['standard_html'] !== 'undefined') {
+					// Highlight-text may start with repeating title:
+					// For checking first remove html elements and then
+					// split title string if hightlight-snippet is starting with it
+					let highlight_html = highlight['standard_html'][0];
+					let highlight_txt = highlight_html.replace(/(<([^>]+)>)/gi, '');
+					let snippet_text = highlight_txt.startsWith(title) ? highlight_txt.substr(title.length).trim() : highlight_txt;
+					// Determine strings after title (cave: may fail if html-elements block splitting)
+					highlight_html = highlight_html.substr( highlight_html.indexOf(snippet_text.substr(0,12)) );
+					hit['snippet'] = highlight_html;
 				}
-				// Attachment: field-name = 'data'
-				if ( typeof source['attachment'] !== 'undefined' && hit['snippet']=='' ) {
-					hit['snippet'] = source['attachment']['content'];
-				}
-				if (hit['snippet'].length > 200) {
-					hit['snippet'] = hit['snippet'].substring(0,200) + '...';
-				}
-			} else {
-			// UNITEL
-				var title = `${source['Vorname']}  ${source['Nachname']}`;
-				var href = '';
-				var EMail = '';
-				var Adresse = '';
-				if (Array.isArray(source['Adresse'])) {
-					console.log('Adresse object is a list');
-					EMail = source['Adresse'][0]['EMail'];
-					URL = source['Adresse'][0]['WWWInstitution'];
-					source['Adresse'].forEach(d => {
-						Adresse += `<dl>${stringify_address(d)}</dl>`;
-					});
-				} else {
-					console.log('Adresse object is a dictionary');
-					EMail = source['Adresse']['EMail'];
-					URL = source['Adresse']['WWWInstitution'];
-					d = source['Adresse'];
-					Adresse += `<dl>${stringify_address(d)}</dl>`;
-				}
-				if (URL) {
-					href = URL;
-				} else {
-					href = `mailto:${EMail}?subject=Anfrage%20via%20Website&body=Guten%20Tag,`;
-				};
-				var hit = { 
-					'path':source['uid'],
-					'href':href,
-					'title':title, 
-					'snippet':Adresse,
-					'index_name':index_name
-				}; 
 			}
+			if ( typeof hit['snippet'] == 'undefined' || hit['snippet'] == '' || hit['snippet'] == null ) {
+				if (typeof source['attr_dc_description'] == 'undefined') {
+					hit['snippet'] = '';
+				} else {
+					hit['snippet'] = source['attr_dc_description'];
+				}
+			}
+			// Attachment: field-name = 'data'
+			if ( typeof source['attachment'] !== 'undefined' && hit['snippet']=='' ) {
+				hit['snippet'] = source['attachment']['content'];
+			}
+			if (hit['snippet'].length > 200) {
+				hit['snippet'] = hit['snippet'].substring(0,200) + '...';
+			}
+
 			res_processed.hits.push(hit)
 		})
 		return res_processed;
 	};
+
+	const add_adword_targets = async (adword) => {
+		const root_url=$('form#site-search-content').attr('data-root-url');
+		const qurl = `./adwords/get_targets_json?adword=${adword}`;
+		const response = await fetch(qurl);
+		const res = await response.json();
+		return res;
+	}
 
 	const show_breadcrumbs = (el) => {
 		if ( el.dataset.id.startsWith('uid') ) {
@@ -165,20 +162,9 @@ $(function() {
 		}
 	}
 
-	const stringify_address = (d) => {
-		var s = '';
-		Object.keys(d).forEach(k => {
-			if (d[k]) {
-				s += `<dt class="${k}">${k}</dt>`;
-				s += `<dd class="${k}">${d[k]}</dd>`;
-			};
-		});
-		return s
-	}
-
 	//# Execute on submit event
 	$('.search-form form').submit(function() {
-		var q = $('input',this).val();
+		var q = decodeURI($('input[name="q"]',this).val());
 		var facet = 'all';
 		winloc.searchParams.set('q', q);
 		history.pushState({}, '', winloc);
@@ -188,7 +174,7 @@ $(function() {
 
 	// POSSIBLE SECURITY ISSUE: auto-execute on ULR parameter
 	if ( winloc.searchParams.get('q', undefined) ) {
-		$('#form-keyword').val(encodeURI(winloc.searchParams.get('q','')));
+		$('#form-keyword').val(decodeURI(winloc.searchParams.get('q','')));
 		$('.search-form form').trigger('submit');
 	}
 

@@ -1,5 +1,7 @@
+from Products.zms import standard
 import json
 from urllib.parse import urlparse
+import opensearchpy
 from opensearchpy import OpenSearch
 from opensearchpy.helpers import bulk
 
@@ -38,6 +40,7 @@ def bulk_opensearch_delete(self, actions):
 	return 0, len(actions)
 
 def manage_opensearch_objects_clear( self, home_id):
+	nodes = [] # TODO get nodes for home_id
 	query = {
 		"query": {
 			"query_string": {

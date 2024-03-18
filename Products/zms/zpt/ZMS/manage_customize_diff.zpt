@@ -19,11 +19,12 @@
 		.form-group.row.mb-5.diffcoloring .form-control {
 			background: none !important;
 			border:none;
-			text-align: right;
-			display:inline-block;
+			padding-left: 0;
+			padding-right: 0;
 		}
 		.form-group.row.mb-5.diffcoloring .form-control .selected {
-			margin-right:1em;
+			margin-left: -.25rem;
+			color: #aaa;
 		}
 		.form-group.row.mb-5.diffcoloring label {
 			visibility: hidden;
@@ -40,15 +41,11 @@
 	/*-->*/
 	</style>
 	<head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
-<body tal:attributes="class python:here.zmi_body_class(id='repository_manager_main')">
-	<header tal:replace="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</header>
-		<div id="zmi-tab">
-		<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[here.manage_sub_options()[0]])">zmi_breadcrumbs</tal:block>
+	<body tal:attributes="class python:here.zmi_body_class(id='repository_manager_main')">
 		<form class="form-horizontal card" method="post" tal:attributes="action request/action" target="_parent">
 			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
-			<legend>Check-Up: Compare working content model with the current ZMS source files.</legend>
 			<div class="form-group row">
-				<div class="controls save">
+				<div class="controls save mr-2">
 					<button type="submit" name="btn" class="btn btn-primary" value="BTN_IMPORT" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
 					<button type="button" name="ignore" class="btn btn-secondary" style="box-shadow:none!important" id="ignore_switch" value="False" 
 						title="Display new elements of current ZMS source files compared to working content model">Display New</button>
@@ -108,7 +105,6 @@
 			//-->
 			</script>
 		</form>
-		</div><!-- #zmi-tab -->
 		<footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 	</body>
 </html>

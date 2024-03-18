@@ -42,10 +42,10 @@ from Products.zms import standard
 from Products.zms import ZMSFilterManager, IZMSMetamodelProvider, IZMSFormatProvider, IZMSRepositoryManager
 from Products.zms import _conf
 from Products.zms import _fileutil
-from Products.zms import _repositoryutil
 from Products.zms import _mediadb
 from Products.zms import _multilangmanager
 from Products.zms import _sequence
+from Products.zms import repositoryutil
 from Products.zms import standard
 from Products.zms import zopeutil
 from Products.zms import zmsindex
@@ -140,6 +140,8 @@ class ConfManager(
     manage_customizeInstalledProducts = PageTemplateFile('zpt/ZMS/manage_customizeinstalledproducts', globals())
     manage_customizeLanguagesForm = PageTemplateFile('zpt/ZMS/manage_customizelanguagesform', globals())
     manage_customizeDesignForm = PageTemplateFile('zpt/ZMS/manage_customizedesignform', globals())
+    manage_customize_diff = PageTemplateFile('zpt/ZMS/manage_customize_diff', globals())
+    manage_main_diff = PageTemplateFile('zpt/ZMSRepositoryManager/manage_main_diff', globals())
 
 
     # --------------------------------------------------------------------------
@@ -168,9 +170,9 @@ class ConfManager(
           xmlfile = StringIO( xml)
       elif isinstance(file, str) and (file.startswith('conf:')):
           filename = file[file.find(':')+1:]
-          basepath = _repositoryutil.get_system_conf_basepath()
+          basepath = repositoryutil.get_system_conf_basepath()
           path = os.path.join(basepath, filename)
-          r = _repositoryutil.readRepository(self, path)
+          r = repositoryutil.readRepository(self, path)
           container_id = filename.split('/')[0]
           container = zopeutil.getObject(self,container_id)
           if container is not None:
@@ -262,12 +264,12 @@ class ConfManager(
             v = v[:v.find(pattern)]+v[i:]
             filenames[k] = v
       # Repository.
-      basepath = _repositoryutil.get_system_conf_basepath()
+      basepath = repositoryutil.get_system_conf_basepath()
       for filename in os.listdir(basepath):
           path = os.path.join(basepath, filename)
           if os.path.isdir(path):
               if pattern is None or filename.startswith(pattern[1:-1]):
-                  r = _repositoryutil.readRepository(self, path, deep=False)
+                  r = repositoryutil.readRepository(self, path, deep=False)
                   for k in r:
                       v = r[k]
                       # Get qualified name.
@@ -1040,22 +1042,6 @@ class ConfManager(
 
     def getMetaCmds(self, context=None, stereotype='', sort=True):
       return self.getMetacmdManager().getMetaCmds(context, stereotype, sort)
-
-
-    ############################################################################
-    ###
-    ###   Interface IZMSRepositoryManager: delegate
-    ###
-    ############################################################################
-
-    def getRepositoryManager(self):
-      manager = [x for x in self.getDocumentElement().objectValues() if IZMSRepositoryManager.IZMSRepositoryManager in list(providedBy(x))]
-      if len(manager)==0:
-        class DefaultManager(object):
-          def exec_auto_commit(self, provider, id): return True
-          def exec_auto_update(self): return True
-        manager = [DefaultManager()]
-      return manager[0]
 
 
     ############################################################################

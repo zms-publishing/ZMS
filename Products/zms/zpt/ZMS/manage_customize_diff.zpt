@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" 
+	tal:define="standard modules/Products.zms/standard;
+			repositoryutil modules/Products.zms/repositoryutil;
+			basepath python:repositoryutil.get_system_conf_basepath();
+			direction python:'Loading';
+			providers python:[x for x in repositoryutil.get_providers(here) if x.id == request['provider_id']];
+			remote python:{x:repositoryutil.remoteFiles(here,basepath+'/'+x.id) for x in providers};
+			ids python:sorted(set([item['id'] for sublist in remote.values() for item in sublist.values()]));
+			local python:{x:repositoryutil.localFiles(here,x,ids=ids) for x in providers};">
+	<style>
+	/*<!--*/
+		legend {
+			margin-bottom:1em!important;
+		}
+		.form-group.row.mb-5.diffcoloring {
+			margin:0 !important;
+		}
+		.form-group.row.mb-5.diffcoloring label {
+			visibility: hidden;
+		}
+		.form-group.row.mb-5.diffcoloring .form-control {
+			background: none !important;
+			border:none;
+			padding-left: 0;
+			padding-right: 0;
+			justify-content: flex-end;
+		}
+		.form-group.row.mb-5.diffcoloring .form-control span.selected {
+			display: none;
+		}
+		button#ignore_switch {
+			width: 7rem;
+		}
+		button#ignore_switch i {
+			font-size:16px
+		}
+	/*-->*/
+	</style>
+	<head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
+	<body tal:attributes="class python:here.zmi_body_class(id='repository_manager_main')">
+		<form class="form-horizontal card" method="post" tal:attributes="action request/action" target="_parent">
+			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
+			<div class="form-group row">
+				<div class="controls save mr-2">
+					<button type="submit" name="btn" class="btn btn-primary" value="BTN_IMPORT" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
+					<button type="button" name="ignore" class="btn btn-secondary" style="box-shadow:none!important" id="ignore_switch" value="False" 
+						title="Display new elements of current ZMS source files compared to working content model">Display New</button>
+					<button type="submit" name="btn" class="btn btn-secondary" onclick="return self.window.parent.zmiModal('hide');" value="BTN_CLOSE" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
+				</div>
+			</div><!-- .form-group -->
+			<div class="form-group row">
+				<div class="col-sm-2"></div>
+				<div class="col-sm-10">
+					<div class="form-group row justify-content-between m-0">
+						<span class="btn btn-secondary" 
+							onclick="zmiToggleSelectionButtonClick(this)" 
+							tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))">
+							<i class="fas fa-check-square" style="min-width:unset"></i>
+						</span>
+					</div>
+				</div>
+			</div>
+			<tal:block tal:content="structure python:here.manage_main_diff(here,request,
+					ids_name='init',
+					providers=providers,
+					ignore=standard.pybool(request.get('ignore', 'True')),
+					direction='Loading',
+					remote=remote,
+					local=local
+					)">
+				the diff
+			</tal:block>
+			<script>
+			//<!--
+				$('#ignore_switch').click(() => {
+					$('#ignore_switch').html('<i class="fas fa-spinner fa-spin"></i>');
+					let url;
+					if (location.href.search('ignore=False') > 0) {
+						url = location.href.replace('ignore=False', 'ignore=True');
+					}
+					else if (location.href.search('ignore=True') > 0) {
+						url = location.href.replace('ignore=True', 'ignore=False');
+					}
+					else {
+						if ($('#ignore_switch').is(':checked')) {
+							url = location.href + 'ignore=False';
+						}
+						else {
+							url = location.href + 'ignore=True';
+						}
+					}
+					location.replace(url);
+				});
+
+				if (location.href.search('ignore=False') > 0) {
+					$('#ignore_switch').prop('checked', true);
+				}
+				else {
+					$('#ignore_switch').prop('checked', false);
+				}
+			//-->
+			</script>
+		</form>
+		<footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
+	</body>
+</html>

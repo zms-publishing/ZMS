@@ -133,7 +133,7 @@ $(function() {
 				hit['snippet'] = source['attachment']['content'];
 			}
 			if (hit['snippet'].length > 200) {
-				hit['snippet'] = hit['snippet'].substring(0,200) + '...';
+				hit['snippet'] = hit['snippet'].substring(0,256) + '...';
 			}
 			res_processed.hits.push(hit)
 		})

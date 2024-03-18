@@ -62,15 +62,22 @@ def elasticsearch_query( self, REQUEST=None):
 		"size": qsize,
 		"from": qfrom,
 		"query": {
-			"simple_query_string": {
-				"query": q,
-				"default_operator": "AND"
+			"bool": {
+				"must": [
+					{
+						"simple_query_string": {
+							"query": q,
+							"default_operator": "AND"
+						}
+					}
+				]
 			}
 		},
 		"highlight": {
+			"fragment_size" : 256,
 			"fields": {
 				"title": { "type": "plain"},
-				"standard_html": { "type": "plain"}
+				"standard_html": { "type": "plain"},
 			}
 		},
 		"aggs": {

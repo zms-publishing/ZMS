@@ -28,7 +28,7 @@ class elasticsearch_connector:
 	package = "com.zms.catalog.elasticsearch"
 
 	# Revision
-	revision = "1.1.1"
+	revision = "1.5.0"
 
 	# Type
 	type = "ZMSLibrary"

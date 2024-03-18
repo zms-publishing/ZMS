@@ -32,7 +32,7 @@ class elasticsearch_page:
 	package = "com.zms.catalog.elasticsearch"
 
 	# Revision
-	revision = "1.1.1"
+	revision = "1.5.0"
 
 	# Type
 	type = "ZMSDocument"
@@ -82,11 +82,11 @@ class elasticsearch_page:
 				,"master = context.unibe.content"
 				,"zmsclientids = []"
 				,"def getZMSPortalClients(zmsclient):"
-				,"  zmsclientids.append(zmsclient.getHome().id)"
-				,"  for zmsclientid in zmsclient.getPortalClients():"
-				,"    getZMSPortalClients(zmsclientid)"
-				,"  zmsclientids.sort()"
-				,"  return list(zmsclientids)"
+				,"	zmsclientids.append(zmsclient.getHome().id)"
+				,"	for zmsclientid in zmsclient.getPortalClients():"
+				,"		getZMSPortalClients(zmsclientid)"
+				,"	zmsclientids.sort()"
+				,"	return list(zmsclientids)"
 				,"return [(id,id) for id in getZMSPortalClients(zmsclient=master)]"]
 			,"mandatory":0
 			,"multilang":0

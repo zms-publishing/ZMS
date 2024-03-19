@@ -1950,7 +1950,7 @@ def str_json(i, encoding='ascii', errors='xmlcharrefreplace', formatted=False, l
   elif type(i) is dict:
     k = list(i)
     if sort_keys:
-      k = sorted(i)
+      k = sorted(i, key=lambda x: x or '')
     return '{' \
         + (['','\n'][formatted]+(['','\t'][formatted]*level)+',').join(['"%s":%s'%(x,str_json(i[x],encoding,errors,formatted,level+1,allow_booleans,sort_keys)) for x in k]) \
         + '}'

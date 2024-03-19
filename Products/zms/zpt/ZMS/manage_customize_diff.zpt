@@ -10,36 +10,50 @@
 			local python:{x:repositoryutil.localFiles(here,x,ids=ids) for x in providers};">
 	<style>
 	/*<!--*/
-		legend {
-			margin-bottom:1em!important;
+		.zmi.repository_manager_main .checkup label.col-sm-2.control-label.zms-component {
+			display: block;
+			margin: 0 0 .5rem !important;
+			text-align: left;
+			width: 100%;
+			max-width: unset;
+			border: none;
+			flex: none;
+			padding: 0 1rem;
+			font-weight:normal !important;
+			font-size:16px
 		}
-		.form-group.row.mb-5.diffcoloring {
+		.zmi.repository_manager_main .checkup label.col-sm-2.control-label.zms-component a {
+			color:#212529 !important;
+			text-transform:capitalize;
+			text-decoration:none !important;
+        }
+		.zmi.repository_manager_main .checkup .row {
+			flex-direction: row !important;
 			margin:0 !important;
 		}
-		.form-group.row.mb-5.diffcoloring label {
-			visibility: hidden;
+		.zmi.repository_manager_main .checkup .form-group.row .col-sm-10 {
+			max-width: unset;
+			width:100%;
+			flex: none;
 		}
-		.form-group.row.mb-5.diffcoloring .form-control {
+		.zmi.repository_manager_main .checkup .form-group.row.mb-5.diffcoloring .form-control {
+			margin: 0 0 1rem 0 !important;
 			background: none !important;
 			border:none;
-			padding-left: 0;
-			padding-right: 0;
 			justify-content: flex-end;
 		}
-		.form-group.row.mb-5.diffcoloring .form-control span.selected {
-			display: none;
+		.zmi.repository_manager_main .checkup .form-group.row.mb-5.diffcoloring label,
+		.zmi.repository_manager_main .checkup .form-group.row.mb-5.diffcoloring .form-control span.selected {
+			display:none;
 		}
-		button#ignore_switch {
-			width: 7rem;
-		}
-		button#ignore_switch i {
-			font-size:16px
+		.zmi.repository_manager_main .checkup table.table-sm td {
+			white-space: nowrap;
 		}
 	/*-->*/
 	</style>
 	<head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
 	<body tal:attributes="class python:here.zmi_body_class(id='repository_manager_main')">
-		<form class="form-horizontal card" method="post" tal:attributes="action request/action" target="_parent">
+		<form class="form-horizontal card checkup" method="post" tal:attributes="action request/action" target="_parent">
 			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 			<div class="form-group row">
 				<div class="controls save mr-2">
@@ -49,17 +63,12 @@
 					<button type="submit" name="btn" class="btn btn-secondary" onclick="return self.window.parent.zmiModal('hide');" value="BTN_CLOSE" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
 				</div>
 			</div><!-- .form-group -->
-			<div class="form-group row">
-				<div class="col-sm-2"></div>
-				<div class="col-sm-10">
-					<div class="form-group row justify-content-between m-0">
-						<span class="btn btn-secondary" 
-							onclick="zmiToggleSelectionButtonClick(this)" 
-							tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))">
-							<i class="fas fa-check-square" style="min-width:unset"></i>
-						</span>
-					</div>
-				</div>
+			<div class="form-group row pl-2 float-left">
+				<span class="btn btn-secondary" 
+					onclick="zmiToggleSelectionButtonClick(this)" 
+					tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))">
+					<i class="fas fa-check-square" style="min-width:unset"></i>
+				</span>
 			</div>
 			<tal:block tal:content="structure python:here.manage_main_diff(here,request,
 					ids_name='init',

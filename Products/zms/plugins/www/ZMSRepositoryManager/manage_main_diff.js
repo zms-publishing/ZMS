@@ -1,6 +1,6 @@
 	$(function() {
 		if ( $('.prettyTextDiff').length > 0 ) {
-			$('#repo-changesets').prepend('<div class="row"><p class="h6">Changesets</p></div>');
+			$('#repo-changesets').prepend('<p class="h6">Changesets</p>');
 		}
 		$(".prettyTextDiff").each(function() {
 			var diffContainer = ".diff";

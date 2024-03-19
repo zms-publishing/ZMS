@@ -1,66 +1,81 @@
 <!DOCTYPE html>
 <html lang="en" 
 	tal:define="standard modules/Products.zms/standard;
-			repositoryutil modules/Products.zms/repositoryutil;
-			basepath python:repositoryutil.get_system_conf_basepath();
-			direction python:'Loading';
-			providers python:[x for x in repositoryutil.get_providers(here) if x.id == request['provider_id']];
-			remote python:{x:repositoryutil.remoteFiles(here,basepath+'/'+x.id) for x in providers};
-			ids python:sorted(set([item['id'] for sublist in remote.values() for item in sublist.values()]));
-			local python:{x:repositoryutil.localFiles(here,x,ids=ids) for x in providers};">
-	<style>
-	/*<!--*/
-		.zmi.repository_manager_main .checkup label.col-sm-2.control-label.zms-component {
-			display: block;
-			margin: 0 0 .5rem !important;
-			text-align: left;
-			width: 100%;
-			max-width: unset;
-			border: none;
-			flex: none;
-			padding: 0 1rem;
-			font-weight:normal !important;
-			font-size:16px
-		}
-		.zmi.repository_manager_main .checkup label.col-sm-2.control-label.zms-component a {
-			color:#212529 !important;
-			text-transform:capitalize;
-			text-decoration:none !important;
-        }
-		.zmi.repository_manager_main .checkup .row {
-			flex-direction: row !important;
-			margin:0 !important;
-		}
-		.zmi.repository_manager_main .checkup .form-group.row .col-sm-10 {
-			max-width: unset;
-			width:100%;
-			flex: none;
-		}
-		.zmi.repository_manager_main .checkup .form-group.row.mb-5.diffcoloring .form-control {
-			margin: 0 0 1rem 0 !important;
-			background: none !important;
-			border:none;
-			justify-content: flex-end;
-		}
-		.zmi.repository_manager_main .checkup .form-group.row.mb-5.diffcoloring label,
-		.zmi.repository_manager_main .checkup .form-group.row.mb-5.diffcoloring .form-control span.selected {
-			display:none;
-		}
-		.zmi.repository_manager_main .checkup table.table-sm td {
-			white-space: nowrap;
-		}
-	/*-->*/
-	</style>
-	<head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
+		repositoryutil modules/Products.zms/repositoryutil;
+		basepath python:repositoryutil.get_system_conf_basepath();
+		direction python:'Loading';
+		providers python:[x for x in repositoryutil.get_providers(here) if x.id == request['provider_id']];
+		remote python:{x:repositoryutil.remoteFiles(here,basepath+'/'+x.id) for x in providers};
+		ids python:sorted(set([item['id'] for sublist in remote.values() for item in sublist.values()]));
+		local python:{x:repositoryutil.localFiles(here,x,ids=ids) for x in providers};">
+	<head>
+		<tal:block tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
+		<style>
+		/*<!--*/
+			.zmi.repository_manager_main .checkup label.col-sm-2.control-label.zms-component {
+				display: block;
+				margin: 0 0 .5rem !important;
+				text-align: left;
+				width: 100%;
+				max-width: unset;
+				border: none;
+				flex: none;
+				padding: 0 1rem;
+				font-weight:normal !important;
+				font-size:16px
+			}
+			.zmi.repository_manager_main .checkup label.col-sm-2.control-label.zms-component a {
+				color:#212529 !important;
+				text-transform:capitalize;
+				text-decoration:none !important;
+			}
+			.zmi.repository_manager_main .checkup .row {
+				flex-direction: row !important;
+				margin:0 !important;
+			}
+			.zmi.repository_manager_main .checkup .form-group.row .col-sm-10 {
+				max-width: unset;
+				width:100%;
+				flex: none;
+			}
+			.zmi.repository_manager_main .checkup .form-group.row.mb-5.diffcoloring .form-control {
+				margin: 0 0 1rem 0 !important;
+				background: none !important;
+				border:none;
+				justify-content: flex-end;
+			}
+			.zmi.repository_manager_main .checkup .form-group.row.mb-5.diffcoloring label,
+			.zmi.repository_manager_main .checkup .form-group.row.mb-5.diffcoloring .form-control span.selected {
+				display:none;
+			}
+			.zmi.repository_manager_main .checkup table.table-sm td {
+				white-space: nowrap;
+			}
+			.zmi.repository_manager_main .checkup button#ignore_switch[value="False"]:after {
+				content:"Display New";
+			}
+			.zmi.repository_manager_main .checkup button#ignore_switch[value="True"]:after {
+				content:"Hide New";
+			}
+			.zmi.repository_manager_main .checkup button#ignore_switch.loading:after {
+				content:"Loading" !important;
+			}
+			/*-->*/
+		</style>
+	</head> 
 	<body tal:attributes="class python:here.zmi_body_class(id='repository_manager_main')">
 		<form class="form-horizontal card checkup" method="post" tal:attributes="action request/action" target="_parent">
 			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 			<div class="form-group row">
 				<div class="controls save mr-2">
-					<button type="submit" name="btn" class="btn btn-primary" value="BTN_IMPORT" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
-					<button type="button" name="ignore" class="btn btn-secondary" style="box-shadow:none!important" id="ignore_switch" value="False" 
-						title="Display new elements of current ZMS source files compared to working content model">Display New</button>
-					<button type="submit" name="btn" class="btn btn-secondary" onclick="return self.window.parent.zmiModal('hide');" value="BTN_CLOSE" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
+					<button type="submit" name="btn" class="btn btn-primary" value="BTN_IMPORT" 
+						tal:content="python:here.getZMILangStr('BTN_IMPORT')">
+						Import
+					</button>
+					<button type="button" name="ignore" class="btn btn-secondary" id="ignore_switch" value="False"
+						tal:attributes="value python:request.get('ignore','False')"
+						title="Display new elements of current ZMS source files compared to working content model">
+					</button>
 				</div>
 			</div><!-- .form-group -->
 			<div class="form-group row pl-2 float-left">
@@ -83,31 +98,20 @@
 			<script>
 			//<!--
 				$('#ignore_switch').click(() => {
-					$('#ignore_switch').html('<i class="fas fa-spinner fa-spin"></i>');
-					let url;
-					if (location.href.search('ignore=False') > 0) {
-						url = location.href.replace('ignore=False', 'ignore=True');
+					$('#ignore_switch').html('<i class="fas fa-spinner fa-spin mr-2"></i>');
+					$('#ignore_switch').addClass('loading');
+					let url = location.href;
+					if (url.search('ignore=False') > 0) {
+						url = url.replace('ignore=False', 'ignore=True');
 					}
-					else if (location.href.search('ignore=True') > 0) {
-						url = location.href.replace('ignore=True', 'ignore=False');
+					else if (url.search('ignore=True') > 0) {
+						url = url.replace('ignore=True', 'ignore=False');
 					}
 					else {
-						if ($('#ignore_switch').is(':checked')) {
-							url = location.href + 'ignore=False';
-						}
-						else {
-							url = location.href + 'ignore=True';
-						}
+						url += '&ignore=True';
 					}
 					location.replace(url);
 				});
-
-				if (location.href.search('ignore=False') > 0) {
-					$('#ignore_switch').prop('checked', true);
-				}
-				else {
-					$('#ignore_switch').prop('checked', false);
-				}
 			//-->
 			</script>
 		</form>

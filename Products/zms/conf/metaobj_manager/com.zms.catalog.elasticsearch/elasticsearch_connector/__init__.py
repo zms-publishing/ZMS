@@ -28,7 +28,7 @@ class elasticsearch_connector:
 	package = "com.zms.catalog.elasticsearch"
 
 	# Revision
-	revision = "1.0.0"
+	revision = "1.5.0"
 
 	# Type
 	type = "ZMSLibrary"
@@ -44,6 +44,15 @@ class elasticsearch_connector:
 			,"name":"Property-Definitions (JSON)"
 			,"repetitive":0
 			,"type":"constant"}
+
+		readme = {"default":""
+			,"id":"readme"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"readme.md"
+			,"repetitive":0
+			,"type":"resource"}
 
 		manage_elasticsearch_schematize = {"default":""
 			,"id":"manage_elasticsearch_schematize"
@@ -68,7 +77,7 @@ class elasticsearch_connector:
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
-			,"name":"Object: Index elasticsearch"
+			,"name":"Objects: Index elasticsearch"
 			,"repetitive":0
 			,"type":"External Method"}
 
@@ -77,7 +86,16 @@ class elasticsearch_connector:
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
-			,"name":"Object: Delete elasticsearch"
+			,"name":"Objects: Delete elasticsearch"
+			,"repetitive":0
+			,"type":"External Method"}
+
+		manage_elasticsearch_objects_clear = {"default":""
+			,"id":"manage_elasticsearch_objects_clear"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"Objects: Clear Client from elasticsearch"
 			,"repetitive":0
 			,"type":"External Method"}
 
@@ -107,12 +125,3 @@ class elasticsearch_connector:
 			,"name":"Suggest"
 			,"repetitive":0
 			,"type":"External Method"}
-
-		readme = {"default":""
-			,"id":"readme"
-			,"keys":[]
-			,"mandatory":0
-			,"multilang":0
-			,"name":"readme.md"
-			,"repetitive":0
-			,"type":"resource"}

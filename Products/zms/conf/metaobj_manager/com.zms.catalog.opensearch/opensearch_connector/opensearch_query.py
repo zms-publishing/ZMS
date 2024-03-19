@@ -38,6 +38,9 @@ def opensearch_query( self, REQUEST=None):
 	qpage_index = request.get('pageIndex',0)
 	qsize = request.get('size', 10)
 	qfrom = request.get('from', qpage_index*qsize)
+	home_id = request.get('home_id', '')
+	multisite_search = int(request.get('multisite_search', 1))
+	multisite_exclusions = request.get('multisite_exclusions', '').split(',')
 	index_names = []
 	# Search in a specific index given by Request-parameter facet
 	if request.get('facet') not in ['all','undefined', None, '']:
@@ -53,13 +56,62 @@ def opensearch_query( self, REQUEST=None):
 	# https://discuss.elastic.co/t/query-multiple-indexes-but-apply-queries-to-specific-index/127858
 	# https://opster.com/guides/opensearch/opensearch-search-apis/opensearch-composite-aggregation/
 
+	################################################
+	# Example query with 'must_not' operator
+	################################################
+	# query = {
+	# 	"size": qsize,
+	# 	"from": qfrom,
+	# 	"query": {
+	# 		"bool": {
+	# 			"must": [
+	# 				{
+	# 					"simple_query_string": {
+	# 						"query": q,
+	# 						"default_operator": "AND"
+	# 					}
+	# 				}
+	# 			],
+	# 			"must_not": [
+	# 				{
+	# 					"match": {
+	# 						"home_id": multisite_exclusions
+	# 					}
+	# 				}
+	# 			]
+	# 		}
+	# 	},
+	#	"highlight": {
+	#		"fields": {
+	#			"title": { "type": "plain"},
+	#			"standard_html": { "type": "plain"}
+	#		}
+	#	},
+	# 	"aggs": {
+	# 		"response_codes": {
+	# 			"terms": {
+	# 				"field": "_index",
+	# 				"size": 5
+	# 			}
+	# 		}
+	# 	}
+	# }
+	################################################
+
+
 	query = {
 		"size": qsize,
 		"from": qfrom,
 		"query": {
-			"simple_query_string": {
-				"query": q,
-				"default_operator": "AND"
+			"bool": {
+				"must": [
+					{
+						"simple_query_string": {
+							"query": q,
+							"default_operator": "AND"
+						}
+					}
+				]
 			}
 		},
 		"aggs": {
@@ -71,6 +123,26 @@ def opensearch_query( self, REQUEST=None):
 			}
 		}
 	}
+
+	# No multisite-search: show only results of current ZMS-client
+	if multisite_search==0 and len(home_id) > 0:
+		query['query']['bool']['must'].append( {
+			"match": {
+				"home_id": str(home_id)
+			}
+		})
+
+	# Exclusion of ZMS-Clients (home_id exclusions) via 'must_not' operator
+	if multisite_exclusions[0]!='':
+		# init 'must_not' operator
+		query['query']['bool']['must_not'] = []
+		# add must_not for each home_id
+		for home_id in multisite_exclusions:
+			query['query']['bool']['must_not'].append( {
+				"match": {
+					"home_id": str(home_id)
+				}
+			})
 
 	client = get_opensearch_client(self)
 	if not client:
@@ -84,4 +156,3 @@ def opensearch_query( self, REQUEST=None):
 		resp_text = '//%s'%(e.error)
 	
 	return resp_text
-

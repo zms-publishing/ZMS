@@ -3,6 +3,7 @@ import json
 from requests.auth import HTTPBasicAuth
 import urllib3
 import re
+from Products.zms import standard
 # Disable warning
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -11,24 +12,27 @@ def get_suggest_terms(self, q='Lorem', index_name='myzms', field_names=['title',
 	url = self.getConfProperty('elasticsearch.url').rstrip('/')
 	if not url:
 		return None
-	url += '/_plugins/_sql'
+	url += '/_sql'
 	username = self.getConfProperty('elasticsearch.username', 'admin')
 	password = self.getConfProperty('elasticsearch.password', 'admin')
 	auth = HTTPBasicAuth(username,password)
 	verify = bool(self.getConfProperty('elasticsearch.ssl.verify', False))
 
 	# Assemble SQL Query using f-strings
-	sql_tmpl = "SELECT CONCAT({}) AS keywords FROM {} WHERE {} LIMIT {}"
-	sel_fields = ", ' ', ".join(field_names)
-	whr_clause = " OR ".join([f"({field_name} LIKE '%{q}%')" for field_name in field_names])
-	if index_name == "unitel":
-		whr_clause = f"CONCAT({sel_fields}) LIKE '%{q}%'"
+	sql_tmpl = "SELECT {} AS keywords FROM {} WHERE {} LIMIT {}"
+	sel_fields = "''"
+	for fn in field_names:
+		sel_field = f"CONCAT(CONVERT({fn},STRING),' ')"
+		sel_fields = f"CONCAT({sel_fields},{sel_field})"
+	whr_clause = " OR ".join([f"QUERY('*{q}*','default_field={field_name}')" for field_name in field_names])
 	sql = sql_tmpl.format(sel_fields, index_name, whr_clause, qsize)
 
 	# #########################
 	# DEBUG-INFO: SQL Query
 	if bool(debug): print(10*'#' + '\n# ELASTICEARCH SQL: %s\n'%sql +10*'#')
+	# standard.writeBlock(self,(10*'#' + '\n# ELASTICEARCH SQL: %s\n'%sql +10*'#'))
 	# #########################
+
 
 	# Prepare HTTP Request
 	headers = {"Content-Type": "application/json"}
@@ -38,17 +42,14 @@ def get_suggest_terms(self, q='Lorem', index_name='myzms', field_names=['title',
 	response = requests.post(url, headers=headers, data=json.dumps(data),auth=auth, verify=verify)
 
 	# Postprocess Response
-	datarows = response.json().get('datarows') or []
-	if index_name=='unitel':
-		# #########################
-		# UNIBE-CUSTOM: UNITEL
-		#  Suggest words (fullname) shall not get splitted into single words
-		# #########################
-		terms = [row[0] for row in datarows]
-	else:
-		# MYZMS: Suggest words (keywords) shall get splitted into single, stripped words
-		terms = [ re.sub(r'[^\w\s]','',w) for row in datarows for w in re.split('; |,| ',row[0]) if q.lower() in w.lower() ]
-	terms = sorted(set(terms), key=lambda x: x.lower()) # remove duplicates and sort
+	terms = []
+	datarows = response.json().get('rows') or []
+	if datarows:
+		# Remove empty rows
+		datarows = [row for row in datarows if row[0] is not None]
+		# Suggest words (keywords) shall get splitted into single, stripped words
+		terms = [ re.sub(r'[^\w\s]','',w) for row in datarows for w in re.split('; |,|-|\. | ',row[0]) if q.lower() in w.lower() ]
+		terms = sorted(set(terms), key=lambda x: x.lower()) # remove duplicates and sort
 
 	# #########################
 	# DEBUG-INFO: Result-List
@@ -67,16 +68,24 @@ def get_suggest_fieldsets(self):
 	# Define default fieldset for index_name = zms root element id
 	fieldsets = { self.getRootElement().getHome().id : json.loads(default) }
 	# Get all configured fieldsets (maybe overwrite default fieldset)
-	property_names = [k for k in list(self.getConfProperties().keys()) if k.lower().startswith(key_prefix)]
+	property_names = []
+	try:
+		property_names = [k for k in list(self.getConfProperties().keys()) if k.lower().startswith(key_prefix)]
+	except:
+		pass
 	# If there are no client conf data check if there are any properties in the portal conf
 	# TODO: Remove this fallback to portal conf and take the next parent node with zcatalog_adapters
 	if not property_names:
-		property_names = [k for k in list(self.getPortalMaster().getConfProperties().keys()) if k.lower().startswith(key_prefix)]
+		try:
+			property_names = [k for k in list(self.getPortalMaster().getConfProperties().keys()) if k.lower().startswith(key_prefix)]
+		except:
+			pass
 	for property_name in property_names:
 		index_name = property_name[len(key_prefix):]
 		if not isinstance(property_value, list):
 			property_value = json.loads(str(property_value).replace('\'','\"'))
 		fieldsets[index_name] = property_value
+	# print(fieldsets)
 	return fieldsets
 
 
@@ -84,7 +93,7 @@ def elasticsearch_suggest(self, REQUEST=None):
 	request = self.REQUEST
 	q = request.get('q','Lorem')
 	qsize = request.get('qsize', 12)
-	debug = bool(int(request.get('debug',0)))
+	debug = bool(int(request.get('debug',1)))
 	# Get configured or default fieldsets that are used for extracting suggest terms
 	fieldsets = get_suggest_fieldsets(self)
 	resp_text = ''

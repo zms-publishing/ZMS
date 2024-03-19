@@ -221,6 +221,13 @@
 			<div class="form-group row mt-5">
 				<div class="controls save">
 					<button name="btn" type="submit" class="btn btn-primary" value="BTN_IMPORT" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
+					<button class="btn btn-secondary ml-1" 
+						title="Check-Up: Compare working content model with the current ZMS source files."
+						onclick="$ZMI.iframe('./manage_customize_diff',{lang:getZMILang(),provider_id:'metacmd_manager',action:'manage_changeMetacmds'},{iframe:true,height:'600',title:$(this).attr('title')});return false">
+						<i class="fas fa-code-branch"></i>
+					</button>
+
+
 				</div>
 			</div>
 		</form>

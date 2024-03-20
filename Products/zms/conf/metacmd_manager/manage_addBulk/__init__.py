@@ -47,5 +47,5 @@ class manage_addBulk:
 
 	# Impl
 	class Impl:
-		manage_addclient = {"id":"manage_addBulk"
+		manage_addbulk = {"id":"manage_addBulk"
 			,"type":"External Method"}

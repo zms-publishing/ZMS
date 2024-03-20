@@ -52,10 +52,10 @@
 				white-space: nowrap;
 			}
 			.zmi.repository_manager_main .checkup button#ignore_switch[value="False"]:after {
-				content:"Display New";
+				content:"Hide New";
 			}
 			.zmi.repository_manager_main .checkup button#ignore_switch[value="True"]:after {
-				content:"Hide New";
+				content:"Display New";
 			}
 			.zmi.repository_manager_main .checkup button#ignore_switch.loading:after {
 				content:"Loading" !important;
@@ -66,14 +66,15 @@
 	<body tal:attributes="class python:here.zmi_body_class(id='repository_manager_main')">
 		<form class="form-horizontal card checkup" method="post" tal:attributes="action request/action" target="_parent">
 			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
+			<input type="hidden" name="section" value="import"/>
 			<div class="form-group row">
 				<div class="controls save mr-2">
-					<button type="submit" name="btn" class="btn btn-primary" value="BTN_IMPORT" 
+					<button type="submit" name="btn" class="btn btn-primary" value="BTN_IMPORT"
 						tal:content="python:here.getZMILangStr('BTN_IMPORT')">
 						Import
 					</button>
-					<button type="button" name="ignore" class="btn btn-secondary" id="ignore_switch" value="False"
-						tal:attributes="value python:request.get('ignore','False')"
+					<button type="button" name="ignore" class="btn btn-secondary" id="ignore_switch" value="True"
+						tal:attributes="value python:request.get('ignore','True')"
 						title="Display new elements of current ZMS source files compared to working content model">
 					</button>
 				</div>
@@ -108,9 +109,18 @@
 						url = url.replace('ignore=True', 'ignore=False');
 					}
 					else {
-						url += '&ignore=True';
+						url += '&ignore=False';
 					}
 					location.replace(url);
+				});
+
+				// @TODO: "Import" on ZMSMetaobjManager.manage_changeProperties
+				$(function() {
+					if( $('form.checkup').attr('action')=='manage_changeProperties' ) {
+						$('form.checkup button[value="BTN_IMPORT"]')
+							.attr('disabled','disabled')
+							.attr('title','Import is still disabled in this mode. Please use the "Import" button in the previous step.');
+					}
 				});
 			//-->
 			</script>

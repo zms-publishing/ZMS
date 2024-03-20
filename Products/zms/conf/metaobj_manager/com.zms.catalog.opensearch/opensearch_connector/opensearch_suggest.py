@@ -18,11 +18,14 @@ def get_suggest_terms(self, q='Lorem', index_name='myzms', field_names=['title',
 	verify = bool(self.getConfProperty('opensearch.ssl.verify', False))
 
 	# Assemble SQL Query using f-strings
-	sql_tmpl = "SELECT CONCAT({}) AS keywords FROM {} WHERE {} LIMIT {}"
-	sel_fields = ", ' ', ".join(field_names)
+	sql_tmpl = "SELECT {} FROM {} WHERE {} LIMIT {}"
+	sel_fields = ','.join(field_names)
 	whr_clause = " OR ".join([f"({field_name} LIKE '%{q}%')" for field_name in field_names])
 	if index_name == "unitel":
-		whr_clause = f"CONCAT({sel_fields}) LIKE '%{q}%'"
+		# UNITEL: Join Fullname fields with space for matching
+		sel_fields = ",' ',".join(field_names)
+		sel_fields = f"CONCAT({sel_fields})"
+		whr_clause = f"{sel_fields} LIKE '%{q}%'"
 	sql = sql_tmpl.format(sel_fields, index_name, whr_clause, qsize)
 
 	# #########################
@@ -34,23 +37,31 @@ def get_suggest_terms(self, q='Lorem', index_name='myzms', field_names=['title',
 	headers = {"Content-Type": "application/json"}
 	data = { "query": sql }
 
-	# Execute HTTP Request
+	# Execute HTTP Request in case of SQL with POST!
 	response = requests.post(url, headers=headers, data=json.dumps(data),auth=auth, verify=verify)
 
 	# Postprocess Response
 	datarows = response.json().get('datarows') or []
+	terms = []
 	if datarows:
-		# Remove empty rows
-		datarows = [row for row in datarows if row[0] is not None]
-	if index_name=='unitel':
-		# #########################
-		# UNIBE-CUSTOM: UNITEL
-		#  Suggest words (fullname) shall not get splitted into single words
-		# #########################
-		terms = [row[0] for row in datarows]
-	else:
-		# MYZMS: Suggest words (keywords) shall get splitted into single, stripped words
-		terms = [ re.sub(r'[^\w\s]','',w) for row in datarows for w in re.split('; |,|-|\. | ',row[0]) if q.lower() in w.lower() ]
+		if index_name=='unitel':
+			# #########################
+			# UNIBE-CUSTOM: UNITEL
+			# Suggest words (fullname) shall not get splitted into single words
+			# #########################
+			terms = [row[0] for row in datarows]
+		else:
+			# STANDARD: Suggest words (keywords) shall get splitted into single, stripped words
+			for row in datarows:
+				row_content = ''
+				# Concatenate all field values of a row to a single string 
+				# because OpenSearch SQL plugin does not support CONCAT/ISNULL
+				for i in range(0,len(field_names)):
+					s = '%s '%(str(row[i]))
+					row_content += s
+				terms.extend(re.findall(r'[\w]+|[^\s\w]',row_content))
+			terms = [ re.sub(r'[^\w\s]','',w) for w in terms if q.lower() in w.lower() ]
+
 	terms = sorted(set(terms), key=lambda x: x.lower()) # remove duplicates and sort
 
 	# #########################

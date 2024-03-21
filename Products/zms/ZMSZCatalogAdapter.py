@@ -118,7 +118,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     # Management Permissions.
     # -----------------------
     __administratorPermissions__ = (
-        'manage_changeProperties', 'manage_main', 'manage_reindex',
+        'manage_changeProperties', 'manage_main',
         )
     __ac_permissions__=(
         ('ZMS Administrator', __administratorPermissions__),
@@ -148,17 +148,17 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     # --------------------------------------------------------------------------
     #  ZMSZCatalogAdapter.reindex_node
     # --------------------------------------------------------------------------
-    def reindex_node(self, node, forced=False):
+    def reindex_node(self, node):
       standard.writeBlock(node, "[reindex_node]")
       try:
-        if self.getConfProperty('ZMS.CatalogAwareness.active', 1) or forced:
+        if self.getConfProperty('ZMS.CatalogAwareness.active', 1):
           nodes = node.breadcrumbs_obj_path()
           nodes.reverse()
           for node in nodes:
             if self.matches_ids_filter(node):
               fileparsing = standard.pybool( self.getConfProperty('ZMS.CatalogAwareness.fileparsing', 1))
               for connector in self.get_connectors():
-                self.reindex(connector, node, recursive=False, fileparsing=fileparsing)
+                self.reindex(connector, node, recursive=False, sync=False, fileparsing=fileparsing)
         return True
       except:
         standard.writeError( self, "can't reindex_node")
@@ -319,10 +319,10 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     # --------------------------------------------------------------------------
     #  Reindex
     # --------------------------------------------------------------------------
-    def reindex(self, connector, base, recursive=True, fileparsing=True):
+    def reindex(self, connector, base, recursive=True, sync=True, fileparsing=True):
       def traverse(node, recursive):
         objects = self.get_catalog_objects(connector, node, fileparsing)
-        success, failed = connector.manage_objects_add(objects)
+        success, failed = connector.manage_objects_add(objects, sync)
         if recursive:
           for childNode in node.filteredChildNodes(request):
             childSuccess, childFailed = traverse(childNode, recursive)
@@ -334,25 +334,6 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
       result = []
       result.append('%i objects cataloged (%s failed)'%traverse(base, recursive))
       return ', '.join([x for x in result if x])
-
-
-    ############################################################################
-    #  ZMSZCatalogAdapter.manage_reindex:
-    #
-    #  Reindex.
-    ############################################################################
-    def manage_reindex(self, uid, connector_id=None, REQUEST=None, RESPONSE=None):
-        """ ZMSZCatalogAdapter.manage_reindex """
-        result = []
-        t0 = time.time()
-        root = self.getRootElement()
-        adapter = root.getCatalogAdapter()
-        for connector in adapter.get_connectors():
-          if connector.id ==  connector_id or not connector_id: 
-            base = self.getLinkObj(uid)
-            result.append(connector.id + "\n" + adapter.reindex(connector, base, recursive=True, fileparsing=True))
-        result.append('done!')
-        return ', '.join([x for x in result if x])+' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
 
 
     ############################################################################

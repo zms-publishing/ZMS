@@ -21,26 +21,26 @@ from zope.interface import Interface
 
 class IZMSCatalogConnector(Interface):
 
-    def search(self, qs, order=None):
+    def search_json(self, REQUEST=None, RESPONSE=None):
       """
       Search.
-      @param qs: query-string
-      @rtype: C{str}
-      @param order: result order (obsolete)
-      @rtype: C{bool}
-      @return: list of result items
-      @rtype: C{list}
-      """
-
-    def reindex_all(self):
-      """
-      Reindex.
-      @return: comma separated result message for any indexed object
+      @param REQUEST: the triggering request
+      @type REQUEST: ZPublisher.HTTPRequest
+      @return: JSON-list of result items
       @rtype: C{str}
       """
 
-    def reindex_node(self, node):
+    def reindex_page(self, uid, page_size, clients=False, fileparsing=True, REQUEST=None, RESPONSE=None):
       """
-      Reindex single node.
+      Reindex page.
+      @param uid the uid of the page's start-node
+      @param page-size the page-size
+      @param clients process clients
+      @type clients C{Boolean}
+      @param fileparsing parse files
+      @type fileparsing C{Boolean}
+      @param REQUEST: the triggering request
+      @type REQUEST: ZPublisher.HTTPRequest
+      @return log
       @rtype: C{str}
       """

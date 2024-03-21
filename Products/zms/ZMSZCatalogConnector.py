@@ -136,21 +136,34 @@ class ZMSZCatalogConnector(
     # --------------------------------------------------------------------------
     #  ZMSZCatalogConnector.manage_objects_add
     #
-    #  @param objects ((node, data), (node, data), (node, data), ...)
-    #  @type  objects list|tuple 
-    #  @return success, failed
-    #  @rtype  tuple
+    #  @param   objects ((node, data), (node, data), (node, data), ...)
+    #  @type    objects C{list|tuple} 
+    #  @param   sync execute synchronously
+    #  @type    sync C{Boolean}
+    #  @return  success, failed
+    #  @rtype   C{tuple}
     # --------------------------------------------------------------------------
-    def manage_objects_add(self, objects):
-      return [x['ob'](self, objects) for x in self.getActions(r'^manage_(.*?)_objects_add$')][0]
+    def manage_objects_add(self, objects, sync=True):
+      def f():
+        return [x['ob'](self, objects) for x in self.getActions(r'^manage_(.*?)_objects_add$')][0]
+      if not sync:
+        try:
+          import asyncio
+          async def af():
+            f()
+          asyncio.run(af())
+          return (-1, -1)
+        except:
+          standard.writeError(self, "manage_objects_add: can't async")
+      return f()
 
     # --------------------------------------------------------------------------
     #  ZMSZCatalogConnector.manage_objects_remove
     # 
     #  @param   nodes
-    #  @type    nodes list|tuple 
+    #  @type    nodes C{list|tuple} 
     #  @return  success, failed
-    #  @rtype   tuple
+    #  @rtype   C{tuple}
     # --------------------------------------------------------------------------
     def manage_objects_remove(self, nodes):
       return [x['ob'](self, nodes) for x in self.getActions(r'^manage_(.*?)_objects_remove$')][0]

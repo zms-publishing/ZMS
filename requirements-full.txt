@@ -27,6 +27,7 @@ pdfminer.six
 # OpenSearch
 opensearch-py
 rich
+asyncio
 
 # PAS
 Products.PluggableAuthService

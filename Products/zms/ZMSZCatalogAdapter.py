@@ -157,16 +157,15 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
           for node in nodes:
             if self.matches_ids_filter(node):
               fileparsing = standard.pybool( self.getConfProperty('ZMS.CatalogAwareness.fileparsing', 1))
-              if self.get_connectors():
-                # if local connectors are available, use them
-                # Note: if local connectors are used, they must cover all connector types
-                for connector in self.get_connectors():
-                  self.reindex(connector, node, recursive=False, fileparsing=fileparsing)
-              else:
-                # otherwise use global connector
+              connectors = self.get_connectors()
+              # if local connectors are available, use them.
+              # otherwise use global connector
+              # Note: if local connectors are used, they must cover all connector types
+              if not connectors:
                 root = self.getRootElement()
-                for connector in root.getCatalogAdapter().get_connectors():
-                  self.reindex(connector, node, recursive=False, fileparsing=fileparsing)
+                connectors = root.getCatalogAdapter().get_connectors()
+              for connector in connectors:
+                self.reindex(connector, node, recursive=False, fileparsing=fileparsing)
         return True
       except:
         standard.writeError( self, "can't reindex_node")

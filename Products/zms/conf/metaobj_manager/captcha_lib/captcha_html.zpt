@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+    <head>
+        	<link rel="stylesheet" type="text/css" href="/++resource++zmi/bootstrap-4.6.0/bootstrap.min.css" />
+    </head>
+<body>
+<div class="container" style="max-width:300px">
+    <form action="#" method="POST">
+        <div class="form-group mt-5">
+            <img src="#" class="rounded" id="captcha_data_uri"></img>
+            <button class="btn btn-secondary ml-2" name="BTN_RELOAD" type="reset" onclick="captcha_create();return false;">
+                <div id="countdown" style="display:inline-block" title="Countdown for Auto-Reload">
+                  <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+                    <circle id="circle_static" r="7" cy="11" cx="11" ></circle>
+                    <circle id="circle_animated" r="7" cy="11" cx="11" ></circle>
+                  </svg>
+                  RELOAD
+                </div>
+            </button>
+        </div>
+        <div class="form-group">
+            <input type="hidden" id="public_key" name="public_key" value=""></input>
+            <input type="hidden" id="life_time" name="life_time" value=""></input>
+            <input type="hidden" id="timestamp_create" name="timestamp_create" value=""></input>
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="text" id="captcha_str" name="captcha_str" value="" placeholder="Enter given digits and send!"></input>
+        </div>
+        <div class="form-group">
+            <input class="btn btn-primary" onclick="captcha_validate();return false;" name="BTN_SEND" value="SEND" type="button"></input>
+        </div>
+    </form>
+    <div id="captcha_is_valid"></div>
+</div>
+</body>
+<script>
+    //<--
+    var life_time = 600
+    
+    ;(async function() {
+
+        captcha_create()
+
+        setInterval(async function() {
+            captcha_create()
+        }, life_time*1000)
+
+    }())
+    //-->
+
+    //<--
+    async function captcha_create() {
+        const response = await fetch('./captcha_create')
+        const responseJSON = await response.json()
+        document.getElementById('captcha_data_uri').setAttribute('src', responseJSON.captcha_data_uri)
+        document.getElementById('public_key').setAttribute('value', responseJSON.public_key)
+        document.getElementById('life_time').setAttribute('value', responseJSON.life_time)
+        document.getElementById('timestamp_create').setAttribute('value', responseJSON.timestamp_create)
+        life_time = parseInt(responseJSON.life_time)
+        document.getElementById('circle_animated').setAttribute('style','animation: countdown ' + life_time + 's linear infinite forwards;')
+        return false
+    }
+    async function captcha_validate() {
+        const public_key = document.getElementById('public_key').value
+        const timestamp_create = document.getElementById('timestamp_create').value
+        const captcha_str = document.getElementById('captcha_str').value
+        const url_params = '?public_key='+public_key+'&timestamp_create='+timestamp_create+'&captcha_str='+captcha_str
+        const settings = {
+            method: 'GET', 
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            }
+        }
+        const response = await fetch('./captcha_validate' + url_params, settings)
+        const responseJSON = await response.json()
+        if (responseJSON.captcha_is_valid) {
+            document.getElementById('captcha_is_valid').setAttribute('class','alert alert-success')
+            document.getElementById('captcha_is_valid').innerHTML = 'True'
+        } else {
+            document.getElementById('captcha_is_valid').setAttribute('class','alert alert-danger')
+            document.getElementById('captcha_is_valid').innerHTML = 'False'
+        }
+        return false
+    }
+    //-->
+</script>
+<style>
+    svg {
+        transform: rotate(-90deg);
+    }
+    svg circle#circle_animated {
+      stroke-dasharray: 48px;
+      stroke-dashoffset: 0px;
+      stroke-linecap: round;
+      stroke-width: 4px;
+      stroke: #ffffff;
+      fill: none;
+      animation: countdown 600s linear infinite forwards;
+    }
+    svg circle#circle_static {
+      stroke-width: 3px;
+      stroke: #00000066;
+      fill: none;
+    }
+    @keyframes countdown {
+      from {
+        stroke-dashoffset: 0px;
+      }
+      to {
+        stroke-dashoffset: 48px;
+      }
+    }
+</style>
+</html>

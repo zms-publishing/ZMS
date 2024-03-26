@@ -22,6 +22,8 @@ def create_image(text):
 	font = ImageFont.truetype(font_path, 36)
 	# draw the text on the image
 	draw.text((5, -3), text, font=font, fill=(255, 255, 255))
+	# draw.line((0,8, 100,30), fill=(0,0,0), width=3)
+	# draw.line((0,30, 80,0), fill=(255,255,255), width=3)
 	# create a BytesIO object
 	buffered = BytesIO()
 	# save image to the BytesIO object
@@ -57,7 +59,7 @@ def captcha_create(secret_key='uiwe#sdfj$%sdfj', life_time=600):
 	# generate a random string
 	captcha_str = str(random.randint(1000, 9999))
 	# create a public key from the secret key and the captcha string
-	public_key = encrypt_password(secret_key + captcha_str, 'sha-1', True)
+	public_key = encrypt_password(secret_key + captcha_str, 'sha-2', True)
 	# create captcha image as data-uri
 	captcha_data_uri = create_image(captcha_str)
 	# create a timestamp

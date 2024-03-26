@@ -4,7 +4,7 @@ The Captcha Lib creates a random number of 4 digits and signs it with a hash-key
 
 <pre>
 {
-    "public_key": "f0d41d3647a88edc4c73509b62c0b4e57787bd07",
+    "signature": "f0d41d3647a88edc4c73509b62c0b4e57787bd07",
     "timestamp_create": 1711395119031,
     "life_time": 600,
     "captcha_data_uri": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAAAmCAIAAAC9EKlkAAAEHklEQVR4n..."

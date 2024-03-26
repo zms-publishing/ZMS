@@ -21,4 +21,3 @@ else:
 	else:
 		return False
 # --// /captcha_validate //--
-

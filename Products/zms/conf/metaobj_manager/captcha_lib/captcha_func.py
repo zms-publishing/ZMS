@@ -36,7 +36,7 @@ def create_image(text):
 
 
 # [2] Create hash of a given string
-def encrypt_password(pw, algorithm='md5', hex=False):
+def encrypt_password(pw, algorithm='sha256', hex=False):
 	algorithm = algorithm.lower()
 	algorithm = algorithm=='sha-1' and 'sha1' or algorithm
 	enc = None
@@ -59,7 +59,7 @@ def captcha_create(secret_key='uiwe#sdfj$%sdfj', life_time=600):
 	# generate a random string
 	captcha_str = str(random.randint(1000, 9999))
 	# create a public key from the secret key and the captcha string
-	public_key = encrypt_password(secret_key + captcha_str, 'sha-2', True)
+	public_key = encrypt_password(secret_key + captcha_str, 'sha256', True)
 	# create captcha image as data-uri
 	captcha_data_uri = create_image(captcha_str)
 	# create a timestamp
@@ -85,7 +85,7 @@ def captcha_validate(public_key, secret_key, captcha_str, timestamp_create, life
 	dt_create = datetime.utcfromtimestamp(float(timestamp_create) / 1e3)
 	dt_receive = datetime.utcfromtimestamp((datetime.timestamp(datetime.now()) * 1000) / 1e3)
 	is_intime = (dt_receive - dt_create).total_seconds() < life_time
-	is_valid = public_key == encrypt_password(secret_key + str(captcha_str), 'sha-1', True)
+	is_valid = public_key == encrypt_password(secret_key + str(captcha_str), 'sha256, True)
 	return is_intime and is_valid
 
 # ##############################

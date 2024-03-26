@@ -10,6 +10,7 @@ from io import BytesIO
 secret_key='uiwe#sdfj$%sdfj'
 life_time=120
 font_path = "/usr/share/fonts/truetype/freefont/DejaVuSansMono-Bold.ttf"
+log_path = "/tmp/zms_captcha.log"
 
 # HELPER FUNCTIONS
 # [1] Create an image object from a given text of 4 digits
@@ -34,7 +35,6 @@ def create_image(text):
 	# return data_uri
 	return f"data:image/png;base64,{image_str}"
 
-
 # [2] Create hash of a given string
 def encrypt_password(pw, algorithm='sha256', hex=False):
 	algorithm = algorithm.lower()
@@ -49,6 +49,49 @@ def encrypt_password(pw, algorithm='sha256', hex=False):
 			enc = h.digest()
 	return enc
 
+# [3] Write captcha data to a file
+def write_captcha_data(captcha_str, file_path):
+	was_used = False
+	with open(file_path, 'r') as file_read:
+		l = [line.strip() for line in file_read.readlines()]  # remove line breaks
+		if captcha_str not in l:
+			# add the new captcha to the list
+			l.append(captcha_str)
+			with open(file_path, 'w') as file_write:
+				file_write.write('\n'.join(l))
+		else:
+			was_used = True
+	if was_used: 
+		# used before means it is not written to the file
+		return False
+	else: 
+		# not used before means it is written to the file
+		return True
+
+# [4] Read captcha data from a file
+def read_captcha_data(file_path):
+	l = []
+	try:
+		with open(file_path, 'r') as file:
+			l = [int(line.strip()) for line in file.readlines()]  # remove line breaks
+		# keep only the last 100 entries
+		if len(l) > 100:
+			l = l[-100:]
+			with open(file_path, 'w') as file:
+				file.write('\n'.join([str(i) for i in l]))
+		return l
+	except FileNotFoundError:
+		with open(file_path, 'w') as file:
+			file.write('')
+		return l
+
+# [5] Exclude the logged list of numbers from a random number generator
+def randint_exclude(start, end, exclude):
+	while True:
+		rand_num = random.randint(start, end)
+		if rand_num not in exclude:
+			return rand_num
+
 # #############################
 # MAIN FUNCTIONS
 # ##############################
@@ -56,13 +99,14 @@ def encrypt_password(pw, algorithm='sha256', hex=False):
 #	@secret_key
 #	@life_time
 def captcha_create(secret_key='uiwe#sdfj$%sdfj', life_time=600):
-	# generate a random string
-	captcha_str = str(random.randint(1000, 9999))
-	# create a timestamp
+	# Generate a random string that is not in the log file
+	l = read_captcha_data(log_path)
+	captcha_str = str(randint_exclude(1000, 9999, l))
+	# Create a timestamp
 	timestamp_create = int(datetime.timestamp(datetime.now()) * 1000)
-	# create a crypto signature from the secret key and the captcha string
+	# Create a signature key from the secret key, captcha string and timestamp
 	signature = encrypt_password(secret_key + captcha_str + str(timestamp_create), 'sha256', True)
-	# create captcha image as data-uri
+	# Create captcha image as data-uri
 	captcha_data_uri = create_image(captcha_str)
 
 	# create a dictionary to store the captcha data
@@ -86,7 +130,14 @@ def captcha_validate(signature, secret_key, captcha_str, timestamp_create, life_
 	dt_receive = datetime.utcfromtimestamp((datetime.timestamp(datetime.now()) * 1000) / 1e3)
 	is_intime = (dt_receive - dt_create).total_seconds() < life_time
 	is_valid = signature == encrypt_password(secret_key + str(captcha_str) + str(timestamp_create), 'sha256', True)
-	return is_intime and is_valid
+	if is_intime and is_valid:
+		# check if the captcha was used before
+		if write_captcha_data(captcha_str, log_path):
+			return True
+		else:
+			return False
+	else:
+		return False
 
 # ##############################
 # ZOPE-API-CALL captcha(create|validate)
@@ -108,4 +159,3 @@ def captcha_func(self, do):
 		# Validate the captcha data
 		captcha_is_valid = captcha_validate(req_data.get('signature'), secret_key, req_data.get('captcha_str'), req_data.get('timestamp_create'), life_time)
 		return captcha_is_valid and json.dumps({'captcha_is_valid':True}) or json.dumps({'captcha_is_valid':False})
-v

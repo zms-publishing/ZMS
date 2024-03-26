@@ -22,7 +22,7 @@ class captcha_lib:
 	package = ""
 
 	# Revision
-	revision = "0.2.0"
+	revision = "0.3.0"
 
 	# Type
 	type = "ZMSLibrary"

@@ -9,7 +9,7 @@ from io import BytesIO
 # GLOBAL CONSTANTS
 secret_key='uiwe#sdfj$%sdfj'
 life_time=120
-font_path = "/usr/share/fonts/truetype/freefont/DejaVuSansMono-Bold.ttf"
+font_path = "/usr/share/fonts/dejavu/DejaVuSansMono-Bold.ttf"
 log_path = "/tmp/zms_captcha.log"
 
 # HELPER FUNCTIONS
@@ -50,8 +50,11 @@ def encrypt_password(pw, algorithm='sha256', hex=False):
 	return enc
 
 # [3] Write captcha data to a file
+# 	- add the new captcha string to the log list
+# 	- return True if the captcha is new to the list and can be added
+# 	- return False if the captcha was used before and could not be added
 def write_captcha_data(captcha_str, file_path):
-	was_used = False
+	was_used = True
 	with open(file_path, 'r') as file_read:
 		l = [line.strip() for line in file_read.readlines()]  # remove line breaks
 		if captcha_str not in l:
@@ -59,14 +62,8 @@ def write_captcha_data(captcha_str, file_path):
 			l.append(captcha_str)
 			with open(file_path, 'w') as file_write:
 				file_write.write('\n'.join(l))
-		else:
-			was_used = True
-	if was_used: 
-		# used before means it is not written to the file
-		return False
-	else: 
-		# not used before means it is written to the file
-		return True
+			was_used = False
+	return not(was_used)
 
 # [4] Read captcha data from a file
 def read_captcha_data(file_path):
@@ -125,17 +122,22 @@ def captcha_create(secret_key='uiwe#sdfj$%sdfj', life_time=600):
 #	@captcha_str: the captcha string entered by the user
 #	@timestamp_create: the timestamp when the captcha was created
 #	@life_time: the life time of the captcha
-def captcha_validate(signature, secret_key, captcha_str, timestamp_create, life_time):
+#	@submitted: the flag whether the captcha was submitted or just validated by async by the client
+def captcha_validate(signature, secret_key, captcha_str, timestamp_create, life_time, submitted):
 	dt_create = datetime.utcfromtimestamp(float(timestamp_create) / 1e3)
 	dt_receive = datetime.utcfromtimestamp((datetime.timestamp(datetime.now()) * 1000) / 1e3)
 	is_intime = (dt_receive - dt_create).total_seconds() < life_time
 	is_valid = signature == encrypt_password(secret_key + str(captcha_str) + str(timestamp_create), 'sha256', True)
 	if is_intime and is_valid:
-		# check if the captcha was used before
-		if write_captcha_data(captcha_str, log_path):
-			return True
+		if submitted:
+			# check whether captcha_str can be added as a new item to log file
+			# means it was not used before
+			if write_captcha_data(captcha_str, log_path):
+				return True
+			else:
+				return False
 		else:
-			return False
+			return True
 	else:
 		return False
 
@@ -154,8 +156,8 @@ def captcha_func(self, do):
 	elif do == 'validate':
 		req_data = {}
 		# Get the relevant captcha data from the client request
-		for k in ['signature','captcha_str','timestamp_create']:
+		for k in ['signature','captcha_str','timestamp_create','submitted']:
 			req_data[k] = request.get(k,0)
 		# Validate the captcha data
-		captcha_is_valid = captcha_validate(req_data.get('signature'), secret_key, req_data.get('captcha_str'), req_data.get('timestamp_create'), life_time)
+		captcha_is_valid = captcha_validate(req_data.get('signature'), secret_key, req_data.get('captcha_str'), req_data.get('timestamp_create'), life_time, req_data.get('submitted'))
 		return captcha_is_valid and json.dumps({'captcha_is_valid':True}) or json.dumps({'captcha_is_valid':False})

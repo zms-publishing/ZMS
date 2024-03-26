@@ -4,7 +4,7 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=
+##parameters=content_type='json'
 ##title=Create Captcha
 ##
 # --// captcha_create //--

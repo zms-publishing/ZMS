@@ -73,14 +73,4 @@ class ZCatalogManager(object):
           ob = getattr(ob, id, None)
       return ob
 
-
-    # --------------------------------------------------------------------------
-    #  ZCatalogManager.submitCatalogQuery:
-    #
-    #  Submits query to catalog.
-    #  @deprecated
-    # --------------------------------------------------------------------------
-    def submitCatalogQuery(self, search_query, search_order_by, search_meta_types=[], search_clients=False, REQUEST=None):
-      return self.getCatalogAdapter().search(search_query, search_order_by)
-
 ################################################################################

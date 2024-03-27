@@ -21,15 +21,16 @@ from zope.interface import Interface
 
 class IZMSCatalogAdapter(Interface):
 
-  def search(self, qs, order, clients=False):
+  def reindex_node(self, node, forced=False):
     """
-    Search catalog.
-    @param qs: the query-string 
-    @type qs: C{str}
-    @param order: the sort-order 
-    @type order: C{str}
-    @param clients: flag to process clients recursicely
-    @type clients: C{boolean=False}
-    @returns: the list of search-results 
-    @rtype: C{list}
+    Reindex node
+    @param node: the node
+    @param forced: forced reindex
+    """
+
+  def unindex_node(self, node, forced=False):
+    """
+    Unindex node
+    @param node: the node
+    @param forced: forced unindex
     """

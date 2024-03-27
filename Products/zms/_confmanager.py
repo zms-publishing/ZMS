@@ -884,32 +884,36 @@ class ConfManager(
     ###
     ############################################################################
 
+    def getWorkflowManager(self):
+      manager = getattr(self, 'workflow_manager', None)
+      return manager
+
     def getWfActivities(self):
-      workflow_manager = getattr(self, 'workflow_manager', None)
+      workflow_manager = self.getWorkflowManager()
       if workflow_manager is None:
         return []
       return workflow_manager.getActivities()
 
     def getWfActivitiesIds(self):
-      workflow_manager = getattr(self, 'workflow_manager', None)
+      workflow_manager = self.getWorkflowManager()
       if workflow_manager is None:
         return []
       return workflow_manager.getActivityIds()
 
     def getWfActivity(self, id):
-      workflow_manager = getattr(self, 'workflow_manager', None)
+      workflow_manager = self.getWorkflowManager()
       if workflow_manager is None:
         return None
       return workflow_manager.getActivity(id)
 
     def getWfTransitions(self):
-      workflow_manager = getattr(self, 'workflow_manager', None)
+      workflow_manager = self.getWorkflowManager()
       if workflow_manager is None:
         return []
       return workflow_manager.getTransitions()
 
     def getWfTransition(self, id):
-      workflow_manager = getattr(self, 'workflow_manager', None)
+      workflow_manager = self.getWorkflowManager()
       if workflow_manager is None:
         return None
       return workflow_manager.getTransition(id)
@@ -935,23 +939,23 @@ class ConfManager(
         except:
           standard.writeError(self, "[getFilterManager]: can't init new %s"%meta_type)
       ###
-      manager = [x for x in self.getDocumentElement().objectValues() if isinstance(x,ZMSFilterManager.ZMSFilterManager)]
-      if len(manager)==0:
-        class DefaultManager(object):
-          getFilter__roles__ = None
-          def getFilter(self, id): return {}
-          getFilterIds__roles__ = None
-          def getFilterIds(self, sort=True): return []
-          getFilterProcesses__roles__ = None
-          def getFilterProcesses(self, id): return []
-          getProcess__roles__ = None
-          def getProcess(self, id): return {}
-          getProcessIds__roles__ = None
-          def getProcessIds(self, sort=True): return []
-          importXml__roles__ = None
-          def importXml(self, xml): pass
-        manager = [DefaultManager()]
-      return manager[0]
+      for ob in self.objectValues():
+        if ZMSFilterManager.ZMSFilterManager in list(providedBy(ob)):
+          return ob
+      class MockManager(object):
+        getFilter__roles__ = None
+        def getFilter(self, id): return {}
+        getFilterIds__roles__ = None
+        def getFilterIds(self, sort=True): return []
+        getFilterProcesses__roles__ = None
+        def getFilterProcesses(self, id): return []
+        getProcess__roles__ = None
+        def getProcess(self, id): return {}
+        getProcessIds__roles__ = None
+        def getProcessIds(self, sort=True): return []
+        importXml__roles__ = None
+        def importXml(self, xml): pass
+      return MockManager()
 
 
     ############################################################################
@@ -962,19 +966,19 @@ class ConfManager(
 
     def getMetaobjManager(self):
       manager = getattr(self, 'metaobj_manager', None)
-      if manager is None:
-        class DefaultMetaobjManager(object):
-          def importXml(self, xml): pass
-          def getMetaobjId(self, name): return None
-          def getMetaobjIds(self, sort=None, excl_ids=[]): return []
-          def getMetaobj(self, id): return None
-          def getMetaobjAttrIds(self, meta_id, types=[]): return []
-          def getMetaobjAttrs(self, meta_id,  types=[]): return []
-          def getMetaobjAttr(self, id, attr_id, sync=True): return None
-          def getMetaobjAttrIdentifierId(self, meta_id): return None
-          def notifyMetaobjAttrAboutValue(self, meta_id, key, value): return None
-        manager = DefaultMetaobjManager()
-      return manager
+      if manager:
+        return manager
+      class MockManager(object):
+        def importXml(self, xml): pass
+        def getMetaobjId(self, name): return None
+        def getMetaobjIds(self, sort=None, excl_ids=[]): return []
+        def getMetaobj(self, id): return None
+        def getMetaobjAttrIds(self, meta_id, types=[]): return []
+        def getMetaobjAttrs(self, meta_id,  types=[]): return []
+        def getMetaobjAttr(self, id, attr_id, sync=True): return None
+        def getMetaobjAttrIdentifierId(self, meta_id): return None
+        def notifyMetaobjAttrAboutValue(self, meta_id, key, value): return None
+      return MockManager()
 
     def getMetaobjRevision(self, id):
       return self.getMetaobjManager().getMetaobjRevision( id)
@@ -1019,16 +1023,16 @@ class ConfManager(
         self._setObject( obj.id, obj)
         self.delConfProperty('ZMS.custom.commands')
       ###
-      metacmd_manager = getattr(self, 'metacmd_manager', None)
-      if metacmd_manager is None:
-        class DefaultManager(object):
-          def importXml(self, xml): pass
-          def getMetaCmdDescription(self, id): return None
-          def getMetaCmd(self, id): return None
-          def getMetaCmdIds(self, sort=True): return []
-          def getMetaCmds(self, context=None, stereotype='', sort=True): return []
-        metacmd_manager = DefaultManager()
-      return metacmd_manager
+      manager = getattr(self, 'metacmd_manager', None)
+      if manager:
+        return manager
+      class MockManager(object):
+        def importXml(self, xml): pass
+        def getMetaCmdDescription(self, id): return None
+        def getMetaCmd(self, id): return None
+        def getMetaCmdIds(self, sort=True): return []
+        def getMetaCmds(self, context=None, stereotype='', sort=True): return []
+      return MockManager()
 
     def getMetaCmdDescription(self, id):
        """ getMetaCmdDescription """
@@ -1052,18 +1056,18 @@ class ConfManager(
 
     def getWorkflowManager(self):
       manager = getattr(self.getDocumentElement(),'workflow_manager',None)
-      if manager is None:
-        class DefaultManager(object):
-          def importXml(self, xml): pass
-          def getAutocommit(self): return True
-          def getActivities(self): return []
-          def getActivityIds(self): return []
-          def getActivity(self, id): return None
-          def getActivityDetails(self, id): return None
-          def getTransitions(self): return []
-          def getTransitionIds(self): return []
-        manager = DefaultManager()
-      return manager
+      if manager:
+        return manager
+      class MockManager(object):
+        def importXml(self, xml): pass
+        def getAutocommit(self): return True
+        def getActivities(self): return []
+        def getActivityIds(self): return []
+        def getActivity(self, id): return None
+        def getActivityDetails(self, id): return None
+        def getTransitions(self): return []
+        def getTransitionIds(self): return []
+      return MockManager()
 
 
     ############################################################################
@@ -1094,16 +1098,26 @@ class ConfManager(
     ###
     ############################################################################
 
-    def getCatalogAdapter(self):
+    def getCatalogAdapter(self, createIfNotExists=False):
       from Products.zms import IZMSCatalogAdapter, ZMSZCatalogAdapter
       for ob in self.objectValues():
         if IZMSCatalogAdapter.IZMSCatalogAdapter in list(providedBy(ob)):
           return ob
-      adapter = ZMSZCatalogAdapter.ZMSZCatalogAdapter()
-      self._setObject( adapter.id, adapter)
-      adapter = getattr(self, adapter.id)
-      adapter.initialize()
-      return adapter
+      master = self.getPortalMaster()
+      if master:
+        adapter = master.getCatalogAdapter()
+        if adapter:
+          return adapter
+      if createIfNotExists:
+        adapter = ZMSZCatalogAdapter.ZMSZCatalogAdapter()
+        self._setObject( adapter.id, adapter)
+        adapter = getattr(self, adapter.id)
+        adapter.initialize()
+        return adapter
+      class MockAdapter(object):
+        def reindex_node(self, node, forced=False): pass
+        def unindex_node(self, node, forced=False): pass
+      return MockAdapter()
 
 
 # call this to initialize framework classes, which

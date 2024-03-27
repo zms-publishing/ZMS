@@ -1114,7 +1114,11 @@ class ConfManager(
         adapter = getattr(self, adapter.id)
         adapter.initialize()
         return adapter
+      class MockConnector(object):
+        def manage_init(self): pass
       class MockAdapter(object):
+        def add_connector(self, id): return MockConnector()
+        def reindex(self, connector, base, recursive=True, fileparsing=True): pass
         def reindex_node(self, node, forced=False): pass
         def unindex_node(self, node, forced=False): pass
       return MockAdapter()

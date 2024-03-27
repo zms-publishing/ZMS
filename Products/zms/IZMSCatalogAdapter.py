@@ -21,6 +21,20 @@ from zope.interface import Interface
 
 class IZMSCatalogAdapter(Interface):
 
+  def add_connector(self, id):
+    """
+    Add connector
+    """
+
+  def reindex(self, connector, base, recursive=True, fileparsing=True):
+    """
+    Reindex
+    @param connector: the connector
+    @param base: the base
+    @param recursive: recursive
+    @param fileparsing: fileparsing
+    """
+  
   def reindex_node(self, node, forced=False):
     """
     Reindex node

@@ -22,7 +22,7 @@ class captcha_lib:
 	package = ""
 
 	# Revision
-	revision = "0.3.0"
+	revision = "0.4.0"
 
 	# Type
 	type = "ZMSLibrary"
@@ -44,6 +44,24 @@ class captcha_lib:
 			,"mandatory":0
 			,"multilang":0
 			,"name":"Jupyter Notebook"
+			,"repetitive":0
+			,"type":"resource"}
+
+		captcha_js = {"default":""
+			,"id":"captcha_js"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"Captcha JS"
+			,"repetitive":0
+			,"type":"resource"}
+
+		captcha_css = {"default":""
+			,"id":"captcha_css"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"Captcha CSS"
 			,"repetitive":0
 			,"type":"resource"}
 

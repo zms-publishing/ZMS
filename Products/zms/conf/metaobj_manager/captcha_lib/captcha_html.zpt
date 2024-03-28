@@ -1,171 +1,34 @@
 <!doctype html>
 <html>
 	<head>
-			<link rel="stylesheet" type="text/css" href="/++resource++zmi/bootstrap-4.6.0/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="/++resource++zmi/bootstrap-4.6.0/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="./content/metaobj_manager/captcha_lib.captcha_css" />
+		<script type="text/javascript" charset="UTF-8" src="./content/metaobj_manager/captcha_lib.captcha_js"></script>
 	</head>
-<body>
-<div class="container" style="max-width:300px">
-	<form action="#" method="POST">
-		<div class="form-group mt-5">
-			<img src="#" class="rounded" id="captcha_data_uri"></img>
-			<div id="captcha_reload" class="btn btn-secondary" title="Countdown for Auto-Reload"
-				onclick="captcha_create();captcha_timer_restart();return false;">
-				<div id="captcha_timer" class="pie"></div>
-			</div>
+	<body>
+		<div class="container" style="max-width:300px">
+			<form action="#" method="POST">
+				<div class="form-group mt-5">
+					<img src="#" class="rounded" id="captcha_data_uri"></img>
+					<div id="captcha_reload" class="btn btn-secondary" title="Countdown for Auto-Reload"
+						onclick="captcha_create();captcha_timer_restart();return false;">
+						<div id="captcha_timer" class="pie"></div>
+					</div>
+				</div>
+				<div class="hidden form-group">
+					<input type="hidden" id="signature" name="signature" value=""></input>
+					<input type="hidden" id="life_time" name="life_time" value=""></input>
+					<input type="hidden" id="timestamp_create" name="timestamp_create" value=""></input>
+					<input type="hidden" id="submitted" name="submitted:int" value="1"></input>
+				</div>
+				<div class="form-group">
+					<input class="form-control" type="text" id="captcha_str" name="captcha_str" value="" placeholder="Enter given digits and send!"></input>
+				</div>
+				<div class="form-group">
+					<input class="btn btn-primary" onclick="captcha_validate();return false;" name="BTN_SEND" value="SEND" type="button"></input>
+				</div>
+			</form>
+			<div id="captcha_is_valid"></div>
 		</div>
-		<div class="form-group">
-			<input type="hidden" id="signature" name="signature" value=""></input>
-			<input type="hidden" id="life_time" name="life_time" value=""></input>
-			<input type="hidden" id="timestamp_create" name="timestamp_create" value=""></input>
-			<input type="hidden" id="submitted" name="submitted:int" value="1"></input>
-		</div>
-		<div class="form-group">
-			<input class="form-control" type="text" id="captcha_str" name="captcha_str" value="" placeholder="Enter given digits and send!"></input>
-		</div>
-		<div class="form-group">
-			<input class="btn btn-primary" onclick="captcha_validate();return false;" name="BTN_SEND" value="SEND" type="button"></input>
-		</div>
-	</form>
-	<div id="captcha_is_valid"></div>
-</div>
-</body>
-
-<script>
-	//<--
-
-	var life_time = 120
-	var captcha_timer
-	const $captcha_timer = document.getElementById('captcha_timer')
-
-	;(async function() {
-		await captcha_create()
-		captcha_timer_restart()
-	}())
-
-	function captcha_timer_start() {
-		captcha_timer = setInterval(async function() {
-			captcha_create()
-			console.log(life_time)
-		}, life_time * 1000)
-	}
-	function captcha_timer_stop() {
-		clearInterval(captcha_timer)
-	}
-	function captcha_timer_restart() {
-		captcha_timer_stop()
-		captcha_timer_start()
-	}
-
-	async function captcha_create() {
-		const response = await fetch('./captcha_create')
-		const responseJSON = await response.json()
-		document.getElementById('captcha_data_uri').setAttribute('src', responseJSON.captcha_data_uri)
-		document.getElementById('signature').setAttribute('value', responseJSON.signature)
-		document.getElementById('life_time').setAttribute('value', responseJSON.life_time)
-		document.getElementById('timestamp_create').setAttribute('value', responseJSON.timestamp_create)
-		life_time = parseInt(responseJSON.life_time)
-		document.getElementById('captcha_timer').remove()
-		document.getElementById('captcha_reload').appendChild( $captcha_timer )
-		document.getElementById('captcha_timer').setAttribute('style', '--life_time:' + life_time + 's')
-		return false
-	}
-
-	async function captcha_validate() {
-		const signature = document.getElementById('signature').value
-		const timestamp_create = document.getElementById('timestamp_create').value
-		const captcha_str = document.getElementById('captcha_str').value
-		const url_params = '?signature='+signature+'&timestamp_create='+timestamp_create+'&captcha_str='+captcha_str
-		const settings = {
-			method: 'GET',
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json',
-			}
-		}
-		const response = await fetch('./captcha_validate' + url_params, settings)
-		const responseJSON = await response.json()
-		if (responseJSON.captcha_is_valid) {
-			document.getElementById('captcha_is_valid').setAttribute('class','alert alert-success')
-			document.getElementById('captcha_is_valid').innerHTML = 'True'
-		} else {
-			document.getElementById('captcha_is_valid').setAttribute('class','alert alert-danger')
-			document.getElementById('captcha_is_valid').innerHTML = 'False'
-		}
-		return false
-	}
-	//-->
-</script>
-<style>
-	#captcha_reload.btn {
-		display: inline-block;
-		white-space:nowrap;
-		border: 1px solid #ced4da;
-		margin-left:.5rem;
-	}
-	#captcha_reload.btn::before {
-		content:"Neu laden";
-		content:"Reload";
-		display:inline-block;
-		float:right;
-		padding:0 0 0 1.85rem ;
-	}
-
-	/* ############################################################# */
-	/* CSS Pie Timer
-	/* https://kittygiraudel.com/2021/04/11/css-pie-timer-revisited/ */
-	/* ############################################################# */
-	.pie {
-		--color: white;
-		--backgroundcolor:#6c757d;
-		font-size: 150%;
-		width: 1em;
-		height: 1em;
-		border-radius: 50%;
-		position: relative;
-		border: 0.05em solid var(--color);
-	}
-	.pie::before,
-	.pie::after {
-		content: '';
-		width: 50%;
-		height: 100%;
-		border-radius: 0.5em 0 0 0.5em;
-		position: absolute;
-		left: 0;
-		transform-origin: center right;
-	}
-	.pie::before {
-		z-index: 1;
-		background-color: var(--backgroundcolor);
-	}
-	.pie::after {
-		background-color: var(--color);
-	}
-	.pie::before,
-	.pie::after {
-		animation-duration: var(--life_time);
-		animation-iteration-count: infinite;
-	}
-	.pie::before {
-		animation-name: mask;
-		animation-timing-function: steps(1);
-	}
-	.pie::after {
-		animation-name: rotate;
-		animation-timing-function: linear;
-	}
-	@keyframes mask {
-		50%,
-		100% {
-			background-color: var(--color);
-			transform: rotate(0.5turn);
-		}
-	}
-	@keyframes rotate {
-		to {
-			transform: rotate(1turn);
-		}
-	}
-
-</style>
+	</body>
 </html>

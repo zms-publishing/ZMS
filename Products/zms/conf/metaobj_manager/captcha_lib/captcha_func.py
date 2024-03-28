@@ -6,12 +6,20 @@ import json
 import base64
 from io import BytesIO
 
-# GLOBAL CONSTANTS
+# #############################################
+# GLOBALS: DEFAULT PARAMETERS
+# Overwritten by correponding ZMS Conf Property
+# #############################################
+# ZMS.captcha.secret_key
 secret_key='uiwe#sdfj$%sdfj'
+# ZMS.captcha.life_time
 life_time=120
-font_path = "/usr/share/fonts/dejavu/DejaVuSansMono-Bold.ttf"
+# ZMS.captcha.font_path
+font_path = "/usr/share/fonts/dejavu/DejaVuSansMono-Bold.ttf" 
+# ZMS.captcha.log_path
 log_path = "/tmp/zms_captcha.log"
 
+#############################################
 # HELPER FUNCTIONS
 # [1] Create an image object from a given text of 4 digits
 def create_image(text):
@@ -89,9 +97,9 @@ def randint_exclude(start, end, exclude):
 		if rand_num not in exclude:
 			return rand_num
 
-# #############################
+# #############################################
 # MAIN FUNCTIONS
-# ##############################
+# #############################################
 # [A] Create Captcha with global constants:
 #	@secret_key
 #	@life_time
@@ -126,7 +134,7 @@ def captcha_create(secret_key='uiwe#sdfj$%sdfj', life_time=600):
 def captcha_validate(signature, secret_key, captcha_str, timestamp_create, life_time, submitted):
 	dt_create = datetime.utcfromtimestamp(float(timestamp_create) / 1e3)
 	dt_receive = datetime.utcfromtimestamp((datetime.timestamp(datetime.now()) * 1000) / 1e3)
-	is_intime = (dt_receive - dt_create).total_seconds() < life_time
+	is_intime = (dt_receive - dt_create).total_seconds() < int(life_time)
 	is_valid = signature == encrypt_password(secret_key + str(captcha_str) + str(timestamp_create), 'sha256', True)
 	if is_intime and is_valid:
 		if submitted:
@@ -141,11 +149,22 @@ def captcha_validate(signature, secret_key, captcha_str, timestamp_create, life_
 	else:
 		return False
 
-# ##############################
+# #############################################
 # ZOPE-API-CALL captcha(create|validate)
-# ##############################
+# #############################################
 def captcha_func(self, do):
 	request = self.REQUEST
+
+	# Getting/setting global parameters
+	global secret_key
+	global life_time
+	global font_path
+	global log_path
+	secret_key = self.content.getConfProperty('ZMS.captcha.secret_key') or secret_key
+	life_time = self.content.getConfProperty('ZMS.captcha.life_time') or life_time
+	font_path = self.content.getConfProperty('ZMS.captcha.font_path') or font_path
+	log_path = self.content.getConfProperty('ZMS.captcha.log_path') or log_path
+
 	if do == 'create':
 		# Create a captcha
 		captcha_data = captcha_create(secret_key, life_time)

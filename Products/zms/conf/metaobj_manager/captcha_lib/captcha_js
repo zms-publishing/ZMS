@@ -1,0 +1,82 @@
+// #####################################
+// GLOBAL VARIABLES
+// #####################################
+var life_time = 120
+var captcha_timer
+var $captcha_timer
+
+
+// #####################################
+// MAIN FUNCTIONS
+// #####################################
+
+async function captcha_create() {
+	const response = await fetch('./captcha_create')
+	const responseJSON = await response.json()
+	document.getElementById('captcha_data_uri').setAttribute('src', responseJSON.captcha_data_uri)
+	document.getElementById('signature').setAttribute('value', responseJSON.signature)
+	document.getElementById('life_time').setAttribute('value', responseJSON.life_time)
+	document.getElementById('timestamp_create').setAttribute('value', responseJSON.timestamp_create)
+	life_time = parseInt(responseJSON.life_time)
+	document.getElementById('captcha_timer').remove()
+	document.getElementById('captcha_reload').appendChild( $captcha_timer )
+	document.getElementById('captcha_timer').setAttribute('style', '--life_time:' + life_time + 's')
+	return false
+}
+
+async function captcha_validate() {
+	const signature = document.getElementById('signature').value
+	const timestamp_create = document.getElementById('timestamp_create').value
+	const captcha_str = document.getElementById('captcha_str').value
+	const url_params = '?signature='+signature+'&timestamp_create='+timestamp_create+'&captcha_str='+captcha_str
+	const settings = {
+		method: 'GET',
+		headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json',
+		}
+	}
+	const response = await fetch('./captcha_validate' + url_params, settings)
+	const responseJSON = await response.json()
+	if (responseJSON.captcha_is_valid) {
+		document.getElementById('captcha_is_valid').setAttribute('class','alert alert-success')
+		document.getElementById('captcha_is_valid').innerHTML = 'True'
+	} else {
+		document.getElementById('captcha_is_valid').setAttribute('class','alert alert-danger')
+		document.getElementById('captcha_is_valid').innerHTML = 'False'
+	}
+	return false
+}
+
+
+// #####################################
+// HELPERS: TIMER FUNCTIONS
+// #####################################
+function captcha_timer_start() {
+	captcha_timer = setInterval(async function() {
+		captcha_create()
+		console.log(life_time)
+	}, life_time * 1000)
+}
+
+function captcha_timer_stop() {
+	clearInterval(captcha_timer)
+}
+
+function captcha_timer_restart() {
+	captcha_timer_stop()
+	captcha_timer_start()
+}
+
+
+// #####################################
+// INITALIZE APP
+// #####################################
+document.addEventListener('DOMContentLoaded', function () {
+    $captcha_timer = document.getElementById('captcha_timer')
+}, false);
+
+(async () => {
+	await captcha_create()
+	captcha_timer_restart()
+})()

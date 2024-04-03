@@ -59,7 +59,7 @@ def opensearch_query( self, REQUEST=None):
 		index_name = self.getRootElement().getHome().id
 		index_names = [k.split('.')[-1] for k in list(self.getConfProperties(inherited=True)) if k.lower().startswith('opensearch.suggest.fields.')]
 		if index_name not in index_names:
-			index_names.append(index_names)
+			index_names.append(index_name)
 
 	# Refs: query on multiple indexes and composite aggregation
 	# https://discuss.elastic.co/t/query-multiple-indexes-but-apply-queries-to-specific-index/127858

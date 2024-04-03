@@ -120,7 +120,7 @@ def get_suggest_fieldsets(self):
 	property_names = [k for k in list(self.getConfProperties(inherited=True)) if k.lower().startswith(key_prefix)]
 	# If there are no client conf data check if there are any properties in the portal conf
 	# TODO: Remove this fallback to portal conf and take the next parent node with zcatalog_adapters
-	if not property_names:
+	if not property_names and self.getPortalMaster():
 		property_names = [k for k in list(self.getPortalMaster().getConfProperties().keys()) if k.lower().startswith(key_prefix)]
 	for property_name in property_names:
 		index_name = property_name[len(key_prefix):]

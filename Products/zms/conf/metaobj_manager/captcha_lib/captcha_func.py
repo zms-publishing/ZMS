@@ -46,7 +46,6 @@ def create_image(text):
 # [2] Create hash of a given string
 def encrypt_password(pw, algorithm='sha256', hex=False):
 	algorithm = algorithm.lower()
-	algorithm = algorithm=='sha-1' and 'sha1' or algorithm
 	enc = None
 	if algorithm in list(hashlib.algorithms_available):
 		h = hashlib.new(algorithm)

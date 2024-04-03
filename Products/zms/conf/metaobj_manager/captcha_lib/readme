@@ -20,5 +20,10 @@ The Lib consists of four elements:
 3. **captcha_validate** _Python Script_: calls captcha_validate() from captcha_func
 4. **captcha_html** _TAL-Template_: displays a form using async calls of captcha_create and captcha_validate
 
-The TAL-Templates is considered as example form that contains the HTML elements and JS-functions that are needed to integrate the functionality to your own forms.
+The TAL-Templates is considered as working example form that contains the HTML elements and JS-functions that are needed to integrate the functionality to your own forms.
 
+The following ZMS configuration properties are used by the Captcha Lib:
+1. `ZMS.captcha.secret_key`: secret key for signinng the captcha
+2. `ZMS.captcha.life_time`: life time of the captcha
+3. `ZMS.captcha.font_path`: os path of the applied font
+4. `ZMS.captcha.log_path`: os path of the log file (log file is needed for preventing captcha flooding)

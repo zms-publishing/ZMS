@@ -1,22 +1,51 @@
-import requests
 import json
-from requests.auth import HTTPBasicAuth
-import urllib3
+from urllib.parse import urlparse
+import opensearchpy
+from opensearchpy import OpenSearch, RequestsHttpConnection
 import re
-# Disable warning
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+from Products.zms import standard
+
+
+def get_opensearch_client(self):
+	# ${opensearch.url:https://localhost:9200, https://localhost:9201}
+	# ${opensearch.username:admin}
+	# ${opensearch.password:admin}
+	# ${opensearch.ssl.verify:}
+	url_string = self.getConfProperty('opensearch.url')
+	urls = [url.strip().rstrip('/') for url in url_string.split(',')]
+	hosts = []
+	use_ssl = False
+	# Process (multiple) url(s) (host, port, ssl)
+	if not urls:
+		return None
+	else:
+		for url in urls:
+			hosts.append( { \
+					'host':urlparse(url).hostname, \
+					'port':urlparse(url).port } \
+				)
+			if urlparse(url).scheme=='https':
+				use_ssl = True
+	verify = bool(self.getConfProperty('opensearch.ssl.verify', False))
+	username = self.getConfProperty('opensearch.username', 'admin')
+	password = self.getConfProperty('opensearch.password', 'admin')
+	auth = (username,password)
+	
+	# CAVE: connection_class RequestsHttpConnection
+	client = OpenSearch(
+		urls,
+		connection_class=RequestsHttpConnection,
+		http_compress = False,
+		http_auth = auth,
+		use_ssl = use_ssl,
+		verify_certs = verify,
+		ssl_show_warn = False,
+	)
+	return client
 
 
 def get_suggest_terms(self, q='Lorem', index_name='myzms', field_names=['title','attr_dc_subject'], qsize=10, debug=False):
-	url = self.getConfProperty('opensearch.url').rstrip('/')
-	if not url:
-		return None
-	url += '/_plugins/_sql'
-	username = self.getConfProperty('opensearch.username', 'admin')
-	password = self.getConfProperty('opensearch.password', 'admin')
-	auth = HTTPBasicAuth(username,password)
-	verify = bool(self.getConfProperty('opensearch.ssl.verify', False))
-
+	# Get suggest terms for a given query string q and index_name
 	# Assemble SQL Query using f-strings
 	sql_tmpl = "SELECT {} FROM {} WHERE {} LIMIT {}"
 	sel_fields = ','.join(field_names)
@@ -37,11 +66,18 @@ def get_suggest_terms(self, q='Lorem', index_name='myzms', field_names=['title',
 	headers = {"Content-Type": "application/json"}
 	data = { "query": sql }
 
+	# #########################
 	# Execute HTTP Request in case of SQL with POST!
-	response = requests.post(url, headers=headers, data=json.dumps(data),auth=auth, verify=verify)
+	# #########################
+	client = get_opensearch_client(self)
+	response = {}
+	try:
+		response = client.transport.perform_request(method='POST', url='/_plugins/_sql', headers=headers, params=None, body=data)
+	except opensearchpy.exceptions.NotFoundError as e:
+		standard.writeError(self, 'OpenSearch: %s'%(e.error))
 
 	# Postprocess Response
-	datarows = response.json().get('datarows') or []
+	datarows = response.get('datarows') or []
 	terms = []
 	if datarows:
 		if index_name=='unitel':
@@ -100,15 +136,18 @@ def opensearch_suggest(self, REQUEST=None):
 	q = request.get('q','Lorem')
 	qsize = request.get('qsize', 12)
 	debug = bool(int(request.get('debug',0)))
+
 	# Get configured or default fieldsets that are used for extracting suggest terms
 	fieldsets = get_suggest_fieldsets(self)
-	resp_text = ''
-	suggest_terms = []
+
 	# Get suggest terms for any configured opensearch.suggest.fields.$index_name
 	# Example: opensearch.suggest.fields.unitel = ['Vorname','Nachname']
+	suggest_terms = []
+	resp_text = ''
 	for index_name, field_names in fieldsets.items():
 		suggest_terms.extend(get_suggest_terms(self, q=q, index_name=index_name, field_names=field_names, qsize=qsize, debug=debug))
-	# Finally sort all terms and return as JSON-text
+
+	# Finally sort all terms and return as JSON-textTestBan
 	suggest_terms = sorted(set(suggest_terms), key=lambda x: x.lower())
 	resp_text = json.dumps(suggest_terms, indent=2)
 	return resp_text

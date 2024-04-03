@@ -11,9 +11,9 @@
 		</ul>
 	</tal:block>
 
-<tal:block tal:condition="python:not request.get('URL','').find('/manage') > -1"
-	tal:replace="python:zmscontext.attr('get_adword_target_as_json')">
-</tal:block>
+	<tal:block tal:condition="python:not request.get('URL','').find('/manage') > -1"
+		tal:replace="python:zmscontext.attr('get_adword_target_as_json')">
+	</tal:block>
 
 </tal:block>
 <!-- /adwords.standard_html -->

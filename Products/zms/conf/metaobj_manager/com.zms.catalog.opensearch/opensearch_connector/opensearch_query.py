@@ -5,26 +5,35 @@ from opensearchpy import OpenSearch
 
 
 def get_opensearch_client(self):
-	# ${opensearch.url:https://localhost:9200}
+	# ${opensearch.url:https://localhost:9200, https://localhost:9201}
 	# ${opensearch.username:admin}
 	# ${opensearch.password:admin}
 	# ${opensearch.ssl.verify:}
-	url = self.getConfProperty('opensearch.url').rstrip('/')
-	if not url:
+	url_string = self.getConfProperty('opensearch.url')
+	urls = [url.strip().rstrip('/') for url in url_string.split(',')]
+	hosts = []
+	use_ssl = False
+	# Process (multiple) url(s) (host, port, ssl)
+	if not urls:
 		return None
-	host = urlparse(url).hostname
-	port = urlparse(url).port
-	ssl = urlparse(url).scheme=='https' and True or False
+	else:
+		for url in urls:
+			hosts.append( { \
+					'host':urlparse(url).hostname, \
+					'port':urlparse(url).port } \
+				)
+			if urlparse(url).scheme=='https':
+				use_ssl = True
 	verify = bool(self.getConfProperty('opensearch.ssl.verify', False))
 	username = self.getConfProperty('opensearch.username', 'admin')
 	password = self.getConfProperty('opensearch.password', 'admin')
 	auth = (username,password)
 	
 	client = OpenSearch(
-		hosts = [{'host': host, 'port': port}],
+		hosts = hosts,
 		http_compress = False, # enables gzip compression for request bodies
 		http_auth = auth,
-		use_ssl = ssl,
+		use_ssl = use_ssl,
 		verify_certs = verify,
 		ssl_assert_hostname = False,
 		ssl_show_warn = False,
@@ -50,7 +59,7 @@ def opensearch_query( self, REQUEST=None):
 		index_name = self.getRootElement().getHome().id
 		index_names = [k.split('.')[-1] for k in list(self.getConfProperties(inherited=True)) if k.lower().startswith('opensearch.suggest.fields.')]
 		if index_name not in index_names:
-			index_names.append(index_names)
+			index_names.append(index_name)
 
 	# Refs: query on multiple indexes and composite aggregation
 	# https://discuss.elastic.co/t/query-multiple-indexes-but-apply-queries-to-specific-index/127858

@@ -6465,6 +6465,22 @@
     <Cell><Data ss:Type="String">פריטים ששונו לאחרונה</Data></Cell>
    </Row>
    <Row>
+    <Cell><Data ss:Type="String">TASK_INACTIVE_NODES</Data></Cell>
+    <Cell><Data ss:Type="String">Inaktive Inhalte auflisten</Data></Cell>
+    <Cell><Data ss:Type="String">List inactive contents</Data></Cell>
+    <Cell><Data ss:Type="String">List inactive contents</Data></Cell>
+    <Cell><Data ss:Type="String">List inactive contents</Data></Cell>
+    <Cell><Data ss:Type="String">List inactive contents</Data></Cell>
+    <Cell><Data ss:Type="String">List inactive contents</Data></Cell>
+    <Cell><Data ss:Type="String">List inactive contents</Data></Cell>
+    <Cell><Data ss:Type="String">List inactive contents</Data></Cell>
+    <Cell><Data ss:Type="String">List inactive contents</Data></Cell>
+    <Cell><Data ss:Type="String">List inactive contents</Data></Cell>
+    <Cell><Data ss:Type="String">List inactive contents</Data></Cell>
+    <Cell><Data ss:Type="String">List inactive contents</Data></Cell>
+    <Cell><Data ss:Type="String">List inactive contents</Data></Cell>
+   </Row>
+   <Row>
     <Cell><Data ss:Type="String">TASK_UNTRANSLATED</Data></Cell>
     <Cell><Data ss:Type="String">zu übersetzende Objekte</Data></Cell>
     <Cell><Data ss:Type="String">objects to be translated</Data></Cell>

@@ -57,6 +57,21 @@
 	padding-right:.15em;
 	background-color: #d6002b1c !important;
 }
+.search-results > h2 > code {
+	font-family: inherit;
+	font-size: inherit;
+	font-weight: inherit;
+	background: none;
+	color: inherit;
+}
+.search-results > h2 > code:before {
+	content:"«";
+	margin-right:.25rem;
+}
+.search-results > h2 > code:after {
+	content:"»";
+	margin-left:.25rem;
+}
 
 /* Loading Spinner */
 .spin {

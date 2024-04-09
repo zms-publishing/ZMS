@@ -1,0 +1,21 @@
+diff --git a/.gitignore b/.gitignore
+index 5cb1915c..10b7c3ad 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -2,9 +2,14 @@
+ *.pyc
+ Products/zms/plugins/www/zms-all.min.js
+ Products/zms/plugins/www/i18n/*.js
+-Products/zms/overrides.zcml
+-.vscode/
++
++*~
++.*.swp
++
++/.idea/
++/.vscode/
+ dist/
+ build/
+ docker/var/*
+ docker/var/log/
++/revisions.txt

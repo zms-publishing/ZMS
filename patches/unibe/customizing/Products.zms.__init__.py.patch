@@ -1,0 +1,190 @@
+diff --git a/Products/zms/__init__.py b/Products/zms/__init__.py
+index 94533f75..002f145a 100644
+--- a/Products/zms/__init__.py
++++ b/Products/zms/__init__.py
+@@ -19,10 +19,12 @@
+ 
+ # Imports.
+ from App.Common import package_home
++from App.config import getConfiguration
+ import OFS.misc_
+ import codecs
+ import os
+ import re
++import sys
+ # Product Imports.
+ from Products.zms import _confmanager
+ from Products.zms import _multilangmanager
+@@ -38,7 +40,7 @@ from Products.zms import zmslinkelement
+ # ### Allow additional Python modules in restricted context
+ # ### Use with:
+ # ### import pdb; pdb.set_trace()
+-# 
++#
+ # from AccessControl import allow_module
+ # allow_module('pdb')
+ 
+@@ -48,17 +50,48 @@ __doc__ = """initialization module."""
+ # Version string.
+ __version__ = '0.1'
+ 
++
++#################################################################################################################
++# Memcached: Monkey patched Product.mcdutils
++#
++# Avoid raise exception if Memcached connection fails and log instead
++# as it is done by pylibmc used in Flask-Caching for unibe-cmsapi.
++# - Connection errors suddenly occur only with cluster setup in Docker Swarm mode.
++# - Docker Swarm networking seems to kill idle TCP connections after a while (15min?).
++# - Memcached is alive and can be reconnected.
++#
++# https://forums.docker.com/t/tcp-timeout-that-occurs-only-in-docker-swarm-not-simple-docker-run/58179
++# https://github.com/zulip/zulip/issues/14455#issuecomment-609472979
++# https://docs.docker.com/network/overlay/#bypass-the-routing-mesh-for-a-swarm-service
++# https://news.ycombinator.com/item?id=25328865
++# => "host" mode instead of the default "ingress" mode using "endpoint_mode: dnsrr" as workaound is not suitable
++#################################################################################################################
++from Products.mcdutils.mapping import MemCacheMapping
++
++def tpc_vote(self, txn):
++    """ See IDataManager.
++    """
++    server, key = self._p_proxy.client._get_server(self._p_key)
++    if server is None:
++        from Products.mcdutils import MemCacheError
++        # raise MemCacheError("Can't reach memcache server!")
++        import logging
++        LOGGER = logging.getLogger('Products.mcdutils')
++        LOGGER.log(logging.ERROR, MemCacheError("Can't reach memcache server!"))
++
++MemCacheMapping.tpc_vote = tpc_vote
++#################################################################################################################
++
+ #################################################################################################################
+ # FilesystemDirectoryView: Monkey patched Products.CMFCore.zcml
+ #
+ # Allow directory registration outside of package context to access arbitrary paths configured in overrides.zcml
+-# 
+-# Background: 
+-# The function Products.CMFCore.zcml.registerDirectory() cuts the registering directory path exactly
+-# at the length of the overrides.zcml containing package path and uses the remaining right as a 'reg_key'.
+-# If the registering directory path is outside the package context this will end up in strange substrings 
+-# of the target path string. The patch normalizes the generation of the uses the 'reg_key' by using the 
+-# name-attribute as the path root (Line 80).
++#
++# - path if installed in default mode: ~/unibe-cms/venv/lib/python3.11/site-packages/Products/zms
++# - path if installed in editable mode: ~/unibe-cms/backend/zms-core/Products/zms
++# => are normally used to extract the subdir -- but these lengths do not match the desired location below
++#
++# - path needed to be registered: ~/unibe-cms/frontend/web/estatico-handlebars/src/assets
+ #################################################################################################################
+ from Products.CMFCore import zcml
+ from Products.CMFCore.DirectoryView import _dirreg
+@@ -77,7 +110,7 @@ def registerDirectory(_context, name, directory=None, recursive=False,
+         filepath = path.join(_context.package.__path__[0], 'skins', str(name))
+     else:
+         # subdir = str(directory[len(_context.package.__path__[0]) + 1:])
+-        subdir = str(name)
++        subdir = '/%s' % str(name)
+         filepath = str(directory)
+ 
+     reg_key = _generateKey(_context.package.__name__, subdir)
+@@ -92,8 +125,8 @@ def registerDirectory(_context, name, directory=None, recursive=False,
+ zcml.registerDirectory = registerDirectory
+ #################################################################################################################
+ 
+-# Additional Registration of FileExtensions 
+-# will get obsolete with 
++# Additional Registration of FileExtensions
++# will get obsolete with
+ # https://github.com/zopefoundation/Products.CMFCore/pull/130
+ # https://github.com/zopefoundation/Zope/pull/1146
+ 
+@@ -108,7 +141,7 @@ try:
+   registerFileExtension('ppt', FSFile)
+   registerFileExtension('pptx', FSFile)
+   registerFileExtension('map', FSFile)
+-  registerFileExtension('svg', FSImage)
++  registerFileExtension('svg', FSFile)
+   registerFileExtension('ttf', FSFile)
+   registerFileExtension('eot', FSFile)
+   registerFileExtension('woff', FSFile)
+@@ -123,13 +156,13 @@ except:
+ # Define the initialize() function.
+ ################################################################################
+ 
+-def initialize(context): 
++def initialize(context):
+     """Initialize the product."""
+-    
++
+     create_session_storage_if_neccessary(context)
+-    try: 
++    try:
+         """Try to register the product."""
+-        
++
+         context.registerClass(
+             zms.ZMS,
+             permission = 'Add ZMSs',
+@@ -172,21 +205,21 @@ def initialize(context):
+             constructors = (_zmsattributecontainer.manage_addZMSAttributeContainer, _zmsattributecontainer.manage_addZMSAttributeContainer),
+             container_filter = _zmsattributecontainer.containerFilter,
+             )
+-        
++
+         # register deprecated classes
+         dummy_constructors = (zmscustom.manage_addZMSCustomForm, zmscustom.manage_addZMSCustom,)
+         dummy_permission = 'Add ZMSs'
+         zms.NoETagAdapter.register()
+-        
++
+         # automated registration of language-dictionary
+         if not hasattr(OFS.misc_.misc_,'zms'):
+           OFS.misc_.misc_.zms = {}
+         OFS.misc_.misc_.zms['langdict']=_multilangmanager.langdict()
+-        
++
+         # automated registration of configuration
+         confdict = _confmanager.ConfDict.get()
+         OFS.misc_.misc_.zms['confdict']=confdict
+-        
++
+         # automated minification
+         confkeys = confdict.keys()
+         for confkey in [x for x in confkeys if x.startswith('gen.') and x+'.include' in confkeys]:
+@@ -252,7 +285,7 @@ def initialize(context):
+                 standard.writeStdout(context, "add %s (Packed: %i -> %i Bytes)"%(fn, l0, l1))
+               fileobj.write(fc)
+             fileobj.close()
+-        
++
+         # automated generation of language JavaScript
+         from xml.dom import minidom
+         filename = os.sep.join([package_home(globals())]+['import', '_language.xml'])
+@@ -300,17 +333,17 @@ def initialize(context):
+               fileobj.write('\'')
+           fileobj.write('};')
+           fileobj.close()
+-    
++
+     except:
+-        """If you can't register the product, dump error. 
+-        
++        """If you can't register the product, dump error.
++
+         Zope will sometimes provide you with access to "broken product" and
+-        a backtrace of what went wrong, but not always; I think that only 
+-        works for errors caught in your main product module. 
+-        
+-        This code provides traceback for anything that happened in 
++        a backtrace of what went wrong, but not always; I think that only
++        works for errors caught in your main product module.
++
++        This code provides traceback for anything that happened in
+         registerClass(), assuming you're running Zope in debug mode."""
+-        
++
+         import sys, traceback
+         type, val, tb = sys.exc_info()
+         sys.stderr.write(''.join(traceback.format_exception(type, val, tb)))

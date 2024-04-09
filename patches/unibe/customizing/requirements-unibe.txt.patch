@@ -1,0 +1,36 @@
+diff --git a/requirements-unibe.txt b/requirements-unibe.txt
+new file mode 100644
+index 00000000..25893d5a
+--- /dev/null
++++ b/requirements-unibe.txt
+@@ -0,0 +1,30 @@
++# Python package requirements
++# by ZMS core library see zms-core/requirements*.txt
++
++# by UniBE-CMS customization layer
++requests
++requests-oauthlib
++
++opensearch-py
++rich
++pdfminer.six
++
++chardet
++ftfy
++
++beautifulsoup4
++lxml
++Markdown
++pyScss
++xmltodict
++
++sqlalchemy==1.4.41
++Products.ZMySQLDA
++Products.ZSQLMethods
++
++Products.PluggableAuthService
++Products.PluginRegistry
++
++zeo
++
++pydevd-pycharm~=232.10227.11  # Debugger for PyCharm 2023.2.5 (Professional Edition) built on November 14, 2023

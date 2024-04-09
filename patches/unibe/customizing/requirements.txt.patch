@@ -1,0 +1,20 @@
+diff --git a/requirements.txt b/requirements.txt
+index fa75b1dc..9e6079fa 100644
+--- a/requirements.txt
++++ b/requirements.txt
+@@ -2,7 +2,6 @@
+ docutils
+ configparser
+ requests
+-Zope[wsgi]
+ Products.GenericSetup
+ Products.MailHost
+ Products.ExternalMethod
+@@ -12,6 +11,7 @@ Products.SiteErrorLog
+ Products.StandardCacheManagers
+ Products.Sessions
+ Products.TemporaryFolder
++Products.mcdutils
+ 
+ zope.app.publication
+ zope.authentication

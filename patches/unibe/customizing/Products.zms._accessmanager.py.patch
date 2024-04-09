@@ -1,0 +1,15 @@
+diff --git a/Products/zms/_accessmanager.py b/Products/zms/_accessmanager.py
+index 8f91fa01..96397a0e 100644
+--- a/Products/zms/_accessmanager.py
++++ b/Products/zms/_accessmanager.py
+@@ -1268,7 +1268,9 @@ class AccessManager(AccessableContainer):
+             # Send notification.
+             # ------------------
+             #-- Recipient
+-            mto = email
++            mto = {}
++            mto['To'] = email
++            mto['From'] = self.getConfProperty('ZMSAdministrator.email', '')
+             #-- Body
+             userObj = self.findUser(id)
+             mbody = []

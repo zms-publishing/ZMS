@@ -1,0 +1,93 @@
+diff --git a/Products/zms/zpt/ZMSObject/input_fields.zpt b/Products/zms/zpt/ZMSObject/input_fields.zpt
+index fc88d950..56ad52b7 100644
+--- a/Products/zms/zpt/ZMSObject/input_fields.zpt
++++ b/Products/zms/zpt/ZMSObject/input_fields.zpt
+@@ -20,7 +20,7 @@
+ 	<input type="hidden" id="meta_id" name="meta_id" tal:attributes="value meta_id" />
+ 	<input type="hidden" id="ZMS_INSERT" name="ZMS_INSERT" tal:condition="python:request.get('ZMS_INSERT',False)" tal:attributes="value python:request.get('ZMS_INSERT','')" />
+ 
+-	<div class="card" 
++	<div class="card"
+ 		tal:condition="python:metaObj['type'] != 'ZMSRecordSet' or command.lower() != 'insert'"
+ 		tal:attributes="class python:'card input_fields_%s'%(meta_id)">
+ 		<div class="card-header attr_last_modified clearfix btn-collapse">
+@@ -28,7 +28,7 @@
+ 				<a id="zmi-toggle-activity-btn" class="btn card-toggle" data-toggle="collapse" href="#attrActivity"
+ 					><i class="fas fa-invisible"></i> <tal:block tal:content="python:here.getZMILangStr('ATTR_ACTIVITY')">Activity</tal:block></a>
+ 				<div class="btn zmi-changes"
+-						tal:condition="not:python:request.get('ZMS_INSERT',False)" 
++						tal:condition="not:python:request.get('ZMS_INSERT',False)"
+ 						tal:define="change_uid python:here.attr('change_uid');change_dt python:here.attr('change_dt')">
+ 					<tal:block tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')">changed by</tal:block>
+ 					<span class="zmi-change-dt" tal:content="structure python:here.getLangFmtDate(change_dt,fmt_str='DATETIME_FMT')">the change-dt</span>
+@@ -89,9 +89,9 @@
+ 								<tal:block tal:define="dummy0 python:standard.triggerEvent(here,'*.ObjectMoved')"></tal:block>
+                                 <script>location.href='?refresh_catalog=False'</script>
+ 							</tal:block>
+-							<a tal:condition="not:cataloged" 
++							<a tal:condition="not:cataloged"
+ 								href="javascript:;" title="Refresh Catalog Item"
+-								onclick="if(confirm('Really Refresh Catalog Item?')){self.location.href='?refresh_catalog=True'}return false;" 
++								onclick="if(confirm('Really Refresh Catalog Item?')){self.location.href='?refresh_catalog=True'}return false;"
+ 								class="btn btn-danger ml-2">
+ 								<i title="Refresh catalog" class="fas fa-sync-alt"></i>
+ 							</a>
+@@ -189,7 +189,7 @@
+ 				</tal:block>
+ 			</div><!-- .card-body -->
+ 		</div><!-- .collapse -->
+-		<tal:block 
++		<tal:block
+ 			tal:define="constraints python:here.attr('check_constraints')"
+ 			tal:condition="constraints">
+ 			<tal:block tal:on-error="nothing" tal:repeat="category python:list(constraints)">
+@@ -208,9 +208,9 @@
+ 			<div class="card-body">
+ 				<div class="form-group row">
+ 					<div class="controls save">
+-						<div class="form-check form-check-inline align-middle" 
+-							title="Menu Lock: Stay in the menu after clicking the save button.">
+-							<input type="checkbox" id="menulock" name="menulock:int" onclick="$ZMILocalStorageAPI.set('ZMS.menulock',this.checked)" value="1" /><i class="fas fa-lock pl-2"></i>
++						<div class="form-check form-check-inline align-middle"
++							title="Menu Pin: Stay in the menu after clicking the save button.">
++							<input type="checkbox" id="menulock" name="menulock:int" onclick="$ZMILocalStorageAPI.set('ZMS.menulock',this.checked)" value="1" /><i class="fas fa-thumbtack pl-2"></i>
+ 						</div>
+ 						<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:'BTN_%s'%command.upper()" tal:content="python:here.getZMILangStr('BTN_%s'%command.upper())">Action</button>
+ 						<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CANCEL" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
+@@ -234,7 +234,7 @@
+ 		</form>
+ 
+ 		<tal:block tal:repeat="metaObjAttr python:[x for x in [here.getMetaobjAttr(metaObj['id'],x) for x in metaObjAttrIds] if x]"
+-			><tal:block tal:define="global 
++			><tal:block tal:define="global
+ 					elName python:here.getObjAttrName(metaObjAttr,request['lang']);
+ 					elLabel python:here.getObjAttrLabel(metaObjAttr)"
+ 				><tal:block tal:condition="python:not metaObjAttr['id'].startswith('_') and not (metaObjAttr['id']=='e' and metaObjAttr['type']=='*') and not (metaObjAttr['id'] in request.get('ZMS_HIDE_ELEMENTS',[]))"
+@@ -266,7 +266,7 @@
+ 									<tal:block tal:repeat="childNode objChildren">
+ 										<li tal:attributes="id python:'zmi_item_%s'%childNode.id; class python:' '.join([childNode.meta_id,'zmi-item','zmi-selectable']+[['pageelement'],['page']][int(childNode.isPage())] + [[],['is-new']][int(childNode.inObjStates(['STATE_NEW'],request))] + [[],['is-modified']][int(childNode.inObjStates(['STATE_MODIFIED'],request))] + [[],['is-deleted']][int(childNode.inObjStates(['STATE_DELETED'],request))])">
+ 											<div class="center"
+-												tal:on-error="structure string: <code style='display:block'>ERROR: childNode.renderShort(request)</code>"  
++												tal:on-error="structure string: <code style='display:block'>ERROR: childNode.renderShort(request)</code>"
+ 												tal:attributes="class python:'center%s'%([' inactive',''][childNode.isActive(request)])"
+ 												tal:content="structure python:childNode.renderShort(request)">
+ 												the rendered child-node
+@@ -303,15 +303,15 @@
+ 	</div><!-- .card -->
+ 
+ 	<!-- Readme: markdown formatted optional 'readme' resource attribute rendered as HTML -->
+-	<div id="readme" class="modal" 
++	<div id="readme" class="modal"
+ 		tal:condition="readme"
+-		tal:define="readme python:here.attr('readme'); 
++		tal:define="readme python:here.attr('readme');
+ 			readme_url python:'%s/%s.readme/manage_readme'%(here.content.metaobj_manager.absolute_url(),meta_id)"
+ 		tal:attributes="title python:meta_id; data-readme readme_url">
+ 		<script>
+ 		//<!--
+ 			$(function() {
+-				$(window).on('show.bs.modal', function (event) { 
++				$(window).on('show.bs.modal', function (event) {
+ 					if ( $('#readme script').length > 0 ) {
+ 						$.get($('#readme').data('readme'),'',function(data) {
+ 							$('#readme').html(data);

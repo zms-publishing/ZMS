@@ -1,0 +1,12 @@
+diff --git a/Products/zms/plugins/www/zmi.core.css b/Products/zms/plugins/www/zmi.core.css
+index 34168e7c..675b52e6 100644
+--- a/Products/zms/plugins/www/zmi.core.css
++++ b/Products/zms/plugins/www/zmi.core.css
+@@ -698,6 +698,7 @@ body.zmi .zmi-sitemap span.preview_on_hover:hover::after {
+ 		max-width: 100%;
+ 		/* overflow:hidden; # hides dropdown menu as an unpleasant side effect */
+ 	}
++	.zmi header.navbar ul.navbar-nav li span.cache_label,
+ 	.zmi header.navbar ul.navbar-nav li span.language_label {
+ 		display: none;
+ 	}

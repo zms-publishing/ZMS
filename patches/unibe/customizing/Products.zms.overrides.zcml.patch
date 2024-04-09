@@ -1,0 +1,27 @@
+diff --git a/Products/zms/overrides.zcml b/Products/zms/overrides.zcml
+new file mode 100644
+index 00000000..dce14e83
+--- /dev/null
++++ b/Products/zms/overrides.zcml
+@@ -0,0 +1,20 @@
++<configure
++    xmlns="http://namespaces.zope.org/zope"
++    xmlns:browser="http://namespaces.zope.org/browser"
++    >
++
++  <browser:resourceDirectory
++      name="zms_"
++      directory="plugins/www"
++      />
++
++  <configure
++      xmlns:cmf="http://namespaces.zope.org/cmf"
++      xmlns:zcml="http://namespaces.zope.org/zcml"
++      zcml:condition="installed Products.CMFCore"
++      >
++    <cmf:registerDirectory name="assets" directory="../../../../frontend/web/estatico-handlebars/dist/assets" recursive="True" />
++
++  </configure>
++
++</configure>
+\ No newline at end of file

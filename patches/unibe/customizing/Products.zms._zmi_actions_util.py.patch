@@ -1,0 +1,13 @@
+diff --git a/Products/zms/_zmi_actions_util.py b/Products/zms/_zmi_actions_util.py
+index 4f1fafc5..b0f2aecf 100644
+--- a/Products/zms/_zmi_actions_util.py
++++ b/Products/zms/_zmi_actions_util.py
+@@ -229,7 +229,7 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
+   
+   #-- Headline.
+   if len(actions) > 0:
+-    actions.insert(0, ('----- %s -----'%container.getZMILangStr('CAPTION_INSERT')%container.getZMILangStr('ATTR_CONTENT'), 'insert-action'))
++    actions.insert(0, ('----- %s -----'%container.getZMILangStr('ACTION_INSERT')%container.display_type(REQUEST), 'insert-action'))
+   
+   # Return action list.
+   return actions

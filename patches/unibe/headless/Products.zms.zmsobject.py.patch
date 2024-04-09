@@ -1,0 +1,15 @@
+diff --git a/Products/zms/zmsobject.py b/Products/zms/zmsobject.py
+index 3dc4cef8..61426b51 100644
+--- a/Products/zms/zmsobject.py
++++ b/Products/zms/zmsobject.py
+@@ -494,8 +494,8 @@ class ZMSObject(ZMSItem.ZMSItem,
+     #  Returns 1 if current object is visible.
+     # --------------------------------------------------------------------------
+     def isVisible(self, REQUEST):
+-      REQUEST = standard.nvl(REQUEST, self.REQUEST)
+-      lang = standard.nvl(REQUEST.get('lang'), self.getPrimaryLanguage())
++      REQUEST = standard.nvl(REQUEST, {})
++      lang = REQUEST.get('lang', self.getPrimaryLanguage())
+       visible = True
+       visible = visible and self.isTranslated(lang, REQUEST) # Object is translated.
+       visible = visible and self.isCommitted(REQUEST) # Object has been committed.

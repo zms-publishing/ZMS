@@ -1,0 +1,23 @@
+diff --git a/Products/zms/standard.py b/Products/zms/standard.py
+index 93236aa4..87df0817 100644
+--- a/Products/zms/standard.py
++++ b/Products/zms/standard.py
+@@ -896,8 +896,7 @@ def triggerEvent(context, *args, **kwargs):
+     # Process zope-triggers.
+     m = getattr(context, name, None)
+     if m is not None:
+-      m(context=context, REQUEST=context.REQUEST)
+-
++      m(context=context,REQUEST=context.get('REQUEST', {}))
+   return l
+ 
+ 
+@@ -2358,7 +2357,7 @@ def dt_tal(context, text, options={}):
+   pt = StaticPageTemplateFile(filename='None')
+   pt.setText(text)
+   pt.setEnv(context, options)
+-  request = context.REQUEST
++  request = {}
+   rendered = pt.pt_render(extra_context={'here':context,'request':request})
+   return rendered
+ 

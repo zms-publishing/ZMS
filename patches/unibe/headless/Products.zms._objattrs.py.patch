@@ -1,0 +1,643 @@
+diff --git a/Products/zms/_objattrs.py b/Products/zms/_objattrs.py
+index c3824157..fa49a469 100644
+--- a/Products/zms/_objattrs.py
++++ b/Products/zms/_objattrs.py
+@@ -43,7 +43,7 @@ def getobjattrdefault(obj, obj_attr, lang):
+     if datatype in range(len(_globals.datatype_map)):
+       default = obj_attr.get('default',_globals.datatype_map[datatype][1])
+     # Default inactive in untranslated languages.
+-    if obj_attr['id'] == 'active' and len(obj.getLangIds()) > 1 and not obj.isTranslated(lang,obj.REQUEST):
++    if obj_attr['id'] == 'active' and len(obj.getLangIds()) > 1 and not obj.isTranslated(lang,{}):
+         default = 0
+     if default is not None:
+       if datatype in _globals.DT_DATETIMES and default == '{now}':
+@@ -68,7 +68,7 @@ def getobjattr(self, obj, obj_attr, lang):
+   if obj_attr['id'] == 'attr_dc_coverage':
+     coverage = getattr(obj, obj_attr['id'], '')
+     coverages = ['', 'obligation', None]
+-    if coverage in coverages: 
++    if coverage in coverages:
+       coverage = 'global.' + self.getPrimaryLanguage()
+     return coverage
+   # Get other.
+@@ -247,7 +247,7 @@ class ObjAttrs(object):
+     def _getObjAttrName(self, obj_attr, lang=None):
+       attr = obj_attr['id']
+       if obj_attr['multilang']:
+-        if lang is None: 
++        if lang is None:
+           lang = self.getPrimaryLanguage()
+         attr = '%s_%s'%(attr, lang)
+       return attr
+@@ -274,36 +274,36 @@ class ObjAttrs(object):
+     #  ObjAttrs.getObjAttrInput:
+     # --------------------------------------------------------------------------
+     def getObjAttrInput(self, fmName, obj_attr, value, REQUEST):
+-    
++
+       #-- DATATYPE
+       datatype = obj_attr['datatype_key']
+-      
++
+       #-- NAME
+       lang = REQUEST['lang']
+       elName = self.getObjAttrName(obj_attr, lang)
+-      
++
+       #-- INPUTTYPE
+       inputtype = obj_attr.get('type', 'string')
+-      
++
+       #-- ENABLED / DISABLED
+       enabled = not self.isDisabledAttr(obj_attr, REQUEST)
+       disabled = obj_attr['id'].find('_')==0
+-      
++
+       #-- Meta-Object
+       meta_id = REQUEST.get( 'ZMS_INSERT', self.meta_id)
+       metaObj = self.getMetaobj( meta_id)
+-      
++
+       #-- Label
+       lang_str = self.getObjAttrLabel(obj_attr)
+-      
++
+       #-- Mandatory
+       mandatory = obj_attr.get('mandatory', 0)
+-      
++
+       #-- ID-Fields.
+       if inputtype == 'identifier':
+         if value == '': value = 'e%i'%self.getSequence().nextVal()
+         return '<div class="form-control-static"><input type="hidden" name="%s" value="%s">%s</div>'%(elName, value, value)
+-      
++
+       #-- Richtext-Fields.
+       elif inputtype == 'richtext':
+         REQUEST.set('data', value)
+@@ -332,34 +332,34 @@ class ObjAttrs(object):
+         if form_fixed:
+           css = 'form-control form-fixed'
+           wrap = 'off'
+-        if disabled: 
++        if disabled:
+           css += '-disabled'
+         return self.f_selectRichtext(self, ob=self, fmName=fmName, elName=elName, cols=50, rows=15, value=value, key=obj_attr['id'], metaObj=metaObj, enabled=enabled, lang=lang, lang_str=lang_str, REQUEST=REQUEST, css=css, wrap=wrap)
+-      
++
+       #-- Image-Fields.
+       elif inputtype == 'image':
+         return self.f_selectImage(self, ob=self, fmName=fmName, elName=elName, value=_blobfields.MyBlobDelegate(value), key=obj_attr['id'], metaObj=metaObj, lang=lang, REQUEST=REQUEST)
+-      
++
+       #-- File-Fields.
+       elif inputtype == 'file':
+         return self.f_selectFile(self, ob=self, fmName=fmName, elName=elName, value=_blobfields.MyBlobDelegate(value), key=obj_attr['id'], metaObj=metaObj, lang=lang, REQUEST=REQUEST)
+-      
++
+       #-- Password-Fields.
+       if inputtype == 'password':
+         return self.getPasswordInput(fmName=fmName, elName=elName, value=value)
+-      
++
+       #-- Dictionary/List-Fields.
+       elif inputtype in [ 'dictionary', 'list']:
+         css = 'form-fixed form-control'
+         wrap = 'virtual'
+-        if disabled: 
++        if disabled:
+           css += '-disabled'
+         cols = 35
+         rows = 1
+         inp = []
+         inp.append(self.getTextArea(fmName, elName, cols, rows, self.toXmlString(value), enabled, css, wrap))
+         return ''.join(inp)
+-      
++
+       #-- Text-Fields.
+       elif inputtype in [ 'text', 'xml']:
+         css = 'form-control'
+@@ -367,27 +367,27 @@ class ObjAttrs(object):
+         if inputtype in ['xml']:
+           css = 'form-fixed'
+           wrap = 'off'
+-        if disabled: 
++        if disabled:
+           css += '-disabled'
+         cols = None
+         rows = 5
+         return self.getTextArea(fmName, elName, cols, rows, value, enabled, css, wrap)
+-      
++
+       #-- Boolean-Fields.
+       elif inputtype == 'boolean':
+         return self.getCheckbox(fmName=fmName, elName=elName, elId=obj_attr['id'], value=value, enabled=enabled, hidden=False, btn=True)
+-      
++
+       #-- Autocomplete-Fields.
+       elif inputtype in ['autocomplete', 'multiautocomplete']:
+         return self.zmi_input_autocomplete(self, name=elName, value=value, type=inputtype, ajax_url='ajaxGetObjOptions', obj_id=meta_id, attr_id=obj_attr['id'], lang_str=lang_str, enabled=enabled)
+-      
++
+       #-- Select-Fields.
+       elif inputtype in ['multiselect', 'select', 'color']:
+         optpl = self.getObjOptions(obj_attr, REQUEST)
+         return self.getSelect(fmName, elName, value, inputtype, lang_str, mandatory, optpl, enabled)
+-      
++
+       #-- Input-Fields.
+-      else: 
++      else:
+         css = 'form-control'
+         if disabled: css += '-disabled'
+         css += ' datatype-%s'%(datatype)
+@@ -457,19 +457,19 @@ class ObjAttrs(object):
+     #  ObjAttrs._getObjAttrValue:
+     # --------------------------------------------------------------------------
+     def _getObjAttrValue(self, obj_attr, obj_vers, lang):
+-      
++
+       # Get value.
+       datatype = obj_attr['datatype_key']
+       value = getobjattr(self, obj_vers, obj_attr, lang)
+-      
++
+       #-- Blob-Fields
+       if datatype in _globals.DT_BLOBS:
+         if isinstance(value,str):
+           value = None
+         elif value is not None:
+-          value = value._createCopy( self, obj_attr['id'])
++          value = value._createCopy( self, obj_attr['id'], lang)
+           value.lang = lang
+-      
++
+       #-- DateTime-Fields.
+       elif datatype in _globals.DT_DATETIMES:
+         if value is not None:
+@@ -482,26 +482,26 @@ class ObjAttrs(object):
+             value = standard.parseLangFmtDate(value)
+           elif not isinstance(value, time.struct_time):
+             value = standard.getDateTime(value)
+-      
++
+       #-- List-Fields.
+       elif datatype == _globals.DT_LIST:
+         if not isinstance(value, list):
+           value = [value]
+-      
++
+       #-- Integer-Fields.
+       elif datatype in _globals.DT_INTS:
+         try:
+           value = int(math.floor(float(value)))
+         except:
+           value = 0
+-      
++
+       #-- Float-Fields.
+       elif datatype == _globals.DT_FLOAT:
+         try:
+           value = float(value)
+         except:
+           value = 0.0
+-      
++
+       # Return value.
+       return value
+ 
+@@ -552,17 +552,17 @@ class ObjAttrs(object):
+     #
+     #  Retrieves value for specified property.
+     #
+-    #  @deprecated: use attr(key) instead! 
++    #  @deprecated: use attr(key) instead!
+     # --------------------------------------------------------------------------
+     def getObjProperty(self, key, REQUEST={}, par=None):
+       obj_attrs = self.getObjAttrs()
+-      
++
+       # Special attributes.
+       if key not in obj_attrs.keys():
+         value = standard.nvl(self.evalMetaobjAttr(key), '')
+         if not isinstance(value, _blobfields.MyBlob) and (isinstance(value, Image) or isinstance(value, File)):
+           value = _blobfields.MyBlobWrapper(value)
+-      
++
+       # Standard attributes.
+       elif key in obj_attrs.keys():
+         obj_attr = obj_attrs[key]
+@@ -576,11 +576,11 @@ class ObjAttrs(object):
+           value = self.validateLinkObj(value)
+         # Executable fields.
+         value = standard.dt_exec(self, value)
+-      
++
+       # Undefined attributes.
+       else:
+         value = ''
+-      
++
+       # Return value.
+       return value
+ 
+@@ -595,7 +595,7 @@ class ObjAttrs(object):
+     #  attr({key0:value0,...,keyN:valueN}) -> setObjProperty(key0,value0),...
+     # --------------------------------------------------------------------------
+     def attr(self, *args, **kwargs):
+-      request = kwargs.get('request',kwargs.get('REQUEST',self.REQUEST))
++      request = kwargs.get('request', kwargs.get('REQUEST', self.get('REQUEST', {})))
+       if len(args) == 1 and isinstance(args[0], str):
+         return self.getObjProperty( args[0], request, kwargs)
+       elif len(args) == 2:
+@@ -610,7 +610,7 @@ class ObjAttrs(object):
+     # --------------------------------------------------------------------------
+     def evalMetaobjAttr(self, *args, **kwargs):
+       root = self
+-      request = self.REQUEST
++      request = kwargs.get('request', kwargs.get('REQUEST', self.get('REQUEST', {})))
+       id = request.get('ZMS_INSERT', self.meta_id)
+       key = args[0]
+       if key.find('.')>0:
+@@ -639,9 +639,9 @@ class ObjAttrs(object):
+ 
+     """
+     ############################################################################
+-    ###  
++    ###
+     ###  Active
+-    ### 
++    ###
+     ############################################################################
+     """
+ 
+@@ -681,29 +681,32 @@ class ObjAttrs(object):
+               empty = value is None
+             if not empty:
+               break
+-          # Toggle.
+-          if key == 'active':
+-            b = b and value
+-          # Start time.
+-          elif key == 'attr_active_start':
+-            if value is not None:
+-              if isinstance(value, time.struct_time):
+-                # Convert time.struct_time to datetime tuple.
+-                value = tuple(value[:8]) + (0,)
+-              dt = datetime.datetime.fromtimestamp(time.mktime(value))
+-              b = b and now > dt
+-              if dt > now and self.REQUEST.get('ZMS_CACHE_EXPIRE_DATETIME', dt) >= dt:
+-                self.REQUEST.set('ZMS_CACHE_EXPIRE_DATETIME',dt)
+-          # End time.
+-          elif key == 'attr_active_end':
+-            if value is not None:
+-              if isinstance(value, time.struct_time):
+-                # Convert time.struct_time to datetime tuple.
+-                value = tuple(value[:8]) + (0,)
+-              dt = datetime.datetime.fromtimestamp(time.mktime(value))
+-              b = b and dt > now
+-              if dt > now and self.REQUEST.get('ZMS_CACHE_EXPIRE_DATETIME', dt) >= dt:
+-                self.REQUEST.set('ZMS_CACHE_EXPIRE_DATETIME',dt)
++          try:
++              # Toggle.
++              if key == 'active':
++                b = b and value
++              # Start time.
++              elif key == 'attr_active_start':
++                if value is not None:
++                  if isinstance(value, time.struct_time):
++                    # Convert time.struct_time to datetime tuple.
++                    value = tuple(value[:8]) + (0,)
++                  dt = datetime.datetime.fromtimestamp(time.mktime(value))
++                  b = b and now > dt
++                  if dt > now and self.REQUEST.get('ZMS_CACHE_EXPIRE_DATETIME', dt) >= dt:
++                    self.REQUEST.set('ZMS_CACHE_EXPIRE_DATETIME',dt)
++              # End time.
++              elif key == 'attr_active_end':
++                if value is not None:
++                  if isinstance(value, time.struct_time):
++                    # Convert time.struct_time to datetime tuple.
++                    value = tuple(value[:8]) + (0,)
++                  dt = datetime.datetime.fromtimestamp(time.mktime(value))
++                  b = b and dt > now
++                  if dt > now and self.REQUEST.get('ZMS_CACHE_EXPIRE_DATETIME', dt) >= dt:
++                    self.REQUEST.set('ZMS_CACHE_EXPIRE_DATETIME',dt)
++          except:
++              continue
+           if not b: break
+       return b
+ 
+@@ -715,15 +718,15 @@ class ObjAttrs(object):
+     #
+     ############################################################################
+     """
+-    
++
+     # --------------------------------------------------------------------------
+     #  ObjAttrs.formatObjAttrValue:
+     # --------------------------------------------------------------------------
+     def formatObjAttrValue(self, obj_attr, v, lang=None):
+-      
++
+       #-- DATATYPE
+       datatype = obj_attr.get('datatype_key', _globals.DT_UNKNOWN)
+-      
++
+       #-- VALUE
+       if isinstance(v, str):
+         chars = ''.join([ x for x in string.whitespace if x != '\t'])
+@@ -731,7 +734,7 @@ class ObjAttrs(object):
+       # Retrieve v from options.
+       if 'options' in obj_attr:
+         options = obj_attr['options']
+-        try: 
++        try:
+           i = options.index(int(v))
+           if i%2==1: v = options[i-1]
+         except:
+@@ -740,7 +743,7 @@ class ObjAttrs(object):
+             if i%2==1: v = options[i-1]
+           except:
+             pass
+-      
++
+       #-- Blob-Fields
+       if datatype in _globals.DT_BLOBS:
+         stored = False
+@@ -773,14 +776,14 @@ class ObjAttrs(object):
+             stored = True
+         if stored and self.getType() == 'ZMSRecordSet':
+           v.on_setobjattr()
+-      
++
+       #-- DateTime-Fields.
+       if datatype in _globals.DT_DATETIMES:
+         if isinstance(v,str):
+           v = standard.parseLangFmtDate(v)
+         elif not isinstance(v, time.struct_time):
+           v = standard.getDateTime(v)
+-      
++
+       #-- Dictionary-Fields
+       if datatype == _globals.DT_DICT:
+         if v is None:
+@@ -793,7 +796,7 @@ class ObjAttrs(object):
+             pass
+         if isinstance(v, dict):
+           v = v.copy()
+-      
++
+       #-- List-Fields
+       if datatype == _globals.DT_LIST:
+         if obj_attr['repetitive'] and not isinstance(v, list):
+@@ -822,37 +825,37 @@ class ObjAttrs(object):
+               v = [v.strip()]
+             if isinstance(v, list) or isinstance(v, tuple):
+               v = standard.copy_list(v)
+-      
++
+       #-- Integer-Fields
+       if datatype in _globals.DT_INTS:
+         if isinstance(v,str) and len(v) > 0:
+           if v[-1] == '.':
+             v = v[:-1]
+           v = int(v)
+-      
++
+       #-- Float-Fields
+       if datatype == _globals.DT_FLOAT:
+         if isinstance(v,str) and len(v) > 0:
+           v = float(v)
+-      
++
+       #-- String-Fields.
+       if datatype in _globals.DT_STRINGS:
+         if v is None:
+           v = ''
+-      
++
+       #-- Text-Fields
+       if datatype in _globals.DT_TEXTS:
+         v = self.validateInlineLinkObj(v)
+-      
++
+       #-- Url-Fields
+       if datatype == _globals.DT_URL:
+         v = self.validateLinkObj(v)
+-      
++
+       # Hook for custom formatting.
+       name = 'formatCustomObjAttrValue'
+       if hasattr(self, name):
+         v = getattr(self, name)( context=self, obj_attr=obj_attr, v=v)
+-      
++
+       return v
+ 
+ 
+@@ -862,42 +865,42 @@ class ObjAttrs(object):
+     #  Assigns value to specified property from Request-Object.
+     # --------------------------------------------------------------------------
+     def setReqProperty(self, key, REQUEST, forced=0):
+-      
++
+       #-- REQUEST
+       lang = REQUEST['lang']
+-      
++
+       #-- DEFINTION
+       obj_attr = self.getObjAttr(key)
+       elName = self.getObjAttrName(obj_attr, lang)
+-      
++
+       #-- ENABLED
+       enabled = not self.isDisabledAttr(obj_attr, REQUEST)
+-      
++
+       #-- DATATYPE
+       datatype = obj_attr['datatype_key']
+-      
++
+       #-- RETURN
+       if ( not enabled) or \
+          ( not obj_attr['xml']) or \
+          ( obj_attr['id'].find('_') == 0 and elName not in REQUEST.form) or \
+-         ( datatype == _globals.DT_UNKNOWN): 
+-        if not forced: 
++         ( datatype == _globals.DT_UNKNOWN):
++        if not forced:
+           return
+-      
++
+       #-- VALUE
+       set, value =False, REQUEST.get(elName, None)
+-      
++
+       #-- Blob-Fields
+       if datatype in _globals.DT_BLOBS:
+-        
++
+         # Upload
+         if isinstance(value, ZPublisher.HTTPRequest.FileUpload) and len(value.filename) > 0:
+           set, value = True, value
+-        
++
+         # Delete
+         elif int(REQUEST.get('del_%s'%elName, 0)) == 1:
+           set, value = True, None
+-        
++
+         # Preload
+         else:
+           form_id = REQUEST.get('form_id', None)
+@@ -924,7 +927,7 @@ class ObjAttrs(object):
+                   value.width = w
+                   value.height = h
+               temp_folder.manage_delObjects([id])
+-      
++
+       #-- Integer-Fields
+       elif datatype in _globals.DT_INTS:
+         if value is not None:
+@@ -932,7 +935,7 @@ class ObjAttrs(object):
+             set, value = True, None
+           else:
+             set, value = True, int(value)
+-      
++
+       #-- Float-Fields
+       elif datatype == _globals.DT_FLOAT:
+         if value is not None:
+@@ -940,11 +943,11 @@ class ObjAttrs(object):
+             set, value = True, None
+           else:
+             set, value = True, float(value)
+-      
++
+       #-- Other-Fields
+       else:
+         set = True
+-      
++
+       #-- SET?
+       if set:
+         standard.writeLog( self, "[setReqProperty] %s=%s"%(key, str(value)))
+@@ -956,19 +959,19 @@ class ObjAttrs(object):
+     #
+     #  Assigns value to specified property.
+     #
+-    #  @deprecated: use attr(key,value) instead! 
++    #  @deprecated: use attr(key,value) instead!
+     # --------------------------------------------------------------------------
+     def setObjProperty(self, key, value, lang=None, forced=0):
+-      
++
+       #-- Get definition.
+       obj_attr = self.getObjAttr(key)
+-      
++
+       #-- Format value.
+       value = self.formatObjAttrValue(obj_attr, value, lang)
+-      
++
+       #-- Notify metaobj_manager.
+       self.notifyMetaobjAttrAboutValue( self.meta_id, key, value)
+-      
++
+       #-- SET!
+       standard.writeLog( self, "[setObjProperty]: %s=%s"%(key, str(value)))
+       ob = self.getObjVersion({'preview':'preview'})
+@@ -995,11 +998,11 @@ class ObjAttrs(object):
+           k = qs[:e]
+           v = qs[e+1:]
+           REQUEST.set(k, v)
+-      
++
+       # Mandatory parameters.
+       lang = REQUEST['lang']
+       key = REQUEST['key']
+-      
++
+       dataRequestKey = REQUEST.get('dataRequestKey')
+       filenameUnescape = REQUEST.get('filenameUnescape')
+       if dataRequestKey:
+@@ -1016,7 +1019,7 @@ class ObjAttrs(object):
+         filename = value.filename
+       blob = self.ImageFromData(value, filename)
+       filename = blob.getFilename()
+-      
++
+       # Preload to temp-folder.
+       form_id = REQUEST['form_id']
+       temp_folder = self.temp_folder
+@@ -1030,18 +1033,18 @@ class ObjAttrs(object):
+         file = temp_folder.manage_addImage( id=id, title=filename, file=value)
+       else:
+         file = temp_folder.manage_addFile( id=id, title=filename, file=value)
+-      
++
+       if dataRequestKey:
+         message['filename'] = blob.getFilename()
+         message['size_str'] = self.getDataSizeStr(blob.get_size())
+         message['content_type'] = blob.getContentType()
+         message['temp_url'] = '%s/%s'%(temp_folder.absolute_url(), id)
+         message = self.str_json(message)
+-      
++
+       if REQUEST.get('set'):
+         self.setReqProperty(key, REQUEST)
+         message = self.getZMILangStr( 'MSG_UPLOADED')+'('+self.getLangFmtDate(time.time())+')'
+-      
++
+       # Return with success.
+       RESPONSE.setHeader('Content-Type', content_type)
+       return message
+@@ -1184,7 +1187,7 @@ class ObjAttrs(object):
+     #
+     ############################################################################
+     """
+-    
++
+     # --------------------------------------------------------------------------
+     #  ObjAttrs.cloneObjAttrs:
+     #
+@@ -1275,7 +1278,7 @@ class ObjAttrsManager(object):
+       rtn = []
+       rtn.append('[%s.synchronizeObjAttrs]: %s'%(self.absolute_url(), str(sync_id)))
+       standard.writeLog( self, '[synchronizeObjAttrs]')
+-      
++
+       # Prepare defaults.
+       defaults_obj_attrs = {}
+       defaults = [
+@@ -1305,7 +1308,7 @@ class ObjAttrsManager(object):
+         dct = self.synchronizeObjAttr( attr)
+         if isinstance(dct, dict):
+           defaults_obj_attrs[dct['id']] = dct
+-      
++
+       # Process meta-model.
+       if sync_id is None or sync_id == [ None]:
+         self.dObjAttrs = {}
+@@ -1334,10 +1337,10 @@ class ObjAttrsManager(object):
+           elif key in obj_attrs:
+             del obj_attrs[key]
+         self.dObjAttrs[meta_id] = obj_attrs
+-      
++
+       # Make persistent.
+       self.dObjAttrs = self.dObjAttrs.copy()
+-      
++
+       # Process clients.
+       for portalClient in self.getPortalClients():
+         try:
+@@ -1353,7 +1356,7 @@ class ObjAttrsManager(object):
+             rtn.append(portalClient.synchronizeObjAttrs(sync_id))
+         except:
+           standard.writeError( self, '[synchronizeObjAttrs]: Can\'t process %s'%portalClient.absolute_url())
+-      
++
+       return '\n'.join(rtn)
+ 
+ ################################################################################

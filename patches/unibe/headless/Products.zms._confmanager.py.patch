@@ -1,0 +1,12 @@
+diff --git a/Products/zms/_confmanager.py b/Products/zms/_confmanager.py
+index e0d86083..85732890 100644
+--- a/Products/zms/_confmanager.py
++++ b/Products/zms/_confmanager.py
+@@ -1114,7 +1114,6 @@ __REGISTRY__ = None
+ def getRegistry():
+     global __REGISTRY__
+     if __REGISTRY__ is None:
+-        print("__REGISTRY__['confdict']",__REGISTRY__)
+         __REGISTRY__ = {}
+         try:
+           __REGISTRY__['confdict'] = ConfDict.get()

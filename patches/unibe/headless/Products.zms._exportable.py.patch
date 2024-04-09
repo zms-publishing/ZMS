@@ -1,0 +1,13 @@
+diff --git a/Products/zms/_exportable.py b/Products/zms/_exportable.py
+index 432639ca..80dcfcf2 100644
+--- a/Products/zms/_exportable.py
++++ b/Products/zms/_exportable.py
+@@ -383,7 +383,7 @@ class Exportable(_filtermanager.FilterItem):
+     # --------------------------------------------------------------------------
+     #  Exportable.toXml:
+     # --------------------------------------------------------------------------
+-    def toXml(self, REQUEST, deep=True, data2hex=False, multilang=True):
++    def toXml(self, REQUEST={}, deep=True, data2hex=False, multilang=True):
+       xml = ''
+       xml += _xmllib.xml_header()
+       xml += _xmllib.getObjToXml( self, REQUEST, deep, base_path='', data2hex=data2hex, multilang=multilang)

@@ -1,0 +1,39 @@
+diff --git a/Products/zms/standard.py b/Products/zms/standard.py
+index 93236aa4..d854eda6 100644
+--- a/Products/zms/standard.py
++++ b/Products/zms/standard.py
+@@ -340,9 +340,8 @@ def set_response_headers_cache(context, request=None, cache_max_age=24*3600, cac
+       expire_datetime_gmt = expire_datetime.toZone('GMT')
+ 
+       if t1 > t0 and cache_s_maxage > expire_in_secs:
+-        request.RESPONSE.setHeader('Expires', expire_datetime_gmt.asdatetime().strftime('%a, %d %b %Y %H:%M:%S %Z'))
+-        request.RESPONSE.setHeader('Cache-Control','s-maxage={}, max-age={}, public, must-revalidate, proxy-revalidate'.format(expire_in_secs, expire_in_secs))
+-        request.RESPONSE.setHeader('X-Accel-Expires', expire_in_secs)
++        request.RESPONSE.setHeader('Cache-Control',
++          's-maxage={}, max-age={}, public, must-revalidate, proxy-revalidate'.format(expire_in_secs, expire_in_secs))
+ 
+       return expire_datetime_gmt.ISO8601(), expire_in_secs
+ 
+@@ -373,11 +372,10 @@ def get_installed_packages(pip_cmd='freeze'):
+     }
+   cmd = pip_cmds.get(pip_cmd,'freeze')
+   pth = getPACKAGE_HOME().rsplit('/lib/')[0] + '/bin'
+-  packages = ''
+   output = subprocess.Popen(pth + cmd,
+                             stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                             shell=True, cwd=pth, universal_newlines=True)
+-  packages = f'# {pth}{cmd}\n\n{output.communicate()[0].strip()}'
++  packages = f'# {pth}{cmd}\n\nPython {sys.version}\n\n{output.communicate()[0].strip()}'
+   return packages
+ 
+ 
+@@ -1086,7 +1084,8 @@ def getLog(context):
+   else:
+     zms_log = getattr(context, 'zms_log', None)
+     if zms_log is None:
+-      zms_log = getattr(context.getPortalMaster(), 'zms_log', None)
++      # get ZMSLOG of UniBE-Root-Master instead of getPortalMaster()
++      zms_log = getattr(context.breadcrumbs_obj_path()[0], 'zms_log', None)
+     request.set('ZMSLOG', zms_log)
+   return zms_log
+ 

@@ -6,8 +6,3 @@
 .zmi .ZMSDocument h1 small {
 	color: rgb(0,138,199);
 }
-.zmi.ZMSTrashcan header .dropdown i.icon-trash,
-.zmi system header .dropdown i.icon-bolt,
-.zmi.users  header .dropdown i.icon-group {
-	color: #08c;
-}

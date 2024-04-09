@@ -9,10 +9,10 @@
 	tal:attributes="id id;class css_class">
 
 	<tal:block tal:condition="python: not is_bpmn and diagram_code">
-		<script type="module" 
+		<script type="module"
 			tal:define="dgrm_load python:request.set('dgrm_load',request.get('dgrm_load',0)+1)"
 			tal:condition="python:request.get('dgrm_load',0)==1">
-			import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@9/dist/mermaid.esm.min.mjs';
+			import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
 			$(document).on('ready turbolinks:load', function() {
 				$('body').attr('data-turbolinks','false');
 				mermaid.initialize({ startOnLoad: true });

@@ -129,8 +129,11 @@ The configuraton form ends up with a preview of the rendered html output.
 _GUI for defining individual character-formats_
 
 ## Search: Using Zope-ZCatalog
-The ZCatalog module provides a simple index for Zope contents. ZMS can address this index by default: the admin menu *Search* allows to select all the content object classes and their attributes to be indexed.
-Via *ZCatalog-Connector* tab the Zope objects containing the index are listed and can be administered (by buttons like *Delete*, *Refresh" etc.).
+The ZCatalog module provides a simple index for Zope contents. ZMS can address this index by default: the admin menu *Search* allows with the tab "Adapter" to select all the content object classes and their attributes to be indexed.
+Via *ZCatalog-Connector* tab the Zope ZCatalog objects containing the index are listed and can be administered (by *Delete* and *Refresh"). The index objects are named like `"catalog_"+ Lang-ID` (e.g. `catalog_eng`). This ZCatalog object is contained by the ZMS object 'content'; it helds the attributes schema and all the processed content. The ZMS API allows to access the ZCatalog object by the method `getZCatalog()` and further functions for querying.
+
+In a *multisite hierarchy* only the root-Catalog will collect all the index data; the root ZMS object defines the content classes and the attribute schema for the *global content indexing*. If in deeper nodes different content models are applied and individual document-like content classes are not acquired from the top-level ZMS, these *local* document classes can be activated/registered in the client's individual Search configuration. IMPORTANT HINT: Any deep level *attribute schema* will be ignored for global indexing. All relevant attributes or the global index must be declared in the root ZMS object! That is why a solid metadata concept is needed to avoid conflicts in the attribute schema.
+
 
 ![Administration of Metadata to be indexed](images/admin_gui_search1.gif)
 _Administration of metadata to be indexed_
@@ -150,52 +153,52 @@ First a ZMS document node is needed for showing the search form and the results;
 <form class="search" method="get" xmlns:tal="http://xml.zope.org/namespaces/tal">
 
 	<tal:block tal:condition="python:request.get('searchform',True)">
-	<input tal:condition="python:request.get('searchform')" type="hidden" name="searchform" tal:attributes="value python:request.get('searchform')" />
-	<input tal:condition="python:request.get('lang')" type="hidden" name="lang" tal:attributes="value python:request.get('lang')" />
-	<input tal:condition="python:request.get('preview')" type="hidden" name="preview" tal:attributes="value python:request.get('preview')" />
-	<legend tal:content="python:here.getZMILangStr('SEARCH_HEADER')">Search header</legend>
-	<div class="form-group">
-		<div class="col-md-12">
-			<div class="input-group">
-				<tal:block tal:content="structure python:here.getTextInput(fmName='searchform',elName='search',value=request.get('search',''))">the value</tal:block>
-				<span class="input-group-btn">
-					<button type="submit" class="btn btn-primary">
-						<i class="fa fa-search icon-search"></i>
-					</button>
-				</span>
+		<input tal:condition="python:request.get('searchform')" type="hidden" name="searchform" tal:attributes="value python:request.get('searchform')" />
+		<input tal:condition="python:request.get('lang')" type="hidden" name="lang" tal:attributes="value python:request.get('lang')" />
+		<input tal:condition="python:request.get('preview')" type="hidden" name="preview" tal:attributes="value python:request.get('preview')" />
+		<legend tal:content="python:here.getZMILangStr('SEARCH_HEADER')">Search header</legend>
+		<div class="form-group">
+			<div class="col-md-12">
+				<div class="input-group">
+					<tal:block tal:content="structure python:here.getTextInput(fmName='searchform',elName='search',value=request.get('search',''))">the value</tal:block>
+					<span class="input-group-btn">
+						<button type="submit" class="btn btn-primary">
+							<i class="fa fa-search icon-search"></i>
+						</button>
+					</span>
+				</div>
 			</div>
-		</div>
-	</div><!-- .form-group -->
-	<div class="form-group row" tal:condition="python:here.getPortalMaster() is not None or len(here.getPortalClients())>0">
-		<div class="control-label col-md-12" tal:define="home_id python:here.getHome().id">
-			<input type="hidden" name="home_id" tal:attributes="value python:request.get('home_id',home_id); data-value home_id">
-			<input type="checkbox" class="form-check-input" onchange="var $i=$('input[name=home_id]');$i.val(this.checked?$i.attr('data-value'):'');" tal:attributes="checked python:['','checked'][request.get('home_id',home_id)==home_id]">
-			<label class="form-check-label control-label">
-				<strong tal:content="home_id">the home-id</strong> (local)
-			</label>
-		</div>
-	</div><!-- .form-group -->
+		</div><!-- .form-group -->
+		<div class="form-group row" tal:condition="python:here.getPortalMaster() is not None or len(here.getPortalClients())>0">
+			<div class="control-label col-md-12" tal:define="home_id python:here.getHome().id">
+				<input type="hidden" name="home_id" tal:attributes="value python:request.get('home_id',home_id); data-value home_id" />
+				<input type="checkbox" class="form-check-input" onchange="var $i=$('input[name=home_id]');$i.val(this.checked?$i.attr('data-value'):'');" tal:attributes="checked python:['','checked'][request.get('home_id',home_id)==home_id]" />
+				<label class="form-check-label control-label">
+					<strong tal:content="home_id">the home-id</strong> (local)
+				</label>
+			</div>
+		</div><!-- .form-group -->
 	</tal:block>
 
-<div id="search_results" class="form-group" style="display:none">
-	<div class="col-md-12">
-		<h4 tal:content="python:here.getZMILangStr('SEARCH_HEADERRESULT')">
-			Result
-		</h4>
-		<div class="header row">
-			<div class="col-md-12">
-				<span class="small-head">
-					<span class="glyphicon glyphicon-refresh fas fa-spinner fa-spin" alt="Loading..."></span>
-					<tal:block tal:content="python:here.getZMILangStr('MSG_LOADING')">loading</tal:block>
-				</span>
-			</div>
-		</div><!-- .header.row -->
-		<div class="line row"></div><!-- .row -->
-			<div class="pull-right">
-				<ul class="pagination"></ul>
-			</div>
+	<div id="search_results" class="form-group" style="display:none">
+		<div class="col-md-12">
+			<h4 tal:content="python:here.getZMILangStr('SEARCH_HEADERRESULT')">
+				Result
+			</h4>
+			<div class="header row">
+				<div class="col-md-12">
+					<span class="small-head">
+						<span class="glyphicon glyphicon-refresh fas fa-spinner fa-spin" alt="Loading..."></span>
+						<tal:block tal:content="python:here.getZMILangStr('MSG_LOADING')">loading</tal:block>
+					</span>
+				</div>
+			</div><!-- .header.row -->
+			<div class="line row"></div><!-- .row -->
+				<div class="pull-right">
+					<ul class="pagination"></ul>
+				</div>
+		</div>
 	</div>
-</div>
 
 </form>
 ```
@@ -206,6 +209,10 @@ The TAL code has two sections:
 The form's request is responded by an XML stream which is transformed into an HTML list by JavaScript. That is why the frontend code need to reference a special, ready to use JS module for handling the search gui:
 
 ```html
+<link rel="stylesheet" type="text/css" href="/++resource++zmi/fontawesome-free-5.15.2/css/all.css" />
+<script type="text/javascript" src="/++resource++zms_/zmi.js"></script>
+
+<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/zmi.core.js"></script>
 <script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ZMS/zmi_body_content_search.js"></script>
 ```
 

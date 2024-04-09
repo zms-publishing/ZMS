@@ -103,7 +103,8 @@ class ZMSTextformatManager(object):
       if id in self.textformats:
         i = self.textformats.index(id)
         d = self.textformats[i+1]
-        return ZMSTextformat.ZMSTextformat(id, d, REQUEST)
+        manage_lang = self.get_manage_lang()
+        return ZMSTextformat.ZMSTextformat(id, d, manage_lang)
       return None
 
 

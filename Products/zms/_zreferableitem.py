@@ -359,6 +359,28 @@ class ZReferableItem(object):
         url = ild['data-id']
     return url
 
+  # ----------------------------------------------------------------------------
+  #  ZReferableItem.findObject:
+  #
+  #  Find object.
+  #  Fast access to object of what we know that it must exist,
+  #  since we have just calculated the url a short period before.
+  # ----------------------------------------------------------------------------
+  def findObject(self, url):
+    url = url[2:-1]
+    if url.find('id:') >= 0:
+      catalog = self.getZMSIndex().get_catalog()
+      q = catalog({'get_uid':url})
+      for r in q:
+        path  = '%s/'%r['getPath']
+        break
+    else:
+      path = url.replace('@','/content/')
+    ob = self
+    l = [x for x in path.split('/') if x] 
+    for id in l:
+      ob = getattr(ob,id,None)
+    return ob
 
   # ----------------------------------------------------------------------------
   #  ZReferableItem.getLinkObj:
@@ -368,21 +390,6 @@ class ZReferableItem(object):
   def getLinkObj(self, url, REQUEST=None):
     ob = None
     if isInternalLink(url):
-      def default(*args, **kwargs):
-        self = args[0]
-        url = args[1]['url']
-        ob = None
-        if not url.startswith('{$__'):
-          # Find document-element.
-          zmspath = url[2:-1].replace('@', '/content/')
-          l = zmspath.split('/') 
-          ob = self
-          try:
-            for id in [x for x in l if x]:
-              ob = getattr(ob, id, None)
-          except:
-            pass
-        return ob
       # Params.
       ref_params = {}
       if url.find(';') > 0:
@@ -399,26 +406,25 @@ class ZReferableItem(object):
           catalog = self.getZMSIndex().get_catalog()
           q = catalog({'get_uid':url})
           for r in q:
-            zmspath  = '%s/'%r['getPath']
-            l = zmspath[1:-1].split('/')
-            ob = self
-            try:
-              for id in [x for x in l if x]:
+            path  = '%s/'%r['getPath']
+            l = [x for x in path.split('/') if x] 
+            ob = self.getRootElement()
+            if l:
+              [l.pop(0) for x in ob.getPhysicalPath() if l[0] == x]
+              for id in l:
                 ob = getattr(ob,id,None)
-              break
-            except:
-              pass
+            break
         elif not url.startswith('__'):
-          url = url.replace('@','/content/')
-          l = url.split('/')
-          ob =self.getDocumentElement()
-          try:
-            for id in [x for x in l if x]:
+          path = url.replace('@','/content/')
+          l = [x for x in path.split('/')if x] 
+          ob = self.getDocumentElement()
+          if l:
+            [l.pop(0) for x in ob.getPhysicalPath() if l[0] == x]
+            for id in l:
               ob = getattr(ob,id,None)
-          except:
-            pass
       # Prepare request
-      if ob is not None and ob.id not in self.getPhysicalPath():
+      ids = self.getPhysicalPath()
+      if ob is not None and ob.id not in ids:
         request = self.get('request', self.get('REQUEST', {}))
         # ob.set_request_context(request, ref_params)
     return ob

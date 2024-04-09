@@ -150,7 +150,7 @@
 </table>
 
 			<div class="card-body">
-				<div class="form-row">
+				<div class="form-group row">
 					<div class="controls save">
 						<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:'BTN_%s'%command.upper()" tal:content="python:here.getZMILangStr('BTN_%s'%command.upper())">Action</button>
 						<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CANCEL" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>

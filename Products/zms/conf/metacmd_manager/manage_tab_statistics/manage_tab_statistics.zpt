@@ -132,7 +132,7 @@
 				<table class="table mb-0">
 					<thead>
 						<tr>
-							<th width="33%" tal:content="python:'Meta-Name: %s'%(here.display_type(request,meta_id))">the display-type</th>
+							<th width="33%" tal:content="python:'Meta-Name: %s'%(here.display_type(meta_id=meta_id))">the display-type</th>
 							<th width="33%">Attribute Usage [ % (Abs.) ]</th>
 							<th width="33%">Attribute Empty [ % (Abs.)]</th>
 						</tr>
@@ -155,7 +155,7 @@
 										</tal:block>
 									</a>
 									<ol tal:attributes="id python:'ol_%s1'%metaObjAttr['id']" style="visibility:hidden;display:none;">
-										<li tal:repeat="ob python:stat1[metaObjAttr['id']]">
+										<li tal:repeat="ob python:stat1[metaObjAttr['id']]" class="text-nowrap">
 											<i class="far fa-square" title="Is Visible" 
 												tal:attributes="class python:ob['is_visible'] and 'far fa-check-square is_visible text-muted' or 'far fa-square is_not_visible text-warning'"></i>
 											<a tal:attributes="title python:'%s/manage_main'%ob['abs_url'];href python:'%s/manage_main'%ob['abs_url']; class python:ob['is_visible']==False and 'text-warning' or None"
@@ -177,7 +177,7 @@
 										</tal:block>
 									</a>
 									<ol tal:attributes="id python:'ol_%s0'%metaObjAttr['id']" style="visibility:hidden;display:none;">
-										<li tal:repeat="ob python:stat0[metaObjAttr['id']]">
+										<li tal:repeat="ob python:stat0[metaObjAttr['id']]" class="text-nowrap">
 											<i class="far fa-square" title="Is Visible" 
 												tal:attributes="class python:ob['is_visible'] and 'far fa-check-square is_visible text-muted' or 'far fa-square is_not_visible text-warning'"></i>
 											<a tal:attributes="title python:'%s/manage_main'%ob['abs_url'];href python:'%s/manage_main'%ob['abs_url']; class python:ob['is_visible']==False and 'text-warning' or None"

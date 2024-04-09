@@ -88,8 +88,8 @@ function ZMSGraphic_extEdit_action( elName, elParams, pil) {
 	var elParamsSplit = elParams.split('&');
 	for (var i = 0; i < elParamsSplit.length; i++) {
 		var s = elParamsSplit[i];
-		var k = s.substr(0,s.indexOf('='));
-		var v = s.substr(s.indexOf('=')+1);
+		var k = s.substring(0,s.indexOf('='));
+		var v = s.substring(s.indexOf('=')+1);
 		ZMSGraphic_params[k] = v;
 	}
 	zmiRegisterParams(elName,ZMSGraphic_params);

@@ -113,7 +113,7 @@ def manage_addZMSCustom(self, meta_id, lang, _sort_id, btn, REQUEST, RESPONSE):
       # Normalize Sort-Ids
       self.normalizeSortIds(id_prefix)
       # Message
-      message = self.getZMILangStr('MSG_INSERTED')%obj.display_type(REQUEST)
+      message = self.getZMILangStr('MSG_INSERTED')%obj.display_type(meta_id=obj.meta_id)
     except:
       message = standard.writeError(self, "[manage_addZMSCustom]")
       messagekey = 'manage_tabs_error_message'
@@ -176,9 +176,9 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
     # -----------------------
     __viewPermissions__ = (
         'manage', 'manage_main', 'manage_container', 'manage_workspace', 'manage_menu',
-        'manage_ajaxGetChildNodes',
         )
     __authorPermissions__ = (
+        'preview_html', 'preview_top_html',
         'manage_addZMSModule',
         'manage_changeRecordSet',
         'manage_properties', 'manage_changeProperties', 'manage_changeTempBlobjProperty',
@@ -221,10 +221,11 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
     #
     # Constructor (initialise a new instance of ZMSCustom).
     ############################################################################
-    def __init__(self, id='', sort_id=0, meta_id=None):
+    def __init__(self, id='', sort_id=0, meta_id=None, uid=''):
       """ ZMSCustom.__init__ """
       zmscontainerobject.ZMSContainerObject.__init__(self, id, sort_id)
       self.meta_id = standard.nvl(meta_id, self.meta_type)
+      self._uid = uid
 
 
     ############################################################################
@@ -680,7 +681,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
       
       else:
         ob = _importable.importFile( self, file, REQUEST, _importable.importContent)
-        message = self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%ob.display_type(REQUEST))
+        message = self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%ob.display_type())
       
       # Return with message.
       if RESPONSE is not None:

@@ -1,11 +1,11 @@
 <!-- ZMSTextarea.standard_html -->
 
 <tal:block tal:define="
-		zmscontext options/zmscontext;
-		text          python:zmscontext.getText(request);
-		format        python:zmscontext.attr('format');
-		renderedText  python:zmscontext.renderText(format,'text',text,request,zmscontext.id)"
-		tal:content="structure renderedText">
+	zmscontext options/zmscontext;
+	text          python:zmscontext.getText(request);
+	format        python:zmscontext.attr('format');
+	renderedText  python:zmscontext.renderText(format,'text',text,request,zmscontext.id)"
+	tal:content="structure renderedText">
 	The text
 </tal:block>
 

@@ -28,7 +28,7 @@
 			</div><!-- .form-group -->
 			<div class="form-group row">
 				<label for="new_icon_clazz" class="col-sm-2 control-label"><span>Icon</span></label>
-				<div class="col-sm-9"><input type="text" id="new_icon_clazz" name="new_icon_clazz" class="form-control form-control-sm zmi-input-icon-clazz" tal:attributes="value python:format.get('icon_clazz','')"/></div>
+				<div class="col-sm-10"><input type="text" id="new_icon_clazz" name="new_icon_clazz" class="form-control form-control-sm zmi-input-icon-clazz" tal:attributes="value python:format.get('icon_clazz','')"/></div>
 			</div><!-- .form-group -->
 			<div class="form-group row">
 				<label for="new_tag" class="col-sm-2 control-label"><span>&lt;<tal:block tal:content="python:here.getZMILangStr('ATTR_TAG')">Tag</tal:block>&gt;</span></label>
@@ -45,19 +45,19 @@
 			<div class="form-group row">
 				<label for="preview_charcode" class="col-sm-2 control-label"><span>Rendered Code</span></label>
 				<div class="col-sm-10">
-					<p id="preview_charcode" class="preview_textformat p-2">
+					<p id="preview_charcode" class="preview_textformat p-2 bg-light">
 						<code>&lt;<tal:block tal:content="format/tag">tag</tal:block> <tal:block tal:content="format/attrs">attrs</tal:block>&gt;</code><br/>
 							&nbsp;&nbsp;&nbsp;&nbsp;<tal:block tal:content="format/display">display</tal:block><br/>
 						<code>&lt;/<tal:block tal:content="format/tag">tag</tal:block>&gt;</code>
 					</p>
 				</div><!-- .col-sm-10 -->
 			</div><!-- .form-group -->
-			<div class="form-row">
+			<div class="form-group row">
 				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-primary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 					<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CLOSE" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
 				</div><!-- .controls.save -->
-			</div><!-- .form-row -->
+			</div><!-- .form-group -->
 		</form>
 	</div><!-- .inner -->
 </div><!-- #editObj -->
@@ -139,7 +139,7 @@
 	<tbody>
 	<tal:block tal:repeat="format formats">
 		<tr>
-			<td class="meta-sort text-center">
+			<td class="meta-sort text-center align-middle">
 				<input type="checkbox" name="ids:list" tal:attributes="value python:format.get('id','')" />
 			</td>
 			<td>

@@ -28,7 +28,7 @@
 			</tal:block>
 		</tal:block>
 	</tal:block>
-	<div class="form-row">
+	<div class="form-group row">
 		<div class="controls save">
 			<button type="submit" name="btn" class="btn btn-primary" value="Change">Change</button>
 			<button type="submit" name="btn" class="btn btn-secondary" value="Cancel">Cancel</button>

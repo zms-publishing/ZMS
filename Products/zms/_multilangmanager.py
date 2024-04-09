@@ -19,9 +19,9 @@
 # Imports.
 from App.Common import package_home
 import OFS.misc_
+import json
 from zope.interface import implementer
 # Product Imports.
-from Products.zms import IZMSLocale
 from Products.zms import _fileutil
 from Products.zms import _xmllib
 from Products.zms import standard
@@ -221,7 +221,6 @@ class MultiLanguageObject(object):
 ###
 ################################################################################
 ################################################################################
-@implementer(IZMSLocale.IZMSLocale)
 class MultiLanguageManager(object):
 
     def get_manage_langs(self):
@@ -235,20 +234,26 @@ class MultiLanguageManager(object):
       Returns preferred of manage-language for current content-language.
       """
       manage_lang = None
-      req = getattr( self, 'REQUEST', None)
-      if req is not None:
-        sess = standard.get_session(self)
-        if 'manage_lang' in req:
-          manage_lang = req.get('manage_lang')
+      request = self.REQUEST
+      if standard.isManagementInterface(self):
+        manage_langs = self.get_manage_langs()
+        # get manage_lang from request.form
+        if 'manage_lang' in request.form and request.form['manage_lang'] in manage_langs:
+          manage_lang = request.form['manage_lang']
+          # save manage_lang from request.form in session
+          standard.set_session_value(self, 'manage_lang', manage_lang)
         else:
-          if sess is not None and 'reset_manage_lang' not in req.form:
-            manage_lang = sess.get('manage_lang')
-          if manage_lang is None:
-            lang = req.get('lang')
+          # get manage_lang from request or session
+          manage_lang = request.get('manage_lang', standard.get_session_value(self, 'manage_lang'))
+          if manage_lang not in manage_langs:
+            # get manage_lang from request.lang
+            manage_lang = None
+            lang = request.get('lang')
             if lang in self.getLangIds():
               manage_lang = self.getLang(lang).get('manage')
-        if sess is not None:
-          sess.set('manage_lang', manage_lang)
+              # save manage_lang from request.lang in session
+              standard.set_session_value(self, 'manage_lang', manage_lang)
+      # default manage_lang to English
       if manage_lang is None:
         manage_lang = 'eng'
       return manage_lang
@@ -280,12 +285,13 @@ class MultiLanguageManager(object):
         return d[key][lang]
       
       # Return system value.
-      d = OFS.misc_.misc_.zms['langdict'].get_langdict()
-      if key in d:
-        if lang not in d[key]:
-          lang = 'eng'
-        if lang in d[key]:
-          return d[key][lang]
+      if hasattr(OFS.misc_.misc_,'zms'):
+        d = OFS.misc_.misc_.zms['langdict'].get_langdict()
+        if key in d:
+          if lang not in d[key]:
+            lang = 'eng'
+          if lang in d[key]:
+            return d[key][lang]
       
       return key
 
@@ -500,13 +506,14 @@ class MultiLanguageManager(object):
       # Change.
       # -------
       elif btn == 'BTN_SAVE':
+        newId = REQUEST.get('language_id','').strip()
         for id in self.getLangIds():
-          newLabel = REQUEST.get('%s_label'%id).strip()
-          newParent = REQUEST.get('%s_parent'%id).strip()
-          newManage = REQUEST.get('%s_manage'%id).strip()
-          self.setLanguage(id, newLabel, newParent, newManage)
+          if id != newId:
+            newLabel = REQUEST.get('%s_label'%id).strip()
+            newParent = REQUEST.get('%s_parent'%id).strip()
+            newManage = REQUEST.get('%s_manage'%id).strip()
+            self.setLanguage(id, newLabel, newParent, newManage)
         # Insert
-        newId = REQUEST.get('language_id').strip()
         if len(newId) > 0:
           newLabel = REQUEST.get('language_label').strip()
           if len(self.getLangIds()) == 0:
@@ -570,8 +577,8 @@ class MultiLanguageManager(object):
       self.storeReqBuff( reqBuffId, d)
       if REQUEST is not None:
         REQUEST.RESPONSE.setHeader('Cache-Control', 'public, max-age=3600')
-        REQUEST.RESPONSE.setHeader('Content-Type', 'text/plain; charset=utf-8')
-        return self.str_json(d)
+        REQUEST.RESPONSE.setHeader('Content-Type', 'application/json; charset=utf-8')
+        return json.dumps(d)
       
       return d
 

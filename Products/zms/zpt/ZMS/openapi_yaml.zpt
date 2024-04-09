@@ -1,0 +1,335 @@
+<tal:block tal:define="
+  standard modules/Products.zms/standard;
+  dummy0 python:request.RESPONSE.setHeader('Content-Type','application/json');
+">openapi: 3.0.0
+info:
+  title: ZMS REST API
+  description: RESTful API for Easy Standardized Access to the ZMS-Universe.
+  version: 1.0.0
+servers:
+  - url: <tal:block tal:content="python:'/'.join(here.getDocumentElement().getPhysicalPath())"></tal:block>/++rest_api
+tags:
+  - name: zmsindex
+    description: Query ZMSIndex
+  - name: metamodel
+    description: Query Meta-Model
+  - name: content
+    description: Return Content of Result Node(s)
+  - name: navigation
+    description: List Parent or Child Objects
+
+paths:
+  /zmsindex:
+    get:
+      tags:
+        - zmsindex
+      summary: Returns records from ZMSIndex.
+      description: Get records from ZMSIndex by using fieldname as a paramter, e.g. /zmsindex?meta_id=ZMSFolder
+      parameters:<tal:block tal:repeat="index_name python:here.getZMSIndex().get_catalog().indexes()">
+        - name: <tal:block tal:content="index_name">the Index-Name</tal:block>
+          in: query
+          required: false
+          schema:
+            type: string</tal:block>
+      responses:
+        '200':    # status code
+          description: Records from ZMSIndex.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ZMSIndexRecord'
+  /metaobj_manager:
+    get:
+      tags:
+        - metamodel
+      summary: Returns meta-model.
+      description: get meta-model
+      responses:
+        '200':    # status code
+          description: Meta-model
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MetaModelRecord'
+  /{path}:
+    get:
+      tags:
+        - content
+      summary: Returns a ZMS-Object.
+      description: Get ZMS-Object.
+      parameters:
+        - name: path
+          in: path
+          description: id-path to resource
+          required: false
+          schema:
+            type: string
+            example: /
+        - name: lang
+          in: query
+          description: language for monolingual result
+          required: false
+          schema:
+            type: string
+            example: eng
+      responses:
+        '200':    # status code
+          description: ZMS-Object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/ZMSObjectResponse'
+  /{path}/list_parent_nodes:
+    get:
+      tags:
+        - navigation
+      summary: List ZMS-Object Parent's Index-Data.
+      description: Sequencing Parent Nodes Index-Data
+      parameters:
+        - name: path
+          in: path
+          description: id-path to current node
+          required: false
+          schema:
+            type: string
+            example: /e34/e36/
+      responses:
+        '200':    # status code
+          description: A JSON array of Parent Objects Meta-Data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/ZMSObjectResponse'
+  /{path}/list_child_nodes:
+    get:
+      tags:
+        - navigation
+      summary: List ZMS-Object Children's Index-Data.
+      description: Sequencing Child Nodes Index-Data
+      parameters:
+        - name: path
+          in: path
+          description: id-path to current node
+          required: false
+          schema:
+            type: string
+            example: /e34/e36/
+      responses:
+        '200':    # status code
+          description: A JSON array of Children Objects Meta-Data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/responses/ZMSObjectResponse'
+  /{path}/list_tree_nodes:
+    get:
+      tags:
+        - navigation
+      summary: List ZMS-Object-Tree Index-Data.
+      description: Sequencing Object-Tree Index-Data
+      parameters:
+        - name: path
+          in: path
+          description: id-path to current node
+          required: false
+          schema:
+            type: string
+            example: e34/e36
+      responses:
+        '200':    # status code
+          description: A JSON array of Tree Objects Meta-Data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/responses/ZMSObjectResponse'
+  /{path}/get_parent_nodes:
+    get:
+      tags:
+        - navigation
+      summary: List ZMS-Object Parent's Index-Data.
+      description: Sequencing Parent Nodes Content
+      parameters:
+        - name: path
+          in: path
+          description: id-path to current node
+          required: false
+          schema:
+            type: string
+            example: /e34/e36/
+      responses:
+        '200':    # status code
+          description: A JSON array of Parent Objects Content
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/responses/ZMSObjectResponse'
+  /{path}/get_child_nodes:
+    get:
+      tags:
+        - navigation
+      summary: List ZMS-Object Children's Index-Data.
+      description: Sequencing Child Nodes Content
+      parameters:
+        - name: path
+          in: path
+          description: id-path to current node
+          required: false
+          schema:
+            type: string
+            example: /e34/e36/
+      responses:
+        '200':    # status code
+          description: A JSON array of Children Objects Content
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/responses/ZMSObjectResponse'
+  /{path}/get_tree_nodes:
+    get:
+      tags:
+        - navigation
+      summary: List Object-Tree Content.
+      description: Sequencing the Object-Tree
+      parameters:
+        - name: path
+          in: path
+          description: id-path to current node
+          required: false
+          schema:
+            type: string
+            example: e34/e36
+      responses:
+        '200':    # status code
+          description: A JSON array of Object-Tree
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/responses/ZMSObjectResponse'
+  /{path}/get_body_content:
+    get:
+      tags:
+        - content
+      summary: Returns body-content of a ZMS-object.
+      description: get body-content of ZMS-objects
+      parameters:
+        - name: path
+          in: path
+          description: id-path to resource
+          required: false
+          schema:
+            type: string
+            example: /
+      responses:
+        '200':    # status code
+          description: A JSON array of user names
+          content:
+            text/html:
+              type: string
+components:
+  responses:
+    ZMSObjectResponse:
+      content:
+        application/json:
+          schema:
+            oneOf:<tal:block tal:repeat="metaObjId python:here.getMetaobjIds(sort=True)"
+              ><tal:block tal:define="
+                metaObj python:here.getMetaobj(metaObjId);
+                metaObjAttrIds python:here.getMetaobjAttrIds(metaObjId);
+                objAttrs python:here.getObjAttrs(metaObjId);
+                properties python:[x for x in metaObjAttrIds if x in objAttrs];"
+                ><tal:block tal:condition="properties">
+              - $ref: '#/components/schemas/<tal:block tal:content="metaObjId">The Name:</tal:block>'</tal:block
+              ></tal:block
+              ></tal:block>
+            discriminator:
+              propertyName: meta_id
+  schemas:
+    ZMSIndexRecord:
+      description: ZMSIndex-Record
+      type: object
+      required:
+        - id
+        - meta_id
+        - uid
+        - getPath
+      properties:
+        id:
+          description: object-id
+          type: string
+        meta_id:
+          description: ZMS meta-id
+          type: string
+        uid:
+          description: ZODB unique-id
+          type: string
+        getPath:
+          description: physical-path
+          type: string
+    MetaModelRecord:
+      description: Meta-Model-Record
+      type: object
+      required:
+        - icon_clazz
+      properties:
+        icon_clazz:
+          description: icon-class
+          type: string
+    <tal:block tal:repeat="metaObjId python:here.getMetaobjIds(sort=True)"
+    ><tal:block tal:define="
+      metaObj python:here.getMetaobj(metaObjId);
+      metaObjAttrIds python:here.getMetaobjAttrIds(metaObjId);
+      objAttrs python:here.getObjAttrs(metaObjId);
+      properties python:[x for x in metaObjAttrIds if x in objAttrs];"
+    ><tal:block tal:condition="properties">
+    <tal:block tal:content="metaObjId">the name</tal:block>:
+      description: <tal:block tal:content="metaObj/name">the description</tal:block>
+      type: object
+      required:
+        - id
+        - meta_id
+        - uid
+        - getPath<tal:block tal:repeat="property properties"
+        ><tal:block tal:define="metaObjAttr python:here.getMetaobjAttr(metaObjId,property)"
+        ><tal:block tal:condition="metaObjAttr/mandatory">
+        - <tal:block tal:content="property">the property</tal:block
+        ></tal:block
+        ></tal:block
+        ></tal:block>
+      properties:
+        id:
+          description: object-id
+          type: string
+        meta_id:
+          description: ZMS meta-id
+          type: string
+        uid:
+          description: ZODB unique-id
+          type: string
+        getPath:
+          description: physical-path
+          type: string
+        <tal:block tal:repeat="property properties"
+        ><tal:block tal:define="metaObjAttr python:here.getMetaobjAttr(metaObjId,property)"
+        ><tal:block tal:content="python:property=='id' and 'attr_id' or property">the property id</tal:block>:
+          description: <tal:block tal:content="python:standard.re_sub(pattern='<[^>]*>|\042|:', replacement='', subject=metaObjAttr.get('name'))">it's description</tal:block>
+          type: <tal:block tal:content="metaObjAttr/type">it's type</tal:block>
+        </tal:block
+        ></tal:block
+      ></tal:block
+    ></tal:block
+  ></tal:block
+></tal:block>

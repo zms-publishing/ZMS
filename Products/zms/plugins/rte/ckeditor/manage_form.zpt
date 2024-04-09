@@ -30,7 +30,7 @@ Fix for can't edit fields of CKEditor in jQuery UI modal dialog
 
 function zmiStandardOnSubmitEventHandler(fm) {
   for (var id in CKEDITOR.instances) {
-    var elName = id.substr(id.indexOf('_')+1);
+    var elName = id.substring(id.indexOf('_')+1);
     var el = document.getElementById('zmiStandardEditor'+elName);
     if ( el != null && el.style.display != 'none' && el.style.visibility != 'hidden') {
       var data = $('#'+elName).val();
@@ -46,7 +46,7 @@ function zmiStandardOnSubmitEventHandler(fm) {
 
 function zmiRichtextOnSubmitEventHandler(fm) {
   for (var id in CKEDITOR.instances) {
-    var elName = id.substr(id.indexOf('_')+1);
+    var elName = id.substring(id.indexOf('_')+1);
     var el = document.getElementById('zmiRichtextEditor'+elName);
     if ( el != null && el.style.display != 'none' && el.style.visibility != 'hidden') {
       // Get value from editor.

@@ -1086,7 +1086,7 @@ class VersionManagerContainer(object):
       if self.isPage():
         b = self.isPageContainer()
         if not b:
-          b = self.meta_id == 'ZMSLinkElement' and self.isEmbedded(self.REQUEST)
+          b = self.meta_id == 'ZMSLinkElement' and self.isEmbedded()
         if not b:
           parent = self.getParentNode()
           b = parent is not None and parent.isPageContainer()

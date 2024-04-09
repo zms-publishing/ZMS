@@ -41,28 +41,27 @@
 					'LOGOUT' : 'x'
 					}">
 					<tal:block tal:condition="admin">
-						<a class="dropdown-item" data-turbolinks="false" tal:attributes="href python:'f_api_html?lang=%s'%(request['lang'])">
-							<i class="fas fa-question-circle"></i> 
-							API
+						<a class="dropdown-item" data-turbolinks="false" href="swagger_ui" target="_blank">
+							<i class="fas"><img alt="Swagger-Icon" src="/++resource++zms_/img/svg/Swagger.svg"/></i>Swagger-UI
+						</a>
+						<a class="dropdown-item" data-turbolinks="false" tal:attributes="href python:'f_api_html?lang=%s'%(request['lang'])" target="_blank">
+							<i class="fas fa-question-circle"></i> API
 						</a>
 						<a class="dropdown-item" data-turbolinks="false" tal:attributes="href python:'manage_main?lang=%s&zmi-manage-system=%i'%(request['lang'],int(not int(standard.get_session_value(here,'zmi-manage-system',0))));
 								accesskey python:accesskey_map.get('ZOPE',None)">
-							<i class="fas fa-bolt"></i> 
-							Zope
+							<i class="fas"><img alt="Zope-Icon" src="/++resource++zms_/img/svg/Zope.svg"/></i>Zope
 						</a>
 					</tal:block>
 					<a class="dropdown-item" 
 						tal:define="trashcan python:here.getTrashcan()"
 						tal:attributes="href python:'%s/manage_main?lang=%s'%(trashcan.absolute_url(),request['lang']);
 							accesskey python:accesskey_map.get('TRASHCAN',None)">
-						<i class="fas fa-trash"></i>
-						<tal:block tal:content="python:trashcan.display_type(request)">Trashcan</tal:block>
+						<i class="fas fa-trash"></i><tal:block tal:content="python:trashcan.display_type()">Trashcan</tal:block>
 					</a>
 					<tal:block tal:define="options python:here.getDocumentElement().customize_manage_options()"
 						tal:condition="python:len(options)>1">
 						<div class="dropdown-header">
-							<i class="fas fa-caret-down"></i>
-							<tal:block tal:content="python:here.getZMILangStr('TAB_CONFIGURATION')">Configuration</tal:block>
+							<i class="fas fa-caret-down"></i><tal:block tal:content="python:here.getZMILangStr('TAB_CONFIGURATION')">Configuration</tal:block>
 						</div>
 						<tal:block tal:repeat="option python:options[1:]">
 							<a class="dropdown-item" tal:attributes="href python:'%s/%s?lang=%s'%(here.getDocumentElement().absolute_url(),option['action'],request['lang']);
@@ -75,8 +74,7 @@
 					<a class="dropdown-item" href="manage_zmi_logout" data-turbolinks="false"
 						tal:attributes="href python:'{}?lang={}'.format(here.getConfProperty('ZMS.logout.href',''),request['lang']) if here.getConfProperty('ZMS.logout.href','')!='' else 'manage_zmi_logout';
 							accesskey python:accesskey_map.get('LOGOUT',None)">
-						<i class="fas fa-sign-out-alt"></i>
-						Logout
+						<i class="fas fa-sign-out-alt"></i>Logout
 					</a>
 				</div>
 			</li><!-- .dropdown -->
@@ -105,15 +103,15 @@
 				</div>
 			</li><!-- .dropdown -->
 			<li class="dropdown localisation">
-				<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" tal:attributes="title python:'ZMS-%s: %s'%(here.getZMILangStr('ATTR_LANG'),here.getLocale().getLangStr('LANG',request['manage_lang']))">
+				<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" tal:attributes="title python:'ZMS-%s: %s'%(here.getZMILangStr('ATTR_LANG'),here.getZMILangStr('LANG'))">
 					<i class="fas fa-globe"></i>
 					<b class="caret"></b>
 				</a>
 				<div class="dropdown-menu">
-					<tal:block tal:repeat="manage_lang python:here.getLocale().get_manage_langs()">
+					<tal:block tal:repeat="manage_lang python:here.get_manage_langs()">
 						<a class="dropdown-item" tal:attributes="href python:'?lang=%s&manage_lang=%s'%(request['lang'],manage_lang)">
-							<i class="far fa-check-square" tal:attributes="class python:manage_lang==request.get('manage_lang','ger') and 'far fa-check-square' or 'far fa-square'"></i>
-							<tal:block tal:content="python:here.getLocale().getLangStr('LANG',manage_lang)">language</tal:block>
+							<i class="far fa-check-square" tal:attributes="class python:manage_lang==here.get_manage_lang() and 'far fa-check-square' or 'far fa-square'"></i>
+							<tal:block tal:content="python:here.getLangStr('LANG',manage_lang)">language</tal:block>
 						</a>
 					</tal:block>
 				</div>

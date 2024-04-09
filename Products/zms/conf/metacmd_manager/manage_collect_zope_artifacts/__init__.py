@@ -13,7 +13,7 @@ class manage_collect_zope_artifacts:
 	description = ""
 
 	# Execution
-	execution = 0
+	execution = False
 
 	# Icon_clazz
 	icon_clazz = "fas fa-briefcase"

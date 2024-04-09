@@ -75,11 +75,11 @@ class ZMSObject(ZMSItem.ZMSItem,
   _pathhandler.PathHandler,		# Path-Handler.
   _textformatmanager.TextFormatObject,	# Text-Formats.
   _zreferableitem.ZReferableItem		# ZReferable Item.
-  ): 
+  ):
 
     # Documentation string.
     __doc__ = """ZMS product module."""
-    # Version string. 
+    # Version string.
     __version__ = '0.1'
 
     # Create a SecurityInfo for this class. We will use this
@@ -121,7 +121,7 @@ class ZMSObject(ZMSItem.ZMSItem,
 
 
     ############################################################################
-    #  ZMSObject.__init__: 
+    #  ZMSObject.__init__:
     #
     #  Constructor (initialise a new instance of ZMSObject).
     ############################################################################
@@ -132,14 +132,17 @@ class ZMSObject(ZMSItem.ZMSItem,
       self.setSortId(sort_id)
 
     def getPath(self, *args, **kwargs):
-      return '/'.join(self.getPhysicalPath())
+      ids = self.getPhysicalPath()
+      # avoid content/content (seen in xml-import of zms-default-content)
+      ids = [ids[x] for x in range(len(ids)) if x == 0 or not ids[x-1] == ids[x]]
+      return '/'.join(ids)
 
     """
     Check if feature toggle is set.
     @rtype: C{boolean}
-    """ 
+    """
     def isFeatureEnabled(self, feature=''):
-    
+
       # get conf from current client
       confprop = self.breadcrumbs_obj_path(False)[0].getConfProperty('ZMS.Features.enabled', '')
       features = confprop.replace(',', ';').split(';')
@@ -147,7 +150,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       if len(features)==1 and features[0].strip()=='':
         confprop = self.breadcrumbs_obj_path(True)[0].getConfProperty('ZMS.Features.enabled', '')
         features = confprop.replace(',', ';').split(';')
-    
+
       if len([x for x in features if x.strip()==feature.strip()])>0:
         return True
       else:
@@ -156,7 +159,7 @@ class ZMSObject(ZMSItem.ZMSItem,
 
     # --------------------------------------------------------------------------
     #  ZMSObject.f_css_defaults:
-    #  
+    #
     #  @deprecated
     # --------------------------------------------------------------------------
     def f_css_defaults(self, REQUEST=None):
@@ -197,11 +200,16 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     def get_uid(self, forced=False):
       import uuid
+      uid = getattr(self,'_uid','')
+      new_uid = None
       if forced \
           or '_uid' not in self.__dict__ \
-          or len(getattr(self,'_uid','')) == 0 \
-          or len(getattr(self,'_uid','').split('-')) < 5:
+          or len(uid) == 0 \
+          or len(uid.split('-')) < 5:
         new_uid = str(uuid.uuid4())
+      if uid.startswith('!uid:'):
+        new_uid = uid[len('!uid:'):]
+      if new_uid:
         self._uid = new_uid
       return 'uid:%s'%self._uid
 
@@ -249,7 +257,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       value = REQUEST.get(context, None)
       if value is not None:
         standard.writeLog(self, "[get_request_context]: GET "+context+"="+str(value))
-        return value 
+        return value
       return REQUEST.get(key, defaultValue)
 
     # --------------------------------------------------------------------------
@@ -355,8 +363,8 @@ class ZMSObject(ZMSItem.ZMSItem,
                   s = v
                   break
               c = c + 1
-      if s is None or len(s) == 0:
-        s = self.display_type(REQUEST)
+      if not s:
+        s = self.display_type()
       if self.isPage():
         sec_no = self.getSecNo()
         if len(sec_no) > 0:
@@ -370,10 +378,10 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  ZMSObject.getTitlealt
     # --------------------------------------------------------------------------
     def getTitlealt( self, REQUEST):
-      s = self.getObjProperty('titlealt', REQUEST)
-      if s is None or len(s) == 0: 
-        s = self.display_type(REQUEST)
-      if s is None or len(s) == 0:
+      s = self.getObjProperty('titlealt', REQUEST) or self.getObjProperty('titlealt', {'lang':self.getPrimaryLanguage()})
+      if not s:
+        s = self.display_type()
+      if not s:
         if self.isPage():
           metaObjAttrs = self.getMetaobj( self.meta_id).get( 'attrs', [])
           offs = 0
@@ -549,13 +557,6 @@ class ZMSObject(ZMSItem.ZMSItem,
 
 
     # --------------------------------------------------------------------------
-    #  ZMSObject.icon:
-    # --------------------------------------------------------------------------
-    def icon(self):
-      return "++resource++zms_/img/ZMSObject.png"
-
-
-    # --------------------------------------------------------------------------
     #  ZMSObject.zmi_icon:
     # --------------------------------------------------------------------------
     def zmi_icon(self,*args, **kwargs):
@@ -589,22 +590,25 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     #  ZMSObject.display_icon:
     #
-    #  @param REQUEST
-    #  @deprecated
+    #  @param meta_id
+    #  @deprecated @param meta_type
     # --------------------------------------------------------------------------
-    def display_icon(self, REQUEST={}, meta_type=None, key='icon', zpt=True):
+    def display_icon(self, *args, **kwargs):
       """ ZMSObject.display_icon """
-      id = standard.nvl(meta_type, self.meta_id)
+      meta_id = self.meta_id
+      if len(args) == 2 and not kwargs:
+         meta_id = args[1]
+      else:
+        meta_id = kwargs.get('meta_id', kwargs.get('meta_type', meta_id))
       name = 'fas fa-exclamation-triangle'
-      title = self.display_type(meta_type=id)
+      title = bool(meta_id) and self.display_type(meta_id=meta_id) or self.meta_id
       extra = ''
-      if id in self.getMetaobjIds( sort=0) + ['ZMSTrashcan']:
-        name = self.evalMetaobjAttr( '%s.%s'%(id, 'icon_clazz'))
+      if meta_id in self.getMetaobjIds( sort=False) + ['ZMSTrashcan']:
+        name = self.evalMetaobjAttr( '%s.%s'%(meta_id, 'icon_clazz'))
         if not name:
-          metaObj = self.getMetaobj(id)
           names = {'ZMSResource':'fas fa-asterisk icon-asterisk','ZMSLibrary':'fas fa-flask icon-beaker','ZMSPackage':'fas fa-suitcase icon-suitcase','ZMSRecordSet':'far fa-list-alt icon-list','ZMSReference':'fas fa-link icon-link','ZMSTrashcan':'fas fa-trash'}
-          name = names.get(id, 'fas fa-file-alt icon-file-alt')
-        if meta_type is None:
+          name = names.get(meta_id, 'fas fa-file-alt icon-file-alt')
+        if meta_id is None:
           constraints = self.attr('check_constraints')
           if isinstance(constraints, dict):
             if len(constraints) > 0:
@@ -620,24 +624,29 @@ class ZMSObject(ZMSItem.ZMSItem,
               title += '; '+'; '.join(['RESTRICTION: '+x[1] for x in constraints['RESTRICTIONS']])
       else:
         name = 'fas fa-exclamation-triangle constraint-error'
-        title = '%s not found!'%str(id)
+        title = '%s not found!'%str(bool(meta_id) or 'Meta-ID')
       return '<i class="%s" title="%s"%s></i>'%(name,title,extra)
 
 
     # --------------------------------------------------------------------------
     #  ZMSObject.display_type:
     #
-    #  @param REQUEST
+    #  @param meta_id
+    #  @deprecated @param meta_type
     # --------------------------------------------------------------------------
-    def display_type(self, REQUEST={}, meta_type=None):
-      meta_type = standard.nvl( meta_type, self.meta_id)
-      metaObj = self.getMetaobj( meta_type)
+    def display_type(self, *args, **kwargs):
+      meta_id = self.meta_id
+      if len(args) == 2 and not kwargs:
+         meta_id = args[1]
+      else:
+        meta_id = kwargs.get('meta_id', kwargs.get('meta_type', meta_id))
+      metaObj = self.getMetaobj( meta_id)
       if isinstance(metaObj, dict) and 'name' in metaObj:
-        meta_type = metaObj[ 'name']
-      lang_key = 'TYPE_%s'%meta_type.upper()
+        meta_id = metaObj[ 'name']
+      lang_key = 'TYPE_%s'%meta_id.upper()
       lang_str = self.getZMILangStr( lang_key)
       if lang_key == lang_str:
-        return meta_type
+        return meta_id
       else:
         return lang_str
 
@@ -646,15 +655,12 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  ZMSObject.breadcrumbs_obj_path:
     # --------------------------------------------------------------------------
     def breadcrumbs_obj_path(self, portalMaster=True):
-      #REQUEST = self.REQUEST
       # Handle This.
       rtn = []
       obj = self
-      for lvl in range(self.getLevel()+1):
-        if obj is not None:
-          obj_item = [obj]
-          obj_item.extend(rtn)
-          rtn = obj_item
+      while obj is not None:
+          if obj is not None and obj.id in self.getPhysicalPath():
+              rtn.insert(0,obj)
           obj = obj.getParentNode()
       # Handle Portal Master.
       if portalMaster and self.getConfProperty('Portal.Master', ''):
@@ -677,7 +683,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     def changeProperties(self, lang):
       request = self.REQUEST
       request['lang'] = lang # ensure correct language is set
-      
+
       ##### Resources #####
       if 'resources' in self.getMetaobjAttrIds( self.meta_id):
         resources = self.getObjProperty( 'resources', request)
@@ -692,7 +698,7 @@ class ZMSObject(ZMSItem.ZMSItem,
                 v = resources[ i]
                 if el_value.find( '/'+v.getFilename()) > 0:
                   l[ i] = l[ i] + 1
-        c = 0 
+        c = 0
         for i in range( len( resources)):
           v = resources[ c]
           if l[ i] == 0:
@@ -728,15 +734,15 @@ class ZMSObject(ZMSItem.ZMSItem,
                   request.set( el_name, el_value)
                   redirect_self = True
         self.setObjProperty( 'resources', resources, lang)
-      
+
       ##### Primitives #####
       for key in self.getObjAttrs():
         if key not in ['resources']:
           self.setReqProperty(key, request)
-      
+
       ##### VersionManager ####
       self.onChangeObj(request)
-      
+
       ##### Resource-Objects #####
       metaObjIds = self.getMetaobjIds()
       metaObjAttrIds = self.getMetaobjAttrIds(self.meta_id)
@@ -763,7 +769,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       message = ''
       messagekey = 'manage_tabs_message'
       t0 = time.time()
-      
+
       redirect_self = False
       redirect_self = redirect_self or REQUEST.get('btn', '') == ''
       redirect_self = redirect_self or self.isPage()
@@ -771,7 +777,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         attr_type = attr['type']
         redirect_self = redirect_self or attr_type in self.getMetaobjIds()+['*']
       redirect_self = redirect_self and (self.isPageContainer() or not REQUEST.get('btn') in [ 'BTN_CANCEL', 'BTN_BACK'])
-      
+
       if REQUEST.get('btn', '') not in [ 'BTN_CANCEL', 'BTN_BACK']:
         try:
           # Object State
@@ -784,7 +790,7 @@ class ZMSObject(ZMSItem.ZMSItem,
           message = standard.writeError(self, "[manage_changeProperties]")
           messagekey = 'manage_tabs_error_message'
         message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
-      
+
       # Return with message.
       target_ob = self.getParentNode()
       if redirect_self or target_ob is None or REQUEST.get('menulock',0) == 1:
@@ -889,7 +895,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  ZMSObject.getHref2Html:
     #  ZMSObject.getHref2IndexHtml:
     #
-    #  "Sans-Document"-Navigation: reference to first page that contains visible 
+    #  "Sans-Document"-Navigation: reference to first page that contains visible
     #  page-elements.
     # --------------------------------------------------------------------------
     def getHref2Html(self, fct, pageext, REQUEST):
@@ -911,7 +917,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         if href.find( base) == 0:
           href = href[len(base):]
       return href
-      
+
     # --------------------------------------------------------------------------
     #  ZMSObject.getAbsoluteUrlInContext:
     #  @param context the current context
@@ -922,12 +928,11 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  ASP.protocol=[http]
     #  ASP.ip_or_domain=[Not empty]
     #
-    #  Contextualize absolute_url used in ZMI with subdomain from 
+    #  Contextualize absolute_url used in ZMI with subdomain from
     #  config-properties.
     #  Used to keep ZMS-users in configured subdomain-context.
     # --------------------------------------------------------------------------
     def getAbsoluteUrlInContext(self, context, abs_url=None, forced=False):
-      request = self.REQUEST
       context = standard.nvl(context,self)
       if abs_url is None:
         abs_url = self.absolute_url()
@@ -948,12 +953,12 @@ class ZMSObject(ZMSItem.ZMSItem,
                 else:
                   i += 1
                 l = l[i:]
-                abs_url = protocol + '://' + domain  
+                abs_url = protocol + '://' + domain
                 if l:
                   abs_url = abs_url + '/' + '/'.join(l)
         return abs_url
       return self.evalExtensionPoint('ExtensionPoint.ZMSObject.getAbsoluteUrlInContext',default,context=context,abs_url=abs_url,forced=forced)
-    
+
     # --------------------------------------------------------------------------
     #  ZMSObject.getHref2IndexHtmlInContext:
     #  @param context the current-context
@@ -980,13 +985,14 @@ class ZMSObject(ZMSItem.ZMSItem,
               i += 1
             l = l[i:]
             index_html = protocol + '://' + domain + '/' + '/'.join(l)
-      elif REQUEST.get('ZMS_RELATIVATE_URL', False) and self.getConfProperty('ZMSObject.getHref2IndexHtmlInContext.relativate', True) and self.getHome() == context.getHome():
-        path = REQUEST.get('URL', '')
-        path = re.sub('\\/index_(.*?)\\/index_html$','/index_\\1',path)
-        path = re.sub('\\/index_html$','/',path)
-        index_html = self.getRelativeUrl(path,index_html)
+      elif REQUEST.get('ZMS_RELATIVATE_URL', True) and self.getConfProperty('ZMSObject.getHref2IndexHtmlInContext.relativate', True) and self.getHome() == context.getHome():
+        path = REQUEST.get('URL')
+        if path:
+          path = re.sub(r'\/index_(.*?)\/index_html$','/index_\\1',path)
+          path = re.sub(r'\/index_html$','/',path)
+          index_html = self.getRelativeUrl(path,index_html)
       return index_html
-    
+
     #++
     def getHref2IndexHtml(self, REQUEST, deep=1):
       deep = int(self.getConfProperty('ZMSObject.getHref2IndexHtml.deep', deep))
@@ -998,7 +1004,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         if fct == 'index' and 'index_html' in self.objectIds():
           value = self.absolute_url()
           for param in ['lang', 'preview']:
-            if REQUEST.get(param, '') != '': 
+            if REQUEST.get(param, '') != '':
               value = standard.url_append_params(value, {param:REQUEST[param]})
         else:
           if deep:
@@ -1066,7 +1072,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  ZMSObject.getParentByDepth:
     #  @param deep the depth
     #
-    #  The parent of this node by depth. 
+    #  The parent of this node by depth.
     # --------------------------------------------------------------------------
     def getParentByDepth(self, deep):
       rtn = self
@@ -1079,7 +1085,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  ZMSObject.getParentByLevel:
     #  @param level the level
     #
-    #  The parent of this node by level. 
+    #  The parent of this node by level.
     # --------------------------------------------------------------------------
     def getParentByLevel(self, level):
       rtn = self
@@ -1091,7 +1097,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     #  ZMSObject.getParentNode:
     #
-    #  The parent of this node. 
+    #  The parent of this node.
     #  All nodes except root may have a parent.
     # --------------------------------------------------------------------------
     def getParentNode(self):
@@ -1106,7 +1112,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  ZMSObject.getTreeNodes:
     #
     #  Returns a NodeList that contains all children of this subtree in correct order.
-    #  If none, this is a empty NodeList. 
+    #  If none, this is a empty NodeList.
     # --------------------------------------------------------------------------
     def getTreeNodes(self, REQUEST={}, meta_types=None):
       rtn = []
@@ -1114,266 +1120,6 @@ class ZMSObject(ZMSItem.ZMSItem,
         if ob.isMetaType(meta_types): rtn.append(ob)
         rtn.extend(ob.getTreeNodes(REQUEST, meta_types))
       return rtn
-
-
-    # --------------------------------------------------------------------------
-    #  ZMSObject.ajaxGetNodes:
-    # --------------------------------------------------------------------------
-    security.declareProtected('View', 'ajaxGetNodes')
-    def ajaxGetNodes(self, context=None, lang=None, xml_header=True, REQUEST=None):
-      """ ZMSObject.ajaxGetNodes """
-      context = standard.nvl(context, self)
-      refs = REQUEST.get('refs', [])
-      if len(refs)==0:
-        for key in REQUEST.keys():
-          if key.startswith('ref') and key[3:].isdigit():
-            refs.append((int(key[3:]), REQUEST[key]))
-        refs.sort()
-        refs = [x[1] for x in refs]
-      
-      #-- Build xml.
-      xml = ''
-      if xml_header:
-        RESPONSE = REQUEST.RESPONSE
-        content_type = 'text/plain; charset=utf-8'
-        filename = 'ajaxGetNodes.xml'
-        RESPONSE.setHeader('Content-Type', content_type)
-        RESPONSE.setHeader('Content-Disposition', 'inline;filename="%s"'%filename)
-        RESPONSE.setHeader('Cache-Control', 'no-cache')
-        RESPONSE.setHeader('Pragma', 'no-cache')
-        self.f_standard_html_request( self, REQUEST)
-        xml += self.getXmlHeader()
-      xml += '<pages>'
-      for ref in refs:
-        ob = self.getLinkObj(ref)
-        if ob is None:
-          xml += '<page ref="%s" not_found="1"/>'%ref
-        else:
-          xml += ob.ajaxGetNode(context=context, lang=lang, xml_header=False, REQUEST=REQUEST)
-      xml += "</pages>"
-      return xml
-
-
-    # --------------------------------------------------------------------------
-    #  ZMSObject.manage_get_node_json:
-    # --------------------------------------------------------------------------
-    def manage_get_node_json(self):
-      """ ZMSObject.manage_get_node_json """
-      content_type = 'application/json; charset=utf-8'
-      filename = '%s.json'%self.id
-      request = self.REQUEST
-      RESPONSE = request.RESPONSE
-      RESPONSE.setHeader('Content-Type',content_type)
-      RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%filename)
-      RESPONSE.setHeader('Cache-Control', 'no-cache')
-      RESPONSE.setHeader('Pragma', 'no-cache')
-      self.f_standard_html_request( self, request)
-      d = {}
-      d['id'] = self.id
-      d['uid'] = self.get_uid()
-      d['physical_path'] = '/'.join(self.getPhysicalPath())
-      obj_attrs = self.getObjAttrs()
-      for key in obj_attrs:
-        v = self.attr(key)
-        if isinstance( v, _blobfields.MyBlob):
-            v = v.getHref(request)
-        d[key] = v
-      return standard.str_json(d)
-
-
-    # --------------------------------------------------------------------------
-    #  ZMSObject.ajaxGetNode:
-    # --------------------------------------------------------------------------
-    security.declareProtected('View', 'ajaxGetNode')
-    def ajaxGetNode(self, context=None, lang=None, xml_header=True, meta_types=None, REQUEST=None):
-      """ ZMSObject.ajaxGetNode """
-      
-      #-- Build xml.
-      xml = ''
-      if xml_header:
-        RESPONSE = REQUEST.RESPONSE
-        content_type = 'text/xml; charset=utf-8'
-        filename = 'ajaxGetNode.xml'
-        RESPONSE.setHeader('Content-Type', content_type)
-        RESPONSE.setHeader('Content-Disposition', 'inline;filename="%s"'%filename)
-        RESPONSE.setHeader('Cache-Control', 'no-cache')
-        RESPONSE.setHeader('Pragma', 'no-cache')
-        self.f_standard_html_request( self, REQUEST)
-        xml += self.getXmlHeader()
-      xml += '<page'
-      xml += " absolute_url=\"%s\""%str(self.getAbsoluteUrlInContext(context))
-      xml += " physical_path=\"%s\""%('/'.join(self.getPhysicalPath()))
-      xml += " access=\"%s\""%str(int(self.hasAccess(REQUEST)))
-      xml += " active=\"%s\""%str(int(self.isActive(REQUEST)))
-      try:
-        xml += " zmi_icon=\"%s\""%self.zmi_icon()
-      except:
-        xml += " zmi_icon=\"%s\""%self.zmi_icon
-      xml += " display_type=\"%s\""%str(self.display_type(REQUEST))
-      xml += " uid=\"{$%s}\""%(self.get_uid())
-      xml += " id=\"%s_%s\""%(self.getHome().id, self.id)
-      xml += " home_id=\"%s\""%(self.getHome().id)
-      xml += " index_html=\"%s\""%standard.html_quote(self.getHref2IndexHtmlInContext(context,REQUEST=REQUEST))
-      xml += " is_page=\"%s\""%str(int(self.isPage()))
-      xml += " is_pageelement=\"%s\""%str(int(self.isPageElement()))
-      xml += " meta_id=\"%s\""%(self.meta_id)
-      xml += " title=\"%s\""%standard.html_quote(self.getTitle(REQUEST))
-      xml += " titlealt=\"%s\""%standard.html_quote(self.getTitlealt(REQUEST))
-      xml += " restricted=\"%s\""%str(self.hasRestrictedAccess())
-      xml += " attr_dc_type=\"%s\""%(self.attr('attr_dc_type'))
-      xml += ">"
-      if REQUEST.form.get('get_attrs', 0):
-        obj_attrs = self.getObjAttrs()
-        for key in [x for x in obj_attrs if x not in ['title', 'titlealt', 'change_dt', 'change_uid', 'change_history', 'created_dt', 'created_uid', 'attr_dc_coverage', 'attr_cacheable', 'work_dt', 'work_uid']]:
-          obj_attr = obj_attrs[ key]
-          if obj_attr['datatype_key'] in _globals.DT_TEXTS or \
-             obj_attr['datatype_key'] in _globals.DT_NUMBERS or \
-             obj_attr['datatype_key'] in _globals.DT_DATETIMES:
-            v = self.attr(key)
-            if v:
-              xml += "<%s>%s</%s>"%(key, standard.toXmlString(self,v).encode('utf-8'), key)
-          elif obj_attr['datatype_key'] in _globals.DT_BLOBS:
-            v = self.attr(key)
-            if v:
-              xml += "<%s>"%key
-              xml += "<href>%s</href>"%standard.html_quote(v.getHref(REQUEST))
-              xml += "<filename>%s</filename>"%standard.html_quote(v.getFilename())
-              xml += "<content_type>%s</content_type>"%standard.html_quote(v.getContentType())
-              xml += "<size>%s</size>"%standard.getDataSizeStr(v.get_size())
-              xml += "<icon>%s</icon>"%standard.getMimeTypeIconSrc(v.getContentType())
-              xml += "</%s>"%key
-      xml += "</page>"
-      return xml
-
-
-    # --------------------------------------------------------------------------
-    #  ZMSObject.ajaxGetParentNodes:
-    # --------------------------------------------------------------------------
-    security.declareProtected('View', 'ajaxGetParentNodes')
-    def ajaxGetParentNodes(self, lang, xml_header=True, meta_types=None, REQUEST=None):
-      """ ZMSObject.ajaxGetParentNodes """
-      # Get context.
-      context = self
-      for id in REQUEST.get('physical_path', '').split('/'):
-        if id and context is not None:
-          context = getattr(context, id, None)
-          if context is None:
-            context = self
-            break
-      # Build xml.
-      xml = ''
-      if xml_header:
-        RESPONSE = REQUEST.RESPONSE
-        content_type = 'text/xml; charset=utf-8'
-        filename = 'ajaxGetParentNodes.xml'
-        RESPONSE.setHeader('Content-Type', content_type)
-        RESPONSE.setHeader('Content-Disposition', 'inline;filename="%s"'%filename)
-        RESPONSE.setHeader('Cache-Control', 'no-cache')
-        RESPONSE.setHeader('Pragma', 'no-cache')
-        self.f_standard_html_request( self, REQUEST)
-        xml += self.getXmlHeader()
-      # Start-tag.
-      xml += "<pages"
-      for key in REQUEST.form.keys():
-        if key.find('get_') < 0 and key not in ['lang', 'preview', 'http_referer', 'meta_types']:
-          xml += " %s=\"%s\""%(key, str(REQUEST.form.get(key)))
-      xml += " level=\"%i\""%self.getLevel()
-      xml += ">\n"
-      # Process nodes.
-      for node in self.breadcrumbs_obj_path():
-        nodexml = node.ajaxGetNode( context=context, lang=lang, xml_header=False, meta_types=meta_types, REQUEST=REQUEST)
-        try:
-          xml += str(nodexml, 'utf-8', errors='ignore')
-        except:
-          xml += nodexml
-      # End-tag.
-      xml += "</pages>"
-      # Return xml.
-      return xml
-
-
-    # --------------------------------------------------------------------------
-    #  ZMSObject.ajaxGetChildNodes:
-    # --------------------------------------------------------------------------
-    security.declareProtected('View', 'ajaxGetChildNodes')
-    def manage_ajaxGetChildNodes(self, lang, xml_header=True, meta_types=None, REQUEST=None):
-      """ ZMSObject.manage_ajaxGetChildNodes """
-      return self.ajaxGetChildNodes(lang, xml_header, meta_types, REQUEST)
-    def ajaxGetChildNodes(self, lang, xml_header=True, meta_types=None, REQUEST=None):
-      """ ZMSObject.ajaxGetChildNodes """
-      # Get context.
-      context = self
-      for id in REQUEST.get('physical_path', '').split('/'):
-        if id and context is not None:
-          context = getattr(context, id, None)
-          if context is None:
-            context = self
-            break
-      # Build xml.
-      xml = ''
-      if xml_header:
-        RESPONSE = REQUEST.RESPONSE
-        content_type = 'text/xml; charset=utf-8'
-        filename = 'ajaxGetChildNodes.xml'
-        RESPONSE.setHeader('Content-Type', content_type)
-        RESPONSE.setHeader('Content-Disposition', 'inline;filename="%s"'%filename)
-        RESPONSE.setHeader('Cache-Control', 'no-cache')
-        RESPONSE.setHeader('Pragma', 'no-cache')
-        self.f_standard_html_request( self, REQUEST)
-        xml += self.getXmlHeader()
-      
-      xml += "<pages"
-      for key in REQUEST.form.keys():
-        if key.find('get_') < 0 and key not in ['lang', 'preview', 'http_referer', 'meta_types']:
-          xml += " %s=\"%s\""%(key, str(REQUEST.form.get(key)))
-      xml += " level=\"%i\""%self.getLevel()
-      xml += ">\n"
-      
-      if isinstance(meta_types, str) and meta_types.find(',') > 0:
-        meta_types = meta_types.split(',')
-      if isinstance(meta_types, list):
-        new_meta_types = []
-        for meta_type in meta_types:
-          try:
-            new_meta_types.append( int( meta_type))
-          except:
-            new_meta_types.append( meta_type)
-        meta_types = new_meta_types
-      if REQUEST.form.get('http_referer'):
-        REQUEST.set('URL', REQUEST.form.get('http_referer'))
-
-      # Add child-nodes.
-      obs = []
-      childNodes = self.getChildNodes(REQUEST, meta_types)
-      
-      # Exclude meta-ids.
-      excludeMetaIds = self.getConfProperty('ZMS.ajaxGetChildNodes.excludeMetaIds','').split(',')
-      childNodes = [x for x in childNodes if x.meta_id not in excludeMetaIds]
-
-      # Sort.
-      sortedChildNodes = self.evalMetaobjAttr('sortChildNodes',childNodes=childNodes)
-      if isinstance(sortedChildNodes,list):
-        childNodes = sortedChildNodes
-      
-      obs.extend(childNodes)
-      
-      # Add trashcan.
-      if ( self.meta_type == 'ZMS') and \
-         ( ( isinstance(meta_types, list) and 'ZMSTrashcan' in meta_types) or \
-           ( isinstance(meta_types, str) and 'ZMSTrashcan' == meta_types)):
-        obs.append( self.getTrashcan())
-      if self.meta_type == 'ZMS':
-        obs.extend( self.getPortalClients())
-      
-      for ob in obs:
-        xml += ob.ajaxGetNode( context=context, lang=lang, xml_header=False, meta_types=meta_types, REQUEST=REQUEST)
-      
-      xml += "</pages>"
-      
-      if REQUEST.RESPONSE.getHeader('Location'):
-        del REQUEST.RESPONSE.headers['location']
-      
-      return xml
 
 
     ############################################################################
@@ -1398,7 +1144,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     #
     #  Returns Sort-ID (integer).
     # --------------------------------------------------------------------------
-    def getSortId(self): 
+    def getSortId(self):
       rtnVal = 0
       sort_id = getattr( self, 'sort_id','')
       if sort_id:
@@ -1418,7 +1164,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       self.setSortId(sort_id - 15)
       parent.normalizeSortIds(standard.id_prefix(self.id))
       # Return with message.
-      message = self.getZMILangStr('MSG_MOVEDOBJUP')%("<i>%s</i>"%self.display_type(REQUEST))
+      message = self.getZMILangStr('MSG_MOVEDOBJUP')%("<i>%s</i>"%self.display_type())
       RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s#zmi_item_%s'%(parent.absolute_url(), lang, standard.url_quote(message), self.id))
 
 
@@ -1434,7 +1180,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       self.setSortId(sort_id + 15)
       parent.normalizeSortIds(standard.id_prefix(self.id))
       # Return with message.
-      message = self.getZMILangStr('MSG_MOVEDOBJDOWN')%("<i>%s</i>"%self.display_type(REQUEST))
+      message = self.getZMILangStr('MSG_MOVEDOBJDOWN')%("<i>%s</i>"%self.display_type())
       RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s#zmi_item_%s'%(parent.absolute_url(), lang, standard.url_quote(message), self.id))
 
 
@@ -1469,7 +1215,7 @@ class ZMSObject(ZMSItem.ZMSItem,
           ids.insert(pos, ids.pop(old))
           self.setConfProperty('Portal.Clients',ids)
       # Return with message.
-      message = self.getZMILangStr('MSG_MOVEDOBJ%s'%['UP','DOWN'][int(old<pos)])%("<i>%s</i>"%self.display_type(REQUEST))
+      message = self.getZMILangStr('MSG_MOVEDOBJ%s'%['UP','DOWN'][int(old<pos)])%("<i>%s</i>"%self.display_type())
       if fmt == 'json':
         return self.str_json(message)
       else:
@@ -1481,45 +1227,54 @@ class ZMSObject(ZMSItem.ZMSItem,
     #
     #  Execute Meta-Command.
     ############################################################################
-    def manage_executeMetacmd(self, lang, REQUEST, RESPONSE=None):
+    def manage_executeMetacmd(self, id, REQUEST, RESPONSE=None, context=None):
       """ MetacmdObject.manage_executeMetacmd """
-      id = REQUEST.get('id')
-      RESPONSE.setHeader('Cache-Control', 'no-cache')
-      RESPONSE.setHeader('Pragma', 'no-cache')
+      if RESPONSE:
+        RESPONSE.setHeader('Cache-Control', 'no-cache')
+        RESPONSE.setHeader('Pragma', 'no-cache')
+      lang = REQUEST.get('lang')
+      value = None
       message = ''
       target = self
-      
+      zmscontext = standard.nvl(context, self)
+
       # METAOBJ
-      metaObjAttr = self.getMetaobjAttr(self.meta_id, id)
+      metaObjAttr = zmscontext.getMetaobjAttr(zmscontext.meta_id, id)
       if metaObjAttr is not None:
         # Execute directly.
-        return self.attr(id)
-      
+        return zmscontext.attr(id)
+
       # METACMD
       metaCmd = self.getMetaCmd(id)
       if metaCmd is not None:
-        # Execute directly.
+        # Execute metacmd.
         ob = zopeutil.getObject(self, id)
-        value = zopeutil.callObject(ob, zmscontext=self)
-        if not metaCmd['id'].startswith('manage_tab_') and metaCmd.get('execution', 0) == 1:
+        # Proceed with generating message for executed metacmd.
+        if bool(metaCmd.get('execution')) and not metaCmd['id'].startswith('manage_tab_'):
+          value = zopeutil.callObject(ob, zmscontext=zmscontext)
           if isinstance(value, str):
             message = value
           elif isinstance(value, tuple):
             target = value[0]
             message = value[1]
-        # Execute redirect.
+        # Proceed with redirecting to tab view.
         else:
           loc = '%s/%s?lang=%s'%(target.absolute_url(),metaCmd['id'],lang)
           status = 302
           if REQUEST.method == 'GET':
+            value = zopeutil.callObject(ob, zmscontext=zmscontext)
             status = 201 # Turbolinks
             RESPONSE.setHeader('Location',loc)
             RESPONSE.setHeader('Turbolinks-Location',loc)
-          RESPONSE.redirect(loc,status=status)
+          if RESPONSE:
+            RESPONSE.redirect(loc,status=status)
           return value
 
       # Return with message.
-      message = standard.url_quote(message)
+      if RESPONSE:
+        message = standard.url_quote(message)
+        if message == 'ERROR':
+          return RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_error_message=ERROR'%(target.absolute_url(), lang))
       return RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s'%(target.absolute_url(), lang, message))
 
 
@@ -1600,21 +1355,21 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     def printHtml(self, level, sectionizer, REQUEST, deep=True):
       html = ''
-      
+
       # Title.
       sectionizer.processLevel( level)
       title = self.getTitle( REQUEST)
       title = '%s %s'%(str(sectionizer), title)
       REQUEST.set( 'ZMS_SECTIONIZED_TITLE', '<h%i>%s</h%i>'%( level, title, level))
-      
+
       # bodyContent
       html += self._getBodyContent(REQUEST)
-      
+
       # Container-Objects.
       if deep:
         for ob in self.filteredChildNodes(REQUEST, self.PAGES):
           html += ob.printHtml( level+1, sectionizer, REQUEST, deep)
-      
+
       # Return <html>.
       return html
 
@@ -1637,18 +1392,18 @@ class ZMSObject(ZMSItem.ZMSItem,
     ############################################################################
     def xmlOnStartElement(self, sTagName, dTagAttrs, oParentNode):
         standard.writeLog( self, "[xmlOnStartElement]: sTagName=%s"%sTagName)
-        
+
         self.dTagStack    = collections.deque()
         self.dValueStack  = collections.deque()
-        
-        # WORKAROUND! The member variable "aq_parent" does not contain the right 
-        # parent object at this stage of the creation process (it will later 
-        # on!). Therefore, we introduce a special attribute containing the 
+
+        # WORKAROUND! The member variable "aq_parent" does not contain the right
+        # parent object at this stage of the creation process (it will later
+        # on!). Therefore, we introduce a special attribute containing the
         # parent object, which will be used by xmlGetParent() (see below).
         self.oParent = oParentNode
 
 
-    def xmlOnEndElement(self): 
+    def xmlOnEndElement(self):
         self.initObjChildren( self.REQUEST)
 
 

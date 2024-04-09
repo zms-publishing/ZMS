@@ -29,15 +29,6 @@ class ZMSLib:
 
 	# Attrs
 	class Attrs:
-		f_css_defaults = {"default":""
-			,"id":"f_css_defaults"
-			,"keys":[]
-			,"mandatory":0
-			,"multilang":0
-			,"name":"CSS: Default"
-			,"repetitive":0
-			,"type":"resource"}
-
 		bodycontentzmslib_page = {"default":""
 			,"id":"bodyContentZMSLib_page"
 			,"keys":[]

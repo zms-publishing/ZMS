@@ -7,15 +7,15 @@
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
 <tal:block tal:define="
-    task_ids python:['TASK_ZMSNOTE', 'TASK_UNTRANSLATED', 'TASK_CHANGED_BY_DATE'];
-    global obs python:[]">
+	task_ids python:['TASK_ZMSNOTE', 'TASK_UNTRANSLATED', 'TASK_CHANGED_BY_DATE','TASK_INACTIVE_NODES'];
+	global obs python:[]">
 
-<form class="form-horizontal card" role="form" name="form0" method="get">
+<form class="form-horizontal card border-bottom" role="form" name="form0" method="get">
 	<legend><span tal:replace="python:here.getZMILangStr('TAB_TASKS')">the task-type</span></legend>
 	<div class="card-body">
-		<div class="form-group row task_type">
+		<div class="form-group row task_type my-0">
 			<div class="col-sm-2">
-				<button type="submit" class="btn btn-primary" tal:content="python:here.getZMILangStr('BTN_DISPLAY')">Display</button>
+				<button type="submit" class="btn btn-primary w-100 text-nowrap" tal:content="python:here.getZMILangStr('BTN_DISPLAY')">Display</button>
 			</div>
 			<div class="col-sm-10">
 				<select class="form-control" id="task_type" name="task_type">
@@ -28,11 +28,17 @@
 	</div>
 </form>
 
-<div class="form-horizontal card mt-4" tal:condition="python:'task_type' in request.form">
+<div class="form-horizontal card border-0" tal:condition="python:'task_type' in request.form">
 	<div class="card-body">
+
 	<tal:block tal:condition="python:request['task_type']=='TASK_ZMSNOTE'">
 		<tal:block tal:define="dummy0 python:obs.extend(here.getTreeNodes(request,'ZMSNote'))"></tal:block>
 	</tal:block>
+
+	<tal:block tal:condition="python:request['task_type']=='TASK_INACTIVE_NODES'">
+		<tal:block tal:define="dummy0 python:obs.extend([ob for ob in here.getTreeNodes(request) if not ob.isActive(request)])"></tal:block>
+	</tal:block>
+
 	<tal:block tal:condition="python:request['task_type']=='TASK_UNTRANSLATED'">
 		<tal:block tal:repeat="lang python:[request['lang']]+[[],here.getDescendantLanguages(request['lang'],request)][int('descendant_langs' in request.form)]">
 			<tal:block tal:repeat="ob python:[here]+here.getTreeNodes(request,here.PAGES)">
@@ -49,12 +55,14 @@
 			</tal:block>
 		</tal:block>
 	</tal:block>
+
 	<tal:block tal:condition="python:request['task_type']=='TASK_CHANGED_BY_DATE'">
 		<tal:block tal:define="
 				obj_tuples python:[ ( x.attr('change_dt'), x ) for x in [here]+here.getTreeNodes(request) ];
 				obj_tuples python:sorted(obj_tuples, key=lambda obj: obj[0], reverse=True);
 				global obs python:[obj[1] for obj in obj_tuples]"></tal:block>
 	</tal:block>
+
 	<tal:block tal:condition="python:request['task_type'] not in task_ids">
 		<tal:block tal:repeat="lang python:[request['lang']]+[[],here.getDescendantLanguages(request['lang'],request)][int('descendant_langs' in request.form)]">
 			<tal:block tal:repeat="ob python:[here]+here.getTreeNodes(request,here.PAGES)">
@@ -66,13 +74,38 @@
 			</tal:block>
 		</tal:block>
 	</tal:block>
-	<form class="form-horizontal" method="get" tal:content="structure python:here.zmi_manage_main_grid(obs=obs)">
+
+	<form class="form-horizontal" method="get" 
+		tal:attributes="id python:request.get('task_type', None)"
+		tal:content="structure python:here.zmi_manage_main_grid(obs=obs)">
 		zmi_manage_main_grid
 	</form>
+
 </div>
 </div>
 </tal:block>
 </div><!-- #zmi-tab -->
 <footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
+<script>
+	// <!-- 
+	$(function() {
+		$('.btn.btn-primary').on('click',function() {
+			$(this).html('<i class="fas fa-spinner fa-spin"></i>')
+		})
+	});
+	//-->
+</script>
+<style>
+	/* <!-- */
+	.zmi.tasks #TASK_INACTIVE_NODES .breadcrumb li.breadcrumb-item.active {
+		max-width: unset !important;
+		overflow: unset;
+		text-overflow: unset;
+	}
+	.zmi.tasks #TASK_INACTIVE_NODES .breadcrumb li.breadcrumb-item.active a {
+		text-decoration: line-through;
+	}
+	/* --> */
+</style>
 </body>
 </html>

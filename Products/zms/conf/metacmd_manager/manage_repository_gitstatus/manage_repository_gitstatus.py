@@ -8,9 +8,6 @@ def manage_repository_gitstatus( self ):
 	git_branch = self.getConfProperty('ZMSRepository.git.server.branch','main')
 	if request.get('lang',None) is None:
 		request['lang'] = 'ger'
-	if request.get('manage_lang',None) is None:
-		request['manage_lang'] = 'ger'
-	RESPONSE =  request.RESPONSE
 	btn = request.form.get('btn')
 	came_from = request.get('came_from',request['HTTP_REFERER'])
 	if came_from.find('?') > 0:
@@ -71,7 +68,7 @@ def manage_repository_gitstatus( self ):
 			gcmd = ';'.join(git_commands)
 			result = os.popen(gcmd).read()
 			# result = os.system(command)
-			message = '<pre class="zmi-code d-block m-0 p-4" style="color: #dee2e6;background-color: #354f67;"><b style="color:#8d9eaf;">>> %s</b><br/><br/>%s</pre>'%(gcmd,str(result))
+			message = '<pre class="zmi-log rounded-0"><b style="color:#8d9eaf;">>> %s</b><br/><br/>%s</pre>'%(gcmd,str(result))
 		else:
 			message = 'Error: To execute this function a user role Manager or ZMSAdministrator is needed.'
 		html.append(message)

@@ -22,9 +22,7 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Persistence import Persistent
 from Acquisition import Implicit
 import OFS.SimpleItem, OFS.ObjectManager
-import zope.interface
 # Product Imports.
-from Products.zms import IZMSDaemon
 from Products.zms import standard
 from Products.zms import _accessmanager
 
@@ -86,7 +84,6 @@ class ZMSItem(
       l = ['zmi','zms', 'loading']
       l.append(request.get('lang'))
       l.append('lang-%s'%(request.get('lang')))
-      l.append('manage_lang-%s'%(request.get('manage_lang')))
       l.extend(kwargs.values())
       l.append(self.meta_id)
       # FOR EVALUATION: adding node specific css classes [list]
@@ -102,9 +99,6 @@ class ZMSItem(
     #  ZMSItem.zmi_page_request:
     # --------------------------------------------------------------------------
     def _zmi_page_request(self, *args, **kwargs):
-      for daemon in self.getDocumentElement().objectValues():
-        if IZMSDaemon.IZMSDaemon in list(zope.interface.providedBy(daemon)):
-          daemon.startDaemon()
       request = self.REQUEST
       request.set( 'ZMS_THIS', self.getSelf())
       request.set( 'ZMS_DOCELMNT', self.breadcrumbs_obj_path()[0])
@@ -128,13 +122,12 @@ class ZMSItem(
       RESPONSE.setHeader('Cache-Control', 'no-cache')
       RESPONSE.setHeader('Pragma', 'no-cache')
       RESPONSE.setHeader('Content-Type', 'text/html;charset=%s'%request['ZMS_CHARSET'])
+      request.set( 'is_zmi', True)
       if not request.get( 'preview'):
         request.set( 'preview', 'preview')
       langs = self.getLanguages(request)
       if request.get('lang') not in langs:
         request.set('lang', langs[0])
-      if request.get('manage_lang') not in self.getLocale().get_manage_langs():
-        request.set('manage_lang', self.get_manage_lang())
       if not request.get('manage_tabs_message'):
         request.set( 'manage_tabs_message', self.getConfProperty('ZMS.manage_tabs_message', ''))
       if 'zmi-manage-system' in request.form:
@@ -158,8 +151,6 @@ class ZMSItem(
       self._zmi_page_request()
       if not request.get( 'lang'):
         request.set( 'lang', self.getLanguage(request))
-      if not request.get('manage_lang') in self.getLocale().get_manage_langs():
-        request.set( 'manage_lang', self.get_manage_lang())
 
 
     # --------------------------------------------------------------------------
@@ -167,11 +158,12 @@ class ZMSItem(
     #
     #  @param REQUEST
     # --------------------------------------------------------------------------
-    def display_icon(self, REQUEST, meta_type=None, key='icon', zpt=None):
-      if meta_type is None:
+    def display_icon(self, *args, **kwargs):
+      meta_id = kwargs.get('meta_id')
+      if meta_id is None:
         return self.icon
       else:
-        return self.aq_parent.display_icon( REQUEST, meta_type, key, zpt)
+        return self.aq_parent.display_icon(meta_id=meta_id)
 
 
     # --------------------------------------------------------------------------

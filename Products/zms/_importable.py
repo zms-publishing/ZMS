@@ -102,7 +102,10 @@ def importContent(self, file):
   
   # Cleanup.
   self.setConfProperty('ZMS.CatalogAwareness.active', catalog_awareness)
-  
+
+  # Refresh zcatalog_index
+  standard.triggerEvent( self, '*.ObjectImported')
+
   # Return imported object.
   return ob
 
@@ -120,18 +123,17 @@ def importFile(self, file, REQUEST, handler):
   standard.writeBlock( self, '[importFile]: filename='+filename)
   
   # Create temporary folder.
-  folder = tempfile.mktemp()
-  os.mkdir(folder)
+  tempfolder = tempfile.mkdtemp()
   
   # Save to temporary file.
-  filename = os.path.join(folder, _fileutil.extractFilename(filename))
+  filename = os.path.join(tempfolder, _fileutil.extractFilename(filename))
   _fileutil.exportObj(file, filename)
   
   # Import ZEXP-file.
   if _fileutil.extractFileExt(filename) == 'zexp':
     ob =  self._importObjectFromFile(filename,verify=0)
     # Remove temporary files.
-    _fileutil.remove(folder, deep=1)
+    _fileutil.remove(tempfolder, deep=True)
     # Refresh zcatalog_index
     standard.triggerEvent( self, '*.ObjectImported')
     return ob
@@ -143,7 +145,7 @@ def importFile(self, file, REQUEST, handler):
     for deep in [0, 1]:
       for ext in ['xml', 'htm', 'html' ]:
         if filename is None:
-          filename = _fileutil.findExtension(ext, folder, deep)
+          filename = _fileutil.findExtension(ext, tempfolder, deep)
       break
     if filename is None:
       raise zExceptions.InternalError('XML-File not found!')
@@ -159,7 +161,7 @@ def importFile(self, file, REQUEST, handler):
   f.close()
   
   # Remove temporary files.
-  _fileutil.remove(folder, deep=1)
+  _fileutil.remove(tempfolder, deep=True)
   
   # Return imported object.
   return ob

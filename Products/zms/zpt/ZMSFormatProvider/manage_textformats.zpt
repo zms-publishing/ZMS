@@ -35,7 +35,7 @@
 			<div class="form-group row">
 				<label for="new_usage" class="col-sm-3 control-label"><span>Usage</span></label>
 				<div class="col-sm-9">
-					<span class="btn btn-secondary col-sm-12" title="Format is avaliable in these types of editors">
+					<span class="btn border text-left col-sm-12" title="Format is avaliable in these types of editors">
 						<input type="checkbox" id="new_usage" name="new_usage:list" value="standard" tal:attributes="checked python:['','checked'][int('standard' in format.getUsage())]"/>
 						Standard-Editor
 						&nbsp;&nbsp;&nbsp;
@@ -53,13 +53,15 @@
 				<div class="col-sm-9"><span class="btn btn-secondary"><input type="checkbox" id="new_richedit" name="new_richedit:int" value="1" tal:attributes="checked python:['','checked'][str(format.getRichedit())=='1']"/></span></div>
 			</div><!-- .form-group -->
 			<div class="form-group row" title="Rendered HTML Code nesting the text block">
-				<div class="col-sm-12">
-					<div class="alert alert-info mx-0">
+				<label for="preview_textformat" class="col-sm-3 control-label"><span>Rendered Code</span></label>
+				<div class="col-sm-9">
+					<p id="preview_textformat" class="preview_textformat p-2 bg-light">
 						<code tal:content="structure python:format.getHtml()">Html</code>
-					</div>
-				</div>
+					</p>
+				</div><!-- .col-sm-10 -->
 			</div><!-- .form-group -->
-			<div class="form-row">
+
+			<div class="form-group row">
 				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-primary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 					<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CLOSE" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
@@ -82,7 +84,7 @@
 				<div class="col-lg-10"><input class="form-control form-control-sm" type="text" id="_display" name="_display" /></div>
 			</div><!-- .form-group -->
 			<div class="form-group row">
-				<div class="col-lg-10">
+				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-primary" value="BTN_INSERT" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
 				</div>
 			</div><!-- .form-group -->
@@ -142,7 +144,7 @@
 	<tbody>
 	<tal:block tal:repeat="format formats"
 		><tr tal:attributes="class python:['','text-info bg-info'][int(format.getId()==here.getTextFormatDefault())];title python:['','Default'][int(format.getId()==here.getTextFormatDefault())]">
-			<td class="meta-sort text-center">
+			<td class="meta-sort text-center align-middle">
 				<input type="checkbox" name="ids:list" tal:attributes="value python:format.getId()" />
 			</td>
 			<td class="text-nowrap align-middle">
@@ -153,7 +155,7 @@
 				</a>
 			</td>
 			<td class="p-2">
-				<div class="preview_textformat" tal:content="structure python:format.renderText(format.getDisplay(),request)">Render</div>
+				<div class="preview_textformat" tal:content="structure python:format.renderText(zmscontext,format.getDisplay())">Render</div>
 			</td>
 		</tr>
 	</tal:block>
@@ -166,23 +168,20 @@
 </div><!-- #zmi-tab -->
 
 <script>
+//<!--
 
-/**
- * Export xml.
- */
+// Export xml.
 function zmiExportBtnClick(sender) {
 	var fm = $(sender).parents("form")[0];
 	var href = fm.action+'?lang='+getZMILang()+'&btn=BTN_EXPORT';
 	$('input[name="ids:list"]:checked',fm).each(function(){
-			href += '&'+$(this).attr("name")+'='+$(this).val();
-		});
+		href += '&'+$(this).attr("name")+'='+$(this).val();
+	});
 	window.open(href);
 	return false;
 }
 
-/**
- * Delete object.
- */
+// Delete object.
 function zmiDeleteObjBtnClick(sender,d) {
 	if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
 		var $fm = $(sender).closest("form");
@@ -198,13 +197,14 @@ function zmiDeleteObjBtnClick(sender,d) {
 }
 
 $(function(){
-		zmiModal('#editObj',{title:getZMILangStr('BTN_EDIT'),remove:true})
-		$('button[name=btn][value=BTN_CLOSE]').click(function() {
-				zmiModal("hide");
-				return false;
-			});
+	zmiModal('#editObj',{title:getZMILangStr('BTN_EDIT'),remove:true});
+	$('button[name=btn][value=BTN_CLOSE]').click(function() {
+		zmiModal("hide");
+		return false;
+	});
 });
 
+//-->
 </script>
 
 <footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>

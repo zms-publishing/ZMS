@@ -41,7 +41,7 @@
 					</select>
 				</div>
 			</div><!-- .form-group -->
-			<div class="form-row">
+			<div class="form-group row">
 				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-primary" value="BTN_INSERT" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
 				</div><!-- .controls.save -->
@@ -69,7 +69,7 @@
 		<tal:block tal:condition="metaObjRecordSet">
 			<option id="type_objects" value="" tal:content="python:'--- %s ---'%here.getZMILangStr('ATTR_FK')"></option>
 			<tal:block tal:repeat="metaObj python:[x for x in metaObjs if x['type']=='ZMSRecordSet' and x.get('package')==metaObj.get('package')]">
-				<option tal:attributes="value metaObj/id" tal:content="python:here.display_type(request,metaObj['id'])">type</option>
+				<option tal:attributes="value metaObj/id" tal:content="python:here.display_type(meta_id=metaObj['id'])">type</option>
 			</tal:block>
 		</tal:block>
 		<tal:block tal:condition="not:metaObjRecordSet">
@@ -79,7 +79,7 @@
 			</tal:block>
 			<option id="type_objects" value="" tal:content="python:'--- %s ---'%here.getZMILangStr('ATTR_OBJECTS')"></option>
 			<tal:block tal:repeat="metaObj python:[x for x in metaObjs if x['type'] != 'ZMSPackage']">
-				<option tal:attributes="value python:metaObj['id']" tal:content="python:here.display_type(request,metaObj['id'])">type</option>
+				<option tal:attributes="value python:metaObj['id']" tal:content="python:here.display_type(meta_id=metaObj['id'])">type</option>
 			</tal:block>
 			<option id="type_objects_sequence" value="" tal:content="python:'--- %s ---'%here.getZMILangStr('ATTR_SEQUENCE')"></option>
 			<option value="*" tal:content="python:'%s (*)'%here.getZMILangStr('ATTR_CUSTOM')">*</option>
@@ -96,7 +96,6 @@
 				<input tal:condition="python:metaObj.get('acquired')" type="hidden" name="id" tal:attributes="value metaObj/id">
 				<button class="btn btn-default" data-toggle="dropdown">
 					<i class="fas fa-caret-down mr-2"></i>
-					<i tal:condition="python:metaObj.get('acquired')" class="fas fa-share mr-2" title="acquired"></i>
 					<i tal:on-error="string:ERROR icon" tal:attributes="class python:'%s mr-2'%(zmscontext.zmi_icon(metaObj['id']))"></i>
 					<span tal:content="python:metaObj.get('name')">Name</span>
 				</button>
@@ -126,7 +125,12 @@
 					</tal:block>
 				</div>
 			</div>
-			<a class="btn btn-secondary" target="_blank" value="BTN_SEARCH" 
+			<a tal:condition="python:metaObj.get('acquired',None)" class="btn btn-secondary" target="_blank"
+				tal:attributes="
+					href python:'%s/metaobj_manager/manage_main?lang=%s&id=%s'%(context.getRootElement().absolute_url(),request['lang'],metaObj['id']);
+					title python:'acquired YYY from: %s (%s)'%(context.getRootElement().getHome().id, context.getRootElement().attr('titlealt'))"
+				><i class="fas fa-share" title="acquired"></i></a>
+			<a class="btn btn-secondary" target="_blank" value="BTN_SEARCH"
 				tal:attributes="
 					href python:'manage_analyze?lang=%s&id=%s'%(request['lang'],metaObj['id']); 
 					title python:'Click for content analysis of \042%s\042. Please, apply carefully!'%metaObj['id']"
@@ -136,7 +140,7 @@
 			<button class="btn btn-secondary" type="button" name="btn" value="BTN_EXPORT" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')" onclick="return zmiExportBtnClick(this)"><i class="fas fa-download"></i></button>
 		</div>
 
-		<div class="form-row m-2">
+		<div class="form-group row m-2">
 			<div class="controls save m-0 p-0 container text-nowrap">
 				<button tal:condition="python:not metaObj['acquired']" type="submit" name="btn" class="btn btn-primary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 				<button tal:condition="python:metaObj['acquired']" type="submit" name="btn" class="btn btn-primary" value="BTN_COPY" tal:content="python:here.getZMILangStr('BTN_COPY')">Copy</button>
@@ -239,6 +243,11 @@
 								<div class="single-line zmi-code" 
 									tal:condition="python:objAttr.get('ob') is not None"
 									tal:define="zopetype python:objAttr['type'] in here.valid_zopetypes; ob python:objAttr.get('ob')">
+									<code class="debug" title="Class Products.zms.zopeutil.MissingArtefactProxy" 
+										tal:condition="python:objAttr.get('ob').absolute_url()=='#'"
+										tal:content="python:'ERROR: Object not created %s'%(objAttr.get('ob'))">
+										ERROR: Object not created 
+									</code>
 									<textarea class="form-control-ace-editor form-control form-control-sm"
 										tal:attributes="name python:'attr_custom_%s'%objAttr['id']; 
 											id  python:'attr_custom_%s'%(str(objAttr['id']).replace('/','__'));
@@ -260,12 +269,20 @@
 								<input type="hidden" tal:attributes="name python:'attr_type_%s'%objAttr['id']; value objAttr/type"/>
 								<input class="btn btn-file" type="file" tal:attributes="name python:'attr_custom_%s'%objAttr['id']"/>
 								<tal:block tal:condition="python:objAttr.get('ob')">
-									<a tal:define="fname python:objAttr['ob'].title" tal:attributes="href python:objAttr['ob'].absolute_url(); title python:'%s [%s]'%(fname,here.getDataSizeStr(objAttr['ob'].get_size()))" target="_blank" style="text-decoration:none;">
+									<a tal:define="fname python:objAttr['ob'].title" 
+										tal:attributes="href python:'%s/manage_main'%(objAttr['ob'].absolute_url()); 
+											title python:'Edit %s [%s]'%(fname,here.getDataSizeStr(objAttr['ob'].get_size()))" 
+										target="_blank" style="text-decoration:none;">
 										<i class="fas fa-file-alt"></i>
 										<tal:block tal:content="fname">FILE NAME</tal:block>
 									</a>
 								</tal:block>
 							</div>
+							<span tal:condition="python:objAttr['id']=='readme'" 
+								title="Readme" class="zmi-readme text-info float-right btn-sm mr-2 d-none d-lg-block"
+								tal:attributes="onclick python:'window.open(\'./metaobj_manager/%s.readme/manage_readme_iframe\')'%(id)">
+								<i class="far fa-question-circle"></i>
+							</span>
 						</td>
 					</tal:block>
 
@@ -371,14 +388,32 @@
 		<tal:block tal:repeat="langDict python:here.getLangDict()">
 			<tr tal:condition="python:langDict['key'].startswith(request['id'])" tal:define="i python:repeat['langDict'].index+1">
 				<td class="meta-sort"></td>
-				<td><input type="text" class="form-control form-control-sm" tal:attributes="name python:'_lang_dict_key_%i'%i; value python:langDict['key'][len(request['id'])+1:];"></td>
-				<td tal:repeat="langId langIds"><div class="single-line"><textarea class="form-control form-control-sm" tal:attributes="name python:'_lang_dict_value_%i_%s'%(i,langId);" tal:content="python:langDict.get(langId,'')"></textarea></div></td>
+				<td>
+					<input type="text" class="form-control form-control-sm" 
+						tal:attributes="name python:'_lang_dict_key_%i'%i; value python:langDict['key'][len(request['id'])+1:];" />
+				</td>
+				<td tal:repeat="langId langIds">
+					<div class="single-line">
+						<textarea class="form-control form-control-sm" 
+							tal:attributes="name python:'_lang_dict_value_%i_%s'%(i,langId);
+								title python:' %s (%s)'%(langDict['key'][len(request['id'])+1:],langId);" 
+							tal:content="python:langDict.get(langId,'')"></textarea>
+					</div>
+				</td>
 			</tr>
 		</tal:block>
 		<tr class="row_insert" tal:define="i python:0">
-			<td class="meta-sort text-right"><span class="btn btn-add mr-1"><i class="fas fa-plus"></i></span></td>
-			<td><input class="form-control form-control-sm" type="text" tal:attributes="name python:'_lang_dict_key_%i'%i" /></td>
-			<td tal:repeat="langId langIds"><div class="single-line"><textarea class="form-control form-control-sm" tal:attributes="name python:'_lang_dict_value_%i_%s'%(i,langId)"></textarea></div></td>
+			<td class="meta-sort text-right">
+				<span class="btn btn-add mr-1"><i class="fas fa-plus"></i></span>
+			</td>
+			<td>
+				<input class="form-control form-control-sm" type="text" tal:attributes="name python:'_lang_dict_key_%i'%i" />
+			</td>
+			<td tal:repeat="langId langIds">
+				<div class="single-line">
+					<textarea class="form-control form-control-sm" tal:attributes="name python:'_lang_dict_value_%i_%s'%(i,langId)"></textarea>
+				</div>
+			</td>
 		</tr>
 		</tbody>
 	</table>
@@ -791,7 +826,7 @@ $(function(){
 
 }
 // Add Execute Button for TAL-Code-Regeneration om a ZPT-Method named standard_html
-var zmi_code_default_btn = '<i onclick="set_zmi_code_default(event)" title=\"Replace by Default-Code-Template\" class=\"zmi-code-default icon-repeat fas fa-redo-alt text-primary text-center\" style=\"cursor:pointer;display:block;position:absolute;text-align:right !important;right:0.75em;padding:0.5em;\"></i>';
+var zmi_code_default_btn = '<i onclick="set_zmi_code_default(event)" title=\"Replace by Default-Code-Template\" class=\"zmi-code-default fas fa-sync text-primary btn-lg mr-2 position-absolute\" style=\"cursor:pointer;right:0\"></i>';
 
 // Execute on DOM-Ready
 $(function(){
@@ -802,7 +837,15 @@ $(function(){
 	// ++++++++++++
 	let new_row_counter = 0;
 	// Get number of language terms
-	let lang_count = Object.keys(JSON.parse(ZMI.prototype.getCachedValue('get_lang_dict'))).length
+	let lang_dict = ZMI.prototype.getCachedValue('get_lang_dict');
+	let lang_count = 0;
+	if ( lang_dict!='undefined' ) {
+		if ( typeof lang_dict == 'object' ) {
+			lang_count = Object.keys(ZMI.prototype.getCachedValue('get_lang_dict')).length
+		} else {
+			lang_count = Object.keys(JSON.parse(ZMI.prototype.getCachedValue('get_lang_dict'))).length
+		}
+	};
 
 	// Add click event function to add-buttons
 	$(".row_insert .btn-add").click(function(){

@@ -136,6 +136,7 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
 
   ### Init ZMS default content-model.
   _confmanager.initConf(obj, 'conf:com.zms.foundation*')
+  _confmanager.initConf(obj, 'conf:com.zms.catalog.zcatalog')
 
   ### Init ZMS index.
   obj.getZMSIndex()
@@ -208,8 +209,11 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
     #-- Search
     initContent(obj, 'com.zms.search.content.xml', REQUEST)
 
-    # Initialize catalogs.
-    obj.getCatalogAdapter().reindex_all()
+    # Initialize catalog adapter / connector.
+    catalog_adapter = obj.getCatalogAdapter() 
+    catalog_connector = catalog_adapter.add_connector('zcatalog_connector')
+    catalog_connector.manage_init()
+    catalog_adapter.reindex(catalog_connector, obj, recursive=True)
 
     # Initialize access.
     obj.synchronizePublicAccess()
@@ -254,7 +258,6 @@ class ZMS(
     # -----------------------
     __viewPermissions__ = (
         'manage', 'manage_main', 'manage_container', 'manage_workspace', 'manage_menu',
-        'manage_ajaxGetChildNodes',
         )
     __administratorPermissions__ = (
         'manage_customize',
@@ -264,6 +267,7 @@ class ZMS(
         'manage_customizeDesign', 'manage_customizeDesignForm',
         )
     __authorPermissions__ = (
+        'preview_html', 'preview_top_html',
         'manage_addZMSModule',
         'manage_deleteObjs', 'manage_undoObjs',
         'manage_moveObjUp', 'manage_moveObjDown', 'manage_moveObjToPos',
@@ -304,6 +308,8 @@ class ZMS(
 
     # Interface.
     # ----------
+    swagger_ui = PageTemplateFile('zpt/ZMS/swagger-ui', globals()) # swagger-ui
+    openapi_yaml = PageTemplateFile('zpt/ZMS/openapi_yaml', globals()) # openapi.yaml
     index_html = PageTemplateFile('zpt/ZMS/index', globals()) # index_html
     f_index_html = PageTemplateFile('zpt/ZMS/index', globals()) # index_html
     f_headDoctype = PageTemplateFile('zpt/ZMS/f_headdoctype', globals()) # Head.DOCTYPE
@@ -390,7 +396,13 @@ class ZMS(
     The root element of the site.
     """
     def getRootElement(self):
-      return self.breadcrumbs_obj_path()[0]
+      doc_elmnt = self
+      while True:
+        portal_mstr = doc_elmnt.getPortalMaster()
+        if portal_mstr is None:
+          break
+        doc_elmnt = portal_mstr
+      return doc_elmnt
 
     # --------------------------------------------------------------------------
     #  ZMS.getAbsoluteHome

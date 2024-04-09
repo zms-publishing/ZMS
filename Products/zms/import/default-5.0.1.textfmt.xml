@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<list>
+	<item type="dictionary">
+		<dictionary>
+			<item key="key">plain_html</item>
+			<item key="value" type="dictionary">
+				<dictionary>
+					<item key="attrs"></item>
+					<item key="default" type="int">0</item>
+					<item key="display" type="dictionary">
+						<dictionary>
+							<item key="eng">HTML</item>
+							<item key="esp">HTML</item>
+							<item key="fra">HTML</item>
+							<item key="ger">HTML</item>
+							<item key="ita">HTML</item>
+						</dictionary>
+					</item>
+					<item key="subtag"></item>
+					<item key="tag"></item>
+				</dictionary>
+			</item>
+		</dictionary>
+	</item>
+	<item type="dictionary">
+		<dictionary>
+			<item key="key">body</item>
+			<item key="value" type="dictionary">
+				<dictionary>
+					<item key="attrs"></item>
+					<item key="default" type="int">0</item>
+					<item key="display" type="dictionary">
+						<dictionary>
+							<item key="eng">Textbody</item>
+							<item key="esp"><![CDATA[Cuerpo del texto]]></item>
+							<item key="fra"><![CDATA[Corps des textes]]></item>
+							<item key="ger">Textkörper</item>
+							<item key="ita"><![CDATA[Corpo del testo]]></item>
+						</dictionary>
+					</item>
+					<item key="richedit" type="int">0</item>
+					<item key="subtag">br</item>
+					<item key="tag">p</item>
+					<item key="usage" type="list">
+						<list>
+							<item>standard</item>
+						</list>
+					</item>
+				</dictionary>
+			</item>
+		</dictionary>
+	</item>
+	<item type="dictionary">
+		<dictionary>
+			<item key="key">headline_2</item>
+			<item key="value" type="dictionary">
+				<dictionary>
+					<item key="attrs"></item>
+					<item key="default" type="int">0</item>
+					<item key="display" type="dictionary">
+						<dictionary>
+							<item key="eng"><![CDATA[Headline 2]]></item>
+							<item key="esp"><![CDATA[Titular 2]]></item>
+							<item key="fra"><![CDATA[Titre 2]]></item>
+							<item key="ger"><![CDATA[Überschrift 2]]></item>
+							<item key="ita"><![CDATA[Titolo 2]]></item>
+						</dictionary>
+					</item>
+					<item key="richedit" type="int">0</item>
+					<item key="subtag">br</item>
+					<item key="tag">h2</item>
+					<item key="usage" type="list">
+						<list>
+							<item>standard</item>
+							<item>wysiwyg</item>
+						</list>
+					</item>
+				</dictionary>
+			</item>
+		</dictionary>
+	</item>
+	<item type="dictionary">
+		<dictionary>
+			<item key="key">headline_3</item>
+			<item key="value" type="dictionary">
+				<dictionary>
+					<item key="attrs"></item>
+					<item key="default" type="int">0</item>
+					<item key="display" type="dictionary">
+						<dictionary>
+							<item key="eng"><![CDATA[Headline 3]]></item>
+							<item key="esp"><![CDATA[Titular 3]]></item>
+							<item key="fra"><![CDATA[Titre 3]]></item>
+							<item key="ger"><![CDATA[Überschrift 3]]></item>
+							<item key="ita"><![CDATA[Titolo 3]]></item>
+						</dictionary>
+					</item>
+					<item key="richedit" type="int">0</item>
+					<item key="subtag">br</item>
+					<item key="tag">h3</item>
+					<item key="usage" type="list">
+						<list>
+							<item>standard</item>
+							<item>wysiwyg</item>
+						</list>
+					</item>
+				</dictionary>
+			</item>
+		</dictionary>
+	</item>
+	<item type="dictionary">
+		<dictionary>
+			<item key="key">headline_4</item>
+			<item key="value" type="dictionary">
+				<dictionary>
+					<item key="attrs"></item>
+					<item key="default" type="int">0</item>
+					<item key="display" type="dictionary">
+						<dictionary>
+							<item key="eng"><![CDATA[Headline 4]]></item>
+							<item key="esp"><![CDATA[Titular 4]]></item>
+							<item key="fra"><![CDATA[Titre 4]]></item>
+							<item key="ger"><![CDATA[Überschrift 4]]></item>
+							<item key="ita"><![CDATA[Titolo 4]]></item>
+						</dictionary>
+					</item>
+					<item key="richedit" type="int">0</item>
+					<item key="subtag">br</item>
+					<item key="tag">h4</item>
+					<item key="usage" type="list">
+						<list>
+							<item>standard</item>
+							<item>wysiwyg</item>
+						</list>
+					</item>
+				</dictionary>
+			</item>
+		</dictionary>
+	</item>
+	<item type="dictionary">
+		<dictionary>
+			<item key="key">ordered_list</item>
+			<item key="value" type="dictionary">
+				<dictionary>
+					<item key="attrs"></item>
+					<item key="default" type="int">0</item>
+					<item key="display" type="dictionary">
+						<dictionary>
+							<item key="eng">Enumeration</item>
+							<item key="esp">Enumeración</item>
+							<item key="fra">Énumération</item>
+							<item key="ger">Nummerierung</item>
+							<item key="ita">Enumerazione</item>
+						</dictionary>
+					</item>
+					<item key="subtag">li</item>
+					<item key="tag">ol</item>
+				</dictionary>
+			</item>
+		</dictionary>
+	</item>
+	<item type="dictionary">
+		<dictionary>
+			<item key="key">unordered_list</item>
+			<item key="value" type="dictionary">
+				<dictionary>
+					<item key="attrs"></item>
+					<item key="default" type="int">0</item>
+					<item key="display" type="dictionary">
+						<dictionary>
+							<item key="eng">List</item>
+							<item key="esp">Lista</item>
+							<item key="fra">Liste</item>
+							<item key="ger">Liste</item>
+							<item key="ita">Lista</item>
+						</dictionary>
+					</item>
+					<item key="subtag">li</item>
+					<item key="tag">ul</item>
+				</dictionary>
+			</item>
+		</dictionary>
+	</item>
+	<item type="dictionary">
+		<dictionary>
+			<item key="key">blockquote</item>
+			<item key="value" type="dictionary">
+				<dictionary>
+					<item key="attrs">class="blockquote"</item>
+					<item key="default" type="int">0</item>
+					<item key="display" type="dictionary">
+						<dictionary>
+							<item key="eng"><![CDATA[Quote block]]></item>
+							<item key="esp"><![CDATA[Citar bloque]]></item>
+							<item key="fra"><![CDATA[Bloc citation]]></item>
+							<item key="ger">Zitat-Block</item>
+							<item key="ita"><![CDATA[Blocco di citazioni]]></item>
+						</dictionary>
+					</item>
+					<item key="richedit" type="int">0</item>
+					<item key="subtag">br</item>
+					<item key="tag">p</item>
+					<item key="usage" type="list">
+						<list>
+							<item>standard</item>
+							<item>wysiwyg</item>
+						</list>
+					</item>
+				</dictionary>
+			</item>
+		</dictionary>
+	</item>
+	<item type="dictionary">
+		<dictionary>
+			<item key="key">emphasis</item>
+			<item key="value" type="dictionary">
+				<dictionary>
+					<item key="attrs">class="emphasis"</item>
+					<item key="default" type="int">0</item>
+					<item key="display" type="dictionary">
+						<dictionary>
+							<item key="eng">Emphasis</item>
+							<item key="esp">Énfasis</item>
+							<item key="fra">Emphase</item>
+							<item key="ger">Merksatz</item>
+							<item key="ita">Enfasi</item>
+						</dictionary>
+					</item>
+					<item key="richedit" type="int">0</item>
+					<item key="subtag">br</item>
+					<item key="tag">p</item>
+					<item key="usage" type="list">
+						<list>
+							<item>standard</item>
+							<item>wysiwyg</item>
+						</list>
+					</item>
+				</dictionary>
+			</item>
+		</dictionary>
+	</item>
+	<item type="dictionary">
+		<dictionary>
+			<item key="key">caption</item>
+			<item key="value" type="dictionary">
+				<dictionary>
+					<item key="attrs">class="caption"</item>
+					<item key="default" type="int">0</item>
+					<item key="display" type="dictionary">
+						<dictionary>
+							<item key="eng">Caption</item>
+							<item key="esp">Subtítulo</item>
+							<item key="fra">Légende</item>
+							<item key="ger">Beschriftung</item>
+							<item key="ita">Titolo</item>
+						</dictionary>
+					</item>
+					<item key="richedit" type="int">0</item>
+					<item key="subtag">br</item>
+					<item key="tag">p</item>
+					<item key="usage" type="list">
+						<list>
+							<item>standard</item>
+							<item>wysiwyg</item>
+						</list>
+					</item>
+				</dictionary>
+			</item>
+		</dictionary>
+	</item>
+	<item type="dictionary">
+		<dictionary>
+			<item key="key">wysiwyg</item>
+			<item key="value" type="dictionary">
+				<dictionary>
+					<item key="attrs"></item>
+					<item key="default" type="int">1</item>
+					<item key="display" type="dictionary">
+						<dictionary>
+							<item key="eng">WYSIWYG</item>
+							<item key="esp">WYSIWYG</item>
+							<item key="fra">WYSIWYG</item>
+							<item key="ger">WYSIWYG</item>
+							<item key="ita">WYSIWYG</item>
+						</dictionary>
+					</item>
+					<item key="richedit" type="int">1</item>
+					<item key="subtag"></item>
+					<item key="tag"></item>
+					<item key="usage" type="list">
+						<list>
+							<item>standard</item>
+						</list>
+					</item>
+				</dictionary>
+			</item>
+		</dictionary>
+	</item>
+	<item type="dictionary">
+		<dictionary>
+			<item key="key">q</item>
+			<item key="value" type="dictionary">
+				<dictionary>
+					<item key="attrs"></item>
+					<item key="default" type="int">0</item>
+					<item key="display" type="dictionary">
+						<dictionary>
+							<item key="eng"><![CDATA[Quote (inline)]]></item>
+							<item key="esp"><![CDATA[Citar (inline)]]></item>
+							<item key="fra"><![CDATA[Citation (inline)]]></item>
+							<item key="ger"><![CDATA[Zitat (inline)]]></item>
+							<item key="ita"><![CDATA[Citazioni (inline)]]></item>
+						</dictionary>
+					</item>
+					<item key="richedit" type="int">0</item>
+					<item key="subtag"></item>
+					<item key="tag">q</item>
+					<item key="usage" type="list">
+						<list>
+							<item>wysiwyg</item>
+						</list>
+					</item>
+				</dictionary>
+			</item>
+		</dictionary>
+	</item>
+</list>

@@ -73,7 +73,7 @@ class LinkTest(ZMSTestCase):
         
         # open actions-dropdown-menu and click delete document
         el = self._show_zmi_action(id)
-        item = el.find_element_by_css_selector('.icon-trash')
+        item = el.find_element_by_css_selector('.fa-trash')
         self._wait(lambda driver: item.is_displayed())
         item.click()
         wait = WebDriverWait(self.driver, 5)

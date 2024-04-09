@@ -17,10 +17,10 @@ try:
         if len(titlealt) < 24:
             return titlealt
         else:
-            return '%s...'%(titlealt)
+            return '%s...'%titlealt
     else:
         return img.getFilename() 
 except:
-    return zmscontext.display_type(zmscontext.REQUEST)
+    return zmscontext.display_type()
 
 # --// EO titlealt //--

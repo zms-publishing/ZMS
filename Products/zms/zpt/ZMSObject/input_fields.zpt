@@ -24,18 +24,19 @@
 		tal:condition="python:metaObj['type'] != 'ZMSRecordSet' or command.lower() != 'insert'"
 		tal:attributes="class python:'card input_fields_%s'%(meta_id)">
 		<div class="card-header attr_last_modified clearfix btn-collapse">
-			<div class="btn-group">
+			<div class="btn-group align-items-center">
 				<a id="zmi-toggle-activity-btn" class="btn card-toggle" data-toggle="collapse" href="#attrActivity"
 					><i class="fas fa-invisible"></i> <tal:block tal:content="python:here.getZMILangStr('ATTR_ACTIVITY')">Activity</tal:block></a>
 				<div class="btn zmi-changes"
 						tal:condition="not:python:request.get('ZMS_INSERT',False)" 
 						tal:define="change_uid python:here.attr('change_uid');change_dt python:here.attr('change_dt')">
-						<tal:block tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')">changed by</tal:block>
-					<span class="zmi-change-dt" tal:content="structure python:here.getLangFmtDate(change_dt,request['manage_lang'],'DATETIME_FMT')">the change-dt</span>
+					<tal:block tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')">changed by</tal:block>
+					<span class="zmi-change-dt" tal:content="structure python:here.getLangFmtDate(change_dt,fmt_str='DATETIME_FMT')">the change-dt</span>
 					<tal:block tal:content="python:here.getZMILangStr('BY')">by</tal:block>
 					<span class="zmi-change-uid" tal:content="change_uid">the change-uid</span>
 					<tal:block tal:content="structure python:here.zmi_version_object_state(here,request)">zmi_version_object_state</tal:block>
 				</div>
+				<span title="Readme" tal:condition="python:here.attr('readme')" class="zmi-readme text-info" onclick="zmiModal('#readme',{title:$('#readme').attr('title')});return false"><i class="far fa-question-circle"></i></span>
 			</div>
 			<div class="zmi-action loaded btn-group pull-right dropleft" tal:condition="not:python: request.get('ZMS_INSERT',False)">
 				<tal:block tal:define="
@@ -71,7 +72,7 @@
 					<span class="btn pl-0" style="white-space: normal;text-align: left;">
 						<tal:block tal:condition="python:here.attr('created_dt') and here.attr('created_uid')">
 							<tal:block tal:content="python:here.getZMILangStr('ATTR_CREATED')+':'">created:</tal:block>
-							<span class="zmi-created-dt" tal:content="python:here.getLangFmtDate(here.attr('created_dt'),request['manage_lang'],'DATETIME_FMT')">the created_dt</span>
+							<span class="zmi-created-dt" tal:content="python:here.getLangFmtDate(here.attr('created_dt'),fmt_str='DATETIME_FMT')">the created_dt</span>
 							<tal:block tal:content="python:here.getZMILangStr('BY')">by</tal:block>
 							<span class="zmi-created-uid" tal:content="python:here.attr('created_uid')">the created_uid</span>,
 						</tal:block>
@@ -84,8 +85,9 @@
 								onclick python:'$ZMI.CopyToClipboard(\'{$%s}\')'%(here.get_uid());
 								class python:' '.join(['get_uid']+[['text-danger'],[]][cataloged]);">
 							<tal:block tal:content="python:'ID:%s'%(here.get_uid())">unique-id</tal:block>
-							<tal:block tal:condition="python:request.get('refresh_catalog')">
+							<tal:block tal:condition="python:request.get('refresh_catalog','False')=='True'">
 								<tal:block tal:define="dummy0 python:standard.triggerEvent(here,'*.ObjectMoved')"></tal:block>
+                                <script>location.href='?refresh_catalog=False'</script>
 							</tal:block>
 							<a tal:condition="not:cataloged" 
 								href="javascript:;" title="Refresh Catalog Item"
@@ -204,7 +206,7 @@
 
 		<div class="collapse show" tal:condition="not:python:request.get('ZMS_INSERT')">
 			<div class="card-body">
-				<div class="form-row">
+				<div class="form-group row">
 					<div class="controls save">
 						<div class="form-check form-check-inline align-middle" 
 							title="Menu Lock: Stay in the menu after clicking the save button.">
@@ -213,7 +215,7 @@
 						<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:'BTN_%s'%command.upper()" tal:content="python:here.getZMILangStr('BTN_%s'%command.upper())">Action</button>
 						<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CANCEL" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
 					</div>
-				</div><!-- .form-row -->
+				</div><!-- .form-group -->
 			</div><!-- .card-body -->
 		</div><!-- .collapse -->
 	</div><!-- .card -->
@@ -273,11 +275,11 @@
 												<div class="zmi-action btn-group dropleft">
 													<span class="d-none zmi-sort-id" tal:content="python:childNode.getSortId()">the sort-id</span>
 													<button class="btn btn-secondary split-left">
-														<tal:block tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
-														<span tal:content="python:childNode.display_type(request)">the child-node</span>
+														<tal:block tal:content="structure python:childNode.display_icon()">the icon</tal:block>
+														<span tal:content="python:childNode.display_type()">the child-node</span>
 													</button>
 													<button class="btn btn-secondary split-right dropdown-toggle" data-toggle="dropdown">
-														<tal:block tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
+														<tal:block tal:content="structure python:childNode.display_icon()">the icon</tal:block>
 													</button>
 													</div><!-- .btn-group -->
 												<span class="zmi-ids">
@@ -299,6 +301,29 @@
 			</tal:block>
 		</tal:block>
 	</div><!-- .card -->
+
+	<!-- Readme: markdown formatted optional 'readme' resource attribute rendered as HTML -->
+	<div id="readme" class="modal" 
+		tal:condition="readme"
+		tal:define="readme python:here.attr('readme'); 
+			readme_url python:'%s/%s.readme/manage_readme'%(here.content.metaobj_manager.absolute_url(),meta_id)"
+		tal:attributes="title python:meta_id; data-readme readme_url">
+		<script>
+		//<!--
+			$(function() {
+				$(window).on('show.bs.modal', function (event) { 
+					if ( $('#readme script').length > 0 ) {
+						$.get($('#readme').data('readme'),'',function(data) {
+							$('#readme').html(data);
+							// Needed for 1st show
+							$('#zmiModalreadme .modal-body').html(data);
+						});
+					}
+				});
+			});
+		//-->
+		</script>
+	</div>
 
 </tal:block>
 

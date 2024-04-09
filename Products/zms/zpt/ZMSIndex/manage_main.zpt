@@ -1,6 +1,6 @@
 <tal:block tal:define="
-	dummy0 python:here.zmi_page_request(here,request); 
-	global standard modules/Products.zms/standard; 
+	dummy0 python:here.zmi_page_request(here,request);
+	global standard modules/Products.zms/standard;
 	global zopeutil modules/Products/zms/zopeutil;
 	global session python:standard.get_session(here);"></tal:block
 ><tal:block tal:condition="python:standard.get_session_value(here,'zmi-manage-system',0)==1"><tal:block tal:content="structure python:here.manage_system(here,request)"></tal:block></tal:block
@@ -8,8 +8,8 @@
 ><!DOCTYPE html>
 <html lang="en" tal:define="standard modules/Products.zms/standard">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
-<body tal:attributes="class python:here.zmi_body_class(id='filter config')">
-<header tal:replace="structure python:here.zmi_body_header(here,request,options=here.manage_options())">zmi_body_header</header>
+<body tal:attributes="class python:here.zmi_body_class(id='zmsindex config')">
+<header tal:replace="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</header>
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[{'label':'Index','action':'manage_main'}])">zmi_breadcrumbs</tal:block>
 <form class="form-horizontal" id="form0" name="form0" method="post" enctype="multipart/form-data">
@@ -18,6 +18,7 @@
 
 <tal:block tal:define="
 		zmscontext context;
+		catalog python:zmscontext.get_catalog();
 		oid python:zmscontext.get_oid();
 		uid python:request.form.get('uid','');
 		loglevels python:['DEBUG','INFO','ERROR'];">
@@ -34,68 +35,22 @@ function openWindow(url) {
 <legend>ZMSIndex</legend>
 <div id="zmsindex" class="collapse show">
 <div class="card-body">
-	<div class="form-group zms4-row">
-		<div class="col-sm-2"></div>
-		<div class="col-sm-10 form-inline">
-			<a class="btn btn-default btn-secondary" target="_blank" style="margin-right:1em"
-				tal:attributes="href python:'%s/manage_catalogView?filterpath=/'%zmscontext.zcatalog_index.absolute_url()">
-					<i class="fas fa-search"></i> zcatalog_index
-			</a>
-			<div class="btn-group" style="margin-right:1em">
-				<button name="btn" class="btn btn-warning" 
-					title="REINDEX: Rebuilding the ZCatalog index of all selected (multisite) hierarchy objects."
-					onclick="return zmiFuncIndex('manage_reindex');">Reindex
-				</button>
-				<div class="btn btn-default btn-secondary" 
-					title="UID RENEWAL: Apply with care; all links may get invalid!!"
-					onclick="if( $('#regenerate_duplicates').prop('checked') ){ $('#regenerate_duplicates').prop('checked', false) } else { alert('UID RENEWAL: Apply with care; all links may get invalid!!');$('#regenerate_duplicates').prop('checked', true) }">
-					UID Renewal:
-					<input id="regenerate_duplicates" name="regenerate_duplicates" type="checkbox"
-						style="display:block;margin:0.25rem 0 0 0.5rem;float:right;"
-						onclick="if( $('#regenerate_duplicates').prop('checked') ){ $('#regenerate_duplicates').prop('checked', false) } else { $('#regenerate_duplicates').prop('checked', true) }"
-					/>
-				</div>
-			</div>
-			<button name="btn" class="btn btn-info" style="margin-right:1em"
-				title="TEST: Test the ZCatalog index."
-				onclick="return zmiFuncIndex('manage_test');">Test
-			</button>
-			<button name="btn" class="btn btn-danger" style="margin-right:1em"
-				title="RESYNC: Validating and refreshing link objects, inline links and backlink on the selected node (default: full hierarchy)."
-				onclick="return zmiFuncIndex('manage_resync');">Resync
-			</button>
-			<div class="input-group">
-				<div class="input-group-prepend">
-					<select class="form-control" id="loglevel" name="loglevel" 
-						title="Select the Debug-Level for Logging Messages while Indexing">
-						<option tal:repeat="loglevel loglevels" tal:attributes="selected python:['','selected'][int(loglevel=='INFO')]" tal:content="loglevel">the loglevel</option>
-					</select>
-				</div>
-				<div class="btn btn-default btn-secondary input-group-addon"
-					title="Show all Logging Info Directly ">
-					<input id="logshow" name="logshow" type="checkbox" />
-				</div>
-			</div>
-		</div>
-	</div><!-- .form-group -->
-
-	<div class="form-group zms4-row">
-		<label class="col-sm-2 control-label">&nbsp;</label>
-		<div class="col-sm-10">
+	<div class="form-group zms4-row mb-0">
+		<div class="col-sm-12" data-label="ZMS-Clients">
 			<div class="btn-group zmi-sitemap-controls">
-				<div title="De-/Select All" 
+				<div title="De-/Select All"
 					class="btn btn-secondary">
 					<input id="zmi-sitemap-select" type="checkbox" checked="checked"
-						onclick="if( this.checked ){ $('.zmi-sitemap ul input').prop('checked', true) } else { $('.zmi-sitemap ul input').prop('checked', false) }" 
+						onclick="if( this.checked ){ $('.zmi-sitemap ul input').prop('checked', true) } else { $('.zmi-sitemap ul input').prop('checked', false) }"
 					/>
 				</div>
-				<div title="Expand Object Tree (Hint: Mind System Load in Case!)" 
-					class="btn btn-secondary" 
+				<div title="Expand Object Tree (Hint: Mind System Load in Case!)"
+					class="btn btn-secondary"
 					onclick="return zmiExpandObjectTree(-1);">
 					<i class="fas fa-plus-square"></i>
 				</div>
 				<div title="Expand/Compress Sitemap View"
-					class="btn btn-secondary" id="zmi-sitemap-expand" 
+					class="btn btn-secondary" id="zmi-sitemap-expand"
 					onclick="$('.zmi-sitemap-container').toggleClass('full');$('#zmi-sitemap-expand i').toggleClass('fa-expand-arrows-alt fa-compress-arrows-alt')">
 					<i class="fas fa-expand-arrows-alt"></i>
 				</div>
@@ -113,7 +68,75 @@ function openWindow(url) {
 	</div><!-- .form-group -->
 
 	<div class="form-group zms4-row">
-		<label class="col-sm-2 control-label">Attributes</label>
+		<div class="col-sm-12 form-inline">
+			<div class="btn-group dropdown mr-3">
+				<button class="btn btn-secondary dropdown-toggle" type="button" id="apiDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<tal:block tal:content="python:'----- %s -----'%here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_ACTION')">ZCatalog-Interaction</tal:block>
+				</button>
+				<div class="dropdown-menu" aria-labelledby="apiDropdownMenuButton"
+					tal:define="zmsindex_metacmd_ids python:[]">
+					<a class="dropdown-item" target="_blank"
+						tal:attributes="href python:'%s/manage_catalogView?filterpath=/'%catalog.absolute_url()">
+						Show zcatalog_index
+					</a>
+					<tal:block tal:repeat="meta_cmd python:here.getMetaCmds(here,'zmsindex')">
+						<a class="dropdown-item" tal:attributes="href python:meta_cmd['action']%''; title meta_cmd/title"
+							tal:define="zmsindex_metacmd_ids python:zmsindex_metacmd_ids.append(meta_cmd['id'])"
+							tal:content="meta_cmd/name">
+							Meta-Cmd Name
+						</a>
+					</tal:block>
+					<a class="dropdown-item" href="javascript:;"
+						tal:attributes="data-debug zmsindex_metacmd_ids"
+						tal:condition="python:'manage_zmsindex_reindex' not in zmsindex_metacmd_ids"
+						onclick="return zmiFuncIndex('REINDEX: Do you really want to reindex selected ZMS clients ?','manage_reindex');" 
+						title="Re-Index: Rebuilding the ZCatalog index of all selected ZMS clients.">
+						Re-Index ZMS Clients
+					</a>
+					<a class="dropdown-item" href="javascript:;"
+						onclick="return zmiFuncIndex('TEST: Do you really want to test the ZMS-Index ?','manage_test');" 
+						title="Test the ZMS-Index (zcatalog_index).">
+						Test ZMS-Index
+					</a>
+					<a class="dropdown-item" href="javascript:;"
+						onclick="return zmiFuncIndex('RESYNC: Do you really want to refresh link objects, inline links and backlinks not uid- but path-based ?','manage_resync');" 
+						title="Resync - Apply with Care: Validating and refreshing link objects, inline links and backlinks (not uid- but path-syntax) on the full client hierarchy (or selected nodes).">
+						Path-based Resync
+					</a>
+				</div>
+			</div>
+			<div class="btn-group" style="margin-right:1em">
+				<div class="btn btn-default btn-secondary"
+					title="UID RENEWAL: Apply with care; all links may get invalid!!"
+					onclick="if( $('#regenerate_duplicates').prop('checked') ){ $('#regenerate_duplicates').prop('checked', false) } else { alert('UID RENEWAL: Apply with care; all links may get invalid!!');$('#regenerate_duplicates').prop('checked', true) }">
+					UID Renewal:
+					<input id="regenerate_duplicates" name="regenerate_duplicates" type="checkbox"
+						style="display:block;margin:0.25rem 0 0 0.5rem;float:right;"
+						onclick="if( $('#regenerate_duplicates').prop('checked') ){ $('#regenerate_duplicates').prop('checked', false) } else { $('#regenerate_duplicates').prop('checked', true) }"
+					/>
+				</div>
+			</div>
+			<div class="input-group">
+				<select class="form-control" id="loglevel" name="loglevel"
+					title="Select the Debug-Level for Logging Messages while Indexing">
+					<option tal:repeat="loglevel loglevels" tal:attributes="selected python:['','selected'][int(loglevel=='INFO')]" tal:content="loglevel">the loglevel</option>
+				</select>
+				<div class="btn btn-default btn-secondary input-group-append"
+					title="Show all Logging Info Directly ">
+					<input id="logshow" name="logshow" type="checkbox"  class="input-group-text" />
+				</div>
+			</div>
+		</div>
+	</div><!-- .form-group -->
+	<div class="form-group">
+		<pre id="log" class="zmi-log" style="display:none;min-height:3.75rem"></pre>
+	</div><!-- .form-group -->
+</div><!-- .card-body -->
+
+<legend title="Add more content attributes to ZMSIndex for special needs like DOI">Extending Schema</legend>
+<div class="card-body">
+	<div class="form-group zms4-row">
+		<label class="col-sm-2 control-label">Add Attributes</label>
 		<div class="col-sm-5">
 			<div class="input-group">
 				<tal:block tal:condition="python:'zmsindex_index_names' in request.keys()">
@@ -127,7 +150,7 @@ function openWindow(url) {
 					<button class="btn btn-primary" name="btn" value="save"
 						onclick="$(this).parents('form').attr({action:self.location.href})">
 						<i class="icon-save fas fa-save"></i>
-						<tal:block tal:content="python:here.getZMILangStr('BTN_SAVE')"></tal:block>  
+						<tal:block tal:content="python:here.getZMILangStr('BTN_SAVE')"></tal:block>
 					</button>
 				</div>
 			</div><!-- .input-group -->
@@ -142,21 +165,21 @@ function set_progress( v, func_name ) {
 	var perc = Math.round(v * 10000) / 100;
 	var bar_type_dict = {'reindex':'warning','test':'info','resync':'danger'};
 	var bar_type = bar_type_dict[func_name];
-	$('#zmsindex .progress .progress-bar')
+	$('.zmi-sitemap-container .progress .progress-bar')
 		.addClass('active')
 		.addClass('bg-' + bar_type)
 		.attr('aria-valuenow',perc)
 		.css('width',perc + '%')
 		.find('span').text( perc + '%' );
 	if ( perc == 100 ) {
-		$('#zmsindex .progress .progress-bar')
+		$('.zmi-sitemap-container .progress .progress-bar')
 			.removeClass('active')
 			.removeClass('progress-bar-animated')
 			.removeClass('progress-bar-striped');
 	}
 }
 function reset_progress() {
-	$('#zmsindex .progress .progress-bar')
+	$('.zmi-sitemap-container .progress .progress-bar')
 		.addClass('progress-bar-striped')
 		.addClass('progress-bar-animated')
 		.removeClass('bg-info')
@@ -168,13 +191,18 @@ function reset_progress() {
 		.find('span').text( 'Loading Sitemap ... ' );
 		$('#zmsindex .zmi-sitemap-container').removeClass('loading');
 }
-function zmiFuncIndex(func_) {
+function zmiFuncIndex(msg, func_) {
+	if (!confirm(msg)) {
+		return false;
+	}
 	$(".zmi-sitemap .response").remove();
 	reset_progress();
 	var $inputs = $(".zmi-sitemap input:checked");
-	var $regenerate_duplicates = $("#regenerate_duplicates:checked")
+	var $regenerate_duplicates = $("#regenerate_duplicates:checked");
+	var $log = $("#log");
+	$log.empty().hide();
 	var i = 0;
-	var n = $inputs.length
+	var n = $inputs.length;
 	var fn = function() {
 		if (i < n ) {
 			var $input = $($inputs[i]);
@@ -195,29 +223,34 @@ function zmiFuncIndex(func_) {
 				url:func_,
 				data:data,
 				error: function (xhr, ajaxOptions, thrownError) {
-						$a.next('.response').addClass('alert modal-content alert-danger text-danger').html( btn_close + '( '+thrownError+' )' );
-						if ( !$('#logshow').prop('checked') ) {
-							$(".zmi-sitemap .response").remove();
-						}
-						i++;
-						console.log('Indexing Client No.' + i + ': ERROR');
-						$('#zmsindex .progress').addClass('error');
-						set_progress( v=(i/n), func_name=func_ );
-						fn();
-					},
+					if ( $('#logshow').prop('checked') ) {
+						$log.show();
+						$log.append(thrownError + '\n' );
+					};
+					$(".zmi-sitemap .response").remove();
+					i++;
+					console.log('Indexing Client No.' + i + ': ERROR');
+					$('#zmsindex .progress').addClass('error');
+					set_progress( v=(i/n), func_name=func_ );
+					fn();
+				},
 				success:function(response) {
-						$a.next('.response').addClass('alert modal-content alert-success text-success').html( btn_close + '( '+response+' )' );
-						if ( !$('#logshow').prop('checked') ) {
-							$(".zmi-sitemap .response").remove();
-						}
-						i++;
-						console.log('Indexing Client No.' + i + ': done');
-						set_progress( v=(i/n), func_name=func_ );
-						fn();
+					if ( $('#logshow').prop('checked') ) {
+						$log.show();
+						if ( response == undefined || response == '' ) {
+							response = 'NO RESPONSE (undefined)';
+						};
+						$log.append(response + '\n' );
 					}
-				});
-			}
-		}
+					$(".zmi-sitemap .response").remove();
+					i++;
+					console.log('Indexing Client No.' + i + ': done');
+					set_progress( v=(i/n), func_name=func_ );
+					fn();
+				}
+			});
+		};
+	};
 	fn();
 	return false;
 }
@@ -250,20 +283,25 @@ function zmiExpandObjectTree(max) {
 $(function() {
 	// Sitemap
 	set_progress( 0, func_name='test');
-	var href = $ZMI.getPhysicalPath();
-	$ZMI.objectTree.init(".zmi-sitemap",href,{
-		'params':{meta_types:'ZMS'},
-		'init.href':'ajaxGetNode',
-		'init.callback':function() {
+	var href = $ZMI.get_document_element_url($ZMI.getPhysicalPath());
+	$ZMI.objectTree.init('.zmi-sitemap', href, {
+		params: {'meta_types':'ZMS'},
+		filter: x => x.meta_id === 'ZMS',
+		'init.callback': function() {
 				zmiExpandObjectTree(1);
 			},
-		'addPages.callback':function() {
+		'addPages.callback': function() {
 				console.log('addPages.callback')
 				$(".zmi-sitemap a:not(.checkboxed)").each(function() {
 						var $a = $(this);
-						$a.addClass("checkboxed");
-						var phys_path = $a.attr('data-page-physical-path');
-						var uid = '{'+'$'+phys_path.substr(1).replace(/\/content/gi,'@')+'}'; // $a.attr('data-uid');
+						var phys_path = $a.attr('href');
+						var href_manage = phys_path + '/manage';
+						$a.addClass("checkboxed")
+							.removeAttr('onclick')
+							.attr('target','_blank')
+							.attr('href',href_manage)
+							.attr('title',href_manage);
+						var uid = '{'+'$'+phys_path.substring(1).replace(/\/content/gi,'@')+'}'; // $a.attr('data-uid');
 						$a.before('<input name="home_ids:list" type="checkbox" title="'+uid+'" value="'+uid+'" checked="checked" /> ');
 					});
 			},

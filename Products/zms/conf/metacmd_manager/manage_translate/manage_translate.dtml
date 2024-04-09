@@ -252,12 +252,12 @@
 		console.log($rendershort_div);
 	
 		var id = $($rendershort_div).attr("id");
-		id = id.substr(id.indexOf("_")+1);
-		id = id.substr(0,id.lastIndexOf("_"));
+		id = id.substring(id.indexOf("_")+1);
+		id = id.substring(0,id.lastIndexOf("_"));
 		console.log('ID = '+id)
 	
 		var lang = $($rendershort_div).attr("id");
-		lang = lang.substr(lang.lastIndexOf("_")+1);
+		lang = lang.substring(lang.lastIndexOf("_")+1);
 		console.log('LANG = '+lang)
 	
 		// var html = $rendershort_div.html();
@@ -267,9 +267,9 @@
 		text = text.replace(/<\/font(.*?)>/gi,'');
 		// Handle start-tag.
 		var startTag = text.split(">")[0].toLowerCase();
-		startTag = startTag.substr(startTag.indexOf("<")+1);
+		startTag = startTag.substring(startTag.indexOf("<")+1);
 		if (startTag.indexOf(" ")>0) {
-			startTag = startTag.substr(0,startTag.indexOf(" "));
+			startTag = startTag.substring(0,startTag.indexOf(" "));
 		}
 		var sre = '<'+startTag+'(.*?)>((.|\n|\r|\t)*?)<\/'+startTag+'(.*?)>';
 		var re = new RegExp(sre,'gi');
@@ -277,9 +277,9 @@
 		text = text.replace(/<span class=\"unicode\">(.*?)<\/span>/gi,'');
 		// Handle sub-tag.
 		var subTag = text.split(">")[0].toLowerCase();
-		subTag = subTag.substr(subTag.indexOf("<")+1);
+		subTag = subTag.substring(subTag.indexOf("<")+1);
 		if (subTag.indexOf(" ")>0) {
-			startTag = subTag.substr(0,subTag.indexOf(" "));
+			startTag = subTag.substring(0,subTag.indexOf(" "));
 		}
 		if (subTag == 'br') {
 			re = new RegExp('<'+subTag+'>','gi');

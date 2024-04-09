@@ -6,8 +6,8 @@
 		<!--
 			function showHistory(el) {
 				var v = $(el).val();
-				var version_nr = v.substr(0,v.indexOf(" "));
-				var version_dt = v.substr(v.indexOf(" ")+1);
+				var version_nr = v.substring(0,v.indexOf(" "));
+				var version_dt = v.substring(v.indexOf(" ")+1);
 				// $(el).prop('selectedIndex',0);
 				$.get("ajaxBodyContentObjHistory",{lang:$("input#lang").val(),version_nr:version_nr,revision:1,ts:new Date()},function(data) {
 					var $xml = $( data );

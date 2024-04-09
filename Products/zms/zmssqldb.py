@@ -63,7 +63,7 @@ def manage_addZMSSqlDb(self, lang, _sort_id, REQUEST, RESPONSE):
   
   # Return with message.
   if REQUEST.RESPONSE:
-    message = self.getZMILangStr('MSG_INSERTED')%obj.display_type(REQUEST)
+    message = self.getZMILangStr('MSG_INSERTED')%obj.display_type()
     REQUEST.RESPONSE.redirect('%s/%s/manage_main?lang=%s&manage_tabs_message=%s'%(self.absolute_url(), obj.id, lang, standard.url_quote(message)))
 
 
@@ -97,6 +97,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
     # Management Permissions.
     # -----------------------
     __authorPermissions__ = (
+        'preview_html', 'preview_top_html',
         'manage', 'manage_main', 'manage_workspace',
         'manage_moveObjUp', 'manage_moveObjDown', 'manage_moveObjToPos',
         'manage_cutObjects', 'manage_copyObjects', 'manage_pasteObjs',
@@ -248,7 +249,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
           return "NULL"
       elif col['type'] in ['date', 'datetime', 'time']:
         try:
-          d = self.parseLangFmtDate(v)
+          d = standard.parseLangFmtDate(v)
           if d is None:
             raise zExceptions.InternalError
           return "'%s'"%self.getLangFmtDate(d, 'eng', '%s_FMT'%col['type'].upper())
@@ -460,6 +461,8 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         handle_record__roles__ = None
         def handle_record(self, r):
           context = self.parent
+          primary_key = context.getEntityPK(tableName)
+          colNames.append(primary_key)
           d = {}
           if len(colNames)>0:
             r = { k: r[k] for k in r if standard.operator_contains(colNames,k,ignorecase=True) }
@@ -484,7 +487,6 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
             except:
               standard.writeError( self, '[getEntityRecordHandler]: can\'t %s'%k)
             d[k] = value
-          primary_key = context.getEntityPK(tableName)
           rowid = standard.operator_getitem(r, primary_key, ignorecase=True)
           d['__id__'] = rowid
           d['params'] = {'rowid':rowid}

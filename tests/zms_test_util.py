@@ -1,13 +1,9 @@
 # encoding: utf-8
 
 from OFS.Folder import Folder
-import inspect
-import os
-import sys
-import time
 import unittest
 # Product imports.
-from Products.zms import standard
+from Products.zms import mock_http
 from Products.zms import zms
 
 
@@ -18,7 +14,7 @@ class ZMSTestCase(unittest.TestCase):
     def setUp(self):
         print(self,"ZMSTestCase.setUp")
         folder = Folder('myzmsx')
-        folder.REQUEST = HTTPRequest({'lang':'eng','preview':'preview'})
+        folder.REQUEST = mock_http.MockHTTPRequest({'lang':'eng','preview':'preview'})
         zmscontext = zms.initZMS(folder, 'content', 'titlealt', 'title', 'eng', 'eng', folder.REQUEST)
         self.context = zmscontext
 
@@ -33,56 +29,6 @@ class ZMSTestCase(unittest.TestCase):
 
     def writeError(self, s):
         self.context.write(logging.ERROR,s)
-
-    def read_image(self, filename):
-        filepath = "../plugins/www/img/%s"%filename
-        modulepath = os.sep.join(inspect.getfile(self.__class__).split(os.sep)[:-1])
-        file = open(os.path.join(modulepath,filepath),"rb")
-        filedata = file.read()
-        file.close()
-        return standard.ImageFromData(self.context,filedata,filename)
-
-    def startMeasurement(self, category):
-        self.measurements[category] = time.time()
-
-    def stopMeasurement(self, category):
-        if self.measurements.has_key(category):
-            print('[stopMeasurement] | PERFORMANCE | %s | %.2fsecs.'%(category,time.time()-self.measurements[category]))
-            del self.measurements[category]
-
-
-class HTTPRequest:
-
-    def __init__(self, d={}, other={}):
-        self.d = d
-        self.other = other
-
-    def __getitem__(self, k, v=None):
-        return self.get(k)
-
-    def __setitem__(self, k, v):
-        self.set(k,v)
-
-    def __contains__(self, item):
-        """ override in-operator """
-        return item in self.d
-    
-    get__roles__ = None
-    def get(self, k, v=None):
-        return self.d.get(k,v)
-
-    set__roles__ = None
-    def set(self, k, v):
-        self.d[k] = v
-
-    has_key__roles__ = None
-    def has_key(self, k):
-        return self.d.has_key(k)
-
-    keys__roles__ = None
-    def keys(self):
-        return self.d.keys()
-
 
 def addClient(zmscontext, id):
     """

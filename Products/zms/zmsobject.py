@@ -500,6 +500,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       visible = visible and self.isTranslated(lang, REQUEST) # Object is translated.
       visible = visible and self.isCommitted(REQUEST) # Object has been committed.
       visible = visible and self.isActive(REQUEST) # Object is active.
+      visible = visible and not '/'.join(self.getPhysicalPath()).startswith('/'.join(self.getTrashcan().getPhysicalPath()))
       return visible
 
 

@@ -65,7 +65,7 @@
 		></tal:block
 		><tal:block tal:condition="not:python:standard.isPreviewRequest(request) or here.isActive(request)"
 			><p class="standard" tal:content="python:here.getLangStr('MSG_INACTIVE',request['lang'])">Message inactive</p
-			><tal:block tal:define="dummy0 python:request.RESPONSE.setStatus(503)"></tal:block
+			><tal:block tal:define="dummy0 python:request.RESPONSE.setStatus(404)"></tal:block
 		></tal:block
 		><tal:block tal:on-error="structure string:<!-- ERROR index_zpt.f_standard_html_footer --></body></html>" tal:content="structure python:here.f_standard_html_footer(here,request)">f_standard_html_footer</tal:block
 		><tal:block tal:define="dummy0 python:done.append(True)"></tal:block

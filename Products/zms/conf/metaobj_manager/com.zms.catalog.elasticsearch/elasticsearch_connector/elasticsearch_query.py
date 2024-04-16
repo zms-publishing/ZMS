@@ -62,15 +62,23 @@ def elasticsearch_query( self, REQUEST=None):
 		"size": qsize,
 		"from": qfrom,
 		"query": {
-			"bool": {
-				"must": [
-					{
-						"simple_query_string": {
-							"query": q,
-							"default_operator": "AND"
-						}
+			"script_score": {
+				"query": {
+					"bool": {
+						"must": [
+							{
+								"simple_query_string": {
+									"query": q,
+									"default_operator": "AND"
+								}
+							}
+						]
 					}
-				]
+				},
+				"script": {
+					"lang":"painless",
+					"source": "return _score;"
+				}
 			}
 		},
 		"highlight": {
@@ -109,6 +117,15 @@ def elasticsearch_query( self, REQUEST=None):
 					"home_id": str(home_id)
 				}
 			})
+
+	# Script Score Query: Boosting by Field Value
+	# https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-script-score-query.html
+	# https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting-painless.html
+	# https://www.elastic.co/guide/en/elasticsearch/painless/8.13/painless-lang-spec.html
+	
+	score_script = self.getConfProperty('opensearch.score_script', '')
+	if score_script:
+		query['query']['script_score']['script']['source'] = score_script
 
 	client = get_elasticsearch_client(self)
 	if not client:

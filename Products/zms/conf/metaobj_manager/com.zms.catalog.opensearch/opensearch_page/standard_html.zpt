@@ -7,12 +7,33 @@
 	{{/.}}
 </template>
 
+<template id="hb_topresults_html" type="text/x-handlebars-template">
+	{{#if docs}}
+		<h2 title="{{adword}}">Top-Treffer</h2>
+		<div class="top_results">
+		{{#each docs}}
+			<article class="hit top_result" title="Top-Treffer {{../adword}}">
+				<a href="{{this.doc.index_html}}">
+						<h2>{{this.doc.title}}</h2>
+						{{#if this.doc.titleimage}}
+								<img src="{{this.doc.titleimage}}" />
+						{{/if}}		
+						{{#if this.doc.attr_dc_description}}
+								<p>{{this.doc.attr_dc_description}}</p>
+						{{/if}}		
+					</a>
+				</article>
+		{{/each}}
+		</div>
+	{{/if}}
+</template>
+
 <template id="hb_results_html" type="text/x-handlebars-template">
 	{{#.}}
 		<h2>{{{this.total}}} Treffer f&uuml;r <code>{{{this.query}}}</code></h2>
 	{{/.}}
 	{{#if buckets}}
-		<ul class="nav nav-tabs responsive" role="tablist">
+		<ul class="nav nav-tabs responsive {{hide_tabs buckets.length}}" data-bucket-length="{{buckets.length}}" role="tablist">
 			{{#each buckets}}
 				<li id="tab-label-{{@index}}" data-tabid="pane_{{this.key}}"
 					aria-controls="tab-pane-{{@index}}" role="tab"
@@ -49,12 +70,18 @@
 </template>
 
 <tal:block tal:define="zmscontext options/zmscontext">
-
+	<h1 tal:content="python:zmscontext.attr('title')">TITEL</h1>
 	<div class="container-fluid skin-bg-gray">
 		<div class="container">
 			<section class="search-form">
 				<form id="site-search-content" action="#" method="get" autocomplete="off"
 					 tal:attributes="data-root-url python:zmscontext.getRootElement().absolute_url()">
+					<input type="hidden" id="home_id" name="home_id" 
+						tal:attributes="value python:zmscontext.getHome().getId()" />
+					<input type="hidden" id="multisite_search" name="multisite_search" 
+						tal:attributes="value python:zmscontext.attr('multisite_search')" />
+					<input type="hidden" id="multisite_exclusions" name="multisite_exclusions" 
+						tal:attributes="value python:','.join(zmscontext.attr('multisite_exclusions'))" />
 					<div class="row skin-gutter-wide search-form no-margin-bottom">
 						<div class="col-lg-6" id="form-keyword-container">
 							<h2 class="small-font">Suche nach Stichworten</h2>
@@ -78,8 +105,8 @@
 	<div class="container-fluid">
 
 		<div class="container">
-			<section id="search_results" class="search-results content-tabs">
-			</section>
+			<section id="top_results"></section>
+			<section id="search_results" class="search-results content-tabs"></section>
 		</div>
 	</div>
 

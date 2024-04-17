@@ -7,15 +7,9 @@ class opensearch_page:
 	access = {"delete_custom":""
 		,"delete_deny":[""
 			,""
-			,""
-			,""
-			,""
 			,""]
 		,"insert_custom":"{$}"
 		,"insert_deny":[""
-			,""
-			,""
-			,""
 			,""
 			,""]}
 
@@ -32,7 +26,7 @@ class opensearch_page:
 	package = "com.zms.catalog.opensearch"
 
 	# Revision
-	revision = "1.1.0"
+	revision = "1.6.1"
 
 	# Type
 	type = "ZMSDocument"
@@ -67,6 +61,33 @@ class opensearch_page:
 			,"repetitive":0
 			,"type":"title"}
 
+		multisite_search = {"default":"1"
+			,"id":"multisite_search"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"Multisite-Search"
+			,"repetitive":0
+			,"type":"boolean"}
+
+		multisite_exclusions = {"default":""
+			,"id":"multisite_exclusions"
+			,"keys":["##"
+				,"master = context.unibe.content"
+				,"zmsclientids = []"
+				,"def getZMSPortalClients(zmsclient):"
+				,"  zmsclientids.append(zmsclient.getHome().id)"
+				,"  for zmsclientid in zmsclient.getPortalClients():"
+				,"    getZMSPortalClients(zmsclientid)"
+				,"  zmsclientids.sort()"
+				,"  return list(zmsclientids)"
+				,"return [(id,id) for id in getZMSPortalClients(zmsclient=master)]"]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"Multisite-Exclusions"
+			,"repetitive":0
+			,"type":"multiautocomplete"}
+
 		scriptjs = {"default":""
 			,"id":"script.js"
 			,"keys":[]
@@ -93,6 +114,15 @@ class opensearch_page:
 			,"name":"Handlebars: JS 4.7.7"
 			,"repetitive":0
 			,"type":"resource"}
+
+		adwords = {"default":""
+			,"id":"adwords"
+			,"keys":[]
+			,"mandatory":1
+			,"multilang":0
+			,"name":"Adwords (Toptreffer)"
+			,"repetitive":0
+			,"type":"adwords"}
 
 		opensearch_breadcrumbs_obj_path = {"default":""
 			,"id":"opensearch_breadcrumbs_obj_path"

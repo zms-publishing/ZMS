@@ -21,7 +21,7 @@
 
 	<tal:block tal:repeat="ob res"
 		><tal:block tal:on-error="structure python:'<!-- ERROR: statrec %s -->'%(ob.get_uid)" 
-				tal:define="global statrec python:[{'abs_url':'zcatalog_index' in here.getAbsoluteHome() and ob.getObject().absolute_url() or ob.absolute_url(),'titlealt':'zcatalog_index' in here.getAbsoluteHome() and ob.getObject().getTitlealt(request) or ob.getTitlealt(request)}]"
+				tal:define="global statrec python:[{'abs_url':'zcatalog_index' in here.getAbsoluteHome() and ob.getObject().absolute_url_path() or ob.absolute_url_path(),'titlealt':'zcatalog_index' in here.getAbsoluteHome() and ob.getObject().getTitlealt(request) or ob.getTitlealt(request)}]"
 			><tal:block tal:repeat="key attrIds" tal:on-error="nothing"
 				><tal:block tal:define="global value python:'zcatalog_index' in here.getAbsoluteHome() and ob.getObject().attr(key) or ob.attr(key)"
 					><tal:block tal:condition="python:value"><tal:block tal:define="global dummy0 python:here.operator_setitem(stat1,key,stat1[key]+statrec)"></tal:block></tal:block
@@ -67,9 +67,9 @@
 					</td>
 					<td class="empty">
 						<a tal:attributes="href python:'javascript:toggleElement(\'img_%s0\',\'ol_%s0\')'%(metaObjAttr['id'],metaObjAttr['id'])"  style="text-decoration:none;">
-							<i tal:attributes="id python:'img_%s1'%metaObjAttr['id']" class="fas fa-caret-right toggle"></i>
+							<i tal:attributes="id python:'img_%s0'%metaObjAttr['id']" class="fas fa-caret-right toggle"></i>
 							<tal:block tal:on-error="string: 0"
-								tal:content="python:100*len(stat0[metaObjAttr['id']])/len(res)">perc</tal:block>% (<tal:block tal:content="python:len(stat0[metaObjAttr['id']])">abs</tal:block>)
+								tal:content="python:round(100*len(stat0[metaObjAttr['id']])/len(res))">perc</tal:block>% (<tal:block tal:content="python:len(stat0[metaObjAttr['id']])">abs</tal:block>)
 						</a>
 						<ol tal:attributes="id python:'ol_%s0'%metaObjAttr['id']" style="visibility:hidden;display:none;">
 							<li tal:repeat="ob python:stat0[metaObjAttr['id']]"><a tal:attributes="href python:'%s/manage_main'%ob['abs_url']" target="_blank" tal:content="python:ob['abs_url']">the url</a></li>
@@ -125,18 +125,33 @@
 		height:42px;
 	}
 	table th.meta_id {
-		width:30%;
+		width:20%;
 	}
 	table th.usage {
-		width:45%;
+		width:40%;
 	}
 	table th.empty {
-		width:15%;
+		width:40%;
+	}
+	table th.usage,
+	table td.usage {
+	background: aliceblue;
+	}
+	table th.empty,
+	table td.empty {
+		background: #e2f1fd;
 	}
 	table td {
-		white-space: nowrap;
+		white-space:nowrap;
+		line-height:1.75; 
+	}
+	table td ol li a {
+		white-space:nowrap;
+		display:inline-block;
+		vertical-align:top;
 		overflow:hidden;
 		text-overflow: ellipsis;
+		max-width:33vw;
 	}
 </style>
 </body>

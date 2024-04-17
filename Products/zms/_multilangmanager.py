@@ -506,13 +506,14 @@ class MultiLanguageManager(object):
       # Change.
       # -------
       elif btn == 'BTN_SAVE':
+        newId = REQUEST.get('language_id','').strip()
         for id in self.getLangIds():
-          newLabel = REQUEST.get('%s_label'%id).strip()
-          newParent = REQUEST.get('%s_parent'%id).strip()
-          newManage = REQUEST.get('%s_manage'%id).strip()
-          self.setLanguage(id, newLabel, newParent, newManage)
+          if id != newId:
+            newLabel = REQUEST.get('%s_label'%id).strip()
+            newParent = REQUEST.get('%s_parent'%id).strip()
+            newManage = REQUEST.get('%s_manage'%id).strip()
+            self.setLanguage(id, newLabel, newParent, newManage)
         # Insert
-        newId = REQUEST.get('language_id').strip()
         if len(newId) > 0:
           newLabel = REQUEST.get('language_label').strip()
           if len(self.getLangIds()) == 0:

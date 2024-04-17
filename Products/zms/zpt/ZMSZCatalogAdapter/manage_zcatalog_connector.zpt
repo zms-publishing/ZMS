@@ -37,7 +37,7 @@
 					<i class="fas fa-expand-arrows-alt"></i>
 				</div>
 			</div>
-			<div class="zmi-sitemap-container mb-3">
+			<div class="zmi-sitemap-container">
 				<div class="progress">
 					<div class="progress-bar progress-bar-striped progress-bar-animated active"
 						role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
@@ -366,8 +366,12 @@
 				}
 				const uid = $('#uid').val();
 				const page_size = $("#page_size").val();
-				const params = {'uid':uid,'page_size:int':page_size,'clients:int':0,'fileparsing:int':1};
+				const fileparsing = $("#fileparsing").prop("checked")?1:0;
+				const params = {'uid':uid,'page_size:int':page_size,'clients:int':0,'fileparsing:int':fileparsing};
 				$.get('reindex_page',params,function(data) {
+					if (typeof data.cleared !== 'undefined') {
+						log("Cleared " + data.home_id + ": " + data.cleared);
+					}
 					that.pageSuccess += data.success;
 					that.pageFailed += data.failed;
 					log("Success: " + data.success + " / Failed: " + data.failed + " ( Total: " + (that.pageSuccess + that.pageFailed) + " / " + that.pageExpected + " )");

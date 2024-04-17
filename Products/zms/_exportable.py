@@ -271,12 +271,12 @@ class Exportable(_filtermanager.FilterItem):
         pass
       
       get_data = REQUEST.get( 'download', 1) == 1
-      
+      content_type = 'application/data'
+
       # ZEXP.
       if export_format == 0:
         filename = '%s.zexp'%self.id
         export = self.aq_parent.manage_exportObject( id=self.id, download=1)
-        content_type = 'application/data'
       
       # HTML.
       elif export_format == 1:

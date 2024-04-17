@@ -1,0 +1,19 @@
+<!-- adwords.standard_html -->
+<tal:block tal:define="zmscontext options/zmscontext">
+
+	<tal:block tal:condition="python:request.get('URL','').find('/manage') > -1">
+		<h2 tal:content="python:zmscontext.getTitlealt(request)">The title.alt</h2>
+		<p class="description" tal:content="python:'%i %s'%(len(zmscontext.attr(zmscontext.getMetaobj(zmscontext.meta_id)['attrs'][0]['id'])),zmscontext.getLangStr('ATTR_RECORDS',request['lang']))">#N records</p>
+		<ul>
+			<li tal:repeat="row python: zmscontext.attr(zmscontext.getMetaobj(zmscontext.meta_id)['attrs'][0]['id'])">
+				<span tal:content="python:row.get('adword')"></span>
+			</li>
+		</ul>
+	</tal:block>
+
+	<tal:block tal:condition="python:not request.get('URL','').find('/manage') > -1"
+		tal:replace="python:zmscontext.attr('get_adword_target_as_json')">
+	</tal:block>
+
+</tal:block>
+<!-- /adwords.standard_html -->

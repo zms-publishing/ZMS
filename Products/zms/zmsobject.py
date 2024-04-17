@@ -201,13 +201,15 @@ class ZMSObject(ZMSItem.ZMSItem,
     def get_uid(self, forced=False):
       import uuid
       uid = getattr(self,'_uid','')
+      new_uid = None
       if forced \
           or '_uid' not in self.__dict__ \
           or len(uid) == 0 \
           or len(uid.split('-')) < 5:
         new_uid = str(uuid.uuid4())
-        if uid.startswith('!uid:'):
-          new_uid = uid[len('!uid:'):]
+      if uid.startswith('!uid:'):
+        new_uid = uid[len('!uid:'):]
+      if new_uid:
         self._uid = new_uid
       return 'uid:%s'%self._uid
 
@@ -498,6 +500,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       visible = visible and self.isTranslated(lang, REQUEST) # Object is translated.
       visible = visible and self.isCommitted(REQUEST) # Object has been committed.
       visible = visible and self.isActive(REQUEST) # Object is active.
+      visible = visible and not '/'.join(self.getPhysicalPath()).startswith('/'.join(self.getTrashcan().getPhysicalPath()))
       return visible
 
 
@@ -1290,6 +1293,13 @@ class ZMSObject(ZMSItem.ZMSItem,
     def _getBodyContent(self, REQUEST):
       rtn = self._getBodyContentContentEditable(self.metaobj_manager.renderTemplate( self))
       return rtn
+
+    security.declareProtected('View', 'ajaxGetBodyContent')
+    def ajaxGetBodyContent(self, REQUEST, forced=False):
+      """
+      HTML presentation in body-content. 
+      """
+      return self.getBodyContent(REQUEST, forced)
 
     def getBodyContent(self, REQUEST, forced=False):
       html = ''

@@ -359,6 +359,28 @@ class ZReferableItem(object):
         url = ild['data-id']
     return url
 
+  # ----------------------------------------------------------------------------
+  #  ZReferableItem.findObject:
+  #
+  #  Find object.
+  #  Fast access to object of what we know that it must exist,
+  #  since we have just calculated the url a short period before.
+  # ----------------------------------------------------------------------------
+  def findObject(self, url):
+    url = url[2:-1]
+    if url.find('id:') >= 0:
+      catalog = self.getZMSIndex().get_catalog()
+      q = catalog({'get_uid':url})
+      for r in q:
+        path  = '%s/'%r['getPath']
+        break
+    else:
+      path = url.replace('@','/content/')
+    ob = self
+    l = [x for x in path.split('/') if x] 
+    for id in l:
+      ob = getattr(ob,id,None)
+    return ob
 
   # ----------------------------------------------------------------------------
   #  ZReferableItem.getLinkObj:

@@ -1,6 +1,4 @@
-from Products.zms import standard
-import json
-from urllib.parse import urlparse
+import requests
 
 def bulk_solr_delete_documents(self, sources):
 	ids = []
@@ -21,7 +19,6 @@ def bulk_solr_delete_documents(self, sources):
 	password = self.getConfProperty('solr.password', 'admin')
 	auth = (username,password)
 
-	import requests
 	index_name = self.getRootElement().getHome().id
 	response = requests.post('%s/%s/update'%(url,index_name), auth=auth, json={'delete':ids, 'commit':{}})
 	print(f"Status Code: {response.status_code}, Response: {response.json()}")

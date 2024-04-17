@@ -7,13 +7,13 @@ Before letting Elasticsearch create an index, Elasticsearch needs to know how to
 
 the _ZMS Catalog Adapter GUI_ helps creating that schema: any content types (usually _pages_) and attributes can be selected to get indexed. Usually the _standard_html_-attribute provides the full text whereas other attributes can be added specifically like _title_, _titlealt_, _description_. Their content may be applied when search results are listed. 
 
-ZMS will send to the index only the content of the by _ZMS Catalog Adapter_ selected contenttypes and its selected attributes. So before starting, please makre sure that the selections in the _ZMS Catalog Adapter GUI_  is correct. 
+ZMS will send to the index only the content of the by _ZMS Catalog Adapter_ selected contenttypes and its selected attributes. So before starting, please make sure that the selections in the _ZMS Catalog Adapter GUI_  is correct. 
 
 ###### Start with _Create Schema_ !
 
 So the first step to prepare Elasticsearch is _Create Schema_: based on the  _ZMS Catalog Adapter_ selections ZMS will save a small JSON file as a configuration parameter. (Note: if Elasticsearch gets no, incomplete or wrong schema, it will guess one from the the transferred content; usually Elasticsearch is not able to guess the keywords types correctly; so this will end up in defect result responses.) 
 
-The second step is _Initialisation_, which leads to an empty index based on that content schema  and named according to the ZMS root name. After this is done the content can be primarily indexed with "Refresh". 
+The second step is _Initialisation_, which leads to an empty index based on that content schema and named according to the ZMS root name. After this is done the content can be primarily indexed with "Refresh".
 
 ---
 

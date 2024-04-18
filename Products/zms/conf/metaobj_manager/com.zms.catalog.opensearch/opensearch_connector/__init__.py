@@ -32,7 +32,7 @@ class opensearch_connector:
 	package = "com.zms.catalog.opensearch"
 
 	# Revision
-	revision = "1.7.2"
+	revision = "1.7.3"
 
 	# Type
 	type = "ZMSLibrary"

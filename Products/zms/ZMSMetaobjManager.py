@@ -505,7 +505,7 @@ class ZMSMetaobjManager(object):
         elif meta_id in metaObjIds:
           typed_meta_ids.append( meta_id)
         else:
-          standard.writeError( self, "[getMetaIds]: invalid meta_id \'%s\'"%meta_id)
+          standard.writeBlock( self, "[getMetaIds]: invalid meta_id \'%s\'"%meta_id)
       return typed_meta_ids
 
     # --------------------------------------------------------------------------

@@ -1768,10 +1768,18 @@ function zmiToggleSelectionButtonClick(sender,v) {
  * zmiBrowseObjs
  */
 function zmiBrowseObjs(fmName, elName, lang) {
-	var elValue = '';
+	let elValue = '';
 	if (fmName.length>0 && elName.length>0) {
-		elValue = $('form[name='+fmName+'] input[name="'+elName+'"]').val();
-	}
+		// Get value of close input field, maybe in a modal dialog
+		$('form[name='+fmName+'] input[name="'+elName+'"]').each(function() {
+			if ( $(this).parents('div.modal.show').length > 0 ) {
+				elValue = $(this).val();
+				return false; // Exit the loop
+			} else {
+				elValue = $(this).val();
+			}
+		});
+	};
 	var title = getZMILangStr('CAPTION_CHOOSEOBJ');
 	var href = "manage_browse_iframe";
 	href += '?lang='+lang;

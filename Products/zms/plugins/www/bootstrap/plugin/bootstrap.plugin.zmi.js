@@ -1768,6 +1768,8 @@ function zmiToggleSelectionButtonClick(sender,v) {
  * zmiBrowseObjs
  */
 function zmiBrowseObjs(fmName, elName, lang) {
+	let title = getZMILangStr('CAPTION_CHOOSEOBJ');
+	let href = "manage_browse_iframe";
 	let elValue = '';
 	if (fmName.length>0 && elName.length>0) {
 		// Get value of close input field, maybe in a modal dialog
@@ -1780,15 +1782,13 @@ function zmiBrowseObjs(fmName, elName, lang) {
 			}
 		});
 	};
-	var title = getZMILangStr('CAPTION_CHOOSEOBJ');
-	var href = "manage_browse_iframe";
 	href += '?lang='+lang;
 	href += '&defaultLang='+lang;
 	href += '&fmName='+fmName;
 	href += '&elName='+elName;
-	href += '&elValue='+escape(elValue);
+	href += '&elValue='+encodeURIComponent(elValue);
 	if ( typeof selectedText == "string") {
-		href += '&selectedText=' + escape( selectedText);
+		href += '&selectedText=' + encodeURIComponent( selectedText);
 	}
 	zmiModal(null,{
 		body: '<iframe src="'+href+'" style="width:100%; min-width:'+$ZMI.getConfProperty('zmiBrowseObjs.minWidth','200px')+'; height:100%; min-height: '+$ZMI.getConfProperty('zmiBrowseObjs.minHeight','62vh')+'; border:0;"></iframe>',

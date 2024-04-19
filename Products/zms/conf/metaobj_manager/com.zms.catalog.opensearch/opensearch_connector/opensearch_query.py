@@ -2,7 +2,7 @@ import json
 from urllib.parse import urlparse
 import opensearchpy
 from opensearchpy import OpenSearch
-
+from Products.zms import standard
 
 def get_opensearch_client(self):
 	# ${opensearch.url:https://localhost:9200, https://localhost:9201}
@@ -112,15 +112,23 @@ def opensearch_query( self, REQUEST=None):
 		"size": qsize,
 		"from": qfrom,
 		"query": {
-			"bool": {
-				"must": [
-					{
-						"simple_query_string": {
-							"query": q,
-							"default_operator": "AND"
-						}
+			"script_score": {
+				"query": {
+					"bool": {
+						"must": [
+							{
+								"simple_query_string": {
+									"query": q,
+									"default_operator": "AND"
+								}
+							}
+						]
 					}
-				]
+				},
+				"script": {
+					"lang":"painless",
+					"source": "return _score;"
+				}
 			}
 		},
 		"aggs": {
@@ -152,6 +160,14 @@ def opensearch_query( self, REQUEST=None):
 					"home_id": str(home_id)
 				}
 			})
+
+	# Script Score Query: Boosting by Field Value
+	# https://opensearch.org/docs/latest/query-dsl/specialized/script-score/
+	# https://opensearch.org/docs/latest/api-reference/script-apis/exec-script/
+	
+	score_script = self.getConfProperty('opensearch.score_script', '')
+	if score_script:
+		query['query']['script_score']['script']['source'] = score_script
 
 	client = get_opensearch_client(self)
 	if not client:

@@ -5,32 +5,40 @@ from opensearchpy import OpenSearch
 
 
 def get_elasticsearch_client(self):
-	# ${elasticsearch.url:https://localhost:9200}
+	# ${elasticsearch.url:https://localhost:9200, https://localhost:9201}
 	# ${elasticsearch.username:admin}
 	# ${elasticsearch.password:admin}
 	# ${elasticsearch.ssl.verify:}
-	url = self.getConfProperty('elasticsearch.url').rstrip('/')
-	if not url:
+	url_string = self.getConfProperty('elasticsearch.url')
+	urls = [url.strip().rstrip('/') for url in url_string.split(',')]
+	hosts = []
+	use_ssl = False
+	# Process (multiple) url(s) (host, port, ssl)
+	if not urls:
 		return None
-	host = urlparse(url).hostname
-	port = urlparse(url).port
-	ssl = urlparse(url).scheme=='https' and True or False
+	else:
+		for url in urls:
+			hosts.append( { \
+					'host':urlparse(url).hostname, \
+					'port':urlparse(url).port } \
+				)
+			if urlparse(url).scheme=='https':
+				use_ssl = True
 	verify = bool(self.getConfProperty('elasticsearch.ssl.verify', False))
 	username = self.getConfProperty('elasticsearch.username', 'admin')
 	password = self.getConfProperty('elasticsearch.password', 'admin')
 	auth = (username,password)
-
+	
 	client = OpenSearch(
-		hosts = [{'host': host, 'port': port}],
+		hosts = hosts,
 		http_compress = False, # enables gzip compression for request bodies
 		http_auth = auth,
-		use_ssl = ssl,
+		use_ssl = use_ssl,
 		verify_certs = verify,
 		ssl_assert_hostname = False,
 		ssl_show_warn = False,
 	)
 	return client
-
 
 def elasticsearch_query( self, REQUEST=None):
 	request = self.REQUEST
@@ -62,15 +70,23 @@ def elasticsearch_query( self, REQUEST=None):
 		"size": qsize,
 		"from": qfrom,
 		"query": {
-			"bool": {
-				"must": [
-					{
-						"simple_query_string": {
-							"query": q,
-							"default_operator": "AND"
-						}
+			"script_score": {
+				"query": {
+					"bool": {
+						"must": [
+							{
+								"simple_query_string": {
+									"query": q,
+									"default_operator": "AND"
+								}
+							}
+						]
 					}
-				]
+				},
+				"script": {
+					"lang":"painless",
+					"source": "return _score;"
+				}
 			}
 		},
 		"highlight": {
@@ -109,6 +125,15 @@ def elasticsearch_query( self, REQUEST=None):
 					"home_id": str(home_id)
 				}
 			})
+
+	# Script Score Query: Boosting by Field Value
+	# https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-script-score-query.html
+	# https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting-painless.html
+	# https://www.elastic.co/guide/en/elasticsearch/painless/8.13/painless-lang-spec.html
+	
+	score_script = self.getConfProperty('opensearch.score_script', '')
+	if score_script:
+		query['query']['script_score']['script']['source'] = score_script
 
 	client = get_elasticsearch_client(self)
 	if not client:

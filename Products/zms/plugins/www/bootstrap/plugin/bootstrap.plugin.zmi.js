@@ -1768,19 +1768,27 @@ function zmiToggleSelectionButtonClick(sender,v) {
  * zmiBrowseObjs
  */
 function zmiBrowseObjs(fmName, elName, lang) {
-	var elValue = '';
+	let title = getZMILangStr('CAPTION_CHOOSEOBJ');
+	let href = "manage_browse_iframe";
+	let elValue = '';
 	if (fmName.length>0 && elName.length>0) {
-		elValue = $('form[name='+fmName+'] input[name="'+elName+'"]').val();
-	}
-	var title = getZMILangStr('CAPTION_CHOOSEOBJ');
-	var href = "manage_browse_iframe";
+		// Get value of close input field, maybe in a modal dialog
+		$('form[name='+fmName+'] input[name="'+elName+'"]').each(function() {
+			if ( $(this).parents('div.modal.show').length > 0 ) {
+				elValue = $(this).val();
+				return false; // Exit the loop
+			} else {
+				elValue = $(this).val();
+			}
+		});
+	};
 	href += '?lang='+lang;
 	href += '&defaultLang='+lang;
 	href += '&fmName='+fmName;
 	href += '&elName='+elName;
-	href += '&elValue='+escape(elValue);
+	href += '&elValue='+encodeURIComponent(elValue);
 	if ( typeof selectedText == "string") {
-		href += '&selectedText=' + escape( selectedText);
+		href += '&selectedText=' + encodeURIComponent( selectedText);
 	}
 	zmiModal(null,{
 		body: '<iframe src="'+href+'" style="width:100%; min-width:'+$ZMI.getConfProperty('zmiBrowseObjs.minWidth','200px')+'; height:100%; min-height: '+$ZMI.getConfProperty('zmiBrowseObjs.minHeight','62vh')+'; border:0;"></iframe>',

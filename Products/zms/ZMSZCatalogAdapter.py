@@ -45,6 +45,8 @@ def get_default_data(node):
   d['meta_id'] = node.meta_id
   d['index_html'] = node.getHref2IndexHtmlInContext(node.getRootElement(), REQUEST=request)
   d['lang'] = request.get('lang',node.getPrimaryLanguage())
+  d['change_dt'] = node.getLangFmtDate(node.attr('change_dt'),'eng','%Y-%m-%d')
+  d['created_dt'] = node.getLangFmtDate(node.attr('created_dt'),'eng','%Y-%m-%d')
   return d
 
 def get_file(node, d, fileparsing=True):

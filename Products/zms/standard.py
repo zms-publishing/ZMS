@@ -252,8 +252,8 @@ def zmi_paths(context):
   # ZMI resources without Zope base css/js
   # css_paths = ("/++resource++zmi/bootstrap-4.6.0/bootstrap.min.css","/++resource++zmi/fontawesome-free-5.15.2/css/all.css")
   # js_paths = ("/++resource++zmi/jquery-3.5.1.min.js","/++resource++zmi/bootstrap-4.6.0/bootstrap.bundle.min.js",)
-  kw["css_paths"] = css_paths(context)[:-1]
-  kw["js_paths"] = js_paths(context)[:-2]
+  kw["css_paths"] = list(css_paths(context))[:-1]
+  kw["js_paths"] = list(js_paths(context))[:-2]
   return kw
 
 

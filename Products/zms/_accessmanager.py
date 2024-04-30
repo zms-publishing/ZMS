@@ -105,6 +105,10 @@ def updateVersion(root):
           else:
            del nodes[nodekey]
       root.setConfProperty('ZMS.security.users', d)
+    # View management screens
+    if root.getConfProperty('ZMS.security.build', 0) == 3:
+      root.setConfProperty('ZMS.security.build', 4)
+      root.initRoleDefs()
 
 # ------------------------------------------------------------------------------
 #  _accessmanager.user_folder_meta_types:

@@ -23,6 +23,7 @@
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
 import time
+from datetime import datetime, timezone
 import zope.interface
 # Product Imports.
 from Products.zms import standard
@@ -45,7 +46,14 @@ def get_default_data(node):
   d['meta_id'] = node.meta_id
   d['index_html'] = node.getHref2IndexHtmlInContext(node.getRootElement(), REQUEST=request)
   d['lang'] = request.get('lang',node.getPrimaryLanguage())
+  d['change_dt'] = get_zoned_dt(node.attr('change_dt'))
+  d['created_dt'] = get_zoned_dt(node.attr('created_dt'))
   return d
+
+def get_zoned_dt(struct_dt):
+  dt = datetime.fromtimestamp(time.mktime(struct_dt))
+  zdt = dt.replace(tzinfo=timezone.utc)
+  return zdt
 
 def get_file(node, d, fileparsing=True):
   """

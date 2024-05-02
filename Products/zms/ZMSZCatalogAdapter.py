@@ -65,13 +65,16 @@ def get_file(node, d, fileparsing=True):
   if fileparsing and node.meta_id == 'ZMSFile':
     try:
       file = node.attr('file')
-      data = file.getData()
-      if data:
-        content_type = file.getContentType()
-        text = content_extraction.extract_content(node, data, content_type)
-        d['standard_html'] = text
+      if file:
+        data = file.getData()
+        if data:
+          content_type = file.getContentType()
+          text = content_extraction.extract_content(node, data, content_type)
+          d['standard_html'] = text
+        else:
+          standard.writeError( node, "WARN - get_file: file.data is empty")
       else:
-        standard.writeError( node, "WARN - extract_content: file.data is empty")
+        standard.writeError( node, "WARN - get_file: file not found")
     except:
       standard.writeError( node, "can't extract_content")
 
@@ -290,7 +293,8 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
           if not (node.meta_id == 'ZMSFile' and attr_id == 'standard_html'):
             value = node.attr(attr_id)
         except:
-          standard.writeError(node, "can't get attr")
+          # standard.writeError(node, "can't get attr")
+          pass
         # Stringify date/datetime.
         if attr_type in ['date', 'datetime']:
           value = standard.getLangFmtDate(node, value, 'eng', 'ISO8601')

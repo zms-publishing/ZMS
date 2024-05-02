@@ -317,19 +317,15 @@ class ZMSZCatalogConnector(
       log = []
       nodes, next_node = self.get_next_page(uid, page_size, clients) 
       for node in nodes:
-        langs = node.getLangIds()
         # Clear client.
         if node.meta_id == 'ZMS':
           cleared = 0
           home_id = node.getHome().id
           result['home_id'] = home_id
-          for lang in langs:
-            REQUEST.set('lang', lang)
-            cleared += self.manage_objects_clear(home_id)[0]
           result['cleared'] = cleared
         # Get catalog objects.
         d = {}
-        for lang in langs:
+        for lang in node.getLangIds():
           REQUEST.set('lang', lang)
           node_objects = adapter.get_catalog_objects(node, fileparsing)
           objects.extend(node_objects)

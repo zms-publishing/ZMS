@@ -300,7 +300,9 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
         # Get value for attr from node.
         value = ''
         try:
-          value = node.attr(attr_id)
+          # ZMSFile.standard_html will work in get_file.
+          if not (node.meta_id == 'ZMSFile' and attr_id == 'standard_html'):
+            value = node.attr(attr_id)
         except:
           standard.writeError(node, "can't get attr")
         # Stringify date/datetime.

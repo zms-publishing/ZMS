@@ -51,8 +51,11 @@ def get_default_data(node):
   return d
 
 def get_zoned_dt(struct_dt):
-  dt = datetime.fromtimestamp(time.mktime(struct_dt))
-  zdt = dt.replace(tzinfo=timezone.utc)
+  try:
+    dt = datetime.fromtimestamp(time.mktime(struct_dt))
+    zdt = dt.replace(tzinfo=timezone.utc)
+  except:
+    zdt = None
   return zdt
 
 def get_file(node, d, fileparsing=True):

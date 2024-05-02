@@ -352,8 +352,7 @@
 					log("#" + (that.clientIndex + 1) + " Reindex " + path);
 					$.get($ZMI.get_rest_api_url($ZMI.getPhysicalPath())+'/zmsindex',{path:path,meta_id:meta_ids},function(zmsindex) {
 						that.pageExpected = zmsindex.length;
-						that.pageSuccess = 0;
-						that.pageFailed = 0;
+						that.pageActual = 0;
 						log("Found " + that.pageExpected + " objects to reindex");
 						that.nextPage();
 					});
@@ -372,17 +371,19 @@
 					if (typeof data.cleared !== 'undefined') {
 						log("Cleared " + data.home_id + ": " + data.cleared);
 					}
-					that.pageSuccess += data.success;
-					that.pageFailed += data.failed;
-					log("Success: " + data.success + " / Failed: " + data.failed + " ( Total: " + (that.pageSuccess + that.pageFailed) + " / " + that.pageExpected + " )");
-					set_progress( that.clientIndex / that.clientCount + (that.pageSuccess + that.pageFailed) / Math.max(that.pageExpected, 1) / that.clientCount, func_name='test');
+					const langs = [...new Set(data.log.map(x => Object.keys(x.objects)).flat(1))];
+					that.pageActual += data.log.map(x =>
+							Math.max(...Object.values(x.objects))
+						).reduce((a, b) => a + b, 0);
+					log("Success: " + data.success + " / Failed: " + data.failed + ", Langs: " + langs + " ( Total: " + that.pageActual + " / " + that.pageExpected + " )");
+					set_progress( that.clientIndex / that.clientCount + that.pageActual / Math.max(that.pageExpected, 1) / that.clientCount, func_name='test');
 					const next_node = data['next_node'];
 					if (next_node) {
 						$('#uid').val(next_node);
 						that.nextPage();
 					}
 					else {
-						that.$response.addClass('alert-success').html("Success: " + that.pageSuccess + " / Failed: " + that.pageFailed + " ( Total: " + (that.pageSuccess + that.pageFailed) + " / " + that.pageExpected + " )");
+						that.$response.addClass('alert-success').html("Total: " + that.pageActual + " / " + that.pageExpected + " )");
 						that.nextClient();
 					}
 				});

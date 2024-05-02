@@ -362,37 +362,6 @@ function zmiExecuteCatalog(url) {
 	return false;
 }
 
-function zmiReindexCatalog() {
-	$(".zmi-sitemap .response").remove();
-	var $inputs = $(".card.active .zmi-sitemap input:checked");
-	var i = 0;
-	var fn = function() {
-		if (i < $inputs.length) {
-			var $input = $($inputs[i]);
-			var uid = $input.val();
-			var data = {uid:uid};
-			var $a = $input.next("a");
-			$a.after(`<span class="response alert zmi-code"><i class="fas fa-spinner fa-spin"></i></span>`);
-			$.ajax({
-				url:"manage_reindex",
-				data:data,
-				error: function (xhr, ajaxOptions, thrownError) {
-					$a.next('.response').addClass('alert-danger').html(thrownError);
-					i++;
-					fn();
-				},
-				success:function(response) {
-					$a.next('.response').addClass('alert-success').html(response);
-					i++;
-					fn();
-				}
-			});
-		}
-	}
-	fn();
-	return false;
-}
-
 function zmiSelectObject() {
 	return false;
 }

@@ -72,9 +72,9 @@ def get_file(node, d, fileparsing=True):
           text = content_extraction.extract_content(node, data, content_type)
           d['standard_html'] = text
         else:
-          standard.writeError( node, "WARN - get_file: file.data is empty")
+          standard.writeInfo( node, "WARN - get_file: file.data is empty")
       else:
-        standard.writeError( node, "WARN - get_file: file not found")
+        standard.writeInfo( node, "WARN - get_file: file not found")
     except:
       standard.writeError( node, "can't extract_content")
 

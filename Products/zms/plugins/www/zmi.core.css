@@ -1884,6 +1884,7 @@ table.table-sm tr.row_insert td .btn-add {
 	margin-left:0;
 	padding-left:1em;
 	list-style:outside none none;
+	white-space:nowrap;
 }
 .zmi-sitemap li.active > a  {
 	font-weight:bold;
@@ -2384,19 +2385,13 @@ body.lazy_select_form footer .controls {
 	overflow-x: hidden;
 	background: #e8f3fb;
 	margin: 0 0 1rem 0;
-	direction: rtl;
 	display: block;
 	padding: 10px 12px;
 	line-height: 1.42857143;
 	background-image: none;
 	border: 1px solid #ccc;
-	border-radius: 4px;
-	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-	box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-	-webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
-	-o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-	transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-	clear:both !important;
+	border-top: none;
+	border-radius: 0 0 4px 4px;
 }
 .zmi-sitemap-container.full  {
 	max-height: unset !important;
@@ -2404,31 +2399,31 @@ body.lazy_select_form footer .controls {
 .zmi-sitemap-container.loading ul li > * {
 	color:#ccc !important
 }
-.zmi-sitemap-container .progress {
-	padding-left:0;
-	margin-right: 7rem;
-	background: #337ab740;
-	height:1.25rem;
-	direction: ltr;
+.zmi-sitemap-controls-container .progress {
+	margin-left:6.75rem;
+	background: #d7e6f1;
+	height:2.15rem;
+	border-radius:0;
+	border-top-right-radius: 4px;
 }
-.zmi-sitemap-container .progress .progress-bar {
+.zmi-sitemap-controls-container .progress .progress-bar {
 	width:0%;
 	text-align:right;
 }
-.zmi-sitemap-container .progress .progress-bar.active {
+.zmi-sitemap-controls-container .progress .progress-bar.active {
 	min-width:5em;
 	width: fit-content;
 }
-.zmi-sitemap-container .progress .progress-bar span {
+.zmi-sitemap-controls-container .progress .progress-bar span {
 	margin:0 1em;
 }
 .zmi-sitemap-container.loading .progress .progress-bar {
 	width:100%;
 }
-.zmi-sitemap-container .progress.error .progress-bar {
+.zmi-sitemap-controls-container .progress.error .progress-bar {
 	background-color:#9C27B0
 }
-.zmi-sitemap-container .progress.error:after {
+.zmi-sitemap-controls-container .progress.error:after {
 	content:"INDEXING ERROR occured: details see event-log";
 	display:block;
 	color:#9C27B0;
@@ -2440,19 +2435,14 @@ body.lazy_select_form footer .controls {
 	direction: ltr;
 }
 .zmi-sitemap-controls {
-	top:0;
-	right: 15px;
 	position: absolute;
 }
-.ZMSZCatalogConnector .zmi-sitemap-controls {
-	top:unset;
-	right:20px;
-}
 .zmi-sitemap-controls > div:first-child {
-	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
 }
 .zmi-sitemap-controls > div:last-child {
 	border-bottom-right-radius: 0;
+	border-top-right-radius: 0;
 }
 .zmi-sitemap.full {
 	max-height: unset;

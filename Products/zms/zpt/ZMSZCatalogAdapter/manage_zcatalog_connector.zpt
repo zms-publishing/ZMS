@@ -19,31 +19,33 @@
 		<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
 		<input type="hidden" id="meta_ids" tal:attributes="value python:','.join(adapter.getIds())"/>
 		<div class="form-group">
-			<div class="btn-group zmi-sitemap-controls">
-				<div title="De-/Select All"
-					class="btn btn-secondary">
-					<input id="zmi-sitemap-select" type="checkbox" checked="checked"
-						onclick="if( this.checked ){ $('.zmi-sitemap ul input').prop('checked', true) } else { $('.zmi-sitemap ul input').prop('checked', false) }"
-					/>
+			<div class="zmi-sitemap-controls-container">
+				<div class="btn-group zmi-sitemap-controls">
+					<div title="De-/Select All"
+						class="btn btn-secondary">
+						<input id="zmi-sitemap-select" type="checkbox" checked="checked"
+							onclick="if( this.checked ){ $('.zmi-sitemap ul input').prop('checked', true) } else { $('.zmi-sitemap ul input').prop('checked', false) }"
+						/>
+					</div>
+					<div title="Expand Object Tree (Hint: Mind System Load in Case!)"
+						class="btn btn-secondary"
+						onclick="return zmiExpandObjectTree(-1);">
+						<i class="fas fa-plus-square"></i>
+					</div>
+					<div title="Expand/Compress Sitemap View"
+						class="btn btn-secondary" id="zmi-sitemap-expand"
+						onclick="$('.zmi-sitemap-container').toggleClass('full');$('#zmi-sitemap-expand i').toggleClass('fa-expand-arrows-alt fa-compress-arrows-alt')">
+						<i class="fas fa-expand-arrows-alt"></i>
+					</div>
 				</div>
-				<div title="Expand Object Tree (Hint: Mind System Load in Case!)"
-					class="btn btn-secondary"
-					onclick="return zmiExpandObjectTree(-1);">
-					<i class="fas fa-plus-square"></i>
-				</div>
-				<div title="Expand/Compress Sitemap View"
-					class="btn btn-secondary" id="zmi-sitemap-expand"
-					onclick="$('.zmi-sitemap-container').toggleClass('full');$('#zmi-sitemap-expand i').toggleClass('fa-expand-arrows-alt fa-compress-arrows-alt')">
-					<i class="fas fa-expand-arrows-alt"></i>
-				</div>
-			</div>
-			<div class="zmi-sitemap-container">
 				<div class="progress">
 					<div class="progress-bar progress-bar-striped progress-bar-animated active"
 						role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
 						<span></span>
 					</div>
 				</div>
+			</div>
+			<div class="zmi-sitemap-container">
 				<div class="zmi-sitemap"><!-- .zmi-sitemap --></div>
 			</div>
 		</div><!-- .form-group -->
@@ -259,16 +261,16 @@
 
 	function set_progress( v, func_name ) {
 		var perc = Math.round(v * 10000) / 100;
-		var bar_type_dict = {'reindex':'warning','test':'info','resync':'danger'};
+		var bar_type_dict = {'reindex':'primary','test':'info','resync':'danger'};
 		var bar_type = bar_type_dict[func_name];
-		$('.zmi-sitemap-container .progress .progress-bar')
+		$('.zmi-sitemap-controls-container .progress .progress-bar')
 			.addClass('active')
 			.addClass('bg-' + bar_type)
 			.attr('aria-valuenow',perc)
 			.css('width',perc + '%')
 			.find('span').text( perc + '%' );
 		if ( perc == 100 ) {
-			$('.zmi-sitemap-container .progress .progress-bar')
+			$('.zmi-sitemap-controls-container .progress .progress-bar')
 				.removeClass('active')
 				.removeClass('progress-bar-animated')
 				.removeClass('progress-bar-striped');
@@ -276,9 +278,10 @@
 	}
 
 	function reset_progress() {
-		$('.zmi-sitemap-container .progress .progress-bar')
+		$('.zmi-sitemap-controls-container .progress .progress-bar')
 			.addClass('progress-bar-striped')
 			.addClass('progress-bar-animated')
+			.removeClass('bg-primary')
 			.removeClass('bg-info')
 			.removeClass('bg-warning')
 			.removeClass('bg-danger')
@@ -343,7 +346,7 @@
 					var $input = $(that.$inputs[that.clientIndex]);
 					var uid = $input.val();
 					$("#uid").val(uid);
-					set_progress( that.clientIndex / that.clientCount, func_name='test');
+					set_progress( that.clientIndex / that.clientCount, func_name='reindex');
 					var $a = $input.next("a");
 					$a.after(`<span class="response"><i class="fas fa-spinner fa-spin text-primary"></i></span>`);
 					that.$response = $a.next('.response');
@@ -352,8 +355,7 @@
 					log("#" + (that.clientIndex + 1) + " Reindex " + path);
 					$.get($ZMI.get_rest_api_url($ZMI.getPhysicalPath())+'/zmsindex',{path:path,meta_id:meta_ids},function(zmsindex) {
 						that.pageExpected = zmsindex.length;
-						that.pageSuccess = 0;
-						that.pageFailed = 0;
+						that.pageActual = 0;
 						log("Found " + that.pageExpected + " objects to reindex");
 						that.nextPage();
 					});
@@ -372,17 +374,21 @@
 					if (typeof data.cleared !== 'undefined') {
 						log("Cleared " + data.home_id + ": " + data.cleared);
 					}
-					that.pageSuccess += data.success;
-					that.pageFailed += data.failed;
-					log("Success: " + data.success + " / Failed: " + data.failed + " ( Total: " + (that.pageSuccess + that.pageFailed) + " / " + that.pageExpected + " )");
-					set_progress( that.clientIndex / that.clientCount + (that.pageSuccess + that.pageFailed) / Math.max(that.pageExpected, 1) / that.clientCount, func_name='test');
+					const langs = [...new Set(data.log.map(x => Object.keys(x.objects)).flat(1))];
+					that.pageActual += data.log.map(x =>
+							Math.max(...Object.values(x.objects))
+						).reduce((a, b) => a + b, 0);
+					log("Success: " + data.success + " / Failed: " + data.failed + ", Langs: " + langs + " ( Total: " + that.pageActual + " / " + that.pageExpected + " )");
+					set_progress( that.clientIndex / that.clientCount + that.pageActual / Math.max(that.pageExpected, 1) / that.clientCount, func_name='reindex');
 					const next_node = data['next_node'];
 					if (next_node) {
 						$('#uid').val(next_node);
 						that.nextPage();
 					}
 					else {
-						that.$response.addClass('alert-success').html("Success: " + that.pageSuccess + " / Failed: " + that.pageFailed + " ( Total: " + (that.pageSuccess + that.pageFailed) + " / " + that.pageExpected + " )");
+						let alert_class = data.failed > 0 ? 'alert-warning' : 'alert-success';
+						that.$response.addClass(alert_class).html("Total: " + that.pageActual + " / " + that.pageExpected );
+						that.$response.attr('title', 'Actually Indexed vs. Expected Pages');
 						that.nextClient();
 					}
 				});
@@ -463,7 +469,7 @@
 // MAIN / Init Sitemap
 // #########################
 	$(function() {
-		set_progress( 0, func_name='test');
+		set_progress( 0, func_name='reindex');
 		var href = $ZMI.get_document_element_url($ZMI.getPhysicalPath());
 		$ZMI.objectTree.init('.zmi-sitemap', href, {
 			params: {'meta_types':'ZMS'},
@@ -500,6 +506,7 @@
 <style>
 /*<!--*/
 	.ZMSZCatalogConnector .response.alert-success,
+	.ZMSZCatalogConnector .response.alert-warning,
 	.ZMSZCatalogConnector .response.alert-danger {
 		overflow-y: auto;
 		font-size:smaller !important;
@@ -508,6 +515,7 @@
 		padding: .25em .5rem;
 		border:0;
 		background:none;
+		color: #607D8B;
 	}
 	.ZMSZCatalogConnector span.response.alert-success:before {
 		content: "\f058";
@@ -517,7 +525,12 @@
 		content: "\f06a";
 		color:#E91E63;
 	}
+	.ZMSZCatalogConnector span.response.alert-warning:before  {
+		content: "\f058";
+		color:#FF9800;
+	}
 	.ZMSZCatalogConnector span.response.alert-success:before,
+	.ZMSZCatalogConnector span.response.alert-warning:before,
 	.ZMSZCatalogConnector span.response.alert-danger:before {
 		font-weight: 900;
 		font-family: 'Font Awesome 5 Free';

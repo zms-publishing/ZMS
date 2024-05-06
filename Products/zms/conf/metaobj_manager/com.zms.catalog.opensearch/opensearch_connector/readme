@@ -56,17 +56,23 @@ opensearch.suggest.fields.addresses = [
 
 ###### Score Boosting
 
-To boost the relevance of certain fields in the search results, the Opensearch connector GUI offers a field "Score-Script (Painless)" (saved as ZMS configuration property `opensearch.score_script`); here a "Painless" script shall be defined using a JAVA-like syntax. The example script returns a value that is multiplied 3x with the default score:
+To boost the relevance of certain fields in the search results, the Opensearch connector GUI offers a field "Score-Script (Painless)" (saved as ZMS configuration property `opensearch.score_script`); here a "Painless" script shall be defined using a JAVA-like syntax. The example script returns a value that is multiplied 5x with the default score for certain meta-ids and dates:
 
-```java
+<pre>
 int wght = 1;
-if ( doc.containsKey('meta_id') ){
-    if ( 
-        doc['meta_id'][0] == 'ZMS' || 
-        doc['meta_id'][0] == 'News' || 
-        doc['meta_id'][0] == 'Joboffer' ) {
-            wght += 2
-    }
+ZonedDateTime dt_limit = ZonedDateTime.parse('2023-01-01T00:00:00+00:00');
+ZonedDateTime dt_doc = dt_limit;
+if ( doc.containsKey('created_dt') ){
+	dt_doc = doc['created_dt'].value;
+}
+if ( doc.containsKey('meta_id') ) {
+	if (
+		doc['meta_id'][0] == 'ZMS' ||
+		doc['meta_id'][0] == 'News' ||
+		( doc['meta_id'][0] == 'Joboffer' && dt_doc.isAfter(dt_limit) )
+	) {
+		wght += 4
+	}
 }
 return _score * wght
-```
+</pre>

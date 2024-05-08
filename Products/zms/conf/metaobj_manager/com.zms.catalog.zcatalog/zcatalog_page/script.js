@@ -24,6 +24,7 @@ $(function() {
 	
 		//# Add pagination ###################
 		var fn = (pageIndex) => {
+			q = encodeURI(q);
 			return `javascript:show_results('${q}',${pageIndex})`
 		};
 		GetPagination(fn, total, 10, pageIndex);

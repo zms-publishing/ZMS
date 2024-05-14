@@ -19,6 +19,7 @@ pyScss
 xmltodict
 
 sqlalchemy==1.4.41
+psycopg2
 Products.ZMySQLDA
 Products.ZSQLMethods
 

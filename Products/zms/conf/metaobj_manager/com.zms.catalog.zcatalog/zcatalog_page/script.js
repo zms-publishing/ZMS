@@ -64,9 +64,15 @@ $(function() {
 	};
 
 	const show_breadcrumbs = (el) => {
-		$.get(url=`${root_url}/zcatalog_breadcrumbs_obj_path`, data={ 'id' : el.dataset.id }, function(data, status) {
-			$(el).html(data);
-		});
+		const lang = $('#lang').attr('value');
+		if ( el.dataset.id.startsWith('uid') ) {
+			$.get(url=`${root_url}/zcatalog_breadcrumbs_obj_path`, 
+				data={ 'id' : el.dataset.id }, 
+				function(data, status) {
+					$(el).html(data);
+				}
+			);
+		}
 	}
 
 	//# Execute on submit event

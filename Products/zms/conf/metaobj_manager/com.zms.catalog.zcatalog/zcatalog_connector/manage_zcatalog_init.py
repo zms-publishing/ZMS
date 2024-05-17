@@ -3,6 +3,7 @@ from Products.zms import standard
 from Products.ZCatalog import ZCatalog
 from Products.PluginIndexes.DateIndex.DateIndex import DateIndex
 from Products.PluginIndexes.KeywordIndex.KeywordIndex import KeywordIndex
+from Products.PluginIndexes.PathIndex.PathIndex import PathIndex
 
 class Empty(object): 
   pass
@@ -95,6 +96,7 @@ def recreateZCatalog(context, lang):
       extra['splitter_single_chars'] = 0
     zcatalog.manage_addColumn(index_name)
     zcatalog.manage_addIndex(index_name, index_type, extra)
+  zcatalog.manage_addIndex('path', PathIndex('path'))
   return '%s created'%str(cat_id)
 
 def manage_zcatalog_init( self):

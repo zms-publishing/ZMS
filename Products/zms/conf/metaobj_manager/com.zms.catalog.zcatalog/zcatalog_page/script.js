@@ -12,6 +12,7 @@ $(function() {
 
 	// Finally define show_results() on ready
 	show_results = async (q, pageIndex) => {
+		$('.search-results').removeClass('not-launched');
 		$('.search-results').html(hb_spinner_tmpl(q));
 		// debugger;
 		const qurl = `${root_url}/zcatalog_query?q=${q}&pageIndex:int=${pageIndex}`;
@@ -38,17 +39,19 @@ $(function() {
 	};
 
 	const postprocess_results = (q, res) => {
-		var total = res.response.numFound.value;
+		var total = res.numFound;
 		var facets = []; // res.facets;
 		var res_processed = { 'hits':[], 'total':total, 'query':q, 'facets':facets};
 
-		res['response']['docs'].forEach(x => {
+		res.docs.forEach(x => {
 			var source = x;
+			// debugger;
 			var hit = { 
-				'path':source['uid'], 
-				'href':source['loc'], 
-				'title':source['title'], 
-				'snippet':source['standard_html'] 
+				'path':source['uid'],
+				'href':source['loc'] || source['index_html'],
+				'title':source['title'],
+				'meta_id':source['meta_id'],
+				'snippet':source['standard_html']
 			}; 
 			// Snippet: field-name = 'standard_html'
 			// Attachment: field-name = 'data'

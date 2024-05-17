@@ -22,6 +22,9 @@
 .no-margin-bottom {
 	margin-bottom: 0!important;
 }
+.search-results.not-launched {
+	display:none;
+}
 .search-results .path {
 	list-style: none;
 	padding-left: 0;

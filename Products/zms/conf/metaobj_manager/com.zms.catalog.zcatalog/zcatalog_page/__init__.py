@@ -32,7 +32,7 @@ class zcatalog_page:
 	package = "com.zms.catalog.zcatalog"
 
 	# Revision
-	revision = "1.0.0"
+	revision = "1.0.2"
 
 	# Type
 	type = "ZMSDocument"

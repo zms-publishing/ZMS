@@ -22,6 +22,9 @@
 .no-margin-bottom {
 	margin-bottom: 0!important;
 }
+.search-results.not-launched {
+	display:none;
+}
 .search-results .path {
 	list-style: none;
 	padding-left: 0;
@@ -109,6 +112,8 @@ body.zms.web .container-fluid.skin-bg-gray {
 }
 body.zms.web #search_results ul.path {
 	display:flex;
+	white-space: nowrap;
+	overflow: hidden;
 }
 body.zms.web #search_results ul.path li {
 	margin-right:.25rem;

@@ -67,6 +67,8 @@ $(function() {
 			// Replace only tab-pane
 			$('.search-results .tab-content').html( hb_results_html );
 		}
+		$('html, body').animate({scrollTop: $("#search_results").offset().top }, 1000);
+
 		//# Add pagination ###################
 		var fn = (pageIndex) => {
 			q = encodeURI(decodeURI(q));

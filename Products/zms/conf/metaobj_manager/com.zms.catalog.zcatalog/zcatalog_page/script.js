@@ -45,14 +45,15 @@ $(function() {
 		var res_processed = { 'hits':[], 'total':total, 'query':q, 'facets':facets};
 
 		res.docs.forEach(x => {
-			var source = x;
-			// debugger;
+			let source = x;
+			let score = typeof source['score'] !== 'undefined' ? parseFloat(source['score']/100).toFixed(2) : -1;
 			var hit = { 
 				'path':source['uid'],
 				'href':source['loc'] || source['index_html'],
 				'title':source['title'],
 				'meta_id':source['meta_id'],
-				'snippet':source['standard_html']
+				'snippet':source['standard_html'],
+				'score':score
 			}; 
 			// Snippet: field-name = 'standard_html'
 			// Attachment: field-name = 'data'

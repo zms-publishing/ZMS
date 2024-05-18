@@ -238,6 +238,10 @@
 		background: #fff;
 		padding-top: .15rem;
 	}
+	.zmi figure img {
+		max-width: min(calc(50vw - 56px), 460px);
+		height: auto;
+	}
 /*-->*/
 </style>
 

@@ -15,8 +15,9 @@
 			</a>
 			<p class="description" 
 				tal:on-error="string: <!-- ERROR Description-->"
-				tal:define="description python:child_node.attr('attr_dc_description')"
-				tal:content="python:description and description or '%s ...'%(str(context.html2text(child_node.getBodyContent(request)))[0:256])">
+				tal:define="description python:child_node.attr('attr_dc_description');
+					text python:context.html2text(child_node.getBodyContent(request))"
+				tal:content="python:description and description or (len(text)>16 and '%s ...'%(str(text)[0:256]) or '')">
 				DESCRIPTION
 			</p>
 		</li>
@@ -50,7 +51,8 @@
 				tal:define="latestposts python:[k for k in zmsroot.getConfProperties().keys() if 'ZMS.permalink.latestpost' in k];">
 				<h2 tal:content="structure python:zmsclient.getLangStr('LATESTPOSTS.title')">Aktuelle Dokumente</h2>
 				<tal:block tal:repeat="latestpost latestposts">
-					<article tal:define="node python:zmsroot.getLinkObj(zmsroot.getConfProperty(latestpost),request);
+					<article tal:on-error="nothing"
+						tal:define="node python:zmsroot.getLinkObj(zmsroot.getConfProperty(latestpost),request);
 							titlealt python:node.attr('titlealt')">
 						<h3><a href="#"
 							tal:attributes="href python:node.getHref2IndexHtml(request)"

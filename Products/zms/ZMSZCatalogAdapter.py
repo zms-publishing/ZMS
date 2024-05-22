@@ -146,6 +146,25 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
       self.setAttrIds(['title', 'titlealt', 'attr_dc_description', 'standard_html'])
 
     # --------------------------------------------------------------------------
+    #  ZMSZCatalogAdapter.reindex
+    # --------------------------------------------------------------------------
+    def reindex(self, connector, base, recursive=True, fileparsing=True):
+      def traverse(node, recursive):
+        objects = self.get_catalog_objects(node, fileparsing)
+        success, failed = connector.manage_objects_add(objects)
+        if recursive:
+          for childNode in node.filteredChildNodes(request):
+            childSuccess, childFailed = traverse(childNode, recursive)
+            success += childSuccess
+            failed += childFailed
+        return success, failed 
+      request = self.REQUEST
+      request.set('lang', self.REQUEST.get('lang', self.getPrimaryLanguage()))
+      result = []
+      result.append('%i objects cataloged (%s failed)'%traverse(base, recursive))
+      return ', '.join([x for x in result if x])
+
+    # --------------------------------------------------------------------------
     #  ZMSZCatalogAdapter.reindex_node
     # --------------------------------------------------------------------------
     def reindex_node(self, node, forced=False):

@@ -123,6 +123,8 @@ body.zms.web .container-fluid.skin-bg-gray {
 }
 body.zms.web #search_results ul.path {
 	display:flex;
+	white-space: nowrap;
+	overflow: hidden;
 }
 body.zms.web #search_results ul.path li {
 	margin-right:.25rem;

@@ -213,7 +213,10 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
     catalog_adapter = obj.getCatalogAdapter()
     catalog_connector = catalog_adapter.add_connector('zcatalog_connector')
     catalog_connector.manage_init()
-    catalog_adapter.reindex(catalog_connector, obj, recursive=True)
+    try:
+      catalog_adapter.reindex(catalog_connector, obj, recursive=True)
+    except:
+      standard.writeBlock( self, '[catalog_adapter]: : \'RequestContainer\' object has no \'attribute reindex\'')
 
     # Initialize access.
     obj.synchronizePublicAccess()

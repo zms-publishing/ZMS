@@ -68,8 +68,8 @@ def zcatalog_query( self, REQUEST=None):
   
   # Limit search-results.
   num_found = len(results)
-  page_index = int(REQUEST.get('page_index',0))
-  page_size = int(REQUEST.get('page_size',20))
+  page_index = int(REQUEST.get('page_index',request.get('pageIndex',0)))
+  page_size = int(REQUEST.get('page_size',request.get('size', 10)))
   start = page_index*page_size
   if num_found > page_size:
     results = results[start:start+page_size]

@@ -67,8 +67,11 @@ $(function() {
 			// Replace only tab-pane
 			$('.search-results .tab-content').html( hb_results_html );
 		}
+		$('html, body').animate({scrollTop: $("#search_results").offset().top }, 1000);
+
 		//# Add pagination ###################
 		var fn = (pageIndex) => {
+			q = encodeURI(decodeURI(q));
 			return `javascript:show_results('${q}',${pageIndex},'${facet}')`
 		};
 		GetPagination(fn, total, 10, pageIndex);
@@ -147,18 +150,29 @@ $(function() {
 	};
 
 	const add_adword_targets = async (adword) => {
+		const lang = $('#lang').attr('value');
 		const root_url=$('form#site-search-content').attr('data-root-url');
-		const qurl = `./adwords/get_targets_json?adword=${adword}`;
+		const adwords_linked = $('#adwords_linked').val();
+		let qurl_base = '.'
+		const qurl = `./adwords/get_targets_json?adword=${adword}&lang=${lang}`;
+		if (adwords_linked) {
+			qurl_base = adwords_linked.replaceAll('/adwords', '');
+		};
+		qurl = qurl_base + qurl;
 		const response = await fetch(qurl);
 		const res = await response.json();
 		return res;
 	}
 
 	const show_breadcrumbs = (el) => {
+		const lang = $('#lang').attr('value');
 		if ( el.dataset.id.startsWith('uid') ) {
-			$.get(url=`${root_url}/opensearch_breadcrumbs_obj_path`, data={ 'id' : el.dataset.id }, function(data, status) {
-				$(el).html(data);
-			});
+			$.get(url=`${root_url}/opensearch_breadcrumbs_obj_path`, 
+				data={ 'id' : el.dataset.id, 'lang' : lang }, 
+				function(data, status) {
+					$(el).html(data);
+				}
+			);
 		}
 	}
 

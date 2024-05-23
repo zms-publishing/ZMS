@@ -60,6 +60,8 @@
 						tal:attributes="value python:zmscontext.attr('multisite_search')" />
 					<input type="hidden" id="multisite_exclusions" name="multisite_exclusions" 
 						tal:attributes="value python:','.join(zmscontext.attr('multisite_exclusions'))" />
+					<input type="hidden" id="lang" name="lang"
+						tal:attributes="value python:request.get('lang',zmscontext.getPrimaryLanguage())" />
 					<div class="row skin-gutter-wide search-form no-margin-bottom">
 						<div class="col-lg-6" id="form-keyword-container">
 							<h2 class="small-font">Suche nach Stichworten</h2>

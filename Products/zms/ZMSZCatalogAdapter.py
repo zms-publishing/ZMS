@@ -25,6 +25,7 @@ import copy
 import time
 from datetime import datetime, timezone
 import zope.interface
+import html
 # Product Imports.
 from Products.zms import standard
 from Products.zms import content_extraction
@@ -173,14 +174,16 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
       fileparsing = False
       try:
         if self.getConfProperty('ZMS.CatalogAwareness.active', 1) or forced:
-            path_nodes = node.breadcrumbs_obj_path()
+            if self.REQUEST.get('ZMS_INSERT', None):
+              path_nodes = node.getParentNode().breadcrumbs_obj_path()
+            else:
+              path_nodes = node.breadcrumbs_obj_path()
             path_nodes.reverse()
-            # The node's page container is to be indexed.
-            # Cave/Todo: On insert the breadcrumbs_obj_path() misses last item.
+            # Determine the node's page container (usually to be indexed).
             path_nodes = [e for e in path_nodes if e.isPage()]
             page = path_nodes[0]
-            # If local connectors are available, use them, otherwise use global connector.
-            # Hint: if local connectors are used, they must cover all connector types 
+            # Prefer local connectors if available, otherwise use global connector.
+            # Hint: Ensure local connectors covers all desired connector types. 
             for path_node in path_nodes:
               if path_node.getCatalogAdapter():
                 if path_node.getCatalogAdapter().matches_ids_filter(page):
@@ -320,9 +323,16 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
         try:
           # ZMSFile.standard_html will work in get_file.
           if not (node.meta_id == 'ZMSFile' and attr_id == 'standard_html'):
-            value = node.attr(attr_id)
+            if attr_id == 'standard_html' and request.get('ZMS_INSERT', None):
+              # Content of the current node on ZMS_INSERT:
+              # The node.attr('standard_html') seems always refering to the current node. 
+              # In practice, getting the containing page's content 'standard_html' does not work.
+              value = node.bodyContentZMSLib_page(request)
+            else:
+              value = node.attr(attr_id)
         except:
-          # standard.writeError(node, "can't get attr")
+          standard.writeError(node, "can't get attr %s"%attr_id)
+          value = 'DATA ERROR'
           pass
         # Stringify date/datetime.
         if attr_type in ['date', 'datetime']:
@@ -330,8 +340,13 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
         # Stringify dict/list.
         elif type(value) in (dict, list):
           value = standard.str_item(value, f=True)
-        # Add to data.  
-        d[attr_id] = standard.remove_tags(value)
+        # Add to data.
+        try:
+          # Get get plain text by removing html-tags and unescaping html entities.
+          d[attr_id] = html.unescape(standard.remove_tags(value))
+        except:
+          standard.writeError(node, "can't unescape attr %s"%attr_id)
+          d[attr_id] = standard.remove_tags(value)
 
     # --------------------------------------------------------------------------
     #  Get catalog objects data.

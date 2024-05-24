@@ -628,6 +628,9 @@ class VersionItem(object):
       self.synchronizePublicAccess()
       # Synchronize search.
       self.getCatalogAdapter().reindex_node(self)
+      # .. by reindexing not only self/object but maybe it's parent/page too.
+      # if not self.isPage():
+      #    self.getCatalogAdapter().reindex_node(parent)
       # Return flag for deleted objects.
       standard.writeLog( self, '[commitObjChanges]: done (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)')
       return delete

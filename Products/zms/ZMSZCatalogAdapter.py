@@ -169,22 +169,32 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     # --------------------------------------------------------------------------
     def reindex_node(self, node, forced=False):
       standard.writeBlock(node, "[reindex_node]")
+      connectors = []
+      fileparsing = False
       try:
         if self.getConfProperty('ZMS.CatalogAwareness.active', 1) or forced:
-          nodes = node.breadcrumbs_obj_path()
-          nodes.reverse()
-          for node in nodes:
-            if self.matches_ids_filter(node):
-              fileparsing = standard.pybool( self.getConfProperty('ZMS.CatalogAwareness.fileparsing', 1))
-              connectors = self.get_connectors()
-              # if local connectors are available, use them.
-              # otherwise use global connector
-              # Note: if local connectors are used, they must cover all connector types
-              if not connectors:
-                root = self.getRootElement()
-                connectors = root.getCatalogAdapter().get_connectors()
-              for connector in connectors:
+            path_nodes = node.breadcrumbs_obj_path()
+            path_nodes.reverse()
+            # The node's page container is to be indexed.
+            # Cave/Todo: On insert the breadcrumbs_obj_path() misses last item.
+            path_nodes = [e for e in path_nodes if e.isPage()]
+            page = path_nodes[0]
+            # If local connectors are available, use them, otherwise use global connector.
+            # Hint: if local connectors are used, they must cover all connector types 
+            for path_node in path_nodes:
+              if path_node.getCatalogAdapter():
+                if path_node.getCatalogAdapter().matches_ids_filter(page):
+                  # Todo: Check here if CatalogAwareness actually is active?
+                  fileparsing = standard.pybool(path_node.getConfProperty('ZMS.CatalogAwareness.fileparsing', 1))
+                  connectors = path_node.getCatalogAdapter().get_connectors()
+                  break
+            if not connectors:
+              root = self.getRootElement()
+              connectors = root.getCatalogAdapter().get_connectors()
+            for connector in connectors:
+              if page != node:
                 self.reindex(connector, node, recursive=False, fileparsing=fileparsing)
+              self.reindex(connector, page, recursive=False, fileparsing=fileparsing)
         return True
       except:
         standard.writeError( self, "can't reindex_node")

@@ -45,6 +45,7 @@ def get_default_data(node):
   d['id'] = node.id
   d['home_id'] = node.getHome().id
   d['meta_id'] = node.meta_id
+  # Todo: Remove preview-parameter.
   d['index_html'] = node.getHref2IndexHtmlInContext(node.getRootElement(), REQUEST=request)
   d['lang'] = request.get('lang',node.getPrimaryLanguage())
   d['created_dt'] = get_zoned_dt(node.attr('created_dt'))
@@ -174,30 +175,52 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
       fileparsing = False
       try:
         if self.getConfProperty('ZMS.CatalogAwareness.active', 1) or forced:
-            if self.REQUEST.get('ZMS_INSERT', None):
-              path_nodes = node.getParentNode().breadcrumbs_obj_path()
-            else:
-              path_nodes = node.breadcrumbs_obj_path()
-            path_nodes.reverse()
-            # Determine the node's page container (usually to be indexed).
-            path_nodes = [e for e in path_nodes if e.isPage()]
-            page = path_nodes[0]
-            # Prefer local connectors if available, otherwise use global connector.
-            # Hint: Ensure local connectors covers all desired connector types. 
-            for path_node in path_nodes:
-              if path_node.getCatalogAdapter():
-                if path_node.getCatalogAdapter().matches_ids_filter(page):
-                  # Todo: Check here if CatalogAwareness actually is active?
-                  fileparsing = standard.pybool(path_node.getConfProperty('ZMS.CatalogAwareness.fileparsing', 1))
-                  connectors = path_node.getCatalogAdapter().get_connectors()
-                  break
-            if not connectors:
-              root = self.getRootElement()
-              connectors = root.getCatalogAdapter().get_connectors()
-            for connector in connectors:
-              if page != node:
-                self.reindex(connector, node, recursive=False, fileparsing=fileparsing)
-              self.reindex(connector, page, recursive=False, fileparsing=fileparsing)
+          if self.REQUEST.get('ZMS_INSERT', None):
+            path_nodes = node.getParentNode().breadcrumbs_obj_path()
+          else:
+            path_nodes = node.breadcrumbs_obj_path()
+          path_nodes.reverse()
+
+          # Determine the node's page container 
+          # because this is what usually is to be indexed.
+          path_nodes = [e for e in path_nodes if e.isPage()]
+          page = path_nodes[0]
+
+          # Prefer local connectors if available, otherwise use global connector.
+          # Hint: Make sure local connectors cover all desired connector types. 
+          for path_node in path_nodes:
+            if path_node.getCatalogAdapter() and path_node.getCatalogAdapter().matches_ids_filter(page):
+                # Todo: Check here if CatalogAwareness actually is active?
+                fileparsing = standard.pybool(path_node.getConfProperty('ZMS.CatalogAwareness.fileparsing', 1))
+                connectors = path_node.getCatalogAdapter().get_connectors()
+                break
+          if not connectors:
+            root = self.getRootElement()
+            connectors = root.getCatalogAdapter().get_connectors()
+
+          # Reindex node's content by each connector.
+          for connector in connectors:
+            if self.matches_ids_filter(node) or self.matches_ids_filter(page):
+
+              # CASE-1: ZMS_INSERT
+              # Reindex the current node if page or its container page.
+              if self.REQUEST.get('ZMS_INSERT', None):
+                if node.isPage() and self.matches_ids_filter(node):
+                  self.reindex(connector, node, recursive=False, fileparsing=fileparsing)
+                elif not node.isPage() and self.matches_ids_filter(page): 
+                  self.reindex(connector, page, recursive=False, fileparsing=fileparsing)
+                if not node.isPage() and self.matches_ids_filter(node):
+                  # After reindexing the page add the node if filter-match.
+                  self.reindex(connector, node, recursive=False, fileparsing=fileparsing)
+
+              # CASE-2: CHANGE
+              # Reindex container page if node!=page and the node if filter-match.
+              else:
+                if node != page and self.matches_ids_filter(page):
+                  self.reindex(connector, page, recursive=False, fileparsing=fileparsing)
+                if self.matches_ids_filter(node):
+                  self.reindex(connector, node, recursive=False, fileparsing=fileparsing)
+
         return True
       except:
         standard.writeError( self, "can't reindex_node")
@@ -314,6 +337,9 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
       # Additional defaults.
       d['id'] = '%s_%s'%(node.id,lang)
       d['lang'] = lang
+      # Make sure we are not in ZMI.
+      request.set('is_zmi', False)
+      request.set('preview', None)
       # Loop attrs.
       for attr_id in self.getAttrIds():
         attr = self.getAttrs().get(attr_id, {})
@@ -323,11 +349,10 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
         try:
           # ZMSFile.standard_html will work in get_file.
           if not (node.meta_id == 'ZMSFile' and attr_id == 'standard_html'):
-            if attr_id == 'standard_html' and request.get('ZMS_INSERT', None):
-              # Content of the current node on ZMS_INSERT:
-              # The node.attr('standard_html') seems always refering to the current node. 
-              # In practice, getting the containing page's content 'standard_html' does not work.
-              value = node.bodyContentZMSLib_page(request)
+            if attr_id == 'standard_html' and request.get('ZMS_INSERT', None) and node.isPage():
+              # ZMS_INSERT Page: attr('standard_html') does not work.
+              for child_node in node.getObjChildren('e',request,self.PAGEELEMENTS):
+                value += child_node.getBodyContent(request)
             else:
               value = node.attr(attr_id)
         except:
@@ -347,6 +372,9 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
         except:
           standard.writeError(node, "can't unescape attr %s"%attr_id)
           d[attr_id] = standard.remove_tags(value)
+      # Return back to ZMI.
+      request.set('is_zmi', True)
+      request.set('preview', 'preview')
 
     # --------------------------------------------------------------------------
     #  Get catalog objects data.

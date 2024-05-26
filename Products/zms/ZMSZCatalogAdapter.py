@@ -25,7 +25,6 @@ import copy
 import time
 from datetime import datetime, timezone
 import zope.interface
-import html
 # Product Imports.
 from Products.zms import standard
 from Products.zms import content_extraction
@@ -210,7 +209,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
                 elif not node.isPage() and self.matches_ids_filter(page): 
                   self.reindex(connector, page, recursive=False, fileparsing=fileparsing)
                 if not node.isPage() and self.matches_ids_filter(node):
-                  # After reindexing the page add the node if filter-match.
+                  # Additionally add node if filter-match (e.g. ZMSFile).
                   self.reindex(connector, node, recursive=False, fileparsing=fileparsing)
 
               # CASE-2: CHANGE
@@ -337,9 +336,6 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
       # Additional defaults.
       d['id'] = '%s_%s'%(node.id,lang)
       d['lang'] = lang
-      # Make sure we are not in ZMI.
-      request.set('is_zmi', False)
-      request.set('preview', None)
       # Loop attrs.
       for attr_id in self.getAttrIds():
         attr = self.getAttrs().get(attr_id, {})
@@ -352,7 +348,9 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
             if attr_id == 'standard_html' and request.get('ZMS_INSERT', None) and node.isPage():
               # ZMS_INSERT Page: attr('standard_html') does not work.
               for child_node in node.getObjChildren('e',request,self.PAGEELEMENTS):
-                value += child_node.getBodyContent(request)
+                # value += child_node.getBodyContent(request) # This would not work.
+                # Explicitly call ob-method to get the correct standard_html:
+                value += self.getMetaobjAttr(child_node.meta_id, 'standard_html')['ob'](zmscontext=child_node)
             else:
               value = node.attr(attr_id)
         except:
@@ -365,16 +363,8 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
         # Stringify dict/list.
         elif type(value) in (dict, list):
           value = standard.str_item(value, f=True)
-        # Add to data.
-        try:
-          # Get get plain text by removing html-tags and unescaping html entities.
-          d[attr_id] = html.unescape(standard.remove_tags(value))
-        except:
-          standard.writeError(node, "can't unescape attr %s"%attr_id)
-          d[attr_id] = standard.remove_tags(value)
-      # Return back to ZMI.
-      request.set('is_zmi', True)
-      request.set('preview', 'preview')
+        # Add plain text to data.
+        d[attr_id] = content_extraction.extract_text_from_html(node, value)
 
     # --------------------------------------------------------------------------
     #  Get catalog objects data.
@@ -388,7 +378,8 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
       # Get adapter's ids & attributes catalog-data.
       self.get_attr_data(node, d)
       # ZMSFile.file to standard_html?
-      get_file(node, d, fileparsing)
+      if fileparsing and node.meta_id == 'ZMSFile':
+        get_file(node, d, fileparsing)
       # Add data via connector.
       return (node, d)
         

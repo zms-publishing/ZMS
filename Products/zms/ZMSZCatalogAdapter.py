@@ -228,19 +228,36 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     # --------------------------------------------------------------------------
     #  ZMSZCatalogAdapter.unindex_node
     # --------------------------------------------------------------------------
-    def unindex_node(self, node, forced=False):
-      standard.writeBlock(node, "[unindex_node]")
+    def unindex_nodes(self, nodes=[], forced=False):
+      # Is triggered by zmscontainerobject.moveObjsToTrashcan(). 
+      standard.writeBlock(self, "[unindex_nodes]")
+
+      # Get closest catalog-connectors.
+      path_nodes = self.breadcrumbs_obj_path()
+      path_nodes.reverse()
+      for path_node in path_nodes:
+        if path_node.getCatalogAdapter():
+          connectors = path_node.getCatalogAdapter().get_connectors()
+          break
+      if not connectors:
+        root = self.getRootElement()
+        connectors = root.getCatalogAdapter().get_connectors()
+
       try:
         if self.getConfProperty('ZMS.CatalogAwareness.active', 1) or forced:
-          nodes = node.breadcrumbs_obj_path()
-          nodes.reverse()
-          for node in nodes:
-            if self.matches_ids_filter(node):
-              for connector in self.get_connectors():
-                connector.manage_objects_remove([node])
-            break
+          # [1] Reindex page-container nodes of deleted page-elements.
+          pageelement_nodes = [node for node in nodes if not node.isPage()]
+          if pageelement_nodes:
+            for pageelement_node in pageelement_nodes:
+              # Todo: Avoid redundant reindexing of page-container.
+              self.reindex_node(node=pageelement_node)
+          # [2] Unindex deleted page-nodes if filter-match.
+          nodes = [node for node in nodes if self.matches_ids_filter(node)]
+          for connector in connectors:
+            connector.manage_objects_remove(nodes)
+        return True
       except:
-        standard.writeError( self, "can't unindex_node")
+        standard.writeError( self, "unindex_nodes not successful")
         return False
 
     # --------------------------------------------------------------------------

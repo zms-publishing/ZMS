@@ -26,6 +26,8 @@ Scripts.  It can be accessed from Python with the statement
 "import Products.zms.content_extraction"
 """
 # Imports.
+import html
+from bs4 import BeautifulSoup
 from AccessControl.SecurityInfo import ModuleSecurityInfo
 # Product Imports.
 from Products.zms import standard
@@ -49,15 +51,18 @@ def extract_content(context, b, content_type=''):
 
 
 security.declarePublic('extract_text_from_html')
-def extract_text_from_html(html):
-    from bs4 import BeautifulSoup
-    soup = BeautifulSoup(html, features="html.parser")
-    text = soup.get_text() \
+def extract_text_from_html(context, html_data):
+    soup = BeautifulSoup(html_data, features="html.parser")
+    text_data = soup.get_text() \
         .replace('\n',' ') \
         .replace('\t',' ') \
         .replace('\"',' ')
-    text = ' '.join(text.split())
-    return text
+    text_data = ' '.join(text_data.split())
+    try:
+        text_data = html.unescape(text_data)
+    except Exception as e:
+        standard.writeError( context, "can't unescape text_data: %s" % e)
+    return text_data
 
 
 def extract_content_tika(context, b, content_type=None):

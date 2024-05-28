@@ -79,7 +79,7 @@ def extract_content_tika(context, b, content_type=None):
             import requests
             r = requests.put(parser_url, headers=headers, data=b)
             html = r.json().get('X-TIKA:content')
-            return extract_text_from_html(html)
+            return extract_text_from_html(context, html)
         except:
             standard.writeError( context, "can't extract_content_tika")
     else:
@@ -112,7 +112,7 @@ def extract_content_pdfminer(context, b, content_type=None):
         interpreter = PDFPageInterpreter(rsrcmgr, device)
         for page in PDFPage.create_pages(doc):
             interpreter.process_page(page)
-        return extract_text_from_html(output_string.getvalue())
+        return extract_text_from_html(context, output_string.getvalue())
     except:
         standard.writeError( context, "can't extract_content_pdfminer")
     return None

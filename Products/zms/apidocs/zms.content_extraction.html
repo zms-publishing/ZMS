@@ -1203,7 +1203,7 @@
     
     <td>Function</td>
     <td><code><a href="#extract_content_pdfminer" class="internal-link" title="zms.content_extraction.extract_content_pdfminer">extract<wbr></wbr>_content<wbr></wbr>_pdfminer</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Apply the pdfminer.six library to extract text from a PDF file. Pdfminer.six is a community maintained fork of the original PDFMiner. It is a tool for extracting information from PDF documents. It focuses on getting and analyzing text data...</td>
   </tr><tr class="function">
     
     <td>Function</td>
@@ -1213,7 +1213,7 @@
     
     <td>Function</td>
     <td><code><a href="#extract_text_from_html" class="internal-link" title="zms.content_extraction.extract_text_from_html">extract<wbr></wbr>_text<wbr></wbr>_from<wbr></wbr>_html</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Removes html tags and converts html entities to plain text.</td>
   </tr><tr class="variable">
     
     <td>Variable</td>
@@ -1239,7 +1239,7 @@
   <div class="functionHeader">
     
     <span class="py-keyword">def</span> <span class="py-defname">extract_content</span>(context, b, content_type=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/content_extraction.py#L36">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/content_extraction.py#L38">
       
       (source)
     </a>
@@ -1261,7 +1261,7 @@
   <div class="functionHeader">
     
     <span class="py-keyword">def</span> <span class="py-defname">extract_content_pdfminer</span>(context, b, content_type=None):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/content_extraction.py#L85">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/content_extraction.py#L96">
       
       (source)
     </a>
@@ -1269,7 +1269,8 @@
   <div class="docstring functionBody">
     
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Apply the pdfminer.six library to extract text from a PDF file. Pdfminer.six is a community maintained fork of the original PDFMiner. It is a tool for extracting information from PDF documents. It focuses on getting and analyzing text data. Pdfminer.six extracts the text from a page directly from the sourcecode of the PDF. Install: pip install pdfminer.six</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">context</span></td><td class="fieldArgDesc">the ZMS-context</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">b:</span><tt class="rst-docutils literal">bytes</tt></td><td class="fieldArgDesc">pdf data stream</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">content<wbr></wbr>_type:</span><tt class="rst-docutils literal">str</tt> or None</td><td class="fieldArgDesc">the content type</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">See Also</td></tr><tr><td colspan="2">//github.com/pdfminer/pdfminer.six</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1283,7 +1284,7 @@
   <div class="functionHeader">
     
     <span class="py-keyword">def</span> <span class="py-defname">extract_content_tika</span>(context, b, content_type=None):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/content_extraction.py#L63">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/content_extraction.py#L74">
       
       (source)
     </a>
@@ -1305,8 +1306,8 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">extract_text_from_html</span>(html):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/content_extraction.py#L52">
+    <span class="py-keyword">def</span> <span class="py-defname">extract_text_from_html</span>(context, html_data):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/content_extraction.py#L54">
       
       (source)
     </a>
@@ -1314,7 +1315,8 @@
   <div class="docstring functionBody">
     
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Removes html tags and converts html entities to plain text.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">context</span></td><td class="fieldArgDesc">the ZMS-context</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">html<wbr></wbr>_data:</span><tt class="rst-docutils literal">str</tt> or <tt class="rst-docutils literal">bytes</tt></td><td class="fieldArgDesc">html data stream</td></tr></table></div>
   </div>
 </div><div class="basevariable">
   
@@ -1328,7 +1330,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">security</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/content_extraction.py#L33">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/content_extraction.py#L35">
       
       (source)
     </a>

@@ -1096,11 +1096,15 @@ class ConfManager(
 
     def getCatalogAdapter(self):
       from Products.zms import IZMSCatalogAdapter, ZMSZCatalogAdapter
-      for ob in self.objectValues():
-        if IZMSCatalogAdapter.IZMSCatalogAdapter in list(providedBy(ob)):
-          return ob
+      path_nodes = self.breadcrumbs_obj_path()
+      path_nodes.reverse()
+      for path_node in path_nodes:
+        for ob in path_node.objectValues():
+          if IZMSCatalogAdapter.IZMSCatalogAdapter in list(providedBy(ob)):
+            return ob
+      # If no ZMSZCatalogAdapter then add one to root node
       adapter = ZMSZCatalogAdapter.ZMSZCatalogAdapter()
-      self._setObject( adapter.id, adapter)
+      self.getRootElement()._setObject( adapter.id, adapter)
       adapter = getattr(self, adapter.id)
       adapter.initialize()
       return adapter

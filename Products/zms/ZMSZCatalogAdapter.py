@@ -356,7 +356,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
         try:
           # ZMSFile.standard_html will work in get_file.
           if not (node.meta_id == 'ZMSFile' and attr_id == 'standard_html'):
-            if attr_id == 'standard_html' and node.isPage():
+            if attr_id == 'standard_html' and request.get('ZMS_INSERT') and node.isPage():
               for child_node in node.getObjChildren('e',request,self.PAGEELEMENTS):
                 value += self.getMetaobjAttr(child_node.meta_id, 'standard_html')['ob'](zmscontext=child_node)
             else:

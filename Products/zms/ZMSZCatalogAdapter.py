@@ -185,17 +185,11 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
           path_nodes = [e for e in path_nodes if e.isPage()]
           page = path_nodes[0]
 
-          # Prefer local connectors if available, otherwise use global connector.
-          # Hint: Make sure local connectors cover all desired connector types. 
-          for path_node in path_nodes:
-            if path_node.getCatalogAdapter() and path_node.getCatalogAdapter().matches_ids_filter(page):
-                # Todo: Check here if CatalogAwareness actually is active?
-                fileparsing = standard.pybool(path_node.getConfProperty('ZMS.CatalogAwareness.fileparsing', 1))
-                connectors = path_node.getCatalogAdapter().get_connectors()
-                break
-          if not connectors:
-            root = self.getRootElement()
-            connectors = root.getCatalogAdapter().get_connectors()
+          # Hint: getCatalogAdapter prefers local adapter, otherwise root adapter.
+          # In case make sure local adapter covers all desired connector types. 
+          if node.getCatalogAdapter().matches_ids_filter(page):
+            fileparsing = standard.pybool(node.getConfProperty('ZMS.CatalogAwareness.fileparsing', 1))
+            connectors = node.getCatalogAdapter().get_connectors()
 
           # Reindex node's content by each connector.
           for connector in connectors:

@@ -225,18 +225,6 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     def unindex_nodes(self, nodes=[], forced=False):
       # Is triggered by zmscontainerobject.moveObjsToTrashcan(). 
       standard.writeBlock(self, "[unindex_nodes]")
-
-      # Get closest catalog-connectors.
-      path_nodes = self.breadcrumbs_obj_path()
-      path_nodes.reverse()
-      for path_node in path_nodes:
-        if path_node.getCatalogAdapter():
-          connectors = path_node.getCatalogAdapter().get_connectors()
-          break
-      if not connectors:
-        root = self.getRootElement()
-        connectors = root.getCatalogAdapter().get_connectors()
-
       try:
         if self.getConfProperty('ZMS.CatalogAwareness.active', 1) or forced:
           # [1] Reindex page-container nodes of deleted page-elements.
@@ -247,7 +235,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
               self.reindex_node(node=pageelement_node)
           # [2] Unindex deleted page-nodes if filter-match.
           nodes = [node for node in nodes if self.matches_ids_filter(node)]
-          for connector in connectors:
+          for connector in self.getCatalogAdapter().get_connectors():
             connector.manage_objects_remove(nodes)
         return True
       except:

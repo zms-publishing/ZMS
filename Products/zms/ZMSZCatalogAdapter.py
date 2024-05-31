@@ -161,6 +161,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
         return success, failed 
       request = self.REQUEST
       request.set('lang', self.REQUEST.get('lang', self.getPrimaryLanguage()))
+      request.set('ZMS_ZCATALOG_REINDEXING', True)
       result = []
       result.append('%i objects cataloged (%s failed)'%traverse(base, recursive))
       return ', '.join([x for x in result if x])
@@ -223,16 +224,25 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     #  ZMSZCatalogAdapter.unindex_node
     # --------------------------------------------------------------------------
     def unindex_nodes(self, nodes=[], forced=False):
-      # Is triggered by zmscontainerobject.moveObjsToTrashcan(). 
+      # Is triggered by zmscontainerobject.moveObjsToTrashcan().
+      # Todo: ensure param 'nodes' does contain all ids to be indexed
+      # to avoid sequentially unindexing leading to redundant reindexing 
+      # on the same page-node.
       standard.writeBlock(self, "[unindex_nodes]")
       try:
         if self.getConfProperty('ZMS.CatalogAwareness.active', 1) or forced:
           # [1] Reindex page-container nodes of deleted page-elements.
           pageelement_nodes = [node for node in nodes if not node.isPage()]
-          if pageelement_nodes:
-            for pageelement_node in pageelement_nodes:
-              # Todo: Avoid redundant reindexing of page-container.
-              self.reindex_node(node=pageelement_node)
+          page_nodes = []
+          for pageelement_node in pageelement_nodes:
+              path_nodes = pageelement_node.breadcrumbs_obj_path()
+              path_nodes.reverse()
+              path_nodes = [e for e in path_nodes if e.isPage()]
+              if path_nodes[0] not in page_nodes:
+                page_nodes.append(path_nodes[0])
+          # Using set() for removing doublicates
+          for page_node in list(set(page_nodes)):
+            self.reindex_node(node=page_node)
           # [2] Unindex deleted page-nodes if filter-match.
           nodes = [node for node in nodes if self.matches_ids_filter(node)]
           for connector in self.getCatalogAdapter().get_connectors():
@@ -341,26 +351,27 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
         attr_type = attr.get('type', 'string')
         # Get value for attr from node.
         value = ''
-        try:
-          # ZMSFile.standard_html will work in get_file.
-          if not (node.meta_id == 'ZMSFile' and attr_id == 'standard_html'):
-            if attr_id == 'standard_html' and request.get('ZMS_INSERT') and node.isPage():
+        # ZMSFile.standard_html will be done in get_file().
+        if not (node.meta_id == 'ZMSFile' and attr_id == 'standard_html'):
+          try:
+            if attr_id == 'standard_html' and node.isPage():
               for child_node in node.filteredChildNodes(request,self.PAGEELEMENTS):
                 value += self.getMetaobjAttr(child_node.meta_id, 'standard_html')['ob'](zmscontext=child_node)
             else:
               value = node.attr(attr_id)
-        except:
-          standard.writeError(node, "can't get attr %s"%attr_id)
-          value = 'DATA ERROR'
-          pass
-        # Stringify date/datetime.
-        if attr_type in ['date', 'datetime']:
-          value = standard.getLangFmtDate(node, value, 'eng', 'ISO8601')
-        # Stringify dict/list.
-        elif type(value) in (dict, list):
-          value = standard.str_item(value, f=True)
-        # Add plain text to data.
-        d[attr_id] = content_extraction.extract_text_from_html(node, value)
+            # Stringify date/datetime.
+            if attr_type in ['date', 'datetime']:
+              value = standard.getLangFmtDate(node, value, 'eng', 'ISO8601')
+            # Stringify dict/list.
+            elif type(value) in (dict, list):
+              value = standard.str_item(value, f=True)
+          except:
+            standard.writeError(node, "can't get attr %s"%attr_id)
+            value = 'DATA ERROR'
+            pass
+
+          # Add plain text to data.
+          d[attr_id] = content_extraction.extract_text_from_html(node, value)
 
     # --------------------------------------------------------------------------
     #  Get catalog objects data.

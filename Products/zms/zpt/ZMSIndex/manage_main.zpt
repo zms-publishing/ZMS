@@ -39,16 +39,15 @@ function openWindow(url) {
 		<div class="col-sm-12" data-label="ZMS-Clients">
 			<div class="zmi-sitemap-controls-container">
 				<div class="btn-group zmi-sitemap-controls">
-					<div title="De-/Select All"
-						class="btn btn-secondary">
-						<input id="zmi-sitemap-select" type="checkbox" checked="checked"
-							onclick="if( this.checked ){ $('.zmi-sitemap ul input').prop('checked', true) } else { $('.zmi-sitemap ul input').prop('checked', false) }"
-						/>
-					</div>
 					<div title="Expand Object Tree (Hint: Mind System Load in Case!)"
 						class="btn btn-secondary"
 						onclick="return zmiExpandObjectTree(-1);">
 						<i class="fas fa-plus-square"></i>
+					</div>
+					<div title="De-/Select All"
+						onclick="zmiToggleSelectionButtonClick(this)"
+						class="btn btn-secondary">
+						<i class="fas fa-check-square"></i>
 					</div>
 					<div title="Expand/Compress Sitemap View"
 						class="btn btn-secondary" id="zmi-sitemap-expand"

@@ -21,16 +21,15 @@
 		<div class="form-group">
 			<div class="zmi-sitemap-controls-container">
 				<div class="btn-group zmi-sitemap-controls">
-					<div title="De-/Select All"
-						class="btn btn-secondary">
-						<input id="zmi-sitemap-select" type="checkbox" checked="checked"
-							onclick="if( this.checked ){ $('.zmi-sitemap ul input').prop('checked', true) } else { $('.zmi-sitemap ul input').prop('checked', false) }"
-						/>
-					</div>
 					<div title="Expand Object Tree (Hint: Mind System Load in Case!)"
 						class="btn btn-secondary"
 						onclick="return zmiExpandObjectTree(-1);">
 						<i class="fas fa-plus-square"></i>
+					</div>
+					<div title="De-/Select All"
+						onclick="zmiToggleSelectionButtonClick(this)"
+						class="btn btn-secondary">
+						<i class="fas fa-check-square"></i>
 					</div>
 					<div title="Expand/Compress Sitemap View"
 						class="btn btn-secondary" id="zmi-sitemap-expand"
@@ -411,6 +410,7 @@
 					that.paused = false;
 					$("#start-button i").removeClass("fa-play text-success").addClass("fa-pause text-info");
 					$("#stop-button").addClass("text-danger").prop("disabled","");
+					$(".progress .progress-bar").removeClass("bg-success bg-warning bg-danger");
 					that.start();
 				}
 				else if (!that.paused) {
@@ -423,6 +423,7 @@
 					log("[CONTINUE]");
 					that.paused = false;
 					$("#start-button i").removeClass("fa-play text-success").addClass("fa-pause text-info");
+					$(".progress .progress-bar").removeClass("bg-success bg-warning bg-danger");
 					that.continue();
 				}
 				return false;
@@ -433,6 +434,8 @@
 				that.stopped = true;
 				$("#start-button i").removeClass("fa-pause").addClass("fa-play");
 				$("#stop-button").removeClass("text-danger").prop("disabled","disabled");
+				$('.response:has(i.fa-spin)').addClass('alert-danger').html("Stopped");
+				$(".progress .progress-bar").addClass("bg-danger");
 			}
 		};
 		$('#start-button').click(that.run);
@@ -551,7 +554,6 @@
 		line-height: 1;
 		display: inline-block;
 		font-size: 1rem;
-		position: absolute;
 	}
 	.ZMSZCatalogConnector #readme .modal-body h1 {
 		font-size: 1.25rem;

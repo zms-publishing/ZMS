@@ -216,7 +216,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
           pageelement_nodes = [node for node in nodes if not node.isPage()]
           page_nodes = []
           for pageelement_node in pageelement_nodes:
-              path_nodes = pageelement_node.breadcrumbs_obj_path()
+              path_nodes = pageelement_node.getParentNode().breadcrumbs_obj_path()
               path_nodes.reverse()
               path_nodes = [e for e in path_nodes if e.isPage()]
               if path_nodes[0] not in page_nodes:
@@ -335,11 +335,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
         # ZMSFile.standard_html will be done in get_file().
         if not (node.meta_id == 'ZMSFile' and attr_id == 'standard_html'):
           try:
-            if attr_id == 'standard_html' and node.isPage():
-              for child_node in node.filteredChildNodes(request,self.PAGEELEMENTS):
-                value += self.getMetaobjAttr(child_node.meta_id, 'standard_html')['ob'](zmscontext=child_node)
-            else:
-              value = node.attr(attr_id)
+            value = node.attr(attr_id)
             # Stringify date/datetime.
             if attr_type in ['date', 'datetime']:
               value = standard.getLangFmtDate(node, value, 'eng', 'ISO8601')

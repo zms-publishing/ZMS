@@ -174,28 +174,24 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
       fileparsing = False
       try:
         if self.getConfProperty('ZMS.CatalogAwareness.active', 1) or forced:
-          if self.REQUEST.get('ZMS_INSERT', None):
-            path_nodes = node.getParentNode().breadcrumbs_obj_path()
-          else:
-            path_nodes = node.breadcrumbs_obj_path()
-          path_nodes.reverse()
-
+          breadcrumbs = node.breadcrumbs_obj_path()
+          breadcrumbs.reverse()
           # Determine the node's page container 
           # because this is what usually is to be indexed.
-          path_nodes = [e for e in path_nodes if e.isPage()]
-          page = path_nodes[0]
-
-          # Hint: getCatalogAdapter prefers local adapter, otherwise root adapter.
-          # In case make sure local adapter covers all desired connector types. 
-          if self.matches_ids_filter(page) or self.matches_ids_filter(node):
+          page_nodes = [e for e in breadcrumbs if e.isPage()]
+          container_page = page_nodes[0]
+          container_nodes = standard.difference_list(breadcrumbs, page_nodes)
+          container_nodes.append(container_page)
+          filtered_container_nodes = [e for e in container_nodes if self.matches_ids_filter(e)]
+          if filtered_container_nodes:
+            # Hint: getCatalogAdapter prefers local adapter, otherwise root adapter.
+            # In case make sure local adapter covers all desired connector types. 
             fileparsing = standard.pybool(node.getConfProperty('ZMS.CatalogAwareness.fileparsing', 1))
             connectors = node.getCatalogAdapter().get_connectors()
-            # Reindex node's content by each connector.
+            # Reindex filtered container node's content by each connector.
             for connector in connectors:
-              if node != page and self.matches_ids_filter(page):
-                self.reindex(connector, page, recursive=False, fileparsing=fileparsing)
-              if self.matches_ids_filter(node):
-                self.reindex(connector, node, recursive=False, fileparsing=fileparsing)
+              for filtered_container_node in filtered_container_nodes:
+                self.reindex(connector, filtered_container_node, recursive=False, fileparsing=fileparsing)
         return True
       except:
         standard.writeError( self, "can't reindex_node")

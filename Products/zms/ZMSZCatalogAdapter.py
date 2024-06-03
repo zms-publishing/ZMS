@@ -220,10 +220,10 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
           # Using set() for removing doublicates
           for page_node in list(set(page_nodes)):
             self.reindex_node(node=page_node)
-          # [2] Unindex deleted page-nodes if filter-match.
-          nodes = [node for node in nodes if self.matches_ids_filter(node)]
+          # [2] Unindex deleted nodes (from trashcan) if filter-match.
+          delnodes = [delnode for delnode in nodes[0].getParentNode().getTrashcan().objectValues() if ( ( delnode in nodes) and self.matches_ids_filter(delnode) )]
           for connector in self.getCatalogAdapter().get_connectors():
-            connector.manage_objects_remove(nodes)
+            connector.manage_objects_remove(delnodes)
         return True
       except:
         standard.writeError( self, "unindex_nodes not successful")

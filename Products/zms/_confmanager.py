@@ -1104,7 +1104,7 @@ class ConfManager(
             return ob
       # If no ZMSZCatalogAdapter then add one to root node
       adapter = ZMSZCatalogAdapter.ZMSZCatalogAdapter()
-      self.getRootElement()._setObject( adapter.id, adapter)
+      path_nodes[0]._setObject( adapter.id, adapter)
       adapter = getattr(self, adapter.id)
       adapter.initialize()
       return adapter

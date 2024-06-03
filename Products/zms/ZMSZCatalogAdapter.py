@@ -161,7 +161,6 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
         return success, failed 
       request = self.REQUEST
       request.set('lang', self.REQUEST.get('lang', self.getPrimaryLanguage()))
-      request.set('ZMS_ZCATALOG_REINDEXING', True)
       result = []
       result.append('%i objects cataloged (%s failed)'%traverse(base, recursive))
       return ', '.join([x for x in result if x])
@@ -188,33 +187,15 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
 
           # Hint: getCatalogAdapter prefers local adapter, otherwise root adapter.
           # In case make sure local adapter covers all desired connector types. 
-          if node.getCatalogAdapter().matches_ids_filter(page):
+          if self.matches_ids_filter(page) or self.matches_ids_filter(node):
             fileparsing = standard.pybool(node.getConfProperty('ZMS.CatalogAwareness.fileparsing', 1))
             connectors = node.getCatalogAdapter().get_connectors()
-
-          # Reindex node's content by each connector.
-          for connector in connectors:
-            if self.matches_ids_filter(node) or self.matches_ids_filter(page):
-
-              # CASE-1: ZMS_INSERT
-              # Reindex the current node if page or its container page.
-              if self.REQUEST.get('ZMS_INSERT', None):
-                if node.isPage() and self.matches_ids_filter(node):
-                  self.reindex(connector, node, recursive=False, fileparsing=fileparsing)
-                elif not node.isPage() and self.matches_ids_filter(page): 
-                  self.reindex(connector, page, recursive=False, fileparsing=fileparsing)
-                if not node.isPage() and self.matches_ids_filter(node):
-                  # Additionally add node if filter-match (e.g. ZMSFile).
-                  self.reindex(connector, node, recursive=False, fileparsing=fileparsing)
-
-              # CASE-2: CHANGE
-              # Reindex container page if node!=page and the node if filter-match.
-              else:
-                if node != page and self.matches_ids_filter(page):
-                  self.reindex(connector, page, recursive=False, fileparsing=fileparsing)
-                if self.matches_ids_filter(node):
-                  self.reindex(connector, node, recursive=False, fileparsing=fileparsing)
-
+            # Reindex node's content by each connector.
+            for connector in connectors:
+              if node != page and self.matches_ids_filter(page):
+                self.reindex(connector, page, recursive=False, fileparsing=fileparsing)
+              if self.matches_ids_filter(node):
+                self.reindex(connector, node, recursive=False, fileparsing=fileparsing)
         return True
       except:
         standard.writeError( self, "can't reindex_node")

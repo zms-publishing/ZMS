@@ -611,8 +611,8 @@ class ObjAttrs(object):
     def evalMetaobjAttr(self, *args, **kwargs):
       root = self
       request = self.REQUEST
-      id = request.get('ZMS_INSERT', self.meta_id)
       key = args[0]
+      id = standard.nvl(request.get('ZMS_INSERT'), self.meta_id)
       if key.find('.')>0:
         id = key[:key.find('.')]
         key = key[key.find('.')+1:]

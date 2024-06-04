@@ -1905,7 +1905,7 @@ body.browse_iframe .toggle {
 .zmi-sitemap .toggle {
 	color:#CCC;
 	font-size:120%;
-	vertical-align:bottom;
+	vertical-align: baseline;
 	width:12px;
 	margin-right:2px;
 	text-align:center;
@@ -2386,7 +2386,7 @@ body.lazy_select_form footer .controls {
 	background: #e8f3fb;
 	margin: 0 0 1rem 0;
 	display: block;
-	padding: 10px 12px;
+	padding: 10px 17px;
 	line-height: 1.42857143;
 	background-image: none;
 	border: 1px solid #ccc;

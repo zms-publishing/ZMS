@@ -294,14 +294,14 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     # --------------------------------------------------------------------------
     def get_connectors(self):
       self.ensure_zcatalog_connector_is_initialized()
-      return list(sorted([x for x in self.objectValues(['ZMSZCatalogConnector']) if x.__name__!='broken object']))
+      root = self.getRootElement()
+      return list(sorted([x for x in root.getCatalogAdapter().objectValues(['ZMSZCatalogConnector']) if x.__name__!='broken object']))
 
     # --------------------------------------------------------------------------
     #  ZMSZCatalogAdapter.get_connector
     # --------------------------------------------------------------------------
     def get_connector(self, id):
-      root = self.getRootElement()
-      return [[x for x in root.getCatalogAdapter().get_connectors() if x.id == id]+[None]][0]
+      return [[x for x in self.get_connectors() if x.id == id]+[None]][0]
 
     # --------------------------------------------------------------------------
     #  Add connector.

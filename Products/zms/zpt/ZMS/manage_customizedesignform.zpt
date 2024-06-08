@@ -41,18 +41,19 @@
 		<form id="importObjForm" name="importObjForm" class="form-horizontal" action="manage_customizeDesign" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="section" value="theme" />
 			<input type="hidden" name="lang" tal:attributes="value request/lang">
-			<div class="form-group row">
-				<label for="file" class="col-lg-2 col-md-3 control-label">
-					<i class="fas fa-folder far fa-folder"></i>
-					<span tal:content="python:here.getZMILangStr('ATTR_FILE')">File</span>
-				</label>
-				<div class="col-lg-10 col-md-9"><input class="btn btn-file" name="file" type="file" /></div><!-- .col-lg-10 -->
-			</div><!-- .form-group -->
-			<div class="form-group row">
-				<div class="controls save">
-					<button type="submit" name="btn" class="btn btn-primary" value="BTN_IMPORT" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
-				</div><!-- .controls -->
-			</div><!-- .form-group -->
+			<div class="input-group" title="Select Local File for Uploading">
+				<div class="custom-file">
+					<input type="file" name="file" id="file" class="custom-file-input" value="" 
+						onchange="$('.custom-file label span').html($(this).val().replace(/^.*(\\|\/|\:)/, ''));" />
+					<label class="custom-file-label" for="file"><span tal:content="python:here.getZMILangStr('ATTR_FILE')">Choose file</span></label>
+				</div>
+				<div class="input-group-append">
+					<button name="btn" type="submit" class="btn btn-primary" value="BTN_IMPORT" 
+						tal:content="python:here.getZMILangStr('BTN_IMPORT')">
+						Import
+					</button>
+				</div>
+			</div>
 		</form>
 	</div><!-- .inner -->
 </div><!-- #importObj -->

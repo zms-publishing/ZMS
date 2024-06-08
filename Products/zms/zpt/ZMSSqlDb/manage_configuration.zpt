@@ -219,10 +219,10 @@ function mms_normalize_rows(el_tbody) {
 				</label>
 				<div class="col-sm-9 col-lg-10"><input class="btn btn-file" name="file" type="file" /></div><!-- .col-lg-10 -->
 			</div><!-- .form-group -->
-			<div class="form-group row">
-				<div class="col-lg-12">
+			<div class="form-group row mt-5">
+				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-primary" value="BTN_IMPORT" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
-				</div><!-- .col-lg-12-->
+				</div><!-- .controls -->
 			</div><!-- .form-group -->
 		</div><!-- .inner -->
 	</div><!-- #importConf -->

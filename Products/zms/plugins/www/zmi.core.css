@@ -1713,6 +1713,9 @@ table.table-sm tr.row_insert td .btn-add {
 .zmi.metas table.meta-access .breadcrumb i {
 	font-size:11px;
 }
+.zmi.metas.config iframe {
+	height: 70vh !important;
+}
 
 
 /*  Repository Manager

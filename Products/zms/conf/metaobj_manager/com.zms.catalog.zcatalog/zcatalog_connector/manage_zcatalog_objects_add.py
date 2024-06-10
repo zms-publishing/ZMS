@@ -28,12 +28,12 @@ def catalog_object(zcatalog, adapter, node, data):
 
 def manage_zcatalog_objects_add( self, objects):
   request = self.REQUEST
-  lang = standard.nvl(request.get('lang'), self.getPrimaryLanguage())
-  if 'ZMS_ENV_ZCATALOG' not in request:
-    request['ZMS_ENV_ZCATALOG'] = getZCatalog(self, lang)
-  zcatalog = request['ZMS_ENV_ZCATALOG']
   adapter = self.getCatalogAdapter()
   success, failed = 0, 0
   for (node, data) in objects:
+    lang = standard.nvl(data.get('lang',request.get('lang')), self.getPrimaryLanguage())
+    if 'ZMS_ENV_ZCATALOG_%s'%lang.upper() not in request:
+      request['ZMS_ENV_ZCATALOG_%s'%lang.upper()] = getZCatalog(self, lang)
+    zcatalog = request['ZMS_ENV_ZCATALOG_%s'%lang.upper()]
     success += catalog_object(zcatalog, adapter, node, data)
   return success, failed

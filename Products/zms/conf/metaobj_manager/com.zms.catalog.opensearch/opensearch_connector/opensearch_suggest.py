@@ -39,6 +39,7 @@ def get_opensearch_client(self):
 		http_auth = auth,
 		use_ssl = use_ssl,
 		verify_certs = verify,
+		ssl_assert_hostname = verify,
 		ssl_show_warn = False,
 	)
 	return client

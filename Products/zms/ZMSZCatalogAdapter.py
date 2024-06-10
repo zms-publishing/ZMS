@@ -343,8 +343,11 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
             value = 'DATA ERROR'
             pass
 
-          # Add plain text to data.
-          d[attr_id] = content_extraction.extract_text_from_html(node, value)
+          if attr_type in ['int', 'float', 'amount', 'date', 'datetime', 'time', 'bool']:
+            d[attr_id] = value
+          else:
+            # Add plain text to data.
+            d[attr_id] = content_extraction.extract_text_from_html(node, value)
 
     # --------------------------------------------------------------------------
     #  Get catalog objects data.

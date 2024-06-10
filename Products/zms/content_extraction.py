@@ -58,6 +58,7 @@ def extract_text_from_html(context, html_data):
     @param html_data: html data stream
     @type html_data: C{str} or C{bytes}
     """
+    html_data = standard.pystr(html_data)
     soup = BeautifulSoup(html_data, features="html.parser")
     text_data = soup.get_text() \
         .replace('\n',' ') \

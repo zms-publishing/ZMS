@@ -19,6 +19,49 @@ class opensearch_page:
 	# Id
 	id = "opensearch_page"
 
+	# Lang_dict
+	lang_dict = {"opensearch_page.BTN_SEARCH":{"eng":"Search"
+			,"fra":"Recherche"
+			,"ger":"Suchen"
+			,"ita":"Ricerca"}
+		,"opensearch_page.INFO_KEYWORD":{"eng":"Keyword"
+			,"fra":"Mot-clé"
+			,"ger":"Stichwort"
+			,"ita":"Parola chiave"}
+		,"opensearch_page.INFO_LOADING":{"eng":"Is loading ..."
+			,"fra":"En attendant ..."
+			,"ger":"Wird geladen..."
+			,"ita":"In attesa ..."}
+		,"opensearch_page.INFO_RESULTS":{"eng":"Hits"
+			,"fra":"Résultats"
+			,"ger":"Treffer"
+			,"ita":"Colpi"}
+		,"opensearch_page.INFO_RESULTS_FOR":{"eng":"Hits for"
+			,"fra":"Les hits pour"
+			,"ger":"Treffer für"
+			,"ita":"Colpi per"}
+		,"opensearch_page.INFO_SEARCH":{"eng":"Search for Keywords"
+			,"fra":"Recherche de mots-clés"
+			,"ger":"Suche nach Stichworten"
+			,"ita":"Ricerca per parole chiave"}
+		,"opensearch_page.INFO_UNIBE":{"eng":"Content"
+			,"fra":"Contenu"
+			,"ger":"Inhalte"
+			,"ita":"Contenuto"}
+		,"opensearch_page.INFO_UNITEL":{"eng":"Persons"
+			,"fra":"Personnes"
+			,"ger":"Personen"
+			,"ita":"Persone"}
+		,"opensearch_page.SEARCH_FOR":{"eng":"Search for"
+			,"fra":"Recherche de"
+			,"ger":"Suche nach"
+			,"ita":"Ricerca di"}
+		,"opensearch_page.TOP_RESULTS":{"eng":"Top Hits"
+			,"fra":"Meilleurs résultats"
+			,"ger":"Top-Treffer"
+			,"ita":"Colpo di punta"}}
+
+
 	# Name
 	name = "Opensearch-Page"
 
@@ -26,7 +69,7 @@ class opensearch_page:
 	package = "com.zms.catalog.opensearch"
 
 	# Revision
-	revision = "1.6.1"
+	revision = "1.8.6"
 
 	# Type
 	type = "ZMSDocument"

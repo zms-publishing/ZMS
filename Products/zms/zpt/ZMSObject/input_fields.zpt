@@ -21,7 +21,7 @@
 	<input type="hidden" id="ZMS_INSERT" name="ZMS_INSERT" tal:condition="python:request.get('ZMS_INSERT',False)" tal:attributes="value python:request.get('ZMS_INSERT','')" />
 
 	<div class="card" 
-		tal:condition="python:metaObj['type'] != 'ZMSRecordSet' or command.lower() != 'insert'"
+		tal:condition="python:metaObj.get('type') != 'ZMSRecordSet' or command.lower() != 'insert'"
 		tal:attributes="class python:'card input_fields_%s'%(meta_id)">
 		<div class="card-header attr_last_modified clearfix btn-collapse">
 			<div class="btn-group align-items-center">

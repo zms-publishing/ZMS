@@ -1,0 +1,42 @@
+<connection>sqlite_db</connection>
+<params>zms_id
+client_id
+uuid
+change_dt
+lang
+content_md5
+content_datetime
+content_cache</params>
+<max_rows>1000</max_rows>
+<max_cache>100</max_cache>
+<cache_time>0</cache_time>
+UPDATE OR IGNORE teasers SET
+  zms_id = <dtml-sqlvar zms_id type=nb>,
+  client_id = <dtml-sqlvar client_id type=nb>,
+  uuid = <dtml-sqlvar uuid type=nb>,
+  change_dt = <dtml-sqlvar change_dt type=nb>,
+  lang = <dtml-sqlvar lang type=nb>,
+  content_md5 = <dtml-sqlvar content_md5 type=nb>,
+  content_datetime = <dtml-sqlvar content_datetime type=nb>,
+  content_cache = <dtml-sqlvar content_cache type=nb>
+WHERE zms_id = <dtml-sqlvar zms_id type=nb>
+<dtml-var sql_delimiter>
+INSERT OR IGNORE INTO teasers (
+  zms_id,
+  client_id,
+  uuid,
+  change_dt,
+  lang,
+  content_md5,
+  content_datetime,
+  content_cache
+) VALUES (
+  <dtml-sqlvar zms_id type=nb>,
+  <dtml-sqlvar client_id type=nb>,
+  <dtml-sqlvar uuid type=nb>,
+  <dtml-sqlvar change_dt type=nb>,
+  <dtml-sqlvar lang type=nb>,
+  <dtml-sqlvar content_md5 type=nb>,
+  <dtml-sqlvar content_datetime type=nb>,
+  <dtml-sqlvar content_cache type=nb>
+)

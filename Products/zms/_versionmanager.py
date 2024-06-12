@@ -625,7 +625,8 @@ class VersionItem(object):
       standard.writeLog( self, "[commitObjChanges]: forced=%s, do_history=%s, do_delete=%s"%(str(forced), str(do_history), str(do_delete)))
       delete = self._commitObjChanges( parent, REQUEST, forced, do_history, do_delete)
       # Unset Insert-Flag.
-      REQUEST.set('ZMS_INSERT', None)
+      if not REQUEST.has_key('ZMS_INSERT_CHILD'):
+        REQUEST.set('ZMS_INSERT', None)
       # Synchronize access.
       self.synchronizePublicAccess()
       # Synchronize search.

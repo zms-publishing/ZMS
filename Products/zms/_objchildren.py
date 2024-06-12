@@ -135,6 +135,7 @@ class ObjChildren(object):
       for metaObjAttrId in self.getMetaobjAttrIds( self.meta_id):
         metaObjAttr = self.getMetaobjAttr( self.meta_id, metaObjAttrId)
         if metaObjAttr['type'] in metaObjIds:
+           REQUEST.set('ZMS_INSERT_CHILD', metaObjAttr['id'])
            self._initObjChildren( metaObjAttr, REQUEST)
 
 

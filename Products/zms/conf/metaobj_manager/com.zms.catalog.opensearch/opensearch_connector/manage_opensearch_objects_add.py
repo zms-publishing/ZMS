@@ -49,8 +49,6 @@ def bulk_opensearch_index(self, sources):
 	actions = []
 	# Name adaption to opensearch schema
 	for x in sources:
-		# Allow multipe/batched bodyContentZMSLib page executions in a single request
-		self.REQUEST.set('count_bodyContentZMSLib_page',-1)
 		# Create language specific opensearch id
 		_id = "%s:%s"%(x['uid'],x.get('lang',self.getPrimaryLanguage()))
 		d = {"_op_type":"index", "_index":index_name, "_id":_id}

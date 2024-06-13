@@ -185,7 +185,6 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
           filtered_container_nodes = [e for e in container_nodes if self.matches_ids_filter(e)]
           if filtered_container_nodes:
             # Hint: getCatalogAdapter prefers local adapter, otherwise root adapter.
-            # In case make sure local adapter covers all desired connector types. 
             fileparsing = standard.pybool(node.getConfProperty('ZMS.CatalogAwareness.fileparsing', 1))
             connectors = node.getCatalogAdapter().get_connectors()
             # Reindex filtered container node's content by each connector.
@@ -350,7 +349,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
             d[attr_id] = content_extraction.extract_text_from_html(node, value)
 
     # --------------------------------------------------------------------------
-    #  Get catalog objects data.
+    #  Get catalog objects data for given node.
     # --------------------------------------------------------------------------
     def get_catalog_objects_data(self, node, d, fileparsing=True):
       request = node.REQUEST

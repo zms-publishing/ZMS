@@ -4,6 +4,8 @@ def bulk_solr_add_documents(self, sources):
 	actions = []
 	# Name adaption to solr schema
 	for x in sources:
+		# Allow multipe/batched bodyContentZMSLib page executions in a single request
+		self.REQUEST.set('count_bodyContentZMSLib_page',-1)
 		# Create language specific solr id
 		_id = "%s:%s"%(x['uid'], x.get('lang',self.getPrimaryLanguage()))
 		d = {"_id":_id}

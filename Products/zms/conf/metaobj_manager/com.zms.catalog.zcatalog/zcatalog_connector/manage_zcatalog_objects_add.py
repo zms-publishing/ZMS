@@ -38,5 +38,7 @@ def manage_zcatalog_objects_add( self, objects):
 		if 'ZMS_ENV_ZCATALOG_%s'%lang.upper() not in request:
 			request['ZMS_ENV_ZCATALOG_%s'%lang.upper()] = getZCatalog(self, lang)
 		zcatalog = request['ZMS_ENV_ZCATALOG_%s'%lang.upper()]
+		# Allow multipe/batched bodyContentZMSLib page executions in a single request
+		request.set('count_bodyContentZMSLib_page',-1)
 		success += catalog_object(zcatalog, adapter, node, data)
 	return success, failed

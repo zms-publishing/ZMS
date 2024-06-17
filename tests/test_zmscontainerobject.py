@@ -7,8 +7,6 @@ import unittest
 
 # Product imports.
 from tests.zms_test_util import *
-from Products.zms import mock_http
-from Products.zms import zms
 
 # /Products/zms> python -m unittest discover -s unit_tests
 # /Products/zms> python -m unittest test_zmscontainerobject.ZMSContainerObjectTest
@@ -17,12 +15,11 @@ class ZMSContainerObjectTest(ZMSTestCase):
   temp_title = 'temp-test'
 
   def setUp(self):
-    folder = Folder('myzmsx')
-    folder.REQUEST = mock_http.MockHTTPRequest({'lang':'eng','preview':'preview'})
-    zmscontext = zms.initZMS(folder, 'content', 'titlealt', 'title', 'eng', 'eng', folder.REQUEST)
-    self.context = zmscontext
+    super(ZMSContainerObjectTest, self).setUp()
     print('[setUp] create %s'%self.temp_title)
-    self.folder = zmscontext.manage_addZMSCustom('ZMSFolder',{'title':self.temp_title,'titlealt':self.temp_title},zmscontext.REQUEST)
+    zmscontext = self.context
+    request = zmscontext.REQUEST
+    self.folder = zmscontext.manage_addZMSCustom('ZMSFolder',{'title':self.temp_title,'titlealt':self.temp_title},request)
 
   def test_tree(self):
     context = self.context

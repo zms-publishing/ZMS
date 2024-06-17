@@ -190,7 +190,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
             # Reindex filtered container node's content by each connector.
             for connector in connectors:
               for filtered_container_node in filtered_container_nodes:
-                self.reindex(connector, filtered_container_node, recursive=False, fileparsing=fileparsing)
+                self.reindex(connector, filtered_container_node, recursive=False, sync=False, fileparsing=fileparsing)
         return True
       except:
         standard.writeError( self, "can't reindex_node")
@@ -386,6 +386,45 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
           data = get_default_data(node)
           objects.append(self.get_catalog_objects_data(node, data, fileparsing))
       return objects
+
+    # --------------------------------------------------------------------------
+    #  Reindex
+    # --------------------------------------------------------------------------
+    def reindex(self, connector, base, recursive=True, sync=True, fileparsing=True):
+      def traverse(node, recursive):
+        objects = self.get_catalog_objects(connector, node, fileparsing)
+        success, failed = connector.manage_objects_add(objects, sync)
+        if recursive:
+          for childNode in node.filteredChildNodes(request):
+            childSuccess, childFailed = traverse(childNode, recursive)
+            success += childSuccess
+            failed += childFailed
+        return success, failed 
+      request = self.REQUEST
+      request.set('lang', self.REQUEST.get('lang', self.getPrimaryLanguage()))
+      result = []
+      result.append('%i objects cataloged (%s failed)'%traverse(base, recursive))
+      return ', '.join([x for x in result if x])
+
+
+    ############################################################################
+    #  ZMSZCatalogAdapter.manage_reindex:
+    #
+    #  Reindex.
+    ############################################################################
+    def manage_reindex(self, uid, connector_id=None, REQUEST=None, RESPONSE=None):
+        """ ZMSZCatalogAdapter.manage_reindex """
+        result = []
+        t0 = time.time()
+        root = self.getRootElement()
+        adapter = root.getCatalogAdapter()
+        for connector in adapter.get_connectors():
+          if connector.id ==  connector_id or not connector_id: 
+            base = self.getLinkObj(uid)
+            result.append(connector.id + "\n" + adapter.reindex(connector, base, recursive=True, fileparsing=True))
+        result.append('done!')
+        return ', '.join([x for x in result if x])+' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
+
 
     ############################################################################
     #  ZMSZCatalogAdapter.manage_changeProperties:

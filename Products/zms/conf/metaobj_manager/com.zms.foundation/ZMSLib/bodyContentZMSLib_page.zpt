@@ -1,6 +1,6 @@
 <!-- bodyContentZMSLib_page -->
 <tal:block
-	tal:condition="not:python:here.id in request.get('count_bodyContentZMSLib_page',[])">
+	tal:condition="python:here.id not in request.get('count_bodyContentZMSLib_page',[]) or request.get('path_to_handle')[-1]=='reindex_page'">
 	<tal:block tal:define="detect_recursions python:request.set('count_bodyContentZMSLib_page', request.get('count_bodyContentZMSLib_page',[])+[here.id])"></tal:block>
 	<tal:block tal:condition="python:here.meta_id in ['ZMS','ZMSFolder','ZMSDocument']" tal:define="global 
 		childNodes python:[ob for ob in here.getObjChildren('e',request,here.PAGEELEMENTS) if ob.meta_id not in ['bt_carousel']]">

@@ -149,10 +149,10 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     # --------------------------------------------------------------------------
     #  ZMSZCatalogAdapter.reindex
     # --------------------------------------------------------------------------
-    def reindex(self, connector, base, recursive=True, fileparsing=True, insync=True):
+    def reindex(self, connector, base, recursive=True, fileparsing=True):
       def traverse(node, recursive):
         objects = self.get_catalog_objects(node, fileparsing)
-        success, failed = connector.manage_objects_add(objects, insync)
+        success, failed = connector.manage_objects_add(objects)
         if recursive:
           for childNode in node.filteredChildNodes(request):
             childSuccess, childFailed = traverse(childNode, recursive)
@@ -172,7 +172,6 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
       standard.writeBlock(node, "[reindex_node]")
       connectors = []
       fileparsing = False
-      insync = False
       try:
         if self.getConfProperty('ZMS.CatalogAwareness.active', 1):
           breadcrumbs = node.breadcrumbs_obj_path()
@@ -191,7 +190,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
             # Reindex filtered container node's content by each connector.
             for connector in connectors:
               for filtered_container_node in filtered_container_nodes:
-                self.reindex(connector, filtered_container_node, recursive=False, fileparsing=fileparsing, insync=insync)
+                self.reindex(connector, filtered_container_node, recursive=False, fileparsing=fileparsing)
         return True
       except:
         standard.writeError( self, "can't reindex_node")

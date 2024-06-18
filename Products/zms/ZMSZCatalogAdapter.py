@@ -168,7 +168,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     # --------------------------------------------------------------------------
     #  ZMSZCatalogAdapter.reindex_node
     # --------------------------------------------------------------------------
-    def reindex_node(self, node, forced=False):
+    def reindex_node(self, node):
       standard.writeBlock(node, "[reindex_node]")
       connectors = []
       fileparsing = False

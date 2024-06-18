@@ -138,15 +138,15 @@ class ZMSZCatalogConnector(
     #
     #  @param   objects ((node, data), (node, data), (node, data), ...)
     #  @type    objects C{list|tuple} 
-    #  @param   sync execute synchronously
-    #  @type    sync C{Boolean}
+    #  @param   insync execute synchronously
+    #  @type    insync C{Boolean}
     #  @return  success, failed
     #  @rtype   C{tuple}
     # --------------------------------------------------------------------------
-    def manage_objects_add(self, objects, sync=True):
+    def manage_objects_add(self, objects, insync=True):
       def f():
         return [x['ob'](self, objects) for x in self.getActions(r'^manage_(.*?)_objects_add$')][0]
-      if not sync:
+      if not insync:
         try:
           import asyncio
           async def af():

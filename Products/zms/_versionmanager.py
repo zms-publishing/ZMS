@@ -624,18 +624,14 @@ class VersionItem(object):
       t0 = time.time()
       standard.writeLog( self, "[commitObjChanges]: forced=%s, do_history=%s, do_delete=%s"%(str(forced), str(do_history), str(do_delete)))
       delete = self._commitObjChanges( parent, REQUEST, forced, do_history, do_delete)
-      # Unset Request-Flags.
-      request = {'ZMS_INSERT': None, 'preview': None}
-      [(operator.setitem(request, x, REQUEST.get(x)), REQUEST.set(x, None)) for x in request]
       # Synchronize access.
       self.synchronizePublicAccess()
       # Synchronize search.
-      self.getCatalogAdapter().reindex_node(self)
-      # Reset Request-Flags.
-      [REQUEST.set(x, request.get(x)) for x in request]
+      self.getCatalogAdapter().reindex_node(self, insync=False)
       # Return flag for deleted objects.
       standard.writeLog( self, '[commitObjChanges]: done (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)')
       return delete
+
 
 
     """

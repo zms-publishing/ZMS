@@ -136,10 +136,10 @@ class ZMSZCatalogConnector(
     # --------------------------------------------------------------------------
     #  ZMSZCatalogConnector.manage_objects_add
     #
-    #  @param objects ((node, data), (node, data), (node, data), ...)
-    #  @type  objects list|tuple 
-    #  @return success, failed
-    #  @rtype  tuple
+    #  @param   objects ((node, data), (node, data), (node, data), ...)
+    #  @type    objects C{list|tuple} 
+    #  @return  success, failed
+    #  @rtype   C{tuple}
     # --------------------------------------------------------------------------
     def manage_objects_add(self, objects):
       return [x['ob'](self, objects) for x in self.getActions(r'^manage_(.*?)_objects_add$')][0]
@@ -148,9 +148,9 @@ class ZMSZCatalogConnector(
     #  ZMSZCatalogConnector.manage_objects_remove
     # 
     #  @param   nodes
-    #  @type    nodes list|tuple 
+    #  @type    nodes C{list|tuple} 
     #  @return  success, failed
-    #  @rtype   tuple
+    #  @rtype   C{tuple}
     # --------------------------------------------------------------------------
     def manage_objects_remove(self, nodes):
       return [x['ob'](self, nodes) for x in self.getActions(r'^manage_(.*?)_objects_remove$')][0]

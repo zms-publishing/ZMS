@@ -1,11 +1,6 @@
 ################################################################################
 # _objchildren.py
 #
-# $Id: _objchildren.py,v 1.7 2004/11/24 21:02:52 zmsdev Exp $
-# $Name:$
-# $Author: zmsdev $
-# $Revision: 1.7 $
-#
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2

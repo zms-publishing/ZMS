@@ -632,7 +632,7 @@ class VersionItem(object):
       # Synchronize search.
       self.getCatalogAdapter().reindex_node(self)
       # Reset Request-Flags.
-      [(REQUEST.set(x, request.get(x)), REQUEST.set(x, None)) for x in request]
+      [(REQUEST.set(x, request.get(x)), REQUEST.get(x, None)) for x in request]
       # Return flag for deleted objects.
       standard.writeLog( self, '[commitObjChanges]: done (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)')
       return delete

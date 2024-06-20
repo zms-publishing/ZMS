@@ -35,7 +35,7 @@ def get_opensearch_client(self):
 		http_auth = auth,
 		use_ssl = use_ssl,
 		verify_certs = verify,
-		ssl_assert_hostname = False,
+		ssl_assert_hostname = verify,
 		ssl_show_warn = False,
 	)
 	return client
@@ -143,7 +143,7 @@ def opensearch_query( self, REQUEST=None):
 
 	# No multisite-search: show only results of current ZMS-client
 	if multisite_search==0 and len(home_id) > 0:
-		query['query']['bool']['must'].append( {
+		query['query']['script_score']['query']['bool']['must'].append( {
 			"match": {
 				"home_id": str(home_id)
 			}
@@ -152,10 +152,10 @@ def opensearch_query( self, REQUEST=None):
 	# Exclusion of ZMS-Clients (home_id exclusions) via 'must_not' operator
 	if multisite_exclusions[0]!='':
 		# init 'must_not' operator
-		query['query']['bool']['must_not'] = []
+		query['query']['script_score']['query']['bool']['must_not'] = []
 		# add must_not for each home_id
 		for home_id in multisite_exclusions:
-			query['query']['bool']['must_not'].append( {
+			query['query']['script_score']['query']['bool']['must_not'].append( {
 				"match": {
 					"home_id": str(home_id)
 				}

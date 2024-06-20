@@ -206,26 +206,38 @@
 														</td>
 													</tr>
 												</tal:block>
-												<tr tal:condition="not:metaObjPackage" tal:repeat="value python:['type(ZMSDocument)','type(ZMSObject)']">
-													<td><input type="checkbox" name="ids:list" tal:attributes="value value"></td>
-													<td><tal:block tal:content="value"></tal:block></td>
+												<tr title="Index any of the class type."
+													tal:condition="not:metaObjPackage" 
+													tal:repeat="value python:['type(ZMSDocument)','type(ZMSObject)']">
+													<td class="text-center">
+														<input type="checkbox" name="ids:list" tal:attributes="value value;id python:'objtype_%s'%(value)" />
+													</td>
+													<td>
+														<i class="fas fa-asterisk text-muted"></i>&nbsp;
+														<label tal:attributes="for python:'objtype_%s'%(value)" class="m-0" tal:content="value">NAME</label>
+													</td>
 												</tr>
 												<tal:block tal:repeat="metaObj metaObjs">
-													<tr tal:condition="python:metaObj['type']!='ZMSPackage' and metaObj.get('package')==metaObjPackage">
-														<td style="text-align:center;">
+													<tr title="Index the content class."
+														tal:condition="python:metaObj['type']!='ZMSPackage' and metaObj.get('package')==metaObjPackage">
+														<td class="text-center">
 															<input type="checkbox" name="ids:list" tal:attributes="value metaObj/id;
+																id python:'objid_%s'%(metaObj['id']);
 																data-attrs python:','.join(
 																	['%s(%s)'%(xx['id'],xx['type']) for xx in
 																		[here.getMetaobjAttr(metaObj['id'],x['id']) for x in metaObj['attrs'] if x['type'] not in ['*','constant','delimiter','file','hint','image','interface']]]);
 																checked python:['','checked'][int('catalog_index' in [x['id'] for x in metaObj['attrs']])];
-																disabled python:['','disabled'][int('catalog_index' in [x['id'] for x in metaObj['attrs']])]" onclick="toggleMetaobj()"/>
+																disabled python:['','disabled'][int('catalog_index' in [x['id'] for x in metaObj['attrs']])]" onclick="toggleMetaobj()" />
 														</td>
 														<td>
 															<a href="#" class="mr-1" target="_blank" title="Show Content Class Details (Big Picture)"
 																tal:attributes="href python:'../metaobj_manager/manage_bigpicture?lang=%s&id=%s'%(request.get('lang','ger'),metaObj['id'])"
 															><i tal:on-error="string:ERROR icon" tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])"></i></a>&nbsp;
-															<span tal:on-error="string:ERROR" tal:content="metaObj/name">the name</span>
-															<span>(<tal:block tal:content="python:here.getZMILangStr('SOTYPE_%s'%metaObj['type'].upper())">the type</tal:block>)</span>
+															<label tal:attributes="for python:'objid_%s'%(metaObj['id'])" class="m-0" 
+																tal:on-error="string:ERROR" 
+																tal:content="python:'%s (%s)'%(metaObj['name'], here.getZMILangStr('SOTYPE_%s'%metaObj['type'].upper()))">
+																NAME (TYPE)
+															</label>
 														</td>
 													</tr>
 												</tal:block>
@@ -255,7 +267,7 @@
 </div><!-- #zmi-tab -->
 
 <script>
-
+//<!--
 function toggleMetaobj() {
 	var selected = {};
 	$("table#indexes input:checked").each(function() {
@@ -298,10 +310,10 @@ function toggleMetaobj() {
 		$("table#indexes").append(''
 			+ '<'+'tr>'
 				+ '<'+'td style="text-align:center;">'
-					+ '<'+'input type="checkbox" name="attr_ids:list" '+(preselected?' checked="checked"':'')+'value="'+metaObjAttrId+'" onclick="toggleMetaobj()"/>'
+					+ '<'+'input type="checkbox" name="attr_ids:list" '+(preselected?' checked="checked"':'')+'value="'+metaObjAttrId+'" id="attrid_'+metaObjAttrId+'" onclick="toggleMetaobj()"/>'
 				+ '<'+'/td>'
 				+ '<'+'td>'
-					+ '<'+'span>'+metaObjAttrId+' ('+type+')<'+'/span> '
+					+ '<'+'label for="attrid_'+metaObjAttrId+'">'+metaObjAttrId+' ('+type+')<'+'/label> '
 					+ '<'+'input type="hidden" name="type_'+metaObjAttrId+'" value="'+type+'"/> '
 				+ '<'+'/td>'
 				+ '<'+'td>'

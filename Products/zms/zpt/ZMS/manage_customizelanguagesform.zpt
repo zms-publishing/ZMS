@@ -174,23 +174,29 @@ function zmiFormSubmit(sender,d) {
 <div id="importLangDict" class="d-none">
 <form class="form-horizontal" action="manage_changeLangDictProperties" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
-	<div class="form-row">
-		<label class="col-lg-2 control-label" for="file"><i class="fas fa-folder-open"></i> <tal:block tal:content="python:here.getZMILangStr('ATTR_FILE')">File</tal:block></label>
-		<div class="col-lg-10">
-			<input class="btn btn-file" name="file" type="file" />
-		</div><!-- .col-lg-10 -->
+	<div class="form-group col-12">
+		<div class="custom-file">
+			<input type="file" name="file" id="file" class="custom-file-input" value="" 
+				onchange="$('.custom-file label span').html($(this).val().replace(/^.*(\\|\/|\:)/, ''));" />
+			<label class="custom-file-label" for="file"><span tal:content="python:here.getZMILangStr('ATTR_FILE')">Choose file</span></label>
+		</div>
 	</div><!-- .form-group -->
-	<div class="form-row">
-		<label class="col-lg-2 control-label" for="file" tal:content="python:here.getZMILangStr('OR')">or</label>
-		<div class="col-lg-10">
-			<select class="form-control form-control-sm" id="init" name="init" onfocus="zmiExpandConfFiles(this,'.langdict.')" onmouseover="zmiExpandConfFiles(this,'.langdict.')">
-				<option value="">--- <tal:block tal:content="python:here.getZMILangStr('BTN_INIT')">Init</tal:block>... ---</option>
-			</select>
-		</div><!-- .col-lg-10 -->
+	<label class="col-12 control-label text-left"><span tal:content="python:here.getZMILangStr('OR').lower()">Or</span></label>
+	<div class="form-group col-12 mt-2">
+		<select class="form-control" id="init" name="init" 
+			onfocus="zmiExpandConfFiles(this,'.langdict.')" 
+			onmouseover="zmiExpandConfFiles(this,'.langdict.')">
+			<option value="">--- <tal:block tal:content="python:here.getZMILangStr('BTN_INIT')">Init</tal:block>... ---</option>
+		</select>
 	</div><!-- .form-group -->
-	<div class="controls save">
-		<button name="btn" type="submit" class="btn btn-primary" value="BTN_IMPORT" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
-	</div>
+	<div class="form-group row mt-5 mr-0">
+		<div class="controls save">
+			<button name="btn" type="submit" class="btn btn-primary" value="BTN_IMPORT" 
+				tal:content="python:here.getZMILangStr('BTN_IMPORT')">
+				Import
+			</button>
+		</div>
+	</div><!-- .form-group -->
 </form>
 </div><!-- #importLangDict -->
 

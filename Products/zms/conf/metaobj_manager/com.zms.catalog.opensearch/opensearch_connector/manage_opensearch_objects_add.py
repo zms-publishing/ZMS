@@ -69,7 +69,6 @@ def manage_opensearch_objects_add( self, objects):
 	# Function applies to:
 	#	ZMSZCatalogConnector.manage_objects_add 
 	#	ZMSZCatalogConnector.reindex_page
-	self.REQUEST.set('content_trimmed',True)
 	sources = [data for (node, data) in objects]
 	try:
 		success, failed = bulk_opensearch_index(self, sources)

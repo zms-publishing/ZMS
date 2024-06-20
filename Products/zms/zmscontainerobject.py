@@ -132,7 +132,7 @@ class ZMSContainerObject(
       @rtype: C{zmsobject.ZMSObject}
       """
       request = self.REQUEST
-      values['meta_id'] = request.get('ZMS_INSERT',meta_id)
+      values['meta_id'] = standard.nvl(request.get('ZMS_INSERT'),meta_id)
       return self.manage_addZMSObject('ZMSCustom', values, request)
 
 

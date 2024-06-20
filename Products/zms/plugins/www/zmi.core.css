@@ -904,7 +904,7 @@ li.zmi-item span.zmi-ids {
 	margin: 6px;
 	cursor:pointer;
 }
-.zmi-manage-main-change {
+div.zmi-manage-main-change {
 	color:#999;
 	font-size:11px;
 	margin:.7rem 0 0 0;
@@ -1713,6 +1713,9 @@ table.table-sm tr.row_insert td .btn-add {
 }
 .zmi.metas table.meta-access .breadcrumb i {
 	font-size:11px;
+}
+.zmi.metas.config iframe {
+	height: 70vh !important;
 }
 
 

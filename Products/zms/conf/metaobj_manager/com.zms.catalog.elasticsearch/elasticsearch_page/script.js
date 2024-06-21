@@ -97,16 +97,22 @@ $(function() {
 			let index_name = x['_index'];
 			let source = x['_source'];
 			let highlight = x['highlight'];
-			let body = source['standard_html'];
+			let lang = source['lang'];
 			let title = source['title'];
-			// Remove repeating title string from beginning of snippet
-			let snippet = body.startsWith(title) ? body.substr(title.length).trim() : body;
+			let snippet = source['attr_dc_description'];
+			if (!snippet) {
+				snippet = source['standard_html'];
+				// Remove repeating title string from beginning of snippet
+				snippet = snippet ? ( snippet.indexOf(title) === 0 ? snippet.substr(title.length).trim() : snippet ) : snippet;
+			};
 			var hit = { 
 				'path':source['uid'], 
 				'href':source['index_html'], 
 				'title':title, 
 				'snippet':snippet,
-				'index_name':index_name
+				'index_name':index_name,
+				'score':score,
+				'lang':lang
 			};
 			if (typeof highlight !== 'undefined') {
 				if (typeof highlight['title'] !== 'undefined') {

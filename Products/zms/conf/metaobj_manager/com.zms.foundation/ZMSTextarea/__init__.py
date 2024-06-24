@@ -26,7 +26,7 @@ class ZMSTextarea:
 	package = "com.zms.foundation"
 
 	# Revision
-	revision = "5.1.0"
+	revision = "5.2.0"
 
 	# Type
 	type = "ZMSObject"
@@ -96,3 +96,12 @@ class ZMSTextarea:
 			,"name":"Template: ZMSTextarea"
 			,"repetitive":0
 			,"type":"zpt"}
+
+		standard_json = {"default":""
+			,"id":"standard_json"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"JSON"
+			,"repetitive":0
+			,"type":"py"}

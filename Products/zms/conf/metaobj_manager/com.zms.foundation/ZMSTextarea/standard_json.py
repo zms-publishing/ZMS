@@ -34,18 +34,16 @@ format_docx_map = {
 	"wysiwyg" : "html",
 }
 
-block_seq = []
+blocks = [
+	{
+		'id':id, 
+		'meta_id':meta_id,
+		'parent_id':parent_id,
+		'parent_meta_id':parent_meta_id,
+		"docx_format":format_docx_map.get(format,'Normal'), 
+		'content':text
+	}
+]
 
-block1 = dict({
-	'id':id, 
-	'meta_id':meta_id,
-	'parent_id':parent_id,
-	'parent_meta_id':parent_meta_id,
-	"docx_format":format_docx_map.get(format,'Normal'), 
-	'content':text
-})
-
-block_seq.append(block1)
-
-return block_seq
+return blocks
 # --// standard_json //--

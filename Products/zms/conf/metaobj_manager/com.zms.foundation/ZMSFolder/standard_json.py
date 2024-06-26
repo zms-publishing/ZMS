@@ -43,7 +43,12 @@ for pageelement in zmscontext.filteredChildNodes(request,zmscontext.PAGEELEMENTS
 			html = standard.re_sub(r'<!--(.|\s|\n)*?-->', '', html)
 			html = standard.re_sub(r'\n|\t|\s\s|\s>', '', html)
 		except:
-			html = 'Rendering Error: %s' % pageelement.meta_id
+			html = '<table>'
+			html += '<caption>Rendering Error: %s</caption>' % pageelement.meta_id
+			attrs = [d['id'] for d in zmscontext.getMetaobjAttrs(pageelement.meta_id) if d['type'] not in ['dtml','zpt','py','constant','resource','interface']]
+			for attr in attrs:
+				html += '<tr><td>%s</td><td>%s</td></tr>' % (attr, pageelement.attr(attr))
+			html += '</table>'
 		# Create a json block
 		json_block = [{
 			'id': pageelement.id,

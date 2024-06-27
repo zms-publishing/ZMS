@@ -46,7 +46,7 @@ for pageelement in zmscontext.filteredChildNodes(request,zmscontext.PAGEELEMENTS
 			html = pageelement.getBodyContent(request)
 			# Clean html data
 			html = standard.re_sub(r'<!--(.|\s|\n)*?-->', '', html)
-			html = standard.re_sub(r'\n|\t|\s\s|\s>', '', html)
+			html = standard.re_sub(r'\n|\t|\s\s', '', html)
 		except:
 			html = '<table>'
 			html += '<caption>Rendering Error: %s</caption>' % pageelement.meta_id

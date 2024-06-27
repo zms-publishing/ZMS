@@ -16,6 +16,7 @@ from docx.shared import Pt
 from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.enum.style import WD_STYLE_TYPE
 from docx.oxml import OxmlElement, ns
+from docx.shared import Emu
 
 from bs4 import BeautifulSoup
 
@@ -109,7 +110,7 @@ def add_runs(docx_block, bs_element):
 		docx_block.text(bs_element.text)
 
 
-def add_htmlblock_to_docx(docx, htmlblock):
+def add_htmlblock_to_docx(zmscontext, docx, htmlblock):
 	# remove comments
 	htmlblock = re.sub(r'<!.*?->','', htmlblock)
 
@@ -164,18 +165,32 @@ def add_htmlblock_to_docx(docx, htmlblock):
 						if cl.name == 'th':
 							table.cell(r,i).paragraphs[0].runs[0].bold = True
 
-			elif element.name == 'img':
+			elif element.name == 'img' or element.name == 'figure':
+				if element.name == 'figure':
+					element = element.find('img')
 				if element.has_attr('src'):
 					img_name = element['src'].split('/')[-1]
 					if not element['src'].startswith('http'):
-						element['src'] = str(request['URL' ]) + str(element['src'])
+						src_url0 = zmscontext.absolute_url().split('/content/')[0]
+						src_url1 = element['src'].split('/content/')[-1]
+						element['src'] = '%s/content/%s'%(src_url0, src_url1)
+
+				maxwidth = 460
+				imgwidth = element.has_attr('width') and int(float(element['width'])) or None
+				if imgwidth:
+					scale =  imgwidth>maxwidth and imgwidth/maxwidth or 1
+					imgwidth = imgwidth/scale
+				else:
+					imgwidth = maxwidth
+
 				try:
 					response = requests.get(element['src'])
 					with open(img_name, 'wb') as f:
 						f.write(response.content)
-					docx.add_picture(img_name)
+					docx.add_picture(img_name, width=Emu(imgwidth*9525))
 				except:
 					pass
+
 			else:
 				docx.add_paragraph(str(element))
 
@@ -201,6 +216,8 @@ def manage_export_pydocx(self):
 	styles = doc.styles
 	# Custom colors: #017D87
 	custom_color1 = docx.shared.RGBColor(1, 125, 135)
+	# Page margins
+	doc.sections[0].top_margin = Emu(120*9525)
 	# Normal
 	styles['Normal'].font.name = 'Arial'
 	styles['Normal'].font.size = Pt(9)
@@ -236,6 +253,8 @@ def manage_export_pydocx(self):
 	styles.add_style('Hyperlink', WD_STYLE_TYPE.CHARACTER)
 	styles['Hyperlink'].font.color.rgb = custom_color1
 	styles['Hyperlink'].font.underline = True
+	styles['Header'].font.size = Pt(8)
+	styles['footer'].font.size = Pt(8)
 	# #############################################
 	
 	# #############################################
@@ -260,7 +279,7 @@ def manage_export_pydocx(self):
 	for block in blocks:
 		v = block['content']
 		if v and block['docx_format'] == 'html':
-			doc, add_count, docx_block_type = add_htmlblock_to_docx(docx=doc, htmlblock=v)
+			doc, add_count, docx_block_type = add_htmlblock_to_docx(zmscontext=self, docx=doc, htmlblock=v)
 		else:
 			doc.add_paragraph(v, style=block['docx_format'])
 			add_count = 1

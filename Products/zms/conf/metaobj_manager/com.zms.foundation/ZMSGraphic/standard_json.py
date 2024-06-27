@@ -16,12 +16,10 @@ meta_id = zmscontext.meta_id
 parent_id = zmscontext.getParentNode().id 
 parent_meta_id = zmscontext.getParentNode().meta_id 
 text = zmscontext.attr('text')
-img = zmscontext.attr('img')
-imghires = zmscontext.attr('imghires')
-if img:
-    img_url = img.getHref(request) 
-if imghires:
-    img_url = imghires.getHref(request)
+img = zmscontext.attr('imghires') or zmscontext.attr('img')
+img_url = img.getHref(request) 
+imgwidth = img and int(img.getWidth()) or 0;
+imgheight = img and int(img.getHeight()) or 0;
 
 blocks = [
 	{
@@ -29,8 +27,16 @@ blocks = [
 		'meta_id':meta_id,
 		'parent_id':parent_id,
 		'parent_meta_id':parent_meta_id,
+		'docx_format':'Caption',
+		'content':text
+	},
+	{
+		'id':id, 
+		'meta_id':meta_id,
+		'parent_id':parent_id,
+		'parent_meta_id':parent_meta_id,
 		'docx_format':'html',
-		'content':'<p class="Caption">%s<p><img src="%s" />'%(text, img_url)
+		'content':'<img src="%s" width="%s" height="%s" />'%(img_url, imgwidth, imgheight)
 	}
 ]
 

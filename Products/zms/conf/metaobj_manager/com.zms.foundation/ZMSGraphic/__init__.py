@@ -26,7 +26,7 @@ class ZMSGraphic:
 	package = "com.zms.foundation"
 
 	# Revision
-	revision = "5.0.0"
+	revision = "5.2.0"
 
 	# Type
 	type = "ZMSObject"
@@ -128,7 +128,7 @@ class ZMSGraphic:
 			,"repetitive":0
 			,"type":"richtext"}
 
-		format = {"default":"##\nreturn context.getTextFormatDefault()"
+		format = {"default":"##\r\nreturn context.getTextFormatDefault()"
 			,"id":"format"
 			,"keys":[]
 			,"mandatory":1
@@ -174,3 +174,12 @@ class ZMSGraphic:
 			,"name":"Template: ZMSGraphic"
 			,"repetitive":0
 			,"type":"zpt"}
+
+		standard_json = {"default":""
+			,"id":"standard_json"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"JSON Template: ZMSGraphic"
+			,"repetitive":0
+			,"type":"py"}

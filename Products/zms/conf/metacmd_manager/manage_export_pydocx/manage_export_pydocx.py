@@ -101,14 +101,21 @@ def add_bottom_border(style):
 # #############################################
 # Helper Functions 2: HTML/Richtext-Processing 
 # #############################################
-	
+
+# Clean HTML
+def clean_html(html):
+	# Clean comments, styles, empty tags
+	html = re.sub(r'<!.*?->','', html)
+	html = re.sub(r'<style.*?</style>','', html)
+	html = standard.re_sub(r'\n|\t', ' ', html)
+	html = standard.re_sub(r'\s\s', ' ', html)
+	return html
+
 # ADD RUNS TO DOCX-BLOCK
 def add_runs(docx_block, bs_element):
-	# #########################################
 	# Adding a minimum set of inline runs
 	# any BeautifulSoup block element may contain
 	# to the docx-block, e.g. <strong>, <em>, <a>
-	# #########################################
 	if bs_element.children:
 		for elrun in bs_element.children:
 			if elrun.name == 'strong':
@@ -125,18 +132,19 @@ def add_runs(docx_block, bs_element):
 
 # ADD HTML-BLOCK TO DOCX
 def add_htmlblock_to_docx(zmscontext, docx, htmlblock):
-	# remove comments
-	htmlblock = re.sub(r'<!.*?->','', htmlblock)
+	# Clean HTML
+	htmlblock = clean_html(htmlblock)
 
 	# Apply BeautifulSoup and iterate over elements
 	soup = BeautifulSoup(htmlblock, 'html.parser')
 
-	# Iterate over elements
+	# Block type and counter is needed for determining last inserted block
 	c = 0
+	docx_block_type = 'paragraph'
+
+	# Iterate over elements
 	for element in soup.children:
 		if element.name != None and element not in ['\n']:
-			# Block type and counter is needed for determining last inserted block
-			docx_block_type = 'paragraph'
 			c+=1
 			if element.name in ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']:
 				heading_level = int(element.name[1])
@@ -146,7 +154,11 @@ def add_htmlblock_to_docx(zmscontext, docx, htmlblock):
 				p = docx.add_paragraph()
 				if element.has_attr('class'):
 					if 'caption' in element['class']:
-						p.style('Caption')
+						p.style = docx.styles['Caption']
+					else:
+						class_name = element['class'][0]
+						style_name = (class_name in docx.styles) and class_name or 'Normal'
+						p.style = docx.styles[style_name]
 				add_runs(docx_block = p, bs_element = element)
 
 			elif element.name in ['ul','ol']:
@@ -205,8 +217,34 @@ def add_htmlblock_to_docx(zmscontext, docx, htmlblock):
 				except:
 					pass
 
+			elif element.name == 'div':
+				child_tags = [e.name for e in element.children if e.name]
+				if 'em' in child_tags or 'strong' in child_tags:
+					p = docx.add_paragraph()
+					if element.has_attr('class'):
+						class_name = element['class'][0]
+						style_name = (class_name in docx.styles) and class_name or 'Normal'
+						p.style = docx.styles[style_name]
+					add_runs(docx_block = p, bs_element = element)
+				else:
+					div_html = ''.join([str(e) for e in element.children])
+					add_htmlblock_to_docx(zmscontext, docx, div_html)
+
+			elif element.name == 'a':
+				# Hyperlink containing a block element 
+				div_html = ''.join([str(e) for e in element.children])
+				add_htmlblock_to_docx(zmscontext, docx, div_html)
+
 			else:
-				docx.add_paragraph(str(element))
+				if element.children:
+					div_html = ''.join([str(e) for e in element.children])
+					p = add_htmlblock_to_docx(zmscontext, docx, div_html)
+					try:
+						add_runs(docx_block = p, bs_element = element)
+					except:
+						pass
+				else:
+					docx.add_paragraph(str(element))
 
 	return (docx, c, docx_block_type)
 
@@ -270,31 +308,41 @@ def set_docx_styles(doc):
 # Helper Functions 4: GET DOCX NORMALIZED JSON
 # #############################################
 
-def get_docx_normalized_json(self):
-	# Get a normalized JSON-stream of a ZMSDocument-like node
-	# The JSON-Stream is used for the DOCX-Export
-	# It is a list of blocks, where the first block is the container meta data
-	# and the following blocks are the pageelements of the document
-	# Each block is a dictionary with the following keys:
-	# - id: the id of the node
-	# - meta_id: the meta_id of the node
-	# - parent_id: the id of the parent node
-	# - parent_meta_id: the meta_id of the parent node
-	# - title: the title of the node
-	# - description: the description of the node
-	# - last_change_dt: the last change date of the node
-	# - docx_format: the format of the content (e.g. 'html')
-	# - content: the content of the node
+# The function creates a normalized JSON stream of 
+# a PAGE-like ZMS node. This JSON stream is used for 
+# transforming the content to DOCX. 
+# It is a list of dicts (key/value-pairs), where the 
+# first dict is representing the container meta data
+# and the following blocks are representing the PAGEELEMENTS
+# of the document.
+# Each object dictionary has the following keys:
+# - id: the id of the node
+# - meta_id: the meta_id of the node
+# - parent_id: the id of the parent node
+# - parent_meta_id: the meta_id of the parent node
+# - title: the title of the node
+# - description: the description of the node
+# - last_change_dt: the last change date of the node
+# - docx_format: the format of the content (e.g. 'html')
+# - content: the content of the node
 
-	# Any PAGEELEMENT node need to have a 'standard_json_docx' attribute
-	# which provides the specific ZMS content model translation to the 
-	# DOCX model. If this attribute is not available, the standard_html 
-	# of the PAGEELEMENT node is used as content.
+# Any PAGEELEMENT-node may have a specific 'standard_json_docx'
+# attribute which preprocesses it's ZMS content model close to
+# the translation into the DOCX model. 
+# If this attribute method (py-primtive) is not available, 
+# the object's class standard_html-method is used to get the 
+# content, so that the (maybe not optimum) html will be 
+# transformed to DOCX.
+
+# Depending on the complexity of the content it's JSON 
+# representation may consist of ore or multiple key/value-
+# sequences. Any of these blocks will create a new block 
+# element (e.g. paragraph) in the DOCX document.
+
+
+def get_docx_normalized_json(self):
 
 	zmscontext = self
-
-	# --// standard_json //--
-	from Products.zms import standard
 	request = zmscontext.REQUEST
 
 	id = zmscontext.id
@@ -302,7 +350,7 @@ def get_docx_normalized_json(self):
 	parent_id = zmscontext.id
 	parent_meta_id = zmscontext.meta_id 
 	title = zmscontext.attr('title')
-	descripton = zmscontext.attr('attr_dc_descripton')
+	description = zmscontext.attr('attr_dc_description')
 	last_change_dt = zmscontext.attr('change_dt') or zmscontext.attr('created_dt')
 	url = zmscontext.getHref2IndexHtml(request)
 
@@ -315,7 +363,7 @@ def get_docx_normalized_json(self):
 			'parent_id':parent_id,
 			'parent_meta_id':parent_meta_id,
 			'title':title,
-			'descripton':descripton,
+			'description':description,
 			'last_change_dt':last_change_dt
 		}
 	]
@@ -331,8 +379,7 @@ def get_docx_normalized_json(self):
 			try:
 				html = pageelement.getBodyContent(request)
 				# Clean html data
-				html = standard.re_sub(r'<!--(.|\s|\n)*?-->', '', html)
-				html = standard.re_sub(r'\n|\t|\s\s', '', html)
+				html = clean_html(html)
 			except:
 				html = '<table>'
 				html += '<caption>Rendering Error: %s</caption>' % pageelement.meta_id
@@ -355,7 +402,6 @@ def get_docx_normalized_json(self):
 	blocks[0]['last_change_dt'] = last_change_dt
 
 	return blocks
-	# --// /standard_json //--
 
 
 # #############################################
@@ -391,8 +437,8 @@ def manage_export_pydocx(self):
 	prepend_bookmark(doc.paragraphs[-1], heading.get('id',''))
 	
 	if heading.get('description','')!='':
-		descr = doc.add_paragraph(heading.get('description',''))
-		descr.style = 'Description'
+		p = doc.add_paragraph(heading.get('description',''))
+		p.style = doc.styles['Description']
 	
 	for block in blocks:
 		v = block['content']
@@ -428,6 +474,9 @@ def manage_export_pydocx(self):
 	# Set the HTTP response headers
 	request.RESPONSE.setHeader('Content-Disposition', f'inline;filename={fn}')
 	request.RESPONSE.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+
+	# msg = 'DOCX-Export erfolgreich: %s'%fn
+	# request.response.redirect(standard.url_append_params('%s/manage_main'%self.absolute_url(),{'lang':request['lang'],'manage_tabs_message':msg}))
 
 	# Return the data of the docx file
 	return data

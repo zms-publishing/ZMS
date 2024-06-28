@@ -55,20 +55,20 @@ def add_page_number(run):
 	run._r.append(fldChar2)
 
 # BOOKMARK ZMS-ID
-def prepend_bookmark(block, bookmark_id):
+def prepend_bookmark(docx_block, bookmark_id):
 	bookmark_start = create_element('w:bookmarkStart')
 	create_attribute(bookmark_start, 'w:id', bookmark_id)
 	create_attribute(bookmark_start, 'w:name', bookmark_id)
 	bookmark_end = create_element('w:bookmarkEnd')
 	create_attribute(bookmark_end, 'w:id', bookmark_id)
 	try:
-		block._element.insert(0, bookmark_end)
-		block._element.insert(0, bookmark_start)
+		docx_block._element.insert(0, bookmark_end)
+		docx_block._element.insert(0, bookmark_start)
 	except:
 		pass
 
-def add_hyperlink(block, link_text, url):
-	r_id = block.part.relate_to(url, docx.opc.constants.RELATIONSHIP_TYPE.HYPERLINK, is_external=True)
+def add_hyperlink(docx_block, link_text, url):
+	r_id = docx_block.part.relate_to(url, docx.opc.constants.RELATIONSHIP_TYPE.HYPERLINK, is_external=True)
 	hyper_link = create_element('w:hyperlink')
 	create_attribute(hyper_link, 'w:id', r_id)
 	hyper_link_run = create_element('w:r')
@@ -81,7 +81,7 @@ def add_hyperlink(block, link_text, url):
 	hyper_link_text.text = link_text
 	hyper_link_run.append(hyper_link_text)
 	hyper_link.append(hyper_link_run)
-	block._p.append(hyper_link)
+	docx_block._p.append(hyper_link)
 
 
 # BORDER BOTTOM
@@ -123,7 +123,7 @@ def add_runs(docx_block, bs_element):
 			elif elrun.name == 'em':
 				docx_block.add_run(elrun.text).italic = True
 			elif elrun.name == 'a':
-				add_hyperlink(block = docx_block, link_text = elrun.text, url = elrun.get('href'))
+				add_hyperlink(docx_block = docx_block, link_text = elrun.text, url = elrun.get('href'))
 				docx_block.add_run(' ')
 			else:
 				docx_block.add_run(str(elrun))
@@ -131,16 +131,15 @@ def add_runs(docx_block, bs_element):
 		docx_block.text(bs_element.text)
 
 # ADD HTML-BLOCK TO DOCX
-def add_htmlblock_to_docx(zmscontext, docx, htmlblock):
+def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
 	# Clean HTML
 	htmlblock = clean_html(htmlblock)
 
 	# Apply BeautifulSoup and iterate over elements
 	soup = BeautifulSoup(htmlblock, 'html.parser')
 
-	# Block type and counter is needed for determining last inserted block
+	# Counter for html elements: set bookmark before first element
 	c = 0
-	docx_block_type = 'paragraph'
 
 	# Iterate over elements
 	for element in soup.children:
@@ -148,38 +147,44 @@ def add_htmlblock_to_docx(zmscontext, docx, htmlblock):
 			c+=1
 			if element.name in ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']:
 				heading_level = int(element.name[1])
-				docx.add_heading(element.text, level=heading_level)
+				p = docx_doc.add_heading(element.text, level=heading_level)
+				if c==1: 
+					prepend_bookmark(p, zmsid)
 
 			elif element.name == 'p':
-				p = docx.add_paragraph()
+				p = docx_doc.add_paragraph()
+				if c==1: 
+					prepend_bookmark(p, zmsid)
 				if element.has_attr('class'):
 					if 'caption' in element['class']:
-						p.style = docx.styles['Caption']
+						p.style = docx_doc.styles['Caption']
 					else:
 						class_name = element['class'][0]
-						style_name = (class_name in docx.styles) and class_name or 'Normal'
-						p.style = docx.styles[style_name]
+						style_name = (class_name in docx_doc.styles) and class_name or 'Normal'
+						p.style = docx_doc.styles[style_name]
 				add_runs(docx_block = p, bs_element = element)
 
 			elif element.name in ['ul','ol']:
-				def add_list(docx, element, level=0):
+				def add_list(docx_doc, element, level=0, c=0):
 					li_styles = {'ul':'ListBullet', 'ol':'ListNumber'}
 					level_suffix = level!=0 and str(level+1) or ''
 					for li in element.find_all('li', recursive=False):
-						docx.add_paragraph(li.contents[0].strip(), style='%s%s'%(li_styles[element.name], level_suffix))
+						p = docx_doc.add_paragraph(li.contents[0].strip(), style='%s%s'%(li_styles[element.name], level_suffix))
+						if c==1: 
+							prepend_bookmark(p, zmsid)
 						for ul in li.find_all(['ul','ol'], recursive=False):
-							add_list(docx, ul, level+1)
-				add_list(docx, element, level=0)
+							add_list(docx_doc, ul, level+1)
+				add_list(docx_doc, element, level=0, c=c)
 
 			elif element.name == 'table':
-				docx_block_type = 'table'
 				caption = element.find('caption')
 				if caption:
-					docx.add_paragraph(caption.text, style='Caption')
-					docx_block_type = 'paragraph'
+					p = docx_doc.add_paragraph(caption.text, style='Caption')
+					if c==1: 
+						prepend_bookmark(p, zmsid)
 				rows = element.find_all('tr')
 				cols = rows[0].find_all(['td','th'])
-				table = docx.add_table(rows=len(rows), cols=len(cols))
+				table = docx_doc.add_table(rows=len(rows), cols=len(cols))
 				table.style = 'Table Grid'
 				table.alignment = WD_TABLE_ALIGNMENT.CENTER
 				r=-1
@@ -190,6 +195,9 @@ def add_htmlblock_to_docx(zmscontext, docx, htmlblock):
 						table.cell(r,i).text = cl.text
 						if cl.name == 'th':
 							table.cell(r,i).paragraphs[0].runs[0].bold = True
+				if not caption and c==1:
+					prepend_bookmark(table, zmsid)
+
 
 			elif element.name == 'img' or element.name == 'figure':
 				if element.name == 'figure':
@@ -213,40 +221,42 @@ def add_htmlblock_to_docx(zmscontext, docx, htmlblock):
 					response = requests.get(element['src'])
 					with open(img_name, 'wb') as f:
 						f.write(response.content)
-					docx.add_picture(img_name, width=Emu(imgwidth*9525))
+					docx_doc.add_picture(img_name, width=Emu(imgwidth*9525))
+					if c==1:
+						prepend_bookmark(docx_doc.paragraphs[-1], zmsid)
 				except:
 					pass
 
 			elif element.name == 'div':
 				child_tags = [e.name for e in element.children if e.name]
 				if 'em' in child_tags or 'strong' in child_tags:
-					p = docx.add_paragraph()
+					p = docx_doc.add_paragraph()
+					if c==1: 
+						prepend_bookmark(p, zmsid)
 					if element.has_attr('class'):
 						class_name = element['class'][0]
-						style_name = (class_name in docx.styles) and class_name or 'Normal'
-						p.style = docx.styles[style_name]
+						style_name = (class_name in docx_doc.styles) and class_name or 'Normal'
+						p.style = docx_doc.styles[style_name]
 					add_runs(docx_block = p, bs_element = element)
 				else:
 					div_html = ''.join([str(e) for e in element.children])
-					add_htmlblock_to_docx(zmscontext, docx, div_html)
+					add_htmlblock_to_docx(zmscontext, docx_doc, div_html, zmsid)
 
 			elif element.name == 'a':
 				# Hyperlink containing a block element 
 				div_html = ''.join([str(e) for e in element.children])
-				add_htmlblock_to_docx(zmscontext, docx, div_html)
+				add_htmlblock_to_docx(zmscontext, docx_doc, div_html, zmsid)
+
+			elif element.name == 'hr':
+				# ignore horizontal rule
+				pass
 
 			else:
-				if element.children:
-					div_html = ''.join([str(e) for e in element.children])
-					p = add_htmlblock_to_docx(zmscontext, docx, div_html)
-					try:
-						add_runs(docx_block = p, bs_element = element)
-					except:
-						pass
-				else:
-					docx.add_paragraph(str(element))
+				p = docx.add_paragraph(str(element))
+				if c==1: 
+					prepend_bookmark(p, zmsid)
 
-	return (docx, c, docx_block_type)
+	return docx
 
 # #############################################
 
@@ -342,7 +352,7 @@ def set_docx_styles(doc):
 # element (e.g. paragraph) in the DOCX document.
 
 
-def get_docx_normalized_json(self):
+def apply_standard_json_docx(self):
 
 	zmscontext = self
 	request = zmscontext.REQUEST
@@ -426,7 +436,7 @@ def manage_export_pydocx(self):
 	# 3. ITERATE JSON CONTENT TO DOCX
 	# #############################################
 	# zmsdoc = self.attr('standard_json')
-	zmsdoc = get_docx_normalized_json(self)
+	zmsdoc = apply_standard_json_docx(self)
 	heading = zmsdoc[0]
 	blocks = zmsdoc[1:]
 
@@ -445,23 +455,11 @@ def manage_export_pydocx(self):
 	for block in blocks:
 		v = block['content']
 		if v and block['docx_format'] == 'html':
-			doc, add_count, docx_block_type = add_htmlblock_to_docx(zmscontext=self, docx=doc, htmlblock=v)
+			add_htmlblock_to_docx(zmscontext=self, docx_doc=doc, htmlblock=v, zmsid=block['id'])
 		else:
-			doc.add_paragraph(v, style=block['docx_format'])
-			add_count = 1
-			docx_block_type = 'paragraph'
-		# Add bookmark to the last inserted block
-		if block.get('id'):
-			# For prepending bookmark we need to know the number of formerly inserted blocks
-			last_block = doc.paragraphs[-add_count]
-			if docx_block_type == 'table':
-				try:
-					last_block = doc.tables[-add_count]
-				except:
-					pass
-			prepend_bookmark(last_block, block['id'])
-	
-		# doc.add_page_break()
+			p = doc.add_paragraph(v, style=block['docx_format'])
+			prepend_bookmark(p, block['id'])
+
 
 	# Save document in temporary directory
 	fn = '%s.docx'%(self.id_quote(self.getTitlealt(request)))

@@ -97,11 +97,11 @@ class ZMSTextarea:
 			,"repetitive":0
 			,"type":"zpt"}
 
-		standard_json = {"default":""
-			,"id":"standard_json"
+		standard_json_docx = {"default":""
+			,"id":"standard_json_docx"
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
-			,"name":"JSON"
+			,"name":"DOCX-JSON Template: ZMSTextarea"
 			,"repetitive":0
 			,"type":"py"}

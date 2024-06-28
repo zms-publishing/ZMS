@@ -1,5 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+
+# IMPORT GENERAL LIBRARIES
 import os
 import re
 import shutil
@@ -8,19 +10,20 @@ import urllib
 import json
 import requests
 
+# IMPORT ZMS LIBRARIES
 from Products.zms import standard
 from Products.zms import rest_api
 
+# HTML LIBRARIES
+from bs4 import BeautifulSoup
+
+# IMPORT DOCX LIBRARIES
 import docx
 from docx.shared import Pt
 from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.enum.style import WD_STYLE_TYPE
 from docx.oxml import OxmlElement, ns
 from docx.shared import Emu
-
-from bs4 import BeautifulSoup
-
-# #############################################
 
 
 # #############################################
@@ -260,6 +263,102 @@ def set_docx_styles(doc):
 	return doc
 
 # #############################################
+
+
+
+# #############################################
+# Helper Functions 4: GET DOCX NORMALIZED JSON
+# #############################################
+
+def get_docx_normalized_json(self):
+	# Get a normalized JSON-stream of a ZMSDocument-like node
+	# The JSON-Stream is used for the DOCX-Export
+	# It is a list of blocks, where the first block is the container meta data
+	# and the following blocks are the pageelements of the document
+	# Each block is a dictionary with the following keys:
+	# - id: the id of the node
+	# - meta_id: the meta_id of the node
+	# - parent_id: the id of the parent node
+	# - parent_meta_id: the meta_id of the parent node
+	# - title: the title of the node
+	# - description: the description of the node
+	# - last_change_dt: the last change date of the node
+	# - docx_format: the format of the content (e.g. 'html')
+	# - content: the content of the node
+
+	# Any PAGEELEMENT node need to have a 'standard_json_docx' attribute
+	# which provides the specific ZMS content model translation to the 
+	# DOCX model. If this attribute is not available, the standard_html 
+	# of the PAGEELEMENT node is used as content.
+
+	zmscontext = self
+
+	# --// standard_json //--
+	from Products.zms import standard
+	request = zmscontext.REQUEST
+
+	id = zmscontext.id
+	meta_id = zmscontext.meta_id
+	parent_id = zmscontext.id
+	parent_meta_id = zmscontext.meta_id 
+	title = zmscontext.attr('title')
+	descripton = zmscontext.attr('attr_dc_descripton')
+	last_change_dt = zmscontext.attr('change_dt') or zmscontext.attr('created_dt')
+	url = zmscontext.getHref2IndexHtml(request)
+
+	# 1st block is container meta data
+	blocks = [
+		{
+			'id':id,
+			'url':url,
+			'meta_id':meta_id,
+			'parent_id':parent_id,
+			'parent_meta_id':parent_meta_id,
+			'title':title,
+			'descripton':descripton,
+			'last_change_dt':last_change_dt
+		}
+	]
+
+	# Sequence all pageelements
+	for pageelement in zmscontext.filteredChildNodes(request,zmscontext.PAGEELEMENTS):
+		if pageelement.attr('change_dt') and pageelement.attr('change_dt') >= last_change_dt:
+			last_change_dt = pageelement.attr('change_dt')
+		json_block = []
+		json_block = pageelement.attr('standard_json')
+		if not json_block:
+			html = ''
+			try:
+				html = pageelement.getBodyContent(request)
+				# Clean html data
+				html = standard.re_sub(r'<!--(.|\s|\n)*?-->', '', html)
+				html = standard.re_sub(r'\n|\t|\s\s', '', html)
+			except:
+				html = '<table>'
+				html += '<caption>Rendering Error: %s</caption>' % pageelement.meta_id
+				attrs = [d['id'] for d in zmscontext.getMetaobjAttrs(pageelement.meta_id) if d['type'] not in ['dtml','zpt','py','constant','resource','interface']]
+				for attr in attrs:
+					html += '<tr><td>%s</td><td>%s</td></tr>' % (attr, pageelement.attr(attr))
+				html += '</table>'
+			# Create a json block
+			json_block = [{
+				'id': pageelement.id,
+				'meta_id': pageelement.meta_id,
+				'parent_id': pageelement.getParentNode().id,
+				'parent_meta_id': pageelement.getParentNode().meta_id,
+				'docx_format': 'html',
+				'content': html
+			}]
+		blocks.extend(json_block)
+
+	# Update last_change_dt
+	blocks[0]['last_change_dt'] = last_change_dt
+
+	return blocks
+	# --// /standard_json //--
+
+
+# #############################################
 # MAIN function for DOCX-Generation
 # #############################################
 def manage_export_pydocx(self):
@@ -278,7 +377,8 @@ def manage_export_pydocx(self):
 	# #############################################
 	# 3. ITERATE JSON CONTENT TO DOCX
 	# #############################################
-	zmsdoc = self.attr('standard_json')
+	# zmsdoc = self.attr('standard_json')
+	zmsdoc = get_docx_normalized_json(self)
 	heading = zmsdoc[0]
 	blocks = zmsdoc[1:]
 

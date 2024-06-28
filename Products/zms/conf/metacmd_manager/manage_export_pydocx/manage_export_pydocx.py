@@ -22,6 +22,15 @@ from bs4 import BeautifulSoup
 
 # #############################################
 
+
+# #############################################
+# Helper Functions 1: DOCX-XML
+# 1. `add_page_number(run)` : add page number to text-run (e.g. footer)
+# 2. `add_bottom_border(style)` : adds border-properties to paragraph-style-object
+# Hint: the docx API does not support the page counter directly. 
+# We have to create a custom footer with a page counter.
+# #############################################
+
 # XML-Helpers
 def create_element(name):
 	return OxmlElement(name)
@@ -87,8 +96,10 @@ def add_bottom_border(style):
 
 
 # #############################################
-# HTML/RICHTEXT PROCESSOR
+# Helper Functions 2: HTML/Richtext-Processing 
 # #############################################
+	
+# ADD RUNS TO DOCX-BLOCK
 def add_runs(docx_block, bs_element):
 	# #########################################
 	# Adding a minimum set of inline runs
@@ -109,7 +120,7 @@ def add_runs(docx_block, bs_element):
 	else:
 		docx_block.text(bs_element.text)
 
-
+# ADD HTML-BLOCK TO DOCX
 def add_htmlblock_to_docx(zmscontext, docx, htmlblock):
 	# remove comments
 	htmlblock = re.sub(r'<!.*?->','', htmlblock)
@@ -200,19 +211,9 @@ def add_htmlblock_to_docx(zmscontext, docx, htmlblock):
 
 
 # #############################################
-# MAIN
+# Helper Functions 3: Set Docx-Styles
 # #############################################
-def manage_export_pydocx(self):
-	request = self.REQUEST
-
-	# #############################################	
-	# 1. INIT DOCUMENT
-	# #############################################	
-	doc = docx.Document()	# Hint: may use template like docx.Document('template.docx')
-	
-	# #############################################	
-	# 2. SET STYLES
-	# #############################################	
+def set_docx_styles(doc):
 	styles = doc.styles
 	# Custom colors: #017D87
 	custom_color1 = docx.shared.RGBColor(1, 125, 135)
@@ -255,8 +256,25 @@ def manage_export_pydocx(self):
 	styles['Hyperlink'].font.underline = True
 	styles['Header'].font.size = Pt(8)
 	styles['footer'].font.size = Pt(8)
-	# #############################################
 	
+	return doc
+
+# #############################################
+# MAIN function for DOCX-Generation
+# #############################################
+def manage_export_pydocx(self):
+	request = self.REQUEST
+
+	# #############################################
+	# 1. INIT DOCUMENT
+	# #############################################
+	doc = docx.Document()	# Hint: may use template like docx.Document('template.docx')
+
+	# #############################################
+	# 2. SET DOCX STYLES
+	# #############################################
+	doc = set_docx_styles(doc)
+
 	# #############################################
 	# 3. ITERATE JSON CONTENT TO DOCX
 	# #############################################

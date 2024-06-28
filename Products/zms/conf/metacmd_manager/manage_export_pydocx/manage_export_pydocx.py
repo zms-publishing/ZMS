@@ -323,12 +323,14 @@ def set_docx_styles(doc):
 # - title: the title of the node
 # - description: the description of the node
 # - last_change_dt: the last change date of the node
-# - docx_format: the format of the content (e.g. 'html')
+# - docx_format: the format of the content ('html' or e.g.'Normal')
 # - content: the content of the node
 
 # Any PAGEELEMENT-node may have a specific 'standard_json_docx'
 # attribute which preprocesses it's ZMS content model close to
-# the translation into the DOCX model. 
+# the translation into the DOCX model. The key 'docx_format'
+# is used to determine the style of the content block.
+
 # If this attribute method (py-primtive) is not available, 
 # the object's class standard_html-method is used to get the 
 # content, so that the (maybe not optimum) html will be 
@@ -373,7 +375,7 @@ def get_docx_normalized_json(self):
 		if pageelement.attr('change_dt') and pageelement.attr('change_dt') >= last_change_dt:
 			last_change_dt = pageelement.attr('change_dt')
 		json_block = []
-		json_block = pageelement.attr('standard_json')
+		json_block = pageelement.attr('standard_json_docx')
 		if not json_block:
 			html = ''
 			try:
@@ -453,7 +455,10 @@ def manage_export_pydocx(self):
 			# For prepending bookmark we need to know the number of formerly inserted blocks
 			last_block = doc.paragraphs[-add_count]
 			if docx_block_type == 'table':
-				last_block = doc.tables[-add_count]
+				try:
+					last_block = doc.tables[-add_count]
+				except:
+					pass
 			prepend_bookmark(last_block, block['id'])
 	
 		# doc.add_page_break()

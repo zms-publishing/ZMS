@@ -26,7 +26,7 @@ class ZMSDocument:
 	package = "com.zms.foundation"
 
 	# Revision
-	revision = "5.2.0"
+	revision = "5.0.0"
 
 	# Type
 	type = "ZMSDocument"
@@ -143,12 +143,3 @@ class ZMSDocument:
 			,"name":"Template: ZMSDocument"
 			,"repetitive":0
 			,"type":"zpt"}
-
-		standard_json = {"default":""
-			,"id":"standard_json"
-			,"keys":[]
-			,"mandatory":0
-			,"multilang":0
-			,"name":"JSON Template: ZMSDocument"
-			,"repetitive":0
-			,"type":"py"}

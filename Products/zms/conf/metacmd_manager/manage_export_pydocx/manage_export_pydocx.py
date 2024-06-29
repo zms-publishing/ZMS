@@ -22,7 +22,7 @@ import docx
 from docx.shared import Pt
 from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.enum.style import WD_STYLE_TYPE
-from docx.oxml import OxmlElement, ns
+from docx.oxml import OxmlElement, ns, parse_xml
 from docx.shared import Emu
 
 
@@ -252,11 +252,11 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
 				pass
 
 			else:
-				p = docx.add_paragraph(str(element))
+				p = docx_doc.add_paragraph(str(element))
 				if c==1: 
 					prepend_bookmark(p, zmsid)
 
-	return docx
+	return docx_doc
 
 # #############################################
 
@@ -456,6 +456,9 @@ def manage_export_pydocx(self):
 		v = block['content']
 		if v and block['docx_format'] == 'html':
 			add_htmlblock_to_docx(zmscontext=self, docx_doc=doc, htmlblock=v, zmsid=block['id'])
+		elif v and block['docx_format'] == 'xml':
+			parsed_xml = parse_xml(v)
+			doc.element.body.append(parsed_xml)
 		else:
 			p = doc.add_paragraph(v, style=block['docx_format'])
 			prepend_bookmark(p, block['id'])

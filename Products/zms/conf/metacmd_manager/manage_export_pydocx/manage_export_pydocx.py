@@ -9,6 +9,7 @@ import tempfile
 import urllib
 import json
 import requests
+from io import BytesIO
 
 # IMPORT ZMS LIBRARIES
 from Products.zms import standard
@@ -19,6 +20,7 @@ from bs4 import BeautifulSoup
 
 # IMPORT DOCX LIBRARIES
 import docx
+from docx.text.paragraph import Paragraph
 from docx.shared import Pt
 from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.enum.style import WD_STYLE_TYPE
@@ -452,17 +454,38 @@ def manage_export_pydocx(self):
 		p = doc.add_paragraph(heading.get('description',''))
 		p.style = doc.styles['Description']
 	
+	docx_elements = []
+	# Transform JSON content to DOCX elements
 	for block in blocks:
 		v = block['content']
 		if v and block['docx_format'] == 'html':
+			# Add simple-html-coded (mmore or less complex) object to document
 			add_htmlblock_to_docx(zmscontext=self, docx_doc=doc, htmlblock=v, zmsid=block['id'])
 		elif v and block['docx_format'] == 'xml':
+			# Create a paragraph object from parsed xml
 			parsed_xml = parse_xml(v)
-			doc.element.body.append(parsed_xml)
+			p = Paragraph(parsed_xml, doc)
+			# Add blank paragraph to document
+			doc_p = doc.add_paragraph()
+			# Add runs to new document paragraph
+			for run in p.runs:
+				doc_p.add_run(run.text, run.style)
+			prepend_bookmark(doc_p, block['id'])
+		elif v and block['docx_format'] == 'image':
+			# Add image to document
+			image_url = v
+			resp = requests.get(image_url)
+			image_file = BytesIO(resp.content)
+			# Add a paragraph containing the image as run
+			# see: /python-docx/src/docx/document.py
+			p = doc.add_paragraph()
+			r = p.add_run()
+			r.add_picture(image_file, width=Emu(460*9525))
+			prepend_bookmark(p, block['id'])
 		else:
+			# Add text block with given style to document
 			p = doc.add_paragraph(v, style=block['docx_format'])
 			prepend_bookmark(p, block['id'])
-
 
 	# Save document in temporary directory
 	fn = '%s.docx'%(self.id_quote(self.getTitlealt(request)))

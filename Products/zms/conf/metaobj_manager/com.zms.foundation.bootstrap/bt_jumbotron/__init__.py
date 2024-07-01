@@ -26,7 +26,7 @@ class bt_jumbotron:
 	package = "com.zms.foundation.bootstrap"
 
 	# Revision
-	revision = "4.1.0"
+	revision = "5.0.0"
 
 	# Type
 	type = "ZMSObject"

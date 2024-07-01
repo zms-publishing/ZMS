@@ -24,12 +24,13 @@ for slide in zmscontext.filteredObjChildren('slides',request):
 
 	docxml = f'''
 		<w:p xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+			<w:bookmarkStart w:id="{id}" w:name="{id}"></w:bookmarkStart>
+			<w:bookmarkEnd w:id="{id}"></w:bookmarkEnd>
 			{f'<w:r><w:rPr><w:rStyle w:val="Bold"/></w:rPr><w:t>{title}</w:t><w:br/></w:r>' if title else ''}
-			<w:r><w:t>{text}</w:t><w:br/></w:r>
-			{f'<w:r><w:t>{url}</w:t></w:r>' if url else ''}
+			<w:r><w:t>{text}</w:t></w:r>
+			{f'<w:r><w:br/><w:t>{url}</w:t></w:r>' if url else ''}
 		</w:p>
 	'''
-
 	blocks.append( {
 		'id': id,
 		'meta_id': slide.meta_id,

@@ -335,7 +335,8 @@ def set_docx_styles(doc):
 # - title: the title of the node
 # - description: the description of the node
 # - last_change_dt: the last change date of the node
-# - docx_format: the format of the content ('html' or e.g.'Normal')
+# - docx_format: the format of the content (html/xml/image 
+#   or text-stylename e.g.'Normal')
 # - content: the content of the node
 
 # Any PAGEELEMENT-node may have a specific 'standard_json_docx'
@@ -458,19 +459,20 @@ def manage_export_pydocx(self):
 	# Transform JSON content to DOCX elements
 	for block in blocks:
 		v = block['content']
+		# #############################################
+		# [1] HTML-BLOCK (e.g. richtext with inline styles, just a minimum set of inline elements)
 		if v and block['docx_format'] == 'html':
-			# Add simple-html-coded (mmore or less complex) object to document
 			add_htmlblock_to_docx(zmscontext=self, docx_doc=doc, htmlblock=v, zmsid=block['id'])
+		# #############################################
+		# [2] XML-BLOCK
 		elif v and block['docx_format'] == 'xml':
 			# Create a paragraph object from parsed xml
 			parsed_xml = parse_xml(v)
-			p = Paragraph(parsed_xml, doc)
-			# Add blank paragraph to document
-			doc_p = doc.add_paragraph()
-			# Add runs to new document paragraph
-			for run in p.runs:
-				doc_p.add_run(run.text, run.style)
-			prepend_bookmark(doc_p, block['id'])
+			doc.add_paragraph()
+			# Replace last paragraph with parsed xml
+			doc.element.body[-1] = parsed_xml
+		# #############################################
+		# [3] IMAGE-BLOCK
 		elif v and block['docx_format'] == 'image':
 			# Add image to document
 			image_url = v
@@ -480,8 +482,11 @@ def manage_export_pydocx(self):
 			# see: /python-docx/src/docx/document.py
 			p = doc.add_paragraph()
 			r = p.add_run()
+			# Normalize image width to 460px
 			r.add_picture(image_file, width=Emu(460*9525))
 			prepend_bookmark(p, block['id'])
+		# #############################################
+		# [4] TEXT-BLOCK with given style
 		else:
 			# Add text block with given style to document
 			p = doc.add_paragraph(v, style=block['docx_format'])

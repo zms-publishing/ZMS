@@ -307,9 +307,13 @@ def set_docx_styles(doc):
 	styles.add_style('Hyperlink', WD_STYLE_TYPE.CHARACTER)
 	styles['Hyperlink'].font.color.rgb = custom_color1
 	styles['Hyperlink'].font.underline = True
+	styles['MacroText'].font.size = Pt(9)
+	styles['MacroText'].paragraph_format.space_before = Pt(12)
+	styles['MacroText'].paragraph_format.space_after = Pt(12)
+	styles['MacroText'].paragraph_format.line_spacing = 1.35
 	styles['Header'].font.size = Pt(8)
 	styles['footer'].font.size = Pt(8)
-	
+
 	return doc
 
 # #############################################
@@ -383,8 +387,14 @@ def apply_standard_json_docx(self):
 		}
 	]
 
-	# Sequence all pageelements
-	for pageelement in zmscontext.filteredChildNodes(request,zmscontext.PAGEELEMENTS):
+	# Sequence all pageelements including ZMSNote
+	# Ref: ZMSObject.isPageElement
+	pageelements = [ \
+		e for e in zmscontext.filteredChildNodes(request) \
+			if ( e.getType() in [ 'ZMSObject', 'ZMSRecordSet' ] ) \
+				and not e.meta_id in [ 'ZMSTeaserContainer' ] \
+		]
+	for pageelement in pageelements:
 		if pageelement.attr('change_dt') and pageelement.attr('change_dt') >= last_change_dt:
 			last_change_dt = pageelement.attr('change_dt')
 		json_block = []
@@ -445,7 +455,8 @@ def manage_export_pydocx(self):
 
 	dt = standard.getLangFmtDate(self, heading.get('last_change_dt',''), 'eng', '%Y-%m-%d')
 	url = heading.get('url','').replace('nohost','localhost')
-	doc.sections[0].header.paragraphs[0].text = '%s\t\t%s\nURL: %s'%(heading.get('title',''), dt, url)
+	tabs = len(heading.get('title',''))>48 and '\t' or '\t\t'
+	doc.sections[0].header.paragraphs[0].text = '%s%s%s\nURL: %s'%(heading.get('title',''), tabs, dt, url)
 	add_page_number(doc.sections[0].footer.paragraphs[0].add_run('Seite '))
 	
 	doc.add_heading(heading.get('title',''), level=1)

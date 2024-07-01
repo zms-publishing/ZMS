@@ -7,11 +7,9 @@ class ZMSNote:
 	access = {"delete_custom":""
 		,"delete_deny":[""
 			,""
-			,""
 			,""]
 		,"insert_custom":"{$}"
 		,"insert_deny":[""
-			,""
 			,""
 			,""]}
 
@@ -28,7 +26,7 @@ class ZMSNote:
 	package = "com.zms.foundation"
 
 	# Revision
-	revision = "5.1.0"
+	revision = "5.2.0"
 
 	# Type
 	type = "ZMSObject"
@@ -78,5 +76,14 @@ class ZMSNote:
 			,"mandatory":0
 			,"multilang":0
 			,"name":"Event: onChangeObj"
+			,"repetitive":0
+			,"type":"py"}
+
+		standard_json_docx = {"default":""
+			,"id":"standard_json_docx"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"JSON-DOCX Template"
 			,"repetitive":0
 			,"type":"py"}

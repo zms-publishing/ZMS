@@ -43,6 +43,8 @@ def create_element(name):
 def create_attribute(element, name, value):
 	element.set(ns.qn(name), value)
 
+# #############################################
+
 # PAGE NUMBER
 def add_page_number(run):
 	fldChar1 = create_element('w:fldChar')
@@ -97,7 +99,7 @@ def add_bottom_border(style):
 	border.append(bottom)
 	style.element.pPr.append(border) # pPr = Paragraph properties
 
-# #############################################
+
 
 
 # #############################################
@@ -119,16 +121,39 @@ def add_runs(docx_block, bs_element):
 	# any BeautifulSoup block element may contain
 	# to the docx-block, e.g. <strong>, <em>, <a>
 	if bs_element.children:
+		c = 0
 		for elrun in bs_element.children:
-			if elrun.name == 'strong':
+			c += 1
+			if elrun.name == 'br':
+				docx_block.add_run('\n')
+			elif elrun.text == '↵':
+				docx_block.add_run('')
+			elif elrun.name == 'strong':
 				docx_block.add_run(elrun.text).bold = True
 			elif elrun.name == 'em':
 				docx_block.add_run(elrun.text).italic = True
 			elif elrun.name == 'a':
 				add_hyperlink(docx_block = docx_block, link_text = elrun.text, url = elrun.get('href'))
 				docx_block.add_run(' ')
+			elif elrun.name == 'span':
+				if elrun.has_attr('class'):
+					class_name = elrun['class'][0]
+					style_name = (class_name in doc.styles) and class_name or 'Default Paragraph Font'
+					docx_block.add_run(elrun.text, style=style_name)
+				else:
+					docx_block.add_run(elrun.text)
+			# #############################################
+			## TO-DO: Add inline image to docx
+			## Error: adding image as a block element 
+			## may result in content replication
+			# #############################################
+			# elif elrun.name == 'img':
+			# 	add_htmlblock_to_docx(zmscontext, doc, str(elrun), zmsid=None)
 			else:
-				docx_block.add_run(str(elrun))
+				s = str(elrun)
+				if c == 1: # Remove trailing spaces on first text element of a block
+					s = s.lstrip()
+				docx_block.add_run(s)
 	else:
 		docx_block.text(bs_element.text)
 
@@ -171,7 +196,8 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
 					li_styles = {'ul':'ListBullet', 'ol':'ListNumber'}
 					level_suffix = level!=0 and str(level+1) or ''
 					for li in element.find_all('li', recursive=False):
-						p = docx_doc.add_paragraph(li.contents[0].strip(), style='%s%s'%(li_styles[element.name], level_suffix))
+						p = docx_doc.add_paragraph(style='%s%s'%(li_styles[element.name], level_suffix))
+						add_runs(docx_block = p, bs_element = li)
 						if c==1: 
 							prepend_bookmark(p, zmsid)
 						for ul in li.find_all(['ul','ol'], recursive=False):
@@ -209,25 +235,34 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
 					if not element['src'].startswith('http'):
 						src_url0 = zmscontext.absolute_url().split('/content/')[0]
 						src_url1 = element['src'].split('/content/')[-1]
+						if src_url1.startswith('/'): 
+							# eg. ZMS assets starting with /++resource++zms_
+							src_url1 = src_url1[1:]
 						element['src'] = '%s/content/%s'%(src_url0, src_url1)
 
-				maxwidth = 460
-				imgwidth = element.has_attr('width') and int(float(element['width'])) or None
-				if imgwidth:
-					scale =  imgwidth>maxwidth and imgwidth/maxwidth or 1
-					imgwidth = imgwidth/scale
-				else:
-					imgwidth = maxwidth
+					maxwidth = 460
+					imgwidth = element.has_attr('width') and int(float(element['width'])) or None
+					if imgwidth:
+						scale =  imgwidth>maxwidth and imgwidth/maxwidth or 1
+						imgwidth = imgwidth/scale
+					else:
+						imgwidth = maxwidth
 
-				try:
-					response = requests.get(element['src'])
-					with open(img_name, 'wb') as f:
-						f.write(response.content)
-					docx_doc.add_picture(img_name, width=Emu(imgwidth*9525))
-					if c==1:
-						prepend_bookmark(docx_doc.paragraphs[-1], zmsid)
-				except:
-					pass
+					try:
+						response = requests.get(element['src'])
+						with open(img_name, 'wb') as f:
+							f.write(response.content)
+						if src_url1.startswith('++resource++zms_'):
+							# ZMS assets are not resized (alternative: use pass)
+							# pass
+							docx_doc.add_picture(img_name)
+						else:
+							docx_doc.add_picture(img_name, width=Emu(imgwidth*9525))
+						os.remove(img_name)
+						if c==1:
+							prepend_bookmark(docx_doc.paragraphs[-1], zmsid)
+					except:
+						pass
 
 			elif element.name == 'div':
 				child_tags = [e.name for e in element.children if e.name]
@@ -245,9 +280,19 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
 					add_htmlblock_to_docx(zmscontext, docx_doc, div_html, zmsid)
 
 			elif element.name == 'a':
-				# Hyperlink containing a block element 
-				div_html = ''.join([str(e) for e in element.children])
-				add_htmlblock_to_docx(zmscontext, docx_doc, div_html, zmsid)
+				# Hyperlink just containing text
+				if element.children and list(element.children)[0] == element.text:
+					add_hyperlink(docx_block = docx_doc, link_text = element.text, url = element.get('href'))
+				# Hyperlink containing a block element
+				elif {'div','p','table'} & set([e.name for e in element.children]):
+					div_html = ''.join([str(e) for e in element.children])
+					add_htmlblock_to_docx(zmscontext, docx_doc, div_html, zmsid)
+				# Hyperlink containing inline elements
+				else:
+					p = docx_doc.add_paragraph()
+					if c==1: 
+						prepend_bookmark(p, zmsid)
+					add_runs(docx_block = p, bs_element = element)
 
 			elif element.name == 'hr':
 				# ignore horizontal rule
@@ -260,7 +305,6 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
 
 	return docx_doc
 
-# #############################################
 
 
 # #############################################
@@ -268,8 +312,10 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
 # #############################################
 def set_docx_styles(doc):
 	styles = doc.styles
-	# Custom colors: #017D87
+	# Custom color 1: #017D87
 	custom_color1 = docx.shared.RGBColor(1, 125, 135)
+	# Custom color 2: #AAAAAA
+	custom_color2 = docx.shared.RGBColor(170, 170, 170)
 	# Page margins
 	doc.sections[0].top_margin = Emu(120*9525)
 	# Normal
@@ -278,17 +324,25 @@ def set_docx_styles(doc):
 	styles['Normal'].paragraph_format.space_after = Pt(6)
 	styles['Normal'].paragraph_format.space_before = Pt(6)
 	styles['Normal'].paragraph_format.line_spacing = 1.35
+
 	# Headlines derived from Normal
 	styles['Heading 1'].basedOn = doc.styles['Normal']
+	styles['Heading 1'].font.name = 'Arial'
 	styles['Heading 1'].font.size = Pt(24)
+	styles['Heading 1'].font.bold = False
+	styles['Heading 1'].paragraph_format.line_spacing = 1.2
+	styles['Heading 1'].paragraph_format.space_before = Pt(12)
 	styles['Heading 1'].font.color.rgb = custom_color1
+
 	styles['Heading 2'].basedOn = doc.styles['Normal']
 	styles['Heading 2'].font.size = Pt(18)
 	styles['Heading 2'].font.color.rgb = custom_color1
+
 	styles['Heading 3'].basedOn = doc.styles['Normal']
 	styles['Heading 3'].font.size = Pt(12)
 	styles['Heading 3'].font.bold = True
 	styles['Heading 3'].font.color.rgb = custom_color1
+
 	# More styles derived from Normal
 	styles.add_style('Description', WD_STYLE_TYPE.PARAGRAPH)
 	styles['Description'].basedOn = doc.styles['Normal']
@@ -299,24 +353,32 @@ def set_docx_styles(doc):
 	styles['Description'].paragraph_format.space_after = Pt(18)
 	styles['Description'].paragraph_format.line_spacing = 1.35
 	add_bottom_border(styles['Description'])
+
 	styles['Caption'].font.size = Pt(8)
 	styles['Caption'].font.italic = True
 	styles['Caption'].font.color.rgb = custom_color1
 	styles['Caption'].paragraph_format.space_before = Pt(14)
 	styles['Caption'].paragraph_format.space_after = Pt(4)
+
 	styles.add_style('Hyperlink', WD_STYLE_TYPE.CHARACTER)
 	styles['Hyperlink'].font.color.rgb = custom_color1
 	styles['Hyperlink'].font.underline = True
-	styles['MacroText'].font.size = Pt(9)
-	styles['MacroText'].paragraph_format.space_before = Pt(12)
-	styles['MacroText'].paragraph_format.space_after = Pt(12)
-	styles['MacroText'].paragraph_format.line_spacing = 1.35
-	styles['Header'].font.size = Pt(8)
-	styles['footer'].font.size = Pt(8)
+
+	styles.add_style('refGlossary', WD_STYLE_TYPE.CHARACTER)
+	styles['refGlossary'].font.color.rgb = custom_color1
+	styles['refGlossary'].font.italic = True
+
+	styles['macro'].font.size = Pt(9)
+	styles['macro'].paragraph_format.space_before = Pt(12)
+	styles['macro'].paragraph_format.space_after = Pt(12)
+	styles['macro'].paragraph_format.line_spacing = 1.35
+
+	styles['header'].font.size = Pt(7)
+	styles['header'].font.color.rgb = custom_color2
+	styles['footer'].font.size = Pt(7)
+	styles['footer'].font.color.rgb = custom_color2
 
 	return doc
-
-# #############################################
 
 
 
@@ -430,30 +492,29 @@ def apply_standard_json_docx(self):
 
 
 # #############################################
+# GLOBALS
+# #############################################
+# DOCX-Document with custom style-set
+# Hint: may use template like docx.Document('template.docx')
+doc = docx.Document()
+doc = set_docx_styles(doc)
+zmscontext = None
+
+# #############################################
 # MAIN function for DOCX-Generation
 # #############################################
 def manage_export_pydocx(self):
 	request = self.REQUEST
+	global zmscontext
+	zmscontext = self
 
-	# #############################################
-	# 1. INIT DOCUMENT
-	# #############################################
-	doc = docx.Document()	# Hint: may use template like docx.Document('template.docx')
-
-	# #############################################
-	# 2. SET DOCX STYLES
-	# #############################################
-	doc = set_docx_styles(doc)
-
-	# #############################################
-	# 3. ITERATE JSON CONTENT TO DOCX
-	# #############################################
-	# zmsdoc = self.attr('standard_json')
-	zmsdoc = apply_standard_json_docx(self)
+	# Get JSON representation of a page
+	zmsdoc = apply_standard_json_docx(zmscontext)
 	heading = zmsdoc[0]
 	blocks = zmsdoc[1:]
 
-	dt = standard.getLangFmtDate(self, heading.get('last_change_dt',''), 'eng', '%Y-%m-%d')
+	# [A] HEADING
+	dt = standard.getLangFmtDate(zmscontext, heading.get('last_change_dt',''), 'eng', '%Y-%m-%d')
 	url = heading.get('url','').replace('nohost','localhost')
 	tabs = len(heading.get('title',''))>48 and '\t' or '\t\t'
 	doc.sections[0].header.paragraphs[0].text = '%s%s%s\nURL: %s'%(heading.get('title',''), tabs, dt, url)
@@ -465,15 +526,14 @@ def manage_export_pydocx(self):
 	if heading.get('description','')!='':
 		p = doc.add_paragraph(heading.get('description',''))
 		p.style = doc.styles['Description']
-	
-	docx_elements = []
-	# Transform JSON content to DOCX elements
+
+	# [B] CONTENT-BLOCKS
 	for block in blocks:
 		v = block['content']
 		# #############################################
 		# [1] HTML-BLOCK (e.g. richtext with inline styles, just a minimum set of inline elements)
 		if v and block['docx_format'] == 'html':
-			add_htmlblock_to_docx(zmscontext=self, docx_doc=doc, htmlblock=v, zmsid=block['id'])
+			add_htmlblock_to_docx(zmscontext=zmscontext, docx_doc=doc, htmlblock=v, zmsid=block['id'])
 		# #############################################
 		# [2] XML-BLOCK
 		elif v and block['docx_format'] == 'xml':
@@ -497,14 +557,18 @@ def manage_export_pydocx(self):
 			r.add_picture(image_file, width=Emu(460*9525))
 			prepend_bookmark(p, block['id'])
 		# #############################################
-		# [4] TEXT-BLOCK with given style
+		# [4] TEXT-BLOCK with given block format (style)
 		else:
 			# Add text block with given style to document
-			p = doc.add_paragraph(v, style=block['docx_format'])
+			style_name = block['docx_format']
+			if style_name in [e.name for e in doc.styles]:
+				p = doc.add_paragraph(v, style=style_name)
+			else:
+				p = doc.add_paragraph(v)
 			prepend_bookmark(p, block['id'])
 
 	# Save document in temporary directory
-	fn = '%s.docx'%(self.id_quote(self.getTitlealt(request)))
+	fn = '%s.docx'%(zmscontext.id_quote(zmscontext.getTitlealt(request)))
 	tempfolder = tempfile.mkdtemp()
 	docx_filename = os.path.join(tempfolder, fn)
 	doc.save(docx_filename)

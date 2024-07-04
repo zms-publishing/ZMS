@@ -7,7 +7,23 @@ Before letting Opensearch create an index, Opensearch needs to know how to index
 
 the _ZMS Catalog Adapter GUI_ helps creating that schema: any content types (usually _pages_) and attributes can be selected to get indexed. Usually the _standard_html_-attribute provides the full text whereas other attributes can be added specifically like _title_, _titlealt_, _description_. Their content may be applied when search results are listed.
 
-ZMS will send to the index only the content of the by _ZMS Catalog Adapter_ selected contenttypes and its selected attributes. So before starting, please make sure that the selections in the _ZMS Catalog Adapter GUI_ is correct.
+ZMS will send to the index only the content of the by _ZMS Catalog Adapter_ selected contenttypes and its selected attributes. So before starting, please make sure that the selections in the _ZMS Catalog Adapter GUI_ is correct and take a careful look at the _Custom Filter-Function_ for selecting the documents to be indexed. Especially `breadcrumbs_obj_path()`-expressions may result in unexpected exclusions. Example:
+
+<pre>
+## filter excludes the following objects:
+## - inactive
+## - redirects
+## - robots = noindex, nofollow
+return (context.meta_id in meta_ids) \
+    and len([ob for ob in context.breadcrumbs_obj_path() if not ob.isActive(context.REQUEST)])==0  \
+    and not context.meta_id == 'ZMSFormulator' \
+    and not context.attr('attr_dc_identifier_url_redirect') \
+    and ('noindex' not in context.attr('attr_robots')) \
+    and ('none' not in context.attr('attr_robots')) \
+    and len( [ ob for ob in context.breadcrumbs_obj_path() if ( ( 'nofollow' in ob.attr('attr_robots') ) ) ] )==0 \
+    and context.isVisible(context.REQUEST)
+</pre>
+
 
 ###### Start with _Create Schema_ !
 
@@ -62,7 +78,7 @@ To boost the relevance of certain fields in the search results, the Opensearch c
 int wght = 1;
 ZonedDateTime dt_limit = ZonedDateTime.parse('2023-01-01T00:00:00+00:00');
 ZonedDateTime dt_doc = dt_limit;
-if ( doc.containsKey('created_dt') ){
+if ( doc.containsKey('created_dt') && !doc['created_dt'].empty){
 	dt_doc = doc['created_dt'].value;
 }
 if ( doc.containsKey('meta_id') ) {

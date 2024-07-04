@@ -36,7 +36,8 @@
 				##<br/>
 				return (context.meta_id in meta_ids) \<br/>
 				&nbsp;&nbsp;and not [ob for ob in context.breadcrumbs_obj_path() if not ob.isActive(context.REQUEST)] \<br/>
-				&nbsp;&nbsp;and not context.attr('attr_dc_type')=='Resource'<br/>
+				&nbsp;&nbsp;and not context.attr('attr_dc_type')=='Resource' \<br/>
+				&nbsp;&nbsp;and context.isVisible(context.REQUEST)<br/>
 			</div>
 			<br/>
 			<p class="small">

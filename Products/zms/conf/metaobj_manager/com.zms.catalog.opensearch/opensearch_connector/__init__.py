@@ -112,6 +112,15 @@ class opensearch_connector:
 			,"repetitive":0
 			,"type":"External Method"}
 
+		manage_opensearch_test = {"default":""
+			,"id":"manage_opensearch_test"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"Test: OpenSearch connection"
+			,"repetitive":0
+			,"type":"External Method"}
+
 		opensearch_query = {"default":""
 			,"id":"opensearch_query"
 			,"keys":[]

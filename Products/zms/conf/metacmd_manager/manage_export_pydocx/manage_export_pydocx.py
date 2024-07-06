@@ -287,7 +287,13 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
 			elif element.name == 'a':
 				# Hyperlink just containing text
 				if element.children and list(element.children)[0] == element.text:
-					add_hyperlink(docx_block = docx_doc, link_text = element.text, url = element.get('href'))
+					try:
+						add_hyperlink(docx_block = docx_doc, link_text = element.text, url = element.get('href'))
+					except:
+						p = docx_doc.add_paragraph()
+						if c==1: 
+							prepend_bookmark(p, zmsid)
+						add_runs(docx_block = p, bs_element = element)
 				# Hyperlink containing a block element
 				elif {'div','p','table'} & set([e.name for e in element.children]):
 					div_html = ''.join([str(e) for e in element.children])
@@ -508,27 +514,45 @@ zmscontext = None
 # #############################################
 # MAIN function for DOCX-Generation
 # #############################################
-def manage_export_pydocx(self):
+# The function `manage_export_pydocx` may be called
+# recursively to create a DOCX document from a 
+# document tree. The function is called with the
+# `do_return` parameter set to `True` on the last
+# node of the tree. The `filename` parameter is used
+# to name the DOCX file. The function returns the
+# binary data of the DOCX file.
+def manage_export_pydocx(self, do_return=True, filename=None):
 	request = self.REQUEST
+
+	# PAGE_COUNT: Counter for recursive export
+	page_count = request.get('page_count',0) + 1
+	request.set('page_count', page_count)
+
 	global zmscontext
 	zmscontext = self
 
-	global doc
-	doc = docx.Document()
-	doc = set_docx_styles(doc)
+	# Initialize new docx document
+	# and preserve it on recursive export
+	if page_count == 1:
+		global doc
+		doc = docx.Document()
+		doc = set_docx_styles(doc)
 
 	# Get JSON representation of a page
 	zmsdoc = apply_standard_json_docx(zmscontext)
 	heading = zmsdoc[0]
 	blocks = zmsdoc[1:]
 
-	# [A] HEADING
-	dt = standard.getLangFmtDate(zmscontext, heading.get('last_change_dt',''), 'eng', '%Y-%m-%d')
-	url = heading.get('url','').replace('nohost','localhost')
-	tabs = len(heading.get('title',''))>48 and '\t' or '\t\t'
-	doc.sections[0].header.paragraphs[0].text = '%s%s%s\nURL: %s'%(heading.get('title',''), tabs, dt, url)
-	add_page_number(doc.sections[0].footer.paragraphs[0].add_run('Seite '))
-	
+	# [A] SECTION HEADER/FOOTER
+	# created on initial page (on recursive export)
+	if page_count == 1:
+		dt = standard.getLangFmtDate(zmscontext, heading.get('last_change_dt',''), 'eng', '%Y-%m-%d')
+		url = heading.get('url','').replace('nohost','localhost')
+		tabs = len(heading.get('title',''))>48 and '\t' or '\t\t'
+		doc.sections[0].header.paragraphs[0].text = '%s%s%s\nURL: %s'%(heading.get('title',''), tabs, dt, url)
+		add_page_number(doc.sections[0].footer.paragraphs[0].add_run('Seite '))
+
+	# [B] HEADING
 	doc.add_heading(heading.get('title',''), level=1)
 	prepend_bookmark(doc.paragraphs[-1], heading.get('id',''))
 	
@@ -536,13 +560,17 @@ def manage_export_pydocx(self):
 		p = doc.add_paragraph(heading.get('description',''))
 		p.style = doc.styles['Description']
 
-	# [B] CONTENT-BLOCKS
+	# [C] CONTENT-BLOCKS
 	for block in blocks:
 		v = block['content']
 		# #############################################
 		# [1] HTML-BLOCK (e.g. richtext with inline styles, just a minimum set of inline elements)
 		if v and block['docx_format'] == 'html':
-			add_htmlblock_to_docx(zmscontext=zmscontext, docx_doc=doc, htmlblock=v, zmsid=block['id'])
+			try:
+				add_htmlblock_to_docx(zmscontext=zmscontext, docx_doc=doc, htmlblock=v, zmsid=block['id'])
+			except:
+				p = doc.add_paragraph()
+				p.add_run('Rendering Error: %s'%block['meta_id'])
 		# #############################################
 		# [2] XML-BLOCK
 		elif v and block['docx_format'] == 'xml':
@@ -576,25 +604,34 @@ def manage_export_pydocx(self):
 				p = doc.add_paragraph(v)
 			prepend_bookmark(p, block['id'])
 
-	# Save document in temporary directory
-	fn = '%s.docx'%(zmscontext.id_quote(zmscontext.getTitlealt(request)))
-	tempfolder = tempfile.mkdtemp()
-	docx_filename = os.path.join(tempfolder, fn)
-	doc.save(docx_filename)
-	
-	# Read the docx file
-	with open(docx_filename, 'rb') as f:
-		data = f.read()
+	# #############################################
+	# [d] SAVE DOCX-FILE
+	# #############################################
+			
+	if do_return:
+		# Save document in temporary directory
+		fn = '%s.docx'%(filename and filename or zmscontext.id_quote(zmscontext.getTitlealt(request)))
+		tempfolder = tempfile.mkdtemp()
+		docx_filename = os.path.join(tempfolder, fn)
+		doc.save(docx_filename)
+		
+		# Read the docx file
+		with open(docx_filename, 'rb') as f:
+			data = f.read()
 
-	# Remove the temporary folder
-	shutil.rmtree(tempfolder)
+		# Remove the temporary folder
+		shutil.rmtree(tempfolder)
 
-	# Set the HTTP response headers
-	request.RESPONSE.setHeader('Content-Disposition', f'inline;filename={fn}')
-	request.RESPONSE.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+		# Set the HTTP response headers
+		request.RESPONSE.setHeader('Content-Disposition', f'inline;filename={fn}')
+		request.RESPONSE.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')
 
-	# msg = 'DOCX-Export erfolgreich: %s'%fn
-	# request.response.redirect(standard.url_append_params('%s/manage_main'%self.absolute_url(),{'lang':request['lang'],'manage_tabs_message':msg}))
+		# msg = 'DOCX-Export erfolgreich: %s'%fn
+		# request.response.redirect(standard.url_append_params('%s/manage_main'%self.absolute_url(),{'lang':request['lang'],'manage_tabs_message':msg}))
 
-	# Return the data of the docx file
-	return data
+		# Return the data of the docx file
+		# on single page export or on last page of recursive export
+		return data
+	else:
+		# Proceed with recursive export
+		pass

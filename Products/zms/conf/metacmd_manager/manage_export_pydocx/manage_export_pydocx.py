@@ -122,11 +122,12 @@ def add_runs(docx_block, bs_element):
 	# to the docx-block, e.g. <strong>, <em>, <a>
 	if bs_element.children:
 		c = 0
-		for elrun in bs_element.children:
+		for elrun in [elrun for elrun in bs_element.children if elrun.name not in ['ul', 'ol', 'li', 'img']]:
+			# Hint: ul/ol/li are handled as blocks in add_htmlblock_to_docx.add_list
 			c += 1
 			if elrun.name == 'br':
 				docx_block.add_run('\n')
-			elif elrun.text == '↵':
+			elif elrun.name != None and elrun.text == '↵':
 				docx_block.add_run('')
 			elif elrun.name == 'strong':
 				docx_block.add_run(elrun.text).bold = True
@@ -149,6 +150,7 @@ def add_runs(docx_block, bs_element):
 			# #############################################
 			# elif elrun.name == 'img':
 			# 	add_htmlblock_to_docx(zmscontext, doc, str(elrun), zmsid=None)
+			# #############################################
 			else:
 				s = str(elrun)
 				if c == 1: # Remove trailing spaces on first text element of a block
@@ -260,7 +262,10 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
 							docx_doc.add_picture(img_name, width=Emu(imgwidth*9525))
 						os.remove(img_name)
 						if c==1:
-							prepend_bookmark(docx_doc.paragraphs[-1], zmsid)
+							try:
+								prepend_bookmark(docx_doc.paragraphs[-1], zmsid)
+							except:
+								pass
 					except:
 						pass
 
@@ -507,6 +512,10 @@ def manage_export_pydocx(self):
 	request = self.REQUEST
 	global zmscontext
 	zmscontext = self
+
+	global doc
+	doc = docx.Document()
+	doc = set_docx_styles(doc)
 
 	# Get JSON representation of a page
 	zmsdoc = apply_standard_json_docx(zmscontext)

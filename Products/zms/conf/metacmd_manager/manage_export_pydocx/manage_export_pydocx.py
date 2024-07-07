@@ -306,9 +306,20 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
 					add_runs(docx_block = p, bs_element = element)
 
 			elif element.name == 'hr':
-				# ignore horizontal rule
+				# Omit horizontal rule
 				pass
-
+			elif element.name == 'script':
+				# Omit javascript
+				pass
+			elif element.name == 'form':
+				p = docx_doc.add_paragraph(style='macro')
+				p.add_run('<form>\n').font.bold = True
+				if c==1: 
+					prepend_bookmark(p, zmsid)
+				input_field_count = 0
+				for input_field in element.find_all('input', recursive=True):
+					input_field_count += 1
+					p.add_run('%s. <input> : %s\n'%(input_field_count, input_field.get('name','')))
 			else:
 				p = docx_doc.add_paragraph(str(element))
 				if c==1: 
@@ -521,7 +532,7 @@ zmscontext = None
 # node of the tree. The `filename` parameter is used
 # to name the DOCX file. The function returns the
 # binary data of the DOCX file.
-def manage_export_pydocx(self, do_return=True, filename=None):
+def manage_export_pydocx(self, save_file=True, file_name=None):
 	request = self.REQUEST
 
 	# PAGE_COUNT: Counter for recursive export
@@ -531,20 +542,20 @@ def manage_export_pydocx(self, do_return=True, filename=None):
 	global zmscontext
 	zmscontext = self
 
-	# Initialize new docx document
-	# and preserve it on recursive export
+	# INITIALIZE DOCX Document
+	# and preserve it while exporting recursively 
 	if page_count == 1:
 		global doc
 		doc = docx.Document()
 		doc = set_docx_styles(doc)
 
-	# Get JSON representation of a page
+	# GET PAGE CONTENT (JSON)
 	zmsdoc = apply_standard_json_docx(zmscontext)
 	heading = zmsdoc[0]
 	blocks = zmsdoc[1:]
 
-	# [A] SECTION HEADER/FOOTER
-	# created on initial page (on recursive export)
+	# [A] CREATE SECTION HEADER/FOOTER (on initial page)
+	# and preserve it while exporting recursively 
 	if page_count == 1:
 		dt = standard.getLangFmtDate(zmscontext, heading.get('last_change_dt',''), 'eng', '%Y-%m-%d')
 		url = heading.get('url','').replace('nohost','localhost')
@@ -552,7 +563,7 @@ def manage_export_pydocx(self, do_return=True, filename=None):
 		doc.sections[0].header.paragraphs[0].text = '%s%s%s\nURL: %s'%(heading.get('title',''), tabs, dt, url)
 		add_page_number(doc.sections[0].footer.paragraphs[0].add_run('Seite '))
 
-	# [B] HEADING
+	# [B] CREATE PAGE HEADING
 	doc.add_heading(heading.get('title',''), level=1)
 	prepend_bookmark(doc.paragraphs[-1], heading.get('id',''))
 	
@@ -560,7 +571,7 @@ def manage_export_pydocx(self, do_return=True, filename=None):
 		p = doc.add_paragraph(heading.get('description',''))
 		p.style = doc.styles['Description']
 
-	# [C] CONTENT-BLOCKS
+	# [C] CREATE PAGE CONTENT-BLOCKS
 	for block in blocks:
 		v = block['content']
 		# #############################################
@@ -608,16 +619,16 @@ def manage_export_pydocx(self, do_return=True, filename=None):
 	# [d] SAVE DOCX-FILE
 	# #############################################
 			
-	if do_return:
+	if save_file:
 		# Save document in temporary directory
-		fn = '%s.docx'%(filename and filename or zmscontext.id_quote(zmscontext.getTitlealt(request)))
+		fn = '%s.docx'%(file_name and file_name or zmscontext.id_quote(zmscontext.getTitlealt(request)))
 		tempfolder = tempfile.mkdtemp()
-		docx_filename = os.path.join(tempfolder, fn)
-		doc.save(docx_filename)
+		docx_file_name = os.path.join(tempfolder, fn)
+		doc.save(docx_file_name)
 		
 		# Read the docx file
-		with open(docx_filename, 'rb') as f:
-			data = f.read()
+		with open(docx_file_name, 'rb') as f:
+			docx_file_data = f.read()
 
 		# Remove the temporary folder
 		shutil.rmtree(tempfolder)
@@ -631,7 +642,7 @@ def manage_export_pydocx(self, do_return=True, filename=None):
 
 		# Return the data of the docx file
 		# on single page export or on last page of recursive export
-		return data
+		return docx_file_data
 	else:
 		# Proceed with recursive export
 		pass

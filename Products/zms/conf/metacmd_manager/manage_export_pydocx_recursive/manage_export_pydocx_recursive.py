@@ -3,13 +3,13 @@
 
 def manage_export_pydocx_recursive(self):
 	request = self.REQUEST
-	filename = self.id_quote(self.getTitlealt(request))
+	file_name = self.id_quote(self.getTitlealt(request))
 	zmsdocs = []
 	zmsdocs.append(self)
 	zmsdocs.extend(self.filteredTreeNodes(request, self.PAGES))
-	docx_data = None
+	docx_file_data = None
 	for zmsdoc in zmsdocs:
 		# Do return data on last zmsdoc
-		do_return = zmsdoc == zmsdocs[-1]
-		docx_data = zmsdoc.manage_export_pydocx(do_return = do_return, filename = filename)            
-	return docx_data
+		save_file = zmsdoc == zmsdocs[-1]
+		docx_file_data = zmsdoc.manage_export_pydocx(save_file = save_file, file_name = file_name)
+	return docx_file_data

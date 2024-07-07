@@ -10,6 +10,7 @@ import urllib
 import json
 import requests
 from io import BytesIO
+import sys
 
 # IMPORT ZMS LIBRARIES
 from Products.zms import standard
@@ -131,6 +132,8 @@ def add_runs(docx_block, bs_element):
 				docx_block.add_run('')
 			elif elrun.name == 'strong':
 				docx_block.add_run(elrun.text).bold = True
+			elif elrun.name == 'q':
+				docx_block.add_run(elrun.text, style='q')
 			elif elrun.name == 'em':
 				docx_block.add_run(elrun.text).italic = True
 			elif elrun.name == 'a':
@@ -152,12 +155,12 @@ def add_runs(docx_block, bs_element):
 			# 	add_htmlblock_to_docx(zmscontext, doc, str(elrun), zmsid=None)
 			# #############################################
 			else:
-				s = str(elrun)
+				s = standard.pystr(elrun)
 				if c == 1: # Remove trailing spaces on first text element of a block
 					s = s.lstrip()
 				docx_block.add_run(s)
 	else:
-		docx_block.text(bs_element.text)
+		docx_block.text(standard.pystr(bs_element.text))
 
 # ADD HTML-BLOCK TO DOCX
 def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
@@ -233,10 +236,14 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
 				if element.name == 'figure':
 					element = element.find('img')
 				if element.has_attr('src'):
-					img_name = element['src'].split('/')[-1]
-					if not element['src'].startswith('http'):
+					img_src = element['src']
+					if zmscontext.operator_getattr(zmscontext,zmsid).attr('imghires'):
+						# Use high resolution image
+						img_src = zmscontext.operator_getattr(zmscontext,zmsid).attr('imghires').getHref(zmscontext.REQUEST)
+					img_name = img_src.split('/')[-1]
+					if not img_src.startswith('http'):
 						src_url0 = zmscontext.absolute_url().split('/content/')[0]
-						src_url1 = element['src'].split('/content/')[-1]
+						src_url1 = img_src.split('/content/')[-1]
 						if src_url1.startswith('/'): 
 							# eg. ZMS assets starting with /++resource++zms_
 							src_url1 = src_url1[1:]
@@ -270,19 +277,23 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
 						pass
 
 			elif element.name == 'div':
-				child_tags = [e.name for e in element.children if e.name]
-				if 'em' in child_tags or 'strong' in child_tags:
-					p = docx_doc.add_paragraph()
-					if c==1: 
-						prepend_bookmark(p, zmsid)
-					if element.has_attr('class'):
-						class_name = element['class'][0]
-						style_name = (class_name in docx_doc.styles) and class_name or 'Normal'
-						p.style = docx_doc.styles[style_name]
-					add_runs(docx_block = p, bs_element = element)
+				if element.has_attr('class') and (('ZMSGraphic' in element['class']) or ('graphic' in element['class'])):
+					ZMSGraphic_html = ''.join([str(e) for e in element.children])
+					add_htmlblock_to_docx(zmscontext, docx_doc, ZMSGraphic_html, zmsid)
 				else:
-					div_html = ''.join([str(e) for e in element.children])
-					add_htmlblock_to_docx(zmscontext, docx_doc, div_html, zmsid)
+					child_tags = [e.name for e in element.children if e.name]
+					if 'em' in child_tags or 'strong' in child_tags:
+						p = docx_doc.add_paragraph()
+						if c==1: 
+							prepend_bookmark(p, zmsid)
+						if element.has_attr('class'):
+							class_name = element['class'][0]
+							style_name = (class_name in docx_doc.styles) and class_name or 'Normal'
+							p.style = docx_doc.styles[style_name]
+						add_runs(docx_block = p, bs_element = element)
+					else:
+						div_html = ''.join([standard.pystr(e) for e in element.children])
+						add_htmlblock_to_docx(zmscontext, docx_doc, div_html, zmsid)
 
 			elif element.name == 'a':
 				# Hyperlink just containing text
@@ -295,7 +306,7 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
 							prepend_bookmark(p, zmsid)
 						add_runs(docx_block = p, bs_element = element)
 				# Hyperlink containing a block element
-				elif {'div','p','table'} & set([e.name for e in element.children]):
+				elif {'div','p','table','img'} & set([e.name for e in element.children]):
 					div_html = ''.join([str(e) for e in element.children])
 					add_htmlblock_to_docx(zmscontext, docx_doc, div_html, zmsid)
 				# Hyperlink containing inline elements
@@ -348,7 +359,8 @@ def set_docx_styles(doc):
 	styles['Normal'].paragraph_format.line_spacing = 1.35
 
 	# Headlines derived from Normal
-	styles['Heading 1'].basedOn = doc.styles['Normal']
+	if sys.version_info[0] > 2:
+		styles['Heading 1'].basedOn = doc.styles['Normal']
 	styles['Heading 1'].font.name = 'Arial'
 	styles['Heading 1'].font.size = Pt(24)
 	styles['Heading 1'].font.bold = False
@@ -356,18 +368,28 @@ def set_docx_styles(doc):
 	styles['Heading 1'].paragraph_format.space_before = Pt(12)
 	styles['Heading 1'].font.color.rgb = custom_color1
 
-	styles['Heading 2'].basedOn = doc.styles['Normal']
+	if sys.version_info[0] > 2:
+		styles['Heading 2'].basedOn = doc.styles['Normal']
 	styles['Heading 2'].font.size = Pt(18)
 	styles['Heading 2'].font.color.rgb = custom_color1
 
-	styles['Heading 3'].basedOn = doc.styles['Normal']
+	if sys.version_info[0] > 2:
+		styles['Heading 3'].basedOn = doc.styles['Normal']
 	styles['Heading 3'].font.size = Pt(12)
 	styles['Heading 3'].font.bold = True
 	styles['Heading 3'].font.color.rgb = custom_color1
 
+	if sys.version_info[0] > 2:
+		styles['Heading 4'].basedOn = doc.styles['Normal']
+	styles['Heading 4'].font.size = Pt(12)
+	styles['Heading 4'].font.bold = False
+	styles['Heading 4'].font.color.rgb = custom_color1
+
+
 	# More styles derived from Normal
 	styles.add_style('Description', WD_STYLE_TYPE.PARAGRAPH)
-	styles['Description'].basedOn = doc.styles['Normal']
+	if sys.version_info[0] > 2:
+		styles['Description'].basedOn = doc.styles['Normal']
 	styles['Description'].font.name = 'Arial'
 	styles['Description'].font.size = Pt(9)
 	styles['Description'].font.italic = True
@@ -381,6 +403,11 @@ def set_docx_styles(doc):
 	styles['Caption'].font.color.rgb = custom_color1
 	styles['Caption'].paragraph_format.space_before = Pt(14)
 	styles['Caption'].paragraph_format.space_after = Pt(4)
+
+	styles.add_style('q', WD_STYLE_TYPE.CHARACTER)
+	styles['q'].font.color.rgb = custom_color2
+	styles['q'].font.bold = True
+	styles['q'].font.italic = True
 
 	styles.add_style('Hyperlink', WD_STYLE_TYPE.CHARACTER)
 	styles['Hyperlink'].font.color.rgb = custom_color1
@@ -560,28 +587,28 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 		dt = standard.getLangFmtDate(zmscontext, heading.get('last_change_dt',''), 'eng', '%Y-%m-%d')
 		url = heading.get('url','').replace('nohost','localhost')
 		tabs = len(heading.get('title',''))>48 and '\t' or '\t\t'
-		doc.sections[0].header.paragraphs[0].text = '%s%s%s\nURL: %s'%(heading.get('title',''), tabs, dt, url)
+		doc.sections[0].header.paragraphs[0].text = '%s%s%s\nURL: %s'%(standard.pystr(heading.get('title','')), tabs, dt, url)
 		add_page_number(doc.sections[0].footer.paragraphs[0].add_run('Seite '))
 
 	# [B] CREATE PAGE HEADING
-	doc.add_heading(heading.get('title',''), level=1)
+	doc.add_heading(standard.pystr(heading.get('title','')), level=1)
 	prepend_bookmark(doc.paragraphs[-1], heading.get('id',''))
 	
 	if heading.get('description','')!='':
-		p = doc.add_paragraph(heading.get('description',''))
+		p = doc.add_paragraph(standard.pystr(heading.get('description','')))
 		p.style = doc.styles['Description']
 
 	# [C] CREATE PAGE CONTENT-BLOCKS
 	for block in blocks:
-		v = block['content']
+		v = standard.pystr(block['content'])
 		# #############################################
 		# [1] HTML-BLOCK (e.g. richtext with inline styles, just a minimum set of inline elements)
 		if v and block['docx_format'] == 'html':
-			try:
-				add_htmlblock_to_docx(zmscontext=zmscontext, docx_doc=doc, htmlblock=v, zmsid=block['id'])
-			except:
-				p = doc.add_paragraph()
-				p.add_run('Rendering Error: %s'%block['meta_id'])
+			# try:
+			add_htmlblock_to_docx(zmscontext=zmscontext, docx_doc=doc, htmlblock=v, zmsid=block['id'])
+			# except:
+			# 	p = doc.add_paragraph()
+			# 	p.add_run('Rendering Error: %s'%block['meta_id'])
 		# #############################################
 		# [2] XML-BLOCK
 		elif v and block['docx_format'] == 'xml':
@@ -606,13 +633,11 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 			prepend_bookmark(p, block['id'])
 		# #############################################
 		# [4] TEXT-BLOCK with given block format (style)
-		else:
-			# Add text block with given style to document
-			style_name = block['docx_format']
-			if style_name in [e.name for e in doc.styles]:
+		elif v and block['docx_format'] in [e.name for e in doc.styles]:
 				p = doc.add_paragraph(v, style=style_name)
-			else:
-				p = doc.add_paragraph(v)
+				prepend_bookmark(p, block['id'])
+		elif v:
+			p = doc.add_paragraph(v)
 			prepend_bookmark(p, block['id'])
 
 	# #############################################
@@ -634,7 +659,7 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 		shutil.rmtree(tempfolder)
 
 		# Set the HTTP response headers
-		request.RESPONSE.setHeader('Content-Disposition', f'inline;filename={fn}')
+		request.RESPONSE.setHeader('Content-Disposition', 'inline;filename=%s'%fn)
 		request.RESPONSE.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')
 
 		# msg = 'DOCX-Export erfolgreich: %s'%fn

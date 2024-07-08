@@ -73,20 +73,21 @@ def prepend_bookmark(docx_block, bookmark_id):
 		pass
 
 def add_hyperlink(docx_block, link_text, url):
-	r_id = docx_block.part.relate_to(url, docx.opc.constants.RELATIONSHIP_TYPE.HYPERLINK, is_external=True)
-	hyper_link = create_element('w:hyperlink')
-	create_attribute(hyper_link, 'w:id', r_id)
-	hyper_link_run = create_element('w:r')
-	hyper_link_run_prop = create_element('w:rPr')
-	hyper_link_run_prop_style = create_element('w:rStyle')
-	create_attribute(hyper_link_run_prop_style, 'w:val', 'Hyperlink')
-	hyper_link_run_prop.append(hyper_link_run_prop_style)
-	hyper_link_run.append(hyper_link_run_prop)
-	hyper_link_text = create_element('w:t')
-	hyper_link_text.text = link_text
-	hyper_link_run.append(hyper_link_text)
-	hyper_link.append(hyper_link_run)
-	docx_block._p.append(hyper_link)
+	if not url.startswith('javascript:'): # Omit javascript links
+		r_id = docx_block.part.relate_to(url, docx.opc.constants.RELATIONSHIP_TYPE.HYPERLINK, is_external=True)
+		hyper_link = create_element('w:hyperlink')
+		create_attribute(hyper_link, 'w:id', r_id)
+		hyper_link_run = create_element('w:r')
+		hyper_link_run_prop = create_element('w:rPr')
+		hyper_link_run_prop_style = create_element('w:rStyle')
+		create_attribute(hyper_link_run_prop_style, 'w:val', 'Hyperlink')
+		hyper_link_run_prop.append(hyper_link_run_prop_style)
+		hyper_link_run.append(hyper_link_run_prop)
+		hyper_link_text = create_element('w:t')
+		hyper_link_text.text = link_text
+		hyper_link_run.append(hyper_link_text)
+		hyper_link.append(hyper_link_run)
+		docx_block._p.append(hyper_link)
 
 
 # BORDER BOTTOM
@@ -98,9 +99,26 @@ def add_bottom_border(style):
 	create_attribute(bottom, 'w:space', '9')
 	create_attribute(bottom, 'w:color', '017D87')
 	border.append(bottom)
-	style.element.pPr.append(border) # pPr = Paragraph properties
+	try:
+		style.element.pPr.append(border) # pPr = Paragraph properties
+	except:
+		standard.write('Error: Could not add bottom border to style %s' % style.name)
 
-
+def add_bgcolor(style, color):
+	shading = create_element('w:shd') # shd = Shading
+	create_attribute(shading, 'w:val', 'clear')
+	create_attribute(shading, 'w:color', 'auto')
+	create_attribute(shading, 'w:fill', color)
+	style.element.pPr.append(shading)
+	border = create_element('w:pBdr') # pBdr = Paragraph border
+	for side in ['left', 'right', 'top', 'bottom']:
+		border_side = create_element('w:%s' % side)
+		create_attribute(border_side, 'w:val', 'single')
+		create_attribute(border_side, 'w:sz', '4')
+		create_attribute(border_side, 'w:space', '5')
+		create_attribute(border_side, 'w:color', color)
+		border.append(border_side)
+	style.element.pPr.append(border)
 
 
 # #############################################
@@ -134,7 +152,7 @@ def add_runs(docx_block, bs_element):
 				docx_block.add_run(elrun.text).bold = True
 			elif elrun.name == 'q':
 				docx_block.add_run(elrun.text, style='q')
-			elif elrun.name == 'em':
+			elif elrun.name == 'em' or elrun.name == 'i':
 				docx_block.add_run(elrun.text).italic = True
 			elif elrun.name == 'a':
 				add_hyperlink(docx_block = docx_block, link_text = elrun.text, url = elrun.get('href'))
@@ -177,15 +195,22 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
 	for element in soup.children:
 		if element.name != None and element not in ['\n']:
 			c+=1
+			# #############################################
+			# HEADINGS
+			# #############################################
 			if element.name in ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']:
 				heading_level = int(element.name[1])
 				p = docx_doc.add_heading(element.text, level=heading_level)
-				if c==1: 
+				if c==1 and zmsid: 
 					prepend_bookmark(p, zmsid)
-
+				if element.text == 'Inhaltsverzeichnis':
+					p.style = docx_doc.styles['TOC-Header']
+			# #############################################
+			# PARAGRAPH
+			# #############################################
 			elif element.name == 'p':
 				p = docx_doc.add_paragraph()
-				if c==1: 
+				if c==1 and zmsid: 
 					prepend_bookmark(p, zmsid)
 				if element.has_attr('class'):
 					if 'caption' in element['class']:
@@ -195,7 +220,9 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
 						style_name = (class_name in docx_doc.styles) and class_name or 'Normal'
 						p.style = docx_doc.styles[style_name]
 				add_runs(docx_block = p, bs_element = element)
-
+			# #############################################
+			# LIST
+			# #############################################
 			elif element.name in ['ul','ol']:
 				def add_list(docx_doc, element, level=0, c=0):
 					li_styles = {'ul':'ListBullet', 'ol':'ListNumber'}
@@ -203,35 +230,55 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
 					for li in element.find_all('li', recursive=False):
 						p = docx_doc.add_paragraph(style='%s%s'%(li_styles[element.name], level_suffix))
 						add_runs(docx_block = p, bs_element = li)
-						if c==1: 
+						if c==1 and zmsid:  
 							prepend_bookmark(p, zmsid)
 						for ul in li.find_all(['ul','ol'], recursive=False):
 							add_list(docx_doc, ul, level+1)
 				add_list(docx_doc, element, level=0, c=c)
-
+			# #############################################
+			# TABLE
+			# #############################################
 			elif element.name == 'table':
+				### debug: element.has_attr('class') and element['name']=='abgabekriterium'
 				caption = element.find('caption')
-				if caption:
-					p = docx_doc.add_paragraph(caption.text, style='Caption')
-					if c==1: 
-						prepend_bookmark(p, zmsid)
+				caption_text = caption and caption.text or ''
+				if zmsid == 'changeHistory':
+					caption_text = 'Änderungshistorie'
+				p = docx_doc.add_paragraph(standard.pystr(caption_text), style='Caption')
+				if c==1 and zmsid:
+					prepend_bookmark(p, zmsid)
 				rows = element.find_all('tr')
 				cols = rows[0].find_all(['td','th'])
-				table = docx_doc.add_table(rows=len(rows), cols=len(cols))
-				table.style = 'Table Grid'
-				table.alignment = WD_TABLE_ALIGNMENT.CENTER
+				docx_table = docx_doc.add_table(rows=len(rows), cols=len(cols))
+				docx_table.style = 'Table Grid'
+				docx_table.alignment = WD_TABLE_ALIGNMENT.CENTER
 				r=-1
 				for row in rows:
 					r+=1
 					cells = row.find_all(['td','th'])
 					for i, cl in enumerate(cells):
-						table.cell(r,i).text = cl.text
+						docx_cell = docx_table.cell(r,i)
+						if {'div','ol','ul','table','p'} & set([e.name for e in cl.children]):
+							# [A] Cell contains block elements
+							# Hint: Cell implicitly contains a paragraph
+							cl_html = standard.pystr(''.join([str(child) for child in cl.contents if child!=' ']))
+							add_htmlblock_to_docx(zmscontext, docx_cell, cl_html, zmsid=None)
+						else:
+							# [B] Cell contains inline elements
+							p = docx_cell.paragraphs[0]
+							p.style = docx_doc.styles['Normal']
+							if zmsid == 'changeHistory':
+								p.style = docx_doc.styles['Table-Small']
+							add_runs(p, cl)
 						if cl.name == 'th':
-							table.cell(r,i).paragraphs[0].runs[0].bold = True
-				if not caption and c==1:
-					prepend_bookmark(table, zmsid)
-
-
+							docx_table.cell(r,i).paragraphs[0].runs[0].bold = True
+				# Add linebreak or pagebreak after table
+				p = docx_doc.add_paragraph()
+				if zmsid == 'changeHistory':
+					p.add_run().add_break(docx.enum.text.WD_BREAK.PAGE)
+			# #############################################
+			# IMAGE
+			# #############################################
 			elif element.name == 'img' or element.name == 'figure':
 				if element.name == 'figure':
 					element = element.find('img')
@@ -268,14 +315,16 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
 						else:
 							docx_doc.add_picture(img_name, width=Emu(imgwidth*9525))
 						os.remove(img_name)
-						if c==1:
+						if c==1 and zmsid:
 							try:
 								prepend_bookmark(docx_doc.paragraphs[-1], zmsid)
 							except:
 								pass
 					except:
 						pass
-
+			# #############################################
+			# DIV
+			# #############################################
 			elif element.name == 'div':
 				if element.has_attr('class') and (('ZMSGraphic' in element['class']) or ('graphic' in element['class'])):
 					ZMSGraphic_html = ''.join([str(e) for e in element.children])
@@ -284,7 +333,7 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
 					child_tags = [e.name for e in element.children if e.name]
 					if 'em' in child_tags or 'strong' in child_tags:
 						p = docx_doc.add_paragraph()
-						if c==1: 
+						if c==1 and zmsid: 
 							prepend_bookmark(p, zmsid)
 						if element.has_attr('class'):
 							class_name = element['class'][0]
@@ -295,6 +344,9 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
 						div_html = ''.join([standard.pystr(e) for e in element.children])
 						add_htmlblock_to_docx(zmscontext, docx_doc, div_html, zmsid)
 
+			# #############################################
+			# Link/A containing text or block elements
+			# #############################################
 			elif element.name == 'a':
 				# Hyperlink just containing text
 				if element.children and list(element.children)[0] == element.text:
@@ -302,7 +354,7 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
 						add_hyperlink(docx_block = docx_doc, link_text = element.text, url = element.get('href'))
 					except:
 						p = docx_doc.add_paragraph()
-						if c==1: 
+						if c==1 and	zmsid:
 							prepend_bookmark(p, zmsid)
 						add_runs(docx_block = p, bs_element = element)
 				# Hyperlink containing a block element
@@ -312,16 +364,12 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
 				# Hyperlink containing inline elements
 				else:
 					p = docx_doc.add_paragraph()
-					if c==1: 
+					if c==1 and zmsid:
 						prepend_bookmark(p, zmsid)
 					add_runs(docx_block = p, bs_element = element)
-
-			elif element.name == 'hr':
-				# Omit horizontal rule
-				pass
-			elif element.name == 'script':
-				# Omit javascript
-				pass
+			# #############################################
+			# FORM
+			# #############################################
 			elif element.name == 'form':
 				p = docx_doc.add_paragraph(style='macro')
 				p.add_run('<form>\n').font.bold = True
@@ -331,10 +379,22 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
 				for input_field in element.find_all('input', recursive=True):
 					input_field_count += 1
 					p.add_run('%s. <input> : %s\n'%(input_field_count, input_field.get('name','')))
+			# #############################################
+			# OTHERS
+			# #############################################
+			elif element.name == 'hr':
+				# Omit horizontal rule
+				pass
+			elif element.name == 'script':
+				# Omit javascript
+				pass
 			else:
-				p = docx_doc.add_paragraph(str(element))
-				if c==1: 
-					prepend_bookmark(p, zmsid)
+				try:
+					p = docx_doc.add_paragraph(str(element))
+					if c==1 and zmsid: 
+						prepend_bookmark(p, zmsid)
+				except:
+					pass
 
 	return docx_doc
 
@@ -343,6 +403,180 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
 # #############################################
 # Helper Functions 3: Set Docx-Styles
 # #############################################
+# print('\n'.join([s.name for s in styles]))
+"""
+	Normal
+	Header
+	Header Char
+	Footer
+	Footer Char
+	Heading 1
+	Heading 2
+	Heading 3
+	Heading 4
+	Heading 5
+	Heading 6
+	Heading 7
+	Heading 8
+	Heading 9
+	Default Paragraph Font
+	Normal Table
+	No List
+	No Spacing
+	Heading 1 Char
+	Heading 2 Char
+	Heading 3 Char
+	Title
+	Title Char
+	Subtitle
+	Subtitle Char
+	List Paragraph
+	Body Text
+	Body Text Char
+	Body Text 2
+	Body Text 2 Char
+	Body Text 3
+	Body Text 3 Char
+	List
+	List 2
+	List 3
+	List Bullet
+	List Bullet 2
+	List Bullet 3
+	List Number
+	List Number 2
+	List Number 3
+	List Continue
+	List Continue 2
+	List Continue 3
+	macro
+	Macro Text Char
+	Quote
+	Quote Char
+	Heading 4 Char
+	Heading 5 Char
+	Heading 6 Char
+	Heading 7 Char
+	Heading 8 Char
+	Heading 9 Char
+	Caption
+	Strong
+	Emphasis
+	Intense Quote
+	Intense Quote Char
+	Subtle Emphasis
+	Intense Emphasis
+	Subtle Reference
+	Intense Reference
+	Book Title
+	TOC Heading
+	Table Grid
+	Light Shading
+	Light Shading Accent 1
+	Light Shading Accent 2
+	Light Shading Accent 3
+	Light Shading Accent 4
+	Light Shading Accent 5
+	Light Shading Accent 6
+	Light List
+	Light List Accent 1
+	Light List Accent 2
+	Light List Accent 3
+	Light List Accent 4
+	Light List Accent 5
+	Light List Accent 6
+	Light Grid
+	Light Grid Accent 1
+	Light Grid Accent 2
+	Light Grid Accent 3
+	Light Grid Accent 4
+	Light Grid Accent 5
+	Light Grid Accent 6
+	Medium Shading 1
+	Medium Shading 1 Accent 1
+	Medium Shading 1 Accent 2
+	Medium Shading 1 Accent 3
+	Medium Shading 1 Accent 4
+	Medium Shading 1 Accent 5
+	Medium Shading 1 Accent 6
+	Medium Shading 2
+	Medium Shading 2 Accent 1
+	Medium Shading 2 Accent 2
+	Medium Shading 2 Accent 3
+	Medium Shading 2 Accent 4
+	Medium Shading 2 Accent 5
+	Medium Shading 2 Accent 6
+	Medium List 1
+	Medium List 1 Accent 1
+	Medium List 1 Accent 2
+	Medium List 1 Accent 3
+	Medium List 1 Accent 4
+	Medium List 1 Accent 5
+	Medium List 1 Accent 6
+	Medium List 2
+	Medium List 2 Accent 1
+	Medium List 2 Accent 2
+	Medium List 2 Accent 3
+	Medium List 2 Accent 4
+	Medium List 2 Accent 5
+	Medium List 2 Accent 6
+	Medium Grid 1
+	Medium Grid 1 Accent 1
+	Medium Grid 1 Accent 2
+	Medium Grid 1 Accent 3
+	Medium Grid 1 Accent 4
+	Medium Grid 1 Accent 5
+	Medium Grid 1 Accent 6
+	Medium Grid 2
+	Medium Grid 2 Accent 1
+	Medium Grid 2 Accent 2
+	Medium Grid 2 Accent 3
+	Medium Grid 2 Accent 4
+	Medium Grid 2 Accent 5
+	Medium Grid 2 Accent 6
+	Medium Grid 3
+	Medium Grid 3 Accent 1
+	Medium Grid 3 Accent 2
+	Medium Grid 3 Accent 3
+	Medium Grid 3 Accent 4
+	Medium Grid 3 Accent 5
+	Medium Grid 3 Accent 6
+	Dark List
+	Dark List Accent 1
+	Dark List Accent 2
+	Dark List Accent 3
+	Dark List Accent 4
+	Dark List Accent 5
+	Dark List Accent 6
+	Colorful Shading
+	Colorful Shading Accent 1
+	Colorful Shading Accent 2
+	Colorful Shading Accent 3
+	Colorful Shading Accent 4
+	Colorful Shading Accent 5
+	Colorful Shading Accent 6
+	Colorful List
+	Colorful List Accent 1
+	Colorful List Accent 2
+	Colorful List Accent 3
+	Colorful List Accent 4
+	Colorful List Accent 5
+	Colorful List Accent 6
+	Colorful Grid
+	Colorful Grid Accent 1
+	Colorful Grid Accent 2
+	Colorful Grid Accent 3
+	Colorful Grid Accent 4
+	Colorful Grid Accent 5
+	Colorful Grid Accent 6
+	Description
+	q
+	Hyperlink
+	refGlossary
+	Table-Small
+	TOC-Header
+"""
+
 def set_docx_styles(doc):
 	styles = doc.styles
 	# Custom color 1: #017D87
@@ -401,8 +635,8 @@ def set_docx_styles(doc):
 	styles['Caption'].font.size = Pt(8)
 	styles['Caption'].font.italic = True
 	styles['Caption'].font.color.rgb = custom_color1
-	styles['Caption'].paragraph_format.space_before = Pt(14)
-	styles['Caption'].paragraph_format.space_after = Pt(4)
+	styles['Caption'].paragraph_format.space_before = Pt(16)
+	styles['Caption'].paragraph_format.space_after = Pt(6)
 
 	styles.add_style('q', WD_STYLE_TYPE.CHARACTER)
 	styles['q'].font.color.rgb = custom_color2
@@ -427,6 +661,36 @@ def set_docx_styles(doc):
 	styles['footer'].font.size = Pt(7)
 	styles['footer'].font.color.rgb = custom_color2
 
+	# Table small
+	styles.add_style('Table-Small', WD_STYLE_TYPE.PARAGRAPH)
+	styles['Table-Small'].font.name = 'Arial'
+	styles['Table-Small'].font.size = Pt(7)
+	styles['Table-Small'].paragraph_format.space_after = Pt(2)
+	styles['Table-Small'].paragraph_format.space_before = Pt(2)
+	styles['Table-Small'].paragraph_format.line_spacing = 1.2
+
+	# Inhaltsverzeichnis
+	styles.add_style('TOC-Header', WD_STYLE_TYPE.PARAGRAPH)
+	if sys.version_info[0] > 2:
+		styles['TOC-Header'].basedOn = doc.styles['Heading 2']
+	styles['TOC-Header'].font.name = 'Arial'
+	styles['TOC-Header'].font.size = Pt(18)
+	styles['TOC-Header'].font.color.rgb = custom_color2
+	styles['TOC-Header'].paragraph_format.space_before = Pt(12)
+	# add_bottom_border(styles['TOC-Header'])
+
+	# Notiz
+	styles.add_style('ZMSNotiz', WD_STYLE_TYPE.PARAGRAPH)
+	if sys.version_info[0] > 2:
+		styles['ZMSNotiz'].basedOn = doc.styles['Normal']
+	styles['ZMSNotiz'].font.name = 'Arial'
+	styles['ZMSNotiz'].font.size = Pt(8)
+	styles['ZMSNotiz'].paragraph_format.space_before = Pt(12)
+	styles['ZMSNotiz'].paragraph_format.space_after = Pt(12)
+	styles['ZMSNotiz'].paragraph_format.line_spacing = 1.5
+	# Add background color
+	add_bgcolor(styles['ZMSNotiz'], 'fff5ce')
+
 	return doc
 
 
@@ -435,42 +699,40 @@ def set_docx_styles(doc):
 # Helper Functions 4: GET DOCX NORMALIZED JSON
 # #############################################
 
-# The function creates a normalized JSON stream of 
-# a PAGE-like ZMS node. This JSON stream is used for 
-# transforming the content to DOCX. 
-# It is a list of dicts (key/value-pairs), where the 
-# first dict is representing the container meta data
-# and the following blocks are representing the PAGEELEMENTS
-# of the document.
-# Each object dictionary has the following keys:
-# - id: the id of the node
-# - meta_id: the meta_id of the node
-# - parent_id: the id of the parent node
-# - parent_meta_id: the meta_id of the parent node
-# - title: the title of the node
-# - description: the description of the node
-# - last_change_dt: the last change date of the node
-# - docx_format: the format of the content (html/xml/image 
-#   or text-stylename e.g.'Normal')
-# - content: the content of the node
-
-# Any PAGEELEMENT-node may have a specific 'standard_json_docx'
-# attribute which preprocesses it's ZMS content model close to
-# the translation into the DOCX model. The key 'docx_format'
-# is used to determine the style of the content block.
-
-# If this attribute method (py-primtive) is not available, 
-# the object's class standard_html-method is used to get the 
-# content, so that the (maybe not optimum) html will be 
-# transformed to DOCX.
-
-# Depending on the complexity of the content it's JSON 
-# representation may consist of ore or multiple key/value-
-# sequences. Any of these blocks will create a new block 
-# element (e.g. paragraph) in the DOCX document.
-
-
 def apply_standard_json_docx(self):
+	# The function creates a normalized JSON stream of 
+	# a PAGE-like ZMS node. This JSON stream is used for 
+	# transforming the content to DOCX. 
+	# It is a list of dicts (key/value-pairs), where the 
+	# first dict is representing the container meta data
+	# and the following blocks are representing the PAGEELEMENTS
+	# of the document.
+	# Each object dictionary has the following keys:
+	# - id: the id of the node
+	# - meta_id: the meta_id of the node
+	# - parent_id: the id of the parent node
+	# - parent_meta_id: the meta_id of the parent node
+	# - title: the title of the node
+	# - description: the description of the node
+	# - last_change_dt: the last change date of the node
+	# - docx_format: the format of the content (html/xml/image 
+	#   or text-stylename e.g.'Normal')
+	# - content: the content of the node
+
+	# Any PAGEELEMENT-node may have a specific 'standard_json_docx'
+	# attribute which preprocesses it's ZMS content model close to
+	# the translation into the DOCX model. The key 'docx_format'
+	# is used to determine the style of the content block.
+
+	# If this attribute method (py-primtive) is not available, 
+	# the object's class standard_html-method is used to get the 
+	# content, so that the (maybe not optimum) html will be 
+	# transformed to DOCX.
+
+	# Depending on the complexity of the content it's JSON 
+	# representation may consist of ore or multiple key/value-
+	# sequences. Any of these blocks will create a new block 
+	# element (e.g. paragraph) in the DOCX document.
 
 	zmscontext = self
 	request = zmscontext.REQUEST
@@ -501,9 +763,10 @@ def apply_standard_json_docx(self):
 	# Sequence all pageelements including ZMSNote
 	# Ref: ZMSObject.isPageElement
 	pageelements = [ \
-		e for e in zmscontext.filteredChildNodes(request) \
+		e for e in zmscontext.getChildNodes(request)  \
 			if ( e.getType() in [ 'ZMSObject', 'ZMSRecordSet' ] ) \
-				and not e.meta_id in [ 'ZMSTeaserContainer' ] \
+				and not e.meta_id in [ 'ZMSTeaserContainer'] \
+				and not e.isPage() \
 		]
 	for pageelement in pageelements:
 		if pageelement.attr('change_dt') and pageelement.attr('change_dt') >= last_change_dt:
@@ -634,7 +897,7 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 		# #############################################
 		# [4] TEXT-BLOCK with given block format (style)
 		elif v and block['docx_format'] in [e.name for e in doc.styles]:
-				p = doc.add_paragraph(v, style=style_name)
+				p = doc.add_paragraph(v, style=block['docx_format'])
 				prepend_bookmark(p, block['id'])
 		elif v:
 			p = doc.add_paragraph(v)

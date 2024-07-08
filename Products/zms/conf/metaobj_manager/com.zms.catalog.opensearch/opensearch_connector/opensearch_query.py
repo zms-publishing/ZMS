@@ -50,6 +50,7 @@ def opensearch_query( self, REQUEST=None):
 	home_id = request.get('home_id', '')
 	multisite_search = int(request.get('multisite_search', 1))
 	multisite_exclusions = request.get('multisite_exclusions', '').split(',')
+	prettify = bool(int(request.get('prettify',0)))
 	index_names = []
 	# Search in a specific index given by Request-parameter facet
 	if request.get('facet') not in ['all','undefined', None, '']:
@@ -176,7 +177,10 @@ def opensearch_query( self, REQUEST=None):
 	resp_text = ''
 	try:
 		response = client.search(body = json.dumps(query), index = index_names)
-		resp_text = json.dumps(response)
+		if prettify:
+			resp_text = json.dumps(response, indent=4)
+		else:
+			resp_text = json.dumps(response)
 	except opensearchpy.exceptions.RequestError as e:
 		resp_text = '//%s'%(e.error)
 	

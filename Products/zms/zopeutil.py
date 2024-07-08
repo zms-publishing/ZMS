@@ -212,6 +212,9 @@ def removeObject(container, id, removeFile=True):
         os.remove(filepath)
     container.manage_delObjects(ids=[id])
 
+def is_manage(id):
+  return re.match(r'manage(_.*)?$', id)
+
 security.declarePublic('initPermissions')
 def initPermissions(container, id, permissions={}):
   """
@@ -222,7 +225,7 @@ def initPermissions(container, id, permissions={}):
   if ob is None: return
   
   # default manage permissions
-  if id.startswith('manage') and not permissions:
+  if is_manage(id) and not permissions:
     permissions = {'Authenticated':['Access contents information', 'View']}
   # apply proxy-roles
   ob._proxy_roles=('Authenticated','Manager')

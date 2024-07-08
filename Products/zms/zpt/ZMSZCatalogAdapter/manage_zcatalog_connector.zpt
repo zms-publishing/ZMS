@@ -218,7 +218,7 @@
 						placeholder="Universität" title="Enter query, e.g. Universität" 
 						tal:attributes="value python:request.get('q','Universität')">
 					<input type="number" class="form-control" id="zcatalog_test_calls" name="calls:int" 
-						placeholder="10" title="Enter number of repetive calls, e.g. 10" 
+						placeholder="10" title="Enter number of repetitive calls, e.g. 10" 
 						tal:attributes="value python:request.get('calls','10')">
 					<div class="input-group-append">
 						<button class="btn btn-primary" title="Execute Performance Test (JSON shown in new window, Browser-Plugin JSON-Formatter recommended) "

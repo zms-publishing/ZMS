@@ -39,5 +39,26 @@ class ZMSTest(ZMSPortalTestCase):
       else:
         self.assertNotEqual(catalog_adapter, client.getCatalogAdapter())
 
+  def test_metaobj_manager(self):
+    zmscontext = self.context
+    metaobj_manager = zmscontext.getMetaobjManager()
+    self.assertIsNotNone(metaobj_manager)
+    clients = zmscontext.getPortalClients()
+    for i in range(len(clients)):
+      client = clients[i]
+      self.assertEqual(metaobj_manager.getMetaobjIds(), client.getMetaobjManager().getMetaobjIds())
+
+  def test_conf_properties(self):
+    zmscontext = self.context
+    clients = zmscontext.getPortalClients()
+    for i in range(len(clients)):
+      client = clients[i]
+      self.assertIsNone(client.getConfProperty('foo'))
+      zmscontext.setConfProperty('foo','bar')
+      self.assertEqual('bar', client.getConfProperty('foo'))
+      zmscontext.delConfProperty('foo')
+      self.assertIsNone(client.getConfProperty('foo'))
+    
+
   def tearDown(self):
     print('[tearDown] remove %s'%self.temp_title)

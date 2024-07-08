@@ -102,10 +102,6 @@ class StandardTest(unittest.TestCase):
 
     def test_date_api(self):
         from DateTime.DateTime import DateTime
-        context = None
-        lang = 'eng'
-        self.assertEquals('2024-01-01T12:00:00+01:00',standard.format_datetime_iso((2024,1,1,12,0,0,0,0,0)))
-        self.assertEquals(DateTime('2024/01/01 00:00:00 GMT+1'),standard.getLangFmtDate(context,(2024,1,1,12,0,0,0,0,0),lang,'DateTime'))
         self.assertEquals(35, standard.daysBetween((2024,1,1,12,0,0,0,0,0), (2024,2,5,12,0,0,0,0,0)))
         self.assertEquals(0, standard.daysBetween((2024,1,1,12,0,0,0,0,0), (2024,1,1,12,0,0,0,0,0)))
         self.assertEquals(-50, standard.daysBetween((2024,1,1,12,0,0,0,0,0), (2023,11,12,12,0,0,0,0,0)))

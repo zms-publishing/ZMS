@@ -221,6 +221,9 @@ def initPermissions(container, id, permissions={}):
   ob = getObject(container, id)
   if ob is None: return
   
+  # default manage permissions
+  if id.startswith('manage') and not permissions:
+    permissions = {'Authenticated':['Access contents information', 'View']}
   # apply proxy-roles
   ob._proxy_roles=('Authenticated','Manager')
   # apply permissions for roles
@@ -233,9 +236,7 @@ def initPermissions(container, id, permissions={}):
   manager_permissions = [x['name'] for x in ob.permissionsOfRole('Manager')]
   acquired_permissions = [x for x in manager_permissions if x not in role_permissions]
   ob.manage_acquiredPermissions(acquired_permissions)
-  ### Debug Zope object import here on unexpected errors due to (hidden) attrs 
-  # if hasattr(ob, '_owner'):
-    # del ob._owner
+
 
 def addDTMLMethod(container, id, title, data):
   """
@@ -282,6 +283,7 @@ def addExternalMethod(container, id, title, data):
   except:
     standard.writeError(container,"[addExternalMethod]: %s does not exist.\n"%id)
     pass
+  initPermissions(container, id)
 
 def addPageTemplate(container, id, title, data):
   """
@@ -290,6 +292,7 @@ def addPageTemplate(container, id, title, data):
   ZopePageTemplate.manage_addPageTemplate( container, id, title=title, text=data)
   ob = getattr( container, id)
   ob.output_encoding = 'utf-8'
+  initPermissions(container, id)
 
 def addPythonScript(container, id, title, data):
   """

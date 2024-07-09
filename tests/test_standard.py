@@ -108,3 +108,29 @@ class StandardTest(unittest.TestCase):
         self.assertEquals(1, standard.compareDate((2024,1,1,12,0,0,0,0,0), (2024,2,5,12,0,0,0,0,0)))
         self.assertEquals(0, standard.compareDate((2024,1,1,12,0,0,0,0,0), (2024,1,1,12,0,0,0,0,0)))
         self.assertEquals(-1, standard.compareDate((2024,1,1,12,0,0,0,0,0), (2023,11,12,12,0,0,0,0,0)))        
+
+    def test_operator_api(self):
+        self.assertEquals(int, standard.operator_gettype(1))
+        self.assertEquals(str, standard.operator_gettype('foo'))
+        self.assertEquals(str, standard.operator_gettype(u'foo'))
+        d = {'john':'doe'}
+        self.assertFalse('foo' in d)
+        self.assertIsNone(d.get('foo'))
+        standard.operator_setitem(d, 'foo', 'bar')
+        self.assertTrue('foo' in d)
+        self.assertEquals('bar', d.get('foo'))
+        self.assertEquals('bar', standard.operator_getitem(d, 'foo'))
+        self.assertEquals('bar', standard.operator_getitem(d, 'Foo'))
+        self.assertEquals('bar', standard.operator_getitem(d, 'FOO'))
+        standard.operator_delitem(d, 'foo')
+        self.assertFalse('foo' in d)
+        self.assertIsNone(d.get('foo'))
+
+    def test_mappings_api(self):
+        l1 = ['A', 'B', 'B', 'C']
+        l2 = ['C', 'D']
+        self.assertListEqual(['C'], standard.intersection_list(l1, l2))
+        self.assertListEqual(['A', 'B', 'B'], standard.difference_list(l1, l2))
+        self.assertListEqual(['A', 'B', 'B', 'C', 'D'], standard.concat_list(l1, l2))
+        self.assertDictEqual({'A':'B','B':'C'}, standard.dict_list(l1))
+        self.assertListEqual(['A', 'B', 'C'], standard.distinct_list(l1))

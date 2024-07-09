@@ -16,8 +16,9 @@ import sys
 from Products.zms import standard
 from Products.zms import rest_api
 
-# HTML LIBRARIES
+# X/HTML LIBRARIES
 from bs4 import BeautifulSoup
+from lxml import etree
 
 # IMPORT DOCX LIBRARIES
 import docx
@@ -43,6 +44,18 @@ def create_element(name):
 
 def create_attribute(element, name, value):
 	element.set(ns.qn(name), value)
+
+
+def get_normalized_image_width(w, h, max_w = 460):
+	if w:
+		if h > w:
+			scale =  h>max_w and float(h)/float(max_w) or 1
+		else:
+			scale =  w>max_w and float(w)/float(max_w) or 1
+		w = int(w/scale)
+	else:
+		w = max_w
+	return w
 
 # #############################################
 
@@ -151,9 +164,11 @@ def add_runs(docx_block, bs_element):
 			elif elrun.name == 'strong':
 				docx_block.add_run(elrun.text).bold = True
 			elif elrun.name == 'q':
-				docx_block.add_run(elrun.text, style='q')
+				docx_block.add_run(elrun.text, style='Quote Char')
 			elif elrun.name == 'em' or elrun.name == 'i':
 				docx_block.add_run(elrun.text).italic = True
+			elif elrun.name == 'samp' or elrun.name == 'code':
+				docx_block.add_run(elrun.text, style='Macro Text Char')
 			elif elrun.name == 'a':
 				add_hyperlink(docx_block = docx_block, link_text = elrun.text, url = elrun.get('href'))
 				docx_block.add_run(' ')
@@ -164,6 +179,7 @@ def add_runs(docx_block, bs_element):
 					docx_block.add_run(elrun.text, style=style_name)
 				else:
 					docx_block.add_run(elrun.text)
+
 			# #############################################
 			## TO-DO: Add inline image to docx
 			## Error: adding image as a block element 
@@ -172,6 +188,7 @@ def add_runs(docx_block, bs_element):
 			# elif elrun.name == 'img':
 			# 	add_htmlblock_to_docx(zmscontext, doc, str(elrun), zmsid=None)
 			# #############################################
+
 			else:
 				s = standard.pystr(elrun)
 				if c == 1: # Remove trailing spaces on first text element of a block
@@ -212,6 +229,7 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
 				p = docx_doc.add_paragraph()
 				if c==1 and zmsid: 
 					prepend_bookmark(p, zmsid)
+				# htmlblock.__contains__('ZMSTable')
 				if element.has_attr('class'):
 					if 'caption' in element['class']:
 						p.style = docx_doc.styles['Caption']
@@ -296,21 +314,16 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
 							src_url1 = src_url1[1:]
 						element['src'] = '%s/content/%s'%(src_url0, src_url1)
 
-					maxwidth = 460
+					# Normalize image size to 460px
+					imgheight = element.has_attr('height') and int(float(element['height'])) or None
 					imgwidth = element.has_attr('width') and int(float(element['width'])) or None
-					if imgwidth:
-						scale =  imgwidth>maxwidth and imgwidth/maxwidth or 1
-						imgwidth = imgwidth/scale
-					else:
-						imgwidth = maxwidth
+					imgwidth = get_normalized_image_width(w = imgwidth, h = imgheight, max_w = 460)
 
 					try:
 						response = requests.get(element['src'])
 						with open(img_name, 'wb') as f:
 							f.write(response.content)
 						if src_url1.startswith('++resource++zms_'):
-							# ZMS assets are not resized (alternative: use pass)
-							# pass
 							docx_doc.add_picture(img_name)
 						else:
 							docx_doc.add_picture(img_name, width=Emu(imgwidth*9525))
@@ -570,7 +583,6 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
 	Colorful Grid Accent 5
 	Colorful Grid Accent 6
 	Description
-	q
 	Hyperlink
 	refGlossary
 	Table-Small
@@ -599,24 +611,33 @@ def set_docx_styles(doc):
 	styles['Heading 1'].font.size = Pt(24)
 	styles['Heading 1'].font.bold = False
 	styles['Heading 1'].paragraph_format.line_spacing = 1.2
-	styles['Heading 1'].paragraph_format.space_before = Pt(12)
+	styles['Heading 1'].paragraph_format.space_before = Pt(18)
 	styles['Heading 1'].font.color.rgb = custom_color1
 
 	if sys.version_info[0] > 2:
 		styles['Heading 2'].basedOn = doc.styles['Normal']
+	styles['Heading 2'].font.name = 'Arial'
 	styles['Heading 2'].font.size = Pt(18)
+	styles['Heading 2'].font.bold = False
+	styles['Heading 2'].paragraph_format.line_spacing = 1.2
+	styles['Heading 2'].paragraph_format.space_before = Pt(24)
 	styles['Heading 2'].font.color.rgb = custom_color1
 
 	if sys.version_info[0] > 2:
 		styles['Heading 3'].basedOn = doc.styles['Normal']
-	styles['Heading 3'].font.size = Pt(12)
+	styles['Heading 3'].font.name = 'Arial'
+	styles['Heading 3'].font.size = Pt(13)
 	styles['Heading 3'].font.bold = True
+	styles['Heading 3'].paragraph_format.space_before = Pt(22)
 	styles['Heading 3'].font.color.rgb = custom_color1
 
 	if sys.version_info[0] > 2:
 		styles['Heading 4'].basedOn = doc.styles['Normal']
-	styles['Heading 4'].font.size = Pt(12)
+	styles['Heading 4'].font.name = 'Arial'
+	styles['Heading 4'].font.size = Pt(10)
+	styles['Heading 4'].paragraph_format.space_before = Pt(14)
 	styles['Heading 4'].font.bold = False
+	styles['Heading 4'].font.bold = True
 	styles['Heading 4'].font.color.rgb = custom_color1
 
 
@@ -635,13 +656,13 @@ def set_docx_styles(doc):
 	styles['Caption'].font.size = Pt(8)
 	styles['Caption'].font.italic = True
 	styles['Caption'].font.color.rgb = custom_color1
-	styles['Caption'].paragraph_format.space_before = Pt(16)
+	styles['Caption'].paragraph_format.space_before = Pt(24)
 	styles['Caption'].paragraph_format.space_after = Pt(6)
+	styles['Caption'].paragraph_format.keep_with_next = True
 
-	styles.add_style('q', WD_STYLE_TYPE.CHARACTER)
-	styles['q'].font.color.rgb = custom_color2
-	styles['q'].font.bold = True
-	styles['q'].font.italic = True
+	styles['Quote Char'].font.color.rgb = custom_color2
+	styles['Quote Char'].font.bold = True
+	styles['Quote Char'].font.italic = True
 
 	styles.add_style('Hyperlink', WD_STYLE_TYPE.CHARACTER)
 	styles['Hyperlink'].font.color.rgb = custom_color1
@@ -672,12 +693,13 @@ def set_docx_styles(doc):
 	# Inhaltsverzeichnis
 	styles.add_style('TOC-Header', WD_STYLE_TYPE.PARAGRAPH)
 	if sys.version_info[0] > 2:
-		styles['TOC-Header'].basedOn = doc.styles['Heading 2']
+		styles['TOC-Header'].basedOn = doc.styles['Heading 23']
 	styles['TOC-Header'].font.name = 'Arial'
-	styles['TOC-Header'].font.size = Pt(18)
+	styles['TOC-Header'].font.size = Pt(12)
+	styles['TOC-Header'].font.bold = True
 	styles['TOC-Header'].font.color.rgb = custom_color2
 	styles['TOC-Header'].paragraph_format.space_before = Pt(12)
-	# add_bottom_border(styles['TOC-Header'])
+	add_bottom_border(styles['TOC-Header'])
 
 	# Notiz
 	styles.add_style('ZMSNotiz', WD_STYLE_TYPE.PARAGRAPH)
@@ -736,6 +758,7 @@ def apply_standard_json_docx(self):
 
 	zmscontext = self
 	request = zmscontext.REQUEST
+	# request.set('preview', 'preview')
 
 	id = zmscontext.id
 	meta_id = zmscontext.meta_id
@@ -772,29 +795,71 @@ def apply_standard_json_docx(self):
 		if pageelement.attr('change_dt') and pageelement.attr('change_dt') >= last_change_dt:
 			last_change_dt = pageelement.attr('change_dt')
 		json_block = []
+
+		# Check for standard_json_docx attribute
 		json_block = pageelement.attr('standard_json_docx')
+
 		if not json_block:
-			html = ''
-			try:
-				html = pageelement.getBodyContent(request)
-				# Clean html data
-				html = clean_html(html)
-			except:
-				html = '<table>'
-				html += '<caption>Rendering Error: %s</caption>' % pageelement.meta_id
-				attrs = [d['id'] for d in zmscontext.getMetaobjAttrs(pageelement.meta_id) if d['type'] not in ['dtml','zpt','py','constant','resource','interface']]
-				for attr in attrs:
-					html += '<tr><td>%s</td><td>%s</td></tr>' % (attr, pageelement.attr(attr))
-				html += '</table>'
-			# Create a json block
-			json_block = [{
-				'id': pageelement.id,
-				'meta_id': pageelement.meta_id,
-				'parent_id': pageelement.getParentNode().id,
-				'parent_meta_id': pageelement.getParentNode().meta_id,
-				'docx_format': 'html',
-				'content': html
-			}]
+
+			# #############################################
+			# ZMSGraphic
+			# #############################################
+			if pageelement.meta_id == 'ZMSGraphic':
+				id = pageelement.id
+				meta_id = pageelement.meta_id
+				parent_id = pageelement.getParentNode().id 
+				parent_meta_id = pageelement.getParentNode().meta_id 
+				text = BeautifulSoup(pageelement.attr('text'), 'html.parser').get_text()
+				img = pageelement.attr('imghires') or pageelement.attr('img')
+				# img_url = img.getHref(request)
+				img_url = '%s/%s'%(pageelement.absolute_url(),img.getHref(request).split('/')[-1])
+				imgwidth = img and int(img.getWidth()) or 0;
+				imgheight = img and int(img.getHeight()) or 0;
+
+				json_block = [ {
+						'id':id,
+						'meta_id':meta_id,
+						'parent_id':parent_id,
+						'parent_meta_id':parent_meta_id,
+						'docx_format':'Caption',
+						'content':'[Abb. %s] %s'%(id, text)
+					},
+					{
+						'id':'%s_img'%(id), 
+						'meta_id':meta_id,
+						'parent_id':parent_id,
+						'parent_meta_id':parent_meta_id,
+						'docx_format':'image',
+						'imgwidth':	imgwidth,
+						'imgheight':imgheight,
+						'content':img_url
+					}
+				]
+			# #############################################
+			else:
+				html = ''
+				# Get standard content of pageelement
+				try:
+					html = pageelement.getBodyContent(request)
+					# Clean html data
+					html = clean_html(html)
+				except:
+					html = '<table>'
+					html += '<caption>Rendering Error: %s</caption>' % pageelement.meta_id
+					attrs = [d['id'] for d in zmscontext.getMetaobjAttrs(pageelement.meta_id) if d['type'] not in ['dtml','zpt','py','constant','resource','interface']]
+					for attr in attrs:
+						html += '<tr><td>%s</td><td>%s</td></tr>' % (attr, pageelement.attr(attr))
+					html += '</table>'
+				# Create a json block
+				json_block = [{
+					'id': pageelement.id,
+					'meta_id': pageelement.meta_id,
+					'parent_id': pageelement.getParentNode().id,
+					'parent_meta_id': pageelement.getParentNode().meta_id,
+					'docx_format': 'html',
+					'content': html
+				}]
+
 		blocks.extend(json_block)
 
 	# Update last_change_dt
@@ -892,7 +957,14 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 			p = doc.add_paragraph()
 			r = p.add_run()
 			# Normalize image width to 460px
-			r.add_picture(image_file, width=Emu(460*9525))
+			# Get image width and height from 'image' data block
+			imgwidth = block.get('imgwidth',0)
+			imgheight = block.get('imgheight',0)
+			try:
+				imgwidth = get_normalized_image_width(w = imgwidth, h = imgheight, max_w = 460)
+			except:
+				imgwidth = 460
+			r.add_picture(image_file, width=Emu(imgwidth*9525))
 			prepend_bookmark(p, block['id'])
 		# #############################################
 		# [4] TEXT-BLOCK with given block format (style)
@@ -902,6 +974,27 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 		elif v:
 			p = doc.add_paragraph(v)
 			prepend_bookmark(p, block['id'])
+
+
+	# #############################################
+	# TASK: Fix Heading Hierarchies
+	# #############################################
+	# # [p.style.name[-1] for p in doc._body.paragraphs if 'Heading' in p.style.name]
+	# headings = [p for p in doc.paragraphs if 'Heading' in p.style.name]
+	# level_shift = 0
+	# for i, p in enumerate(headings):
+	# 	this_level = int(p.style.name[-1])
+	# 	if i>0:
+	# 		# Check if previous heading has 2 level-step difference
+	# 		if this_level - former_level > 1:
+	# 			fixed_level = former_level + 1 - level_shift
+	# 			p.style = doc.styles['Heading %s'%fixed_level]
+	# 			level_shift = this_level - fixed_level
+	# 		if this_level < former_level:
+	# 			shifted_level = this_level + level_shift
+	# 			p.style = doc.styles['Heading %s'%shifted_level]
+	# 	former_level = this_level
+
 
 	# #############################################
 	# [d] SAVE DOCX-FILE

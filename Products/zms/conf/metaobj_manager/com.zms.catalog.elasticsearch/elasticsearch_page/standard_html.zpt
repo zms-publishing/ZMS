@@ -83,7 +83,7 @@
 	</div>
 
 	<div class="container-fluid">
-		<div class="container">
+		<div class="container" id="container_results">
 			<section id="search_results" class="search-results content-tabs">
 			</section>
 		</div>

@@ -26,6 +26,7 @@ from docx.text.paragraph import Paragraph
 from docx.shared import Pt
 from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.enum.style import WD_STYLE_TYPE
+from docx.enum.text import WD_COLOR_INDEX
 from docx.oxml import OxmlElement, ns, parse_xml
 from docx.shared import Emu
 
@@ -117,7 +118,13 @@ def add_bottom_border(style):
 	except:
 		standard.write('Error: Could not add bottom border to style %s' % style.name)
 
-def add_bgcolor(style, color):
+def add_paragraph_bgcolor(style, color):
+	"""
+	Add shadow and borders to paragraph properties
+	Parameters:
+		style = styles['ZMSNotiz']
+		color = 'fff5ce'
+	"""
 	shading = create_element('w:shd') # shd = Shading
 	create_attribute(shading, 'w:val', 'clear')
 	create_attribute(shading, 'w:color', 'auto')
@@ -132,6 +139,46 @@ def add_bgcolor(style, color):
 		create_attribute(border_side, 'w:color', color)
 		border.append(border_side)
 	style.element.pPr.append(border)
+
+def add_table_bgcolor(style, color):
+	"""
+	Add shadow and borders to table properties
+	Parameters:
+		style = styles['Normal Table']
+		color = 'fff5ce'
+	"""
+	shading = create_element('w:shd') # shd = Shading
+	create_attribute(shading, 'w:val', 'clear')
+	create_attribute(shading, 'w:color', 'auto')
+	create_attribute(shading, 'w:fill', color)
+	style.element.tblPr.append(shading)
+	border = create_element('w:tblBorders') # tblBorders = Table borders
+	create_attribute(border, 'w:val', 'single')
+	create_attribute(border, 'w:sz', '4')
+	create_attribute(border, 'w:space', '5')
+	create_attribute(border, 'w:color', color)
+	style.element.tblPr.append(border)
+
+def add_character_bgcolor(style, color):
+	"""
+	Add shadow and borders to run properties
+	Parameters:
+		style = styles['Macro Text Char']
+		color = '017D87'
+	"""
+	shading = create_element('w:shd') # shd = Shading
+	create_attribute(shading, 'w:val', 'clear')
+	create_attribute(shading, 'w:color', 'auto')
+	create_attribute(shading, 'w:fill', color)
+	style.element.rPr.append(shading)
+	border = create_element('w:bdr') # bdr = run border
+	create_attribute(border, 'w:val', 'single')
+	create_attribute(border, 'w:sz', '12')
+	create_attribute(border, 'w:space', '1')
+	create_attribute(border, 'w:color', color)
+	style.element.rPr.append(border)
+
+
 
 
 # #############################################
@@ -167,8 +214,15 @@ def add_runs(docx_block, bs_element):
 				docx_block.add_run(elrun.text, style='Quote Char')
 			elif elrun.name == 'em' or elrun.name == 'i':
 				docx_block.add_run(elrun.text).italic = True
-			elif elrun.name == 'samp' or elrun.name == 'code':
+			elif elrun.name in ['samp', 'code', 'tt', 'var', 'pre']:
 				docx_block.add_run(elrun.text, style='Macro Text Char')
+			elif elrun.name == 'kbd':
+				docx_block.add_run(elrun.text, style='Keyboard')
+				# r.font.highlight_color = WD_COLOR_INDEX.BLACK
+			elif elrun.name == 'sub':
+				docx_block.add_run(elrun.text).font.subscript = True
+			elif elrun.name == 'sup':
+				docx_block.add_run(elrun.text).font.superscript = True
 			elif elrun.name == 'a':
 				add_hyperlink(docx_block = docx_block, link_text = elrun.text, url = elrun.get('href'))
 				docx_block.add_run(' ')
@@ -591,10 +645,18 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
 
 def set_docx_styles(doc):
 	styles = doc.styles
-	# Custom color 1: #017D87
-	custom_color1 = docx.shared.RGBColor(1, 125, 135)
-	# Custom color 2: #AAAAAA
-	custom_color2 = docx.shared.RGBColor(170, 170, 170)
+
+	# Custom color 1: #017D87 dark turquoise
+	color_turquoise = docx.shared.RGBColor(1, 125, 135)
+	# Custom color 2: #AAAAAA light grey
+	color_lightgrey = docx.shared.RGBColor(170, 170, 170)
+	# Custom color 3: #333333 dark grey
+	color_darkgrey = docx.shared.RGBColor(51, 51, 51)
+	# Custom color 4: #FFFFFF white
+	color_white = docx.shared.RGBColor(255, 255, 255)
+	# Custom color 5: #0070FF blue
+	color_blue = docx.shared.RGBColor(0, 112, 255)
+
 	# Page margins
 	doc.sections[0].top_margin = Emu(120*9525)
 	# Normal
@@ -612,7 +674,7 @@ def set_docx_styles(doc):
 	styles['Heading 1'].font.bold = False
 	styles['Heading 1'].paragraph_format.line_spacing = 1.2
 	styles['Heading 1'].paragraph_format.space_before = Pt(18)
-	styles['Heading 1'].font.color.rgb = custom_color1
+	styles['Heading 1'].font.color.rgb = color_turquoise
 
 	if sys.version_info[0] > 2:
 		styles['Heading 2'].basedOn = doc.styles['Normal']
@@ -621,7 +683,7 @@ def set_docx_styles(doc):
 	styles['Heading 2'].font.bold = False
 	styles['Heading 2'].paragraph_format.line_spacing = 1.2
 	styles['Heading 2'].paragraph_format.space_before = Pt(24)
-	styles['Heading 2'].font.color.rgb = custom_color1
+	styles['Heading 2'].font.color.rgb = color_turquoise
 
 	if sys.version_info[0] > 2:
 		styles['Heading 3'].basedOn = doc.styles['Normal']
@@ -629,7 +691,7 @@ def set_docx_styles(doc):
 	styles['Heading 3'].font.size = Pt(13)
 	styles['Heading 3'].font.bold = True
 	styles['Heading 3'].paragraph_format.space_before = Pt(22)
-	styles['Heading 3'].font.color.rgb = custom_color1
+	styles['Heading 3'].font.color.rgb = color_turquoise
 
 	if sys.version_info[0] > 2:
 		styles['Heading 4'].basedOn = doc.styles['Normal']
@@ -638,7 +700,7 @@ def set_docx_styles(doc):
 	styles['Heading 4'].paragraph_format.space_before = Pt(14)
 	styles['Heading 4'].font.bold = False
 	styles['Heading 4'].font.bold = True
-	styles['Heading 4'].font.color.rgb = custom_color1
+	styles['Heading 4'].font.color.rgb = color_turquoise
 
 
 	# More styles derived from Normal
@@ -648,28 +710,28 @@ def set_docx_styles(doc):
 	styles['Description'].font.name = 'Arial'
 	styles['Description'].font.size = Pt(9)
 	styles['Description'].font.italic = True
-	styles['Description'].font.color.rgb = custom_color1
+	styles['Description'].font.color.rgb = color_turquoise
 	styles['Description'].paragraph_format.space_after = Pt(18)
 	styles['Description'].paragraph_format.line_spacing = 1.35
 	add_bottom_border(styles['Description'])
 
 	styles['Caption'].font.size = Pt(8)
 	styles['Caption'].font.italic = True
-	styles['Caption'].font.color.rgb = custom_color1
+	styles['Caption'].font.color.rgb = color_turquoise
 	styles['Caption'].paragraph_format.space_before = Pt(24)
 	styles['Caption'].paragraph_format.space_after = Pt(6)
 	styles['Caption'].paragraph_format.keep_with_next = True
 
-	styles['Quote Char'].font.color.rgb = custom_color2
+	styles['Quote Char'].font.color.rgb = color_lightgrey
 	styles['Quote Char'].font.bold = True
 	styles['Quote Char'].font.italic = True
 
 	styles.add_style('Hyperlink', WD_STYLE_TYPE.CHARACTER)
-	styles['Hyperlink'].font.color.rgb = custom_color1
+	styles['Hyperlink'].font.color.rgb = color_turquoise
 	styles['Hyperlink'].font.underline = True
 
 	styles.add_style('refGlossary', WD_STYLE_TYPE.CHARACTER)
-	styles['refGlossary'].font.color.rgb = custom_color1
+	styles['refGlossary'].font.color.rgb = color_turquoise
 	styles['refGlossary'].font.italic = True
 
 	styles['macro'].font.size = Pt(9)
@@ -677,10 +739,20 @@ def set_docx_styles(doc):
 	styles['macro'].paragraph_format.space_after = Pt(12)
 	styles['macro'].paragraph_format.line_spacing = 1.35
 
+	styles['Macro Text Char'].font.bold = True
+	styles['Macro Text Char'].font.color.rgb = color_blue
+
+	styles.add_style('Keyboard', WD_STYLE_TYPE.CHARACTER)
+	styles['Keyboard'].font.name = 'Courier New'
+	styles['Keyboard'].font.size = Pt(8)
+	styles['Keyboard'].font.bold = True
+	styles['Keyboard'].font.color.rgb = color_white
+	add_character_bgcolor(styles['Keyboard'], '000000')
+
 	styles['header'].font.size = Pt(7)
-	styles['header'].font.color.rgb = custom_color2
+	styles['header'].font.color.rgb = color_lightgrey
 	styles['footer'].font.size = Pt(7)
-	styles['footer'].font.color.rgb = custom_color2
+	styles['footer'].font.color.rgb = color_lightgrey
 
 	# Table small
 	styles.add_style('Table-Small', WD_STYLE_TYPE.PARAGRAPH)
@@ -697,7 +769,7 @@ def set_docx_styles(doc):
 	styles['TOC-Header'].font.name = 'Arial'
 	styles['TOC-Header'].font.size = Pt(12)
 	styles['TOC-Header'].font.bold = True
-	styles['TOC-Header'].font.color.rgb = custom_color2
+	styles['TOC-Header'].font.color.rgb = color_lightgrey
 	styles['TOC-Header'].paragraph_format.space_before = Pt(12)
 	add_bottom_border(styles['TOC-Header'])
 
@@ -711,7 +783,7 @@ def set_docx_styles(doc):
 	styles['ZMSNotiz'].paragraph_format.space_after = Pt(12)
 	styles['ZMSNotiz'].paragraph_format.line_spacing = 1.5
 	# Add background color
-	add_bgcolor(styles['ZMSNotiz'], 'fff5ce')
+	add_paragraph_bgcolor(styles['ZMSNotiz'], 'fff5ce')
 
 	return doc
 
@@ -722,39 +794,41 @@ def set_docx_styles(doc):
 # #############################################
 
 def apply_standard_json_docx(self):
-	# The function creates a normalized JSON stream of 
-	# a PAGE-like ZMS node. This JSON stream is used for 
-	# transforming the content to DOCX. 
-	# It is a list of dicts (key/value-pairs), where the 
-	# first dict is representing the container meta data
-	# and the following blocks are representing the PAGEELEMENTS
-	# of the document.
-	# Each object dictionary has the following keys:
-	# - id: the id of the node
-	# - meta_id: the meta_id of the node
-	# - parent_id: the id of the parent node
-	# - parent_meta_id: the meta_id of the parent node
-	# - title: the title of the node
-	# - description: the description of the node
-	# - last_change_dt: the last change date of the node
-	# - docx_format: the format of the content (html/xml/image 
-	#   or text-stylename e.g.'Normal')
-	# - content: the content of the node
+	"""
+	The function creates a normalized JSON stream of 
+	a PAGE-like ZMS node. This JSON stream is used for 
+	transforming the content to DOCX. 
+	It is a list of dicts (key/value-pairs), where the 
+	first dict is representing the container meta data
+	and the following blocks are representing the PAGEELEMENTS
+	of the document.
+	Each object dictionary has the following keys:
+	- id: the id of the node
+	- meta_id: the meta_id of the node
+	- parent_id: the id of the parent node
+	- parent_meta_id: the meta_id of the parent node
+	- title: the title of the node
+	- description: the description of the node
+	- last_change_dt: the last change date of the node
+	- docx_format: the format of the content (html/xml/image 
+	  or text-stylename e.g.'Normal')
+	- content: the content of the node
 
-	# Any PAGEELEMENT-node may have a specific 'standard_json_docx'
-	# attribute which preprocesses it's ZMS content model close to
-	# the translation into the DOCX model. The key 'docx_format'
-	# is used to determine the style of the content block.
+	Any PAGEELEMENT-node may have a specific 'standard_json_docx'
+	attribute which preprocesses it's ZMS content model close to
+	the translation into the DOCX model. The key 'docx_format'
+	is used to determine the style of the content block.
 
-	# If this attribute method (py-primtive) is not available, 
-	# the object's class standard_html-method is used to get the 
-	# content, so that the (maybe not optimum) html will be 
-	# transformed to DOCX.
+	If this attribute method (py-primtive) is not available, 
+	the object's class standard_html-method is used to get the 
+	content, so that the (maybe not optimum) html will be 
+	transformed to DOCX.
 
-	# Depending on the complexity of the content it's JSON 
-	# representation may consist of ore or multiple key/value-
-	# sequences. Any of these blocks will create a new block 
-	# element (e.g. paragraph) in the DOCX document.
+	Depending on the complexity of the content it's JSON 
+	representation may consist of ore or multiple key/value-
+	sequences. Any of these blocks will create a new block 
+	element (e.g. paragraph) in the DOCX document.
+	"""
 
 	zmscontext = self
 	request = zmscontext.REQUEST
@@ -867,6 +941,84 @@ def apply_standard_json_docx(self):
 
 	return blocks
 
+# #############################################
+# Helper Functions 5: READ HEADLINE LEVELS
+# #############################################
+# Based on number-prefix of headlines
+def get_headline_levels_from_numbering(headline_paragraphs=[]):
+	list2 = [ \
+		(
+			len(p.text.split(' ')[0].rstrip('.').split('.'))+1 \
+			if '.' in p.text.split(' ')[0] else 1 \
+		) \
+		for p in headline_paragraphs
+	]
+
+	return list2
+
+
+# #############################################
+# Helper Functions 6: NORMALIZE HEADLINE LEVELS
+# #############################################
+# VARIANT-1
+# Better for very volatile headline jumping
+def normalize_headline_levels(list1):
+	"""
+	Normalize headline levels
+	expects a list of headline levels as integer values
+	"""
+	list2 = list1[:]  # Create a copy of list1
+	l = len(list2)
+	i = 0
+	n = 0
+	# Start with headline level 1
+	list2[0] = 1
+	while i < l:
+		i = (n == 0 or i > n) and i+1 or n + 1
+		n = 0
+		if i >= l:
+			break
+		v = list2[i]
+		if v == list1[i-1]:
+			continue
+		if v - list1[i-1] > 1 or v - list2[i-1] > 1:
+			list2[i] = list1[i-1] + 1
+			if v - list2[i-1] > 1:
+				list2[i] = list2[i-1] + 1
+			n = i
+		if n + 1 >= l:
+			break
+		while list1[n+1] == list1[n]:
+			n += 1
+			if n + 1 >= l:
+				break
+			list2[n] = list2[i]
+	return list2
+
+# VARIANT-2
+# Better for systmatical headline jumps
+# e.g. omitted h2 (see Test-Case 1)
+def normalize_headline_levels2(list1):
+	"""
+	Normalize headline levels
+	expects a list of headline levels as integer values
+	"""
+	s = []
+	list2 = [1]
+	for i in list1[1:]:
+		i1 = i + 1
+		if s and s[-1] == i1:
+			pass
+		elif not s or s[-1] < i1:
+			s.append(i1)
+		elif s:
+			while len(s) > 1 and s[-1] > i1:
+				s = s[:-1]
+		list2.append(len(s) + 1)
+	return list2
+
+
+
 
 # #############################################
 # GLOBALS
@@ -977,23 +1129,31 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 
 
 	# #############################################
-	# TASK: Fix Heading Hierarchies
+	# Normalize Headline Hierarchy
+	# using function normalize_headline_levels2 
+	# up-levelling systematic gaps in headline levels
 	# #############################################
-	# # [p.style.name[-1] for p in doc._body.paragraphs if 'Heading' in p.style.name]
-	# headings = [p for p in doc.paragraphs if 'Heading' in p.style.name]
-	# level_shift = 0
-	# for i, p in enumerate(headings):
-	# 	this_level = int(p.style.name[-1])
-	# 	if i>0:
-	# 		# Check if previous heading has 2 level-step difference
-	# 		if this_level - former_level > 1:
-	# 			fixed_level = former_level + 1 - level_shift
-	# 			p.style = doc.styles['Heading %s'%fixed_level]
-	# 			level_shift = this_level - fixed_level
-	# 		if this_level < former_level:
-	# 			shifted_level = this_level + level_shift
-	# 			p.style = doc.styles['Heading %s'%shifted_level]
-	# 	former_level = this_level
+	headline_paragraphs = [p for p in doc._body.paragraphs if 'Heading' in p.style.name]
+	
+	# 1. Get headline levels on HTML/stylenames 
+	# and its normalization with function normalize_headline_levels2()
+	headline_levels_on_stylenames = [int(p.style.name[-1]) for p in headline_paragraphs]
+	headline_levels_normalized = normalize_headline_levels2(headline_levels_on_stylenames)
+
+	# 2. Get headline levels on its numbering-prefixes
+	headline_levels_on_numbering = get_headline_levels_from_numbering(headline_paragraphs)
+
+	# 3. Which method for getting the normalized levels is more reliable?
+	# Sum up prefix-based level-numbers and divide by number of levels
+	# Approach: if there are no numbers, all levels are considered as 1
+	# what is supposed to be unreliable
+	if sum(headline_levels_on_numbering)/len(headline_levels_on_numbering) > 1.25: 
+		headline_levels_normalized = headline_levels_on_numbering
+
+	# 4. Reset levels of headline-paragraphs
+	for i, p in enumerate(headline_paragraphs):
+		p.style = doc.styles['Heading %s'%headline_levels_normalized[i]]
+
 
 
 	# #############################################

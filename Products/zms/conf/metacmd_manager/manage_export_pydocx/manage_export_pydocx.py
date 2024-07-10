@@ -201,7 +201,7 @@ def add_runs(docx_block, bs_element):
 	# to the docx-block, e.g. <strong>, <em>, <a>
 	if bs_element.children:
 		c = 0
-		for elrun in [elrun for elrun in bs_element.children if elrun.name not in ['ul', 'ol', 'li', 'img']]:
+		for elrun in [elrun for elrun in bs_element.children if elrun.name not in ['ul', 'ol', 'li', 'img', 'figure']]:
 			# Hint: ul/ol/li are handled as blocks in add_htmlblock_to_docx.add_list
 			c += 1
 			if elrun.name == 'br':
@@ -242,7 +242,8 @@ def add_runs(docx_block, bs_element):
 			# elif elrun.name == 'img':
 			# 	add_htmlblock_to_docx(zmscontext, doc, str(elrun), zmsid=None)
 			# #############################################
-
+			elif elrun.name == 'p':
+				add_runs(docx_block = docx_block, bs_element = elrun)
 			else:
 				s = standard.pystr(elrun)
 				if c == 1: # Remove trailing spaces on first text element of a block
@@ -1066,7 +1067,7 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 	if page_count == 1:
 		dt = standard.getLangFmtDate(zmscontext, heading.get('last_change_dt',''), 'eng', '%Y-%m-%d')
 		url = heading.get('url','').replace('nohost','localhost')
-		tabs = len(heading.get('title',''))>48 and '\t' or '\t\t'
+		tabs = len(heading.get('title',''))>68 and '\t' or '\t\t'
 		doc.sections[0].header.paragraphs[0].text = '%s%s%s\nURL: %s'%(standard.pystr(heading.get('title','')), tabs, dt, url)
 		add_page_number(doc.sections[0].footer.paragraphs[0].add_run('Seite '))
 

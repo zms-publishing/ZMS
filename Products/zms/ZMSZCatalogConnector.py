@@ -319,7 +319,6 @@ class ZMSZCatalogConnector(
       for node in nodes:
         # Clear client.
         if node.meta_id == 'ZMS':
-          cleared = 0
           home_id = node.getHome().id
           result['home_id'] = home_id
           result['cleared'] = self.manage_objects_clear(home_id)[0]

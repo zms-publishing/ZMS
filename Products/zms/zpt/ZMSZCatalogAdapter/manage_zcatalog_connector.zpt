@@ -4,7 +4,7 @@
 	zopeutil modules/Products.zms/zopeutil;
 	adapter python:here.getCatalogAdapter();
 	properties python:here.getProperties();
-	actions python:here.getActions();">
+	actions python:[action for action in here.getActions() if not action.get('id').endswith('_test')];">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
 <body tal:attributes="class python:here.zmi_body_class(id='ZMSZCatalogConnector catalog-connector config')">
 <header tal:replace="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</header>
@@ -51,7 +51,9 @@
 		<div class="form-group">
 			<div class="navbar p-0" style="align-items: start !important;">
 				<div class="input-group-prepend">
-					<div class="btn-group dropdown mr-3" tal:condition="actions" tal:attributes="title python:'%s.%s'%(here.getMetaobj(here.id)['package'],here.id)">
+					<div class="btn-group dropdown mr-3" 
+						tal:condition="actions" 
+						tal:attributes="title python:'%s.%s'%(here.getMetaobj(here.id)['package'],here.id)">
 						<button class="btn btn-secondary dropdown-toggle" type="button" id="apiDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<tal:block tal:content="python:'----- %s -----'%here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_ACTION')">ZCatalog-Interaction</tal:block>
 						</button>

@@ -598,7 +598,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       """ ZMSObject.display_icon """
       meta_id = self.meta_id
       if len(args) == 2 and not kwargs:
-         meta_id = args[1]
+         meta_id = len(args[1]) > 0 and args[1] or meta_id
       else:
         meta_id = kwargs.get('meta_id', kwargs.get('meta_type', meta_id))
       name = 'fas fa-exclamation-triangle'

@@ -625,7 +625,7 @@ class ZMSObject(ZMSItem.ZMSItem,
               title += '; '+'; '.join(['RESTRICTION: '+x[1] for x in constraints['RESTRICTIONS']])
       else:
         name = 'fas fa-exclamation-triangle constraint-error'
-        title = '%s not found!'%str(bool(meta_id!='' and meta_id  or 'Meta-ID') or 'Meta-ID')
+        title = '%s not found!'%str(bool(meta_id) or 'Meta-ID')
       return '<i class="%s" title="%s"%s></i>'%(name,title,extra)
 
 
@@ -1294,7 +1294,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     security.declareProtected('View', 'ajaxGetBodyContent')
     def ajaxGetBodyContent(self, REQUEST, forced=False):
       """
-      HTML presentation in body-content. 
+      HTML presentation in body-content.
       """
       return self.getBodyContent(REQUEST, forced)
 

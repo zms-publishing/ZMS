@@ -26,7 +26,7 @@ class adwords:
 	package = "com.zms.catalog.opensearch"
 
 	# Revision
-	revision = "1.8.4"
+	revision = "1.8.5"
 
 	# Type
 	type = "ZMSRecordSet"
@@ -93,19 +93,16 @@ class adwords:
 		category = {"custom":1
 			,"default":""
 			,"id":"category"
-			,"keys":["##"
-				,"return ["
-				,"  ('direkt','Direkteinstiege'),"
-				,"  ('universitaet','Universität'),"
-				,"  ('study','Studium'),"
-				,"  ('forschung','Forschung'),"
-				,"  ('weiterbildung','Weiterbildung'),"
-				,"  ('fakultaeten','Fakultäten'),"
-				,"  ('institute','Institute und Zentren'),"
-				,"  ('microsites','Microsites'),"
-				,"  ('apps','Applikationen'),"
-				,"  ('extern','Externe Seiten')"
-				,"]"]
+			,"keys":["direkt"
+				,"universitaet"
+				,"study"
+				,"forschung"
+				,"weiterbildung"
+				,"fakultaeten"
+				,"institute"
+				,"microsites"
+				,"apps"
+				,"extern"]
 			,"mandatory":0
 			,"multilang":0
 			,"name":"Category"

@@ -32,7 +32,7 @@ class opensearch_connector:
 	package = "com.zms.catalog.opensearch"
 
 	# Revision
-	revision = "1.7.5"
+	revision = "1.8.0"
 
 	# Type
 	type = "ZMSLibrary"
@@ -109,6 +109,15 @@ class opensearch_connector:
 			,"mandatory":0
 			,"multilang":0
 			,"name":"Destroy: Delete Schema"
+			,"repetitive":0
+			,"type":"External Method"}
+
+		manage_opensearch_test = {"default":""
+			,"id":"manage_opensearch_test"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"Test: OpenSearch connection"
 			,"repetitive":0
 			,"type":"External Method"}
 

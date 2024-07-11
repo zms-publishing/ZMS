@@ -210,6 +210,25 @@
 				</tal:block>
 			</tal:block>
 		</tal:block>
+		<div class="form-group row" tal:condition="python:here.getId().split('_')[0]=='opensearch'">
+			<label class="col-sm-2 control-label" for="zcatalog_test"><span>Performance</span></label>
+			<div class="col-sm-10">
+				<div class="input-group" id="zcatalog_test">
+					<input type="text" class="form-control" id="zcatalog_test_q" name="q" 
+						placeholder="Universität" title="Enter query, e.g. Universität" 
+						tal:attributes="value python:request.get('q','Universität')">
+					<input type="number" class="form-control" id="zcatalog_test_calls" name="calls:int" 
+						placeholder="10" title="Enter number of repetitive calls, e.g. 10" 
+						tal:attributes="value python:request.get('calls','10')">
+					<div class="input-group-append">
+						<button class="btn btn-primary" title="Execute Performance Test (JSON shown in new window, Browser-Plugin JSON-Formatter recommended) "
+							onclick="javascript:window.open('./manage_opensearch_test?prettify=1&calls='+$('#zcatalog_test_calls').val()+'&q='+$('#zcatalog_test_q').val(),'Performance Test','width=800,height=600,scrollbars=yes');return false"
+							><i class="fas fa-external-link-alt"></i>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div><!-- .form-group -->
 		<div class="form-group row">
 			<label class="col-sm-2 control-label" for="zcatalog_qsearch"><span>Query</span></label>
 			<div class="col-sm-10">
@@ -217,7 +236,7 @@
 					<input type="text" class="form-control" id="zcatalog_qsearch" name="q" tal:attributes="value python:request.get('q','')">
 					<div class="input-group-append">
 						<button class="btn btn-primary"
-							tal:attributes="onclick python:'javascript:$ZMI.iframe(\'%s/search_json\',{q:$(\'#zcatalog_qsearch\').val(),debug:0,pretty:1},{id:\'connector_results\',json:true,title:\'Query: <code>\' + $(\'#zcatalog_qsearch\').val() + \'</code>\' });;return false'%(here.absolute_url())"
+							onclick="javascript:window.open('./search_json?prettify=1&q='+$('#zcatalog_qsearch').val(),'Query Test','width=800,height=600,scrollbars=yes');return false"
 							><i class="fas fa-external-link-alt"></i>
 						</button>
 					</div>
@@ -231,7 +250,7 @@
 					<input type="text" class="form-control" id="zcatalog_qsuggest" name="q" tal:attributes="value python:request.get('q','')">
 					<div class="input-group-append">
 						<button class="btn btn-primary"
-							tal:attributes="onclick python:'javascript:$ZMI.iframe(\'%s/suggest_json\',{q:$(\'#zcatalog_qsuggest\').val(),debug:0,pretty:1},{id:\'connector_results\',json:true,title:\'Suggest: <code>\' + $(\'#zcatalog_qsuggest\').val() + \'</code>\' });;return false'%(here.absolute_url())"
+							onclick="javascript:window.open('./suggest_json?prettify=1&q='+$('#zcatalog_qsuggest').val(),'Suggest','width=800,height=600,scrollbars=yes');return false"
 							><i class="fas fa-external-link-alt"></i>
 						</button>
 					</div>

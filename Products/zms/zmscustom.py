@@ -80,7 +80,7 @@ def manage_addZMSCustom(self, meta_id, lang, _sort_id, btn, REQUEST, RESPONSE):
   target = self.absolute_url()
   if btn == 'BTN_INSERT':
     # Create
-    meta_id = REQUEST.get('ZMS_INSERT',meta_id)
+    meta_id = standard.nvl(REQUEST.get('ZMS_INSERT'),meta_id)
     id_prefix = standard.id_prefix(REQUEST.get('id_prefix', 'e'))
     new_id = self.getNewId(id_prefix)
     globalAttr = self.dGlobalAttrs.get(meta_id, self.dGlobalAttrs['ZMSCustom'])

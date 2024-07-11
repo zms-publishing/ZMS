@@ -69,7 +69,7 @@ class opensearch_page:
 	package = "com.zms.catalog.opensearch"
 
 	# Revision
-	revision = "1.8.6"
+	revision = "1.8.7"
 
 	# Type
 	type = "ZMSDocument"

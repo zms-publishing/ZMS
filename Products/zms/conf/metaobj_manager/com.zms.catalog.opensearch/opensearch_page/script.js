@@ -67,7 +67,7 @@ $(function() {
 			// Replace only tab-pane
 			$('.search-results .tab-content').html( hb_results_html );
 		};
-		$('html, body').animate({scrollTop: $("#search_results").offset().top }, 1000);
+		$('html, body').animate({scrollTop: $("#container_results").offset().top }, 1000);
 
 		//# Add pagination ###################
 		var fn = (pageIndex) => {
@@ -106,10 +106,14 @@ $(function() {
 			let score = x['_score'];
 			// UNIBE
 			if ( index_name != 'unitel' ) {
-				let body = source['standard_html'];
+				let lang = source['lang'];
 				let title = source['seotitle_tag'] ? source['seotitle_tag'] : source['title'];
-				// Remove repeating title string from beginning of snippet
-				let snippet = source['seometa_tag'] ? source['seometa_tag'] : ( body.startsWith(title) ? body.substr(title.length).trim() : body );
+				let snippet = source['seometa_tag'] ? source['seometa_tag'] : source['attr_dc_description'];
+				if (!snippet) {
+					snippet = source['standard_html'];
+					// Remove repeating title string from beginning of snippet
+					snippet = snippet ? ( snippet.indexOf(title) === 0 ? snippet.substr(title.length).trim() : snippet ) : snippet;
+				};
 				let highlight = x['highlight'];
 				var hit = { 
 					'path':source['uid'], 
@@ -117,7 +121,8 @@ $(function() {
 					'title':title, 
 					'snippet':snippet,
 					'index_name':index_name,
-					'score':score
+					'score':score,
+					'lang':lang
 				};
 				if (typeof highlight !== 'undefined') {
 					if (typeof highlight['title'] !== 'undefined') {
@@ -180,7 +185,8 @@ $(function() {
 					'title':title, 
 					'snippet':Adresse,
 					'index_name':index_name,
-					'score':score
+					'score':score,
+					'lang':'*'
 				}; 
 			}
 			res_processed.hits.push(hit)
@@ -204,7 +210,7 @@ $(function() {
 	}
 
 	const show_breadcrumbs = (el) => {
-		const lang = $('#lang').attr('value');
+		const lang = el.dataset.lang!='undefined'? el.dataset.lang : $('#lang').attr('value');
 		if ( el.dataset.id.startsWith('uid') ) {
 			$.get(url=`${root_url}/opensearch_breadcrumbs_obj_path`, 
 				data={ 'id' : el.dataset.id, 'lang' : lang }, 
@@ -216,10 +222,13 @@ $(function() {
 	}
 
 	const stringify_address = (d,URL) => {
+		const lang = $('#lang').attr('value');
 		let s = '';
 		Object.keys(d).forEach(k => {
 			if (d[k]) {
-				s += `<dt class="${k}">${k}</dt>`;
+				let lang_key = `opensearch_page.UNITEL_KEY_${k}`; 
+				let lang_str = $ZMI.getLangStr( lang_key, lang )==undefined ? k : $ZMI.getLangStr( lang_key, lang );
+				s += `<dt class="${lang} ${k}">${lang_str}</dt>`;
 				if (k=='Institution' && URL) {
 					s += `<dd class="${k}"><a href="${URL}">${d[k]}</a></dd>`;
 				} else if (k=='WWWInstitution') {

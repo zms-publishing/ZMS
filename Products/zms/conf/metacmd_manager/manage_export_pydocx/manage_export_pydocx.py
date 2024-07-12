@@ -188,10 +188,21 @@ def add_character_bgcolor(style, color):
 # Clean HTML
 def clean_html(html):
 	# Clean comments, styles, empty tags
+	# and handle special characters: left-to-right, triangle
+	left_to_right_char = '\u200e'
+	triangle_char = '\U0001F806'
+
 	html = re.sub(r'<!.*?->','', html)
 	html = re.sub(r'<style.*?</style>','', html)
 	html = standard.re_sub(r'\n|\t', ' ', html)
 	html = standard.re_sub(r'\s\s', ' ', html)
+	html = html.replace('<span class="unicode">&crarr;</span><br />','')
+	html = html.replace('<span class="unicode">&crarr;</span>','')
+	html = html.replace('">\n','">')
+	# refGlossary
+	html = html.replace(left_to_right_char,'')
+	html = html.replace('[[', triangle_char)
+	html = html.replace(']]', '')
 	return html
 
 # ADD RUNS TO DOCX-BLOCK
@@ -272,7 +283,8 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
 			# #############################################
 			if element.name in ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']:
 				heading_level = int(element.name[1])
-				p = docx_doc.add_heading(element.text, level=heading_level)
+				heading_text = element.text.strip()
+				p = docx_doc.add_heading(heading_text, level=heading_level)
 				if c==1 and zmsid: 
 					prepend_bookmark(p, zmsid)
 				if element.text == 'Inhaltsverzeichnis':
@@ -736,7 +748,7 @@ def set_docx_styles(doc):
 
 	styles.add_style('refGlossary', WD_STYLE_TYPE.CHARACTER)
 	styles['refGlossary'].font.color.rgb = color_turquoise
-	styles['refGlossary'].font.italic = True
+	styles['refGlossary'].font.italic = False
 
 	styles['macro'].font.size = Pt(9)
 	styles['macro'].paragraph_format.space_before = Pt(12)
@@ -788,6 +800,20 @@ def set_docx_styles(doc):
 	styles['ZMSNotiz'].paragraph_format.line_spacing = 1.5
 	# Add background color
 	add_paragraph_bgcolor(styles['ZMSNotiz'], 'fff5ce')
+
+	# Merksatz
+	styles.add_style('emphasis', WD_STYLE_TYPE.PARAGRAPH)
+	if sys.version_info[0] > 2:
+		styles['emphasis'].basedOn = doc.styles['Normal']
+	styles['emphasis'].font.name = 'Arial'
+	styles['emphasis'].font.size = Pt(9)
+	styles['emphasis'].font.bold = False
+	styles['emphasis'].font.italic = True
+	styles['emphasis'].paragraph_format.space_before = Pt(12)
+	styles['emphasis'].paragraph_format.space_after = Pt(12)
+	styles['emphasis'].paragraph_format.line_spacing = 1.5
+	# Add background color
+	add_paragraph_bgcolor(styles['emphasis'], 'f0f8ff')
 
 	return doc
 
@@ -869,9 +895,10 @@ def apply_standard_json_docx(self):
 		# Ref: ZMSObject.isPageElement
 		pageelements = [ \
 			e for e in zmscontext.getChildNodes(request)  \
-				if ( e.getType() in [ 'ZMSObject', 'ZMSRecordSet' ] ) \
+				if ( ( e.getType() in [ 'ZMSObject', 'ZMSRecordSet'] ) \
 					and not e.meta_id in [ 'ZMSTeaserContainer'] \
-					and not e.isPage() \
+					and not e.isPage() ) \
+					or e.meta_id in [ 'ZMSLinkElement' ]
 			]
 
 	for pageelement in pageelements:
@@ -896,8 +923,8 @@ def apply_standard_json_docx(self):
 				img = pageelement.attr('imghires') or pageelement.attr('img')
 				# img_url = img.getHref(request)
 				img_url = '%s/%s'%(pageelement.absolute_url(),img.getHref(request).split('/')[-1])
-				imgwidth = img and int(img.getWidth()) or 0;
-				imgheight = img and int(img.getHeight()) or 0;
+				imgwidth = img and int(img.getWidth()) or 0
+				imgheight = img and int(img.getHeight()) or 0
 
 				json_block = [ {
 						'id':id,
@@ -918,6 +945,58 @@ def apply_standard_json_docx(self):
 						'content':img_url
 					}
 				]
+			# #############################################
+			# ZMSLinkElement
+			# #############################################
+			elif pageelement.meta_id == 'ZMSLinkElement':
+				# and pageelement.attr('attr_type') in ['','replace','new']:
+				id = pageelement.id
+				meta_id = pageelement.meta_id
+				parent_id = pageelement.getParentNode().id
+				parent_meta_id = pageelement.getParentNode().meta_id
+				icon = '\U0001F517'
+				title = pageelement.attr('title')
+				text = pageelement.attr('attr_dc_description')
+				try:
+					href = zmscontext.getLinkObj(pageelement.attr('attr_url'),request).getHref2IndexHtml(request)
+				except:
+					href = '#'
+
+				json_block = [ {
+						'id':id,
+						'meta_id':meta_id,
+						'parent_id':parent_id,
+						'parent_meta_id':parent_meta_id,
+						'docx_format':'html',
+						'content':'<p>%s <a href="%s">%s</a><br/>%s</p>'%(icon, href, title, text)
+					}
+				]
+			# #############################################
+			# ZMSFile
+			# #############################################
+			elif (pageelement.meta_id == 'ZMSFile' or pageelement.meta_id == 'downloadfile') and pageelement.attr('file'):
+				id = pageelement.id
+				meta_id = pageelement.meta_id
+				parent_id = pageelement.getParentNode().id
+				parent_meta_id = pageelement.getParentNode().meta_id
+				icon = '\U0001F87E'
+				title = pageelement.attr('title')
+				text = pageelement.attr('attr_dc_description')
+				try:
+					href = pageelement.getHref2IndexHtml(request)
+				except:
+					href = '#'
+
+				json_block = [ {
+						'id':id,
+						'meta_id':meta_id,
+						'parent_id':parent_id,
+						'parent_meta_id':parent_meta_id,
+						'docx_format':'html',
+						'content':'<p>%s <a href="%s">%s</a><br/>%s</p>'%(icon, href, title, text)
+					}
+				]
+
 			# #############################################
 			else:
 				html = ''
@@ -1143,6 +1222,8 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 	# Normalize Headline Hierarchy
 	# using function normalize_headline_levels2 
 	# up-levelling systematic gaps in headline levels
+	# ---------------------------------------------
+	# TODO: Make it work with recursive export
 	# #############################################
 	headline_paragraphs = [p for p in doc._body.paragraphs if 'Heading' in p.style.name]
 	if headline_paragraphs:

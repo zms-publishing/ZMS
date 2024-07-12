@@ -90,7 +90,7 @@ def add_hyperlink(docx_block, link_text, url):
 	if not url.startswith('javascript:'): # Omit javascript links
 		r_id = docx_block.part.relate_to(url, docx.opc.constants.RELATIONSHIP_TYPE.HYPERLINK, is_external=True)
 		hyper_link = create_element('w:hyperlink')
-		create_attribute(hyper_link, 'w:id', r_id)
+		create_attribute(hyper_link, 'r:id', r_id)
 		hyper_link_run = create_element('w:r')
 		hyper_link_run_prop = create_element('w:rPr')
 		hyper_link_run_prop_style = create_element('w:rStyle')
@@ -357,9 +357,12 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
 					element = element.find('img')
 				if element.has_attr('src'):
 					img_src = element['src']
-					if zmscontext.operator_getattr(zmscontext,zmsid).attr('imghires'):
-						# Use high resolution image
-						img_src = zmscontext.operator_getattr(zmscontext,zmsid).attr('imghires').getHref(zmscontext.REQUEST)
+					try:
+						if zmscontext.operator_getattr(zmscontext,zmsid).attr('imghires'):
+							# Use high resolution image
+							img_src = zmscontext.operator_getattr(zmscontext,zmsid).attr('imghires').getHref(zmscontext.REQUEST)
+					except:
+						pass
 					img_name = img_src.split('/')[-1]
 					if not img_src.startswith('http'):
 						src_url0 = zmscontext.absolute_url().split('/content/')[0]
@@ -766,7 +769,7 @@ def set_docx_styles(doc):
 	# Inhaltsverzeichnis
 	styles.add_style('TOC-Header', WD_STYLE_TYPE.PARAGRAPH)
 	if sys.version_info[0] > 2:
-		styles['TOC-Header'].basedOn = doc.styles['Heading 23']
+		styles['TOC-Header'].basedOn = doc.styles['Heading 2']
 	styles['TOC-Header'].font.name = 'Arial'
 	styles['TOC-Header'].font.size = Pt(12)
 	styles['TOC-Header'].font.bold = True
@@ -834,6 +837,7 @@ def apply_standard_json_docx(self):
 	zmscontext = self
 	request = zmscontext.REQUEST
 	# request.set('preview', 'preview')
+	is_page = zmscontext.isPage()
 
 	id = zmscontext.id
 	meta_id = zmscontext.meta_id
@@ -844,7 +848,7 @@ def apply_standard_json_docx(self):
 	last_change_dt = zmscontext.attr('change_dt') or zmscontext.attr('created_dt')
 	url = zmscontext.getHref2IndexHtml(request)
 
-	# 1st block is container meta data
+	# Meta data as 1st block
 	blocks = [
 		{
 			'id':id,
@@ -858,14 +862,18 @@ def apply_standard_json_docx(self):
 		}
 	]
 
-	# Sequence all pageelements including ZMSNote
-	# Ref: ZMSObject.isPageElement
-	pageelements = [ \
-		e for e in zmscontext.getChildNodes(request)  \
-			if ( e.getType() in [ 'ZMSObject', 'ZMSRecordSet' ] ) \
-				and not e.meta_id in [ 'ZMSTeaserContainer'] \
-				and not e.isPage() \
-		]
+	if not is_page:
+		pageelements = [zmscontext]
+	else:
+		# Sequence all pageelements including ZMSNote
+		# Ref: ZMSObject.isPageElement
+		pageelements = [ \
+			e for e in zmscontext.getChildNodes(request)  \
+				if ( e.getType() in [ 'ZMSObject', 'ZMSRecordSet' ] ) \
+					and not e.meta_id in [ 'ZMSTeaserContainer'] \
+					and not e.isPage() \
+			]
+
 	for pageelement in pageelements:
 		if pageelement.attr('change_dt') and pageelement.attr('change_dt') >= last_change_dt:
 			last_change_dt = pageelement.attr('change_dt')
@@ -1049,6 +1057,7 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 
 	global zmscontext
 	zmscontext = self
+	is_page = zmscontext.isPage()
 
 	# INITIALIZE DOCX Document
 	# and preserve it while exporting recursively 
@@ -1072,12 +1081,13 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 		add_page_number(doc.sections[0].footer.paragraphs[0].add_run('Seite '))
 
 	# [B] CREATE PAGE HEADING
-	doc.add_heading(standard.pystr(heading.get('title','')), level=1)
-	prepend_bookmark(doc.paragraphs[-1], heading.get('id',''))
-	
-	if heading.get('description','')!='':
-		p = doc.add_paragraph(standard.pystr(heading.get('description','')))
-		p.style = doc.styles['Description']
+	if is_page:
+		doc.add_heading(standard.pystr(heading.get('title','')), level=1)
+		prepend_bookmark(doc.paragraphs[-1], heading.get('id',''))
+		
+		if heading.get('description','')!='':
+			p = doc.add_paragraph(standard.pystr(heading.get('description','')))
+			p.style = doc.styles['Description']
 
 	# [C] CREATE PAGE CONTENT-BLOCKS
 	for block in blocks:
@@ -1085,11 +1095,11 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 		# #############################################
 		# [1] HTML-BLOCK (e.g. richtext with inline styles, just a minimum set of inline elements)
 		if v and block['docx_format'] == 'html':
-			# try:
-			add_htmlblock_to_docx(zmscontext=zmscontext, docx_doc=doc, htmlblock=v, zmsid=block['id'])
-			# except:
-			# 	p = doc.add_paragraph()
-			# 	p.add_run('Rendering Error: %s'%block['meta_id'])
+			try:
+				add_htmlblock_to_docx(zmscontext=zmscontext, docx_doc=doc, htmlblock=v, zmsid=block['id'])
+			except:
+				p = doc.add_paragraph()
+				p.add_run('Rendering Error: %s'%block['meta_id'])
 		# #############################################
 		# [2] XML-BLOCK
 		elif v and block['docx_format'] == 'xml':
@@ -1135,25 +1145,25 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 	# up-levelling systematic gaps in headline levels
 	# #############################################
 	headline_paragraphs = [p for p in doc._body.paragraphs if 'Heading' in p.style.name]
-	
-	# 1. Get headline levels on HTML/stylenames 
-	# and its normalization with function normalize_headline_levels2()
-	headline_levels_on_stylenames = [int(p.style.name[-1]) for p in headline_paragraphs]
-	headline_levels_normalized = normalize_headline_levels2(headline_levels_on_stylenames)
+	if headline_paragraphs:
+		# 1. Get headline levels on HTML/stylenames 
+		# and its normalization with function normalize_headline_levels2()
+		headline_levels_on_stylenames = [int(p.style.name[-1]) for p in headline_paragraphs]
+		headline_levels_normalized = normalize_headline_levels2(headline_levels_on_stylenames)
 
-	# 2. Get headline levels on its numbering-prefixes
-	headline_levels_on_numbering = get_headline_levels_from_numbering(headline_paragraphs)
+		# 2. Get headline levels on its numbering-prefixes
+		headline_levels_on_numbering = get_headline_levels_from_numbering(headline_paragraphs)
 
-	# 3. Which method for getting the normalized levels is more reliable?
-	# Sum up prefix-based level-numbers and divide by number of levels
-	# Approach: if there are no numbers, all levels are considered as 1
-	# what is supposed to be unreliable
-	if sum(headline_levels_on_numbering)/len(headline_levels_on_numbering) > 1.25: 
-		headline_levels_normalized = headline_levels_on_numbering
+		# 3. Which method for getting the normalized levels is more reliable?
+		# Sum up prefix-based level-numbers and divide by number of levels
+		# Approach: if there are no numbers, all levels are considered as 1
+		# what is supposed to be unreliable
+		if sum(headline_levels_on_numbering)/len(headline_levels_on_numbering) > 1.25: 
+			headline_levels_normalized = headline_levels_on_numbering
 
-	# 4. Reset levels of headline-paragraphs
-	for i, p in enumerate(headline_paragraphs):
-		p.style = doc.styles['Heading %s'%headline_levels_normalized[i]]
+		# 4. Reset levels of headline-paragraphs
+		for i, p in enumerate(headline_paragraphs):
+			p.style = doc.styles['Heading %s'%headline_levels_normalized[i]]
 
 
 

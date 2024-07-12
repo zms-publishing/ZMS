@@ -27,6 +27,7 @@ from docx.shared import Pt
 from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.enum.style import WD_STYLE_TYPE
 from docx.enum.text import WD_COLOR_INDEX
+from docx.enum.section import WD_SECTION_START
 from docx.oxml import OxmlElement, ns, parse_xml
 from docx.shared import Emu
 
@@ -1130,9 +1131,9 @@ zmscontext = None
 def manage_export_pydocx(self, save_file=True, file_name=None):
 	request = self.REQUEST
 
-	# PAGE_COUNT: Counter for recursive export
-	page_count = request.get('page_count',0) + 1
-	request.set('page_count', page_count)
+	# PAGE_COUNTER: Counter for recursive export
+	page_counter = request.get('page_counter',0) + 1
+	request.set('page_counter', page_counter)
 
 	global zmscontext
 	zmscontext = self
@@ -1140,24 +1141,34 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 
 	# INITIALIZE DOCX Document
 	# and preserve it while exporting recursively 
-	if page_count == 1:
+	if page_counter == 1:
 		global doc
 		doc = docx.Document()
 		doc = set_docx_styles(doc)
-
+	
 	# GET PAGE CONTENT (JSON)
-	zmsdoc = apply_standard_json_docx(zmscontext)
+	zmsdoc = apply_standard_json_docx(self)
 	heading = zmsdoc[0]
 	blocks = zmsdoc[1:]
 
-	# [A] CREATE SECTION HEADER/FOOTER (on initial page)
-	# and preserve it while exporting recursively 
-	if page_count == 1:
-		dt = standard.getLangFmtDate(zmscontext, heading.get('last_change_dt',''), 'eng', '%Y-%m-%d')
-		url = heading.get('url','').replace('nohost','localhost')
-		tabs = len(heading.get('title',''))>68 and '\t' or '\t\t'
+	# [A] CREATE SECTION HEADER/FOOTER
+	# On recursive export change header for any new page (self)
+	# while preserving footer all the same (zmscontext)
+
+	dt = standard.getLangFmtDate(self, heading.get('last_change_dt',''), 'eng', '%Y-%m-%d')
+	url = heading.get('url','').replace('nohost','localhost')
+	tabs = len(heading.get('title',''))>68 and '\t' or '\t\t'
+
+	if page_counter == 1:
 		doc.sections[0].header.paragraphs[0].text = '%s%s%s\nURL: %s'%(standard.pystr(heading.get('title','')), tabs, dt, url)
 		add_page_number(doc.sections[0].footer.paragraphs[0].add_run('Seite '))
+	else:
+		new_section = doc.add_section(WD_SECTION_START.NEW_PAGE)
+		new_section.header.is_linked_to_previous = False # ESSENTIAL FOR CHANGING HEADER!!!
+		header_paragraph = new_section.header.paragraphs[0] if new_section.header.paragraphs else new_section.header.add_paragraph()
+		header_paragraph.text = '%s%s%s\nURL: %s'%(standard.pystr(heading.get('title','')), tabs, dt, url)
+		# new_section.header.first_page_header = True
+		# new_section.footer.first_page_footer = True
 
 	# [B] CREATE PAGE HEADING
 	if is_page:
@@ -1225,26 +1236,29 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 	# ---------------------------------------------
 	# TODO: Make it work with recursive export
 	# #############################################
-	headline_paragraphs = [p for p in doc._body.paragraphs if 'Heading' in p.style.name]
-	if headline_paragraphs:
-		# 1. Get headline levels on HTML/stylenames 
-		# and its normalization with function normalize_headline_levels2()
-		headline_levels_on_stylenames = [int(p.style.name[-1]) for p in headline_paragraphs]
-		headline_levels_normalized = normalize_headline_levels2(headline_levels_on_stylenames)
+	if is_page:
+		# Get all headline paragraphs for any page / section
+		for sect in doc.sections:
+			headline_paragraphs = [p for p in sect.header.paragraphs if 'Heading' in p.style.name]
+			if headline_paragraphs:
+				# 1. Get headline levels on HTML/stylenames 
+				# and its normalization with function normalize_headline_levels2()
+				headline_levels_on_stylenames = [int(p.style.name[-1]) for p in headline_paragraphs]
+				headline_levels_normalized = normalize_headline_levels2(headline_levels_on_stylenames)
 
-		# 2. Get headline levels on its numbering-prefixes
-		headline_levels_on_numbering = get_headline_levels_from_numbering(headline_paragraphs)
+				# 2. Get headline levels on its numbering-prefixes
+				headline_levels_on_numbering = get_headline_levels_from_numbering(headline_paragraphs)
 
-		# 3. Which method for getting the normalized levels is more reliable?
-		# Sum up prefix-based level-numbers and divide by number of levels
-		# Approach: if there are no numbers, all levels are considered as 1
-		# what is supposed to be unreliable
-		if sum(headline_levels_on_numbering)/len(headline_levels_on_numbering) > 1.25: 
-			headline_levels_normalized = headline_levels_on_numbering
+				# 3. Which method for getting the normalized levels is more reliable?
+				# Sum up prefix-based level-numbers and divide by number of levels
+				# Approach: if there are no numbers, all levels are considered as 1
+				# what is supposed to be unreliable
+				if sum(headline_levels_on_numbering)/len(headline_levels_on_numbering) > 1.25: 
+					headline_levels_normalized = headline_levels_on_numbering
 
-		# 4. Reset levels of headline-paragraphs
-		for i, p in enumerate(headline_paragraphs):
-			p.style = doc.styles['Heading %s'%headline_levels_normalized[i]]
+				# 4. Reset levels of headline-paragraphs
+				for i, p in enumerate(headline_paragraphs):
+					p.style = doc.styles['Heading %s'%headline_levels_normalized[i]]
 
 
 

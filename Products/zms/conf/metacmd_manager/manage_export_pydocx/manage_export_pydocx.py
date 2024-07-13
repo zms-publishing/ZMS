@@ -483,6 +483,17 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
 	return docx_doc
 
 
+# ADD BREADCRUMBS AS RUNS TO PARAGRAPH
+def add_breadcrumbs_as_runs(zmscontext, p):
+	breadcrumbs = zmscontext.breadcrumbs_obj_path()
+	c = 0
+	for obj in breadcrumbs:
+		c += 1
+		add_hyperlink(docx_block = p, link_text = obj.attr('titlealt'), url = obj.getHref2IndexHtml(zmscontext.REQUEST))
+		if c < len(breadcrumbs):
+			p.add_run(' > ')
+	return p
+
 
 # #############################################
 # Helper Functions 3: Set Docx-Styles
@@ -689,8 +700,9 @@ def set_docx_styles(doc):
 	styles['Heading 1'].font.name = 'Arial'
 	styles['Heading 1'].font.size = Pt(24)
 	styles['Heading 1'].font.bold = False
-	styles['Heading 1'].paragraph_format.line_spacing = 1.2
+	styles['Heading 1'].paragraph_format.line_spacing = 1
 	styles['Heading 1'].paragraph_format.space_before = Pt(18)
+	styles['Heading 1'].paragraph_format.space_after = Pt(18)
 	styles['Heading 1'].font.color.rgb = color_turquoise
 
 	if sys.version_info[0] > 2:
@@ -768,6 +780,8 @@ def set_docx_styles(doc):
 
 	styles['header'].font.size = Pt(7)
 	styles['header'].font.color.rgb = color_lightgrey
+	styles['header'].paragraph_format.space_before = Pt(0)
+	styles['header'].paragraph_format.line_spacing = 1.5
 	styles['footer'].font.size = Pt(7)
 	styles['footer'].font.color.rgb = color_lightgrey
 
@@ -1157,16 +1171,21 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 
 	dt = standard.getLangFmtDate(self, heading.get('last_change_dt',''), 'eng', '%Y-%m-%d')
 	url = heading.get('url','').replace('nohost','localhost')
+	url = len(url)>124 and url[:124]+'...' or url
 	tabs = len(heading.get('title',''))>68 and '\t' or '\t\t'
+	header_text = '%s%s%s\nURL: %s\n'%(standard.pystr(heading.get('title','')), tabs, dt, url)
 
 	if page_counter == 1:
-		doc.sections[0].header.paragraphs[0].text = '%s%s%s\nURL: %s'%(standard.pystr(heading.get('title','')), tabs, dt, url)
+		doc.sections[0].header.paragraphs[0].text = header_text
+		header_paragraph = doc.sections[0].header.paragraphs[0]
+		add_breadcrumbs_as_runs(zmscontext, header_paragraph)
 		add_page_number(doc.sections[0].footer.paragraphs[0].add_run('Seite '))
 	else:
 		new_section = doc.add_section(WD_SECTION_START.NEW_PAGE)
 		new_section.header.is_linked_to_previous = False # ESSENTIAL FOR CHANGING HEADER!!!
 		header_paragraph = new_section.header.paragraphs[0] if new_section.header.paragraphs else new_section.header.add_paragraph()
-		header_paragraph.text = '%s%s%s\nURL: %s'%(standard.pystr(heading.get('title','')), tabs, dt, url)
+		header_paragraph.text = header_text
+		add_breadcrumbs_as_runs(zmscontext, header_paragraph)
 		# new_section.header.first_page_header = True
 		# new_section.footer.first_page_footer = True
 

@@ -413,6 +413,11 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
 				if element.has_attr('class') and (('ZMSGraphic' in element['class']) or ('graphic' in element['class'])):
 					ZMSGraphic_html = ''.join([str(e) for e in element.children])
 					add_htmlblock_to_docx(zmscontext, docx_doc, ZMSGraphic_html, zmsid)
+				elif element.has_attr('class') and 'handlungsaufforderung' in element['class']:
+					p = docx_doc.add_paragraph(style='Handlungsaufforderung')
+					if c==1 and zmsid:
+						prepend_bookmark(p, zmsid)
+					p.add_run(element.text).bold = True
 				else:
 					child_tags = [e.name for e in element.children if e.name]
 					if 'em' in child_tags or 'strong' in child_tags:
@@ -489,7 +494,7 @@ def add_breadcrumbs_as_runs(zmscontext, p):
 	c = 0
 	for obj in breadcrumbs:
 		c += 1
-		add_hyperlink(docx_block = p, link_text = obj.attr('titlealt'), url = obj.getHref2IndexHtml(zmscontext.REQUEST))
+		add_hyperlink(docx_block = p, link_text = standard.pystr(obj.attr('titlealt')), url = obj.getHref2IndexHtml(zmscontext.REQUEST))
 		if c < len(breadcrumbs):
 			p.add_run(' > ')
 	return p
@@ -747,8 +752,8 @@ def set_docx_styles(doc):
 	styles['Caption'].font.size = Pt(8)
 	styles['Caption'].font.italic = True
 	styles['Caption'].font.color.rgb = color_turquoise
-	styles['Caption'].paragraph_format.space_before = Pt(24)
-	styles['Caption'].paragraph_format.space_after = Pt(6)
+	styles['Caption'].paragraph_format.space_before = Pt(6)
+	styles['Caption'].paragraph_format.space_after = Pt(24)
 	styles['Caption'].paragraph_format.keep_with_next = True
 
 	styles['Quote Char'].font.color.rgb = color_lightgrey
@@ -829,6 +834,18 @@ def set_docx_styles(doc):
 	styles['emphasis'].paragraph_format.line_spacing = 1.5
 	# Add background color
 	add_paragraph_bgcolor(styles['emphasis'], 'f0f8ff')
+
+	styles.add_style('Handlungsaufforderung', WD_STYLE_TYPE.PARAGRAPH)
+	if sys.version_info[0] > 2:
+		styles['Handlungsaufforderung'].basedOn = doc.styles['Normal']
+	styles['Handlungsaufforderung'].font.name = 'Arial'
+	styles['Handlungsaufforderung'].font.size = Pt(9)
+	styles['Handlungsaufforderung'].font.bold = False
+	styles['Handlungsaufforderung'].font.italic = False
+	styles['Handlungsaufforderung'].paragraph_format.space_before = Pt(6)
+	styles['Handlungsaufforderung'].paragraph_format.space_after = Pt(6)
+	styles['Handlungsaufforderung'].paragraph_format.line_spacing = 1.5
+
 
 	return doc
 
@@ -911,6 +928,7 @@ def apply_standard_json_docx(self):
 		pageelements = [ \
 			e for e in zmscontext.getChildNodes(request)  \
 				if ( ( e.getType() in [ 'ZMSObject', 'ZMSRecordSet'] ) \
+					and not e.meta_id in [ 'LgChangeHistory'] \
 					and not e.meta_id in [ 'ZMSTeaserContainer'] \
 					and not e.isPage() ) \
 					or e.meta_id in [ 'ZMSLinkElement' ]
@@ -941,14 +959,7 @@ def apply_standard_json_docx(self):
 				imgwidth = img and int(img.getWidth()) or 0
 				imgheight = img and int(img.getHeight()) or 0
 
-				json_block = [ {
-						'id':id,
-						'meta_id':meta_id,
-						'parent_id':parent_id,
-						'parent_meta_id':parent_meta_id,
-						'docx_format':'Caption',
-						'content':'[Abb. %s] %s'%(id, text)
-					},
+				json_block = [ 
 					{
 						'id':'%s_img'%(id), 
 						'meta_id':meta_id,
@@ -958,7 +969,16 @@ def apply_standard_json_docx(self):
 						'imgwidth':	imgwidth,
 						'imgheight':imgheight,
 						'content':img_url
-					}
+					},
+					{
+						'id':id,
+						'meta_id':meta_id,
+						'parent_id':parent_id,
+						'parent_meta_id':parent_meta_id,
+						'docx_format':'Caption',
+						'content':'[Abb. %s] %s'%(id, text)
+					},
+
 				]
 			# #############################################
 			# ZMSLinkElement

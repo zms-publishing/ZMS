@@ -11,6 +11,7 @@ import json
 import requests
 from io import BytesIO
 import sys
+import datetime
 
 # IMPORT ZMS LIBRARIES
 from Products.zms import standard
@@ -61,15 +62,16 @@ def get_normalized_image_width(w, h, max_w = 460):
 
 # #############################################
 
-# PAGE NUMBER
-def add_page_number(run):
+# ADD DATA FIELD: eg PAGE, SAVEDATE
+def add_field(paragraph, field_code="PAGE"):
 	fldChar1 = create_element('w:fldChar')
 	create_attribute(fldChar1, 'w:fldCharType', 'begin')
 	instrText = create_element('w:instrText')
 	create_attribute(instrText, 'xml:space', 'preserve')
-	instrText.text = "PAGE"
+	instrText.text = field_code
 	fldChar2 = create_element('w:fldChar')
 	create_attribute(fldChar2, 'w:fldCharType', 'end')
+	run = paragraph.add_run()
 	run._r.append(fldChar1)
 	run._r.append(instrText)
 	run._r.append(fldChar2)
@@ -328,9 +330,7 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
 				### debug: element.has_attr('class') and element['name']=='abgabekriterium'
 				caption = element.find('caption')
 				caption_text = caption and caption.text or ''
-				if zmsid == 'changeHistory':
-					caption_text = 'Änderungshistorie'
-				p = docx_doc.add_paragraph(standard.pystr(caption_text), style='Caption')
+				p = docx_doc.add_paragraph(standard.pystr(caption_text), style='Table-Caption')
 				if c==1 and zmsid:
 					prepend_bookmark(p, zmsid)
 				rows = element.find_all('tr')
@@ -353,15 +353,14 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
 							# [B] Cell contains inline elements
 							p = docx_cell.paragraphs[0]
 							p.style = docx_doc.styles['Normal']
-							if zmsid == 'changeHistory':
-								p.style = docx_doc.styles['Table-Small']
+							if element.has_attr('style') and element['style'] in docx_doc.styles:
+								p.style = docx_doc.styles[element['style']]
 							add_runs(p, cl)
 						if cl.name == 'th':
 							docx_table.cell(r,i).paragraphs[0].runs[0].bold = True
 				# Add linebreak or pagebreak after table
 				p = docx_doc.add_paragraph()
-				if zmsid == 'changeHistory':
-					p.add_run().add_break(docx.enum.text.WD_BREAK.PAGE)
+
 			# #############################################
 			# IMAGE
 			# #############################################
@@ -669,11 +668,16 @@ def add_breadcrumbs_as_runs(zmscontext, p):
 	Colorful Grid Accent 4
 	Colorful Grid Accent 5
 	Colorful Grid Accent 6
+
 	Description
 	Hyperlink
 	refGlossary
 	Table-Small
+	Table-Caption
 	TOC-Header
+	ZMSNotiz
+	Handlungsaufforderung
+
 """
 
 def set_docx_styles(doc):
@@ -709,6 +713,17 @@ def set_docx_styles(doc):
 	styles['Heading 1'].paragraph_format.space_before = Pt(18)
 	styles['Heading 1'].paragraph_format.space_after = Pt(18)
 	styles['Heading 1'].font.color.rgb = color_turquoise
+
+	if sys.version_info[0] > 2:
+		styles['Title'].basedOn = doc.styles['Heading 1']
+	styles['Title'].font.name = 'Arial'
+	styles['Title'].font.size = Pt(24)
+	styles['Title'].font.bold = False
+	styles['Title'].paragraph_format.line_spacing = 1
+	styles['Title'].paragraph_format.space_before = Pt(18)
+	styles['Title'].paragraph_format.space_after = Pt(18)
+	styles['Title'].font.color.rgb = color_turquoise
+	add_bottom_border(styles['Title'])
 
 	if sys.version_info[0] > 2:
 		styles['Heading 2'].basedOn = doc.styles['Normal']
@@ -749,6 +764,7 @@ def set_docx_styles(doc):
 	styles['Description'].paragraph_format.line_spacing = 1.35
 	add_bottom_border(styles['Description'])
 
+	styles['Caption'].font.name = 'Arial'
 	styles['Caption'].font.size = Pt(8)
 	styles['Caption'].font.italic = True
 	styles['Caption'].font.color.rgb = color_turquoise
@@ -797,6 +813,17 @@ def set_docx_styles(doc):
 	styles['Table-Small'].paragraph_format.space_after = Pt(2)
 	styles['Table-Small'].paragraph_format.space_before = Pt(2)
 	styles['Table-Small'].paragraph_format.line_spacing = 1.2
+
+	styles.add_style('Table-Caption', WD_STYLE_TYPE.PARAGRAPH)
+	if sys.version_info[0] > 2:
+		styles['Table-Caption'].basedOn = doc.styles['Normal']
+	styles['Table-Caption'].font.name = 'Arial'
+	styles['Table-Caption'].font.italic = True
+	styles['Table-Caption'].font.color.rgb = color_turquoise
+	styles['Table-Caption'].paragraph_format.space_before = Pt(24)
+	styles['Table-Caption'].paragraph_format.space_after = Pt(3)
+	styles['Table-Caption'].paragraph_format.keep_with_next = True
+
 
 	# Inhaltsverzeichnis
 	styles.add_style('TOC-Header', WD_STYLE_TYPE.PARAGRAPH)
@@ -1149,7 +1176,7 @@ def normalize_headline_levels2(list1):
 # DOCX-Document with custom style-set
 # Hint: may use template like docx.Document('template.docx')
 doc = docx.Document()
-doc = set_docx_styles(doc)
+set_docx_styles(doc)
 zmscontext = None
 
 # #############################################
@@ -1164,6 +1191,7 @@ zmscontext = None
 # binary data of the DOCX file.
 def manage_export_pydocx(self, save_file=True, file_name=None):
 	request = self.REQUEST
+	creator = request.AUTHENTICATED_USER.getUserName()
 
 	# PAGE_COUNTER: Counter for recursive export
 	page_counter = request.get('page_counter',0) + 1
@@ -1178,7 +1206,14 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 	if page_counter == 1:
 		global doc
 		doc = docx.Document()
-		doc = set_docx_styles(doc)
+		set_docx_styles(doc)
+		# https://python-docx.readthedocs.io/en/latest/dev/analysis/features/coreprops.html
+		doc.core_properties.author = creator
+		doc.core_properties.title = standard.pystr(zmscontext.attr('title'))
+		doc.core_properties.created = datetime.datetime.now()
+		doc.core_properties.modified = datetime.datetime.now()
+		doc.core_properties.category = 'ZMS-Export'
+		doc.core_properties.comments = 'Generated by ZMS / python-docx'
 	
 	# GET PAGE CONTENT (JSON)
 	zmsdoc = apply_standard_json_docx(self)
@@ -1193,13 +1228,16 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 	url = heading.get('url','').replace('nohost','localhost')
 	url = len(url)>124 and url[:124]+'...' or url
 	tabs = len(heading.get('title',''))>68 and '\t' or '\t\t'
-	header_text = '%s%s%s\nURL: %s\n'%(standard.pystr(heading.get('title','')), tabs, dt, url)
+	header_text = '%s%s Published %s\nURL: %s'%(standard.pystr(heading.get('title','')), tabs, dt, url)
 
 	if page_counter == 1:
-		doc.sections[0].header.paragraphs[0].text = header_text
-		header_paragraph = doc.sections[0].header.paragraphs[0]
-		add_breadcrumbs_as_runs(zmscontext, header_paragraph)
-		add_page_number(doc.sections[0].footer.paragraphs[0].add_run('Seite '))
+		header_p = doc.sections[0].header.paragraphs[0]
+		header_p.text = header_text
+		footer_p = doc.sections[0].footer.paragraphs[0]
+		footer_p.add_run('Seite ')
+		add_field(footer_p, field_code='PAGE')
+		footer_p.add_run('\t\t')
+		add_field(footer_p, field_code='SAVEDATE \@ "yyyy-MM-dd" \* MERGEFORMAT')
 	else:
 		new_section = doc.add_section(WD_SECTION_START.NEW_PAGE)
 		new_section.header.is_linked_to_previous = False # ESSENTIAL FOR CHANGING HEADER!!!
@@ -1209,11 +1247,32 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 		# new_section.header.first_page_header = True
 		# new_section.footer.first_page_footer = True
 
-	# [B] CREATE PAGE HEADING
+	# [B] CONTENT HEADINGS
 	if is_page:
+		# [1] CREATE INFO-PAGE
+		doc_title = doc.add_heading(standard.pystr(heading.get('title','')), level=0)
+		p = doc.add_paragraph()
+		add_breadcrumbs_as_runs(zmscontext, p)
+
+		# Document Protocol Table
+
+		v = '''
+			<table class="Table-Small">
+				<caption>Dokumenthistorie</caption>
+				<tr><th>Datum</th><th>Bearbeitungsstadium*</th><th>Bearbeiter</th></tr>
+				<tr><td>%s</td><td>ZMS-Export</td><td>%s</td></tr>
+				<tr><td> </td><td> </td><td> </td></tr>
+				<tr><td> </td><td> </td><td> </td></tr>
+			</table>'''%(doc.core_properties.modified,creator)
+		add_htmlblock_to_docx(zmscontext=zmscontext, docx_doc=doc, htmlblock=v, zmsid=None)
+		p = doc.add_paragraph(style='Table-Small')
+		p.add_run(standard.pystr('* mögliche Bearbeitungsstadien siehe Dokument NEON Blueprints: How To')).font.italic = True
+
+		p.add_run().add_break(docx.enum.text.WD_BREAK.PAGE)
+
+		# [2] DOCUMENT TITLE AND DESCRIPTION
 		doc.add_heading(standard.pystr(heading.get('title','')), level=1)
 		prepend_bookmark(doc.paragraphs[-1], heading.get('id',''))
-		
 		if heading.get('description','')!='':
 			p = doc.add_paragraph(standard.pystr(heading.get('description','')))
 			p.style = doc.styles['Description']

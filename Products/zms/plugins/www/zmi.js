@@ -22,16 +22,9 @@ if (typeof $ == "undefined") {
 /**
  * Turbolinks
  */
-if (typeof Turbolinks != "undefined") {
-	Turbolinks.setProgressBarDelay(0);
-	document.addEventListener("turbolinks:visit", function() {
-		var ts = performance.now();
-		console.log("BO turbolinks:visit " + ts);
-	});
-	document.addEventListener("turbolinks:load", function() {
-		var ts = performance.now();
-		console.log("BO turbolinks:load " + ts);
-		$ZMI.runReady();
-		console.log("EO turbolinks:load " + ts + "->" + (performance.now()-ts) + "msec");
-	});
-}
+document.addEventListener('htmx:afterRequest', function(evt) {
+	var ts = performance.now();
+	console.log("BO htmx:afterRequest " + ts);
+	$ZMI.runReady();
+	console.log("EO htmx:afterRequest " + ts + "->" + (performance.now()-ts) + "msec");
+});

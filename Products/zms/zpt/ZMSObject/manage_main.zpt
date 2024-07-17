@@ -27,7 +27,7 @@
 	<tal:block tal:condition="not:python:here.attr('_grid')" tal:content="structure python:here.metaobj_recordset_main(meta_id=standard.nvl(request.get('ZMS_INSERT'),here.meta_id))">
 		metaobj_recordset_main
 	</tal:block>
-	<tal:block tal:condition="python:here.attr('_grid')" tal:content="structure python:here.metaobj_recordset_grid(meta_id=standard.nvl(request.get('ZMS_INSERT)',here.meta_id))">
+	<tal:block tal:condition="python:here.attr('_grid')" tal:content="structure python:here.metaobj_recordset_grid(meta_id=standard.nvl(request.get('ZMS_INSERT'),here.meta_id))">
 		metaobj_recordset_grid
 	</tal:block>
 </tal:block>

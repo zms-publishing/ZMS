@@ -281,7 +281,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
         REQUEST.set('masterRow', masterRows[0])
       # init filter from request.
       index = 0
-      for filterIndex in range(100):
+      for filterIndex in range(10):
         for filterStereotype in ['attr', 'op', 'value']:
           requestkey = 'filter%s%i'%(filterStereotype, filterIndex)
           sessionkey = '%s_%s'%(requestkey, self.id)

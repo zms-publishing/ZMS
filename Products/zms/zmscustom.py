@@ -265,6 +265,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
       standard.set_session_value(self,sessionattr, REQUEST.form.get(filterattr, standard.get_session_value(self,sessionattr, '')))
       standard.set_session_value(self,sessionvalue, REQUEST.form.get(filtervalue, standard.get_session_value(self,sessionvalue, '')))
       if REQUEST.get('btn')=='BTN_RESET':
+        REQUEST.set('qindex', 0)
         standard.set_session_value(self,sessionattr, '')
         standard.set_session_value(self,sessionvalue, '')
       if standard.get_session_value(self,sessionattr, '') != '' and \

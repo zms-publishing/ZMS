@@ -35,6 +35,9 @@ recordSet_Interface*:interface will only be display for grid-view (UzK)
 				x['id'] not in ['__sort_id']
 				and x['type'] in here.metaobj_manager.valid_types+here.getMetaobjIds()
 				and x['type'] not in ['password','resource']];
+		row python:res_abs[request['qindex']];
+		dummy0 python:request.set('qindex',res.index(row) if row in res else -1);
+		dummy0 python:standard.set_session_value(here,'qindex_%s'%here.id,request.get('qindex'));
 		metaObjAttrs python:[x for x in filter_columns if x.get('custom')]">
 
 <tal:block tal:condition="python:request.get('action') not in ['updateForm','insertForm']">

@@ -128,7 +128,25 @@ def add_bottom_border(style):
 	try:
 		style.element.pPr.append(border) # pPr = Paragraph properties
 	except:
-		standard.write('Error: Could not add bottom border to style %s' % style.name)
+		standard.writeStdout(None, 'Error: Could not add bottom border to style %s' % style.name)
+
+def add_arrow_listchar(style):
+	# Add arrow list character to paragraph properties
+	numPr = create_element('w:numPr') # numPr = Numbering properties
+	ilvl = create_element('w:ilvl')
+	create_attribute(ilvl, 'w:val', '1')
+	numId = create_element('w:numId')
+	create_attribute(numId, 'w:val', '8')
+	numPr.append(ilvl)
+	numPr.append(numId)
+	style.element.pPr.append(numPr)
+	jc = create_element('w:jc')
+	create_attribute(jc, 'w:val', 'left')
+	style.element.pPr.append(jc)
+	outlineLvl = create_element('w:outlineLvl')
+	create_attribute(outlineLvl, 'w:val', '0')
+	style.element.pPr.append(outlineLvl)
+
 
 def add_paragraph_bgcolor(style, color):
 	"""
@@ -932,7 +950,37 @@ def set_docx_styles(doc):
 	styles['Handlungsaufforderung'].font.italic = False
 	styles['Handlungsaufforderung'].paragraph_format.space_before = Pt(6)
 	styles['Handlungsaufforderung'].paragraph_format.space_after = Pt(6)
-	styles['Handlungsaufforderung'].paragraph_format.line_spacing = 1.5
+	styles['Handlungsaufforderung'].paragraph_format.left_indent = Pt(18)
+	add_arrow_listchar(styles['Handlungsaufforderung'])
+
+	# Add numbering to style 'Handlungsaufforderung'
+	"""
+	<w:style w:type="paragraph" w:styleId="Handlungsaufforderung" w:customStyle="1">
+		<w:name w:val="Handlungsaufforderung"/>
+		<w:qFormat/>
+		<w:pPr>
+			<w:widowControl/>
+			<w:numPr>
+				<w:ilvl w:val="0"/>
+				<w:numId w:val="8"/>
+			</w:numPr>
+			<w:bidi w:val="0"/>
+			<w:spacing w:lineRule="auto" w:line="360" w:before="120" w:after="120"/>
+			<w:jc w:val="left"/>
+			<w:outlineLvl w:val="0"/>
+		</w:pPr>
+		<w:rPr>
+			<w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:eastAsia="ＭＳ 明朝" w:cs="" w:cstheme="minorBidi" w:eastAsiaTheme="minorEastAsia"/>
+			<w:b w:val="false"/>
+			<w:i w:val="false"/>
+			<w:color w:val="auto"/>
+			<w:kern w:val="0"/>
+			<w:sz w:val="18"/>
+			<w:szCs w:val="22"/>
+			<w:lang w:val="en-US" w:eastAsia="en-US" w:bidi="ar-SA"/>
+		</w:rPr>
+	</w:style>
+	"""
 
 
 	return doc
@@ -989,7 +1037,7 @@ def apply_standard_json_docx(self):
 	meta_id = zmscontext.meta_id
 	parent_id = zmscontext.id
 	parent_meta_id = zmscontext.meta_id 
-	title = zmscontext.attr('title')
+	title = zmscontext.attr('title') or zmscontext.getTitle(request)
 	description = zmscontext.attr('attr_dc_description')
 	last_change_dt = zmscontext.attr('change_dt') or zmscontext.attr('created_dt')
 	userid = zmscontext.attr('change_uid')
@@ -1023,6 +1071,8 @@ def apply_standard_json_docx(self):
 					and not e.isPage() ) \
 					or e.meta_id in [ 'ZMSLinkElement' ]
 			]
+		# if zmscontext.meta_id == 'LgRegel':
+		# 	pageelements = [zmscontext]
 
 	for pageelement in pageelements:
 
@@ -1120,6 +1170,23 @@ def apply_standard_json_docx(self):
 						'content':'<p>%s <a href="%s">%s</a><br/>%s</p>'%(icon, href, title, text)
 					}
 				]
+
+			# #############################################
+			# CAVE: Do not apply renderShort!
+			# e.g. LgBedingung, ZMSNote
+			# #############################################
+			elif 'renderShort' in pageelement.getMetaobjAttrIds(pageelement.meta_id):
+				json_block = [{
+					'id': pageelement.id,
+					'meta_id': pageelement.meta_id,
+					'parent_id': pageelement.getParentNode().id,
+					'parent_meta_id': pageelement.getParentNode().meta_id,
+					'docx_format': 'html',
+					'content': pageelement.attr('standard_html')
+				}]
+				if pageelement.meta_id == 'LgBedingung':
+					standard.writeStdout(None, 'IMPORTANT NOTE: LgBedingung.standard_html needs to be customized!')
+					# zmi python:request['URL'].find('/manage')>0 and not request['URL'].find('pydocx')>0;
 
 			# #############################################
 			else:
@@ -1303,6 +1370,10 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 	zmscontext = self
 	is_page = zmscontext.isPage()
 
+	# Write to stdout
+	standard.writeStdout(None, 'DOCX-INFO-%s: Writing ZMS node %s' %(page_counter, zmscontext.id))
+
+
 	# INITIALIZE DOCX Document
 	# and preserve it while exporting recursively 
 	if page_counter == 1:
@@ -1440,6 +1511,7 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 	# using function normalize_headline_levels2 
 	# up-levelling systematic gaps in headline levels
 	# ---------------------------------------------
+	# TODO: Make it work with recursive export
 	# #############################################
 	if is_page:
 		# Get all headline paragraphs for any page / section

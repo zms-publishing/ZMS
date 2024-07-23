@@ -130,7 +130,7 @@ def add_bottom_border(style):
 	except:
 		standard.writeStdout(None, 'Error: Could not add bottom border to style %s' % style.name)
 
-def add_arrow_listchar(style):
+def add_listbullet_arrow(style):
 	# Add arrow list character to paragraph properties
 	numPr = create_element('w:numPr') # numPr = Numbering properties
 	ilvl = create_element('w:ilvl')
@@ -285,6 +285,8 @@ def add_runs(docx_block, bs_element):
 			# #############################################
 			elif elrun.name == 'p':
 				add_runs(docx_block = docx_block, bs_element = elrun)
+			elif elrun.name == 'script':
+				pass
 			else:
 				s = standard.pystr(elrun)
 				if c == 1: # Remove trailing spaces on first text element of a block
@@ -348,6 +350,10 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
 							style_name = (class_name in docx_doc.styles) and class_name or 'Normal'
 							p.style = docx_doc.styles[style_name]
 					add_runs(docx_block = p, bs_element = element)
+					if p.text == '' or p.text == ' ':
+						last_paragraph = docx_doc.paragraphs[-1]._element
+						last_paragraph.getparent().remove(last_paragraph)
+
 				# #############################################
 				# LIST
 				# #############################################
@@ -470,7 +476,14 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
 						p = docx_doc.add_paragraph(style='Handlungsaufforderung')
 						if c==1 and zmsid:
 							prepend_bookmark(p, zmsid)
-						p.add_run(element.text).bold = True
+						r = p.add_run(u'\uF075 ')
+						r.font.name = 'Wingdings 3'
+						# r.font.color.rgb = docx.shared.RGBColor(1, 125, 135) # color_turquoise
+						div_element = BeautifulSoup(standard.pystr(element), 'html.parser')
+						div_tag = div_element.div
+						div_tag.unwrap()
+						add_runs(docx_block = p,  bs_element = div_element)
+		
 					else:
 						child_tags = [e.name for e in element.children if e.name]
 						if {'em','strong','i'} & set(child_tags):
@@ -950,37 +963,8 @@ def set_docx_styles(doc):
 	styles['Handlungsaufforderung'].font.italic = False
 	styles['Handlungsaufforderung'].paragraph_format.space_before = Pt(6)
 	styles['Handlungsaufforderung'].paragraph_format.space_after = Pt(6)
-	styles['Handlungsaufforderung'].paragraph_format.left_indent = Pt(18)
-	add_arrow_listchar(styles['Handlungsaufforderung'])
-
-	# Add numbering to style 'Handlungsaufforderung'
-	"""
-	<w:style w:type="paragraph" w:styleId="Handlungsaufforderung" w:customStyle="1">
-		<w:name w:val="Handlungsaufforderung"/>
-		<w:qFormat/>
-		<w:pPr>
-			<w:widowControl/>
-			<w:numPr>
-				<w:ilvl w:val="0"/>
-				<w:numId w:val="8"/>
-			</w:numPr>
-			<w:bidi w:val="0"/>
-			<w:spacing w:lineRule="auto" w:line="360" w:before="120" w:after="120"/>
-			<w:jc w:val="left"/>
-			<w:outlineLvl w:val="0"/>
-		</w:pPr>
-		<w:rPr>
-			<w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:eastAsia="ＭＳ 明朝" w:cs="" w:cstheme="minorBidi" w:eastAsiaTheme="minorEastAsia"/>
-			<w:b w:val="false"/>
-			<w:i w:val="false"/>
-			<w:color w:val="auto"/>
-			<w:kern w:val="0"/>
-			<w:sz w:val="18"/>
-			<w:szCs w:val="22"/>
-			<w:lang w:val="en-US" w:eastAsia="en-US" w:bidi="ar-SA"/>
-		</w:rPr>
-	</w:style>
-	"""
+	# styles['Handlungsaufforderung'].paragraph_format.left_indent = Pt(18)
+	# add_listbullet_arrow(styles['Handlungsaufforderung'])
 
 
 	return doc

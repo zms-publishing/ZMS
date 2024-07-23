@@ -5,7 +5,7 @@ ZMS is the Python-based Content Management and E-Publishing System for Science, 
 
 Modularity of the ZMS components and approved production processes turn ZMS into an incomparably rapid tool. The underlying efficiency-oriented publication model is the result of many consulting projects in recent years by HOFFMANN+LIEBENBERG in association with SNTL Publishing, Berlin.
 
-http://www.zms-publishing.com
+
 
 Download
 ---------

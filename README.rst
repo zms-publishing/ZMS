@@ -7,12 +7,12 @@ Modularity of the ZMS components and approved production processes turn ZMS into
 
 http://www.zms-publishing.com
 
-Changelog
+Download
 ---------
 
-    * Source: https://github.com/zms-publishing/ZMS/
-    * Revisions: https://github.com/zms-publishing/ZMS/commits/master
-    * Archive: https://github.com/zms-publishing/ZMS/archive/master.zip
+* Source: https://github.com/zms-publishing/ZMS/
+* Revisions: https://github.com/zms-publishing/ZMS/commits/master
+* Archive: https://github.com/zms-publishing/ZMS/archive/master.zip
 
 Installation (GNU/Linux, OSX/Darwin and Windows/WSL)
 ----------------------------------------------------
@@ -45,24 +45,24 @@ $ ./ZMS/bin/pip install ZMS [--upgrade]
 $ ./ZMS/bin/mkwsgiinstance -d ../instance
 $ ./ZMS/bin/runwsgi -v ../instance/etc/zope.ini
 
-    and finally "Add ZMS" via web user interface
+and finally "Add ZMS" via web user interface
+http://localhost:8080/manage
+(replace "localhost" with your system's IP address or domain name if no local installation)
 
-    |   http://localhost:8080/manage
-    |   (replace "localhost" with your system's IP address or domain name if no local installation)
+More detailed instructions can be found here: https://github.com/zms-publishing/ZMS/blob/main/docs/develop_intro_en.md
+
 
 Prerequisites
 -------------
 
-    |   ``virtualenv`` is the PyPA recommended tool for creating isolated Python environments:
-    |   https://virtualenv.pypa.io/en/latest/installation.html
+``virtualenv`` is the PyPA recommended tool for creating isolated Python environments:
+https://virtualenv.pypa.io/en/latest/installation.html
 
-    |   ``pip`` is the PyPA recommended tool for installing and managing Python packages:
-    |   https://pip.pypa.io/en/latest/installing.html
+``pip`` is the PyPA recommended tool for installing and managing Python packages:
+https://pip.pypa.io/en/latest/installing.html
 
-	Users of Microsoft Windows 10 can enable the Windows subsystem for Linux (WSL) for installing ZMS as under Linux (`Bash on Ubuntu on Windows <https://msdn.microsoft.com/de-de/commandline/wsl/install_guide>`_). Users of former Windows version have to install a development environment. MinGW (Minimalist GNU for Windows, http://www.mingw.org) provides a complete Open Source programming tool set which is suitable (`more hints <http://www.zms-publishing.com/download/installation_windows/index_ger.html>`_).
-    
-	Apple OS X running updated Xcode command line tools causes compiler errors rather than warnings used until before. You can `downgrade these errors to warnings <https://langui.sh/2014/03/10/wunused-command-line-argument-hard-error-in-future-is-a-harsh-mistress/>`_ again.
+Users of Microsoft Windows 10/11 can enable the Windows subsystem for Linux (WSL) for installing ZMS as under Linux (`Bash on Ubuntu on Windows <https://msdn.microsoft.com/de-de/commandline/wsl/install_guide>`_). Apple OS X running updated Xcode command line tools causes compiler errors rather than warnings used until before. You can `downgrade these errors to warnings <https://langui.sh/2014/03/10/wunused-command-line-argument-hard-error-in-future-is-a-harsh-mistress/>`_ again. If you get compilation errors like ``fatal error: Python.h: No such file or directory compilation terminated``, install development headers using your system's recommended package manager.
 
-    If you get compilation errors like ``fatal error: Python.h: No such file or directory compilation terminated``, install development headers using your system's recommended package manager.
 
-Copyright (c) 2000-2023 `HOFFMANN+LIEBENBERG <http://www.hoffmannliebenberg.de>`_ in association with `SNTL Publishing <http://www.sntl-publishing.com>`_, Berlin. Code released under the `GNU General Public License v3 <http://www.gnu.org/licenses/gpl.html>`_ license.
+
+Copyright (c) 2000-2024 `HOFFMANN+LIEBENBERG <http://www.hoffmannliebenberg.de>`_ in association with `SNTL Publishing <http://www.sntl-publishing.com>`_, Berlin. Code released under the `GNU General Public License v3 <http://www.gnu.org/licenses/gpl.html>`_ license.

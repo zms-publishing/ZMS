@@ -658,6 +658,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     def breadcrumbs_obj_path(self, portalMaster=True):
       # Handle This.
       phys_path = list(self.getPhysicalPath())
+      phys_path = phys_path[phys_path.index('content'):]
       phys_path.reverse()
       rtn = []
       ob = self

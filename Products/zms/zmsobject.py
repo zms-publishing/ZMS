@@ -658,8 +658,18 @@ class ZMSObject(ZMSItem.ZMSItem,
     def breadcrumbs_obj_path(self, portalMaster=True):
       # Handle This.
       phys_path = list(self.getPhysicalPath())
-      phys_path = phys_path[phys_path.index('content'):]
-      rtn = [getattr(self, id) for id in phys_path]
+      phys_path.reverse()
+      rtn = []
+      ob = self
+      for id in phys_path:
+        while ob is not None:
+          ob_path = ob.getPhysicalPath()
+          if id not in ob_path:
+            break
+          if ob_path[-1] == id:
+            rtn.insert(0, ob)
+            break
+          ob = ob.getParentNode()
       # Handle Portal Master.
       if portalMaster and self.getConfProperty('Portal.Master', ''):
         try:

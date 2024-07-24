@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<?zms version='ZMS4-4.4.1dev'?>
+<dictionary>
+  <item key="key"><![CDATA[LgEmployeeRecordSet]]></item>
+  <item key="value" type="dictionary">
+    <dictionary>
+      <item key="__obj_attrs__" type="list">
+        <list>
+          <item type="dictionary">
+            <dictionary>
+              <item key="default"></item>
+              <item key="id"><![CDATA[records]]></item>
+              <item key="keys" type="list">
+                <list>
+                </list>
+              </item>
+              <item key="mandatory" type="int">1</item>
+              <item key="meta_type"></item>
+              <item key="multilang" type="int">0</item>
+              <item key="name"><![CDATA[Datensätze]]></item>
+              <item key="repetitive" type="int">0</item>
+              <item key="type"><![CDATA[list]]></item>
+            </dictionary>
+          </item>
+          <item type="dictionary">
+            <dictionary>
+              <item key="default"></item>
+              <item key="id"><![CDATA[employee_id]]></item>
+              <item key="keys" type="list">
+                <list>
+                </list>
+              </item>
+              <item key="mandatory" type="int">1</item>
+              <item key="meta_type"></item>
+              <item key="multilang" type="int">0</item>
+              <item key="name"><![CDATA[Id]]></item>
+              <item key="repetitive" type="int">0</item>
+              <item key="type"><![CDATA[identifier]]></item>
+            </dictionary>
+          </item>
+          <item type="dictionary">
+            <dictionary>
+              <item key="default"></item>
+              <item key="id"><![CDATA[last_name]]></item>
+              <item key="keys" type="list">
+                <list>
+                </list>
+              </item>
+              <item key="mandatory" type="int">1</item>
+              <item key="meta_type"></item>
+              <item key="multilang" type="int">0</item>
+              <item key="name"><![CDATA[Last Name]]></item>
+              <item key="repetitive" type="int">0</item>
+              <item key="type"><![CDATA[string]]></item>
+            </dictionary>
+          </item>
+          <item type="dictionary">
+            <dictionary>
+              <item key="default"></item>
+              <item key="id"><![CDATA[first_name]]></item>
+              <item key="keys" type="list">
+                <list>
+                </list>
+              </item>
+              <item key="mandatory" type="int">1</item>
+              <item key="meta_type"></item>
+              <item key="multilang" type="int">0</item>
+              <item key="name"><![CDATA[First Name]]></item>
+              <item key="repetitive" type="int">0</item>
+              <item key="type"><![CDATA[string]]></item>
+            </dictionary>
+          </item>
+          <item type="dictionary">
+            <dictionary>
+              <item key="default"></item>
+              <item key="id"><![CDATA[title]]></item>
+              <item key="keys" type="list">
+                <list>
+                  <item><![CDATA[General Manager]]></item>
+                  <item><![CDATA[Sales Manager]]></item>
+                  <item><![CDATA[Sales Support Agent]]></item>
+                  <item><![CDATA[IT Manager]]></item>
+                  <item><![CDATA[IT Staff]]></item>
+                </list>
+              </item>
+              <item key="mandatory" type="int">1</item>
+              <item key="meta_type"></item>
+              <item key="multilang" type="int">0</item>
+              <item key="name"><![CDATA[Title]]></item>
+              <item key="repetitive" type="int">0</item>
+              <item key="type"><![CDATA[select]]></item>
+            </dictionary>
+          </item>
+          <item type="dictionary">
+            <dictionary>
+              <item key="default"></item>
+              <item key="id"><![CDATA[reports_to]]></item>
+              <item key="keys" type="list">
+                <list>
+                </list>
+              </item>
+              <item key="mandatory" type="int">0</item>
+              <item key="meta_type"></item>
+              <item key="multilang" type="int">0</item>
+              <item key="name"><![CDATA[Reports To]]></item>
+              <item key="repetitive" type="int">0</item>
+              <item key="type"><![CDATA[LgEmployeeRecordSet]]></item>
+            </dictionary>
+          </item>
+          <item type="dictionary">
+            <dictionary>
+              <item key="default"></item>
+              <item key="id"><![CDATA[birth_date]]></item>
+              <item key="keys" type="list">
+                <list>
+                </list>
+              </item>
+              <item key="mandatory" type="int">1</item>
+              <item key="meta_type"></item>
+              <item key="multilang" type="int">0</item>
+              <item key="name"><![CDATA[Birth Date]]></item>
+              <item key="repetitive" type="int">0</item>
+              <item key="type"><![CDATA[date]]></item>
+            </dictionary>
+          </item>
+          <item type="dictionary">
+            <dictionary>
+              <item key="default"></item>
+              <item key="id"><![CDATA[hire_date]]></item>
+              <item key="keys" type="list">
+                <list>
+                </list>
+              </item>
+              <item key="mandatory" type="int">1</item>
+              <item key="meta_type"></item>
+              <item key="multilang" type="int">0</item>
+              <item key="name"><![CDATA[Hire Date]]></item>
+              <item key="repetitive" type="int">0</item>
+              <item key="type"><![CDATA[date]]></item>
+            </dictionary>
+          </item>
+          <item type="dictionary">
+            <dictionary>
+              <item key="default"></item>
+              <item key="id"><![CDATA[address]]></item>
+              <item key="keys" type="list">
+                <list>
+                </list>
+              </item>
+              <item key="mandatory" type="int">1</item>
+              <item key="meta_type"></item>
+              <item key="multilang" type="int">0</item>
+              <item key="name"><![CDATA[Address]]></item>
+              <item key="repetitive" type="int">0</item>
+              <item key="type"><![CDATA[string]]></item>
+            </dictionary>
+          </item>
+          <item type="dictionary">
+            <dictionary>
+              <item key="default"></item>
+              <item key="id"><![CDATA[city]]></item>
+              <item key="keys" type="list">
+                <list>
+                </list>
+              </item>
+              <item key="mandatory" type="int">1</item>
+              <item key="meta_type"></item>
+              <item key="multilang" type="int">0</item>
+              <item key="name"><![CDATA[City]]></item>
+              <item key="repetitive" type="int">0</item>
+              <item key="type"><![CDATA[string]]></item>
+            </dictionary>
+          </item>
+          <item type="dictionary">
+            <dictionary>
+              <item key="default"></item>
+              <item key="id"><![CDATA[state]]></item>
+              <item key="keys" type="list">
+                <list>
+                  <item><![CDATA[AB]]></item>
+                  <item><![CDATA[DC]]></item>
+                  <item><![CDATA[FL]]></item>
+                  <item><![CDATA[NM]]></item>
+                  <item><![CDATA[NY]]></item>
+                  <item><![CDATA[TE]]></item>
+                  <item><![CDATA[WI]]></item>
+                </list>
+              </item>
+              <item key="mandatory" type="int">1</item>
+              <item key="meta_type"></item>
+              <item key="multilang" type="int">0</item>
+              <item key="name"><![CDATA[State]]></item>
+              <item key="repetitive" type="int">0</item>
+              <item key="type"><![CDATA[select]]></item>
+            </dictionary>
+          </item>
+          <item type="dictionary">
+            <dictionary>
+              <item key="custom"><![CDATA[<!-- LgEmployeeRecordSet.standard_html -->
+
+<tal:block tal:define="
+		zmscontext options/zmscontext">
+	<h2 tal:content="python:zmscontext.getTitlealt(request)">The title.alt</h2>
+	<p class="description" tal:content="python:'%i %s'%(len(zmscontext.attr(zmscontext.getMetaobj(zmscontext.meta_id)['attrs'][0]['id'])),zmscontext.getLangStr('ATTR_RECORDS',request['lang']))">#N records</p>
+</tal:block>
+
+<!-- /LgEmployeeRecordSet.standard_html -->]]>
+              </item>
+              <item key="default"></item>
+              <item key="id"><![CDATA[standard_html]]></item>
+              <item key="keys" type="list">
+                <list>
+                </list>
+              </item>
+              <item key="mandatory" type="int">0</item>
+              <item key="meta_type"></item>
+              <item key="multilang" type="int">0</item>
+              <item key="name"><![CDATA[Template: Employees]]></item>
+              <item key="repetitive" type="int">0</item>
+              <item key="type"><![CDATA[zpt]]></item>
+            </dictionary>
+          </item>
+        </list>
+      </item>
+      <item key="access" type="dictionary">
+        <dictionary>
+          <item key="delete_custom"></item>
+          <item key="delete_deny" type="list">
+            <list>
+              <item></item>
+              <item></item>
+              <item></item>
+            </list>
+          </item>
+          <item key="insert_custom"><![CDATA[{$}]]></item>
+          <item key="insert_deny" type="list">
+            <list>
+              <item></item>
+              <item></item>
+              <item></item>
+            </list>
+          </item>
+        </dictionary>
+      </item>
+      <item key="enabled" type="int">1</item>
+      <item key="id"><![CDATA[LgEmployeeRecordSet]]></item>
+      <item key="name"><![CDATA[Employees]]></item>
+      <item key="package"></item>
+      <item key="revision"><![CDATA[0.0.0]]></item>
+      <item key="type"><![CDATA[ZMSRecordSet]]></item>
+    </dictionary>
+  </item>
+</dictionary>

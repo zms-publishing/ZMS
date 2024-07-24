@@ -35,12 +35,6 @@ recordSet_Interface*:interface will only be display for grid-view (UzK)
 				x['id'] not in ['__sort_id']
 				and x['type'] in here.metaobj_manager.valid_types+here.getMetaobjIds()
 				and x['type'] not in ['password','resource']];
-		qindex python:int(request.get('qindex',-1));
-		res request/res;
-		res_abs request/res_abs;
-		row python:res_abs[qindex] if qindex >= 0 and qindex < len(res_abs) else {};
-		dummy0 python:request.set('qindex',res.index(row) if row in res else -1);
-		dummy0 python:standard.set_session_value(here,'qindex_%s'%here.id,request['qindex']);
 		metaObjAttrs python:[x for x in filter_columns if x.get('custom')]">
 
 <tal:block tal:condition="python:request.get('action') not in ['updateForm','insertForm']">
@@ -114,6 +108,14 @@ recordSet_Interface*:interface will only be display for grid-view (UzK)
 	</div><!-- .card -->
 </form>
 
+<tal:block tal:define="
+		qindex python:int(request.get('qindex',-1));
+		qindex2 qindex;
+		res request/res;
+		row python:records[qindex] if qindex >= 0 and qindex < len(records) else {};
+		dummy0 python:request.set('qindex',res.index(row) if row in res else -1);
+		dummy0 python:standard.set_session_value(here,'qindex_%s'%here.id,request['qindex']);
+	">
 	<tal:block tal:content="structure python:here.metaobj_recordset_main_grid(
 			metaObjAttrIds=here.getMetaobjAttrIds(meta_id),
 			metaObjAttrs=metaObjAttrs,
@@ -123,6 +125,7 @@ recordSet_Interface*:interface will only be display for grid-view (UzK)
 			record_handler=here.getEntityRecordHandler(meta_id))">
 		metaobj_recordset_main_grid
 	</tal:block>
+</tal:block>
 
 </tal:block>
 

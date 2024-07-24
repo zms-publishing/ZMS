@@ -265,6 +265,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
       standard.set_session_value(self,sessionattr, REQUEST.form.get(filterattr, standard.get_session_value(self,sessionattr, '')))
       standard.set_session_value(self,sessionvalue, REQUEST.form.get(filtervalue, standard.get_session_value(self,sessionvalue, '')))
       if REQUEST.get('btn')=='BTN_RESET':
+        REQUEST.set('qindex', 0)
         standard.set_session_value(self,sessionattr, '')
         standard.set_session_value(self,sessionvalue, '')
       if standard.get_session_value(self,sessionattr, '') != '' and \
@@ -280,7 +281,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
         REQUEST.set('masterRow', masterRows[0])
       # init filter from request.
       index = 0
-      for filterIndex in range(100):
+      for filterIndex in range(10):
         for filterStereotype in ['attr', 'op', 'value']:
           requestkey = 'filter%s%i'%(filterStereotype, filterIndex)
           sessionkey = '%s_%s'%(requestkey, self.id)

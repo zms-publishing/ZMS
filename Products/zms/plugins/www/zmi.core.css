@@ -1166,9 +1166,6 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
-.zmi .breadcrumb li.breadcrumb-item.active a {
-	color:#999fa5;
-}
 .zmi .breadcrumb li.breadcrumb-item:hover a {
 	color: #999fa5;
 	text-decoration:none;

@@ -656,21 +656,13 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  ZMSObject.breadcrumbs_obj_path:
     # --------------------------------------------------------------------------
     def breadcrumbs_obj_path(self, portalMaster=True):
+      def is_reserved_name(name):
+        import keyword
+        return keyword.iskeyword(name) or name in dir(__builtins__)
       # Handle This.
       phys_path = list(self.getPhysicalPath())
       phys_path = phys_path[phys_path.index('content'):]
-      phys_path.reverse()
-      rtn = []
-      ob = self
-      for id in phys_path:
-        while ob is not None:
-          ob_path = ob.getPhysicalPath()
-          if id not in ob_path:
-            break
-          if ob_path[-1] == id:
-            rtn.insert(0, ob)
-            break
-          ob = ob.getParentNode()
+      rtn = [is_reserved_name(id) and getattr(self.getParentNode(),id) or getattr(self, id) for id in phys_path]
       # Handle Portal Master.
       if portalMaster and self.getConfProperty('Portal.Master', ''):
         try:

@@ -17,7 +17,7 @@
 	pageSize python:request.get('qsize',20);
 	pageCount python:size//pageSize;
 	pageIndex python:request.get('pageIndex',int(request.get('qindex',-1))//pageSize);
-	pageIndex python:pageIndex if pageIndex >= 0 and pageIndex < pageSize else 0;
+	pageIndex python:pageIndex if pageIndex >= 0 and pageIndex <= pageCount else 0;
 	pageStart python:pageIndex*pageSize;
 	pageEnd python:min(pageStart+pageSize,size);
 	offset python:options.get('offset',pageStart);">

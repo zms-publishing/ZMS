@@ -37,9 +37,19 @@ from docx.enum.section import WD_SECTION_START
 
 
 # #############################################
+# GLOBALS
+# #############################################
+# ZMS-Context will be set in main function manage_export_pydocx()
+zmscontext = None
+# DOCX-Document will be set in main function manage_export_pydocx()
+doc = None
+# Set local path for docx-template
+docx_tmpl = open("/home/zope/instance/zms4_gez/neon-entw/Extensions/neon.docx", "r")
+
+
+# #############################################
 # Helper Functions 1: DOCX-XML
-# 1. `add_page_number(run)` : add page number to text-run (e.g. footer)
-# 2. `add_bottom_border(style)` : adds border-properties to paragraph-style-object
+# e.g. `add_page_number(run)` : add page number to text-run (e.g. footer)
 # Hint: the docx API does not support the page counter directly. 
 # We have to create a custom footer with a page counter.
 # #############################################
@@ -114,101 +124,6 @@ def add_hyperlink(docx_block, link_text, url):
 		hyper_link_run.append(hyper_link_text)
 		hyper_link.append(hyper_link_run)
 		docx_block._p.append(hyper_link)
-
-
-# BORDER BOTTOM
-def add_bottom_border(style):
-	border = create_element('w:pBdr') # pBdr = Paragraph border
-	bottom = create_element('w:bottom')
-	create_attribute(bottom, 'w:val', 'single')
-	create_attribute(bottom, 'w:sz', '2')
-	create_attribute(bottom, 'w:space', '9')
-	create_attribute(bottom, 'w:color', '017D87')
-	border.append(bottom)
-	try:
-		style.element.pPr.append(border) # pPr = Paragraph properties
-	except:
-		standard.writeStdout(None, 'Error: Could not add bottom border to style %s' % style.name)
-
-def add_listbullet_arrow(style):
-	# Add arrow list character to paragraph properties
-	numPr = create_element('w:numPr') # numPr = Numbering properties
-	ilvl = create_element('w:ilvl')
-	create_attribute(ilvl, 'w:val', '1')
-	numId = create_element('w:numId')
-	create_attribute(numId, 'w:val', '8')
-	numPr.append(ilvl)
-	numPr.append(numId)
-	style.element.pPr.append(numPr)
-	jc = create_element('w:jc')
-	create_attribute(jc, 'w:val', 'left')
-	style.element.pPr.append(jc)
-	outlineLvl = create_element('w:outlineLvl')
-	create_attribute(outlineLvl, 'w:val', '0')
-	style.element.pPr.append(outlineLvl)
-
-
-def add_paragraph_bgcolor(style, color):
-	"""
-	Add shadow and borders to paragraph properties
-	Parameters:
-		style = styles['ZMSNotiz']
-		color = 'fff5ce'
-	"""
-	shading = create_element('w:shd') # shd = Shading
-	create_attribute(shading, 'w:val', 'clear')
-	create_attribute(shading, 'w:color', 'auto')
-	create_attribute(shading, 'w:fill', color)
-	style.element.pPr.append(shading)
-	border = create_element('w:pBdr') # pBdr = Paragraph border
-	for side in ['left', 'right', 'top', 'bottom']:
-		border_side = create_element('w:%s' % side)
-		create_attribute(border_side, 'w:val', 'single')
-		create_attribute(border_side, 'w:sz', '4')
-		create_attribute(border_side, 'w:space', '5')
-		create_attribute(border_side, 'w:color', color)
-		border.append(border_side)
-	style.element.pPr.append(border)
-
-def add_table_bgcolor(style, color):
-	"""
-	Add shadow and borders to table properties
-	Parameters:
-		style = styles['Normal Table']
-		color = 'fff5ce'
-	"""
-	shading = create_element('w:shd') # shd = Shading
-	create_attribute(shading, 'w:val', 'clear')
-	create_attribute(shading, 'w:color', 'auto')
-	create_attribute(shading, 'w:fill', color)
-	style.element.tblPr.append(shading)
-	border = create_element('w:tblBorders') # tblBorders = Table borders
-	create_attribute(border, 'w:val', 'single')
-	create_attribute(border, 'w:sz', '4')
-	create_attribute(border, 'w:space', '5')
-	create_attribute(border, 'w:color', color)
-	style.element.tblPr.append(border)
-
-def add_character_bgcolor(style, color):
-	"""
-	Add shadow and borders to run properties
-	Parameters:
-		style = styles['Macro Text Char']
-		color = '017D87'
-	"""
-	shading = create_element('w:shd') # shd = Shading
-	create_attribute(shading, 'w:val', 'clear')
-	create_attribute(shading, 'w:color', 'auto')
-	create_attribute(shading, 'w:fill', color)
-	style.element.rPr.append(shading)
-	border = create_element('w:bdr') # bdr = run border
-	create_attribute(border, 'w:val', 'single')
-	create_attribute(border, 'w:sz', '12')
-	create_attribute(border, 'w:space', '1')
-	create_attribute(border, 'w:color', color)
-	style.element.rPr.append(border)
-
-
 
 
 # #############################################
@@ -329,7 +244,7 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
 				if element.name in ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']:
 					heading_level = int(element.name[1])
 					heading_text = standard.pystr(element.text).strip()
-					p = docx_doc.add_heading(heading_text, level=heading_level)
+					p = add_heading(docx_doc, heading_text, level=heading_level)
 					if c==1 and zmsid: 
 						prepend_bookmark(p, zmsid)
 					if element.text == 'Inhaltsverzeichnis':
@@ -396,7 +311,7 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
 							if {'div','ol','ul','table','p'} & set([e.name for e in cl.children]):
 								# [A] Cell contains block elements
 								# Hint: Cell implicitly contains a paragraph
-								cl_html = standard.pystr(''.join([str(child) for child in cl.contents if child!=' ']))
+								cl_html = ''.join([standard.pystr(child) for child in cl.contents if child!=' '])
 								add_htmlblock_to_docx(zmscontext, docx_cell, cl_html, zmsid=None)
 							else:
 								# [B] Cell contains inline elements
@@ -476,14 +391,19 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
 						p = docx_doc.add_paragraph(style='Handlungsaufforderung')
 						if c==1 and zmsid:
 							prepend_bookmark(p, zmsid)
-						r = p.add_run(u'\uF075 ')
-						r.font.name = 'Wingdings 3'
-						# r.font.color.rgb = docx.shared.RGBColor(1, 125, 135) # color_turquoise
 						div_element = BeautifulSoup(standard.pystr(element), 'html.parser')
 						div_tag = div_element.div
 						div_tag.unwrap()
 						add_runs(docx_block = p,  bs_element = div_element)
-		
+					elif element.has_attr('class') and 'grundsatz' in element['class']:
+						p = docx_doc.add_paragraph(style='Grundsatz')
+						if c==1 and zmsid:
+							prepend_bookmark(p, zmsid)
+						div_element = BeautifulSoup(standard.pystr(element), 'html.parser')
+						div_tag = div_element.div
+						div_tag.unwrap()
+						add_runs(docx_block = p,  bs_element = div_element)
+
 					else:
 						child_tags = [e.name for e in element.children if e.name]
 						if {'em','strong','i'} & set(child_tags):
@@ -585,390 +505,6 @@ def add_breadcrumbs_as_runs(zmscontext, p):
 		if c < len(breadcrumbs):
 			p.add_run(' > ')
 	return p
-
-
-# #############################################
-# Helper Functions 3: Set Docx-Styles
-# #############################################
-# print('\n'.join([s.name for s in styles]))
-"""
-	Normal
-	Header
-	Header Char
-	Footer
-	Footer Char
-	Heading 1
-	Heading 2
-	Heading 3
-	Heading 4
-	Heading 5
-	Heading 6
-	Heading 7
-	Heading 8
-	Heading 9
-	Default Paragraph Font
-	Normal Table
-	No List
-	No Spacing
-	Heading 1 Char
-	Heading 2 Char
-	Heading 3 Char
-	Title
-	Title Char
-	Subtitle
-	Subtitle Char
-	List Paragraph
-	Body Text
-	Body Text Char
-	Body Text 2
-	Body Text 2 Char
-	Body Text 3
-	Body Text 3 Char
-	List
-	List 2
-	List 3
-	List Bullet
-	List Bullet 2
-	List Bullet 3
-	List Number
-	List Number 2
-	List Number 3
-	List Continue
-	List Continue 2
-	List Continue 3
-	macro
-	Macro Text Char
-	Quote
-	Quote Char
-	Heading 4 Char
-	Heading 5 Char
-	Heading 6 Char
-	Heading 7 Char
-	Heading 8 Char
-	Heading 9 Char
-	Caption
-	Strong
-	Emphasis
-	Intense Quote
-	Intense Quote Char
-	Subtle Emphasis
-	Intense Emphasis
-	Subtle Reference
-	Intense Reference
-	Book Title
-	TOC Heading
-	Table Grid
-	Light Shading
-	Light Shading Accent 1
-	Light Shading Accent 2
-	Light Shading Accent 3
-	Light Shading Accent 4
-	Light Shading Accent 5
-	Light Shading Accent 6
-	Light List
-	Light List Accent 1
-	Light List Accent 2
-	Light List Accent 3
-	Light List Accent 4
-	Light List Accent 5
-	Light List Accent 6
-	Light Grid
-	Light Grid Accent 1
-	Light Grid Accent 2
-	Light Grid Accent 3
-	Light Grid Accent 4
-	Light Grid Accent 5
-	Light Grid Accent 6
-	Medium Shading 1
-	Medium Shading 1 Accent 1
-	Medium Shading 1 Accent 2
-	Medium Shading 1 Accent 3
-	Medium Shading 1 Accent 4
-	Medium Shading 1 Accent 5
-	Medium Shading 1 Accent 6
-	Medium Shading 2
-	Medium Shading 2 Accent 1
-	Medium Shading 2 Accent 2
-	Medium Shading 2 Accent 3
-	Medium Shading 2 Accent 4
-	Medium Shading 2 Accent 5
-	Medium Shading 2 Accent 6
-	Medium List 1
-	Medium List 1 Accent 1
-	Medium List 1 Accent 2
-	Medium List 1 Accent 3
-	Medium List 1 Accent 4
-	Medium List 1 Accent 5
-	Medium List 1 Accent 6
-	Medium List 2
-	Medium List 2 Accent 1
-	Medium List 2 Accent 2
-	Medium List 2 Accent 3
-	Medium List 2 Accent 4
-	Medium List 2 Accent 5
-	Medium List 2 Accent 6
-	Medium Grid 1
-	Medium Grid 1 Accent 1
-	Medium Grid 1 Accent 2
-	Medium Grid 1 Accent 3
-	Medium Grid 1 Accent 4
-	Medium Grid 1 Accent 5
-	Medium Grid 1 Accent 6
-	Medium Grid 2
-	Medium Grid 2 Accent 1
-	Medium Grid 2 Accent 2
-	Medium Grid 2 Accent 3
-	Medium Grid 2 Accent 4
-	Medium Grid 2 Accent 5
-	Medium Grid 2 Accent 6
-	Medium Grid 3
-	Medium Grid 3 Accent 1
-	Medium Grid 3 Accent 2
-	Medium Grid 3 Accent 3
-	Medium Grid 3 Accent 4
-	Medium Grid 3 Accent 5
-	Medium Grid 3 Accent 6
-	Dark List
-	Dark List Accent 1
-	Dark List Accent 2
-	Dark List Accent 3
-	Dark List Accent 4
-	Dark List Accent 5
-	Dark List Accent 6
-	Colorful Shading
-	Colorful Shading Accent 1
-	Colorful Shading Accent 2
-	Colorful Shading Accent 3
-	Colorful Shading Accent 4
-	Colorful Shading Accent 5
-	Colorful Shading Accent 6
-	Colorful List
-	Colorful List Accent 1
-	Colorful List Accent 2
-	Colorful List Accent 3
-	Colorful List Accent 4
-	Colorful List Accent 5
-	Colorful List Accent 6
-	Colorful Grid
-	Colorful Grid Accent 1
-	Colorful Grid Accent 2
-	Colorful Grid Accent 3
-	Colorful Grid Accent 4
-	Colorful Grid Accent 5
-	Colorful Grid Accent 6
-
-	Description
-	Hyperlink
-	refGlossary
-	Table-Small
-	Table-Caption
-	TOC-Header
-	ZMSNotiz
-	Handlungsaufforderung
-
-"""
-
-def set_docx_styles(doc):
-	styles = doc.styles
-
-	# Custom color 1: #017D87 dark turquoise
-	color_turquoise = docx.shared.RGBColor(1, 125, 135)
-	# Custom color 2: #AAAAAA light grey
-	color_lightgrey = docx.shared.RGBColor(170, 170, 170)
-	# Custom color 3: #333333 dark grey
-	color_darkgrey = docx.shared.RGBColor(51, 51, 51)
-	# Custom color 4: #FFFFFF white
-	color_white = docx.shared.RGBColor(255, 255, 255)
-	# Custom color 5: #0070FF blue
-	color_blue = docx.shared.RGBColor(0, 112, 255)
-
-	# Page margins
-	doc.sections[0].top_margin = Emu(120*9525)
-	# Normal
-	styles['Normal'].font.name = 'Arial'
-	styles['Normal'].font.size = Pt(9)
-	styles['Normal'].paragraph_format.space_after = Pt(6)
-	styles['Normal'].paragraph_format.space_before = Pt(6)
-	styles['Normal'].paragraph_format.line_spacing = 1.35
-
-	# Headlines derived from Normal
-	if sys.version_info[0] > 2:
-		styles['Heading 1'].basedOn = doc.styles['Normal']
-	styles['Heading 1'].font.name = 'Arial'
-	styles['Heading 1'].font.size = Pt(24)
-	styles['Heading 1'].font.bold = False
-	styles['Heading 1'].paragraph_format.line_spacing = 1
-	styles['Heading 1'].paragraph_format.space_before = Pt(18)
-	styles['Heading 1'].paragraph_format.space_after = Pt(18)
-	styles['Heading 1'].font.color.rgb = color_turquoise
-
-	if sys.version_info[0] > 2:
-		styles['Title'].basedOn = doc.styles['Heading 1']
-	styles['Title'].font.name = 'Arial'
-	styles['Title'].font.size = Pt(24)
-	styles['Title'].font.bold = False
-	styles['Title'].paragraph_format.line_spacing = 1
-	styles['Title'].paragraph_format.space_before = Pt(18)
-	styles['Title'].paragraph_format.space_after = Pt(18)
-	styles['Title'].font.color.rgb = color_turquoise
-	add_bottom_border(styles['Title'])
-
-	if sys.version_info[0] > 2:
-		styles['Heading 2'].basedOn = doc.styles['Normal']
-	styles['Heading 2'].font.name = 'Arial'
-	styles['Heading 2'].font.size = Pt(18)
-	styles['Heading 2'].font.bold = False
-	styles['Heading 2'].paragraph_format.line_spacing = 1.2
-	styles['Heading 2'].paragraph_format.space_before = Pt(24)
-	styles['Heading 2'].font.color.rgb = color_turquoise
-
-	if sys.version_info[0] > 2:
-		styles['Heading 3'].basedOn = doc.styles['Normal']
-	styles['Heading 3'].font.name = 'Arial'
-	styles['Heading 3'].font.size = Pt(13)
-	styles['Heading 3'].font.bold = True
-	styles['Heading 3'].paragraph_format.space_before = Pt(22)
-	styles['Heading 3'].font.color.rgb = color_turquoise
-
-	if sys.version_info[0] > 2:
-		styles['Heading 4'].basedOn = doc.styles['Normal']
-	styles['Heading 4'].font.name = 'Arial'
-	styles['Heading 4'].font.size = Pt(10)
-	styles['Heading 4'].paragraph_format.space_before = Pt(14)
-	styles['Heading 4'].font.bold = False
-	styles['Heading 4'].font.bold = True
-	styles['Heading 4'].font.color.rgb = color_turquoise
-
-
-	# More styles derived from Normal
-	styles.add_style('Description', WD_STYLE_TYPE.PARAGRAPH)
-	if sys.version_info[0] > 2:
-		styles['Description'].basedOn = doc.styles['Normal']
-	styles['Description'].font.name = 'Arial'
-	styles['Description'].font.size = Pt(9)
-	styles['Description'].font.italic = True
-	styles['Description'].font.color.rgb = color_turquoise
-	styles['Description'].paragraph_format.space_after = Pt(18)
-	styles['Description'].paragraph_format.line_spacing = 1.35
-	add_bottom_border(styles['Description'])
-
-	styles['Caption'].font.name = 'Arial'
-	styles['Caption'].font.size = Pt(8)
-	styles['Caption'].font.italic = True
-	styles['Caption'].font.color.rgb = color_turquoise
-	styles['Caption'].paragraph_format.space_before = Pt(6)
-	styles['Caption'].paragraph_format.space_after = Pt(24)
-	styles['Caption'].paragraph_format.keep_with_next = True
-
-	styles['Quote Char'].font.color.rgb = color_lightgrey
-	styles['Quote Char'].font.bold = True
-	styles['Quote Char'].font.italic = True
-
-	styles.add_style('Hyperlink', WD_STYLE_TYPE.CHARACTER)
-	styles['Hyperlink'].font.color.rgb = color_turquoise
-	styles['Hyperlink'].font.underline = True
-
-	styles.add_style('refGlossary', WD_STYLE_TYPE.CHARACTER)
-	styles['refGlossary'].font.color.rgb = color_turquoise
-	styles['refGlossary'].font.italic = False
-
-	styles['macro'].font.size = Pt(9)
-	styles['macro'].paragraph_format.space_before = Pt(12)
-	styles['macro'].paragraph_format.space_after = Pt(12)
-	styles['macro'].paragraph_format.line_spacing = 1.35
-
-	styles['Macro Text Char'].font.bold = True
-	styles['Macro Text Char'].font.color.rgb = color_blue
-
-	styles.add_style('Keyboard', WD_STYLE_TYPE.CHARACTER)
-	styles['Keyboard'].font.name = 'Courier New'
-	styles['Keyboard'].font.size = Pt(8)
-	styles['Keyboard'].font.bold = True
-	styles['Keyboard'].font.color.rgb = color_white
-	add_character_bgcolor(styles['Keyboard'], '000000')
-
-	styles['header'].font.size = Pt(7)
-	styles['header'].font.color.rgb = color_lightgrey
-	styles['header'].paragraph_format.space_before = Pt(0)
-	styles['header'].paragraph_format.line_spacing = 1.5
-	styles['footer'].font.size = Pt(7)
-	styles['footer'].font.color.rgb = color_lightgrey
-	# Remove default tabstops
-	styles['footer'].paragraph_format.tab_stops.clear_all()
-	# Set new tabstop for right-aligned text
-	styles['footer'].paragraph_format.tab_stops.add_tab_stop(Cm(16.5), WD_TAB_ALIGNMENT.RIGHT)
-
-	# Table small
-	styles.add_style('Table-Small', WD_STYLE_TYPE.PARAGRAPH)
-	styles['Table-Small'].font.name = 'Arial'
-	styles['Table-Small'].font.size = Pt(7)
-	styles['Table-Small'].paragraph_format.space_after = Pt(2)
-	styles['Table-Small'].paragraph_format.space_before = Pt(2)
-	styles['Table-Small'].paragraph_format.line_spacing = 1.2
-
-	styles.add_style('Table-Caption', WD_STYLE_TYPE.PARAGRAPH)
-	if sys.version_info[0] > 2:
-		styles['Table-Caption'].basedOn = doc.styles['Normal']
-	styles['Table-Caption'].font.name = 'Arial'
-	styles['Table-Caption'].font.italic = True
-	styles['Table-Caption'].font.color.rgb = color_turquoise
-	styles['Table-Caption'].paragraph_format.space_before = Pt(24)
-	styles['Table-Caption'].paragraph_format.space_after = Pt(3)
-	styles['Table-Caption'].paragraph_format.keep_with_next = True
-
-
-	# Inhaltsverzeichnis
-	styles.add_style('TOC-Header', WD_STYLE_TYPE.PARAGRAPH)
-	if sys.version_info[0] > 2:
-		styles['TOC-Header'].basedOn = doc.styles['Heading 2']
-	styles['TOC-Header'].font.name = 'Arial'
-	styles['TOC-Header'].font.size = Pt(12)
-	styles['TOC-Header'].font.bold = True
-	styles['TOC-Header'].font.color.rgb = color_lightgrey
-	styles['TOC-Header'].paragraph_format.space_before = Pt(12)
-	add_bottom_border(styles['TOC-Header'])
-
-	# Notiz
-	styles.add_style('ZMSNotiz', WD_STYLE_TYPE.PARAGRAPH)
-	if sys.version_info[0] > 2:
-		styles['ZMSNotiz'].basedOn = doc.styles['Normal']
-	styles['ZMSNotiz'].font.name = 'Arial'
-	styles['ZMSNotiz'].font.size = Pt(8)
-	styles['ZMSNotiz'].paragraph_format.space_before = Pt(12)
-	styles['ZMSNotiz'].paragraph_format.space_after = Pt(12)
-	styles['ZMSNotiz'].paragraph_format.line_spacing = 1.5
-	# Add background color
-	add_paragraph_bgcolor(styles['ZMSNotiz'], 'fff5ce')
-
-	# Merksatz
-	styles.add_style('emphasis', WD_STYLE_TYPE.PARAGRAPH)
-	if sys.version_info[0] > 2:
-		styles['emphasis'].basedOn = doc.styles['Normal']
-	styles['emphasis'].font.name = 'Arial'
-	styles['emphasis'].font.size = Pt(9)
-	styles['emphasis'].font.bold = False
-	styles['emphasis'].font.italic = True
-	styles['emphasis'].paragraph_format.space_before = Pt(12)
-	styles['emphasis'].paragraph_format.space_after = Pt(12)
-	styles['emphasis'].paragraph_format.line_spacing = 1.5
-	# Add background color
-	add_paragraph_bgcolor(styles['emphasis'], 'f0f8ff')
-
-	styles.add_style('Handlungsaufforderung', WD_STYLE_TYPE.PARAGRAPH)
-	if sys.version_info[0] > 2:
-		styles['Handlungsaufforderung'].basedOn = doc.styles['Normal']
-	styles['Handlungsaufforderung'].font.name = 'Arial'
-	styles['Handlungsaufforderung'].font.size = Pt(9)
-	styles['Handlungsaufforderung'].font.bold = False
-	styles['Handlungsaufforderung'].font.italic = False
-	styles['Handlungsaufforderung'].paragraph_format.space_before = Pt(6)
-	styles['Handlungsaufforderung'].paragraph_format.space_after = Pt(6)
-	# styles['Handlungsaufforderung'].paragraph_format.left_indent = Pt(18)
-	# add_listbullet_arrow(styles['Handlungsaufforderung'])
-
-
-	return doc
-
 
 
 # #############################################
@@ -1113,8 +649,8 @@ def apply_standard_json_docx(self):
 				parent_id = pageelement.getParentNode().id
 				parent_meta_id = pageelement.getParentNode().meta_id
 				icon = '\U0001F517'
-				title = pageelement.attr('title')
-				text = pageelement.attr('attr_dc_description')
+				title = standard.pystr(pageelement.attr('title'))
+				text = standard.pystr(pageelement.attr('attr_dc_description'))
 				try:
 					href = zmscontext.getLinkObj(pageelement.attr('attr_url'),request).getHref2IndexHtml(request)
 				except:
@@ -1137,9 +673,9 @@ def apply_standard_json_docx(self):
 				meta_id = pageelement.meta_id
 				parent_id = pageelement.getParentNode().id
 				parent_meta_id = pageelement.getParentNode().meta_id
-				icon = '\U0001F87E'
-				title = pageelement.attr('title')
-				text = pageelement.attr('attr_dc_description')
+				icon = u'\U0001F87E'
+				title = standard.pystr(pageelement.attr('title'))
+				text = standard.pystr(pageelement.attr('attr_dc_description'))
 				try:
 					href = pageelement.getHref2IndexHtml(request)
 				except:
@@ -1151,7 +687,7 @@ def apply_standard_json_docx(self):
 						'parent_id':parent_id,
 						'parent_meta_id':parent_meta_id,
 						'docx_format':'html',
-						'content':'<p>%s <a href="%s">%s</a><br/>%s</p>'%(icon, href, title, text)
+						'content':'<p>%s <a href="%s">%s</a>%s</p>'%(icon, href, title, text)
 					}
 				]
 
@@ -1321,16 +857,20 @@ def get_headings_of_section(doc):
 	# Return the list of sections
 	return sections
 
+# Overwrite site-packages/docx/document.py
+def add_heading(self, text, level=1):
+	"""Return a heading paragraph newly added to the end of the document.
 
+	The heading paragraph will contain `text` and have its paragraph style
+	determined by `level`. If `level` is 0, the style is set to `Title`. If `level`
+	is 1 (or omitted), `Heading 1` is used. Otherwise the style is set to `Heading
+	{level}`. Raises |ValueError| if `level` is outside the range 0-9.
+	"""
+	if not 0 <= level <= 9:
+		raise ValueError("level must be in range 0-9, got %d" % level)
+	style = "Title" if level == 0 else "Heading%d" % level
+	return self.add_paragraph(text, style)
 
-# #############################################
-# GLOBALS
-# #############################################
-# DOCX-Document with custom style-set
-# Hint: may use template like docx.Document('template.docx')
-doc = docx.Document()
-set_docx_styles(doc)
-zmscontext = None
 
 # #############################################
 # MAIN function for DOCX-Generation
@@ -1357,13 +897,19 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 	# Write to stdout
 	standard.writeStdout(None, 'DOCX-INFO-%s: Writing ZMS node %s' %(page_counter, zmscontext.id))
 
-
 	# INITIALIZE DOCX Document
 	# and preserve it while exporting recursively 
 	if page_counter == 1:
+
+		# #############################################
+		# DOCX-Document with custom style-set
+		# Usage: docx.Document('template.docx')
+		# #############################################	
 		global doc
-		doc = docx.Document()
-		set_docx_styles(doc)
+		doc = docx.Document(docx_tmpl)
+		# doc.element.body.clear()  # Remove eventual example content
+		# set_docx_styles(doc)
+
 		# https://python-docx.readthedocs.io/en/latest/dev/analysis/features/coreprops.html
 		doc.core_properties.author = docx_creator
 		doc.core_properties.title = standard.pystr(zmscontext.attr('title'))
@@ -1391,8 +937,10 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 
 	if page_counter == 1:
 		header_p = doc.sections[0].header.paragraphs[0]
+		header_p.clear()
 		header_p.text = header_text
 		footer_p = doc.sections[0].footer.paragraphs[0]
+		footer_p.clear()
 		footer_p.add_run('Seite ')
 		add_field(footer_p, field_code='PAGE')
 		footer_p.add_run('\t')
@@ -1412,7 +960,7 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 	# [B] CONTENT HEADINGS
 	if is_page:
 		# [1] CREATE INFO-PAGE
-		doc_title = doc.add_heading(standard.pystr(heading.get('title','')), level=0)
+		doc_title = add_heading(doc, standard.pystr(heading.get('title','')), level=0)
 		p = doc.add_paragraph()
 		add_breadcrumbs_as_runs(zmscontext, p)
 
@@ -1435,7 +983,7 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 		p.add_run().add_break(docx.enum.text.WD_BREAK.PAGE)
 
 		# [2] DOCUMENT TITLE AND DESCRIPTION
-		doc.add_heading(standard.pystr(heading.get('title','')), level=1)
+		add_heading(doc, standard.pystr(heading.get('title','')), level=1)
 		prepend_bookmark(doc.paragraphs[-1], heading.get('id',''))
 		if heading.get('description','')!='':
 			doc.add_paragraph(standard.pystr(heading.get('description','')), style='Description')
@@ -1518,7 +1066,7 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 
 			# 4. Reset levels of headline-paragraphs
 			for i, p in enumerate(headline_paragraphs):
-				p.style = doc.styles['Heading %s'%headline_levels_normalized[i]]
+				p.style = doc.styles['Heading%s'%headline_levels_normalized[i]]
 
 
 

@@ -44,7 +44,7 @@ zmscontext = None
 # DOCX-Document will be set in main function manage_export_pydocx()
 doc = None
 # Set local path for docx-template
-docx_tmpl = open("/home/zope/instance/zms4_gez/neon-entw/Extensions/neon.docx", "r")
+docx_tmpl = open("/home/zope/instance/zms4_gez/neon-entw/Extensions/neon.docx", "rb")
 
 
 # #############################################
@@ -211,7 +211,7 @@ def add_runs(docx_block, bs_element):
 		docx_block.text(standard.pystr(bs_element.text))
 
 # ADD HTML-BLOCK TO DOCX
-def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
+def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid=None):
 	# Clean HTML
 	htmlblock = clean_html(htmlblock)
 
@@ -256,9 +256,9 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
 					p = docx_doc.add_paragraph()
 					if c==1 and zmsid: 
 						prepend_bookmark(p, zmsid)
-					# htmlblock.__contains__('ZMSTable')
+					# htmlblock.__contains__('ZMSTable') or htmlblock.__contains__('img')
 					if element.has_attr('class'):
-						if 'caption' in element['class']:
+						if 'caption' in element['class'] and zmsmetaid in ['ZMSGraphic', 'ZMSTable']:
 							p.style = docx_doc.styles['Caption']
 						else:
 							class_name = element['class'][0]
@@ -383,10 +383,10 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
 				elif element.name == 'div':
 					if element.has_attr('class') and (('ZMSGraphic' in element['class']) or ('graphic' in element['class'])):
 						ZMSGraphic_html = standard.pystr(''.join([str(e) for e in element.children]))
-						add_htmlblock_to_docx(zmscontext, docx_doc, ZMSGraphic_html, zmsid)
+						add_htmlblock_to_docx(zmscontext, docx_doc, ZMSGraphic_html, zmsid, zmsmetaid='ZMSGraphic')
 					elif element.has_attr('class') and ('ZMSTextarea' in element['class']):
 						ZMSTextarea_html = standard.pystr(''.join([str(e) for e in element.children]))
-						add_htmlblock_to_docx(zmscontext, docx_doc, ZMSTextarea_html, zmsid)
+						add_htmlblock_to_docx(zmscontext, docx_doc, ZMSTextarea_html, zmsid, zmsmetaid='ZMSTextarea')
 					elif element.has_attr('class') and 'handlungsaufforderung' in element['class']:
 						p = docx_doc.add_paragraph(style='Handlungsaufforderung')
 						if c==1 and zmsid:
@@ -403,7 +403,19 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None):
 						div_tag = div_element.div
 						div_tag.unwrap()
 						add_runs(docx_block = p,  bs_element = div_element)
-
+					elif element.has_attr('style') and 'background: rgb(238, 238, 238)' in element['style']:
+						p = docx_doc.add_paragraph(style='Hinweis')
+						if c==1 and zmsid:
+							prepend_bookmark(p, zmsid)
+						div_element = BeautifulSoup(standard.pystr(element), 'html.parser')
+						div_tag = div_element.div
+						div_tag.unwrap()
+						add_runs(docx_block = p,  bs_element = div_element)
+					elif element.has_attr('class') and 'text' in element['class'] and zmsmetaid in ['ZMSGraphic', 'ZMSTable']:
+						p = docx_doc.add_paragraph(style='Caption')
+						if c==1 and zmsid:
+							prepend_bookmark(p, zmsid)
+						add_runs(docx_block = p, bs_element = element)
 					else:
 						child_tags = [e.name for e in element.children if e.name]
 						if {'em','strong','i'} & set(child_tags):
@@ -907,7 +919,10 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 		# #############################################	
 		global doc
 		doc = docx.Document(docx_tmpl)
-		# doc.element.body.clear()  # Remove eventual example content
+		# Remove eventual example content/paragraphs
+		for p in doc.paragraphs:
+			e = p._element
+			e.getparent().remove(e)
 		# set_docx_styles(doc)
 
 		# https://python-docx.readthedocs.io/en/latest/dev/analysis/features/coreprops.html
@@ -1029,7 +1044,23 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 			r.add_picture(image_file, width=Emu(imgwidth*9525))
 			prepend_bookmark(p, block['id'])
 		# #############################################
-		# [4] TEXT-BLOCK with given block format (style)
+		# [4] CAPTION TEXT-BLOCK
+		elif v and block['docx_format']=='Caption':
+			if re.match(r'^\[Abb. e\d+\] .*', v):
+				capt_list = re.split(r'^\[Abb. e\d+\] ', v)
+				if len(capt_list) > 1 and len(capt_list[1]) > 0:
+					p = doc.add_paragraph(style='Caption')
+					prepend_bookmark(p, block['id'])
+					p.add_run('Abb. %s: '%block['id']).font.italic = False
+					p.add_run(capt_list[1])
+			elif re.match(r'^\[Abb. e\d+\] ', v):
+				# Omit caption with empty text
+				pass
+			else:
+				p = doc.add_paragraph(style='Caption')
+				prepend_bookmark(p, block['id'])
+		# #############################################
+		# [5] TEXT-BLOCK with given block format (style)
 		elif v and block['docx_format'] in [e.name for e in doc.styles]:
 				p = doc.add_paragraph(v, style=block['docx_format'])
 				prepend_bookmark(p, block['id'])

@@ -180,8 +180,12 @@ def add_runs(docx_block, bs_element):
 			elif elrun.name == 'sup':
 				docx_block.add_run(elrun.text).font.superscript = True
 			elif elrun.name == 'a':
-				add_hyperlink(docx_block = docx_block, link_text = elrun.text, url = elrun.get('href'))
-				docx_block.add_run(' ')
+				if elrun.has_attr('href'):
+					add_hyperlink(docx_block = docx_block, link_text = elrun.text, url = elrun.get('href'))
+					docx_block.add_run(' ')
+				else:
+					# elrun.encode_contents() => html
+					docx_block.add_run(elrun.text)
 			elif elrun.name == 'span':
 				if elrun.has_attr('class'):
 					class_name = elrun['class'][0]
@@ -209,6 +213,20 @@ def add_runs(docx_block, bs_element):
 				docx_block.add_run(s)
 	else:
 		docx_block.text(standard.pystr(bs_element.text))
+
+
+# ADD CLASS-NAMED HTML-BLOCK AS PARAGRAPH
+def add_tagged_content_as_paragraph(docx_doc, bs_element, style_name="Standard", c=0, zmsid=None):
+	# Add content of a BeautifulSoup element as a paragraph
+	# to the docx document (self)
+	p = docx_doc.add_paragraph(style=style_name)
+	if c==1 and zmsid:
+		prepend_bookmark(p, zmsid)
+	el = BeautifulSoup(standard.pystr(bs_element), 'html.parser')
+	el_tag = el.div
+	el_tag.unwrap()
+	add_runs(docx_block = p,  bs_element = el)
+
 
 # ADD HTML-BLOCK TO DOCX
 def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid=None):
@@ -388,29 +406,11 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 						ZMSTextarea_html = standard.pystr(''.join([str(e) for e in element.children]))
 						add_htmlblock_to_docx(zmscontext, docx_doc, ZMSTextarea_html, zmsid, zmsmetaid='ZMSTextarea')
 					elif element.has_attr('class') and 'handlungsaufforderung' in element['class']:
-						p = docx_doc.add_paragraph(style='Handlungsaufforderung')
-						if c==1 and zmsid:
-							prepend_bookmark(p, zmsid)
-						div_element = BeautifulSoup(standard.pystr(element), 'html.parser')
-						div_tag = div_element.div
-						div_tag.unwrap()
-						add_runs(docx_block = p,  bs_element = div_element)
+						add_tagged_content_as_paragraph(docx_doc, element, 'Handlungsaufforderung', c, zmsid)
 					elif element.has_attr('class') and 'grundsatz' in element['class']:
-						p = docx_doc.add_paragraph(style='Grundsatz')
-						if c==1 and zmsid:
-							prepend_bookmark(p, zmsid)
-						div_element = BeautifulSoup(standard.pystr(element), 'html.parser')
-						div_tag = div_element.div
-						div_tag.unwrap()
-						add_runs(docx_block = p,  bs_element = div_element)
+						add_tagged_content_as_paragraph(docx_doc, element, 'Grundsatz', c, zmsid)
 					elif element.has_attr('style') and 'background: rgb(238, 238, 238)' in element['style']:
-						p = docx_doc.add_paragraph(style='Hinweis')
-						if c==1 and zmsid:
-							prepend_bookmark(p, zmsid)
-						div_element = BeautifulSoup(standard.pystr(element), 'html.parser')
-						div_tag = div_element.div
-						div_tag.unwrap()
-						add_runs(docx_block = p,  bs_element = div_element)
+						add_tagged_content_as_paragraph(docx_doc, element, 'Hinweis', c, zmsid)
 					elif element.has_attr('class') and 'text' in element['class'] and zmsmetaid in ['ZMSGraphic', 'ZMSTable']:
 						p = docx_doc.add_paragraph(style='Caption')
 						if c==1 and zmsid:

@@ -12,7 +12,8 @@ ZMS is running on Zope (Version 5+) as the underlaying Python3 application serve
 ~$: sudo apt-get install gcc
 ~$: sudo apt-get install openssh-server
 ~$: sudo apt-get install build-essential 
-~$: sudo apt-get install libssl-dev libffi-dev 
+~$: sudo apt-get install libssl-dev libffi-dev
+~$: sudo apt get libldap2-dev libsasl2-dev 
 ~$: sudo apt-get install python3-dev
 ~$: sudo apt-get install python3-venv
 ~$: sudo apt-get install git

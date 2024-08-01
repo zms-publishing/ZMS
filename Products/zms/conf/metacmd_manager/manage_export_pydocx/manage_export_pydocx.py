@@ -53,6 +53,9 @@ docx_tmpl = open("/home/zope/instance/zms4_gez/neon-entw/Extensions/neon.docx", 
 # Hint: the docx API does not support the page counter directly. 
 # We have to create a custom footer with a page counter.
 # #############################################
+# Reference: DocumentFormat.OpenXml
+# https://learn.microsoft.com/en-us/dotnet/api/overview/openxml/?view=openxml-3.0.1
+
 
 # XML-Helpers
 def create_element(name):
@@ -157,10 +160,19 @@ def add_runs(docx_block, bs_element):
 	# to the docx-block, e.g. <strong>, <em>, <a>
 	if bs_element.children:
 		c = 0
-		for elrun in [elrun for elrun in bs_element.children if elrun.name not in ['ul', 'ol', 'li', 'img', 'figure']]:
-			# Hint: ul/ol/li are handled as blocks in add_htmlblock_to_docx.add_list
+		# Hint: ul/ol/li are handled as blocks in add_htmlblock_to_docx.add_list
+		elruns = [elrun for elrun in bs_element.children if elrun.name not in ['ul', 'ol', 'li', 'img', 'figure']]
+		for elrun in elruns:
 			c += 1
-			if elrun.name == 'br':
+			if elrun.name == None:
+				s = standard.pystr(elrun)
+				# Remove trailing spaces on first text element of a new line or block
+				if c == 1:
+					s = s.lstrip()
+				elif elruns[c-2].name == 'br':
+					s = s.lstrip()
+				docx_block.add_run(s)
+			elif elrun.name == 'br':
 				docx_block.add_run('\n')
 			elif elrun.name != None and elrun.text == '↵':
 				docx_block.add_run('')
@@ -204,13 +216,7 @@ def add_runs(docx_block, bs_element):
 			# #############################################
 			elif elrun.name == 'p':
 				add_runs(docx_block = docx_block, bs_element = elrun)
-			elif elrun.name == 'script':
-				pass
-			else:
-				s = standard.pystr(elrun)
-				if c == 1: # Remove trailing spaces on first text element of a block
-					s = s.lstrip()
-				docx_block.add_run(s)
+			# #############################################
 	else:
 		docx_block.text(standard.pystr(bs_element.text))
 
@@ -314,8 +320,8 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 						prepend_bookmark(p, zmsid)
 					rows = element.find_all('tr')
 					text_style = 'Normal'
-					# if len(rows) > 16:
-					# 	text_style = 'Table-Small'
+					if len(rows) > 16:
+						text_style = 'Table-Small'
 					cols = rows[0].find_all(['td','th'])
 					docx_table = docx_doc.add_table(rows=len(rows), cols=len(cols))
 					docx_table.style = 'Table Grid'
@@ -347,7 +353,7 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 
 							# Bolden table header
 							if cl.name == 'th':
-								docx_table.cell(r,i).paragraphs[0].runs[0].bold = True
+								docx_table.cell(r,i).paragraphs[0].style = 'Tableheader'
 					# Add linebreak or pagebreak after table
 					p = docx_doc.add_paragraph()
 
@@ -577,7 +583,10 @@ def apply_standard_json_docx(self):
 	meta_id = zmscontext.meta_id
 	parent_id = zmscontext.id
 	parent_meta_id = zmscontext.meta_id 
-	title = zmscontext.attr('title') or zmscontext.getTitle(request)
+	if zmscontext.meta_id == 'LgRegel':
+		title = zmscontext.attr('titlealt')
+	else:
+		title = zmscontext.attr('title') or zmscontext.getTitle(request)
 	description = zmscontext.attr('attr_dc_description')
 	last_change_dt = zmscontext.attr('change_dt') or zmscontext.attr('created_dt')
 	userid = zmscontext.attr('change_uid')
@@ -724,9 +733,6 @@ def apply_standard_json_docx(self):
 					'docx_format': 'html',
 					'content': pageelement.attr('standard_html')
 				}]
-				if pageelement.meta_id == 'LgBedingung':
-					standard.writeStdout(None, 'IMPORTANT NOTE: LgBedingung.standard_html needs to be customized!')
-					# zmi python:request['URL'].find('/manage')>0 and not request['URL'].find('pydocx')>0;
 
 			# #############################################
 			else:
@@ -752,6 +758,13 @@ def apply_standard_json_docx(self):
 					'docx_format': 'html',
 					'content': html
 				}]
+
+			# Give some customizing hints for standard_html
+			if pageelement.meta_id in ['LgRegel','LgBedingung']:
+				standard.writeStdout(None, 'IMPORTANT NOTE: %s.standard_html needs to be customized!'%(pageelement.meta_id))
+				# %<----  CUSTOMIZE LIKE THIS ---------------------
+				# zmi python:request['URL'].find('/manage')>0 and not request['URL'].find('pydocx')>0;
+				# %<---- /CUSTOMIZE LIKE THIS ---------------------
 
 		blocks.extend(json_block)
 
@@ -787,45 +800,7 @@ def get_headline_levels_from_numbering(headline_paragraphs=[]):
 # #############################################
 # Helper Functions 6: NORMALIZE HEADLINE LEVELS
 # #############################################
-# VARIANT-1
-# Better for very volatile headline jumping
 def normalize_headline_levels(list1):
-	"""
-	Normalize headline levels
-	expects a list of headline levels as integer values
-	"""
-	list2 = list1[:]  # Create a copy of list1
-	l = len(list2)
-	i = 0
-	n = 0
-	# Start with headline level 1
-	list2[0] = 1
-	while i < l:
-		i = (n == 0 or i > n) and i+1 or n + 1
-		n = 0
-		if i >= l:
-			break
-		v = list2[i]
-		if v == list1[i-1]:
-			continue
-		if v - list1[i-1] > 1 or v - list2[i-1] > 1:
-			list2[i] = list1[i-1] + 1
-			if v - list2[i-1] > 1:
-				list2[i] = list2[i-1] + 1
-			n = i
-		if n + 1 >= l:
-			break
-		while list1[n+1] == list1[n]:
-			n += 1
-			if n + 1 >= l:
-				break
-			list2[n] = list2[i]
-	return list2
-
-# VARIANT-2
-# Better for systmatical headline jumps
-# e.g. omitted h2 (see Test-Case 1)
-def normalize_headline_levels2(list1):
 	"""
 	Normalize headline levels
 	expects a list of headline levels as integer values
@@ -1079,7 +1054,7 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 
 	# #############################################
 	# Normalize Headline Hierarchy
-	# using function normalize_headline_levels2 
+	# using function normalize_headline_levels 
 	# up-levelling systematic gaps in headline levels
 	# ---------------------------------------------
 	# TODO: Make it work with recursive export
@@ -1089,9 +1064,9 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 		section_list = get_headings_of_section(doc)
 		for headline_paragraphs in section_list:
 			# 1. Get headline levels on HTML/stylenames 
-			# and its normalization with function normalize_headline_levels2()
+			# and its normalization with function normalize_headline_levels()
 			headline_levels_on_stylenames = [int(p.style.name[-1]) for p in headline_paragraphs]
-			headline_levels_normalized = normalize_headline_levels2(headline_levels_on_stylenames)
+			headline_levels_normalized = normalize_headline_levels(headline_levels_on_stylenames)
 
 			# 2. Get headline levels on its numbering-prefixes
 			headline_levels_on_numbering = get_headline_levels_from_numbering(headline_paragraphs)

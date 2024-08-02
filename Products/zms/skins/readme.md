@@ -35,12 +35,13 @@ Example: *Products.zms/overrides.zcml*
 		xmlns:cmf="http://namespaces.zope.org/cmf"
 		xmlns:zcml="http://namespaces.zope.org/zcml"
 		zcml:condition="installed Products.CMFCore">
+		<cmf:registerDirectory name="skin_zms5_minimal" recursive="True" />
 		<cmf:registerDirectory name="themes" directory="/home/zope/src/zms_themes" recursive="True" />
 	</configure>
 </configure>
 ```
 
-In this example, the new directory `/home/zope/themes` is registered as a skin directory for ZMS. This allows you to organize your themes in a different location than the default `./skins` folder. The given *name*-attribute of the directory registration is essential, because it will be shown in the Zope-GUI as the root name of the declared  directory [1]. You can add as many directories as you like, and you can also use the `recursive` attribute to include subdirectories.
+In this example, the new directory `/home/zope/src/zms_themes` is registered as a additional skin directory for ZMS. This allows you to organize your themes in a different location than the default `./skins` folder. The given *name*-attribute of the directory registration is essential, because it will be shown in the Zope-GUI as the root name of the declared  directory [1]. You can add as many directories as you like, and you can also use the `recursive` attribute to include subdirectories.
 
 ---
 

@@ -106,6 +106,8 @@ def prepend_bookmark(docx_block, bookmark_id):
 	except:
 		pass
 
+
+# ADD HYPERLINK
 def add_hyperlink(docx_block, link_text, url):
 	# url_base = 'http://127.0.0.1:8080/'
 	url_base = 'http://neon/'
@@ -126,7 +128,17 @@ def add_hyperlink(docx_block, link_text, url):
 		hyper_link_text.text = link_text
 		hyper_link_run.append(hyper_link_text)
 		hyper_link.append(hyper_link_run)
-		docx_block._p.append(hyper_link)
+
+		## DEBUG: Show docx xml
+		# etree.tostring(hyper_link, pretty_print=True)
+
+		if isinstance(docx_block, type(docx.Document())):
+			# Add hyperlink as a new block element
+			p = docx_block.add_paragraph()
+			p._p.append(hyper_link)
+		else:
+			# Add hyperlink as inline element
+			docx_block._p.append(hyper_link)
 	else:
 		docx_block.add_run(link_text)
 	return docx_block
@@ -196,7 +208,7 @@ def add_runs(docx_block, bs_element):
 				docx_block.add_run(elrun.text).font.superscript = True
 			elif elrun.name == 'a':
 				if elrun.has_attr('href'):
-					docx_block = add_hyperlink(docx_block = docx_block, link_text = elrun.text, url = elrun.get('href'))
+					add_hyperlink(docx_block = docx_block, link_text = elrun.text, url = elrun.get('href'))
 					docx_block.add_run(' ')
 				else:
 					# elrun.encode_contents() => html
@@ -279,7 +291,7 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 				# #############################################
 				# PARAGRAPH
 				# #############################################
-				elif element.name == 'p':
+				elif element.name == 'p' and element.text != '' and element.text != ' ':
 					p = docx_doc.add_paragraph()
 					if c==1 and zmsid: 
 						prepend_bookmark(p, zmsid)
@@ -292,9 +304,11 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 							style_name = (class_name in docx_doc.styles) and class_name or 'Normal'
 							p.style = docx_doc.styles[style_name]
 					add_runs(docx_block = p, bs_element = element)
-					if p.text == '' or p.text == ' ':
-						last_paragraph = docx_doc.paragraphs[-1]._element
-						last_paragraph.getparent().remove(last_paragraph)
+
+					## Remove empty paragraphs
+					# if element.text == '' or element.text == ' ':
+					# 	last_paragraph = docx_doc.paragraphs[-1]._element
+					# 	last_paragraph.getparent().remove(last_paragraph)
 
 				# #############################################
 				# LIST

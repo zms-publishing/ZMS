@@ -24,7 +24,7 @@ if (typeof $ == "undefined") {
  */
 document.addEventListener('htmx:afterRequest', function(evt) {
 	var ts = performance.now();
-	console.log("BO htmx:afterRequest " + ts);
+	console.log("BO htmx:afterRequest ", ts, evt);
 	$ZMI.runReady();
-	console.log("EO htmx:afterRequest " + ts + "->" + (performance.now()-ts) + "msec");
+	console.log("EO htmx:afterRequest ", ts, "->" + (performance.now()-ts) + "ms");
 });

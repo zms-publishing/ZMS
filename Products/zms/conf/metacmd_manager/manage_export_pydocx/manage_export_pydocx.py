@@ -127,6 +127,9 @@ def add_hyperlink(docx_block, link_text, url):
 		hyper_link_run.append(hyper_link_text)
 		hyper_link.append(hyper_link_run)
 		docx_block._p.append(hyper_link)
+	else:
+		docx_block.add_run(link_text)
+	return docx_block
 
 
 # #############################################
@@ -193,7 +196,7 @@ def add_runs(docx_block, bs_element):
 				docx_block.add_run(elrun.text).font.superscript = True
 			elif elrun.name == 'a':
 				if elrun.has_attr('href'):
-					add_hyperlink(docx_block = docx_block, link_text = elrun.text, url = elrun.get('href'))
+					docx_block = add_hyperlink(docx_block = docx_block, link_text = elrun.text, url = elrun.get('href'))
 					docx_block.add_run(' ')
 				else:
 					# elrun.encode_contents() => html
@@ -615,8 +618,7 @@ def apply_standard_json_docx(self):
 		pageelements = [ \
 			e for e in zmscontext.getChildNodes(request)  \
 				if ( ( e.getType() in [ 'ZMSObject', 'ZMSRecordSet'] ) \
-					and not e.meta_id in [ 'LgChangeHistory'] \
-					and not e.meta_id in [ 'ZMSTeaserContainer'] \
+					and not e.meta_id in [ 'LgChangeHistory','ZMSTeaserContainer','LgELearningBanner'] \
 					and not e.isPage() ) \
 					or e.meta_id in [ 'ZMSLinkElement' ]
 			]
@@ -760,7 +762,7 @@ def apply_standard_json_docx(self):
 				}]
 
 			# Give some customizing hints for standard_html
-			if pageelement.meta_id in ['LgRegel','LgBedingung']:
+			if pageelement.meta_id in ['LgRegel','LgBedingung','LgELearningBanner','ZMSNote']:
 				standard.writeStdout(None, 'IMPORTANT NOTE: %s.standard_html needs to be customized!'%(pageelement.meta_id))
 				# %<----  CUSTOMIZE LIKE THIS ---------------------
 				# zmi python:request['URL'].find('/manage')>0 and not request['URL'].find('pydocx')>0;

@@ -390,7 +390,7 @@ def xmlOnUnknownEndTag(self, sTagName):
               if obj_attr['multilang'] == 0 and \
                  isinstance(value, dict) and \
                  len(value.keys()) == 1 and \
-                 value.keys()[0] == self.getPrimaryLanguage():
+                 list(value.keys())[0] == self.getPrimaryLanguage():
                 value = value[value.keys()[0]]
               xmlInitObjProperty(self, sTagName, value)
             if len(self.dValueStack) > 0:

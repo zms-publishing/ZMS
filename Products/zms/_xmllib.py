@@ -391,7 +391,7 @@ def xmlOnUnknownEndTag(self, sTagName):
                  isinstance(value, dict) and \
                  len(value.keys()) == 1 and \
                  list(value.keys())[0] == self.getPrimaryLanguage():
-                value = value[value.keys()[0]]
+                value = value[self.getPrimaryLanguage()]
               xmlInitObjProperty(self, sTagName, value)
             if len(self.dValueStack) > 0:
               raise "Items on self.dValueStack=%s" % self.dValueStack

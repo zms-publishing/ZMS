@@ -7,7 +7,7 @@
 	<script tal:condition="python:standard.once('zmiBlobJs',request)" type="text/javascript" charset="UTF-8" src="/++resource++zms_/objattrs/zmi.blob.js"></script> 
 
 	<div class="zmi-file d-flex align-items-center row" 
-		tal:define="has_file python:value is not None and here.operator_gettype(value) is not str;
+		tal:define="has_file python:value is not None and standard.operator_gettype(value) is not str;
 			allowed_ext python:request.set('ZMS_ALLOWED_EXTENSIONS',['jpg', 'jpeg', 'png', 'gif','svg']);
 			filename python:has_file and value.getFilename() or 'None';
 			href python:has_file and value.getHref(request) or 'None';
@@ -18,7 +18,7 @@
 		<input type="hidden" tal:attributes="name python:'exists_%s'%elName; value python:request.get('ZMS_INSERT',None) is None and value not in [None,'']" />
 		<input type="hidden" tal:attributes="name python:'del_%s'%elName" value="0" />
 
-		<div class="col-12" tal:attributes="class python:not(value is not None and here.operator_gettype(value) is not str) and 'col-9' or default">
+		<div class="col-12" tal:attributes="class python:not(value is not None and standard.operator_gettype(value) is not str) and 'col-9' or default">
 			<div class="zmi-input-file btn-group">
 
 				<div class="custom-file"
@@ -56,7 +56,7 @@
 			</div>
 		</div>
 
-		<div class="col-3" tal:condition="not:python:value is not None and here.operator_gettype(value) is not str">
+		<div class="col-3" tal:condition="not:python:value is not None and standard.operator_gettype(value) is not str">
 			<div class="zmi-file-info">
 				<a tal:attributes="id python:'filename_%s'%elName" target="_blank" tal:content="python:''">the filename</a>
 				<span class="size" tal:attributes="id python:'size_%s'%elName" tal:content="python:''">the size</span>

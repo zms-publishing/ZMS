@@ -22,7 +22,14 @@ if (typeof $ == "undefined") {
 /**
  * Turbolinks
  */
+$ZMI.ready(function() {
+	document.querySelector('body').classList.remove('loading')
+})
+document.addEventListener('htmx:beforeRequest', function(evt) {
+	document.querySelector('body').classList.add('loading');
+});
 document.addEventListener('htmx:afterRequest', function(evt) {
+	document.querySelector('body').classList.add('loaded');
 	var ts = performance.now();
 	console.log("BO htmx:afterRequest ", ts, evt);
 	$ZMI.runReady();

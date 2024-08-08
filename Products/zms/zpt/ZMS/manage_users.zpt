@@ -441,9 +441,9 @@ function zmiModalInsertUserOpen(context) {
 	</div><!-- #insertUser -->
 </div><!-- .d-none -->
 
-<div class="row">
+<div class="row" style="overflow-x:hidden;max-width:100vw">
 
-<div class="col-sm-6 mb-3 pr-sm-0 list_users">
+<div class="col-sm-6 mb-3 pr-sm-0 list_users" style="overflow-x:hidden">
 
 	<div class="alert alert-success" tal:condition="python:request.get('btn')=='Purge'">
 		Purge local users<br/>
@@ -553,7 +553,7 @@ function zmiModalInsertUserOpen(context) {
 	</div><!-- #insertRole.inner -->
 </div><!-- .d-none -->
 
-<div class="col-sm-6 mb-3 pl-sm-0 list_roles">
+<div class="col-sm-6 mb-3 pl-sm-0 list_roles" style="overflow-x:hidden">
 	<form class="form-horizontal card">
 		<input type="hidden" name="key" value="" />
 		<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />

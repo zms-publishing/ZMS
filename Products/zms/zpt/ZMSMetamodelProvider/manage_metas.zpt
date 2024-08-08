@@ -210,10 +210,8 @@ function zmiFormSubmit(sender,d) {
 	</tr>
 	</tbody>
 	</table>
-	<div class="form-group row">
-		<div class="controls save">
-			<button name="btn" type="submit" class="btn btn-primary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-		</div>
+	<div class="controls save">
+		<button name="btn" type="submit" class="btn btn-primary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 	</div>
 </form>
 

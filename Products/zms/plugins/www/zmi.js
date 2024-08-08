@@ -22,16 +22,19 @@ if (typeof $ == "undefined") {
 /**
  * Turbolinks
  */
-if (typeof Turbolinks != "undefined") {
-	Turbolinks.setProgressBarDelay(0);
-	document.addEventListener("turbolinks:visit", function() {
-		var ts = performance.now();
-		console.log("BO turbolinks:visit " + ts);
-	});
-	document.addEventListener("turbolinks:load", function() {
-		var ts = performance.now();
-		console.log("BO turbolinks:load " + ts);
-		$ZMI.runReady();
-		console.log("EO turbolinks:load " + ts + "->" + (performance.now()-ts) + "msec");
-	});
-}
+$ZMI.registerReady(function() {
+	if (document.querySelector('body') != null && document.querySelector('body').classList.contains("loading")) {
+		document.querySelector('body').classList.remove('loading');
+	}
+})
+document.addEventListener('htmx:beforeRequest', function(evt) {
+	document.querySelector('body').classList.add('loading');
+});
+document.addEventListener('htmx:afterRequest', function(evt) {
+	document.querySelector('body').classList.remove('loading')
+	document.querySelector('body').classList.add('loaded');
+	var ts = performance.now();
+	console.log("BO htmx:afterRequest ", ts, evt);
+	$ZMI.runReady();
+	console.log("EO htmx:afterRequest ", ts, "->" + (performance.now()-ts) + "ms");
+});

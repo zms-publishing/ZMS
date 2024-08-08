@@ -22,7 +22,7 @@ if (typeof $ == "undefined") {
 /**
  * Turbolinks
  */
-$ZMI.ready(function() {
+$ZMI.registerReady(function() {
 	if (document.querySelector('body') != null && document.querySelector('body').classList.contains("loading")) {
 		document.querySelector('body').classList.remove('loading');
 	}

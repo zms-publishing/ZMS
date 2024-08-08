@@ -10,7 +10,7 @@
 		<h1 tal:condition="title" class="display-4" tal:content="structure title">Jumbotron title</h1>
 		<p tal:condition="subtitle" class="lead" tal:content="structure subtitle" tal:condition="subtitle">Jumbotron subtitle</p>
 		<hr tal:condition="python: title or subtitle" class="my-4"/>
-		<p tal:content="structure text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+		<p tal:replace="structure text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
 		<p class="lead" tal:condition="linklist">
 			<tal:block tal:repeat="link linklist" tal:on-error="structure string:<!-- ERROR: linklist -->">
 				<a	class="btn btn-primary btn-lg mb-3" role="button" 

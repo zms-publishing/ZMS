@@ -340,9 +340,21 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 					if len(rows) > 16:
 						text_style = 'Table-Small'
 					cols = rows[0].find_all(['td','th'])
+					# Create table
 					docx_table = docx_doc.add_table(rows=len(rows), cols=len(cols))
 					docx_table.style = 'Table Grid'
 					docx_table.alignment = WD_TABLE_ALIGNMENT.CENTER
+
+					def remove_empty_paragraphs(docx_table):
+						for row in docx_table.rows:
+							for cell in row.cells:
+								for p_empty in [p for p in cell.paragraphs if p.text == '']:
+									p = p_empty._element
+									p.getparent().remove(p)
+
+					# #############################################
+					# [A] Filling Cells with data
+					# #############################################
 					r=-1
 					for row in rows:
 						r+=1
@@ -361,16 +373,38 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 								if element.has_attr('style') and element['style'] in docx_doc.styles:
 									p.style = docx_doc.styles[element['style']]
 								add_runs(p, cl)
-							
-							# Remove empty paragraphs from cell
-							if len(docx_cell.paragraphs) > 1:
-								for p_empty in [p for p in docx_cell.paragraphs if p.text == '']:
-									p = p_empty._element
-									p.getparent().remove(p)
 
 							# Bolden table header
 							if cl.name == 'th':
 								docx_table.cell(r,i).paragraphs[0].style = 'Tableheader'
+
+					# #############################################
+					# [B] Merge Cells with rowspan and colspan
+					# #############################################
+					r=-1
+					rspn = 0
+					clspn = 0
+					for row in rows:
+						r+=1
+						cells = row.find_all(['td','th'])
+						for i, cl in enumerate(cells):
+							# Merge cells if rowspan or colspan is set
+							if cl.has_attr('rowspan'):
+								rspn = int(cl['rowspan'])
+								docx_table.cell(r,i).merge(docx_table.cell(r,i+rspn-1))
+							if cl.has_attr('colspan'):
+								clspn = int(cl['colspan'])
+								docx_table.cell(r,i).merge(docx_table.cell(r+clspn-1,i))
+
+					# Remove empty paragraphs from any cell
+					for row in docx_table.rows:
+						for cell in row.cells:
+							if len(cell.paragraphs)>1:
+								for p_empty in [p for p in cell.paragraphs if p.text == '']:
+									p = p_empty._element
+									cell._element.remove(p)
+									# p.getparent().remove(p)
+
 					# Add linebreak or pagebreak after table
 					p = docx_doc.add_paragraph()
 

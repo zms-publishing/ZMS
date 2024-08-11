@@ -20,21 +20,31 @@ if (typeof $ == "undefined") {
 }
 
 /**
- * Turbolinks
+ * HTMX: Add loading class to body on htmx:beforeRequest and remove it on htmx:afterRequest
  */
-$ZMI.registerReady(function() {
+if (typeof htmx != "undefined") {
+	document.addEventListener('htmx:beforeRequest', function(evt) {
+		document.querySelector('body').classList.add('loading');
+	});
+	document.addEventListener('htmx:afterRequest', function(evt) {
+		document.querySelector('body').classList.remove('loading')
+		document.querySelector('body').classList.add('loaded');
+		var ts = performance.now();
+		console.log("BO htmx:afterRequest ", ts, evt);
+		$ZMI.runReady();
+		console.log("EO htmx:afterRequest ", ts, "->" + (performance.now()-ts) + "ms");
+	});
+}
+
+/**
+ * jQuery: Run $ZMI.ready() on document.ready
+ */
+if (typeof $ != "undefined") {
+	// Remove loading class from body
 	if (document.querySelector('body') != null && document.querySelector('body').classList.contains("loading")) {
 		document.querySelector('body').classList.remove('loading');
-	}
-})
-document.addEventListener('htmx:beforeRequest', function(evt) {
-	document.querySelector('body').classList.add('loading');
-});
-document.addEventListener('htmx:afterRequest', function(evt) {
-	document.querySelector('body').classList.remove('loading')
-	document.querySelector('body').classList.add('loaded');
-	var ts = performance.now();
-	console.log("BO htmx:afterRequest ", ts, evt);
-	$ZMI.runReady();
-	console.log("EO htmx:afterRequest ", ts, "->" + (performance.now()-ts) + "ms");
-});
+	};
+	setTimeout(function() {
+		$ZMI.runReady();
+	}, 500);
+}

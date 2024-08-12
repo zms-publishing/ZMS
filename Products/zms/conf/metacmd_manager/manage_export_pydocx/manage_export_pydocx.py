@@ -15,7 +15,7 @@ import datetime
 
 # IMPORT ZMS LIBRARIES
 from Products.zms import standard
-from Products.zms import rest_api
+# from Products.zms import rest_api
 
 # X/HTML LIBRARIES
 from bs4 import BeautifulSoup, NavigableString
@@ -437,7 +437,7 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 						imgwidth = get_normalized_image_width(w = imgwidth, h = imgheight, max_w = 460)
 
 						try:
-							response = requests.get(element['src'])
+							response = requests.get(element['src'], verify=False)
 							with open(img_name, 'wb') as f:
 								f.write(response.content)
 							if src_url1.startswith('++resource++zms_'):
@@ -1060,7 +1060,7 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 		elif v and block['docx_format'] == 'image':
 			# Add image to document
 			image_url = v
-			resp = requests.get(image_url)
+			resp = requests.get(image_url, verify=False)
 			image_file = BytesIO(resp.content)
 			# Add a paragraph containing the image as run
 			# see: /python-docx/src/docx/document.py

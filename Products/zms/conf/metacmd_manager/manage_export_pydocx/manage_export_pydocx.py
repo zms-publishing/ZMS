@@ -194,11 +194,11 @@ def add_runs(docx_block, bs_element):
 			elif elrun.name == 'strong':
 				docx_block.add_run(elrun.text).bold = True
 			elif elrun.name == 'q':
-				docx_block.add_run(elrun.text, style='Quote Char')
+				docx_block.add_run(elrun.text, style='Zitat Zchn')
 			elif elrun.name == 'em' or elrun.name == 'i':
 				docx_block.add_run(elrun.text).italic = True
 			elif elrun.name in ['samp', 'code', 'tt', 'var', 'pre']:
-				docx_block.add_run(elrun.text, style='Macro Text Char')
+				docx_block.add_run(elrun.text, style='Makrotext Zchn')
 			elif elrun.name == 'kbd':
 				docx_block.add_run(elrun.text, style='Keyboard')
 				# r.font.highlight_color = WD_COLOR_INDEX.BLACK
@@ -315,8 +315,8 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 				# #############################################
 				elif element.name in ['ul','ol']:
 					def add_list(docx_doc, element, level=0, c=0):
-						li_styles = {'ul':'ListBullet', 'ol':'ListNumber'}
-						level_suffix = level!=0 and str(level+1) or ''
+						li_styles = {'ul':'List Bullet', 'ol':'List Number'}
+						level_suffix = level!=0 and ' %s'%str(level+1) or ''
 						for li in element.find_all('li', recursive=False):
 							p = docx_doc.add_paragraph(style='%s%s'%(li_styles[element.name], level_suffix))
 							add_runs(docx_block = p, bs_element = li)
@@ -913,7 +913,7 @@ def add_heading(self, text, level=1):
 	"""
 	if not 0 <= level <= 9:
 		raise ValueError("level must be in range 0-9, got %d" % level)
-	style = "Title" if level == 0 else "Heading%d" % level
+	style = "Title" if level == 0 else "heading %d" % level
 	return self.add_paragraph(text, style)
 
 
@@ -1130,7 +1130,7 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 
 			# 4. Reset levels of headline-paragraphs
 			for i, p in enumerate(headline_paragraphs):
-				p.style = doc.styles['Heading%s'%headline_levels_normalized[i]]
+				p.style = doc.styles['heading %s'%headline_levels_normalized[i]]
 
 
 

@@ -232,7 +232,7 @@ def add_runs(docx_block, bs_element):
 			elif elrun.name == 'strong':
 				docx_block.add_run(elrun.text).bold = True
 			elif elrun.name == 'q':
-				docx_block.add_run(elrun.text, style='Quote-Inline')
+				docx_block.add_run('"%s"'%(elrun.text), style='Quote-Inline')
 			elif elrun.name == 'em' or elrun.name == 'i':
 				docx_block.add_run(elrun.text).italic = True
 			elif elrun.name in ['samp', 'code', 'tt', 'var', 'pre']:
@@ -291,7 +291,7 @@ def add_tagged_content_as_paragraph(docx_doc, bs_element, style_name="Standard",
 def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid=None):
 	# Clean HTML
 	htmlblock = clean_html(htmlblock)
-
+	heading_text = ''
 	# Apply BeautifulSoup and iterate over elements
 	soup = BeautifulSoup(htmlblock, 'html.parser')
 
@@ -336,7 +336,7 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 					# htmlblock.__contains__('ZMSTable') or htmlblock.__contains__('img')
 					if element.has_attr('class'):
 						if 'caption' in element['class'] and zmsmetaid in ['ZMSGraphic', 'ZMSTable']:
-							p.style = docx_doc.styles['Caption']
+							p.style = docx_doc.styles['caption']
 						else:
 							class_name = element['class'][0]
 							style_name = (class_name in docx_doc.styles) and class_name or 'Normal'

@@ -106,6 +106,44 @@ def prepend_bookmark(docx_block, bookmark_id):
 	except:
 		pass
 
+def set_block_as_listitem(docx_block, list_type='ul', level=0):
+	# Set list properties to docx-block
+	# ul = List Bullet => numId=2
+	# ol = List Number => numId=3
+	# level: 0-8
+	# Hints:
+	# 1. ul/ol/li are handled as blocks in add_htmlblock_to_docx.add_list
+	# 2. docx-numbering.xml needs suitable list style definitions with numId=2 and 3
+	# Example xml code for a list item paragraph:
+		# <w:p>
+		# 	<w:pPr>
+		# 		<w:pStyle w:val="Normal"/>
+		# 		<w:numPr>
+		# 			<w:ilvl w:val="0"/>
+		# 			<w:numId w:val="2"/>
+		# 		</w:numPr>
+		# 		<w:bidi w:val="0"/>
+		# 		<w:jc w:val="start"/>
+		# 		<w:rPr/>
+		# 	</w:pPr>
+		# 	<w:r>
+		# 		<w:rPr/>
+		# 		<w:t>1st level</w:t>
+		# 	</w:r>
+		# </w:p>
+
+	pPr = create_element('w:pPr')
+	numPr = create_element('w:numPr')
+	ilvl = create_element('w:ilvl')
+	create_attribute(ilvl, 'w:val', str(level))
+	numId = create_element('w:numId')
+	create_attribute(numId, 'w:val', {'ul':'2', 'ol':'3'}[list_type])
+	numPr.append(ilvl)
+	numPr.append(numId)
+	pPr.append(numPr)
+	docx_block._element.append(pPr)
+	return docx_block
+
 
 # ADD HYPERLINK
 def add_hyperlink(docx_block, link_text, url):
@@ -194,11 +232,11 @@ def add_runs(docx_block, bs_element):
 			elif elrun.name == 'strong':
 				docx_block.add_run(elrun.text).bold = True
 			elif elrun.name == 'q':
-				docx_block.add_run(elrun.text, style='Zitat Zchn')
+				docx_block.add_run(elrun.text, style='Quote-Inline')
 			elif elrun.name == 'em' or elrun.name == 'i':
 				docx_block.add_run(elrun.text).italic = True
 			elif elrun.name in ['samp', 'code', 'tt', 'var', 'pre']:
-				docx_block.add_run(elrun.text, style='Makrotext Zchn')
+				docx_block.add_run(elrun.text, style='Code-Inline')
 			elif elrun.name == 'kbd':
 				docx_block.add_run(elrun.text, style='Keyboard')
 				# r.font.highlight_color = WD_COLOR_INDEX.BLACK
@@ -315,12 +353,11 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 				# #############################################
 				elif element.name in ['ul','ol']:
 					def add_list(docx_doc, element, level=0, c=0):
-						li_styles = {'ul':'List Bullet', 'ol':'List Number'}
-						level_suffix = level!=0 and ' %s'%str(level+1) or ''
 						for li in element.find_all('li', recursive=False):
-							p = docx_doc.add_paragraph(style='%s%s'%(li_styles[element.name], level_suffix))
+							p = docx_doc.add_paragraph()
+							set_block_as_listitem(p, list_type=element.name, level=level)
 							add_runs(docx_block = p, bs_element = li)
-							if c==1 and zmsid:  
+							if c==1 and zmsid:
 								prepend_bookmark(p, zmsid)
 							for ul in li.find_all(['ul','ol'], recursive=False):
 								add_list(docx_doc, ul, level+1)

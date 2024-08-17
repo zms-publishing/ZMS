@@ -527,9 +527,12 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 									if e.name and e.has_attr('class'):
 										class_name = e['class']
 										if 'fa-pencil-alt' in class_name:
-											p.add_run('Bearbeitung: ')
+											# p.add_run('Bearbeitung: ')
+											p.add_run(u'\U0000F021', style='Icon')
 										elif 'fa-phone' in class_name:
-											p.add_run('Routing: ')
+											# p.add_run('Routing: ')
+											p.add_run(u'\U0000F028', style='Icon')
+											p.add_run('   ')
 										if list(e.children)!=[]:
 											add_runs(docx_block = p, bs_element = e)
 										else:

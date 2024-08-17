@@ -513,7 +513,7 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 						add_runs(docx_block = p, bs_element = element)
 					else:
 						child_tags = [e.name for e in element.children if e.name]
-						if {'em','strong','i'} & set(child_tags):
+						if {'em','strong','i', 'span'} & set(child_tags):
 							p = docx_doc.add_paragraph()
 							if c==1 and zmsid: 
 								prepend_bookmark(p, zmsid)

@@ -521,7 +521,7 @@
 		<w:qFormat/>
 		<w:pPr>
 			<w:numPr>
-				<w:numId w:val="7"/>
+				<w:numId w:val="4"/>
 			</w:numPr>
 			<w:spacing w:before="227" w:after="227" w:line="276" w:lineRule="auto"/>
 			<w:ind w:hanging="283"/>

@@ -376,9 +376,10 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 					text_style = 'Normal'
 					if len(rows) > 16:
 						text_style = 'Table-Small'
-					cols = rows[0].find_all(['td','th'])
+					# Get max number of columns of all rows (for ignoring colspan)
+					cols_len = max([len(row.find_all(['td','th'])) for row in rows])
 					# Create table
-					docx_table = docx_doc.add_table(rows=len(rows), cols=len(cols))
+					docx_table = docx_doc.add_table(rows=len(rows), cols=cols_len)
 					docx_table.style = 'Table Grid'
 					docx_table.alignment = WD_TABLE_ALIGNMENT.CENTER
 
@@ -398,18 +399,22 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 						cells = row.find_all(['td','th'])
 						for i, cl in enumerate(cells):
 							docx_cell = docx_table.cell(r,i)
-							if {'div','ol','ul','table','p'} & set([e.name for e in cl.children]):
-								# [A] Cell contains block elements
-								# Hint: Cell implicitly contains a paragraph
-								cl_html = ''.join([standard.pystr(child) for child in cl.contents if child!=' '])
-								add_htmlblock_to_docx(zmscontext, docx_cell, cl_html, zmsid=None)
-							else:
-								# [B] Cell contains inline elements
+							try:
+								if {'div','ol','ul','table','p'} & set([e.name for e in cl.children]):
+									# [A] Cell contains block elements
+									# Hint: Cell implicitly contains a paragraph
+									cl_html = ''.join([standard.pystr(child) for child in cl.contents if child!=' '])
+									add_htmlblock_to_docx(zmscontext, docx_cell, cl_html, zmsid=None)
+								else:
+									# [B] Cell contains inline elements
+									p = docx_cell.paragraphs[0]
+									p.style = docx_doc.styles[text_style]
+									if element.has_attr('style') and element['style'] in docx_doc.styles:
+										p.style = docx_doc.styles[element['style']]
+									add_runs(p, cl)
+							except:
 								p = docx_cell.paragraphs[0]
-								p.style = docx_doc.styles[text_style]
-								if element.has_attr('style') and element['style'] in docx_doc.styles:
-									p.style = docx_doc.styles[element['style']]
-								add_runs(p, cl)
+								p.add_run('Rendering Error Table-Cell: %s'%cl.text)
 
 							# Bolden table header
 							if cl.name == 'th':
@@ -420,18 +425,26 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 					# #############################################
 					r=-1
 					rspn = 0
+					rspn_matrix = (0, [])
 					clspn = 0
 					for row in rows:
 						r+=1
 						cells = row.find_all(['td','th'])
 						for i, cl in enumerate(cells):
 							# Merge cells if rowspan or colspan is set
+							rspn = 1
+							clspn = 1
 							if cl.has_attr('rowspan'):
 								rspn = int(cl['rowspan'])
-								docx_table.cell(r,i).merge(docx_table.cell(r,i+rspn-1))
+								# Merge cells if rowspan is set
+								if rspn > 1:
+									docx_table.cell(r,i).merge(docx_table.cell(r+rspn-1,i))
 							if cl.has_attr('colspan'):
 								clspn = int(cl['colspan'])
-								docx_table.cell(r,i).merge(docx_table.cell(r+clspn-1,i))
+								# Merge cells if colspan is set
+								# and cell is not already merged by rowspan
+								if clspn > 1:
+									docx_table.cell(r,i).merge(docx_table.cell(r,i+clspn-1))
 
 					# Remove empty paragraphs from any cell
 					for row in docx_table.rows:
@@ -1083,7 +1096,7 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 		# [1] HTML-BLOCK (e.g. richtext with inline styles, just a minimum set of inline elements)
 		if v and block['docx_format'] == 'html':
 			try:
-				add_htmlblock_to_docx(zmscontext=zmscontext, docx_doc=doc, htmlblock=v, zmsid=block['id'])
+				add_htmlblock_to_docx(zmscontext=zmscontext, docx_doc=doc, htmlblock=v, zmsid=block['id'], zmsmetaid=block['meta_id'])
 			except:
 				p = doc.add_paragraph()
 				p.add_run('Rendering Error: %s'%block['meta_id'])

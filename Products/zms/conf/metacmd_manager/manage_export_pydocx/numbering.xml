@@ -126,22 +126,33 @@
 		<w:lvl w:ilvl="0">
 			<w:start w:val="1"/>
 			<w:numFmt w:val="bullet"/>
-			<w:lvlText w:val=""/>
+			<w:lvlText w:val="●"/>
 			<w:lvlJc w:val="start"/>
 			<w:pPr>
 				<w:tabs>
 					<w:tab w:val="num" w:pos="360"/>
 				</w:tabs>
-				<w:ind w:start="360" w:hanging="0"/>
+				<w:ind w:start="360" w:hanging="360"/>
 			</w:pPr>
-			<w:rPr>
-				<w:rFonts w:ascii="Symbol" w:hAnsi="Symbol" w:cs="Symbol" w:hint="default"/>
-			</w:rPr>
+			<w:rPr/>
 		</w:lvl>
 		<w:lvl w:ilvl="1">
 			<w:start w:val="1"/>
 			<w:numFmt w:val="bullet"/>
-			<w:lvlText w:val="◦"/>
+			<w:lvlText w:val="○"/>
+			<w:lvlJc w:val="start"/>
+			<w:pPr>
+				<w:tabs>
+					<w:tab w:val="num" w:pos="720"/>
+				</w:tabs>
+				<w:ind w:start="720" w:hanging="360"/>
+			</w:pPr>
+			<w:rPr/>
+		</w:lvl>
+		<w:lvl w:ilvl="2">
+			<w:start w:val="1"/>
+			<w:numFmt w:val="bullet"/>
+			<w:lvlText w:val="▪"/>
 			<w:lvlJc w:val="start"/>
 			<w:pPr>
 				<w:tabs>
@@ -149,11 +160,9 @@
 				</w:tabs>
 				<w:ind w:start="1080" w:hanging="360"/>
 			</w:pPr>
-			<w:rPr>
-				<w:rFonts w:ascii="OpenSymbol" w:hAnsi="OpenSymbol" w:cs="OpenSymbol" w:hint="default"/>
-			</w:rPr>
+			<w:rPr/>
 		</w:lvl>
-		<w:lvl w:ilvl="2">
+		<w:lvl w:ilvl="3">
 			<w:start w:val="1"/>
 			<w:numFmt w:val="bullet"/>
 			<w:lvlText w:val="▪"/>
@@ -164,14 +173,12 @@
 				</w:tabs>
 				<w:ind w:start="1440" w:hanging="360"/>
 			</w:pPr>
-			<w:rPr>
-				<w:rFonts w:ascii="OpenSymbol" w:hAnsi="OpenSymbol" w:cs="OpenSymbol" w:hint="default"/>
-			</w:rPr>
+			<w:rPr/>
 		</w:lvl>
-		<w:lvl w:ilvl="3">
+		<w:lvl w:ilvl="4">
 			<w:start w:val="1"/>
 			<w:numFmt w:val="bullet"/>
-			<w:lvlText w:val=""/>
+			<w:lvlText w:val="▪"/>
 			<w:lvlJc w:val="start"/>
 			<w:pPr>
 				<w:tabs>
@@ -179,24 +186,7 @@
 				</w:tabs>
 				<w:ind w:start="1800" w:hanging="360"/>
 			</w:pPr>
-			<w:rPr>
-				<w:rFonts w:ascii="Symbol" w:hAnsi="Symbol" w:cs="Symbol" w:hint="default"/>
-			</w:rPr>
-		</w:lvl>
-		<w:lvl w:ilvl="4">
-			<w:start w:val="1"/>
-			<w:numFmt w:val="bullet"/>
-			<w:lvlText w:val="◦"/>
-			<w:lvlJc w:val="start"/>
-			<w:pPr>
-				<w:tabs>
-					<w:tab w:val="num" w:pos="2160"/>
-				</w:tabs>
-				<w:ind w:start="2160" w:hanging="360"/>
-			</w:pPr>
-			<w:rPr>
-				<w:rFonts w:ascii="OpenSymbol" w:hAnsi="OpenSymbol" w:cs="OpenSymbol" w:hint="default"/>
-			</w:rPr>
+			<w:rPr/>
 		</w:lvl>
 		<w:lvl w:ilvl="5">
 			<w:start w:val="1"/>
@@ -205,43 +195,36 @@
 			<w:lvlJc w:val="start"/>
 			<w:pPr>
 				<w:tabs>
-					<w:tab w:val="num" w:pos="2520"/>
+					<w:tab w:val="num" w:pos="2160"/>
 				</w:tabs>
-				<w:ind w:start="2520" w:hanging="360"/>
+				<w:ind w:start="2160" w:hanging="360"/>
 			</w:pPr>
-			<w:rPr>
-				<w:rFonts w:ascii="OpenSymbol" w:hAnsi="OpenSymbol" w:cs="OpenSymbol" w:hint="default"/>
-			</w:rPr>
 		</w:lvl>
 		<w:lvl w:ilvl="6">
 			<w:start w:val="1"/>
 			<w:numFmt w:val="bullet"/>
-			<w:lvlText w:val=""/>
+			<w:lvlText w:val="▪"/>
 			<w:lvlJc w:val="start"/>
 			<w:pPr>
 				<w:tabs>
-					<w:tab w:val="num" w:pos="2880"/>
+					<w:tab w:val="num" w:pos="2420"/>
 				</w:tabs>
-				<w:ind w:start="2880" w:hanging="360"/>
+				<w:ind w:start="2420" w:hanging="360"/>
 			</w:pPr>
-			<w:rPr>
-				<w:rFonts w:ascii="Symbol" w:hAnsi="Symbol" w:cs="Symbol" w:hint="default"/>
-			</w:rPr>
+			<w:rPr/>
 		</w:lvl>
 		<w:lvl w:ilvl="7">
 			<w:start w:val="1"/>
 			<w:numFmt w:val="bullet"/>
-			<w:lvlText w:val="◦"/>
+			<w:lvlText w:val="▪"/>
 			<w:lvlJc w:val="start"/>
 			<w:pPr>
 				<w:tabs>
-					<w:tab w:val="num" w:pos="3240"/>
+					<w:tab w:val="num" w:pos="2780"/>
 				</w:tabs>
-				<w:ind w:start="3240" w:hanging="360"/>
+				<w:ind w:start="2780" w:hanging="360"/>
 			</w:pPr>
-			<w:rPr>
-				<w:rFonts w:ascii="OpenSymbol" w:hAnsi="OpenSymbol" w:cs="OpenSymbol" w:hint="default"/>
-			</w:rPr>
+			<w:rPr/>
 		</w:lvl>
 		<w:lvl w:ilvl="8">
 			<w:start w:val="1"/>
@@ -250,13 +233,11 @@
 			<w:lvlJc w:val="start"/>
 			<w:pPr>
 				<w:tabs>
-					<w:tab w:val="num" w:pos="3600"/>
+					<w:tab w:val="num" w:pos="3040"/>
 				</w:tabs>
-				<w:ind w:start="3600" w:hanging="360"/>
+				<w:ind w:start="3040" w:hanging="360"/>
 			</w:pPr>
-			<w:rPr>
-				<w:rFonts w:ascii="OpenSymbol" w:hAnsi="OpenSymbol" w:cs="OpenSymbol" w:hint="default"/>
-			</w:rPr>
+			<w:rPr/>
 		</w:lvl>
 	</w:abstractNum>
 
@@ -268,11 +249,13 @@
 			<w:lvlJc w:val="start"/>
 			<w:pPr>
 				<w:tabs>
-					<w:tab w:val="num" w:pos="720"/>
+					<w:tab w:val="num" w:pos="360"/>
 				</w:tabs>
-				<w:ind w:start="720" w:hanging="360"/>
+				<w:ind w:start="360" w:hanging="360"/>
 			</w:pPr>
-			<w:rPr/>
+			<w:rPr>
+				<w:color w:val="017D87" />
+			</w:rPr>
 		</w:lvl>
 		<w:lvl w:ilvl="1">
 			<w:start w:val="1"/>
@@ -281,9 +264,9 @@
 			<w:lvlJc w:val="start"/>
 			<w:pPr>
 				<w:tabs>
-					<w:tab w:val="num" w:pos="1080"/>
+					<w:tab w:val="num" w:pos="720"/>
 				</w:tabs>
-				<w:ind w:start="1080" w:hanging="360"/>
+				<w:ind w:start="720" w:hanging="360"/>
 			</w:pPr>
 			<w:rPr/>
 		</w:lvl>
@@ -294,9 +277,9 @@
 			<w:lvlJc w:val="start"/>
 			<w:pPr>
 				<w:tabs>
-					<w:tab w:val="num" w:pos="1440"/>
+					<w:tab w:val="num" w:pos="1080"/>
 				</w:tabs>
-				<w:ind w:start="1440" w:hanging="360"/>
+				<w:ind w:start="1080" w:hanging="360"/>
 			</w:pPr>
 			<w:rPr/>
 		</w:lvl>
@@ -307,9 +290,9 @@
 			<w:lvlJc w:val="start"/>
 			<w:pPr>
 				<w:tabs>
-					<w:tab w:val="num" w:pos="1800"/>
+					<w:tab w:val="num" w:pos="1440"/>
 				</w:tabs>
-				<w:ind w:start="1800" w:hanging="360"/>
+				<w:ind w:start="1440" w:hanging="360"/>
 			</w:pPr>
 			<w:rPr/>
 		</w:lvl>
@@ -320,9 +303,9 @@
 			<w:lvlJc w:val="start"/>
 			<w:pPr>
 				<w:tabs>
-					<w:tab w:val="num" w:pos="2160"/>
+					<w:tab w:val="num" w:pos="1800"/>
 				</w:tabs>
-				<w:ind w:start="2160" w:hanging="360"/>
+				<w:ind w:start="1800" w:hanging="360"/>
 			</w:pPr>
 			<w:rPr/>
 		</w:lvl>
@@ -333,9 +316,9 @@
 			<w:lvlJc w:val="start"/>
 			<w:pPr>
 				<w:tabs>
-					<w:tab w:val="num" w:pos="2520"/>
+					<w:tab w:val="num" w:pos="2160"/>
 				</w:tabs>
-				<w:ind w:start="2520" w:hanging="360"/>
+				<w:ind w:start="2160" w:hanging="360"/>
 			</w:pPr>
 			<w:rPr/>
 		</w:lvl>
@@ -346,9 +329,9 @@
 			<w:lvlJc w:val="start"/>
 			<w:pPr>
 				<w:tabs>
-					<w:tab w:val="num" w:pos="2880"/>
+					<w:tab w:val="num" w:pos="2420"/>
 				</w:tabs>
-				<w:ind w:start="2880" w:hanging="360"/>
+				<w:ind w:start="2420" w:hanging="360"/>
 			</w:pPr>
 			<w:rPr/>
 		</w:lvl>
@@ -359,9 +342,9 @@
 			<w:lvlJc w:val="start"/>
 			<w:pPr>
 				<w:tabs>
-					<w:tab w:val="num" w:pos="3240"/>
+					<w:tab w:val="num" w:pos="2780"/>
 				</w:tabs>
-				<w:ind w:start="3240" w:hanging="360"/>
+				<w:ind w:start="2780" w:hanging="360"/>
 			</w:pPr>
 			<w:rPr/>
 		</w:lvl>
@@ -372,9 +355,9 @@
 			<w:lvlJc w:val="start"/>
 			<w:pPr>
 				<w:tabs>
-					<w:tab w:val="num" w:pos="3600"/>
+					<w:tab w:val="num" w:pos="3040"/>
 				</w:tabs>
-				<w:ind w:start="3600" w:hanging="360"/>
+				<w:ind w:start="3040" w:hanging="360"/>
 			</w:pPr>
 			<w:rPr/>
 		</w:lvl>
@@ -392,9 +375,9 @@
 			<w:lvlJc w:val="left"/>
 			<w:pPr>
 				<w:tabs>
-					<w:tab w:val="num" w:pos="340"/>
+					<w:tab w:val="num" w:pos="360"/>
 				</w:tabs>
-				<w:ind w:left="340" w:hanging="340"/>
+				<w:ind w:left="360" w:hanging="360"/>
 			</w:pPr>
 			<w:rPr>
 				<w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial" w:hint="default"/>

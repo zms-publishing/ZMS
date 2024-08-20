@@ -56,6 +56,8 @@ from Products.zms import _mimetypes
 
 security = ModuleSecurityInfo('Products.zms.standard')
 
+LOGGER = logging.getLogger("ZMS.standard")
+
 security.declarePublic('pybool')
 def pybool(v):
   return v in [True,'true','True',1]
@@ -1080,14 +1082,22 @@ def getLog(context):
   """
   Get zms_log.
   """
-  request = context.REQUEST
-  if 'ZMSLOG' in request:
-    zms_log = request.get('ZMSLOG')
-  else:
-    zms_log = getattr(context, 'zms_log', None)
-    if zms_log is None:
-      zms_log = getattr(context.getPortalMaster(), 'zms_log', None)
-    request.set('ZMSLOG', zms_log)
+  zms_log = None 
+  if context is not None:
+    request = getattr(context, 'REQUEST', None)
+    if request and 'ZMSLOG' in request:
+      zms_log = request.get('ZMSLOG')
+    else:
+      zms_log = getattr(context, 'zms_log', None)
+      if zms_log is None:
+        zms_log = getattr(context.getPortalMaster(), 'zms_log', None)
+      if request:
+        request.set('ZMSLOG', zms_log)
+  if zms_log is None:
+      class DefaulLog(object):
+          def hasSeverity(self, severity): return True
+          def LOG(self, severity, message): LOGGER.log( severity, message)
+      zms_log = DefaulLog()
   return zms_log
 
 security.declarePublic('writeStdout')
@@ -1115,14 +1125,20 @@ def writeLog(context, info):
     zms_log = getLog(context)
     severity = logging.DEBUG
     if zms_log.hasSeverity(severity):
-      info = "[%s@%s] "%(context.meta_id, '/'.join(context.getPhysicalPath())) + info
+      if context:
+        info = "[%s@%s] "%(context.meta_id, '/'.join(context.getPhysicalPath())) + info
       zms_log.LOG( severity, info)
   except:
     pass
   return info
 
 security.declarePublic('writeBlock')
-def writeBlock(context, info):
+def writeBlock(context=None, info='?'):
+  return writeInfo(context, info)
+
+
+security.declarePublic('writeInfo')
+def writeInfo(context=None, info='?'):
   """
   Log information.
   @param info: Information
@@ -1135,14 +1151,15 @@ def writeBlock(context, info):
     zms_log = getLog(context)
     severity = logging.INFO
     if zms_log.hasSeverity(severity):
-      info = "[%s@%s] "%(context.meta_id, '/'.join(context.getPhysicalPath())) + info
+      if context:
+        info = "[%s@%s] "%(context.meta_id, '/'.join(context.getPhysicalPath())) + info
       zms_log.LOG( severity, info)
   except:
     pass
   return info
 
 security.declarePublic('writeError')
-def writeError(context, info):
+def writeError(context=None, info='?'):
   """
   Log error.
   @param info: Information
@@ -1154,7 +1171,8 @@ def writeError(context, info):
     info = info.decode('utf-8')
   info += '\n'.join(traceback.format_tb(tb))
   try:
-    info = "[%s@%s] "%(context.meta_id, '/'.join(context.getPhysicalPath())) + info
+    if context:
+      info = "[%s@%s] "%(context.meta_id, '/'.join(context.getPhysicalPath())) + info
     zms_log = getLog(context)
     severity = logging.ERROR
     if zms_log.hasSeverity(severity):

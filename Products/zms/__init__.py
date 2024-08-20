@@ -25,6 +25,7 @@ import os
 import re
 # Product Imports.
 from Products.zms import _confmanager
+from Products.zms import _daemon
 from Products.zms import _multilangmanager
 from Products.zms import _mediadb
 from Products.zms import _zmsattributecontainer
@@ -300,6 +301,10 @@ def initialize(context):
               fileobj.write('\'')
           fileobj.write('};')
           fileobj.close()
+        
+        # start daemon
+        _daemon.interval = 5 # TODO from conf
+        _daemon.start()
     
     except:
         """If you can't register the product, dump error. 

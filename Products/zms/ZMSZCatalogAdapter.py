@@ -29,6 +29,7 @@ import zope.interface
 from Products.zms import standard
 from Products.zms import content_extraction
 from Products.zms import _confmanager
+from Products.zms import _daemon
 from Products.zms import IZMSCatalogAdapter, IZMSConfigurationProvider
 from Products.zms import ZMSItem
 
@@ -168,7 +169,14 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     # --------------------------------------------------------------------------
     #  ZMSZCatalogAdapter.reindex_node
     # --------------------------------------------------------------------------
-    def reindex_node(self, node):
+    def reindex_node(self, node, insync=True, REQUEST=None, RESPONSE=None):
+      """ ZMSZCatalogAdapter.reindex_node """
+      if REQUEST is None:
+        path = self.getRefObjPath(node)
+        if not insync and _daemon.push(self,'reindex_node',node=path):
+          return
+      else:
+        node = self.getLinkObj(node)
       standard.writeBlock(node, "[reindex_node]")
       connectors = []
       fileparsing = False

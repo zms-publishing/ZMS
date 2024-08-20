@@ -14,7 +14,9 @@
 				</a>
 			</li>
 			<li id="toggle_menu" class="form-inline desktop hidden-xs" title="Show/Hide Tree Menu of the Navigation Context">
-				<a id="navbar-sitemap" tal:attributes="href python:'manage?lang=%s'%request['lang']" target="_top" 
+				<a id="navbar-sitemap" target="_top"
+					tal:define="zmscontext_url python:zmscontext.absolute_url()"
+					tal:attributes="href python:'%s/manage?lang=%s'%(zmscontext_url, request.get('lang','ger'))"
 					><i class="fas fa-sitemap"></i></a>
 			</li>
 			<li class="dropdown">

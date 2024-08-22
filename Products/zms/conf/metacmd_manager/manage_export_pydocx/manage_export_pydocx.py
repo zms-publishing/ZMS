@@ -376,7 +376,7 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 					text_style = 'Normal'
 					if len(rows) > 16:
 						text_style = 'Table-Small'
-					# Get max number of columns of all rows (for ignoring colspan)
+					# TABLE GRID: Get max number of columns of all rows (for ignoring colspan)
 					cols_len = max([len(row.find_all(['td','th'])) for row in rows])
 					# Create table
 					docx_table = docx_doc.add_table(rows=len(rows), cols=cols_len)
@@ -425,8 +425,8 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 					# #############################################
 					r=-1
 					rspn = 0
-					rspn_matrix = (0, [])
 					clspn = 0
+					rspn_cells = [] # List of row-spanned  cells
 					for row in rows:
 						r+=1
 						cells = row.find_all(['td','th'])
@@ -436,13 +436,19 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 							clspn = 1
 							if cl.has_attr('rowspan'):
 								rspn = int(cl['rowspan'])
-								# Merge cells if rowspan is set
 								if rspn > 1:
 									docx_table.cell(r,i).merge(docx_table.cell(r+rspn-1,i))
+									rspn_cells.extend(list([(r+j,i) for j in range(rspn)[1:]]))
+
+							# Shift next cell of a rowspan to the right
+							if (r,i) in rspn_cells and i < cols_len-1:
+								docx_table.cell(r, i + 1).text = docx_table.cell(r, i).text
+								docx_table.cell(r, i).text = ''
+								rspn_cells.remove((r,i))
+								i += 1
+
 							if cl.has_attr('colspan'):
 								clspn = int(cl['colspan'])
-								# Merge cells if colspan is set
-								# and cell is not already merged by rowspan
 								if clspn > 1:
 									docx_table.cell(r,i).merge(docx_table.cell(r,i+clspn-1))
 

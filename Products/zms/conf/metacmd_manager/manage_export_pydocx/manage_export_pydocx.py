@@ -352,10 +352,13 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 				# LIST
 				# #############################################
 				elif element.name in ['ul','ol']:
-					def add_list(docx_doc, element, level=0, c=0):
+					def add_list(docx_obj, element, level=0, c=0):
 						for li in element.find_all('li', recursive=False):
-							p = docx_doc.add_paragraph()
-							set_block_as_listitem(p, list_type=element.name, level=level)
+							if docx_obj.paragraphs and docx_obj.paragraphs[-1].text == '':
+								p = docx_obj.paragraphs[-1]
+							else:
+								p = docx_obj.add_paragraph()
+							p = set_block_as_listitem(p, list_type=element.name, level=level)
 							add_runs(docx_block = p, bs_element = li)
 							if c==1 and zmsid:
 								prepend_bookmark(p, zmsid)
@@ -366,102 +369,91 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 				# TABLE
 				# #############################################
 				elif element.name == 'table':
-					### debug: element.has_attr('class') and element['name']=='abgabekriterium'
-					caption = element.find('caption')
+					table = element
+					# Add caption if available
+					caption = table.find('caption')
 					caption_text = caption and caption.text or ''
 					p = docx_doc.add_paragraph(standard.pystr(caption_text), style='Table-Caption')
 					if c==1 and zmsid:
 						prepend_bookmark(p, zmsid)
-					rows = element.find_all('tr')
+
+					# Create a 2D list to represent the table
+					rows = table.find_all('tr')
+					cols_len = max([len(row.find_all(['td','th'])) for row in rows])
+					table_list = [[None] * cols_len for _ in range(len(rows))]
+
+					# Set table style
 					text_style = 'Normal'
 					if len(rows) > 16:
 						text_style = 'Table-Small'
-					# TABLE GRID: Get max number of columns of all rows (for ignoring colspan)
-					cols_len = max([len(row.find_all(['td','th'])) for row in rows])
-					# Create table
+
+					# ------------------------------------------------
+					# Fill a declarative 2D list with the cell contents
+					# ------------------------------------------------
+					for i, row in enumerate(rows):
+						for j, cell in enumerate(row.find_all(['td', 'th'])):
+							# Find the first None element in the 2D list
+							while table_list[i][j] is not None:
+								j += 1
+							# Set the appropriate number of elements to the cell content
+							for k in range(i, i + int(cell.get('rowspan', 1))):
+								for l in range(j, j + int(cell.get('colspan', 1))):
+									table_list[k][l] = '[%s:%s:%s] %s'%(cell.name, i,j,cell.decode_contents() if cell.contents else '')
+
+					# Create DOCX table
 					docx_table = docx_doc.add_table(rows=len(rows), cols=cols_len)
 					docx_table.style = 'Table Grid'
 					docx_table.alignment = WD_TABLE_ALIGNMENT.CENTER
 
-					def remove_empty_paragraphs(docx_table):
-						for row in docx_table.rows:
-							for cell in row.cells:
-								for p_empty in [p for p in cell.paragraphs if p.text == '']:
-									p = p_empty._element
-									p.getparent().remove(p)
+					# ------------------------------------------------
+					# Fill the docx table with the cell contents and merge cells
+					# ------------------------------------------------
+					for i, row in enumerate(table_list):
+						for j, cell in enumerate(row):
+							docx_table.cell(i, j).text = cell
+							# Merge cells if they're the same as the previous cell
+							if i > 0 and cell == table_list[i - 1][j]:
+								docx_table.cell(i, j).text = ''
+								docx_table.cell(i - 1, j).merge(docx_table.cell(i, j))
+							if j > 0 and cell == row[j - 1]:
+								docx_table.cell(i, j).text = ''
+								docx_table.cell(i, j - 1).merge(docx_table.cell(i, j))
 
-					# #############################################
-					# [A] Filling Cells with data
-					# #############################################
-					r=-1
-					for row in rows:
-						r+=1
-						cells = row.find_all(['td','th'])
-						for i, cl in enumerate(cells):
-							docx_cell = docx_table.cell(r,i)
-							try:
-								if {'div','ol','ul','table','p'} & set([e.name for e in cl.children]):
-									# [A] Cell contains block elements
-									# Hint: Cell implicitly contains a paragraph
-									cl_html = ''.join([standard.pystr(child) for child in cl.contents if child!=' '])
-									add_htmlblock_to_docx(zmscontext, docx_cell, cl_html, zmsid=None)
-								else:
-									# [B] Cell contains inline elements
-									p = docx_cell.paragraphs[0]
-									p.style = docx_doc.styles[text_style]
-									if element.has_attr('style') and element['style'] in docx_doc.styles:
-										p.style = docx_doc.styles[element['style']]
-									add_runs(p, cl)
-							except:
-								p = docx_cell.paragraphs[0]
-								p.add_run('Rendering Error Table-Cell: %s'%cl.text)
 
-							# Bolden table header
-							if cl.name == 'th':
-								docx_table.cell(r,i).paragraphs[0].style = 'Tableheader'
+					# ------------------------------------------------
+					# Transform table cells html-content to docx
+					# ------------------------------------------------
+					def convert_cell_html_to_docx(zmscontext, docx_cell, text_style='Normal'):
+						'''Convert cell html to docx'''
+						cl_html = clean_html(docx_cell.text)
+						cl_type = cl_html.startswith('[th:') and 'th' or 'td'
+						cl_html = re.sub(r'\[(th|td):\d:\d\] ','',cl_html)
+						cl = BeautifulSoup(cl_html, 'html.parser')
 
-					# #############################################
-					# [B] Merge Cells with rowspan and colspan
-					# #############################################
-					r=-1
-					rspn = 0
-					clspn = 0
-					rspn_cells = [] # List of row-spanned  cells
-					for row in rows:
-						r+=1
-						cells = row.find_all(['td','th'])
-						for i, cl in enumerate(cells):
-							# Merge cells if rowspan or colspan is set
-							rspn = 1
-							clspn = 1
-							if cl.has_attr('rowspan'):
-								rspn = int(cl['rowspan'])
-								if rspn > 1:
-									docx_table.cell(r,i).merge(docx_table.cell(r+rspn-1,i))
-									rspn_cells.extend(list([(r+j,i) for j in range(rspn)[1:]]))
+						# Clear docx_cell content
+						docx_cell._tc.clear_content()
+						p = docx_cell.add_paragraph()
+						p.style = cl_type == 'th' and 'Tableheader' or text_style
 
-							# Shift next cell of a rowspan to the right
-							if (r,i) in rspn_cells and i < cols_len-1:
-								docx_table.cell(r, i + 1).text = docx_table.cell(r, i).text
-								docx_table.cell(r, i).text = ''
-								rspn_cells.remove((r,i))
-								i += 1
+						# Add structured content to cell
+						try:
+							if {'div','ol','ul','table','p'} & set([e.name for e in cl.children]):
+								# [A] Block elements
+								add_htmlblock_to_docx(zmscontext, docx_cell, cl_html, zmsid=None)
+							else:
+								# [B] Inline elements
+								add_runs(p, cl)
+						except:
+							p.add_run('Rendering Error Table-Cell: %s'%cl.text)
 
-							if cl.has_attr('colspan'):
-								clspn = int(cl['colspan'])
-								if clspn > 1:
-									docx_table.cell(r,i).merge(docx_table.cell(r,i+clspn-1))
-
-					# Remove empty paragraphs from any cell
+					# Iterate each cell for executing html conversion 
 					for row in docx_table.rows:
 						for cell in row.cells:
-							if len(cell.paragraphs)>1:
-								for p_empty in [p for p in cell.paragraphs if p.text == '']:
-									p = p_empty._element
-									cell._element.remove(p)
-									# p.getparent().remove(p)
+							convert_cell_html_to_docx(zmscontext, cell, text_style='Normal')
 
+					# ------------------------------------------------
 					# Add linebreak or pagebreak after table
+					# ------------------------------------------------
 					p = docx_doc.add_paragraph()
 
 				# #############################################

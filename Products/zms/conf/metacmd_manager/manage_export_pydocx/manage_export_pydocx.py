@@ -141,6 +141,8 @@ def set_block_as_listitem(docx_block, list_type='ul', level=0):
 	numPr.append(ilvl)
 	numPr.append(numId)
 	pPr.append(numPr)
+	if docx_block._element.pPr is not None:
+		docx_block._element.remove(docx_block._element.pPr)
 	docx_block._element.append(pPr)
 	return docx_block
 
@@ -200,6 +202,9 @@ def clean_html(html):
 	html = html.replace('<span class="unicode">&crarr;</span><br />','')
 	html = html.replace('<span class="unicode">&crarr;</span>','')
 	html = html.replace('">\n','">')
+	html = re.sub(r'(?i)(?m)((ol\>) )', r'\g<2>', html)
+	html = re.sub(r'(?i)(?m)((ul\>) )', r'\g<2>', html)
+	html = re.sub(r'(?i)(?m)((li\>) )', r'\g<2>', html)
 	# refGlossary
 	html = html.replace(left_to_right_char,'')
 	html = html.replace('[[', triangle_char)
@@ -228,48 +233,56 @@ def add_runs(docx_block, bs_element):
 			elif elrun.name == 'br':
 				docx_block.add_run('\n')
 			elif elrun.name != None and elrun.text == '↵':
-				docx_block.add_run('')
-			elif elrun.name == 'strong':
-				docx_block.add_run(elrun.text).bold = True
-			elif elrun.name == 'q':
-				docx_block.add_run('"%s"'%(elrun.text), style='Quote-Inline')
-			elif elrun.name == 'em' or elrun.name == 'i':
-				docx_block.add_run(elrun.text).italic = True
-			elif elrun.name in ['samp', 'code', 'tt', 'var', 'pre']:
-				docx_block.add_run(elrun.text, style='Code-Inline')
-			elif elrun.name == 'kbd':
-				docx_block.add_run(elrun.text, style='Keyboard')
-				# r.font.highlight_color = WD_COLOR_INDEX.BLACK
-			elif elrun.name == 'sub':
-				docx_block.add_run(elrun.text).font.subscript = True
-			elif elrun.name == 'sup':
-				docx_block.add_run(elrun.text).font.superscript = True
-			elif elrun.name == 'a':
-				if elrun.has_attr('href'):
-					add_hyperlink(docx_block = docx_block, link_text = elrun.text, url = elrun.get('href'))
-					docx_block.add_run(' ')
-				else:
-					# elrun.encode_contents() => html
-					docx_block.add_run(elrun.text)
-			elif elrun.name == 'span':
-				if elrun.has_attr('class'):
-					class_name = elrun['class'][0]
-					style_name = (class_name in doc.styles) and class_name or 'Default Paragraph Font'
-					docx_block.add_run(elrun.text, style=style_name)
-				else:
-					docx_block.add_run(elrun.text)
+				pass
+			elif elrun.name == 'i':
+				if elrun.has_attr('class') and 'fa-pencil-alt' in elrun['class']:
+					docx_block.add_run(u'\U0000F021', style='Icon')
+				elif elrun.has_attr('class') and 'fa-phone' in elrun['class']:
+					docx_block.add_run(u'\U0000F028', style='Icon')
+				elif elrun.text != '':
+					docx_block.add_run(elrun.text).italic = True
+			elif elrun.text != '':
+				if elrun.name == 'strong' or elrun.name == 'b':
+					docx_block.add_run(elrun.text).bold = True
+				elif elrun.name == 'q' or elrun.name == 'quote':
+					docx_block.add_run('"%s"'%(elrun.text), style='Quote-Inline')
+				elif elrun.name == 'em':
+					docx_block.add_run(elrun.text).italic = True
+				elif elrun.name in ['samp', 'code', 'tt', 'var', 'pre']:
+					docx_block.add_run(elrun.text, style='Code-Inline')
+				elif elrun.name == 'kbd':
+					docx_block.add_run(elrun.text, style='Keyboard')
+					# r.font.highlight_color = WD_COLOR_INDEX.BLACK
+				elif elrun.name == 'sub':
+					docx_block.add_run(elrun.text).font.subscript = True
+				elif elrun.name == 'sup':
+					docx_block.add_run(elrun.text).font.superscript = True
+				elif elrun.name == 'a':
+					if elrun.has_attr('href'):
+						add_hyperlink(docx_block = docx_block, link_text = elrun.text, url = elrun.get('href'))
+						docx_block.add_run(' ')
+					else:
+						# elrun.encode_contents() => html
+						docx_block.add_run(elrun.text)
+				elif elrun.name == 'span':
+					if elrun.has_attr('class'):
+						class_name = elrun['class'][0]
+						style_name = (class_name in doc.styles) and class_name or 'Default Paragraph Font'
+						docx_block.add_run(elrun.text, style=style_name)
+					else:
+						docx_block.add_run(elrun.text)
 
-			# #############################################
-			## TO-DO: Add inline image to docx
-			## Error: adding image as a block element 
-			## may result in content replication
-			# #############################################
-			# elif elrun.name == 'img':
-			# 	add_htmlblock_to_docx(zmscontext, doc, str(elrun), zmsid=None)
-			# #############################################
-			elif elrun.name == 'p':
-				add_runs(docx_block = docx_block, bs_element = elrun)
-			# #############################################
+				# #############################################
+				## TO-DO: Add inline image to docx
+				## Error: adding image as a block element 
+				## may result in content replication
+				# #############################################
+				# elif elrun.name == 'img':
+				# 	add_htmlblock_to_docx(zmscontext, doc, str(elrun), zmsid=None)
+				# #############################################
+				elif elrun.name == 'p':
+					add_runs(docx_block = docx_block, bs_element = elrun)
+				# #############################################
 	else:
 		docx_block.text(standard.pystr(bs_element.text))
 
@@ -329,7 +342,8 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 				# #############################################
 				# PARAGRAPH
 				# #############################################
-				elif element.name == 'p' and element.text != '' and element.text != ' ':
+				elif (element.name == 'p' and element.text != '' and element.text != ' ' ) \
+					or ( element.name == 'p' and ('i' in [e.name for e in element.children]) ):
 					p = docx_doc.add_paragraph()
 					if c==1 and zmsid: 
 						prepend_bookmark(p, zmsid)

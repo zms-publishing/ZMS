@@ -220,7 +220,7 @@ def add_runs(docx_block, bs_element):
 		c = 0
 		# Hint: ul/ol/li are handled as blocks in add_htmlblock_to_docx.add_list
 		elruns = [elrun for elrun in bs_element.children if elrun.name not in ['ul', 'ol', 'li', 'img', 'figure']]
-		for elrun in elruns:
+		for elrun in list(elruns):
 			c += 1
 			if elrun.name == None:
 				s = standard.pystr(elrun)
@@ -285,6 +285,14 @@ def add_runs(docx_block, bs_element):
 				# #############################################
 	else:
 		docx_block.text(standard.pystr(bs_element.text))
+	# #############################################
+	# CAVE: 
+	# Empty runs may cause rendering errors,
+	# remove empty runs from docx-block
+	# ############################################
+	for r in docx_block.runs:
+		if r.text == '':
+			docx_block._p.remove(r._r)
 
 
 # ADD CLASS-NAMED HTML-BLOCK AS PARAGRAPH
@@ -358,9 +366,9 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 					add_runs(docx_block = p, bs_element = element)
 
 					## Remove empty paragraphs
-					# if element.text == '' or element.text == ' ':
-					# 	last_paragraph = docx_doc.paragraphs[-1]._element
-					# 	last_paragraph.getparent().remove(last_paragraph)
+					if element.text == '' or element.text == ' ':
+						last_paragraph = docx_doc.paragraphs[-1]._element
+						last_paragraph.getparent().remove(last_paragraph)
 
 				# #############################################
 				# LIST
@@ -379,6 +387,7 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 							for ul in li.find_all(['ul','ol'], recursive=False):
 								add_list(docx_doc, ul, level+1)
 					add_list(docx_doc, element, level=0, c=c)
+
 				# #############################################
 				# TABLE
 				# #############################################
@@ -454,8 +463,11 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 							if {'div','ol','ul','table','p'} & set([e.name for e in cl.children]):
 								# [A] Block elements
 								add_htmlblock_to_docx(zmscontext, docx_cell, cl_html, zmsid=None)
+							elif set([e.name for e in cl.children])==set([None]):
+								# [B] Just text
+								p.text = cl.text
 							else:
-								# [B] Inline elements
+								# [C] Inline elements
 								add_runs(p, cl)
 						except:
 							p.add_run('Rendering Error Table-Cell: %s'%cl.text)

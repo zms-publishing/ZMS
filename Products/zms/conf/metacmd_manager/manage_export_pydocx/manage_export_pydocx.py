@@ -45,6 +45,8 @@ zmscontext = None
 doc = None
 # Set local path for docx-template
 docx_tmpl = open("/home/zope/instance/zms4_gez/neon-entw/Extensions/neon.docx", "rb")
+# Set initial numbering.num_id for restarting decimal num-lists
+num_id = 5
 
 
 # #############################################
@@ -106,42 +108,69 @@ def prepend_bookmark(docx_block, bookmark_id):
 	except:
 		pass
 
-def set_block_as_listitem(docx_block, list_type='ul', level=0, i=0):
-	# Set list properties to docx-block
-	# ul = List Bullet => numId=2
-	# ol = List Number => numId=3
-	# level: 0-8
-	# i: enumeration index of list item (py2 0-based)
-	# Hints:
-	# 1. ul/ol/li are handled as blocks in add_htmlblock_to_docx.add_list
-	# 2. docx-numbering.xml needs suitable list style definitions with numId=2 and 3
-	# Example xml code for a list item paragraph:
-		# <w:p>
-		# 	<w:pPr>
-		# 		<w:pStyle w:val="Normal"/>
-		# 		<w:numPr>
-		# 			<w:ilvl w:val="0"/>
-		# 			<w:numId w:val="2"/>
-		# 		</w:numPr>
-		# 		<w:bidi w:val="0"/>
-		# 		<w:jc w:val="start"/>
-		# 		<w:rPr/>
-		# 	</w:pPr>
-		# 	<w:r>
-		# 		<w:rPr/>
-		# 		<w:t>1st level</w:t>
-		# 	</w:r>
-		# </w:p>
 
+def add_num_element(document=doc, abstractNum_id=3, num_id=5):
+	"""
+	Add a num element to the numbering part of a document
+	referencing an abstract numbering definition identified by *abstractNum_id*.
+	"""
+	# Create a new num element
+	num = create_element('w:num')
+	create_attribute(num, 'w:numId', str(num_id))
+	abstractNumId = create_element('w:abstractNumId')
+	create_attribute(abstractNumId, 'w:val', str(abstractNum_id))
+	lvlOverride = create_element('w:lvlOverride')
+	create_attribute(lvlOverride, 'w:ilvl', '0')
+	startOverride = create_element('w:startOverride')
+	create_attribute(startOverride, 'w:val', '1')
+	lvlOverride.append(startOverride)
+	num.append(abstractNumId)
+	num.append(lvlOverride)
+	# Add the num element to the numbering part
+	numbering_part = document.part.numbering_part
+	numbering_part.element.append(num)
+
+
+def set_block_as_listitem(docx_block, list_type='ul', level=0, i=0):
+	"""
+	Set list properties to docx-block
+	ul = List Bullet => numId=2
+	ol = List Number => numId=3
+	level: 0-8
+	i: enumeration index of list item (py2 0-based)
+	Hints:
+		1. ul/ol/li are handled as blocks in add_htmlblock_to_docx.add_list
+		2. docx-numbering.xml needs suitable list style definitions with numId=2 and 3
+	Example xml code for a list item paragraph:
+		<w:p>
+			<w:pPr>
+				<w:pStyle w:val="Normal"/>
+				<w:numPr>
+					<w:ilvl w:val="0"/>
+					<w:numId w:val="2"/>
+				</w:numPr>
+				<w:bidi w:val="0"/>
+				<w:jc w:val="start"/>
+				<w:rPr/>
+			</w:pPr>
+			<w:r>
+				<w:rPr/>
+				<w:t>1st level</w:t>
+			</w:r>
+		</w:p>
+	"""
 	if list_type=='ol' and i==0:
 		list_type = 'ol_restart'
+		global num_id
+		num_id += 1
+		add_num_element(document=doc, abstractNum_id=3, num_id=num_id)
 
 	pPr = create_element('w:pPr')
 	numPr = create_element('w:numPr')
 	ilvl = create_element('w:ilvl')
 	create_attribute(ilvl, 'w:val', str(level))
 	numId = create_element('w:numId')
-	create_attribute(numId, 'w:val', {'ul':'2', 'ol':'3','ol_restart':'5'}[list_type])
+	create_attribute(numId, 'w:val', {'ul':'2', 'ol':'3','ol_restart':str(num_id)}[list_type])
 	numPr.append(ilvl)
 	numPr.append(numId)
 	pPr.append(numPr)
@@ -194,8 +223,10 @@ def add_hyperlink(docx_block, link_text, url):
 
 # Clean HTML
 def clean_html(html):
-	# Clean comments, styles, empty tags
-	# and handle special characters: left-to-right, triangle
+	"""
+	Clean comments, styles, empty tags
+	and handle special characters: left-to-right, triangle
+	"""
 	left_to_right_char = '\u200e'
 	triangle_char = '\U0001F806'
 
@@ -217,9 +248,11 @@ def clean_html(html):
 
 # ADD RUNS TO DOCX-BLOCK
 def add_runs(docx_block, bs_element):
-	# Adding a minimum set of inline runs
-	# any BeautifulSoup block element may contain
-	# to the docx-block, e.g. <strong>, <em>, <a>
+	"""
+	Adding a minimum set of inline runs
+	any BeautifulSoup block element may contain
+	to the docx-block, e.g. <strong>, <em>, <a>
+	"""
 	if bs_element.children:
 		c = 0
 		# Hint: ul/ol/li are handled as blocks in add_htmlblock_to_docx.add_list
@@ -301,8 +334,10 @@ def add_runs(docx_block, bs_element):
 
 # ADD CLASS-NAMED HTML-BLOCK AS PARAGRAPH
 def add_tagged_content_as_paragraph(docx_doc, bs_element, style_name="Standard", c=0, zmsid=None):
-	# Add content of a BeautifulSoup element as a paragraph
-	# to the docx document (self)
+	"""
+	Add content of a BeautifulSoup element as a paragraph
+	to the docx document (self)
+	"""
 	if docx_doc.paragraphs and docx_doc.paragraphs[-1].text == '':
 		p = docx_doc.paragraphs[-1]
 		p.style = style_name

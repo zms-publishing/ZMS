@@ -34,17 +34,19 @@ if (typeof htmx != "undefined") {
 		$ZMI.runReady();
 		console.log("EO htmx:afterRequest ", ts, "->" + (performance.now()-ts) + "ms");
 	});
+	window.onload = function() {
+		$ZMI.runReady();
+	};
 }
 
 /**
  * jQuery: Run $ZMI.ready() on document.ready
  */
-if (typeof $ != "undefined") {
-	// Remove loading class from body
+$ZMI.registerReady(function() {
+		// Remove loading class from body
 	if (document.querySelector('body') != null && document.querySelector('body').classList.contains("loading")) {
 		document.querySelector('body').classList.remove('loading');
 	};
-	setTimeout(function() {
-		$ZMI.runReady();
-	}, 500);
-}
+});
+
+$ZMI.runReady();

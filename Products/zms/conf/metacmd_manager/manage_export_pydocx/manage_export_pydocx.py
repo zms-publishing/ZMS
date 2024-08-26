@@ -106,11 +106,12 @@ def prepend_bookmark(docx_block, bookmark_id):
 	except:
 		pass
 
-def set_block_as_listitem(docx_block, list_type='ul', level=0):
+def set_block_as_listitem(docx_block, list_type='ul', level=0, i=0):
 	# Set list properties to docx-block
 	# ul = List Bullet => numId=2
 	# ol = List Number => numId=3
 	# level: 0-8
+	# i: enumeration index of list item (py2 0-based)
 	# Hints:
 	# 1. ul/ol/li are handled as blocks in add_htmlblock_to_docx.add_list
 	# 2. docx-numbering.xml needs suitable list style definitions with numId=2 and 3
@@ -132,12 +133,15 @@ def set_block_as_listitem(docx_block, list_type='ul', level=0):
 		# 	</w:r>
 		# </w:p>
 
+	if list_type=='ol' and i==0:
+		list_type = 'ol_restart'
+
 	pPr = create_element('w:pPr')
 	numPr = create_element('w:numPr')
 	ilvl = create_element('w:ilvl')
 	create_attribute(ilvl, 'w:val', str(level))
 	numId = create_element('w:numId')
-	create_attribute(numId, 'w:val', {'ul':'2', 'ol':'3'}[list_type])
+	create_attribute(numId, 'w:val', {'ul':'2', 'ol':'3','ol_restart':'5'}[list_type])
 	numPr.append(ilvl)
 	numPr.append(numId)
 	pPr.append(numPr)
@@ -283,12 +287,12 @@ def add_runs(docx_block, bs_element):
 				elif elrun.name == 'p':
 					add_runs(docx_block = docx_block, bs_element = elrun)
 				# #############################################
-	else:
+	elif bs_element.text != '':
 		docx_block.text(standard.pystr(bs_element.text))
 	# #############################################
 	# CAVE: 
 	# Empty runs may cause rendering errors,
-	# remove empty runs from docx-block
+	# so remove empty runs from docx-block
 	# ############################################
 	for r in docx_block.runs:
 		if r.text == '':
@@ -299,7 +303,11 @@ def add_runs(docx_block, bs_element):
 def add_tagged_content_as_paragraph(docx_doc, bs_element, style_name="Standard", c=0, zmsid=None):
 	# Add content of a BeautifulSoup element as a paragraph
 	# to the docx document (self)
-	p = docx_doc.add_paragraph(style=style_name)
+	if docx_doc.paragraphs and docx_doc.paragraphs[-1].text == '':
+		p = docx_doc.paragraphs[-1]
+		p.style = style_name
+	else:
+		p = docx_doc.add_paragraph(style=style_name)
 	if c==1 and zmsid:
 		prepend_bookmark(p, zmsid)
 	el = BeautifulSoup(standard.pystr(bs_element), 'html.parser')
@@ -375,12 +383,12 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 				# #############################################
 				elif element.name in ['ul','ol']:
 					def add_list(docx_obj, element, level=0, c=0):
-						for li in element.find_all('li', recursive=False):
+						for i, li in enumerate(element.find_all('li', recursive=False)):
 							if docx_obj.paragraphs and docx_obj.paragraphs[-1].text == '':
 								p = docx_obj.paragraphs[-1]
 							else:
 								p = docx_obj.add_paragraph()
-							p = set_block_as_listitem(p, list_type=element.name, level=level)
+							p = set_block_as_listitem(p, list_type=element.name, level=level, i=i)
 							add_runs(docx_block = p, bs_element = li)
 							if c==1 and zmsid:
 								prepend_bookmark(p, zmsid)
@@ -431,6 +439,7 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 					# ------------------------------------------------
 					# Fill the docx table with the cell contents and merge cells
 					# ------------------------------------------------
+					merge_log = [] # Keep track of merged cells that finally should be empty
 					for i, row in enumerate(table_list):
 						for j, cell in enumerate(row):
 							docx_table.cell(i, j).text = cell
@@ -438,13 +447,15 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 							if i > 0 and cell == table_list[i - 1][j]:
 								docx_table.cell(i, j).text = ''
 								docx_table.cell(i - 1, j).merge(docx_table.cell(i, j))
+								merge_log.append((i, j))
 							if j > 0 and cell == row[j - 1]:
 								docx_table.cell(i, j).text = ''
 								docx_table.cell(i, j - 1).merge(docx_table.cell(i, j))
+								merge_log.append((i, j))
 
 
 					# ------------------------------------------------
-					# Transform table cells html-content to docx
+					# HELPER FUNCTION: Transform table cells html-content to docx
 					# ------------------------------------------------
 					def convert_cell_html_to_docx(zmscontext, docx_cell, text_style='Normal'):
 						'''Convert cell html to docx'''
@@ -472,10 +483,14 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 						except:
 							p.add_run('Rendering Error Table-Cell: %s'%cl.text)
 
+					# ------------------------------------------------
 					# Iterate each cell for executing html conversion 
-					for row in docx_table.rows:
-						for cell in row.cells:
-							convert_cell_html_to_docx(zmscontext, cell, text_style='Normal')
+					# ------------------------------------------------
+					for i, row in enumerate(docx_table.rows):
+						for j, cell in enumerate(row.cells):
+							# Skip merged cells
+							if (i, j) not in merge_log:
+								convert_cell_html_to_docx(zmscontext, cell, text_style='Normal')
 
 					# ------------------------------------------------
 					# Add linebreak or pagebreak after table

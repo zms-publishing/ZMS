@@ -295,7 +295,7 @@ def add_runs(docx_block, bs_element):
 	# so remove empty runs from docx-block
 	# ############################################
 	for r in docx_block.runs:
-		if r.text == '':
+		if r.text == '' and  r.style.name != "Icon":
 			docx_block._p.remove(r._r)
 
 
@@ -375,8 +375,9 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 
 					## Remove empty paragraphs
 					if element.text == '' or element.text == ' ':
-						last_paragraph = docx_doc.paragraphs[-1]._element
-						last_paragraph.getparent().remove(last_paragraph)
+						if 'Icon' not in [r.style.name for r in docx_doc.paragraphs[-1].runs]:
+							last_paragraph = docx_doc.paragraphs[-1]._element
+							last_paragraph.getparent().remove(last_paragraph)
 
 				# #############################################
 				# LIST

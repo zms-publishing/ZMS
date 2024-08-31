@@ -5,7 +5,7 @@
 		zmscontext python:here.getSelf(); 
 		admin python:request['AUTHENTICATED_USER'].has_permission('ZMS Administrator',here)">
 	<header class="navbar navbar-nav navbar-expand navbar-dark flex-row justify-content-between bd-navbar"
-			tal:attributes="class python:'navbar navbar-nav navbar-expand navbar-dark flex-row justify-content-between bd-navbar%s' %((admin and here.getConfProperty('ZMS.debug',0)) and ' zmsdebug' or '')">
+			tal:attributes="data-zmsmode python:(admin and here.getConfProperty('ZMS.mode.debug',0)) and 'debug' or (here.getConfProperty('ZMS.mode.maintenance',0) and 'maintenance' or None)">
 		<tal:block tal:content="structure python:here.zmi_navbar_brand(here,request)">zmi_navbar_brand</tal:block>
 		<ul class="navbar-nav flex-row ml-sm-auto d-flex">
 			<li id="zmi-authenticated_user" class="form-inline zmi-authenticated_user" tal:attributes="title python:'Authenticated User: %s'%(request.get('AUTHENTICATED_USER'))">

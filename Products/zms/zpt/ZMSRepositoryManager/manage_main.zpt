@@ -27,7 +27,7 @@
 </nav><!-- #subTab -->
 
 <div class="tab-content" 
-	tal:attributes="class python:'tab-content update_direction-%s debug-%s'%(here.get_update_direction(),here.getConfProperty('ZMS.debug',0))"> 
+	tal:attributes="class python:'tab-content update_direction-%s debug-%s'%(here.get_update_direction(),here.getConfProperty('ZMS.mode.debug',0))"> 
 	<div class="tab-pane fade active show card" id="diff">
 		<form class="form-horizontal" action="manage_change" method="post">
 		<input type="hidden" name="lang" tal:attributes="value request/lang" />

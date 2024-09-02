@@ -104,11 +104,12 @@ header.navbar-nav ul.navbar-nav {
 	background: #354f67;
 	flex-wrap: nowrap;
 }
-/* Show Debug Mode: ZMS.debug=1 */
-header.zmsdebug .navbar-brand .slogan {
+/* Show ZMS Mode: ZMS.mode.debug=1, ZMS.mode.maintenance=1 */
+header[data-zmsmode] .navbar-brand .slogan {
 	visibility: collapse;
 }
-header.zmsdebug .navbar-brand .product:after {
+header[data-zmsmode='debug'] .navbar-brand .product:after,
+header[data-zmsmode='maintenance'] .navbar-brand .product:after {
 	content: "DEBUG MODE";
 	font-size: .9rem;
 	color: white;
@@ -122,12 +123,20 @@ header.zmsdebug .navbar-brand .product:after {
 	top: 0;
 	left: 105px;
 }
+header[data-zmsmode='maintenance'] .navbar-brand .product:after {
+	content: "MAINTENANCE";
+	background: #dc3545;
+}
 @media (max-width: 767px) {
-	header.zmsdebug .navbar-brand .product:after {
+	header[data-zmsmode='debug'] .navbar-brand .product:after,
+	header[data-zmsmode='maintenance'] .navbar-brand .product:after {
 		content:"\F188";
 		font-family:'Font Awesome 5 Free',fontawesome;
 		font-size: 1.2rem;
 		padding: .78rem .4rem;
+	}
+	header[data-zmsmode='maintenance'] .navbar-brand .product:after {
+		content:"\F05E";
 	}
 }
 
@@ -1166,9 +1175,6 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	white-space:nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-}
-.zmi .breadcrumb li.breadcrumb-item.active a {
-	color:#999fa5;
 }
 .zmi .breadcrumb li.breadcrumb-item:hover a {
 	color: #999fa5;

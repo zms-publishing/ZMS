@@ -580,7 +580,7 @@ class Exportable(_filtermanager.FilterItem):
       rtn = _fileutil.buildZipArchive( zipfiles, get_data)
       
       #-- Remove temporary folder.
-      if not self.getConfProperty('ZMS.debug', 0):
+      if not self.getConfProperty('ZMS.mode.debug', 0):
         _fileutil.remove( tempfolder, deep=1)
       
       return rtn
@@ -607,7 +607,7 @@ class Exportable(_filtermanager.FilterItem):
       rtn = _fileutil.buildZipArchive( zipfiles, get_data)
       
       #-- Remove temporary folder.
-      if not self.getConfProperty('ZMS.debug', 0):
+      if not self.getConfProperty('ZMS.mode.debug', 0):
         _fileutil.remove( tempfolder, deep=1)
       
       return rtn

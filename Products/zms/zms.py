@@ -548,8 +548,8 @@ class ZMS(
         </tal:block>
       """
       path = request.path
-      maintenance_mode = int(self.getConfProperty('ZMS.mode.maintenance', 0))
-      if maintenance_mode == 1 and 'manage_changeProperties' in path:
+      maintenance_mode = bool(self.getConfProperty('ZMS.mode.maintenance', False))
+      if maintenance_mode and 'manage_changeProperties' in path:
         raise zExceptions.HTTPServiceUnavailable('Maintenance')
 
 ################################################################################

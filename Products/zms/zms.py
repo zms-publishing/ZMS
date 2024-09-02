@@ -25,7 +25,6 @@ import os
 import sys
 import time
 import zExceptions
-import logging
 # Product imports.
 from Products.zms import standard
 from Products.zms import _accessmanager
@@ -549,7 +548,6 @@ class ZMS(
         </tal:block>
       """
       path = request.path
-      logging.getLogger().log(logging.ERROR, path)
       maintenance_mode = int(self.getConfProperty('ZMS.mode.maintenance', 0))
       if maintenance_mode == 1 and 'manage_changeProperties' in path:
         raise zExceptions.HTTPServiceUnavailable('Maintenance')

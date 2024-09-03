@@ -530,6 +530,28 @@ class ZMS(
       # object, which will be used by xmlGetParent() (see below).
       self.oParent = None
 
+    # Hook: ZMS.mode.maintenance
+    def __before_publishing_traverse__(self, object, request):
+      """
+      Maintenance mode can be set by adding the ZMS configuration
+      key ZMS.mode.maintenance=1. The maintenance mode prevents 
+      editing content and returns an error: 503 Service Unavailable.
+      To show a specific message the Zope object standard_error_message 
+      should be customized, e.g. like this:
+        <tal:block
+            tal:define="
+              errtype python:options.get('error_type',None);
+              errvalue python:options.get('error_value',None)"
+            tal:condition="python:errtype=='HTTPServiceUnavailable' and str(errvalue)=='Maintenance'">
+            <h2>ZMS Maintenance active</h2>
+            <button onclick="history.back()">Go Back</button>
+        </tal:block>
+      """
+      path = request.path
+      maintenance_mode = bool(self.getConfProperty('ZMS.mode.maintenance', False))
+      if maintenance_mode and 'manage_changeProperties' in path:
+        raise zExceptions.HTTPServiceUnavailable('Maintenance')
+
 ################################################################################
 
 

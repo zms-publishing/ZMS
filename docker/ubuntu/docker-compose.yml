@@ -2,7 +2,7 @@ version: "3.7"
 services:
   zms5:
     build: .
-    image: zms5:latest
+    image: zms5:ubuntu
     ports:
       - 8085:8085
       - 8086:8086

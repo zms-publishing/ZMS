@@ -211,7 +211,13 @@ function zmiFormSubmit(sender,d) {
 	</tbody>
 	</table>
 	<div class="controls save">
-		<button name="btn" type="submit" class="btn btn-primary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+		<button name="btn" type="button" class="btn btn-primary" 
+			hx-trigger="click"
+			hx-post="manage_changeMetaProperties" 
+			hx-target="body" 
+			hx-swap="outerHTML"
+			value="BTN_SAVE" 
+			tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 	</div>
 </form>
 

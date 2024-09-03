@@ -21,6 +21,10 @@ if (typeof $ == "undefined") {
 
 /**
  * HTMX: Add loading class to body on htmx:beforeRequest and remove it on htmx:afterRequest
+ * Hint: Due to DOM limitations, it’s not possible to use the outerHTML method on the <body> 
+ * element. htmx will change outerHTML on <body> to use innerHTML. So, the classList will not 
+ * be renewed after htmx request. To fix this, we have to add the classList to the <body> element
+ * Source: https://htmx.org/attributes/hx-swap/
  */
 if (typeof htmx != "undefined") {
 	document.addEventListener('htmx:beforeRequest', (evt) => {

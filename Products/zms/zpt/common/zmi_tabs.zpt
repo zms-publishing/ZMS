@@ -10,7 +10,8 @@
 				noactive python:len([x for x in active if x])<1;
 		"><tal:block tal:repeat="i python:range(len(options))"
 			><tal:block tal:define="option python:options[i]"
-				><li class="nav-item" hx-target="body" hx-swap="outerHTML" hx-push-url="true" tal:attributes="data-action option/action; hx-get python:here.url_append_params('%s/%s?lang=%s'%(here.getSelf().absolute_url(),option['action'],request['lang']),option.get('params',{}),sep='&');"
+				><li class="nav-item" hx-target="body" hx-push-url="true" 
+					tal:attributes="data-action option/action; hx-get python:here.url_append_params('%s/%s?lang=%s'%(here.getSelf().absolute_url(),option['action'],request['lang']),option.get('params',{}),sep='&');"
 					><a tal:attributes="class python:' '.join(['nav-link']+[['','active'][int(active[i] or (i==0 and noactive))]])"
 					tal:content="structure python:here.getZMILangStr(option['label'])">label</a>
 				</li>

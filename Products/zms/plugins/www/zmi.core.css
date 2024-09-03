@@ -5,6 +5,42 @@ body.zmi .form-control {
 	font-family: "Helvetica Neue",Arial,sans-serif;
 	font-size: .867rem !important;
 }
+/* GUI hx-loading progress bar */
+body.zmi:not(.manage-menu) {
+	overflow-y: scroll;
+}
+body.zmi.loading {
+	overflow-x: hidden;
+}
+body.zmi.loading:after, 
+body.zmi:not(.loading).loaded:after {
+	top:0;
+	content:' ';
+	display:block;
+	position:absolute;
+	background:#00ccff;
+	height:3px;
+	z-index:10000;
+}
+body.zmi.loading:after {
+	left:0;
+	animation-name: loading;
+	animation-duration: 1.5s;
+}
+body.zmi:not(.loading).loaded:after {
+	right:0;
+	animation-name: loaded;
+	animation-duration: .75s;
+}
+@keyframes loading {
+	from {width:0vw;opacity:1}
+	to {width:100vw;opacity:.5}
+}
+@keyframes loaded {
+	from {width:100vw;opacity:1}
+	to {width:0vw;opacity:.5}
+}
+
 a {
 	color: #08c;
 }
@@ -1843,7 +1879,7 @@ table.table-sm tr.row_insert td .btn-add {
 }
 
 .zmi.repository_manager_main .table.repo-changeset .zmi-helper-clickable {
-    cursor:pointer;
+	cursor:pointer;
 }
 
 

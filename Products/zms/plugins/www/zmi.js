@@ -23,16 +23,18 @@ if (typeof $ == "undefined") {
  * HTMX: Add loading class to body on htmx:beforeRequest and remove it on htmx:afterRequest
  */
 if (typeof htmx != "undefined") {
-	document.addEventListener('htmx:beforeRequest', function(evt) {
+	document.addEventListener('htmx:beforeRequest', (evt) => {
 		document.querySelector('body').classList.add('loading');
 	});
-	document.addEventListener('htmx:afterRequest', function(evt) {
+	document.addEventListener('htmx:afterRequest', (evt) => {
+		var bodyClass = evt.detail.xhr.responseText;
+		bodyClass = bodyClass.substr(bodyClass.indexOf("<body"));
+		bodyClass = bodyClass.substr(bodyClass.indexOf("class=\"")+"class=\"".length);
+		bodyClass = bodyClass.substr(0,bodyClass.indexOf("\""));
+		document.querySelector('body').classList = bodyClass;
 		document.querySelector('body').classList.remove('loading')
 		document.querySelector('body').classList.add('loaded');
-		var ts = performance.now();
-		console.log("BO htmx:afterRequest ", ts, evt);
 		$ZMI.runReady();
-		console.log("EO htmx:afterRequest ", ts, "->" + (performance.now()-ts) + "ms");
 	});
 	window.onload = function() {
 		$ZMI.runReady();

@@ -24,6 +24,7 @@ ENV LANGUAGE=en_US.UTF-8
 
 RUN python3 -m venv venv
 RUN pip install -U pip wheel setuptools
+RUN pip install -U -e git+https://github.com/zopefoundation/Zope.git@master#egg=Zope
 RUN pip install -U -e git+https://github.com/zms-publishing/ZMS.git#egg=ZMS
 RUN pip install -r https://raw.githubusercontent.com/zms-publishing/ZMS5/master/requirements-full.txt
 RUN pip install ZEO

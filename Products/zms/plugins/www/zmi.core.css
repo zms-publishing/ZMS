@@ -5,8 +5,8 @@ body.zmi .form-control {
 	font-family: "Helvetica Neue",Arial,sans-serif;
 	font-size: .867rem !important;
 }
-/* GUI loading progress bar */
-body.zmi {
+/* GUI hx-loading progress bar */
+body.zmi:not(.manage-menu) {
 	overflow-y: scroll;
 }
 body.zmi.loading {
@@ -1870,7 +1870,7 @@ table.table-sm tr.row_insert td .btn-add {
 }
 
 .zmi.repository_manager_main .table.repo-changeset .zmi-helper-clickable {
-    cursor:pointer;
+	cursor:pointer;
 }
 
 

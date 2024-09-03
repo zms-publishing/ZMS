@@ -32,7 +32,7 @@ if (typeof htmx != "undefined") {
 		bodyClass = bodyClass.substr(bodyClass.indexOf("class=\"")+"class=\"".length);
 		bodyClass = bodyClass.substr(0,bodyClass.indexOf("\""));
 		document.querySelector('body').classList = bodyClass;
-		document.querySelector('body').classList.remove('loading')
+		document.querySelector('body').classList.remove('loading');
 		document.querySelector('body').classList.add('loaded');
 		$ZMI.runReady();
 	});

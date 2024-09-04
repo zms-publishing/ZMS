@@ -122,11 +122,11 @@ def get_attrs(node):
         data['has_portal_clients'] = node.getPortalClients() != []
     general_keys = data.keys()
     obj_attrs = node.getObjAttrs()
-    try:
-        metaobj_attrs = node.getMetaobjManager().getMetaobjAttrs(node.meta_id)
-    except:
-        # In case node is a ZMSProxy object:
+    if hasattr(node,'proxy'):
         metaobj_attrs = node.proxy.getMetaobjManager().getMetaobjAttrs(node.meta_id)
+        data['meta_id'] = 'ZMSLinkElement'
+    else:
+        metaobj_attrs = node.getMetaobjManager().getMetaobjAttrs(node.meta_id)
     for metaobj_attr in metaobj_attrs:
         id = metaobj_attr['id']
         if id in obj_attrs and not id in general_keys:

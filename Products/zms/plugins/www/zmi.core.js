@@ -442,6 +442,15 @@ ZMI.prototype.CopyToClipboard = function(str) {
 }
 
 /**
+ * Spinner Indicator: hx-on:click="$ZMI.show_spinner(this);"
+ */
+ZMI.prototype.show_spinner = function(elem) {
+	let w = elem.clientWidth + 2;
+	elem.innerHTML=`<i class="fas fa-spinner fa-spin" title="${getZMILangStr('MSG_LOADING')}" ></i>`;
+	elem.style.width = `${w}px`;
+}
+
+/**
  * $: Register 
  */
 if (typeof $ != "undefined") {

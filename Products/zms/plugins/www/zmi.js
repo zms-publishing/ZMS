@@ -33,12 +33,14 @@ if (typeof htmx != "undefined") {
 	document.addEventListener('htmx:afterRequest', (evt) => {
 		var bodyClass = evt.detail.xhr.responseText;
 		bodyClass = bodyClass.substr(bodyClass.indexOf("<body"));
-		bodyClass = bodyClass.substr(bodyClass.indexOf("class=\"")+"class=\"".length);
-		bodyClass = bodyClass.substr(0,bodyClass.indexOf("\""));
-		document.querySelector('body').classList = bodyClass;
+		if ( bodyClass.indexOf("<body") > -1 ) {
+			bodyClass = bodyClass.substr(bodyClass.indexOf("class=\"")+"class=\"".length);
+			bodyClass = bodyClass.substr(0,bodyClass.indexOf("\""));
+			document.querySelector('body').classList = bodyClass;
+			$ZMI.runReady();
+		};
 		document.querySelector('body').classList.remove('loading');
 		document.querySelector('body').classList.add('loaded');
-		$ZMI.runReady();
 	});
 	window.onload = function() {
 		$ZMI.runReady();

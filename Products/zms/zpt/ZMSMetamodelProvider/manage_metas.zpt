@@ -298,9 +298,11 @@ function zmiFormSubmit(sender,d) {
 					newname = defname.includes(':') ? `${newname}:int` : newname;
 					$(this).attr('name',newname);
 					newval = `new${new_row_counter}`;
-					if ( tagname != 'SELECT') {
+					if ( tagname == 'INPUT' && deftype != 'checkbox') {
 						$(this).val(newval);
 						$(this).attr('placeholder',newval);
+					} else if ( deftype == 'checkbox' ) {
+						$(this).val(1);
 					}
 				});
 			});

@@ -260,7 +260,7 @@ class ZMSMetadictManager(object):
         extra = {}
         t0 = time.time()
         id = REQUEST.get('id', '')
-        target = 'manage_metas'
+        target = REQUEST.get('target', 'manage_metas')
         
         try:
           
@@ -383,14 +383,22 @@ class ZMSMetadictManager(object):
           error = str( sys.exc_info()[0])
           if sys.exc_info()[1]:
             error += ': ' + str( sys.exc_info()[1])
-          target = standard.url_append_params( target, { 'manage_tabs_error_message':error})
+          if target=='zmi_manage_tabs_message':
+            REQUEST.set('manage_tabs_error_message', error)
+            return self.zmi_manage_tabs_message(lang=lang, id=id, extra=extra)
+          else:
+            target = standard.url_append_params( target, { 'manage_tabs_error_message':error})
         
         # Return with message.
-        target = standard.url_append_params( target, { 'lang':lang, 'id':id})
-        target = standard.url_append_params( target, extra)
-        if len( message) > 0:
-          message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
-          target = standard.url_append_params( target, { 'manage_tabs_message':message})
-        return RESPONSE.redirect( target)
+        if target=='zmi_manage_tabs_message':
+          REQUEST.set('manage_tabs_message', message)
+          return self.zmi_manage_tabs_message(lang=lang, id=id, extra=extra)
+        else:
+          target = standard.url_append_params( target, { 'lang':lang, 'id':id})
+          target = standard.url_append_params( target, extra)
+          if len( message) > 0:
+            message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
+            target = standard.url_append_params( target, { 'manage_tabs_message':message})
+          return RESPONSE.redirect( target)
 
 ################################################################################

@@ -106,6 +106,7 @@ function zmiFormSubmit(sender,d) {
 <form class="form-horizontal card manage_metas"
 	action="manage_changeMetaProperties" method="post" enctype="multipart/form-data"
 	hx-boost="true" xmlns:hx-on="https://htmx.org/">
+	<input type="hidden" name="target" value="zmi_manage_tabs_message">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<legend class="has_tooltip"
 		tal:attributes="title python:here.getZMILangStr('TIP_METADICT')" 
@@ -216,9 +217,10 @@ function zmiFormSubmit(sender,d) {
 		<button name="btn" type="button" class="btn btn-primary" 
 			hx-trigger="click"
 			hx-post="manage_changeMetaProperties" 
-			hx-target="body" 
+			hx-target="#zmi_manage_tabs_message" 
 			hx-swap="outerHTML show:top"
 			hx-on:click="$ZMI.show_spinner(this)"
+			hx-on:htmx:after-request="$ZMI.reset_spinner(this)"
 			value="BTN_SAVE" 
 			tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 	</div>

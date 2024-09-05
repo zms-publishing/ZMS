@@ -260,7 +260,9 @@ class ZMSMetadictManager(object):
         extra = {}
         t0 = time.time()
         id = REQUEST.get('id', '')
-        target = REQUEST.get('target', 'manage_metas')
+        target = 'manage_metas'
+        if btn == 'BTN_SAVE':
+          target = REQUEST.get('target', target)
         
         try:
           
@@ -290,21 +292,6 @@ class ZMSMetadictManager(object):
                 newDefault = REQUEST.get('attr_default_%s'%oldId, '')
                 self.setMetadictAttr( oldId, newId, newAcquired, newName, newType, newMandatory, newMultilang, newRepetitive, newCustom, newKeys, newDefault)
             message += self.getZMILangStr('MSG_CHANGED')
-            newId = REQUEST['_id'].strip()
-            newAcquired = 0
-            newName = REQUEST['_name'].strip()
-            newType = REQUEST['_type'].strip()
-            newMandatory = REQUEST.get('_mandatory', 0)
-            newMultilang = REQUEST.get('_multilang', 0)
-            newRepetitive = REQUEST.get('_repetitive', 0)
-            newCustom = ''
-            if len(newId) > 0 and len(newName) > 0 and len(newType) > 0:
-              if newType == 'method':
-                newCustom += '<dtml-comment>--// BO '+ newId + ' //--</dtml-comment>\n'
-                newCustom += '\n'
-                newCustom += '<dtml-comment>--// EO '+ newId + ' //--</dtml-comment>\n'
-              self.setMetadictAttr( None, newId, newAcquired, newName, newType, newMandatory, newMultilang, newRepetitive, newCustom)
-              message += self.getZMILangStr('MSG_INSERTED')%newId
           
           # Copy.
           # -----

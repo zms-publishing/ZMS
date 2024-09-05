@@ -113,7 +113,7 @@ function zmiFormSubmit(sender,d) {
 		tal:content="python:here.getZMILangStr('TAB_METADATA')">
 		Metadata
 	</legend>
-	<table class="table table-striped table-bordered table-sm zmi-sortable">
+	<table id="meta_properties" class="table table-striped table-bordered table-sm zmi-sortable">
 	<thead>
 	<tr>
 		<th class="meta-sort">
@@ -195,7 +195,7 @@ function zmiFormSubmit(sender,d) {
 	</tr>
 	</tal:block>
 	<tr class="row_insert">
-		<td class="meta-sort text-right"><span class="btn btn-add mr-1"><i class="fas fa-plus"></i></span></td>
+		<td class="meta-sort text-right"><span class="btn btn-add mr-1 btn-secondary btn-sm"><i class="fas fa-plus"></i></span></td>
 		<td class="meta-id"><input class="form-control form-control-sm" type="text" name="_id" /></td>
 		<td class="meta-name"><input class="form-control form-control-sm" type="text" name="_name" /></td>
 		<td class="meta-type">
@@ -227,6 +227,101 @@ function zmiFormSubmit(sender,d) {
 </form>
 
 </div><!-- #zmi-tab -->
+
+<style>
+/* <!-- */
+	table#meta_properties tr.row_insert > td > .btn-add {
+		width: 6em;
+		color:#333;
+		padding: 4px 8px;
+	}
+	table#meta_properties tr.row_insert > td > .btn-add:hover {
+		color:white;
+	}
+	table#meta_properties tr.row_insert > td:not(.meta-sort) > * {
+		opacity:.35
+	}
+/* --> */
+</style>
+<script>
+// <!--
+	$(function(){
+		// Disable the last row of the table
+		$('#meta_properties tbody tr:last-child input').attr('disabled',true);
+
+		// ++++++++++++
+		// Add rows to tables #meta_properties on button click
+		// ++++++++++++
+		let new_row_counter = 0;
+
+		// Add click event function to add-buttons
+		$(".row_insert .btn-add").click(function(){
+			new_row_counter++;
+			$('#meta_properties tbody tr:last-child input').attr('disabled',false);
+
+			// Where to insert the new row 
+			let $where_insert = $(this).closest('tr');
+
+			// Set variables
+			let table_id = $(this).closest('table').attr('id'); // meta_properties or meta_languages
+			let new_row_name = `new_row_${table_id}_${new_row_counter}`;
+			let old_id_html = `<input type="hidden" name="old_ids:list" value="new${new_row_counter}">`;
+			let new_btn_html = `
+				<div class="input-group input-group-sm">
+					${old_id_html}
+					<select class="zmi-sort form-control-sm"
+						title="Sortable after Save"
+						disabled="disabled">
+					</select>
+					<div class="input-group-append">
+						<span class="btn btn-secondary" style="color:#999"
+							title="Revoke new Meta Attribute"
+							onclick="javascript:$(this).closest('tr').remove()">
+							<i class="fas fa-times"></i>
+						</span>
+					</div>
+				</div>
+				`;
+
+			// Clone(true) to get a deep copy including select options
+			let $new_row = $where_insert.clone(true);
+
+			// Process table cells of the clone like "old" row
+			$new_row.find('td').each(function() {
+				$(this).find('input,select,textarea').each(function() {
+					let tagname = $(this).prop('tagName');
+					let defname = $(this).attr('name')
+					let deftype = $(this).attr('type')
+					let newname = $(this).attr('name').split('_')[1].split(':')[0];
+					let newval  = $(this).val();
+					newname = `attr_${newname}_new${new_row_counter}`
+					newname = defname.includes(':') ? `${newname}:int` : newname;
+					$(this).attr('name',newname);
+					newval = `new${new_row_counter}`;
+					if ( tagname != 'SELECT') {
+						$(this).val(newval);
+						$(this).attr('placeholder',newval);
+					}
+				});
+			});
+
+			// Process td:first-child of the clone
+			$new_row.find('td.meta-sort').html(new_btn_html);
+			$new_row.removeAttr('class').attr('id',new_row_name);
+
+			// Insert the new row
+			$new_row.insertBefore($where_insert);
+			// Reset the clone template
+			$where_insert.find('input:not([type="checkbox"]),select,textarea').each(function() {
+				$(this).val(undefined);
+			});
+			$('#meta_properties tbody tr:last-child input').attr('disabled',true);
+		});
+
+	});
+// -->
+</script>
+
 <footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 </body>
 </html>

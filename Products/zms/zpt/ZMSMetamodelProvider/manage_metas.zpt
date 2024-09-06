@@ -284,7 +284,7 @@ function zmiFormSubmit(sender,d) {
 					sort_options_html += `<option value="${i+1}">${i+1}</option>`;
 				}
 			}
-			debugger;
+			// debugger;
 			let new_btn_html = `
 				<div class="input-group input-group-sm">
 					${old_id_html}

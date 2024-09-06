@@ -8,7 +8,7 @@
 ><!DOCTYPE html>
 <html lang="en" tal:define="zmscontext python:here.getSelf();">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
-<body tal:attributes="class python:here.zmi_body_class(id='metas config')">
+<body tal:attributes="class python:here.zmi_body_class(id='metas config metaobj')">
 <header tal:replace="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</header>
 <div id="zmi-tab">
 <tal:block tal:define="
@@ -332,7 +332,7 @@
 				</tal:block>
 			</tr>
 			<tr class="row_insert">
-				<td class="meta-sort text-right"><span class="btn btn-add mr-1"><i class="fas fa-plus"></i></span></td>
+				<td class="meta-sort text-right"><span class="btn btn-secondary btn-sm btn-add mr-1 w-100"><i class="fas fa-plus"></i></span></td>
 				<td class="meta-id"><input class="form-control form-control-sm" type="text" name="attr_id"/></td>
 				<td class="meta-name"><input class="form-control form-control-sm" type="text" name="attr_name"/></td>
 				<td class="meta-type">
@@ -404,7 +404,7 @@
 		</tal:block>
 		<tr class="row_insert" tal:define="i python:0">
 			<td class="meta-sort text-right">
-				<span class="btn btn-add mr-1"><i class="fas fa-plus"></i></span>
+				<span class="btn btn-secondary btn-sm btn-add mr-1 w-100"><i class="fas fa-plus"></i></span>
 			</td>
 			<td>
 				<input class="form-control form-control-sm" type="text" tal:attributes="name python:'_lang_dict_key_%i'%i" />
@@ -589,6 +589,21 @@
 
 <footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 
+<style>
+/* <!-- */
+	tr.row_insert > td > .btn-add {
+		width: 100%;
+		color:#333 !important;
+		padding: 4px 8px;
+	}
+	tr.row_insert > td > .btn-add:hover {
+		color:white !important;
+	}
+	tr.row_insert > td:not(.meta-sort) > * {
+		opacity:.35
+	}
+/* --> */
+</style>
 <script>
 // <!--
 /**
@@ -832,6 +847,9 @@ var zmi_code_default_btn = '<i onclick="set_zmi_code_default(event)" title=\"Rep
 $(function(){
 	$('#meta_properties input[name="attr_type_standard_html"] ~ .zmi-code').prepend( zmi_code_default_btn);
 
+	// New field set: initially disable inputs
+	$('input, textarea, select','tr.row_insert').attr('disabled',true);
+
 	// ++++++++++++
 	// Add rows to tables #meta_properties or #meta_languages on button click
 	// ++++++++++++
@@ -850,6 +868,8 @@ $(function(){
 	// Add click event function to add-buttons
 	$(".row_insert .btn-add").click(function(){
 		new_row_counter++;
+		// New field set: clone with enabled inputs
+		$('input, textarea, select','tr.row_insert').attr('disabled',false);
 
 		// Where to insert the new row 
 		let $where_insert = $(this).closest('tr');
@@ -857,13 +877,45 @@ $(function(){
 		// Set variables
 		let table_id = $(this).closest('table').attr('id'); // meta_properties or meta_languages
 		let new_row_name = `new_row_${table_id}_${new_row_counter}`;
-		let old_id_html = (table_id != 'meta_languages') ? `<input type="hidden" name="old_ids:list" value="new${new_row_counter}">` : ``;
-		let new_btn_html = `${old_id_html}
-			<span class="btn btn-default btn-sm mr-1" style="color:#999" 
+		let old_id_html = '';
+		let sort_options_html = '';
+		let sort_options_len = 0;
+		let new_btn_html = `
+			<span class="btn btn-secondary btn-sm mr-1 w-100" style="color:#999" 
 				onclick="javascript:$(this).closest('tr').remove()">
 				<i class="fas fa-times"></i>
 			</span>
+		`;
+
+		// #### TABLES: Process table specific
+		if (table_id != 'meta_languages') {
+			old_id_html = `<input type="hidden" name="old_ids:list" value="new${new_row_counter}">`;
+			sort_options_len = $('#' + table_id + ' tbody tr').length - 2;
+			for (let i = 0; i < sort_options_len; i++) {
+				if (i == sort_options_len - 1) {
+					sort_options_html += `<option value="${i+1}" selected>${i+1}</option>`;
+				} else {
+					sort_options_html += `<option value="${i+1}">${i+1}</option>`;
+				}
+			};
+			new_btn_html = `
+				<div class="input-group input-group-sm">
+					${old_id_html}
+					<select class="zmi-sort form-control-sm"
+						title="Important Note: Changing sort order gets possible after Save & Reload"
+						disabled="disabled">
+						${sort_options_html}
+					</select>
+					<div class="input-group-append">
+						<span class="btn btn-secondary" style="color:#999"
+							title="Revoke new Meta Attribute"
+							onclick="javascript:$(this).closest('tr').remove()">
+							<i class="fas fa-times"></i>
+						</span>
+					</div>
+				</div>
 			`;
+		}
 
 		// Clone(true) to get a deep copy including select options
 		let $new_row = $where_insert.clone(true);
@@ -915,6 +967,8 @@ $(function(){
 		$where_insert.find('input:not([type="checkbox"]),select,textarea').each(function() {
 			$(this).val(undefined);
 		});
+		// New field set: reset to disabled inputs
+		$('input, textarea, select','tr.row_insert').attr('disabled',true);
 	});
 
 });

@@ -230,7 +230,6 @@ function zmiFormSubmit(sender,d) {
 			tal:content="python:here.getZMILangStr('BTN_RESET')">
 			Cancel
 		</button>
-
 	</div>
 </form>
 
@@ -238,15 +237,15 @@ function zmiFormSubmit(sender,d) {
 
 <style>
 /* <!-- */
-	table#meta_properties tr.row_insert > td > .btn-add {
-		width: 6em;
-		color:#333;
+	tr.row_insert > td > .btn-add {
+		width: 100%;
+		color:#333 !important;
 		padding: 4px 8px;
 	}
-	table#meta_properties tr.row_insert > td > .btn-add:hover {
-		color:white;
+	tr.row_insert > td > .btn-add:hover {
+		color:white !important;
 	}
-	table#meta_properties tr.row_insert > td:not(.meta-sort) > * {
+	tr.row_insert > td:not(.meta-sort) > * {
 		opacity:.35
 	}
 /* --> */
@@ -283,8 +282,7 @@ function zmiFormSubmit(sender,d) {
 				} else {
 					sort_options_html += `<option value="${i+1}">${i+1}</option>`;
 				}
-			}
-			// debugger;
+			};
 			let new_btn_html = `
 				<div class="input-group input-group-sm">
 					${old_id_html}
@@ -301,7 +299,7 @@ function zmiFormSubmit(sender,d) {
 						</span>
 					</div>
 				</div>
-				`;
+			`;
 
 			// Clone(true) to get a deep copy including select options
 			let $new_row = $where_insert.clone(true);

@@ -222,7 +222,15 @@ function zmiFormSubmit(sender,d) {
 			hx-on:click="$ZMI.show_spinner(this)"
 			hx-on:htmx:after-request="$ZMI.reset_spinner(this)"
 			value="BTN_SAVE" 
-			tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+			tal:content="python:here.getZMILangStr('BTN_SAVE')">
+			Save
+		</button>
+		<button name="btn" type="submit" class="btn btn-secondary" 
+			value="BTN_CANCEL" 
+			tal:content="python:here.getZMILangStr('BTN_RESET')">
+			Cancel
+		</button>
+
 	</div>
 </form>
 
@@ -246,8 +254,8 @@ function zmiFormSubmit(sender,d) {
 <script>
 // <!--
 	$(function(){
-		// Disable the last row of the table
-		$('#meta_properties tbody tr:last-child input').attr('disabled',true);
+		// New field set: initially disable inputs
+		$('tr.row_insert input').attr('disabled',true);
 
 		// ++++++++++++
 		// Add rows to tables #meta_properties on button click
@@ -257,7 +265,8 @@ function zmiFormSubmit(sender,d) {
 		// Add click event function to add-buttons
 		$(".row_insert .btn-add").click(function(){
 			new_row_counter++;
-			$('#meta_properties tbody tr:last-child input').attr('disabled',false);
+			// New field set: clone with enabled inputs
+			$('tr.row_insert input').attr('disabled',false);
 
 			// Where to insert the new row 
 			let $where_insert = $(this).closest('tr');
@@ -266,12 +275,23 @@ function zmiFormSubmit(sender,d) {
 			let table_id = $(this).closest('table').attr('id'); // meta_properties or meta_languages
 			let new_row_name = `new_row_${table_id}_${new_row_counter}`;
 			let old_id_html = `<input type="hidden" name="old_ids:list" value="new${new_row_counter}">`;
+			let sort_options_html = ``;
+			let sort_options_len = $('#' + table_id + ' tbody tr').length;
+			for (let i = 0; i < sort_options_len; i++) {
+				if (i == sort_options_len - 1) {
+					sort_options_html += `<option value="${i+1}" selected>${i+1}</option>`;
+				} else {
+					sort_options_html += `<option value="${i+1}">${i+1}</option>`;
+				}
+			}
+			debugger;
 			let new_btn_html = `
 				<div class="input-group input-group-sm">
 					${old_id_html}
 					<select class="zmi-sort form-control-sm"
-						title="Sortable after Save"
+						title="Important Note: Changing sort order gets possible after Save & Reload"
 						disabled="disabled">
+						${sort_options_html}
 					</select>
 					<div class="input-group-append">
 						<span class="btn btn-secondary" style="color:#999"
@@ -317,7 +337,8 @@ function zmiFormSubmit(sender,d) {
 			$where_insert.find('input:not([type="checkbox"]),select,textarea').each(function() {
 				$(this).val(undefined);
 			});
-			$('#meta_properties tbody tr:last-child input').attr('disabled',true);
+			// New field set: reset to disabled inputs
+			$('tr.row_insert input').attr('disabled',true);
 		});
 
 	});

@@ -1005,9 +1005,11 @@ ZMI.prototype.initInputFields = function(container) {
 				$input.prev().on('click', function() {
 					// Show icon details on https://fontawesome.com/v5
 					var s = '';
-					if ( $input.val().split('fa-').length > 1 ) {
-						s = $input.val().split('fa-')[1];
-					};
+					$input.val().split(' ').forEach(function(v) {
+						if ( v.split('fa-').length > 1 ) {
+							s = v.split('fa-')[1];
+						};
+					});
 					window.open('https://fontawesome.com/v5/search?m=free&q=' + s,'Fontawesome-V5','toolbar=no,scrollbars=yes,resizable=yes,top=100,left=100,width=480,height=720');
 				});
 			});

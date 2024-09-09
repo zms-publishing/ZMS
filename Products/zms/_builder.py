@@ -149,7 +149,11 @@ class Builder(object):
             raise ParseError('%s at line %s' % (pyexpat.ErrorString(p.ErrorCode), p.ErrorLineNumber))
         ####
 
-        return root
+        oLastNode = getattr(self.oCurrNode,'oLastNode',None)
+        if oLastNode:
+          delattr(self.oCurrNode,'oLastNode')
+        delattr(self,'oCurrNode')
+        return oLastNode
 
 
     ############################################################################
@@ -268,11 +272,13 @@ class Builder(object):
             # notify current node
             self.oCurrNode.xmlOnEndElement()
 
-            parent = self.oCurrNode.xmlGetParent()
-            
             # set parent node as current node
-            self.oCurrNode = parent
-        
+            oLastNode = getattr(self.oCurrNode,'oLastNode',None)
+            if oLastNode:
+              delattr(self.oCurrNode,'oLastNode')
+            self.oLastNode = self.oCurrNode
+            self.oCurrNode = self.oCurrNode.xmlGetParent()
+
         else:
           # tag name is unknown -> offer it to current object
           if not self.oCurrNode.xmlOnUnknownEndTag(name):

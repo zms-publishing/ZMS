@@ -500,6 +500,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       visible = visible and self.isTranslated(lang, REQUEST) # Object is translated.
       visible = visible and self.isCommitted(REQUEST) # Object has been committed.
       visible = visible and self.isActive(REQUEST) # Object is active.
+      visible = visible and not '/'.join(self.getPhysicalPath()+('',)).startswith('/'.join(self.getTrashcan().getPhysicalPath()+('',))) # Object is not in trashcan.
       return visible
 
 
@@ -597,7 +598,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       """ ZMSObject.display_icon """
       meta_id = self.meta_id
       if len(args) == 2 and not kwargs:
-         meta_id = args[1]
+         meta_id = len(args[1]) > 0 and args[1] or meta_id
       else:
         meta_id = kwargs.get('meta_id', kwargs.get('meta_type', meta_id))
       name = 'fas fa-exclamation-triangle'
@@ -655,13 +656,13 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  ZMSObject.breadcrumbs_obj_path:
     # --------------------------------------------------------------------------
     def breadcrumbs_obj_path(self, portalMaster=True):
+      def is_reserved_name(name):
+        import keyword
+        return keyword.iskeyword(name) or name in dir(__builtins__)
       # Handle This.
-      rtn = []
-      obj = self
-      while obj is not None:
-          if obj is not None and obj.id in self.getPhysicalPath():
-              rtn.insert(0,obj)
-          obj = obj.getParentNode()
+      phys_path = list(self.getPhysicalPath())
+      phys_path = phys_path[phys_path.index('content'):]
+      rtn = [is_reserved_name(id) and getattr(self.getParentNode(),id) or getattr(self, id) for id in phys_path]
       # Handle Portal Master.
       if portalMaster and self.getConfProperty('Portal.Master', ''):
         try:

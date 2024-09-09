@@ -3,6 +3,7 @@
 # pydoctor: https://github.com/twisted/pydoctor
 # customize: https://pydoctor.readthedocs.io/en/latest/customize.html?highlight=css#tweak-html-templates
 # docstring markup (epytext): http://epydoc.sourceforge.net/epytext.html
+# How to: https://github.com/zms-publishing/ZMS/pull/72
 # ##############
 ~/vpy38/bin/pydoctor ./Products/zms/ \
 	--project-name ZMS \

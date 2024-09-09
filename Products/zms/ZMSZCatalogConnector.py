@@ -136,10 +136,10 @@ class ZMSZCatalogConnector(
     # --------------------------------------------------------------------------
     #  ZMSZCatalogConnector.manage_objects_add
     #
-    #  @param objects ((node, data), (node, data), (node, data), ...)
-    #  @type  objects list|tuple 
-    #  @return success, failed
-    #  @rtype  tuple
+    #  @param   objects ((node, data), (node, data), (node, data), ...)
+    #  @type    objects C{list|tuple} 
+    #  @return  success, failed
+    #  @rtype   C{tuple}
     # --------------------------------------------------------------------------
     def manage_objects_add(self, objects):
       return [x['ob'](self, objects) for x in self.getActions(r'^manage_(.*?)_objects_add$')][0]
@@ -148,12 +148,23 @@ class ZMSZCatalogConnector(
     #  ZMSZCatalogConnector.manage_objects_remove
     # 
     #  @param   nodes
-    #  @type    nodes list|tuple 
+    #  @type    nodes C{list|tuple} 
     #  @return  success, failed
-    #  @rtype   tuple
+    #  @rtype   C{tuple}
     # --------------------------------------------------------------------------
     def manage_objects_remove(self, nodes):
       return [x['ob'](self, nodes) for x in self.getActions(r'^manage_(.*?)_objects_remove$')][0]
+
+    # --------------------------------------------------------------------------
+    #  ZMSZCatalogConnector.manage_objects_clear
+    #
+    #  @param home_id
+    #  @type  objects list|tuple 
+    #  @return success, failed
+    #  @rtype  tuple
+    # --------------------------------------------------------------------------
+    def manage_objects_clear(self, home_id):
+      return [x['ob'](self, home_id) for x in self.getActions(r'^manage_(.*?)_objects_clear$')][0]
 
     # --------------------------------------------------------------------------
     #  ZMSZCatalogConnector.manage_destroy
@@ -303,16 +314,28 @@ class ZMSZCatalogConnector(
       adapter = self.getCatalogAdapter()
       result = {'success':0,'failed':0,'log':[],'next_node':None}
       objects = []
-      nodes, next_node = self.get_next_page(uid, page_size, clients) 
       log = []
+      nodes, next_node = self.get_next_page(uid, page_size, clients) 
       for node in nodes:
-        node_objects = adapter.get_catalog_objects(self, node, fileparsing)
-        objects.extend(node_objects)
+        # Clear client.
+        if node.meta_id == 'ZMS':
+          home_id = node.getHome().id
+          result['home_id'] = home_id
+          result['cleared'] = self.manage_objects_clear(home_id)[0]
+        # Get catalog objects.
+        d = {}
+        for lang in node.getLangIds():
+          REQUEST.set('lang', lang)
+          node_objects = adapter.get_catalog_objects(node, fileparsing)
+          objects.extend(node_objects)
+          d[lang] = len(node_objects)
         log.append({'index':nodes.index(node),
           'path':'/'.join(node.getPhysicalPath()),
           'meta_id':node.meta_id,
-          'objects':len(node_objects)})
+          'objects':d})
+      # Add objects.
       result['success'], result['failed'] = self.manage_objects_add(objects)
+      # Return with log and next-node.
       result['log'], result['next_node'] = log, next_node
       RESPONSE.setHeader('Cache-Control', 'no-cache')
       RESPONSE.setHeader('Content-Type', 'application/json; charset=utf-8')

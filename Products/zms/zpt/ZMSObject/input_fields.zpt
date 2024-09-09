@@ -18,10 +18,10 @@
 	<input type="hidden" id="_sort_id" name="_sort_id:int" tal:attributes="value python:request.get('_sort_id',0)" />
 	<input type="hidden" id="id_prefix" name="id_prefix" tal:attributes="value python:request.get('id_prefix','')" />
 	<input type="hidden" id="meta_id" name="meta_id" tal:attributes="value meta_id" />
-	<input type="hidden" id="ZMS_INSERT" name="ZMS_INSERT" tal:condition="python:request.get('ZMS_INSERT',False)" tal:attributes="value python:request.get('ZMS_INSERT','')" />
+	<input type="hidden" id="ZMS_INSERT" name="ZMS_INSERT" tal:condition="python:request.get('ZMS_INSERT')" tal:attributes="value python:request.get('ZMS_INSERT')" />
 
 	<div class="card" 
-		tal:condition="python:metaObj['type'] != 'ZMSRecordSet' or command.lower() != 'insert'"
+		tal:condition="python:metaObj.get('type') != 'ZMSRecordSet' or command.lower() != 'insert'"
 		tal:attributes="class python:'card input_fields_%s'%(meta_id)">
 		<div class="card-header attr_last_modified clearfix btn-collapse">
 			<div class="btn-group align-items-center">
@@ -85,8 +85,9 @@
 								onclick python:'$ZMI.CopyToClipboard(\'{$%s}\')'%(here.get_uid());
 								class python:' '.join(['get_uid']+[['text-danger'],[]][cataloged]);">
 							<tal:block tal:content="python:'ID:%s'%(here.get_uid())">unique-id</tal:block>
-							<tal:block tal:condition="python:request.get('refresh_catalog')">
+							<tal:block tal:condition="python:request.get('refresh_catalog','False')=='True'">
 								<tal:block tal:define="dummy0 python:standard.triggerEvent(here,'*.ObjectMoved')"></tal:block>
+                                <script>location.href='?refresh_catalog=False'</script>
 							</tal:block>
 							<a tal:condition="not:cataloged" 
 								href="javascript:;" title="Refresh Catalog Item"
@@ -125,7 +126,7 @@
 								dummy0 python:options.append('local.'+request['lang'])"></tal:block>
 						</tal:block>
 					</tal:block>
-					<tal:block tal:condition="not:python:request.get('ZMS_INSERT',False)" tal:define="global
+					<tal:block tal:condition="not:python:request.get('ZMS_INSERT')" tal:define="global
 							coverage python:here.getDCCoverage(request);
 							coverage_lang python:coverage[coverage.find('.')+1:];">
 						<tal:block tal:condition="not:python:request['lang']==coverage_lang">

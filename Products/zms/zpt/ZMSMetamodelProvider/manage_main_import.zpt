@@ -26,27 +26,34 @@
 			class="form-horizontal card-body" action="manage_changeProperties" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="lang" tal:attributes="value request/lang" />
 			<input type="hidden" name="target" tal:attributes="value python:request['URL'].split('/')[-1]" />
-			<div class="form-group row mb-3">
-				<label for="file" class="col-sm-2 control-label">
-					<span tal:content="python:'XML-%s'%(here.getZMILangStr('ATTR_FILE'))">XML-File</span>
-				</label>
-				<div class="col-sm-10"><input class="btn btn-file" type="file" name="file" /></div>
-			</div><!-- .form-group -->
-			<div class="form-group row">
-				<label for="or" class="col-sm-2 control-label"><span tal:content="python:here.getZMILangStr('OR')">Or</span></label>
-				<div class="col-sm-10">
-					<select id="init" name="init" class="form-control" onfocus="zmiExpandConfFiles(this,'.metaobj.')" onmouseover="zmiExpandConfFiles(this,'.metaobj.')">
-						<option value="" tal:content="python:'--- %s ---'%here.getZMILangStr('BTN_INIT')">--- Init... ---</option>
-					</select>
+
+
+			<div class="form-group col-12 mb-3 mt-4">
+				<div class="custom-file">
+					<input type="file" name="file" id="file" class="custom-file-input" value="" 
+						onchange="$('.custom-file label span').html($(this).val().replace(/^.*(\\|\/|\:)/, ''));" />
+					<label class="custom-file-label" for="file"><span tal:content="python:'XML-%s'%(here.getZMILangStr('ATTR_FILE'))">XML-File</span></label>
 				</div>
 			</div><!-- .form-group -->
-			<div class="badge badge-dark position-absolute mr-1" style="top:0;right:0">Step-1</div>
-			<div class="form-group row">
-				<div class="controls save mt-3">
-					<button type="submit" name="btn" class="btn btn-primary" value="BTN_IMPORT" 
-						tal:content="python:here.getZMILangStr('BTN_IMPORT')">
-						Import
-					</button>
+			<label class="col-12 control-label text-left"><span tal:content="python:here.getZMILangStr('OR').lower()">Or</span></label>
+			<div class="form-group col-12 mt-2">
+				<select id="init" name="init" class="form-control" 
+					onfocus="zmiExpandConfFiles(this,'.metaobj.')" 
+					onmouseover="zmiExpandConfFiles(this,'.metaobj.')">
+					<option value="" tal:content="python:'--- %s ---'%here.getZMILangStr('BTN_INIT')">--- Init... ---</option>
+				</select>
+			</div><!-- .form-group -->
+
+			<div class="badge badge-dark position-absolute m-1" style="top:0;right:0">Step-1</div>
+
+			<div class="form-group row mt-5 mr-0">
+				<div class="controls save">
+					<button name="btn" type="submit" class="btn btn-primary" value="BTN_IMPORT" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
+					<a class="btn btn-secondary ml-1" 
+						title="Check-Up: Compare working content model with the current ZMS source files."
+						tal:attributes="href python:'./manage_customize_diff?action=%s&lang=%s&provider_id=metaobj_manager'%('manage_changeProperties',request['lang'])">
+						<i class="fas fa-code-branch"></i>
+					</a>
 				</div>
 			</div><!-- .form-group -->
 		</form>

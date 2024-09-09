@@ -1,64 +1,107 @@
 <!-- opensearch.standard_html -->
-
-<template id="hb_spinner_html" type="text/x-handlebars-template">
-	{{#.}}
-		<h2>Suche nach <code>{{{this}}}</code></h2>
-		<div title="Loading..." class="spin"></div>
-	{{/.}}
-</template>
-
-<template id="hb_results_html" type="text/x-handlebars-template">
-	{{#.}}
-		<h2>{{{this.total}}} Treffer f&uuml;r <code>{{{this.query}}}</code></h2>
-	{{/.}}
-	{{#if buckets}}
-		<ul class="nav nav-tabs responsive" role="tablist">
-			{{#each buckets}}
-				<li id="tab-label-{{@index}}" data-tabid="pane_{{this.key}}"
-					aria-controls="tab-pane-{{@index}}" role="tab"
-					class="{{#if @first}}active{{/if}}"
-					><a class="facet" data-toggle="tab" 
-						data-facet="{{this.key}}" onclick="show_results_facet(this)" 
-						href="#tab-pane-{{@index}}">
-						{{#compareStrings this.key "unitel"}}
-							Personen
-						{{else}}
-							Inhalte
-						{{/compareStrings}}
-						<span class="badge badge-tabs">{{{this.doc_count}}}</span>
-						<span class="sr-only">Treffer</span>
-					</a>
-				</li>
-			{{/each}}
-		</ul>
-	{{/if}}
-	<div class="tab-content">
-		<div class="tab-pane show active" role="tabpanel">
-			<div class="pagination" style="margin-bottom: 0em;"></div>
-			{{#each hits}}
-				<article class="hit {{this.index_name}}">
-					<ul class="path" data-id="{{this.path}}">&nbsp;</ul>
-					<a title="{{this.path}}" href="{{this.href}}" target="_blank">{{{this.title}}}</a>
-					<br/>
-					<p>{{{this.snippet}}}</p>
-				</article>
-			{{/each}}
-			<div class="pagination"></div>
-		</div>
-	</div>
-</template>
-
 <tal:block tal:define="zmscontext options/zmscontext">
 
+	<template id="hb_spinner_html" type="text/x-handlebars-template">
+		{{#.}}
+			<h2>
+				<span tal:replace="python:zmscontext.getLangStr('opensearch_page.SEARCH_FOR')">Suche nach</span>
+				<code>{{{this}}}</code>
+			</h2>
+			<div title="Loading..." class="spin"></div>
+		{{/.}}
+	</template>
+
+	<template id="hb_topresults_html" type="text/x-handlebars-template">
+		{{#if docs}}
+			<h2 title="{{adword}}" tal:content="python:zmscontext.getLangStr('opensearch_page.TOP_RESULTS')">Top-Treffer</h2>
+			<div class="top_results">
+			{{#each docs}}
+				<article class="hit top_result" title="Top-Results {{../adword}}">
+					<a href="{{this.doc.index_html}}">
+							<h2>{{this.doc.title}}</h2>
+							{{#if this.doc.titleimage}}
+									<img src="{{this.doc.titleimage}}" />
+							{{/if}}
+							{{#if this.doc.attr_dc_description}}
+									<p>{{this.doc.attr_dc_description}}</p>
+							{{/if}}
+						</a>
+					</article>
+			{{/each}}
+			</div>
+		{{/if}}
+	</template>
+
+	<template id="hb_results_html" type="text/x-handlebars-template">
+		{{#.}}
+			<h2>{{{this.total}}} <span tal:content="python:zmscontext.getLangStr('opensearch_page.INFO_RESULTS_FOR')">Treffer f&uuml;r</span> <code>{{{this.query}}}</code></h2>
+		{{/.}}
+		{{#if buckets}}
+			<ul class="nav nav-tabs responsive {{hide_tabs buckets.length}}" data-bucket-length="{{buckets.length}}" role="tablist">
+				{{#each buckets}}
+					<li id="tab-label-{{@index}}" data-tabid="pane_{{this.key}}"
+						aria-controls="tab-pane-{{@index}}" role="tab"
+						class="{{#if @first}}first{{/if}}"
+						><a class="facet" data-toggle="tab"
+							data-facet="{{this.key}}" onclick="show_results_facet(this)"
+							href="#tab-pane-{{@index}}">
+							{{#compareStrings this.key "unitel"}}
+								<span tal:replace="python:zmscontext.getLangStr('opensearch_page.INFO_UNITEL')">Personen</span>
+							{{else}}
+								<span tal:replace="python:zmscontext.getLangStr('opensearch_page.INFO_UNIBE')">Inhalte</span>
+							{{/compareStrings}}
+							<span class="badge badge-tabs">{{{this.doc_count}}}</span>
+							<span class="sr-only" tal:content="python:zmscontext.getLangStr('opensearch_page.INFO_UNIBE')">Treffer</span>
+						</a>
+					</li>
+				{{/each}}
+			</ul>
+		{{/if}}
+		<div class="tab-content">
+			<div class="tab-pane show active" role="tabpanel">
+				{{#each hits}}
+					<article class="hit {{this.index_name}}" title="SCORE = {{this.score}}">
+						<ul class="path" data-id="{{this.path}}">&nbsp;</ul>
+						<a title="{{this.path}}" href="{{this.href}}" target="_blank">{{{this.title}}}</a>
+						<br/>
+						<p>{{{this.snippet}}}</p>
+					</article>
+				{{/each}}
+				<div class="pagination"></div>
+			</div>
+		</div>
+	</template>
+
+
+	<h1 tal:content="python:zmscontext.attr('title')">TITEL</h1>
 	<div class="container-fluid skin-bg-gray">
 		<div class="container">
 			<section class="search-form">
 				<form id="site-search-content" action="#" method="get" autocomplete="off"
-					tal:attributes="data-root-url python:zmscontext.getRootElement().absolute_url()">
-					<div class="row skin-gutter-wide search-form no-margin-bottom">
+					 tal:attributes="data-root-url python:zmscontext.getRootElement().absolute_url()">
+					<input type="hidden" id="home_id" name="home_id"
+						tal:attributes="value python:zmscontext.getHome().getId()" />
+					<input type="hidden" id="multisite_search" name="multisite_search"
+						tal:attributes="value python:zmscontext.attr('multisite_search')" />
+					<input type="hidden" id="multisite_exclusions" name="multisite_exclusions"
+						tal:attributes="value python:','.join(zmscontext.attr('multisite_exclusions'))" />
+					<input type="hidden" id="adwords_linked" name="adwords_linked"
+						tal:define="adwords_linked python:zmscontext.attr('adwords_linked');
+							adwords_url python:adwords_linked and zmscontext.getLinkObj(adwords_linked).absolute_url() or None"
+						tal:condition="adwords_linked"
+						tal:attributes="value adwords_url" />
+					<input type="hidden" id="lang" name="lang"
+						tal:attributes="value python:request.get('lang',zmscontext.getPrimaryLanguage())" />
+						<div class="row skin-gutter-wide search-form no-margin-bottom">
 						<div class="col-lg-6" id="form-keyword-container">
-							<h2 class="small-font">Suche nach Stichworten</h2>
-							<label for="form-keyword" class="sr-only">Stichwort</label>
+							<h2 class="small-font"
+								tal:content="python:zmscontext.getLangStr('opensearch_page.INFO_SEARCH')">
+								Suche nach Stichworten
+							</h2>
+							<label for="form-keyword" class="sr-only"
+								tal:content="python:zmscontext.getLangStr('opensearch_page.INFO_KEYWORD')">
+								Stichwort
+							</label>
 							<input type="text" name="q" id="form-keyword" list="suggests"
 								class="form-control" autofocus value=""
 								tal:attributes="value python:request.get('q','')" />
@@ -67,7 +110,11 @@
 					</div>
 					<div class="row skin-gutter-wide search-form">
 						<div class="col-lg-12">
-						<br> <button class="btn btn-primary btn-lg" type="submit">Suchen</button>
+							<br>
+							<button class="btn btn-primary btn-lg" type="submit"
+								tal:content="python:zmscontext.getLangStr('opensearch_page.BTN_SEARCH')">
+								Suchen
+							</button>
 						</div>
 					</div>
 				</form>
@@ -76,9 +123,10 @@
 	</div>
 
 	<div class="container-fluid">
-		<div class="container">
-			<section id="search_results" class="search-results content-tabs">
-			</section>
+
+		<div class="container" id="container_results">
+			<section id="top_results"></section>
+			<section id="search_results" class="search-results content-tabs"></section>
 		</div>
 	</div>
 

@@ -213,7 +213,10 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
     catalog_adapter = obj.getCatalogAdapter() 
     catalog_connector = catalog_adapter.add_connector('zcatalog_connector')
     catalog_connector.manage_init()
-    catalog_adapter.reindex(catalog_connector, obj, recursive=True)
+    try:
+      catalog_adapter.reindex(catalog_connector, obj, recursive=True)
+    except:
+      standard.writeBlock( self, '[catalog_adapter]: : \'RequestContainer\' object has no \'attribute reindex\'')
 
     # Initialize access.
     obj.synchronizePublicAccess()
@@ -526,6 +529,41 @@ class ZMS(
       # Therefore, we introduce a special attribute containing the parent
       # object, which will be used by xmlGetParent() (see below).
       self.oParent = None
+
+    # Hook: ZMS.mode.maintenance
+    def __before_publishing_traverse__(self, object, request):
+      """
+      Maintenance mode can be set by adding the ZMS configuration
+      key ZMS.mode.maintenance=1. The maintenance mode prevents 
+      editing content and returns an error: 503 Service Unavailable.
+      To show a specific message the Zope object standard_error_message 
+      should be customized, e.g. like this:
+        <tal:block
+            tal:define="
+              errtype python:options.get('error_type',None);
+              errvalue python:options.get('error_value',None)"
+            tal:condition="python:errtype=='HTTPServiceUnavailable' and str(errvalue)=='Maintenance'">
+            <h2>ZMS Maintenance active</h2>
+            <button onclick="history.back()">Go Back</button>
+        </tal:block>
+      """
+      path = request.path
+      maintenance_conf_key = 'ZMS.mode.maintenance'
+      maintenance_mode = bool(self.getConfProperty(maintenance_conf_key, False))
+      is_maintenance_mode_change = 'manage_customizeSystem' in path and request.get('conf_key') == maintenance_conf_key
+      # Only allow ZMS.mode.maintenance changes in maintenance mode.
+      if maintenance_mode and not is_maintenance_mode_change:
+        import transaction
+        import ZODB.Connection
+        t = transaction.get()
+        def maintenance_hook():
+          # Check if there are ZODB changes - if there is a ZODB.Connection.Connection resource manager.
+          # Transaction._resources contains all resource managers which commit their changes sequentially:
+          # https://github.com/zopefoundation/transaction/blob/6d4785159c277067f2ec95158884870a92660220/src/transaction/_transaction.py#L421
+          for resource in t._resources:
+            if isinstance(resource, ZODB.Connection.Connection):
+              raise zExceptions.HTTPServiceUnavailable('Maintenance')
+        t.addBeforeCommitHook(maintenance_hook)
 
 ################################################################################
 

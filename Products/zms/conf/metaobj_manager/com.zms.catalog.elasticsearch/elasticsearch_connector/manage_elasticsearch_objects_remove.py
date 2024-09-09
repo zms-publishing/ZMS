@@ -5,28 +5,38 @@ import opensearchpy
 from opensearchpy import OpenSearch
 from opensearchpy.helpers import bulk
 
+langs = ['ger','eng']
 
 def get_elasticsearch_client(self):
-	# ${elasticsearch.url:https://localhost:9200}
+	# ${elasticsearch.url:https://localhost:9200, https://localhost:9201}
 	# ${elasticsearch.username:admin}
 	# ${elasticsearch.password:admin}
 	# ${elasticsearch.ssl.verify:}
-	url = self.getConfProperty('elasticsearch.url').rstrip('/')
-	if not url:
+	url_string = self.getConfProperty('elasticsearch.url')
+	urls = [url.strip().rstrip('/') for url in url_string.split(',')]
+	hosts = []
+	use_ssl = False
+	# Process (multiple) url(s) (host, port, ssl)
+	if not urls:
 		return None
-	host = urlparse(url).hostname
-	port = urlparse(url).port
-	ssl = urlparse(url).scheme=='https' and True or False
+	else:
+		for url in urls:
+			hosts.append( { \
+					'host':urlparse(url).hostname, \
+					'port':urlparse(url).port } \
+				)
+			if urlparse(url).scheme=='https':
+				use_ssl = True
 	verify = bool(self.getConfProperty('elasticsearch.ssl.verify', False))
 	username = self.getConfProperty('elasticsearch.username', 'admin')
 	password = self.getConfProperty('elasticsearch.password', 'admin')
 	auth = (username,password)
 	
 	client = OpenSearch(
-		hosts = [{'host': host, 'port': port}],
+		hosts = hosts,
 		http_compress = False, # enables gzip compression for request bodies
 		http_auth = auth,
-		use_ssl = ssl,
+		use_ssl = use_ssl,
 		verify_certs = verify,
 		ssl_assert_hostname = False,
 		ssl_show_warn = False,
@@ -40,18 +50,24 @@ def bulk_elasticsearch_delete(self, sources):
 	# Name adaption to elasticsearch schema
 	for x in sources:
 		# Create language specific elasticsearch id
-		_id = "%s:%s"%(x['uid'],x.get('lang',self.getPrimaryLanguage()))
-		d = {"_op_type":"delete", "_index":index_name, "_id":_id}
-		actions.append(d)
+		for lang in globals()['langs']:
+			_id = "%s:%s"%(x['uid'],lang)
+			d = {"_op_type":"delete", "_index":index_name, "_id":_id}
+			actions.append(d)
 	if client: 
 		return bulk(client, actions)
 	return 0, len(actions)
 
 def manage_elasticsearch_objects_remove( self, nodes):
 	sources = [{'uid':x.get_uid()} for x in nodes]
+	for node in nodes:
+		# Set node's language list as global variable.
+		global langs
+		langs = node.getLangIds()
+		break
 	try:
 		success, failed = bulk_elasticsearch_delete(self, sources)
 	except Exception as e:
-		print(e)
+		standard.writeBlock( self, str(e))
 		return 0, len(sources)
 	return success, failed or 0

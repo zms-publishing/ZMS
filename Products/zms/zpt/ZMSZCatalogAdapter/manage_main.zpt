@@ -19,6 +19,36 @@
 	<div class="well">On every change the content is automatically indexed in the catalog.</div>
 </div>
 
+<div class="help d-none" data-for="custom_filter_function">
+	<div class="well">
+		<p>
+			The indexing filter consists of python code that works with two parameters: <br/>
+			1. <code>context</code> is the currently iterated object to be indexed<br/>
+			2. <code>meta_ids</code> is the list of content-classes that should be indexed. <br/>
+			<br/>
+			The applied code can define rules based on the context's attributes values whether 
+			indexing shall happen or not. The returning value of the filter rules must be 
+			<code>True</code> or <code>False</code>.
+			A simple example will illustrate how it can be applied; the intention would be 
+			"<i>Do not index any inactive node, it's descendants and nodes having type-attribute 
+			set to 'Resource'</i>".
+			<div class="zmi-code card p-2 highlight text-nowrap" style="overflow-x: scroll;">
+				##<br/>
+				return (context.meta_id in meta_ids) \<br/>
+				&nbsp;&nbsp;and not [ob for ob in context.breadcrumbs_obj_path() if not ob.isActive(context.REQUEST)] \<br/>
+				&nbsp;&nbsp;and not context.attr('attr_dc_type')=='Resource' \<br/>
+				&nbsp;&nbsp;and context.isVisible(context.REQUEST)<br/>
+			</div>
+			<br/>
+			<p class="small">
+				HINT: The introducing ##-comments marks the code as Python for the editor gui.
+				Actually only Python code will work here. 
+			</p>
+		</p>
+	</div>
+</div>
+
+
 <div class="help d-none" data-for="catalog_model">
 	<div class="well">
 		<p>
@@ -38,7 +68,7 @@
 			##<br/>
 			<br/>
 			return [{<br/>
-				<code tal:repeat="attr_id python:here.getAttrIds()" tal:content="structure python:'&nbsp;&nbsp;\'%s\':\'...\',<br/>'%(attr_id)" />
+			<code tal:repeat="attr_id python:here.getAttrIds()" tal:content="structure python:'&nbsp;&nbsp;\'%s\':\'...\',<br/>'%(attr_id)" />
 			}]
 		</div>
 	</div>
@@ -50,7 +80,7 @@
 	<input type="hidden" id="getIds" tal:attributes="value python:','.join(here.getIds())" />
 	<span class="d-none" id="getAttrs" tal:content="python:here.str_json(here.getAttrs())"></span>
 
-	<tal:block tal:condition="python:here.getLevel()==0">
+	<tal:block tal:condition="python:here.breadcrumbs_obj_path().index(here.getDocumentElement())==0">
 	<legend>Connectors</legend>
 	<div class="card-body" tal:define="
 		connectors python:here.get_connectors();
@@ -122,6 +152,12 @@
 				<input type="checkbox" value="1" id="catalog_awareness_active" name="catalog_awareness_active:int" tal:attributes="checked python:['','checked'][int(here.getConfProperty('ZMS.CatalogAwareness.active',1)==1)]"/>
 			</div><!-- .col-sm-10 -->
 		</div><!-- .form-group -->
+		<div class="form-group row align-items-start">
+			<label class="col-sm-2 control-label" for="custom_filter_function"><span>Custom Filter-Function</span></label>
+			<div class="col-sm-10">
+				<textarea tal:replace="structure python:here.zmi_ace_editor(here,request,name='custom_filter_function',id='custom_filter_function',text=here.getCustomFilterFunction())">ACE Editor</textarea>
+			</div>
+		</div>
 		<div class="form-group row align-items-baseline">
 			<label class="col-sm-2 control-label" for="catalog_model"><span>Model</span></label>
 			<div class="col-sm-10"
@@ -144,7 +180,6 @@
 						<tbody>
 							<tr>
 								<td class="p-0">
-
 									<table class="table table-sm table-borderless" id="meta_types">
 										<tbody>
 											<tal:block tal:repeat="metaObjPackage python:here.sort_list(metaObjPackages+metaObjPackages2)">
@@ -172,33 +207,44 @@
 														</td>
 													</tr>
 												</tal:block>
-												<tr tal:condition="not:metaObjPackage" tal:repeat="value python:['type(ZMSDocument)','type(ZMSObject)']">
-													<td><input type="checkbox" name="ids:list" tal:attributes="value value"></td>
-													<td><tal:block tal:content="value"></tal:block></td>
+												<tr title="Index any of the class type."
+													tal:condition="not:metaObjPackage" 
+													tal:repeat="value python:['type(ZMSDocument)','type(ZMSObject)']">
+													<td class="text-center">
+														<input type="checkbox" name="ids:list" tal:attributes="value value;id python:'objtype_%s'%(value)" />
+													</td>
+													<td>
+														<i class="fas fa-asterisk text-muted"></i>&nbsp;
+														<label tal:attributes="for python:'objtype_%s'%(value)" class="m-0" tal:content="value">NAME</label>
+													</td>
 												</tr>
 												<tal:block tal:repeat="metaObj metaObjs">
-													<tr tal:condition="python:metaObj['type']!='ZMSPackage' and metaObj.get('package')==metaObjPackage">
-														<td style="text-align:center;">
+													<tr title="Index the content class."
+														tal:condition="python:metaObj['type']!='ZMSPackage' and metaObj.get('package')==metaObjPackage">
+														<td class="text-center">
 															<input type="checkbox" name="ids:list" tal:attributes="value metaObj/id;
+																id python:'objid_%s'%(metaObj['id']);
 																data-attrs python:','.join(
 																	['%s(%s)'%(xx['id'],xx['type']) for xx in
 																		[here.getMetaobjAttr(metaObj['id'],x['id']) for x in metaObj['attrs'] if x['type'] not in ['*','constant','delimiter','file','hint','image','interface']]]);
 																checked python:['','checked'][int('catalog_index' in [x['id'] for x in metaObj['attrs']])];
-																disabled python:['','disabled'][int('catalog_index' in [x['id'] for x in metaObj['attrs']])]" onclick="toggleMetaobj()"/>
+																disabled python:['','disabled'][int('catalog_index' in [x['id'] for x in metaObj['attrs']])]" onclick="toggleMetaobj()" />
 														</td>
 														<td>
 															<a href="#" class="mr-1" target="_blank" title="Show Content Class Details (Big Picture)"
 																tal:attributes="href python:'../metaobj_manager/manage_bigpicture?lang=%s&id=%s'%(request.get('lang','ger'),metaObj['id'])"
 															><i tal:on-error="string:ERROR icon" tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])"></i></a>&nbsp;
-															<span tal:on-error="string:ERROR" tal:content="metaObj/name">the name</span>
-															<span>(<tal:block tal:content="python:here.getZMILangStr('SOTYPE_%s'%metaObj['type'].upper())">the type</tal:block>)</span>
+															<label tal:attributes="for python:'objid_%s'%(metaObj['id'])" class="m-0" 
+																tal:on-error="string:ERROR" 
+																tal:content="python:'%s (%s)'%(metaObj['name'], here.getZMILangStr('SOTYPE_%s'%metaObj['type'].upper()))">
+																NAME (TYPE)
+															</label>
 														</td>
 													</tr>
 												</tal:block>
 											</tal:block>
 										</tbody>
 									</table>
-
 								</td>
 								<td class="p-0">
 									<table class="table table-sm table-borderless" id="indexes">
@@ -208,7 +254,6 @@
 							</tr>
 						</tbody>
 					</table>
-
 			</div><!-- .col-sm-10 -->
 		</div><!-- .form-group -->
 		<div class="form-group row">
@@ -218,14 +263,12 @@
 			</div><!-- .controls.save -->
 		</div><!-- .form-group.row -->
 	</div><!-- .card-body -->
-
 </form>
 
 </div><!-- #zmi-tab -->
 
 <script>
-// <!--
-
+//<!--
 function toggleMetaobj() {
 	var selected = {};
 	$("table#indexes input:checked").each(function() {
@@ -236,7 +279,7 @@ function toggleMetaobj() {
 	});
 	var metaObjAttrs = {};
 	$("form input[name='ids:list']:checked").each(function() {
-		if(!$(this).prop("disabled")) {
+		if(!$(this).prop("disabled") && $(this).attr("data-attrs")) {
 			var dataAttrs = $(this).attr("data-attrs").split(",");
 			for (var i = 0; i < dataAttrs.length; i++) {
 				var dataAttr = dataAttrs[i];
@@ -244,7 +287,7 @@ function toggleMetaobj() {
 					id:dataAttr.substring(0,dataAttr.indexOf("(")),
 					type:dataAttr.substring(dataAttr.indexOf("(")+1,dataAttr.indexOf(")"))
 				};
-				if (typeof metaObjAttrs[metaObjAttr.id] == 'undefined') {
+				if (!metaObjAttr.id.indexOf("_") == 0 && typeof metaObjAttrs[metaObjAttr.id] == 'undefined') {
 					metaObjAttrs[metaObjAttr.id] = metaObjAttr;
 				}
 			}
@@ -268,10 +311,10 @@ function toggleMetaobj() {
 		$("table#indexes").append(''
 			+ '<'+'tr>'
 				+ '<'+'td style="text-align:center;">'
-					+ '<'+'input type="checkbox" name="attr_ids:list" '+(preselected?' checked="checked"':'')+'value="'+metaObjAttrId+'" onclick="toggleMetaobj()"/>'
+					+ '<'+'input type="checkbox" name="attr_ids:list" '+(preselected?' checked="checked"':'')+'value="'+metaObjAttrId+'" id="attrid_'+metaObjAttrId+'" onclick="toggleMetaobj()"/>'
 				+ '<'+'/td>'
 				+ '<'+'td>'
-					+ '<'+'span>'+metaObjAttrId+' ('+type+')<'+'/span> '
+					+ '<'+'label for="attrid_'+metaObjAttrId+'">'+metaObjAttrId+' ('+type+')<'+'/label> '
 					+ '<'+'input type="hidden" name="type_'+metaObjAttrId+'" value="'+type+'"/> '
 				+ '<'+'/td>'
 				+ '<'+'td>'
@@ -322,37 +365,6 @@ function zmiExecuteCatalog(url) {
 					} else {
 						$a.next('.response').addClass('alert-danger').html(response);
 					}
-					i++;
-					fn();
-				}
-			});
-		}
-	}
-	fn();
-	return false;
-}
-
-function zmiReindexCatalog() {
-	$(".zmi-sitemap .response").remove();
-	var $inputs = $(".card.active .zmi-sitemap input:checked");
-	var i = 0;
-	var fn = function() {
-		if (i < $inputs.length) {
-			var $input = $($inputs[i]);
-			var uid = $input.val();
-			var data = {uid:uid};
-			var $a = $input.next("a");
-			$a.after(`<span class="response alert zmi-code"><i class="fas fa-spinner fa-spin"></i></span>`);
-			$.ajax({
-				url:"manage_reindex",
-				data:data,
-				error: function (xhr, ajaxOptions, thrownError) {
-					$a.next('.response').addClass('alert-danger').html(thrownError);
-					i++;
-					fn();
-				},
-				success:function(response) {
-					$a.next('.response').addClass('alert-success').html(response);
 					i++;
 					fn();
 				}

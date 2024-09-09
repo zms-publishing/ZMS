@@ -30,7 +30,49 @@
 		"files.eol": "\n",
 		"files.autoSave": "afterDelay",
 		"workbench.colorTheme": "Visual Studio Light",
-		"python.linting.enabled": true
+		"python.linting.enabled": false,
+		"python.formatting.provider": "none",
+		// "python.testing.pytestEnabled": false,
+		// "python.testing.unittestEnabled": true,
+		// "python.testing.unittestArgs": [
+		// 	"-v",
+		// 	"-s",
+		// 	"./tests",
+		// 	"-p",
+		// 	"test*.py"
+		// ],
 	},
-	"remoteAuthority": "wsl+Ubuntu-20.04"
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+			{
+				"name": "ZMS5-Docker",
+				"type": "debugpy",
+				"request": "launch",
+				"program": "/home/zope/venv/bin/runwsgi",
+				"justMyCode": false,
+				"console": "integratedTerminal",
+				"args": [
+					"--debug",
+					"--verbose",
+					"/home/zope/venv/instance/zms5/etc/zope.ini",
+					"debug-mode=on",
+					"http_port=8087",
+				],
+				"env": {
+					"PYTHONUNBUFFERED":"1",
+					"CONFIG_FILE": "/home/zope/venv/instance/zms5/etc/zope.ini",
+					"INSTANCE_HOME": "/home/zope/venv/instance/zms5",
+					"CLIENT_HOME": "/home/zope/venv/instance/zms5",
+					"PYTHON": "/home/zope/venv/bin/python",
+					"SOFTWARE_HOME": "/home/zope/venv/bin"
+				},
+				"serverReadyAction":{
+					"pattern":"Serving on http://0.0.0.0:8087",
+					"uriFormat": "http://127.0.0.1:8087/manage_main",
+					"action": "openExternally",
+				},
+			},
+		]
+	}
 }

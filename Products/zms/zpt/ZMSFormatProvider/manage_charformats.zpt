@@ -78,10 +78,10 @@
 				<label for="_display" class="col-sm-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
 				<div class="col-sm-10"><input class="form-control form-control-sm" type="text" id="_display" name="_display" /></div><!-- .col-sm-10 -->
 			</div><!-- .form-group -->
-			<div class="form-group row">
-				<div class="col-sm-10">
+			<div class="form-group row mt-5">
+				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-primary" value="BTN_INSERT" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
-				</div><!-- .col-sm-10 -->
+				</div><!-- .controls -->
 			</div><!-- .form-group -->
 		</form>
 	</div><!-- .inner -->
@@ -91,25 +91,28 @@
 	<div id="importConf" class="inner">
 		<form class="form-horizontal" tal:attributes="action action" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="lang" tal:attributes="value request/lang" />
-			<div class="form-group row">
-				<label for="file" class="col-sm-2 control-label">
-					<i class="far fa-folder"></i>
-					<span tal:content="python:here.getZMILangStr('ATTR_FILE')">File</span>
-				</label>
-				<div class="col-sm-10"><input class="btn btn-file" name="file" type="file" /></div><!-- .col-sm-10 -->
+			<div class="form-group col-12">
+				<div class="custom-file">
+					<input type="file" name="file" id="file" class="custom-file-input" value="" 
+						onchange="$('.custom-file label span').html($(this).val().replace(/^.*(\\|\/|\:)/, ''));" />
+					<label class="custom-file-label" for="file"><span tal:content="python:here.getZMILangStr('ATTR_FILE')">Choose file</span></label>
+				</div>
 			</div><!-- .form-group -->
-			<div class="form-group row">
-				<label for="or" class="col-sm-2 control-label"><span tal:content="python:here.getZMILangStr('OR')">Or</span></label>
-				<div class="col-sm-10">
-					<select class="form-control form-control-sm" id="init" name="init" onfocus="zmiExpandConfFiles(this,'.charfmt.')" onmouseover="zmiExpandConfFiles(this,'.charfmt.')">
-						<option value="" tal:content="python:'--- %s ---'%here.getZMILangStr('BTN_INIT')">--- Init... ---</option>
-					</select>
-				</div><!-- .col-sm-10 -->
+			<label class="col-12 control-label text-left"><span tal:content="python:here.getZMILangStr('OR').lower()">Or</span></label>
+			<div class="form-group col-12 mt-2">
+				<select class="form-control" id="init" name="init"
+					onfocus="zmiExpandConfFiles(this,'.charfmt.')"
+					onmouseover="zmiExpandConfFiles(this,'.charfmt.')">
+					<option value="" tal:content="python:'--- %s ---'%here.getZMILangStr('BTN_INIT')">--- Init... ---</option>
+				</select>
 			</div><!-- .form-group -->
-			<div class="form-group row">
-				<div class="col-sm-10">
-					<button type="submit" name="btn" class="btn btn-primary" value="BTN_IMPORT" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
-				</div><!-- .col-sm-10 -->
+			<div class="form-group row mt-5 mr-0">
+				<div class="controls save">
+					<button type="submit" name="btn" class="btn btn-primary" value="BTN_IMPORT" 
+						tal:content="python:here.getZMILangStr('BTN_IMPORT')">
+						Import
+					</button>
+				</div>
 			</div><!-- .form-group -->
 		</form>
 	</div><!-- .inner -->

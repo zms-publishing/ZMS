@@ -271,12 +271,12 @@ class Exportable(_filtermanager.FilterItem):
         pass
       
       get_data = REQUEST.get( 'download', 1) == 1
-      
+      content_type = 'application/data'
+
       # ZEXP.
       if export_format == 0:
         filename = '%s.zexp'%self.id
         export = self.aq_parent.manage_exportObject( id=self.id, download=1)
-        content_type = 'application/data'
       
       # HTML.
       elif export_format == 1:
@@ -580,7 +580,7 @@ class Exportable(_filtermanager.FilterItem):
       rtn = _fileutil.buildZipArchive( zipfiles, get_data)
       
       #-- Remove temporary folder.
-      if not self.getConfProperty('ZMS.debug', 0):
+      if not self.getConfProperty('ZMS.mode.debug', 0):
         _fileutil.remove( tempfolder, deep=1)
       
       return rtn
@@ -607,7 +607,7 @@ class Exportable(_filtermanager.FilterItem):
       rtn = _fileutil.buildZipArchive( zipfiles, get_data)
       
       #-- Remove temporary folder.
-      if not self.getConfProperty('ZMS.debug', 0):
+      if not self.getConfProperty('ZMS.mode.debug', 0):
         _fileutil.remove( tempfolder, deep=1)
       
       return rtn

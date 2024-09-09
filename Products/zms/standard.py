@@ -252,8 +252,8 @@ def zmi_paths(context):
   # ZMI resources without Zope base css/js
   # css_paths = ("/++resource++zmi/bootstrap-4.6.0/bootstrap.min.css","/++resource++zmi/fontawesome-free-5.15.2/css/all.css")
   # js_paths = ("/++resource++zmi/jquery-3.5.1.min.js","/++resource++zmi/bootstrap-4.6.0/bootstrap.bundle.min.js",)
-  kw["css_paths"] = css_paths(context)[:-1]
-  kw["js_paths"] = js_paths(context)[:-2]
+  kw["css_paths"] = list(css_paths(context))[:-1]
+  kw["js_paths"] = list(js_paths(context))[:-2]
   return kw
 
 
@@ -1951,7 +1951,7 @@ def str_json(i, encoding='ascii', errors='xmlcharrefreplace', formatted=False, l
   elif type(i) is dict:
     k = list(i)
     if sort_keys:
-      k = sorted(i)
+      k = sorted(i, key=lambda x: x or '')
     return '{' \
         + (['','\n'][formatted]+(['','\t'][formatted]*level)+',').join(['"%s":%s'%(x,str_json(i[x],encoding,errors,formatted,level+1,allow_booleans,sort_keys)) for x in k]) \
         + '}'

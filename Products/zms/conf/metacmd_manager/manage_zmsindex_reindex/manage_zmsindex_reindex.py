@@ -64,7 +64,7 @@ def manage_zmsindex_reindex( self):
         <input class="form-control" id="page_size" name="page_size:int" type="number" value="200" />
       </div>
     </div><!-- .form-group -->
-    <div class="form-group row">
+    <div class="form-group row d-none">
       <label for="root_node" class="col-sm-2 control-label">Root</label>
       <div class="col-sm-10">
         <input class="form-control url-input" id="root_node" name="root_node" type="text" value="{$}" />

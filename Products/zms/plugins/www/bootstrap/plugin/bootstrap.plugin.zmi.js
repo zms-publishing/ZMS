@@ -1507,12 +1507,26 @@ ZMIActionList.prototype.over = function(el, e, cb) {
 			if (o==0 && i==1) {
 				$ul.append('<a class="dropdown-item" href="javascript:zmiToggleSelectionButtonClick($(\'li.zmi-item' + (id==''?':first':'#zmi_item_'+id) + '\'))"><i class="fas fa-check-square"></i> '+getZMILangStr('BTN_SLCTALL')+'/'+getZMILangStr('BTN_SLCTNONE')+'</a>');
 			}
+			// Standard commands/workflow provide 3 parameters
 			var action = actions[i];
 			var optlabel = action[0];
 			var optvalue = action[1];
-			var opticon = action.length>2?action[2]:'';
-			var optid = action.length>3?action[3]:'';
-			var opttitle = action.length>4?action[4]:'';
+			var opticon = action[2];
+			var optid = '';
+			var opttitle = '';
+			// Content objects provide 5 parameters
+			if (action.length==5) {
+				optid = action[3];
+				opttitle = action[4];
+			}
+			// Custom commands provide 6 parameters
+			if (action.length==6) {
+				var optlabel = action[1];
+				var optvalue = action[2];
+				var opticon = action[3];
+				var optid = action[4];
+				var opttitle = action[5];
+			}
 			if (optlabel.indexOf("-----") == 0 && optlabel.lastIndexOf("-----") > 0) {
 				opticon = '<i class="fas fa-caret-down"></i>';
 				optlabel = optlabel.substring("-----".length);
@@ -1754,19 +1768,27 @@ function zmiToggleSelectionButtonClick(sender,v) {
  * zmiBrowseObjs
  */
 function zmiBrowseObjs(fmName, elName, lang) {
-	var elValue = '';
+	let title = getZMILangStr('CAPTION_CHOOSEOBJ');
+	let href = "manage_browse_iframe";
+	let elValue = '';
 	if (fmName.length>0 && elName.length>0) {
-		elValue = $('form[name='+fmName+'] input[name="'+elName+'"]').val();
-	}
-	var title = getZMILangStr('CAPTION_CHOOSEOBJ');
-	var href = "manage_browse_iframe";
+		// Get value of close input field, maybe in a modal dialog
+		$('form[name='+fmName+'] input[name="'+elName+'"]').each(function() {
+			if ( $(this).parents('div.modal.show').length > 0 ) {
+				elValue = $(this).val();
+				return false; // Exit the loop
+			} else {
+				elValue = $(this).val();
+			}
+		});
+	};
 	href += '?lang='+lang;
 	href += '&defaultLang='+lang;
 	href += '&fmName='+fmName;
 	href += '&elName='+elName;
-	href += '&elValue='+escape(elValue);
+	href += '&elValue='+encodeURIComponent(elValue);
 	if ( typeof selectedText == "string") {
-		href += '&selectedText=' + escape( selectedText);
+		href += '&selectedText=' + encodeURIComponent( selectedText);
 	}
 	zmiModal(null,{
 		body: '<iframe src="'+href+'" style="width:100%; min-width:'+$ZMI.getConfProperty('zmiBrowseObjs.minWidth','200px')+'; height:100%; min-height: '+$ZMI.getConfProperty('zmiBrowseObjs.minHeight','62vh')+'; border:0;"></iframe>',

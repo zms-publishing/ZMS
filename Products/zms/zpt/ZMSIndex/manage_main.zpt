@@ -37,31 +37,32 @@ function openWindow(url) {
 <div class="card-body">
 	<div class="form-group zms4-row mb-0">
 		<div class="col-sm-12" data-label="ZMS-Clients">
-			<div class="btn-group zmi-sitemap-controls">
-				<div title="De-/Select All"
-					class="btn btn-secondary">
-					<input id="zmi-sitemap-select" type="checkbox" checked="checked"
-						onclick="if( this.checked ){ $('.zmi-sitemap ul input').prop('checked', true) } else { $('.zmi-sitemap ul input').prop('checked', false) }"
-					/>
+			<div class="zmi-sitemap-controls-container">
+				<div class="btn-group zmi-sitemap-controls">
+					<div title="Expand Object Tree (Hint: Mind System Load in Case!)"
+						class="btn btn-secondary"
+						onclick="return zmiExpandObjectTree(-1);">
+						<i class="fas fa-plus-square"></i>
+					</div>
+					<div title="De-/Select All"
+						onclick="zmiToggleSelectionButtonClick(this)"
+						class="btn btn-secondary">
+						<i class="fas fa-check-square"></i>
+					</div>
+					<div title="Expand/Compress Sitemap View"
+						class="btn btn-secondary" id="zmi-sitemap-expand"
+						onclick="$('.zmi-sitemap-container').toggleClass('full');$('#zmi-sitemap-expand i').toggleClass('fa-expand-arrows-alt fa-compress-arrows-alt')">
+						<i class="fas fa-expand-arrows-alt"></i>
+					</div>
 				</div>
-				<div title="Expand Object Tree (Hint: Mind System Load in Case!)"
-					class="btn btn-secondary"
-					onclick="return zmiExpandObjectTree(-1);">
-					<i class="fas fa-plus-square"></i>
-				</div>
-				<div title="Expand/Compress Sitemap View"
-					class="btn btn-secondary" id="zmi-sitemap-expand"
-					onclick="$('.zmi-sitemap-container').toggleClass('full');$('#zmi-sitemap-expand i').toggleClass('fa-expand-arrows-alt fa-compress-arrows-alt')">
-					<i class="fas fa-expand-arrows-alt"></i>
-				</div>
-			</div>
-			<div class="zmi-sitemap-container">
 				<div class="progress">
 					<div class="progress-bar progress-bar-striped progress-bar-animated active"
 						role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
 						<span></span>
 					</div>
 				</div>
+			</div>
+			<div class="zmi-sitemap-container">
 				<div class="zmi-sitemap"><!-- .zmi-sitemap --></div>
 			</div>
 		</div><!-- .col-sm-10 -->
@@ -163,25 +164,26 @@ function openWindow(url) {
 <script>
 function set_progress( v, func_name ) {
 	var perc = Math.round(v * 10000) / 100;
-	var bar_type_dict = {'reindex':'warning','test':'info','resync':'danger'};
+	var bar_type_dict = {'reindex':'primary','test':'primary','resync':'danger'};
 	var bar_type = bar_type_dict[func_name];
-	$('.zmi-sitemap-container .progress .progress-bar')
+	$('.zmi-sitemap-controls-container .progress .progress-bar')
 		.addClass('active')
 		.addClass('bg-' + bar_type)
 		.attr('aria-valuenow',perc)
 		.css('width',perc + '%')
 		.find('span').text( perc + '%' );
 	if ( perc == 100 ) {
-		$('.zmi-sitemap-container .progress .progress-bar')
+		$('.zmi-sitemap-controls-container .progress .progress-bar')
 			.removeClass('active')
 			.removeClass('progress-bar-animated')
 			.removeClass('progress-bar-striped');
 	}
 }
 function reset_progress() {
-	$('.zmi-sitemap-container .progress .progress-bar')
+	$('.zmi-sitemap-controls-container .progress .progress-bar')
 		.addClass('progress-bar-striped')
 		.addClass('progress-bar-animated')
+		.removeClass('bg-primary')
 		.removeClass('bg-info')
 		.removeClass('bg-warning')
 		.removeClass('bg-danger')

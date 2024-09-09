@@ -13,7 +13,7 @@ class manage_addBulk:
 	description = ""
 
 	# Execution
-	execution = 0
+	execution = False
 
 	# Icon_clazz
 	icon_clazz = "fas fa-home"
@@ -47,5 +47,5 @@ class manage_addBulk:
 
 	# Impl
 	class Impl:
-		manage_addclient = {"id":"manage_addBulk"
+		manage_addbulk = {"id":"manage_addBulk"
 			,"type":"External Method"}

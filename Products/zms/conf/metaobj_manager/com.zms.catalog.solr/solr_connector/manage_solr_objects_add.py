@@ -1,6 +1,3 @@
-from Products.zms import standard
-import json
-from urllib.parse import urlparse
 import requests
 
 def bulk_solr_add_documents(self, sources):

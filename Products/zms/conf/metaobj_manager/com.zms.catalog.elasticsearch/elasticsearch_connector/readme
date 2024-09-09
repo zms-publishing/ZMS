@@ -7,7 +7,7 @@ Before letting Elasticsearch create an index, Elasticsearch needs to know how to
 
 the _ZMS Catalog Adapter GUI_ helps creating that schema: any content types (usually _pages_) and attributes can be selected to get indexed. Usually the _standard_html_-attribute provides the full text whereas other attributes can be added specifically like _title_, _titlealt_, _description_. Their content may be applied when search results are listed. 
 
-ZMS will send to the index only the content of the by _ZMS Catalog Adapter_ selected contenttypes and its selected attributes. So before starting, please makre sure that the selections in the _ZMS Catalog Adapter GUI_  is correct. 
+ZMS will send to the index only the content of the by _ZMS Catalog Adapter_ selected contenttypes and its selected attributes. So before starting, please make sure that the selections in the _ZMS Catalog Adapter GUI_  is correct. 
 
 ###### Start with _Create Schema_ !
 
@@ -52,4 +52,28 @@ elasticsearch.suggest.fields.addresses = [
     "lastname",
     "city"
     ]
+</pre>
+
+
+###### Score Boosting
+
+To boost the relevance of certain fields in the search results, the Opensearch connector GUI offers a field "Score-Script (Painless)" (saved as ZMS configuration property `elasticsearch.score_script`); here a "Painless" script shall be defined using a JAVA-like syntax. The example script returns a value that is multiplied 5x with the default score for certain meta-ids and dates:
+
+<pre>
+int wght = 1;
+ZonedDateTime dt_limit = ZonedDateTime.parse('2023-01-01T00:00:00+00:00');
+ZonedDateTime dt_doc = dt_limit;
+if ( doc.containsKey('created_dt') ){
+	dt_doc = doc['created_dt'].value;
+}
+if ( doc.containsKey('meta_id') ) {
+	if (
+		doc['meta_id'][0] == 'ZMS' ||
+		doc['meta_id'][0] == 'News' ||
+		( doc['meta_id'][0] == 'Joboffer' && dt_doc.isAfter(dt_limit) )
+	) {
+		wght += 4
+	}
+}
+return _score * wght
 </pre>

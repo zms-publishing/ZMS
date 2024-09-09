@@ -26,7 +26,7 @@ class zcatalog_connector:
 	package = "com.zms.catalog.zcatalog"
 
 	# Revision
-	revision = "1.0.1"
+	revision = "1.0.4"
 
 	# Type
 	type = "ZMSLibrary"
@@ -57,7 +57,7 @@ class zcatalog_connector:
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
-			,"name":"Object: Catalog to ZCatalog"
+			,"name":"Objects: Catalog to ZCatalog"
 			,"repetitive":0
 			,"type":"External Method"}
 
@@ -66,7 +66,16 @@ class zcatalog_connector:
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
-			,"name":"Object: Uncatalog from ZCatalog"
+			,"name":"Objects: Uncatalog from ZCatalog"
+			,"repetitive":0
+			,"type":"External Method"}
+
+		manage_zcatalog_objects_clear = {"default":""
+			,"id":"manage_zcatalog_objects_clear"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"Objects: Clear Client from ZCatalog"
 			,"repetitive":0
 			,"type":"External Method"}
 

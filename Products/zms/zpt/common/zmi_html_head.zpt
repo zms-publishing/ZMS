@@ -38,7 +38,7 @@
 			added_js_zmi_href python:added_js_zmi.replace('$ZMS_HOME/',ZMS_HOME).replace('$ZMS_THEME/',ZMS_THEME);"
 		tal:condition="python:added_js_zmi.find('.js')>-1"
 		tal:attributes="src added_js_zmi_href"></script>
-	<tal:block tal:condition="python:not standard.get_session_value(here,'did_update_userdata')">
+	<tal:block tal:condition="python:not standard.get_session_value(here,'did_update_userdata') and 'Manager' not in request.get('AUTHENTICATED_USER').getRoles()">
 		<tal:block tal:condition="python:here.getUserAttr(request['AUTHENTICATED_USER'],'forceChangePassword',0)==1">
 			<script type="text/javascript">$(function(){$ZMI.forceChangePassword()});</script>
 		</tal:block>

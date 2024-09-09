@@ -43,8 +43,16 @@
 	<div class="container-fluid skin-bg-gray">
 		<div class="container">
 			<section class="search-form">
-				 <form id="site-search-content" action="#" method="get" 
-				 	tal:attributes="data-root-url python:zmscontext.getRootElement().absolute_url()">
+				<form id="site-search-content" action="#" method="get" 
+					tal:attributes="data-root-url python:zmscontext.getRootElement().absolute_url()">
+					<input type="hidden" id="home_id" name="home_id" 
+						tal:attributes="value python:zmscontext.getHome().getId()" />
+					<input type="hidden" id="multisite_search" name="multisite_search" 
+						tal:attributes="value python:zmscontext.attr('multisite_search')" />
+					<input type="hidden" id="multisite_exclusions" name="multisite_exclusions" 
+						tal:attributes="value python:','.join(zmscontext.attr('multisite_exclusions'))" />
+					<input type="hidden" id="lang" name="lang"
+						tal:attributes="value python:request.get('lang',zmscontext.getPrimaryLanguage())" />
 					<div class="row skin-gutter-wide search-form no-margin-bottom">
 						<div class="col-lg-6">
 							<h2 class="small-font">Suche nach Stichworten</h2>
@@ -65,7 +73,7 @@
 	</div>
 
 	<div class="container-fluid">
-		<div class="container">
+		<div class="container" id="container_results">
 			<section id="search_results" class="search-results content-tabs">
 			</section>
 		</div>

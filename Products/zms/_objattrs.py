@@ -669,6 +669,7 @@ class ObjAttrs(object):
       obj_vers = self.getObjVersion(REQUEST)
       obj_attrs = self.getObjAttrs()
       now = datetime.datetime.now()
+      dst = time.daylight == 1 and 1 or 0 # Daylight saving time.
       for key in ['active', 'attr_active_start', 'attr_active_end']:
         if key in obj_attrs:
           obj_attr = obj_attrs[key]
@@ -690,7 +691,7 @@ class ObjAttrs(object):
               if isinstance(value, time.struct_time):
                 # Convert time.struct_time to datetime tuple.
                 value = tuple(value[:8]) + (0,)
-              dt = datetime.datetime.fromtimestamp(time.mktime(value))
+              dt = datetime.datetime.fromtimestamp(time.mktime(value) - (dst * 3600))
               b = b and now > dt
               if dt > now and self.REQUEST.get('ZMS_CACHE_EXPIRE_DATETIME', dt) >= dt:
                 self.REQUEST.set('ZMS_CACHE_EXPIRE_DATETIME',dt)
@@ -700,7 +701,7 @@ class ObjAttrs(object):
               if isinstance(value, time.struct_time):
                 # Convert time.struct_time to datetime tuple.
                 value = tuple(value[:8]) + (0,)
-              dt = datetime.datetime.fromtimestamp(time.mktime(value))
+              dt = datetime.datetime.fromtimestamp(time.mktime(value) - (dst * 3600))
               b = b and dt > now
               if dt > now and self.REQUEST.get('ZMS_CACHE_EXPIRE_DATETIME', dt) >= dt:
                 self.REQUEST.set('ZMS_CACHE_EXPIRE_DATETIME',dt)

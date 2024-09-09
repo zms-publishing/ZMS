@@ -273,8 +273,7 @@ class Builder(object):
             self.oCurrNode.xmlOnEndElement()
 
             # set parent node as current node
-            oLastNode = getattr(self.oCurrNode,'oLastNode',None)
-            if oLastNode:
+            if hasattr(self.oCurrNode,'oLastNode'):
               delattr(self.oCurrNode,'oLastNode')
             self.oLastNode = self.oCurrNode
             self.oCurrNode = self.oCurrNode.xmlGetParent()

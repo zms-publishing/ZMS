@@ -548,9 +548,22 @@ class ZMS(
         </tal:block>
       """
       path = request.path
-      maintenance_mode = bool(self.getConfProperty('ZMS.mode.maintenance', False))
-      if maintenance_mode and 'manage_changeProperties' in path:
-        raise zExceptions.HTTPServiceUnavailable('Maintenance')
+      maintenance_conf_key = 'ZMS.mode.maintenance'
+      maintenance_mode = bool(self.getConfProperty(maintenance_conf_key, False))
+      is_maintenance_mode_change = 'manage_customizeSystem' in path and request.get('conf_key') == maintenance_conf_key
+      # Only allow ZMS.mode.maintenance changes in maintenance mode.
+      if maintenance_mode and not is_maintenance_mode_change:
+        import transaction
+        import ZODB.Connection
+        t = transaction.get()
+        def maintenance_hook():
+          # Check if there are ZODB changes - if there is a ZODB.Connection.Connection resource manager.
+          # Transaction._resources contains all resource managers which commit their changes sequentially:
+          # https://github.com/zopefoundation/transaction/blob/6d4785159c277067f2ec95158884870a92660220/src/transaction/_transaction.py#L421
+          for resource in t._resources:
+            if isinstance(resource, ZODB.Connection.Connection):
+              raise zExceptions.HTTPServiceUnavailable('Maintenance')
+        t.addBeforeCommitHook(maintenance_hook)
 
 ################################################################################
 

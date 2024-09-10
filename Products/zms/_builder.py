@@ -151,7 +151,8 @@ class Builder(object):
 
         oLastNode = getattr(self.oCurrNode,'oLastNode',None)
         if oLastNode:
-          delattr(self.oCurrNode,'oLastNode')
+          try: delattr(self.oCurrNode,'oLastNode')
+          except: pass
         delattr(self,'oCurrNode')
         return oLastNode
 
@@ -273,8 +274,10 @@ class Builder(object):
             self.oCurrNode.xmlOnEndElement()
 
             # set parent node as current node
-            if hasattr(self.oCurrNode,'oLastNode'):
-              delattr(self.oCurrNode,'oLastNode')
+            oLastNode = getattr(self.oCurrNode,'oLastNode',None)
+            if oLastNode:
+              try: delattr(self.oCurrNode,'oLastNode')
+              except: pass
             self.oLastNode = self.oCurrNode
             self.oCurrNode = self.oCurrNode.xmlGetParent()
 

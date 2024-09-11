@@ -562,6 +562,10 @@ class ZMS(
           # https://github.com/zopefoundation/transaction/blob/6d4785159c277067f2ec95158884870a92660220/src/transaction/_transaction.py#L421
           for resource in t._resources:
             if isinstance(resource, ZODB.Connection.Connection):
+              # Reset response content type (WGSIPublisher sets it to "text/plain" per default if unset)
+              # and lock status (the zException does not get mapped correctly)
+              request.response.setHeader('Content-Type', 'text/html;charset=utf-8')
+              request.response.setStatus(503, lock=True)
               raise zExceptions.HTTPServiceUnavailable('Maintenance')
         t.addBeforeCommitHook(maintenance_hook)
 

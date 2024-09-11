@@ -43,7 +43,7 @@ def get_elasticsearch_client(self):
 	return client
 
 def manage_elasticsearch_destroy( self):
-	index_name = self.getRootElement().getHome().id
+	index_name = self.getConfProperty('elasticsearch.index_name', self.getRootElement().getHome().id )
 	client = get_elasticsearch_client(self)
 	resp_text = '//RESPONSE\n'
 	try:

@@ -45,7 +45,7 @@ def get_elasticsearch_client(self):
 
 def bulk_elasticsearch_delete(self, sources):
 	client = get_elasticsearch_client(self)
-	index_name = self.getRootElement().getHome().id
+	index_name = self.getConfProperty('elasticsearch.index_name', self.getRootElement().getHome().id )
 	actions = []
 	# Name adaption to elasticsearch schema
 	for x in sources:

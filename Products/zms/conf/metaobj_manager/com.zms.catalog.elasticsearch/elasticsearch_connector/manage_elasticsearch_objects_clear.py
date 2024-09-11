@@ -50,7 +50,8 @@ def bulk_elasticsearch_delete(self, actions):
 
 def manage_elasticsearch_objects_clear( self, home_id):
 	index_names = []
-	index_names.append(self.getRootElement().getHome().id)
+	index_name = self.getConfProperty('elasticsearch.index_name', self.getRootElement().getHome().id )
+	index_names.append(index_name)
 	query = {
 		"query": {
 			"query_string": {

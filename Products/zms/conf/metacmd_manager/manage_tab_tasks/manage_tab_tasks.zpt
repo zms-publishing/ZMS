@@ -11,6 +11,7 @@
 	global obs python:[]">
 
 <form class="form-horizontal card border-bottom" role="form" name="form0" method="get">
+	<input type="hidden" name="id" value="manage_tab_tasks" />
 	<legend><span tal:replace="python:here.getZMILangStr('TAB_TASKS')">the task-type</span></legend>
 	<div class="card-body">
 		<div class="form-group row task_type my-0">

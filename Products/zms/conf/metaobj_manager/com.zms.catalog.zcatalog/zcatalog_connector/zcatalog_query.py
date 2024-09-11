@@ -19,9 +19,17 @@ def zcatalog_query( self, REQUEST=None):
   q = request.get('q','')
   fq = request.get('fq','')
   lang = standard.nvl(request.get('lang'), self.getPrimaryLanguage())
+  home_id = request.get('home_id', '')
+  multisite_search = int(request.get('multisite_search', 1))
+  multisite_exclusions = request.get('multisite_exclusions', '').split(',')
   root = self.getRootElement()
   zcatalog = getattr(root, 'catalog_%s'%lang)
-  
+
+  if multisite_search==0 and len(home_id) > 0:
+    if fq:
+      fq += ','
+    fq += 'home_id_s:'+home_id
+
   # Find search-results.
   items = []
   prototype = {}
@@ -34,6 +42,17 @@ def zcatalog_query( self, REQUEST=None):
       fqv = fqs[fqs.find(':')+1:]
       fqv = umlaut_quote(self, fqv)
       prototype[fqk] = fqv
+
+  # @TODO: Implement multisite-search
+  # # Multisite-search: show results of all ZMS-clients except the ones in multisite_exclusions
+  # if multisite_search==1 and multisite_exclusions:
+  #   prototype['zcat_index_home_id'] = {'query':'', 'operator':'AND'}
+  #   exclusion_string = ''
+  #   for exclusion in multisite_exclusions:
+  #     exclusion_string += exclusion and '-%s '%exclusion or ''
+  #   if exclusion_string:
+  #     prototype['zcat_index_home_id']['query'] = exclusion_string
+
   for index in zcatalog.indexes():
     if index.find('zcat_index_')==0:
       query = copy.deepcopy(prototype)
@@ -90,4 +109,3 @@ def zcatalog_query( self, REQUEST=None):
 
   response = {'status':0, 'numFound':num_found, 'start': start, 'docs':docs_list}
   return json.dumps(response)
-

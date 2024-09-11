@@ -1276,7 +1276,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         message = standard.url_quote(message)
         if message == 'ERROR':
           return RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_error_message=ERROR'%(target.absolute_url(), lang))
-      return RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s'%(target.absolute_url(), lang, message))
+        return RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s'%(target.absolute_url(), lang, message))
 
 
     # --------------------------------------------------------------------------

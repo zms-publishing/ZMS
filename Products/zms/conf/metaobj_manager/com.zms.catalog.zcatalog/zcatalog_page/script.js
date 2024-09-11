@@ -26,7 +26,7 @@ $(function() {
 		var total = res_processed.total;
 		var hb_results_html = hb_results_tmpl(res_processed);
 		$('.search-results').html( hb_results_html );
-		$('html, body').animate({scrollTop: $("#search_results").offset().top }, 1000);
+		$('html, body').animate({scrollTop: $("#site-search-content").offset().top }, 1000);
 
 		//# Add pagination ###################
 		var fn = (pageIndex) => {

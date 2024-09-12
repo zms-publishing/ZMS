@@ -12,7 +12,10 @@
 <tal:block tal:define="global langIds python:here.getLangIds(sort=True)">
 
 <form class="form-horizontal card" id="changeLanguagesForm" 
-	action="manage_changeLanguages" method="post" enctype="multipart/form-data">
+	action="manage_changeLanguages" method="post" enctype="multipart/form-data"
+	hx-boost="true" xmlns:hx-on="https://htmx.org/"
+	hx-confirm="Are you sure?">
+	<input type="hidden" name="target" value="languages" />
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<legend class="has_tooltip" 
 		tal:attributes="title python:here.getZMILangStr('TIP_MULTILANG')" 
@@ -42,7 +45,20 @@
 					<tal:block tal:define="dummy python:langStack.append(si['parent'])"></tal:block>
 				</tal:block>
 				<tr tal:attributes="id python:'lang%s'%'_'.join(langStack+[langId])">
-					<td class="meta-sort text-center"><input type="checkbox" name="ids:list" tal:attributes="value python:langId" tal:condition="python:langId!=here.getPrimaryLanguage()"></td>
+					<td class="meta-sort text-center">
+						<div class="btn-group" tal:condition="python:langId!=here.getPrimaryLanguage()">
+							<span class="btn btn-secondary btn-sm">
+								<input type="checkbox" name="ids:list" tal:attributes="value python:langId" />
+							</span>
+							<button class="btn btn-secondary btn-sm" type="submit" name="btn" value="BTN_DELETE"
+								hx-trigger="click"
+								hx-on:click="$('input', $(this).closest('td')).prop('checked', true)"
+								hx-target="body"
+								tal:attributes="title python:here.getZMILangStr('BTN_DELETE')">
+								<i class="fas fa-times"></i>
+							</button>
+						</div>
+					</td>
 					<td><tal:block tal:content="langId">langId</tal:block></td>
 					<td><input class="form-control form-control-sm" type="text" tal:attributes="name python:'%s_label'%langId; value python:langObj['label']"></td>
 					<td>

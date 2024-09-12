@@ -883,37 +883,20 @@ $(function(){
 		let new_btn_html = `
 			<span class="btn btn-secondary btn-sm mr-1 w-100" style="color:#999" 
 				onclick="javascript:$(this).closest('tr').remove()">
-				<i class="fas fa-times"></i>
+				<i class="fas fa-undo-alt"></i>
 			</span>
 		`;
 
 		// #### TABLES: Process table specific
 		if (table_id != 'meta_languages') {
 			old_id_html = `<input type="hidden" name="old_ids:list" value="new${new_row_counter}">`;
-			sort_options_len = $('#' + table_id + ' tbody tr').length - 2;
-			for (let i = 0; i < sort_options_len; i++) {
-				if (i == sort_options_len - 1) {
-					sort_options_html += `<option value="${i+1}" selected>${i+1}</option>`;
-				} else {
-					sort_options_html += `<option value="${i+1}">${i+1}</option>`;
-				}
-			};
 			new_btn_html = `
-				<div class="input-group input-group-sm">
-					${old_id_html}
-					<select class="zmi-sort form-control-sm"
-						title="Important Note: Changing sort order gets possible after Save & Reload"
-						disabled="disabled">
-						${sort_options_html}
-					</select>
-					<div class="input-group-append">
-						<span class="btn btn-secondary" style="color:#999"
-							title="Revoke new Meta Attribute"
-							onclick="javascript:$(this).closest('tr').remove()">
-							<i class="fas fa-times"></i>
-						</span>
-					</div>
-				</div>
+				${old_id_html}
+				<span class="btn btn-secondary btn-sm mr-1 w-100" style="color:#999"
+					title="Revoke new Meta Attribute"
+					onclick="javascript:$(this).closest('tr').remove()">
+					<i class="fas fa-undo-alt"></i>
+				</span>
 			`;
 		}
 

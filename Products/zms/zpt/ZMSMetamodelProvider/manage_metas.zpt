@@ -279,7 +279,7 @@ function zmiFormSubmit(sender,d) {
 				<span class="btn btn-secondary btn-sm mr-1 w-100" style="color:#999"
 					title="Revoke new Meta Attribute"
 					onclick="javascript:$(this).closest('tr').remove()">
-					<i class="fas fa-times"></i>
+					<i class="fas fa-undo-alt"></i>
 				</span>
 			`;
 

@@ -118,8 +118,8 @@ function zmiFormSubmit(sender,d) {
 	</tbody>
 	</table>
 	<div class="controls save">
-		<button title="Save Language Definitions" name="btn" type="submit" class="btn btn-primary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-		<button title="Delete Selected Language Definitions" name="btn" type="submit" class="btn btn-secondary" value="BTN_DELETE" tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</button>
+		<button title="Save Language Definitions" name="btn" type="submit" class="btn btn-primary" value="BTN_SAVE"><i class="fas fa-save"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</tal:block></button>
+		<button title="Delete Selected Language Definitions" name="btn" type="submit" class="btn btn-secondary" value="BTN_DELETE"><i class="fas fa-times"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block></button>
 	</div>
 </form>
 
@@ -155,7 +155,18 @@ function zmiFormSubmit(sender,d) {
 	</thead>
 	<tbody>
 	<tr tal:repeat="langDict python:here.getLangDict()">
-		<td class="meta-sort text-center"><input type="checkbox" name="ids:list" tal:attributes="value python:langDict['key']; disabled python:['','disabled'][int(len(langDict.get('acquired',[]))>0)]"/></td>
+		<td class="meta-sort text-center">
+			<div class="input-group input-group-sm">
+				<span class="btn btn-secondary">
+					<input type="checkbox" name="ids:list" tal:attributes="value python:langDict['key']; disabled python:['','disabled'][int(len(langDict.get('acquired',[]))>0)]"/>
+				</span>
+				<div class="input-group-append">
+					<a class="btn btn-secondary" href="javascript:;" 
+						tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'BTN_DELETE\',\'ids:list\':\'%s\'})'%langDict['key']; title python:here.getZMILangStr('BTN_DELETE')"
+						><i class="fas fa-times"></i></a>
+				</div>
+			</div>
+		</td>
 		<td tal:attributes="title python:'getLangStr(\'%s\',lang)'%langDict['key']" tal:content="python:langDict['key']">Key</td>
 		<td tal:repeat="langId langIds"><div class="single-line"><textarea class="form-control form-control-sm" tal:attributes="name python:'%s_value_%s'%(langDict['key'],langId); disabled python:['','disabled'][int(langId in langDict.get('acquired',[]))]" tal:content="python:langDict.get(langId,'')"></textarea></div></td>
 	</tr>
@@ -167,8 +178,8 @@ function zmiFormSubmit(sender,d) {
 	</tbody>
 	</table>
 	<div class="controls save">
-		<button title="Save Dictionary"  name="btn" type="submit" class="btn btn-primary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-		<button title="Delete Selected Dictionary Terms" name="btn" type="submit" class="btn btn-secondary" value="BTN_DELETE" tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</button>
+		<button title="Save Dictionary"  name="btn" type="submit" class="btn btn-primary" value="BTN_SAVE"><i class="fas fa-save"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</tal:block></button>
+		<button title="Delete Selected Dictionary Terms" name="btn" type="submit" class="btn btn-secondary" value="BTN_DELETE"><i class="fas fa-times"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block></button>
 	</div>
 </form>
 
@@ -277,7 +288,9 @@ function zmiFormSubmit(sender,d) {
 						let newname = $(this).attr('name').replace('_0', '_' + counter);
 						let newval  = 'new'+counter;
 						$(this).attr('name',newname);
-						$(this).val(newval);
+						if (!('select'==tagname.toLowerCase())) {
+							$(this).val(newval);
+						}
 					});
 				});
 	
@@ -288,7 +301,7 @@ function zmiFormSubmit(sender,d) {
 				// Insert the new row
 				$new_row.insertBefore($where_insert);
 				// Reset the clone template
-				$where_insert.find('input:not([type="checkbox"]),select,textarea').each(function() {
+				$where_insert.find('input:not([type="checkbox"]),textarea').each(function() {
 					$(this).val(undefined);
 				});
 				// New field set: reset to disabled inputs

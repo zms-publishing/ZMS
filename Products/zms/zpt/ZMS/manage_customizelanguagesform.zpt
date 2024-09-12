@@ -9,50 +9,10 @@
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[{'label':'TAB_LANGUAGES','action':'manage_customizeLanguagesForm'}])">zmi_breadcrumbs</tal:block>
 
-<script>
-
-/**
- * Export xml.
- */
-function zmiExportBtnClick(sender) {
-	var fm = $(sender).parents("form")[0];
-	var href = fm.action+'?lang='+getZMILang()+'&btn=BTN_EXPORT';
-	$('input[name="ids:list"]:checked',fm).each(function(){
-			href += '&'+$(this).attr("name")+'='+$(this).val();
-		});
-	window.open(href);
-	return false;
-}
-
-/**
- * Delete object.
- */
-function zmiDeleteObjBtnClick(sender,d) {
-	if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
-		zmiFormSubmit(sender,d);
-	}
-}
-
-/**
- * Submit form with given parameters.
- */
-function zmiFormSubmit(sender,d) {
-	var $fm = $(sender).closest("form");
-	var html = '';
-	for (var i in d) {
-		$('input[name="' + i + '"]',$fm).remove();
-		html += '<input type="hidden" name="' + i + '" value="' + d[i] +'"/>';
-	}
-	$fm
-		.append(html)
-		.submit();
-}
-
-</script>
-
 <tal:block tal:define="global langIds python:here.getLangIds(sort=True)">
 
-<form class="form-horizontal card" id="changeLanguagesForm" action="manage_changeLanguages" method="post" enctype="multipart/form-data">
+<form class="form-horizontal card" id="changeLanguagesForm" 
+	action="manage_changeLanguages" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<legend class="has_tooltip" 
 		tal:attributes="title python:here.getZMILangStr('TIP_MULTILANG')" 
@@ -123,8 +83,11 @@ function zmiFormSubmit(sender,d) {
 	</div>
 </form>
 
-<form class="form-horizontal card" id="changeLangDictForm" action="manage_changeLangDictProperties" method="post" enctype="multipart/form-data">
-	<input type="hidden" name="lang" tal:attributes="value request/lang">
+<form class="form-horizontal card" id="changeLangDictForm" 
+	action="manage_changeLangDictProperties" method="post" enctype="multipart/form-data"
+	hx-boost="true" xmlns:hx-on="https://htmx.org/">
+	<input type="hidden" name="target" value="languages" />
+	<input type="hidden" name="lang" tal:attributes="value request/lang" />
 	<legend class="has_tooltip"
 		tal:attributes="title python:here.getZMILangStr('TIP_MULTILANGDICT')"
 		tal:content="python:here.getZMILangStr('ATTR_DICTIONARY')">
@@ -153,17 +116,27 @@ function zmiFormSubmit(sender,d) {
 		<th tal:repeat="langId langIds" tal:content="python:here.getLanguageLabel(langId)">Language-Label</th>
 	</tr>
 	</thead>
-	<tbody>
-	<tr tal:repeat="langDict python:here.getLangDict()">
+	<tbody hx-confirm="Are you sure?" hx-target="closest tr" hx-swap="outerHTML swap:1s"
+		tal:attributes="hx-confirm python:here.getZMILangStr('MSG_CONFIRM_DELOBJ')">
+	<tr tal:repeat="langDict python:here.getLangDict()" 
+		tal:attributes="id python:'langkey_%s'%(langDict['key'])">
 		<td class="meta-sort text-center">
 			<div class="btn-group">
 				<span class="btn btn-secondary btn-sm">
-					<input type="checkbox" name="ids:list" tal:attributes="value python:langDict['key']; disabled python:['','disabled'][int(len(langDict.get('acquired',[]))>0)]"/>
+					<input type="checkbox" name="ids:list" 
+						tal:attributes="
+							value python:langDict['key']; 
+							disabled python:['','disabled'][int(len(langDict.get('acquired',[]))>0)]"/>
 				</span>
-				<a class="btn btn-secondary btn-sm" href="javascript:;" 
-					tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'BTN_DELETE\',\'ids:list\':\'%s\'})'%langDict['key']; title python:here.getZMILangStr('BTN_DELETE')">
+				<button class="btn btn-secondary btn-sm"
+					hx-get="manage_changeLangDictProperties" 
+					hx-target="#zmi_manage_tabs_message"
+					hx-on:htmx:after-request="$(this).closest('tr').hide('slow')"
+					tal:attributes="
+						hx-get python:'manage_changeLangDictProperties?btn=BTN_DELETE&target=zmi_manage_tabs_message&lang=%s&ids:list=%s'%(request.get('lang',here.getPrimaryLanguage()),langDict['key']); 
+						title python:here.getZMILangStr('BTN_DELETE')">
 					<i class="fas fa-times"></i>
-				</a>
+				</button>
 			</div>
 		</td>
 		<td tal:attributes="title python:'getLangStr(\'%s\',lang)'%langDict['key']" tal:content="python:langDict['key']">Key</td>
@@ -228,10 +201,67 @@ function zmiFormSubmit(sender,d) {
 		tr.row_insert > td:not(.meta-sort) > * {
 			opacity:.35
 		}
+		tr.htmx-swapping td {
+			opacity: 0;
+			transition: opacity 1s ease-out;
+		}
 	/* --> */
 	</style>
 	<script>
 	// <!--
+		/**
+		 * Export xml.
+		 */
+		function zmiExportBtnClick(sender) {
+			var fm = $(sender).parents("form")[0];
+			var href = fm.action+'?lang='+getZMILang()+'&btn=BTN_EXPORT';
+			$('input[name="ids:list"]:checked',fm).each(function(){
+					href += '&'+$(this).attr("name")+'='+$(this).val();
+				});
+			window.open(href);
+			return false;
+		}
+
+		/**
+		 * Submit form with given parameters.
+		 */
+		function zmiFormSubmit(sender,d) {
+			var $fm = $(sender).closest("form");
+			var html = '';
+			for (var i in d) {
+				$('input[name="' + i + '"]',$fm).remove();
+				html += '<input type="hidden" name="' + i + '" value="' + d[i] +'"/>';
+			}
+			$fm
+				.append(html)
+				.submit();
+		}
+		function zmiFormSubmit(sender,d) {
+			var $fm = $(sender).closest("form");
+			if ('btn' in d) {
+				if (d['btn']=='BTN_DELETE' && 'ids:list' in d) {
+					for (var i in d['ids:list']) {
+						$('tr#lang'+i,$fm).remove();
+						$('input[name="ids:list"]',$(sender).closest("tr")).each(function(){
+							$fm.append('<input type="hidden" name="ids:list" value="'+$(this).val()+'"/>');
+						});
+					}
+				}
+			} else {
+				var html = '';
+				for (var i in d) {
+					$('input[name="' + i + '"]',$fm).remove();
+					html += '<input type="hidden" name="' + i + '" value="' + d[i] +'"/>';
+				}
+				$fm
+					.append(html)
+					.submit();
+			}
+		}
+
+		/**
+		 * On load:
+		 */
 		$(function(){
 			// New field set: initially disable inputs
 			$('input, textarea, select','tr.row_insert').attr('disabled',true);

@@ -622,6 +622,8 @@ class MultiLanguageManager(object):
     def manage_changeLangDictProperties(self, lang, btn, REQUEST, RESPONSE=None):
         """ MultiLanguageManager.manage_changeLangDictProperties """
         
+        target = REQUEST.get('target', None)
+
         # Delete.
         # -------
         if btn == 'BTN_DELETE':
@@ -677,7 +679,15 @@ class MultiLanguageManager(object):
           message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%filename)
         
         # Return with message.
-        message = standard.url_quote(self.getZMILangStr('MSG_CHANGED'))
-        return RESPONSE.redirect('manage_customizeLanguagesForm?lang=%s&manage_tabs_message=%s#langdict'%(lang, message))
+        if target=='zmi_manage_tabs_message':
+          if btn == 'BTN_DELETE' and ids:
+            message = '%s: %s'%(self.getZMILangStr('MSG_DELETED')%len(ids), id)
+          else:
+            message = self.getZMILangStr('MSG_CHANGED')
+          REQUEST.set('manage_tabs_message', message)
+          return self.zmi_manage_tabs_message(lang=lang, id=id, extra={}, REQUEST=REQUEST, RESPONSE=RESPONSE)
+        else:
+          message = standard.url_quote(self.getZMILangStr('MSG_CHANGED'))
+          return RESPONSE.redirect('manage_customizeLanguagesForm?lang=%s&manage_tabs_message=%s#langdict'%(lang, message))
 
 ################################################################################

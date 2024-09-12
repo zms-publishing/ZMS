@@ -125,6 +125,24 @@ def registerDirectory(_context, name, directory=None, recursive=False,
 zcml.registerDirectory = registerDirectory
 #################################################################################################################
 
+#################################################################################################################
+# Extensions: Monkey patched Products.ExternalMethod
+#
+# Load changes from filesystem even if not in debug mode. So changes to files initiated by one cluster node
+# will be propagated to other cluster nodes sharing a common mounted extensions folder.
+#
+#################################################################################################################
+from Products.ExternalMethod.ExternalMethod import ExternalMethod
+def getFuncDefaults(self):
+    # if getConfiguration().debug_mode:
+    self.reloadIfChanged()
+    if not hasattr(self, '_v_func_defaults'):
+        self._v_f = self.getFunction()
+    return self._v_func_defaults
+
+ExternalMethod.getFuncDefaults = getFuncDefaults
+#################################################################################################################
+
 # Additional Registration of FileExtensions
 # will get obsolete with
 # https://github.com/zopefoundation/Products.CMFCore/pull/130

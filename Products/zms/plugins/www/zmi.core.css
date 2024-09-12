@@ -1045,6 +1045,12 @@ div.zmi-manage-main-change {
 .zmi table.table td.meta-sort {
 	width:5rem;
 }
+tr[id*='new_row'] {
+	background:#d6e0e9 !important;
+}
+tr[id*='new_row'] td {
+	border-color:white !important
+}
 .zmi table.table-sm td.meta-sort div select,
 .zmi table.table-sm td.meta-sort div div a  {
 	background-color:rgba(255, 255, 255, 0);

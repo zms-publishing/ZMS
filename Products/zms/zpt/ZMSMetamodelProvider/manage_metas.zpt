@@ -274,31 +274,13 @@ function zmiFormSubmit(sender,d) {
 			let table_id = $(this).closest('table').attr('id'); // meta_properties or meta_languages
 			let new_row_name = `new_row_${table_id}_${new_row_counter}`;
 			let old_id_html = `<input type="hidden" name="old_ids:list" value="new${new_row_counter}">`;
-			let sort_options_html = ``;
-			let sort_options_len = $('#' + table_id + ' tbody tr').length;
-			for (let i = 0; i < sort_options_len; i++) {
-				if (i == sort_options_len - 1) {
-					sort_options_html += `<option value="${i+1}" selected>${i+1}</option>`;
-				} else {
-					sort_options_html += `<option value="${i+1}">${i+1}</option>`;
-				}
-			};
 			let new_btn_html = `
-				<div class="input-group input-group-sm">
-					${old_id_html}
-					<select class="zmi-sort form-control-sm"
-						title="Important Note: Changing sort order gets possible after Save & Reload"
-						disabled="disabled">
-						${sort_options_html}
-					</select>
-					<div class="input-group-append">
-						<span class="btn btn-secondary" style="color:#999"
-							title="Revoke new Meta Attribute"
-							onclick="javascript:$(this).closest('tr').remove()">
-							<i class="fas fa-times"></i>
-						</span>
-					</div>
-				</div>
+				${old_id_html}
+				<span class="btn btn-secondary btn-sm mr-1 w-100" style="color:#999"
+					title="Revoke new Meta Attribute"
+					onclick="javascript:$(this).closest('tr').remove()">
+					<i class="fas fa-times"></i>
+				</span>
 			`;
 
 			// Clone(true) to get a deep copy including select options

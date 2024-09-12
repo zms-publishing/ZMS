@@ -118,8 +118,8 @@ function zmiFormSubmit(sender,d) {
 	</tbody>
 	</table>
 	<div class="controls save">
-		<button title="Save Language Definitions" name="btn" type="submit" class="btn btn-primary" value="BTN_SAVE"><i class="fas fa-save"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</tal:block></button>
-		<button title="Delete Selected Language Definitions" name="btn" type="submit" class="btn btn-secondary" value="BTN_DELETE"><i class="fas fa-times"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block></button>
+		<button title="Save Language Definitions" name="btn" type="submit" class="btn btn-primary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+		<button title="Delete Selected Language Definitions" name="btn" type="submit" class="btn btn-secondary" value="BTN_DELETE" tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</button>
 	</div>
 </form>
 
@@ -156,15 +156,14 @@ function zmiFormSubmit(sender,d) {
 	<tbody>
 	<tr tal:repeat="langDict python:here.getLangDict()">
 		<td class="meta-sort text-center">
-			<div class="input-group input-group-sm">
-				<span class="btn btn-secondary">
+			<div class="btn-group">
+				<span class="btn btn-secondary btn-sm">
 					<input type="checkbox" name="ids:list" tal:attributes="value python:langDict['key']; disabled python:['','disabled'][int(len(langDict.get('acquired',[]))>0)]"/>
 				</span>
-				<div class="input-group-append">
-					<a class="btn btn-secondary" href="javascript:;" 
-						tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'BTN_DELETE\',\'ids:list\':\'%s\'})'%langDict['key']; title python:here.getZMILangStr('BTN_DELETE')"
-						><i class="fas fa-times"></i></a>
-				</div>
+				<a class="btn btn-secondary btn-sm" href="javascript:;" 
+					tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'BTN_DELETE\',\'ids:list\':\'%s\'})'%langDict['key']; title python:here.getZMILangStr('BTN_DELETE')">
+					<i class="fas fa-times"></i>
+				</a>
 			</div>
 		</td>
 		<td tal:attributes="title python:'getLangStr(\'%s\',lang)'%langDict['key']" tal:content="python:langDict['key']">Key</td>
@@ -178,8 +177,8 @@ function zmiFormSubmit(sender,d) {
 	</tbody>
 	</table>
 	<div class="controls save">
-		<button title="Save Dictionary"  name="btn" type="submit" class="btn btn-primary" value="BTN_SAVE"><i class="fas fa-save"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</tal:block></button>
-		<button title="Delete Selected Dictionary Terms" name="btn" type="submit" class="btn btn-secondary" value="BTN_DELETE"><i class="fas fa-times"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block></button>
+		<button title="Save Dictionary"  name="btn" type="submit" class="btn btn-primary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+		<button title="Delete Selected Dictionary Terms" name="btn" type="submit" class="btn btn-secondary" value="BTN_DELETE" tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</button>
 	</div>
 </form>
 

@@ -9,45 +9,6 @@
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[here.manage_sub_options()[0]])">zmi_breadcrumbs</tal:block>
 
-<script>
-/**
- * Export xml.
- */
-function zmiExportBtnClick(sender) {
-	var fm = $(sender).parents("form")[0];
-	var href = fm.action+'?lang='+getZMILang()+'&btn=BTN_EXPORT';
-	$('input[name="ids:list"]:checked',fm).each(function(){
-			href += '&'+$(this).attr("name")+'='+$(this).val();
-		});
-	window.open(href);
-	return false;
-}
-
-/**
- * Delete object.
- */
-function zmiDeleteObjBtnClick(sender,d) {
-	if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
-		zmiFormSubmit(sender,d);
-	}
-}
-
-/**
- * Submit form with given parameters.
- */
-function zmiFormSubmit(sender,d) {
-	var $fm = $(sender).closest("form");
-	var html = '';
-	for (var i in d) {
-		$('input[name="' + i + '"]',$fm).remove();
-		html += '<input type="hidden" name="' + i + '" value="' + d[i] +'"/>';
-	}
-	$fm
-		.append(html)
-		.submit();
-}
-</script>
-
 <div class="d-none" tal:condition="python:here.getPortalMaster()!=None">
 	<div id="acquireConf" class="inner">
 		<form class="form-horizontal card" action="manage_changeMetaProperties" method="post" enctype="multipart/form-data">
@@ -220,7 +181,7 @@ function zmiFormSubmit(sender,d) {
 			hx-target="#zmi_manage_tabs_message" 
 			hx-swap="outerHTML show:top"
 			hx-on:click="$ZMI.show_spinner(this)"
-			hx-on:htmx:after-request="$ZMI.reset_spinner(this)"
+			hx-on:htmx:after-request="renew_sort_options(table_id=$(this).closest('table').attr('id'));$ZMI.reset_spinner(this);"
 			value="BTN_SAVE" 
 			tal:content="python:here.getZMILangStr('BTN_SAVE')">
 			Save
@@ -252,6 +213,94 @@ function zmiFormSubmit(sender,d) {
 </style>
 <script>
 // <!--
+	/**
+	 * Export xml.
+	 */
+	function zmiExportBtnClick(sender) {
+		var fm = $(sender).parents("form")[0];
+		var href = fm.action+'?lang='+getZMILang()+'&btn=BTN_EXPORT';
+		$('input[name="ids:list"]:checked',fm).each(function(){
+				href += '&'+$(this).attr("name")+'='+$(this).val();
+			});
+		window.open(href);
+		return false;
+	}
+
+	/**
+	 * Delete object.
+	 */
+	function zmiDeleteObjBtnClick(sender,d) {
+		if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
+			zmiFormSubmit(sender,d);
+		}
+	}
+
+	/**
+	 * Submit form with given parameters.
+	 */
+	function zmiFormSubmit(sender,d) {
+		var $fm = $(sender).closest("form");
+		var html = '';
+		for (var i in d) {
+			$('input[name="' + i + '"]',$fm).remove();
+			html += '<input type="hidden" name="' + i + '" value="' + d[i] +'"/>';
+		}
+		$fm
+			.append(html)
+			.submit();
+	}
+
+	/**
+	 * Normalize inserted rows.
+	 */
+	function renew_sort_options(table_id='meta_properties') {
+
+		// Remove highlighting of new rows
+		$('tr[id*="new_row"]').each(function() {
+			$(this).removeAttr('id');
+		});
+
+		let sort_options_len = $('#' + table_id + ' tbody tr').length;
+		let $rows = $('#' + table_id + ' tbody tr');
+		let row_counter = 0;
+
+		$rows.each( function() {
+			row_counter++;
+			let sort_options_html = ``;
+			let old_id_html = $(this).find('input[name="old_ids:list"]').prop('outerHTML');
+			let old_id = $(this).find('td.meta-id input').val();
+			if (old_id_html == undefined) {
+				old_id_html = `<input type="hidden" name="old_ids:list" value="${old_id}">`;
+			};
+			for (let i = 0; i < sort_options_len; i++) {
+				if (i == row_counter - 1) {
+					sort_options_html += `<option value="${i+1}" selected>${i+1}</option>`;
+				} else {
+					sort_options_html += `<option value="${i+1}">${i+1}</option>`;
+				}
+			};
+			let new_btn_html = `
+				<div class="input-group input-group-sm">
+					${old_id_html}
+					<select class="zmi-sort form-control-sm" 
+						onchange="zmiFormSubmit(this,{btn:'move_to',id:'${old_id}','pos:int':this.selectedIndex})">
+						${sort_options_html}
+					</select>
+					<div class="input-group-append">
+						<span class="btn btn-secondary" style="color:#999"
+							title="Delete Meta Attribute"
+							onclick="javascript:zmiDeleteObjBtnClick(this,{btn:'BTN_DELETE',id:'${old_id}'})"">
+							<i class="fas fa-times"></i>
+						</span>
+					</div>
+				</div>
+			`;
+			if (row_counter < sort_options_len) {
+				$(this).find('td.meta-sort').html(new_btn_html);
+			};
+		});
+	};
+
 	$(function(){
 		// New field set: initially disable inputs
 		$('tr.row_insert input').attr('disabled',true);

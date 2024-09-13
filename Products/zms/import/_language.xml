@@ -4077,6 +4077,22 @@
     <Cell><Data ss:Type="String">לשמור שינויים בכל זאת?</Data></Cell>
    </Row>
    <Row>
+    <Cell><Data ss:Type="String">MSG_CONFIRM</Data></Cell>
+    <Cell><Data ss:Type="String">Änderungen bestätigen.</Data></Cell>
+    <Cell><Data ss:Type="String">Confirm changes.</Data></Cell>
+    <Cell><Data ss:Type="String">Bevestig wijzigingen.</Data></Cell>
+    <Cell><Data ss:Type="String">Confirmer les changements.</Data></Cell>
+    <Cell><Data ss:Type="String">Conferma le modifiche.</Data></Cell>
+    <Cell><Data ss:Type="String">Confirmar cambios.</Data></Cell>
+    <Cell><Data ss:Type="String">确认更改</Data></Cell>
+    <Cell><Data ss:Type="String">تأكيد التغييرات</Data></Cell>
+    <Cell><Data ss:Type="String">Подтвердить изменения</Data></Cell>
+    <Cell><Data ss:Type="String">परिवर्तन की पुष्टि करें</Data></Cell>
+    <Cell><Data ss:Type="String">تأكيد التعديلات</Data></Cell>
+    <Cell><Data ss:Type="String">Xác nhận thay đổi.</Data></Cell>
+    <Cell><Data ss:Type="String">אשר שינויים</Data></Cell>
+   </Row>
+   <Row>
     <Cell><Data ss:Type="String">MSG_CONFIRM_CUTOBJS</Data></Cell>
     <Cell><Data ss:Type="String">Soll(en) %i ausgewählte(s) Objekt(e) wirklich ausgeschnitten werden?</Data></Cell>
     <Cell><Data ss:Type="String">Do you really want to cut %i selected object(s)?</Data></Cell>

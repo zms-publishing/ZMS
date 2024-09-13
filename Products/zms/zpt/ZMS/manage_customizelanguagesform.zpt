@@ -14,7 +14,8 @@
 <form class="form-horizontal card" id="changeLanguagesForm" 
 	action="manage_changeLanguages" method="post" enctype="multipart/form-data"
 	hx-boost="true" xmlns:hx-on="https://htmx.org/"
-	hx-confirm="Are you sure?">
+	hx-confirm="Confirm changes."
+	tal:attributes="hx-confirm python:here.getLangStr('MSG_CONFIRM')">
 	<input type="hidden" name="target" value="languages" />
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<legend class="has_tooltip" 

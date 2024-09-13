@@ -100,13 +100,20 @@
 		<td class="meta-sort">
 			<input type="hidden" name="old_ids:list" tal:attributes="value python:metadictAttr['id']" />
 			<div class="input-group input-group-sm">
-				<select class="zmi-sort form-control-sm" tal:attributes="onchange python:'zmiFormSubmit(this,{btn:\'move_to\',id:\'%s\',\'pos:int\':this.selectedIndex})'%metadictAttrId">
+				<select class="zmi-sort form-control-sm" 
+					tal:attributes="onchange python:'zmiFormSubmit(this,{btn:\'move_to\',id:\'%s\',\'pos:int\':this.selectedIndex})'%metadictAttrId">
 					<option tal:repeat="i python:range(0,len(metadictAttrIds))" tal:attributes="selected python:['','selected'][int(i==metadictAttrIds.index(metadictAttrId))]" tal:content="python:i+1">i+1</option>
 				</select>
 				<div class="input-group-append">
-					<a class="btn btn-secondary" href="javascript:;" 
-						tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'BTN_DELETE\',id:\'%s\'})'%metadictAttr['id']; title python:here.getZMILangStr('BTN_DELETE')"
-						><i class="fas fa-times"></i></a>
+					<a class="btn btn-secondary"
+						hx-get="manage_changeMetaProperties"
+						hx-target="#zmi_manage_tabs_message"
+						hx-on:htmx:after-request="$(this).closest('tr').hide('slow')"
+						tal:attributes="
+							hx-get python:'manage_changeMetaProperties?btn=BTN_DELETE&target=zmi_manage_tabs_message&lang=%s&id=%s'%(request.get('lang',here.getPrimaryLanguage()),metadictAttr['id']);
+							title python:here.getZMILangStr('BTN_DELETE')">
+						<i class="fas fa-times"></i>
+					</a>
 				</div>
 			</div>
 		</td>
@@ -254,7 +261,7 @@
 	 * Normalize inserted rows.
 	 */
 	function renew_sort_options(table_id='meta_properties') {
-
+		let lang = getZMILang();
 		// Remove highlighting of new rows
 		$('tr[id*="new_row"]').each(function() {
 			$(this).removeAttr('id');
@@ -287,16 +294,18 @@
 						${sort_options_html}
 					</select>
 					<div class="input-group-append">
-						<span class="btn btn-secondary" style="color:#999"
-							title="Delete Meta Attribute"
-							onclick="javascript:zmiDeleteObjBtnClick(this,{btn:'BTN_DELETE',id:'${old_id}'})"">
+						<a class="btn btn-secondary" title="Delete Meta Attribute"
+							hx-get="manage_changeMetaProperties?btn=BTN_DELETE&target=zmi_manage_tabs_message&lang=${lang}&id=${old_id}"
+							hx-target="#zmi_manage_tabs_message"
+							hx-on:htmx:after-request="$(this).closest('tr').hide('slow')">
 							<i class="fas fa-times"></i>
-						</span>
+						</a>
 					</div>
 				</div>
 			`;
 			if (row_counter < sort_options_len) {
 				$(this).find('td.meta-sort').html(new_btn_html);
+				htmx.process($(this).find('td.meta-sort')[0]); // Process the new elements with htmx
 			};
 		});
 	};

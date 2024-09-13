@@ -261,7 +261,7 @@ class ZMSMetadictManager(object):
         t0 = time.time()
         id = REQUEST.get('id', '')
         target = 'manage_metas'
-        if btn == 'BTN_SAVE':
+        if btn == 'BTN_SAVE' or btn == 'BTN_DELETE':
           target = REQUEST.get('target', target)
         
         try:

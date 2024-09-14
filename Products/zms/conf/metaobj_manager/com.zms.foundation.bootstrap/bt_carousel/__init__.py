@@ -26,7 +26,7 @@ class bt_carousel:
 	package = "com.zms.foundation.bootstrap"
 
 	# Revision
-	revision = "4.1.0"
+	revision = "5.0.0"
 
 	# Type
 	type = "ZMSObject"
@@ -105,3 +105,12 @@ class bt_carousel:
 			,"name":"Template: Carousel"
 			,"repetitive":0
 			,"type":"zpt"}
+
+		standard_json_docx = {"default":""
+			,"id":"standard_json_docx"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"JSON-DOCX Template"
+			,"repetitive":0
+			,"type":"py"}

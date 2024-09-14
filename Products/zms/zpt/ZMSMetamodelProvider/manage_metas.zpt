@@ -108,7 +108,7 @@
 					<a class="btn btn-secondary"
 						hx-get="manage_changeMetaProperties"
 						hx-target="#zmi_manage_tabs_message"
-						hx-on:htmx:after-request="$(this).closest('tr').hide('slow')"
+						hx-on:htmx:after-request="clean_deleted_row(this)"
 						tal:attributes="
 							hx-get python:'manage_changeMetaProperties?btn=BTN_DELETE&target=zmi_manage_tabs_message&lang=%s&id=%s'%(request.get('lang',here.getPrimaryLanguage()),metadictAttr['id']);
 							title python:here.getZMILangStr('BTN_DELETE')">
@@ -188,7 +188,7 @@
 			hx-target="#zmi_manage_tabs_message" 
 			hx-swap="outerHTML show:top"
 			hx-on:click="$ZMI.show_spinner(this)"
-			hx-on:htmx:after-request="renew_sort_options(table_id=$(this).closest('table').attr('id'));$ZMI.reset_spinner(this);"
+			hx-on:htmx:after-request="renew_sort_options(this);$ZMI.reset_spinner(this);"
 			value="BTN_SAVE" 
 			tal:content="python:here.getZMILangStr('BTN_SAVE')">
 			Save
@@ -220,6 +220,12 @@
 </style>
 <script>
 // <!--
+
+	/**
+	 * Global vars.
+	 */
+	const table_id = 'meta_properties';
+
 	/**
 	 * Export xml.
 	 */
@@ -260,7 +266,8 @@
 	/**
 	 * Normalize inserted rows.
 	 */
-	function renew_sort_options(table_id='meta_properties') {
+	function renew_sort_options() {
+
 		let lang = getZMILang();
 		// Remove highlighting of new rows
 		$('tr[id*="new_row"]').each(function() {
@@ -279,11 +286,11 @@
 			if (old_id_html == undefined) {
 				old_id_html = `<input type="hidden" name="old_ids:list" value="${old_id}">`;
 			};
-			for (let i = 0; i < sort_options_len; i++) {
-				if (i == row_counter - 1) {
-					sort_options_html += `<option value="${i+1}" selected>${i+1}</option>`;
+			for (let i = 1; i < sort_options_len; i++) {
+				if (i == row_counter) {
+					sort_options_html += `<option value="${i}" selected>${i}</option>`;
 				} else {
-					sort_options_html += `<option value="${i+1}">${i+1}</option>`;
+					sort_options_html += `<option value="${i}">${i}</option>`;
 				}
 			};
 			let new_btn_html = `
@@ -297,7 +304,7 @@
 						<a class="btn btn-secondary" title="Delete Meta Attribute"
 							hx-get="manage_changeMetaProperties?btn=BTN_DELETE&target=zmi_manage_tabs_message&lang=${lang}&id=${old_id}"
 							hx-target="#zmi_manage_tabs_message"
-							hx-on:htmx:after-request="$(this).closest('tr').hide('slow')">
+							hx-on:htmx:after-request="clean_deleted_row(this)">
 							<i class="fas fa-times"></i>
 						</a>
 					</div>
@@ -310,6 +317,19 @@
 		});
 	};
 
+	/**
+	 * Normalize after deleting a row.
+	 */
+	 function clean_deleted_row(sender) {
+		$(sender).closest('tr').hide('slow',function(){ 
+			$(sender).closest('tr').remove();
+			renew_sort_options();
+		})
+	}
+
+	/**
+	 * Init.
+	 */
 	$(function(){
 		// New field set: initially disable inputs
 		$('tr.row_insert input').attr('disabled',true);
@@ -329,7 +349,6 @@
 			let $where_insert = $(this).closest('tr');
 
 			// Set variables
-			let table_id = $(this).closest('table').attr('id'); // meta_properties or meta_languages
 			let new_row_name = `new_row_${table_id}_${new_row_counter}`;
 			let old_id_html = `<input type="hidden" name="old_ids:list" value="new${new_row_counter}">`;
 			let new_btn_html = `

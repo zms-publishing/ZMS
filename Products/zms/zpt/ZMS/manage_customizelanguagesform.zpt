@@ -148,7 +148,7 @@
 				<button class="btn btn-secondary btn-sm"
 					hx-get="manage_changeLangDictProperties" 
 					hx-target="#zmi_manage_tabs_message"
-					hx-on:htmx:after-request="$(this).closest('tr').hide('slow')"
+					hx-on:htmx:after-request="$(this).closest('tr').hide('slow',function(){$(this).closest('tr').remove()})"
 					tal:attributes="
 						hx-get python:'manage_changeLangDictProperties?btn=BTN_DELETE&target=zmi_manage_tabs_message&lang=%s&ids:list=%s'%(request.get('lang',here.getPrimaryLanguage()),langDict['key']); 
 						title python:here.getZMILangStr('BTN_DELETE')">

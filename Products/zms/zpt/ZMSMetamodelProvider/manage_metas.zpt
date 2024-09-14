@@ -224,7 +224,7 @@
 	/**
 	 * Global vars.
 	 */
-	const table_id = 'meta_properties';
+	var table_id = 'meta_properties';
 
 	/**
 	 * Export xml.

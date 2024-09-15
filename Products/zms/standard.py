@@ -1669,6 +1669,13 @@ def operator_delattr(a, b):
   """
   return delattr(a, b)
 
+security.declarePublic('operator_itemgetter')
+def operator_itemgetter(key, val, dictionary):
+
+    if val in map(operator.itemgetter(key), dictionary):
+        return True
+    return False
+
 #)
 
 

@@ -882,7 +882,7 @@ $(function(){
 		let sort_options_len = 0;
 		let new_btn_html = `
 			<span class="btn btn-secondary btn-sm mr-1 w-100" style="color:#999" 
-				onclick="javascript:$(this).closest('tr').remove()">
+				onclick="javascript:$(this).closest('tr').hide('slow',function(){$(this).closest('tr').remove()})">
 				<i class="fas fa-undo-alt"></i>
 			</span>
 		`;
@@ -894,7 +894,7 @@ $(function(){
 				${old_id_html}
 				<span class="btn btn-secondary btn-sm mr-1 w-100" style="color:#999"
 					title="Revoke new Meta Attribute"
-					onclick="javascript:$(this).closest('tr').remove()">
+					onclick="javascript:$(this).closest('tr').hide('slow',function(){$(this).closest('tr').remove()})">
 					<i class="fas fa-undo-alt"></i>
 				</span>
 			`;

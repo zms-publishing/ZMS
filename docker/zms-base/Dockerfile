@@ -61,8 +61,8 @@ EOR
 
 # install debugging helpers like: pip install debugpy
 
-# # Create Zope Instance
-RUN mkwsgiinstance -d instance -u admin:admin
+# Create Zope Instance
+RUN mkwsgiinstance --dir instance --user admin:admin
 
 COPY --chown=zope:zope <<EOF instance/bin/start.sh
 #!/bin/bash

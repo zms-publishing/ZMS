@@ -1,18 +1,20 @@
 #!/bin/bash
-# The ZEO/Zope start script works in two steps:
-# 1. ZEO server is started silently (nohub)
-# 2. Zope instance it started on parameter defined port:8085
-# Sending Zope's output not to dev/null but the console maintains
-# docker running
-
 instance_dir="/home/zope/instance/"
 venv_bin_dir="/home/zope/venv/bin"
 
-# echo "Step-1: Starting ZEO"
-# nohup  $venv_bin_dir/runzeo --configure $instance_dir/etc/zeo.conf 1>/dev/null 2>/dev/null &
+# Regarding debug-mode=on
+# @see https://zope.readthedocs.io/en/latest/zopebook/InstallingZope.html#the-debug-mode-directive
+# recommend to disable debug-mode in production as it auto reloads templates on change
+# @see https://zope.readthedocs.io/en/latest/zdgbook/TestingAndDebugging.html#debug-mode
+# mentions that this also shows backtraces to users
+# @see https://zope.readthedocs.io/en/latest/news.html#wsgi-as-the-new-default-server-type
+# mentions that this disables a httpexceptions midleware and shows backtraces on the console>
+# TODO talk to FH if this makes sense. Might require a slightly different workflow from them.
+# Currently always enabled on our servers.
 
-echo "Step-2: Starting ZOPE 80"
-# FIXME does this need --debug, and what do I do to get rid of it in production?
-$venv_bin_dir/runwsgi --debug --verbose $instance_dir/etc/zope.ini debug-mode=on http_port=80
+# Regarding --debug
+# @see https://zope.readthedocs.io/en/latest/operation.html#running-zope-in-the-foreground
+# seems to sugges that this also enables the debug-mode directive
+# TODO talk to FH to allow me to check that
 
-
+exec $venv_bin_dir/runwsgi --debug --verbose $instance_dir/etc/zope.ini debug-mode=on http_port=80

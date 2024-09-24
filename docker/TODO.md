@@ -1,7 +1,7 @@
 # Goals
 
-- [ ] one process per container
-- [ ] Starting the bare docker file will give you a basic zope / zms
+- [x] one process per container
+- [X] Starting the bare docker file will give you a basic zope / zms
 - [ ] everything as similar to our server deployment as possible to allow easy migration
 - [ ] modern os and python
 - [ ] simple to use and develop in vscode -> .devcontainer!

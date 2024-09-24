@@ -61,6 +61,7 @@ EOR
 
 # TODO install debugging helpers like: pip install debugpy
 
+# REFACT consider a flat layout where the user has venv etc bin directly in home folder
 # Create Zope Instance
 RUN mkwsgiinstance --dir instance --user admin:admin
 

@@ -30,13 +30,21 @@ RUN useradd --system --create-home --uid $UID zope
 USER zope:zope
 WORKDIR /home/zope/
 
+# Install uv
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
+ENV UV_LINK_MODE=copy
+
 # Create venv and permanently enable it
-ARG CREATE_VENV_COMMAND="python -m venv"
+# ARG CREATE_VENV_COMMAND="uv venv"
+ARG CREATE_VENV_COMMAND="python3 -m venv"
 ENV VIRTUAL_ENV=/home/zope/venv
 RUN $CREATE_VENV_COMMAND $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 # Enable caching of pip packages to speed up rebuild times
+# cannot use uv as long as so many editable packages need to be installed
+# ARG PIP_INSTALL="uv pip install"
+ARG PIP_INSTALL="pip install --config-settings editable_mode=compat"
 ENV PIP_CACHE_DIR=/home/zope/venv/cache
 RUN --mount=type=cache,uid=$UID,target=$PIP_CACHE_DIR,sharing=locked <<EOR
     set -e

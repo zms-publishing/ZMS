@@ -64,13 +64,10 @@ EOR
 # Create Zope Instance
 RUN mkwsgiinstance --dir instance --user admin:admin
 
-COPY --chown=zope:zope <<EOF instance/bin/start.sh
-#!/bin/bash
-instance_dir="/home/zope/instance/"
-venv_bin_dir="/home/zope/venv/bin"
-# FIXME does this need --debug, and what do I do to get rid of it in production?
-$venv_bin_dir/runwsgi --debug --verbose $instance_dir/etc/zope.ini debug-mode=on http_port=80
-EOF
+# Configure Zope Instance
+COPY --chown=zope:zope --chmod=500 start.sh instance/bin/start.sh
+COPY --chown=zope:zope zope.ini instance/etc/zope.ini
+COPY --chown=zope:zope zope.conf instance/etc/zope.conf
 
 # COPY --chown=zope:zope ./etc instance/etc
 # COPY ./var venv/instance/zms5/var

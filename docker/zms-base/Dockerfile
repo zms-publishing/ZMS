@@ -47,13 +47,16 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 ARG PIP_INSTALL="pip install --config-settings editable_mode=compat"
 ENV PIP_CACHE_DIR=/home/zope/venv/cache
 RUN --mount=type=cache,uid=$UID,target=$PIP_CACHE_DIR,sharing=locked <<EOR
-    set -e
-    pip install --cache-dir $PIP_CACHE_DIR --upgrade pip wheel setuptools
-    pip install --cache-dir $PIP_CACHE_DIR --upgrade --editable git+https://github.com/zms-publishing/ZMS.git#egg=ZMS
-    pip install --cache-dir $PIP_CACHE_DIR --requirement https://raw.githubusercontent.com/zms-publishing/ZMS5/master/requirements-full.txt
-    pip install --cache-dir $PIP_CACHE_DIR --upgrade --editable -e git+https://github.com/sntl-projects/Products.zmsPluggableAuthService.git#egg=Products.zmsPluggableAuthService[nginx-sso]
-    pip install --cache-dir $PIP_CACHE_DIR ZEO
-    pip install --cache-dir $PIP_CACHE_DIR debugpy
+    set -ex
+
+    if echo ${PIP_INSTALL} | grep -qv "\buv\b"; then
+        $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --upgrade pip wheel setuptools
+    fi
+    $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --upgrade --editable git+https://github.com/zms-publishing/ZMS.git#egg=ZMS
+    $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --requirement https://raw.githubusercontent.com/zms-publishing/ZMS5/master/requirements-full.txt
+    $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --upgrade --editable git+https://github.com/sntl-projects/Products.zmsPluggableAuthService.git#egg=Products.zmsPluggableAuthService[nginx-sso]
+    $PIP_INSTALL --cache-dir $PIP_CACHE_DIR ZEO
+    $PIP_INSTALL --cache-dir $PIP_CACHE_DIR debugpy
 EOR
 
 # install debugging helpers like: pip install debugpy

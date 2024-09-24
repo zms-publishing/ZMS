@@ -24,7 +24,7 @@ RUN \
     apt --yes install libldap2-dev libsasl2-dev
 EOR
 
-# Set the user and virtualenv
+# Drop root privileges
 ENV UID=1000
 RUN useradd --system --create-home --uid $UID zope
 USER zope:zope

@@ -59,7 +59,7 @@ RUN --mount=type=cache,uid=$UID,target=$PIP_CACHE_DIR,sharing=locked <<EOR
     $PIP_INSTALL --cache-dir $PIP_CACHE_DIR debugpy
 EOR
 
-# install debugging helpers like: pip install debugpy
+# TODO install debugging helpers like: pip install debugpy
 
 # Create Zope Instance
 RUN mkwsgiinstance --dir instance --user admin:admin

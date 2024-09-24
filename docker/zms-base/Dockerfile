@@ -5,24 +5,23 @@ EXPOSE 80
 ARG CI_COMMIT_SHA=development
 ENV CI_COMMIT_SHA=$CI_COMMIT_SHA
 
-
 # Ensure all system packages are up to date
 ENV DEBIAN_FRONTEND=noninteractive
 RUN \
     --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
-<<EOR
-    apt-get update
-    apt-get --yes upgrade
+    <<EOR
+    apt update
+    apt --yes upgrade
 EOR
 
 # Install Zope/ZEO Dependencies
 RUN \
     --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
-<<EOR
-    apt-get update
-    # apt-get --yes upgrade
+    <<EOR
+    apt update
+    apt --yes install libldap2-dev libsasl2-dev
 EOR
 
 # Set the user and virtualenv

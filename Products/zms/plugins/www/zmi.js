@@ -30,7 +30,7 @@ if (typeof htmx != "undefined") {
 	document.addEventListener('htmx:beforeRequest', (evt) => {
 		const body = document.querySelector('body');
 		if (body.classList.contains("form-modified") && !confirm(getZMILangStr('MSG_CONFIRM_DISCARD_CHANGES'))) {
-			evt.preventDefault();
+			return evt.preventDefault();
 		}
 		body.classList.add('loading');
 	});

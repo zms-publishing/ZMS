@@ -1620,14 +1620,6 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	padding:0.5rem;
 	border-radius: 0;
 }
-.zmi .form-modified input:not(:focus), .form-modified select:not(:focus), .form-modified textarea:not(:focus) {
-	background: rgba(51, 122, 182, 0.15);
-}
-.zmi .form-modified label {
-	font-style: italic;
-	font-weight: bold!important;
-}
-
 .zmi.metas table.table-sm td.meta-resource.input-group-sm .meta-resource-container .btn.form-modified {
 	background: rgba(51, 122, 182, 0.15);
 }
@@ -3131,4 +3123,28 @@ body.zmi.ger q {
 }
 body.zmi.eng q {
 	quotes:'“' '”';
+}
+
+.zmi.form-modified .nav-link.active {
+	font-style: italic;
+	font-weight: bold!important;
+}
+.zmi.form-modified .nav-link.active::after {
+	content: " \00D7";
+	color: #286090;
+}
+.zmi .form-modified label {
+	font-style: italic;
+	font-weight: bold!important;
+}
+.zmi .form-modified input:not(:focus), 
+.zmi .form-modified select:not(:focus), 
+.zmi .form-modified textarea:not(:focus) {
+	background: rgba(51, 122, 182, 0.15);
+}
+.zmi.form-modified .controls.save .btn.btn-primary { /* btn-warning */
+	color: #212529;
+    background-color: #ffc107;
+    border-color: #ffc107;
+	font-weight: bold;
 }

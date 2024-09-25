@@ -983,12 +983,17 @@ ZMI.prototype.initInputFields = function(container) {
 				$this.attr("data-initial-value",$this.val());
 				$this.keyup(function() {
 					const $formGroup = $this.parents(".form-group");
-					if ($this.val()==$this.attr("data-initial-value")) {
+					if ($this.val() == $this.attr("data-initial-value")) {
 						$formGroup.removeClass("form-modified");
-						$this.removeClass("form-modified");
 					} else {
 						$formGroup.addClass("form-modified");
-						$this.addClass("form-modified");
+					}
+					const $body = $("body.zmi");
+					if ($(".form-group.form-modified").length == 0) {
+						$body.removeClass("form-modified");
+					}
+					else {
+						$body.addClass("form-modified");
 					}
 				});
 			});

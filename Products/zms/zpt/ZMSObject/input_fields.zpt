@@ -11,7 +11,7 @@
 		metaObjAttrIds python:here.getMetaobjAttrIds(metaObj['id']);
 		objAttrs python:here.getObjAttrs(metaObj['id'])">
 
-<form class="form-horizontal" id="form0" name="form0" tal:attributes="action action" method="post" enctype="multipart/form-data">
+<form class="form-horizontal" id="form0" name="form0" tal:attributes="hx-post action; action action" hx-target="body" method="post" enctype="multipart/form-data">
 	<input type="hidden" id="lang" name="lang" tal:attributes="value request/lang" />
 	<input type="hidden" id="preview" name="preview" tal:attributes="value request/preview" />
 	<input type="hidden" id="form_id" name="form_id" tal:attributes="value python:DateTime().timeTime()" />

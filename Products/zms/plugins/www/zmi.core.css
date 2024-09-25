@@ -3133,17 +3133,4 @@ body.zmi.eng q {
 .zmi .form-modified textarea:not(:focus) {
 	background: rgb(232 240 254);
 }
-.zmi.form-modified .controls.save .btn.btn-primary:before {
-	content: "\f303";
-	font-family: 'Font Awesome 5 Free';
-	font-weight: 900;
-	-moz-osx-font-smoothing: grayscale;
-	-webkit-font-smoothing: antialiased;
-	display: inline-block;
-	font-style: normal;
-	font-variant: normal;
-	text-rendering: auto;
-	line-height: 1;
-	margin-right:.5rem
-}
 /* ############################################## */

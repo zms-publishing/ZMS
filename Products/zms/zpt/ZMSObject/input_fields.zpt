@@ -212,7 +212,7 @@
 							title="Menu Lock: Stay in the menu after clicking the save button.">
 							<input type="checkbox" id="menulock" name="menulock:int" onclick="$ZMILocalStorageAPI.set('ZMS.menulock',this.checked)" value="1" /><i class="fas fa-lock pl-2"></i>
 						</div>
-						<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:'BTN_%s'%command.upper()" tal:content="python:here.getZMILangStr('BTN_%s'%command.upper())">Action</button>
+						<button type="submit" name="btn" class="btn btn-secondary" tal:attributes="value python:'BTN_%s'%command.upper()" tal:content="python:here.getZMILangStr('BTN_%s'%command.upper())">Action</button>
 						<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CANCEL" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
 					</div>
 				</div><!-- .form-group -->

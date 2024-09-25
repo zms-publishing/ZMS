@@ -978,6 +978,8 @@ ZMI.prototype.initInputFields = function(container) {
 				$label.prepend('<i class="fas fa-exclamation"></i>');
 			});
 			// Check for intermediate modification by other user
+			const $body = $("body.zmi");
+			const $btn_save = $(".controls.save button[value='BTN_SAVE']");
 			$("input,select,textarea",this).each(function() {
 				var $this = $(this);
 				$this.attr("data-initial-value",$this.val());
@@ -988,12 +990,13 @@ ZMI.prototype.initInputFields = function(container) {
 					} else {
 						$formGroup.addClass("form-modified");
 					}
-					const $body = $("body.zmi");
 					if ($(".form-group.form-modified").length == 0) {
 						$body.removeClass("form-modified");
+						$btn_save.removeClass("btn-primary").addClass("btn-secondary");
 					}
 					else {
 						$body.addClass("form-modified");
+						$btn_save.removeClass("btn-secondary").addClass("btn-primary");
 					}
 				});
 			});

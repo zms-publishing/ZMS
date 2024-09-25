@@ -3125,26 +3125,25 @@ body.zmi.eng q {
 	quotes:'“' '”';
 }
 
-.zmi.form-modified .nav-link.active {
-	font-style: italic;
-	font-weight: bold!important;
-}
-.zmi.form-modified .nav-link.active::after {
-	content: " \00D7";
-	color: #286090;
-}
-.zmi .form-modified label {
-	font-style: italic;
-	font-weight: bold!important;
-}
+/* ############################################## */
+/* #### form-modified ########################### */
+/* ############################################## */
 .zmi .form-modified input:not(:focus), 
 .zmi .form-modified select:not(:focus), 
 .zmi .form-modified textarea:not(:focus) {
-	background: rgba(51, 122, 182, 0.15);
+	background: rgb(232 240 254);
 }
-.zmi.form-modified .controls.save .btn.btn-primary { /* btn-warning */
-	color: #212529;
-    background-color: #ffc107;
-    border-color: #ffc107;
-	font-weight: bold;
+.zmi.form-modified .controls.save .btn.btn-primary:before {
+	content: "\f303";
+	font-family: 'Font Awesome 5 Free';
+	font-weight: 900;
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-font-smoothing: antialiased;
+	display: inline-block;
+	font-style: normal;
+	font-variant: normal;
+	text-rendering: auto;
+	line-height: 1;
+	margin-right:.5rem
 }
+/* ############################################## */

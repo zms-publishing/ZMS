@@ -35,7 +35,7 @@ function openWindow(url) {
 <legend>ZMSIndex</legend>
 <div id="zmsindex" class="collapse show">
 <div class="card-body">
-	<div class="form-group zms4-row mb-0">
+	<div class="form-group zmi-form-container  zms4-row mb-0">
 		<div class="col-sm-12" data-label="ZMS-Clients">
 			<div class="zmi-sitemap-controls-container">
 				<div class="btn-group zmi-sitemap-controls">

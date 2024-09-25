@@ -1620,10 +1620,10 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	padding:0.5rem;
 	border-radius: 0;
 }
-.form-modified input, .form-modified select, .form-modified textarea {
+.zmi .form-modified input:not(:focus), .form-modified select:not(:focus), .form-modified textarea:not(:focus) {
 	background: rgba(51, 122, 182, 0.15);
 }
-.form-modified label {
+.zmi .form-modified label {
 	font-style: italic;
 	font-weight: bold!important;
 }

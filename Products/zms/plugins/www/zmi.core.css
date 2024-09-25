@@ -1620,6 +1620,14 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	padding:0.5rem;
 	border-radius: 0;
 }
+.form-modified input, .form-modified select, .form-modified textarea {
+	background: rgba(51, 122, 182, 0.15);
+}
+.form-modified label {
+	font-style: italic;
+	font-weight: bold!important;
+}
+
 .zmi.metas table.table-sm td.meta-resource.input-group-sm .meta-resource-container .btn.form-modified {
 	background: rgba(51, 122, 182, 0.15);
 }

@@ -981,10 +981,13 @@ ZMI.prototype.initInputFields = function(container) {
 			$("input,select,textarea",this).each(function() {
 				var $this = $(this);
 				$this.attr("data-initial-value",$this.val());
-				$this.change(function() {
+				$this.keyup(function() {
+					const $formGroup = $this.parents(".form-group");
 					if ($this.val()==$this.attr("data-initial-value")) {
+						$formGroup.removeClass("form-modified");
 						$this.removeClass("form-modified");
 					} else {
+						$formGroup.addClass("form-modified");
 						$this.addClass("form-modified");
 					}
 				});

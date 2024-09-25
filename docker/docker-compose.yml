@@ -7,6 +7,7 @@ services:
 
   zope:
     image: zms-base:latest
+    stop_grace_period: 1s # SIGKILL after 1s, as zope is always taking the full 10 seconds
     ports:
       - 80:80
     volumes:

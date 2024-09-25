@@ -3133,4 +3133,10 @@ body.zmi.eng q {
 .zmi .form-modified textarea:not(:focus) {
 	background: rgb(232 240 254);
 }
+.zmi.form-modified .zmi nav .nav-tabs .nav-link.active:before {
+	content:"\25CF";
+	display:inline-block;
+	margin-right:.35em;
+	color: var(--primary);
+}
 /* ############################################## */

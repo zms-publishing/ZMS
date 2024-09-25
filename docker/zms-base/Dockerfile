@@ -69,6 +69,7 @@ RUN mkwsgiinstance --dir instance --user admin:admin
 COPY --chown=zope:zope --chmod=500 start.sh instance/bin/start.sh
 COPY --chown=zope:zope zope.ini instance/etc/zope.ini
 COPY --chown=zope:zope zope.conf instance/etc/zope.conf
+RUN mkdir instance/cache
 
 # All of these should probably be mounted?
 # COPY --chown=zope:zope ./etc instance/etc

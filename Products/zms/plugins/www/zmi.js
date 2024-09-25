@@ -28,7 +28,11 @@ if (typeof $ == "undefined") {
  */
 if (typeof htmx != "undefined") {
 	document.addEventListener('htmx:beforeRequest', (evt) => {
-		document.querySelector('body').classList.add('loading');
+		const body = document.querySelector('body');
+		if (body.classList.contains("form-modified") && !confirm(getZMILangStr('MSG_CONFIRM_DISCARD_CHANGES'))) {
+			evt.preventDefault();
+		}
+		body.classList.add('loading');
 	});
 	document.addEventListener('htmx:afterRequest', (evt) => {
 		var bodyClass = evt.detail.xhr.responseText;

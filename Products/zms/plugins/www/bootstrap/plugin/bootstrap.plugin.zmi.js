@@ -2387,7 +2387,11 @@ function sortOptions(what) {
 // /////////////////////////////////////////////////////////////////////////////
 
 ZMI.prototype.set_form_modified = function(context,initialValue) {
-	const value = $(context).val();
+	if ($(context).attr('id').indexOf('editor_')==0) {
+		const value = CKEDITOR.instances[$(context).attr('id')].getData();
+	} else {
+		const value = $(context).val();
+	};
 	const $body = $('body.zmi');
 	const $btn_save = $('.controls.save button[value="BTN_SAVE"]',$(context).closest('form'));
 	const $formGroup = $(context).parents('.form-group');

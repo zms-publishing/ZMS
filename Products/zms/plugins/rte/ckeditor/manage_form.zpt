@@ -178,27 +178,10 @@ function zmiRichtextInit(id) {
           instanceReady: function(ev) {
               zmiRichtextResize(id);
               $('span.cke_button_label.cke_button__source_label').html('');
-              // TODO duplicate code in bootstrap.plugin.zmi.js
-              const $body = $("body.zmi");
-			        const $btn_save = $(".controls.save button[value='BTN_SAVE']");
               const initialValue = CKEDITOR.instances['editor_'+id].getData();
               const $this = $('#editor_'+id);
               ev.editor.on('change', function (event) {
-                const value = CKEDITOR.instances['editor_'+id].getData();
-                const $formGroup = $this.parents(".form-group");
-                if (value == initialValue) {
-                  $formGroup.removeClass("form-modified");
-                } else {
-                  $formGroup.addClass("form-modified");
-                }
-                if ($(".form-group.form-modified").length == 0) {
-                  $body.removeClass("form-modified");
-                  $btn_save.removeClass("btn-primary").addClass("btn-secondary");
-                }
-                else {
-                  $body.addClass("form-modified");
-                  $btn_save.removeClass("btn-secondary").addClass("btn-primary");
-                }
+                $ZMI.set_form_modified($this,initialValue);
               });
             }
           }

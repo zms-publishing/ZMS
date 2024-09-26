@@ -977,29 +977,13 @@ ZMI.prototype.initInputFields = function(container) {
 				var $label = $(this);
 				$label.prepend('<i class="fas fa-exclamation"></i>');
 			});
-			// Check for intermediate modification by other user
-			const $body = $("body.zmi");
-			const $btn_save = $(".controls.save button[value='BTN_SAVE']");
+			// Check for intermediate modification (by other user)
 			$("input,select,textarea",this).each(function() {
 				var $this = $(this);
 				const initialValue = $this.val();
 				$this.attr("data-initial-value",initialValue);
 				$this.keyup(function() {
-					const value = $this.val();
-					const $formGroup = $this.parents(".form-group");
-					if (value == initialValue) {
-						$formGroup.removeClass("form-modified");
-					} else {
-						$formGroup.addClass("form-modified");
-					}
-					if ($(".form-group.form-modified").length == 0) {
-						$body.removeClass("form-modified");
-						$btn_save.removeClass("btn-primary").addClass("btn-secondary");
-					}
-					else {
-						$body.addClass("form-modified");
-						$btn_save.removeClass("btn-secondary").addClass("btn-primary");
-					}
+					$ZMI.set_form_modified($this,initialValue);
 				});
 			});
 			// Icon-Class
@@ -2395,4 +2379,32 @@ function sortOptions(what) {
 	}
 	for (var i=0;i<copyOption.length;i++)
 		addOption(what,copyOption[i][0],copyOption[i][1])
+}
+
+
+// /////////////////////////////////////////////////////////////////////////////
+//  Set / Reset Form as Modified
+// /////////////////////////////////////////////////////////////////////////////
+
+ZMI.prototype.set_form_modified = function(context,initialValue) {
+	const value = $(context).val();
+	const $body = $('body.zmi');
+	const $btn_save = $('.controls.save button[value="BTN_SAVE"]',$(context).closest('form'));
+	const $formGroup = $(context).parents('.form-group');
+	if (initialValue==undefined) {
+		initialValue = $(context).data('initial-value');
+	};
+	if (value == initialValue) {
+		$formGroup.removeClass('form-modified');
+	} else {
+		$formGroup.addClass('form-modified');
+	}
+	if ($('.form-group.form-modified').length == 0) {
+		$body.removeClass('form-modified');
+		$btn_save.removeClass('btn-primary').addClass('btn-secondary');
+	}
+	else {
+		$body.addClass('form-modified');
+		$btn_save.removeClass('btn-secondary').addClass('btn-primary');
+	}
 }

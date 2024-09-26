@@ -167,8 +167,21 @@
 	</tbody>
 	</table>
 	<div class="controls save">
-		<button title="Save Dictionary"  name="btn" type="submit" class="btn btn-secondary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-		<button title="Delete Selected Dictionary Terms" name="btn" type="submit" class="btn btn-secondary" value="BTN_DELETE" tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</button>
+		<button title="Save Dictionary"  name="btn" type="submit" class="btn btn-secondary" 
+			hx-trigger="click"
+			hx-post="manage_changeLangDictProperties" 
+			hx-target="body" 
+			hx-swap="outerHTML show:top"
+			hx-on:click="$ZMI.show_spinner(this)"
+			hx-on:htmx:after-request="$ZMI.reset_spinner(this)"
+			value="BTN_SAVE" 
+			tal:content="python:here.getZMILangStr('BTN_SAVE')">
+			Save
+		</button>
+		<button title="Delete Selected Dictionary Terms" name="btn" type="submit" class="btn btn-secondary" 
+			value="BTN_DELETE" tal:content="python:here.getZMILangStr('BTN_DELETE')">
+			Delete
+		</button>
 	</div>
 </form>
 

@@ -182,7 +182,7 @@
 	</tbody>
 	</table>
 	<div class="controls save">
-		<button name="btn" type="button" class="btn btn-secondary" 
+		<button name="btn" type="submit" class="btn btn-secondary" 
 			hx-trigger="click"
 			hx-post="manage_changeMetaProperties" 
 			hx-target="#zmi_manage_tabs_message" 

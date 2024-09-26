@@ -29,8 +29,11 @@ if (typeof $ == "undefined") {
 if (typeof htmx != "undefined") {
 	document.addEventListener('htmx:beforeRequest', (evt) => {
 		const body = document.querySelector('body');
-		if (body.classList.contains("form-modified") && !confirm(getZMILangStr('MSG_CONFIRM_DISCARD_CHANGES'))) {
-			return evt.preventDefault();
+		// If not send from SAVE button, check if form is modified
+		if ( ! evt.target.classList.contains('btn-primary')) {
+			if (body.classList.contains("form-modified") && !confirm(getZMILangStr('MSG_CONFIRM_DISCARD_CHANGES'))) {
+				return evt.preventDefault();
+			}
 		}
 		body.classList.add('loading');
 	});
@@ -43,6 +46,10 @@ if (typeof htmx != "undefined") {
 			document.querySelector('body').classList = bodyClass;
 			$ZMI.runReady();
 		};
+		// Remove form-modified class from
+		Array.from(document.getElementsByClassName('form-modified')).forEach(
+			e => { e.classList.remove('form-modified') }
+		);
 		document.querySelector('body').classList.remove('loading');
 		document.querySelector('body').classList.add('loaded');
 	});

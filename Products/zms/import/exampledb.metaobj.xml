@@ -14,7 +14,7 @@
           <item key="id"><![CDATA[com.zms.db.example]]></item>
           <item key="name"><![CDATA[com.zms.db.example]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[3.0.a]]></item>
+          <item key="revision"><![CDATA[5.0.0]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>
@@ -96,7 +96,7 @@
 			records python:zmscontext.attr(metaObjAttrIds[0]);
 			metaObjAttrs python:[x for x in metaObj['attrs'][1:] if 
 					x['id'] not in ['sort_id']
-					and x['custom']
+					and x.get('custom')
 					and x['type'] in zmscontext.metaobj_manager.valid_types
 					and not x['type'] in ['password']
 					]">
@@ -108,7 +108,7 @@
 		<div class="form-group row" style="margin:.5em">
 			<div class="input-group">
 				<input type="hidden" tal:attributes="name python:'filterattr%i'%filterIndex" value="%">
-				<input class="form-control form-control-sm" type="text" tal:attributes="name python:'filtervalue%i'%filterIndex; value python:request.SESSION.get('filtervalue%i_%s'%(filterIndex,zmscontext.id),'')" />
+				<input class="form-control" type="text" tal:attributes="name python:'filtervalue%i'%filterIndex; value python:request.SESSION.get('filtervalue%i_%s'%(filterIndex,zmscontext.id),'')" />
 				<div class="input-group-append">
 					<button type="submit" name="btn" class="btn btn-secondary" value="BTN_SEARCH" tal:attributes="title python:here.getZMILangStr('BTN_SEARCH')"><i class="fas fa-search"></i></button>
 					<button type="submit" name="btn" class="btn btn-secondary" value="BTN_RESET" tal:attributes="title python:here.getZMILangStr('BTN_RESET')"><i class="fas fa-times"></i></button>
@@ -159,7 +159,7 @@
           <item key="id"><![CDATA[dept]]></item>
           <item key="name"><![CDATA[Departments]]></item>
           <item key="package"><![CDATA[com.zms.db.example]]></item>
-          <item key="revision"><![CDATA[3.0.0]]></item>
+          <item key="revision"><![CDATA[5.0.0]]></item>
           <item key="type"><![CDATA[ZMSRecordSet]]></item>
         </dictionary>
       </item>
@@ -301,7 +301,7 @@
 			records python:zmscontext.attr(metaObjAttrIds[0]);
 			metaObjAttrs python:[x for x in metaObj['attrs'][1:] if 
 					x['id'] not in ['sort_id']
-					and x['custom']
+					and x.get('custom')
 					and x['type'] in zmscontext.metaobj_manager.valid_types
 					and not x['type'] in ['password']
 					]">
@@ -313,7 +313,7 @@
 		<div class="form-group row" style="margin:.5em">
 			<div class="input-group">
 				<input type="hidden" tal:attributes="name python:'filterattr%i'%filterIndex" value="%">
-				<input class="form-control form-control-sm" type="text" tal:attributes="name python:'filtervalue%i'%filterIndex; value python:request.SESSION.get('filtervalue%i_%s'%(filterIndex,zmscontext.id),'')" />
+				<input class="form-control" type="text" tal:attributes="name python:'filtervalue%i'%filterIndex; value python:request.SESSION.get('filtervalue%i_%s'%(filterIndex,zmscontext.id),'')" />
 				<div class="input-group-append">
 					<button type="submit" name="btn" class="btn btn-secondary" value="BTN_SEARCH" tal:attributes="title python:here.getZMILangStr('BTN_SEARCH')"><i class="fas fa-search"></i></button>
 					<button type="submit" name="btn" class="btn btn-secondary" value="BTN_RESET" tal:attributes="title python:here.getZMILangStr('BTN_RESET')"><i class="fas fa-times"></i></button>
@@ -364,7 +364,7 @@
           <item key="id"><![CDATA[emp]]></item>
           <item key="name"><![CDATA[Employees]]></item>
           <item key="package"><![CDATA[com.zms.db.example]]></item>
-          <item key="revision"><![CDATA[3.0.a]]></item>
+          <item key="revision"><![CDATA[5.0.0]]></item>
           <item key="type"><![CDATA[ZMSRecordSet]]></item>
         </dictionary>
       </item>
@@ -480,7 +480,7 @@
           <item key="id"><![CDATA[exampleDatabase]]></item>
           <item key="name"><![CDATA[Example-Database]]></item>
           <item key="package"><![CDATA[com.zms.db.example]]></item>
-          <item key="revision"><![CDATA[3.0.a]]></item>
+          <item key="revision"><![CDATA[5.0.0]]></item>
           <item key="type"><![CDATA[ZMSDocument]]></item>
         </dictionary>
       </item>

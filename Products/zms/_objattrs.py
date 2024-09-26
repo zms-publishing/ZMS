@@ -723,14 +723,17 @@ class ObjAttrs(object):
     def formatObjAttrValue(self, obj_attr, v, lang=None):
       
       #-- DATATYPE
-      datatype = obj_attr.get('datatype_key', _globals.DT_UNKNOWN)
+      try:
+        datatype = obj_attr.get('datatype_key', _globals.DT_UNKNOWN)
+      except:
+        datatype = _globals.DT_UNKNOWN
       
       #-- VALUE
       if isinstance(v, str):
         chars = ''.join([ x for x in string.whitespace if x != '\t'])
         v = v.strip(chars)
       # Retrieve v from options.
-      if 'options' in obj_attr:
+      if obj_attr is not None and 'options' in obj_attr:
         options = obj_attr['options']
         try: 
           i = options.index(int(v))

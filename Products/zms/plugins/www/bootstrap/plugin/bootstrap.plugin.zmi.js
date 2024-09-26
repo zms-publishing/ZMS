@@ -982,10 +982,12 @@ ZMI.prototype.initInputFields = function(container) {
 			const $btn_save = $(".controls.save button[value='BTN_SAVE']");
 			$("input,select,textarea",this).each(function() {
 				var $this = $(this);
-				$this.attr("data-initial-value",$this.val());
+				const initialValue = $this.val();
+				$this.attr("data-initial-value",initialValue);
 				$this.keyup(function() {
+					const value = $this.val();
 					const $formGroup = $this.parents(".form-group");
-					if ($this.val() == $this.attr("data-initial-value")) {
+					if (value == initialValue) {
 						$formGroup.removeClass("form-modified");
 					} else {
 						$formGroup.addClass("form-modified");

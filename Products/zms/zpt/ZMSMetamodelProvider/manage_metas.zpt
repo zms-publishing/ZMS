@@ -95,7 +95,7 @@
 	</thead>
 	<tbody>
 	<tal:block tal:define="metadictAttrIds python:here.getMetadictAttrs()">
-	<tr tal:repeat="metadictAttrId metadictAttrIds">
+	<tr tal:repeat="metadictAttrId metadictAttrIds" class="form-group">
 		<tal:block tal:define="global metadictAttr python:here.getMetadictAttr(metadictAttrId)">
 		<td class="meta-sort">
 			<input type="hidden" name="old_ids:list" tal:attributes="value python:metadictAttr['id']" />
@@ -162,7 +162,7 @@
 		</tal:block>
 	</tr>
 	</tal:block>
-	<tr class="row_insert">
+	<tr class="row_insert form-group">
 		<td class="meta-sort text-right"><span class="btn btn-add mr-1 btn-secondary btn-sm"><i class="fas fa-plus"></i></span></td>
 		<td class="meta-id"><input class="form-control form-control-sm" type="text" name="_id" /></td>
 		<td class="meta-name"><input class="form-control form-control-sm" type="text" name="_name" /></td>
@@ -182,13 +182,13 @@
 	</tbody>
 	</table>
 	<div class="controls save">
-		<button name="btn" type="button" class="btn btn-primary" 
+		<button name="btn" type="button" class="btn btn-secondary" 
 			hx-trigger="click"
 			hx-post="manage_changeMetaProperties" 
 			hx-target="#zmi_manage_tabs_message" 
 			hx-swap="outerHTML show:top"
 			hx-on:click="$ZMI.show_spinner(this)"
-			hx-on:htmx:after-request="renew_sort_options(this);$ZMI.reset_spinner(this);"
+			hx-on:htmx:after-request="renew_sort_options(this);$ZMI.reset_spinner(this)"
 			value="BTN_SAVE" 
 			tal:content="python:here.getZMILangStr('BTN_SAVE')">
 			Save
@@ -386,10 +386,12 @@
 
 			// Process td:first-child of the clone
 			$new_row.find('td.meta-sort').html(new_btn_html);
-			$new_row.removeAttr('class').attr('id',new_row_name);
+			$new_row.removeClass('row_insert').attr('id',new_row_name)
 
 			// Insert the new row
 			$new_row.insertBefore($where_insert);
+			// Set form as modified
+			$ZMI.set_form_modified($('.meta-id input',$new_row));
 			// Reset the clone template
 			$where_insert.find('input:not([type="checkbox"]),select,textarea').each(function() {
 				$(this).val(undefined);

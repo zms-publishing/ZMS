@@ -142,7 +142,7 @@
 
 		<div class="form-group row m-2">
 			<div class="controls save m-0 p-0 container text-nowrap">
-				<button tal:condition="python:not metaObj['acquired']" type="submit" name="btn" class="btn btn-primary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+				<button tal:condition="python:not metaObj['acquired']" type="submit" name="btn" class="btn btn-secondary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 				<button tal:condition="python:metaObj['acquired']" type="submit" name="btn" class="btn btn-primary" value="BTN_COPY" tal:content="python:here.getZMILangStr('BTN_COPY')">Copy</button>
 				<a href="./manage_main" class="btn btn-secondary" value="BTN_BACK" tal:content="python:here.getZMILangStr('BTN_BACK')">Back</a>
 			</div>
@@ -202,7 +202,7 @@
 
 		<tbody tal:define="req_attr_id_match python:request.get('attr_id') in objAttrIds">
 			<tr tal:repeat="objAttrId objAttrIds" 
-				tal:attributes="class python:request.get('attr_id') and ( ( req_attr_id_match and request.get('attr_id')==objAttrId ) and 'zmi-selected table-warning' or ( ( not req_attr_id_match and ( len(request.get('attr_id'))>1 and request.get('attr_id') in objAttrId ) ) and  'zmi-selected table-warning' or '' ) );">
+				tal:attributes="class python:'form-group %s'%(request.get('attr_id','') and ( ( req_attr_id_match and request.get('attr_id')==objAttrId ) and 'zmi-selected table-warning' or ( ( not req_attr_id_match and ( len(request.get('attr_id'))>1 and ( request.get('attr_id') in objAttrId ) ) ) and  'zmi-selected table-warning' or '' )));">
 				<tal:block tal:define="
 						objAttr python:metaObjAttrs[objAttrIds.index(objAttrId)];
 						isMetaDictAttr python:int(objAttr['meta_type'] not in [0,'',False,None]);">
@@ -331,7 +331,7 @@
 
 				</tal:block>
 			</tr>
-			<tr class="row_insert">
+			<tr class="row_insert form-group">
 				<td class="meta-sort text-right"><span class="btn btn-secondary btn-sm btn-add mr-1 w-100"><i class="fas fa-plus"></i></span></td>
 				<td class="meta-id"><input class="form-control form-control-sm" type="text" name="attr_id"/></td>
 				<td class="meta-name"><input class="form-control form-control-sm" type="text" name="attr_name"/></td>
@@ -386,7 +386,8 @@
 		</thead>
 		<tbody>
 		<tal:block tal:repeat="langDict python:here.getLangDict()">
-			<tr tal:condition="python:langDict['key'].startswith(request['id'])" tal:define="i python:repeat['langDict'].index+1">
+			<tr class="form-group" 
+				tal:condition="python:langDict['key'].startswith(request['id'])" tal:define="i python:repeat['langDict'].index+1">
 				<td class="meta-sort"></td>
 				<td>
 					<input type="text" class="form-control form-control-sm" 
@@ -402,7 +403,7 @@
 				</td>
 			</tr>
 		</tal:block>
-		<tr class="row_insert" tal:define="i python:0">
+		<tr class="row_insert form-group" tal:define="i python:0">
 			<td class="meta-sort text-right">
 				<span class="btn btn-secondary btn-sm btn-add mr-1 w-100"><i class="fas fa-plus"></i></span>
 			</td>
@@ -942,10 +943,12 @@ $(function(){
 
 		// Process td:first-child of the clone
 		$new_row.find('td.meta-sort').html(new_btn_html);
-		$new_row.removeAttr('class').attr('id',new_row_name);
+		$new_row.removeClass('row_insert').attr('id',new_row_name);
 
 		// Insert the new row
 		$new_row.insertBefore($where_insert);
+		// Set form as modified
+		$ZMI.set_form_modified($('.meta-id input',$new_row));
 		// Reset the clone template
 		$where_insert.find('input:not([type="checkbox"]),select,textarea').each(function() {
 			$(this).val(undefined);

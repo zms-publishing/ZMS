@@ -271,10 +271,21 @@ function zmiModalInsertUserOpen(context) {
 				</tal:block>
 				<div class="form-group row">
 					<div class="controls save">
-						<button type="submit" name="btn" class="btn btn-primary" value="BTN_SAVE" tal:condition="python:userObj is not None"><i class="fas fa-save"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</tal:block></button>
-						<button type="submit" name="btn" class="btn btn-secondary" value="BTN_DELETE" tal:condition="python:userName in userNames"><i class="fas fa-times"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block></button>
+						<button type="submit" name="btn" class="btn btn-primary" value="BTN_SAVE" 
+							tal:condition="python:userObj is not None"
+							tal:content="python:here.getZMILangStr('BTN_SAVE')">
+							Save
+						</button>
+						<button type="submit" name="btn" class="btn btn-secondary" value="BTN_DELETE" 
+							tal:condition="python:userName in userNames" 
+							tal:content="python:here.getZMILangStr('BTN_DELETE')">
+							Delete
+						</button>
 						&nbsp;&nbsp;
-						<button type="submit" name="btn" class="btn btn-secondary" value="BTN_BACK" tal:content="python:here.getZMILangStr('BTN_BACK')">Back</button>
+						<button type="submit" name="btn" class="btn btn-secondary" value="BTN_BACK" 
+							tal:content="python:here.getZMILangStr('BTN_BACK')">
+							Back
+						</button>
 					</div>
 				</div>
 			</div>

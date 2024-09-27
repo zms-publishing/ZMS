@@ -1272,7 +1272,9 @@ class AccessManager(AccessableContainer):
             # Send notification.
             # ------------------
             #-- Recipient
-            mto = email
+            mto = {}
+            mto['To'] = email
+            mto['From'] = self.getConfProperty('ZMSAdministrator.email', '')
             #-- Body
             userObj = self.findUser(id)
             mbody = []

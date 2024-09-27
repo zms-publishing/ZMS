@@ -2387,10 +2387,9 @@ function sortOptions(what) {
 // /////////////////////////////////////////////////////////////////////////////
 
 ZMI.prototype.set_form_modified = function(context,initialValue) {
+	let nowValue = $(context).val();
 	if ($(context).attr('id').indexOf('editor_')==0) {
-		const value = CKEDITOR.instances[$(context).attr('id')].getData();
-	} else {
-		const value = $(context).val();
+		nowValue = CKEDITOR.instances[$(context).attr('id')].getData();
 	};
 	const $body = $('body.zmi');
 	const $btn_save = $('.controls.save button[value="BTN_SAVE"]',$(context).closest('form'));
@@ -2398,7 +2397,7 @@ ZMI.prototype.set_form_modified = function(context,initialValue) {
 	if (initialValue==undefined) {
 		initialValue = $(context).data('initial-value');
 	};
-	if (value == initialValue) {
+	if (nowValue == initialValue) {
 		$formGroup.removeClass('form-modified');
 	} else {
 		$formGroup.addClass('form-modified');

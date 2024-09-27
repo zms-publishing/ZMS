@@ -1128,6 +1128,9 @@ input.btn.btn-file {
 	text-align:right;
 	width:100%;
 }
+.zmi .controls.save #menulock[value='0'] + #menulock_icon {
+	color:#bfc8cf
+}
 .zmi .single-line {
 	width:100%;
 	flex-wrap:nowrap;

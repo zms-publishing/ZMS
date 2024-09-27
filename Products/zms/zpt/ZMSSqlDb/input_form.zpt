@@ -216,14 +216,23 @@
 
 			<div class="form-group row">
 				<div class="controls save">
-					<div tal:replace="nothing" 
-						class="form-check form-check-inline align-middle" 
-						title="Menu Lock: Stay in the menu after clicking the save button.">
-						<input type="checkbox" id="menulock" name="menulock:int" onclick="$ZMILocalStorageAPI.set('ZMS.menulock',this.checked)" value="1" /><i class="fas fa-lock pl-2"></i>
+					<div tal:replace="nothing"
+						class="btn" title="Menu Lock: Stay in the menu after clicking the save button." 
+						onclick="$('#menulock').val($('#menulock').val()==0?1:0);$ZMILocalStorageAPI.set('ZMS.menulock',$('#menulock').val())">
+						<input type="hidden" id="menulock" name="menulock:int" value="0" />
+						<i id="menulock_icon" class="fas fa-thumbtack"></i>
 					</div>
-					<button type="submit" name="btn" class="btn btn-primary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-					<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CANCEL" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
-				</div>
+					<button type="submit" name="btn" class="btn btn-primary" 
+						value="BTN_SAVE" 
+						tal:content="python:here.getZMILangStr('BTN_SAVE')">
+						Save
+					</button>
+					<button type="submit" name="btn" class="btn btn-secondary" 
+						value="BTN_CANCEL" 
+						tal:content="python:here.getZMILangStr('BTN_CANCEL')">
+						Cancel
+					</button>
+				</div
 			</div><!-- .form-group -->
 
 		</div><!-- card-body -->

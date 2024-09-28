@@ -9,8 +9,8 @@
 		<tr class="form-group" 
 			tal:define="id python:key[len(prefix):]">
 			<td class="meta-sort">
-				<span class="btn btn-add mr-1 btn-secondary w-100" 
-					tal:attributes="onclick python:'if (confirm(getZMILangStr(\'MSG_CONFIRM_DELOBJ\'))){$(this).parents(\'tr\').remove()}'; title python:here.getZMILangStr('BTN_DELETE')">
+				<span class="btn btn-add mr-1 btn-secondary w-100" onclick="javascript:remove_row(this)"
+					tal:attributes="title python:here.getZMILangStr('BTN_DELETE')">
 					<i class="fas fa-times"></i>
 				</span>
 			</td>
@@ -48,8 +48,20 @@
 	 */
 	var table_id = 'permalinks';
 
+	function remove_row(context) {
+		// Remove row
+		$(context).closest('tr').hide('slow',function(){$(this).closest('tr').remove()});
+		// Enable refreshing all input fields by onChangeObjEvt.py 
+		$('tr.row_insert input').attr('disabled',false);
+		// Set form as modified
+		const $body = $('body.zmi');
+		const $btn_save = $('.controls.save button[value="BTN_SAVE"]',$(context).closest('form'));
+		$body.addClass('form-modified');
+		$btn_save.removeClass('btn-secondary').addClass('btn-primary');
+	}
+
 	/**
-	 * Init: Execute on DOM-Ready
+	 * Init (DOM-Ready)
 	 */
 	$(function(){
 		// New field set: initially disable inputs

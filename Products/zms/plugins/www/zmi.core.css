@@ -1138,8 +1138,16 @@ input.btn.btn-file {
 	text-align:right;
 	width:100%;
 }
-.zmi .controls.save #menulock[value='0'] + #menulock_icon {
-	color:#bfc8cf
+.zmi .controls.save .btn:not(:last-child) {
+	margin-right:0.25rem;
+}
+.zmi .controls.save dialog#menulock_btn {
+	/* Hint: is dialog element for react on focus/click event */
+	display:inline-block;
+	position: relative;
+}
+.zmi .controls.save dialog#menulock_btn #menulock[value='0'] + #menulock_icon {
+	color:#bfc8cf;
 }
 .zmi .single-line {
 	width:100%;

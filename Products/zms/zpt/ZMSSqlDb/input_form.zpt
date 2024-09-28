@@ -216,12 +216,12 @@
 
 			<div class="form-group row">
 				<div class="controls save">
-					<div tal:replace="nothing"
-						class="btn" title="Menu Lock: Stay in the menu after clicking the save button." 
+					<dialog tal:replace="nothing"
+						id="menulock_btn" class="btn" title="Menu Lock: Stay in the menu after clicking the save button." 
 						onclick="$('#menulock').val($('#menulock').val()==0?1:0);$ZMILocalStorageAPI.set('ZMS.menulock',$('#menulock').val())">
 						<input type="hidden" id="menulock" name="menulock:int" value="0" />
 						<i id="menulock_icon" class="fas fa-thumbtack"></i>
-					</div>
+					</dialog>
 					<button type="submit" name="btn" class="btn btn-primary" 
 						value="BTN_SAVE" 
 						tal:content="python:here.getZMILangStr('BTN_SAVE')">

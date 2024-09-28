@@ -219,148 +219,148 @@
 </div><!-- #zmi-tab -->
 
 <style>
-	/* <!-- */
-		tr.row_insert > td > .btn-add {
-			width: 100%;
-			color:#333 !important;
-			padding: 4px 8px;
-		}
-		tr.row_insert > td > .btn-add:hover {
-			color:white !important;
-		}
-		tr.row_insert > td:not(.meta-sort) > * {
-			opacity:.35
-		}
-		tr.htmx-swapping td {
-			opacity: 0;
-			transition: opacity 1s ease-out;
-		}
-	/* --> */
-	</style>
-	<script>
-	// <!--
-		/**
-		 * Export xml.
-		 */
-		function zmiExportBtnClick(sender) {
-			var fm = $(sender).parents("form")[0];
-			var href = fm.action+'?lang='+getZMILang()+'&btn=BTN_EXPORT';
-			$('input[name="ids:list"]:checked',fm).each(function(){
-					href += '&'+$(this).attr("name")+'='+$(this).val();
-				});
-			window.open(href);
-			return false;
-		}
-
-		/**
-		 * Submit form with given parameters.
-		 */
-		function zmiFormSubmit(sender,d) {
-			var $fm = $(sender).closest("form");
-			if ('btn' in d) {
-				if (d['btn']=='BTN_DELETE' && 'ids:list' in d) {
-					for (var i in d['ids:list']) {
-						$('tr#lang'+i,$fm).remove();
-						$('input[name="ids:list"]',$(sender).closest("tr")).each(function(){
-							$fm.append('<input type="hidden" name="ids:list" value="'+$(this).val()+'"/>');
-						});
-					}
-				}
-			} else {
-				var html = '';
-				for (var i in d) {
-					$('input[name="' + i + '"]',$fm).remove();
-					html += '<input type="hidden" name="' + i + '" value="' + d[i] +'"/>';
-				}
-				$fm
-					.append(html)
-					.submit();
-			}
-		}
-
-		/**
-		 * On load:
-		 */
-		$(function(){
-			// New field set: initially disable inputs
-			$('input, textarea, select','tr.row_insert').attr('disabled',true);
-	
-			// ++++++++++++
-			// Add rows to tables #meta_properties on button click
-			// ++++++++++++
-			let new_row_counter = 0;
-
-			// Get number of language terms
-			let lang_dict = ZMI.prototype.getCachedValue('get_lang_dict');
-			let lang_count = 0;
-			if ( lang_dict!='undefined' ) {
-				if ( typeof lang_dict == 'object' ) {
-					lang_count = Object.keys(ZMI.prototype.getCachedValue('get_lang_dict')).length
-				} else {
-					lang_count = Object.keys(JSON.parse(ZMI.prototype.getCachedValue('get_lang_dict'))).length
-				}
-			};
-
-			// Add click event function to add-buttons
-			$(".row_insert .btn-add").click(function(){
-				new_row_counter++;
-				// New field set: clone with enabled inputs
-				$('input, textarea, select','tr.row_insert').attr('disabled',false);
-				
-				// Where to insert the new row 
-				let $where_insert = $(this).closest('tr');
-	
-				// Set variables
-				let table_id = $(this).closest('table').attr('id'); // meta_properties or meta_languages
-				let new_row_name = `new_row_${table_id}_${new_row_counter}`;
-				let old_id_html = '';
-				let sort_options_html = '';
-				let sort_options_len = 0;
-				let new_btn_html = `
-					<span class="btn btn-secondary btn-sm mr-1 w-100" style="color:#999" 
-						onclick="javascript:$(this).closest('tr').hide('slow',function(){$(this).closest('tr').remove()})">
-						<i class="fas fa-undo-alt"></i>
-					</span>
-				`;
-			
-				// Clone(true) to get a deep copy including select options
-				let $new_row = $where_insert.clone(true);
-	
-				// Process table cells of the clone like "old" row
-				$new_row.find('td').each(function() {
-					$(this).find('input,select,textarea').each(function() {
-						let tagname = $(this).prop('tagName');
-						let defname = $(this).attr('name');
-						let deftype = $(this).attr('type');
-						let counter = table_id == 'lang_dict' ? lang_count + new_row_counter : new_row_counter;
-						let newname = $(this).attr('name').replace('_0', '_' + counter);
-						let newval  = 'new'+counter;
-						$(this).attr('name',newname);
-						if (!('select'==tagname.toLowerCase())) {
-							$(this).val(newval);
-						}
-					});
-				});
-	
-				// Process td:first-child of the clone
-				$new_row.find('td.meta-sort').html(new_btn_html);
-				$new_row.removeClass('row_insert').attr('id',new_row_name);
-	
-				// Insert the new row
-				$new_row.insertBefore($where_insert);
-				// Set form as modified
-				$ZMI.set_form_modified($('input',$new_row));
-				// Reset the clone template
-				$where_insert.find('input:not([type="checkbox"]),textarea').each(function() {
-					$(this).val(undefined);
-				});
-				// New field set: reset to disabled inputs
-				$('input, textarea, select','tr.row_insert').attr('disabled',true);
+/* <!-- */
+	tr.row_insert > td > .btn-add {
+		width: 100%;
+		color:#333 !important;
+		padding: 4px 8px;
+	}
+	tr.row_insert > td > .btn-add:hover {
+		color:white !important;
+	}
+	tr.row_insert > td:not(.meta-sort) > * {
+		opacity:.35
+	}
+	tr.htmx-swapping td {
+		opacity: 0;
+		transition: opacity 1s ease-out;
+	}
+/* --> */
+</style>
+<script>
+// <!--
+	/**
+	 * Export xml.
+	 */
+	function zmiExportBtnClick(sender) {
+		var fm = $(sender).parents("form")[0];
+		var href = fm.action+'?lang='+getZMILang()+'&btn=BTN_EXPORT';
+		$('input[name="ids:list"]:checked',fm).each(function(){
+				href += '&'+$(this).attr("name")+'='+$(this).val();
 			});
-	
+		window.open(href);
+		return false;
+	}
+
+	/**
+	 * Submit form with given parameters.
+	 */
+	function zmiFormSubmit(sender,d) {
+		var $fm = $(sender).closest("form");
+		if ('btn' in d) {
+			if (d['btn']=='BTN_DELETE' && 'ids:list' in d) {
+				for (var i in d['ids:list']) {
+					$('tr#lang'+i,$fm).remove();
+					$('input[name="ids:list"]',$(sender).closest("tr")).each(function(){
+						$fm.append('<input type="hidden" name="ids:list" value="'+$(this).val()+'"/>');
+					});
+				}
+			}
+		} else {
+			var html = '';
+			for (var i in d) {
+				$('input[name="' + i + '"]',$fm).remove();
+				html += '<input type="hidden" name="' + i + '" value="' + d[i] +'"/>';
+			}
+			$fm
+				.append(html)
+				.submit();
+		}
+	}
+
+	/**
+	 * On load:
+	 */
+	$(function(){
+		// New field set: initially disable inputs
+		$('input, textarea, select','tr.row_insert').attr('disabled',true);
+
+		// ++++++++++++
+		// Add rows to tables #meta_properties on button click
+		// ++++++++++++
+		let new_row_counter = 0;
+
+		// Get number of language terms
+		let lang_dict = ZMI.prototype.getCachedValue('get_lang_dict');
+		let lang_count = 0;
+		if ( lang_dict!='undefined' ) {
+			if ( typeof lang_dict == 'object' ) {
+				lang_count = Object.keys(ZMI.prototype.getCachedValue('get_lang_dict')).length
+			} else {
+				lang_count = Object.keys(JSON.parse(ZMI.prototype.getCachedValue('get_lang_dict'))).length
+			}
+		};
+
+		// Add click event function to add-buttons
+		$(".row_insert .btn-add").click(function(){
+			new_row_counter++;
+			// New field set: clone with enabled inputs
+			$('input, textarea, select','tr.row_insert').attr('disabled',false);
+			
+			// Where to insert the new row 
+			let $where_insert = $(this).closest('tr');
+
+			// Set variables
+			let table_id = $(this).closest('table').attr('id'); // meta_properties or meta_languages
+			let new_row_name = `new_row_${table_id}_${new_row_counter}`;
+			let old_id_html = '';
+			let sort_options_html = '';
+			let sort_options_len = 0;
+			let new_btn_html = `
+				<span class="btn btn-secondary btn-sm mr-1 w-100" style="color:#999" 
+					onclick="javascript:$(this).closest('tr').hide('slow',function(){$(this).closest('tr').remove()})">
+					<i class="fas fa-undo-alt"></i>
+				</span>
+			`;
+		
+			// Clone(true) to get a deep copy including select options
+			let $new_row = $where_insert.clone(true);
+
+			// Process table cells of the clone like "old" row
+			$new_row.find('td').each(function() {
+				$(this).find('input,select,textarea').each(function() {
+					let tagname = $(this).prop('tagName');
+					let defname = $(this).attr('name');
+					let deftype = $(this).attr('type');
+					let counter = table_id == 'lang_dict' ? lang_count + new_row_counter : new_row_counter;
+					let newname = $(this).attr('name').replace('_0', '_' + counter);
+					let newval  = 'new'+counter;
+					$(this).attr('name',newname);
+					if (!('select'==tagname.toLowerCase())) {
+						$(this).val(newval);
+					}
+				});
+			});
+
+			// Process td:first-child of the clone
+			$new_row.find('td.meta-sort').html(new_btn_html);
+			$new_row.removeClass('row_insert').attr('id',new_row_name);
+
+			// Insert the new row
+			$new_row.insertBefore($where_insert);
+			// Set form as modified
+			$ZMI.set_form_modified($('input',$new_row));
+			// Reset the clone template
+			$where_insert.find('input:not([type="checkbox"]),textarea').each(function() {
+				$(this).val(undefined);
+			});
+			// New field set: reset to disabled inputs
+			$('input, textarea, select','tr.row_insert').attr('disabled',true);
 		});
-	// -->
-	</script>
+
+	});
+// -->
+</script>
 
 <footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 </body>

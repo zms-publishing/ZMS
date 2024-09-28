@@ -46,7 +46,8 @@ def getInternalLinkDict(self, url):
   reqBuffId = 'getInternalLinkDict.%s'%url
   try: return docelmnt.fetchReqBuff(reqBuffId)
   except: pass
-  request = self.REQUEST
+  from Products.zms.standard import create_fake_http_request
+  request = self.get('REQUEST', create_fake_http_request())
   d = {}
   # Params.
   anchor = ''
@@ -87,7 +88,8 @@ def getInternalLinkDict(self, url):
 #  getInternalLinkUrl:
 # ------------------------------------------------------------------------------
 def getInternalLinkUrl(self, url, ob):
-  request = self.REQUEST
+  from Products.zms.standard import create_fake_http_request
+  request = self.get('REQUEST', create_fake_http_request())
   if ob is None:
     index_html = './index_%s.html?error_type=NotFound&op=not_found&url=%s'%(request.get('lang', self.getPrimaryLanguage()), str(url))
   else:
@@ -388,6 +390,8 @@ class ZReferableItem(object):
   #  Resolves internal/external links and returns Object.
   # ----------------------------------------------------------------------------
   def getLinkObj(self, url, REQUEST=None):
+    from Products.zms.standard import create_fake_http_request
+    request = self.get('REQUEST', create_fake_http_request())
     ob = None
     if isInternalLink(url):
       # Params.
@@ -425,7 +429,6 @@ class ZReferableItem(object):
       # Prepare request
       ids = self.getPhysicalPath()
       if ob is not None and ob.id not in ids:
-        request = self.REQUEST
         ob.set_request_context(request, ref_params)
     return ob
 

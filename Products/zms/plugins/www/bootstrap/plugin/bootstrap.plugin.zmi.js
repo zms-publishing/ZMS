@@ -2388,7 +2388,7 @@ function sortOptions(what) {
 
 ZMI.prototype.set_form_modified = function(context,initialValue) {
 	let nowValue = $(context).val();
-	if ($(context).attr('id').indexOf('editor_')==0) {
+	if ( $(context).attr('id')!=undefined && $(context).attr('id').indexOf('editor_')==0 ) {
 		nowValue = CKEDITOR.instances[$(context).attr('id')].getData();
 	};
 	const $body = $('body.zmi');

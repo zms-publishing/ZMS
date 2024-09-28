@@ -1,29 +1,124 @@
 <!-- ZMS.interface_permalinks -->
 
 <div class="control-group" tal:define="zmscontext options/zmscontext">
-	<table class="table table-bordered m-0" title="Permalinks">
+	<table id="permalinks" class="table table-bordered m-0" title="Permalinks">
 		<tbody tal:define="prefix python:'%s.permalink.'%zmscontext.meta_id;
 			keys python:[x for x in zmscontext.getConfProperties() if x.startswith(prefix)];
 			dummy0 python:keys.sort();">
 		<tal:block tal:repeat="key keys">
-		<tr tal:define="id python:key[len(prefix):]">
+		<tr class="form-group" 
+			tal:define="id python:key[len(prefix):]">
 			<td class="meta-sort">
-				<div class="btn-group">
-					<a class="btn btn-secondary" href="javascript:;" tal:attributes="onclick python:'if (confirm(getZMILangStr(\'MSG_CONFIRM_DELOBJ\'))){$(this).parents(\'tr\').remove()}'; title python:here.getZMILangStr('BTN_DELETE')"
-						><i class="fas fa-times"></i></a>
-				</div><!-- .btn-group -->
+				<span class="btn btn-add mr-1 btn-secondary w-100" 
+					tal:attributes="onclick python:'if (confirm(getZMILangStr(\'MSG_CONFIRM_DELOBJ\'))){$(this).parents(\'tr\').remove()}'; title python:here.getZMILangStr('BTN_DELETE')">
+					<i class="fas fa-times"></i>
+				</span>
 			</td>
-			<td class="meta-id"><input class="form-control form-control" tal:attributes="name python:'permalink_key_%s'%id; value id;"/></td>
-			<td class="meta-url form-group"><input class="form-control form-control url-input" tal:attributes="name python:'permalink_val_%s'%id; value python:zmscontext.getConfProperty(key)"/></td>
+			<td class="meta-id"><input class="form-control" tal:attributes="name python:'permalink_key_%s'%id; value id;"/></td>
+			<td class="meta-url form-group"><input class="form-control url-input" tal:attributes="name python:'permalink_val_%s'%id; value python:zmscontext.getConfProperty(key)"/></td>
 		</tr>
 		</tal:block>
-		<tr class="row_insert">
-			<td class="meta-sort"><span class="btn btn-light"><i class="fas fa-plus"></i></td>
+		<tr class="row_insert form-group">
+			<td class="meta-sort text-right"><span class="btn btn-add mr-1 btn-secondary"><i class="fas fa-plus"></i></span></td>
 			<td class="meta-id"><input class="form-control form-control" name="permalink_key__" placeholder="Enter Id..."/></td>
-			<td class="meta-url form-group"><input class="form-control form-control url-input" name="permalink_val__" placeholder="Select Url..."/></td>
+			<td class="meta-url form-group"><input class="form-control url-input" name="permalink_val__" placeholder="Select Url..."/></td>
 		</tr>
 		</tbody>
 	</table>
 </div>
+<style>
+/* <!-- */
+	tr.row_insert > td > .btn-add {
+		width: 100%;
+		color:#333 !important;
+	}
+	tr.row_insert > td > .btn-add:hover {
+		color:white !important;
+	}
+	tr.row_insert > td:not(.meta-sort) > * {
+		opacity:.35
+	}
+/* --> */
+</style>
 
+<script>
+// <!--
+	/**
+	 * Global vars.
+	 */
+	var table_id = 'permalinks';
+
+	/**
+	 * Init: Execute on DOM-Ready
+	 */
+	$(function(){
+		// New field set: initially disable inputs
+		$('tr.row_insert input').attr('disabled',true);
+
+		// ++++++++++++
+		// Add rows to tables #meta_properties on button click
+		// ++++++++++++
+		let new_row_counter = 0;
+
+		// Add click event function to add-buttons
+		$(".row_insert .btn-add").click(function(){
+			new_row_counter++;
+			// New field set: clone with enabled inputs
+			$('tr.row_insert input').attr('disabled',false);
+
+			// Where to insert the new row 
+			let $where_insert = $(this).closest('tr');
+
+			// Set variables
+			let new_row_name = `new_row_${table_id}_${new_row_counter}`;
+			let new_btn_html = `
+				<span class="btn btn-secondary mr-1 w-100" style="color:#999"
+					title="Revoke new Permalink"
+					onclick="javascript:$(this).closest('tr').hide('slow',function(){$(this).closest('tr').remove()})">
+					<i class="fas fa-undo-alt"></i>
+				</span>
+			`;
+
+			// Clone(true) to get a deep copy including select options
+			let $new_row = $where_insert.clone(true);
+
+			// Process table cells of the clone like "old" row
+			$new_row.find('td').each(function() {
+				$(this).find('input').each(function() {
+					let tagname = $(this).prop('tagName');
+					let defname = $(this).attr('name')
+					let newval  = $(this).val();
+					newname = `${defname}new${new_row_counter}`
+					newval = `new${new_row_counter}`;
+					$(this).attr('name',newname);
+					$(this).val(newval);
+					$(this).attr('placeholder',`new${new_row_counter}`);
+					// debugger;
+					if ( $(this).hasClass('url-input') ) {
+						// Replace td-content by the new input field
+						$(this).closest('.input-group').replaceWith(`<input class="form-control url-input" name="${newname}" placeholder="Select Url..."/>`); 
+					};
+				});
+			});
+
+			// Process td:first-child of the clone
+			$new_row.find('td.meta-sort').html(new_btn_html);
+			$new_row.removeClass('row_insert').attr('id',new_row_name)
+
+			// Insert the new row
+			$new_row.insertBefore($where_insert);
+			// Set form as modified
+			$ZMI.set_form_modified($('.meta-id input',$new_row));
+			$ZMI.initUrlInput($("td.meta-url",$new_row));
+			// Reset the clone template
+			$where_insert.find('input:not([type="checkbox"]),select,textarea').each(function() {
+				$(this).val(undefined);
+			});
+			// New field set: reset to disabled inputs
+			$('tr.row_insert input').attr('disabled',true);
+		});
+
+	});
+// -->
+</script>
 <!-- /ZMS.interface_permalinks -->

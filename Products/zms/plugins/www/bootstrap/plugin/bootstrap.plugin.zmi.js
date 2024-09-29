@@ -2391,8 +2391,10 @@ ZMI.prototype.set_form_modified = function(context,initialValue) {
 	if ( $(context).attr('id')!=undefined && $(context).attr('id').indexOf('editor_')==0 ) {
 		nowValue = CKEDITOR.instances[$(context).attr('id')].getData();
 	};
+	debugger;
 	const $body = $('body.zmi');
 	const $btn_save = $('.controls.save button[value="BTN_SAVE"]',$(context).closest('form'));
+	const $form = $(context).parents('form');
 	const $formGroup = $(context).parents('.form-group');
 	if (initialValue==undefined) {
 		initialValue = $(context).data('initial-value');
@@ -2405,9 +2407,11 @@ ZMI.prototype.set_form_modified = function(context,initialValue) {
 	if ($('.form-group.form-modified').length == 0) {
 		$body.removeClass('form-modified');
 		$btn_save.removeClass('btn-primary').addClass('btn-secondary');
-	}
-	else {
+	} else {
 		$body.addClass('form-modified');
 		$btn_save.removeClass('btn-secondary').addClass('btn-primary');
+	}
+	if ($('#form_modified',$form).length == 0) {
+		$form.append('<input type="hidden" id="form_modified" name="form_modified:boolean" value="1">');
 	}
 }

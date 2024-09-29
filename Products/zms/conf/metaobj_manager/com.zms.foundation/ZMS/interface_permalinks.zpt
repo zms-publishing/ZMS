@@ -1,28 +1,27 @@
 <!-- ZMS.interface_permalinks -->
-
 <div class="control-group" tal:define="zmscontext options/zmscontext">
 	<table id="permalinks" class="table table-bordered m-0" title="Permalinks">
 		<tbody tal:define="prefix python:'%s.permalink.'%zmscontext.meta_id;
 			keys python:[x for x in zmscontext.getConfProperties() if x.startswith(prefix)];
 			dummy0 python:keys.sort();">
-		<tal:block tal:repeat="key keys">
-		<tr class="form-group" 
-			tal:define="id python:key[len(prefix):]">
-			<td class="meta-sort">
-				<span class="btn btn-add mr-1 btn-secondary w-100" onclick="javascript:remove_row(this)"
-					tal:attributes="title python:here.getZMILangStr('BTN_DELETE')">
-					<i class="fas fa-times"></i>
-				</span>
-			</td>
-			<td class="meta-id"><input class="form-control" tal:attributes="name python:'permalink_key_%s'%id; value id;"/></td>
-			<td class="meta-url form-group"><input class="form-control url-input" tal:attributes="name python:'permalink_val_%s'%id; value python:zmscontext.getConfProperty(key)"/></td>
-		</tr>
-		</tal:block>
-		<tr class="row_insert form-group">
-			<td class="meta-sort text-right"><span class="btn btn-add mr-1 btn-secondary"><i class="fas fa-plus"></i></span></td>
-			<td class="meta-id"><input class="form-control form-control" name="permalink_key__" placeholder="Enter Id..."/></td>
-			<td class="meta-url form-group"><input class="form-control url-input" name="permalink_val__" placeholder="Select Url..."/></td>
-		</tr>
+			<tal:block tal:repeat="key keys">
+				<tr class="form-group" 
+					tal:define="id python:key[len(prefix):]">
+					<td class="meta-sort">
+						<span class="btn btn-add mr-1 btn-secondary w-100" onclick="javascript:remove_row(this)"
+							tal:attributes="title python:here.getZMILangStr('BTN_DELETE')">
+							<i class="fas fa-times"></i>
+						</span>
+					</td>
+					<td class="meta-id"><input class="form-control" tal:attributes="name python:'permalink_key_%s'%id; value id;"/></td>
+					<td class="meta-url form-group"><input class="form-control url-input" tal:attributes="name python:'permalink_val_%s'%id; value python:zmscontext.getConfProperty(key)"/></td>
+				</tr>
+			</tal:block>
+			<tr class="row_insert form-group">
+				<td class="meta-sort text-right"><span class="btn btn-add mr-1 btn-secondary"><i class="fas fa-plus"></i></span></td>
+				<td class="meta-id"><input class="form-control form-control" name="permalink_key__" placeholder="Enter Id..."/></td>
+				<td class="meta-url form-group"><input class="form-control url-input" name="permalink_val__" placeholder="Select Url..."/></td>
+			</tr>
 		</tbody>
 	</table>
 </div>
@@ -49,15 +48,10 @@
 	var table_id = 'permalinks';
 
 	function remove_row(context) {
-		// Remove row
+		// Remove row from table
 		$(context).closest('tr').hide('slow',function(){$(this).closest('tr').remove()});
-		// Enable refreshing all input fields by onChangeObjEvt.py 
-		$('tr.row_insert input').attr('disabled',false);
-		// Set form as modified
-		const $body = $('body.zmi');
-		const $btn_save = $('.controls.save button[value="BTN_SAVE"]',$(context).closest('form'));
-		$body.addClass('form-modified');
-		$btn_save.removeClass('btn-secondary').addClass('btn-primary');
+		// Set form as modified (ZMS.onChangeObjEvt)
+		$ZMI.set_form_modified(context)
 	}
 
 	/**

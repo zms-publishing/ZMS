@@ -4,7 +4,14 @@ Products/zms/plugins/www/zms-all.min.js
 Products/zms/plugins/www/i18n/*.js
 Products/zms/overrides.zcml
 .vscode/
+
+*~
+.*.swp
+
+/.idea/
+
 dist/
 build/
 docker/var/*
 docker/var/log/
+/revisions.txt

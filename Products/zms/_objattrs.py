@@ -613,6 +613,7 @@ class ObjAttrs(object):
       request = kwargs.get('request', kwargs.get('REQUEST', self.get('REQUEST', {})))
       id = request.get('ZMS_INSERT', self.meta_id)
       key = args[0]
+      id = standard.nvl(request.get('ZMS_INSERT'), self.meta_id)
       if key.find('.')>0:
         id = key[:key.find('.')]
         key = key[key.find('.')+1:]
@@ -669,6 +670,7 @@ class ObjAttrs(object):
       obj_vers = self.getObjVersion(REQUEST)
       obj_attrs = self.getObjAttrs()
       now = datetime.datetime.now()
+      dst = time.daylight == 1 and 1 or 0 # Daylight saving time.
       for key in ['active', 'attr_active_start', 'attr_active_end']:
         if key in obj_attrs:
           obj_attr = obj_attrs[key]
@@ -691,7 +693,7 @@ class ObjAttrs(object):
                   if isinstance(value, time.struct_time):
                     # Convert time.struct_time to datetime tuple.
                     value = tuple(value[:8]) + (0,)
-                  dt = datetime.datetime.fromtimestamp(time.mktime(value))
+                  dt = datetime.datetime.fromtimestamp(time.mktime(value) - (dst * 3600))
                   b = b and now > dt
                   if dt > now and self.REQUEST.get('ZMS_CACHE_EXPIRE_DATETIME', dt) >= dt:
                     self.REQUEST.set('ZMS_CACHE_EXPIRE_DATETIME',dt)
@@ -701,7 +703,7 @@ class ObjAttrs(object):
                   if isinstance(value, time.struct_time):
                     # Convert time.struct_time to datetime tuple.
                     value = tuple(value[:8]) + (0,)
-                  dt = datetime.datetime.fromtimestamp(time.mktime(value))
+                  dt = datetime.datetime.fromtimestamp(time.mktime(value) - (dst * 3600))
                   b = b and dt > now
                   if dt > now and self.REQUEST.get('ZMS_CACHE_EXPIRE_DATETIME', dt) >= dt:
                     self.REQUEST.set('ZMS_CACHE_EXPIRE_DATETIME',dt)
@@ -725,14 +727,17 @@ class ObjAttrs(object):
     def formatObjAttrValue(self, obj_attr, v, lang=None):
 
       #-- DATATYPE
-      datatype = obj_attr.get('datatype_key', _globals.DT_UNKNOWN)
-
+      try:
+        datatype = obj_attr.get('datatype_key', _globals.DT_UNKNOWN)
+      except:
+        datatype = _globals.DT_UNKNOWN
+      
       #-- VALUE
       if isinstance(v, str):
         chars = ''.join([ x for x in string.whitespace if x != '\t'])
         v = v.strip(chars)
       # Retrieve v from options.
-      if 'options' in obj_attr:
+      if obj_attr is not None and 'options' in obj_attr:
         options = obj_attr['options']
         try:
           i = options.index(int(v))

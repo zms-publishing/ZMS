@@ -26,6 +26,8 @@ Scripts.  It can be accessed from Python with the statement
 "import Products.zms.content_extraction"
 """
 # Imports.
+import html
+from bs4 import BeautifulSoup
 from AccessControl.SecurityInfo import ModuleSecurityInfo
 # Product Imports.
 from Products.zms import standard
@@ -49,15 +51,25 @@ def extract_content(context, b, content_type=''):
 
 
 security.declarePublic('extract_text_from_html')
-def extract_text_from_html(html):
-    from bs4 import BeautifulSoup
-    soup = BeautifulSoup(html, features="html.parser")
-    text = soup.get_text() \
+def extract_text_from_html(context, html_data):
+    """
+    Removes html tags and converts html entities to plain text.
+    @param context: the ZMS-context
+    @param html_data: html data stream
+    @type html_data: C{str} or C{bytes}
+    """
+    html_data = standard.pystr(html_data)
+    soup = BeautifulSoup(html_data, features="html.parser")
+    text_data = soup.get_text() \
         .replace('\n',' ') \
         .replace('\t',' ') \
         .replace('\"',' ')
-    text = ' '.join(text.split())
-    return text
+    text_data = ' '.join(text_data.split())
+    try:
+        text_data = html.unescape(text_data)
+    except Exception as e:
+        standard.writeError( context, "can't unescape text_data: %s" % e)
+    return text_data
 
 
 def extract_content_tika(context, b, content_type=None):
@@ -74,7 +86,7 @@ def extract_content_tika(context, b, content_type=None):
             import requests
             r = requests.put(parser_url, headers=headers, data=b)
             html = r.json().get('X-TIKA:content')
-            return extract_text_from_html(html)
+            return extract_text_from_html(context, html)
         except:
             standard.writeError( context, "can't extract_content_tika")
     else:
@@ -83,13 +95,22 @@ def extract_content_tika(context, b, content_type=None):
 
 
 def extract_content_pdfminer(context, b, content_type=None):
+    """
+    Apply the pdfminer.six library to extract text from a PDF file.
+    Pdfminer.six is a community maintained fork of the original PDFMiner. 
+    It is a tool for extracting information from PDF documents. It focuses
+    on getting and analyzing text data. Pdfminer.six extracts the text 
+    from a page directly from the sourcecode of the PDF. 
+    Install: pip install pdfminer.six
+    @see https://github.com/pdfminer/pdfminer.six
+
+    @param context: the ZMS-context
+    @param b: pdf data stream
+    @type b: C{bytes}
+    @param content_type: the content type
+    @type content_type: C{str} or None
+    """
     try:
-        # pdfminer.six (https://github.com/pdfminer/pdfminer.six)
-        # Pdfminer.six is a community maintained fork of the original PDFMiner. 
-        # It is a tool for extracting information from PDF documents. It focuses
-        # on getting and analyzing text data. Pdfminer.six extracts the text 
-        # from a page directly from the sourcecode of the PDF. 
-        # pip install pdfminer.six
         from io import BytesIO, StringIO
         from pdfminer.converter import TextConverter
         from pdfminer.layout import LAParams
@@ -107,7 +128,7 @@ def extract_content_pdfminer(context, b, content_type=None):
         interpreter = PDFPageInterpreter(rsrcmgr, device)
         for page in PDFPage.create_pages(doc):
             interpreter.process_page(page)
-        return extract_text_from_html(output_string.getvalue())
+        return extract_text_from_html(context, output_string.getvalue())
     except:
         standard.writeError( context, "can't extract_content_pdfminer")
     return None

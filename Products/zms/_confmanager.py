@@ -461,7 +461,8 @@ class ConfManager(
     def getConfPropertiesDefaults(self):
       return [
         {'key':'ZMS.conf.path','title':'ZMS conf-path','desc':'ZMS conf-path','datatype':'string','default':'$INSTANCE_HOME/var/$HOME_ID'}, 
-        {'key':'ZMS.debug','title':'ZMS debug','desc':'ZMS debug','datatype':'boolean','default':0}, 
+        {'key':'ZMS.mode.debug','title':'ZMS Debug Mode','desc':'Run ZMS in debug mode','datatype':'boolean','default':0}, 
+        {'key':'ZMS.mode.maintenance','title':'ZMS Maintenance Mode','desc':'Run ZMS in maintenance mode','datatype':'boolean','default':0}, 
         {'key':'ZMSAdministrator.email','title':'Admin e-Mail','desc':'Administrators e-mail address.','datatype':'string'},
         {'key':'ASP.protocol','title':'ASP Protocol','desc':'ASP Protocol.','datatype':'string','options':['http', 'https'],'default':'http'},
         {'key':'ASP.ip_or_domain','title':'ASP IP/Domain','desc':'ASP IP/Domain.','datatype':'string'},
@@ -1096,11 +1097,15 @@ class ConfManager(
 
     def getCatalogAdapter(self):
       from Products.zms import IZMSCatalogAdapter, ZMSZCatalogAdapter
-      for ob in self.objectValues():
-        if IZMSCatalogAdapter.IZMSCatalogAdapter in list(providedBy(ob)):
-          return ob
+      path_nodes = self.breadcrumbs_obj_path()
+      path_nodes.reverse()
+      for path_node in path_nodes:
+        for ob in path_node.objectValues():
+          if IZMSCatalogAdapter.IZMSCatalogAdapter in list(providedBy(ob)):
+            return ob
+      # If no ZMSZCatalogAdapter then add one to root node
       adapter = ZMSZCatalogAdapter.ZMSZCatalogAdapter()
-      self._setObject( adapter.id, adapter)
+      path_nodes[0]._setObject( adapter.id, adapter)
       adapter = getattr(self, adapter.id)
       adapter.initialize()
       return adapter

@@ -2,7 +2,7 @@ import json
 from urllib.parse import urlparse
 import opensearchpy
 from opensearchpy import OpenSearch
-
+from Products.zms import standard
 
 def get_opensearch_client(self):
 	# ${opensearch.url:https://localhost:9200, https://localhost:9201}
@@ -35,7 +35,7 @@ def get_opensearch_client(self):
 		http_auth = auth,
 		use_ssl = use_ssl,
 		verify_certs = verify,
-		ssl_assert_hostname = False,
+		ssl_assert_hostname = verify,
 		ssl_show_warn = False,
 	)
 	return client
@@ -50,6 +50,7 @@ def opensearch_query( self, REQUEST=None):
 	home_id = request.get('home_id', '')
 	multisite_search = int(request.get('multisite_search', 1))
 	multisite_exclusions = request.get('multisite_exclusions', '').split(',')
+	prettify = bool(int(request.get('prettify',0)))
 	index_names = []
 	# Search in a specific index given by Request-parameter facet
 	if request.get('facet') not in ['all','undefined', None, '']:
@@ -112,15 +113,23 @@ def opensearch_query( self, REQUEST=None):
 		"size": qsize,
 		"from": qfrom,
 		"query": {
-			"bool": {
-				"must": [
-					{
-						"simple_query_string": {
-							"query": q,
-							"default_operator": "AND"
-						}
+			"script_score": {
+				"query": {
+					"bool": {
+						"must": [
+							{
+								"simple_query_string": {
+									"query": q,
+									"default_operator": "AND"
+								}
+							}
+						]
 					}
-				]
+				},
+				"script": {
+					"lang":"painless",
+					"source": "return _score;"
+				}
 			}
 		},
 		"aggs": {
@@ -135,7 +144,7 @@ def opensearch_query( self, REQUEST=None):
 
 	# No multisite-search: show only results of current ZMS-client
 	if multisite_search==0 and len(home_id) > 0:
-		query['query']['bool']['must'].append( {
+		query['query']['script_score']['query']['bool']['must'].append( {
 			"match": {
 				"home_id": str(home_id)
 			}
@@ -144,14 +153,22 @@ def opensearch_query( self, REQUEST=None):
 	# Exclusion of ZMS-Clients (home_id exclusions) via 'must_not' operator
 	if multisite_exclusions[0]!='':
 		# init 'must_not' operator
-		query['query']['bool']['must_not'] = []
+		query['query']['script_score']['query']['bool']['must_not'] = []
 		# add must_not for each home_id
 		for home_id in multisite_exclusions:
-			query['query']['bool']['must_not'].append( {
+			query['query']['script_score']['query']['bool']['must_not'].append( {
 				"match": {
 					"home_id": str(home_id)
 				}
 			})
+
+	# Script Score Query: Boosting by Field Value
+	# https://opensearch.org/docs/latest/query-dsl/specialized/script-score/
+	# https://opensearch.org/docs/latest/api-reference/script-apis/exec-script/
+	
+	score_script = self.getConfProperty('opensearch.score_script', '')
+	if score_script:
+		query['query']['script_score']['script']['source'] = score_script
 
 	client = get_opensearch_client(self)
 	if not client:
@@ -160,7 +177,10 @@ def opensearch_query( self, REQUEST=None):
 	resp_text = ''
 	try:
 		response = client.search(body = json.dumps(query), index = index_names)
-		resp_text = json.dumps(response)
+		if prettify:
+			resp_text = json.dumps(response, indent=4)
+		else:
+			resp_text = json.dumps(response)
 	except opensearchpy.exceptions.RequestError as e:
 		resp_text = '//%s'%(e.error)
 	

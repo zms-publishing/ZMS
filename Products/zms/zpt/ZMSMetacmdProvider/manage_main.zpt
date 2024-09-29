@@ -184,60 +184,57 @@
 	<div id="importConf" class="inner">
 		<form class="form-horizontal" tal:attributes="action action" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="lang" tal:attributes="value request/lang">
-			<div class="form-group row">
-				<label class="col-sm-2 control-label" for="file"><i class="far fa-folder-open"></i> <tal:block tal:content="python:here.getZMILangStr('ATTR_FILE')">File</tal:block></label>
-				<div class="col-sm-10">
-					<input class="btn btn-file" name="file" type="file" />
+			<div class="form-group col-12">
+				<div class="custom-file">
+					<input type="file" name="file" id="file" class="custom-file-input" value=""
+						onchange="$('.custom-file label span').html($(this).val().replace(/^.*(\\|\/|\:)/, ''));" />
+					<label class="custom-file-label" for="file"><span tal:content="python:here.getZMILangStr('ATTR_FILE')">Choose file</span></label>
 				</div>
 			</div><!-- .form-group -->
-			<div class="form-group row">
-				<label class="col-sm-2 control-label" for="file" tal:content="python:here.getZMILangStr('OR')">or</label>
-				<div class="col-sm-10">
-					<select id="init" name="init" multiple="multiple" class="form-control" 
-						onfocus="zmiExpandConfFiles(this,'.metacmd.');$(this).addClass('expand');" 
-						onmouseover="zmiExpandConfFiles(this,'.metacmd.')">
-						<option value="">--- <tal:block tal:content="python:here.getZMILangStr('BTN_INIT')">Init</tal:block>... ---</option>
-					</select>
-				</div>
+			<label class="col-12 control-label text-left"><span tal:content="python:here.getZMILangStr('OR').lower()">Or</span></label>
+			<div class="form-group col-12 mt-2">
+				<select id="init" name="init" multiple="multiple" class="form-control"
+					onfocus="zmiExpandConfFiles(this,'.metacmd.');$(this).addClass('expand');"
+					onmouseover="zmiExpandConfFiles(this,'.metacmd.')">
+					<option value="">--- <tal:block tal:content="python:here.getZMILangStr('BTN_INIT')">Init</tal:block>... ---</option>
+				</select>
 				<style>
-				/*<!--*/
-					#init { 
-						height:2rem;
-						overflow:unset !important;
-						overflow-x: hidden;
-						overflow-y:scroll !important;
-					}
-					#init.expand,
-					#init:focus {
-						transition: height 0.5s ease-in-out;
-						height:20rem;
-					}
-					#meta_commands tbody tr:not(.table-danger):hover {
-						background-color: rgba(0,0,0,.1);
-					}
-				/*-->*/
-				</style>
+					/*<!--*/
+						#init {
+							height:2rem;
+							overflow:unset !important;
+							overflow-x: hidden;
+							overflow-y:scroll !important;
+						}
+						#init.expand,
+						#init:focus {
+							transition: height 0.5s ease-in-out;
+							height:20rem;
+						}
+						#meta_commands tbody tr:not(.table-danger):hover {
+							background-color: rgba(0,0,0,.1);
+						}
+					/*-->*/
+					</style>
 			</div><!-- .form-group -->
-			<div class="form-group row mt-5">
+			<div class="form-group row mt-5 mr-0">
 				<div class="controls save">
 					<button name="btn" type="submit" class="btn btn-primary" value="BTN_IMPORT" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
-					<button class="btn btn-secondary ml-1" 
+					<button class="btn btn-secondary ml-1"
 						title="Check-Up: Compare working content model with the current ZMS source files."
 						onclick="$ZMI.iframe('./manage_customize_diff',{lang:getZMILang(),provider_id:'metacmd_manager',action:'manage_changeMetacmds'},{iframe:true,height:'600',title:$(this).attr('title')});return false">
 						<i class="fas fa-code-branch"></i>
 					</button>
-
-
 				</div>
-			</div>
+			</div><!-- .form-group -->
 		</form>
 	</div><!-- #importConf.inner -->
 </div><!-- .d-none -->
 
 <form class="form-horizontal card" tal:attributes="action action" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
-	<legend class="has_tooltip" 
-		tal:attributes="title python:here.getZMILangStr('TIP_METACMD')" 
+	<legend class="has_tooltip"
+		tal:attributes="title python:here.getZMILangStr('TIP_METACMD')"
 		tal:content="python:here.getZMILangStr('TAB_METACMD')">
 		Metacmd
 	</legend>
@@ -287,9 +284,9 @@
 			<tal:block tal:define="
 					ob python:getattr(here,metaCmd['id'],None);
 					revision python:metaCmd.get('revision','0.0.0');">
-				<tr class="zmi-selectable" 
+				<tr class="zmi-selectable"
 					tal:attributes="
-						data-package package; 
+						data-package package;
 						class python:(ob is None) and 'text-danger table-danger' or '';
 						title python:(ob is None) and '%s not found'%metaCmd['id'] or ''">
 					<td class="meta-ids text-center">
@@ -301,8 +298,8 @@
 							<tal:block tal:condition="python:metaCmd.get('acquired',False)">
 								<a target="_blank" data-turbolinks="false"
 									tal:attributes="
-										href python:'%s/metacmd_manager/manage_main?lang=%s&id=%s'%(context.getRootElement().absolute_url(),request['lang'],metaCmd['id']);
-										title python:'acquired from: %s (%s)'%(context.getRootElement().getHome().id, context.getRootElement().attr('titlealt'))"
+										href python:'%s/metacmd_manager/manage_main?lang=%s&id=%s'%(context.getHome().aq_parent.content.absolute_url(),request['lang'],metaCmd['id']);
+										title python:'acquired from: %s (%s)'%(context.getHome().aq_parent.content.id, context.getHome().aq_parent.content.attr('titlealt'))"
 									><i class="fas fa-share"></i></a>
 								<i tal:condition="python:metaCmd.get('icon_clazz',False)" tal:attributes="class python:metaCmd.get('icon_clazz')"></i>&nbsp;&nbsp;
 								<strong tal:content="python:metaCmd['id']">the id</strong> ( <tal:block tal:content="python:here.getZMILangStr(metaCmd['name'])">Name</tal:block> )
@@ -315,7 +312,7 @@
 									(<tal:block tal:content="python:here.getZMILangStr(metaCmd['name'])">the name</tal:block>)
 								</a>
 							</tal:block>
-							<tal:block tal:content="revision">the version</tal:block> 
+							<tal:block tal:content="revision">the version</tal:block>
 							(<tal:block tal:content="python:metaCmd['meta_type']">the type</tal:block>)
 						</tal:block>
 						<tal:block tal:condition="python:ob is None"

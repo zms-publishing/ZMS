@@ -1,9 +1,9 @@
 <!-- ACE-Editor3 onChangeJS -->
 <div class="form-group row">
-<div class="col-sm-2"></div>
-<div class="col-sm-10" style="top:-2.5em;padding:0;">
-<div class="ACE_Editor">
-<div id="ACE_Editor3"></div>
-</div>
-</div>
+	<div class="col-sm-2"></div>
+	<div class="col-sm-10" style="top:-2.5em;">
+		<div class="ACE_Editor">
+			<div id="ACE_Editor3"></div>
+		</div>
+	</div>
 </div>

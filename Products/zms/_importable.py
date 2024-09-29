@@ -77,8 +77,9 @@ def recurse_importContent(self, folder):
   self.onChangeObj( self.REQUEST, forced=1)
   
   # Process children.
-  for ob in self.getChildNodes():
-    recurse_importContent(ob, folder)
+  if self.meta_id != 'ZMS':
+    for ob in self.getChildNodes():
+      recurse_importContent(ob, folder)
 
 
 # ------------------------------------------------------------------------------

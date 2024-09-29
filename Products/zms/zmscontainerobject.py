@@ -132,7 +132,7 @@ class ZMSContainerObject(
       @rtype: C{zmsobject.ZMSObject}
       """
       request = self.REQUEST
-      values['meta_id'] = request.get('ZMS_INSERT',meta_id)
+      values['meta_id'] = standard.nvl(request.get('ZMS_INSERT'),meta_id)
       return self.manage_addZMSObject('ZMSCustom', values, request)
 
 
@@ -267,7 +267,7 @@ class ZMSContainerObject(
       trashcan.normalizeSortIds()
       trashcan.run_garbage_collection(forced=1)
       # Synchronize search.
-      self.getCatalogAdapter().unindex_node(self)
+      self.getCatalogAdapter().unindex_nodes(nodes=children)
       # Sort-IDs.
       self.normalizeSortIds()
       [standard.triggerEvent(child,'afterDeleteObjsEvt') for child in children]

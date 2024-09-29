@@ -5,6 +5,42 @@ body.zmi .form-control {
 	font-family: "Helvetica Neue",Arial,sans-serif;
 	font-size: .867rem !important;
 }
+/* GUI hx-loading progress bar */
+body.zmi:not(.manage-menu) {
+	overflow-y: scroll;
+}
+body.zmi.loading {
+	overflow-x: hidden;
+}
+body.zmi.loading:after, 
+body.zmi:not(.loading).loaded:after {
+	top:0;
+	content:' ';
+	display:block;
+	position:absolute;
+	background:#00ccff;
+	height:3px;
+	z-index:10000;
+}
+body.zmi.loading:after {
+	left:0;
+	animation-name: loading;
+	animation-duration: 1.5s;
+}
+body.zmi:not(.loading).loaded:after {
+	right:0;
+	animation-name: loaded;
+	animation-duration: .75s;
+}
+@keyframes loading {
+	from {width:0vw;opacity:1}
+	to {width:100vw;opacity:.5}
+}
+@keyframes loaded {
+	from {width:100vw;opacity:1}
+	to {width:0vw;opacity:.5}
+}
+
 a {
 	color: #08c;
 }
@@ -104,11 +140,12 @@ header.navbar-nav ul.navbar-nav {
 	background: #354f67;
 	flex-wrap: nowrap;
 }
-/* Show Debug Mode: ZMS.debug=1 */
-header.zmsdebug .navbar-brand .slogan {
+/* Show ZMS Mode: ZMS.mode.debug=1, ZMS.mode.maintenance=1 */
+header[data-zmsmode] .navbar-brand .slogan {
 	visibility: collapse;
 }
-header.zmsdebug .navbar-brand .product:after {
+header[data-zmsmode='debug'] .navbar-brand .product:after,
+header[data-zmsmode='maintenance'] .navbar-brand .product:after {
 	content: "DEBUG MODE";
 	font-size: .9rem;
 	color: white;
@@ -122,12 +159,20 @@ header.zmsdebug .navbar-brand .product:after {
 	top: 0;
 	left: 105px;
 }
+header[data-zmsmode='maintenance'] .navbar-brand .product:after {
+	content: "MAINTENANCE";
+	background: #dc3545;
+}
 @media (max-width: 767px) {
-	header.zmsdebug .navbar-brand .product:after {
+	header[data-zmsmode='debug'] .navbar-brand .product:after,
+	header[data-zmsmode='maintenance'] .navbar-brand .product:after {
 		content:"\F188";
 		font-family:'Font Awesome 5 Free',fontawesome;
 		font-size: 1.2rem;
 		padding: .78rem .4rem;
+	}
+	header[data-zmsmode='maintenance'] .navbar-brand .product:after {
+		content:"\F05E";
 	}
 }
 
@@ -903,7 +948,7 @@ li.zmi-item span.zmi-ids {
 	margin: 6px;
 	cursor:pointer;
 }
-.zmi-manage-main-change {
+div.zmi-manage-main-change {
 	color:#999;
 	font-size:11px;
 	margin:.7rem 0 0 0;
@@ -1083,6 +1128,17 @@ input.btn.btn-file {
 	text-align:right;
 	width:100%;
 }
+.zmi .controls.save .btn:not(:last-child) {
+	margin-right:0.25rem;
+}
+.zmi .controls.save dialog#menulock_btn {
+	/* Hint: is dialog element for react on focus/click event */
+	display:inline-block;
+	position: relative;
+}
+.zmi .controls.save dialog#menulock_btn #menulock[value='0'] + #menulock_icon {
+	color:#bfc8cf;
+}
 .zmi .single-line {
 	width:100%;
 	flex-wrap:nowrap;
@@ -1166,9 +1222,6 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
-.zmi .breadcrumb li.breadcrumb-item.active a {
-	color:#999fa5;
-}
 .zmi .breadcrumb li.breadcrumb-item:hover a {
 	color: #999fa5;
 	text-decoration:none;
@@ -1195,11 +1248,11 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	border:0;
 	padding:0 .35rem 0 0;
 }
-.zmi .form-group .breadcrumb li.breadcrumb-item {
-	white-space: nowrap;
-	text-overflow: ellipsis;
-	max-width: 98px;
-	overflow: hidden;
+.zmi td.form-group .breadcrumb li.breadcrumb-item {
+	padding-top:.2rem!important;
+}
+.zmi td.form-group .breadcrumb li.breadcrumb-item:not(.active) {
+	padding-top:.3rem!important;
 }
 .zmi .form-group li.breadcrumb-item + li.breadcrumb-item::before,
 .zmi .form-group li.breadcrumb li.breadcrumb-item i {
@@ -1713,6 +1766,9 @@ table.table-sm tr.row_insert td .btn-add {
 .zmi.metas table.meta-access .breadcrumb i {
 	font-size:11px;
 }
+.zmi.metas.config iframe {
+	height: 70vh !important;
+}
 
 
 /*  Repository Manager
@@ -1834,7 +1890,7 @@ table.table-sm tr.row_insert td .btn-add {
 }
 
 .zmi.repository_manager_main .table.repo-changeset .zmi-helper-clickable {
-    cursor:pointer;
+	cursor:pointer;
 }
 
 
@@ -1883,6 +1939,7 @@ table.table-sm tr.row_insert td .btn-add {
 	margin-left:0;
 	padding-left:1em;
 	list-style:outside none none;
+	white-space:nowrap;
 }
 .zmi-sitemap li.active > a  {
 	font-weight:bold;
@@ -1903,7 +1960,7 @@ body.browse_iframe .toggle {
 .zmi-sitemap .toggle {
 	color:#CCC;
 	font-size:120%;
-	vertical-align:bottom;
+	vertical-align: baseline;
 	width:12px;
 	margin-right:2px;
 	text-align:center;
@@ -2341,17 +2398,21 @@ body.lazy_select_form footer .controls {
 	border:1px dotted #607D8B;
 }
 .zmi.config.users .list_users table.show_lastlogin tr.userName td:before {
-	content:attr(data-lastlogin);
-	display:block;
+	content: "0000-00-00";
+	display: inline-block;
 	right:0;
 	color:white;
 	font-family:monospace;
-	float:right;
 	font-size:11px;
 	position:absolute;
-	background:#333333;
-	padding:.1rem .5rem;;
+	background: #4950573d;
+	padding:.1rem .5rem;
 	margin-top:-.5rem;
+	margin-top:-.5rem;
+}
+.zmi.config.users .list_users table.show_lastlogin tr.userName td[data-lastlogin]:before {
+	background:#333333;
+	content:attr(data-lastlogin);
 }
 /* ZMSLinkElement */
 .zmi #tr_attr_ref #tr_attr_ref_type select#attr_type {
@@ -2383,19 +2444,13 @@ body.lazy_select_form footer .controls {
 	overflow-x: hidden;
 	background: #e8f3fb;
 	margin: 0 0 1rem 0;
-	direction: rtl;
 	display: block;
-	padding: 10px 12px;
+	padding: 10px 17px;
 	line-height: 1.42857143;
 	background-image: none;
 	border: 1px solid #ccc;
-	border-radius: 4px;
-	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-	box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-	-webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
-	-o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-	transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-	clear:both !important;
+	border-top: none;
+	border-radius: 0 0 4px 4px;
 }
 .zmi-sitemap-container.full  {
 	max-height: unset !important;
@@ -2403,31 +2458,31 @@ body.lazy_select_form footer .controls {
 .zmi-sitemap-container.loading ul li > * {
 	color:#ccc !important
 }
-.zmi-sitemap-container .progress {
-	padding-left:0;
-	margin-right: 7rem;
-	background: #337ab740;
-	height:1.25rem;
-	direction: ltr;
+.zmi-sitemap-controls-container .progress {
+	margin-left:6.75rem;
+	background: #d7e6f1;
+	height:2.15rem;
+	border-radius:0;
+	border-top-right-radius: 4px;
 }
-.zmi-sitemap-container .progress .progress-bar {
+.zmi-sitemap-controls-container .progress .progress-bar {
 	width:0%;
 	text-align:right;
 }
-.zmi-sitemap-container .progress .progress-bar.active {
+.zmi-sitemap-controls-container .progress .progress-bar.active {
 	min-width:5em;
 	width: fit-content;
 }
-.zmi-sitemap-container .progress .progress-bar span {
+.zmi-sitemap-controls-container .progress .progress-bar span {
 	margin:0 1em;
 }
 .zmi-sitemap-container.loading .progress .progress-bar {
 	width:100%;
 }
-.zmi-sitemap-container .progress.error .progress-bar {
+.zmi-sitemap-controls-container .progress.error .progress-bar {
 	background-color:#9C27B0
 }
-.zmi-sitemap-container .progress.error:after {
+.zmi-sitemap-controls-container .progress.error:after {
 	content:"INDEXING ERROR occured: details see event-log";
 	display:block;
 	color:#9C27B0;
@@ -2439,19 +2494,14 @@ body.lazy_select_form footer .controls {
 	direction: ltr;
 }
 .zmi-sitemap-controls {
-	top:0;
-	right: 15px;
 	position: absolute;
 }
-.ZMSZCatalogConnector .zmi-sitemap-controls {
-	top:unset;
-	right:20px;
-}
 .zmi-sitemap-controls > div:first-child {
-	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
 }
 .zmi-sitemap-controls > div:last-child {
 	border-bottom-right-radius: 0;
+	border-top-right-radius: 0;
 }
 .zmi-sitemap.full {
 	max-height: unset;

@@ -33,3 +33,6 @@ asyncio
 Products.PluggableAuthService
 Products.PluginRegistry
 # -e git+https://github.com/sntl-projects/Products.zmsPluggableAuthService.git#egg=Products.zmsPluggableAuthService
+
+# MemCacheD to replace mappingstorage
+Products.mcdutils>=3.2

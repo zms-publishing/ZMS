@@ -26,7 +26,7 @@ class adwords:
 	package = "com.zms.catalog.opensearch"
 
 	# Revision
-	revision = "1.6.1"
+	revision = "1.8.5"
 
 	# Type
 	type = "ZMSRecordSet"
@@ -42,7 +42,7 @@ class adwords:
 			,"repetitive":0
 			,"type":"list"}
 
-		grid = {"default":"1"
+		grid = {"default":0
 			,"id":"_grid"
 			,"keys":[]
 			,"mandatory":1
@@ -80,7 +80,8 @@ class adwords:
 			,"repetitive":0
 			,"type":"url"}
 
-		synonyms = {"default":""
+		synonyms = {"custom":1
+			,"default":""
 			,"id":"synonyms"
 			,"keys":[]
 			,"mandatory":0
@@ -89,21 +90,44 @@ class adwords:
 			,"repetitive":0
 			,"type":"string"}
 
-		category = {"default":""
+		category = {"custom":1
+			,"default":""
 			,"id":"category"
-			,"keys":["##"
-				,"return ["
-				,"  ('person','Person'),"
-				,"  ('news','News'),"
-				,"  ('study','Studium'),"
-				,"  ('event','Veranstaltung'),"
-				,"  ('tip','Tipp')"
-				,"]"]
+			,"keys":["direkt"
+				,"universitaet"
+				,"study"
+				,"forschung"
+				,"weiterbildung"
+				,"fakultaeten"
+				,"institute"
+				,"microsites"
+				,"apps"
+				,"extern"]
 			,"mandatory":0
 			,"multilang":0
 			,"name":"Category"
 			,"repetitive":0
 			,"type":"select"}
+
+		title = {"custom":1
+			,"default":""
+			,"id":"title"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"Ext.Link: Title"
+			,"repetitive":0
+			,"type":"string"}
+
+		attr_dc_description = {"custom":1
+			,"default":""
+			,"id":"attr_dc_description"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"Ext.Link: Text"
+			,"repetitive":0
+			,"type":"string"}
 
 		icon_clazz = {"custom":"far fa-list-alt text-danger"
 			,"default":""

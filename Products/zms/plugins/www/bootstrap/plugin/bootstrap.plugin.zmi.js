@@ -550,7 +550,7 @@ $ZMI.registerReady(function(){
 	$ZMI.setCursorAuto("EO bootstrap.plugin.zmi");
 
 	// Set Save-Button Behaviour: Menu Lock
-	$('#menulock').prop('checked', JSON.parse($ZMILocalStorageAPI.get('ZMS.menulock',false)));
+	$('#menulock').val(JSON.parse($ZMILocalStorageAPI.get('ZMS.menulock',0)));
 
 	// ZMSLightbox
 	$('a.zmslightbox, a.fancybox')
@@ -1755,7 +1755,7 @@ function zmiActionButtonsRefresh(sender,evt) {
  * @param v Boolean value for new (un-)checked state.
  */
 function zmiToggleSelectionButtonClick(sender,v) {
-	var $fm = $(sender).parents('form,.zmi-form-container');
+	var $fm = $(sender).closest('form,.zmi-form-container');
 	var $inputs = $('input:checkbox:not([id~="active"]):not([id~="attr_dc_coverage"])',$fm);
 	if (typeof v == "undefined") {
 		v = !$inputs.prop('checked');

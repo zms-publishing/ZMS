@@ -9,7 +9,8 @@
 - [ ] example systemd files to run everything
   - [ ] this should show how automated container updates are done!
 - [ ] example nginx config so you get the same experience as on the server
-- [ ] Allow working on zms inside the container
+- [x] Allow working on zms inside the container
+- [ ] Full development experience with all dependennt services locally (mariadb, memcached, …)
 
 # TODOs
 

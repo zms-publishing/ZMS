@@ -11,12 +11,12 @@ services:
     ports:
       - 80:80
     volumes:
-      - ./zope/etc/:/home/zope/instance/etc/
-      - ./zope/var/:/home/zope/instance/var/
+      - ./zope/etc/:/home/zope/etc/
+      - ./zope/var/:/home/zope/var/
 
   zeo:
     image: zms-base:latest
-    command: runzeo --configure instance/etc/zeo.conf
+    command: runzeo --configure etc/zeo.conf
     volumes:
-      - ./zeo/etc/:/home/zope/instance/etc/
-      - ./zeo/var/:/home/zope/instance/var/
+      - ./zeo/etc/:/home/zope/etc/
+      - ./zeo/var/:/home/zope/var/

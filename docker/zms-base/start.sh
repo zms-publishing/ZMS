@@ -1,5 +1,5 @@
 #!/bin/bash
-instance_dir="/home/zope/instance/"
+instance_dir="/home/zope/"
 venv_bin_dir="/home/zope/venv/bin"
 
 # Regarding debug-mode=on

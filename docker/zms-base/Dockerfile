@@ -61,19 +61,18 @@ EOR
 
 # TODO install debugging helpers like: pip install debugpy
 
-# REFACT consider a flat layout where the user has venv etc bin directly in home folder
 # Create Zope Instance
-RUN mkwsgiinstance --dir instance --user admin:admin
+RUN mkwsgiinstance --dir . --user admin:admin
 
 # Configure Zope Instance
-COPY --chown=zope:zope --chmod=500 start.sh instance/bin/start.sh
-COPY --chown=zope:zope zope.ini instance/etc/zope.ini
-COPY --chown=zope:zope zope.conf instance/etc/zope.conf
-RUN mkdir instance/cache
+COPY --chown=zope:zope --chmod=500 start.sh bin/start.sh
+COPY --chown=zope:zope zope.ini etc/zope.ini
+COPY --chown=zope:zope zope.conf etc/zope.conf
+RUN mkdir cache
 
 # All of these should probably be mounted?
-# COPY --chown=zope:zope ./etc instance/etc
-# COPY ./var venv/instance/zms5/var
-# COPY ./Extensions venv/instance/zms5/Extensions
+# COPY --chown=zope:zope ./etc etc
+# COPY ./var var
+# COPY ./Extensions Extensions
 
-CMD ["/home/zope/instance/bin/start.sh"]
+CMD ["/home/zope/bin/start.sh"]

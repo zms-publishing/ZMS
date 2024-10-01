@@ -60,8 +60,6 @@ RUN --mount=type=cache,uid=$UID,target=$PIP_CACHE_DIR,sharing=locked <<EOR
     $PIP_INSTALL --cache-dir $PIP_CACHE_DIR debugpy
 EOR
 
-# TODO install debugging helpers like: pip install debugpy
-
 # Create Zope Instance
 RUN mkwsgiinstance --dir . --user admin:admin
 
@@ -69,11 +67,6 @@ RUN mkwsgiinstance --dir . --user admin:admin
 COPY --chown=zope:zope --chmod=500 start.sh bin/start.sh
 COPY --chown=zope:zope zope.ini etc/zope.ini
 COPY --chown=zope:zope zope.conf etc/zope.conf
-RUN mkdir cache
-
-# All of these should probably be mounted?
-# COPY --chown=zope:zope ./etc etc
-# COPY ./var var
-# COPY ./Extensions Extensions
+RUN mkdir cache Extensions
 
 CMD ["/home/zope/bin/start.sh"]

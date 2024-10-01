@@ -384,9 +384,9 @@ class Exportable(_filtermanager.FilterItem):
     #  Exportable.toXml:
     # --------------------------------------------------------------------------
     def toXml(self, REQUEST=None, deep=True, data2hex=False, multilang=True):
-      from Products.zms.standard import create_fake_http_request
+      from Products.zms.standard import create_headless_http_request
       if REQUEST is None:
-        REQUEST = self.get('REQUEST', create_fake_http_request())
+        REQUEST = self.get('REQUEST', create_headless_http_request())
       xml = ''
       xml += _xmllib.xml_header()
       xml += _xmllib.getObjToXml( self, REQUEST, deep, base_path='', data2hex=data2hex, multilang=multilang)

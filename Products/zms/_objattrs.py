@@ -37,8 +37,8 @@ from Products.zms import _globals
 #  getobjattrdefault
 # ------------------------------------------------------------------------------
 def getobjattrdefault(obj, obj_attr, lang):
-    from Products.zms.standard import create_fake_http_request
-    request = obj.get('REQUEST', create_fake_http_request())
+    from Products.zms.standard import create_headless_http_request
+    request = obj.get('REQUEST', create_headless_http_request())
     v = None
     datatype = obj_attr['datatype_key']
     default = None
@@ -597,8 +597,8 @@ class ObjAttrs(object):
     #  attr({key0:value0,...,keyN:valueN}) -> setObjProperty(key0,value0),...
     # --------------------------------------------------------------------------
     def attr(self, *args, **kwargs):
-      from Products.zms.standard import create_fake_http_request
-      req = self.get('REQUEST', create_fake_http_request())
+      from Products.zms.standard import create_headless_http_request
+      req = self.get('REQUEST', create_headless_http_request())
       request = kwargs.get('request',kwargs.get('REQUEST',req))
       if len(args) == 1 and isinstance(args[0], str):
         return self.getObjProperty( args[0], request, kwargs)
@@ -613,8 +613,8 @@ class ObjAttrs(object):
     #  ObjAttrs.evalMetaobjAttr
     # --------------------------------------------------------------------------
     def evalMetaobjAttr(self, *args, **kwargs):
-      from Products.zms.standard import create_fake_http_request
-      request = self.get('REQUEST', create_fake_http_request())
+      from Products.zms.standard import create_headless_http_request
+      request = self.get('REQUEST', create_headless_http_request())
       root = self
       key = args[0]
       id = standard.nvl(request.get('ZMS_INSERT'), self.meta_id)

@@ -40,8 +40,8 @@ class ReqBuff(object):
     #  Clear buffered values from Http-Request.
     # --------------------------------------------------------------------------
     def clearReqBuff(self, prefix='', REQUEST=None):
-      from Products.zms.standard import create_fake_http_request
-      request = self.get('REQUEST', create_fake_http_request())
+      from Products.zms.standard import create_headless_http_request
+      request = self.get('REQUEST', create_headless_http_request())
       buff = request.get('__buff__', Buff())
       reqBuffId = self.getReqBuffId(prefix)
       if len(prefix) > 0:
@@ -58,8 +58,8 @@ class ReqBuff(object):
     #  @throws Exception
     # --------------------------------------------------------------------------
     def fetchReqBuff(self, key, REQUEST=None):
-      from Products.zms.standard import create_fake_http_request
-      request = self.get('REQUEST', create_fake_http_request())
+      from Products.zms.standard import create_headless_http_request
+      request = self.get('REQUEST', create_headless_http_request())
       buff = request['__buff__']
       reqBuffId = self.getReqBuffId(key)
       return getattr(buff, reqBuffId)
@@ -70,8 +70,8 @@ class ReqBuff(object):
     #  Returns value and stores it in buffer of Http-Request.
     # --------------------------------------------------------------------------
     def storeReqBuff(self, key, value, REQUEST=None):
-      from Products.zms.standard import create_fake_http_request
-      request = self.get('REQUEST', create_fake_http_request())
+      from Products.zms.standard import create_headless_http_request
+      request = self.get('REQUEST', create_headless_http_request())
       buff = request.get('__buff__', None)
       if buff is None:
         buff = Buff()

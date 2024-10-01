@@ -103,8 +103,8 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
     #  ZMSLinkElement.getEmbedType: 
     # --------------------------------------------------------------------------
     def getEmbedType(self):
-      from Products.zms.standard import create_fake_http_request
-      request = self.get('REQUEST', create_fake_http_request())
+      from Products.zms.standard import create_headless_http_request
+      request = self.get('REQUEST', create_headless_http_request())
       embed_type = self.getObjAttrValue( self.getObjAttr( 'attr_type'), request)
       if embed_type in [ 'embed', 'recursive', 'remote']:
         ref_obj = self.getRefObj()
@@ -383,8 +383,8 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
     #  ZMSLinkElement.isPageElement
     # --------------------------------------------------------------------------
     def isPageElement(self):
-      from Products.zms.standard import create_fake_http_request
-      request = self.get('REQUEST', create_fake_http_request())
+      from Products.zms.standard import create_headless_http_request
+      request = self.get('REQUEST', create_headless_http_request())
       rtnVal = False
       if self.getEmbedType() == 'remote':
         return self.getRemoteObj().get('is_page_element',False)
@@ -633,8 +633,8 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
     #  Returns self or referenced object (if embedded) as ZMSProxyObject
     # --------------------------------------------------------------------------
     def __proxy__(self):
-      from Products.zms.standard import create_fake_http_request
-      req = self.get('REQUEST', create_fake_http_request())
+      from Products.zms.standard import create_headless_http_request
+      req = self.get('REQUEST', create_headless_http_request())
       rtn = self
       if req.get( 'ZMS_PROXY', True):
         if req.get( 'URL', '').find( '/manage') < 0 or req.get( 'ZMS_PATH_HANDLER', False):
@@ -653,8 +653,8 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
     #  ZMSProxyObject.
     # --------------------------------------------------------------------------
     def getProxy(self):
-      from Products.zms.standard import create_fake_http_request
-      req = self.get('REQUEST', create_fake_http_request())
+      from Products.zms.standard import create_headless_http_request
+      req = self.get('REQUEST', create_headless_http_request())
       rtn = self
       if req.get( 'ZMS_PROXY', True):
         rtn = req.get( 'ZMS_PROXY_%s'%self.id, self.__proxy__())

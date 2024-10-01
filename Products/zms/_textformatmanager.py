@@ -29,8 +29,8 @@ class TextFormatObject(object):
   #  Returns section-number.
   # ----------------------------------------------------------------------------
   def getSecNo( self):
-    from Products.zms.standard import create_fake_http_request
-    request = self.get('REQUEST', create_fake_http_request())
+    from Products.zms.standard import create_headless_http_request
+    request = self.get('REQUEST', create_headless_http_request())
     sec_no = ''
     #-- [ReqBuff]: Fetch buffered value from Http-Request.
     parentNode = self.getParentNode()

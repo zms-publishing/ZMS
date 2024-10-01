@@ -25,7 +25,7 @@ from Products.zms import standard
 from Products.zms import _blobfields
 from Products.zms import _fileutil
 from Products.zms import _globals
-
+from Products.zms.standard import create_headless_http_request
 
 # ------------------------------------------------------------------------------
 #  _pathhandler.validateId:
@@ -119,7 +119,6 @@ class PathHandler(object):
     def __bobo_traverse__(self, TraversalRequest, name):
       # If this is the first time this __bob_traverse__ method has been called
       # in handling this traversal request, store the path_to_handle
-      from Products.zms.standard import create_headless_http_request
       request = self.get('REQUEST', create_headless_http_request())
       url = request.get('URL', '')
       zmi = url.find('/manage') >= 0

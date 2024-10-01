@@ -32,6 +32,7 @@ from Products.zms import _filtermanager
 from Products.zms import _globals
 from Products.zms import _xmllib
 from Products.zms import standard
+from Products.zms.standard import create_headless_http_request
 
 
 def writeFile(self, filename, data, mode='w', encoding='utf-8'):
@@ -384,7 +385,6 @@ class Exportable(_filtermanager.FilterItem):
     #  Exportable.toXml:
     # --------------------------------------------------------------------------
     def toXml(self, REQUEST=None, deep=True, data2hex=False, multilang=True):
-      from Products.zms.standard import create_headless_http_request
       if REQUEST is None:
         REQUEST = self.get('REQUEST', create_headless_http_request())
       xml = ''

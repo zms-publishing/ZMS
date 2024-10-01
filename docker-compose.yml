@@ -1,0 +1,29 @@
+services:
+  zms-base:
+    build: ./docker/zms-base
+    image: zms-base:latest
+    entrypoint: "bash -c"
+    command: "exit 0"
+
+  zope:
+    image: zms-base:latest
+    depends_on:
+      - zeo
+    stop_grace_period: 1s # SIGKILL after 1s, as zope is always taking the full 10 seconds
+    ports:
+      - 80:80
+    volumes:
+      - ./docker/zope/etc/:/home/zope/etc/
+      - ./docker/zope/var/:/home/zope/var/
+      - ./docker/zope/Extensions/:/home/zope/Extensions/
+      - .:/home/zope/venv/src/zms/
+    # allow attaching to the container to debug with `breakpoint()`
+    stdin_open: true
+    tty: true
+
+  zeo:
+    image: zms-base:latest
+    command: runzeo --configure etc/zeo.conf
+    volumes:
+      - ./docker/zeo/etc/:/home/zope/etc/
+      - ./docker/zeo/var/:/home/zope/var/

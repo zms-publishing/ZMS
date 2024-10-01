@@ -56,6 +56,7 @@ RUN --mount=type=cache,uid=$UID,target=$PIP_CACHE_DIR,sharing=locked <<EOR
     $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --requirement https://raw.githubusercontent.com/zms-publishing/ZMS5/master/requirements-full.txt
     $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --upgrade --editable git+https://github.com/sntl-projects/Products.zmsPluggableAuthService.git#egg=Products.zmsPluggableAuthService[nginx-sso]
     $PIP_INSTALL --cache-dir $PIP_CACHE_DIR ZEO
+    # Allow remote debugging from vscode
     $PIP_INSTALL --cache-dir $PIP_CACHE_DIR debugpy
 EOR
 

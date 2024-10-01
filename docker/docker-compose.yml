@@ -15,6 +15,7 @@ services:
     volumes:
       - ./zope/etc/:/home/zope/etc/
       - ./zope/var/:/home/zope/var/
+      - ..:/home/zope/venv/src/zms/
 
   zeo:
     image: zms-base:latest

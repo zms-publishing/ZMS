@@ -15,6 +15,7 @@ services:
     volumes:
       - ./docker/zope/etc/:/home/zope/etc/
       - ./docker/zope/var/:/home/zope/var/
+      # TODO seems to contain only generated files. Consider not mapping this folder?
       - ./docker/zope/Extensions/:/home/zope/Extensions/
       - .:/home/zope/venv/src/zms/
     # allow attaching to the container to debug with `breakpoint()`

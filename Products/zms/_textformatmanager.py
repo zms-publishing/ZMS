@@ -19,7 +19,6 @@
 # Product Imports.
 from Products.zms import standard
 from Products.zms import _globals
-from Products.zms.standard import create_headless_http_request
 
 
 class TextFormatObject(object):
@@ -30,7 +29,7 @@ class TextFormatObject(object):
   #  Returns section-number.
   # ----------------------------------------------------------------------------
   def getSecNo( self):
-    request = self.get('REQUEST', create_headless_http_request())
+    request = self.get('REQUEST', standard.create_headless_http_request())
     sec_no = ''
     #-- [ReqBuff]: Fetch buffered value from Http-Request.
     parentNode = self.getParentNode()

@@ -9,6 +9,7 @@
 - [ ] example systemd files to run everything
   - [ ] this should show how automated container updates are done!
 - [ ] example nginx config so you get the same experience as on the server
+- [ ] Allow working on zms inside the container
 
 # TODOs
 
@@ -16,4 +17,4 @@
 - [x] specialize them for zeoserver and zope
 - [x] create docker-compose file that runs each server separately
 - [ ] add devcontainer.json to develop and run everything from vscode
-- [ ] …
+- [ ] mount the zms source live into the container so working within it becomes possible

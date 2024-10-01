@@ -2391,7 +2391,6 @@ ZMI.prototype.set_form_modified = function(context,initialValue) {
 	if ( $(context).attr('id')!=undefined && $(context).attr('id').indexOf('editor_')==0 ) {
 		nowValue = CKEDITOR.instances[$(context).attr('id')].getData();
 	};
-	debugger;
 	const $body = $('body.zmi');
 	const $btn_save = $('.controls.save button[value="BTN_SAVE"]',$(context).closest('form'));
 	const $form = $(context).parents('form');

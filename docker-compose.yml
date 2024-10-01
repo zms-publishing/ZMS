@@ -1,0 +1,25 @@
+services:
+  zope:
+    build: ./docker/base
+    image: zope:latest
+    depends_on:
+      - zeo
+    stop_grace_period: 1s # SIGKILL after 1s, as zope is always taking the full 10 seconds
+    ports:
+      - 80:80
+    volumes:
+      - .:/home/zope/venv/src/zms/
+      - ./docker/zope/etc/:/home/zope/etc/
+      - ./docker/zope/var/:/home/zope/var/
+      # TODO we may want to map these in from outside to ease debugging
+      # - ./docker/zope/Extensions/:/home/zope/Extensions/
+    # allow attaching to the container to debug with `breakpoint()`
+    stdin_open: true
+    tty: true
+
+  zeo:
+    image: zope:latest
+    command: runzeo --configure etc/zeo.conf
+    volumes:
+      - ./docker/zeo/etc/:/home/zope/etc/
+      - ./docker/zeo/var/:/home/zope/var/

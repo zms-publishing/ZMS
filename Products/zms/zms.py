@@ -102,7 +102,7 @@ def importTheme(self, theme):
 # A new ZMS node can be initalized as a stand-alone client (master) or 
 # as subordinated client acquiring content models and sharing the zmsindex.
 # Use a request variable 'acquire' =  1 to initalize ZMS as a client
-def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
+def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST, minimal_init = False):
 
   ### Constructor.
   obj = ZMS()
@@ -135,7 +135,7 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   obj.setConfProperty('ZMS.autocommit', 1)
 
   ### Init ZMS default content-model.
-  _confmanager.initConf(obj, 'conf:com.zms.foundation*')
+  _confmanager.initConf(obj, 'conf:com.zms.foundation' if minimal_init else 'conf:com.zms.foundation*')
   _confmanager.initConf(obj, 'conf:com.zms.catalog.zcatalog')
 
   ### Init ZMS index.

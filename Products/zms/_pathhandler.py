@@ -26,7 +26,6 @@ from Products.zms import _blobfields
 from Products.zms import _fileutil
 from Products.zms import _globals
 
-
 # ------------------------------------------------------------------------------
 #  _pathhandler.validateId:
 #
@@ -119,7 +118,7 @@ class PathHandler(object):
     def __bobo_traverse__(self, TraversalRequest, name):
       # If this is the first time this __bob_traverse__ method has been called
       # in handling this traversal request, store the path_to_handle
-      request = self.REQUEST
+      request = self.get('REQUEST', standard.create_headless_http_request())
       url = request.get('URL', '')
       zmi = url.find('/manage') >= 0
       
@@ -142,7 +141,7 @@ class PathHandler(object):
               TraversalRequest[ 'path_to_handle'].insert( i-1, path_physical[ i])
       
       # Set language.
-      lang = request.get( 'lang')
+      lang = request.get( 'lang', self.getPrimaryLanguage())
       if lang is None:
         lang = self.getLanguageFromName(TraversalRequest['path_to_handle'][-1])
       if lang is not None:
@@ -341,8 +340,13 @@ class PathHandler(object):
                 request.set('ZMS_EXT', zms_ext)
                 request.set('lang', lang)
                 return self
-        
-        # If there's no more names left to handle, return the path handling 
+
+        # Products.zms.standard.create_headless_http_request()
+        # has been called above for headless mode
+        if request.get('SERVER_NAME') == 'nohost':
+          return
+
+        # If there's no more names left to handle, return the path handling
         # method to the traversal machinery so it gets called next
         standard.raiseError('NotFound',''.join([x+'/' for x in TraversalRequest['path_to_handle']]))
 

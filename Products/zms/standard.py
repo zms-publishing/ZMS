@@ -71,6 +71,9 @@ def pystr(v, encoding='utf-8', errors='strict'):
       v = str(v)
   return v
 
+security.declarePublic('pybytes')
+# Just for compatibility of old ZMS4 templates.
+pybytes = pystr
 
 # Umlauts
 umlaut_map = {

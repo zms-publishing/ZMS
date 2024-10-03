@@ -127,8 +127,8 @@
 			</div>
 			<a tal:condition="python:metaObj.get('acquired',None)" class="btn btn-secondary" target="_blank"
 				tal:attributes="
-					href python:'%s/metaobj_manager/manage_main?lang=%s&id=%s'%(context.getRootElement().absolute_url(),request['lang'],metaObj['id']);
-					title python:'acquired YYY from: %s (%s)'%(context.getRootElement().getHome().id, context.getRootElement().attr('titlealt'))"
+					href python:'%s/metaobj_manager/manage_main?lang=%s&id=%s'%(context.getHome().aq_parent.content.absolute_url(),request['lang'],metaObj['id']);
+					title python:'acquired from: %s (%s)'%(context.getHome().aq_parent.content.id, context.getHome().aq_parent.content.attr('titlealt'))"
 				><i class="fas fa-share" title="acquired"></i></a>
 			<a class="btn btn-secondary" target="_blank" value="BTN_SEARCH"
 				tal:attributes="

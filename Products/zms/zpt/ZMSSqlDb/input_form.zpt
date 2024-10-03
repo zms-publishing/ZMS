@@ -232,7 +232,7 @@
 						tal:content="python:here.getZMILangStr('BTN_CANCEL')">
 						Cancel
 					</button>
-				</div
+				</div>
 			</div><!-- .form-group -->
 
 		</div><!-- card-body -->

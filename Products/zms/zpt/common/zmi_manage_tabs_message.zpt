@@ -10,6 +10,24 @@
 		<tal:block tal:define="dummy0 python:request.set('manage_tabs_message','')"></tal:block>
 		<tal:block tal:define="dummy0 python:standard.set_session_value(here,'manage_tabs_message','')"></tal:block>
 	</div>
+	<div class="alert alert-warning"
+		tal:define="msg python:standard.get_session_value(here,'manage_tabs_warning_message','') or request.get('manage_tabs_warning_message','')"
+		tal:condition="python:msg!=''">
+		<a class="close" data-dismiss="alert" href="#">&times;</a>
+		<tal:block tal:content="structure msg">manage_tabs_warning_message</tal:block>
+		(<tal:block tal:content="structure python:here.getLangFmtDate(here.ZopeTime())">ZopeTime</tal:block>)
+		<tal:block tal:define="dummy0 python:request.set('manage_tabs_warning_message','');"></tal:block>
+		<tal:block tal:define="dummy0 python:standard.set_session_value(here,'manage_tabs_warning_message','')"></tal:block>
+	</div>
+	<div class="alert alert-danger"
+		tal:define="msg python:standard.get_session_value(here,'manage_tabs_danger_message','') or request.get('manage_tabs_danger_message','')"
+		tal:condition="python:msg!=''">
+		<a class="close" data-dismiss="alert" href="#">&times;</a>
+		<tal:block tal:content="structure msg">manage_tabs_danger_message</tal:block>
+		(<tal:block tal:content="structure python:here.getLangFmtDate(here.ZopeTime())">ZopeTime</tal:block>)
+		<tal:block tal:define="dummy0 python:request.set('manage_tabs_danger_message','');"></tal:block>
+		<tal:block tal:define="dummy0 python:standard.set_session_value(here,'manage_tabs_danger_message','')"></tal:block>
+	</div>
 	<div class="alert alert-danger" tal:condition="python:request.get('manage_tabs_error_message')">
 		<a class="close" data-dismiss="alert" href="javascript:;">&times;</a>
 		<tal:block tal:content="structure python:request.get('manage_tabs_error_message')">manage_tabs_error_message</tal:block>

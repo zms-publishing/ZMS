@@ -7,6 +7,7 @@
 		metaObjIds python:here.getMetaobjIds();
 		metaObjAttrIds python:here.getMetaobjAttrIds(metaObj['id']);
 		metaObjAttrs python:metaObj['attrs'][1:];
+		metaObjAttrs python:[x for x in metaObjAttrs if x.get('custom', 0) == 1];
 		num_rows python:here.attr('_num_rows');
 		command python:'Save';
 		dummy0 python:standard.once('zmiGraphicExtEdit',request);
@@ -152,10 +153,11 @@
 			<div class="card-body">
 				<div class="form-group row">
 					<div class="controls save">
-						<button type="submit" name="btn" class="btn btn-secondary" 
+						<button type="submit" name="btn" class="btn btn-secondary"
+							tal:condition="python:here.getPrimaryLanguage()==request.get('lang')"
 							tal:attributes="value python:'BTN_%s'%command.upper()" 
 							tal:content="python:here.getZMILangStr('BTN_%s'%command.upper())">
-							Action
+							Command
 						</button>
 						<button type="submit" name="btn" class="btn btn-secondary" 
 							value="BTN_CANCEL" 

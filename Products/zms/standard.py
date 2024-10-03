@@ -314,7 +314,7 @@ def set_response_headers_cache(context, request=None, cache_max_age=24*3600, cac
   @param cache_s_maxage: seconds the element remains in public/proxy cache (value -1 means cache_s_maxage = cache_max_age)
   @see: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control#directives
   @see: http://nginx.org/en/docs/http/ngx_http_headers_module.html#expires
-  @see: https://www.nginx.com/resources/wiki/start/topics/examples/x-accel/
+  @see: https://github.com/nginxinc/nginx-wiki/blob/master/source/start/topics/examples/x-accel.rst
   @returns: Tuple of expires date time in GMT as ISO8601 string and the seconds until expiration
   @retype: C{tuple}
   """

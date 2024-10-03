@@ -1,0 +1,3 @@
+#!/bin/sh
+
+docker compose run --rm zope addzopeuser -c etc/zope.conf admin admin

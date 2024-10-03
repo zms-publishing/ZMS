@@ -1046,6 +1046,12 @@ div.zmi-manage-main-change {
 .zmi table.table td.meta-sort {
 	width:5rem;
 }
+tr[id*='new_row'] {
+	background:#d6e0e9 !important;
+}
+tr[id*='new_row'] td {
+	border-color:white !important
+}
 .zmi table.table-sm td.meta-sort div select,
 .zmi table.table-sm td.meta-sort div div a  {
 	background-color:rgba(255, 255, 255, 0);
@@ -1077,8 +1083,12 @@ div.zmi-manage-main-change {
 	border-bottom-left-radius: .25rem;
 	border-top-left-radius: .25rem;
 	padding-right: .25em;
+	padding-left: 0;
 }
-.zmi form.manage_metas table.table td.meta-sort select.zmi-sort {
+.zmi.metas.metaobj form table.table td.meta-sort select.zmi-sort {
+	width: 3em;
+}
+.zmi.metas:not(.metaobj) form table.table td.meta-sort select.zmi-sort {
 	width: 3.9em;
 }
 .zmi table.table .input-group {
@@ -1704,11 +1714,6 @@ table.table-sm td:not(.zmi-datatype-action) .form-control {
 table.table-sm tr.row_metadata td, 
 table.table-sm tr.row_insert td {
 	background-color: #e9ecef !important
-}
-table.table-sm tr.row_metadata td .btn-add, 
-table.table-sm tr.row_insert td .btn-add {
-	padding-right: 0.4rem;
-	color: #888;
 }
 .zmi table.table-sm td.meta-id input {
 	background:rgba(53, 79, 103, 0.10);
@@ -3131,3 +3136,20 @@ body.zmi.ger q {
 body.zmi.eng q {
 	quotes:'“' '”';
 }
+
+/* ############################################## */
+/* #### form-modified ########################### */
+/* ############################################## */
+.zmi .form-modified input:not(:focus), 
+.zmi .form-modified select:not(:focus), 
+.zmi .form-modified textarea:not(:focus),
+.zmi .form-modified [contenteditable]:not(:focus) {
+	background: rgb(232 240 254);
+}
+.zmi.form-modified nav .nav-tabs .nav-link.active:before {
+	content:"\25CF";
+	display:inline-block;
+	margin-right:.35em;
+	color: var(--primary);
+}
+/* ############################################## */

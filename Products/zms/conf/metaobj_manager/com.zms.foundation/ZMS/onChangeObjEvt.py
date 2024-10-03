@@ -11,7 +11,9 @@
 
 request = zmscontext.REQUEST
 # permalinks
-if 'permalink_key__' in request and 'permalink_val__' in request:
+# permalink_keys = [k for k in request.keys() if k.startswith('permalink_key__')]
+# permalink_vals = [k for k in request.keys() if k.startswith('permalink_val__')]
+if request.get('form_modified',False):
   prefix = '%s.permalink.'%zmscontext.meta_id
   # delete all conf-properties
   for key in [x for x in zmscontext.getConfProperties() if x.startswith(prefix)]:

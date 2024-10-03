@@ -442,6 +442,23 @@ ZMI.prototype.CopyToClipboard = function(str) {
 }
 
 /**
+ * Spinner Indicator: hx-on:click="$ZMI.show_spinner(this);"
+ */
+ZMI.prototype.show_spinner = function(elem) {
+	let alert = document.querySelector('#zmi_manage_tabs_message > div');
+	if (alert) alert.style.opacity = .3;
+	elem.title = elem.textContent;
+	let w = elem.clientWidth + 2;
+	elem.innerHTML=`<i class="fas fa-spinner fa-spin" title="${getZMILangStr('MSG_LOADING')}" ></i>`;
+	elem.style.width = `${w}px`;
+}
+ZMI.prototype.reset_spinner = function(elem) {
+	elem.innerHTML = elem.title;
+	elem.removeAttribute('style');
+	elem.blur();
+}
+
+/**
  * $: Register 
  */
 if (typeof $ != "undefined") {

@@ -6,7 +6,7 @@
 		<table class="table table-bordered m-0">
 			<tbody>
 			<tr class="row_insert bg-light">
-				<td class="meta-sort"><span class="btn btn-primary btn-add"><i class="fas fa-plus"></i></td>
+				<td class="meta-sort"><span class="btn btn-secondary btn-add"><i class="fas fa-plus"></i></td>
 				<td class="meta-label"><input class="form-control" name="links_label__" placeholder="Enter Label..."/>
 				<td class="meta-url"><input class="form-control url-input" name="links_url__" placeholder="Select Url..."/>
 			</tr>

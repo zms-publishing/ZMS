@@ -977,16 +977,13 @@ ZMI.prototype.initInputFields = function(container) {
 				var $label = $(this);
 				$label.prepend('<i class="fas fa-exclamation"></i>');
 			});
-			// Check for intermediate modification by other user
+			// Check for intermediate modification (by other user)
 			$("input,select,textarea",this).each(function() {
 				var $this = $(this);
-				$this.attr("data-initial-value",$this.val());
-				$this.change(function() {
-					if ($this.val()==$this.attr("data-initial-value")) {
-						$this.removeClass("form-modified");
-					} else {
-						$this.addClass("form-modified");
-					}
+				const initialValue = $this.val();
+				$this.attr("data-initial-value",initialValue);
+				$this.keyup(function() {
+					$ZMI.set_form_modified($this,initialValue);
 				});
 			});
 			// Icon-Class
@@ -1005,9 +1002,11 @@ ZMI.prototype.initInputFields = function(container) {
 				$input.prev().on('click', function() {
 					// Show icon details on https://fontawesome.com/v5
 					var s = '';
-					if ( $input.val().split('fa-').length > 1 ) {
-						s = $input.val().split('fa-')[1];
-					};
+					$input.val().split(' ').forEach(function(v) {
+						if ( v.split('fa-').length > 1 ) {
+							s = v.split('fa-')[1];
+						};
+					});
 					window.open('https://fontawesome.com/v5/search?m=free&q=' + s,'Fontawesome-V5','toolbar=no,scrollbars=yes,resizable=yes,top=100,left=100,width=480,height=720');
 				});
 			});
@@ -2384,4 +2383,38 @@ function sortOptions(what) {
 	}
 	for (var i=0;i<copyOption.length;i++)
 		addOption(what,copyOption[i][0],copyOption[i][1])
+}
+
+
+// /////////////////////////////////////////////////////////////////////////////
+//  Set / Reset Form as Modified
+// /////////////////////////////////////////////////////////////////////////////
+
+ZMI.prototype.set_form_modified = function(context,initialValue) {
+	let nowValue = $(context).val();
+	if ( $(context).attr('id')!=undefined && $(context).attr('id').indexOf('editor_')==0 ) {
+		nowValue = CKEDITOR.instances[$(context).attr('id')].getData();
+	};
+	const $body = $('body.zmi');
+	const $btn_save = $('.controls.save button[value="BTN_SAVE"]',$(context).closest('form'));
+	const $form = $(context).parents('form');
+	const $formGroup = $(context).parents('.form-group');
+	if (initialValue==undefined) {
+		initialValue = $(context).data('initial-value');
+	};
+	if (nowValue == initialValue) {
+		$formGroup.removeClass('form-modified');
+	} else {
+		$formGroup.addClass('form-modified');
+	}
+	if ($('.form-group.form-modified').length == 0) {
+		$body.removeClass('form-modified');
+		$btn_save.removeClass('btn-primary').addClass('btn-secondary');
+	} else {
+		$body.addClass('form-modified');
+		$btn_save.removeClass('btn-secondary').addClass('btn-primary');
+	}
+	if ($('#form_modified',$form).length == 0) {
+		$form.append('<input type="hidden" id="form_modified" name="form_modified:boolean" value="1">');
+	}
 }

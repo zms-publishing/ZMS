@@ -58,7 +58,7 @@ security = ModuleSecurityInfo('Products.zms.standard')
 
 security.declarePublic('pybool')
 def pybool(v):
-  return v in [True,'true','True',1]
+  return v in [True,'true','True',1,'1']
 
 security.declarePublic('pystr')
 def pystr(v, encoding='utf-8', errors='strict'):
@@ -373,11 +373,10 @@ def get_installed_packages(pip_cmd='freeze'):
     }
   cmd = pip_cmds.get(pip_cmd,'freeze')
   pth = getPACKAGE_HOME().rsplit('/lib/')[0] + '/bin'
-  packages = ''
   output = subprocess.Popen(pth + cmd,
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                             shell=True, cwd=pth, universal_newlines=True)
-  packages = f'# {pth}{cmd}\n\n{output.communicate()[0].strip()}'
+  packages = f'# {pth}{cmd}\n\nPython {sys.version}\n\n{output.communicate()[0].strip()}'
   return packages
 
 
@@ -1104,6 +1103,8 @@ def getLog(context):
     zms_log = getattr(context, 'zms_log', None)
     if zms_log is None:
       zms_log = getattr(context.getPortalMaster(), 'zms_log', None)
+      if is_conf_enabled(context, 'ZMS.log.root'):
+        zms_log = getattr(context.breadcrumbs_obj_path()[0], 'zms_log', None)
     request.set('ZMSLOG', zms_log)
   return zms_log
 
@@ -2562,6 +2563,28 @@ def raiseError(error_type, error_value):
   @rtype: C{zExceptions.Error}
   """
   raise getattr(zExceptions,error_type)(error_value)
+
+
+security.declarePublic('is_conf_enabled')
+def is_conf_enabled(context, setting):
+  """
+  Returns True if given setting is activated in system properties (= in [True,'true','True',1,'1'])
+  or given setting is found in system property ZMS.Features.enabled (either surrounded by % or not)
+  in current client or inherited from portal masters
+  PLEASE NOTE: System properties with prefix ASP.* are not inherited in portal clients
+  """
+  conf_property = context.getConfProperty(setting, None)
+
+  if conf_property is None:
+    features_enabled = context.getConfProperty('ZMS.Features.enabled', None)
+    if features_enabled is not None:
+      features = features_enabled.replace('%', '').replace(',', ';').split(';')
+      if len([x for x in features if x.strip() == setting.replace('%', '').strip()]) > 0:
+        return True
+      return False
+
+  return pybool(conf_property)
+
 
 class initutil(object):
   """Define the initialize() util."""

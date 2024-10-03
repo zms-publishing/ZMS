@@ -1290,6 +1290,10 @@ ZMIObjectTree.prototype.addPages = function(nodes) {
 		var css = [ node.is_page ? 'is_page' : 'is_page_element' ];
 		var callback = that.p['toggleClick.callback'];
 
+		if ((node.titlealt.toUpperCase().search('REDIRECT') > -1) &&
+			(node.attr_dc_identifier_url_redirect &&
+				node.attr_dc_identifier_url_redirect.trim() != '')) return;
+
 		if (node.meta_id == 'ZMSGraphic' && link_url) {
 			link_url = `<img data-id=&quot;${data_id}&quot; src=&quot;${link_url}&quot;>`;
 		} else if (node.meta_id == 'ZMSFile' && link_url) {

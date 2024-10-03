@@ -138,25 +138,6 @@ class ZMSObject(ZMSItem.ZMSItem,
       ids = [ids[x] for x in range(len(ids)) if x == 0 or not ids[x-1] == ids[x]]
       return '/'.join(ids)
 
-    """
-    Check if feature toggle is set.
-    @rtype: C{boolean}
-    """
-    def isFeatureEnabled(self, feature=''):
-
-      # get conf from current client
-      confprop = self.breadcrumbs_obj_path(False)[0].getConfProperty('ZMS.Features.enabled', '')
-      features = confprop.replace(',', ';').split(';')
-      # get conf from top master if there is no feature toggle set at client
-      if len(features)==1 and features[0].strip()=='':
-        confprop = self.breadcrumbs_obj_path(True)[0].getConfProperty('ZMS.Features.enabled', '')
-        features = confprop.replace(',', ';').split(';')
-
-      if len([x for x in features if x.strip()==feature.strip()])>0:
-        return True
-      else:
-        return False
-
 
     # --------------------------------------------------------------------------
     #  ZMSObject.f_css_defaults:

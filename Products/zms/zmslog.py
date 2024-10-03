@@ -21,7 +21,6 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import logging
 import os
 import time
-import glob
 # Product Imports.
 from Products.zms import standard
 from Products.zms import ZMSItem
@@ -115,7 +114,7 @@ class ZMSLog(ZMSItem.ZMSItem):
     # --------------------------------------------------------------------------
     def getLOG(self, REQUEST, RESPONSE=None):
       """ ZMSLog.getLOG """
-      filename = os.path.join(standard.getINSTANCE_HOME(),'var','log','event.log')
+      filename = self.get_log_filename()
       RESPONSE.setHeader( 'Content-Type','text/plain')
       RESPONSE.setHeader( 'Content-Disposition','inline;filename="%s"'%_fileutil.extractFilename( filename))
       file = open( filename, 'r')
@@ -127,21 +126,18 @@ class ZMSLog(ZMSItem.ZMSItem):
     #  ZMSLog.tail_event_log:
     # --------------------------------------------------------------------------
     def tail_event_log(self, linesback=100, returnlist=True):
-      filename = os.path.join(standard.getINSTANCE_HOME(),'var','log','event.log')
-      try:
-        return _fileutil.tail_lines(filename,linesback,returnlist)
-      except:
-        filename_prefix = os.path.join(standard.getINSTANCE_HOME(),'var','log','event')
-        filename_list = [f for f in glob.glob( r'' + filename_prefix + r'*.log')]
-        error_info = ['ERROR:']
-        error_info.append('Default event log file %s not found.'%(filename))
-        error_info.append('Please check zope.ini [handler_eventlog]')
-        if filename_list:
-          error_info.append('')
-          error_info.append('Following event log files are found:')
-          error_info.extend(filename_list)
-          error_info.append('HINT: If one of them is sym-linked as event.log, it will be showm.')
-        return error_info
+      filename = self.get_log_filename()
+      return _fileutil.tail_lines(filename,linesback,returnlist)
+    
+    # --------------------------------------------------------------------------
+    #  ZMSLog.get_log_filename:
+    # --------------------------------------------------------------------------
+    def get_log_filename():
+      logging_file_handlers = [x for x in logging.root.handlers if isinstance(x, logging.FileHandler)]
+      if len(logging_file_handlers) == 0:
+        raise RuntimeError('No event log file handler defined in zope.ini ([handler_eventlog])')
+      return logging_file_handlers[0].baseFilename
+
 
 
 

@@ -58,7 +58,7 @@ security = ModuleSecurityInfo('Products.zms.standard')
 
 security.declarePublic('pybool')
 def pybool(v):
-  return v in [True,'true','True',1]
+  return v in [True,'true','True',1,'1']
 
 security.declarePublic('pystr')
 def pystr(v, encoding='utf-8', errors='strict'):
@@ -314,7 +314,7 @@ def set_response_headers_cache(context, request=None, cache_max_age=24*3600, cac
   @param cache_s_maxage: seconds the element remains in public/proxy cache (value -1 means cache_s_maxage = cache_max_age)
   @see: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control#directives
   @see: http://nginx.org/en/docs/http/ngx_http_headers_module.html#expires
-  @see: https://www.nginx.com/resources/wiki/start/topics/examples/x-accel/
+  @see: https://github.com/nginxinc/nginx-wiki/blob/master/source/start/topics/examples/x-accel.rst
   @returns: Tuple of expires date time in GMT as ISO8601 string and the seconds until expiration
   @retype: C{tuple}
   """
@@ -373,11 +373,10 @@ def get_installed_packages(pip_cmd='freeze'):
     }
   cmd = pip_cmds.get(pip_cmd,'freeze')
   pth = getPACKAGE_HOME().rsplit('/lib/')[0] + '/bin'
-  packages = ''
   output = subprocess.Popen(pth + cmd,
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                             shell=True, cwd=pth, universal_newlines=True)
-  packages = f'# {pth}{cmd}\n\n{output.communicate()[0].strip()}'
+  packages = f'# {pth}{cmd}\n\nPython {sys.version}\n\n{output.communicate()[0].strip()}'
   return packages
 
 
@@ -861,6 +860,7 @@ def triggerEvent(context, *args, **kwargs):
   """
   Hook for trigger of custom event (if there is one)
   """
+  request = context.get('REQUEST', create_headless_http_request())
   l = []
   name = args[0]
   root = context.getRootElement()
@@ -896,7 +896,7 @@ def triggerEvent(context, *args, **kwargs):
     # Process zope-triggers.
     m = getattr(context, name, None)
     if m is not None:
-      m(context=context, REQUEST=context.REQUEST)
+      m(context=context, REQUEST=request)
 
   return l
 
@@ -954,6 +954,22 @@ def unescape(s):
       new = chr(int('0x'+s[i+1:i+3], 0))
     s = s.replace(old, new)
   return s
+
+
+def create_headless_http_request():
+    """
+    Returns a ZPublisher.HTTPRequest object to be used in headless mode.
+    """
+    from io import BytesIO
+    from ZPublisher.HTTPRequest import HTTPRequest
+    from ZPublisher.HTTPResponse import HTTPResponse
+
+    env = {}
+    env.setdefault('SERVER_NAME', 'nohost')
+    env.setdefault('SERVER_PORT', '80')
+    resp = HTTPResponse(stdout=BytesIO)
+
+    return HTTPRequest(stdin=BytesIO, environ=env, response=resp)
 
 
 security.declarePublic('http_request')
@@ -1087,6 +1103,8 @@ def getLog(context):
     zms_log = getattr(context, 'zms_log', None)
     if zms_log is None:
       zms_log = getattr(context.getPortalMaster(), 'zms_log', None)
+      if is_conf_enabled(context, 'ZMS.log.root'):
+        zms_log = getattr(context.breadcrumbs_obj_path()[0], 'zms_log', None)
     request.set('ZMSLOG', zms_log)
   return zms_log
 
@@ -1669,6 +1687,13 @@ def operator_delattr(a, b):
   @type b: C{any}
   """
   return delattr(a, b)
+
+security.declarePublic('operator_itemgetter')
+def operator_itemgetter(key, val, dictionary):
+
+    if val in map(operator.itemgetter(key), dictionary):
+        return True
+    return False
 
 #)
 
@@ -2358,7 +2383,7 @@ def dt_tal(context, text, options={}):
   pt = StaticPageTemplateFile(filename='None')
   pt.setText(text)
   pt.setEnv(context, options)
-  request = context.REQUEST
+  request = context.get('REQUEST', create_headless_http_request())
   rendered = pt.pt_render(extra_context={'here':context,'request':request})
   return rendered
 
@@ -2538,6 +2563,28 @@ def raiseError(error_type, error_value):
   @rtype: C{zExceptions.Error}
   """
   raise getattr(zExceptions,error_type)(error_value)
+
+
+security.declarePublic('is_conf_enabled')
+def is_conf_enabled(context, setting):
+  """
+  Returns True if given setting is activated in system properties (= in [True,'true','True',1,'1'])
+  or given setting is found in system property ZMS.Features.enabled (either surrounded by % or not)
+  in current client or inherited from portal masters
+  PLEASE NOTE: System properties with prefix ASP.* are not inherited in portal clients
+  """
+  conf_property = context.getConfProperty(setting, None)
+
+  if conf_property is None:
+    features_enabled = context.getConfProperty('ZMS.Features.enabled', None)
+    if features_enabled is not None:
+      features = features_enabled.replace('%', '').replace(',', ';').split(';')
+      if len([x for x in features if x.strip() == setting.replace('%', '').strip()]) > 0:
+        return True
+      return False
+
+  return pybool(conf_property)
+
 
 class initutil(object):
   """Define the initialize() util."""

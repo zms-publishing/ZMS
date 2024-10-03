@@ -1,1 +1,0 @@
-# Externalizing Extensions for Docker

@@ -39,22 +39,22 @@
 			<input type="hidden" name="lang" tal:attributes="value request/lang">
 			<div class="form-group col-12">
 				<div class="custom-file">
-					<input type="file" name="file" id="file" class="custom-file-input" value="" 
+					<input type="file" name="file" id="file" class="custom-file-input" value=""
 						onchange="$('.custom-file label span').html($(this).val().replace(/^.*(\\|\/|\:)/, ''));" />
 					<label class="custom-file-label" for="file"><span tal:content="python:here.getZMILangStr('ATTR_FILE')">Choose file</span></label>
 				</div>
 			</div><!-- .form-group -->
 			<label class="col-12 control-label text-left"><span tal:content="python:here.getZMILangStr('OR').lower()">Or</span></label>
 			<div class="form-group col-12 mt-2">
-				<select class="form-control" id="init" name="init" 
-					onfocus="zmiExpandConfFiles(this,'.metadict.')" 
+				<select class="form-control" id="init" name="init"
+					onfocus="zmiExpandConfFiles(this,'.metadict.')"
 					onmouseover="zmiExpandConfFiles(this,'.metadict.')">
 					<option value="" tal:content="python:'--- %s ---'%here.getZMILangStr('BTN_INIT')">--- Init... ---</option>
 				</select>
 			</div><!-- .form-group -->
 			<div class="form-group row mt-5 mr-0">
 				<div class="controls save">
-					<button type="submit" name="btn" class="btn btn-primary" value="BTN_IMPORT" 
+					<button type="submit" name="btn" class="btn btn-primary" value="BTN_IMPORT"
 						tal:content="python:here.getZMILangStr('BTN_IMPORT')">
 						Import
 					</button>
@@ -70,7 +70,7 @@
 	<input type="hidden" name="target" value="zmi_manage_tabs_message">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<legend class="has_tooltip"
-		tal:attributes="title python:here.getZMILangStr('TIP_METADICT')" 
+		tal:attributes="title python:here.getZMILangStr('TIP_METADICT')"
 		tal:content="python:here.getZMILangStr('TAB_METADATA')">
 		Metadata
 	</legend>
@@ -93,14 +93,13 @@
 		<th></th>
 	</tr>
 	</thead>
-	<tbody>
-	<tal:block tal:define="metadictAttrIds python:here.getMetadictAttrs()">
+	<tbody tal:define="metadictAttrIds python:here.getMetadictAttrs()">
 	<tr tal:repeat="metadictAttrId metadictAttrIds" class="form-group">
 		<tal:block tal:define="global metadictAttr python:here.getMetadictAttr(metadictAttrId)">
 		<td class="meta-sort">
 			<input type="hidden" name="old_ids:list" tal:attributes="value python:metadictAttr['id']" />
 			<div class="input-group input-group-sm">
-				<select class="zmi-sort form-control-sm" 
+				<select class="zmi-sort form-control-sm"
 					tal:attributes="onchange python:'zmiFormSubmit(this,{btn:\'move_to\',id:\'%s\',\'pos:int\':this.selectedIndex})'%metadictAttrId">
 					<option tal:repeat="i python:range(0,len(metadictAttrIds))" tal:attributes="selected python:['','selected'][int(i==metadictAttrIds.index(metadictAttrId))]" tal:content="python:i+1">i+1</option>
 				</select>
@@ -122,8 +121,8 @@
 				tal:define="meta_ids python:request.set('meta_id_usage',', '.join([xx for xx in here.getMetaobjIds() if metadictAttrId in [x['type'] for x in here.getMetaobjAttrs(xx)]]));">
 			</tal:block>
 			<input class="form-control form-control-sm" type="text"
-				tal:attributes="name python:'attr_id_%s'%metadictAttr['id']; 
-					value python:metadictAttr['id']; 
+				tal:attributes="name python:'attr_id_%s'%metadictAttr['id'];
+					value python:metadictAttr['id'];
 					title python:'Used by: ' + request.get('meta_id_usage','Unknown');
 					disabled python:['','disabled'][int(metadictAttr.get('acquired',0))]" />
 		</td>
@@ -131,11 +130,10 @@
 			<input class="form-control form-control-sm" type="text" tal:attributes="name python:'attr_name_%s'%metadictAttr['id']; value python:metadictAttr['name']; disabled python:['','disabled'][int(metadictAttr.get('acquired',0))]"/>
 		</td>
 		<td class="meta-type">
-			<select class="form-control form-control-sm" tal:attributes="name python:'attr_type_%s'%metadictAttr['id']; disabled python:['','disabled'][int(metadictAttr.get('acquired',0))]">
-				<option value="">--- <tal:block tal:content="python:here.getZMILangStr('ATTR_PRIMITIVE')">Primitive</tal:block> ---</option>
-				<option tal:repeat="datatype python:here.valid_datatypes" tal:attributes="value datatype; selected python:['','selected'][int(metadictAttr['type']==datatype)]" tal:content="datatype">datatype</option>
-				<option value="">--- <tal:block tal:content="python:here.getZMILangStr('ATTR_OBJECTS')">Objects</tal:block> ---</option>
-				<option tal:repeat="meta_type python:here.getMetaobjIds(sort=True,excl_ids=['ZMS'])" tal:attributes="value meta_type; selected python:['','selected'][int(metadictAttr['type']==meta_type)]" tal:content="python:here.display_type(meta_id=meta_type)">meta_type</option>
+			<select class="form-control form-control-sm"
+				tal:define="attr_type python:metadictAttr.get('type')"
+				tal:attributes="name python:'attr_type_%s'%metadictAttr['id']; disabled python:['','disabled'][int(metadictAttr.get('acquired',0))]">
+				<option tal:attributes="value attr_type" selected="selected" tal:content="attr_type">datatype</option>
 			</select>
 		</td>
 		<tal:block tal:condition="python:metadictAttr['type'] in ['method']">
@@ -161,7 +159,6 @@
 		</tal:block>
 		</tal:block>
 	</tr>
-	</tal:block>
 	<tr class="row_insert form-group">
 		<td class="meta-sort text-right"><span class="btn btn-add mr-1 btn-secondary btn-sm"><i class="fas fa-plus"></i></span></td>
 		<td class="meta-id"><input class="form-control form-control-sm" type="text" name="_id" /></td>
@@ -182,19 +179,19 @@
 	</tbody>
 	</table>
 	<div class="controls save">
-		<button name="btn" type="submit" class="btn btn-secondary" 
+		<button name="btn" type="submit" class="btn btn-secondary"
 			hx-trigger="click"
-			hx-post="manage_changeMetaProperties" 
-			hx-target="#zmi_manage_tabs_message" 
+			hx-post="manage_changeMetaProperties"
+			hx-target="#zmi_manage_tabs_message"
 			hx-swap="outerHTML show:top"
 			hx-on:click="$ZMI.show_spinner(this)"
 			hx-on:htmx:after-request="renew_sort_options(this);$ZMI.reset_spinner(this)"
-			value="BTN_SAVE" 
+			value="BTN_SAVE"
 			tal:content="python:here.getZMILangStr('BTN_SAVE')">
 			Save
 		</button>
-		<button name="btn" type="submit" class="btn btn-secondary" 
-			value="BTN_CANCEL" 
+		<button name="btn" type="submit" class="btn btn-secondary"
+			value="BTN_CANCEL"
 			tal:content="python:here.getZMILangStr('BTN_RESET')">
 			Cancel
 		</button>
@@ -296,7 +293,7 @@
 			let new_btn_html = `
 				<div class="input-group input-group-sm">
 					${old_id_html}
-					<select class="zmi-sort form-control-sm" 
+					<select class="zmi-sort form-control-sm"
 						onchange="zmiFormSubmit(this,{btn:'move_to',id:'${old_id}','pos:int':this.selectedIndex})">
 						${sort_options_html}
 					</select>
@@ -321,7 +318,7 @@
 	 * Normalize after deleting a row.
 	 */
 	 function clean_deleted_row(sender) {
-		$(sender).closest('tr').hide('slow',function(){ 
+		$(sender).closest('tr').hide('slow',function(){
 			$(sender).closest('tr').remove();
 			renew_sort_options();
 		})
@@ -331,6 +328,26 @@
 	 * Init.
 	 */
 	$(function(){
+
+		// ########################################################################
+		// Clone all meta_types select lists from the last row
+		const $meta_options = $('select[name="_type"] option');
+		// let c = 1;
+		$('#meta_properties tbody tr:not(.row_insert) td.meta-type select').each( function() {
+			let sel = $(this);
+			let sel_opt = $('option',sel).clone();
+			// Clear the select list
+			$('option',sel).remove();
+			// Add all options incl. the selected one
+			$meta_options.each( function() {
+				let opt = $(this).attr('value')==$(sel_opt).attr('value') ? $(sel_opt) : $(this).clone();
+				$(sel).append($(opt.prop('outerHTML')));
+				debugger;
+			});
+			// console.log(c++ + ' ' + sel.attr('name'));
+		})
+		// ########################################################################
+
 		// New field set: initially disable inputs
 		$('tr.row_insert input').attr('disabled',true);
 
@@ -345,7 +362,7 @@
 			// New field set: clone with enabled inputs
 			$('tr.row_insert input').attr('disabled',false);
 
-			// Where to insert the new row 
+			// Where to insert the new row
 			let $where_insert = $(this).closest('tr');
 
 			// Set variables

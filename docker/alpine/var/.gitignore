@@ -1,8 +1,0 @@
-./cache/*
-./log/*
-Data.fs
-Data.fs.index
-Data.fs.lock
-Data.fs.tmp
-Z4.pid
-zeosocket

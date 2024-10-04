@@ -25,13 +25,13 @@ RUN pip install itsdangerous
 RUN pip install debugpy
 
 # Create Zope Instance
-RUN mkwsgiinstance -d venv/instance/zms5 -u admin:admin
+RUN mkwsgiinstance -d . -u admin:admin
 
-COPY ./etc venv/instance/zms5/etc
-COPY ./var venv/instance/zms5/var
-COPY ./Extensions venv/instance/zms5/Extensions
+COPY ./etc ./etc
+COPY ./var ./var
+COPY ./Extensions ./Extensions
 
 
 # Finally Start ZEO/Zope by Script
 # ENTRYPOINT ["/bin/sh -c"]
-CMD ["/home/zope/venv/instance/zms5/etc/start.sh"]
+CMD ["/home/zope/etc/start.sh"]

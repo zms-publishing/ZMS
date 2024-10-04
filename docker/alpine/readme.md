@@ -2,9 +2,9 @@
 
 Important: *The here presented Docker environment is not recommended for production, just for testing and exploration.*
 
-The ZMS source folder `./docker` contains two minimalistic Docker files: 
-1. the [dockerfile](https://github.com/zms-publishing/ZMS/blob/main/docker/dockerfile) for creating a Docker *image* and 
-2. the [docker-compose](https://github.com/zms-publishing/ZMS/blob/main/docker/docker-compose.yml) file for building a Docker *container*.
+The ZMS source folder `./docker/alpine` contains two minimalistic Docker files: 
+1. the [dockerfile](https://github.com/zms-publishing/ZMS/blob/main/docker/alpine/dockerfile) for creating a Docker *image* and 
+2. the [docker-compose](https://github.com/zms-publishing/ZMS/blob/main/docker/alpine/docker-compose.yml) file for building a Docker *container*.
 
 The image utilizes a minimal *alpine*-Linux with a fresh compiled Python3 and some additional software packages (like mariadb and openldap). The ZMS installation happens with pip in a successively created virtual python environment (`/home/zope/venv`) and provides the ZMS code in the pip-"editable" mode. Both the ZMS source code (`/home/zope/venv/src/ZMS/.git`) and the Zope instance are placed in the virtual python environment folder (`/home/zope/venv/instance/zms5`)
 
@@ -62,10 +62,10 @@ $ tree -p
 
 The VSCode Docker Extension [ms-azuretools.vscode-docker](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker) is a perfect tool for handling containers. A right mouse click on the file ´docker-compose.yaml´ starts composing the container. Initially ZEO will be started and Zope will run on port 8085.
 
-![Running the ZMS Container with VSCode](../docs/images/admin_docker_run.gif)
+![Running the ZMS Container with VSCode](../../docs/images/admin_docker_run.gif)
 
 ## Attach VSCode to the ZMS Container
 Another right click on the running container-ID allows to intrude the container with VSCode and launch a new Zope instance in debugging mode. 
-Hint: For this purpose the  docker-container folder `/home/zope/venv/src/zms/docker/.vscode/` contains a prepared VSCode-workspace file and a launch file for starting Zope in debug-mode within the container  [launch.json](https://github.com/zms-publishing/ZMS/blob/main/docker/.vscode/launch.json). The thus launched Zope instance will run port 8087.
+Hint: For this purpose the  docker-container folder `/home/zope/venv/src/zms/docker/.vscode/` contains a prepared VSCode-workspace file and a launch config for starting Zope in debug-mode within the container [Docker.code-workspace](https://github.com/zms-publishing/ZMS/blob/main/docker/alpine/.vscode/Docker.code-workspace). The thus launched Zope instance will run port 8085.
 
-![Attach VSCode to the ZMS Container](../docs/images/admin_docker_debug_zeo.gif)
+![Attach VSCode to the ZMS Container](../../docs/images/admin_docker_debug_zeo.gif)

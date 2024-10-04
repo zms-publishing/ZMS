@@ -356,7 +356,7 @@
 		// ########################################################################
 
 		// New field set: initially disable inputs
-		$('tr.row_insert input').attr('disabled',true);
+		$('input, textarea, select','tr.row_insert').attr('disabled',true);
 
 		// ++++++++++++
 		// Add rows to tables #meta_properties on button click
@@ -367,7 +367,7 @@
 		$(".row_insert .btn-add").click(function(){
 			new_row_counter++;
 			// New field set: clone with enabled inputs
-			$('tr.row_insert input').attr('disabled',false);
+			$('input, textarea, select','tr.row_insert').attr('disabled',false);
 
 			// Where to insert the new row
 			let $where_insert = $(this).closest('tr');
@@ -425,7 +425,7 @@
 				$(this).val(undefined);
 			});
 			// New field set: reset to disabled inputs
-			$('tr.row_insert input').attr('disabled',true);
+			$('input, textarea, select','tr.row_insert').attr('disabled',true);
 		});
 
 	});

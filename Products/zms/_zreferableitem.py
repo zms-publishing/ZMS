@@ -21,6 +21,7 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import base64
 import re
 # Product Imports.
+from Products.zms import _globals
 from Products.zms import standard
 
 
@@ -47,7 +48,7 @@ def getInternalLinkDict(self, url):
   reqBuffId = 'getInternalLinkDict.%s'%url
   try: return docelmnt.fetchReqBuff(reqBuffId)
   except: pass
-  request = self.get('REQUEST', standard.create_headless_http_request())
+  request = self.get('REQUEST', _globals.headless_http_request)
   d = {}
   # Params.
   anchor = ''
@@ -88,7 +89,7 @@ def getInternalLinkDict(self, url):
 #  getInternalLinkUrl:
 # ------------------------------------------------------------------------------
 def getInternalLinkUrl(self, url, ob):
-  request = self.get('REQUEST', standard.create_headless_http_request())
+  request = self.get('REQUEST', _globals.headless_http_request)
   if ob is None:
     index_html = './index_%s.html?error_type=NotFound&op=not_found&url=%s'%(request.get('lang', self.getPrimaryLanguage()), str(url))
   else:
@@ -389,7 +390,7 @@ class ZReferableItem(object):
   #  Resolves internal/external links and returns Object.
   # ----------------------------------------------------------------------------
   def getLinkObj(self, url, REQUEST=None):
-    request = self.get('REQUEST', standard.create_headless_http_request())
+    request = self.get('REQUEST', _globals.headless_http_request)
     ob = None
     if isInternalLink(url):
       # Params.

@@ -330,10 +330,9 @@
 	$(function(){
 
 		// ########################################################################
-		// Clone all meta_types select lists from the last row
+		// Clone meta_types select lists from the last row
 		const $meta_options = $('select[name="_type"] option');
-		// let c = 1;
-		$('#meta_properties tbody tr:not(.row_insert) td.meta-type select').each( function() {
+		$('#meta_properties tbody tr:not(.row_insert) td.meta-type select').on('focus', function() {
 			let sel = $(this);
 			let sel_opt = $('option',sel).clone();
 			// Clear the select list
@@ -342,9 +341,7 @@
 			$meta_options.each( function() {
 				let opt = $(this).attr('value')==$(sel_opt).attr('value') ? $(sel_opt) : $(this).clone();
 				$(sel).append($(opt.prop('outerHTML')));
-				debugger;
 			});
-			// console.log(c++ + ' ' + sel.attr('name'));
 		})
 		// ########################################################################
 

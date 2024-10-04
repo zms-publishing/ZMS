@@ -11,8 +11,8 @@ services:
       - .:/home/zope/venv/src/zms/
       - ./docker/zope/etc/:/home/zope/etc/
       - ./docker/zope/var/:/home/zope/var/
-      # TODO we may want to map these in from outside to ease debugging
-      # - ./docker/zope/Extensions/:/home/zope/Extensions/
+      # To share external methods between Zope/ZEO/Docker clients folder needs to be mounted
+      - ./docker/zope/Extensions/:/home/zope/Extensions/
     # allow attaching to the container to debug with `breakpoint()`
     stdin_open: true
     tty: true

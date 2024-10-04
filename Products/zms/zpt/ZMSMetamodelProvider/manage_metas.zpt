@@ -164,7 +164,7 @@
 		<td class="meta-id"><input class="form-control form-control-sm" type="text" name="_id" /></td>
 		<td class="meta-name"><input class="form-control form-control-sm" type="text" name="_name" /></td>
 		<td class="meta-type">
-			<select class="form-control form-control-sm" name="_type">
+			<select id="populate_type" class="form-control form-control-sm" name="_type">
 				<option value="">--- <tal:block tal:content="python:here.getZMILangStr('ATTR_PRIMITIVE')">Primitive</tal:block> ---</option>
 				<option tal:repeat="datatype python:here.valid_datatypes" tal:attributes="value datatype" tal:content="datatype">datatype</option>
 				<option value="">--- <tal:block tal:content="python:here.getZMILangStr('ATTR_OBJECTS')">Objects</tal:block> ---</option>
@@ -325,24 +325,34 @@
 	}
 
 	/**
+	 * Populate type select-list.
+	 */
+	function zmiPopulateTypeSelect(sender) {
+		if ( sender.options.length <= 1) {
+			var selectedValue = '';
+			if ( sender.options.length == 1) {
+				selectedValue = sender.options[0].value;
+			}
+			sender.options.length = 0;
+			$("select#populate_type option").each(function() {
+				if (sender.name != '_type' || !$(this).hasClass('deprecated')) {
+					addOption( sender, $(this).text(), $(this).val(), selectedValue);
+				}
+			});
+		}
+	}
+
+	/**
 	 * Init.
 	 */
 	$(function(){
 
 		// ########################################################################
-		// Clone meta_types select lists from the last row
-		const $meta_options = $('select[name="_type"] option');
-		$('#meta_properties tbody tr:not(.row_insert) td.meta-type select').on('focus', function() {
-			let sel = $(this);
-			let sel_opt = $('option',sel).clone();
-			// Clear the select list
-			$('option',sel).remove();
-			// Add all options incl. the selected one
-			$meta_options.each( function() {
-				let opt = $(this).attr('value')==$(sel_opt).attr('value') ? $(sel_opt) : $(this).clone();
-				$(sel).append($(opt.prop('outerHTML')));
-			});
-		})
+		// Clone meta_types select lists from .row_insert-template
+		$("select[name^=attr_type_]")
+			.focus(function(){zmiPopulateTypeSelect(this)})
+			.hover(function(){zmiPopulateTypeSelect(this)})
+		;
 		// ########################################################################
 
 		// New field set: initially disable inputs
@@ -394,7 +404,11 @@
 						$(this).attr('placeholder',newval);
 					} else if ( deftype == 'checkbox' ) {
 						$(this).val(1);
-					}
+					};
+					// Remove id #populate_type from cloned select
+					if ( tagname == 'SELECT') {
+						$(this).removeAttr('id');
+					};
 				});
 			});
 

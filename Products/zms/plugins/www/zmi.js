@@ -30,8 +30,8 @@ if (typeof htmx != "undefined") {
 	document.addEventListener('htmx:beforeRequest', (evt) => {
 		const body = document.querySelector('body');
 		// If not send from SAVE button, check if form is modified
-		if ( ! evt.target.classList.contains('btn-primary')) {
-			if (body.classList.contains("form-modified") && !confirm(getZMILangStr('MSG_CONFIRM_DISCARD_CHANGES'))) {
+		if ( ! evt.target.classList.contains('btn-primary') && ! evt.currentTarget.activeElement.classList.contains('btn-primary')) {
+			if (body.classList.contains("form-modified") && ! confirm(getZMILangStr('MSG_CONFIRM_DISCARD_CHANGES'))) {
 				return evt.preventDefault();
 			}
 		}

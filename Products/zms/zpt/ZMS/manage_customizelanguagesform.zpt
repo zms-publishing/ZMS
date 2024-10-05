@@ -4,18 +4,14 @@
 	zmscontext python:here.getSelf();
 	standard modules/Products.zms/standard">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
-<body tal:attributes="class python:here.zmi_body_class(id='languages config')">
+<body tal:attributes="class python:here.zmi_body_class(id='languages config')" hx-boost="true" xmlns:hx-on="https://htmx.org/">
 <header tal:replace="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</header>
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[{'label':'TAB_LANGUAGES','action':'manage_customizeLanguagesForm'}])">zmi_breadcrumbs</tal:block>
 
 <tal:block tal:define="global langIds python:here.getLangIds(sort=True)">
 
-<form class="form-horizontal card" id="changeLanguagesForm" 
-	action="manage_changeLanguages" method="post" enctype="multipart/form-data"
-	hx-boost="true" xmlns:hx-on="https://htmx.org/"
-	hx-confirm="Confirm changes."
-	tal:attributes="hx-confirm python:here.getLangStr('MSG_CONFIRM')">
+<form class="form-horizontal card" id="changeLanguagesForm" action="manage_changeLanguages" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="target" value="languages" />
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<legend class="has_tooltip" 
@@ -51,13 +47,18 @@
 							<span class="btn btn-secondary btn-sm">
 								<input type="checkbox" name="ids:list" tal:attributes="value python:langId" />
 							</span>
-							<button class="btn btn-secondary btn-sm" type="submit" name="btn" value="BTN_DELETE"
-								hx-trigger="click"
-								hx-on:click="$('input', $(this).closest('td')).prop('checked', true)"
-								hx-target="body"
-								tal:attributes="title python:here.getZMILangStr('BTN_DELETE')">
+							<button class="btn btn-secondary btn-sm"
+								hx-confirm="Do you really want to delete this object?"
+								hx-get="manage_changeLanguages" 
+								hx-target="#zmi_manage_tabs_message"
+								hx-on:htmx:after-request="$(this).closest('tr').hide('slow',function(){$(this).closest('tr').remove()})"
+								tal:attributes="
+									hx-confirm python:here.getZMILangStr('MSG_CONFIRM_DELOBJ');
+									hx-get python:'manage_changeLanguages?btn=BTN_DELETE&target=zmi_manage_tabs_message&lang=%s&ids:list=%s'%(request.get('lang',here.getPrimaryLanguage()),langId); 
+									title python:here.getZMILangStr('BTN_DELETE')">
 								<i class="fas fa-times"></i>
 							</button>
+
 						</div>
 					</td>
 					<td><tal:block tal:content="langId">langId</tal:block></td>
@@ -100,9 +101,7 @@
 	</div>
 </form>
 
-<form class="form-horizontal card" id="changeLangDictForm" 
-	action="manage_changeLangDictProperties" method="post" enctype="multipart/form-data"
-	hx-boost="true" xmlns:hx-on="https://htmx.org/">
+<form class="form-horizontal card" id="changeLangDictForm" action="manage_changeLangDictProperties" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="target" value="languages" />
 	<input type="hidden" name="lang" tal:attributes="value request/lang" />
 	<legend class="has_tooltip"
@@ -133,8 +132,7 @@
 		<th tal:repeat="langId langIds" tal:content="python:here.getLanguageLabel(langId)">Language-Label</th>
 	</tr>
 	</thead>
-	<tbody hx-confirm="Are you sure?" hx-target="closest tr" hx-swap="outerHTML swap:1s"
-		tal:attributes="hx-confirm python:here.getZMILangStr('MSG_CONFIRM_DELOBJ')">
+	<tbody>
 	<tr tal:repeat="langDict python:here.getLangDict()" class="form-group"
 		tal:attributes="id python:'langkey_%s'%(langDict['key'])">
 		<td class="meta-sort text-center">
@@ -146,10 +144,12 @@
 							disabled python:['','disabled'][int(len(langDict.get('acquired',[]))>0)]"/>
 				</span>
 				<button class="btn btn-secondary btn-sm"
+					hx-confirm="Do you really want to delete this object?"
 					hx-get="manage_changeLangDictProperties" 
 					hx-target="#zmi_manage_tabs_message"
 					hx-on:htmx:after-request="$(this).closest('tr').hide('slow',function(){$(this).closest('tr').remove()})"
 					tal:attributes="
+						hx-confirm python:here.getZMILangStr('MSG_CONFIRM_DELOBJ');
 						hx-get python:'manage_changeLangDictProperties?btn=BTN_DELETE&target=zmi_manage_tabs_message&lang=%s&ids:list=%s'%(request.get('lang',here.getPrimaryLanguage()),langDict['key']); 
 						title python:here.getZMILangStr('BTN_DELETE')">
 					<i class="fas fa-times"></i>

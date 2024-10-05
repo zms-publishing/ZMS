@@ -5,7 +5,7 @@
 # Sending Zope's output not to dev/null but the console maintains
 # docker running
 
-instance_dir="/home/zope/venv/instance/zms5"
+instance_dir="/home/zope"
 venv_bin_dir="/home/zope/venv/bin"
 
 echo "Step-1: Starting ZEO"

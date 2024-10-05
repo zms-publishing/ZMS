@@ -4,7 +4,7 @@
 	zmscontext python:here.getSelf();
 	standard modules/Products.zms/standard">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
-<body tal:attributes="class python:here.zmi_body_class(id='textformats config')">
+<body tal:attributes="class python:here.zmi_body_class(id='textformats config')" hx-boost="true" xmlns:hx-on="https://htmx.org/">
 <header tal:replace="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</header>
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[here.manage_sub_options()[0]])">zmi_breadcrumbs</tal:block>
@@ -149,7 +149,22 @@
 	<tal:block tal:repeat="format formats"
 		><tr tal:attributes="class python:['','text-info bg-info'][int(format.getId()==here.getTextFormatDefault())];title python:['','Default'][int(format.getId()==here.getTextFormatDefault())]">
 			<td class="meta-sort text-center align-middle">
-				<input type="checkbox" name="ids:list" tal:attributes="value python:format.getId()" />
+				<div class="btn-group">
+					<span class="btn btn-secondary btn-sm">
+						<input type="checkbox" name="ids:list" tal:attributes="value python:format.getId()" />
+					</span>
+					<button class="btn btn-secondary btn-sm"
+						hx-confirm="Do you really want to delete this object?"
+						hx-get="manage_changeTextformat" 
+						hx-target="#zmi_manage_tabs_message"
+						hx-on:htmx:after-request="$(this).closest('tr').hide('slow',function(){$(this).closest('tr').remove()})"
+						tal:attributes="
+							hx-confirm python:here.getZMILangStr('MSG_CONFIRM_DELOBJ');
+							hx-get python:'manage_changeTextformat?btn=BTN_DELETE&target=zmi_manage_tabs_message&lang=%s&ids:list=%s'%(request.get('lang',here.getPrimaryLanguage()),format.getId()); 
+							title python:here.getZMILangStr('BTN_DELETE')">
+						<i class="fas fa-times"></i>
+					</button>
+				</div>
 			</td>
 			<td class="text-nowrap align-middle">
 				<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],format.getId())">

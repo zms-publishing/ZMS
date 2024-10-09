@@ -132,7 +132,7 @@ class ZMSLog(ZMSItem.ZMSItem):
     # --------------------------------------------------------------------------
     #  ZMSLog.get_log_filename:
     # --------------------------------------------------------------------------
-    def get_log_filename():
+    def get_log_filename(self):
       logging_file_handlers = [x for x in logging.root.handlers if isinstance(x, logging.FileHandler)]
       if len(logging_file_handlers) == 0:
         raise RuntimeError('No event log file handler defined in zope.ini ([handler_eventlog])')

@@ -385,7 +385,7 @@ class Exportable(_filtermanager.FilterItem):
     # --------------------------------------------------------------------------
     def toXml(self, REQUEST=None, deep=True, data2hex=False, multilang=True):
       if REQUEST is None:
-        REQUEST = self.get('REQUEST', _globals.headless_http_request)
+        REQUEST = self.get('REQUEST', standard.create_headless_http_request())
       xml = ''
       xml += _xmllib.xml_header()
       xml += _xmllib.getObjToXml( self, REQUEST, deep, base_path='', data2hex=data2hex, multilang=multilang)

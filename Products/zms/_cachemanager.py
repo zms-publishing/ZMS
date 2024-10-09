@@ -17,9 +17,9 @@
 ################################################################################
 
 # Imports.
-from Products.zms import _globals
+from Products.zms import standard
 
-headless_http_request = _globals.headless_http_request
+headless_http_request = standard.create_headless_http_request()
 
 class Buff(object):
   pass

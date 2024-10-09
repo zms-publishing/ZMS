@@ -29,7 +29,7 @@ class TextFormatObject(object):
   #  Returns section-number.
   # ----------------------------------------------------------------------------
   def getSecNo( self):
-    request = self.get('REQUEST', standard.create_headless_http_request())
+    request = getattr(self, 'REQUEST', standard.create_headless_http_request())
     sec_no = ''
     #-- [ReqBuff]: Fetch buffered value from Http-Request.
     parentNode = self.getParentNode()

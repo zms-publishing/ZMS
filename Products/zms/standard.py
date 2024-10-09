@@ -860,7 +860,7 @@ def triggerEvent(context, *args, **kwargs):
   """
   Hook for trigger of custom event (if there is one)
   """
-  request = context.get('REQUEST', create_headless_http_request())
+  request = getattr(context, 'REQUEST', create_headless_http_request())
   l = []
   name = args[0]
   root = context.getRootElement()
@@ -2383,7 +2383,7 @@ def dt_tal(context, text, options={}):
   pt = StaticPageTemplateFile(filename='None')
   pt.setText(text)
   pt.setEnv(context, options)
-  request = context.get('REQUEST', create_headless_http_request())
+  request = getattr(context, 'REQUEST', create_headless_http_request())
   rendered = pt.pt_render(extra_context={'here':context,'request':request})
   return rendered
 

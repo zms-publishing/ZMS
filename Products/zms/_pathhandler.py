@@ -118,7 +118,7 @@ class PathHandler(object):
     def __bobo_traverse__(self, TraversalRequest, name):
       # If this is the first time this __bob_traverse__ method has been called
       # in handling this traversal request, store the path_to_handle
-      request = self.get('REQUEST', standard.create_headless_http_request())
+      request = getattr(self, 'REQUEST', standard.create_headless_http_request())
       url = request.get('URL', '')
       zmi = url.find('/manage') >= 0
       

@@ -923,7 +923,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         abs_url = args[1]['abs_url']
         forced = args[1]['forced']
         if context.getConfProperty('ZMSObject.getAbsoluteUrlInContext', False):
-          if context.getHome() != context.getHome():
+          if context.getHome() != self.getHome():
             protocol = context.getConfProperty('ASP.protocol', 'http')
             domain = context.getConfProperty('ASP.ip_or_domain', None)
             if domain:

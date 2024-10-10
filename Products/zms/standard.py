@@ -860,7 +860,7 @@ def triggerEvent(context, *args, **kwargs):
   """
   Hook for trigger of custom event (if there is one)
   """
-  request = context.get('REQUEST', _globals.headless_http_request)
+  request = context.get('REQUEST', create_headless_http_request())
   l = []
   name = args[0]
   root = context.getRootElement()
@@ -954,6 +954,22 @@ def unescape(s):
       new = chr(int('0x'+s[i+1:i+3], 0))
     s = s.replace(old, new)
   return s
+
+
+def create_headless_http_request():
+    """
+    Returns a ZPublisher.HTTPRequest object to be used in headless mode.
+    """
+    from io import BytesIO
+    from ZPublisher.HTTPRequest import HTTPRequest
+    from ZPublisher.HTTPResponse import HTTPResponse
+
+    env = {}
+    env.setdefault('SERVER_NAME', 'nohost')
+    env.setdefault('SERVER_PORT', '80')
+    resp = HTTPResponse(stdout=BytesIO)
+
+    return HTTPRequest(stdin=BytesIO, environ=env, response=resp)
 
 
 security.declarePublic('http_request')
@@ -2367,7 +2383,7 @@ def dt_tal(context, text, options={}):
   pt = StaticPageTemplateFile(filename='None')
   pt.setText(text)
   pt.setEnv(context, options)
-  request = context.get('REQUEST', _globals.headless_http_request)
+  request = context.get('REQUEST', create_headless_http_request())
   rendered = pt.pt_render(extra_context={'here':context,'request':request})
   return rendered
 

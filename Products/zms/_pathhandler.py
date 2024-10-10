@@ -118,7 +118,7 @@ class PathHandler(object):
     def __bobo_traverse__(self, TraversalRequest, name):
       # If this is the first time this __bob_traverse__ method has been called
       # in handling this traversal request, store the path_to_handle
-      request = self.get('REQUEST', _globals.headless_http_request)
+      request = self.get('REQUEST', standard.create_headless_http_request())
       url = request.get('URL', '')
       zmi = url.find('/manage') >= 0
       
@@ -341,7 +341,7 @@ class PathHandler(object):
                 request.set('lang', lang)
                 return self
 
-        # Products.zms._globals.headless_http_request
+        # Products.zms.standard.create_headless_http_request()
         # has been called above for headless mode
         if request.get('SERVER_NAME') == 'nohost':
           return

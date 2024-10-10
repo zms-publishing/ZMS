@@ -25,6 +25,7 @@ from Products.zms import standard
 from Products.zms import _blobfields
 from Products.zms import _fileutil
 from Products.zms import _globals
+from zope.globalrequest import getRequest
 
 # ------------------------------------------------------------------------------
 #  _pathhandler.validateId:
@@ -118,7 +119,7 @@ class PathHandler(object):
     def __bobo_traverse__(self, TraversalRequest, name):
       # If this is the first time this __bob_traverse__ method has been called
       # in handling this traversal request, store the path_to_handle
-      request = getattr(self, 'REQUEST', standard.create_headless_http_request())
+      request = getattr(self, 'REQUEST', getRequest())
       url = request.get('URL', '')
       zmi = url.find('/manage') >= 0
       

@@ -860,7 +860,6 @@ def triggerEvent(context, *args, **kwargs):
   """
   Hook for trigger of custom event (if there is one)
   """
-  request = context.get('REQUEST', _globals.headless_http_request)
   l = []
   name = args[0]
   root = context.getRootElement()
@@ -896,7 +895,7 @@ def triggerEvent(context, *args, **kwargs):
     # Process zope-triggers.
     m = getattr(context, name, None)
     if m is not None:
-      m(context=context, REQUEST=request)
+      m(context=context, REQUEST=context.REQUEST)
 
   return l
 
@@ -2367,7 +2366,7 @@ def dt_tal(context, text, options={}):
   pt = StaticPageTemplateFile(filename='None')
   pt.setText(text)
   pt.setEnv(context, options)
-  request = context.get('REQUEST', _globals.headless_http_request)
+  request = context.REQUEST
   rendered = pt.pt_render(extra_context={'here':context,'request':request})
   return rendered
 

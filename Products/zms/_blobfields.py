@@ -524,15 +524,12 @@ class MyBlob(object):
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     MyBlob._createCopy:
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    def _createCopy(self, aq_parent, key, lang=None):
+    def _createCopy(self, aq_parent, key):
       value = self._getCopy()
       value.is_blob = True
       value.aq_parent = aq_parent
       value.key = key
-      if hasattr(aq_parent, 'REQUEST'):
-        value.lang = aq_parent.REQUEST.get( 'lang')
-      elif lang is not None:
-        value.lang = lang
+      value.lang = aq_parent.REQUEST.get( 'lang')
       return value
 
 

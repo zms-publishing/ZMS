@@ -22,7 +22,6 @@ from AccessControl.class_init import InitializeClass
 import json
 import sys
 # Product Imports.
-from Products.zms import _globals
 from Products.zms import rest_api
 from Products.zms import standard
 from Products.zms import zmscontainerobject
@@ -30,7 +29,6 @@ from Products.zms import zmscustom
 from Products.zms import zmsobject
 from Products.zms import zmsproxyobject
 from Products.zms import zmslinkelement
-
 
 """
 ################################################################################
@@ -105,8 +103,7 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
     #  ZMSLinkElement.getEmbedType: 
     # --------------------------------------------------------------------------
     def getEmbedType(self):
-      request = self.get('REQUEST', _globals.headless_http_request)
-      embed_type = self.getObjAttrValue( self.getObjAttr( 'attr_type'), request)
+      embed_type = self.getObjAttrValue( self.getObjAttr( 'attr_type'), self.REQUEST)
       if embed_type in [ 'embed', 'recursive', 'remote']:
         ref_obj = self.getRefObj()
         if ref_obj is not None and ref_obj.isAncestor( self):
@@ -383,8 +380,7 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
     # --------------------------------------------------------------------------
     #  ZMSLinkElement.isPageElement
     # --------------------------------------------------------------------------
-    def isPageElement(self):
-      request = self.get('REQUEST', _globals.headless_http_request)
+    def isPageElement(self): 
       rtnVal = False
       if self.getEmbedType() == 'remote':
         return self.getRemoteObj().get('is_page_element',False)
@@ -395,7 +391,7 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
             rtnVal = rtnVal or ref_obj.isPageElement()
           else:
             rtnVal = rtnVal or True
-        elif self.getObjProperty('align', request) not in ['', 'NONE']:
+        elif self.getObjProperty('align', self.REQUEST) not in ['', 'NONE']:
           rtnVal = rtnVal or True
       return rtnVal
 
@@ -633,8 +629,8 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
     #  Returns self or referenced object (if embedded) as ZMSProxyObject
     # --------------------------------------------------------------------------
     def __proxy__(self):
-      req = self.get('REQUEST', _globals.headless_http_request)
       rtn = self
+      req = self.REQUEST
       if req.get( 'ZMS_PROXY', True):
         if req.get( 'URL', '').find( '/manage') < 0 or req.get( 'ZMS_PATH_HANDLER', False):
           if self.isEmbeddedRecursive():
@@ -652,8 +648,8 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
     #  ZMSProxyObject.
     # --------------------------------------------------------------------------
     def getProxy(self):
-      req = self.get('REQUEST', _globals.headless_http_request)
       rtn = self
+      req = self.REQUEST
       if req.get( 'ZMS_PROXY', True):
         rtn = req.get( 'ZMS_PROXY_%s'%self.id, self.__proxy__())
       return rtn

@@ -16,11 +16,6 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ################################################################################
 
-# Imports.
-from Products.zms import _globals
-
-headless_http_request = _globals.headless_http_request
-
 class Buff(object):
   pass
 
@@ -45,7 +40,7 @@ class ReqBuff(object):
     #  Clear buffered values from Http-Request.
     # --------------------------------------------------------------------------
     def clearReqBuff(self, prefix='', REQUEST=None):
-      request = self.get('REQUEST', headless_http_request )
+      request = self.REQUEST
       buff = request.get('__buff__', Buff())
       reqBuffId = self.getReqBuffId(prefix)
       if len(prefix) > 0:
@@ -62,7 +57,7 @@ class ReqBuff(object):
     #  @throws Exception
     # --------------------------------------------------------------------------
     def fetchReqBuff(self, key, REQUEST=None):
-      request = self.get('REQUEST', headless_http_request )
+      request = self.REQUEST
       buff = request['__buff__']
       reqBuffId = self.getReqBuffId(key)
       return getattr(buff, reqBuffId)
@@ -73,7 +68,7 @@ class ReqBuff(object):
     #  Returns value and stores it in buffer of Http-Request.
     # --------------------------------------------------------------------------
     def storeReqBuff(self, key, value, REQUEST=None):
-      request = self.get('REQUEST', headless_http_request )
+      request = self.REQUEST
       buff = request.get('__buff__', None)
       if buff is None:
         buff = Buff()

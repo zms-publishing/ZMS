@@ -142,7 +142,7 @@ class PathHandler(object):
               TraversalRequest[ 'path_to_handle'].insert( i-1, path_physical[ i])
       
       # Set language.
-      lang = request.get( 'lang', self.getPrimaryLanguage())
+      lang = request.get('lang')
       if lang is None:
         lang = self.getLanguageFromName(TraversalRequest['path_to_handle'][-1])
       if lang is not None:
@@ -342,9 +342,8 @@ class PathHandler(object):
                 request.set('lang', lang)
                 return self
 
-        # Products.zms.standard.create_headless_http_request()
-        # has been called above for headless mode
-        if request.get('SERVER_NAME') == 'nohost':
+        # headless mode
+        if not hasattr(self, 'REQUEST'):
           return
 
         # If there's no more names left to handle, return the path handling

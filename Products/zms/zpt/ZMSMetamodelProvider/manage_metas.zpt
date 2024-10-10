@@ -9,45 +9,6 @@
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[here.manage_sub_options()[0]])">zmi_breadcrumbs</tal:block>
 
-<script>
-/**
- * Export xml.
- */
-function zmiExportBtnClick(sender) {
-	var fm = $(sender).parents("form")[0];
-	var href = fm.action+'?lang='+getZMILang()+'&btn=BTN_EXPORT';
-	$('input[name="ids:list"]:checked',fm).each(function(){
-			href += '&'+$(this).attr("name")+'='+$(this).val();
-		});
-	window.open(href);
-	return false;
-}
-
-/**
- * Delete object.
- */
-function zmiDeleteObjBtnClick(sender,d) {
-	if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
-		zmiFormSubmit(sender,d);
-	}
-}
-
-/**
- * Submit form with given parameters.
- */
-function zmiFormSubmit(sender,d) {
-	var $fm = $(sender).closest("form");
-	var html = '';
-	for (var i in d) {
-		$('input[name="' + i + '"]',$fm).remove();
-		html += '<input type="hidden" name="' + i + '" value="' + d[i] +'"/>';
-	}
-	$fm
-		.append(html)
-		.submit();
-}
-</script>
-
 <div class="d-none" tal:condition="python:here.getPortalMaster()!=None">
 	<div id="acquireConf" class="inner">
 		<form class="form-horizontal card" action="manage_changeMetaProperties" method="post" enctype="multipart/form-data">
@@ -78,22 +39,22 @@ function zmiFormSubmit(sender,d) {
 			<input type="hidden" name="lang" tal:attributes="value request/lang">
 			<div class="form-group col-12">
 				<div class="custom-file">
-					<input type="file" name="file" id="file" class="custom-file-input" value="" 
+					<input type="file" name="file" id="file" class="custom-file-input" value=""
 						onchange="$('.custom-file label span').html($(this).val().replace(/^.*(\\|\/|\:)/, ''));" />
 					<label class="custom-file-label" for="file"><span tal:content="python:here.getZMILangStr('ATTR_FILE')">Choose file</span></label>
 				</div>
 			</div><!-- .form-group -->
 			<label class="col-12 control-label text-left"><span tal:content="python:here.getZMILangStr('OR').lower()">Or</span></label>
 			<div class="form-group col-12 mt-2">
-				<select class="form-control" id="init" name="init" 
-					onfocus="zmiExpandConfFiles(this,'.metadict.')" 
+				<select class="form-control" id="init" name="init"
+					onfocus="zmiExpandConfFiles(this,'.metadict.')"
 					onmouseover="zmiExpandConfFiles(this,'.metadict.')">
 					<option value="" tal:content="python:'--- %s ---'%here.getZMILangStr('BTN_INIT')">--- Init... ---</option>
 				</select>
 			</div><!-- .form-group -->
 			<div class="form-group row mt-5 mr-0">
 				<div class="controls save">
-					<button type="submit" name="btn" class="btn btn-primary" value="BTN_IMPORT" 
+					<button type="submit" name="btn" class="btn btn-primary" value="BTN_IMPORT"
 						tal:content="python:here.getZMILangStr('BTN_IMPORT')">
 						Import
 					</button>
@@ -103,14 +64,17 @@ function zmiFormSubmit(sender,d) {
 	</div><!-- .inner -->
 </div><!-- #importConf -->
 
-<form class="form-horizontal card manage_metas" action="manage_changeMetaProperties" method="post" enctype="multipart/form-data">
+<form class="form-horizontal card manage_metas"
+	action="manage_changeMetaProperties" method="post" enctype="multipart/form-data"
+	hx-boost="true" xmlns:hx-on="https://htmx.org/">
+	<input type="hidden" name="target" value="zmi_manage_tabs_message">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<legend class="has_tooltip"
-		tal:attributes="title python:here.getZMILangStr('TIP_METADICT')" 
+		tal:attributes="title python:here.getZMILangStr('TIP_METADICT')"
 		tal:content="python:here.getZMILangStr('TAB_METADATA')">
 		Metadata
 	</legend>
-	<table class="table table-striped table-bordered table-sm zmi-sortable">
+	<table id="meta_properties" class="table table-striped table-bordered table-sm zmi-sortable">
 	<thead>
 	<tr>
 		<th class="meta-sort">
@@ -129,20 +93,28 @@ function zmiFormSubmit(sender,d) {
 		<th></th>
 	</tr>
 	</thead>
-	<tbody>
-	<tal:block tal:define="metadictAttrIds python:here.getMetadictAttrs()">
-	<tr tal:repeat="metadictAttrId metadictAttrIds">
+	<tbody tal:define="metadictAttrIds python:here.getMetadictAttrs()">
+	<tr tal:repeat="metadictAttrId metadictAttrIds" class="form-group">
 		<tal:block tal:define="global metadictAttr python:here.getMetadictAttr(metadictAttrId)">
 		<td class="meta-sort">
 			<input type="hidden" name="old_ids:list" tal:attributes="value python:metadictAttr['id']" />
 			<div class="input-group input-group-sm">
-				<select class="zmi-sort form-control-sm" tal:attributes="onchange python:'zmiFormSubmit(this,{btn:\'move_to\',id:\'%s\',\'pos:int\':this.selectedIndex})'%metadictAttrId">
+				<select class="zmi-sort form-control-sm"
+					tal:attributes="onchange python:'zmiFormSubmit(this,{btn:\'move_to\',id:\'%s\',\'pos:int\':this.selectedIndex})'%metadictAttrId">
 					<option tal:repeat="i python:range(0,len(metadictAttrIds))" tal:attributes="selected python:['','selected'][int(i==metadictAttrIds.index(metadictAttrId))]" tal:content="python:i+1">i+1</option>
 				</select>
 				<div class="input-group-append">
-					<a class="btn btn-secondary" href="javascript:;" 
-						tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'BTN_DELETE\',id:\'%s\'})'%metadictAttr['id']; title python:here.getZMILangStr('BTN_DELETE')"
-						><i class="fas fa-times"></i></a>
+					<a class="btn btn-secondary"
+						hx-get="manage_changeMetaProperties"
+						hx-target="#zmi_manage_tabs_message"
+						hx-confirm="Do you really want to delete this object?"
+						hx-on:htmx:after-request="clean_deleted_row(this)"
+						tal:attributes="
+							hx-get python:'manage_changeMetaProperties?btn=BTN_DELETE&target=zmi_manage_tabs_message&lang=%s&id=%s'%(request.get('lang',here.getPrimaryLanguage()),metadictAttr['id']);
+							hx-confirm python:here.getZMILangStr('MSG_CONFIRM_DELOBJ');
+							title python:here.getZMILangStr('BTN_DELETE')">
+						<i class="fas fa-times"></i>
+					</a>
 				</div>
 			</div>
 		</td>
@@ -151,8 +123,8 @@ function zmiFormSubmit(sender,d) {
 				tal:define="meta_ids python:request.set('meta_id_usage',', '.join([xx for xx in here.getMetaobjIds() if metadictAttrId in [x['type'] for x in here.getMetaobjAttrs(xx)]]));">
 			</tal:block>
 			<input class="form-control form-control-sm" type="text"
-				tal:attributes="name python:'attr_id_%s'%metadictAttr['id']; 
-					value python:metadictAttr['id']; 
+				tal:attributes="name python:'attr_id_%s'%metadictAttr['id'];
+					value python:metadictAttr['id'];
 					title python:'Used by: ' + request.get('meta_id_usage','Unknown');
 					disabled python:['','disabled'][int(metadictAttr.get('acquired',0))]" />
 		</td>
@@ -160,11 +132,10 @@ function zmiFormSubmit(sender,d) {
 			<input class="form-control form-control-sm" type="text" tal:attributes="name python:'attr_name_%s'%metadictAttr['id']; value python:metadictAttr['name']; disabled python:['','disabled'][int(metadictAttr.get('acquired',0))]"/>
 		</td>
 		<td class="meta-type">
-			<select class="form-control form-control-sm" tal:attributes="name python:'attr_type_%s'%metadictAttr['id']; disabled python:['','disabled'][int(metadictAttr.get('acquired',0))]">
-				<option value="">--- <tal:block tal:content="python:here.getZMILangStr('ATTR_PRIMITIVE')">Primitive</tal:block> ---</option>
-				<option tal:repeat="datatype python:here.valid_datatypes" tal:attributes="value datatype; selected python:['','selected'][int(metadictAttr['type']==datatype)]" tal:content="datatype">datatype</option>
-				<option value="">--- <tal:block tal:content="python:here.getZMILangStr('ATTR_OBJECTS')">Objects</tal:block> ---</option>
-				<option tal:repeat="meta_type python:here.getMetaobjIds(sort=True,excl_ids=['ZMS'])" tal:attributes="value meta_type; selected python:['','selected'][int(metadictAttr['type']==meta_type)]" tal:content="python:here.display_type(meta_id=meta_type)">meta_type</option>
+			<select class="form-control form-control-sm"
+				tal:define="attr_type python:metadictAttr.get('type')"
+				tal:attributes="name python:'attr_type_%s'%metadictAttr['id']; disabled python:['','disabled'][int(metadictAttr.get('acquired',0))]">
+				<option tal:attributes="value attr_type" selected="selected" tal:content="attr_type">datatype</option>
 			</select>
 		</td>
 		<tal:block tal:condition="python:metadictAttr['type'] in ['method']">
@@ -190,13 +161,12 @@ function zmiFormSubmit(sender,d) {
 		</tal:block>
 		</tal:block>
 	</tr>
-	</tal:block>
-	<tr class="row_insert">
-		<td class="meta-sort text-right"><span class="btn btn-add mr-1"><i class="fas fa-plus"></i></span></td>
+	<tr class="row_insert form-group">
+		<td class="meta-sort text-right"><span class="btn btn-add mr-1 btn-secondary btn-sm"><i class="fas fa-plus"></i></span></td>
 		<td class="meta-id"><input class="form-control form-control-sm" type="text" name="_id" /></td>
 		<td class="meta-name"><input class="form-control form-control-sm" type="text" name="_name" /></td>
 		<td class="meta-type">
-			<select class="form-control form-control-sm" name="_type">
+			<select id="populate_type" class="form-control form-control-sm" name="_type">
 				<option value="">--- <tal:block tal:content="python:here.getZMILangStr('ATTR_PRIMITIVE')">Primitive</tal:block> ---</option>
 				<option tal:repeat="datatype python:here.valid_datatypes" tal:attributes="value datatype" tal:content="datatype">datatype</option>
 				<option value="">--- <tal:block tal:content="python:here.getZMILangStr('ATTR_OBJECTS')">Objects</tal:block> ---</option>
@@ -211,11 +181,259 @@ function zmiFormSubmit(sender,d) {
 	</tbody>
 	</table>
 	<div class="controls save">
-		<button name="btn" type="submit" class="btn btn-primary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+		<button name="btn" type="submit" class="btn btn-secondary"
+			hx-trigger="click"
+			hx-post="manage_changeMetaProperties"
+			hx-target="#zmi_manage_tabs_message"
+			hx-swap="outerHTML show:top"
+			hx-on:click="$ZMI.show_spinner(this)"
+			hx-on:htmx:after-request="renew_sort_options(this);$ZMI.reset_spinner(this)"
+			value="BTN_SAVE"
+			tal:content="python:here.getZMILangStr('BTN_SAVE')">
+			Save
+		</button>
+		<button name="btn" type="submit" class="btn btn-secondary"
+			value="BTN_CANCEL"
+			tal:content="python:here.getZMILangStr('BTN_RESET')">
+			Cancel
+		</button>
 	</div>
 </form>
 
 </div><!-- #zmi-tab -->
+
+<style>
+/* <!-- */
+	tr.row_insert > td > .btn-add {
+		width: 100%;
+		color:#333 !important;
+		padding: 4px 8px;
+	}
+	tr.row_insert > td > .btn-add:hover {
+		color:white !important;
+	}
+	tr.row_insert > td:not(.meta-sort) > * {
+		opacity:.35
+	}
+/* --> */
+</style>
+<script>
+// <!--
+
+	/**
+	 * Global vars.
+	 */
+	var table_id = 'meta_properties';
+
+	/**
+	 * Export xml.
+	 */
+	function zmiExportBtnClick(sender) {
+		var fm = $(sender).parents("form")[0];
+		var href = fm.action+'?lang='+getZMILang()+'&btn=BTN_EXPORT';
+		$('input[name="ids:list"]:checked',fm).each(function(){
+				href += '&'+$(this).attr("name")+'='+$(this).val();
+			});
+		window.open(href);
+		return false;
+	}
+
+	/**
+	 * Delete object.
+	 */
+	function zmiDeleteObjBtnClick(sender,d) {
+		if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
+			zmiFormSubmit(sender,d);
+		}
+	}
+
+	/**
+	 * Submit form with given parameters.
+	 */
+	function zmiFormSubmit(sender,d) {
+		var $fm = $(sender).closest("form");
+		var html = '';
+		for (var i in d) {
+			$('input[name="' + i + '"]',$fm).remove();
+			html += '<input type="hidden" name="' + i + '" value="' + d[i] +'"/>';
+		}
+		$fm
+			.append(html)
+			.submit();
+	}
+
+	/**
+	 * Normalize inserted rows.
+	 */
+	function renew_sort_options() {
+
+		let lang = getZMILang();
+		// Remove highlighting of new rows
+		$('tr[id*="new_row"]').each(function() {
+			$(this).removeAttr('id');
+		});
+
+		let sort_options_len = $('#' + table_id + ' tbody tr').length;
+		let $rows = $('#' + table_id + ' tbody tr');
+		let row_counter = 0;
+
+		$rows.each( function() {
+			row_counter++;
+			let sort_options_html = ``;
+			let old_id_html = $(this).find('input[name="old_ids:list"]').prop('outerHTML');
+			let old_id = $(this).find('td.meta-id input').val();
+			if (old_id_html == undefined) {
+				old_id_html = `<input type="hidden" name="old_ids:list" value="${old_id}">`;
+			};
+			for (let i = 1; i < sort_options_len; i++) {
+				if (i == row_counter) {
+					sort_options_html += `<option value="${i}" selected>${i}</option>`;
+				} else {
+					sort_options_html += `<option value="${i}">${i}</option>`;
+				}
+			};
+			let new_btn_html = `
+				<div class="input-group input-group-sm">
+					${old_id_html}
+					<select class="zmi-sort form-control-sm"
+						onchange="zmiFormSubmit(this,{btn:'move_to',id:'${old_id}','pos:int':this.selectedIndex})">
+						${sort_options_html}
+					</select>
+					<div class="input-group-append">
+						<a class="btn btn-secondary" title="Delete Meta Attribute"
+							hx-get="manage_changeMetaProperties?btn=BTN_DELETE&target=zmi_manage_tabs_message&lang=${lang}&id=${old_id}"
+							hx-target="#zmi_manage_tabs_message"
+							hx-on:htmx:after-request="clean_deleted_row(this)">
+							<i class="fas fa-times"></i>
+						</a>
+					</div>
+				</div>
+			`;
+			if (row_counter < sort_options_len) {
+				$(this).find('td.meta-sort').html(new_btn_html);
+				htmx.process($(this).find('td.meta-sort')[0]); // Process the new elements with htmx
+			};
+		});
+	};
+
+	/**
+	 * Normalize after deleting a row.
+	 */
+	 function clean_deleted_row(sender) {
+		$(sender).closest('tr').hide('slow',function(){
+			$(sender).closest('tr').remove();
+			renew_sort_options();
+		})
+	}
+
+	/**
+	 * Populate type select-list.
+	 */
+	function zmiPopulateTypeSelect(sender) {
+		if ( sender.options.length <= 1) {
+			var selectedValue = '';
+			if ( sender.options.length == 1) {
+				selectedValue = sender.options[0].value;
+			}
+			sender.options.length = 0;
+			$("select#populate_type option").each(function() {
+				if (sender.name != '_type' || !$(this).hasClass('deprecated')) {
+					addOption( sender, $(this).text(), $(this).val(), selectedValue);
+				}
+			});
+		}
+	}
+
+	/**
+	 * Init.
+	 */
+	$(function(){
+
+		// ########################################################################
+		// Clone meta_types select lists from .row_insert-template
+		$("select[name^=attr_type_]")
+			.focus(function(){zmiPopulateTypeSelect(this)})
+			.hover(function(){zmiPopulateTypeSelect(this)})
+		;
+		// ########################################################################
+
+		// New field set: initially disable inputs
+		$('input, textarea, select','tr.row_insert').attr('disabled',true);
+
+		// ++++++++++++
+		// Add rows to tables #meta_properties on button click
+		// ++++++++++++
+		let new_row_counter = 0;
+
+		// Add click event function to add-buttons
+		$(".row_insert .btn-add").click(function(){
+			new_row_counter++;
+			// New field set: clone with enabled inputs
+			$('input, textarea, select','tr.row_insert').attr('disabled',false);
+
+			// Where to insert the new row
+			let $where_insert = $(this).closest('tr');
+
+			// Set variables
+			let new_row_name = `new_row_${table_id}_${new_row_counter}`;
+			let old_id_html = `<input type="hidden" name="old_ids:list" value="new${new_row_counter}">`;
+			let new_btn_html = `
+				${old_id_html}
+				<span class="btn btn-secondary btn-sm mr-1 w-100" style="color:#999"
+					title="Revoke new Meta Attribute"
+					onclick="javascript:$(this).closest('tr').hide('slow',function(){$(this).closest('tr').remove()})">
+					<i class="fas fa-undo-alt"></i>
+				</span>
+			`;
+
+			// Clone(true) to get a deep copy including select options
+			let $new_row = $where_insert.clone(true);
+
+			// Process table cells of the clone like "old" row
+			$new_row.find('td').each(function() {
+				$(this).find('input,select,textarea').each(function() {
+					let tagname = $(this).prop('tagName');
+					let defname = $(this).attr('name')
+					let deftype = $(this).attr('type')
+					let newname = $(this).attr('name').split('_')[1].split(':')[0];
+					let newval  = $(this).val();
+					newname = `attr_${newname}_new${new_row_counter}`
+					newname = defname.includes(':') ? `${newname}:int` : newname;
+					$(this).attr('name',newname);
+					newval = `new${new_row_counter}`;
+					if ( tagname == 'INPUT' && deftype != 'checkbox') {
+						$(this).val(newval);
+						$(this).attr('placeholder',newval);
+					} else if ( deftype == 'checkbox' ) {
+						$(this).val(1);
+					};
+					// Remove id #populate_type from cloned select
+					if ( tagname == 'SELECT') {
+						$(this).removeAttr('id');
+					};
+				});
+			});
+
+			// Process td:first-child of the clone
+			$new_row.find('td.meta-sort').html(new_btn_html);
+			$new_row.removeClass('row_insert').attr('id',new_row_name)
+
+			// Insert the new row
+			$new_row.insertBefore($where_insert);
+			// Set form as modified
+			$ZMI.set_form_modified($('.meta-id input',$new_row));
+			// Reset the clone template
+			$where_insert.find('input:not([type="checkbox"]),select,textarea').each(function() {
+				$(this).val(undefined);
+			});
+			// New field set: reset to disabled inputs
+			$('input, textarea, select','tr.row_insert').attr('disabled',true);
+		});
+
+	});
+// -->
+</script>
+
 <footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 </body>
 </html>

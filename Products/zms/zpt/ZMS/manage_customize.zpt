@@ -335,10 +335,7 @@
 				<div class="form-group row">
 					<label class="col-sm-2 control-label">ZMS Version</label>
 					<div class="col-sm-10">
-						<a title="ZMS commits on github.com" target="_blank"
-							href="https://github.com/zms-publishing/ZMS/commits/main">
-							<samp id="zms_custom_version" tal:content="structure python:here.zms_version(custom=True)">zms_version</samp>
-						</a>
+                        <samp tal:content="structure python:here.zms_version(custom=True)">zms_version</samp>
 					</div>
 				</div><!-- .form-group -->
 				<div class="form-group row">
@@ -363,10 +360,9 @@
 					<label class="col-sm-2 control-label" for="installed_python_packages">
 						Installed Python Packages
 						<p class="help-text small mt-sm-3 mb-0">
-							Tools such as the <a href="https://pip.pypa.io/en/stable/reference/pip/" target="_blank">Python Package Installer</a>
+							Tools such as the <a href="https://pip.pypa.io/en/stable/cli/pip/" target="_blank">Python Package Installer</a>
 							with <a href="https://pip.pypa.io/en/stable/user_guide/#requirements-files" target="_blank">requirements</a>
 							and <a href="https://pip.pypa.io/en/stable/user_guide/#constraints-files" target="_blank">constraints</a> files
-							and <a href="https://requires.io/github/zopefoundation/Zope/requirements/?branch=master" target="_blank">requires.io</a>
 							help manage and monitor package dependencies.
 						</p>
 					</label>

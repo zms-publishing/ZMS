@@ -1,0 +1,37 @@
+FROM alpine
+
+EXPOSE 8085
+EXPOSE 8086
+EXPOSE 8080
+EXPOSE 5678
+
+# Install Zope/ZEO Dependencies
+RUN apk add python3 make gcc g++ git
+RUN apk update && apk add python3-dev git mariadb-dev openldap-dev curl bash
+
+# https://stackoverflow.com/questions/49955097/how-do-i-add-a-user-when-im-using-alpine-as-a-base-image 
+RUN addgroup -S zope && adduser --disabled-password -S zope -G zope
+USER zope
+WORKDIR /home/zope/
+ENV VIRTUAL_ENV=/home/zope/venv
+
+RUN python3 -m venv venv
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+RUN pip install -U pip wheel setuptools
+RUN pip install -U -e git+https://github.com/zms-publishing/ZMS.git@main#egg=ZMS
+RUN pip install -r https://raw.githubusercontent.com/zms-publishing/ZMS5/master/requirements-full.txt
+RUN pip install ZEO
+RUN pip install itsdangerous
+RUN pip install debugpy
+
+# Create Zope Instance
+RUN mkwsgiinstance -d . -u admin:admin
+
+COPY ./etc ./etc
+COPY ./var ./var
+COPY ./Extensions ./Extensions
+
+
+# Finally Start ZEO/Zope by Script
+# ENTRYPOINT ["/bin/sh -c"]
+CMD ["/home/zope/etc/start.sh"]

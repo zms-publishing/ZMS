@@ -28,17 +28,30 @@ if (typeof $ == "undefined") {
  */
 if (typeof htmx != "undefined") {
 	document.addEventListener('htmx:beforeRequest', (evt) => {
-		document.querySelector('body').classList.add('loading');
+		const body = document.querySelector('body');
+		// If not send from SAVE button, check if form is modified
+		if ( ! evt.target.classList.contains('btn-primary') && ! evt.currentTarget.activeElement.classList.contains('btn-primary')) {
+			if (body.classList.contains("form-modified") && ! confirm(getZMILangStr('MSG_CONFIRM_DISCARD_CHANGES'))) {
+				return evt.preventDefault();
+			}
+		}
+		body.classList.add('loading');
 	});
 	document.addEventListener('htmx:afterRequest', (evt) => {
 		var bodyClass = evt.detail.xhr.responseText;
 		bodyClass = bodyClass.substr(bodyClass.indexOf("<body"));
-		bodyClass = bodyClass.substr(bodyClass.indexOf("class=\"")+"class=\"".length);
-		bodyClass = bodyClass.substr(0,bodyClass.indexOf("\""));
-		document.querySelector('body').classList = bodyClass;
+		if ( bodyClass.indexOf("<body") > -1 ) {
+			bodyClass = bodyClass.substr(bodyClass.indexOf("class=\"")+"class=\"".length);
+			bodyClass = bodyClass.substr(0,bodyClass.indexOf("\""));
+			document.querySelector('body').classList = bodyClass;
+			$ZMI.runReady();
+		};
+		// Remove form-modified class from
+		Array.from(document.getElementsByClassName('form-modified')).forEach(
+			e => { e.classList.remove('form-modified') }
+		);
 		document.querySelector('body').classList.remove('loading');
 		document.querySelector('body').classList.add('loaded');
-		$ZMI.runReady();
 	});
 	window.onload = function() {
 		$ZMI.runReady();

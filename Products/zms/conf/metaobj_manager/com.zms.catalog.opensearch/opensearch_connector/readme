@@ -1,5 +1,7 @@
 # Managing ZMS-Content-Index with Opensearch
 ZMS offers an [Opensearch](https://opensearch.org/) connector for the crucial tasks of index management.
+
+###### Define the Content Schema to be indexed
 Before letting Opensearch create an index, Opensearch needs to know how to index the content. Therefore Opensearch needs to get the content "schema" (as a JSON-based list of typed fields). By listing
 
 1. all ZMS content types and
@@ -25,8 +27,21 @@ return (context.meta_id in meta_ids) \
 </pre>
 
 
-###### Start with _Create Schema_ !
+###### Configuration Properties
+For communicating with the Elasticsearch server over REST API, the connector needs some properties:
 
+1. *URL*: the URL(s) of the Elasticsearch server (comma-separated)
+2. *Username*: the username for the Elasticsearch server
+3. *Password*: the password for the Elasticsearch server
+4. *Schema*: the data schema of the index in JSON format; it is defined by the general search adapter GUI and created wirh the "Create Schema" action
+5. *Parser*: the URL of the parsing application (e.g. Apache Tika) for extracting content from any binary files
+6. Score-Script (Painless): a script for boosting the relevance of certain fields in the search results
+7. Suggest-Fields: indexname-specific fieldnames (as a list) for autocomplete suggestions
+
+_Hint:_ All these properties are stored in the ZMS configuration and can be managed as well with the ZMS configuration GUI.
+
+
+###### Before writing data to Index a schema is needed: _Create Schema_ !
 So the first step to prepare Opensearch is _Create Schema_: based on the  _ZMS Catalog Adapter_ selections ZMS will save a small JSON file as a configuration parameter. (Note: if Opensearch gets no, incomplete or wrong schema, it will guess one from the the transferred content; usually Opensearch is not able to guess the keywords types correctly; so this will end up in defect result responses.)
 
 The second step is _Initialisation_, which leads to an empty index based on that content schema and named according to the ZMS root name. After this is done the content can be primarily indexed with "Refresh".

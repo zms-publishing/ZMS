@@ -93,6 +93,32 @@ def get_size(v):
   return sys.getsizeof(v)
 
 
+def create_headless_http_request():
+    """
+    Returns a ZPublisher.HTTPRequest object to be used in headless mode.
+    """
+    # Measure time for exection.
+    import logging
+    LOGGER = logging.getLogger('create_headless_http_request')
+    start_time = time.time()
+    # Imports.  
+    from io import BytesIO
+    from ZPublisher.HTTPRequest import HTTPRequest
+    from ZPublisher.HTTPResponse import HTTPResponse
+
+    env = {}
+    env.setdefault('SERVER_NAME', 'nohost')
+    env.setdefault('SERVER_PORT', '80')
+    resp = HTTPResponse(stdout=BytesIO)
+
+    # Print execution time.
+    LOGGER.log(logging.INFO, 'Execution time create_headless_http_request(): %s' % (time.time() - start_time))
+
+    return HTTPRequest(stdin=BytesIO, environ=env, response=resp)
+
+# Set gobal variable headless_http_request.
+headless_http_request = create_headless_http_request()
+
 ################################################################################
 # Define StaticPageTemplateFile.
 ################################################################################

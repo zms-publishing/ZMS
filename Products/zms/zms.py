@@ -102,7 +102,7 @@ def importTheme(self, theme):
 # A new ZMS node can be initalized as a stand-alone client (master) or 
 # as subordinated client acquiring content models and sharing the zmsindex.
 # Use a request variable 'acquire' =  1 to initalize ZMS as a client
-def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
+def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST, minimal_init = False):
 
   ### Constructor.
   obj = ZMS()
@@ -135,7 +135,7 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   obj.setConfProperty('ZMS.autocommit', 1)
 
   ### Init ZMS default content-model.
-  _confmanager.initConf(obj, 'conf:com.zms.foundation*')
+  _confmanager.initConf(obj, 'conf:com.zms.foundation' if minimal_init else 'conf:com.zms.foundation*')
   _confmanager.initConf(obj, 'conf:com.zms.catalog.zcatalog')
 
   ### Init ZMS index.
@@ -374,13 +374,47 @@ class ZMS(
       file.close()
       zms_custom_version = os.environ.get('ZMS_CUSTOM_VERSION', '')
       if custom and zms_custom_version != '':
-        rtn += ' ({})'.format(zms_custom_version)
+        rtn += f'&nbsp;(<samp id="zms_custom_version">{zms_custom_version}</samp>)'
+        # Generate revisions and custom version gathering commit hashes of git submodules
+        # see Lines 37-46 unibe-cms/.github/workflows/build-and-push.yml
+        revisions = _fileutil.getOSPath('/app/revisions.txt')
+        if os.path.exists(revisions):
+            file = open(revisions, 'r')
+            zms_submodule_revisions = file.read()
+            file.close()
+            rtn += f"""
+                <span class="d-inline-block" data-toggle="popover"
+                    title="Git revisions"
+                    data-content="{zms_submodule_revisions}">
+                    <i class="fab fa-git-square fa-lg"></i>
+                </span>
+                <script>
+                    $(function () {{
+                        $('[data-toggle="popover"]').popover();
+                        // CAVEAT: Slicing below relies on commit hashes at https://github.com/idasm-unibe-ch/unibe-cms/tree/...
+                        const zms_custom_version = $('#zms_custom_version').text().replaceAll('(', '').replaceAll(')', '');
+                        const github_link = zms_custom_version.substr(zms_custom_version.indexOf('https://github.com'), zms_custom_version.length);
+                        const version_str = zms_custom_version.substr(0, zms_custom_version.indexOf('https://github.com')).trim();
+                        if (github_link.indexOf('https://github.com') == 0) {{
+                            $('#zms_custom_version').html('<a href="'+github_link+'" title="'+github_link.slice(0, 58)+'" target="_blank">'+version_str+'</a>');
+                        }}
+                    }})
+                </script>
+                <style>
+                    .popover-body {{
+                        white-space: break-spaces;
+                        width: auto;
+                        font-size: smaller;
+                    }}
+                </style>
+                """
       if custom and os.path.exists(_fileutil.getOSPath(package_home(globals())+'/../../.git/FETCH_HEAD')):
         file = open(_fileutil.getOSPath(package_home(globals())+'/../../.git/FETCH_HEAD'),'r')
         FETCH_HEAD = file.read()
         file.close()
         FETCH_HEAD = FETCH_HEAD[0:7]
-        rtn += ' git#%s'%(FETCH_HEAD)
+        rtn += (f'<a title="ZMS commits on github.com" target="_blank" '
+                f'href="https://github.com/zms-publishing/ZMS/commits/main"> git#{FETCH_HEAD}</a>')
       return rtn
 
     # --------------------------------------------------------------------------
@@ -562,6 +596,10 @@ class ZMS(
           # https://github.com/zopefoundation/transaction/blob/6d4785159c277067f2ec95158884870a92660220/src/transaction/_transaction.py#L421
           for resource in t._resources:
             if isinstance(resource, ZODB.Connection.Connection):
+              # Reset response content type (WGSIPublisher sets it to "text/plain" per default if unset)
+              # and lock status (the zException does not get mapped correctly)
+              request.response.setHeader('Content-Type', 'text/html;charset=utf-8')
+              request.response.setStatus(503, lock=True)
               raise zExceptions.HTTPServiceUnavailable('Maintenance')
         t.addBeforeCommitHook(maintenance_hook)
 

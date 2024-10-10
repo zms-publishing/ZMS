@@ -4,62 +4,22 @@
 	zmscontext python:here.getSelf();
 	standard modules/Products.zms/standard">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
-<body tal:attributes="class python:here.zmi_body_class(id='languages config')">
+<body tal:attributes="class python:here.zmi_body_class(id='languages config')" hx-boost="true" xmlns:hx-on="https://htmx.org/">
 <header tal:replace="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</header>
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[{'label':'TAB_LANGUAGES','action':'manage_customizeLanguagesForm'}])">zmi_breadcrumbs</tal:block>
 
-<script>
-
-/**
- * Export xml.
- */
-function zmiExportBtnClick(sender) {
-	var fm = $(sender).parents("form")[0];
-	var href = fm.action+'?lang='+getZMILang()+'&btn=BTN_EXPORT';
-	$('input[name="ids:list"]:checked',fm).each(function(){
-			href += '&'+$(this).attr("name")+'='+$(this).val();
-		});
-	window.open(href);
-	return false;
-}
-
-/**
- * Delete object.
- */
-function zmiDeleteObjBtnClick(sender,d) {
-	if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
-		zmiFormSubmit(sender,d);
-	}
-}
-
-/**
- * Submit form with given parameters.
- */
-function zmiFormSubmit(sender,d) {
-	var $fm = $(sender).closest("form");
-	var html = '';
-	for (var i in d) {
-		$('input[name="' + i + '"]',$fm).remove();
-		html += '<input type="hidden" name="' + i + '" value="' + d[i] +'"/>';
-	}
-	$fm
-		.append(html)
-		.submit();
-}
-
-</script>
-
 <tal:block tal:define="global langIds python:here.getLangIds(sort=True)">
 
 <form class="form-horizontal card" id="changeLanguagesForm" action="manage_changeLanguages" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="target" value="languages" />
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<legend class="has_tooltip" 
 		tal:attributes="title python:here.getZMILangStr('TIP_MULTILANG')" 
 		tal:content="python:here.getZMILangStr('TAB_LANGUAGES')">
 		Languages
 	</legend>
-	<table class="table table-sm table-striped table-bordered">
+	<table id="langs" class="table table-sm table-striped table-bordered">
 	<thead>
 	<tr>
 		<th class="meta-sort"></th>
@@ -81,8 +41,26 @@ function zmiFormSubmit(sender,d) {
 				<tal:block tal:condition="not:python:si['parent'] in langStack and not langStack[-1]==si['parent']">
 					<tal:block tal:define="dummy python:langStack.append(si['parent'])"></tal:block>
 				</tal:block>
-				<tr tal:attributes="id python:'lang%s'%'_'.join(langStack+[langId])">
-					<td class="meta-sort text-center"><input type="checkbox" name="ids:list" tal:attributes="value python:langId" tal:condition="python:langId!=here.getPrimaryLanguage()"></td>
+				<tr tal:attributes="id python:'lang%s'%'_'.join(langStack+[langId])" class="form-group">
+					<td class="meta-sort text-center">
+						<div class="btn-group" tal:condition="python:langId!=here.getPrimaryLanguage()">
+							<span class="btn btn-secondary btn-sm">
+								<input type="checkbox" name="ids:list" tal:attributes="value python:langId" />
+							</span>
+							<button class="btn btn-secondary btn-sm"
+								hx-confirm="Do you really want to delete this object?"
+								hx-get="manage_changeLanguages" 
+								hx-target="#zmi_manage_tabs_message"
+								hx-on:htmx:after-request="$(this).closest('tr').hide('slow',function(){$(this).closest('tr').remove()})"
+								tal:attributes="
+									hx-confirm python:here.getZMILangStr('MSG_CONFIRM_DELOBJ');
+									hx-get python:'manage_changeLanguages?btn=BTN_DELETE&target=zmi_manage_tabs_message&lang=%s&ids:list=%s'%(request.get('lang',here.getPrimaryLanguage()),langId); 
+									title python:here.getZMILangStr('BTN_DELETE')">
+								<i class="fas fa-times"></i>
+							</button>
+
+						</div>
+					</td>
 					<td><tal:block tal:content="langId">langId</tal:block></td>
 					<td><input class="form-control form-control-sm" type="text" tal:attributes="name python:'%s_label'%langId; value python:langObj['label']"></td>
 					<td>
@@ -100,17 +78,17 @@ function zmiFormSubmit(sender,d) {
 			</tal:block>
 		</tal:block>
 	</tal:block>
-	<tr class="row_insert">
-		<td class="meta-sort text-center"><span class="btn btn-add mr-1"><i class="fas fa-plus"></i></span></td>
-		<td class="language_id"><input class="form-control form-control-sm" type="text" name="language_id" /></td>
-		<td class="language_label"><input class="form-control form-control-sm" type="text" name="language_label" /></td>
+	<tr class="row_insert form-group">
+		<td class="meta-sort text-center"><span class="btn btn-secondary btn-sm btn-add mr-1 w-100"><i class="fas fa-plus"></i></span></td>
+		<td class="language_id"><input class="form-control form-control-sm" placeholder="ISO-639/2" minlength="2" maxlength="3" required="true" type="text" name="_lang_id_0" /></td>
+		<td class="language_label"><input class="form-control form-control-sm" required="true"type="text" name="_lang_label_0" /></td>
 		<td class="language_parent">
-			<select class="form-control form-control-sm" name="language_parent">
+			<select class="form-control form-control-sm" name="_lang_parent_0" required="true">
 				<option tal:repeat="lang langIds" tal:attributes="value lang" tal:content="python:here.getLanguageLabel(lang)">lang</option>
 			</select>
 		</td>
 		<td>
-			<select class="form-control form-control-sm" name="language_manage">
+			<select class="form-control form-control-sm" name="_lang_manage_0" required="true">
 				<option tal:repeat="manage_lang python:here.get_manage_langs()" tal:attributes="value manage_lang" tal:content="python:here.getLangStr('LANG',manage_lang)">manage_lang</option>
 			</select>
 		</td>
@@ -118,19 +96,21 @@ function zmiFormSubmit(sender,d) {
 	</tbody>
 	</table>
 	<div class="controls save">
-		<button title="Save Language Definitions" name="btn" type="submit" class="btn btn-primary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+		<button title="Save Language Definitions" name="btn" type="submit" class="btn btn-secondary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 		<button title="Delete Selected Language Definitions" name="btn" type="submit" class="btn btn-secondary" value="BTN_DELETE" tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</button>
 	</div>
 </form>
 
 <form class="form-horizontal card" id="changeLangDictForm" action="manage_changeLangDictProperties" method="post" enctype="multipart/form-data">
-	<input type="hidden" name="lang" tal:attributes="value request/lang">
+	<input type="hidden" name="target" value="languages" />
+	<input type="hidden" name="lang" tal:attributes="value request/lang" />
 	<legend class="has_tooltip"
 		tal:attributes="title python:here.getZMILangStr('TIP_MULTILANGDICT')"
 		tal:content="python:here.getZMILangStr('ATTR_DICTIONARY')">
 		Dictionary
 	</legend>
-	<table class="table table-sm table-striped table-bordered table-hover table-responsive"
+	<table id="lang_dict" 
+		class="table table-sm table-striped table-bordered table-hover table-responsive"
 		tal:attributes="class python:'table table-sm table-striped table-bordered table-hover %s'%(len(langIds)>6 and 'table-responsive' or '')">
 	<thead>
 	<tr>
@@ -153,21 +133,55 @@ function zmiFormSubmit(sender,d) {
 	</tr>
 	</thead>
 	<tbody>
-	<tr tal:repeat="langDict python:here.getLangDict()">
-		<td class="meta-sort text-center"><input type="checkbox" name="ids:list" tal:attributes="value python:langDict['key']; disabled python:['','disabled'][int(len(langDict.get('acquired',[]))>0)]"/></td>
+	<tr tal:repeat="langDict python:here.getLangDict()" class="form-group"
+		tal:attributes="id python:'langkey_%s'%(langDict['key'])">
+		<td class="meta-sort text-center">
+			<div class="btn-group">
+				<span class="btn btn-secondary btn-sm">
+					<input type="checkbox" name="ids:list" 
+						tal:attributes="
+							value python:langDict['key']; 
+							disabled python:['','disabled'][int(len(langDict.get('acquired',[]))>0)]"/>
+				</span>
+				<button class="btn btn-secondary btn-sm"
+					hx-confirm="Do you really want to delete this object?"
+					hx-get="manage_changeLangDictProperties" 
+					hx-target="#zmi_manage_tabs_message"
+					hx-on:htmx:after-request="$(this).closest('tr').hide('slow',function(){$(this).closest('tr').remove()})"
+					tal:attributes="
+						hx-confirm python:here.getZMILangStr('MSG_CONFIRM_DELOBJ');
+						hx-get python:'manage_changeLangDictProperties?btn=BTN_DELETE&target=zmi_manage_tabs_message&lang=%s&ids:list=%s'%(request.get('lang',here.getPrimaryLanguage()),langDict['key']); 
+						title python:here.getZMILangStr('BTN_DELETE')">
+					<i class="fas fa-times"></i>
+				</button>
+			</div>
+		</td>
 		<td tal:attributes="title python:'getLangStr(\'%s\',lang)'%langDict['key']" tal:content="python:langDict['key']">Key</td>
 		<td tal:repeat="langId langIds"><div class="single-line"><textarea class="form-control form-control-sm" tal:attributes="name python:'%s_value_%s'%(langDict['key'],langId); disabled python:['','disabled'][int(langId in langDict.get('acquired',[]))]" tal:content="python:langDict.get(langId,'')"></textarea></div></td>
 	</tr>
-	<tr class="row_insert">
-		<td class="meta-sort text-center"><span class="btn btn-add mr-1"><i class="fas fa-plus"></i></span></td>
-		<td><input class="form-control form-control-sm" type="text" name="_key" /></td>
-		<td tal:repeat="langId langIds"><div class="single-line"><textarea class="form-control form-control-sm" tal:attributes="name python:'_value_%s'%(langId)"></textarea></div></td>
+	<tr class="row_insert form-group">
+		<td class="meta-sort text-center"><span class="btn btn-secondary btn-sm btn-add mr-1 w-100"><i class="fas fa-plus"></i></span></td>
+		<td><input class="form-control form-control-sm" type="text" name="_lang_dict_key_0" /></td>
+		<td tal:repeat="langId langIds"><div class="single-line"><textarea class="form-control form-control-sm" tal:attributes="name python:'_lang_dict_value_0_%s'%(langId)"></textarea></div></td>
 	</tr>
 	</tbody>
 	</table>
 	<div class="controls save">
-		<button title="Save Dictionary"  name="btn" type="submit" class="btn btn-primary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-		<button title="Delete Selected Dictionary Terms" name="btn" type="submit" class="btn btn-secondary" value="BTN_DELETE" tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</button>
+		<button title="Save Dictionary"  name="btn" type="submit" class="btn btn-secondary" 
+			hx-trigger="click"
+			hx-post="manage_changeLangDictProperties" 
+			hx-target="body" 
+			hx-swap="outerHTML show:top"
+			hx-on:click="$ZMI.show_spinner(this)"
+			hx-on:htmx:after-request="$ZMI.reset_spinner(this)"
+			value="BTN_SAVE" 
+			tal:content="python:here.getZMILangStr('BTN_SAVE')">
+			Save
+		</button>
+		<button title="Delete Selected Dictionary Terms" name="btn" type="submit" class="btn btn-secondary" 
+			value="BTN_DELETE" tal:content="python:here.getZMILangStr('BTN_DELETE')">
+			Delete
+		</button>
 	</div>
 </form>
 
@@ -203,6 +217,151 @@ function zmiFormSubmit(sender,d) {
 </tal:block>
 
 </div><!-- #zmi-tab -->
+
+<style>
+/* <!-- */
+	tr.row_insert > td > .btn-add {
+		width: 100%;
+		color:#333 !important;
+		padding: 4px 8px;
+	}
+	tr.row_insert > td > .btn-add:hover {
+		color:white !important;
+	}
+	tr.row_insert > td:not(.meta-sort) > * {
+		opacity:.35
+	}
+	tr.htmx-swapping td {
+		opacity: 0;
+		transition: opacity 1s ease-out;
+	}
+/* --> */
+</style>
+<script>
+// <!--
+	/**
+	 * Export xml.
+	 */
+	function zmiExportBtnClick(sender) {
+		var fm = $(sender).parents("form")[0];
+		var href = fm.action+'?lang='+getZMILang()+'&btn=BTN_EXPORT';
+		$('input[name="ids:list"]:checked',fm).each(function(){
+				href += '&'+$(this).attr("name")+'='+$(this).val();
+			});
+		window.open(href);
+		return false;
+	}
+
+	/**
+	 * Submit form with given parameters.
+	 */
+	function zmiFormSubmit(sender,d) {
+		var $fm = $(sender).closest("form");
+		if ('btn' in d) {
+			if (d['btn']=='BTN_DELETE' && 'ids:list' in d) {
+				for (var i in d['ids:list']) {
+					$('tr#lang'+i,$fm).remove();
+					$('input[name="ids:list"]',$(sender).closest("tr")).each(function(){
+						$fm.append('<input type="hidden" name="ids:list" value="'+$(this).val()+'"/>');
+					});
+				}
+			}
+		} else {
+			var html = '';
+			for (var i in d) {
+				$('input[name="' + i + '"]',$fm).remove();
+				html += '<input type="hidden" name="' + i + '" value="' + d[i] +'"/>';
+			}
+			$fm
+				.append(html)
+				.submit();
+		}
+	}
+
+	/**
+	 * On load:
+	 */
+	$(function(){
+		// New field set: initially disable inputs
+		$('input, textarea, select','tr.row_insert').attr('disabled',true);
+
+		// ++++++++++++
+		// Add rows to tables #meta_properties on button click
+		// ++++++++++++
+		let new_row_counter = 0;
+
+		// Get number of language terms
+		let lang_dict = ZMI.prototype.getCachedValue('get_lang_dict');
+		let lang_count = 0;
+		if ( lang_dict!='undefined' ) {
+			if ( typeof lang_dict == 'object' ) {
+				lang_count = Object.keys(ZMI.prototype.getCachedValue('get_lang_dict')).length
+			} else {
+				lang_count = Object.keys(JSON.parse(ZMI.prototype.getCachedValue('get_lang_dict'))).length
+			}
+		};
+
+		// Add click event function to add-buttons
+		$(".row_insert .btn-add").click(function(){
+			new_row_counter++;
+			// New field set: clone with enabled inputs
+			$('input, textarea, select','tr.row_insert').attr('disabled',false);
+			
+			// Where to insert the new row 
+			let $where_insert = $(this).closest('tr');
+
+			// Set variables
+			let table_id = $(this).closest('table').attr('id'); // meta_properties or meta_languages
+			let new_row_name = `new_row_${table_id}_${new_row_counter}`;
+			let old_id_html = '';
+			let sort_options_html = '';
+			let sort_options_len = 0;
+			let new_btn_html = `
+				<span class="btn btn-secondary btn-sm mr-1 w-100" style="color:#999" 
+					onclick="javascript:$(this).closest('tr').hide('slow',function(){$(this).closest('tr').remove()})">
+					<i class="fas fa-undo-alt"></i>
+				</span>
+			`;
+		
+			// Clone(true) to get a deep copy including select options
+			let $new_row = $where_insert.clone(true);
+
+			// Process table cells of the clone like "old" row
+			$new_row.find('td').each(function() {
+				$(this).find('input,select,textarea').each(function() {
+					let tagname = $(this).prop('tagName');
+					let defname = $(this).attr('name');
+					let deftype = $(this).attr('type');
+					let counter = table_id == 'lang_dict' ? lang_count + new_row_counter : new_row_counter;
+					let newname = $(this).attr('name').replace('_0', '_' + counter);
+					let newval  = 'new'+counter;
+					$(this).attr('name',newname);
+					if (!('select'==tagname.toLowerCase())) {
+						$(this).val(newval);
+					}
+				});
+			});
+
+			// Process td:first-child of the clone
+			$new_row.find('td.meta-sort').html(new_btn_html);
+			$new_row.removeClass('row_insert').attr('id',new_row_name);
+
+			// Insert the new row
+			$new_row.insertBefore($where_insert);
+			// Set form as modified
+			$ZMI.set_form_modified($('input',$new_row));
+			// Reset the clone template
+			$where_insert.find('input:not([type="checkbox"]),textarea').each(function() {
+				$(this).val(undefined);
+			});
+			// New field set: reset to disabled inputs
+			$('input, textarea, select','tr.row_insert').attr('disabled',true);
+		});
+
+	});
+// -->
+</script>
+
 <footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 </body>
 </html>

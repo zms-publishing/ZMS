@@ -32,18 +32,18 @@ from Products.zms import zopeutil
 from Products.zms import _blobfields
 from Products.zms import _globals
 
-
 # ------------------------------------------------------------------------------
 #  getobjattrdefault
 # ------------------------------------------------------------------------------
 def getobjattrdefault(obj, obj_attr, lang):
+    request = obj.get('REQUEST', _globals.headless_http_request)
     v = None
     datatype = obj_attr['datatype_key']
     default = None
     if datatype in range(len(_globals.datatype_map)):
       default = obj_attr.get('default',_globals.datatype_map[datatype][1])
     # Default inactive in untranslated languages.
-    if obj_attr['id'] == 'active' and len(obj.getLangIds()) > 1 and not obj.isTranslated(lang,obj.REQUEST):
+    if obj_attr['id'] == 'active' and len(obj.getLangIds()) > 1 and not obj.isTranslated(lang,request):
         default = 0
     if default is not None:
       if datatype in _globals.DT_DATETIMES and default == '{now}':
@@ -467,7 +467,7 @@ class ObjAttrs(object):
         if isinstance(value,str):
           value = None
         elif value is not None:
-          value = value._createCopy( self, obj_attr['id'])
+          value = value._createCopy( self, obj_attr['id'], lang)
           value.lang = lang
       
       #-- DateTime-Fields.
@@ -595,7 +595,8 @@ class ObjAttrs(object):
     #  attr({key0:value0,...,keyN:valueN}) -> setObjProperty(key0,value0),...
     # --------------------------------------------------------------------------
     def attr(self, *args, **kwargs):
-      request = kwargs.get('request',kwargs.get('REQUEST',self.REQUEST))
+      req = self.get('REQUEST', _globals.headless_http_request)
+      request = kwargs.get('request',kwargs.get('REQUEST',req))
       if len(args) == 1 and isinstance(args[0], str):
         return self.getObjProperty( args[0], request, kwargs)
       elif len(args) == 2:
@@ -609,8 +610,8 @@ class ObjAttrs(object):
     #  ObjAttrs.evalMetaobjAttr
     # --------------------------------------------------------------------------
     def evalMetaobjAttr(self, *args, **kwargs):
+      request = self.get('REQUEST', _globals.headless_http_request)
       root = self
-      request = self.REQUEST
       key = args[0]
       id = standard.nvl(request.get('ZMS_INSERT'), self.meta_id)
       if key.find('.')>0:
@@ -693,7 +694,7 @@ class ObjAttrs(object):
                 value = tuple(value[:8]) + (0,)
               dt = datetime.datetime.fromtimestamp(time.mktime(value) - (dst * 3600))
               b = b and now > dt
-              if dt > now and self.REQUEST.get('ZMS_CACHE_EXPIRE_DATETIME', dt) >= dt:
+              if dt > now and self.get('REQUEST') and self.REQUEST.get('ZMS_CACHE_EXPIRE_DATETIME', dt) >= dt:
                 self.REQUEST.set('ZMS_CACHE_EXPIRE_DATETIME',dt)
           # End time.
           elif key == 'attr_active_end':
@@ -703,7 +704,7 @@ class ObjAttrs(object):
                 value = tuple(value[:8]) + (0,)
               dt = datetime.datetime.fromtimestamp(time.mktime(value) - (dst * 3600))
               b = b and dt > now
-              if dt > now and self.REQUEST.get('ZMS_CACHE_EXPIRE_DATETIME', dt) >= dt:
+              if dt > now and self.get('REQUEST') and self.REQUEST.get('ZMS_CACHE_EXPIRE_DATETIME', dt) >= dt:
                 self.REQUEST.set('ZMS_CACHE_EXPIRE_DATETIME',dt)
           if not b: break
       return b
@@ -723,14 +724,17 @@ class ObjAttrs(object):
     def formatObjAttrValue(self, obj_attr, v, lang=None):
       
       #-- DATATYPE
-      datatype = obj_attr.get('datatype_key', _globals.DT_UNKNOWN)
+      try:
+        datatype = obj_attr.get('datatype_key', _globals.DT_UNKNOWN)
+      except:
+        datatype = _globals.DT_UNKNOWN
       
       #-- VALUE
       if isinstance(v, str):
         chars = ''.join([ x for x in string.whitespace if x != '\t'])
         v = v.strip(chars)
       # Retrieve v from options.
-      if 'options' in obj_attr:
+      if obj_attr is not None and 'options' in obj_attr:
         options = obj_attr['options']
         try: 
           i = options.index(int(v))

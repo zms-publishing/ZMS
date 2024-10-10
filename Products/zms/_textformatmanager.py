@@ -19,7 +19,7 @@
 # Product Imports.
 from Products.zms import standard
 from Products.zms import _globals
-
+from zope.globalrequest import getRequest
 
 class TextFormatObject(object):
 
@@ -29,7 +29,7 @@ class TextFormatObject(object):
   #  Returns section-number.
   # ----------------------------------------------------------------------------
   def getSecNo( self):
-    request = self.get('REQUEST', _globals.headless_http_request)
+    request = getattr(self, 'REQUEST', getRequest())
     sec_no = ''
     #-- [ReqBuff]: Fetch buffered value from Http-Request.
     parentNode = self.getParentNode()

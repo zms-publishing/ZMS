@@ -47,6 +47,7 @@ from Products.zms import ZMSItem
 from Products.zms import ZMSWorkflowItem
 from Products.zms import standard
 from Products.zms import zopeutil
+from zope.globalrequest import getRequest
 
 
 __all__= ['ZMSObject']
@@ -476,7 +477,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  Returns 1 if current object is visible.
     # --------------------------------------------------------------------------
     def isVisible(self, REQUEST):
-      request = self.get('REQUEST', _globals.headless_http_request)
+      request = getattr(self, 'REQUEST', getRequest())
       REQUEST = standard.nvl(REQUEST, request)
       lang = standard.nvl(REQUEST.get('lang'), self.getPrimaryLanguage())
       visible = True
@@ -925,7 +926,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         abs_url = args[1]['abs_url']
         forced = args[1]['forced']
         if context.getConfProperty('ZMSObject.getAbsoluteUrlInContext', False):
-          if context.getHome() != self.getHome():
+          if context.getHome() != context.getHome():
             protocol = context.getConfProperty('ASP.protocol', 'http')
             domain = context.getConfProperty('ASP.ip_or_domain', None)
             if domain:

@@ -48,7 +48,6 @@ from Products.zms import ZMSWorkflowItem
 from Products.zms import standard
 from Products.zms import zopeutil
 
-
 __all__= ['ZMSObject']
 
 
@@ -476,8 +475,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  Returns 1 if current object is visible.
     # --------------------------------------------------------------------------
     def isVisible(self, REQUEST):
-      request = self.get('REQUEST', standard.create_headless_http_request())
-      REQUEST = standard.nvl(REQUEST, request)
+      REQUEST = standard.nvl(REQUEST, self.REQUEST)
       lang = standard.nvl(REQUEST.get('lang'), self.getPrimaryLanguage())
       visible = True
       visible = visible and self.isTranslated(lang, REQUEST) # Object is translated.

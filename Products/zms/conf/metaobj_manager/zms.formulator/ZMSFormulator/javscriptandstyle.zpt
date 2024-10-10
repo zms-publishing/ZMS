@@ -1,5 +1,14 @@
 <script type="text/javascript" charset="UTF-8" src="/++resource++zmi/ace.ajax.org/ace.js"></script>
 <tal:block tal:condition="python:request.get('ZMS_INSERT',None) is None">
+<script type="text/javascript" 
+  tal:define="lang python:request.get('lang',context.getPrimaryLanguage());
+  jstmpl python:'''
+    var text1_name='optionsJS_%s'\x3B
+    var text2_name='onReadyJS_%s'\x3B
+    var text3_name='onChangeJS_%s'\x3B
+  '''" tal:content="python:jstmpl%(lang,lang,lang)">
+</script>
+  
 <script type="text/javascript">
 //<!--
 $ZMI.registerReady(function() {
@@ -92,7 +101,8 @@ $ZMI.registerReady(function() {
     }
   });
   var edit1 = ace.edit("ACE_Editor1");
-  var text1 = $('textarea#optionsJS_'+getZMILang()).hide();    
+  // var text1 = $('textarea#optionsJS_'+getZMILang()).hide();
+  var text1 = $('textarea#'+text1_name).hide(); 
   edit1.setTheme("ace/theme/chrome");
   edit1.getSession().setMode("ace/mode/javascript");
   edit1.getSession().setValue(text1.val());
@@ -100,7 +110,8 @@ $ZMI.registerReady(function() {
     text1.val(edit1.getSession().getValue()).change();
   });
   var edit2 = ace.edit("ACE_Editor2");
-  var text2 = $('textarea#onReadyJS_'+getZMILang()).hide();
+  // var text2 = $('textarea#onReadyJS_'+getZMILang()).hide();
+  var text2 = $('textarea#'+text2_name).hide();
   edit2.setTheme("ace/theme/chrome");
   edit2.getSession().setMode("ace/mode/javascript");    
   edit2.getSession().setValue(text2.val());
@@ -108,7 +119,8 @@ $ZMI.registerReady(function() {
     text2.val(edit2.getSession().getValue()).change();
   });
   var edit3 = ace.edit("ACE_Editor3");
-  var text3 = $('textarea#onChangeJS_'+getZMILang()).hide();
+  // var text3 = $('textarea#onChangeJS_'+getZMILang()).hide();
+  var text3 = $('textarea#'+text3_name).hide();
   edit3.setTheme("ace/theme/chrome");
   edit3.getSession().setMode("ace/mode/javascript");    
   edit3.getSession().setValue(text3.val());
@@ -120,39 +132,43 @@ $ZMI.registerReady(function() {
 </script>
 </tal:block>
 <style>
-.ACE_Editor {
-  position: relative;
-  height: 14em;
-}
-#ACE_Editor1, #ACE_Editor2, #ACE_Editor3 {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border: 1px solid #ddd;
-}
-.ace_editor.fullScreen {
-  height: 90% !important;
-  width: 90% !important;
-  border: 1px solid #000 !important;
-  margin: 0;
-  padding: 1em !important;
-  position: fixed !important;
-  top: 50px;
-  bottom: 0;
-  left: 50px;
-  right: 0;
-  z-index: 100;
-  overflow: hidden;
-}
-button.btn-default {
-  background-color: #EAEDEF;
-}
+/*<!--*/
+  .ACE_Editor {
+    position: relative;
+    height: 14em;
+  }
+  #ACE_Editor1, #ACE_Editor2, #ACE_Editor3 {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 1px solid #ddd;
+  }
+  .ace_editor.fullScreen {
+    height: 90% !important;
+    width: 90% !important;
+    border: 1px solid #000 !important;
+    margin: 0;
+    padding: 1em !important;
+    position: fixed !important;
+    top: 50px;
+    bottom: 0;
+    left: 50px;
+    right: 0;
+    z-index: 100;
+    overflow: hidden;
+  }
+  button.btn-default {
+    background-color: #EAEDEF;
+  }
+/*-->*/
 </style>
 <style tal:condition="python:request.get('ZMS_INSERT',None) is not None">
-#delimiter_Advanced, 
-#delimiter_Data,
-#form0 > div > div:nth-child(6), 
-#form0 > div > div:nth-child(8) {
-  display: none;
-}
+/*<!--*/
+  #delimiter_Advanced, 
+  #delimiter_Data,
+  #form0 > div > div:nth-child(6), 
+  #form0 > div > div:nth-child(8) {
+    display: none;
+  }
+/*-->*/
 </style>

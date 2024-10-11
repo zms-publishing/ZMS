@@ -29,6 +29,9 @@ opensearch-py
 rich
 asyncio
 
+# SimpleSearch
+lunr
+
 # PAS
 Products.PluggableAuthService
 Products.PluginRegistry

@@ -186,17 +186,17 @@
 									><i class="fas fa-check-square" tal:attributes="class python:'far fa-%ssquare'%(elValue and 'check-' or '')"></i>
 								</tal:block
 								><tal:block tal:condition="python:elType in ['image']"
-									><tal:block tal:condition="python:elValue is not None and here.operator_gettype(elValue) is not str"
+									><tal:block tal:condition="python:elValue is not None and standard.operator_gettype(elValue) is not str"
 										><a tal:attributes="href python:elValue.getHref(request)" class="thumbnail" target="_blank"><img tal:attributes="src python:elValue.getHref(request)"/></a>
 									</tal:block
-									><tal:block tal:condition="python:elValue is not None and here.operator_gettype(elValue) is str">
+									><tal:block tal:condition="python:elValue is not None and standard.operator_gettype(elValue) is str">
 										<img src="data:image/png;base64," tal:attributes="data-previewbase64 elValue" width="32" height="32" />
 									</tal:block
 								></tal:block
 								><tal:block tal:condition="python:elType in ['file'] and elValue is not None"
 									><i class="fas fa-download"></i> <tal:block 
 										tal:on-error="string:<!-- FILENAME-ERROR -->" 
-										tal:content="structure python:(here.operator_gettype(elValue) is not str) and elValue.getFilename() or elValue">filename</tal:block
+										tal:content="structure python:(standard.operator_gettype(elValue) is not str) and elValue.getFilename() or elValue">filename</tal:block
 								></tal:block
 								><tal:block tal:condition="python:elType in ['date','datetime','time']"
 									><tal:block tal:content="python:here.getLangFmtDate(elValue,fmt_str=('%s_fmt'%elType).upper())">elValue</tal:block

@@ -67,7 +67,7 @@
 										python:here.getObjAttrInput(fmName='form0',obj_attr=here.getObjAttr(elName),value=elValue,REQUEST=request)">
 									the control
 								</tal:block>
-								<tal:block tal:condition="python:metaObjAttr['type'] in ['image'] and elValue is not None and here.operator_gettype(elValue) is str">
+								<tal:block tal:condition="python:metaObjAttr['type'] in ['image'] and elValue is not None and standard.operator_gettype(elValue) is str">
 									<img src="data:image/png;base64," tal:attributes="data-previewbase64 elValue" width="32" height="32" />
 									<input type="hidden" tal:attributes="value elValue" />
 								</tal:block>

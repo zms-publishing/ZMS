@@ -20,7 +20,7 @@
 			 tal:content="structure caption"></caption>
 		<tal:block tal:repeat="row table">
 			<tal:block tal:condition="python:table_type==1 and row==table[0]" tal:content="structure python:'<thead>'"></tal:block>
-			<tal:block tal:condition="python:table_type==1 and row==table[1]" tal:content="structure python:'<tbody>'"></tal:block>
+			<tal:block tal:on-error="nothing" tal:condition="python:table_type==1 and row==table[1]" tal:content="structure python:'<tbody>'"></tal:block>
 			<tr>
 				<tal:block tal:repeat="column row"
 					><tal:block tal:on-error="structure string:<td>ERROR</td>"
@@ -42,7 +42,7 @@
 				</tal:block>
 			</tr>
 			<tal:block tal:condition="python:table_type==1 and row==table[0]" tal:content="structure python:'</thead>'"></tal:block>
-			<tal:block tal:condition="python:table_type==1 and row==table[-1]" tal:content="structure python:'</tbody>'"></tal:block>
+			<tal:block tal:on-error="nothing" tal:condition="python:table_type==1 and row==table[-1]" tal:content="structure python:'</tbody>'"></tal:block>
 		</tal:block>
 	</table>
 </div>

@@ -8,7 +8,10 @@
 		zmshome_url python:zmshome.absolute_url(relative=1);
 		ZMS_HOME python:zmshome_url and '/%s/'%zmshome_url or '/%s'%zmshome_url;
 		ZMS_THEME python:here.getConfProperty('ZMS.theme','');
-		ZMS_THEME python:ZMS_THEME!='' and (ZMS_THEME +'/') or '';">
+		ZMS_THEME python:ZMS_THEME!='' and (ZMS_THEME +'/') or '';
+		zmi_css python:here.getConfProperty('ZMS.added.css.zmi').replace('$ZMS_HOME/',ZMS_HOME).replace('$ZMS_THEME/',ZMS_THEME);
+		zmi_js python:here.getConfProperty('ZMS.added.js.zmi').replace('$ZMS_HOME/',ZMS_HOME).replace('$ZMS_THEME/',ZMS_THEME);
+		has_added_folder python:standard.operator_getattr(zmshome.common,'added',False) and True or False;">
 	<title tal:content="python:'ZMS | %s | %s'%(here.getTitlealt(request),request['lang'])">the title</title>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes" />
@@ -20,11 +23,9 @@
 			href python:href.replace('$ZMS_HOME/',ZMS_HOME).replace('$ZMS_THEME/',ZMS_THEME)" />
 	</tal:block>
 	<link type="text/css" rel="stylesheet" 
-		tal:define="
-			added_css_zmi python:here.getConfProperty('ZMS.added.css.zmi','common/added/zmi.css');
-			added_css_zmi_href python:added_css_zmi.replace('$ZMS_HOME/',ZMS_HOME).replace('$ZMS_THEME/',ZMS_THEME);"
-		tal:condition="python:added_css_zmi.find('.css')>-1"
-		tal:attributes="href added_css_zmi_href" />
+		tal:define="use_added_folder python:zmi_css.find('common/added')>-1"
+		tal:condition="python:(has_added_folder==use_added_folder) and zmi_css.find('.css')>-1"
+		tal:attributes="href zmi_css"/>
 	<tal:block tal:repeat="src python:here.getConfProperty('plugins.zmi.js').split(',')"
 		><script type="text/javascript" charset="UTF-8" tal:attributes="src src"></script>
 	</tal:block>
@@ -33,11 +34,9 @@
 		><script type="text/javascript" charset="UTF-8" tal:condition="src" tal:attributes="src src"></script>
 	</tal:block>
 	<script type="text/javascript" charset="UTF-8" defer="defer" 
-		tal:define="
-			added_js_zmi python:here.getConfProperty('ZMS.added.js.zmi','common/added/zmi.js');
-			added_js_zmi_href python:added_js_zmi.replace('$ZMS_HOME/',ZMS_HOME).replace('$ZMS_THEME/',ZMS_THEME);"
-		tal:condition="python:added_js_zmi.find('.js')>-1"
-		tal:attributes="src added_js_zmi_href"></script>
+		tal:define="use_added_folder python:zmi_js.find('common/added')>-1"
+		tal:condition="python:(has_added_folder==use_added_folder) and zmi_js.find('.js')>-1"
+		tal:attributes="src zmi_js"></script>
 	<tal:block tal:condition="python:not standard.get_session_value(here,'did_update_userdata') and 'Manager' not in request.get('AUTHENTICATED_USER').getRoles()">
 		<tal:block tal:condition="python:here.getUserAttr(request['AUTHENTICATED_USER'],'forceChangePassword',0)==1">
 			<script type="text/javascript">$(function(){$ZMI.forceChangePassword()});</script>

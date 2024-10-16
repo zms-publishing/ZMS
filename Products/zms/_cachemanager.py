@@ -17,9 +17,8 @@
 ################################################################################
 
 # Imports.
-from Products.zms import _globals
-
-headless_http_request = _globals.headless_http_request
+from Products.zms import standard
+from zope.globalrequest import getRequest
 
 class Buff(object):
   pass
@@ -45,7 +44,7 @@ class ReqBuff(object):
     #  Clear buffered values from Http-Request.
     # --------------------------------------------------------------------------
     def clearReqBuff(self, prefix='', REQUEST=None):
-      request = self.get('REQUEST', headless_http_request )
+      request = getattr(self, 'REQUEST', getRequest())
       buff = request.get('__buff__', Buff())
       reqBuffId = self.getReqBuffId(prefix)
       if len(prefix) > 0:
@@ -62,7 +61,7 @@ class ReqBuff(object):
     #  @throws Exception
     # --------------------------------------------------------------------------
     def fetchReqBuff(self, key, REQUEST=None):
-      request = self.get('REQUEST', headless_http_request )
+      request = getattr(self, 'REQUEST', getRequest())
       buff = request['__buff__']
       reqBuffId = self.getReqBuffId(key)
       return getattr(buff, reqBuffId)
@@ -73,7 +72,7 @@ class ReqBuff(object):
     #  Returns value and stores it in buffer of Http-Request.
     # --------------------------------------------------------------------------
     def storeReqBuff(self, key, value, REQUEST=None):
-      request = self.get('REQUEST', headless_http_request )
+      request = getattr(self, 'REQUEST', getRequest())
       buff = request.get('__buff__', None)
       if buff is None:
         buff = Buff()

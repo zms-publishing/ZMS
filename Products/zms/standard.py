@@ -32,6 +32,7 @@ from App.config import getConfiguration
 from DateTime.DateTime import DateTime
 from zope.event import notify
 from zope.lifecycleevent import ObjectModifiedEvent
+from zope.globalrequest import getRequest
 import base64
 import cgi
 import copy
@@ -860,7 +861,7 @@ def triggerEvent(context, *args, **kwargs):
   """
   Hook for trigger of custom event (if there is one)
   """
-  request = context.get('REQUEST', _globals.headless_http_request)
+  request = getattr(context, 'REQUEST', getRequest())
   l = []
   name = args[0]
   root = context.getRootElement()
@@ -2367,7 +2368,7 @@ def dt_tal(context, text, options={}):
   pt = StaticPageTemplateFile(filename='None')
   pt.setText(text)
   pt.setEnv(context, options)
-  request = context.get('REQUEST', _globals.headless_http_request)
+  request = getattr(context, 'REQUEST', getRequest())
   rendered = pt.pt_render(extra_context={'here':context,'request':request})
   return rendered
 

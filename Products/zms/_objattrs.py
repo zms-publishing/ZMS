@@ -31,12 +31,13 @@ from Products.zms import standard
 from Products.zms import zopeutil
 from Products.zms import _blobfields
 from Products.zms import _globals
+from zope.globalrequest import getRequest
 
 # ------------------------------------------------------------------------------
 #  getobjattrdefault
 # ------------------------------------------------------------------------------
 def getobjattrdefault(obj, obj_attr, lang):
-    request = obj.get('REQUEST', _globals.headless_http_request)
+    request = getattr(obj, 'REQUEST', getRequest())
     v = None
     datatype = obj_attr['datatype_key']
     default = None
@@ -595,7 +596,7 @@ class ObjAttrs(object):
     #  attr({key0:value0,...,keyN:valueN}) -> setObjProperty(key0,value0),...
     # --------------------------------------------------------------------------
     def attr(self, *args, **kwargs):
-      req = self.get('REQUEST', _globals.headless_http_request)
+      req = getattr(self, 'REQUEST', getRequest())
       request = kwargs.get('request',kwargs.get('REQUEST',req))
       if len(args) == 1 and isinstance(args[0], str):
         return self.getObjProperty( args[0], request, kwargs)
@@ -610,7 +611,7 @@ class ObjAttrs(object):
     #  ObjAttrs.evalMetaobjAttr
     # --------------------------------------------------------------------------
     def evalMetaobjAttr(self, *args, **kwargs):
-      request = self.get('REQUEST', _globals.headless_http_request)
+      request = getattr(self, 'REQUEST', getRequest())
       root = self
       key = args[0]
       id = standard.nvl(request.get('ZMS_INSERT'), self.meta_id)
@@ -694,7 +695,7 @@ class ObjAttrs(object):
                 value = tuple(value[:8]) + (0,)
               dt = datetime.datetime.fromtimestamp(time.mktime(value) - (dst * 3600))
               b = b and now > dt
-              if dt > now and self.get('REQUEST') and self.REQUEST.get('ZMS_CACHE_EXPIRE_DATETIME', dt) >= dt:
+              if dt > now and hasattr(self,'REQUEST') and self.REQUEST.get('ZMS_CACHE_EXPIRE_DATETIME', dt) >= dt:
                 self.REQUEST.set('ZMS_CACHE_EXPIRE_DATETIME',dt)
           # End time.
           elif key == 'attr_active_end':
@@ -704,7 +705,7 @@ class ObjAttrs(object):
                 value = tuple(value[:8]) + (0,)
               dt = datetime.datetime.fromtimestamp(time.mktime(value) - (dst * 3600))
               b = b and dt > now
-              if dt > now and self.get('REQUEST') and self.REQUEST.get('ZMS_CACHE_EXPIRE_DATETIME', dt) >= dt:
+              if dt > now and hasattr(self,'REQUEST') and self.REQUEST.get('ZMS_CACHE_EXPIRE_DATETIME', dt) >= dt:
                 self.REQUEST.set('ZMS_CACHE_EXPIRE_DATETIME',dt)
           if not b: break
       return b

@@ -550,7 +550,7 @@ $ZMI.registerReady(function(){
 	$ZMI.setCursorAuto("EO bootstrap.plugin.zmi");
 
 	// Set Save-Button Behaviour: Menu Lock
-	$('#menulock').val(JSON.parse($ZMILocalStorageAPI.get('ZMS.menulock',0)));
+	$('#menulock').val(+JSON.parse($ZMILocalStorageAPI.get('ZMS.menulock',0)));
 
 	// ZMSLightbox
 	$('a.zmslightbox, a.fancybox')

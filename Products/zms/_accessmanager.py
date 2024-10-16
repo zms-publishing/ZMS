@@ -109,6 +109,10 @@ def updateVersion(root):
     if root.getConfProperty('ZMS.security.build', 0) == 3:
       root.setConfProperty('ZMS.security.build', 4)
       root.initRoleDefs()
+    # View management screens (ii)
+    if root.getConfProperty('ZMS.security.build', 0) == 4:
+      root.setConfProperty('ZMS.security.build', 5)
+      root.synchronizeRolesAccess()
 
 # ------------------------------------------------------------------------------
 #  _accessmanager.user_folder_meta_types:

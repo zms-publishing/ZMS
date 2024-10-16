@@ -119,6 +119,10 @@
 				</div>
 			</li><!-- .dropdown -->
 			<tal:block tal:condition="python: here.getTrashcan().getId()!=here.getId()">
+				<tal:block
+				  tal:condition="python:len([x for x in zmscontext.getAbsoluteHome().objectValues() if x.id == 'zmi_body_header_custom'])"
+					metal:use-macro="container/zmi_body_header_custom/macros/menus">
+				</tal:block>
 				<li class="view_preview">
 					<a target="_blank" tal:attributes="href python:'preview_html?lang=%s&preview=preview'%request['lang']">
 						<i class="far fa-eye"></i>

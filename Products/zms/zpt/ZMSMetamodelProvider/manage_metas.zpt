@@ -202,21 +202,6 @@
 
 </div><!-- #zmi-tab -->
 
-<style>
-/* <!-- */
-	tr.row_insert > td > .btn-add {
-		width: 100%;
-		color:#333 !important;
-		padding: 4px 8px;
-	}
-	tr.row_insert > td > .btn-add:hover {
-		color:white !important;
-	}
-	tr.row_insert > td:not(.meta-sort) > * {
-		opacity:.35
-	}
-/* --> */
-</style>
 <script>
 // <!--
 

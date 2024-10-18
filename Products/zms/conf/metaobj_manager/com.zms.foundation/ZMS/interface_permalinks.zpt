@@ -25,21 +25,6 @@
 		</tbody>
 	</table>
 </div>
-<style>
-/* <!-- */
-	tr.row_insert > td > .btn-add {
-		width: 100%;
-		color:#333 !important;
-	}
-	tr.row_insert > td > .btn-add:hover {
-		color:white !important;
-	}
-	tr.row_insert > td:not(.meta-sort) > * {
-		opacity:.35
-	}
-/* --> */
-</style>
-
 <script>
 // <!--
 	/**

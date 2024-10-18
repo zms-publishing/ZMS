@@ -6,7 +6,7 @@
 		<table class="table table-bordered m-0">
 			<tbody>
 			<tr class="row_insert bg-light">
-				<td class="meta-sort"><span class="btn btn-secondary btn-add"><i class="fas fa-plus"></i></td>
+				<td class="meta-sort"><span class="btn btn-secondary btn-add" style="padding:.375rem .75rem"><i class="fas fa-plus"></i></td>
 				<td class="meta-label"><input class="form-control" name="links_label__" placeholder="Enter Label..."/>
 				<td class="meta-url"><input class="form-control url-input" name="links_url__" placeholder="Select Url..."/>
 			</tr>
@@ -15,113 +15,114 @@
 	</div>
 </div>
 <script>
-	$(function() {
-			$("div[id^='tr_links_links']").hide();
-			var links = [];
-			var $table = $("#tr_links_interface0 table");
-			var xml = $.parseXML($("textarea[id^='links_links']").val());
-			var $xml = $(xml);
-			$("list > item > dictionary",$xml).each(function() {
-				var record = {};
-				$("item",this).each(function() {
-						var $item = $(this);
-						record[$item.attr("key")] = $item.text();
-					});
+//<!--
+	$(document).ready(function() {
+		// console.log('Render tr_links_links');
+		$("div[id^='tr_links_links']").hide();
+		var links = [];
+		var $table = $("#tr_links_interface0 table");
+		var xml = $.parseXML($("textarea[id^='links_links']").val());
+		var $xml = $(xml);
+		$("list > item > dictionary",$xml).each(function() {
+			var record = {};
+			$("item",this).each(function() {
+				var $item = $(this);
+				record[$item.attr("key")] = $item.text();
+			});
+			links.push(record);
+		});
+		const refreshData = function() {
+			var xml = '';
+			xml += '<list>\n';
+			for (var i=0; i < links.length; i++) {
+				var record = links[i];
+				xml += '<item type="dict">\n';
+				xml += '<dictionary>\n';
+				for (var k in record) {
+					xml += '<item key="'+k+'"><![CDATA['+record[k]+']]></item>\n';
+				}
+				xml += '</dictionary>\n';
+				xml += '</item>\n';
+			}
+			xml += '</list>';
+			$("textarea[id^='links_links']").val(xml);
+		};
+		const refreshLinks = function() {
+			links = [];
+			$table = $("#tr_links_interface0 table");
+			$("tr.url-inputs",$table).each(function() {
+				var $tr = $(this);
+				var record = {url:$("input[name^='links_url_']",$tr).val(),label:$("input[name^='links_label_']",$tr).val()};
 				links.push(record);
 			});
-			const refreshData = function() {
-				var xml = '';
-				xml += '<list>\n';
-				for (var i=0; i < links.length; i++) {
-					var record = links[i];
-					xml += '<item type="dict">\n';
-					xml += '<dictionary>\n';
-					for (var k in record) {
-						xml += '<item key="'+k+'"><![CDATA['+record[k]+']]></item>\n';
-					}
-					xml += '</dictionary>\n';
-					xml += '</item>\n';
+			refreshData();
+		}
+		const refreshView = function() {
+			$("tr:not(:last)",$table).remove();
+			var $last = ("tr:last",$table);
+			var html = '';
+			for (var i=0; i < links.length; i++) {
+				var record = links[i];
+				html += '<tr class="url-inputs">\n';
+				html += '<td class="meta-sort">\n';
+				html += '<div class="input-group">\n';
+				html += '<select class="zmi-sort">\n';
+				for (var j=0; j < links.length; j++) {
+					html += '<option value="'+j+'"' + (j==i?' selected="selected"':'') + '>'+(j+1)+'<'+'/option>\n';
 				}
-				xml += '</list>';
-				$("textarea[id^='links_links']").val(xml);
-			};
-			const refreshLinks = function() {
-				links = [];
-				$table = $("#tr_links_interface0 table");
-				$("tr.url-inputs",$table).each(function() {
-						var $tr = $(this);
-						var record = {url:$("input[name^='links_url_']",$tr).val(),label:$("input[name^='links_label_']",$tr).val()};
-						links.push(record);
-					});
-				refreshData();
+				html += '</select>\n';
+				html += '<div class="input-group-append"><a class="btn btn-secondary btn-delete" href="javascript:;"><i class="fas fa-times"></i></a></div>';
+				html += '</div>\n';
+				html += '</td>\n';
+				html += '<td class="meta-label">\n';
+				html += '<input class="form-control" name="links_label_'+i+'" value="'+record.label+'">\n';
+				html += '</td>\n';
+				html += '<td class="meta-url">\n';
+				html += '<input class="form-control url-input" name="links_url_'+i+'" value="'+record.url+'">\n';
+				html += '</td>\n';
+				html += '</tr>\n';
 			}
-			const refreshView = function() {
-				$("tr:not(:last)",$table).remove();
-				var $last = ("tr:last",$table);
-				var html = '';
-				for (var i=0; i < links.length; i++) {
-					var record = links[i];
-					html += '<tr class="url-inputs">\n';
-					html += '<td class="meta-sort">\n';
-					html += '<div class="input-group input-group">\n';
-					html += '<select class="zmi-sort">\n';
-					for (var j=0; j < links.length; j++) {
-						html += '<option value="'+j+'"' + (j==i?' selected="selected"':'') + '>'+(j+1)+'<'+'/option>\n';
-					}
-					html += '</select>\n';
-					html += '<div class="input-group-append"><a class="btn btn-secondary btn-delete" href="javascript:;"><i class="fas fa-times"></i></a></div>';
-					html += '</div>\n';
-					html += '</td>\n';
-					html += '<td class="meta-label">\n';
-					html += '<input class="form-control" name="links_label_'+i+'" value="'+record.label+'">\n';
-					html += '</td>\n';
-					html += '<td class="meta-url">\n';
-					html += '<input class="form-control url-input" name="links_url_'+i+'" value="'+record.url+'">\n';
-					html += '</td>\n';
-					html += '</tr>\n';
+			$last.prepend(html);
+			// $ZMI.initUrlInput($("tr.url-inputs",$table));
+			refreshLinks();
+			$(".btn-delete",$table).click(function() {
+				if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
+					$(this).parents('tr').remove();
+					refreshLinks();
 				}
-				$last.prepend(html);
-				$ZMI.initUrlInput($("tr.url-inputs",$table));
-				refreshLinks();
-				$(".btn-delete",$table).click(function() {
-					if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
-						$(this).parents('tr').remove();
-						refreshLinks();
-					}
-				});
-				$("tr.url-inputs input",$table).change(refreshLinks);
-				refreshData();
-			};
-			refreshView();
-			$(".btn-add",$table).click(function() {
-				var $tr = $(this).parents("tr")[0];
-				if ($("input[value='']",$tr).length==0) {
-					var record = {url:$("input[name^='links_url_']",$tr).val(),label:$("input[name^='links_label_']",$tr).val()};
-					links.push(record);
-					$("input",$tr).val("").change();
-				}
-				refreshView();
 			});
-
-			// Sorting Function
-			$('#tr_links_interface0 .meta-sort select').on('change',function() {
-				var $this_row = $(this).parents('#tr_links_interface0 table tr');
-				var pos = $(this).val();
-				// console.log(pos);
-				$(this).find('option').removeAttr('selected');
-				$(this).find('option[value="' + pos + '"]').attr('selected', 'selected');
-				var $target_row = $('#tr_links_interface0 table tr')[pos];
-				if ( pos==0 ) {
-					$this_row.insertBefore($target_row);
-				} else {
-					$this_row.insertAfter($target_row);
-				};
-				// Refresh XML-List from Re-Ordered Table
-				refreshLinks();
-			})
-
+			$("tr.url-inputs input",$table).change(refreshLinks);
+			refreshData();
+		};
+		refreshView();
+		$(".btn-add",$table).click(function() {
+			var $tr = $(this).parents("tr")[0];
+			if ($("input[value='']",$tr).length==0) {
+				var record = {url:$("input[name^='links_url_']",$tr).val(),label:$("input[name^='links_label_']",$tr).val()};
+				links.push(record);
+				$("input",$tr).val("").change();
+			}
+			refreshView();
+			$ZMI.initUrlInput($("tr.url-inputs",$table));
+		});
+		// Sorting Function
+		$('#tr_links_interface0 .meta-sort select').on('change',function() {
+			var $this_row = $(this).parents('#tr_links_interface0 table tr');
+			var pos = $(this).val();
+			// console.log(pos);
+			$(this).find('option').removeAttr('selected');
+			$(this).find('option[value="' + pos + '"]').attr('selected', 'selected');
+			var $target_row = $('#tr_links_interface0 table tr')[pos];
+			if ( pos==0 ) {
+				$this_row.insertBefore($target_row);
+			} else {
+				$this_row.insertAfter($target_row);
+			};
+			// Refresh XML-List from Re-Ordered Table
+			refreshLinks();
+		})
 	});
+//-->
 </script>
-
 
 <tal:block tal:content="structure string:<!--/bt_link_list.interface0 -->"></tal:block>

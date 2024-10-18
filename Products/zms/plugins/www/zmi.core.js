@@ -92,20 +92,26 @@ $ZMI.registerReady(function(){
 				body:not(.zmi) .contentEditable.zmi-highlight:hover {
 					cursor:pointer;
 					background:unset !important;
-					box-shadow: 0 0 0 1px black;
+					box-shadow: 0 0 0 1px #07aee9;
 				}
 				body:not(.zmi) .contentEditable.zmi-highlight:hover > * {
 					transform:unset !important;
 				}
 				body:not(.zmi) .contentEditable.zmi-highlight:hover:before {
-					content:" ";
-					width:20px;
-					height:20px;
+					content:"+";
+					font:normal 1rem Arial, sans-serif;
+					color:white;
+					text-align:center;
+					line-height:1;
+					width:1rem;
+					height:1rem;
+					margin:0;
+					background-color:#07aee9;
+					display:block;
 					position:absolute;
-					background-color:black;
+					padding-right:1px;
 					z-index:10;
-					background-image: url("data:image/svg+xml;utf8,<svg width='20' height='20' viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'><circle fill='black' cx='256' cy='256' r='247.66' /><path d='m400 284c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92h-92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12z' fill='white'/></svg>");
-				}
+					}
 			</style>`;
 		$('head').append(hilight_css);
 

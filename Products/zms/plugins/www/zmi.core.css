@@ -1725,6 +1725,26 @@ table.table-sm tr.row_insert td {
 	color:#999;
 }
 
+/* Row-Insert */
+.zmi table tr.row_insert > td > .btn-add {
+	width: 100%;
+	color:#333 !important;
+	padding: 4px 8px;
+}
+.zmi table tr.row_insert > td > .btn-add:hover {
+	color:white !important;
+}
+.zmi table tr.row_insert > td:not(.meta-sort) > * {
+	opacity:.35;
+	pointer-events:none;
+}
+.zmi table tr.htmx-swapping td {
+	opacity: 0;
+	transition: opacity 1s ease-out;
+}
+.zmi table td.meta-url nav ol.breadcrumb {
+	margin:.35em 0 -0.5em;
+}
 
 /* CSS Document */
 .zmi.metas table.meta-access textarea  {

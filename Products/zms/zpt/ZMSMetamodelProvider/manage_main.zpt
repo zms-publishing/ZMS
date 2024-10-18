@@ -822,8 +822,8 @@
 	}
 
 
-	// Add Execute Button for TAL-Code-Regeneration om a ZPT-Method named standard_html
-	const zmi_code_default_btn = '<i onclick="set_zmi_code_default(event)" title=\"Replace by Default-Code-Template\" class=\"zmi-code-default fas fa-sync text-primary btn-lg mr-2 position-absolute\" style=\"cursor:pointer;right:0\"></i>';
+	// Add Execute Button for TAL-Code-Regeneration on a ZPT-Method named standard_html
+	var zmi_code_default_btn = '<i onclick="set_zmi_code_default(event)" title=\"Replace by Default-Code-Template\" class=\"zmi-code-default fas fa-sync text-primary btn-lg mr-2 position-absolute\" style=\"cursor:pointer;right:0\"></i>';
 
 	// Execute on DOM-Ready
 	$(function(){

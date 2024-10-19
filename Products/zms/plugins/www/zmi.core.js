@@ -86,9 +86,9 @@ $ZMI.registerReady(function(){
 	zmiParams['base_url'] = base_url;
 
 	// Content-Editable ////////////////////////////////////////////////////////
-	if (self.location.href.indexOf('/manage')>0 || self.location.href.indexOf('preview=preview')>0) {
+	if ( !document.getElementById('zmi_highlight_css') && ( self.location.href.indexOf('/manage')>0 || self.location.href.indexOf('preview=preview')>0 ) ) {
 		var hilight_css = `
-			<style type="text/css">
+			<style type="text/css" id="zmi_highlight_css">
 				body:not(.zmi) .contentEditable.zmi-highlight:hover {
 					cursor:pointer;
 					background:unset !important;

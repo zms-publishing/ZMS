@@ -14,14 +14,14 @@ Array.prototype.contains = function(obj) {var i,listed=false;for(i=0;i<this.leng
  */
 ZMI.prototype.get_document_element_url = function(url) {
 	let i;
-    if (url.indexOf('/content') >= 0) {
-        i = url.indexOf('/content')+'/content'.length;
+	if (url.indexOf('/content') >= 0) {
+		i = url.indexOf('/content')+'/content'.length;
 	}
-    else if (url.indexOf('://') >= 0) {
-        i = url.indexOf('://')+'://'.length;
-        i = i+url.substring(i).indexOf('/');
+	else if (url.indexOf('://') >= 0) {
+		i = url.indexOf('://')+'://'.length;
+		i = i+url.substring(i).indexOf('/');
 }
-    return url.substring(0,i);
+	return url.substring(0,i);
 }
 
 /**
@@ -30,7 +30,7 @@ ZMI.prototype.get_document_element_url = function(url) {
 ZMI.prototype.get_rest_api_url = function(url) {
 	const document_element_url = this.get_document_element_url(url);
 	const i = document_element_url.length;
-    return document_element_url+'/++rest_api'+url.substring(i);
+	return document_element_url+'/++rest_api'+url.substring(i);
 }
 
 /**
@@ -40,12 +40,11 @@ ZMI.prototype.parseURLParams = function(url) {
 	var qd = {};
 	var search = url.indexOf("?")>0?url.substring(url.indexOf("?")):"?";
 	search.substring(1).split("&").forEach(function(item) {
-				var s = item.split("="),
-					k = s[0],
-					v = s[1] && decodeURIComponent(s[1]);
-				(qd[k] = qd[k] || []).push(v);
-			}
-		);
+		var s = item.split("="),
+			k = s[0],
+			v = s[1] && decodeURIComponent(s[1]);
+		(qd[k] = qd[k] || []).push(v);
+	});
 	return qd;
 }
 
@@ -86,34 +85,37 @@ $ZMI.registerReady(function(){
 	zmiParams['base_url'] = base_url;
 
 	// Content-Editable ////////////////////////////////////////////////////////
-	if ( !document.getElementById('zmi_highlight_css') && ( self.location.href.indexOf('/manage')>0 || self.location.href.indexOf('preview=preview')>0 ) ) {
-		var hilight_css = `
-			<style type="text/css" id="zmi_highlight_css">
-				body:not(.zmi) .contentEditable.zmi-highlight:hover {
-					cursor:pointer;
-					background:unset !important;
-					box-shadow: 0 0 0 1px #07aee9;
-				}
-				body:not(.zmi) .contentEditable.zmi-highlight:hover > * {
-					transform:unset !important;
-				}
-				body:not(.zmi) .contentEditable.zmi-highlight:hover:before {
-					content:"+";
-					font:normal 1rem Arial, sans-serif;
-					color:white;
-					text-align:center;
-					line-height:1;
-					width:1rem;
-					height:1rem;
-					margin:0;
-					background-color:#07aee9;
-					display:block;
-					position:absolute;
-					padding-right:1px;
-					z-index:10;
+	if ( self.location.href.indexOf('/manage')>0 || self.location.href.indexOf('preview=preview')>0 ) {
+		
+		if (!document.getElementById('zmi_highlight_css')) {
+			var hilight_css = `
+				<style type="text/css" id="zmi_highlight_css">
+					body:not(.zmi) .contentEditable.zmi-highlight:hover {
+						cursor:pointer;
+						background:unset !important;
+						box-shadow: 0 0 0 1px #07aee9;
 					}
-			</style>`;
-		$('head').append(hilight_css);
+					body:not(.zmi) .contentEditable.zmi-highlight:hover > * {
+						transform:unset !important;
+					}
+					body:not(.zmi) .contentEditable.zmi-highlight:hover:before {
+						content:"+";
+						font:normal 1rem Arial, sans-serif;
+						color:white;
+						text-align:center;
+						line-height:1;
+						width:1rem;
+						height:1rem;
+						margin:0;
+						background-color:#07aee9;
+						display:block;
+						position:absolute;
+						padding-right:1px;
+						z-index:10;
+						}
+				</style>`;
+			$('head').append(hilight_css);
+		}
 
 		// PREVIEW CONTENTEDITABLE: It is recommended nesting the page content by an <article> element
 		var page = $('.zms-page');
@@ -229,7 +231,6 @@ ZMI.prototype.setCursorWait = function(s) {
 	}
 	zmiCursor.push(s);
 	console.log("setCursorWait[" + zmiCursor.length + "]: " + s);
-
 }
 
 ZMI.prototype.setCursorAuto = function() {
@@ -244,12 +245,12 @@ ZMI.prototype.setCursorAuto = function() {
  */
 function getZMILang() {
 	if (typeof zmiParams['lang'] == 'undefined') {
-    if (typeof zmiLangStr != "undefined") {
-      zmiParams['lang'] = zmiLangStr['lang'];
-    }
-    if (typeof zmiParams['lang'] == 'undefined') {
-      zmiParams['lang'] = 'eng';
-    }
+	if (typeof zmiLangStr != "undefined") {
+	  zmiParams['lang'] = zmiLangStr['lang'];
+	}
+	if (typeof zmiParams['lang'] == 'undefined') {
+	  zmiParams['lang'] = 'eng';
+	}
 	}
 	return zmiParams['lang'];
 }
@@ -334,13 +335,13 @@ ZMI.prototype.getReqProperty = function(key, defaultValue) {
  *  Returns base-url.
  */
 ZMI.prototype.getBaseUrl = function(key, defaultValue) {
-		var url = this.getPhysicalPath();
-		if (url.indexOf('/content/')>0 || url.slice(-8)=='/content' ) {
-			url = url.substring(0,url.indexOf('/content')+'/content'.length);
-		} else {
-			url='';
-		};
-		return url;
+	var url = this.getPhysicalPath();
+	if (url.indexOf('/content/')>0 || url.slice(-8)=='/content' ) {
+		url = url.substring(0,url.indexOf('/content')+'/content'.length);
+	} else {
+		url='';
+	};
+	return url;
 }
 
 /**

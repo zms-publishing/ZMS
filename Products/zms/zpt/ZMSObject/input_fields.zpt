@@ -312,26 +312,36 @@
 	</div><!-- .card -->
 
 	<!-- Readme: markdown formatted optional 'readme' resource attribute rendered as HTML -->
-	<div id="readme" class="modal" 
+	<div id="readme" class="modal"
 		tal:condition="readme"
 		tal:define="readme python:here.attr('readme'); 
 			readme_url python:'%s/%s.readme/manage_readme'%(here.content.metaobj_manager.absolute_url(),meta_id)"
 		tal:attributes="title python:meta_id; data-readme readme_url">
-		<script>
-		//<!--
-			$(function() {
-				$(window).on('show.bs.modal', function (event) { 
-					if ( $('#readme script').length > 0 ) {
-						$.get($('#readme').data('readme'),'',function(data) {
-							$('#readme').html(data);
-							// Needed for 1st show
-							$('#zmiModalreadme .modal-body').html(data);
-						});
-					}
+		<tal:block tal:condition="python:not isinstance(here.attr('readme'),str)">
+			<script>
+			//<!--
+				$(function() {
+					$(window).on('show.bs.modal', function (event) { 
+						if ( $('#readme script').length > 0 ) {
+							$.get($('#readme').data('readme'),'',function(data) {
+								$('#readme').html(data);
+								// Needed for 1st show
+								$('#zmiModalreadme .modal-body').html(data);
+							});
+						}
+					});
 				});
-			});
-		//-->
-		</script>
+			//-->
+			</script>
+		</tal:block>
+		<pre tal:condition="python:isinstance(here.attr('readme'),str)"
+			><span tal:define="
+				Std modules/Products.PythonScripts/standard;
+				newline_to_br nocall:Std/newline_to_br"
+				tal:replace="python:here.attr('readme')">
+				readme as constant/string
+			</span>
+		</pre>
 	</div>
 
 </tal:block>

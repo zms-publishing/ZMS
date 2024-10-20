@@ -16,9 +16,13 @@
 </div>
 <script>
 //<!--
-	$(document).ready(function() {
-		// console.log('Render tr_links_links');
-		$("div[id^='tr_links_links']").hide();
+	var done_process_bt_link_list = false;
+
+	function process_bt_link_list() {
+
+		// ######################################
+		// VARIABLES
+		// ######################################
 		var links = [];
 		var $table = $("#tr_links_interface0 table");
 		var xml = $.parseXML($("textarea[id^='links_links']").val());
@@ -31,6 +35,10 @@
 			});
 			links.push(record);
 		});
+
+		// ######################################
+		// FUNCTIONS
+		// ######################################
 		const refreshData = function() {
 			var xml = '';
 			xml += '<list>\n';
@@ -83,7 +91,7 @@
 				html += '</tr>\n';
 			}
 			$last.prepend(html);
-			// $ZMI.initUrlInput($("tr.url-inputs",$table));
+			$ZMI.initUrlInput($("tr.url-inputs",$table));
 			refreshLinks();
 			$(".btn-delete",$table).click(function() {
 				if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
@@ -94,7 +102,10 @@
 			$("tr.url-inputs input",$table).change(refreshLinks);
 			refreshData();
 		};
-		refreshView();
+
+		// ######################################
+		// HELPER: Add Button
+		// ######################################
 		$(".btn-add",$table).click(function() {
 			var $tr = $(this).parents("tr")[0];
 			if ($("input[value='']",$tr).length==0) {
@@ -105,7 +116,9 @@
 			refreshView();
 			$ZMI.initUrlInput($("tr.url-inputs",$table));
 		});
-		// Sorting Function
+		// ######################################
+		// HELPER: Sort Button
+		// ######################################
 		$('#tr_links_interface0 .meta-sort select').on('change',function() {
 			var $this_row = $(this).parents('#tr_links_interface0 table tr');
 			var pos = $(this).val();
@@ -121,7 +134,30 @@
 			// Refresh XML-List from Re-Ordered Table
 			refreshLinks();
 		})
-	});
+
+		// Execute Creating GUI
+		refreshView();
+	}
+
+	// ######################################
+	// MAIN
+	// ######################################
+	// EVENT-1: Execute on Document Ready
+	$(function() {
+		$("div[id^='tr_links_links']").hide();
+		if (!done_process_bt_link_list) {
+			process_bt_link_list();
+			done_process_bt_link_list = true;
+		}
+	})
+	// EVENT-2: Execute on HTMX/AJAX-Load
+	htmx.onLoad(function() {
+		$("div[id^='tr_links_links']").hide();
+		if (!done_process_bt_link_list) {
+			process_bt_link_list();
+			done_process_bt_link_list = true;
+		}
+	})
 //-->
 </script>
 

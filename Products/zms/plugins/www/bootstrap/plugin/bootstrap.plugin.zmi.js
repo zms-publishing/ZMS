@@ -2171,38 +2171,41 @@ function zmiExpandConfFiles(el, pattern) {
 ZMI.prototype.initUrlInput = function(context) {
 	var fn_url_input_each = function() {
 		var $input = $(this);
-		var fmName = $input.parents("form").attr("name");
-		var elName = $input.attr("name");
-		$input.wrap('<div class="input-group"></div>');
-		var $inputgroup = $input.parent();
-		if ($input.prop("disabled")) {
-			$inputgroup.append(''
+		// Add input-group only if not already present
+		if (!$input.parent().hasClass('input-group')) {
+			var fmName = $input.parents("form").attr("name");
+			var elName = $input.attr("name");
+			$input.wrap('<div class="input-group"></div>');
+			var $inputgroup = $input.parent();
+			if ($input.prop("disabled")) {
+				$inputgroup.append(''
+						+ '<div class="input-group-append">'
+							+ '<span class="input-group-text"><i class="fas fa-ban"></i></span>'
+						+ '</div>'
+					);
+			} else {
+				$inputgroup.append(''
 					+ '<div class="input-group-append">'
-						+ '<span class="input-group-text"><i class="fas fa-ban"></i></span>'
+						+ '<a class="btn btn-secondary" href="javascript:;" onclick="return zmiBrowseObjs(\'' + fmName + '\',\'' + elName + '\',getZMILang())">'
+							+ '<i class="fas fa-link"></i>'
+						+ '</a>'
 					+ '</div>'
 				);
-		} else {
-			$inputgroup.append(''
-				+ '<div class="input-group-append">'
-					+ '<a class="btn btn-secondary" href="javascript:;" onclick="return zmiBrowseObjs(\'' + fmName + '\',\'' + elName + '\',getZMILang())">'
-						+ '<i class="fas fa-link"></i>'
-					+ '</a>'
-				+ '</div>'
-			);
+			}
+			var fn = function() {
+				$inputgroup.next(".breadcrumb, [aria-label=breadcrumb]").remove();
+				$.ajax({
+					url: 'zmi_breadcrumbs_obj_path',
+					data:{lang:getZMILang(),zmi_breadcrumbs_ref_obj_path:$input.val()},
+					datatype:'text',
+					success:function(response) {
+						$inputgroup.next(".breadcrumb, [aria-label=breadcrumb]").remove();
+						$inputgroup.after(response.replace(/<!--(.*?)-->/gi,'').trim());
+					}
+				});
+			};
+			$input.change(fn).change();
 		}
-		var fn = function() {
-			$inputgroup.next(".breadcrumb, [aria-label=breadcrumb]").remove();
-			$.ajax({
-				url: 'zmi_breadcrumbs_obj_path',
-				data:{lang:getZMILang(),zmi_breadcrumbs_ref_obj_path:$input.val()},
-				datatype:'text',
-				success:function(response) {
-					$inputgroup.next(".breadcrumb, [aria-label=breadcrumb]").remove();
-					$inputgroup.after(response.replace(/<!--(.*?)-->/gi,'').trim());
-				}
-			});
-		};
-		$input.change(fn).change();
 	}
 	$("input.url-input",context).each(fn_url_input_each);
 	$("textarea.url-input",context).each(function() {

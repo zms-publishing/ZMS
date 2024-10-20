@@ -116,6 +116,10 @@
 			refreshView();
 			$ZMI.initUrlInput($("tr.url-inputs",$table));
 		});
+
+		// Execute Creating GUI
+		refreshView();
+
 		// ######################################
 		// HELPER: Sort Button
 		// ######################################
@@ -135,8 +139,6 @@
 			refreshLinks();
 		})
 
-		// Execute Creating GUI
-		refreshView();
 	}
 
 	// ######################################

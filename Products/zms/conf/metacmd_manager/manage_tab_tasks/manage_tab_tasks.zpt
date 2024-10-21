@@ -115,6 +115,9 @@
 	form.task_list .zmi-manage-main-change i {
 		line-height: 1.25;
 	}
+	.form-group.task_type .btn {
+		min-width: 8rem;
+	}
 /* --> */
 </style>
 </body>

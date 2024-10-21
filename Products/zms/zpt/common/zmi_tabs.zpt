@@ -6,6 +6,7 @@
 		active python:[
 			(x==current and not here.id+'/'+current in actions) or
 			(x==here.id+'/'+current) or
+			(x==request.get('id')) or
 			(current not in actions and current.startswith(x)) for x in actions];
 		noactive python:len([x for x in active if x])<1;"
 		><tal:block tal:repeat="i python:range(len(options))"

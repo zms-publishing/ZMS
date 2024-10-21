@@ -34,7 +34,7 @@ class manage_tab_tasks:
 	package = "com.zms.foundation.metacmd.tabs"
 
 	# Revision
-	revision = "5.0.2"
+	revision = "5.0.3"
 
 	# Roles
 	roles = ["*"]

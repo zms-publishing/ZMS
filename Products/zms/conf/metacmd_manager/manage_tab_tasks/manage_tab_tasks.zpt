@@ -10,24 +10,28 @@
 	task_ids python:['TASK_ZMSNOTE', 'TASK_UNTRANSLATED', 'TASK_CHANGED_BY_DATE','TASK_INACTIVE_NODES'];
 	global obs python:[]">
 
-<form class="form-horizontal card border-bottom" role="form" name="form0" method="get" action="manage_tab_tasks">
+<form class="form-horizontal card border-bottom" role="form" name="form0" method="get">
 	<input type="hidden" name="id" value="manage_tab_tasks" />
 	<legend><span tal:replace="python:here.getZMILangStr('TAB_TASKS')">the task-type</span></legend>
 	<div class="card-body">
-		<div class="form-group row task_type my-0">
-			<div class="col-sm-2">
-				<button type="submit" class="btn btn-secondary w-100 text-nowrap"
-					onclick="$(this).html('<i class=\'fas fa-spinner fa-spin\'></i>')"
-					tal:content="python:here.getZMILangStr('BTN_DISPLAY')">
-					Display
-				</button>
-			</div>
-			<div class="col-sm-10">
-				<select class="form-control" id="task_type" name="task_type" onchange="$('.btn.btn-secondary').removeClass('btn-secondary').addClass('btn-primary')">
+		<div class="form-group task_type">
+			<div class="input-group">
+				<select class="form-control" id="task_type" name="task_type" 
+					onchange="$('.btn.btn-secondary').removeClass('btn-secondary').addClass('btn-primary').removeAttr('disabled')">
 					<option value="" tal:content="python:'----- %s -----'%(here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_DISPLAY'))">--- ACTION_SELECT%ATTR_DISPLAY ---</option>
 					<option tal:repeat="wfActivity python:here.getWfActivities()" tal:attributes="value python:wfActivity['id']; selected python:['','selected'][int(request.get('task_type','')==wfActivity['id'])]" tal:content="python:wfActivity['name']">the name</option>
 					<option tal:repeat="id task_ids" tal:attributes="value id; selected python:['','selected'][int(request.get('task_type','')==id)]" tal:content="python:here.getZMILangStr(id)">the name</option>
 				</select>
+				<div class="input-group-append">
+					<button type="submit" class="btn btn-secondary text-nowrap" disabled="disabled"
+						onclick="$(this).html('<i class=\'fas fa-spinner fa-spin\'></i>')"
+						tal:attributes="
+							disabled python:request.get('task_type')==None and 'disabled' or None;
+							data-task_type python:request.get('task_type') and request.get('task_type') or '';"
+						tal:content="python:here.getZMILangStr('BTN_DISPLAY')">
+						Display
+					</button>
+				</div>
 			</div>
 		</div><!-- .form-group -->
 	</div>

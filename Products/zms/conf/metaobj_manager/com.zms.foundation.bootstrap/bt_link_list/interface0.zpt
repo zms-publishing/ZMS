@@ -14,12 +14,21 @@
 		</table>
 	</div>
 </div>
+<style>
+/*<!--*/
+	div[id^='tr_links_links'] { display:none; }
+/*-->*/
+</style>
 <script>
 //<!--
+	// ######################################
+	// Global variables
+	// ######################################
+	// Avoid multiple execution of the same code
 	var done_process_bt_link_list = false;
 
 	function process_bt_link_list() {
-
+		// $("div[id^='tr_links_links']").hide();
 		// ######################################
 		// VARIABLES
 		// ######################################
@@ -138,28 +147,27 @@
 			// Refresh XML-List from Re-Ordered Table
 			refreshLinks();
 		})
-
 	}
 
 	// ######################################
 	// MAIN
 	// ######################################
-	// EVENT-1: Execute on Document Ready
+	// EVENT-A: Execute on Document Ready
 	$(function() {
-		$("div[id^='tr_links_links']").hide();
 		if (!done_process_bt_link_list) {
 			process_bt_link_list();
 			done_process_bt_link_list = true;
-		}
+		};
 	})
-	// EVENT-2: Execute on HTMX/AJAX-Load
-	htmx.onLoad(function() {
-		$("div[id^='tr_links_links']").hide();
-		if (!done_process_bt_link_list) {
-			process_bt_link_list();
-			done_process_bt_link_list = true;
-		}
-	})
+
+	// EVENT-B: Execute on HTMX/AJAX-Load
+	// Cave: htmx shows formerly hidden textarea 
+	// so just use CSS instead of javascript .hide()
+	// ######################################
+	// htmx.onLoad(function() {
+	//	$("div[id^='tr_links_links']").hide();
+	// })
+
 //-->
 </script>
 

@@ -77,6 +77,8 @@ function zmiBookmarksChanged() {
 				html += '</div><!-- .dropdown-menu --> ';
 			}
 			$("#zmi-bookmarks").html(html);
+			$("#zmi-bookmarks").removeClass('has_changed').addClass('has_changed');
+
 			$("#zmi-bookmarks .close").click(function(event) {
 				event.preventDefault();
 				event.stopPropagation();
@@ -129,6 +131,7 @@ function zmiHistoryChanged() {
 				html += '</div><!-- .dropdown-menu --> ';
 			}
 			$("#zmi-history").html(html);
+			$("#zmi-history").removeClass('has_changed').addClass('has_changed');
 		});
 }
 

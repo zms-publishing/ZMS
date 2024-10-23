@@ -103,6 +103,20 @@ header .navbar-brand {
 	color: silver;
 	text-decoration:none;
 }
+@keyframes highlight_icon {
+	0% {
+		color: #96ebff;
+	}
+	68% {
+		color: #96ebff;
+	}
+	100% {
+		color: inherit;
+	}
+}
+.navbar-nav > ul > li.has_changed > a > i {
+	animation: highlight_icon .75s
+}
 .navbar-nav > ul > li > a:active, 
 .navbar-nav > ul > li > a:hover,
 .navbar-nav a.navbar-brand:hover {

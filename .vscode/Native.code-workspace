@@ -13,10 +13,6 @@
 		//  	"path": "../../ZMS3"
 		//  },
 		{
-			"name": "Python-docx",
-			"path": "/home/zope/src/zms-publishing/python-docx"
-		},
-		{
 			"name": "Zope 5",
 			"path": "/home/zope/src/zopefoundation/Zope"
 		},

@@ -38,12 +38,24 @@ if (typeof htmx != "undefined") {
 		body.classList.add('loading');
 	});
 	document.addEventListener('htmx:afterRequest', (evt) => {
-		var bodyClass = evt.detail.xhr.responseText;
-		bodyClass = bodyClass.substr(bodyClass.indexOf("<body"));
-		if ( bodyClass.indexOf("<body") > -1 ) {
-			bodyClass = bodyClass.substr(bodyClass.indexOf("class=\"")+"class=\"".length);
-			bodyClass = bodyClass.substr(0,bodyClass.indexOf("\""));
-			document.querySelector('body').classList = bodyClass;
+		var resp_text = evt.detail.xhr.responseText;
+		var parser = new DOMParser();
+		var resp_doc = parser.parseFromString(resp_text , 'text/html');
+		var newBody = resp_doc.querySelector('body');
+		// Check if response is a full HTML page or just a message
+		if ( resp_text.indexOf("<body") > -1 && newBody.childNodes[0].id!='zmi_manage_tabs_message') {
+			var currentBody = document.querySelector('body');
+			// Copy all attributes from newBody to currentBody
+			Array.from(newBody.attributes).forEach(attr => {
+				currentBody.setAttribute(attr.name, attr.value);
+			});
+			// Remove attributes that are not in newBody
+			Array.from(currentBody.attributes).forEach(attr => {
+				if (!newBody.hasAttribute(attr.name)) {
+					currentBody.removeAttribute(attr.name);
+				}
+			});
+			// Trigger Ready Event
 			$ZMI.runReady();
 		};
 		// Remove form-modified class from

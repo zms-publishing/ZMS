@@ -27,13 +27,12 @@ $ZMI.registerReady(function(){
 						$ZMILocalStorageAPI.replace(key,bookmarks);
 						var frames = window.parent.frames;
 						try {
-						for (var i = 0; i < frames.length; i++) {
-							if (frames[i] != window && typeof frames[i].zmiBookmarksChanged == "function") {
-								frames[i].zmiBookmarksChanged();
+							for (var i = 0; i < frames.length; i++) {
+								if (frames[i] != window && typeof frames[i].zmiBookmarksChanged == "function") {
+									frames[i].zmiBookmarksChanged();
+								}
 							}
-						}
-						}
-						catch (e) {
+						} catch (e) {
 						}
 					});
 					var index = bookmarks.indexOf(data_path);
@@ -58,13 +57,12 @@ $ZMI.registerReady(function(){
 			$ZMILocalStorageAPI.replace(key,history);
 			var frames = window.parent.frames;
 			try {
-			for (var i = 0; i < frames.length; i++) {
-				if (frames[i] != window && typeof frames[i].zmiHistoryChanged == "function") {
-					frames[i].zmiHistoryChanged();
+				for (var i = 0; i < frames.length; i++) {
+					if (frames[i] != window && typeof frames[i].zmiHistoryChanged == "function") {
+						frames[i].zmiHistoryChanged();
+					}
 				}
-			}
-			}
-			catch (e) {
+			} catch (e) { 
 			}
 		}
 	});

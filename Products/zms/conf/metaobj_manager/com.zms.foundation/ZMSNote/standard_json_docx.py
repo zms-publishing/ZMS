@@ -8,6 +8,12 @@
 ##title=py: JSON-DOCX Template
 ##
 # --// standard_json_docx //--
+# This Python script is used to generate a normalized JSON representation 
+# of the object's content, which is then used by ZMS-action manage_export_pydocx 
+# for exporting its content to a Word file.
+# For further details, please refer to the docstring of 
+# manage_export_pydocx.apply_standard_json_docx().
+#
 from Products.zms import standard
 request = zmscontext.REQUEST
 id = zmscontext.id

@@ -43,6 +43,12 @@
 	<section class="search-form">
 		 <form id="site-search-content" action="#" method="get" 
 		 	tal:attributes="data-root-url python:zmscontext.getRootElement().absolute_url()">
+			<input type="hidden" id="home_id" name="home_id"
+				tal:attributes="value python:zmscontext.getHome().getId()" />
+			<input type="hidden" id="multisite_search" name="multisite_search"
+				tal:attributes="value python:zmscontext.attr('multisite_search')" />
+			<input type="hidden" id="multisite_exclusions" name="multisite_exclusions"
+				tal:attributes="value python:','.join(zmscontext.attr('multisite_exclusions'))" />
 			<div class="form-group row">
 				<div class="col-md-12">
 					<div class="input-group">

@@ -38,8 +38,11 @@ def manage_collect_zope_artifacts(self, request=None):
 					newName = path
 					newType = node.meta_type
 					newCustom = zopeutil.readData(node)
-					if type(newCustom) is not str:
-						newCustom = str(newCustom)
+					# if newType in ['Page Template','Script (Python)']:
+					# 	newCustom = standard.pystr(newCustom)
+					# elif newType=='File':
+					# 	if node.content_type in ['text/html','text/x-python','text/plain','text/css','text/javascript','application/x-javascript']:
+					# 		newCustom = standard.pystr(node.data)
 					self.metaobj_manager.setMetaobjAttr(id=id, oldId=oldId, newId=newId, newName=newName, newType=newType, newCustom=newCustom)
 					i['status'].append(newId)
 				rtn.append(i)

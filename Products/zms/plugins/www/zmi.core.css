@@ -5,6 +5,42 @@ body.zmi .form-control {
 	font-family: "Helvetica Neue",Arial,sans-serif;
 	font-size: .867rem !important;
 }
+/* GUI hx-loading progress bar */
+body.zmi:not(.manage-menu) {
+	overflow-y: scroll;
+}
+body.zmi.loading {
+	overflow-x: hidden;
+}
+body.zmi.loading:after, 
+body.zmi:not(.loading).loaded:after {
+	top:0;
+	content:' ';
+	display:block;
+	position:absolute;
+	background:#00ccff;
+	height:3px;
+	z-index:10000;
+}
+body.zmi.loading:after {
+	left:0;
+	animation-name: loading;
+	animation-duration: 1.5s;
+}
+body.zmi:not(.loading).loaded:after {
+	right:0;
+	animation-name: loaded;
+	animation-duration: .75s;
+}
+@keyframes loading {
+	from {width:0vw;opacity:1}
+	to {width:100vw;opacity:.5}
+}
+@keyframes loaded {
+	from {width:100vw;opacity:1}
+	to {width:0vw;opacity:.5}
+}
+
 a {
 	color: #08c;
 }
@@ -67,6 +103,20 @@ header .navbar-brand {
 	color: silver;
 	text-decoration:none;
 }
+@keyframes icon_blink {
+	0% {
+		color: #96ebff;
+	}
+	68% {
+		color: #96ebff;
+	}
+	100% {
+		color: inherit;
+	}
+}
+.navbar-nav > ul > li.has_changed > a > i {
+	animation: icon_blink .75s
+}
 .navbar-nav > ul > li > a:active, 
 .navbar-nav > ul > li > a:hover,
 .navbar-nav a.navbar-brand:hover {
@@ -104,11 +154,12 @@ header.navbar-nav ul.navbar-nav {
 	background: #354f67;
 	flex-wrap: nowrap;
 }
-/* Show Debug Mode: ZMS.debug=1 */
-header.zmsdebug .navbar-brand .slogan {
+/* Show ZMS Mode: ZMS.mode.debug=1, ZMS.mode.maintenance=1 */
+header[data-zmsmode] .navbar-brand .slogan {
 	visibility: collapse;
 }
-header.zmsdebug .navbar-brand .product:after {
+header[data-zmsmode='debug'] .navbar-brand .product:after,
+header[data-zmsmode='maintenance'] .navbar-brand .product:after {
 	content: "DEBUG MODE";
 	font-size: .9rem;
 	color: white;
@@ -122,12 +173,20 @@ header.zmsdebug .navbar-brand .product:after {
 	top: 0;
 	left: 105px;
 }
+header[data-zmsmode='maintenance'] .navbar-brand .product:after {
+	content: "MAINTENANCE";
+	background: #dc3545;
+}
 @media (max-width: 767px) {
-	header.zmsdebug .navbar-brand .product:after {
+	header[data-zmsmode='debug'] .navbar-brand .product:after,
+	header[data-zmsmode='maintenance'] .navbar-brand .product:after {
 		content:"\F188";
 		font-family:'Font Awesome 5 Free',fontawesome;
 		font-size: 1.2rem;
 		padding: .78rem .4rem;
+	}
+	header[data-zmsmode='maintenance'] .navbar-brand .product:after {
+		content:"\F05E";
 	}
 }
 
@@ -698,6 +757,7 @@ body.zmi .zmi-sitemap span.preview_on_hover:hover::after {
 		max-width: 100%;
 		/* overflow:hidden; # hides dropdown menu as an unpleasant side effect */
 	}
+	.zmi header.navbar ul.navbar-nav li span.cache_label,
 	.zmi header.navbar ul.navbar-nav li span.language_label {
 		display: none;
 	}
@@ -1000,6 +1060,12 @@ div.zmi-manage-main-change {
 .zmi table.table td.meta-sort {
 	width:5rem;
 }
+tr[id*='new_row'] {
+	background:#d6e0e9 !important;
+}
+tr[id*='new_row'] td {
+	border-color:white !important
+}
 .zmi table.table-sm td.meta-sort div select,
 .zmi table.table-sm td.meta-sort div div a  {
 	background-color:rgba(255, 255, 255, 0);
@@ -1031,8 +1097,12 @@ div.zmi-manage-main-change {
 	border-bottom-left-radius: .25rem;
 	border-top-left-radius: .25rem;
 	padding-right: .25em;
+	padding-left: 0;
 }
-.zmi form.manage_metas table.table td.meta-sort select.zmi-sort {
+.zmi.metas.metaobj form table.table td.meta-sort select.zmi-sort {
+	width: 3em;
+}
+.zmi.metas:not(.metaobj) form table.table td.meta-sort select.zmi-sort {
 	width: 3.9em;
 }
 .zmi table.table .input-group {
@@ -1082,6 +1152,17 @@ input.btn.btn-file {
 	padding:0 1rem 1rem;
 	text-align:right;
 	width:100%;
+}
+.zmi .controls.save .btn:not(:last-child) {
+	margin-right:0.25rem;
+}
+.zmi .controls.save dialog#menulock_btn {
+	/* Hint: is dialog element for react on focus/click event */
+	display:inline-block;
+	position: relative;
+}
+.zmi .controls.save dialog#menulock_btn #menulock[value='0'] + #menulock_icon {
+	color:#bfc8cf;
 }
 .zmi .single-line {
 	width:100%;
@@ -1648,11 +1729,6 @@ table.table-sm tr.row_metadata td,
 table.table-sm tr.row_insert td {
 	background-color: #e9ecef !important
 }
-table.table-sm tr.row_metadata td .btn-add, 
-table.table-sm tr.row_insert td .btn-add {
-	padding-right: 0.4rem;
-	color: #888;
-}
 .zmi table.table-sm td.meta-id input {
 	background:rgba(53, 79, 103, 0.10);
 }
@@ -1663,6 +1739,26 @@ table.table-sm tr.row_insert td .btn-add {
 	color:#999;
 }
 
+/* Row-Insert */
+.zmi table tr.row_insert > td > .btn-add {
+	width: 100%;
+	color:#333 !important;
+	padding: 4px 8px;
+}
+.zmi table tr.row_insert > td > .btn-add:hover {
+	color:white !important;
+}
+.zmi table tr.row_insert > td:not(.meta-sort) > * {
+	opacity:.35;
+	pointer-events:none;
+}
+.zmi table tr.htmx-swapping td {
+	opacity: 0;
+	transition: opacity 1s ease-out;
+}
+.zmi table td.meta-url nav ol.breadcrumb {
+	margin:.35em 0 -0.5em;
+}
 
 /* CSS Document */
 .zmi.metas table.meta-access textarea  {
@@ -1834,7 +1930,7 @@ table.table-sm tr.row_insert td .btn-add {
 }
 
 .zmi.repository_manager_main .table.repo-changeset .zmi-helper-clickable {
-    cursor:pointer;
+	cursor:pointer;
 }
 
 
@@ -2342,17 +2438,21 @@ body.lazy_select_form footer .controls {
 	border:1px dotted #607D8B;
 }
 .zmi.config.users .list_users table.show_lastlogin tr.userName td:before {
-	content:attr(data-lastlogin);
-	display:block;
+	content: "0000-00-00";
+	display: inline-block;
 	right:0;
 	color:white;
 	font-family:monospace;
-	float:right;
 	font-size:11px;
 	position:absolute;
-	background:#333333;
-	padding:.1rem .5rem;;
+	background: #4950573d;
+	padding:.1rem .5rem;
 	margin-top:-.5rem;
+	margin-top:-.5rem;
+}
+.zmi.config.users .list_users table.show_lastlogin tr.userName td[data-lastlogin]:before {
+	background:#333333;
+	content:attr(data-lastlogin);
 }
 /* ZMSLinkElement */
 .zmi #tr_attr_ref #tr_attr_ref_type select#attr_type {
@@ -3070,3 +3170,20 @@ body.zmi.ger q {
 body.zmi.eng q {
 	quotes:'“' '”';
 }
+
+/* ############################################## */
+/* #### form-modified ########################### */
+/* ############################################## */
+.zmi .form-modified input:not(:focus), 
+.zmi .form-modified select:not(:focus), 
+.zmi .form-modified textarea:not(:focus),
+.zmi .form-modified [contenteditable]:not(:focus) {
+	background: rgb(232 240 254);
+}
+.zmi.form-modified nav .nav-tabs .nav-link.active:before {
+	content:"\25CF";
+	display:inline-block;
+	margin-right:.35em;
+	color: var(--primary);
+}
+/* ############################################## */

@@ -4,7 +4,7 @@
 		zmscontext options/zmscontext;
 		zmsid         python:zmscontext.getId();
 		title         python:zmscontext.attr('title');
-		titlealt      python:zmscontext.attr('titlealt');
+		titlealt      python:zmscontext.attr('titlealt') or zmscontext.attr('title');
 		ref           python:zmscontext.attr('attr_url');
 		target        python:zmscontext.attr('attr_type');
 		align         python:zmscontext.attr('align');

@@ -74,7 +74,7 @@ recordSet_Interface*:interface will only be display for grid-view (UzK)
 			<div class="card-body">
 				<tal:block tal:repeat="filterIndex python:range(request.get('qfilters',1))">
 					<div tal:attributes="class python:' '.join(['form-row']+[[],['d-none']][int(filterIndex==request.get('qfilters',1))])">
-						<div class="form-group col-md-4">
+						<div class="form-group col-md-4 pl-0">
 							<select class="form-control form-control-sm" tal:attributes="name python:'filterattr%i'%filterIndex">
 								<option value="" tal:content="python:here.getZMILangStr('CAPTION_SELECT')">the option</option>
 								<tal:block tal:repeat="filter_column filter_columns">
@@ -89,13 +89,13 @@ recordSet_Interface*:interface will only be display for grid-view (UzK)
 								</tal:block>
 							</select>
 						</div>
-						<div class="form-group col-md-6">
+						<div class="form-group col-md-6 pr-0">
 							<input class="form-control form-control-sm" type="text" tal:attributes="name python:'filtervalue%i'%filterIndex; value python:request.get('filtervalue%i'%filterIndex, standard.get_session_value(here,'filtervalue%i_%s'%(filterIndex,here.id),''))" />
 						</div>
 					</div><!-- .form-row -->
 				</tal:block>
 				<div class="form-row">
-					<button type="submit" id="btn-search" class="btn btn-primary" name="btn" value="BTN_REFRESH">
+					<button type="submit" id="btn-search" class="btn btn-primary mr-2" name="btn" value="BTN_REFRESH">
 						<i class="fas fa-search"></i>
 						<tal:block tal:content="python:here.getZMILangStr('BTN_SEARCH')">Search</tal:block>
 					</button>

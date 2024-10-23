@@ -36,7 +36,7 @@ def get_elasticsearch_client(self):
 	return client
 
 def manage_elasticsearch_init( self):
-	index_name = self.getRootElement().getHome().id
+	index_name = self.getConfProperty('elasticsearch.index_name', self.getRootElement().getHome().id )
 	schema = self.getConfProperty('elasticsearch.schema','{}')
 	resp_text = '//RESPONSE\n'
 	client = get_elasticsearch_client(self)

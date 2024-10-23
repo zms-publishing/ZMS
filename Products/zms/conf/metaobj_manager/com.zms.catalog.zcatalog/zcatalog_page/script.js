@@ -15,14 +15,18 @@ $(function() {
 		$('.search-results').removeClass('not-launched');
 		$('.search-results').html(hb_spinner_tmpl(q));
 		// debugger;
-		const qurl = `${root_url}/zcatalog_query?q=${q}&pageIndex:int=${pageIndex}`;
+		var q = decodeURI($('#site-search-content input[name="q"]').val());
+		const home_id = $('#home_id').attr('value') || '';
+		const multisite_search = $('#multisite_search').attr('value') || 1;
+		const multisite_exclusions = $('#multisite_exclusions').attr('value') || '';
+		const qurl = `${root_url}/zcatalog_query?q=${q}&pageIndex:int=${pageIndex}&home_id=${home_id}&multisite_search=${multisite_search}&multisite_exclusions=${multisite_exclusions}`;
 		const response = await fetch(qurl);
 		const res = await response.json();
 		const res_processed = postprocess_results(q, res);
 		var total = res_processed.total;
 		var hb_results_html = hb_results_tmpl(res_processed);
 		$('.search-results').html( hb_results_html );
-		$('html, body').animate({scrollTop: $("#search_results").offset().top }, 1000);
+		$('html, body').animate({scrollTop: $("#site-search-content").offset().top }, 1000);
 
 		//# Add pagination ###################
 		var fn = (pageIndex) => {
@@ -82,7 +86,7 @@ $(function() {
 
 	//# Execute on submit event
 	$('.search-form form').submit(function() {
-		var q = $('input',this).val();
+		var q = decodeURI($('input[name="q"]',this).val());
 		winloc.searchParams.set('q', q);
 		history.pushState({}, '', winloc);
 		show_results(q, 0);

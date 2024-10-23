@@ -278,6 +278,7 @@
 									<div class="form-group row">
 										<div class="controls save">
 											<button type="submit" name="btn" class="btn btn-primary" value="BTN_SAVE"
+												tal:on-error="nothing"
 												tal:attributes="
 													disabled python:'Filesystem' in js.meta_type and 'disabled' or None;
 													title python:'Filesystem' in js.meta_type and 'IMPORTANT NOTE: Filesystem files are not editable here!' or None;"

@@ -22,7 +22,7 @@ class com_zms_catalog_zcatalog:
 	package = ""
 
 	# Revision
-	revision = "1.0.4"
+	revision = "1.1.0"
 
 	# Type
 	type = "ZMSPackage"

@@ -44,7 +44,7 @@ zmscontext = None
 # DOCX-Document will be set in main function manage_export_pydocx()
 doc = None
 # Set local path for docx-template
-docx_tmpl = open("/home/zope/instance/zms4_gez/neon-entw/Extensions/neon.docx", "rb")
+docx_tmpl = open("/home/zope/src/zms-publishing/ZMS5/Products/zms/conf/metacmd_manager/manage_export_pydocx/neon.docx", "rb")
 # Set initial numbering.num_id for restarting decimal num-lists
 num_id = 5
 

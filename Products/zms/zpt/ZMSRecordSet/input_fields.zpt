@@ -109,13 +109,19 @@
 					</tal:block>
 				</tal:block>
 
-				<div class="form-row">
+				<div class="form-group row">
 					<div class="controls save">
-						<button type="submit" name="btn" class="btn btn-primary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')"
-							tal:condition="python:here.getPrimaryLanguage()==request.get('lang')">Save</button>
-						<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CANCEL" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
+						<button type="submit" name="btn" class="btn btn-secondary" value="BTN_SAVE" 
+							tal:content="python:here.getZMILangStr('BTN_SAVE')"
+							tal:condition="python:here.getPrimaryLanguage()==request.get('lang')">
+							Save
+						</button>
+						<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CANCEL" 
+							tal:content="python:here.getZMILangStr('BTN_CANCEL')">
+							Cancel
+						</button>
 					</div>
-				</div><!-- .form-row -->
+				</div><!-- .form-group -->
 
 			</div><!-- .card-body -->
 		</div><!-- .collapse -->

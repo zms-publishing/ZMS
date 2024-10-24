@@ -1,11 +1,6 @@
 ################################################################################
 # _objchildren.py
 #
-# $Id: _objchildren.py,v 1.7 2004/11/24 21:02:52 zmsdev Exp $
-# $Name:$
-# $Author: zmsdev $
-# $Revision: 1.7 $
-#
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -194,7 +189,7 @@ class ObjChildren(object):
       
       # Return with message.
       if RESPONSE is not None:
-        message = self.getZMILangStr('MSG_INSERTED')%obj.display_type(REQUEST)
+        message = self.getZMILangStr('MSG_INSERTED')%obj.display_type()
         message = standard.url_quote(message)
         target = REQUEST.get('manage_target', '%s/manage_main'%obj.id)
         RESPONSE.redirect('%s?lang=%s&manage_tabs_message=%s'%(target, lang, message))

@@ -15,8 +15,9 @@
 	size python:options.get('size',len(filtered_records));
 	total python:options.get('total',len(records));
 	pageSize python:request.get('qsize',20);
-	pageIndex python:request.get('pageIndex',int(request.get('qindex',0))//pageSize);
-	pageIndex python:pageIndex if pageIndex >= 0 else 0;
+	pageCount python:size//pageSize;
+	pageIndex python:request.get('pageIndex',int(request.get('qindex',-1))//pageSize);
+	pageIndex python:pageIndex if pageIndex >= 0 and pageIndex <= pageCount else 0;
 	pageStart python:pageIndex*pageSize;
 	pageEnd python:min(pageStart+pageSize,size);
 	offset python:options.get('offset',pageStart);">
@@ -198,7 +199,7 @@
 										tal:content="structure python:(here.operator_gettype(elValue) is not str) and elValue.getFilename() or elValue">filename</tal:block
 								></tal:block
 								><tal:block tal:condition="python:elType in ['date','datetime','time']"
-									><tal:block tal:content="python:here.getLangFmtDate(elValue,request['manage_lang'],('%s_fmt'%elType).upper())">elValue</tal:block
+									><tal:block tal:content="python:here.getLangFmtDate(elValue,fmt_str=('%s_fmt'%elType).upper())">elValue</tal:block
 								></tal:block
 								><tal:block tal:condition="python:elType in ['float','int']"
 									><tal:block tal:content="elValue">elValue</tal:block

@@ -26,7 +26,7 @@ class ZMSTextarea:
 	package = "com.zms.foundation"
 
 	# Revision
-	revision = "5.0.1"
+	revision = "5.2.0"
 
 	# Type
 	type = "ZMSObject"
@@ -52,7 +52,7 @@ class ZMSTextarea:
 			,"repetitive":0
 			,"type":"interface"}
 
-		format = {"default":"##\nreturn context.getTextFormatDefault()"
+		format = {"default":"##\r\nreturn context.getTextFormatDefault()"
 			,"id":"format"
 			,"keys":[]
 			,"mandatory":1
@@ -79,11 +79,29 @@ class ZMSTextarea:
 			,"repetitive":0
 			,"type":"py"}
 
+		readme = {"default":""
+			,"id":"readme"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"Readme (text/markdown)"
+			,"repetitive":0
+			,"type":"resource"}
+
 		standard_html = {"default":""
 			,"id":"standard_html"
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
-			,"name":"Template: ZMSTextarwa"
+			,"name":"Template: ZMSTextarea"
 			,"repetitive":0
 			,"type":"zpt"}
+
+		standard_json_docx = {"default":""
+			,"id":"standard_json_docx"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"DOCX-JSON Template: ZMSTextarea"
+			,"repetitive":0
+			,"type":"py"}

@@ -42,7 +42,7 @@ function GetURLParameter(sParam, sDefault) {
  */
 function AssembleUrlParameter(url,d) {
 	if (url.indexOf("?") > 0) {
-		var sPageURL = url.substr(url.indexOf("?")+1);
+		var sPageURL = url.substring(url.indexOf("?")+1);
 		var sURLVariables = sPageURL.split('&');
 		for (var i = 0; i < sURLVariables.length; i++) {
 			var sURLVariable = sURLVariables[i].split('=');
@@ -52,7 +52,7 @@ function AssembleUrlParameter(url,d) {
 				d[sParameterName] = sParameterValue;
 			}
 		}
-		url = url.substr(0,url.indexOf("?"));
+		url = url.substring(0,url.indexOf("?"));
 	}
 	var dl = "?";
 	for (var sParameterName in d) {
@@ -97,7 +97,7 @@ function GetPagination(fn, size, pageSize, pageIndex) {
 		}
 		html += ''
 			+ '<li class="page-item last' + (pageIndex==pageCount-1?" disabled":"") + '">'
-			+ '<a	class="page-link" href="'+(pageIndex==pageCount-1?'javascript:;':fn(pageIndex+1))+'">'+$ZMI.icon('fa fa-chevron-right icon-chevron-right')+'</a>'
+			+ '<a class="page-link" href="'+(pageIndex==pageCount-1?'javascript:;':fn(pageIndex+1))+'">'+$ZMI.icon('fa fa-chevron-right icon-chevron-right')+'</a>'
 			+ '</li>'
 			+ '</ul>'
 			+ '</nav><!-- .pagination -->';
@@ -122,7 +122,7 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
 	p['page_size'] = pageSize;
 	p['page_index'] = pageIndex;
 	var fq = [];
-	if ('home_id' in zmiParams && zmiParams['home_id'].length > 0) {
+	if (typeof zmiParams === 'object' && typeof zmiParams['home_id'] === 'object' && zmiParams['home_id'].length > 0) {
 		fq.push('home_id_s:'+zmiParams['home_id']);
 	}
 	p['fq'] = fq;
@@ -136,11 +136,11 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
 		}
 	}
 	if (baseurl.indexOf("/content")>0) {
-		baseurl = baseurl.substr(0,baseurl.indexOf("/content")+"/content".length);
+		baseurl = baseurl.substring(0,baseurl.indexOf("/content")+"/content".length);
 	}
 	var adapter = $ZMI.getConfProperty('zms.search.adapter.id','zcatalog_adapter');
 	var connector = $ZMI.getConfProperty('zms.search.connector.id','zcatalog_connector');
-	var url = baseurl+'/'+adapter+'/'+connector+'/search_xml';
+	var url = baseurl+'/'+adapter+'/'+connector+'/search_json';
 	$.ajax({
 		url:url,
 		data:p,
@@ -150,92 +150,51 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
 				+ getZMILangStr('CAPTION_ERROR')+'<hr/> '
 				+ '<code>' + xhr.status + ': ' + thrownError + '</code>');
 		},
-		success:function(xmlDoc) {
-			var $xml = $(xmlDoc);
-			var $response = $("result[name=response]",$xml);
-			var total = 0;
-			var status = parseInt($("lst[name=responseHeader] > int[name=status]",$xml).text());
-			var message = "Status: "+status;
+		success:function(result) {
+			var total = result['numFound'];
+			var docs = result['docs']
 			var html = "";
-			if (status != 0) {
-				$("#search_results .small-head").html(getZMILangStr('SEARCH_YOURQUERY').replace('%s','<span id="q"></span>')+' '+message);
+			if (total == 0) {
+				$("#search_results .small-head").html(getZMILangStr('SEARCH_YOURQUERY').replace('%s','<span id="q" class="badge badge-danger fa-1x"></span>')+' '+getZMILangStr('SEARCH_NORESULTS'));
 				$("#search_results .small-head #q").text(q);
 			}
 			else {
-				total = parseInt($response.attr("numFound"));
-				if (total == 0) {
-					$("#search_results .small-head").html(getZMILangStr('SEARCH_YOURQUERY').replace('%s','<span id="q"></span>')+' '+getZMILangStr('SEARCH_NORESULTS'));
-					$("#search_results .small-head #q").text(q);
-				}
-				else {
-					$("#search_results .small-head").html(getZMILangStr('SEARCH_YOURQUERY').replace('%s','<span id="q"></span>')+' '+getZMILangStr('SEARCH_RETURNEDRESULTS')+':');
-					$("#search_results .small-head #q").text(q);
-					var $docs = $("doc",$response);
-					var $highlighting = $("lst[name=highlighting]",$xml);
-					for (var c = 0; c < $docs.length; c++) {
-						var $doc = $($docs[c]);
-						function getattr(name) {
-							return $("str[name="+name+"]",$doc).text()+$("arr[name="+name+"]>str",$doc).text();
-						}
-						var did = getattr("id");
-						var meta_id = getattr("meta_id");
-						var href = '';
-						if (zmi) {
-							if (href=='') href = getattr("loc");
-							if (href=='') href = getattr("absolute_url");
-							href += '/manage';
-						} else {
-							href = getattr("index_html");
-						}
-						var title = getattr("title");
-						var snippet = getattr("standard_html");
-						var custom = getattr("custom");
-						if (snippet.length > p['hl.fragsize']) {
-							snippet = snippet.substr(0,p['hl.fragsize']);
-							while (!snippet.lastIndexOf(" ")==snippet.length-1) {
-								snippet = snippet.substr(0,snippet.length-2);
-							}
-						}
-						var $hl = $("lst[name="+did+"]",$highlighting);
-						var str = getattr("title");
-						if (typeof str != "undefined" && str.length > 0) {
-							title = str.replace(/&lt;/gi,'<').replace(/&gt;/gi,'>');
-						}
-						var str = getattr("body");
-						if (typeof str != "undefined" && str.length > 0) {
-							snippet = str.replace(/&lt;/gi,'<').replace(/&gt;/gi,'>');
-						}
-						var breadcrumb = '';
-						if (typeof custom != "undefined" && custom.length > 0) {
-							var $custom = $("<xml>"+custom+"<xml>");
-							$("custom>breadcrumbs>breadcrumb",$custom).each(function() {
-								var title = $(">title",this).text();
-								var loc;
-								if (zmi) {
-									loc = $(">loc",this).text()+"/manage";
-								} else {
-									loc = $(">index_html",this).text();
-								}
-								breadcrumb += '<li class="breadcrumb-item"><a href="'+loc+'">'+title+'</a></li>';
-							});
-						}
-						html += ''
-							+ '<div class="line row'+(c%2==0?" gray":"")+'">'
-							+ '<div class="col-sm-12">'
-							+ '<h2 class="'+meta_id+'"><a href="'+href+'">'+title+'</a></h2>'
-							+ (breadcrumb.length==0?'':'<nav aria-label="breadcrumb"><ol class="breadcrumb">'+breadcrumb+'</ol></nav><!-- .breadcrumb -->')
-							+ '<p>'+snippet+'</p>'
-							+ '</div>'
-							+ '</div><!-- .line.row -->';
+				$("#search_results .small-head").html(getZMILangStr('SEARCH_YOURQUERY').replace('%s','<span id="q" class="badge badge-info fa-1x"></span>')+' '+getZMILangStr('SEARCH_RETURNEDRESULTS')+':');
+				$("#search_results .small-head #q").text(q);
+				docs.forEach(doc => {
+					var href = '';
+					if (zmi) {
+						if (href=='' || href==undefined) href = doc.loc;
+						if (href=='' || href==undefined) href = doc.absolute_url;
+						if (href=='' || href==undefined) href = doc.path;
+						href += '/manage';
+					} else {
+						href = doc.index_html;
 					}
-					
-					// Pagination
-					var fn = function(pageIndex) {
-						var url = window.location.href;
-						return AssembleUrlParameter(url,{"pageIndex:int":pageIndex});
+					var snippet = doc.attr_dc_description || doc.standard_html || '';
+					if (snippet.length > p['hl.fragsize']) {
+						snippet = snippet.substring(0,p['hl.fragsize']);
+						while (!snippet.lastIndexOf(" ")==snippet.length-1) {
+							snippet = snippet.substring(0,snippet.length-2);
+						}
 					}
-					GetPagination(fn,total,pageSize,pageIndex);
+					html += `
+						<div class="line row" data-uid="${doc.uid}" data-id="${doc.id}">
+							<div class="col-sm-12">
+								<h2 class="${doc.meta_id}">
+									<a target="_blank" href="${href}">${doc.title}</a>
+								</h2>
+								<p>${snippet}</p>
+							</div>
+						</div>
+					`;
+				});
+				// Pagination
+				var fn = function(pageIndex) {
+					var url = window.location.href;
+					return AssembleUrlParameter(url,{"pageIndex:int":pageIndex});
 				}
+				GetPagination(fn,total,pageSize,pageIndex);
 			}
 			$(".line.row:first").replaceWith(html);
 			// Callback: Done

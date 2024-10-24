@@ -20,7 +20,12 @@ function show_ace_editor(e, toggle=false) {
 		$textarea.addClass('form-control-ace-editor');
 		$textarea.parent().addClass('zmi-ace-editor')
 		$textarea.after('<div id="' + editor_id + '">ace editor text</div>');
-		$textarea.closest('td').append('<div class="control-label-ace-editor"><div><i onclick="remove_ace_editor(\'' + editor_id + '\')" title="Close Editor" class="close fas fa-chevron-up text-primary"></i></div><div><a title="Zope-Object-Editor" target="_blank" href="' + zopeurl + '">' + $textarea.attr('id').split('attr_custom_')[1] + '</a></div></div>');
+		if (zopeurl == '#/manage') {
+			// Zope-Object is not yet created: Products.zms.zopeutil.MissingArtefactProxy
+			$textarea.closest('td').append('<div class="control-label-ace-editor"><div><i onclick="remove_ace_editor(\'' + editor_id + '\')" title="Close Editor" class="close fas fa-chevron-up text-primary"></i></div></div>');
+		} else {
+			$textarea.closest('td').append('<div class="control-label-ace-editor"><div><i onclick="remove_ace_editor(\'' + editor_id + '\')" title="Close Editor" class="close fas fa-chevron-up text-primary"></i></div><div><a title="Zope-Object-Editor" target="_blank" href="' + zopeurl + '">' + $textarea.attr('id').split('attr_custom_')[1] + '</a></div></div>');
+		}
 	}
 
 	var dom = ace.require('ace/lib/dom');
@@ -102,7 +107,7 @@ function show_ace_editor(e, toggle=false) {
 		editor.setTheme('ace/theme/eclipse');
 		editor.getSession().setMode('ace/mode/'+mode);
 		editor.getSession().setValue(value);
-		editor.getSession().setOptions({ tabSize: 4, useSoftTabs: false });
+		editor.getSession().setOptions({ tabSize: 4, useSoftTabs: true });
 		editor.getSession().on('change',function() {
 			$textarea.val(editor.getSession().getValue()).change();
 		});

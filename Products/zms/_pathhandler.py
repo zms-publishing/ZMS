@@ -20,11 +20,12 @@
 import copy
 import re
 # Product Imports.
+from Products.zms import rest_api
 from Products.zms import standard
 from Products.zms import _blobfields
 from Products.zms import _fileutil
 from Products.zms import _globals
-
+from zope.globalrequest import getRequest
 
 # ------------------------------------------------------------------------------
 #  _pathhandler.validateId:
@@ -32,23 +33,23 @@ from Products.zms import _globals
 #  Validates id against list of possible declarative id.
 # ------------------------------------------------------------------------------
 def validateId(self, id, REQUEST):
-  langs = []
-  lang = REQUEST.get( 'lang')
-  if lang is None:
-    for lang in self.getLanguages():
-      request = { 'lang': lang, 'preview': REQUEST.get('preview', '')}
-      decl_id = self.getDeclId(request)
-      if id == decl_id:
-        langs.append( lang)
-    if len( langs) == 1:
-      self.REQUEST.set( 'lang', langs[0])
-  else:
-    decl_id = self.getDeclId( REQUEST)
-    if id == decl_id:
-      langs.append( lang)
-  if len( langs) > 0:
-    return True
-  return False
+    langs = []
+    lang = REQUEST.get( 'lang')
+    if lang is None:
+        for lang in self.getLanguages():
+            request = { 'lang': lang, 'preview': REQUEST.get('preview', '')}
+            decl_id = self.getDeclId(request)
+            if id == decl_id:
+                langs.append( lang)
+        if len( langs) == 1:
+            self.REQUEST.set( 'lang', langs[0])
+    else:
+        decl_id = self.getDeclId( REQUEST)
+        if id == decl_id:
+            langs.append( lang)
+    if len( langs) > 0:
+        return True
+    return False
 
 
 # ------------------------------------------------------------------------------
@@ -118,14 +119,14 @@ class PathHandler(object):
     def __bobo_traverse__(self, TraversalRequest, name):
       # If this is the first time this __bob_traverse__ method has been called
       # in handling this traversal request, store the path_to_handle
-      request = self.REQUEST
+      request = getattr(self, 'REQUEST', getRequest())
       url = request.get('URL', '')
       zmi = url.find('/manage') >= 0
       
       if 'path_to_handle' not in TraversalRequest:
         
         # Make a reversed copy of the TraversalRequestNameStack
-        TraversalRequestNameStackReversed=copy.copy(TraversalRequest['TraversalRequestNameStack'])
+        TraversalRequestNameStackReversed = copy.copy(TraversalRequest['TraversalRequestNameStack'])
         TraversalRequestNameStackReversed.reverse()
         
         # Set path_to_handle in the TraversalRequest.
@@ -141,7 +142,7 @@ class PathHandler(object):
               TraversalRequest[ 'path_to_handle'].insert( i-1, path_physical[ i])
       
       # Set language.
-      lang = request.get( 'lang')
+      lang = request.get('lang')
       if lang is None:
         lang = self.getLanguageFromName(TraversalRequest['path_to_handle'][-1])
       if lang is not None:
@@ -167,6 +168,12 @@ class PathHandler(object):
       else:
         standard.writeLog( self, '[__bobo_traverse__]: otherwise do some magic')
         
+        # REST-API.
+        if name == '++rest_api':
+          request.RESPONSE.setHeader('Content-Type','application/json; charset=utf-8')
+          return rest_api.RestApiController(self, TraversalRequest)
+
+        # Default Language.
         if request.get('lang') is None:
           lang = self.getPrimaryLanguage()
           request.set('lang', lang)
@@ -197,7 +204,7 @@ class PathHandler(object):
           # Recursive inclusions.
           thisOb = standard.nvl( filterId( self, name, request), self)
           if thisOb.meta_type == 'ZMSLinkElement':
-            recursive = thisOb.isEmbeddedRecursive(request)
+            recursive = thisOb.isEmbeddedRecursive()
             if recursive:
               ob = thisOb.getRefObj()
               proxy = thisOb.initProxy( thisOb.aq_parent, thisOb.absolute_url(), ob, recursive)
@@ -334,8 +341,12 @@ class PathHandler(object):
                 request.set('ZMS_EXT', zms_ext)
                 request.set('lang', lang)
                 return self
-        
-        # If there's no more names left to handle, return the path handling 
+
+        # headless mode
+        if not hasattr(self, 'REQUEST'):
+          return
+
+        # If there's no more names left to handle, return the path handling
         # method to the traversal machinery so it gets called next
         standard.raiseError('NotFound',''.join([x+'/' for x in TraversalRequest['path_to_handle']]))
 

@@ -80,7 +80,7 @@ def manage_addZMSCustom(self, meta_id, lang, _sort_id, btn, REQUEST, RESPONSE):
   target = self.absolute_url()
   if btn == 'BTN_INSERT':
     # Create
-    meta_id = REQUEST.get('ZMS_INSERT',meta_id)
+    meta_id = standard.nvl(REQUEST.get('ZMS_INSERT'),meta_id)
     id_prefix = standard.id_prefix(REQUEST.get('id_prefix', 'e'))
     new_id = self.getNewId(id_prefix)
     globalAttr = self.dGlobalAttrs.get(meta_id, self.dGlobalAttrs['ZMSCustom'])
@@ -113,7 +113,7 @@ def manage_addZMSCustom(self, meta_id, lang, _sort_id, btn, REQUEST, RESPONSE):
       # Normalize Sort-Ids
       self.normalizeSortIds(id_prefix)
       # Message
-      message = self.getZMILangStr('MSG_INSERTED')%obj.display_type(REQUEST)
+      message = self.getZMILangStr('MSG_INSERTED')%obj.display_type(meta_id=obj.meta_id)
     except:
       message = standard.writeError(self, "[manage_addZMSCustom]")
       messagekey = 'manage_tabs_error_message'
@@ -176,9 +176,9 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
     # -----------------------
     __viewPermissions__ = (
         'manage', 'manage_main', 'manage_container', 'manage_workspace', 'manage_menu',
-        'manage_ajaxGetChildNodes',
         )
     __authorPermissions__ = (
+        'preview_html', 'preview_top_html',
         'manage_addZMSModule',
         'manage_changeRecordSet',
         'manage_properties', 'manage_changeProperties', 'manage_changeTempBlobjProperty',
@@ -221,10 +221,11 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
     #
     # Constructor (initialise a new instance of ZMSCustom).
     ############################################################################
-    def __init__(self, id='', sort_id=0, meta_id=None):
+    def __init__(self, id='', sort_id=0, meta_id=None, uid=''):
       """ ZMSCustom.__init__ """
       zmscontainerobject.ZMSContainerObject.__init__(self, id, sort_id)
       self.meta_id = standard.nvl(meta_id, self.meta_type)
+      self._uid = uid
 
 
     ############################################################################
@@ -264,6 +265,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
       standard.set_session_value(self,sessionattr, REQUEST.form.get(filterattr, standard.get_session_value(self,sessionattr, '')))
       standard.set_session_value(self,sessionvalue, REQUEST.form.get(filtervalue, standard.get_session_value(self,sessionvalue, '')))
       if REQUEST.get('btn')=='BTN_RESET':
+        REQUEST.set('qindex', 0)
         standard.set_session_value(self,sessionattr, '')
         standard.set_session_value(self,sessionvalue, '')
       if standard.get_session_value(self,sessionattr, '') != '' and \
@@ -279,7 +281,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
         REQUEST.set('masterRow', masterRows[0])
       # init filter from request.
       index = 0
-      for filterIndex in range(100):
+      for filterIndex in range(10):
         for filterStereotype in ['attr', 'op', 'value']:
           requestkey = 'filter%s%i'%(filterStereotype, filterIndex)
           sessionkey = '%s_%s'%(requestkey, self.id)
@@ -411,9 +413,31 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
             values = {}
             for dictitem in listitem['dictionary']['item']:
               key = dictitem.get('@key')
+              typ = dictitem.get('@type')
+              val = dictitem.get('#text')
+              # filter out internal attributes not to be exposed
+              if key in ('_change_dt', '_change_uid', '_grid'):
+                  continue
               if key not in keys:
                 keys.append(key)
-              values[key] = dictitem.get('#text')
+              if typ == 'list' and dictitem.get('list') is not None:
+                items = dictitem.get('list').get('item')
+                if type(items) is list:
+                  val = ', '.join(items)
+                else:
+                  val = items
+              if val is not None and \
+                 val.startswith('{$uid:') and val.endswith('}'):
+                obj = self.getLinkObj(val, REQUEST)
+                if obj is not None:
+                  try:
+                    lang = REQUEST.get('lang', self.getPrimaryLanguage())
+                    if ';lang=' in val:
+                      lang = self.re_sub(r'{\$(.*);lang=(\w*)}', r'\2', val)
+                    val = self.UniBE_zeix_('getHref2SubdomainHtml', item=obj, lang=lang)
+                  except AttributeError:
+                    val = obj.getHref2IndexHtml(REQUEST)
+              values[key] = val
             rows.append(values)
 
         csvfile = io.StringIO()
@@ -680,7 +704,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
       
       else:
         ob = _importable.importFile( self, file, REQUEST, _importable.importContent)
-        message = self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%ob.display_type(REQUEST))
+        message = self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%ob.display_type())
       
       # Return with message.
       if RESPONSE is not None:

@@ -19,6 +19,12 @@ class ZMSTable:
 	# Id
 	id = "ZMSTable"
 
+	# Lang_dict
+	lang_dict = {"ZMSTable.MSG_ZMSTABLE_EDITOR":{"eng":"<small class=\"form-text text-muted\">HINTS:\r\n	<span class=\"badge badge-dark\">Click</span> cell to edit,\r\n	<span class=\"badge badge-dark\">Double-click</span> cell to open WYSIWYG-editor,\r\n	<span class=\"badge badge-dark\">Right-click</span> to insert, move or delete cells.\r\n</small>"
+			,"ger":"<small class=\"form-text text-muted\">HINWEISE:\r\n	<span class=\"badge badge-dark\">Klick</span> auf Zelle zum Editieren,\r\n	<span class=\"badge badge-dark\">Doppel-Klick</span> auf Zelle zum Öffnen des WYSIWYG-Editors,\r\n	<span class=\"badge badge-dark\">Rechts-Klick</span> zum Einfügen, Verschieben oder Löschen von Zellen.\r\n</small>"}
+		,"ZMSTable.MSG_ZMSTABLE_TYPE":{"eng":"Note: Type can not be changed later"
+			,"ger":"Hinweis: Tabellen-Typ kann nachträglich nicht mehr geändert werden."}}
+
 	# Name
 	name = "ZMSTable"
 
@@ -26,7 +32,7 @@ class ZMSTable:
 	package = "com.zms.foundation"
 
 	# Revision
-	revision = "5.0.2"
+	revision = "5.1.2"
 
 	# Type
 	type = "ZMSObject"
@@ -151,6 +157,15 @@ class ZMSTable:
 			,"name":"Icon (CSS)"
 			,"repetitive":0
 			,"type":"constant"}
+
+		readme = {"default":""
+			,"id":"readme"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"Readme (text/markdown)"
+			,"repetitive":0
+			,"type":"resource"}
 
 		onchangeobjevt = {"default":""
 			,"id":"onChangeObjEvt"

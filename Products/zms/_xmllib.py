@@ -116,9 +116,9 @@ def getXmlType(v):
 def getXmlTypeSaveValue(v, attrs):
   # Strip.
   if isinstance(v, str):
-    while len(v) > 0 and v[0] <= ' ':
+    while len(v) > 0 and v[0] <= ' ' and v[0] != '\t':
       v = v[1:]
-    while len(v) > 0 and v[-1] <= ' ':
+    while len(v) > 0 and v[-1] <= ' ' and v[-1] != '\t':
       v = v[:-1]
   # Type.
   t = attrs.get('type', '?')
@@ -184,7 +184,7 @@ def xmlInitObjProperty(self, key, value, lang=None):
     # -- Date-Fields
     if datatype in _globals.DT_DATETIMES:
       if isinstance(value, str) and len(value) > 0:
-        value = self.parseLangFmtDate(value)
+        value = standard.parseLangFmtDate(value)
     # -- Integer-Fields
     elif datatype in _globals.DT_INTS:
       if isinstance(value, str) and len(value) > 0:
@@ -316,8 +316,21 @@ def xmlOnUnknownEndTag(self, sTagName):
       else:
         item = self.dValueStack.pop()
       values = self.dValueStack.pop()
-      values[lang] = item
+      try:
+        values[lang] = item
+      except:
+        # empty values
+        standard.writeBlock(self, "[values]: WARNING Importing xml may not match to ZMS client's content model - Skip lang %s for %s" %(lang, str(values)))
+        values = {}
+        values[lang] = item
       self.dValueStack.append(values)
+
+    # -- COMF-PROPERTY --
+    #--------------------
+    elif sTagName.startswith('conf:'):
+      key = sTagName[len('conf:'):]
+      self.setConfProperty(key,cdata)
+      self.dValueStack.clear()
 
     # -- OBJECT-ATTRIBUTES --
     #-----------------------
@@ -330,7 +343,9 @@ def xmlOnUnknownEndTag(self, sTagName):
 
         # -- Multi-Language Attributes.
         if obj_attr['multilang']:
-          item = self.dValueStack.pop()
+          item = None
+          if len(self.dValueStack) > 0:
+            item = self.dValueStack.pop()
           if item is not None:
             if not isinstance(item, dict):
               item = {self.getPrimaryLanguage():item}
@@ -383,8 +398,8 @@ def xmlOnUnknownEndTag(self, sTagName):
               if obj_attr['multilang'] == 0 and \
                  isinstance(value, dict) and \
                  len(value.keys()) == 1 and \
-                 value.keys()[0] == self.getPrimaryLanguage():
-                value = value[value.keys()[0]]
+                 list(value.keys())[0] == self.getPrimaryLanguage():
+                value = value[self.getPrimaryLanguage()]
               xmlInitObjProperty(self, sTagName, value)
             if len(self.dValueStack) > 0:
               raise "Items on self.dValueStack=%s" % self.dValueStack
@@ -630,11 +645,11 @@ def getAttrToXml(self, base_path, data2hex, obj_attr, REQUEST):
 # ------------------------------------------------------------------------------
 #  _xmllib.getObjPropertyToXml:
 # ------------------------------------------------------------------------------
-def getObjPropertyToXml(self, base_path, data2hex, obj_attr, REQUEST):
+def getObjPropertyToXml(self, REQUEST, base_path='', data2hex=False, obj_attr={}, multilang=True):
   xml = ''
   # Multi-Language Attributes.
   indentlevel = len(base_path.split('/'))
-  if obj_attr['multilang']:
+  if obj_attr['multilang'] and multilang==True:
     lang = REQUEST.get('lang')
     langIds = self.getLangIds()
     for langId in langIds:
@@ -653,7 +668,7 @@ def getObjPropertyToXml(self, base_path, data2hex, obj_attr, REQUEST):
 # ------------------------------------------------------------------------------
 #  _xmllib.getObjToXml:
 # ------------------------------------------------------------------------------
-def getObjToXml(self, REQUEST, deep=True, base_path='', data2hex=False):
+def getObjToXml(self, REQUEST, deep=True, base_path='', data2hex=False, multilang=True):
   # Check Constraints.
   root = getattr(self, '__root__', None)
   if root is not None:
@@ -671,6 +686,13 @@ def getObjToXml(self, REQUEST, deep=True, base_path='', data2hex=False):
     xml.append(' id="%s"' % id)
     xml.append(' id_prefix="%s"' % standard.id_prefix(id))
   xml.append('>\n')
+  # [Issue-219] Special content-like conf-properties edited in interfaces (ZMS.interface_permalinks).
+  if self.meta_id == 'ZMS':
+    attr_ids = [re.sub(r'^interface_(.*?)(s)','\\1',x) for x in self.getMetaobjAttrIds(self.meta_id,types=['interface'])]
+    d = self.get_conf_properties()
+    for k in d:
+      if [x for x in attr_ids if k.startswith('%s.%s'%(self.meta_id,x))]:
+        xml.append('%s<conf:%s>%s</conf:%s>\n'%(((indentlevel+1)*INDENTSTR),k,d[k],k))
   # Attributes.
   keys = self.getObjAttrs().keys()
   if self.getType() == 'ZMSRecordSet':
@@ -678,12 +700,12 @@ def getObjToXml(self, REQUEST, deep=True, base_path='', data2hex=False):
   for key in keys:
     obj_attr = self.getObjAttr(key)
     if obj_attr['xml'] or key in ['change_dt','change_uid','created_dt','created_uid']:
-      ob_prop = getObjPropertyToXml(self, base_path, data2hex, obj_attr, REQUEST)
+      ob_prop = getObjPropertyToXml(self, REQUEST, base_path, data2hex, obj_attr, multilang)
       if len(ob_prop) > 0:
         xml.append('%s<%s>%s</%s>\n' % ( (indentlevel+1) * INDENTSTR, key, ob_prop, key ) )
   # Process children.
   if deep:
-    xml.extend([getObjToXml(x, REQUEST, deep, base_path + x.id + '/', data2hex) for x in self.getChildNodes()])
+    xml.extend([getObjToXml(x, REQUEST, deep, base_path + x.id + '/', data2hex, multilang) for x in self.getChildNodes()])
   # End tag.
   xml.append('%s</%s>\n' % ( indentlevel * INDENTSTR, self.meta_id ) )
   # Return xml.

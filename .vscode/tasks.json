@@ -1,0 +1,18 @@
+// {
+// 	"version": "2.0.0",
+// 	"tasks": [
+// 		{
+// 			"label": "Install latest Py3-VScode-Extension", 
+// 			"type": "shell",
+// 			"command": "code --install-extension ms-python.python --force", 
+// 			"group": "none",
+// 			"presentation": {
+// 				"reveal": "always",
+// 				"panel": "new"
+// 			},
+// 			"runOptions": {
+// 				"runOn": "folderOpen"
+// 			}
+// 		}
+// 	]
+// }

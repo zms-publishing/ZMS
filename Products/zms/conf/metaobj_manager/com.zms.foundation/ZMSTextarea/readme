@@ -1,0 +1,42 @@
+# ZMSTextarea
+ZMSTextarea is the standard element for text blocks. It offers two kind of input fields:
+
+1. plain text
+2. rich-text (wysiswyg)
+
+The ZMSTextarea-GUI is customzied by text-format definitions for:
+
+1. paragraphs (block formats like h1, h2, p)
+2. characters (inline formats like bold, italic)
+
+A paragraph format is declared for the whole text block, whereas character formats can nest any text string inline.
+Both plain text and richt-text editors provide a list of the configured block formats. But inly the plan text editor 
+can be customizd by the configured character formats, because the rich-text editor frontends integrate a set of inline 
+format by themselves.
+For the plain text editor a helper funcion for valifdating the html/XML wellformedness by setting a configuration parameter:
+`ZMS.ZMSTextarea.show_htmlcheck`: 1
+
+## Rich Text / WYSIWYG Exitors
+
+By default ZMS comes with three types of richt text editors (RTE)
+
+1. CKEditor (HTML)
+2. TinyMCE (HTML)
+3. SimpleMDE (Markdown)
+
+The list of RTE can be extendes by adding a TAL-based template `manage_form` as a plugins to the plugin-rte-folder:
+`Products/zms/plugins/rte/`.  
+The editor's JS/GUI-asset files can be placed in the as `++resource++zms_` registred resource folder
+`Products/zms/plugins/www`
+To tell the ZMS client which one of the RTEs should be applied, a configuration parameter has to be set:
+`ZMS.richtext.plugin` (ckeditor, tinymce, simplemde etc.)
+
+## Using Markdown
+The SimpleMDE-editor is a minimal markdown editor using the Python module *markdown*. This module will be installed 
+by default (if code base is fresh), see on [github](https://github.com/zms-publishing/ZMS/blob/main/requirements-full.txt).
+
+After setting ZMS configuration parameter 
+`ZMS.richtext.plugin`: `simplemde`
+at least a paragraph format named `markdown` is needed. ZMS provides a suitable set of paragraph formats named 
+`markdown-0.0.1` for one-click-import: it contains the markdown format as the standard format and a typical set 
+of several html block elements.

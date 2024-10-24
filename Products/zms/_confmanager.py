@@ -27,9 +27,11 @@ from OFS.Image import Image
 from OFS.Folder import Folder
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import OFS.misc_
+import base64
 import configparser
 import importlib
 import io
+import json
 import operator
 import os
 import zExceptions
@@ -37,12 +39,13 @@ from zope.interface import implementer, providedBy
 # Product imports.
 from .IZMSConfigurationProvider import IZMSConfigurationProvider
 from Products.zms import standard
-from Products.zms import ZMSFilterManager, IZMSMetamodelProvider, IZMSFormatProvider, IZMSCatalogAdapter, ZMSZCatalogAdapter, IZMSRepositoryManager
+from Products.zms import ZMSFilterManager, IZMSMetamodelProvider, IZMSFormatProvider, IZMSRepositoryManager
+from Products.zms import _conf
 from Products.zms import _fileutil
-from Products.zms import _repositoryutil
 from Products.zms import _mediadb
 from Products.zms import _multilangmanager
 from Products.zms import _sequence
+from Products.zms import repositoryutil
 from Products.zms import standard
 from Products.zms import zopeutil
 from Products.zms import zmsindex
@@ -104,7 +107,7 @@ def initConf(self, pattern):
     for filename in files:
         if filename.startswith(prefix):
             label = files[filename]
-            if fnmatch(label,'%s-*'%pattern):
+            if fnmatch(label,'*%s-*'%pattern):
                 standard.writeBlock( self, '[initConf]: filename='+filename)
                 if filename.endswith('.zip'):
                     self.importConfPackage(filename)
@@ -137,6 +140,8 @@ class ConfManager(
     manage_customizeInstalledProducts = PageTemplateFile('zpt/ZMS/manage_customizeinstalledproducts', globals())
     manage_customizeLanguagesForm = PageTemplateFile('zpt/ZMS/manage_customizelanguagesform', globals())
     manage_customizeDesignForm = PageTemplateFile('zpt/ZMS/manage_customizedesignform', globals())
+    manage_customize_diff = PageTemplateFile('zpt/ZMS/manage_customize_diff', globals())
+    manage_main_diff = PageTemplateFile('zpt/ZMSRepositoryManager/manage_main_diff', globals())
 
 
     # --------------------------------------------------------------------------
@@ -165,9 +170,9 @@ class ConfManager(
           xmlfile = StringIO( xml)
       elif isinstance(file, str) and (file.startswith('conf:')):
           filename = file[file.find(':')+1:]
-          basepath = _repositoryutil.get_system_conf_basepath()
+          basepath = repositoryutil.get_system_conf_basepath()
           path = os.path.join(basepath, filename)
-          r = _repositoryutil.readRepository(self, path)
+          r = repositoryutil.readRepository(self, path)
           container_id = filename.split('/')[0]
           container = zopeutil.getObject(self,container_id)
           if container is not None:
@@ -259,25 +264,27 @@ class ConfManager(
             v = v[:v.find(pattern)]+v[i:]
             filenames[k] = v
       # Repository.
-      basepath = _repositoryutil.get_system_conf_basepath()
+      basepath = repositoryutil.get_system_conf_basepath()
       for filename in os.listdir(basepath):
           path = os.path.join(basepath, filename)
           if os.path.isdir(path):
               if pattern is None or filename.startswith(pattern[1:-1]):
-                  r = _repositoryutil.readRepository(self, path, deep=False)
+                  r = repositoryutil.readRepository(self, path, deep=False)
                   for k in r:
                       v = r[k]
-                      filenames['conf:%s/%s'%(filename,k)] = '%s-%s'%(k,v.get('revision','0.0.0'))   
+                      # Get qualified name.
+                      qn = k
+                      package = v.get('package','')
+                      if package and not qn.startswith(package):
+                        qn = '%s.%s'%(package,qn)
+                      revision = v.get('revision','0.0.0')
+                      filenames['conf:%s/%s'%(filename,k)] = '%s-%s'%(qn,revision)   
       # Return.
-      if REQUEST is not None and RESPONSE is not None:
-          RESPONSE = REQUEST.RESPONSE
-          content_type = 'text/xml; charset=utf-8'
-          filename = 'getConfFiles.xml'
-          RESPONSE.setHeader('Content-Type', content_type)
-          RESPONSE.setHeader('Content-Disposition', 'inline;filename="%s"'%filename)
+      if RESPONSE is not None:
+          RESPONSE.setHeader('Content-Type', 'application/json')
           RESPONSE.setHeader('Cache-Control', 'no-cache')
           RESPONSE.setHeader('Pragma', 'no-cache')
-          return self.getXmlHeader() + self.toXmlString( filenames)
+          return json.dumps( filenames)
       return filenames
 
 
@@ -443,6 +450,7 @@ class ConfManager(
     Returns conf-properties.
     """
     def get_conf_properties(self):
+      self.getZMSSysConf()
       return getattr( self, '__attr_conf_dict__', {})
 
 
@@ -453,7 +461,8 @@ class ConfManager(
     def getConfPropertiesDefaults(self):
       return [
         {'key':'ZMS.conf.path','title':'ZMS conf-path','desc':'ZMS conf-path','datatype':'string','default':'$INSTANCE_HOME/var/$HOME_ID'}, 
-        {'key':'ZMS.debug','title':'ZMS debug','desc':'ZMS debug','datatype':'boolean','default':0}, 
+        {'key':'ZMS.mode.debug','title':'ZMS Debug Mode','desc':'Run ZMS in debug mode','datatype':'boolean','default':0}, 
+        {'key':'ZMS.mode.maintenance','title':'ZMS Maintenance Mode','desc':'Run ZMS in maintenance mode','datatype':'boolean','default':0}, 
         {'key':'ZMSAdministrator.email','title':'Admin e-Mail','desc':'Administrators e-mail address.','datatype':'string'},
         {'key':'ASP.protocol','title':'ASP Protocol','desc':'ASP Protocol.','datatype':'string','options':['http', 'https'],'default':'http'},
         {'key':'ASP.ip_or_domain','title':'ASP IP/Domain','desc':'ASP IP/Domain.','datatype':'string'},
@@ -472,7 +481,9 @@ class ConfManager(
         {'key':'ZMS.pathhandler.id_quote.mapping','title':'Declarative IDs-Mapping','desc':'ZMS can map characters in DC.Title.Alt to declarative IDs.','datatype':'string','default':' _-_/_'},
         {'key':'ZMS.preview.contentEditable','title':'Content-Editable Preview','desc':'Make content in ZMS preview editable','datatype':'boolean','default':1},
         {'key':'ZMS.pathcropping','title':'Crop URLs','desc':'ZMS can crop the SERVER_NAME from URLs.','datatype':'boolean'},
-        {'key':'ZMS.manage_tabs_message','title':'Global Message','desc':'ZMS can display a global message for all users in the management interface.','datatype':'text'},
+        {'key':'ZMS.manage_tabs_message','title':'Global Message: Success (green)','desc':'ZMS can display a global message for all users in the management interface.','datatype':'text'},
+        {'key':'ZMS.manage_tabs_warning_message','title':'Global Message: Warning (yellow)','desc':'ZMS can display a global message for all users in the management interface.','datatype':'text'},
+        {'key':'ZMS.manage_tabs_danger_message','title':'Global Message: Danger (red)','desc':'ZMS can display a global message for all users in the management interface.','datatype':'text'},
         {'key':'ZMS.http_accept_language','title':'Http Accept Language','desc':'ZMS can use the HTTP_ACCEPT_LANGUAGE request-parameter to determine initial language.','datatype':'boolean'},
         {'key':'ZMS.export.domains','title':'Export resources from external domains','desc':'ZMS can export resources from external domains in the HTML export.','datatype':'string'},
         {'key':'ZMS.export.pathhandler','title':'Export XHTML with decl. Document Ids','desc':'Please activate this option, if you would like to generate declarative document URLs for static XHTML-Export: /documentname/index_eng.html will be transformed to /documentname.html','datatype':'boolean'},
@@ -484,9 +495,10 @@ class ConfManager(
         {'key':'ZMS.input.file.plugin','title':'File.upload input','desc':'ZMS can use custom input-fields for file-upload.','datatype':'string','options':['input_file', 'jquery_upload'],'default':'input_file'},
         {'key':'ZMS.input.file.maxlength','title':'File.upload maxlength','desc':'ZMS can limit the maximum upload-file size to the given value (in Bytes).','datatype':'string'},
         {'key':'ZMS.input.image.maxlength','title':'Image.upload maxlength','desc':'ZMS can limit the maximum upload-image size to the given value (in Bytes).','datatype':'string'},
+        {'key':'ZMS.log.root','title':'ZMS.log.root','desc':'Use ZMSLog at absolute root node instead of current portal master','datatype':'boolean'},
         {'key':'ZMSGraphic.superres','title':'Image superres-attribute','desc':'Super-resolution attribute for ZMS standard image-objects.','datatype':'boolean','default':0},
         {'key':'ZCatalog.TextIndexType','title':'Search with TextIndex-type','desc':'Use specified TextIndex-type (default: ZCTextIndex)','datatype':'string','default':'ZCTextIndex'},
-        {'key':'ZMSIndexZCatalog.ObjectImported.reindex','title':'Reindex ZMSIndex on content import','desc':'Please be aware that activating implicit ZMSIndex-resync on content import can block bigger sites for a while','datatype':'boolean','default':1},
+        {'key':'ZMSIndexZCatalog.ObjectImported.reindex','title':'Reindex ZMSIndex on content import','desc':'Please be aware that activating implicit ZMSIndex-resync on content import can block bigger sites for a while','datatype':'boolean','default':0},
         {'key':'ZMSIndexZCatalog.ObjectImported.resync','title':'Resync ZMSIndex on content import','desc':'Please be aware that activating implicit ZMSIndex-resync on content import can block bigger sites for a while','datatype':'boolean','default':0},
         {'key':'ZReferableItem.validateLinkObj','title':'Auto-correct inline-links on save','desc':'Ensure valid inline-links by text-parsing and using ZMSIndex for refreshing target urls on save event','datatype':'boolean','default':1},
       ]
@@ -499,13 +511,9 @@ class ConfManager(
       """ ConfManager.getConfProperties """
       d = self.get_conf_properties()
       if REQUEST is not None:
-        import base64
         prefix = str(base64.b64decode(prefix),'utf-8')
-        r = {}
-        for x in d:
-          if x.startswith(prefix+'.'):
-            r[k] = d[k]
-        return self.str_json(r)
+        r = {x:d[x] for x in d if x.startswith(prefix+'.')}
+        return json.dumps(r)
       if inherited:
         d = list(d)
         portalMaster = self.getPortalMaster()
@@ -563,18 +571,10 @@ class ConfManager(
       default = kwargs.get('default')
       REQUEST = kwargs.get('REQUEST')
       if REQUEST is not None:
-        import base64
-        try:
-          #Py3
-          key = str(base64.b64decode(key),'utf-8')
-        except:
-          #Py2
-          key = base64.b64decode(key)
-      try:
+        key = str(base64.b64decode(key),'utf-8')
+      if hasattr(OFS.misc_.misc_,'zms'):
         if key in OFS.misc_.misc_.zms['confdict']:
           default = OFS.misc_.misc_.zms['confdict'].get(key)
-      except:
-        pass
       value = default
       confdict = self.getConfProperties()
       if key in confdict:
@@ -743,16 +743,14 @@ class ConfManager(
           meta_type = REQUEST.get('meta_type', '')
           if meta_type == 'Sequence':
             obj = _sequence.Sequence()
-            self._setObject(obj.id, obj)
-            message = 'Added '+meta_type
           elif meta_type == 'ZMSLog':
             obj = zmslog.ZMSLog()
-            self._setObject(obj.id, obj)
-            message = 'Added '+meta_type
+          elif meta_type == 'ZMSIndex':
+            obj = zmsindex.ZMSIndex()
           else:
             obj = ConfDict.forName(meta_type+'.'+meta_type)()
-            self._setObject(obj.id, obj)
-            message = 'Added '+meta_type
+          self._setObject(obj.id, obj)
+          message = 'Added '+meta_type
         elif btn == 'Remove':
           ids = REQUEST.get('ids', [])
           if ids:
@@ -844,6 +842,22 @@ class ConfManager(
       # Return with message.
       message = standard.url_quote(message)
       return RESPONSE.redirect('manage_customizeDesignForm?lang=%s&manage_tabs_message=%s'%(lang, message))
+
+
+    ############################################################################
+    ###
+    ###   Component ZMSSysConf
+    ###
+    ############################################################################
+
+    def getZMSSysConf(self):
+      sys_conf = getattr(self,"sys_conf",None)
+      if sys_conf is None:
+        sys_conf = _conf.ZMSSysConf()
+        self._setObject(sys_conf.id, sys_conf)
+        sys_conf = getattr(self, sys_conf.id, None)
+        sys_conf.initialize()
+      return sys_conf
 
 
     ############################################################################
@@ -1036,29 +1050,13 @@ class ConfManager(
 
     ############################################################################
     ###
-    ###   Interface IZMSRepositoryManager: delegate
-    ###
-    ############################################################################
-
-    def getRepositoryManager(self):
-      manager = [x for x in self.getDocumentElement().objectValues() if IZMSRepositoryManager.IZMSRepositoryManager in list(providedBy(x))]
-      if len(manager)==0:
-        class DefaultManager(object):
-          def exec_auto_commit(self, provider, id): return True
-          def exec_auto_update(self): return True
-        manager = [DefaultManager()]
-      return manager[0]
-
-
-    ############################################################################
-    ###
     ###   Interface IZMSWorkflowProvider: delegate
     ###
     ############################################################################
 
     def getWorkflowManager(self):
-      manager = [x for x in self.getDocumentElement().objectValues() if x.getId() == 'workflow_manager']
-      if len(manager) == 0:
+      manager = getattr(self.getDocumentElement(),'workflow_manager',None)
+      if manager is None:
         class DefaultManager(object):
           def importXml(self, xml): pass
           def getAutocommit(self): return True
@@ -1068,8 +1066,8 @@ class ConfManager(
           def getActivityDetails(self, id): return None
           def getTransitions(self): return []
           def getTransitionIds(self): return []
-        manager = [DefaultManager()]
-      return manager[0]
+        manager = DefaultManager()
+      return manager
 
 
     ############################################################################
@@ -1101,41 +1099,19 @@ class ConfManager(
     ############################################################################
 
     def getCatalogAdapter(self):
-      for ob in self.objectValues():
-        if IZMSCatalogAdapter.IZMSCatalogAdapter in list(providedBy(ob)):
-          return ob
+      from Products.zms import IZMSCatalogAdapter, ZMSZCatalogAdapter
+      path_nodes = self.breadcrumbs_obj_path()
+      path_nodes.reverse()
+      for path_node in path_nodes:
+        for ob in path_node.objectValues():
+          if IZMSCatalogAdapter.IZMSCatalogAdapter in list(providedBy(ob)):
+            return ob
+      # If no ZMSZCatalogAdapter then add one to root node
       adapter = ZMSZCatalogAdapter.ZMSZCatalogAdapter()
-      self._setObject( adapter.id, adapter)
+      path_nodes[0]._setObject( adapter.id, adapter)
       adapter = getattr(self, adapter.id)
       adapter.initialize()
       return adapter
-
-
-    ############################################################################
-    ###
-    ###   Interface IZMSLocale: delegate
-    ###
-    ############################################################################
-
-    def getLocale(self):
-      return self
-
-    """
-    def get_manage_langs(self):
-      return self.getLocale().get_manage_langs()
-
-    def get_manage_lang(self):
-      return self.getLocale().get_manage_lang()
-
-    def getZMILangStr(self, key, REQUEST=None, RESPONSE=None):
-      return self.getLocale().getZMILangStr( key)
-
-    def getLangStr(self, key, lang=None):
-      return self.getLocale().getLangStr( key, lang)
-
-    def getPrimaryLanguage(self):
-      return self.getLocale().getPrimaryLanguage()
-    """
 
 
 # call this to initialize framework classes, which
@@ -1146,14 +1122,13 @@ __REGISTRY__ = None
 def getRegistry():
     global __REGISTRY__
     if __REGISTRY__ is None:
-        print("__REGISTRY__['confdict']",__REGISTRY__)
         __REGISTRY__ = {}
         try:
           __REGISTRY__['confdict'] = ConfDict.get()
         except:
-          import sys, traceback, string
+          import sys, traceback
           type, val, tb = sys.exc_info()
-          sys.stderr.write(string.join(traceback.format_exception(type, val, tb), ''))
+          sys.stderr.write(''.join(traceback.format_exception(type, val, tb)))
     return __REGISTRY__
 getRegistry()
 

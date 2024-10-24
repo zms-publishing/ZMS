@@ -4,7 +4,7 @@
 		zmscontext options/zmscontext;
 		subclass      python:[zmscontext.meta_id];
 		title         python:zmscontext.attr('title');
-		titlealt      python:zmscontext.attr('titlealt');
+		titlealt      python:zmscontext.attr('titlealt') or zmscontext.attr('title');
 		file          python:zmscontext.attr('file');
 		align         python:zmscontext.attr('align');
 		displaytype   python:zmscontext.attr('displaytype');

@@ -193,6 +193,16 @@
         
 
         
+            <div class="itemName"><code><a href="#duplicate_object" class="internal-link" title="zms.zmsindex.ZMSIndex.duplicate_object">duplicate<wbr></wbr>_object</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
             <div class="itemName"><code><a href="#get_catalog" class="internal-link" title="zms.zmsindex.ZMSIndex.get_catalog">get<wbr></wbr>_catalog</a></code>
             </div>
         
@@ -254,6 +264,16 @@
 
         
             <div class="itemName"><code><a href="#manage_resync" class="internal-link" title="zms.zmsindex.ZMSIndex.manage_resync">manage<wbr></wbr>_resync</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#manage_sub_options" class="internal-link" title="zms.zmsindex.ZMSIndex.manage_sub_options">manage<wbr></wbr>_sub<wbr></wbr>_options</a></code>
             </div>
         
 
@@ -343,6 +363,16 @@
 
         
             <div class="itemName"><code><a href="#manage_main" class="internal-link" title="zms.zmsindex.ZMSIndex.manage_main">manage<wbr></wbr>_main</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#manage_options_default_action" class="internal-link" title="zms.zmsindex.ZMSIndex.manage_options_default_action">manage<wbr></wbr>_options<wbr></wbr>_default<wbr></wbr>_action</a></code>
             </div>
         
 
@@ -454,7 +484,7 @@
         </div>
 
         <div class="extrasDocstring">
-          <p><code><span class="py-keyword">class</span> <span class="py-defname">ZMSIndex</span>(ZMSItem.ZMSItem): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L39" class="sourceLink">(source)</a></code></p>
+          <p><code><span class="py-keyword">class</span> <span class="py-defname">ZMSIndex</span>(ZMSItem.ZMSItem): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L43" class="sourceLink">(source)</a></code></p><p>Implements interfaces: Products.zms.IZMSConfigurationProvider.IZMSConfigurationProvider</p>
           <p><a href="classIndex.html#zms.zmsindex.ZMSIndex">View In Hierarchy</a></p>
         </div>
 
@@ -463,7 +493,7 @@
         </div>
 
         <div id="splitTables">
-          <table class="children sortable" id="id156">
+          <table class="children sortable" id="id163">
   
   
   <tr class="method">
@@ -480,6 +510,11 @@
     
     <td>Method</td>
     <td><code><a href="#doi" class="internal-link" title="zms.zmsindex.ZMSIndex.doi">doi</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#duplicate_object" class="internal-link" title="zms.zmsindex.ZMSIndex.duplicate_object">duplicate<wbr></wbr>_object</a></code></td>
     <td><span class="undocumented">Undocumented</span></td>
   </tr><tr class="method">
     
@@ -516,6 +551,11 @@
     <td>Method</td>
     <td><code><a href="#manage_resync" class="internal-link" title="zms.zmsindex.ZMSIndex.manage_resync">manage<wbr></wbr>_resync</a></code></td>
     <td>ZMSIndex.manage_resync</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#manage_sub_options" class="internal-link" title="zms.zmsindex.ZMSIndex.manage_sub_options">manage<wbr></wbr>_sub<wbr></wbr>_options</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
   </tr><tr class="method">
     
     <td>Method</td>
@@ -559,6 +599,11 @@
   </tr><tr class="classvariable">
     
     <td>Class Variable</td>
+    <td><code><a href="#manage_options_default_action" class="internal-link" title="zms.zmsindex.ZMSIndex.manage_options_default_action">manage<wbr></wbr>_options<wbr></wbr>_default<wbr></wbr>_action</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="classvariable">
+    
+    <td>Class Variable</td>
     <td><code><a href="#meta_type" class="internal-link" title="zms.zmsindex.ZMSIndex.meta_type">meta<wbr></wbr>_type</a></code></td>
     <td><span class="undocumented">Undocumented</span></td>
   </tr><tr class="classvariable">
@@ -591,7 +636,7 @@
   <div class="functionHeader">
     
     <span class="py-keyword">def</span> <span class="py-defname">__init__</span>(self):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L69">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L80">
       
       (source)
     </a>
@@ -613,7 +658,7 @@
   <div class="functionHeader">
     
     <span class="py-keyword">def</span> <span class="py-defname">catalog_object</span>(self, catalog, node, regenerate_duplicates=False):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L184">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L227">
       
       (source)
     </a>
@@ -635,7 +680,29 @@
   <div class="functionHeader">
     
     <span class="py-keyword">def</span> <span class="py-defname">doi</span>(self):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L640">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L660">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms.zmsindex.ZMSIndex.duplicate_object">
+    
+  </a>
+  <a name="duplicate_object">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">duplicate_object</span>(self, catalog, node, regenerate_duplicates=False):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L204">
       
       (source)
     </a>
@@ -656,8 +723,8 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">get_catalog</span>(self, createIfNotExists=True):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L146">
+    <span class="py-keyword">def</span> <span class="py-defname">get_catalog</span>(self, recreate=False):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L160">
       
       (source)
     </a>
@@ -679,7 +746,7 @@
   <div class="functionHeader">
     
     <span class="py-keyword">def</span> <span class="py-defname">get_index_names</span>(self, complete=True):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L175">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L193">
       
       (source)
     </a>
@@ -701,7 +768,7 @@
   <div class="functionHeader">
     
     <span class="py-keyword">def</span> <span class="py-defname">get_log</span>(self, log, request):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L139">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L153">
       
       (source)
     </a>
@@ -723,7 +790,7 @@
   <div class="functionHeader">
     
     <span class="py-keyword">def</span> <span class="py-defname">initialize</span>(self):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L75">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L86">
       
       (source)
     </a>
@@ -745,7 +812,7 @@
   <div class="functionHeader">
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_options</span>(self):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L51">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L59">
       
       (source)
     </a>
@@ -766,8 +833,8 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">manage_reindex</span>(self, regenerate_duplicates=False):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L225">
+    <span class="py-keyword">def</span> <span class="py-defname">manage_reindex</span>(self, regenerate_all=None, regenerate_duplicates=None, REQUEST=None):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L248">
       
       (source)
     </a>
@@ -790,7 +857,7 @@
   <div class="functionHeader">
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_resync</span>(self):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L318">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L340">
       
       (source)
     </a>
@@ -804,6 +871,28 @@
 </div><div class="basemethod">
   
   
+  <a name="zms.zmsindex.ZMSIndex.manage_sub_options">
+    
+  </a>
+  <a name="manage_sub_options">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">manage_sub_options</span>(self):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L62">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
   <a name="zms.zmsindex.ZMSIndex.manage_test">
     
   </a>
@@ -813,7 +902,7 @@
   <div class="functionHeader">
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_test</span>(self):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L266">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L288">
       
       (source)
     </a>
@@ -836,7 +925,7 @@
   <div class="functionHeader">
     
     <span class="py-keyword">def</span> <span class="py-defname">ObjectAdded</span>(self, context):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L93">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L106">
       
       (source)
     </a>
@@ -858,7 +947,7 @@
   <div class="functionHeader">
     
     <span class="py-keyword">def</span> <span class="py-defname">ObjectImported</span>(self, context):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L81">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L93">
       
       (source)
     </a>
@@ -880,7 +969,7 @@
   <div class="functionHeader">
     
     <span class="py-keyword">def</span> <span class="py-defname">ObjectMoved</span>(self, context):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L109">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L123">
       
       (source)
     </a>
@@ -902,7 +991,7 @@
   <div class="functionHeader">
     
     <span class="py-keyword">def</span> <span class="py-defname">ObjectRemoved</span>(self, context):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L126">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L140">
       
       (source)
     </a>
@@ -924,7 +1013,7 @@
   <div class="functionHeader">
     
     <span class="py-keyword">def</span> <span class="py-defname">uncatalog_object</span>(self, catalog, node):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L213">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L239">
       
       (source)
     </a>
@@ -946,7 +1035,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">catalog_id</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L62">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L73">
       
       (source)
     </a>
@@ -969,7 +1058,30 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_main</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L59">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L70">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseclassvariable">
+  
+  
+  <a name="zms.zmsindex.ZMSIndex.manage_options_default_action">
+    
+  </a>
+  <a name="manage_options_default_action">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">manage_options_default_action</span>: <code>str</code> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L58">
       
       (source)
     </a>
@@ -992,7 +1104,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">meta_type</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L43">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L51">
       
       (source)
     </a>
@@ -1015,7 +1127,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_icon</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L44">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L52">
       
       (source)
     </a>
@@ -1038,7 +1150,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">id</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L70">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L81">
       
       (source)
     </a>

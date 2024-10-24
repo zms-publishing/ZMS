@@ -27,13 +27,12 @@ $ZMI.registerReady(function(){
 						$ZMILocalStorageAPI.replace(key,bookmarks);
 						var frames = window.parent.frames;
 						try {
-						for (var i = 0; i < frames.length; i++) {
-							if (frames[i] != window && typeof frames[i].zmiBookmarksChanged == "function") {
-								frames[i].zmiBookmarksChanged();
+							for (var i = 0; i < frames.length; i++) {
+								if (frames[i] != window && typeof frames[i].zmiBookmarksChanged == "function") {
+									frames[i].zmiBookmarksChanged();
+								}
 							}
-						}
-						}
-						catch (e) {
+						} catch (e) {
 						}
 					});
 					var index = bookmarks.indexOf(data_path);
@@ -58,13 +57,12 @@ $ZMI.registerReady(function(){
 			$ZMILocalStorageAPI.replace(key,history);
 			var frames = window.parent.frames;
 			try {
-			for (var i = 0; i < frames.length; i++) {
-				if (frames[i] != window && typeof frames[i].zmiHistoryChanged == "function") {
-					frames[i].zmiHistoryChanged();
+				for (var i = 0; i < frames.length; i++) {
+					if (frames[i] != window && typeof frames[i].zmiHistoryChanged == "function") {
+						frames[i].zmiHistoryChanged();
+					}
 				}
-			}
-			}
-			catch (e) {
+			} catch (e) { 
 			}
 		}
 	});
@@ -83,7 +81,7 @@ $ZMI.registerReady(function(){
 						df = new Array();
 						for(dc=0;dc<dtsplit.length;dc++) {
 							df[dfsplit[dc]]=dtsplit[dc];
-							df[dfsplit[dc].substr(1)]=parseInt(dtsplit[dc]);
+							df[dfsplit[dc].substring(1)]=parseInt(dtsplit[dc]);
 						}
 						var dstring = df['%Y']+'-'+df['%m']+'-'+df['%d']+' '+df['%H']+':'+df['%M']+':'+df['%S'];
 						var date = new Date(df['Y'],df['m']-1,df['d']);
@@ -116,7 +114,7 @@ $ZMI.registerReady(function(){
 	// Toggle: Classical Sitemap Icon
 	$('a#navbar-sitemap').each(function() {
 		var $a = $(this);
-		if (self.window.parent.frames.length > 1 && typeof self.window.parent != "undefined" && (self.window.parent.location+"").indexOf('dtpref_sitemap=1') > 0) {
+		if (self.window.parent.frames.length > 1 && typeof self.window.parent != "undefined" && typeof self.window.parent.frames.manage_menu == "undefined") {
 			$a.attr('target','_top');
 		}
 		else {
@@ -154,7 +152,7 @@ $ZMI.registerReady(function(){
 		}
 	});
 
-	// Titleimage: Video-Preview on Hover 
+	// Titleimage: Video-Preview on Hover
 	if ($('.object_has_titleimage')) {
 		$('.object_has_titleimage i.preview_on_hover').each( function() {
 			var media_url = $(this).data('preview_url');
@@ -252,10 +250,10 @@ $ZMI.registerReady(function(){
 		var $single_line = $(this);
 		var $textarea = $('textarea',this);
 		$textarea.prop({rows:1,wrap:'off'});
-		
+
 		if ($single_line.hasClass("zmi-code")) {
 			$('textarea',$single_line).on('focus', function() {
-				if ( !$(this).hasClass('open-zmi-code') ) {
+				if ( !$(this).hasClass('open-zmi-code') && !($(this).val()=='') ) {
 					$(this)
 						.addClass('open-zmi-code')
 						.removeClass('alert-warning')
@@ -265,7 +263,6 @@ $ZMI.registerReady(function(){
 						$(this).dblclick(function(e) {
 							// Show Zope Code editor only if no text is selected
 							var seltxt = window.getSelection().toString();
-							// debugger; console.log('Selected text: ' + seltxt + ' ' + seltxt.length + ' ' +!/\s/.test(seltxt) );
 							if ( seltxt.length == 0 || /\s/.test(seltxt) ) {
 								$('.zmi-code-close',$single_line).remove();
 								$('textarea',$single_line)
@@ -294,7 +291,7 @@ $ZMI.registerReady(function(){
 			});
 			return;
 		}
-		
+
 		if ($single_line.hasClass("zmi-nodes")) {
 			$textarea.prop({title:getZMILangStr('ATTR_NODE')});
 		}
@@ -357,7 +354,7 @@ $ZMI.registerReady(function(){
 		}
 	});
 
-	// Double-Clickable
+	// Double-Clickable (TODO: to be specified for data grids that lead row-wise to a dataset form!)
 	$('table.table-hover tbody tr')
 		.dblclick( function(evt) {
 			var href = null;
@@ -369,7 +366,7 @@ $ZMI.registerReady(function(){
 			}
 			if (!(href==null || typeof href=="undefined")) {
 				self.location.href = href;
-			} 
+			}
 		})
 		.attr( "title", "Double-click to edit!");
 
@@ -528,9 +525,9 @@ $ZMI.registerReady(function(){
 	$("#subTab ul.nav.nav-tabs").each(function() {
 		var anchor = $("a:first",this).attr("href");
 		if (self.location.href.indexOf("#")>0) {
-			anchor = self.location.href.substr(self.location.href.indexOf("#")+1);
+			anchor = self.location.href.substring(self.location.href.indexOf("#")+1);
 			if (anchor.indexOf('_')==0) {
-				anchor = anchor.substr(1);
+				anchor = anchor.substring(1);
 			}
 			anchor = '#'+anchor;
 		}
@@ -551,13 +548,12 @@ $ZMI.registerReady(function(){
 	$ZMI.setCursorAuto("EO bootstrap.plugin.zmi");
 
 	// Set Save-Button Behaviour: Menu Lock
-	$('#menulock').prop('checked', JSON.parse($ZMILocalStorageAPI.get('ZMS.menulock',false)));
+	$('#menulock').val(+JSON.parse($ZMILocalStorageAPI.get('ZMS.menulock',0)));
 
 	// ZMSLightbox
 	$('a.zmslightbox, a.fancybox')
 		.each(function() {
 				var $img = $("img",$(this));
-				console.log('Found ZMSLightbox Element');
 				$img.attr("data-hiresimg",$(this).attr("href"));
 				$(this).click(function() {
 					return showFancybox($img);
@@ -618,7 +614,7 @@ ZMI.prototype.initInputFields = function(container) {
 			$("i:first",$(".collapse.show",context).prev('.card-header')).removeClass("fa-caret-right").addClass("fa-caret-down");
 			$("a.card-toggle",this).click(function(){
 				$(this).blur();
-				var id = $(this).attr('href').substr(1);
+				var id = $(this).attr('href').substring(1);
 				var key = "ZMS."+data_root+".collapse-"+id;
 				var $icon = $("i:first",this);
 				var showing = $icon.hasClass("fa-caret-down")?1:0;
@@ -674,14 +670,14 @@ ZMI.prototype.initInputFields = function(container) {
 				var labelText = $label.text().basicTrim();
 				var $controlGroup = $label.parents(".form-group");
 				var $controls = $("div:first",$controlGroup);
-				var $control = $('input[name='+forName+'],select:not([name^="zms_mms_src_"])',$controls);
+				var $control = $('input[name='+forName+'],textarea[name='+forName+'],select:not([name^="zms_mms_src_"])',$controls);
 				$label.attr("title","");
 				$control.attr("title","");
 				if ($control.length==1) {
 					var isBlank = false;
 					var nodeName = $control.prop("nodeName").toLowerCase();
 					var nodeType = $control.prop("type").toLowerCase();
-					if (nodeName=="input") {
+					if (nodeName=="input" || nodeName=="textarea") {
 						if ($control.val().basicTrim().length==0 && typeof $control.attr("data-value-attr")!="undefined") {
 							$control.val($control.attr($control.attr("data-value-attr")));
 						}
@@ -695,7 +691,7 @@ ZMI.prototype.initInputFields = function(container) {
 						}
 					}
 					else if (nodeName=="select") {
-						isBlank =  (($("option:selected",$control).length==0) 
+						isBlank =  (($("option:selected",$control).length==0)
 							|| ($("option:selected",$control).length==1 && $("option:selected",$control).attr("value")==""))
 							&& !$control.attr("disabled")=="disabled";
 					}
@@ -979,16 +975,13 @@ ZMI.prototype.initInputFields = function(container) {
 				var $label = $(this);
 				$label.prepend('<i class="fas fa-exclamation"></i>');
 			});
-			// Check for intermediate modification by other user
+			// Check for intermediate modification (by other user)
 			$("input,select,textarea",this).each(function() {
 				var $this = $(this);
-				$this.attr("data-initial-value",$this.val());
-				$this.change(function() {
-					if ($this.val()==$this.attr("data-initial-value")) {
-						$this.removeClass("form-modified");
-					} else {
-						$this.addClass("form-modified");
-					}
+				const initialValue = $this.val();
+				$this.attr("data-initial-value",initialValue);
+				$this.keyup(function() {
+					$ZMI.set_form_modified($this,initialValue);
 				});
 			});
 			// Icon-Class
@@ -1007,9 +1000,11 @@ ZMI.prototype.initInputFields = function(container) {
 				$input.prev().on('click', function() {
 					// Show icon details on https://fontawesome.com/v5
 					var s = '';
-					if ( $input.val().split('fa-').length > 1 ) {
-						s = $input.val().split('fa-')[1];
-					};
+					$input.val().split(' ').forEach(function(v) {
+						if ( v.split('fa-').length > 1 ) {
+							s = v.split('fa-')[1];
+						};
+					});
 					window.open('https://fontawesome.com/v5/search?m=free&q=' + s,'Fontawesome-V5','toolbar=no,scrollbars=yes,resizable=yes,top=100,left=100,width=480,height=720');
 				});
 			});
@@ -1019,7 +1014,7 @@ ZMI.prototype.initInputFields = function(container) {
 			var $richedits = $('div[id^="zmiStandardEditor"]',this);
 			if ($richedits.length > 0) {
 				$richedits.each(function() {
-					var elName = $(this).attr("id").substr("zmiStandardEditor".length);
+					var elName = $(this).attr("id").substring("zmiStandardEditor".length);
 					zmiRichtextInit(elName);
 					var v = $("#"+elName).val();
 					function matchAll(source, regexp) {
@@ -1212,11 +1207,14 @@ ZMI.prototype.iframe = function(href, data, opt) {
 			var $result = $(result);
 			if ($("div#system_msg",$result).length>0) {
 				var manage_tabs_message = $("div#system_msg",$result).text();
-				manage_tabs_message = manage_tabs_message.substr(0,manage_tabs_message.lastIndexOf("("));
+				manage_tabs_message = manage_tabs_message.substring(0,manage_tabs_message.lastIndexOf("("));
 				var href = self.location.href;
-				href = href.substr(0,href.indexOf("?"))+"?lang="+getZMILang()+"&manage_tabs_message="+manage_tabs_message;
+				href = href.substring(0,href.indexOf("?"))+"?lang="+getZMILang()+"&manage_tabs_message="+manage_tabs_message;
 				self.location.href = href;
 			} else {
+				if (opt['json']) {
+					result = `<pre class="zmi-code json">${JSON.stringify(result, null, space=4)}</pre>`;
+				}
 				opt['body'] = result;
 				if (typeof opt['title'] == "undefined") {
 					var title = $("div.zmi",result).attr("title");
@@ -1241,106 +1239,102 @@ $ZMI.objectTree = new ZMIObjectTree();
 
 ZMIObjectTree.prototype.init = function(s,href,p) {
 	var that = this;
-	that.p = p;
+	that.p = p?p:{};
+	that.p.params = that.p.params?that.p.params:{};
 	// Init preselected active.
 	that.active = [];
-	href = href+"/"+(typeof p['init.href'] != "undefined"?p['init.href']:"ajaxGetParentNodes");
 	$(s).html('<i class="fas fa-spinner fa-spin"></i>&nbsp;'+getZMILangStr('MSG_LOADING'));
-	var params = {lang:getZMILang(),preview:'preview'};
-	if (typeof that.p["params"] == "object") {
-		for (var i in that.p["params"]) {
-			params[i] = that.p["params"][i];
-		}
-	}
-	$.get(href,params,function(result) {
-		$(s).html("");
+	var doc_href = $ZMI.get_document_element_url($ZMI.getPhysicalPath());
+	that.metamodel = $.ajax({
+		url: $ZMI.get_rest_api_url(doc_href)+'/metaobj_manager',
+		async: false
+		}).responseJSON;
+	that.p.params.lang = getZMILang();
+	$.get($ZMI.get_rest_api_url(href)+'/get_parent_nodes', that.p.params, function(result) {
+		$(s).html('');
 		var context = s;
-		var pages = $("page",result);
-		for (var i = 0; i < pages.length; i++) {
-			var $page = $(pages[i]);
-			var page_home_id = $page.attr("home_id");
-			var page_id = $page.attr("id").substr(page_home_id.length+1);
-			var html = that.addPages([pages[i]]);
+		result.forEach(node => {
+			var html = that.addPages([node]);
 			$(context).append(html);
 			if (typeof that.p['addPages.callback'] == 'function') {
 				that.p['addPages.callback']();
-			}
-			context = "ul[data-home-id="+page_home_id+"][data-id="+page_id+"] li";
+			};
+			context = `ul[data-id="${node.uid}"] li`;
 			// Remember preselected active.
-			that.active.push({id:page_id,home_id:page_home_id});
-		}
-		$("li",s).addClass("active");
+			that.active.push({id:node.uid});
+		});
+		$('li',s).addClass('active');
 		var callback = that.p['init.callback'];
-		if (typeof callback != "undefined") {
+		if (typeof callback != 'undefined') {
 			callback();
 		}
 	});
 }
 
-ZMIObjectTree.prototype.addPages = function(pages) {
+ZMIObjectTree.prototype.addPages = function(nodes) {
 	var that = this;
 	var html = "";
-	for (var i=0; i<pages.length;i++) {
-		var $page = $(pages[i]);
-		var titlealt = "";
-		var page_uid = $page.attr("uid");
-		var page_home_id = $page.attr("home_id");
-		var page_id = $page.attr("id").substr(page_home_id.length+1);
-		var page_absolute_url = $page.attr("absolute_url");
-		var page_physical_path = $page.attr("physical_path");
-		var link_url = $page.attr("index_html");
-		var page_is_active = $page.attr("active")=='1' || $page.attr("active")=='True';
-		var page_is_restricted = $page.attr("restricted")=='1' || $page.attr("restricted")=='True';
-		var page_is_page = $page.attr("is_page")=='1' || $page.attr("is_page")=='True';
-		var page_is_pageelement = $page.attr("is_pageelement")=='1' || $page.attr("is_pageelement")=='True';
-		var page_meta_type = $page.attr("meta_id");
-		var page_type = $page.attr("attr_dc_type");
-		var page_titlealt = $page.attr("titlealt");
-		var page_icon = $page.attr("zmi_icon");
-		var anchor = "";
+	if (that.p.filter) {
+		nodes = nodes.filter(that.p.filter);
+	};
+	// Ensure nodes as list type
+	nodes = nodes.length==undefined ? [nodes] : nodes;
+	nodes.forEach(node => {
+		var data_id = '{$'+node.uid+'}';
+		var link_url = node.index_html;
+		var icon = that.metamodel[node.meta_id] ? $ZMI.icon(that.metamodel[node.meta_id].icon_clazz) : $ZMI.icon('far fa-file');
+		var anchor = '';
+		var css = [ node.is_page ? 'is_page' : 'is_page_element' ];
+		var callback = that.p['toggleClick.callback'];
 
-		if (page_meta_type=='ZMSGraphic' && link_url) {
-			link_url = '<img data-id=&quot;' + page_uid + '&quot;' + ' src=&quot;' + link_url + '&quot;>';
-		} else if (page_meta_type=='ZMSFile' && link_url) {
+		if ((node.titlealt.toUpperCase().search('REDIRECT') > -1) &&
+			(node.attr_dc_identifier_url_redirect &&
+				node.attr_dc_identifier_url_redirect.trim() != '')) return;
+
+		if (node.meta_id == 'ZMSGraphic' && link_url) {
+			link_url = `<img data-id=&quot;${data_id}&quot; src=&quot;${link_url}&quot;>`;
+		} else if (node.meta_id == 'ZMSFile' && link_url) {
 			var $path_elements = link_url.split('/');
 			var $fname = $path_elements[$path_elements.length -1 ].split('?')[0];
-			link_url = '<a data-id=&quot;' + page_uid + '&quot;' + ' href=&quot;' + link_url + '&quot; target=&quot;_blank&quot;>' + $fname + '</a>'; 
+			link_url = `<a data-id=&quot;${data_id}&quot; src=&quot;${link_url}&quot; target=&quot;_blank&quot;>${$fname}</a>`;
 		};
-		var callback = that.p['toggleClick.callback'];
-		var css = [];
-		if (!page_is_active) {
+		if (!node.active) {
 			css.push("inactive");
 		};
-		if (page_is_restricted) {
+		if (node.restricted) {
 			css.push("restricted");
 		};
-		if (typeof(page_type) != 'undefined') { 
-			if ( page_type.length > 0 ) {
-				css.push('type-'+page_type)
-			}
+		if (node.attr_dc_type) {
+			css.push('type-' + node.attr_dc_type);
 		};
-		html += '<ul data-id="' + page_id + '" data-home-id="' + page_home_id + '" class="zmi-page ' + page_meta_type + '">';
-		html += '<li class="' + css.join(' ') + '">';
-		html += $ZMI.icon("fas fa-caret-right toggle",'title="+" onclick="$ZMI.objectTree.toggleClick(this' + (typeof callback=="undefined"?'':',' + callback) + ')"') + ' ';
-		if (page_is_pageelement) {
-			html += '<span style="cursor:help" onclick="$ZMI.objectTree.previewClick(this)" title="' + getZMILangStr('TAB_PREVIEW') + '"><i class="' + page_icon + '"></i></span> ';
+		html += `<ul data-id="${node.uid}" class="zmi-page ${node.meta_id}${node.is_page_element ? ' is_page_element' :''}">`;
+		html += `<li class="${css.join(' ')}">`;
+		if (!(that.p.params.meta_types == 'ZMS' && node.meta_id == 'ZMS' && !node.has_portal_clients)) {
+			html += `<i class="fas fa-caret-right toggle" title="+" onclick="$ZMI.objectTree.toggleClick(this ${typeof callback=='undefined' ? '' : ',' + callback})"></i> `;
+		} else {
+			html += `<i class="fas fa-caret-right toggle" title="-" style="visibility:hidden"></i> `;
+		};
+		if (node.is_page_element) {
+			if (node.meta_id == 'ZMSGraphic' && node.index_html) {
+				html += `<span class="preview_on_hover preview_image preview_ready" style="--preview_url:url(${node.index_html});cursor:help" title="${getZMILangStr('TAB_PREVIEW')}">${icon}</span> `;
+			} else {
+				html += `<span class="preview_on_hover preview_text" style="cursor:help" data-preview_text="Loading ..." onmouseover="$ZMI.objectTree.preview_load(this)" title="${getZMILangStr('TAB_PREVIEW')}">${icon}</span> `;
+			}
 		}
-		html += '<a href="' + page_absolute_url + '"'
-				+ ' data-link-url="' + link_url + '"'
-				+ ' data-uid="' + page_uid + '"'
-				+ ' data-page-physical-path="' + page_physical_path + '"'
-				+ ' data-anchor="' + anchor + '"'
-				+ ' data-page-is-page="' + page_is_page + '"'
-				+ ' data-page-titlealt="' + page_titlealt.replace(/"/g,'&quot;').replace(/'/g,'&apos;') + '"'
-				+ ' onclick="return zmiSelectObject(this);return false;">';
-		if (!page_is_pageelement) {
-			html += '<i class="' + page_icon + '"></i> ';
+		html += `<a href="${node.getPath}"
+			data-link-url="${link_url}"
+			data-uid="${node.uid}"
+			data-anchor="${anchor}"
+			data-page-titlealt="${node.titlealt.replace(/"/g,'&quot;').replace(/'/g,'&apos;')}"
+			onclick="return zmiSelectObject(this);return false;">`;
+		if (!node.is_page_element) {
+			html += icon + ' ';
 		}
-		html += page_titlealt;
+		html += node.titlealt;
 		html += '</a>';
 		html += '</li>';
 		html += '</ul><!-- .zmi-page -->';
-	}
+	});
 	return html;
 }
 
@@ -1353,46 +1347,20 @@ ZMIObjectTree.prototype.toggleClick = function(toggle, callback) {
 	$container.children("ul").remove();
 	if ($(toggle).hasClass("fa-caret-right")) {
 		$(toggle).removeClass("fa-caret-right").addClass("fa-caret-down").attr({title:'-'});
-		var href = '';
-		var homeId = null;
-		$(toggle).parents(".zmi-page").each(function(){
-			var dataId = $(this).attr("data-id");
-			var dataHomeId = $(this).attr("data-home-id");
-			if (homeId == null) {
-				homeId = dataHomeId;
-			}
-			if (homeId != dataHomeId) {
-				href = '/'+dataHomeId+'/'+homeId+href;
-				homeId = dataHomeId;
-			}
-			else {
-				href = '/'+dataId+href;
-			}
-		});
-		if (!href.indexOf('/'+homeId)==0) {
-			href = '/'+homeId+href;
-		}
-		var base = $ZMI.getPhysicalPath();
-		base = base.substr(0,base.indexOf('/'+homeId));
+		var uid = $("[data-uid]:first",$(toggle).parent()).attr("data-uid");
+		var href = $ZMI.get_document_element_url($ZMI.getPhysicalPath());
 		// Set wait-cursor.
 		$container.append('<div id="loading" class="zmi-page"><i class="fas fa-spinner fa-spin"></i>&nbsp;&nbsp;'+getZMILangStr('MSG_LOADING')+'</div>');
-		// JQuery.AJAX.get
-		var params = {lang:getZMILang(),preview:'preview',physical_path:$('meta[name=physical_path]').attr('content'),'get_attrs:int':0};
-		if (typeof that.p["params"] == "object") {
-			for (var i in that.p["params"]) {
-				params[i] = that.p["params"][i];
-			}
-		}
-		$.get(base+href+'/manage_ajaxGetChildNodes',params,function(result){
+		that.p.params.lang = getZMILang();
+		$.get($ZMI.get_rest_api_url(href)+'/'+uid+'/get_child_nodes', that.p.params, function(result){
 			// Reset wait-cursor.
 			$("#loading").remove();
-			// Get and iterate pages.
-			var pages = $('page',result);
-			if ( pages.length == 0) {
+			// Get and iterate result.
+			if ( result.length == 0) {
 				$(toggle).removeClass("fa-caret-down").attr({title:''});
 			}
 			else {
-				var html = that.addPages(pages);
+				var html = that.addPages(result);
 				$container.append(html);
 				if (typeof that.p['addPages.callback'] == 'function') {
 					that.p['addPages.callback']();
@@ -1400,7 +1368,7 @@ ZMIObjectTree.prototype.toggleClick = function(toggle, callback) {
 				// Set preselected active.
 				for (var i = 0; i < that.active.length; i++) {
 					var d = that.active[i];
-					$('ul[data-id='+d.id+'][data-home-id='+d.home_id+'] > li').addClass('active');
+					$("ul[data-id=\'"+d.id+"] > li").addClass('active');
 				}
 			}
 			if (typeof callback == 'function') {
@@ -1418,30 +1386,19 @@ ZMIObjectTree.prototype.toggleClick = function(toggle, callback) {
 }
 
 /**
- * Click preview.
+ * Load preview.
  */
-ZMIObjectTree.prototype.previewClick = function(sender) {
-	var that = this;
+ZMIObjectTree.prototype.preview_load = function(sender) {
 	var data_id = $(sender).closest('.zmi-page').attr('data-id');
-	if($('#zmi_preview_'+data_id).length > 0) {
-		$('#zmi_preview_'+data_id).remove();
-	}
-	else {
-		var coords = $ZMI.getCoords(sender);
-		var abs_url = $(sender).parent('li').children('[data-page-physical-path]').attr('data-page-physical-path');
-		$.get(abs_url+'/ajaxGetBodyContent',{lang:getZMILang(),preview:'preview'},function(data){
-			$('div.zmi-browse-iframe-preview').remove();
-			$('body').append(''
-				+'<div id="zmi_preview_'+data_id+'">'
-					+'<div class="zmi-browse-iframe-preview">'
-						+'<div class="btn btn-default" title="' + getZMILangStr('BTN_CLOSE') + '" style="position:absolute;border-radius:0;" onclick="$(\'#zmi_preview_'+data_id+'\').remove()"><i class="icon-remove fas fa-times"></i></div>'
-						+data
-					+'</div><!-- .zmi-browse-iframe-preview -->'
-				+'</div><!-- #zmi-preview -->'
-			);
-			$('div.zmi-browse-iframe-preview').css({top:coords.y+$(sender).height(),left:coords.x+$(sender).width()});
+	if(!$(sender).hasClass('preview_loaded')) {
+		var abs_url = $(sender).parent('li').children('a[href]').attr('href');
+		$.get($ZMI.get_rest_api_url(abs_url)+'/get_body_content',{lang:getZMILang(),preview:'preview'},function(data){
+			// Clean data as plain text
+			data = $(JSON.parse(data)).text().replaceAll('\n','');
+			$(sender).attr('data-preview_text',data);
+			$(sender).addClass('preview_loaded');
 		});
-	}
+	};
 }
 
 // #############################################################################
@@ -1500,7 +1457,7 @@ ZMIActionList.prototype.over = function(el, e, cb) {
 		if (!$(el).hasClass("loading")) {
 			if ($(".fa-plus-sign",this).length==0) {
 				var action = self.location.href;
-				action = action.substr(0,action.lastIndexOf("/")+1);
+				action = action.substring(0,action.lastIndexOf("/")+1);
 				if (context_id=="") {
 					action += "manage_properties";
 				}
@@ -1521,7 +1478,7 @@ ZMIActionList.prototype.over = function(el, e, cb) {
 	});
 	// Build action and params.
 	var action = zmiParams['base_url'];
-	action = action.substr(0,action.lastIndexOf("/"));
+	action = action.substring(0,action.lastIndexOf("/"));
 	action += "/manage_ajaxZMIActions";
 	var params = {};
 	params['lang'] = lang;
@@ -1535,7 +1492,6 @@ ZMIActionList.prototype.over = function(el, e, cb) {
 		$(el).append('<div class="dropdown-menu"></div>');
 		$ul = $(".dropdown-menu",el);
 		var startsWithSubmenu = actions.length > 1 && actions[1][0].indexOf("-----") == 0 && actions[1][0].lastIndexOf("-----") > 0;
-		console.log("[ZMIActionList.over]: startsWithSubmenu="+startsWithSubmenu);
 		var o = 0;
 		if (startsWithSubmenu) {
 			o = 2;
@@ -1543,8 +1499,8 @@ ZMIActionList.prototype.over = function(el, e, cb) {
 			var action = actions[1];
 			var optlabel = action[0];
 			var opticon = '<i class="fas fa-plus-sign"></i>';
-			optlabel = optlabel.substr("-----".length);
-			optlabel = optlabel.substr(0,optlabel.lastIndexOf("-----"));
+			optlabel = optlabel.substring("-----".length);
+			optlabel = optlabel.substring(0,optlabel.lastIndexOf("-----"));
 			optlabel = optlabel.basicTrim();
 			$("button.split-left",el).html(opticon+' '+optlabel);
 		}
@@ -1552,15 +1508,30 @@ ZMIActionList.prototype.over = function(el, e, cb) {
 			if (o==0 && i==1) {
 				$ul.append('<a class="dropdown-item" href="javascript:zmiToggleSelectionButtonClick($(\'li.zmi-item' + (id==''?':first':'#zmi_item_'+id) + '\'))"><i class="fas fa-check-square"></i> '+getZMILangStr('BTN_SLCTALL')+'/'+getZMILangStr('BTN_SLCTNONE')+'</a>');
 			}
+			// Standard commands/workflow provide 3 parameters
 			var action = actions[i];
 			var optlabel = action[0];
 			var optvalue = action[1];
-			var opticon = action.length>2?action[2]:'';
-			var opttitle = action.length>3?action[3]:'';
+			var opticon = action[2];
+			var optid = '';
+			var opttitle = '';
+			// Content objects provide 5 parameters
+			if (action.length==5) {
+				optid = action[3];
+				opttitle = action[4];
+			}
+			// Custom commands provide 6 parameters
+			if (action.length==6) {
+				var optlabel = action[1];
+				var optvalue = action[2];
+				var opticon = action[3];
+				var optid = action[4];
+				var opttitle = action[5];
+			}
 			if (optlabel.indexOf("-----") == 0 && optlabel.lastIndexOf("-----") > 0) {
 				opticon = '<i class="fas fa-caret-down"></i>';
-				optlabel = optlabel.substr("-----".length);
-				optlabel = optlabel.substr(0,optlabel.lastIndexOf("-----"));
+				optlabel = optlabel.substring("-----".length);
+				optlabel = optlabel.substring(0,optlabel.lastIndexOf("-----"));
 				optlabel = optlabel.basicTrim();
 				$ul.append('<div class="dropdown-header '+optvalue+'">'+opticon+' '+optlabel+'</div>');
 			}
@@ -1569,11 +1540,6 @@ ZMIActionList.prototype.over = function(el, e, cb) {
 					opticon = $ZMI.icon(opticon);
 				}
 				var html = '';
-				var optid = '';
-				if (optvalue.toLowerCase().indexOf('manage_addproduct/')==0) {
-					// opttitle is meta_id in case of insertable content objects
-					optid = opttitle;
-				}
 				html += '<a class="dropdown-item" title="'+opttitle+'" href="javascript:$ZMI.actionList.exec($(\'li.zmi-item' + (id==''?':first':'#zmi_item_'+id) + '\'),\'' + optlabel + '\',\'' + optvalue + '\',\'' + optid + '\')">';
 				html += opticon+' <span>'+optlabel+'</span>';
 				html += '</a>';
@@ -1645,9 +1611,8 @@ ZMIActionList.prototype.exec = function(sender, label, target, meta_id='') {
 		data['id_prefix'] = id_prefix;
 		var title = '<i class="fas fa-plus-sign"></i> ' + getZMILangStr('BTN_INSERT') + ':&nbsp;' + label;
 		// debugger;
-		if (meta_id!='') { 
+		if (meta_id!='') {
 			data['meta_id'] = meta_id;
-			console.log('ZMIActionList.exec meta_id = ' + meta_id )
 		}
 		$('<li id="manage_addProduct" class="zmi-item zmi-highlighted"><div class="center">'+title+'</div></li>').insertAfter($el.parents(".zmi-item"));
 		// Show add-dialog.
@@ -1668,7 +1633,7 @@ ZMIActionList.prototype.exec = function(sender, label, target, meta_id='') {
 					zmiModal("hide");
 				});
 				// Auto-Insert on models without attributes but not ZMSSqlDb or ZMSTable
-				if ( ['ZMSSqlDb','ZMSTable'].indexOf($('#ZMS_INSERT').val())==-1 && 
+				if ( ['ZMSSqlDb','ZMSTable'].indexOf($('#ZMS_INSERT').val())==-1 &&
 					$('#zmiIframeAddDialog .form-group:not([class*="activity"]) .form-control').length==0 ) {
 					$('#addInsertBtn').click();
 				}
@@ -1688,7 +1653,7 @@ ZMIActionList.prototype.exec = function(sender, label, target, meta_id='') {
 		$input.prop("checked",true);
 		zmiActionButtonsRefresh(sender);
 		var params = $ZMI.parseURLParams(target);
-		var target = target.indexOf("?")>0?target.substr(0,target.indexOf("?")):target;
+		var target = target.indexOf("?")>0?target.substring(0,target.indexOf("?")):target;
 		if (this.confirm($fm,target,params)) {
 			var c = 0;
 			for (var k in params) {
@@ -1791,7 +1756,7 @@ function zmiActionButtonsRefresh(sender,evt) {
  * @param v Boolean value for new (un-)checked state.
  */
 function zmiToggleSelectionButtonClick(sender,v) {
-	var $fm = $(sender).parents('form,.zmi-form-container');
+	var $fm = $(sender).closest('form,.zmi-form-container');
 	var $inputs = $('input:checkbox:not([id~="active"]):not([id~="attr_dc_coverage"])',$fm);
 	if (typeof v == "undefined") {
 		v = !$inputs.prop('checked');
@@ -1804,19 +1769,27 @@ function zmiToggleSelectionButtonClick(sender,v) {
  * zmiBrowseObjs
  */
 function zmiBrowseObjs(fmName, elName, lang) {
-	var elValue = '';
+	let title = getZMILangStr('CAPTION_CHOOSEOBJ');
+	let href = "manage_browse_iframe";
+	let elValue = '';
 	if (fmName.length>0 && elName.length>0) {
-		elValue = $('form[name='+fmName+'] input[name="'+elName+'"]').val();
-	}
-	var title = getZMILangStr('CAPTION_CHOOSEOBJ');
-	var href = "manage_browse_iframe";
+		// Get value of close input field, maybe in a modal dialog
+		$('form[name='+fmName+'] input[name="'+elName+'"]').each(function() {
+			if ( $(this).parents('div.modal.show').length > 0 ) {
+				elValue = $(this).val();
+				return false; // Exit the loop
+			} else {
+				elValue = $(this).val();
+			}
+		});
+	};
 	href += '?lang='+lang;
 	href += '&defaultLang='+lang;
 	href += '&fmName='+fmName;
 	href += '&elName='+elName;
-	href += '&elValue='+escape(elValue);
+	href += '&elValue='+encodeURIComponent(elValue);
 	if ( typeof selectedText == "string") {
-		href += '&selectedText=' + escape( selectedText);
+		href += '&selectedText=' + encodeURIComponent( selectedText);
 	}
 	zmiModal(null,{
 		body: '<iframe src="'+href+'" style="width:100%; min-width:'+$ZMI.getConfProperty('zmiBrowseObjs.minWidth','200px')+'; height:100%; min-height: '+$ZMI.getConfProperty('zmiBrowseObjs.minHeight','62vh')+'; border:0;"></iframe>',
@@ -1831,7 +1804,7 @@ function zmiBrowseObjsApplyUrlValue(fmName, elName, elValue, elTitle) {
 		$('form[name='+fmName+'] input[name^=title]:text').each(function() {
 			if ($(this).val()=='') {
 				$(this).val(elTitle).change();
-			} 
+			}
 		});
 	}
 }
@@ -1914,10 +1887,10 @@ function untagSelected(tag, leftDelimiter, rightDelimiter) {
 		range = range.slice(0,range.length-1);
 		post = " " + post;
 	}
-	var tagName = tag.indexOf(" ")>0?tag.substr(0,tag.indexOf(" ")):tag;
+	var tagName = tag.indexOf(" ")>0?tag.substring(0,tag.indexOf(" ")):tag;
 	var startTag = leftDelimiter + tag + rightDelimiter;
 	var startRe = new RegExp(leftDelimiter + tag + "(.*?)" + rightDelimiter, "gi");
-	var endTag = leftDelimiter + "/" + tagName + rightDelimiter; 
+	var endTag = leftDelimiter + "/" + tagName + rightDelimiter;
 	var endRe = new RegExp(leftDelimiter + "/" + tag + rightDelimiter, "gi");
 	var preMatch = pre.match(startRe);
 	var postMatch = post.match(endRe);
@@ -1947,8 +1920,8 @@ function tagSelected(tag, leftDelimiter, rightDelimiter) {
 		range = range.slice(0,range.length-1);
 		post = " " + post;
 	}
-	var tagName = tag.indexOf(" ")>0?tag.substr(0,tag.indexOf(" ")):tag;
-	var tagAttrs = tag.indexOf(" ")>0?tag.substr(tag.indexOf(" ")):"";
+	var tagName = tag.indexOf(" ")>0?tag.substring(0,tag.indexOf(" ")):tag;
+	var tagAttrs = tag.indexOf(" ")>0?tag.substring(tag.indexOf(" ")):"";
 	if (tagName == 'a' && tagAttrs == '') {
 		if (range.indexOf("@") > 0) {
 			tagAttrs = ' href="mailto:'+range+'"';
@@ -1959,11 +1932,11 @@ function tagSelected(tag, leftDelimiter, rightDelimiter) {
 	}
 	if (tagName == 'a' && tagAttrs == '') {
 		zmiBrowseObjs('','',getZMILang());
-	} 
+	}
 	else {
 		var startTag = leftDelimiter + tagName + tagAttrs + rightDelimiter;
 		var endTag = leftDelimiter + "/" + tagName + rightDelimiter;
-		var newRange = startTag + range + endTag; 
+		var newRange = startTag + range + endTag;
 		$(selectedInput).val(pre+newRange+post);
 		// Set selection.
 		var offset = startTag.length;
@@ -2084,7 +2057,7 @@ $ZMI.registerReady(function(){
 		} else {
 			$('.scroller-right').hide();
 		}
-		
+
 		if (getLeftPosi()<0) {
 			$('.scroller-left').show();
 		} else {
@@ -2121,32 +2094,34 @@ function isScrolledIntoView(elem) {
 $ZMI.registerReady(function(){
 	const scrollToTopButton = document.getElementById('js-top');
 	const stickyControls = document.getElementsByClassName('sticky-controls')[0];
-	window.onscroll = function () {
-		let y = window.scrollY;
-		if ( y > 42 ) {
-			// Show back-to-top button on scroll
-			scrollToTopButton.className = "back-to-top show";
-		} else {
-			scrollToTopButton.className = "back-to-top hide";
-		}
-		if (stickyControls!=undefined) {
-			if ( !isScrolledIntoView(stickyControls) ){
-				stickyControls.classList.add('sticky-controls-activated');
+	if ( scrollToTopButton || stickyControls ) {
+		window.onscroll = function () {
+			let y = window.scrollY;
+			if ( y > 42 && scrollToTopButton ) {
+				// Show back-to-top button on scroll
+				scrollToTopButton.className = "back-to-top show";
+			} else {
+				scrollToTopButton.className = "back-to-top hide";
 			}
-			if (y == 0) {
-				stickyControls.classList.remove('sticky-controls-activated');
+			if (stickyControls!=undefined) {
+				if ( !isScrolledIntoView(stickyControls) ){
+					stickyControls.classList.add('sticky-controls-activated');
+				}
+				if (y == 0) {
+					stickyControls.classList.remove('sticky-controls-activated');
+				}
 			}
-		}
-	};
-	// Scroll back-to-top after button click
-	if (scrollToTopButton) {
-		scrollToTopButton.onclick = () => {
-			$('html, body').animate({
-				scrollTop: 0
-			}, 600);
-			return false;
 		};
-	}
+		// Scroll back-to-top after button click
+		if (scrollToTopButton) {
+			scrollToTopButton.onclick = () => {
+				$('html, body').animate({
+					scrollTop: 0
+				}, 600);
+				return false;
+			};
+		};
+	};
 });
 
 // /////////////////////////////////////////////////////////////////////////////
@@ -2173,13 +2148,12 @@ function zmiExpandConfFiles(el, pattern) {
 				if (first!=null) {
 					$("option:first",el).html(first);
 				}
-				var items = $("item",data);
-				for (var i = 0; i < items.length; i++) {
-					var item = $(items[i]);
-					var value = item.attr("key");
-					var label = item.text();
-					$(el).append('<option value="'+value+'">'+label+'</option>');
-				}
+				Object.keys(data)
+					.map(k => ([k, data[k]]))
+					.sort((a, b) => (a[1].localeCompare(b[1])))
+					.forEach(option => {
+						$(el).append('<option value="'+option[0]+'">'+option[1]+'</option>');
+					});
 				zmiExpandConfFilesProgress = false;
 				// Reset wait-cursor.
 				$ZMI.setCursorAuto("zmiExpandConfFiles");
@@ -2192,41 +2166,44 @@ function zmiExpandConfFiles(el, pattern) {
 //  Url-Input
 // /////////////////////////////////////////////////////////////////////////////
 
-ZMI.prototype.initUrlInput = function(context) { 
+ZMI.prototype.initUrlInput = function(context) {
 	var fn_url_input_each = function() {
 		var $input = $(this);
-		var fmName = $input.parents("form").attr("name");
-		var elName = $input.attr("name");
-		$input.wrap('<div class="input-group"></div>');
-		var $inputgroup = $input.parent();
-		if ($input.prop("disabled")) {
-			$inputgroup.append(''
+		// Add input-group only if not already present
+		if (!$input.parent().hasClass('input-group')) {
+			var fmName = $input.parents("form").attr("name");
+			var elName = $input.attr("name");
+			$input.wrap('<div class="input-group"></div>');
+			var $inputgroup = $input.parent();
+			if ($input.prop("disabled")) {
+				$inputgroup.append(''
+						+ '<div class="input-group-append">'
+							+ '<span class="input-group-text"><i class="fas fa-ban"></i></span>'
+						+ '</div>'
+					);
+			} else {
+				$inputgroup.append(''
 					+ '<div class="input-group-append">'
-						+ '<span class="input-group-text"><i class="fas fa-ban-circle"></i></span>'
+						+ '<a class="btn btn-secondary" href="javascript:;" onclick="return zmiBrowseObjs(\'' + fmName + '\',\'' + elName + '\',getZMILang())">'
+							+ '<i class="fas fa-link"></i>'
+						+ '</a>'
 					+ '</div>'
 				);
-		} else {
-			$inputgroup.append(''
-				+ '<div class="input-group-append">'
-					+ '<a class="btn btn-secondary" href="javascript:;" onclick="return zmiBrowseObjs(\'' + fmName + '\',\'' + elName + '\',getZMILang())">'
-						+ '<i class="fas fa-link"></i>'
-					+ '</a>'
-				+ '</div>'
-			);
+			}
+			var fn = function() {
+				$inputgroup.next(".breadcrumb, [aria-label=breadcrumb]").remove();
+				$.ajax({
+					url: 'zmi_breadcrumbs_obj_path',
+					data:{lang:getZMILang(),zmi_breadcrumbs_ref_obj_path:$input.val()},
+					datatype:'text',
+					success:function(response) {
+						$inputgroup.next(".breadcrumb, [aria-label=breadcrumb]").remove();
+						$inputgroup.after(response.replace(/<!--(.*?)-->/gi,'').trim());
+					}
+				});
+			};
+			$input.change(fn).change();
 		}
-		var fn = function() {
-			$inputgroup.next(".breadcrumb, [aria-label=breadcrumb]").remove();
-			$.ajax({
-				url: 'zmi_breadcrumbs_obj_path',
-				data:{lang:getZMILang(),zmi_breadcrumbs_ref_obj_path:$input.val()},
-				datatype:'text',
-				success:function(response) {
-					$inputgroup.next(".breadcrumb, [aria-label=breadcrumb]").remove();
-					$inputgroup.after(response.replace(/<!--(.*?)-->/gi,'').trim());
-				}
-			});
-		};
-		$input.change(fn).change();
 	}
 	$("input.url-input",context).each(fn_url_input_each);
 	$("textarea.url-input",context).each(function() {
@@ -2283,28 +2260,28 @@ ZMI.prototype.initUrlInput = function(context) {
 /**
  * Remove option from multiselect
  */
-ZMI.prototype.removeFromMultiselect = function(src) { 
+ZMI.prototype.removeFromMultiselect = function(src) {
 	if (typeof src == "string") {
 		src = document.getElementById(src);
 	}
-	var selected = new Array(); 
-	var index = 0; 
-	while (index < src.options.length) { 
-		if (src.options[index].selected) { 
-			selected[index] = src.options[index].selected; 
-		} 
-		index++; 
+	var selected = new Array();
+	var index = 0;
+	while (index < src.options.length) {
+		if (src.options[index].selected) {
+			selected[index] = src.options[index].selected;
+		}
+		index++;
 	}
-	index = 0; 
-	var count = 0; 
-	while (index < selected.length) { 
-		if (selected[index]) 
-			src.options[count] = null; 
-		else 
-			count++; 
-		index++; 
-	} 
-	sortOptions(src); 
+	index = 0;
+	var count = 0;
+	while (index < selected.length) {
+		if (selected[index])
+			src.options[count] = null;
+		else
+			count++;
+		index++;
+	}
+	sortOptions(src);
 }
 
 /**
@@ -2393,7 +2370,7 @@ function addOption( object, name, value, selectedValue) {
 	var selected = value.length > 0 && value == selectedValue;
 	object.options[object.length] = new Option( name, value, defaultSelected, selected);
 }
-	
+
 /**
  * Sort options.
  */
@@ -2407,4 +2384,38 @@ function sortOptions(what) {
 	}
 	for (var i=0;i<copyOption.length;i++)
 		addOption(what,copyOption[i][0],copyOption[i][1])
+}
+
+
+// /////////////////////////////////////////////////////////////////////////////
+//  Set / Reset Form as Modified
+// /////////////////////////////////////////////////////////////////////////////
+
+ZMI.prototype.set_form_modified = function(context,initialValue) {
+	let nowValue = $(context).val();
+	if ( $(context).attr('id')!=undefined && $(context).attr('id').indexOf('editor_')==0 ) {
+		nowValue = CKEDITOR.instances[$(context).attr('id')].getData();
+	};
+	const $body = $('body.zmi');
+	const $btn_save = $('.controls.save button[value="BTN_SAVE"]',$(context).closest('form'));
+	const $form = $(context).parents('form');
+	const $formGroup = $(context).parents('.form-group');
+	if (initialValue==undefined) {
+		initialValue = $(context).data('initial-value');
+	};
+	if (nowValue == initialValue) {
+		$formGroup.removeClass('form-modified');
+	} else {
+		$formGroup.addClass('form-modified');
+	}
+	if ($('.form-group.form-modified').length == 0) {
+		$body.removeClass('form-modified');
+		$btn_save.removeClass('btn-primary').addClass('btn-secondary');
+	} else {
+		$body.addClass('form-modified');
+		$btn_save.removeClass('btn-secondary').addClass('btn-primary');
+	}
+	if ($('#form_modified',$form).length == 0) {
+		$form.append('<input type="hidden" id="form_modified" name="form_modified:boolean" value="1">');
+	}
 }

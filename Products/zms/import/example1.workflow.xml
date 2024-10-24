@@ -106,12 +106,12 @@
   <div class="card-body">
 		<div class="form-group row">
 			<label class="col-sm-2 control-label mandatory" for="comment"><span>Comment</span></label>
-			<div class="col-sm-10"><input type="text" name="comment" class="form-control form-control-sm" /><br /></div><!-- .col-sm-10 -->
+			<div class="col-sm-10"><input type="text" name="comment" class="form-control form-control-sm" /></div><!-- .col-sm-10 -->
 		</div><!-- .form-group.row -->
 		<div class="form-group row">
 			<div class="controls save">
 				<button name="btn" class="btn btn-primary" value="BTN_SEND" tal:content="python:here.getZMILangStr('BTN_SEND')">Send</button>
-				<button name="btn" class="btn" value="BTN_CANCEL" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
+				<button name="btn" class="btn btn-secondary" value="BTN_CANCEL" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
 			</div><!-- .controls.save -->
 		</div><!-- .form-group.row -->
   </div><!-- .card-body -->
@@ -191,12 +191,12 @@
   <div class="card-body">
 		<div class="form-group row">
 			<label class="col-sm-2 control-label mandatory" for="comment"><span>Comment</span></label>
-			<div class="col-sm-10"><input type="text" name="comment" class="form-control form-control-sm" /><br /></div><!-- .col-sm-10 -->
+			<div class="col-sm-10"><input type="text" name="comment" class="form-control form-control-sm" /></div><!-- .col-sm-10 -->
 		</div><!-- .form-group.row -->
 		<div class="form-group row">
 			<div class="controls save">
 				<button name="btn" class="btn btn-primary" value="BTN_SEND" tal:content="python:here.getZMILangStr('BTN_SEND')">Send</button>
-				<button name="btn" class="btn" value="BTN_CANCEL" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
+				<button name="btn" class="btn btn-secondary" value="BTN_CANCEL" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
 			</div><!-- .controls.save -->
 		</div><!-- .form-group.row -->
 	</div><!-- .card-body -->
@@ -213,7 +213,7 @@
 			global mbody python:[];
 			dummy0 python:mbody.append(''
 				+ 'Request for committing my changes:\n'
-				+ '%s: \t'%zmscontext.display_type(request)
+				+ '%s: \t'%zmscontext.display_type()
 				+ '>> '.join([x.getTitlealt(request) for x in zmscontext.breadcrumbs_obj_path()]) + '\n'
 				+ 'URL: \t%s/manage\n\n'%zmscontext.absolute_url()
 			)">
@@ -221,7 +221,7 @@
 	<tal:block tal:repeat="childNode python:[x for x in [zmscontext]+zmscontext.getChildNodes(request) if x.isObjModified(request)]">
 		<tal:block tal:define="global
 				dummy0 python:mbody.append(''
-					+ '- %s '%(zmscontext.display_type(request))
+					+ '- %s '%zmscontext.display_type()
 					+ '[' + ','.join([here.getZMILangStr(x) for x in ['STATE_NEW','STATE_MODIFIED','STATE_DELETED'] if childNode.inObjStates(x,request)]) + '] '
 					+ '%s '%(childNode.getLangFmtDate(childNode.attr('change_dt')))
 					+ '%s %s '%(childNode.getZMILangStr('BY'),childNode.attr('change_uid'))
@@ -329,7 +329,7 @@
 			global mbody python:[];
 			dummy0 python:mbody.append(''
 				+ 'Committing your changes was rejected.\n'
-				+ '%s: \t'%zmscontext.display_type(request)
+				+ '%s: \t'%zmscontext.display_type()
 				+ '>> '.join([x.getTitlealt(request) for x in zmscontext.breadcrumbs_obj_path()]) + '\n'
 				+ 'URL: \t%s/manage\n\n'%zmscontext.absolute_url()
 			)">
@@ -337,7 +337,7 @@
 	<tal:block tal:repeat="childNode python:[x for x in [zmscontext]+zmscontext.getChildNodes(request) if x.isObjModified(request)]">
 		<tal:block tal:define="global
 				dummy0 python:mbody.append(''
-					+ '- %s '%(zmscontext.display_type(request))
+					+ '- %s '%zmscontext.display_type()
 					+ '[' + ','.join([here.getZMILangStr(x) for x in ['STATE_NEW','STATE_MODIFIED','STATE_DELETED'] if childNode.inObjStates(x,request)]) + '] '
 					+ '%s '%(childNode.getLangFmtDate(childNode.attr('change_dt')))
 					+ '%s %s '%(childNode.getZMILangStr('BY'),childNode.attr('change_uid'))

@@ -23,7 +23,7 @@ from OFS.Image import Image, File
 # from mimetools import choose_boundary
 from email.generator import _make_boundary as choose_boundary
 import base64
-import io
+import json
 import re
 import time
 import warnings
@@ -145,9 +145,6 @@ def createBlobField(self, objtype, file=b''):
     blob = uploadBlobField( self, objtype, file)
   elif isinstance(file, dict):
     data = file.get( 'data', '')
-    if isinstance(data, str):
-      data = bytes(data,'utf-8')
-      data = io.BytesIO( data)
     blob = uploadBlobField( self, objtype, data, file.get('filename', ''))
     if file.get('content_type'):
       blob.content_type = file.get('content_type')
@@ -167,6 +164,7 @@ def uploadBlobField(self, clazz, file=b'', filename=''):
   f = None
   if isinstance(file,str):
     f = re.findall(r'^data:(.*?);base64,([\s\S]*)$',file)
+    file = bytes(file,'utf-8')
   if f:
     mt = f[0][0]
     file = base64.b64decode(f[0][1])
@@ -526,12 +524,15 @@ class MyBlob(object):
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     MyBlob._createCopy:
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    def _createCopy(self, aq_parent, key):
+    def _createCopy(self, aq_parent, key, lang=None):
       value = self._getCopy()
       value.is_blob = True
       value.aq_parent = aq_parent
       value.key = key
-      value.lang = aq_parent.REQUEST.get( 'lang')
+      if hasattr(aq_parent, 'REQUEST'):
+        value.lang = aq_parent.REQUEST.get( 'lang')
+      elif lang is not None:
+        value.lang = lang
       return value
 
 
@@ -558,7 +559,7 @@ class MyBlob(object):
           try:
             name = 'hasCustomAccess'
             if hasattr(parent,name):
-              v = zopeutil.callObject(getattr(parent,name),parent)
+              v = zopeutil.callObject(getattr(parent,name),zmscontext=parent)
               if type( v) is bool:
                 access = access and v
               elif type( v) is int and v == 404:
@@ -579,7 +580,7 @@ class MyBlob(object):
         try:
           name = 'getCustomBlobResponseHeaders'
           if hasattr(parent,name):
-            zopeutil.callObject(getattr(parent,name),parent)
+            zopeutil.callObject(getattr(parent,name),zmscontext=parent)
         except:
           standard.writeError(parent,'[__call__]: can\'t %s'%name)
         

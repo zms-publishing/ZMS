@@ -1,9 +1,18 @@
 {
+	// Copy of Native.code-workspace
 	"folders": [
 		{
 			"name": "ZMS5",
 			"path": "../"
 		},
+		// {
+		// 	"name": "ZMS4",
+		//  	"path": "../../ZMS4"
+		//  },
+		// {
+		// 	"name": "ZMS3",
+		//  	"path": "../../ZMS3"
+		//  },
 		{
 			"name": "Zope 5",
 			"path": "/home/zope/src/zopefoundation/Zope"
@@ -13,12 +22,16 @@
 			"path": "/home/zope/instance/zms5_dev"
 		},
 		{
-			"name": "Zope-WebDAV Access",
-			"uri": "webdav://admin:admin@localhost:8091/"
+			"name": "OpenSearchServer",
+			"path": "/home/zope/src/sntl-projects/opensearch_demo"
 		},
-		{
-			"path": "../../../../vpy38/lib/python3.8/site-packages/pydoctor"
-		}
+		// {
+		// 	"name": "Zope-WebDAV Access",
+		// 	"uri": "webdav://admin:admin@localhost:8091/"
+		// },
+		// {
+		// 	"path": "../../../../vpy38/lib/python3.8/site-packages/pydoctor"
+		// }
 	],
 	"settings": {
 		"python.defaultInterpreterPath": "~/vpy38/bin/python",
@@ -38,14 +51,20 @@
 			"*-all.min.*":true,
 			"**/cache/**": true,
 			"**/Data.*": true,
+			"**/docker/**/var/*": true
 		},
 		"search.exclude": { 
-			"**/apidocs/**": true
+			"**/apidocs/**": true,
+			"*.pyc": true,
+			"*-all.min.*":true,
+			"**/cache/**": true,
+			"**/Data.*": true,
+			"**/docker/**/var/*": true
 		},
 		"files.eol": "\n",
 		"files.autoSave": "afterDelay",
 		"workbench.colorTheme": "Visual Studio Light",
 		"python.linting.enabled": true
 	},
-	"remoteAuthority": "wsl+Ubuntu-20.04"
+	"remoteAuthority": "wsl+Ubuntu"
 }

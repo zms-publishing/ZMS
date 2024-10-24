@@ -48,9 +48,59 @@ __doc__ = """initialization module."""
 # Version string.
 __version__ = '0.1'
 
+#################################################################################################################
+# FilesystemDirectoryView: Monkey patched Products.CMFCore.zcml
+#
+# Allow directory registration outside of package context to access arbitrary paths configured in overrides.zcml
+# 
+# Background: 
+# The function Products.CMFCore.zcml.registerDirectory() cuts the registering directory path exactly
+# at the length of the overrides.zcml containing package path and uses the remaining right as a 'reg_key'.
+# If the registering directory path is outside the package context this will end up in strange substrings 
+# of the target path string. The patch normalizes the generation of the uses the 'reg_key' by using the 
+# name-attribute as the path root (Line 80).
+#################################################################################################################
+from Products.CMFCore import zcml
+from Products.CMFCore.DirectoryView import _dirreg
+from Products.CMFCore.DirectoryView import _generateKey
+from Products.CMFCore.DirectoryView import ignore
+from os import path
+
+_directory_regs = []
+
+def registerDirectory(_context, name, directory=None, recursive=False,
+                      ignore=ignore):
+    """ Add a new directory to the registry.
+    """
+    if directory is None:
+        subdir = 'skins/%s' % str(name)
+        filepath = path.join(_context.package.__path__[0], 'skins', str(name))
+    else:
+        # subdir = str(directory[len(_context.package.__path__[0]) + 1:])
+        subdir = str(name)
+        filepath = str(directory)
+
+    reg_key = _generateKey(_context.package.__name__, subdir)
+    _directory_regs.append(reg_key)
+
+    _context.action(
+        discriminator=('registerDirectory', reg_key),
+        callable=_dirreg.registerDirectoryByKey,
+        args=(filepath, reg_key, int(recursive), ignore),
+        )
+
+zcml.registerDirectory = registerDirectory
+#################################################################################################################
+
+# Additional Registration of FileExtensions 
+# will get obsolete with 
+# https://github.com/zopefoundation/Products.CMFCore/pull/130
+# https://github.com/zopefoundation/Zope/pull/1146
+
 try:
   from Products.CMFCore.DirectoryView import registerFileExtension
   from Products.CMFCore.FSFile import FSFile
+  from Products.CMFCore.FSImage import FSImage
   registerFileExtension('xlsx', FSFile)
   registerFileExtension('xls', FSFile)
   registerFileExtension('doc', FSFile)
@@ -58,7 +108,7 @@ try:
   registerFileExtension('ppt', FSFile)
   registerFileExtension('pptx', FSFile)
   registerFileExtension('map', FSFile)
-  registerFileExtension('svg', FSFile)
+  registerFileExtension('svg', FSImage)
   registerFileExtension('ttf', FSFile)
   registerFileExtension('eot', FSFile)
   registerFileExtension('woff', FSFile)
@@ -76,6 +126,7 @@ except:
 def initialize(context): 
     """Initialize the product."""
     
+    create_session_storage_if_neccessary(context)
     try: 
         """Try to register the product."""
         
@@ -260,7 +311,7 @@ def initialize(context):
         This code provides traceback for anything that happened in 
         registerClass(), assuming you're running Zope in debug mode."""
         
-        import sys, traceback, string
+        import sys, traceback
         type, val, tb = sys.exc_info()
         sys.stderr.write(''.join(traceback.format_exception(type, val, tb)))
         del type, val, tb
@@ -288,3 +339,29 @@ def translate_path(s):
   if s.startswith('/++resource++zms_/'):
     l = ['plugins', 'www']+s.split('/')[2:]
   return os.sep.join([ZMS_HOME]+l)
+
+def create_session_storage_if_neccessary(context):
+  """
+  Ensure containers for temporary data.
+  """
+  from OFS.Folder import Folder
+  from Products.Transience.Transience import TransientObjectContainer
+
+  app = context.getApplication()
+  if not 'temp_folder' in app:
+    try:
+      from Products.ZODBMountPoint.MountedObject import manage_addMounts
+      manage_addMounts(app, paths=('/temp_folder',))
+    except:
+      # Adding a 'folder' is a just fallback
+      # if a 'mount_point' is not available
+      # like usually configured via zope.conf
+      temp_folder = Folder('temp_folder')
+      app._setObject('temp_folder', temp_folder)
+  if not 'session_data' in app.temp_folder:
+    container = TransientObjectContainer(
+        'session_data',
+        title='Session Data Container',
+        timeout_mins=20
+    )
+    app.temp_folder._setObject('session_data', container)

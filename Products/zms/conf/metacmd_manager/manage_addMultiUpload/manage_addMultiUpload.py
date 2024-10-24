@@ -146,7 +146,7 @@ def manage_addMultiUpload(self):
 					<input id="file" style="height:2.55rem;" name="file" type="file" class="form-control file" multiple="true" data-show-upload="false" data-show-caption="true" />
 				</div>'
 			</div><!-- .form-group -->
-			<div class="form-row">
+			<div class="form-group row">
 				<div class="controls save py-3 px-1">
 					<button type="submit" name="btn" class="btn btn-primary" value="BTN_UPLOAD">%s</button>
 					<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CANCEL">%s</button>

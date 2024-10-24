@@ -2,7 +2,7 @@
 
 ## Prerequisites
 The following setup is working on Ubuntu 20.4. and will run in a similar way on other unix-like operating systems (as well as *Windows Sublinux*, WSL). It is recomended to add a special non-root user like _zope_ for running the zope application server.
-ZMS needs a Python version 3.6+; please check your installed python version
+ZMS needs a Python version 3.8+; please check your installed python version
 ```console
 ~$: python3 --version
 ```
@@ -12,7 +12,8 @@ ZMS is running on Zope (Version 5+) as the underlaying Python3 application serve
 ~$: sudo apt-get install gcc
 ~$: sudo apt-get install openssh-server
 ~$: sudo apt-get install build-essential 
-~$: sudo apt-get install libssl-dev libffi-dev 
+~$: sudo apt-get install libssl-dev libffi-dev
+~$: sudo apt-get install libldap2-dev libsasl2-dev 
 ~$: sudo apt-get install python3-dev
 ~$: sudo apt-get install python3-venv
 ~$: sudo apt-get install git

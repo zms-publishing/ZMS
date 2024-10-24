@@ -44,7 +44,9 @@
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 </tal:block
 ><tal:block tal:condition="python:not here.getAutocommit() and not request.get('ZMS_VERSION')"
-	><tal:block tal:define="wfStates python:here.getWfStates(request); work_uid python:here.attr('work_uid'); work_dt python:here.attr('work_dt'); objStates python:here.filteredObjStates(request)"
+	><tal:block tal:define="wfStates python:here.getWfStates(request); 
+		work_uid python:here.attr('work_uid'); work_dt python:here.attr('work_dt'); 
+		objStates python:here.filteredObjStates(request)"
 		><tal:block tal:condition="python:work_uid and work_dt" 
 			tal:repeat="wfState wfStates"
 			><span class="zmi-state" 
@@ -54,8 +56,8 @@
 					title python:'%s %s %s (%s)'%(wfActivity['name'],here.getZMILangStr('BY'),work_uid,here.getLangFmtDate(work_dt))"
 				tal:attributes="class python:'zmi-state %s'%(clazz); title title"></span
 		></tal:block>
-		<span tal:condition="python:'STATE_NEW' in objStates" class="zmi-state zmi-state-new fas far-plus-square" tal:attributes="title python:here.getZMILangStr('STATE_NEW')"></span>
-		<span tal:condition="python:( 'STATE_MODIFIED' in objStates ) or ( len(wfStates)>0 and here.isVersionContainer() and here.hasObjModifiedChildren(request) )" class="zmi-state zmi-state-modified fas fa-edit" tal:attributes="title python:here.getZMILangStr('STATE_MODIFIED')"></span>
+		<span tal:condition="python:'STATE_NEW' in objStates" class="zmi-state zmi-state-new fas fa-plus-square" tal:attributes="title python:here.getZMILangStr('STATE_NEW')"></span>
+		<span tal:condition="python:( 'STATE_MODIFIED' in objStates ) or ( len(wfStates)>0 and here.isVersionContainer() and here.hasObjModifiedChildren(request) )" class="zmi-state zmi-state-modified fas fa-edit mr-0" tal:attributes="title python:here.getZMILangStr('STATE_MODIFIED')"></span>
 		<span tal:condition="python:'STATE_DELETED' in objStates" class="zmi-state zmi-state-deleted fas fa-trash" tal:attributes="title python:here.getZMILangStr('STATE_DELETED')"></span>
 	</tal:block
 ></tal:block
@@ -74,5 +76,15 @@
 +- Custom
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 </tal:block>
-<span tal:on-error="nothing" tal:condition="python:here.attr('version_object_state')" class="zmi-state zmi-version-state" tal:content="structure python:here.attr('version_object_state')">attr(version_object_state)</span>
-<span tal:on-error="nothing" tal:condition="python:here.my_version_object_state(here,request)" class="zmi-state zmi-my-version-state" tal:content="structure python:here.my_version_object_state(here,request)">my_version_object_state</span>
+<span class="zmi-state zmi-version-state" tal:condition="python:here.attr('version_object_state')" 
+	tal:content="structure python:here.attr('version_object_state')"
+	tal:on-error="nothing">
+	attr(version_object_state)
+</span>
+<span data-readme="This hook expects a Zope object named my_version_object_state"  
+	class="zmi-state zmi-my-version-state"
+	tal:define="standard modules/Products/zms/standard"
+	tal:condition="python:standard.operator_getattr(here,'my_version_object_state')" 
+	tal:content="structure python:here.my_version_object_state(here,request)">
+	my_version_object_state
+</span>

@@ -7,7 +7,7 @@ ZMI.prototype.multiselect = function(context) {
 				$.plugin('multiselect_js').get("select.zmi-select[multiple]:not(.d-none)",function(){
 						$("select.zmi-select[multiple]:not(.d-none)",context).each(function() {
 								var multiselect_name = $(this).attr("name");
-								var multiselect_id = multiselect_name.substr(0,multiselect_name.indexOf(":"));
+								var multiselect_id = multiselect_name.substring(0,multiselect_name.indexOf(":"));
 								var searchable = $("option",this).length>=$ZMI.getConfProperty('plugin.bootstrap.multiselect.wrapper.search.options.min',15);
 								var html = '<div class="row twosided_multiselect'+(searchable?' searchable':'')+'">';
 								html += ''

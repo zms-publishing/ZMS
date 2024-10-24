@@ -44,7 +44,7 @@
 			<label for="profile" class="col-sm-2 control-label"><span tal:content="python:here.getZMILangStr('ATTR_PROFILE')">Profile</span></label>
 			<div class="col-sm-10" tal:content="structure python:here.getUrlInput(fmName='userform',elName='profile',value=here.getUserAttr(userObj['name'],'profile',''),enabled=False)">the control</div><!-- .col-sm-10 -->
 		</div><!-- .form-group -->
-		<div class="form-row">
+		<div class="form-group row">
 			<div class="controls save ml-auto">
 				<button type="submit" name="btn" class="btn btn-primary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 			</div>

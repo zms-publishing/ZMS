@@ -73,7 +73,9 @@
 				<div class="form-group row">
 					<label class="col-sm-2 control-label" for="portal_master">Master</label>
 					<div class="col-sm-10">
-						<input class="form-control" type="text" name="portal_master" tal:attributes="value python:here.getConfProperty('Portal.Master','')">
+						<input class="form-control" type="text" name="portal_master" tal:attributes="
+							value python:here.getConfProperty('Portal.Master','');
+							class python:' '.join(['form-control']+[[],['alert-info']][here.getConfProperty('Portal.Master')!='' and here.getPortalMaster() is None])">
 					</div>
 				</div><!-- .form-group -->
 				<div class="form-group row">
@@ -299,10 +301,20 @@
 					<div class="form-group row">
 						<div class="col-sm-2">&nbsp;</div>
 						<div class="col-sm-10">
-							<button name="btn" type="submit" class="btn btn-secondary" value="Change">Change</button>
-							<button name="btn" type="submit" class="btn btn-secondary" value="Remove" title="Reimport outsourced mediafolder files back into ZODB of this ZMS-client">Remove</button>
-							<button name="btn" type="submit" class="btn btn-warning" value="Pack" title="Delete all mediafolder garbage files having no container object in this ZMS client"
-								tal:attributes="class python:here.getMediaDb().location.replace('\\','/').find('/'+here.getHome().id)>=0 and 'btn btn-warning' or 'btn btn-danger'">Pack</button>
+							<button name="btn" type="submit" class="btn btn-primary" value="Change"
+								title="Save changed parameters"
+								>Change</button>
+							<button name="btn" type="submit" class="btn btn-secondary" value="Remove" 
+								title="Reimport outsourced mediafolder files back into ZODB of this ZMS-client. Warning: This operation may result in a huge Zope database"
+								>Remove</button>
+							<button name="btn" type="submit" class="btn btn-warning" value="Pack" 
+								title="Delete all mediafolder garbage files having no container object in this ZMS client"
+								tal:attributes="class python:here.getMediaDb().location.replace('\\','/').find('/'+here.getHome().id)>=0 and 'btn btn-warning' or 'btn btn-danger'"
+								>Pack</button>
+							<button name="btn" type="submit" class="btn btn-info" value="Test"
+								onclick="return $ZMI.iframe('acl_mediadb/manage_test',{},{'title':'Media-Folder: Test','json':true})" 
+								title="Test: List all ZMS locations containing media files. Warning: Iteration time depends on amount of content."
+								>Test</button>
 							<div tal:condition="python:here.getMediaDb().location.replace('\\','/').find('/'+here.getHome().id)<0"
 								class="alert alert-danger" style="margin:2em 0">
 								Danger! The mediafolder name is not identical with the ZMS client id.
@@ -323,7 +335,7 @@
 				<div class="form-group row">
 					<label class="col-sm-2 control-label">ZMS Version</label>
 					<div class="col-sm-10">
-						<samp tal:content="structure python:here.zms_version(custom=True)">zms_version</samp>
+                        <samp tal:content="structure python:here.zms_version(custom=True)">zms_version</samp>
 					</div>
 				</div><!-- .form-group -->
 				<div class="form-group row">
@@ -348,10 +360,9 @@
 					<label class="col-sm-2 control-label" for="installed_python_packages">
 						Installed Python Packages
 						<p class="help-text small mt-sm-3 mb-0">
-							Tools such as the <a href="https://pip.pypa.io/en/stable/reference/pip/" target="_blank">Python Package Installer</a>
+							Tools such as the <a href="https://pip.pypa.io/en/stable/cli/pip/" target="_blank">Python Package Installer</a>
 							with <a href="https://pip.pypa.io/en/stable/user_guide/#requirements-files" target="_blank">requirements</a>
 							and <a href="https://pip.pypa.io/en/stable/user_guide/#constraints-files" target="_blank">constraints</a> files
-							and <a href="https://requires.io/github/zopefoundation/Zope/requirements/?branch=master" target="_blank">requires.io</a>
 							help manage and monitor package dependencies.
 						</p>
 					</label>
@@ -387,7 +398,6 @@
 			</form>
 		</div>
 	</div>
-
 </div><!-- #zmi-tab -->
 <footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 </body>

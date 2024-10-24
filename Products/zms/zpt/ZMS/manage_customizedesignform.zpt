@@ -20,18 +20,18 @@
 			<input type="hidden" name="section" value="theme" />
 			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 			<div class="form-group row meta_id">
-				<label for="_meta_id" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
-				<div class="col-lg-10"><input type="text" id="newId" name="newId" class="form-control form-control-sm" /></div>
+				<label for="_meta_id" class="col-lg-2 col-md-3  control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
+				<div class="col-lg-10 col-md-9"><input type="text" id="newId" name="newId" class="form-control form-control-sm" /></div>
 			</div><!-- .form-group -->
 			<div class="form-group row meta_name">
-				<label for="_meta_name" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_TITLE')">Title</span></label>
-				<div class="col-lg-10"><input type="text" id="newTitle" name="newTitle" class="form-control form-control-sm" /></div>
+				<label for="_meta_name" class="col-lg-2 col-md-3 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_TITLE')">Title</span></label>
+				<div class="col-lg-10  col-md-9"><input type="text" id="newTitle" name="newTitle" class="form-control form-control-sm" /></div>
 			</div><!-- .form-group -->
-			<div class="form-row">
+			<div class="form-group row">
 				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-primary" value="BTN_INSERT" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
 				</div><!-- .controls.save -->
-			</div><!-- .form-row -->
+			</div><!-- .form-group -->
 		</form>
 	</div><!-- .inner -->
 </div><!-- #insertObj -->
@@ -41,18 +41,19 @@
 		<form id="importObjForm" name="importObjForm" class="form-horizontal" action="manage_customizeDesign" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="section" value="theme" />
 			<input type="hidden" name="lang" tal:attributes="value request/lang">
-			<div class="form-group row">
-				<label for="file" class="col-lg-2 control-label">
-					<i class="fas fa-folder far fa-folder"></i>
-					<span tal:content="python:here.getZMILangStr('ATTR_FILE')">File</span>
-				</label>
-				<div class="col-lg-10"><input class="btn btn-file" name="file" type="file" /></div><!-- .col-lg-10 -->
-			</div><!-- .form-group -->
-			<div class="form-group row">
-				<div class="col-lg-12">
-					<button type="submit" name="btn" class="btn btn-primary" value="BTN_IMPORT" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
-				</div><!-- .col-lg-12 -->
-			</div><!-- .form-group -->
+			<div class="input-group" title="Select Local File for Uploading">
+				<div class="custom-file">
+					<input type="file" name="file" id="file" class="custom-file-input" value="" 
+						onchange="$('.custom-file label span').html($(this).val().replace(/^.*(\\|\/|\:)/, ''));" />
+					<label class="custom-file-label" for="file"><span tal:content="python:here.getZMILangStr('ATTR_FILE')">Choose file</span></label>
+				</div>
+				<div class="input-group-append">
+					<button name="btn" type="submit" class="btn btn-primary" value="BTN_IMPORT" 
+						tal:content="python:here.getZMILangStr('BTN_IMPORT')">
+						Import
+					</button>
+				</div>
+			</div>
 		</form>
 	</div><!-- .inner -->
 </div><!-- #importObj -->
@@ -184,7 +185,7 @@
 									<!-- ACE Editor -->
 									<tal:block tal:on-error="string:ace" tal:content="structure python:here.zmi_ace_editor(here,request,name=css_id,ob=css,text=str(css),content_type='text/css')">ACE Editor</tal:block>
 									<!-- /ACE Editor -->
-									<div class="form-row">
+									<div class="form-group row">
 										<div class="controls save">
 											<button type="submit" name="btn" class="btn btn-primary" value="BTN_SAVE"
 												tal:attributes="
@@ -274,9 +275,10 @@
 									<!-- ACE Editor -->
 									<tal:block tal:on-error="string:ace" tal:content="structure python:here.zmi_ace_editor(here,request,name=js_id,ob=js,text=str(js),content_type='application/javascript')">ACE Editor</tal:block>
 									<!-- /ACE Editor -->
-									<div class="form-row">
+									<div class="form-group row">
 										<div class="controls save">
 											<button type="submit" name="btn" class="btn btn-primary" value="BTN_SAVE"
+												tal:on-error="nothing"
 												tal:attributes="
 													disabled python:'Filesystem' in js.meta_type and 'disabled' or None;
 													title python:'Filesystem' in js.meta_type and 'IMPORTANT NOTE: Filesystem files are not editable here!' or None;"
@@ -305,7 +307,7 @@
  * Save active theme.
  */
 function zmiSaveBtnClick(sender) {
-	var $fm = $(sender).closest("form");
+	let $fm = $(sender).closest("form");
 	$fm.append('<input type="hidden" name="btn" value="BTN_SAVE">').submit();
 	return false;
 }
@@ -314,11 +316,21 @@ function zmiSaveBtnClick(sender) {
  * Export xml.
  */
 function zmiExportBtnClick(sender) {
-	var $fm = $(sender).closest("form");
-	var id = $('input[name="ids:list"]:checked',$fm).val();
-	var baseurl = self.location.href;
-	baseurl = baseurl.substr(0,baseurl.indexOf("/content"));
-	var href = baseurl+"/manage_exportObject?download:int=1&id="+id;
+	let $fm = $(sender).closest("form");
+	let id = $('input[name="ids:list"]:checked',$fm).val();
+	let sel_len = $('input[name="ids:list"]:checked',$fm).length;
+	if ( sel_len != 1) {
+		if (sel_len == 0) {
+			alert(getZMILangStr('Please select a theme to export!'));
+		} else {
+			alert(getZMILangStr('Please select only one theme to export!'));
+		};
+		$('input[name="ids:list"]:first',$fm).focus();
+		return false;
+	}
+	let baseurl = self.location.href;
+	baseurl = baseurl.substring(0,baseurl.indexOf("/content"));
+	let href = baseurl+"/manage_exportObject?download:int=1&id="+id;
 	window.open(href);
 	return false;
 }
@@ -327,7 +339,7 @@ function zmiExportBtnClick(sender) {
  * Delete object.
  */
 function zmiDeleteBtnClick(sender) {
-	var $fm = $(sender).closest("form");
+	let $fm = $(sender).closest("form");
 	if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
 		$fm.append('<input type="hidden" name="btn" value="BTN_DELETE">').submit();
 	}
@@ -338,7 +350,7 @@ function zmiDeleteBtnClick(sender) {
  * Copy theme to content-objects.
  */
 function zmiArchiveBtnClick(sender) {
-	var $fm = $(sender).closest("form");
+	let $fm = $(sender).closest("form");
 	$fm.append('<input type="hidden" name="btn" value="BTN_COPY">').submit();
 	return false;
 }
@@ -347,8 +359,8 @@ function zmiArchiveBtnClick(sender) {
  * Show Additional CSS/JS Preview.
  */
 function zmiPreviewBtnClick(sender) {
-	var container = $(sender).parent('td')
-	var additional_url = $('a span',container).text(); 
+	let container = $(sender).parent('td')
+	let additional_url = $('a span',container).text(); 
 	// alert(additional_url);
 	$.get( url=additional_url, dataType='text', function( data ) {
 		$('pre',container).html( data.replaceAll('<','&lt;').replaceAll('>','&gt;') ).toggle();

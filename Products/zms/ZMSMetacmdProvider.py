@@ -137,19 +137,26 @@ class ZMSMetacmdProvider(
         ids = self.getMetaCmdIds()
       for id in ids:
         o = self.getMetaCmd(id)
-        if o and not o.get('acquired', 0):
+        if o:
           d = {}
-          for k in [x for x in o if x not in ['bobobase_modification_time', 'data', 'home', 'meta_type']]:
-            d[k] = o[k]
-          ob = getattr(self, id)
-          if ob:
-            d['__icon__'] = ob.zmi_icon() if 'zmi_icon' in ob.__dict__ else 'fas fa-cog'
-            d['__description__'] = ob.meta_type
-            attr = {}
-            attr['id'] = id
-            attr['ob'] = ob
-            attr['type'] = ob.meta_type
-            d['Impl'] = [attr]
+          if o.get('acquired'):
+            d['id'] = id
+            d['acquired'] = o['acquired']
+          else:
+            for k in [x for x in o if x not in ['bobobase_modification_time', 'data', 'home', 'meta_type']]:
+              d[k] = o[k]
+            try:
+              ob = getattr(self, id)
+            except:
+              ob = None
+            if ob:
+              d['__icon__'] = ob.zmi_icon() if 'zmi_icon' in ob.__dict__ else 'fas fa-cog'
+              d['__description__'] = ob.meta_type
+              attr = {}
+              attr['id'] = id
+              attr['ob'] = ob
+              attr['type'] = ob.meta_type
+              d['Impl'] = [attr]
           r[id] = d
       return r
 
@@ -398,7 +405,12 @@ class ZMSMetacmdProvider(
     #  Returns list of actions.
     # --------------------------------------------------------------------------
     def getMetaCmds(self, context=None, stereotype='', sort=True):
-      stereotypes = {'insert':'manage_add','tab':'manage_tab','repository':'manage_repository','zcatalog':'manage_zcatalog'}
+      stereotypes = {
+        'insert':'manage_add',
+        'tab':'manage_tab',
+        'repository':'manage_repository',
+        'zcatalog':'manage_zcatalog',
+        'zmsindex':'manage_zmsindex'}
       metaCmds = []
       portalMasterMetaCmds = None
       for metaCmd in [x for x in self.commands if x['id'].startswith(stereotypes.get(stereotype, ''))]:
@@ -406,11 +418,13 @@ class ZMSMetacmdProvider(
         if metaCmd.get('acquired', 0)==1:
           if portalMasterMetaCmds is None:
             portalMaster = self.getPortalMaster()
-            portalMasterMetaCmds = portalMaster.getMetaCmds(stereotype=stereotype)
-          l = [x for x in portalMasterMetaCmds if x['id']==metaCmd['id']]
-          if len(l) > 0:
-            metaCmd = l[0]
-            metaCmd['acquired'] = 1
+            if portalMaster is not None:
+              portalMasterMetaCmds = portalMaster.getMetaCmds(stereotype=stereotype)
+          if portalMasterMetaCmds is not None:
+            l = [x for x in portalMasterMetaCmds if x['id']==metaCmd['id']]
+            if len(l) > 0:
+              metaCmd = l[0]
+              metaCmd['acquired'] = 1
         else:
           metaCmd = metaCmd.copy()
           metaCmd['home'] = self.aq_parent
@@ -532,7 +546,7 @@ class ZMSMetacmdProvider(
               metaCmd = self.getMetaCmd(id)
               revision = metaCmd.get('revision', '0.0.0')
               el_id = metaCmd['id']
-              el_package = metaCmd['package']
+              el_package = metaCmd.get('package')
               el_name = metaCmd['name']
               el_title = metaCmd.get('title', '')
               el_meta_type = metaCmd['meta_type']
@@ -558,14 +572,23 @@ class ZMSMetacmdProvider(
         # Import.
         # -------
         elif btn == 'BTN_IMPORT':
-          f = REQUEST['file']
-          if f:
+          msg_str = ''
+          if REQUEST.get('file'):
+            f = REQUEST['file']
             filename = f.filename
             self.importXml(xml=f)
+            msg_str = filename
           else:
-            filename = REQUEST['init']
-            self.importConf(filename)
-          message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%filename)
+            init = REQUEST['init']
+            if isinstance(init, list):
+              for filename in init:
+                self.importConf(filename)
+              msg_str = ', '.join(init)
+            else:
+              filename = init
+              self.importConf(filename)
+              msg_str = filename
+          message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%(msg_str))
         
         # Insert.
         # -------
@@ -582,9 +605,6 @@ class ZMSMetacmdProvider(
           newIconClazz = REQUEST.get('_icon_clazz', '')
           id = self.setMetacmd(None, newId, newAcquired, newPackage, newRevision, newName, newTitle, newMethod, newData, newExecution, newIconClazz=newIconClazz)
           message = self.getZMILangStr('MSG_INSERTED')%id
-        
-        # Sync with repository.
-        self.getRepositoryManager().exec_auto_commit(self, id)
         
         # Return with message.
         message = standard.url_quote(message)

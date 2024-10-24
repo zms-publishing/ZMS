@@ -36,7 +36,7 @@
 				<input type="text" name="comment" class="form-control form-control-sm" />
 			</div><!-- .col-sm-10 -->
 		</div><!-- .form-group.row -->
-		<div class="form-group">
+		<div class="form-group row">
 			<div class="controls save">
 				<button name="btn" class="btn btn-primary" value="BTN_SEND" tal:content="python:here.getZMILangStr('BTN_SEND')">Send</button>
 				<button name="btn" class="btn btn-secondary" value="BTN_CANCEL" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
@@ -55,7 +55,7 @@
 		mbody python:[];
 		dummy0 python:mbody.append(''
 			+ 'INFO: Folgendes Objekt wude publiziert:\n'
-			+ '%s: \t'%zmscontext.display_type(request)
+			+ '%s: \t'%zmscontext.display_type()
 			+ '>> '.join([x.getTitlealt(request) for x in zmscontext.breadcrumbs_obj_path()]) + '\n'
 			+ 'MANAGE: \t%s/manage\n'%zmscontext.absolute_url()
 			+ 'PREVIEW: \t%s/preview_html\n\n'%zmscontext.absolute_url()

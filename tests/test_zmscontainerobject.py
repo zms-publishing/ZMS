@@ -7,17 +7,18 @@ import unittest
 
 # Product imports.
 from tests.zms_test_util import *
+from Products.zms import mock_http
 from Products.zms import zms
 
 # /Products/zms> python -m unittest discover -s unit_tests
-# /Products/zms> python -m unittest unit_tests.test_zmscontainerobject.ZMSContainerObjectTest
+# /Products/zms> python -m unittest test_zmscontainerobject.ZMSContainerObjectTest
 class ZMSContainerObjectTest(ZMSTestCase):
 
   temp_title = 'temp-test'
 
   def setUp(self):
     folder = Folder('myzmsx')
-    folder.REQUEST = HTTPRequest({'lang':'eng','preview':'preview'})
+    folder.REQUEST = mock_http.MockHTTPRequest({'lang':'eng','preview':'preview'})
     zmscontext = zms.initZMS(folder, 'content', 'titlealt', 'title', 'eng', 'eng', folder.REQUEST)
     self.context = zmscontext
     print('[setUp] create %s'%self.temp_title)
@@ -29,13 +30,13 @@ class ZMSContainerObjectTest(ZMSTestCase):
     
     folder = self.folder
     print('>>>>>>>>>> test tree')
-    ta1 = folder.manage_addZMSCustom('ZMSTextarea',{'text':'Lorem ipsum dolor'},request)
-    doc1 = folder.manage_addZMSCustom('ZMSDocument',{'title':'document-1','titlealt':'doc-1'},request)
-    ta11 = doc1.manage_addZMSCustom('ZMSTextarea',{'text':'Lorem ipsum dolor'},request)
-    doc2 = folder.manage_addZMSCustom('ZMSDocument',{'title':'document-2','titlealt':'doc-2'},request)
-    ta21 = doc2.manage_addZMSCustom('ZMSTextarea',{'text':'Lorem ipsum dolor'},request)
-    doc3 = folder.manage_addZMSCustom('ZMSDocument',{'title':'document-3','titlealt':'doc-3'},request)
-    ta31 = doc3.manage_addZMSCustom('ZMSTextarea',{'text':'Lorem ipsum dolor'},request)
+    ta1 = folder.manage_addZMSObject('ZMSTextarea',{'text':'Lorem ipsum dolor'},request)
+    doc1 = folder.manage_addZMSObject('ZMSDocument',{'title':'document-1','titlealt':'doc-1'},request)
+    ta11 = doc1.manage_addZMSObject('ZMSTextarea',{'text':'Lorem ipsum dolor'},request)
+    doc2 = folder.manage_addZMSObject('ZMSDocument',{'title':'document-2','titlealt':'doc-2'},request)
+    ta21 = doc2.manage_addZMSObject('ZMSTextarea',{'text':'Lorem ipsum dolor'},request)
+    doc3 = folder.manage_addZMSObject('ZMSDocument',{'title':'document-3','titlealt':'doc-3'},request)
+    ta31 = doc3.manage_addZMSObject('ZMSTextarea',{'text':'Lorem ipsum dolor'},request)
     self.assertEqual(4,len(folder.getChildNodes(request)))
     self.assertEqual(1,len(folder.getChildNodes(request,context.PAGEELEMENTS)))
     self.assertEqual(3,len(folder.getChildNodes(request,context.PAGES)))

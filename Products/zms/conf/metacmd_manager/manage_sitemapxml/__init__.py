@@ -13,7 +13,7 @@ class manage_sitemapxml:
 	description = ""
 
 	# Execution
-	execution = 0
+	execution = False
 
 	# Icon_clazz
 	icon_clazz = "fab fa-google text-danger"

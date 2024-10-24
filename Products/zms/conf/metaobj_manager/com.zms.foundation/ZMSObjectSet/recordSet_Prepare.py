@@ -12,7 +12,7 @@
 from Products.zms import standard
 
 request = zmscontext.REQUEST
-lang = request['lang']
+lang = request.get('lang', zmscontext.getPrimaryLanguage())
 session = request.SESSION
 
 records = []

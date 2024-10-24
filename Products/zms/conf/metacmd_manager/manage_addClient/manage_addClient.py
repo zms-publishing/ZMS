@@ -1,4 +1,5 @@
 from Products.PythonScripts.standard import html_quote
+from Products.zms import standard
 
 def manage_addClient(self):
 	request = self.REQUEST
@@ -24,7 +25,7 @@ def manage_addClient(self):
 		home.manage_addFolder(id=request['id'],title=request['title'])
 		folder_inst = getattr(home,request['id'])
 		request.set('lang_label',self.getLanguageLabel(request['lang']))
-		zms_inst = self.initZMS(folder_inst, 'content', request['titlealt'], request['title'], request['lang'], request['manage_lang'], request)
+		zms_inst = self.initZMS(folder_inst, 'content', request['titlealt'], request['title'], request['lang'], self.get_manage_lang(), request)
 		zms_inst.setConfProperty('Portal.Master',home.id)
 		if request.get('acquire'):
 			for id in [id for id in self.getMetaobjIds() if id not in ['ZMSIndexZCatalog','com.zms.index']]:
@@ -52,7 +53,7 @@ def manage_addClient(self):
 		html += '<label for="titlealt" class="col-sm-3 control-label">%s</label>'%(self.getZMILangStr('TAB_CONFIGURATION'))
 		html += '<div class="col-sm-9"><input name="acquire:int" type="checkbox" value="1" checked="checked"> %s</div>'%(self.getZMILangStr('BTN_ACQUIRE'))
 		html += '</div><!-- .form-group -->'
-		html += '<div class="form-row">'
+		html += '<div class="form-group row">'
 		html += '<div class="controls save">'
 		html += '<button type="submit" name="btn" class="btn btn-primary" value="BTN_INSERT">%s</button>'%self.getZMILangStr('BTN_INSERT')
 		html += '<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CANCEL">%s</button>'%self.getZMILangStr('BTN_CANCEL')

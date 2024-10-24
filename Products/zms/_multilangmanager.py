@@ -19,9 +19,9 @@
 # Imports.
 from App.Common import package_home
 import OFS.misc_
+import json
 from zope.interface import implementer
 # Product Imports.
-from Products.zms import IZMSLocale
 from Products.zms import _fileutil
 from Products.zms import _xmllib
 from Products.zms import standard
@@ -76,7 +76,7 @@ def importXml(self, xml):
 def exportXml(self, ids, REQUEST=None, RESPONSE=None):
   value = []
   d = self.get_lang_dict()
-  for id in d:
+  for id in sorted(d):
     item = d[id].copy()
     item['key'] = id
     if id in ids or len(ids) == 0:
@@ -221,7 +221,6 @@ class MultiLanguageObject(object):
 ###
 ################################################################################
 ################################################################################
-@implementer(IZMSLocale.IZMSLocale)
 class MultiLanguageManager(object):
 
     def get_manage_langs(self):
@@ -235,20 +234,26 @@ class MultiLanguageManager(object):
       Returns preferred of manage-language for current content-language.
       """
       manage_lang = None
-      req = getattr( self, 'REQUEST', None)
-      if req is not None:
-        sess = standard.get_session(self)
-        if 'manage_lang' in req:
-          manage_lang = req.get('manage_lang')
+      request = self.REQUEST
+      if standard.isManagementInterface(self):
+        manage_langs = self.get_manage_langs()
+        # get manage_lang from request.form
+        if 'manage_lang' in request.form and request.form['manage_lang'] in manage_langs:
+          manage_lang = request.form['manage_lang']
+          # save manage_lang from request.form in session
+          standard.set_session_value(self, 'manage_lang', manage_lang)
         else:
-          if sess is not None and 'reset_manage_lang' not in req.form:
-            manage_lang = sess.get('manage_lang')
-          if manage_lang is None:
-            lang = req.get('lang')
+          # get manage_lang from request or session
+          manage_lang = request.get('manage_lang', standard.get_session_value(self, 'manage_lang'))
+          if manage_lang not in manage_langs:
+            # get manage_lang from request.lang
+            manage_lang = None
+            lang = request.get('lang')
             if lang in self.getLangIds():
               manage_lang = self.getLang(lang).get('manage')
-        if sess is not None:
-          sess.set('manage_lang', manage_lang)
+              # save manage_lang from request.lang in session
+              standard.set_session_value(self, 'manage_lang', manage_lang)
+      # default manage_lang to English
       if manage_lang is None:
         manage_lang = 'eng'
       return manage_lang
@@ -280,12 +285,13 @@ class MultiLanguageManager(object):
         return d[key][lang]
       
       # Return system value.
-      d = OFS.misc_.misc_.zms['langdict'].get_langdict()
-      if key in d:
-        if lang not in d[key]:
-          lang = 'eng'
-        if lang in d[key]:
-          return d[key][lang]
+      if hasattr(OFS.misc_.misc_,'zms'):
+        d = OFS.misc_.misc_.zms['langdict'].get_langdict()
+        if key in d:
+          if lang not in d[key]:
+            lang = 'eng'
+          if lang in d[key]:
+            return d[key][lang]
       
       return key
 
@@ -489,7 +495,9 @@ class MultiLanguageManager(object):
     ############################################################################
     def manage_changeLanguages(self, lang, btn, REQUEST, RESPONSE):
       """ MultiLanguageManager.manage_changeLanguages """
-      
+
+      target = REQUEST.get('target', None)
+
       # Delete.
       # -------
       if btn == 'BTN_DELETE':
@@ -500,25 +508,39 @@ class MultiLanguageManager(object):
       # Change.
       # -------
       elif btn == 'BTN_SAVE':
+        # Change available languages.
         for id in self.getLangIds():
           newLabel = REQUEST.get('%s_label'%id).strip()
           newParent = REQUEST.get('%s_parent'%id).strip()
           newManage = REQUEST.get('%s_manage'%id).strip()
           self.setLanguage(id, newLabel, newParent, newManage)
-        # Insert
-        newId = REQUEST.get('language_id').strip()
-        if len(newId) > 0:
-          newLabel = REQUEST.get('language_label').strip()
-          if len(self.getLangIds()) == 0:
-            newParent = ''
-          else:
-            newParent = REQUEST.get('language_parent').strip()
-          newManage = REQUEST.get('language_manage').strip()
-          self.setLanguage(newId, newLabel, newParent, newManage)
-      
+        # Insert new languages
+        # Ref: _multilangmanager.py#L647
+          for key in REQUEST.form.keys():
+            if key.startswith('_lang_id_'):
+              i = int(key[len('_lang_id_'):])
+              if REQUEST[key]:
+                newId = REQUEST[key].strip()
+                if newId not in self.getLangIds():
+                  newLabel = REQUEST.get('_lang_label_%i'%i).strip()
+                  if len(self.getLangIds()) == 0:
+                    newParent = ''
+                  else:
+                    newParent = REQUEST.get('_lang_parent_%i'%i).strip()
+                  newManage = REQUEST.get('_lang_manage_%i'%i).strip()
+                  self.setLanguage(newId, newLabel, newParent, newManage)
+
       # Return with message.
-      message = standard.url_quote(self.getZMILangStr('MSG_CHANGED'))
-      return RESPONSE.redirect('manage_customizeLanguagesForm?lang=%s&manage_tabs_message=%s'%(lang, message))
+      if target=='zmi_manage_tabs_message':
+        if btn == 'BTN_DELETE' and ids:
+          message = '%s: %s'%(self.getZMILangStr('MSG_DELETED')%len(ids), id)
+        else:
+          message = self.getZMILangStr('MSG_CHANGED')
+        REQUEST.set('manage_tabs_message', message)
+        return self.zmi_manage_tabs_message(lang=lang, id=id, extra={}, REQUEST=REQUEST, RESPONSE=RESPONSE)
+      else:
+        message = standard.url_quote(self.getZMILangStr('MSG_CHANGED'))
+        return RESPONSE.redirect('manage_customizeLanguagesForm?lang=%s&manage_tabs_message=%s'%(lang, message))
 
 
     # --------------------------------------------------------------------------
@@ -570,8 +592,8 @@ class MultiLanguageManager(object):
       self.storeReqBuff( reqBuffId, d)
       if REQUEST is not None:
         REQUEST.RESPONSE.setHeader('Cache-Control', 'public, max-age=3600')
-        REQUEST.RESPONSE.setHeader('Content-Type', 'text/plain; charset=utf-8')
-        return self.str_json(d)
+        REQUEST.RESPONSE.setHeader('Content-Type', 'application/json; charset=utf-8')
+        return json.dumps(d)
       
       return d
 
@@ -610,6 +632,8 @@ class MultiLanguageManager(object):
     def manage_changeLangDictProperties(self, lang, btn, REQUEST, RESPONSE=None):
         """ MultiLanguageManager.manage_changeLangDictProperties """
         
+        target = REQUEST.get('target', None)
+
         # Delete.
         # -------
         if btn == 'BTN_DELETE':
@@ -632,14 +656,19 @@ class MultiLanguageManager(object):
               enabled = lang_id not in d[key].get('acquired', [])
               if enabled:
                 lang_dict[key][lang_id] = REQUEST['%s_value_%s'%(key, lang_id)].strip()
-          # Insert
-          key = REQUEST['_key'].strip()
-          if len(key) > 0:
-            lang_dict = self.get_lang_dict()
-            lang_dict[key] = {}
-            for lang_id in self.getLangIds():
-              lang_dict[key][lang_id] = REQUEST['_value_%s'%lang_id].strip()
-          self.set_lang_dict(lang_dict)
+          # Insert (multiple) new language keys at once.
+          # Ref: ZMSMetaobjManager.py#L1294
+          for key in REQUEST.form.keys():
+            if key.startswith('_lang_dict_key_'):
+              i = int(key[len('_lang_dict_key_'):])
+              if REQUEST[key]:
+                k = REQUEST[key].strip()
+                lang_dict[k] = {}
+                for key2 in REQUEST.form.keys():
+                  if key2.startswith('_lang_dict_value_%i_'%i):
+                    lang_id = key2[len('_lang_dict_value_%i_'%i):]
+                    lang_dict[k][lang_id] = REQUEST[key2].strip()
+                self.set_lang_dict(lang_dict)
         
         # Export.
         # -------
@@ -660,7 +689,15 @@ class MultiLanguageManager(object):
           message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%filename)
         
         # Return with message.
-        message = standard.url_quote(self.getZMILangStr('MSG_CHANGED'))
-        return RESPONSE.redirect('manage_customizeLanguagesForm?lang=%s&manage_tabs_message=%s#langdict'%(lang, message))
+        if target=='zmi_manage_tabs_message':
+          if btn == 'BTN_DELETE' and ids:
+            message = '%s: %s'%(self.getZMILangStr('MSG_DELETED')%len(ids), id)
+          else:
+            message = self.getZMILangStr('MSG_CHANGED')
+          REQUEST.set('manage_tabs_message', message)
+          return self.zmi_manage_tabs_message(lang=lang, id=id, extra={}, REQUEST=REQUEST, RESPONSE=RESPONSE)
+        else:
+          message = standard.url_quote(self.getZMILangStr('MSG_CHANGED'))
+          return RESPONSE.redirect('manage_customizeLanguagesForm?lang=%s&manage_tabs_message=%s#langdict'%(lang, message))
 
 ################################################################################

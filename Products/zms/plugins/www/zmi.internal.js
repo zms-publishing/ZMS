@@ -41,9 +41,9 @@ ZMI.prototype.getCoords = function(theElement, thePosition) {
 ZMI.prototype.getDescendantLanguages = function() {
 	var base = self.location.href;
 	if (base.indexOf('?') > 0) {
-		base = base.substr(0,base.indexOf('?'));
+		base = base.substring(0,base.indexOf('?'));
 	}
-	base = base.substr(0,base.lastIndexOf('/'));
+	base = base.substring(0,base.lastIndexOf('/'));
 	var response = $.ajax({
 		url: base+'/getDescendantLanguages',
 		data:{id:getZMILang()},
@@ -82,10 +82,10 @@ ZMI.prototype.getServerUrl = function(url) {
 		return "";
 	}
 	var protocol = url;
-	protocol = protocol.substr(0,protocol.indexOf(":")+3);
+	protocol = protocol.substring(0,protocol.indexOf(":")+3);
 	var server_url = url;
-	server_url = server_url.substr(protocol.length);
-	server_url = protocol + server_url.substr(0,server_url.indexOf("/"));
+	server_url = server_url.substring(protocol.length);
+	server_url = protocol + server_url.substring(0,server_url.indexOf("/"));
 	return server_url;
 }
 
@@ -101,8 +101,8 @@ ZMI.prototype.relativateUrl = function(url,anchor,page_abs_url) {
 	if (server_url.length > 0 && page_server_url.length > 0 && server_url != page_server_url) {
 		return url;
 	}
-	var currntPath = page_abs_url.substr(page_server_url.length);
-	var targetPath = url.substr(server_url.length);
+	var currntPath = page_abs_url.substring(page_server_url.length);
+	var targetPath = url.substring(server_url.length);
 	while ( currntPath.length > 0 && targetPath.length > 0) {
 		var i = currntPath.indexOf( '/');
 		var j = targetPath.indexOf( '/');

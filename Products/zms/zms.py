@@ -102,7 +102,7 @@ def importTheme(self, theme):
 # A new ZMS node can be initalized as a stand-alone client (master) or 
 # as subordinated client acquiring content models and sharing the zmsindex.
 # Use a request variable 'acquire' =  1 to initalize ZMS as a client
-def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
+def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST, minimal_init = False):
 
   ### Constructor.
   obj = ZMS()
@@ -135,7 +135,8 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   obj.setConfProperty('ZMS.autocommit', 1)
 
   ### Init ZMS default content-model.
-  _confmanager.initConf(obj, 'conf:com.zms.foundation*')
+  _confmanager.initConf(obj, 'conf:com.zms.foundation' if minimal_init else 'conf:com.zms.foundation*')
+  _confmanager.initConf(obj, 'conf:com.zms.catalog.zcatalog')
 
   ### Init ZMS index.
   obj.getZMSIndex()
@@ -208,8 +209,14 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
     #-- Search
     initContent(obj, 'com.zms.search.content.xml', REQUEST)
 
-    # Initialize catalogs.
-    obj.getCatalogAdapter().reindex_all()
+    # Initialize catalog adapter / connector.
+    catalog_adapter = obj.getCatalogAdapter() 
+    catalog_connector = catalog_adapter.add_connector('zcatalog_connector')
+    catalog_connector.manage_init()
+    try:
+      catalog_adapter.reindex(catalog_connector, obj, recursive=True)
+    except:
+      standard.writeBlock( self, '[catalog_adapter]: : \'RequestContainer\' object has no \'attribute reindex\'')
 
     # Initialize access.
     obj.synchronizePublicAccess()
@@ -254,7 +261,6 @@ class ZMS(
     # -----------------------
     __viewPermissions__ = (
         'manage', 'manage_main', 'manage_container', 'manage_workspace', 'manage_menu',
-        'manage_ajaxGetChildNodes',
         )
     __administratorPermissions__ = (
         'manage_customize',
@@ -264,6 +270,7 @@ class ZMS(
         'manage_customizeDesign', 'manage_customizeDesignForm',
         )
     __authorPermissions__ = (
+        'preview_html', 'preview_top_html',
         'manage_addZMSModule',
         'manage_deleteObjs', 'manage_undoObjs',
         'manage_moveObjUp', 'manage_moveObjDown', 'manage_moveObjToPos',
@@ -304,6 +311,8 @@ class ZMS(
 
     # Interface.
     # ----------
+    swagger_ui = PageTemplateFile('zpt/ZMS/swagger-ui', globals()) # swagger-ui
+    openapi_yaml = PageTemplateFile('zpt/ZMS/openapi_yaml', globals()) # openapi.yaml
     index_html = PageTemplateFile('zpt/ZMS/index', globals()) # index_html
     f_index_html = PageTemplateFile('zpt/ZMS/index', globals()) # index_html
     f_headDoctype = PageTemplateFile('zpt/ZMS/f_headdoctype', globals()) # Head.DOCTYPE
@@ -365,13 +374,47 @@ class ZMS(
       file.close()
       zms_custom_version = os.environ.get('ZMS_CUSTOM_VERSION', '')
       if custom and zms_custom_version != '':
-        rtn += ' ({})'.format(zms_custom_version)
+        rtn += f'&nbsp;(<samp id="zms_custom_version">{zms_custom_version}</samp>)'
+        # Generate revisions and custom version gathering commit hashes of git submodules
+        # see Lines 37-46 unibe-cms/.github/workflows/build-and-push.yml
+        revisions = _fileutil.getOSPath('/app/revisions.txt')
+        if os.path.exists(revisions):
+            file = open(revisions, 'r')
+            zms_submodule_revisions = file.read()
+            file.close()
+            rtn += f"""
+                <span class="d-inline-block" data-toggle="popover"
+                    title="Git revisions"
+                    data-content="{zms_submodule_revisions}">
+                    <i class="fab fa-git-square fa-lg"></i>
+                </span>
+                <script>
+                    $(function () {{
+                        $('[data-toggle="popover"]').popover();
+                        // CAVEAT: Slicing below relies on commit hashes at https://github.com/idasm-unibe-ch/unibe-cms/tree/...
+                        const zms_custom_version = $('#zms_custom_version').text().replaceAll('(', '').replaceAll(')', '');
+                        const github_link = zms_custom_version.substr(zms_custom_version.indexOf('https://github.com'), zms_custom_version.length);
+                        const version_str = zms_custom_version.substr(0, zms_custom_version.indexOf('https://github.com')).trim();
+                        if (github_link.indexOf('https://github.com') == 0) {{
+                            $('#zms_custom_version').html('<a href="'+github_link+'" title="'+github_link.slice(0, 58)+'" target="_blank">'+version_str+'</a>');
+                        }}
+                    }})
+                </script>
+                <style>
+                    .popover-body {{
+                        white-space: break-spaces;
+                        width: auto;
+                        font-size: smaller;
+                    }}
+                </style>
+                """
       if custom and os.path.exists(_fileutil.getOSPath(package_home(globals())+'/../../.git/FETCH_HEAD')):
         file = open(_fileutil.getOSPath(package_home(globals())+'/../../.git/FETCH_HEAD'),'r')
         FETCH_HEAD = file.read()
         file.close()
         FETCH_HEAD = FETCH_HEAD[0:7]
-        rtn += ' git#%s'%(FETCH_HEAD)
+        rtn += (f'<a title="ZMS commits on github.com" target="_blank" '
+                f'href="https://github.com/zms-publishing/ZMS/commits/main"> git#{FETCH_HEAD}</a>')
       return rtn
 
     # --------------------------------------------------------------------------
@@ -390,7 +433,13 @@ class ZMS(
     The root element of the site.
     """
     def getRootElement(self):
-      return self.breadcrumbs_obj_path()[0]
+      doc_elmnt = self
+      while True:
+        portal_mstr = doc_elmnt.getPortalMaster()
+        if portal_mstr is None:
+          break
+        doc_elmnt = portal_mstr
+      return doc_elmnt
 
     # --------------------------------------------------------------------------
     #  ZMS.getAbsoluteHome
@@ -452,11 +501,11 @@ class ZMS(
     """
     def getPortalMaster(self):
       v = self.get_conf_properties().get('Portal.Master', '')
-      if len(v) > 0:
+      if v:
         try:
           return getattr( self, v).content
         except:
-          standard.writeError(self, '[getPortalMaster]: %s not found!'%str(v))
+          pass
       return None
 
     """
@@ -465,13 +514,13 @@ class ZMS(
     def getPortalClients(self):
       docElmnts = []
       v = self.get_conf_properties().get('Portal.Clients', [])
-      if len(v) > 0:
-        thisHome = self.getHome()
+      if v:
+        home = self.getHome()
         for id in v:
           try:
-            docElmnts.append(getattr(thisHome, id).content)
+            docElmnts.append(getattr(home, id).content)
           except:
-            standard.writeError(self, '[getPortalClients]: %s not found!'%str(id))
+            pass
       return docElmnts
 
 
@@ -514,6 +563,45 @@ class ZMS(
       # Therefore, we introduce a special attribute containing the parent
       # object, which will be used by xmlGetParent() (see below).
       self.oParent = None
+
+    # Hook: ZMS.mode.maintenance
+    def __before_publishing_traverse__(self, object, request):
+      """
+      Maintenance mode can be set by adding the ZMS configuration
+      key ZMS.mode.maintenance=1. The maintenance mode prevents 
+      editing content and returns an error: 503 Service Unavailable.
+      To show a specific message the Zope object standard_error_message 
+      should be customized, e.g. like this:
+        <tal:block
+            tal:define="
+              errtype python:options.get('error_type',None);
+              errvalue python:options.get('error_value',None)"
+            tal:condition="python:errtype=='HTTPServiceUnavailable' and str(errvalue)=='Maintenance'">
+            <h2>ZMS Maintenance active</h2>
+            <button onclick="history.back()">Go Back</button>
+        </tal:block>
+      """
+      path = request.path
+      maintenance_conf_key = 'ZMS.mode.maintenance'
+      maintenance_mode = bool(self.getConfProperty(maintenance_conf_key, False))
+      is_maintenance_mode_change = 'manage_customizeSystem' in path and request.get('conf_key') == maintenance_conf_key
+      # Only allow ZMS.mode.maintenance changes in maintenance mode.
+      if maintenance_mode and not is_maintenance_mode_change:
+        import transaction
+        import ZODB.Connection
+        t = transaction.get()
+        def maintenance_hook():
+          # Check if there are ZODB changes - if there is a ZODB.Connection.Connection resource manager.
+          # Transaction._resources contains all resource managers which commit their changes sequentially:
+          # https://github.com/zopefoundation/transaction/blob/6d4785159c277067f2ec95158884870a92660220/src/transaction/_transaction.py#L421
+          for resource in t._resources:
+            if isinstance(resource, ZODB.Connection.Connection):
+              # Reset response content type (WGSIPublisher sets it to "text/plain" per default if unset)
+              # and lock status (the zException does not get mapped correctly)
+              request.response.setHeader('Content-Type', 'text/html;charset=utf-8')
+              request.response.setStatus(503, lock=True)
+              raise zExceptions.HTTPServiceUnavailable('Maintenance')
+        t.addBeforeCommitHook(maintenance_hook)
 
 ################################################################################
 

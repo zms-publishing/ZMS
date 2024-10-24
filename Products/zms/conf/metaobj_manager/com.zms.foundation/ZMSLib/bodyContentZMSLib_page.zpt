@@ -1,15 +1,19 @@
 <!-- bodyContentZMSLib_page -->
-
+<tal:block tal:define="
+	zopeutil modules/Products.zms/zopeutil; 
+	attr_standard_html python:here.getMetaobjAttr(here.meta_id, 'standard_html');
+	ob python: attr_standard_html.get('ob');
+	maybe_recursive python:ob and (zopeutil.readData(ob).find('bodyContentZMSLib_page') > -1) or False">
 	<tal:block tal:condition="python:here.meta_id in ['ZMS','ZMSFolder','ZMSDocument']" tal:define="global 
 		childNodes python:[ob for ob in here.getObjChildren('e',request,here.PAGEELEMENTS) if ob.meta_id not in ['bt_carousel']]">
-    <tal:block tal:repeat="childNode childNodes" tal:content="structure python:childNode.getBodyContent(request)">
-      The page-element body-content
-    </tal:block>
+		<tal:block tal:repeat="childNode childNodes" tal:content="structure python:childNode.getBodyContent(request)">
+			The page-element body-content
+		</tal:block>
 	</tal:block>
-	<tal:block tal:condition="python:here.meta_id not in ['ZMS','ZMSFolder','ZMSDocument']">
+	<tal:block tal:condition="python:here.meta_id not in ['ZMS','ZMSFolder','ZMSDocument'] and not maybe_recursive">
 		<tal:block tal:content="structure python:here.getBodyContent(request)">
 			The body-content
 		</tal:block>
 	</tal:block>
-
+</tal:block>
 <!-- /bodyContentZMSLib_page -->

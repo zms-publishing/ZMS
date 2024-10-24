@@ -47,7 +47,8 @@
 						<a class="dropdown-item" target="_blank"
 							tal:condition="has_file"
 							tal:attributes="id python:'download_btn_%s'%elName;href href"
-							tal:content="structure python:'%s %s'%('<i class=\042fas fa-download\042></i>',here.getZMILangStr('BTN_DOWNLOAD'))">Download</a>
+							tal:content="structure python:'%s%s'%('<i class=\042fas fa-download\042></i>',here.getZMILangStr('BTN_DOWNLOAD'))">Download</a>
+						<a class="dropdown-item" tal:attributes="id python:'link_btn_%s'%elName;onclick python:'$ZMI.CopyToClipboard(\'{}\')'.format(request.get('BASE0')+href.replace('?preview=preview', ''))"><i class="fas fa-link"></i><tal:block tal:content="python:here.getZMILangStr('Copy Link')">Copy Link</tal:block></a>
 						<a class="dropdown-item" tal:attributes="id python:'delete_btn_%s'%elName"><i class="fas fa-trash"></i><tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block></a>
 						<a class="dropdown-item" tal:attributes="id python:'undo_btn_%s'%elName"><i class="fas fa-undo"></i><tal:block tal:content="python:here.getZMILangStr('BTN_UNDO')">Undo</tal:block></a>
 

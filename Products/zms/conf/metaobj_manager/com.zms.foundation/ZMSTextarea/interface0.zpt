@@ -1,7 +1,8 @@
 <tal:block tal:define="
 	zmscontext options/zmscontext;
-	show_htmlcheck python:bool(int(zmscontext.getConfProperty('ZMS.ZMSTextarea.show_htmlcheck',1)));
-	dummy0 python:request.set('CKEDITOR_config_removeButtons','JustifyLeft,JustifyCenter,JustifyRight')">
+	show_htmlcheck python:bool(int(zmscontext.getConfProperty('ZMS.ZMSTextarea.show_htmlcheck',0)));
+	dummy0 python:request.set('CKEDITOR_config_removeButtons','JustifyLeft,JustifyCenter,JustifyRight')"
+	tal:condition="show_htmlcheck">
 <script type="text/javascript">
 //<!-- ### Realtime HTML Validity Info ###
 	function validate_html(txt) {
@@ -36,8 +37,8 @@
 	});
 //-->
 </script>
-<style tal:condition="show_htmlcheck">
-/*<!-- ### Remove this CSS for Hiding HTML Validity Info ### */
+<style>
+/*<!-- ### Removing this CSS hides the HTML Validity Info ### */
 	.zmi-richtext:after {
 		content:attr(data-msg);
 		display:block;

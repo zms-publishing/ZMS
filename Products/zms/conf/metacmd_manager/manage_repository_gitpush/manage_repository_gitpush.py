@@ -86,7 +86,7 @@ def manage_repository_gitpush(self, request=None):
 		html.append('<small class="px-2 pull-right float-right"><a class="text-info" target="_blank" href="https://git-scm.com/book/en/v2/Git-Tools-Signing-Your-Work">More about Git signing...</a></small>')
 		html.append('</div>')
 		html.append('</div><!-- .form-group -->')
-		html.append('<div class="form-group">')
+		html.append('<div class="form-group row">')
 		html.append('<div class="controls save">')
 		html.append('<button type="submit" name="btn" class="btn btn-primary" value="BTN_GITPUSH">%s</button>'%(self.getZMILangStr('BTN_GITPUSH')))
 		html.append('<button type="submit" name="btn" class="btn btn-secondary btn-default" value="BTN_CANCEL">%s</button>'%(self.getZMILangStr('BTN_CANCEL')))

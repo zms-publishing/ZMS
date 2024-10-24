@@ -16,7 +16,7 @@ class com_zms_foundation_bootstrap:
 	package = ""
 
 	# Revision
-	revision = "4.1.1"
+	revision = "5.0.4"
 
 	# Type
 	type = "ZMSPackage"

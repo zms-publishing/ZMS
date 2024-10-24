@@ -5,6 +5,42 @@ body.zmi .form-control {
 	font-family: "Helvetica Neue",Arial,sans-serif;
 	font-size: .867rem !important;
 }
+/* GUI hx-loading progress bar */
+body.zmi:not(.manage-menu) {
+	overflow-y: scroll;
+}
+body.zmi.loading {
+	overflow-x: hidden;
+}
+body.zmi.loading:after, 
+body.zmi:not(.loading).loaded:after {
+	top:0;
+	content:' ';
+	display:block;
+	position:absolute;
+	background:#00ccff;
+	height:3px;
+	z-index:10000;
+}
+body.zmi.loading:after {
+	left:0;
+	animation-name: loading;
+	animation-duration: 1.5s;
+}
+body.zmi:not(.loading).loaded:after {
+	right:0;
+	animation-name: loaded;
+	animation-duration: .75s;
+}
+@keyframes loading {
+	from {width:0vw;opacity:1}
+	to {width:100vw;opacity:.5}
+}
+@keyframes loaded {
+	from {width:100vw;opacity:1}
+	to {width:0vw;opacity:.5}
+}
+
 a {
 	color: #08c;
 }
@@ -63,10 +99,23 @@ header .navbar-brand {
 	color: #96ebff;
 	margin:0;
 }
-
 .navbar-nav > ul > li > a {
 	color: silver;
 	text-decoration:none;
+}
+@keyframes icon_blink {
+	0% {
+		color: #96ebff;
+	}
+	68% {
+		color: #96ebff;
+	}
+	100% {
+		color: inherit;
+	}
+}
+.navbar-nav > ul > li.has_changed > a > i {
+	animation: icon_blink .75s
 }
 .navbar-nav > ul > li > a:active, 
 .navbar-nav > ul > li > a:hover,
@@ -103,12 +152,14 @@ header.navbar-nav .navbar-brand .slogan {
 }
 header.navbar-nav ul.navbar-nav {
 	background: #354f67;
+	flex-wrap: nowrap;
 }
-/* Show Debug Mode: ZMS.debug=1 */
-header.zmsdebug .navbar-brand .slogan {
+/* Show ZMS Mode: ZMS.mode.debug=1, ZMS.mode.maintenance=1 */
+header[data-zmsmode] .navbar-brand .slogan {
 	visibility: collapse;
 }
-header.zmsdebug .navbar-brand .product:after {
+header[data-zmsmode='debug'] .navbar-brand .product:after,
+header[data-zmsmode='maintenance'] .navbar-brand .product:after {
 	content: "DEBUG MODE";
 	font-size: .9rem;
 	color: white;
@@ -122,12 +173,20 @@ header.zmsdebug .navbar-brand .product:after {
 	top: 0;
 	left: 105px;
 }
+header[data-zmsmode='maintenance'] .navbar-brand .product:after {
+	content: "MAINTENANCE";
+	background: #dc3545;
+}
 @media (max-width: 767px) {
-	header.zmsdebug .navbar-brand .product:after {
+	header[data-zmsmode='debug'] .navbar-brand .product:after,
+	header[data-zmsmode='maintenance'] .navbar-brand .product:after {
 		content:"\F188";
 		font-family:'Font Awesome 5 Free',fontawesome;
 		font-size: 1.2rem;
 		padding: .78rem .4rem;
+	}
+	header[data-zmsmode='maintenance'] .navbar-brand .product:after {
+		content:"\F05E";
 	}
 }
 
@@ -409,9 +468,14 @@ footer .back-to-top.hide {
 	padding:0;
 	background: #EAEDEF;
 }
+#zmi-tab .card .card-header .zmi-action.btn-group.pull-right,
+#zmiIframeAddDialog .card .card-header .zmi-action.btn-group.pull-right {
+	padding-top:0.25rem;
+}
 #zmi-tab .card .card-header.btn-collapse .zmi-changes,
 #zmiIframeAddDialog .card .card-header.btn-collapse .zmi-changes {
 	opacity:0.5;
+	cursor:help;
 }
 @media (max-width: 546px) {
 	#zmi-tab .card .card-header.btn-collapse .zmi-changes,
@@ -453,6 +517,8 @@ footer .back-to-top.hide {
 #zmi-tab .card .card-header.btn-collapse #zmi-toggle-activity,
 #zmiIframeAddDialog .card .card-header.btn-collapse #zmi-toggle-activity {
 	margin-left:0.6rem;
+	margin-top: -2px;
+	display: inline-block;
 }
 .btn-group.managing, .btn-group.packaging {
 	margin-right:0.2rem;
@@ -665,17 +731,33 @@ body.zmi ul.zmi-container > .zmi-item .right video {
 	box-shadow: 5px 5px 20px #c0c0c094;
 	transition: opacity .75s, height .5s, box-shadow 1s, background-color 1s  ease; 
 }
+.preview_on_hover.preview_text:hover::after {
+	content:attr(data-preview_text);
+	background-image:none;
+	padding:0.35rem .5rem;
+	font-size:smaller;
+	overflow: hidden;
+	overflow-y:scroll;
+	white-space: normal;
+}
 body.zmi ul.zmi-container > .zmi-item .right video {
 	margin-top:1.5rem;
 	background-color:transparent;
 	border-color:transparent;
 	box-shadow: none;
 }
+body.zmi .zmi-sitemap span.preview_on_hover:hover::after {
+	width: 35vw;
+	height: 35vh;
+	margin: 1rem 0 0 -.5rem;
+}
+
 @media (max-width: 767px) {
 	body.zmi header.navbar {
 		max-width: 100%;
 		/* overflow:hidden; # hides dropdown menu as an unpleasant side effect */
 	}
+	.zmi header.navbar ul.navbar-nav li span.cache_label,
 	.zmi header.navbar ul.navbar-nav li span.language_label {
 		display: none;
 	}
@@ -803,7 +885,7 @@ body.zmi .dropleft .dropdown-toggle::before {
 body.zmi .zmi-action .btn.split-right:before {
 	content: "";
 	position: absolute;
-	top: .55rem;
+	top: .60rem;
 	left: .25rem;
 	margin:0;
 	display: inline-block;
@@ -881,7 +963,7 @@ li.zmi-item span.zmi-ids {
 	margin: 6px;
 	cursor:pointer;
 }
-.zmi-manage-main-change {
+div.zmi-manage-main-change {
 	color:#999;
 	font-size:11px;
 	margin:.7rem 0 0 0;
@@ -950,7 +1032,8 @@ li.zmi-item span.zmi-ids {
 	content:attr(title);
 	font-family:var(--font-family-sans-serif);
 	font-weight: 400;
-	margin-left:.5rem
+	margin-left:.5rem;
+	line-height: 1.5;
 }
 .zmi.properties .card > .zmi-children {
 	background: #F5F5F5;
@@ -977,6 +1060,12 @@ li.zmi-item span.zmi-ids {
 .zmi table.table td.meta-sort {
 	width:5rem;
 }
+tr[id*='new_row'] {
+	background:#d6e0e9 !important;
+}
+tr[id*='new_row'] td {
+	border-color:white !important
+}
 .zmi table.table-sm td.meta-sort div select,
 .zmi table.table-sm td.meta-sort div div a  {
 	background-color:rgba(255, 255, 255, 0);
@@ -988,7 +1077,6 @@ li.zmi-item span.zmi-ids {
 .zmi table.table td.meta-sort .btn.btn-secondary i.fas.fa-times,
 .zmi table.table td.meta-default .btn.btn-secondary i.fas.fa-key,
 .zmi table.table td.meta-default .btn.btn-secondary i.fas.fa-ellipsis-v,
-.zmi .meta-languages .single-line.input-group i.fas,
 .zmi table.table .single-line.input-group .input-group-append i.fas {
 	color: #999;
 }
@@ -1009,8 +1097,12 @@ li.zmi-item span.zmi-ids {
 	border-bottom-left-radius: .25rem;
 	border-top-left-radius: .25rem;
 	padding-right: .25em;
+	padding-left: 0;
 }
-.zmi form.manage_metas table.table td.meta-sort select.zmi-sort {
+.zmi.metas.metaobj form table.table td.meta-sort select.zmi-sort {
+	width: 3em;
+}
+.zmi.metas:not(.metaobj) form table.table td.meta-sort select.zmi-sort {
 	width: 3.9em;
 }
 .zmi table.table .input-group {
@@ -1061,6 +1153,17 @@ input.btn.btn-file {
 	text-align:right;
 	width:100%;
 }
+.zmi .controls.save .btn:not(:last-child) {
+	margin-right:0.25rem;
+}
+.zmi .controls.save dialog#menulock_btn {
+	/* Hint: is dialog element for react on focus/click event */
+	display:inline-block;
+	position: relative;
+}
+.zmi .controls.save dialog#menulock_btn #menulock[value='0'] + #menulock_icon {
+	color:#bfc8cf;
+}
 .zmi .single-line {
 	width:100%;
 	flex-wrap:nowrap;
@@ -1101,7 +1204,14 @@ input.btn.btn-file {
 .zmi.modal-open.fullScreen .modal-dialog {
 	transform:none !important;
 }
-
+.zmi.modal-open.fullScreen .modal-body .controls.save {
+	right: 32px;
+	position: fixed;
+	bottom: 0;
+	top: calc(100vh - 64px);
+	z-index: 1000000;
+	display: block;
+}
 div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	margin-left:1em;
 }
@@ -1137,9 +1247,6 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
-.zmi .breadcrumb li.breadcrumb-item.active a {
-	color:#999fa5;
-}
 .zmi .breadcrumb li.breadcrumb-item:hover a {
 	color: #999fa5;
 	text-decoration:none;
@@ -1166,11 +1273,11 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	border:0;
 	padding:0 .35rem 0 0;
 }
-.zmi .form-group .breadcrumb li.breadcrumb-item {
-	white-space: nowrap;
-	text-overflow: ellipsis;
-	max-width: 98px;
-	overflow: hidden;
+.zmi td.form-group .breadcrumb li.breadcrumb-item {
+	padding-top:.2rem!important;
+}
+.zmi td.form-group .breadcrumb li.breadcrumb-item:not(.active) {
+	padding-top:.3rem!important;
 }
 .zmi .form-group li.breadcrumb-item + li.breadcrumb-item::before,
 .zmi .form-group li.breadcrumb li.breadcrumb-item i {
@@ -1183,8 +1290,7 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	padding-top:.1rem;
 	width: max-content;
 }
-
-.zmi table td > nav > ol.breadcrumb {
+.zmi table.table td nav > ol.breadcrumb {
 	padding: 0;
 }
 
@@ -1623,11 +1729,6 @@ table.table-sm tr.row_metadata td,
 table.table-sm tr.row_insert td {
 	background-color: #e9ecef !important
 }
-table.table-sm tr.row_metadata td .btn-add, 
-table.table-sm tr.row_insert td .btn-add {
-	padding-right: 0.4rem;
-	color: #888;
-}
 .zmi table.table-sm td.meta-id input {
 	background:rgba(53, 79, 103, 0.10);
 }
@@ -1638,6 +1739,26 @@ table.table-sm tr.row_insert td .btn-add {
 	color:#999;
 }
 
+/* Row-Insert */
+.zmi table tr.row_insert > td > .btn-add {
+	width: 100%;
+	color:#333 !important;
+	padding: 4px 8px;
+}
+.zmi table tr.row_insert > td > .btn-add:hover {
+	color:white !important;
+}
+.zmi table tr.row_insert > td:not(.meta-sort) > * {
+	opacity:.35;
+	pointer-events:none;
+}
+.zmi table tr.htmx-swapping td {
+	opacity: 0;
+	transition: opacity 1s ease-out;
+}
+.zmi table td.meta-url nav ol.breadcrumb {
+	margin:.35em 0 -0.5em;
+}
 
 /* CSS Document */
 .zmi.metas table.meta-access textarea  {
@@ -1677,10 +1798,16 @@ table.table-sm tr.row_insert td .btn-add {
 	font-weight: normal;
 	cursor: default;
 }
-
 .zmi.metas table.meta-access .breadcrumb {
 	font-size:10px;
 	padding-left: 0;
+	flex-wrap: nowrap;
+}
+.zmi.metas table.meta-access .breadcrumb i {
+	font-size:11px;
+}
+.zmi.metas.config iframe {
+	height: 70vh !important;
 }
 
 
@@ -1694,10 +1821,18 @@ table.table-sm tr.row_insert td .btn-add {
 	display:inline-block;
 	text-align:right;
 	padding:0 4px 0 4px;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 .zmi.repository_manager_main .line-number.line-changed {
 	background:#101010;
 	color:#FEFEFE;
+}
+.zmi.repository_manager_main .diff del {
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 .zmi.repository_manager_main .state {
 	display:inline-block;
@@ -1773,6 +1908,7 @@ table.table-sm tr.row_insert td .btn-add {
 .zmi.repository_manager_main .tab-content.update_direction-Saving.auto_update-True.debug-1 #btn_save_to_repo {
 	color: #fff;
 	background-color: #4CAF50;
+	border-color: #28a745;
 }
 .zmi.repository_manager_main .tab-content.update_direction-Loading.auto_update-True.debug-1 #btn_load_from_repo:hover,
 .zmi.repository_manager_main .tab-content.update_direction-Saving.auto_update-True.debug-1 #btn_save_to_repo:hover {
@@ -1794,7 +1930,7 @@ table.table-sm tr.row_insert td .btn-add {
 }
 
 .zmi.repository_manager_main .table.repo-changeset .zmi-helper-clickable {
-    cursor:pointer;
+	cursor:pointer;
 }
 
 
@@ -1843,6 +1979,7 @@ table.table-sm tr.row_insert td .btn-add {
 	margin-left:0;
 	padding-left:1em;
 	list-style:outside none none;
+	white-space:nowrap;
 }
 .zmi-sitemap li.active > a  {
 	font-weight:bold;
@@ -1863,7 +2000,7 @@ body.browse_iframe .toggle {
 .zmi-sitemap .toggle {
 	color:#CCC;
 	font-size:120%;
-	vertical-align:bottom;
+	vertical-align: baseline;
 	width:12px;
 	margin-right:2px;
 	text-align:center;
@@ -1882,6 +2019,10 @@ body.browse_iframe .toggle {
 .zmi.manage-menu .zmi-sitemap a,
 .zmi.manage-menu .zmi-sitemap li > span i {
 	color:#ccc;
+}
+.zmi.manage-menu .zmi-sitemap ul.is_page_element,
+.zmi.manage-menu .zmi-sitemap li.is_page_element {
+	display:none;
 }
 .zmi.manage-menu li.active > a,
 .zmi.manage-menu li > a:hover {
@@ -2066,9 +2207,6 @@ body.lazy_select_form footer .controls {
 .zmi.metas_import input[type="checkbox"] {
 	margin: 0 0.8rem;
 }
-.zmi.metas_import  .btn {
-	margin-bottom:1rem;
-}
 .zmi.metas_import .btn-group legend {
 	display: inline-block !important;
 	width: auto;
@@ -2195,38 +2333,6 @@ body.lazy_select_form footer .controls {
 }
 .zmi.ZMSSysFolder table.objectItems {
 	margin:2rem -1.5rem;
-	width:calc(100% + 3rem);
-}
-.zmi.zms  table.objectItems .zmi-object-check,
-.zmi.zms  table.objectItems .zmi-object-type  {
-	width: 2rem;
-	text-align:center;
-}
-.zmi.zms table.objectItems .zmi-object-id a { 
-	text-overflow: ellipsis;
-	display: inline-block;
-	max-width: 50vw;
-	overflow: hidden;
-}
-.zmi.ZMSSysFolder table.objectItems .zmi-object-last_modified {
-	padding-right:1.5rem;
-}
-.zmi.zms table.objectItems .zmi-object-last_modified {
-	padding-left:2rem;
-}
-.zmi.zms table.objectItems .zmi-object-size,
-.zmi.zms table.objectItems .zmi-object-last_modified {
-	text-align:right;
-	max-width:5rem;
-}
-/* ---- System View: Object Items Table ------- */
-
-.zmi.zms table.objectItems th,
-.zmi.zms table.objectItems td {
-	white-space:nowrap
-}
-.zmi.ZMSSysFolder table.objectItems {
-	margin:2rem -1.5rem;
 	width:calc(100% + 2.8rem);
 }
 .zmi.zms  table.objectItems .zmi-object-check,
@@ -2249,7 +2355,7 @@ body.lazy_select_form footer .controls {
 .zmi.zms table.objectItems .zmi-object-size,
 .zmi.zms table.objectItems .zmi-object-last_modified {
 	text-align:right;
-	max-width:5rem;
+	max-width:6rem;
 }
 
 
@@ -2332,17 +2438,21 @@ body.lazy_select_form footer .controls {
 	border:1px dotted #607D8B;
 }
 .zmi.config.users .list_users table.show_lastlogin tr.userName td:before {
-	content:attr(data-lastlogin);
-	display:block;
+	content: "0000-00-00";
+	display: inline-block;
 	right:0;
 	color:white;
 	font-family:monospace;
-	float:right;
 	font-size:11px;
 	position:absolute;
-	background:#333333;
-	padding:.1rem .5rem;;
+	background: #4950573d;
+	padding:.1rem .5rem;
 	margin-top:-.5rem;
+	margin-top:-.5rem;
+}
+.zmi.config.users .list_users table.show_lastlogin tr.userName td[data-lastlogin]:before {
+	background:#333333;
+	content:attr(data-lastlogin);
 }
 /* ZMSLinkElement */
 .zmi #tr_attr_ref #tr_attr_ref_type select#attr_type {
@@ -2365,11 +2475,7 @@ body.lazy_select_form footer .controls {
 #ZMSZCatalogAdapter #indexes td {
 	padding:.3rem;
 }
-#zmsindex select.form-control:not([size]):not([multiple]) {
-	height: inherit;
-}
-.ZMSZCatalogConnector .zmi-sitemap,
-#zmsindex .zmi-sitemap-container {
+.zmi-sitemap-container {
 	width:100%;
 	max-height: 30rem;
 	height: fit-content;
@@ -2377,124 +2483,71 @@ body.lazy_select_form footer .controls {
 	overflow-y: scroll;
 	overflow-x: hidden;
 	background: #e8f3fb;
-	margin: 0 0 3rem 0;
-	direction: rtl;
+	margin: 0 0 1rem 0;
 	display: block;
-	padding: 10px 12px;
+	padding: 10px 17px;
 	line-height: 1.42857143;
 	background-image: none;
 	border: 1px solid #ccc;
-	border-radius: 4px;
-	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-	box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-	-webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
-	-o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-	transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-	clear:both !important;
+	border-top: none;
+	border-radius: 0 0 4px 4px;
 }
-#zmsindex .zmi-sitemap-container.full {
-	max-height: unset;
+.zmi-sitemap-container.full  {
+	max-height: unset !important;
 }
-#zmsindex .zmi-sitemap-container.loading {
-	background:#b1bbc1;
-}
-#zmsindex .zmi-sitemap-container.loading a,
-#zmsindex .zmi-sitemap-container.loading .toggle,
-#zmsindex .zmi-sitemap-container.loading div#loading,
-#zmsindex .zmi-sitemap-container.loading div#loading .fa-spinner {
-	color: #fff !important;
-}
-#zmsindex .zmi-sitemap-container.loading ul li > * {
+.zmi-sitemap-container.loading ul li > * {
 	color:#ccc !important
 }
-#zmsindex .zmi-sitemap-container .progress {
-	padding-left:0;
-	margin-right: 30px;
-	background: #337ab740;
-	height:1.25rem;
-	direction: ltr;
+.zmi-sitemap-controls-container .progress {
+	margin-left:6.75rem;
+	background: #d7e6f1;
+	height:2.15rem;
+	border-radius:0;
+	border-top-right-radius: 4px;
 }
-#zmsindex .zmi-sitemap-container .progress .progress-bar {
+.zmi-sitemap-controls-container .progress .progress-bar {
 	width:0%;
 	text-align:right;
 }
-#zmsindex .zmi-sitemap-container .progress .progress-bar.active {
+.zmi-sitemap-controls-container .progress .progress-bar.active {
 	min-width:5em;
 	width: fit-content;
 }
-#zmsindex .zmi-sitemap-container .progress .progress-bar span {
+.zmi-sitemap-controls-container .progress .progress-bar span {
 	margin:0 1em;
 }
-#zmsindex .zmi-sitemap-container.loading .progress .progress-bar {
+.zmi-sitemap-container.loading .progress .progress-bar {
 	width:100%;
 }
-#zmsindex .zmi-sitemap-container .progress.error .progress-bar {
+.zmi-sitemap-controls-container .progress.error .progress-bar {
 	background-color:#9C27B0
 }
-#zmsindex .zmi-sitemap-container .progress.error:after {
+.zmi-sitemap-controls-container .progress.error:after {
 	content:"INDEXING ERROR occured: details see event-log";
 	display:block;
 	color:#9C27B0;
 	position:absolute;
 	margin-top:1.5em;
 }
-.ZMSZCatalogConnector .zmi-sitemap > ul,
-#zmsindex .zmi-sitemap > ul {
+.zmi-sitemap-container .zmi-sitemap > ul {
 	margin-top:10px;
 	direction: ltr;
 }
 .zmi-sitemap-controls {
-	top:0;
-	right: 15px;
 	position: absolute;
 }
 .zmi-sitemap-controls > div:first-child {
-	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
 }
 .zmi-sitemap-controls > div:last-child {
 	border-bottom-right-radius: 0;
+	border-top-right-radius: 0;
 }
 .zmi-sitemap.full {
 	max-height: unset;
 }
-.ZMSZCatalogConnector .zmi-sitemap div#loading,
-.ZMSZCatalogConnector .zmi-sitemap div#loading .fa-spinner,
-#zmsindex .zmi-sitemap div#loading,
-#zmsindex .zmi-sitemap div#loading .fa-spinner {
-	color: #08c !important;
-}
-#zmsindex .zmi-sitemap .fa-spinner.fa-spin {
-	zoom: 1.5;
-}
-.ZMSZCatalogConnector .zmi-sitemap:not(.full) div#loading,
-#zmsindex .zmi-sitemap:not(.full) div#loading {
-	top: 2rem;
-	position: absolute;
-	right: 1rem;
-	zoom: 1;
-	background: #b1bbc1;
-	padding:1rem;
-}
-body.loading .ZMSZCatalogConnector .zmi-sitemap {
-	background:#b1bbc1;
-}
-body.loading .ZMSZCatalogConnector .zmi-sitemap a,
-body.loading .ZMSZCatalogConnector .zmi-sitemap .toggle,
-body.loading .ZMSZCatalogConnector .zmi-sitemap div#loading,
-body.loading .ZMSZCatalogConnector .zmi-sitemap div#loading .fa-spinner {
-	color: #fff !important;
-}
-.ZMSZCatalogConnector .zmi-sitemap .fa-spinner.fa-spin,
-#zmsindex .zmi-sitemap .fa-spinner.fa-spin {
-	zoom: 1.8;
-	margin: -.8rem .25rem;
-}
-.ZMSZCatalogConnector .response.alert-success,
-.ZMSZCatalogConnector .response.alert-danger {
-	display: block;
-}
-#zmsindex .response.text-success,
-#zmsindex .response.text-danger {
+.zmi-sitemap-container .response.text-success,
+.zmi-sitemap-container .response.text-danger {
 	display: block;
 	position: fixed;
 	z-index: 1000;
@@ -2507,8 +2560,8 @@ body.loading .ZMSZCatalogConnector .zmi-sitemap div#loading .fa-spinner {
 	white-space:pre;
 	background: #dff0d8;
 }
-#zmsindex .response.text-success .close,
-#zmsindex .response.text-danger .close {
+.zmi-sitemap-container .response.text-success .close,
+.zmi-sitemap-container .response.text-danger .close {
 	display:block;
 	padding: .5em;
 	position: absolute;
@@ -2517,9 +2570,46 @@ body.loading .ZMSZCatalogConnector .zmi-sitemap div#loading .fa-spinner {
 	top: 0;
 	background: #dff0d8;
 }
-#zmsindex .response.text-danger,
-#zmsindex .response.text-danger .close {
+.zmi-sitemap-container .response.text-danger,
+.zmi-sitemap-container .response.text-danger .close {
 	background-color: #f2dede;
+}
+
+/* --------------------- */
+/* ZMI-Search Results    */
+/* manage_tab_search     */
+/* --------------------- */
+.zmi.search #search_results .header {
+	margin-bottom:1.5rem;
+}
+.zmi.search #search_results .line.row {
+	margin-top:1rem;
+}
+.zmi.search #search_results .line.row h2,
+.zmi.search #search_results .line.row p {
+	margin:0;
+	padding:0;
+}
+.zmi.search #search_results .line.row p {
+	max-width:640px;
+}
+.zmi.search #search_results .line.row h2 {
+	font-size:120%;
+}
+
+
+/* --------------------- */
+/* ZMI-Log               */
+/* --------------------- */
+.zmi-log {
+	font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+	color: #fff;
+	background: #354f67;
+	padding: 0.75rem 1rem;
+	display: block;
+	border-radius: .25rem;
+	border: 0;
+	width: 100%;
 }
 
 /* --------------------- */
@@ -2719,6 +2809,45 @@ ul.pagination .page-item {
 		margin-top: 1.75rem;
 	}
 }
+#zmiIframereadme h1:before,
+#zmiModalreadme .modal-title:before {
+	content: "\f059";
+	font-family: 'Font Awesome 5 Free';
+	font-weight: 400;
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-font-smoothing: antialiased;
+	display: inline-block;
+	font-style: normal;
+	font-variant: normal;
+	text-rendering: auto;
+	line-height: 1;
+	box-sizing: border-box;
+	color: #17a2b8!important;
+	margin-right:.5rem;
+}
+#zmiModalreadme .modal-body h1 {
+	display: none !important;
+}
+#zmiIframereadme h1 {
+	font-size: 18px !important;
+	border-bottom:1px solid silver;
+	font-weight: bold !important;
+	padding:.75rem 0;
+	margin:1.25rem 0 1rem;
+}
+#zmiIframereadme h2,
+#zmiModalreadme .modal-body h2 {
+	font-size: 18px !important;
+	font-weight: bold !important;
+}
+.zmi-readme i.fa-question-circle {
+	cursor:pointer !important;
+}
+.zmi-readme.btn.btn-secondary:hover i.fa-question-circle {
+	color:white !important;
+}
+
+
 /* ++++++++++++++++++++++++++ */
 /* ZMSTextarea                */
 /* ++++++++++++++++++++++++++ */
@@ -3002,3 +3131,59 @@ ul.pagination .page-item {
 .zmi .form-group.row .ZMSSqlDbForm-multimultiselect .input-group .control-group {
 	width:calc(50% - 38.5px)
 }
+
+/* ############################################## */
+/* QUOTE-Formats  ############################### */
+/* ############################################## */
+
+p.blockquote {
+	font-size: inherit;
+	padding: 0 0 0 3rem;
+	margin:1rem 0;	
+	border-left:5px solid silver;
+	font-size: inherit;
+	letter-spacing:.025em;
+}
+p.blockquote q {
+	font-style:italic;
+	font-size:large;
+	display:inline-block;
+	letter-spacing:0px !important;
+}
+html.cke_panel_container p.blockquote {
+	font-size: inherit;
+	padding: 0 0 0 1rem;
+	margin:0;
+	letter-spacing:unset;
+}
+html.cke_panel_container q {
+	padding: 0 0 0 1rem;
+	font-size: inherit;
+	quotes:'»' '«';
+}
+body.zmi.fra q {
+	quotes:'« ' ' »';
+}
+body.zmi.ger q {
+	quotes:'»' '«';
+}
+body.zmi.eng q {
+	quotes:'“' '”';
+}
+
+/* ############################################## */
+/* #### form-modified ########################### */
+/* ############################################## */
+.zmi .form-modified input:not(:focus), 
+.zmi .form-modified select:not(:focus), 
+.zmi .form-modified textarea:not(:focus),
+.zmi .form-modified [contenteditable]:not(:focus) {
+	background: rgb(232 240 254);
+}
+.zmi.form-modified nav .nav-tabs .nav-link.active:before {
+	content:"\25CF";
+	display:inline-block;
+	margin-right:.35em;
+	color: var(--primary);
+}
+/* ############################################## */

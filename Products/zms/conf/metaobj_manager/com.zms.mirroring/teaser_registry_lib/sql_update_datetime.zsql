@@ -1,0 +1,6 @@
+<connection>teasers</connection>
+<params>zms_id</params>
+<max_rows>1000</max_rows>
+<max_cache>100</max_cache>
+<cache_time>0</cache_time>
+UPDATE teasers SET content_datetime = '<dtml-var "ZopeTime()" fmt="%Y-%m-%dT%H:%M:%S.0">' WHERE zms_id = <dtml-sqlvar zms_id type=nb>

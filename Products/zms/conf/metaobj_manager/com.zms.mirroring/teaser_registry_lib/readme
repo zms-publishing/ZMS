@@ -1,0 +1,49 @@
+# SQL Content Registry: Create a Teaser Database
+
+The content model library <b>teaser_registry_lib</b> is a collection of ZSQL/Py-methods for
+saving ZMS content data into a SQL database. This database can work as a registry and
+provides quick access to content types, in this case: teasers. Working just with
+teaser elements this library is a simple example code that can be developed to more
+complex needs.
+
+
+## Installation
+
+First add an empty file into file system:
+<pre>$INSTANCE_HOME/var/sqlite/teasers.sqlite</pre>
+First insert a Zope-Folder 'teaser_registry' into the ZMS root folder. Here add a
+ZSQLiteDA object named <code>teasers</code> connecting to the filesystem file.
+After importing the <i>teaser_registry_lib</i> into ZMS, inialize the databse with the ZSQL object
+teaser_registry/sql_create by clicking on the object's view' tab in Zope-ZMI.
+
+## Try out
+
+To check whether any teaser data are written into the SQL database you can
+use the library's Python script <code>teaser_registry/tryout</code>; it
+collects the existing ZMSTeaserElement objects.
+Executing <code>teaser_registry/tryout</code> by clicking on it's view tab shall
+copy the teaser's content to the SQL database and will the SQL-mirrored content with
+<code>teaser_registry/index_html</code>.
+
+## Adding Primitve py-Attribute onChangeObjEvt to Teaser Model
+
+The library provides a method <code>register_teaser</code>: it will be globally available
+and can be called in a python attribute-method <code>onChangeObjEvt</code> via the teaser
+content model. So just add a <code>py</code>-attribute with the following code:
+
+<pre>
+# --// onChangeObjEvt //--
+from Products.zms import standard
+request = container.REQUEST
+RESPONSE =  request.RESPONSE
+try:
+    zmscontext.register_teaser()
+except:
+    pass
+return None
+# --// /onChangeObjEvt //--
+</pre>
+
+Thus inserting or changing of any ZMS teaser object will be mirrored into the SQL database.
+
+

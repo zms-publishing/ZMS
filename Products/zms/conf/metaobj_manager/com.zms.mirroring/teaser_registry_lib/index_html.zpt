@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<link type="text/css" rel="stylesheet" href="/++resource++zmi/bootstrap-4.6.0/bootstrap.min.css" />
+<link type="text/css" rel="stylesheet" href="/++resource++zmi/fontawesome-free-5.15.2/css/all.css" />
+<script src="/++resource++zmi/jquery-3.5.1.min.js"></script>
+<script src="/++resource++zmi/bootstrap-4.6.0/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+<tal:block tal:condition="python:request.get('delete_teaser',0)==1">
+	<tal:block tal:define="delete_teaser python:context.sql_delete(zms_id=request.get('zms_id'))"></tal:block>
+	<tal:block tal:define="redirect python:request.response.redirect('index_html')"></tal:block>
+</tal:block>
+<section id="teasers" class="row" tal:define="teasers python:context.sql_select()">
+	<div class="card" tal:repeat="teaser teasers">
+		<div class="card-title">
+			<span tal:content="structure python:teaser['uuid']"></span>
+			<a href="?delete_teaser=1&zms_id=e1234"
+				tal:attributes="href python:'./index_html?delete_teaser:int=1&zms_id=%s'%(teaser['zms_id'])"
+			><i class="fas fa-times"></i></a>
+		</div>
+		<div class="card-body" tal:content="structure python:teaser['content_cache']"></div>
+	</div>
+</section>
+</body>
+<style>
+	#teasers .card {
+		width:280px !important;
+	}
+	#teasers img {
+		max-width:100%;
+	}
+	.card-title {
+		padding: 0.35em 2em;
+		font-size: 11px;
+		font-family: monospace;
+		margin: 0;
+		background: #d40a31;
+		color: white;
+	}
+	.card-title a {
+		color: white;
+	}
+	a {
+		color: #000000;
+		font-size:85%
+	}
+	a:hover {
+		text-decoration:none;
+	}
+	h3 {
+		font-size:18px !important;
+	}
+	.mdl-teaser_element {
+		max-height:22rem;
+		overflow:hidden
+	}
+	.mdl-teaser_element img {
+		width:280px;
+		height:120px  !important;
+		object-fit: cover
+	}
+	.mdl-teaser_element__type-event has_image {
+		display: flex;
+		flex-wrap: wrap;
+		text-overflow:ellipsis;
+	}
+	.mdl-teaser_element__type-event has_image .mdl-teaser_element__event-meta {
+		order: 4;
+	}
+	.mdl-teaser_element__type-event has_image .mdl-teaser_element__topic {
+		order: 2;
+	}
+	.mdl-teaser_element__type-event has_image .mdl-teaser_element__image {
+		order: 1;
+	}
+	.mdl-teaser_element__type-event has_image .mdl-teaser_element__col {
+		order: 3;
+	}
+</style>
+</html>

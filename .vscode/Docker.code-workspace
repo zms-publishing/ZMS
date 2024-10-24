@@ -5,7 +5,33 @@
 			"path": "../.."
 		},
 	],
-
+	"settings": {
+		"python.defaultInterpreterPath": "/home/zope/venv/bin/python",
+		"window.zoomLevel": 0,
+		"git.ignoreMissingGitWarning": true,
+		"editor.minimap.enabled": false,
+		"editor.renderWhitespace": "all",
+		"editor.renderControlCharacters": false,
+		"workbench.iconTheme": "vs-minimal",
+		"files.associations": {
+			"*.zpt": "html",
+			"*.zcml": "xml"
+		},
+		"scm.alwaysShowActions": true,
+		"files.exclude": {
+			"*.pyc": true,
+			"*-all.min.*":true,
+			"**/cache/**": true,
+			"**/Data.*": true,
+		},
+		"search.exclude": { 
+			"**/apidocs/**": true
+		},
+		"files.eol": "\n",
+		"files.autoSave": "afterDelay",
+		"workbench.colorTheme": "Visual Studio Light",
+		"python.linting.enabled": true
+	},
 	"launch": {
 		"version": "0.2.0",
 		"configurations": [

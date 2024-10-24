@@ -485,6 +485,10 @@ class DeprecatedAPI(object):
     warn(self, 'getLangFmtDate', 'Products.zms.standard.getLangFmtDate')
     return standard.getLangFmtDate(self, t, lang, fmt_str)
 
+  def isFeatureEnabled(self, feature=''):
+    warn(self, 'isFeatureEnabled', 'Products.zms.standard.is_conf_enabled')
+    return standard.is_conf_enabled(self, feature)
+
   # --------------------------------------------------------------------------
   #  ZMSObject.ajaxGetNodes:
   # --------------------------------------------------------------------------

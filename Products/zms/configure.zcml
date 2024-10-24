@@ -10,6 +10,15 @@
       directory="plugins/www"
       />
 
+  <!-- If ZMI resources need to be published, -->
+  <!-- register the current (!) zmi-resources dir as public -->
+  <!-- 
+    <browser:resourceDirectory
+      name="zmi"
+      directory="~/virtualenv/src/zope/src/zmi/styles/resources"
+      permission="zope.Public" /> 
+  -->
+
   <configure
       xmlns:cmf="http://namespaces.zope.org/cmf"
       xmlns:zcml="http://namespaces.zope.org/zcml"

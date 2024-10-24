@@ -1,0 +1,1193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LgEmployeeRecordSet><records>
+<list>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[11120 Jasper Ave NW]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1962/02/18]]>
+      </item>
+      <item key="city"><![CDATA[Edmnonton]]></item>
+      <item key="employee_id"><![CDATA[e10000]]></item>
+      <item key="first_name"><![CDATA[Andrew]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[2002/08/14]]>
+      </item>
+      <item key="last_name"><![CDATA[Adams]]></item>
+      <item key="reports_to"></item>
+      <item key="state"><![CDATA[AB]]></item>
+      <item key="title"><![CDATA[General Manager]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[825 8 Ave SW]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1958/12/08]]>
+      </item>
+      <item key="city"><![CDATA[Calgary]]></item>
+      <item key="employee_id"><![CDATA[e10001]]></item>
+      <item key="first_name"><![CDATA[Nancy]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[2002/05/01]]>
+      </item>
+      <item key="last_name"><![CDATA[Edwards]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[AB]]></item>
+      <item key="title"><![CDATA[Sales Manager]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[1111 6 Ave SW]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1973/08/29]]>
+      </item>
+      <item key="city"><![CDATA[Calgary]]></item>
+      <item key="employee_id"><![CDATA[e149]]></item>
+      <item key="first_name"><![CDATA[Jane]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[2002/04/01]]>
+      </item>
+      <item key="last_name"><![CDATA[Peacock]]></item>
+      <item key="reports_to"><![CDATA[e10001]]></item>
+      <item key="state"><![CDATA[AB]]></item>
+      <item key="title"><![CDATA[Sales Support Agent]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[683 10 Street SW]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1947/09/19]]>
+      </item>
+      <item key="city"><![CDATA[Calgary]]></item>
+      <item key="employee_id"><![CDATA[e10003]]></item>
+      <item key="first_name"><![CDATA[Margaret]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[2003/05/03]]>
+      </item>
+      <item key="last_name"><![CDATA[Park]]></item>
+      <item key="reports_to"><![CDATA[e10001]]></item>
+      <item key="state"><![CDATA[AB]]></item>
+      <item key="title"><![CDATA[Sales Support Agent]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[7727B 41 Ave]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1965/03/03]]>
+      </item>
+      <item key="city"><![CDATA[Calgary]]></item>
+      <item key="employee_id"><![CDATA[e10004]]></item>
+      <item key="first_name"><![CDATA[Steve]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[2003/10/17]]>
+      </item>
+      <item key="last_name"><![CDATA[Johnson]]></item>
+      <item key="reports_to"><![CDATA[e10002]]></item>
+      <item key="state"><![CDATA[AB]]></item>
+      <item key="title"><![CDATA[Sales Support Agent]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[5827 Bowness Road NW]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1973/07/01]]>
+      </item>
+      <item key="city"><![CDATA[Calgary]]></item>
+      <item key="employee_id"><![CDATA[e10005]]></item>
+      <item key="first_name"><![CDATA[Michael]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[2003/10/17]]>
+      </item>
+      <item key="last_name"><![CDATA[Mitchell]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[AB]]></item>
+      <item key="title"><![CDATA[IT Manager]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[590 Columbia Boulevard West]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1970/05/29]]>
+      </item>
+      <item key="city"><![CDATA[Lethbridge]]></item>
+      <item key="employee_id"><![CDATA[e10006]]></item>
+      <item key="first_name"><![CDATA[Robert]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[2004/01/02]]>
+      </item>
+      <item key="last_name"><![CDATA[King]]></item>
+      <item key="reports_to"><![CDATA[e10005]]></item>
+      <item key="state"><![CDATA[AB]]></item>
+      <item key="title"><![CDATA[IT Staff]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[923 7 ST NW]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1968/01/09]]>
+      </item>
+      <item key="city"><![CDATA[Lethbridge]]></item>
+      <item key="employee_id"><![CDATA[e10007]]></item>
+      <item key="first_name"><![CDATA[Laura]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[2004/03/04]]>
+      </item>
+      <item key="last_name"><![CDATA[Callahan]]></item>
+      <item key="reports_to"><![CDATA[e10005]]></item>
+      <item key="state"><![CDATA[AB]]></item>
+      <item key="title"><![CDATA[IT Staff]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[High Street 21]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1964/06/02]]>
+      </item>
+      <item key="city"><![CDATA[Toronto]]></item>
+      <item key="employee_id"><![CDATA[e10008]]></item>
+      <item key="first_name"><![CDATA[Bezalel]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1985/11/21]]>
+      </item>
+      <item key="last_name"><![CDATA[Simmel]]></item>
+      <item key="reports_to"><![CDATA[e10005]]></item>
+      <item key="state"><![CDATA[AB]]></item>
+      <item key="title"><![CDATA[IT Staff]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[Rodeo Drive 37 SW]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1959/12/03]]>
+      </item>
+      <item key="city"><![CDATA[Los Angeles]]></item>
+      <item key="employee_id"><![CDATA[e10009]]></item>
+      <item key="first_name"><![CDATA[Parto]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1986/08/28]]>
+      </item>
+      <item key="last_name"><![CDATA[Bamford]]></item>
+      <item key="reports_to"><![CDATA[e10005]]></item>
+      <item key="state"><![CDATA[AB]]></item>
+      <item key="title"><![CDATA[IT Staff]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[Pickford Ave 22B]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1954/05/01]]>
+      </item>
+      <item key="city"><![CDATA[Denver]]></item>
+      <item key="employee_id"><![CDATA[e10010]]></item>
+      <item key="first_name"><![CDATA[Christian]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1986/12/01]]>
+      </item>
+      <item key="last_name"><![CDATA[Koblick]]></item>
+      <item key="reports_to"><![CDATA[e10002]]></item>
+      <item key="state"><![CDATA[AB]]></item>
+      <item key="title"><![CDATA[Sales Support Agent]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[5-4658 Barter Street]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1953/11/07]]>
+      </item>
+      <item key="city"><![CDATA[Detroit]]></item>
+      <item key="employee_id"><![CDATA[e10011]]></item>
+      <item key="first_name"><![CDATA[Mary]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1990/01/22]]>
+      </item>
+      <item key="last_name"><![CDATA[Sluis]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[NY]]></item>
+      <item key="title"><![CDATA[IT Staff]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[9-12 Carnary Wharf]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1960/10/04]]>
+      </item>
+      <item key="city"><![CDATA[Boston]]></item>
+      <item key="employee_id"><![CDATA[e10012]]></item>
+      <item key="first_name"><![CDATA[Patricio]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1992/12/18]]>
+      </item>
+      <item key="last_name"><![CDATA[Bridgland]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[TE]]></item>
+      <item key="title"><![CDATA[IT Staff]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[5-4658 Barter Street]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1963/06/07]]>
+      </item>
+      <item key="city"><![CDATA[Memphis]]></item>
+      <item key="employee_id"><![CDATA[e10013]]></item>
+      <item key="first_name"><![CDATA[Eberhardt]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1985/10/20]]>
+      </item>
+      <item key="last_name"><![CDATA[Terkki]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[AB]]></item>
+      <item key="title"><![CDATA[IT Manager]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[4-2 Eden Drive]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1956/02/12]]>
+      </item>
+      <item key="city"><![CDATA[Houston]]></item>
+      <item key="employee_id"><![CDATA[e10014]]></item>
+      <item key="first_name"><![CDATA[Berni]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1987/03/11]]>
+      </item>
+      <item key="last_name"><![CDATA[Genin]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[AB]]></item>
+      <item key="title"><![CDATA[Sales Manager]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[4-2 Eden Drive]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1959/08/19]]>
+      </item>
+      <item key="city"><![CDATA[Detroit]]></item>
+      <item key="employee_id"><![CDATA[e10015]]></item>
+      <item key="first_name"><![CDATA[Guoxiang]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1987/07/02]]>
+      </item>
+      <item key="last_name"><![CDATA[Nooteboom]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[FL]]></item>
+      <item key="title"><![CDATA[IT Staff]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[9-12 Carnary Wharf]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1961/05/02]]>
+      </item>
+      <item key="city"><![CDATA[Detroit]]></item>
+      <item key="employee_id"><![CDATA[e10016]]></item>
+      <item key="first_name"><![CDATA[Kazuhito]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1995/01/27]]>
+      </item>
+      <item key="last_name"><![CDATA[Cappelletti]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[FL]]></item>
+      <item key="title"><![CDATA[Sales Manager]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[9-12 Carnary Wharf]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1958/07/06]]>
+      </item>
+      <item key="city"><![CDATA[Houston]]></item>
+      <item key="employee_id"><![CDATA[e10017]]></item>
+      <item key="first_name"><![CDATA[Cristinel]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1993/08/03]]>
+      </item>
+      <item key="last_name"><![CDATA[Bouloucos]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[AB]]></item>
+      <item key="title"><![CDATA[Sales Support Agent]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[4-2 Eden Drive]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1954/06/19]]>
+      </item>
+      <item key="city"><![CDATA[Houston]]></item>
+      <item key="employee_id"><![CDATA[e10018]]></item>
+      <item key="first_name"><![CDATA[Kazuhide]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1987/04/03]]>
+      </item>
+      <item key="last_name"><![CDATA[Peha]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[FL]]></item>
+      <item key="title"><![CDATA[Sales Support Agent]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[4-2 Eden Drive]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1953/01/23]]>
+      </item>
+      <item key="city"><![CDATA[Phoenix]]></item>
+      <item key="employee_id"><![CDATA[e10019]]></item>
+      <item key="first_name"><![CDATA[Lillian]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1999/04/30]]>
+      </item>
+      <item key="last_name"><![CDATA[Haddadi]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[FL]]></item>
+      <item key="title"><![CDATA[Sales Support Agent]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[4-2 Eden Drive]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1952/12/24]]>
+      </item>
+      <item key="city"><![CDATA[Chicago]]></item>
+      <item key="employee_id"><![CDATA[e10020]]></item>
+      <item key="first_name"><![CDATA[Mayuko]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1991/01/26]]>
+      </item>
+      <item key="last_name"><![CDATA[Warwick]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[FL]]></item>
+      <item key="title"><![CDATA[IT Staff]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[4-2 Eden Drive]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1960/02/20]]>
+      </item>
+      <item key="city"><![CDATA[Detroit]]></item>
+      <item key="employee_id"><![CDATA[e10021]]></item>
+      <item key="first_name"><![CDATA[Ramzi]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1988/02/10]]>
+      </item>
+      <item key="last_name"><![CDATA[Erde]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[AB]]></item>
+      <item key="title"><![CDATA[IT Staff]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[9-12 Carnary Wharf]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1952/07/08]]>
+      </item>
+      <item key="city"><![CDATA[Vancouver]]></item>
+      <item key="employee_id"><![CDATA[e10022]]></item>
+      <item key="first_name"><![CDATA[Shahaf]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1995/08/22]]>
+      </item>
+      <item key="last_name"><![CDATA[Famili]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[AB]]></item>
+      <item key="title"><![CDATA[IT Staff]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[5-4658 Barter Street]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1953/09/29]]>
+      </item>
+      <item key="city"><![CDATA[Houston]]></item>
+      <item key="employee_id"><![CDATA[e10023]]></item>
+      <item key="first_name"><![CDATA[Bojan]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1989/12/17]]>
+      </item>
+      <item key="last_name"><![CDATA[Montemayor]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[TE]]></item>
+      <item key="title"><![CDATA[IT Manager]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[4-2 Eden Drive]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1958/09/05]]>
+      </item>
+      <item key="city"><![CDATA[San Francisco]]></item>
+      <item key="employee_id"><![CDATA[e10024]]></item>
+      <item key="first_name"><![CDATA[Suzette]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1997/05/19]]>
+      </item>
+      <item key="last_name"><![CDATA[Pettey]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[NY]]></item>
+      <item key="title"><![CDATA[IT Manager]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[5-4658 Barter Street]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1958/10/31]]>
+      </item>
+      <item key="city"><![CDATA[Houston]]></item>
+      <item key="employee_id"><![CDATA[e10025]]></item>
+      <item key="first_name"><![CDATA[Prasadram]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1987/08/17]]>
+      </item>
+      <item key="last_name"><![CDATA[Heyers]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[NM]]></item>
+      <item key="title"><![CDATA[Sales Manager]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[4-2 Eden Drive]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1953/04/03]]>
+      </item>
+      <item key="city"><![CDATA[Boston]]></item>
+      <item key="employee_id"><![CDATA[e10026]]></item>
+      <item key="first_name"><![CDATA[Yongqiao]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1995/03/20]]>
+      </item>
+      <item key="last_name"><![CDATA[Berztiss]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[WI]]></item>
+      <item key="title"><![CDATA[IT Staff]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[5-4658 Barter Street]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1962/07/10]]>
+      </item>
+      <item key="city"><![CDATA[Detroit]]></item>
+      <item key="employee_id"><![CDATA[e10027]]></item>
+      <item key="first_name"><![CDATA[Divier]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1989/07/07]]>
+      </item>
+      <item key="last_name"><![CDATA[Reistad]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[DC]]></item>
+      <item key="title"><![CDATA[IT Staff]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[5-4658 Barter Street]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1963/11/26]]>
+      </item>
+      <item key="city"><![CDATA[Memphis]]></item>
+      <item key="employee_id"><![CDATA[e10028]]></item>
+      <item key="first_name"><![CDATA[Domenick]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1991/10/22]]>
+      </item>
+      <item key="last_name"><![CDATA[Tempesti]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[AB]]></item>
+      <item key="title"><![CDATA[Sales Support Agent]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[5-4658 Barter Street]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1956/12/13]]>
+      </item>
+      <item key="city"><![CDATA[Vancouver]]></item>
+      <item key="employee_id"><![CDATA[e10029]]></item>
+      <item key="first_name"><![CDATA[Otmar]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1985/11/20]]>
+      </item>
+      <item key="last_name"><![CDATA[Herbst]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[NY]]></item>
+      <item key="title"><![CDATA[IT Manager]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[9-12 Carnary Wharf]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1958/07/14]]>
+      </item>
+      <item key="city"><![CDATA[Chicago]]></item>
+      <item key="employee_id"><![CDATA[e10030]]></item>
+      <item key="first_name"><![CDATA[Elvis]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1994/02/17]]>
+      </item>
+      <item key="last_name"><![CDATA[Demeyer]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[NM]]></item>
+      <item key="title"><![CDATA[IT Staff]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[9-12 Carnary Wharf]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1959/01/27]]>
+      </item>
+      <item key="city"><![CDATA[Chicago]]></item>
+      <item key="employee_id"><![CDATA[e10031]]></item>
+      <item key="first_name"><![CDATA[Karsten]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1991/09/01]]>
+      </item>
+      <item key="last_name"><![CDATA[Joslin]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[TE]]></item>
+      <item key="title"><![CDATA[IT Manager]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[9-12 Carnary Wharf]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1960/08/09]]>
+      </item>
+      <item key="city"><![CDATA[Seattle]]></item>
+      <item key="employee_id"><![CDATA[e10032]]></item>
+      <item key="first_name"><![CDATA[Jeong]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1990/06/20]]>
+      </item>
+      <item key="last_name"><![CDATA[Reistad]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[AB]]></item>
+      <item key="title"><![CDATA[IT Manager]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[9-12 Carnary Wharf]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1956/11/14]]>
+      </item>
+      <item key="city"><![CDATA[Boston]]></item>
+      <item key="employee_id"><![CDATA[e10033]]></item>
+      <item key="first_name"><![CDATA[Arif]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1987/03/18]]>
+      </item>
+      <item key="last_name"><![CDATA[Merlo]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[AB]]></item>
+      <item key="title"><![CDATA[IT Staff]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[4-2 Eden Drive]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1962/12/29]]>
+      </item>
+      <item key="city"><![CDATA[Chicago]]></item>
+      <item key="employee_id"><![CDATA[e10034]]></item>
+      <item key="first_name"><![CDATA[Bader]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1988/09/21]]>
+      </item>
+      <item key="last_name"><![CDATA[Swan]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[AB]]></item>
+      <item key="title"><![CDATA[IT Staff]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[9-12 Carnary Wharf]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1953/02/08]]>
+      </item>
+      <item key="city"><![CDATA[Boston]]></item>
+      <item key="employee_id"><![CDATA[e10035]]></item>
+      <item key="first_name"><![CDATA[Alain]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1988/09/05]]>
+      </item>
+      <item key="last_name"><![CDATA[Chappelet]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[NY]]></item>
+      <item key="title"><![CDATA[Sales Support Agent]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[4-2 Eden Drive]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1959/08/10]]>
+      </item>
+      <item key="city"><![CDATA[Phoenix]]></item>
+      <item key="employee_id"><![CDATA[e10036]]></item>
+      <item key="first_name"><![CDATA[Adamantios]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1992/01/03]]>
+      </item>
+      <item key="last_name"><![CDATA[Portugali]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[AB]]></item>
+      <item key="title"><![CDATA[Sales Manager]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[5-4658 Barter Street]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1963/07/22]]>
+      </item>
+      <item key="city"><![CDATA[Chicago]]></item>
+      <item key="employee_id"><![CDATA[e10037]]></item>
+      <item key="first_name"><![CDATA[Pradeep]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1990/12/05]]>
+      </item>
+      <item key="last_name"><![CDATA[Makrucki]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[DC]]></item>
+      <item key="title"><![CDATA[IT Staff]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[5-4658 Barter Street]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1960/07/20]]>
+      </item>
+      <item key="city"><![CDATA[Houston]]></item>
+      <item key="employee_id"><![CDATA[e10038]]></item>
+      <item key="first_name"><![CDATA[Huan]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1989/09/20]]>
+      </item>
+      <item key="last_name"><![CDATA[Lortz]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[DC]]></item>
+      <item key="title"><![CDATA[IT Staff]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[4-2 Eden Drive]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1959/10/01]]>
+      </item>
+      <item key="city"><![CDATA[Boston]]></item>
+      <item key="employee_id"><![CDATA[e10039]]></item>
+      <item key="first_name"><![CDATA[Alejandro]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1988/01/19]]>
+      </item>
+      <item key="last_name"><![CDATA[Brender]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[NY]]></item>
+      <item key="title"><![CDATA[IT Staff]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[5-4658 Barter Street]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1959/09/13]]>
+      </item>
+      <item key="city"><![CDATA[Detroit]]></item>
+      <item key="employee_id"><![CDATA[e10040]]></item>
+      <item key="first_name"><![CDATA[Weiyi]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1993/02/14]]>
+      </item>
+      <item key="last_name"><![CDATA[Meriste]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[FL]]></item>
+      <item key="title"><![CDATA[Sales Manager]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[9-12 Carnary Wharf]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1959/08/27]]>
+      </item>
+      <item key="city"><![CDATA[Houston]]></item>
+      <item key="employee_id"><![CDATA[e10041]]></item>
+      <item key="first_name"><![CDATA[Uri]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1989/11/12]]>
+      </item>
+      <item key="last_name"><![CDATA[Lenart]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[NY]]></item>
+      <item key="title"><![CDATA[IT Staff]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[4-2 Eden Drive]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1956/02/26]]>
+      </item>
+      <item key="city"><![CDATA[Memphis]]></item>
+      <item key="employee_id"><![CDATA[e10042]]></item>
+      <item key="first_name"><![CDATA[Magy]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1993/03/21]]>
+      </item>
+      <item key="last_name"><![CDATA[Stamatiou]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[NY]]></item>
+      <item key="title"><![CDATA[IT Staff]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[5-4658 Barter Street]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1960/09/19]]>
+      </item>
+      <item key="city"><![CDATA[Memphis]]></item>
+      <item key="employee_id"><![CDATA[e10043]]></item>
+      <item key="first_name"><![CDATA[Yishay]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1990/10/20]]>
+      </item>
+      <item key="last_name"><![CDATA[Tzvieli]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[FL]]></item>
+      <item key="title"><![CDATA[IT Manager]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[5-4658 Barter Street]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1961/09/21]]>
+      </item>
+      <item key="city"><![CDATA[Detroit]]></item>
+      <item key="employee_id"><![CDATA[e10044]]></item>
+      <item key="first_name"><![CDATA[Mingsen]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1994/05/21]]>
+      </item>
+      <item key="last_name"><![CDATA[Casley]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[FL]]></item>
+      <item key="title"><![CDATA[IT Staff]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[5-4658 Barter Street]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1957/08/14]]>
+      </item>
+      <item key="city"><![CDATA[Seattle]]></item>
+      <item key="employee_id"><![CDATA[e10045]]></item>
+      <item key="first_name"><![CDATA[Moss]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1989/09/02]]>
+      </item>
+      <item key="last_name"><![CDATA[Shanbhogue]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[AB]]></item>
+      <item key="title"><![CDATA[IT Staff]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[5-4658 Barter Street]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1960/07/23]]>
+      </item>
+      <item key="city"><![CDATA[Boston]]></item>
+      <item key="employee_id"><![CDATA[e10046]]></item>
+      <item key="first_name"><![CDATA[Lucien]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1992/06/20]]>
+      </item>
+      <item key="last_name"><![CDATA[Rosenbaum]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[AB]]></item>
+      <item key="title"><![CDATA[IT Staff]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[9-12 Carnary Wharf]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1952/06/29]]>
+      </item>
+      <item key="city"><![CDATA[Seattle]]></item>
+      <item key="employee_id"><![CDATA[e10047]]></item>
+      <item key="first_name"><![CDATA[Zvonko]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1989/03/31]]>
+      </item>
+      <item key="last_name"><![CDATA[Nyanchama]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[WI]]></item>
+      <item key="title"><![CDATA[IT Staff]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[4-2 Eden Drive]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1963/07/11]]>
+      </item>
+      <item key="city"><![CDATA[San Francisco]]></item>
+      <item key="employee_id"><![CDATA[e10048]]></item>
+      <item key="first_name"><![CDATA[Florian]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1985/02/24]]>
+      </item>
+      <item key="last_name"><![CDATA[Syrotiuk]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[TE]]></item>
+      <item key="title"><![CDATA[IT Manager]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[9-12 Carnary Wharf]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1961/04/24]]>
+      </item>
+      <item key="city"><![CDATA[San Francisco]]></item>
+      <item key="employee_id"><![CDATA[e10049]]></item>
+      <item key="first_name"><![CDATA[Basil]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1992/05/04]]>
+      </item>
+      <item key="last_name"><![CDATA[Tramer]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[FL]]></item>
+      <item key="title"><![CDATA[Sales Manager]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[4-2 Eden Drive]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1958/05/21]]>
+      </item>
+      <item key="city"><![CDATA[Boston]]></item>
+      <item key="employee_id"><![CDATA[e10050]]></item>
+      <item key="first_name"><![CDATA[Yinghua]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1990/12/25]]>
+      </item>
+      <item key="last_name"><![CDATA[Dredge]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[DC]]></item>
+      <item key="title"><![CDATA[IT Manager]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[5-4658 Barter Street]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1953/07/28]]>
+      </item>
+      <item key="city"><![CDATA[Boston]]></item>
+      <item key="employee_id"><![CDATA[e10051]]></item>
+      <item key="first_name"><![CDATA[Hidefumi]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1992/10/15]]>
+      </item>
+      <item key="last_name"><![CDATA[Caine]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[NY]]></item>
+      <item key="title"><![CDATA[Sales Manager]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[9-12 Carnary Wharf]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1961/02/26]]>
+      </item>
+      <item key="city"><![CDATA[Vancouver]]></item>
+      <item key="employee_id"><![CDATA[e10052]]></item>
+      <item key="first_name"><![CDATA[Heping]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1988/05/21]]>
+      </item>
+      <item key="last_name"><![CDATA[Nitsch]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[AB]]></item>
+      <item key="title"><![CDATA[Sales Manager]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[9-12 Carnary Wharf]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1954/09/13]]>
+      </item>
+      <item key="city"><![CDATA[Vancouver]]></item>
+      <item key="employee_id"><![CDATA[e10053]]></item>
+      <item key="first_name"><![CDATA[Sanjiv]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1986/02/04]]>
+      </item>
+      <item key="last_name"><![CDATA[Zschoche]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[DC]]></item>
+      <item key="title"><![CDATA[IT Staff]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[4-2 Eden Drive]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1957/04/04]]>
+      </item>
+      <item key="city"><![CDATA[San Francisco]]></item>
+      <item key="employee_id"><![CDATA[e10054]]></item>
+      <item key="first_name"><![CDATA[Mayumi]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1995/03/13]]>
+      </item>
+      <item key="last_name"><![CDATA[Schueller]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[FL]]></item>
+      <item key="title"><![CDATA[IT Manager]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[4-2 Eden Drive]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1956/06/06]]>
+      </item>
+      <item key="city"><![CDATA[Detroit]]></item>
+      <item key="employee_id"><![CDATA[e10055]]></item>
+      <item key="first_name"><![CDATA[Georgy]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1992/04/27]]>
+      </item>
+      <item key="last_name"><![CDATA[Dredge]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[NY]]></item>
+      <item key="title"><![CDATA[Sales Support Agent]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[4-2 Eden Drive]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1961/09/01]]>
+      </item>
+      <item key="city"><![CDATA[Boston]]></item>
+      <item key="employee_id"><![CDATA[e10056]]></item>
+      <item key="first_name"><![CDATA[Brendon]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1990/02/01]]>
+      </item>
+      <item key="last_name"><![CDATA[Bernini]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[WI]]></item>
+      <item key="title"><![CDATA[IT Staff]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[4-2 Eden Drive]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1954/05/30]]>
+      </item>
+      <item key="city"><![CDATA[Boston]]></item>
+      <item key="employee_id"><![CDATA[e10057]]></item>
+      <item key="first_name"><![CDATA[Ebbe]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1992/01/15]]>
+      </item>
+      <item key="last_name"><![CDATA[Callaway]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[AB]]></item>
+      <item key="title"><![CDATA[Sales Support Agent]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[4-2 Eden Drive]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1954/10/01]]>
+      </item>
+      <item key="city"><![CDATA[Houston]]></item>
+      <item key="employee_id"><![CDATA[e10058]]></item>
+      <item key="first_name"><![CDATA[Berhard]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1987/04/13]]>
+      </item>
+      <item key="last_name"><![CDATA[McFarlin]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[WI]]></item>
+      <item key="title"><![CDATA[IT Staff]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[4-2 Eden Drive]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1953/09/19]]>
+      </item>
+      <item key="city"><![CDATA[Vancouver]]></item>
+      <item key="employee_id"><![CDATA[e10059]]></item>
+      <item key="first_name"><![CDATA[Alejandro]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1991/06/26]]>
+      </item>
+      <item key="last_name"><![CDATA[McAlpine]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[FL]]></item>
+      <item key="title"><![CDATA[IT Manager]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[5-4658 Barter Street]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1961/10/15]]>
+      </item>
+      <item key="city"><![CDATA[Houston]]></item>
+      <item key="employee_id"><![CDATA[e10060]]></item>
+      <item key="first_name"><![CDATA[Breannda]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1987/11/02]]>
+      </item>
+      <item key="last_name"><![CDATA[Billingsley]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[AB]]></item>
+      <item key="title"><![CDATA[IT Manager]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[5-4658 Barter Street]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1962/10/19]]>
+      </item>
+      <item key="city"><![CDATA[Memphis]]></item>
+      <item key="employee_id"><![CDATA[e10061]]></item>
+      <item key="first_name"><![CDATA[Tse]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1985/09/17]]>
+      </item>
+      <item key="last_name"><![CDATA[Herber]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[AB]]></item>
+      <item key="title"><![CDATA[IT Manager]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[9-12 Carnary Wharf]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1961/11/02]]>
+      </item>
+      <item key="city"><![CDATA[San Francisco]]></item>
+      <item key="employee_id"><![CDATA[e10062]]></item>
+      <item key="first_name"><![CDATA[Anoosh]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1991/08/30]]>
+      </item>
+      <item key="last_name"><![CDATA[Peyn]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[FL]]></item>
+      <item key="title"><![CDATA[IT Staff]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[9-12 Carnary Wharf]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1952/08/06]]>
+      </item>
+      <item key="city"><![CDATA[Chicago]]></item>
+      <item key="employee_id"><![CDATA[e10063]]></item>
+      <item key="first_name"><![CDATA[Gino]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1989/04/08]]>
+      </item>
+      <item key="last_name"><![CDATA[Leonhardt]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[TE]]></item>
+      <item key="title"><![CDATA[IT Manager]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[4-2 Eden Drive]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1959/04/07]]>
+      </item>
+      <item key="city"><![CDATA[Phoenix]]></item>
+      <item key="employee_id"><![CDATA[e10064]]></item>
+      <item key="first_name"><![CDATA[Udi]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1985/11/20]]>
+      </item>
+      <item key="last_name"><![CDATA[Jansch]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[NM]]></item>
+      <item key="title"><![CDATA[IT Staff]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="address"><![CDATA[5-4658 Barter Street]]></item>
+      <item key="birth_date" type="datetime">
+        <![CDATA[1963/04/14]]>
+      </item>
+      <item key="city"><![CDATA[Houston]]></item>
+      <item key="employee_id"><![CDATA[e10065]]></item>
+      <item key="first_name"><![CDATA[Satosi]]></item>
+      <item key="hire_date" type="datetime">
+        <![CDATA[1988/05/18]]>
+      </item>
+      <item key="last_name"><![CDATA[Awdeh]]></item>
+      <item key="reports_to"><![CDATA[e10000]]></item>
+      <item key="state"><![CDATA[WI]]></item>
+      <item key="title"><![CDATA[IT Staff]]></item>
+    </dictionary>
+  </item>
+</list></records>
+</LgEmployeeRecordSet>

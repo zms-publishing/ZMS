@@ -143,16 +143,17 @@ function zmiModalInsertUserOpen(context) {
 		<form class="form-horizontal" action="manage_userProperties" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="lang" tal:attributes="value request/lang" />
 			<input type="hidden" name="key" value="" />
-			<div class="form-group row">
-				<label for="file" class="col-sm-3 control-label">
-					<i class="far fa-folder"></i>
-					<span tal:content="python:here.getZMILangStr('ATTR_FILE')">File</span>
-				</label>
-				<div class="col-sm-9"><input class="btn btn-file" name="file" type="file" /></div>
-			</div>
-			<div class="form-group row">
-				<div class="col-sm-9">
-					<button type="submit" name="btn" class="btn btn-primary" value="BTN_IMPORT" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
+			<div class="input-group" title="Select Local File for Uploading">
+				<div class="custom-file">
+					<input type="file" name="file" id="file" class="custom-file-input" value="" 
+						onchange="$('.custom-file label span').html($(this).val().replace(/^.*(\\|\/|\:)/, ''));" />
+					<label class="custom-file-label" for="file"><span tal:content="python:here.getZMILangStr('ATTR_FILE')">Choose file</span></label>
+				</div>
+				<div class="input-group-append">
+					<button name="btn" type="submit" class="btn btn-primary" value="BTN_IMPORT" 
+						tal:content="python:here.getZMILangStr('BTN_IMPORT')">
+						Import
+					</button>
 				</div>
 			</div>
 		</form>
@@ -270,10 +271,21 @@ function zmiModalInsertUserOpen(context) {
 				</tal:block>
 				<div class="form-group row">
 					<div class="controls save">
-						<button type="submit" name="btn" class="btn btn-primary" value="BTN_SAVE" tal:condition="python:userObj is not None"><i class="fas fa-save"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</tal:block></button>
-						<button type="submit" name="btn" class="btn btn-secondary" value="BTN_DELETE" tal:condition="python:userName in userNames"><i class="fas fa-times"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block></button>
+						<button type="submit" name="btn" class="btn btn-primary" value="BTN_SAVE" 
+							tal:condition="python:userObj is not None"
+							tal:content="python:here.getZMILangStr('BTN_SAVE')">
+							Save
+						</button>
+						<button type="submit" name="btn" class="btn btn-secondary" value="BTN_DELETE" 
+							tal:condition="python:userName in userNames" 
+							tal:content="python:here.getZMILangStr('BTN_DELETE')">
+							Delete
+						</button>
 						&nbsp;&nbsp;
-						<button type="submit" name="btn" class="btn btn-secondary" value="BTN_BACK" tal:content="python:here.getZMILangStr('BTN_BACK')">Back</button>
+						<button type="submit" name="btn" class="btn btn-secondary" value="BTN_BACK" 
+							tal:content="python:here.getZMILangStr('BTN_BACK')">
+							Back
+						</button>
 					</div>
 				</div>
 			</div>
@@ -440,9 +452,9 @@ function zmiModalInsertUserOpen(context) {
 	</div><!-- #insertUser -->
 </div><!-- .d-none -->
 
-<div class="row">
+<div class="row" style="overflow-x:hidden;max-width:100vw">
 
-<div class="col-sm-6 mb-3 pr-sm-0 list_users">
+<div class="col-sm-6 mb-3 pr-sm-0 list_users" style="overflow-x:hidden">
 
 	<div class="alert alert-success" tal:condition="python:request.get('btn')=='Purge'">
 		Purge local users<br/>
@@ -552,7 +564,7 @@ function zmiModalInsertUserOpen(context) {
 	</div><!-- #insertRole.inner -->
 </div><!-- .d-none -->
 
-<div class="col-sm-6 mb-3 pl-sm-0 list_roles">
+<div class="col-sm-6 mb-3 pl-sm-0 list_roles" style="overflow-x:hidden">
 	<form class="form-horizontal card">
 		<input type="hidden" name="key" value="" />
 		<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />

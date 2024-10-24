@@ -66,8 +66,11 @@ $(function() {
 			// Replace only tab-pane
 			$('.search-results .tab-content').html( hb_results_html );
 		}
+		$('html, body').animate({scrollTop: $("#container_results").offset().top }, 1000);
+
 		//# Add pagination ###################
 		var fn = (pageIndex) => {
+			q = encodeURI(decodeURI(q));
 			return `javascript:show_results('${q}',${pageIndex},'${facet}')`
 		};
 		GetPagination(fn, total, 10, pageIndex);
@@ -94,30 +97,36 @@ $(function() {
 			let index_name = x['_index'];
 			let source = x['_source'];
 			let highlight = x['highlight'];
-			let body = source['standard_html'];
+			let lang = source['lang'];
 			let title = source['title'];
-			// Remove repeating title string from beginning of snippet
-			let snippet = body.startsWith(title) ? body.substr(title.length).trim() : body;
+			let snippet = source['attr_dc_description'];
+			if (!snippet) {
+				snippet = source['standard_html'];
+				// Remove repeating title string from beginning of snippet
+				snippet = snippet ? ( snippet.indexOf(title) === 0 ? snippet.substr(title.length).trim() : snippet ) : snippet;
+			};
 			var hit = { 
 				'path':source['uid'], 
 				'href':source['index_html'], 
 				'title':title, 
 				'snippet':snippet,
-				'index_name':index_name
+				'index_name':index_name,
+				'score':score,
+				'lang':lang
 			};
 			if (typeof highlight !== 'undefined') {
 				if (typeof highlight['title'] !== 'undefined') {
 					hit['title'] = highlight['title'];
 				}
 				if (typeof highlight['standard_html'] !== 'undefined') {
-				    // Highlight-text may start with repeating title:
-				    // For checking first remove html elements and then 
-				    // split title string if hightlight-snippet is starting with it
-				    let highlight_html = highlight['standard_html'][0];
-				    let highlight_txt = highlight_html.replace(/(<([^>]+)>)/gi, '');
-				    let snippet_text = highlight_txt.startsWith(title) ? highlight_txt.substr(title.length).trim() : highlight_txt;
-				    // Determine strings after title (cave: may fail if html-elements block splitting)
-				    highlight_html = highlight_html.substr( highlight_html.indexOf(snippet_text.substr(0,12)) );
+					// Highlight-text may start with repeating title:
+					// For checking first remove html elements and then 
+					// split title string if hightlight-snippet is starting with it
+					let highlight_html = highlight['standard_html'][0];
+					let highlight_txt = highlight_html.replace(/(<([^>]+)>)/gi, '');
+					let snippet_text = highlight_txt.startsWith(title) ? highlight_txt.substr(title.length).trim() : highlight_txt;
+					// Determine strings after title (cave: may fail if html-elements block splitting)
+					highlight_html = highlight_html.substr( highlight_html.indexOf(snippet_text.substr(0,12)) );
 					hit['snippet'] = highlight_html;
 				}
 			}
@@ -141,10 +150,14 @@ $(function() {
 	};
 
 	const show_breadcrumbs = (el) => {
+		const lang = $('#lang').attr('value');
 		if ( el.dataset.id.startsWith('uid') ) {
-			$.get(url=`${root_url}/elasticsearch_breadcrumbs_obj_path`, data={ 'id' : el.dataset.id }, function(data, status) {
-				$(el).html(data);
-			});
+			$.get(url=`${root_url}/elasticsearch_breadcrumbs_obj_path`, 
+				data={ 'id' : el.dataset.id, 'lang' : lang }, 
+				function(data, status) {
+					$(el).html(data);
+				}
+			);
 		}
 	}
 

@@ -22,12 +22,18 @@
 .no-margin-bottom {
 	margin-bottom: 0!important;
 }
+.search-results.not-launched {
+	display:none;
+}
 .search-results .path {
 	list-style: none;
 	padding-left: 0;
 	margin-left: 0;
 	font-size: .7em;
-	margin:2em 0 0.1em 0
+	margin:2em 0 0.1em 0;
+	display: flex;
+	white-space:nowrap;
+	overflow:hidden;
 }
 .search-results .path li:before {
 	line-height: .5;
@@ -35,6 +41,10 @@
 }
 .search-results .path li a {
 	color:#aaa;
+}
+.search-results .path li a:before {
+	padding: 0 .25em 0 .5em;
+	content:"/ "
 }
 .search-results .hit em {
 	font-style: normal;
@@ -66,26 +76,6 @@
 		-webkit-transform: rotate(360deg);
 	}
 }
-.pagination i.fas.fa-chevron-left:after,
-.pagination i.fas.fa-chevron-right:after {
-	font-family: unibe-iconset;
-	speak: none;
-	font-size:200%;
-	font-style: normal;
-	font-weight: 400;
-	font-variant: normal;
-	text-transform: none;
-	line-height: .75em;
-	vertical-align: -.25em;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-}
-body:not(.zms.web) .pagination i.fas.fa-chevron-left:after {
-	content: "\e603";
-}
-body:not(.zms.web) .pagination i.fas.fa-chevron-right:after {
-	content: "\e602";
-}
 .pagination > li > a, 
 .pagination > li > span {
 	color: #d6002b;
@@ -109,6 +99,8 @@ body.zms.web .container-fluid.skin-bg-gray {
 }
 body.zms.web #search_results ul.path {
 	display:flex;
+	white-space: nowrap;
+	overflow: hidden;
 }
 body.zms.web #search_results ul.path li {
 	margin-right:.25rem;

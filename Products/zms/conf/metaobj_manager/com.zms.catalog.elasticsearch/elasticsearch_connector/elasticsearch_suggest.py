@@ -66,7 +66,8 @@ def get_suggest_fieldsets(self):
 	key_prefix = 'elasticsearch.suggest.fields.'
 	default = '["title","attr_dc_subject","attr_dc_description"]'
 	# Define default fieldset for index_name = zms root element id
-	fieldsets = { self.getRootElement().getHome().id : json.loads(default) }
+	index_name = self.getConfProperty('elasticsearch.index_name', self.getRootElement().getHome().id )
+	fieldsets = { index_name : json.loads(default) }
 	# Get all configured fieldsets (maybe overwrite default fieldset)
 	property_names = []
 	try:

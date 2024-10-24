@@ -39,6 +39,7 @@ def get_opensearch_client(self):
 		http_auth = auth,
 		use_ssl = use_ssl,
 		verify_certs = verify,
+		ssl_assert_hostname = verify,
 		ssl_show_warn = False,
 	)
 	return client
@@ -136,6 +137,7 @@ def opensearch_suggest(self, REQUEST=None):
 	q = request.get('q','Lorem')
 	qsize = request.get('qsize', 12)
 	debug = bool(int(request.get('debug',0)))
+	prettify = bool(int(request.get('prettify',0)))
 
 	# Get configured or default fieldsets that are used for extracting suggest terms
 	fieldsets = get_suggest_fieldsets(self)
@@ -149,5 +151,8 @@ def opensearch_suggest(self, REQUEST=None):
 
 	# Finally sort all terms and return as JSON-textTestBan
 	suggest_terms = sorted(set(suggest_terms), key=lambda x: x.lower())
-	resp_text = json.dumps(suggest_terms, indent=2)
+	if prettify:
+		resp_text = json.dumps(suggest_terms, indent=4)
+	else:
+		resp_text = json.dumps(suggest_terms)
 	return resp_text

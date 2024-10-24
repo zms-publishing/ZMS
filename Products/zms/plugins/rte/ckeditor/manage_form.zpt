@@ -178,6 +178,11 @@ function zmiRichtextInit(id) {
           instanceReady: function(ev) {
               zmiRichtextResize(id);
               $('span.cke_button_label.cke_button__source_label').html('');
+              const initialValue = CKEDITOR.instances['editor_'+id].getData();
+              const $this = $('#editor_'+id);
+              ev.editor.on('change', function (event) {
+                $ZMI.set_form_modified($this,initialValue);
+              });
             }
           }
       });

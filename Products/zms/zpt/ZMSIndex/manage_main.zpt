@@ -35,33 +35,34 @@ function openWindow(url) {
 <legend>ZMSIndex</legend>
 <div id="zmsindex" class="collapse show">
 <div class="card-body">
-	<div class="form-group zms4-row mb-0">
+	<div class="form-group zmi-form-container zms4-row mb-0">
 		<div class="col-sm-12" data-label="ZMS-Clients">
-			<div class="btn-group zmi-sitemap-controls">
-				<div title="De-/Select All"
-					class="btn btn-secondary">
-					<input id="zmi-sitemap-select" type="checkbox" checked="checked"
-						onclick="if( this.checked ){ $('.zmi-sitemap ul input').prop('checked', true) } else { $('.zmi-sitemap ul input').prop('checked', false) }"
-					/>
+			<div class="zmi-sitemap-controls-container">
+				<div class="btn-group zmi-sitemap-controls">
+					<div title="Expand Object Tree (Hint: Mind System Load in Case!)"
+						class="btn btn-secondary"
+						onclick="return zmiExpandObjectTree(-1);">
+						<i class="fas fa-plus-square"></i>
+					</div>
+					<div title="De-/Select All"
+						onclick="zmiToggleSelectionButtonClick(this)"
+						class="btn btn-secondary">
+						<i class="fas fa-check-square"></i>
+					</div>
+					<div title="Expand/Compress Sitemap View"
+						class="btn btn-secondary" id="zmi-sitemap-expand"
+						onclick="$('.zmi-sitemap-container').toggleClass('full');$('#zmi-sitemap-expand i').toggleClass('fa-expand-arrows-alt fa-compress-arrows-alt')">
+						<i class="fas fa-expand-arrows-alt"></i>
+					</div>
 				</div>
-				<div title="Expand Object Tree (Hint: Mind System Load in Case!)"
-					class="btn btn-secondary"
-					onclick="return zmiExpandObjectTree(-1);">
-					<i class="fas fa-plus-square"></i>
-				</div>
-				<div title="Expand/Compress Sitemap View"
-					class="btn btn-secondary" id="zmi-sitemap-expand"
-					onclick="$('.zmi-sitemap-container').toggleClass('full');$('#zmi-sitemap-expand i').toggleClass('fa-expand-arrows-alt fa-compress-arrows-alt')">
-					<i class="fas fa-expand-arrows-alt"></i>
-				</div>
-			</div>
-			<div class="zmi-sitemap-container">
 				<div class="progress">
 					<div class="progress-bar progress-bar-striped progress-bar-animated active"
 						role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
 						<span></span>
 					</div>
 				</div>
+			</div>
+			<div class="zmi-sitemap-container">
 				<div class="zmi-sitemap"><!-- .zmi-sitemap --></div>
 			</div>
 		</div><!-- .col-sm-10 -->
@@ -148,9 +149,9 @@ function openWindow(url) {
 					tal:attributes="value python:zmscontext.operator_getattr(zmscontext,'index_names','')"/>
 				<div class="input-group-append input-group-btn">
 					<button class="btn btn-primary" name="btn" value="save"
-						onclick="$(this).parents('form').attr({action:self.location.href})">
-						<i class="icon-save fas fa-save"></i>
-						<tal:block tal:content="python:here.getZMILangStr('BTN_SAVE')"></tal:block>
+						onclick="$(this).parents('form').attr({action:self.location.href})"
+						tal:content="python:here.getZMILangStr('BTN_SAVE')">
+						Save
 					</button>
 				</div>
 			</div><!-- .input-group -->
@@ -163,25 +164,26 @@ function openWindow(url) {
 <script>
 function set_progress( v, func_name ) {
 	var perc = Math.round(v * 10000) / 100;
-	var bar_type_dict = {'reindex':'warning','test':'info','resync':'danger'};
+	var bar_type_dict = {'reindex':'primary','test':'primary','resync':'danger'};
 	var bar_type = bar_type_dict[func_name];
-	$('.zmi-sitemap-container .progress .progress-bar')
+	$('.zmi-sitemap-controls-container .progress .progress-bar')
 		.addClass('active')
 		.addClass('bg-' + bar_type)
 		.attr('aria-valuenow',perc)
 		.css('width',perc + '%')
 		.find('span').text( perc + '%' );
 	if ( perc == 100 ) {
-		$('.zmi-sitemap-container .progress .progress-bar')
+		$('.zmi-sitemap-controls-container .progress .progress-bar')
 			.removeClass('active')
 			.removeClass('progress-bar-animated')
 			.removeClass('progress-bar-striped');
 	}
 }
 function reset_progress() {
-	$('.zmi-sitemap-container .progress .progress-bar')
+	$('.zmi-sitemap-controls-container .progress .progress-bar')
 		.addClass('progress-bar-striped')
 		.addClass('progress-bar-animated')
+		.removeClass('bg-primary')
 		.removeClass('bg-info')
 		.removeClass('bg-warning')
 		.removeClass('bg-danger')
@@ -263,15 +265,15 @@ function zmiExpandObjectTree(max) {
 	var fn = function() {
 		var done = false;
 		$(".zmi-sitemap .toggle[title='+']").each(function() {
-				var $toggle = $(this);
-				var $parents = $toggle.parentsUntil(".zmi-sitemap","ul");
-				var $container = $($toggle.parents("li")[0]);
-				var level = $parents.length - 1;
-				if (level < max || -1 == max) {
-					$ZMI.objectTree.toggleClick($toggle,fn);
-					done = true;
-				}
-			});
+			var $toggle = $(this);
+			var $parents = $toggle.parentsUntil(".zmi-sitemap","ul");
+			var $container = $($toggle.parents("li")[0]);
+			var level = $parents.length - 1;
+			if (level < max || -1 == max) {
+				$ZMI.objectTree.toggleClick($toggle,fn);
+				done = true;
+			}
+		});
 		if (!done) {
 			reset_progress()
 		}
@@ -288,24 +290,24 @@ $(function() {
 		params: {'meta_types':'ZMS'},
 		filter: x => x.meta_id === 'ZMS',
 		'init.callback': function() {
-				zmiExpandObjectTree(1);
-			},
+			zmiExpandObjectTree(1);
+		},
 		'addPages.callback': function() {
-				console.log('addPages.callback')
-				$(".zmi-sitemap a:not(.checkboxed)").each(function() {
-						var $a = $(this);
-						var phys_path = $a.attr('href');
-						var href_manage = phys_path + '/manage';
-						$a.addClass("checkboxed")
-							.removeAttr('onclick')
-							.attr('target','_blank')
-							.attr('href',href_manage)
-							.attr('title',href_manage);
-						var uid = '{'+'$'+phys_path.substring(1).replace(/\/content/gi,'@')+'}'; // $a.attr('data-uid');
-						$a.before('<input name="home_ids:list" type="checkbox" title="'+uid+'" value="'+uid+'" checked="checked" /> ');
-					});
-			},
-		});
+			console.log('addPages.callback')
+			$(".zmi-sitemap a:not(.checkboxed)").each(function() {
+				var $a = $(this);
+				var phys_path = $a.attr('href');
+				var href_manage = phys_path + '/manage';
+				$a.addClass("checkboxed")
+					.removeAttr('onclick')
+					.attr('target','_blank')
+					.attr('href',href_manage)
+					.attr('title',href_manage);
+				var uid = '{'+'$'+phys_path.substring(1).replace(/\/content/gi,'@')+'}'; // $a.attr('data-uid');
+				$a.before('<input name="home_ids:list" type="checkbox" title="'+uid+'" value="'+uid+'" checked="checked" /> ');
+			});
+		},
+	});
 	$('#zmsindex .zmi-sitemap-container').removeClass('loading');
 });
 </script>

@@ -23,6 +23,7 @@
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
 import time
+from datetime import datetime, timezone
 import zope.interface
 # Product Imports.
 from Products.zms import standard
@@ -43,9 +44,20 @@ def get_default_data(node):
   d['id'] = node.id
   d['home_id'] = node.getHome().id
   d['meta_id'] = node.meta_id
+  # Todo: Remove preview-parameter.
   d['index_html'] = node.getHref2IndexHtmlInContext(node.getRootElement(), REQUEST=request)
   d['lang'] = request.get('lang',node.getPrimaryLanguage())
+  d['created_dt'] = get_zoned_dt(node.attr('created_dt'))
+  d['change_dt'] = get_zoned_dt(node.attr('change_dt')) or d['created_dt']
   return d
+
+def get_zoned_dt(struct_dt):
+  try:
+    dt = datetime.fromtimestamp(time.mktime(struct_dt))
+    zdt = dt.replace(tzinfo=timezone.utc)
+  except:
+    zdt = None
+  return zdt
 
 def get_file(node, d, fileparsing=True):
   """
@@ -54,29 +66,18 @@ def get_file(node, d, fileparsing=True):
   if fileparsing and node.meta_id == 'ZMSFile':
     try:
       file = node.attr('file')
-      data = file.getData()
-      if data:
-        content_type = file.getContentType()
-        text = content_extraction.extract_content(node, data, content_type)
-        d['standard_html'] = text
+      if file:
+        data = file.getData()
+        if data:
+          content_type = file.getContentType()
+          text = content_extraction.extract_content(node, data, content_type)
+          d['standard_html'] = text
+        else:
+          standard.writeInfo( node, "WARN - get_file: file.data is empty")
       else:
-        standard.writeError( node, "WARN - extract_content: file.data is empty")
+        standard.writeInfo( node, "WARN - get_file: file not found")
     except:
       standard.writeError( node, "can't extract_content")
-
-def get_catalog_objects(adapter, connector, node, d, fileparsing=True):
-  request = node.REQUEST
-  lang = request.get('lang', node.getPrimaryLanguage())
-  # Additional defaults.
-  d['id'] = '%s_%s'%(node.id,lang)
-  d['lang'] = lang
-  # Get adapter's ids & attributes catalog-data.
-  adapter.get_attr_data(node, d)
-  # ZMSFile.file to standard_html?
-  get_file(node, d, fileparsing)
-  # Add data via connector.
-  return (node, d)
-    
 
 ################################################################################
 ################################################################################
@@ -118,7 +119,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     # Management Permissions.
     # -----------------------
     __administratorPermissions__ = (
-        'manage_changeProperties', 'manage_main', 'manage_reindex',
+        'manage_changeProperties', 'manage_main',
         )
     __ac_permissions__=(
         ('ZMS Administrator', __administratorPermissions__),
@@ -146,26 +147,50 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
       self.setAttrIds(['title', 'titlealt', 'attr_dc_description', 'standard_html'])
 
     # --------------------------------------------------------------------------
+    #  ZMSZCatalogAdapter.reindex
+    # --------------------------------------------------------------------------
+    def reindex(self, connector, base, recursive=True, fileparsing=True):
+      def traverse(node, recursive):
+        objects = self.get_catalog_objects(node, fileparsing)
+        success, failed = connector.manage_objects_add(objects)
+        if recursive:
+          for childNode in node.filteredChildNodes(request):
+            childSuccess, childFailed = traverse(childNode, recursive)
+            success += childSuccess
+            failed += childFailed
+        return success, failed 
+      request = self.REQUEST
+      request.set('lang', self.REQUEST.get('lang', self.getPrimaryLanguage()))
+      result = []
+      result.append('%i objects cataloged (%s failed)'%traverse(base, recursive))
+      return ', '.join([x for x in result if x])
+
+    # --------------------------------------------------------------------------
     #  ZMSZCatalogAdapter.reindex_node
     # --------------------------------------------------------------------------
-    def reindex_node(self, node, forced=False):
+    def reindex_node(self, node):
       standard.writeBlock(node, "[reindex_node]")
+      connectors = []
+      fileparsing = False
       try:
-        if self.getConfProperty('ZMS.CatalogAwareness.active', 1) or forced:
-          nodes = node.breadcrumbs_obj_path()
-          nodes.reverse()
-          for node in nodes:
-            if self.matches_ids_filter(node):
-              fileparsing = standard.pybool( self.getConfProperty('ZMS.CatalogAwareness.fileparsing', 1))
-              connectors = self.get_connectors()
-              # if local connectors are available, use them.
-              # otherwise use global connector
-              # Note: if local connectors are used, they must cover all connector types
-              if not connectors:
-                root = self.getRootElement()
-                connectors = root.getCatalogAdapter().get_connectors()
-              for connector in connectors:
-                self.reindex(connector, node, recursive=False, fileparsing=fileparsing)
+        if self.getConfProperty('ZMS.CatalogAwareness.active', 1):
+          breadcrumbs = node.breadcrumbs_obj_path()
+          breadcrumbs.reverse()
+          # Determine the node's page container 
+          # because this is what usually is to be indexed.
+          page_nodes = [e for e in breadcrumbs if e.isPage()]
+          container_page = page_nodes[0]
+          container_nodes = standard.difference_list(breadcrumbs, page_nodes)
+          container_nodes.append(container_page)
+          filtered_container_nodes = [e for e in container_nodes if self.matches_ids_filter(e)]
+          if filtered_container_nodes:
+            # Hint: getCatalogAdapter prefers local adapter, otherwise root adapter.
+            fileparsing = standard.pybool(node.getConfProperty('ZMS.CatalogAwareness.fileparsing', 1))
+            connectors = node.getCatalogAdapter().get_connectors()
+            # Reindex filtered container node's content by each connector.
+            for connector in connectors:
+              for filtered_container_node in filtered_container_nodes:
+                self.reindex(connector, filtered_container_node, recursive=False, fileparsing=fileparsing)
         return True
       except:
         standard.writeError( self, "can't reindex_node")
@@ -174,19 +199,33 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     # --------------------------------------------------------------------------
     #  ZMSZCatalogAdapter.unindex_node
     # --------------------------------------------------------------------------
-    def unindex_node(self, node, forced=False):
-      standard.writeBlock(node, "[unindex_node]")
+    def unindex_nodes(self, nodes=[], forced=False):
+      # Is triggered by zmscontainerobject.moveObjsToTrashcan().
+      # Todo: ensure param 'nodes' does contain all ids to be indexed
+      # to avoid sequentially unindexing leading to redundant reindexing 
+      # on the same page-node.
+      standard.writeBlock(self, "[unindex_nodes]")
       try:
         if self.getConfProperty('ZMS.CatalogAwareness.active', 1) or forced:
-          nodes = node.breadcrumbs_obj_path()
-          nodes.reverse()
-          for node in nodes:
-            if self.matches_ids_filter(node):
-              for connector in self.get_connectors():
-                connector.manage_objects_remove([node])
-            break
+          # [1] Reindex page-container nodes of deleted page-elements.
+          pageelement_nodes = [node for node in nodes if not node.isPage()]
+          page_nodes = []
+          for pageelement_node in pageelement_nodes:
+              path_nodes = pageelement_node.getParentNode().breadcrumbs_obj_path()
+              path_nodes.reverse()
+              path_nodes = [e for e in path_nodes if e.isPage()]
+              if path_nodes[0] not in page_nodes:
+                page_nodes.append(path_nodes[0])
+          # Using set() for removing doublicates
+          for page_node in list(set(page_nodes)):
+            self.reindex_node(node=page_node)
+          # [2] Unindex deleted nodes (from trashcan) if filter-match.
+          delnodes = [delnode for delnode in nodes[0].getParentNode().getTrashcan().objectValues() if ( ( delnode in nodes) and self.matches_ids_filter(delnode) )]
+          for connector in self.getCatalogAdapter().get_connectors():
+            connector.manage_objects_remove(delnodes)
+        return True
       except:
-        standard.writeError( self, "can't unindex_node")
+        standard.writeError( self, "unindex_nodes not successful")
         return False
 
     # --------------------------------------------------------------------------
@@ -254,14 +293,14 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     # --------------------------------------------------------------------------
     def get_connectors(self):
       self.ensure_zcatalog_connector_is_initialized()
-      return list(sorted([x for x in self.objectValues(['ZMSZCatalogConnector']) if x.__name__!='broken object']))
+      root = self.getRootElement()
+      return list(sorted([x for x in root.getCatalogAdapter().objectValues(['ZMSZCatalogConnector']) if x.__name__!='broken object']))
 
     # --------------------------------------------------------------------------
     #  ZMSZCatalogAdapter.get_connector
     # --------------------------------------------------------------------------
     def get_connector(self, id):
-      root = self.getRootElement()
-      return [[x for x in root.getCatalogAdapter().get_connectors() if x.id == id]+[None]][0]
+      return [[x for x in self.get_connectors() if x.id == id]+[None]][0]
 
     # --------------------------------------------------------------------------
     #  Add connector.
@@ -275,7 +314,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     # --------------------------------------------------------------------------
     #   Get adapter's ids & attributes catalog-data.
     # --------------------------------------------------------------------------
-    def get_attr_data(self, node, d, fileparsing=True):
+    def get_attr_data(self, node, d):
       request = node.REQUEST
       # Is request['lang'] set?
       lang = request.get('lang', d.get('lang', node.getPrimaryLanguage()))
@@ -288,23 +327,48 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
         attr_type = attr.get('type', 'string')
         # Get value for attr from node.
         value = ''
-        try:
-          value = node.attr(attr_id)
-        except:
-          standard.writeError(node, "can't get attr")
-        # Stringify date/datetime.
-        if attr_type in ['date', 'datetime']:
-          value = standard.getLangFmtDate(node, value, 'eng', 'ISO8601')
-        # Stringify dict/list.
-        elif type(value) in (dict, list):
-          value = standard.str_item(value, f=True)
-        # Add to data.  
-        d[attr_id] = standard.remove_tags(value)
+        # ZMSFile.standard_html will be done in get_file().
+        if not (node.meta_id == 'ZMSFile' and attr_id == 'standard_html'):
+          try:
+            value = node.attr(attr_id)
+            # Stringify date/datetime.
+            if attr_type in ['date', 'datetime']:
+              value = standard.getLangFmtDate(node, value, 'eng', 'ISO8601')
+            # Stringify dict/list.
+            elif type(value) in (dict, list):
+              value = standard.str_item(value, f=True)
+          except:
+            standard.writeError(node, "can't get attr %s"%attr_id)
+            value = 'DATA ERROR'
+            pass
+
+          if attr_type in ['int', 'float', 'amount', 'date', 'datetime', 'time', 'bool']:
+            d[attr_id] = value
+          else:
+            # Add plain text to data.
+            d[attr_id] = content_extraction.extract_text_from_html(node, value)
 
     # --------------------------------------------------------------------------
-    #  Get object data and add via connector.
+    #  Get catalog objects data for given node.
     # --------------------------------------------------------------------------
-    def get_catalog_objects(self, connector, node, fileparsing=True):
+    def get_catalog_objects_data(self, node, d, fileparsing=True):
+      request = node.REQUEST
+      lang = standard.nvl(request.get('lang'), node.getPrimaryLanguage())
+      # Additional defaults.
+      d['id'] = '%s_%s'%(node.id,lang)
+      d['lang'] = lang
+      # Get adapter's ids & attributes catalog-data.
+      self.get_attr_data(node, d)
+      # ZMSFile.file to standard_html?
+      if fileparsing and node.meta_id == 'ZMSFile':
+        get_file(node, d, fileparsing)
+      # Add data via connector.
+      return (node, d)
+        
+    # --------------------------------------------------------------------------
+    #  Get catalog objects.
+    # --------------------------------------------------------------------------
+    def get_catalog_objects(self, node, fileparsing=True):
       objects = []
       indexable = True
       # Custom hook:
@@ -316,51 +380,12 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
         # if catalog_index is in node-attributes, then retrieve value for it. 
         if 'catalog_index' in self.getMetaobjAttrIds(node.meta_id):
           for data in node.attr('catalog_index'):
-            objects.append(get_catalog_objects(self, connector, node, data, fileparsing))
+            objects.append(self.get_catalog_objects_data(node, data, fileparsing))
         # Catalog only desired typed meta-ids (resolves type(ZMS...)).
         if self.matches_ids_filter(node):
           data = get_default_data(node)
-          objects.append(get_catalog_objects(self, connector, node, data, fileparsing))
+          objects.append(self.get_catalog_objects_data(node, data, fileparsing))
       return objects
-
-    # --------------------------------------------------------------------------
-    #  Reindex
-    # --------------------------------------------------------------------------
-    def reindex(self, connector, base, recursive=True, fileparsing=True):
-      def traverse(node, recursive):
-        objects = self.get_catalog_objects(connector, node, fileparsing)
-        success, failed = connector.manage_objects_add(objects)
-        if recursive:
-          for childNode in node.filteredChildNodes(request):
-            childSuccess, childFailed = traverse(childNode, recursive)
-            success += childSuccess
-            failed += childFailed
-        return success, failed 
-      request = self.REQUEST
-      request.set('lang', self.REQUEST.get('lang', self.getPrimaryLanguage()))
-      result = []
-      result.append('%i objects cataloged (%s failed)'%traverse(base, recursive))
-      return ', '.join([x for x in result if x])
-
-
-    ############################################################################
-    #  ZMSZCatalogAdapter.manage_reindex:
-    #
-    #  Reindex.
-    ############################################################################
-    def manage_reindex(self, uid, connector_id=None, REQUEST=None, RESPONSE=None):
-        """ ZMSZCatalogAdapter.manage_reindex """
-        result = []
-        t0 = time.time()
-        root = self.getRootElement()
-        adapter = root.getCatalogAdapter()
-        for connector in adapter.get_connectors():
-          if connector.id ==  connector_id or not connector_id: 
-            base = self.getLinkObj(uid)
-            result.append(connector.id + "\n" + adapter.reindex(connector, base, recursive=True, fileparsing=True))
-        result.append('done!')
-        return ', '.join([x for x in result if x])+' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
-
 
     ############################################################################
     #  ZMSZCatalogAdapter.manage_changeProperties:

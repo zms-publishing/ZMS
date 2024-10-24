@@ -505,7 +505,8 @@ class ZMSMetaobjManager(object):
         elif meta_id in metaObjIds:
           typed_meta_ids.append( meta_id)
         else:
-          standard.writeError( self, "[getMetaIds]: invalid meta_id \'%s\'"%meta_id)
+          # standard.writeBlock( self, "[getMetaIds]: invalid meta_id \'%s\'"%meta_id)
+          continue
       return typed_meta_ids
 
     # --------------------------------------------------------------------------
@@ -1200,7 +1201,8 @@ class ZMSMetaobjManager(object):
           if (len(attr_id) > 0 and len(newName) > 0 and len(newType) > 0) or newType in self.getMetadictAttrs():
             message += self.setMetaobjAttr( id, None, attr_id, newName, newMandatory, newMultilang, newRepetitive, newType, newKeys, newCustom, newDefault)
             message += self.getZMILangStr('MSG_INSERTED')%attr_id
-          # Lang-Dict.
+          # Insert (multiple) new language keys at once.
+          # Ref: _multilangmanager.py#L647
           for key in REQUEST.form.keys():
             if key.startswith('_lang_dict_key_'):
               i = int(key[len('_lang_dict_key_'):])

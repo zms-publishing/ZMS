@@ -21,9 +21,11 @@ $(function() {
 		var total = res_processed.total;
 		var hb_results_html = hb_results_tmpl(res_processed);
 		$('.search-results').html( hb_results_html );
-	
+		$('html, body').animate({scrollTop: $("#container_results").offset().top }, 1000);
+
 		//# Add pagination ###################
 		var fn = (pageIndex) => {
+			q = encodeURI(decodeURI(q));
 			return `javascript:show_results('${q}',${pageIndex})`
 		};
 		GetPagination(fn, total, 10, pageIndex);
@@ -63,9 +65,15 @@ $(function() {
 	};
 
 	const show_breadcrumbs = (el) => {
-		$.get(url=`${root_url}/solr_breadcrumbs_obj_path`, data={ 'id' : el.dataset.id }, function(data, status) {
-			$(el).html(data);
-		});
+		const lang = $('#lang').attr('value');
+		if ( el.dataset.id.startsWith('uid') ) {
+			$.get(url=`${root_url}/solr_breadcrumbs_obj_path`, 
+				data={ 'id' : el.dataset.id, 'lang' : lang },
+				function(data, status) {
+					$(el).html(data);
+				}
+			);
+		}
 	}
 
 	//# Execute on submit event

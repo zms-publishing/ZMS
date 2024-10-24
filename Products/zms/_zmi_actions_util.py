@@ -229,8 +229,8 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
   
   #-- Headline.
   if len(actions) > 0:
-    actions.insert(0, ('----- %s -----'%container.getZMILangStr('CAPTION_INSERT')%container.getZMILangStr('ATTR_CONTENT'), 'insert-action'))
-  
+    actions.insert(0, ('----- %s -----'%container.getZMILangStr('ACTION_INSERT')%container.display_type(REQUEST), 'insert-action'))
+
   # Return action list.
   return actions
 

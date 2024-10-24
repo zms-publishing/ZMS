@@ -7,6 +7,7 @@
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
 <form class="card form-horizontal" name="searchform" method="get">
+	<input type="hidden" name="id" value="manage_tab_search" />
 	<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
 	<input type="hidden" name="preview" tal:attributes="value python:request['preview']" />
 	<legend tal:content="python:here.getZMILangStr('SEARCH_HEADER')">Search header</legend>

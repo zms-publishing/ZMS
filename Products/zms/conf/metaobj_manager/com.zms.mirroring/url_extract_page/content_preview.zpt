@@ -1,0 +1,39 @@
+<tal:block 
+        tal:define="zmscontext options/zmscontext" 
+        tal:condition="python:not request.get('ZMS_INSERT',None)">
+    <div class="form-group row">
+        <label for="titlealt_ger" class="col-sm-2 control-label mandatory"><span>Preview</span></label>
+        <div class="col-sm-10"> 
+            <div style="border:1px solid silver;padding:1rem;border-radius:4px;background:aliceblue"
+                tal:define="extract python:context.url_extracting(zmscontext, content_url=zmscontext.attr('content_url'), content_node=zmscontext.attr('content_node'), force=True)">
+                <tal:block
+                    tal:content="structure python:extract['content_cache']">
+                    Extracted HTML
+                </tal:block>
+                <div class="code code text-monospace" style="font-size:10px;margin:2rem 0;border-top:1px dotted silver;padding-top:.25rem;">
+                    Date: <code tal:content="python:extract['content_datetime']"></code><br/> 
+                    MD5: <code tal:content="python:extract['content_md5']"></code><br/>
+                    HTML: <a href="javascript:$('#content_preview_html').toggle()">show</a><br/>
+                    <pre id="content_preview_html" style="display:none;" tal:content="python:extract['html']"></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+        #content_node, 
+        #css_custom {
+            font-family: monospace;
+            background:#eaedef;
+        }
+         #css_custom {
+            font-size: smaller !important;
+        }
+        #content_preview_html {
+            background: #354f67;
+            color: white;
+            padding: .5rem;
+            border-radius: 4px;
+        }
+        <tal:block tal:replace="python:zmscontext.attr('css_custom')">CSS Customs</tal:block>
+    </style>
+</tal:block>

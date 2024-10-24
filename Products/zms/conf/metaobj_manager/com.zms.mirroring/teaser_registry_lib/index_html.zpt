@@ -10,10 +10,10 @@
 </head>
 <body>
 <tal:block tal:condition="python:request.get('delete_teaser',0)==1">
-	<tal:block tal:define="delete_teaser python:context.sqlite_db_delete_sql(zms_id=request.get('zms_id'))"></tal:block>
+	<tal:block tal:define="delete_teaser python:context.sql_delete(zms_id=request.get('zms_id'))"></tal:block>
 	<tal:block tal:define="redirect python:request.response.redirect('index_html')"></tal:block>
 </tal:block>
-<section id="teasers" class="row" tal:define="teasers python:context.sqlite_db_select_sql()">
+<section id="teasers" class="row" tal:define="teasers python:context.sql_select()">
 	<div class="card" tal:repeat="teaser teasers">
 		<div class="card-title">
 			<span tal:content="structure python:teaser['uuid']"></span>

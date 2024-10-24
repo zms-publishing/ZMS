@@ -1,4 +1,4 @@
-## Script (Python) "register_teaser_test"
+## Script (Python) "tryout"
 ##bind container=container
 ##bind context=context
 ##bind namespace=
@@ -7,16 +7,20 @@
 ##parameters=
 ##title=TEST
 ##
-# --// register_teaser_test //--
+# --// tryout //--
 from Products.zms import standard
 request = container.REQUEST
-zms = context.content
-zmscontext = zms.e149.teaser_item152
+zmscontext = context.content
 
-lang = request.get('lang','ger')
-html = zmscontext.getBodyContent(request) 
+lang = zmscontext.getPrimaryLanguage()
+request.set('lang',lang)
 
-context.teaser_registry.sqlite_db_upsert_sql(
+teasers = zmscontext.getTreeNodes(request,meta_types=['ZMSTeaserElement'])
+
+for teaser in teasers:
+    html = teaser.getBodyContent(request)
+
+    context.teaser_registry.sql_upsert(
         zms_id = zmscontext.getId(),
         client_id = zmscontext.getHome().getId(),
         uuid = zmscontext.get_uid(),
@@ -25,8 +29,8 @@ context.teaser_registry.sqlite_db_upsert_sql(
         content_md5 = zmscontext.encrypt_password(html, algorithm='md5', hex=True),
         content_datetime = zmscontext.attr('change_dt'),
         content_cache = html
-)
+    )
 
-return zmscontext.getId()
+return container.index_html()
 
-# --// /register_teaser_test //--
+# --// /tryout //--

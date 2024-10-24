@@ -20,7 +20,7 @@ def register_teaser( self ):
     lang = self.REQUEST.get('lang','ger')
     html = zmscontext.getBodyContent(self.REQUEST) 
     if self.isActive(self.REQUEST):
-        zmscontext.teaser_registry.sqlite_db_upsert_sql(
+        zmscontext.teaser_registry.sql_upsert(
             zms_id = zmscontext.getId(),
             client_id = zmscontext.getHome().getId(),
             uuid = zmscontext.get_uid(),

@@ -1,4 +1,4 @@
-<connection>sqlite_db</connection>
+<connection>teasers</connection>
 <params>zms_id
 client_id
 uuid

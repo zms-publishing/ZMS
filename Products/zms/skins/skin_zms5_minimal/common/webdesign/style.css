@@ -1,12 +1,14 @@
 /* LAYOUT */
 body {
   margin:0 auto;
-  font-family:Arial,sans-serif;
-  line-height:1.33;
+  font-family: Roboto, Arial,sans-serif;
+  line-height: 1.5;
   background-color: #f8f8f8;
+  font-size: larger;
 }
 header {
   background-color: white;
+  border-bottom: 1px solid white;
 }
 .grid {
   display: grid;
@@ -33,18 +35,19 @@ header .logo {
   -ms-grid-row-align: center;
 }
 header .logo a {
-  display:block;
-  width:100%;
-  text-align:left;  
+  /* display:block; */
+  /* width:100%; */
+  /* text-align:left; */
 }
 header .logo a img {
-  display:block;
-  margin:auto;  
+  /* display:block; */
+  margin-left: .7em;
+  width: 160px;
 }
 header nav {
   grid-area: nav;
   width:100%;
-  align-self:end;
+  align-self: center;
   text-align:right;
   -ms-grid-column: 2;
   -ms-grid-row: 1;
@@ -54,17 +57,18 @@ header nav {
   display:none;
 }
 #shadowbox {
-  height:20px;
+  height: 1.25em;
   position:absolute;
   z-index:101;
-  background: linear-gradient( rgba(0,0,0,.3),rgba(0,0,0,.15),rgba(0,0,0,.05),rgba(128,128,128,0));
+  background: linear-gradient( rgba(0,0,0,.10),rgba(128,128,128,0));
   width:100%
 }
 
 main.grid {
-  grid-template-areas:"leftnavigation content rightnavigation"
-                      "footer footer footer";
-  grid-template-columns: 260px 1fr 260px;
+  grid-template-areas:
+    "leftnavigation content rightnavigation"
+    "footer footer footer";
+  grid-template-columns: 260px 1fr 260px;;
   grid-template-rows: 1fr;
   display: -ms-grid;
   -ms-grid-columns: 260px 1fr 260px;
@@ -80,10 +84,17 @@ body.no_teasers main.grid  {
   -ms-grid-columns: 260px auto 0px;
   border-right: 1px solid #eee;
 }
+body#zmsroot main.grid  {
+  grid-template-columns: 0px 1fr 0px;
+  -ms-grid-columns: 0px auto 0px;
+}
+body#zmsroot aside  {
+  display: none;
+}
 
 article, aside, footer{
   margin:0;
-  padding:1em;
+  padding: 8.75em 1em 3em 1em;
 }
 article {
   z-index:10;
@@ -96,7 +107,7 @@ article {
 aside.left {
   z-index:20;
   grid-area: leftnavigation;
-  background-color: black;
+  background-color: #ffffff;
   -ms-grid-column: 1;
   -ms-grid-row: 1;
 }
@@ -114,7 +125,7 @@ aside.right {
 }
 footer {
     grid-area: footer;
-    background-color: rgb(68, 74, 78);
+    background-color: rgb(0 0 0 / 50%);
     padding-top: 1.5em;
 }
 
@@ -126,29 +137,34 @@ header a {
   color:black;
 }
 aside.left a {
-  color:white;
+  color: black;
 }
 
 /* CONTENT TYPOGRAPHY*/
 article {
-  padding: 1em 2rem !important;  
+  padding: 1em 3rem 1em 2em !important;
 }
 article section {
   padding-top:0;
 }
 article section.titles h1 {
   font-weight:normal;
-  font-size:220%;
-  margin:0.5em 0 0.7em;
+  font-size: 225%;
+  margin: 0.6em 0 0.7em;
   line-height:1.2;
+}
+#zmsroot article section.titles {
+  padding-top: 2em;
 }
 article section.titles .description {
   font-weight:bold;
   letter-spacing:.5px;
   color:#666;
+  line-height: 1.65;
+  margin: 0 0 2em 0;
 }
 article a {
-  color: #03A9F4;
+  color: #07aee9;
 }
 
 /* FUNCTION BREADCRUMB */
@@ -156,13 +172,14 @@ article a {
   z-index:1;
   display:block;
   list-style-type:none;
-  margin: -1em -2em 0 -2em;
+  margin: -1em 0 0 -2em;
   padding: 1em 2em;
   width: 100%;
   font-size:100%;
-  background:#eee;
+  /* background:#eee; */
   white-space: nowrap;
   overflow:hidden;
+  /* text-align: end; */
 }
 body.has_teasers .breadcrumb {
   margin: -1em -1.1em 0 -1.1em;
@@ -171,12 +188,12 @@ body.has_teasers .breadcrumb {
 .breadcrumb li {
   display:inline-block;
   line-height:1em;
-  font-size:90%;
+  font-size:80%;
 }
-.breadcrumb li:after,
-.breadcrumb li:first-child::before {
-  content:" > ";
+.breadcrumb li:after {
+  content:">";
   color:silver;
+  margin: 0 .25em 0 .35em;
 }
 .breadcrumb li:last-child::after {
   content:none;
@@ -189,6 +206,7 @@ body.has_teasers .breadcrumb {
   text-overflow:ellipsis;
   text-decoration:none;
   border-bottom:1px solid transparent;
+  color: silver;
 }
 .breadcrumb li a:hover {
   text-decoration:none;
@@ -210,9 +228,11 @@ nav ul li {
 nav ul li a {
   display:inline-block;
   text-decoration:none;
-  padding:0.5em 1em;
+  padding: 0.15em 1em;
 }
-
+nav ul#navigationtree li a { 
+  padding: 0.5em 1em;
+}
 
 @keyframes darken {
   from {
@@ -224,12 +244,18 @@ nav ul li a {
 }
 
 header nav > ul > li {
-  line-height:2em;
+  /* line-height:2em; */
   background-color:rgba(0,0,0,.0);
+  margin: 0;
+  padding: 0;
 }
 header nav ul li.active,
 header nav ul li:hover {
-  background-color:rgba(0,0,0,.3);
+  background-color: rgb(7 174 233);
+}
+header nav ul li.active a,
+header nav ul li:hover a {
+  color: white;
 }
 header nav ul li:hover {
   animation-name: darken;
@@ -245,7 +271,8 @@ aside nav ul li a:hover {
   color:#82d8ff
 }
 aside nav ul > li.active > a {
-  color:#82d8ff !important;
+  color: #07aee9 !important;
+  font-weight: bold;
 }
 aside nav ul li.active.current:before {
   content:'>';
@@ -253,7 +280,7 @@ aside nav ul li.active.current:before {
   display:inline-block;
   margin:.5em 0 0 0;
   position:absolute;
-  color:#82d8ff
+  color: #07aee9;
 }
 aside nav ul li ul {
   padding-left:1.5em;
@@ -263,12 +290,12 @@ footer p {
   padding:0;
   margin:0;
   line-height:2;
-  font-size:80%;
+  font-size: 70%;
   color: white;
 }
 footer p a {
   text-decoration:none;
-  color: white;
+  color: inherit;
 }
 
 @media screen and (min-width: 1200px) {
@@ -297,8 +324,8 @@ footer p a {
     display:block !important;
   }
   header .logo {
-    text-align:center;
-    padding:.75em 1em 0.25em;
+    /* text-align:center; */
+    padding: 1em 0 0.35em 0.35em;
   }
   header nav {
     text-align:left;
@@ -309,6 +336,7 @@ footer p a {
   header nav.expand ul li,
   header nav ul li.active {
     display:block;
+    margin: .5em 0;
   }
   header nav ul li.active,
   header nav ul li:hover {
@@ -318,7 +346,7 @@ footer p a {
     color:white
   }
   header nav ul li a {
-    padding: .1em 1em;
+    padding: .1em 2em;
   }
   #shadowbox {
     display:none;
@@ -356,11 +384,11 @@ footer p a {
     display:block;
     position: absolute;
     right: 0;
-    padding: 1px 3px 2px 3px;
-    font-size: 18px;
-    line-height: .8;
+    padding: 0 .35em;
+    font-size: 32px;
+    line-height: .5;
     color:black;
-    border: 1px solid black;
+    /* border: 1px solid black; */
     margin: 7px;
   }
   #zmsroot .navtoggle {

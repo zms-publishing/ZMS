@@ -84,7 +84,7 @@ class ZMSTextarea:
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
-			,"name":"Readme (text/markdown)"
+			,"name":"README.md"
 			,"repetitive":0
 			,"type":"resource"}
 

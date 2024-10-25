@@ -79,6 +79,6 @@ class url_extract_lib:
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
-			,"name":"readme"
+			,"name":"README.md"
 			,"repetitive":0
 			,"type":"resource"}

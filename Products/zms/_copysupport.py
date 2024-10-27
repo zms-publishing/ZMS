@@ -45,11 +45,12 @@ def normalize_ids_after_copy(node, id_prefix='e', ids=[]):
       # reset ref_by
       childNode.ref_by = []
       # init object-state
-      if not '*' in ids and not node.getAutocommit():
+      if not '*' in ids:
         lang = request.get('lang')
         for langId in node.getLangIds():
           request.set('lang',langId)
-          childNode.setObjStateNew(request,reset=0)
+          if not node.getAutocommit():
+            childNode.setObjStateNew(request,reset=0)
           childNode.onChangeObj(request)
         request.set('lang',lang)
         # new id

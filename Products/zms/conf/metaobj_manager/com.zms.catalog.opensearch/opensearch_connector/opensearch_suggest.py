@@ -6,6 +6,27 @@ import re
 from Products.zms import standard
 
 
+def escape_query_string(q):
+	# Escape special characters for OpenSearch SQL
+	mysql_import = True
+	psycopg2_import = True
+	try:
+		import mysql
+	except ImportError:
+		mysql_import = False
+	try :
+		import psycopg2
+		from psycopg2.extensions import adapt 
+	except ImportError:
+		psycopg2_import = False
+	if mysql_import:
+		return mysql.connector.connector.escape_string(q)
+	elif psycopg2_import:
+		return adapt(q).getquoted().decode('latin-1')
+	else:
+		return q
+
+
 def get_opensearch_client(self):
 	# ${opensearch.url:https://localhost:9200, https://localhost:9201}
 	# ${opensearch.username:admin}
@@ -50,12 +71,13 @@ def get_suggest_terms(self, q='Lorem', index_name='myzms', field_names=['title',
 	# Assemble SQL Query using f-strings
 	sql_tmpl = "SELECT {} FROM {} WHERE {} LIMIT {}"
 	sel_fields = ','.join(field_names)
-	whr_clause = " OR ".join([f"({field_name} LIKE '%{q}%')" for field_name in field_names])
+	q = escape_query_string('%%%s%%'%(q))
+	whr_clause = " OR ".join([f"({field_name} LIKE {q})" for field_name in field_names])
 	if index_name == "unitel":
 		# UNITEL: Join Fullname fields with space for matching
 		sel_fields = ",' ',".join(field_names)
 		sel_fields = f"CONCAT({sel_fields})"
-		whr_clause = f"{sel_fields} LIKE '%{q}%'"
+		whr_clause = f"{sel_fields} LIKE {q}"
 	sql = sql_tmpl.format(sel_fields, index_name, whr_clause, qsize)
 
 	# #########################

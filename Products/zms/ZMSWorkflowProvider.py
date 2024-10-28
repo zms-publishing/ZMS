@@ -383,7 +383,7 @@ class ZMSWorkflowProvider(
           else:
             filename = REQUEST['init']
             self.importConf(filename)
-          message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%f.filename)
+          message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%filename)
       
       # Return with message.
       message = standard.url_quote(message)

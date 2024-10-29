@@ -6,27 +6,6 @@ import re
 from Products.zms import standard
 
 
-def escape_query_string(q):
-	# Escape special characters for OpenSearch SQL
-	mysql_import = True
-	psycopg2_import = True
-	try:
-		import mysql
-	except ImportError:
-		mysql_import = False
-	try :
-		import psycopg2
-		from psycopg2.extensions import adapt 
-	except ImportError:
-		psycopg2_import = False
-	if mysql_import:
-		return mysql.connector.connector.escape_string(q)
-	elif psycopg2_import:
-		return adapt(q).getquoted().decode('latin-1')
-	else:
-		return q
-
-
 def get_opensearch_client(self):
 	# ${opensearch.url:https://localhost:9200, https://localhost:9201}
 	# ${opensearch.username:admin}
@@ -71,23 +50,38 @@ def get_suggest_terms(self, q='Lorem', index_name='myzms', field_names=['title',
 	# Assemble SQL Query using f-strings
 	sql_tmpl = "SELECT {} FROM {} WHERE {} LIMIT {}"
 	sel_fields = ','.join(field_names)
-	q = escape_query_string('%%%s%%'%(q))
-	whr_clause = " OR ".join([f"({field_name} LIKE {q})" for field_name in field_names])
+	whr_clause = " OR ".join([f"({field_name} LIKE ?)" for field_name in field_names])
+	q_string = q
 	if index_name == "unitel":
-		# UNITEL: Join Fullname fields with space for matching
+		# UNITEL: Join Fullname fields with space for matching, no wildcard
 		sel_fields = ",' ',".join(field_names)
 		sel_fields = f"CONCAT({sel_fields})"
-		whr_clause = f"{sel_fields} LIKE {q}"
+		whr_clause = f"{sel_fields} LIKE ?"
+	else:
+		# STANDARD: Wildcard search for each field
+		q_string = '%%%s%%'%(q)
+
 	sql = sql_tmpl.format(sel_fields, index_name, whr_clause, qsize)
+
+	# Prepare SQL Parameters for OpenSearch SQL
+	# https://opensearch.org/docs/latest/search-plugins/sql/sql-ppl-api/#using-parameters
+	sql_params = []
+	if index_name == "unitel":
+		# Add q_string only once for UNITEL
+		sql_params.append({"type":"string","value":q_string})
+	else:
+		# Add q_string for each field_name
+		for i in range(0,len(field_names)):
+			sql_params.append({"type":"string","value":q_string})
 
 	# #########################
 	# DEBUG-INFO: SQL Query
-	if bool(debug): print(10*'#' + '\n# OPENSEARCH SQL: %s\n'%sql +10*'#')
+	if bool(debug)==False: print(10*'#' + '\n# OPENSEARCH SQL: %s\n'%sql +10*'#')
 	# #########################
 
 	# Prepare HTTP Request
 	headers = {"Content-Type": "application/json"}
-	data = { "query": sql }
+	data = { "query": sql, "parameters": sql_params }
 
 	# #########################
 	# Execute HTTP Request in case of SQL with POST!

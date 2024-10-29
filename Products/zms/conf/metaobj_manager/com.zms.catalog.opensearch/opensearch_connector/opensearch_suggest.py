@@ -76,7 +76,7 @@ def get_suggest_terms(self, q='Lorem', index_name='myzms', field_names=['title',
 
 	# #########################
 	# DEBUG-INFO: SQL Query
-	if bool(debug)==False: print(10*'#' + '\n# OPENSEARCH SQL: %s\n'%sql +10*'#')
+	if bool(debug): print(10*'#' + '\n# OPENSEARCH SQL: %s\n'%sql +10*'#')
 	# #########################
 
 	# Prepare HTTP Request

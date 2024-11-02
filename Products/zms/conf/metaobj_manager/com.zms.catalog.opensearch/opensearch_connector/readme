@@ -28,11 +28,11 @@ return (context.meta_id in meta_ids) \
 
 
 ###### Configuration Properties
-For communicating with the Elasticsearch server over REST API, the connector needs some properties:
+For communicating with the OpenSearch server over REST API, the connector needs some properties:
 
-1. *URL*: the URL(s) of the Elasticsearch server (comma-separated)
-2. *Username*: the username for the Elasticsearch server
-3. *Password*: the password for the Elasticsearch server
+1. *URL*: the URL(s) of the OpenSearch server (comma-separated)
+2. *Username*: the username for the OpenSearch server
+3. *Password*: the password for the OpenSearch server
 4. *Schema*: the data schema of the index in JSON format; it is defined by the general search adapter GUI and created wirh the "Create Schema" action
 5. *Parser*: the URL of the parsing application (e.g. Apache Tika) for extracting content from any binary files
 6. Score-Script (Painless): a script for boosting the relevance of certain fields in the search results

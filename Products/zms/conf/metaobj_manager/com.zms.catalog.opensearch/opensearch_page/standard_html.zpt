@@ -1,4 +1,4 @@
-<!-- opensearch.standard_html -->
+<!--! opensearch.standard_html -->
 <tal:block tal:define="zmscontext options/zmscontext">
 
 	<template id="hb_spinner_html" type="text/x-handlebars-template">
@@ -61,7 +61,7 @@
 			<div class="tab-pane show active" role="tabpanel">
 				{{#each hits}}
 					<article class="hit {{this.index_name}}" title="SCORE = {{this.score}}">
-						<ul class="path" data-id="{{this.path}}">&nbsp;</ul>
+						<ul class="path" data-id="{{this.path}}" data-lang="{{this.lang}}">&nbsp;</ul>
 						<a title="{{this.path}}" href="{{this.href}}" target="_blank">{{{this.title}}}</a>
 						<br/>
 						<p>{{{this.snippet}}}</p>
@@ -137,4 +137,4 @@
 
 </tal:block>
 
-<!-- /opensearch.standard_html -->
+<!--! /opensearch.standard_html -->

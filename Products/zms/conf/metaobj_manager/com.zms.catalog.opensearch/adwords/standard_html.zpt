@@ -1,4 +1,4 @@
-<!-- adwords.standard_html -->
+<!--! adwords.standard_html -->
 <tal:block tal:define="zmscontext options/zmscontext">
 
 	<tal:block tal:condition="python:request.get('URL','').find('/manage') > -1">
@@ -16,4 +16,4 @@
 	</tal:block>
 
 </tal:block>
-<!-- /adwords.standard_html -->
+<!--! /adwords.standard_html -->

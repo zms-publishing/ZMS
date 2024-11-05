@@ -169,7 +169,6 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     #  ZMSZCatalogAdapter.reindex_node
     # --------------------------------------------------------------------------
     def reindex_node(self, node):
-      standard.writeBlock(node, "[reindex_node]")
       connectors = []
       fileparsing = False
       try:
@@ -186,25 +185,29 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
           if filtered_container_nodes:
             # Hint: getCatalogAdapter prefers local adapter, otherwise root adapter.
             fileparsing = standard.pybool(node.getConfProperty('ZMS.CatalogAwareness.fileparsing', 1))
-            connectors = node.getCatalogAdapter().get_connectors()
             # Reindex filtered container node's content by each connector.
-            for connector in connectors:
-              for filtered_container_node in filtered_container_nodes:
-                self.reindex(connector, filtered_container_node, recursive=False, fileparsing=fileparsing)
+            connectors = node.getCatalogAdapter().get_connectors()
+            for container in filtered_container_nodes:
+              visible = container.is_visible()
+              for connector in connectors:
+                if visible:
+                  self.reindex(connector, container, recursive=False, fileparsing=fileparsing)
+                else:
+                  # [2] Unindex invisible node
+                  connector.manage_objects_remove([container])
         return True
       except:
         standard.writeError( self, "can't reindex_node")
         return False
 
     # --------------------------------------------------------------------------
-    #  ZMSZCatalogAdapter.unindex_node
+    #  ZMSZCatalogAdapter.unindex_nodes
     # --------------------------------------------------------------------------
     def unindex_nodes(self, nodes=[], forced=False):
       # Is triggered by zmscontainerobject.moveObjsToTrashcan().
       # Todo: ensure param 'nodes' does contain all ids to be indexed
       # to avoid sequentially unindexing leading to redundant reindexing 
       # on the same page-node.
-      standard.writeBlock(self, "[unindex_nodes]")
       try:
         if self.getConfProperty('ZMS.CatalogAwareness.active', 1) or forced:
           # [1] Reindex page-container nodes of deleted page-elements.
@@ -221,11 +224,12 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
             self.reindex_node(node=page_node)
           # [2] Unindex deleted nodes (from trashcan) if filter-match.
           delnodes = [delnode for delnode in nodes[0].getParentNode().getTrashcan().objectValues() if ( ( delnode in nodes) and self.matches_ids_filter(delnode) )]
-          for connector in self.getCatalogAdapter().get_connectors():
+          connectors = self.getCatalogAdapter().get_connectors()
+          for connector in connectors:
             connector.manage_objects_remove(delnodes)
         return True
       except:
-        standard.writeError( self, "unindex_nodes not successful")
+        standard.writeError( self, "can't unindex_nodes")
         return False
 
     # --------------------------------------------------------------------------

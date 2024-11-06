@@ -182,19 +182,18 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
           container_nodes = standard.difference_list(breadcrumbs, page_nodes)
           container_nodes.append(container_page)
           filtered_container_nodes = [e for e in container_nodes if self.matches_ids_filter(e)]
+          # Hint: getCatalogAdapter prefers local adapter, otherwise root adapter.
+          connectors = node.getCatalogAdapter().get_connectors()
           if filtered_container_nodes:
-            # Hint: getCatalogAdapter prefers local adapter, otherwise root adapter.
             fileparsing = standard.pybool(node.getConfProperty('ZMS.CatalogAwareness.fileparsing', 1))
             # Reindex filtered container node's content by each connector.
-            connectors = node.getCatalogAdapter().get_connectors()
-            for container in filtered_container_nodes:
-              visible = container.is_visible()
-              for connector in connectors:
-                if visible:
-                  self.reindex(connector, container, recursive=False, fileparsing=fileparsing)
-                else:
-                  # [2] Unindex invisible node
-                  connector.manage_objects_remove([container])
+            for connector in connectors:
+              for filtered_container_node in filtered_container_nodes:
+                self.reindex(connector, filtered_container_node, recursive=False, fileparsing=fileparsing)
+          else:
+            # Remove from catalog if editing leads to filter-not-matching.
+            for connector in connectors:
+              connector.manage_objects_remove([container_page])
         return True
       except:
         standard.writeError( self, "can't reindex_node")
@@ -436,4 +435,3 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
         return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s#%s'%(lang, message, REQUEST.get('tab')))
 
 ################################################################################
-

@@ -1296,7 +1296,7 @@ ZMIObjectTree.prototype.addPages = function(nodes) {
 		} else if (node.meta_id == 'ZMSFile' && link_url) {
 			var $path_elements = link_url.split('/');
 			var $fname = $path_elements[$path_elements.length -1 ].split('?')[0];
-			link_url = `<a data-id=&quot;${data_id}&quot; src=&quot;${link_url}&quot; target=&quot;_blank&quot;>${$fname}</a>`;
+			link_url = `<a data-id=&quot;${data_id}&quot; href=&quot;${link_url}&quot; target=&quot;_blank&quot;>${$fname}</a>`;
 		};
 		if (!node.active) {
 			css.push("inactive");

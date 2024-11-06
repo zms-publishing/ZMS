@@ -258,7 +258,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     #  getter and setter for custom filter-function
     # --------------------------------------------------------------------------
     def getCustomFilterFunction(self):
-      return getattr(self, '_custom_filter_function', '##\nreturn context.meta_id in meta_ids')
+      return getattr(self, '_custom_filter_function', '##\nreturn context.meta_id in meta_ids\\\n    and (context.isVisible(context.REQUEST))')
 
     def setCustomFilterFunction(self, custom_filter_function):
       setattr(self, '_custom_filter_function', custom_filter_function)

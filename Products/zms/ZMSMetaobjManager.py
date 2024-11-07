@@ -1176,14 +1176,16 @@ class ZMSMetaobjManager(object):
             # Upload resource.
             if newType in self.valid_uploadtypes or isinstance(newCustom, ZPublisher.HTTPRequest.FileUpload):
                 if len(getattr(newCustom, 'filename', '')):
-                    newCustom = _blobfields.createBlobField( self, _blobfields.MyFile, newCustom)
+                  newCustom = _blobfields.createBlobField( self, _blobfields.MyFile, newCustom)
                 else:
-                  savedAttr = [x for x in savedAttrs if x['id'] == old_id][0]
-                  syncZopeMetaobjAttr( self, newValue, savedAttr)
-                  if savedAttr.get('ob'):
-                    filename = savedAttr['ob'].title
-                    data = bytes(zopeutil.readData(savedAttr['ob']))
-                    newCustom = _blobfields.createBlobField( self, _blobfields.MyFile, {'filename':filename,'data':data})
+                  old_savedAttrs = [x for x in savedAttrs if x['id'] == old_id]
+                  if old_savedAttrs:
+                    savedAttr = old_savedAttrs[0]
+                    syncZopeMetaobjAttr( self, newValue, savedAttr)
+                    if savedAttr.get('ob'):
+                      filename = savedAttr['ob'].title
+                      data = bytes(zopeutil.readData(savedAttr['ob']))
+                      newCustom = _blobfields.createBlobField( self, _blobfields.MyFile, {'filename':filename,'data':data})
             # Change attribute.
             message += self.setMetaobjAttr( id, old_id, attr_id, newName, newMandatory, newMultilang, newRepetitive, newType, newKeys, newCustom, newDefault)
           # Return with message.

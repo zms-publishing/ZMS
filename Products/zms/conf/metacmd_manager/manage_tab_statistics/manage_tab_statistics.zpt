@@ -111,7 +111,7 @@
 						tal:attributes="checked python:check_is_visible_in_path is not False and 'selected' or False" />
 				</span>
 				<label for="check_is_visible_in_path" class="mx-0">
-					<small class="text-muted">Compute visibilty on object path </small>
+					<small class="text-muted">Compute visibility on object path</small>
 				</label>
 			</div>
 

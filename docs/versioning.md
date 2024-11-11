@@ -55,6 +55,22 @@ This attribute-container has a unique id and this id is referenced by the `ZMSCu
 An object is designed to have two versions and has attributes containing the id of the corresponding attribute-container:
 * `version_live_id` for the current published live-version
 * `version_work_id` for the current version in progress
+
+These block objects are very atomic. A useful aggregate is a committable container-object. 
+Committing a container-object should be equivalent to tagging a changeset.
+
+TODO: tag each atomic block object or store all versions of atomic sub-objects in the container?
+e.g.:
+
+Folder e1 {1.0.0: AAA, 2.0.0: AAA}
+    Textarea e2 {1.0.0: AAA: 2.0.0: ABA}
+    Textarea e3 {1.0.0: AAA: 2.0.0: AAA}
+
+Folder e1 {1.0.0: {e1: AAA, e2: AAA, e3: AAA},
+           2.0.0: {e1: AAA, e2: ABA, e3: AAA}}
+    Textarea e2
+    Textarea e3
+
 ## Numbering
 ## Versioning without workflow
 ## Versioning with activated workflow

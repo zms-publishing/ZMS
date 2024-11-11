@@ -190,11 +190,16 @@ class RestApiController(object):
                 decoration, data = self.get_child_nodes(self.context, content_type=True)
             elif self.ids == ['get_tree_nodes']:
                 decoration, data = self.get_tree_nodes(self.context, content_type=True)
+            elif self.ids == ['get_tags']:
+                decoration, data = self.get_tags(self.context, content_type=True)
+            elif self.ids == ['get_tag']:
+                decoration, data = self.get_tag(self.context, content_type=True)
             elif self.ids == [] or self.ids == ['get']:
                 decoration, data = self.get(self.context, content_type=True)
             else:
                 data = {'ERROR':'Not Found','context':str(self.context),'path_to_handle':self.path_to_handle,'ids':self.ids}
             REQUEST.RESPONSE.setHeader('Content-Type',decoration['content_type'])
+            REQUEST.RESPONSE.setHeader('Content-Disposition', 'inline;filename="%s.json"'%(self.ids+['get'])[-1])
             return json.dumps(data)
         return None
 
@@ -265,3 +270,38 @@ class RestApiController(object):
         request = _get_request(context)
         nodes = context.getTreeNodes(request)
         return [get_attrs(x) for x in nodes]
+
+    @api(tag="version", pattern="/{path}/get_tags", method="GET", content_type="application/json")
+    def get_tags(self, context):
+        request = _get_request(context)
+        tags = []
+        version_container = context.getVersionContainer()
+        version_items = version_container.getVersionItems(request)
+        for version_item in [version_container] + version_items:
+            for obj_version in version_item.getObjVersions():
+                request.set('ZMS_VERSION_%s'%version_item.id,obj_version.id)
+                tags.append((obj_version.attr('master_version'), obj_version.attr('major_version'), obj_version.attr('minor_version')))
+        tags = reversed(sorted(list(set(tags))))
+        return ['r%i.%i.%i'%(x[0],x[1],x[2]) for x in tags]
+    
+    @api(tag="version", pattern="/{path}/get_tag", method="GET", content_type="application/yaml")
+    def get_tag(self, context):
+        request = _get_request(context)
+        tag = [int(x) for x in request.get('tag','r0.0.0')[1:].split('.')]
+        data = []
+        version_container = context.getVersionContainer()
+        version_items = version_container.getVersionItems(request)
+        for version_item in [version_container] + version_items:
+            d = {}
+            for obj_version in version_item.getObjVersions():
+                request.set('ZMS_VERSION_%s'%version_item.id,obj_version.id)
+                d[(obj_version.attr('master_version'), obj_version.attr('major_version'), obj_version.attr('minor_version'))] = obj_version.id
+            tags = list(reversed(sorted(list(d.keys())))) 
+            if version_item != version_container:
+                tags = [x for x in tags if list(x) <= tag]
+            if tags:
+                request.set('ZMS_VERSION_%s'%version_item.id,d[tags[0]])
+                attrs = get_attrs(version_item)
+                attrs['version_nr'] = 'r%s.%s.%s'%(tags[0][0],tags[0][1],tags[0][2])
+                data.append(attrs)
+        return data

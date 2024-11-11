@@ -10,6 +10,20 @@
 		level python:here.getLevel();
 		obj_versions python:here.getObjVersions();">
 
+<tal:block tal:condition="python:here.isVersionContainer()">
+	<tal:block tal:define="version_items python:[here]+here.getVersionItems(request)">
+		<tal:block tal:repeat="version_item version_items">
+			<div>
+			<tal:block tal:content="python:version_item.absolute_url()+' '+version_item.meta_id"></tal:block>
+			<tal:block tal:repeat="obj_version python:version_item.getObjVersions()">
+				<tal:block tal:define="dummy0 python:request.set('ZMS_VERSION_%s'%version_item.id,obj_version.id)"></tal:block>
+				<tal:block tal:content="python:obj_version.getVersionNr()"></tal:block>
+			</tal:block>
+			</div>
+		</tal:block>
+	</tal:block>
+</tal:block>
+
 	<legend tal:content="python:here.getZMILangStr('TAB_HISTORY')"
 		tal:attributes="title python:here.getZMILangStr('MSG_UNDOVERSION')"
 		>History
@@ -121,7 +135,9 @@
 									</div><!-- .center -->
 									<div class="right">
 										<span class="zmi-ids">
-											<input type="checkbox" name="ids:list" tal:attributes="value python:obj_version.id; checked python:['','checked'][selected]"/> <strong tal:content="python:obj_version.getVersionNr()">version_nr</strong>
+											<input type="checkbox" name="ids:list" tal:attributes="value python:obj_version.id; checked python:['','checked'][selected]"/> 
+											<strong tal:content="python:obj_version.getVersionNr()">version_nr</strong>
+											change_history=<tal:block tal:content="python:standard.operator_getattr(obj_version,'change_history','?')"></tal:block>
 										</span>
 										<div class="zmi-manage-main-change">
 											<tal:block tal:content="structure python:here.getLangFmtDate(obj_version.attr('change_dt'),fmt_str='BOBOBASE_MODIFICATION_FMT')">version_dt</tal:block>

@@ -194,13 +194,18 @@ class RestApiController(object):
                 decoration, data = self.get_tags(self.context, content_type=True)
             elif self.ids == ['get_tag']:
                 decoration, data = self.get_tag(self.context, content_type=True)
+            elif self.ids == ['body_content']:
+                decoration, data = self.body_content(self.context, content_type=True)
             elif self.ids == [] or self.ids == ['get']:
                 decoration, data = self.get(self.context, content_type=True)
             else:
                 data = {'ERROR':'Not Found','context':str(self.context),'path_to_handle':self.path_to_handle,'ids':self.ids}
-            REQUEST.RESPONSE.setHeader('Content-Type',decoration['content_type'])
-            REQUEST.RESPONSE.setHeader('Content-Disposition', 'inline;filename="%s.json"'%(self.ids+['get'])[-1])
-            return json.dumps(data)
+            ct = decoration['content_type']
+            REQUEST.RESPONSE.setHeader('Content-Type',ct)
+            REQUEST.RESPONSE.setHeader('Content-Disposition', 'inline;filename="%s.json"'%(self.ids+['get'])[-1],ct.split('/')[-1])
+            if ct == 'application/json':
+                return json.dumps(data)
+            return data
         return None
 
     @api(tag="zmsindex", pattern="/zmsindex", content_type="application/json")
@@ -284,7 +289,7 @@ class RestApiController(object):
         tags = reversed(sorted(list(set(tags))))
         return ['r%i.%i.%i'%(x[0],x[1],x[2]) for x in tags]
     
-    @api(tag="version", pattern="/{path}/get_tag", method="GET", content_type="application/yaml")
+    @api(tag="version", pattern="/{path}/get_tag", method="GET", content_type="application/json")
     def get_tag(self, context):
         request = _get_request(context)
         tag = [int(x) for x in request.get('tag','r0.0.0')[1:].split('.')]
@@ -305,3 +310,24 @@ class RestApiController(object):
                 attrs['version_nr'] = 'r%s.%s.%s'%(tags[0][0],tags[0][1],tags[0][2])
                 data.append(attrs)
         return data
+    
+    @api(tag="version", pattern="/{path}/body_content", method="GET", content_type="text/html")
+    def body_content(self, context):
+        request = _get_request(context)
+        tag = [int(x) for x in request.get('tag','r0.0.0')[1:].split('.')]
+        version_container = context.getVersionContainer()
+        version_items = version_container.getVersionItems(request)
+        for version_item in [version_container] + version_items:
+            d = {}
+            for obj_version in version_item.getObjVersions():
+                request.set('ZMS_VERSION_%s'%version_item.id,obj_version.id)
+                d[(obj_version.attr('master_version'), obj_version.attr('major_version'), obj_version.attr('minor_version'))] = obj_version.id
+            tags = list(reversed(sorted(list(d.keys())))) 
+            if version_item != version_container:
+                tags = [x for x in tags if list(x) <= tag]
+            if tags:
+                request.set('ZMS_VERSION_%s'%version_item.id,d[tags[0]])
+        html = []
+        html.append('<div class="%s"><h1>%s<small>%s</small></h1></div>'%(version_container.meta_id,version_container.getTitle(request),version_container.getDCDescription(request)))
+        html.append(version_container.getBodyContent(request))
+        return '\n'.join(html)

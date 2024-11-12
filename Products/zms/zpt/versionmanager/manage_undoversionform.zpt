@@ -1,10 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" tal:define="
-	dummy0 python:request.set('ZMI_LIBS_JS',request.get('ZMI_LIBS_JS',[])+
-		['/++resource++zms_/jquery/diff/diff_match_patch.js'
-		,'/++resource++zms_/jquery/diff/jquery.pretty-text-diff.min.js'
-		]);
-	standard modules/Products.zms/standard">
+<html lang="en" tal:define="standard modules/Products.zms/standard">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
 <body tal:attributes="class python:here.zmi_body_class(id='undo')">
 <header tal:replace="structure python:here.zmi_body_header(here,request)">zmi_body_header</header>
@@ -15,28 +10,34 @@
 		level python:here.getLevel();
 		obj_versions python:here.getObjVersions();">
 
-<div class="row diff">
-	<tal:block tal:repeat="i python:['original','changed']">
+<div class="container diff-container">
+<div class="row">
 		<div class="col-sm-6">
-			<select class="form-control version-nr">
-			</select>
-			<pre tal:attributes="class python:'preview %s'%i"></pre>
+			<select class="form-control version-nr"></select>
+			<div class="preview original center"></div>
+			<pre class="json original d-none"></pre>
 		</div>
-	</tal:block>
+		<div class="col-sm-6">
+			<select class="form-control version-nr"></select>
+			<div class="preview changed d-none"></div>
+			<div class="preview diff center"></div>
+			<pre class="json changed d-none"></pre>
+		</div>
 	<div class="col-sm-12">
-		<pre class="diff"></pre>
+		<pre class="json diff"></pre>
 	</div>
 </div>
+</div><!-- .container -->
 
 <script>
 
-function diff(container) 
+function diff(container, qualifier) 
 {
-	var diffContainer = ".diff";
+	var diffContainer = qualifier+".diff";
 	$(container).prettyTextDiff({
 		cleanup:true,
-		originalContainer:".original",
-		changedContainer:".changed",
+		originalContainer:qualifier+".original",
+		changedContainer:qualifier+".changed",
 		diffContainer:diffContainer
 	});
 	var $diffContainer = $(diffContainer,container);
@@ -74,162 +75,24 @@ function diff(container)
 		$.get($ZMI.get_rest_api_url(href)+"/get_tags",function(tags) {
 			$(tags).each(x => $("select.version-nr").append("<option value=\""+tags[x]+"\">"+tags[x]+"</option>"));
 			$("select.version-nr").change(function() {
-				var $preview = $(this).next(".preview");
+				var tag = $(this).val();
+				var $preview = $(".preview",$(this).parent());
+				var $json = $(".json",$(this).parent());
 				$preview.text($(this).val());
-				$.get($ZMI.get_rest_api_url(href)+"/get_tag",{tag:$(this).val()},function(tag) {
-					var obj = JSON.parse(tag);
-					var str = JSON.stringify(obj, null, 4);
-					$preview.text(str);
-					diff($(".row.diff"));
+				$.get($ZMI.get_rest_api_url(href)+"/body_content",{tag:tag},function(html) {
+					$preview.html(html);
+					$.get($ZMI.get_rest_api_url(href)+"/get_tag",{tag:tag},function(json) {
+						var str = JSON.stringify(json, null, 4);
+						$json.text(str);
+						//diff($(".diff-container"),".preview");
+						diff($(".diff-container"),".json");
+					});
 				});
 			}).change();
 		});
 	});
 </script>
 
-	<legend tal:content="python:here.getZMILangStr('TAB_HISTORY')"
-		tal:attributes="title python:here.getZMILangStr('MSG_UNDOVERSION')"
-		>History
-	</legend>
-
-<tal:block tal:condition="python:request.get('btn')=='BTN_COMPARE'" 
-	tal:define="ids python:request.get('ids',[]); ids python:[x.id for x in here.getObjVersions() if x.id in ids];">
-	<tal:block tal:condition="python:len(ids)>1">
-	<div class="card">
-		<div class="card-header btn-collapse">
-			<a class="btn card-toggle" data-toggle="collapse" href="#compare">
-				<i class="fas fa-cplumns"></i>
-				<tal:block tal:content="python:here.getZMILangStr('BTN_COMPARE')">the heading</tal:block>
-			</a>
-		</div><!-- .card-header -->
-		<div class="collapse show" id="compare">
-			<div class="card-body">
-				<table class="table-bordered table-striped diff">
-				<tr>
-					<th>&nbsp;</th>
-					<tal:block tal:repeat="id python:ids[:-1]">
-						<tal:block tal:define="dummy0 python:request.set('ZMS_VERSION_%s'%here.id,id); obj_version python:here.getObjVersion(request); childNode python:obj_version.aq_parent">
-							<th>
-								<tal:block tal:content="python:'v.%i.%i.%i'%(childNode.attr('master_version'),childNode.attr('major_version'),childNode.attr('minor_version'))">v.0.0.0</tal:block>
-							</th>
-						</tal:block>
-					</tal:block>
-				</tr>
-				<tal:block tal:repeat="metaObjAttr python:[xx for xx in [here.getMetaobjAttr(here.meta_id,x) for x in here.getMetaobjAttrIds(here.meta_id)] if xx['type'] in here.metaobj_manager.valid_types]">
-					<tal:block tal:define="values python:[]">
-						<tal:block tal:repeat="id ids">
-							<tal:block tal:define="dummy0 python:request.set('ZMS_VERSION_%s'%here.id,id);
-									obj_version python:here.getObjVersion(request);
-									childNode python:obj_version.aq_parent;
-									value python:childNode.attr(metaObjAttr['id']);">
-								<tal:block tal:condition="python:metaObjAttr['type'] in ['date','datetime']">
-									<tal:block tal:define="dummy0 python:values.append(here.getLangFmtDate(value,request['lang']));"></tal:block>
-								</tal:block>
-								<tal:block tal:condition="python:metaObjAttr['type'] in ['list','multiautocomplete','multiselect']">
-									<tal:block tal:define="dummy0 python:values.append(', '.join(value));"></tal:block>
-								</tal:block>
-								<tal:block tal:condition="not:python:metaObjAttr['type'] in ['date','datetime','list','multiautocomplete','multiselect']">
-									<tal:block tal:define="dummy0 python:values.append(value);"></tal:block>
-								</tal:block>
-							</tal:block>
-						</tal:block>
-						<tr class="diff" tal:condition="python:len([x for x in values[1:] if x==values[0]])!=len(values)-1">
-							<th tal:attributes="title metaObjAttr/id" tal:content="python:here.getObjAttrLabel(metaObjAttr)">the key</th>
-							<tal:block tal:define="
-									dummy0 python:values.append(values[-1])"></tal:block>
-							<tal:block tal:repeat="i python:range(len(values)-2)">
-								<td tal:attributes="id python:'data-%s-%i'%(metaObjAttr['id'],i)">
-									<tal:block tal:condition="python:values[i]==values[i+1]">
-										<div class="text-muted"><tal:block tal:content="structure python:values[i+1]">the original-value</tal:block></div>
-									</tal:block>
-									<tal:block tal:condition="not:python:values[i]==values[i+1]">
-										<div class="original"><tal:block tal:content="structure python:values[i+1]">the original-value</tal:block></div>
-										<div class="changed"><tal:block tal:content="structure python:values[i]">the changed-value</tal:block></div>
-										<div class="diff"></div>
-									</tal:block>
-								</td>
-							</tal:block>
-						</tr>
-					</tal:block>
-				</tal:block>
-				</table>
-			</div><!-- .card-body -->
-		</div><!-- .collapse -->
-	</div><!-- .card -->
-	</tal:block>
-
-	<script>
-	$(function() {
-		$("tr.diff").each(function() {
-				var $tr = $(this);
-				$("td",$tr).each(function() {
-						$("#"+$(this).attr("id")).prettyTextDiff({
-								cleanupt:true,
-								originalContainer:".original",
-								changedContainer:".changed",
-								diffContainer:".diff"
-							});
-					});
-			});
-		});
-	</script>
-
-	<hr/>
-</tal:block>
-
-	<tal:block tal:define="global
-			size python:len(obj_versions);
-			pageSize python:request.get('qsize',10);
-			pageIndex python:request.get('pageIndex',0);
-			pageStart python:pageIndex*pageSize;
-			pageEnd python:min(pageStart+pageSize,size)">
-
-		<tal:block tal:content="structure python:here.zmi_pagination(size=size,pageSize=pageSize,pageIndex=pageIndex)">zmi_pagination</tal:block>
-
-		<div class="collapse show">
-			<div class="card-body">
-				<ul class="zmi-container">
-					<tal:block tal:repeat="obj_version python:obj_versions[pageStart:pageEnd]">
-							<tal:block tal:define="global childNode python:obj_version.aq_parent; dummy0 python:request.set('ZMS_VERSION_%s'%childNode.id,obj_version.id); selected python:obj_version.id in request.get('ids',[])">
-								<li tal:attributes="id python:'zmi_item_%s'%childNode.id; class python:' '.join([['even','odd'][repeat['obj_version'].odd()],'zmi-item','zmi-selectable']+[[],['zmi-selected']][selected]+[['pageelement'],[]][int(childNode.isPage())])">
-									<div tal:attributes="class python:'center%s'%([' inactive',''][childNode.isActive(request)])"
-										tal:content="structure python:childNode.renderShort(request)">
-										the rendered child-node
-									</div><!-- .center -->
-									<div class="right">
-										<span class="zmi-ids">
-											<input type="checkbox" name="ids:list" tal:attributes="value python:obj_version.id; checked python:['','checked'][selected]"/> 
-											<strong tal:content="python:obj_version.getVersionNr()">version_nr</strong>
-											change_history=<tal:block tal:content="python:standard.operator_getattr(obj_version,'change_history','?')"></tal:block>
-										</span>
-										<div class="zmi-manage-main-change">
-											<tal:block tal:content="structure python:here.getLangFmtDate(obj_version.attr('change_dt'),fmt_str='BOBOBASE_MODIFICATION_FMT')">version_dt</tal:block>
-										</div><!-- .zmi-manage-main-change -->
-									</div><!-- .right -->
-									<div class="clearboth"></div>
-								</li>
-							</tal:block>
-					</tal:block>
-				</ul><!-- .zmi-container -->
-			</div><!-- .card-body -->
-		</div><!-- .collapse -->
-		<hr />
-		<div class="form-group row">
-			<div class="controls save">
-				<button type="submit" name="btn" class="btn btn-primary" value="BTN_COMPARE">
-					<i class="fas fa-random"></i>
-					<tal:block tal:content="python:here.getZMILangStr('BTN_COMPARE')">Compare</tal:block>
-				</button>
-				<button type="submit" name="btn" class="btn btn-secondary" value="BTN_RESET">
-					<i class="fas fa-undo"></i>
-					<tal:block tal:content="python:here.getZMILangStr('BTN_RESET')">Reset</tal:block>
-				</button>
-			</div>
-		</div>
-
-		<tal:block tal:content="structure python:here.zmi_pagination(size=size,pageSize=pageSize,pageIndex=pageIndex)">zmi_pagination</tal:block>
-
-	</tal:block>
 
 </form><!-- .form-horizontal -->
 <!-- #zmi-tab -->

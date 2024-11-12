@@ -1,5 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" tal:define="standard modules/Products.zms/standard">
+<html lang="en" tal:define="
+	dummy0 python:request.set('ZMI_LIBS_JS',request.get('ZMI_LIBS_JS',[])+
+		['/++resource++zms_/jquery/diff/diff_match_patch.js'
+		,'/++resource++zms_/jquery/diff/jquery.pretty-text-diff.min.js'
+		]);
+	standard modules/Products.zms/standard">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
 <body tal:attributes="class python:here.zmi_body_class(id='undo')">
 <header tal:replace="structure python:here.zmi_body_header(here,request)">zmi_body_header</header>
@@ -10,17 +15,60 @@
 		level python:here.getLevel();
 		obj_versions python:here.getObjVersions();">
 
-<div class="row">
-<tal:block tal:repeat="i python:['left','right']">
-<div class="col-sm-6">
-	<select class="form-control version-nr">
-	</select>
-	<div class="preview"></div>
-</div>
-</tal:block>
+<div class="row diff">
+	<tal:block tal:repeat="i python:['original','changed']">
+		<div class="col-sm-6">
+			<select class="form-control version-nr">
+			</select>
+			<div tal:attributes="class python:'preview %s'%i"></div>
+		</div>
+	</tal:block>
+	<div class="col-sm-12">
+		<pre class="diff"></pre>
+	</div>
 </div>
 
 <script>
+
+function diff(container) 
+{
+	var diffContainer = ".diff";
+	$(container).prettyTextDiff({
+		cleanup:true,
+		originalContainer:".original",
+		changedContainer:".changed",
+		diffContainer:diffContainer
+	});
+	var $diffContainer = $(diffContainer,container);
+	var lines = $diffContainer.html().replace(/<span>/gi,'').replace(/<\/span>/gi,'').split("<br>");
+	var show = [];
+	var changed = false;
+	for (var i = 0; i < lines.length; i++) {
+		var line = lines[i];
+		changed |= line.indexOf("<"+"del>")>=0 || line.indexOf("<ins>")>=0;
+		if (changed) {
+			show.push(i);
+		}
+		changed &= !(line.indexOf("<"+"/del>")>=0 || line.indexOf("</ins>")>=0);
+	}
+	var html = [];
+	changed = false;
+	for (var i = 0; i < lines.length; i++) {
+		var line = lines[i];
+		changed |= line.indexOf("<"+"del>")>=0 || line.indexOf("<"+"ins>")>=0;
+		line = '<'+'span class="line-number'+(changed?' line-changed':'')+'">'+(i+1)+'</span> '+lines[i];
+		if (!(show.contains(i-1) || show.contains(i) || show.contains(i+1))) {
+			line = '<'+'span class="diff-unchanged d-none">'+line+'<'+'/span>';
+		}
+		else {
+			line = line+'<'+'br/>';
+		}
+		html.push(line);
+		changed &= !(line.indexOf("<"+"/del>")>=0 || line.indexOf("<"+"/ins>")>=0);
+	}
+	$diffContainer.html(html.join(""));
+}
+
 	$(function() {
 		var href = $ZMI.getPhysicalPath();
 		$.get($ZMI.get_rest_api_url(href)+"/get_tags",function(tags) {
@@ -30,6 +78,7 @@
 				$preview.text($(this).val());
 				$.get($ZMI.get_rest_api_url(href)+"/get_tag",{tag:$(this).val()},function(tag) {
 					$preview.text(tag);
+					diff($(".row.diff"));
 				});
 			}).change();
 		});

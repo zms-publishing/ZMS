@@ -10,19 +10,31 @@
 		level python:here.getLevel();
 		obj_versions python:here.getObjVersions();">
 
-<tal:block tal:condition="python:here.isVersionContainer()">
-	<tal:block tal:define="version_items python:[here]+here.getVersionItems(request)">
-		<tal:block tal:repeat="version_item version_items">
-			<div>
-			<tal:block tal:content="python:version_item.absolute_url()+' '+version_item.meta_id"></tal:block>
-			<tal:block tal:repeat="obj_version python:version_item.getObjVersions()">
-				<tal:block tal:define="dummy0 python:request.set('ZMS_VERSION_%s'%version_item.id,obj_version.id)"></tal:block>
-				<tal:block tal:content="python:obj_version.getVersionNr()"></tal:block>
-			</tal:block>
-			</div>
-		</tal:block>
-	</tal:block>
+<div class="row">
+<tal:block tal:repeat="i python:['left','right']">
+<div class="col-sm-6">
+	<select class="form-control version-nr">
+	</select>
+	<div class="preview"></div>
+</div>
 </tal:block>
+</div>
+
+<script>
+	$(function() {
+		var href = $ZMI.getPhysicalPath();
+		$.get($ZMI.get_rest_api_url(href)+"/get_tags",function(tags) {
+			$(tags).each(x => $("select.version-nr").append("<option value=\""+tags[x]+"\">"+tags[x]+"</option>"));
+			$("select.version-nr").change(function() {
+				var $preview = $(this).next(".preview");
+				$preview.text($(this).val());
+				$.get($ZMI.get_rest_api_url(href)+"/get_tag",{tag:$(this).val()},function(tag) {
+					$preview.text(tag);
+				});
+			}).change();
+		});
+	});
+</script>
 
 	<legend tal:content="python:here.getZMILangStr('TAB_HISTORY')"
 		tal:attributes="title python:here.getZMILangStr('MSG_UNDOVERSION')"

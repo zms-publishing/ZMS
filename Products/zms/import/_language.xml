@@ -6406,19 +6406,19 @@
    </Row>
    <Row>
     <Cell><Data ss:Type="String">TAB_WORKFLOW_ASSIGNMENT</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow-Aktivierung</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Zuweisung</Data></Cell>
+    <Cell><Data ss:Type="String">Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Assignment</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">TAB_WORKFLOW_MODEL</Data></Cell>

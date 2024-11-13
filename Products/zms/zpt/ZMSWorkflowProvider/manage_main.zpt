@@ -248,7 +248,8 @@
 		<form id="workflow_assignment_form" name="workflow_assignment_form" 
 			class="form-horizontal" action="manage_changeWorkflow" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="lang" tal:attributes="value request/lang" />
-			<input type="hidden" name="key" value="workflow_properties" />
+			<input type="hidden" name="key" value="workflow_assignment" />
+			<input type="hidden" name="workflow:int" value="0" tal:attributes="value python:[0,1][int(not here.getAutocommit())]" />
 
 			<div class="controls form-row form-inline px-3">
 				<div class="form-group">

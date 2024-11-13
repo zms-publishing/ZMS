@@ -342,7 +342,16 @@ class ZMSWorkflowProvider(
             except:
               message += '[%s: %s]'%(node,'No history to pack')
         message = self.getZMILangStr('MSG_CHANGED')+message
-      
+
+      # Content Assignment.
+      # -----------
+      elif key == 'workflow_assignment':
+        # Save.
+        # ------
+        if btn == 'BTN_SAVE':
+          self.nodes = standard.string_list(REQUEST.get('nodes', ''))
+          message = self.getZMILangStr('MSG_CHANGED')
+
       # Properties.
       # -----------
       elif key == 'workflow_properties':
@@ -354,7 +363,6 @@ class ZMSWorkflowProvider(
           new_autocommit = REQUEST.get('workflow', 0) == 0
           self.revision = REQUEST.get('revision', '0.0.0')
           self.autocommit = new_autocommit
-          self.nodes = standard.string_list(REQUEST.get('nodes', ''))
           if old_autocommit == 0 and new_autocommit == 1:
             self.doAutocommit(lang, REQUEST)
           message = self.getZMILangStr('MSG_CHANGED')

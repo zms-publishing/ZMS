@@ -248,7 +248,7 @@
 		<form id="workflow_assignment_form" name="workflow_assignment_form" 
 			class="form-horizontal" action="manage_changeWorkflow" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="lang" tal:attributes="value request/lang" />
-			<input type="hidden" name="key" value="properties" />
+			<input type="hidden" name="key" value="workflow_properties" />
 
 			<div class="controls form-row form-inline px-3">
 				<div class="form-group">

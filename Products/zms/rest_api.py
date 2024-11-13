@@ -202,7 +202,7 @@ class RestApiController(object):
                 data = {'ERROR':'Not Found','context':str(self.context),'path_to_handle':self.path_to_handle,'ids':self.ids}
             ct = decoration['content_type']
             REQUEST.RESPONSE.setHeader('Content-Type',ct)
-            REQUEST.RESPONSE.setHeader('Content-Disposition', 'inline;filename="%s.json"'%(self.ids+['get'])[-1],ct.split('/')[-1])
+            REQUEST.RESPONSE.setHeader('Content-Disposition', 'inline;filename="%s.%s"'%((self.ids+['get'])[-1],ct.split('/')[-1]))
             if ct == 'application/json':
                 return json.dumps(data)
             return data

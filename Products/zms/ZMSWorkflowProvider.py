@@ -316,13 +316,13 @@ class ZMSWorkflowProvider(
     
     Change workflow.
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    def manage_changeWorkflow(self, lang, btn='', key='properties', REQUEST=None, RESPONSE=None):
+    def manage_changeWorkflow(self, lang, btn='', key='workflow_properties', REQUEST=None, RESPONSE=None):
       """ ZMSWorkflowProvider.manage_changeWorkflow """
       message = ''
 
       # Version Control.
       # -----------
-      if key == 'history':
+      if key == 'workflow_versioning':
         old_active = self.getConfProperty('ZMS.Version.active',0)
         new_active = REQUEST.get('active',0)
         old_nodes = self.getConfProperty('ZMS.Version.nodes',['{$}'])
@@ -345,7 +345,7 @@ class ZMSWorkflowProvider(
       
       # Properties.
       # -----------
-      elif key == 'properties':
+      elif key == 'workflow_properties':
         # Save.
         # ------
         if btn == 'BTN_SAVE':
@@ -387,6 +387,6 @@ class ZMSWorkflowProvider(
       
       # Return with message.
       message = standard.url_quote(message)
-      return RESPONSE.redirect('manage_main?lang=%s&key=%s&manage_tabs_message=%s#_properties'%(lang, key, message))
+      return RESPONSE.redirect('manage_main?lang=%s&key=%s&manage_tabs_message=%s'%(lang, key, message))
 
 ################################################################################

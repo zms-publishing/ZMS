@@ -8,7 +8,7 @@
 <html lang="en" tal:define="zmscontext python:here.getSelf(); standard modules/Products.zms/standard">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
 
-<body tal:attributes="class python:here.zmi_body_class(id='workflow_manager_main config')">
+<body tal:attributes="class python:here.zmi_body_class(id='workflow_manager_main config')" hx-disable="hx-disable">
 
 <header tal:replace="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</header>
 
@@ -49,14 +49,12 @@
 	<div id="workflow_model" class="tab-pane fade card show active" role="tabpanel" 
 		tal:attributes="class python:request.get('key','workflow_model')=='workflow_model' and 'tab-pane fade card show active' or 'tab-pane card fade'">
 
-		<form id="workflow_activities_form" name="workflow_activities_form" 
-			class="form-horizontal activities border-bottom-0" action="manage_changeActivities" method="post" enctype="multipart/form-data" 
-			tal:define="activityIds python:here.getActivityIds()">
-			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
-			<input type="hidden" name="key" value="workflow_model" />
+		<form id="workflow_properties" name="workflow_properties" 
+			class="form-horizontal" action="manage_changeWorkflow" method="post" enctype="multipart/form-data">
+			<input type="hidden" name="lang" tal:attributes="value request/lang" />
+			<input type="hidden" name="key" value="workflow_properties" />
 
 			<div class="controls form-row form-inline px-3 justify-content-between">
-
 				<div class="form-group"> 
 					<span class="btn btn-secondary">
 						<span class="input-group" title="Activate or deactivate workflow - and click Save-button">
@@ -68,25 +66,20 @@
 							</label>
 						</span>
 					</span>
-
 					<input class="form-control mx-2 text-monospace" name="revision" 
 						placeholder="0.0.0" type="text" size="8"
 						title="Please, enter the version number of this workflow configuration in Semantic Versioning Syntax MAJOR.MINOR.PATCH"
 						tal:attributes="value python:here.getRevision()" />
-
 					<button type="submit" name="btn" class="btn btn-primary" value="BTN_SAVE" 
 						tal:content="python:here.getZMILangStr('BTN_SAVE')">
 						Save
 					</button>
-
 					<a class="btn btn-secondary mx-2" 
 						tal:attributes="
 							href python:'javascript:if(confirm(getZMILangStr(\'MSG_CONFIRM_DELOBJ\'))){self.location.href=\'manage_changeWorkflow?lang=%s&btn=%s\'}'%(request['lang'],'BTN_CLEAR'); 
 							title python:here.getZMILangStr('BTN_CLEAR')+'...'" 
 						tal:content="python:here.getZMILangStr('BTN_CLEAR')">BTN_CLEAR</a>
-
 				</div>
-
 				<div class="form-group"> 
 					<div class="btn-group">
 						<span class="btn btn-secondary" 
@@ -103,8 +96,15 @@
 					</div>
 				</div>
 			</div>
+		</form>
 
-			<hr />
+		<hr />
+
+		<form id="workflow_activities_form" name="workflow_activities_form" 
+			class="form-horizontal activities border-bottom-0" action="manage_changeActivities" method="post" enctype="multipart/form-data" 
+			tal:define="activityIds python:here.getActivityIds()">
+			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
+			<input type="hidden" name="key" value="workflow_model" />
 
 			<table class="table zmi-sortable">
 				<thead>
@@ -248,7 +248,7 @@
 		<form id="workflow_assignment_form" name="workflow_assignment_form" 
 			class="form-horizontal" action="manage_changeWorkflow" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="lang" tal:attributes="value request/lang" />
-			<input type="hidden" name="key" value="assignment" />
+			<input type="hidden" name="key" value="properties" />
 
 			<div class="controls form-row form-inline px-3">
 				<div class="form-group">

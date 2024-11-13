@@ -49,6 +49,7 @@ def get_default_data(node):
   d['lang'] = request.get('lang',node.getPrimaryLanguage())
   d['created_dt'] = get_zoned_dt(node.attr('created_dt'))
   d['change_dt'] = get_zoned_dt(node.attr('change_dt')) or d['created_dt']
+  d['indexing_dt'] = get_zoned_dt(time.gmtime())
   return d
 
 def get_zoned_dt(struct_dt):

@@ -8,6 +8,19 @@ Before letting Opensearch create an index, Opensearch needs to know how to index
 2. the attributes of these types
 
 the _ZMS Catalog Adapter GUI_ helps creating that schema: any content types (usually _pages_) and attributes can be selected to get indexed. Usually the _standard_html_-attribute provides the full text whereas other attributes can be added specifically like _title_, _titlealt_, _description_. Their content may be applied when search results are listed.
+A set of technical attributes (url, dates etc.) will be added to the selected (custom) content attributes and complete the schema:
+
+1. 'id' : {'type':'text'}
+2. 'zmsid' : {'type':'text'}
+3. 'uid' : {'type':'text'}
+4. 'loc' : {'type':'text'}
+5. 'index_html' : {'type':'text'}
+6. 'meta_id' : {'type':'keyword'}
+7. 'lang' : {'type':'keyword'}
+8. 'home_id' : {'type':'keyword'}
+9. 'created_dt' : {'type':'date'}
+10. 'change_dt' : {'type':'date'}
+11. 'indexing_dt' : {'type':'date'}
 
 ZMS will send to the index only the content of the by _ZMS Catalog Adapter_ selected contenttypes and its selected attributes. So before starting, please make sure that the selections in the _ZMS Catalog Adapter GUI_ is correct and take a careful look at the _Custom Filter-Function_ for selecting the documents to be indexed. Especially `breadcrumbs_obj_path()`-expressions may result in unexpected exclusions. Example:
 

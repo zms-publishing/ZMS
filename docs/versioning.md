@@ -136,14 +136,18 @@ The version numbering follows the scheme
 major.minor.patch
 ```
 
-* **major**: Significant changes, possibly incompatible with previous versions.
+* **major**: Significant changes, possibly incompatible with previous versions (aka. _master_ version).
 * **minor**: Minor feature additions, backward-compatible.
 * **patch**: Bug fixes and minor changes, backward-compatible.
 
-## Versioning without workflow
-
-In scenarios where the workflow is not activated, versioning still ensures that changes are tracked and can be reverted if necessary. Each save action creates a new version of the content, and the system maintains a history of these versions. Users can manually switch between versions or restore previous versions as needed.
-
 ## Versioning with activated workflow
 
-When the workflow is activated, versioning integrates seamlessly with the workflow states and transitions. Each state change or transition can trigger the creation of a new version, ensuring that every step in the workflow is documented and traceable. This integration provides a robust mechanism for content management, combining the benefits of both versioning and workflow to maintain high content quality and accountability.
+When the workflow is activated, versioning integrates seamlessly with the workflow states and transitions. Each state change or transition can trigger the creation of a new _patch_ version, ensuring that every step in the workflow is documented and traceable. Any committing of a document creates a new _minor_ version and all atomic _patch_ versions during the workflow cycle are ommited.
+This integration provides a robust mechanism for content management, combining the benefits of both versioning and workflow to maintain high content quality and accountability.
+
+## Versioning without workflow
+
+In scenarios where the workflow is not activated, versioning still ensures that changes are tracked and can be reverted if necessary. Each save action creates a new _minor_ version of the content. Users can manually switch between versions or restore previous versions as needed.
+
+In both cases a _major_ version is not created implicitly (like _patch_ and _minor_), but it has to be done explicity by a user action ("Create Major Version"). Creating a _major_ versions omits all _minor_ and _patch_ versions, and thus helps to reduce the amount of data.
+

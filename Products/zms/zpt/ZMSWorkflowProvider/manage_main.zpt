@@ -19,8 +19,8 @@
 <nav id="subTab">
 	<ul class="nav nav-tabs" role="tablist" tal:attributes="title python:here.getRevision()">
 		<li class="nav-item">
-			<a class="nav-link" href="#workflow_model" data-toggle="tab" 
-				tal:attributes="class python:request.get('key','workflow_model')=='workflow_model' and 'nav-link active show' or 'nav-link'"
+			<a class="nav-link" href="#workflow_properties" data-toggle="tab" 
+				tal:attributes="class python:request.get('key','workflow_properties')=='workflow_properties' and 'nav-link active show' or 'nav-link'"
 				tal:content="python:here.getZMILangStr('TAB_WORKFLOW_MODEL')">
 				Workflow-Model
 			</a>
@@ -46,10 +46,10 @@
 <div class="tab-content">
 
 	<!--! [TAB-1] -->
-	<div id="workflow_model" class="tab-pane fade card show active" role="tabpanel" 
-		tal:attributes="class python:request.get('key','workflow_model')=='workflow_model' and 'tab-pane fade card show active' or 'tab-pane card fade'">
+	<div id="workflow_properties" class="tab-pane fade card show active" role="tabpanel" 
+		tal:attributes="class python:request.get('key','workflow_properties')=='workflow_properties' and 'tab-pane fade card show active' or 'tab-pane card fade'">
 
-		<form id="workflow_properties" name="workflow_properties" 
+		<form id="workflow_properties_form" name="workflow_properties_form" 
 			class="form-horizontal" action="manage_changeWorkflow" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="lang" tal:attributes="value request/lang" />
 			<input type="hidden" name="key" value="workflow_properties" />

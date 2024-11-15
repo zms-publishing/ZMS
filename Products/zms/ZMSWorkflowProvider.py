@@ -395,6 +395,6 @@ class ZMSWorkflowProvider(
       
       # Return with message.
       message = standard.url_quote(message)
-      return RESPONSE.redirect('manage_main?lang=%s&key=%s&manage_tabs_message=%s'%(lang, key, message))
+      return RESPONSE.redirect('manage_main?lang=%s&key=%s&manage_tabs_message=%s#%s'%(lang, key, message, key))
 
 ################################################################################

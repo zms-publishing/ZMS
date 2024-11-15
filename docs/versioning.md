@@ -129,8 +129,7 @@ Folder e1 {1.0.0: {e1: AAA, e2: AAA, e3: AAA},
 
 ## Numbering
 
-The version numbering follows the scheme 
-:
+The version numbering follows the scheme:
 
 ```
 major.minor.patch
@@ -149,5 +148,5 @@ This integration provides a robust mechanism for content management, combining t
 
 In scenarios where the workflow is not activated, versioning still ensures that changes are tracked and can be reverted if necessary. Each save action creates a new _minor_ version of the content. Users can manually switch between versions or restore previous versions as needed.
 
-In both cases a _major_ version is not created implicitly (like _patch_ and _minor_), but it has to be done explicity by a user action ("Create Major Version"). Creating a _major_ versions omits all _minor_ and _patch_ versions, and thus helps to reduce the amount of data.
+In both cases ZMS does not implicitly create a  _major_ version  (like _patch_ and _minor_), but it has to be done explicity by a user interaction ("Create Major Version"). Important note: Creating a _major_ versions omits all _minor_ and _patch_ versions, and thus helps to reduce the amount of data.
 

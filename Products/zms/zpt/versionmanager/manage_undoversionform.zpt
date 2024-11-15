@@ -6,27 +6,28 @@
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
-<form class="form-horizontal card" tal:define="
+<form class="form-horizontal card pt-4" 
+	tal:define="
 		level python:here.getLevel();
 		obj_versions python:here.getObjVersions();">
 
 <div class="container diff-container">
-<div class="row">
-		<div class="col-sm-6">
-			<select class="form-control version-nr"></select>
-			<div class="preview original center"></div>
-			<pre class="json original d-none"></pre>
+	<div class="row">
+			<div class="col-sm-6">
+				<select class="form-control version-nr mb-3"></select>
+				<div class="preview original center"></div>
+				<pre class="json original d-none"></pre>
+			</div>
+			<div class="col-sm-6">
+				<select class="form-control version-nr"></select>
+				<div class="preview changed d-none"></div>
+				<div class="preview diff center"></div>
+				<pre class="json changed d-none"></pre>
+			</div>
+		<div class="col-sm-12">
+			<pre class="json diff"></pre>
 		</div>
-		<div class="col-sm-6">
-			<select class="form-control version-nr"></select>
-			<div class="preview changed d-none"></div>
-			<div class="preview diff center"></div>
-			<pre class="json changed d-none"></pre>
-		</div>
-	<div class="col-sm-12">
-		<pre class="json diff"></pre>
 	</div>
-</div>
 </div><!-- .container -->
 
 <script>

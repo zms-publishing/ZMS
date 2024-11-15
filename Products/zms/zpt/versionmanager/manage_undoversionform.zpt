@@ -14,26 +14,51 @@
 <div class="container diff-container">
 	<div class="row">
 			<div class="col-sm-6">
-				<select class="form-control version-nr mb-3"></select>
-				<div class="preview original center"></div>
-				<pre class="json original d-none"></pre>
+				<div class="input-group mb-3">
+					<div class="input-group-prepend">
+						<span class="form-control input-group-text alert-danger">Version</span>
+					</div>
+					<select class="form-control version-nr"></select>
+					<div class="input-group-append">
+						<button class="btn btn-secondary" onclick="toggle_preview();return false;"><i class="fas fa-eye"></i></button>
+					</div>
+				</div>
+				<div class="original preview"></div>
+				<pre class="original json d-none"></pre>
 			</div>
 			<div class="col-sm-6">
-				<select class="form-control version-nr"></select>
-				<div class="preview changed d-none"></div>
-				<div class="preview diff center"></div>
-				<pre class="json changed d-none"></pre>
+				<div class="input-group mb-3">
+					<div class="input-group-prepend">
+						<span class="form-control input-group-text alert-success">Version</span>
+					</div>
+					<select class="form-control version-nr"></select>
+					<div class="input-group-append">
+						<button class="btn btn-secondary" onclick="toggle_preview();return false;"><i class="fas fa-eye"></i></button>
+					</div>
+				</div>
+				<div class="changed preview"></div>
+				<div class="changed json d-none"></div>
 			</div>
 		<div class="col-sm-12">
-			<pre class="json diff"></pre>
+			<div class="diff preview"></div>
+			<div class="diff json d-none"></div>
 		</div>
 	</div>
 </div><!-- .container -->
 
 <script>
+//<!--
 
-function diff(container, qualifier) 
-{
+function toggle_preview() {
+	$(".diff-container .col-sm-6 .preview").toggleClass('d-none');
+	if ($(".diff-container .col-sm-6 i").hasClass('fas fa-eye')) {
+		$(".diff-container .col-sm-6 i").removeClass('fas fa-eye').addClass('fas fa-eye-slash');
+	} else {
+		$(".diff-container .col-sm-6 i").removeClass('fas fa-eye-slash').addClass('fas fa-eye');
+	}
+}
+
+function diff(container, qualifier) {
 	var diffContainer = qualifier+".diff";
 	$(container).prettyTextDiff({
 		cleanup:true,
@@ -77,21 +102,22 @@ function diff(container, qualifier)
 			$(tags).each(x => $("select.version-nr").append("<option value=\""+tags[x]+"\">"+tags[x]+"</option>"));
 			$("select.version-nr").change(function() {
 				var tag = $(this).val();
-				var $preview = $(".preview",$(this).parent());
-				var $json = $(".json",$(this).parent());
+				var $preview = $(".preview",$(this).parent().parent());
+				var $json = $(".json",$(this).parent().parent());
 				$preview.text($(this).val());
 				$.get($ZMI.get_rest_api_url(href)+"/body_content",{tag:tag},function(html) {
 					$preview.html(html);
-					$.get($ZMI.get_rest_api_url(href)+"/get_tag",{tag:tag},function(json) {
-						var str = JSON.stringify(json, null, 4);
-						$json.text(str);
-						//diff($(".diff-container"),".preview");
-						diff($(".diff-container"),".json");
-					});
+					// $.get($ZMI.get_rest_api_url(href)+"/get_tag",{tag:tag},function(json) {
+					// 	var str = JSON.stringify(json, null, 4);
+					// 	$json.text(str);
+					// 	// diff($(".diff-container"),".json");
+					// });
 				});
+			diff($(".diff-container"),".preview");
 			}).change();
 		});
 	});
+//-->
 </script>
 
 

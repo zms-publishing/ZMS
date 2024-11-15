@@ -20,7 +20,8 @@
 					</div>
 					<select class="form-control version-nr"></select>
 					<div class="input-group-append">
-						<button class="btn btn-secondary" onclick="toggle_preview();return false;"><i class="fas fa-eye"></i></button>
+						<button class="btn btn-secondary toggle_preview" onclick="toggle_preview();return false;"><i class="fas fa-eye"></i></button>
+						<button class="btn btn-secondary toggle_datatype" onclick="toggle_datatype();return false;"><i class="fas fa-file-alt"></i></button>
 					</div>
 				</div>
 				<div class="original preview"></div>
@@ -33,7 +34,8 @@
 					</div>
 					<select class="form-control version-nr"></select>
 					<div class="input-group-append">
-						<button class="btn btn-secondary" onclick="toggle_preview();return false;"><i class="fas fa-eye"></i></button>
+						<button class="btn btn-secondary toggle_preview" onclick="toggle_preview();return false;"><i class="fas fa-eye"></i></button>
+						<button class="btn btn-secondary toggle_datatype" onclick="toggle_datatype();return false;"><i class="fas fa-file-alt"></i></button>
 					</div>
 				</div>
 				<div class="changed preview"></div>
@@ -50,11 +52,21 @@
 //<!--
 
 function toggle_preview() {
+	let $btn = $(".diff-container .col-sm-6 .toggle_preview i");
 	$(".diff-container .col-sm-6 .preview").toggleClass('d-none');
-	if ($(".diff-container .col-sm-6 i").hasClass('fas fa-eye')) {
-		$(".diff-container .col-sm-6 i").removeClass('fas fa-eye').addClass('fas fa-eye-slash');
+	if ( $btn.hasClass('fas fa-eye')) {
+		$btn.removeClass('fas fa-eye').addClass('fas fa-eye-slash');
 	} else {
-		$(".diff-container .col-sm-6 i").removeClass('fas fa-eye-slash').addClass('fas fa-eye');
+		$btn.removeClass('fas fa-eye-slash').addClass('fas fa-eye');
+	}
+}
+function toggle_datatype() {
+	let $btn = $(".diff-container .col-sm-6 .toggle_datatype i");
+	$(".diff-container .col-sm-6 .json").toggleClass('d-none');
+	if ( $btn.hasClass('fas fa-file-alt')) {
+		$btn.removeClass('fas fa-file-alt').addClass('fas fa-code');
+	} else {
+		$btn.removeClass('fas fa-code').addClass('fas fa-file-alt');
 	}
 }
 
@@ -113,7 +125,7 @@ function diff(container, qualifier) {
 					// 	// diff($(".diff-container"),".json");
 					// });
 				});
-			diff($(".diff-container"),".preview");
+				diff($(".diff-container"),".preview");
 			}).change();
 		});
 	});
@@ -160,6 +172,10 @@ function diff(container, qualifier) {
 	}
 	li.even.zmi-item .center {
 		background: #EDF5FE !important;
+	}
+	.btn.toggle_preview,
+	.btn.toggle_datatype {
+		width: 2.5rem;
 	}
 	
 </style>

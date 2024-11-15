@@ -126,6 +126,24 @@ Folder e1 {1.0.0: {e1: AAA, e2: AAA, e3: AAA},
     Textarea e2
     Textarea e3
 ```
+
 ## Numbering
+
+The version numbering follows the scheme 
+:
+
+```
+major.minor.patch
+```
+
+* **major**: Significant changes, possibly incompatible with previous versions.
+* **minor**: Minor feature additions, backward-compatible.
+* **patch**: Bug fixes and minor changes, backward-compatible.
+
 ## Versioning without workflow
+
+In scenarios where the workflow is not activated, versioning still ensures that changes are tracked and can be reverted if necessary. Each save action creates a new version of the content, and the system maintains a history of these versions. Users can manually switch between versions or restore previous versions as needed.
+
 ## Versioning with activated workflow
+
+When the workflow is activated, versioning integrates seamlessly with the workflow states and transitions. Each state change or transition can trigger the creation of a new version, ensuring that every step in the workflow is documented and traceable. This integration provides a robust mechanism for content management, combining the benefits of both versioning and workflow to maintain high content quality and accountability.

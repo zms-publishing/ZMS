@@ -2234,6 +2234,23 @@ def processData(context, processId, data, trans=None):
   return _filtermanager.processData(context, processId, data, trans)
 
 
+security.declarePublic('htmldiff')
+def htmldiff(original, changed):
+  """
+  Wrapper for htmldiff2.render_html_diff.
+  @param original: html-file-0
+  @type context: C{str}
+  @param changed: html-file-1
+  @type changed: C{str}
+  """
+  try:
+    from htmldiff2 import render_html_diff
+    diff = render_html_diff(original,changed)
+  except:
+    diff = '<pre>ERROR: Cannot load or work with htmldiff2</pre>'
+  return diff
+
+
 ############################################################################
 #
 #{  Executable

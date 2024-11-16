@@ -11,9 +11,9 @@
 		level python:here.getLevel();
 		obj_versions python:here.getObjVersions();">
 
-<div class="container diff-container">
+<div class="diff-container container">
 	<div class="row">
-			<div class="col-sm-6">
+			<div class="col-sm-6 col-original">
 				<div class="input-group mb-3" title="original">
 					<div class="input-group-prepend">
 						<span class="form-control input-group-text alert-danger">Version</span>
@@ -23,7 +23,7 @@
 				<div class="original preview"></div>
 				<pre class="original json d-none"></pre>
 			</div>
-			<div class="col-sm-6">
+			<div class="col-sm-6 col-changed">
 				<div class="input-group mb-3" title="changed">
 					<div class="input-group-prepend">
 						<span class="form-control input-group-text alert-success">Version</span>
@@ -90,6 +90,25 @@ function toggle_view(btn,btn_func) {
 			$('.diff-container .json').removeClass('d-none');
 		}
 	}
+}
+
+function get_htmldiff() {
+	let href = $ZMI.getPhysicalPath();
+	let original = $('.diff-container .original.preview').html();
+	let changed = $('.diff-container .changed.preview').html();
+	let data = {
+		'original':original,
+		'changed':changed
+	};
+	$.ajax({
+		type: "POST",
+		url: $ZMI.get_rest_api_url(href)+'/get_htmldiff',
+		data: data,
+		dataType: 'html',
+		success: function(html) {
+			$('.diff.preview').html(html);
+		}
+	});
 }
 
 function diff(container, qualifier) {

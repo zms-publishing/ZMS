@@ -36,7 +36,7 @@
 							<i class="fas fa-eye"></i>
 						</button>
 						<button id="toggle_datatype" class="btn btn-secondary" 
-							title="Show/Hide Splitview"
+							title="Switch JSON vs HTML-Preview"
 							onclick="toggle_view(this,'toggle_datatype');return false;">
 							<i class="fas fa-file-alt"></i>
 						</button>

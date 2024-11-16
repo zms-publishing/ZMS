@@ -14,36 +14,40 @@
 <div class="container diff-container">
 	<div class="row">
 			<div class="col-sm-6">
-				<div class="input-group mb-3">
+				<div class="input-group mb-3" title="original">
 					<div class="input-group-prepend">
 						<span class="form-control input-group-text alert-danger">Version</span>
 					</div>
 					<select class="form-control version-nr"></select>
-					<div class="input-group-append">
-						<button class="btn btn-secondary toggle_preview" onclick="toggle_preview();return false;"><i class="fas fa-eye"></i></button>
-						<button class="btn btn-secondary toggle_datatype" onclick="toggle_datatype();return false;"><i class="fas fa-file-alt"></i></button>
-					</div>
 				</div>
 				<div class="original preview"></div>
 				<pre class="original json d-none"></pre>
 			</div>
 			<div class="col-sm-6">
-				<div class="input-group mb-3">
+				<div class="input-group mb-3" title="changed">
 					<div class="input-group-prepend">
 						<span class="form-control input-group-text alert-success">Version</span>
 					</div>
 					<select class="form-control version-nr"></select>
 					<div class="input-group-append">
-						<button class="btn btn-secondary toggle_preview" onclick="toggle_preview();return false;"><i class="fas fa-eye"></i></button>
-						<button class="btn btn-secondary toggle_datatype" onclick="toggle_datatype();return false;"><i class="fas fa-file-alt"></i></button>
+						<button id="toggle_splitview" class="btn btn-secondary" 
+							title="Show/Hide Splitview"
+							onclick="toggle_view(this,'toggle_splitview');return false;">
+							<i class="fas fa-eye"></i>
+						</button>
+						<button id="toggle_datatype" class="btn btn-secondary" 
+							title="Show/Hide Splitview"
+							onclick="toggle_view(this,'toggle_datatype');return false;">
+							<i class="fas fa-file-alt"></i>
+						</button>
 					</div>
 				</div>
 				<div class="changed preview"></div>
-				<div class="changed json d-none"></div>
+				<pre class="changed json d-none"></pre>
 			</div>
 		<div class="col-sm-12">
-			<div class="diff preview"></div>
-			<div class="diff json d-none"></div>
+			<pre class="diff preview"></pre>
+			<pre class="diff json d-none"></pre>
 		</div>
 	</div>
 </div><!-- .container -->
@@ -51,22 +55,40 @@
 <script>
 //<!--
 
-function toggle_preview() {
-	let $btn = $(".diff-container .col-sm-6 .toggle_preview i");
-	$(".diff-container .col-sm-6 .preview").toggleClass('d-none');
-	if ( $btn.hasClass('fas fa-eye')) {
-		$btn.removeClass('fas fa-eye').addClass('fas fa-eye-slash');
-	} else {
-		$btn.removeClass('fas fa-eye-slash').addClass('fas fa-eye');
+function toggle_view(btn,btn_func) {
+	// Hide Splitview
+	$('.diff-container .original, .diff-container .changed').addClass('d-none');
+	// Set datatype to be shown
+	let datatype = $('#toggle_datatype i').hasClass('fa-code')? 'json': 'preview';
+	// Conditionally Show Splitview
+	// A. On Button-Click #toggle_splitview
+	if ( btn_func=='toggle_splitview' ) {
+		if ( $('i',$(btn)).hasClass('fa-eye') ){
+			$('i',$(btn)).removeClass('fa-eye').addClass('fa-eye-slash')
+		} else {
+			// Show Splitview for current Datatype
+			$('i',$(btn)).removeClass('fa-eye-slash').addClass('fa-eye');
+			if (datatype=='json') {
+				$('.diff-container .col-sm-6 .json').removeClass('d-none');
+			} else {
+				$('.diff-container .col-sm-6 .preview').removeClass('d-none');
+			}
+		}
 	}
-}
-function toggle_datatype() {
-	let $btn = $(".diff-container .col-sm-6 .toggle_datatype i");
-	$(".diff-container .col-sm-6 .json").toggleClass('d-none');
-	if ( $btn.hasClass('fas fa-file-alt')) {
-		$btn.removeClass('fas fa-file-alt').addClass('fas fa-code');
-	} else {
-		$btn.removeClass('fas fa-code').addClass('fas fa-file-alt');
+	// B. On Button-Click #toggle_datatype
+	if ( btn_func=='toggle_datatype' ) {
+		$('.diff-container .diff').addClass('d-none');
+		$('#toggle_splitview i').removeClass('fa-eye-slash').addClass('fa-eye');
+		// Show Splitview for current Datatype
+		if (datatype=='json') {
+			// Switch to html preview
+			$('i',$(btn)).removeClass('fa-code').addClass('fa-file-alt');
+			$('.diff-container .preview').removeClass('d-none');
+		} else {
+			// Switch to JSON view
+			$('i',$(btn)).removeClass('fa-file-alt').addClass('fa-code');
+			$('.diff-container .json').removeClass('d-none');
+		}
 	}
 }
 
@@ -113,19 +135,20 @@ function diff(container, qualifier) {
 		$.get($ZMI.get_rest_api_url(href)+"/get_tags",function(tags) {
 			$(tags).each(x => $("select.version-nr").append("<option value=\""+tags[x]+"\">"+tags[x]+"</option>"));
 			$("select.version-nr").change(function() {
-				var tag = $(this).val();
-				var $preview = $(".preview",$(this).parent().parent());
-				var $json = $(".json",$(this).parent().parent());
+				let $this_col = $(this).parent().parent();
+				let tag = $(this).val();
+				let $preview = $(".preview",$this_col);
+				let $json = $(".json",$this_col);
 				$preview.text($(this).val());
-				$.get($ZMI.get_rest_api_url(href)+"/body_content",{tag:tag},function(html) {
+				$.get($ZMI.get_rest_api_url(href)+"/body_content", {tag:tag}, function(html) {
 					$preview.html(html);
-					// $.get($ZMI.get_rest_api_url(href)+"/get_tag",{tag:tag},function(json) {
-					// 	var str = JSON.stringify(json, null, 4);
-					// 	$json.text(str);
-					// 	// diff($(".diff-container"),".json");
-					// });
+					diff($('.diff-container'),'.preview');
 				});
-				diff($(".diff-container"),".preview");
+				$.get($ZMI.get_rest_api_url(href)+"/get_tag",{tag:tag},function(json) {
+					var str = JSON.stringify(json, null, 4);
+					$json.text(str);
+					diff($('.diff-container'),'.json');
+				});
 			}).change();
 		});
 	});
@@ -173,11 +196,17 @@ function diff(container, qualifier) {
 	li.even.zmi-item .center {
 		background: #EDF5FE !important;
 	}
-	.btn.toggle_preview,
-	.btn.toggle_datatype {
+	button#toggle_preview,
+	button#toggle_datatype {
 		width: 2.5rem;
 	}
-	
+	.diff {
+		background-color: aliceblue;
+	}
+	.diff span.d-none {
+		display:block !important;
+	}
+
 </style>
 
 <footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>

@@ -13,41 +13,41 @@
 
 <div class="diff-container container center">
 	<div class="row">
-			<div class="col-sm-6 col-original">
-				<div class="input-group mb-3" title="original">
-					<div class="input-group-prepend">
-						<span class="form-control input-group-text alert-danger">Version</span>
-					</div>
-					<select class="form-control version-nr"></select>
+		<div class="col-sm-6 col-original">
+			<div class="input-group mb-3" title="original">
+				<div class="input-group-prepend">
+					<span class="form-control input-group-text alert-danger">Version</span>
 				</div>
-				<div class="original preview"></div>
-				<pre class="original json d-none"></pre>
+				<select class="form-control version-nr"></select>
 			</div>
-			<div class="col-sm-6 col-changed">
-				<div class="input-group mb-3" title="changed">
-					<div class="input-group-prepend">
-						<span class="form-control input-group-text alert-success">Version</span>
-					</div>
-					<select class="form-control version-nr"></select>
-					<div class="input-group-append">
-						<button id="toggle_splitview" class="btn btn-secondary" 
-							title="Show/Hide Splitview"
-							onclick="toggle_view(this,'toggle_splitview');return false;">
-							<i class="fas fa-eye"></i>
-						</button>
-						<button id="toggle_datatype" class="btn btn-secondary" 
-							title="Switch JSON vs HTML-Preview"
-							onclick="toggle_view(this,'toggle_datatype');return false;">
-							<i class="fas fa-file-alt"></i>
-						</button>
-					</div>
+			<div class="original preview d-none"></div>
+			<pre class="original json d-none"></pre>
+		</div>
+		<div class="col-sm-6 col-changed">
+			<div class="input-group mb-3" title="changed">
+				<div class="input-group-prepend">
+					<span class="form-control input-group-text alert-success">Version</span>
 				</div>
-				<div class="changed preview"></div>
-				<pre class="changed json d-none"></pre>
+				<select class="form-control version-nr"></select>
+				<div class="input-group-append">
+					<button id="toggle_splitview" class="btn btn-secondary" 
+						title="Show/Hide Splitted Preview"
+						onclick="toggle_view(this,'toggle_splitview');return false;">
+						<i class="fas fa-eye-slash"></i>
+					</button>
+					<button id="toggle_datatype" class="btn btn-secondary" 
+						title="Switch Datatype of Preview (JSON vs HTML)"
+						onclick="toggle_view(this,'toggle_datatype');return false;">
+						<i class="fas fa-file-alt"></i>
+					</button>
+				</div>
 			</div>
+			<div class="changed preview d-none"></div>
+			<pre class="changed json d-none"></pre>
+		</div>
 		<div class="col-sm-12">
-			<div class="diff preview"></div>
-			<pre class="diff json d-none"></pre>
+			<div class="diff preview my-5"></div>
+			<pre class="diff json my-5 d-none"></pre>
 		</div>
 	</div>
 </div><!-- .container -->
@@ -104,7 +104,6 @@ function get_htmldiff(container, qualifier) {
 	let changed = $(changedContainer).html();
 	original = remove_curly_braces(original);
 	changed = remove_curly_braces(changed);
-	debugger;
 	let data = {
 		'original':original,
 		'changed':changed
@@ -236,7 +235,7 @@ $(function() {
 		width: 2.5rem;
 	}
 	.diff {
-		background-color: aliceblue;
+		background-color: unset;
 	}
 	.diff span.d-none {
 		display:block !important;

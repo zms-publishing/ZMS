@@ -2245,6 +2245,9 @@ def htmldiff(original, changed):
   """
   try:
     from htmldiff2 import render_html_diff
+    # Remove html comments for processing with htmldiff2/genshi.
+    original = re.sub(r'<!--.*?-->', '', original, flags=re.DOTALL)
+    changed = re.sub(r'<!--.*?-->', '', changed, flags=re.DOTALL)
     diff = render_html_diff(original,changed)
   except:
     diff = '<pre>ERROR: Cannot load or work with htmldiff2</pre>'

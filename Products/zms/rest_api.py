@@ -172,7 +172,14 @@ class RestApiController(object):
         standard.writeBlock(self.context,'__call__: %s'%str(self.ids))
         if self.method == 'POST':
             if self.ids == ['get_htmldiff']:
-                decoration, data = self.get_htmldiff(self.context, content_type=True)
+                # decoration, data = self.get_htmldiff(self.context, content_type=True)
+                decoration, data = {'content_type':'text/html'}, {}
+                request = _get_request(self.context)
+                original = request.get('original','<pre>original</pre>')
+                changed = request.get('changed','<pre>changed</pre>')
+                data = standard.htmldiff(original, changed)
+                ct = decoration['content_type']
+                request.RESPONSE.setHeader('Content-Type',ct)
                 return data
         if self.method == 'GET':
             decoration, data = {'content_type':'text/plain'}, {}

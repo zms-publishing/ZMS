@@ -92,12 +92,19 @@ function toggle_view(btn,btn_func) {
 	}
 }
 
+function remove_curly_braces(str) {
+	return str.replace(/[\{\}]/g,'');
+}
+
 function get_htmldiff(container, qualifier) {
 	let originalContainer = qualifier + '.original';
 	let changedContainer = qualifier + '.changed';
 	let diffContainer = qualifier + '.diff';
 	let original = $(originalContainer).html();
 	let changed = $(changedContainer).html();
+	original = remove_curly_braces(original);
+	changed = remove_curly_braces(changed);
+	debugger;
 	let data = {
 		'original':original,
 		'changed':changed
@@ -167,6 +174,7 @@ $(function() {
 			let $json = $(".json",$this_col);
 			$preview.text($(this).val());
 			$.get($ZMI.get_rest_api_url(href)+"/body_content", {tag:tag}, function(html) {
+				html = remove_curly_braces(html);
 				$preview.html(html);
 				get_htmldiff($('.diff-container'),'.preview');
 				$.get($ZMI.get_rest_api_url(href)+"/get_tag",{tag:tag},function(json) {

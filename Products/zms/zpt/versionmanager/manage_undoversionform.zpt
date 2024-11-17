@@ -113,6 +113,9 @@ function get_htmldiff(container, qualifier) {
 	});
 }
 
+// ############################################################################################################
+// DEPRECATED: diff() is now done server-side
+// ############################################################################################################
 function diff(container, qualifier) {
 	var diffContainer = qualifier+".diff";
 	$(container).prettyTextDiff({
@@ -150,29 +153,32 @@ function diff(container, qualifier) {
 	}
 	$diffContainer.html(html.join(""));
 }
+// ############################################################################################################
 
-	$(function() {
-		var href = $ZMI.getPhysicalPath();
-		$.get($ZMI.get_rest_api_url(href)+"/get_tags",function(tags) {
-			$(tags).each(x => $("select.version-nr").append("<option value=\""+tags[x]+"\">"+tags[x]+"</option>"));
-			$("select.version-nr").change(function() {
-				let $this_col = $(this).parent().parent();
-				let tag = $(this).val();
-				let $preview = $(".preview",$this_col);
-				let $json = $(".json",$this_col);
-				$preview.text($(this).val());
-				$.get($ZMI.get_rest_api_url(href)+"/body_content", {tag:tag}, function(html) {
-					$preview.html(html);
-					get_htmldiff($('.diff-container'),'.preview');
-				});
+
+$(function() {
+	var href = $ZMI.getPhysicalPath();
+	$.get($ZMI.get_rest_api_url(href)+"/get_tags",function(tags) {
+		$(tags).each(x => $("select.version-nr").append("<option value=\""+tags[x]+"\">"+tags[x]+"</option>"));
+		$("select.version-nr").change(function() {
+			let $this_col = $(this).parent().parent();
+			let tag = $(this).val();
+			let $preview = $(".preview",$this_col);
+			let $json = $(".json",$this_col);
+			$preview.text($(this).val());
+			$.get($ZMI.get_rest_api_url(href)+"/body_content", {tag:tag}, function(html) {
+				$preview.html(html);
+				get_htmldiff($('.diff-container'),'.preview');
 				$.get($ZMI.get_rest_api_url(href)+"/get_tag",{tag:tag},function(json) {
-					var str = JSON.stringify(json, null, 4);
+					let str = JSON.stringify(json, null, 4);
 					$json.text(str);
+					// TODO: user server-side diff!?
 					diff($('.diff-container'),'.json');
 				});
-			}).change();
-		});
+			});
+		}).change();
 	});
+});
 //-->
 </script>
 

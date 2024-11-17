@@ -11,7 +11,7 @@
 		level python:here.getLevel();
 		obj_versions python:here.getObjVersions();">
 
-<div class="diff-container container">
+<div class="diff-container container center">
 	<div class="row">
 			<div class="col-sm-6 col-original">
 				<div class="input-group mb-3" title="original">
@@ -46,7 +46,7 @@
 				<pre class="changed json d-none"></pre>
 			</div>
 		<div class="col-sm-12">
-			<pre class="diff preview"></pre>
+			<div class="diff preview"></div>
 			<pre class="diff json d-none"></pre>
 		</div>
 	</div>
@@ -92,17 +92,19 @@ function toggle_view(btn,btn_func) {
 	}
 }
 
-function get_htmldiff() {
-	let href = $ZMI.getPhysicalPath();
-	let original = $('.diff-container .original.preview').html();
-	let changed = $('.diff-container .changed.preview').html();
+function get_htmldiff(container, qualifier) {
+	let originalContainer = qualifier + '.original';
+	let changedContainer = qualifier + '.changed';
+	let diffContainer = qualifier + '.diff';
+	let original = $(originalContainer).html();
+	let changed = $(changedContainer).html();
 	let data = {
 		'original':original,
 		'changed':changed
 	};
 	$.ajax({
 		type: "POST",
-		url: $ZMI.get_rest_api_url(href)+'/get_htmldiff',
+		url: $ZMI.get_rest_api_url($ZMI.getPhysicalPath())+'/get_htmldiff',
 		data: data,
 		dataType: 'html',
 		success: function(html) {
@@ -161,7 +163,7 @@ function diff(container, qualifier) {
 				$preview.text($(this).val());
 				$.get($ZMI.get_rest_api_url(href)+"/body_content", {tag:tag}, function(html) {
 					$preview.html(html);
-					diff($('.diff-container'),'.preview');
+					get_htmldiff($('.diff-container'),'.preview');
 				});
 				$.get($ZMI.get_rest_api_url(href)+"/get_tag",{tag:tag},function(json) {
 					var str = JSON.stringify(json, null, 4);

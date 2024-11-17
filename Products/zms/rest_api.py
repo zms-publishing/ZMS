@@ -170,6 +170,10 @@ class RestApiController(object):
     def __call__(self, REQUEST=None, **kw):
         """"""
         standard.writeBlock(self.context,'__call__: %s'%str(self.ids))
+        if self.method == 'POST':
+            if self.ids == ['get_htmldiff']:
+                decoration, data = self.get_htmldiff(self.context, content_type=True)
+                return data
         if self.method == 'GET':
             decoration, data = {'content_type':'text/plain'}, {}
             if  self.ids == [] and self.context.meta_type == 'ZMSIndex':
@@ -196,8 +200,6 @@ class RestApiController(object):
                 decoration, data = self.get_tag(self.context, content_type=True)
             elif self.ids == ['body_content']:
                 decoration, data = self.body_content(self.context, content_type=True)
-            elif self.ids == ['get_htmldiff']:
-                decoration, data = self.get_htmldiff(self.context, content_type=True)
             elif self.ids == [] or self.ids == ['get']:
                 decoration, data = self.get(self.context, content_type=True)
             else:
@@ -335,6 +337,12 @@ class RestApiController(object):
         return '\n'.join(html)
 
     @api(tag="version", pattern="/{path}/get_htmldiff", method="POST", content_type="text/html")
-    def get_htmldiff(self, context, original='<pre>original</pre>', changed='<pre>changed</pre>'):
+    def get_htmldiff(self, context):
+        decoration, data = {'content_type':'text/html'}, {}
         request = _get_request(context)
-        return standard.htmldiff(original, changed)
+        original = request.get('original','<pre>original</pre>')
+        changed = request.get('changed','<pre>changed</pre>')
+        data = standard.htmldiff(original, changed)
+        ct = decoration['content_type']
+        request.RESPONSE.setHeader('Content-Type',ct)
+        return data

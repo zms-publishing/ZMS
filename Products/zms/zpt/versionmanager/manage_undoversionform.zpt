@@ -129,17 +129,6 @@ function get_htmldiff(container, qualifier) {
 	});
 }
 
-function get_body_content_diff(container, qualifier) {
-	var href = $ZMI.getPhysicalPath();
-	let data = {
-		'original':$('.col-original select').val(),
-		'changed':$('.col-changed select').val()
-	};
-	$.get($ZMI.get_rest_api_url(href)+"/body_content_diff",data,function(html) {
-			$('.diff.preview').html(html);
-		});
-}
-
 // ############################################################################################################
 // DEPRECATED: diff() is now done server-side
 // ############################################################################################################
@@ -196,8 +185,7 @@ $(function() {
 			$.get($ZMI.get_rest_api_url(href)+"/body_content", {tag:tag}, function(html) {
 				html = remove_curly_braces(html);
 				$preview.html(html);
-				//get_htmldiff($('.diff-container'),'.preview');
-				get_body_content_diff($('.diff-container'),'.preview');
+				get_htmldiff($('.diff-container'),'.preview');
 				const maxlength = 80;
 				$.get($ZMI.get_rest_api_url(href)+"/get_tag",{tag:tag},function(json) {
 					let str = "";

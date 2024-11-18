@@ -316,8 +316,7 @@ class RestApiController(object):
                 request.set('ZMS_VERSION_%s'%version_item.id,obj_version.id)
                 d[standard.getLangFmtDate(version_item,obj_version.attr('change_dt'),'eng','DATETIME_FMT')] = obj_version.id
             tags = list(reversed(sorted(list(d.keys())))) 
-            if version_item != version_container:
-                tags = [x for x in tags if x <= change_dt]
+            tags = [x for x in tags if x <= change_dt]
             if tags:
                 request.set('ZMS_VERSION_%s'%version_item.id,d[tags[0]])
                 attrs = get_attrs(version_item)
@@ -337,8 +336,7 @@ class RestApiController(object):
                 request.set('ZMS_VERSION_%s'%version_item.id,obj_version.id)
                 d[standard.getLangFmtDate(version_item,obj_version.attr('change_dt'),'eng','DATETIME_FMT')] = obj_version.id
             tags = list(reversed(sorted(list(d.keys())))) 
-            if version_item != version_container:
-                tags = [x for x in tags if x <= change_dt]
+            tags = [x for x in tags if x <= change_dt]
             if tags:
                 request.set('ZMS_VERSION_%s'%version_item.id,d[tags[0]])
         html = []

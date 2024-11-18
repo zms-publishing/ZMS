@@ -100,6 +100,8 @@ _Screen image: The simple workflow has got some more transitions to cover varian
 
 ## Selective workflow
 
+The content nodes that follow the workflow on publishing a document can be assigned individually. The assignment works recursively. So if the just the root-node is assigned, the workflow is set to the whole content tree.
+
 # Versioning
 
 ## Introduction
@@ -112,20 +114,34 @@ Any object is designed to exist in two versions; its container-object aggregates
 
 Because document a massively fragmented into small block objects, a useful aggregate is the committable container-object. Thus committing a container-object (document) will be equivalent to tagging a changeset.
 
-###TODO###: 
-tag each atomic block object or store all versions of atomic sub-objects in the container?
-e.g.:
+The following example shows that if only two blocks are versioned atomically, it cannot be resolved if there is no change documentation for the container document, i.e., the sum of the blocks:
 
 ```
-Folder e1 {1.0.0: AAA, 2.0.0: AAA}
-    Textarea e2 {1.0.0: AAA: 2.0.0: ABA}
-    Textarea e3 {1.0.0: AAA: 2.0.0: AAA}
+document-e1: 0.0.1
+    |---block-e2: 0.0.1
+    |---block-e3: 0.0.2
+    |---block-e4: 0.0.1
 
-Folder e1 {1.0.0: {e1: AAA, e2: AAA, e3: AAA},
-           2.0.0: {e1: AAA, e2: ABA, e3: AAA}}
-    Textarea e2
-    Textarea e3
+document-e1: 0.0.1
+    |---block-e2: 0.0.1
+    |---block-e3: 0.0.3
+    |---block-e4: 0.0.3
 ```
+
+The document container must keep a log and increment its version with each child change, as if it were changed itself. This is the only way to historically trace the changes.
+
+
+```
+document-e1: - 0.0.1 {e2:0.0.1, e3:0.0.1, e4:0.0.1}
+    |        - 0.0.2 {e2:0.0.1, e3:0.0.2, e4:0.0.1}
+    |        - 0.0.3 {e2:0.0.1, e3:0.0.3, e4:0.0.1}
+    |        - 0.0.4 {e2:0.0.1, e3:0.0.3, e4:0.0.2}
+    |        - 0.0.5 {e2:0.0.1, e3:0.0.3, e4:0.0.3}
+    |---block-e2: [0.0.1]
+    |---block-e3: [0.0.1, 0.0.2, 0.0.3]
+    |---block-e4: [0.0.1, 0.0.2, 0.0.3]
+```
+
 
 ## Numbering
 

@@ -2245,9 +2245,13 @@ def htmldiff(original, changed):
   """
   try:
     from htmldiff2 import render_html_diff
+    def remove_curly_braces(s):
+      return re.sub(r'/[\{\}]', '', s, flags=re.IGNORECASE) 
+    def remove_html_comments(s):
+      return re.sub(r'<!--.*?-->', '', s, flags=re.DOTALL) 
     # Remove html comments for processing with htmldiff2/genshi.
-    original = re.sub(r'<!--.*?-->', '', original, flags=re.DOTALL)
-    changed = re.sub(r'<!--.*?-->', '', changed, flags=re.DOTALL)
+    original = remove_html_comments(remove_curly_braces(original))
+    changed = remove_html_comments(remove_curly_braces(changed))
     diff = render_html_diff(original,changed)
   except:
     diff = '<pre>ERROR: Cannot load or work with htmldiff2</pre>'

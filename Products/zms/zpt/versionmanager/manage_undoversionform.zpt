@@ -136,7 +136,6 @@ function get_body_content_diff(container, qualifier) {
 		'changed':$('.col-changed select').val()
 	};
 	$.get($ZMI.get_rest_api_url(href)+"/body_content_diff",data,function(html) {
-			console.log("body_content_diff",html);
 			$('.diff.preview').html(html);
 		});
 }

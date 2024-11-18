@@ -20,7 +20,7 @@
 				</div>
 				<select class="form-control version-nr"></select>
 			</div>
-			<div class="original preview d-Xnone"></div>
+			<div class="original preview d-none"></div>
 			<pre class="original json d-none"></pre>
 		</div>
 		<div class="col-sm-6 col-changed">
@@ -33,21 +33,21 @@
 					<button id="toggle_splitview" class="btn btn-secondary" 
 						title="Show/Hide Splitted Preview"
 						onclick="toggle_view(this,'toggle_splitview');return false;">
-						<i class="fas fa-eye-slash"></i>
+						<i class="fas fa-columns"></i>
 					</button>
-					<button id="toggle_datatype" class="btn btn-secondary" 
+					<button id="toggle_datatype" class="btn btn-primary" 
 						title="Switch Datatype of Preview (JSON vs HTML)"
 						onclick="toggle_view(this,'toggle_datatype');return false;">
 						<i class="fas fa-file-alt"></i>
 					</button>
 				</div>
 			</div>
-			<div class="changed preview d-Xnone"></div>
+			<div class="changed preview d-none"></div>
 			<pre class="changed json d-none"></pre>
 		</div>
 		<div class="col-sm-12">
 			<div class="diff preview my-5"></div>
-			<pre class="diff json my-5"></pre>
+			<pre class="diff json my-5 d-none"></pre>
 		</div>
 	</div>
 </div><!-- .container -->
@@ -56,38 +56,50 @@
 //<!--
 
 function toggle_view(btn,btn_func) {
-	// Hide Splitview
-	$('.diff-container .original, .diff-container .changed').addClass('d-none');
+	// Hide Views
+	$('.col-sm-6 .original, .col-sm-6 .changed, .col-sm-12 > .diff','.diff-container').addClass('d-none');
+	debugger;
 	// Set datatype to be shown
 	let datatype = $('#toggle_datatype i').hasClass('fa-code')? 'json': 'preview';
+	let splitview = $('#toggle_splitview').hasClass('btn-primary')? true: false;
+
 	// Conditionally Show Splitview
 	// A. On Button-Click #toggle_splitview
 	if ( btn_func=='toggle_splitview' ) {
-		if ( $('i',$(btn)).hasClass('fa-eye') ){
-			$('i',$(btn)).removeClass('fa-eye').addClass('fa-eye-slash')
+		// Hide Splitview
+		if ($(btn).hasClass('btn-primary')) {
+			$(btn).removeClass('btn-primary').addClass('btn-secondary');
 		} else {
 			// Show Splitview for current Datatype
-			$('i',$(btn)).removeClass('fa-eye-slash').addClass('fa-eye');
+			$(btn).removeClass('btn-secondary').addClass('btn-primary');
 			if (datatype=='json') {
 				$('.diff-container .col-sm-6 .json').removeClass('d-none');
 			} else {
 				$('.diff-container .col-sm-6 .preview').removeClass('d-none');
 			}
 		}
+		if (datatype=='json') {
+			$('.diff-container .col-sm-12 .json').removeClass('d-none');
+		} else {
+			$('.diff-container .col-sm-12 .preview').removeClass('d-none');
+		}
 	}
 	// B. On Button-Click #toggle_datatype
 	if ( btn_func=='toggle_datatype' ) {
-		$('.diff-container .diff').addClass('d-none');
-		$('#toggle_splitview i').removeClass('fa-eye-slash').addClass('fa-eye');
-		// Show Splitview for current Datatype
 		if (datatype=='json') {
 			// Switch to html preview
 			$('i',$(btn)).removeClass('fa-code').addClass('fa-file-alt');
-			$('.diff-container .preview').removeClass('d-none');
+			$('.diff-container .col-sm-12 > .diff.preview').removeClass('d-none');
+			if (splitview) {
+				$('.diff-container .col-sm-6 .preview').removeClass('d-none');
+			}
 		} else {
 			// Switch to JSON view
 			$('i',$(btn)).removeClass('fa-file-alt').addClass('fa-code');
-			$('.diff-container .json').removeClass('d-none');
+			$('.diff-container .col-sm-12 > .diff.json').removeClass('d-none');
+			if (splitview) {
+				$('.diff-container .col-sm-6 .json').removeClass('d-none');
+			}
 		}
 	}
 }
@@ -196,7 +208,10 @@ $(function() {
 					diff($('.diff-container'),'.json');
 				});
 			});
-		}).change();
+		});
+		// Trigger initial change to load former version for comparison
+		$('.col-original select.version-nr option:eq(1)').prop('selected', true).change();
+		$('.col-changed select.version-nr option:eq(0)').prop('selected', true).change();
 	});
 });
 //-->
@@ -243,9 +258,12 @@ $(function() {
 	li.even.zmi-item .center {
 		background: #EDF5FE !important;
 	}
-	button#toggle_preview,
+	button#toggle_splitview,
 	button#toggle_datatype {
 		width: 2.5rem;
+	}
+	button#toggle_splitview.btn-secondary i.fas.fa-columns {
+		opacity: .5;
 	}
 	.diff {
 		background-color: unset;

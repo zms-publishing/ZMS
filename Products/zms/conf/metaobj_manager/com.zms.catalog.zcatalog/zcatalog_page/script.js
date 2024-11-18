@@ -1,4 +1,19 @@
 //# ######################################
+//# Handlebars Helper
+//# ######################################
+Handlebars.registerHelper("compareStrings", function (p, q, options) {
+	return p == q ? options.fn(this) : options.inverse(this);
+});
+Handlebars.registerHelper('hide_tabs', function (length) {
+	return length < 2 ? 'hidden' : 'not_hidden';
+});
+Handlebars.registerHelper('sanitize', function (str) {
+	const element = document.createElement('div');
+	element.innerText = String(str);
+	return element.innerHTML;
+});
+
+//# ######################################
 //# Init function show_results() as global
 //# ######################################
 var show_results;

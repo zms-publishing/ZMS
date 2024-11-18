@@ -2,14 +2,14 @@
 
 <template id="hb_spinner_html" type="text/x-handlebars-template">
 	{{#.}}
-		<h2>Suche nach <code>{{{this}}}</code></h2>
+		<h2>Suche nach <code>{{{sanitize this}}}</code></h2>
 		<div title="Loading..." class="spin"></div>
 	{{/.}}
 </template>
 
 <template id="hb_results_html" type="text/x-handlebars-template">
 	{{#.}}
-		<h2>{{{this.total}}} Treffer f&uuml;r <code>{{{this.query}}}</code></h2>
+		<h2>{{{this.total}}} Treffer f&uuml;r <code>{{{sanitize this.query}}}</code></h2>
 	{{/.}}
 	<!-- //-->
 	{{#if buckets}}

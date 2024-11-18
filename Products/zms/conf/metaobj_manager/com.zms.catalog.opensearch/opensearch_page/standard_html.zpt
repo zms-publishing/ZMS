@@ -5,7 +5,7 @@
 		{{#.}}
 			<h2>
 				<span tal:replace="python:zmscontext.getLangStr('opensearch_page.SEARCH_FOR')">Suche nach</span>
-				<code>{{{this}}}</code>
+				<code>{{{sanitize this}}}</code>
 			</h2>
 			<div title="Loading..." class="spin"></div>
 		{{/.}}
@@ -20,10 +20,10 @@
 					<a href="{{this.doc.index_html}}">
 							<h2>{{this.doc.title}}</h2>
 							{{#if this.doc.titleimage}}
-									<img src="{{this.doc.titleimage}}" />
+								<img src="{{this.doc.titleimage}}" />
 							{{/if}}
 							{{#if this.doc.attr_dc_description}}
-									<p>{{this.doc.attr_dc_description}}</p>
+								<p>{{this.doc.attr_dc_description}}</p>
 							{{/if}}
 						</a>
 					</article>
@@ -34,7 +34,7 @@
 
 	<template id="hb_results_html" type="text/x-handlebars-template">
 		{{#.}}
-			<h2>{{{this.total}}} <span tal:content="python:zmscontext.getLangStr('opensearch_page.INFO_RESULTS_FOR')">Treffer f&uuml;r</span> <code>{{{this.query}}}</code></h2>
+			<h2>{{{this.total}}} <span tal:content="python:zmscontext.getLangStr('opensearch_page.INFO_RESULTS_FOR')">Treffer f&uuml;r</span> <code>{{{sanitize this.query}}}</code></h2>
 		{{/.}}
 		{{#if buckets}}
 			<ul class="nav nav-tabs responsive {{hide_tabs buckets.length}}" data-bucket-length="{{buckets.length}}" role="tablist">

@@ -20,7 +20,7 @@
 				</div>
 				<select class="form-control version-nr"></select>
 			</div>
-			<div class="original preview d-none"></div>
+			<div class="original preview d-Xnone"></div>
 			<pre class="original json d-none"></pre>
 		</div>
 		<div class="col-sm-6 col-changed">
@@ -42,12 +42,12 @@
 					</button>
 				</div>
 			</div>
-			<div class="changed preview d-none"></div>
+			<div class="changed preview d-Xnone"></div>
 			<pre class="changed json d-none"></pre>
 		</div>
 		<div class="col-sm-12">
 			<div class="diff preview my-5"></div>
-			<pre class="diff json my-5 d-none"></pre>
+			<pre class="diff json my-5"></pre>
 		</div>
 	</div>
 </div><!-- .container -->
@@ -112,7 +112,6 @@ function get_htmldiff(container, qualifier) {
 		type: "POST",
 		url: $ZMI.get_rest_api_url($ZMI.getPhysicalPath())+'/get_htmldiff',
 		data: data,
-		dataType: 'html',
 		success: function(html) {
 			$('.diff.preview').html(html);
 		}
@@ -176,8 +175,22 @@ $(function() {
 				html = remove_curly_braces(html);
 				$preview.html(html);
 				get_htmldiff($('.diff-container'),'.preview');
+				const maxlength = 80;
 				$.get($ZMI.get_rest_api_url(href)+"/get_tag",{tag:tag},function(json) {
-					let str = JSON.stringify(json, null, 4);
+					let str = "";
+					JSON.stringify(json, null, 4).split("\n").forEach(s => {
+						while (s) {
+							let i = s;
+							if (i.length > maxlength) {
+								i = s.substr(0, maxlength);
+								s = s.substr(maxlength);
+							}
+							else {
+								s = "";
+							}
+							str += i + "\n";
+						}
+					});
 					$json.text(str);
 					// TODO: user server-side diff!?
 					diff($('.diff-container'),'.json');
@@ -239,6 +252,9 @@ $(function() {
 	}
 	.diff span.d-none {
 		display:block !important;
+	}
+	.diff span.d-none.diff-unchanged {
+		display:none !important;
 	}
 
 </style>

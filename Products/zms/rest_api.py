@@ -202,6 +202,8 @@ class RestApiController(object):
                 decoration, data = self.get_tag(self.context, content_type=True)
             elif self.ids == ['body_content']:
                 decoration, data = self.body_content(self.context, content_type=True)
+            elif self.ids == ['body_content_diff']:
+                decoration, data = self.body_content_diff(self.context, content_type=True)
             elif self.ids == [] or self.ids == ['get']:
                 decoration, data = self.get(self.context, content_type=True)
             else:
@@ -345,6 +347,16 @@ class RestApiController(object):
         html.append('<div class="%s"><h1>%s<small>%s</small></h1></div>'%(version_container.meta_id,version_container.getTitle(request),version_container.getDCDescription(request)))
         html.append(version_container.getBodyContent(request))
         return '\n'.join(html)
+
+    @api(tag="version", pattern="/{path}/body_content_diff", method="GET", content_type="text/html")
+    def body_content_diff(self, context):
+        request = _get_request(context)
+        request.set('tag', request.get('original'))
+        original = self.body_content(context)
+        request.set('tag', request.get('changed'))
+        changed = self.body_content(context)
+        data = standard.htmldiff(original, changed)
+        return data
 
     @api(tag="version", pattern="/{path}/get_htmldiff", method="POST", content_type="text/html")
     def get_htmldiff(self, context):

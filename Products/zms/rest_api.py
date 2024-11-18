@@ -291,13 +291,15 @@ class RestApiController(object):
         for version_item in [version_container] + version_items:
             for obj_version in version_item.getObjVersions():
                 request.set('ZMS_VERSION_%s'%version_item.id,obj_version.id)
-                tags.append(
-                    (standard.getLangFmtDate(version_item,obj_version.attr('change_dt'),'eng','DATETIME_FMT')
-                    ,obj_version.attr('change_uid')           
-                    ,'r%i.%i.%i'%(obj_version.attr('master_version'), obj_version.attr('major_version'), obj_version.attr('minor_version'))
-                    ,'/'.join(version_item.getPhysicalPath())
-                    ,version_item.get_uid()
-                    ,version_item.meta_id))
+                change_dt = obj_version.attr('change_dt')
+                change_uid = obj_version.attr('change_uid')
+                if change_dt and change_uid:
+                    tags.append(
+                        (standard.getLangFmtDate(version_item,change_dt,'eng','DATETIME_FMT')
+                        ,change_uid           
+                        ,'r%i.%i.%i'%(obj_version.attr('master_version'), obj_version.attr('major_version'), obj_version.attr('minor_version'))
+                        ,'/'.join(version_item.getPhysicalPath())
+                        ,version_item.meta_id))
         tags = sorted(list(set(tags)),key=lambda x:x[0])
         tags.reverse()
         return tags
@@ -306,7 +308,7 @@ class RestApiController(object):
     def get_tag(self, context):
         request = _get_request(context)
         tag = request.get('tag').split(",")
-        change_dt = tag[0]
+        dt = tag[0]
         data = []
         version_container = context.getVersionContainer()
         version_items = version_container.getVersionItems(request)
@@ -314,9 +316,12 @@ class RestApiController(object):
             d = {}
             for obj_version in version_item.getObjVersions():
                 request.set('ZMS_VERSION_%s'%version_item.id,obj_version.id)
-                d[standard.getLangFmtDate(version_item,obj_version.attr('change_dt'),'eng','DATETIME_FMT')] = obj_version.id
+                change_dt = obj_version.attr('change_dt')
+                change_uid = obj_version.attr('change_uid')
+                if change_dt and change_uid:
+                    d[standard.getLangFmtDate(version_item,change_dt,'eng','DATETIME_FMT')] = obj_version.id
             tags = list(reversed(sorted(list(d.keys())))) 
-            tags = [x for x in tags if x <= change_dt]
+            tags = [x for x in tags if x <= dt]
             if tags:
                 request.set('ZMS_VERSION_%s'%version_item.id,d[tags[0]])
                 attrs = get_attrs(version_item)
@@ -327,21 +332,27 @@ class RestApiController(object):
     def body_content(self, context):
         request = _get_request(context)
         tag = request.get('tag').split(",")
-        change_dt = tag[0]
+        dt = tag[0]
         version_container = context.getVersionContainer()
-        version_items = version_container.getVersionItems(request)
-        for version_item in [version_container] + version_items:
+        version_items = [version_container] + version_container.getVersionItems(request)
+        html = []
+        for version_item in version_items:
             d = {}
             for obj_version in version_item.getObjVersions():
                 request.set('ZMS_VERSION_%s'%version_item.id,obj_version.id)
-                d[standard.getLangFmtDate(version_item,obj_version.attr('change_dt'),'eng','DATETIME_FMT')] = obj_version.id
+                change_dt = obj_version.attr('change_dt')
+                change_uid = obj_version.attr('change_uid')
+                if change_dt and change_uid:
+                    d[standard.getLangFmtDate(version_item,change_dt,'eng','DATETIME_FMT')] = obj_version.id
             tags = list(reversed(sorted(list(d.keys())))) 
-            tags = [x for x in tags if x <= change_dt]
+            tags = [x for x in tags if x <= dt]
             if tags:
                 request.set('ZMS_VERSION_%s'%version_item.id,d[tags[0]])
-        html = []
-        html.append('<div class="%s"><h1>%s<small>%s</small></h1></div>'%(version_container.meta_id,version_container.getTitle(request),version_container.getDCDescription(request)))
-        html.append(version_container.getBodyContent(request))
+                html.append('<div><a href="%s/manage_main"><small>%s</div></small></a></div>'%(version_item.absolute_url(),'/'.join(version_item.getPhysicalPath())))
+                if version_item == version_container:
+                    html.append('<div class="%s"><h1>%s<small>%s</small></h1></div>'%(version_item.meta_id,version_item.getTitle(request),version_item.getDCDescription(request)))
+                else:
+                    html.append(version_item.renderShort(request))
         return '\n'.join(html)
 
     @api(tag="standard", pattern="/{path}/get_htmldiff", method="POST", content_type="text/html")

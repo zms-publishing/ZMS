@@ -142,6 +142,81 @@ document-e1: - 0.0.1 {e2:0.0.1, e3:0.0.1, e4:0.0.1}
     |---block-e4: [0.0.1, 0.0.2, 0.0.3]
 ```
 
+### Implementation (DRAFT)
+
+To implement the versioning system for a container object that contains an arbitrary number of sub-objects, each individually versioned on any changes, consider implementing a versioning vector that captures the state of the entire container and its sub-objects. Here is a proposed solution:
+
+1. **Version Vector Structure**: Use a version vector that includes the version of the container object itself and the versions of all its sub-objects. This vector should be updated whenever any sub-object or the container object changes.
+
+2. **Composite Versioning**: Maintain a composite version for the container object that reflects the versions of all its sub-objects. This composite version can be a hash or a concatenation of the individual versions.
+
+3. **Change Log**: Keep a detailed change log for the container object that records changes to both the container and its sub-objects. This log should include timestamps and the specific changes made.
+
+4. **Incremental Updates**: Increment the version of the container object whenever any sub-object changes. This ensures that the container's version always reflects the latest state of its contents.
+
+5. **Efficient Storage**: Store the version vector in a way that minimizes redundancy and allows for efficient retrieval and comparison of versions.
+
+
+_**Example Implementation:**_
+
+```py
+class VersionedObject:
+    def __init__(self, id):
+        self.id = id
+        self.version = 0
+        self.sub_objects = {}
+        self.change_log = []
+
+    def add_sub_object(self, sub_object):
+        self.sub_objects[sub_object.id] = sub_object
+        self.update_version()
+
+    def update_sub_object(self, sub_object_id, new_version):
+        if sub_object_id in self.sub_objects:
+            self.sub_objects[sub_object_id].version = new_version
+            self.update_version()
+
+    def update_version(self):
+        self.version += 1
+        self.change_log.append(self.get_version_vector())
+
+    def get_version_vector(self):
+        version_vector = {self.id: self.version}
+        for sub_object_id, sub_object in self.sub_objects.items():
+            version_vector[sub_object_id] = sub_object.version
+        return version_vector
+
+class SubObject:
+    def __init__(self, id):
+        self.id = id
+        self.version = 0
+
+# Example usage
+container = VersionedObject('container')
+block1 = SubObject('block1')
+block2 = SubObject('block2')
+
+container.add_sub_object(block1)
+container.add_sub_object(block2)
+
+container.update_sub_object('block1', 1)
+container.update_sub_object('block2', 2)
+
+print(container.get_version_vector())
+```
+
+_**Explanation:**_
+
+* **VersionedObject Class**: Represents the container object. It maintains a version, a dictionary of sub-objects, and a change log.
+* **SubObject Class**: Represents a sub-object with its own version.
+* **add_sub_object Method**: Adds a sub-object to the container and updates the container's version.
+* **update_sub_object Method**: Updates the version of a sub-object and increments the container's version.
+* **update_version Method**: Increments the container's version and logs the current version vector.
+get_version_vector Method: Returns the current version vector, which includes the versions of the container and all its sub-objects.
+
+This approach ensures that the container's version always reflects the latest state of its sub-objects, providing a clear and traceable version history.
+
+
 
 ## Numbering
 

@@ -116,8 +116,9 @@ function get_htmldiff(container, qualifier) {
 	original = remove_curly_braces(original);
 	changed = remove_curly_braces(changed);
 	let data = {
+		'lang':getZMILang(),
 		'original':original,
-		'changed':changed
+		'changed':changed,
 	};
 	$.ajax({
 		type: "POST",
@@ -182,11 +183,11 @@ $(function() {
 			let $preview = $(".preview",$this_col);
 			let $json = $(".json",$this_col);
 			$preview.text($(this).val());
-			$.get($ZMI.get_rest_api_url(href)+"/body_content", {tag:tag}, function(html) {
+			$.get($ZMI.get_rest_api_url(href)+"/body_content", {tag:tag,lang:getZMILang()}, function(html) {
 				html = remove_curly_braces(html);
 				$preview.html(html);
 				get_htmldiff($('.diff-container'),'.preview');
-				const maxlength = 80;
+				const maxlength = 800;
 				$.get($ZMI.get_rest_api_url(href)+"/get_tag",{tag:tag},function(json) {
 					let str = "";
 					JSON.stringify(json, null, 4).split("\n").forEach(s => {
@@ -274,6 +275,20 @@ $(function() {
 		display:none !important;
 	}
 
+	/* Manage Links */
+	.diff-container div.preview div > a:has(small) {
+		display:block;
+		font-family:monospace;
+		border-bottom:1px dotted #ccc;
+		margin:1.5rem 0 0 0;
+		color:#999;
+		text-align:left
+	}
+	.diff-container div.preview div > a:has(small):hover {
+		color:#008ac7;
+		text-decoration:none;
+		border-bottom:1px dotted #008ac7;
+	}
 </style>
 
 <footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>

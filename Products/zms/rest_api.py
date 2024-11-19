@@ -287,8 +287,8 @@ class RestApiController(object):
         request = _get_request(context)
         tags = []
         version_container = context.getVersionContainer()
-        version_items = version_container.getVersionItems(request)
-        for version_item in [version_container] + version_items:
+        version_items = ([version_container] + version_container.getVersionItems(request)) if context.isVersionContainer() else [context]
+        for version_item in version_items:
             for obj_version in version_item.getObjVersions():
                 request.set('ZMS_VERSION_%s'%version_item.id,obj_version.id)
                 change_dt = obj_version.attr('change_dt')
@@ -311,8 +311,8 @@ class RestApiController(object):
         dt = tag[0]
         data = []
         version_container = context.getVersionContainer()
-        version_items = version_container.getVersionItems(request)
-        for version_item in [version_container] + version_items:
+        version_items = ([version_container] + version_container.getVersionItems(request)) if context.isVersionContainer() else [context]
+        for version_item in version_items:
             d = {}
             for obj_version in version_item.getObjVersions():
                 request.set('ZMS_VERSION_%s'%version_item.id,obj_version.id)
@@ -333,9 +333,9 @@ class RestApiController(object):
         request = _get_request(context)
         tag = request.get('tag').split(",")
         dt = tag[0]
-        version_container = context.getVersionContainer()
-        version_items = [version_container] + version_container.getVersionItems(request)
         html = []
+        version_container = context.getVersionContainer()
+        version_items = ([version_container] + version_container.getVersionItems(request)) if context.isVersionContainer() else [context]
         for version_item in version_items:
             d = {}
             for obj_version in version_item.getObjVersions():

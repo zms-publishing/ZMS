@@ -300,16 +300,20 @@ $(function() {
 		text-decoration:none;
 		border-bottom:1px dotted #008ac7;
 	}
-	.diff-container a.tagdiff_replaced {
+	.diff-container .diff a.tagdiff_replaced {
 		background-color:#fea;
 	}
-	.diff-container img.old-src {
+	.diff-container .diff img.old-src {
 		max-width:80px;
 		max-height:80px;
 		position:absolute;
 		margin:-.3rem 0 0 -.3rem;
 		border:1px solid red;
 		box-shadow: 0 0 .25rem white;
+	}
+	.diff-container .diff img.tagdiff_replaced {
+		border: 1px solid #155724;
+		box-shadow: 0 0 0 .25rem #d4edda;
 	}
 </style>
 

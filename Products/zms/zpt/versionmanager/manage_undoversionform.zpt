@@ -107,6 +107,16 @@ function remove_curly_braces(str) {
 	return str.replace(/[\{\}]/g,'');
 }
 
+function show_old_src_images() {
+	$('.diff-container .diff img.tagdiff_replaced[data-old-src]').each(function() {
+		let $this = $(this);
+		let img = new Image();
+		img.src = $this.attr('data-old-src');
+		img.classList.add('old-src');
+		$this.before(img);
+	});
+}
+
 function get_htmldiff(container, qualifier) {
 	let originalContainer = qualifier + '.original';
 	let changedContainer = qualifier + '.changed';
@@ -126,6 +136,7 @@ function get_htmldiff(container, qualifier) {
 		data: data,
 		success: function(html) {
 			$('.diff.preview').html(html);
+			show_old_src_images()
 		}
 	});
 }
@@ -288,6 +299,17 @@ $(function() {
 		color:#008ac7;
 		text-decoration:none;
 		border-bottom:1px dotted #008ac7;
+	}
+	.diff-container a.tagdiff_replaced {
+		background-color:#fea;
+	}
+	.diff-container img.old-src {
+		max-width:80px;
+		max-height:80px;
+		position:absolute;
+		margin:-.3rem 0 0 -.3rem;
+		border:1px solid red;
+		box-shadow: 0 0 .25rem white;
 	}
 </style>
 

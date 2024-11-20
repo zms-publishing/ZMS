@@ -316,13 +316,13 @@ class ZMSWorkflowProvider(
     
     Change workflow.
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    def manage_changeWorkflow(self, lang, btn='', key='properties', REQUEST=None, RESPONSE=None):
+    def manage_changeWorkflow(self, lang, btn='', key='workflow_properties', REQUEST=None, RESPONSE=None):
       """ ZMSWorkflowProvider.manage_changeWorkflow """
       message = ''
 
       # Version Control.
       # -----------
-      if key == 'history':
+      if key == 'workflow_versioning':
         old_active = self.getConfProperty('ZMS.Version.active',0)
         new_active = REQUEST.get('active',0)
         old_nodes = self.getConfProperty('ZMS.Version.nodes',['{$}'])
@@ -342,10 +342,19 @@ class ZMSWorkflowProvider(
             except:
               message += '[%s: %s]'%(node,'No history to pack')
         message = self.getZMILangStr('MSG_CHANGED')+message
-      
+
+      # Content Assignment.
+      # -----------
+      elif key == 'workflow_assignment':
+        # Save.
+        # ------
+        if btn == 'BTN_SAVE':
+          self.nodes = standard.string_list(REQUEST.get('nodes', ''))
+          message = self.getZMILangStr('MSG_CHANGED')
+
       # Properties.
       # -----------
-      elif key == 'properties':
+      elif key == 'workflow_properties':
         # Save.
         # ------
         if btn == 'BTN_SAVE':
@@ -354,7 +363,6 @@ class ZMSWorkflowProvider(
           new_autocommit = REQUEST.get('workflow', 0) == 0
           self.revision = REQUEST.get('revision', '0.0.0')
           self.autocommit = new_autocommit
-          self.nodes = standard.string_list(REQUEST.get('nodes', ''))
           if old_autocommit == 0 and new_autocommit == 1:
             self.doAutocommit(lang, REQUEST)
           message = self.getZMILangStr('MSG_CHANGED')
@@ -383,10 +391,10 @@ class ZMSWorkflowProvider(
           else:
             filename = REQUEST['init']
             self.importConf(filename)
-          message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%f.filename)
+          message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%filename)
       
       # Return with message.
       message = standard.url_quote(message)
-      return RESPONSE.redirect('manage_main?lang=%s&key=%s&manage_tabs_message=%s#_properties'%(lang, key, message))
+      return RESPONSE.redirect('manage_main?lang=%s&key=%s&manage_tabs_message=%s#%s'%(lang, key, message, key))
 
 ################################################################################

@@ -23,6 +23,7 @@ Markdown
 pyScss
 ftfy
 pdfminer.six
+htmldiff2
 
 # OpenSearch
 opensearch-py

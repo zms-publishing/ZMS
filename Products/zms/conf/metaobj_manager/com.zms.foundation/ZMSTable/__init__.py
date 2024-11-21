@@ -32,7 +32,7 @@ class ZMSTable:
 	package = "com.zms.foundation"
 
 	# Revision
-	revision = "5.1.0"
+	revision = "5.1.2"
 
 	# Type
 	type = "ZMSObject"
@@ -163,7 +163,7 @@ class ZMSTable:
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
-			,"name":"Readme (text/markdown)"
+			,"name":"README.md"
 			,"repetitive":0
 			,"type":"resource"}
 

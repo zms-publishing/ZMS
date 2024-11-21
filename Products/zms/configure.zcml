@@ -11,7 +11,7 @@
       />
 
   <!-- If ZMI resources need to be published, -->
-  <!-- register the resources dir as public   -->
+  <!-- register the current (!) zmi-resources dir as public -->
   <!-- 
     <browser:resourceDirectory
       name="zmi"

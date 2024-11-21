@@ -8,7 +8,7 @@
 				style="font-size: x-small; height: 25em; overflow: scroll; background-color: #EAEDEF; padding: 1em;"
 				tal:condition="python:not zmscontext.attr('dataStorageDisabled')"
 				tal:content="structure python:zmscontext.printData()"
-				tal:on-error="structure string:<span style='color:red;'>An error occurred: ${error/value}</span>">
+				tal:on-error="structure python:'<span style=\042color:red\042>ERROR / NO DATA CONNECTION</span>'">
 				data
 			</pre>
 		</div>

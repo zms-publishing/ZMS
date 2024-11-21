@@ -55,12 +55,11 @@ def elasticsearch_query( self, REQUEST=None):
 		index_names.append(request.get('facet'))
 	else:
 	# Search in all configured indexes
-		root_name = self.getRootElement().getHome().id
-		index_names.append(root_name)
+		index_name = self.getConfProperty('elasticsearch.index_name', self.getRootElement().getHome().id )
 		# suggest.fields may be configured explicitly for any index, like 'elasticsearch.suggest.fields.persons = ['lastname','firstname']'
-		for index_name in [k.split('.')[-1] for k in list(self.getConfProperties(inherited=True)) if k.lower().startswith('elasticsearch.suggest.fields.')]:
-			if index_name != root_name:
-				index_names.append(index_name)
+		index_names = [k.split('.')[-1] for k in list(self.getConfProperties(inherited=True)) if k.lower().startswith('elasticsearch.suggest.fields.')]
+		if index_name not in index_names:
+			index_names.append(index_name)
 
 	# Refs: query on multiple indexes and composite aggregation
 	# https://discuss.elastic.co/t/query-multiple-indexes-but-apply-queries-to-specific-index/127858

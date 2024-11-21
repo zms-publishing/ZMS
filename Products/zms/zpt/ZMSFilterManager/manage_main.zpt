@@ -159,7 +159,7 @@
 			<!-- INSERT NEW ROW -->
 			<tr class="row_insert">
 				<td class="meta-sort text-right">
-					<span class="btn btn-add mr-1">
+					<span class="btn btn-secondary btn-add mr-1 w-100">
 						<i class="fas fa-plus"></i>
 					</span>
 				</td>
@@ -568,9 +568,9 @@
 			let table_id = $(this).closest('table').attr('id'); // meta_properties or meta_languages
 			let new_row_name = `new_row_${table_id}_${new_row_counter}`;
 			let new_btn_html = `
-				<span class="btn btn-default btn-sm mr-1" style="color:#999" 
-					onclick="javascript:$(this).closest('tr').remove()">
-					<i class="fas fa-times"></i>
+				<span class="btn btn-secondary mr-1 w-100" style="color:#999" 
+					onclick="javascript:$(this).closest('tr').hide('slow',function(){$(this).closest('tr').remove()})">
+					<i class="fas fa-undo-alt"></i>
 				</span>
 				`;
 

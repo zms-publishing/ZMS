@@ -19,13 +19,17 @@
 			tal:attributes="onclick python:'javascript:window.open(\'%s/%s\',\'MetaObjectManagerWindow\')'%(zmscontext.getDocumentElement().getAbsoluteUrlInContext(here),middot)"
 			><tal:block tal:condition="python:childNode==childNodes[-1]"
 				tal:on-error="nothing"
-				><i class="far fa-file-alt" title="Icon" tal:attributes="class python:childNode.zmi_icon();title python:childNode.meta_id"></i
+				><i class="far fa-file-alt" title="Icon" tal:attributes="class python:childNode.attr('attr_dc_identifier_url_redirect')=='' and childNode.zmi_icon();title python:childNode.meta_id"></i
 			></tal:block
-			></span>&nbsp;<a tal:define="
+			></span><i class="far fa-share-square" title="Icon" tal:condition="python:childNode.attr('attr_dc_identifier_url_redirect')!=''"></i>&nbsp;
+			<a tal:define="
 				titlealt python:childNode.getTitlealt(request);
 				title python:childNode.getTitle(request);
-				accesskey repeat/childNode/number;"
-				tal:attributes="href python:'%s/manage_main?lang=%s'%(childNode.getAbsoluteUrlInContext(here),request['lang']);title title;accesskey accesskey"
+				visible python:childNode.isVisible(request) and 'text-decoration:normal;;' or 'text-decoration:line-through;;';
+				accesskey repeat/childNode/number;
+				href python:'%s/manage_main?lang=%s'%(childNode.getAbsoluteUrlInContext(here),request['lang'])"
+				hx-target="body" hx-push-url="true"
+				tal:attributes="href href;hx-get href;title title;accesskey accesskey;style visible;"
 			tal:content="structure titlealt">titlealt
 	</a></li>
 	<li class="breadcrumb-item" tal:repeat="extra python:options.get('extra',[])">

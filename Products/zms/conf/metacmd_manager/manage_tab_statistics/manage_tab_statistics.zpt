@@ -10,6 +10,7 @@
 		path_filter python:request.get('filter', '');
 		max_objs python:request.get('limit', '100').strip()!='' and int(request.get('limit', '100')) or 100;
 		num_objs python:request.get('num_objs', False);
+		check_is_visible_in_path python:request.get('check_is_visible_in_path', False);
 		res_objs python:here.getAbsoluteHome().zcatalog_index({'meta_id':meta_id});
 		res python:filter(lambda x: path_filter in x.getPath(), res_objs);
 		total python:len(res);
@@ -95,12 +96,22 @@
 					<i class="fas fa-search mr-2"></i> Analyze
 				</button>
 			</div>
-			<div class="form-check px-2" title="Show total number of content objects in select box">
-				<span class="btn">
-					<input type="checkbox" id="num_objs" name="num_objs" tal:attributes="checked python:num_objs is not False and 'selected' or False" />
+			<div class="form-check px-2">
+				<span class="btn" 
+					title="Show total number of content objects in select box">
+					<input type="checkbox" id="num_objs" name="num_objs" 
+						tal:attributes="checked python:num_objs is not False and 'selected' or False" />
 				</span>
 				<label for="num_objs" class="mx-0">
 					<small class="text-muted">Show total number of content objects in select box</small>
+				</label>
+				<span class="btn ml-4" 
+					title="Extend computation object visibility to its path. Be careful: big content trees may need long compuation time.">
+					<input type="checkbox" id="check_is_visible_in_path" name="check_is_visible_in_path" 
+						tal:attributes="checked python:check_is_visible_in_path is not False and 'selected' or False" />
+				</span>
+				<label for="check_is_visible_in_path" class="mx-0">
+					<small class="text-muted">Compute visibility on object path</small>
 				</label>
 			</div>
 
@@ -110,6 +121,8 @@
 						tal:on-error="nothing"
 						tal:define="
 							is_visible python:ob.getObject().is_visible();
+							is_visible_in_path python:check_is_visible_in_path==False and True or len([e for e in ob.getObject().breadcrumbs_obj_path() if not e.isActive(context.REQUEST)])==0;
+							is_visible python: is_visible and is_visible_in_path;
 							global count_visible python:is_visible and count_visible+1 or count_visible;
 							statrec python:[{'abs_url':ob.getObject().absolute_url(),'titlealt':ob.getObject().getTitlealt(request),'is_visible':is_visible}]"
 						><tal:block tal:repeat="key attrIds"

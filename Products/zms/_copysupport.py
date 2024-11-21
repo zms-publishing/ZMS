@@ -49,7 +49,8 @@ def normalize_ids_after_copy(node, id_prefix='e', ids=[]):
         lang = request.get('lang')
         for langId in node.getLangIds():
           request.set('lang',langId)
-          childNode.setObjStateNew(request,reset=0)
+          if not node.getAutocommit():
+            childNode.setObjStateNew(request,reset=0)
           childNode.onChangeObj(request)
         request.set('lang',lang)
         # new id
@@ -58,7 +59,7 @@ def normalize_ids_after_copy(node, id_prefix='e', ids=[]):
         # new id
         new_id = node.getNewId(standard.id_prefix(id))
       # reset id
-      if new_id is not None and new_id != id:
+      if new_id is not None and new_id != id and childNode.getParentNode() == node:
         standard.writeBlock(node,'[CopySupport._normalize_ids_after_copy]: rename %s(%s) to %s'%(childNode.absolute_url(),childNode.meta_id,new_id))
         node.manage_renameObject(id=id,new_id=new_id)
       # traverse tree

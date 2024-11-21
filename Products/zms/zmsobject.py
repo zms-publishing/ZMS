@@ -47,6 +47,8 @@ from Products.zms import ZMSItem
 from Products.zms import ZMSWorkflowItem
 from Products.zms import standard
 from Products.zms import zopeutil
+from zope.globalrequest import getRequest
+
 
 __all__= ['ZMSObject']
 
@@ -136,25 +138,6 @@ class ZMSObject(ZMSItem.ZMSItem,
       # avoid content/content (seen in xml-import of zms-default-content)
       ids = [ids[x] for x in range(len(ids)) if x == 0 or not ids[x-1] == ids[x]]
       return '/'.join(ids)
-
-    """
-    Check if feature toggle is set.
-    @rtype: C{boolean}
-    """
-    def isFeatureEnabled(self, feature=''):
-
-      # get conf from current client
-      confprop = self.breadcrumbs_obj_path(False)[0].getConfProperty('ZMS.Features.enabled', '')
-      features = confprop.replace(',', ';').split(';')
-      # get conf from top master if there is no feature toggle set at client
-      if len(features)==1 and features[0].strip()=='':
-        confprop = self.breadcrumbs_obj_path(True)[0].getConfProperty('ZMS.Features.enabled', '')
-        features = confprop.replace(',', ';').split(';')
-
-      if len([x for x in features if x.strip()==feature.strip()])>0:
-        return True
-      else:
-        return False
 
 
     # --------------------------------------------------------------------------
@@ -494,7 +477,8 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  Returns 1 if current object is visible.
     # --------------------------------------------------------------------------
     def isVisible(self, REQUEST):
-      REQUEST = standard.nvl(REQUEST, self.REQUEST)
+      request = getattr(self, 'REQUEST', getRequest())
+      REQUEST = standard.nvl(REQUEST, request)
       lang = standard.nvl(REQUEST.get('lang'), self.getPrimaryLanguage())
       visible = True
       visible = visible and self.isTranslated(lang, REQUEST) # Object is translated.
@@ -942,7 +926,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         abs_url = args[1]['abs_url']
         forced = args[1]['forced']
         if context.getConfProperty('ZMSObject.getAbsoluteUrlInContext', False):
-          if context.getHome() != context.getHome():
+          if context.getHome() != self.getHome():
             protocol = context.getConfProperty('ASP.protocol', 'http')
             domain = context.getConfProperty('ASP.ip_or_domain', None)
             if domain:
@@ -1276,7 +1260,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         message = standard.url_quote(message)
         if message == 'ERROR':
           return RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_error_message=ERROR'%(target.absolute_url(), lang))
-      return RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s'%(target.absolute_url(), lang, message))
+        return RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s'%(target.absolute_url(), lang, message))
 
 
     # --------------------------------------------------------------------------

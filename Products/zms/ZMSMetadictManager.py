@@ -261,6 +261,8 @@ class ZMSMetadictManager(object):
         t0 = time.time()
         id = REQUEST.get('id', '')
         target = 'manage_metas'
+        if btn == 'BTN_SAVE' or btn == 'BTN_DELETE':
+          target = REQUEST.get('target', target)
         
         try:
           
@@ -290,21 +292,6 @@ class ZMSMetadictManager(object):
                 newDefault = REQUEST.get('attr_default_%s'%oldId, '')
                 self.setMetadictAttr( oldId, newId, newAcquired, newName, newType, newMandatory, newMultilang, newRepetitive, newCustom, newKeys, newDefault)
             message += self.getZMILangStr('MSG_CHANGED')
-            newId = REQUEST['_id'].strip()
-            newAcquired = 0
-            newName = REQUEST['_name'].strip()
-            newType = REQUEST['_type'].strip()
-            newMandatory = REQUEST.get('_mandatory', 0)
-            newMultilang = REQUEST.get('_multilang', 0)
-            newRepetitive = REQUEST.get('_repetitive', 0)
-            newCustom = ''
-            if len(newId) > 0 and len(newName) > 0 and len(newType) > 0:
-              if newType == 'method':
-                newCustom += '<dtml-comment>--// BO '+ newId + ' //--</dtml-comment>\n'
-                newCustom += '\n'
-                newCustom += '<dtml-comment>--// EO '+ newId + ' //--</dtml-comment>\n'
-              self.setMetadictAttr( None, newId, newAcquired, newName, newType, newMandatory, newMultilang, newRepetitive, newCustom)
-              message += self.getZMILangStr('MSG_INSERTED')%newId
           
           # Copy.
           # -----
@@ -383,14 +370,22 @@ class ZMSMetadictManager(object):
           error = str( sys.exc_info()[0])
           if sys.exc_info()[1]:
             error += ': ' + str( sys.exc_info()[1])
-          target = standard.url_append_params( target, { 'manage_tabs_error_message':error})
+          if target=='zmi_manage_tabs_message':
+            REQUEST.set('manage_tabs_error_message', error)
+            return self.zmi_manage_tabs_message(lang=lang, id=id, extra=extra)
+          else:
+            target = standard.url_append_params( target, { 'manage_tabs_error_message':error})
         
         # Return with message.
-        target = standard.url_append_params( target, { 'lang':lang, 'id':id})
-        target = standard.url_append_params( target, extra)
-        if len( message) > 0:
-          message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
-          target = standard.url_append_params( target, { 'manage_tabs_message':message})
-        return RESPONSE.redirect( target)
+        if target=='zmi_manage_tabs_message':
+          REQUEST.set('manage_tabs_message', message)
+          return self.zmi_manage_tabs_message(lang=lang, id=id, extra=extra)
+        else:
+          target = standard.url_append_params( target, { 'lang':lang, 'id':id})
+          target = standard.url_append_params( target, extra)
+          if len( message) > 0:
+            message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
+            target = standard.url_append_params( target, { 'manage_tabs_message':message})
+          return RESPONSE.redirect( target)
 
 ################################################################################

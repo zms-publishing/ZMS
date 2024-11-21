@@ -82,6 +82,6 @@ class CSSLib:
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
-			,"name":"Readme"
+			,"name":"README.md"
 			,"repetitive":0
 			,"type":"constant"}

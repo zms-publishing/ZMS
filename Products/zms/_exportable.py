@@ -32,6 +32,7 @@ from Products.zms import _filtermanager
 from Products.zms import _globals
 from Products.zms import _xmllib
 from Products.zms import standard
+from zope.globalrequest import getRequest
 
 
 def writeFile(self, filename, data, mode='w', encoding='utf-8'):
@@ -383,7 +384,9 @@ class Exportable(_filtermanager.FilterItem):
     # --------------------------------------------------------------------------
     #  Exportable.toXml:
     # --------------------------------------------------------------------------
-    def toXml(self, REQUEST, deep=True, data2hex=False, multilang=True):
+    def toXml(self, REQUEST=None, deep=True, data2hex=False, multilang=True):
+      if REQUEST is None:
+        REQUEST = getattr(self, 'REQUEST', getRequest())
       xml = ''
       xml += _xmllib.xml_header()
       xml += _xmllib.getObjToXml( self, REQUEST, deep, base_path='', data2hex=data2hex, multilang=multilang)

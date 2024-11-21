@@ -34,7 +34,7 @@ class captcha_lib:
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
-			,"name":"readme.md"
+			,"name":"README.md"
 			,"repetitive":0
 			,"type":"resource"}
 

@@ -32,7 +32,7 @@ class elasticsearch_page:
 	package = "com.zms.catalog.elasticsearch"
 
 	# Revision
-	revision = "1.5.1"
+	revision = "1.8.1"
 
 	# Type
 	type = "ZMSDocument"

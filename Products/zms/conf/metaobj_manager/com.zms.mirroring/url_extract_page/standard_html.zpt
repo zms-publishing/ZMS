@@ -1,0 +1,12 @@
+<!-- url_extract.standard_html -->
+<div class="url_extract" 
+    tal:define="zmscontext options/zmscontext;
+	    extract python:context.url_extracting(zmscontext, content_url=zmscontext.attr('content_url'), content_node=zmscontext.attr('content_node'), force=False);">
+            <tal:block
+                tal:content="structure python:extract['content_cache']">
+                Extracted HTML
+            </tal:block>
+    <pre style="font-size:10px;margin:2rem 0;border-top:1px dotted silver;padding-top:.25rem;">Date: <code tal:content="python:extract['content_datetime']"></code>, MD5: <code tal:content="python:extract['content_md5']"></code></pre>
+    <style tal:content="python:zmscontext.attr('css_custom')">CSS Customs</style>
+</div>
+<!-- url_extract.standard_html -->

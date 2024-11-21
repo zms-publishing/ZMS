@@ -1,0 +1,6 @@
+<pre tal:define="
+        content_url python:'https://www.uniklinikum-jena.de/kim1/Studium+_+Lehre.html';
+        content_node python:'div.block.block-b01';"
+    tal:content="python:context.url_extracting(context.content.e5.e118,content_url=content_url,content_node=content_node,force=True)">
+    Extracted HTML
+</pre>

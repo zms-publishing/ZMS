@@ -28,17 +28,42 @@ if (typeof $ == "undefined") {
  */
 if (typeof htmx != "undefined") {
 	document.addEventListener('htmx:beforeRequest', (evt) => {
-		document.querySelector('body').classList.add('loading');
+		const body = document.querySelector('body');
+		// If not send from SAVE button, check if form is modified
+		if ( ! evt.target.classList.contains('btn-primary') && ! evt.currentTarget.activeElement.classList.contains('btn-primary')) {
+			if (body.classList.contains("form-modified") && ! confirm(getZMILangStr('MSG_CONFIRM_DISCARD_CHANGES'))) {
+				return evt.preventDefault();
+			}
+		}
+		body.classList.add('loading');
 	});
 	document.addEventListener('htmx:afterRequest', (evt) => {
-		var bodyClass = evt.detail.xhr.responseText;
-		bodyClass = bodyClass.substr(bodyClass.indexOf("<body"));
-		bodyClass = bodyClass.substr(bodyClass.indexOf("class=\"")+"class=\"".length);
-		bodyClass = bodyClass.substr(0,bodyClass.indexOf("\""));
-		document.querySelector('body').classList = bodyClass;
+		var resp_text = evt.detail.xhr.responseText;
+		var parser = new DOMParser();
+		var resp_doc = parser.parseFromString(resp_text , 'text/html');
+		var newBody = resp_doc.querySelector('body');
+		// Check if response is a full HTML page or just a message
+		if ( resp_text.indexOf("<body") > -1 && newBody.childNodes[0].id!='zmi_manage_tabs_message') {
+			var currentBody = document.querySelector('body');
+			// Copy all attributes from newBody to currentBody
+			Array.from(newBody.attributes).forEach(attr => {
+				currentBody.setAttribute(attr.name, attr.value);
+			});
+			// Remove attributes that are not in newBody
+			Array.from(currentBody.attributes).forEach(attr => {
+				if (!newBody.hasAttribute(attr.name)) {
+					currentBody.removeAttribute(attr.name);
+				}
+			});
+			// Trigger Ready Event
+			$ZMI.runReady();
+		};
+		// Remove form-modified class from
+		Array.from(document.getElementsByClassName('form-modified')).forEach(
+			e => { e.classList.remove('form-modified') }
+		);
 		document.querySelector('body').classList.remove('loading');
 		document.querySelector('body').classList.add('loaded');
-		$ZMI.runReady();
 	});
 	window.onload = function() {
 		$ZMI.runReady();

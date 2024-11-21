@@ -32,7 +32,7 @@ class opensearch_connector:
 	package = "com.zms.catalog.opensearch"
 
 	# Revision
-	revision = "1.8.0"
+	revision = "1.9.0"
 
 	# Type
 	type = "ZMSLibrary"
@@ -54,7 +54,7 @@ class opensearch_connector:
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
-			,"name":"readme.md"
+			,"name":"README.md"
 			,"repetitive":0
 			,"type":"resource"}
 

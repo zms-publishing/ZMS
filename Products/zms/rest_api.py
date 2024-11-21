@@ -296,13 +296,24 @@ class RestApiController(object):
                 if change_dt and change_uid:
                     tags.append(
                         (standard.getLangFmtDate(version_item,change_dt,'eng','DATETIME_FMT')
-                        ,change_uid           
                         ,'r%i.%i.%i'%(obj_version.attr('master_version'), obj_version.attr('major_version'), obj_version.attr('minor_version'))
                         ,'/'.join(version_item.getPhysicalPath())
-                        ,version_item.meta_id))
+                        ))
         tags = sorted(list(set(tags)),key=lambda x:x[0])
         tags.reverse()
-        return tags
+        physical_path = '/'.join(version_container.getPhysicalPath())
+        rtn = []
+        for i in range(len(tags)):
+            tag = list(tags[i])
+            if i == 0 and not tag[2] == physical_path:
+                rtn.append(
+                    [tag[0]
+                    ,'r*.*.*'
+                    , physical_path
+                    ])
+            if tag[2] == physical_path:
+                rtn.append(tag)
+        return [(x[0],x[1]) for x in rtn]
     
     @api(tag="version", pattern="/{path}/get_tag", method="GET", content_type="application/json")
     def get_tag(self, context):

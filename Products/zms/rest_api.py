@@ -301,7 +301,9 @@ class RestApiController(object):
                         ))
         tags = sorted(list(set(tags)),key=lambda x:x[0])
         tags.reverse()
-        physical_path = '/'.join(version_container.getPhysicalPath())
+        physical_path = '/'.join(context.getPhysicalPath())
+        if context.isVersionContainer():
+            physical_path = '/'.join(version_container.getPhysicalPath())
         rtn = []
         for i in range(len(tags)):
             tag = list(tags[i])

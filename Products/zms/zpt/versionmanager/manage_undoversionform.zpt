@@ -13,7 +13,7 @@
 
 <div class="diff-container container center">
 	<div class="row">
-		<div class="col-sm-6 col-original">
+		<div id="original" class="col-sm-6 col-original">
 			<div class="input-group mb-3" title="original">
 				<div class="input-group-prepend">
 					<span class="form-control input-group-text alert-danger">Version</span>
@@ -23,7 +23,7 @@
 			<div class="original preview d-none"></div>
 			<pre class="original json d-none"></pre>
 		</div>
-		<div class="col-sm-6 col-changed">
+		<div id="changed" class="col-sm-6 col-changed">
 			<div class="input-group mb-3" title="changed">
 				<div class="input-group-prepend">
 					<span class="form-control input-group-text alert-success">Version</span>
@@ -158,26 +158,26 @@ function diff(container, qualifier) {
 	var changed = false;
 	for (var i = 0; i < lines.length; i++) {
 		var line = lines[i];
-		changed |= line.indexOf("<"+"del>")>=0 || line.indexOf("<ins>")>=0;
+		changed |= line.indexOf("<del>")>=0 || line.indexOf("<ins>")>=0;
 		if (changed) {
 			show.push(i);
 		}
-		changed &= !(line.indexOf("<"+"/del>")>=0 || line.indexOf("</ins>")>=0);
+		changed &= !(line.indexOf("</del>")>=0 || line.indexOf("</ins>")>=0);
 	}
 	var html = [];
 	changed = false;
 	for (var i = 0; i < lines.length; i++) {
 		var line = lines[i];
-		changed |= line.indexOf("<"+"del>")>=0 || line.indexOf("<"+"ins>")>=0;
-		line = '<'+'span class="line-number'+(changed?' line-changed':'')+'">'+(i+1)+'</span> '+lines[i];
+		changed |= line.indexOf("<del>")>=0 || line.indexOf("<ins>")>=0;
+		line = '<span class="line-number'+(changed?' line-changed':'')+'">'+(i+1)+'</span> '+lines[i];
 		if (!(show.contains(i-1) || show.contains(i) || show.contains(i+1))) {
-			line = '<'+'span class="diff-unchanged d-none">'+line+'<'+'/span>';
+			line = '<span class="diff-unchanged d-none">'+line+'</span>';
 		}
 		else {
 			line = line+'<'+'br/>';
 		}
 		html.push(line);
-		changed &= !(line.indexOf("<"+"/del>")>=0 || line.indexOf("<"+"/ins>")>=0);
+		changed &= !(line.indexOf("</del>")>=0 || line.indexOf("</ins>")>=0);
 	}
 	$diffContainer.html(html.join(""));
 }
@@ -186,68 +186,44 @@ function diff(container, qualifier) {
 
 $(function() {
 	var href = $ZMI.getPhysicalPath();
-	var versions_loaded = false;
 	$.get($ZMI.get_rest_api_url(href)+"/get_tags",function(tags) {
 		$(tags).each(x => $("select.version-nr").append(`<option value="${tags[x]}">${tags[x]}</option>`));
 
-		// Initially select former version of original and latest version of changed
-		$('.col-original select.version-nr option:eq(1)').prop('selected', true);
-		$('.col-changed select.version-nr option:eq(0)').prop('selected', true);
-
-		// Load inital content of selected versions
-		$("select.version-nr").each(function() {
-			let $this_col = $(this).parent().parent();
-			let tag = $(this).val();
-			let $preview = $(".preview",$this_col);
-			let $json = $(".json",$this_col);
-			$preview.text($(this).val());
-			$.get($ZMI.get_rest_api_url(href)+"/body_content", {tag:tag,lang:getZMILang()}, function(html) {
-				html = remove_curly_braces(html);
-				$preview.html(html);
-				$.get($ZMI.get_rest_api_url(href)+"/get_tag",{tag:tag},function(json) {
-					let str = JSON.stringify(json, null, 4)
-					$json.text(str);
-				});
-			});
-		});
-		versions_loaded = true;
-
 		// Change event for select.version-nr
-		$("select.version-nr").change(function() {
-			let $this_col = $(this).parent().parent();
-			let tag = $(this).val();
-			let $preview = $(".preview",$this_col);
+		$("select.version-nr").attr("data-loaded",false).change(function() {
+			let $select = $(this);
+			let $this_col = $select.parent().parent();
+			let id = $this_col.attr("id");
+			let tag = $select.val();
+			let $html = $(".preview",$this_col);
 			let $json = $(".json",$this_col);
-			$preview.text($(this).val());
+			$html.text("Loading " + tag + " for " + id + "...");
+			console.log("Loading " + tag + " for " + id + "...");
 			$.get($ZMI.get_rest_api_url(href)+"/body_content", {tag:tag,lang:getZMILang()}, function(html) {
 				html = remove_curly_braces(html);
-				$preview.html(html);
-				if (versions_loaded) {
-					get_htmldiff($('.diff-container'),'.preview');
-				} else {
-					console.log('versions not loaded yet');
-				};
+				$html.html(html);
 				$.get($ZMI.get_rest_api_url(href)+"/get_tag",{tag:tag},function(json) {
 					let str = JSON.stringify(json, null, 4)
 					$json.text(str);
+					console.log("Loaded " + tag + " for " + id);
+					$select.attr("data-loaded",true);
+					let versions_loaded = $("select.version-nr[data-loaded=false]").length == 0;
 					if (versions_loaded) {
+						console.log('generate diff');
+						get_htmldiff($('.diff-container'),'.preview');
 						diff($('.diff-container'),'.json');
 					} else {
-						console.log('versions not loaded yet');
+						console.log('cannot diff yet');
 					}
 				});
 			});
 		});
 
-	});
-	// To be refactored by using promises
-	setTimeout(function() {
-		if (versions_loaded) {
-			// Trigger Change Event for Initial Diff
-			$('.col-original select.version-nr option:eq(1)').change();
-		}
-	}, 1000);
+		// Initially select former version of original and latest version of changed
+		$('.col-original select.version-nr option:eq(1)').prop('selected', true).change();
+		$('.col-changed select.version-nr option:eq(0)').prop('selected', true).change();
 
+	});
 });
 //-->
 </script>

@@ -186,8 +186,33 @@ function diff(container, qualifier) {
 
 $(function() {
 	var href = $ZMI.getPhysicalPath();
+	var versions_loaded = false;
 	$.get($ZMI.get_rest_api_url(href)+"/get_tags",function(tags) {
-		$(tags).each(x => $("select.version-nr").append("<option value=\""+tags[x]+"\">"+tags[x]+"</option>"));
+		$(tags).each(x => $("select.version-nr").append(`<option value="${tags[x]}">${tags[x]}</option>`));
+
+		// Initially select former version of original and latest version of changed
+		$('.col-original select.version-nr option:eq(1)').prop('selected', true);
+		$('.col-changed select.version-nr option:eq(0)').prop('selected', true);
+
+		// Load inital content of selected versions
+		$("select.version-nr").each(function() {
+			let $this_col = $(this).parent().parent();
+			let tag = $(this).val();
+			let $preview = $(".preview",$this_col);
+			let $json = $(".json",$this_col);
+			$preview.text($(this).val());
+			$.get($ZMI.get_rest_api_url(href)+"/body_content", {tag:tag,lang:getZMILang()}, function(html) {
+				html = remove_curly_braces(html);
+				$preview.html(html);
+				$.get($ZMI.get_rest_api_url(href)+"/get_tag",{tag:tag},function(json) {
+					let str = JSON.stringify(json, null, 4)
+					$json.text(str);
+				});
+			});
+		});
+		versions_loaded = true;
+
+		// Change event for select.version-nr
 		$("select.version-nr").change(function() {
 			let $this_col = $(this).parent().parent();
 			let tag = $(this).val();
@@ -197,33 +222,32 @@ $(function() {
 			$.get($ZMI.get_rest_api_url(href)+"/body_content", {tag:tag,lang:getZMILang()}, function(html) {
 				html = remove_curly_braces(html);
 				$preview.html(html);
-				get_htmldiff($('.diff-container'),'.preview');
-				const maxlength = 800;
+				if (versions_loaded) {
+					get_htmldiff($('.diff-container'),'.preview');
+				} else {
+					console.log('versions not loaded yet');
+				};
 				$.get($ZMI.get_rest_api_url(href)+"/get_tag",{tag:tag},function(json) {
-					let str = "";
-					JSON.stringify(json, null, 4).split("\n").forEach(s => {
-						while (s) {
-							let i = s;
-							if (i.length > maxlength) {
-								i = s.substr(0, maxlength);
-								s = s.substr(maxlength);
-							}
-							else {
-								s = "";
-							}
-							str += i + "\n";
-						}
-					});
+					let str = JSON.stringify(json, null, 4)
 					$json.text(str);
-					// TODO: user server-side diff!?
-					diff($('.diff-container'),'.json');
+					if (versions_loaded) {
+						diff($('.diff-container'),'.json');
+					} else {
+						console.log('versions not loaded yet');
+					}
 				});
 			});
 		});
-		// Trigger initial change to load former version for comparison
-		$('.col-original select.version-nr option:eq(1)').prop('selected', true).change();
-		$('.col-changed select.version-nr option:eq(0)').prop('selected', true).change();
+
 	});
+	// To be refactored by using promises
+	setTimeout(function() {
+		if (versions_loaded) {
+			// Trigger Change Event for Initial Diff
+			$('.col-original select.version-nr option:eq(1)').change();
+		}
+	}, 1000);
+
 });
 //-->
 </script>

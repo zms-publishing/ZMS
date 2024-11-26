@@ -12,7 +12,7 @@
 
 # Regarding --debug
 # @see https://zope.readthedocs.io/en/latest/operation.html#running-zope-in-the-foreground
-# seems to sugges that this also enables the debug-mode directive
+# seems to suggest that this also enables the debug-mode directive
 # TODO talk to FH to allow me to check that
 
 exec runwsgi --debug --verbose etc/zope.ini debug-mode=on http_port=80

@@ -295,11 +295,13 @@ class RestApiController(object):
                 change_dt = obj_version.attr('change_dt')
                 change_uid = obj_version.attr('change_uid')
                 if change_dt and change_uid:
-                    tags.append(
-                        (standard.getLangFmtDate(version_item,change_dt,'eng','DATETIME_FMT')
-                        ,'r%i.%i.%i'%(obj_version.attr('master_version'), obj_version.attr('major_version'), obj_version.attr('minor_version'))
-                        ,'/'.join(version_item.getPhysicalPath())
-                        ))
+                    dt = standard.getLangFmtDate(version_item,change_dt,'eng','DATETIME_FMT')
+                    if not [1 for tag in tags if tag[0] == dt]:
+                        tags.append(
+                            (dt
+                            ,'r%i.%i.%i'%(obj_version.attr('master_version'), obj_version.attr('major_version'), obj_version.attr('minor_version'))
+                            ,'/'.join(version_item.getPhysicalPath())
+                            ))
         tags = sorted(list(set(tags)),key=lambda x:x[0])
         tags.reverse()
         physical_path = '/'.join(context.getPhysicalPath())
@@ -309,8 +311,9 @@ class RestApiController(object):
         for i in range(len(tags)):
             tag = list(tags[i])
             if i == 0 and not tag[2] == physical_path:
+                dt = tag[0]
                 rtn.append(
-                    [tag[0]
+                    [dt
                     ,'r*.*.*'
                     , physical_path
                     ])

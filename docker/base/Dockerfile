@@ -31,8 +31,8 @@ USER zope:zope
 WORKDIR /home/zope/
 
 # Install uv
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
-ENV UV_LINK_MODE=copy
+# COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
+# ENV UV_LINK_MODE=copy
 
 # Create venv and permanently enable it
 # ARG CREATE_VENV_COMMAND="uv venv"
@@ -44,6 +44,7 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 # Enable caching of pip packages to speed up rebuild times
 # cannot use uv as long as so many editable packages need to be installed
 # ARG PIP_INSTALL="uv pip install"
+# may need to switch back to pip if the pyproject.toml requirement kicks in
 ARG PIP_INSTALL="pip install --config-settings editable_mode=compat"
 ENV PIP_CACHE_DIR=/home/zope/venv/cache
 RUN --mount=type=cache,uid=$UID,target=$PIP_CACHE_DIR,sharing=locked <<EOR

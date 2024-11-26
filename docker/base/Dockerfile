@@ -42,7 +42,11 @@ RUN $CREATE_VENV_COMMAND $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 # Enable caching of pip packages to speed up rebuild times
-# cannot use uv as long as so many editable packages need to be installed
+# uv follows the new editable spec, even if the package (zms) does not provide a pyproject.toml
+# this creates entries like __editable__.ZMS-5.2.0.finder.__path_hook__ in `Products.__path__`
+# which Zope cannot handle yet
+# @see https://github.com/zopefoundation/Zope/issues/1239
+# uv also cannot install editable eggs from git repos, but I think we don't need that
 # ARG PIP_INSTALL="uv pip install"
 # may need to switch back to pip if the pyproject.toml requirement kicks in
 ARG PIP_INSTALL="pip install --config-settings editable_mode=compat"

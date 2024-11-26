@@ -1,4 +1,4 @@
-FROM python:3.13
+FROM python:3.12
 
 EXPOSE 80
 
@@ -61,12 +61,10 @@ RUN --mount=type=cache,uid=$UID,target=$PIP_CACHE_DIR,sharing=locked <<EOR
     if echo ${PIP_INSTALL} | grep -qv "\buv\b"; then
         $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --upgrade pip wheel setuptools
     fi
-    $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --editable .
+    $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --editable .[dev]
     $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --requirement requirements-full.txt
     $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --upgrade git+https://github.com/sntl-projects/Products.zmsPluggableAuthService.git#egg=Products.zmsPluggableAuthService[nginx-sso]
     $PIP_INSTALL --cache-dir $PIP_CACHE_DIR ZEO
-    # Allow remote debugging from vscode
-    $PIP_INSTALL --cache-dir $PIP_CACHE_DIR debugpy
 EOR
 
 # Create Zope Instance
@@ -79,5 +77,9 @@ COPY --chown=zope:zope $BUILD_DIR/zope.conf etc/zope.conf
 RUN mkdir cache Extensions
 
 COPY --chown=zope:zope Products Products
+# consider if we need the test code to be in the container to run
+# in github actions or similar circumstances
+# locally it is mapped into the container via bindmounts
+# COPY --chown=zope:zope selenium_tests test_output tests ./
 
 CMD runwsgi --verbose etc/zope.ini http_port=80

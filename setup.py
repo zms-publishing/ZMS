@@ -1,5 +1,5 @@
 """
-The ZMS environment consists of an application server based on pegged versions 
+The ZMS environment consists of an application server based on pegged versions
 of depending packages (see requirements.txt).
 
   Use
@@ -69,5 +69,14 @@ setup(
   zip_safe              = False,
   extras_require        = {
       'zeo' : open(os.path.join(setup_path, 'requirements-zeo.txt')).readlines(),
+      'dev' : [
+          # allow debugging from vscode
+          'debugpy',
+          # test execution in container
+          'watching_testrunner',
+          'pytest',
+          # acceptance tests
+          'selenium',
+      ]
   },
 )

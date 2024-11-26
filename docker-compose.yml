@@ -20,9 +20,13 @@ services:
             - ./selenium_tests:/home/zope/selenium_tests
         develop:
             watch:
+                # sync+restart
                 - action: sync+restart
                   path: ./Products
                   target: /home/zope/Products
+                # rebuild
+                - action: rebuild
+                  path: docker/base/Dockerfile
                 - action: rebuild
                   path: requirements.txt
                 - action: rebuild

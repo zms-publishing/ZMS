@@ -186,7 +186,7 @@ function diff(container, qualifier) {
 
 $(function() {
 	var href = $ZMI.getPhysicalPath();
-	$.get($ZMI.get_rest_api_url(href)+"/get_tags",function(tags) {
+	$.get($ZMI.get_rest_api_url(href)+"/get_tags", {lang:getZMILang()}, function(tags) {
 		$(tags).each(x => $("select.version-nr").append(`<option value="${tags[x]}">${tags[x]}</option>`));
 
 		// Change event for select.version-nr

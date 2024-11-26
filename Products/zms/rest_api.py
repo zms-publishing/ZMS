@@ -285,6 +285,7 @@ class RestApiController(object):
     @api(tag="version", pattern="/{path}/get_tags", method="GET", content_type="application/json")
     def get_tags(self, context):
         request = _get_request(context)
+        lang = request.get('lang')
         tags = []
         version_container = context.getVersionContainer()
         version_items = ([version_container] + version_container.getVersionItems(request)) if context.isVersionContainer() else [context]

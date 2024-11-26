@@ -27,7 +27,7 @@ EOR
 # Drop root privileges
 ENV UID=1000
 RUN useradd --system --create-home --uid $UID zope
-USER zope:zope
+USER zope
 WORKDIR /home/zope/
 
 # Install uv

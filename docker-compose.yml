@@ -9,11 +9,32 @@ services:
         ports:
             - 80:80
         volumes:
-            - .:/home/zope/venv/src/zms/
             - ./docker/zope/etc/:/home/zope/etc/
             - ./docker/zope/var/:/home/zope/var/
             # To share external methods between Zope/ZEO/Docker clients folder needs to be mounted
             - ./docker/zope/Extensions/:/home/zope/Extensions/
+            # source code
+            - ./tests:/home/zope/tests
+            - ./test_output:/home/zope/test_output
+            - ./selenium_tests:/home/zope/selenium_tests
+        develop:
+            watch:
+                - action: sync+restart
+                  path: ./Products
+                  target: /home/zope/Products
+                - action: rebuild
+                  path: requirements.txt
+                - action: rebuild
+                  path: requirements-zeo.txt
+                - action: rebuild
+                  path: requirements-full.txt
+                - action: rebuild
+                  path: requirements-dev.txt
+                - action: rebuild
+                  path: setup.py
+                - action: rebuild
+                  path: setup.cfg
+
         # allow attaching to the container to debug with `breakpoint()`
         stdin_open: true
         tty: true

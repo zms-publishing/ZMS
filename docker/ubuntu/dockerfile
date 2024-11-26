@@ -24,8 +24,15 @@ ENV LANGUAGE=en_US.UTF-8
 
 RUN python3 -m venv venv
 RUN pip install -U pip wheel setuptools
-RUN pip install -U -e git+https://github.com/zopefoundation/Zope.git@master#egg=Zope
-RUN pip install -U -e git+https://github.com/zms-publishing/ZMS.git#egg=ZMS
+# RUN pip install -U -e git+https://github.com/zopefoundation/Zope.git@master#egg=Zope
+# RUN pip install -U -e git+https://github.com/zms-publishing/ZMS.git#egg=ZMS
+RUN pip install Zope
+COPY --chown=zope:zope Products Products
+COPY --chown=zope:zope pyproject.toml setup.cfg setup.py requirements.txt \
+    README.rst requirements-zeo.txt \
+    .
+RUN pip install -e .
+
 RUN pip install -r https://raw.githubusercontent.com/zms-publishing/ZMS5/master/requirements-full.txt
 RUN pip install ZEO
 RUN pip install itsdangerous
@@ -34,9 +41,9 @@ RUN pip install itsdangerous
 # Create Zope Instance
 RUN mkwsgiinstance -d . -u admin:admin
 
-COPY ./etc etc
-COPY ./var var
-COPY ./Extensions Extensions
+COPY docker/ubuntu/etc etc
+COPY docker/ubuntu/var var
+COPY docker/ubuntu/Extensions Extensions
 
 EXPOSE 8085
 EXPOSE 8086

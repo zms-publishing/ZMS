@@ -64,9 +64,10 @@ EOR
 RUN mkwsgiinstance --dir . --user admin:admin
 
 # Configure Zope Instance
-COPY --chown=zope:zope --chmod=500 start.sh bin/start.sh
-COPY --chown=zope:zope zope.ini etc/zope.ini
-COPY --chown=zope:zope zope.conf etc/zope.conf
+ARG BUILD_DIR=docker/base
+COPY --chown=zope:zope --chmod=500 $BUILD_DIR/start.sh bin/start.sh
+COPY --chown=zope:zope $BUILD_DIR/zope.ini etc/zope.ini
+COPY --chown=zope:zope $BUILD_DIR/zope.conf etc/zope.conf
 RUN mkdir cache Extensions
 
 CMD ["/home/zope/bin/start.sh"]

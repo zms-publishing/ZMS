@@ -74,11 +74,10 @@ RUN mkwsgiinstance --dir . --user admin:admin
 
 # Configure Zope Instance
 ARG BUILD_DIR=docker/base
-COPY --chown=zope:zope --chmod=500 $BUILD_DIR/start.sh bin/start.sh
 COPY --chown=zope:zope $BUILD_DIR/zope.ini etc/zope.ini
 COPY --chown=zope:zope $BUILD_DIR/zope.conf etc/zope.conf
 RUN mkdir cache Extensions
 
 COPY --chown=zope:zope Products Products
 
-CMD ["/home/zope/bin/start.sh"]
+CMD runwsgi --verbose etc/zope.ini http_port=80

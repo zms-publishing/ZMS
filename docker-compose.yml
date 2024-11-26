@@ -6,6 +6,7 @@ services:
         depends_on:
             - zeo
         stop_grace_period: 1s # SIGKILL after 1s, as zope is always taking the full 10 seconds
+        command: runwsgi --debug --verbose etc/zope.ini debug-mode=on http_port=80
         ports:
             - 80:80
         volumes:

@@ -46,6 +46,10 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 # ARG PIP_INSTALL="uv pip install"
 # may need to switch back to pip if the pyproject.toml requirement kicks in
 ARG PIP_INSTALL="pip install --config-settings editable_mode=compat"
+
+COPY --chown=zope:zope Products/zms/version.txt Products/zms/version.txt
+COPY --chown=zope:zope requirements*.txt setup.py setup.cfg README.rst ./
+
 ENV PIP_CACHE_DIR=/home/zope/venv/cache
 RUN --mount=type=cache,uid=$UID,target=$PIP_CACHE_DIR,sharing=locked <<EOR
     set -ex
@@ -53,9 +57,9 @@ RUN --mount=type=cache,uid=$UID,target=$PIP_CACHE_DIR,sharing=locked <<EOR
     if echo ${PIP_INSTALL} | grep -qv "\buv\b"; then
         $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --upgrade pip wheel setuptools
     fi
-    $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --upgrade --editable git+https://github.com/zms-publishing/ZMS.git#egg=ZMS
-    $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --requirement https://raw.githubusercontent.com/zms-publishing/ZMS/master/requirements-full.txt
-    $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --upgrade --editable git+https://github.com/sntl-projects/Products.zmsPluggableAuthService.git#egg=Products.zmsPluggableAuthService[nginx-sso]
+    $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --editable .
+    $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --requirement requirements-full.txt
+    $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --upgrade git+https://github.com/sntl-projects/Products.zmsPluggableAuthService.git#egg=Products.zmsPluggableAuthService[nginx-sso]
     $PIP_INSTALL --cache-dir $PIP_CACHE_DIR ZEO
     # Allow remote debugging from vscode
     $PIP_INSTALL --cache-dir $PIP_CACHE_DIR debugpy
@@ -70,5 +74,7 @@ COPY --chown=zope:zope --chmod=500 $BUILD_DIR/start.sh bin/start.sh
 COPY --chown=zope:zope $BUILD_DIR/zope.ini etc/zope.ini
 COPY --chown=zope:zope $BUILD_DIR/zope.conf etc/zope.conf
 RUN mkdir cache Extensions
+
+COPY --chown=zope:zope Products Products
 
 CMD ["/home/zope/bin/start.sh"]

@@ -329,8 +329,8 @@ class RestApiController(object):
             d = {}
             for obj_version in version_item.getObjVersions():
                 request.set('ZMS_VERSION_%s'%version_item.id,obj_version.id)
-                change_dt = obj_version.attr('change_dt')
-                change_uid = obj_version.attr('change_uid')
+                change_dt = obj_version.attr('change_dt') or obj_version.attr('created_dt')
+                change_uid = obj_version.attr('change_uid') or obj_version.attr('created_uid')
                 if change_dt and change_uid:
                     d[standard.getLangFmtDate(version_item,change_dt,'eng','DATETIME_FMT')] = obj_version.id
             tags = list(reversed(sorted(list(d.keys())))) 
@@ -353,8 +353,8 @@ class RestApiController(object):
             d = {}
             for obj_version in version_item.getObjVersions():
                 request.set('ZMS_VERSION_%s'%version_item.id,obj_version.id)
-                change_dt = obj_version.attr('change_dt')
-                change_uid = obj_version.attr('change_uid')
+                change_dt = obj_version.attr('change_dt') or obj_version.attr('created_dt')
+                change_uid = obj_version.attr('change_uid') or obj_version.attr('created_uid')
                 if change_dt and change_uid:
                     d[standard.getLangFmtDate(version_item,change_dt,'eng','DATETIME_FMT')] = obj_version.id
             tags = list(reversed(sorted(list(d.keys())))) 

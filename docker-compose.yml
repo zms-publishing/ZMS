@@ -3,6 +3,7 @@ services:
         build:
             context: .
             dockerfile: ./docker/base/Dockerfile
+        image: localhost/zms:latest
         depends_on:
             - zeo
         stop_grace_period: 1s # SIGKILL after 1s, as zope is always taking the full 10 seconds
@@ -48,6 +49,7 @@ services:
         build:
             context: .
             dockerfile: ./docker/base/Dockerfile
+        image: localhost/zms:latest
         command: runzeo --configure etc/zeo.conf
         volumes:
             - ./docker/zeo/etc/:/home/zope/etc/

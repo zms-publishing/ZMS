@@ -1,6 +1,4 @@
 #!/bin/bash
-instance_dir="/home/zope/"
-venv_bin_dir="/home/zope/venv/bin"
 
 # Regarding debug-mode=on
 # @see https://zope.readthedocs.io/en/latest/zopebook/InstallingZope.html#the-debug-mode-directive
@@ -17,4 +15,4 @@ venv_bin_dir="/home/zope/venv/bin"
 # seems to sugges that this also enables the debug-mode directive
 # TODO talk to FH to allow me to check that
 
-exec $venv_bin_dir/runwsgi --debug --verbose $instance_dir/etc/zope.ini debug-mode=on http_port=80
+exec runwsgi --debug --verbose etc/zope.ini debug-mode=on http_port=80

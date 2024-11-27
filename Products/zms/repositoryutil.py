@@ -30,6 +30,7 @@ from zope.interface import providedBy
 import inspect
 import os
 import re
+import sys
 # Product Imports.
 from Products.zms import IZMSConfigurationProvider
 from Products.zms import IZMSRepositoryProvider
@@ -65,9 +66,13 @@ Get class from py-string.
 """
 def get_class(py):
   id = re.findall('class (.*?):', py)[0]
-  py = py + "\nglobal c\nc = " + id
-  exec(py, globals=globals(), locals=locals())
-  return eval("c", globals=globals(), locals=locals())
+  if sys.version_info >= (3, 13):
+    py = py + "\nglobal c\nc = " + id
+    exec(py, globals=globals(), locals=locals())
+    return eval("c", globals=globals(), locals=locals())
+  else:
+    exec(py)
+    return eval(id)
 
 
 """

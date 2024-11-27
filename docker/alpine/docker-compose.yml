@@ -1,8 +1,8 @@
 version: "3.7"
 services:
-  zms5:
+  zms5-alpine:
     build: .
-    image: zms5:latest
+    image: zms5-alpine:latest
     ports:
       - 8085:8085
       - 8086:8086

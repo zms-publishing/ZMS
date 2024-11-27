@@ -65,8 +65,9 @@ Get class from py-string.
 """
 def get_class(py):
   id = re.findall('class (.*?):', py)[0]
-  exec(py)
-  return eval(id)
+  py = py + "\nglobal c\nc = " + id
+  exec(py, globals=globals(), locals=locals())
+  return eval("c", globals=globals(), locals=locals())
 
 
 """

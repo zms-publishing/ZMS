@@ -1,0 +1,10 @@
+[Unit]
+Description=ZMS/Zope ZEO zeopack
+After=network-online.target
+
+[Service]
+Type=simple
+User=zope
+# I do not know yet how to execute this correctly
+# may require a script that execs into the zeo container to trigger this?
+ExecStart=/home/zope/instance/bin/zeopack

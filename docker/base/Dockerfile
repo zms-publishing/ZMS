@@ -27,12 +27,12 @@ EOR
 # Drop root privileges
 ENV UID=1000
 RUN useradd --system --create-home --uid $UID zope
-USER zope:zope
+USER zope
 WORKDIR /home/zope/
 
 # Install uv
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
-ENV UV_LINK_MODE=copy
+# COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
+# ENV UV_LINK_MODE=copy
 
 # Create venv and permanently enable it
 # ARG CREATE_VENV_COMMAND="uv venv"
@@ -42,9 +42,18 @@ RUN $CREATE_VENV_COMMAND $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 # Enable caching of pip packages to speed up rebuild times
-# cannot use uv as long as so many editable packages need to be installed
+# uv follows the new editable spec, even if the package (zms) does not provide a pyproject.toml
+# this creates entries like __editable__.ZMS-5.2.0.finder.__path_hook__ in `Products.__path__`
+# which Zope cannot handle yet
+# @see https://github.com/zopefoundation/Zope/issues/1239
+# uv also cannot install editable eggs from git repos, but I think we don't need that
 # ARG PIP_INSTALL="uv pip install"
+# may need to switch back to pip if the pyproject.toml requirement kicks in
 ARG PIP_INSTALL="pip install --config-settings editable_mode=compat"
+
+COPY --chown=zope:zope Products/zms/version.txt Products/zms/version.txt
+COPY --chown=zope:zope requirements*.txt setup.py setup.cfg README.rst ./
+
 ENV PIP_CACHE_DIR=/home/zope/venv/cache
 RUN --mount=type=cache,uid=$UID,target=$PIP_CACHE_DIR,sharing=locked <<EOR
     set -ex
@@ -52,21 +61,25 @@ RUN --mount=type=cache,uid=$UID,target=$PIP_CACHE_DIR,sharing=locked <<EOR
     if echo ${PIP_INSTALL} | grep -qv "\buv\b"; then
         $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --upgrade pip wheel setuptools
     fi
-    $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --upgrade --editable git+https://github.com/zms-publishing/ZMS.git#egg=ZMS
-    $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --requirement https://raw.githubusercontent.com/zms-publishing/ZMS5/master/requirements-full.txt
-    $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --upgrade --editable git+https://github.com/sntl-projects/Products.zmsPluggableAuthService.git#egg=Products.zmsPluggableAuthService[nginx-sso]
+    $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --editable .[dev]
+    $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --requirement requirements-full.txt
+    $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --upgrade git+https://github.com/sntl-projects/Products.zmsPluggableAuthService.git#egg=Products.zmsPluggableAuthService[nginx-sso]
     $PIP_INSTALL --cache-dir $PIP_CACHE_DIR ZEO
-    # Allow remote debugging from vscode
-    $PIP_INSTALL --cache-dir $PIP_CACHE_DIR debugpy
 EOR
 
 # Create Zope Instance
 RUN mkwsgiinstance --dir . --user admin:admin
 
 # Configure Zope Instance
-COPY --chown=zope:zope --chmod=500 start.sh bin/start.sh
-COPY --chown=zope:zope zope.ini etc/zope.ini
-COPY --chown=zope:zope zope.conf etc/zope.conf
+ARG BUILD_DIR=docker/base
+COPY --chown=zope:zope $BUILD_DIR/zope.ini etc/zope.ini
+COPY --chown=zope:zope $BUILD_DIR/zope.conf etc/zope.conf
 RUN mkdir cache Extensions
 
-CMD ["/home/zope/bin/start.sh"]
+COPY --chown=zope:zope Products Products
+# consider if we need the test code to be in the container to run
+# in github actions or similar circumstances
+# locally it is mapped into the container via bindmounts
+# COPY --chown=zope:zope selenium_tests test_output tests ./
+
+CMD runwsgi --verbose etc/zope.ini http_port=80

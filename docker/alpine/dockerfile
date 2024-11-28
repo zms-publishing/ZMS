@@ -1,4 +1,4 @@
-FROM alpine
+FROM python:3.13-alpine
 
 EXPOSE 8085
 EXPOSE 8086
@@ -18,7 +18,11 @@ ENV VIRTUAL_ENV=/home/zope/venv
 RUN python3 -m venv venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 RUN pip install -U pip wheel setuptools
-RUN pip install -U -e git+https://github.com/zms-publishing/ZMS.git@main#egg=ZMS
+# RUN pip install -U -e git+https://github.com/zms-publishing/ZMS.git@main#egg=ZMS
+# Install Zope --editable first, so that the toml-setup can be used
+# https://github.com/zms-publishing/ZMS/pull/302#issuecomment-2327312673
+RUN pip install -e git+https://github.com/zopefoundation/Zope.git@master#egg=Zope
+RUN pip install -e git+https://github.com/zms-publishing/ZMS.git@fb_pip_using_pyproject_toml#egg=ZMS
 RUN pip install -r https://raw.githubusercontent.com/zms-publishing/ZMS5/master/requirements-full.txt
 RUN pip install ZEO
 RUN pip install itsdangerous

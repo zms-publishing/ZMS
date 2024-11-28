@@ -1,0 +1,27 @@
+[Unit]
+Description=ZMS/Zope rebuilder and restarter
+
+After=docker.service
+Requires=docker.service
+
+
+[Service]
+#User=zope
+#Group=zope
+Restart=always
+
+## FIXME /path/to/oidc_client/ needs to point to the root folder of the source code of the oidc_client
+## so docker can actually build the image
+## TODO probably best to point to a rebuild script?
+Environment="INSTANCE_HOME=/path/to/instance_home"
+Environment="DOCKER_IMAGE=localhost/zms DOCKER_TAG=latest"
+
+TimeoutStartSec=0
+PrivateTmp=true
+
+ExecStartPre=/usr/bin/docker build --no-cache --pull --tag $DOCKER_IMAGE:$DOCKER_TAG $INSTANCE_HOME
+ExecStart=/usr/bin/systemd restart zms@*.service
+
+[Install]
+WantedBy=multi-user.target
+WantedBy=zms.target

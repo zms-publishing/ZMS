@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<w:styles xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" mc:Ignorable="w14 w15">
+<w:styles xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+	xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" 
+	xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" 
+	xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" 
+	xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" 
+	mc:Ignorable="w14 w15">
 	<w:docDefaults>
 		<w:rPrDefault>
 			<w:rPr>
 				<w:rFonts w:asciiTheme="majorHAnsi" w:eastAsiaTheme="minorEastAsia" w:hAnsiTheme="majorHAnsi" w:cstheme="minorBidi"/>
 				<w:sz w:val="18"/>
 				<w:szCs w:val="18"/>
-				<w:lang w:val="en-US" w:eastAsia="en-US" w:bidi="ar-SA"/>
+				<w:lang w:val="de-DE" w:eastAsia="en-US" w:bidi="ar-SA"/>
 			</w:rPr>
 		</w:rPrDefault>
 		<w:pPrDefault>
@@ -15,25 +20,25 @@
 			</w:pPr>
 		</w:pPrDefault>
 	</w:docDefaults>
-	<w:latentStyles w:defLockedState="1" w:defUIPriority="99" w:defSemiHidden="0" w:defUnhideWhenUsed="0" w:defQFormat="0" w:count="19">
-		<w:lsdException w:name="Normal" w:locked="0" w:uiPriority="0" w:qFormat="1"/>
-		<w:lsdException w:name="Default Paragraph Font" w:semiHidden="1" w:uiPriority="1" w:unhideWhenUsed="1"/>
-		<w:lsdException w:name="heading 1" w:locked="0" w:uiPriority="9" w:qFormat="1"/>
-		<w:lsdException w:name="heading 2" w:locked="0" w:semiHidden="1" w:uiPriority="9" w:unhideWhenUsed="1" w:qFormat="1"/>
-		<w:lsdException w:name="heading 3" w:locked="0" w:semiHidden="1" w:uiPriority="9" w:unhideWhenUsed="1" w:qFormat="1"/>
-		<w:lsdException w:name="heading 4" w:locked="0" w:semiHidden="1" w:uiPriority="9" w:unhideWhenUsed="1" w:qFormat="1"/>
-		<w:lsdException w:name="heading 5" w:locked="0" w:semiHidden="1" w:uiPriority="9" w:unhideWhenUsed="1" w:qFormat="1"/>
-		<w:lsdException w:name="heading 6" w:locked="0" w:semiHidden="1" w:uiPriority="9" w:unhideWhenUsed="1" w:qFormat="1"/>
-		<w:lsdException w:name="header" w:locked="0" w:semiHidden="1" w:unhideWhenUsed="1"/>
-		<w:lsdException w:name="footer" w:locked="0" w:semiHidden="1" w:unhideWhenUsed="1"/>
-		<w:lsdException w:name="caption" w:locked="0" w:semiHidden="1" w:uiPriority="35" w:unhideWhenUsed="1" w:qFormat="1"/>
-		<w:lsdException w:name="Title" w:locked="0" w:uiPriority="10" w:qFormat="1"/>
-		<w:lsdException w:name="Hyperlink" w:locked="0" w:semiHidden="1" w:unhideWhenUsed="1"/>
-		<w:lsdException w:name="Strong" w:locked="0" w:uiPriority="22" w:qFormat="1"/>
-		<w:lsdException w:name="Emphasis" w:locked="0" w:uiPriority="20" w:qFormat="1"/>
-		<w:lsdException w:name="Normal Table" w:locked="0" w:semiHidden="1" w:unhideWhenUsed="1"/>
-		<w:lsdException w:name="No List" w:locked="0" w:semiHidden="1" w:unhideWhenUsed="1"/>
-		<w:lsdException w:name="Quote" w:locked="0" w:uiPriority="29" w:qFormat="1"/>
+	<w:latentStyles w:defLockedState="1" w:defUIPriority="99" w:defSemiHidden="1" w:defUnhideWhenUsed="1" w:defQFormat="1" w:count="19">
+		<w:lsdException w:name="Normal" w:uiPriority="0"/>
+		<w:lsdException w:name="Default Paragraph Font" w:uiPriority="1"/>
+		<w:lsdException w:name="Title" w:uiPriority="10"/>
+		<w:lsdException w:name="heading 1" w:uiPriority="9"/>
+		<w:lsdException w:name="heading 2" w:uiPriority="9"/>
+		<w:lsdException w:name="heading 3" w:uiPriority="9"/>
+		<w:lsdException w:name="heading 4" w:uiPriority="9"/>
+		<w:lsdException w:name="heading 5" w:uiPriority="9"/>
+		<w:lsdException w:name="heading 6" w:uiPriority="9"/>
+		<w:lsdException w:name="header"/>
+		<w:lsdException w:name="footer"/>
+		<w:lsdException w:name="caption" w:uiPriority="21"/>
+		<w:lsdException w:name="Hyperlink" w:uiPriority="22"/>
+		<w:lsdException w:name="Strong" w:uiPriority="23"/>
+		<w:lsdException w:name="Emphasis" w:uiPriority="24"/>
+		<w:lsdException w:name="Quote" w:uiPriority="25"/>
+		<w:lsdException w:name="Normal Table"/>
+		<w:lsdException w:name="No List"/>
 	</w:latentStyles>
 
 	<w:style w:type="character" w:default="1" w:styleId="Absatz-Standardschriftart">
@@ -47,7 +52,6 @@
 		<w:name w:val="Normal"/>
 		<w:uiPriority w:val="1"/>
 		<w:qFormat/>
-		<w:rsid w:val="00AE0547"/>
 		<w:pPr>
 			<w:suppressAutoHyphens w:val="0"/>
 			<w:spacing w:before="120" w:after="120" w:line="324" w:lineRule="auto"/>
@@ -60,7 +64,6 @@
 		<w:next w:val="Standard"/>
 		<w:uiPriority w:val="2"/>
 		<w:qFormat/>
-		<w:rsid w:val="00FC693F"/>
 		<w:pPr>
 			<w:pBdr>
 				<w:bottom w:val="single" w:sz="2" w:space="9" w:color="017D87"/>
@@ -83,7 +86,6 @@
 		<w:next w:val="Standard"/>
 		<w:uiPriority w:val="3"/>
 		<w:qFormat/>
-		<w:rsid w:val="00AE0547"/>
 		<w:pPr>
 			<w:keepNext/>
 			<w:keepLines/>
@@ -105,7 +107,6 @@
 		<w:uiPriority w:val="4"/>
 		<w:unhideWhenUsed/>
 		<w:qFormat/>
-		<w:rsid w:val="003D04AE"/>
 		<w:pPr>
 			<w:spacing w:before="480" w:after="0" w:line="288" w:lineRule="auto"/>
 			<w:outlineLvl w:val="1"/>
@@ -124,7 +125,6 @@
 		<w:uiPriority w:val="5"/>
 		<w:unhideWhenUsed/>
 		<w:qFormat/>
-		<w:rsid w:val="003D04AE"/>
 		<w:pPr>
 			<w:spacing w:before="440" w:after="0"/>
 			<w:outlineLvl w:val="2"/>
@@ -144,7 +144,6 @@
 		<w:uiPriority w:val="6"/>
 		<w:unhideWhenUsed/>
 		<w:qFormat/>
-		<w:rsid w:val="00FC693F"/>
 		<w:pPr>
 			<w:spacing w:before="280" w:after="0"/>
 			<w:outlineLvl w:val="3"/>
@@ -166,7 +165,6 @@
 		<w:uiPriority w:val="7"/>
 		<w:unhideWhenUsed/>
 		<w:qFormat/>
-		<w:rsid w:val="006D34B4"/>
 		<w:pPr>
 			<w:spacing w:before="200" w:after="0"/>
 			<w:outlineLvl w:val="4"/>
@@ -185,7 +183,6 @@
 		<w:uiPriority w:val="8"/>
 		<w:unhideWhenUsed/>
 		<w:qFormat/>
-		<w:rsid w:val="00FC693F"/>
 		<w:pPr>
 			<w:keepNext/>
 			<w:keepLines/>
@@ -204,7 +201,6 @@
 		<w:basedOn w:val="Absatz-Standardschriftart"/>
 		<w:uiPriority w:val="20"/>
 		<w:qFormat/>
-		<w:rsid w:val="00FC693E"/>
 		<w:rPr>
 			<w:color w:val="3465A4"/>
 			<w:u w:val="single"/>
@@ -216,7 +212,6 @@
 		<w:basedOn w:val="Absatz-Standardschriftart"/>
 		<w:uiPriority w:val="21"/>
 		<w:qFormat/>
-		<w:rsid w:val="00FC693F"/>
 		<w:rPr>
 			<w:b/>
 			<w:bCs/>
@@ -253,7 +248,6 @@
 		<w:uiPriority w:val="99"/>
 		<w:unhideWhenUsed/>
 		<w:locked/>
-		<w:rsid w:val="00AA1D8D"/>
 		<w:pPr>
 			<w:ind w:left="360" w:hanging="360"/>
 			<w:contextualSpacing/>
@@ -271,7 +265,6 @@
 		<w:basedOn w:val="Standard"/>
 		<w:uiPriority w:val="99"/>
 		<w:unhideWhenUsed/>
-		<w:rsid w:val="00E618BF"/>
 		<w:pPr>
 			<w:tabs>
 				<w:tab w:val="center" w:pos="4680"/>
@@ -290,7 +283,6 @@
 		<w:basedOn w:val="Standard"/>
 		<w:uiPriority w:val="99"/>
 		<w:unhideWhenUsed/>
-		<w:rsid w:val="00E618BF"/>
 		<w:pPr>
 			<w:tabs>
 				<w:tab w:val="right" w:pos="9354"/>
@@ -330,7 +322,6 @@
 		<w:uiPriority w:val="99"/>
 		<w:unhideWhenUsed/>
 		<w:qFormat/>
-		<w:rsid w:val="0029639D"/>
 		<w:pPr>
 			<w:tabs>
 				<w:tab w:val="left" w:pos="576"/>
@@ -357,7 +348,6 @@
 		<w:link w:val="Code"/>
 		<w:uiPriority w:val="99"/>
 		<w:qFormat/>
-		<w:rsid w:val="00296391"/>
 		<w:rPr>
 			<w:rFonts w:ascii="Courier" w:hAnsi="Courier"/>
 			<w:b/>
@@ -374,7 +364,6 @@
 		<w:link w:val="QuoteInline"/>
 		<w:uiPriority w:val="99"/>
 		<w:qFormat/>
-		<w:rsid w:val="00FC693F"/>
 		<w:rPr>
 			<w:i/>
 			<w:iCs/>
@@ -390,7 +379,6 @@
 		<w:link w:val="Quote"/>
 		<w:uiPriority w:val="99"/>
 		<w:qFormat/>
-		<w:rsid w:val="00296392"/>
 		<w:rPr>
 			<w:i w:val="false"/>
 			<w:iCs/>
@@ -404,7 +392,6 @@
 		<w:basedOn w:val="Absatz-Standardschriftart"/>
 		<w:uiPriority w:val="99"/>
 		<w:qFormat/>
-		<w:rsid w:val="00296393"/>
 		<w:rPr>
 			<w:iCs/>
 			<w:color w:val="000000"/>
@@ -525,7 +512,6 @@
 			</w:numPr>
 			<w:spacing w:before="227" w:after="227" w:line="276" w:lineRule="auto"/>
 			<w:ind w:hanging="283"/>
-			<w:outlineLvl w:val="0"/>
 		</w:pPr>
 	</w:style>
 
@@ -534,7 +520,6 @@
 		<w:basedOn w:val="Standard"/>
 		<w:qFormat/>
 		<w:locked/>
-		<w:rsid w:val="0042280A"/>
 		<w:pPr>
 			<w:numPr>
 				<w:numId w:val="8"/>
@@ -615,7 +600,6 @@
 		<w:name w:val="Table Grid"/>
 		<w:basedOn w:val="NormaleTabelle"/>
 		<w:uiPriority w:val="99"/>
-		<w:rsid w:val="00FC693F"/>
 		<w:tblPr>
 			<w:tblBorders>
 				<w:top w:val="single" w:sz="4" w:space="0" w:color="auto"/>

@@ -186,6 +186,7 @@ def add_hyperlink(docx_block, link_text, url):
 	url_base = 'http://neon/'
 	# Omit javascript links
 	if not url.startswith('javascript:'):
+		url = url.replace('mailto:', '')
 		# Fix missing domain name
 		url = ('http' in url) and url.replace('http:///', url_base) or (url_base + (url.startswith('/') and url[1:] or url))
 		r_id = docx_block.part.relate_to(url, docx.opc.constants.RELATIONSHIP_TYPE.HYPERLINK, is_external=True)
@@ -510,6 +511,10 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 							if {'div','ol','ul','table','p'} & set([e.name for e in cl.children]):
 								# [A] Block elements
 								add_htmlblock_to_docx(zmscontext, docx_cell, cl_html, zmsid=None)
+								# Cleaning: remove first cell paragraph if empty
+								if docx_cell.paragraphs[0].text == '':
+									first_p = docx_cell.paragraphs[0]._element
+									docx_cell._tc.remove(first_p)
 							elif set([e.name for e in cl.children])==set([None]):
 								# [B] Just text
 								p.text = cl.text
@@ -588,7 +593,25 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 						ZMSTextarea_html = standard.pystr(''.join([str(e) for e in element.children]))
 						add_htmlblock_to_docx(zmscontext, docx_doc, ZMSTextarea_html, zmsid, zmsmetaid='ZMSTextarea')
 					elif element.has_attr('class') and 'handlungsaufforderung' in element['class']:
-						add_tagged_content_as_paragraph(docx_doc, element, 'Handlungsaufforderung', c, zmsid)
+						if len([e.name for e in element.children if e.name in ['ul','ol']])>0:
+							add_tagged_content_as_paragraph(docx_doc, element, 'Handlungsaufforderung', c, zmsid)
+							child_tag = [e.name for e in element.children if e.name][0]
+							# COPY add_list
+							def add_list(docx_obj, element, level=0, c=0):
+								for i, li in enumerate(element.find_all('li', recursive=False)):
+									if docx_obj.paragraphs and docx_obj.paragraphs[-1].text == '':
+										p = docx_obj.paragraphs[-1]
+									else:
+										p = docx_obj.add_paragraph()
+									p = set_block_as_listitem(p, list_type=element.name, level=level, i=i)
+									add_runs(docx_block = p, bs_element = li)
+									if c==1 and zmsid:
+										prepend_bookmark(p, zmsid)
+									for ul in li.find_all(['ul','ol'], recursive=False):
+										add_list(docx_doc, ul, level+1)
+							add_list(docx_doc, element.find(child_tag), level=1, c=c)
+						else:
+							add_tagged_content_as_paragraph(docx_doc, element, 'Handlungsaufforderung', c, zmsid)
 					elif element.has_attr('class') and 'grundsatz' in element['class']:
 						add_tagged_content_as_paragraph(docx_doc, element, 'Grundsatz', c, zmsid)
 					elif element.has_attr('style') and 'background: rgb(238, 238, 238)' in element['style'] \
@@ -705,7 +728,7 @@ def add_breadcrumbs_as_runs(zmscontext, p):
 	c = 0
 	for obj in breadcrumbs:
 		c += 1
-		link_text = obj.meta_id == 'ZMS' and standard.pystr(obj.attr('title')) or standard.pystr(obj.attr('titlealt'))
+		link_text = obj.meta_id == 'ZMS' and standard.pystr(obj.attr('title')) or standard.pystr(obj.getTitlealt(zmscontext.REQUEST))
 		add_hyperlink(docx_block = p, link_text = link_text, url = obj.getHref2IndexHtml(zmscontext.REQUEST))
 		if c < len(breadcrumbs):
 			p.add_run(' > ')
@@ -755,7 +778,9 @@ def apply_standard_json_docx(self):
 
 	zmscontext = self
 	request = zmscontext.REQUEST
-	# request.set('preview', 'preview')
+	# ### FOR DEBUGGING USE PREVIEW ###############
+	request.set('preview', 'preview')
+	# #############################################
 	is_page = zmscontext.isPage()
 
 	id = zmscontext.id
@@ -1057,6 +1082,7 @@ def add_heading(self, text, level=1):
 # binary data of the DOCX file.
 def manage_export_pydocx(self, save_file=True, file_name=None):
 	request = self.REQUEST
+	request.set('lang', self.getPrimaryLanguage())
 	docx_creator = request.AUTHENTICATED_USER.getUserName()
 
 	# PAGE_COUNTER: Counter for recursive export

@@ -390,7 +390,7 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 					if c==1 and zmsid: 
 						prepend_bookmark(p, zmsid)
 					if element.text == 'Inhaltsverzeichnis':
-						p.style = docx_doc.styles['TOC-Header']
+						p.style = doc.styles['TOC-Header']
 				# #############################################
 				# PARAGRAPH
 				# #############################################
@@ -402,11 +402,14 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 					# htmlblock.__contains__('ZMSTable') or htmlblock.__contains__('img')
 					if element.has_attr('class'):
 						if 'caption' in element['class'] and zmsmetaid in ['ZMSGraphic', 'ZMSTable']:
-							p.style = docx_doc.styles['caption']
+							p.style = doc.styles['caption']
 						else:
 							class_name = element['class'][0]
-							style_name = (class_name in docx_doc.styles) and class_name or 'Normal'
-							p.style = docx_doc.styles[style_name]
+							try:
+								style_name = (class_name in doc.styles) and class_name or 'Normal'
+							except:
+								style_name = 'Normal'
+								p.style = doc.styles[style_name]
 					add_runs(docx_block = p, bs_element = element)
 
 					## Remove empty paragraphs
@@ -510,7 +513,10 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 						try:
 							if {'div','ol','ul','table','p'} & set([e.name for e in cl.children]):
 								# [A] Block elements
-								add_htmlblock_to_docx(zmscontext, docx_cell, cl_html, zmsid=None)
+								try:
+									add_htmlblock_to_docx(zmscontext, docx_cell, cl_html, zmsid=None)
+								except:
+									p.add_run('Rendering Error Table-Cell: %s'%cl.text)
 								# Cleaning: remove first cell paragraph if empty
 								if docx_cell.paragraphs[0].text == '':
 									first_p = docx_cell.paragraphs[0]._element
@@ -630,8 +636,8 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 								prepend_bookmark(p, zmsid)
 							if len(element.contents) == 1:
 								if element.has_attr('class'):
-									style_name = (class_name in docx_doc.styles) and class_name or 'Normal'
-									p.style = docx_doc.styles[style_name]
+									style_name = (class_name in doc.styles) and class_name or 'Normal'
+									p.style = doc.styles[style_name]
 								p.add_run(element.text)
 							elif len(element.contents) > 1:
 								for e in element.contents:

@@ -245,6 +245,26 @@ def clean_html(html):
 	html = html.replace(left_to_right_char,'')
 	html = html.replace('[[', triangle_char)
 	html = html.replace(']]', '')
+
+	# Nest text (not nested by an html-element) following a block element into a paragraph, like:
+	# %<--------------
+	# <div class="handlungsaufforderung">Den Inkassoauftrag\xa0beim Inkassounternehmen 
+	# zur\xfcckziehen (siehe Handling <a data-id="{$uid:61882d10-33f1-4a8b-8518-a0ee5bf2b9e8}" 
+	# href="/site30/content/e254/e758/e761/e19882/?preview=preview">Inkassounternehmen 
+	# benachrichtigen</a>).</div> RUBIN vermerkt den Inkassostatus <strong>zur\xfcck</strong> 
+	# und l\xf6st die Mitteilung \xfcber die R\xfccknahme an das Inkassounternehmen aus.
+	# %<--------------
+	# => 
+	# %<--------------
+	# <div class="handlungsaufforderung">Den Inkassoauftrag\xa0beim Inkassounternehmen 
+	# zur\xfcckziehen (siehe Handling <a data-id="{$uid:61882d10-33f1-4a8b-8518-a0ee5bf2b9e8}" 
+	# href="/site30/content/e254/e758/e761/e19882/?preview=preview">Inkassounternehmen 
+	# benachrichtigen</a>).</div>
+	# <p>RUBIN vermerkt den Inkassostatus <strong>zur\xfcck</strong> 
+	# und l\xf6st die Mitteilung \xfcber die R\xfccknahme an das Inkassounternehmen aus.</p>
+	# %<--------------
+
+	# html = re.sub(r'(?i)(?m)(<div.*?>)(.*?)(</div>)(.*?)', r'\g<1>\g<2>\g<3><p>\g<4><p>', html)
 	return html
 
 # ADD RUNS TO DOCX-BLOCK
@@ -377,10 +397,17 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 					prepend_bookmark(p, zmsid)
 			else: 
 				# #############################################
-				# HTML-Elements, element.name != None
+				# INLINE ELEMENTS not nested by a block element
+				# just following a text element
 				# #############################################
+				# orphaned_inline_elements = ['strong','b','em','i','q','quote','samp','code','tt','var','kbd','sub','sup']
+				# if element.name in orphaned_inline_elements and element.find_parent() == soup:
+				# 	p.add_run(' ')
+				# 	add_runs(p, element)
 
 				# #############################################
+				# BLOCK-Elements, element.name != None
+				# ---------------------------------------------
 				# HEADINGS
 				# #############################################
 				if element.name in ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']:
@@ -707,14 +734,18 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 					for input_field in element.find_all('input', recursive=True):
 						input_field_count += 1
 						p.add_run('%s. <input> : %s\n'%(input_field_count, input_field.get('name','')))
+
 				# #############################################
-				# OTHERS
+				# OTHER ELEMENTS
 				# #############################################
 				elif element.name == 'hr':
 					# Omit horizontal rule
 					pass
 				elif element.name == 'script':
 					# Omit javascript
+					pass
+				elif element.name == 'style':
+					# Omit style
 					pass
 				else:
 					try:

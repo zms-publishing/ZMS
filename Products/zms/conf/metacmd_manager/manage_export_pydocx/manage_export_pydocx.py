@@ -245,26 +245,8 @@ def clean_html(html):
 	html = html.replace(left_to_right_char,'')
 	html = html.replace('[[', triangle_char)
 	html = html.replace(']]', '')
-
-	# Nest text (not nested by an html-element) following a block element into a paragraph, like:
-	# %<--------------
-	# <div class="handlungsaufforderung">Den Inkassoauftrag\xa0beim Inkassounternehmen 
-	# zur\xfcckziehen (siehe Handling <a data-id="{$uid:61882d10-33f1-4a8b-8518-a0ee5bf2b9e8}" 
-	# href="/site30/content/e254/e758/e761/e19882/?preview=preview">Inkassounternehmen 
-	# benachrichtigen</a>).</div> RUBIN vermerkt den Inkassostatus <strong>zur\xfcck</strong> 
-	# und l\xf6st die Mitteilung \xfcber die R\xfccknahme an das Inkassounternehmen aus.
-	# %<--------------
-	# => 
-	# %<--------------
-	# <div class="handlungsaufforderung">Den Inkassoauftrag\xa0beim Inkassounternehmen 
-	# zur\xfcckziehen (siehe Handling <a data-id="{$uid:61882d10-33f1-4a8b-8518-a0ee5bf2b9e8}" 
-	# href="/site30/content/e254/e758/e761/e19882/?preview=preview">Inkassounternehmen 
-	# benachrichtigen</a>).</div>
-	# <p>RUBIN vermerkt den Inkassostatus <strong>zur\xfcck</strong> 
-	# und l\xf6st die Mitteilung \xfcber die R\xfccknahme an das Inkassounternehmen aus.</p>
-	# %<--------------
-
-	# html = re.sub(r'(?i)(?m)(<div.*?>)(.*?)(</div>)(.*?)', r'\g<1>\g<2>\g<3><p>\g<4><p>', html)
+	# Wrap untagged text following a block element into a paragraph
+	html = re.sub(r'(?i)(?m)(<div.*?>.*?<\/div>)\s*(?=\w)(.*?)', r'\g<1>\n<p>\g<2><p>', html)
 	return html
 
 # ADD RUNS TO DOCX-BLOCK

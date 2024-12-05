@@ -202,7 +202,7 @@ $(function() {
 			$.get($ZMI.get_rest_api_url(href)+"/body_content", {tag:tag,lang:getZMILang()}, function(html) {
 				html = remove_curly_braces(html);
 				$html.html(html);
-				$.get($ZMI.get_rest_api_url(href)+"/get_tag",{tag:tag},function(json) {
+				$.get($ZMI.get_rest_api_url(href)+"/get_tag",{tag:tag,lang:getZMILang()},function(json) {
 					let str = JSON.stringify(json, null, 4)
 					$json.text(str);
 					console.log("Loaded " + tag + " for " + id);

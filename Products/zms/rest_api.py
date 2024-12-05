@@ -324,6 +324,7 @@ class RestApiController(object):
     @api(tag="version", pattern="/{path}/get_tag", method="GET", content_type="application/json")
     def get_tag(self, context):
         request = _get_request(context)
+        lang = request.get('lang')
         tag = request.get('tag').split(",")
         dt = tag[0]
         data = []
@@ -348,6 +349,7 @@ class RestApiController(object):
     @api(tag="version", pattern="/{path}/body_content", method="GET", content_type="text/html")
     def body_content(self, context):
         request = _get_request(context)
+        lang = request.get('lang')
         tag = request.get('tag').split(",")
         dt = tag[0]
         html = []

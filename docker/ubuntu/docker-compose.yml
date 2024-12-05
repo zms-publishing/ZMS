@@ -1,23 +1,25 @@
-version: "3.7"
 services:
-  zms5:
-    build: .
-    image: zms5:ubuntu
-    ports:
-      - 8085:8085
-      - 8086:8086
-      - 8080:8080
-      - 5678:5678
-    environment:
-      - PYTHONUNBUFFERED="1"
-      - CONFIG_FILE="/home/zope/etc/zope.ini"
-      - INSTANCE_HOME="/home/zope"
-      - CLIENT_HOME="/home/zope"
-      - PYTHON="/home/zope/venv/bin/python"
-      - SOFTWARE_HOME="/home/zope/venv/bin"
-    volumes:
-      - ./etc/:/home/zope/etc/
-      - ./Extensions/:/home/zope/Extensions/:rw
-      - ./var/:/home/zope/var/
+    zms5:
+        image: zms5:ubuntu
+        pull_policy: build
+        build:
+            context: ../../
+            dockerfile: docker/ubuntu/dockerfile
+        ports:
+            - 8085:8085
+            - 8086:8086
+            - 8080:8080
+            - 5678:5678
+        environment:
+            - PYTHONUNBUFFERED="1"
+            - CONFIG_FILE="/home/zope/etc/zope.ini"
+            - INSTANCE_HOME="/home/zope"
+            - CLIENT_HOME="/home/zope"
+            - PYTHON="/home/zope/venv/bin/python"
+            - SOFTWARE_HOME="/home/zope/venv/bin"
+        volumes:
+            - ./etc/:/home/zope/etc/
+            - ./Extensions/:/home/zope/Extensions/:rw
+            - ./var/:/home/zope/var/
 
-    # command: /home/zope/etc/start.sh
+        # command: /home/zope/etc/start.sh

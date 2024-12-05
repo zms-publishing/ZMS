@@ -44,7 +44,8 @@ zmscontext = None
 # DOCX-Document will be set in main function manage_export_pydocx()
 doc = None
 # Set local path for docx-template
-docx_tmpl = open("/home/zope/src/zms-publishing/ZMS5/Products/zms/conf/metacmd_manager/manage_export_pydocx/neon.docx", "rb")
+# docx_tmpl = open("/home/zope/src/zms-publishing/ZMS5/Products/zms/conf/metacmd_manager/manage_export_pydocx/neon.docx", "rb")
+docx_tmpl = open("/home/zope/instance/zms4_gez/neon-entw/Extensions/neon.docx", "rb")
 # Set initial numbering.num_id for restarting decimal num-lists
 num_id = 5
 
@@ -223,7 +224,7 @@ def add_hyperlink(docx_block, link_text, url):
 # #############################################
 
 # Clean HTML
-def clean_html(html):
+def clean_html(html, wrap_trailling_text=False):
 	"""
 	Clean comments, styles, empty tags
 	and handle special characters: left-to-right, triangle
@@ -245,8 +246,9 @@ def clean_html(html):
 	html = html.replace(left_to_right_char,'')
 	html = html.replace('[[', triangle_char)
 	html = html.replace(']]', '')
-	# Wrap untagged text following a block element into a paragraph
-	html = re.sub(r'(?i)(?m)(<div.*?>.*?<\/div>)\s*(?=\w)(.*?)', r'\g<1>\n<p>\g<2><p>', html)
+	if wrap_trailling_text:
+		# Wrap untagged text following a block element into a paragraph
+		html = re.sub(r'(?i)(?m)(<div.*?>.*?<\/div>)\s*(?=\w)(.*?)', r'\g<1>\n<p>\g<2><p>', html)
 	return html
 
 # ADD RUNS TO DOCX-BLOCK
@@ -279,6 +281,8 @@ def add_runs(docx_block, bs_element):
 					docx_block.add_run(u'\U0000F021', style='Icon')
 				elif elrun.has_attr('class') and 'fa-phone' in elrun['class']:
 					docx_block.add_run(u'\U0000F028', style='Icon')
+				elif elrun.has_attr('class') and 'fa-exclamation-triangle' in elrun['class']:
+					docx_block.add_run(u'\U0000F045', style='Icon')
 				elif elrun.text != '':
 					docx_block.add_run(elrun.text).italic = True
 			elif elrun.text != '':
@@ -297,6 +301,8 @@ def add_runs(docx_block, bs_element):
 					docx_block.add_run(elrun.text).font.subscript = True
 				elif elrun.name == 'sup':
 					docx_block.add_run(elrun.text).font.superscript = True
+				elif elrun.name == 'u':
+					docx_block.add_run(elrun.text).underline = True
 				elif elrun.name == 'a':
 					if elrun.has_attr('href'):
 						add_hyperlink(docx_block = docx_block, link_text = elrun.text, url = elrun.get('href'))
@@ -379,20 +385,11 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 					prepend_bookmark(p, zmsid)
 			else: 
 				# #############################################
-				# INLINE ELEMENTS not nested by a block element
-				# just following a text element
-				# #############################################
-				# orphaned_inline_elements = ['strong','b','em','i','q','quote','samp','code','tt','var','kbd','sub','sup']
-				# if element.name in orphaned_inline_elements and element.find_parent() == soup:
-				# 	p.add_run(' ')
-				# 	add_runs(p, element)
-
-				# #############################################
 				# BLOCK-Elements, element.name != None
 				# ---------------------------------------------
 				# HEADINGS
 				# #############################################
-				if element.name in ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']:
+				if element.name in ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7', 'h8']:
 					heading_level = int(element.name[1])
 					heading_text = standard.pystr(element.text).strip()
 					p = add_heading(docx_doc, heading_text, level=heading_level)
@@ -508,7 +505,7 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 					# ------------------------------------------------
 					def convert_cell_html_to_docx(zmscontext, docx_cell, text_style='Normal'):
 						'''Convert cell html to docx'''
-						cl_html = clean_html(docx_cell.text)
+						cl_html = clean_html(docx_cell.text, wrap_trailling_text=True)
 						cl_type = cl_html.startswith('[th:') and 'th' or 'td'
 						cl_html = re.sub(r'\[(th|td):\d:\d\] ','',cl_html)
 						cl = BeautifulSoup(cl_html, 'html.parser')
@@ -639,7 +636,7 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 						add_runs(docx_block = p, bs_element = element)
 					else:
 						child_tags = [e.name for e in element.children if e.name]
-						if {'em','strong','i', 'span'} & set(child_tags):
+						if {'em','strong','i','span','u'} & set(child_tags):
 							p = docx_doc.add_paragraph()
 							if c==1 and zmsid: 
 								prepend_bookmark(p, zmsid)
@@ -659,8 +656,15 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 											# p.add_run('Routing: ')
 											p.add_run(u'\U0000F028', style='Icon')
 											p.add_run('   ')
+										elif 'fa-exclamation-triangle' in class_name:
+											# p.add_run('Kommentar: ')
+											p.add_run(u'\U0000F045', style='Icon')
+											p.add_run('   ')
 										if list(e.children)!=[]:
-											add_runs(docx_block = p, bs_element = e)
+											if [ch.name for ch in e.children if ch.name in ['p', 'ol', 'ul', 'div']]:
+												add_htmlblock_to_docx(zmscontext, docx_doc, standard.pystr(e), zmsid)
+											else:
+												add_runs(docx_block = p, bs_element = e)
 										else:
 											p.add_run(standard.pystr(e.text))
 									elif e.name:
@@ -1267,7 +1271,7 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 				prepend_bookmark(p, block['id'])
 		# #############################################
 		# [5] TEXT-BLOCK with given block format (style)
-		elif v and block['docx_format'] in [e.name for e in doc.styles]:
+		elif v and ( block['docx_format'] in [e.name for e in doc.styles] or block['docx_format'] in [e.name.replace(' ','') for e in doc.styles] ):
 				p = doc.add_paragraph(v, style=block['docx_format'])
 				prepend_bookmark(p, block['id'])
 		elif v:

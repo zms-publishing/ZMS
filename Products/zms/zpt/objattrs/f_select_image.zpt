@@ -73,7 +73,7 @@
 	<script defer type="text/javascript" tal:condition="python:standard.once('zmiBlobJs',request)" charset="UTF-8" src="/++resource++zms_/objattrs/zmi.blob.js"></script>
 
 	<div class="zmi-image d-flex align-items-center row"
-		tal:define="has_file python:value is not None and here.operator_gettype(value) is not str;
+		tal:define="has_file python:value is not None and standard.operator_gettype(value) is not str;
 			allowed_ext python:request.set('ZMS_ALLOWED_EXTENSIONS',['jpg', 'jpeg', 'png', 'gif','svg']);
 			filename python:has_file and value.getFilename() or 'None';
 			href python:has_file and value.getHref(request) or 'None';
@@ -150,7 +150,7 @@
 
 		<div class="col mx-3 p-0" tal:condition="has_file">
 
-			<tal:block tal:condition="python:value is not None and here.operator_gettype(value) is not str">
+			<tal:block tal:condition="python:value is not None and standard.operator_gettype(value) is not str">
 				<div class="zmi-image-preview" tal:attributes="id python:'ZMSGraphic_extEdit_preview_%s'%elName" 
 					tal:condition="python:key.find('superres')<0 and value.getContentType().find('image')==0">
 					<input type="hidden" tal:attributes="id python:'width_%s'%elName; name python:'width_%s:int'%elName; value python:value.getWidth()"/>
@@ -171,7 +171,7 @@
 				</div>
 			</tal:block>
 
-			<tal:block tal:condition="not:python:value is not None and here.operator_gettype(value) is not str">
+			<tal:block tal:condition="not:python:value is not None and standard.operator_gettype(value) is not str">
 				<div class="zmi-image-info">
 					<a  data-turbolinks="false" tal:attributes="id python:'filename_%s'%elName" target="_blank" tal:content="python:''">the filename</a>
 					<span class="dimensions" tal:attributes="id python:'dimensions_%s'%elName" tal:content="python:''">the dimensions</span>

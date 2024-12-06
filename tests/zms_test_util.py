@@ -30,6 +30,27 @@ class ZMSTestCase(unittest.TestCase):
     def writeError(self, s):
         self.context.write(logging.ERROR,s)
 
+
+class ZMSPortalTestCase(ZMSTestCase):
+
+    def setUp(self):
+        super(ZMSPortalTestCase, self).setUp()
+        zmscontext = self.context
+        request = zmscontext.REQUEST
+        home = zmscontext.aq_parent
+        ids = []
+        n = 3
+        for i in range(n):
+            id = 'client%i'%i
+            client = Folder(id)
+            setattr(client, home.id, home)
+            home._setObject(client.id, client)
+            client = getattr(home, client.id)
+            zmsclient = zms.initZMS(client, 'content', id, id, 'eng', 'eng', request)
+            zmsclient.setConfProperty('Portal.Master',home.id)
+            ids.append(id)
+        zmscontext.setConfProperty('Portal.Clients',ids)
+
 def addClient(zmscontext, id):
     """
     Add ZMS client.

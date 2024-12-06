@@ -28,14 +28,14 @@ class elasticsearch_connector:
 	package = "com.zms.catalog.elasticsearch"
 
 	# Revision
-	revision = "1.0.0"
+	revision = "1.8.0"
 
 	# Type
 	type = "ZMSLibrary"
 
 	# Attrs
 	class Attrs:
-		properties = {"custom":"[\r\n  {\r\n    \"id\": \"elasticsearch.url\",\r\n    \"type\": \"string\",\r\n    \"label\": \"URL\",\r\n    \"default_value\": \"https://localhost:9200\",\r\n    \"is_target_of\": \"\"\r\n  },\r\n  {\r\n    \"id\": \"elasticsearch.username\",\r\n    \"type\": \"string\",\r\n    \"label\": \"Username\",\r\n    \"default_value\": \"admin\",\r\n    \"is_target_of\": \"\"\r\n  },\r\n  {\r\n    \"id\": \"elasticsearch.password\",\r\n    \"type\": \"password\",\r\n    \"label\": \"Password\",\r\n    \"default_value\": \"admin\",\r\n    \"is_target_of\": \"\"\r\n  },\r\n  {\r\n    \"id\": \"elasticsearch.schema\",\r\n    \"type\": \"text\",\r\n    \"label\": \"Schema\",\r\n    \"default_value\": \"{}\",\r\n    \"is_target_of\": \"schematize\"\r\n  },\r\n  {\r\n    \"id\": \"elasticsearch.parser\",\r\n    \"type\": \"string\",\r\n    \"label\": \"Parser\",\r\n    \"default_value\": \"http://localhost:9998/tika\",\r\n    \"is_target_of\": \"\"\r\n  }\r\n]"
+		properties = {"custom":"[\r\n  {\r\n    \"id\": \"elasticsearch.url\",\r\n    \"type\": \"string\",\r\n    \"label\": \"URL\",\r\n    \"default_value\": \"https://localhost:9200\",\r\n    \"is_target_of\": \"\"\r\n  },\r\n  {\r\n    \"id\": \"elasticsearch.username\",\r\n    \"type\": \"string\",\r\n    \"label\": \"Username\",\r\n    \"default_value\": \"admin\",\r\n    \"is_target_of\": \"\"\r\n  },\r\n  {\r\n    \"id\": \"elasticsearch.password\",\r\n    \"type\": \"password\",\r\n    \"label\": \"Password\",\r\n    \"default_value\": \"admin\",\r\n    \"is_target_of\": \"\"\r\n  },\r\n  {\r\n    \"id\": \"elasticsearch.index_name\",\r\n    \"type\": \"string\",\r\n    \"label\": \"Index Name\",\r\n    \"default_value\": \"\",\r\n    \"is_target_of\": \"\"\r\n  },\r\n  {\r\n    \"id\": \"elasticsearch.schema\",\r\n    \"type\": \"text\",\r\n    \"label\": \"Schema\",\r\n    \"default_value\": \"{}\",\r\n    \"is_target_of\": \"schematize\"\r\n  },\r\n  {\r\n    \"id\": \"elasticsearch.parser\",\r\n    \"type\": \"string\",\r\n    \"label\": \"Parser\",\r\n    \"default_value\": \"http://localhost:9998/tika\",\r\n    \"is_target_of\": \"\"\r\n  }\r\n]"
 			,"default":""
 			,"id":"properties"
 			,"keys":[]
@@ -44,6 +44,15 @@ class elasticsearch_connector:
 			,"name":"Property-Definitions (JSON)"
 			,"repetitive":0
 			,"type":"constant"}
+
+		readme = {"default":""
+			,"id":"readme"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"README.md"
+			,"repetitive":0
+			,"type":"resource"}
 
 		manage_elasticsearch_schematize = {"default":""
 			,"id":"manage_elasticsearch_schematize"
@@ -68,7 +77,7 @@ class elasticsearch_connector:
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
-			,"name":"Object: Index elasticsearch"
+			,"name":"Objects: Index elasticsearch"
 			,"repetitive":0
 			,"type":"External Method"}
 
@@ -77,7 +86,16 @@ class elasticsearch_connector:
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
-			,"name":"Object: Delete elasticsearch"
+			,"name":"Objects: Delete elasticsearch"
+			,"repetitive":0
+			,"type":"External Method"}
+
+		manage_elasticsearch_objects_clear = {"default":""
+			,"id":"manage_elasticsearch_objects_clear"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"Objects: Clear Client from elasticsearch"
 			,"repetitive":0
 			,"type":"External Method"}
 
@@ -107,12 +125,3 @@ class elasticsearch_connector:
 			,"name":"Suggest"
 			,"repetitive":0
 			,"type":"External Method"}
-
-		readme = {"default":""
-			,"id":"readme"
-			,"keys":[]
-			,"mandatory":0
-			,"multilang":0
-			,"name":"readme.md"
-			,"repetitive":0
-			,"type":"resource"}

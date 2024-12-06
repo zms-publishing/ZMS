@@ -6,16 +6,37 @@
 		,'/++resource++zms_/ZMSRepositoryManager/manage_main_diff.js'
 		]);
 	standard modules/Products.zms/standard;
-	provider_diffs python:[(x,here.getDiffs(x,here.get_ignore_orphans())) for x in here.getRepositoryProviders()];
+	repositoryutil modules/Products.zms/repositoryutil;
+	ids_name options/ids_name;
+	providers options/providers;
+	ignore options/ignore;
+	direction options/direction;
+	remote options/remote;
+	local options/local;
+	provider_diffs python:[(x,repositoryutil.get_diffs(local.get(x,{}),remote.get(x,{}),ignore)) for x in providers];
 	provider_diffs_count python:sum([len(x[1]) for x in provider_diffs]+[0])">
 
+	<div class="form-group row mb-5 diffcoloring">
+		<label class="col-sm-2 control-label">Working Mode</label>
+		<div class="col-sm-10">
+			<div class="form-control" readonly="readonly" style="user-select:none;background:#f5f5f5">
+				<span class="selected" tal:content="python:direction=='Loading' and 'Import Mode: Show changes in Filesystem compared to ZMS (Default)' or 'Export Mode: Show changes in ZMS compared to Filesystem'">Loading Mode</span>
+				<small style="float:right;padding-top:0.2em">
+					<span class="state alert-success">&nbsp;</span> <tal:block tal:content="python:here.getZMILangStr('STATE_NEW')"></tal:block>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<span class="state alert-warning">&nbsp;</span> <tal:block tal:content="python:here.getZMILangStr('STATE_MODIFIED')"></tal:block>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<span class="state alert-danger">&nbsp;</span> <tal:block tal:content="python:here.getZMILangStr('STATE_DELETED')"></tal:block>&nbsp;
+				</small>
+			</div>
+		</div><!-- .col-sm-10 -->
+	</div><!-- .form-group -->
+
 	<tal:block tal:condition="not:provider_diffs_count">
-		<div class="form-group filelist row" tal:repeat="provider python:here.getRepositoryProviders()">
+		<div class="form-group filelist row" tal:repeat="provider providers">
 			<label class="col-sm-2 control-label zms-component">
 				<a tal:attributes="href python:'%s/manage_main?lang=%s'%(provider.absolute_url(),request['lang'])" target="_blank"><tal:block tal:content="python:provider.id">the provider</tal:block></a>
 			</label>
 			<div class="col-sm-10" tal:define="
-					local_files python:list(here.localFiles(provider).values());
+					local_files python:list(local[provider].values());
 					ids python:standard.distinct_list([x['id'] for x in local_files]);
 					ids_sorting python:ids.sort();">
 				<div tal:repeat="id ids">
@@ -33,7 +54,7 @@
 	><tal:block
 		tal:define="zmscontext python:here.getSelf();
 			provider python:provider_diff[0];
-			local_files python:list(here.localFiles(provider).values());
+			local_files python:list(local[provider].values());
 			diffs python:provider_diff[1];
 			ids python:standard.distinct_list([x[2] for x in diffs]);
 			ids_sorting python:ids.sort();"
@@ -47,7 +68,7 @@
 			<table class="table repo-diff-files table-sm table-hover">
 			<tal:block tal:repeat="id ids">
 				<tr>
-					<td class="meta-ids"><input type="checkbox" name="ids:list" tal:attributes="value python:'%s:%s'%(provider.id,id)" checked="checked"></td>
+					<td class="meta-ids"><input type="checkbox" tal:attributes="name python:'%s:list'%ids_name; value python:'%s%s%s%s'%(['conf:',''][ids_name=='ids'],provider.id,['/',':'][ids_name=='ids'],id)" checked="checked"></td>
 					<td>
 						<a tal:attributes="href python:'%s/manage_%s?lang=%s&id=%s'%(provider.absolute_url(), id=='__metas__' and 'metas' or 'main',request['lang'],id)" target="_blank">
 							<i tal:on-error="string:" style="text-align:center;width:2em;" tal:attributes="class python:zmscontext.zmi_icon(id)"></i>
@@ -115,14 +136,14 @@
 							<tr>
 								<td>
 									<span class="file_name">
-										<strong class="text-primary" tal:content="python:here.get_conf_basepath(provider.id+'/'+filename)"></strong>
+										<strong class="text-primary" tal:content="filename"></strong>
 										<em class="text-muted" tal:content="python:'(%s)'%(mt)"></em>
 									</span>
 									<small class="file_details d-block" style="cursor:help"
 										tal:attributes="title python:is_incoming and 'Should be Loaded from Filesystem' or 'Should be Saved to Filesystem'">
 										<tal:block tal:condition="l" tal:content="python:'ZODB: %s - %i Bytes'%(lversion,len(ld))"></tal:block>
-										<i tal:condition="python:here.get_update_direction()=='Saving'" class="icon-arrow-right fas fa-arrow-right"></i>
-										<i tal:condition="python:here.get_update_direction()=='Loading'" class="icon-arrow-left fas fa-arrow-left"></i>
+										<i tal:condition="python:direction=='Saving'" class="icon-arrow-right fas fa-arrow-right"></i>
+										<i tal:condition="python:direction=='Loading'" class="icon-arrow-left fas fa-arrow-left"></i>
 										<tal:block tal:condition="r" tal:content="python:'Repository: %s - %i Bytes'%(rversion,len(rd))"></tal:block>
 									</small>
 								</td>

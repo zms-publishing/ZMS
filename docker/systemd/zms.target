@@ -1,0 +1,6 @@
+[Unit]
+Description=ZMS/Zope and all of its dependencies
+After=network-online.target
+
+[Install]
+WantedBy=multi-user.target

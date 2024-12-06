@@ -4077,6 +4077,22 @@
     <Cell><Data ss:Type="String">לשמור שינויים בכל זאת?</Data></Cell>
    </Row>
    <Row>
+    <Cell><Data ss:Type="String">MSG_CONFIRM</Data></Cell>
+    <Cell><Data ss:Type="String">Änderungen bestätigen.</Data></Cell>
+    <Cell><Data ss:Type="String">Confirm changes.</Data></Cell>
+    <Cell><Data ss:Type="String">Bevestig wijzigingen.</Data></Cell>
+    <Cell><Data ss:Type="String">Confirmer les changements.</Data></Cell>
+    <Cell><Data ss:Type="String">Conferma le modifiche.</Data></Cell>
+    <Cell><Data ss:Type="String">Confirmar cambios.</Data></Cell>
+    <Cell><Data ss:Type="String">确认更改</Data></Cell>
+    <Cell><Data ss:Type="String">تأكيد التغييرات</Data></Cell>
+    <Cell><Data ss:Type="String">Подтвердить изменения</Data></Cell>
+    <Cell><Data ss:Type="String">परिवर्तन की पुष्टि करें</Data></Cell>
+    <Cell><Data ss:Type="String">تأكيد التعديلات</Data></Cell>
+    <Cell><Data ss:Type="String">Xác nhận thay đổi.</Data></Cell>
+    <Cell><Data ss:Type="String">אשר שינויים</Data></Cell>
+   </Row>
+   <Row>
     <Cell><Data ss:Type="String">MSG_CONFIRM_CUTOBJS</Data></Cell>
     <Cell><Data ss:Type="String">Soll(en) %i ausgewählte(s) Objekt(e) wirklich ausgeschnitten werden?</Data></Cell>
     <Cell><Data ss:Type="String">Do you really want to cut %i selected object(s)?</Data></Cell>
@@ -5639,17 +5655,17 @@
    </Row>
    <Row>
     <Cell><Data ss:Type="String">SEARCH_YOURQUERY</Data></Cell>
-    <Cell><Data ss:Type="String">Ihre Suche nach dem Begriff: '%s'</Data></Cell>
-    <Cell><Data ss:Type="String">Your search for: '%s'</Data></Cell>
-    <Cell><Data ss:Type="String">Uw zoek naar: '%s'</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">La ricerca del termine: '%s'</Data></Cell>
+    <Cell><Data ss:Type="String">Ihre Suche nach dem Begriff: %s</Data></Cell>
+    <Cell><Data ss:Type="String">Your search for: %s</Data></Cell>
+    <Cell><Data ss:Type="String">Uw zoek naar: %s</Data></Cell>
+    <Cell ss:Index="6"><Data ss:Type="String">La ricerca del termine: %s</Data></Cell>
     <Cell ss:Index="8"><Data ss:Type="String">%s 濜索结果</Data></Cell>
     <Cell/>
-    <Cell><Data ss:Type="String">ваш поиск слова: '%s'</Data></Cell>
-    <Cell><Data ss:Type="String">आपका खोज '%s'  का</Data></Cell>
-    <Cell><Data ss:Type="String">بحثك عن '%s'</Data></Cell>
-    <Cell><Data ss:Type="String">Tìm kiếm của bạn cho:'%s'</Data></Cell>
-    <Cell><Data ss:Type="String">חיפוש שלך עבור:  '%s'</Data></Cell>
+    <Cell><Data ss:Type="String">ваш поиск слова: %s</Data></Cell>
+    <Cell><Data ss:Type="String">आपका खोज %s  का</Data></Cell>
+    <Cell><Data ss:Type="String">بحثك عن %s</Data></Cell>
+    <Cell><Data ss:Type="String">Tìm kiếm của bạn cho:%s</Data></Cell>
+    <Cell><Data ss:Type="String">חיפוש שלך עבור:  %s</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">SHORTDATETIME_FMT</Data></Cell>
@@ -6463,6 +6479,22 @@
     <Cell><Data ss:Type="String">سرد آخر العناصر التي تم عليها تعديلات</Data></Cell>
     <Cell><Data ss:Type="String">Các đối tượng được thay đổi gần đây nhất</Data></Cell>
     <Cell><Data ss:Type="String">פריטים ששונו לאחרונה</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">TASK_INACTIVE_NODES</Data></Cell>
+    <Cell><Data ss:Type="String">Inaktive Inhalte auflisten</Data></Cell>
+    <Cell><Data ss:Type="String">List inactive contents</Data></Cell>
+    <Cell><Data ss:Type="String">List inactive contents</Data></Cell>
+    <Cell><Data ss:Type="String">List inactive contents</Data></Cell>
+    <Cell><Data ss:Type="String">List inactive contents</Data></Cell>
+    <Cell><Data ss:Type="String">List inactive contents</Data></Cell>
+    <Cell><Data ss:Type="String">List inactive contents</Data></Cell>
+    <Cell><Data ss:Type="String">List inactive contents</Data></Cell>
+    <Cell><Data ss:Type="String">List inactive contents</Data></Cell>
+    <Cell><Data ss:Type="String">List inactive contents</Data></Cell>
+    <Cell><Data ss:Type="String">List inactive contents</Data></Cell>
+    <Cell><Data ss:Type="String">List inactive contents</Data></Cell>
+    <Cell><Data ss:Type="String">List inactive contents</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">TASK_UNTRANSLATED</Data></Cell>

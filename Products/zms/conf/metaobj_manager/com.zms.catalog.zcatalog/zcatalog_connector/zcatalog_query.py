@@ -19,9 +19,17 @@ def zcatalog_query( self, REQUEST=None):
   q = request.get('q','')
   fq = request.get('fq','')
   lang = standard.nvl(request.get('lang'), self.getPrimaryLanguage())
+  home_id = request.get('home_id', '')
+  multisite_search = int(request.get('multisite_search', 1))
+  multisite_exclusions = request.get('multisite_exclusions', '').split(',')
   root = self.getRootElement()
   zcatalog = getattr(root, 'catalog_%s'%lang)
-  
+
+  if multisite_search==0 and len(home_id) > 0:
+    if fq:
+      fq += ','
+    fq += 'home_id_s:'+home_id
+
   # Find search-results.
   items = []
   prototype = {}
@@ -34,6 +42,17 @@ def zcatalog_query( self, REQUEST=None):
       fqv = fqs[fqs.find(':')+1:]
       fqv = umlaut_quote(self, fqv)
       prototype[fqk] = fqv
+
+  # @TODO: Implement multisite-search
+  # # Multisite-search: show results of all ZMS-clients except the ones in multisite_exclusions
+  # if multisite_search==1 and multisite_exclusions:
+  #   prototype['zcat_index_home_id'] = {'query':'', 'operator':'AND'}
+  #   exclusion_string = ''
+  #   for exclusion in multisite_exclusions:
+  #     exclusion_string += exclusion and '-%s '%exclusion or ''
+  #   if exclusion_string:
+  #     prototype['zcat_index_home_id']['query'] = exclusion_string
+
   for index in zcatalog.indexes():
     if index.find('zcat_index_')==0:
       query = copy.deepcopy(prototype)
@@ -68,8 +87,8 @@ def zcatalog_query( self, REQUEST=None):
   
   # Limit search-results.
   num_found = len(results)
-  page_index = int(REQUEST.get('page_index',0))
-  page_size = int(REQUEST.get('page_size',20))
+  page_index = int(REQUEST.get('page_index',request.get('pageIndex',0)))
+  page_size = int(REQUEST.get('page_size',request.get('size', 10)))
   start = page_index*page_size
   if num_found > page_size:
     results = results[start:start+page_size]
@@ -81,13 +100,12 @@ def zcatalog_query( self, REQUEST=None):
   docs_list = []
   for doc in docs:
     doc_item = {}
-    for k in list(doc.keys()):
+    for k in list(doc):
       try:
         doc_item[k] = str(doc[k])
       except:
         doc_item[k] = 'TypeError'
     docs_list.append(doc_item)
 
-  response = {'status':0, 'numFound':num_found, 'start': start, 'docs':docs}
+  response = {'status':0, 'numFound':num_found, 'start': start, 'docs':docs_list}
   return json.dumps(response)
-

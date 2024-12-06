@@ -1,0 +1,12 @@
+.devcontainer
+.github
+.ropeproject
+.vscode
+build
+dist
+docker/alpine/var
+docker/elastic
+docker/solr
+docker/ubuntu/var
+docker/zeo/var
+docker/zope/var

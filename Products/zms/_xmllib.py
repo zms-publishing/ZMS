@@ -316,7 +316,13 @@ def xmlOnUnknownEndTag(self, sTagName):
       else:
         item = self.dValueStack.pop()
       values = self.dValueStack.pop()
-      values[lang] = item
+      try:
+        values[lang] = item
+      except:
+        # empty values
+        standard.writeBlock(self, "[values]: WARNING Importing xml may not match to ZMS client's content model - Skip lang %s for %s" %(lang, str(values)))
+        values = {}
+        values[lang] = item
       self.dValueStack.append(values)
 
     # -- COMF-PROPERTY --
@@ -337,7 +343,9 @@ def xmlOnUnknownEndTag(self, sTagName):
 
         # -- Multi-Language Attributes.
         if obj_attr['multilang']:
-          item = self.dValueStack.pop()
+          item = None
+          if len(self.dValueStack) > 0:
+            item = self.dValueStack.pop()
           if item is not None:
             if not isinstance(item, dict):
               item = {self.getPrimaryLanguage():item}
@@ -390,8 +398,8 @@ def xmlOnUnknownEndTag(self, sTagName):
               if obj_attr['multilang'] == 0 and \
                  isinstance(value, dict) and \
                  len(value.keys()) == 1 and \
-                 value.keys()[0] == self.getPrimaryLanguage():
-                value = value[value.keys()[0]]
+                 list(value.keys())[0] == self.getPrimaryLanguage():
+                value = value[self.getPrimaryLanguage()]
               xmlInitObjProperty(self, sTagName, value)
             if len(self.dValueStack) > 0:
               raise "Items on self.dValueStack=%s" % self.dValueStack

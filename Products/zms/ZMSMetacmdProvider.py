@@ -405,7 +405,12 @@ class ZMSMetacmdProvider(
     #  Returns list of actions.
     # --------------------------------------------------------------------------
     def getMetaCmds(self, context=None, stereotype='', sort=True):
-      stereotypes = {'insert':'manage_add','tab':'manage_tab','repository':'manage_repository','zcatalog':'manage_zcatalog'}
+      stereotypes = {
+        'insert':'manage_add',
+        'tab':'manage_tab',
+        'repository':'manage_repository',
+        'zcatalog':'manage_zcatalog',
+        'zmsindex':'manage_zmsindex'}
       metaCmds = []
       portalMasterMetaCmds = None
       for metaCmd in [x for x in self.commands if x['id'].startswith(stereotypes.get(stereotype, ''))]:
@@ -567,19 +572,20 @@ class ZMSMetacmdProvider(
         # Import.
         # -------
         elif btn == 'BTN_IMPORT':
-          f = REQUEST['file']
           msg_str = ''
-          if f:
+          if REQUEST.get('file'):
+            f = REQUEST['file']
             filename = f.filename
             self.importXml(xml=f)
             msg_str = filename
           else:
-            if isinstance(REQUEST['init'], list):
-              for filename in list(REQUEST['init']):
+            init = REQUEST['init']
+            if isinstance(init, list):
+              for filename in init:
                 self.importConf(filename)
-              msg_str = ', '.join(REQUEST['init'])
+              msg_str = ', '.join(init)
             else:
-              filename = REQUEST['init']
+              filename = init
               self.importConf(filename)
               msg_str = filename
           message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%(msg_str))
@@ -599,9 +605,6 @@ class ZMSMetacmdProvider(
           newIconClazz = REQUEST.get('_icon_clazz', '')
           id = self.setMetacmd(None, newId, newAcquired, newPackage, newRevision, newName, newTitle, newMethod, newData, newExecution, newIconClazz=newIconClazz)
           message = self.getZMILangStr('MSG_INSERTED')%id
-        
-        # Sync with repository.
-        self.getRepositoryManager().exec_auto_commit(self, id)
         
         # Return with message.
         message = standard.url_quote(message)

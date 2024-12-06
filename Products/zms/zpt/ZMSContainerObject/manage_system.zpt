@@ -67,12 +67,12 @@
 	</td>
 	<td class="zmi-object-type">
 		<tal:block tal:define="icon python:item[1].zmi_icon"
-			tal:on-error="structure string:<i title='Error: No Icon Found' class='far fa-file-alt'></i>">
-			<i tal:attributes="class icon" />
+			tal:on-error="structure string:<i title='Error: No Icon Found' class='fas fa-exclamation-triangle text-danger'></i>">
+			<i tal:attributes="class icon; title python:item[1].meta_type" />
 		</tal:block>
 	</td>
 	<td class="zmi-object-id">
-		<a target="_blank" tal:on-error="string:Error: No URL Found!" 
+		<a target="_blank" tal:on-error="python:'%s (Broken Object!)'%item[0]" 
 			tal:attributes="href python:'%s/manage_workspace'%item[1].absolute_url()">
 			<tal:block tal:content="python:item[0]">the id</tal:block>
 			<tal:block tal:condition="python:item[1].title_or_id()">
@@ -80,8 +80,19 @@
 			</tal:block>
 		</a>
 	</td>
-	<td class="zmi-object-size"><tal:block tal:content="python:zmscontext.getDataSizeStr(item[1].get_size())" tal:on-error="string:get_size is not defined!">the size</tal:block></td>
-	<td class="zmi-object-date zmi-object-last_modified hidden-xs"><tal:block tal:content="python:zmscontext.last_modified(zmscontext)" tal:on-error="string:last_modified is not defined!">the timestamp</tal:block></td>
+	<td class="zmi-object-size">
+		<tal:block 
+			tal:condition="python:item[1].meta_type!='External Method'" 
+			tal:content="python:zmscontext.getDataSizeStr(item[1].get_size())" 
+			tal:on-error="string:get_size is not defined!">the size
+		</tal:block>
+	</td>
+	<td class="zmi-object-date zmi-object-last_modified hidden-xs">
+		<tal:block 
+			tal:content="python:zmscontext.last_modified(zmscontext)" 
+			tal:on-error="string:last_modified is not defined!">the timestamp
+		</tal:block>
+	</td>
 </tr>
 </tbody>
 </table>

@@ -141,7 +141,7 @@ class zms_formulator_lib:
 	package = "zms.formulator"
 
 	# Revision
-	revision = "5.0.1"
+	revision = "5.0.2"
 
 	# Type
 	type = "ZMSLibrary"
@@ -238,11 +238,11 @@ class zms_formulator_lib:
 			,"repetitive":0
 			,"type":"External Method"}
 
-		readmemd = {"default":""
-			,"id":"readme.md"
+		readme = {"default":""
+			,"id":"readme"
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
-			,"name":"Readme"
+			,"name":"README.md"
 			,"repetitive":0
-			,"type":"zpt"}
+			,"type":"resource"}

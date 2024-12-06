@@ -22,9 +22,7 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Persistence import Persistent
 from Acquisition import Implicit
 import OFS.SimpleItem, OFS.ObjectManager
-import zope.interface
 # Product Imports.
-from Products.zms import IZMSDaemon
 from Products.zms import standard
 from Products.zms import _accessmanager
 
@@ -101,9 +99,6 @@ class ZMSItem(
     #  ZMSItem.zmi_page_request:
     # --------------------------------------------------------------------------
     def _zmi_page_request(self, *args, **kwargs):
-      for daemon in self.getDocumentElement().objectValues():
-        if IZMSDaemon.IZMSDaemon in list(zope.interface.providedBy(daemon)):
-          daemon.startDaemon()
       request = self.REQUEST
       request.set( 'ZMS_THIS', self.getSelf())
       request.set( 'ZMS_DOCELMNT', self.breadcrumbs_obj_path()[0])
@@ -135,6 +130,10 @@ class ZMSItem(
         request.set('lang', langs[0])
       if not request.get('manage_tabs_message'):
         request.set( 'manage_tabs_message', self.getConfProperty('ZMS.manage_tabs_message', ''))
+      if not request.get('manage_tabs_warning_message'):
+        request.set( 'manage_tabs_warning_message',self.getConfProperty('ZMS.manage_tabs_warning_message',''))
+      if not request.get('manage_tabs_danger_message'):
+        request.set( 'manage_tabs_danger_message',self.getConfProperty('ZMS.manage_tabs_danger_message',''))
       if 'zmi-manage-system' in request.form:
         standard.set_session_value(self,'zmi-manage-system',int(request.get('zmi-manage-system',0)))
       # AccessableObject

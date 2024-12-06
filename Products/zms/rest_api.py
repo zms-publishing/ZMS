@@ -122,7 +122,11 @@ def get_attrs(node):
         data['has_portal_clients'] = node.getPortalClients() != []
     general_keys = data.keys()
     obj_attrs = node.getObjAttrs()
-    metaobj_attrs = node.getMetaobjManager().getMetaobjAttrs(node.meta_id)
+    if hasattr(node,'proxy'):
+        metaobj_attrs = node.proxy.getMetaobjManager().getMetaobjAttrs(node.meta_id)
+        data['meta_id'] = 'ZMSLinkElement'
+    else:
+        metaobj_attrs = node.getMetaobjManager().getMetaobjAttrs(node.meta_id)
     for metaobj_attr in metaobj_attrs:
         id = metaobj_attr['id']
         if id in obj_attrs and not id in general_keys:
@@ -200,7 +204,7 @@ class RestApiController(object):
         catalog = context.get_catalog()
         q = {k.replace('[]',''):v for k,v in request.form.items() if v != ''}
         l = catalog(q)
-        return [{item_name:r[item_name] for item_name in catalog.schema()} for r in l]
+        return [{item_name:(r[item_name] or '') for item_name in catalog.schema()} for r in l]
 
     @api(tag="metamodel", pattern="/metaobj_manager", content_type="application/json")
     def metaobj_manager(self, context):

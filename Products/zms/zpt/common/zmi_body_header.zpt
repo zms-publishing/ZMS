@@ -5,7 +5,7 @@
 		zmscontext python:here.getSelf(); 
 		admin python:request['AUTHENTICATED_USER'].has_permission('ZMS Administrator',here)">
 	<header class="navbar navbar-nav navbar-expand navbar-dark flex-row justify-content-between bd-navbar"
-			tal:attributes="class python:'navbar navbar-nav navbar-expand navbar-dark flex-row justify-content-between bd-navbar%s' %((admin and here.getConfProperty('ZMS.debug',0)) and ' zmsdebug' or '')">
+			tal:attributes="data-zmsmode python:(admin and bool(here.getConfProperty('ZMS.mode.debug',False))) and 'debug' or (bool(here.getConfProperty('ZMS.mode.maintenance',False)) and 'maintenance' or None)">
 		<tal:block tal:content="structure python:here.zmi_navbar_brand(here,request)">zmi_navbar_brand</tal:block>
 		<ul class="navbar-nav flex-row ml-sm-auto d-flex">
 			<li id="zmi-authenticated_user" class="form-inline zmi-authenticated_user" tal:attributes="title python:'Authenticated User: %s'%(request.get('AUTHENTICATED_USER'))">
@@ -14,7 +14,9 @@
 				</a>
 			</li>
 			<li id="toggle_menu" class="form-inline desktop hidden-xs" title="Show/Hide Tree Menu of the Navigation Context">
-				<a id="navbar-sitemap" tal:attributes="href python:'manage?lang=%s'%request['lang']" target="_top" 
+				<a id="navbar-sitemap" target="_top"
+					tal:define="zmscontext_url python:zmscontext.absolute_url()"
+					tal:attributes="href python:'%s/manage?lang=%s'%(zmscontext_url, request.get('lang','ger'))"
 					><i class="fas fa-sitemap"></i></a>
 			</li>
 			<li class="dropdown">
@@ -117,6 +119,10 @@
 				</div>
 			</li><!-- .dropdown -->
 			<tal:block tal:condition="python: here.getTrashcan().getId()!=here.getId()">
+				<tal:block
+				  tal:condition="python:len([x for x in zmscontext.getAbsoluteHome().objectValues() if x.id == 'zmi_body_header_custom'])"
+					metal:use-macro="container/zmi_body_header_custom/macros/menus">
+				</tal:block>
 				<li class="view_preview">
 					<a target="_blank" tal:attributes="href python:'preview_html?lang=%s&preview=preview'%request['lang']">
 						<i class="far fa-eye"></i>

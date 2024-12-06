@@ -27,23 +27,28 @@
 	<div id="importConf" class="inner">
 		<form class="form-horizontal" name="importConfForm" tal:attributes="action action" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="lang" tal:attributes="value request/lang">
-			<div class="form-group row">
-				<label for="file" class="col-md-3 control-label">
-					<i class="fas fa-folder far fa-folder"></i>
-					<span tal:content="python:here.getZMILangStr('ATTR_FILE')">File</span>
-				</label>
-				<div class="col-md-9"><input class="btn btn-file" name="file" type="file" /></div>
-			</div><!-- .form-group -->
-			<div class="form-group row">
-				<label for="or" class="col-md-3 control-label"><span tal:content="python:here.getZMILangStr('OR')">Or</span></label>
-				<div class="col-md-9">
-					<select class="form-control" id="init" name="init" onfocus="zmiExpandConfFiles(this,'.filter.')" onmouseover="zmiExpandConfFiles(this,'.filter.')">
-						<option value="" tal:content="python:'--- %s ---'%here.getZMILangStr('BTN_INIT')">--- Init... ---</option>
-					</select>
+			<div class="form-group col-12">
+				<div class="custom-file">
+					<input type="file" name="file" id="file" class="custom-file-input" value="" 
+						onchange="$('.custom-file label span').html($(this).val().replace(/^.*(\\|\/|\:)/, ''));" />
+					<label class="custom-file-label" for="file"><span tal:content="python:here.getZMILangStr('ATTR_FILE')">Choose file</span></label>
 				</div>
 			</div><!-- .form-group -->
-			<div class="form-group container controls">
-				<button type="submit" name="btn" class="btn btn-primary" value="BTN_IMPORT" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
+			<label class="col-12 control-label text-left"><span tal:content="python:here.getZMILangStr('OR').lower()">Or</span></label>
+			<div class="form-group col-12 mt-2">
+				<select class="form-control" id="init" name="init" 
+					onfocus="zmiExpandConfFiles(this,'.filter.')" 
+					onmouseover="zmiExpandConfFiles(this,'.filter.')">
+					<option value="" tal:content="python:'--- %s ---'%here.getZMILangStr('BTN_INIT')">--- Init... ---</option>
+				</select>
+			</div><!-- .form-group -->
+			<div class="form-group row mt-5 mr-0">
+				<div class="controls save">
+					<button type="submit" name="btn" class="btn btn-primary" value="BTN_IMPORT" 
+						tal:content="python:here.getZMILangStr('BTN_IMPORT')">
+						Import
+					</button>
+				</div>
 			</div><!-- .form-group -->
 		</form>
 	</div><!-- .inner -->
@@ -154,7 +159,7 @@
 			<!-- INSERT NEW ROW -->
 			<tr class="row_insert">
 				<td class="meta-sort text-right">
-					<span class="btn btn-add mr-1">
+					<span class="btn btn-secondary btn-add mr-1 w-100">
 						<i class="fas fa-plus"></i>
 					</span>
 				</td>
@@ -563,9 +568,9 @@
 			let table_id = $(this).closest('table').attr('id'); // meta_properties or meta_languages
 			let new_row_name = `new_row_${table_id}_${new_row_counter}`;
 			let new_btn_html = `
-				<span class="btn btn-default btn-sm mr-1" style="color:#999" 
-					onclick="javascript:$(this).closest('tr').remove()">
-					<i class="fas fa-times"></i>
+				<span class="btn btn-secondary mr-1 w-100" style="color:#999" 
+					onclick="javascript:$(this).closest('tr').hide('slow',function(){$(this).closest('tr').remove()})">
+					<i class="fas fa-undo-alt"></i>
 				</span>
 				`;
 

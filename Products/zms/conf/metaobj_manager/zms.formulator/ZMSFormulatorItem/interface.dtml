@@ -11,12 +11,10 @@ $ZMI.registerReady(function() {
   $('#tr_type select').change(function() {
     $('#tabProperties .accordion-inner').attr('class','accordion-inner ' + $('#tr_type :selected').text());
     if ($('#tr_type select').val() != 'custom') {
-      $('#ACE_Editor1').hide();
-      $('.ACE_Editor').height(0);
+      $('#tr_rawJSON_'+getZMILang()+',#tr_ACE_rawJSON').hide();
     }
     else {
-      $('#ACE_Editor1').show();
-      $('.ACE_Editor').height('20em');
+      $('#tr_rawJSON_'+getZMILang()+',#tr_ACE_rawJSON').show();
     }
     if ($('#tr_type select').val() == 'email') {
       $('#tr_replyToField').show();
@@ -63,7 +61,7 @@ $ZMI.registerReady(function() {
     }
   });
   if ($('#tr_type select').val() != 'custom') {
-    $('#ACE_Editor1').hide();
+    $('#tr_rawJSON_'+getZMILang()+',#tr_ACE_rawJSON').hide();
   }
   if ($('#tr_type select').val() == 'email') {
       $('#tr_replyToField').show();

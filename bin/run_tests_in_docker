@@ -1,0 +1,5 @@
+#!/bin/sh
+
+exec docker compose run --rm zope \
+    watching_testrunner --basepath Products --basepath tests \
+    -- pytest --tb=short $@

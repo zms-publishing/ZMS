@@ -1,0 +1,23 @@
+# Integrate External Content as ZMS-Page via SQL Cache
+
+The content model library <b>url_extract_lib</b> is a collection of ZSQL/Py-methods for
+saving ZMS external content data into a SQL database. The content class <b>url_extract_page</b>
+acts like page in ZMS and can be added to ZMS at any folderish tree node. The entered URL
+will request the html stream and extract it at the CSS node selector.
+
+## Installation
+
+First add an empty file into file system:
+<pre>$INSTANCE_HOME/var/sqlite/extracts.sqlite</pre>
+First insert a Zope-Folder 'url_extrac' into the ZMS root folder. Here add a
+ZSQLiteDA object named <code>extracts</code> connecting to the filesystem file.
+After importing the <i>url_extract_lib</i> into ZMS, inialize the databse with the ZSQL object
+url_extract/sql_create by clicking on the object's view' tab in Zope-ZMI.
+
+## Use
+
+To check whether any content data are written into the SQL database just add a new
+<i>URL-Extract Page<i> to the content tree. Afte savnig the extracted content will be
+show in ZMS and some meta-data (timestamp, checksum).
+
+

@@ -1,4 +1,19 @@
 //# ######################################
+//# Handlebars Helper
+//# ######################################
+Handlebars.registerHelper("compareStrings", function (p, q, options) {
+	return p == q ? options.fn(this) : options.inverse(this);
+});
+Handlebars.registerHelper('hide_tabs', function (length) {
+	return length < 2 ? 'hidden' : 'not_hidden';
+});
+Handlebars.registerHelper('sanitize', function (str) {
+	const element = document.createElement('div');
+	element.innerText = String(str);
+	return element.innerHTML;
+});
+
+//# ######################################
 //# Init function show_results() as global
 //# ######################################
 var show_results;
@@ -21,9 +36,11 @@ $(function() {
 		var total = res_processed.total;
 		var hb_results_html = hb_results_tmpl(res_processed);
 		$('.search-results').html( hb_results_html );
-	
+		$('html, body').animate({scrollTop: $("#container_results").offset().top }, 1000);
+
 		//# Add pagination ###################
 		var fn = (pageIndex) => {
+			q = encodeURI(decodeURI(q));
 			return `javascript:show_results('${q}',${pageIndex})`
 		};
 		GetPagination(fn, total, 10, pageIndex);
@@ -43,7 +60,12 @@ $(function() {
 
 		res['response']['docs'].forEach(x => {
 			var source = x;
-			var hit = { 'path':source['uid'], 'href':source['loc'], 'title':source['title'], 'snippet':source['standard_html'] }; 
+			var hit = { 
+				'path':source['uid'], 
+				'href':source['index_html'], 
+				'title':source['title'], 
+				'snippet':source['standard_html']
+			}; 
 			// Snippet: field-name = 'standard_html'
 			// Attachment: field-name = 'data'
 			if ( typeof source['attachment'] !== 'undefined' && hit['snippet']=='' ) {
@@ -58,9 +80,15 @@ $(function() {
 	};
 
 	const show_breadcrumbs = (el) => {
-		$.get(url=`${root_url}/solr_breadcrumbs_obj_path`, data={ 'id' : el.dataset.id }, function(data, status) {
-			$(el).html(data);
-		});
+		const lang = $('#lang').attr('value');
+		if ( el.dataset.id.startsWith('uid') ) {
+			$.get(url=`${root_url}/solr_breadcrumbs_obj_path`, 
+				data={ 'id' : el.dataset.id, 'lang' : lang },
+				function(data, status) {
+					$(el).html(data);
+				}
+			);
+		}
 	}
 
 	//# Execute on submit event

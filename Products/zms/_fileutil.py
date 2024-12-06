@@ -419,6 +419,8 @@ def extractZipArchive(file):
   
   zf = zipfile.ZipFile( file, 'r')
   for name in zf.namelist():
+    if name.startswith('__MACOSX/') or name.endswith('.DS_Store'):
+        continue
     dir = getOSPath( name)
     i = dir.rfind( os.sep) 
     if i > 0:

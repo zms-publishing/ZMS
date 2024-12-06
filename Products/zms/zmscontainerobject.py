@@ -132,7 +132,7 @@ class ZMSContainerObject(
       @rtype: C{zmsobject.ZMSObject}
       """
       request = self.REQUEST
-      values['meta_id'] = request.get('ZMS_INSERT',meta_id)
+      values['meta_id'] = standard.nvl(request.get('ZMS_INSERT'),meta_id)
       return self.manage_addZMSObject('ZMSCustom', values, request)
 
 
@@ -267,7 +267,7 @@ class ZMSContainerObject(
       trashcan.normalizeSortIds()
       trashcan.run_garbage_collection(forced=1)
       # Synchronize search.
-      self.getCatalogAdapter().unindex_node(self)
+      self.getCatalogAdapter().unindex_nodes(nodes=children)
       # Sort-IDs.
       self.normalizeSortIds()
       [standard.triggerEvent(child,'afterDeleteObjsEvt') for child in children]
@@ -745,39 +745,64 @@ class ZMSContainerObject(
     ###
     ############################################################################
 
-    def get_next_node(self, clients=False, allow_children=True):
-      # children
-      if allow_children:
-        if self.meta_id != 'ZMSLinkElement':
-          children = self.getChildNodes()
-          if children:
+    def get_next_page(self, uid, page_size=100, clients=False):
+      nodes, next = [], None
+      meta_types = list(self.dGlobalAttrs)
+      child_nodes = {}
+
+      def get_child_nodes(self):
+        key = str(self)
+        if key not in child_nodes:
+          child_nodes[key] = self.objectValues(meta_types)
+        return child_nodes[key]
+
+      def get_next_node(self, allow_children=True):
+        # children
+        if allow_children:
+          if self.meta_id != 'ZMSLinkElement':
+            children = get_child_nodes(self)
+            if children:
+              return children[0]
+        # siblings
+        parent  = self.getParentNode()
+        if parent:
+          siblings = get_child_nodes(parent)
+          index = siblings.index(self)
+          if index < len(siblings) - 1:
+            return siblings[index+1]
+          # parent
+          return get_next_node(parent, allow_children=False)
+        # portal
+        if clients:
+          children = self.getPortalClients()
+          if children: 
             return children[0]
-      # siblings
-      parent  = self.getParentNode()
-      if parent:
-        siblings = parent.getChildNodes()
-        index = siblings.index(self)
-        if index < len(siblings) - 1:
-          return siblings[index+1]
-        # parent
-        return parent.get_next_node(clients, allow_children=False)
-      # portal
-      if clients:
-        children = self.getPortalClients()
-        if children: 
-          return children[0]
-        else:
-          here = self.getDocumentElement()
-          while here:
-            parent = here.getPortalMaster()
-            if parent:
-              siblings = parent.getPortalClients()
-              index = siblings.index(here)
-              if index < len(siblings) - 1:
-                return siblings[index+1]
-            here = parent
-      # none
-      return None
+          else:
+            here = self.getDocumentElement()
+            while here:
+              parent = here.getPortalMaster()
+              if parent:
+                siblings = parent.getPortalClients()
+                index = siblings.index(here)
+                if index < len(siblings) - 1:
+                  return siblings[index+1]
+              here = parent
+        # none
+        return None
+
+      node = self.findObject(uid)
+      while node and len(nodes) < page_size:
+        nodes.append(node)
+        node = get_next_node(node)
+      if node:
+        root_element = node.getRootElement()
+        root = '/'.join(root_element.getHome().getPhysicalPath())
+        path = '/'.join(node.getPhysicalPath())
+        path = path[len(root):]
+        i = path.find('/content')
+        next = '{$%s@%s}'%(path[:i],path[i+len('/content')+1:])
+      return nodes, next        
+
 
     # --------------------------------------------------------------------------
     #  ZMSContainerObject.filteredTreeNodes:

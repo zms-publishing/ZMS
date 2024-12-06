@@ -19,16 +19,27 @@ zmsindex = zmscontext.getZMSIndex()
 
 catalog =zmsindex.get_catalog()
 q = catalog({ cat_attr_name : str(id) })
-obj_path = []
+zmsobj = None
+zmsobj_path = []
 for r in q:
 	uid = r['get_uid']
 	pth = r['getPath']
 	zms_data_id = '{$%s}'%uid
 	# return '%s\n%s'%(zmsindex.getLinkObj(zms_data_id), r.getObject())
 	# return zmscontext.getLinkObj(zms_data_id).attr('standard_html')
-	obj_path = zmscontext.getLinkObj(zms_data_id).breadcrumbs_obj_path()
+	zmsobj = zmscontext.getLinkObj(zms_data_id)
+	if zmsobj:
+		zmsobj_path = zmsobj.breadcrumbs_obj_path(portalMaster=False)
 
-# Return HTML for Ajax-Requests
-return '\n'.join(['<li><a href="%s">%s</a></li>'%(obj.getHref2IndexHtml(request), obj.attr('titlealt')) for obj in obj_path])
+## Return HTML for Ajax-Requests
+if len(zmsobj_path) > 2:
+	zmsobj_path = zmsobj_path[:-1]
+## #############################################
+## A. Basic URL Generation: getHref2IndexHtml()
+return '\n'.join(['<li><a href="%s">%s</a></li>'%(obj.getHref2IndexHtml(request), obj.attr('titlealt')) for obj in zmsobj_path if obj.attr('titlealt')])
+## #############################################
+## B. Specific URL Generation: custom function getHref2SubdomainHtml()
+# return '\n'.join(['<li><a href="%s">%s</a></li>'%(zmscontext.UniBE_zeix_('getHref2SubdomainHtml',item=obj), obj.attr('titlealt')) for obj in zmsobj_path if obj.attr('titlealt')])
+## #############################################
 
 # --// /opensearch_breadcrumbs_obj_path //--

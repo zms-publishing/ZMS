@@ -68,7 +68,7 @@ class solr_connector:
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
-			,"name":"Object: Index Solr"
+			,"name":"Objects: Index Solr"
 			,"repetitive":0
 			,"type":"External Method"}
 
@@ -77,7 +77,16 @@ class solr_connector:
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
-			,"name":"Object: Delete Solr"
+			,"name":"Objects: Delete Solr"
+			,"repetitive":0
+			,"type":"External Method"}
+
+		manage_solr_objects_clear = {"default":""
+			,"id":"manage_solr_objects_clear"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"Objects: Clear Client from Solr"
 			,"repetitive":0
 			,"type":"External Method"}
 
@@ -113,6 +122,6 @@ class solr_connector:
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
-			,"name":"readme.md"
+			,"name":"README.md"
 			,"repetitive":0
 			,"type":"resource"}

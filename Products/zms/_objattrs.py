@@ -31,19 +31,20 @@ from Products.zms import standard
 from Products.zms import zopeutil
 from Products.zms import _blobfields
 from Products.zms import _globals
-
+from zope.globalrequest import getRequest
 
 # ------------------------------------------------------------------------------
 #  getobjattrdefault
 # ------------------------------------------------------------------------------
 def getobjattrdefault(obj, obj_attr, lang):
+    request = getattr(obj, 'REQUEST', getRequest())
     v = None
     datatype = obj_attr['datatype_key']
     default = None
     if datatype in range(len(_globals.datatype_map)):
       default = obj_attr.get('default',_globals.datatype_map[datatype][1])
     # Default inactive in untranslated languages.
-    if obj_attr['id'] == 'active' and len(obj.getLangIds()) > 1 and not obj.isTranslated(lang,obj.REQUEST):
+    if obj_attr['id'] == 'active' and len(obj.getLangIds()) > 1 and not obj.isTranslated(lang,request):
         default = 0
     if default is not None:
       if datatype in _globals.DT_DATETIMES and default == '{now}':
@@ -467,7 +468,7 @@ class ObjAttrs(object):
         if isinstance(value,str):
           value = None
         elif value is not None:
-          value = value._createCopy( self, obj_attr['id'])
+          value = value._createCopy( self, obj_attr['id'], lang)
           value.lang = lang
       
       #-- DateTime-Fields.
@@ -595,7 +596,8 @@ class ObjAttrs(object):
     #  attr({key0:value0,...,keyN:valueN}) -> setObjProperty(key0,value0),...
     # --------------------------------------------------------------------------
     def attr(self, *args, **kwargs):
-      request = kwargs.get('request',kwargs.get('REQUEST',self.REQUEST))
+      req = getattr(self, 'REQUEST', getRequest())
+      request = kwargs.get('request',kwargs.get('REQUEST',req))
       if len(args) == 1 and isinstance(args[0], str):
         return self.getObjProperty( args[0], request, kwargs)
       elif len(args) == 2:
@@ -609,10 +611,10 @@ class ObjAttrs(object):
     #  ObjAttrs.evalMetaobjAttr
     # --------------------------------------------------------------------------
     def evalMetaobjAttr(self, *args, **kwargs):
+      request = getattr(self, 'REQUEST', getRequest())
       root = self
-      request = self.REQUEST
-      id = request.get('ZMS_INSERT', self.meta_id)
       key = args[0]
+      id = standard.nvl(request.get('ZMS_INSERT'), self.meta_id)
       if key.find('.')>0:
         id = key[:key.find('.')]
         key = key[key.find('.')+1:]
@@ -669,6 +671,7 @@ class ObjAttrs(object):
       obj_vers = self.getObjVersion(REQUEST)
       obj_attrs = self.getObjAttrs()
       now = datetime.datetime.now()
+      dst = time.daylight == 1 and 1 or 0 # Daylight saving time.
       for key in ['active', 'attr_active_start', 'attr_active_end']:
         if key in obj_attrs:
           obj_attr = obj_attrs[key]
@@ -687,16 +690,22 @@ class ObjAttrs(object):
           # Start time.
           elif key == 'attr_active_start':
             if value is not None:
-              dt = datetime.datetime.fromtimestamp(time.mktime(value))
+              if isinstance(value, time.struct_time):
+                # Convert time.struct_time to datetime tuple.
+                value = tuple(value[:8]) + (0,)
+              dt = datetime.datetime.fromtimestamp(time.mktime(value) - (dst * 3600))
               b = b and now > dt
-              if dt > now and self.REQUEST.get('ZMS_CACHE_EXPIRE_DATETIME', dt) >= dt:
+              if dt > now and hasattr(self,'REQUEST') and self.REQUEST.get('ZMS_CACHE_EXPIRE_DATETIME', dt) >= dt:
                 self.REQUEST.set('ZMS_CACHE_EXPIRE_DATETIME',dt)
           # End time.
           elif key == 'attr_active_end':
             if value is not None:
-              dt = datetime.datetime.fromtimestamp(time.mktime(value))
+              if isinstance(value, time.struct_time):
+                # Convert time.struct_time to datetime tuple.
+                value = tuple(value[:8]) + (0,)
+              dt = datetime.datetime.fromtimestamp(time.mktime(value) - (dst * 3600))
               b = b and dt > now
-              if dt > now and self.REQUEST.get('ZMS_CACHE_EXPIRE_DATETIME', dt) >= dt:
+              if dt > now and hasattr(self,'REQUEST') and self.REQUEST.get('ZMS_CACHE_EXPIRE_DATETIME', dt) >= dt:
                 self.REQUEST.set('ZMS_CACHE_EXPIRE_DATETIME',dt)
           if not b: break
       return b
@@ -716,14 +725,17 @@ class ObjAttrs(object):
     def formatObjAttrValue(self, obj_attr, v, lang=None):
       
       #-- DATATYPE
-      datatype = obj_attr.get('datatype_key', _globals.DT_UNKNOWN)
+      try:
+        datatype = obj_attr.get('datatype_key', _globals.DT_UNKNOWN)
+      except:
+        datatype = _globals.DT_UNKNOWN
       
       #-- VALUE
       if isinstance(v, str):
         chars = ''.join([ x for x in string.whitespace if x != '\t'])
         v = v.strip(chars)
       # Retrieve v from options.
-      if 'options' in obj_attr:
+      if obj_attr is not None and 'options' in obj_attr:
         options = obj_attr['options']
         try: 
           i = options.index(int(v))

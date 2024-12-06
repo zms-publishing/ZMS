@@ -1,11 +1,11 @@
 <!-- ACE-Editor1 optionsJS -->
 <tal:block tal:condition="python:request.get('ZMS_INSERT',None) is None">
 <div class="form-group row">
-<div class="col-sm-2"></div>
-<div class="col-sm-10" style="top:-2.5em;padding:0;">
-<div class="ACE_Editor">
-<div id="ACE_Editor1"></div>
-</div>
-</div>
+	<div class="col-sm-2"></div>
+	<div class="col-sm-10" style="top:-2.5em;">
+		<div class="ACE_Editor">
+			<div id="ACE_Editor1"></div>
+		</div>
+	</div>
 </div>
 </tal:block>

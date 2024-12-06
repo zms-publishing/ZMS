@@ -105,6 +105,14 @@ def updateVersion(root):
           else:
            del nodes[nodekey]
       root.setConfProperty('ZMS.security.users', d)
+    # View management screens
+    if root.getConfProperty('ZMS.security.build', 0) == 3:
+      root.setConfProperty('ZMS.security.build', 4)
+      root.initRoleDefs()
+    # View management screens (ii)
+    if root.getConfProperty('ZMS.security.build', 0) == 4:
+      root.setConfProperty('ZMS.security.build', 5)
+      root.synchronizeRolesAccess()
 
 # ------------------------------------------------------------------------------
 #  _accessmanager.user_folder_meta_types:
@@ -120,10 +128,10 @@ user_folder_meta_types = ['LDAPUserFolder', 'User Folder', 'Simple User Folder',
 # ------------------------------------------------------------------------------
 role_defs = {
    'ZMSAdministrator':['*']
-  ,'ZMSEditor':['Access contents information', 'Add ZMSs', 'Add Documents, Images, and Files', 'Copy or Move', 'Delete objects', 'Manage properties', 'Use Database Methods', 'View', 'ZMS Author']
-  ,'ZMSAuthor':['Access contents information', 'Add ZMSs', 'Copy or Move', 'Delete objects', 'Use Database Methods', 'View', 'ZMS Author']
+  ,'ZMSEditor':['View management screens', 'Access contents information', 'Add ZMSs', 'Add Documents, Images, and Files', 'Copy or Move', 'Delete objects', 'Manage properties', 'Use Database Methods', 'View', 'ZMS Author']
+  ,'ZMSAuthor':['View management screens', 'Access contents information', 'Add ZMSs', 'Copy or Move', 'Delete objects', 'Use Database Methods', 'View', 'ZMS Author']
   ,'ZMSSubscriber':['Access contents information', 'View']
-  ,'ZMSUserAdministrator':['Access contents information', 'View', 'ZMS UserAdministrator']
+  ,'ZMSUserAdministrator':['View management screens', 'Access contents information', 'View', 'ZMS UserAdministrator']
 }
 
 # ------------------------------------------------------------------------------
@@ -1268,7 +1276,9 @@ class AccessManager(AccessableContainer):
             # Send notification.
             # ------------------
             #-- Recipient
-            mto = email
+            mto = {}
+            mto['To'] = email
+            mto['From'] = self.getConfProperty('ZMSAdministrator.email', '')
             #-- Body
             userObj = self.findUser(id)
             mbody = []

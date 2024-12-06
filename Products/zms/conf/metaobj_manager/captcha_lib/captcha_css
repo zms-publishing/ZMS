@@ -1,0 +1,70 @@
+#captcha_reload.btn {
+	display: inline-block;
+	white-space:nowrap;
+	border: 1px solid #ced4da;
+	margin-left:.5rem;
+}
+#captcha_reload.btn::before {
+	content:"Neu laden";
+	content:"Reload";
+	display:inline-block;
+	float:right;
+	padding:0 0 0 1.85rem ;
+}
+
+/* ############################################################# */
+/* CSS Pie Timer
+/* https://kittygiraudel.com/2021/04/11/css-pie-timer-revisited/ */
+/* ############################################################# */
+.pie {
+	--color: white;
+	--backgroundcolor:#6c757d;
+	font-size: 150%;
+	width: 1em;
+	height: 1em;
+	border-radius: 50%;
+	position: relative;
+	border: 0.05em solid var(--color);
+}
+.pie::before,
+.pie::after {
+	content: '';
+	width: 50%;
+	height: 100%;
+	border-radius: 0.5em 0 0 0.5em;
+	position: absolute;
+	left: 0;
+	transform-origin: center right;
+}
+.pie::before {
+	z-index: 1;
+	background-color: var(--backgroundcolor);
+}
+.pie::after {
+	background-color: var(--color);
+}
+.pie::before,
+.pie::after {
+	animation-duration: var(--life_time);
+	animation-iteration-count: infinite;
+}
+.pie::before {
+	animation-name: mask;
+	animation-timing-function: steps(1);
+}
+.pie::after {
+	animation-name: rotate;
+	animation-timing-function: linear;
+}
+@keyframes mask {
+	50%,
+	100% {
+		background-color: var(--color);
+		transform: rotate(0.5turn);
+	}
+}
+@keyframes rotate {
+	to {
+		transform: rotate(1turn);
+	}
+}

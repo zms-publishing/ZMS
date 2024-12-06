@@ -159,19 +159,8 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
       # dynamic list of types
       if standard.dt_executable('\n'.join(meta_keys)):
         meta_keys = standard.dt_exec(container, '\n'.join(meta_keys))
-      # iterate types
-      metaobj_manager = container.getMetaobjManager()
-      for meta_id in meta_keys:
-        if meta_id.startswith('type(') and meta_id.endswith(')'):
-          meta_obj_type = meta_id[5:-1]
-          for metaObjId in metaObjIds:
-            metaObj = metaobj_manager.getMetaobj( metaObjId, aq_attrs=['enabled'])
-            if metaObj['type'] == meta_obj_type and metaObj['enabled']:
-              meta_ids.append( metaObj['id'])
-        elif meta_id in metaObjIds:
-          meta_ids.append( meta_id)
-        else:
-          container.writeError( '[zmi_insert_actions]: %s.%s contains invalid meta_id \'%s\''%(container.meta_id, objAttr['id'], meta_id))
+      # typed meta-ids (resolves type(ZMS...))
+      meta_ids = container.getMetaobjManager().getTypedMetaIds(meta_keys)
     else:
       meta_ids.append( objAttr['type'])
     for meta_id in meta_ids:
@@ -208,20 +197,40 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
           value = 'manage_addZMSCustomDefault'
         else:
           value = 'manage_addProduct/zms/manage_addzmscustomform'
-        action = (container.display_type(meta_id=meta_id), value, container.display_icon(meta_id=meta_id), meta_id)
+        tooltip_key = '%s.TOOLTIP'%meta_id
+        tooltip_val = container.getLangStr(tooltip_key)
+        tooltip_val = tooltip_val if tooltip_val != tooltip_key else meta_id
+        icon_clazz = container.display_icon(meta_id=meta_id)
+        action = (meta_id, container.display_type(meta_id=meta_id), value, icon_clazz, meta_id, tooltip_val)
         if action not in actions:
           actions.append( action)
   
   #-- Insert Commands.
   actions.extend(zmi_command_actions(container, stereotype='insert'))
   
-  #-- Sort.
+  #-- Pre-Sort by display-label.
+  actions.sort(key=lambda x: x[1])
+  actions = [[len(actions)+actions.index(x)]+list(x) for x in actions]
+  #-- Sort by custom-sort-id.
+  def get_sort(x):
+    sort_key = '%s.SORT'%x[1]
+    # Default sort value is display-label
+    sort_val = x[0]
+    # If SORT key (integer!) found, use it.
+    if container.getLangStr(sort_key) != sort_key:
+      try:
+        sort_val = int(container.getLangStr(sort_key))
+      except:
+        pass
+    return sort_val
+  actions = [[get_sort(x)]+x[2:] for x in actions]
   actions.sort()
+  actions = [tuple(x[1:]) for x in actions]
   
   #-- Headline.
   if len(actions) > 0:
-    actions.insert(0, ('----- %s -----'%container.getZMILangStr('CAPTION_INSERT')%container.getZMILangStr('ATTR_CONTENT'), 'insert-action'))
-  
+    actions.insert(0, ('----- %s -----'%container.getZMILangStr('ACTION_INSERT')%container.display_type(REQUEST), 'insert-action'))
+
   # Return action list.
   return actions
 
@@ -235,12 +244,8 @@ def zmi_command_actions(context, stereotype='', objPath=''):
   #-- Context Commands.
   if context is not None:
     for metaCmd in [x for x in context.getMetaCmds(context, stereotype) if x['stereotype']==stereotype]:
-      l = [metaCmd['name'], metaCmd['action'].replace('%s',objPath)]
-      if metaCmd.get('icon_clazz'):
-        l.append(metaCmd.get('icon_clazz'))
-      if metaCmd.get('title'):
-        l.append(metaCmd.get('title'))
-      actions.append(tuple(l))
+      action = (metaCmd['id'], metaCmd['name'], metaCmd['action'].replace('%s',objPath),metaCmd.get('icon_clazz','fas fa-cog'),metaCmd['id'],metaCmd.get('title'))
+      actions.append(action)
   
   #-- Sort.
   actions.sort()

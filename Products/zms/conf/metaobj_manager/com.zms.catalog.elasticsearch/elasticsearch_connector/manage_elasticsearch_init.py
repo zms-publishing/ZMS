@@ -13,7 +13,7 @@ def get_elasticsearch_client(self):
 	# ${elasticsearch.username:admin}
 	# ${elasticsearch.password:admin}
 	# ${elasticsearch.ssl.verify:}
-	url = self.getConfProperty('elasticsearch.url')
+	url = self.getConfProperty('elasticsearch.url').rstrip('/')
 	if not url:
 		return None
 	host = urlparse(url).hostname
@@ -36,7 +36,7 @@ def get_elasticsearch_client(self):
 	return client
 
 def manage_elasticsearch_init( self):
-	index_name = self.getRootElement().getHome().id
+	index_name = self.getConfProperty('elasticsearch.index_name', self.getRootElement().getHome().id )
 	schema = self.getConfProperty('elasticsearch.schema','{}')
 	resp_text = '//RESPONSE\n'
 	client = get_elasticsearch_client(self)

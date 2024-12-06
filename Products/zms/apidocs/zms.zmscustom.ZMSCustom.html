@@ -386,6 +386,16 @@
             </div>
         
 
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_uid" class="internal-link" title="zms.zmscustom.ZMSCustom._uid">_uid</a></code>
+            </div>
+        
+
     </li>
 </ul> 
 
@@ -519,7 +529,7 @@
         </div>
 
         <div id="splitTables">
-          <table class="children sortable" id="id159">
+          <table class="children sortable" id="id161">
   
   
   <tr class="method">
@@ -632,6 +642,11 @@
     <td>Instance Variable</td>
     <td><code><a href="#meta_id" class="internal-link" title="zms.zmscustom.ZMSCustom.meta_id">meta<wbr></wbr>_id</a></code></td>
     <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_uid" class="internal-link" title="zms.zmscustom.ZMSCustom._uid">_uid</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
   </tr>
 </table>
           
@@ -651,8 +666,8 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">__init__</span>(self, id=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, sort_id=0, meta_id=None):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L223">
+    <span class="py-keyword">def</span> <span class="py-defname">__init__</span>(self, id=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, sort_id=0, meta_id=None, uid=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L224">
       
       (source)
     </a>
@@ -675,7 +690,7 @@
   <div class="functionHeader">
     
     <span class="py-keyword">def</span> <span class="py-defname">getEntityRecordHandler</span>(self, id):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L435">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L437">
       
       (source)
     </a>
@@ -697,7 +712,7 @@
   <div class="functionHeader">
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_changeRecordGrid</span>(self, lang, btn, REQUEST, RESPONSE):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L476">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L478">
       
       (source)
     </a>
@@ -720,7 +735,7 @@
   <div class="functionHeader">
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_changeRecordSet</span>(self, lang, btn, action, REQUEST, RESPONSE):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L558">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L560">
       
       (source)
     </a>
@@ -743,7 +758,7 @@
   <div class="functionHeader">
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_import</span>(self, file, lang, REQUEST, RESPONSE=None):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L668">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L670">
       
       (source)
     </a>
@@ -788,7 +803,7 @@
   <div class="functionHeader">
     
     <span class="py-keyword">def</span> <span class="py-defname">recordSet_Export</span>(self, lang, qorder, qorderdir, qindex=[], REQUEST=None, RESPONSE=None, mode=<span class="rst-variable-quote">'</span><span class="rst-variable-string">xml</span><span class="rst-variable-quote">'</span>):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L379">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L381">
       
       (source)
     </a>
@@ -811,7 +826,7 @@
   <div class="functionHeader">
     
     <span class="py-keyword">def</span> <span class="py-defname">recordSet_Filter</span>(self, REQUEST):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L255">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L257">
       
       (source)
     </a>
@@ -833,7 +848,7 @@
   <div class="functionHeader">
     
     <span class="py-keyword">def</span> <span class="py-defname">recordSet_Init</span>(self, REQUEST):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L240">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L242">
       
       (source)
     </a>
@@ -855,7 +870,7 @@
   <div class="functionHeader">
     
     <span class="py-keyword">def</span> <span class="py-defname">recordSet_Sort</span>(self, REQUEST=None):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L327">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L329">
       
       (source)
     </a>
@@ -877,7 +892,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">__ac_permissions__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L194">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L195">
       
       (source)
     </a>
@@ -946,7 +961,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_menu</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L203">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L204">
       
       (source)
     </a>
@@ -969,7 +984,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_properties</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L202">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L203">
       
       (source)
     </a>
@@ -1015,7 +1030,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">metaobj_recordset_grid</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L207">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L208">
       
       (source)
     </a>
@@ -1039,7 +1054,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">metaobj_recordset_input_fields</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L206">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L207">
       
       (source)
     </a>
@@ -1062,7 +1077,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">metaobj_recordset_main</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L205">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L206">
       
       (source)
     </a>
@@ -1085,7 +1100,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">metaobj_recordset_main_grid</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L204">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L205">
       
       (source)
     </a>
@@ -1131,7 +1146,30 @@
   <div class="functionHeader">
     
     <span class="py-defname">meta_id</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L226">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L227">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="zms.zmscustom.ZMSCustom._uid">
+    
+  </a>
+  <a name="_uid">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_uid</span> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L228">
       
       (source)
     </a>
@@ -1157,14 +1195,14 @@
     <!-- t:slot name="pydoctor_version" /&gt; at <t:slot name="buildtime" / -->.
   </div>
 
-  <!-- Search related scripts needs to be loaded at the end of HTML
+  <!-- Search related scripts needs to be loaded at the end of HTML 
     parsing not to introduce overhead and display HTML data asap -->
   <script src="ajax.js" type="text/javascript"></script>
   <script src="searchlib.js" type="text/javascript"></script>
   <script src="search.js" type="text/javascript"></script>
 
 <script>
-//<!-- OPEN SOURCE LINKS IN FRAMESET
+//<!-- OPEN SOURCE LINKS IN FRAMESET 
   document.addEventListener('DOMContentLoaded', function(){
   var links = document.getElementsByClassName('sourceLink');
     var len = links.length;

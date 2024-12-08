@@ -885,7 +885,7 @@ def apply_standard_json_docx(self):
 						'parent_id':parent_id,
 						'parent_meta_id':parent_meta_id,
 						'docx_format':'image',
-						'imgwidth':	imgwidth,
+						'imgwidth': imgwidth,
 						'imgheight':imgheight,
 						'content':img_url
 					},
@@ -1261,20 +1261,11 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 		# #############################################
 		# [4] CAPTION TEXT-BLOCK
 		elif v and block['docx_format']=='Caption':
-			#if re.match(r'^\[Abb. e\d+\] .*', v):
-			#	capt_list = re.split(r'^\[Abb. e\d+\] ', v)
-			#	if len(capt_list) > 1 and len(capt_list[1]) > 0:
-					p = doc.add_paragraph(style='Caption')
-					# p.add_run('Abb. %s: '%block['id']).font.italic = False
-					#p.add_run(capt_list[1])
-					p.add_run(v).font.italic = False
-					prepend_bookmark(p, block['id'])
-			#elif re.match(r'^\[Abb. e\d+\] ', v):
-			#	# Omit caption with empty text
-			#	pass
-			# else:
-			#	p = doc.add_paragraph(style='Caption')
-			#	prepend_bookmark(p, block['id'])
+			# if re.match(r'^\[Abb\. e\d+\] .*', v):
+			p = doc.add_paragraph(style='Caption')
+			p.add_run(v)
+			prepend_bookmark(p, block['id'])
+
 		# #############################################
 		# [5] TEXT-BLOCK with given block format (style)
 		elif v and ( block['docx_format'] in [e.name for e in doc.styles] or block['docx_format'] in [e.name.replace(' ','') for e in doc.styles] ):

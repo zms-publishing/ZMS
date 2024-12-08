@@ -364,6 +364,7 @@ def add_tagged_content_as_paragraph(docx_doc, bs_element, style_name="Standard",
 def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid=None):
 	# Clean HTML
 	htmlblock = clean_html(htmlblock)
+	htmlblock = htmlblock.strip()
 	heading_text = ''
 	# Apply BeautifulSoup and iterate over elements
 	soup = BeautifulSoup(htmlblock, 'html.parser')
@@ -564,7 +565,7 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 								img_src = zmscontext.operator_getattr(zmscontext,zmsid).attr('imghires').getHref(zmscontext.REQUEST)
 						except:
 							pass
-						img_name = img_src.split('/')[-1]
+						img_name = img_src.split('?')[0].split('/')[-1]
 						if not img_src.startswith('http'):
 							src_url0 = zmscontext.absolute_url().split('/content/')[0]
 							src_url1 = img_src.split('/content/')[-1]
@@ -600,9 +601,13 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 				elif element.name == 'div':
 					if element.has_attr('class') and (('ZMSGraphic' in element['class']) or ('graphic' in element['class'])):
 						ZMSGraphic_html = standard.pystr(''.join([str(e) for e in element.children]))
+						zmsid = element.has_attr('id') and element['id'] or zmsid
+						zmscontext = zmscontext.operator_getattr(zmscontext,zmsid)
 						add_htmlblock_to_docx(zmscontext, docx_doc, ZMSGraphic_html, zmsid, zmsmetaid='ZMSGraphic')
 					elif element.has_attr('class') and ('ZMSTextarea' in element['class']):
 						ZMSTextarea_html = standard.pystr(''.join([str(e) for e in element.children]))
+						zmsid = element.has_attr('id') and element['id'] or zmsid
+						zmscontext = zmscontext.operator_getattr(zmscontext,zmsid)
 						add_htmlblock_to_docx(zmscontext, docx_doc, ZMSTextarea_html, zmsid, zmsmetaid='ZMSTextarea')
 					elif element.has_attr('class') and 'handlungsaufforderung' in element['class']:
 						if len([e.name for e in element.children if e.name in ['ul','ol']])>0:
@@ -842,7 +847,7 @@ def apply_standard_json_docx(self):
 		pageelements = [ \
 			e for e in zmscontext.getChildNodes(request)  \
 				if ( ( e.getType() in [ 'ZMSObject', 'ZMSRecordSet'] ) \
-					and not e.meta_id in [ 'LgChangeHistory','ZMSTeaserContainer','LgELearningBanner'] \
+					and not e.meta_id in [ 'LgChangeHistory','ZMSTeaserContainer'] \
 					and not e.isPage() ) \
 					or e.meta_id in [ 'ZMSLinkElement' ]
 			]
@@ -986,7 +991,7 @@ def apply_standard_json_docx(self):
 				}]
 
 			# Give some customizing hints for standard_html
-			if pageelement.meta_id in ['LgRegel','LgBedingung','LgELearningBanner','ZMSNote']:
+			if pageelement.meta_id in ['LgRegel','LgBedingung','LgELearningBanner','ZMSNote','ZMSTestarea']:
 				standard.writeStdout(None, 'IMPORTANT NOTE: %s.standard_html needs to be customized!'%(pageelement.meta_id))
 				# %<----  CUSTOMIZE LIKE THIS ---------------------
 				# zmi python:request['URL'].find('/manage')>0 and not request['URL'].find('pydocx')>0;
@@ -1256,19 +1261,20 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 		# #############################################
 		# [4] CAPTION TEXT-BLOCK
 		elif v and block['docx_format']=='Caption':
-			if re.match(r'^\[Abb. e\d+\] .*', v):
-				capt_list = re.split(r'^\[Abb. e\d+\] ', v)
-				if len(capt_list) > 1 and len(capt_list[1]) > 0:
+			#if re.match(r'^\[Abb. e\d+\] .*', v):
+			#	capt_list = re.split(r'^\[Abb. e\d+\] ', v)
+			#	if len(capt_list) > 1 and len(capt_list[1]) > 0:
 					p = doc.add_paragraph(style='Caption')
+					# p.add_run('Abb. %s: '%block['id']).font.italic = False
+					#p.add_run(capt_list[1])
+					p.add_run(v).font.italic = False
 					prepend_bookmark(p, block['id'])
-					p.add_run('Abb. %s: '%block['id']).font.italic = False
-					p.add_run(capt_list[1])
-			elif re.match(r'^\[Abb. e\d+\] ', v):
-				# Omit caption with empty text
-				pass
-			else:
-				p = doc.add_paragraph(style='Caption')
-				prepend_bookmark(p, block['id'])
+			#elif re.match(r'^\[Abb. e\d+\] ', v):
+			#	# Omit caption with empty text
+			#	pass
+			# else:
+			#	p = doc.add_paragraph(style='Caption')
+			#	prepend_bookmark(p, block['id'])
 		# #############################################
 		# [5] TEXT-BLOCK with given block format (style)
 		elif v and ( block['docx_format'] in [e.name for e in doc.styles] or block['docx_format'] in [e.name.replace(' ','') for e in doc.styles] ):

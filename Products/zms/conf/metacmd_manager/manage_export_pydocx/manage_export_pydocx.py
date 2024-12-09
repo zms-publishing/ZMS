@@ -1261,9 +1261,16 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 		# #############################################
 		# [4] CAPTION TEXT-BLOCK
 		elif v and block['docx_format']=='Caption':
-			# if re.match(r'^\[Abb\. e\d+\] .*', v):
 			p = doc.add_paragraph(style='Caption')
-			p.add_run(v)
+			if re.match(r'^\[Abb\. e\d+\] .*', v):
+				re_list = re.split(r'^(\[Abb. e\d+\]) (.*)',v)
+				v1 = re_list[1]
+				v2 = BeautifulSoup(re_list[2], 'html.parser').get_text()
+				p.add_run(v1).font.italic = False
+				p.add_run(' ')
+				p.add_run(v2)
+			else:
+				p.add_run(v)
 			prepend_bookmark(p, block['id'])
 
 		# #############################################

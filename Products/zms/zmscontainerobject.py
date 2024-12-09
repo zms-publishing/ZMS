@@ -247,30 +247,28 @@ class ZMSContainerObject(
       if self.meta_id == 'ZMSTrashcan':
         return
       trashcan = self.getTrashcan()
-      # Set deletion-date.
-      ids_copy = []
+      nodes = []
       for id in ids:
         try:
           context = getattr(self, id)
           context.del_uid = str(REQUEST.get('AUTHENTICATED_USER', None))
           context.del_dt = standard.getDateTime( time.time())
-          ids_copy.append(id)
+          # Move (Cut & Paste).
+          children = [context]
+          [standard.triggerEvent(child,'beforeDeleteObjsEvt') for child in children]
+          cb_copy_data = _cb_decode(self.manage_cutObjects([id]))
+          trashcan.manage_pasteObjects(cb_copy_data=_cb_encode(cb_copy_data))
+          [standard.triggerEvent(child,'afterDeleteObjsEvt') for child in children]
+          nodes.extend(children)
         except:
           standard.writeBlock( self, "[moveObjsToTrashcan]: Attribute Error %s"%(id))
-      # Use only successfully tried ids
-      ids = ids_copy
-      # Move (Cut & Paste).
-      children = [getattr(self,x) for x in ids]
-      [standard.triggerEvent(child,'beforeDeleteObjsEvt') for child in children]
-      cb_copy_data = _cb_decode(self.manage_cutObjects(ids))
-      trashcan.manage_pasteObjects(cb_copy_data=_cb_encode(cb_copy_data))
+      # Synchronize search.
+      self.getCatalogAdapter().unindex_nodes(nodes=nodes)
+      # Trashcan: Sort-IDs and Garbage-Collection,
       trashcan.normalizeSortIds()
       trashcan.run_garbage_collection(forced=1)
-      # Synchronize search.
-      self.getCatalogAdapter().unindex_nodes(nodes=children)
       # Sort-IDs.
       self.normalizeSortIds()
-      [standard.triggerEvent(child,'afterDeleteObjsEvt') for child in children]
 
 
     ############################################################################

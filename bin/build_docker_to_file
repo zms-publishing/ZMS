@@ -9,4 +9,4 @@ cd ..
 docker buildx bake --set '*.platform=linux/amd64' zope
 
 cd dist
-docker image save localhost/zope:$ZOPE_TAG > zope:latest.tar
+docker image save localhost/zope:$ZOPE_TAG > zope.latest.tar

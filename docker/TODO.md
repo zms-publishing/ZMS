@@ -9,8 +9,7 @@
 - [x] Allow working on zms inside the container
 - [x] example systemd files to run everything
   - [x] this should show how automated container updates are done!
-- [ ] example nginx config so you get the same experience as on the server
-- [ ] Full development experience with all dependennt services locally (mariadb, memcached, …)
+- [ ] Full development experience with all dependent services locally (mariadb, memcached, …)
 
 # TODOs
 
@@ -22,3 +21,7 @@
 - [x] remove debug mode from zope Dockerfile
 - [x] add script to run tests in docker
 - [ ] add nginx, mariadb, memcached to docker-compose for a fully featured development environment, that can run production like configs
+
+# Later
+
+- [ ] example nginx config so you get the same experience as on the server

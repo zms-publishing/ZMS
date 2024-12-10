@@ -82,4 +82,4 @@ COPY --chown=zope:zope Products Products
 # locally it is mapped into the container via bindmounts
 # COPY --chown=zope:zope selenium_tests test_output tests ./
 
-CMD runwsgi --verbose etc/zope.ini http_port=80
+CMD ["runwsgi", "--verbose", "etc/zope.ini", "http_port=80"]

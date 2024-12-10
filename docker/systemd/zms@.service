@@ -14,6 +14,7 @@ Group=zope
 Restart=always
 
 Environment="ZOPE_PUBLIC_PORT=%i"
+Environment="INSTANCE_HOME=/path/to/instance_home"
 Environment="DOCKER_IMAGE=localhost/zms DOCKER_TAG=latest"
 
 TimeoutStartSec=0

@@ -26,7 +26,7 @@ class adwords:
 	package = "com.zms.catalog.opensearch"
 
 	# Revision
-	revision = "1.8.5"
+	revision = "1.9.1"
 
 	# Type
 	type = "ZMSRecordSet"
@@ -86,9 +86,9 @@ class adwords:
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
-			,"name":"Synonyms (space-sep.)"
+			,"name":"Synonyms"
 			,"repetitive":0
-			,"type":"string"}
+			,"type":"text"}
 
 		category = {"custom":1
 			,"default":""

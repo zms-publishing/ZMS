@@ -7,6 +7,11 @@ Handlebars.registerHelper("compareStrings", function (p, q, options) {
 Handlebars.registerHelper('hide_tabs', function (length) {
 	return length < 2 ? 'hidden' : 'not_hidden';
 });
+Handlebars.registerHelper('sanitize', function (str) {
+	const element = document.createElement('div');
+	element.innerText = String(str);
+	return element.innerHTML;
+});
 
 //# ######################################
 //# Init function show_results() as global
@@ -67,8 +72,8 @@ $(function() {
 			// Replace only tab-pane
 			$('.search-results .tab-content').html( hb_results_html );
 		};
-		$('html, body').animate({scrollTop: $("#container_results").offset().top }, 1000);
-
+		$('html, body').animate({scrollTop: $("#container_results").offset().top }, 1000);		
+		
 		//# Add pagination ###################
 		var fn = (pageIndex) => {
 			q = encodeURI(decodeURI(q));
@@ -157,18 +162,27 @@ $(function() {
 			} else {
 			// UNITEL
 				let title = `${source['Vorname']}  ${source['Nachname']}`;
+				let URL = '';
 				let href = '';
 				let EMail = '';
 				let Adresse = `<h3 style="margin-bottom: 12px">${title}</h3>`;
 				if (Array.isArray(source['Adresse'])) {
-					console.log('Adresse object is a list');
-					EMail = source['Adresse'][0]['EMail'];
-					URL = source['Adresse'][0]['WWWInstitution'];
+					// console.log('Adresse object is a list');
 					source['Adresse'].forEach(d => {
+						if ('EMail' in d) {
+							EMail = d['EMail'];
+						} else {
+							EMail = '';
+						};
+						if ('WWWInstitution' in d) {
+							URL = d['WWWInstitution'];
+						} else {
+							URL = '';
+						};
 						Adresse += `<dl>${stringify_address(d,URL)}</dl>`;
 					});
 				} else {
-					console.log('Adresse object is a dictionary');
+					// console.log('Adresse object is a dictionary');
 					EMail = source['Adresse']['EMail'];
 					URL = source['Adresse']['WWWInstitution'];
 					d = source['Adresse'];
@@ -200,12 +214,28 @@ $(function() {
 		const adwords_linked = $('#adwords_linked').val();
 		let qurl_base = '.';
 		let qurl = `/adwords/get_targets_json?adword=${adword}&lang=${lang}`;
+		// If request fails, try linked adwords if available
+		let response = await fetch(qurl_base + qurl);
+		let res = {'docs':[]};
+		try {
+			if (response.status === 404) {
+				throw new Error('404 Not Found');
+			}
+			res = await response.json();
+		} catch (error) {
+			// Handle the 404 error
+			console.error(error);
+		};
+		let response2;
+		let res2; 
 		if (adwords_linked) {
 			qurl_base = adwords_linked.replaceAll('/adwords', '');
+			response2 = await fetch(qurl_base + qurl);
+			res2 = await response2.json();
 		};
-		qurl = qurl_base + qurl;
-		const response = await fetch(qurl);
-		const res = await response.json();
+		if (res2) {
+			res['docs'] = res['docs'].concat(res2['docs']);
+		};
 		return res;
 	}
 
@@ -277,9 +307,9 @@ $(function() {
 						// create new option element and append it to datalist
 						// function complete_searchterm() may used for custom-autofill-gui
 						$('<option onclick="complete_searchterm(this)">')
-								.val(value)
-								.text(value)
-								.appendTo(dataList);
+							.val(value)
+							.text(value)
+							.appendTo(dataList);
 					});
 				}
 			});

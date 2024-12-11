@@ -197,9 +197,8 @@ body.zms.web #search_results .nav-tabs {
 
 /* UNITEL */
 
-article.unitel.hit a {
-	display:inline-block;
-}
+article.hit.unitel > ul,
+article.hit.unitel > a,
 article.unitel.hit p,
 article.unitel.hit .Reihenfolge,
 article.unitel.hit .Land,
@@ -207,100 +206,49 @@ article.unitel.hit .Hauptadresse,
 article.unitel.hit .InstitutionGUID {
 	display:none !important;
 }
-article.unitel.hit dl {
-	display: flex;
-	flex-flow: row wrap;
-	min-width:960px;
-	border: solid #eee;
-	border-width: 0 0 0 0;
-	padding-bottom:1rem;
-}
-article.hit.unitel dl:not(:first-child) {
-	margin-bottom: 1.5rem;
+article.unitel.hit h3 { 
+	margin:0 0 1rem 0 !important 
 }
 article.unitel.hit dt {
-	flex-basis: 20%;
 	padding: 2px 12px 2px 0;
-	background: #f9f2f4;
-	text-align: right;
-	margin: 0;
 	color:#888;
-	border: solid #888;
-	border-width: 0 0 0 0;
+	font-weight: normal;
+	font-family: unset;
 }
-article.unitel.hit dd {
-	flex-basis: 80%;
-	flex-grow: 1;
-	margin: 0;
-	padding: 2px 0 2px 8px;
-}
-article.unitel.hit dd.WWWInstitution {
-	white-space:nowrap;
-	max-width:92%;
+article.hit.unitel dl {
+	white-space:pre-line;
 	overflow:hidden;
 	text-overflow:ellipsis;
 }
-
-/* Fit styles to former hitlist */
-article.unitel.hit dl {
-	display:block;
-	font-weight: 400;
-	margin-bottom:0;
-	padding-bottom:0
-}
-/* ### vCard-Dummy
-article.unitel.hit:after {
-	content:"vCard";
-	display:block;
-	color:#0074c4;
-}
-*/
-
-article.hit.unitel >ul,
-article.hit.unitel > a,
-article.hit.unitel dt {
-	display:none;
-}
+article.hit.unitel dt,
 article.hit.unitel dd {
-	margin:0;
-	padding:0
+	display:inline !important;
+}
+article.hit.unitel dt:not(:first-child):before {
+	content:"\A";
+}
+article.hit.unitel dt:after{
+	content:":";
+}
+article.hit.unitel dt.ger.Ort {
+	display: none !important;
 }
 article.hit.unitel dd.PLZ {
-	display:inline-block !important;
-	float:left;
-	margin-right:.35em;
+	margin-right:.75rem
 }
-article.hit.unitel dd:before {
-	color:#666;
+article.hit.unitel dt.ger.PLZ::after {
+	content:",  Ort:";
 }
-article.hit.unitel dd.Telefondirekt1:before,
-article.hit.unitel dd.Telefondirekt2:before{
-	content:"Telefon direkt: ";
-}
-article.hit.unitel dd.Institutionstelefon:before {
-	content:"Telefon Institution: ";
-}
-article.hit.unitel dd.EMail:before {
-	content:"Email: ";
-}
-article.hit.unitel dd.Institution,
-article.hit.unitel dd.EMail,
-article.hit.unitel dd.Telefondirekt1,
-article.hit.unitel dd.Telefondirekt2,
-article.hit.unitel dd.Institutionstelefon,
-article.hit.unitel dd.WWWInstitution {
-	/* color: #0074c4; */
-}
-
-
 #top_results .top_results {
 	display:flex;
 	flex-direction: row;
 	align-items: stretch;
-	justify-content: flex-start;
 	column-gap:2rem;
+	row-gap: 2rem;
+	justify-content: flex-start;
 	align-content: flex-start;
 	overflow:hidden;
+	flex-wrap: wrap;
 }
 @media screen and (max-width: 480px) {
 	#top_results .top_results {
@@ -310,24 +258,28 @@ article.hit.unitel dd.WWWInstitution {
 }
 #top_results article.top_result {
 	max-width: 32rem;
-	padding: 1em;
+	min-width: 26rem;
+	padding: 0;
 	border: 2px solid #e4e4e4;
+	hyphens: auto;
 }
 #top_results article.hit.top_result h2 {
 	margin: 0;
-	padding:0 0 1rem 0;
+	padding:.5em .75em;
 	font-size:120%;
 }
 #top_results article.top_result img {
-	height:24rem;
+	height: 20rem;
 	width:100%;
 	object-fit:cover;
 	object-position: center;
+	margin: 0;
+	display: block;
 }
 #top_results .top_results article.top_result p {
 	color: #666 !important;
 	margin:0;
-	padding:1rem 0 0 0;
+	padding:.25em .75em .5em .75em;
 }
 .search-results.content-tabs ul.nav-tabs {
 	/* override legacy css */

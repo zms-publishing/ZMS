@@ -32,7 +32,7 @@ class solr_page:
 	package = "com.zms.catalog.solr"
 
 	# Revision
-	revision = "1.0.0"
+	revision = "1.0.1"
 
 	# Type
 	type = "ZMSDocument"

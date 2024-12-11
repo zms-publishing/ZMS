@@ -55,6 +55,7 @@ def manage_opensearch_schematize( self):
 	properties['home_id'] = {'type':'keyword'}
 	properties['created_dt'] = {'type':'date'}
 	properties['change_dt'] = {'type':'date'}
+	properties['indexing_dt'] = {'type':'date'}
 
 	mappings = {'properties':properties}
 	dictionary = {'mappings':mappings}

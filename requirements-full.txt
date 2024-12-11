@@ -2,7 +2,7 @@
 -r requirements.txt
 
 # Theming
--e git+https://github.com/zms-publishing/Products.zms-skins.git#egg=Products.zms-skins
+git+https://github.com/zms-publishing/Products.zms-skins.git#egg=Products.zms-skins
 
 # SQL
 SQLAlchemy==1.4.49
@@ -33,7 +33,7 @@ asyncio
 # PAS
 Products.PluggableAuthService
 Products.PluginRegistry
-# -e git+https://github.com/sntl-projects/Products.zmsPluggableAuthService.git#egg=Products.zmsPluggableAuthService
+# git+https://github.com/sntl-projects/Products.zmsPluggableAuthService.git#egg=Products.zmsPluggableAuthService
 
 # MemCacheD to replace mappingstorage
 Products.mcdutils>=3.2

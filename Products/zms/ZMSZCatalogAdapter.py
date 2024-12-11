@@ -49,6 +49,7 @@ def get_default_data(node):
   d['lang'] = request.get('lang',node.getPrimaryLanguage())
   d['created_dt'] = get_zoned_dt(node.attr('created_dt'))
   d['change_dt'] = get_zoned_dt(node.attr('change_dt')) or d['created_dt']
+  d['indexing_dt'] = get_zoned_dt(time.gmtime())
   return d
 
 def get_zoned_dt(struct_dt):
@@ -169,7 +170,6 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     #  ZMSZCatalogAdapter.reindex_node
     # --------------------------------------------------------------------------
     def reindex_node(self, node):
-      standard.writeBlock(node, "[reindex_node]")
       connectors = []
       fileparsing = False
       try:
@@ -183,28 +183,31 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
           container_nodes = standard.difference_list(breadcrumbs, page_nodes)
           container_nodes.append(container_page)
           filtered_container_nodes = [e for e in container_nodes if self.matches_ids_filter(e)]
+          # Hint: getCatalogAdapter prefers local adapter, otherwise root adapter.
+          connectors = node.getCatalogAdapter().get_connectors()
           if filtered_container_nodes:
-            # Hint: getCatalogAdapter prefers local adapter, otherwise root adapter.
             fileparsing = standard.pybool(node.getConfProperty('ZMS.CatalogAwareness.fileparsing', 1))
-            connectors = node.getCatalogAdapter().get_connectors()
             # Reindex filtered container node's content by each connector.
             for connector in connectors:
               for filtered_container_node in filtered_container_nodes:
                 self.reindex(connector, filtered_container_node, recursive=False, fileparsing=fileparsing)
+          else:
+            # Remove from catalog if editing leads to filter-not-matching.
+            for connector in connectors:
+              connector.manage_objects_remove([container_page])
         return True
       except:
         standard.writeError( self, "can't reindex_node")
         return False
 
     # --------------------------------------------------------------------------
-    #  ZMSZCatalogAdapter.unindex_node
+    #  ZMSZCatalogAdapter.unindex_nodes
     # --------------------------------------------------------------------------
     def unindex_nodes(self, nodes=[], forced=False):
       # Is triggered by zmscontainerobject.moveObjsToTrashcan().
       # Todo: ensure param 'nodes' does contain all ids to be indexed
       # to avoid sequentially unindexing leading to redundant reindexing 
       # on the same page-node.
-      standard.writeBlock(self, "[unindex_nodes]")
       try:
         if self.getConfProperty('ZMS.CatalogAwareness.active', 1) or forced:
           # [1] Reindex page-container nodes of deleted page-elements.
@@ -221,11 +224,12 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
             self.reindex_node(node=page_node)
           # [2] Unindex deleted nodes (from trashcan) if filter-match.
           delnodes = [delnode for delnode in nodes[0].getParentNode().getTrashcan().objectValues() if ( ( delnode in nodes) and self.matches_ids_filter(delnode) )]
-          for connector in self.getCatalogAdapter().get_connectors():
+          connectors = self.getCatalogAdapter().get_connectors()
+          for connector in connectors:
             connector.manage_objects_remove(delnodes)
         return True
       except:
-        standard.writeError( self, "unindex_nodes not successful")
+        standard.writeError( self, "can't unindex_nodes")
         return False
 
     # --------------------------------------------------------------------------
@@ -255,7 +259,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     #  getter and setter for custom filter-function
     # --------------------------------------------------------------------------
     def getCustomFilterFunction(self):
-      return getattr(self, '_custom_filter_function', '##\nreturn context.meta_id in meta_ids')
+      return getattr(self, '_custom_filter_function', '##\nreturn context.meta_id in meta_ids\\\n    and (context.isVisible(context.REQUEST))')
 
     def setCustomFilterFunction(self, custom_filter_function):
       setattr(self, '_custom_filter_function', custom_filter_function)
@@ -432,4 +436,3 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
         return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s#%s'%(lang, message, REQUEST.get('tab')))
 
 ################################################################################
-

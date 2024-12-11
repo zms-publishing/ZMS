@@ -259,6 +259,28 @@
 		}
 	}
 
+	// Get current number of language terms
+	function get_lang_count() {
+		let lang_count = 0;
+		// Refresh cached language dictionary
+		let lang_dict_json = $.ajax({
+			url: $ZMI.getBaseUrl()+'/get_lang_dict',
+			async: false
+			}).responseJSON;
+		$ZMI.setCachedValue('get_lang_dict',lang_dict_json);
+
+		// Get language count from cached language dictionary
+		let lang_dict = ZMI.prototype.getCachedValue('get_lang_dict');
+		if ( lang_dict!='undefined' ) {
+			if ( typeof lang_dict == 'object' ) {
+				lang_count = Object.keys(lang_dict).length;
+			} else {
+				lang_count = Object.keys(JSON.parse(lang_dict)).length;
+			}
+		};
+		return lang_count;
+	}
+
 	/**
 	 * On load:
 	 */
@@ -271,19 +293,10 @@
 		// ++++++++++++
 		let new_row_counter = 0;
 
-		// Get number of language terms
-		let lang_dict = ZMI.prototype.getCachedValue('get_lang_dict');
-		let lang_count = 0;
-		if ( lang_dict!='undefined' ) {
-			if ( typeof lang_dict == 'object' ) {
-				lang_count = Object.keys(ZMI.prototype.getCachedValue('get_lang_dict')).length
-			} else {
-				lang_count = Object.keys(JSON.parse(ZMI.prototype.getCachedValue('get_lang_dict'))).length
-			}
-		};
-
 		// Add click event function to add-buttons
 		$(".row_insert .btn-add").click(function(){
+			let lang_count = get_lang_count();
+			// Refresh global row counter
 			new_row_counter++;
 			// New field set: clone with enabled inputs
 			$('input, textarea, select','tr.row_insert').attr('disabled',false);

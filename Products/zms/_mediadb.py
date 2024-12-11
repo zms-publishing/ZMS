@@ -400,6 +400,7 @@ class MediaDb(
         standard.writeBlock(self, msg)
         filename = 'file_not_found_0.txt'
         mt, enc, data, fsize = 'text/plain', 'utf-8', msg, len(msg)
+        REQUEST.response.setStatus(404)
       else:
         # File found.
         fsize = os.path.getsize( local_filename)

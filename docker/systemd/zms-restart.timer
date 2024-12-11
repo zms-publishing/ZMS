@@ -1,0 +1,15 @@
+[Unit]
+Description=Timer for ZMS/Zope to restart and pull os updates
+# Propagate start and stop from target
+PartOf=zms.target
+# Start after target
+After=zms.target
+
+[Timer]
+OnBootSec=10m
+RandomizedDelaySec=1h
+OnCalendar=daily
+
+[Install]
+WantedBy=timers.target
+WantedBy=zms.target

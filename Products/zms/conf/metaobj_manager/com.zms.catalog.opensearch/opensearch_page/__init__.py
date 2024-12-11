@@ -59,8 +59,43 @@ class opensearch_page:
 		,"opensearch_page.TOP_RESULTS":{"eng":"Top Hits"
 			,"fra":"Meilleurs résultats"
 			,"ger":"Top-Treffer"
-			,"ita":"Colpo di punta"}}
-
+			,"ita":"Colpo di punta"}
+		,"opensearch_page.UNITEL_KEY_EMail":{"eng":"E-Mail"
+			,"fra":"E-Mail"
+			,"ger":"E-Mail"
+			,"ita":"E-Mail"}
+		,"opensearch_page.UNITEL_KEY_Institution":{"eng":"Institution"
+			,"fra":"Institution"
+			,"ger":"Institution"
+			,"ita":"Istituzione"}
+		,"opensearch_page.UNITEL_KEY_Institutionstelefon":{"eng":"Institution phone"
+			,"fra":"Téléphone de l'institution"
+			,"ger":"Institutionstelefon"
+			,"ita":"Telefono dell'istituzione"}
+		,"opensearch_page.UNITEL_KEY_Land":{"eng":"Country"
+			,"fra":"Pays"
+			,"ger":"Land"
+			,"ita":"Paese"}
+		,"opensearch_page.UNITEL_KEY_Ort":{"eng":"City"
+			,"fra":"Ville"
+			,"ger":"Ort"
+			,"ita":"Città"}
+		,"opensearch_page.UNITEL_KEY_PLZ":{"eng":"ZIP"
+			,"fra":"Code postal"
+			,"ger":"PLZ"
+			,"ita":"CAP"}
+		,"opensearch_page.UNITEL_KEY_StrassePostfach":{"eng":"Street / P.O. Box"
+			,"fra":"Rue / Boîte postale"
+			,"ger":"Strasse / Postfach"
+			,"ita":"Strada / Casella postale"}
+		,"opensearch_page.UNITEL_KEY_Telefondirekt1":{"eng":"Phone direct"
+			,"fra":"Téléphone direct"
+			,"ger":"Telefon direkt"
+			,"ita":"Telefono diretto"}
+		,"opensearch_page.UNITEL_KEY_WWWInstitution":{"eng":"Internet"
+			,"fra":"Internet"
+			,"ger":"Internet"
+			,"ita":"Internet"}}
 
 	# Name
 	name = "Opensearch-Page"
@@ -69,7 +104,7 @@ class opensearch_page:
 	package = "com.zms.catalog.opensearch"
 
 	# Revision
-	revision = "1.8.7"
+	revision = "1.8.15"
 
 	# Type
 	type = "ZMSDocument"
@@ -131,6 +166,15 @@ class opensearch_page:
 			,"repetitive":0
 			,"type":"multiautocomplete"}
 
+		adwords_linked = {"default":""
+			,"id":"adwords_linked"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"Linked Adwords"
+			,"repetitive":0
+			,"type":"url"}
+
 		scriptjs = {"default":""
 			,"id":"script.js"
 			,"keys":[]
@@ -161,7 +205,7 @@ class opensearch_page:
 		adwords = {"default":""
 			,"id":"adwords"
 			,"keys":[]
-			,"mandatory":1
+			,"mandatory":0
 			,"multilang":0
 			,"name":"Adwords (Toptreffer)"
 			,"repetitive":0

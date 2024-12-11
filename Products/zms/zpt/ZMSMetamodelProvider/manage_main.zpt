@@ -516,6 +516,10 @@
 						<button class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$ZMI.iframe('manage_main_import',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')});return false"><i class="fas fa-upload"></i></button>
 						<button class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="return zmiExportBtnClick(this);"><i class="fas fa-download"></i></button>
 					</div><!-- .btn-group -->
+					<span class="btn-group">
+						<i class="fas fa-filter tablefilter p-2" onclick="$('#tablefilter').focus().addClass('visited')"></i>
+						<input id="tablefilter" name="tablefilter" class="form-control" type="text"  title="Filter object list by entering a name." />
+					</span>	
 				</div><!-- .btn-toolbar -->
 			</th>
 		</tr>
@@ -968,10 +972,71 @@
 		});
 
 	});
+
+
+	// +++++++++++++++++++++++++++
+	// Tablefilter: Object-List
+	// +++++++++++++++++++++++++++
+	function isModifierKeyPressed(event) {
+		return event.altKey ||
+		event.ctrlKey ||
+		event.metaKey;
+	}
+	$(document).keypress(function (event) {
+		if (isModifierKeyPressed(event)) {
+			return; // ignore
+		}
+		// Set Focus to Tablefilter only when Modal Dialog is not Shown
+		if (!$('#zmi-modal').hasClass('show')) {
+			$('#tablefilter').focus().addClass('visited');
+			// Prevent Submitting a form by hitting Enter
+			// https://stackoverflow.com/questions/895171/prevent-users-from-submitting-a-form-by-hitting-enter
+			if (event.which == 13) {
+				event.preventDefault();
+				return false;
+			};
+		};
+	})
+	$('#tablefilter').keyup(function (event) {
+		let tablefilter = $(this).val();
+		if (isModifierKeyPressed(event)) {
+			return; // ignore
+		}
+		if (event.which == 13) {
+			$('table#meta_overview').find("tbody tr").show();
+			event.preventDefault();
+		};
+		$('table#meta_overview').find("tbody tr").hide();
+		$('table#meta_overview').find("tbody tr td.meta-id a:contains(" + tablefilter + "),tbody tr td.meta-id a[title*='" + tablefilter + "']").closest('tbody tr').show();
+	});
 // -->
 </script>
 
 <script type="text/javascript" charset="UTF-8" src="/++resource++zms_/common/zmi_ace_editor.js"></script>
+
+<style>
+/* <!-- */
+	.zmi #tablefilter {
+		padding: 0 0 0 2.5em;
+		font-family: monospace;
+		width: 2.55rem;
+	}
+	.zmi #tablefilter:focus {
+		background-color: #f2f2f2;
+		border: 1px solid #ced4da;
+		box-shadow: none;
+	}
+	.zmi #tablefilter.visited {
+		width: 12rem;
+		transition: width 0.5s ease-in-out;
+	}
+	.zmi .fa-filter.tablefilter {
+		margin: 0.1rem -2.25rem 0 1.25rem;
+		opacity:.3;
+		cursor:pointer;
+	}
+/* --> */
+</style>
 
 </body>
 </html>

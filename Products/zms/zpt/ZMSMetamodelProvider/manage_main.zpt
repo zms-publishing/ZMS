@@ -71,7 +71,16 @@
 					<span tal:content="python:metaObj.get('name')">Name</span>
 				</button>
 				<div class="dropdown-menu">
-					<div class="dropdown-header" tal:content="structure python:here.getZMILangStr('CAPTION_CHOOSEOBJ')">choose object</div>
+					<div class="dropdown-header">
+						<span class="btn-group">
+							<label for="tablefilter" onclick="$('#tablefilter').focus().addClass('visited')">
+								<i class="fas fa-filter tablefilter"></i>
+								<span tal:content="python:here.getZMILangStr('CAPTION_CHOOSEOBJ')"></span>
+							</label>
+							<input id="tablefilter" name="tablefilter" type="text" class="form-control dropdown-header"
+								title="Filter object list by entering name or id" />
+						</span>	
+					</div>
 					<tal:block tal:repeat="metaObjPackage python:here.sort_list(metaObjPackages+metaObjPackages2)">
 						<tal:block tal:condition="python:metaObjPackage in metaObjPackages">
 							<tal:block tal:condition="metaObjPackage">
@@ -1003,11 +1012,19 @@
 			return; // ignore
 		}
 		if (event.which == 13) {
-			$('table#meta_overview').find("tbody tr").show();
+			// $('table#meta_overview').find("tbody tr").show();
 			event.preventDefault();
 		};
-		$('table#meta_overview').find("tbody tr").hide();
-		$('table#meta_overview').find("tbody tr td.meta-id a:contains(" + tablefilter + "),tbody tr td.meta-id a[title*='" + tablefilter + "']").closest('tbody tr').show();
+		if ( $('#tablefilter').parent().parent().hasClass('dropdown-header') ) {
+			/* Filter Dropdown-Menu */
+			$('.nav-metaobj').find('a.dropdown-item').hide();
+			$('.nav-metaobj').find(`a.dropdown-item span:contains(${tablefilter})`).parent().show();
+		} else {
+			/* Filter Table */
+			$('table#meta_overview').find('tbody tr').hide();
+			$('table#meta_overview').find(`tbody tr td.meta-id a:contains(${tablefilter}), tbody tr td.meta-id a[title*="${tablefilter}"]`).closest('tbody tr').show();
+
+		}
 	});
 // -->
 </script>
@@ -1034,6 +1051,34 @@
 		margin: 0.1rem -2.25rem 0 1.25rem;
 		opacity:.3;
 		cursor:pointer;
+	}
+	/* Tablefilter in Dropdown-Menu */
+	.zmi .dropdown-menu .dropdown-header #tablefilter,
+	.zmi .dropdown-menu .dropdown-header #tablefilter.visited {
+		width:unset;
+		height:unset;
+		padding: unset;
+		background-color:transparent;
+		border: none !important;
+		box-shadow: none !important;
+		color: white;
+		position:absolute;
+		margin-left:1.5rem;
+	}
+	.zmi .dropdown-menu .dropdown-header #tablefilter.visited,
+	.zmi .dropdown-menu .dropdown-header #tablefilter:focus {
+		background-color:#818ea2;
+	}
+	.zmi .dropdown-menu .dropdown-header label span {
+		color: #ffffff;
+		white-space: nowrap;
+	}
+	.zmi .dropdown-menu .dropdown-header .fa-filter.tablefilter {
+		margin: 0.2rem 0;
+		opacity: .5;
+	}
+	.zmi .dropdown-menu .dropdown-header :focus-within i.tablefilter {
+		opacity: 1;
 	}
 /* --> */
 </style>

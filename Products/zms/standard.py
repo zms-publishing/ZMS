@@ -2241,6 +2241,30 @@ def processData(context, processId, data, trans=None):
   return _filtermanager.processData(context, processId, data, trans)
 
 
+security.declarePublic('htmldiff')
+def htmldiff(original, changed):
+  """
+  Wrapper for htmldiff2.render_html_diff.
+  @param original: html-file-0
+  @type context: C{str}
+  @param changed: html-file-1
+  @type changed: C{str}
+  """
+  try:
+    from htmldiff2 import render_html_diff
+    def remove_curly_braces(s):
+      return re.sub(r'/[\{\}]', '', s, flags=re.IGNORECASE) 
+    def remove_html_comments(s):
+      return re.sub(r'<!--.*?-->', '', s, flags=re.DOTALL) 
+    # Remove html comments for processing with htmldiff2/genshi.
+    original = remove_html_comments(remove_curly_braces(original))
+    changed = remove_html_comments(remove_curly_braces(changed))
+    diff = render_html_diff(original,changed)
+  except:
+    diff = '<pre>ERROR: Cannot load or work with htmldiff2</pre>'
+  return diff
+
+
 ############################################################################
 #
 #{  Executable

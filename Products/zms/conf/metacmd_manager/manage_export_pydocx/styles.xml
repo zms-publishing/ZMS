@@ -108,6 +108,8 @@
 		<w:unhideWhenUsed/>
 		<w:qFormat/>
 		<w:pPr>
+			<w:keepNext/>
+			<w:keepLines/>
 			<w:spacing w:before="480" w:after="0" w:line="288" w:lineRule="auto"/>
 			<w:outlineLvl w:val="1"/>
 		</w:pPr>
@@ -126,6 +128,8 @@
 		<w:unhideWhenUsed/>
 		<w:qFormat/>
 		<w:pPr>
+			<w:keepNext/>
+			<w:keepLines/>
 			<w:spacing w:before="440" w:after="0"/>
 			<w:outlineLvl w:val="2"/>
 		</w:pPr>
@@ -145,6 +149,8 @@
 		<w:unhideWhenUsed/>
 		<w:qFormat/>
 		<w:pPr>
+			<w:keepNext/>
+			<w:keepLines/>
 			<w:spacing w:before="280" w:after="0"/>
 			<w:outlineLvl w:val="3"/>
 		</w:pPr>
@@ -166,11 +172,15 @@
 		<w:unhideWhenUsed/>
 		<w:qFormat/>
 		<w:pPr>
+			<w:keepNext/>
+			<w:keepLines/>
 			<w:spacing w:before="200" w:after="0"/>
 			<w:outlineLvl w:val="4"/>
 		</w:pPr>
 		<w:rPr>
-			<w:color w:val="auto"/>
+			<w:bCs w:val="0"/>
+			<w:i/>
+			<w:iCs/>
 			<w:sz w:val="18"/>
 		</w:rPr>
 	</w:style>
@@ -190,9 +200,10 @@
 			<w:outlineLvl w:val="5"/>
 		</w:pPr>
 		<w:rPr>
-			<w:i/>
+			<w:bCs w:val="0"/>
+			<w:u w:val="single"/>
 			<w:iCs/>
-			<w:color w:val="243F60" w:themeColor="accent1" w:themeShade="7F"/>
+			<w:sz w:val="18"/>
 		</w:rPr>
 	</w:style>
 

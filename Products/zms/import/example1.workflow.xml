@@ -43,7 +43,7 @@
       <item type="dictionary">
         <dictionary>
           <item key="icon"></item>
-          <item key="icon_clazz"><![CDATA[icon-reply text-danger wf-icon]]></item>
+          <item key="icon_clazz"><![CDATA[fas fa-reply text-danger wf-icon]]></item>
           <item key="id"><![CDATA[AC_ROLLEDBACK]]></item>
           <item key="name"><![CDATA[Rolled back]]></item>
         </dictionary>

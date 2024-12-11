@@ -1,19 +1,15 @@
 [Unit]
-Description=ZMS/Zope
+Description=Zope ZEO Server
 
-Requires=memcached.service
-After=memcached.service
 # After=docker.service
 # Requires=docker.service
-# Requires=mariadb.service
-# After=mariadb.service
 
 [Service]
 User=zope
 Group=zope
 Restart=always
 
-Environment="ZOPE_PUBLIC_PORT=%i"
+Environment="ZEO_PUBLIC_PORT=%i"
 Environment="INSTANCE_HOME=/path/to/instance_home"
 Environment="DOCKER_IMAGE=localhost/zms DOCKER_TAG=latest"
 
@@ -21,7 +17,9 @@ TimeoutStartSec=0
 PrivateTmp=true
 
 ExecStartPre=-/usr/bin/podman stop $DOCKER_IMAGE
-ExecStart=/usr/bin/podman run --rm --publish 127.0.0.1:$ZOPE_PUBLIC_PORT:80 --name $DOCKER_IMAGE $DOCKER_IMAGE:$DOCKER_TAG
+# TODO add zeo run command
+# TODO find a way to parametrize the zeo port or use a file based socket
+ExecStart=/usr/bin/podman run --rm --publish 127.0.0.1:$ZEO_PUBLIC_PORT:80 --name $DOCKER_IMAGE $DOCKER_IMAGE:$DOCKER_TAG
 
 [Install]
 WantedBy=multi-user.target

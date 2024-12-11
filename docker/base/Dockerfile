@@ -74,6 +74,7 @@ RUN mkwsgiinstance --dir . --user admin:admin
 ARG BUILD_DIR=docker/base
 COPY --chown=zope:zope $BUILD_DIR/zope.ini etc/zope.ini
 COPY --chown=zope:zope $BUILD_DIR/zope.conf etc/zope.conf
+COPY --chown=zope:zope $BUILD_DIR/zeo.conf etc/zeo.conf
 RUN mkdir cache Extensions
 
 COPY --chown=zope:zope Products Products
@@ -82,4 +83,4 @@ COPY --chown=zope:zope Products Products
 # locally it is mapped into the container via bindmounts
 # COPY --chown=zope:zope selenium_tests test_output tests ./
 
-CMD runwsgi --verbose etc/zope.ini http_port=80
+CMD ["runwsgi", "--verbose", "etc/zope.ini", "http_port=80"]

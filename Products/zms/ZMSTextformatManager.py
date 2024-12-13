@@ -103,7 +103,8 @@ class ZMSTextformatManager(object):
       if id in self.textformats:
         i = self.textformats.index(id)
         d = self.textformats[i+1]
-        return ZMSTextformat.ZMSTextformat(id, d, REQUEST)
+        manage_lang = self.get_manage_lang()
+        return ZMSTextformat.ZMSTextformat(id, d, manage_lang)
       return None
 
 
@@ -151,7 +152,8 @@ class ZMSTextformatManager(object):
       """ ZMSTextformatManager.manage_changeTextformat """
       message = ''
       id = REQUEST.get('id', '')
-      
+      target = REQUEST.get('target', None)
+
       # Change.
       # -------
       if btn == 'BTN_SAVE':
@@ -222,10 +224,15 @@ class ZMSTextformatManager(object):
         message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%filename)
       
       # Return with message.
-      if RESPONSE:
-        message = standard.url_quote(message)
-        return RESPONSE.redirect('manage_textformats?lang=%s&manage_tabs_message=%s&id=%s'%(lang, message, id))
-      
-      return message
+      if target=='zmi_manage_tabs_message' and btn == 'BTN_DELETE' and ids:
+        message = '%s: %s'%(self.getZMILangStr('MSG_DELETED')%len(ids), id)
+        REQUEST.set('manage_tabs_message', message)
+        return self.zmi_manage_tabs_message(lang=lang, id=id, extra={}, REQUEST=REQUEST, RESPONSE=RESPONSE)
+      else:
+        if RESPONSE:
+          message = standard.url_quote(message)
+          return RESPONSE.redirect('manage_textformats?lang=%s&manage_tabs_message=%s&id=%s'%(lang, message, id))
+        
+        return message
 
 ################################################################################

@@ -486,6 +486,28 @@ class ZMSMetaobjManager(object):
       ob = obs.get( id)
       return ob
 
+    # --------------------------------------------------------------------------
+    #  ZMSMetaobjManager.getTypedMetaIds:
+    #
+    #  Returns list of all typed meta-ids in model.
+    # --------------------------------------------------------------------------
+    def getTypedMetaIds(self, meta_ids):
+      metaObjIds = self.getMetaobjIds()
+      typed_meta_ids = []
+      # iterate types
+      for meta_id in meta_ids:
+        if meta_id.startswith('type(') and meta_id.endswith(')'):
+          meta_obj_type = meta_id[5:-1]
+          for metaObjId in metaObjIds:
+            metaObj = self.getMetaobj( metaObjId, aq_attrs=['enabled'])
+            if metaObj['type'] == meta_obj_type and metaObj['enabled']:
+              typed_meta_ids.append( metaObj['id'])
+        elif meta_id in metaObjIds:
+          typed_meta_ids.append( meta_id)
+        else:
+          # standard.writeBlock( self, "[getMetaIds]: invalid meta_id \'%s\'"%meta_id)
+          continue
+      return typed_meta_ids
 
     # --------------------------------------------------------------------------
     #  ZMSMetaobjManager.getMetaobjIds:
@@ -720,7 +742,7 @@ class ZMSMetaobjManager(object):
         elif metaObjAttr['type'] in self.valid_zopeattrs:
           ob = metaObjAttr.get('ob', None)
           if ob:
-            value = zopeutil.callObject(ob, zmscontext, options)
+            value = zopeutil.callObject(ob, zmscontext=zmscontext, options=options)
       # Return value.
       return value
 
@@ -883,7 +905,7 @@ class ZMSMetaobjManager(object):
       mapTypes = {'method':'DTML Method','py':'Script (Python)','zpt':'Page Template'}
       message = ''
       if newType in ['interface']:
-        newType = standard.dt_executable(self, standard.pystr(newCustom, encoding='utf-8', errors='replace'))
+        newType = standard.dt_executable(standard.pystr(newCustom, encoding='utf-8', errors='replace'))
         if not newType:
           newType = 'method'
         newName = '%s: %s'%(newId, newType)
@@ -911,7 +933,7 @@ class ZMSMetaobjManager(object):
         i = ids.index(newId)
         attrs[i] = attr
       # Always append new methods at the end.
-      elif newType in method_types:
+      elif oldId is not None or (oldId is None and newType in method_types):
         attrs.append( attr)
       # Insert new attributes before methods
       else:
@@ -1154,14 +1176,16 @@ class ZMSMetaobjManager(object):
             # Upload resource.
             if newType in self.valid_uploadtypes or isinstance(newCustom, ZPublisher.HTTPRequest.FileUpload):
                 if len(getattr(newCustom, 'filename', '')):
-                    newCustom = _blobfields.createBlobField( self, _blobfields.MyFile, newCustom)
+                  newCustom = _blobfields.createBlobField( self, _blobfields.MyFile, newCustom)
                 else:
-                  savedAttr = [x for x in savedAttrs if x['id'] == old_id][0]
-                  syncZopeMetaobjAttr( self, newValue, savedAttr)
-                  if savedAttr.get('ob'):
-                    filename = savedAttr['ob'].title
-                    data = bytes(zopeutil.readData(savedAttr['ob']))
-                    newCustom = _blobfields.createBlobField( self, _blobfields.MyFile, {'filename':filename,'data':data})
+                  old_savedAttrs = [x for x in savedAttrs if x['id'] == old_id]
+                  if old_savedAttrs:
+                    savedAttr = old_savedAttrs[0]
+                    syncZopeMetaobjAttr( self, newValue, savedAttr)
+                    if savedAttr.get('ob'):
+                      filename = savedAttr['ob'].title
+                      data = bytes(zopeutil.readData(savedAttr['ob']))
+                      newCustom = _blobfields.createBlobField( self, _blobfields.MyFile, {'filename':filename,'data':data})
             # Change attribute.
             message += self.setMetaobjAttr( id, old_id, attr_id, newName, newMandatory, newMultilang, newRepetitive, newType, newKeys, newCustom, newDefault)
           # Return with message.
@@ -1179,7 +1203,8 @@ class ZMSMetaobjManager(object):
           if (len(attr_id) > 0 and len(newName) > 0 and len(newType) > 0) or newType in self.getMetadictAttrs():
             message += self.setMetaobjAttr( id, None, attr_id, newName, newMandatory, newMultilang, newRepetitive, newType, newKeys, newCustom, newDefault)
             message += self.getZMILangStr('MSG_INSERTED')%attr_id
-          # Lang-Dict.
+          # Insert (multiple) new language keys at once.
+          # Ref: _multilangmanager.py#L647
           for key in REQUEST.form.keys():
             if key.startswith('_lang_dict_key_'):
               i = int(key[len('_lang_dict_key_'):])
@@ -1272,18 +1297,18 @@ class ZMSMetaobjManager(object):
           immediately = REQUEST.get('immediately', 0)
           overwrite = []
           ids = REQUEST.get('aq_ids', [])
-          for id in ids:
-            if not immediately and id in self.getMetaobjIds():
-              overwrite.append( id)
-            else:
-              self.acquireMetaobj( id)
+          if immediately:
+            for id in ids:
+              self.acquireMetaobj(id)
+            id = ''
+            message = self.getZMILangStr('MSG_INSERTED')%str(len(ids))
+          else:
+            for id in ids:
+              overwrite.append(id)
           if overwrite:
             id = ''
             extra['section'] = 'acquire'
             extra['temp_ids'] = ','.join(overwrite)
-          else:
-            # Return with message.
-            message = self.getZMILangStr('MSG_INSERTED')%str(len(ids))
         
         # Import.
         # -------
@@ -1305,8 +1330,11 @@ class ZMSMetaobjManager(object):
             filename = f.filename
             xmlfile = f
           if REQUEST.get('init'):
-            file = REQUEST['init']
-            filename,xmlfile = self.getConfXmlFile( file)
+            init = REQUEST['init']
+            if isinstance(init, list):
+              message = "@TODO implement here"
+            else:
+              filename, xmlfile = self.getConfXmlFile( init)
           if xmlfile is not None:
             # extract xml from zip
             if filename.endswith('.zip'):
@@ -1323,11 +1351,11 @@ class ZMSMetaobjManager(object):
               # open string-io.
               xmlfile = io.BytesIO(xml)
               v = standard.parseXmlString(xmlfile)
-              xmlfile = io.BytesIO(xml)
               if not isinstance(v,list):
                 v = []
               if temp_id in temp_folder.objectIds():
                 temp_folder.manage_delObjects([temp_id])
+              xmlfile = io.BytesIO(xml)
               file = zopeutil.addFile(temp_folder, temp_id, filename, xmlfile)
               extra['section'] = 'import'
               extra['temp_import_file_id'] = temp_id
@@ -1363,9 +1391,6 @@ class ZMSMetaobjManager(object):
               sync_id.append(k)
         if len(sync_id) > 0:
           self.synchronizeObjAttrs( sync_id)
-      
-        # Sync with repository.
-        self.getRepositoryManager().exec_auto_commit(self, id)
         
         # Return with message.
         if RESPONSE:

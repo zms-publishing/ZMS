@@ -1,0 +1,122 @@
+# Managing ZMS-Content-Index with Opensearch
+ZMS offers an [Opensearch](https://opensearch.org/) connector for the crucial tasks of index management.
+
+###### Define the Content Schema to be indexed
+Before letting Opensearch create an index, Opensearch needs to know how to index the content. Therefore Opensearch needs to get the content "schema" (as a JSON-based list of typed fields). By listing
+
+1. all ZMS content types and
+2. the attributes of these types
+
+the _ZMS Catalog Adapter GUI_ helps creating that schema: any content types (usually _pages_) and attributes can be selected to get indexed. Usually the _standard_html_-attribute provides the full text whereas other attributes can be added specifically like _title_, _titlealt_, _description_. Their content may be applied when search results are listed.
+A set of technical attributes (url, dates etc.) will be added to the selected (custom) content attributes and complete the schema:
+
+1. 'id' : {'type':'text'}
+2. 'zmsid' : {'type':'text'}
+3. 'uid' : {'type':'text'}
+4. 'loc' : {'type':'text'}
+5. 'index_html' : {'type':'text'}
+6. 'meta_id' : {'type':'keyword'}
+7. 'lang' : {'type':'keyword'}
+8. 'home_id' : {'type':'keyword'}
+9. 'created_dt' : {'type':'date'}
+10. 'change_dt' : {'type':'date'}
+11. 'indexing_dt' : {'type':'date'}
+
+ZMS will send to the index only the content of the by _ZMS Catalog Adapter_ selected contenttypes and its selected attributes. So before starting, please make sure that the selections in the _ZMS Catalog Adapter GUI_ is correct and take a careful look at the _Custom Filter-Function_ for selecting the documents to be indexed. Especially `breadcrumbs_obj_path()`-expressions may result in unexpected exclusions. Example:
+
+<pre>
+## filter excludes the following objects:
+## - inactive
+## - redirects
+## - robots = noindex, nofollow
+return (context.meta_id in meta_ids) \
+    and len([ob for ob in context.breadcrumbs_obj_path() if not ob.isActive(context.REQUEST)])==0  \
+    and not context.meta_id == 'ZMSFormulator' \
+    and not context.attr('attr_dc_identifier_url_redirect') \
+    and ('noindex' not in context.attr('attr_robots')) \
+    and ('none' not in context.attr('attr_robots')) \
+    and len( [ ob for ob in context.breadcrumbs_obj_path() if ( ( 'nofollow' in ob.attr('attr_robots') ) ) ] )==0 \
+    and context.isVisible(context.REQUEST)
+</pre>
+
+
+###### Configuration Properties
+For communicating with the OpenSearch server over REST API, the connector needs some properties:
+
+1. *URL*: the URL(s) of the OpenSearch server (comma-separated)
+2. *Username*: the username for the OpenSearch server
+3. *Password*: the password for the OpenSearch server
+4. *Schema*: the data schema of the index in JSON format; it is defined by the general search adapter GUI and created wirh the "Create Schema" action
+5. *Parser*: the URL of the parsing application (e.g. Apache Tika) for extracting content from any binary files
+6. Score-Script (Painless): a script for boosting the relevance of certain fields in the search results
+7. Suggest-Fields: indexname-specific fieldnames (as a list) for autocomplete suggestions
+
+_Hint:_ All these properties are stored in the ZMS configuration and can be managed as well with the ZMS configuration GUI.
+
+
+###### Before writing data to Index a schema is needed: _Create Schema_ !
+So the first step to prepare Opensearch is _Create Schema_: based on the  _ZMS Catalog Adapter_ selections ZMS will save a small JSON file as a configuration parameter. (Note: if Opensearch gets no, incomplete or wrong schema, it will guess one from the the transferred content; usually Opensearch is not able to guess the keywords types correctly; so this will end up in defect result responses.)
+
+The second step is _Initialisation_, which leads to an empty index based on that content schema and named according to the ZMS root name. After this is done the content can be primarily indexed with "Refresh".
+
+---
+
+_GUI elements for managing the index:_
+
+1. **Index Refresh**: Re-/Indexing the selected ZMS client(s) or the multisite-tree
+2. **Create Schema**: Generating the field schema of the index in JSON format
+3. **Initialisation**: Creating an index on the Opensearch server
+4. **Deleting**: Removing the index on the Opensearch server
+
+---
+
+After the initial indexing new content will be added to the index incrementally on any content insert or change.
+
+_Important hint_: The action "Initialisation" creates/recreates always an **empty** index based on the selected attribute schema. So if a schema is changed and the index initialised, all indexed items are gone and a new full reindexing will be necessary.
+
+###### Autocomplete Suggestion Terms
+
+Since the autocomplete concept of Opensearch in general does not provide any word lists, but matching hits, a list of field names is needed that are explicitly named in the schema to get a basis for extracting words from the content. A typical set of meaningful fields may be:
+
+1. title
+2. attr_dc_subject
+3. attr_dc_description
+
+To define a custom set of these meaningful properties a new ZMS configuration property shall be defined with a prefix `opensearch.suggest.fields` and a dot-separated name of the index as suffix (usually this is the ZMS root name); two examples:
+
+<pre>
+opensearch.suggest.fields.myzms = [
+    "title",
+    "attr_dc_subject",
+    "attr_dc_description"
+    ]
+
+opensearch.suggest.fields.addresses = [
+    "firstname",
+    "lastname",
+    "city"
+    ]
+</pre>
+
+###### Score Boosting
+
+To boost the relevance of certain fields in the search results, the Opensearch connector GUI offers a field "Score-Script (Painless)" (saved as ZMS configuration property `opensearch.score_script`); here a "Painless" script shall be defined using a JAVA-like syntax. The example script returns a value that is multiplied 5x with the default score for certain meta-ids and dates:
+
+<pre>
+int wght = 1;
+ZonedDateTime dt_limit = ZonedDateTime.parse('2023-01-01T00:00:00+00:00');
+ZonedDateTime dt_doc = dt_limit;
+if ( doc.containsKey('created_dt') && !doc['created_dt'].empty){
+	dt_doc = doc['created_dt'].value;
+}
+if ( doc.containsKey('meta_id') ) {
+	if (
+		doc['meta_id'][0] == 'ZMS' ||
+		doc['meta_id'][0] == 'News' ||
+		( doc['meta_id'][0] == 'Joboffer' && dt_doc.isAfter(dt_limit) )
+	) {
+		wght += 4
+	}
+}
+return _score * wght
+</pre>

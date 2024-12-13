@@ -12,6 +12,7 @@ import re
 import shutil
 import tempfile
 import urllib
+from Products.zms import standard
 
 env = {}
 dpi = 3000
@@ -190,7 +191,7 @@ regions = {
 def filter_regions(vtype):
   # Py-2.7: {k: v for k, v in regions.iteritems() if v['type']==vtype}
   d = {}
-  [operator.setitem(d,x,regions[x]) for x in list(region) if regions[x]['type']==vtype]
+  [operator.setitem(d,x,regions[x]) for x in list(regions) if regions[x]['type']==vtype]
   return d
 
 def process_regions(html,):
@@ -317,7 +318,7 @@ def html2docbook(html):
   html = html.replace('\t',' ')
   while html.find('  ')>=0:
     html = html.replace('  ',' ')
-  docbookxml = process_paragraphs(html)
+  docbookxml = process_paragraphs(unicode(html).encode('utf-8'))
   docbookxml = process_images(docbookxml)
   return docbookxml
 
@@ -378,13 +379,13 @@ def manage_exportDocx( self):
   bodyContent = []
   bodyContent.append('<h1>%s</h1>'%self.getTitle(request))
   bodyContent.append(self.getBodyContent(request))
-  bodyContent = ''.join(bodyContent)
+  bodyContent = ''.join([standard.pystr(s) for s in bodyContent])
   document = '''<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <w:document xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape" mc:Ignorable="w14 w15 wp14">
 	<w:body>%s</w:body>
 </w:document>'''%html2docbook(bodyContent)
   f = open(os.path.join(tempfolder,'word','document.xml'),'w')
-  f.write(document)
+  f.write(unicode(document).encode('utf-8'))
   f.close()
   
   # Numbering
@@ -446,7 +447,7 @@ def manage_exportDocx( self):
         </list>
       </item>
       <item key="name"><![CDATA[DOCX Export]]></item>
-      <item key="revision"><![CDATA[0.0.0]]></item>
+      <item key="revision"><![CDATA[4.0.1]]></item>
       <item key="roles" type="list">
         <list>
           <item><![CDATA[ZMSAdministrator]]></item>
@@ -507,12 +508,12 @@ def manage_importDocx( self):
   html += '<label class="control-label col-sm-2" for="file"><span>%s</span></label>'%self.getZMILangStr('ATTR_FILE')
   html += '<div class="col-sm-10"><input class="btn btn-file" size="25" name="file" type="file"/></div>'
   html += '</div><!-- .form-group -->'
-  html += '<div class="form-row">'
+  html += '<div class="form-group row">'
   html += '<div class="controls save">'
   html += '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button> '%(self.getZMILangStr('BTN_IMPORT'),self.getZMILangStr('BTN_IMPORT'))
   html += '<button type="button" name="btn" class="btn btn-secondary" value="return %s" onclick="btn_execute_click()">%s</button> '%(self.getZMILangStr('BTN_EXECUTE'),self.getZMILangStr('BTN_EXECUTE'))
   html += '</div>'
-  html += '</div><!-- .form-row -->'
+  html += '</div><!-- .form-group -->'
   
   # ---------------------------------
   

@@ -32,6 +32,7 @@ from Products.zms import _filtermanager
 from Products.zms import _globals
 from Products.zms import _xmllib
 from Products.zms import standard
+from zope.globalrequest import getRequest
 
 
 def writeFile(self, filename, data, mode='w', encoding='utf-8'):
@@ -271,12 +272,12 @@ class Exportable(_filtermanager.FilterItem):
         pass
       
       get_data = REQUEST.get( 'download', 1) == 1
-      
+      content_type = 'application/data'
+
       # ZEXP.
       if export_format == 0:
         filename = '%s.zexp'%self.id
         export = self.aq_parent.manage_exportObject( id=self.id, download=1)
-        content_type = 'application/data'
       
       # HTML.
       elif export_format == 1:
@@ -383,7 +384,9 @@ class Exportable(_filtermanager.FilterItem):
     # --------------------------------------------------------------------------
     #  Exportable.toXml:
     # --------------------------------------------------------------------------
-    def toXml(self, REQUEST, deep=True, data2hex=False, multilang=True):
+    def toXml(self, REQUEST=None, deep=True, data2hex=False, multilang=True):
+      if REQUEST is None:
+        REQUEST = getattr(self, 'REQUEST', getRequest())
       xml = ''
       xml += _xmllib.xml_header()
       xml += _xmllib.getObjToXml( self, REQUEST, deep, base_path='', data2hex=data2hex, multilang=multilang)
@@ -481,8 +484,9 @@ class Exportable(_filtermanager.FilterItem):
       REQUEST.set('ZMS_PATH_HANDLER', True)
       try:
         
-        # Remember others.
-        others = copy.copy(REQUEST.other.keys())
+        # Remember others to remove them later.
+        # Note: REQUEST.other.keys() reveals not a list but a dict_keys-object!
+        others = copy.copy(list(REQUEST.other.keys()))
         
         root = getattr( obj, '__root__', None)
         if root is not None:
@@ -492,7 +496,7 @@ class Exportable(_filtermanager.FilterItem):
           html = obj.f_index_html( obj, REQUEST)
         
         # Remove new others.
-        for rk in REQUEST.other.keys():
+        for rk in list(REQUEST.other.keys()):
           if rk not in others:
             try:
               del REQUEST.other[rk]
@@ -579,7 +583,7 @@ class Exportable(_filtermanager.FilterItem):
       rtn = _fileutil.buildZipArchive( zipfiles, get_data)
       
       #-- Remove temporary folder.
-      if not self.getConfProperty('ZMS.debug', 0):
+      if not self.getConfProperty('ZMS.mode.debug', 0):
         _fileutil.remove( tempfolder, deep=1)
       
       return rtn
@@ -606,7 +610,7 @@ class Exportable(_filtermanager.FilterItem):
       rtn = _fileutil.buildZipArchive( zipfiles, get_data)
       
       #-- Remove temporary folder.
-      if not self.getConfProperty('ZMS.debug', 0):
+      if not self.getConfProperty('ZMS.mode.debug', 0):
         _fileutil.remove( tempfolder, deep=1)
       
       return rtn

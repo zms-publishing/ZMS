@@ -22,6 +22,7 @@ import base64
 import re
 # Product Imports.
 from Products.zms import standard
+from zope.globalrequest import getRequest
 
 # ------------------------------------------------------------------------------
 #  isMailLink:
@@ -46,7 +47,7 @@ def getInternalLinkDict(self, url):
   reqBuffId = 'getInternalLinkDict.%s'%url
   try: return docelmnt.fetchReqBuff(reqBuffId)
   except: pass
-  request = self.REQUEST
+  request = getattr(self, 'REQUEST', getRequest())
   d = {}
   # Params.
   anchor = ''
@@ -87,7 +88,7 @@ def getInternalLinkDict(self, url):
 #  getInternalLinkUrl:
 # ------------------------------------------------------------------------------
 def getInternalLinkUrl(self, url, ob):
-  request = self.REQUEST
+  request = getattr(self, 'REQUEST', getRequest())
   if ob is None:
     index_html = './index_%s.html?error_type=NotFound&op=not_found&url=%s'%(request.get('lang', self.getPrimaryLanguage()), str(url))
   else:
@@ -359,6 +360,28 @@ class ZReferableItem(object):
         url = ild['data-id']
     return url
 
+  # ----------------------------------------------------------------------------
+  #  ZReferableItem.findObject:
+  #
+  #  Find object.
+  #  Fast access to object of what we know that it must exist,
+  #  since we have just calculated the url a short period before.
+  # ----------------------------------------------------------------------------
+  def findObject(self, url):
+    url = url[2:-1]
+    if url.find('id:') >= 0:
+      catalog = self.getZMSIndex().get_catalog()
+      q = catalog({'get_uid':url})
+      for r in q:
+        path  = '%s/'%r['getPath']
+        break
+    else:
+      path = url.replace('@','/content/')
+    ob = self
+    l = [x for x in path.split('/') if x] 
+    for id in l:
+      ob = getattr(ob,id,None)
+    return ob
 
   # ----------------------------------------------------------------------------
   #  ZReferableItem.getLinkObj:
@@ -366,23 +389,9 @@ class ZReferableItem(object):
   #  Resolves internal/external links and returns Object.
   # ----------------------------------------------------------------------------
   def getLinkObj(self, url, REQUEST=None):
+    request = getattr(self, 'REQUEST', getRequest())
     ob = None
     if isInternalLink(url):
-      def default(*args, **kwargs):
-        self = args[0]
-        url = args[1]['url']
-        ob = None
-        if not url.startswith('{$__'):
-          # Find document-element.
-          zmspath = url[2:-1].replace('@', '/content/')
-          l = zmspath.split('/') 
-          ob = self
-          try:
-            for id in [x for x in l if x]:
-              ob = getattr(ob, id, None)
-          except:
-            pass
-        return ob
       # Params.
       ref_params = {}
       if url.find(';') > 0:
@@ -399,28 +408,25 @@ class ZReferableItem(object):
           catalog = self.getZMSIndex().get_catalog()
           q = catalog({'get_uid':url})
           for r in q:
-            zmspath  = '%s/'%r['getPath']
-            l = [x for x in zmspath.split('/') if x]
-            ob = self
-            try:
+            path  = '%s/'%r['getPath']
+            l = [x for x in path.split('/') if x] 
+            ob = self.getRootElement()
+            if l:
+              [l.pop(0) for x in ob.getPhysicalPath() if l[0] == x]
               for id in l:
-                if id not in ob.getPhysicalPath():
-                    ob = getattr(ob,id,None)
-              break
-            except:
-              pass
+                ob = getattr(ob,id,None)
+            break
         elif not url.startswith('__'):
-          url = url.replace('@','/content/')
-          l = url.split('/') 
-          ob =self.getDocumentElement()
-          try:
-            for id in [x for x in l if x]:
+          path = url.replace('@','/content/')
+          l = [x for x in path.split('/') if x] 
+          ob = self.getDocumentElement()
+          if l:
+            [l.pop(0) for x in ob.getPhysicalPath() if l[0] == x]
+            for id in l:
               ob = getattr(ob,id,None)
-          except:
-            pass
       # Prepare request
-      if ob is not None and ob.id not in self.getPhysicalPath():
-        request = self.REQUEST
+      ids = self.getPhysicalPath()
+      if ob is not None and ob.id not in ids:
         ob.set_request_context(request, ref_params)
     return ob
 

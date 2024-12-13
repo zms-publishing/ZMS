@@ -32,6 +32,7 @@ from App.config import getConfiguration
 from DateTime.DateTime import DateTime
 from zope.event import notify
 from zope.lifecycleevent import ObjectModifiedEvent
+from zope.globalrequest import getRequest
 import base64
 import cgi
 import copy
@@ -56,6 +57,10 @@ from Products.zms import _mimetypes
 
 security = ModuleSecurityInfo('Products.zms.standard')
 
+security.declarePublic('pybool')
+def pybool(v):
+  return v in [True,'true','True',1,'1']
+
 security.declarePublic('pystr')
 def pystr(v, encoding='utf-8', errors='strict'):
   if isinstance(v, bytes):
@@ -67,6 +72,105 @@ def pystr(v, encoding='utf-8', errors='strict'):
       v = str(v)
   return v
 
+security.declarePublic('pybytes')
+# Just for compatibility of old ZMS4 templates.
+pybytes = pystr
+
+# Umlauts
+umlaut_map = {
+        # German
+        u'ä': 'ae',
+        u'ö': 'oe',
+        u'ü': 'ue',
+        u'Ä': 'Ae',
+        u'Ö': 'Oe',
+        u'Ü': 'Ue',
+        u'ß': 'ss',
+        # Cyrillic
+        u'а': 'a',
+        u'б': 'b',
+        u'в': 'v',
+        u'г': 'g',
+        u'д': 'd',
+        u'е': 'e',
+        u'ё': 'e',
+        u'ж': 'zh',
+        u'з': 'z',
+        u'и': 'i',
+        u'й': 'j',
+        u'к': 'k',
+        u'л': 'l',
+        u'м': 'm',
+        u'н': 'n',
+        u'о': 'o',
+        u'п': 'p',
+        u'р': 'r',
+        u'с': 's',
+        u'т': 't',
+        u'у': 'u',
+        u'ф': 'f',
+        u'х': 'h',
+        u'ц': 'c',
+        u'ч': 'ch',
+        u'ш': 'sh',
+        u'щ': 'sch',
+        u'ы': 'y',
+        u'ь': "'",
+        u'э': 'e',
+        u'ю': 'ju',
+        u'я': 'ja',
+        u'А': 'A',
+        u'Б': 'B',
+        u'В': 'V',
+        u'Г': 'G',
+        u'Д': 'D',
+        u'Е': 'E',
+        u'Ё': 'E',
+        u'Ж': 'ZH',
+        u'З': 'Z',
+        u'И': 'I',
+        u'Й': 'J',
+        u'К': 'K',
+        u'Л': 'L',
+        u'М': 'M',
+        u'Н': 'N',
+        u'О': 'O',
+        u'П': 'P',
+        u'Р': 'R',
+        u'С': 'S',
+        u'Т': 'T',
+        u'У': 'U',
+        u'Ф': 'F',
+        u'Х': 'H',
+        u'Ц': 'C',
+        u'Ч': 'CH',
+        u'Ш': 'SH',
+        u'Щ': 'SCH',
+        u'Ъ': "'",
+        u'Ы': 'Y',
+        u'Ь': "'",
+        u'Э': 'E',
+        u'Ю': 'JU',
+        u'Я': 'JA',}
+
+security.declarePublic('umlaut_quote')
+def umlaut_quote(s, mapping={}):
+  """
+  Replace umlauts in s using given mapping.
+  @param s: String
+  @type s: C{str}
+  @param mapping: Mapping
+  @type mapping: C{dict}
+  @return: Quoted string
+  @rtype: C{str}
+  """
+  s = pystr(s)
+  mapping.update(umlaut_map)
+  for key in mapping:
+    try: s = s.replace(key, mapping[key])
+    except: pass
+  return s
+
 
 security.declarePublic('addZMSCustom')
 def addZMSCustom(self, meta_id=None, values={}, REQUEST=None):
@@ -76,7 +180,7 @@ def addZMSCustom(self, meta_id=None, values={}, REQUEST=None):
 
   @param meta_id: the meta-id / type of the new ZMSObject
   @type meta_id: C{str}
-  @param values: the dictionary of initial attribut-values assigned to the new ZMSObject 
+  @param values: the dictionary of initial attribut-values assigned to the new ZMSObject
   @type values: C{dict}
   @param REQUEST: the triggering request
   @type REQUEST: C{ZPublisher.HTTPRequest}
@@ -108,7 +212,7 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   homeElmnt = Folder(id)
   self._setObject(homeElmnt.id, homeElmnt)
   homeElmnt = [x for x in self.objectValues() if x.id == homeElmnt.id][0]
-  
+
   ##### Add ZMS ####
   from Products.zms import zms
   content = zms.initZMS(homeElmnt, 'content', titlealt, title, lang, manage_lang, REQUEST)
@@ -152,8 +256,8 @@ def zmi_paths(context):
   # ZMI resources without Zope base css/js
   # css_paths = ("/++resource++zmi/bootstrap-4.6.0/bootstrap.min.css","/++resource++zmi/fontawesome-free-5.15.2/css/all.css")
   # js_paths = ("/++resource++zmi/jquery-3.5.1.min.js","/++resource++zmi/bootstrap-4.6.0/bootstrap.bundle.min.js",)
-  kw["css_paths"] = css_paths(context)[:-1]
-  kw["js_paths"] = js_paths(context)[:-2]
+  kw["css_paths"] = list(css_paths(context))[:-1]
+  kw["js_paths"] = list(js_paths(context))[:-2]
   return kw
 
 
@@ -214,7 +318,7 @@ def set_response_headers_cache(context, request=None, cache_max_age=24*3600, cac
   @param cache_s_maxage: seconds the element remains in public/proxy cache (value -1 means cache_s_maxage = cache_max_age)
   @see: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control#directives
   @see: http://nginx.org/en/docs/http/ngx_http_headers_module.html#expires
-  @see: https://www.nginx.com/resources/wiki/start/topics/examples/x-accel/
+  @see: https://github.com/nginxinc/nginx-wiki/blob/master/source/start/topics/examples/x-accel.rst
   @returns: Tuple of expires date time in GMT as ISO8601 string and the seconds until expiration
   @retype: C{tuple}
   """
@@ -229,7 +333,7 @@ def set_response_headers_cache(context, request=None, cache_max_age=24*3600, cac
       request.RESPONSE.setHeader('Pragma', 'no-cache')
     else:
       cache_s_maxage = cache_s_maxage==-1 and cache_max_age or cache_s_maxage
-      request.RESPONSE.setHeader('Cache-Control', 
+      request.RESPONSE.setHeader('Cache-Control',
         's-maxage={}, max-age={}, public, must-revalidate, proxy-revalidate'.format(cache_s_maxage, cache_max_age))
 
       now = time.time()
@@ -256,7 +360,7 @@ def once(key, request):
   @param key: the key
   @param request: the request
   @returns: Boolean execute once
-  @retype: C{boolean} 
+  @retype: C{boolean}
   """
   req_key = 'f_%s'%key
   req_val = request.get(req_key,True)
@@ -268,37 +372,16 @@ security.declarePublic('get_installed_packages')
 def get_installed_packages(pip_cmd='freeze'):
   import subprocess
   pip_cmds = {
-      'list':'/pip list', 
+      'list':'/pip list',
       'freeze':'/pip freeze --all'
     }
   cmd = pip_cmds.get(pip_cmd,'freeze')
   pth = getPACKAGE_HOME().rsplit('/lib/')[0] + '/bin'
-  packages = ''
   output = subprocess.Popen(pth + cmd,
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                             shell=True, cwd=pth, universal_newlines=True)
-  packages = f'# {pth}{cmd}\n\n{output.communicate()[0].strip()}'
+  packages = f'# {pth}{cmd}\n\nPython {sys.version}\n\n{output.communicate()[0].strip()}'
   return packages
-
-
-security.declarePublic('umlaut_quote')
-def umlaut_quote(s, mapping={}):
-  """
-  Replace umlauts in s using given mapping.
-  @param s: String
-  @type s: C{str}
-  @param mapping: Mapping
-  @type mapping: C{dict}
-  @return: Quoted string
-  @rtype: C{str}
-  """
-  if not isinstance(s,str):
-    s = str(s)
-  for x in _globals.umlaut_map:
-    mapping[x] = _globals.umlaut_map[x]
-  for key in mapping:
-    s = s.replace(key, str(mapping[key]))
-  return s
 
 
 security.declarePublic('url_append_params')
@@ -407,10 +490,10 @@ def string_maxlen(s, maxlen=20, etc='...', encoding=None):
     s = str(s)
   # remove all tags.
   # @see https://stackoverflow.com/questions/8554035/remove-all-javascript-tags-and-style-tags-from-html-with-python-and-the-lxml-mod
-  s = re.sub(r'<[\S\s]*!--.*?--[\S\s]*>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
-  s = re.sub(r'<[\S\s]*?script[\S\s]*?\/[\S\s]*?script[\S\s]*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
-  s = re.sub(r'<[\S\s]*style.*?\/[\S\s]*style[\S\s]*>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
-  s = re.sub(r'<[\S\s]*meta.*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
+  s = re.sub(r'<[\s]*!--[\S\s]*?--[\s]*>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
+  s = re.sub(r'<[\s]*?script[\S\s]*?\/[\s]*?script[\S\s]*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
+  s = re.sub(r'<[\s]*?style[\S\s]*?\/[\s]*?style[\S\s]*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
+  s = re.sub(r'<[\s]*meta.*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
   s = re.sub(r'<[\S\s]*?>', '', s)
   if len(s) > maxlen:
     if s[:maxlen].rfind('&') >= 0 and not s[:maxlen].rfind('&') < s[:maxlen].rfind(';') and \
@@ -451,7 +534,7 @@ def guess_content_type(filename, data):
   @rtype: C{tuple}
   """
   import zope.contenttype
-  # MIME-type guessing based on Zope-like filename syntax 
+  # MIME-type guessing based on Zope-like filename syntax
   # using underscore as a delimiter for the filename extension
   f_exts = {
     '_css':'text/css',
@@ -507,10 +590,10 @@ def remove_tags(s):
   for x in d:
     s = s.replace(x,d[x])
   # @see https://stackoverflow.com/questions/8554035/remove-all-javascript-tags-and-style-tags-from-html-with-python-and-the-lxml-mod
-  s = re.sub(r'<[\S\s]*!--.*?--[\S\s]*>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
-  s = re.sub(r'<[\S\s]*?script[\S\s]*?\/[\S\s]*?script[\S\s]*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
-  s = re.sub(r'<[\S\s]*style.*?\/[\S\s]*style[\S\s]*>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
-  s = re.sub(r'<[\S\s]*meta.*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
+  s = re.sub(r'<[\s]*!--[\S\s]*?--[\s]*>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
+  s = re.sub(r'<[\s]*?script[\S\s]*?\/[\s]*?script[\S\s]*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
+  s = re.sub(r'<[\s]*?style[\S\s]*?\/[\s]*?style[\S\s]*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
+  s = re.sub(r'<[\s]*meta.*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
   s = re.sub(r'<[\S\s]*?>', '', s)
   while s.find('\t') >= 0:
     s = s.replace('\t', ' ')
@@ -751,36 +834,8 @@ def get_session(context):
   """
   Get http-session.
   """
-  request = getattr( context, 'REQUEST', None)
-  if request.get('SESSION', None) == None:
-    create_session_storage_if_neccessary(context)
-  session = request.get('SESSION',request.environ.get('beaker.session',None))
-  return session
-
-security.declarePublic('create_session_storage_if_neccessary')
-def create_session_storage_if_neccessary(context):
-  """
-  Ensure containers for temporary data.
-  """
-  from OFS.Folder import Folder
-  from Products.Transience.Transience import TransientObjectContainer
-
-  root = context.getPhysicalRoot()
-  if not 'temp_folder' in root:
-    # Adding a 'folder' is a just fallback
-    # if a 'mount_point' is not available 
-    # like usually configured via zope.conf
-    temp_folder = Folder('temp_folder')
-    root._setObject('temp_folder', temp_folder)
-    # writeLog( context, 'Missing temp_folder added')
-  if not 'session_data' in root.temp_folder:
-    container = TransientObjectContainer(
-        'session_data',
-        title='Session Data Container',
-        timeout_mins=20
-    )
-    root.temp_folder._setObject('session_data', container)
-    # writeLog( context, 'Missing session_data-container added')
+  request = context.REQUEST
+  return request.get('SESSION',request.environ.get('beaker.session',None))
 
 security.declarePublic('get_session_value')
 def get_session_value(context, key, defaultValue=None):
@@ -809,16 +864,17 @@ def triggerEvent(context, *args, **kwargs):
   """
   Hook for trigger of custom event (if there is one)
   """
+  request = getattr(context, 'REQUEST', getRequest())
   l = []
   name = args[0]
+  root = context.getRootElement()
 
   # Object triggers.
   if name.startswith('*.Object'):
-    root = context.getRootElement()
     for node in root.objectValues():
       m = getattr(node,name[2:],None)
       if m is not None:
-        m(context) 
+        m(context)
 
   # Always call local trigger for global triggers.
   if name.startswith('*.'):
@@ -827,9 +883,15 @@ def triggerEvent(context, *args, **kwargs):
   # Pass custom event to zope ObjectModifiedEvent event.
   notify(ObjectModifiedEvent(context, name))
 
+  # Process global meta-command-triggers (e.g. uncatalog_object).
+  for metaCmdId in root.getMetaCmdIds():
+    if metaCmdId.endswith('_%s'%name):
+      v = root.manage_executeMetacmd(metaCmdId, context.REQUEST, context=context)
+      writeLog( root, "[triggerEvent]: %s=%s"%(metaCmdId, str(v)))
+
+  # Process meta-object-triggers.
   metaObj = context.getMetaobj( context.meta_id)
   if metaObj:
-    # Process meta-object-triggers.
     context = context
     v = context.evalMetaobjAttr(name, kwargs)
     writeLog( context, "[triggerEvent]: %s=%s"%(name, str(v)))
@@ -838,20 +900,24 @@ def triggerEvent(context, *args, **kwargs):
     # Process zope-triggers.
     m = getattr(context, name, None)
     if m is not None:
-      m(context=context, REQUEST=context.REQUEST)
+      m(context=context, REQUEST=request)
+
   return l
 
 
 security.declarePublic('isManagementInterface')
-def isManagementInterface(REQUEST):
+def isManagementInterface(self):
   """
   Returns true if current context is management-interface, false else.
   @rtype: C{Bool}
   """
-  return REQUEST is not None and \
-         REQUEST.get('URL', '').find('/manage') >= 0 and \
-         isPreviewRequest(REQUEST)
-
+  request = self.REQUEST
+  if not 'is_zmi' in request:
+    permissions = set(sum([list(x[1]) for x in self.__ac_permissions__],[]))
+    current = request.get('URL', '').split('/')[-1]
+    request.set('is_zmi', request.get('AUTHENTICATED_USER') and \
+         (current.startswith('manage_') or current in permissions))
+  return request.get('is_zmi')
 
 
 security.declarePublic('isPreviewRequest')
@@ -1025,6 +1091,8 @@ def getLog(context):
     zms_log = getattr(context, 'zms_log', None)
     if zms_log is None:
       zms_log = getattr(context.getPortalMaster(), 'zms_log', None)
+      if is_conf_enabled(context, 'ZMS.log.root'):
+        zms_log = getattr(context.breadcrumbs_obj_path()[0], 'zms_log', None)
     request.set('ZMSLOG', zms_log)
   return zms_log
 
@@ -1099,7 +1167,7 @@ def writeError(context, info):
       zms_log.LOG( severity, info)
     t = t.__name__.upper()
   except:
-    pass
+    t = info
   return '%s: %s'%(t, v)
 
 #)
@@ -1195,37 +1263,37 @@ def re_findall( pattern, text, ignorecase=False):
 # 8  daylight savings flag 0, 1 or -1; see below
 # ==========================================================================
 # C-Style Format Strings
-# %a   An abbreviation for the day of the week. 
-# %A   The full name for the day of the week. 
-# %b   An abbreviation for the month name. 
-# %B   The full name of the month. 
-# %c   A string representing the complete date and time; on my 
-#      computer it's in the form: 10/22/99 19:03:23 
-# %d   The day of the month, formatted with two digits. 
-# %H   The hour (on a 24-hour clock), formatted with two digits. 
-# %I   The hour (on a 12-hour clock), formatted with two digits. 
-# %j   The count of days in the year, formatted with three digits 
-#      (from 001 to 366). 
-# %m   The month number, formatted with two digits. 
-# %M   The minute, formatted with two digits. 
-# %p   Either AM or PM as appropriate. 
-# %S   The second, formatted with two digits. 
-# %U   The week number, formatted with two digits (from 00 to 53; 
+# %a   An abbreviation for the day of the week.
+# %A   The full name for the day of the week.
+# %b   An abbreviation for the month name.
+# %B   The full name of the month.
+# %c   A string representing the complete date and time; on my
+#      computer it's in the form: 10/22/99 19:03:23
+# %d   The day of the month, formatted with two digits.
+# %H   The hour (on a 24-hour clock), formatted with two digits.
+# %I   The hour (on a 12-hour clock), formatted with two digits.
+# %j   The count of days in the year, formatted with three digits
+#      (from 001 to 366).
+# %m   The month number, formatted with two digits.
+# %M   The minute, formatted with two digits.
+# %p   Either AM or PM as appropriate.
+# %S   The second, formatted with two digits.
+# %U   The week number, formatted with two digits (from 00 to 53;
 #      week number 1 is taken as beginning with the first Sunday
-#      in a year). See also %W. 
-# %w   A single digit representing the day of the week: 
+#      in a year). See also %W.
+# %w   A single digit representing the day of the week:
 #      Sunday is day 0.
-# %W   Another version of the week number: like %U, but 
-#      counting week 1 as beginning with the first Monday in a year. 
-# %x   A string representing the complete date; on my computer 
+# %W   Another version of the week number: like %U, but
+#      counting week 1 as beginning with the first Monday in a year.
+# %x   A string representing the complete date; on my computer
 #      it's in the format 10/22/99.
-# %X   A string representing the full time of day (hours, minutes, 
+# %X   A string representing the full time of day (hours, minutes,
 #      and seconds), in a format like the following example: 13:13:13
-# %y   The last two digits of the year. 
-# %Y   The full year, formatted with four digits to include 
-#      the century. 
-# %Z   Defined by ANSI C as eliciting the time zone, if available; 
-#      it is not available in this implementation (which accepts %Z 
+# %y   The last two digits of the year.
+# %Y   The full year, formatted with four digits to include
+#      the century.
+# %Z   Defined by ANSI C as eliciting the time zone, if available;
+#      it is not available in this implementation (which accepts %Z
 #      but generates no output for it).
 # ==========================================================================
 
@@ -1242,7 +1310,7 @@ def format_datetime_iso(t):
     tz = time.timezone
   else:
     tz = 0
-  #  The offset of the local (non-DST) timezone, in seconds west of UTC
+  # The offset of the local (non-DST) timezone, in seconds west of UTC
   # (negative in most of Western Europe, positive in the US, zero in the
   # UK).
   #
@@ -1335,6 +1403,13 @@ def getDateTime(t):
         t = time.mktime( t)
       if not isinstance(t, time.struct_time):
         t = time.localtime( t)
+      else:
+        if t.tm_isdst == 1:
+          # In struct_time normalize tm_dst-value  
+          # (DST: Daylight Saving Time) to avoid mktime-error
+          t = list(t)
+          t[8] = -1
+          t = time.localtime( time.mktime( t))
     except:
       pass
   return t
@@ -1608,6 +1683,13 @@ def operator_delattr(a, b):
   """
   return delattr(a, b)
 
+security.declarePublic('operator_itemgetter')
+def operator_itemgetter(key, val, dictionary):
+
+    if val in map(operator.itemgetter(key), dictionary):
+        return True
+    return False
+
 #)
 
 
@@ -1789,6 +1871,19 @@ def distinct_list(l, i=None):
   return k
 
 
+def sort_item( i):
+    if isinstance(i, float):
+        pass
+    elif isinstance(i, time.struct_time):
+        i = time.strftime('%Y%m%d%H%M%S',i)
+    elif i is None or i == '':
+        i = 0
+    elif isinstance(i, bool):
+        i = int(i)
+    elif not isinstance(i, int):
+        i = umlaut_quote(i)
+    return i
+
 security.declarePublic('sort_list')
 def sort_list(l, qorder=None, qorderdir='asc', ignorecase=1):
   """
@@ -1799,11 +1894,11 @@ def sort_list(l, qorder=None, qorderdir='asc', ignorecase=1):
   if qorder is None:
     tl = [(x, x) for x in l]
   elif isinstance(qorder, str):
-    tl = [(_globals.sort_item(x.get(qorder, None)), x) for x in l]
+    tl = [(sort_item(x.get(qorder, None)), x) for x in l]
   elif isinstance(qorder, list):
-    tl = [([_globals.sort_item(x[y]) for y in qorder], x) for x in l]
+    tl = [([sort_item(x[y]) for y in qorder], x) for x in l]
   else:
-    tl = [(_globals.sort_item(x[qorder]), x) for x in l]
+    tl = [(sort_item(x[qorder]), x) for x in l]
   if ignorecase and len(tl) > 0 and isinstance(tl[0][0], str):
     tl = [(str(x[0]).upper(), x[1]) for x in tl]
   tl = sorted(tl,key=lambda x:x[0])
@@ -1876,7 +1971,7 @@ def str_json(i, encoding='ascii', errors='xmlcharrefreplace', formatted=False, l
   elif type(i) is dict:
     k = list(i)
     if sort_keys:
-      k = sorted(i)
+      k = sorted(i, key=lambda x: x or '')
     return '{' \
         + (['','\n'][formatted]+(['','\t'][formatted]*level)+',').join(['"%s":%s'%(x,str_json(i[x],encoding,errors,formatted,level+1,allow_booleans,sort_keys)) for x in k]) \
         + '}'
@@ -2101,7 +2196,7 @@ def toXmlString(context, v, xhtml=False, encoding='utf-8'):
   @type context: C{zmsobject.ZMSObject}
   @param v: content node
   @type v: C{zmsobject.ZMSObject}
-  @param xhtml: 
+  @param xhtml:
   @type xhtml
   @param encoding
   @type encoding
@@ -2149,6 +2244,30 @@ def processData(context, processId, data, trans=None):
   return _filtermanager.processData(context, processId, data, trans)
 
 
+security.declarePublic('htmldiff')
+def htmldiff(original, changed):
+  """
+  Wrapper for htmldiff2.render_html_diff.
+  @param original: html-file-0
+  @type context: C{str}
+  @param changed: html-file-1
+  @type changed: C{str}
+  """
+  try:
+    from htmldiff2 import render_html_diff
+    def remove_curly_braces(s):
+      return re.sub(r'/[\{\}]', '', s, flags=re.IGNORECASE) 
+    def remove_html_comments(s):
+      return re.sub(r'<!--.*?-->', '', s, flags=re.DOTALL) 
+    # Remove html comments for processing with htmldiff2/genshi.
+    original = remove_html_comments(remove_curly_braces(original))
+    changed = remove_html_comments(remove_curly_braces(changed))
+    diff = render_html_diff(original,changed)
+  except:
+    diff = '<pre>ERROR: Cannot load or work with htmldiff2</pre>'
+  return diff
+
+
 ############################################################################
 #
 #{  Executable
@@ -2156,18 +2275,16 @@ def processData(context, processId, data, trans=None):
 ############################################################################
 
 security.declarePublic('dt_executable')
-def dt_executable(context, v):
+def dt_executable(v):
   """
   Returns if given value is executable.
-  @param context: the context
-  @type context: C{ZMSObject}
   @param v: the executable code
   @type v: C{str}
   @return:
   @rtype: C{Bool}
   """
   if isinstance(v, bytes) or isinstance(v, str):
-    if v.startswith('##'):
+    if v.startswith('##') and v.find('return ') > 0:
       return 'py'
     elif v.find('<tal:') >= 0:
       return 'zpt'
@@ -2189,7 +2306,7 @@ def dt_exec(context, v, o={}):
   @rtype: C{any}
   """
   if type(v) is str:
-    if v.startswith('##'):
+    if v.startswith('##') and v.find('return ') > 0:
       v = dt_py(context, v, o)
     elif v.find('<tal:') >= 0:
       v = dt_tal(context, v, dict(o))
@@ -2285,7 +2402,7 @@ def dt_tal(context, text, options={}):
   pt = StaticPageTemplateFile(filename='None')
   pt.setText(text)
   pt.setEnv(context, options)
-  request = context.REQUEST
+  request = getattr(context, 'REQUEST', getRequest())
   rendered = pt.pt_render(extra_context={'here':context,'request':request})
   return rendered
 
@@ -2384,7 +2501,7 @@ def sendMail(context, mto, msubject, mbody, REQUEST=None, mattach=None):
           part = MIMEAudio(filedata, fileextn)
         else:
           part = MIMEApplication(filedata)
-        part.add_header('Content-Disposition', 'attachment; filename="%s"'%filename)
+        part.add_header('Content-Disposition', 'attachment; filename="%s"'%url_quote(umlaut_quote(filename).replace(' ','_')))
         mime_msg.attach(part)
 
   # Get MailHost.
@@ -2451,7 +2568,7 @@ def getTempFile( context, id):
        b += data.data
        data=data.next
   return b
-  
+
 
 security.declarePublic('raiseError')
 def raiseError(error_type, error_value):
@@ -2465,6 +2582,28 @@ def raiseError(error_type, error_value):
   @rtype: C{zExceptions.Error}
   """
   raise getattr(zExceptions,error_type)(error_value)
+
+
+security.declarePublic('is_conf_enabled')
+def is_conf_enabled(context, setting):
+  """
+  Returns True if given setting is activated in system properties (= in [True,'true','True',1,'1'])
+  or given setting is found in system property ZMS.Features.enabled (either surrounded by % or not)
+  in current client or inherited from portal masters
+  PLEASE NOTE: System properties with prefix ASP.* are not inherited in portal clients
+  """
+  conf_property = context.getConfProperty(setting, None)
+
+  if conf_property is None:
+    features_enabled = context.getConfProperty('ZMS.Features.enabled', None)
+    if features_enabled is not None:
+      features = features_enabled.replace('%', '').replace(',', ';').split(';')
+      if len([x for x in features if x.strip() == setting.replace('%', '').strip()]) > 0:
+        return True
+      return False
+
+  return pybool(conf_property)
+
 
 class initutil(object):
   """Define the initialize() util."""

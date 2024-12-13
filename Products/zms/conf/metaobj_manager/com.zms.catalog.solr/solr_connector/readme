@@ -1,0 +1,42 @@
+# Managing ZMS-Content-Index with Solr
+ZMS offers an [Solr](https://solr.apache.org/) connector for content indexing. Because current Solr software cannot create schema/cores via web-API, this has to be done offsite by shell commands. So, before starting with ZMS please create a new core that has the identical name like the ZMS root id, e.g. 'myzmsearch':
+
+```sh
+solr@d79a814e7e88:/opt/solr-8.11.2/bin$ ./solr create -c myzmsearch
+```
+
+Deleting the core is done in a similar way:
+
+```sh
+solr@d79a814e7e88:/opt/solr-8.11.2/bin$ ./solr delete -c myzmsearch
+```
+
+Then Solr needs to know how to index the content. Therefore Solr needs to get the content "schema" (as a JSON-based list of typed fields). By listing 
+
+1. all ZMS content types and
+2. the attributes of these types
+
+the _ZMS Catalog Adapter GUI_ helps creating that schema: any content types (usually _pages_) and attributes can be selected to get indexed. Usually the _standard_html_-attribute provides the full text whereas other attributes can be added specifically like _title_, _titlealt_, _description_. Their content may be applied when search results are listed. 
+
+ZMS will send to the index only the content of the by _ZMS Catalog Adapter_ selected contenttypes and its selected attributes. So before starting, please make sure that the selections in the _ZMS Catalog Adapter GUI_  is correct. 
+
+###### Start with _Create Schema_ !
+
+So the first step to prepare Solr is _Create Schema_: based on the  _ZMS Catalog Adapter_ selections ZMS will save a small JSON file as a configuration parameter. (Not: if Solr gets no, incomplete or wrong schema, it will guess one from the the transferred content; usually Solr is not able to guess the keywords types correctly; so this will end up in defect result responses.) 
+
+The second step is _Initialisation_, which leads to an empty index based on that content schema. After this is done the content can be primarily indexed with "Refresh". 
+
+---
+
+_GUI elements for managing the index:_
+
+1. **Index Refresh**: Re-/Indexing the selected ZMS client(s) or the multisite-tree
+2. **Create Schema**: Generating the field schema of the index in JSON format
+3. **Initialisation**: Creating an index schema on the Solr server (IMPORTANT NOTE: Solr expects a name-identical pre-created core.)
+4. **Deleting**: Removing the index on the Solr server
+
+---
+
+After the initial indexing new content will be added to the index incrementally on any content insert or change.
+
+

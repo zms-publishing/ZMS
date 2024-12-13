@@ -74,8 +74,11 @@ def recurse_importContent(self, folder):
                         self.setObjProperty(key, blob, lang)
   
   # Commit object.
-  self.onChangeObj( self.REQUEST, forced=1)
-  
+  try: 
+    self.onChangeObj( self.REQUEST, forced=1)
+  except:
+    standard.writeBlock( self, '[recurse_importContent]: %s commitObject failed'%(self.getId()))
+
   # Process children.
   for ob in self.getChildNodes():
     recurse_importContent(ob, folder)
@@ -102,7 +105,10 @@ def importContent(self, file):
   
   # Cleanup.
   self.setConfProperty('ZMS.CatalogAwareness.active', catalog_awareness)
-  
+
+  # Refresh zcatalog_index
+  standard.triggerEvent( self, '*.ObjectImported')
+
   # Return imported object.
   return ob
 

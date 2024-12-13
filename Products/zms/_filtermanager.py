@@ -63,7 +63,7 @@ def processData(self, processId, data, trans=None):
   data = f.read()
   f.close()
   # Remove temporary folder.
-  if not self.getConfProperty('ZMS.debug', 0):
+  if not self.getConfProperty('ZMS.mode.debug', 0):
       _fileutil.remove(tempfolder, deep=True)
   # Return data.
   return data
@@ -85,7 +85,7 @@ def processMethod(self, processId, filename, trans, REQUEST):
   try:
       process = self.getFilterManager().getProcess(processId) 
       ob = process['ob'] 
-      value = zopeutil.callObject( ob, self)
+      value = zopeutil.callObject( ob, zmscontext=self)
   except:
       value = standard.writeError( self, '[processMethod]: processId=%s'%processId)
   outfilename = REQUEST.get( 'ZMS_FILTER_OUT')
@@ -215,7 +215,7 @@ def exportFilter(self, id, REQUEST):
     data = f.read()
     f.close()
   # Remove temporary folder.
-  if not self.getConfProperty('ZMS.debug', 0):
+  if not self.getConfProperty('ZMS.mode.debug', 0):
     _fileutil.remove( tempfolder, deep=1)
   # Return.
   return filename, data, content_type

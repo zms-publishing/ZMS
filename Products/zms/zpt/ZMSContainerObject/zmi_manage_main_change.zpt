@@ -3,7 +3,7 @@
 </tal:block>
 <a class="object_has_titleimage" title="Title Image Preview: Click to Edit" 
 	tal:condition="python:here.attr('titleimage')" 
-	tal:attributes="href python:'%s/manage_properties?lang=%s'%(here.absolute_url(),request['manage_lang'])"
+	tal:attributes="href python:'%s/manage_properties?lang=%s'%(here.absolute_url(),request['lang'])"
 	><i class="zmi-state far fa-image text-info preview_on_hover" 
 		tal:define="preview_url python:here.attr('titleimage').getHref(request)"
 		tal:attributes="style python:'--preview_url:url(%s)'%(preview_url); data-preview_url preview_url;"></i>
@@ -23,7 +23,7 @@
 	</span>
 	<span class="version_object_state" tal:content="structure python:here.zmi_version_object_state(here,request)">zmi_version_object_state</span>
 	<span class="zmi-state zmi-change-uid" tal:condition="change_uid" tal:attributes="title python:standard.string_maxlen(change_uid,20)"></span>
-	<span class="zmi-state zmi-change-dt" tal:condition="change_dt" tal:attributes="title python:here.getLangFmtDate(change_dt,request['manage_lang'],'DATETIME_FMT')"></span>
+	<span class="zmi-state zmi-change-dt" tal:condition="change_dt" tal:attributes="title python:here.getLangFmtDate(change_dt,fmt_str='DATETIME_FMT')"></span>
 
 </tal:block
 

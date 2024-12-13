@@ -23,7 +23,7 @@ from OFS.Image import Image, File
 # from mimetools import choose_boundary
 from email.generator import _make_boundary as choose_boundary
 import base64
-import io
+import json
 import re
 import time
 import warnings
@@ -524,12 +524,15 @@ class MyBlob(object):
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     MyBlob._createCopy:
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    def _createCopy(self, aq_parent, key):
+    def _createCopy(self, aq_parent, key, lang=None):
       value = self._getCopy()
       value.is_blob = True
       value.aq_parent = aq_parent
       value.key = key
-      value.lang = aq_parent.REQUEST.get( 'lang')
+      if hasattr(aq_parent, 'REQUEST'):
+        value.lang = aq_parent.REQUEST.get( 'lang')
+      elif lang is not None:
+        value.lang = lang
       return value
 
 
@@ -556,7 +559,7 @@ class MyBlob(object):
           try:
             name = 'hasCustomAccess'
             if hasattr(parent,name):
-              v = zopeutil.callObject(getattr(parent,name),parent)
+              v = zopeutil.callObject(getattr(parent,name),zmscontext=parent)
               if type( v) is bool:
                 access = access and v
               elif type( v) is int and v == 404:
@@ -577,7 +580,7 @@ class MyBlob(object):
         try:
           name = 'getCustomBlobResponseHeaders'
           if hasattr(parent,name):
-            zopeutil.callObject(getattr(parent,name),parent)
+            zopeutil.callObject(getattr(parent,name),zmscontext=parent)
         except:
           standard.writeError(parent,'[__call__]: can\'t %s'%name)
         

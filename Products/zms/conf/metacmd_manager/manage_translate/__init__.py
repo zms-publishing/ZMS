@@ -13,7 +13,7 @@ class manage_translate:
 	description = ""
 
 	# Execution
-	execution = 0
+	execution = False
 
 	# Icon_clazz
 	icon_clazz = "fas fa-globe text-success"
@@ -36,7 +36,7 @@ class manage_translate:
 	package = ""
 
 	# Revision
-	revision = "5.0.1"
+	revision = "5.0.2"
 
 	# Roles
 	roles = ["ZMSEditor"

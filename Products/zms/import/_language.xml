@@ -2898,6 +2898,22 @@
     <Cell><Data ss:Type="String">מחק</Data></Cell>
    </Row>
    <Row>
+    <Cell><Data ss:Type="String">BTN_DESTROY</Data></Cell>
+    <Cell><Data ss:Type="String">Löschen</Data></Cell>
+    <Cell><Data ss:Type="String">Delete</Data></Cell>
+    <Cell><Data ss:Type="String">Verwijderen</Data></Cell>
+    <Cell><Data ss:Type="String">Supprimer</Data></Cell>
+    <Cell><Data ss:Type="String">Cancellare</Data></Cell>
+    <Cell><Data ss:Type="String">Borrar</Data></Cell>
+    <Cell><Data ss:Type="String">删除</Data></Cell>
+    <Cell><Data ss:Type="String">حذف</Data></Cell>
+    <Cell><Data ss:Type="String">стереть</Data></Cell>
+    <Cell><Data ss:Type="String">मिटाना</Data></Cell>
+    <Cell><Data ss:Type="String">شطب/مسح</Data></Cell>
+    <Cell><Data ss:Type="String">Xóa</Data></Cell>
+    <Cell><Data ss:Type="String">מחק</Data></Cell>
+   </Row>
+   <Row>
     <Cell><Data ss:Type="String">BTN_DUPLICATE</Data></Cell>
     <Cell><Data ss:Type="String">Duplizieren</Data></Cell>
     <Cell><Data ss:Type="String">Duplicate</Data></Cell>
@@ -3031,7 +3047,8 @@
     <Cell><Data ss:Type="String">Importeren</Data></Cell>
     <Cell><Data ss:Type="String">Importer</Data></Cell>
     <Cell><Data ss:Type="String">Importare</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">导入</Data></Cell>
+    <Cell><Data ss:Type="String">Importar</Data></Cell>
+    <Cell><Data ss:Type="String">导入</Data></Cell>
     <Cell><Data ss:Type="String">واردات</Data></Cell>
     <Cell><Data ss:Type="String">импортировать</Data></Cell>
     <Cell><Data ss:Type="String">आयात</Data></Cell>
@@ -3046,7 +3063,8 @@
     <Cell><Data ss:Type="String">Initiëren</Data></Cell>
     <Cell><Data ss:Type="String">Initialiser</Data></Cell>
     <Cell><Data ss:Type="String">Initializzare</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">刿始化</Data></Cell>
+    <Cell><Data ss:Type="String">Inicializar</Data></Cell>
+    <Cell><Data ss:Type="String">刿始化</Data></Cell>
     <Cell><Data ss:Type="String">ارزش</Data></Cell>
     <Cell><Data ss:Type="String">инициализировать</Data></Cell>
     <Cell><Data ss:Type="String">ईनिट</Data></Cell>
@@ -3077,7 +3095,9 @@
     <Cell><Data ss:Type="String">Inviteren</Data></Cell>
     <Cell><Data ss:Type="String">Inviter</Data></Cell>
     <Cell><Data ss:Type="String">Invitare</Data></Cell>
-    <Cell ss:Index="9"/>
+    <Cell><Data ss:Type="String">Invitar</Data></Cell>
+    <Cell><Data ss:Type="String">邀请</Data></Cell>
+    <Cell><Data ss:Type="String">دعوت</Data></Cell>
     <Cell><Data ss:Type="String">загрузить</Data></Cell>
     <Cell><Data ss:Type="String">आमन्त्रित </Data></Cell>
     <Cell><Data ss:Type="String">دعوة</Data></Cell>
@@ -3089,7 +3109,12 @@
     <Cell><Data ss:Type="String">Weiter</Data></Cell>
     <Cell><Data ss:Type="String">Next</Data></Cell>
     <Cell><Data ss:Type="String">Verder</Data></Cell>
-    <Cell ss:Index="10"/>
+    <Cell><Data ss:Type="String">Continuer</Data></Cell>
+    <Cell><Data ss:Type="String">Ulteriori</Data></Cell>
+    <Cell><Data ss:Type="String">Adelante</Data></Cell>
+    <Cell><Data ss:Type="String">更多</Data></Cell>
+    <Cell><Data ss:Type="String">بعدی</Data></Cell>
+    <Cell><Data ss:Type="String">Далее</Data></Cell>
     <Cell><Data ss:Type="String">अगला</Data></Cell>
     <Cell><Data ss:Type="String">التالي</Data></Cell>
     <Cell><Data ss:Type="String">Kế tiếp</Data></Cell>
@@ -3116,8 +3141,10 @@
     <Cell><Data ss:Type="String">Überschreiben</Data></Cell>
     <Cell><Data ss:Type="String">Overwrite</Data></Cell>
     <Cell><Data ss:Type="String">Overschrijven</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Sovrascrivere</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">改写</Data></Cell>
+    <Cell><Data ss:Type="String">Écraser</Data></Cell>
+    <Cell><Data ss:Type="String">Sovrascrivere</Data></Cell>
+    <Cell><Data ss:Type="String">Sobrescribir</Data></Cell>    
+    <Cell><Data ss:Type="String">改写</Data></Cell>
     <Cell><Data ss:Type="String">بازنويسی</Data></Cell>
     <Cell><Data ss:Type="String">переписать</Data></Cell>
     <Cell><Data ss:Type="String">के ऊपर लिखना</Data></Cell>
@@ -3203,9 +3230,11 @@
     <Cell><Data ss:Type="String">Umbenennen</Data></Cell>
     <Cell><Data ss:Type="String">Rename</Data></Cell>
     <Cell><Data ss:Type="String">Ombenoemen</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Cambiare nome</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">釿命忿</Data></Cell>
-    <Cell/>
+    <Cell><Data ss:Type="String">Renommer</Data></Cell>
+    <Cell><Data ss:Type="String">Rinominare</Data></Cell>
+    <Cell><Data ss:Type="String">Cambiare nome</Data></Cell>
+    <Cell><Data ss:Type="String">釿命忿</Data></Cell>
+    <Cell><Data ss:Type="String">نام</Data></Cell>
     <Cell><Data ss:Type="String">переименновать</Data></Cell>
     <Cell><Data ss:Type="String">पुनः नामांकण</Data></Cell>
     <Cell><Data ss:Type="String">إعادة التسمية</Data></Cell>
@@ -3270,6 +3299,22 @@
     <Cell><Data ss:Type="String">حفظ</Data></Cell>
     <Cell><Data ss:Type="String">Lưu lại</Data></Cell>
     <Cell><Data ss:Type="String">שמור</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">BTN_SCHEMATIZE</Data></Cell>
+    <Cell><Data ss:Type="String">Schema erzeugen</Data></Cell>
+    <Cell><Data ss:Type="String">Create Schema</Data></Cell>
+    <Cell><Data ss:Type="String">Schema maken</Data></Cell>
+    <Cell><Data ss:Type="String">Créer un schéma</Data></Cell>
+    <Cell><Data ss:Type="String">Creare lo schema</Data></Cell>
+    <Cell><Data ss:Type="String">Crear esquema</Data></Cell>
+    <Cell><Data ss:Type="String">创建索引模式</Data></Cell>
+    <Cell><Data ss:Type="String">ایجاد طرح نمایه</Data></Cell>
+    <Cell><Data ss:Type="String">Создание схемы индекса</Data></Cell>
+    <Cell><Data ss:Type="String">अनुक्रमणिका स्कीमा बनाएँ</Data></Cell>
+    <Cell><Data ss:Type="String">إنشاء مخطط فهرس</Data></Cell>
+    <Cell><Data ss:Type="String">Tạo lược đồ chỉ mục</Data></Cell>
+    <Cell><Data ss:Type="String">יצירת סכימת אינדקס</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">BTN_SEARCH</Data></Cell>
@@ -4030,6 +4075,22 @@
     <Cell/>
     <Cell><Data ss:Type="String">Lưu lại những thay đổi dù bất kì giá nào?</Data></Cell>
     <Cell><Data ss:Type="String">לשמור שינויים בכל זאת?</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">MSG_CONFIRM</Data></Cell>
+    <Cell><Data ss:Type="String">Änderungen bestätigen.</Data></Cell>
+    <Cell><Data ss:Type="String">Confirm changes.</Data></Cell>
+    <Cell><Data ss:Type="String">Bevestig wijzigingen.</Data></Cell>
+    <Cell><Data ss:Type="String">Confirmer les changements.</Data></Cell>
+    <Cell><Data ss:Type="String">Conferma le modifiche.</Data></Cell>
+    <Cell><Data ss:Type="String">Confirmar cambios.</Data></Cell>
+    <Cell><Data ss:Type="String">确认更改</Data></Cell>
+    <Cell><Data ss:Type="String">تأكيد التغييرات</Data></Cell>
+    <Cell><Data ss:Type="String">Подтвердить изменения</Data></Cell>
+    <Cell><Data ss:Type="String">परिवर्तन की पुष्टि करें</Data></Cell>
+    <Cell><Data ss:Type="String">تأكيد التعديلات</Data></Cell>
+    <Cell><Data ss:Type="String">Xác nhận thay đổi.</Data></Cell>
+    <Cell><Data ss:Type="String">אשר שינויים</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">MSG_CONFIRM_CUTOBJS</Data></Cell>
@@ -5594,17 +5655,17 @@
    </Row>
    <Row>
     <Cell><Data ss:Type="String">SEARCH_YOURQUERY</Data></Cell>
-    <Cell><Data ss:Type="String">Ihre Suche nach dem Begriff: '%s'</Data></Cell>
-    <Cell><Data ss:Type="String">Your search for: '%s'</Data></Cell>
-    <Cell><Data ss:Type="String">Uw zoek naar: '%s'</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">La ricerca del termine: '%s'</Data></Cell>
+    <Cell><Data ss:Type="String">Ihre Suche nach dem Begriff: %s</Data></Cell>
+    <Cell><Data ss:Type="String">Your search for: %s</Data></Cell>
+    <Cell><Data ss:Type="String">Uw zoek naar: %s</Data></Cell>
+    <Cell ss:Index="6"><Data ss:Type="String">La ricerca del termine: %s</Data></Cell>
     <Cell ss:Index="8"><Data ss:Type="String">%s 濜索结果</Data></Cell>
     <Cell/>
-    <Cell><Data ss:Type="String">ваш поиск слова: '%s'</Data></Cell>
-    <Cell><Data ss:Type="String">आपका खोज '%s'  का</Data></Cell>
-    <Cell><Data ss:Type="String">بحثك عن '%s'</Data></Cell>
-    <Cell><Data ss:Type="String">Tìm kiếm của bạn cho:'%s'</Data></Cell>
-    <Cell><Data ss:Type="String">חיפוש שלך עבור:  '%s'</Data></Cell>
+    <Cell><Data ss:Type="String">ваш поиск слова: %s</Data></Cell>
+    <Cell><Data ss:Type="String">आपका खोज %s  का</Data></Cell>
+    <Cell><Data ss:Type="String">بحثك عن %s</Data></Cell>
+    <Cell><Data ss:Type="String">Tìm kiếm của bạn cho:%s</Data></Cell>
+    <Cell><Data ss:Type="String">חיפוש שלך עבור:  %s</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">SHORTDATETIME_FMT</Data></Cell>
@@ -6345,23 +6406,23 @@
    </Row>
    <Row>
     <Cell><Data ss:Type="String">TAB_WORKFLOW_ASSIGNMENT</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow-Aktivierung</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Zuweisung</Data></Cell>
+    <Cell><Data ss:Type="String">Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Assignment</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">TAB_WORKFLOW_MODEL</Data></Cell>
-    <Cell><Data ss:Type="String">Ablauf-Modell</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow-Modell</Data></Cell>
     <Cell><Data ss:Type="String">Workflow Model</Data></Cell>
     <Cell><Data ss:Type="String">Workflow Model</Data></Cell>
     <Cell><Data ss:Type="String">Workflow Model</Data></Cell>
@@ -6418,6 +6479,22 @@
     <Cell><Data ss:Type="String">سرد آخر العناصر التي تم عليها تعديلات</Data></Cell>
     <Cell><Data ss:Type="String">Các đối tượng được thay đổi gần đây nhất</Data></Cell>
     <Cell><Data ss:Type="String">פריטים ששונו לאחרונה</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">TASK_INACTIVE_NODES</Data></Cell>
+    <Cell><Data ss:Type="String">Inaktive Inhalte auflisten</Data></Cell>
+    <Cell><Data ss:Type="String">List inactive contents</Data></Cell>
+    <Cell><Data ss:Type="String">List inactive contents</Data></Cell>
+    <Cell><Data ss:Type="String">List inactive contents</Data></Cell>
+    <Cell><Data ss:Type="String">List inactive contents</Data></Cell>
+    <Cell><Data ss:Type="String">List inactive contents</Data></Cell>
+    <Cell><Data ss:Type="String">List inactive contents</Data></Cell>
+    <Cell><Data ss:Type="String">List inactive contents</Data></Cell>
+    <Cell><Data ss:Type="String">List inactive contents</Data></Cell>
+    <Cell><Data ss:Type="String">List inactive contents</Data></Cell>
+    <Cell><Data ss:Type="String">List inactive contents</Data></Cell>
+    <Cell><Data ss:Type="String">List inactive contents</Data></Cell>
+    <Cell><Data ss:Type="String">List inactive contents</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">TASK_UNTRANSLATED</Data></Cell>

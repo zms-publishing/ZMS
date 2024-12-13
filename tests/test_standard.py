@@ -22,10 +22,60 @@ class StandardTest(unittest.TestCase):
     def test_remove_tags(self):
         self.assertEqual('foo bar',standard.remove_tags('foo\n<\tscript\ttype="javascript"\n>window.onload(\'<script>\')</script\t\n>bar'))
         self.assertEqual('foo bar',standard.remove_tags('foo\n<\tstyle\t\n>body {}</style\t\n>bar'))
+        self.assertEqual('foo bar',standard.remove_tags('''
+            <!DOCTYPE html>
+            <meta name="description" content="Test regular expressions">
+            
+            <!--	###comment
+            --><body>	
+            	foo	
+            </body><!-- -->
+
+                <script	type="text/javascript"
+                nonce="Ow7cULQDb0b483xVnZngrwRoCICLoMVI8GOprsWtvWU=">
+                	try {
+                		window._pageTimings = window._pageTimings || {};
+                		window._pageTimings["TTJSStart"] = Math.round(performance.now());
+                	} catch (e) {
+                		console.error("Error in adding TTJSStart marker");
+                	}
+                </script 
+                bar>
+            bar</em>
+                <script type="text/javascript">
+                </script	>
+                
+                <style>
+                /* style */
+            .dropdown-submenu {
+                position: relative;
+            }
+            .dropdown-submenu>.dropdown-menu>li>a:hover {
+                background-color: #F5F5F5;
+                border-left-width: 5px;
+                padding-left: 15px;
+            }
+            </style>
+        '''))
 
     def test_string_maxlen(self):
         self.assertEqual('foo\nbar',standard.string_maxlen('foo\n<\tscript\ttype="javascript"\n>window.onload(\'<script>\')</script\t\n>bar'))
         self.assertEqual('foo\nbar',standard.string_maxlen('foo\n<\tstyle\t\n>body {}</style\t\n>bar'))
+
+    def test_sort_item(self):
+        self.assertEqual(0.1,standard.sort_item(0.1))
+        self.assertEqual(0,standard.sort_item(None))
+        self.assertEqual(0,standard.sort_item(''))
+        self.assertEqual(0,standard.sort_item(False))
+        self.assertEqual(1,standard.sort_item(True))
+        self.assertEqual('foo',standard.sort_item('foo'))
+        self.assertEqual('bar',standard.sort_item('bar'))
+        self.assertEqual('aeoeue',standard.sort_item(u'äöü'))
+
+    def test_sort_list(self):
+        self.assertEqual([1,2,3],standard.sort_list([3,1,2]))
+        self.assertEqual([{'sort_id':1,'value':'C'},{'sort_id':2,'value':'B'},{'sort_id':3,'value':'A'}],standard.sort_list([{'sort_id':3,'value':'A'},{'sort_id':1,'value':'C'},{'sort_id':2,'value':'B'}],'sort_id'))
+
 
     class FakeHTTPConnection:
         def __init__(self, status=200, reason='OK'):

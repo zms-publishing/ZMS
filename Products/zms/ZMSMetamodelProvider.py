@@ -71,6 +71,8 @@ class ZMSMetamodelProvider(
     manage_bigpicture = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_bigpicture', globals())
     manage_analyze = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_analyze', globals())
     manage_metas = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_metas', globals())
+    manage_readme = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_readme', globals())
+    manage_readme_iframe = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_readme_iframe', globals())
 
     # Management Permissions.
     # -----------------------

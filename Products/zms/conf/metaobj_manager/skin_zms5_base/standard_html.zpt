@@ -41,27 +41,12 @@
 	<script src="/++resource++zms_/zmi.js"></script>
 	<link rel="shortcut icon" href="common/img/favicon.ico" type="image/ico" tal:attributes="href python:'%s/common/img/favicon.ico'%(common)" />
 
-	<!-- Matomo -->
-	<script type="text/javascript">
-		var _paq = window._paq = window._paq || [];
-		/* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-		_paq.push(['trackPageView']);
-		_paq.push(['enableLinkTracking']);
-		(function() {
-			var u="https://analytics.zms.hosting/";
-			_paq.push(['setTrackerUrl', u+'matomo.php']);
-			_paq.push(['setSiteId', '5']);
-			var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-			g.type='text/javascript'; g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
-		})();
-	</script>
-	<!-- End Matomo Code -->
-
 </head>
 <body tal:attributes="
 	data-path python:zmscontext.getRootElement().getRefObjPath(here);
 	data-root python:zmscontext.getRootElement().getHome().id;
 	data-client python:zmsclient.getHome().id;
+	data-level python:zmscontext.getLevel();
 	id python:'zmsid_%s'%(zmscontext.id);
 	class python:'zms web %s %s'%(zmscontext.meta_id, attr_dc_type)">
 	<span id="header_nav_toggler" class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#header_nav" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -202,8 +187,6 @@
 
 		})
 	</script>
-
-	<noscript><p><img src="https://analytics.zms.hosting/matomo.php?idsite=5&amp;rec=1" style="border:0;" alt="" /></p></noscript>
 
 	<tal:block tal:define="
 		standard modules/Products.zms/standard;

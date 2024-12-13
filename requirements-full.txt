@@ -2,10 +2,10 @@
 -r requirements.txt
 
 # Theming
--e git+https://github.com/zms-publishing/Products.zms-skins.git#egg=Products.zms-skins
+git+https://github.com/zms-publishing/Products.zms-skins.git#egg=Products.zms-skins
 
 # SQL
-Products.ZMySQLDA
+SQLAlchemy==1.4.49
 Products.SQLAlchemyDA
 Products.ZSQLMethods
 # 2.2 is incompatible with mariadb 5.5.68 which is installed standard on centos 7
@@ -23,8 +23,17 @@ Markdown
 pyScss
 ftfy
 pdfminer.six
+htmldiff2
+
+# OpenSearch
+opensearch-py
+rich
+asyncio
 
 # PAS
 Products.PluggableAuthService
 Products.PluginRegistry
-# -e git+https://github.com/sntl-projects/Products.zmsPluggableAuthService.git#egg=Products.zmsPluggableAuthService
+# git+https://github.com/sntl-projects/Products.zmsPluggableAuthService.git#egg=Products.zmsPluggableAuthService
+
+# MemCacheD to replace mappingstorage
+Products.mcdutils>=3.2

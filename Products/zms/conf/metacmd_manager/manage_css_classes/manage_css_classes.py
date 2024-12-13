@@ -72,7 +72,7 @@ def manage_css_classes(self):
 		html += self.zmi_input_multiselect(self,name='css_classes',value=get_css_classes(self),lang_str='CSS Classes',options=css_classes)
 		html += '</div>'
 		html += '</div><!-- .form-group -->'
-		html += '<div class="form-group  row">'
+		html += '<div class="form-group row">'
 		html += '<div class="controls save">'
 		html += '<button type="submit" name="btn" class="btn btn-primary" value="BTN_INSERT">%s</button>'%(self.getZMILangStr('BTN_INSERT'))
 		html += '&nbsp;<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CANCEL">%s</button>'%(self.getZMILangStr('BTN_CANCEL'))

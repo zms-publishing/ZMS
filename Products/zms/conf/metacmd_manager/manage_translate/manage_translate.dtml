@@ -6,7 +6,7 @@
 
 <dtml-var "zmi_html_head(this(),REQUEST)">
 
-<body class="zmi" id="manage_translate" data-turbolinks="false">
+<body class="zmi" id="manage_translate" hx-disable="hx-disable">
 	<header class="navbar navbar-nav navbar-expand navbar-dark notranslate">
 		<dtml-var "zmi_breadcrumbs_obj_path(this(),REQUEST)">
 	</header>
@@ -85,7 +85,7 @@
 						<tr valign="top">
 							<dtml-in "['left','right']">
 								<dtml-let si=sequence-item lang_req_key="{'left':'lang1','right':'lang2'}[si]">
-									<td class="zmi-translate-<dtml-var si> <dtml-var "['translate','notranslate'][si=='left']">">
+									<td class="article zmi-translate-<dtml-var si> <dtml-var "['translate','notranslate'][si=='left']">">
 										<dtml-call "REQUEST.set('lang',REQUEST.get(lang_req_key+'_bk'))">
 										<span class="zmi-translate-element-id notranslate" <dtml-if "isActive(REQUEST)!=True"
 											>title="Inactive" style="background-color:#999"</dtml-if>> <a
@@ -238,6 +238,10 @@
 		background: #fff;
 		padding-top: .15rem;
 	}
+	.zmi figure img {
+		max-width: min(calc(50vw - 56px), 460px);
+		height: auto;
+	}
 /*-->*/
 </style>
 
@@ -302,7 +306,8 @@
 			},'html');
 		}
 	}
-	$(function() {
+	// $(function() {
+	$ZMI.registerReady(function() {
 		$('.zmiRenderShort .contentEditable').off('click');
 		$('.zmiRenderShort [onclick]').removeAttr('onclick');
 		$('.zmiRenderShort [ondblclick]').removeAttr('ondblclick');

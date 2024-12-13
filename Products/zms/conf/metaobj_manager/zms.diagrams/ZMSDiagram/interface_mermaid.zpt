@@ -1,4 +1,4 @@
-<tal:block 
+<tal:block
 	tal:define="zmscontext options/zmscontext;"
 	tal:condition="not:python:request.get('ZMS_INSERT')">
 <script type="text/javascript" defer charset="UTF-8" src="/++resource++zms_/common/zmi_ace_editor.js"></script>
@@ -7,7 +7,7 @@
 	<div class="col-sm-10">
 		<small>
 			Copy &amp; Paste <strong>Mermaid.js</strong> code from <a href="https://mermaid.live/" target="_blank">Live Editor</a>
-			| <a href="https://mermaid.js.org/intro/n00b-syntaxReference.html" target="_blank" id="reference_mermaid_href">Diagram Syntax</a>
+			| <a href="https://mermaid.js.org/intro/syntax-reference.html" target="_blank" id="reference_mermaid_href">Diagram Syntax</a>
 		</small>
 
 		<div id="diagram_code_preview">
@@ -22,8 +22,8 @@
 
 		<script type="module">
 		//<!--
-			import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@9/dist/mermaid.esm.min.mjs';
-			$(document).on('ready turbolinks:load', function() {
+			import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+			$(document).on('ready turbolinks:load', async function() {
 				$('body').attr('data-turbolinks','false');
 				let $textarea = $('textarea[id^="diagram_code"]');
 				let $preview = $('#diagram_code_preview')
@@ -34,20 +34,21 @@
 				$textarea.dblclick(function() {
 					show_ace_editor($(this),true);
 				});
-				mermaid.initialize({ startOnLoad: true });
-				$textarea.on('keydown change',function(){
+                mermaid.initialize({ startOnLoad: false });
+                await mermaid.run();
+				$textarea.on('keydown change', async function(){
 					let dgrm_code = $textarea.prop('value').trim();
 					let dgrm_html = `<pre class="mermaid" id="diagram_code_rendered">${dgrm_code}</pre>`;
 					$preview.html(dgrm_html);
 					// debugger;
 					let test = false;
 					try {
-						test = mermaid.parse(dgrm_code);
+						test = await mermaid.parse(dgrm_code);
 					} catch(error) {
 						console.log(error);
 					}
 					if (test && dgrm_code.length > 0) {
-						let svg = mermaid.render("diagram_code_rendered", dgrm_code);
+						let { svg } = await mermaid.render("diagram_code_rendered", dgrm_code);
 						$preview.html(svg);
 					} else {
 						if (dgrm_code.length > 0) {
@@ -64,7 +65,7 @@
 		<style>
 		/*<!--*/
 			#diagram_code_preview { width:100%; background:aliceblue}
-			#diagram_code_rendered { width:100%; min-height:20rem;}
+			#diagram_code_rendered { margin-top:1em; width:100%; min-height:20rem;}
 			.ace_editor {border:1px solid #e4e4e4;border-radius:4px;}
 		/*-->*/
 		</style>

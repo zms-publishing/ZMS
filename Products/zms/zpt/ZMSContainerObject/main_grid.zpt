@@ -19,7 +19,7 @@
 					<tal:block tal:content="structure python:ob.zmi_breadcrumbs()">zmi_breadcrumbs</tal:block>
 					<div class="zmi-container"><div class="zmi-item"><div class="center"><div tal:attributes="id python:'renderShort_%s'%id; class python:['d-none',''][int(renderShort)]" tal:content="structure python:ob.renderShort(request)">renderShort</div></div></div></div>
 				</td>
-				<td><tal:block tal:content="structure python:ob.zmi_manage_main_change(ob,request)">the info child-node</tal:block></td>
+				<td class="zmi-manage-main-change"><tal:block tal:content="structure python:ob.zmi_manage_main_change(ob,request)">the info child-node</tal:block></td>
 			</tr>
 			</tal:block>
 			</tal:block>

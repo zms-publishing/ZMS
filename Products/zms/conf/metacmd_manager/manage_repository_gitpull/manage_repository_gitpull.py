@@ -78,7 +78,7 @@ def manage_repository_gitpull(self, request=None):
 		html.append('<label for="git_hardreset" class="col-sm-2 control-label mandatory">Use Hard Reset</label>')
 		html.append('<div class="col-sm-10"><span class="btn btn-secondary btn-default"><input type="checkbox" name="git_hardreset" value="git_hardreset" title="git reset --hard origin/%s" /></span></div>'%(git_branch))
 		html.append('</div><!-- .form-group -->')
-		html.append('<div class="form-group">')
+		html.append('<div class="form-group row">')
 		html.append('<div class="controls save">')
 		html.append('<button type="submit" name="btn" class="btn btn-primary" value="BTN_GITPULL">%s</button>'%(self.getZMILangStr('BTN_GITPULL')))
 		html.append('<button type="submit" name="btn" class="btn btn-secondary btn-default" value="BTN_CANCEL">%s</button>'%(self.getZMILangStr('BTN_CANCEL')))

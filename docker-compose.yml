@@ -1,0 +1,56 @@
+services:
+    zope:
+        build:
+            context: .
+            dockerfile: ./docker/base/Dockerfile
+        image: localhost/zope:${ZOPE_TAG:-latest}
+        depends_on:
+            - zeo
+        stop_grace_period: 1s # SIGKILL after 1s, as zope is always taking the full 10 seconds
+        command: runwsgi --debug --verbose etc/zope.ini debug-mode=on http_port=80
+        ports:
+            - 80:80
+        volumes:
+            - ./docker/zope/etc/:/home/zope/etc/
+            - ./docker/zope/var/:/home/zope/var/
+            # To share external methods between Zope/ZEO/Docker clients folder needs to be mounted
+            - ./docker/zope/Extensions/:/home/zope/Extensions/
+            # source code
+            - ./tests:/home/zope/tests
+            - ./test_output:/home/zope/test_output
+            - ./selenium_tests:/home/zope/selenium_tests
+        develop:
+            watch:
+                # sync+restart
+                - action: sync+restart
+                  path: ./Products
+                  target: /home/zope/Products
+                # rebuild
+                - action: rebuild
+                  path: docker/base/Dockerfile
+                - action: rebuild
+                  path: requirements.txt
+                - action: rebuild
+                  path: requirements-zeo.txt
+                - action: rebuild
+                  path: requirements-full.txt
+                - action: rebuild
+                  path: requirements-dev.txt
+                - action: rebuild
+                  path: setup.py
+                - action: rebuild
+                  path: setup.cfg
+
+        # allow attaching to the container to debug with `breakpoint()`
+        stdin_open: true
+        tty: true
+
+    zeo:
+        build:
+            context: .
+            dockerfile: ./docker/base/Dockerfile
+        image: localhost/zope:latest
+        command: runzeo --configure etc/zeo.conf
+        volumes:
+            - ./docker/zeo/etc/:/home/zope/etc/
+            - ./docker/zeo/var/:/home/zope/var/

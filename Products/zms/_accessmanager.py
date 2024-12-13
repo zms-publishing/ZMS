@@ -105,6 +105,14 @@ def updateVersion(root):
           else:
            del nodes[nodekey]
       root.setConfProperty('ZMS.security.users', d)
+    # View management screens
+    if root.getConfProperty('ZMS.security.build', 0) == 3:
+      root.setConfProperty('ZMS.security.build', 4)
+      root.initRoleDefs()
+    # View management screens (ii)
+    if root.getConfProperty('ZMS.security.build', 0) == 4:
+      root.setConfProperty('ZMS.security.build', 5)
+      root.synchronizeRolesAccess()
 
 # ------------------------------------------------------------------------------
 #  _accessmanager.user_folder_meta_types:
@@ -120,10 +128,10 @@ user_folder_meta_types = ['LDAPUserFolder', 'User Folder', 'Simple User Folder',
 # ------------------------------------------------------------------------------
 role_defs = {
    'ZMSAdministrator':['*']
-  ,'ZMSEditor':['Access contents information', 'Add ZMSs', 'Add Documents, Images, and Files', 'Copy or Move', 'Delete objects', 'Manage properties', 'Use Database Methods', 'View', 'ZMS Author']
-  ,'ZMSAuthor':['Access contents information', 'Add ZMSs', 'Copy or Move', 'Delete objects', 'Use Database Methods', 'View', 'ZMS Author']
+  ,'ZMSEditor':['View management screens', 'Access contents information', 'Add ZMSs', 'Add Documents, Images, and Files', 'Copy or Move', 'Delete objects', 'Manage properties', 'Use Database Methods', 'View', 'ZMS Author']
+  ,'ZMSAuthor':['View management screens', 'Access contents information', 'Add ZMSs', 'Copy or Move', 'Delete objects', 'Use Database Methods', 'View', 'ZMS Author']
   ,'ZMSSubscriber':['Access contents information', 'View']
-  ,'ZMSUserAdministrator':['Access contents information', 'View', 'ZMS UserAdministrator']
+  ,'ZMSUserAdministrator':['View management screens', 'Access contents information', 'View', 'ZMS UserAdministrator']
 }
 
 # ------------------------------------------------------------------------------
@@ -1010,11 +1018,11 @@ class AccessManager(AccessableContainer):
     # --------------------------------------------------------------------------
     def toggleUserActive(self, id):
       active = self.getUserAttr(id, 'attrActive', 1)
-      attrActiveStart = self.parseLangFmtDate(self.getUserAttr(id, 'attrActiveStart', None))
+      attrActiveStart = standard.parseLangFmtDate(self.getUserAttr(id, 'attrActiveStart', None))
       if attrActiveStart is not None:
         dt = DateTime(time.mktime(attrActiveStart))
         active = active and dt.isPast()
-      attrActiveEnd = self.parseLangFmtDate(self.getUserAttr(id, 'attrActiveEnd', None))
+      attrActiveEnd = standard.parseLangFmtDate(self.getUserAttr(id, 'attrActiveEnd', None))
       if attrActiveEnd is not None:
         dt = DateTime(time.mktime(attrActiveEnd))
         active = active and (dt.isFuture() or (dt.equalTo(dt.earliestTime()) and dt.latestTime().isFuture()))
@@ -1224,8 +1232,8 @@ class AccessManager(AccessableContainer):
               updateUserPassword(self, user, password, confirm)
             self.setUserAttr(id, 'forceChangePassword', REQUEST.get('forceChangePassword', 0))
             self.setUserAttr(id, 'attrActive', newAttrActive)
-            self.setUserAttr(id, 'attrActiveStart', self.parseLangFmtDate(REQUEST.get('attrActiveStart')))
-            self.setUserAttr(id, 'attrActiveEnd', self.parseLangFmtDate(REQUEST.get('attrActiveEnd')))
+            self.setUserAttr(id, 'attrActiveStart', standard.parseLangFmtDate(REQUEST.get('attrActiveStart')))
+            self.setUserAttr(id, 'attrActiveEnd', standard.parseLangFmtDate(REQUEST.get('attrActiveEnd')))
             for key in ['email','profile','user_id']:
               if key in REQUEST.keys():  
                 value = REQUEST.get(key, '').strip()
@@ -1268,7 +1276,9 @@ class AccessManager(AccessableContainer):
             # Send notification.
             # ------------------
             #-- Recipient
-            mto = email
+            mto = {}
+            mto['To'] = email
+            mto['From'] = self.getConfProperty('ZMSAdministrator.email', '')
             #-- Body
             userObj = self.findUser(id)
             mbody = []

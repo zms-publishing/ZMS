@@ -19,7 +19,7 @@
 # Imports.
 import time
 from OFS import Moniker
-from OFS.CopySupport import _cb_decode, _cb_encode, CopyError # TODO , eNoData, eNotFound, eInvalid
+from OFS.CopySupport import _cb_decode, _cb_encode, CopyError
 # Product Imports.
 from Products.zms import standard
 
@@ -49,7 +49,8 @@ def normalize_ids_after_copy(node, id_prefix='e', ids=[]):
         lang = request.get('lang')
         for langId in node.getLangIds():
           request.set('lang',langId)
-          childNode.setObjStateNew(request,reset=0)
+          if not node.getAutocommit():
+            childNode.setObjStateNew(request,reset=0)
           childNode.onChangeObj(request)
         request.set('lang',lang)
         # new id
@@ -58,7 +59,7 @@ def normalize_ids_after_copy(node, id_prefix='e', ids=[]):
         # new id
         new_id = node.getNewId(standard.id_prefix(id))
       # reset id
-      if new_id is not None and new_id != id:
+      if new_id is not None and new_id != id and childNode.getParentNode() == node:
         standard.writeBlock(node,'[CopySupport._normalize_ids_after_copy]: rename %s(%s) to %s'%(childNode.absolute_url(),childNode.meta_id,new_id))
         node.manage_renameObject(id=id,new_id=new_id)
       # traverse tree
@@ -115,13 +116,12 @@ class CopySupport(object):
         if REQUEST and '__cp' in REQUEST:
           cp=REQUEST['__cp']
       if cp is None:
-        raise CopyError(eNoData)
+        raise CopyError('No Data')
       
       try: 
         cp=_cb_decode(cp)
       except: 
-        standard.writeError( self, '[CopySupport._get_cb_copy_data]: eInvalid')
-        raise CopyError(eInvalid)
+        raise CopyError('Invalid')
       
       return cp
 
@@ -134,8 +134,7 @@ class CopySupport(object):
         try: 
           cp=_cb_decode(cp)
         except: 
-          standard.writeError( self, '[CopySupport._get_obs]: eInvalid')
-          #raise CopyError, eInvalid
+          raise CopyError('Invalid')
         
         oblist=[]
         op=cp[0]
@@ -146,8 +145,7 @@ class CopySupport(object):
           try: 
             ob = m.bind(app)
           except: 
-            standard.writeError( self, '[CopySupport._get_obs]: eNotFound')
-            #raise CopyError, eNotFound
+            raise CopyError('Not Found')
           self._verifyObjectPaste(ob)
           oblist.append(ob)
         

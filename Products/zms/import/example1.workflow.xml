@@ -43,7 +43,7 @@
       <item type="dictionary">
         <dictionary>
           <item key="icon"></item>
-          <item key="icon_clazz"><![CDATA[icon-reply text-danger wf-icon]]></item>
+          <item key="icon_clazz"><![CDATA[fas fa-reply text-danger wf-icon]]></item>
           <item key="id"><![CDATA[AC_ROLLEDBACK]]></item>
           <item key="name"><![CDATA[Rolled back]]></item>
         </dictionary>
@@ -106,12 +106,12 @@
   <div class="card-body">
 		<div class="form-group row">
 			<label class="col-sm-2 control-label mandatory" for="comment"><span>Comment</span></label>
-			<div class="col-sm-10"><input type="text" name="comment" class="form-control form-control-sm" /><br /></div><!-- .col-sm-10 -->
+			<div class="col-sm-10"><input type="text" name="comment" class="form-control form-control-sm" /></div><!-- .col-sm-10 -->
 		</div><!-- .form-group.row -->
 		<div class="form-group row">
 			<div class="controls save">
 				<button name="btn" class="btn btn-primary" value="BTN_SEND" tal:content="python:here.getZMILangStr('BTN_SEND')">Send</button>
-				<button name="btn" class="btn" value="BTN_CANCEL" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
+				<button name="btn" class="btn btn-secondary" value="BTN_CANCEL" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
 			</div><!-- .controls.save -->
 		</div><!-- .form-group.row -->
   </div><!-- .card-body -->
@@ -191,12 +191,12 @@
   <div class="card-body">
 		<div class="form-group row">
 			<label class="col-sm-2 control-label mandatory" for="comment"><span>Comment</span></label>
-			<div class="col-sm-10"><input type="text" name="comment" class="form-control form-control-sm" /><br /></div><!-- .col-sm-10 -->
+			<div class="col-sm-10"><input type="text" name="comment" class="form-control form-control-sm" /></div><!-- .col-sm-10 -->
 		</div><!-- .form-group.row -->
 		<div class="form-group row">
 			<div class="controls save">
 				<button name="btn" class="btn btn-primary" value="BTN_SEND" tal:content="python:here.getZMILangStr('BTN_SEND')">Send</button>
-				<button name="btn" class="btn" value="BTN_CANCEL" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
+				<button name="btn" class="btn btn-secondary" value="BTN_CANCEL" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
 			</div><!-- .controls.save -->
 		</div><!-- .form-group.row -->
 	</div><!-- .card-body -->

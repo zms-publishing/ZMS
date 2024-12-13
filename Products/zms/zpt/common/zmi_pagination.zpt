@@ -19,7 +19,7 @@
 		></li
 		><li tal:condition="python:pageCount>=10 and page==0 and pageIndex>(3+1)" class="page-item disabled"><span class="page-link">...</span></li
 	></tal:block>
-	<li tal:attributes="class python:['page-item','page-item disabled'][int(pageIndex==(size-1)/pageSize)]"
+	<li tal:attributes="class python:['page-item','page-item disabled'][int(pageIndex>=pageCount-1)]"
 		><a class="page-link" tal:attributes="href python:here.url_append_params(url,{'pageIndex:int':pageIndex+1},sep='&')"
 			>&raquo;</a
 	></li>

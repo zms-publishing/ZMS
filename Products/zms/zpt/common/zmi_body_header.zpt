@@ -5,7 +5,7 @@
 		zmscontext python:here.getSelf(); 
 		admin python:request['AUTHENTICATED_USER'].has_permission('ZMS Administrator',here)">
 	<header class="navbar navbar-nav navbar-expand navbar-dark flex-row justify-content-between bd-navbar"
-			tal:attributes="class python:'navbar navbar-nav navbar-expand navbar-dark flex-row justify-content-between bd-navbar%s' %((admin and here.getConfProperty('ZMS.debug',0)) and ' zmsdebug' or '')">
+			tal:attributes="data-zmsmode python:(admin and bool(here.getConfProperty('ZMS.mode.debug',False))) and 'debug' or (bool(here.getConfProperty('ZMS.mode.maintenance',False)) and 'maintenance' or None)">
 		<tal:block tal:content="structure python:here.zmi_navbar_brand(here,request)">zmi_navbar_brand</tal:block>
 		<ul class="navbar-nav flex-row ml-sm-auto d-flex">
 			<li id="zmi-authenticated_user" class="form-inline zmi-authenticated_user" tal:attributes="title python:'Authenticated User: %s'%(request.get('AUTHENTICATED_USER'))">
@@ -14,7 +14,9 @@
 				</a>
 			</li>
 			<li id="toggle_menu" class="form-inline desktop hidden-xs" title="Show/Hide Tree Menu of the Navigation Context">
-				<a id="navbar-sitemap" tal:attributes="href python:'manage?lang=%s'%request['lang']" target="_top" 
+				<a id="navbar-sitemap" target="_top"
+					tal:define="zmscontext_url python:zmscontext.absolute_url()"
+					tal:attributes="href python:'%s/manage?lang=%s'%(zmscontext_url, request.get('lang','ger'))"
 					><i class="fas fa-sitemap"></i></a>
 			</li>
 			<li class="dropdown">
@@ -103,20 +105,24 @@
 				</div>
 			</li><!-- .dropdown -->
 			<li class="dropdown localisation">
-				<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" tal:attributes="title python:'ZMS-%s: %s'%(here.getZMILangStr('ATTR_LANG'),here.getLocale().getLangStr('LANG',request['manage_lang']))">
+				<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" tal:attributes="title python:'ZMS-%s: %s'%(here.getZMILangStr('ATTR_LANG'),here.getZMILangStr('LANG'))">
 					<i class="fas fa-globe"></i>
 					<b class="caret"></b>
 				</a>
 				<div class="dropdown-menu">
-					<tal:block tal:repeat="manage_lang python:here.getLocale().get_manage_langs()">
+					<tal:block tal:repeat="manage_lang python:here.get_manage_langs()">
 						<a class="dropdown-item" tal:attributes="href python:'?lang=%s&manage_lang=%s'%(request['lang'],manage_lang)">
-							<i class="far fa-check-square" tal:attributes="class python:manage_lang==request.get('manage_lang','ger') and 'far fa-check-square' or 'far fa-square'"></i>
-							<tal:block tal:content="python:here.getLocale().getLangStr('LANG',manage_lang)">language</tal:block>
+							<i class="far fa-check-square" tal:attributes="class python:manage_lang==here.get_manage_lang() and 'far fa-check-square' or 'far fa-square'"></i>
+							<tal:block tal:content="python:here.getLangStr('LANG',manage_lang)">language</tal:block>
 						</a>
 					</tal:block>
 				</div>
 			</li><!-- .dropdown -->
 			<tal:block tal:condition="python: here.getTrashcan().getId()!=here.getId()">
+				<tal:block
+				  tal:condition="python:len([x for x in zmscontext.getAbsoluteHome().objectValues() if x.id == 'zmi_body_header_custom'])"
+					metal:use-macro="container/zmi_body_header_custom/macros/menus">
+				</tal:block>
 				<li class="view_preview">
 					<a target="_blank" tal:attributes="href python:'preview_html?lang=%s&preview=preview'%request['lang']">
 						<i class="far fa-eye"></i>

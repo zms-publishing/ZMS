@@ -135,6 +135,7 @@ class ZMSCharformatManager(object):
       """ ZMSCharformatManager.manage_changeCharformat """
       message = ''
       id = REQUEST.get('id', '')
+      target = REQUEST.get('target', None)
       
       # Change.
       # -------
@@ -206,7 +207,12 @@ class ZMSCharformatManager(object):
         id = ''
       
       # Return with message.
-      message = standard.url_quote(message)
-      return RESPONSE.redirect('manage_charformats?lang=%s&manage_tabs_message=%s&id=%s'%(lang, message, id))
+      if target=='zmi_manage_tabs_message' and btn == 'BTN_DELETE' and ids:
+        message = '%s: %s'%(self.getZMILangStr('MSG_DELETED')%len(ids), id)
+        REQUEST.set('manage_tabs_message', message)
+        return self.zmi_manage_tabs_message(lang=lang, id=id, extra={}, REQUEST=REQUEST, RESPONSE=RESPONSE)
+      else:
+        message = standard.url_quote(message)
+        return RESPONSE.redirect('manage_charformats?lang=%s&manage_tabs_message=%s&id=%s'%(lang, message, id))
 
 ################################################################################

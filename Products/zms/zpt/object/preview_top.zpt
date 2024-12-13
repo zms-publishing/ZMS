@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" tal:define="standard modules/Products.zms/standard">
+<html lang="en" tal:define="standard modules/Products.zms/standard; set_zmi python:request.set('is_zmi',True)">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
 <body tal:attributes="class python:here.zmi_body_class(id='preview_top')">
 <style>
@@ -66,6 +66,10 @@
 				<tal:block tal:content="python:here.getZMILangStr('TAB_LIVE')">live</tal:block>
 			</a>
 		</tal:block>
+		<a href="javascript:;" title="Fullscreen view" class="d-none d-lg-inline"
+			onclick="parent.location.href = parent.partner.location.href;$('header').slideUp(1000);$('header').slideDown(500);">
+			<i class="fas fa-angle-double-up m-0"></i>
+		</a>
 	</div>
 </header>
 <tal:block tal:content="structure python:here.zmi_html_foot(here,request)">zmi_html_foot</tal:block>

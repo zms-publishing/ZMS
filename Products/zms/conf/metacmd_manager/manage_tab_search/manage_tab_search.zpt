@@ -7,6 +7,7 @@
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
 <form class="card form-horizontal" name="searchform" method="get">
+	<input type="hidden" name="id" value="manage_tab_search" />
 	<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
 	<input type="hidden" name="preview" tal:attributes="value python:request['preview']" />
 	<legend tal:content="python:here.getZMILangStr('SEARCH_HEADER')">Search header</legend>
@@ -23,7 +24,7 @@
 		</div><!-- .form-group -->
 
 		<div class="form-group row" tal:condition="python:here.getPortalMaster() is not None or len(here.getPortalClients())>0">
-			<div class="control-label col-md-12" tal:define="home_id python:here.getHome().id">
+			<div class="control-label col-md-12 pl-4" tal:define="home_id python:here.getHome().id">
 				<input type="hidden" name="home_id" tal:attributes="value python:request.get('home_id',home_id); data-value home_id" />
 				<input type="checkbox" class="form-check-input" onchange="var $i=$('input[name=home_id]');$i.val(this.checked?$i.attr('data-value'):'');" tal:attributes="checked python:['','checked'][request.get('home_id',home_id)==home_id]" />
 				<label class="form-check-label control-label">
@@ -40,7 +41,7 @@
 		</tal:comment>
 
 		<div id="search_results" class="form-group row" style="display:none">
-			<div class="col-sm-10">
+			<div class="col-sm-12">
 				<h4 tal:content="python:here.getZMILangStr('SEARCH_HEADERRESULT')">Result</h4>
 				<div class="header">
 					<span class="small-head">
@@ -49,8 +50,13 @@
 					</span>
 					<div class="meta-info col-sm-12"> </div>
 				</div><!-- .header.row -->
+				<div class="col row mt-0">
+					<ul class="pagination"></ul>
+				</div>
+
 				<div class="line row"></div><!-- .row -->
-				<div class="pull-right">
+
+				<div class="col row mt-4">
 					<ul class="pagination"></ul>
 				</div>
 			</div>

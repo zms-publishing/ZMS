@@ -1,0 +1,24 @@
+[Unit]
+Description=ZMS/Zope rebuilder and restarter
+
+# After=docker.service
+# Requires=docker.service
+
+[Service]
+User=zope
+Group=zope
+Restart=always
+
+Environment="INSTANCE_HOME=/path/to/instance_home"
+Environment="DOCKER_IMAGE=localhost/zms DOCKER_TAG=latest"
+
+TimeoutStartSec=0
+PrivateTmp=true
+
+# If the image is locally built and prepared for it, then this can rebuild the image and thus apply operating system updates
+#ExecStartPre=/usr/bin/podman build --no-cache --pull --tag $DOCKER_IMAGE:$DOCKER_TAG $INSTANCE_HOME
+ExecStart=/usr/bin/systemd restart zms@*.service
+
+[Install]
+WantedBy=multi-user.target
+WantedBy=zms.target

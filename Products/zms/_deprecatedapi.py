@@ -435,7 +435,7 @@ class DeprecatedAPI(object):
 
   def dt_executable(self, v):
     warn(self, 'dt_executable', 'Products.zms.standard.dt_executable')
-    return standard.dt_executable(self, v)
+    return standard.dt_executable(v)
 
   def dt_exec(self, v, o={}):
     warn(self, 'dt_exec', 'Products.zms.standard.dt_exec')
@@ -484,6 +484,10 @@ class DeprecatedAPI(object):
   def getLangFmtDate(self, t, lang=None, fmt_str='SHORTDATETIME_FMT'):
     warn(self, 'getLangFmtDate', 'Products.zms.standard.getLangFmtDate')
     return standard.getLangFmtDate(self, t, lang, fmt_str)
+
+  def isFeatureEnabled(self, feature=''):
+    warn(self, 'isFeatureEnabled', 'Products.zms.standard.is_conf_enabled')
+    return standard.is_conf_enabled(self, feature)
 
   # --------------------------------------------------------------------------
   #  ZMSObject.ajaxGetNodes:

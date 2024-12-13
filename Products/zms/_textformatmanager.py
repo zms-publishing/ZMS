@@ -19,7 +19,7 @@
 # Product Imports.
 from Products.zms import standard
 from Products.zms import _globals
-
+from zope.globalrequest import getRequest
 
 class TextFormatObject(object):
 
@@ -29,6 +29,7 @@ class TextFormatObject(object):
   #  Returns section-number.
   # ----------------------------------------------------------------------------
   def getSecNo( self):
+    request = getattr(self, 'REQUEST', getRequest())
     sec_no = ''
     #-- [ReqBuff]: Fetch buffered value from Http-Request.
     parentNode = self.getParentNode()
@@ -42,11 +43,11 @@ class TextFormatObject(object):
         sec_no = parentNode.fetchReqBuff( '%s_%s'%(reqBuffId, self.id))
     except:
       levelnfc = parentNode.attr('levelnfc')
-      parentNode.storeReqBuff( '%s_levelnfc'%reqBuffId, levelnfc, self.REQUEST)
+      parentNode.storeReqBuff( '%s_levelnfc'%reqBuffId, levelnfc, request)
       if levelnfc is not None and len(levelnfc) > 0:
         parent_no = parentNode.getSecNo()
         sectionizer = _globals.MySectionizer(levelnfc)
-        siblings = parentNode.filteredChildNodes( self.REQUEST)
+        siblings = parentNode.filteredChildNodes( request)
         for sibling in siblings:
           curr_no = ''
           level = 0
@@ -62,7 +63,7 @@ class TextFormatObject(object):
             if self == sibling:
               sec_no = curr_no
           #-- [ReqBuff]: Store value in buffer of Http-Request.
-          parentNode.storeReqBuff( '%s_%s'%(reqBuffId, sibling.id), curr_no, self.REQUEST)
+          parentNode.storeReqBuff( '%s_%s'%(reqBuffId, sibling.id), curr_no, request)
     #-- [ReqBuff]: Return value.
     return sec_no
 
@@ -88,7 +89,7 @@ class TextFormatObject(object):
     if format is not None:
       textformat = self.getTextFormat( format, REQUEST)
       if textformat is not None and len( text) > 0:
-        text = textformat.renderText( text, REQUEST, id, clazz)
+        text = textformat.renderText( self, text, id, clazz)
     # Custom hook.
     try:
       name = 'renderCustomText'
@@ -96,7 +97,7 @@ class TextFormatObject(object):
         text = getattr(self, name)(context=self, key=key, text=text, REQUEST=REQUEST)
     except:
       standard.writeError( self, '[renderText]: can\'t %s'%name)
-    if self.getConfProperty('ZMS.richtext.plugin', '') == 'simplemde':
+    if format == 'markdown':  # and self.getConfProperty('ZMS.richtext.plugin', '') == 'simplemde'
       try:
         import markdown
         text = markdown.markdown(text)

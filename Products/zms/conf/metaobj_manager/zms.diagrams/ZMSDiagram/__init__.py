@@ -26,7 +26,7 @@ class ZMSDiagram:
 	package = "zms.diagrams"
 
 	# Revision
-	revision = "0.0.5"
+	revision = "0.0.6"
 
 	# Type
 	type = "ZMSObject"
@@ -53,8 +53,10 @@ class ZMSDiagram:
 				,"Class Diagram"
 				,"State Diagram"
 				,"User Journey"
+				,"Quadrant Chart"
 				,"Gantt Chart"
 				,"Pie Chart"
+				,"XY Chart"
 				,"Flowchart"
 				,"Gitgraph"
 				,"Timeline"

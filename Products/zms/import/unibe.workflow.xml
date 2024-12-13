@@ -121,7 +121,7 @@
 				<input type="text" name="comment" class="form-control form-control-sm" />
 			</div><!-- .controls -->
 		</div><!-- .form-group -->
-		<div class="form-group">
+		<div class="form-group row">
 			<div class="controls save">
 				<button name="btn" class="btn btn-primary" value="BTN_SEND" tal:content="python:here.getZMILangStr('BTN_SEND')">Send</button>
 				<button name="btn" class="btn btn-secondary" value="BTN_CANCEL" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
@@ -248,7 +248,7 @@
 				<input type="text" name="comment" class="form-control" />
 			</div><!-- .controls -->
 		</div><!-- .form-group.row -->
-		<div class="form-group">
+		<div class="form-group row">
 			<div class="controls save">
 				<button name="btn" class="btn btn-primary" value="BTN_SEND" tal:content="python:here.getZMILangStr('BTN_SEND')">Send</button>
 				<button name="btn" class="btn btn-secondary" value="BTN_CANCEL" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
@@ -368,7 +368,7 @@
 				<input type="text" name="comment" class="form-control" />
 			</div>
 		</div><!-- .form-group.row -->
-		<div class="form-group">
+		<div class="form-group row">
 			<div class="controls save">
 				<button name="btn" class="btn btn-primary" value="BTN_SEND" tal:content="python:here.getZMILangStr('BTN_SEND')">Send</button>
 				<button name="btn" class="btn btn-secondary" value="BTN_CANCEL" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>

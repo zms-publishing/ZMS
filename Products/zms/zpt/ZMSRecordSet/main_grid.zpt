@@ -199,7 +199,7 @@
 										tal:content="structure python:(here.operator_gettype(elValue) is not str) and elValue.getFilename() or elValue">filename</tal:block
 								></tal:block
 								><tal:block tal:condition="python:elType in ['date','datetime','time']"
-									><tal:block tal:content="python:here.getLangFmtDate(elValue,fmt_str=('%s_fmt'%elType).upper())">elValue</tal:block
+									><tal:block tal:content="python:here.getLangFmtDate(elValue,request.get('manage_lang',request['lang']),('%s_fmt'%elType).upper())">elValue</tal:block
 								></tal:block
 								><tal:block tal:condition="python:elType in ['float','int']"
 									><tal:block tal:content="elValue">elValue</tal:block

@@ -45,7 +45,7 @@
 </tal:block>
 
 <tal:block tal:condition="python:request.get('action')=='updateForm'">
-	<tal:block tal:content="structure python:here.manage_zmi_input_form(
+	<tal:block tal:content="structure python:here.zmi_input_form(
 			entity=entity,
 			action='update',
 			qindex=request['qindex'],
@@ -55,7 +55,7 @@
 		metaobj_recordset_input_fields
 	</tal:block>
 </tal:block>
-<tal:block tal:condition="python:request.get('action')=='insertForm'" tal:content="structure python:here.manage_zmi_input_form(
+<tal:block tal:condition="python:request.get('action')=='insertForm'" tal:content="structure python:here.zmi_input_form(
 			entity=entity,
 			action='insert',
 			qindex=-1,

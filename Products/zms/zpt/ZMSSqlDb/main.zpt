@@ -1,0 +1,127 @@
+<tal:block tal:define="standard modules/Products.zms/standard;
+	zmscontext python:here.getSelf();
+	entities python:here.getEntities();
+	tables python:[x for x in entities if x['type'].upper()=='TABLE'];
+	SESSION request/SESSION;
+	dummy0 python:request.set('qsize',request.get('qsize',standard.get_session_value(here,'qsize_%s'%here.id,20)));
+	dummy0 python:request.set('qfilters',request.get('qfilters',standard.get_session_value(here,'qfilters_%s'%here.id,1)));
+	dummy0 python:request.set('qindex',request.get('qindex',standard.get_session_value(here,'qindex_%s'%here.id,-1)));
+	dummy0 python:SESSION.set('qsize_%s'%here.id,request.get('qsize'));
+	dummy0 python:SESSION.set('qfilters_%s'%here.id,request.get('qfilters'));
+	dummy0 python:SESSION.set('qindex_%s'%here.id,request.get('qindex'));
+	dummy0 python:here.recordSet_Init(request);
+	dummy0 python:here.recordSet_Filter(request);
+	dummy0 python:here.recordSet_Sort(request);
+	pageSize python:request.get('qsize',20);
+	pageIndex python:request.get('pageIndex',0);
+	pageStart python:pageIndex*pageSize;">
+
+	<tal:block tal:condition="tables">
+
+		<tal:block tal:define="global
+			sessqentitykey python:'qentity_%s'%here.id;
+			sessqfilterskey python:'qfilters_%s'%id;
+			entity python:[x for x in tables if x['id']==request['qentity']][0];
+			primary_key python:here.getEntityPK(entity['id']);
+			encoding python:getattr(here,'charset','utf-8');
+			metaObjAttrIds python:[];
+			metaObjAttrs python:[];
+			res python:[];
+			resSlctStmnt python:''.join(request.get('sqlStatement',[]))+' LIMIT %s OFFSET %s'%(str(pageSize),str(pageStart));
+			cntSlctStmnt python:standard.re_sub('^(SELECT (.*?) FROM)','SELECT COUNT(*) AS rcount FROM',resSlctStmnt[:resSlctStmnt.find('ORDER BY')]);
+			row_count python:here.query(cntSlctStmnt)['records'][0]['rcount']">
+
+			<tal:block tal:define="global
+				query python:here.query(resSlctStmnt,encoding=encoding);
+				dummy0 python:metaObjAttrIds.extend([x['id'] for x in entity['columns']]);
+				dummy0 python:metaObjAttrs.extend([here.getEntityColumn(entity['id'],x) for x in metaObjAttrIds]);
+				dummy0 python:res.extend(query['records'])">
+			</tal:block>
+
+			<tal:block tal:condition="python:(request.get('action') in ['delete']) or (request.get('action') in ['insert','update'] and request.get('btn')=='BTN_SAVE')">
+				<tal:block tal:define="
+						message python:[];
+						values python:{}">
+					<tal:block tal:repeat="column python:entity['columns']">
+						<tal:block tal:define="dummy0 python:here.operator_setitem(values,['','blob_'][int('blob' in column)]+column['id'],request.get(column['id'].lower(),None))"></tal:block>
+						<tal:block tal:condition="python:'blob' in column and int(request.get('del_%s'%column['id'].lower(),0))==1"><tal:block tal:define="dummy0 python:here.operator_setitem(values,'delete_blob_%s'%column['id'],True)"></tal:block></tal:block>
+					</tal:block>
+					<tal:block tal:condition="python:request.get('action') in ['insert']">
+						<tal:block tal:content="python:here.recordSet_Insert(tablename=entity['id'],values=values, update_intersections=True)"
+								tal:define="dummy0 python:message.append(here.getZMILangStr('MSG_INSERTED')%here.getZMILangStr('ATTR_RECORD'))"></tal:block>
+					</tal:block>
+					<tal:block tal:condition="python:request.get('action') in ['update']">
+						<tal:block tal:content="python:here.recordSet_Update(tablename=entity['id'],rowid=request['rowid'],values=values, update_intersections=True)"
+								tal:define="dummy0 python:message.append(here.getZMILangStr('MSG_CHANGED'))"></tal:block>
+					</tal:block>
+					<tal:block tal:condition="python:request.get('action') in ['delete']">
+						<tal:block tal:repeat="rowid python:request.get('qindices',[request['qindex']])">
+							<tal:block tal:content="python:here.recordSet_Delete(tablename=entity['id'],rowid=rowid)"
+								tal:define="dummy0 python:message.append(here.getZMILangStr('MSG_DELETED')%1)"></tal:block>
+						</tal:block>
+					</tal:block>
+					<tal:block tal:define="dummy0 python:request.RESPONSE.redirect(here.url_append_params(request['URL'],{
+								'lang':request['lang'],
+								'manage_tabs_message':'<br>'.join(message),
+							}))">
+					</tal:block>
+				</tal:block>
+			</tal:block>
+
+			<tal:block tal:condition="python:request.get('action') not in ['noFilterForm','updateForm','insertForm']">
+				<tal:block tal:content="structure python:here.zmi_filter_form(
+					entity=entity,
+					tables=tables,
+					resSlctStmnt=resSlctStmnt)">
+					Filter Form
+				</tal:block>
+			</tal:block>
+			<tal:block tal:condition="python:request.get('action') not in ['noGridForm','updateForm','insertForm']">
+				<tal:block tal:define="
+					dummy0 python:[here.operator_setitem(x,'name',x['label']) for x in metaObjAttrs];
+					colNames python:[x['id'] for x in metaObjAttrs if x.get('hide',0) == 0]">
+					<tal:block tal:content="structure python:here.metaobj_recordset_main_grid(
+						metaObjAttrIds=metaObjAttrIds,
+						metaObjAttrs=metaObjAttrs,
+						records=res,
+						size=row_count,
+						total=row_count,
+						offset=0,
+						filtered=True,
+						form_action=request['URL'],
+						url_params={'qentity':request.get('qentity')},
+						record_handler=here.getEntityRecordHandler(entity['id'],['blob'],colNames))">
+						metaobj_recordset_main_grid
+					</tal:block>
+				</tal:block>
+			</tal:block>
+
+			<tal:block tal:condition="python:request.get('action')=='updateForm'">
+				<tal:block tal:define="
+					sql python:here.recordSet_Select(tablename=entity['id'],select='*',where='%s=%s'%(primary_key,here.sql_quote__(entity['id'],primary_key,request['rowid'])));
+					row python:here.query(sql,encoding=encoding)['records'][0]">
+					<tal:block tal:content="structure 
+						python:here.zmi_input_form(
+							entity=entity,
+							action='update',
+							qindex=request['qindex'],
+							rowid=request['rowid'],
+							row=row)">
+						metaobj_recordset_input_fields
+					</tal:block>
+				</tal:block>
+			</tal:block>
+
+			<tal:block tal:condition="python:request.get('action')=='insertForm'" tal:content="structure 
+				python:here.zmi_input_form(
+					entity=entity,
+					action='insert',
+					qindex=-1,
+					rowid=-1,
+					row={})">
+				metaobj_recordset_input_fields
+			</tal:block>
+
+		</tal:block>
+	</tal:block>
+</tal:block>

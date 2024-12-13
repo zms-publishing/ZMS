@@ -102,7 +102,6 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         'manage_moveObjUp', 'manage_moveObjDown', 'manage_moveObjToPos',
         'manage_cutObjects', 'manage_copyObjects', 'manage_pasteObjs',
         'manage_userForm', 'manage_user',
-        'manage_zmi_input_form', 
         'manage_zmi_details_grid', 'manage_zmi_details_form',
         'manage_zmi_lazy_select_form',
         )
@@ -117,7 +116,9 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
 
     # Management Interface.
     # ---------------------
-    manage_zmi_input_form = PageTemplateFile('zpt/ZMSSqlDb/input_form', globals())
+    zmi_filter_form = PageTemplateFile('zpt/ZMSSqlDb/filter_form', globals())
+    zmi_input_form = PageTemplateFile('zpt/ZMSSqlDb/input_form', globals())
+    zmi_main = PageTemplateFile('zpt/ZMSSqlDb/main', globals())
     manage_zmi_details_grid = PageTemplateFile('zpt/ZMSSqlDb/zmi_details_grid', globals())
     manage_zmi_details_form = PageTemplateFile('zpt/ZMSSqlDb/zmi_details_form', globals())
     manage_zmi_lazy_select_form = PageTemplateFile('zpt/ZMSSqlDb/zmi_lazy_select_form', globals())
@@ -141,6 +142,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       'checkbox': 1,
       'password': 1,
       'richtext': 1,
+      'string': 1,
       'text': 1,
       'time': 1,
       'url': 1,
@@ -905,8 +907,8 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         # The pattern matches digits in parenthesis.To get the digits use .group(1).
         size_p = re.compile(r'\(\s*?([0-9]+)\s*?\)')
         for tableBrwsr in tableBrwsrs:
-          tableName = str(getattr(tableBrwsr, 'Name', getattr(tableBrwsr, 'name', None))())
-          tableType = str(getattr(tableBrwsr, 'Type', getattr(tableBrwsr, 'type', None))())
+          tableName = str(getattr(tableBrwsr, 'Name', getattr(tableBrwsr, 'name', None))()).replace('"','').replace('[','').replace(']','')
+          tableType = str(getattr(tableBrwsr, 'Type', getattr(tableBrwsr, 'type', None))()).replace('"','').replace('[','').replace(']','')
           if tableType.upper() == 'TABLE' and p.match(tableName):
             
             # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
@@ -929,9 +931,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
                         c += l + ' '
                     cl = [x for x in c.split(' ') if x.strip()]
                     if len(cl) >= 2:
-                      cid = cl[0]
-                      if cid.startswith('"') and cid.endswith('"'):
-                        cid = cid[1:-1]
+                      cid = cl[0].replace('"','').replace('[','').replace(']','')
                       ucid = cid.upper() 
                       uctype = cl[1].upper()
                       if not ucid in ['CHECK', 'FOREIGN', 'PRIMARY'] and not uctype.startswith('KEY') and not uctype.startswith('(') and not ucid.startswith('\''):
@@ -942,7 +942,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
               else:
                 for columnBrwsr in tableBrwsr.tpValues():
                   col = {}
-                  col["id"] = columnBrwsr.tpId()
+                  col["id"] = columnBrwsr.tpId().replace('"','').replace('[','').replace(']','')
                   col["description"] = getattr(columnBrwsr, 'Description', getattr(columnBrwsr, 'description', None))().upper()
                   columnBrwsrs.append(col)
               for columnBrwsr in columnBrwsrs:
@@ -1137,7 +1137,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       if len(tabledefs) > 0:
         if tablename not in [x['id'] for x in tabledefs]:
           tablename = tabledefs[0]['id']
-        tablename = REQUEST.form.get('qentity', tablename)
+        tablename = REQUEST.get('qentity', tablename)
         tabledef = [x for x in tabledefs if x['id'].upper()==tablename.upper()][0]
         sqlStatement.append( self.recordSet_Select( tablename))
         tablecols = tabledef['columns']

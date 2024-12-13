@@ -282,10 +282,10 @@ function mms_normalize_rows(el_tbody) {
 									<tal:block tal:on-error="python:'ERROR'" tal:define="global
 											intersection python:here.getEntity(column['multiselect']['tablename']);
 											dst python:[x for x in intersection['columns'] if x.get('fk') is not None and x.get('fk',{}).get('tablename')!=table['id']][0];
-											dstentity python:here.getEntity(dst['fk']['tablename']);
+											dstentity python:dst['fk'].get('tablename') and here.getEntity(dst['fk']['tablename']) or {'id':'Details tablename not found'}
 											">
 										<i class="fas fa-long-arrow-alt-right" tal:attributes="title python:dst['id']"></i>
-										<i class="fas fa-th"></i>
+										<i class="fas fa-th" tal:attributes="title dst"></i>
 										<tal:block tal:content="dstentity/id">the details-tablename</tal:block>
 									</tal:block>
 								</span>
@@ -298,10 +298,10 @@ function mms_normalize_rows(el_tbody) {
 									<tal:block tal:on-error="python:'ERROR'" tal:define="global
 											intersection python:here.getEntity(column['details']['tablename']);
 											dst python:[x for x in intersection['columns'] if x.get('fk') is not None and x.get('fk',{}).get('tablename')!=table['id']][0];
-											dstentity python:here.getEntity(dst['fk']['tablename']);
+											dstentity python:dst['fk'].get('tablename') and here.getEntity(dst['fk']['tablename']) or {'id':'Details tablename not found'}
 											">
 										<i class="fas fa-long-arrow-alt-right" tal:attributes="title python:dst['id']"></i>
-										<i class="fas fa-th"></i>
+										<i class="fas fa-th" tal:attributes="title dst"></i>
 										<tal:block tal:content="dstentity/id">the details-tablename</tal:block>
 									</tal:block>
 								</span>

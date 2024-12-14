@@ -259,7 +259,7 @@ def initialize(context):
             min_hash_fileobj = open(fileobj.name + '.hash', 'w')
             min_hash_fileobj.write(min_hash)
             OFS.misc_.misc_.zms['confdict']['js_min.hash'] = min_hash
-            standard.writeStdout(context, "New minify hash created: %s" % min_hash_fileobj.name)
+            standard.writeStdout(context, "add %s" % min_hash_fileobj.name)
             min_hash_fileobj.close()
             min_fileobj.close()
 

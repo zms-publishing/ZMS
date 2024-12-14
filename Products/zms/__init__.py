@@ -252,6 +252,17 @@ def initialize(context):
                 standard.writeStdout(context, "add %s (Packed: %i -> %i Bytes)"%(fn, l0, l1))
               fileobj.write(fc)
             fileobj.close()
+            # Before closing minified file finally create hash 
+            # of packed file content and write it into separate file
+            min_fileobj = open(fileobj.name, 'r')
+            min_hash = standard.encrypt_password(min_fileobj.read(),hex=True)
+            min_hash_fileobj = open(fileobj.name + '.hash', 'w')
+            min_hash_fileobj.write(min_hash)
+            OFS.misc_.misc_.zms['confdict']['js_min.hash'] = min_hash
+            standard.writeStdout(context, "New minify hash created: %s" % min_hash_fileobj.name)
+            min_hash_fileobj.close()
+            min_fileobj.close()
+
         
         # automated generation of language JavaScript
         from xml.dom import minidom

@@ -252,8 +252,9 @@ def initialize(context):
                 standard.writeStdout(context, "add %s (Packed: %i -> %i Bytes)"%(fn, l0, l1))
               fileobj.write(fc)
             fileobj.close()
-            # Before closing minified file finally create hash 
-            # of packed file content and write it into separate file
+            # Finally create hash value of packed file content:
+            # a. write it into separate file and
+            # b. create a configuration parameter
             min_fileobj = open(fileobj.name, 'r')
             min_hash = standard.encrypt_password(min_fileobj.read(),hex=True)
             min_hash_fileobj = open(fileobj.name + '.hash', 'w')

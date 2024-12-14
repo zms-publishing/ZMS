@@ -23,7 +23,8 @@ if (typeof $ == "undefined") {
  * HTMX: Add loading class to body on htmx:beforeRequest and remove it on htmx:afterRequest
  * Hint: Due to DOM limitations, it’s not possible to use the outerHTML method on the <body> 
  * element. htmx will change outerHTML on <body> to use innerHTML. So, the classList will not 
- * be renewed after htmx request. To fix this, we have to add the classList to the <body> element
+ * be renewed after htmx request. That is why the classList has to be added again the <body> 
+ * element after request
  * Source: https://htmx.org/attributes/hx-swap/
  */
 if (typeof htmx != "undefined") {
@@ -74,7 +75,7 @@ if (typeof htmx != "undefined") {
  * jQuery: Run $ZMI.ready() on document.ready
  */
 $ZMI.registerReady(function() {
-		// Remove loading class from body
+	// Remove loading class from body
 	if (document.querySelector('body') != null && document.querySelector('body').classList.contains("loading")) {
 		document.querySelector('body').classList.remove('loading');
 	};

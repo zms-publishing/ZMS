@@ -256,7 +256,8 @@ def initialize(context):
             # a. write it into separate file and
             # b. create a configuration parameter
             min_fileobj = open(fileobj.name, 'r')
-            min_hash = standard.encrypt_password(min_fileobj.read(),hex=True)
+            min_fileobj_content = min_fileobj.read()
+            min_hash = str(hash(min_fileobj_content))
             min_hash_fileobj = open(fileobj.name + '.hash', 'w')
             min_hash_fileobj.write(min_hash)
             OFS.misc_.misc_.zms['confdict']['js_min.hash'] = min_hash

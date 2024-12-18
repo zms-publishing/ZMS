@@ -26,7 +26,8 @@ EOR
 
 # Drop root privileges
 ENV UID=1000
-RUN useradd --system --create-home --uid $UID zope
+ENV GID=1000
+RUN groupadd --gid $GID zope ; useradd --system --create-home --uid $UID --gid $GID zope
 USER zope
 WORKDIR /home/zope/
 

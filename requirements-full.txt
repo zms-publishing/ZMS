@@ -10,6 +10,7 @@ Products.SQLAlchemyDA
 Products.ZSQLMethods
 # 2.2 is incompatible with mariadb 5.5.68 which is installed standard on centos 7
 mysqlclient<2.2
+psycopg2-binary
 
 # LDAP
 python-ldap

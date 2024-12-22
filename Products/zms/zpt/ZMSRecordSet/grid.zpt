@@ -1,183 +1,174 @@
 <!-- ZMSRecordSet/grid -->
 
 <div class="ZMSRecordSet main" tal:define="
-		standard modules/Products/zms/standard;
-		meta_id options/meta_id;
-		metaObj python:here.getMetaobj(meta_id);
-		metaObjIds python:here.getMetaobjIds();
-		metaObjAttrIds python:here.getMetaobjAttrIds(metaObj['id']);
-		metaObjAttrs python:metaObj['attrs'][1:];
-		metaObjAttrs python:[x for x in metaObjAttrs if x.get('custom', 0) == 1];
-		num_rows python:here.attr('_num_rows');
-		command python:'Save';
-		dummy0 python:standard.once('zmiGraphicExtEdit',request);
-		">
-
-<tal:block tal:define="
+	standard modules/Products/zms/standard;
+	meta_id options/meta_id;
+	metaObj python:here.getMetaobj(meta_id);
+	metaObjIds python:here.getMetaobjIds();
+	metaObjAttrIds python:here.getMetaobjAttrIds(metaObj['id']);
+	metaObjAttrs python:metaObj['attrs'][1:];
+	metaObjAttrs python:[x for x in metaObjAttrs if x.get('custom', 0) == 1];
+	num_rows python:here.attr('_num_rows');
+	command python:'Save';
+	dummy0 python:standard.once('zmiGraphicExtEdit',request)"
+	><tal:block tal:define="
 		record_id python:metaObjAttrIds[0];
 		records python:standard.sort_list(here.attr(record_id),'_sort_id');
 		filter_columns python:[x for x in metaObjAttrs if 
-				not x['id'].startswith('_')
-				and x['type'] in here.metaobj_manager.valid_types+here.getMetaobjIds()
-				and x['type'] not in ['resource']];
-		metaObjAttrs python:[x for x in filter_columns]">
+			not x['id'].startswith('_')
+			and x['type'] in here.metaobj_manager.valid_types+here.getMetaobjIds()
+			and x['type'] not in ['resource']];
+		metaObjAttrs python:[x for x in filter_columns]"
+		><tal:block tal:condition="python:num_rows and num_rows>len(records)"
+			><tal:block tal:define=" global
+				dummy0 python:records.extend([{y['id']:'e%i'%here.getSequence().nextVal() for y in metaObjAttrs if y['type'] == 'identifier'} for x in range(num_rows-len(records))]);
+				dummy0 python:here.setObjStateModified(request);
+				dummy0 python:here.setObjProperty(record_id,records);
+				dummy0 python:here.onChangeObj(request)"
+			></tal:block
+		></tal:block>
 
-<tal:block tal:condition="python:num_rows and num_rows>len(records)">
-	<tal:block tal:define=" global
-		dummy0 python:records.extend([{y['id']:'e%i'%here.getSequence().nextVal() for y in metaObjAttrs if y['type'] == 'identifier'} for x in range(num_rows-len(records))]);
-		dummy0 python:here.setObjStateModified(request);
-		dummy0 python:here.setObjProperty(record_id,records);
-		dummy0 python:here.onChangeObj(request);
-		">
-	</tal:block>
-</tal:block>
+		<form method="get" class="form-horizontal">
+			<input type="hidden" name="lang" tal:attributes="value request/lang" />
+			<input type="hidden" name="preview" tal:attributes="value request/preview" />
+			<div class="card">
+				<div class="card-header attr_last_modified clearfix btn-collapse">
+					<a class="btn card-toggle" data-toggle="collapse" href="#attrActivity" aria-expanded="false"
+						><i class="fas fa-caret-right"></i> <tal:block tal:content="python:here.getZMILangStr('ATTR_ACTIVITY')">Activity</tal:block
+					></a>
+					<div class="btn zmi-changes" tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')+' '+here.getLangFmtDate(here.attr('change_dt'))+' '+here.getZMILangStr('BY')+' '+here.attr('change_uid')">change_dt by change_uid</div>
+				</div><!-- .card-header -->
+				<div id="attrActivity" class="collapse">
+					<div class="card-body">
+						<tal:block tal:condition="python:here.attr('created_dt') and here.attr('created_uid')">
+							<span tal:content="python:'%s: %s %s %s'%(here.getZMILangStr('ATTR_CREATED'),here.getLangFmtDate(here.attr('created_dt')),here.getZMILangStr('BY'),here.attr('created_uid'))">Createad: %d.%m.%Y by %s</span>,
+						</tal:block>
+						<span title="This Node Contains ..." tal:content="python:'%i %s'%(len(here.getChildNodes(request)),here.getZMILangStr('ATTR_OBJECTS'))">%i Objects</span>,
+						<span title="Data Size" class="get_size" tal:content="python:here.getDataSizeStr(here.get_size())">%i Bytes</span>,
+						<span title="Unique ID" class="get_uid" tal:content="python:'ID:%s'%(here.get_uid())">unique-id</span>
+					</div><!-- .card-body -->
+				</div><!-- .collapse -->
+			</div><!-- .card -->
+		</form>
 
-<form method="get" class="form-horizontal">
-	<input type="hidden" name="lang" tal:attributes="value request/lang">
-	<input type="hidden" name="preview" tal:attributes="value request/preview">
-	<div class="card">
-		<div class="card-header attr_last_modified clearfix btn-collapse">
-			<a class="btn card-toggle" data-toggle="collapse" href="#attrActivity" aria-expanded="false"
-				><i class="fas fa-caret-right"></i> <tal:block tal:content="python:here.getZMILangStr('ATTR_ACTIVITY')">Activity</tal:block
-			></a>
-			<div class="btn zmi-changes" tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')+' '+here.getLangFmtDate(here.attr('change_dt'))+' '+here.getZMILangStr('BY')+' '+here.attr('change_uid')">change_dt by change_uid</div>
-		</div><!-- .card-header -->
-		<div id="attrActivity" class="collapse">
-			<div class="card-body">
-				<tal:block tal:condition="python:here.attr('created_dt') and here.attr('created_uid')">
-					<span tal:content="python:'%s: %s %s %s'%(here.getZMILangStr('ATTR_CREATED'),here.getLangFmtDate(here.attr('created_dt')),here.getZMILangStr('BY'),here.attr('created_uid'))">Createad: %d.%m.%Y by %s</span>,
-				</tal:block>
-				<span title="This Node Contains ..." tal:content="python:'%i %s'%(len(here.getChildNodes(request)),here.getZMILangStr('ATTR_OBJECTS'))">%i Objects</span>,
-				<span title="Data Size" class="get_size" tal:content="python:here.getDataSizeStr(here.get_size())">%i Bytes</span>,
-				<span title="Unique ID" class="get_uid" tal:content="python:'ID:%s'%(here.get_uid())">unique-id</span>
-			</div><!-- .card-body -->
-		</div><!-- .collapse -->
-	</div><!-- .card -->
-</form>
+		<div class="ZMSRecordSet main_grid">
 
-<div class="ZMSRecordSet main_grid">
+			<form class="form-horizontal" id="form0" name="form0" action="manage_changeRecordGrid" method="post" enctype="multipart/form-data">
+				<input type="hidden" id="lang" name="lang" tal:attributes="value python:request['lang']" />
+				<input type="hidden" id="preview" name="preview" tal:attributes="value python:request['preview']" />
+				<input type="hidden" id="form_id" name="form_id" tal:attributes="value python:request['ZMI_TIME']" />
 
-<form class="form-horizontal" id="form0" name="form0" action="manage_changeRecordGrid" method="post" enctype="multipart/form-data">
-	<input type="hidden" id="lang" name="lang" tal:attributes="value python:request['lang']">
-	<input type="hidden" id="preview" name="preview" tal:attributes="value python:request['preview']">
-	<input type="hidden" id="form_id" name="form_id" tal:attributes="value python:request['ZMI_TIME']">
+				<div class="table-responsive mb-2">
+					<table id="grid0" class="table table-sm table-striped table-bordered table-hover zmi-sortable mb-0" 
+						tal:attributes="data-cols python:len(metaObjAttrs)">
+						<colgroup>
+							<col />
+							<col tal:repeat="metaObjAttr metaObjAttrs" tal:attributes="class python:'zmi-datatype-%s'%(metaObjAttr.get('type','string'))" />
+						</colgroup>
+						<thead>
+							<tr>
+								<th></th>
+								<tal:block tal:repeat="metaObjAttr metaObjAttrs"
+									><th class="nowrap" 
+										tal:define="
+											elLabel python:metaObjAttr['name'];
+											elType python:metaObjAttr.get('type','string')"
+										tal:attributes="class python:'nowrap zmi-datatype-%s'%(elType)">
+										<span tal:content="elLabel">the label</span>
+									</th>
+								</tal:block>
+							</tr>
+						</thead>
+						<tbody>
+							<tal:block tal:repeat="record records"
+								><tal:block tal:define="qindex python:records.index(record);">
+									<tr tal:attributes="id python:'tr_%i'%qindex">
+										<td class="zmi-datatype-action">
+											<tal:block tal:define="global title python:''"></tal:block>
+											<tal:block tal:condition="python:'_change_uid' in record">
+												<tal:block tal:define="global title python:here.getLangFmtDate(record.get('_change_dt'))+' '+here.getZMILangStr('BY')+' '+str(record.get('_change_uid'))"></tal:block>
+											</tal:block>
+											<div class="btn-group" tal:attributes="title title">
+												<div class="input-group input-group-sm">
+													<select class="zmi-sort form-control" onchange="javascript:zmiMoveObjBtnClick(this);" tal:attributes="name python:'_sort_id_%i:int'%qindex; title python:here.getZMILangStr('ATTR_ORDERBY');">
+														<option tal:repeat="i python:range(0,len(records))" tal:attributes="selected python:['','selected'][i==qindex]" tal:content="python:i+1">i+1</option>
+													</select>
+													<div class="input-group-append">
+														<a tal:condition="python:not num_rows or num_rows<0 or num_rows>len(records)"
+															class="btn btn-secondary"
+															href="javascript:;" onclick="zmiDeleteObjBtnClick(this);" tal:attributes="title python:here.getZMILangStr('BTN_DELETE');"
+															><i class="fas fa-times"></i></a>
+													</div>
+												</div>
+											</div>
+										</td>
 
-<div class="table-responsive mb-2">
-<table class="table table-sm table-striped table-bordered table-hover zmi-sortable mb-0"
-	tal:attributes="data-cols python:len(metaObjAttrs) ">
-	<colgroup>
-		<col />
-		<col tal:repeat="metaObjAttr metaObjAttrs" tal:attributes="class python:'zmi-datatype-%s'%(metaObjAttr.get('type','string'))" />
-	</colgroup>
-	<thead>
-		<tr>
-			<th></th>
-			<tal:block tal:repeat="metaObjAttr metaObjAttrs"
-				><th class="nowrap" 
-					tal:define="
-						elLabel python:metaObjAttr['name'];
-						elType python:metaObjAttr.get('type','string')"
-					tal:attributes="class python:'nowrap zmi-datatype-%s'%(elType)">
-					<span tal:content="elLabel">the label</span>
-				</th>
-			</tal:block>
-		</tr>
-	</thead>
-	<tbody>
-
-		<tal:block tal:repeat="record records"
-			><tal:block tal:define="qindex python:records.index(record);">
-
-				<tr tal:attributes="id python:'tr_%i'%qindex">
-				<td class="zmi-datatype-action">
-					<tal:block tal:define="global title python:''"></tal:block>
-					<tal:block tal:condition="python:'_change_uid' in record">
-						<tal:block tal:define="global title python:here.getLangFmtDate(record.get('_change_dt'))+' '+here.getZMILangStr('BY')+' '+str(record.get('_change_uid'))"></tal:block>
-					</tal:block>
-					<div class="btn-group" tal:attributes="title title">
-						<div class="input-group input-group-sm">
-							<select class="zmi-sort form-control" onchange="javascript:zmiMoveObjBtnClick(this);" tal:attributes="name python:'_sort_id_%i:int'%qindex; title python:here.getZMILangStr('ATTR_ORDERBY');">
-								<option tal:repeat="i python:range(0,len(records))" tal:attributes="selected python:['','selected'][i==qindex]" tal:content="python:i+1">i+1</option>
-							</select>
-							<div class="input-group-append">
-								<a tal:condition="python:not num_rows or num_rows<0 or num_rows>len(records)"
-										class="btn btn-secondary"
-										href="javascript:;" onclick="zmiDeleteObjBtnClick(this);" tal:attributes="title python:here.getZMILangStr('BTN_DELETE');"
-									><i class="fas fa-times"></i></a>
+										<tal:block tal:repeat="metaObjAttr metaObjAttrs">
+											<tal:block tal:define="
+												dummy0 python:request.set('objAttrNamePrefix', '');
+												dummy0 python:request.set('objAttrNameSuffix', '_%i'%qindex);
+												objAttr python:here.getObjAttr(metaObjAttr['id']);
+												elName python:here.getObjAttrName(objAttr);
+												elType python:metaObjAttr.get('type','string');
+												elDefault python:standard.dt_exec(here,metaObjAttr.get('default',''));
+												elValue python:here.formatObjAttrValue(objAttr,here.operator_getitem(record,metaObjAttr['id'],elDefault),request['lang'])">
+												<td class="data" tal:attributes="class python:'data data-%s zmi-datatype-%s'%(elName, elType)"
+													tal:content="structure python:here.getObjAttrInput('form0',objAttr,elValue,request)">
+												</td>
+											</tal:block>
+										</tal:block>
+									</tr>
+								</tal:block>
+							</tal:block>
+							<tr class="row_insert" tal:condition="python:not num_rows or num_rows<0 or num_rows<len(records)">
+								<td class="text-center meta-sort"><span class="btn btn-secondary btn-sm btn-add mr-1 w-100"><i class="fas fa-plus"></i></span></td>
+								<tal:block tal:repeat="metaObjAttr metaObjAttrs">
+									<tal:block tal:define="
+										dummy0 python:request.set('objAttrNamePrefix', '_');
+										dummy0 python:request.set('objAttrNameSuffix', '');
+										objAttr python:here.getObjAttr(metaObjAttr['id']);
+										elName python:here.getObjAttrName(objAttr);
+										elType python:metaObjAttr.get('type','string');
+										elValue python:None">
+										<td class="data" tal:attributes="class python:'data data-%s zmi-datatype-%s'%(elName, elType)"
+											tal:content="structure python:here.getObjAttrInput('form0',objAttr,'',request)"></td>
+									</tal:block>
+								</tal:block>
+							</tr>
+						</tbody>
+					</table>
+					<div class="card-body">
+						<div class="form-group row">
+							<div class="controls save">
+								<button type="submit" name="btn" class="btn btn-secondary"
+									tal:condition="python:here.getPrimaryLanguage()==request.get('lang')"
+									tal:attributes="value python:'BTN_%s'%command.upper()" 
+									tal:content="python:here.getZMILangStr('BTN_%s'%command.upper())">
+									Command
+								</button>
+								<button type="submit" name="btn" class="btn btn-secondary" 
+									value="BTN_CANCEL" 
+									tal:content="python:here.getZMILangStr('BTN_CANCEL')">
+									Cancel
+								</button>
 							</div>
-						</div>
-					</div>
-				</td>
-
-				<tal:block tal:repeat="metaObjAttr metaObjAttrs">
-					<tal:block tal:define="
-							dummy0 python:request.set('objAttrNamePrefix', '');
-							dummy0 python:request.set('objAttrNameSuffix', '_%i'%qindex);
-							objAttr python:here.getObjAttr(metaObjAttr['id']);
-							elName python:here.getObjAttrName(objAttr);
-							elType python:metaObjAttr.get('type','string');
-							elDefault python:standard.dt_exec(here,metaObjAttr.get('default',''));
-							elValue python:here.formatObjAttrValue(objAttr,here.operator_getitem(record,metaObjAttr['id'],elDefault),request['lang']);
-							">
-					<td class="data" tal:attributes="class python:'data data-%s zmi-datatype-%s'%(elName, elType)">
-						<tal:block tal:content="structure python:here.getObjAttrInput('form0',objAttr,elValue,request)"></tal:block>
-					</td>
-					</tal:block>
-				</tal:block>
-
-			</tr>
-		</tal:block>
+						</div><!-- .form-row -->
+					</div><!-- .card-body -->
+				</div><!-- .table-responsive -->
+			</form>
+		</div><!-- .ZMSRecordSet main_grid -->
 	</tal:block>
-
-	<tr class="row_insert" tal:condition="python:not num_rows or num_rows<0 or num_rows<len(records)">
-		<td class="text-center"><i class="fas fa-plus"></i></td>
-		<tal:block tal:repeat="metaObjAttr metaObjAttrs">
-			<tal:block tal:define="
-					dummy0 python:request.set('objAttrNamePrefix', '_');
-					dummy0 python:request.set('objAttrNameSuffix', '');
-					objAttr python:here.getObjAttr(metaObjAttr['id']);
-					elName python:here.getObjAttrName(objAttr);
-					elType python:metaObjAttr.get('type','string');
-					elValue python:None;
-					">
-			<td class="data" tal:attributes="class python:'data data-%s zmi-datatype-%s'%(elName, elType)">
-				<tal:block tal:content="structure python:here.getObjAttrInput('form0',objAttr,'',request)"></tal:block>
-			</td>
-			</tal:block>
-		</tal:block>
-	</tr>
-
-</tbody>
-</table>
-
-			<div class="card-body">
-				<div class="form-group row">
-					<div class="controls save">
-						<button type="submit" name="btn" class="btn btn-secondary"
-							tal:condition="python:here.getPrimaryLanguage()==request.get('lang')"
-							tal:attributes="value python:'BTN_%s'%command.upper()" 
-							tal:content="python:here.getZMILangStr('BTN_%s'%command.upper())">
-							Command
-						</button>
-						<button type="submit" name="btn" class="btn btn-secondary" 
-							value="BTN_CANCEL" 
-							tal:content="python:here.getZMILangStr('BTN_CANCEL')">
-							Cancel
-						</button>
-					</div>
-				</div><!-- .form-row -->
-			</div><!-- .card-body -->
-
-</div>
-</form>
-
-</div>
-
-</tal:block>
 
 </div>
 
 <script>
+//<!--
+
+	/**
+	* Global vars.
+	*/
+	var table_id = 'grid0';
+
 	function zmiMoveObjBtnClick(sender) {
 		var $tr = $(sender).closest("tr");
 		var $table = $(sender).closest("table");
@@ -194,6 +185,104 @@
 		var $tr = $(sender).parents("tr");
 		$tr.remove();
 	}
-</script>
 
+	function get_img_preview_size_class($img) {
+		// Catch the function if not available
+		return void 0;
+	}
+
+	/**
+	 * Init.
+	 */
+	 $(function(){
+
+		// ++++++++++++
+		$('.thumbnail.ZMSGraphic_extEdit_action')
+			.removeAttr('onmouseover')
+			.attr('href','#')
+
+		// ++++++++++++
+
+		// New field set: initially disable inputs
+		$('input, textarea, select','tr.row_insert').attr('disabled',true);
+
+		// ++++++++++++
+		// Add rows to tables #meta_properties on button click
+		// ++++++++++++
+		let new_row_counter = 0;
+
+		// Add click event function to add-buttons
+		$(".row_insert .btn-add").click(function(){
+			new_row_counter++;
+			// New field set: clone with enabled inputs
+			$('input, textarea, select','tr.row_insert').attr('disabled',false);
+
+			// Where to insert the new row
+			let $where_insert = $(this).closest('tr');
+
+			// Set variables
+			let new_row_name = `new_row_${table_id}_${new_row_counter}`;
+			let old_id_html = `<input type="hidden" name="old_ids:list" value="new${new_row_counter}">`;
+			let new_btn_html = `
+				${old_id_html}
+				<span class="btn btn-secondary btn-sm mr-1 w-100" style="color:#999"
+					title="Revoke new Meta Attribute"
+					onclick="javascript:$(this).closest('tr').hide('slow',function(){$(this).closest('tr').remove()})">
+					<i class="fas fa-undo-alt"></i>
+				</span>
+			`;
+
+			// Clone(true) to get a deep copy including select options
+			let $new_row = $where_insert.clone(true);
+
+			// Process table cells of the clone like "old" row
+			$new_row.find('td').each(function() {
+				$(this).find('input,select,textarea').each(function() {
+					let tagname = $(this).prop('tagName');
+					let defname = $(this).attr('name')
+					let deftype = $(this).attr('type')
+					let newname = $(this).attr('name').split('_')[1].split(':')[0];
+					let newval  = $(this).val();
+					newname = `attr_${newname}_new${new_row_counter}`
+					newname = defname.includes(':') ? `${newname}:int` : newname;
+					$(this).attr('name',newname);
+					newval = `new${new_row_counter}`;
+					if ( tagname == 'INPUT' && deftype != 'checkbox') {
+						$(this).val(newval);
+						$(this).attr('placeholder',newval);
+					} else if ( deftype == 'checkbox' ) {
+						$(this).val(1);
+					};
+					// Remove id #populate_type from cloned select
+					if ( tagname == 'SELECT') {
+						$(this).removeAttr('id');
+					};
+				});
+			});
+
+			// Process td:first-child of the clone
+			$new_row.find('td.meta-sort').html(new_btn_html);
+			$new_row.removeClass('row_insert').attr('id',new_row_name)
+
+			// Insert the new row
+			$new_row.insertBefore($where_insert);
+			// Set form as modified
+			$ZMI.set_form_modified($('.meta-id input',$new_row));
+			// Reset the clone template
+			$where_insert.find('input:not([type="checkbox"]),select,textarea').each(function() {
+				$(this).val(undefined);
+			});
+			// New field set: reset to disabled inputs
+			$('input, textarea, select','tr.row_insert').attr('disabled',true);
+		});
+
+	});
+//-->
+</script>
+<style>
+	.row_insert .zmi-datatype-image .col-12 {
+		margin: 0;
+		padding: 0;
+	}
+</style>
 <!-- /ZMSRecordSet/grid -->

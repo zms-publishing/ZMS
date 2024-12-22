@@ -7,10 +7,16 @@
 
 <textarea tal:attributes="id python:'editor_%s'%request['elName']; name python:'editor_%s'%request['elName']"></textarea>
 
+<div id="attr_url_markdown_div" class="d-none">
+    <input type="text" id="attr_url_markdown" name="attr_url_markdown" class="form-control url-input">
+    <div id="attr_url_dummy"></div>
+</div>
+
 <tal:block tal:condition="python:request.get('f_zmiRichtextOnSubmitEventHandler',True)">
 
 <link rel="stylesheet" href="/++resource++zms_/simplemde/simplemde.min.css">
 <script src="/++resource++zms_/simplemde/simplemde.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
 <tal:block tal:content="structure python:'<script>'"></tal:block>
 
@@ -19,24 +25,88 @@ var elName = "text_" + getZMILang();
 $("textarea#editor_" + elName).val($("textarea#" + elName).val());
 
 var simplemde = new SimpleMDE({
-	element: document.getElementById("editor_" + elName)
+	element: document.getElementById("editor_" + elName),
+    toolbar: [
+        "bold", "italic", "strikethrough", "heading", "|",
+        "code", "quote", "unordered-list", "ordered-list", "|", {
+            name: "custom",
+            action: function customFunction(editor) {
+                zmiBrowseObjs('form0','attr_url_markdown',getZMILang());
+            },
+            className: "fa fa-link",
+            title: "Create Link"
+        },
+        "image", "table", "horizontal-rule", "clean-block", "|",
+        "preview", "side-by-side", "fullscreen", "guide"
+    ],
+    previewRender: function(plainText, preview) { // Async method
+		setTimeout(function() {
+			preview.innerHTML = customMarkdownParser(plainText);
+		}, 0);
+		return "Loading...";
+	},
+});
+
+$('#attr_url_markdown').on("change", function() {
+    var data = simplemde.value();
+    var link_href = $('#attr_url_markdown').val();
+    $.ajax({
+        url: 'zmi_breadcrumbs_obj_path',
+        data: {
+            lang: getZMILang(),
+            zmi_breadcrumbs_ref_obj_path: link_href
+        },
+        datatype: 'text',
+        success: function(response) {
+            $('#attr_url_dummy').html(response.trim());
+            var link_text = $('#attr_url_dummy .breadcrumb').text().trim().replaceAll('\n', ' /');
+            if (link_href !== '') {
+                simplemde.value(`$${data}\n[$${link_text}]($${link_href})`);
+            }
+        }
+    });
 });
 
 function zmiStandardOnSubmitEventHandler(fm) {
-	var data = simplemde.value();
-	$('#' + elName).val(data);
+    var data = simplemde.value();
+    $('#' + elName).val(data);
 }
 
 function zmiRichtextOnSubmitEventHandler(fm) {
     var el = document.getElementById('zmiRichtextEditor'+elName);
-	if ( el != null && el.style.display != 'none' && el.style.visibility != 'hidden') {
-	    var data = simplemde.value();
-	    $('#' + elName).val(data);
-	}
+    if ( el != null && el.style.display != 'none' && el.style.visibility != 'hidden') {
+        var data = simplemde.value();
+        $('#' + elName).val(data);
+    }
 }
 
 function zmiRichtextInit(id) {
 
+}
+
+function customMarkdownParser(plainText) {
+    text = marked.parse(plainText);
+
+    // https://stackoverflow.com/questions/136505/searching-for-uuids-in-text-with-regex
+    const pattern = /[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}/ig;
+
+    var uuids = text.match(pattern);
+    if (uuids != null) {
+        uuids.forEach(function(uuid) {
+            $.ajax({
+                url: '++rest_api/zmsindex',
+                async: false,  // to set text in success below
+                data: {
+                    get_uid: 'uid:' + uuid,
+                },
+                datatype: 'json',
+                success: function(response) {
+                    text = text.replace('%7B$uid:' + uuid + '%7D', response[0].getPath);  // incorrect path for img src
+                }
+            });
+        });
+    }
+    return text;
 }
 
 <tal:block tal:content="structure python:'</script>'"></tal:block>

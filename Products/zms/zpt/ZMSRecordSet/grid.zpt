@@ -127,6 +127,7 @@
 							<tr class="new_row_insert" tal:condition="python:not num_rows or num_rows<0 or num_rows<len(records)">
 								<td class="meta-sort zmi-datatype-action">
 									<input type="hidden" name="_col_id" id="_col_id" tal:attributes="value python:'e%i'%(records_len)" />
+									<input type="hidden" name="_sort_id" id="_sort_id" tal:attributes="value python:'%i'%(records_len + 1)" />
 									<span class="btn btn-sm btn-add mr-1 w-100 disabled"><i class="fas fa-plus"></i></span>
 								</td>
 								<tal:block tal:repeat="metaObjAttr metaObjAttrs">

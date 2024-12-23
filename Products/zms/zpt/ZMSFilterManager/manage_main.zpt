@@ -580,7 +580,7 @@
 			// Process table cells of the clone like "old" row
 			$new_row.find('td').each(function() {
 				$(this).find('select').each(function() {
-					let defname = $(this).attr('name')
+					let defname = $(this).attr('name');
 					let newname = defname.split('_')[0] + '_' + new_row_counter;
 					let newval  = $(this).val();
 

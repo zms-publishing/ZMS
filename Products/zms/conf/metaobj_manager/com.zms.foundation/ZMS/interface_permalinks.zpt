@@ -77,9 +77,9 @@
 			$new_row.find('td').each(function() {
 				$(this).find('input').each(function() {
 					let tagname = $(this).prop('tagName');
-					let defname = $(this).attr('name')
+					let defname = $(this).attr('name');
 					let newval  = $(this).val();
-					newname = `${defname}new${new_row_counter}`
+					newname = `${defname}new${new_row_counter}`;
 					newval = `new${new_row_counter}`;
 					$(this).attr('name',newname);
 					$(this).val(newval);

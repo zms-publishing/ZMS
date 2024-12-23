@@ -378,8 +378,8 @@
 			$new_row.find('td').each(function() {
 				$(this).find('input,select,textarea').each(function() {
 					let tagname = $(this).prop('tagName');
-					let defname = $(this).attr('name')
-					let deftype = $(this).attr('type')
+					let defname = $(this).attr('name');
+					let deftype = $(this).attr('type');
 					let newname = $(this).attr('name').split('_')[1].split(':')[0];
 					let newval  = $(this).val();
 					newname = `attr_${newname}_new${new_row_counter}`

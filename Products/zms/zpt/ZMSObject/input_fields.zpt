@@ -337,8 +337,9 @@
 		<pre tal:condition="python:isinstance(here.attr('readme'),str)"
 			><span tal:define="
 				Std modules/Products.PythonScripts/standard;
-				newline_to_br nocall:Std/newline_to_br"
-				tal:replace="python:here.attr('readme')">
+				newline_to_br nocall:Std/newline_to_br;
+				readme_txt python:here.attr('readme')"
+        tal:replace="structure python:context.content.renderText('markdown','text',readme_txt,request,here.id)">
 				readme as constant/string
 			</span>
 		</pre>

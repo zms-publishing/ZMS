@@ -14,6 +14,7 @@
 	><tal:block tal:define="
 		record_id python:metaObjAttrIds[0];
 		records python:standard.sort_list(here.attr(record_id),'_sort_id');
+		records_len python:len(records);
 		filter_columns python:[x for x in metaObjAttrs if 
 			not x['id'].startswith('_')
 			and x['type'] in here.metaobj_manager.valid_types+here.getMetaobjIds()
@@ -88,6 +89,8 @@
 											<tal:block tal:condition="python:'_change_uid' in record">
 												<tal:block tal:define="global title python:here.getLangFmtDate(record.get('_change_dt'))+' '+here.getZMILangStr('BY')+' '+str(record.get('_change_uid'))"></tal:block>
 											</tal:block>
+											<input type="hidden" name="col_id" id="col_id" 
+												tal:attributes="name python:'col_id_%i'%qindex;id python:'col_id_%i'%qindex;value python:record.get('col_id','e%i'%qindex)" />
 											<div class="btn-group" tal:attributes="title title">
 												<div class="input-group input-group-sm">
 													<select class="zmi-sort form-control" onchange="javascript:zmiMoveObjBtnClick(this);" tal:attributes="name python:'_sort_id_%i:int'%qindex; title python:here.getZMILangStr('ATTR_ORDERBY');">
@@ -112,7 +115,8 @@
 												elType python:metaObjAttr.get('type','string');
 												elDefault python:standard.dt_exec(here,metaObjAttr.get('default',''));
 												elValue python:here.formatObjAttrValue(objAttr,here.operator_getitem(record,metaObjAttr['id'],elDefault),request['lang'])">
-												<td class="data" tal:attributes="class python:'data data-%s zmi-datatype-%s'%(elName, elType)"
+												<td class="data" 
+													tal:attributes="class python:'data data-%s zmi-datatype-%s'%(elName, elType)"
 													tal:content="structure python:here.getObjAttrInput('form0',objAttr,elValue,request)">
 												</td>
 											</tal:block>
@@ -120,8 +124,11 @@
 									</tr>
 								</tal:block>
 							</tal:block>
-							<tr class="row_insert" tal:condition="python:not num_rows or num_rows<0 or num_rows<len(records)">
-								<td class="text-center meta-sort"><span class="btn btn-secondary btn-sm btn-add mr-1 w-100"><i class="fas fa-plus"></i></span></td>
+							<tr class="new_row_insert" tal:condition="python:not num_rows or num_rows<0 or num_rows<len(records)">
+								<td class="meta-sort zmi-datatype-action">
+									<input type="hidden" name="_col_id" id="_col_id" tal:attributes="value python:'e%i'%(records_len)" />
+									<span class="btn btn-sm btn-add mr-1 w-100 disabled"><i class="fas fa-plus"></i></span>
+								</td>
 								<tal:block tal:repeat="metaObjAttr metaObjAttrs">
 									<tal:block tal:define="
 										dummy0 python:request.set('objAttrNamePrefix', '_');
@@ -130,8 +137,10 @@
 										elName python:here.getObjAttrName(objAttr);
 										elType python:metaObjAttr.get('type','string');
 										elValue python:None">
-										<td class="data" tal:attributes="class python:'data data-%s zmi-datatype-%s'%(elName, elType)"
-											tal:content="structure python:here.getObjAttrInput('form0',objAttr,'',request)"></td>
+										<td class="data" 
+											tal:attributes="class python:'data data-%s zmi-datatype-%s'%(elName, elType)"
+											tal:content="structure python:here.getObjAttrInput('form0',objAttr,'',request)">
+										</td>
 									</tal:block>
 								</tal:block>
 							</tr>
@@ -183,7 +192,7 @@
 	}
 	function zmiDeleteObjBtnClick(sender) {
 		var $tr = $(sender).parents("tr");
-		$tr.remove();
+		$tr.hide('slow',function(){$tr.remove()});
 	}
 
 	function get_img_preview_size_class($img) {
@@ -196,93 +205,102 @@
 	 */
 	 $(function(){
 
-		// ++++++++++++
+		// Remove ZMSGraphic-artefacts
 		$('.thumbnail.ZMSGraphic_extEdit_action')
 			.removeAttr('onmouseover')
 			.attr('href','#')
 
-		// ++++++++++++
 
-		// New field set: initially disable inputs
-		$('input, textarea, select','tr.row_insert').attr('disabled',true);
+		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		// Prepare multiple inserts
+		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-		// ++++++++++++
-		// Add rows to tables #meta_properties on button click
-		// ++++++++++++
-		let new_row_counter = 0;
+		// // New field set: initially disable inputs
+		// $('input, textarea, select','tr.row_insert').attr('disabled',true);
 
-		// Add click event function to add-buttons
-		$(".row_insert .btn-add").click(function(){
-			new_row_counter++;
-			// New field set: clone with enabled inputs
-			$('input, textarea, select','tr.row_insert').attr('disabled',false);
+		// // ++++++++++++
+		// // Add rows to table #grid0 on button click
+		// // ++++++++++++
+		// let new_row_counter = $('#grid0 tbody tr').length - 2;
 
-			// Where to insert the new row
-			let $where_insert = $(this).closest('tr');
+		// // Add click event function to add-buttons
+		// $(".row_insert .btn-add").click(function(){
+		// 	new_row_counter++;
+		// 	// New field set: clone with enabled inputs
+		// 	$('input, textarea, select','tr.row_insert').attr('disabled',false);
 
-			// Set variables
-			let new_row_name = `new_row_${table_id}_${new_row_counter}`;
-			let old_id_html = `<input type="hidden" name="old_ids:list" value="new${new_row_counter}">`;
-			let new_btn_html = `
-				${old_id_html}
-				<span class="btn btn-secondary btn-sm mr-1 w-100" style="color:#999"
-					title="Revoke new Meta Attribute"
-					onclick="javascript:$(this).closest('tr').hide('slow',function(){$(this).closest('tr').remove()})">
-					<i class="fas fa-undo-alt"></i>
-				</span>
-			`;
+		// 	// Where to insert the new row
+		// 	let $where_insert = $(this).closest('tr');
 
-			// Clone(true) to get a deep copy including select options
-			let $new_row = $where_insert.clone(true);
+		// 	// Set variables
+		// 	let new_row_name = `tr_${new_row_counter}`;
+		// 	let new_btn_html = `
+		// 		<span class="btn btn-secondary btn-sm mr-1 w-100" 
+		// 			title="Revoke new data set"
+		// 			onclick="javascript:$(this).closest('tr').hide('slow',function(){$(this).closest('tr').remove()})">
+		// 			<i class="fas fa-undo-alt"></i>
+		// 		</span>
+		// 	`;
 
-			// Process table cells of the clone like "old" row
-			$new_row.find('td').each(function() {
-				$(this).find('input,select,textarea').each(function() {
-					let tagname = $(this).prop('tagName');
-					let defname = $(this).attr('name')
-					let deftype = $(this).attr('type')
-					let newname = $(this).attr('name').split('_')[1].split(':')[0];
-					let newval  = $(this).val();
-					newname = `attr_${newname}_new${new_row_counter}`
-					newname = defname.includes(':') ? `${newname}:int` : newname;
-					$(this).attr('name',newname);
-					newval = `new${new_row_counter}`;
-					if ( tagname == 'INPUT' && deftype != 'checkbox') {
-						$(this).val(newval);
-						$(this).attr('placeholder',newval);
-					} else if ( deftype == 'checkbox' ) {
-						$(this).val(1);
-					};
-					// Remove id #populate_type from cloned select
-					if ( tagname == 'SELECT') {
-						$(this).removeAttr('id');
-					};
-				});
-			});
+		// 	// Clone(true) to get a deep copy including select options
+		// 	let $new_row = $where_insert.clone(true);
 
-			// Process td:first-child of the clone
-			$new_row.find('td.meta-sort').html(new_btn_html);
-			$new_row.removeClass('row_insert').attr('id',new_row_name)
+		// 	// Process table cells of the clone like "old" row
+		// 	$new_row.find('td').each(function() {
+		// 		$(this).find('input,select,textarea').each(function() {
+		// 			let tagname = $(this).prop('tagName');
+		// 			let defname = $(this).attr('name');
+		// 			let deftype = $(this).attr('type');
+		// 			debugger;
+		// 			let newname = $(this).attr('name').split('_').at(-1);
+		// 			let newval  = $(this).val();
+		// 			newname = `${newname}_${new_row_counter}`
+		// 			newname = defname.includes(':') ? `${newname}:int` : newname;
+		// 			$(this).attr('name',newname);
+		// 			$(this).attr('id',newname);
+		// 			newval = `new${new_row_counter}`;
+		// 			if ( tagname == 'INPUT' && deftype != 'checkbox' && deftype != 'file' ) {	
+		// 				$(this).val(newval);
+		// 				$(this).attr('placeholder',newval);
+		// 			} else if ( deftype == 'checkbox' ) {
+		// 				$(this).val(1);
+		// 			};
+		// 		});
+		// 	});
 
-			// Insert the new row
-			$new_row.insertBefore($where_insert);
-			// Set form as modified
-			$ZMI.set_form_modified($('.meta-id input',$new_row));
-			// Reset the clone template
-			$where_insert.find('input:not([type="checkbox"]),select,textarea').each(function() {
-				$(this).val(undefined);
-			});
-			// New field set: reset to disabled inputs
-			$('input, textarea, select','tr.row_insert').attr('disabled',true);
-		});
+		// 	// Process td:first-child of the clone
+		// 	$new_row.find('td.meta-sort').html(new_btn_html);
+		// 	$new_row.removeClass('row_insert').attr('id',new_row_name)
+
+		// 	// Insert the new row
+		// 	$new_row.insertBefore($where_insert);
+		// 	// Set form as modified
+		// 	$ZMI.set_form_modified($('.meta-id input',$new_row));
+		// 	// Reset the clone template
+		// 	$where_insert.find('input:not([type="checkbox"]),select,textarea').each(function() {
+		// 		$(this).val(undefined);
+		// 	});
+		// 	// New field set: reset to disabled inputs
+		// 	$('input, textarea, select','tr.row_insert').attr('disabled',true);
+		// });
 
 	});
 //-->
 </script>
 <style>
-	.row_insert .zmi-datatype-image .col-12 {
+	#grid0 .col-12 {
 		margin: 0;
 		padding: 0;
+	}
+	#grid0 .zmi-zoom-in {
+		display: none;
+	}
+	#grid0 .zmi-datatype-action {
+		width: 7rem;
+		white-space: nowrap;
+	}
+	#grid0 .zmi-datatype-action .btn-group {
+		width: 100%;
 	}
 </style>
 <!-- /ZMSRecordSet/grid -->

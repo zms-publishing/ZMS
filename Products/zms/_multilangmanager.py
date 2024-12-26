@@ -657,7 +657,7 @@ class MultiLanguageManager(object):
               if enabled:
                 lang_dict[key][lang_id] = REQUEST['%s_value_%s'%(key, lang_id)].strip()
           # Insert (multiple) new language keys at once.
-          # Ref: ZMSMetaobjManager.py#L1294
+          # Ref: ZMSMetaobjManager.py#L1207
           for key in REQUEST.form.keys():
             if key.startswith('_lang_dict_key_'):
               i = int(key[len('_lang_dict_key_'):])

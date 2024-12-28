@@ -561,8 +561,8 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
           for new_col_id_idx in [k[8:] for k in REQUEST.form.keys() if k.startswith('_col_id_')]:
             REQUEST.set('objAttrNameSuffix', '_%s'%new_col_id_idx)
             record = retrieve({})
-          if record is not None:
-            new_records.append(record)
+            if record is not None:
+              new_records.append(record)
           message = self.getZMILangStr('MSG_CHANGED')
           # Set
           self.setObjProperty(record_id, new_records, lang)

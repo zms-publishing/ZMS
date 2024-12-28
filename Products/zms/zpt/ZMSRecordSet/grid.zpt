@@ -297,7 +297,9 @@
 					$(this).attr('name',newname);
 					$(this).attr('id',newname);
 					newval = `new_${new_row_counter}`;
-					if ( tagname == 'INPUT' && deftype != 'checkbox' && deftype != 'file' ) {	
+					if ( defname.startsWith('del_') ) {
+						$(this).val(0);
+					} else if ( tagname == 'INPUT' && deftype != 'checkbox' && deftype != 'file' ) {	
 						$(this).val(newval);
 						$(this).attr('placeholder',newval);
 					} else if ( deftype == 'checkbox' ) {

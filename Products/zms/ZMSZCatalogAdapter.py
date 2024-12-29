@@ -351,6 +351,9 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
           else:
             # Add plain text to data.
             d[attr_id] = content_extraction.extract_text_from_html(node, value)
+      # Prevent in-place redirecting by resetting status code and location header.
+      request.RESPONSE.setStatus(200) 
+      request.RESPONSE.setHeader('Location', '')
 
     # --------------------------------------------------------------------------
     #  Get catalog objects data for given node.

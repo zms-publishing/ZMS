@@ -127,7 +127,7 @@
 									</tr>
 								</tal:block>
 							</tal:block>
-							<tr class="new_row_insert" tal:condition="python:not num_rows or num_rows<0 or num_rows<len(records)">
+							<tr class="row_insert" tal:condition="python:not num_rows or num_rows<0 or num_rows<len(records)">
 								<td class="meta-sort zmi-datatype-action">
 									<input type="hidden" name="_col_id" id="_col_id" tal:attributes="value python:'e%i'%(records_len)" />
 									<input type="hidden" name="_sort_id" id="_sort_id" tal:attributes="value python:'%i'%(records_len + 1)" />
@@ -253,74 +253,76 @@
 		// Prepare multiple inserts
 		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-		// // New field set: initially disable inputs
-		// $('input, textarea, select','tr.row_insert').attr('disabled',true);
+		// New field set: initially disable inputs
+		$('input, textarea, select','tr.row_insert').attr('disabled',true);
 
-		// // ++++++++++++
-		// // Add rows to table #grid0 on button click
-		// // ++++++++++++
-		// let new_row_counter = $('#grid0 tbody tr').length - 2;
+		// ++++++++++++
+		// Add rows to table #grid0 on button click
+		// ++++++++++++
+		let new_row_counter = $('#grid0 tbody tr').length - 2;
 
-		// // Add click event function to add-buttons
-		// $(".row_insert .btn-add").click(function(){
-		// 	new_row_counter++;
-		// 	// New field set: clone with enabled inputs
-		// 	$('input, textarea, select','tr.row_insert').attr('disabled',false);
+		// Add click event function to add-buttons
+		$(".row_insert .btn-add").click(function(){
+			new_row_counter++;
+			// New field set: clone with enabled inputs
+			$('input, textarea, select','tr.row_insert').attr('disabled',false);
 
-		// 	// Where to insert the new row
-		// 	let $where_insert = $(this).closest('tr');
+			// Where to insert the new row
+			let $where_insert = $(this).closest('tr');
 
-		// 	// Set variables
-		// 	let new_row_name = `tr_${new_row_counter}`;
-		// 	let new_btn_html = `
-		// 		<span class="btn btn-secondary btn-sm mr-1 w-100" 
-		// 			title="Revoke new data set"
-		// 			onclick="javascript:$(this).closest('tr').hide('slow',function(){$(this).closest('tr').remove()})">
-		// 			<i class="fas fa-undo-alt"></i>
-		// 		</span>
-		// 	`;
+			// Set variables
+			let new_row_name = `tr_${new_row_counter}`;
+			let new_btn_html = `
+				<span class="btn btn-secondary btn-sm mr-1 w-100" 
+					title="Revoke new data set"
+					onclick="javascript:$(this).closest('tr').hide('slow',function(){$(this).closest('tr').remove()})">
+					<i class="fas fa-undo-alt"></i>
+				</span>
+			`;
 
-		// 	// Clone(true) to get a deep copy including select options
-		// 	let $new_row = $where_insert.clone(true);
+			// Clone(true) to get a deep copy including select options
+			let $new_row = $where_insert.clone(true);
 
-		// 	// Process table cells of the clone like "old" row
-		// 	$new_row.find('td').each(function() {
-		// 		$(this).find('input,select,textarea').each(function() {
-		// 			let tagname = $(this).prop('tagName');
-		// 			let defname = $(this).attr('name');
-		// 			let deftype = $(this).attr('type');
-		// 			debugger;
-		// 			let newname = $(this).attr('name').split('_').at(-1);
-		// 			let newval  = $(this).val();
-		// 			newname = `${newname}_${new_row_counter}`
-		// 			newname = defname.includes(':') ? `${newname}:int` : newname;
-		// 			$(this).attr('name',newname);
-		// 			$(this).attr('id',newname);
-		// 			newval = `new${new_row_counter}`;
-		// 			if ( tagname == 'INPUT' && deftype != 'checkbox' && deftype != 'file' ) {	
-		// 				$(this).val(newval);
-		// 				$(this).attr('placeholder',newval);
-		// 			} else if ( deftype == 'checkbox' ) {
-		// 				$(this).val(1);
-		// 			};
-		// 		});
-		// 	});
+			// Process table cells of the clone like "old" row
+			$new_row.find('td').each(function() {
+				$(this).find('input,select,textarea').each(function() {
+					let tagname = $(this).prop('tagName');
+					let defname = $(this).attr('name');
+					let deftype = $(this).attr('type');
+					debugger;
+					// let newname = $(this).attr('name').split('_').at(-1);
+					// newname = defname.includes(':') ? `${newname}:int` : newname;
+					let newname = `${defname}_${new_row_counter}`
+					let newval  = $(this).val();
+					$(this).attr('name',newname);
+					$(this).attr('id',newname);
+					newval = `new_${new_row_counter}`;
+					if ( defname.startsWith('del_') ) {
+						$(this).val(0);
+					} else if ( tagname == 'INPUT' && deftype != 'checkbox' && deftype != 'file' ) {	
+						$(this).val(newval);
+						$(this).attr('placeholder',newval);
+					} else if ( deftype == 'checkbox' ) {
+						$(this).val(1);
+					};
+				});
+			});
 
-		// 	// Process td:first-child of the clone
-		// 	$new_row.find('td.meta-sort').html(new_btn_html);
-		// 	$new_row.removeClass('row_insert').attr('id',new_row_name)
+			// Process td:first-child of the clone
+			$new_row.find('td.meta-sort span').replaceWith(new_btn_html);
+			$new_row.removeClass('row_insert').attr('id',new_row_name)
 
-		// 	// Insert the new row
-		// 	$new_row.insertBefore($where_insert);
-		// 	// Set form as modified
-		// 	$ZMI.set_form_modified($('.meta-id input',$new_row));
-		// 	// Reset the clone template
-		// 	$where_insert.find('input:not([type="checkbox"]),select,textarea').each(function() {
-		// 		$(this).val(undefined);
-		// 	});
-		// 	// New field set: reset to disabled inputs
-		// 	$('input, textarea, select','tr.row_insert').attr('disabled',true);
-		// });
+			// Insert the new row
+			$new_row.insertBefore($where_insert);
+			// Set form as modified
+			$ZMI.set_form_modified($('.meta-id input',$new_row));
+			// Reset the clone template
+			$where_insert.find('input:not([type="checkbox"]),select,textarea').each(function() {
+				$(this).val(undefined);
+			});
+			// New field set: reset to disabled inputs
+			$('input, textarea, select','tr.row_insert').attr('disabled',true);
+		});
 
 	});
 //-->

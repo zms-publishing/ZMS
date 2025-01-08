@@ -463,7 +463,7 @@ class ZReferableItem(object):
       url = index_html + ref_anchor
     elif isMailLink (url):
       prefix = 'mailto:'
-      url = 'javascript:window.location.href=\''+prefix+'\'+atob(\''+base64.b64encode(url[len(prefix):].encode()).decode()+'\')'
+      url = 'javascript:void(location.href=\'%s\'+String.fromCharCode(%s))'%(prefix,','.join([str(ord(x)) for x in url[len(prefix):]]))
     return url
 
   # ----------------------------------------------------------------------------

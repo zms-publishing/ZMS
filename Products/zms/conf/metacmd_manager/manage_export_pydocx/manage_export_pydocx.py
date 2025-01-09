@@ -1176,7 +1176,7 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 		footer_p.add_run('Dateiname: ')
 		add_field(footer_p, field_code='FILENAME')
 		footer_p.add_run(' / Stand: ')
-		add_field(footer_p, field_code='SAVEDATE \@ "yyyy-MM-dd" \* MERGEFORMAT')
+		add_field(footer_p, field_code='SAVEDATE \\@ "yyyy-MM-dd" \\* MERGEFORMAT')
 	else:
 		new_section = doc.add_section(WD_SECTION_START.NEW_PAGE)
 		new_section.header.is_linked_to_previous = False # ESSENTIAL FOR CHANGING HEADER!!!

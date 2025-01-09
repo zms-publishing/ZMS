@@ -990,7 +990,7 @@ def apply_standard_json_docx(self):
 				}]
 
 			# Give some customizing hints for standard_html
-			if pageelement.meta_id in ['LgRegel','LgBedingung','LgELearningBanner','ZMSNote','ZMSTestarea']:
+			if pageelement.meta_id in ['LgRegel','LgBedingung','LgELearningBanner','ZMSNote','ZMSTextarea']:
 				standard.writeStdout(None, 'IMPORTANT NOTE: %s.standard_html needs to be customized!'%(pageelement.meta_id))
 				# %<----  CUSTOMIZE LIKE THIS ---------------------
 				# zmi python:request['URL'].find('/manage')>0 and not request['URL'].find('pydocx')>0;

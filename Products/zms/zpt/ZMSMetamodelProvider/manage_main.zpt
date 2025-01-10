@@ -402,8 +402,9 @@
 		</thead>
 		<tbody>
 		<tal:block tal:repeat="langDict python:here.getLangDict()">
-			<tr class="form-group" 
-				tal:condition="python:langDict['key'].startswith(request['id'])" tal:define="i python:repeat['langDict'].index+1">
+			<tr class="form-group"
+				tal:define="i python:repeat['langDict'].index+1"
+				tal:condition="python:langDict['key'].startswith('%s.'%(request['id']))">
 				<td class="meta-sort"></td>
 				<td>
 					<input type="text" class="form-control form-control-sm"
@@ -1000,19 +1001,10 @@
 			$('#tablefilter').focus().addClass('visited');
 			// Prevent Submitting a form by hitting Enter
 			// https://stackoverflow.com/questions/895171/prevent-users-from-submitting-a-form-by-hitting-enter
-			// if (event.which == 13) {
-			// 	event.preventDefault();
-			// 	return false;
-			// };
-			// +++++++++++++++++++++++++++++++++++++++++++++
-			// Debug: https://stackoverflow.com/questions/56699276/ace-editor-pressing-enter-key-does-not-add-a-newline
-			// // let debugPreventDefault = Event.prototype.preventDefault;
-			// // Event.prototype.preventDefault = function() {
-			// // 	console.log(this);
-			// // 	debugger;
-			// // 	debugPreventDefault.call(this);
-			// // };
-			// +++++++++++++++++++++++++++++++++++++++++++++
+			if (event.which == 13) {
+				event.preventDefault();
+				return false;
+			};
 		};
 	})
 	$('#tablefilter').keyup(function (event) {

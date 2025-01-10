@@ -280,7 +280,10 @@ def addExternalMethod(container, id, title, data):
         filepath = standard.getINSTANCE_HOME()+'/Extensions/'+m+'.py'
         if os.path.exists(filepath):
           break
-        context = context.getParentNode()
+        try:
+          context = context.getParentNode()
+        except:
+          context= None
   try:
     ExternalMethod.manage_addExternalMethod( container, id, title, m, f)
   except:

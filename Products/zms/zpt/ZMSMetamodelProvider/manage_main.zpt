@@ -402,8 +402,9 @@
 		</thead>
 		<tbody>
 		<tal:block tal:repeat="langDict python:here.getLangDict()">
-			<tr class="form-group" 
-				tal:condition="python:langDict['key'].startswith(request['id'])" tal:define="i python:repeat['langDict'].index+1">
+			<tr class="form-group"
+				tal:define="i python:repeat['langDict'].index+1"
+				tal:condition="python:langDict['key'].startswith('%s.'%(request['id']))">
 				<td class="meta-sort"></td>
 				<td>
 					<input type="text" class="form-control form-control-sm"

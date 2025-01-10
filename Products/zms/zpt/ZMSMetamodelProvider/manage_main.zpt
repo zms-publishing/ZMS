@@ -1015,7 +1015,6 @@
 			// // };
 			// +++++++++++++++++++++++++++++++++++++++++++++
 		};
-		};
 	})
 	$('#tablefilter').keyup(function (event) {
 		let tablefilter = $(this).val();

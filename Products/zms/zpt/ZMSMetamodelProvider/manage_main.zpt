@@ -1001,10 +1001,20 @@
 			$('#tablefilter').focus().addClass('visited');
 			// Prevent Submitting a form by hitting Enter
 			// https://stackoverflow.com/questions/895171/prevent-users-from-submitting-a-form-by-hitting-enter
-			if (event.which == 13) {
-				event.preventDefault();
-				return false;
-			};
+			// if (event.which == 13) {
+			// 	event.preventDefault();
+			// 	return false;
+			// };
+			// +++++++++++++++++++++++++++++++++++++++++++++
+			// Debug: https://stackoverflow.com/questions/56699276/ace-editor-pressing-enter-key-does-not-add-a-newline
+			// // let debugPreventDefault = Event.prototype.preventDefault;
+			// // Event.prototype.preventDefault = function() {
+			// // 	console.log(this);
+			// // 	debugger;
+			// // 	debugPreventDefault.call(this);
+			// // };
+			// +++++++++++++++++++++++++++++++++++++++++++++
+		};
 		};
 	})
 	$('#tablefilter').keyup(function (event) {

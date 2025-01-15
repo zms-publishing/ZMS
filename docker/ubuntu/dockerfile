@@ -17,6 +17,7 @@ USER zope
 WORKDIR /home/zope/
 
 ENV VIRTUAL_ENV=/home/zope/venv
+ENV SHELL=/bin/bash
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 ENV LC_ALL=en_US.UTF-8
 ENV LANG=en_US.UTF-8

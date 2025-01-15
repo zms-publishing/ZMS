@@ -46,6 +46,7 @@
 					"--debug",
 					"--verbose",
 					"/home/zope/etc/zope.ini",
+					"http_port=8080"
 				],
 				"env": {
 					"PYTHONUNBUFFERED":"1",

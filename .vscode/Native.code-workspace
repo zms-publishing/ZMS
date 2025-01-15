@@ -5,6 +5,14 @@
 			"path": "../"
 		},
 		// {
+		// 	"name": "ZMS5 Dev Instance",
+		// 	"path": "/home/zope/instance/zms5_dev"
+		// },
+		// {
+		// 	"name": "Zope 5",
+		// 	"path": "/home/zope/src/zopefoundation/Zope"
+		// },
+		// {
 		// 	"name": "ZMS4",
 		//  	"path": "../../ZMS4"
 		//  },
@@ -13,23 +21,12 @@
 		//  	"path": "../../ZMS3"
 		//  },
 		// {
-		// 	"name": "Zope 5",
-		// 	"path": "/home/zope/src/zopefoundation/Zope"
-		// },
-		// {
-		// 	"name": "ZMS5 Dev Instance",
-		// 	"path": "/home/zope/instance/zms5_dev"
-		// },
-		// {
 		// 	"name": "OpenSearchServer",
 		// 	"path": "/home/zope/src/sntl-projects/opensearch_demo"
 		// },
 		// {
 		// 	"name": "Zope-WebDAV Access",
 		// 	"uri": "webdav://admin:admin@localhost:8091/"
-		// },
-		// {
-		// 	"path": "../../../../vpy38/lib/python3.8/site-packages/pydoctor"
 		// }
 	],
 

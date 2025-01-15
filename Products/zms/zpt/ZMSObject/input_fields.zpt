@@ -339,7 +339,7 @@
 				Std modules/Products.PythonScripts/standard;
 				newline_to_br nocall:Std/newline_to_br;
 				readme_txt python:here.attr('readme')"
-        tal:replace="structure python:context.content.renderText('markdown','text',readme_txt,request,here.id)">
+        tal:replace="structure python:context.content.renderText('markdown','text',readme_txt,request)">
 				readme as constant/string
 			</span>
 		</pre>

@@ -53,7 +53,7 @@
 			const refreshData = function() {
 				let xml = '';
 				xml += '<list>\n';
-				for (let i=0; i <= links.length; i++) {
+				for (let i=0; i < links.length; i++) {
 					let record = links[i];
 					xml += '<item type="dict">\n';
 					xml += '<dictionary>\n';

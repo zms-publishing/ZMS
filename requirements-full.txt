@@ -25,6 +25,7 @@ pyScss
 ftfy
 pdfminer.six
 htmldiff2
+python-docx
 
 # OpenSearch
 opensearch-py

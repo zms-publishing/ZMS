@@ -54,7 +54,7 @@
 	</span>
 	<header class="collapse" id="header_nav">
 		<nav id="topbar">
-			<a href="#" class="nav-item pr-3" tal:on-error="" tal:attributes="href python:search_node.getHref2IndexHtml(request)"><i class="fas fa-search"></i>&nbsp;<span tal:replace="python:zmscontext.getLangStr('SEARCH')">Suche</span></a>
+			<a href="#" class="nav-item pr-3" tal:on-error="structure string:<!-- Please, set ZMS.permalink.search correctly -->" tal:attributes="href python:search_node.getHref2IndexHtml(request)"><i class="fas fa-search"></i>&nbsp;<span tal:replace="python:zmscontext.getLangStr('SEARCH')">Suche</span></a>
 			<a href="#" class="nav-item px-3" tal:attributes="href python:login_node.getHref2IndexHtml(request)"><i class="fas fa-lock"></i>&nbsp;Login</a>
 			<a href="#" class="nav-item px-3" tal:attributes="href python:imprint_node.getHref2IndexHtml(request)"><span tal:replace="python:zmscontext.getLangStr('IMPRINT')">Impresssum</span></a>
 			<a href="#" class="nav-item px-3 d-none d-md-inline" tal:attributes="href python:privacy_node.getHref2IndexHtml(request)"><span tal:replace="python:zmscontext.getLangStr('PRIVACY')">Datenschutz</span></a>

@@ -13,8 +13,8 @@ function zmiSelectObject(sender) {
 		// change location in manage_main-frame with htmx: https://htmx.org/api/#ajax
 		window.parent.manage_main.htmx.ajax("GET", href + "/manage_main?lang=" + lang, 'body');
 		window.parent.manage_main.htmx.onLoad(function() {
-			window.parent.manage_main.history.replaceState(null, null,  href + "/manage_main?lang=" + lang);
-                        window.parent.history.pushState(null, null,  href + "/manage_main?lang=" + lang);
+			window.parent.manage_main.history.replaceState(null, null, href + "/manage_main?lang=" + lang);
+			window.parent.history.pushState(null, null, href + "/manage_main?lang=" + lang);
 		})
 	} else {
 		// open new home in new tab

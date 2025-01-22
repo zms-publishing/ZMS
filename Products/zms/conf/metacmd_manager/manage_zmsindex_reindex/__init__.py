@@ -25,7 +25,7 @@ class manage_zmsindex_reindex:
 	meta_types = ["ZMS"]
 
 	# Name
-	name = "Re-Indexing (incremental)"
+	name = "Full Multisite-Reindexing"
 
 	# Nodes
 	nodes = "{$}"
@@ -34,7 +34,7 @@ class manage_zmsindex_reindex:
 	package = "com.zms.index"
 
 	# Revision
-	revision = "3.2.0"
+	revision = "3.2.1"
 
 	# Roles
 	roles = ["ZMSAdministrator"]
@@ -43,7 +43,7 @@ class manage_zmsindex_reindex:
 	stereotype = ""
 
 	# Title
-	title = "Re-Indexing in customisable increments"
+	title = "Full Multisite-Reindexing in customisable increments"
 
 	# Impl
 	class Impl:

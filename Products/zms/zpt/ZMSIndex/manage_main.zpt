@@ -89,7 +89,6 @@ function openWindow(url) {
 					</tal:block>
 					<a class="dropdown-item" href="javascript:;"
 						tal:attributes="data-debug zmsindex_metacmd_ids"
-						tal:condition="python:'manage_zmsindex_reindex' not in zmsindex_metacmd_ids"
 						onclick="return zmiFuncIndex('REINDEX: Do you really want to reindex selected ZMS clients ?','manage_reindex');" 
 						title="Re-Index: Rebuilding the ZCatalog index of all selected ZMS clients.">
 						Re-Index ZMS Clients

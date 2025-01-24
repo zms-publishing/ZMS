@@ -1,6 +1,6 @@
 FROM ubuntu:24.04
 
-# Install Zope/ZEO Dependencies
+# Install OS Requirements
 RUN apt-get update
 RUN apt-get install -y ca-certificates
 RUN update-ca-certificates
@@ -25,7 +25,7 @@ ENV LANGUAGE=en_US.UTF-8
 
 RUN python3 -m venv venv
 RUN pip install -U pip wheel setuptools
-RUN pip install -U -e git+https://github.com/zms-publishing/ZMS.git#egg=ZMS
+RUN pip install -U -e git+https://github.com/zms-publishing/ZMS.git@main#egg=ZMS
 RUN pip install -r https://raw.githubusercontent.com/zms-publishing/ZMS5/master/requirements-full.txt
 RUN pip install ZEO
 RUN pip install itsdangerous
@@ -38,10 +38,10 @@ COPY ./etc etc
 COPY ./var var
 COPY ./Extensions Extensions
 
-EXPOSE 8085
-EXPOSE 8086
-EXPOSE 8080
 EXPOSE 5678
+EXPOSE 8080
+EXPOSE 8086
+EXPOSE 8085
 
 # Finally Start ZEO/Zope by Script
 # ENTRYPOINT ["/bin/sh -c"]

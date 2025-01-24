@@ -2504,7 +2504,9 @@ def sendMail(context, mto, msubject, mbody, REQUEST=None, mattach=None):
         part.add_header('Content-Disposition', 'attachment; filename="%s"'%url_quote(umlaut_quote(filename).replace(' ','_')))
         mime_msg.attach(part)
 
-  # Get MailHost.
+  # Get MailHost:
+  # from ZMS clients container via object type 'Mail Host'
+  # or via acquired name 'MailHost'.
   mailhost = None
   homeElmnt = context.getHome()
   if len(homeElmnt.objectValues(['Mail Host'])) == 1:

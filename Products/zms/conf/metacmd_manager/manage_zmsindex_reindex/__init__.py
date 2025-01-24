@@ -25,7 +25,7 @@ class manage_zmsindex_reindex:
 	meta_types = ["ZMS"]
 
 	# Name
-	name = "Full Multisite-Reindexing"
+	name = "Re-Index All Clients"
 
 	# Nodes
 	nodes = "{$}"

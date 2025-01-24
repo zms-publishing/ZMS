@@ -52,6 +52,7 @@ Installation
   3. Add a new SQL schema for the incoming data, e.g. `zms_forms` with da default characterset `utf8mb4`
   4. Add a database DSN as ZMS configuration parameter `ZMSFormulator.dbconnection.password` according to sqlalchemy syntax, e.g. mysql://root:passwd@127.0.0.1:3306/zms_forms
   5. In case of using Google recaptcha add two more parameters: `Google.API.sitekey.password`, `Google.API.secretkey.password`
+  6. For sending E-mails make sure that the ZMS client's home-folder contains a correctly configured Zope 'Mail Host' object. If the 'Mail Host' object shall get acquired from upper parts of the object tree it's given ID has to be 'MailHost' to be utilized by zms.formulator.
 
 
 References

@@ -25,8 +25,8 @@ or referenced as *volume mounts* from the *container* (on composing):
 # docker-compose
     volumes:
       - ./etc/:/home/zope/etc/
-      - ./var/:/home/zope/var/
-      - ./Extensions/:/home/zope/Extensions
+      - ./var/:/home/zope/var/:rw
+      - ./Extensions/:/home/zope/Extensions:rw
 ```
 
 
@@ -57,6 +57,23 @@ The VSCode Docker Extension [ms-azuretools.vscode-docker](https://marketplace.vi
 
 ## Attach VSCode to the ZMS Container
 Another right click on the running container-ID allows to intrude the container with VSCode and launch a new Zope instance in debugging mode. 
-Hint: For this purpose the docker-container folder `/home/zope/venv/src/zms/docker/.vscode/` contains a prepared VSCode-workspace file and a launch file for starting Zope in debug-mode within the container [Docker.code-workspace](https://github.com/zms-publishing/ZMS/blob/main/docker/alpine/.vscode/Docker.code-workspace). The thus launched Zope instance will run port 80.
+Hint: For this purpose the docker-container folder `/home/zope/venv/src/zms/docker/.vscode/` contains a prepared VSCode-workspace file and a launch file for starting Zope in debug-mode within the container [Docker.code-workspace](https://github.com/zms-publishing/ZMS/blob/main/docker/alpine/.vscode/Docker.code-workspace). The thus launched Zope instance will run port 8085.
 
 ![Attach VSCode to the ZMS Container](../../docs/images/admin_docker_debug_zeo.gif)
+
+
+## Browser-based VSCode server in a development container
+In VPN environments, attaching VSCode to the container "in-situ" may not work due to firewall issues.
+In this case a "ready for development" container might be a good alternative: The Ubuntu-ZMS container creates with it's `docker-compose` file a _devcontainer_ including a preinstalled VSCode server. After starting the Ubuntu-ZMS container, not only ZMS/Zope is running on port 8085, but also the VSCode server on port 8080.
+
+Calling `http://localhost:8080` provides a browser-based VSCode view of the `/home/zope` folder; switching to the VSCode workspace file `/home/zope/venc/src/zms/.vscode/Docker.workspace` allows to start a new Zope instance on port 8086 for debugging within the VSCode GUI.
+The locally created Docker image can be saved as tar-file ...
+
+```sh
+docker save -o $path_for_generated_tar_file $image_name
+```
+... and transferred / imported ontp the production server
+
+```sh
+docker load -i $path_to_image_tar_file
+```

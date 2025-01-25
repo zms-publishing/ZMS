@@ -12,6 +12,15 @@ RUN apt-get install -y default-libmysqlclient-dev build-essential pkg-config
 RUN apt-get install -y slapd libldap2-dev libsasl2-dev
 RUN apt-get install -y memcached
 
+# Add Microsoft Package Servers for VSCode
+RUN apt-get install -y curl apt-transport-https
+RUN curl -sSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor -o /usr/share/keyrings/microsoft.gpg
+RUN echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list
+RUN apt-get update
+# Install VSCode Server as User root
+RUN curl -fsSL https://code-server.dev/install.sh | sh
+
+# Add Zope User and Environment
 RUN adduser --disabled-password zope && usermod -aG sudo zope
 USER zope
 WORKDIR /home/zope/
@@ -23,6 +32,7 @@ ENV LC_ALL=en_US.UTF-8
 ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US.UTF-8
 
+# Install ZMS and Zope in a Virtual Environment
 RUN python3 -m venv venv
 RUN pip install -U pip wheel setuptools
 RUN pip install -U -e git+https://github.com/zms-publishing/ZMS.git@main#egg=ZMS
@@ -34,15 +44,25 @@ RUN pip install itsdangerous
 # Create Zope Instance
 RUN mkwsgiinstance -d . -u admin:admin
 
+# Mount Zope Instance Data
 COPY ./etc etc
 COPY ./var var
 COPY ./Extensions Extensions
 
+# Expose Ports:
+    # 8080 = Running VSCode-Server 
+    # 8085 = Running Default Zope-Server on ZEO
+    # 8086 = Provided for Debugger-Zope-Instance
 EXPOSE 5678
-EXPOSE 8080
-EXPOSE 8086
+EXPOSE 8080 
 EXPOSE 8085
+EXPOSE 8086
 
-# Finally Start ZEO/Zope by Script
-# ENTRYPOINT ["/bin/sh -c"]
+# Install VSCode Extension for local User zope
+RUN code-server --install-extension ms-python.python --user-data-dir /home/zope/.local/share/code-server
+
+# Finally apply shell-script as User zope for starting both
+    # 1. VSCode-Server plus Python Extension 
+    # 2. ZEO/Zope-Instance
 CMD ["/home/zope/etc/start.sh"]
+ 

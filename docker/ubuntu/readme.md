@@ -66,6 +66,9 @@ Hint: For this purpose the docker-container folder `/home/zope/venv/src/zms/dock
 In VPN environments, attaching VSCode to the container "in-situ" may not work due to firewall issues.
 In this case a "ready for development" container might be a good alternative: The Ubuntu-ZMS container creates with it's `docker-compose` file a _devcontainer_ including a preinstalled VSCode server. After starting the Ubuntu-ZMS container, not only ZMS/Zope is running on port 8085, but also the VSCode server on port 8080.
 
+![Browser-based VSCode-GUI from ZMS Container](../../docs/images/develop_vscode_remote5_devcontainer.gif)
+
+
 Calling `http://localhost:8080` provides a browser-based VSCode view of the `/home/zope` folder; switching to the VSCode workspace file `/home/zope/venc/src/zms/.vscode/Docker.workspace` allows to start a new Zope instance on port 8086 for debugging within the VSCode GUI.
 The locally created Docker image can be saved as tar-file ...
 

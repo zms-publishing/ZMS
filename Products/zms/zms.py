@@ -352,8 +352,8 @@ class ZMS(
     # --------------------------------------------------------------------------
     #  ZMS.initZMS:
     # --------------------------------------------------------------------------
-    def initZMS(self, container, id, titlealt, title, lang, manage_lang, REQUEST):
-      return initZMS(container, id, titlealt, title, lang, manage_lang, REQUEST)
+    def initZMS(self, container, id, titlealt, title, lang, manage_lang, REQUEST, minimal_init = False):
+      return initZMS(container, id, titlealt, title, lang, manage_lang, REQUEST, minimal_init)
 
 
     # --------------------------------------------------------------------------

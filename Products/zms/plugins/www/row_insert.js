@@ -1,40 +1,5 @@
-/**
- * Export xml.
- */
-function zmiExportBtnClick(sender) {
-	var $fm = $(sender).closest("form");
-	var href = $fm.attr('action')+'?lang='+getZMILang()+'&btn=BTN_EXPORT';
-	$('input[name="id"]:text,input[name="ids:list"]:checked',$fm).each(function(){
-		href += '&ids:list='+$(this).val();
-	});
-	window.open(href);
-	return false;
-}
-
-
-/**
- * Delete object.
- */
-function zmiDeleteObjBtnClick(sender,d) {
-	if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
-		zmiFormSubmit(sender,d);
-	}
-}
-
-/**
- * Submit form with given parameters.
- */
-function zmiFormSubmit(sender,d) {
-	var $fm = $(sender).closest("form");
-	var html = '';
-	for (var i in d) {
-		$('input[name="' + i + '"]',$fm).remove();
-		html += '<input type="hidden" name="' + i + '" value="' + d[i] +'"/>';
-	}
-	$fm
-		.append(html)
-		.submit();
-}
+// Title: Row Insert Functions
+// Description: Functions for adding more data-rows to ZMI config tables.
 
 /**
  * Get current number of language terms.
@@ -87,9 +52,8 @@ function remove_row(context) {
 	$(context).closest('tr').hide('slow',function(){$(this).closest('tr').remove()});
 	// 2. Set form as modified (ZMS.onChangeObjEvt)
 	$ZMI.set_form_modified(context);
-	if ( $(context).closest('table').attr('id')!='permalinks' ) {
-		renew_sort_options(this_table = $(context).closest('table'));
-	}
+	// 3. Normalize sorting-UI after deleting a row
+	renew_sort_options(this_table = $(context).closest('table'));
 }
 
 
@@ -117,15 +81,11 @@ function renew_sort_options(this_table) {
 	let $rows = $('tbody tr', this_table)
 	let sort_options_len = $rows.length;
 	let row_counter = 0;
-	debugger;
 	$rows.each( function() {
 		row_counter++;
 		let sort_options_html = ``;
-		let old_id_html = $(this).find('input[name="old_ids:list"]').prop('outerHTML');
-		let old_id = $(this).find('td.meta-id input').val();
-		if (old_id_html == undefined) {
-			old_id_html = `<input type="hidden" name="old_ids:list" value="${old_id}">`;
-		};
+		let old_id = $(this).find('td.meta-id input').attr('name');
+		let old_id_html = `<input type="hidden" name="old_ids:list" value="${old_id}">`;
 		for (let i = 1; i < sort_options_len; i++) {
 			if (i == row_counter) {
 				sort_options_html += `<option value="${i}" selected>${i}</option>`;
@@ -167,6 +127,10 @@ function add_new_row(this_btn) {
 	let row_count = $('tbody tr',$(this_btn).closest('table')).length;
 	let new_row_name = `new_row_${table_id}_${row_count}`;
 	let old_id_html = `<input type="hidden" name="old_ids:list" value="new${row_count}">`;
+	if (table_id == 'languages') {
+		// metaobj_manager.meta_languages
+		old_id_html = '';
+	}
 	let new_btn_html = `
 		${old_id_html}
 		<span class="btn btn-secondary mr-1 w-100" style="color:#999"
@@ -188,7 +152,13 @@ function add_new_row(this_btn) {
 			let defname = $(this).attr('name').split(':')[0]; 
 			let deftype = $(this).attr('type');
 			let newval  = `new${row_count}`;
-			let newname = defname.startsWith('_lang_') ? `${defname.replace('_0', '_')}${row_count}` : `${defname}_${newval}`;
+			let newname = `${defname}_${newval}`;
+			if (defname.slice(-1)=='0') {
+				newname = defname.replace('0', row_count);
+			};
+			if (defname.includes('_0_')) {
+				newname = defname.replace('_0_', `_${row_count}_`);
+			};
 			$(this).attr('name',newname);
 			if (!(tagname == 'select')) {
 				$(this).val(newval);
@@ -232,10 +202,10 @@ $(function(){
 		.focus(function(){zmiPopulateTypeSelect(this)})
 		.hover(function(){zmiPopulateTypeSelect(this)})
 	;
-	// New field set: initially disable inputs
-	$('input, textarea, select','tr.row_insert').attr('disabled',true);
-	// Add click event function to add-buttons
-	$(".row_insert .btn-add").click(function(){
-		add_new_row(this_btn = this);
-	});
+	// // New field set: initially disable inputs
+	// $('input, textarea, select','tr.row_insert').attr('disabled',true);
+	// // Add click event function to add-buttons
+	// $(".row_insert .btn-add").click(function(){
+	// 	add_new_row(this_btn = this);
+	// });
 });

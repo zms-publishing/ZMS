@@ -614,7 +614,7 @@ class AccessManager(AccessableContainer):
     # --------------------------------------------------------------------------
     #  AccessManager.getSecurityUsers:
     # --------------------------------------------------------------------------
-    def getSecurityUsers(self, acquired=False, ):
+    def getSecurityUsers(self, acquired=False):
       userDefs = {}
       root = self.getRootElement()
       d = root.getConfProperty('ZMS.security.users', {})

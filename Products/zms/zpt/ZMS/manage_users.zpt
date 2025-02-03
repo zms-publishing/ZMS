@@ -475,6 +475,7 @@ function zmiModalInsertUserOpen(context) {
 					<a class="btn btn-secondary btn-users_add" href="javascript:;" onclick="zmiModalInsertUserOpen(this)" tal:attributes="title python:'%s %s / %s '%(here.getZMILangStr('ATTR_USERS'), here.getZMILangStr('BTN_SEARCH'), here.getZMILangStr('BTN_INSERT'))"><i class="fas fa-plus"></i></a>
 					<a class="btn btn-secondary btn-users_acquired" tal:attributes="href python:'?lang=%s&show_acquired:boolean=%s'%(request['lang'],str(not request.get('show_acquired',False))); title python:'show acquired'; class python:'btn '+['btn-secondary','btn-success'][request.get('show_acquired')==True]" tal:condition="python:here.getPortalMaster() is not None"><i class="fas fa-share"></i></a>
 					<a class="btn btn-secondary btn-users_sitemap" tal:attributes="href python:'manage_users_sitemap?lang=%s'%request['lang']; title python:here.getZMILangStr('TAB_SITEMAP')"><i class="fas fa-sitemap"></i></a>
+					<a class="btn btn-secondary btn-users_acquired" tal:attributes="href python:'?lang=%s&show_filter:boolean=%s'%(request['lang'],str(not request.get('show_filter',False))); title python:'show_filter'; class python:'btn '+['btn-secondary','btn-danger'][request.get('show_filter')==True]"><i class="fas fa-filter"></i></a>
 					<a class="btn btn-secondary btn-users_import" href="javascript:;" onclick="zmiModal('#importUsers',{title:$(this).attr('title')})" tal:attributes="title python:'%s...'%here.getZMILangStr('BTN_IMPORT')"><i class="fas fa-upload"></i></a>
 					<a class="btn btn-secondary btn-users_export" href="javascript:;" onclick="var $fm=$(this).closest('form');$('input[name=btn]',$fm).val('BTN_EXPORT');$fm.attr('target','_blank').submit();" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')"><i class="fas fa-download"></i></a>
 					<a class="btn btn-secondary btn-users_delete" href="javascript:;" onclick="zmiDeleteObjBtnClick(this,{btn:'BTN_DELETE',key:'obj'})" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')"><i class="fas fa-times"></i></a>
@@ -485,7 +486,9 @@ function zmiModalInsertUserOpen(context) {
 			</th>
 		</tr>
 	</thead>
-	<tbody tal:define="securityUsers python:here.getSecurityUsers(request.get('show_acquired',False))">
+	<tbody tal:define="
+		securityUsers python:here.getSecurityUsers(request.get('show_acquired',False));
+		userNames python:[x for x in userNames if not securityUsers[x].get('nodes',{})] if request.get('show_filter',False) else userNames;">		
 	<tr tal:repeat="userName userNames" tal:attributes="id userName" class="userName">
 		<td tal:define="
 				securityUser python:securityUsers.get(userName,{});

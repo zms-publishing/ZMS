@@ -202,7 +202,7 @@
 
 </div><!-- #zmi-tab -->
 
-<script>
+<script src="/++resource++zms_/row_insert.js" tal:content="nothing">
 // <!--
 
 	/**
@@ -352,6 +352,7 @@
 
 		// Add click event function to add-buttons
 		$(".row_insert .btn-add").click(function(){
+			debugger;
 			new_row_counter++;
 			// New field set: clone with enabled inputs
 			$('input, textarea, select','tr.row_insert').attr('disabled',false);

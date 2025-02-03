@@ -19,13 +19,13 @@
 			</tal:block>
 			<tr class="row_insert form-group">
 				<td class="meta-sort text-right"><span class="btn btn-add mr-1 btn-secondary"><i class="fas fa-plus"></i></span></td>
-				<td class="meta-id"><input class="form-control form-control" name="permalink_key__" placeholder="Enter Id..."/></td>
-				<td class="meta-url form-group"><input class="form-control url-input" name="permalink_val__" placeholder="Select Url..."/></td>
+				<td class="meta-id"><input class="form-control form-control" name="permalink_key" placeholder="Enter Id..."/></td>
+				<td class="meta-url form-group"><input class="form-control url-input" name="permalink_val" placeholder="Select Url..."/></td>
 			</tr>
 		</tbody>
 	</table>
 </div>
-<script>
+<script src="/++resource++zms_/row_insert.js" tal:content="nothing">
 // <!--
 	/**
 	 * Global vars.

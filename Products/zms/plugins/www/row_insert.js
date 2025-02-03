@@ -2,14 +2,15 @@
  * Export xml.
  */
 function zmiExportBtnClick(sender) {
-	var fm = $(sender).parents("form")[0];
-	var href = fm.action+'?lang='+getZMILang()+'&btn=BTN_EXPORT';
-	$('input[name="ids:list"]:checked',fm).each(function(){
-			href += '&'+$(this).attr("name")+'='+$(this).val();
-		});
+	var $fm = $(sender).closest("form");
+	var href = $fm.attr('action')+'?lang='+getZMILang()+'&btn=BTN_EXPORT';
+	$('input[name="id"]:text,input[name="ids:list"]:checked',$fm).each(function(){
+		href += '&ids:list='+$(this).val();
+	});
 	window.open(href);
 	return false;
 }
+
 
 /**
  * Delete object.
@@ -86,7 +87,20 @@ function remove_row(context) {
 	$(context).closest('tr').hide('slow',function(){$(this).closest('tr').remove()});
 	// 2. Set form as modified (ZMS.onChangeObjEvt)
 	$ZMI.set_form_modified(context);
-	renew_sort_options(this_table = $(context).closest('table'));
+	if ( $(context).closest('table').attr('id')!='permalinks' ) {
+		renew_sort_options(this_table = $(context).closest('table'));
+	}
+}
+
+
+/**
+ * Normalize sorting-UI after deleting a row.
+ */
+function clean_deleted_row(context) {
+	$(context).closest('tr').hide('slow',function(){
+		$(context).closest('tr').remove();
+		renew_sort_options(this_table = $(context).closest('table'));
+	})
 }
 
 /**
@@ -103,7 +117,7 @@ function renew_sort_options(this_table) {
 	let $rows = $('tbody tr', this_table)
 	let sort_options_len = $rows.length;
 	let row_counter = 0;
-
+	debugger;
 	$rows.each( function() {
 		row_counter++;
 		let sort_options_html = ``;
@@ -119,7 +133,7 @@ function renew_sort_options(this_table) {
 				sort_options_html += `<option value="${i}">${i}</option>`;
 			}
 		};
-		let new_btn_html = `
+		const new_btn_html = `
 			<div class="input-group input-group-sm">
 				${old_id_html}
 				<select class="zmi-sort form-control-sm"
@@ -136,6 +150,7 @@ function renew_sort_options(this_table) {
 				</div>
 			</div>
 		`;
+
 		if (row_counter < sort_options_len) {
 			$(this).find('td.meta-sort').html(new_btn_html);
 			htmx.process($(this).find('td.meta-sort')[0]); // Process the new elements with htmx
@@ -148,9 +163,8 @@ function renew_sort_options(this_table) {
  */
 function add_new_row(this_btn) {
 	let $where_insert = $(this_btn).closest('tr');
-	debugger;
 	let table_id  = $(this_btn).closest('table').attr('id').split('_').pop();
-	let row_count = $('body tr',$(this_btn).closest('table')).length;
+	let row_count = $('tbody tr',$(this_btn).closest('table')).length;
 	let new_row_name = `new_row_${table_id}_${row_count}`;
 	let old_id_html = `<input type="hidden" name="old_ids:list" value="new${row_count}">`;
 	let new_btn_html = `
@@ -171,20 +185,19 @@ function add_new_row(this_btn) {
 			$(this).removeAttr('disabled');
 			$(this).removeAttr('id');
 			let tagname = $(this).prop('tagName').toLowerCase();
-			let defname = $(this).attr('name'); 
+			let defname = $(this).attr('name').split(':')[0]; 
 			let deftype = $(this).attr('type');
-			let newval  = $(this).val();
-			let newname = `${defname.split(':')[0]}${row_count}`;
-			newname = defname.includes(':') ? `${newname}:int` : newname;
-			newval = `new${row_count}`;
+			let newval  = `new${row_count}`;
+			let newname = defname.startsWith('_lang_') ? `${defname.replace('_0', '_')}${row_count}` : `${defname}_${newval}`;
 			$(this).attr('name',newname);
 			if (!(tagname == 'select')) {
 				$(this).val(newval);
-			}
+			};
 			if ( tagname == 'input' && deftype != 'checkbox') {
 				$(this).attr('placeholder',newval);
 			};
 			if ( deftype == 'checkbox' ) {
+				$(this).attr('name',`${newname}:int`);
 				$(this).val(1);
 			};
 			if ( $(this).hasClass('url-input') ) {

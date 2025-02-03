@@ -477,6 +477,7 @@ function zmiModalInsertUserOpen(context) {
 					<a class="btn btn-secondary btn-users_sitemap" tal:attributes="href python:'manage_users_sitemap?lang=%s'%request['lang']; title python:here.getZMILangStr('TAB_SITEMAP')"><i class="fas fa-sitemap"></i></a>
 					<a class="btn btn-secondary btn-users_import" href="javascript:;" onclick="zmiModal('#importUsers',{title:$(this).attr('title')})" tal:attributes="title python:'%s...'%here.getZMILangStr('BTN_IMPORT')"><i class="fas fa-upload"></i></a>
 					<a class="btn btn-secondary btn-users_export" href="javascript:;" onclick="var $fm=$(this).closest('form');$('input[name=btn]',$fm).val('BTN_EXPORT');$fm.attr('target','_blank').submit();" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')"><i class="fas fa-download"></i></a>
+					<a class="btn btn-secondary btn-users_delete" href="javascript:;" onclick="zmiDeleteObjBtnClick(this,{btn:'BTN_DELETE',key:'obj'})" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')"><i class="fas fa-times"></i></a>
 					<a class="btn btn-secondary btn-users_purge alert-danger" tal:condition="python:request['AUTHENTICATED_USER'].has_role('Manager')" tal:attributes="href python:'?lang=%s&btn=Purge'%request['lang']" title="Purge Local Roles (WARNING: Using this function deletes the local roles of users who no longer exist. Click only if you are aware of the consequences.)"><i class="fas fa-eraser"></i></a>
 					<a class="btn btn-secondary btn-users_lastlogin" href="javascript:;" onclick="$(this).closest('table').toggleClass('show_lastlogin')" title="Last Logins"><i class="far fa-clock"></i></a>
 					<a class="btn btn-secondary btn-users_sync" href="javascript:;" onclick="zmiSynchronizeUsers(this)" tal:attributes="title python:'%s %s'%(here.getZMILangStr('ATTR_USERS'), here.getZMILangStr('BTN_SYNCHRONIZE'))"><i class="fas fa-sync"></i></a>
@@ -612,6 +613,24 @@ function zmiModalInsertUserOpen(context) {
 <footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 
 <script>
+	function zmiDeleteObjBtnClick(sender,d) {
+		if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
+			zmiFormSubmit(sender,d);
+		}
+	}
+	// Submit form with given parameters.
+	function zmiFormSubmit(sender,d) {
+		var $fm = $(sender).closest("form");
+		var html = '';
+		for (var i in d) {
+			$('input[name="' + i + '"]',$fm).remove();
+			html += '<input type="hidden" name="' + i + '" value="' + d[i] +'"/>';
+		}
+		$fm
+			.append(html)
+			.submit();
+	}
+
 	function zmiSynchronizeUsers(sender){
 
 		var looper = $.Deferred().resolve();

@@ -242,7 +242,32 @@
 			.submit();
 	}
 
+	/**
+	 * Populate type select-list.
+	 */
+	function zmiPopulateTypeSelect(sender) {
+		if ( sender.options.length <= 1) {
+			var selectedValue = '';
+			if ( sender.options.length == 1) {
+				selectedValue = sender.options[0].value;
+			}
+			sender.options.length = 0;
+			$("select#populate_type option").each(function() {
+				if (sender.name != '_type' || !$(this).hasClass('deprecated')) {
+					addOption( sender, $(this).text(), $(this).val(), selectedValue);
+				}
+			});
+		}
+	}
 
+	// Execute on DOM-Ready
+	$(function(){
+		// Clone meta_types select lists from .row_insert-template
+		$("select[name^=attr_type_]")
+			.focus(function(){zmiPopulateTypeSelect(this)})
+			.hover(function(){zmiPopulateTypeSelect(this)})
+			;
+	});
 // -->
 </script>
 <script type="text/javascript" charset="UTF-8" src="/++resource++zms_/row_insert.js"></script>

@@ -25,24 +25,6 @@ function get_lang_terms_count() {
 	return lang_terms_count;
 }
 
-/**
- * Populate type select-list.
- */
-function zmiPopulateTypeSelect(sender) {
-	if ( sender.options.length <= 1) {
-		var selectedValue = '';
-		if ( sender.options.length == 1) {
-			selectedValue = sender.options[0].value;
-		}
-		sender.options.length = 0;
-		$("select#populate_type option").each(function() {
-			if (sender.name != '_type' || !$(this).hasClass('deprecated')) {
-				addOption( sender, $(this).text(), $(this).val(), selectedValue);
-			}
-		});
-	}
-}
-
 
 /**
  * Remove row from table.
@@ -192,20 +174,3 @@ function add_new_row(this_btn) {
 	// New field set: reset to disabled inputs
 	$('input, textarea, select','tr.row_insert').attr('disabled',true);
 }
-
-/**
- * Init (DOM-Ready).
- */
-$(function(){
-	// Clone meta_types select lists from .row_insert-template
-	$("select[name^=attr_type_]")
-		.focus(function(){zmiPopulateTypeSelect(this)})
-		.hover(function(){zmiPopulateTypeSelect(this)})
-	;
-	// // New field set: initially disable inputs
-	// $('input, textarea, select','tr.row_insert').attr('disabled',true);
-	// // Add click event function to add-buttons
-	// $(".row_insert .btn-add").click(function(){
-	// 	add_new_row(this_btn = this);
-	// });
-});

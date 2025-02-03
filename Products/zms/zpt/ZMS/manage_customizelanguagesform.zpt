@@ -218,7 +218,7 @@
 
 </div><!-- #zmi-tab -->
 
-<script>
+<script src="/++resource++zms_/row_insert.js" tal:content="nothing">
 // <!--
 	/**
 	 * Export xml.
@@ -260,8 +260,8 @@
 	}
 
 	// Get current number of language terms
-	function get_lang_count() {
-		let lang_count = 0;
+	function get_lang_terms_count() {
+		let lang_terms_count = 0;
 		// Refresh cached language dictionary
 		let lang_dict_json = $.ajax({
 			url: $ZMI.getBaseUrl()+'/get_lang_dict',
@@ -273,12 +273,12 @@
 		let lang_dict = ZMI.prototype.getCachedValue('get_lang_dict');
 		if ( lang_dict!='undefined' ) {
 			if ( typeof lang_dict == 'object' ) {
-				lang_count = Object.keys(lang_dict).length;
+				lang_terms_count = Object.keys(lang_dict).length;
 			} else {
-				lang_count = Object.keys(JSON.parse(lang_dict)).length;
+				lang_terms_count = Object.keys(JSON.parse(lang_dict)).length;
 			}
 		};
-		return lang_count;
+		return lang_terms_count;
 	}
 
 	/**
@@ -295,7 +295,7 @@
 
 		// Add click event function to add-buttons
 		$(".row_insert .btn-add").click(function(){
-			let lang_count = get_lang_count();
+			let lang_count = get_lang_terms_count();
 			// Refresh global row counter
 			new_row_counter++;
 			// New field set: clone with enabled inputs

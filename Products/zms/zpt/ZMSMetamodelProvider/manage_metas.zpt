@@ -108,7 +108,7 @@
 						hx-get="manage_changeMetaProperties"
 						hx-target="#zmi_manage_tabs_message"
 						hx-confirm="Do you really want to delete this object?"
-						hx-on:htmx:after-request="clean_deleted_row(this)"
+						hx-on:htmx:after-request="remove_row(this)"
 						tal:attributes="
 							hx-get python:'manage_changeMetaProperties?btn=BTN_DELETE&target=zmi_manage_tabs_message&lang=%s&id=%s'%(request.get('lang',here.getPrimaryLanguage()),metadictAttr['id']);
 							hx-confirm python:here.getZMILangStr('MSG_CONFIRM_DELOBJ');

@@ -30,23 +30,13 @@ function get_lang_terms_count() {
  * Remove row from table.
  */
 function remove_row(context) {
-	// 1. Remove row from table
-	$(context).closest('tr').hide('slow',function(){$(this).closest('tr').remove()});
-	// 2. Set form as modified (ZMS.onChangeObjEvt)
-	$ZMI.set_form_modified(context);
-	// 3. Normalize sorting-UI after deleting a row
-	renew_sort_options(this_table = $(context).closest('table'));
-}
-
-
-/**
- * Normalize sorting-UI after deleting a row.
- */
-function clean_deleted_row(context) {
+	// 1. Remove row from table and set form as modified
 	$(context).closest('tr').hide('slow',function(){
-		$(context).closest('tr').remove();
-		renew_sort_options(this_table = $(context).closest('table'));
-	})
+		$(this).closest('tr').remove();
+		$ZMI.set_form_modified(context);
+	});
+	// 2. Normalize sorting-UI after deleting a row
+	renew_sort_options(this_table = $(context).closest('table'));
 }
 
 /**
@@ -86,7 +76,7 @@ function renew_sort_options(this_table) {
 					<a class="btn btn-secondary" title="Delete Meta Attribute"
 						hx-get="manage_changeMetaProperties?btn=BTN_DELETE&target=zmi_manage_tabs_message&lang=${lang}&id=${old_id}"
 						hx-target="#zmi_manage_tabs_message"
-						hx-on:htmx:after-request="clean_deleted_row(this)">
+						hx-on:htmx:after-request="remove_row(this)">
 						<i class="fas fa-times"></i>
 					</a>
 				</div>
@@ -117,7 +107,7 @@ function add_new_row(this_btn) {
 		${old_id_html}
 		<span class="btn btn-secondary mr-1 w-100" style="color:#999"
 			title="Revoke New Row"
-			onclick="javascript:$(this).closest('tr').hide('slow',function(){$(this).closest('tr').remove()})">
+			onclick="javascript:remove_row($(this))">
 			<i class="fas fa-undo-alt"></i>
 		</span>
 	`;

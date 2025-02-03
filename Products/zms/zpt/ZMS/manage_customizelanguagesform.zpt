@@ -51,7 +51,7 @@
 								hx-confirm="Do you really want to delete this object?"
 								hx-get="manage_changeLanguages" 
 								hx-target="#zmi_manage_tabs_message"
-								hx-on:htmx:after-request="$(this).closest('tr').hide('slow',function(){$(this).closest('tr').remove()})"
+								hx-on:htmx:after-request="remove_row($(this))"
 								tal:attributes="
 									hx-confirm python:here.getZMILangStr('MSG_CONFIRM_DELOBJ');
 									hx-get python:'manage_changeLanguages?btn=BTN_DELETE&target=zmi_manage_tabs_message&lang=%s&ids:list=%s'%(request.get('lang',here.getPrimaryLanguage()),langId); 

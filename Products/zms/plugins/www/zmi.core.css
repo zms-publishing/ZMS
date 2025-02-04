@@ -520,9 +520,6 @@ footer .back-to-top.hide {
 	margin-top: -2px;
 	display: inline-block;
 }
-.btn-group.managing, .btn-group.packaging {
-	margin-right:0.2rem;
-}
 .center h1 {
 	line-height:1.4em;
 	font-size:x-large;

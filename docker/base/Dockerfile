@@ -21,7 +21,7 @@ RUN \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     <<EOR
     apt update
-    apt --yes install libldap2-dev libsasl2-dev
+    apt --yes install libldap2-dev libsasl2-dev git
 EOR
 
 # Drop root privileges

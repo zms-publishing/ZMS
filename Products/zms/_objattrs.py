@@ -671,7 +671,7 @@ class ObjAttrs(object):
       obj_vers = self.getObjVersion(REQUEST)
       obj_attrs = self.getObjAttrs()
       now = datetime.datetime.now()
-      dst = time.daylight == 1 and 1 or 0 # Daylight saving time.
+      dst = time.localtime().tm_isdst == 1 and 1 or 0 # Daylight saving time.
       for key in ['active', 'attr_active_start', 'attr_active_end']:
         if key in obj_attrs:
           obj_attr = obj_attrs[key]

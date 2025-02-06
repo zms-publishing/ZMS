@@ -72,7 +72,7 @@
 			</div><!-- .form-group -->
 			<div class="form-group row">
 				<label for="_icon_clazz" class="col-sm-2 control-label mandatory"><span>Icon</span></label>
-				<div class="col-sm-9"><input type="text" id="_icon_clazz" name="_icon_clazz" class="form-control form-control-sm zmi-input-icon-clazz""/></div>
+				<div class="col-sm-10"><input type="text" id="_icon_clazz" name="_icon_clazz" class="form-control form-control-sm zmi-input-icon-clazz" placeholder="fas fa-bold" value="fas fa-bold"/></div>
 			</div><!-- .form-group -->
 			<div class="form-group row">
 				<label for="_display" class="col-sm-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
@@ -130,11 +130,13 @@
 				</div>
 			</th>
 			<th>
-				<div class="btn-group">
-					<button class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="zmiModal('#insertObj',{title:$(this).attr('title')});return false"><i class="fas fa-plus"></i></button>
-					<button class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:'BTN_DELETE',key:'obj'});return false"><i class="fas fa-times"></i></button>
-					<button class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal($('#importConf'),{title:$(this).attr('title')});return false"><i class="fas fa-upload"></i></button>
-					<button class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this);return false"><i class="fas fa-download"></i></button>
+				<div class="btn-group managing mr-1">
+					<button type="button" class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="zmiModal('#insertObj',{title:$(this).attr('title')});return false"><i class="fas fa-plus"></i></button>
+					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:'BTN_DELETE',key:'obj'});return false"><i class="fas fa-times"></i></button>
+				</div>
+				<div class="btn-group packaging mr-1">
+					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal($('#importConf'),{title:$(this).attr('title')});return false"><i class="fas fa-upload"></i></button>
+					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this);return false"><i class="fas fa-download"></i></button>
 				</div>
 			</th>
 		</tr>

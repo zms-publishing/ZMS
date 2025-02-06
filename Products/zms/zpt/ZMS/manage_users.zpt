@@ -40,7 +40,7 @@
 							tal:define="name python:search_param[0]; label python:search_param[1]"
 							tal:attributes="value name; selected python:['','selected'][request.get('search_param',here.getConfProperty('LDAPUserFolder.uid_attr',''))==name]"
 							tal:content="python:label">
-								the search-param
+							the search-param
 						</option>
 					</tal:block>
 				</select>
@@ -58,11 +58,11 @@
 					res valid_userids/records;
 					dummy0 python:[here.operator_setitem(x,'__id__',x['name']) for x in res]"
 				><tal:block tal:content="structure python:here.metaobj_recordset_main_grid(
-						metaObjAttrIds=metaObjAttrIds,
-						metaObjAttrs=metaObjAttrs,
-						records=res,
-						actions=['select']+[[],['insert']][int(userAdderPlugin is not None)],
-						insert='zmiModalAddUserOpen();')">
+					metaObjAttrIds=metaObjAttrIds,
+					metaObjAttrs=metaObjAttrs,
+					records=res,
+					actions=['select']+[[],['insert']][int(userAdderPlugin is not None)],
+					insert='zmiModalAddUserOpen();')">
 					metaobj_recordset_main_grid
 				</tal:block
 			></tal:block>
@@ -96,28 +96,28 @@ function zmiModalInsertUserLoad(url) {
 		}
 	}
 	$("input:text").each(function() {
-			data[$(this).attr("name")] = $(this).val();
+		data[$(this).attr("name")] = $(this).val();
 		});
 	$("select option:selected").each(function() {
-			data[$(this).parent().attr("name")] = $(this).val();
+		data[$(this).parent().attr("name")] = $(this).val();
 		});
 	$('#zmiModalinsertUser .modal-body').html('<i class="fas fa-spinner fa-spin"></i>' +getZMILangStr('MSG_LOADING'));
 	$.get(self.location.href,data,function(result) {
 			$('#zmiModalinsertUser .modal-body').html(result);
 			$("#zmiModalinsertUser #insertUserForm .btn-group")
 				.mouseover( function(evt) {
-						$(this).parents(".ZMSRecordSet.main_grid").css({overflow:"visible"});
+					$(this).parents(".ZMSRecordSet.main_grid").css({overflow:"visible"});
 				});
 			$("#zmiModalinsertUser #insertUserForm input:radio").change(function() {
-					self.location.href = zmiParams['base_url']
-						+'?lang='+getZMILang()
-						+'&id='+$(this).prop("value");
+				self.location.href = zmiParams['base_url']
+					+'?lang='+getZMILang()
+					+'&id='+$(this).prop("value");
 				});
 			$("#zmiModalinsertUser #insertUserForm a").each(function() {
-					var href = $(this).attr("href");
-					$(this)
-						.click(function() {return zmiModalInsertUserLoad(href);})
-						.attr("href","javascript:;");
+				var href = $(this).attr("href");
+				$(this)
+					.click(function() {return zmiModalInsertUserLoad(href);})
+					.attr("href","javascript:;");
 				});
 		});
 	return false;
@@ -130,13 +130,13 @@ function zmiModalInsertUserOpen(context) {
 </script>
 
 <tal:block tal:define="
-		userFolder python:here.getUserFolder();
-		userAdderPlugin python:here.getUserAdderPlugin();
-		userDefs python:here.getSecurityUsers(request.get('show_acquired',False));
-		roleDefs python:here.getSecurityRoles();
-		userNames python:here.sort_list(list(userDefs));
-		langs_optpl python:[[x,here.getLanguageLabel(x)] for x in here.getLanguages(request)];
-		roles_optpl python:[(x,here.getRoleName(x)) for x in ['ZMSAdministrator','ZMSEditor','ZMSAuthor','ZMSSubscriber','ZMSUserAdministrator']+list(roleDefs)]">
+	userFolder python:here.getUserFolder();
+	userAdderPlugin python:here.getUserAdderPlugin();
+	userDefs python:here.getSecurityUsers(request.get('show_acquired',False));
+	roleDefs python:here.getSecurityRoles();
+	userNames python:here.sort_list(list(userDefs));
+	langs_optpl python:[[x,here.getLanguageLabel(x)] for x in here.getLanguages(request)];
+	roles_optpl python:[(x,here.getRoleName(x)) for x in ['ZMSAdministrator','ZMSEditor','ZMSAuthor','ZMSSubscriber','ZMSUserAdministrator']+list(roleDefs)]">
 
 <div class="d-none">
 	<div id="importUsers" class="inner">
@@ -161,10 +161,10 @@ function zmiModalInsertUserOpen(context) {
 </div><!-- .d-none -->
 
 <tal:block tal:condition="python:request.get('id',False) not in [False,'']"
-		tal:define="editUser python:request.get('id') not in here.getRootElement().getSecurityRoles();
-		editRole python:not editUser;
-		action python: editUser and 'manage_userProperties' or 'manage_roleProperties';
-		multilang python:editUser and len(here.getLangIds())>1">
+	tal:define="editUser python:request.get('id') not in here.getRootElement().getSecurityRoles();
+	editRole python:not editUser;
+	action python: editUser and 'manage_userProperties' or 'manage_roleProperties';
+	multilang python:editUser and len(here.getLangIds())>1">
 
 <div class="d-none">
 	<div id="insertNode" class="inner">
@@ -302,17 +302,17 @@ function zmiModalInsertUserOpen(context) {
 			<div class="card-body">
 				<div class="form-group row">
 					<div class="controls save"
-							tal:define="
-								security_roles python:here.getRootElement().getSecurityRoles().get(request['id'],{});
-								nodes python:list(security_roles.get('nodes',{}));
-								security_users python:here.getConfProperty('ZMS.security.users',{}).values();
-								is_deletable python:len(list(nodes))==0 and not len([x for x in security_users if len([y for y in x.get('nodes',{}).values() if request['id'] in y['roles']])>0])>0">
-							<button type="submit" name="btn" class="btn btn-danger" value="BTN_DELETE"
-								tal:attributes="
-								disabled python:'' if is_deletable else 'disabled';
-								title python:'' if is_deletable else 'HINT Role cannot be deleted, because it is still in use: containing declared nodes and/or given to users'"
-							><i class="fas fa-times"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block></button>
-							&nbsp;&nbsp;
+						tal:define="
+							security_roles python:here.getRootElement().getSecurityRoles().get(request['id'],{});
+							nodes python:list(security_roles.get('nodes',{}));
+							security_users python:here.getConfProperty('ZMS.security.users',{}).values();
+							is_deletable python:len(list(nodes))==0 and not len([x for x in security_users if len([y for y in x.get('nodes',{}).values() if request['id'] in y['roles']])>0])>0">
+						<button type="submit" name="btn" class="btn btn-danger" value="BTN_DELETE"
+							tal:attributes="
+							disabled python:'' if is_deletable else 'disabled';
+							title python:'' if is_deletable else 'HINT Role cannot be deleted, because it is still in use: containing declared nodes and/or given to users'"
+						><i class="fas fa-times"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block></button>
+						&nbsp;&nbsp;
 						<button type="submit" name="btn" class="btn btn-secondary" value="BTN_BACK" tal:content="python:here.getZMILangStr('BTN_BACK')">Back</button>
 					</div>
 				</div>
@@ -340,22 +340,22 @@ function zmiModalInsertUserOpen(context) {
 						</span>
 						<button class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"></button>
 						<div class="dropdown-menu">
-								<a class="dropdown-item" href="javascript:;"
-									onclick="zmiModal('#insertNode',{title:$(this).attr('title')});"
-									tal:attributes="title python:here.getZMILangStr('BTN_INSERT')"
-									><i class="fas fa-plus"></i>
-									<tal:block tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</tal:block>
-								</a>
-								<a class="dropdown-item" href="javascript:;"
-									onclick="var $f=$(this).closest('form');$('input[name=btn]',$f).attr('value','BTN_DELETE');$f.submit();"
-									><i class="fas fa-times"></i>
-									<tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block>
-								</a>
-								<a class="dropdown-item" href="javascript:;"
-									onclick="var $f=$(this).closest('form');$('input[name=btn]',$f).attr('value','BTN_INVITE');$f.submit();"
-									><i class="fas fa-share"></i>
-									<tal:block tal:content="python:here.getZMILangStr('BTN_INVITE')">Invite</tal:block>
-								</a>
+							<a class="dropdown-item" href="javascript:;"
+								onclick="zmiModal('#insertNode',{title:$(this).attr('title')});"
+								tal:attributes="title python:here.getZMILangStr('BTN_INSERT')"
+								><i class="fas fa-plus"></i>
+								<tal:block tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</tal:block>
+							</a>
+							<a class="dropdown-item" href="javascript:;"
+								onclick="var $f=$(this).closest('form');$('input[name=btn]',$f).attr('value','BTN_DELETE');$f.submit();"
+								><i class="fas fa-times"></i>
+								<tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block>
+							</a>
+							<a class="dropdown-item" href="javascript:;"
+								onclick="var $f=$(this).closest('form');$('input[name=btn]',$f).attr('value','BTN_INVITE');$f.submit();"
+								><i class="fas fa-share"></i>
+								<tal:block tal:content="python:here.getZMILangStr('BTN_INVITE')">Invite</tal:block>
+							</a>
 						</div><!-- .dropdown-menu -->
 					</div>
 				</th>
@@ -372,14 +372,14 @@ function zmiModalInsertUserOpen(context) {
 						</span>
 						<button class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"></button>
 						<div class="dropdown-menu">
-								<a class="dropdown-item" href="javascript:;" onclick="var $f=$(this).closest('form');$('input[name=btn]',$f).attr('value','BTN_DELETE');$('input:checkbox',$(this).closest('tr')).prop('checked','checked');$f.submit();">
-									<i class="fas fa-times"></i>
-									<tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block>
-								</a>
-								<a class="dropdown-item" href="javascript:;" onclick="var $f=$(this).closest('form');$('input[name=btn]',$f).attr('value','BTN_INVITE');$('input:checkbox',$(this).closest('tr')).prop('checked','checked');$f.submit();"
-									><i class="fas fa-share"></i>
-									<tal:block tal:content="python:here.getZMILangStr('BTN_INVITE')">Invite</tal:block>
-								</a>
+							<a class="dropdown-item" href="javascript:;" onclick="var $f=$(this).closest('form');$('input[name=btn]',$f).attr('value','BTN_DELETE');$('input:checkbox',$(this).closest('tr')).prop('checked','checked');$f.submit();">
+								<i class="fas fa-times"></i>
+								<tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block>
+							</a>
+							<a class="dropdown-item" href="javascript:;" onclick="var $f=$(this).closest('form');$('input[name=btn]',$f).attr('value','BTN_INVITE');$('input:checkbox',$(this).closest('tr')).prop('checked','checked');$f.submit();"
+								><i class="fas fa-share"></i>
+								<tal:block tal:content="python:here.getZMILangStr('BTN_INVITE')">Invite</tal:block>
+							</a>
 						</div><!-- .dropdown-menu -->
 					</div><!-- .btn-group -->
 				</td>
@@ -456,11 +456,13 @@ function zmiModalInsertUserOpen(context) {
 
 <div class="col-sm-6 mb-3 pr-sm-0 list_users" style="overflow-x:hidden">
 
+<!--!
 	<div class="alert alert-success" tal:condition="python:request.get('btn')=='Purge'">
 		Purge local users<br/>
 		<tal:block tal:content="structure python:here.purgeLocalUsers()">purgeLocalUsers</tal:block>
 		(<tal:block tal:content="python:here.getLangFmtDate(DateTime())"></tal:block>)
-	</div><!-- .alert -->
+	</div>
+-->
 
 <form class="form-horizontal card" action="manage_userProperties" method="get">
 	<input type="hidden" name="btn" value="" />
@@ -471,30 +473,38 @@ function zmiModalInsertUserOpen(context) {
 	<thead>
 		<tr>
 			<th>
-				<div class="btn-group">
-					<a class="btn btn-secondary btn-users_add" href="javascript:;" onclick="zmiModalInsertUserOpen(this)" tal:attributes="title python:'%s %s / %s '%(here.getZMILangStr('ATTR_USERS'), here.getZMILangStr('BTN_SEARCH'), here.getZMILangStr('BTN_INSERT'))"><i class="fas fa-plus"></i></a>
+				<div class="btn-group managing mr-1">
+					<button type="button" class="btn btn-secondary btn-users_add" onclick="zmiModalInsertUserOpen(this)" tal:attributes="title python:'%s %s / %s '%(here.getZMILangStr('ATTR_USERS'), here.getZMILangStr('BTN_SEARCH'), here.getZMILangStr('BTN_INSERT'))"><i class="fas fa-plus"></i></button>
+					<button type="button" class="btn btn-secondary btn-users_delete" onclick="zmiDeleteObjBtnClick(this,{btn:'BTN_DELETE',key:'obj'})" title="Delete Selected User Profiles"><i class="fas fa-times"></i></button>
+				</div>
+				<div class="btn-group maintainance mr-1">
 					<a class="btn btn-secondary btn-users_acquired" tal:attributes="href python:'?lang=%s&show_acquired:boolean=%s'%(request['lang'],str(not request.get('show_acquired',False))); title python:'show acquired'; class python:'btn '+['btn-secondary','btn-success'][request.get('show_acquired')==True]" tal:condition="python:here.getPortalMaster() is not None"><i class="fas fa-share"></i></a>
 					<a class="btn btn-secondary btn-users_sitemap" tal:attributes="href python:'manage_users_sitemap?lang=%s'%request['lang']; title python:here.getZMILangStr('TAB_SITEMAP')"><i class="fas fa-sitemap"></i></a>
-					<a class="btn btn-secondary btn-users_import" href="javascript:;" onclick="zmiModal('#importUsers',{title:$(this).attr('title')})" tal:attributes="title python:'%s...'%here.getZMILangStr('BTN_IMPORT')"><i class="fas fa-upload"></i></a>
-					<a class="btn btn-secondary btn-users_export" href="javascript:;" onclick="var $fm=$(this).closest('form');$('input[name=btn]',$fm).val('BTN_EXPORT');$fm.attr('target','_blank').submit();" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')"><i class="fas fa-download"></i></a>
-					<a class="btn btn-secondary btn-users_purge alert-danger" tal:condition="python:request['AUTHENTICATED_USER'].has_role('Manager')" tal:attributes="href python:'?lang=%s&btn=Purge'%request['lang']" title="Purge Local Roles (WARNING: Using this function deletes the local roles of users who no longer exist. Click only if you are aware of the consequences.)"><i class="fas fa-eraser"></i></a>
-					<a class="btn btn-secondary btn-users_lastlogin" href="javascript:;" onclick="$(this).closest('table').toggleClass('show_lastlogin')" title="Last Logins"><i class="far fa-clock"></i></a>
-					<a class="btn btn-secondary btn-users_sync" href="javascript:;" onclick="zmiSynchronizeUsers(this)" tal:attributes="title python:'%s %s'%(here.getZMILangStr('ATTR_USERS'), here.getZMILangStr('BTN_SYNCHRONIZE'))"><i class="fas fa-sync"></i></a>
-				</div><!-- .btn-group -->
+					<a class="btn btn-secondary btn-users_filtered" tal:attributes="href python:'?lang=%s&show_filter:boolean=%s'%(request['lang'],str(not request.get('show_filter',False))); class python:'btn '+['btn-secondary','btn-success'][request.get('show_filter')==True]" title="Filter Invalid User Profiles"><i class="fas fa-filter"></i></a>
+					<!--! <a class="btn btn-secondary btn-users_purge alert-danger" tal:condition="python:request['AUTHENTICATED_USER'].has_role('Manager')" tal:attributes="href python:'?lang=%s&btn=Purge'%request['lang']" title="Purge Local Roles (WARNING: Using this function deletes the local roles of users who no longer exist. Click only if you are aware of the consequences.)"><i class="fas fa-eraser"></i></a> -->
+					<button type="button" class="btn btn-secondary btn-users_sync" onclick="zmiSynchronizeUsers(this)" tal:attributes="title python:'%s %s'%(here.getZMILangStr('ATTR_USERS'), here.getZMILangStr('BTN_SYNCHRONIZE'))"><i class="fas fa-sync"></i></button>
+					<button type="button" class="btn btn-secondary btn-users_lastlogin" onclick="$(this).closest('table').toggleClass('show_lastlogin')" title="Last Logins"><i class="far fa-clock"></i></button>
+				</div>
+				<div class="btn-group packaging mr-1">
+					<button type="button" class="btn btn-secondary btn-users_import" onclick="zmiModal('#importUsers',{title:$(this).attr('title')})" tal:attributes="title python:'%s...'%here.getZMILangStr('BTN_IMPORT')"><i class="fas fa-upload"></i></button>
+					<button type="button" class="btn btn-secondary btn-users_export" onclick="var $fm=$(this).closest('form');$('input[name=btn]',$fm).val('BTN_EXPORT');$fm.attr('target','_blank').submit();" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')"><i class="fas fa-download"></i></button>
+				</div>
 			</th>
 		</tr>
 	</thead>
-	<tbody tal:define="securityUsers python:here.getSecurityUsers(request.get('show_acquired',False))">
+	<tbody tal:define="
+		securityUsers python:here.getSecurityUsers(request.get('show_acquired',False));
+		userNames python:[x for x in userNames if not securityUsers[x].get('nodes',{})] if request.get('show_filter',False) else userNames;">		
 	<tr tal:repeat="userName userNames" tal:attributes="id userName" class="userName">
 		<td tal:define="
-				securityUser python:securityUsers.get(userName,{});
-				label python:securityUser.get('label',securityUser.get('details',{}).get('label',None));
-				lower python:securityUser.get('attrActiveStart',None);
-				upper python:securityUser.get('attrActiveEnd',None);
-				active python:standard.todayInRange(lower, upper);
-				acquired python:securityUser.get('acquired',False);
-				lastlogin python:securityUser.get('lastlogin',None);
-				nodes python:securityUser.get('nodes',{});"
+			securityUser python:securityUsers.get(userName,{});
+			label python:securityUser.get('label',securityUser.get('details',{}).get('label',None));
+			lower python:securityUser.get('attrActiveStart',None);
+			upper python:securityUser.get('attrActiveEnd',None);
+			active python:standard.todayInRange(lower, upper);
+			acquired python:securityUser.get('acquired',False);
+			lastlogin python:securityUser.get('lastlogin',None);
+			nodes python:securityUser.get('nodes',{});"
 			tal:attributes="data-lastlogin lastlogin">
 			<tal:block tal:content="repeat/userName/number"></tal:block>.
 			<input type="checkbox" name="ids:list" tal:attributes="value userName"/>
@@ -612,6 +622,24 @@ function zmiModalInsertUserOpen(context) {
 <footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 
 <script>
+	function zmiDeleteObjBtnClick(sender,d) {
+		if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
+			zmiFormSubmit(sender,d);
+		}
+	}
+	// Submit form with given parameters.
+	function zmiFormSubmit(sender,d) {
+		var $fm = $(sender).closest("form");
+		var html = '';
+		for (var i in d) {
+			$('input[name="' + i + '"]',$fm).remove();
+			html += '<input type="hidden" name="' + i + '" value="' + d[i] +'"/>';
+		}
+		$fm
+			.append(html)
+			.submit();
+	}
+
 	function zmiSynchronizeUsers(sender){
 
 		var looper = $.Deferred().resolve();

@@ -1108,10 +1108,13 @@ class ConfManager(
           if IZMSCatalogAdapter.IZMSCatalogAdapter in list(providedBy(ob)):
             return ob
       # If no ZMSZCatalogAdapter then add one to root node
-      adapter = ZMSZCatalogAdapter.ZMSZCatalogAdapter()
-      path_nodes[0]._setObject( adapter.id, adapter)
-      adapter = getattr(self, adapter.id)
-      adapter.initialize()
+      class DefaultAdapter(object):
+        def reindex_node(self, node): pass
+      adapter = DefaultAdapter()
+      # adapter = ZMSZCatalogAdapter.ZMSZCatalogAdapter()
+      # path_nodes[0]._setObject( adapter.id, adapter)
+      # adapter = getattr(self, adapter.id)
+      # adapter.initialize()
       return adapter
 
 

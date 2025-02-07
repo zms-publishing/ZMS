@@ -135,11 +135,6 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     def __init__(self):
       self.id = 'zcatalog_adapter'
 
-    def ensure_zcatalog_connector_is_initialized(self):
-      root = self.getRootElement()
-      if 'zcatalog_connector' not in root.getMetaobjIds():
-        _confmanager.initConf(root, 'conf:com.zms.catalog.zcatalog')
-
     ############################################################################
     #  Initialize 
     ############################################################################
@@ -296,7 +291,6 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     #  ZMSZCatalogAdapter.get_connectors
     # --------------------------------------------------------------------------
     def get_connectors(self):
-      self.ensure_zcatalog_connector_is_initialized()
       root = self.getRootElement()
       return list(sorted([x for x in root.getCatalogAdapter().objectValues(['ZMSZCatalogConnector']) if x.__name__!='broken object']))
 

@@ -146,18 +146,19 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST, minimal_init 
 
   else:
     ### Acquire content-model from master.
-    master = self.content.getPortalMaster() or self.aq_parent.content
-    obj.setConfProperty('Portal.Master',master.getHome().id)
-    masterMetaObjIds = master.getMetaobjIds()
-    masterMetaObjs = map(lambda x: master.getMetaobj(x), masterMetaObjIds)
-    masterMetaObjPackages = obj.sort_list(obj.distinct_list(map(lambda x: x.get('package'), masterMetaObjs)))
-    if len(obj.breadcrumbs_obj_path(True))>1:
-      for client in obj.breadcrumbs_obj_path(True)[1:]:
-        for id in masterMetaObjPackages:
-          if id.strip() != '':
-            client.metaobj_manager.acquireMetaobj(id)
-      client.synchronizeObjAttrs()
-    obj.setConfProperty('ZMS.theme', master.getConfProperty('ZMS.theme'))
+    master = self.content.getPortalMaster() or (hasattr(self.aq_parent,'content') and self.aq_parent.content or None)
+    if master:
+      obj.setConfProperty('Portal.Master',master.getHome().id)
+      masterMetaObjIds = master.getMetaobjIds()
+      masterMetaObjs = map(lambda x: master.getMetaobj(x), masterMetaObjIds)
+      masterMetaObjPackages = obj.sort_list(obj.distinct_list(map(lambda x: x.get('package'), masterMetaObjs)))
+      if len(obj.breadcrumbs_obj_path(True))>1:
+        for client in obj.breadcrumbs_obj_path(True)[1:]:
+          for id in masterMetaObjPackages:
+            if id.strip() != '':
+              client.metaobj_manager.acquireMetaobj(id)
+        client.synchronizeObjAttrs()
+      obj.setConfProperty('ZMS.theme', master.getConfProperty('ZMS.theme'))
 
   ### Init ZMS default actions.
   _confmanager.initConf(obj, 'conf:manage_tab_*')

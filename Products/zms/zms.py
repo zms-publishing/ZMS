@@ -164,6 +164,11 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST, minimal_init 
   _confmanager.initConf(obj, 'conf:manage_tab_*')
 
   ### Init default-configuration.
+  ### ###################################
+  ### CAVE: 
+  ### zcatalog-connecter shall not 
+  ### get initialized by default again.
+  ### ###################################
   _confmanager.initConf(obj, ':default')
 
   ### Init Role-Definitions and Permission Settings.

@@ -52,17 +52,48 @@
 		</div>
 
 		<div class="form-group row">
-			<div class="col-sm-3 col-md-2">Initialization</div>
+			<div class="col-sm-3 col-md-2">Content</div>
 			<div class="col-sm-9 col-md-10">
-				<label><input type="radio" name="initialization:int" value="0"/> None</label>
-				<label><input type="radio" name="initialization:int" value="1" checked="checked" /> with default content</label>
+				<div class="form-group px-4">
+					<label for="content_init">
+						<input class="form-check-input" type="checkbox" id="content_init" name="content_init:int" value="1" checked="checked"/>
+						Add Default Content
+					</label>
+				</div>
 			</div>
 		</div>
 
 		<div class="form-group row">
 			<div class="col-sm-3 col-md-2">Configuration</div>
 			<div class="col-sm-9 col-md-10">
-				<label><input type="checkbox" name="zmslog:int" value="1" checked="checked"/> Add log</label>
+				<div class="form-group px-1">
+					<label for="minimal_init0" class="form-radio-label m-0 mr-3">
+						<input class="form-radio-input" type="radio" id="minimal_init0" name="minimal_init:int" value="0" checked="checked" />
+						Standard
+					</label>
+					<label for="minimal_init1" class="form-radio-label m-0 ">
+						<input class="form-radio-input" type="radio" id="minimal_init1" name="minimal_init:int" value="1" />
+						Minimal
+					</label>
+				</div>
+				<div class="form-group px-4">
+					<label for="zcatalog_init" class="form-check-label m-0"> 
+						<input class="form-check-input" type="checkbox" id="zcatalog_init" name="zcatalog_init:int" value="1" checked="checked" />
+						Search: Add default ZCatalog Connector
+					</label>
+				</div>
+				<div class="form-group px-4">
+					<label for="zmslog_init" class="form-check-label m-0"> 
+						<input class="form-check-input" type="checkbox" id="zmslog_init" name="zmslog_init:int" value="1" checked="checked"/>
+						Logging: Add logfile viewer
+					</label>
+				</div>
+				<div class="form-group px-4">
+					<label for="acquire" class="form-check-label m-0">
+						<input class="form-check-input" type="checkbox" name="acquire:int" value="1" />
+						As Multisite-Client (acquiring configuration from existing parent node)
+					</label>
+				</div>
 			</div>
 		</div>
 
@@ -116,13 +147,16 @@
 </script>
 
 <style>
-	body {
+	body.zmi-manage_addzmsform {
 		background: #354f67 !important;
 		margin:2rem;
 	}
-	form.card {
+	body.zmi-manage_addzmsform form.card {
 		max-width: 60rem;
 		margin: auto;
+	}
+	body.zmi-manage_addzmsform .zmi-controls button {
+		min-width:6rem;
 	}
 </style>
 

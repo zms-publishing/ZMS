@@ -137,7 +137,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
 
     def ensure_zcatalog_connector_is_initialized(self):
       root = self.getRootElement()
-      if 'zcatalog_connector' not in root.getMetaobjIds():
+      if 'zcatalog_connector' not in root.getMetaobjIds() and self.REQUEST.get('zcatalog_init', 1) == 1:
         _confmanager.initConf(root, 'conf:com.zms.catalog.zcatalog')
 
     ############################################################################

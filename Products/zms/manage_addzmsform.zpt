@@ -75,24 +75,34 @@
 						<input class="form-radio-input" type="radio" id="minimal_init1" name="minimal_init:int" value="1" />
 						Minimal
 					</label>
+					<span class="btn-collapse ml-3">
+						<a class="collapsed" title="More advanced options" data-toggle="collapse" href="#TAB_ADVANCED" aria-expanded="false">
+							<i class="fas fa-caret-right"></i>
+							&nbsp;more ...
+						</a>
+					</span>
 				</div>
-				<div class="form-group px-4">
-					<label for="zcatalog_init" class="form-check-label m-0"> 
-						<input class="form-check-input" type="checkbox" id="zcatalog_init" name="zcatalog_init:int" value="1" checked="checked" />
-						Search: Add default ZCatalog Connector
-					</label>
-				</div>
-				<div class="form-group px-4">
-					<label for="zmslog_init" class="form-check-label m-0"> 
-						<input class="form-check-input" type="checkbox" id="zmslog_init" name="zmslog_init:int" value="1" checked="checked"/>
-						Logging: Add logfile viewer
-					</label>
-				</div>
-				<div class="form-group px-4">
-					<label for="acquire" class="form-check-label m-0">
-						<input class="form-check-input" type="checkbox" name="acquire:int" value="1" />
-						As Multisite-Client (acquiring configuration from existing parent node)
-					</label>
+				<div class="collapse" id="TAB_ADVANCED">
+					<div class="form-group px-4">
+						<label for="zcatalog_init_toggle" class="form-check-label m-0">
+							<!--! Hint: zcatalog_init-option needs a value 0|1 to control ZMSZCatalogAdapter.ensure_zcatalog_connector_is_initialized() -->
+							<input class="form-check-input" type="hidden" id="zcatalog_init" name="zcatalog_init:int" value="1" />
+							<input class="form-check-input" type="checkbox" id="zcatalog_init_toggle" name="zcatalog_init_toggle:int" value="1" checked="checked" />
+							Search: Add default ZCatalog Connector
+						</label>
+					</div>
+					<div class="form-group px-4">
+						<label for="zmslog_init" class="form-check-label m-0">
+							<input class="form-check-input" type="checkbox" conclick="" id="zmslog_init" name="zmslog_init" value="1" checked="checked"/>
+							Logging: Add logfile viewer
+						</label>
+					</div>
+					<div class="form-group px-4">
+						<label for="acquire" class="form-check-label m-0">
+							<input class="form-check-input" type="checkbox" name="acquire:int" value="1" />
+							As Multisite-Client (acquiring configuration from existing parent node)
+						</label>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -128,6 +138,10 @@
 		$("#preview").html('<'+'img style="border-radius: 4px;margin-bottom:.5em;" src="'+img_src+'" border="0" width="250" height="160" />');
 	}
 
+	document.getElementById('zcatalog_init_toggle').addEventListener('click', () => {
+		document.getElementById('zcatalog_init').value = document.getElementById('zcatalog_init_toggle').checked ? 1 : 0;
+	});
+
 	$(function() {
 		$.get('/++resource++zms_/themes/themes.zcml',function(response) {
 				var xmlDoc = $.parseXML(response);
@@ -157,6 +171,9 @@
 	}
 	body.zmi-manage_addzmsform .zmi-controls button {
 		min-width:6rem;
+	}
+	body.zmi-manage_addzmsform .btn-collapse a:not(.collapsed) i.fas.fa-caret-right:before {
+		content:"\f0d7" !important;
 	}
 </style>
 

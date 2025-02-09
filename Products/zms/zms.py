@@ -146,10 +146,13 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST, minimal_init 
 
   else:
     ### Acquire content-model from master.
-    master = self.content.getPortalMaster() or (hasattr(self.aq_parent,'content') and self.aq_parent.content or None)
+    master = hasattr(self.aq_parent,'content') and (self.aq_parent.content or self.aq_parent.content.getPortalMaster()) or None
     if master:
       obj.setConfProperty('Portal.Master',master.getHome().id)
-      masterMetaObjIds = master.getMetaobjIds()
+      masterMetaObjIds_ignore = ['ZMSIndexZCatalog','com.zms.index'] # Ignore obsolete object classes.
+      if REQUEST.get('zcatalog_init', 0) == 0:
+        masterMetaObjIds_ignore.extend(['com.zms.catalog.zcatalog','zcatalog_connector','zcatalog_page'])
+      masterMetaObjIds = [id for id in master.getMetaobjIds() if id not in masterMetaObjIds_ignore]
       masterMetaObjs = map(lambda x: master.getMetaobj(x), masterMetaObjIds)
       masterMetaObjPackages = obj.sort_list(obj.distinct_list(map(lambda x: x.get('package'), masterMetaObjs)))
       if len(obj.breadcrumbs_obj_path(True))>1:

@@ -82,7 +82,6 @@ $ZMI.registerReady(function(){
 			}
 		}
 	}
-	zmiParams['base_url'] = base_url;
 
 	// Content-Editable ////////////////////////////////////////////////////////
 	if ( self.location.href.indexOf('/manage')>0 || self.location.href.indexOf('preview=preview')>0 ) {

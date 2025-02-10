@@ -126,21 +126,13 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
 		fq.push('home_id_s:'+zmiParams['home_id']);
 	}
 	p['fq'] = fq;
-	var baseurl = $('meta[name=physical_path]').attr('content');
-	if (typeof baseurl == "undefined") {
-		try {
-			baseurl = zmiParams['base_url'];
-		} catch(e) {
-			console.log(e);
-			baseurl = window.location['pathname'];
-		}
-	}
-	if (baseurl.indexOf("/content")>0) {
-		baseurl = baseurl.substring(0,baseurl.indexOf("/content")+"/content".length);
+	var base_url = self.location.origin + self.location.pathname;
+	if (base_url.indexOf("/content")>0) {
+		base_url = base_url.substring(0,base_url.indexOf("/content")+"/content".length);
 	}
 	var adapter = $ZMI.getConfProperty('zms.search.adapter.id','zcatalog_adapter');
 	var connector = $ZMI.getConfProperty('zms.search.connector.id','zcatalog_connector');
-	var url = baseurl+'/'+adapter+'/'+connector+'/search_json';
+	var url = base_url+'/'+adapter+'/'+connector+'/search_json';
 	$.ajax({
 		url:url,
 		data:p,

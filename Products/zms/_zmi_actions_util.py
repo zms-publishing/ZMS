@@ -56,54 +56,55 @@ def zmi_basic_actions(container, context, objAttr, objChildren, objPath=''):
   mandatory = objAttr.get('mandatory', 0)==1
   
   #-- Action: Edit.
-  if context is not None:
-    userdef_roles = list(container.getRootElement().aq_parent.userdefined_roles())+list(container.getRootElement().userdefined_roles())
-    user_roles = [x for x in context.getUserRoles(auth_user, resolve=False) if x in userdef_roles]
-    can_edit = True
-    constraints = context.attr('check_constraints')
-    if isinstance(constraints, dict) and 'RESTRICTIONS' in constraints:
-      for restriction in constraints.get('RESTRICTIONS'):
-        permissions = restriction[2]
-        for permission in permissions:
-          can_edit = auth_user.has_permission(permission, context)
-          if not can_edit:
-            break
-    if can_edit:
-      actions.append((container.getZMILangStr('BTN_EDIT'), objPath+'manage_main', 'fas fa-pencil-alt'))
-    if context.getLevel() > 0:
-      if repetitive or not mandatory:
-        #-- Action: Undo.
-        can_undo = context.inObjStates( [ 'STATE_NEW', 'STATE_MODIFIED', 'STATE_DELETED'], REQUEST)
-        if can_undo:
-          actions.append((container.getZMILangStr('BTN_UNDO'), 'manage_undoObjs', 'fas fa-undo'))
-        #-- Action: Delete.
-        if not objAttr:
-          actions.append((container.getZMILangStr('BTN_DELETE'), 'manage_eraseObjs', 'fas fa-times'))
-        else:
-          can_delete = not context.inObjStates( [ 'STATE_DELETED'], REQUEST) and context.getAutocommit() or context.getDCCoverage(REQUEST).endswith('.'+lang)
-          if can_delete:
-            ob_access = context.getObjProperty('manage_access', REQUEST)
-            can_delete = can_delete and ((not isinstance(ob_access, dict)) or (ob_access.get( 'delete') is None) or (len( standard.intersection_list( ob_access.get( 'delete'), user_roles)) > 0))
-            metaObj = container.getMetaobj( context.meta_id)
-            mo_access = metaObj.get('access', {})
-            mo_access_deny = mo_access.get('delete_deny', [])
-            can_delete = can_delete and len([x for x in user_roles if x not in mo_access_deny]) > 0
-            can_delete = can_delete or auth_user.has_role('Manager')
-          if can_delete:
-            actions.append((container.getZMILangStr('BTN_DELETE'), 'manage_deleteObjs', 'fas fa-trash-alt'))
-        #-- Action: Cut.
-        can_cut = not context.inObjStates( [ 'STATE_DELETED'], REQUEST) and context.getAutocommit() or context.getDCCoverage(REQUEST).endswith('.'+lang)
-        if can_cut:
-          actions.append((container.getZMILangStr('BTN_CUT'), 'manage_cutObjects', 'fas fa-cut')) 
-      #-- Action: Copy.
-      can_copy = context.getParentByLevel(1).meta_id!='ZMSTrashcan'
-      if can_copy: 
-        actions.append((container.getZMILangStr('BTN_COPY'), 'manage_copyObjects', 'fas fa-copy'))
-      #-- Actions: Move.
-      can_move = objChildren > 1
-      if can_move:
-        actions.append((container.getZMILangStr('ACTION_MOVEUP'), objPath+'manage_moveObjUp', 'fas fa-angle-up'))
-        actions.append((container.getZMILangStr('ACTION_MOVEDOWN'), objPath+'manage_moveObjDown', 'fas fa-angle-down'))
+  if context is None:
+    context = container
+  userdef_roles = list(container.getRootElement().aq_parent.userdefined_roles())+list(container.getRootElement().userdefined_roles())
+  user_roles = [x for x in context.getUserRoles(auth_user, resolve=False) if x in userdef_roles]
+  can_edit = True
+  constraints = context.attr('check_constraints')
+  if isinstance(constraints, dict) and 'RESTRICTIONS' in constraints:
+    for restriction in constraints.get('RESTRICTIONS'):
+      permissions = restriction[2]
+      for permission in permissions:
+        can_edit = auth_user.has_permission(permission, context)
+        if not can_edit:
+          break
+  if can_edit:
+    actions.append((container.getZMILangStr('BTN_EDIT'), objPath+'manage_main', 'fas fa-pencil-alt'))
+  if context.getLevel() > 0:
+    if repetitive or not mandatory:
+      #-- Action: Undo.
+      can_undo = context.inObjStates( [ 'STATE_NEW', 'STATE_MODIFIED', 'STATE_DELETED'], REQUEST)
+      if can_undo:
+        actions.append((container.getZMILangStr('BTN_UNDO'), 'manage_undoObjs', 'fas fa-undo'))
+      #-- Action: Delete.
+      if not objAttr:
+        actions.append((container.getZMILangStr('BTN_DELETE'), 'manage_eraseObjs', 'fas fa-times'))
+      else:
+        can_delete = not context.inObjStates( [ 'STATE_DELETED'], REQUEST) and context.getAutocommit() or context.getDCCoverage(REQUEST).endswith('.'+lang)
+        if can_delete:
+          ob_access = context.getObjProperty('manage_access', REQUEST)
+          can_delete = can_delete and ((not isinstance(ob_access, dict)) or (ob_access.get( 'delete') is None) or (len( standard.intersection_list( ob_access.get( 'delete'), user_roles)) > 0))
+          metaObj = container.getMetaobj( context.meta_id)
+          mo_access = metaObj.get('access', {})
+          mo_access_deny = mo_access.get('delete_deny', [])
+          can_delete = can_delete and len([x for x in user_roles if x not in mo_access_deny]) > 0
+          can_delete = can_delete or auth_user.has_role('Manager')
+        if can_delete:
+          actions.append((container.getZMILangStr('BTN_DELETE'), 'manage_deleteObjs', 'fas fa-trash-alt'))
+      #-- Action: Cut.
+      can_cut = not context.inObjStates( [ 'STATE_DELETED'], REQUEST) and context.getAutocommit() or context.getDCCoverage(REQUEST).endswith('.'+lang)
+      if can_cut:
+        actions.append((container.getZMILangStr('BTN_CUT'), 'manage_cutObjects', 'fas fa-cut')) 
+    #-- Action: Copy.
+    can_copy = context.getParentByLevel(1).meta_id!='ZMSTrashcan'
+    if can_copy: 
+      actions.append((container.getZMILangStr('BTN_COPY'), 'manage_copyObjects', 'fas fa-copy'))
+    #-- Actions: Move.
+    can_move = objChildren > 1
+    if can_move:
+      actions.append((container.getZMILangStr('ACTION_MOVEUP'), objPath+'manage_moveObjUp', 'fas fa-angle-up'))
+      actions.append((container.getZMILangStr('ACTION_MOVEDOWN'), objPath+'manage_moveObjDown', 'fas fa-angle-down'))
   
   #-- Action: Paste.
   if repetitive or objChildren==0:

@@ -237,13 +237,11 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
       #-- Search GUI
       initContent(obj, 'com.zms.search.content.xml', REQUEST)
       # Initialize catalog adapter / connector.
-      catalog_adapter = obj.getCatalogAdapter() 
+      _confmanager.initConf(obj, 'conf:com.zms.catalog.zcatalog')
+      catalog_adapter = obj.getCatalogAdapter(createIfNotExists=True) 
       catalog_connector = catalog_adapter.add_connector('zcatalog_connector')
       catalog_connector.manage_init()
-      try:
-        catalog_adapter.reindex(catalog_connector, obj, recursive=True)
-      except:
-        standard.writeBlock( self, '[catalog_adapter]: : \'RequestContainer\' object has no \'attribute reindex\'')
+      catalog_adapter.reindex(catalog_connector, obj, recursive=True)
 
     # Initialize access.
     obj.synchronizePublicAccess()

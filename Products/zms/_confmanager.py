@@ -1099,7 +1099,7 @@ class ConfManager(
     ###
     ############################################################################
 
-    def getCatalogAdapter(self):
+    def getCatalogAdapter(self, createIfNotExists=False):
       from Products.zms import IZMSCatalogAdapter, ZMSZCatalogAdapter
       path_nodes = self.breadcrumbs_obj_path()
       path_nodes.reverse()
@@ -1108,11 +1108,17 @@ class ConfManager(
           if IZMSCatalogAdapter.IZMSCatalogAdapter in list(providedBy(ob)):
             return ob
       # If no ZMSZCatalogAdapter then add one to root node
-      adapter = ZMSZCatalogAdapter.ZMSZCatalogAdapter()
-      path_nodes[0]._setObject( adapter.id, adapter)
-      adapter = getattr(self, adapter.id)
-      adapter.initialize()
-      return adapter
+      if createIfNotExists:
+        adapter = ZMSZCatalogAdapter.ZMSZCatalogAdapter()
+        path_nodes[0]._setObject( adapter.id, adapter)
+        adapter = getattr(self, adapter.id)
+        adapter.initialize()
+        return adapter
+      # Default mock adapter
+      class MocktAdapter(object):
+        def objectValues(meta_types=None): return []
+        def reindex_node(self, node): pass
+      return MocktAdapter()
 
 
 # call this to initialize framework classes, which

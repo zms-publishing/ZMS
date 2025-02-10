@@ -85,7 +85,6 @@
 				<div class="collapse" id="TAB_ADVANCED">
 					<div class="form-group px-4">
 						<label for="zcatalog_init_toggle" class="form-check-label m-0">
-							<!--! Hint: zcatalog_init-option needs a value 0|1 to control ZMSZCatalogAdapter.ensure_zcatalog_connector_is_initialized() -->
 							<input class="form-check-input" type="hidden" id="zcatalog_init" name="zcatalog_init:int" value="1" />
 							<input class="form-check-input" type="checkbox" id="zcatalog_init_toggle" name="zcatalog_init_toggle:int" value="1" checked="checked" />
 							Search: Add default ZCatalog Connector

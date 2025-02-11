@@ -88,11 +88,15 @@ zope.event.subscribers.append(subscriber)
 #  importTheme:
 # ------------------------------------------------------------------------------
 def importTheme(self, theme):
-  filename = _fileutil.extractFilename(theme)
-  id = filename[:filename.rfind('-')]
-  filepath = package_home(globals()) + '/import/'
-  path = filepath + filename
-  self.importConf(path)
+  if not theme.startswith('conf:'):
+    filename = _fileutil.extractFilename(theme)
+    id = filename[:filename.rfind('-')]
+    filepath = package_home(globals()) + '/import/'
+    path = filepath + filename
+    self.importConf(path)
+  else:
+    _confmanager.initConf(self, theme)
+    id = theme.split('/').pop()
   return id
 
 

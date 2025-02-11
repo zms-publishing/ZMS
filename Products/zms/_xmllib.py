@@ -467,7 +467,10 @@ def toCdata(self, s, xhtml=False):
   # Return Text in CDATA.
   elif s is not None:
     if isinstance(s, bytes):
-      s = s.decode('utf-8')
+      try:
+        s = s.decode('utf-8')
+      except:
+        s = s.decode('latin-1')
     # Hack for invalid characters
     s = s.replace(chr(30), '')
     # Hack for nested CDATA

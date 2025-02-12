@@ -1268,6 +1268,10 @@ ZMIObjectTree.prototype.init = function(s,href,p) {
 		if (typeof callback != 'undefined') {
 			callback();
 		}
+	}).fail(function(jqXHR) {
+		if (jqXHR.status === 401) {
+			parent.window.location.reload();
+		}
 	});
 }
 
@@ -1565,6 +1569,10 @@ ZMIActionList.prototype.over = function(el, e, cb) {
 		// Callback.
 		if (typeof cb == "function") {
 			cb();
+		}
+	}).fail(function(jqXHR) {
+		if (jqXHR.status === 401) {
+			parent.window.location.reload();
 		}
 	});
 }

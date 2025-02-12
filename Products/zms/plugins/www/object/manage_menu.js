@@ -8,16 +8,33 @@ function zmiSelectObject(sender) {
 	let origin = window.location.origin;
 	let href = $sender.attr("href");
 	let lang = getZMILang();
-	// same origin?
+	// Same origin?
 	if (href.startsWith(origin) || href.startsWith('/')) {
-		// change location in manage_main-frame with htmx: https://htmx.org/api/#ajax
-		window.parent.manage_main.htmx.ajax("GET", href + "/manage_main?lang=" + lang, 'body');
-		window.parent.manage_main.htmx.onLoad(function() {
-			window.parent.manage_main.history.replaceState(null, null, href + "/manage_main?lang=" + lang);
-			window.parent.history.pushState(null, null, href + "/manage_main?lang=" + lang);
+		// Change location in manage_main-frame with htmx: https://htmx.org/api/#ajax
+		let manage_main_href = `${href}/manage_main?lang=${lang}`;
+		window.parent.manage_main.htmx.ajax("GET", manage_main_href, 'body')
+		.then(() => {
+			// Listen for the htmx response event
+			window.parent.manage_main.htmx.on('htmx:afterOnLoad', (event) => {
+				let response = event.detail.xhr;
+				if (response.status === 200) {
+					window.parent.manage_main.history.replaceState(null, null, manage_main_href);
+					window.parent.history.pushState(null, null, manage_main_href + '&dtpref_sitemap=1');
+					// console.log('zmiSelectObject: manage_main_href=' + manage_main_href + ' successfully loaded');
+				} else if (response.status === 401) {
+					console.error('zmiSelectObject: manage_main_href=' + manage_main_href + ' failed with status=' + response.status + ' - and will be reloaded');
+					if (window.parent.manage_main) {
+						window.parent.manage_main.location.assign(manage_main_href);
+					} else {
+						window.location.assign(manage_main_href + '&dtpref_sitemap=1');
+					}
+				} else {
+					console.error('zmiSelectObject: manage_main_href=' + manage_main_href + ' ended with status=' + response.status);
+				}
+			});
 		})
 	} else {
-		// open new home in new tab
+		// Open new home in new tab
 		window.open(href + "/manage?lang=" + lang + "&dtpref_sitemap=1", "_blank").focus();
 	}
 	return false;

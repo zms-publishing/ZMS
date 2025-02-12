@@ -109,3 +109,21 @@ class theme_zms5_base:
 			,"name":"custom_zmsdemo.css"
 			,"repetitive":0
 			,"type":"File"}
+
+		theme_zms5_base_common_img_zmslogosvg = {"default":""
+			,"id":"theme_zms5_base/common/img/zmslogo.svg"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"zmslogo.svg"
+			,"repetitive":0
+			,"type":"File"}
+
+		theme_zms5_base_common_img_faviconico = {"default":""
+			,"id":"theme_zms5_base/common/img/favicon.ico"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"favicon.ico"
+			,"repetitive":0
+			,"type":"File"}

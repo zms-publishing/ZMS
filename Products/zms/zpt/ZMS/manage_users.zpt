@@ -109,7 +109,7 @@ function zmiModalInsertUserLoad(url) {
 					$(this).parents(".ZMSRecordSet.main_grid").css({overflow:"visible"});
 				});
 			$("#zmiModalinsertUser #insertUserForm input:radio").change(function() {
-				self.location.href = zmiParams['base_url']
+				self.location.href = self.location.origin + self.location.pathname
 					+'?lang='+getZMILang()
 					+'&id='+$(this).prop("value");
 				});

@@ -84,10 +84,12 @@ $ZMI.registerReady(function(){
 	}
 
 	// Content-Editable ////////////////////////////////////////////////////////
-	if ( self.location.href.indexOf('/manage')>0 || self.location.href.indexOf('preview=preview')>0 ) {
-		
+	let is_manage_ui = self.location.href.indexOf('/manage') > 0;
+	let is_preview_ui = self.location.href.indexOf('preview=preview') > 0;
+	if ( is_manage_ui || is_preview_ui ) {
+		// HIGHLIGHT CSS
 		if (!document.getElementById('zmi_highlight_css')) {
-			var hilight_css = `
+			let hilight_css = `
 				<style type="text/css" id="zmi_highlight_css">
 					body:not(.zmi) .contentEditable.zmi-highlight:hover {
 						cursor:pointer;
@@ -111,7 +113,7 @@ $ZMI.registerReady(function(){
 						position:absolute;
 						padding-right:1px;
 						z-index:10;
-						}
+					}
 				</style>`;
 			$('head').append(hilight_css);
 		}
@@ -120,7 +122,6 @@ $ZMI.registerReady(function(){
 		var page = $('.zms-page');
 		var page_href = page.attr("data-absolute-url");
 		var page_container_constructed = false;
-		//debugger;
 		if ( page.closest('article').length > 0 ) {
 			page.closest('article').wrapInner('<div class="contentEditable zms-page" data-absolute-url="'+ page_href +'"></div>');
 			page_container_constructed = true;
@@ -132,10 +133,13 @@ $ZMI.registerReady(function(){
 		} else {
 			page.siblings().first().wrapInner('<div class="contentEditable zms-page" data-absolute-url="'+ page_href +'"></div>');
 			page_container_constructed = true;
-			console.log('Page = 1st Sibling of Content Container; maybe use article-Element or .article-Class to mark the Content Container');
 		}
-		if ( page_container_constructed == false ) {
-			console.log('Page-Container Not Found: Please Add article-Element or .article-Class to the HTML-Element that is Nesting the Page Content')
+		if (is_preview_ui) {
+			if ( page_container_constructed == false ) {
+				console.log('Page-Container Not Found: Please Add article-Element or .article-Class to the HTML-Element that is Nesting the Page Content')
+			} else {
+				console.log('Page = 1st Sibling of Content Container; maybe use article-Element or .article-Class to mark the Content Container');
+			}
 		}
 		$('.contentEditable')
 			.mouseover( function(evt) {

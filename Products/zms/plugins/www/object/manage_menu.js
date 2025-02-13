@@ -21,7 +21,7 @@ function zmiSelectObject(sender) {
 					window.parent.manage_main.history.replaceState(null, null, manage_main_href);
 					window.parent.history.pushState(null, null, manage_main_href + '&dtpref_sitemap=1');
 					// console.log('zmiSelectObject: manage_main_href=' + manage_main_href + ' successfully loaded');
-				} else if (response.status === 401) {
+				}  else if ( response.status === 401 || ( response.status === 302 && response.responseURL.indexOf('/auth/login')) > -1 ) {
 					console.error('zmiSelectObject: manage_main_href=' + manage_main_href + ' failed with status=' + response.status + ' - and will be reloaded');
 					if (window.parent.manage_main) {
 						window.parent.manage_main.location.assign(manage_main_href);

@@ -168,6 +168,7 @@ class ConfManager(
           filename = file['filename']
           xml = file['data']
           xmlfile = StringIO( xml)
+      # Get conf not from a xml-package but from the ZMS-conf folder.
       elif isinstance(file, str) and (file.startswith('conf:')):
           filename = file[file.find(':')+1:]
           basepath = repositoryutil.get_system_conf_basepath()

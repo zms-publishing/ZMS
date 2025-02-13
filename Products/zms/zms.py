@@ -95,7 +95,7 @@ def importTheme(self, theme):
     path = filepath + filename
     self.importConf(path)
   else:
-    _confmanager.initConf(self, theme)
+    _confmanager.ConfManager.getConfXmlFile(self, theme)
     id = theme.split('/').pop()
   return id
 

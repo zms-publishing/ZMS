@@ -126,7 +126,7 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST, minimal_init 
   obj.setLanguage(lang, REQUEST['lang_label'], '', manage_lang)
 
   ### Log.
-  if REQUEST.get('zmslog'):
+  if REQUEST.get('zmslog_init', 0)==1:
     zmslog = ZMSLog( copy_to_stdout=True, logged_entries=[ 'ERROR', 'INFO'])
     obj._setObject(zmslog.id, zmslog)
 
@@ -134,17 +134,44 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST, minimal_init 
   obj.setConfProperty('HTTP.proxy', REQUEST.get('http_proxy', ''))
   obj.setConfProperty('ZMS.autocommit', 1)
 
-  ### Init ZMS default content-model.
-  _confmanager.initConf(obj, 'conf:com.zms.foundation' if minimal_init else 'conf:com.zms.foundation*')
-  _confmanager.initConf(obj, 'conf:com.zms.catalog.zcatalog')
+  if REQUEST.get('acquire', 0) == 0:
+    ### Init ZMS default content-model.
+    minimal_init = minimal_init == True or REQUEST.get('minimal_init', 0) == 1
+    _confmanager.initConf(obj, 'conf:com.zms.foundation' if minimal_init else 'conf:com.zms.foundation*')
+    if REQUEST.get('zcatalog_init', 0) == 1:
+      _confmanager.initConf(obj, 'conf:com.zms.catalog.zcatalog')
 
-  ### Init ZMS index.
-  obj.getZMSIndex()
+    ### Init ZMS index.
+    obj.getZMSIndex()
+
+  else:
+    ### Acquire content-model from master.
+    master = hasattr(self.aq_parent,'content') and (self.aq_parent.content or self.aq_parent.content.getPortalMaster()) or None
+    if master:
+      obj.setConfProperty('Portal.Master',master.getHome().id)
+      masterMetaObjIds_ignore = ['ZMSIndexZCatalog','com.zms.index'] # Ignore obsolete object classes.
+      if REQUEST.get('zcatalog_init', 0) == 0:
+        masterMetaObjIds_ignore.extend(['com.zms.catalog.zcatalog','zcatalog_connector','zcatalog_page'])
+      masterMetaObjIds = [id for id in master.getMetaobjIds() if id not in masterMetaObjIds_ignore]
+      masterMetaObjs = map(lambda x: master.getMetaobj(x), masterMetaObjIds)
+      masterMetaObjPackages = obj.sort_list(obj.distinct_list(map(lambda x: x.get('package'), masterMetaObjs)))
+      if len(obj.breadcrumbs_obj_path(True))>1:
+        for client in obj.breadcrumbs_obj_path(True)[1:]:
+          for id in masterMetaObjPackages:
+            if id.strip() != '':
+              client.metaobj_manager.acquireMetaobj(id)
+        client.synchronizeObjAttrs()
+      obj.setConfProperty('ZMS.theme', master.getConfProperty('ZMS.theme'))
 
   ### Init ZMS default actions.
   _confmanager.initConf(obj, 'conf:manage_tab_*')
 
   ### Init default-configuration.
+  ### ###################################
+  ### CAVE: 
+  ### zcatalog-connecter shall not 
+  ### get initialized by default again.
+  ### ###################################
   _confmanager.initConf(obj, ':default')
 
   ### Init Role-Definitions and Permission Settings.
@@ -201,22 +228,22 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
     obj.setConfProperty('ZMS.theme',themeId)
 
     ##### Default content ####
-    if REQUEST.get('initialization', 0)==1:
+    if REQUEST.get('content_init', 0)==1:
       initContent(obj, 'content.default.zip', REQUEST)
 
     ##### Configuration ####
 
-    #-- Search
-    initContent(obj, 'com.zms.search.content.xml', REQUEST)
-
-    # Initialize catalog adapter / connector.
-    catalog_adapter = obj.getCatalogAdapter() 
-    catalog_connector = catalog_adapter.add_connector('zcatalog_connector')
-    catalog_connector.manage_init()
-    try:
-      catalog_adapter.reindex(catalog_connector, obj, recursive=True)
-    except:
-      standard.writeBlock( self, '[catalog_adapter]: : \'RequestContainer\' object has no \'attribute reindex\'')
+    if REQUEST.get('zcatalog_init', 0)==1:
+      #-- Search GUI
+      initContent(obj, 'com.zms.search.content.xml', REQUEST)
+      # Initialize catalog adapter / connector.
+      catalog_adapter = obj.getCatalogAdapter() 
+      catalog_connector = catalog_adapter.add_connector('zcatalog_connector')
+      catalog_connector.manage_init()
+      try:
+        catalog_adapter.reindex(catalog_connector, obj, recursive=True)
+      except:
+        standard.writeBlock( self, '[catalog_adapter]: : \'RequestContainer\' object has no \'attribute reindex\'')
 
     # Initialize access.
     obj.synchronizePublicAccess()

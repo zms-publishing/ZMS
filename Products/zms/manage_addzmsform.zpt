@@ -127,6 +127,7 @@
 			// Preview image named as last segment of conf-package-name
 			// Example: conf:metaobj_manager/com.zms.theme.default -> default.png
 			// Example: conf:metaobj_manager/theme_zms5_default -> theme_zms5_default.png
+			v = v.split(':').pop();
 			if (v.indexOf('.') > 0) {
 				v = v.split('.').pop();
 			} else {

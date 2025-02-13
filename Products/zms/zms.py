@@ -88,6 +88,8 @@ zope.event.subscribers.append(subscriber)
 #  importTheme:
 # ------------------------------------------------------------------------------
 def importTheme(self, theme):
+  if not theme or theme == 'conf:acquire':
+    return None
   if not theme.startswith('conf:'):
     filename = _fileutil.extractFilename(theme)
     id = filename[:filename.rfind('-')]
@@ -228,8 +230,9 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
     obj = initZMS(homeElmnt, 'content', titlealt, title, lang, manage_lang, REQUEST)
     
     ##### Add Theme ####
-    themeId = importTheme(obj,REQUEST['theme'])
-    obj.setConfProperty('ZMS.theme',themeId)
+    if REQUEST.get('theme','conf:acquire') != 'conf:acquire':
+      themeId = importTheme(obj,REQUEST.get('theme','conf:acquire'))
+      obj.setConfProperty('ZMS.theme',themeId)
 
     ##### Default content ####
     if REQUEST.get('content_init', 0)==1:

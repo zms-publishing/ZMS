@@ -2,4 +2,5 @@
 	xmlns="http://namespaces.zope.org/zope" 
 	xmlns:zms="http://namespaces.zope.org/zms">
 	<source location="conf:metaobj_manager/theme_zms5_base"/>
+	<source location="conf:acquire"/>
 </configure>

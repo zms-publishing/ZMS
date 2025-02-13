@@ -105,7 +105,7 @@ def initConf(self, pattern):
     pattern = pattern.split(':')[1]
     files = self.getConfFiles()
     for filename in files:
-        if filename.startswith(prefix):
+        if filename.startswith(prefix) and 'theme.default' not in filename:
             label = files[filename]
             if fnmatch(label,'*%s-*'%pattern):
                 standard.writeBlock( self, '[initConf]: filename='+filename)

@@ -474,10 +474,6 @@ def toCdata(self, s, xhtml=False):
       # Hack for nested CDATA
       s = re.compile(r'\<\!\[CDATA\[(.*?)\]\]\>').sub(r'<!{CDATA{\1}}>', s)
     except:
-      # @zmsdev: If decoding fails, it just nests as CDATA
-      # toCdata() shall not and cannot be used to handle binary file data
-      # correctly in terms of creating a Zope file/image object
-      # Ref: ConfManager.getConfXmlFile() ==> standard.toXmlString(self, l)
       standard.writeBlock(self, "[toCdata]: WARNING - Cannot create file/image object from binary data")
       pass
     # Wrap with CDATA

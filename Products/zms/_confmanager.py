@@ -105,7 +105,7 @@ def initConf(self, pattern):
     pattern = pattern.split(':')[1]
     files = self.getConfFiles()
     for filename in files:
-        if filename.startswith(prefix):
+        if filename.startswith(prefix) and 'theme.default' not in filename:
             label = files[filename]
             if fnmatch(label,'*%s-*'%pattern):
                 standard.writeBlock( self, '[initConf]: filename='+filename)
@@ -168,6 +168,7 @@ class ConfManager(
           filename = file['filename']
           xml = file['data']
           xmlfile = StringIO( xml)
+      # Get conf not from a xml-package but from the ZMS-conf folder.
       elif isinstance(file, str) and (file.startswith('conf:')):
           filename = file[file.find(':')+1:]
           basepath = repositoryutil.get_system_conf_basepath()

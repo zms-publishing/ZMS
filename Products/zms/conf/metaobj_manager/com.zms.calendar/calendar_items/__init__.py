@@ -32,7 +32,7 @@ class calendar_items:
 	package = "com.zms.calendar"
 
 	# Revision
-	revision = "0.0.5"
+	revision = "0.0.6"
 
 	# Type
 	type = "ZMSRecordSet"

@@ -19,7 +19,7 @@ class CSSLib:
 	name = "CSSLib"
 
 	# Package
-	package = "com.zms.foundation.theme"
+	package = "com.zms.foundation.theming"
 
 	# Revision
 	revision = "5.0.0"

@@ -177,6 +177,7 @@ class ZMSZCatalogConnector(
     # --------------------------------------------------------------------------
     def search_json(self, REQUEST, RESPONSE):
       """ search_json """
+      self.ensure_zcatalog_connector_is_initialized()
       RESPONSE.setHeader('Cache-Control', 'no-cache')
       RESPONSE.setHeader('Content-Type', 'application/json; charset=utf-8')
       result = [x['ob'](self, REQUEST) for x in self.getActions(r'(.*?)_query$')][0]
@@ -187,6 +188,7 @@ class ZMSZCatalogConnector(
     # --------------------------------------------------------------------------
     def search_xml(self, REQUEST, RESPONSE):
       """ search_xml """
+      self.ensure_zcatalog_connector_is_initialized()
       result = json.loads(self.search_json(REQUEST, RESPONSE))
       RESPONSE.setHeader('Cache-Control', 'no-cache')
       RESPONSE.setHeader('Content-Type', 'text/xml; charset=utf-8')
@@ -258,6 +260,7 @@ class ZMSZCatalogConnector(
     # --------------------------------------------------------------------------
     def suggest_json(self, REQUEST, RESPONSE):
       """ suggest_json """
+      self.ensure_zcatalog_connector_is_initialized()
       RESPONSE.setHeader('Cache-Control', 'no-cache')
       RESPONSE.setHeader('Content-Type', 'application/json; charset=utf-8')
       result = [x['ob'](self, REQUEST) for x in self.getActions(r'(.*?)_suggest$')][0]
@@ -268,6 +271,7 @@ class ZMSZCatalogConnector(
     # --------------------------------------------------------------------------
     def suggest_xml(self, REQUEST, RESPONSE):
       """ suggest_xml """
+      self.ensure_zcatalog_connector_is_initialized()
       result = json.loads(self.suggest_json(REQUEST, RESPONSE))
       RESPONSE.setHeader('Cache-Control', 'no-cache')
       RESPONSE.setHeader('Content-Type', 'text/xml; charset=utf-8')

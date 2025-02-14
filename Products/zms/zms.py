@@ -240,10 +240,10 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
 
     ##### Configuration ####
 
+    # Initialize catalog adapter / connector.
     if REQUEST.get('zcatalog_init', 0)==1:
-      #-- Search GUI
-      initContent(obj, 'com.zms.search.content.xml', REQUEST)
-      # Initialize catalog adapter / connector.
+      #-- Search GUI: now is part of com.zms.catalog
+      # initContent(obj, 'com.zms.search.content.xml', REQUEST)
       _confmanager.initConf(obj, 'conf:com.zms.catalog.zcatalog')
       catalog_adapter = obj.getCatalogAdapter(createIfNotExists=True) 
       catalog_connector = catalog_adapter.add_connector('zcatalog_connector')
@@ -603,7 +603,8 @@ class ZMS(
       key ZMS.mode.maintenance=1. The maintenance mode prevents 
       editing content and returns an error: 503 Service Unavailable.
       To show a specific message the Zope object standard_error_message 
-      should be customized, e.g. like this:
+      should be customized, e.g. like this::
+
         <tal:block
             tal:define="
               errtype python:options.get('error_type',None);

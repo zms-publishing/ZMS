@@ -165,7 +165,6 @@ class ConfManager(
     #  ConfManager.importConfPackage:
     # --------------------------------------------------------------------------
     def importConfPackage(self, file):
-      
       if isinstance(file, str):
         if file.startswith('http://') or file.startswith('https://'):
           file = StringIO( self.http_import(file))

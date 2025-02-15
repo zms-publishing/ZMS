@@ -90,15 +90,15 @@ zope.event.subscribers.append(subscriber)
 def importTheme(self, theme):
   if not theme or theme == 'conf:acquire':
     return None
-  if not theme.startswith('conf:'):
+  if theme.startswith('conf:'):
+    id = theme.split('/').pop()
+    self.importConf(theme)
+  else:
     filename = _fileutil.extractFilename(theme)
     id = filename[:filename.rfind('-')]
     filepath = package_home(globals()) + '/import/'
     path = filepath + filename
     self.importConf(path)
-  else:
-    _confmanager.ConfManager.getConfXmlFile(self, theme)
-    id = theme.split('/').pop()
   return id
 
 

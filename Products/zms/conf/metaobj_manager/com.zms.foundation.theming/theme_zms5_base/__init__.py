@@ -19,7 +19,7 @@ class theme_zms5_base:
 	name = "theme_zms5_base"
 
 	# Package
-	package = "com.zms.theme.default"
+	package = "com.zms.foundation.theming"
 
 	# Revision
 	revision = "5.0.3"

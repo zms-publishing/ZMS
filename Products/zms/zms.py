@@ -92,7 +92,7 @@ def importTheme(self, theme):
     return None
   if theme.startswith('conf:'):
     id = theme.split('/').pop()
-    self.importConf(theme)
+    _confmanager.initConf(self, theme)
   else:
     filename = _fileutil.extractFilename(theme)
     id = filename[:filename.rfind('-')]
@@ -231,8 +231,9 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
     
     ##### Add Theme ####
     if REQUEST.get('theme','conf:acquire') != 'conf:acquire':
-      themeId = importTheme(obj,REQUEST.get('theme','conf:acquire'))
-      obj.setConfProperty('ZMS.theme',themeId)
+      theme_id = importTheme(obj,REQUEST.get('theme','conf:acquire'))
+      # Set theme property: id should not contain dots.
+      obj.setConfProperty('ZMS.theme',theme_id.replace('.','_'))
 
     ##### Default content ####
     if REQUEST.get('content_init', 0)==1:

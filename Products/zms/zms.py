@@ -232,7 +232,7 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
     ##### Add Theme ####
     if REQUEST.get('theme','conf:acquire') != 'conf:acquire':
       theme_id = importTheme(obj,REQUEST.get('theme','conf:acquire'))
-      # Set theme property: id should not contain dots.
+      # Set theme property: id may not contain dots.
       obj.setConfProperty('ZMS.theme',theme_id.replace('.','_'))
 
     ##### Default content ####

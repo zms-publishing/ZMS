@@ -107,10 +107,15 @@ def initConf(self, pattern):
     only C{pattern} is the part of the filename to match using function fnmatch().
     If a matching file is found and it ends with '.zip', it will be imported 
     as a configuration package. Otherwise, it will be imported as a a single XML 
-    file or  - if prefixed with C{conf:} as a set of configuration files from 
+    file or - if prefixed with C{conf:} as a set of configuration files from 
     the ZMS conf-folder.
     The full list of available configuration files is aggrgated by the method 
     L{ConfManager.getConfFiles}.
+    In case of C{conf:}-prefix, the filename is expected to be in the format 
+    C{conf:container_id/package-id}, e.g. C{conf:metaobj_manager/com.zms.foundation.theme}.
+    This means only the 1st level of the naming hierarchy (in case of metaobj_manager
+    mostly the package-id is used to match the pattern). Nested packages are always
+    imported as a whole.
 
     @param pattern: String-pattern to filter filenames.
     @type pattern: C{string}

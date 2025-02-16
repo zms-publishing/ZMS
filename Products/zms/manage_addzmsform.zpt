@@ -153,6 +153,10 @@
 		if ( document.getElementById('acquire').checked ) {
 			document.getElementById('theme').value = 'conf:acquire';
 			document.getElementById('theme').dispatchEvent(new Event('change'));
+			document.getElementById('zcatalog_init_toggle').checked = false;
+			document.getElementById('zcatalog_init').value = 0;
+			document.getElementById('zmslog_init').checked = false;
+			document.getElementById('zmslog_init').value = 0;
 		}
 	});
 

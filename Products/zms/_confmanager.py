@@ -127,9 +127,9 @@ def initConf(self, pattern):
     pattern = pattern.split(':')[1]
     files = self.getConfFiles()
     for filename in files:
-        if filename.startswith(prefix): # and 'theme.default' not in filename:
+        if filename.startswith(prefix):
             label = files[filename]
-            if fnmatch(label,'*%s-*'%pattern):
+            if len(pattern.split('/')) > 2 and fnmatch(label,'*%s-*'%'/'.join(pattern.split('/')[1:-1])) or fnmatch(label,'*%s-*'%pattern):
                 standard.writeBlock( self, '[initConf]: filename='+filename)
                 if filename.endswith('.zip'):
                     self.importConfPackage(filename)

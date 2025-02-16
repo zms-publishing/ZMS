@@ -245,7 +245,7 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
     if REQUEST.get('zcatalog_init', 0)==1:
       #-- Search GUI
       _confmanager.initConf(obj, 'conf:com.zms.catalog.zcatalog')
-      catalog_adapter = obj.getCatalogAdapter(createIfNotExists=True) 
+      catalog_adapter = obj.getCatalogAdapter() 
       catalog_connector = catalog_adapter.add_connector('zcatalog_connector')
       catalog_connector.manage_init()
       try:

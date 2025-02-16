@@ -16,7 +16,7 @@ class ZMSIndexTest(ZMSTestCase):
 
   def setUp(self):
     folder = Folder('site')
-    folder.REQUEST = mock_http.MockHTTPRequest({'lang':'eng','preview':'preview','url':'{$}'})
+    folder.REQUEST = mock_http.MockHTTPRequest({'lang':'eng','preview':'preview','url':'{$}','theme':'conf:aquire','minimal_init':1,'content_init':1})
     self.context = standard.initZMS(folder, 'myzmsx', 'titlealt', 'title', 'eng', 'eng', folder.REQUEST)
     print('[setUp] create %s'%self.temp_title)
     zmsindex = self.context.getZMSIndex()

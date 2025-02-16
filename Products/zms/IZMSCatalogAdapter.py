@@ -21,13 +21,6 @@ from zope.interface import Interface
 
 class IZMSCatalogAdapter(Interface):
 
-  def reindex_node(self, node):
-    """
-    Reindex node.
-    @param node: the node
-    @type node: C{object}
-    """
-
   def search(self, qs, order, clients=False):
     """
     Search catalog.

@@ -7,7 +7,7 @@
   <head>
     
     <title>zms._versionmanager.VersionManagerContainer</title>
-    <meta name="generator" content="pydoctor 22.5.1"> 
+    <meta name="generator" content="pydoctor 24.11.2"> 
         
     </meta>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
@@ -15,6 +15,7 @@
     <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="apidocs.css" />
     <link rel="stylesheet" type="text/css" href="extra.css" />
+    
 </head>
 
   <body>
@@ -52,7 +53,7 @@
             
             <span class="input-group-btn">
               <a style="display: none;" class="btn btn-default" id="search-clear-button" title="Clear" onclick="clearSearch()"><img src="fonts/x-circle.svg" alt="Clear" /></a>
-              <a class="btn btn-default" id="search-help-button" title="Help" onclick="toggleSearchHelpText()"><img src="fonts/info.svg" alt="Help" /></a>
+              <a class="btn btn-default" id="apidocs-help-button" title="Help" href="apidocs-help.html"><img src="fonts/info.svg" alt="Help" /></a>
             </span>
           </div>
         </div>
@@ -76,39 +77,6 @@
             <h1>Cannot search: JavaScript is not supported/enabled in your browser.</h1>
         </noscript>
 
-        <div class="hint" id="search-help-box">
-          <p class="rst-last">
-      
-            Search bar offers the following options:
-            <ul>   
-                <li>
-                  <strong>Term presence.</strong> The below example searches for documents that 
-                    must contain “foo”, might contain “bar” and must not contain “baz”: <code>+foo bar -baz</code>
-                </li> 
-
-                <li>
-                  <strong>Wildcards.</strong> The below example searches for documents with words beginning with “foo”: <code>foo*</code>
-                </li> 
-
-                <li>
-                  <strong>Search in specific fields.</strong> The following search matches all objects 
-                  in "twisted.mail" that matches “search”: <code>+qname:twisted.mail.* +search</code>
-
-                  <p>
-                    Possible fields: 'name', 'qname' (fully qualified name), 'docstring', and 'kind'.
-                    Last two fields are only applicable if "search in docstrings" is enabled.
-                  </p>
-                </li>
-
-                <li>
-                  <strong>Fuzzy matches.</strong> The following search matches all documents 
-                  that have a word within 1 edit distance of “foo”: <code>foo~1</code>
-                </li>
-            </ul>
-
-          </p>
-        </div>
-
         <div id="search-status"> </div>
 
         <div class="warning" id="search-warn-box" style="display: none;">
@@ -119,8 +87,8 @@
           <!-- Filled dynamically by JS -->
         </table>
         
-        <div style="margin-top: 8px;">
-          <p>Results provided by <a href="https://lunrjs.com">Lunr.js</a></p>
+        <div style="margin-top: 10px;">
+          <p>For more information on the search, visit the <a href="apidocs-help.html#rst-search">help page</a>.</p>
         </div>
       </div>
 
@@ -384,7 +352,7 @@
         </div>
 
         <div class="extrasDocstring">
-          <p><code><span class="py-keyword">class</span> <span class="py-defname">VersionManagerContainer</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1079" class="sourceLink">(source)</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">VersionManagerContainer</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1084" class="sourceLink">(source)</a></code></p>
           <p><a href="classIndex.html#zms._versionmanager.VersionManagerContainer">View In Hierarchy</a></p>
         </div>
 
@@ -465,14 +433,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">autoWfTransition</span>(self, REQUEST):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1170">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">autoWfTransition</span><span class="function-signature">(self, REQUEST)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1175">
       
       (source)
     </a>
+    <a class="headerLink" href="#autoWfTransition" title="zms._versionmanager.VersionManagerContainer.autoWfTransition">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -487,14 +460,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">commitObj</span>(self, REQUEST={}, forced=False, do_history=True):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1278">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">commitObj</span><span class="function-signature">(self, REQUEST={}, forced=False, do_history=True)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1283">
       
       (source)
     </a>
+    <a class="headerLink" href="#commitObj" title="zms._versionmanager.VersionManagerContainer.commitObj">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -509,14 +487,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">getRecipientsByRole</span>(self, roles=[<wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">ZMSEditor</span><span class="rst-variable-quote">'</span>], REQUEST=None):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1129">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getRecipientsByRole</span><span class="function-signature">(self, roles=[<wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">ZMSEditor</span><span class="rst-variable-quote">'</span>], REQUEST=None)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1134">
       
       (source)
     </a>
+    <a class="headerLink" href="#getRecipientsByRole" title="zms._versionmanager.VersionManagerContainer.getRecipientsByRole">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -531,14 +514,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">getRecipientWf</span>(self, REQUEST=None):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1113">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getRecipientWf</span><span class="function-signature">(self, REQUEST=None)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1118">
       
       (source)
     </a>
+    <a class="headerLink" href="#getRecipientWf" title="zms._versionmanager.VersionManagerContainer.getRecipientWf">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -553,14 +541,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">getVersionContainer</span>(self):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1098">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getVersionContainer</span><span class="function-signature">(self)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1103">
       
       (source)
     </a>
+    <a class="headerLink" href="#getVersionContainer" title="zms._versionmanager.VersionManagerContainer.getVersionContainer">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -575,14 +568,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">isVersionContainer</span>(self):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1084">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">isVersionContainer</span><span class="function-signature">(self)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1089">
       
       (source)
     </a>
+    <a class="headerLink" href="#isVersionContainer" title="zms._versionmanager.VersionManagerContainer.isVersionContainer">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -597,17 +595,21 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">manage_wfTransition</span>(self, lang, custom, REQUEST, RESPONSE):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1221">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">manage_wfTransition</span><span class="function-signature">(self, lang, custom, REQUEST, RESPONSE)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1226">
       
       (source)
+    </a>
+    <a class="headerLink" href="#manage_wfTransition" title="zms._versionmanager.VersionManagerContainer.manage_wfTransition">
+      
+      
+      ¶
     </a>
   </div>
   <div class="docstring functionBody">
     
-    
-    <div><p>WorkflowContainer.manage_wfTransition</p>
-</div>
+    <div><p>WorkflowContainer.manage_wfTransition</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -620,17 +622,21 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">manage_wfTransitionFinalize</span>(self, lang, custom, REQUEST, RESPONSE=None):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1238">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">manage_wfTransitionFinalize</span><span class="function-signature">(self, lang, custom, REQUEST, RESPONSE=None)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1243">
       
       (source)
+    </a>
+    <a class="headerLink" href="#manage_wfTransitionFinalize" title="zms._versionmanager.VersionManagerContainer.manage_wfTransitionFinalize">
+      
+      
+      ¶
     </a>
   </div>
   <div class="docstring functionBody">
     
-    
-    <div><p>WorkflowContainer.manage_wfTransitionFinalize</p>
-</div>
+    <div><p>WorkflowContainer.manage_wfTransitionFinalize</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -643,14 +649,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">resetWfStates</span>(self, REQUEST):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1162">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">resetWfStates</span><span class="function-signature">(self, REQUEST)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1167">
       
       (source)
     </a>
+    <a class="headerLink" href="#resetWfStates" title="zms._versionmanager.VersionManagerContainer.resetWfStates">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -665,14 +676,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">rollbackObj</span>(self, REQUEST):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1339">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">rollbackObj</span><span class="function-signature">(self, REQUEST)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1344">
       
       (source)
     </a>
+    <a class="headerLink" href="#rollbackObj" title="zms._versionmanager.VersionManagerContainer.rollbackObj">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -685,10 +701,10 @@
     <footer class="navbar navbar-default">
 
   
-  <div class="container">
+  <div class="container-fluid">
     <a href="index.html">API Documentation</a> for <a href="https://github.com/zms-publishing/ZMS/" class="projecthome">ZMS</a>,
   generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
-    <!-- t:slot name="pydoctor_version" /&gt; at <t:slot name="buildtime" / -->.
+    <!-- t:slot name="pydoctor_version" /> at <t:slot name="buildtime" / -->.
   </div>
 
   <!-- Search related scripts needs to be loaded at the end of HTML 

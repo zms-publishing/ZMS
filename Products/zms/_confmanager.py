@@ -112,9 +112,8 @@ def initConf(self, pattern):
     The full list of available configuration files is aggrgated by the method 
     L{ConfManager.getConfFiles}.
     In case of C{conf:}-prefix, the filename is expected to be in the format 
-    C{conf:container_id/package-id}, e.g. C{conf:metaobj_manager/com.zms.foundation.theme}; 
-    Example: C{conf:metaobj_manager/com.zms.foundation.theme/theme_zms_base} will match to path 
-    {conf:metaobj_manager/com.zms.foundation.theme}.
+    C{conf:container_id/package-id}, e.g. C{conf:metaobj_manager/com.zms.foundation.theme/theme_zms_base} 
+    will match to path C{conf:metaobj_manager/com.zms.foundation.theme}.
     This means only the 1st level of the naming hierarchy (in case of metaobj_manager
     mostly the package-id is used to match the pattern). Nested packages are always
     imported as a whole. 

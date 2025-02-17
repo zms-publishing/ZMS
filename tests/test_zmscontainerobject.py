@@ -18,7 +18,7 @@ class ZMSContainerObjectTest(ZMSTestCase):
 
   def setUp(self):
     folder = Folder('myzmsx')
-    folder.REQUEST = mock_http.MockHTTPRequest({'lang':'eng','preview':'preview'})
+    folder.REQUEST = mock_http.MockHTTPRequest({'lang':'eng','preview':'preview','theme':'conf:aquire','minimal_init':1,'content_init':1})
     zmscontext = zms.initZMS(folder, 'content', 'titlealt', 'title', 'eng', 'eng', folder.REQUEST)
     self.context = zmscontext
     print('[setUp] create %s'%self.temp_title)

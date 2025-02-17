@@ -52,17 +52,58 @@
 		</div>
 
 		<div class="form-group row">
-			<div class="col-sm-3 col-md-2">Initialization</div>
+			<div class="col-sm-3 col-md-2">Content</div>
 			<div class="col-sm-9 col-md-10">
-				<label><input type="radio" name="initialization:int" value="0"/> None</label>
-				<label><input type="radio" name="initialization:int" value="1" checked="checked" /> with default content</label>
+				<div class="form-group px-4">
+					<label for="content_init">
+						<input class="form-check-input" type="checkbox" id="content_init" name="content_init:int" value="1" checked="checked"/>
+						Add Default Content
+					</label>
+				</div>
 			</div>
 		</div>
 
 		<div class="form-group row">
-			<div class="col-sm-3 col-md-2">Configuration</div>
+			<div class="col-sm-3 col-md-2 text-nowrap">Configuration</div>
 			<div class="col-sm-9 col-md-10">
-				<label><input type="checkbox" name="zmslog:int" value="1" checked="checked"/> Add log</label>
+				<div class="form-group px-1">
+					<label for="minimal_init0" class="form-radio-label m-0 mr-3">
+						<input class="form-radio-input" type="radio" id="minimal_init0" name="minimal_init:int" value="0" checked="checked" />
+						Standard
+					</label>
+					<label for="minimal_init1" class="form-radio-label m-0 ">
+						<input class="form-radio-input" type="radio" id="minimal_init1" name="minimal_init:int" value="1" />
+						Minimal
+					</label>
+					<span class="btn-collapse ml-3">
+						<a class="collapsed" title="More advanced options" data-toggle="collapse" href="#TAB_ADVANCED" aria-expanded="false">
+							<i class="fas fa-caret-right"></i>
+							&nbsp;more ...
+						</a>
+					</span>
+				</div>
+				<div class="collapse" id="TAB_ADVANCED">
+					<div class="form-group px-4">
+						<label for="zcatalog_init_toggle" class="form-check-label m-0">
+							<!--! Hint: zcatalog_init-option needs a value 0|1 to control ZMSZCatalogAdapter.ensure_zcatalog_connector_is_initialized() -->
+							<input class="form-check-input" type="hidden" id="zcatalog_init" name="zcatalog_init:int" value="1" />
+							<input class="form-check-input" type="checkbox" id="zcatalog_init_toggle" name="zcatalog_init_toggle:int" value="1" checked="checked" />
+							Search: Add default ZCatalog Connector
+						</label>
+					</div>
+					<div class="form-group px-4">
+						<label for="zmslog_init" class="form-check-label m-0">
+							<input class="form-check-input" type="checkbox" conclick="" id="zmslog_init" name="zmslog_init" value="1" checked="checked"/>
+							Logging: Add logfile viewer
+						</label>
+					</div>
+					<div class="form-group px-4">
+						<label for="acquire" class="form-check-label m-0">
+							<input class="form-check-input" id="acquire" type="checkbox" name="acquire:int" value="1" />
+							As Multisite-Client (acquiring configuration from existing parent node)
+						</label>
+					</div>
+				</div>
 			</div>
 		</div>
 
@@ -76,26 +117,49 @@
 </main>
 
 <script>
+//<!--
 	function themeChange(el) {
-		var i = el.selectedIndex;
-		var v = el.options[i].value;
+		let i = el.selectedIndex;
+		let v = el.options[i].value;
 		if (v.length == 0) {
 			img_src = "/++resource++zms_/img/spacer.gif";
 		}
+		else if (v.indexOf('conf:')>-1) {
+			// Preview image named as last segment of conf-package-name
+			// Example: conf:metaobj_manager/com.zms.theme.default -> default.png
+			// Example: conf:metaobj_manager/theme_zms5_default -> theme_zms5_default.png
+			v = v.split(':').pop().split('/').pop();
+			img_src = `/++resource++zms_/themes/${v}.png`;
+		}
 		else {
-			if (v.indexOf('-')>0) {
+			if (v.indexOf('-') > 0) {
 				v = v.substring(0,v.indexOf('-'));
 			}
-			if (v.indexOf('.')>0) {
+			if (v.indexOf('.') > 0) {
 				v = v.substring(0,v.indexOf('.'));
 			}
 			img_src = v+'.png';
-			if (v.indexOf('http://')<0) {
+			if (v.indexOf('http') < 0) {
 				img_src = "/++resource++zms_/themes/"+img_src;
 			}
 		}
-		$("#preview").html('<'+'img style="border-radius: 4px;margin-bottom:.5em;" src="'+img_src+'" border="0" width="250" height="160" />');
+		$("#preview").html(`<img style="border-radius:4px;margin-bottom:.5em;" src="${img_src}" border="0" width="250" height="160" />`);
 	}
+
+	document.getElementById('zcatalog_init_toggle').addEventListener('click', () => {
+		document.getElementById('zcatalog_init').value = document.getElementById('zcatalog_init_toggle').checked ? 1 : 0;
+	});
+
+	document.getElementById('acquire').addEventListener('click', () => {
+		if ( document.getElementById('acquire').checked ) {
+			document.getElementById('theme').value = 'conf:acquire';
+			document.getElementById('theme').dispatchEvent(new Event('change'));
+			document.getElementById('zcatalog_init_toggle').checked = false;
+			document.getElementById('zcatalog_init').value = 0;
+			document.getElementById('zmslog_init').checked = false;
+			document.getElementById('zmslog_init').value = 0;
+		}
+	});
 
 	$(function() {
 		$.get('/++resource++zms_/themes/themes.zcml',function(response) {
@@ -113,17 +177,26 @@
 			$(this).html('<i class="fas fa-spinner fa-spin"></i>')
 		})
 	});
+//-->
 </script>
 
 <style>
-	body {
+/*<!--*/
+	body.zmi-manage_addzmsform {
 		background: #354f67 !important;
 		margin:2rem;
 	}
-	form.card {
+	body.zmi-manage_addzmsform form.card {
 		max-width: 60rem;
 		margin: auto;
 	}
+	body.zmi-manage_addzmsform .zmi-controls button {
+		min-width:6rem;
+	}
+	body.zmi-manage_addzmsform .btn-collapse a:not(.collapsed) i.fas.fa-caret-right:before {
+		content:"\f0d7" !important;
+	}
+/*-->*/
 </style>
 
 <tal:block tal:content="structure here/manage_page_footer"></tal:block>

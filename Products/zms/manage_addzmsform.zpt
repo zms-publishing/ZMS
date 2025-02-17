@@ -139,7 +139,7 @@
 				v = v.substring(0,v.indexOf('.'));
 			}
 			img_src = v+'.png';
-			if (v.indexOf('http://') < 0) {
+			if (v.indexOf('http') < 0) {
 				img_src = "/++resource++zms_/themes/"+img_src;
 			}
 		}

@@ -164,7 +164,7 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST, minimal_init 
       if len(obj.breadcrumbs_obj_path(True))>1:
         for client in obj.breadcrumbs_obj_path(True)[1:]:
           for id in masterMetaObjPackages:
-            if id and id.strip() != '':
+            if id and id.strip():
               client.metaobj_manager.acquireMetaobj(id)
         client.synchronizeObjAttrs()
       obj.setConfProperty('ZMS.theme', master.getConfProperty('ZMS.theme'))
@@ -230,7 +230,8 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
     obj = initZMS(homeElmnt, 'content', titlealt, title, lang, manage_lang, REQUEST)
     
     ##### Add Theme ####
-    if REQUEST.get('theme','conf:acquire') != 'conf:acquire':
+    theme_none = 'conf:acquire'
+    if REQUEST.get('theme',theme_none) != 'conf:acquire':
       theme_id = importTheme(obj,REQUEST.get('theme','conf:acquire'))
       # Set theme property: id may not contain dots.
       obj.setConfProperty('ZMS.theme',theme_id.replace('.','_'))

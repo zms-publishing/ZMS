@@ -33,12 +33,12 @@ class IZMSCatalogConnector(Interface):
     def reindex_page(self, uid, page_size, clients=False, fileparsing=True, REQUEST=None, RESPONSE=None):
       """
       Reindex page.
-      @param uid the uid of the page's start-node
-      @param page-size the page-size
-      @param clients process clients
-      @type clients C{Boolean}
-      @param fileparsing parse files
-      @type fileparsing C{Boolean}
+      @param uid: the uid of the page's start-node
+      @param page_size: the page-size
+      @param clients: process clients
+      @type clients: C{Boolean}
+      @param fileparsing: parse files
+      @type fileparsing: C{Boolean}
       @param REQUEST: the triggering request
       @type REQUEST: ZPublisher.HTTPRequest
       @return log

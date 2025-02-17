@@ -88,11 +88,17 @@ zope.event.subscribers.append(subscriber)
 #  importTheme:
 # ------------------------------------------------------------------------------
 def importTheme(self, theme):
-  filename = _fileutil.extractFilename(theme)
-  id = filename[:filename.rfind('-')]
-  filepath = package_home(globals()) + '/import/'
-  path = filepath + filename
-  self.importConf(path)
+  if not theme or theme == 'conf:acquire':
+    return None
+  if theme.startswith('conf:'):
+    id = theme.split('/').pop()
+    _confmanager.initConf(self, theme)
+  else:
+    filename = _fileutil.extractFilename(theme)
+    id = filename[:filename.rfind('-')]
+    filepath = package_home(globals()) + '/import/'
+    path = filepath + filename
+    self.importConf(path)
   return id
 
 
@@ -152,13 +158,13 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST, minimal_init 
       masterMetaObjIds_ignore = ['ZMSIndexZCatalog','com.zms.index'] # Ignore obsolete object classes.
       if REQUEST.get('zcatalog_init', 0) == 0:
         masterMetaObjIds_ignore.extend(['com.zms.catalog.zcatalog','zcatalog_connector','zcatalog_page'])
-      masterMetaObjIds = [id for id in master.getMetaobjIds() if id not in masterMetaObjIds_ignore]
+      masterMetaObjIds = [id for id in master.getMetaobjIds() if id not in masterMetaObjIds_ignore and id is not None]
       masterMetaObjs = map(lambda x: master.getMetaobj(x), masterMetaObjIds)
       masterMetaObjPackages = obj.sort_list(obj.distinct_list(map(lambda x: x.get('package'), masterMetaObjs)))
       if len(obj.breadcrumbs_obj_path(True))>1:
         for client in obj.breadcrumbs_obj_path(True)[1:]:
           for id in masterMetaObjPackages:
-            if id.strip() != '':
+            if id and id.strip():
               client.metaobj_manager.acquireMetaobj(id)
         client.synchronizeObjAttrs()
       obj.setConfProperty('ZMS.theme', master.getConfProperty('ZMS.theme'))
@@ -224,8 +230,11 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
     obj = initZMS(homeElmnt, 'content', titlealt, title, lang, manage_lang, REQUEST)
     
     ##### Add Theme ####
-    themeId = importTheme(obj,REQUEST['theme'])
-    obj.setConfProperty('ZMS.theme',themeId)
+    theme_none = 'conf:acquire'
+    if REQUEST.get('theme',theme_none) != 'conf:acquire':
+      theme_id = importTheme(obj,REQUEST.get('theme','conf:acquire'))
+      # Set theme property: id may not contain dots.
+      obj.setConfProperty('ZMS.theme',theme_id.replace('.','_'))
 
     ##### Default content ####
     if REQUEST.get('content_init', 0)==1:
@@ -233,10 +242,10 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
 
     ##### Configuration ####
 
+    # Initialize catalog adapter / connector.
     if REQUEST.get('zcatalog_init', 0)==1:
       #-- Search GUI
-      initContent(obj, 'com.zms.search.content.xml', REQUEST)
-      # Initialize catalog adapter / connector.
+      _confmanager.initConf(obj, 'conf:com.zms.catalog.zcatalog')
       catalog_adapter = obj.getCatalogAdapter() 
       catalog_connector = catalog_adapter.add_connector('zcatalog_connector')
       catalog_connector.manage_init()
@@ -598,7 +607,8 @@ class ZMS(
       key ZMS.mode.maintenance=1. The maintenance mode prevents 
       editing content and returns an error: 503 Service Unavailable.
       To show a specific message the Zope object standard_error_message 
-      should be customized, e.g. like this:
+      should be customized, e.g. like this::
+
         <tal:block
             tal:define="
               errtype python:options.get('error_type',None);

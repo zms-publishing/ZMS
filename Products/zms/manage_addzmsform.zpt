@@ -99,7 +99,7 @@
 					</div>
 					<div class="form-group px-4">
 						<label for="acquire" class="form-check-label m-0">
-							<input class="form-check-input" type="checkbox" name="acquire:int" value="1" />
+							<input class="form-check-input" id="acquire" type="checkbox" name="acquire:int" value="1" />
 							As Multisite-Client (acquiring configuration from existing parent node)
 						</label>
 					</div>
@@ -117,29 +117,48 @@
 </main>
 
 <script>
+//<!--
 	function themeChange(el) {
-		var i = el.selectedIndex;
-		var v = el.options[i].value;
+		let i = el.selectedIndex;
+		let v = el.options[i].value;
 		if (v.length == 0) {
 			img_src = "/++resource++zms_/img/spacer.gif";
 		}
+		else if (v.indexOf('conf:')>-1) {
+			// Preview image named as last segment of conf-package-name
+			// Example: conf:metaobj_manager/com.zms.theme.default -> default.png
+			// Example: conf:metaobj_manager/theme_zms5_default -> theme_zms5_default.png
+			v = v.split(':').pop().split('/').pop();
+			img_src = `/++resource++zms_/themes/${v}.png`;
+		}
 		else {
-			if (v.indexOf('-')>0) {
+			if (v.indexOf('-') > 0) {
 				v = v.substring(0,v.indexOf('-'));
 			}
-			if (v.indexOf('.')>0) {
+			if (v.indexOf('.') > 0) {
 				v = v.substring(0,v.indexOf('.'));
 			}
 			img_src = v+'.png';
-			if (v.indexOf('http://')<0) {
+			if (v.indexOf('http') < 0) {
 				img_src = "/++resource++zms_/themes/"+img_src;
 			}
 		}
-		$("#preview").html('<'+'img style="border-radius: 4px;margin-bottom:.5em;" src="'+img_src+'" border="0" width="250" height="160" />');
+		$("#preview").html(`<img style="border-radius:4px;margin-bottom:.5em;" src="${img_src}" border="0" width="250" height="160" />`);
 	}
 
 	document.getElementById('zcatalog_init_toggle').addEventListener('click', () => {
 		document.getElementById('zcatalog_init').value = document.getElementById('zcatalog_init_toggle').checked ? 1 : 0;
+	});
+
+	document.getElementById('acquire').addEventListener('click', () => {
+		if ( document.getElementById('acquire').checked ) {
+			document.getElementById('theme').value = 'conf:acquire';
+			document.getElementById('theme').dispatchEvent(new Event('change'));
+			document.getElementById('zcatalog_init_toggle').checked = false;
+			document.getElementById('zcatalog_init').value = 0;
+			document.getElementById('zmslog_init').checked = false;
+			document.getElementById('zmslog_init').value = 0;
+		}
 	});
 
 	$(function() {
@@ -158,9 +177,11 @@
 			$(this).html('<i class="fas fa-spinner fa-spin"></i>')
 		})
 	});
+//-->
 </script>
 
 <style>
+/*<!--*/
 	body.zmi-manage_addzmsform {
 		background: #354f67 !important;
 		margin:2rem;
@@ -175,6 +196,7 @@
 	body.zmi-manage_addzmsform .btn-collapse a:not(.collapsed) i.fas.fa-caret-right:before {
 		content:"\f0d7" !important;
 	}
+/*-->*/
 </style>
 
 <tal:block tal:content="structure here/manage_page_footer"></tal:block>

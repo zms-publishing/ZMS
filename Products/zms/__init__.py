@@ -49,6 +49,19 @@ __doc__ = """initialization module."""
 __version__ = '0.1'
 
 #################################################################################################################
+# FORM LIMITS: Customize GUI blocking form limits like max. number of form parts
+# https://github.com/zopefoundation/Zope/pull/1251
+# Alternative: Setting parameters via zope.conf
+#  # form-part-limit
+#  # form-memory-limit 
+#  # form-disk-limit
+#  # form-memfile-limit
+# https://github.com/zopefoundation/Zope/blob/master/src/Zope2/utilities/skel/etc/zope.conf.in#L253-L282
+#################################################################################################################
+from ZPublisher import HTTPRequest
+setattr(HTTPRequest, 'FORM_PART_LIMITS', 1024)
+
+#################################################################################################################
 # FilesystemDirectoryView: Monkey patched Products.CMFCore.zcml
 #
 # Allow directory registration outside of package context to access arbitrary paths configured in overrides.zcml

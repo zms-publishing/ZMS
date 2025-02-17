@@ -143,7 +143,11 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST, minimal_init 
   if REQUEST.get('acquire', 0) == 0:
     ### Init ZMS default content-model.
     minimal_init = minimal_init == True or REQUEST.get('minimal_init', 0) == 1
-    _confmanager.initConf(obj, 'conf:com.zms.foundation' if minimal_init else 'conf:com.zms.foundation*')
+    if minimal_init:
+      _confmanager.initConf(obj, 'conf:com.zms.foundation')
+      _confmanager.initConf(obj, 'conf:com.zms.foundation.theming')
+    else:
+      _confmanager.initConf(obj, 'conf:com.zms.foundation*')
     if REQUEST.get('zcatalog_init', 0) == 1:
       _confmanager.initConf(obj, 'conf:com.zms.catalog.zcatalog')
 

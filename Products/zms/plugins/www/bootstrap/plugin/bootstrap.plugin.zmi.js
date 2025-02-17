@@ -1268,6 +1268,10 @@ ZMIObjectTree.prototype.init = function(s,href,p) {
 		if (typeof callback != 'undefined') {
 			callback();
 		}
+	}).fail(function(jqXHR) {
+		if (jqXHR.status === 401) {
+			parent.window.location.reload();
+		}
 	});
 }
 
@@ -1468,6 +1472,7 @@ ZMIActionList.prototype.over = function(el, e, cb) {
 					action += context_id+"/manage_main";
 				}
 				action += "?lang=" + lang;
+				// TODO: navigate to href with htmx
 				self.location.href = action;
 			}
 			else {
@@ -1477,7 +1482,7 @@ ZMIActionList.prototype.over = function(el, e, cb) {
 		return false;
 	});
 	// Build action and params.
-	var action = zmiParams['base_url'];
+	var action = self.location.origin + self.location.pathname;
 	action = action.substring(0,action.lastIndexOf("/"));
 	action += "/manage_ajaxZMIActions";
 	var params = {};
@@ -1565,6 +1570,10 @@ ZMIActionList.prototype.over = function(el, e, cb) {
 		// Callback.
 		if (typeof cb == "function") {
 			cb();
+		}
+	}).fail(function(jqXHR) {
+		if (jqXHR.status === 401) {
+			parent.window.location.reload();
 		}
 	});
 }

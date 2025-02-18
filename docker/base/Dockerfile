@@ -31,6 +31,12 @@ RUN groupadd --gid $GID zope ; useradd --system --create-home --uid $UID --gid $
 USER zope
 WORKDIR /home/zope/
 
+# Configure git for user
+RUN <<EOR
+    git config --global user.email "zms@container"
+    git config --global user.name "ZMS Container"
+EOR
+
 # Install uv
 # COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
 # ENV UV_LINK_MODE=copy

@@ -1,0 +1,32 @@
+FROM localhost/zope:latest
+
+USER root
+RUN \
+    --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    <<EOR
+    # Add Microsoft Package Servers for VSCode
+    apt-get install -y curl apt-transport-https
+    curl -sSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor -o /usr/share/keyrings/microsoft.gpg
+    echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list
+    apt-get update
+
+    # Install VSCode Server as User root
+    curl -fsSL https://code-server.dev/install.sh | sh
+EOR
+
+USER zope
+
+# Install VSCode Extension for local User zope
+RUN code-server --install-extension ms-python.python --user-data-dir /home/zope/.local/share/code-server
+
+# COPY --chown=zope:zope docker/base/start-debug.sh start-debug.sh
+# Expose Ports:
+# debugpy (vscode remote debugger)
+EXPOSE 5678
+# Running VSCode-Server
+EXPOSE 8080
+# Running Default Zope-Server on ZEO
+EXPOSE 8085
+# Provided for Debugger-Zope-Instance
+EXPOSE 8086

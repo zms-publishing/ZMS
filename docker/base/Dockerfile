@@ -34,8 +34,8 @@ WORKDIR /home/zope/
 
 # Configure git for user
 RUN <<EOR
-    git config --global user.email "zms@container"
-    git config --global user.name "ZMS Container"
+    git config --global user.email "zmsbot@container"
+    git config --global user.name "zmsbot"
 EOR
 
 # Install uv

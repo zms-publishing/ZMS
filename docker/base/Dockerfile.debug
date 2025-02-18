@@ -20,6 +20,7 @@ USER zope
 # Install VSCode Extension for local User zope
 RUN code-server --install-extension ms-python.python --user-data-dir /home/zope/.local/share/code-server
 
+CMD ["code-server", "--bind-addr", "0.0.0.0:8080", "--auth", "none", "/home/zope"]
 # COPY --chown=zope:zope docker/base/start-debug.sh start-debug.sh
 # Expose Ports:
 # debugpy (vscode remote debugger)

@@ -69,6 +69,16 @@ if (typeof htmx != "undefined") {
 	window.onload = function() {
 		$ZMI.runReady();
 	};
+	// https://htmx.org/quirks/#history-can-be-tricky
+	// meta does not work => use popstate
+	window.addEventListener('popstate', function (e) {
+		var state = e.state;
+		if (state !== null) {
+			setTimeout(function() {
+				$ZMI.runReady();
+			}, 200);
+		}
+	});		
 }
 
 /**

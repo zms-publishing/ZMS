@@ -15,6 +15,14 @@ function zmiSelectObject(sender) {
 		window.parent.manage_main.htmx.ajax("GET", manage_main_href, 'body')
 		.then(() => {
 			// Listen for the htmx response event
+			window.parent.manage_main.htmx.on("htmx:sendError", function(e) {
+				const manage_main_href = e.detail.pathInfo.finalRequestPath;
+				if (window.parent.manage_main) {
+					window.parent.manage_main.location.assign(manage_main_href);
+				} else {
+					window.location.assign(manage_main_href + '&dtpref_sitemap=1');
+				}
+			});
 			window.parent.manage_main.htmx.on('htmx:afterOnLoad', (event) => {
 				let response = event.detail.xhr;
 				if (response.status === 200) {

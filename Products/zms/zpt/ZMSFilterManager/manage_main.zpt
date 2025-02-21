@@ -569,7 +569,7 @@
 			let new_row_name = `new_row_${table_id}_${new_row_counter}`;
 			let new_btn_html = `
 				<span class="btn btn-secondary mr-1 w-100" style="color:#999" 
-					onclick="javascript:$(this).closest('tr').hide('slow',function(){$(this).closest('tr').remove()})">
+					onclick="javascript:remove_row($(this))">
 					<i class="fas fa-undo-alt"></i>
 				</span>
 				`;

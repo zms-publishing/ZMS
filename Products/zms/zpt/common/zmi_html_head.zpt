@@ -13,6 +13,7 @@
 		zmi_js python:here.getConfProperty('ZMS.added.js.zmi').replace('$ZMS_HOME/',ZMS_HOME).replace('$ZMS_THEME/',ZMS_THEME)">
 	<title tal:content="python:'ZMS | %s | %s'%(here.getTitlealt(request),request['lang'])">the title</title>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="htmx-config" content='{"historyCacheSize": 0}'>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes" />
 	<meta name="version_container_abs_url" tal:attributes="content python:here.getVersionContainer().absolute_url()" />
 	<meta name="physical_path" tal:attributes="content python:'/'.join(here.getPhysicalPath())" />

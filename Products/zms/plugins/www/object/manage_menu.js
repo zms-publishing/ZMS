@@ -6,40 +6,16 @@ function zmiSelectObject(sender) {
 	let $sender = $(sender);
 	$sender.parents("li").addClass("active");
 	let origin = window.location.origin;
+	let title = $sender.attr("data-page-titlealt");
 	let href = $sender.attr("href");
 	let lang = getZMILang();
 	// Same origin?
 	if (href.startsWith(origin) || href.startsWith('/')) {
 		// Change location in manage_main-frame with htmx: https://htmx.org/api/#ajax
-		let manage_main_href = `${href}/manage_main?lang=${lang}`;
-		window.parent.manage_main.htmx.ajax("GET", manage_main_href, 'body')
+		window.parent.manage_main.htmx.ajax("GET", href + "/manage_main?lang=" + lang, 'body')
 		.then(() => {
-			// Listen for the htmx response event
-			window.parent.manage_main.htmx.on("htmx:sendError", function(e) {
-				const manage_main_href = e.detail.pathInfo.finalRequestPath;
-				if (window.parent.manage_main) {
-					window.parent.manage_main.location.assign(manage_main_href);
-				} else {
-					window.location.assign(manage_main_href + '&dtpref_sitemap=1');
-				}
-			});
-			window.parent.manage_main.htmx.on('htmx:afterOnLoad', (event) => {
-				let response = event.detail.xhr;
-				if (response.status === 200) {
-					window.parent.manage_main.history.replaceState(null, null, manage_main_href);
-					window.parent.history.pushState(null, null, manage_main_href + '&dtpref_sitemap=1');
-					// console.log('zmiSelectObject: manage_main_href=' + manage_main_href + ' successfully loaded');
-				}  else if ( response.status === 401 || ( response.status === 302 && response.responseURL.indexOf('/auth/login')) > -1 ) {
-					console.error('zmiSelectObject: manage_main_href=' + manage_main_href + ' failed with status=' + response.status + ' - and will be reloaded');
-					if (window.parent.manage_main) {
-						window.parent.manage_main.location.assign(manage_main_href);
-					} else {
-						window.location.assign(manage_main_href + '&dtpref_sitemap=1');
-					}
-				} else {
-					console.error('zmiSelectObject: manage_main_href=' + manage_main_href + ' ended with status=' + response.status);
-				}
-			});
+			window.parent.manage_main.history.replaceState({title:title}, title, href + "/manage_main?lang=" + lang + '&test=1');
+			window.parent.history.pushState({title:title}, title, href + "/manage?lang=" + lang + '&dtpref_sitemap=1');
 		})
 	} else {
 		// Open new home in new tab
@@ -165,7 +141,7 @@ function zmiResize(init) {
 	var key = "ZMS.manage_menu.width";
 	$(window).resize(function() {
 			$ZMILocalStorageAPI.set(key,window.innerWidth);
-		});
+	});
 	var frmwidth = $ZMILocalStorageAPI.get(key,224);
 	var frmset = parent.document.getElementsByTagName('frameset');
 	var colval = frmwidth + ",*";

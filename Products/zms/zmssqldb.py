@@ -882,7 +882,8 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       
       entities = []
       da = self.getDA()
-      if da is None: return entities
+      if da is None or da.connected() is None:
+        return entities
       
       tableBrwsrs = da.tpValues()
       

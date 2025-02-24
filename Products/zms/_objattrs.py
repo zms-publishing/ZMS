@@ -1297,6 +1297,9 @@ class ObjAttrsManager(object):
         { 'id':'master_version', 'type':'int', 'default':0},
         { 'id':'major_version', 'type':'int', 'default':0},
         { 'id':'minor_version', 'type':'int', 'default':0},
+        { 'id':'version_work_id', 'type':'datetime', 'default':None},
+        { 'id':'version_work_dt', 'type':'datetime', 'default':None},
+
         # Active
         { 'id':'active', 'type':'boolean', 'multilang':1, 'default':1},
         { 'id':'attr_active_start', 'type':'datetime', 'multilang':1},

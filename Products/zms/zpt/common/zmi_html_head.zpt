@@ -29,7 +29,7 @@
 	<script type="text/javascript" charset="UTF-8" tal:attributes="src python:'/++resource++zms_/i18n/%s.js'%here.get_manage_lang()"></script>
 	<tal:block tal:repeat="src python:list(zmi_paths['js_paths'])+[here.getConfProperty(x) for x in here.getConfProperty('bootstrap.libs').split(',')]"
 		><script type="text/javascript" charset="UTF-8" tal:condition="src" 
-			tal:attributes="src python:src.endswith('-all.min.js') and '%s?hash=%s'%(src,here.getConfProperty('js_min.hash')) or src">
+			tal:attributes="src python:(src.endswith('-all.min.js') or src.endswith('zmi.js'))and '%s?hash=%s'%(src,here.getConfProperty('js_min.hash')) or src">
 		</script>
 	</tal:block>
 	<script tal:condition="python:here.restrictedTraverse(zmi_js, None)" tal:attributes="src zmi_js" type="text/javascript" charset="UTF-8" defer="defer"></script>

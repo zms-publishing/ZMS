@@ -42,7 +42,7 @@ RUN pip install itsdangerous
 # RUN pip install debugpy
 
 # Create Zope Instance
-RUN mkwsgiinstance -d . -u admin:admin
+RUN mkwsgiinstance -d /home/zope/ -u admin:admin
 
 # Mount Zope Instance Data
 COPY ./etc etc

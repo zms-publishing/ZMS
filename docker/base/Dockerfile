@@ -76,7 +76,7 @@ RUN --mount=type=cache,uid=$UID,target=$PIP_CACHE_DIR,sharing=locked <<EOR
 EOR
 
 # Create Zope Instance
-RUN mkwsgiinstance --dir . --user admin:admin
+RUN mkwsgiinstance --dir /home/zope/ --user admin:admin
 
 # Configure Zope Instance
 ARG BUILD_DIR=docker/base

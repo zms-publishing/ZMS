@@ -202,8 +202,8 @@
 							</div>
 						</div>
 					</td>
-					<td class="meta-id" tal:attributes="title python:here.getZMILangStr('ATTR_ID')"><input type="text" tal:attributes="name python:'attr_id_%s'%objAttrId; value python:objAttr['id']; class python:['form-control form-control-sm','form-control form-control-sm zmi-element-disabled'][isMetaDictAttr]"/></td>
-					<td class="meta-name" tal:attributes="title python:here.getZMILangStr('ATTR_DISPLAY')"><input type="text" tal:attributes="name python:'attr_name_%s'%objAttrId; value python:objAttr['name']; class python:['form-control form-control-sm','form-control form-control-sm zmi-element-disabled'][isMetaDictAttr]"/></td>
+					<td class="meta-id" tal:attributes="title python:'%s: \n%s'%(here.getZMILangStr('ATTR_ID'), objAttr['id'])"><input type="text" tal:attributes="name python:'attr_id_%s'%objAttrId; value python:objAttr['id']; class python:['form-control form-control-sm','form-control form-control-sm zmi-element-disabled'][isMetaDictAttr]"/></td>
+					<td class="meta-name" tal:attributes="title python:'%s: \n%s'%(here.getZMILangStr('ATTR_DISPLAY'), objAttr['name'])"><input type="text" tal:attributes="name python:'attr_name_%s'%objAttrId; value python:objAttr['name']; class python:['form-control form-control-sm','form-control form-control-sm zmi-element-disabled'][isMetaDictAttr]"/></td>
 
 					<tal:block tal:condition="python:objAttr['type'] in ['interface','method','py','resource','zpt']+here.valid_zopetypes">
 						<td tal:condition="python:objAttr['type'] not in here.valid_uploadtypes and objAttr.get('ob') is not None"

@@ -202,8 +202,8 @@
 							</div>
 						</div>
 					</td>
-					<td class="meta-id" tal:attributes="title python:'%s: \n%s'%(here.getZMILangStr('ATTR_ID'), objAttr['id'])"><input type="text" tal:attributes="name python:'attr_id_%s'%objAttrId; value python:objAttr['id']; class python:['form-control form-control-sm','form-control form-control-sm zmi-element-disabled'][isMetaDictAttr]"/></td>
-					<td class="meta-name" tal:attributes="title python:'%s: \n%s'%(here.getZMILangStr('ATTR_DISPLAY'), objAttr['name'])"><input type="text" tal:attributes="name python:'attr_name_%s'%objAttrId; value python:objAttr['name']; class python:['form-control form-control-sm','form-control form-control-sm zmi-element-disabled'][isMetaDictAttr]"/></td>
+					<td class="meta-id" tal:attributes="title python:'%s: \n%s'%(here.getZMILangStr('ATTR_ID'), objAttr['id'])"><input type="text" tal:attributes="name python:'attr_id_%s'%objAttrId; value python:objAttr['id']; class python:['form-control form-control-sm dynamic-input','form-control form-control-sm zmi-element-disabled'][isMetaDictAttr]"/></td>
+					<td class="meta-name" tal:attributes="title python:'%s: \n%s'%(here.getZMILangStr('ATTR_DISPLAY'), objAttr['name'])"><input type="text" tal:attributes="name python:'attr_name_%s'%objAttrId; value python:objAttr['name']; class python:['form-control form-control-sm dynamic-input','form-control form-control-sm zmi-element-disabled'][isMetaDictAttr]"/></td>
 
 					<tal:block tal:condition="python:objAttr['type'] in ['interface','method','py','resource','zpt']+here.valid_zopetypes">
 						<td tal:condition="python:objAttr['type'] not in here.valid_uploadtypes and objAttr.get('ob') is not None"
@@ -980,6 +980,36 @@
 		});
 
 	});
+
+
+	/**
+	 * Dynamic Inputs: On input fit field width to amount of text.
+	 */
+		var dynamic_inputs = document.querySelectorAll('.dynamic-input');
+		dynamic_inputs.forEach(input => {
+			const originalWidth = input.style.width;
+
+			input.addEventListener('focus', adjustWidth);
+			input.addEventListener('input', adjustWidth);
+			input.addEventListener('blur', () => resetWidth(input, originalWidth));
+
+			function adjustWidth() {
+				const text = input.value || input.placeholder;
+				const span = document.createElement('span');
+				span.style.visibility = 'hidden';
+				span.style.position = 'absolute';
+				span.style.whiteSpace = 'nowrap';
+				span.style.fontFamily = 'Courier New, monospace';
+				span.textContent = text;
+				document.body.appendChild(span);
+				input.style.width = span.offsetWidth + 'px';
+				document.body.removeChild(span);
+			}
+
+			function resetWidth(input, originalWidth) {
+				input.removeAttribute('style');
+			}
+		});
 
 
 	// +++++++++++++++++++++++++++

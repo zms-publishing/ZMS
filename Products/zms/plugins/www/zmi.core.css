@@ -1708,7 +1708,13 @@ table.table-sm td.meta-name,
 table.table-sm td.meta-name .form-control,
 table.table-sm td.meta-type,
 table.table-sm td.meta-type .form-control {
-	width: 10rem !important;
+	min-width: 10rem !important;
+	width: 10rem;
+}
+table.table-sm td.meta-id .form-control:focus,
+table.table-sm td.meta-name .form-control:focus {
+	position:absolute;
+	background-color: aliceblue;
 }
 table.table-sm td.meta-mandatory,
 table.table-sm td.meta-multilang,

@@ -5,8 +5,7 @@
 		dummy0 python:here.zmi_page_request(here,request);
 		zmi_paths python:standard.zmi_paths(here);
 		zmshome python:here.getHome();
-		zmshome_url python:zmshome.absolute_url(relative=1);
-		ZMS_HOME python:zmshome_url and '/%s/'%zmshome_url or '/%s'%zmshome_url;
+		ZMS_HOME python:'%s/'%('/'.join(zmshome.getPhysicalPath()));
 		ZMS_THEME python:here.getConfProperty('ZMS.theme','');
 		ZMS_THEME python:ZMS_THEME!='' and (ZMS_THEME +'/') or '';
 		zmi_css python:here.getConfProperty('ZMS.added.css.zmi').replace('$ZMS_HOME/',ZMS_HOME).replace('$ZMS_THEME/',ZMS_THEME);

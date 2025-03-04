@@ -51,14 +51,8 @@ if (typeof htmx != "undefined") {
 						</header>`;
 			}
 		});
-		window.parent.manage_main.htmx.on('htmx:sendError', (evt) => {
-			let manage_main_href = evt.detail.pathInfo.finalRequestPath;
-			if ( confirm(getZMILangStr('MSG_CONFIRM_RELOAD'))) {
-				window.parent.manage_main.location.assign(manage_main_href);
-			}
-		});
 	};
-	window.addEventListener('htmx:sendError', (evt) => {
+	document.addEventListener('htmx:sendError', (evt) => {
 		const manage_main_href = evt.detail.pathInfo.finalRequestPath;
 		if ( confirm(getZMILangStr('MSG_CONFIRM_RELOAD'))) {
 			const topWindow = window.parent.manage_main || window;
@@ -97,7 +91,7 @@ if (typeof htmx != "undefined") {
 		$ZMI.runReady();
 	};
 	// https://htmx.org/quirks/#history-can-be-tricky
-	window.addEventListener('htmx:historyRestore', (e) => {
+	document.addEventListener('htmx:historyRestore', (e) => {
 		$ZMI.runReady();
 	});
 }

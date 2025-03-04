@@ -39,7 +39,7 @@ if (typeof htmx != "undefined") {
 		body.classList.add('loading');
 	});
 	// Listen for the htmx response error event
-	if (window.parent.manage_main) {
+	if (window.parent.manage_mai && window.parent.manage_main.htmx) {
 		window.parent.manage_main.htmx.on('htmx:beforeSwap', (evt) => { 
 			if (evt.detail.xhr.status === 404) {
 				// Remove html body and wtrite error message
@@ -57,7 +57,14 @@ if (typeof htmx != "undefined") {
 				window.parent.manage_main.location.assign(manage_main_href);
 			}
 		});
-	}
+	};
+	window.addEventListener('htmx:sendError', (evt) => {
+		const manage_main_href = evt.detail.pathInfo.finalRequestPath;
+		if ( confirm(getZMILangStr('MSG_CONFIRM_RELOAD'))) {
+			const topWindow = window.parent.manage_main || window;
+			topWindow.location.assign(manage_main_href);
+		}
+	});
 	document.addEventListener('htmx:afterRequest', (evt) => {
 		var resp_text = evt.detail.xhr.responseText;
 		var parser = new DOMParser();

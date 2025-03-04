@@ -4,7 +4,7 @@ set -exo pipefail
 
 TARGET_HOST=${1:-new.dosis-jena.de}
 DIST_FILE=${2:-zope.latest.tar}
-DIST_DEBUG_FILE=${2:-zope-debug.latest.tar}
+DIST_DEBUG_FILE=${3:-zope-debug.latest.tar}
 
 cd "$(dirname "$0")/../dist"
 

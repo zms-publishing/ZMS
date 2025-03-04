@@ -466,12 +466,16 @@ def toCdata(self, s, xhtml=False):
 
   # Return Text in CDATA.
   elif s is not None:
-    if isinstance(s, bytes):
-      s = s.decode('utf-8')
-    # Hack for invalid characters
-    s = s.replace(chr(30), '')
-    # Hack for nested CDATA
-    s = re.compile(r'\<\!\[CDATA\[(.*?)\]\]\>').sub(r'<!{CDATA{\1}}>', s)
+    try:
+      if isinstance(s, bytes):
+        s = s.decode('utf-8')
+      # Hack for invalid characters
+      s = s.replace(chr(30), '')
+      # Hack for nested CDATA
+      s = re.compile(r'\<\!\[CDATA\[(.*?)\]\]\>').sub(r'<!{CDATA{\1}}>', s)
+    except:
+      standard.writeBlock(self, "[toCdata]: WARNING - Cannot create file/image object from binary data")
+      pass
     # Wrap with CDATA
     rtn = '<![CDATA[%s]]>'%s
 

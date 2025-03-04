@@ -4,8 +4,12 @@ set -exo pipefail
 
 TARGET_HOST=${1:-new.dosis-jena.de}
 DIST_FILE=${2:-zope.latest.tar}
+DIST_DEBUG_FILE=${2:-zope-debug.latest.tar}
 
 cd "$(dirname "$0")/../dist"
 
 rsync --checksum --partial --archive --itemize-changes --compress --progress $DIST_FILE $TARGET_HOST:
 ssh $TARGET_HOST "cat $DIST_FILE | sudo -iu zope podman load"
+
+rsync --checksum --partial --archive --itemize-changes --compress --progress $DIST_DEBUG_FILE $TARGET_HOST:
+ssh $TARGET_HOST "cat $DIST_DEBUG_FILE | sudo -iu zope podman load"

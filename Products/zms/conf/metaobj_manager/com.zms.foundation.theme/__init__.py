@@ -3,8 +3,14 @@ class com_zms_foundation_theme:
 	python-representation of com.zms.foundation.theme
 	"""
 
+	# Access
+	access = {"delete_custom":""
+		,"delete_deny":[]
+		,"insert_custom":""
+		,"insert_deny":[]}
+
 	# Enabled
-	enabled = 1
+	enabled = 0
 
 	# Id
 	id = "com.zms.foundation.theme"
@@ -16,7 +22,7 @@ class com_zms_foundation_theme:
 	package = ""
 
 	# Revision
-	revision = "5.0.1"
+	revision = "5.1.0"
 
 	# Type
 	type = "ZMSPackage"

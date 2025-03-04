@@ -265,7 +265,16 @@ def initialize(context):
             min_hash_fileobj.close()
             min_fileobj.close()
 
-        
+        # create hash value of zmi.js
+        zmi_js_fileobj = open(translate_path('/++resource++zms_/zmi.js'), 'r')
+        zmi_js_fileobj_content = zmi_js_fileobj.read()
+        zmi_js_hash = str(standard.encrypt_password(zmi_js_fileobj_content,hex=True))
+        zmi_js_hash_fileobj = open(translate_path('/++resource++zms_/zmi.js.hash'), 'w')
+        zmi_js_hash_fileobj.write(zmi_js_hash)
+        OFS.misc_.misc_.zms['confdict']['js_zmi.hash'] = zmi_js_hash
+        standard.writeStdout(context, "add %s" % zmi_js_hash_fileobj.name)
+        zmi_js_hash_fileobj.close()
+
         # automated generation of language JavaScript
         from xml.dom import minidom
         filename = os.sep.join([package_home(globals())]+['import', '_language.xml'])

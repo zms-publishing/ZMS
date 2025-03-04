@@ -7,7 +7,7 @@
   <head>
     
     <title>zms._objattrs.ObjAttrsManager</title>
-    <meta name="generator" content="pydoctor 22.5.1"> 
+    <meta name="generator" content="pydoctor 24.11.2"> 
         
     </meta>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
@@ -15,6 +15,7 @@
     <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="apidocs.css" />
     <link rel="stylesheet" type="text/css" href="extra.css" />
+    
 </head>
 
   <body>
@@ -52,7 +53,7 @@
             
             <span class="input-group-btn">
               <a style="display: none;" class="btn btn-default" id="search-clear-button" title="Clear" onclick="clearSearch()"><img src="fonts/x-circle.svg" alt="Clear" /></a>
-              <a class="btn btn-default" id="search-help-button" title="Help" onclick="toggleSearchHelpText()"><img src="fonts/info.svg" alt="Help" /></a>
+              <a class="btn btn-default" id="apidocs-help-button" title="Help" href="apidocs-help.html"><img src="fonts/info.svg" alt="Help" /></a>
             </span>
           </div>
         </div>
@@ -76,39 +77,6 @@
             <h1>Cannot search: JavaScript is not supported/enabled in your browser.</h1>
         </noscript>
 
-        <div class="hint" id="search-help-box">
-          <p class="rst-last">
-      
-            Search bar offers the following options:
-            <ul>   
-                <li>
-                  <strong>Term presence.</strong> The below example searches for documents that 
-                    must contain “foo”, might contain “bar” and must not contain “baz”: <code>+foo bar -baz</code>
-                </li> 
-
-                <li>
-                  <strong>Wildcards.</strong> The below example searches for documents with words beginning with “foo”: <code>foo*</code>
-                </li> 
-
-                <li>
-                  <strong>Search in specific fields.</strong> The following search matches all objects 
-                  in "twisted.mail" that matches “search”: <code>+qname:twisted.mail.* +search</code>
-
-                  <p>
-                    Possible fields: 'name', 'qname' (fully qualified name), 'docstring', and 'kind'.
-                    Last two fields are only applicable if "search in docstrings" is enabled.
-                  </p>
-                </li>
-
-                <li>
-                  <strong>Fuzzy matches.</strong> The following search matches all documents 
-                  that have a word within 1 edit distance of “foo”: <code>foo~1</code>
-                </li>
-            </ul>
-
-          </p>
-        </div>
-
         <div id="search-status"> </div>
 
         <div class="warning" id="search-warn-box" style="display: none;">
@@ -119,8 +87,8 @@
           <!-- Filled dynamically by JS -->
         </table>
         
-        <div style="margin-top: 8px;">
-          <p>Results provided by <a href="https://lunrjs.com">Lunr.js</a></p>
+        <div style="margin-top: 10px;">
+          <p>For more information on the search, visit the <a href="apidocs-help.html#rst-search">help page</a>.</p>
         </div>
       </div>
 
@@ -327,7 +295,7 @@
         </div>
 
         <div class="extrasDocstring">
-          <p><code><span class="py-keyword">class</span> <span class="py-defname">ObjAttrsManager</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objattrs.py#L1225" class="sourceLink">(source)</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ObjAttrsManager</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objattrs.py#L1231" class="sourceLink">(source)</a></code></p>
           <p><a href="classIndex.html#zms._objattrs.ObjAttrsManager">View In Hierarchy</a></p>
         </div>
 
@@ -373,14 +341,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">synchronizeObjAttr</span>(self, attr):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objattrs.py#L1232">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">synchronizeObjAttr</span><span class="function-signature">(self, attr)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objattrs.py#L1238">
       
       (source)
     </a>
+    <a class="headerLink" href="#synchronizeObjAttr" title="zms._objattrs.ObjAttrsManager.synchronizeObjAttr">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -395,17 +368,21 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">synchronizeObjAttrs</span>(self, sync_id=None):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objattrs.py#L1270">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">synchronizeObjAttrs</span><span class="function-signature">(self, sync_id=None)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objattrs.py#L1276">
       
       (source)
+    </a>
+    <a class="headerLink" href="#synchronizeObjAttrs" title="zms._objattrs.ObjAttrsManager.synchronizeObjAttrs">
+      
+      
+      ¶
     </a>
   </div>
   <div class="docstring functionBody">
     
-    
-    <div><p>Synchronizes dictionary of object-attributes.</p>
-<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">sync<wbr></wbr>_id</span></td><td class="fieldArgDesc">meta-id of content-object, if None synchronize all.</td></tr></table></div>
+    <div><p>Synchronizes dictionary of object-attributes.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">sync<wbr></wbr>_id</span></td><td class="fieldArgDesc">meta-id of content-object, if None synchronize all.</td></tr></table></div>
   </div>
 </div><div class="baseinstancevariable">
   
@@ -419,13 +396,17 @@
   <div class="functionHeader">
     
     <span class="py-defname">dObjAttrs</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objattrs.py#L1311">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objattrs.py#L1317">
       
       (source)
     </a>
+    <a class="headerLink" href="#dObjAttrs" title="zms._objattrs.ObjAttrsManager.dObjAttrs">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
     
@@ -439,10 +420,10 @@
     <footer class="navbar navbar-default">
 
   
-  <div class="container">
+  <div class="container-fluid">
     <a href="index.html">API Documentation</a> for <a href="https://github.com/zms-publishing/ZMS/" class="projecthome">ZMS</a>,
   generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
-    <!-- t:slot name="pydoctor_version" /&gt; at <t:slot name="buildtime" / -->.
+    <!-- t:slot name="pydoctor_version" /> at <t:slot name="buildtime" / -->.
   </div>
 
   <!-- Search related scripts needs to be loaded at the end of HTML 

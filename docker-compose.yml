@@ -45,6 +45,30 @@ services:
         stdin_open: true
         tty: true
 
+    zope-debug:
+        build:
+            context: .
+            dockerfile: ./docker/base/Dockerfile.debug
+        image: localhost/zope-debug:latest
+        depends_on:
+            - zeo
+        stop_grace_period: 1s # SIGKILL after 1s, as zope is always taking the full 10 seconds
+        command: code-server --bind-addr 0.0.0.0:8080 --auth none  /home/zope
+        ports:
+            - 8080:8080 # VSCode-Server
+            - 5678:5678 # debugpy (vscode remote debugger)
+            - 8085:8085 # Running Default Zope-Server on ZEO
+            - 8086:8086 # Provided for Debugger-Zope-Instance
+        volumes:
+            - ./docker/zope/etc/:/home/zope/etc/
+            - ./docker/zope/var/:/home/zope/var/
+            # To share external methods between Zope/ZEO/Docker clients folder needs to be mounted
+            - ./docker/zope/Extensions/:/home/zope/Extensions/
+            # source code
+            - ./tests:/home/zope/tests
+            - ./test_output:/home/zope/test_output
+            - ./selenium_tests:/home/zope/selenium_tests
+
     zeo:
         build:
             context: .

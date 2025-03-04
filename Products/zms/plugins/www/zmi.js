@@ -90,14 +90,8 @@ if (typeof htmx != "undefined") {
 		$ZMI.runReady();
 	};
 	// https://htmx.org/quirks/#history-can-be-tricky
-	// meta does not work => use popstate
-	window.addEventListener('popstate', function (e) {
-		var state = e.state;
-		if (state !== null) {
-			setTimeout(function() {
-				$ZMI.runReady();
-			}, 200);
-		}
+	window.addEventListener('htmx:historyRestore', (e) => {
+		$ZMI.runReady();
 	});
 }
 

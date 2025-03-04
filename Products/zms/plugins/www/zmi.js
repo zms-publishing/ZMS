@@ -39,7 +39,7 @@ if (typeof htmx != "undefined") {
 		body.classList.add('loading');
 	});
 	// Listen for the htmx response error event
-	if (window.parent.manage_mai && window.parent.manage_main.htmx) {
+	if (window.parent.manage_main && window.parent.manage_main.htmx) {
 		window.parent.manage_main.htmx.on('htmx:beforeSwap', (evt) => { 
 			if (evt.detail.xhr.status === 404) {
 				// Remove html body and wtrite error message

@@ -115,6 +115,10 @@ class RestAPITest(ZMSTestCase):
             actual = json.loads( self.context.__bobo_traverse__(self.context.REQUEST, name)(self.context.REQUEST))
             print(json.dumps(actual))
             self.assertEqual( len(actual), len(document.getTreeNodes(self.context.REQUEST)))
+            # get_child_nodes/count + multilingual
+            self.context.REQUEST = mock_http.MockHTTPRequest({'REQUEST_METHOD':'GET','TraversalRequestNameStack':path_to_handle+['get_child_nodes','count'],'path_to_handle':path_to_handle+['get_child_nodes','count']})
+            print("path_to_handle", self.context.REQUEST.get('path_to_handle'))
+            actual = json.loads( self.context.__bobo_traverse__(self.context.REQUEST, name)(self.context.REQUEST))
             # get_child_nodes + multilingual
             self.context.REQUEST = mock_http.MockHTTPRequest({'REQUEST_METHOD':'GET','TraversalRequestNameStack':path_to_handle+['get_child_nodes'],'path_to_handle':path_to_handle+['get_child_nodes']})
             print("path_to_handle", self.context.REQUEST.get('path_to_handle'))

@@ -1288,7 +1288,7 @@ ZMIObjectTree.prototype.addPages = function(nodes) {
 		var link_url = node.index_html;
 		var icon = that.metamodel[node.meta_id] ? $ZMI.icon(that.metamodel[node.meta_id].icon_clazz) : $ZMI.icon('far fa-file');
 		var anchor = '';
-		var css = [ node.is_page ? 'is_page' : 'is_page_element' ];
+		var css = [ node.is_page ? 'is_page' : node.is_page_element ? 'is_page_element' : '' ];
 		var callback = that.p['toggleClick.callback'];
 
 		if ((node.titlealt.toUpperCase().search('REDIRECT') > -1) &&
@@ -1313,7 +1313,7 @@ ZMIObjectTree.prototype.addPages = function(nodes) {
 		};
 		html += `<ul data-id="${node.uid}" class="zmi-page ${node.meta_id}${node.is_page_element ? ' is_page_element' :''}">`;
 		html += `<li class="${css.join(' ')}">`;
-		if (!(that.p.params.meta_types == 'ZMS' && node.meta_id == 'ZMS' && !node.has_portal_clients)) {
+		if (!(that.p.params.meta_types == 'ZMS' && node.meta_id == 'ZMS' && !node.has_portal_clients) && !(node.meta_id == 'ZMSTrashcan')) {
 			html += `<i class="fas fa-caret-right toggle" title="+" onclick="$ZMI.objectTree.toggleClick(this ${typeof callback=='undefined' ? '' : ',' + callback})"></i> `;
 		} else {
 			html += `<i class="fas fa-caret-right toggle" title="-" style="visibility:hidden"></i> `;

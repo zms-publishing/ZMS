@@ -225,6 +225,7 @@ class RestApiController(object):
     @api(tag="metamodel", pattern="/metaobj_manager", content_type="application/json")
     def metaobj_manager(self, context):
         data = {}
+        data['ZMSTrashcan'] = {'icon_clazz': 'fas fa-trash'}
         for id in context.getMetaobjIds():
             d = {}
             d['icon_clazz'] = context.aq_parent.zmi_icon(id)

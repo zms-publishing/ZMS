@@ -916,7 +916,8 @@ class ZMSContainerObject(
       order. If none, this is a empty node-list. 
       """
       childNodes = []
-      obs = self.objectValues(list(self.dGlobalAttrs))
+      ob_types = list(self.dGlobalAttrs) + [[],['ZMSTrashcan']][bool(meta_types and 'ZMSTrashcan' in meta_types)]
+      obs = self.objectValues(ob_types)
       # Filter ids.
       if reid:
         pattern = re.compile( reid)

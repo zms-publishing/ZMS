@@ -96,7 +96,7 @@ paths:
           required: false
           schema:
             type: string
-            example: /e34/e36/
+            example: e34/e36
       responses:
         '200':    # status code
           description: A JSON array of Parent Objects Meta-Data
@@ -117,7 +117,7 @@ paths:
           required: false
           schema:
             type: string
-            example: /e34/e36/
+            example: e34/e36
       responses:
         '200':    # status code
           description: A JSON array of Children Objects Meta-Data
@@ -163,7 +163,7 @@ paths:
           required: false
           schema:
             type: string
-            example: /e34/e36/
+            example: e34/e36
       responses:
         '200':    # status code
           description: A JSON array of Parent Objects Content
@@ -186,7 +186,7 @@ paths:
           required: false
           schema:
             type: string
-            example: /e34/e36/
+            example: e34/e36
       responses:
         '200':    # status code
           description: A JSON array of Children Objects Content
@@ -209,7 +209,7 @@ paths:
           required: false
           schema:
             type: string
-            example: /e34/e36/
+            example: e34/e36
       responses:
         '200':    # status code
           description: The Number of the Object's Children
@@ -253,10 +253,30 @@ paths:
           required: false
           schema:
             type: string
-            example: /
+            example: e34/e36
       responses:
         '200':    # status code
           description: A JSON array of user names
+          content:
+            text/html:
+              type: string
+  /{path}/get_htmldiff:
+    get:
+      tags:
+        - content
+      summary: Returns changes (diff) of ZMS-object versions.
+      description: get diff of ZMS-object versions
+      parameters:
+        - name: path
+          in: path
+          description: id-path to resource
+          required: false
+          schema:
+            type: string
+            example: /
+      responses:
+        '200':    # status code
+          description: A del/ins-structured HTML stream
           content:
             text/html:
               type: string

@@ -260,20 +260,27 @@ paths:
           content:
             text/html:
               type: string
-  /{path}/get_htmldiff:
-    get:
+  /get_htmldiff:
+    post:
       tags:
         - content
-      summary: Returns changes (diff) of ZMS-object versions.
-      description: get diff of ZMS-object versions
+      summary: Returns Differences of text/html-Content.
+      description: get content differences
       parameters:
-        - name: path
-          in: path
-          description: id-path to resource
+        - name: original
+          in: query
+          description: original html version
           required: false
           schema:
-            type: string
-            example: /
+            type: text
+            example: '<p>Good Morning Mr Smith</p>'
+        - name: changed
+          in: query
+          description: changed html version
+          required: false
+          schema:
+            type: text
+            example: '<p>Good Bye Mr Smith</p>'
       responses:
         '200':    # status code
           description: A del/ins-structured HTML stream

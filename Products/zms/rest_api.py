@@ -275,6 +275,7 @@ class RestApiController(object):
         nodes = context.getObjChildren(id_prefix, request, meta_types)
         if context.meta_type == 'ZMS':
             nodes.extend(context.getPortalClients())
+        return nodes
 
     @api(tag="navigation", pattern="/{path}/get_child_nodes/count", method="GET", content_type="application/json")
     def get_child_nodes__count(self, context):

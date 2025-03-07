@@ -217,8 +217,6 @@ paths:
             application/json:
               schema:
                 type: integer
-                items:
-                  $ref: '#/components/responses/ZMSObjectResponse'
   /{path}/get_tree_nodes:
     get:
       tags:

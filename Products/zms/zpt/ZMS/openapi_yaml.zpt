@@ -264,29 +264,34 @@ paths:
     post:
       tags:
         - content
-      summary: Returns Differences of text/html-Content.
-      description: get content differences
-      parameters:
-        - name: original
-          in: query
-          description: original html version
-          required: false
-          schema:
-            type: text
-            example: '<p>Good Morning Mr Smith</p>'
-        - name: changed
-          in: query
-          description: changed html version
-          required: false
-          schema:
-            type: text
-            example: '<p>Good Bye Mr Smith</p>'
+      summary: Returns the Diff of two HTML streams
+      description: Get the Diff of two HTML streams.
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                original:
+                  type: string
+                  description: Original HTML text
+                  example: '<p><cite>The Web does not just connect computers, it connects people.</cite> - Tim Berners-Lee</p>'
+                changed:
+                  type: string
+                  description: Changed HTML text
+                  example: '<p><cite>The Web does not just connect machines, it connects people.</cite> - Tim Berners-Lee</p>'
+              required:
+                - original
+                - changed
       responses:
         '200':    # status code
-          description: A del/ins-structured HTML stream
+          description: Structured Diff of two HTML streams.
           content:
             text/html:
-              type: string
+              schema:
+                type: string
+                example: '<div class="diff"><pre><del>original</del><ins>changed</ins></pre></div>'
 components:
   responses:
     ZMSObjectResponse:

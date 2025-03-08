@@ -6,13 +6,16 @@ $ZMI.registerReady(function() {
 	.then(
 		response => response.text())
 		.then(data => {
-			if (parseInt(data) > 0) {
+			if (parseInt(data,10) > 0) {
+				const sanitizedData = parseInt(data, 10);
+				const trashcanTitle = `${sanitizedData} Object(s) in Trashcan`;
+				const trashcanUrl = `${$ZMI.getBaseUrl()}/trashcan/manage?lang=${getZMILang()}`;
 				$('header #toggle_menu').after(`
-					<li id="trashrestore" class="form-inline desktop hidden-xs" title="${data} Object(s) in Trashcan">
-						<a target="_top" href="${$ZMI.getBaseUrl()}/trashcan/manage?lang=ger">
+					<li id="trashrestore" class="form-inline desktop hidden-xs" title="${trashcanTitle}">
+						<a target="_top" href="${trashcanUrl}">
 							<i class="fas fa-trash-restore"></i>
 						</a>
-					</li>`)
+					</li>`);
 			};
 		})
 	.catch(error => console.error('Error ++rest_api:', error));

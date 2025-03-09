@@ -107,7 +107,7 @@ def zmi_basic_actions(container, context, objAttr, objChildren, objPath=''):
   
   #-- Action: Paste.
   if repetitive or objChildren==0:
-    if container.cb_dataValid():
+    if container.cb_dataValid() and container.meta_id!='ZMSTrashcan':
       if objAttr['type']=='*':
         meta_ids = objAttr['keys']
       else:

@@ -13,10 +13,6 @@ function zmiSelectObject(sender) {
 	if (href.startsWith(origin) || href.startsWith('/')) {
 		// Change location in manage_main-frame with htmx: https://htmx.org/api/#ajax
 		window.parent.manage_main.htmx.ajax("GET", href + "/manage_main?lang=" + lang, 'body')
-		.then(() => {
-			window.parent.manage_main.history.replaceState({title:title}, title, href + "/manage_main?lang=" + lang + '&test=1');
-			window.parent.history.pushState({title:title}, title, href + "/manage?lang=" + lang + '&dtpref_sitemap=1');
-		})
 	} else {
 		// Open new home in new tab
 		window.open(href + "/manage?lang=" + lang + "&dtpref_sitemap=1", "_blank").focus();

@@ -11,7 +11,9 @@ $ZMI.registerReady(function(){
 			// Bookmark
 			if (manage_menu) {
 				$("#zmi-tab .breadcrumb").each(function() {
-					$(this).append('<li class="btn-bookmark"><a href="javascript:;" title="Set Bookmark" class="align-text-top"><i class="far fa-bookmark text-muted"></a><li>');
+					if ($(".btn-bookmark",this).length==0) {
+						$(this).append('<li class="btn-bookmark"><a href="javascript:;" title="Set Bookmark" class="align-text-top"><i class="far fa-bookmark text-muted"></a><li>');
+					};
 					var key = "ZMS."+data_root+".bookmarks";
 					var bookmarks = $ZMILocalStorageAPI.get(key,[]);
 					$("a:last",this).click(function() {

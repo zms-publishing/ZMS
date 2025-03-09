@@ -108,7 +108,7 @@
 						hx-get="manage_changeMetaProperties"
 						hx-target="#zmi_manage_tabs_message"
 						hx-confirm="Do you really want to delete this object?"
-						hx-on:htmx:after-request="clean_deleted_row(this)"
+						hx-on:htmx:after-request="remove_row(this)"
 						tal:attributes="
 							hx-get python:'manage_changeMetaProperties?btn=BTN_DELETE&target=zmi_manage_tabs_message&lang=%s&id=%s'%(request.get('lang',here.getPrimaryLanguage()),metadictAttr['id']);
 							hx-confirm python:here.getZMILangStr('MSG_CONFIRM_DELOBJ');
@@ -162,20 +162,20 @@
 		</tal:block>
 	</tr>
 	<tr class="row_insert form-group">
-		<td class="meta-sort text-right"><span class="btn btn-add mr-1 btn-secondary btn-sm"><i class="fas fa-plus"></i></span></td>
-		<td class="meta-id"><input class="form-control form-control-sm" type="text" name="_id" /></td>
-		<td class="meta-name"><input class="form-control form-control-sm" type="text" name="_name" /></td>
+		<td class="meta-sort text-right"><span class="btn btn-add mr-1 btn-secondary btn-sm" onclick="javascript:add_new_row(this)"><i class="fas fa-plus"></i></span></td>
+		<td class="meta-id"><input class="form-control form-control-sm" type="text" name="attr_id" disabled="disabled" /></td>
+		<td class="meta-name"><input class="form-control form-control-sm" type="text" name="attr_name" disabled="disabled" /></td>
 		<td class="meta-type">
-			<select id="populate_type" class="form-control form-control-sm" name="_type">
+			<select id="populate_type" class="form-control form-control-sm" name="attr_type" disabled="disabled">
 				<option value="">--- <tal:block tal:content="python:here.getZMILangStr('ATTR_PRIMITIVE')">Primitive</tal:block> ---</option>
 				<option tal:repeat="datatype python:here.valid_datatypes" tal:attributes="value datatype" tal:content="datatype">datatype</option>
 				<option value="">--- <tal:block tal:content="python:here.getZMILangStr('ATTR_OBJECTS')">Objects</tal:block> ---</option>
 				<option tal:repeat="meta_type python:here.getMetaobjIds(sort=True,excl_ids=['ZMS'])" tal:attributes="value meta_type" tal:content="python:here.display_type(meta_id=meta_type)">meta_type</option>
 			</select>
 		</td>
-		<td class="meta-mandatory"><input type="checkbox" name="_mandatory:int" value="1" /></td>
-		<td class="meta-multilang"><input type="checkbox" name="_multilang:int" value="1" /></td>
-		<td class="meta-repetitive"><input type="checkbox" name="_repetitive:int" value="1" /></td>
+		<td class="meta-mandatory"><input type="checkbox" name="attr_mandatory:int" value="1" disabled="disabled" /></td>
+		<td class="meta-multilang"><input type="checkbox" name="attr_multilang:int" value="1" disabled="disabled" /></td>
+		<td class="meta-repetitive"><input type="checkbox" name="attr_repetitive:int" value="1" disabled="disabled" /></td>
 		<td>&nbsp;</td>
 	</tr>
 	</tbody>
@@ -204,11 +204,6 @@
 
 <script>
 // <!--
-
-	/**
-	 * Global vars.
-	 */
-	var table_id = 'meta_properties';
 
 	/**
 	 * Export xml.
@@ -248,70 +243,6 @@
 	}
 
 	/**
-	 * Normalize inserted rows.
-	 */
-	function renew_sort_options() {
-
-		let lang = getZMILang();
-		// Remove highlighting of new rows
-		$('tr[id*="new_row"]').each(function() {
-			$(this).removeAttr('id');
-		});
-
-		let sort_options_len = $('#' + table_id + ' tbody tr').length;
-		let $rows = $('#' + table_id + ' tbody tr');
-		let row_counter = 0;
-
-		$rows.each( function() {
-			row_counter++;
-			let sort_options_html = ``;
-			let old_id_html = $(this).find('input[name="old_ids:list"]').prop('outerHTML');
-			let old_id = $(this).find('td.meta-id input').val();
-			if (old_id_html == undefined) {
-				old_id_html = `<input type="hidden" name="old_ids:list" value="${old_id}">`;
-			};
-			for (let i = 1; i < sort_options_len; i++) {
-				if (i == row_counter) {
-					sort_options_html += `<option value="${i}" selected>${i}</option>`;
-				} else {
-					sort_options_html += `<option value="${i}">${i}</option>`;
-				}
-			};
-			let new_btn_html = `
-				<div class="input-group input-group-sm">
-					${old_id_html}
-					<select class="zmi-sort form-control-sm"
-						onchange="zmiFormSubmit(this,{btn:'move_to',id:'${old_id}','pos:int':this.selectedIndex})">
-						${sort_options_html}
-					</select>
-					<div class="input-group-append">
-						<a class="btn btn-secondary" title="Delete Meta Attribute"
-							hx-get="manage_changeMetaProperties?btn=BTN_DELETE&target=zmi_manage_tabs_message&lang=${lang}&id=${old_id}"
-							hx-target="#zmi_manage_tabs_message"
-							hx-on:htmx:after-request="clean_deleted_row(this)">
-							<i class="fas fa-times"></i>
-						</a>
-					</div>
-				</div>
-			`;
-			if (row_counter < sort_options_len) {
-				$(this).find('td.meta-sort').html(new_btn_html);
-				htmx.process($(this).find('td.meta-sort')[0]); // Process the new elements with htmx
-			};
-		});
-	};
-
-	/**
-	 * Normalize after deleting a row.
-	 */
-	 function clean_deleted_row(sender) {
-		$(sender).closest('tr').hide('slow',function(){
-			$(sender).closest('tr').remove();
-			renew_sort_options();
-		})
-	}
-
-	/**
 	 * Populate type select-list.
 	 */
 	function zmiPopulateTypeSelect(sender) {
@@ -329,95 +260,17 @@
 		}
 	}
 
-	/**
-	 * Init.
-	 */
+	// Execute on DOM-Ready
 	$(function(){
-
-		// ########################################################################
 		// Clone meta_types select lists from .row_insert-template
 		$("select[name^=attr_type_]")
 			.focus(function(){zmiPopulateTypeSelect(this)})
 			.hover(function(){zmiPopulateTypeSelect(this)})
-		;
-		// ########################################################################
-
-		// New field set: initially disable inputs
-		$('input, textarea, select','tr.row_insert').attr('disabled',true);
-
-		// ++++++++++++
-		// Add rows to tables #meta_properties on button click
-		// ++++++++++++
-		let new_row_counter = 0;
-
-		// Add click event function to add-buttons
-		$(".row_insert .btn-add").click(function(){
-			new_row_counter++;
-			// New field set: clone with enabled inputs
-			$('input, textarea, select','tr.row_insert').attr('disabled',false);
-
-			// Where to insert the new row
-			let $where_insert = $(this).closest('tr');
-
-			// Set variables
-			let new_row_name = `new_row_${table_id}_${new_row_counter}`;
-			let old_id_html = `<input type="hidden" name="old_ids:list" value="new${new_row_counter}">`;
-			let new_btn_html = `
-				${old_id_html}
-				<span class="btn btn-secondary btn-sm mr-1 w-100" style="color:#999"
-					title="Revoke new Meta Attribute"
-					onclick="javascript:$(this).closest('tr').hide('slow',function(){$(this).closest('tr').remove()})">
-					<i class="fas fa-undo-alt"></i>
-				</span>
-			`;
-
-			// Clone(true) to get a deep copy including select options
-			let $new_row = $where_insert.clone(true);
-
-			// Process table cells of the clone like "old" row
-			$new_row.find('td').each(function() {
-				$(this).find('input,select,textarea').each(function() {
-					let tagname = $(this).prop('tagName');
-					let defname = $(this).attr('name');
-					let deftype = $(this).attr('type');
-					let newname = $(this).attr('name').split('_')[1].split(':')[0];
-					let newval  = $(this).val();
-					newname = `attr_${newname}_new${new_row_counter}`
-					newname = defname.includes(':') ? `${newname}:int` : newname;
-					$(this).attr('name',newname);
-					newval = `new${new_row_counter}`;
-					if ( tagname == 'INPUT' && deftype != 'checkbox') {
-						$(this).val(newval);
-						$(this).attr('placeholder',newval);
-					} else if ( deftype == 'checkbox' ) {
-						$(this).val(1);
-					};
-					// Remove id #populate_type from cloned select
-					if ( tagname == 'SELECT') {
-						$(this).removeAttr('id');
-					};
-				});
-			});
-
-			// Process td:first-child of the clone
-			$new_row.find('td.meta-sort').html(new_btn_html);
-			$new_row.removeClass('row_insert').attr('id',new_row_name)
-
-			// Insert the new row
-			$new_row.insertBefore($where_insert);
-			// Set form as modified
-			$ZMI.set_form_modified($('.meta-id input',$new_row));
-			// Reset the clone template
-			$where_insert.find('input:not([type="checkbox"]),select,textarea').each(function() {
-				$(this).val(undefined);
-			});
-			// New field set: reset to disabled inputs
-			$('input, textarea, select','tr.row_insert').attr('disabled',true);
-		});
-
+			;
 	});
 // -->
 </script>
+<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/row_insert.js"></script>
 
 <footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 </body>

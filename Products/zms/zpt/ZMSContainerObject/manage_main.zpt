@@ -8,7 +8,8 @@
 	data-level python:here.getLevel();
 	data-type python:here.attr('attr_dc_type') or nothing;
 	id python:'zmsid_%s'%(here.id);
-	class python:here.zmi_body_class(id='properties')">
+	class python:here.zmi_body_class(id='properties')"
+	hx-push-url="true">
 <header tal:replace="structure python:here.zmi_body_header(here,request)">zmi_body_header</header>
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>

@@ -61,8 +61,8 @@ https://virtualenv.pypa.io/en/latest/installation.html
 ``pip`` is the PyPA recommended tool for installing and managing Python packages:
 https://pip.pypa.io/en/latest/installing.html
 
-Users of Microsoft Windows 10/11 can enable the Windows subsystem for Linux (WSL) for installing ZMS as under Linux (`Bash on Ubuntu on Windows <https://msdn.microsoft.com/de-de/commandline/wsl/install_guide>`_). Apple OS X running updated Xcode command line tools causes compiler errors rather than warnings used until before. You can `downgrade these errors to warnings <https://langui.sh/2014/03/10/wunused-command-line-argument-hard-error-in-future-is-a-harsh-mistress/>`_ again. If you get compilation errors like ``fatal error: Python.h: No such file or directory compilation terminated``, install development headers using your system's recommended package manager.
+Users of Microsoft Windows 11 can enable the Windows subsystem for Linux (WSL) for installing ZMS as under Linux (`Bash on Ubuntu on Windows <https://msdn.microsoft.com/de-de/commandline/wsl/install_guide>`_). Apple OS X running updated Xcode command line tools causes compiler errors rather than warnings used until before. You can `downgrade these errors to warnings <https://langui.sh/2014/03/10/wunused-command-line-argument-hard-error-in-future-is-a-harsh-mistress/>`_ again. If you get compilation errors like ``fatal error: Python.h: No such file or directory compilation terminated``, install development headers using your system's recommended package manager.
 
 ____
 
-Copyright (c) 2000-2024 `HOFFMANN+LIEBENBERG <http://www.hoffmannliebenberg.de>`_ in association with `SNTL Publishing <http://www.sntl-publishing.com>`_, Berlin. Code released under the `GNU General Public License v3 <http://www.gnu.org/licenses/gpl.html>`_ license.
+Copyright (c) 2000-2025 `HOFFMANN+LIEBENBERG <http://www.hoffmannliebenberg.de>`_ in association with `SNTL Publishing <http://www.sntl-publishing.com>`_, Berlin. Code released under the `GNU General Public License v3 <http://www.gnu.org/licenses/gpl.html>`_ license.

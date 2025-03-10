@@ -16,10 +16,10 @@ class ZMSTheme:
 	id = "ZMSTheme"
 
 	# Name
-	name = "ZMSTheme"
+	name = "ZMSTheme-Switch"
 
 	# Package
-	package = "com.zms.foundation.theme"
+	package = "com.zms.foundation.theming"
 
 	# Revision
 	revision = "5.0.1"

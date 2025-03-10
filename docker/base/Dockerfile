@@ -25,11 +25,18 @@ RUN \
 EOR
 
 # Drop root privileges
+# We need hardcoded uid/gid so we can later share the production files as bind mounts with the correct uid/gid
 ENV UID=1000
 ENV GID=1000
 RUN groupadd --gid $GID zope ; useradd --system --create-home --uid $UID --gid $GID zope
 USER zope
 WORKDIR /home/zope/
+
+# Configure git for user
+RUN <<EOR
+    git config --global user.email "zmsbot@container"
+    git config --global user.name "zmsbot"
+EOR
 
 # Install uv
 # COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv

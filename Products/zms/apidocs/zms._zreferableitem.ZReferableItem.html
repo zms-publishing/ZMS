@@ -7,7 +7,7 @@
   <head>
     
     <title>zms._zreferableitem.ZReferableItem</title>
-    <meta name="generator" content="pydoctor 22.5.1"> 
+    <meta name="generator" content="pydoctor 24.11.2"> 
         
     </meta>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
@@ -15,6 +15,7 @@
     <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="apidocs.css" />
     <link rel="stylesheet" type="text/css" href="extra.css" />
+    
 </head>
 
   <body>
@@ -52,7 +53,7 @@
             
             <span class="input-group-btn">
               <a style="display: none;" class="btn btn-default" id="search-clear-button" title="Clear" onclick="clearSearch()"><img src="fonts/x-circle.svg" alt="Clear" /></a>
-              <a class="btn btn-default" id="search-help-button" title="Help" onclick="toggleSearchHelpText()"><img src="fonts/info.svg" alt="Help" /></a>
+              <a class="btn btn-default" id="apidocs-help-button" title="Help" href="apidocs-help.html"><img src="fonts/info.svg" alt="Help" /></a>
             </span>
           </div>
         </div>
@@ -76,39 +77,6 @@
             <h1>Cannot search: JavaScript is not supported/enabled in your browser.</h1>
         </noscript>
 
-        <div class="hint" id="search-help-box">
-          <p class="rst-last">
-      
-            Search bar offers the following options:
-            <ul>   
-                <li>
-                  <strong>Term presence.</strong> The below example searches for documents that 
-                    must contain “foo”, might contain “bar” and must not contain “baz”: <code>+foo bar -baz</code>
-                </li> 
-
-                <li>
-                  <strong>Wildcards.</strong> The below example searches for documents with words beginning with “foo”: <code>foo*</code>
-                </li> 
-
-                <li>
-                  <strong>Search in specific fields.</strong> The following search matches all objects 
-                  in "twisted.mail" that matches “search”: <code>+qname:twisted.mail.* +search</code>
-
-                  <p>
-                    Possible fields: 'name', 'qname' (fully qualified name), 'docstring', and 'kind'.
-                    Last two fields are only applicable if "search in docstrings" is enabled.
-                  </p>
-                </li>
-
-                <li>
-                  <strong>Fuzzy matches.</strong> The following search matches all documents 
-                  that have a word within 1 edit distance of “foo”: <code>foo~1</code>
-                </li>
-            </ul>
-
-          </p>
-        </div>
-
         <div id="search-status"> </div>
 
         <div class="warning" id="search-warn-box" style="display: none;">
@@ -119,8 +87,8 @@
           <!-- Filled dynamically by JS -->
         </table>
         
-        <div style="margin-top: 8px;">
-          <p>Results provided by <a href="https://lunrjs.com">Lunr.js</a></p>
+        <div style="margin-top: 10px;">
+          <p>For more information on the search, visit the <a href="apidocs-help.html#rst-search">help page</a>.</p>
         </div>
       </div>
 
@@ -507,7 +475,7 @@
         </div>
 
         <div class="extrasDocstring">
-          <p><code><span class="py-keyword">class</span> <span class="py-defname">ZReferableItem</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L121" class="sourceLink">(source)</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZReferableItem</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L122" class="sourceLink">(source)</a></code></p>
           <p><a href="classIndex.html#zms._zreferableitem.ZReferableItem">View In Hierarchy</a></p>
         </div>
 
@@ -643,14 +611,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">findObject</span>(self, url):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L369">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">findObject</span><span class="function-signature">(self, url)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L370">
       
       (source)
     </a>
+    <a class="headerLink" href="#findObject" title="zms._zreferableitem.ZReferableItem.findObject">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -665,14 +638,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">getLinkObj</span>(self, url, REQUEST=None):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L390">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getLinkObj</span><span class="function-signature">(self, url, REQUEST=None)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L391">
       
       (source)
     </a>
+    <a class="headerLink" href="#getLinkObj" title="zms._zreferableitem.ZReferableItem.getLinkObj">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -687,14 +665,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">getLinkUrl</span>(self, url, REQUEST=None):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L438">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getLinkUrl</span><span class="function-signature">(self, url, REQUEST=None)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L439">
       
       (source)
     </a>
+    <a class="headerLink" href="#getLinkUrl" title="zms._zreferableitem.ZReferableItem.getLinkUrl">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -709,14 +692,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">getRefByObjs</span>(self, REQUEST=None):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L178">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getRefByObjs</span><span class="function-signature">(self, REQUEST=None)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L179">
       
       (source)
     </a>
+    <a class="headerLink" href="#getRefByObjs" title="zms._zreferableitem.ZReferableItem.getRefByObjs">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -731,14 +719,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">getRefObjPath</span>(self, ob, anchor=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L158">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getRefObjPath</span><span class="function-signature">(self, ob, anchor=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L159">
       
       (source)
     </a>
+    <a class="headerLink" href="#getRefObjPath" title="zms._zreferableitem.ZReferableItem.getRefObjPath">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -753,14 +746,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">getRefToObjs</span>(self):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L250">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getRefToObjs</span><span class="function-signature">(self)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L251">
       
       (source)
     </a>
+    <a class="headerLink" href="#getRefToObjs" title="zms._zreferableitem.ZReferableItem.getRefToObjs">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -775,14 +773,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">getRelativeUrl</span>(self, path, url):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L141">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getRelativeUrl</span><span class="function-signature">(self, path, url)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L142">
       
       (source)
     </a>
+    <a class="headerLink" href="#getRelativeUrl" title="zms._zreferableitem.ZReferableItem.getRelativeUrl">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -797,14 +800,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">prepareRefreshRefToObjs</span>(self):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L282">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">prepareRefreshRefToObjs</span><span class="function-signature">(self)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L283">
       
       (source)
     </a>
+    <a class="headerLink" href="#prepareRefreshRefToObjs" title="zms._zreferableitem.ZReferableItem.prepareRefreshRefToObjs">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -819,14 +827,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">refreshRefToObjs</span>(self):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L293">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">refreshRefToObjs</span><span class="function-signature">(self)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L294">
       
       (source)
     </a>
+    <a class="headerLink" href="#refreshRefToObjs" title="zms._zreferableitem.ZReferableItem.refreshRefToObjs">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -841,14 +854,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">registerRefObj</span>(self, ob):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L214">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">registerRefObj</span><span class="function-signature">(self, ob)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L215">
       
       (source)
     </a>
+    <a class="headerLink" href="#registerRefObj" title="zms._zreferableitem.ZReferableItem.registerRefObj">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -863,14 +881,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">synchronizeRefByObjs</span>(self, strict=1):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L191">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">synchronizeRefByObjs</span><span class="function-signature">(self, strict=1)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L192">
       
       (source)
     </a>
+    <a class="headerLink" href="#synchronizeRefByObjs" title="zms._zreferableitem.ZReferableItem.synchronizeRefByObjs">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -885,14 +908,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">tal_anchor</span>(self, href, target=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, attrs={}, content=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L477">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">tal_anchor</span><span class="function-signature">(self, href, target=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, attrs={}, content=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L478">
       
       (source)
     </a>
+    <a class="headerLink" href="#tal_anchor" title="zms._zreferableitem.ZReferableItem.tal_anchor">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -907,14 +935,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">unregisterRefObj</span>(self, ob):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L228">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">unregisterRefObj</span><span class="function-signature">(self, ob)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L229">
       
       (source)
     </a>
+    <a class="headerLink" href="#unregisterRefObj" title="zms._zreferableitem.ZReferableItem.unregisterRefObj">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -929,14 +962,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">validateInlineLinkObj</span>(self, text):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L328">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">validateInlineLinkObj</span><span class="function-signature">(self, text)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L329">
       
       (source)
     </a>
+    <a class="headerLink" href="#validateInlineLinkObj" title="zms._zreferableitem.ZReferableItem.validateInlineLinkObj">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -951,14 +989,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">validateLinkObj</span>(self, url):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L354">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">validateLinkObj</span><span class="function-signature">(self, url)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L355">
       
       (source)
     </a>
+    <a class="headerLink" href="#validateLinkObj" title="zms._zreferableitem.ZReferableItem.validateLinkObj">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -974,13 +1017,17 @@
   <div class="functionHeader">
     
     <span class="py-defname">__ac_permissions__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L128">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L129">
       
       (source)
     </a>
+    <a class="headerLink" href="#__ac_permissions__" title="zms._zreferableitem.ZReferableItem.__ac_permissions__">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
     
@@ -997,13 +1044,17 @@
   <div class="functionHeader">
     
     <span class="py-defname">__authorPermissions__</span>: <code>tuple[<wbr></wbr>str, <wbr></wbr><span class="rst-variable-ellipsis">...</span>]</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L125">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L126">
       
       (source)
     </a>
+    <a class="headerLink" href="#__authorPermissions__" title="zms._zreferableitem.ZReferableItem.__authorPermissions__">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
     
@@ -1020,13 +1071,17 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_browse_iframe</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L135">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L136">
       
       (source)
     </a>
+    <a class="headerLink" href="#manage_browse_iframe" title="zms._zreferableitem.ZReferableItem.manage_browse_iframe">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
     
@@ -1043,13 +1098,17 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_RefForm</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L134">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L135">
       
       (source)
     </a>
+    <a class="headerLink" href="#manage_RefForm" title="zms._zreferableitem.ZReferableItem.manage_RefForm">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
     
@@ -1066,13 +1125,17 @@
   <div class="functionHeader">
     
     <span class="py-defname">ref_by</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L205">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L206">
       
       (source)
     </a>
+    <a class="headerLink" href="#ref_by" title="zms._zreferableitem.ZReferableItem.ref_by">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
     
@@ -1089,13 +1152,17 @@
   <div class="functionHeader">
     
     <span class="py-defname">ref_to</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L285">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L286">
       
       (source)
     </a>
+    <a class="headerLink" href="#ref_to" title="zms._zreferableitem.ZReferableItem.ref_to">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
     
@@ -1109,10 +1176,10 @@
     <footer class="navbar navbar-default">
 
   
-  <div class="container">
+  <div class="container-fluid">
     <a href="index.html">API Documentation</a> for <a href="https://github.com/zms-publishing/ZMS/" class="projecthome">ZMS</a>,
   generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
-    <!-- t:slot name="pydoctor_version" /&gt; at <t:slot name="buildtime" / -->.
+    <!-- t:slot name="pydoctor_version" /> at <t:slot name="buildtime" / -->.
   </div>
 
   <!-- Search related scripts needs to be loaded at the end of HTML 

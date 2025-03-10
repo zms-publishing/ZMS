@@ -7,7 +7,7 @@
   <head>
     
     <title>zms.IZMSCatalogConnector.IZMSCatalogConnector</title>
-    <meta name="generator" content="pydoctor 22.5.1"> 
+    <meta name="generator" content="pydoctor 24.11.2"> 
         
     </meta>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
@@ -15,6 +15,7 @@
     <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="apidocs.css" />
     <link rel="stylesheet" type="text/css" href="extra.css" />
+    
 </head>
 
   <body>
@@ -52,7 +53,7 @@
             
             <span class="input-group-btn">
               <a style="display: none;" class="btn btn-default" id="search-clear-button" title="Clear" onclick="clearSearch()"><img src="fonts/x-circle.svg" alt="Clear" /></a>
-              <a class="btn btn-default" id="search-help-button" title="Help" onclick="toggleSearchHelpText()"><img src="fonts/info.svg" alt="Help" /></a>
+              <a class="btn btn-default" id="apidocs-help-button" title="Help" href="apidocs-help.html"><img src="fonts/info.svg" alt="Help" /></a>
             </span>
           </div>
         </div>
@@ -76,39 +77,6 @@
             <h1>Cannot search: JavaScript is not supported/enabled in your browser.</h1>
         </noscript>
 
-        <div class="hint" id="search-help-box">
-          <p class="rst-last">
-      
-            Search bar offers the following options:
-            <ul>   
-                <li>
-                  <strong>Term presence.</strong> The below example searches for documents that 
-                    must contain “foo”, might contain “bar” and must not contain “baz”: <code>+foo bar -baz</code>
-                </li> 
-
-                <li>
-                  <strong>Wildcards.</strong> The below example searches for documents with words beginning with “foo”: <code>foo*</code>
-                </li> 
-
-                <li>
-                  <strong>Search in specific fields.</strong> The following search matches all objects 
-                  in "twisted.mail" that matches “search”: <code>+qname:twisted.mail.* +search</code>
-
-                  <p>
-                    Possible fields: 'name', 'qname' (fully qualified name), 'docstring', and 'kind'.
-                    Last two fields are only applicable if "search in docstrings" is enabled.
-                  </p>
-                </li>
-
-                <li>
-                  <strong>Fuzzy matches.</strong> The following search matches all documents 
-                  that have a word within 1 edit distance of “foo”: <code>foo~1</code>
-                </li>
-            </ul>
-
-          </p>
-        </div>
-
         <div id="search-status"> </div>
 
         <div class="warning" id="search-warn-box" style="display: none;">
@@ -119,8 +87,8 @@
           <!-- Filled dynamically by JS -->
         </table>
         
-        <div style="margin-top: 8px;">
-          <p>Results provided by <a href="https://lunrjs.com">Lunr.js</a></p>
+        <div style="margin-top: 10px;">
+          <p>For more information on the search, visit the <a href="apidocs-help.html#rst-search">help page</a>.</p>
         </div>
       </div>
 
@@ -163,7 +131,7 @@
         
 
         
-            <div class="itemName"><code><a href="#reindex_all" class="internal-link" title="zms.IZMSCatalogConnector.IZMSCatalogConnector.reindex_all">reindex<wbr></wbr>_all</a></code>
+            <div class="itemName"><code><a href="#reindex_page" class="internal-link" title="zms.IZMSCatalogConnector.IZMSCatalogConnector.reindex_page">reindex<wbr></wbr>_page</a></code>
             </div>
         
 
@@ -173,17 +141,7 @@
         
 
         
-            <div class="itemName"><code><a href="#reindex_node" class="internal-link" title="zms.IZMSCatalogConnector.IZMSCatalogConnector.reindex_node">reindex<wbr></wbr>_node</a></code>
-            </div>
-        
-
-    </li><li class="">
-        
-        
-        
-
-        
-            <div class="itemName"><code><a href="#search" class="internal-link" title="zms.IZMSCatalogConnector.IZMSCatalogConnector.search">search</a></code>
+            <div class="itemName"><code><a href="#search_json" class="internal-link" title="zms.IZMSCatalogConnector.IZMSCatalogConnector.search_json">search<wbr></wbr>_json</a></code>
             </div>
         
 
@@ -271,7 +229,7 @@
         </div>
 
         <div class="extrasDocstring">
-          <p><code><span class="py-keyword">class</span> <span class="py-defname">IZMSCatalogConnector</span>(Interface): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/IZMSCatalogConnector.py#L22" class="sourceLink">(source)</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">IZMSCatalogConnector</span>(Interface): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/IZMSCatalogConnector.py#L22" class="sourceLink">(source)</a></code></p>
           <p><a href="classIndex.html#zms.IZMSCatalogConnector.IZMSCatalogConnector">View In Hierarchy</a></p>
         </div>
 
@@ -286,17 +244,12 @@
   <tr class="method">
     
     <td>Method</td>
-    <td><code><a href="#reindex_all" class="internal-link" title="zms.IZMSCatalogConnector.IZMSCatalogConnector.reindex_all">reindex<wbr></wbr>_all</a></code></td>
-    <td>Reindex.</td>
+    <td><code><a href="#reindex_page" class="internal-link" title="zms.IZMSCatalogConnector.IZMSCatalogConnector.reindex_page">reindex<wbr></wbr>_page</a></code></td>
+    <td>Reindex page.</td>
   </tr><tr class="method">
     
     <td>Method</td>
-    <td><code><a href="#reindex_node" class="internal-link" title="zms.IZMSCatalogConnector.IZMSCatalogConnector.reindex_node">reindex<wbr></wbr>_node</a></code></td>
-    <td>Reindex single node.</td>
-  </tr><tr class="method">
-    
-    <td>Method</td>
-    <td><code><a href="#search" class="internal-link" title="zms.IZMSCatalogConnector.IZMSCatalogConnector.search">search</a></code></td>
+    <td><code><a href="#search_json" class="internal-link" title="zms.IZMSCatalogConnector.IZMSCatalogConnector.search_json">search<wbr></wbr>_json</a></code></td>
     <td>Search.</td>
   </tr>
 </table>
@@ -309,71 +262,56 @@
           <div class="basemethod">
   
   
-  <a name="zms.IZMSCatalogConnector.IZMSCatalogConnector.reindex_all">
+  <a name="zms.IZMSCatalogConnector.IZMSCatalogConnector.reindex_page">
     
   </a>
-  <a name="reindex_all">
+  <a name="reindex_page">
     
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">reindex_all</span>(self):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/IZMSCatalogConnector.py#L35">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">reindex_page</span><span class="function-signature">(self, uid, page_size, clients=False, fileparsing=True, REQUEST=None, RESPONSE=None)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/IZMSCatalogConnector.py#L33">
       
       (source)
+    </a>
+    <a class="headerLink" href="#reindex_page" title="zms.IZMSCatalogConnector.IZMSCatalogConnector.reindex_page">
+      
+      
+      ¶
     </a>
   </div>
   <div class="docstring functionBody">
     
-    
-    <div><p>Reindex.</p>
-<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils literal">str</tt></td><td class="fieldArgDesc">comma separated result message for any indexed object</td></tr></table></div>
+    <div><p>Reindex page.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">uid</span></td><td class="fieldArgDesc">the uid of the page's start-node</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">page<wbr></wbr>_size</span></td><td class="fieldArgDesc">the page-size</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">clients:</span><tt class="rst-docutils rst-literal">Boolean</tt></td><td class="fieldArgDesc">process clients</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">fileparsing:</span><tt class="rst-docutils rst-literal">Boolean</tt></td><td class="fieldArgDesc">parse files</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span>ZPublisher.HTTPRequest @return log</td><td class="fieldArgDesc">the triggering request</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">RESPONSE</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
   
-  <a name="zms.IZMSCatalogConnector.IZMSCatalogConnector.reindex_node">
+  <a name="zms.IZMSCatalogConnector.IZMSCatalogConnector.search_json">
     
   </a>
-  <a name="reindex_node">
-    
-  </a>
-  <div class="functionHeader">
-    
-    <span class="py-keyword">def</span> <span class="py-defname">reindex_node</span>(self, node):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/IZMSCatalogConnector.py#L42">
-      
-      (source)
-    </a>
-  </div>
-  <div class="docstring functionBody">
-    
-    
-    <div><p>Reindex single node.</p>
-<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils literal">str</tt></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr></table></div>
-  </div>
-</div><div class="basemethod">
-  
-  
-  <a name="zms.IZMSCatalogConnector.IZMSCatalogConnector.search">
-    
-  </a>
-  <a name="search">
+  <a name="search_json">
     
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">search</span>(self, qs, order=None):
+    
+    <span class="py-keyword">def</span> <span class="py-defname">search_json</span><span class="function-signature">(self, REQUEST=None, RESPONSE=None)</span>:
     <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/IZMSCatalogConnector.py#L24">
       
       (source)
     </a>
+    <a class="headerLink" href="#search_json" title="zms.IZMSCatalogConnector.IZMSCatalogConnector.search_json">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
     
-    
-    <div><p>Search.</p>
-<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">qs</span></td><td class="fieldArgDesc">query-string</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">order</span></td><td class="fieldArgDesc">result order (obsolete)</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils literal">list</tt></td><td class="fieldArgDesc">list of result items</td></tr></table></div>
+    <div><p>Search.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span>ZPublisher.HTTPRequest</td><td class="fieldArgDesc">the triggering request</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">RESPONSE</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">JSON-list of result items</td></tr></table></div>
   </div>
 </div>
         </div>
@@ -384,10 +322,10 @@
     <footer class="navbar navbar-default">
 
   
-  <div class="container">
+  <div class="container-fluid">
     <a href="index.html">API Documentation</a> for <a href="https://github.com/zms-publishing/ZMS/" class="projecthome">ZMS</a>,
   generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
-    <!-- t:slot name="pydoctor_version" /&gt; at <t:slot name="buildtime" / -->.
+    <!-- t:slot name="pydoctor_version" /> at <t:slot name="buildtime" / -->.
   </div>
 
   <!-- Search related scripts needs to be loaded at the end of HTML 

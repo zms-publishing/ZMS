@@ -66,9 +66,10 @@ $(function() {
 		res.docs.forEach(x => {
 			let source = x;
 			let score = typeof source['score'] !== 'undefined' ? parseFloat(source['score']/100).toFixed(2) : -1;
+			let href = source['loc'] || source['index_html'];
 			var hit = { 
 				'path':source['uid'],
-				'href':source['loc'] || source['index_html'],
+				'href':href.replace(/\?.*$/, ''),
 				'title':source['title'],
 				'meta_id':source['meta_id'],
 				'snippet':source['standard_html'],

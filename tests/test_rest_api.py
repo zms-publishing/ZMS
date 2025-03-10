@@ -18,7 +18,7 @@ class RestAPITest(ZMSTestCase):
 
   def setUp(self):
     folder = Folder('site')
-    folder.REQUEST = mock_http.MockHTTPRequest({'lang':'eng','preview':'preview','url':'{$}'})
+    folder.REQUEST = mock_http.MockHTTPRequest({'lang':'eng','preview':'preview','url':'{$}','theme':'conf:aquire','minimal_init':1,'content_init':1})
     self.context = standard.initZMS(folder, 'myzmsx', 'titlealt', 'title', self.lang, self.lang, folder.REQUEST)
     print('[setUp] create %s'%self.temp_title)
     zmsindex = self.context.getZMSIndex()
@@ -54,7 +54,7 @@ class RestAPITest(ZMSTestCase):
       actual = json.loads( self.context.__bobo_traverse__(request, name)(request))
       print(json.dumps(actual))
       self.assertTrue(isinstance(actual, dict))
-      self.assertEqual( len(actual), 39)
+      self.assertEqual( len(actual), 25)
 
   def test_headless_get(self):
       count = 0
@@ -115,13 +115,17 @@ class RestAPITest(ZMSTestCase):
             actual = json.loads( self.context.__bobo_traverse__(self.context.REQUEST, name)(self.context.REQUEST))
             print(json.dumps(actual))
             self.assertEqual( len(actual), len(document.getTreeNodes(self.context.REQUEST)))
+            # get_child_nodes/count
+            self.context.REQUEST = mock_http.MockHTTPRequest({'REQUEST_METHOD':'GET','TraversalRequestNameStack':path_to_handle+['get_child_nodes','count'],'path_to_handle':path_to_handle+['get_child_nodes','count']})
+            print("path_to_handle", self.context.REQUEST.get('path_to_handle'))
+            actual = json.loads( self.context.__bobo_traverse__(self.context.REQUEST, name)(self.context.REQUEST))
+            self.assertEqual( actual, len(document.getChildNodes(self.context.REQUEST)))
             # get_child_nodes + multilingual
             self.context.REQUEST = mock_http.MockHTTPRequest({'REQUEST_METHOD':'GET','TraversalRequestNameStack':path_to_handle+['get_child_nodes'],'path_to_handle':path_to_handle+['get_child_nodes']})
             print("path_to_handle", self.context.REQUEST.get('path_to_handle'))
             actual = json.loads( self.context.__bobo_traverse__(self.context.REQUEST, name)(self.context.REQUEST))
             print(json.dumps(actual))
             self.assertTrue( isinstance( actual, list))
-            self.assertEqual( len(actual), len(document.getChildNodes(self.context.REQUEST)))
             self.assertEqual( len(actual), len(document.getChildNodes(self.context.REQUEST)))
             if actual:
                 self.assertFalse( 'title' in actual[0])
@@ -133,7 +137,6 @@ class RestAPITest(ZMSTestCase):
             actual = json.loads( self.context.__bobo_traverse__(self.context.REQUEST, name)(self.context.REQUEST))
             print(json.dumps(actual))
             self.assertTrue( isinstance( actual, list))
-            self.assertEqual( len(actual), len(document.getChildNodes(self.context.REQUEST)))
             self.assertEqual( len(actual), len(document.getChildNodes(self.context.REQUEST)))
             if actual:
                 self.assertTrue( 'title' in actual[0])

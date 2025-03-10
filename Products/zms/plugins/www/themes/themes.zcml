@@ -1,3 +1,6 @@
-<configure xmlns="http://namespaces.zope.org/zope" xmlns:zms="http://namespaces.zope.org/zms">
-  <source location="skin_zms5_base-5.0.2.metaobj.xml"/>
+<configure 
+	xmlns="http://namespaces.zope.org/zope" 
+	xmlns:zms="http://namespaces.zope.org/zms">
+	<source location="conf:metaobj_manager/com.zms.foundation.theme/zms_theme_basic"/>
+	<source location="conf:acquire"/>
 </configure>

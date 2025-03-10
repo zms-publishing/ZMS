@@ -132,7 +132,7 @@ class ZMSRepositoryManager(
 
 
     """
-    Commit ZODB to repository.
+    Export: Commit ZODB to repository.
     """
     def commitChanges(self, ids):
       standard.writeLog(self,"[commitChanges]: ids=%s"%str(ids))
@@ -191,7 +191,7 @@ class ZMSRepositoryManager(
       return success,failure
 
     """
-    Update ZODB from repository.
+    Import: Update ZODB from repository.
     """
     def updateChanges(self, ids, override=False):
       standard.writeLog(self,"[updateChanges]: ids=%s"%str(ids))

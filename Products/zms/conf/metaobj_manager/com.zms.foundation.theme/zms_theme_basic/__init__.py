@@ -1,6 +1,6 @@
-class skin_zms5_base:
+class zms_theme_basic:
 	"""
-	python-representation of skin_zms5_base
+	python-representation of zms_theme_basic
 	"""
 
 	# Access
@@ -13,16 +13,16 @@ class skin_zms5_base:
 	enabled = 0
 
 	# Id
-	id = "skin_zms5_base"
+	id = "zms_theme_basic"
 
 	# Name
-	name = "skin_zms5_base"
+	name = "zms_theme_basic"
 
 	# Package
-	package = ""
+	package = "com.zms.foundation.theme"
 
 	# Revision
-	revision = "5.0.2"
+	revision = "5.0.3"
 
 	# Type
 	type = "ZMSLibrary"
@@ -38,8 +38,8 @@ class skin_zms5_base:
 			,"repetitive":0
 			,"type":"resource"}
 
-		skin_zms5_base_standard_html = {"default":""
-			,"id":"skin_zms5_base/standard_html"
+		zms_theme_basic_standard_html = {"default":""
+			,"id":"zms_theme_basic/standard_html"
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
@@ -47,8 +47,8 @@ class skin_zms5_base:
 			,"repetitive":0
 			,"type":"Page Template"}
 
-		skin_zms5_base_pageelements = {"default":""
-			,"id":"skin_zms5_base/pageelements"
+		zms_theme_basic_pageelements = {"default":""
+			,"id":"zms_theme_basic/pageelements"
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
@@ -56,17 +56,8 @@ class skin_zms5_base:
 			,"repetitive":0
 			,"type":"Page Template"}
 
-		skin_zms5_base_faviconico = {"default":""
-			,"id":"skin_zms5_base/favicon.ico"
-			,"keys":[]
-			,"mandatory":0
-			,"multilang":0
-			,"name":"favicon.ico"
-			,"repetitive":0
-			,"type":"Image"}
-
-		skin_zms5_base_common_added_webcss = {"default":""
-			,"id":"skin_zms5_base/common/added/web.css"
+		zms_theme_basic_common_added_webcss = {"default":""
+			,"id":"zms_theme_basic/common/added/web.css"
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
@@ -74,8 +65,8 @@ class skin_zms5_base:
 			,"repetitive":0
 			,"type":"File"}
 
-		skin_zms5_base_common_added_webjs = {"default":""
-			,"id":"skin_zms5_base/common/added/web.js"
+		zms_theme_basic_common_added_webjs = {"default":""
+			,"id":"zms_theme_basic/common/added/web.js"
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
@@ -83,8 +74,8 @@ class skin_zms5_base:
 			,"repetitive":0
 			,"type":"File"}
 
-		skin_zms5_base_common_added_zmicss = {"default":""
-			,"id":"skin_zms5_base/common/added/zmi.css"
+		zms_theme_basic_common_added_zmicss = {"default":""
+			,"id":"zms_theme_basic/common/added/zmi.css"
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
@@ -92,8 +83,8 @@ class skin_zms5_base:
 			,"repetitive":0
 			,"type":"File"}
 
-		skin_zms5_base_common_added_zmijs = {"default":""
-			,"id":"skin_zms5_base/common/added/zmi.js"
+		zms_theme_basic_common_added_zmijs = {"default":""
+			,"id":"zms_theme_basic/common/added/zmi.js"
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
@@ -101,8 +92,8 @@ class skin_zms5_base:
 			,"repetitive":0
 			,"type":"File"}
 
-		skin_zms5_base_common_css_stylecss = {"default":""
-			,"id":"skin_zms5_base/common/css/style.css"
+		zms_theme_basic_common_css_stylecss = {"default":""
+			,"id":"zms_theme_basic/common/css/style.css"
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
@@ -110,20 +101,29 @@ class skin_zms5_base:
 			,"repetitive":0
 			,"type":"File"}
 
-		skin_zms5_base_common_img_zmslogosvg = {"default":""
-			,"id":"skin_zms5_base/common/img/zmslogo.svg"
+		zms_theme_basic_common_webdesign_custom_zmsdemocss = {"default":""
+			,"id":"zms_theme_basic/common/webdesign/custom_zmsdemo.css"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"custom_zmsdemo.css"
+			,"repetitive":0
+			,"type":"File"}
+
+		zms_theme_basic_common_img_zmslogosvg = {"default":""
+			,"id":"zms_theme_basic/common/img/zmslogo.svg"
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
 			,"name":"zmslogo.svg"
 			,"repetitive":0
-			,"type":"Image"}
+			,"type":"File"}
 
-		skin_zms5_base_common_webdesign_custom_zmsdemocss = {"default":""
-			,"id":"skin_zms5_base/common/webdesign/custom_zmsdemo.css"
+		zms_theme_basic_common_img_faviconico = {"default":""
+			,"id":"zms_theme_basic/common/img/favicon.ico"
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
-			,"name":"custom_zmsdemo.css"
+			,"name":"favicon.ico"
 			,"repetitive":0
 			,"type":"File"}

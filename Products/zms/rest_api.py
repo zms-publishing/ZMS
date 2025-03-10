@@ -192,6 +192,8 @@ class RestApiController(object):
                 decoration, data = self.list_tree_nodes(self.context, content_type=True)
             elif self.ids == ['get_parent_nodes']:
                 decoration, data = self.get_parent_nodes(self.context, content_type=True)
+            elif self.ids == ['get_child_nodes','count']:
+                decoration, data = self.get_child_nodes__count(self.context, content_type=True)
             elif self.ids == ['get_child_nodes']:
                 decoration, data = self.get_child_nodes(self.context, content_type=True)
             elif self.ids == ['get_tree_nodes']:
@@ -266,14 +268,23 @@ class RestApiController(object):
         nodes = context.breadcrumbs_obj_path()
         return [get_attrs(x) for x in nodes]
 
-    @api(tag="navigation", pattern="/{path}/get_child_nodes", method="GET", content_type="application/json")
-    def get_child_nodes(self, context):
+    def __get_child_nodes(self, context):
         request = _get_request(context)
         id_prefix = request.get('id_prefix','')
         meta_types = [context.PAGES if str(x)==str(context.PAGES) else context.PAGEELEMENTS if str(x)==str(context.PAGEELEMENTS) else x for x in request.get('meta_types').split(',')] if request.get('meta_types') else None
         nodes = context.getObjChildren(id_prefix, request, meta_types)
         if context.meta_type == 'ZMS':
             nodes.extend(context.getPortalClients())
+        return nodes
+
+    @api(tag="navigation", pattern="/{path}/get_child_nodes/count", method="GET", content_type="application/json")
+    def get_child_nodes__count(self, context):
+        nodes = self.__get_child_nodes(context)
+        return len(nodes)
+
+    @api(tag="navigation", pattern="/{path}/get_child_nodes", method="GET", content_type="application/json")
+    def get_child_nodes(self, context):
+        nodes = self.__get_child_nodes(context)
         return [get_attrs(x) for x in nodes]
 
     @api(tag="navigation", pattern="/{path}/get_tree_nodes", method="GET", content_type="application/json")

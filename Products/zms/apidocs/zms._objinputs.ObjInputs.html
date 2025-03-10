@@ -7,7 +7,7 @@
   <head>
     
     <title>zms._objinputs.ObjInputs</title>
-    <meta name="generator" content="pydoctor 22.5.1"> 
+    <meta name="generator" content="pydoctor 24.11.2"> 
         
     </meta>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
@@ -15,6 +15,7 @@
     <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="apidocs.css" />
     <link rel="stylesheet" type="text/css" href="extra.css" />
+    
 </head>
 
   <body>
@@ -52,7 +53,7 @@
             
             <span class="input-group-btn">
               <a style="display: none;" class="btn btn-default" id="search-clear-button" title="Clear" onclick="clearSearch()"><img src="fonts/x-circle.svg" alt="Clear" /></a>
-              <a class="btn btn-default" id="search-help-button" title="Help" onclick="toggleSearchHelpText()"><img src="fonts/info.svg" alt="Help" /></a>
+              <a class="btn btn-default" id="apidocs-help-button" title="Help" href="apidocs-help.html"><img src="fonts/info.svg" alt="Help" /></a>
             </span>
           </div>
         </div>
@@ -76,39 +77,6 @@
             <h1>Cannot search: JavaScript is not supported/enabled in your browser.</h1>
         </noscript>
 
-        <div class="hint" id="search-help-box">
-          <p class="rst-last">
-      
-            Search bar offers the following options:
-            <ul>   
-                <li>
-                  <strong>Term presence.</strong> The below example searches for documents that 
-                    must contain “foo”, might contain “bar” and must not contain “baz”: <code>+foo bar -baz</code>
-                </li> 
-
-                <li>
-                  <strong>Wildcards.</strong> The below example searches for documents with words beginning with “foo”: <code>foo*</code>
-                </li> 
-
-                <li>
-                  <strong>Search in specific fields.</strong> The following search matches all objects 
-                  in "twisted.mail" that matches “search”: <code>+qname:twisted.mail.* +search</code>
-
-                  <p>
-                    Possible fields: 'name', 'qname' (fully qualified name), 'docstring', and 'kind'.
-                    Last two fields are only applicable if "search in docstrings" is enabled.
-                  </p>
-                </li>
-
-                <li>
-                  <strong>Fuzzy matches.</strong> The following search matches all documents 
-                  that have a word within 1 edit distance of “foo”: <code>foo~1</code>
-                </li>
-            </ul>
-
-          </p>
-        </div>
-
         <div id="search-status"> </div>
 
         <div class="warning" id="search-warn-box" style="display: none;">
@@ -119,8 +87,8 @@
           <!-- Filled dynamically by JS -->
         </table>
         
-        <div style="margin-top: 8px;">
-          <p>Results provided by <a href="https://lunrjs.com">Lunr.js</a></p>
+        <div style="margin-top: 10px;">
+          <p>For more information on the search, visit the <a href="apidocs-help.html#rst-search">help page</a>.</p>
         </div>
       </div>
 
@@ -311,7 +279,7 @@
         </div>
 
         <div class="extrasDocstring">
-          <p><code><span class="py-keyword">class</span> <span class="py-defname">ObjInputs</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objinputs.py#L23" class="sourceLink">(source)</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ObjInputs</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objinputs.py#L23" class="sourceLink">(source)</a></code></p>
           <p><a href="classIndex.html#zms._objinputs.ObjInputs">View In Hierarchy</a></p>
         </div>
 
@@ -377,14 +345,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">getCheckbox</span>(self, fmName, elName, elId=None, value=None, enabled=True, hidden=True, css=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, btn=False, options=[<wbr></wbr>0, <wbr></wbr>1]):
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getCheckbox</span><span class="function-signature">(self, fmName, elName, elId=None, value=None, enabled=True, hidden=True, css=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, btn=False, options=[<wbr></wbr>0, <wbr></wbr>1])</span>:
     <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objinputs.py#L165">
       
       (source)
     </a>
+    <a class="headerLink" href="#getCheckbox" title="zms._objinputs.ObjInputs.getCheckbox">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -399,14 +372,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">getDateTimeInput</span>(self, fmName, elName, size=8, value=None, enabled=True, fmt_str=<span class="rst-variable-quote">'</span><span class="rst-variable-string">DATETIME_FMT</span><span class="rst-variable-quote">'</span>, css=<span class="rst-variable-quote">'</span><span class="rst-variable-string">form-control</span><span class="rst-variable-quote">'</span>):
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getDateTimeInput</span><span class="function-signature">(self, fmName, elName, size=8, value=None, enabled=True, fmt_str=<span class="rst-variable-quote">'</span><span class="rst-variable-string">DATETIME_FMT</span><span class="rst-variable-quote">'</span>, css=<span class="rst-variable-quote">'</span><span class="rst-variable-string">form-control</span><span class="rst-variable-quote">'</span>)</span>:
     <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objinputs.py#L52">
       
       (source)
     </a>
+    <a class="headerLink" href="#getDateTimeInput" title="zms._objinputs.ObjInputs.getDateTimeInput">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -421,14 +399,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">getPasswordInput</span>(self, fmName, elName, size=15, value=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, enabled=True, css=<span class="rst-variable-quote">'</span><span class="rst-variable-string">form-control</span><span class="rst-variable-quote">'</span>):
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getPasswordInput</span><span class="function-signature">(self, fmName, elName, size=15, value=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, enabled=True, css=<span class="rst-variable-quote">'</span><span class="rst-variable-string">form-control</span><span class="rst-variable-quote">'</span>)</span>:
     <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objinputs.py#L84">
       
       (source)
     </a>
+    <a class="headerLink" href="#getPasswordInput" title="zms._objinputs.ObjInputs.getPasswordInput">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -443,14 +426,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">getSelect</span>(self, fmName, elName, value, inputtype, lang_str, required=False, optpl=[], enabled=True, css=<span class="rst-variable-quote">'</span><span class="rst-variable-string">form-control</span><span class="rst-variable-quote">'</span>, maxlen=30):
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getSelect</span><span class="function-signature">(self, fmName, elName, value, inputtype, lang_str, required=False, optpl=[], enabled=True, css=<span class="rst-variable-quote">'</span><span class="rst-variable-string">form-control</span><span class="rst-variable-quote">'</span>, maxlen=30)</span>:
     <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objinputs.py#L136">
       
       (source)
     </a>
+    <a class="headerLink" href="#getSelect" title="zms._objinputs.ObjInputs.getSelect">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -465,14 +453,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">getTextArea</span>(self, fmName, elName, cols, rows, value, enabled=True, css=<span class="rst-variable-quote">'</span><span class="rst-variable-string">form-control</span><span class="rst-variable-quote">'</span>, wrap=<span class="rst-variable-quote">'</span><span class="rst-variable-string">virtual</span><span class="rst-variable-quote">'</span>):
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getTextArea</span><span class="function-signature">(self, fmName, elName, cols, rows, value, enabled=True, css=<span class="rst-variable-quote">'</span><span class="rst-variable-string">form-control</span><span class="rst-variable-quote">'</span>, wrap=<span class="rst-variable-quote">'</span><span class="rst-variable-string">virtual</span><span class="rst-variable-quote">'</span>)</span>:
     <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objinputs.py#L211">
       
       (source)
     </a>
+    <a class="headerLink" href="#getTextArea" title="zms._objinputs.ObjInputs.getTextArea">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -487,14 +480,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">getTextInput</span>(self, fmName, elName, size=None, value=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, type=<span class="rst-variable-quote">'</span><span class="rst-variable-string">text</span><span class="rst-variable-quote">'</span>, enabled=True, css=<span class="rst-variable-quote">'</span><span class="rst-variable-string">form-control</span><span class="rst-variable-quote">'</span>, placeholder=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>):
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getTextInput</span><span class="function-signature">(self, fmName, elName, size=None, value=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, type=<span class="rst-variable-quote">'</span><span class="rst-variable-string">text</span><span class="rst-variable-quote">'</span>, enabled=True, css=<span class="rst-variable-quote">'</span><span class="rst-variable-string">form-control</span><span class="rst-variable-quote">'</span>, placeholder=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>)</span>:
     <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objinputs.py#L99">
       
       (source)
     </a>
+    <a class="headerLink" href="#getTextInput" title="zms._objinputs.ObjInputs.getTextInput">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -509,14 +507,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">getUrlInput</span>(self, fmName, elName, elTextName=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, size=None, value=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, enabled=True, css=<span class="rst-variable-quote">'</span><span class="rst-variable-string">form-control</span><span class="rst-variable-quote">'</span>):
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getUrlInput</span><span class="function-signature">(self, fmName, elName, elTextName=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, size=None, value=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, enabled=True, css=<span class="rst-variable-quote">'</span><span class="rst-variable-string">form-control</span><span class="rst-variable-quote">'</span>)</span>:
     <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objinputs.py#L37">
       
       (source)
     </a>
+    <a class="headerLink" href="#getUrlInput" title="zms._objinputs.ObjInputs.getUrlInput">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -529,10 +532,10 @@
     <footer class="navbar navbar-default">
 
   
-  <div class="container">
+  <div class="container-fluid">
     <a href="index.html">API Documentation</a> for <a href="https://github.com/zms-publishing/ZMS/" class="projecthome">ZMS</a>,
   generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
-    <!-- t:slot name="pydoctor_version" /&gt; at <t:slot name="buildtime" / -->.
+    <!-- t:slot name="pydoctor_version" /> at <t:slot name="buildtime" / -->.
   </div>
 
   <!-- Search related scripts needs to be loaded at the end of HTML 

@@ -9,7 +9,7 @@
 	--zms_header_bg:#ffffff !important;
 	--zms_header_main_text_color:#333333;
 	--zms_header_dropdown_text_color:#333333;
-	--zms_logo: url('skin_zms5_base/common/img/zmslogo.svg');
+	--zms_logo: url('theme_zms5_base/common/img/zmslogo.svg');
 	--zms_card_bg:white;
 	--zms_card_shadow:0 0 2rem rgba(0,0,0,0.2);
 	--zms_card_delimiter_border:1px dotted #333;

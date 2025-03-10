@@ -178,6 +178,8 @@ def addZMSCustom(self, meta_id=None, values={}, REQUEST=None):
   Public alias for manage_addZMSCustom:
   add a custom node of the type designated by meta_id in current context.
 
+  @param self: context node
+  @type self: C{zmsobject.ZMSObject}
   @param meta_id: the meta-id / type of the new ZMSObject
   @type meta_id: C{str}
   @param values: the dictionary of initial attribut-values assigned to the new ZMSObject
@@ -308,7 +310,13 @@ def set_response_headers_cache(context, request=None, cache_max_age=24*3600, cac
   """
   Set default and dynamic cache response headers according to ZMS_CACHE_EXPIRE_DATETIME
   which is determined in ObjAttrs.isActive for each page element as the earliest time for invalidation.
-  I:Usage: Add to standard_html master template, e.g.::
+
+    - U{https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control#directives}
+    - U{http://nginx.org/en/docs/http/ngx_http_headers_module.html#expires}
+    - U{https://github.com/nginxinc/nginx-wiki/blob/master/source/start/topics/examples/x-accel.rst}
+
+  Usage: Add to standard_html master template, e.g.::
+
     <tal:block tal:define="
       standard modules/Products.zms/standard;
       cache_expire python:standard.set_response_headers_cache(this, request, cache_max_age=0, cache_s_maxage=6*3600)">
@@ -316,11 +324,8 @@ def set_response_headers_cache(context, request=None, cache_max_age=24*3600, cac
 
   @param cache_max_age: seconds the element remains in all caches (public/proxy and private/browser)
   @param cache_s_maxage: seconds the element remains in public/proxy cache (value -1 means cache_s_maxage = cache_max_age)
-  @see: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control#directives
-  @see: http://nginx.org/en/docs/http/ngx_http_headers_module.html#expires
-  @see: https://github.com/nginxinc/nginx-wiki/blob/master/source/start/topics/examples/x-accel.rst
-  @returns: Tuple of expires date time in GMT as ISO8601 string and the seconds until expiration
-  @retype: C{tuple}
+  @return: Tuple of expires date time in GMT as ISO8601 string and the seconds until expiration
+  @rtype: C{tuple}
   """
   if request is not None:
     is_preview = request.get('preview', '') == 'preview'
@@ -359,8 +364,8 @@ def once(key, request):
   once per request
   @param key: the key
   @param request: the request
-  @returns: Boolean execute once
-  @retype: C{boolean}
+  @return: Boolean execute once
+  @rtype: C{boolean}
   """
   req_key = 'f_%s'%key
   req_val = request.get(req_key,True)
@@ -2249,7 +2254,7 @@ def htmldiff(original, changed):
   """
   Wrapper for htmldiff2.render_html_diff.
   @param original: html-file-0
-  @type context: C{str}
+  @type original: C{str}
   @param changed: html-file-1
   @type changed: C{str}
   """

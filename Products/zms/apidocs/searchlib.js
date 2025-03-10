@@ -7,7 +7,7 @@
 // Other required ressources like lunr.js, searchindex.json and all-documents.html are passed as URL
 //      to functions. This makes the code reusable outside of pydoctor build directory.    
 // Implementation note: Searches are designed to be launched synchronously, if lunrSearch() is called sucessively (while already running),
-// old promise will never resolves and the searhc worker will be restarted.
+// old promise will never resolves and the search worker will be restarted.
 
 // Hacky way to make the worker code inline with the rest of the source file handling the search.
 // Worker message params are the following: 
@@ -28,15 +28,17 @@ onmessage = (message) => {
     if (!message.data.defaultFields) {
         throw new Error('No default fields provided.');
     }
+
     // Create index
     let index = lunr.Index.load(message.data.indexJSONData);
-    
+
     // Declare query function building 
     function _queryfn(_query){ // _query is the Query object
         // Edit the parsed query clauses that are applicable for all fields (default) in order
         // to remove the field 'kind' from the clause since this it's only useful when specifically requested.
         var parser = new lunr.QueryParser(message.data.query, _query)
         parser.parse()
+
         _query.clauses.forEach(clause => {
             if (clause.fields == _query.allFields){
                 // we change the query fields when they are applicable to all fields
@@ -44,13 +46,54 @@ onmessage = (message) => {
                 // which should not be matched by default.
                 clause.fields = message.data.defaultFields;
             }
-            // TODO: If fuzzy match is greater than 20 throw an error.
+
         });
+        // Auto wilcard feature, see issue https://github.com/twisted/pydoctor/issues/648
+        var new_clauses = [];
+
+        _query.clauses.forEach(clause => {
+            if (clause.presence === 1) { // ignore clauses that have explicit presence (+/-)
+                // Setting clause.wildcard is useless, and clause.wildcard is actually always NONE 
+                // due to https://github.com/olivernn/lunr.js/issues/495
+                // But this works...
+                if (clause.term.slice(-1) != '*'){
+                    let new_clause = {...clause}
+                    new_clause.term = new_clause.term + '*'
+                    clause.boost = 2
+                    new_clause.boost = 1
+                    new_clauses.push(new_clause)
+                }
+                
+                // Adding a leading wildcard if the dot is included as well.
+                // This should only apply to terms that are applicable to name-like fields. 
+                // so we refer to the default fields
+                if (clause.term.indexOf('.') != -1) {
+                    if (clause.term.slice(0,1) != '*'){
+                        let second_new_clause = {...clause}
+                        second_new_clause.boost = 1
+                        if (clause.term.slice(0,1) != '.'){ 
+                            second_new_clause.term = '.' + second_new_clause.term
+                        }
+                        second_new_clause.term = '*' + second_new_clause.term
+                        if (clause.term.slice(-1) != '*'){
+                            second_new_clause.term = second_new_clause.term + '*'
+                        }
+                        new_clauses.push(second_new_clause)
+                    }
+                }
+            }
+        });
+
+        new_clauses.forEach(clause => {
+            _query.clauses.push(clause)
+        });
+        console.log('Parsed query:')
+        console.dir(_query.clauses)
     }
 
     // Launch the search
-    let results = index.query(_queryfn)
-    
+    var results = index.query(_queryfn)
+
     // Post message with results
     postMessage({'results':results});
 };
@@ -145,7 +188,7 @@ function _getWorkerPromise(lunJsSourceCode){ // -> Promise of a fresh worker to 
  * @param lunrJsURL: URL pointing to a copy of lunr.js.
  * @param searchDelay: Number of miliseconds to wait before actually launching the query. This is useful to set for "search as you type" kind of search box
  *                     because it let a chance to users to continue typing without triggering useless searches (because previous search is aborted on launching a new one).
- */
+*/
 function lunrSearch(query, indexURL, defaultFields, lunrJsURL, searchDelay){
     // Abort ongoing search
     abortSearch();
@@ -157,7 +200,7 @@ function lunrSearch(query, indexURL, defaultFields, lunrJsURL, searchDelay){
         searchEventsEnv.removeEventListener('abortSearch', this);
     });
 
-    // Pref:
+    // Perf:
     // Because this function can be called a lot of times in a very few moments, 
     // Actually launch search after a delay to let a chance to users to continue typing,
     // which would trigger a search abort event, which would avoid wasting a worker 
@@ -189,7 +232,7 @@ function lunrSearch(query, indexURL, defaultFields, lunrJsURL, searchDelay){
             let _msgData = {
                 'query': query,
                 'indexJSONData': lunrIndexData,
-                'defaultFields': defaultFields
+                'defaultFields': defaultFields,
             }
             
             if (!_aborted){

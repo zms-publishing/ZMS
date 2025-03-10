@@ -104,7 +104,11 @@ function toggle_view(btn,btn_func) {
 }
 
 function remove_curly_braces(str) {
-	return str.replace(/[\{\}]/g,'');
+	if (typeof str !== 'string') {
+		return str
+	} else {
+		return str.replace(/[\{\}]/g,'');
+	}
 }
 
 function show_old_src_images() {
@@ -153,6 +157,9 @@ function diff(container, qualifier) {
 		diffContainer:diffContainer
 	});
 	var $diffContainer = $(diffContainer,container);
+	if ($diffContainer === undefined) {
+		return;
+	}
 	var lines = $diffContainer.html().replace(/<span>/gi,'').replace(/<\/span>/gi,'').split("<br>");
 	var show = [];
 	var changed = false;

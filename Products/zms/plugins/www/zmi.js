@@ -36,7 +36,6 @@ if (typeof htmx != "undefined") {
 				return evt.preventDefault();
 			}
 		}
-		body.classList.add('loading');
 	});
 	// Listen for the htmx response error event
 	if (window.parent.manage_main && window.parent.manage_main.htmx) {
@@ -84,8 +83,6 @@ if (typeof htmx != "undefined") {
 		Array.from(document.getElementsByClassName('form-modified')).forEach(
 			e => { e.classList.remove('form-modified') }
 		);
-		document.querySelector('body').classList.remove('loading');
-		document.querySelector('body').classList.add('loaded');
 	});
 	window.onload = function() {
 		$ZMI.runReady();

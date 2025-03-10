@@ -28,7 +28,7 @@
 				visible python:childNode.isVisible(request) and 'text-decoration:normal;;' or 'text-decoration:line-through;;';
 				accesskey repeat/childNode/number;
 				href python:'%s/manage_main?lang=%s'%(childNode.getAbsoluteUrlInContext(here),request['lang'])"
-				hx-target="body" hx-push-url="true"
+				hx-target="body" hx-indicator="body"
 				tal:attributes="href href;hx-get href;title title;accesskey accesskey;style visible;"
 			tal:content="structure titlealt">titlealt
 	</a></li>

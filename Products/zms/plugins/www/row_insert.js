@@ -47,7 +47,7 @@ function add_new_row(this_btn) {
 				$(this).val(1);
 			};
 			if ( $(this).hasClass('url-input') ) {
-				$(this).closest('.input-group').replaceWith(`<input class="form-control url-input" name="${new_field_name}" placeholder="Select Url..."/>`); 
+				$(this).closest('.input-group').replaceWith(`<input class="form-control url-input" name="${escapeHtml(new_field_name)}" placeholder="Select Url..."/>`); 
 			};
 		});
 	});
@@ -158,3 +158,16 @@ function get_lang_terms_count() {
 	};
 	return lang_terms_count;
 }
+
+
+// [4] Escape HTML characters
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+function escapeHtml(unsafe) {
+	return unsafe
+		.replace(/&/g, "&amp;")
+		.replace(/</g, "&lt;")
+		.replace(/>/g, "&gt;")
+		.replace(/"/g, "&quot;")
+		.replace(/'/g, "&#039;");
+}
+

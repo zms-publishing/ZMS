@@ -11,6 +11,9 @@
 				diffContainer:diffContainer
 			});
 			var $diffContainer = $(diffContainer,this);
+			if ($diffContainer === undefined) {
+				return;
+			}
 			var lines = $diffContainer.html().replace(/<span>/gi,'').replace(/<\/span>/gi,'').split("<br>");
 			var show = [];
 			var changed = false;

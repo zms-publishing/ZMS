@@ -583,25 +583,24 @@ class ZMSFilterManager(
         # Filter Processes.
         index = 0
         for filterProcess in cp.get('processes', []):
-          newProcessId = REQUEST.get('newFilterProcessId_%i'%index, '').strip()
-          newProcessFile = REQUEST.get('newFilterProcessFile_%i'%index)
-          if isinstance(newProcessFile, ZPublisher.HTTPRequest.FileUpload):
-            if len(getattr(newProcessFile, 'filename', ''))==0:
-              newProcessFile = filterProcess.get('file', None)
+          processId = REQUEST.get('filterProcessId_%i'%index, '').strip()
+          processFile = REQUEST.get('filterProcessFile_%i'%index)
+          if isinstance(processFile, ZPublisher.HTTPRequest.FileUpload):
+            if len(getattr(processFile, 'filename', ''))==0:
+              processFile = filterProcess.get('file', None)
             else:
-              newProcessFile = _blobfields.createBlobField(self, _blobfields.MyFile, newProcessFile)
-          self.setFilterProcess(id, index, newProcessId, newProcessFile)
+              processFile = _blobfields.createBlobField(self, _blobfields.MyFile, processFile)
+          self.setFilterProcess(id, index, processId, processFile)
           index += 1
-        # New Filter Process?
-        while True:
-          newProcessId = REQUEST.get('newFilterProcessId_%i'%index, '').strip()
-          newProcessFile = REQUEST.get('newFilterProcessFile_%i'%index)
-          if newProcessId: 
-            self.setFilterProcess(id, index, newProcessId, newProcessFile)
-          else:
-            break
-          index += 1
-        # Return with message.
+       # New Filter Process?
+        for k in [k for k in REQUEST.keys() if k.startswith('filterProcessId')]:
+          if k[-1].isdigit() and int(k[-1]) > index:
+            processId = REQUEST.get(k, '').strip()
+            processFile = REQUEST.get(k.replace('Id','File'), None)
+            if isinstance(processFile, ZPublisher.HTTPRequest.FileUpload):
+              processFile = _blobfields.createBlobField(self, _blobfields.MyFile, processFile)
+            self.setFilterProcess(id, index, processId, processFile)
+            index += 1
         message = self.getZMILangStr('MSG_CHANGED')
       
       # Delete.

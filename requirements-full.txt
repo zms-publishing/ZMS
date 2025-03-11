@@ -1,15 +1,15 @@
 # Zope + ZMS
 -r requirements.txt
 
-# Theming
-git+https://github.com/zms-publishing/Products.zms-skins.git#egg=Products.zms-skins
-
 # SQL
-SQLAlchemy==1.4.49
+# 2.2 is incompatible with mariadb 5.5.68 which is installed standard on centos 7
+# mysqlclient<2.2
+# SQLAlchemy==1.4.49
+mysqlclient
+SQLAlchemy
 Products.SQLAlchemyDA
 Products.ZSQLMethods
-# 2.2 is incompatible with mariadb 5.5.68 which is installed standard on centos 7
-mysqlclient<2.2
+
 psycopg2-binary
 
 # LDAP

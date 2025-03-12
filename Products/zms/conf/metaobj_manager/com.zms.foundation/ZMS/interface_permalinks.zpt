@@ -1,5 +1,5 @@
 <!-- ZMS.interface_permalinks -->
-<div class="control-group" tal:define="zmscontext options/zmscontext">
+<div class="control-group col-sm-10 offset-sm-2 p-0" tal:define="zmscontext options/zmscontext">
 	<table id="permalinks" class="table table-bordered m-0" title="Permalinks">
 		<tbody tal:define="prefix python:'%s.permalink.'%zmscontext.meta_id;
 			keys python:[x for x in zmscontext.getConfProperties() if x.startswith(prefix)];
@@ -18,7 +18,7 @@
 					<td class="meta-url form-group"><input class="form-control url-input" tal:attributes="name python:'permalink_val_%s'%id; value python:zmscontext.getConfProperty(key)"/></td>
 				</tr>
 			</tal:block>
-			<tr class="row_insert form-group">
+			<tr class="row_insert form-group bg-light">
 				<td class="meta-sort text-right"><span class="btn btn-add mr-1 btn-secondary w-100" onclick="javascript:add_new_row(this)"><i class="fas fa-plus"></i></span></td>
 				<td class="meta-id"><input class="form-control form-control" name="permalink_key__" placeholder="Enter Id..."/></td>
 				<td class="meta-url form-group"><input class="form-control url-input" name="permalink_val__" placeholder="Select Url..."/></td>

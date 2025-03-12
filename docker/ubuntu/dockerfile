@@ -42,7 +42,7 @@ RUN pip install itsdangerous
 RUN mkwsgiinstance -d . -u admin:admin
 
 COPY docker/ubuntu/etc etc
-COPY docker/ubuntu/var var
+# COPY docker/ubuntu/var var
 COPY docker/ubuntu/Extensions Extensions
 
 EXPOSE 8085

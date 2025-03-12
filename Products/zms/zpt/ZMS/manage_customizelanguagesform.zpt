@@ -51,7 +51,7 @@
 								hx-confirm="Do you really want to delete this object?"
 								hx-get="manage_changeLanguages" 
 								hx-target="#zmi_manage_tabs_message"
-								hx-on:htmx:after-request="$(this).closest('tr').hide('slow',function(){$(this).closest('tr').remove()})"
+								hx-on:htmx:after-request="remove_row($(this))"
 								tal:attributes="
 									hx-confirm python:here.getZMILangStr('MSG_CONFIRM_DELOBJ');
 									hx-get python:'manage_changeLanguages?btn=BTN_DELETE&target=zmi_manage_tabs_message&lang=%s&ids:list=%s'%(request.get('lang',here.getPrimaryLanguage()),langId); 
@@ -79,7 +79,13 @@
 		</tal:block>
 	</tal:block>
 	<tr class="row_insert form-group">
-		<td class="meta-sort text-center"><span class="btn btn-secondary btn-sm btn-add mr-1 w-100"><i class="fas fa-plus"></i></span></td>
+		<td class="meta-sort text-center">
+			<input type="hidden" name="old_ids:list" value="" />
+			<span class="btn btn-secondary btn-sm btn-add mr-1 w-100" 
+				onclick="javascript:add_new_row(this)">
+				<i class="fas fa-plus"></i>
+			</span>
+		</td>
 		<td class="language_id"><input class="form-control form-control-sm" placeholder="ISO-639/2" minlength="2" maxlength="3" required="true" type="text" name="_lang_id_0" /></td>
 		<td class="language_label"><input class="form-control form-control-sm" required="true"type="text" name="_lang_label_0" /></td>
 		<td class="language_parent">
@@ -160,9 +166,9 @@
 		<td tal:repeat="langId langIds"><div class="single-line"><textarea class="form-control form-control-sm" tal:attributes="name python:'%s_value_%s'%(langDict['key'],langId); disabled python:['','disabled'][int(langId in langDict.get('acquired',[]))]" tal:content="python:langDict.get(langId,'')"></textarea></div></td>
 	</tr>
 	<tr class="row_insert form-group">
-		<td class="meta-sort text-center"><span class="btn btn-secondary btn-sm btn-add mr-1 w-100"><i class="fas fa-plus"></i></span></td>
-		<td><input class="form-control form-control-sm" type="text" name="_lang_dict_key_0" /></td>
-		<td tal:repeat="langId langIds"><div class="single-line"><textarea class="form-control form-control-sm" tal:attributes="name python:'_lang_dict_value_0_%s'%(langId)"></textarea></div></td>
+		<td class="meta-sort text-center"><span class="btn btn-secondary btn-sm btn-add mr-1 w-100" onclick="javascript:add_new_row(this)"><i class="fas fa-plus"></i></span></td>
+		<td><input class="form-control form-control-sm" type="text" name="_lang_dict_key_0" disabled="disabled" /></td>
+		<td tal:repeat="langId langIds"><div class="single-line"><textarea class="form-control form-control-sm" tal:attributes="name python:'_lang_dict_value_0_%s'%(langId)" disabled="disabled"></textarea></div></td>
 	</tr>
 	</tbody>
 	</table>
@@ -258,101 +264,6 @@
 				.submit();
 		}
 	}
-
-	// Get current number of language terms
-	function get_lang_count() {
-		let lang_count = 0;
-		// Refresh cached language dictionary
-		let lang_dict_json = $.ajax({
-			url: $ZMI.getBaseUrl()+'/get_lang_dict',
-			async: false
-			}).responseJSON;
-		$ZMI.setCachedValue('get_lang_dict',lang_dict_json);
-
-		// Get language count from cached language dictionary
-		let lang_dict = ZMI.prototype.getCachedValue('get_lang_dict');
-		if ( lang_dict!='undefined' ) {
-			if ( typeof lang_dict == 'object' ) {
-				lang_count = Object.keys(lang_dict).length;
-			} else {
-				lang_count = Object.keys(JSON.parse(lang_dict)).length;
-			}
-		};
-		return lang_count;
-	}
-
-	/**
-	 * On load:
-	 */
-	$(function(){
-		// New field set: initially disable inputs
-		$('input, textarea, select','tr.row_insert').attr('disabled',true);
-
-		// ++++++++++++
-		// Add rows to tables #meta_properties on button click
-		// ++++++++++++
-		let new_row_counter = 0;
-
-		// Add click event function to add-buttons
-		$(".row_insert .btn-add").click(function(){
-			let lang_count = get_lang_count();
-			// Refresh global row counter
-			new_row_counter++;
-			// New field set: clone with enabled inputs
-			$('input, textarea, select','tr.row_insert').attr('disabled',false);
-			
-			// Where to insert the new row 
-			let $where_insert = $(this).closest('tr');
-
-			// Set variables
-			let table_id = $(this).closest('table').attr('id'); // meta_properties or meta_languages
-			let new_row_name = `new_row_${table_id}_${new_row_counter}`;
-			let old_id_html = '';
-			let sort_options_html = '';
-			let sort_options_len = 0;
-			let new_btn_html = `
-				<span class="btn btn-secondary btn-sm mr-1 w-100" style="color:#999" 
-					onclick="javascript:$(this).closest('tr').hide('slow',function(){$(this).closest('tr').remove()})">
-					<i class="fas fa-undo-alt"></i>
-				</span>
-			`;
-		
-			// Clone(true) to get a deep copy including select options
-			let $new_row = $where_insert.clone(true);
-
-			// Process table cells of the clone like "old" row
-			$new_row.find('td').each(function() {
-				$(this).find('input,select,textarea').each(function() {
-					let tagname = $(this).prop('tagName');
-					let defname = $(this).attr('name');
-					let deftype = $(this).attr('type');
-					let counter = table_id == 'lang_dict' ? lang_count + new_row_counter : new_row_counter;
-					let newname = $(this).attr('name').replace('_0', '_' + counter);
-					let newval  = 'new'+counter;
-					$(this).attr('name',newname);
-					if (!('select'==tagname.toLowerCase())) {
-						$(this).val(newval);
-					}
-				});
-			});
-
-			// Process td:first-child of the clone
-			$new_row.find('td.meta-sort').html(new_btn_html);
-			$new_row.removeClass('row_insert').attr('id',new_row_name);
-
-			// Insert the new row
-			$new_row.insertBefore($where_insert);
-			// Set form as modified
-			$ZMI.set_form_modified($('input',$new_row));
-			// Reset the clone template
-			$where_insert.find('input:not([type="checkbox"]),textarea').each(function() {
-				$(this).val(undefined);
-			});
-			// New field set: reset to disabled inputs
-			$('input, textarea, select','tr.row_insert').attr('disabled',true);
-		});
-
-	});
 // -->
 </script>
 

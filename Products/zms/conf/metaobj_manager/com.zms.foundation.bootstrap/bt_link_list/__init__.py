@@ -26,7 +26,7 @@ class bt_link_list:
 	package = "com.zms.foundation.bootstrap"
 
 	# Revision
-	revision = "5.1.2"
+	revision = "5.1.3"
 
 	# Type
 	type = "ZMSResource"

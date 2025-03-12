@@ -63,7 +63,7 @@
 				},
 			},
 			{
-				"name": "ZMS-Docker:8085",
+				"name": "ZMS-Docker:8086",
 				"type": "debugpy",
 				"request": "launch",
 				"justMyCode": false,
@@ -73,7 +73,7 @@
 					"--debug",
 					"--verbose",
 					"/home/zope/etc/zope.ini",
-					"http_port=8085"
+					"http_port=8086"
 				],
 				"env": {
 					"PYTHONUNBUFFERED":"1",
@@ -84,8 +84,8 @@
 					"SOFTWARE_HOME": "/home/zope/venv/bin"
 				},
 				"serverReadyAction":{
-					"pattern":"Serving on http://0.0.0.0:8085",
-					"uriFormat": "http://admin:admin@127.0.0.1:8085/manage_main",
+					"pattern":"Serving on http://0.0.0.0:8086",
+					"uriFormat": "http://admin:admin@127.0.0.1:8086/manage_main",
 					"action": "openExternally",
 				},
 			},

@@ -2,10 +2,9 @@
 	zmscontext options/zmscontext;
 	id zmscontext/id">
 	<!--bt_link_list.interface0 -->
-	<div class="form-group row" id="tr_links_interface0" 
+	<div id="tr_links_interface0" 
 		tal:attributes="id python:'tr_%s_interface0'%(id)">
-		<div class="col-sm-2"></div>
-		<div class="col-sm-10">
+		<div class="form-group col-sm-10 offset-sm-2 p-0">
 			<table class="table table-bordered m-0">
 				<tr class="row_insert bg-light">
 					<td class="meta-sort">
@@ -122,6 +121,7 @@
 				refreshLinks();
 				$('.btn-delete',$linktable).click(function() {
 					if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
+						$ZMI.set_form_modified($linktable);
 						$(this).closest('tr').hide('slow',function(){
 							$(this).closest('tr').remove();
 							refreshLinks();
@@ -144,6 +144,7 @@
 				}
 				refreshView();
 				$ZMI.initUrlInput($('tr.url-inputs',$linktable));
+				$ZMI.set_form_modified($linktable);
 			});
 
 			// Execute Creating GUI

@@ -159,6 +159,7 @@
 						hx-confirm="Do you really want to delete this object?"
 						hx-get="manage_changeTextformat" 
 						hx-target="#zmi_manage_tabs_message"
+						hx-indicator="body"
 						hx-on:htmx:after-request="$(this).closest('tr').hide('slow',function(){$(this).closest('tr').remove()})"
 						tal:attributes="
 							hx-confirm python:here.getZMILangStr('MSG_CONFIRM_DELOBJ');

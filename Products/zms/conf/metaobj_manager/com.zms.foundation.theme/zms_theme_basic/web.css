@@ -9,7 +9,7 @@
 	--zms_header_bg:#ffffff !important;
 	--zms_header_main_text_color:#333333;
 	--zms_header_dropdown_text_color:#333333;
-	--zms_logo: url('theme_zms5_base/common/img/zmslogo.svg');
+	--zms_logo: url('zms_theme_basic/common/img/zmslogo.svg');
 	--zms_card_bg:white;
 	--zms_card_shadow:0 0 2rem rgba(0,0,0,0.2);
 	--zms_card_delimiter_border:1px dotted #333;
@@ -516,9 +516,9 @@ section#overview #our_contacts address p span {
 		float:left;
 		width:6rem;
 		height:8rem;
-		background-image:url('/sites/gpoh/bs5_gpoh/common/img/Schrappe.jpg');
+		background-image:url('/++resource++zmi/logo/Zope_symbol.svg');
 		background-position:top;
-		background-size:cover;
+		background-size: contain;
 		margin:0 1rem 3rem 0;
 		opacity:1;
 		transition:height 1s, width 1s ease-in-out;

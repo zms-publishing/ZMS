@@ -107,6 +107,7 @@
 					<a class="btn btn-secondary"
 						hx-get="manage_changeMetaProperties"
 						hx-target="#zmi_manage_tabs_message"
+						hx-indicator="body"
 						hx-confirm="Do you really want to delete this object?"
 						hx-on:htmx:after-request="remove_row(this)"
 						tal:attributes="

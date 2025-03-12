@@ -270,7 +270,6 @@
 	});
 // -->
 </script>
-<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/row_insert.js"></script>
 
 <footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 </body>

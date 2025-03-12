@@ -66,7 +66,7 @@ function add_new_row(this_btn) {
 		$(this).val(undefined);
 	});
 	$('input, textarea, select','tr.row_insert').attr('disabled',true);
-}
+};
 
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -77,14 +77,18 @@ function add_new_row(this_btn) {
 // [1] Remove row from table.
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 function remove_row(context) {
+	let table_id  = $(context).closest('table').attr('id').split('_').pop();
 	// 1. Remove row from table and set form as modified
 	$(context).closest('tr').hide('slow',function(){
 		$(this).closest('tr').remove();
 		$ZMI.set_form_modified(context);
 	});
-	// 2. Normalize sorting-UI after deleting a row
-	renew_sort_options(this_table = $(context).closest('table'));
-}
+	// 2. Normalize sorting-UI after deleting a row 
+	// if the current table-cell contains a SELECT element
+	if ($(context).closest('td').find('select').length > 0) {
+		renew_sort_options(this_table = $(context).closest('table'));
+	}
+};
 
 
 // [2] Normalize sorting-UI after deleting a row.
@@ -96,8 +100,8 @@ function renew_sort_options(this_table) {
 	$('tr[id*="new_row"]').each(function() {
 		$(this).removeAttr('id');
 	});
-
-	let $rows = $('tbody tr', this_table)
+	let table_id  = this_table.attr('id').split('_').pop();
+	let $rows = $('tbody tr', this_table);
 	let sort_options_len = $rows.length;
 	let row_counter = 0;
 	$rows.each( function() {
@@ -157,17 +161,17 @@ function get_lang_terms_count() {
 		}
 	};
 	return lang_terms_count;
-}
+};
 
 
 // [4] Escape HTML characters
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-function escapeHtml(unsafe) {
+const escapeHtml = (unsafe) => {
 	return unsafe
-		.replace(/&/g, "&amp;")
-		.replace(/</g, "&lt;")
-		.replace(/>/g, "&gt;")
-		.replace(/"/g, "&quot;")
-		.replace(/'/g, "&#039;");
+		.replaceAll('&', '&amp;')
+		.replaceAll('<', '&lt;')
+		.replaceAll('>', '&gt;')
+		.replaceAll('"', '&quot;')
+		.replaceAll("'", '&#039;');
 }
 

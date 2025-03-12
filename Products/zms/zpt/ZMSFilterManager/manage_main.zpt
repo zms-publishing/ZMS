@@ -555,7 +555,6 @@
 	});
 //-->
 </script>
-<script src="/++resource++zms_/row_insert.js"></script>
 </body>
 </html>
 </tal:block>

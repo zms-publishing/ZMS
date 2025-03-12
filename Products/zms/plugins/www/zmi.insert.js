@@ -77,13 +77,13 @@ function add_new_row(this_btn) {
 // [1] Remove row from table.
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 function remove_row(context) {
-	let table_id  = $(context).closest('table').attr('id').split('_').pop();
-	// 1. Remove row from table and set form as modified
+	// Set form as modified
+	$ZMI.set_form_modified(context);
+	// Remove row from table
 	$(context).closest('tr').hide('slow',function(){
 		$(this).closest('tr').remove();
-		$ZMI.set_form_modified(context);
 	});
-	// 2. Normalize sorting-UI after deleting a row 
+	// 2. Normalize sorting-UI after removing row 
 	// if the current table-cell contains a SELECT element
 	if ($(context).closest('td').find('select').length > 0) {
 		renew_sort_options(this_table = $(context).closest('table'));

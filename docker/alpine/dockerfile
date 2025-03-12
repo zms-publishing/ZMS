@@ -21,7 +21,7 @@ RUN python3 -m venv venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 RUN pip install -U pip wheel setuptools
 RUN pip install -U -e git+https://github.com/zms-publishing/ZMS.git@main#egg=ZMS
-RUN pip install -r https://raw.githubusercontent.com/zms-publishing/ZMS5/master/requirements-full.txt
+RUN pip install -r https://raw.githubusercontent.com/zms-publishing/ZMS5/main/requirements-full.txt
 RUN pip install ZEO
 RUN pip install itsdangerous
 RUN pip install debugpy

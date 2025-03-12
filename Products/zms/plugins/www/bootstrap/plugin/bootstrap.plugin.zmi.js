@@ -1400,7 +1400,14 @@ ZMIObjectTree.prototype.preview_load = function(sender) {
 		var abs_url = $(sender).parent('li').children('a[href]').attr('href');
 		$.get($ZMI.get_rest_api_url(abs_url)+'/get_body_content',{lang:getZMILang(),preview:'preview'},function(data){
 			// Clean data as plain text
-			data = $(JSON.parse(data)).text().replaceAll('\n','');
+			try {
+				// If data is JSON:
+				data = JSON.parse(data);
+			} catch (e) {
+				// If data is HTML:
+				data = data.replaceAll('\n','').replaceAll('\t','').replace(/<!--[\s\S]*?-->/g, '');
+			};
+			data = $(data).text().replaceAll('\n','');
 			$(sender).attr('data-preview_text',data);
 			$(sender).addClass('preview_loaded');
 		});

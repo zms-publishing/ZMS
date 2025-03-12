@@ -212,7 +212,12 @@ class RestApiController(object):
             REQUEST.RESPONSE.setHeader('Content-Type',ct)
             REQUEST.RESPONSE.setHeader('Content-Disposition', 'inline;filename="%s.%s"'%((self.ids+['get'])[-1],ct.split('/')[-1]))
             if ct == 'application/json':
-                return json.dumps(data)
+                # Filtering data records that may contain not strings but objects.
+                try:
+                    data = json.dumps(data)
+                except:
+                    data = [{k:i[k] for k in i.keys() if not k=='records'} for i in data]
+                    data = json.dumps(data)
             return data
         return None
 

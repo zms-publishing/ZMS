@@ -1321,7 +1321,7 @@ ZMIObjectTree.prototype.addPages = function(nodes) {
 			html += `<i class="fas fa-caret-right toggle" title="-" style="visibility:hidden"></i> `;
 		};
 		if (node.is_page_element) {
-			if (node.meta_id == 'ZMSGraphic' && node.index_html) {
+			if (node.index_html && /\.(gif|jpe?g|png|webp|svg)$/i.test(node.index_html)) {
 				html += `<span class="preview_on_hover preview_image preview_ready" style="--preview_url:url(${node.index_html});cursor:help" title="${getZMILangStr('TAB_PREVIEW')}">${icon}</span> `;
 			} else {
 				html += `<span class="preview_on_hover preview_text" style="cursor:help" data-preview_text="Loading ..." onmouseover="$ZMI.objectTree.preview_load(this)" title="${getZMILangStr('TAB_PREVIEW')}">${icon}</span> `;
@@ -1399,8 +1399,15 @@ ZMIObjectTree.prototype.preview_load = function(sender) {
 	if(!$(sender).hasClass('preview_loaded')) {
 		var abs_url = $(sender).parent('li').children('a[href]').attr('href');
 		$.get($ZMI.get_rest_api_url(abs_url)+'/get_body_content',{lang:getZMILang(),preview:'preview'},function(data){
-			// Clean data as plain text
-			data = $(JSON.parse(data)).text().replaceAll('\n','');
+			// Condense data to plain text
+			try {
+				// If data is JSON:
+				data = JSON.parse(data);
+			} catch (e) {
+				// If data is HTML:
+				data = data.replaceAll('\n','').replaceAll('\t','').replace(/<!--[\s\S]*?-->/g, '');
+			};
+			data = $(data).text().replaceAll('\n',' ');
 			$(sender).attr('data-preview_text',data);
 			$(sender).addClass('preview_loaded');
 		});

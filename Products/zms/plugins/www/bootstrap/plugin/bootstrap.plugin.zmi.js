@@ -1322,9 +1322,9 @@ ZMIObjectTree.prototype.addPages = function(nodes) {
 		};
 		if (node.is_page_element) {
 			if (node.meta_id == 'ZMSGraphic' && node.index_html) {
-				html += `<span class="preview_on_hover preview_image preview_ready" style="--preview_url:url(${node.index_html});cursor:help" title="${getZMILangStr('TAB_PREVIEW')}">${icon}</span> `;
+				html += `<div class="preview_on_hover preview_image preview_ready" style="--preview_url:url(${node.index_html});cursor:help" title="${getZMILangStr('TAB_PREVIEW')}">${icon}</div> `;
 			} else {
-				html += `<span class="preview_on_hover preview_text" style="cursor:help" data-preview_text="Loading ..." onmouseover="$ZMI.objectTree.preview_load(this)" title="${getZMILangStr('TAB_PREVIEW')}">${icon}</span> `;
+				html += `<div class="preview_on_hover preview_html" style="cursor:help" data-preview_text="Loading ..." onmouseover="$ZMI.objectTree.preview_load(this)" title="${getZMILangStr('TAB_PREVIEW')}"><div class="preview_preview">Loading ...</div>${icon}</div> `;
 			}
 		}
 		html += `<a href="${node.getPath}"
@@ -1399,9 +1399,7 @@ ZMIObjectTree.prototype.preview_load = function(sender) {
 	if(!$(sender).hasClass('preview_loaded')) {
 		var abs_url = $(sender).parent('li').children('a[href]').attr('href');
 		$.get($ZMI.get_rest_api_url(abs_url)+'/get_body_content',{lang:getZMILang(),preview:'preview'},function(data){
-			// Clean data as plain text
-			data = $(JSON.parse(data)).text().replaceAll('\n','');
-			$(sender).attr('data-preview_text',data);
+			$(".preview_preview",sender).html(data);
 			$(sender).addClass('preview_loaded');
 		});
 	};

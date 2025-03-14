@@ -19,7 +19,6 @@
 							label python:here.getZMILangStr(option['label']);"
 						hx-target="body"
 						hx-indicator="body"
-						hx-push-url="true" 
 						hx-trigger="click"
 						tal:attributes="href url; hx-get url;class css_class;"
 						tal:content="structure label">

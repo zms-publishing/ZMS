@@ -9,8 +9,7 @@
 	data-root python:here.getRootElement().getHome().id;
 	data-client python:here.getHome().id;
 	id python:'zmsid_%s'%(here.id);
-	class python:here.zmi_body_class(id='customize config')"
-	hx-push-url="true">
+	class python:here.zmi_body_class(id='customize config')">
 	<header tal:replace="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</header>
 <div id="zmi-tab">
 	<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[{'action':'manage_customize','label':'TAB_SYSTEM'}])">zmi_breadcrumbs</tal:block>

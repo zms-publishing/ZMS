@@ -18,8 +18,7 @@
 	data-level python:here.getLevel();
 	data-turbolinks python:here.attr('turbolinks')=='false' and 'false' or None;
 	id python:'zmsid_%s'%(here.id);
-	class python:here.zmi_body_class(id='properties')"
-	hx-push-url="true">
+	class python:here.zmi_body_class(id='properties')">
 <header tal:replace="structure python:here.zmi_body_header(here,request)">zmi_body_header</header>
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>

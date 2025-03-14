@@ -1405,9 +1405,11 @@ ZMIObjectTree.prototype.preview_load = function(sender) {
 				data = JSON.parse(data);
 			} catch (e) {
 				// If data is HTML:
-				data = data.replaceAll('\n','').replaceAll('\t','').replace(/<!--[\s\S]*?-->/g, '');
+				data = data.replaceAll('\n',' ').replaceAll('\t',' ');
+				// Remove HTML-comments, <style> and <script> elements
+				data = data.replace(/<!--[\s\S]*?-->/g, '').replace(/<style[\s\S]*?<\/style>/gi, '').replace(/<script[\s\S]*?<\/script>/gi, '');
 			};
-			data = $(data).text().replaceAll('\n',' ');
+			data = $(data).text().trim();
 			$(sender).attr('data-preview_text',data);
 			$(sender).addClass('preview_loaded');
 		});

@@ -726,6 +726,7 @@ body.zmi ul.zmi-container > .zmi-item .right video {
 	overflow: hidden;
 	overflow-y:scroll;
 	white-space: normal;
+	font-family:'Courier New', Courier, monospace;
 }
 body.zmi ul.zmi-container > .zmi-item .right video {
 	margin-top:1.5rem;

@@ -297,7 +297,7 @@ $ZMI.registerReady(function(){
 		if ($single_line.hasClass("zmi-nodes")) {
 			$textarea.prop({title:getZMILangStr('ATTR_NODE')});
 		}
-		if ($("span.input-group-append",this).length==0) {
+		if ($(".input-group-append",this).length==0) {
 			$(this).addClass("input-group");
 			if ($textarea.prev('i').length==1) {
 				$textarea.prev('i').wrap('<div class="input-group-prepend"><span class="btn btn-secondary btn-sm"></span></div>')

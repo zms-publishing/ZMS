@@ -5,7 +5,8 @@
 	data-root python:here.getRootElement().getHome().id;
 	data-client python:here.getHome().id;
 	id python:'zmsid_%s'%(here.id);
-	class python:here.zmi_body_class(id='manage-menu')">
+	class python:here.zmi_body_class(id='manage-menu')"
+	hx-push-url="true">
 <header class="navbar navbar-nav navbar-expand navbar-dark flex-row bd-navbar">
 	<ul class="nav navbar-nav navbar-right">
 		<li id="zmi-history" class="dropdown"></li>

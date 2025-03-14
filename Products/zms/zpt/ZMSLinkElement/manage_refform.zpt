@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" tal:define="standard modules/Products.zms/standard">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
-<body tal:attributes="class python:here.zmi_body_class(id='ref')">
+<body tal:attributes="class python:here.zmi_body_class(id='ref')" hx-push-url="true">
 <header tal:replace="structure python:here.zmi_body_header(here,request)">zmi_body_header</header>
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
 <tal:block tal:define="global
-		dummy0 python:here.synchronizeRefByObjs();
-		refByObjs python:here.getRefByObjs()">
+	dummy0 python:here.synchronizeRefByObjs();
+	refByObjs python:here.getRefByObjs()">
 
 <form tal:condition="python:refByObjs" class="card form-horizontal">
 	<legend tal:content="structure python:'%s:'%(here.getZMILangStr('MSG_REFERENCEDBY')%('<em>%s</em>'%here.getTitlealt(request)))">titlealt referenced by:</legend>

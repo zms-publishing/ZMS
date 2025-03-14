@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <tal:block tal:define="global zmscontext options/zmscontext" tal:content="structure python:zmscontext.zmi_html_head(zmscontext,request)">zmi_html_head</tal:block>
-<body tal:attributes="class python:' '.join(['zmi',request['lang'],'transition',zmscontext.meta_id])">
+<body tal:attributes="class python:' '.join(['zmi',request['lang'],'transition',zmscontext.meta_id])" hx-push-url="true">
 <tal:block tal:content="structure python:zmscontext.zmi_body_header(zmscontext,request)">zmi_body_header</tal:block>
 <div id="zmi-tab">
 <tal:block tal:content="structure python:zmscontext.zmi_breadcrumbs(zmscontext,request)">zmi_breadcrumbs</tal:block>

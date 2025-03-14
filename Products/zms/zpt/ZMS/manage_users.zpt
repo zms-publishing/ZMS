@@ -74,7 +74,7 @@
 <html lang="en" tal:define="standard modules/Products.zms/standard">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
 <!-- body tal:attributes="class python:' '.join(['zmi zms',request['lang'],'users config',here.meta_id])" -->
-<body tal:attributes="class python:here.zmi_body_class(id='users config')">
+<body tal:attributes="class python:here.zmi_body_class(id='users config')" hx-push-url="true">
 
 <header tal:replace="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</header>
 <div id="zmi-tab">

@@ -6,7 +6,7 @@
 	repositoryutil modules/Products.zms/repositoryutil;
 	providers python:repositoryutil.get_providers(here);">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
-<body tal:attributes="class python:here.zmi_body_class(id='repository_manager_main config')">
+<body tal:attributes="class python:here.zmi_body_class(id='repository_manager_main config')" hx-push-url="true">
 <header tal:replace="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</header>
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[here.manage_sub_options()[0]])">zmi_breadcrumbs</tal:block>

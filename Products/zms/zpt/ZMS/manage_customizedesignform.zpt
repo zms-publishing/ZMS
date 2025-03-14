@@ -9,7 +9,7 @@
 	ZMS_THEME python:zmscontext.getConfProperty('ZMS.theme','');
 	ZMS_THEME python:ZMS_THEME!='' and (ZMS_THEME +'/') or '';">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
-<body tal:attributes="class python:here.zmi_body_class(id='design config')">
+<body tal:attributes="class python:here.zmi_body_class(id='design config')" hx-push-url="true">
 <header tal:replace="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</header>
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[{'label':'TAB_DESIGN','action':'manage_customizeDesignForm'}])">zmi_breadcrumbs</tal:block>

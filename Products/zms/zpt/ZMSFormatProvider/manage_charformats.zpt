@@ -4,7 +4,7 @@
 	zmscontext python:here.getSelf();
 	standard modules/Products.zms/standard">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
-<body tal:attributes="class python:here.zmi_body_class(id='charformats config')" hx-boost="true" xmlns:hx-on="https://htmx.org/">
+<body tal:attributes="class python:here.zmi_body_class(id='charformats config')" hx-push-url="true" hx-boost="true" xmlns:hx-on="https://htmx.org/">
 <header tal:replace="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</header>
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[here.manage_sub_options()[1]])">zmi_breadcrumbs</tal:block>

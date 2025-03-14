@@ -4,13 +4,12 @@
 	zmscontext python:here.getSelf();
 	standard modules/Products.zms/standard">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
-<body tal:attributes="class python:here.zmi_body_class(id='properties')">
+<body tal:attributes="class python:here.zmi_body_class(id='properties')" hx-push-url="true">
 <header tal:replace="structure python:here.zmi_body_header(here,request)">zmi_body_header</header>
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
-<script>
-</script>
+<script></script>
 
 <form class="form-horizontal" name="form0" action="manage_changeProperties" method="post" onsubmit="return onImportFormSubmit(this)" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
@@ -40,12 +39,12 @@
 					</button>
 					<div class="dropdown-menu" role="menu">
 						<tal:block tal:repeat="SQLConnectionID python:here.SQLConnectionIDs()">
-								<a class="dropdown-item" href="javascript:;" tal:attributes="onclick python:'javascript:$(\'#connection_id\').val(\'%s\')\073$(\'button:first\',$(this).parents(\'.btn-group\')).html($(this).html())'%SQLConnectionID[1]">
-									<span tal:attributes="data-url python:getattr(here,SQLConnectionID[1]).absolute_url()">
-										<i class="fas fa-database"></i>
-										<tal:block tal:content="python:SQLConnectionID[1]">SQLConnectionID</tal:block>
-									</span>
-								</a>
+							<a class="dropdown-item" href="javascript:;" tal:attributes="onclick python:'javascript:$(\'#connection_id\').val(\'%s\')\073$(\'button:first\',$(this).parents(\'.btn-group\')).html($(this).html())'%SQLConnectionID[1]">
+								<span tal:attributes="data-url python:getattr(here,SQLConnectionID[1]).absolute_url()">
+									<i class="fas fa-database"></i>
+									<tal:block tal:content="python:SQLConnectionID[1]">SQLConnectionID</tal:block>
+								</span>
+							</a>
 						</tal:block>
 					</div>
 				</div><!-- .btn-group -->

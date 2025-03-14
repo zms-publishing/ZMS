@@ -8,7 +8,7 @@
 ><!DOCTYPE html>
 <html lang="en" tal:define="standard modules/Products.zms/standard">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
-<body tal:attributes="class python:here.zmi_body_class(id='zmsindex config')">
+<body tal:attributes="class python:here.zmi_body_class(id='zmsindex config')" hx-push-url="true">
 <header tal:replace="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</header>
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[{'label':'Index','action':'manage_main'}])">zmi_breadcrumbs</tal:block>

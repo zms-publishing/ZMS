@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" tal:define="standard modules/Products.zms/standard; set_zmi python:request.set('is_zmi',True)">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
-<body tal:attributes="class python:here.zmi_body_class(id='preview_top')">
+<body tal:attributes="class python:here.zmi_body_class(id='preview_top')" hx-push-url="true">
 <style>
 	a, i {
 		color:silver;

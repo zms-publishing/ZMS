@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" tal:define="standard modules/Products.zms/standard">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
-<body tal:attributes="class python:here.zmi_body_class(id='metas_acquire')">
+<body tal:attributes="class python:here.zmi_body_class(id='metas_acquire')" hx-push-url="true">
 
 <tal:block tal:define="
 		master python:here.getPortalMaster();

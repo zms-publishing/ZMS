@@ -19,14 +19,14 @@
 	<body tal:define="metaObjIds python:here.getMetaobjIds();
 			metaObjs python:[here.getMetaobj(x) for x in metaObjIds];
 			metaObjPackages python:here.sort_list(standard.distinct_list( [x.get('package') for x in metaObjs] ))"
-		tal:attributes="class python:here.zmi_body_class(id='metas_import')">
+		tal:attributes="class python:here.zmi_body_class(id='metas_import')"
+		hx-push-url="true">
 
 		<!-- Step-1: SELECT configuration file -->
 		<form tal:condition="python:request.get('section')!='import'"
 			class="form-horizontal card-body" action="manage_changeProperties" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="lang" tal:attributes="value request/lang" />
 			<input type="hidden" name="target" tal:attributes="value python:request['URL'].split('/')[-1]" />
-
 
 			<div class="form-group col-12 mb-3 mt-4">
 				<div class="custom-file">

@@ -3,7 +3,7 @@
 
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
 
-<body tal:attributes="class python:here.zmi_body_class(id='sequence')">
+<body tal:attributes="class python:here.zmi_body_class(id='sequence')" hx-push-url="true">
 
 	<form class="form-horizontal card" action="manage_changeProperties" method="post">
 

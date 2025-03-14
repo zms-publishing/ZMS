@@ -63,7 +63,7 @@
 			/*-->*/
 		</style>
 	</head> 
-	<body tal:attributes="class python:here.zmi_body_class(id='repository_manager_main')">
+	<body tal:attributes="class python:here.zmi_body_class(id='repository_manager_main')" hx-push-url="true">
 		<form class="form-horizontal card checkup" method="post" tal:attributes="action request/action" target="_parent">
 			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 			<input type="hidden" name="section" value="import"/>

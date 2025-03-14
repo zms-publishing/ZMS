@@ -4,7 +4,7 @@
 	zmscontext python:here.getSelf();
 	standard modules/Products.zms/standard">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
-<body tal:attributes="class python:' '.join(['zms',request['lang'],'user config',here.meta_id])">
+<body tal:attributes="class python:' '.join(['zms',request['lang'],'user config',here.meta_id])" hx-push-url="true">
 
 <form name="form0" class="form-horizontal container" action="manage_user" target="_parent" method="post" onsubmit="return form0Submit(this);">
 

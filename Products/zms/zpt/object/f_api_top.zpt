@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" tal:define="standard modules/Products.zms/standard; Std modules/Products/PythonScripts/standard">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
-<body tal:attributes="class python:here.zmi_body_class(id='preview_top')">
+<body tal:attributes="class python:here.zmi_body_class(id='preview_top')" hx-push-url="true">
 <script>
 	function open_partner(sender,href) {
 		var elems = document.getElementsByClassName("zmi-top-active");

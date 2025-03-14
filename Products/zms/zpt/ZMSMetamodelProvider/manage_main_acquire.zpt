@@ -9,7 +9,8 @@
 		masterMetaObjs python:[master.getMetaobj(x) for x in masterMetaObjIds];
 		masterMetaObjPackages python:here.sort_list(standard.distinct_list([x.get('package') for x in masterMetaObjs]));
 		acquireObjs python:[]"
-	tal:attributes="class python:here.zmi_body_class(id='metas_acquire')">
+	tal:attributes="class python:here.zmi_body_class(id='metas_acquire')"
+	hx-push-url="true">
 
 	<tal:block tal:repeat="metaObjId python:[x for x in masterMetaObjIds if x not in metaObjIds or not here.getMetaobj(x).get('acquired')]">
 		<tal:block tal:define="global metaObj python:master.getMetaobj(metaObjId)">

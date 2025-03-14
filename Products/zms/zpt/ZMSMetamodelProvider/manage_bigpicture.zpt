@@ -17,7 +17,7 @@
 ><!DOCTYPE html>
 <html lang="en">
 	<head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
-<body tal:attributes="class python:here.zmi_body_class(id='bigpicture')" data-template-ids="manage_bigpicture">
+<body tal:attributes="class python:here.zmi_body_class(id='bigpicture')" data-template-ids="manage_bigpicture" hx-push-url="true">
 <form class="form-horizontal card" 
 	tal:attributes="class python:'form-horizontal card %s'%(given_id and 'single-package' or 'all-packages')">
 	<legend class="navbar navbar-nav navbar-expand navbar-dark">

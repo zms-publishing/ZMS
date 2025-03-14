@@ -2,74 +2,75 @@
 <html lang="en" tal:define="zmscontext python:here.getSelf(); standard modules/Products.zms/standard">
 <tal:block tal:content="structure python:zmscontext.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <style>
-.zmi.browse_iframe .nav-tabs a.nav-link.active {
-	background: #f5f6f7;
-	border-bottom-color: transparent !important;
-}
-.zmi.browse_iframe .tab-content {
-	border: 1px solid #dee2e6;
-	margin-top: -1px;
-	background: #f5f6f7;
-}
-.zmi.browse_iframe .tab-content .zmi-filter .input-group-prepend > .input-group-text {
-	padding: 0rem 0.62rem;
-}
-.zmi.browse_iframe .tabbable .tab-pane form {
-	box-shadow:none;
-	border:none;
-	padding:1em 0em;
-}
-.zmi.browse_iframe #search_results .line.row {
-	margin:0 0.1rem
-}
-.zmi.browse_iframe #search_results .line.row.gray {
-	background-color:#fff;
-}
-.zmi.browse_iframe #search_results .line.row h2 {
-	line-height:1 !important;
-	margin-bottom:0;
-}
-.zmi.browse_iframe #search_results .line.row p {
-	font-size:x-small;
-}
-.zmi.browse_iframe #search_results h2 a {
-	font-size:medium;
-}
-.zmi.browse_iframe #search_results .breadcrumb {
-	font-size:small;
-	padding:3px 0 0 0;
-	background:transparent;
-	margin:0;
-}
-.zmi.browse_iframe #search_results h4 {
-	color:#999;
-}
-.zmi.browse_iframe #search_results .header.row {
-	display:none;
-}
-.zmi.browse_iframe  .form-inline .form-control {
-	display: inline-block;
-	width: auto;
-	vertical-align: middle;
-}
-.zmi.browse_iframe .form-inline .form-group {
-	display: inline-block;
-	margin-bottom: 0px;
-	vertical-align: middle;
-}
-.zmi.browse_iframe #link .form-inline .form-group {
-	margin-top: 1em;
-	vertical-align:baseline;
-}
-.zmi.browse_iframe .pull-right nav {
-	margin: 3rem .5rem .5rem 0;
-}
-.zmi.browse_iframe .zmi-sitemap  > .fa-spin {
-	margin: 1rem .3rem 1rem 1rem;
-}
-
+/*<!-- */
+	.zmi.browse_iframe .nav-tabs a.nav-link.active {
+		background: #f5f6f7;
+		border-bottom-color: transparent !important;
+	}
+	.zmi.browse_iframe .tab-content {
+		border: 1px solid #dee2e6;
+		margin-top: -1px;
+		background: #f5f6f7;
+	}
+	.zmi.browse_iframe .tab-content .zmi-filter .input-group-prepend > .input-group-text {
+		padding: 0rem 0.62rem;
+	}
+	.zmi.browse_iframe .tabbable .tab-pane form {
+		box-shadow:none;
+		border:none;
+		padding:1em 0em;
+	}
+	.zmi.browse_iframe #search_results .line.row {
+		margin:0 0.1rem
+	}
+	.zmi.browse_iframe #search_results .line.row.gray {
+		background-color:#fff;
+	}
+	.zmi.browse_iframe #search_results .line.row h2 {
+		line-height:1 !important;
+		margin-bottom:0;
+	}
+	.zmi.browse_iframe #search_results .line.row p {
+		font-size:x-small;
+	}
+	.zmi.browse_iframe #search_results h2 a {
+		font-size:medium;
+	}
+	.zmi.browse_iframe #search_results .breadcrumb {
+		font-size:small;
+		padding:3px 0 0 0;
+		background:transparent;
+		margin:0;
+	}
+	.zmi.browse_iframe #search_results h4 {
+		color:#999;
+	}
+	.zmi.browse_iframe #search_results .header.row {
+		display:none;
+	}
+	.zmi.browse_iframe  .form-inline .form-control {
+		display: inline-block;
+		width: auto;
+		vertical-align: middle;
+	}
+	.zmi.browse_iframe .form-inline .form-group {
+		display: inline-block;
+		margin-bottom: 0px;
+		vertical-align: middle;
+	}
+	.zmi.browse_iframe #link .form-inline .form-group {
+		margin-top: 1em;
+		vertical-align:baseline;
+	}
+	.zmi.browse_iframe .pull-right nav {
+		margin: 3rem .5rem .5rem 0;
+	}
+	.zmi.browse_iframe .zmi-sitemap  > .fa-spin {
+		margin: 1rem .3rem 1rem 1rem;
+	}
+/*-->*/
 </style>
-<body tal:attributes="class python:zmscontext.zmi_body_class(id='browse_iframe')">
+<body tal:attributes="class python:zmscontext.zmi_body_class(id='browse_iframe')" hx-push-url="true">
 
 <span class="d-none" name="physical_path"
 	tal:define="global el python:zmscontext.getLinkObj(request.get('elValue'))"

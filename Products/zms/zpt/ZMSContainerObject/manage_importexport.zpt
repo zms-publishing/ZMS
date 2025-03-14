@@ -1,29 +1,29 @@
 <!DOCTYPE html>
 <html lang="en" tal:define="standard modules/Products.zms/standard">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
-<body tal:attributes="class python:here.zmi_body_class(id='importexport')">
+<body tal:attributes="class python:here.zmi_body_class(id='importexport')" hx-push-url="true">
 <header tal:replace="structure python:here.zmi_body_header(here,request)">zmi_body_header</header>
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
 <script>
-
-function onExportFormatChange(el) {
-	var v = $(el).val();
-	if ( v == '1') {
-		$('#div_charset').show( 'normal');
+//<!--
+	function onExportFormatChange(el) {
+		var v = $(el).val();
+		if ( v == '1') {
+			$('#div_charset').show( 'normal');
+		}
+		else {
+			$('#div_charset').hide( 'normal');
+		}
+		if ( isNaN(v)) {
+			$('#div_debug').show( 'normal');
+		}
+		else {
+			$('#div_debug').hide( 'normal');
+		}
 	}
-	else {
-		$('#div_charset').hide( 'normal');
-	}
-	if ( isNaN(v)) {
-		$('#div_debug').show( 'normal');
-	}
-	else {
-		$('#div_debug').hide( 'normal');
-	}
-}
-
+//-->
 </script>
 
 <tal:block 
@@ -32,12 +32,12 @@ function onExportFormatChange(el) {
 		filter_manager python:here.getFilterManager();
 		filterIds python:filter_manager.getFilterIds();
 		filters python:[x for x in [filter_manager.getFilter(x) for x in filterIds] 
-				if (here.meta_id in x.get('meta_types',[]) 
-					or '*' in x.get('meta_types',[]))
-				and (request['AUTHENTICATED_USER'].has_role('Manager') 
-					or len(standard.intersection_list(here.getUserRoles(request['AUTHENTICATED_USER']),x.get('roles',[])))>0
-					or '*' in x.get('roles',[]))
-				];
+			if (here.meta_id in x.get('meta_types',[]) 
+				or '*' in x.get('meta_types',[]))
+			and (request['AUTHENTICATED_USER'].has_role('Manager') 
+				or len(standard.intersection_list(here.getUserRoles(request['AUTHENTICATED_USER']),x.get('roles',[])))>0
+				or '*' in x.get('roles',[]))
+			];
 		importFilters python:[x for x in filters if len(standard.intersection_list([x.get('format','Missing filter format')],['import'])) > 0];
 		exportFilters python:[x for x in filters if len(standard.intersection_list([x.get('format','Missing filter format')],['export','XML','XHTML','myXML'])) > 0]">
 

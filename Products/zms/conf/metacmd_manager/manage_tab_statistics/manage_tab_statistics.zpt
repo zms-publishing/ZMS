@@ -28,7 +28,7 @@
 		global count_visible python:0;">
 
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
-<body tal:attributes="class python:here.zmi_body_class(id='analyze')">
+<body tal:attributes="class python:here.zmi_body_class(id='analyze') hx-push-url="true">
 
 	<header tal:replace="structure python:here.zmi_body_header(here,request)">zmi_body_header</header>
 

@@ -6,7 +6,7 @@
 	properties python:here.getProperties();
 	actions python:[action for action in here.getActions() if not action.get('id').endswith('_test')];">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
-<body tal:attributes="class python:here.zmi_body_class(id='ZMSZCatalogConnector catalog-connector config')">
+<body tal:attributes="class python:here.zmi_body_class(id='ZMSZCatalogConnector catalog-connector config')" hx-push-url="true">
 <header tal:replace="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</header>
 <div id="zmi-tab">
 

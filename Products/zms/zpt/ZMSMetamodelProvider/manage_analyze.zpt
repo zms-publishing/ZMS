@@ -4,7 +4,7 @@
 	zmscontext python:here.getSelf();
 	standard modules/Products.zms/standard">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
-<body tal:attributes="class python:here.zmi_body_class(id='analyze')">
+<body tal:attributes="class python:here.zmi_body_class(id='analyze')" hx-push-url="true">
 <form class="form-horizontal card"
 	tal:define="global
 		meta_id request/id;

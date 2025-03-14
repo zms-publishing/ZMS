@@ -687,6 +687,17 @@ body.zmi ul.zmi-container > .zmi-item > .right {
 	}
 }
 
+
+/* -------------------------------------------------- */
+/* ZMI-SITEMAP Preview Popup                          */
+/* -------------------------------------------------- */
+
+.preview_on_hover,
+.preview_on_hover.preview_html {
+	display: inline-block;
+}
+/* [A] PLAIN Preview for Navtree: Image or Plain Text */
+/* based on CSS-Pseudo-Elements (preview_image/text)  */
 .preview_on_hover.preview_image::after,
 .preview_on_hover.preview_text::after {
 	content:"";
@@ -698,8 +709,8 @@ body.zmi ul.zmi-container > .zmi-item > .right {
 	margin-top:1.5rem;
 }
 
-.preview_on_hover.preview_image::after,
-.preview_on_hover.preview_text::after,
+.preview_on_hover.preview_image:hover::after,
+.preview_on_hover.preview_text:hover::after,
 body.zmi ul.zmi-container > .zmi-item .right video {
 	content:"";
 	width:20vw;
@@ -719,30 +730,6 @@ body.zmi ul.zmi-container > .zmi-item .right video {
 	margin-left:-10vw;
 	box-shadow: 5px 5px 20px #c0c0c094;
 	transition: opacity .75s, height .5s, box-shadow 1s, background-color 1s  ease; 
-}
-
-.preview_preview {
-	zoom: 70%;
-	width:25rem;
-	height:25rem;
-	padding: .5rem;
-	overflow: hidden;
-	opacity:1;
-	display:none;
-	position:absolute;
-	background-color:white;
-	border:1px solid #c0c0c0;
-	border-radius:4px;
-	z-index:1000;
-	box-shadow: 5px 5px 20px #c0c0c0;
-	transition: opacity .75s, height .5s, box-shadow 1s, background-color 1s  ease; 
-}
-.preview_on_hover.preview_html:hover .preview_preview {
-	display: block;
-}
-.preview_on_hover,
-.preview_on_hover.preview_html {
-	display: inline-block;
 }
 
 .preview_on_hover.preview_text:hover::after {
@@ -765,6 +752,34 @@ body.zmi .zmi-sitemap span.preview_on_hover:hover::after {
 	height: 35vh;
 	margin: 1rem 0 0 -.5rem;
 }
+
+/* [B] RENDERED HTML Preview based on renderShort()   */
+/* based on DOM-Elements (preview_html)               */
+.preview_on_hover.preview_html .preview_preview {
+	zoom: 70%;
+	width: 0;
+	height: 0;
+	padding: .5rem;
+	margin: 1rem 0 0 -.5rem;
+	overflow: hidden;
+	opacity:0;
+	visibility:hidden;
+	position:absolute;
+	background-color:white;
+	border:1px solid #c0c0c0;
+	border-radius:4px;
+	z-index:1000;
+	box-shadow: 5px 5px 20px #c0c0c0;
+	transition: opacity .75s, height .5s, box-shadow 1s, background-color 1s  ease;
+	cursor:default;
+}
+.preview_on_hover.preview_html:hover .preview_preview {
+	visibility:visible;
+	opacity:1;
+	width: 35vw;
+	height: 35vh;
+}
+
 
 @media (max-width: 767px) {
 	body.zmi header.navbar {

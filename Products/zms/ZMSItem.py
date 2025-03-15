@@ -122,6 +122,7 @@ class ZMSItem(
       RESPONSE.setHeader('Cache-Control', 'no-cache')
       RESPONSE.setHeader('Pragma', 'no-cache')
       RESPONSE.setHeader('Content-Type', 'text/html;charset=%s'%request['ZMS_CHARSET'])
+      RESPONSE.setHeader('HX-Push-Url', request.environ.get('REQUEST_URI', '.'))
       request.set( 'is_zmi', True)
       if not request.get( 'preview'):
         request.set( 'preview', 'preview')

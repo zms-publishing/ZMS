@@ -1,10 +1,29 @@
 /**
  * $ZMI: Register functions to be executed on document.ready 
  */
-ZMI = function() { this.readyFn = []};
-ZMI.prototype.registerReady = function(fn) {this.readyFn.push(fn)};
-ZMI.prototype.ready = function(fn) {this.readyFn.push(fn)};
-ZMI.prototype.runReady = function() {this.readyFn.map(x=>x())};
+ZMI = function() { this.readyFn = {}};
+ZMI.prototype.generateUUID = function() { // Public Domain/MIT
+    var d = new Date().getTime();//Timestamp
+    var d2 = ((typeof performance !== 'undefined') && performance.now && (performance.now()*1000)) || 0;//Time in microseconds since page-load or 0 if unsupported
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random() * 16;//random number between 0 and 16
+        if(d > 0){//Use timestamp until depleted
+            r = (d + r)%16 | 0;
+            d = Math.floor(d/16);
+        } else {//Use microseconds since page-load if supported
+            r = (d2 + r)%16 | 0;
+            d2 = Math.floor(d2/16);
+        }
+        return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+}
+ZMI.prototype.registerReady = function(fn, key) {
+	key = typeof key == 'undefined' ? this.generateUUID() : key;
+	if (typeof this.readyFn[key] == 'undefined') {
+		this.readyFn[key] = fn;
+	}
+};
+ZMI.prototype.runReady = function() {Object.entries(this.readyFn).map(([k, v], i)=>v())};
 $ZMI = new ZMI();
 
 /**
@@ -58,7 +77,8 @@ if (typeof htmx != "undefined") {
 			topWindow.location.assign(manage_main_href);
 		}
 	});
-	document.addEventListener('htmx:afterRequest', (evt) => {
+	document.addEventListener('htmx:afterSettle', (evt) => {
+		console.log('htmx:afterSettle');
 		var resp_text = evt.detail.xhr.responseText;
 		var parser = new DOMParser();
 		var resp_doc = parser.parseFromString(resp_text , 'text/html');

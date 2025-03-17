@@ -40,7 +40,7 @@
 
 </style>
 
-<tal:block tal:content="structure python:'<script>'"></tal:block>
+<script>
 
 /** 
  * Toggle richtext-editor.
@@ -53,7 +53,9 @@ function zmiRichtextEditorToggle( elName, newFormat) {
 	$('#zmiRichtextEditor'+elName).toggle();
 }
 
-$ZMI.registerReady(function() {
+function ZMISelectRichtextReady() 
+{
+	console.log("f_select_richtext.$ZMI.registerReady");
 	var format = $('#format').val();
 	var wysiwyg = typeof format=='undefined' || format=='<tal:block tal:on-error="string:undefined" tal:content="structure python:rteTextFormats[0].getId()"></tal:block>';
 	if(wysiwyg) {
@@ -62,22 +64,11 @@ $ZMI.registerReady(function() {
 	else {
 		$('div[id^="zmiRichtextEditor"]').hide();
 	}
-});
+}
 
-document.addEventListener("htmx:afterSwap", function(evt) {
-	if (typeof CKEDITOR !== 'undefined') {
-		console.log("CKEditor is available in DOM.");
-		setTimeout(function() {
-			console.log("f_select_richtext fires $ZMI.runReady() with htmx:afterSwap after 250ms", evt);
-			$ZMI.runReady();
-		}, 250)
-	}
-	else {
-		console.log("CKEditor not available in DOM.");
-	}
-})
+$ZMI.registerReady(ZMISelectRichtextReady, 'ZMISelectRichtextReady');
 
-<tal:block tal:content="structure python:'</script>'"></tal:block>
+</script>
 
 </tal:block>
 

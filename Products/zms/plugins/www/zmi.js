@@ -91,6 +91,18 @@ if (typeof htmx != "undefined") {
 	document.addEventListener('htmx:historyRestore', (e) => {
 		$ZMI.runReady();
 	});
+	document.addEventListener("htmx:afterSwap", function(evt) {
+		if (typeof CKEDITOR !== 'undefined') {
+			console.log("CKEditor is available in DOM.");
+			setTimeout(function() {
+				console.log("f_select_richtext fires $ZMI.runReady() with htmx:afterSwap after 250ms", evt);
+				$ZMI.runReady();
+			}, 250)
+		}
+		else {
+			console.log("CKEditor not available in DOM.");
+		}
+	})
 }
 
 /**

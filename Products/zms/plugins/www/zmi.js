@@ -78,7 +78,6 @@ if (typeof htmx != "undefined") {
 		}
 	});
 	document.addEventListener('htmx:afterSettle', (evt) => {
-		console.log('htmx:afterSettle');
 		var resp_text = evt.detail.xhr.responseText;
 		var parser = new DOMParser();
 		var resp_doc = parser.parseFromString(resp_text , 'text/html');

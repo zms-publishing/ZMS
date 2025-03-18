@@ -1,9 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
-
-<list>
-  <item type="dictionary">
-    <dictionary>
-      <item key="data"><![CDATA[## Script (Python) "manage_stereotype"
+## Script (Python) "manage_stereotype"
 ##bind container=container
 ##bind context=context
 ##bind namespace=
@@ -12,6 +7,7 @@
 ##parameters=
 ##title=*** DO NOT DELETE OR MODIFY ***
 ##
+from Products.zms import standard
 request = container.REQUEST
 RESPONSE =  request.RESPONSE
 
@@ -64,7 +60,7 @@ html = ''
 html += '<!DOCTYPE html>'
 html += '<html lang="en">'
 html += context.zmi_html_head(context,request)
-html += '<body class="%s">'%(' '.join(['zmi',request['lang'],context.meta_id]))
+html += '<body hx-push-url="true" class="%s">'%(' '.join(['zmi',request['lang'],context.meta_id]))
 html += context.zmi_body_header(context,request,options=[
 	{'label': 'TAB_EDIT', 'action': 'manage_main'},
 	{'label': 'TAB_PROPERTIES', 'action': 'manage_properties'},
@@ -73,7 +69,7 @@ html += context.zmi_body_header(context,request,options=[
 	{'label': 'TAB_SEARCH', 'action': 'manage_tab_search'},
 	{'label': 'TAB_TASKS', 'action': 'manage_tab_tasks'},
 	{'label': 'ATTR_STATISTICS', 'action': 'manage_tab_statistics'},
-	{'label': 'Stereotypes', 'action': 'manage_tab_stereotypes'},
+	{'label': 'Stereotypes', 'action': 'manage_stereotype'},
 ])
 html += '<div id="zmi-tab">'
 html += context.zmi_breadcrumbs(context,request)
@@ -94,7 +90,7 @@ for meta_id in context.getMetaobjIds(sort=True):
 	if metaObj['type'] in ['ZMSDocument','ZMSObject']:
 		data_attrs = [context.getMetaobjAttr(metaObj['id'],x['id']) for x in metaObj['attrs'] if x['id'] not in ['icon','icon_clazz','levelnfc'] and x['type'] not in ['constant','delimiter','hint','interface','method','py','resource','zpt']]
 		data_attrs= ','.join(['%s(%s)'%(x['id'],x['type']) for x in data_attrs])
-		html += '<option value="%s" data-attrs="%s"%s>%s (%s)</option>'%(metaObj['id'],data_attrs,['',' selected="selected"'][int(request.get('src_meta_id',context.meta_id)==metaObj['id'])],str(context.display_type(meta_id=metaObj['id'])),metaObj['id'])
+		html += '<option value="%s" data-attrs="%s"%s>%s (%s)</option>'%(metaObj['id'],data_attrs,['',' selected="selected"'][int(request.get('src_meta_id',context.meta_id)==metaObj['id'])],str(context.display_type(request,metaObj['id'])),metaObj['id'])
 html += '</select><!-- .form-control -->'
 html += '</div>'
 html += '<div class="col-sm-6">'
@@ -105,7 +101,7 @@ for meta_id in context.getMetaobjIds(sort=True):
 	if metaObj['type'] in ['ZMSDocument','ZMSObject']:
 		data_attrs = [context.getMetaobjAttr(metaObj['id'],x['id']) for x in metaObj['attrs'] if x['id'] not in ['icon','icon_clazz','levelnfc'] and x['type'] not in ['constant','delimiter','hint','interface','method','py','resource','zpt']]
 		data_attrs= ','.join(['%s(%s)'%(x['id'],x['type']) for x in data_attrs])
-		html += '<option value="%s" data-attrs="%s"%s>%s (%s)</option>'%(metaObj['id'],data_attrs,['',' selected="selected"'][int(request.get('meta_id',context.meta_id)==metaObj['id'])],str(context.display_type(meta_id=metaObj['id'])),metaObj['id'])
+		html += '<option value="%s" data-attrs="%s"%s>%s (%s)</option>'%(metaObj['id'],data_attrs,['',' selected="selected"'][int(request.get('meta_id',context.meta_id)==metaObj['id'])],str(context.display_type(request,metaObj['id'])),metaObj['id'])
 html += '</select><!-- .form-control -->'
 html += '</div>'
 html += '</div>'
@@ -125,10 +121,10 @@ html += '<span class="btn btn-secondary"><input name="recursive" type="checkbox"
 html += '</div><!--.col-sm-10 -->'
 html += '</div>'
 
-html += '<div class="form-group row">'
+html += '<div class="form-row">'
 html += '<div class="controls save">'
-html += '<button type="submit" name="btn" class="btn btn-primary" value="BTN_EXECUTE">%s</button> '%context.getZMILangStr('BTN_EXECUTE')
-html += '<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CANCEL">%s</button> '%context.getZMILangStr('BTN_CANCEL')
+html += '<button type="submit" name="btn" class="btn btn-primary" value="BTN_EXECUTE">%s</button> '%(standard.pystr(context.getZMILangStr('BTN_EXECUTE')))
+html += '<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CANCEL">%s</button> '%(standard.pystr(context.getZMILangStr('BTN_CANCEL')))
 html += '</div><!-- .controls.save -->'
 html += '</div><!-- .form-row -->'
 
@@ -149,9 +145,9 @@ function onSelectMetaIdChange() {
 	var html = "";
 	for (var i = 0; i < attrsSrc.length; i++) {
 		var src = attrsSrc[i];
-		var name = src.substring(0,src.indexOf('('));
-		var type = src.substring(src.indexOf('(')+1);
-		type = type.substring(0,type.indexOf(')'));
+		var name = src.substr(0,src.indexOf('('));
+		var type = src.substr(src.indexOf('(')+1);
+		type = type.substr(0,type.indexOf(')'));
 		html += '<div class="form-group row">'
 		html += '<label class="col-sm-6 control-label text-right">' + src+'</label>';
 		html += '<div class="col-sm-6">';
@@ -178,34 +174,3 @@ html += '</body>'
 html += '</html>'
 
 return html
-]]>
-      </item>
-      <item key="description"></item>
-      <item key="execution" type="int">0</item>
-      <item key="icon_clazz"><![CDATA[fas fa-tag]]></item>
-      <item key="id">manage_stereotype</item>
-      <item key="meta_type"><![CDATA[Script (Python)]]></item>
-      <item key="meta_types" type="list">
-        <list>
-          <item>type(ZMSDocument)</item>
-          <item>type(ZMSObject)</item>
-          <item>type(ZMSTeaserElement)</item>
-          <item>type(ZMSRecordSet)</item>
-          <item>type(ZMSResource)</item>
-          <item>type(ZMSReference)</item>
-          <item>type(ZMSLibrary)</item>
-          <item>type(ZMSPackage)</item>
-          <item>type(ZMSModule)</item>
-        </list>
-      </item>
-      <item key="name"><![CDATA[Change stereotype]]></item>
-      <item key="revision">4.0.1</item>
-      <item key="roles" type="list">
-        <list>
-          <item>ZMSAdministrator</item>
-        </list>
-      </item>
-      <item key="title"><![CDATA[Change stereotype]]></item>
-    </dictionary>
-  </item>
-</list>

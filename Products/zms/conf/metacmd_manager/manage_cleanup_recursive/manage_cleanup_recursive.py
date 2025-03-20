@@ -508,7 +508,7 @@ def manage_cleanup_recursive(self):
 			html.append('<ol class="delete">')
 			for e in clean_delete_data:
 				TOOLTIP = json.dumps(e, indent=4).replace('"', '')
-				html.append(li_tmpl.format(TOOLTIP=TOOLTIP, e=dotdict(e), ID=e['absolute_url'].split('/content')[1], YEARS=round(e['age_days']/365)))
+				html.append(li_tmpl.format(TOOLTIP=TOOLTIP, e=dotdict(e), ID='/content/' not in e['absolute_url'] and e['absolute_url'] or e['absolute_url'].split('/content')[1], YEARS=round(e['age_days']/365)))
 			html.append('</ol>')
 			html.append('<p />')
 
@@ -518,7 +518,7 @@ def manage_cleanup_recursive(self):
 			for e in clean_check_data:
 				TOOLTIP = json.dumps(e, indent=4).replace('"', '')
 				if e['grading'] == 1:
-					html.append(li_tmpl.format(TOOLTIP=TOOLTIP, e=dotdict(e), ID=e['absolute_url'].split('/content')[1], YEARS=round(e['age_days']/365)))
+					html.append(li_tmpl.format(TOOLTIP=TOOLTIP, e=dotdict(e), ID='/content/' not in e['absolute_url'] and e['absolute_url'] or e['absolute_url'].split('/content')[1], YEARS=round(e['age_days']/365)))
 			html.append('</ol>')
 
 		# -----------------------------------------------------

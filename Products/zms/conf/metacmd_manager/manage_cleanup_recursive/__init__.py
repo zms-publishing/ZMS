@@ -26,7 +26,7 @@ class manage_cleanup_recursive:
 		,"ZMS"]
 
 	# Name
-	name = "manage_cleanup_recursive"
+	name = "Inactivity-Cleanup"
 
 	# Nodes
 	nodes = "{$}"
@@ -35,7 +35,7 @@ class manage_cleanup_recursive:
 	package = ""
 
 	# Revision
-	revision = "0.7.1"
+	revision = "0.7.2"
 
 	# Roles
 	roles = ["ZMSAdministrator"]
@@ -44,7 +44,7 @@ class manage_cleanup_recursive:
 	stereotype = ""
 
 	# Title
-	title = "Remove inactive content"
+	title = "Check and remove inactive content"
 
 	# Impl
 	class Impl:

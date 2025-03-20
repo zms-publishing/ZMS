@@ -9,11 +9,17 @@ services:
       - cluster.name=es-cluster
       - discovery.type=single-node
       - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms1g -Xmx2g # Java-Heap-Size
     ports:
       - 9200:9200 # REST API
       - 9300:9300
     volumes:
       - ../var/elasticsearch/data:/usr/share/elasticsearch/data
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    mem_limit: 2g
     networks:
       - elastic
 

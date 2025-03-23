@@ -850,8 +850,14 @@ def apply_standard_json_docx(self):
 					and not e.isPage() ) \
 					or e.meta_id in [ 'ZMSLinkElement' ]
 			]
-		# if zmscontext.meta_id == 'LgRegel':
-		# 	pageelements = [zmscontext]
+		if zmscontext.meta_id == 'LgRegel':
+			# Sequenzierung korrigieren: 
+			# 1. Rechtlicher Rahmen (LgBegruendung), 
+			# 2. Bearbeitungsschritte (LgBearbeitung)
+			pageelements_resort = [e for e in pageelements if e.meta_id=='LgBegruendung']
+			pageelements_resort += [e for e in pageelements if e.meta_id=='LgBearbeitung']
+			pageelements_resort += [e for e in pageelements if e.meta_id not in ['LgBegruendung','LgBearbeitung']]
+			pageelements = pageelements_resort
 
 	for pageelement in pageelements:
 

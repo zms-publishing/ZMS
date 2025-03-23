@@ -630,7 +630,7 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 							add_tagged_content_as_paragraph(docx_doc, element, 'Handlungsaufforderung', c, zmsid)
 					elif element.has_attr('class') and 'grundsatz' in element['class']:
 						add_tagged_content_as_paragraph(docx_doc, element, 'Grundsatz', c, zmsid)
-					elif element.has_attr('style') and 'background: rgb(238, 238, 238)' in element['style'] \
+					elif element.has_attr('style') and ('background:rgb(238,238,238)' in element['style'].replace(' ','') or 'background:#eeeeee;' in element['style'].replace(' ','')) \
 						and heading_text != 'Inhaltsverzeichnis':
 						add_tagged_content_as_paragraph(docx_doc, element, 'Hinweis', c, zmsid)
 					elif element.has_attr('class') and 'text' in element['class'] and zmsmetaid in ['ZMSGraphic', 'ZMSTable']:

@@ -260,7 +260,8 @@ def add_runs(docx_block, bs_element):
 	if bs_element.children:
 		c = 0
 		# Hint: ul/ol/li are handled as blocks in add_htmlblock_to_docx.add_list
-		elruns = [elrun for elrun in bs_element.children if elrun.name not in ['ul', 'ol', 'li', 'img', 'figure']]
+		# elruns = [elrun for elrun in bs_element.children if elrun.name not in ['ul', 'ol', 'li', 'img', 'figure']]
+		elruns = [elrun for elrun in bs_element.children if elrun.name not in ['ul', 'ol', 'li']]
 		for elrun in list(elruns):
 			c += 1
 			if elrun.name == None:
@@ -284,6 +285,27 @@ def add_runs(docx_block, bs_element):
 					docx_block.add_run(u'\U0000F045', style='Icon')
 				elif elrun.text != '':
 					docx_block.add_run(elrun.text).italic = True
+			# #############################################
+			## Add inline image to docx
+			## Cave: adding image as a block element 
+			## may result in content replication
+			# #############################################
+			elif elrun.name == 'img':
+				# add_htmlblock_to_docx(zmscontext, doc, str(elrun), zmsid=None)
+				img_src = elrun['src']
+				img_name = img_src.split('?')[0].split('/')[-1]
+				if not img_src.startswith('http') and not img_src.startswith('/'):
+					src_url = '%s/%s'%(zmscontext.getParentNode().absolute_url(),img_src.split('./')[-1])
+					elrun['src'] = src_url
+				try:
+					response = requests.get(elrun['src'], verify=False)
+					with open(img_name, 'wb') as f:
+						f.write(response.content)
+					img_run = docx_block.add_run()
+					img_run.add_picture(img_name)
+					os.remove(img_name)
+				except:
+					pass
 			elif elrun.text != '':
 				if elrun.name == 'strong' or elrun.name == 'b':
 					docx_block.add_run(elrun.text).bold = True
@@ -316,14 +338,6 @@ def add_runs(docx_block, bs_element):
 						docx_block.add_run(elrun.text, style=style_name)
 					else:
 						docx_block.add_run(elrun.text)
-
-				# #############################################
-				## TO-DO: Add inline image to docx
-				## Error: adding image as a block element 
-				## may result in content replication
-				# #############################################
-				# elif elrun.name == 'img':
-				# 	add_htmlblock_to_docx(zmscontext, doc, str(elrun), zmsid=None)
 				# #############################################
 				elif elrun.name == 'p':
 					add_runs(docx_block = docx_block, bs_element = elrun)
@@ -336,7 +350,8 @@ def add_runs(docx_block, bs_element):
 	# so remove empty runs from docx-block
 	# ############################################
 	for r in docx_block.runs:
-		if r.text == '' and  r.style.name != "Icon":
+		# Cave: Exclude image from removal
+		if r.text == '' and  r.style.name != "Icon" and bool(r._r.drawing_lst)==False:
 			docx_block._p.remove(r._r)
 
 
@@ -630,7 +645,8 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 							add_tagged_content_as_paragraph(docx_doc, element, 'Handlungsaufforderung', c, zmsid)
 					elif element.has_attr('class') and 'grundsatz' in element['class']:
 						add_tagged_content_as_paragraph(docx_doc, element, 'Grundsatz', c, zmsid)
-					elif element.has_attr('style') and ('background:rgb(238,238,238)' in element['style'].replace(' ','') or 'background:#eeeeee;' in element['style'].replace(' ','')) \
+					# elif element.has_attr('style') and ('background:rgb(238,238,238)' in element['style'].replace(' ','') or 'background:#eeeeee;' in element['style'].replace(' ','')) \
+					elif element.has_attr('style') and ('background:rgb(238,238,238)' in element['style'].replace(' ','')) \
 						and heading_text != 'Inhaltsverzeichnis':
 						add_tagged_content_as_paragraph(docx_doc, element, 'Hinweis', c, zmsid)
 					elif element.has_attr('class') and 'text' in element['class'] and zmsmetaid in ['ZMSGraphic', 'ZMSTable']:

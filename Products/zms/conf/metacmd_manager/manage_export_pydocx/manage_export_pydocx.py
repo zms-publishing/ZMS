@@ -1283,6 +1283,7 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 				add_runs(p, BeautifulSoup(v, 'html.parser'))
 			else:
 				# Add text as styled paragraph to document
+				v = BeautifulSoup(v, 'html.parser').text
 				p = doc.add_paragraph(v, style=block['docx_format'])
 			prepend_bookmark(p, block['id'])
 		elif v:

@@ -1275,8 +1275,16 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 		# #############################################
 		# [5] TEXT-BLOCK with given block format (style)
 		elif v and ( block['docx_format'] in [e.name for e in doc.styles] or block['docx_format'] in [e.name.replace(' ','') for e in doc.styles] ):
+			# Check if text contains unexpected HTML elements
+			is_html = bool(BeautifulSoup(v, 'html.parser').find())
+			if is_html:
+				# Add html structured text as styled paragraph to document
+				p = doc.add_paragraph('', style=block['docx_format'])
+				add_runs(p, BeautifulSoup(v, 'html.parser'))
+			else:
+				# Add text as styled paragraph to document
 				p = doc.add_paragraph(v, style=block['docx_format'])
-				prepend_bookmark(p, block['id'])
+			prepend_bookmark(p, block['id'])
 		elif v:
 			p = doc.add_paragraph(v)
 			prepend_bookmark(p, block['id'])

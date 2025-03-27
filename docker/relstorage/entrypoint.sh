@@ -12,9 +12,9 @@ done
 su -c "psql -c \"CREATE USER zodbuser WITH PASSWORD 'zodbuser';\"" postgres
 su -c "psql -c \"CREATE DATABASE zodb OWNER zodbuser;\"" postgres
 
-# Start Zope --> with VScode-Debugger
-# su -c "runwsgi /home/zope/etc/zope.ini" zope
+# Start Zope
+su -c "runwsgi /home/zope/etc/zope.ini" zope
 
-# Let the container run with zope
-tail -f /dev/null
+# Let the container run: Start Zope with VScode-Debugger
+# tail -f /dev/null
 

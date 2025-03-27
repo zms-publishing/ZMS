@@ -2,7 +2,7 @@
 	"folders": [
 		{
 			"name": "ZMS-Docker-RelStorage",
-			"path": "../.."
+			"path": "."
 		},
 	],
 	"settings": {

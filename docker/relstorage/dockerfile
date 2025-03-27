@@ -31,16 +31,19 @@ WORKDIR /home/zope/
 # Install Zope and RelStorage
 RUN python3 -m venv venv
 RUN pip install -U pip wheel setuptools
-RUN pip install -r https://raw.github.com/zopefoundation/Zope/master/requirements-full.txt
-# RUN pip install -r https://raw.githubusercontent.com/zms-publishing/ZMS5/main/requirements-full.txt
+RUN pip install -r https://raw.githubusercontent.com/zopefoundation/Zope/master/requirements-full.txt
+RUN pip install -r https://raw.githubusercontent.com/zms-publishing/ZMS5/main/requirements.txt
+RUN pip install git+https://github.com/zms-publishing/ZMS.git
 RUN pip install RelStorage psycopg2-binary
 
 # Create Zope Instance
 RUN mkwsgiinstance -d . -u admin:admin
 
 # Copy Zope configuration
-COPY zope.conf $VIRTUAL_ENV/etc/
-COPY docker.code-workspace .
+COPY ./etc/zope.conf ./etc/zope.conf
+COPY ./etc/zope.ini ./etc/zope.ini
+COPY relstorage.code-workspace .
+
 # Copy entrypoint script
 USER root
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh

@@ -1,34 +1,54 @@
 # Use a base image with Python
 FROM python:3.11-slim
 
-# Install required packages
-RUN apt-get update && apt-get install -y \
-    gcc libpq-dev postgresql && \
-    rm -rf /var/lib/apt/lists/*
+# Install OS Requirements
+RUN apt-get update
+RUN apt-get -y upgrade
+RUN apt-get install -y locales locales-all
+RUN apt-get install -y make gcc g++ git build-essential curl
+RUN apt-get install -y python3 python3-dev python3-venv
+RUN apt-get install -y build-essential pkg-config
+RUN apt-get install -y libpq-dev postgresql
+RUN apt-get install -y memcached
 
 # Set environment variables
-ENV ZOPE_HOME=/opt/zope
 ENV POSTGRES_DATA=/var/lib/postgresql/data
-
-# Create Zope working directory
-WORKDIR $ZOPE_HOME
-
-# Install Zope and RelStorage
-RUN pip install Zope RelStorage psycopg2-binary
-
-# Copy Zope configuration
-COPY zope.conf $ZOPE_HOME/instance/etc/
+ENV VIRTUAL_ENV=/home/zope/venv
+ENV SHELL=/bin/bash
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+ENV LC_ALL=en_US.UTF-8
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US.UTF-8
 
 # Create PostgreSQL directory
 RUN mkdir -p $POSTGRES_DATA && chmod 700 $POSTGRES_DATA
 
-# Setup PostgreSQL database
-RUN service postgresql start && \
-    su - postgres -c "createuser -P -s zodbuser" && \
-    su - postgres -c "createdb -O zodbuser zodb"
+# Add Zope User and Environment
+RUN adduser --disabled-password zope && usermod -aG sudo zope
+USER zope
+WORKDIR /home/zope/
+
+# Install Zope and RelStorage
+RUN python3 -m venv venv
+RUN pip install -U pip wheel setuptools
+RUN pip install -r https://raw.github.com/zopefoundation/Zope/master/requirements-full.txt
+# RUN pip install -r https://raw.githubusercontent.com/zms-publishing/ZMS5/main/requirements-full.txt
+RUN pip install RelStorage psycopg2-binary
+
+# Create Zope Instance
+RUN mkwsgiinstance -d . -u admin:admin
+
+# Copy Zope configuration
+COPY zope.conf $VIRTUAL_ENV/etc/
+COPY docker.code-workspace .
+# Copy entrypoint script
+USER root
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Expose ports for Zope and PostgreSQL
-EXPOSE 8080 5432
+EXPOSE 8080
+EXPOSE 5432
 
-# Start Zope and PostgreSQL services
-CMD ["sh", "-c", "service postgresql start && runwsgi etc/zope.conf"]
+# Use the entrypoint script to start services
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

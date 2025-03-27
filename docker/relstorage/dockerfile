@@ -1,0 +1,34 @@
+# Use a base image with Python
+FROM python:3.11-slim
+
+# Install required packages
+RUN apt-get update && apt-get install -y \
+    gcc libpq-dev postgresql && \
+    rm -rf /var/lib/apt/lists/*
+
+# Set environment variables
+ENV ZOPE_HOME=/opt/zope
+ENV POSTGRES_DATA=/var/lib/postgresql/data
+
+# Create Zope working directory
+WORKDIR $ZOPE_HOME
+
+# Install Zope and RelStorage
+RUN pip install Zope RelStorage psycopg2-binary
+
+# Copy Zope configuration
+COPY zope.conf $ZOPE_HOME/instance/etc/
+
+# Create PostgreSQL directory
+RUN mkdir -p $POSTGRES_DATA && chmod 700 $POSTGRES_DATA
+
+# Setup PostgreSQL database
+RUN service postgresql start && \
+    su - postgres -c "createuser -P -s zodbuser" && \
+    su - postgres -c "createdb -O zodbuser zodb"
+
+# Expose ports for Zope and PostgreSQL
+EXPOSE 8080 5432
+
+# Start Zope and PostgreSQL services
+CMD ["sh", "-c", "service postgresql start && runwsgi etc/zope.conf"]

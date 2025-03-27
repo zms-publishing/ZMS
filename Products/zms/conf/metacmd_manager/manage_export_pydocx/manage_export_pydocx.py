@@ -260,7 +260,8 @@ def add_runs(docx_block, bs_element):
 	if bs_element.children:
 		c = 0
 		# Hint: ul/ol/li are handled as blocks in add_htmlblock_to_docx.add_list
-		elruns = [elrun for elrun in bs_element.children if elrun.name not in ['ul', 'ol', 'li', 'img', 'figure']]
+		# elruns = [elrun for elrun in bs_element.children if elrun.name not in ['ul', 'ol', 'li', 'img', 'figure']]
+		elruns = [elrun for elrun in bs_element.children if elrun.name not in ['ul', 'ol', 'li']]
 		for elrun in list(elruns):
 			c += 1
 			if elrun.name == None:
@@ -284,6 +285,27 @@ def add_runs(docx_block, bs_element):
 					docx_block.add_run(u'\U0000F045', style='Icon')
 				elif elrun.text != '':
 					docx_block.add_run(elrun.text).italic = True
+			# #############################################
+			## Add inline image to docx
+			## Cave: adding image as a block element 
+			## may result in content replication
+			# #############################################
+			elif elrun.name == 'img':
+				# add_htmlblock_to_docx(zmscontext, doc, str(elrun), zmsid=None)
+				img_src = elrun['src']
+				img_name = img_src.split('?')[0].split('/')[-1]
+				if not img_src.startswith('http') and not img_src.startswith('/'):
+					src_url = '%s/%s'%(zmscontext.getParentNode().absolute_url(),img_src.split('./')[-1])
+					elrun['src'] = src_url
+				try:
+					response = requests.get(elrun['src'], verify=False)
+					with open(img_name, 'wb') as f:
+						f.write(response.content)
+					img_run = docx_block.add_run()
+					img_run.add_picture(img_name)
+					os.remove(img_name)
+				except:
+					pass
 			elif elrun.text != '':
 				if elrun.name == 'strong' or elrun.name == 'b':
 					docx_block.add_run(elrun.text).bold = True
@@ -316,14 +338,6 @@ def add_runs(docx_block, bs_element):
 						docx_block.add_run(elrun.text, style=style_name)
 					else:
 						docx_block.add_run(elrun.text)
-
-				# #############################################
-				## TO-DO: Add inline image to docx
-				## Error: adding image as a block element 
-				## may result in content replication
-				# #############################################
-				# elif elrun.name == 'img':
-				# 	add_htmlblock_to_docx(zmscontext, doc, str(elrun), zmsid=None)
 				# #############################################
 				elif elrun.name == 'p':
 					add_runs(docx_block = docx_block, bs_element = elrun)
@@ -336,7 +350,8 @@ def add_runs(docx_block, bs_element):
 	# so remove empty runs from docx-block
 	# ############################################
 	for r in docx_block.runs:
-		if r.text == '' and  r.style.name != "Icon":
+		# Cave: Exclude image from removal
+		if r.text == '' and  r.style.name != "Icon" and bool(r._r.drawing_lst)==False:
 			docx_block._p.remove(r._r)
 
 
@@ -630,8 +645,8 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 							add_tagged_content_as_paragraph(docx_doc, element, 'Handlungsaufforderung', c, zmsid)
 					elif element.has_attr('class') and 'grundsatz' in element['class']:
 						add_tagged_content_as_paragraph(docx_doc, element, 'Grundsatz', c, zmsid)
-					elif element.has_attr('style') and 'background: rgb(238, 238, 238)' in element['style'] \
-						and heading_text != 'Inhaltsverzeichnis':
+					elif element.has_attr('style') and ('background:rgb(238,238,238)' in element['style'].replace(' ','') or 'background:#eeeeee;' in element['style'].replace(' ','')) \
+						and not (heading_text in ('Inhaltsverzeichnis','Inhalt','') and bool(element.find_all('ol'))):
 						add_tagged_content_as_paragraph(docx_doc, element, 'Hinweis', c, zmsid)
 					elif element.has_attr('class') and 'text' in element['class'] and zmsmetaid in ['ZMSGraphic', 'ZMSTable']:
 						p = docx_doc.add_paragraph(style='Caption')
@@ -850,8 +865,14 @@ def apply_standard_json_docx(self):
 					and not e.isPage() ) \
 					or e.meta_id in [ 'ZMSLinkElement' ]
 			]
-		# if zmscontext.meta_id == 'LgRegel':
-		# 	pageelements = [zmscontext]
+		if zmscontext.meta_id == 'LgRegel':
+			# Sequenzierung korrigieren: 
+			# 1. Rechtlicher Rahmen (LgBegruendung), 
+			# 2. Bearbeitungsschritte (LgBearbeitung)
+			pageelements_resort = [e for e in pageelements if e.meta_id=='LgBegruendung']
+			pageelements_resort += [e for e in pageelements if e.meta_id=='LgBearbeitung']
+			pageelements_resort += [e for e in pageelements if e.meta_id not in ['LgBegruendung','LgBearbeitung']]
+			pageelements = pageelements_resort
 
 	for pageelement in pageelements:
 
@@ -1275,8 +1296,17 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 		# #############################################
 		# [5] TEXT-BLOCK with given block format (style)
 		elif v and ( block['docx_format'] in [e.name for e in doc.styles] or block['docx_format'] in [e.name.replace(' ','') for e in doc.styles] ):
+			# Check if text contains unexpected HTML elements
+			is_html = bool(BeautifulSoup(v, 'html.parser').find())
+			if is_html:
+				# Add html structured text as styled paragraph to document
+				p = doc.add_paragraph('', style=block['docx_format'])
+				add_runs(p, BeautifulSoup(v, 'html.parser'))
+			else:
+				# Add text as styled paragraph to document
+				v = BeautifulSoup(v, 'html.parser').text
 				p = doc.add_paragraph(v, style=block['docx_format'])
-				prepend_bookmark(p, block['id'])
+			prepend_bookmark(p, block['id'])
 		elif v:
 			p = doc.add_paragraph(v)
 			prepend_bookmark(p, block['id'])

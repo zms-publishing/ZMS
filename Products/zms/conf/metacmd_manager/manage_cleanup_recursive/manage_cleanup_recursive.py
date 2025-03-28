@@ -490,15 +490,16 @@ def manage_cleanup_recursive(self):
 	# [B] CVS
 	if request.get('content_type') == 'cvs':
 		cvs = []
-		cvs.append('INFO\tURL\tLANG\tYEARS\tTITLE\tGRADING')
+		cvs.append('INFO\tTITLE\tURL\tLANGUAGE\tAGE/YEARS')
+		server_url = request.get('SERVER_URL')
 		if clean_delete_data:
 			for e in clean_delete_data:
-				cvs.append('\t'.join([ e['grading_info'], e['absolute_url'], e['lang'], str(round(e['age_days']/365)), e['title'], str(e['grading']) ]))
-		
+				cvs.append('\t'.join([ e['grading_info'],e['title'], server_url + e['absolute_url'], e['lang'], str(round(e['age_days']/365)) ]))
+		cvs.append('-\t-\t-\t-\t-')
 		if clean_check_data:
 			for e in clean_check_data:
 				if e['grading'] == 1:
-					cvs.append('\t'.join([ e['grading_info'], e['absolute_url'], e['lang'], str(round(e['age_days']/365)), e['title'], str(e['grading']) ]))
+					cvs.append('\t'.join([ e['grading_info'],e['title'], server_url + e['absolute_url'], e['lang'], str(round(e['age_days']/365)) ]))
 		response.setHeader('Content-Type', 'text/plain')
 		return '\n'.join(cvs)
 	# [C] HTML

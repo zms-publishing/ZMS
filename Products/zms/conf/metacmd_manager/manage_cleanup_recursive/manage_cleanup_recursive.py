@@ -222,7 +222,7 @@ def html_page(self):
 		html.append('<input type="hidden" name="do_execution:boolean" value="1"/>')
 		html.append('<legend>')
 		html.append('<div>Content Cleanup for <i class="fas fa-home"></i> <span>%s</span> containing <span id="info_page_count">...</span> Nodes in <span id="info_lang_count">...</span> Languages <span id="info_proc_time">(... sec)</span></div>'%(zmscontext.getHome().id))
-		html.append('<nav><a href="manage_cleanup_recursive?content_type=html" class="active">HTML</a> &vert; <a target="_blank" href="manage_cleanup_recursive?content_type=json">JSON</a></nav>')
+		html.append('<nav><a href="manage_cleanup_recursive?content_type=html" class="active">HTML</a> &vert; <a target="_blank" href="manage_cleanup_recursive?content_type=cvs">CVS</a> &vert; <a target="_blank" href="manage_cleanup_recursive?content_type=json">JSON</a></nav>')
 		html.append('</legend>')
 		html.append('<div class="card-body" hx-target="this" hx-get="manage_cleanup_recursive?lang=%s&do_execution=1" hx-trigger="load">'%(request.get('lang','ger')))
 		html.append('<div style="text-align:center;margin:2rem auto;"><i class="text-primary fas fa-spinner fa-spin fa-3x"></i></div>')
@@ -360,7 +360,8 @@ def manage_cleanup_recursive(self):
 	# SHOW SPINNER page while waiting until action 
 	# has completed it's execution
 	# -----------------------------------------------------
-	if not request.get('do_execution') and not request.get('content_type')=='json':
+	if not request.get('do_execution') and request.get('content_type') not in ['json','cvs']:
+		response.setHeader('Content-Type', 'text/html')
 		return html_page(zmscontext)
 	else:
 		pass
@@ -486,8 +487,21 @@ def manage_cleanup_recursive(self):
 		# to format the JSON output in the browser
 		response.setHeader('Content-Type', 'text/plain')
 		return json.dumps(clean_check_data, indent=4)
-
-	# [B] HTML
+	# [B] CVS
+	if request.get('content_type') == 'cvs':
+		cvs = []
+		cvs.append('INFO\tURL\tLANG\tYEARS\tTITLE\tGRADING')
+		if clean_delete_data:
+			for e in clean_delete_data:
+				cvs.append('\t'.join([ e['grading_info'], e['absolute_url'], e['lang'], str(round(e['age_days']/365)), e['title'], str(e['grading']) ]))
+		
+		if clean_check_data:
+			for e in clean_check_data:
+				if e['grading'] == 1:
+					cvs.append('\t'.join([ e['grading_info'], e['absolute_url'], e['lang'], str(round(e['age_days']/365)), e['title'], str(e['grading']) ]))
+		response.setHeader('Content-Type', 'text/plain')
+		return '\n'.join(cvs)
+	# [C] HTML
 	else:
 		html = []
 		li_tmpl = '''

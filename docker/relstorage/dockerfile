@@ -34,7 +34,7 @@ RUN pip install -U pip wheel setuptools
 RUN pip install -r https://raw.githubusercontent.com/zopefoundation/Zope/master/requirements-full.txt
 RUN pip install -r https://raw.githubusercontent.com/zms-publishing/ZMS5/main/requirements.txt
 RUN pip install git+https://github.com/zms-publishing/ZMS.git
-RUN pip install RelStorage psycopg2-binary
+RUN pip install RelStorage psycopg2-binary lxml 
 
 # Create Zope Instance
 RUN mkwsgiinstance -d . -u admin:admin
@@ -43,6 +43,10 @@ RUN mkwsgiinstance -d . -u admin:admin
 COPY ./etc/zope.conf ./etc/zope.conf
 COPY ./etc/zope.ini ./etc/zope.ini
 COPY relstorage.code-workspace .
+
+# Add PostgreSQL Configuration for Accesssing Port 5432
+COPY ./etc/postgres/postgresql.conf /etc/postgresql/15/main/postgresql.conf
+COPY ./etc/postgres/pg_hba.conf /etc/postgresql/15/main/pg_hba.conf
 
 # Copy entrypoint script
 USER root

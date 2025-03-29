@@ -6,7 +6,7 @@ services:
     ports:
       - 8983:8983
     volumes:
-      - ../var/solr:/var/solr:rw
+      - /home/zope/instance/zms4_gez/neon-entw/var/solr:/var/solr:rw
     working_dir: /opt/solr
     entrypoint: /opt/docker-solr/scripts/docker-entrypoint.sh 
     command: /opt/docker-solr/scripts/solr-foreground

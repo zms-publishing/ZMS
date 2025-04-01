@@ -35,7 +35,7 @@ class manage_cleanup_recursive:
 	package = ""
 
 	# Revision
-	revision = "0.7.4"
+	revision = "0.7.5"
 
 	# Roles
 	roles = ["ZMSAdministrator"]

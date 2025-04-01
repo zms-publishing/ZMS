@@ -222,7 +222,13 @@ def html_page(self):
 		html.append('<input type="hidden" name="do_execution:boolean" value="1"/>')
 		html.append('<legend>')
 		html.append('<div>Content Cleanup for <i class="fas fa-home"></i> <span>%s</span> containing <span id="info_page_count">...</span> Nodes in <span id="info_lang_count">...</span> Languages <span id="info_proc_time">(... sec)</span></div>'%(zmscontext.getHome().id))
-		html.append('<nav><a href="manage_cleanup_recursive?content_type=html" class="active">HTML</a> &vert; <a target="_blank" href="manage_cleanup_recursive?content_type=cvs">CVS</a> &vert; <a target="_blank" href="manage_cleanup_recursive?content_type=json">JSON</a></nav>')
+		html.append('''
+					<nav>
+						<a target="_blank" href="manage_cleanup_recursive?content_type=cvs" title="Show this List as CVS for Importing to Excel">CVS</a>&nbsp;&nbsp;&vert;&nbsp;
+						<a target="_blank" href="manage_cleanup_recursive?content_type=json" title="Show Complete Tree in Details as JSON">JSON</a>&nbsp;&nbsp;&vert;&nbsp;
+						<a href="manage_cleanup_recursive?content_type=html" class="active" title="Reload and Update this List"><i class="fas fa-sync text-primary"></i></a>
+					</nav>
+					''')
 		html.append('</legend>')
 		html.append('<div class="card-body" hx-target="this" hx-get="manage_cleanup_recursive?lang=%s&do_execution=1" hx-trigger="load">'%(request.get('lang','ger')))
 		html.append('<div style="text-align:center;margin:2rem auto;"><i class="text-primary fas fa-spinner fa-spin fa-3x"></i></div>')
@@ -247,8 +253,9 @@ def html_page(self):
 					font-family: monospace;
 				}
 				#form_cleanup_recursive legend nav a:hover,
-				#form_cleanup_recursive legend nav a.active {
-					color: #000;
+				#form_cleanup_recursive legend nav a.active,
+				#form_cleanup_recursive legend nav a:hover i {
+					color: #000 !important;
 				}
 				#form_cleanup_recursive h2 {
 					text-transform: uppercase;
@@ -478,7 +485,8 @@ def manage_cleanup_recursive(self):
 
 
 	# -----------------------------------------------------
-	# Output of valid grading data: [A] JSON or [B] HTML
+	# Output of valid grading data for [A] JSON 
+	# and delete/check-subset data for [B] CVS and [C] HTML
 	# -----------------------------------------------------
 
 	if request.get('content_type') == 'json':
@@ -486,7 +494,7 @@ def manage_cleanup_recursive(self):
 		# HINT: Use https://github.com/callumlocke/json-formatter
 		# to format the JSON output in the browser
 		response.setHeader('Content-Type', 'text/plain')
-		return json.dumps(clean_check_data, indent=4)
+		return json.dumps(valid_grading_data, indent=4)
 	# [B] CVS
 	if request.get('content_type') == 'cvs':
 		cvs = []
@@ -527,14 +535,20 @@ def manage_cleanup_recursive(self):
 			html.append('</ol>')
 			html.append('<p />')
 
+		# Show only the check items with grading == 1
+		clean_check_data = [e for e in clean_check_data if e['grading'] == 1]
 		if clean_check_data:
 			html.append('<h2 class="check"><i class="fas fa-eye"></i> check</h2>')
 			html.append('<ol class="check">')
 			for e in clean_check_data:
 				TOOLTIP = json.dumps(e, indent=4).replace('"', '')
-				if e['grading'] == 1:
-					html.append(li_tmpl.format(TOOLTIP=TOOLTIP, e=dotdict(e), ID='/content/' not in e['absolute_url'] and e['absolute_url'] or e['absolute_url'].split('/content')[1], YEARS=round(e['age_days']/365)))
+				html.append(li_tmpl.format(TOOLTIP=TOOLTIP, e=dotdict(e), ID='/content/' not in e['absolute_url'] and e['absolute_url'] or e['absolute_url'].split('/content')[1], YEARS=round(e['age_days']/365)))
 			html.append('</ol>')
+		
+		if not clean_delete_data and not clean_check_data:
+			html.append('<h2 class="text-success"><i class="fas fa-check"></i> No items to check</h2>')
+			html.append('<p>All items are active or have active subpages. Nothing to clean,</p>')
+			html.append('<p />')
 
 		# -----------------------------------------------------
 		ZMI_TIME_SEC = int((DateTime.DateTime().timeTime()-ZMI_TIME)*100.0)/100.0

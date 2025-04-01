@@ -1,19 +1,20 @@
 #!/bin/bash
 
-# Start PostgreSQL in the background
-service postgresql start
-
-# Wait for PostgreSQL to be ready
-until pg_isready -U postgres; do
-    echo "Waiting for PostgreSQL to start..."
-    sleep 2
+# Wait for PostgreSQL to be ready (important for container orchestration)
+echo "Waiting for PostgreSQL..."
+while ! pg_isready -h postgres; do
+  sleep 2
 done
+echo "PostgreSQL is ready!"
 
-su -c "psql -c \"CREATE USER zodbuser WITH PASSWORD 'zodbuser';\"" postgres
-su -c "psql -c \"CREATE DATABASE zodb OWNER zodbuser;\"" postgres
+# # Create the database if it doesn't exist
+# echo "Creating database..."
+# psql -c "CREATE USER zope WITH PASSWORD 'zope';"
+# psql -c "CREATE DATABASE zodb OWNER zope;"
 
 # Start Zope
-su -c "runwsgi /home/zope/etc/zope.ini" zope
+echo "Starting Zope..."
+/home/zope/venv/bin/runwsgi -v /home/zope/etc/zope.ini
 
 # Let the container run: Start Zope with VScode-Debugger
 # tail -f /dev/null

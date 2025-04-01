@@ -547,7 +547,7 @@ def manage_cleanup_recursive(self):
 		
 		if not clean_delete_data and not clean_check_data:
 			html.append('<h2 class="text-success"><i class="fas fa-check"></i> No items to check</h2>')
-			html.append('<p>All items are active or have active subpages. Nothing to clean,</p>')
+			html.append('<p>All items are active or have active subpages. Nothing to clean.</p>')
 			html.append('<p />')
 
 		# -----------------------------------------------------

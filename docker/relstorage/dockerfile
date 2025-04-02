@@ -32,18 +32,18 @@ RUN pip install -U pip wheel setuptools
 RUN pip install -r https://raw.githubusercontent.com/zopefoundation/Zope/master/requirements-full.txt
 RUN pip install -r https://raw.githubusercontent.com/zms-publishing/ZMS5/main/requirements.txt
 RUN pip install git+https://github.com/zms-publishing/ZMS.git
-RUN pip install RelStorage psycopg2-binary lxml 
+RUN pip install RelStorage psycopg2-binary lxml opensearch-py
 
 # Create Zope Instance
 RUN mkwsgiinstance -d . -u admin:admin
 
-# Copy Zope configuration
-COPY ./etc/zope.conf ./etc/zope.conf
-COPY ./etc/zope.ini ./etc/zope.ini
-COPY relstorage.code-workspace .
-
-# Kopiere einen angepassten Entrypoint (ohne PostgreSQL-Start)
+# Mount Zope Instance Data
+COPY ./etc etc
+COPY ./var var
+COPY ./Extensions Extensions
+COPY ./relstorage.code-workspace .
 COPY ./entrypoint.sh /usr/local/bin/entrypoint.sh
+
 USER root
 RUN chmod +x /usr/local/bin/entrypoint.sh
 

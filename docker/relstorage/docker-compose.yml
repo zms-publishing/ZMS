@@ -15,16 +15,13 @@ services:
       - ./etc/postgres/pg_hba.conf:/var/lib/postgresql/conf/pg_hba.conf
     command: postgres -D /var/lib/postgresql/data -c hba_file=/var/lib/postgresql/conf/pg_hba.conf
     networks:
-      zms_network:
-        aliases:
-          - postgres  # Ensure Hostname is reachable
+      - cms_network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U zope"]
+      test: ["CMD-SHELL", "pg_isready -U zodb"]
       interval: 5s
       timeout: 5s
       retries: 10
 
-      
   zms5:
     image: zms5:relstorage 
     build:
@@ -33,6 +30,7 @@ services:
     container_name: zms5_relstorage
     ports:
       - "8080:8080"
+      - "8081:8081"
     environment:
       - PYTHONUNBUFFERED=1
       - CONFIG_FILE=/home/zope/etc/zope.ini
@@ -43,13 +41,15 @@ services:
       postgres:
         condition: service_healthy
     networks:
-      - zms_network
+      - cms_network
     volumes:
-      - zms5_data:/home/zope/var
+      - ./Extensions:/zope/home/Extensions
+      - ./var:/home/zope/var
+      - ./etc:/home/zope/etc
 
 networks:
-  zms_network:
-    driver: bridge
+  cms_network:
+    # driver: bridge
 
 volumes:
   postgres_data:

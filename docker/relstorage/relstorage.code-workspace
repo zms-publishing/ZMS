@@ -36,7 +36,7 @@
 		"version": "0.2.0",
 		"configurations": [
 			{
-				"name": "ZMS-Docker:8080",
+				"name": "ZMS-Docker:8081",
 				"type": "debugpy",
 				"request": "launch",
 				"justMyCode": false,
@@ -45,19 +45,19 @@
 				"args": [
 					"--debug",
 					"--verbose",
-					"/home/zope/etc/zope.ini"
+					"/home/zope/etc/zope_debug.ini"
 				],
 				"env": {
 					"PYTHONUNBUFFERED":"1",
-					"CONFIG_FILE": "/home/zope/etc/zope.ini",
+					"CONFIG_FILE": "/home/zope/etc/zope_debug.ini",
 					"INSTANCE_HOME": "/home/zope/",
 					"CLIENT_HOME": "/home/zope/",
 					"PYTHON": "/home/zope/venv/bin/python",
 					"SOFTWARE_HOME": "/home/zope/venv/bin"
 				},
 				"serverReadyAction":{
-					"pattern":"Serving on http://0.0.0.0:80",
-					"uriFormat": "http://admin:admin@127.0.0.1:80/manage_main",
+					"pattern":"Serving on http://0.0.0.0:8081",
+					"uriFormat": "http://admin:admin@127.0.0.1:8081/manage_main",
 					"action": "openExternally",
 				},
 			}

@@ -1,6 +1,6 @@
 # Running ZMS in a Docker container on RelStorage
 
-Important: *The presented Docker environment is not yet recommended for production, just for testing and exploration.* We do plan to evolve these to be production ready, but we are not there yet.
+Important: *The presented Docker environment is not yet recommended for production, just for testing and exploration.* 
 
 RelStorage stores the ZODB data in a RDBMS: the dockerfile installs - based on Py3.11-slim - Postgres (V15) as the database storing Zope/ZMS data. When Zope is started the first time a schema "zodb" an a postgres-user "zodbuser" is created SQL. The mounted configuration file ./ect/zope.ini tells Zope to store its data via the relstorage-interface
 

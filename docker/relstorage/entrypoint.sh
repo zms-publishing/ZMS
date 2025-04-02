@@ -18,4 +18,3 @@ echo "Starting Zope..."
 
 # Let the container run: Start Zope with VScode-Debugger
 # tail -f /dev/null
-

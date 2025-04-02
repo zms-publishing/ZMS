@@ -9,7 +9,7 @@ RelStorage stores the ZODB data in a RDBMS: the dockerfile installs - based on P
   mount-point /
   <relstorage>
     <postgresql>
-      dsn dbname='zodb' user='zodbuser' host='localhost' password='zodbuser'
+      dsn dbname='zodb' user='zodb' host='localhost' password='zodb'
     </postgresql>
   </relstorage>
 </zodb_db>

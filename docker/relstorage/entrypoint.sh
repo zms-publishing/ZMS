@@ -9,8 +9,8 @@ echo "PostgreSQL is ready!"
 
 # # Create the database if it doesn't exist
 # echo "Creating database..."
-# psql -c "CREATE USER zope WITH PASSWORD 'zope';"
-# psql -c "CREATE DATABASE zodb OWNER zope;"
+# psql -c "CREATE USER zodb WITH PASSWORD 'zodb';"
+# psql -c "CREATE DATABASE zodb OWNER zodb;"
 
 # Start Zope
 echo "Starting Zope..."

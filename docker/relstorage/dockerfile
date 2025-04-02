@@ -38,13 +38,15 @@ RUN pip install RelStorage psycopg2-binary lxml opensearch-py
 RUN mkwsgiinstance -d . -u admin:admin
 
 # Mount Zope Instance Data
-COPY ./etc etc
-COPY ./var var
-COPY ./Extensions Extensions
-COPY ./relstorage.code-workspace .
+COPY ./etc /home/zope/etc
+COPY ./var /home/zope/var
+COPY ./Extensions /home/zope/Extensions
+
+COPY ./relstorage.code-workspace /home/zope/relstorage.code-workspace
 COPY ./entrypoint.sh /usr/local/bin/entrypoint.sh
 
 USER root
+RUN chown -R zope:zope /home/zope
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Expose port for Zope

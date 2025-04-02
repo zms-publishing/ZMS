@@ -5,14 +5,14 @@ services:
     image: postgres:15
     container_name: postgres_15
     environment:
-      - POSTGRES_USER=zope
-      - POSTGRES_PASSWORD=zope
+      - POSTGRES_USER=zodb
+      - POSTGRES_PASSWORD=zodb
       - POSTGRES_DB=zodb
     ports:
       - "5432:5432"
     volumes:
-      - ./postgres_data:/var/lib/postgresql/data
-      - ./etc/postgres/pg_hba.conf:/var/lib/postgresql/conf/pg_hba.conf
+      - ./postgres/data:/var/lib/postgresql/data
+      - ./postgres/conf/pg_hba.conf:/var/lib/postgresql/conf/pg_hba.conf
     command: postgres -D /var/lib/postgresql/data -c hba_file=/var/lib/postgresql/conf/pg_hba.conf
     networks:
       - cms_network
@@ -36,7 +36,7 @@ services:
       - CONFIG_FILE=/home/zope/etc/zope.ini
       - INSTANCE_HOME=/home/zope
       - CLIENT_HOME=/home/zope
-      - RELSTORAGE_DSN=dbname=zodb user=zope password=zope host=postgres port=5432
+      - RELSTORAGE_DSN=dbname=zodb user=zodb password=zodb host=postgres port=5432
     depends_on:
       postgres:
         condition: service_healthy
@@ -47,10 +47,55 @@ services:
       - ./var:/home/zope/var
       - ./etc:/home/zope/etc
 
+
+  # https://opensearch.org/docs/latest/install-and-configure/install-opensearch/docker/
+  opensearch-node:
+    image: opensearchproject/opensearch:2.15.0
+    init: true
+    environment:
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true # Disable JVM heap memory swapping
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m" # Set min and max JVM heap sizes to at least 50% of system RAM
+      - "DISABLE_INSTALL_DEMO_CONFIG=true" # Prevents execution of bundled demo script which installs demo certificates and security configurations to OpenSearch
+      - "DISABLE_SECURITY_PLUGIN=true" # Disables Security plugin
+    ulimits:
+      memlock:
+        soft: -1 # Set memlock to unlimited (no soft or hard limit)
+        hard: -1
+      nofile:
+        soft: 65536 # Maximum number of open files for the opensearch user - set to at least 65536
+        hard: 65536
+    volumes:
+      - ./opensearch:/usr/share/opensearch/data
+    ports:
+      - 9200:9200 # REST API
+      - 9600:9600 # Performance Analyzer
+    networks:
+      - cms_network
+
+  opensearch-dashboards:
+    image: opensearchproject/opensearch-dashboards:2.15.0
+    ports:
+      - 5601:5601
+    environment:
+      OPENSEARCH_HOSTS: '["http://opensearch-node:9200"]' # Define the OpenSearch nodes that OpenSearch Dashboards will query
+      DISABLE_SECURITY_DASHBOARDS_PLUGIN: true
+    networks:
+      - cms_network
+
+  tika:
+    image: apache/tika:2.9.0.0
+    ports:
+      - 9998:9998
+    networks:
+      - cms_network
+
+
+
 networks:
   cms_network:
     # driver: bridge
 
-volumes:
-  postgres_data:
-  zms5_data:
+# volumes:
+#   postgres_data:
+#   zms5_data:

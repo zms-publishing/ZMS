@@ -37,6 +37,9 @@ services:
       - INSTANCE_HOME=/home/zope
       - CLIENT_HOME=/home/zope
       - RELSTORAGE_DSN=dbname=zodb user=zodb password=zodb host=postgres port=5432
+      # Use for OpenSearch communication: http://opensearch-node:9200
+      - OPENSEARCH_HOST=opensearch-node
+      - OPENSEARCH_PORT=9200
     depends_on:
       postgres:
         condition: service_healthy

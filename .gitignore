@@ -15,6 +15,7 @@ dist/
 build/
 docker/**/var/*
 docker/**/Extensions/*
-docker/**/postgres_data/*
+docker/**/postgres/data/*
+docker/**/opensearch/*
 /revisions.txt
 

@@ -132,7 +132,7 @@ class ZMSTrashcan(zmscontainerobject.ZMSContainerObject):
         for context in self.objectValues(self.dGlobalAttrs):
           delete = True
           try:
-            delete = delete and standard.daysBetween(context.del_dt, now)>=days
+            delete = delete and standard.daysBetween(context.del_dt, now) > days
           except:
             pass
           if delete:

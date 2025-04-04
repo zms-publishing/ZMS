@@ -1374,6 +1374,22 @@
     <Cell><Data ss:Type="String">איסוף אשפה</Data></Cell>
    </Row>
    <Row>
+    <Cell><Data ss:Type="String">CAPTION_GARBAGE_COLLECTION</Data></Cell>
+    <Cell><Data ss:Type="String">Tage nach Objekt-Löschung</Data></Cell>
+    <Cell><Data ss:Type="String">days after object deletion</Data></Cell>
+    <Cell><Data ss:Type="String">days after object deletion</Data></Cell>
+    <Cell><Data ss:Type="String">days after object deletion</Data></Cell>
+    <Cell><Data ss:Type="String">days after object deletion</Data></Cell>
+    <Cell><Data ss:Type="String">days after object deletion</Data></Cell>
+    <Cell><Data ss:Type="String">days after object deletion</Data></Cell>
+    <Cell><Data ss:Type="String">days after object deletion</Data></Cell>
+    <Cell><Data ss:Type="String">days after object deletion</Data></Cell>
+    <Cell><Data ss:Type="String">days after object deletion</Data></Cell>
+    <Cell><Data ss:Type="String">days after object deletion</Data></Cell>
+    <Cell><Data ss:Type="String">days after object deletion</Data></Cell>
+    <Cell><Data ss:Type="String">days after object deletion</Data></Cell>
+   </Row>
+   <Row>
     <Cell><Data ss:Type="String">ATTR_HEIGHT</Data></Cell>
     <Cell><Data ss:Type="String">Höhe</Data></Cell>
     <Cell><Data ss:Type="String">Height</Data></Cell>

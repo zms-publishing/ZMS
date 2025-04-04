@@ -14,6 +14,11 @@ Products/zms/overrides.zcml
 dist/
 build/
 docker/**/var/*
+!docker/**/var/
 docker/**/Extensions/*
+!docker/**/Extensions/
+docker/**/postgres/data/*
+!docker/**/postgres/data/
+docker/**/opensearch/*
+!docker/**/opensearch/
 /revisions.txt
-

@@ -986,7 +986,8 @@ class VersionItem(object):
             s = ob.id # Never delete this line!
             return ob
         except:
-            raise zExceptions.InternalError(standard.writeError( self, '[getObjVersion]: an unexpected error occured!'))
+            standard.writeBlock( self, '[getObjVersion]: an unexpected error occured!')
+            return self
 
 
     # --------------------------------------------------------------------------

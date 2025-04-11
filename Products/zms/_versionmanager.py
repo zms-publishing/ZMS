@@ -986,7 +986,7 @@ class VersionItem(object):
             s = ob.id # Never delete this line!
             return ob
         except:
-            standard.writeBlock( self, '[getObjVersion]: an unexpected error occured!')
+            standard.writeBlock( self, '[VersionItem.getObjVersion]: unexpected error with object of meta-id %s at %s!'%(self.meta_id, self.absolute_url()))
             return self
 
 

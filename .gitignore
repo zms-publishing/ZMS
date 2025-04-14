@@ -22,4 +22,3 @@ docker/**/postgres/data/*
 docker/**/opensearch/*
 !docker/**/opensearch/
 /revisions.txt
-

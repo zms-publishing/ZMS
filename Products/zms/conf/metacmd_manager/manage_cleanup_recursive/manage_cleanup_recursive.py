@@ -224,7 +224,7 @@ def html_page(self):
 		html.append('<div>Content Cleanup for <i class="fas fa-home"></i> <span>%s</span> containing <span id="info_page_count">...</span> Nodes in <span id="info_lang_count">...</span> Languages <span id="info_proc_time">(... sec)</span></div>'%(zmscontext.getHome().id))
 		html.append('''
 					<nav>
-						<a target="_blank" href="manage_cleanup_recursive?content_type=cvs" title="Show this List as CVS for Importing to Excel">CVS</a>&nbsp;&nbsp;&vert;&nbsp;
+						<a target="_blank" href="manage_cleanup_recursive?content_type=csv" title="Show this List as CSV for Importing to Excel">CSV</a>&nbsp;&nbsp;&vert;&nbsp;
 						<a target="_blank" href="manage_cleanup_recursive?content_type=json" title="Show Complete Tree in Details as JSON">JSON</a>&nbsp;&nbsp;&vert;&nbsp;
 						<a href="manage_cleanup_recursive?content_type=html" class="active" title="Reload and Update this List"><i class="fas fa-sync text-primary"></i></a>
 					</nav>
@@ -367,7 +367,7 @@ def manage_cleanup_recursive(self):
 	# SHOW SPINNER page while waiting until action 
 	# has completed it's execution
 	# -----------------------------------------------------
-	if not request.get('do_execution') and request.get('content_type') not in ['json','cvs']:
+	if not request.get('do_execution') and request.get('content_type') not in ['json','csv']:
 		response.setHeader('Content-Type', 'text/html')
 		return html_page(zmscontext)
 	else:
@@ -486,7 +486,7 @@ def manage_cleanup_recursive(self):
 
 	# -----------------------------------------------------
 	# Output of valid grading data for [A] JSON 
-	# and delete/check-subset data for [B] CVS and [C] HTML
+	# and delete/check-subset data for [B] CSV and [C] HTML
 	# -----------------------------------------------------
 
 	if request.get('content_type') == 'json':
@@ -495,21 +495,21 @@ def manage_cleanup_recursive(self):
 		# to format the JSON output in the browser
 		response.setHeader('Content-Type', 'text/plain')
 		return json.dumps(valid_grading_data, indent=4)
-	# [B] CVS
-	if request.get('content_type') == 'cvs':
-		cvs = []
-		cvs.append('INFO\tTITLE\tURL\tLANGUAGE\tAGE/YEARS')
+	# [B] CSV
+	if request.get('content_type') == 'csv':
+		csv = []
+		csv.append('INFO\tTITLE\tURL\tLANGUAGE\tAGE/YEARS')
 		server_url = request.get('SERVER_URL')
 		if clean_delete_data:
 			for e in clean_delete_data:
-				cvs.append('\t'.join([ e['grading_info'],e['title'], server_url + e['absolute_url'], e['lang'], str(round(e['age_days']/365)) ]))
-		cvs.append('-\t-\t-\t-\t-')
+				csv.append('\t'.join([ e['grading_info'],e['title'], server_url + e['absolute_url'] + '/manage?lang=%s'%(e['lang']), str(round(e['age_days']/365)) ]))
+		csv.append('-\t-\t-\t-\t-')
 		if clean_check_data:
 			for e in clean_check_data:
 				if e['grading'] == 1:
-					cvs.append('\t'.join([ e['grading_info'],e['title'], server_url + e['absolute_url'], e['lang'], str(round(e['age_days']/365)) ]))
+					csv.append('\t'.join([ e['grading_info'],e['title'], server_url + e['absolute_url'] + '/manage?lang=%s'%(e['lang']), e['lang'], str(round(e['age_days']/365)) ]))
 		response.setHeader('Content-Type', 'text/plain')
-		return '\n'.join(cvs)
+		return '\n'.join(csv)
 	# [C] HTML
 	else:
 		html = []

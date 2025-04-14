@@ -12,6 +12,8 @@ RUN apt-get install -y libpq-dev
 RUN apt-get install -y memcached
 RUN apt-get install -y postgresql-client
 
+# Expose port for Zope
+EXPOSE 8080
 
 # Set environment variables
 ENV VIRTUAL_ENV=/home/zope/venv
@@ -35,23 +37,14 @@ RUN pip install git+https://github.com/zms-publishing/ZMS.git
 RUN pip install RelStorage psycopg2-binary lxml opensearch-py
 
 # Create Zope Instance
-RUN mkwsgiinstance -d . -u admin:admin
+RUN ./venv/bin/mkwsgiinstance -d . -u admin:admin
 
-# Mount Zope Instance Data
-COPY ./etc /home/zope/etc
-COPY ./var /home/zope/var
-COPY ./Extensions /home/zope/Extensions
-
-COPY ./relstorage.code-workspace /home/zope/relstorage.code-workspace
-COPY ./entrypoint.sh /usr/local/bin/entrypoint.sh
-
-USER root
-RUN chown -R zope:zope /home/zope
-RUN chmod +x /usr/local/bin/entrypoint.sh
-
-# Expose port for Zope
-EXPOSE 8080
+# Mount Zope Instance Data from Host
+COPY --chown=zope:zope ./etc /home/zope/etc
+COPY --chown=zope:zope ./var /home/zope/var
+COPY --chown=zope:zope ./Extensions /home/zope/Extensions
+COPY --chown=zope:zope ./relstorage.code-workspace /home/zope/relstorage.code-workspace
+COPY --chown=+x. /entrypoint.sh /usr/local/bin/entrypoint.sh
 
 # Use the entrypoint script to start services
-USER zope
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

@@ -46,9 +46,9 @@ services:
     networks:
       - cms_network
     volumes:
-      - ./Extensions:/zope/home/Extensions
-      - ./var:/home/zope/var
-      - ./etc:/home/zope/etc
+      - ./Extensions/:/zope/home/Extensions/:z
+      - ./var/:/home/zope/var/:z
+      - ./etc/:/home/zope/etc/:z
 
 
   # https://opensearch.org/docs/latest/install-and-configure/install-opensearch/docker/
@@ -93,11 +93,9 @@ services:
     networks:
       - cms_network
 
-
-
 networks:
   cms_network:
-    # driver: bridge
+    driver: bridge
 
 # volumes:
 #   postgres_data:

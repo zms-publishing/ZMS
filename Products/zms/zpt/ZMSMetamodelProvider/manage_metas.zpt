@@ -79,7 +79,7 @@
 	<tr>
 		<th class="meta-sort">
 			<div class="btn-group">
-				<a class="btn btn-secondary" href="javascript:;" tal:attributes="title python:here.getZMILangStr('BTN_ACQUIRE')+'...'" onclick="zmiModal('#acquireConf',{title:$(this).attr('title')})" tal:condition="python:here.getPortalMaster() is not None"><i class="fas fa-share"></i></a>
+				<a class="btn btn-secondary" href="javascript:;" tal:attributes="title python:here.getZMILangStr('BTN_ACQUIRE')+'...'" onclick="zmiModal('#acquireConf',{title:$(this).attr('title')})" tal:condition="python:here.getPortalMaster() is not None"><i class="fas fa-share fa-flip-vertical"></i></a>
 				<a class="btn btn-secondary" href="javascript:;" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).attr('title')})"><i class="fas fa-upload"></i></a>
 				<a class="btn btn-secondary" href="javascript:;" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><i class="fas fa-download"></i></a>
 			</div>

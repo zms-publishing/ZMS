@@ -42,28 +42,29 @@ def normalize_ids_after_copy(node, id_prefix='e', ids=[]):
     id = childNode.getId()
     new_id = None
     if '*' in ids or id in ids or id.startswith(copy_of_prefix):
-      # reset ref_by
-      childNode.ref_by = []
-      # init object-state
+      # new id
       if not '*' in ids:
-        lang = request.get('lang')
-        for langId in node.getLangIds():
-          request.set('lang',langId)
-          if not node.getAutocommit():
-            childNode.setObjStateNew(request,reset=0)
-          childNode.onChangeObj(request)
-        request.set('lang',lang)
-        # new id
         new_id = node.getNewId(id_prefix)
       else:
-        # new id
         new_id = node.getNewId(standard.id_prefix(id))
       # reset id
       if new_id is not None and new_id != id and childNode.getParentNode() == node:
         standard.writeBlock(node,'[CopySupport._normalize_ids_after_copy]: rename %s(%s) to %s'%(childNode.absolute_url(),childNode.meta_id,new_id))
         node.manage_renameObject(id=id,new_id=new_id)
-      # traverse tree
-      normalize_ids_after_copy(childNode, id_prefix, ids=['*'])
+  for childNode in node.getChildNodes():
+    # reset ref_by
+    childNode.ref_by = []
+    # init object-state
+    if not '*' in ids:
+      lang = request.get('lang')
+      for langId in node.getLangIds():
+        request.set('lang',langId)
+        if not node.getAutocommit():
+          childNode.setObjStateNew(request,reset=0)
+        childNode.onChangeObj(request)
+      request.set('lang',lang)
+    # traverse tree
+    normalize_ids_after_copy(childNode, id_prefix, ids=['*'])
 
 
 # ------------------------------------------------------------------------------

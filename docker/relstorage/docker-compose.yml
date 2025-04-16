@@ -50,7 +50,9 @@ services:
       - ./var/:/home/zope/var/:z
       - ./etc/:/home/zope/etc/:z
 
-
+# IMPORTANT: Create the Network first to make it external
+# >docker network create zms_network
 networks:
   zms_network:
     driver: bridge
+    external: true

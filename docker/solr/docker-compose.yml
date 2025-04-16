@@ -5,6 +5,8 @@ services:
     image: solr:8.11.2
     ports:
       - 8983:8983
+    networks:
+      - zms_network
     volumes:
       - /home/zope/instance/zms4_gez/neon-entw/var/solr:/var/solr:rw
     working_dir: /opt/solr

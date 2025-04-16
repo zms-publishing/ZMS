@@ -21,7 +21,7 @@ services:
         hard: -1
     mem_limit: 2g
     networks:
-      - elastic
+      - zms_network
 
   kibana:
     image: docker.elastic.co/kibana/kibana:8.14.3
@@ -35,14 +35,15 @@ services:
       - elasticsearch
     restart: 'unless-stopped'
     networks:
-      - elastic
+      - zms_network
 
   tika:
     image: apache/tika:3.1.0.0
     ports:
       - 9998:9998
     networks:
-      - elastic
+      - zms_network
 
 networks:
-  elastic:
+  zms_network:
+    driver: bridge

@@ -19,6 +19,6 @@ docker/**/Extensions/*
 !docker/**/Extensions/
 docker/**/postgres/data/*
 !docker/**/postgres/data/
-docker/**/opensearch/*
-!docker/**/opensearch/
+docker/**/opensearch/data/*
+!docker/**/opensearch/data/
 /revisions.txt

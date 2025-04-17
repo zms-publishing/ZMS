@@ -80,7 +80,7 @@
 				<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteBtnClick(this)"><i class="fas fa-times"></i></span>
 				<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importObj',{title:$(this).attr('title')})"><i class="fas fa-upload"></i></span>
 				<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><i class="fas fa-download"></i></span>
-				<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_COPY')" onclick="zmiArchiveBtnClick(this)"><i class="fas fa-archive"></i></span>
+				<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_COPY')" onclick="zmiArchiveBtnClick(this)"><i class="fas fa-copy"></i></span>
 			</div>
 		</th>
 	</tr>

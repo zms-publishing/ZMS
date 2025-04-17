@@ -298,7 +298,7 @@
 									tal:attributes="
 										href python:'%s/metacmd_manager/manage_main?lang=%s&id=%s'%(context.getHome().aq_parent.content.absolute_url(),request['lang'],metaCmd['id']);
 										title python:'acquired from: %s (%s)'%(context.getHome().aq_parent.content.id, context.getHome().aq_parent.content.attr('titlealt'))"
-									><i class="fas fa-share fa-flip-vertical"></i></a>
+									><i class="fas fa-share fa-flip-vertical mr-2"></i></a>
 								<i tal:condition="python:metaCmd.get('icon_clazz',False)" tal:attributes="class python:metaCmd.get('icon_clazz')"></i>&nbsp;&nbsp;
 								<strong tal:content="python:metaCmd['id']">the id</strong> ( <tal:block tal:content="python:here.getZMILangStr(metaCmd['name'])">Name</tal:block> )
 							</tal:block>

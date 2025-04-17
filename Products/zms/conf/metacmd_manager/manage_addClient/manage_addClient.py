@@ -3,6 +3,14 @@
 
 from Products.zms import standard
 
+zmsclientids = []
+def getZMSPortalClients(zmsclient):
+	zmsclientids.append(zmsclient.getHome().id)
+	for zmsclientid in zmsclient.getPortalClients():
+		getZMSPortalClients(zmsclientid)
+	zmsclientids.sort()
+	return list(dict.fromkeys(zmsclientids))
+
 def manage_addClient(self):
 	request = self.REQUEST
 	html = ''
@@ -41,7 +49,11 @@ def manage_addClient(self):
 	else:
 		html += '<div class="form-group row">'
 		html += '<label for="id" class="col-sm-3 control-label mandatory">%s</label>'%(self.getZMILangStr('ATTR_ID'))
-		html += '<div class="col-sm-9"><input class="form-control" name="id" type="text" size="25" value="client0"></div>'
+		html += '<div class="col-sm-9"><input class="form-control" list="zmsclientids" name="id" type="text" size="25" value="client0"></div>'
+		html += '<datalist id="zmsclientids">'
+		for c in getZMSPortalClients(self.getPortalMaster() or self):
+			html += '<option value="%s">'%(c)
+		html += '</datalist>'
 		html += '</div><!-- .form-group -->'
 		html += '<div class="form-group row">'
 		html += '<label for="titlealt" class="col-sm-3 control-label mandatory">%s</label>'%(self.getZMILangStr('ATTR_TITLEALT'))

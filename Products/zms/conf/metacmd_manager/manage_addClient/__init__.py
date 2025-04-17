@@ -34,7 +34,7 @@ class manage_addClient:
 	package = ""
 
 	# Revision
-	revision = "5.0.1"
+	revision = "5.0.2"
 
 	# Roles
 	roles = ["ZMSAdministrator"]

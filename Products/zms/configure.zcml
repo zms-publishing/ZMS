@@ -24,14 +24,19 @@
       xmlns:zcml="http://namespaces.zope.org/zcml"
       zcml:condition="installed Products.CMFCore"
       >
-    <cmf:registerDirectory name="skin_zms5_minimal" recursive="True" />
 
-    <!-- cmf:registerDirectory name="mytemplateset" directory="C:\\home\\zope\\zms-skins\\mytemplateset" recursive="True" / -->
-    <!-- cmf:registerDirectory name="mytemplateset" directory="/home/zope/zms-skins/mytemplateset" recursive="True" / -->
+    <!--
+    HINTS:
+    [1] For registering file-system folders with Products.CMFCore use the following syntax
+      <cmf:registerDirectory name="theme_zms_minimal" recursive="True" />
+      <cmf:registerDirectory name="mytemplateset" directory="C:\\home\\zope\\zms-skins\\mytemplateset" recursive="True" />
+      <cmf:registerDirectory name="mytemplateset" directory="/home/zope/zms-skins/mytemplateset" recursive="True" />
+    [2] Or register the folders by adding a zcml file to the etc-folder of the Zope instance and adding here the reference to the zcml file:
+      <include files="$INSTANCE_HOME/etc/skins.zcml" />
+    [3] Do not make any changes here but use the file overrides.zcml to avoid data loss when updating the ZMS code.
+    -->
 
-    <!-- Hint: Add your ZMS skins as a site-package like Product.zms-skins -->
-    <!-- or register them via adding a zcml file to the etc-folder of the Zope instance -->
-    <!-- include files="$INSTANCE_HOME/etc/skins.zcml"/ -->
+    <cmf:registerDirectory name="theme_zms_minimal" recursive="True" />
 
   </configure>
 

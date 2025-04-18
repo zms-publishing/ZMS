@@ -131,9 +131,16 @@ paths:
     get:
       tags:
         - navigation
-      summary: List ZMS-Object-Tree Index-Data.
-      description: Sequencing Object-Tree Index-Data
+      summary: List ZMS-Object-Tree Index-Data by meta-id.
+      description: Sequencing Object-Tree Index-Data by meta-id
       parameters:
+        - name: meta_id
+          in: query
+          description: meta-id to filter objects
+          required: false
+          schema:
+            type: string
+            example: ZMSFolder
         - name: path
           in: path
           description: id-path to current node

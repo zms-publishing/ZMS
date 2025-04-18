@@ -198,8 +198,6 @@ class RestApiController(object):
                 decoration, data = self.get_child_nodes(self.context, content_type=True)
             elif self.ids == ['get_tree_nodes']:
                 decoration, data = self.get_tree_nodes(self.context, content_type=True)
-            elif self.ids == ['get_content_objects']:
-                decoration, data = self.get_content_objects(self.context, content_type=True)
             elif self.ids == ['get_tags']:
                 decoration, data = self.get_tags(self.context, content_type=True)
             elif self.ids == ['get_tag']:
@@ -270,6 +268,24 @@ class RestApiController(object):
         nodes = context.getTreeNodes(request)
         return [get_meta_data(x) for x in nodes]
 
+    @api(tag="navigation", pattern="/{path}/list_tree_nodes", method="GET", content_type="application/json")
+    def list_tree_nodes(self, context):
+        request = _get_request(context)
+        meta_id = request.get('meta_id')
+        path = '/'+'/'.join(context.REQUEST.steps).split('++rest_api')[0]
+        if meta_id:
+            result = context.zcatalog_index({'meta_id': meta_id, 'path': path})
+        else:
+            result = context.zcatalog_index({'path': path})
+        return [
+                    {
+                    'id':x.id,
+                    'meta_id':x.meta_id,
+                    'uid':x.get_uid,
+                    'getPath':x.getPath()
+                    } for x in result
+                ]
+
     @api(tag="navigation", pattern="/{path}/get_parent_nodes", method="GET", content_type="application/json")
     def get_parent_nodes(self, context):
         nodes = context.breadcrumbs_obj_path()
@@ -299,16 +315,6 @@ class RestApiController(object):
         request = _get_request(context)
         nodes = context.getTreeNodes(request)
         return [get_attrs(x) for x in nodes]
-
-    @api(tag="navigation", pattern="/{path}/get_content_objects", method="GET", content_type="application/json")
-    def get_content_objects(self, context):
-        request = _get_request(context)
-        meta_id = request.get('meta_id')
-        if meta_id is not None:
-            path = '/'+'/'.join(context.REQUEST.steps).split('++rest_api')[0]
-            result = context.zcatalog_index({'meta_id': meta_id, 'path': path})
-            return [{x.get_uid: x.getPath()} for x in result]
-        return []
 
     @api(tag="version", pattern="/{path}/get_tags", method="GET", content_type="application/json")
     def get_tags(self, context):

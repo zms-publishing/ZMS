@@ -55,6 +55,9 @@ class api(object):
 
 def _get_request(context):
     request = getattr(context,'REQUEST',mock_http.MockHTTPRequest())
+    # Add additional request attributes for testing
+    if not hasattr(request, 'steps'):
+        request.steps = []
     return request
 
 

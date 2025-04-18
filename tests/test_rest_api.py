@@ -111,6 +111,7 @@ class RestAPITest(ZMSTestCase):
             self.assertEqual( len(actual), len(document.getChildNodes(self.context.REQUEST)))
             # list_tree_nodes
             self.context.REQUEST = mock_http.MockHTTPRequest({'REQUEST_METHOD':'GET','TraversalRequestNameStack':path_to_handle+['list_tree_nodes'],'path_to_handle':path_to_handle+['list_tree_nodes']})
+            self.context.REQUEST.steps = path_to_handle[:3]
             print("path_to_handle", self.context.REQUEST.get('path_to_handle'))
             actual = json.loads( self.context.__bobo_traverse__(self.context.REQUEST, name)(self.context.REQUEST))
             print(json.dumps(actual))

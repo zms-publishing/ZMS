@@ -234,7 +234,7 @@ class RestApiController(object):
     @api(tag="metamodel", pattern="/metaobj_manager", content_type="application/json")
     def metaobj_manager(self, context):
         data = {}
-        for id in context.getMetaobjIds(sort=True):
+        for id in context.getMetaobjIds():
             d = {}
             d['icon_clazz'] = context.aq_parent.zmi_icon(id)
             data[id] = d

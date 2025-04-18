@@ -521,10 +521,8 @@ class ZMSMetaobjManager(object):
       if excl_ids:
         ids = [x for x in ids if x not in excl_ids]
       # sort
-      if sort == True:
-        ids = sorted(ids,key=lambda x:self.display_type(meta_id=x))
-      elif sort == False:
-        ids = sorted(ids,key=lambda x:obs[x].get('name',x))
+      if sort:
+        ids = sorted(ids)
       return ids
 
 

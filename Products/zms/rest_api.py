@@ -76,6 +76,15 @@ def get_meta_data(node):
     return data
 
 
+def get_index_data(node):
+    data = {}
+    data['id'] = node.id
+    data['meta_id'] = node.meta_id
+    data['uid'] = node.get_uid
+    data['getPath'] = node.getPath()
+    return data
+
+
 def get_rest_api_url(url):
     if '/content' in url:
         i = url.find('/content')+len('/content')
@@ -265,6 +274,11 @@ class RestApiController(object):
     @api(tag="navigation", pattern="/{path}/list_tree_nodes", method="GET", content_type="application/json")
     def list_tree_nodes(self, context):
         request = _get_request(context)
+        meta_id = request.get('meta_id')
+        if meta_id is not None:
+            path = '/'+'/'.join(context.REQUEST.steps).split('++rest_api')[0]
+            result = context.zcatalog_index({'meta_id': meta_id, 'path': path})
+            return [get_index_data(x) for x in result]
         nodes = context.getTreeNodes(request)
         return [get_meta_data(x) for x in nodes]
 
@@ -336,7 +350,7 @@ class RestApiController(object):
             if tag[2] == physical_path:
                 rtn.append(tag)
         return [(x[0],x[1]) for x in rtn]
-    
+
     @api(tag="version", pattern="/{path}/get_tag", method="GET", content_type="application/json")
     def get_tag(self, context):
         request = _get_request(context)
@@ -354,14 +368,14 @@ class RestApiController(object):
                 change_uid = obj_version.attr('change_uid') or obj_version.attr('created_uid')
                 if change_dt and change_uid:
                     d[standard.getLangFmtDate(version_item,change_dt,'eng','DATETIME_FMT')] = obj_version.id
-            tags = list(reversed(sorted(list(d.keys())))) 
+            tags = list(reversed(sorted(list(d.keys()))))
             tags = [x for x in tags if x <= dt]
             if tags:
                 request.set('ZMS_VERSION_%s'%version_item.id,d[tags[0]])
                 attrs = get_attrs(version_item)
                 data.append(attrs)
         return data
-    
+
     @api(tag="version", pattern="/{path}/body_content", method="GET", content_type="text/html")
     def body_content(self, context):
         request = _get_request(context)
@@ -379,7 +393,7 @@ class RestApiController(object):
                 change_uid = obj_version.attr('change_uid') or obj_version.attr('created_uid')
                 if change_dt and change_uid:
                     d[standard.getLangFmtDate(version_item,change_dt,'eng','DATETIME_FMT')] = obj_version.id
-            tags = list(reversed(sorted(list(d.keys())))) 
+            tags = list(reversed(sorted(list(d.keys()))))
             tags = [x for x in tags if x <= dt]
             if tags:
                 request.set('ZMS_VERSION_%s'%version_item.id,d[tags[0]])

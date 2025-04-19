@@ -141,6 +141,13 @@ paths:
           schema:
             type: string
             example: e34/e36
+        - name: meta_id
+          in: query
+          description: meta_id to be filtered by
+          required: false
+          schema:
+            type: string
+            example: ZMSTable
       responses:
         '200':    # status code
           description: A JSON array of Tree Objects Meta-Data

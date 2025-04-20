@@ -151,9 +151,6 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST, minimal_init 
     if REQUEST.get('zcatalog_init', 0) == 1:
       _confmanager.initConf(obj, 'conf:com.zms.catalog.zcatalog')
 
-    ### Init ZMS index.
-    obj.getZMSIndex()
-
   else:
     ### Acquire content-model from master.
     master = hasattr(self.aq_parent,'content') and (self.aq_parent.content or self.aq_parent.content.getPortalMaster()) or None
@@ -172,6 +169,9 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST, minimal_init 
               client.metaobj_manager.acquireMetaobj(id)
         client.synchronizeObjAttrs()
       obj.setConfProperty('ZMS.theme', master.getConfProperty('ZMS.theme'))
+
+  ### Init ZMS index.
+  obj.getZMSIndex()
 
   ### Init ZMS default actions.
   _confmanager.initConf(obj, 'conf:manage_tab_*')

@@ -862,6 +862,7 @@ class ConfManager(
       # Copy theme.
       # -----
       elif btn == 'BTN_COPY':
+        id = REQUEST.get('id', '')
         self.metaobj_manager.importTheme(id)
         message = self.getZMILangStr('MSG_IMPORTED')%('<code class="alert-success">'+id+'</code>')
       

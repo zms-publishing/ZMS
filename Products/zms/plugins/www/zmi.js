@@ -73,7 +73,7 @@ if (typeof htmx != "undefined") {
 	document.addEventListener('htmx:sendError', (evt) => {
 		const manage_main_href = evt.detail.pathInfo.finalRequestPath;
 		if ( confirm(getZMILangStr('MSG_CONFIRM_RELOAD'))) {
-			const topWindow = window.parent.manage_main || window;
+			const topWindow = window.parent || window;
 			topWindow.location.assign(manage_main_href);
 		}
 	});

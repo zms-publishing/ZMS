@@ -1,5 +1,15 @@
-from Products.PythonScripts.standard import html_quote
+#!/usr/bin/python
+# coding: utf8
+
 from Products.zms import standard
+
+zmsclientids = []
+def getZMSPortalClients(zmsclient):
+	zmsclientids.append(zmsclient.getHome().id)
+	for zmsclientid in zmsclient.getPortalClients():
+		getZMSPortalClients(zmsclientid)
+	zmsclientids.sort()
+	return list(dict.fromkeys(zmsclientids))
 
 def manage_addClient(self):
 	request = self.REQUEST
@@ -26,11 +36,11 @@ def manage_addClient(self):
 		folder_inst = getattr(home,request['id'])
 		request.set('lang_label',self.getLanguageLabel(request['lang']))
 		zms_inst = self.initZMS(folder_inst, 'content', request['titlealt'], request['title'], request['lang'], self.get_manage_lang(), request)
+		zms_inst.synchronizePublicAccess()
 		zms_inst.setConfProperty('Portal.Master',home.id)
-		if request.get('acquire'):
-			for id in [id for id in self.getMetaobjIds() if id not in ['ZMSIndexZCatalog','com.zms.index']]:
-				zms_inst.metaobj_manager.acquireMetaobj(id)
 		self.setConfProperty('Portal.Clients',self.getConfProperty('Portal.Clients',[])+[request['id']])
+		# Trigger adding to zmsindex
+		standard.triggerEvent(zms_inst.content,'*.ObjectMoved')
 		message.append(self.getZMILangStr('MSG_INSERTED')%request['id'])
 		request.response.redirect(standard.url_append_params('%s/manage_main'%zms_inst.absolute_url(),{'lang':request['lang'],'manage_tabs_message':'<br/>'.join(message)}))
 
@@ -39,7 +49,11 @@ def manage_addClient(self):
 	else:
 		html += '<div class="form-group row">'
 		html += '<label for="id" class="col-sm-3 control-label mandatory">%s</label>'%(self.getZMILangStr('ATTR_ID'))
-		html += '<div class="col-sm-9"><input class="form-control" name="id" type="text" size="25" value="client0"></div>'
+		html += '<div class="col-sm-9"><input class="form-control" list="zmsclientids" name="id" type="text" size="25" value="client0"></div>'
+		html += '<datalist id="zmsclientids">'
+		for c in getZMSPortalClients(self.getPortalMaster() or self):
+			html += '<option value="%s">'%(c)
+		html += '</datalist>'
 		html += '</div><!-- .form-group -->'
 		html += '<div class="form-group row">'
 		html += '<label for="titlealt" class="col-sm-3 control-label mandatory">%s</label>'%(self.getZMILangStr('ATTR_TITLEALT'))

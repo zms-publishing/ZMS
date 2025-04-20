@@ -86,8 +86,11 @@
 								class python:' '.join(['get_uid']+[['text-danger'],[]][cataloged]);">
 							<tal:block tal:content="python:'ID:%s'%(here.get_uid())">unique-id</tal:block>
 							<tal:block tal:condition="python:request.get('refresh_catalog','False')=='True'">
-								<tal:block tal:define="dummy0 python:standard.triggerEvent(here,'*.ObjectMoved')"></tal:block>
-                                <script>location.href='?refresh_catalog=False'</script>
+								<script tal:define="dummy0 python:standard.triggerEvent(here,'*.ObjectMoved')">
+								//<!--
+									location.href='?refresh_catalog=False';
+								//-->
+								</script>
 							</tal:block>
 							<a tal:condition="not:cataloged" 
 								href="javascript:;" title="Refresh Catalog Item"

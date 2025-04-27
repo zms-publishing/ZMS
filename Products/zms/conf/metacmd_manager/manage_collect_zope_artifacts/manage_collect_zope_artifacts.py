@@ -20,8 +20,13 @@ def manage_collect_zope_artifacts(self, request=None):
 
 	def traverse(node,execute):
 		rtn = []
-		meta_type = node.meta_type
-		if node.meta_type in ['Folder']:
+		meta_type = 'NA'
+		try:
+			meta_type = node.meta_type
+		except:
+			# Error: Node has no attribute meta_type
+			pass
+		if meta_type in ['Folder']:
 			for childNode in node.objectValues():
 				rtn.extend(traverse(childNode,execute))
 		elif meta_type in zope_objects:
@@ -36,7 +41,10 @@ def manage_collect_zope_artifacts(self, request=None):
 					oldId = None
 					newId = path
 					newName = path
-					newType = node.meta_type
+					try:
+						newType = node.meta_type
+					except:
+						newType = meta_type
 					newCustom = zopeutil.readData(node)
 					# if newType in ['Page Template','Script (Python)']:
 					# 	newCustom = standard.pystr(newCustom)

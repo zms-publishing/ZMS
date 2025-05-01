@@ -10,7 +10,7 @@
 		dummy0 python:here.synchronizeRefByObjs();
 		refByObjs python:here.getRefByObjs()">
 
-<form tal:condition="python:refByObjs" class="card form-horizontal">
+<form tal:condition="python:refByObjs" name="refByObjs" class="card form-horizontal">
 	<legend tal:content="structure python:'%s:'%(here.getZMILangStr('MSG_REFERENCEDBY')%('<em>%s</em>'%here.getTitlealt(request)))">titlealt referenced by:</legend>
 	<div class="card-body">
 		<ol>
@@ -29,6 +29,30 @@
 	titlealt referenced by:
 </div>
 
+<form tal:condition="python:refByObjs" name="change_refByObjs" class="card form-horizontal">
+	<legend>Change All these References to a New Link Target:</legend>
+	<div class="card-body">
+		<div class="form-group">
+			<div tal:replace="structure python:here.getUrlInput('change_refByObjs', 'new_linktarget', elTextName='', size=None, value='', enabled=True, css='form-control')">
+				New Link Target
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="controls save py-3 px-1">
+				<button type="submit" name="btn" class="btn btn-primary" 
+					value="BTN_SAVE" 
+					tal:content="python:here.getZMILangStr('BTN_SAVE')">
+					BTN_SAVE
+				</button>
+				<button type="submit" name="btn" class="btn btn-secondary" 
+					value="BTN_CANCEL" 
+					tal:content="python:here.getZMILangStr('BTN_CANCEL')">
+					BTN_CANCEL
+				</button>
+			</div>
+		</div>
+	</div>
+</form>
 </tal:block>
 
 </div><!-- #zmi-tab -->

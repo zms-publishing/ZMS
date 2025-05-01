@@ -13,10 +13,11 @@ Products/zms/overrides.zcml
 
 dist/
 build/
-docker/**/var/*
-!docker/**/var/
+docker/**/var/*.*
+docker/**/var/log/*.*
+!docker/**/var/log/Readme.md
 docker/**/Extensions/*
-!docker/**/Extensions/
+!docker/**/Extensions/Readme.md
 docker/**/postgres/data/*
 !docker/**/postgres/data/
 docker/**/opensearch/data/*

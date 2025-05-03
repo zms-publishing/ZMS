@@ -22,6 +22,8 @@ from OFS import Moniker
 from OFS.CopySupport import _cb_decode, _cb_encode, CopyError
 # Product Imports.
 from Products.zms import standard
+from Products.zms import _globals
+from Products.zms import _blobfields
 
 
 # ------------------------------------------------------------------------------
@@ -117,12 +119,12 @@ class CopySupport(object):
           cp=REQUEST['__cp']
       if cp is None:
         raise CopyError('No Data')
-      
-      try: 
+
+      try:
         cp=_cb_decode(cp)
-      except: 
+      except:
         raise CopyError('Invalid')
-      
+
       return cp
 
 
@@ -130,25 +132,25 @@ class CopySupport(object):
     #  CopySupport._get_obs:
     # --------------------------------------------------------------------------
     def _get_obs(self, cp):
-        
-        try: 
+
+        try:
           cp=_cb_decode(cp)
-        except: 
+        except:
           raise CopyError('Invalid')
-        
+
         oblist=[]
         op=cp[0]
         app = self.getPhysicalRoot()
-        
+
         for mdata in cp[1]:
           m = Moniker.loadMoniker(mdata)
-          try: 
+          try:
             ob = m.bind(app)
-          except: 
+          except:
             raise CopyError('Not Found')
           self._verifyObjectPaste(ob)
           oblist.append(ob)
-        
+
         return oblist
 
     def cp_get_obs(self, REQUEST):
@@ -173,8 +175,8 @@ class CopySupport(object):
 
     # --------------------------------------------------------------------------
     #  CopySupport._set_sort_ids:
-    # 
-    #  Group all objects to be copied / moved at new position (given by _sort_id) 
+    #
+    #  Group all objects to be copied / moved at new position (given by _sort_id)
     #  in correct sort-order.
     # --------------------------------------------------------------------------
     def _set_sort_ids(self, ids, op, REQUEST):
@@ -186,6 +188,81 @@ class CopySupport(object):
         if (id in ids) or (op == OP_MOVE and copy_of_prefix+id in ids):
           ob.setSortId(sort_id)
           sort_id += 1
+
+    # --------------------------------------------------------------------------
+    #  CopySupport._copy_blobs_between_clients_with_different_mediadb
+    #
+    #  If source and target have different mediadb folder settings,
+    #  then the data of blob fields is copied as well
+    #  to avoid missing images and files due to invalid references.
+    # --------------------------------------------------------------------------
+    def _copy_blobs_if_other_mediadb(self, **kwargs):
+        mode = kwargs.get('mode', None)
+        oblist = kwargs.get('oblist', [])
+        ids = kwargs.get('ids', [])
+
+        if mode == 'load_from_source':
+            self.blobfields = []
+            for ob in oblist:
+                lang = ob.REQUEST.get('lang')
+                for langId in ob.getLangIds():
+                    for key in ob.getObjAttrs():
+                        # TODO: handle getObjVersions...!? (preview vs live, activated workflow)
+                        obj_attr = ob.getObjAttr(key)
+                        datatype = obj_attr['datatype_key']
+                        if datatype in _globals.DT_BLOBS:
+                            ob.REQUEST.set('lang', langId)
+                            if ob.attr(key) is not None:
+                                self.blobfields.append({
+                                    'id': ob.getId(),
+                                    'key': key,
+                                    'lang': langId,
+                                    'filename': ob.attr(key).getFilename(),
+                                    'mediadbfile': ob.attr(key).getMediadbfile(),
+                                    'data': ob.attr(key).getData(),
+                                })
+                                self.mediadb_source_location = ob.getMediaDb().getLocation()
+                            ob.REQUEST.set('lang', lang)
+
+        if mode == 'store_to_target':
+            if self.getMediaDb().getLocation() == self.mediadb_source_location:
+                # target and source have the same mediadb folder
+                # -> do nothing to preserve the behavior w/o copy blob support
+                # -> the new pasted object references the same mediadb file as the source
+                # -> hint: this is true until next change/upload of a new blob in either source or target
+                self.blobfields = []
+                return
+            copy_of_prefix = 'copy_of_'
+            for childNode in self.getChildNodes():
+                id = childNode.getId()
+                if '*' in ids or id in ids or id.startswith(copy_of_prefix):
+                    for key in childNode.getObjAttrs():
+                        obj_id = childNode.getId().replace(copy_of_prefix, '')
+                        obj_attr = childNode.getObjAttr(key)
+                        datatype = obj_attr['datatype_key']
+                        lang = childNode.REQUEST.get('lang')
+                        prim_lang = childNode.getPrimaryLanguage()
+                        for langId in childNode.getLangIds():
+                            if datatype in _globals.DT_BLOBS:
+                                # TODO: check this condition to handle different multilang and secondary lang only settings
+                                if (obj_attr['multilang'] == 1 or
+                                    langId == prim_lang or
+                                    (obj_attr['multilang'] == 0 and langId == prim_lang)):
+                                    file_to_store = [x for x in self.blobfields if
+                                                     obj_id == x.get('id') and
+                                                     key == x.get('key') and
+                                                     langId == x.get('lang')]
+                                    if len(file_to_store) == 1:
+                                        filedata = {
+                                            'filename': file_to_store[0].get('filename'),
+                                            'data': file_to_store[0].get('data'),
+                                        }
+                                        childNode.REQUEST.set('lang', langId)
+                                        blob = _blobfields.createBlobField(childNode, datatype, filedata)
+                                        blob.on_setobjattr()
+                                        childNode.attr(key, blob)
+                                        childNode.REQUEST.set('lang', lang)
+            self.blobfields = []
 
 
     ############################################################################
@@ -227,7 +304,7 @@ class CopySupport(object):
       id_prefix = REQUEST.get('id_prefix','e')
       standard.writeBlock( self, "[CopySupport.manage_pasteObjs]")
       t0 = time.time()
-      
+
       # Analyze request
       cb_copy_data = self._get_cb_copy_data(cb_copy_data=None, REQUEST=REQUEST)
       op = cb_copy_data[0]
@@ -235,26 +312,30 @@ class CopySupport(object):
       cp = _cb_encode(cp)
       ids = [self._get_id(x.getId()) for x in self._get_obs(cp)]
       oblist = self._get_obs(cp)
-      
+
+      self._copy_blobs_if_other_mediadb(mode='load_from_source', oblist=oblist)
+
       # Paste objects.
       action = ['Copy','Move'][op==OP_MOVE]
       standard.triggerEvent(self,'before%sObjsEvt'%action)
       self.manage_pasteObjects(cb_copy_data=None,REQUEST=REQUEST)
       standard.triggerEvent(self,'after%sObjsEvt'%action)
-      
+
+      self._copy_blobs_if_other_mediadb(mode='store_to_target', ids=ids)
+
       # Sort order (I).
       self._set_sort_ids(ids=ids, op=op, REQUEST=REQUEST)
-      
+
       # Move objects.
       if op == OP_MOVE:
         normalize_ids_after_move(self,id_prefix=id_prefix,ids=ids)
       # Copy objects.
       else:
         normalize_ids_after_copy(self,id_prefix=id_prefix,ids=ids)
-      
+
       # Sort order (II).
       self.normalizeSortIds()
-      
+
       # Return with message.
       if RESPONSE is not None:
         message = self.getZMILangStr('MSG_PASTED')

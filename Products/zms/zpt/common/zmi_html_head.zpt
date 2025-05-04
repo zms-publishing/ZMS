@@ -8,20 +8,20 @@
 		ZMS_HOME python:'%s/'%('/'.join(zmshome.getPhysicalPath()));
 		ZMS_THEME python:here.getConfProperty('ZMS.theme','');
 		ZMS_THEME python:ZMS_THEME!='' and (ZMS_THEME +'/') or '';
-		zmi_css python:here.getConfProperty('ZMS.added.css.zmi').replace('$ZMS_HOME/',ZMS_HOME).replace('$ZMS_THEME/',ZMS_THEME);
-		zmi_js python:here.getConfProperty('ZMS.added.js.zmi').replace('$ZMS_HOME/',ZMS_HOME).replace('$ZMS_THEME/',ZMS_THEME)">
+		zmi_css python:here.getConfProperty('ZMS.added.css.zmi','').replace('$ZMS_HOME/',ZMS_HOME).replace('$ZMS_THEME/',ZMS_THEME);
+		zmi_js python:here.getConfProperty('ZMS.added.js.zmi','').replace('$ZMS_HOME/',ZMS_HOME).replace('$ZMS_THEME/',ZMS_THEME)">
 	<title tal:content="python:'ZMS | %s | %s'%(here.getTitlealt(request),request['lang'])">the title</title>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes" />
 	<meta name="version_container_abs_url" tal:attributes="content python:here.getVersionContainer().absolute_url()" />
 	<meta name="physical_path" tal:attributes="content python:'/'.join(here.getPhysicalPath())" />
 	<meta name="generator" content="ZMS5" />
-	<tal:block tal:repeat="href python:list(zmi_paths['css_paths'])+[here.getConfProperty(x) for x in here.getConfProperty('zmi.css').split(',')]"
+	<tal:block tal:repeat="href python:list(zmi_paths['css_paths'])+[here.getConfProperty(x) for x in here.getConfProperty('zmi.css','').split(',')]"
 		><link tal:condition="href" type="text/css" rel="stylesheet" tal:attributes="
 			href python:href.replace('$ZMS_HOME/',ZMS_HOME).replace('$ZMS_THEME/',ZMS_THEME)" />
 	</tal:block>
 	<link tal:condition="python:here.restrictedTraverse(zmi_css, None)" tal:attributes="href zmi_css" type="text/css" rel="stylesheet" />
-	<tal:block tal:repeat="src python:here.getConfProperty('plugins.zmi.js').split(',')"
+	<tal:block tal:repeat="src python:here.getConfProperty('plugins.zmi.js','').split(',')"
 		><script type="text/javascript" charset="UTF-8" tal:attributes="src python:src.endswith('zmi.js') and '%s?hash=%s'%(src,here.getConfProperty('js_zmi.hash')) or src"></script>
 	</tal:block>
 	<script type="text/javascript" charset="UTF-8" tal:attributes="src python:'/++resource++zms_/i18n/%s.js'%here.get_manage_lang()"></script>

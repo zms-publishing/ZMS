@@ -313,7 +313,8 @@ class CopySupport(object):
       ids = [self._get_id(x.getId()) for x in self._get_obs(cp)]
       oblist = self._get_obs(cp)
 
-      self._copy_blobs_if_other_mediadb(mode='load_from_source', oblist=oblist)
+      if self.getMediaDb():
+        self._copy_blobs_if_other_mediadb(mode='load_from_source', oblist=oblist)
 
       # Paste objects.
       action = ['Copy','Move'][op==OP_MOVE]
@@ -321,7 +322,8 @@ class CopySupport(object):
       self.manage_pasteObjects(cb_copy_data=None,REQUEST=REQUEST)
       standard.triggerEvent(self,'after%sObjsEvt'%action)
 
-      self._copy_blobs_if_other_mediadb(mode='store_to_target', ids=ids)
+      if self.getMediaDb():
+        self._copy_blobs_if_other_mediadb(mode='store_to_target', ids=ids)
 
       # Sort order (I).
       self._set_sort_ids(ids=ids, op=op, REQUEST=REQUEST)

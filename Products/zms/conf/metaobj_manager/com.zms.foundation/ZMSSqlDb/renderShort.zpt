@@ -1,19 +1,30 @@
 <!-- ZMSSqlDb.renderShort -->
 
-<tal:block tal:define="zmscontext options/zmscontext">
+<tal:block tal:define="
+	zmscontext options/zmscontext;
+	entities python:zmscontext.getEntities()">
 	<p class="my-2" style="color:#008ac7;">
 		<i class="fas fa-database"></i>
 		<strong tal:content="python:zmscontext.connection_id">the connection-id</strong>
 	</p>
-	<ul class="fa-ul">
-		<li tal:repeat="table python:[x for x in zmscontext.getEntities() if x['type']=='table']">
+	<ul class="fa-ul mb-5" tal:condition="entities">
+		<li tal:repeat="table python:[x for x in entities if x['type']=='table']">
 			<a class="font-monospace" tal:attributes="href python:'%s/manage_main?qentity=%s'%(zmscontext.id,table['id'])" >
 				<span class="fa-li"><i class="fas fa-table"></i></span>
 				<span class="table_id" tal:content="table/id">the table</span>
 			</a>
 		</li>
 	</ul>
-	<br/>
+	<div class="alert alert-warning ml-0" tal:condition="not:entities">
+		No tables found in this database. 
+		<a href="#" target="_blank" 
+			tal:attributes="
+				href python:'%s/%s/manage_main'%(zmscontext.getHome().absolute_url(),zmscontext.connection_id);
+				title python:'%s/%s/manage_main'%(zmscontext.getHome().absolute_url(),zmscontext.connection_id);">
+			Database connection
+		</a> 
+		may be closed.
+	</div>
 </tal:block>
 
 <!-- /ZMSSqlDb.renderShort -->

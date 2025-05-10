@@ -192,20 +192,11 @@ def addZMSCustom(self, meta_id=None, values={}, REQUEST=None):
   return self.manage_addZMSCustom(meta_id, values, REQUEST)
 
 
+security.declarePublic('url_quote')
 def url_quote(string, safe='/', encoding=None, errors=None):
   from urllib.parse import quote
   return quote(string, safe, encoding, errors)
 
-"""
-@group PIL (Python Imaging Library): pil_img_*
-@group Local File-System: localfs_*
-@group Logging: writeBlock, writeLog
-@group Mappings: *_list
-@group Operators: operator_*
-@group Styles / CSS: parse_stylesheet, get_colormap
-@group Regular Expressions: re_*
-@group: XML: getXmlHeader, toXmlString, parseXmlString, xslProcess, processData, xmlParse, xmlNodeSet
-"""
 
 security.declarePublic('initZMS')
 def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
@@ -329,18 +320,14 @@ def set_response_headers_cache(context, request=None, cache_max_age=24*3600, cac
   """
   if request is not None:
     is_preview = request.get('preview', '') == 'preview'
-    is_restricted = len([ob for ob in context.breadcrumbs_obj_path(portalMaster=False)
-                         if ob.attr('attr_dc_accessrights_restricted') in [1, True]]) > 0
-
+    is_restricted = len([ob for ob in context.breadcrumbs_obj_path(portalMaster=False) if ob.attr('attr_dc_accessrights_restricted') in [1, True]]) > 0
     if is_restricted or is_preview:
       request.RESPONSE.setHeader('Cache-Control', 'no-cache')
       request.RESPONSE.setHeader('Expires', '-1')
       request.RESPONSE.setHeader('Pragma', 'no-cache')
     else:
       cache_s_maxage = cache_s_maxage==-1 and cache_max_age or cache_s_maxage
-      request.RESPONSE.setHeader('Cache-Control',
-        's-maxage={}, max-age={}, public, must-revalidate, proxy-revalidate'.format(cache_s_maxage, cache_max_age))
-
+      request.RESPONSE.setHeader('Cache-Control', 's-maxage={}, max-age={}, public, must-revalidate, proxy-revalidate'.format(cache_s_maxage, cache_max_age))
       now = time.time()
       expire_datetime = DateTime(request.get('ZMS_CACHE_EXPIRE_DATETIME', now + cache_s_maxage))
       t1 = expire_datetime.millis()
@@ -1074,8 +1061,14 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
         writeError(context, '[http_import]: can\'t parse_qs')
     return data
   else:
+    try:
+      data = response.read()
+    except:
+      data = None
     result = '['+str(reply_code)+']: '+str(message)
     writeLog( context, "[http_import.result]: %s"%result)
+    if data is not None:
+      result += '\n\n%s'%data.decode('utf-8','replace')
     return result
 
 

@@ -18,12 +18,12 @@
 
 # Imports.
 import time
+import shutil
 from OFS import Moniker
 from OFS.CopySupport import _cb_decode, _cb_encode, CopyError
 # Product Imports.
 from Products.zms import standard
 from Products.zms import _globals
-from Products.zms import _blobfields
 
 
 # ------------------------------------------------------------------------------
@@ -199,15 +199,15 @@ class CopySupport(object):
     def _copy_blobs_if_other_mediadb(self, **kwargs):
         mode = kwargs.get('mode', None)
         oblist = kwargs.get('oblist', [])
-        ids = kwargs.get('ids', [])
 
-        if mode == 'load_from_source':
+        # identify all BLOB fields and their MediaDb's filenames in the source
+        if mode == 'read_from_source':
             self.blobfields = []
             for ob in oblist:
                 lang = ob.REQUEST.get('lang')
                 for langId in ob.getLangIds():
                     for key in ob.getObjAttrs():
-                        # TODO: handle getObjVersions...!? (preview vs live, activated workflow)
+                        # TODO: discuss handling of getObjVersions...!? (preview vs live, activated workflow)
                         obj_attr = ob.getObjAttr(key)
                         datatype = obj_attr['datatype_key']
                         if datatype in _globals.DT_BLOBS:
@@ -219,50 +219,27 @@ class CopySupport(object):
                                     'lang': langId,
                                     'filename': ob.attr(key).getFilename(),
                                     'mediadbfile': ob.attr(key).getMediadbfile(),
-                                    'data': ob.attr(key).getData(),
                                 })
                                 self.mediadb_source_location = ob.getMediaDb().getLocation()
                             ob.REQUEST.set('lang', lang)
 
-        if mode == 'store_to_target':
-            if self.getMediaDb().getLocation() == self.mediadb_source_location:
-                # target and source have the same mediadb folder
-                # -> do nothing to preserve the behavior w/o copy blob support
-                # -> the new pasted object references the same mediadb file as the source
-                # -> hint: this is true until next change/upload of a new blob in either source or target
+        # copy these files from source to target's MediaDb folder at os-level
+        # do nothing if target and source have the same MediaDb folder
+        # -> the new pasted object references the same MediaDb file as the source object
+        # -> this is true until the next change/upload of a new BLOB in either source or target object
+        if mode == 'copy_to_target':
+            try:
+                if self.getMediaDb().getLocation() != self.mediadb_source_location:
+                    for blob in self.blobfields:
+                        mediadb_file = blob.get('mediadbfile')
+                        if mediadb_file is not None:
+                            shutil.copy(f'{self.mediadb_source_location}/{mediadb_file}', self.getMediaDb().getLocation())
+                            # TODO: remove print
+                            print(f'{self.mediadb_source_location}/{mediadb_file}', self.getMediaDb().getLocation())
+            except:
+                standard.writeError(self, '[CopySupport._copy_blobs_if_other_mediadb]')
+            finally:
                 self.blobfields = []
-                return
-            copy_of_prefix = 'copy_of_'
-            for childNode in self.getChildNodes():
-                id = childNode.getId()
-                if '*' in ids or id in ids or id.startswith(copy_of_prefix):
-                    for key in childNode.getObjAttrs():
-                        obj_id = childNode.getId().replace(copy_of_prefix, '')
-                        obj_attr = childNode.getObjAttr(key)
-                        datatype = obj_attr['datatype_key']
-                        lang = childNode.REQUEST.get('lang')
-                        prim_lang = childNode.getPrimaryLanguage()
-                        for langId in childNode.getLangIds():
-                            if datatype in _globals.DT_BLOBS:
-                                # TODO: check this condition to handle different multilang and secondary lang only settings
-                                if (obj_attr['multilang'] == 1 or
-                                    langId == prim_lang or
-                                    (obj_attr['multilang'] == 0 and langId == prim_lang)):
-                                    file_to_store = [x for x in self.blobfields if
-                                                     obj_id == x.get('id') and
-                                                     key == x.get('key') and
-                                                     langId == x.get('lang')]
-                                    if len(file_to_store) == 1:
-                                        filedata = {
-                                            'filename': file_to_store[0].get('filename'),
-                                            'data': file_to_store[0].get('data'),
-                                        }
-                                        childNode.REQUEST.set('lang', langId)
-                                        blob = _blobfields.createBlobField(childNode, datatype, filedata)
-                                        blob.on_setobjattr()
-                                        childNode.attr(key, blob)
-                                        childNode.REQUEST.set('lang', lang)
-            self.blobfields = []
 
 
     ############################################################################
@@ -314,7 +291,7 @@ class CopySupport(object):
       oblist = self._get_obs(cp)
 
       if self.getMediaDb():
-        self._copy_blobs_if_other_mediadb(mode='load_from_source', oblist=oblist)
+        self._copy_blobs_if_other_mediadb(mode='read_from_source', oblist=oblist)
 
       # Paste objects.
       action = ['Copy','Move'][op==OP_MOVE]
@@ -323,7 +300,7 @@ class CopySupport(object):
       standard.triggerEvent(self,'after%sObjsEvt'%action)
 
       if self.getMediaDb():
-        self._copy_blobs_if_other_mediadb(mode='store_to_target', ids=ids)
+        self._copy_blobs_if_other_mediadb(mode='copy_to_target')
 
       # Sort order (I).
       self._set_sort_ids(ids=ids, op=op, REQUEST=REQUEST)

@@ -20,8 +20,9 @@ ENV SHELL=/bin/bash
 RUN python3 -m venv venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 RUN pip install -U pip wheel setuptools
-RUN pip install -U -e git+https://github.com/zms-publishing/ZMS.git@main#egg=ZMS
-RUN pip install -r https://raw.githubusercontent.com/zms-publishing/ZMS5/main/requirements-full.txt
+RUN pip install -r https://raw.githubusercontent.com/zopefoundation/Zope/master/requirements-full.txt
+RUN pip install -r https://raw.githubusercontent.com/zms-publishing/ZMS5/main/requirements.txt
+RUN pip install git+https://github.com/zms-publishing/ZMS.git
 RUN pip install ZEO
 RUN pip install itsdangerous
 RUN pip install debugpy
@@ -38,6 +39,6 @@ EXPOSE 8080
 EXPOSE 8086
 EXPOSE 8085
 
-# Finally Start ZEO/Zope by Script
-# ENTRYPOINT ["/bin/sh -c"]
-CMD ["/home/zope/etc/start.sh"]
+# Start ZEO/Zope by Script via docker-compose
+# ENTRYPOINT ["/home/zope/etc/start.sh"]
+CMD ["/bin/sh -c"]

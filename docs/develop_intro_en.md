@@ -22,13 +22,13 @@ ZMS is running on Zope (Version 5+) as the underlaying Python3 application serve
 ## 1. Setup virtual Python environment
 The first step is to setup a virtual Python environment which is a kind of copy of the primary Python installation which easily can be extended or replaced. The following example places the virtual environment into the home-folder of user _zope_:
 ```console
-~$: python3 -m venv /home/zope/vpy3
+~$: python3 -m venv /home/zope/vpy313
 ```
 ## 2. Install ZMS into the virtual Python environment
 After changing to the `bin`-folder of the installed virtual environment, simply install ZMS with `pip` from the ZMS-github-master: https://github.com/zms-publishing/ZMS
 
 ```console
-~$: cd /home/zope/vpy3/bin/
+~$: cd /home/zope/vpy313/bin/
 ~$: ./pip install https://github.com/zms-publishing/ZMS/archive/master.zip
 ```
 **Developing ZMS**: If you intend to work on the code of ZMS (or Zope or any other site-package), please, pip-install it's source-code in the _editable-mode_ again: first add a folder for the git sources, clone the sources and finally install the module without dependencies:
@@ -38,13 +38,13 @@ After changing to the `bin`-folder of the installed virtual environment, simply 
 ~$: mkdir src
 ~$: cd src
 ~$: git clone git@github.com:zms-publishing/ZMS.git
-~$: cd /home/zope/vpy3/bin/
+~$: cd /home/zope/vpy313/bin/
 ~$: ./pip install --no-deps -e /home/zope/src/ZMS/.
 ```
 After this procedure the virtual-python has ommited the formely installed ZMS package and will reference the ZMS code from your git repository. The as _editable_ installed modules appear in the pip-list with it's source link:
 
 ```console
-~$: cd /home/zope/vpy3/bin/
+~$: cd /home/zope/vpy313/bin/
 ~$: ./pip list
 
 Package                        Version     Location             
@@ -87,39 +87,39 @@ The _add menu_ is located in the Zope top bar. Please select the object type 'ZM
 
 # Working with Visual Studio Code
 ## Installation & Setup of Visual Studio Code
-[Visual Studio Code](https://code.visualstudio.com/) (VS Code) is a free source-code editor made by Microsoft for Windows, Linux and macOS - and a perfect environment for developing ZMS websites. On linux you can install VS Code by running:
+[Visual Studio Code](https://code.visualstudio.com/) (VSCode ) is a free source-code editor made by Microsoft for Windows, Linux and macOS - and a perfect environment for developing ZMS websites. On linux you can install VSCode  by running:
 ```console
 sudo snap install --classic code
 ```
-![Install VS Code](images/develop_vscode_install.gif)
+![Install VSCode ](images/develop_vscode_install.gif)
 
-After completing the standard installation of VS Code at least two helpful **extensions** should be added:
+After completing the standard installation of VSCode  at least two helpful **extensions** should be added:
 
 1. [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python) for syntax highlighting and debugging Python code
 2. [Remote Development Extension Pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) for getting SSH-connections to  remote servers, VMs or the Sublinux on your Windows 10 machine.
 
-The [ZMS code repository](https://github.com/zms-publishing/ZMS5/) contains a basic set of customizable VS Code JSON config files for the workspace and for running Zope/ZMS in the debugging mode:
-```
-.vscode
-	ZMS5.code-workspace
-	launch.json
-	settings.json
-```
 
-### ZMS5.code-workspace
-[ZMS5.code-workspace](https://github.com/zms-publishing/ZMS5/blob/master/.vscode/ZMS5.code-workspace) defines some workspace parameters like
+### VSCode-Workspace-Files: ZMS_host and ZMS_docker
+
+The [ZMS code repository](https://github.com/zms-publishing/ZMS5/) contains a basic set of customizable VSCode  JSON config files for the workspace and for running Zope/ZMS in the debugging mode. The two different files can be used for launching the debugger in the native environment (*host*) or in den container (*docker*):
+
+1. [ZMS_host.code-workspace](https://github.com/zms-publishing/ZMS5/blob/master/.vscode/ZMS_host.code-workspace) 
+2. [ZMS_docker.code-workspace](https://github.com/zms-publishing/ZMS5/blob/master/.vscode/ZMS_docker.code-workspace) 
+
+The workspace-file  define typical settings for VSCode like:
+
 + shown folders
 + python path
 + files associations
 + invisible files
-+ VS Code theme & icons
++ VSCode theme & icons
 
-### settings.json
-The only item in [settings.json](https://github.com/zms-publishing/ZMS5/blob/master/.vscode/settings.json) tells VS Code where to expect the python executable. This should be the one of the virtual python (and not the primary python installation)
+Hint: The most important item actually is `python.defaultInterpreterPath` for the python path; it tells VSCode  where to expect the python executable. This should be the one of the virtual python (and not the primary python installation).
 
-### launch.json
-The file [launch.json](https://github.com/zms-publishing/ZMS5/blob/master/.vscode/launch.json) is the most important config file bedause it tells VS Code how the Python extension will start the debugger. So all relevant paths must be mentioned, especially the starting `programm` and the `env`ironment variables Zope needs for starting a Zope instance. The following example config file assumes that 
-1. there is a user `zope` using its home folder as a location for the virtual python (`~/vpy3/`) and the zope instances (`~/instance/`)
+### launch-items
+The section *launch* in the workspace-file tells VSCode how the Python extension will start the debugger. So all relevant paths must be mentioned, especially the starting `programm` and the `env`ironment variables Zope needs for starting a Zope instance. The following example config file assumes that 
+
+1. there is a user `zope` using its home folder as a location for the virtual python (`~/vpy313/`) and the zope instances (`~/instance/`)
 2. the name of the Zope instance is `zms5_dev`
 3. the git-cloned code of Zope and ZMS are placed in a source folder called `~/src`
 
@@ -130,7 +130,7 @@ The file [launch.json](https://github.com/zms-publishing/ZMS5/blob/master/.vscod
 			"name": "ZMS5-DEV",
 			"type": "python",
 			"request": "launch",
-			"program": "~/vpy37/bin/runwsgi",
+			"program": "~/vpy313/bin/runwsgi",
 			"justMyCode": false,
 			"console": "integratedTerminal",
 			"args": [
@@ -145,16 +145,16 @@ The file [launch.json](https://github.com/zms-publishing/ZMS5/blob/master/.vscod
 				"CONFIG_FILE": "~/instance/zms5_dev/etc/zope.ini",
 				"INSTANCE_HOME": "~/instance/zms5_dev",
 				"CLIENT_HOME": "~/instance/zms5_dev",
-				"PYTHON": "~/vpy37/bin/python",
-				"SOFTWARE_HOME": "~/vpy37/bin/"
+				"PYTHON": "~/vpy313/bin/python",
+				"SOFTWARE_HOME": "~/vpy313/bin/"
 			},
 		},
 	]
 }
 ```
-If the paths in launch config correspond to the ones of your development machine you can start Zope with the Python debugger via the configuration item *Python3: Zope-ZMS5* in the debug menu of VS Code. The Zope server can be addressed in a web browser via `http://localhost:8080`. The environment will look like this:
+If the paths in launch config correspond to the ones of your development machine you can start Zope with the Python debugger via the configuration item *Python3: Zope-ZMS5* in the debug menu of VSCode . The Zope server can be addressed in a web browser via `http://localhost:8080`. The environment will look like this:
 
-![Install VS Code](images/develop_vscode_setup.png)
+![Install VSCode ](images/develop_vscode_setup.png)
 
 <br />
 
@@ -182,26 +182,26 @@ host github.com
 ```
 
 Useful Links:
-+ [On Ubuntu VS Code gives me an ssh_askpass error when I try to push the changes to my Github repository](https://stackoverflow.com/questions/52885928/vs-code-gives-me-an-ssh-askpass-error-when-i-try-to-push-the-changes-to-my-githu#52886041)
++ [On Ubuntu VSCode  gives me an ssh_askpass error when I try to push the changes to my Github repository](https://stackoverflow.com/questions/52885928/vs-code-gives-me-an-ssh-askpass-error-when-i-try-to-push-the-changes-to-my-githu#52886041)
 
 + [How to use Git credential store on Windows Sublinux, WSL?]( https://stackoverflow.com/questions/45925964/how-to-use-git-credential-store-on-wsl-ubuntu-on-windows)
 
-+ [VS Code extension for managing pull requests and issues on Github](https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-pull-request-github)
++ [VSCode  extension for managing pull requests and issues on Github](https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-pull-request-github)
 
 
 ## Remote Development
-The [Remote Development Extension Pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) allows you to open a remote folder on any remote machine, virtual machine, or container with a running SSH server and take full advantage of VS Code's feature set.
-After getting connected to the remote server VS Code installs a Node.js Express web app that allows editing and debugging on the remote machine just like if the source code was local.
+The [Remote Development Extension Pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) allows you to open a remote folder on any remote machine, virtual machine, or container with a running SSH server and take full advantage of VSCode 's feature set.
+After getting connected to the remote server VSCode  installs a Node.js Express web app that allows editing and debugging on the remote machine just like if the source code was local.
 
 Useful Links:
-+ [VS Code Remote Development](https://code.visualstudio.com/docs/remote/remote-overview)
++ [VSCode  Remote Development](https://code.visualstudio.com/docs/remote/remote-overview)
 + [Remote development over SSH](https://code.visualstudio.com/docs/remote/ssh-tutorial)
 
-The remote explorer menu allows to add your server connections; VS code refers to the user's existing ssh connection by reading the local `~/.ssh/config` file (*see* [git connections](#git_connections)).
+The remote explorer menu allows to add your server connections; VSCode  refers to the user's existing ssh connection by reading the local `~/.ssh/config` file (*see* [git connections](#git_connections)).
 
 ![Remote Explorer Menu](images/develop_vscode_remote0.png)
 
-Usually you should connect with the **username that is used for running Zope** so that you can run it controlled by VS Code. 
+Usually you should connect with the **username that is used for running Zope** so that you can run it controlled by VSCode . 
 Example config:
 ```
 Host 192.168.48.15
@@ -209,20 +209,20 @@ Host 192.168.48.15
 	User zope
 	ForwardAgent yes
 ```
-The next screen images shows a remote connection from VS Code (Win10) to a Ubuntu-VM. After the first connection VS Code installs some Node.js server files into the  remote machine's folder `~/.vscode-server`. 
+The next screen images shows a remote connection from VSCode  (Win10) to a Ubuntu-VM. After the first connection VSCode  installs some Node.js server files into the  remote machine's folder `~/.vscode-server`. 
 
 ![Remote Connection](images/develop_vscode_remote1.png)
 
-Then you can open folders on the remote machine and save them as a VS Code *workspace*. This happens to the remote folder `~/.vscode`. 
+Then you can open folders on the remote machine and save them as a VSCode  *workspace*. This happens to the remote folder `~/.vscode`. 
 
 ![Start Debugging](images/develop_vscode_remote2.png)
 
 
 ## Debugging in a ZEO environment
-In an [ZEO environment](https://zope.readthedocs.io/en/latest/zopebook/ZEO.html#what-is-zeo) VS Code can launch one more Zope instance in parallel to the running ZEO clients. The launch script needs an additional argument for a separate HTTP port (e.g. `http_port=8088`) the launched instance should communicate with. VS Code recognizes all the ports that are served by ZEO clients and shows it in the remote explorer menu. You can click on the browser button to address this port via port forewarding on localhost for viewing the just started debugging instance:
+In an [ZEO environment](https://zope.readthedocs.io/en/latest/zopebook/ZEO.html#what-is-zeo) VSCode can launch one more Zope instance in parallel to the running ZEO clients. The launch script needs an additional argument for a separate HTTP port (e.g. `http_port=8088`) the launched instance should communicate with. VSCode  recognizes all the ports that are served by ZEO clients and shows it in the remote explorer menu. You can click on the browser button to address this port via port forewarding on localhost for viewing the just started debugging instance:
 
 ![Debugging in a ZEO environment](images/develop_vscode_remote3.png)
-*After launching the Zope debugging instance by VS Code the remote explorer menu automatically shows all ports the ZEO environment is communicating with (left side, bottom). A click on a browser icon starts a new browser windows requesting that port via VS Code controlled forwording*
+*After launching the Zope debugging instance by VSCode  the remote explorer menu automatically shows all ports the ZEO environment is communicating with (left side, bottom). A click on a browser icon starts a new browser windows requesting that port via VSCode  controlled forwording*
 
 ### launch.config
 *Important hint*: Please, set the `http_port` argument to run the Zope instance for debugging on a vacant port:
@@ -235,7 +235,7 @@ In an [ZEO environment](https://zope.readthedocs.io/en/latest/zopebook/ZEO.html#
 			"name": "ZMS5-DEV",
 			"type": "python",
 			"request": "launch",
-			"program": "~/vpy37/bin/runwsgi",
+			"program": "~/vpy313/bin/runwsgi",
 			"justMyCode": false,
 			"console": "integratedTerminal",
 			"args": [
@@ -250,14 +250,14 @@ In an [ZEO environment](https://zope.readthedocs.io/en/latest/zopebook/ZEO.html#
 				"CONFIG_FILE": "~/instance/zms5_dev/etc/zope.ini",
 				"INSTANCE_HOME": "~/instance/zms5_dev",
 				"CLIENT_HOME": "~/instance/zms5_dev",
-				"PYTHON": "~/vpy37/bin/python",
-				"SOFTWARE_HOME": "~/vpy37/bin/"
+				"PYTHON": "~/vpy313/bin/python",
+				"SOFTWARE_HOME": "~/vpy3137/bin/"
 			},
 		},
 	]
 }
 ```
-*After setting up  VS Code to launch the remote Zope in debug-mode you can interfere with Zope/ZMS code on the remote machine:*
+*After setting up  VSCode  to launch the remote Zope in debug-mode you can interfere with Zope/ZMS code on the remote machine:*
 ![Debugging in a ZEO environment](images/develop_vscode_remote4.png)
 
 
@@ -324,7 +324,7 @@ As an example the following shell scripts starts ZEO first and then the Zope ins
 #!/bin/bash
 
 instance_dir="/home/zope/instances/zms5_dev"
-venv_bin_dir="/home/zope/vpy38/bin"
+venv_bin_dir="/home/zope/vpy313/bin"
 
 nohup  $venv_bin_dir/runzeo --configure $instance_dir/etc/zeo.conf 1>/dev/null 2>/dev/null &
 echo "ZEO started"
@@ -333,7 +333,6 @@ echo "ZOPE 8085 started"
 nohup $venv_bin_dir/runwsgi --debug --verbose $instance_dir/etc/zope.ini debug-mode=on http_port=8086 1>/dev/null 2>/dev/null &
 echo "ZOPE 8086 started"
 ```
-
 
 More details  about the ZEO configuration are described in the <a href="https://zeo.readthedocs.io/en/latest/clients.html#configuration-strings-files">ZEO docs</a> 
 

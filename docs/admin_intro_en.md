@@ -94,6 +94,7 @@ ZMS comes with three RTE GUIs by default:
 1. [CKEditor (HTML)](https://ckeditor.com)
 2. [TinyMCE (HTML)](https://www.tiny.cloud/tinymce)
 3. [Simple MDE (Markdown)](https://simplemde.com/)
+4. [Easy MDE (Markdown)](https://github.com/Ionaru/easy-markdown-editor)
 
 The applied RTE is configured as a _system_ parameter "ZMS.richtext.plugin":
 

@@ -204,25 +204,26 @@ class CopySupport(object):
         if mode == 'read_from_source':
             self.blobfields = []
             self.mediadb_source_location = None
-            for ob in oblist:
-                lang = ob.REQUEST.get('lang')
-                self.mediadb_source_location = ob.getMediaDb().getLocation()
-                for langId in ob.getLangIds():
-                    for key in ob.getObjAttrs():
-                        # TODO: discuss handling of getObjVersions...!? (preview vs live, activated workflow)
-                        obj_attr = ob.getObjAttr(key)
-                        datatype = obj_attr['datatype_key']
-                        if datatype in _globals.DT_BLOBS:
-                            ob.REQUEST.set('lang', langId)
-                            if ob.attr(key) is not None:
-                                self.blobfields.append({
-                                    'id': ob.getId(),
-                                    'key': key,
-                                    'lang': langId,
-                                    'filename': ob.attr(key).getFilename(),
-                                    'mediadbfile': ob.attr(key).getMediadbfile(),
-                                })
-                            ob.REQUEST.set('lang', lang)
+            for obj in oblist:
+                lang = obj.REQUEST.get('lang')
+                self.mediadb_source_location = obj.getMediaDb().getLocation()
+                for ob in obj.getTreeNodes():
+                    for langId in ob.getLangIds():
+                        for key in ob.getObjAttrs():
+                            # TODO: discuss handling of getObjVersions...!? (preview vs live, activated workflow)
+                            obj_attr = ob.getObjAttr(key)
+                            datatype = obj_attr['datatype_key']
+                            if datatype in _globals.DT_BLOBS:
+                                ob.REQUEST.set('lang', langId)
+                                if ob.attr(key) is not None:
+                                    self.blobfields.append({
+                                        'id': ob.getId(),
+                                        'key': key,
+                                        'lang': langId,
+                                        'filename': ob.attr(key).getFilename(),
+                                        'mediadbfile': ob.attr(key).getMediadbfile(),
+                                    })
+                                ob.REQUEST.set('lang', lang)
 
         # copy these files from source to target's MediaDb folder at os-level
         # do nothing if target and source have the same MediaDb folder

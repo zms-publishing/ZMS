@@ -199,15 +199,17 @@ class CopySupport(object):
     def _copy_blobs_if_other_mediadb(self, **kwargs):
         mode = kwargs.get('mode', None)
         oblist = kwargs.get('oblist', [])
-
-        # identify all BLOB fields and their MediaDb's filenames in the source
+        # identify all BLOB fields
         if mode == 'read_from_source':
+            self.REQUEST.set('mediadb_source_location', oblist[0].getMediaDb().getLocation())
             self.blobfields = []
-            self.mediadb_source_location = None
+            tree_objs = []
             for obj in oblist:
                 lang = obj.REQUEST.get('lang')
-                self.mediadb_source_location = obj.getMediaDb().getLocation()
-                for ob in obj.getTreeNodes():
+                tree_objs.append(obj)
+                if obj.getTreeNodes():
+                    tree_objs.extend(obj)
+                for ob in tree_objs:
                     for langId in ob.getLangIds():
                         for key in ob.getObjAttrs():
                             # TODO: discuss handling of getObjVersions...!? (preview vs live, activated workflow)
@@ -230,14 +232,16 @@ class CopySupport(object):
         # -> the new pasted object references the same MediaDb file as the source object
         # -> this is true until the next change/upload of a new BLOB in either source or target object
         if mode == 'copy_to_target':
+            mediadb_source_location = self.REQUEST.get('mediadb_source_location')
+            mediadb_target_location = self.getMediaDb().getLocation()
             try:
-                if self.getMediaDb().getLocation() != self.mediadb_source_location:
+                if mediadb_target_location and (mediadb_target_location != mediadb_source_location):
                     for blob in self.blobfields:
                         mediadb_file = blob.get('mediadbfile')
                         if mediadb_file is not None:
-                            shutil.copy(f'{self.mediadb_source_location}/{mediadb_file}', self.getMediaDb().getLocation())
+                            shutil.copy(f'{mediadb_source_location}/{mediadb_file}', mediadb_target_location)
                             # TODO: remove print
-                            print(f'{self.mediadb_source_location}/{mediadb_file}', self.getMediaDb().getLocation())
+                            print(f'{self.mediadb_source_location}/{mediadb_file}', mediadb_target_location)
             except:
                 standard.writeError(self, '[CopySupport._copy_blobs_if_other_mediadb]')
             finally:

@@ -18,14 +18,15 @@
 <script src="/++resource++zms_/simplemde/simplemde.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-<tal:block tal:content="structure python:'<script>'"></tal:block>
+<script>
+//<!--
 
 var elName = "text_" + getZMILang();
 
 $("textarea#editor_" + elName).val($("textarea#" + elName).val());
 
 var simplemde = new SimpleMDE({
-	element: document.getElementById("editor_" + elName),
+    element: document.getElementById("editor_" + elName),
     toolbar: [
         "bold", "italic", "strikethrough", "heading", "|",
         "code", "quote", "unordered-list", "ordered-list", "|", {
@@ -40,11 +41,11 @@ var simplemde = new SimpleMDE({
         "preview", "side-by-side", "fullscreen", "guide"
     ],
     previewRender: function(plainText, preview) { // Async method
-		setTimeout(function() {
-			preview.innerHTML = customMarkdownParser(plainText);
-		}, 0);
-		return "Loading...";
-	},
+        setTimeout(function() {
+            preview.innerHTML = customMarkdownParser(plainText);
+        }, 0);
+        return "Loading...";
+    },
 });
 
 $('#attr_url_markdown').on("change", function() {
@@ -80,8 +81,20 @@ function zmiRichtextOnSubmitEventHandler(fm) {
     }
 }
 
-function zmiRichtextInit(id) {
+function zmiRichtextInit(elName) {
+    console.log('zmiRichtextInit: ' + elName);
+}
 
+// Prevent stacking by ensuring the event is only bound once
+if (!window.htmxOnLoadBound) {
+    window.htmxOnLoadBound = true;
+    htmx.onLoad(function(content) {
+        if (content !== document.body) {
+            console.log('htmx: body element loaded: ' + elName);
+            $ZMI.runReady();
+            $('#editor_'+elName).hide();
+        }
+    });
 }
 
 function customMarkdownParser(plainText) {
@@ -109,7 +122,8 @@ function customMarkdownParser(plainText) {
     return text;
 }
 
-<tal:block tal:content="structure python:'</script>'"></tal:block>
+// -->
+</script>
 
 <tal:block tal:define="dummy0 python:request.set('f_zmiRichtextOnSubmitEventHandler',False)"></tal:block>
 </tal:block>

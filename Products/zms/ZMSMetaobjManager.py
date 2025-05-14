@@ -810,7 +810,7 @@ class ZMSMetaobjManager(object):
       
       # Defaults for Insert
       method_types = [ 'method', 'py', 'zpt'] + self.valid_zopetypes
-      if oldId is None and not newCustom:
+      if str(oldId).startswith('new') and newType in method_types and not newCustom:
         if newType in [ 'method', 'DTML Method', 'DTML Document']:
           newCustom = ''
           newCustom += '<!-- '+ newId + ' -->\n'

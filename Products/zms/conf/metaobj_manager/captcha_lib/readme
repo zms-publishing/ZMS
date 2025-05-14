@@ -23,6 +23,7 @@ The Lib consists of four elements:
 The TAL-Templates is considered as working example form that contains the HTML elements and JS-functions that are needed to integrate the functionality to your own forms.
 
 The following ZMS configuration properties are used by the Captcha Lib:
+
 1. `ZMS.captcha.secret_key`: secret key for signinng the captcha
 2. `ZMS.captcha.life_time`: life time of the captcha
 3. `ZMS.captcha.font_path`: os path of the applied font

@@ -137,7 +137,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
 
     def ensure_zcatalog_connector_is_initialized(self):
       root = self.getRootElement()
-      if 'zcatalog_connector' not in root.getMetaobjIds():
+      if 'zcatalog_connector' not in root.getMetaobjIds() and self.REQUEST.get('zcatalog_init', 1) == 1:
         _confmanager.initConf(root, 'conf:com.zms.catalog.zcatalog')
 
     ############################################################################
@@ -351,6 +351,9 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
           else:
             # Add plain text to data.
             d[attr_id] = content_extraction.extract_text_from_html(node, value)
+      # Prevent in-place redirecting by resetting status code and location header.
+      request.RESPONSE.setStatus(200) 
+      request.RESPONSE.setHeader('Location', '')
 
     # --------------------------------------------------------------------------
     #  Get catalog objects data for given node.

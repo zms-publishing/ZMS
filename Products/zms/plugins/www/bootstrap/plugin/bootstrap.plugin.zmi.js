@@ -11,7 +11,9 @@ $ZMI.registerReady(function(){
 			// Bookmark
 			if (manage_menu) {
 				$("#zmi-tab .breadcrumb").each(function() {
-					$(this).append('<li class="btn-bookmark"><a href="javascript:;" title="Set Bookmark" class="align-text-top"><i class="far fa-bookmark text-muted"></a><li>');
+					if ($(".btn-bookmark",this).length==0) {
+						$(this).append('<li class="btn-bookmark"><a href="javascript:;" title="Set Bookmark" class="align-text-top"><i class="far fa-bookmark text-muted"></a><li>');
+					};
 					var key = "ZMS."+data_root+".bookmarks";
 					var bookmarks = $ZMILocalStorageAPI.get(key,[]);
 					$("a:last",this).click(function() {
@@ -295,7 +297,7 @@ $ZMI.registerReady(function(){
 		if ($single_line.hasClass("zmi-nodes")) {
 			$textarea.prop({title:getZMILangStr('ATTR_NODE')});
 		}
-		if ($("span.input-group-append",this).length==0) {
+		if ($(".input-group-append",this).length==0) {
 			$(this).addClass("input-group");
 			if ($textarea.prev('i').length==1) {
 				$textarea.prev('i').wrap('<div class="input-group-prepend"><span class="btn btn-secondary btn-sm"></span></div>')
@@ -1268,6 +1270,10 @@ ZMIObjectTree.prototype.init = function(s,href,p) {
 		if (typeof callback != 'undefined') {
 			callback();
 		}
+	}).fail(function(jqXHR) {
+		if (jqXHR.status === 401) {
+			parent.window.location.reload();
+		}
 	});
 }
 
@@ -1315,7 +1321,7 @@ ZMIObjectTree.prototype.addPages = function(nodes) {
 			html += `<i class="fas fa-caret-right toggle" title="-" style="visibility:hidden"></i> `;
 		};
 		if (node.is_page_element) {
-			if (node.meta_id == 'ZMSGraphic' && node.index_html) {
+			if (node.index_html && /\.(gif|jpe?g|png|webp|svg)$/i.test(node.index_html)) {
 				html += `<span class="preview_on_hover preview_image preview_ready" style="--preview_url:url(${node.index_html});cursor:help" title="${getZMILangStr('TAB_PREVIEW')}">${icon}</span> `;
 			} else {
 				html += `<span class="preview_on_hover preview_text" style="cursor:help" data-preview_text="Loading ..." onmouseover="$ZMI.objectTree.preview_load(this)" title="${getZMILangStr('TAB_PREVIEW')}">${icon}</span> `;
@@ -1393,8 +1399,17 @@ ZMIObjectTree.prototype.preview_load = function(sender) {
 	if(!$(sender).hasClass('preview_loaded')) {
 		var abs_url = $(sender).parent('li').children('a[href]').attr('href');
 		$.get($ZMI.get_rest_api_url(abs_url)+'/get_body_content',{lang:getZMILang(),preview:'preview'},function(data){
-			// Clean data as plain text
-			data = $(JSON.parse(data)).text().replaceAll('\n','');
+			// Condense data to plain text
+			try {
+				// If data is JSON:
+				data = JSON.parse(data);
+			} catch (e) {
+				// If data is HTML:
+				data = data.replaceAll('\n',' ').replaceAll('\t',' ');
+				// Remove HTML-comments, <style> and <script> elements
+				data = data.replace(/<!--[\s\S]*?-->/g, '').replace(/<style[\s\S]*?<\/style>/gi, '').replace(/<script[\s\S]*?<\/script>/gi, '');
+			};
+			data = $(data).text().trim();
 			$(sender).attr('data-preview_text',data);
 			$(sender).addClass('preview_loaded');
 		});
@@ -1468,6 +1483,7 @@ ZMIActionList.prototype.over = function(el, e, cb) {
 					action += context_id+"/manage_main";
 				}
 				action += "?lang=" + lang;
+				// TODO: navigate to href with htmx
 				self.location.href = action;
 			}
 			else {
@@ -1477,7 +1493,7 @@ ZMIActionList.prototype.over = function(el, e, cb) {
 		return false;
 	});
 	// Build action and params.
-	var action = zmiParams['base_url'];
+	var action = self.location.origin + self.location.pathname;
 	action = action.substring(0,action.lastIndexOf("/"));
 	action += "/manage_ajaxZMIActions";
 	var params = {};
@@ -1565,6 +1581,10 @@ ZMIActionList.prototype.over = function(el, e, cb) {
 		// Callback.
 		if (typeof cb == "function") {
 			cb();
+		}
+	}).fail(function(jqXHR) {
+		if (jqXHR.status === 401) {
+			parent.window.location.reload();
 		}
 	});
 }

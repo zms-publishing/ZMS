@@ -2,23 +2,29 @@ version: '3.7'
 # https://stackoverflow.com/questions/40373400/docker-compose-yml-for-elasticsearch-and-kibana
 services:
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.1
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.14.3
     container_name: elasticsearch
     environment:
       - node.name=es-node
       - cluster.name=es-cluster
       - discovery.type=single-node
       - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms1g -Xmx2g # Java-Heap-Size
     ports:
       - 9200:9200 # REST API
       - 9300:9300
     volumes:
       - ../var/elasticsearch/data:/usr/share/elasticsearch/data
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    mem_limit: 2g
     networks:
-      - elastic
+      - zms_network
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:8.11.1
+    image: docker.elastic.co/kibana/kibana:8.14.3
     container_name: kibana
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
@@ -29,14 +35,15 @@ services:
       - elasticsearch
     restart: 'unless-stopped'
     networks:
-      - elastic
+      - zms_network
 
   tika:
-    image: apache/tika:2.9.0.0
+    image: apache/tika:3.1.0.0
     ports:
       - 9998:9998
     networks:
-      - elastic
+      - zms_network
 
 networks:
-  elastic:
+  zms_network:
+    driver: bridge

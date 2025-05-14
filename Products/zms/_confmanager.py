@@ -100,6 +100,29 @@ class ConfDict(object):
 #  _confmanager.initConf:
 # ------------------------------------------------------------------------------
 def initConf(self, pattern):
+    """
+    Initialize a ZMS configuration by importing a set of configuration files 
+    that match a given name pattern, e.g. 'unibern.*'.
+    The pattern should be in the format C{prefix:pattern}, where actually
+    only C{pattern} is the part of the filename to match using function fnmatch().
+    If a matching file is found and it ends with '.zip', it will be imported 
+    as a configuration package. Otherwise, it will be imported as a a single XML 
+    file or - if prefixed with C{conf:} as a set of configuration files from 
+    the ZMS conf-folder.
+    The full list of available configuration files is aggrgated by the method 
+    L{ConfManager.getConfFiles}.
+    In case of C{conf:}-prefix, the filename is expected to be in the format 
+    C{conf:container_id/package-id}, e.g. C{conf:metaobj_manager/com.zms.foundation.theme/theme_zms_base} 
+    will match to path C{conf:metaobj_manager/com.zms.foundation.theme}.
+    This means only the 1st level of the naming hierarchy (in case of metaobj_manager
+    mostly the package-id is used to match the pattern). Nested packages are always
+    imported as a whole. 
+
+    @param pattern: String-pattern to filter filenames.
+    @type pattern: C{string}
+    @return: None
+    @rtype: C{None}
+    """
     standard.writeBlock( self, '[initConf]: pattern='+pattern)
     prefix = pattern.split(':')[0]
     pattern = pattern.split(':')[1]
@@ -107,7 +130,7 @@ def initConf(self, pattern):
     for filename in files:
         if filename.startswith(prefix):
             label = files[filename]
-            if fnmatch(label,'*%s-*'%pattern):
+            if len(pattern.split('/')) > 2 and fnmatch(label,'*%s-*'%'/'.join(pattern.split('/')[1:-1])) or fnmatch(label,'*%s-*'%pattern):
                 standard.writeBlock( self, '[initConf]: filename='+filename)
                 if filename.endswith('.zip'):
                     self.importConfPackage(filename)
@@ -148,7 +171,6 @@ class ConfManager(
     #  ConfManager.importConfPackage:
     # --------------------------------------------------------------------------
     def importConfPackage(self, file):
-      
       if isinstance(file, str):
         if file.startswith('http://') or file.startswith('https://'):
           file = StringIO( self.http_import(file))
@@ -168,6 +190,7 @@ class ConfManager(
           filename = file['filename']
           xml = file['data']
           xmlfile = StringIO( xml)
+      # Get conf not from a xml-package but from the ZMS-conf folder.
       elif isinstance(file, str) and (file.startswith('conf:')):
           filename = file[file.find(':')+1:]
           basepath = repositoryutil.get_system_conf_basepath()
@@ -192,6 +215,23 @@ class ConfManager(
     #  ConfManager.importConf:
     # --------------------------------------------------------------------------
     def importConf(self, file, syncIfNecessary=True):
+      """
+      Imports configuration from the given file and processes 
+      it in the context according to its filename.
+
+      @param file: The path to the configuration file to be imported.
+      @type file: C{str}
+      @param syncIfNecessary: Flag indicating whether to synchronize object attributes if necessary. Defaults to True.
+      @type syncIfNecessary: C{bool}, optional
+      @return: A message indicating the result of the import operation.
+      @rtype: C{str}
+
+      Notes:
+        - The method identifies the type of configuration file based on its filename and processes it accordingly.
+        - Hidden files created by MacOSX (starting with '._') are ignored.
+        - If the filename contains specific substrings (e.g., '.charfmt.', '.filter.', etc.), the corresponding import method is called.
+        - If synchronization is necessary and the syncIfNecessary flag is True, the object's attributes are synchronized.
+      """
       message = ''
       syncNecessary = False
       filename, xmlfile = self.getConfXmlFile( file)
@@ -240,7 +280,13 @@ class ConfManager(
     security.declareProtected('ZMS Administrator', 'getConfFiles')
     def getConfFiles(self, pattern=None, REQUEST=None, RESPONSE=None):
       """
-      ConfManager.getConfFiles
+      Retrieve configuration files from the ZMS distribution code:
+      1. Product/zms/conf: Sets of singular configuration files (repository-manager style, pattern-prefix 'conf:').
+      2. Product/zms/import: Classical zipped XML packages, e.g. for importing as single file via web-frontend.
+
+      @param pattern: string, optional, pattern to filter filenames.
+      @param REQUEST: C{ZPublisher.HTTPResponse}, optional.
+      @param RESPONSE: C{ZPublisher.HTTPRequest}, optional, if provided, the method will return a JSON response.
       """
       filenames = {}
       # Import-Folder.
@@ -471,6 +517,8 @@ class ConfManager(
         {'key':'jquery.ui','title':'JQuery UI version','desc':'JQuery UI version.','datatype':'string'},
         {'key':'jquery.plugin.version','title':'JQuery plugin version','desc':'JQuery plugin version','datatype':'string'},
         {'key':'jquery.plugin.extensions','title':'JQuery plugin extensions','desc':'JQuery plugin extensions','datatype':'string'},
+        {'key':'js_min.hash','title':'Hash value of minified Bootstrap-Customisation-ZMS-JS aggregate','desc':'Use hash-value of the minified Bootstrap-Customisation-ZMS-Javascript aggregate file for cache bustering','datatype':'string'},
+        {'key':'js_zmi.hash','title':'Hash value of the generic ZMI-initialising Javascript','desc':'Use hash-value of the generic ZMI-initialising Javascript file for cache bustering','datatype':'string'},
         {'key':'ZMS.blobfields.grant_public_access','title':'Grant public access to blob-fields','desc':'Blob-fields in restricted nodes are not visible. You may grant public access to blob-fields by activating this option.','datatype':'boolean'},
         {'key':'ZMS.blobfields.accept_ranges','title':'Http-Header Accept-Ranges for blob-fields','desc':'Http-Header Accept-Ranges for blob-fields.','datatype':'string','default':'bytes'},
         {'key':'ZMS.locale.amount.unit','title':'Currency unit for amount-types','desc':'The currency unit used for amount-types.','datatype':'string','default':'EUR'},
@@ -814,6 +862,7 @@ class ConfManager(
       # Copy theme.
       # -----
       elif btn == 'BTN_COPY':
+        id = REQUEST.get('id', '')
         self.metaobj_manager.importTheme(id)
         message = self.getZMILangStr('MSG_IMPORTED')%('<code class="alert-success">'+id+'</code>')
       

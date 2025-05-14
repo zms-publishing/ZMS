@@ -1,29 +1,28 @@
 FROM python:3.13-alpine
 
-EXPOSE 8085
-EXPOSE 8086
-EXPOSE 8080
-EXPOSE 5678
-
-# Install Zope/ZEO Dependencies
+# Install OS Requirements
 RUN apk add python3 make gcc g++ git
 RUN apk update && apk add python3-dev git mariadb-dev openldap-dev curl bash
 
+# # # Install VS Code Server and Python Extension
+# # RUN curl -fsSL https://code-server.dev/install.sh | sh
+# # RUN code-server --install-extension ms-python.python
+
+# Add Zope User
 # https://stackoverflow.com/questions/49955097/how-do-i-add-a-user-when-im-using-alpine-as-a-base-image 
 RUN addgroup -S zope && adduser --disabled-password -S zope -G zope
 USER zope
 WORKDIR /home/zope/
 ENV VIRTUAL_ENV=/home/zope/venv
+ENV SHELL=/bin/bash
 
+# Install Zope/ZEO
 RUN python3 -m venv venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 RUN pip install -U pip wheel setuptools
-# RUN pip install -U -e git+https://github.com/zms-publishing/ZMS.git@main#egg=ZMS
-# Install Zope --editable first, so that the toml-setup can be used
-# https://github.com/zms-publishing/ZMS/pull/302#issuecomment-2327312673
-RUN pip install -e git+https://github.com/zopefoundation/Zope.git@master#egg=Zope
-RUN pip install -e git+https://github.com/zms-publishing/ZMS.git@fb_pip_using_pyproject_toml#egg=ZMS
-RUN pip install -r https://raw.githubusercontent.com/zms-publishing/ZMS5/master/requirements-full.txt
+RUN pip install -r https://raw.githubusercontent.com/zopefoundation/Zope/master/requirements-full.txt
+RUN pip install -r https://raw.githubusercontent.com/zms-publishing/ZMS5/main/requirements.txt
+RUN pip install git+https://github.com/zms-publishing/ZMS.git
 RUN pip install ZEO
 RUN pip install itsdangerous
 RUN pip install debugpy
@@ -35,7 +34,11 @@ COPY ./etc ./etc
 COPY ./var ./var
 COPY ./Extensions ./Extensions
 
+EXPOSE 5678
+EXPOSE 8080
+EXPOSE 8086
+EXPOSE 8085
 
-# Finally Start ZEO/Zope by Script
-# ENTRYPOINT ["/bin/sh -c"]
-CMD ["/home/zope/etc/start.sh"]
+# Start ZEO/Zope by Script via docker-compose
+# ENTRYPOINT ["/home/zope/etc/start.sh"]
+CMD ["/bin/sh -c"]

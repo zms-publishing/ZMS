@@ -1247,15 +1247,17 @@ class AccessManager(AccessableContainer):
         # -------
         elif btn in ['delete', 'remove', 'BTN_DELETE']:
           if key=='obj':
-            #-- Delete user.
-            self.delUser(id)
-            #-- Remove user.
-            if btn == 'remove':
-              userAdderPlugin = self.getUserAdderPlugin()
-              userAdderPlugin.removeUser( id)
+            ids = REQUEST.get('ids',[id])
+            for id in ids:
+              #-- Delete user.
+              self.delUser(id)
+              #-- Remove user.
+              if btn == 'remove':
+                userAdderPlugin = self.getUserAdderPlugin()
+                userAdderPlugin.removeUser( id)
             id = ''
             #-- Assemble message.
-            message = self.getZMILangStr('MSG_DELETED')%int(1)
+            message = self.getZMILangStr('MSG_DELETED')%len(ids)
           elif key=='attr':
             #-- Delete local user.
             nodekeys = REQUEST.get('nodekeys', [])

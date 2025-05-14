@@ -71,7 +71,16 @@
 					<span tal:content="python:metaObj.get('name')">Name</span>
 				</button>
 				<div class="dropdown-menu">
-					<div class="dropdown-header" tal:content="structure python:here.getZMILangStr('CAPTION_CHOOSEOBJ')">choose object</div>
+					<div class="dropdown-header">
+						<span class="btn-group">
+							<label for="tablefilter" onclick="$('#tablefilter').focus().addClass('visited')">
+								<i class="fas fa-filter tablefilter"></i>
+								<span tal:content="python:here.getZMILangStr('CAPTION_CHOOSEOBJ')"></span>
+							</label>
+							<input id="tablefilter" name="tablefilter" type="text" class="form-control dropdown-header"
+								title="Filter object list by entering name or id" />
+						</span>	
+					</div>
 					<tal:block tal:repeat="metaObjPackage python:here.sort_list(metaObjPackages+metaObjPackages2)">
 						<tal:block tal:condition="python:metaObjPackage in metaObjPackages">
 							<tal:block tal:condition="metaObjPackage">
@@ -100,7 +109,7 @@
 				tal:attributes="
 					href python:'%s/metaobj_manager/manage_main?lang=%s&id=%s'%(context.getHome().aq_parent.content.absolute_url(),request['lang'],metaObj['id']);
 					title python:'acquired from: %s (%s)'%(context.getHome().aq_parent.content.id, context.getHome().aq_parent.content.attr('titlealt'))"
-				><i class="fas fa-share" title="acquired"></i></a>
+				><i class="fas fa-share fa-flip-vertical" title="acquired"></i></a>
 			<a class="btn btn-secondary" target="_blank" value="BTN_SEARCH"
 				tal:attributes="
 					href python:'manage_analyze?lang=%s&id=%s'%(request['lang'],metaObj['id']); 
@@ -313,11 +322,11 @@
 			</tr>
 			<!-- row_insert-template -->
 			<tr class="row_insert form-group">
-				<td class="meta-sort text-right"><span class="btn btn-secondary btn-sm btn-add mr-1 w-100"><i class="fas fa-plus"></i></span></td>
-				<td class="meta-id"><input class="form-control form-control-sm" type="text" name="attr_id"/></td>
-				<td class="meta-name"><input class="form-control form-control-sm" type="text" name="attr_name"/></td>
+				<td class="meta-sort text-right"><span class="btn btn-secondary btn-sm btn-add mr-1 w-100" onclick="javascript:add_new_row(this)"><i class="fas fa-plus"></i></span></td>
+				<td class="meta-id"><input class="form-control form-control-sm" type="text" name="attr_id" disabled="disabled" /></td>
+				<td class="meta-name"><input class="form-control form-control-sm" type="text" name="attr_name" disabled="disabled" /></td>
 				<td class="meta-type">
-					<select id="populate_type" class="form-control form-control-sm" name="_type">
+					<select id="populate_type" class="form-control form-control-sm" name="attr_type" disabled="disabled">
 						<option id="type_primitive" value="" tal:content="python:'--- %s ---'%here.getZMILangStr('ATTR_PRIMITIVE')"></option>
 						<tal:block tal:repeat="type python:here.valid_datatypes">
 							<option tal:attributes="value type; class python:' '.join([['','deprecated'][int(type in here.deprecated_types)]])" tal:content="type">type</option>
@@ -346,10 +355,10 @@
 						</tal:block>
 					</select>
 				</td>
-				<td class="meta-mandatory"><input type="checkbox" name="_mandatory:int" value="1"/></td>
-				<td class="meta-displaycol" tal:condition="metaObjRecordSet" colspan="2"><input type="checkbox" name="_custom:int" value="1"/></td>
-				<td class="meta-multilang" tal:condition="not:metaObjRecordSet"><input type="checkbox" name="_multilang:int" value="1" checked="checked"/></td>
-				<td class="meta-repetitive" tal:condition="not:metaObjRecordSet"><input type="checkbox" name="_repetitive:int" value="1"/></td>
+				<td class="meta-mandatory"><input type="checkbox" name="attr_mandatory:int" value="1" disabled="disabled" /></td>
+				<td class="meta-displaycol" tal:condition="metaObjRecordSet" colspan="2"><input type="checkbox" name="attr_custom:int" value="1" disabled="disabled" /></td>
+				<td class="meta-multilang" tal:condition="not:metaObjRecordSet"><input type="checkbox" name="attr_multilang:int" value="1" checked="checked" disabled="disabled" /></td>
+				<td class="meta-repetitive" tal:condition="not:metaObjRecordSet"><input type="checkbox" name="attr_repetitive:int" value="1" disabled="disabled" /></td>
 				<td>&nbsp;</td>
 			</tr>
 			<!-- /row_insert-template -->
@@ -393,8 +402,9 @@
 		</thead>
 		<tbody>
 		<tal:block tal:repeat="langDict python:here.getLangDict()">
-			<tr class="form-group" 
-				tal:condition="python:langDict['key'].startswith(request['id'])" tal:define="i python:repeat['langDict'].index+1">
+			<tr class="form-group"
+				tal:define="i python:repeat['langDict'].index+1"
+				tal:condition="python:langDict['key'].startswith('%s.'%(request['id']))">
 				<td class="meta-sort"></td>
 				<td>
 					<input type="text" class="form-control form-control-sm"
@@ -410,16 +420,12 @@
 				</td>
 			</tr>
 		</tal:block>
-		<tr class="row_insert form-group" tal:define="i python:0">
-			<td class="meta-sort text-right">
-				<span class="btn btn-secondary btn-sm btn-add mr-1 w-100"><i class="fas fa-plus"></i></span>
-			</td>
-			<td>
-				<input class="form-control form-control-sm" type="text" tal:attributes="name python:'_lang_dict_key_%i'%i" />
-			</td>
+		<tr class="row_insert form-group">
+			<td class="meta-sort text-right"><span class="btn btn-secondary btn-sm btn-add mr-1 w-100" onclick="javascript:add_new_row(this)"><i class="fas fa-plus"></i></span></td>
+			<td><input class="form-control form-control-sm" type="text" tal:attributes="name python:'_lang_dict_key_0'" /></td>
 			<td tal:repeat="langId langIds">
 				<div class="single-line">
-					<textarea class="form-control form-control-sm" tal:attributes="name python:'_lang_dict_value_%i_%s'%(i,langId)"></textarea>
+					<textarea class="form-control form-control-sm" tal:attributes="name python:'_lang_dict_value_0_%s'%(langId)"></textarea>
 				</div>
 			</td>
 		</tr>
@@ -506,17 +512,19 @@
 				</div>
 			</th>
 			<th colspan="2" class="meta-toolbar">
-				<div class="btn-toolbar" role="toolbar">
-					<div class="btn-group managing">
-						<button class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="zmiModal('#insertObj',{title:$(this).attr('title')});return false"><i class="fas fa-plus"></i></button>
-						<button class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:'BTN_DELETE',key:'obj'});return false"><i class="fas fa-times"></i></button>
-					</div><!-- .btn-group -->
-					<div class="btn-group packaging">
-						<button class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_ACQUIRE')+'...'" onclick="$ZMI.iframe('manage_main_acquire',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')});return false" tal:condition="python:here.getPortalMaster() is not None"><i class="fas fa-share"></i></button>
-						<button class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$ZMI.iframe('manage_main_import',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')});return false"><i class="fas fa-upload"></i></button>
-						<button class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="return zmiExportBtnClick(this);"><i class="fas fa-download"></i></button>
-					</div><!-- .btn-group -->
-				</div><!-- .btn-toolbar -->
+				<div class="btn-group managing mr-1">
+					<button type="button" class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="zmiModal('#insertObj',{title:$(this).attr('title')});return false"><i class="fas fa-plus"></i></button>
+					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:'BTN_DELETE',key:'obj'});return false"><i class="fas fa-times"></i></button>
+				</div><!-- .btn-group -->
+				<div class="btn-group packaging mr-1">
+					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_ACQUIRE')+'...'" onclick="$ZMI.iframe('manage_main_acquire',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')});return false" tal:condition="python:here.getPortalMaster() is not None"><i class="fas fa-share fa-flip-vertical"></i></button>
+					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$ZMI.iframe('manage_main_import',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')});return false"><i class="fas fa-upload"></i></button>
+					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="return zmiExportBtnClick(this);"><i class="fas fa-download"></i></button>
+				</div><!-- .btn-group -->
+				<div class="btn-group filtering">
+					<i class="fas fa-filter tablefilter p-2" onclick="$('#tablefilter').focus().addClass('visited')"></i>
+					<input id="tablefilter" name="tablefilter" class="form-control" type="text"  title="Filter object list by entering a name." />
+				</div>	
 			</th>
 		</tr>
 	</thead>
@@ -531,7 +539,7 @@
 				</td>
 				<td colspan="2" class="meta-id">
 					<tal:block tal:condition="python:metaObjPackage"
-						><i tal:condition="python:metaObj.get('acquired',None)" class="fas fa-share" title="acquired"></i>
+						><i tal:condition="python:metaObj.get('acquired',None)" class="fas fa-share fa-flip-vertical" title="acquired"></i>
 						<a tal:condition="python:metaObjPackage" data-turbolinks="false"
 							tal:attributes="href python:'manage_bigpicture?lang=%s&id=%s'%(request['lang'],metaObjPackage); title python:'%s - Click for big picture...'%metaObjPackage" target="_blank"
 							><i class="fas fa-briefcase"></i></a>
@@ -572,7 +580,7 @@
 							tal:attributes="
 								href python:'%s/metaobj_manager/manage_main?lang=%s&id=%s'%(context.getHome().aq_parent.content.absolute_url(),request['lang'],metaObj['id']);
 								title python:'acquired from: %s (%s)'%(context.getHome().aq_parent.content.id, context.getHome().aq_parent.content.attr('titlealt'))"
-							><i class="fas fa-share"></i></a>
+							><i class="fas fa-share fa-flip-vertical"></i></a>
 						<a title="Enabled" href="javascript:;" onclick="zmiEnabledBtnClick(this)"><i tal:attributes="class python:' '.join(['enabled-toggle']+[['far fa-square'],['far fa-check-square']][metaObj.get('enabled',0) in [1,True]])"></i></a>
 						<a tal:attributes="href python:'manage_analyze?lang=%s&id=%s'%(request['lang'],metaObj['id']); title python:'%s - Click for content analysis...'%metaObj['id']" target="_blank"><i tal:on-error="string:ERROR icon" tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])"></i></a>
 						<i tal:on-error="string:ERROR icon" tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])" style="display:none;"></i>
@@ -821,157 +829,139 @@
 		}
 	}
 
-	// Add Execute Button for TAL-Code-Regeneration on a ZPT-Method named standard_html
-	var zmi_code_default_btn = '<i onclick="set_zmi_code_default(event)" title=\"Replace by Default-Code-Template\" class=\"zmi-code-default fas fa-sync text-primary btn-lg mr-2 position-absolute\" style=\"cursor:pointer;right:0\"></i>';
 
-	// Get current number of language terms
-	function get_lang_count() {
-		let lang_count = 0;
-		// Refresh cached language dictionary
-		let lang_dict_json = $.ajax({
-			url: $ZMI.getBaseUrl()+'/get_lang_dict',
-			async: false
-			}).responseJSON;
-		$ZMI.setCachedValue('get_lang_dict',lang_dict_json);
-
-		// Get language count from cached language dictionary
-		let lang_dict = ZMI.prototype.getCachedValue('get_lang_dict');
-		if ( lang_dict!='undefined' ) {
-			if ( typeof lang_dict == 'object' ) {
-				lang_count = Object.keys(lang_dict).length;
-			} else {
-				lang_count = Object.keys(JSON.parse(lang_dict)).length;
-			}
-		};
-		return lang_count;
+	// +++++++++++++++++++++++++++
+	// Tablefilter: Object-List
+	// +++++++++++++++++++++++++++
+	function isModifierKeyPressed(event) {
+		return event.altKey ||
+		event.ctrlKey ||
+		event.metaKey;
 	}
+	$(document).keypress(function (event) {
+		if (isModifierKeyPressed(event)) {
+			return; // ignore
+		}
+		// Set Focus to Tablefilter only when Modal Dialog is not Shown
+		if (!$('#zmi-modal').hasClass('show')) {
+			$('#tablefilter').focus().addClass('visited');
+			// Prevent Submitting a form by hitting Enter
+			// https://stackoverflow.com/questions/895171/prevent-users-from-submitting-a-form-by-hitting-enter
+			// if (event.which == 13) {
+			// 	event.preventDefault();
+			// 	return false;
+			// };
+			// +++++++++++++++++++++++++++++++++++++++++++++
+			// Debug: https://stackoverflow.com/questions/56699276/ace-editor-pressing-enter-key-does-not-add-a-newline
+			// // let debugPreventDefault = Event.prototype.preventDefault;
+			// // Event.prototype.preventDefault = function() {
+			// // 	console.log(this);
+			// // 	debugger;
+			// // 	debugPreventDefault.call(this);
+			// // };
+			// +++++++++++++++++++++++++++++++++++++++++++++
+		};
+	})
+	$('#tablefilter').keyup(function (event) {
+		let tablefilter = $(this).val();
+		if (isModifierKeyPressed(event)) {
+			return; // ignore
+		}
+		if (event.which == 13) {
+			// $('table#meta_overview').find("tbody tr").show();
+			event.preventDefault();
+		};
+		if ( $('#tablefilter').parent().parent().hasClass('dropdown-header') ) {
+			/* Filter Dropdown-Menu */
+			$('.nav-metaobj').find('a.dropdown-item').hide();
+			$('.nav-metaobj').find(`a.dropdown-item span:contains(${tablefilter})`).parent().show();
+		} else {
+			/* Filter Table */
+			$('table#meta_overview').find('tbody tr').hide();
+			$('table#meta_overview').find(`tbody tr td.meta-id a:contains(${tablefilter}), tbody tr td.meta-id a[title*="${tablefilter}"]`).closest('tbody tr').show();
 
+		}
+	});
 
 	// Execute on DOM-Ready
 	$(function(){
-
+		// Add Execute Button for TAL-Code-Regeneration on a ZPT-Method named standard_html
+		let zmi_code_default_btn = '<i onclick="set_zmi_code_default(event)" title=\"Replace by Default-Code-Template\" class=\"zmi-code-default fas fa-sync text-primary btn-lg mr-2 position-absolute\" style=\"cursor:pointer;right:0\"></i>';
+		$('#meta_properties input[name="attr_type_standard_html"] ~ .zmi-code')
+			.prepend(zmi_code_default_btn)
+			;
 		// Add Event-Listeners
 		$("table input[name='ids:list']")
 			.change(zmiActionButtonsRefresh)
 			;
-		// ########################################################################
 		// Clone meta_types select lists from .row_insert-template
 		$("select[name^=attr_type_]")
 			.focus(function(){zmiPopulateTypeSelect(this)})
 			.hover(function(){zmiPopulateTypeSelect(this)})
 			;
-		// ########################################################################
-
-		// Add Execute Button for TAL-Code-Regeneration on a ZPT-Method named standard_html
-		$('#meta_properties input[name="attr_type_standard_html"] ~ .zmi-code').prepend(zmi_code_default_btn);
-
-		// New field set: initially disable inputs
-		$('input, textarea, select','tr.row_insert').attr('disabled',true);
-
-		// ++++++++++++
-		// Add rows to tables #meta_properties or #meta_languages on button click
-		// ++++++++++++
-		let new_row_counter = 0;
-		// Add click event function to add-buttons
-		$(".row_insert .btn-add").click(function(){
-			let lang_count = get_lang_count();
-			// Refresh global row counter
-			new_row_counter++;
-			// New field set: clone with enabled inputs
-			$('input, textarea, select','tr.row_insert').attr('disabled',false);
-
-			// Where to insert the new row
-			let $where_insert = $(this).closest('tr');
-
-			// Set variables
-			let table_id = $(this).closest('table').attr('id'); // meta_properties or meta_languages
-			let new_row_name = `new_row_${table_id}_${new_row_counter}`;
-			let old_id_html = '';
-			let sort_options_html = '';
-			let sort_options_len = 0;
-			let new_btn_html = `
-				<span class="btn btn-secondary btn-sm mr-1 w-100" style="color:#999" 
-					onclick="javascript:$(this).closest('tr').hide('slow',function(){$(this).closest('tr').remove()})">
-					<i class="fas fa-undo-alt"></i>
-				</span>
-			`;
-
-			// #### TABLES: Process table specific
-			if (table_id != 'meta_languages') {
-				old_id_html = `<input type="hidden" name="old_ids:list" value="new${new_row_counter}">`;
-				new_btn_html = `
-					${old_id_html}
-					<span class="btn btn-secondary btn-sm mr-1 w-100" style="color:#999"
-						title="Revoke new Meta Attribute"
-						onclick="javascript:$(this).closest('tr').hide('slow',function(){$(this).closest('tr').remove()})">
-						<i class="fas fa-undo-alt"></i>
-					</span>
-				`;
-			}
-
-			// Clone(true) to get a deep copy including select options
-			let $new_row = $where_insert.clone(true);
-
-			// Process table cells of the clone like "old" row
-			$new_row.find('td').each(function() {
-				$(this).find('input,select,textarea').each(function() {
-					let tagname = $(this).prop('tagName');
-					let defname = $(this).attr('name')
-					let deftype = $(this).attr('type')
-					let newname = $(this).attr('name').split('_')[1].split(':')[0];
-					let newval  = $(this).val();
-
-					// #### NAMES: Set new form element names according to table_id
-					switch (table_id) {
-						case 'meta_languages':
-							newname = defname.replace('_0', '_' + (lang_count + new_row_counter));
-							break
-						default:  // meta_properties
-							newname = `attr_${newname}_new${new_row_counter}`
-							newname = defname.includes(':') ? `${newname}:int` : newname;
-					};
-					$(this).attr('name',newname);
-
-					// #### Set default values: Transfer initially created values from row_insert-template to it's clone
-					if ( tagname == 'SELECT') {
-						// Remove id #populate_type from cloned select
-						$(this).removeAttr('id');
-						let selected = $("option:selected", $('.row_insert select')).val();
-						if (selected!='') {
-							$('option[value="' + selected +'"]',$(this)).prop('selected', true);
-						};
-					} else {
-						if (deftype == 'checkbox') {
-							newval = newval =='1' ? 1 : 0;
-						} else {
-							newval = newval =='' ? ('new'+new_row_counter) : newval;
-						};
-						$(this).val(newval);
-					}
-				});
-			});
-
-			// Process td:first-child of the clone
-			$new_row.find('td.meta-sort').html(new_btn_html);
-			$new_row.removeClass('row_insert').attr('id',new_row_name);
-
-			// Insert the new row
-			$new_row.insertBefore($where_insert);
-			// Set form as modified
-			$ZMI.set_form_modified($('.meta-id input',$new_row));
-			// Reset the clone template
-			$where_insert.find('input:not([type="checkbox"]),select,textarea').each(function() {
-				$(this).val(undefined);
-			});
-			// New field set: reset to disabled inputs
-			$('input, textarea, select','tr.row_insert').attr('disabled',true);
-		});
-
+        // https://stackoverflow.com/questions/8746882/jquery-contains-selector-uppercase-and-lower-case-issue
+        jQuery.expr[':'].contains = function(a, i, m) {
+            return jQuery(a).text().toUpperCase()
+            .indexOf(m[3].toUpperCase()) >= 0;
+        };
 	});
+
 // -->
 </script>
 
 <script type="text/javascript" charset="UTF-8" src="/++resource++zms_/common/zmi_ace_editor.js"></script>
+
+<style>
+/* <!-- */
+	.zmi #tablefilter {
+		padding: 0 0 0 2.5em;
+		font-family: monospace;
+		width: 2.55rem;
+	}
+	.zmi #tablefilter:focus {
+		background-color: #f2f2f2;
+		border: 1px solid #ced4da;
+		box-shadow: none;
+	}
+	.zmi #tablefilter.visited {
+		width: 12rem;
+		transition: width 0.5s ease-in-out;
+	}
+	.zmi .fa-filter.tablefilter {
+		margin: 0.1rem -2.25rem 0 0.25rem;
+		opacity:.3;
+		cursor:pointer;
+	}
+	/* Tablefilter in Dropdown-Menu */
+	.zmi .dropdown-menu .dropdown-header #tablefilter,
+	.zmi .dropdown-menu .dropdown-header #tablefilter.visited {
+		width:unset;
+		height:unset;
+		padding: unset;
+		background-color:transparent;
+		border: none !important;
+		box-shadow: none !important;
+		color: white;
+		position:absolute;
+		margin-left:1.5rem;
+	}
+	.zmi .dropdown-menu .dropdown-header #tablefilter.visited,
+	.zmi .dropdown-menu .dropdown-header #tablefilter:focus {
+		background-color:#818ea2;
+	}
+	.zmi .dropdown-menu .dropdown-header label span {
+		color: #ffffff;
+		white-space: nowrap;
+	}
+	.zmi .dropdown-menu .dropdown-header .fa-filter.tablefilter {
+		margin: 0.2rem 0;
+		opacity: .5;
+	}
+	.zmi .dropdown-menu .dropdown-header :focus-within i.tablefilter {
+		opacity: 1;
+	}
+/* --> */
+</style>
 
 </body>
 </html>

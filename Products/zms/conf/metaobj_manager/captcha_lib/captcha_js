@@ -13,6 +13,7 @@ var $captcha_timer
 async function captcha_create() {
 	const response = await fetch('./captcha_create')
 	const responseJSON = await response.json()
+	document.getElementById('captcha_str').setAttribute('class','form-control')
 	document.getElementById('captcha_data_uri').setAttribute('src', responseJSON.captcha_data_uri)
 	document.getElementById('signature').setAttribute('value', responseJSON.signature)
 	document.getElementById('life_time').setAttribute('value', responseJSON.life_time)
@@ -39,9 +40,12 @@ async function captcha_validate() {
 	const response = await fetch('./captcha_validate' + url_params, settings)
 	const responseJSON = await response.json()
 	if (responseJSON.captcha_is_valid) {
+		document.getElementById('captcha_str').setAttribute('class','form-control alert-success')
 		document.getElementById('captcha_is_valid').setAttribute('class','alert alert-success')
 		document.getElementById('captcha_is_valid').innerHTML = 'True'
+		return true
 	} else {
+		document.getElementById('captcha_str').setAttribute('class','form-control alert-danger')
 		document.getElementById('captcha_is_valid').setAttribute('class','alert alert-danger')
 		document.getElementById('captcha_is_valid').innerHTML = 'False'
 	}

@@ -165,7 +165,8 @@
 							style python:'background-image:%s;;'%(cssimageurl);
 							id python:'img_%s'%elName;
 							data-src python:value.getHref(request)"
-						><img onload="javascript:get_img_preview_size_class($(this).parent())" tal:attributes="id python:'img_%s'%elName; src python:value.getHref(request)"/>
+						><img onload="javascript:try{get_img_preview_size_class($(this).parent())}catch{console.log('Waiting for zmi.blob.ZMSGraphic_extEdit.js')}" 
+						tal:attributes="id python:'img_%s'%elName; src python:value.getHref(request)"/>
 						<div class="zmi-zoom-in"><i class="fas fa-search-plus"></i></div>
 					</a>
 				</div>

@@ -72,6 +72,9 @@ def pystr(v, encoding='utf-8', errors='strict'):
       v = str(v)
   return v
 
+security.declarePublic('pybytes')
+# Just for compatibility of old ZMS4 templates.
+pybytes = pystr
 
 # Umlauts
 umlaut_map = {
@@ -175,6 +178,8 @@ def addZMSCustom(self, meta_id=None, values={}, REQUEST=None):
   Public alias for manage_addZMSCustom:
   add a custom node of the type designated by meta_id in current context.
 
+  @param self: context node
+  @type self: C{zmsobject.ZMSObject}
   @param meta_id: the meta-id / type of the new ZMSObject
   @type meta_id: C{str}
   @param values: the dictionary of initial attribut-values assigned to the new ZMSObject
@@ -187,20 +192,11 @@ def addZMSCustom(self, meta_id=None, values={}, REQUEST=None):
   return self.manage_addZMSCustom(meta_id, values, REQUEST)
 
 
+security.declarePublic('url_quote')
 def url_quote(string, safe='/', encoding=None, errors=None):
   from urllib.parse import quote
   return quote(string, safe, encoding, errors)
 
-"""
-@group PIL (Python Imaging Library): pil_img_*
-@group Local File-System: localfs_*
-@group Logging: writeBlock, writeLog
-@group Mappings: *_list
-@group Operators: operator_*
-@group Styles / CSS: parse_stylesheet, get_colormap
-@group Regular Expressions: re_*
-@group: XML: getXmlHeader, toXmlString, parseXmlString, xslProcess, processData, xmlParse, xmlNodeSet
-"""
 
 security.declarePublic('initZMS')
 def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
@@ -305,7 +301,13 @@ def set_response_headers_cache(context, request=None, cache_max_age=24*3600, cac
   """
   Set default and dynamic cache response headers according to ZMS_CACHE_EXPIRE_DATETIME
   which is determined in ObjAttrs.isActive for each page element as the earliest time for invalidation.
-  I:Usage: Add to standard_html master template, e.g.::
+
+    - U{https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control#directives}
+    - U{http://nginx.org/en/docs/http/ngx_http_headers_module.html#expires}
+    - U{https://github.com/nginxinc/nginx-wiki/blob/master/source/start/topics/examples/x-accel.rst}
+
+  Usage: Add to standard_html master template, e.g.::
+
     <tal:block tal:define="
       standard modules/Products.zms/standard;
       cache_expire python:standard.set_response_headers_cache(this, request, cache_max_age=0, cache_s_maxage=6*3600)">
@@ -313,26 +315,19 @@ def set_response_headers_cache(context, request=None, cache_max_age=24*3600, cac
 
   @param cache_max_age: seconds the element remains in all caches (public/proxy and private/browser)
   @param cache_s_maxage: seconds the element remains in public/proxy cache (value -1 means cache_s_maxage = cache_max_age)
-  @see: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control#directives
-  @see: http://nginx.org/en/docs/http/ngx_http_headers_module.html#expires
-  @see: https://github.com/nginxinc/nginx-wiki/blob/master/source/start/topics/examples/x-accel.rst
-  @returns: Tuple of expires date time in GMT as ISO8601 string and the seconds until expiration
-  @retype: C{tuple}
+  @return: Tuple of expires date time in GMT as ISO8601 string and the seconds until expiration
+  @rtype: C{tuple}
   """
   if request is not None:
     is_preview = request.get('preview', '') == 'preview'
-    is_restricted = len([ob for ob in context.breadcrumbs_obj_path(portalMaster=False)
-                         if ob.attr('attr_dc_accessrights_restricted') in [1, True]]) > 0
-
+    is_restricted = len([ob for ob in context.breadcrumbs_obj_path(portalMaster=False) if ob.attr('attr_dc_accessrights_restricted') in [1, True]]) > 0
     if is_restricted or is_preview:
       request.RESPONSE.setHeader('Cache-Control', 'no-cache')
       request.RESPONSE.setHeader('Expires', '-1')
       request.RESPONSE.setHeader('Pragma', 'no-cache')
     else:
       cache_s_maxage = cache_s_maxage==-1 and cache_max_age or cache_s_maxage
-      request.RESPONSE.setHeader('Cache-Control',
-        's-maxage={}, max-age={}, public, must-revalidate, proxy-revalidate'.format(cache_s_maxage, cache_max_age))
-
+      request.RESPONSE.setHeader('Cache-Control', 's-maxage={}, max-age={}, public, must-revalidate, proxy-revalidate'.format(cache_s_maxage, cache_max_age))
       now = time.time()
       expire_datetime = DateTime(request.get('ZMS_CACHE_EXPIRE_DATETIME', now + cache_s_maxage))
       t1 = expire_datetime.millis()
@@ -356,8 +351,8 @@ def once(key, request):
   once per request
   @param key: the key
   @param request: the request
-  @returns: Boolean execute once
-  @retype: C{boolean}
+  @return: Boolean execute once
+  @rtype: C{boolean}
   """
   req_key = 'f_%s'%key
   req_val = request.get(req_key,True)
@@ -1066,8 +1061,14 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
         writeError(context, '[http_import]: can\'t parse_qs')
     return data
   else:
+    try:
+      data = response.read()
+    except:
+      data = None
     result = '['+str(reply_code)+']: '+str(message)
     writeLog( context, "[http_import.result]: %s"%result)
+    if data is not None:
+      result += '\n\n%s'%data.decode('utf-8','replace')
     return result
 
 
@@ -2241,6 +2242,30 @@ def processData(context, processId, data, trans=None):
   return _filtermanager.processData(context, processId, data, trans)
 
 
+security.declarePublic('htmldiff')
+def htmldiff(original, changed):
+  """
+  Wrapper for htmldiff2.render_html_diff.
+  @param original: html-file-0
+  @type original: C{str}
+  @param changed: html-file-1
+  @type changed: C{str}
+  """
+  try:
+    from htmldiff2 import render_html_diff
+    def remove_curly_braces(s):
+      return re.sub(r'/[\{\}]', '', s, flags=re.IGNORECASE) 
+    def remove_html_comments(s):
+      return re.sub(r'<!--.*?-->', '', s, flags=re.DOTALL) 
+    # Remove html comments for processing with htmldiff2/genshi.
+    original = remove_html_comments(remove_curly_braces(original))
+    changed = remove_html_comments(remove_curly_braces(changed))
+    diff = render_html_diff(original,changed)
+  except:
+    diff = '<pre>ERROR: Cannot load or work with htmldiff2</pre>'
+  return diff
+
+
 ############################################################################
 #
 #{  Executable
@@ -2477,7 +2502,9 @@ def sendMail(context, mto, msubject, mbody, REQUEST=None, mattach=None):
         part.add_header('Content-Disposition', 'attachment; filename="%s"'%url_quote(umlaut_quote(filename).replace(' ','_')))
         mime_msg.attach(part)
 
-  # Get MailHost.
+  # Get MailHost:
+  # from ZMS clients container via object type 'Mail Host'
+  # or via acquired name 'MailHost'.
   mailhost = None
   homeElmnt = context.getHome()
   if len(homeElmnt.objectValues(['Mail Host'])) == 1:

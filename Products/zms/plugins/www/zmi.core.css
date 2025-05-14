@@ -5,41 +5,31 @@ body.zmi .form-control {
 	font-family: "Helvetica Neue",Arial,sans-serif;
 	font-size: .867rem !important;
 }
+
 /* GUI hx-loading progress bar */
 body.zmi:not(.manage-menu) {
 	overflow-y: scroll;
 }
-body.zmi.loading {
+body.zmi.htmx-request {
 	overflow-x: hidden;
 }
-body.zmi.loading:after, 
-body.zmi:not(.loading).loaded:after {
+body.zmi.htmx-request:after {
 	top:0;
 	content:' ';
 	display:block;
 	position:absolute;
 	background:#00ccff;
-	height:3px;
+	background: linear-gradient(90deg, rgba(0,204,255,0) 0vw, rgba(0,204,255,1) 25vw, rgba(0,204,255,1) 75vw, rgba(0,204,255,0) 100vw);
+	height:5px;
 	z-index:10000;
-}
-body.zmi.loading:after {
-	left:0;
-	animation-name: loading;
-	animation-duration: 1.5s;
-}
-body.zmi:not(.loading).loaded:after {
-	right:0;
-	animation-name: loaded;
-	animation-duration: .75s;
+	animation: loading 2s linear infinite;
+	margin:0 auto
 }
 @keyframes loading {
-	from {width:0vw;opacity:1}
-	to {width:100vw;opacity:.5}
+	from {width:0vw;opacity:.6}
+	to {width:100vw;opacity:1}
 }
-@keyframes loaded {
-	from {width:100vw;opacity:1}
-	to {width:0vw;opacity:.5}
-}
+/* /GUI hx-loading progress bar */
 
 a {
 	color: #08c;
@@ -520,9 +510,6 @@ footer .back-to-top.hide {
 	margin-top: -2px;
 	display: inline-block;
 }
-.btn-group.managing, .btn-group.packaging {
-	margin-right:0.2rem;
-}
 .center h1 {
 	line-height:1.4em;
 	font-size:x-large;
@@ -739,6 +726,7 @@ body.zmi ul.zmi-container > .zmi-item .right video {
 	overflow: hidden;
 	overflow-y:scroll;
 	white-space: normal;
+	font-family:'Courier New', Courier, monospace;
 }
 body.zmi ul.zmi-container > .zmi-item .right video {
 	margin-top:1.5rem;
@@ -1711,7 +1699,16 @@ table.table-sm td.meta-name,
 table.table-sm td.meta-name .form-control,
 table.table-sm td.meta-type,
 table.table-sm td.meta-type .form-control {
+	min-width: 10rem !important;
 	width: 10rem !important;
+}
+table.table-sm td.meta-id input.form-control:focus,
+table.table-sm td.meta-name input.form-control:focus {
+	field-sizing: content;
+	background-color: aliceblue;
+	width: auto !important;
+	min-width: 9rem;
+	position:absolute
 }
 table.table-sm td.meta-mandatory,
 table.table-sm td.meta-multilang,
@@ -1748,7 +1745,7 @@ table.table-sm tr.row_insert td {
 .zmi table tr.row_insert > td > .btn-add:hover {
 	color:white !important;
 }
-.zmi table tr.row_insert > td:not(.meta-sort) > * {
+.zmi:not(.ZMSLinkContainer.properties) table tr.row_insert > td:not(.meta-sort) > * {
 	opacity:.35;
 	pointer-events:none;
 }

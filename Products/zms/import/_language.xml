@@ -1374,6 +1374,22 @@
     <Cell><Data ss:Type="String">איסוף אשפה</Data></Cell>
    </Row>
    <Row>
+    <Cell><Data ss:Type="String">CAPTION_GARBAGE_COLLECTION</Data></Cell>
+    <Cell><Data ss:Type="String">Tage nach Objekt-Löschung</Data></Cell>
+    <Cell><Data ss:Type="String">days after object deletion</Data></Cell>
+    <Cell><Data ss:Type="String">days after object deletion</Data></Cell>
+    <Cell><Data ss:Type="String">days after object deletion</Data></Cell>
+    <Cell><Data ss:Type="String">days after object deletion</Data></Cell>
+    <Cell><Data ss:Type="String">days after object deletion</Data></Cell>
+    <Cell><Data ss:Type="String">days after object deletion</Data></Cell>
+    <Cell><Data ss:Type="String">days after object deletion</Data></Cell>
+    <Cell><Data ss:Type="String">days after object deletion</Data></Cell>
+    <Cell><Data ss:Type="String">days after object deletion</Data></Cell>
+    <Cell><Data ss:Type="String">days after object deletion</Data></Cell>
+    <Cell><Data ss:Type="String">days after object deletion</Data></Cell>
+    <Cell><Data ss:Type="String">days after object deletion</Data></Cell>
+   </Row>
+   <Row>
     <Cell><Data ss:Type="String">ATTR_HEIGHT</Data></Cell>
     <Cell><Data ss:Type="String">Höhe</Data></Cell>
     <Cell><Data ss:Type="String">Height</Data></Cell>
@@ -4179,6 +4195,22 @@
     <Cell><Data ss:Type="String">להזיז באמת את האובייקט לכאן?</Data></Cell>
    </Row>
    <Row>
+    <Cell><Data ss:Type="String">MSG_CONFIRM_RELOAD</Data></Cell>
+    <Cell><Data ss:Type="String">Der Server verlangt ein Neuladen dieser Seite.</Data></Cell>
+    <Cell><Data ss:Type="String">The server requires this page to be reloaded.</Data></Cell>
+    <Cell><Data ss:Type="String">De server vereist dat deze pagina opnieuw wordt geladen.</Data></Cell>
+    <Cell><Data ss:Type="String">Le serveur demande un rechargement de cette page.</Data></Cell>
+    <Cell><Data ss:Type="String">Il server richiede che questa pagina venga ricaricata.</Data></Cell>
+    <Cell><Data ss:Type="String">El servidor requiere que esta página sea recargada.</Data></Cell>
+    <Cell><Data ss:Type="String">伺服器要求重新載入此頁面</Data></Cell>
+    <Cell><Data ss:Type="String">The server requires this page to be reloaded.</Data></Cell>
+    <Cell><Data ss:Type="String">Серверу требуется перезагрузка этой страницы.</Data></Cell>
+    <Cell><Data ss:Type="String">The server requires this page to be reloaded.</Data></Cell>
+    <Cell><Data ss:Type="String">يتطلب الخادم إعادة تحميل هذه الصفحة.</Data></Cell>
+    <Cell><Data ss:Type="String">The server requires this page to be reloaded.</Data></Cell>
+    <Cell><Data ss:Type="String">The server requires this page to be reloaded.</Data></Cell>
+   </Row>
+   <Row>
     <Cell><Data ss:Type="String">MSG_CONFIRM_TRASHOBJS</Data></Cell>
     <Cell><Data ss:Type="String">Soll(en) %i ausgewählte(s) Objekt(e) wirklich in den Papierkorb verschoben werden?</Data></Cell>
     <Cell><Data ss:Type="String">Do you really want to move %i selected object(s) to trashcan?</Data></Cell>
@@ -6406,23 +6438,23 @@
    </Row>
    <Row>
     <Cell><Data ss:Type="String">TAB_WORKFLOW_ASSIGNMENT</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow-Aktivierung</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Zuweisung</Data></Cell>
+    <Cell><Data ss:Type="String">Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Assignment</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">TAB_WORKFLOW_MODEL</Data></Cell>
-    <Cell><Data ss:Type="String">Ablauf-Modell</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow-Modell</Data></Cell>
     <Cell><Data ss:Type="String">Workflow Model</Data></Cell>
     <Cell><Data ss:Type="String">Workflow Model</Data></Cell>
     <Cell><Data ss:Type="String">Workflow Model</Data></Cell>

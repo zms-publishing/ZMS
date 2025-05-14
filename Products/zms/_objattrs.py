@@ -536,7 +536,7 @@ class ObjAttrs(object):
       try:
         modified = False
         request = self.REQUEST
-        if 'ZMS_INSERT' not in request and not self.getAutocommit():
+        if request.get('ZMS_INSERT') is None and not self.getAutocommit():
           obj_attr = self.getObjAttr(key, self.meta_id)
           datatype = obj_attr['datatype_key']
           lang = request['lang']
@@ -671,7 +671,7 @@ class ObjAttrs(object):
       obj_vers = self.getObjVersion(REQUEST)
       obj_attrs = self.getObjAttrs()
       now = datetime.datetime.now()
-      dst = time.daylight == 1 and 1 or 0 # Daylight saving time.
+      dst = time.localtime().tm_isdst == 1 and 1 or 0 # Daylight saving time.
       for key in ['active', 'attr_active_start', 'attr_active_end']:
         if key in obj_attrs:
           obj_attr = obj_attrs[key]

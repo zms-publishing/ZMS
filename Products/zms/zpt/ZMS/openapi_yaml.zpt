@@ -96,7 +96,7 @@ paths:
           required: false
           schema:
             type: string
-            example: /e34/e36/
+            example: e34/e36
       responses:
         '200':    # status code
           description: A JSON array of Parent Objects Meta-Data
@@ -117,7 +117,7 @@ paths:
           required: false
           schema:
             type: string
-            example: /e34/e36/
+            example: e34/e36
       responses:
         '200':    # status code
           description: A JSON array of Children Objects Meta-Data
@@ -141,6 +141,13 @@ paths:
           schema:
             type: string
             example: e34/e36
+        - name: meta_id
+          in: query
+          description: meta_id to be filtered by
+          required: false
+          schema:
+            type: string
+            example: ZMSTable
       responses:
         '200':    # status code
           description: A JSON array of Tree Objects Meta-Data
@@ -163,7 +170,7 @@ paths:
           required: false
           schema:
             type: string
-            example: /e34/e36/
+            example: e34/e36
       responses:
         '200':    # status code
           description: A JSON array of Parent Objects Content
@@ -186,7 +193,7 @@ paths:
           required: false
           schema:
             type: string
-            example: /e34/e36/
+            example: e34/e36
       responses:
         '200':    # status code
           description: A JSON array of Children Objects Content
@@ -196,6 +203,27 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/responses/ZMSObjectResponse'
+  /{path}/get_child_nodes/count:
+    get:
+      tags:
+        - navigation
+      summary: Count ZMS-Object Children.
+      description: Sequencing Child Nodes Content
+      parameters:
+        - name: path
+          in: path
+          description: id-path to current node
+          required: false
+          schema:
+            type: string
+            example: e34/e36
+      responses:
+        '200':    # status code
+          description: The Number of the Object's Children
+          content:
+            application/json:
+              schema:
+                type: integer
   /{path}/get_tree_nodes:
     get:
       tags:
@@ -232,13 +260,45 @@ paths:
           required: false
           schema:
             type: string
-            example: /
+            example: e34/e36
       responses:
         '200':    # status code
           description: A JSON array of user names
           content:
             text/html:
               type: string
+  /get_htmldiff:
+    post:
+      tags:
+        - content
+      summary: Returns the Diff of two HTML streams
+      description: Get the Diff of two HTML streams.
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                original:
+                  type: string
+                  description: Original HTML text
+                  example: '<p><cite>The Web does not just connect computers, it connects people.</cite> - Tim Berners-Lee</p>'
+                changed:
+                  type: string
+                  description: Changed HTML text
+                  example: '<p><cite>The Web does not just connect machines, it connects people.</cite> - Tim Berners-Lee</p>'
+              required:
+                - original
+                - changed
+      responses:
+        '200':    # status code
+          description: Structured Diff of two HTML streams.
+          content:
+            text/html:
+              schema:
+                type: string
+                example: '<div class="diff"><pre><del>original</del><ins>changed</ins></pre></div>'
 components:
   responses:
     ZMSObjectResponse:

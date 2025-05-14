@@ -140,15 +140,16 @@ class ZMSItem(
       _accessmanager.AccessableObject.zmi_page_request(self, args, kwargs)
       # avoid declarative urls
       path_to_handle = request['URL0'][len(request['BASE0']):]
+      qs = request['QUERY_STRING']
       path = path_to_handle.split('/')
       if not path[-2] in self.objectIds() \
           and len([x for x in path[:-1] if x.find('.')>0 or x.startswith('manage')])==0:
         new_path = self.absolute_url()+'/'+path[-1]
         if not new_path.endswith(path_to_handle):
-          qs = request['QUERY_STRING']
           if qs:
             new_path += '?' + qs
           request.RESPONSE.redirect(new_path)
+      RESPONSE.setHeader('HX-Push-Url', '%s?%s'%(path_to_handle, qs))
 
     def f_standard_html_request(self, *args, **kwargs):
       request = self.REQUEST

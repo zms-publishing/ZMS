@@ -208,7 +208,7 @@ class CopySupport(object):
                 lang = obj.REQUEST.get('lang')
                 tree_objs.append(obj)
                 if obj.getTreeNodes():
-                    tree_objs.extend(obj)
+                    tree_objs.extend(obj.getTreeNodes())
                 for ob in tree_objs:
                     for langId in ob.getLangIds():
                         for key in ob.getObjAttrs():

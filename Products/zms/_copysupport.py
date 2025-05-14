@@ -203,8 +203,10 @@ class CopySupport(object):
         # identify all BLOB fields and their MediaDb's filenames in the source
         if mode == 'read_from_source':
             self.blobfields = []
+            self.mediadb_source_location = None
             for ob in oblist:
                 lang = ob.REQUEST.get('lang')
+                self.mediadb_source_location = ob.getMediaDb().getLocation()
                 for langId in ob.getLangIds():
                     for key in ob.getObjAttrs():
                         # TODO: discuss handling of getObjVersions...!? (preview vs live, activated workflow)
@@ -220,7 +222,6 @@ class CopySupport(object):
                                     'filename': ob.attr(key).getFilename(),
                                     'mediadbfile': ob.attr(key).getMediadbfile(),
                                 })
-                                self.mediadb_source_location = ob.getMediaDb().getLocation()
                             ob.REQUEST.set('lang', lang)
 
         # copy these files from source to target's MediaDb folder at os-level

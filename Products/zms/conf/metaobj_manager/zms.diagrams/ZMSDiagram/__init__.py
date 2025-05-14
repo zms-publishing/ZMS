@@ -26,7 +26,7 @@ class ZMSDiagram:
 	package = "zms.diagrams"
 
 	# Revision
-	revision = "0.0.6"
+	revision = "0.0.7"
 
 	# Type
 	type = "ZMSObject"

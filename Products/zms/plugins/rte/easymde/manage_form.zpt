@@ -16,13 +16,12 @@
 
 <link rel="stylesheet" href="/++resource++zms_/easymde/easymde.min.css">
 <script src="/++resource++zms_/easymde/easymde.min.js"></script>
+<!--! marked.js.org: parser for dynamic preview -->
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
 <script>
 //<!--
-
 var elName = "text_" + getZMILang();
-
 $("textarea#editor_" + elName).val($("textarea#" + elName).val());
 
 var easymde = new EasyMDE({

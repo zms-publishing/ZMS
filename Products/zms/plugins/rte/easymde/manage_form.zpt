@@ -1,7 +1,7 @@
 <tal:block tal:replace="nothing">
 ################################################################################
-###  SimpleMDE
-###  please refer to https://github.com/sparksuite/simplemde-markdown-editor
+###  EasyMDE - Markdown Editor
+###  please refer to https://github.com/Ionaru/easy-markdown-editor
 ################################################################################
 </tal:block>
 
@@ -14,8 +14,8 @@
 
 <tal:block tal:condition="python:request.get('f_zmiRichtextOnSubmitEventHandler',True)">
 
-<link rel="stylesheet" href="/++resource++zms_/simplemde/simplemde.min.css">
-<script src="/++resource++zms_/simplemde/simplemde.min.js"></script>
+<link rel="stylesheet" href="/++resource++zms_/easymde/easymde.min.css">
+<script src="/++resource++zms_/easymde/easymde.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
 <script>
@@ -25,7 +25,7 @@ var elName = "text_" + getZMILang();
 
 $("textarea#editor_" + elName).val($("textarea#" + elName).val());
 
-var simplemde = new SimpleMDE({
+var easymde = new EasyMDE({
     element: document.getElementById("editor_" + elName),
     toolbar: [
         "bold", "italic", "strikethrough", "heading", "|",
@@ -49,7 +49,7 @@ var simplemde = new SimpleMDE({
 });
 
 $('#attr_url_markdown').on("change", function() {
-    var data = simplemde.value();
+    var data = easymde.value();
     var link_href = $('#attr_url_markdown').val();
     $.ajax({
         url: 'zmi_breadcrumbs_obj_path',
@@ -62,21 +62,21 @@ $('#attr_url_markdown').on("change", function() {
             $('#attr_url_dummy').html(response.trim());
             var link_text = $('#attr_url_dummy .breadcrumb').text().trim().replaceAll('\n', ' /');
             if (link_href !== '') {
-                simplemde.value(`$${data}\n[$${link_text}]($${link_href})`);
+                easymde.value(`$${data}\n[$${link_text}]($${link_href})`);
             }
         }
     });
 });
 
 function zmiStandardOnSubmitEventHandler(fm) {
-    var data = simplemde.value();
+    var data = easymde.value();
     $('#' + elName).val(data);
 }
 
 function zmiRichtextOnSubmitEventHandler(fm) {
     var el = document.getElementById('zmiRichtextEditor'+elName);
     if ( el != null && el.style.display != 'none' && el.style.visibility != 'hidden') {
-        var data = simplemde.value();
+        var data = easymde.value();
         $('#' + elName).val(data);
     }
 }

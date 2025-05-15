@@ -101,6 +101,12 @@ class TextFormatObject(object):
       try:
         import markdown
         text = markdown.markdown(text)
+        import re
+        # https://stackoverflow.com/questions/136505/searching-for-uuids-in-text-with-regex
+        pattern = re.compile('\\{\\$uid:[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}\\}')
+        uuids = re.findall(pattern, text)
+        for uuid in uuids:
+            text = text.replace(uuid, self.getLinkUrl(uuid))
       except:
         pass
     # Return.

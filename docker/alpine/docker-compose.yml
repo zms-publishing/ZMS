@@ -1,4 +1,3 @@
-version: "3.7"
 services:
   zms5-alpine:
     build: .
@@ -22,4 +21,16 @@ services:
       - ./Extensions/:/home/zope/Extensions/:rw
       - ./var/:/home/zope/var/:rw
 
-    # command: /home/zope/etc/start.sh
+    ### Override the default CMD to launch script and keep container alive
+    # command: sleep infinity
+    command: >
+      bash -c "
+        /home/zope/etc/start.sh &
+        sleep infinity
+      "
+
+# IMPORTANT: Create the Network first to make it external
+# > docker network create zms_network
+networks:
+  zms_network:
+    driver: bridge

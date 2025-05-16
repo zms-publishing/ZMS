@@ -12,7 +12,7 @@
 
 <form tal:condition="python:refByObjs" name="refByObjs" class="card form-horizontal">
 	<legend tal:content="structure python:'%s:'%(here.getZMILangStr('MSG_REFERENCEDBY')%('<em>%s</em>'%here.getTitlealt(request)))">titlealt referenced by:</legend>
-	<div class="card-body">
+	<div class="card-body" id="refByObjs">
 		<ol>
 			<li tal:repeat="refByObj refByObjs">
 				<tal:block tal:define="global target python:here.getLinkObj(refByObj,request)">
@@ -29,11 +29,16 @@
 	titlealt referenced by:
 </div>
 
-<form tal:condition="python:refByObjs" name="change_refByObjs" class="card form-horizontal">
+<form name="manage_change_refs"
+	tal:condition="python:len([x for x in request['AUTHENTICATED_USER'].getRolesInContext(here) if x in ['Manager','ZMSAdminstrator']]) > 0 and refByObjs"
+	hx-post="manage_change_refs" 
+	hx-confirm="Really change all backlinks?" 
+	hx-target="#refByObjs" 
+	class="card form-horizontal">
 	<legend>Change All these References to a New Link Target:</legend>
 	<div class="card-body">
 		<div class="form-group">
-			<div tal:replace="structure python:here.getUrlInput('change_refByObjs', 'new_linktarget', elTextName='', size=None, value='', enabled=True, css='form-control')">
+			<div tal:replace="structure python:here.getUrlInput('manage_change_refs', 'ref_to', elTextName='', size=None, value='', enabled=True, css='form-control')">
 				New Link Target
 			</div>
 		</div>

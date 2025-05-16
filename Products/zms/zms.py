@@ -308,6 +308,7 @@ class ZMS(
         'manage_customizeSystem',
         'manage_changeLanguages', 'manage_customizeLanguagesForm',
         'manage_customizeDesign', 'manage_customizeDesignForm',
+        'manage_change_refs'
         )
     __authorPermissions__ = (
         'preview_html', 'preview_top_html',

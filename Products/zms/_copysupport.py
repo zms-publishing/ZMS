@@ -241,8 +241,6 @@ class CopySupport(object):
                         mediadb_file = blob.get('mediadbfile')
                         if mediadb_file is not None:
                             shutil.copy(f'{mediadb_source_location}/{mediadb_file}', mediadb_target_location)
-                            # TODO: remove print
-                            print(f'{self.mediadb_source_location}/{mediadb_file}', mediadb_target_location)
             except:
                 standard.writeError(self, '[CopySupport._copy_blobs_if_other_mediadb]')
             finally:

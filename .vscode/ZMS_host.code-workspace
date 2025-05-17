@@ -97,8 +97,8 @@
 					"SOFTWARE_HOME": "~/vpy313/bin/"
 				},
 				"serverReadyAction": {
-					"pattern": "Serving on http://127.0.0.1:8081",
-					"uriFormat": "http://127.0.0.1:8081/manage_main",
+					"pattern": "Serving on http://127.0.0.1:8080",
+					"uriFormat": "http://127.0.0.1:8080/manage_main",
 					"action": "openExternally"
 				}
 			}

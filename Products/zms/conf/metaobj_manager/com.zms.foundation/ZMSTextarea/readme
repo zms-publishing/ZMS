@@ -23,16 +23,17 @@ By default ZMS comes with three types of richt text editors (RTE)
 1. CKEditor (HTML)
 2. TinyMCE (HTML)
 3. SimpleMDE (Markdown)
+4. EasyMDE (Markdown)
 
 The list of RTE can be extendes by adding a TAL-based template `manage_form` as a plugins to the plugin-rte-folder:
 `Products/zms/plugins/rte/`.  
 The editor's JS/GUI-asset files can be placed in the as `++resource++zms_` registred resource folder
 `Products/zms/plugins/www`
 To tell the ZMS client which one of the RTEs should be applied, a configuration parameter has to be set:
-`ZMS.richtext.plugin` (ckeditor, tinymce, simplemde etc.)
+`ZMS.richtext.plugin` (ckeditor, tinymce, simplemde, easymde etc.)
 
 ## Using Markdown
-The SimpleMDE-editor is a minimal markdown editor using the Python module *markdown*. This module will be installed 
+The SimpleMDE- or EasyMDE-editor is a minimal markdown editor using the Python module *markdown*. This module will be installed 
 by default (if code base is fresh), see on [github](https://github.com/zms-publishing/ZMS/blob/main/requirements-full.txt).
 
 After setting ZMS configuration parameter 

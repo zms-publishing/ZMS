@@ -253,7 +253,8 @@ function ZMSGraphic_extEdit_apply() {
 				var elName = result['elName'];
 				var elParams = 'lang='+encodeURI(result['lang'])+'&key='+encodeURI(result['key'])+'&form_id='+encodeURI(result['form_id']);
 				ZMSGraphic_extEdit_set(elName,result['src'],result['filename'],result['width'],result['height'],elParams);
-			});
+			}
+		);
 	}
 	// Crop
 	else if (ZMSGraphic_action == 'crop') {
@@ -275,7 +276,10 @@ function ZMSGraphic_extEdit_apply() {
 				var result = eval('('+data+')');
 				console.log(result);
 				ZMSGraphic_extEdit_set(ZMSGraphic_elName,result['src'],result['filename'],result['width'],result['height']);
-			});
+			}
+		);
+		// Show GUI as modified
+		$ZMI.set_form_modified($('input.custom-file-input[id^="img_"]'),$('body'))
 	}
 	// Resize
 	else {
@@ -307,6 +311,8 @@ function ZMSGraphic_extEdit_apply() {
 			$(`.custom-file label[for="${ZMSGraphic_elName}"]`)
 				.text(new_label)
 				.addClass('new_label');
+			// Show GUI as modified
+			$ZMI.set_form_modified($('input.custom-file-input[id^="img_"]'),$('body'))
 		}
 	}
 	// Close dialog.

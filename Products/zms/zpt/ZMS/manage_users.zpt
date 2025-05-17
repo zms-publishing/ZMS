@@ -353,7 +353,7 @@ function zmiModalInsertUserOpen(context) {
 							</a>
 							<a class="dropdown-item" href="javascript:;"
 								onclick="var $f=$(this).closest('form');$('input[name=btn]',$f).attr('value','BTN_INVITE');$f.submit();"
-								><i class="fas fa-share"></i>
+								><i class="fas fa-share fa-flip-vertical"></i>
 								<tal:block tal:content="python:here.getZMILangStr('BTN_INVITE')">Invite</tal:block>
 							</a>
 						</div><!-- .dropdown-menu -->
@@ -508,7 +508,7 @@ function zmiModalInsertUserOpen(context) {
 			tal:attributes="data-lastlogin lastlogin">
 			<tal:block tal:content="repeat/userName/number"></tal:block>.
 			<input type="checkbox" name="ids:list" tal:attributes="value userName"/>
-			<i class="fas fa-share" tal:condition="acquired"></i>
+			<i class="fas fa-share fa-flip-vertical" tal:condition="acquired"></i>
 			<a data-placement="top"
 				tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],userName); 
 					class python:['','text-muted'][acquired or not active];"

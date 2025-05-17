@@ -15,7 +15,7 @@ class dotdict(dict):
 	def __delattr__(self, attr):
 		del self[attr]
 
-# Reset DST to -1 to avoid DST issues with time.mktime
+# RESET DST to -1 to avoid DST issues with time.mktime
 def reset_dst(struct_time):
 	struct_time_list = list(struct_time)
 	struct_time_list[8] = -1  # Set tm_isdst to -1
@@ -23,7 +23,7 @@ def reset_dst(struct_time):
 	struct_time = time.struct_time(struct_time_list)
 	return struct_time
 
-# Check if the end date is older than given days
+# EXPIRED: Check if the end date is older than given days
 def get_age_expired(end_struct = None, expire_days = 720):
 	# Params: end_struct = struct_time, expire_days = int
 	# Return: tuple (age_days[int], is_expired[bool])
@@ -43,51 +43,55 @@ def get_cleanup_grading(e, request):
 	# ----------------------------------------
 	# Intial values
 	# ----------------------------------------
+	# e = ZMSObject
+	# Important Hint: The request-lang is set by 
+	# the function caller so all values are 
+	# individually computed to the context language
+	# ----------------------------------------
 	grading_value = 0
 	grading_info = 'keep'
 	grading_dict = {0: 'keep', 1: 'check', 2: 'delete'}
-	now_ts = DateTime.DateTime().timeTime()
-	age_days = 0
 	is_inactive = False
 	is_multilang_inactive = False
+	age_days = 0
 	is_too_old = False
 	is_linked = True
 	has_active_subpages = False
 	has_inactive_parent = False
 	has_active_local_subnodes = False
 
+	primary_lang = e.getPrimaryLanguage()
+	coverage = 'global.%s'%(primary_lang)
+
 	# ----------------------------------------
 	# Checking for inactivity, age and backlinks
 	# ----------------------------------------
 	# 1. Active
-	is_inactive = e.attr('active') == 0
-	lang_saved = request.get('lang')
+	is_inactive = not(standard.pybool(e.attr('active')))
+
+	# 2. Multilang Active: Check if the object is 
+	# systematically inactive in the all languages
+	lang_saved = request.get('lang')  # Save the context language
 	langs = e.getLangs()
 	if len(langs) > 1:
 		ll = []
 		for lang in langs:
 			request.set('lang',lang)
-			lang_is_inactive = e.attr('active') and 1 or 0
-			if lang_is_inactive==0:
-				lang_is_inactive = get_age_expired(e.attr('attr_active_end'), expire_days=1)[1] and 1 or 0
-			ll.append( lang_is_inactive )
+			lang_is_active = int(standard.pybool(e.attr('active')))
+			if lang_is_active==1 and e.attr('attr_active_end')!=None:
+				lang_is_active = int(not(get_age_expired(e.attr('attr_active_end'), expire_days=1)[1]))
+			ll.append( lang_is_active )
 		is_multilang_inactive = sum(ll) == 0
 	else:
 		is_multilang_inactive = is_inactive
-	request.set('lang',lang_saved)
+	request.set('lang',lang_saved)  # Reset request language back to context language
 
-	# 2. Age
+	# 3. Age
 	last_change_struct = e.attr('change_dt') or e.attr('created_dt')
 	if last_change_struct:
 		age_days, is_too_old = get_age_expired(last_change_struct, expire_days=720)
 	if e.attr('attr_active_end'):
 		age_days, is_too_old = get_age_expired(e.attr('attr_active_end'), expire_days=720)
-
-	# 3. Active local Sub-Nodes
-	# Check if there are active sub-nodes in a different language 
-	# declared as global (aka. local)
-	primary_lang = e.getPrimaryLanguage()
-	coverage = 'global.%s'%(primary_lang)
 
 	# 4. Backlinks
 	if not e.getRefByObjs(request):
@@ -144,9 +148,9 @@ def get_cleanup_grading(e, request):
 		'title': e.getTitlealt(request),
 		'grading': grading_value,
 		'grading_info': grading_info.upper(),
-		'age_days': age_days,
 		'is_inactive': is_inactive,
 		'is_multilang_inactive': is_multilang_inactive,
+		'age_days': age_days,
 		'is_too_old': is_too_old,
 		'is_linked': is_linked,
 		'has_active_subpages': has_active_subpages,
@@ -358,10 +362,14 @@ def html_page(self):
 # MAIN
 # -----------------------------------------------------
 def manage_cleanup_recursive(self):
+	ZMI_TIME = DateTime.DateTime().timeTime()
 	request = self.REQUEST
 	response =  request.response
 	zmscontext = self
 	zmsclient_url = zmscontext.getHome().absolute_url()
+	primary_lang = self.getPrimaryLanguage()
+	# Enforce primary language
+	request.set('lang',primary_lang)
 
 	# -----------------------------------------------------
 	# SHOW SPINNER page while waiting until action 
@@ -399,17 +407,16 @@ def manage_cleanup_recursive(self):
 	else:
 		pass
 
+
 	# -----------------------------------------------------
 	# Get grading data for all pages
 	# -----------------------------------------------------
-	ZMI_TIME = DateTime.DateTime().timeTime()
 	grading_data = [] # list of grading data dictionaries
 	langs = zmscontext.getLangs()
 	pages = [zmscontext]
 	pages.extend( zmscontext.getTreeNodes(request, zmscontext.PAGES) )
 	c = -1
 	for page in pages:
-		grading = 0
 		c += 1
 		l = 0
 		for lang in langs:
@@ -417,13 +424,17 @@ def manage_cleanup_recursive(self):
 			request.set('lang',lang)
 			grading_datadict = get_cleanup_grading(page,request)
 			grading_data.append(grading_datadict)
+	# Reset to primary language
+	request.set('lang',primary_lang)
 
-	# -----------------------------------------------------
-	# DEBUG: Show all grading data as JSON
-	# -----------------------------------------------------
+	# # -----------------------------------------------------
+	# # DEBUG: Show all raw grading data as JSON
+	# # -----------------------------------------------------
 	# return json.dumps(grading_data, indent=4)
 
-	# VALIDATE "DELETE" NODES (grading == 2)
+	# -----------------------------------------------------
+	# VALIDATE "DELETE" NODES: Really delete or downgrade to "CHECK"
+	# -----------------------------------------------------	
 	# All nodes with grading == 2 are deleted only if their SUB-PAGES are inactive:
 	# The grading value will be downgraded from 2 to 1 if any SUB-PAGE is active.
 	delete_data = []
@@ -445,28 +456,24 @@ def manage_cleanup_recursive(self):
 		valid_grading_data.append(grading_datadict)
 	
 	# -----------------------------------------------------
-	# Clean the resulting lists of grading data by
+	# SEPARATE AND UNIFY the validated grading data
+	# to valid 1. DELETE and 2. CHECK datasets
 	# -----------------------------------------------------
-	clean_delete_data = delete_data.copy()
-	clean_check_data = valid_grading_data.copy()
+	valid_delete_data = delete_data.copy()
+	valid_check_data = valid_grading_data.copy()
 
-	# 1. Removing from DELETE-list language duplicates
-	for delete_item in clean_delete_data:
-		delete_item_id = delete_item['zmsid']
-		for d in [e for e in standard.filter_list(l=clean_check_data,i='zmsid',v=delete_item_id,o='=') if e['lang']!=e['primary_lang']]:
-			try:
-				clean_delete_data.remove(d)
-			except:
-				standard.writeStdout(zmscontext, 'Step-1-Cleanup Processor Message: Could not remove %s from delete_data'%delete_item_id)
-				pass
+	# 1. Removing from DELETE-list heterolingual items:
+	# all items having have the same zmsid as the delete_item and 
+	# are not the primary language and not a global language
+	valid_delete_data = [e for e in valid_delete_data if (e['lang']==e['primary_lang'] and e['coverage'].endswith(e['lang']))]
 
 	# 2. Removing from DELETE-list all children of any parent that is marked for deletion
-	for delete_item in clean_delete_data:
+	for delete_item in valid_delete_data:
 		delete_item_id = delete_item['zmsid']
 		for delete_item2 in delete_data:
 			if delete_item_id in delete_item2['obj_path'][:-1]:
 				try:
-					clean_delete_data.remove(delete_item2)
+					valid_delete_data.remove(delete_item2)
 				except:
 					standard.writeStdout(zmscontext, 'Step-2-Cleanup Processor Message: Could not remove %s from delete_data'%delete_item_id)
 					pass
@@ -475,17 +482,17 @@ def manage_cleanup_recursive(self):
 	for delete_item in delete_data:
 		delete_item_id = delete_item['zmsid']
 		for lang in langs:
-			for check_item in clean_check_data:
-					if (delete_item_id == check_item['zmsid'] and lang == check_item['lang']) or delete_item_id in check_item['obj_path']:
-						try:
-							clean_check_data.remove(check_item)
-						except:
-							standard.writeStdout(zmscontext, 'Step-3-Cleanup Processor Message: Could not remove %s from delete_data'%delete_item_id)
-							pass
+			for check_item in valid_check_data:
+				if (delete_item_id == check_item['zmsid'] and lang == check_item['lang']) or delete_item_id in check_item['obj_path'] or check_item['lang']!=check_item['primary_lang']:
+					try:
+						valid_check_data.remove(check_item)
+					except:
+						standard.writeStdout(zmscontext, 'Step-3-Cleanup Processor Message: Could not remove %s from delete_data'%delete_item_id)
+						pass
 
 
 	# -----------------------------------------------------
-	# Output of valid grading data for [A] JSON 
+	# OUTPUT of valid grading data for [A] JSON 
 	# and delete/check-subset data for [B] CSV and [C] HTML
 	# -----------------------------------------------------
 
@@ -500,12 +507,12 @@ def manage_cleanup_recursive(self):
 		csv = []
 		csv.append('INFO\tTITLE\tURL\tLANGUAGE\tAGE/YEARS')
 		server_url = request.get('SERVER_URL')
-		if clean_delete_data:
-			for e in clean_delete_data:
-				csv.append('\t'.join([ e['grading_info'],e['title'], server_url + e['absolute_url'] + '/manage?lang=%s'%(e['lang']), str(round(e['age_days']/365)) ]))
+		if valid_delete_data:
+			for e in valid_delete_data:
+				csv.append('\t'.join([ e['grading_info'],e['title'], server_url + e['absolute_url'] + '/manage?lang=%s'%(e['lang']), e['lang'], str(round(e['age_days']/365)) ]))
 		csv.append('-\t-\t-\t-\t-')
-		if clean_check_data:
-			for e in clean_check_data:
+		if valid_check_data:
+			for e in valid_check_data:
 				if e['grading'] == 1:
 					csv.append('\t'.join([ e['grading_info'],e['title'], server_url + e['absolute_url'] + '/manage?lang=%s'%(e['lang']), e['lang'], str(round(e['age_days']/365)) ]))
 		response.setHeader('Content-Type', 'text/plain')
@@ -526,26 +533,26 @@ def manage_cleanup_recursive(self):
 				</div>
 			</li>'''
 
-		if clean_delete_data:
+		if valid_delete_data:
 			html.append('<h2 class="delete"><i class="far fa-trash-alt"></i> delete</h2>')
 			html.append('<ol class="delete">')
-			for e in clean_delete_data:
+			for e in valid_delete_data:
 				TOOLTIP = json.dumps(e, indent=4).replace('"', '')
 				html.append(li_tmpl.format(TOOLTIP=TOOLTIP, e=dotdict(e), ID='/content/' not in e['absolute_url'] and e['absolute_url'] or e['absolute_url'].split('/content')[1], YEARS=round(e['age_days']/365)))
 			html.append('</ol>')
 			html.append('<p />')
 
 		# Show only the check items with grading == 1
-		clean_check_data = [e for e in clean_check_data if e['grading'] == 1]
-		if clean_check_data:
+		valid_check_data = [e for e in valid_check_data if e['grading'] == 1]
+		if valid_check_data:
 			html.append('<h2 class="check"><i class="fas fa-eye"></i> check</h2>')
 			html.append('<ol class="check">')
-			for e in clean_check_data:
+			for e in valid_check_data:
 				TOOLTIP = json.dumps(e, indent=4).replace('"', '')
 				html.append(li_tmpl.format(TOOLTIP=TOOLTIP, e=dotdict(e), ID='/content/' not in e['absolute_url'] and e['absolute_url'] or e['absolute_url'].split('/content')[1], YEARS=round(e['age_days']/365)))
 			html.append('</ol>')
 		
-		if not clean_delete_data and not clean_check_data:
+		if not valid_delete_data and not valid_check_data:
 			html.append('<h2 class="text-success"><i class="fas fa-check"></i> No items to check</h2>')
 			html.append('<p>All items are active or have active subpages. Nothing to clean.</p>')
 			html.append('<p />')

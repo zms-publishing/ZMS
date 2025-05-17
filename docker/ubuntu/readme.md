@@ -57,7 +57,7 @@ The VSCode Docker Extension [ms-azuretools.vscode-docker](https://marketplace.vi
 
 ## Attach VSCode to the ZMS Container
 Another right click on the running container-ID allows to intrude the container with VSCode and launch a new Zope instance in debugging mode. 
-Hint: For this purpose the docker-container folder `/home/zope/venv/src/zms/docker/.vscode/` contains a prepared VSCode-workspace file and a launch file for starting Zope in debug-mode within the container [Docker.code-workspace](https://github.com/zms-publishing/ZMS/blob/main/docker/alpine/.vscode/Docker.code-workspace). The thus launched Zope instance will run port 8085.
+Hint: For this purpose the docker-container folder `/home/zope/venv/src/zms/.vscode/` contains a prepared VSCode-workspace file and a launch file for starting Zope in debug-mode within the container [ZMS_docker.code-workspace](https://github.com/zms-publishing/ZMS/blob/main/.vscode/ZMS_docker.code-workspace). The thus launched Zope instance will run port 8085.
 
 ![Attach VSCode to the ZMS Container](../../docs/images/admin_docker_debug_zeo.gif)
 
@@ -69,7 +69,7 @@ In this case a "ready for development" container might be a good alternative: Th
 ![Browser-based VSCode-GUI from ZMS Container](../../docs/images/develop_vscode_remote5_devcontainer.gif)
 
 
-Calling `http://localhost:8080` provides a browser-based VSCode view of the `/home/zope` folder; switching to the VSCode workspace file `/home/zope/venc/src/zms/.vscode/Docker.workspace` allows to start a new Zope instance on port 8086 for debugging within the VSCode GUI.
+Calling `http://localhost:8080` provides a browser-based VSCode view of the `/home/zope` folder; switching to the VSCode workspace file `/home/zope/venc/src/zms/.vscode/ZMS_docker.code-workspace` allows to start a new Zope instance on port 8086 for debugging within the VSCode GUI.
 The locally created Docker image can be saved as tar-file ...
 
 ```sh

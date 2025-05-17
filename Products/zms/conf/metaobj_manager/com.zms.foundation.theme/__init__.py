@@ -22,7 +22,7 @@ class com_zms_foundation_theme:
 	package = ""
 
 	# Revision
-	revision = "5.1.0"
+	revision = "5.2.0"
 
 	# Type
 	type = "ZMSPackage"

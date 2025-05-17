@@ -252,7 +252,7 @@
 					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:'BTN_DELETE',key:'obj'});return false"><i class="fas fa-times"></i></button>
 				</div><!-- .btn-group -->
 				<div class="btn-group packaging mr-1">
-					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_ACQUIRE')+'...'" onclick="$ZMI.iframe('manage_main_acquire',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')});return false" tal:condition="python:here.getPortalMaster() is not None"><i class="fas fa-share"></i></button>
+					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_ACQUIRE')+'...'" onclick="$ZMI.iframe('manage_main_acquire',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')});return false" tal:condition="python:here.getPortalMaster() is not None"><i class="fas fa-share fa-flip-vertical"></i></button>
 					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).attr('title')});return false"><i class="fas fa-upload"></i></button>
 					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this);return false"><i class="fas fa-download"></i></button>
 				</div><!-- .btn-group -->
@@ -298,7 +298,7 @@
 									tal:attributes="
 										href python:'%s/metacmd_manager/manage_main?lang=%s&id=%s'%(context.getHome().aq_parent.content.absolute_url(),request['lang'],metaCmd['id']);
 										title python:'acquired from: %s (%s)'%(context.getHome().aq_parent.content.id, context.getHome().aq_parent.content.attr('titlealt'))"
-									><i class="fas fa-share"></i></a>
+									><i class="fas fa-share fa-flip-vertical mr-2"></i></a>
 								<i tal:condition="python:metaCmd.get('icon_clazz',False)" tal:attributes="class python:metaCmd.get('icon_clazz')"></i>&nbsp;&nbsp;
 								<strong tal:content="python:metaCmd['id']">the id</strong> ( <tal:block tal:content="python:here.getZMILangStr(metaCmd['name'])">Name</tal:block> )
 							</tal:block>
@@ -316,7 +316,7 @@
 						<tal:block tal:condition="python:ob is None"
 							><tal:block tal:condition="python:metaCmd.get('acquired',False)"
 								><a tal:attributes="href python:'/'.join([here.getPortalMaster().absolute_url()]+request['URL'].split('/')[-2:])" target="_blank"
-									><i class="fas fa-share" title="acquired"></i></a
+									><i class="fas fa-share fa-flip-vertical" title="acquired"></i></a
 							></tal:block
 							><a data-turbolinks="false" class="text-danger"
 								tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaCmd['id'])"
@@ -326,7 +326,11 @@
 						</tal:block>
 					</td>
 					<td>
-						<tal:block tal:content="python:' '.join([x[1] for x in execution_options if int(metaCmd['execution'])==x[0]])">execution</tal:block>
+						<tal:block 
+							tal:on-error="structure python:'<span title=\042ERROR\042 class=\042badge badge-danger\042>%s</span>'%(metaCmd.get('execution'))"
+							tal:content="python:' '.join([x[1] for x in execution_options if int(metaCmd['execution'])==x[0]])">
+							execution
+						</tal:block>
 					</td>
 					<td>
 						<tal:block tal:condition="python:metaCmd.get('data') is not None"

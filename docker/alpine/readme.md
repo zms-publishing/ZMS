@@ -57,6 +57,6 @@ The VSCode Docker Extension [ms-azuretools.vscode-docker](https://marketplace.vi
 
 ## Attach VSCode to the ZMS Container
 Another right click on the running container-ID allows to intrude the container with VSCode and launch a new Zope instance in debugging mode. 
-Hint: For this purpose the docker-container folder `/home/zope/venv/src/zms/docker/.vscode/` contains a prepared VSCode-workspace file and a launch config for starting Zope in debug-mode within the container [Docker.code-workspace](https://github.com/zms-publishing/ZMS/blob/main/docker/alpine/.vscode/Docker.code-workspace). The thus launched Zope instance will run port 80.
+Hint: For this purpose the docker-container folder `/home/zope/venv/src/zms/.vscode/` contains a prepared VSCode-workspace file and a launch config for starting Zope in debug-mode within the container [ZMS_docker.code-workspace](https://github.com/zms-publishing/ZMS/blob/main/.vscode/ZMS_docker.code-workspace). The thus launched Zope instance will run port 80.
 
 ![Attach VSCode to the ZMS Container](../../docs/images/admin_docker_debug_zeo.gif)

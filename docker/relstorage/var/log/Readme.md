@@ -1,0 +1,1 @@
+Empty folder needed as Docker volume.

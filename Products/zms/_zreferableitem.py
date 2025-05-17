@@ -126,14 +126,19 @@ class ZReferableItem(object):
   __authorPermissions__ = (
     'manage_RefForm', 'manage_browse_iframe',
   )
+  __administratorPermissions__ = (
+    'manage_change_refs',
+  )
   __ac_permissions__=(
     ('ZMS Author', __authorPermissions__),
+    ('ZMS Administrator', __administratorPermissions__),
   )
 
   # Management Interface.
   # ---------------------
   manage_RefForm = PageTemplateFile('zpt/ZMSLinkElement/manage_refform', globals())
-  manage_browse_iframe = PageTemplateFile('zpt/ZMSLinkElement/manage_browse_iframe', globals()) 
+  manage_browse_iframe = PageTemplateFile('zpt/ZMSLinkElement/manage_browse_iframe', globals())
+  manage_change_refs = PageTemplateFile('zpt/ZMSLinkElement/manage_changeRefsToObj', globals())
 
 
   # ----------------------------------------------------------------------------
@@ -274,6 +279,76 @@ class ZReferableItem(object):
                   d[ref] = 1
     return list(set(d))
 
+
+  # ----------------------------------------------------------------------------
+  #  ZReferableItem.changeRefsToObj:
+  #
+  #  Change each reference TO the current TO an other object.
+  # ----------------------------------------------------------------------------
+  def changeRefsToObj(self, ref_to):
+    """
+    Change all internal references to a new target object.
+    
+    @param ref_to: The target object to which all references should point
+    @return: Dictionary with counts of changed references
+    """
+    standard.writeLog(self, '[changeRefToObjs]')
+    result = {'changed': 0, 'unchanged': 0, 'ref_to': None}
+    request = self.REQUEST
+    # Get the link of the current object
+    this_ref = str(self.getRefObjPath(self))
+    getRefByObjs = self.getRefByObjs()
+
+    if not getRefByObjs or not ref_to:
+      # Break if there are no references or the target object is not specified
+      standard.writeLog(self, '[changeRefsToObj] No references or target object specified.')
+      return None
+    else:
+      result['ref_to'] = '%s/manage_RefForm'%(self.getLinkObj(ref_to).absolute_url())
+
+    for ref in getRefByObjs:
+      ref_ob = self.getLinkObj(ref,request)
+      if ref_ob is not None:
+        # Get the referencing object
+        ref_obj = self.getLinkObj(ref)
+        if ref_obj is not None:
+          # Find the attribute that is linking to the current object
+          for key in [k for k in list(ref_obj.getObjAttrs()) if ref_obj.getObjAttrs()[k]['datatype'] in ['richtext', 'string', 'text', 'url']]:
+            objAttr = ref_obj.getObjAttr(key)
+            datatype = objAttr['datatype']
+
+            if datatype in ['richtext', 'string', 'text']:
+              # Get the value of the attribute
+              v = ref_obj.attr(key)
+              if v is not None and isinstance(v, str):
+                if this_ref in str(v):
+                  try:
+                    ref_obj.attr(key,str(v).replace(this_ref, ref_to))
+                    # Register the new reference at the target object
+                    ref_to_ob = self.getLinkObj(ref_to)
+                    if ref_to_ob is not None:
+                      ref_to_ob.registerRefObj(ref_obj)
+                    result['changed'] += 1
+                  except Exception as e:
+                    # Handle the exception if the replacement fails
+                    standard.writeLog(self, '[changeRefsToObj] Error: %s'%str(e))
+                    result['unchanged'] += 1
+            elif datatype in ['url']:
+              v = ref_obj.attr(key)
+              if v is not None:
+                if this_ref in str(v):
+                  try:
+                    ref_obj.attr(key, ref_to)
+                    # Register the new reference at the target object
+                    ref_to_ob = self.getLinkObj(ref_to)
+                    if ref_to_ob is not None:
+                      ref_to_ob.registerRefObj(ref_obj)
+                    result['changed'] += 1
+                  except Exception as e:
+                    # Handle the exception if the replacement fails
+                    standard.writeLog(self, '[changeRefsToObj] Error: %s'%str(e))
+                    result['unchanged'] += 1
+    return result
 
   # ----------------------------------------------------------------------------
   #  ZReferableItem.prepareRefreshRefToObjs:

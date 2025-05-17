@@ -18,10 +18,12 @@
 
 # Imports.
 import time
+import shutil
 from OFS import Moniker
 from OFS.CopySupport import _cb_decode, _cb_encode, CopyError
 # Product Imports.
 from Products.zms import standard
+from Products.zms import _globals
 
 
 # ------------------------------------------------------------------------------
@@ -118,12 +120,12 @@ class CopySupport(object):
           cp=REQUEST['__cp']
       if cp is None:
         raise CopyError('No Data')
-      
-      try: 
+
+      try:
         cp=_cb_decode(cp)
-      except: 
+      except:
         raise CopyError('Invalid')
-      
+
       return cp
 
 
@@ -131,25 +133,25 @@ class CopySupport(object):
     #  CopySupport._get_obs:
     # --------------------------------------------------------------------------
     def _get_obs(self, cp):
-        
-        try: 
+
+        try:
           cp=_cb_decode(cp)
-        except: 
+        except:
           raise CopyError('Invalid')
-        
+
         oblist=[]
         op=cp[0]
         app = self.getPhysicalRoot()
-        
+
         for mdata in cp[1]:
           m = Moniker.loadMoniker(mdata)
-          try: 
+          try:
             ob = m.bind(app)
-          except: 
+          except:
             raise CopyError('Not Found')
           self._verifyObjectPaste(ob)
           oblist.append(ob)
-        
+
         return oblist
 
     def cp_get_obs(self, REQUEST):
@@ -174,8 +176,8 @@ class CopySupport(object):
 
     # --------------------------------------------------------------------------
     #  CopySupport._set_sort_ids:
-    # 
-    #  Group all objects to be copied / moved at new position (given by _sort_id) 
+    #
+    #  Group all objects to be copied / moved at new position (given by _sort_id)
     #  in correct sort-order.
     # --------------------------------------------------------------------------
     def _set_sort_ids(self, ids, op, REQUEST):
@@ -187,6 +189,63 @@ class CopySupport(object):
         if (id in ids) or (op == OP_MOVE and copy_of_prefix+id in ids):
           ob.setSortId(sort_id)
           sort_id += 1
+
+    # --------------------------------------------------------------------------
+    #  CopySupport._copy_blobs_between_clients_with_different_mediadb
+    #
+    #  If source and target have different mediadb folder settings,
+    #  then the data of blob fields is copied as well
+    #  to avoid missing images and files due to invalid references.
+    # --------------------------------------------------------------------------
+    def _copy_blobs_if_other_mediadb(self, **kwargs):
+        mode = kwargs.get('mode', None)
+        oblist = kwargs.get('oblist', [])
+        # identify all BLOB fields
+        if mode == 'read_from_source':
+            if len(oblist) > 0:
+                self.REQUEST.set('mediadb_source_location', oblist[0].getMediaDb().getLocation())
+            self.blobfields = []
+            tree_objs = []
+            for obj in oblist:
+                lang = obj.REQUEST.get('lang')
+                tree_objs.append(obj)
+                if obj.getTreeNodes():
+                    tree_objs.extend(obj.getTreeNodes())
+                for ob in tree_objs:
+                    for langId in ob.getLangIds():
+                        for key in ob.getObjAttrs():
+                            # TODO: discuss handling of getObjVersions...!? (preview vs live, activated workflow)
+                            obj_attr = ob.getObjAttr(key)
+                            datatype = obj_attr['datatype_key']
+                            if datatype in _globals.DT_BLOBS:
+                                ob.REQUEST.set('lang', langId)
+                                if ob.attr(key) is not None:
+                                    self.blobfields.append({
+                                        'id': ob.getId(),
+                                        'key': key,
+                                        'lang': langId,
+                                        'filename': ob.attr(key).getFilename(),
+                                        'mediadbfile': ob.attr(key).getMediadbfile(),
+                                    })
+                                ob.REQUEST.set('lang', lang)
+
+        # copy these files from source to target's MediaDb folder at os-level
+        # do nothing if target and source have the same MediaDb folder
+        # -> the new pasted object references the same MediaDb file as the source object
+        # -> this is true until the next change/upload of a new BLOB in either source or target object
+        if mode == 'copy_to_target':
+            mediadb_source_location = self.REQUEST.get('mediadb_source_location')
+            mediadb_target_location = self.getMediaDb().getLocation()
+            try:
+                if mediadb_target_location and (mediadb_target_location != mediadb_source_location):
+                    for blob in self.blobfields:
+                        mediadb_file = blob.get('mediadbfile')
+                        if mediadb_file is not None:
+                            shutil.copy(f'{mediadb_source_location}/{mediadb_file}', mediadb_target_location)
+            except:
+                standard.writeError(self, '[CopySupport._copy_blobs_if_other_mediadb]')
+            finally:
+                self.blobfields = []
 
 
     ############################################################################
@@ -228,7 +287,7 @@ class CopySupport(object):
       id_prefix = REQUEST.get('id_prefix','e')
       standard.writeBlock( self, "[CopySupport.manage_pasteObjs]")
       t0 = time.time()
-      
+
       # Analyze request
       cb_copy_data = self._get_cb_copy_data(cb_copy_data=None, REQUEST=REQUEST)
       op = cb_copy_data[0]
@@ -236,26 +295,32 @@ class CopySupport(object):
       cp = _cb_encode(cp)
       ids = [self._get_id(x.getId()) for x in self._get_obs(cp)]
       oblist = self._get_obs(cp)
-      
+
+      if self.getMediaDb():
+        self._copy_blobs_if_other_mediadb(mode='read_from_source', oblist=oblist)
+
       # Paste objects.
       action = ['Copy','Move'][op==OP_MOVE]
       standard.triggerEvent(self,'before%sObjsEvt'%action)
       self.manage_pasteObjects(cb_copy_data=None,REQUEST=REQUEST)
       standard.triggerEvent(self,'after%sObjsEvt'%action)
-      
+
+      if self.getMediaDb():
+        self._copy_blobs_if_other_mediadb(mode='copy_to_target')
+
       # Sort order (I).
       self._set_sort_ids(ids=ids, op=op, REQUEST=REQUEST)
-      
+
       # Move objects.
       if op == OP_MOVE:
         normalize_ids_after_move(self,id_prefix=id_prefix,ids=ids)
       # Copy objects.
       else:
         normalize_ids_after_copy(self,id_prefix=id_prefix,ids=ids)
-      
+
       # Sort order (II).
       self.normalizeSortIds()
-      
+
       # Return with message.
       if RESPONSE is not None:
         message = self.getZMILangStr('MSG_PASTED')

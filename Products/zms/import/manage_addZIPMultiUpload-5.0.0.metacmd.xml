@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<list>
+  <item type="dictionary">
+    <dictionary>
+      <item key="data"><![CDATA[from io import BytesIO
+from PIL import Image, IptcImagePlugin
+from PIL.ExifTags import TAGS
+from Products.zms import standard
+
+def manage_addZIPMultiUpload(self):
+	request = self.REQUEST
+	html = ''
+	html += '<!DOCTYPE html>'
+	html += '<html lang="en">'
+	html += self.zmi_html_head(self,request)
+	html += '<body class="%s">'%(' '.join(['zmi',request['lang'],'transition',self.meta_id]))
+	html += self.zmi_body_header(self,request,options=[{'action':'#','label':'Multi-Upload...'}])
+	html += '<div id="zmi-tab">'
+	html += self.zmi_breadcrumbs(self,request)
+
+	html += '<form class="form-horizontal card" method="post" enctype="multipart/form-data">'
+	html += '<input type="hidden" name="form_id" value="manage_addZIPMultiUpload" />'
+	html += '<input type="hidden" name="lang" value="%s" />'%request['lang']
+	html += '<legend>Multi-File-Upload</legend>'
+	html += '<div class="card-body" style="min-height:calc(100vh - 15rem);">'
+	html += self.zmi_form_section_begin(self,request)
+
+	# --- Display contents of zip-file.
+	# ---------------------------------
+	if request.form.get('btn')=='BTN_UPLOAD' and request.form.get('file'):
+		file = request['file']
+		temp_id = request.SESSION.getContainerKey().decode()+'_'+request['form_id']
+		temp_folder = self.temp_folder
+		files = self.getZipArchive(file)
+		root = None
+		containers = []
+		html += '<input type="hidden" name="temp_id" value="%s" />'%temp_id
+		html += '<input type="hidden" name="temp_filename" value="%s" />'%file.filename
+		if temp_id in self.temp_folder.objectIds():
+			getattr(temp_folder,temp_id).manage_upload(file)
+		else:
+			temp_folder.manage_addFile(id=temp_id,title=file.filename,file=file)
+		html += '<div class="form-group">'
+		html += '<label class="control-label"><i class="fas fa-file-archive"></i> %s (%s, %i %s)</label>'%( file.filename, self.getDataSizeStr(getattr(temp_folder,temp_id).size), len(files), self.getZMILangStr('ATTR_OBJECTS') )
+		html += '<ol style="list-style-type:none;">'
+
+		for file in self.sort_list(files,'local_filename'):
+			if '__MACOSX' in file['local_filename']:
+				continue
+			base = file['local_filename'][:-len(file['filename'])-1]
+			if root is None:
+				root = file['local_filename'][:max(file['local_filename'].rfind('/'),file['local_filename'].rfind('\\'))]
+			if file['isdir']:
+				containers.append(file['local_filename'])
+				html += '<ol style="list-style-type:none;"><li style="list-style-type:none;"><input type="checkbox" class="mr-1" name="ids:list" value="%s" checked="checked"/>%s %s</li>'%(file['local_filename'][len(root):],self.display_icon(meta_id='ZMSFolder'),file['filename'])
+			else:
+				if containers:
+					if base != containers[-1]:
+						containers.remove(containers[-1])
+						html += '</ol>'
+				meta_id = 'ZMSFile'
+				if file['content_type'] == 'text/html':
+					meta_id = 'ZMSTextarea'
+				elif file['content_type'].startswith('image/'):
+					meta_id = 'ZMSGraphic'
+				html += '<li style="list-style-type:none; line-height:1.5rem"><input type="checkbox" class="mr-1" name="ids:list" value="%s" checked="checked"/>&nbsp;%s %s (%s)</li>'%(file['local_filename'][len(root):],self.display_icon(meta_id=meta_id),file['filename'],self.getDataSizeStr(file['size']))
+		for base in containers:
+			html += '</ol>'
+
+		html += '</div><!-- .form-group -->'
+
+
+		html += """
+			<div class="form-group row">
+				<div class="controls save py-3 px-1">
+					<button type="submit" name="btn" class="btn btn-primary" value="BTN_UPLOAD">%s</button>
+					<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CANCEL">%s</button>
+				</div>
+			</div><!-- .form-group -->
+			"""%(self.getZMILangStr('BTN_UPLOAD'), self.getZMILangStr('BTN_CANCEL'))
+
+	# --- Import contents of zip-file.
+	# ---------------------------------
+	elif request.form.get('btn')=='BTN_UPLOAD' and request.form.get('temp_id'):
+		temp_id = request['temp_id']
+		temp_filename = request['temp_filename']
+		temp_folder = self.temp_folder
+		message = []
+		files = self.getZipArchive(bytes(getattr(temp_folder,temp_id).data))
+		containers = {}
+		root = None
+		c = 0
+		for file in self.sort_list(files,'local_filename'):
+			base = file['local_filename'][:-len(file['filename'])-1]
+			if root is None:
+				root = file['local_filename'][:max(file['local_filename'].rfind('/'),file['local_filename'].rfind('\\'))]
+			id_prefix = 'e'
+			#if len(containers.keys()) == 0:
+			#	id_prefix = request['id_prefix']
+
+			if file['local_filename'][len(root):] in request.form.get('ids',[]):
+				container = containers.get(base,self)
+				if file['isdir']:
+					containers[file['local_filename']] = container.manage_addZMSCustom(
+						'ZMSFolder', {
+							'id_prefix': id_prefix,
+							'title': file['filename'],
+							'titlealt': file['filename'],
+						}, request)
+				elif file['content_type'] == 'text/html':
+					text = str(file['data'])
+					i = text.lower().find('<body')
+					if i >= 0:
+						text = text[i:]
+						text = text[text.find('>')+1:]
+						i = text.lower().find('</body')
+						if i >= 0:
+							text = text[:i]
+					container.manage_addZMSCustom(
+						'ZMSTextarea', {
+							'id_prefix': id_prefix,
+							'text': text,
+							'format': 'plain_html',
+						}, request)
+				elif file['content_type'].startswith('image/'):
+					#request.set('generate_preview_imghires_%s'%request['lang'],True)
+
+					exif_data = {}
+					copy = desc = ''
+
+					try:
+						image = Image.open(BytesIO(file['data']))
+
+						# https://iptc.org/std/photometadata/specification/IPTC-PhotoMetadata#metadata-properties
+						iptc_data = IptcImagePlugin.getiptcinfo(image)
+						if iptc_data:
+							iptc_title = iptc_data.get((2, 5))  # https://iptc.org/std/photometadata/specification/IPTC-PhotoMetadata#title
+							iptc_headline = iptc_data.get((2, 105))  # https://iptc.org/std/photometadata/specification/IPTC-PhotoMetadata#headline
+							iptc_description = iptc_data.get((2, 120))  # https://iptc.org/std/photometadata/specification/IPTC-PhotoMetadata#description
+							iptc_copright = iptc_data.get((2, 116))  # https://iptc.org/std/photometadata/specification/IPTC-PhotoMetadata#copyright-notice
+							iptc_creator = iptc_data.get((2, 80))  # https://iptc.org/std/photometadata/specification/IPTC-PhotoMetadata#creator
+
+							if iptc_description is not None:
+								desc = iptc_description.decode()
+							if iptc_title is not None and iptc_title.decode() not in desc:
+								desc = f'{iptc_title.decode()} {desc}'
+							if iptc_headline is not None and iptc_headline.decode() not in desc:
+								desc = f'{iptc_headline.decode()} {desc}'
+
+							if iptc_copright is not None:
+								copy = iptc_copright.decode()
+							if iptc_creator is not None and iptc_creator.decode() not in copy:
+								copy = f'{copy} {iptc_creator.decode()}'
+
+							desc = desc.strip()
+							copy = copy.strip()
+							copy = not copy.startswith('©') and '© ' + copy or copy
+
+						# https://pillow.readthedocs.io/en/stable/reference/ExifTags.html
+						if image.getexif() is not None:
+							for tag, value in image.getexif().items():
+								if tag in TAGS:
+									exif_data[TAGS[tag]] = value
+
+						if desc.strip() == '':
+							if 'ImageDescription' in exif_data:
+								exif_description = exif_data['ImageDescription'].encode('latin-1').decode()
+								if '©' in exif_description:
+									desc, copy = exif_description.split('©')
+
+						if copy.strip() == '':
+							if 'Copyright' in exif_data:
+								exif_copyright = exif_data['Copyright'].encode('latin-1').decode()
+								if exif_copyright.strip() != '':
+									copy = not exif_copyright.startswith('©') and '© ' + exif_copyright or exif_copyright
+
+					except:
+						pass
+
+					# print(desc)
+					# print(copy)
+					# print('---')
+
+					container.manage_addZMSCustom(
+						'ZMSGraphic', {
+							'id_prefix': id_prefix,
+							'captionaddon': copy.strip(),
+							'text': desc.strip(),
+							'img': file,
+						}, request)
+				else:
+					container.manage_addZMSCustom(
+						'ZMSFile', {
+							'id_prefix': id_prefix,
+							'title': file['filename'],
+							'titlealt': file['filename'],
+							'file': file,
+							'align': 'LEFT',
+						}, request)
+				c += 1
+		message.append(self.getZMILangStr('MSG_IMPORTED')%temp_filename+' [%i/%i]'%(c,len(files)))
+		request.response.redirect(standard.url_append_params('%s/manage_main'%self.absolute_url(),{'lang':request['lang'],'manage_tabs_message':'<br/>'.join(message)}))
+
+	# --- Display initial import form.
+	# ---------------------------------
+	else:
+
+		html += """
+			<div class="form-group row"">
+				<div class="col-sm-12">
+					<input id="file" style="height:2.55rem;" name="file" type="file" class="form-control file" multiple="true" data-show-upload="false" data-show-caption="true" />
+				</div>'
+			</div><!-- .form-group -->
+			<div class="form-group row">
+				<div class="controls save py-3 px-1">
+					<button type="submit" name="btn" class="btn btn-primary" value="BTN_UPLOAD">%s</button>
+					<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CANCEL">%s</button>
+				</div>
+			</div><!-- .form-group -->
+			"""%(self.getZMILangStr('BTN_UPLOAD'), self.getZMILangStr('BTN_CANCEL'))
+
+	# ---------------------------------
+
+	html += '</form><!-- .form-horizontal -->'
+	html += '</div><!-- .card -->'
+	html += '</div><!-- #zmi-tab -->'
+	html += self.zmi_body_footer(self,request)
+	html +='</body></html>'
+	return html]]>
+      </item>
+      <item key="description"></item>
+      <item key="execution" type="int">0</item>
+      <item key="icon_clazz"><![CDATA[fa fa-upload text-warning]]></item>
+      <item key="id"><![CDATA[manage_addZIPMultiUpload]]></item>
+      <item key="meta_type"><![CDATA[External Method]]></item>
+      <item key="meta_types" type="list">
+        <list>
+          <item><![CDATA[ZMS]]></item>
+          <item><![CDATA[ZMSDocument]]></item>
+          <item><![CDATA[ZMSFolder]]></item>
+          <item><![CDATA[gallery]]></item>
+        </list>
+      </item>
+      <item key="name"><![CDATA[ZIP-Multi-Upload]]></item>
+      <item key="revision"><![CDATA[5.0.0]]></item>
+      <item key="roles" type="list">
+        <list>
+          <item><![CDATA[ZMSAdministrator]]></item>
+          <item><![CDATA[ZMSAuthor]]></item>
+          <item><![CDATA[ZMSEditor]]></item>
+        </list>
+      </item>
+      <item key="title"><![CDATA[Upload multiple files as a ZIP-file]]></item>
+    </dictionary>
+  </item>
+</list>

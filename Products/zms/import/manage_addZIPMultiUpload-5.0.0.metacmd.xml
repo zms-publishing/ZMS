@@ -53,7 +53,7 @@ def manage_addZIPMultiUpload(self):
 				root = file['local_filename'][:max(file['local_filename'].rfind('/'),file['local_filename'].rfind('\\'))]
 			if file['isdir']:
 				containers.append(file['local_filename'])
-				html += '<ol style="list-style-type:none;"><li style="list-style-type:none;"><input type="checkbox" name="ids:list" value="%s" checked="checked"/>%s %s</li>'%(file['local_filename'][len(root):],self.display_icon(meta_id='ZMSFolder'),file['filename'])
+				html += '<ol style="list-style-type:none;"><li style="list-style-type:none;"><input type="checkbox" class="mr-1" name="ids:list" value="%s" checked="checked"/>%s %s</li>'%(file['local_filename'][len(root):],self.display_icon(meta_id='ZMSFolder'),file['filename'])
 			else:
 				if containers:
 					if base != containers[-1]:
@@ -64,7 +64,7 @@ def manage_addZIPMultiUpload(self):
 					meta_id = 'ZMSTextarea'
 				elif file['content_type'].startswith('image/'):
 					meta_id = 'ZMSGraphic'
-				html += '<li style="list-style-type:none; line-height:1.5rem"><input type="checkbox" name="ids:list" value="%s" checked="checked"/>&nbsp;%s %s (%s)</li>'%(file['local_filename'][len(root):],self.display_icon(meta_id=meta_id),file['filename'],self.getDataSizeStr(file['size']))
+				html += '<li style="list-style-type:none; line-height:1.5rem"><input type="checkbox" class="mr-1" name="ids:list" value="%s" checked="checked"/>&nbsp;%s %s (%s)</li>'%(file['local_filename'][len(root):],self.display_icon(meta_id=meta_id),file['filename'],self.getDataSizeStr(file['size']))
 		for base in containers:
 			html += '</ol>'
 

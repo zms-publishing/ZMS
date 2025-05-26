@@ -36,7 +36,7 @@ class manage_addMultiUpload:
 	package = ""
 
 	# Revision
-	revision = "5.1.0"
+	revision = "5.1.1"
 
 	# Roles
 	roles = ["ZMSAdministrator"

@@ -37,9 +37,26 @@ OP_MOVE = 1
 #  CopySupport._normalize_ids_after_copy:
 # ------------------------------------------------------------------------------
 def normalize_ids_after_copy(node, id_prefix='e', ids=[]):
+  """ 
+  The ids of copied objects are normalized to the context-node's id_prefix
+  and the ZMS-client's sequence incrementing (acl_sequence).
+  After the objects are moved to their new position their ids are normalized,
+  that means they are reset to a new id that consists of the id_prefix of the 
+  target-context and the next increment of the ZMS-object sequence counter.
+
+  @param node: context-node
+  @type node: ZMSNode
+  @param id_prefix: id_prefix of context-node
+  @type id_prefix: C{str}
+  @param ids: list of ids to be normalized, '*' for all
+  @type ids: C{list}
+  @note: This function is called after manage_pasteObjs() has moved the objects.
+  """
   request = node.REQUEST
   copy_of_prefix = 'copy_of_'
-  new_ids = []
+  normalized_objs = []
+
+  # [A] Rename an object in the new context
   for childNode in node.getChildNodes():
     # validate id
     id = childNode.getId()
@@ -54,15 +71,15 @@ def normalize_ids_after_copy(node, id_prefix='e', ids=[]):
       if new_id is not None and new_id != id and childNode.getParentNode() == node:
         standard.writeBlock(node,'[CopySupport._normalize_ids_after_copy]: rename %s(%s) to %s'%(childNode.absolute_url(),childNode.meta_id,new_id))
         node.manage_renameObject(id=id,new_id=new_id)
-        # add to new_ids
-        new_ids.append(new_id)
-      else:
-        new_ids.append(id)
+        # Add normalized object to list
+        normalized_objs.extend(node.getChildNodes(reid=new_id))
+
+  # [B] Reset backlink-attribute and trigger onChangeObj for all copied child-nodes.
   for childNode in node.getChildNodes():
-    # reset ref_by
+    # Reset ref_by
     childNode.ref_by = []
-    # init object-state
-    if not '*' in ids and childNode.id in new_ids:
+    # Init object-state
+    if not '*' in ids:
       lang = request.get('lang')
       for langId in node.getLangIds():
         request.set('lang',langId)
@@ -71,7 +88,8 @@ def normalize_ids_after_copy(node, id_prefix='e', ids=[]):
         childNode.onChangeObj(request)
       request.set('lang',lang)
     # traverse tree
-    normalize_ids_after_copy(childNode, id_prefix, ids=['*'])
+    if childNode in normalized_objs and childNode.isPage():
+  	  normalize_ids_after_copy(childNode, id_prefix, ids=['*'])
 
 
 # ------------------------------------------------------------------------------

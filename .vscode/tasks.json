@@ -1,18 +1,39 @@
-// {
-// 	"version": "2.0.0",
-// 	"tasks": [
-// 		{
-// 			"label": "Install latest Py3-VScode-Extension", 
-// 			"type": "shell",
-// 			"command": "code --install-extension ms-python.python --force", 
-// 			"group": "none",
-// 			"presentation": {
-// 				"reveal": "always",
-// 				"panel": "new"
-// 			},
-// 			"runOptions": {
-// 				"runOn": "folderOpen"
-// 			}
-// 		}
-// 	]
-// }
+{
+	// https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ms-python/vsextensions/python/2022.2.1924087327/vspackage
+	// First make sure that docker is running:
+	// > sudo systemctl restart docker
+	"version": "2.0.0",
+	"tasks": [
+		// // {
+		// // 	"label": "Downgrade Py-Extension for Py2", 
+		// // 	"type": "shell",
+		// // 	"command": [
+		// // 		"code --uninstall-extension ms-toolsai.jupyter",
+		// // 		"code --uninstall-extension ms-toolsai.jupyter-keymap",
+		// // 		"code --uninstall-extension ms-toolsai.vscode-jupyter-cell-tag",
+		// // 		"code --install-extension ms-python.python@2022.2.1924087327",
+		// // 		"code --install-extension atariq11700.debugpy-old@2023.1.12492010",
+		// // 		"code --install-extension github.copilot@1.270.0",
+		// // 		"code --install-extension github.copilot-chat@0.23.2",
+		// // 	],
+		// // 	"runOptions": {
+		// // 		"runOn": "folderOpen"
+		// // 	}
+		// // },
+		// {
+		// 	"label": "Upgrade Py-Extension for Py3", 
+		// 	"type": "shell",
+		// 	"command": [
+		// 		"code --install-extension ms-python.python --force",
+		// 		"code --install-extension ms-toolsai.jupyter --force",
+		// 		"code --install-extension ms-toolsai.jupyter-keymap --force",
+		// 		"code --install-extension ms-toolsai.vscode-jupyter-cell-tag --force",
+		// 		"code --install-extension github.copilot --force",
+		// 		"code --install-extension github.copilot-chat --force",
+		// 	],
+		// 	"runOptions": {
+		// 		"runOn": "folderOpen"
+		// 	}
+		// },
+	]
+}

@@ -75,21 +75,21 @@ def normalize_ids_after_copy(node, id_prefix='e', ids=[]):
         normalized_objs.extend(node.getChildNodes(reid=new_id))
 
   # [B] Reset backlink-attribute and trigger onChangeObj for all copied child-nodes.
-  for childNode in node.getChildNodes():
+  for obj in normalized_objs:
     # Reset ref_by
-    childNode.ref_by = []
+    obj.ref_by = []
     # Init object-state
     if not '*' in ids:
       lang = request.get('lang')
       for langId in node.getLangIds():
         request.set('lang',langId)
         if not node.getAutocommit():
-          childNode.setObjStateNew(request,reset=0)
-        childNode.onChangeObj(request)
+          obj.setObjStateNew(request,reset=0)
+        obj.onChangeObj(request)
       request.set('lang',lang)
     # traverse tree
-    if childNode in normalized_objs and childNode.isPage():
-  	  normalize_ids_after_copy(childNode, id_prefix, ids=['*'])
+    for childNode in obj.getChildNodes():
+      normalize_ids_after_copy(childNode, id_prefix, ids=['*'])
 
 
 # ------------------------------------------------------------------------------

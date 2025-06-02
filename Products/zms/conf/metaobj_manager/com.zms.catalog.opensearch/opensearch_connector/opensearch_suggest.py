@@ -6,45 +6,6 @@ import re
 from Products.zms import standard
 
 
-def get_opensearch_client(self):
-	# ${opensearch.url:https://localhost:9200, https://localhost:9201}
-	# ${opensearch.username:admin}
-	# ${opensearch.password:admin}
-	# ${opensearch.ssl.verify:}
-	url_string = self.getConfProperty('opensearch.url')
-	urls = [url.strip().rstrip('/') for url in url_string.split(',')]
-	hosts = []
-	use_ssl = False
-	# Process (multiple) url(s) (host, port, ssl)
-	if not urls:
-		return None
-	else:
-		for url in urls:
-			hosts.append( { \
-					'host':urlparse(url).hostname, \
-					'port':urlparse(url).port } \
-				)
-			if urlparse(url).scheme=='https':
-				use_ssl = True
-	verify = bool(self.getConfProperty('opensearch.ssl.verify', False))
-	username = self.getConfProperty('opensearch.username', 'admin')
-	password = self.getConfProperty('opensearch.password', 'admin')
-	auth = (username,password)
-	
-	# CAVE: connection_class RequestsHttpConnection
-	client = OpenSearch(
-		urls,
-		connection_class=RequestsHttpConnection,
-		http_compress = False,
-		http_auth = auth,
-		use_ssl = use_ssl,
-		verify_certs = verify,
-		ssl_assert_hostname = verify,
-		ssl_show_warn = False,
-	)
-	return client
-
-
 def get_suggest_terms(self, q='Lorem', index_name='myzms', field_names=['title','attr_dc_subject'], qsize=10, debug=False):
 	# Get suggest terms for a given query string q and index_name
 	# Assemble SQL Query using f-strings
@@ -70,7 +31,7 @@ def get_suggest_terms(self, q='Lorem', index_name='myzms', field_names=['title',
 	# #########################
 	# Execute HTTP Request in case of SQL with POST!
 	# #########################
-	client = get_opensearch_client(self)
+	client = self.opensearch_get_client(self)
 	response = {}
 	try:
 		response = client.transport.perform_request(method='POST', url='/_plugins/_sql', headers=headers, params=None, body=data)

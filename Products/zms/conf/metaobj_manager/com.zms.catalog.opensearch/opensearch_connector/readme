@@ -44,12 +44,13 @@ return (context.meta_id in meta_ids) \
 For communicating with the OpenSearch server over REST API, the connector needs some properties:
 
 1. *URL*: the URL(s) of the OpenSearch server (comma-separated)
-2. *Username*: the username for the OpenSearch server
-3. *Password*: the password for the OpenSearch server
-4. *Schema*: the data schema of the index in JSON format; it is defined by the general search adapter GUI and created wirh the "Create Schema" action
-5. *Parser*: the URL of the parsing application (e.g. Apache Tika) for extracting content from any binary files
-6. Score-Script (Painless): a script for boosting the relevance of certain fields in the search results
-7. Suggest-Fields: indexname-specific fieldnames (as a list) for autocomplete suggestions
+2. *Timeout*: limits the waiting for the OpenSearch server-response (seconds) 
+3. *Username*: the username for the OpenSearch server
+4. *Password*: the password for the OpenSearch server
+5. *Schema*: the data schema of the index in JSON format; it is defined by the general search adapter GUI and created wirh the "Create Schema" action
+6. *Parser*: the URL of the parsing application (e.g. Apache Tika) for extracting content from any binary files
+7. Score-Script (Painless): a script for boosting the relevance of certain fields in the search results
+8. Suggest-Fields: indexname-specific fieldnames (as a list) for autocomplete suggestions
 
 _Hint:_ All these properties are stored in the ZMS configuration and can be managed as well with the ZMS configuration GUI.
 
@@ -82,7 +83,18 @@ Since the autocomplete concept of Opensearch in general does not provide any wor
 2. attr_dc_subject
 3. attr_dc_description
 
-To define a custom set of these meaningful properties a new ZMS configuration property shall be defined with a prefix `opensearch.suggest.fields` and a dot-separated name of the index as suffix (usually this is the ZMS root name); two examples:
+To define a custom set of these meaningful properties a new ZMS configuration property shall be defined as `opensearch.suggest.fields` 
+
+<pre>
+opensearch.suggest.fields = [
+    "title",
+    "attr_dc_subject",
+    "attr_dc_description"
+    ]
+</pre>
+
+
+If there more external, e.g. SQL-filled indexes a dot-separated name of the index as suffix (usually this is the ZMS root name) can be applied; the following example refers to the ZMS-bases index and an additional index with a different schema containing addresses:
 
 <pre>
 opensearch.suggest.fields.myzms = [

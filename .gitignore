@@ -22,4 +22,6 @@ docker/**/postgres/data/*
 !docker/**/postgres/data/
 docker/**/opensearch/data/*
 !docker/**/opensearch/data/
+docker/**/elastic/data/*
+!docker/**/elastic/data/
 /revisions.txt

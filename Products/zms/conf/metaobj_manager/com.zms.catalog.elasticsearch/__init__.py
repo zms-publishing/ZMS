@@ -16,7 +16,7 @@ class com_zms_catalog_elasticsearch:
 	package = ""
 
 	# Revision
-	revision = "1.8.0"
+	revision = "1.10.0"
 
 	# Type
 	type = "ZMSPackage"

@@ -127,25 +127,31 @@
 
 
 <tal:block tal:condition="properties">
-	<legend tal:content="python:here.getZMILangStr('TAB_PROPERTIES')">the properties</legend>
+	<legend tal:content="python:here.getZMILangStr('TAB_PROPERTIES')"
+		title="Configurable Property-Types: string, text, number, boolean, password">
+		the properties
+	</legend>
 	<form method="post" action="manage_changeProperties">
 		<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
 		<div class="card-body">
 			<div class="form-group row" tal:repeat="property properties">
-				<label class="col-sm-2 control-label"><span><span tal:content="property/label">the label</span></label>
+				<label class="col-sm-2 control-label"><span tal:content="property/label">the label</span></label>
 				<div class="col-sm-10" tal:define="
 						value python:here.getConfProperty(property['id'],property.get('default_value',''));
 						is_target_of python:property.get('is_target_of','')">
-					<tal:block tal:condition="python:property.get('type','string')=='string'">
-						<input class="form-control zmi-code" type="text" tal:attributes="
-							name property/id;
-							value value;
-							data-is_target_of is_target_of">
-					</tal:block>
-					<tal:block tal:condition="python:property.get('type','string')=='password'">
-						<input class="form-control zmi-code" type="password" placeholder="*****" tal:attributes="name property/id;">
-					</tal:block>
-					<div class="single-line zmi-code" tal:condition="python:property.get('type','string')=='text'">
+					<input tal:condition="python:property.get('type') not in ['text', 'number', 'boolean', 'password']"
+							data-property-type="string" class="form-control zmi-code" type="text" 
+							tal:attributes="
+								name property/id;
+								value value;
+								data-is_target_of is_target_of" />
+					<input tal:condition="python:property.get('type')=='password'" 
+							data-property-type="password"
+							class="form-control zmi-code" type="password" placeholder="*****" 
+							tal:attributes="name property/id;" />
+					<div tal:condition="python:property.get('type')=='text'"
+						data-property-type="text"
+						class="single-line zmi-code">
 						<textarea title="Doubleclick for ACE-Editor"
 							tal:attributes="name property/id;
 								id property/id;
@@ -157,6 +163,22 @@
 							tal:content="value">
 						</textarea>
 					</div>
+					<input tal:condition="python:property.get('type')=='number'"
+						data-property-type="number"
+						class="form-control zmi-code" type="number" tal:attributes="
+							name property/id;
+							value value;
+							data-is_target_of is_target_of"
+							step="any"
+							placeholder="3.0" />
+					<input tal:condition="python:property.get('type')=='boolean'"
+						data-property-type="boolean"
+						class="checkbox mx-2" type="checkbox" 
+						tal:attributes="
+							name property/id;
+							value value;
+							data-is_target_of is_target_of;
+							checked python:value=='1' or value==True" />
 				</div>
 			</div><!-- .form-group.row -->
 			<div class="form-group row">

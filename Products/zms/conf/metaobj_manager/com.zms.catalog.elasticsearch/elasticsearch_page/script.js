@@ -101,6 +101,7 @@ $(function() {
 		res['hits']['hits'].forEach(x => {
 			let index_name = x['_index'];
 			let source = x['_source'];
+			let score = x['_score'];
 			let highlight = x['highlight'];
 			let lang = source['lang'];
 			let title = source['title'];

@@ -31,11 +31,12 @@ return (context.meta_id in meta_ids) \
 For communicating with the Elasticsearch server over REST API, the connector needs some properties:
 
 1. *URL*: the URL(s) of the Elasticsearch server (comma-separated)
-2. *Username*: the username for the Elasticsearch server
-3. *Password*: the password for the Elasticsearch server
-4. *Index Name*: the name of the index to be created. If it is empty, the ZMS root folder name will be used as a default index name (recommended)
-5. *Schema*: the data schema of the index in JSON format; it is defined by the general search adapter GUI and created wirh the "Create Schema" action
-6. *Parser*: the URL of the parsing application (e.g. Apache Tika) for extracting content from any binary files
+2. *Timeout*: limits the waiting for the Elasticsearch server-response (seconds) 
+3. *Username*: the username for the Elasticsearch server
+4. *Password*: the password for the Elasticsearch server
+5. *Index Name*: the name of the index to be created. If it is empty, the ZMS root folder name will be used as a default index name (recommended)
+6. *Schema*: the data schema of the index in JSON format; it is defined by the general search adapter GUI and created wirh the "Create Schema" action
+7. *Parser*: the URL of the parsing application (e.g. Apache Tika) for extracting content from any binary files
 
 _Hint:_ All these properties are stored in the ZMS configuration and can be managed as well with the ZMS configuration GUI.
 
@@ -63,13 +64,24 @@ _Important hint_: The action "Initialisation" creates/recreates always an **empt
 
 ###### Autocomplete Suggestion Terms
 
-Since the autocomplete concept of Opensearch in general does not provide any word lists, but matching hits, a list of field names is needed that are explicitly named in the schema to get a basis for extracting words from the content. A typical set of meaningful fields may be:
+Since the autocomplete concept of Elasticsearch in general does not provide any word lists, but matching hits, a list of field names is needed that are explicitly named in the schema to get a basis for extracting words from the content. A typical set of meaningful fields may be:
 
 1. title
 2. attr_dc_subject
 3. attr_dc_description
 
-To define a custom set of these meaningful properties a new ZMS configuration property shall be defined with a prefix `elasticsearch.suggest.fields` and a dot-separated name of the index as suffix (usually this is the ZMS root name); two examples:
+To define a custom set of these meaningful properties a new ZMS configuration property shall be defined as `elasticsearch.suggest.fields` 
+
+<pre>
+elasticsearch.suggest.fields = [
+    "title",
+    "attr_dc_subject",
+    "attr_dc_description"
+    ]
+</pre>
+
+
+If there more external, e.g. SQL-filled indexes a dot-separated name of the index as suffix (usually this is the ZMS root name) can be applied; the following example refers to the ZMS-bases index and an additional index with a different schema containing addresses:
 
 <pre>
 elasticsearch.suggest.fields.myzms = [

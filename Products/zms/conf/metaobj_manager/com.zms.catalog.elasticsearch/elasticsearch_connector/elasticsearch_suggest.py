@@ -48,7 +48,7 @@ def get_suggest_terms(self, q='Lorem', index_name='myzms', field_names=['title',
 		# Remove empty rows
 		datarows = [row for row in datarows if row[0] is not None]
 		# Suggest words (keywords) shall get splitted into single, stripped words
-		terms = [ re.sub(r'[^\w\s]','',w) for row in datarows for w in re.split('; |,|-|\. | ',row[0]) if q.lower() in w.lower() ]
+		terms = [ re.sub(r'[^\w\s]','',w) for row in datarows for w in re.split('; |,|-|. | ',row[0]) if q.lower() in w.lower() ]
 		terms = sorted(set(terms), key=lambda x: x.lower()) # remove duplicates and sort
 
 	# #########################

@@ -28,14 +28,14 @@ class elasticsearch_connector:
 	package = "com.zms.catalog.elasticsearch"
 
 	# Revision
-	revision = "1.8.0"
+	revision = "1.10.0"
 
 	# Type
 	type = "ZMSLibrary"
 
 	# Attrs
 	class Attrs:
-		properties = {"custom":"[\r\n  {\r\n    \"id\": \"elasticsearch.url\",\r\n    \"type\": \"string\",\r\n    \"label\": \"URL\",\r\n    \"default_value\": \"https://localhost:9200\",\r\n    \"is_target_of\": \"\"\r\n  },\r\n  {\r\n    \"id\": \"elasticsearch.username\",\r\n    \"type\": \"string\",\r\n    \"label\": \"Username\",\r\n    \"default_value\": \"admin\",\r\n    \"is_target_of\": \"\"\r\n  },\r\n  {\r\n    \"id\": \"elasticsearch.password\",\r\n    \"type\": \"password\",\r\n    \"label\": \"Password\",\r\n    \"default_value\": \"admin\",\r\n    \"is_target_of\": \"\"\r\n  },\r\n  {\r\n    \"id\": \"elasticsearch.index_name\",\r\n    \"type\": \"string\",\r\n    \"label\": \"Index Name\",\r\n    \"default_value\": \"\",\r\n    \"is_target_of\": \"\"\r\n  },\r\n  {\r\n    \"id\": \"elasticsearch.schema\",\r\n    \"type\": \"text\",\r\n    \"label\": \"Schema\",\r\n    \"default_value\": \"{}\",\r\n    \"is_target_of\": \"schematize\"\r\n  },\r\n  {\r\n    \"id\": \"elasticsearch.parser\",\r\n    \"type\": \"string\",\r\n    \"label\": \"Parser\",\r\n    \"default_value\": \"http://localhost:9998/tika\",\r\n    \"is_target_of\": \"\"\r\n  }\r\n]"
+		properties = {"custom":"[\r\n  {\r\n    \"id\": \"elasticsearch.url\",\r\n    \"type\": \"string\",\r\n    \"label\": \"URL\",\r\n    \"default_value\": \"https://localhost:9200\",\r\n    \"is_target_of\": \"\"\r\n  },\r\n  {\r\n    \"id\": \"elasticsearch.url.timeout\",\r\n    \"type\": \"number\",\r\n    \"label\": \"URL-Timeout\",\r\n    \"default_value\": \"5\",\r\n    \"is_target_of\": \"\"\r\n  },\r\n  {\r\n    \"id\": \"elasticsearch.username\",\r\n    \"type\": \"string\",\r\n    \"label\": \"Username\",\r\n    \"default_value\": \"admin\",\r\n    \"is_target_of\": \"\"\r\n  },\r\n  {\r\n    \"id\": \"elasticsearch.password\",\r\n    \"type\": \"password\",\r\n    \"label\": \"Password\",\r\n    \"default_value\": \"admin\",\r\n    \"is_target_of\": \"\"\r\n  },\r\n  {\r\n    \"id\": \"elasticsearch.index_name\",\r\n    \"type\": \"string\",\r\n    \"label\": \"Index Name\",\r\n    \"default_value\": \"\",\r\n    \"is_target_of\": \"\"\r\n  },\r\n  {\r\n    \"id\": \"elasticsearch.schema\",\r\n    \"type\": \"text\",\r\n    \"label\": \"Schema\",\r\n    \"default_value\": \"{}\",\r\n    \"is_target_of\": \"schematize\"\r\n  },\r\n  {\r\n    \"id\": \"elasticsearch.suggest.fields\",\r\n    \"type\": \"string\",\r\n    \"label\": \"Suggest-Fields\",\r\n    \"default_value\": \"['title','titlealt','attr_dc_description']\",\r\n    \"is_target_of\": \"\"\r\n  },\r\n  {\r\n    \"id\": \"elasticsearch.parser\",\r\n    \"type\": \"string\",\r\n    \"label\": \"Parser\",\r\n    \"default_value\": \"http://localhost:9998/tika\",\r\n    \"is_target_of\": \"\"\r\n  }\r\n]"
 			,"default":""
 			,"id":"properties"
 			,"keys":[]
@@ -60,6 +60,15 @@ class elasticsearch_connector:
 			,"mandatory":0
 			,"multilang":0
 			,"name":"Schematize: Generate Schema"
+			,"repetitive":0
+			,"type":"External Method"}
+
+		elasticsearch_get_client = {"default":""
+			,"id":"elasticsearch_get_client"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"Get Elasticsearch Client"
 			,"repetitive":0
 			,"type":"External Method"}
 

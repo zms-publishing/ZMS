@@ -1,6 +1,5 @@
 *.egg-info/
 *.pyc
-Products/zms/plugins/www/zmi.js.hash
 Products/zms/plugins/www/zms-all.min.js
 Products/zms/plugins/www/zms-all.min.js.hash
 Products/zms/plugins/www/i18n/*.js
@@ -23,4 +22,6 @@ docker/**/postgres/data/*
 !docker/**/postgres/data/
 docker/**/opensearch/data/*
 !docker/**/opensearch/data/
+docker/**/elastic/data/*
+!docker/**/elastic/data/
 /revisions.txt

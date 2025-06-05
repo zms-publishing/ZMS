@@ -190,7 +190,16 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
             # Reindex filtered container node's content by each connector.
             for connector in connectors:
               for filtered_container_node in filtered_container_nodes:
-                self.reindex(connector, filtered_container_node, recursive=False, fileparsing=fileparsing)
+                # Avoid reindexing the same node multiple times.
+                if not hasattr(self.REQUEST, 'reindex_node_log'):
+                  self.REQUEST.set('reindex_node_log', [])
+                if filtered_container_node.id not in self.REQUEST.get('reindex_node_log'):
+                  self.reindex(connector, filtered_container_node, recursive=False, fileparsing=fileparsing)
+                  # Add reindexed node to log variable.
+                  reindex_node_log = self.REQUEST.get('reindex_node_log')
+                  reindex_node_log.append(filtered_container_node.id)
+                  # Update request variable.
+                  self.REQUEST.set('reindex_node_log', reindex_node_log)
           else:
             # Remove from catalog if editing leads to filter-not-matching.
             for connector in connectors:

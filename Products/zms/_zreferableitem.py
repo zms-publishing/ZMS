@@ -321,7 +321,7 @@ class ZReferableItem(object):
               # Get the value of the attribute
               v = ref_obj.attr(key)
               if v is not None and isinstance(v, str):
-                if this_ref in str(v):
+                if str(this_ref[:-1]) in str(v):
                   try:
                     ref_obj.attr(key,str(v).replace(this_ref, ref_to))
                     # Register the new reference at the target object
@@ -336,7 +336,7 @@ class ZReferableItem(object):
             elif datatype in ['url']:
               v = ref_obj.attr(key)
               if v is not None:
-                if this_ref in str(v):
+                if str(this_ref[:-1]) in str(v):
                   try:
                     ref_obj.attr(key, ref_to)
                     # Register the new reference at the target object

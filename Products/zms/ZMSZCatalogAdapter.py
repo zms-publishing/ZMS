@@ -200,8 +200,9 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
                   reindex_node_log.append(filtered_container_node.id)
                   # Update request variable.
                   self.REQUEST.set('reindex_node_log', reindex_node_log)
-          else:
-            # Remove from catalog if editing leads to filter-not-matching.
+          elif container_page.getId() not in self.REQUEST.get('reindex_node_log', []):
+            # Remove from catalog if editing leads to filter-not-matching 
+            # and node was not part of current reindexing.
             for connector in connectors:
               connector.manage_objects_remove([container_page])
         return True

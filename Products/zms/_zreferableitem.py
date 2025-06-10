@@ -316,38 +316,40 @@ class ZReferableItem(object):
           for key in [k for k in list(ref_obj.getObjAttrs()) if ref_obj.getObjAttrs()[k]['datatype'] in ['richtext', 'string', 'text', 'url']]:
             objAttr = ref_obj.getObjAttr(key)
             datatype = objAttr['datatype']
-
-            if datatype in ['richtext', 'string', 'text']:
-              # Get the value of the attribute
-              v = ref_obj.attr(key)
-              if v is not None and isinstance(v, str):
-                if str(this_ref[:-1]) in str(v):
-                  try:
-                    ref_obj.attr(key,str(v).replace(this_ref, ref_to))
-                    # Register the new reference at the target object
-                    ref_to_ob = self.getLinkObj(ref_to)
-                    if ref_to_ob is not None:
-                      ref_to_ob.registerRefObj(ref_obj)
-                    result['changed'] += 1
-                  except Exception as e:
-                    # Handle the exception if the replacement fails
-                    standard.writeLog(self, '[changeRefsToObj] Error: %s'%str(e))
-                    result['unchanged'] += 1
-            elif datatype in ['url']:
-              v = ref_obj.attr(key)
-              if v is not None:
-                if str(this_ref[:-1]) in str(v):
-                  try:
-                    ref_obj.attr(key, ref_to)
-                    # Register the new reference at the target object
-                    ref_to_ob = self.getLinkObj(ref_to)
-                    if ref_to_ob is not None:
-                      ref_to_ob.registerRefObj(ref_obj)
-                    result['changed'] += 1
-                  except Exception as e:
-                    # Handle the exception if the replacement fails
-                    standard.writeLog(self, '[changeRefsToObj] Error: %s'%str(e))
-                    result['unchanged'] += 1
+            langs = list(objAttr.get('multilang') and self.getLangs().keys() or [self.getPrimaryLanguage()])
+            for lang in langs:
+              self.REQUEST.set('lang', lang)
+              if datatype in ['richtext', 'string', 'text']:
+                # Get the value of the attribute
+                v = ref_obj.attr(key)
+                if v is not None and isinstance(v, str):
+                  if str(this_ref[:-1]) in str(v):
+                    try:
+                      ref_obj.attr(key,str(v).replace(this_ref, ref_to))
+                      # Register the new reference at the target object
+                      ref_to_ob = self.getLinkObj(ref_to)
+                      if ref_to_ob is not None:
+                        ref_to_ob.registerRefObj(ref_obj)
+                      result['changed'] += 1
+                    except Exception as e:
+                      # Handle the exception if the replacement fails
+                      standard.writeLog(self, '[changeRefsToObj] Error: %s'%str(e))
+                      result['unchanged'] += 1
+              elif datatype in ['url']:
+                v = ref_obj.attr(key)
+                if v is not None:
+                  if str(this_ref[:-1]) in str(v):
+                    try:
+                      ref_obj.attr(key, ref_to)
+                      # Register the new reference at the target object
+                      ref_to_ob = self.getLinkObj(ref_to)
+                      if ref_to_ob is not None:
+                        ref_to_ob.registerRefObj(ref_obj)
+                      result['changed'] += 1
+                    except Exception as e:
+                      # Handle the exception if the replacement fails
+                      standard.writeLog(self, '[changeRefsToObj] Error: %s'%str(e))
+                      result['unchanged'] += 1
     return result
 
   # ----------------------------------------------------------------------------

@@ -1,0 +1,76 @@
+body {
+	font-family: Arial, sans-serif;
+	line-height: 1.6;
+	color: #333;
+	display: flex;
+}
+h1, h2, h3 {
+	color: #444;
+}
+aside {
+	width: fit-content;
+	background-color: #f4f4f4;
+	padding: 5.25rem  1rem 1rem 0rem;
+	border-right: 1px solid #ddd;
+	font-size: 90%;
+	white-space: nowrap;
+}
+section.title {
+	padding: 1rem 1rem 0 1rem;
+	margin: 0 1rem;
+}
+section.title h1 {
+	color: #4a76b8 !important;
+}
+section.title p {
+	font-weight: bold;
+	color: #666;
+}
+section.teasers {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: stretch;
+	gap: 1rem;
+	gap: 1rem 2rem; /* row-gap column gap */
+	row-gap: 1rem;
+	column-gap: 2rem;
+}
+article {
+	padding: 1rem;
+	margin: 1rem;
+}
+.infobox {
+	background-color: #f9f9f9;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	padding: 15px;
+	margin: 20px 0;
+}
+.infobox-header {
+	border-bottom: 1px solid #ddd;
+	margin-bottom: 10px;
+}
+.infobox-header h2 {
+	margin: 0;
+	font-size: 1.5em;
+}
+.infobox-content {
+	font-size: 1em;
+	color: #333;
+}
+.infobox-footer {
+	margin-top: 10px;
+	text-align: right;
+}
+.infobox-footer a {
+	color: #007bff;
+	text-decoration: none;
+}
+.infobox-footer a:hover {
+	text-decoration: underline;
+}
+footer {
+	padding: 1rem;
+	text-align: end;
+}

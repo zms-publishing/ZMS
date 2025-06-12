@@ -41,6 +41,12 @@
         data-schema-multilang="1"
         data-schema-repetitive="0"
         data-schema-default="Read more..."
+        data-schema-attr-href-id="url"
+        data-schema-attr-href-type="string"
+        data-schema-attr-href-name="URL"
+        data-schema-attr-href-mandatory="0"
+        data-schema-attr-href-multilang="1"
+        data-schema-attr-href-repetitive="0"
         tal:attributes="href python:zmscontext.attr('url') or '#';"
         tal:content="python:zmscontext.attr('linktext') or default">
         Weiter lesen ...

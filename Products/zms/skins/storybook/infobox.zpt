@@ -4,7 +4,7 @@
       zmscontext options/zmscontext;
       request options/request;
       lang request/lang;
-      scheme python:dict({
+      schema python:dict({
         'title': {
           'id':'title',
           'type':'string',

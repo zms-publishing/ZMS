@@ -42,7 +42,7 @@
 		<article>
 			<section class="teasers">
 				<div tal:content="structure python:here.infobox(zmscontext=zmscontext,request=request)"></div>
-				<div tal:content="structure python:here.infobox(zmscontext=zmscontext,request=request)"></div>
+				<div tal:content="structure python:here.infobox2(zmscontext=zmscontext,request=request)"></div>
 			</section>
 			<section class="content" tal:content="structure python:zmscontext.getBodyContent(request)"></section>
 		</article>

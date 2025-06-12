@@ -46,6 +46,7 @@ article {
 	border-radius: 4px;
 	padding: 15px;
 	margin: 20px 0;
+	max-height: 20rem;
 }
 .infobox-header {
 	border-bottom: 1px solid #ddd;

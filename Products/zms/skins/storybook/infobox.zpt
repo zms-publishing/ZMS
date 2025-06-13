@@ -3,51 +3,34 @@
     tal:define="
       zmscontext options/zmscontext;
       request options/request;
-      lang request/lang;
-      schema python:dict({
-        'title': {
-          'id':'title',
-          'type':'string',
-          'name':'Title',
-          'mandatory':0,
-          'multilang':1,
-          'repetitive':0,
-          'default':''
-      },
-      'attr_dc_description': {
-          'id':'attr_dc_description',
-          'type':'text',
-          'name':'Description',
-          'mandatory':0,
-          'multilang':1,
-          'repetitive':0,
-          'default':''
-      },
-      'linktext': {
-          'id':'linktext',
-          'type':'string',
-          'name':'Linktext',
-          'mandatory':0,
-          'multilang':1,
-          'repetitive':0,
-          'default':'Read more...'
-      }
-    })">
+      lang request/lang">
   <link tal:condition="not: zmscontext" charset="UTF-8" rel="stylesheet" href="./common/added/web.css">
   <div class="infobox-header">
-    <h2 tal:content="python:zmscontext.attr('title')">
+    <h2
+      data-schema-id="title"
+      tal:content="python:zmscontext.attr('title') or default">
       Dummy-Titel der Infobox
     </h2>
   </div>
   <div class="infobox-content">
-    <p tal:content="python:zmscontext.attr('attr_dc_description')">
+    <p 
+      data-schema-id="attr_dc_description"
+      data-schema-type="text"
+      data-schema-name="Description"
+      tal:content="python:zmscontext.attr('attr_dc_description') or default">
       Dummy-Beschreibung der Infobox und kann mehrzeilig sein.
     </p>
   </div>
   <div class="infobox-footer">
     <hr>
-    <a href="#"
-      tal:content="python:zmscontext.attr('linktext') or default">
+    <a href="#" class="readmore"
+        data-schema-id="linktext"
+        data-schema-type="string"
+        data-schema-name="Linktext"
+        data-schema-default="Read more..."
+        data-schema-attr-href-id="url"
+        tal:attributes="href python:zmscontext.attr('url') or '#';"
+        tal:content="python:zmscontext.attr('linktext') or default">
         Weiter lesen ...
     </a>
   </div>

@@ -1,9 +1,9 @@
 {
     "class": {
-        "id": "infobox2",
+        "id": "infobox",
         "type": "ZMSObject",
-        "name": "Infobox2",
-        "package": "com.zms.infobox2",
+        "name": "Infobox",
+        "package": "com.zms.infobox",
         "revision": "0.0.1",
         "enabled": 1,
         "insert_custom": "{$}",

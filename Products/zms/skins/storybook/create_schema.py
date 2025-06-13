@@ -124,4 +124,3 @@ if __name__ == "__main__":
             extract_schema(f0, tal_file_path, output_file_path)
             print(f'Schema for {f0} saved to {output_file_path}')
             print('-' * 40)
-

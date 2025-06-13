@@ -1,38 +1,51 @@
 {
-    "title": {
-        "id": "title",
-        "type": "string",
-        "name": "Title",
-        "mandatory": "0",
-        "multilang": "1",
-        "repetitive": "0",
-        "default": ""
-    },
-    "attr_dc_description": {
-        "id": "attr_dc_description",
-        "type": "text",
-        "name": "Description",
-        "mandatory": "0",
-        "multilang": "1",
-        "repetitive": "0",
-        "default": ""
-    },
-    "url": {
-        "id": "url",
-        "type": "url",
-        "name": "Url",
-        "mandatory": "0",
-        "multilang": "1",
-        "repetitive": "0",
-        "default": ""
-    },
-    "linktext": {
-        "id": "linktext",
-        "type": "string",
-        "name": "Linktext",
-        "mandatory": "0",
-        "multilang": "1",
-        "repetitive": "0",
-        "default": "Read more..."
+    "class": {
+        "id": "infobox2",
+        "type": "ZMSObject",
+        "name": "Infobox2",
+        "package": "com.zms.infobox2",
+        "revision": "0.0.1",
+        "enabled": 1,
+        "insert_custom": "{$}",
+        "insert_deny": [],
+        "delete_deny": [],
+        "attrs": {
+            "title": {
+                "id": "title",
+                "type": "string",
+                "name": "Title",
+                "mandatory": "0",
+                "multilang": "1",
+                "repetitive": "0",
+                "default": ""
+            },
+            "attr_dc_description": {
+                "id": "attr_dc_description",
+                "type": "text",
+                "name": "Description",
+                "mandatory": "0",
+                "multilang": "1",
+                "repetitive": "0",
+                "default": ""
+            },
+            "url": {
+                "id": "url",
+                "type": "url",
+                "name": "Url",
+                "mandatory": "0",
+                "multilang": "1",
+                "repetitive": "0",
+                "default": ""
+            },
+            "linktext": {
+                "id": "linktext",
+                "type": "string",
+                "name": "Linktext",
+                "mandatory": "0",
+                "multilang": "1",
+                "repetitive": "0",
+                "default": "Read more..."
+            }
+        }
     }
 }

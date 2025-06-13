@@ -31,19 +31,23 @@ def guess_data_type(html_tag_name):
         return 'string'
 
 
-def extract_schema(tal_file_path, output_file_path):
+def extract_schema(classname, tal_file_path, output_file_path):
+    """
+    Extract schema definitions from a TAL file and save them to a JSON file.
+    :param classname: The name of the class to be used in the schema.
+    :param tal_file_path: The path to the TAL file.
+    :param output_file_path: The path where the schema JSON file will be saved.
+    """
     with open(tal_file_path, 'r', encoding='utf-8') as file:
         content = file.read()
 
     # Parse the content with BeautifulSoup
     soup = bs(content, 'html.parser')
 
-    # Find all html elements that have a data-schema attribute
-    # This will match attributes like data-schema-id, data-schema-type, etc.
+    # List all html elements that have a data-schema attribute
     schema_elements = soup.find_all(lambda tag: any(attr.startswith('data-schema-') for attr in tag.attrs))
-    schema_pattern = re.compile(r'data-schema-.*')
-    # List to hold the schema matches
     matches = []
+
     # Iterate over the schema elements and extract the attributes
     for element in schema_elements:
         # Get the kinds of available schema definitions 
@@ -54,7 +58,7 @@ def extract_schema(tal_file_path, output_file_path):
         for schema_set in schema_sets:
             attr_prefix = schema_set=='data' and 'data-schema' or f'data-schema-attr-{schema_set}'
 
-            # Creates default values for id, type, name, etc.
+            # Create Default values for id, type, name, etc.
             default_type = guess_data_type(element.name)
             default_id = f'{element.name}_'
             if 'class' in element.attrs:
@@ -78,11 +82,24 @@ def extract_schema(tal_file_path, output_file_path):
         print(f'No schema elements found in {tal_file_path}')
         return
 
-    # Create a dictionary to hold the schema
-    schema = {}
+    # Create a Dictionary to hold the Schema
+    schema = { 'class': {
+                    'id':classname,
+                    'type':'ZMSObject',
+                    'name':classname.capitalize(),
+                    'package':f'com.zms.{classname.lower()}',
+                    'revision':'0.0.1',
+                    'enabled':1,
+                    'insert_custom':'{$}',
+                    'insert_deny':[],
+                    'delete_deny':[],
+                    'attrs': { }
+                }
+            }
+    # Add the schema attributes to the schema dictionary
     for match in matches:
         key, value = match
-        schema[key] = value
+        schema['class']['attrs'][key] = value
 
     # Write the schema to the output file
     with open(output_file_path, 'w', encoding='utf-8') as output_file:
@@ -103,10 +120,8 @@ if __name__ == "__main__":
             # Define the output file path
             output_file_path = os.path.join(source_dir, 'schema', f0, 'init.json')
             print(f'Processing {tal_file_path}...')
-            # Call the function to extract schema
-            extract_schema(tal_file_path, output_file_path)
-            # If you want to extract schema from all .zpt files, you can uncomment the following line
-
-    # Call the function to extract schema
-    extract_schema(tal_file_path, output_file_path)
+            # Call function to extract schema
+            extract_schema(f0, tal_file_path, output_file_path)
+            print(f'Schema for {f0} saved to {output_file_path}')
+            print('-' * 40)
 

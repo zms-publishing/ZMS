@@ -79,7 +79,7 @@ def extract_schema(classname, tal_file_path, output_file_path):
 
     # If no schema elements found, print a message and exit
     if not matches:
-        print(f'No schema elements found in {tal_file_path}')
+        print(f'No schema elements found.')
         return False
 
     # Create a Dictionary to hold the Schema
@@ -105,11 +105,11 @@ def extract_schema(classname, tal_file_path, output_file_path):
     with open(output_file_path, 'w', encoding='utf-8') as output_file:
         # Write the schema-dict as a JSON-like format
         output_file.write(json.dumps(schema, indent=4, ensure_ascii=False))
-    print(f'Schema extracted to {output_file_path}')
     return True
 
 
 if __name__ == "__main__":
+    print('-' * 40)
     # Iterate over the source directory to find all .zpt files
     for f in os.listdir(source_dir):
         if f.endswith('.zpt'):
@@ -120,9 +120,9 @@ if __name__ == "__main__":
             os.makedirs(os.path.join(source_dir, 'schema', f0), exist_ok=True)
             # Define the output file path
             output_file_path = os.path.join(source_dir, 'schema', f0, 'init.json')
-            print('-' * 40)
             print(f'Processing {tal_file_path}...')
             # Call function to extract schema
             has_extracted = extract_schema(f0, tal_file_path, output_file_path)
             if has_extracted:
                 print(f'Schema for {f0} saved to {output_file_path}')
+            print('-' * 40)

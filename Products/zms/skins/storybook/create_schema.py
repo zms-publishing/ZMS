@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # This script extracts schema definitions from a TAL file and saves them to a new file.
 # Make sure to adjust the paths as needed.

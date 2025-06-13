@@ -8,7 +8,6 @@
   <div class="infobox-header">
     <h2
       data-schema-id="title"
-      data-schema-type="string"
       tal:content="python:zmscontext.attr('title') or default">
       Dummy-Titel der Infobox
     </h2>

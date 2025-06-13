@@ -13,6 +13,23 @@ import re
 import json
 from bs4 import BeautifulSoup as bs
 
+
+def guess_data_type(html_tag_name):
+    """
+    Guess the ZMS data type based on the HTML tag name.
+    """
+    if html_tag_name in ['textarea']:
+        return 'text'
+    elif html_tag_name in ['select']:
+        return 'select'
+    elif html_tag_name in ['img']:
+        return 'image'
+    elif html_tag_name in ['a']:
+        return 'url'
+    else:
+        return 'string'
+
+
 def extract_schema(tal_file_path, output_file_path):
     with open(tal_file_path, 'r', encoding='utf-8') as file:
         content = file.read()
@@ -28,20 +45,33 @@ def extract_schema(tal_file_path, output_file_path):
     matches = []
     # Iterate over the schema elements and extract the attributes
     for element in schema_elements:
-        # Find all attributes that match the schema pattern
-        for attr in element.attrs:
-            match = schema_pattern.match(attr)
-            if match:
-                # Store the schema information as a tuple
-                matches.append((element.get('data-schema-id', ''), {
-                    'id': element.get('data-schema-id', ''),
-                    'type': element.get('data-schema-type', ''),
-                    'name': element.get('data-schema-name', ''),
-                    'mandatory': element.get('data-schema-mandatory', '0'),
-                    'multilang': element.get('data-schema-multilang', '0'),
-                    'repetitive': element.get('data-schema-repetitive', '0'),
-                    'default': element.get('data-schema-default', '')
-                }))
+        # Get the kinds of available schema definitions 
+        # according to the pattern data-schema-* and data-schema-attr-${attribute-name}-*
+        schema_sets = list(set([a.split('-')[3] for a in element.attrs if a.startswith('data-schema-attr-')]))
+        schema_sets.extend(list(set([a.split('-')[0] for a in element.attrs if a.startswith('data-schema-') and not a.startswith('data-schema-attr-')])))
+
+        for schema_set in schema_sets:
+            attr_prefix = schema_set=='data' and 'data-schema' or f'data-schema-attr-{schema_set}'
+
+            # Creates default values for id, type, name, etc.
+            default_type = guess_data_type(element.name)
+            default_id = f'{element.name}_'
+            if 'class' in element.attrs:
+                default_id += '_'.join(element['class'])
+            default_id = default_id.lower()
+            default_name = element.get(f'{attr_prefix}-id', default_id).capitalize()
+
+            # Collect schema set data
+            matches.append((element.get(f'{attr_prefix}-id', default_id), {
+                'id': element.get(f'{attr_prefix}-id', default_id),
+                'type': element.get(f'{attr_prefix}-type', default_type),
+                'name': element.get(f'{attr_prefix}-name', default_name),
+                'mandatory': element.get(f'{attr_prefix}-mandatory', '0'),
+                'multilang': element.get(f'{attr_prefix}-multilang', '1'),
+                'repetitive': element.get(f'{attr_prefix}-repetitive', '0'),
+                'default': element.get(f'{attr_prefix}-default', '')
+            }))
+
     # If no schema elements found, print a message and exit
     if not matches:
         print(f'No schema elements found in {tal_file_path}')
@@ -64,10 +94,13 @@ if __name__ == "__main__":
     # Iterate over the source directory to find all .zpt files
     for f in os.listdir(source_dir):
         if f.endswith('.zpt'):
-            f_zpt = f
-            f_schema = f_zpt.replace('.zpt', '.json')
-            tal_file_path = os.path.join(source_dir, f_zpt)
-            output_file_path = os.path.join(source_dir, 'schema/', f_schema)
+            f0 = f.replace('.zpt', '')
+            f_schema = f.replace('.zpt', '.json')
+            tal_file_path = os.path.join(source_dir, f)
+            # Make sure the schema directory exists
+            os.makedirs(os.path.join(source_dir, 'schema', f0), exist_ok=True)
+            # Define the output file path
+            output_file_path = os.path.join(source_dir, 'schema', f0, 'init.json')
             print(f'Processing {tal_file_path}...')
             # Call the function to extract schema
             extract_schema(tal_file_path, output_file_path)

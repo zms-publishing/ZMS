@@ -218,28 +218,56 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
       # Todo: ensure param 'nodes' does contain all ids to be indexed
       # to avoid sequentially unindexing leading to redundant reindexing 
       # on the same page-node.
+      if not nodes:
+        standard.writeLog( self, "No nodes given to unindex")
+        return False
       try:
         if self.getConfProperty('ZMS.CatalogAwareness.active', 1) or forced:
-          # [1] Reindex page-container nodes of deleted page-elements.
+
+          # [1] PAGELEMENTS: Reindex PAGE-container nodes of deleted page-element.
           pageelement_nodes = [node for node in nodes if not node.isPage()]
-          page_nodes = []
+          pageelement_pages = [] # page that contain the pageelements.
           for pageelement_node in pageelement_nodes:
               path_nodes = pageelement_node.getParentNode().breadcrumbs_obj_path()
               path_nodes.reverse()
               path_nodes = [e for e in path_nodes if e.isPage()]
-              if path_nodes[0] not in page_nodes:
-                page_nodes.append(path_nodes[0])
-          # Using set() for removing doublicates
-          for page_node in list(set(page_nodes)):
-            self.reindex_node(node=page_node)
-          # [2] Unindex deleted nodes (from trashcan) if filter-match.
-          delnodes = [delnode for delnode in nodes[0].getParentNode().getTrashcan().objectValues() if ( ( delnode in nodes) and self.matches_ids_filter(delnode) )]
+              if path_nodes[0] not in pageelement_pages:
+                pageelement_pages.append(path_nodes[0])
+          for pageelement_page in list(set(pageelement_pages)):  # Remove duplicates.
+            # Reindex page that formerly contained the deleted pageelement.
+            self.reindex_node(node=pageelement_page)
+
+          # [2] PAGES: Remove page-nodes that are moved to trashcan.
+          trashcan = nodes[0].getParentNode().getTrashcan()
+          if not trashcan:
+            standard.writeBlock( self, "No trashcan found for %s"%nodes[0].getParentNode().id)
+            return False
+          trashcan_items = trashcan.objectValues()
+          if not trashcan_items:
+            standard.writeBlock( self, "No trashcan items found after deleting content from  %s"%nodes[0].getParentNode().id)
+            return False
+          # Get page-nodes that are moved to trashcan.
+          delnodes = [i for i in trashcan_items if i in nodes and i.isPage()]
+          if not delnodes:
+            standard.writeBlock( self, "No page-nodes found in trashcan after deleting content from %s"%nodes[0].getParentNode().id)
+            return False
+          # Eventually add all sub-pages if deleted page-node is a tree-root.
+          for delnode in delnodes:
+            # Get all sub-pages of deleted page-node.
+            subpages = delnode.getTreeNodes(self.REQUEST,self.PAGES)
+            if subpages:
+              delnodes.extend(subpages)
+          # Remove deleted nodes from catalog.
+          delnodes = list(set(delnodes))  # Remove duplicates.
           connectors = self.getCatalogAdapter().get_connectors()
-          for connector in connectors:
-            connector.manage_objects_remove(delnodes)
-        return True
+          if delnodes and connectors:
+            for connector in connectors:
+              # Remove deleted nodes from catalog.
+              connector.manage_objects_remove(delnodes)
+            standard.writeBlock(self,'Unindexed %s pages after moving to trashcan.')%(len(delnodes))
+            return True
       except:
-        standard.writeError( self, "can't unindex_nodes")
+        standard.writeError( self, "Cannot unindex_nodes. Check if catalog is initialized.")
         return False
 
     # --------------------------------------------------------------------------

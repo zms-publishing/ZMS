@@ -215,16 +215,14 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     # --------------------------------------------------------------------------
     def unindex_nodes(self, nodes=[], forced=False):
       # Is triggered by zmscontainerobject.moveObjsToTrashcan().
-      # Todo: ensure param 'nodes' does contain all ids to be indexed
-      # to avoid sequentially unindexing leading to redundant reindexing 
-      # on the same page-node.
       if not nodes:
         standard.writeLog( self, "No nodes given to unindex")
         return False
       try:
         if self.getConfProperty('ZMS.CatalogAwareness.active', 1) or forced:
-
+          # ------------------------------------------------------
           # [1] PAGELEMENTS: Reindex PAGE-container nodes of deleted page-element.
+          # ------------------------------------------------------
           pageelement_nodes = [node for node in nodes if not node.isPage()]
           pageelement_pages = [] # page that contain the pageelements.
           for pageelement_node in pageelement_nodes:
@@ -236,8 +234,9 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
           for pageelement_page in list(set(pageelement_pages)):  # Remove duplicates.
             # Reindex page that formerly contained the deleted pageelement.
             self.reindex_node(node=pageelement_page)
-
+          # ------------------------------------------------------
           # [2] PAGES: Remove page-nodes that are moved to trashcan.
+          # ------------------------------------------------------
           trashcan = nodes[0].getParentNode().getTrashcan()
           if not trashcan:
             standard.writeBlock( self, "No trashcan found for %s"%nodes[0].getParentNode().id)

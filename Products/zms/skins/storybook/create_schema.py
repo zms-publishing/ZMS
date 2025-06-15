@@ -17,7 +17,9 @@ import re
 import json
 from bs4 import BeautifulSoup as bs
 
-
+# #####################################################################################
+# Function to guess the data type based on the HTML tag name
+# #####################################################################################
 def guess_data_type(html_tag_name):
     """
     Guess the ZMS data type based on the HTML tag name.
@@ -33,7 +35,9 @@ def guess_data_type(html_tag_name):
     else:
         return 'string'
 
-
+# #####################################################################################
+# Function to extract schema from a TAL file
+# #####################################################################################
 def extract_schema(classname, tal_file_path, output_file_path):
     """
     Extract schema definitions from a TAL file and save them to a JSON file.
@@ -110,7 +114,38 @@ def extract_schema(classname, tal_file_path, output_file_path):
         output_file.write(json.dumps(schema, indent=4, ensure_ascii=False))
     return True
 
+# #####################################################################################
+# Function to save the standard HTML file after preprocessing
+# #####################################################################################
+def save_standard_html(classname, tal_file_path, output_file_path):
+    """
+    Preprocess TAL file for utilizing it as metaobj.standard_hml.zpt in ZMS.
+    :param classname: The name of the class to be used in the schema.
+    :param tal_file_path: The path to the TAL file.
+    :param output_file_path: The path where the schema JSON file will be saved.
+    """
+    with open(tal_file_path, 'r', encoding='utf-8') as file:
+        content = file.read()
 
+    # Remove all data-schema attributes using the datakey variable and regex
+    content = re.sub(r'\s*data-{}-[^=]+="[^"]*"\s*'.format(datakey), ' ', content)
+    # This regex will remove multiple all unneccessary spaces 
+    # between html-attributes within a  html element
+    content = re.sub(r'(?<=[\w"]) +', ' ', content)
+    # Remove the link elements with the tal:condition attribute
+    content = re.sub(r'<link[^>]*tal:condition="[^"]*"[^>]*>\n', '', content)
+    # Make HTML comments filtered by Zope
+    content = re.sub(r'<!--(.*?)-->', r'<!--!\1-->', content, flags=re.DOTALL)
+
+    # Save the modified content to the output folder as standard_html.zpt
+    with open(output_file_path, 'w', encoding='utf-8') as output_file:
+        output_file.write(content)
+    return True
+
+
+# #####################################################################################
+# Main function to iterate over the source directory and process each .zpt file
+# #####################################################################################
 if __name__ == "__main__":
     print('-' * 40)
     # Iterate over the source directory to find all .zpt files
@@ -128,4 +163,8 @@ if __name__ == "__main__":
             has_extracted = extract_schema(f0, tal_file_path, output_file_path)
             if has_extracted:
                 print(f'Schema for {f0} saved to {output_file_path}')
+                save_standard_html(f0, tal_file_path, os.path.join(source_dir, 'schema', f0, 'standard_html.zpt'))
+                print(f'Standard HTML for {f0} saved to {os.path.join(source_dir, "schema", f0, "standard_html.zpt")}')
+            else:
+                print(f'No schema found for {f0}, skipping...')
             print('-' * 40)

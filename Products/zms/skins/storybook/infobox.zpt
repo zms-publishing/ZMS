@@ -4,7 +4,7 @@
       zmscontext options/zmscontext;
       request options/request;
       lang request/lang">
-  <link tal:condition="not: zmscontext" charset="UTF-8" rel="stylesheet" href="./common/added/web.css">
+  <link tal:condition="not:zmscontext" charset="UTF-8" rel="stylesheet" href="./common/added/web.css">
   <div class="infobox-header">
     <h2
       data-schema-id="title"

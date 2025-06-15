@@ -43,7 +43,7 @@
 			<section class="teasers">
 				<div
 					tal:repeat="teaser python:range(3)"
-					tal:replace="structure python:here.infobox2(zmscontext=zmscontext,request=request)">
+					tal:replace="structure python:here.infobox(zmscontext=zmscontext,request=request)">
 				</div>
 			</section>
 			<section class="content" tal:content="structure python:zmscontext.getBodyContent(request)"></section>

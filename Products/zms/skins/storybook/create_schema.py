@@ -15,6 +15,7 @@ datakey = 'schema'
 import os
 import re
 import json
+import yaml
 from bs4 import BeautifulSoup as bs
 
 # #####################################################################################
@@ -112,7 +113,26 @@ def extract_schema(classname, tal_file_path, output_file_path):
     with open(output_file_path, 'w', encoding='utf-8') as output_file:
         # Write the schema-dict as a JSON-like format
         output_file.write(json.dumps(schema, indent=4, ensure_ascii=False))
+    return schema
+
+# #####################################################################################
+# Function to save the schema as a YAML file
+# #####################################################################################
+def save_schema_as_yaml(schema, output_file_path):
+    """
+    Save the schema dictionary to a YAML file.
+    :param schema: The schema dictionary to be saved.
+    :param output_file_path: The path where the YAML file will be saved.
+    """
+    yaml_file = os.path.join(output_file_path, 'init.yaml')
+    with open(yaml_file, 'w', encoding='utf-8') as output_file:
+        class CustomDumper(yaml.Dumper):
+            pass
+        # Preserve the order of elements in the dictionary when dumping to YAML
+        CustomDumper.add_representer(dict, lambda dumper, data: dumper.represent_dict(data.items()))
+        yaml.dump(schema, output_file, allow_unicode=True, default_flow_style=False, Dumper=CustomDumper)
     return True
+
 
 # #####################################################################################
 # Function to save the standard HTML file after preprocessing
@@ -160,11 +180,15 @@ if __name__ == "__main__":
             output_file_path = os.path.join(source_dir, 'schema', f0, 'init.json')
             print(f'Processing {tal_file_path}...')
             # Call function to extract schema
-            has_extracted = extract_schema(f0, tal_file_path, output_file_path)
-            if has_extracted:
-                print(f'Schema for {f0} saved to {output_file_path}')
+            extracted_schema = extract_schema(f0, tal_file_path, output_file_path)
+            if extracted_schema:
+                print(f'Schema for {f0} saved as JSON to {output_file_path}')
+                # Save the schema as a YAML file
+                save_schema_as_yaml(extracted_schema, os.path.join(source_dir, 'schema', f0))
+                print(f'Schema for {f0} saved as YAML to {os.path.join(source_dir, "schema", f0, "init.yaml")}')
+                # Save the standard HTML file
                 save_standard_html(f0, tal_file_path, os.path.join(source_dir, 'schema', f0, 'standard_html.zpt'))
-                print(f'Standard HTML for {f0} saved to {os.path.join(source_dir, "schema", f0, "standard_html.zpt")}')
+                print(f'Standard HTML for {f0} saved as TAL to {os.path.join(source_dir, "schema", f0, "standard_html.zpt")}')
             else:
                 print(f'No schema found for {f0}, skipping...')
             print('-' * 40)

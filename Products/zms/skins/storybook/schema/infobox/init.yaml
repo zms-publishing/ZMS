@@ -41,3 +41,16 @@ class:
       multilang: '1'
       repetitive: '0'
       default: Read more...
+    test:
+      # This is a test attribute to demonstrate the use of multiline Python code in attributes.
+      # It can be used to execute Python code and return a value.
+      id: test
+      type: py
+      name: Python-Test
+      mandatory: '0'
+      multilang: '1'
+      repetitive: '0'
+      default: |
+        def test():
+            return "This is a test attribute that executes Python code."
+        return test()

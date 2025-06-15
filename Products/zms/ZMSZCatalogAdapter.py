@@ -239,16 +239,16 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
           # ------------------------------------------------------
           trashcan = nodes[0].getParentNode().getTrashcan()
           if not trashcan:
-            standard.writeBlock( self, "No trashcan found for %s"%nodes[0].getParentNode().id)
+            standard.writeLog( self, "No trashcan found for %s"%(nodes[0].getParentNode().id) )
             return False
           trashcan_items = trashcan.objectValues()
           if not trashcan_items:
-            standard.writeBlock( self, "No trashcan items found after deleting content from  %s"%nodes[0].getParentNode().id)
+            standard.writeLog( self, "No trashcan items found after deleting content from  %s"%(nodes[0].getParentNode().id) )
             return False
           # Get page-nodes that are moved to trashcan.
           delnodes = [i for i in trashcan_items if i in nodes and i.isPage()]
           if not delnodes:
-            standard.writeBlock( self, "No page-nodes found in trashcan after deleting content from %s"%nodes[0].getParentNode().id)
+            standard.writeLog( self, "No page-nodes found in trashcan after deleting content from %s"%(nodes[0].getParentNode().id) )
             return False
           # Eventually add all sub-pages if deleted page-node is a tree-root.
           for delnode in delnodes:
@@ -263,7 +263,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
             for connector in connectors:
               # Remove deleted nodes from catalog.
               connector.manage_objects_remove(delnodes)
-            standard.writeBlock(self,'Unindexed %s pages after moving to trashcan.')%(len(delnodes))
+            standard.writeLog(self,"Unindexed %s pages after moving to trashcan."%(len(delnodes)) )
             return True
       except:
         standard.writeError( self, "Cannot unindex_nodes. Check if catalog is initialized.")

@@ -8,7 +8,7 @@
 # IMPORTANT NOTE: Define the input and output file paths
 # #####################################################################################
 source_dir = '/home/zope/src/zms-publishing/ZMS5/Products/zms/skins/storybook/'
-datakey = 'unibeschema'
+datakey = 'schema'
 # #####################################################################################
 
 # Imports

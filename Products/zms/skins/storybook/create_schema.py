@@ -8,7 +8,10 @@
 # IMPORTANT NOTE: Define the input and output file paths
 # #####################################################################################
 source_dir = '/home/zope/src/zms-publishing/ZMS5/Products/zms/skins/storybook/'
+datakey = 'unibeschema'
+# #####################################################################################
 
+# Imports
 import os
 import re
 import json
@@ -45,18 +48,18 @@ def extract_schema(classname, tal_file_path, output_file_path):
     soup = bs(content, 'html.parser')
 
     # List all html elements that have a data-schema attribute
-    schema_elements = soup.find_all(lambda tag: any(attr.startswith('data-schema-') for attr in tag.attrs))
+    schema_elements = soup.find_all(lambda tag: any(attr.startswith(f'data-{datakey}-') for attr in tag.attrs))
     matches = []
 
     # Iterate over the schema elements and extract the attributes
     for element in schema_elements:
         # Get the kinds of available schema definitions 
-        # according to the pattern data-schema-* and data-schema-attr-${attribute-name}-*
-        schema_sets = list(set([a.split('-')[3] for a in element.attrs if a.startswith('data-schema-attr-')]))
-        schema_sets.extend(list(set([a.split('-')[0] for a in element.attrs if a.startswith('data-schema-') and not a.startswith('data-schema-attr-')])))
+        # according to the pattern data-{datakey}-* and data-{datakey}-attr-{attrname}-*
+        schema_sets = list(set([a.split('-')[3] for a in element.attrs if a.startswith(f'data-{datakey}-attr-')]))
+        schema_sets.extend(list(set([a.split('-')[0] for a in element.attrs if a.startswith(f'data-{datakey}-') and not a.startswith(f'data-{datakey}-attr-')])))
 
         for schema_set in schema_sets:
-            attr_prefix = schema_set=='data' and 'data-schema' or f'data-schema-attr-{schema_set}'
+            attr_prefix = schema_set=='data' and f'data-{datakey}' or f'data-{datakey}-attr-{schema_set}'
 
             # Create Default values for id, type, name, etc.
             default_type = guess_data_type(element.name)

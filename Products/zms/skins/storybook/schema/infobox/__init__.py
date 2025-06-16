@@ -4,10 +4,10 @@ class infobox:
 	"""
 
 	# Access
-	access = {"delete_custom": ""
-		,"delete_deny": "[]"
-		,"insert_custom": "{$}"
-		,"insert_deny": "[]"}
+	access = {"delete_custom":""
+		,"delete_deny":[]
+		,"insert_custom":"{$}"
+		,"insert_deny":[]}
 
 	# Enabled
 	enabled = 1
@@ -28,39 +28,39 @@ class infobox:
 	type = "ZMSObject"
 
 	class Attrs:
-		title = {"id": "title"
-			,"type": "string"
-			,"name": "Title"
-			,"mandatory": "0"
-			,"multilang": "1"
-			,"repetitive": "0"
-			,"default": ""
-			,"keys": "[]"}
+		title = {"default":""
+			,"id":"title"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":1
+			,"name":"Title"
+			,"repetitive":0
+			,"type":"string"}
 
-		attr_dc_description = {"id": "attr_dc_description"
-			,"type": "text"
-			,"name": "Description"
-			,"mandatory": "0"
-			,"multilang": "1"
-			,"repetitive": "0"
-			,"default": ""
-			,"keys": "[]"}
+		attr_dc_description = {"default":""
+			,"id":"attr_dc_description"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":1
+			,"name":"Description"
+			,"repetitive":0
+			,"type":"text"}
 
-		url = {"id": "url"
-			,"type": "url"
-			,"name": "Url"
-			,"mandatory": "0"
-			,"multilang": "1"
-			,"repetitive": "0"
-			,"default": ""
-			,"keys": "[]"}
+		url = {"default":""
+			,"id":"url"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":1
+			,"name":"Url"
+			,"repetitive":0
+			,"type":"url"}
 
-		linktext = {"id": "linktext"
-			,"type": "string"
-			,"name": "Linktext"
-			,"mandatory": "0"
-			,"multilang": "1"
-			,"repetitive": "0"
-			,"default": "Read more..."
-			,"keys": "[]"}
+		linktext = {"default":"Read more..."
+			,"id":"linktext"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":1
+			,"name":"Linktext"
+			,"repetitive":0
+			,"type":"string"}
 

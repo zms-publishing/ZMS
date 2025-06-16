@@ -17,6 +17,7 @@ import re
 import json
 import yaml
 from bs4 import BeautifulSoup as bs
+from Products.zms import standard
 
 # #####################################################################################
 # Function: Guess the data type based on the HTML tag name
@@ -79,9 +80,9 @@ def extract_schema(classname, tal_file_path, output_file_path):
                 'id': element.get(f'{attr_prefix}-id', default_id),
                 'type': element.get(f'{attr_prefix}-type', default_type),
                 'name': element.get(f'{attr_prefix}-name', default_name),
-                'mandatory': element.get(f'{attr_prefix}-mandatory', '0'),
-                'multilang': element.get(f'{attr_prefix}-multilang', '1'),
-                'repetitive': element.get(f'{attr_prefix}-repetitive', '0'),
+                'mandatory': element.get(f'{attr_prefix}-mandatory', 0),
+                'multilang': element.get(f'{attr_prefix}-multilang', 1),
+                'repetitive': element.get(f'{attr_prefix}-repetitive', 0),
                 'default': element.get(f'{attr_prefix}-default', ''),
                 'keys': [],
             }))
@@ -146,22 +147,13 @@ def save_schema_as_python(schema, output_file_path):
         for key, value in sorted(schema['class'].items()):
             # Skip the 'Attrs' dictionary, as it will be handled separately
             if key != 'Attrs':
-                if isinstance(value, list):
-                    value = '[' + '\t\t,'.join(f'{v}' for v in value) + ']'
-                elif isinstance(value, dict):
-                    value = '{' + '\n\t\t,'.join(f'"{k}": "{v}"' for k, v in value.items()) + '}'
-                elif isinstance(value, int):
-                    value = str(value)
-                elif isinstance(value, bool):
-                    value = '1' if value else '0'
-                else:
-                    value = f'"{value}"'
+                value = standard.str_json(value, encoding="utf-8", formatted=True, level=2, allow_booleans=False)
                 output_file.write(f'\t# {key.capitalize()}\n')
                 output_file.write(f'\t{key} = {value}\n\n')
         # Write the 'Attr' dictionary
         output_file.write('\tclass Attrs:\n')
         for key, value in schema['class']['Attrs'].items():
-            value = '{' + '\n\t\t\t,'.join(f'"{k}": "{v}"' for k, v in value.items()) + '}'
+            value = standard.str_json(value, encoding="utf-8", formatted=True, level=3, allow_booleans=False)
             output_file.write(f'\t\t{key} = {value}\n\n')
     return True
 

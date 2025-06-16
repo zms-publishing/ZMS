@@ -19,7 +19,7 @@ import yaml
 from bs4 import BeautifulSoup as bs
 
 # #####################################################################################
-# Function to guess the data type based on the HTML tag name
+# Function: Guess the data type based on the HTML tag name
 # #####################################################################################
 def guess_data_type(html_tag_name):
     """
@@ -37,7 +37,7 @@ def guess_data_type(html_tag_name):
         return 'string'
 
 # #####################################################################################
-# Function to extract schema from a TAL file
+# Function: Extract Schema from a TAL File as a Dictionary
 # #####################################################################################
 def extract_schema(classname, tal_file_path, output_file_path):
     """
@@ -82,7 +82,8 @@ def extract_schema(classname, tal_file_path, output_file_path):
                 'mandatory': element.get(f'{attr_prefix}-mandatory', '0'),
                 'multilang': element.get(f'{attr_prefix}-multilang', '1'),
                 'repetitive': element.get(f'{attr_prefix}-repetitive', '0'),
-                'default': element.get(f'{attr_prefix}-default', '')
+                'default': element.get(f'{attr_prefix}-default', ''),
+                'keys': [],
             }))
 
     # If no schema elements found, print a message and exit
@@ -98,25 +99,75 @@ def extract_schema(classname, tal_file_path, output_file_path):
                     'package':f'com.zms.{classname.lower()}',
                     'revision':'0.0.1',
                     'enabled':1,
-                    'insert_custom':'{$}',
-                    'insert_deny':[],
-                    'delete_deny':[],
-                    'attrs': { }
+                    'access': {
+                        'delete_custom':'',
+                        'delete_deny':[],
+                        'insert_custom':'{$}',
+                        'insert_deny':[],
+                        'delete_deny':[]
+                    },
+                    'Attrs': { }
                 }
             }
     # Add the schema attributes to the schema dictionary
     for match in matches:
         key, value = match
-        schema['class']['attrs'][key] = value
-
-    # Write the schema to the output file
-    with open(output_file_path, 'w', encoding='utf-8') as output_file:
-        # Write the schema-dict as a JSON-like format
-        output_file.write(json.dumps(schema, indent=4, ensure_ascii=False))
+        schema['class']['Attrs'][key] = value
     return schema
 
 # #####################################################################################
-# Function to save the schema as a YAML file
+# Function: Save the Schema as a JSON File
+# #####################################################################################
+def save_schema_as_json(schema, output_file_path):
+    """
+    Save the schema dictionary to a JSON file.
+    :param schema: The schema dictionary to be saved.
+    :param output_file_path: The path where the JSON file will be saved.
+    """
+    with open(output_file_path, 'w', encoding='utf-8') as output_file:
+        # Write the schema-dict as a JSON-like format
+        output_file.write(json.dumps(schema, indent=4, ensure_ascii=False))
+    return True
+
+# #####################################################################################
+# Function: Save the Schema as a Python File
+# #####################################################################################
+def save_schema_as_python(schema, output_file_path):
+    """
+    Save the schema dictionary to a Python file.
+    :param schema: The schema dictionary to be saved.
+    :param output_file_path: The path where the Python file will be saved.
+    """
+    python_file = os.path.join(output_file_path, '__init__.py')
+    with open(python_file, 'w', encoding='utf-8') as output_file:
+        output_file.write('class %s:\n'% schema['class']['id'])
+        output_file.write(f'\t"""\n\tpython-representation of {schema['class']['id']}\n\t"""\n\n')
+        # Sort keys alphabetically
+        for key, value in sorted(schema['class'].items()):
+            # Skip the 'Attrs' dictionary, as it will be handled separately
+            if key != 'Attrs':
+                if isinstance(value, list):
+                    value = '[' + '\t\t,'.join(f'{v}' for v in value) + ']'
+                elif isinstance(value, dict):
+                    value = '{' + '\n\t\t,'.join(f'"{k}": "{v}"' for k, v in value.items()) + '}'
+                elif isinstance(value, int):
+                    value = str(value)
+                elif isinstance(value, bool):
+                    value = '1' if value else '0'
+                else:
+                    value = f'"{value}"'
+                output_file.write(f'\t# {key.capitalize()}\n')
+                output_file.write(f'\t{key} = {value}\n\n')
+        # Write the 'Attr' dictionary
+        output_file.write('\tclass Attrs:\n')
+        for key, value in schema['class']['Attrs'].items():
+            value = '{' + '\n\t\t\t,'.join(f'"{k}": "{v}"' for k, v in value.items()) + '}'
+            output_file.write(f'\t\t{key} = {value}\n\n')
+    return True
+
+
+# #####################################################################################
+# Function to Save the Schema as a YAML File
 # #####################################################################################
 def save_schema_as_yaml(schema, output_file_path):
     """
@@ -124,7 +175,7 @@ def save_schema_as_yaml(schema, output_file_path):
     :param schema: The schema dictionary to be saved.
     :param output_file_path: The path where the YAML file will be saved.
     """
-    yaml_file = os.path.join(output_file_path, 'init.yaml')
+    yaml_file = os.path.join(output_file_path, '__init__.yaml')
     with open(yaml_file, 'w', encoding='utf-8') as output_file:
         class CustomDumper(yaml.Dumper):
             pass
@@ -177,16 +228,15 @@ if __name__ == "__main__":
             # Make sure the schema directory exists
             os.makedirs(os.path.join(source_dir, 'schema', f0), exist_ok=True)
             # Define the output file path
-            output_file_path = os.path.join(source_dir, 'schema', f0, 'init.json')
+            output_file_path = os.path.join(source_dir, 'schema', f0, '__init__.json')
             print(f'Processing {tal_file_path}...')
             # Call function to extract schema
             extracted_schema = extract_schema(f0, tal_file_path, output_file_path)
             if extracted_schema:
-                print(f'Schema for {f0} saved as JSON to {output_file_path}')
-                # Save the schema as a YAML file
-                save_schema_as_yaml(extracted_schema, os.path.join(source_dir, 'schema', f0))
-                print(f'Schema for {f0} saved as YAML to {os.path.join(source_dir, "schema", f0, "init.yaml")}')
-                # Save the standard HTML file
+                ### Save the schema as a Python file
+                save_schema_as_python(extracted_schema, os.path.join(source_dir, 'schema', f0))
+                print(f'Schema for {f0} saved as Python to {os.path.join(source_dir, "schema", f0, "__init__.py")}')
+                ### Save the standard HTML file
                 save_standard_html(f0, tal_file_path, os.path.join(source_dir, 'schema', f0, 'standard_html.zpt'))
                 print(f'Standard HTML for {f0} saved as TAL to {os.path.join(source_dir, "schema", f0, "standard_html.zpt")}')
             else:

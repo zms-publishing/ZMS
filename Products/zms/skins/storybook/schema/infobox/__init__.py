@@ -64,3 +64,12 @@ class infobox:
 			,"repetitive":0
 			,"type":"string"}
 
+		standard_html = {"default":""
+			,"id":"standard_html"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"Standard-Template (ZPT)"
+			,"repetitive":0
+			,"type":"zpt"}
+

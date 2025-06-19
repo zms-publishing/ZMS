@@ -114,6 +114,19 @@ def extract_schema(classname, tal_file_path, output_file_path):
     for match in matches:
         key, value = match
         schema['class']['Attrs'][key] = value
+
+    # Finally add the standard_html attribute to the schema dictionary
+    schema['class']['Attrs']['standard_html'] = {
+        'id': 'standard_html',
+        'type': 'zpt',
+        'name': 'Standard-Template (ZPT)',
+        'mandatory': 0,
+        'multilang': 0,
+        'repetitive': 0,
+        'default': '',
+        'keys': []
+    }
+
     return schema
 
 # #####################################################################################

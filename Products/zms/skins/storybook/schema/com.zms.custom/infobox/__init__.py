@@ -19,7 +19,7 @@ class infobox:
 	name = "Infobox"
 
 	# Package
-	package = "com.zms.infobox"
+	package = "com.zms.custom"
 
 	# Revision
 	revision = "0.0.1"
@@ -27,6 +27,7 @@ class infobox:
 	# Type
 	type = "ZMSObject"
 
+	# Attrs
 	class Attrs:
 		title = {"default":""
 			,"id":"title"
@@ -36,15 +37,6 @@ class infobox:
 			,"name":"Title"
 			,"repetitive":0
 			,"type":"string"}
-
-		attr_dc_description = {"default":""
-			,"id":"attr_dc_description"
-			,"keys":[]
-			,"mandatory":0
-			,"multilang":1
-			,"name":"Description"
-			,"repetitive":0
-			,"type":"text"}
 
 		url = {"default":""
 			,"id":"url"
@@ -63,6 +55,24 @@ class infobox:
 			,"name":"Linktext"
 			,"repetitive":0
 			,"type":"string"}
+
+		attr_dc_description = {"default":""
+			,"id":"attr_dc_description"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":1
+			,"name":"Description"
+			,"repetitive":0
+			,"type":"text"}
+
+		icon_clazz = {"custom":"fa fa-puzzle-piece"
+			,"id":"icon_clazz"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"Icon Class"
+			,"repetitive":0
+			,"type":"constant"}
 
 		standard_html = {"default":""
 			,"id":"standard_html"

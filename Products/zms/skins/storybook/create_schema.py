@@ -8,6 +8,7 @@
 # IMPORTANT NOTE: Define the input and output file paths
 # #####################################################################################
 source_dir = '/home/zope/src/zms-publishing/ZMS5/Products/zms/skins/storybook/'
+package_name = 'com.zms.custom'
 datakey = 'schema'
 # #####################################################################################
 
@@ -18,6 +19,7 @@ import json
 import yaml
 from bs4 import BeautifulSoup as bs
 from Products.zms import standard
+from chameleon import PageTemplate
 
 # #####################################################################################
 # Function: Guess the data type based on the HTML tag name
@@ -85,6 +87,7 @@ def extract_schema(classname, tal_file_path, output_file_path):
                 'repetitive': element.get(f'{attr_prefix}-repetitive', 0),
                 'default': element.get(f'{attr_prefix}-default', ''),
                 'keys': [],
+                'sort_id': int(element.get(f'{attr_prefix}-sort_id', 0)),
             }))
 
     # If no schema elements found, print a message and exit
@@ -97,7 +100,7 @@ def extract_schema(classname, tal_file_path, output_file_path):
                     'id':classname,
                     'type':'ZMSObject',
                     'name':classname.capitalize(),
-                    'package':f'com.zms.{classname.lower()}',
+                    'package':package_name,
                     'revision':'0.0.1',
                     'enabled':1,
                     'access': {
@@ -110,10 +113,35 @@ def extract_schema(classname, tal_file_path, output_file_path):
                     'Attrs': { }
                 }
             }
+
+    # Sort the matches by sort_id and then by id
+    matches.sort(key=lambda x: (x[1]['sort_id'], x[0]))
+    # Remove the sort_id from the schema attributes
+    for match in matches:
+        key, value = match
+        if 'sort_id' in value:
+            del value['sort_id']
+        # Ensure the keys are sorted alphabetically
+        value['keys'] = sorted(value.get('keys', []))
+
     # Add the schema attributes to the schema dictionary
     for match in matches:
         key, value = match
+        if 'sort_id' in value:
+            del value['sort_id']
         schema['class']['Attrs'][key] = value
+
+    # Add fontawesome icon
+    schema['class']['Attrs']['icon_clazz'] = {
+        'id': 'icon_clazz',
+        'type': 'constant',
+        'name': 'Icon Class',
+        'mandatory': 0,
+        'multilang': 0,
+        'repetitive': 0,
+        'custom': 'fa fa-puzzle-piece',
+        'keys': []
+    }
 
     # Finally add the standard_html attribute to the schema dictionary
     schema['class']['Attrs']['standard_html'] = {
@@ -164,7 +192,7 @@ def save_schema_as_python(schema, output_file_path):
                 output_file.write(f'\t# {key.capitalize()}\n')
                 output_file.write(f'\t{key} = {value}\n\n')
         # Write the 'Attr' dictionary
-        output_file.write('\tclass Attrs:\n')
+        output_file.write('\t# Attrs\n\tclass Attrs:\n')
         for key, value in schema['class']['Attrs'].items():
             value = standard.str_json(value, encoding="utf-8", formatted=True, level=3, allow_booleans=False)
             output_file.write(f'\t\t{key} = {value}\n\n')
@@ -218,6 +246,31 @@ def save_standard_html(classname, tal_file_path, output_file_path):
         output_file.write(content)
     return True
 
+def save_zpt_as_html(tal_file_path, output_file_path):
+    """
+    Convert a TAL file to a standard HTML file.
+    :param tal_file_path: The path to the TAL file.
+    :param output_file_path: The path where the HTML file will be saved.
+    """
+    with open(tal_file_path, 'r', encoding='utf-8') as file:
+        content = file.read()
+
+    # Create dictionary of parameters to pass
+    params = {
+        'zmscontext': {},
+        'request': {
+            'lang': 'eng'
+        }
+    }
+
+    # Convert TAL to HTML using Chameleon
+    template = PageTemplate(content)
+    html_content = template.render(options=params)
+
+    # Save the rendered HTML content to the output file
+    with open(output_file_path, 'w', encoding='utf-8') as output_file:
+        output_file.write(html_content)
+    return True
 
 # #####################################################################################
 # Main function to iterate over the source directory and process each .zpt file
@@ -231,7 +284,7 @@ if __name__ == "__main__":
             f_schema = f.replace('.zpt', '.json')
             tal_file_path = os.path.join(source_dir, f)
             # Make sure the schema directory exists
-            os.makedirs(os.path.join(source_dir, 'schema', f0), exist_ok=True)
+            os.makedirs(os.path.join(source_dir, 'schema', package_name, f0), exist_ok=True)
             # Define the output file path
             output_file_path = os.path.join(source_dir, 'schema', f0, '__init__.json')
             print(f'Processing {tal_file_path}...')
@@ -239,11 +292,14 @@ if __name__ == "__main__":
             extracted_schema = extract_schema(f0, tal_file_path, output_file_path)
             if extracted_schema:
                 ### Save the schema as a Python file
-                save_schema_as_python(extracted_schema, os.path.join(source_dir, 'schema', f0))
-                print(f'Schema for {f0} saved as Python to {os.path.join(source_dir, "schema", f0, "__init__.py")}')
+                save_schema_as_python(extracted_schema, os.path.join(source_dir, 'schema', package_name, f0))
+                print(f'Schema for {f0} saved as Python to {os.path.join(source_dir, "schema", package_name, f0, "__init__.py")}')
                 ### Save the standard HTML file
-                save_standard_html(f0, tal_file_path, os.path.join(source_dir, 'schema', f0, 'standard_html.zpt'))
-                print(f'Standard HTML for {f0} saved as TAL to {os.path.join(source_dir, "schema", f0, "standard_html.zpt")}')
+                save_standard_html(f0, tal_file_path, os.path.join(source_dir, 'schema', package_name, f0, 'standard_html.zpt'))
+                print(f'Standard HTML for {f0} saved as TAL to {os.path.join(source_dir, "schema", package_name, f0, "standard_html.zpt")}')
+                ### Save the ZPT-template as HTML file
+                # save_zpt_as_html(tal_file_path, os.path.join(source_dir, 'schema', f0, 'index.html'))
+
             else:
                 print(f'No schema found for {f0}, skipping...')
             print('-' * 40)

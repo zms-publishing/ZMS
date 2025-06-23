@@ -24,6 +24,7 @@
 	<meta name="description" tal:attributes="content python:zmscontext.attr('attr_dc_description')">
 	<meta name="author" tal:attributes="content python:zmscontext.attr('attr_dc_creator')">
 	<link rel="shortcut icon" href="favicon.ico">
+	<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/htmx/htmx.min.js"></script>
 	<link charset="UTF-8" tal:attributes="href python:'%s/added/web.css'%theme_common" rel="stylesheet">
 </head>
 <body tal:attributes="id python:[zmscontext.id,'zmsroot'][zmscontext.getId()=='content'];class python:'web %s %s %s'%(zmscontext.meta_id,lang,(len(teasers)>0) and 'has_teasers' or 'no_teasers' )">
@@ -42,7 +43,7 @@
 		<article>
 			<section class="teasers">
 				<div
-					tal:repeat="teaser python:range(3)"
+					tal:repeat="teaser python:range(2)"
 					tal:replace="structure python:here.infobox(zmscontext=zmscontext,request=request)">
 				</div>
 			</section>

@@ -8,6 +8,7 @@
   <div class="infobox-header">
     <h2
       data-schema-id="title"
+      data-schema-sort_id="1"
       tal:content="python:zmscontext.attr('title') or default">
       Dummy-Titel der Infobox
     </h2>
@@ -17,6 +18,7 @@
       data-schema-id="attr_dc_description"
       data-schema-type="text"
       data-schema-name="Description"
+      data-schema-sort_id="4"
       tal:content="python:zmscontext.attr('attr_dc_description') or default">
       Dummy-Beschreibung der Infobox und kann mehrzeilig sein.
     </p>
@@ -24,10 +26,12 @@
   <div class="infobox-footer">
     <hr>
     <a href="#" class="readmore"
+        data-schema-sort_id="3"
         data-schema-id="linktext"
         data-schema-type="string"
         data-schema-name="Linktext"
         data-schema-default="Read more..."
+        data-schema-attr-href-sort_id="2"
         data-schema-attr-href-id="url"
         tal:attributes="href python:zmscontext.attr('url') or '#';"
         tal:content="python:zmscontext.attr('linktext') or default">

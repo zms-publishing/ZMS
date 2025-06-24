@@ -255,17 +255,27 @@ def save_zpt_as_html(tal_file_path, output_file_path):
     with open(tal_file_path, 'r', encoding='utf-8') as file:
         content = file.read()
 
-    # Create dictionary of parameters to pass
-    params = {
-        'zmscontext': {},
-        'request': {
-            'lang': 'eng'
-        }
+    # Remove all data-schema attributes using the datakey variable and regex
+    content = re.sub(r'\s*data-{}-[^=]+="[^"]*"\s*'.format(datakey), ' ', content)
+
+    # Simulate ZMS context
+    # namedtuple is used to create a simple class-like structure
+    from collections import namedtuple
+    zmscontext = namedtuple('zmscontext', ['attr'])
+    zmscontext.attr = lambda key: None # Placeholder for ZMS context attributes
+
+    # Prepare a minimum parameter-dict for rendering
+    template_params = {
+        'options': {
+            'zmscontext': zmscontext,
+        },
+        'request': { 'lang': 'ger' },
+        'langmap': {'ger':'de', 'eng':'en', 'fre':'fr', 'ita':'it', 'spa':'es'},
     }
 
-    # Convert TAL to HTML using Chameleon
+    # Convert TAL to HTML using Chameleon, render with **kwargs
     template = PageTemplate(content)
-    html_content = template.render(options=params)
+    html_content = template.render(**template_params)
 
     # Save the rendered HTML content to the output file
     with open(output_file_path, 'w', encoding='utf-8') as output_file:
@@ -298,7 +308,7 @@ if __name__ == "__main__":
                 save_standard_html(f0, tal_file_path, os.path.join(source_dir, 'schema', package_name, f0, 'standard_html.zpt'))
                 print(f'Standard HTML for {f0} saved as TAL to {os.path.join(source_dir, "schema", package_name, f0, "standard_html.zpt")}')
                 ### Save the ZPT-template as HTML file
-                # save_zpt_as_html(tal_file_path, os.path.join(source_dir, 'schema', f0, 'index.html'))
+                save_zpt_as_html(tal_file_path, os.path.join(source_dir, 'schema', package_name, f0, 'index.html'))
 
             else:
                 print(f'No schema found for {f0}, skipping...')

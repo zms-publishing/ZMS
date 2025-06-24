@@ -1,9 +1,9 @@
 <!--! HTML TEMPLATE BOCK ELEMENT INFOBOX -->
-<div class="infobox"
-    tal:define="
-      zmscontext options/zmscontext;
-      request options/request;
-      lang request/lang">
+<div class="infobox" lang="en"
+  tal:define="
+    zmscontext python:options.get('zmscontext',None);
+    lang python:request.get('lang','eng');"
+  tal:attributes="lang python:langmap and langmap.get(lang,lang) or lang;">
     <div class="infobox-header">
     <h2 tal:content="python:zmscontext.attr('title') or default">
       Dummy-Titel der Infobox

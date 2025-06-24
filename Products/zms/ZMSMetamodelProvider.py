@@ -80,8 +80,13 @@ class ZMSMetamodelProvider(
       'manage_changeProperties', 'manage_ajaxChangeProperties', 'manage_main', 'manage_main_import', 'manage_bigpicture',
       'manage_changeMetaProperties', 'manage_metas',
     )
+    __authorPermissions__ = (
+        'manage_bigpicture',
+        'manage_readme', 'manage_readme_iframe',
+    )
     __ac_permissions__=(
       ('ZMS Administrator', __administratorPermissions__),
+      ('ZMS Author', __authorPermissions__),
     )
 
     ############################################################################

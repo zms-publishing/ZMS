@@ -101,7 +101,7 @@ def normalize_ids_after_copy(node, id_prefix='e', ids=[]):
     lang = request.get('lang')
     for langId in node.getLangIds():
       request.set('lang',langId)
-      if not node.getAutocommit() and 1==0:
+      if not node.getAutocommit():
         node.setObjStateNew(request,reset=0)
       node.onChangeObj(request)
     request.set('lang',lang)

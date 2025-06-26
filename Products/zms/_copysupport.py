@@ -75,29 +75,33 @@ def normalize_ids_after_copy(node, id_prefix='e', ids=[]):
         normalized_objs.extend(node.getChildNodes(reid=new_id))
 
   # [B] Reset backlink-attribute and trigger onChangeObj for all copied child-nodes.
-  if len([e for e in normalized_objs if e.isPage()]) > 0:
+  normalized_pages = [e for e in normalized_objs if e.isPage()]
+  if len(normalized_pages) > 0:
+
     # [B1] Inserting page-object(s) or tree-recursion
-    for childNode in node.getChildNodes():
+    for normalized_page in normalized_pages:
       # Reset ref_by
-      childNode.ref_by = []
+      normalized_page.ref_by = []
       # Init object-state
       if not '*' in ids:
         lang = request.get('lang')
         for langId in node.getLangIds():
           request.set('lang',langId)
           if not node.getAutocommit():
-            childNode.setObjStateNew(request,reset=0)
-          childNode.onChangeObj(request)
+            normalized_page.setObjStateNew(request,reset=0)
+          normalized_page.onChangeObj(request)
         request.set('lang',lang)
       # Traverse tree
-      if childNode in normalized_objs and childNode.isPage():
-        normalize_ids_after_copy(childNode, id_prefix, ids=['*'])
+      tree_pages = normalized_page.getTreeNodes(request, node.PAGES)
+      if tree_pages:
+        for tree_pages in tree_pages:
+          normalize_ids_after_copy(tree_pages, id_prefix, ids=['*'])
   else:
     # [B2] Inserting pageelement-object(s)
     lang = request.get('lang')
     for langId in node.getLangIds():
       request.set('lang',langId)
-      if not node.getAutocommit():
+      if not node.getAutocommit() and 1==0:
         node.setObjStateNew(request,reset=0)
       node.onChangeObj(request)
     request.set('lang',lang)

@@ -23,10 +23,10 @@ class ontology:
 	name = "Ontology"
 
 	# Package
-	package = "com.zms.foundation"
+	package = "com.zms.catalog.opensearch"
 
 	# Revision
-	revision = "0.0.1"
+	revision = "0.0.2"
 
 	# Type
 	type = "ZMSRecordSet"

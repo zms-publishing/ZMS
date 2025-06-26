@@ -1,0 +1,9 @@
+<!-- ontology.standard_html -->
+
+<tal:block tal:define="
+		zmscontext options/zmscontext">
+	<h2 tal:content="python:zmscontext.getTitlealt(request)">The title.alt</h2>
+	<p class="description" tal:content="python:'%i %s'%(len(zmscontext.attr(zmscontext.getMetaobj(zmscontext.meta_id)['attrs'][0]['id'])),zmscontext.getLangStr('ATTR_RECORDS',request['lang']))">#N records</p>
+</tal:block>
+
+<!-- /ontology.standard_html -->

@@ -2,21 +2,38 @@
 <div class="infobox" lang="en"
   tal:define="
     zmscontext python:options.get('zmscontext',None);
-    lang python:request.get('lang','eng');"
+    lang python:request.get('lang','eng');
+    langmap python:options.get('langmap',{});"
   tal:attributes="lang python:langmap and langmap.get(lang,lang) or lang;">
     <div class="infobox-header">
-    <h2 tal:content="python:zmscontext.attr('title') or default">
+    <h2
+      data-schema-id="title"
+      data-schema-sort_id="1"
+      tal:content="python:zmscontext.attr('title') or default">
       Dummy-Titel der Infobox
     </h2>
   </div>
   <div class="infobox-content">
-    <p tal:content="python:zmscontext.attr('attr_dc_description') or default">
+    <p 
+      data-schema-id="attr_dc_description"
+      data-schema-type="text"
+      data-schema-name="Description"
+      data-schema-sort_id="4"
+      tal:content="python:zmscontext.attr('attr_dc_description') or default">
       Dummy-Beschreibung der Infobox und kann mehrzeilig sein.
     </p>
   </div>
   <div class="infobox-footer">
     <hr>
-    <a href="#" class="readmore" tal:attributes="href python:zmscontext.attr('url') or '#';"
+    <a href="#" class="readmore"
+        data-schema-sort_id="3"
+        data-schema-id="linktext"
+        data-schema-type="string"
+        data-schema-name="Linktext"
+        data-schema-default="Read more..."
+        data-schema-attr-href-sort_id="2"
+        data-schema-attr-href-id="url"
+        tal:attributes="href python:zmscontext.attr('url') or '#';"
         tal:content="python:zmscontext.attr('linktext') or default">
         Weiter lesen ...
     </a>

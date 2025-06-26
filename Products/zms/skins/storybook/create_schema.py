@@ -208,8 +208,8 @@ def save_schema_as_yaml(schema, output_file_path):
     :param schema: The schema dictionary to be saved.
     :param output_file_path: The path where the YAML file will be saved.
     """
-    yaml_file = os.path.join(output_file_path, '__init__.yaml')
-    with open(yaml_file, 'w', encoding='utf-8') as output_file:
+
+    with open(output_file_path, 'w', encoding='utf-8') as output_file:
         class CustomDumper(yaml.Dumper):
             pass
         # Preserve the order of elements in the dictionary when dumping to YAML
@@ -232,7 +232,7 @@ def save_standard_html(classname, tal_file_path, output_file_path):
         content = file.read()
 
     # Remove all data-schema attributes using the datakey variable and regex
-    content = re.sub(r'\s*data-{}-[^=]+="[^"]*"\s*'.format(datakey), ' ', content)
+    # content = re.sub(r'\s*data-{}-[^=]+="[^"]*"\s*'.format(datakey), ' ', content)
     # This regex will remove multiple all unneccessary spaces 
     # between html-attributes within a  html element
     content = re.sub(r'(?<=[\w"]) +', ' ', content)
@@ -258,11 +258,19 @@ def save_zpt_as_html(tal_file_path, output_file_path):
     # Remove all data-schema attributes using the datakey variable and regex
     content = re.sub(r'\s*data-{}-[^=]+="[^"]*"\s*'.format(datakey), ' ', content)
 
-    # Simulate ZMS context
-    # namedtuple is used to create a simple class-like structure
+    ### Simulate ZMS context
+    # ---
+    # class zmscontext:
+    #     @staticmethod
+    #     def attr(key):
+    #         return 'fnord'
+    # ---
+    # Use namedtuple to create a simple class-like structure
     from collections import namedtuple
-    zmscontext = namedtuple('zmscontext', ['attr'])
-    zmscontext.attr = lambda key: None # Placeholder for ZMS context attributes
+    zmscontext = namedtuple('zmscontext', ['attr','langmap'])
+    # Create a mock zmscontext
+    zmscontext.attr = lambda key: None
+    zmscontext.langmap = {'ger':'de', 'eng':'en', 'fre':'fr', 'ita':'it', 'spa':'es'}
 
     # Prepare a minimum parameter-dict for rendering
     template_params = {
@@ -270,7 +278,6 @@ def save_zpt_as_html(tal_file_path, output_file_path):
             'zmscontext': zmscontext,
         },
         'request': { 'lang': 'ger' },
-        'langmap': {'ger':'de', 'eng':'en', 'fre':'fr', 'ita':'it', 'spa':'es'},
     }
 
     # Convert TAL to HTML using Chameleon, render with **kwargs
@@ -301,6 +308,8 @@ if __name__ == "__main__":
             # Call function to extract schema
             extracted_schema = extract_schema(f0, tal_file_path, output_file_path)
             if extracted_schema:
+                ### Save the schema as a Python file
+                save_schema_as_yaml(extracted_schema, os.path.join(source_dir, 'schema', package_name, f0, '__init__.yaml'))
                 ### Save the schema as a Python file
                 save_schema_as_python(extracted_schema, os.path.join(source_dir, 'schema', package_name, f0))
                 print(f'Schema for {f0} saved as Python to {os.path.join(source_dir, "schema", package_name, f0, "__init__.py")}')

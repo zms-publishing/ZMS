@@ -76,7 +76,7 @@ def normalize_ids_after_copy(node, id_prefix='e', ids=[]):
 
   # [B] Reset backlink-attribute and trigger onChangeObj for all copied child-nodes.
   normalized_pages = [e for e in normalized_objs if e.isPage()]
-  if len(normalized_pages) > 0:
+  if normalized_pages:
 
     # [B1] Inserting page-object(s) or tree-recursion
     for normalized_page in normalized_pages:
@@ -94,8 +94,8 @@ def normalize_ids_after_copy(node, id_prefix='e', ids=[]):
       # Traverse tree
       tree_pages = normalized_page.getTreeNodes(request, node.PAGES)
       if tree_pages:
-        for tree_pages in tree_pages:
-          normalize_ids_after_copy(tree_pages, id_prefix, ids=['*'])
+        for tree_page in tree_pages:
+          normalize_ids_after_copy(tree_page, id_prefix, ids=['*'])
   else:
     # [B2] Inserting pageelement-object(s)
     lang = request.get('lang')

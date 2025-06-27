@@ -641,7 +641,14 @@ div[draggable=true].btn:not(:disabled):not(.disabled) {
 	box-shadow: 0 1rem 1rem -0.5rem #0003;
 	transition: box-shadow 0.3s ease-in-out;
 }
-
+.zmi #diff .sticky-controls.sticky-controls-activated {
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100vw;
+	z-index: 1;
+	padding: .75rem 0 0 1.5rem !important;
+}
 /* Showing clientids only to Managers */
 body.zmi ul.portalClients.zmi-container .zmi-item .portalClient .portalClientId.zmi-manage-main-change {
 	visibility:hidden;

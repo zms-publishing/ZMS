@@ -16,34 +16,45 @@ res = context.content.getChildNodes(request,'ontology')[0].attr('records')
 if not res:
 	return "No ontology records found."
 
-# Get facets from the ontology records.
-facets = sorted(set([r['facet'] for r in res if 'facet' in r and r['facet']!= '']))
+# Get facet-keys from the ontology records.
+facet_keys = sorted(set([r['facet'] for r in res if 'facet' in r and r['facet']!= '']))
+facet_groups = {k: {} for k in facet_keys}
 
-# Group the records by facet and key.
-facet_groups = {k: {} for k in facets}
-
-# Reorganize the records into the facet groups.
-for record in res:
-	if 'facet' in record and record['facet'] in facets:
-		facet = record['facet']
-		# Clean up record by removing the technical keys starting with '_'.
-		record = {k: v for k, v in record.items() if ( not k.startswith('_') and k != 'facet' )}
-		if 'key' in record:
-			facet_groups[facet][record['key']]= {}
-			for lang in langs:
-				if lang in record.keys():
-					facet_groups[facet][record['key']][lang] = record[lang]
-# Add language keys to the facet groups if they are not present.
-for record in res:
-	keyid = record.get('key')
-	if keyid and keyid.startswith('facet_') and keyid.replace('facet_', '') in facets:
-		facet_id = keyid.replace('facet_', '')
+# Create facet groups in two steps:
+# --------------------------------------------------------------------
+# 1. Adding lang-dict to each facet
+# --------------------------------------------------------------------
+for r in res:
+	k = r.get('key')
+	if k and k.startswith('facet_') and k.replace('facet_', '') in facet_keys:
+		facet_key = k.replace('facet_', '')
 		for lang in langs:
-			if lang in record.keys():
-				if facet_id not in facet_groups:
-					facet_groups[facet_id] = {}
-				if lang not in facet_groups[facet_id]:
-					facet_groups[facet_id][lang] = record[lang]
+			if lang in r.keys():
+				if facet_key not in facet_groups:
+					facet_groups[facet_key] = {}
+				if lang not in facet_groups[facet_key]:
+					facet_groups[facet_key][lang] = r[lang]
+
+#--------------------------------------------------------------------
+# 2. Adding all linked keys and its translations to each facet.
+#--------------------------------------------------------------------
+for r in res:
+	if 'facet' in r and r['facet'] in facet_keys:
+		facet_key = r['facet']
+		# Clean up record by removing the technical keys starting with '_'.
+		r = {k: v for k, v in r.items() if ( not k.startswith('_') and k != 'facet' )}
+		facet_groups[facet_key][r['key']]= {}
+		for lang in langs:
+			if lang in r.keys():
+				facet_groups[facet_key][r['key']][lang] = r[lang]
+	elif not r['key'].startswith('facet_'):
+	# Add not-facetted keys to the 'default' facet group.
+		if 'default' not in facet_groups:
+			facet_groups['default'] = {}
+		facet_groups['default'][r['key']] = {}
+		for lang in langs:
+			if lang in r.keys():
+				facet_groups['default'][r['key']][lang] = r[lang]
 
 # Return JSON representation of the ontology.
 return context.content.str_json(facet_groups)

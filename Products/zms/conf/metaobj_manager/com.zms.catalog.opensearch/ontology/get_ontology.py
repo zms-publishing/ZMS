@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from Products.zms import standard
 
-def get_ontoloy(self):
+def get_ontology(self):
 	"""
 	Get (Facetted) Ontology
 	This function retrieves the ontology records from the ZMS context and organizes them into facet groups based on their keys and languages.
@@ -9,7 +9,12 @@ def get_ontoloy(self):
 	"""
 	zmscontext = self
 	request = self.REQUEST
-	langs = self.getLanguages(request)
+	try:
+		langs = zmscontext.getLanguages(request)
+	except:
+		zmscontext = self.content
+		langs = zmscontext.getLanguages(request)
+		pass
 
 	# Get closed ontology records by acquisition along the breadcrumb path.
 	res =  standard.operator_getattr(zmscontext, 'ontology').attr('records')
@@ -58,4 +63,4 @@ def get_ontoloy(self):
 
 	# Return JSON representation of the ontology.
 	return standard.str_json(facet_groups)
-
+	# return len(facet_groups.items())

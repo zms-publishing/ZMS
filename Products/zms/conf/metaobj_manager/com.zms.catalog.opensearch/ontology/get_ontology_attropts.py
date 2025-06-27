@@ -8,9 +8,14 @@ def get_ontology_attropts(self):
 	ontology = self.get_ontology()
 	# Create a list of attribute options for each facet key.
 	attropts = []
-	for facet_key in [k for k in ontology.keys() if k != 'default']:
+	for facet_key in list(ontology.keys()):
 		for k, v in ontology[facet_key].items():
 			if k not in langs:
-				attropts.append([k, '%s / %s'%(facet_key, v[lang])])
+				if facet_key == 'default':
+					v  = v[lang]
+				else:
+					v  = '%s &#x25BA; %s'%(facet_key, v[lang])
+				attropts.append([k, v])
+
 	return attropts
 

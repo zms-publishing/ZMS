@@ -11,6 +11,6 @@ def get_ontology_attropts(self):
 	for facet_key in [k for k in ontology.keys() if k != 'default']:
 		for k, v in ontology[facet_key].items():
 			if k not in langs:
-				attropts.append([k, '%s / %s'%(k, v[lang])])
+				attropts.append([k, '%s / %s'%(facet_key, v[lang])])
 	return attropts
 

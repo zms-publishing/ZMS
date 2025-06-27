@@ -186,7 +186,7 @@
 			hx-target="#zmi_manage_tabs_message"
 			hx-swap="outerHTML show:top"
 			hx-on:click="$ZMI.show_spinner(this)"
-			hx-on:htmx:after-request="renew_sort_options(this);$ZMI.reset_spinner(this)"
+			hx-on:htmx:after-request="renew_sort_options($('#meta_properties'));$ZMI.reset_spinner(this)"
 			value="BTN_SAVE"
 			tal:content="python:here.getZMILangStr('BTN_SAVE')">
 			Save

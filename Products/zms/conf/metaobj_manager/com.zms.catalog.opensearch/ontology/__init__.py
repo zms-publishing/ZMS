@@ -26,7 +26,7 @@ class ontology:
 	package = "com.zms.catalog.opensearch"
 
 	# Revision
-	revision = "0.0.2"
+	revision = "0.0.3"
 
 	# Type
 	type = "ZMSRecordSet"
@@ -126,7 +126,7 @@ class ontology:
 			,"multilang":0
 			,"name":"Get (facetted) Ontology"
 			,"repetitive":0
-			,"type":"py"}
+			,"type":"External Method"}
 
 		readme = {"default":""
 			,"id":"readme"

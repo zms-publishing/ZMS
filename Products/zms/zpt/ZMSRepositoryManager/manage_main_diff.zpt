@@ -68,8 +68,8 @@
 			<table class="table repo-diff-files table-sm table-hover">
 			<tal:block tal:repeat="id ids">
 				<tr>
-					<td class="meta-ids"><input type="checkbox" tal:attributes="name python:'%s:list'%ids_name; value python:'%s%s%s%s'%(['conf:',''][ids_name=='ids'],provider.id,['/',':'][ids_name=='ids'],id)" checked="checked"></td>
-					<td>
+					<td style="width:1rem"><input type="checkbox" tal:attributes="name python:'%s:list'%ids_name; value python:'%s%s%s%s'%(['conf:',''][ids_name=='ids'],provider.id,['/',':'][ids_name=='ids'],id)" checked="checked"></td>
+					<td class="meta-id" style="white-space: nowrap; width: 20vw !important; max-width: 20vw !important; overflow:hidden; text-overflow:ellipsis;">
 						<a tal:attributes="href python:'%s/manage_%s?lang=%s&id=%s'%(provider.absolute_url(), id=='__metas__' and 'metas' or 'main',request['lang'],id)" target="_blank">
 							<i tal:on-error="string:" style="text-align:center;width:2em;" tal:attributes="class python:zmscontext.zmi_icon(id)"></i>
 							<strong tal:content="id">the id</strong>

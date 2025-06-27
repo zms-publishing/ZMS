@@ -61,6 +61,9 @@ def get_ontology(self):
 				if lang in r.keys():
 					facet_groups['default'][r['key']][lang] = r[lang]
 
-	# Return JSON representation of the ontology.
-	return standard.str_json(facet_groups)
-	# return len(facet_groups.items())
+	# For debugging purposes, return the facet groups 
+	# as JSON representation.
+	if request.get('URL0').endswith('/get_ontology'):
+		return standard.str_json(facet_groups)
+	# For production return the facet groups directly.
+	return facet_groups

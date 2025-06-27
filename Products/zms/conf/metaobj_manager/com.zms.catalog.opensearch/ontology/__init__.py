@@ -128,6 +128,15 @@ class ontology:
 			,"repetitive":0
 			,"type":"External Method"}
 
+		get_ontology_attropts = {"default":""
+			,"id":"get_ontology_attropts"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"Get Attribute Options"
+			,"repetitive":0
+			,"type":"External Method"}
+
 		readme = {"default":""
 			,"id":"readme"
 			,"keys":[]

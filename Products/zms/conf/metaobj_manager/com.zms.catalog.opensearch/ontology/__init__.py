@@ -26,7 +26,7 @@ class ontology:
 	package = "com.zms.catalog.opensearch"
 
 	# Revision
-	revision = "0.0.4"
+	revision = "0.0.5"
 
 	# Type
 	type = "ZMSRecordSet"
@@ -100,24 +100,6 @@ class ontology:
 			,"name":"Francais"
 			,"repetitive":0
 			,"type":"string"}
-
-		getlangstr = {"default":""
-			,"id":"getLangStr"
-			,"keys":[]
-			,"mandatory":0
-			,"multilang":0
-			,"name":"Get Language String"
-			,"repetitive":0
-			,"type":"py"}
-
-		get_lang_dict = {"default":""
-			,"id":"get_lang_dict"
-			,"keys":[]
-			,"mandatory":0
-			,"multilang":0
-			,"name":"Get Language Dictionary"
-			,"repetitive":0
-			,"type":"py"}
 
 		get_ontology = {"default":""
 			,"id":"get_ontology"

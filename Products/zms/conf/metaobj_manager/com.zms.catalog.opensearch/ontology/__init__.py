@@ -26,7 +26,7 @@ class ontology:
 	package = "com.zms.catalog.opensearch"
 
 	# Revision
-	revision = "0.0.5"
+	revision = "0.0.6"
 
 	# Type
 	type = "ZMSRecordSet"
@@ -116,6 +116,15 @@ class ontology:
 			,"mandatory":0
 			,"multilang":0
 			,"name":"Get Attribute Options"
+			,"repetitive":0
+			,"type":"External Method"}
+
+		ontology_query = {"default":""
+			,"id":"ontology_query"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"Query"
 			,"repetitive":0
 			,"type":"External Method"}
 

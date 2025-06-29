@@ -1,0 +1,38 @@
+# ZMS Ontology
+
+## [ENG] Manage small keyword catalogs editorially
+
+ZMS provides a simple basic model for multilingual keywording:
+Each folder-like content node can be equipped with an
+individual keyword catalog in the form of a property. This catalog recursively,
+i.e. in all sub-documents of this folder, provides the keywords to be used in this subtree by the authors
+. The keyword catalog is an editorially controlled
+list of terms that can be entered and edited in the form of a data table.
+To add a keyword to the catalog
+
+1. a new data record is added to the ontology data table
+2. first a language-neutral *key* (comparable to a primary key) is entered
+3. the language-specific translations are entered for this *key*
+4. the optional *facet* field is used to group *keys*, i.e. *keys* with
+identical facets can be grouped into a keyword list
+5. *keys* with the prefix *facet_* are not regarded as keywords,
+but are only used to record the translation of the corresponding facet term
+
+
+## [GER] Kleine Schlagwort-Kataloge redaktionell managen
+
+Für die mehrsprachige Verschlagwortung liefert ZMS ein einfaches Basis-Modell:
+Jeder ordnerartige Content-Knoten kann in Form einer Eigenschaft (Property) mit einem
+individuellen Schlagwort-Katalog ausgestattet werden. Dieser Katalog liefert rekursiv,
+d.h. in alle Unter-Dokumente dieses Ordners, die in diesem Teilbaum von den Autoren
+einzusetzenden Schlagworte. Der Schlagwort-Katalog ist eine redaktionell kontrollierte
+Liste von Begriffen, die in Form einer Datentabelle erfasst und editiert werden kann.
+Um ein Schlagwort in den Katalog aufzunehmen, wird
+
+1. ein neuer Datensatz zur Ontology-Datentabelle hinzugefügt
+2. zunächst wird ein sprachneutraler *key* (vergleichbar mit einem Primärschlüssel) erfasst
+3. für diesen *key* werden die sprachspezischen Übersetzungen eingetragen
+4. Das optionale Feld *facet* dient dazu, *keys* zu gruppieren, d.h. *keys* mit
+identischer Facette können zu einer Schlagwort-Liste gruppiert werden
+5. *keys* mit dem Prefix *facet_* werden nicht als Schlagworte betrachtet,
+sondern dienen nur dazu, die Übersetzung des entsprechenden facet-Begriffs zu erfassen

@@ -1,7 +1,6 @@
 import opensearchpy
 from opensearchpy import OpenSearch
 import json
-from chameleon import PageTemplate
 from Products.zms import standard
 
 def ontology_query( self):
@@ -11,8 +10,8 @@ def ontology_query( self):
 	qsize = request.get('size', 10)
 	qfrom = request.get('from', qpage_index*qsize)
 
-	# Get the ZMS context, which may be the current object or its content
 	zmscontext = self
+	hits = []
 	try:
 		langs = zmscontext.getLanguages(request)
 	except:
@@ -38,6 +37,7 @@ def ontology_query( self):
 							{
 								"simple_query_string": {
 									"query": q,
+									"fields": ["attr_dc_subject"],
 									"default_operator": "AND"
 								}
 							}
@@ -45,7 +45,7 @@ def ontology_query( self):
 					}
 				},
 				"script": {
-					"lang":"painless",
+					"lang": "painless",
 					"source": "return _score;"
 				}
 			}
@@ -60,28 +60,11 @@ def ontology_query( self):
 		}
 	}
 
-	# Define the template as a string with Chameleon syntax for repeating hits
-	pt = PageTemplate("""
-	<main>
-		<article class="infoxbox" tal:repeat="hit hits">
-			<div tal:define="title hit['_source']['title']; attr_dc_description hit['_source']['attr_dc_description']">
-				<h1 tal:content="title">Title</h1>
-				<p tal:content="attr_dc_description">Description</p>
-			</div>
-		</article>
-	</main>
-	""")
-
-	hits = []
-	resp_html =	''
 	try:
 		response = client.search(body = json.dumps(query), index = index_names)
 		if 'hits' in response and 'hits' in response['hits']:
 			hits = response['hits']['hits']
-		if hits:
-			resp_html = pt.render(hits=hits)
-
 	except opensearchpy.exceptions.RequestError as e:
 		return '// %s'%(e.error)
 	
-	return resp_html
+	return hits

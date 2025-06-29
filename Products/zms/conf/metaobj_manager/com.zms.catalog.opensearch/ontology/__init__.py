@@ -119,14 +119,15 @@ class ontology:
 			,"repetitive":0
 			,"type":"External Method"}
 
-		ontology_query = {"default":""
-			,"id":"ontology_query"
+		icon_clazz = {"custom":"far fa-list-alt"
+			,"default":""
+			,"id":"icon_clazz"
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
-			,"name":"Query"
+			,"name":"CSS-Icon"
 			,"repetitive":0
-			,"type":"External Method"}
+			,"type":"constant"}
 
 		readme = {"default":""
 			,"id":"readme"

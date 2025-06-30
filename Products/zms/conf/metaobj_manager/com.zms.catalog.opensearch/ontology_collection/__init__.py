@@ -51,6 +51,15 @@ class ontology_collection:
 			,"repetitive":0
 			,"type":"attr_dc_subject"}
 
+		interface = {"default":""
+			,"id":"interface"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"interface"
+			,"repetitive":0
+			,"type":"interface"}
+
 		queryinput = {"default":"1"
 			,"id":"queryinput"
 			,"keys":[]
@@ -115,3 +124,12 @@ class ontology_collection:
 			,"name":"Template: Ontology-Results"
 			,"repetitive":0
 			,"type":"zpt"}
+
+		new12 = {"default":""
+			,"id":"new12"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":1
+			,"name":"new12"
+			,"repetitive":0
+			,"type":""}

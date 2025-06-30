@@ -1,6 +1,6 @@
-class ontology_results:
+class ontology_collection:
 	"""
-	python-representation of ontology_results
+	python-representation of ontology_collection
 	"""
 
 	# Access
@@ -17,16 +17,16 @@ class ontology_results:
 	enabled = 1
 
 	# Id
-	id = "ontology_results"
+	id = "ontology_collection"
 
 	# Name
-	name = "Ontology-Results"
+	name = "Ontology-Collection"
 
 	# Package
 	package = "com.zms.catalog.opensearch"
 
 	# Revision
-	revision = "0.0.1"
+	revision = "0.0.6"
 
 	# Type
 	type = "ZMSObject"
@@ -50,6 +50,43 @@ class ontology_results:
 			,"name":"DC.Subject"
 			,"repetitive":0
 			,"type":"attr_dc_subject"}
+
+		queryinput = {"default":"1"
+			,"id":"queryinput"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"GUI: Textinput"
+			,"repetitive":0
+			,"type":"boolean"}
+
+		filtertype = {"default":""
+			,"id":"filtertype"
+			,"keys":["##"
+				,"return ["
+				,"(None,'No Filter shown'),"
+				,"('parallel','Parallel Facet-Filtering'),"
+				,"('sequential','Sequential Facet-Filtering'),"
+				,"]"]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"GUI: Filter"
+			,"repetitive":0
+			,"type":"select"}
+
+		navigationtype = {"default":""
+			,"id":"navigationtype"
+			,"keys":["##"
+				,"return ["
+				,"(None,'No Navigation shown'),"
+				,"('pagination','Paginaton'),"
+				,"('load','Load more...'),"
+				,"]"]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"GUI: Navigation"
+			,"repetitive":0
+			,"type":"select"}
 
 		icon_clazz = {"custom":"fas fa-table"
 			,"default":""

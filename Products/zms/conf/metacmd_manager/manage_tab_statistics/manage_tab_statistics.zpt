@@ -63,6 +63,15 @@
 							obj
 						</option>
 					</optgroup>
+					<optgroup label="Unpackaged"
+						tal:define="unpackaged_objs python:list(filter(lambda x: here.getMetaobj(x)['package']=='', meta_list))"
+						tal:condition="python:len(unpackaged_objs)>0">
+						<option tal:repeat="obj unpackaged_objs" 
+							tal:attributes="value obj" 
+							tal:content="python:num_objs is not False and '{} ({:,})'.format(obj,len(here.getAbsoluteHome().zcatalog_index({'meta_id':obj}))) or obj">
+							obj
+						</option>
+					</optgroup>
 				</select>
 				<select id="path_filter" name="filter" class="form-control mr-2"
 					tal:define="

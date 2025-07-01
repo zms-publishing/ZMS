@@ -53,6 +53,6 @@
 	});
 	function focus_anchorid(anchorid) {
 		$('.table.focus').removeClass('focus');
-		$(document).scrollTop( $(anchorid).offset().top );
+		$(document).scrollTop( $(anchorid).offset().top - 132 );
 		$(anchorid).addClass('focus');
 	}

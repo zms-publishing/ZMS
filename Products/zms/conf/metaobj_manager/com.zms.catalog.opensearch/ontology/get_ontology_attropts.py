@@ -14,7 +14,12 @@ def get_ontology_attropts(self):
 				if facet_key == 'default':
 					v  = v[lang]
 				else:
-					v  = '%s &#x25BA; %s'%(facet_key, v[lang])
+					try:
+						# Attempt to translate the facet key using the ontology dictionary.
+						facet_key_lang = ontology[facet_key].get(lang, facet_key)
+					except:
+						facet_key_lang = facet_key
+					v  = '%s &#x25BA; %s'%(facet_key_lang, v[lang])
 				attropts.append([k, v])
 
 	return attropts

@@ -114,6 +114,9 @@
 							title python:here.getZMILangStr('BTN_DELETE')">
 						<i class="fas fa-times"></i>
 					</a>
+					<span tal:condition="python:metadictAttr.get('acquired',None)" class="btn">
+						<i class="fas fa-share fa-flip-vertical" title="acquired"></i>
+					</span>
 				</div>
 			</div>
 		</td>

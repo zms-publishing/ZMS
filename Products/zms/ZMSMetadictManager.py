@@ -50,9 +50,8 @@ class ZMSMetadictManager(object):
         metas = [metas[x*2+1] for x in range(len(metas)//2)]
         l = []
         for meta in metas:
-          if 'acquired' in meta:
-            if meta['acquired'] == 1:
-              meta = {'id': meta['id'], 'acquired': 1}
+          if meta.get('acquired'):
+            meta = {'id': meta['id'], 'acquired': 1}
           l.append(meta)
         metas = l  
         d = {'id':id,'__filename__':['__metas__.py'],'Metas':metas}

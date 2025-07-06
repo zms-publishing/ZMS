@@ -28,14 +28,14 @@ class solr_connector:
 	package = "com.zms.catalog.solr"
 
 	# Revision
-	revision = "1.0.0"
+	revision = "1.1.0"
 
 	# Type
 	type = "ZMSLibrary"
 
 	# Attrs
 	class Attrs:
-		properties = {"custom":"[\r\n  {\r\n    \"id\": \"solr.url\",\r\n    \"type\": \"string\",\r\n    \"label\": \"URL\",\r\n    \"default_value\": \"http://localhost:8983/solr\",\r\n    \"is_target_of\": \"\"\r\n  },\r\n  {\r\n    \"id\": \"solr.username\",\r\n    \"type\": \"string\",\r\n    \"label\": \"Username\",\r\n    \"default_value\": \"admin\",\r\n    \"is_target_of\": \"\"\r\n  },\r\n  {\r\n    \"id\": \"solr.password\",\r\n    \"type\": \"password\",\r\n    \"label\": \"Password\",\r\n    \"default_value\": \"admin\",\r\n    \"is_target_of\": \"\"\r\n  },\r\n  {\r\n    \"id\": \"solr.schema\",\r\n    \"type\": \"text\",\r\n    \"label\": \"Schema\",\r\n    \"default_value\": \"{}\",\r\n    \"is_target_of\": \"schematize\"\r\n  },\r\n  {\r\n    \"id\": \"solr.parser\",\r\n    \"type\": \"string\",\r\n    \"label\": \"Parser\",\r\n    \"default_value\": \"http://localhost:9998/tika\",\r\n    \"is_target_of\": \"\"\r\n  }\r\n]"
+		properties = {"custom":"[\r\n  {\r\n    \"id\": \"solr.url\",\r\n    \"type\": \"string\",\r\n    \"label\": \"URL\",\r\n    \"default_value\": \"http://localhost:8983/solr\",\r\n    \"is_target_of\": \"\"\r\n  },\r\n  {\r\n    \"id\": \"solr.core\",\r\n    \"type\": \"string\",\r\n    \"label\": \"Index-Name\",\r\n    \"default_value\": \"\",\r\n    \"is_target_of\": \"\"\r\n  },\r\n  {\r\n    \"id\": \"solr.username\",\r\n    \"type\": \"string\",\r\n    \"label\": \"Username\",\r\n    \"default_value\": \"admin\",\r\n    \"is_target_of\": \"\"\r\n  },\r\n  {\r\n    \"id\": \"solr.password\",\r\n    \"type\": \"password\",\r\n    \"label\": \"Password\",\r\n    \"default_value\": \"admin\",\r\n    \"is_target_of\": \"\"\r\n  },\r\n  {\r\n    \"id\": \"solr.schema\",\r\n    \"type\": \"text\",\r\n    \"label\": \"Schema\",\r\n    \"default_value\": \"{}\",\r\n    \"is_target_of\": \"schematize\"\r\n  },\r\n  {\r\n    \"id\": \"solr.parser\",\r\n    \"type\": \"string\",\r\n    \"label\": \"Parser\",\r\n    \"default_value\": \"http://localhost:9998/tika\",\r\n    \"is_target_of\": \"\"\r\n  }\r\n]"
 			,"default":""
 			,"id":"properties"
 			,"keys":[]

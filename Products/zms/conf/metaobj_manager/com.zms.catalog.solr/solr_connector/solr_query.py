@@ -7,7 +7,7 @@ import requests
 
 def solr_query( self, REQUEST=None):
 	request = self.REQUEST
-	index_name = self.getRootElement().getHome().id
+	index_name = self.getConfProperty('solr.core', self.getRootElement().getHome().id)
 
 
 	url = self.getConfProperty('solr.url')
@@ -26,16 +26,16 @@ def solr_query( self, REQUEST=None):
 
 
 	q = request.get('q','')
+	fulltext_field = self.getConfProperty('solr.fulltext_field', 'standard_html')
 	qpage_index = request.get('pageIndex',0)
 	qsize = request.get('size', 10)
 	qfrom = request.get('from', qpage_index*qsize)
-	index_name = self.getRootElement().getHome().id
 
 	query_params = {
-		'q': 'standard_html:%s'%(q),
+		'q': '%s:%s'%(fulltext_field,q),
 		'wt': 'json',
 		'hl': 'false',
-		'hl.fl': 'standard_html',
+		'hl.fl': fulltext_field,
 		'hl.simple.pre': '<b>',
 		'hl.simple.post': '</b>',
 		'hl.fragsize': 100, # Number of characters to return

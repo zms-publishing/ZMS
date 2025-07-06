@@ -291,7 +291,7 @@
 						<input type="checkbox" name="ids:list" tal:attributes="value metaCmd/id" />
 					</td>
 					<td class="meta-space"></td>
-					<td>
+					<td class="meta-id">
 						<tal:block tal:condition="python:ob is not None">
 							<tal:block tal:condition="python:metaCmd.get('acquired',False)">
 								<a target="_blank" data-turbolinks="false"

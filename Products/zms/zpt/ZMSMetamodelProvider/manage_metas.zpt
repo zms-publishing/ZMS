@@ -96,7 +96,13 @@
 		<tal:block tal:define="global metadictAttr python:here.getMetadictAttr(metadictAttrId)">
 		<td class="meta-sort">
 			<input type="hidden" name="old_ids:list" tal:attributes="value python:metadictAttr['id']" />
-			<div class="input-group input-group-sm">
+			<div class="input-group input-group-sm"
+				tal:attributes="class python: here.getPortalMaster() is not None and 'input-group input-group-sm justify-content-end' or default">
+				<div class="input-group-prepend input-group-sm">
+					<span tal:condition="python:metadictAttr.get('acquired',None)" class="btn mr-1">
+						<i class="fas fa-share fa-flip-vertical" title="acquired"></i>
+					</span>
+				</div>
 				<select class="zmi-sort form-control-sm"
 					tal:attributes="onchange python:'zmiFormSubmit(this,{btn:\'move_to\',id:\'%s\',\'pos:int\':this.selectedIndex})'%metadictAttrId">
 					<option tal:repeat="i python:range(0,len(metadictAttrIds))" tal:attributes="selected python:['','selected'][int(i==metadictAttrIds.index(metadictAttrId))]" tal:content="python:i+1">i+1</option>
@@ -114,9 +120,6 @@
 							title python:here.getZMILangStr('BTN_DELETE')">
 						<i class="fas fa-times"></i>
 					</a>
-					<span tal:condition="python:metadictAttr.get('acquired',None)" class="btn">
-						<i class="fas fa-share fa-flip-vertical" title="acquired"></i>
-					</span>
 				</div>
 			</div>
 		</td>

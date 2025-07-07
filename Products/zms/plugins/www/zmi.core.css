@@ -1108,6 +1108,7 @@ tr[id*='new_row'] td {
 .zmi table#meta_commands.table td.meta-space {
 	text-align:center;
 	width:3em;
+	min-width:2em;
 }
 .zmi i.deprecated,
 .zmi i.deprecated + a,
@@ -1123,7 +1124,15 @@ tr[id*='new_row'] td {
 .zmi table#meta_overview.table td.meta-id {
 	width: auto !important;
 }
-.zmi.metas table#meta_overview td.meta-id i {
+.zmi table#meta_commands.table td.meta-id {
+	max-width:60vw;
+	text-overflow:ellipsis
+}
+.zmi table#meta_commands.table td.meta-id.acquired {
+	color:#8292a1;
+}
+.zmi.metas table#meta_overview td.meta-id i,
+.zmi table#meta_commands.table td.meta-id i {
 	margin:0 .5em;
 }
 .zmi.metas table#meta_overview td.meta-id a:hover i {

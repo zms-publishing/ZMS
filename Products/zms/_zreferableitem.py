@@ -295,6 +295,7 @@ class ZReferableItem(object):
     standard.writeLog(self, '[changeRefToObjs]')
     result = {'changed': 0, 'unchanged': 0, 'ref_to': None}
     request = self.REQUEST
+    req_lang = request.get('lang', self.getPrimaryLanguage())
     # Get the link of the current object
     this_ref = str(self.getRefObjPath(self))
     getRefByObjs = self.getRefByObjs()
@@ -320,6 +321,10 @@ class ZReferableItem(object):
             for lang in langs:
               self.REQUEST.set('lang', lang)
               if datatype in ['richtext', 'string', 'text']:
+                # Reset obsolete ZMSLinkElement.ref_lang attribute if exists
+                if ref_obj.meta_id == 'ZMSLinkElement' and key=='ref_lang':
+                  ref_obj.attr('ref_lang', None)
+                  continue
                 # Get the value of the attribute
                 v = ref_obj.attr(key)
                 if v is not None and isinstance(v, str):
@@ -350,6 +355,8 @@ class ZReferableItem(object):
                       # Handle the exception if the replacement fails
                       standard.writeLog(self, '[changeRefsToObj] Error: %s'%str(e))
                       result['unchanged'] += 1
+    # Reset the request-language
+    self.REQUEST.set('lang', req_lang)
     return result
 
   # ----------------------------------------------------------------------------

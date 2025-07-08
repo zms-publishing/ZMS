@@ -17,3 +17,6 @@ services:
     ###    /opt/docker-solr/scripts/precreate-core mycore
     ### 2. set mounted volume permissions to 777
 
+networks:
+  zms_network:
+    driver: bridge

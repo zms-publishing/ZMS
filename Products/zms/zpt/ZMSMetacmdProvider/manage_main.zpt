@@ -273,7 +273,7 @@
 				<input type="checkbox" name="ids:list" tal:attributes="value package"/>
 			</td>
 			<td colspan="5">
-				<i class="fas fa-briefcase "></i>&nbsp;&nbsp;
+				<i class="fas fa-briefcase mr-2"></i>
 				<strong tal:condition="not:package">[default package]</strong>
 				<strong tal:condition="package" tal:content="package">the package</strong>
 			</td>
@@ -291,7 +291,7 @@
 						<input type="checkbox" name="ids:list" tal:attributes="value metaCmd/id" />
 					</td>
 					<td class="meta-space"></td>
-					<td>
+					<td class="meta-id" tal:attributes="class python:metaCmd.get('acquired',False) and 'meta-id acquired' or 'meta-id'">
 						<tal:block tal:condition="python:ob is not None">
 							<tal:block tal:condition="python:metaCmd.get('acquired',False)">
 								<a target="_blank" data-turbolinks="false"
@@ -299,7 +299,7 @@
 										href python:'%s/metacmd_manager/manage_main?lang=%s&id=%s'%(context.getHome().aq_parent.content.absolute_url(),request['lang'],metaCmd['id']);
 										title python:'acquired from: %s (%s)'%(context.getHome().aq_parent.content.id, context.getHome().aq_parent.content.attr('titlealt'))"
 									><i class="fas fa-share fa-flip-vertical mr-2"></i></a>
-								<i tal:condition="python:metaCmd.get('icon_clazz',False)" tal:attributes="class python:metaCmd.get('icon_clazz')"></i>&nbsp;&nbsp;
+								<i tal:condition="python:metaCmd.get('icon_clazz',False)" tal:attributes="class python:metaCmd.get('icon_clazz')"></i>
 								<strong tal:content="python:metaCmd['id']">the id</strong> ( <tal:block tal:content="python:here.getZMILangStr(metaCmd['name'])">Name</tal:block> )
 							</tal:block>
 							<tal:block tal:condition="not:python:metaCmd.get('acquired',False)">

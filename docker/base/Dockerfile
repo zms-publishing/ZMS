@@ -83,7 +83,7 @@ ARG BUILD_DIR=docker/base
 COPY --chown=zope:zope $BUILD_DIR/zope.ini etc/zope.ini
 COPY --chown=zope:zope $BUILD_DIR/zope.conf etc/zope.conf
 COPY --chown=zope:zope $BUILD_DIR/zeo.conf etc/zeo.conf
-RUN mkdir cache Extensions
+RUN mkdir cache Extensions customizing import
 
 COPY --chown=zope:zope Products Products
 # consider if we need the test code to be in the container to run

@@ -26,7 +26,7 @@ class ontology_collection:
 	package = "com.zms.catalog.opensearch"
 
 	# Revision
-	revision = "0.0.6"
+	revision = "0.0.7"
 
 	# Type
 	type = "ZMSObject"
@@ -43,13 +43,14 @@ class ontology_collection:
 			,"type":"title"}
 
 		attr_dc_subject = {"default":""
-			,"id":"attr_dc_subject"
-			,"keys":[]
-			,"mandatory":0
-			,"multilang":1
-			,"name":"DC.Subject"
-			,"repetitive":0
-			,"type":"attr_dc_subject"}
+ 			,"id":"attr_dc_subject"
+ 			,"keys":["##"
+ 				,"return context.get_ontology_attropts()"]
+ 			,"mandatory":0
+ 			,"multilang":0
+ 			,"name":"Ontology-Keywords"
+ 			,"repetitive":0
+ 			,"type":"multiselect"}
 
 		interface = {"default":""
 			,"id":"interface"

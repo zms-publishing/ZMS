@@ -24,8 +24,7 @@
 
 
 <pre class="alert alert-info ml-0" tal:condition="python:request.get('URL').find('/manage')>-1">
-DEBUG-INFO:
-Query = <code tal:define="zmscontext options/zmscontext;q python:zmscontext.attr('attr_dc_subject');" tal:content="q"></code>
+DEBUG-INFO: Query = <code tal:define="zmscontext options/zmscontext;q python:zmscontext.attr('attr_dc_subject');" tal:content="q"></code>
 </pre>
 
 <style>

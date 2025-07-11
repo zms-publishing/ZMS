@@ -48,4 +48,4 @@ services:
 networks:
   zms_network:
     driver: bridge
-    external: true
+    # external: true

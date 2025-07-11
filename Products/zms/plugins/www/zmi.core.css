@@ -1472,6 +1472,14 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	max-height: 100vh;
 	overflow-y: auto;
 }
+.zmi .zmi-action .dropdown-menu:has(.dropdown-body) {
+	overflow-y: none;
+	max-height: unset;
+}
+.zmi .zmi-action .dropdown-menu .dropdown-body {
+	overflow-y: auto;
+	max-height: calc(100vh - 240px);
+}
 .zmi .zmi-action .dropdown-menu[x-placement="left-start"] {
 	top: 1.93rem !important;
 	left: 3.1rem !important;

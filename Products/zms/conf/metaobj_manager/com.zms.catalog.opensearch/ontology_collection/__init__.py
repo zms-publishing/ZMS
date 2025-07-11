@@ -43,14 +43,14 @@ class ontology_collection:
 			,"type":"title"}
 
 		attr_dc_subject = {"default":""
- 			,"id":"attr_dc_subject"
- 			,"keys":["##"
- 				,"return context.get_ontology_attropts()"]
- 			,"mandatory":0
- 			,"multilang":0
- 			,"name":"Ontology-Keywords"
- 			,"repetitive":0
- 			,"type":"multiselect"}
+			,"id":"attr_dc_subject"
+			,"keys":["##"
+				,"return context.get_ontology_attropts()"]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"Ontology-Keywords"
+			,"repetitive":0
+			,"type":"multiselect"}
 
 		interface = {"default":""
 			,"id":"interface"
@@ -125,12 +125,3 @@ class ontology_collection:
 			,"name":"Template: Ontology-Results"
 			,"repetitive":0
 			,"type":"zpt"}
-
-		new12 = {"default":""
-			,"id":"new12"
-			,"keys":[]
-			,"mandatory":0
-			,"multilang":1
-			,"name":"new12"
-			,"repetitive":0
-			,"type":""}

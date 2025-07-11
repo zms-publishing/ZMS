@@ -17,9 +17,13 @@ def get_ontology(self):
 		pass
 
 	# Get closed ontology records by acquisition along the breadcrumb path.
-	res =  standard.operator_getattr(zmscontext, 'ontology').attr('records')
-	if not res:
-		return "No ontology records found."
+	ontology_obj = standard.operator_getattr(zmscontext, 'ontology')
+	if not ontology_obj:
+		return "WARNING: No ontology found."
+	else:
+		res =  ontology_obj.attr('records')
+		if not res:
+			return "WARNING: No data found."
 
 	# Get facet-keys from the ontology records.
 	facet_keys = sorted(set([r['facet'] for r in res if 'facet' in r and r['facet']!= '']))

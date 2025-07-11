@@ -6,6 +6,9 @@ def get_ontology_attropts(self):
 	langs = self.getLanguages(request)
 	# Get ontology records by acquisition along the breadcrumb path.
 	ontology = self.get_ontology()
+	# If function get_ontology returns a string as warning message.
+	if isinstance(ontology, str):
+		return [('', ontology)]
 	# Create a list of attribute options for each facet key.
 	attropts = []
 	for facet_key in list(ontology.keys()):

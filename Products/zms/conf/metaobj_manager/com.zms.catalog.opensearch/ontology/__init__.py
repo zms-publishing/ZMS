@@ -14,7 +14,7 @@ class ontology:
 			,""]}
 
 	# Enabled
-	enabled = 1
+	enabled = 0
 
 	# Id
 	id = "ontology"
@@ -26,7 +26,7 @@ class ontology:
 	package = "com.zms.catalog.opensearch"
 
 	# Revision
-	revision = "0.0.6"
+	revision = "0.0.7"
 
 	# Type
 	type = "ZMSRecordSet"

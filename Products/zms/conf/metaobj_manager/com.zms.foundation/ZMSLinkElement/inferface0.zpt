@@ -1,9 +1,8 @@
-<div id="inferface0" tal:define="global
-		zmscontext options/zmscontext;
+<div id="inferface0" tal:define="zmscontext options/zmscontext;
 		dummy0 python:request.set('beforeSubmitBtnClick','if ( zmiOnSubmitEventHandler(this)) { ');
 		dummy0 python:request.set('afterSubmitBtnClick',' } ')">
 <script type="text/javascript">
-<!--//
+//<!--
 
 var btn = null;
 var remoteHref = null;
@@ -70,82 +69,58 @@ initAttrRef = function() {
 		});
 	};
 
+function getRefLang() {
+	// Extract language from attr_ref, e.g. "lang=eng" or "lang=ger" or "lang=fra".
+	const attr_ref = $("input#attr_ref").val();
+	const match = attr_ref.match(/lang=([a-zA-Z]+)/);
+	const lang_str = match ? match[1] : null;
+	return lang_str;
+}
+
+function initBrowseObjsBtn() {
+	// Customize link creation button
+	// Default: zmiBrowseObjs('form0','attr_ref',getZMILang());
+	$('#tr_attr_ref a.btn').removeAttr('onclick');
+	$('#tr_attr_ref a.btn').off('click').on('click', function () {
+		let ref_lang = getRefLang();
+		zmiBrowseObjs('form0', 'attr_ref', getZMILang(), ref_lang);
+		return false;
+	});
+};
+
 $(function(){
-
-	$ZMI.afterInitInputFields(function() {
-		$("input#attr_ref").each(function() {
-				var $input = $(this);
-				var $inputgroup = $input.parent();
-				if ($input.val().indexOf('{$')==0 && $input.prop("disabled")) {
-					$input.attr("data-value",$input.val());
-					if ($(".dropdown.languages .dropdown-menu li").length>0) {
-						var html = ''
-							+ '<div class="btn-group">'
-							+ '<button type="button" class="dropdown-toggle btn btn-secondary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
-								+ '<i class="fas fa-flag"></i>'
-							+ '</button>'
-							+ '<div class="dropdown-menu">'
-							+ '<a class="dropdown-item" href="#" data-language=""><i class="far fa-square"></i> Default</a>';
-						$(".dropdown.languages .dropdown-menu li").each(function() {
-								html += '<a class="dropdown-item" href="#" data-language="'+$("a",this).attr("data-language")+'"><i class="far fa-square"></i> '+$("a",this).text()+'</a>';
-							});
-						html += ''
-							+ '</div>'
-							+ '</div>';
-						$(".input-group-addon",$inputgroup).html(html).addClass("input-group-dropdown");
-						var fn = function() {
-								var v = $("#ref_lang").val();
-								var attr_ref = $input.attr("data-value");
-								if (v!="") {
-									attr_ref = attr_ref.replace(/;lang\=\w*/gi,'');
-									attr_ref = attr_ref.substring(0,attr_ref.indexOf('}'));
-									attr_ref += ';lang='+v+'}';
-								}
-								$input.val(attr_ref).change();
-								$(".input-group-addon button .fas fa-flag",$inputgroup).removeClass("text-muted text-primary").addClass(v==""?"text-muted":"text-primary");
-								$(".input-group-addon .dropdown-menu li a",$inputgroup).each(function() {
-										$(".fa-check-square",this).toggleClass("fa-square fa-check-square");
-										if (v==$(this).attr("data-language")) {
-											$(".fa-square",this).toggleClass("fa-square fa-check-square");
-										}
-									});
-							};
-						fn();
-						$(".input-group-addon .dropdown-menu li a",$inputgroup)
-							.click(function() {
-									$("#ref_lang").val($(this).attr("data-language"));
-									fn();
-								});
-					}
-				}
-				else {
-				$("#ref_lang").val("");
-				}
-			});
-		});
-
 	$("input#attr_ref").change(initAttrRef).change();
 	$("#tr_attr_ref_type select").css("width", "100%");
+	// Initialize on page load and/or after afterInitInputFields
+	initBrowseObjsBtn();
+	$ZMI.afterInitInputFields(function() {
+		initBrowseObjsBtn();
+	});
 });
 
 //-->
 </script>
-<!--
+<!--!
 ################################################################################
 ##### Ref & Type: EDIT
 ################################################################################
 -->
-<input type="hidden" id="ref_lang" tal:attributes="name python:'ref_lang_%s'%request['lang']; value python:zmscontext.attr('ref_lang')"/>
 <div class="form-group row" id="tr_attr_ref">
-	<label class="col-sm-2 col-md-2 col-lg-2 control-label mandatory" for="attr_ref"><span tal:content="structure python:here.getZMILangStr('ATTR_URL')">Url</span></label>
-	<div class="col-sm-10">
-		<div class="pull-left" style="width:50%">
-			<tal:block tal:content="structure python:zmscontext.getObjInput('attr_ref',request)">the ref-input</tal:block>
+	<label class="col-sm-2 col-md-2 col-lg-2 control-label mandatory" for="attr_ref">
+		<span tal:content="structure python:here.getZMILangStr('ATTR_URL')">Url</span>
+	</label>
+	<div class="col-sm-10 form-inline align-items-start">
+		<div class="pull-left col-6 p-0" id="div_attr_ref"
+			tal:content="structure python:zmscontext.getObjInput('attr_ref',request)">
+			the ref-input
 		</div>
-		<div id="tr_attr_ref_type" class="form-inline" style="width:50%;float:right" tal:content="structure python:zmscontext.getObjInput('attr_type',request)">the type-input</div>
+		<div class="pull-right col-6 p-0" id="tr_attr_ref_type"
+			tal:content="structure python:zmscontext.getObjInput('attr_type',request)">
+			the type-input
+		</div>
 	</div>
 </div>
-<!--
+<!--!
 ################################################################################
 ##### Embedded Object: PREVIEW
 ################################################################################
@@ -158,5 +133,10 @@ $(function(){
 			renderShort
 	</div>
 </div>
+<!--!
+################################################################################
+##### Avoid doublication of the here created fieldsets: 'attr_ref','attr_type'
+################################################################################
+-->
 <tal:block tal:define="global dummy0 python:request.set('ZMS_HIDE_ELEMENTS',request.get('ZMS_HIDE_ELEMENTS',[])+['attr_ref','ref_lang','attr_type'])"></tal:block>
 </div>

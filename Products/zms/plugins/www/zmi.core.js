@@ -248,12 +248,12 @@ ZMI.prototype.setCursorAuto = function() {
  */
 function getZMILang() {
 	if (typeof zmiParams['lang'] == 'undefined') {
-	if (typeof zmiLangStr != "undefined") {
-	  zmiParams['lang'] = zmiLangStr['lang'];
-	}
-	if (typeof zmiParams['lang'] == 'undefined') {
-	  zmiParams['lang'] = 'eng';
-	}
+		if (typeof zmiLangStr != "undefined") {
+			zmiParams['lang'] = zmiLangStr['lang'];
+		}
+		if (typeof zmiParams['lang'] == 'undefined') {
+			zmiParams['lang'] = 'eng';
+		}
 	}
 	return zmiParams['lang'];
 }

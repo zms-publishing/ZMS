@@ -1788,7 +1788,7 @@ function zmiToggleSelectionButtonClick(sender,v) {
 /**
  * zmiBrowseObjs
  */
-function zmiBrowseObjs(fmName, elName, lang) {
+function zmiBrowseObjs(fmName, elName, lang, selectedLang) {
 	let title = getZMILangStr('CAPTION_CHOOSEOBJ');
 	let href = "manage_browse_iframe";
 	let elValue = '';
@@ -1803,11 +1803,14 @@ function zmiBrowseObjs(fmName, elName, lang) {
 			}
 		});
 	};
-	href += '?lang='+lang;
-	href += '&defaultLang='+lang;
-	href += '&fmName='+fmName;
-	href += '&elName='+elName;
-	href += '&elValue='+encodeURIComponent(elValue);
+	href += '?lang=' + lang;
+	href += '&defaultLang=' + lang;
+	if ( typeof selectedLang == "string" && selectedLang.length > 0) {
+		href += '&selectedLang=' + selectedLang;
+	}
+	href += '&fmName=' + fmName;
+	href += '&elName=' + elName;
+	href += '&elValue=' + encodeURIComponent(elValue);
 	if ( typeof selectedText == "string") {
 		href += '&selectedText=' + encodeURIComponent( selectedText);
 	}

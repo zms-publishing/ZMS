@@ -310,6 +310,7 @@ class ZReferableItem(object):
     for ref in getRefByObjs:
       ref_ob = self.getLinkObj(ref,request)
       if ref_ob is not None:
+        ref_ob_changed = False
         # Get the referencing object
         ref_obj = self.getLinkObj(ref)
         if ref_obj is not None:
@@ -335,7 +336,10 @@ class ZReferableItem(object):
                       ref_to_ob = self.getLinkObj(ref_to)
                       if ref_to_ob is not None:
                         ref_to_ob.registerRefObj(ref_obj)
-                      result['changed'] += 1
+                      if not ref_ob_changed:
+                        result['changed'] += 1
+                        # Register the language change
+                        ref_ob_changed = True
                     except Exception as e:
                       # Handle the exception if the replacement fails
                       standard.writeLog(self, '[changeRefsToObj] Error: %s'%str(e))
@@ -350,7 +354,10 @@ class ZReferableItem(object):
                       ref_to_ob = self.getLinkObj(ref_to)
                       if ref_to_ob is not None:
                         ref_to_ob.registerRefObj(ref_obj)
-                      result['changed'] += 1
+                      if not ref_ob_changed:
+                        result['changed'] += 1
+                        # Register the language change
+                        ref_ob_changed = True
                     except Exception as e:
                       # Handle the exception if the replacement fails
                       standard.writeLog(self, '[changeRefsToObj] Error: %s'%str(e))

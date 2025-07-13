@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" tal:define="standard modules/Products.zms/standard">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
-<body tal:attributes="class python:here.zmi_body_class(id='ref')">
+<body tal:attributes="class python:here.zmi_body_class(id='ref')" hx-boost="true" xmlns:hx-on="https://htmx.org/">
 <header tal:replace="structure python:here.zmi_body_header(here,request)">zmi_body_header</header>
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
@@ -31,9 +31,6 @@
 
 <form name="manage_change_refs"
 	tal:condition="python:len([x for x in request['AUTHENTICATED_USER'].getRolesInContext(here) if x in ['Manager','ZMSAdminstrator']]) > 0 and refByObjs"
-	hx-post="manage_change_refs" 
-	hx-confirm="Really change all backlinks?" 
-	hx-target="#refByObjs" 
 	class="card form-horizontal">
 	<legend>Change All these References to a New Link Target:</legend>
 	<div class="card-body">
@@ -45,12 +42,18 @@
 		<div class="form-group">
 			<div class="controls save py-3 px-1">
 				<button type="submit" name="btn" class="btn btn-primary" 
-					value="BTN_SAVE" 
+					value="BTN_SAVE" style="min-width:6rem"
+					hx-post="manage_change_refs" 
+					hx-target="#refByObjs"
+					hx-confirm="Really change all backlinks?" 
+					hx-indicator="body"
+					hx-on:click="$ZMI.show_spinner(this)"
+					hx-on:htmx:after-request="$ZMI.reset_spinner(this)"
 					tal:content="python:here.getZMILangStr('BTN_SAVE')">
 					BTN_SAVE
 				</button>
 				<button type="submit" name="btn" class="btn btn-secondary" 
-					value="BTN_CANCEL" 
+					value="BTN_CANCEL" style="min-width:6rem"
 					tal:content="python:here.getZMILangStr('BTN_CANCEL')">
 					BTN_CANCEL
 				</button>

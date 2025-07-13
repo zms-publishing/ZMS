@@ -299,6 +299,23 @@ ZMI.prototype.getLangStr = function(key, lang) {
 }
 
 /**
+ * Returns lang-parameter value of current url-input-group, e.g. "lang=eng".
+ * If no lang-parameter is found, returns null.
+ */
+function getRefLang(elem) {
+	if (typeof elem != "undefined") {
+		// find closest input-group and get the first child value
+		// let attr_ref = $(elem).val();
+		let attr_ref = $(elem).closest('.input-group').children().first().val();
+		let match = attr_ref.match(/lang=([a-zA-Z]+)/);
+		let lang = match ? match[1] : null;
+		return lang;
+	} else {
+		return null;
+	}
+}
+
+/**
  * Cache Ajax requests.
  */
 ZMI.prototype.getCachedValue = function(k) {

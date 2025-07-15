@@ -298,16 +298,20 @@ class ZReferableItem(object):
     req_lang = request.get('lang', self.getPrimaryLanguage())
     # Get the link of the current object
     this_ref = str(self.getRefObjPath(self))
-    getRefByObjs = self.getRefByObjs()
-
-    if not getRefByObjs or not ref_to:
+    # Get selected references to change
+    # refByObjs = self.getRefByObjs() # from object
+    if 'refByObjs' in request.form: # from form
+      refByObjs = request.form.get('refByObjs', [])
+      if isinstance(refByObjs, str):
+        refByObjs = [refByObjs]
+    if not refByObjs or not ref_to:
       # Break if there are no references or the target object is not specified
       standard.writeLog(self, '[changeRefsToObj] No references or target object specified.')
       return None
     else:
       result['ref_to'] = '%s/manage_RefForm'%(self.getLinkObj(ref_to).absolute_url())
 
-    for ref in getRefByObjs:
+    for ref in refByObjs:
       ref_ob = self.getLinkObj(ref,request)
       if ref_ob is not None:
         ref_ob_changed = False
@@ -331,6 +335,7 @@ class ZReferableItem(object):
                 if v is not None and isinstance(v, str):
                   if str(this_ref[:-1]) in str(v):
                     try:
+                      ref_obj.setObjStateModified(request)
                       ref_obj.attr(key,str(v).replace(this_ref, ref_to))
                       # Register the new reference at the target object
                       ref_to_ob = self.getLinkObj(ref_to)
@@ -349,6 +354,7 @@ class ZReferableItem(object):
                 if v is not None:
                   if str(this_ref[:-1]) in str(v):
                     try:
+                      ref_obj.setObjStateModified(request)
                       ref_obj.attr(key, ref_to)
                       # Register the new reference at the target object
                       ref_to_ob = self.getLinkObj(ref_to)
@@ -362,6 +368,10 @@ class ZReferableItem(object):
                       # Handle the exception if the replacement fails
                       standard.writeLog(self, '[changeRefsToObj] Error: %s'%str(e))
                       result['unchanged'] += 1
+        # If the reference object has changed, trigger onChangeObj
+        if ref_ob_changed:
+          ref_obj.onChangeObj(request,forced=1)
+          ref_obj.commitObj(request)
     # Reset the request-language
     self.REQUEST.set('lang', req_lang)
     return result

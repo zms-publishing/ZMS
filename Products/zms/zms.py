@@ -443,8 +443,9 @@ class ZMS(
                 </script>
                 <style>
                     .popover-body {{
-                        white-space: break-spaces;
+                        white-space: pre-line;
                         width: auto;
+                        max-width:fit-content;
                         font-size: smaller;
                     }}
                 </style>

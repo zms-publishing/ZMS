@@ -69,33 +69,9 @@ initAttrRef = function() {
 		});
 	};
 
-function getRefLang() {
-	// Extract language from attr_ref, e.g. "lang=eng" or "lang=ger" or "lang=fra".
-	const attr_ref = $("input#attr_ref").val();
-	const match = attr_ref.match(/lang=([a-zA-Z]+)/);
-	const lang_str = match ? match[1] : null;
-	return lang_str;
-}
-
-function initBrowseObjsBtn() {
-	// Customize link creation button
-	// Default: zmiBrowseObjs('form0','attr_ref',getZMILang());
-	$('#tr_attr_ref a.btn').removeAttr('onclick');
-	$('#tr_attr_ref a.btn').off('click').on('click', function () {
-		let ref_lang = getRefLang();
-		zmiBrowseObjs('form0', 'attr_ref', getZMILang(), ref_lang);
-		return false;
-	});
-};
-
 $(function(){
 	$("input#attr_ref").change(initAttrRef).change();
 	$("#tr_attr_ref_type select").css("width", "100%");
-	// Initialize on page load and/or after afterInitInputFields
-	initBrowseObjsBtn();
-	$ZMI.afterInitInputFields(function() {
-		initBrowseObjsBtn();
-	});
 });
 
 //-->

@@ -513,6 +513,7 @@ class ConfManager(
         {'key':'ASP.protocol','title':'ASP Protocol','desc':'ASP Protocol.','datatype':'string','options':['http', 'https'],'default':'http'},
         {'key':'ASP.ip_or_domain','title':'ASP IP/Domain','desc':'ASP IP/Domain.','datatype':'string'},
         {'key':'HTTP.proxy','title':'HTTP proxy','desc':'HTTP proxy (host:port).','datatype':'string'},
+        {'key':'HTTPS.proxy','title':'HTTPS proxy','desc':'HTTPS proxy (host:port).','datatype':'string'},
         {'key':'jquery.version','title':'JQuery version','desc':'JQuery version.','datatype':'string'},
         {'key':'jquery.ui','title':'JQuery UI version','desc':'JQuery UI version.','datatype':'string'},
         {'key':'jquery.plugin.version','title':'JQuery plugin version','desc':'JQuery plugin version','datatype':'string'},

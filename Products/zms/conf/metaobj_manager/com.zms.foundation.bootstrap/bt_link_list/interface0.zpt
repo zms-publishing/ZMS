@@ -73,7 +73,7 @@
 					links.push(record);
 				});
 				refreshData();
-			}
+			};
 			const refreshView = function() {
 				// Remove all rows except the last one
 				$('tr:not(:last)', $linktable).remove();
@@ -107,7 +107,7 @@
 								</div>
 							</td>
 							<td class="meta-label">
-								<input class="form-control" name="${labelname}" value="${record.label}">
+								<input class="form-control" name="${labelname}" value="${escapeHTML(record.label)}">
 							</td>
 							<td class="meta-url">
 								<input class="form-control url-input" name="${urlname}" value="${record.url}">
@@ -130,6 +130,14 @@
 				});
 				$('tr.url-inputs input', $linktable).change(refreshLinks);
 				refreshData();
+			};
+			const escapeHTML = function(str) {
+				return str
+				.replace(/&/g, '&amp;')
+				.replace(/</g, '&lt;')
+				.replace(/>/g, '&gt;')
+				.replace(/"/g, '&quot;')
+				.replace(/'/g, '&#39;');
 			};
 
 			// ######################################

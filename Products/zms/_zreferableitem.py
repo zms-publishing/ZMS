@@ -281,17 +281,13 @@ class ZReferableItem(object):
 
 
   # ----------------------------------------------------------------------------
-  #  ZReferableItem.changeRefsToObj:
+  # ZReferableItem.changeRefsToObj:
   #
-  #  Change each reference TO the current TO an other object.
+  # Change all internal references to a new target object.
+  # @param ref_to: The target object to which all references should point
+  # @return: Dictionary with counts of changed references
   # ----------------------------------------------------------------------------
   def changeRefsToObj(self, ref_to):
-    """
-    Change all internal references to a new target object.
-    
-    @param ref_to: The target object to which all references should point
-    @return: Dictionary with counts of changed references
-    """
     standard.writeLog(self, '[changeRefToObjs]')
     result = {'changed': [], 'unchanged': [], 'ref_to': None}
     request = self.REQUEST

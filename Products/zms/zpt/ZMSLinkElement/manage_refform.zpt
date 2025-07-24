@@ -17,8 +17,17 @@
 			Message: No references to this object!
 		</div>
 
-		<form tal:condition="python:refByObjs" name="manage_change_refs" class="card form-horizontal">
-			<legend tal:content="structure python:'%s:'%(here.getZMILangStr('MSG_REFERENCEDBY')%('%s'%here.getTitlealt(request)))">titlealt referenced by:</legend>
+		<form tal:condition="python:refByObjs" name="manage_change_refs" 
+			class="card form-horizontal">
+			<legend 
+				tal:attributes="title python:here.getAutocommit() == False  and '%s: %s'%(here.getZMILangStr('ATTR_STATE'),here.getZMILangStr('STATE_COMMITTED')) or ''"
+				tal:content="structure python:'%s %s %s'%(
+					here.getZMILangStr('MSG_REFERENCEDBY')%('%s'%here.getTitlealt(request)),
+					len(refByObjs),
+					here.getZMILangStr('TAB_REFERENCES')
+					)">
+				titlealt referenced by:
+			</legend>
 			<div class="card-body" id="refByObjs">
 				<div tal:condition="user_has_permissions" 
 					class="btn-group" style="margin: 0 0 .5rem 2rem;">
@@ -43,7 +52,7 @@
 			</div>
 
 			<div tal:condition="user_has_permissions" class="card form-horizontal">
-				<legend>Change Selected References to a New Link Target:</legend>
+				<legend tal:content="python:here.getZMILangStr('CAPTION_NEWTARGET')">Change Selected References to a New Link Target:</legend>
 				<div class="card-body">
 					<div class="form-group">
 						<div tal:replace="structure python:here.getUrlInput('manage_change_refs', 'ref_to', elTextName='', size=None, value='', enabled=True, css='form-control')">

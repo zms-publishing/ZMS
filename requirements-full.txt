@@ -2,11 +2,11 @@
 -r requirements.txt
 
 # SQL
-# mysqlclient
-# SQLAlchemy
-# 2.2 is incompatible with mariadb 5.5.68 which is installed standard on centos 7
-mysqlclient<2.2
-SQLAlchemy==1.4.49
+mysqlclient
+SQLAlchemy
+# Hint: mysqlclient 2.2+ is incompatible with mariadb 5.5.68 which is installed standard on centos 7
+# mysqlclient<2.2
+# SQLAlchemy==1.4.49
 Products.SQLAlchemyDA
 Products.ZSQLMethods
 

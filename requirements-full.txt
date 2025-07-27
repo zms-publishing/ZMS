@@ -8,6 +8,7 @@ SQLAlchemy
 # mysqlclient<2.2
 # SQLAlchemy==1.4.49
 Products.SQLAlchemyDA
+Products.ZSQLiteDA
 Products.ZSQLMethods
 
 psycopg2-binary

@@ -1445,13 +1445,13 @@ ZMIActionList.prototype.over = function(el, e, cb) {
 		var $right = $(this).parents(".right");
 		var selected = $("input:checkbox",$right).length?$("input:checkbox",$right).prop("checked"):false;
 		$(".dropdown-header",$right).each(function(index) {
-				var actualCollapsed = $("i",this).hasClass("fa-caret-right");
-				var expectedCollapsed = (index == 0 && !selected) || (index > 0 && selected);
-				if (actualCollapsed != expectedCollapsed) {
-					$(this).click();
-				}
-			});
+			var actualCollapsed = $("i",this).hasClass("fa-caret-right");
+			var expectedCollapsed = (index == 0 && !selected) || (index > 0 && selected);
+			if (actualCollapsed != expectedCollapsed) {
+				$(this).click();
+			}
 		});
+	});
 	$('*',$button).hide();
 	// Exit.
 	if ($(el).hasClass("loaded") || $(el).hasClass("loading")) {
@@ -1788,7 +1788,7 @@ function zmiToggleSelectionButtonClick(sender,v) {
 /**
  * zmiBrowseObjs
  */
-function zmiBrowseObjs(fmName, elName, lang) {
+function zmiBrowseObjs(fmName, elName, lang, selectedLang) {
 	let title = getZMILangStr('CAPTION_CHOOSEOBJ');
 	let href = "manage_browse_iframe";
 	let elValue = '';
@@ -1803,11 +1803,14 @@ function zmiBrowseObjs(fmName, elName, lang) {
 			}
 		});
 	};
-	href += '?lang='+lang;
-	href += '&defaultLang='+lang;
-	href += '&fmName='+fmName;
-	href += '&elName='+elName;
-	href += '&elValue='+encodeURIComponent(elValue);
+	href += '?lang=' + lang;
+	href += '&defaultLang=' + lang;
+	if ( typeof selectedLang == "string" && selectedLang.length > 0) {
+		href += '&selectedLang=' + selectedLang;
+	}
+	href += '&fmName=' + fmName;
+	href += '&elName=' + elName;
+	href += '&elValue=' + encodeURIComponent(elValue);
 	if ( typeof selectedText == "string") {
 		href += '&selectedText=' + encodeURIComponent( selectedText);
 	}
@@ -2196,18 +2199,18 @@ ZMI.prototype.initUrlInput = function(context) {
 			$input.wrap('<div class="input-group"></div>');
 			var $inputgroup = $input.parent();
 			if ($input.prop("disabled")) {
-				$inputgroup.append(''
-						+ '<div class="input-group-append">'
-							+ '<span class="input-group-text"><i class="fas fa-ban"></i></span>'
-						+ '</div>'
-					);
+				$inputgroup.append(`
+					<div class="input-group-append">
+						<span class="input-group-text"><i class="fas fa-ban"></i></span>
+					</div>`
+				);
 			} else {
-				$inputgroup.append(''
-					+ '<div class="input-group-append">'
-						+ '<a class="btn btn-secondary" href="javascript:;" onclick="return zmiBrowseObjs(\'' + fmName + '\',\'' + elName + '\',getZMILang())">'
-							+ '<i class="fas fa-link"></i>'
-						+ '</a>'
-					+ '</div>'
+				$inputgroup.append(`
+					<div class="input-group-append">
+						<a class="btn btn-secondary" href="javascript:;" onclick="return zmiBrowseObjs('${fmName}', '${elName}', getZMILang(), getRefLang(this))">
+							<i class="fas fa-link"></i>
+						</a>
+					</div>`
 				);
 			}
 			var fn = function() {
@@ -2232,12 +2235,12 @@ ZMI.prototype.initUrlInput = function(context) {
 		var elName = $input.attr("name");
 		var $container = $input.parent();
 		$input.hide();
-		$container.append(''
-			+ '<div class="url-input-container"></div>'
-			+'<input type="hidden" name="new_'+elName+'"/>'
-			+'<a href="javascript:;" onclick="return zmiBrowseObjs(\'' + fmName + '\',\'new_' + elName + '\',getZMILang())" class="btn btn-secondary">'
-			+'<i class="fas fa-plus"></i>'
-			+'</a>');
+		$container.append(`
+			<div class="url-input-container"></div>
+			<input type="hidden" name="new_${elName}"/>
+			<a class="btn btn-secondary" href="javascript:;" onclick="return zmiBrowseObjs('${fmName}', 'new_${elName}', getZMILang(), getRefLang(this)">
+				<i class="fas fa-plus"></i>
+			</a>`);
 		$("input[name='new_"+elName+"']",$container).change(function() {
 				var v = $(this).val();
 				var l = $input.val().length==0?[]:$input.val().split("\n");

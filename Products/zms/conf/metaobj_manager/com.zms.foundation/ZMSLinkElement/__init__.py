@@ -26,7 +26,7 @@ class ZMSLinkElement:
 	package = "com.zms.foundation"
 
 	# Revision
-	revision = "5.0.1"
+	revision = "5.2.0"
 
 	# Type
 	type = "ZMSObject"
@@ -87,15 +87,6 @@ class ZMSLinkElement:
 			,"name":"Reference"
 			,"repetitive":0
 			,"type":"url"}
-
-		ref_lang = {"default":""
-			,"id":"ref_lang"
-			,"keys":[]
-			,"mandatory":0
-			,"multilang":1
-			,"name":"Reference (lang)"
-			,"repetitive":0
-			,"type":"string"}
 
 		attr_type = {"default":""
 			,"id":"attr_type"

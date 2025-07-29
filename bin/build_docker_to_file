@@ -9,6 +9,7 @@ cd ..
 docker buildx bake --set '*.platform=linux/amd64' zope
 docker buildx bake --set '*.platform=linux/amd64' zope-debug
 
+mkdir -p dist
 cd dist
 docker image save localhost/zope:$ZOPE_TAG > zope.latest.tar
 docker image save localhost/zope-debug:$ZOPE_TAG > zope-debug.latest.tar

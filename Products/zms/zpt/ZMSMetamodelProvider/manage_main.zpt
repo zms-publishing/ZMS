@@ -81,28 +81,30 @@
 								title="Filter object list by entering name or id" />
 						</span>	
 					</div>
-					<tal:block tal:repeat="metaObjPackage python:here.sort_list(metaObjPackages+metaObjPackages2)">
-						<tal:block tal:condition="python:metaObjPackage in metaObjPackages">
-							<tal:block tal:condition="metaObjPackage">
-								<tal:block tal:define="metaObj python:here.getMetaobj(metaObjPackage)">
+					<div class="dropdown-body">
+						<tal:block tal:repeat="metaObjPackage python:here.sort_list(metaObjPackages+metaObjPackages2)">
+							<tal:block tal:condition="python:metaObjPackage in metaObjPackages">
+								<tal:block tal:condition="metaObjPackage">
+									<tal:block tal:define="metaObj python:here.getMetaobj(metaObjPackage)">
+										<a class="dropdown-item" tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id']);
+											class python:request.get('id','')==metaObj['id'] and 'dropdown-item selected' or default">
+											<i class="fas fa-briefcase"></i>
+											<strong tal:on-error="string:ERROR metaObjPackage" tal:content="metaObjPackage">id</strong>
+										</a>
+									</tal:block>
+								</tal:block>
+							</tal:block>
+							<tal:block tal:repeat="metaObj metaObjs">
+								<tal:block tal:condition="python:metaObj['type']!='ZMSPackage' and metaObj.get('package')==metaObjPackage">
 									<a class="dropdown-item" tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id']);
 										class python:request.get('id','')==metaObj['id'] and 'dropdown-item selected' or default">
-										<i class="fas fa-briefcase"></i>
-										<strong tal:on-error="string:ERROR metaObjPackage" tal:content="metaObjPackage">id</strong>
+										<i tal:on-error="string:ERROR icon" tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])"></i>
+										<span tal:on-error="string:ERROR Name" tal:content="metaObj/name">name</span>
 									</a>
 								</tal:block>
 							</tal:block>
 						</tal:block>
-						<tal:block tal:repeat="metaObj metaObjs">
-							<tal:block tal:condition="python:metaObj['type']!='ZMSPackage' and metaObj.get('package')==metaObjPackage">
-								<a class="dropdown-item" tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id']);
-									class python:request.get('id','')==metaObj['id'] and 'dropdown-item selected' or default">
-									<i tal:on-error="string:ERROR icon" tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])"></i>
-									<span tal:on-error="string:ERROR Name" tal:content="metaObj/name">name</span>
-								</a>
-							</tal:block>
-						</tal:block>
-					</tal:block>
+					</div>
 				</div>
 			</div>
 			<a tal:condition="python:metaObj.get('acquired',None)" class="btn btn-secondary" target="_blank"
@@ -899,11 +901,18 @@
 			.focus(function(){zmiPopulateTypeSelect(this)})
 			.hover(function(){zmiPopulateTypeSelect(this)})
 			;
-        // https://stackoverflow.com/questions/8746882/jquery-contains-selector-uppercase-and-lower-case-issue
-        jQuery.expr[':'].contains = function(a, i, m) {
-            return jQuery(a).text().toUpperCase()
-            .indexOf(m[3].toUpperCase()) >= 0;
-        };
+		// https://stackoverflow.com/questions/8746882/jquery-contains-selector-uppercase-and-lower-case-issue
+		jQuery.expr[':'].contains = function(a, i, m) {
+			return jQuery(a).text().toUpperCase()
+			.indexOf(m[3].toUpperCase()) >= 0;
+		};
+		// Scroll to initially selected item in dropdown-list of metaobj-filter
+		$('.zmi-action.nav-metaobj').on('shown.bs.dropdown', function () {
+			const $sel = $(this).find('.dropdown-item.selected');
+			if ($sel.length > 0) {
+				$sel.first().get(0).focus();
+			}
+		});
 	});
 
 // -->

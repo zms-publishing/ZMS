@@ -105,8 +105,28 @@
 								&nbsp;
 							</td>
 							<td>
-								<div class="attr" tal:condition="python:metaObjAttr['type'] in ['*']" tal:content="structure python:'<br/>'.join([here.display_type(meta_id=x) for x in metaObjAttr['keys']])"></div>
-								<div class="attr" tal:condition="python:metaObjAttr['type'] in metaObjIds" tal:content="python:metaObjAttr['type']"></div>
+								<div class="attr" tal:condition="python:metaObjAttr['type'] in ['*']">
+									<span class="attr_type" 
+										tal:repeat="attr_type python:metaObjAttr['keys']"
+										tal:attributes="
+											title python:attr_type.startswith('type(') and 'Abstract Class' or 'Click for Scrolling to Class-Definition';
+											class python:'attr_type%s'%(attr_type.startswith('type') and ' abstractclass' or '');
+											onclick python:attr_type.startswith('type') and 'return false' or 'scrollToFocus(\'%s\')'%(attr_type)"
+										tal:content="attr_type">
+										attr_type
+									</span>
+								</div>
+								<div class="attr" tal:condition="python:metaObjAttr['type'] in metaObjIds">
+									<span class="attr_type" 
+										tal:define="attr_type python:str(metaObjAttr['type'])"
+										tal:attributes="
+											title python:attr_type.startswith('type') and 'Abstract Class' or 'Click for Scrolling to Class-Definition';
+											class python:'attr_type%s'%(attr_type.startswith('type(') and ' abstractclass' or '');
+											onclick python:attr_type.startswith('type') and 'return false' or 'scrollToFocus(\'%s\')'%(attr_type)"
+										tal:content="attr_type">
+										attr_type
+									</span>
+								</div>
 							</td>
 							</tr>
 							</table>
@@ -121,6 +141,17 @@
 <tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
 
 <script>
+	const scrollToFocus = (anchorId) => {
+		const element = document.getElementById(anchorId);
+		if (element) {
+			$('.box').removeClass('focused');
+			$('html, body').animate({
+				scrollTop: $(element).offset().top - 20
+			}, 600);
+			element.classList.add('focused');
+		}
+		return false;
+	};
 	$ZMI.registerReady(function(){
 		$('#toggle_menu').click( function() {
 			if ( $('#toggle_menu').hasClass('fa-times') ) {
@@ -318,8 +349,14 @@ p.box_number {
 	min-width:12em;
 	margin-top:0.1em
 }
-.box .attr.subobject:hover .ref .attr {
+.box .attr.subobject .ref .attr span.attr_type {
+	display: block;
 	cursor:pointer;
+}
+.box .attr.subobject .ref .attr span.attr_type.abstractclass {
+	cursor:default;
+}
+.box .attr.subobject:hover .ref .attr {
 	box-shadow:0 6px 16px -3px #0008;
 	background:#C00;
 	color:white;

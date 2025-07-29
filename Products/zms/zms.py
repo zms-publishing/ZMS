@@ -137,7 +137,9 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST, minimal_init 
     obj._setObject(zmslog.id, zmslog)
 
   ### Init Configuration.
-  obj.setConfProperty('HTTP.proxy', REQUEST.get('http_proxy', ''))
+  if REQUEST.get('http_proxy'):
+    obj.setConfProperty('HTTP.proxy', REQUEST.get('http_proxy', ''))
+    obj.setConfProperty('HTTPS.proxy', REQUEST.get('http_proxy', ''))
   obj.setConfProperty('ZMS.autocommit', 1)
 
   if REQUEST.get('acquire', 0) == 0:
@@ -442,9 +444,13 @@ class ZMS(
                     }})
                 </script>
                 <style>
+                    .popover {{
+                        max-width: unset !important;
+                    }}
                     .popover-body {{
-                        white-space: break-spaces;
+                        white-space: pre-line;
                         width: auto;
+                        max-width:fit-content;
                         font-size: smaller;
                     }}
                 </style>

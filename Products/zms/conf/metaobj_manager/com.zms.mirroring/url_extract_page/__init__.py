@@ -32,7 +32,7 @@ class url_extract_page:
 	package = "com.zms.mirroring"
 
 	# Revision
-	revision = "5.0.0"
+	revision = "5.1.0"
 
 	# Type
 	type = "ZMSDocument"

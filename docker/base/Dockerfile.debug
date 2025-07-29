@@ -1,4 +1,4 @@
-FROM ghcr.io/zms-publishing/zms-debug
+FROM ghcr.io/zms-publishing/zms
 
 USER root
 RUN \

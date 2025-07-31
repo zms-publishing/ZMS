@@ -1,10 +1,18 @@
 <tal:block tal:define="res python:here.changeRefsToObj(request.get('ref_to',''))">
-	<div class="alert alert-success mx-0"
+	<div class="alert alert-success"
 		tal:condition="python:res">
-		Links successfully moved to new <a href="#" target="_blank" tal:attributes="href python:res['ref_to'];title python:res['ref_to']">target</a>
-		(changed: <span tal:content="python:res['changed']"></span>, unchanged: <span tal:content="python:res['unchanged']"></span>)
+		Links successfully moved to new 
+		<a href="#" target="_blank" tal:attributes="href python:res['ref_to'];title python:res['ref_to']">target</a>
+		(changed: <span tal:content="python:len(res['changed'])"></span>, unchanged: <span tal:content="python:len(res['unchanged'])"></span>)
 	</div>
-	<div class="alert alert-warning mx-0"
+	<script>
+		// Set a JavaScript variable with the result
+		window.zmiChangeRefsResult = {
+			'changed': <tal:block tal:content="python:res['changed']"></tal:block>,
+			'unchanged': <tal:block tal:content="python:res['unchanged']"></tal:block>
+		};
+	</script>
+	<div class="alert alert-warning"
 		tal:condition="python:not res">
 		Warning: No changes made!
 	</div>

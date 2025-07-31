@@ -667,7 +667,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     def changeProperties(self, lang):
       request = self.REQUEST
-      request['lang'] = lang # ensure correct language is set
+      request['lang'] = lang or self.getPrimaryLanguage() # ensure correct language is set
 
       ##### Resources #####
       if 'resources' in self.getMetaobjAttrIds( self.meta_id):

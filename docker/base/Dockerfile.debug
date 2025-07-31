@@ -1,4 +1,4 @@
-FROM localhost/zope:latest
+FROM ghcr.io/zms-publishing/zms
 
 USER root
 RUN \

@@ -13,7 +13,7 @@ def get_ontology_attropts(self):
 	attropts = []
 	for facet_key in list(ontology.keys()):
 		for k, v in ontology[facet_key].items():
-			if k not in langs:
+			if k not in langs and k!='sortid':
 				if facet_key == 'default':
 					v  = v[lang]
 				else:

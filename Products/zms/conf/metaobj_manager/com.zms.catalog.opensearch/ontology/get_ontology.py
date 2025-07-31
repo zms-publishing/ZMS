@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from collections import OrderedDict
+import json
 from Products.zms import standard
 
 def get_ontology(self):
@@ -26,7 +28,7 @@ def get_ontology(self):
 			return "WARNING: No data found."
 
 	# Get facet-keys from the ontology records.
-	facet_keys = sorted(set([r['facet'] for r in res if 'facet' in r and r['facet']!= '']))
+	facet_keys = sorted( set( [ r['facet'] for r in res if 'facet' in r and ( r['facet']!= '' and not r['facet'].isdigit() ) ] ) )
 	facet_groups = {k: {} for k in facet_keys}
 
 	# Create facet groups in two steps:
@@ -43,6 +45,7 @@ def get_ontology(self):
 						facet_groups[facet_key] = {}
 					if lang not in facet_groups[facet_key]:
 						facet_groups[facet_key][lang] = r[lang]
+			facet_groups[facet_key]['sortid'] = r['facet']
 
 	#--------------------------------------------------------------------
 	# 2. Adding all linked keys and its translations to each facet.
@@ -64,10 +67,15 @@ def get_ontology(self):
 			for lang in langs:
 				if lang in r.keys():
 					facet_groups['default'][r['key']][lang] = r[lang]
+	# --------------------------------------------------------------------
+	# 3. Sort facet_groups by sortid
+	# --------------------------------------------------------------------
+	facet_groups_sorted = sorted(facet_groups.items(), key=lambda x: x[1]["sortid"])
+	facet_groups = OrderedDict(facet_groups_sorted)
 
 	# For debugging purposes, return the facet groups 
 	# as JSON representation.
 	if request.get('URL0').endswith('/get_ontology'):
-		return standard.str_json(facet_groups)
+		return json.dumps(facet_groups)
 	# For production return the facet groups directly.
 	return facet_groups

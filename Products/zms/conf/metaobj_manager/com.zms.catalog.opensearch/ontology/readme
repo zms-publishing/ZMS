@@ -16,6 +16,7 @@ To add a keyword to the catalog
 identical facets can be grouped into a keyword list
 5. *keys* with the prefix *facet_* are not regarded as keywords,
 but are only used to record the translation of the corresponding facet term
+6. for *keys* with prefix *facet_* the facet-field can contain a digit (1,2,3..) that will be used for sorting the sequence of facets in frontend. 
 
 ### Step-by-Step Configuration
 
@@ -26,8 +27,7 @@ but are only used to record the translation of the corresponding facet term
     return context.get_ontology_attropts()
     ```
 3. In the ZMS content add a new ontology-attribute to ZMS or a ZMSFolder and fill the datatable with a set of facetted/translated keywords
-4. Use the metaobject-class _ontology-collection_ to create a collection the the keyword-tagged object-links 
-
+4. Use the metaobject-class _ontology-collection_ to create a collection the the keyword-tagged object-links
 
 
 ## [GER] Kleine Schlagwort-Kataloge redaktionell managen
@@ -43,6 +43,7 @@ Um ein Schlagwort in den Katalog aufzunehmen, wird
 identischer Facette können zu einer Schlagwort-Liste gruppiert werden
 5. *keys* mit dem Prefix *facet_* werden nicht als Schlagworte betrachtet,
 sondern dienen nur dazu, die Übersetzung des entsprechenden facet-Begriffs zu erfassen
+6. Das *facet*-Feld von *keys* mit dem Prefix *facet_* kann mit einer Ziffer (1,2,3..) gefüllt werden, um für die Drittsicht die Reihenfolge der Facetten zu sortieren. 
 
 ### Schritt-für-Schritt-Konfiguration
 

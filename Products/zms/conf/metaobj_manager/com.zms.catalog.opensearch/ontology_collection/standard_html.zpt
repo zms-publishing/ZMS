@@ -3,20 +3,28 @@
 		zmscontext options/zmscontext;
 		q python:' '.join(zmscontext.attr('attr_dc_subject'));
 		q_request python:request.set('q',q);
-		hits python:zmscontext.ontology_query()"
-		tal:on-error="structure string:<code>ERROR: ontology_query</code>">
+		hits python:zmscontext.ontology_query()">
 	<article class="collection_item" tal:repeat="hit hits">
 		<tal:block tal:define="
 			title python:hit['_source']['title']; 
-			attr_dc_description python:hit['_source']['attr_dc_description'];
+			description python:hit['_source']['attr_dc_description'];
 			zms_data_id python:'{$%s}'%(hit['_source']['uid']);
 			zms_obj python:zmscontext.getLinkObj(zms_data_id);
-			titleimage_url python:zms_obj.attr('titleimage') and zms_obj.attr('titleimage').getHref(request) or ''">
+			titleimage_url python:zms_obj.attr('titleimage') and zms_obj.attr('titleimage').getHref(request) or '';
+			title python:zms_obj.attr('seotitle_tag') or title;
+			description python:zms_obj.attr('seometa_tag') or description">
 			<img src="#" tal:condition="titleimage_url" tal:attributes="src titleimage_url" />
 			<div class="text">
-				<h1 tal:content="title">Title</h1>
-				<p tal:content="attr_dc_description">Description</p>
-				<p class="link"><a href="#" tal:attributes="href python:hit['_source']['index_html']">Weiter... </a></p>
+				<h1><a href="#" tal:attributes="href python:hit['_source']['index_html']" tal:content="title">Title</a></h1>
+				<p tal:content="description">Description</p>
+				<div class="keyword_links" 
+					tal:define="keywords python:hit['_source'].get('attr_dc_subject_ontology', hit['_source'].get('attr_dc_subject'))"
+					tal:condition="keywords">
+					<a class="badge badge-pill badge-secondary" style="zoom:1.25"
+						tal:repeat="keyword python:keywords.split(' ')"
+						tal:content="keyword">keyword
+					</a>
+				</div>
 			</div>
 		</tal:block>
 	</article>

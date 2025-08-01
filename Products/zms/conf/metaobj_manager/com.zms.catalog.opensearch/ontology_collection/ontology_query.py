@@ -3,7 +3,7 @@ from opensearchpy import OpenSearch
 import json
 from Products.zms import standard
 
-def ontology_query( self):
+def ontology_query(self):
 	request = self.REQUEST
 	q = request.get('q','lorem ipsum')
 	qpage_index = request.get('pageIndex',0)
@@ -11,6 +11,8 @@ def ontology_query( self):
 	qfrom = request.get('from', qpage_index*qsize)
 
 	zmscontext = self
+	# Default fields are attr_dc_subject or attr_dc_subject_ontology
+	fields = zmscontext.metaobj_manager.getMetadictAttr('attr_dc_subject_ontology') and ['attr_dc_subject_ontology'] or ['attr_dc_subject']
 	hits = []
 	try:
 		langs = zmscontext.getLanguages(request)

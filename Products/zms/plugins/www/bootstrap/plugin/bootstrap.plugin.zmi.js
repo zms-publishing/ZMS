@@ -1284,7 +1284,11 @@ ZMIObjectTree.prototype.addPages = function(nodes) {
 		nodes = nodes.filter(that.p.filter);
 	};
 	// Ensure nodes as list type
-	nodes = nodes.length==undefined ? [nodes] : nodes;
+	if (typeof nodes == 'undefined' || nodes == null || typeof nodes == 'string') {
+		nodes = [];
+	} else if (typeof nodes == 'object' && !Array.isArray(nodes)) {
+		nodes = [nodes];
+	};
 	nodes.forEach(node => {
 		var data_id = '{$'+node.uid+'}';
 		var link_url = node.index_html;

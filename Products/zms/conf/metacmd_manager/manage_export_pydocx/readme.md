@@ -21,7 +21,7 @@ Ensure that the script is configured correctly with the necessary parameters for
 
 ```py
 # Set local path for docx-template
-docx_tmpl = open("/home/zope/src/zms-publishing/ZMS5/Products/zms/conf/metacmd_manager/manage_export_pydocx/neon.docx", "rb")
+docx_tmpl = open("%s/Extensions/neon.docx"%(os.getenv('INSTANCE_HOME')), "rb")
 ```
 
 You may prefer to export not the committed but the working content, so set the REQUEST-variable:   

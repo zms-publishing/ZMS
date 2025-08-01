@@ -281,82 +281,96 @@ class ZReferableItem(object):
 
 
   # ----------------------------------------------------------------------------
-  #  ZReferableItem.changeRefsToObj:
+  # ZReferableItem.changeRefsToObj:
   #
-  #  Change each reference TO the current TO an other object.
+  # Change all internal references to a new target object.
+  # @param ref_to: The target object to which all references should point
+  # @return: Dictionary with counts of changed references
   # ----------------------------------------------------------------------------
   def changeRefsToObj(self, ref_to):
-    """
-    Change all internal references to a new target object.
-    
-    @param ref_to: The target object to which all references should point
-    @return: Dictionary with counts of changed references
-    """
     standard.writeLog(self, '[changeRefToObjs]')
-    result = {'changed': 0, 'unchanged': 0, 'ref_to': None}
+    result = {'changed': [], 'unchanged': [], 'ref_to': None}
     request = self.REQUEST
     req_lang = request.get('lang', self.getPrimaryLanguage())
     # Get the link of the current object
     this_ref = str(self.getRefObjPath(self))
-    getRefByObjs = self.getRefByObjs()
-
-    if not getRefByObjs or not ref_to:
+    # Get selected references to change
+    # refByObjs = self.getRefByObjs() # from object
+    if 'refByObjs' in request.form: # from form
+      refByObjs = request.form.get('refByObjs', [])
+      if isinstance(refByObjs, str):
+        refByObjs = [refByObjs]
+    if not refByObjs or not ref_to:
       # Break if there are no references or the target object is not specified
       standard.writeLog(self, '[changeRefsToObj] No references or target object specified.')
       return None
     else:
       result['ref_to'] = '%s/manage_RefForm'%(self.getLinkObj(ref_to).absolute_url())
 
-    for ref in getRefByObjs:
-      ref_ob = self.getLinkObj(ref,request)
-      if ref_ob is not None:
-        # Get the referencing object
-        ref_obj = self.getLinkObj(ref)
-        if ref_obj is not None:
-          # Find the attribute that is linking to the current object
-          for key in [k for k in list(ref_obj.getObjAttrs()) if ref_obj.getObjAttrs()[k]['datatype'] in ['richtext', 'string', 'text', 'url']]:
-            objAttr = ref_obj.getObjAttr(key)
-            datatype = objAttr['datatype']
-            langs = list(objAttr.get('multilang') and self.getLangs().keys() or [self.getPrimaryLanguage()])
-            for lang in langs:
-              self.REQUEST.set('lang', lang)
-              if datatype in ['richtext', 'string', 'text']:
-                # Reset obsolete ZMSLinkElement.ref_lang attribute if exists
-                if ref_obj.meta_id == 'ZMSLinkElement' and key=='ref_lang':
-                  ref_obj.attr('ref_lang', None)
-                  continue
-                # Get the value of the attribute
-                v = ref_obj.attr(key)
-                if v is not None and isinstance(v, str):
-                  if str(this_ref[:-1]) in str(v):
-                    try:
-                      ref_obj.attr(key,str(v).replace(this_ref, ref_to))
-                      # Register the new reference at the target object
-                      ref_to_ob = self.getLinkObj(ref_to)
-                      if ref_to_ob is not None:
-                        ref_to_ob.registerRefObj(ref_obj)
-                      result['changed'] += 1
-                    except Exception as e:
-                      # Handle the exception if the replacement fails
-                      standard.writeLog(self, '[changeRefsToObj] Error: %s'%str(e))
-                      result['unchanged'] += 1
-              elif datatype in ['url']:
-                v = ref_obj.attr(key)
-                if v is not None:
-                  if str(this_ref[:-1]) in str(v):
-                    try:
-                      ref_obj.attr(key, ref_to)
-                      # Register the new reference at the target object
-                      ref_to_ob = self.getLinkObj(ref_to)
-                      if ref_to_ob is not None:
-                        ref_to_ob.registerRefObj(ref_obj)
-                      result['changed'] += 1
-                    except Exception as e:
-                      # Handle the exception if the replacement fails
-                      standard.writeLog(self, '[changeRefsToObj] Error: %s'%str(e))
-                      result['unchanged'] += 1
-    # Reset the request-language
-    self.REQUEST.set('lang', req_lang)
+    for ref in refByObjs:
+      ref_obj = self.getLinkObj(ref,request)
+      if ref_obj is not None:
+        ref_ob_changed = False
+        # Find the attribute that is linking to the current object
+        for key in [k for k in list(ref_obj.getObjAttrs()) if ref_obj.getObjAttrs()[k]['datatype'] in ['richtext', 'string', 'text', 'url']]:
+          objAttr = ref_obj.getObjAttr(key)
+          datatype = objAttr['datatype']
+          langs = list(objAttr.get('multilang') and self.getLangs().keys() or [self.getPrimaryLanguage()])
+          for lang in langs:
+            request.set('lang', lang)
+            if datatype in ['richtext', 'string', 'text']:
+              # Reset obsolete ZMSLinkElement.ref_lang attribute if exists
+              if ref_obj.meta_id == 'ZMSLinkElement' and key=='ref_lang':
+                ref_obj.attr('ref_lang', None)
+                continue
+              # Get the value of the attribute
+              v = ref_obj.attr(key)
+              if v is not None and isinstance(v, str):
+                if str(this_ref[:-1]) in str(v):
+                  try:
+                    ref_obj.setObjStateModified(request)
+                    ref_obj.attr(key,str(v).replace(this_ref, ref_to))
+                    # Register the new reference at the target object
+                    ref_to_ob = self.getLinkObj(ref_to)
+                    if ref_to_ob is not None:
+                      ref_to_ob.registerRefObj(ref_obj)
+                    if not ref_ob_changed:
+                      result['changed'].append(ref)
+                      # Register the language change
+                      ref_ob_changed = True
+                  except Exception as e:
+                    # Handle the exception if the replacement fails
+                    standard.writeLog(self, '[changeRefsToObj] Error: %s'%str(e))
+                    result['unchanged'].append(ref)
+            elif datatype in ['url']:
+              v = ref_obj.attr(key)
+              if v is not None:
+                if str(this_ref[:-1]) in str(v):
+                  try:
+                    ref_obj.setObjStateModified(request)
+                    ref_obj.attr(key, ref_to)
+                    # Register the new reference at the target object
+                    ref_to_ob = self.getLinkObj(ref_to)
+                    if ref_to_ob is not None:
+                      ref_to_ob.registerRefObj(ref_obj)
+                    if not ref_ob_changed:
+                      result['changed'].append(ref)
+                      # Register the language change
+                      ref_ob_changed = True
+                  except Exception as e:
+                    # Handle the exception if the replacement fails
+                    standard.writeLog(self, '[changeRefsToObj] Error: %s'%str(e))
+                    result['unchanged'].append(ref)
+          # Reset the request-language
+          request.set('lang', req_lang)
+        # If any url in the object has changed, trigger onChangeObj
+        if ref_ob_changed:
+          ref_obj.onChangeObj(request,forced=True)
+          # If Workflow is active and reference object is part of a page-container:
+          if not self.getAutocommit() and not ref_obj.isPage():
+            ref_obj_page = [ ob for ob in ref_obj.breadcrumbs_obj_path() if ob.isPage() ][-1]
+            ref_obj_page.setObjStateModified(request)
+            ref_obj_page.onChangeObj(request,forced=True)
     return result
 
   # ----------------------------------------------------------------------------

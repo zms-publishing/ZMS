@@ -73,36 +73,39 @@
 				<div class="dropdown-menu">
 					<div class="dropdown-header">
 						<span class="btn-group">
-							<label for="tablefilter" onclick="$('#tablefilter').focus().addClass('visited')">
-								<i class="fas fa-filter tablefilter"></i>
-								<span tal:content="python:here.getZMILangStr('CAPTION_CHOOSEOBJ')"></span>
+							<label for="tablefilter" onmouseover="$('#tablefilter').focus()">
+								<i class="fas fa-filter tablefilter" style="cursor:default;"></i>
 							</label>
-							<input id="tablefilter" name="tablefilter" type="text" class="form-control dropdown-header"
+							<input id="tablefilter" name="tablefilter" type="text" 
+								class="form-control dropdown-header"
+								tal:attributes="placeholder python:here.getZMILangStr('CAPTION_CHOOSEOBJ')"
 								title="Filter object list by entering name or id" />
 						</span>	
 					</div>
-					<tal:block tal:repeat="metaObjPackage python:here.sort_list(metaObjPackages+metaObjPackages2)">
-						<tal:block tal:condition="python:metaObjPackage in metaObjPackages">
-							<tal:block tal:condition="metaObjPackage">
-								<tal:block tal:define="metaObj python:here.getMetaobj(metaObjPackage)">
+					<div class="dropdown-body">
+						<tal:block tal:repeat="metaObjPackage python:here.sort_list(metaObjPackages+metaObjPackages2)">
+							<tal:block tal:condition="python:metaObjPackage in metaObjPackages">
+								<tal:block tal:condition="metaObjPackage">
+									<tal:block tal:define="metaObj python:here.getMetaobj(metaObjPackage)">
+										<a class="dropdown-item" tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id']);
+											class python:request.get('id','')==metaObj['id'] and 'dropdown-item selected' or default">
+											<i class="fas fa-briefcase"></i>
+											<strong tal:on-error="string:ERROR metaObjPackage" tal:content="metaObjPackage">id</strong>
+										</a>
+									</tal:block>
+								</tal:block>
+							</tal:block>
+							<tal:block tal:repeat="metaObj metaObjs">
+								<tal:block tal:condition="python:metaObj['type']!='ZMSPackage' and metaObj.get('package')==metaObjPackage">
 									<a class="dropdown-item" tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id']);
 										class python:request.get('id','')==metaObj['id'] and 'dropdown-item selected' or default">
-										<i class="fas fa-briefcase"></i>
-										<strong tal:on-error="string:ERROR metaObjPackage" tal:content="metaObjPackage">id</strong>
+										<i tal:on-error="string:ERROR icon" tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])"></i>
+										<span tal:on-error="string:ERROR Name" tal:content="metaObj/name">name</span>
 									</a>
 								</tal:block>
 							</tal:block>
 						</tal:block>
-						<tal:block tal:repeat="metaObj metaObjs">
-							<tal:block tal:condition="python:metaObj['type']!='ZMSPackage' and metaObj.get('package')==metaObjPackage">
-								<a class="dropdown-item" tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id']);
-									class python:request.get('id','')==metaObj['id'] and 'dropdown-item selected' or default">
-									<i tal:on-error="string:ERROR icon" tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])"></i>
-									<span tal:on-error="string:ERROR Name" tal:content="metaObj/name">name</span>
-								</a>
-							</tal:block>
-						</tal:block>
-					</tal:block>
+					</div>
 				</div>
 			</div>
 			<a tal:condition="python:metaObj.get('acquired',None)" class="btn btn-secondary" target="_blank"
@@ -899,69 +902,24 @@
 			.focus(function(){zmiPopulateTypeSelect(this)})
 			.hover(function(){zmiPopulateTypeSelect(this)})
 			;
-        // https://stackoverflow.com/questions/8746882/jquery-contains-selector-uppercase-and-lower-case-issue
-        jQuery.expr[':'].contains = function(a, i, m) {
-            return jQuery(a).text().toUpperCase()
-            .indexOf(m[3].toUpperCase()) >= 0;
-        };
+		// https://stackoverflow.com/questions/8746882/jquery-contains-selector-uppercase-and-lower-case-issue
+		jQuery.expr[':'].contains = function(a, i, m) {
+			return jQuery(a).text().toUpperCase()
+			.indexOf(m[3].toUpperCase()) >= 0;
+		};
+		// Scroll to initially selected item in dropdown-list of metaobj-filter
+		$('.zmi-action.nav-metaobj').on('shown.bs.dropdown', function () {
+			const $sel = $(this).find('.dropdown-item.selected');
+			if ($sel.length > 0) {
+				$sel.first().get(0).focus();
+			}
+		});
 	});
 
 // -->
 </script>
 
 <script type="text/javascript" charset="UTF-8" src="/++resource++zms_/common/zmi_ace_editor.js"></script>
-
-<style>
-/* <!-- */
-	.zmi #tablefilter {
-		padding: 0 0 0 2.5em;
-		font-family: monospace;
-		width: 2.55rem;
-	}
-	.zmi #tablefilter:focus {
-		background-color: #f2f2f2;
-		border: 1px solid #ced4da;
-		box-shadow: none;
-	}
-	.zmi #tablefilter.visited {
-		width: 12rem;
-		transition: width 0.5s ease-in-out;
-	}
-	.zmi .fa-filter.tablefilter {
-		margin: 0.1rem -2.25rem 0 0.25rem;
-		opacity:.3;
-		cursor:pointer;
-	}
-	/* Tablefilter in Dropdown-Menu */
-	.zmi .dropdown-menu .dropdown-header #tablefilter,
-	.zmi .dropdown-menu .dropdown-header #tablefilter.visited {
-		width:unset;
-		height:unset;
-		padding: unset;
-		background-color:transparent;
-		border: none !important;
-		box-shadow: none !important;
-		color: white;
-		position:absolute;
-		margin-left:1.5rem;
-	}
-	.zmi .dropdown-menu .dropdown-header #tablefilter.visited,
-	.zmi .dropdown-menu .dropdown-header #tablefilter:focus {
-		background-color:#818ea2;
-	}
-	.zmi .dropdown-menu .dropdown-header label span {
-		color: #ffffff;
-		white-space: nowrap;
-	}
-	.zmi .dropdown-menu .dropdown-header .fa-filter.tablefilter {
-		margin: 0.2rem 0;
-		opacity: .5;
-	}
-	.zmi .dropdown-menu .dropdown-header :focus-within i.tablefilter {
-		opacity: 1;
-	}
-/* --> */
-</style>
 
 </body>
 </html>

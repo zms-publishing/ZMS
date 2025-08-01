@@ -11,10 +11,13 @@ $ZMI.registerReady(function() {
 	let trashcan_key = `ZMS.trashcan.${client_id}`;
 	let trashcan_data = localStorage.getItem(trashcan_key);
 
-	if (client_id !== null) {
+	let has_client_id = client_id !== null && client_id !== undefined && client_id !== '';
+	let no_trashcan_icon = $('header #trashrestore').length === 0;
+
+	if (has_client_id) {
 		if (window.location.href.includes('trashcan')) {
 			localStorage.removeItem(trashcan_key);
-		} else {
+		} else if (no_trashcan_icon) {
 			if (trashcan_data) {
 				if (parseInt(trashcan_data, 10) > 0) {
 					const sanitized_data = parseInt(trashcan_data, 10);

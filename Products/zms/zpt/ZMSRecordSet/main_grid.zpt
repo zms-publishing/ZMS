@@ -116,12 +116,13 @@
 				></tal:block>
 
 				<tr tal:define="value python:record.get('__id__',qindex)" 
-				tal:attributes="id python:'tr_%i'%qindex; 
-				class python:['','zmi-selected'][int(str(value)==str(request.get('qindex')) or str(value) in [str(x) for x in request.get('qindices',[])])]">
+				tal:attributes="id python:'tr_%i'%qindex;
+					data-__id__ python:record.get('__id__'); 
+					class python:['','zmi-selected'][int(str(value)==str(request.get('qindex')) or str(value) in [str(x) for x in request.get('qindices',[])])]">
 				<td class="zmi-datatype-action"
 						tal:define="global title python:'';
-						record_params python:record.get('params',{});
-						params python:dict(url_params,**record_params)">
+							record_params python:record.get('params',{});
+							params python:dict(url_params,**record_params)">
 					<tal:block tal:condition="python:'_change_uid' in record">
 						<tal:block tal:define="global title python:here.getLangFmtDate(record.get('_change_dt'))+' '+here.getZMILangStr('BY')+' '+str(record.get('_change_uid'))"></tal:block>
 					</tal:block>

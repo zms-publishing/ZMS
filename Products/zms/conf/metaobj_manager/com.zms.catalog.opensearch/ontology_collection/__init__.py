@@ -26,7 +26,7 @@ class ontology_collection:
 	package = "com.zms.catalog.opensearch"
 
 	# Revision
-	revision = "0.0.9"
+	revision = "0.0.10"
 
 	# Type
 	type = "ZMSObject"
@@ -84,19 +84,14 @@ class ontology_collection:
 			,"repetitive":0
 			,"type":"select"}
 
-		navigationtype = {"default":""
+		navigationtype = {"default":"1"
 			,"id":"navigationtype"
-			,"keys":["##"
-				,"return ["
-				,"(None,'No Navigation shown'),"
-				,"('pagination','Paginaton'),"
-				,"('load','Load more...'),"
-				,"]"]
+			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
-			,"name":"GUI: Navigation"
+			,"name":"GUI: Load More"
 			,"repetitive":0
-			,"type":"select"}
+			,"type":"boolean"}
 
 		icon_clazz = {"custom":"fas fa-table"
 			,"default":""

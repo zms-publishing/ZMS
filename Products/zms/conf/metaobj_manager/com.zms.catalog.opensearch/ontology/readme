@@ -1,0 +1,64 @@
+# ZMS Ontology
+
+## <kbd>EN</kbd> Manage small keyword catalogs editorially
+
+ZMS provides a simple basic model for multilingual keywording:
+Each folder-like content node can be equipped with an
+individual keyword catalog in the form of a property. This catalog recursively,
+i.e. in all sub-documents of this folder, provides the keywords to be used in this subtree by the authors. The keyword catalog is an editorially controlled
+list of terms that can be entered and edited in the form of a data table.
+To add a keyword to the catalog
+
+1. a new data record is added to the ontology data table
+2. first a language-neutral *key* (comparable to a primary key) is entered
+3. the language-specific translations are entered for this *key*
+4. the optional *facet* field is used to group *keys*, i.e. *keys* with
+identical facets can be grouped into a keyword list
+5. *keys* with the prefix *facet_* are not regarded as keywords,
+but are only used to record the translation of the corresponding facet term
+6. for *keys* with prefix *facet_* the facet-field can contain a digit (1,2,3..) that will be used for sorting the sequence of facets in frontend. 
+
+### Step-by-Step Configuration
+
+1. Import the ontoloy-model to metaobj-model (as part of opensearch-package)
+2. Add ontology-attribute (_complex-type_) to ZMSFolder- and ZMS-metaobject-class (and any other page-like meta-objects that need to use the keyword-catalog) as _multiselect-type_ and set a line of Python-code as the default:
+
+    <pre class="code">
+        ##
+        return context.get_ontology_attropts()
+    </pre>
+
+3. In the ZMS content add a new ontology-attribute to ZMS or a ZMSFolder and fill the datatable with a set of facetted/translated keywords
+4. Use the metaobject-class _ontology-collection_ to create a collection the the keyword-tagged object-links
+
+
+---
+
+
+## <kbd>DE</kbd> Kleine Schlagwort-Kataloge redaktionell managen
+
+Für die mehrsprachige Verschlagwortung liefert ZMS ein einfaches Basis-Modell:
+Jeder ordnerartige Content-Knoten kann in Form einer Eigenschaft (Property) mit einem individuellen Schlagwort-Katalog ausgestattet werden. Dieser Katalog liefert rekursiv, d.h. in alle Unter-Dokumente dieses Ordners, die in diesem Teilbaum von den Autoren einzusetzenden Schlagworte. Der Schlagwort-Katalog ist eine redaktionell kontrollierte Liste von Begriffen, die in Form einer Datentabelle erfasst und editiert werden kann.
+Um ein Schlagwort in den Katalog aufzunehmen, wird
+
+1. ein neuer Datensatz zur Ontology-Datentabelle hinzugefügt
+2. zunächst wird ein sprachneutraler *key* (vergleichbar mit einem Primärschlüssel) erfasst
+3. für diesen *key* werden die sprachspezischen Übersetzungen eingetragen
+4. Das optionale Feld *facet* dient dazu, *keys* zu gruppieren, d.h. *keys* mit
+identischer Facette können zu einer Schlagwort-Liste gruppiert werden
+5. *keys* mit dem Prefix *facet_* werden nicht als Schlagworte betrachtet,
+sondern dienen nur dazu, die Übersetzung des entsprechenden facet-Begriffs zu erfassen
+6. Das *facet*-Feld von *keys* mit dem Prefix *facet_* kann mit einer Ziffer (1,2,3..) gefüllt werden, um für die Drittsicht die Reihenfolge der Facetten zu sortieren. 
+
+### Schritt-für-Schritt-Konfiguration
+
+1. Importieren Sie das Ontoloy-Modell in das Metaobj-Modell (als Teil des opensearch-Pakets)
+2. Ontologie-Attribut (_complex-type_) zu ZMSFolder- und ZMS-metaobject-Klasse (und allen anderen seitenähnlichen Metaobjekten, die den Schlüsselwort-Katalog verwenden sollen) als _multiselect-type_ hinzufügen und eine Zeile Python-Code als Standard setzen:
+
+    <pre class="code">
+        ##
+        return context.get_ontology_attropts()
+    </pre>
+
+3. Fügen Sie zum ZMS- oder ZMSFolder-Objekt ein neues Ontologie-Attribut hinzu und füllen Sie die Datentabelle mit einer Reihe von facettierten/übersetzten Schlüsselwörtern
+4. Verwenden Sie die Metaobjekt-Klasse _ontology-collection_, um eine Sammlung der mit Schlagwörtern versehenen Objekt-Links zu erstellen.

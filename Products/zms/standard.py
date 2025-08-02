@@ -953,7 +953,7 @@ def unescape(s):
 
 
 security.declarePublic('http_request')
-def http_request(url, method='GET', rtn=None, **kwargs):
+def http_request(url, method='GET', return_type=None, **kwargs):
   import requests
   response = None
   if method == 'POST':
@@ -962,11 +962,11 @@ def http_request(url, method='GET', rtn=None, **kwargs):
     response = requests.get(url, **kwargs)
   elif method == 'PURGE':
     response = requests.request('PURGE', url, **kwargs)
-  if rtn == 'status_code':
+  if return_type == 'status_code':
     response = response.status_code
-  elif rtn == 'text':
+  elif return_type == 'text':
     response = response.text
-  elif rtn == 'json':
+  elif return_type == 'json':
     response = response.json()
   return response
 

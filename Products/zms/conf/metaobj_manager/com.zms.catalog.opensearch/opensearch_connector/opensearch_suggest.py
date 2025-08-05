@@ -63,8 +63,9 @@ def get_suggest_terms(self, q='Lorem', index_name='myzms', field_names=['title',
 	terms = sorted(set(terms), key=lambda x: x.lower()) # remove duplicates and sort
 
 	# #########################
-	# DEBUG-INFO: Result-List
-	if bool(debug): print('OPENSEARCH RESULT: %s'%(terms))
+	# DEBUG-INFO: Result
+	if bool(debug):
+		standard.writeLog(self, f"OpenSearch autosuggest result ({index_name}): {suggestions}")
 	# #########################
 
 	return list(terms)

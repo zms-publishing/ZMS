@@ -1,0 +1,91 @@
+<!-- ontology_collection.standard_html -->
+<main class="collection" tal:define="
+		zmscontext options/zmscontext;
+		q python:' '.join(zmscontext.attr('attr_dc_subject'));
+		q_request python:request.set('q',q);
+		hits python:zmscontext.ontology_query()">
+	<article class="collection_item" tal:repeat="hit hits">
+		<tal:block tal:define="
+			title python:hit['_source']['title']; 
+			description python:hit['_source']['attr_dc_description'];
+			zms_data_id python:'{$%s}'%(hit['_source']['uid']);
+			zms_obj python:zmscontext.getLinkObj(zms_data_id);
+			titleimage_url python:zms_obj.attr('titleimage') and zms_obj.attr('titleimage').getHref(request) or '';
+			title python:zms_obj.attr('seotitle_tag') or title;
+			description python:zms_obj.attr('seometa_tag') or description">
+			<img src="#" tal:condition="titleimage_url" tal:attributes="src titleimage_url" />
+			<div class="text">
+				<h1>
+					<a href="#" tal:attributes="href python:hit['_source']['index_html']" 
+						tal:content="title">
+						Title
+					</a>
+				</h1>
+				<p tal:content="description">
+					Description
+				</p>
+				<div class="keyword_links" 
+					tal:define="keywords python:hit['_source'].get('attr_dc_subject_ontology', hit['_source'].get('attr_dc_subject'))"
+					tal:condition="keywords">
+					<a class="badge badge-pill badge-secondary" style="zoom:1.25"
+						hx-indicator="body"
+						hx-trigger="click"
+						hx-target="#ontology_collection_info"
+						hx-get="#"
+						tal:attributes="
+							data-target python:zms_obj.getHref2IndexHtml(request);
+							hx-get python:'ontology_query?return_type=json&q=%s'%(keyword);
+							title python:'TODO: keywords to be translated'"
+						tal:repeat="keyword python:keywords.split(' ')"
+						tal:content="keyword">keyword
+					</a>
+				</div>
+			</div>
+		</tal:block>
+	</article>
+</main>
+
+
+<pre id="ontology_collection_info" class="alert alert-info ml-0" tal:condition="python:request.get('URL').find('/manage')>-1">
+DEBUG-INFO: Query = <code tal:define="zmscontext options/zmscontext;q python:zmscontext.attr('attr_dc_subject');" tal:content="q"></code>
+</pre>
+
+<style>
+	main.collection {
+		display: flex;
+		flex-direction: row;
+		padding: 1rem 0;
+		font-family: Arial, sans-serif;
+		color: #333;
+		column-gap: 2rem;
+		flex-wrap: wrap;
+		justify-content: flex-start;
+	}
+	main.collection .collection_item {
+		background-color: #f0f0f0;
+		border: 1px solid #ccc;
+		margin: 1rem 0;
+		width: 250px;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		border-radius: 5px;
+		transition: transform 0.2s;
+		padding: 0;
+	}
+	main.collection .collection_item img {
+		width: 100%;
+		height:7rem;
+		object-fit: cover;
+	}
+	main.collection .collection_item .text {
+		padding: 1rem;
+	}
+	main.collection .collection_item .text h1 {
+		color: #333;
+		font-size: 1.25em;
+	}
+	main.collection .collection_item .text  p {
+		color: #666;
+	}
+</style>
+
+<!-- /ontology_collection.standard_html -->

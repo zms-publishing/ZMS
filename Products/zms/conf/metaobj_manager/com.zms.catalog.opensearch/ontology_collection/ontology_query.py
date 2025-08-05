@@ -3,7 +3,7 @@ from opensearchpy import OpenSearch
 import json
 from Products.zms import standard
 
-def ontology_query(self, return_format='list'):
+def ontology_query(self, return_type='list'):
 	request = self.REQUEST
 	q = request.get('q','lorem ipsum')
 	qpage_index = request.get('pageIndex',0)
@@ -69,7 +69,7 @@ def ontology_query(self, return_format='list'):
 	except opensearchpy.exceptions.RequestError as e:
 		return '// %s'%(e.error)
 
-	if return_format=='json':
+	if return_type=='json':
 		return json.dumps(hits,indent=2)
 	else:
 		return hits

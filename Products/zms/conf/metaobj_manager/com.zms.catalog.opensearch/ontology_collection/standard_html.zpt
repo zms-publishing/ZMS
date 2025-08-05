@@ -34,7 +34,7 @@
 						hx-get="#"
 						tal:attributes="
 							data-target python:zms_obj.getHref2IndexHtml(request);
-							hx-get python:'ontology_query?return_format=json&q=%s'%(keyword);
+							hx-get python:'ontology_query?return_type=json&q=%s'%(keyword);
 							title python:'TODO: keywords to be translated'"
 						tal:repeat="keyword python:keywords.split(' ')"
 						tal:content="keyword">keyword

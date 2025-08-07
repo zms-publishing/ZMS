@@ -1,12 +1,18 @@
 FROM python:3.13-alpine
 
 # Install OS Requirements
-RUN apk add python3 make gcc g++ git
-RUN apk update && apk add python3-dev git mariadb-dev openldap-dev curl bash
+RUN apk add --no-cache python3 make gcc g++ git curl bash 
+RUN apk update && apk add python3-dev mariadb-dev openldap-dev
 
-# # # Install VS Code Server and Python Extension
-# # RUN curl -fsSL https://code-server.dev/install.sh | sh
-# # RUN code-server --install-extension ms-python.python
+# # Install VS Code Server and Python Extension
+# # CONSTANTLY FAILS ON ALPINE
+# ----------------------------
+# RUN apk add --no-cache gcompat nodejs npm 
+# RUN npm install -g --unsafe-perm code-server
+# RUN code-server --install-extension ms-python.python
+# ----------------------------
+# # SOLUTION Attach the VSCode Server to the Container and
+# # install the Python Extension manually via the VSCode UI
 
 # Add Zope User
 # https://stackoverflow.com/questions/49955097/how-do-i-add-a-user-when-im-using-alpine-as-a-base-image 
@@ -34,7 +40,6 @@ COPY ./etc ./etc
 COPY ./var ./var
 COPY ./Extensions ./Extensions
 
-EXPOSE 8888
 EXPOSE 8086
 EXPOSE 8085
 

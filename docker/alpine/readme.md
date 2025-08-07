@@ -51,12 +51,12 @@ $ tree -p
 
 ## Running the ZMS Container with VSCode
 
-The VSCode Docker Extension [ms-azuretools.vscode-docker](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker) is a perfect tool for handling containers. A right mouse click on the file ´docker-compose.yaml´ starts composing the container. Initially ZEO will be started and Zope will run on port 8085.
+The VSCode Docker Extension [ms-azuretools.vscode-docker](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker) is a perfect tool for handling containers. A right mouse click on the file ´docker-compose.yaml´ starts composing the container. Initially ZEO will be started and Zope will run on port 8085 and second instance on port 8086.
 
-![Running the ZMS Container with VSCode](../../docs/images/admin_docker_run.gif)
+![Running the ZMS Container with VSCode](../../docs/images/admin_docker_run.png)
 
 ## Attach VSCode to the ZMS Container
 Another right click on the running container-ID allows to intrude the container with VSCode and launch a new Zope instance in debugging mode. 
 Hint: For this purpose the docker-container folder `/home/zope/venv/src/zms/.vscode/` contains a prepared VSCode-workspace file and a launch config for starting Zope in debug-mode within the container [ZMS_docker.code-workspace](https://github.com/zms-publishing/ZMS/blob/main/.vscode/ZMS_docker.code-workspace). The thus launched Zope instance will run port 80.
 
-![Attach VSCode to the ZMS Container](../../docs/images/admin_docker_debug_zeo.gif)
+![Attach VSCode to the ZMS Container](../../docs/images/admin_docker_debug_zeo.png)

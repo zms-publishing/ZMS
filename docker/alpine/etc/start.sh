@@ -27,3 +27,4 @@ while ! echo > /dev/tcp/127.0.0.1/8086; do
   sleep 1
 done
 echo "Zope started on port 8086"
+

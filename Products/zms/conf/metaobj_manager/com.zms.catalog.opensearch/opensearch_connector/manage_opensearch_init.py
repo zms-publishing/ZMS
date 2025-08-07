@@ -26,7 +26,7 @@ def manage_opensearch_init( self):
 			raise
 		else:
 			client.indices.delete(index=index_name)
-			response = client.indices.create(index_name, body=json.dumps(schema))
+			response = client.indices.create(index=index_name, body=json.dumps(schema))
 			resp_text += '//%s\n'%(e.error)
 	resp_text += json.dumps(response, indent=2)
 	# concatinate opensearch response and schema

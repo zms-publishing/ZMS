@@ -422,7 +422,7 @@ def manage_searchReplace(self):
                 $(window).on("load", function() {
                   $(".loader-wrapper").fadeOut("slow");
                 });
-                $(document).ready(function() {
+                $ZMI.registerReady(function() {
                   $(".loader-wrapper").fadeOut("slow");
                   $("#form_searchreplace").submit(function() {
                       $.ajax({

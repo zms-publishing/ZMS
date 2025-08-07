@@ -21,7 +21,7 @@
 			$('#tr_videoHeight').show();
 		};
 	};
-	$(document).ready( function() {
+	$ZMI.registerReady( function() {
 		$('#tr_provider select').change(function() { changeGUI() });
 		changeGUI();
 	});

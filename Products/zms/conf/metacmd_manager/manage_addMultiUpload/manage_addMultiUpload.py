@@ -179,7 +179,7 @@ def manage_addMultiUpload(self):
 			}
 		</style>
 		<script>
-			$(document).ready(function() {
+			$ZMI.registerReady(function() {
 				// Initialize Plugin with Defaults
 				$("#file").fileinput({
 					theme: 'fa5',

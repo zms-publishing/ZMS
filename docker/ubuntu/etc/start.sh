@@ -7,7 +7,7 @@
 instance_dir="/home/zope"
 venv_bin_dir="/home/zope/venv/bin"
 zope_port="8085"
-vscode_port="8080"
+vscode_port="8888"
 
 echo "Step-1: Starting ZEO"
 nohup $venv_bin_dir/runzeo --configure $instance_dir/etc/zeo.conf 1>/dev/null 2>/dev/null &

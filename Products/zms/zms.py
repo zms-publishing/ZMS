@@ -432,7 +432,7 @@ class ZMS(
                     <i class="fab fa-git-square fa-lg"></i>
                 </span>
                 <script>
-                    $(function () {{
+                    $ZMI.registerReady(function () {{
                         $('[data-toggle="popover"]').popover();
                         // CAVEAT: Slicing below relies on commit hashes at https://github.com/idasm-unibe-ch/unibe-cms/tree/...
                         const zms_custom_version = $('#zms_custom_version').text().replaceAll('(', '').replaceAll(')', '');

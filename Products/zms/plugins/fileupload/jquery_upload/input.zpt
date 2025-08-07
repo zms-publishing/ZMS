@@ -18,7 +18,7 @@
 }
 </style>
 <tal:block tal:content="structure python:'<script>'"></tal:block>
-$(function () {
+$ZMI.registerReady(function () {
 	$('<'+'script type="text/javascript" src="/++resource++zms_/fileupload/jquery_upload/vendor/jquery.ui.widget.js"/>').appendTo(document.body);
 	$('<'+'script type="text/javascript" src="/++resource++zms_/fileupload/jquery_upload/jquery.iframe-transport.js"/>').appendTo(document.body);
 	$('<'+'script type="text/javascript" src="/++resource++zms_/fileupload/jquery_upload/jquery.fileupload.js"/>').appendTo(document.body);

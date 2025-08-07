@@ -34,8 +34,7 @@ COPY ./etc ./etc
 COPY ./var ./var
 COPY ./Extensions ./Extensions
 
-EXPOSE 5678
-EXPOSE 8080
+EXPOSE 8888
 EXPOSE 8086
 EXPOSE 8085
 

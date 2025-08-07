@@ -50,12 +50,10 @@ COPY ./var var
 COPY ./Extensions Extensions
 
 # Expose Ports:
-    # 8080 = Running VSCode-Server 
+    # 8888 = Running VSCode-Server 
     # 8085 = Running Default Zope-Server on ZEO
     # 8086 = Provided for Debugger-Zope-Instance
-    # 5678 = Provided for VSCode-debugpy
-EXPOSE 5678
-EXPOSE 8080 
+EXPOSE 8888 
 EXPOSE 8085
 EXPOSE 8086
 

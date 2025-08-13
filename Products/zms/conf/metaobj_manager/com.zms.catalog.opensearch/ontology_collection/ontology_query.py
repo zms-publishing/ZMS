@@ -5,9 +5,10 @@ from Products.zms import standard
 
 def ontology_query(self, return_type='list'):
 	request = self.REQUEST
-	q = request.get('q','lorem ipsum')
+	q = request.get('q','*')
+	q = q.strip()=='' and '*' or q.strip()
 	qpage_index = request.get('pageIndex',0)
-	qsize = request.get('size', 10)
+	qsize = request.get('size', 100)
 	qfrom = request.get('from', qpage_index*qsize)
 
 	zmscontext = self
@@ -42,6 +43,22 @@ def ontology_query(self, return_type='list'):
 									"query": q,
 									"fields": ["attr_dc_subject"],
 									"default_operator": "AND"
+								}
+							},
+							{
+								"exists": {
+									"field": "attr_dc_subject"
+								}
+							},
+							{
+								# Ensure that attr_dc_subject is not empty
+								"regexp": { 
+									"attr_dc_subject": {
+										"flags": "ALL",
+										"max_determinized_states": 10000,
+										"rewrite": "constant_score",
+										"value": ".+"
+									}
 								}
 							}
 						]

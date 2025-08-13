@@ -27,10 +27,14 @@ def opensearch_get_client(self, REQUEST=None):
 		return None
 	else:
 		for url in urls:
-			hosts.append( { \
+			if urlparse(url).hostname:
+				hosts.append( { \
 					'host':urlparse(url).hostname, \
 					'port':urlparse(url).port } \
 				)
+			else:
+				# Ignore URL without valid hostname
+				urls.remove(url)
 			if urlparse(url).scheme=='https':
 				use_ssl = True
 	timeout = float(zmscontext.getConfProperty('opensearch.url.timeout', 3))

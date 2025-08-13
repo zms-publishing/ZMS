@@ -17,9 +17,13 @@ class opensearch_connector:
 
 	# Lang_dict
 	lang_dict = {"opensearch_connector.BTN_DESTROY":{"eng":"Delete Index"
-			,"ger":"Index löschen"}
+			,"fra":"Supprimer l'index"
+			,"ger":"Index löschen"
+			,"ita":"Eliminare l'indice"}
 		,"opensearch_connector.BTN_SCHEMATIZE":{"eng":"Create Schema (JSON)"
-			,"ger":"Schema erzeugen (JSON)"}}
+			,"fra":"Créer le schéma (JSON)"
+			,"ger":"Schema erzeugen (JSON)"
+			,"ita":"Creare lo schema (JSON)"}}
 
 	# Name
 	name = "Opensearch-Connector"
@@ -28,14 +32,14 @@ class opensearch_connector:
 	package = "com.zms.catalog.opensearch"
 
 	# Revision
-	revision = "1.10.2"
+	revision = "1.11.3"
 
 	# Type
 	type = "ZMSLibrary"
 
 	# Attrs
 	class Attrs:
-		properties = {"custom":"[\r\n  {\r\n    \"id\": \"opensearch.url\",\r\n    \"type\": \"string\",\r\n    \"label\": \"URL(s)\",\r\n    \"default_value\": \"https://localhost:9200\",\r\n    \"is_target_of\": \"\"\r\n  },\r\n  {\r\n    \"id\": \"opensearch.url.timeout\",\r\n    \"type\": \"number\",\r\n    \"label\": \"URL-Timeout\",\r\n    \"default_value\": \"5\",\r\n    \"is_target_of\": \"\"\r\n  },\r\n  {\r\n    \"id\": \"opensearch.username\",\r\n    \"type\": \"string\",\r\n    \"label\": \"Username\",\r\n    \"default_value\": \"admin\",\r\n    \"is_target_of\": \"\"\r\n  },\r\n  {\r\n    \"id\": \"opensearch.password\",\r\n    \"type\": \"password\",\r\n    \"label\": \"Password\",\r\n    \"default_value\": \"admin\",\r\n    \"is_target_of\": \"\"\r\n  },\r\n  {\r\n    \"id\": \"opensearch.schema\",\r\n    \"type\": \"text\",\r\n    \"label\": \"Schema\",\r\n    \"default_value\": \"{}\",\r\n    \"is_target_of\": \"schematize\"\r\n  },\r\n  {\r\n    \"id\": \"opensearch.parser\",\r\n    \"type\": \"string\",\r\n    \"label\": \"Parser\",\r\n    \"default_value\": \"http://localhost:9998/tika\",\r\n    \"is_target_of\": \"\"\r\n  },\r\n  {\r\n    \"id\": \"opensearch.score_script\",\r\n    \"type\": \"text\",\r\n    \"label\": \"Score-Script (Painless)\",\r\n    \"default_value\": \"return _score;\",\r\n    \"is_target_of\": \"\"\r\n  },\r\n  {\r\n    \"id\": \"opensearch.suggest.fields.unibe\",\r\n    \"type\": \"string\",\r\n    \"label\": \"Suggest-Fields: unibe\",\r\n    \"default_value\": \"['title', 'attr_dc_description']\",\r\n    \"is_target_of\": \"\"\r\n  },\r\n  {\r\n    \"id\": \"opensearch.suggest.fields.unitel\",\r\n    \"type\": \"string\",\r\n    \"label\": \"Suggest-Fields: unitel\",\r\n    \"default_value\": \"['Vorname', 'Nachname']\",\r\n    \"is_target_of\": \"\"\r\n  }\r\n]"
+		properties = {"custom":"[\n  {\n    \"id\": \"opensearch.url\",\n    \"type\": \"string\",\n    \"label\": \"URL(s)\",\n    \"default_value\": \"https://localhost:9200\",\n    \"is_target_of\": \"\"\n  },\n  {\n    \"id\": \"opensearch.url.timeout\",\n    \"type\": \"number\",\n    \"label\": \"URL-Timeout\",\n    \"default_value\": \"5\",\n    \"is_target_of\": \"\"\n  },\n  {\n    \"id\": \"opensearch.username\",\n    \"type\": \"string\",\n    \"label\": \"Username\",\n    \"default_value\": \"admin\",\n    \"is_target_of\": \"\"\n  },\n  {\n    \"id\": \"opensearch.password\",\n    \"type\": \"password\",\n    \"label\": \"Password\",\n    \"default_value\": \"admin\",\n    \"is_target_of\": \"\"\n  },\n  {\n    \"id\": \"opensearch.schema\",\n    \"type\": \"text\",\n    \"label\": \"Schema\",\n    \"default_value\": \"{}\",\n    \"is_target_of\": \"schematize\"\n  },\n  {\n    \"id\": \"opensearch.parser\",\n    \"type\": \"string\",\n    \"label\": \"Parser\",\n    \"default_value\": \"http://localhost:9998/tika\",\n    \"is_target_of\": \"\"\n  },\n  {\n    \"id\": \"opensearch.score_script\",\n    \"type\": \"text\",\n    \"label\": \"Score-Script (Painless)\",\n    \"default_value\": \"return _score;\",\n    \"is_target_of\": \"\"\n  },\n  {\n    \"id\": \"opensearch.suggest.fields.unibe\",\n    \"type\": \"string\",\n    \"label\": \"Suggest-Fields: unibe\",\n    \"default_value\": \"['title', 'attr_dc_description']\",\n    \"is_target_of\": \"\"\n  },\n  {\n    \"id\": \"opensearch.suggest.fields.unitel\",\n    \"type\": \"string\",\n    \"label\": \"Suggest-Fields: unitel\",\n    \"default_value\": \"['Vorname', 'Nachname']\",\n    \"is_target_of\": \"\"\n  }\n]"
 			,"default":""
 			,"id":"properties"
 			,"keys":[]

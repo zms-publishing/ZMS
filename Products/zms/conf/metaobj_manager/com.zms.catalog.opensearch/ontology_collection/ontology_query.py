@@ -26,7 +26,8 @@ def ontology_query(self, return_type='list'):
 
 	client = self.opensearch_get_client(self)
 	if not client:
-		return '// Error: No OpenSearch Client found.'
+		standard.writeStdout(None, 'ERROR: ontology_query() cannot find an OpenSearch Client!')
+		return None
 
 	query = {
 		"size": qsize,

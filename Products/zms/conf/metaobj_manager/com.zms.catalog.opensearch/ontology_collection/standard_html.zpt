@@ -4,7 +4,9 @@
 		q python:' '.join(zmscontext.attr('attr_dc_subject'));
 		q_request python:request.set('q',q);
 		hits python:zmscontext.ontology_query()">
-	<article class="collection_item" tal:repeat="hit hits">
+	<article class="collection_item"
+		tal:condition="hits"
+		tal:repeat="hit hits">
 		<tal:block tal:define="
 			title python:hit['_source']['title']; 
 			description python:hit['_source']['attr_dc_description'];
@@ -43,6 +45,7 @@
 			</div>
 		</tal:block>
 	</article>
+	<pre class="alert alert-danger ml-0 w-100" tal:condition="not:hits">ERROR: No OpenSearch Client found!</pre>
 </main>
 
 

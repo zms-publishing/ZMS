@@ -26,4 +26,3 @@ def get_ontology_attropts(self):
 				attropts.append([k, v])
 
 	return attropts
-

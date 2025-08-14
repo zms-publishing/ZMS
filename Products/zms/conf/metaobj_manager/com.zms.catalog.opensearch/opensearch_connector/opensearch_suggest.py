@@ -42,8 +42,7 @@ def get_suggest_terms(self, q='Lorem', index_name='myzms', field_names=['title',
 		"_source": False,
 		"fields": [ field['name'] for field in fields ]
 	}
-		
-		
+
 	# This query is more performant if the fields are of type "search_as_you_type".
 	# A "search-as-you-type" field creates 2-/3-gram subfields of this field. Additionally, it creates an index prefix subfield.
 	# The OpenSearch search automatically/magically uses the prefixes to improve the query

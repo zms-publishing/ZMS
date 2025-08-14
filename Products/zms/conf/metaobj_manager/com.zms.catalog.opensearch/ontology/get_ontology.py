@@ -18,7 +18,7 @@ def get_ontology(self):
 		langs = zmscontext.getLanguages(request)
 		pass
 
-	# Get closed ontology records by acquisition along the breadcrumb path.
+	# Get ontology records by acquisition along the breadcrumb path.
 	ontology_obj = standard.operator_getattr(zmscontext, 'ontology')
 	if not ontology_obj:
 		return "WARNING: No ontology found."

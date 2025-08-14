@@ -10,8 +10,13 @@ def ontology_query(self, return_type='list'):
 	qpage_index = request.get('pageIndex',0)
 	qsize = request.get('size', 100)
 	qfrom = request.get('from', qpage_index*qsize)
-
+	
 	zmscontext = self
+
+	ontology_location = '/'
+	if standard.operator_getattr(zmscontext, 'ontology'):
+		ontology_location = '/'.join(standard.operator_getattr(zmscontext, 'ontology').absolute_url_path().split('/')[:-1])
+
 	hits = []
 	try:
 		langs = zmscontext.getLanguages(request)
@@ -41,6 +46,11 @@ def ontology_query(self, return_type='list'):
 									"query": q,
 									"fields": ["attr_dc_subject_ontology"],
 									"default_operator": "AND"
+								}
+							},
+							{
+								"term": {
+									"loc": ontology_location
 								}
 							},
 							{

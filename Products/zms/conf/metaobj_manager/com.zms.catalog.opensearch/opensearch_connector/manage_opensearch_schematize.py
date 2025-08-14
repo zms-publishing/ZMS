@@ -1,6 +1,5 @@
 import json
 
-
 def manage_opensearch_schematize( self):
 	zmscontext = self
 	properties = {}
@@ -36,10 +35,16 @@ def manage_opensearch_schematize( self):
 	# https://aws.amazon.com/de/blogs/big-data/perform-accent-insensitive-search-using-opensearch/
 	settings = {
 		"analysis": {
-				"filter": {
+			"filter": {
 				"custom_ascii_folding": {
 					"type": "asciifolding",
 					"preserve_original": True
+				}
+			},
+			"tokenizer": {
+				"path_tokenizer": {
+					"type": "path_hierarchy",
+					"delimiter": "/"
 				}
 			},
 			"analyzer": {
@@ -51,12 +56,16 @@ def manage_opensearch_schematize( self):
 						"custom_ascii_folding"
 					]
 				},
+				"path_analyzer": {
+					"type": "custom",
+					"tokenizer": "path_tokenizer"
+				},
 				"default": {
-        	"type": "standard"
-        },
-        "default_search": {
-        	"type": "standard"
-        }
+					"type": "standard"
+				},
+				"default_search": {
+					"type": "standard"
+				}
 			}
 		}
 	}
@@ -79,7 +88,7 @@ def manage_opensearch_schematize( self):
 	properties['id'] = {'type':'text'}
 	properties['zmsid'] = {'type':'text'}
 	properties['uid'] = {'type':'text'}
-	properties['loc'] = {'type':'text'}
+	properties['loc'] = {'type':'text','analyzer':'path_analyzer'}
 	properties['index_html'] = {'type':'text', 'analyzer':'custom_ascii_analyzer'}
 	properties['meta_id'] = {'type':'keyword'}
 	properties['lang'] = {'type':'keyword'}

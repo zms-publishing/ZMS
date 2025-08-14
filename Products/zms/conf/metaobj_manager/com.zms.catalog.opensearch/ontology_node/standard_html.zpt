@@ -1,0 +1,15 @@
+<!-- ontology_node.standard_html -->
+<div tal:define="zmscontext options/zmscontext;
+		id python:zmscontext.getId();
+		css_class python:zmscontext.meta_id;
+		key python:zmscontext.attr('key');
+		title python:zmscontext.attr('title');
+		e_list python:zmscontext.filteredChildNodes(request);"
+		tal:attributes="id id;class css_class">
+	<div class="key" tal:content="key">key</div>
+	<div class="title" tal:content="title">title</div>
+	<div class="e repetitive" tal:condition="e_list">
+		<tal:block tal:repeat="e_listitem e_list" tal:content="structure python:e_listitem.renderShort(request)">e</tal:block>
+	</div>
+</div>
+<!-- ontology_node.standard_html -->

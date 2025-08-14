@@ -12,8 +12,6 @@ def ontology_query(self, return_type='list'):
 	qfrom = request.get('from', qpage_index*qsize)
 
 	zmscontext = self
-	# Default fields are attr_dc_subject or attr_dc_subject_ontology
-	fields = zmscontext.metaobj_manager.getMetadictAttr('attr_dc_subject_ontology') and ['attr_dc_subject_ontology'] or ['attr_dc_subject']
 	hits = []
 	try:
 		langs = zmscontext.getLanguages(request)
@@ -41,19 +39,19 @@ def ontology_query(self, return_type='list'):
 							{
 								"simple_query_string": {
 									"query": q,
-									"fields": ["attr_dc_subject"],
+									"fields": ["attr_dc_subject_ontology"],
 									"default_operator": "AND"
 								}
 							},
 							{
 								"exists": {
-									"field": "attr_dc_subject"
+									"field": "attr_dc_subject_ontology"
 								}
 							},
 							{
 								# Ensure that attr_dc_subject is not empty
 								"regexp": { 
-									"attr_dc_subject": {
+									"attr_dc_subject_ontology": {
 										"flags": "ALL",
 										"max_determinized_states": 10000,
 										"rewrite": "constant_score",

@@ -26,7 +26,7 @@ class ontology_collection:
 	package = "com.zms.catalog.opensearch"
 
 	# Revision
-	revision = "0.0.11"
+	revision = "0.1.0"
 
 	# Type
 	type = "ZMSObject"
@@ -42,8 +42,8 @@ class ontology_collection:
 			,"repetitive":0
 			,"type":"title"}
 
-		attr_dc_subject = {"default":""
-			,"id":"attr_dc_subject"
+		attr_dc_subject_ontology = {"default":""
+			,"id":"attr_dc_subject_ontology"
 			,"keys":["##"
 				,"return context.get_ontology_attropts()"]
 			,"mandatory":0

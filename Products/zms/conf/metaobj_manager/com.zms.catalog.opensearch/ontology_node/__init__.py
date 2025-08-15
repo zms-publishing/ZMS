@@ -87,6 +87,15 @@ class ontology_node:
 			,"repetitive":0
 			,"type":"External Method"}
 
+		get_ontology_skos = {"default":""
+			,"id":"get_ontology_skos"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"Get SKOS Ontology"
+			,"repetitive":0
+			,"type":"External Method"}
+
 		icon_clazz = {"custom":"fas fa-tags"
 			,"default":""
 			,"id":"icon_clazz"

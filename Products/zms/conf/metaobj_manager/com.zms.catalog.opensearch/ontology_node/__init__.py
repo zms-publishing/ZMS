@@ -1,6 +1,6 @@
-class ontology:
+class ontology_node:
 	"""
-	python-representation of ontology
+	python-representation of ontology_node
 	"""
 
 	# Access
@@ -14,45 +14,35 @@ class ontology:
 			,""]}
 
 	# Enabled
-	enabled = 0
+	enabled = 1
 
 	# Id
-	id = "ontology"
+	id = "ontology_node"
 
 	# Name
-	name = "Ontology"
+	name = "Ontology-Node"
 
 	# Package
 	package = "com.zms.catalog.opensearch"
 
 	# Revision
-	revision = "0.0.9"
+	revision = "0.2.0"
 
 	# Type
-	type = "ZMSRecordSet"
+	type = "ZMSDocument"
 
 	# Attrs
 	class Attrs:
-		records = {"default":""
-			,"id":"records"
+		titlealt = {"default":""
+			,"id":"titlealt"
 			,"keys":[]
-			,"mandatory":1
+			,"mandatory":0
 			,"multilang":0
-			,"name":"Datensätze"
+			,"name":"DC.Title.Alt"
 			,"repetitive":0
-			,"type":"list"}
+			,"type":"py"}
 
-		grid = {"default":"0"
-			,"id":"_grid"
-			,"keys":[]
-			,"mandatory":1
-			,"multilang":0
-			,"name":"Grid?"
-			,"repetitive":0
-			,"type":"boolean"}
-
-		key = {"custom":1
-			,"default":""
+		key = {"default":""
 			,"id":"key"
 			,"keys":[]
 			,"mandatory":1
@@ -61,45 +51,23 @@ class ontology:
 			,"repetitive":0
 			,"type":"string"}
 
-		facet = {"custom":1
-			,"default":""
-			,"id":"facet"
-			,"keys":[]
-			,"mandatory":0
-			,"multilang":0
-			,"name":"Facet"
-			,"repetitive":0
-			,"type":"string"}
-
-		ger = {"custom":1
-			,"default":""
-			,"id":"ger"
+		title = {"default":""
+			,"id":"title"
 			,"keys":[]
 			,"mandatory":1
-			,"multilang":0
-			,"name":"Deutsch"
+			,"multilang":1
+			,"name":"DC.Title"
 			,"repetitive":0
-			,"type":"string"}
+			,"type":"title"}
 
-		eng = {"custom":1
-			,"default":""
-			,"id":"eng"
+		attr_dc_description = {"default":""
+			,"id":"attr_dc_description"
 			,"keys":[]
 			,"mandatory":0
-			,"multilang":0
-			,"name":"English"
+			,"multilang":1
+			,"name":"DC.Description"
 			,"repetitive":0
-			,"type":"string"}
-
-		fra = {"custom":1
-			,"default":""
-			,"id":"fra"
-			,"keys":[]
-			,"mandatory":0
-			,"multilang":0
-			,"name":"Francais"
-			,"repetitive":0
-			,"type":"string"}
+			,"type":"attr_dc_description"}
 
 		get_ontology = {"default":""
 			,"id":"get_ontology"
@@ -119,13 +87,22 @@ class ontology:
 			,"repetitive":0
 			,"type":"External Method"}
 
-		icon_clazz = {"custom":"far fa-list-alt"
+		get_ontology_skos = {"default":""
+			,"id":"get_ontology_skos"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"Get SKOS Ontology"
+			,"repetitive":0
+			,"type":"External Method"}
+
+		icon_clazz = {"custom":"fas fa-tags"
 			,"default":""
 			,"id":"icon_clazz"
 			,"keys":[]
 			,"mandatory":0
-			,"multilang":0
-			,"name":"CSS-Icon"
+			,"multilang":1
+			,"name":"Icon (Class)"
 			,"repetitive":0
 			,"type":"constant"}
 
@@ -138,11 +115,20 @@ class ontology:
 			,"repetitive":0
 			,"type":"resource"}
 
+		e = {"default":""
+			,"id":"e"
+			,"keys":["ontology_node"]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"Nodes"
+			,"repetitive":1
+			,"type":"*"}
+
 		standard_html = {"default":""
 			,"id":"standard_html"
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
-			,"name":"Template: Ontology"
+			,"name":"Template: Ontology-Node"
 			,"repetitive":0
 			,"type":"zpt"}

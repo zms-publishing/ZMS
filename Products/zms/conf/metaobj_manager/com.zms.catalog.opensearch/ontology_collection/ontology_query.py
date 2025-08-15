@@ -5,14 +5,18 @@ from Products.zms import standard
 
 def ontology_query(self, return_type='list'):
 	request = self.REQUEST
-	q = request.get('q','lorem ipsum')
+	q = request.get('q','*')
+	q = q.strip()=='' and '*' or q.strip()
 	qpage_index = request.get('pageIndex',0)
-	qsize = request.get('size', 10)
+	qsize = request.get('size', 100)
 	qfrom = request.get('from', qpage_index*qsize)
-
+	
 	zmscontext = self
-	# Default fields are attr_dc_subject or attr_dc_subject_ontology
-	fields = zmscontext.metaobj_manager.getMetadictAttr('attr_dc_subject_ontology') and ['attr_dc_subject_ontology'] or ['attr_dc_subject']
+
+	ontology_location = '/'
+	if standard.operator_getattr(zmscontext, 'ontology'):
+		ontology_location = '/'.join(standard.operator_getattr(zmscontext, 'ontology').absolute_url_path().split('/')[:-1])
+
 	hits = []
 	try:
 		langs = zmscontext.getLanguages(request)
@@ -26,7 +30,8 @@ def ontology_query(self, return_type='list'):
 
 	client = self.opensearch_get_client(self)
 	if not client:
-		return '// Error: No OpenSearch Client found.'
+		standard.writeStdout(None, 'ERROR: ontology_query() cannot find an OpenSearch Client!')
+		return None
 
 	query = {
 		"size": qsize,
@@ -39,8 +44,29 @@ def ontology_query(self, return_type='list'):
 							{
 								"simple_query_string": {
 									"query": q,
-									"fields": ["attr_dc_subject"],
+									"fields": ["attr_dc_subject_ontology"],
 									"default_operator": "AND"
+								}
+							},
+							{
+								"term": {
+									"loc": ontology_location
+								}
+							},
+							{
+								"exists": {
+									"field": "attr_dc_subject_ontology"
+								}
+							},
+							{
+								# Ensure that attr_dc_subject is not empty
+								"regexp": { 
+									"attr_dc_subject_ontology": {
+										"flags": "ALL",
+										"max_determinized_states": 10000,
+										"rewrite": "constant_score",
+										"value": ".+"
+									}
 								}
 							}
 						]

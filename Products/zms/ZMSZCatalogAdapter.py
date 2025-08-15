@@ -44,6 +44,7 @@ def get_default_data(node):
   d['id'] = node.id
   d['home_id'] = node.getHome().id
   d['meta_id'] = node.meta_id
+  d['loc'] = node.absolute_url_path()
   # Todo: Remove preview-parameter.
   d['index_html'] = node.getHref2IndexHtmlInContext(node.getRootElement(), REQUEST=request)
   d['lang'] = request.get('lang',node.getPrimaryLanguage())
@@ -306,7 +307,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     #  getter and setter for attribute-ids, that can be cataloged
     # --------------------------------------------------------------------------
     def _getAttrIds(self):
-      return ['uid', 'id', 'meta_id', 'home_id', 'index_html'] + self.getAttrIds()
+      return ['uid', 'id', 'meta_id', 'home_id', 'loc','index_html'] + self.getAttrIds()
 
     def getAttrIds(self):
       return list(self.getAttrs())

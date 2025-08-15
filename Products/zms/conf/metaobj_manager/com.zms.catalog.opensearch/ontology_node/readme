@@ -1,0 +1,27 @@
+# ZMS Ontology
+
+## <kbd>EN</kbd> Editorial Management of Ontology Trees
+
+ZMS uses the recursive ZMS-document-type content-class **Ontology-Node** for creating and managing ontology trees, (replacing the previous keyword-table approach).
+
+Each folder-like content node can contain an Ontology-Node subtree, allowing editorial control over multilingual keywording and hierarchical term organization. The ontology tree is recursively available to all sub-documents, providing a structured set of terms for authors to use within the subtree.
+
+To add or manage terms in the ontology:
+
+1. Create or edit the Ontology-property of a folderish documents within the ZMS Client.
+2. Each Ontology-Node represents a term, with language-neutral keys and language-specific translations as properties.
+3. Terms are grouped using it's parent terms.
+
+### Step-by-Step Configuration
+
+1. Import the ontology-model to the metaobj-model (as part of the opensearch-package).
+2. Add an ontology attribute (_complex-type_) to ZMSFolder and ZMS-metaobject classes (and any other page-like metaobjects needing ontology support) as a _multiselect-type_ and set a line of Python code as the default:
+
+    <pre class="code">
+        ##
+        return context.get_ontology_attropts()
+    </pre>
+
+3. In ZMS content, add a new ontology attribute to ZMS or a ZMSFolder and build the ontology tree using Ontology-Node documents.
+4. Use the metaobject-class _ontology-collection_ to create collections of keyword-tagged object links based on the ontology tree.
+

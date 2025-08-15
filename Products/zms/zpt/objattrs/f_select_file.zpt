@@ -18,7 +18,7 @@
 		<input type="hidden" tal:attributes="name python:'exists_%s'%elName; value python:request.get('ZMS_INSERT',None) is None and value not in [None,'']" />
 		<input type="hidden" tal:attributes="name python:'del_%s'%elName" value="0" />
 
-		<div class="col-12" tal:attributes="class python:not(value is not None and here.operator_gettype(value) is not str) and 'col-9' or default">
+		<div class="col-12">
 			<div class="zmi-input-file btn-group">
 
 				<div class="custom-file"

@@ -161,7 +161,11 @@ $(function() {
 				}
 			} else {
 			// UNITEL
-				let title = `${source['Vorname']}  ${source['Nachname']}`;
+				let acaddeg = source['Titel'];
+				let title = `${source['VornameTel']}  ${source['NachnameTel']}`;
+				if (acaddeg) {
+					title = `${acaddeg} ${title}`;
+				};
 				let URL = '';
 				let href = '';
 				let EMail = '';

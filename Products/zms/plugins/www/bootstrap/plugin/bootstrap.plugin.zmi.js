@@ -492,7 +492,7 @@ $ZMI.registerReady(function(){
 	});
 	// Action-Lists
 	$('button.btn.split-right.dropdown-toggle').attr('title',getZMILangStr('ACTION_SELECT').replace('%s',getZMILangStr('ATTR_ACTION')));
-	$(".btn-group")
+	$(".zmi-action.btn-group")
 		.mouseover( function(evt) {
 				$(this).parents(".collapse").css({overflow:"visible"});
 			})
@@ -511,14 +511,14 @@ $ZMI.registerReady(function(){
 			});
 	$(".zmi-action button.dropdown-toggle:not(.btn-card-header-menu)")
 		.click( function(evt) {
-				// For ajax afterload-menus prevent click event until class 'loaded' was added
-				var el = $(this);
-				if (!el.parent(".zmi-action").hasClass('loaded')) {
-						evt.preventDefault();
-						evt.stopPropagation();
-						setTimeout(function() {el.click();}, 100);
-				}
-			});
+			// For ajax afterload-menus prevent click event until class 'loaded' was added
+			var el = $(this);
+			if (!el.parent(".zmi-action").hasClass('loaded')) {
+				evt.preventDefault();
+				evt.stopPropagation();
+				setTimeout(function() {el.click();}, 100);
+			}
+		});
 
 	// Inputs
 	$ZMI.initInputFields($("body"));
@@ -543,8 +543,8 @@ $ZMI.registerReady(function(){
 		var ajax_url = $that.attr("data-ajax-url");
 		var params = {};
 		$.get( ajax_url, params, function( data) {
-				$that.html(data);
-			});
+			$that.html(data);
+		});
 	});
 
 	$ZMI.setCursorAuto("EO bootstrap.plugin.zmi");
@@ -555,11 +555,11 @@ $ZMI.registerReady(function(){
 	// ZMSLightbox
 	$('a.zmslightbox, a.fancybox')
 		.each(function() {
-				var $img = $("img",$(this));
-				$img.attr("data-hiresimg",$(this).attr("href"));
-				$(this).click(function() {
-					return showFancybox($img);
-				});
+			var $img = $("img",$(this));
+			$img.attr("data-hiresimg",$(this).attr("href"));
+			$(this).click(function() {
+				return showFancybox($img);
+			});
 	});
 
 });
@@ -588,59 +588,59 @@ ZMI.prototype.initInputFields = function(container) {
 	$ZMI.setCursorWait("BO zmiInitInputFields["+$('form:not(.form-initialized)',container).length+"]");
 	$(container).each(function() {
 		var context = this;
-			// Accordion:
-			// highlight default collapse item
-			var data_root = $("body").attr('data-root');
-			$(".collapse",context).each(function() {
-				var id = $(this).attr('id');
-				if (typeof id != "undefined") {
-					var $toggle = $('a.card-toggle[href=\'#'+id+'\']');
-					if ($toggle.length > 0) {
-						var key = "ZMS."+data_root+".collapse-"+id;
-						var value = $ZMILocalStorageAPI.get(key,'1');
-						if (value != null) {
-							if ($(this).hasClass('show')) {
-								if (value == '0') {
-									$(this).removeClass('show');
-								}
-							} else {
-								if (value == '1') {
-									$(this).addClass('show');
-								}
+		// Accordion:
+		// highlight default collapse item
+		var data_root = $("body").attr('data-root');
+		$(".collapse",context).each(function() {
+			var id = $(this).attr('id');
+			if (typeof id != "undefined") {
+				var $toggle = $('a.card-toggle[href=\'#'+id+'\']');
+				if ($toggle.length > 0) {
+					var key = "ZMS."+data_root+".collapse-"+id;
+					var value = $ZMILocalStorageAPI.get(key,'1');
+					if (value != null) {
+						if ($(this).hasClass('show')) {
+							if (value == '0') {
+								$(this).removeClass('show');
+							}
+						} else {
+							if (value == '1') {
+								$(this).addClass('show');
 							}
 						}
 					}
 				}
-			});
-			$("i:first",$(".collapse",context).prev('.card-header')).removeClass("fa-caret-down").addClass("fa-caret-right");
-			$("i:first",$(".collapse.show",context).prev('.card-header')).removeClass("fa-caret-right").addClass("fa-caret-down");
-			$("a.card-toggle",this).click(function(){
-				$(this).blur();
-				var id = $(this).attr('href').substring(1);
-				var key = "ZMS."+data_root+".collapse-"+id;
-				var $icon = $("i:first",this);
-				var showing = $icon.hasClass("fa-caret-down")?1:0;
-				if (showing) {
-					$icon.removeClass("fa-caret-down").addClass("fa-caret-right");
-					$ZMILocalStorageAPI.set(key,'0');
-				}
-				else {
-					$icon.removeClass("fa-caret-right").addClass("fa-caret-down");
-					$ZMILocalStorageAPI.set(key,'1');
-				}
-			});
-			// Password
-			$("input[type=password]",this).focus(function() {
-				if ($(this).val()=='******') {
-					$(this).val('');
-				}
-			})
-			.blur(function() {
-				if ($(this).val()=='') {
-					$(this).val('******');
-				}
-			});
+			}
 		});
+		$("i:first",$(".collapse",context).prev('.card-header')).removeClass("fa-caret-down").addClass("fa-caret-right");
+		$("i:first",$(".collapse.show",context).prev('.card-header')).removeClass("fa-caret-right").addClass("fa-caret-down");
+		$("a.card-toggle",this).click(function(){
+			$(this).blur();
+			var id = $(this).attr('href').substring(1);
+			var key = "ZMS."+data_root+".collapse-"+id;
+			var $icon = $("i:first",this);
+			var showing = $icon.hasClass("fa-caret-down")?1:0;
+			if (showing) {
+				$icon.removeClass("fa-caret-down").addClass("fa-caret-right");
+				$ZMILocalStorageAPI.set(key,'0');
+			}
+			else {
+				$icon.removeClass("fa-caret-right").addClass("fa-caret-down");
+				$ZMILocalStorageAPI.set(key,'1');
+			}
+		});
+		// Password
+		$("input[type=password]",this).focus(function() {
+			if ($(this).val()=='******') {
+				$(this).val('');
+			}
+		})
+		.blur(function() {
+			if ($(this).val()=='') {
+				$(this).val('******');
+			}
+		});
+	});
 	$('form:not(.form-initialized)',container)
 		.submit(function() {
 			var b = true;
@@ -811,11 +811,11 @@ ZMI.prototype.initInputFields = function(container) {
 								var id = $(this).attr("name")+"_diff";
 								var $diffContainer = $("#"+id);
 								$(this).prettyTextDiff({
-										cleanup:true,
-										originalContent:$(this).attr("data-initial-value").replace(/</gi,'&lt;'),
-										changedContent:$(this).val().replace(/</gi,'&lt;'),
-										diffContainer:$diffContainer
-									});
+									cleanup:true,
+									originalContent:$(this).attr("data-initial-value").replace(/</gi,'&lt;'),
+									changedContent:$(this).val().replace(/</gi,'&lt;'),
+									diffContainer:$diffContainer
+								});
 								var lines = $diffContainer.html().replace(/<span>/gi,'').replace(/<\/span>/gi,'').split("<br>");
 								var show = [];
 								var changed = false;

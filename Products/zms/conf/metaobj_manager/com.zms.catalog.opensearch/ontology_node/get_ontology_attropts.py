@@ -19,15 +19,9 @@ def get_ontology_attropts(self):
 	def aggregate_hierarchy(ontology, parent_title=''):
 		for key, value in ontology.items():
 			if isinstance(value, dict):
-				title = value.get('title', '')
+				title = value.get('title', key)
 				if parent_title:
-					title = f"{parent_title} > {title}"
-			else:
-				title = value
-			if not title:
-				title = key
-			# Create a full key by concatenating parent keys.
-			if isinstance(value, dict):
+					title = f"{parent_title} &#x2005;&rsaquo; {title}"
 				if 'nodes' not in value.keys():
 					attropts.append({
 						'key': key,
@@ -35,6 +29,9 @@ def get_ontology_attropts(self):
 					})
 				else:
 					aggregate_hierarchy(value['nodes'], title)
+			else:
+				title = value
+
 	aggregate_hierarchy(ontology)
 
 	# Sort the attribute options by title

@@ -774,6 +774,8 @@ class ZMSObject(ZMSItem.ZMSItem,
         except:
           message = standard.writeError(self, "[manage_changeProperties]")
           messagekey = 'manage_tabs_error_message'
+          if REQUEST.get('do_not_save_on_error', False):
+            self.rollbackObjChanges(self, REQUEST)
         message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
 
       # Return with message.

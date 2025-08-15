@@ -499,26 +499,18 @@ class VersionItem(object):
     def onChangeObj(self, REQUEST, forced=False, do_history=True):
         prim_lang = self.getPrimaryLanguage()
         lang = REQUEST.get('lang', prim_lang)
-
-        try:
-            ##### Trigger thumbnail generation of image fields ####
-            _blobfields.thumbnailImageFields(self, lang, REQUEST)
-
-            ##### Trigger custom onChangeObj-Event (if there is one) ####
-            standard.triggerEvent(self, 'onChangeObjEvt')
-
-            ##### Commit or initiate workflow transition ####
-            if self.getAutocommit() or forced:
-                self.commitObj(REQUEST, forced, do_history)
-            else:
-                self.autoWfTransition(REQUEST)
-
-        except Exception as e:
-            if REQUEST.get('do_not_save_on_error', False):
-                self.rollbackObjChanges(self, REQUEST)
-                raise zExceptions.InternalError(e)
-            else:
-                raise zExceptions.InternalError(e)
+        
+        ##### Trigger thumbnail generation of image fields ####
+        _blobfields.thumbnailImageFields( self, lang, REQUEST)
+        
+        ##### Trigger custom onChangeObj-Event (if there is one) ####
+        standard.triggerEvent( self, 'onChangeObjEvt')
+        
+        ##### Commit or initiate workflow transition ####
+        if self.getAutocommit() or forced:
+          self.commitObj(REQUEST, forced, do_history)
+        else:
+          self.autoWfTransition(REQUEST)
 
     # --------------------------------------------------------------------------
     #  VersionItem.commitObjChanges

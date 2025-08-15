@@ -26,7 +26,7 @@ class ontology_node:
 	package = "com.zms.catalog.opensearch"
 
 	# Revision
-	revision = "0.1.0"
+	revision = "0.2.0"
 
 	# Type
 	type = "ZMSDocument"
@@ -87,7 +87,7 @@ class ontology_node:
 			,"repetitive":0
 			,"type":"External Method"}
 
-		icon_clazz = {"custom":"fas fa-folder-plus"
+		icon_clazz = {"custom":"fas fa-tags"
 			,"default":""
 			,"id":"icon_clazz"
 			,"keys":[]

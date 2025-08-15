@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+from collections import OrderedDict
+import json
+from Products.zms import standard
 
 def get_ontology_attropts(self):
 	request = self.REQUEST
@@ -6,9 +9,44 @@ def get_ontology_attropts(self):
 
 	# Create a list of attribute options for each facet key.
 	attropts = []
-	for facet in list(ontology.keys()):
-		for term in list(ontology[facet].keys()):
-			attropts.append([term, ontology[facet][term]])
+	if not ontology.keys():
+		return ["NO DATA FOUND"]
 
-	return attropts
+	# Aggregate the hierarchy to key/value set where the key is
+	# the last element in the hierarchy path and the value is
+	# a concatenatination of all titles of the path.
+	# Do not append an element if it has sub-nodes.
+	def aggregate_hierarchy(ontology, parent_title=''):
+		for key, value in ontology.items():
+			if isinstance(value, dict):
+				title = value.get('title', '')
+				if parent_title:
+					title = f"{parent_title} > {title}"
+			else:
+				title = value
+			if not title:
+				title = key
+			# Create a full key by concatenating parent keys.
+			if isinstance(value, dict):
+				if 'nodes' not in value.keys():
+					attropts.append({
+						'key': key,
+						'title': title
+					})
+				else:
+					aggregate_hierarchy(value['nodes'], title)
+	aggregate_hierarchy(ontology)
 
+	# Sort the attribute options by title
+	attropts.sort(key=lambda x: x['title'])
+
+	# Convert the dict to a ZMI-like list of tuples
+	attropts = [(opt['key'], opt['title']) for opt in attropts]
+
+
+	# If the request is for JSON, return the attribute options as JSON.
+	if request.get('URL0').endswith('/get_ontology_attropts'):
+		return json.dumps(attropts, indent=2)
+	else:
+		# Otherwise, return the attribute options directly.
+		return attropts

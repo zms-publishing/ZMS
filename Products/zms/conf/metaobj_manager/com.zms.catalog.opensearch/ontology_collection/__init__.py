@@ -26,7 +26,7 @@ class ontology_collection:
 	package = "com.zms.catalog.opensearch"
 
 	# Revision
-	revision = "0.2.0"
+	revision = "0.2.1"
 
 	# Type
 	type = "ZMSObject"

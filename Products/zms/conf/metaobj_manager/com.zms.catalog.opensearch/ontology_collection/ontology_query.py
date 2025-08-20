@@ -90,12 +90,15 @@ def ontology_query(self, return_type='list'):
 
 	try:
 		response = client.search(body = json.dumps(query), index = index_names)
-		if 'hits' in response and 'hits' in response['hits']:
-			hits = response['hits']['hits']
-	except opensearchpy.exceptions.RequestError as e:
-		return '// %s'%(e.error)
-
-	if return_type=='json':
-		return json.dumps(hits,indent=2)
+	except:
+		standard.writeStdout(None, 'ERROR: ontology_query() failed to execute query!')
+		return None
+	if 'hits' in response and 'hits' in response['hits']:
+		hits = response['hits']['hits']
+		if return_type=='json':
+			return json.dumps(hits,indent=2)
+		else:
+			return hits
 	else:
-		return hits
+		standard.writeStdout(None, 'ERROR: ontology_query() no hits found!')
+		return None

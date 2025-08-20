@@ -14,7 +14,7 @@ class ontology_node:
 			,""]}
 
 	# Enabled
-	enabled = 1
+	enabled = 0
 
 	# Id
 	id = "ontology_node"
@@ -26,7 +26,7 @@ class ontology_node:
 	package = "com.zms.catalog.opensearch"
 
 	# Revision
-	revision = "0.2.0"
+	revision = "0.2.1"
 
 	# Type
 	type = "ZMSDocument"

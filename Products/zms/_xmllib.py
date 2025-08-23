@@ -566,7 +566,7 @@ def toXml(self, value, indentlevel=0, xhtml=False, encoding='utf-8'):
     # Tuples (DateTime)
     elif isinstance(value, tuple) or isinstance(value, time.struct_time) or isinstance(value, DateTime):
       try:
-        s_value = self.getLangFmtDate(value, 'eng', 'DATETIME_FMT')
+        s_value = self.getLangFmtDate(value, fmt_str='ISO8601')
         if len(s_value) > 0:
           xml.append('\n' + indentlevel * INDENTSTR)
           xml.append(toCdata(self, s_value, -1))

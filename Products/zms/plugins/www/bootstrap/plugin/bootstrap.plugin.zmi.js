@@ -2242,7 +2242,7 @@ ZMI.prototype.initUrlInput = function(context) {
 		$container.append(`
 			<div class="url-input-container"></div>
 			<input type="hidden" name="new_${elName}"/>
-			<a class="btn btn-secondary" href="javascript:;" onclick="return zmiBrowseObjs('${fmName}', 'new_${elName}', getZMILang(), getRefLang(this)">
+			<a class="btn btn-secondary" href="javascript:;" onclick="return zmiBrowseObjs('${fmName}', 'new_${elName}', getZMILang(), getRefLang(this))">
 				<i class="fas fa-plus"></i>
 			</a>`);
 		$("input[name='new_"+elName+"']",$container).change(function() {
@@ -2263,7 +2263,7 @@ ZMI.prototype.initUrlInput = function(context) {
 				$inputContainer.append('<input class="form-control url-input" type="text" value="'+l[i]+'" disabled="disabled"> ');
 			}
 			$("input.url-input",$inputContainer).each(fn_url_input_each);
-			$(".input-group-append",$inputContainer).replaceWith('<a class="btn btn-secondary" href="javascript:;"><i class="fas fa-times"></i></a>');
+			$(".input-group-append",$inputContainer).replaceWith('<div class="input-group-append"><a class="btn btn-secondary" href="javascript:;"><i class="fas fa-times"></i></a></div>');
 			$("input.url-input",$inputContainer).next().click(function() {
 				$(this).parents(".input-group").next(".breadcrumb").remove();
 				$(this).parents(".input-group").remove();

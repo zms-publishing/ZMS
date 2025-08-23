@@ -303,7 +303,7 @@ ZMI.prototype.getLangStr = function(key, lang) {
  * If no lang-parameter is found, returns null.
  */
 function getRefLang(elem) {
-	if (typeof elem != "undefined") {
+	if (typeof elem != "undefined" && $(elem).closest('.input-group').length > 0) {
 		// find closest input-group and get the first child value
 		// let attr_ref = $(elem).val();
 		let attr_ref = $(elem).closest('.input-group').children().first().val();

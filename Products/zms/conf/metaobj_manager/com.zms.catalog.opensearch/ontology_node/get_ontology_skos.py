@@ -17,7 +17,7 @@ def get_ontology_skos(self):
 
 	ontology_obj = standard.operator_getattr(zmscontext, 'ontology')
 	if not ontology_obj:
-		return "WARNING: No ontology found."
+		return [{None:'No ontology found.'}]
 
 	skos_terms = []
 	languages = zmscontext.getLanguages(request)

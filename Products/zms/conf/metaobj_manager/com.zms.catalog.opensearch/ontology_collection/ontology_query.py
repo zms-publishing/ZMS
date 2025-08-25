@@ -10,6 +10,7 @@ def ontology_query(self, return_type='list'):
 	qpage_index = request.get('pageIndex',0)
 	qsize = request.get('size', 100)
 	qfrom = request.get('from', qpage_index*qsize)
+	lang = request.get('lang',self.getPrimaryLanguage())
 	
 	zmscontext = self
 
@@ -46,6 +47,12 @@ def ontology_query(self, return_type='list'):
 									"query": q,
 									"fields": ["attr_dc_subject_ontology"],
 									"default_operator": "AND"
+								}
+							},
+							{
+								"simple_query_string": {
+								"query": lang,
+								"fields": ["lang"]
 								}
 							},
 							{

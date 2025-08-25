@@ -12,7 +12,7 @@ def get_ontology(self):
 	ontology_obj = standard.operator_getattr(zmscontext, 'ontology')
 
 	if not ontology_obj:
-		return "WARNING: No ontology found."
+		return {None:'WARNING: No ontology found.'}
 
 	def get_ontology_dict(self, request):
 		ontology_dict = {}

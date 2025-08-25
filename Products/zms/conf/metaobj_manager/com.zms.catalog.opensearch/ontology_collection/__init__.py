@@ -26,7 +26,7 @@ class ontology_collection:
 	package = "com.zms.catalog.opensearch"
 
 	# Revision
-	revision = "0.2.1"
+	revision = "0.3.0"
 
 	# Type
 	type = "ZMSObject"
@@ -102,6 +102,15 @@ class ontology_collection:
 			,"name":"CSS-Icon"
 			,"repetitive":0
 			,"type":"constant"}
+
+		get_titles_dict = {"default":""
+			,"id":"get_titles_dict"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"Get All Titles (Lang-Dict)"
+			,"repetitive":0
+			,"type":"py"}
 
 		ontology_query = {"default":""
 			,"id":"ontology_query"

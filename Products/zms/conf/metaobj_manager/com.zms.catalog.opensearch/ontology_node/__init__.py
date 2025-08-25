@@ -26,7 +26,7 @@ class ontology_node:
 	package = "com.zms.catalog.opensearch"
 
 	# Revision
-	revision = "0.2.1"
+	revision = "0.3.2"
 
 	# Type
 	type = "ZMSDocument"
@@ -45,11 +45,21 @@ class ontology_node:
 		key = {"default":""
 			,"id":"key"
 			,"keys":[]
-			,"mandatory":1
+			,"mandatory":0
 			,"multilang":0
-			,"name":"Key"
+			,"name":"Key (Hashtag)"
 			,"repetitive":0
 			,"type":"string"}
+
+		key_is_editable = {"custom":"False"
+			,"default":""
+			,"id":"_key_is_editable"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"Key editable"
+			,"repetitive":0
+			,"type":"constant"}
 
 		title = {"default":""
 			,"id":"title"
@@ -68,6 +78,15 @@ class ontology_node:
 			,"name":"DC.Description"
 			,"repetitive":0
 			,"type":"attr_dc_description"}
+
+		interface = {"default":""
+			,"id":"interface"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"interface"
+			,"repetitive":0
+			,"type":"interface"}
 
 		get_ontology = {"default":""
 			,"id":"get_ontology"
@@ -95,6 +114,15 @@ class ontology_node:
 			,"name":"Get SKOS Ontology"
 			,"repetitive":0
 			,"type":"External Method"}
+
+		onchangeobjevt = {"default":""
+			,"id":"onChangeObjEvt"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"Event: onChange"
+			,"repetitive":0
+			,"type":"py"}
 
 		icon_clazz = {"custom":"fas fa-tags"
 			,"default":""

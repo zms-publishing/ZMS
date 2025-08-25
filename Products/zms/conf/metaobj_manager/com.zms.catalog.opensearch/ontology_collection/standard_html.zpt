@@ -3,7 +3,8 @@
 		zmscontext options/zmscontext;
 		q python:' '.join(zmscontext.attr('attr_dc_subject_ontology'));
 		q_request python:request.set('q',q);
-		hits python:zmscontext.ontology_query()">
+		hits python:zmscontext.ontology_query();
+		titles_dict python:zmscontext.attr('get_titles_dict')">
 	<tal:block 
 		tal:repeat="hit hits"
 		tal:condition="hits" 
@@ -39,9 +40,9 @@
 						tal:attributes="
 							data-target python:zms_obj.getHref2IndexHtml(request);
 							hx-get python:'ontology_query?return_type=json&q=%s'%(keyword);
-							title python:'TODO: keywords to be translated'"
+							title keyword"
 						tal:repeat="keyword python:keywords.split(' ')"
-						tal:content="keyword">keyword
+						tal:content="python:titles_dict.get(keyword,keyword)">keyword
 					</a>
 				</div>
 			</div>

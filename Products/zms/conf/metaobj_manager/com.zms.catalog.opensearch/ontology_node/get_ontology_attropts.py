@@ -10,7 +10,7 @@ def get_ontology_attropts(self):
 	# Create a list of attribute options for each facet key.
 	attropts = []
 	if not ontology.keys():
-		return ["NO DATA FOUND"]
+		return [(None,'NO DATA FOUND')]
 
 	# Aggregate the hierarchy to key/value set where the key is
 	# the last element in the hierarchy path and the value is

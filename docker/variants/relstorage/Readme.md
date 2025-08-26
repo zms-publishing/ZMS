@@ -34,7 +34,7 @@ host  all  all  0.0.0.0/0  md5
 
 _Screen-Image:_ The example environment is Windows 11 with WSSL/Ubuntu and Docker installed. Zope/ZMS are running in a Docker container on exposed port 8080 while Postgress can be reached (due to to upper conf modifications) from the host on 5432, e.g. with HeidiSQL.
 
-![RelStorage-ZODB](../../docs/images/develop_relstorage.png)
+![RelStorage-ZODB](../../../docs/images/develop_relstorage.png)
 
 ## Running OpenSearch in another Docker Container
 
@@ -48,4 +48,4 @@ docker network create zms_network
 
 The command has to be executed only once. After that, the docker-compose.yml may be used to start the containers. The network name `zms_network` are used in the docker-compose.yml files of both container-sets.
 
-![RelStorage-ZODB](../../docs/images/develop_relstorage_opensearch.png)
+![RelStorage-ZODB](../../../docs/images/develop_relstorage_opensearch.png)

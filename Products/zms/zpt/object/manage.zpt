@@ -1,8 +1,9 @@
 <tal:block tal:define="global 
-		is_sitemap python:request.get('dtpref_sitemap','0')=='1' and not (request.get('dtpref_system','0')=='1' and request['URL'].find('/manage_workspace')>0);
 		is_system python:request.get('dtpref_system','0')=='1';
+		is_sitemap python:request.get('dtpref_sitemap','0')=='1' and not (is_system and request['URL'].find('/manage_workspace')>0);
+		is_openai python:request.get('dtpref_openai','0')=='1' and not (is_system and request['URL'].find('/manage_workspace')>0);
 		target python:request.get('came_from',['manage_main','manage_system'][int(is_system)]+'?lang=%s'%request.get('lang',here.getPrimaryLanguage()));">
-	<tal:block tal:condition="is_sitemap">
+	<tal:block tal:condition="python:is_sitemap or is_openai">
 		<!DOCTYPE html>
 		<html lang="en" tal:define="standard modules/Products.zms/standard">
 			<head tal:define="dummy python:here.zmi_page_request(here,request)">
@@ -13,12 +14,16 @@
 				<meta name="physical_path" tal:attributes="content python:'/'.join(here.getPhysicalPath())" />
 				<meta name="generator" content="ZMS5" />
 			</head>
-			<frameset tal:attributes="cols python:'%s,*'%str(request.get('manage_menu_width',224))">
-				<frame marginwidth="2" marginheight="2" scrolling="auto" name="manage_menu" tal:attributes="src python:'manage_menu?lang=%s&preview=preview'%request.get('lang','ger')+['','&zmi-debug=True'][int('zmi-debug' in request)]"/>
-				<frame marginwidth="2" marginheight="2" scrolling="auto" tal:condition="is_system" name="manage_main" tal:attributes="src python:'manage_system?lang=%s'%request.get('lang','ger')+['','&zmi-debug=True'][int('zmi-debug' in request)]"/>
-				<frame marginwidth="2" marginheight="2" scrolling="auto" tal:condition="not:is_system" name="manage_main" tal:attributes="src target"/>
+			<frameset tal:attributes="cols python:','.join(
+					[[],[str(request.get('manage_menu_width',224))]][is_sitemap] +
+					['*'] +
+					[[],[str(request.get('manage_menu_width',224))]][is_openai])">
+				<frame tal:condition="is_sitemap" marginwidth="2" marginheight="2" scrolling="auto" name="manage_menu" tal:attributes="src python:'manage_menu?lang=%s&preview=preview'%request.get('lang','ger')"/>
+				<frame tal:condition="is_system" marginwidth="2" marginheight="2" scrolling="auto" name="manage_main" tal:attributes="src python:'manage_system?lang=%s'%request.get('lang','ger')"/>
+				<frame tal:condition="not:is_system" marginwidth="2" marginheight="2" scrolling="auto" name="manage_main" tal:attributes="src target"/>
+				<frame tal:condition="is_openai" marginwidth="2" marginheight="2" scrolling="auto" name="manage_openai" tal:attributes="src python:'manage_openai?lang=%s&preview=preview'%request.get('lang','ger')"/>
 			</frameset>
 		</html>
 	</tal:block>
-	<tal:block tal:condition="not:is_sitemap" tal:content="python:request.RESPONSE.redirect(target)">redirect to target</tal:block>
+	<tal:block tal:condition="not:python:is_sitemap or is_openai" tal:content="python:request.RESPONSE.redirect(target)">redirect to target</tal:block>
 </tal:block>

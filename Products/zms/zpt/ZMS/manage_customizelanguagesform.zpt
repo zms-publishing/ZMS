@@ -86,15 +86,15 @@
 				<i class="fas fa-plus"></i>
 			</span>
 		</td>
-		<td class="language_id"><input class="form-control form-control-sm" placeholder="ISO-639/2" minlength="2" maxlength="3" required="true" type="text" name="_lang_id_0" /></td>
-		<td class="language_label"><input class="form-control form-control-sm" required="true"type="text" name="_lang_label_0" /></td>
+		<td class="language_id"><input class="form-control form-control-sm" placeholder="ISO-639/2" minlength="2" maxlength="3" required="true" disabled="disabled" type="text" name="_lang_id_0" /></td>
+		<td class="language_label"><input class="form-control form-control-sm" required="true" disabled="disabled"  type="text" name="_lang_label_0" /></td>
 		<td class="language_parent">
-			<select class="form-control form-control-sm" name="_lang_parent_0" required="true">
+			<select class="form-control form-control-sm" name="_lang_parent_0" required="true" disabled="disabled">
 				<option tal:repeat="lang langIds" tal:attributes="value lang" tal:content="python:here.getLanguageLabel(lang)">lang</option>
 			</select>
 		</td>
 		<td>
-			<select class="form-control form-control-sm" name="_lang_manage_0" required="true">
+			<select class="form-control form-control-sm" name="_lang_manage_0" required="true" disabled="disabled">
 				<option tal:repeat="manage_lang python:here.get_manage_langs()" tal:attributes="value manage_lang" tal:content="python:here.getLangStr('LANG',manage_lang)">manage_lang</option>
 			</select>
 		</td>

@@ -199,67 +199,79 @@ def localFiles(self, provider, ids=None):
   local = provider.provideRepository(ids)
   for id in local:
     o = local[id]
-    acquired = int(o.get('acquired',0))
-    filename = o.get('__filename__', [id, '__%s__.py'%['init','acquired'][acquired]])
-    # Write python-representation.
-    py = []
-    py.append('class %s:'%id.replace('.','_').replace('-','_'))
-    py.append('\t"""')
-    py.append('\tpython-representation of %s'%o['id'])
-    py.append('\t"""')
-    py.append('')
-    e = sorted([x for x in o if not x.startswith('__') and x==x.capitalize() and isinstance(o[x], list)])
-    keys = sorted([x for x in o if not x.startswith('__') and x not in e])
-    for k in keys:
-      v = o.get(k)
-      py.append('\t# %s'%k.capitalize())
-      py.append('\t%s = %s'%(standard.id_quote(k), standard.str_json(v, encoding="utf-8", formatted=True, level=2, allow_booleans=False)))
-      py.append('')
-    for k in e:
-      v = o.get(k)
-      if v and isinstance(v, list):
-        py.append('\t# %s'%k.capitalize())
-        py.append('\tclass %s:'%standard.id_quote(k).capitalize())
-        # Are there duplicated ids after id-quoting?
-        id_list = [ standard.id_quote(i['id']) for i in v if i.get('ob') is None ] 
-        id_duplicates =  [ i for i in id_list if id_list.count(i) > 1 ]
-        for i in v:
-          if 'id' in i:
-            ob = i.get('ob')
-            if ob is not None:
-              d = {}
-              # Someone is so kind to pass us a file-like Object with {filename,data,version,meta_type} as dict.
-              if type(ob) is dict:
-                d = ob
-              # Otherwise we have a Zope-Object and determine everything by ourselves.
-              else:
-                fileexts = {'DTML Method':'.dtml', 'DTML Document':'.dtml', 'External Method':'.py', 'Page Template':'.zpt', 'Script (Python)':'.py', 'Z SQL Method':'.zsql'}
-                fileprefix = i['id'].split('/')[-1]
-                data = zopeutil.readData(ob)
-                version = ''
-                if hasattr(ob,'_p_mtime'):
-                  version = standard.getLangFmtDate(DateTime(ob._p_mtime).timeTime(), 'eng')
-                d['filename'] = os.path.sep.join(filename[:-1]+['%s%s'%(fileprefix, fileexts.get(ob.meta_type, ''))])
-                d['data'] = data
-                d['version'] = version
-                d['meta_type'] = ob.meta_type
-              d['id'] = id
-              l[d['filename']] = d
-            if 'ob' in i:
-              del i['ob']
-            try:
-              # Prevent id-quoting if duplicates may result
-              id_quoted = ( i['id'].startswith('_') and ( standard.id_quote(i['id']) in id_duplicates) ) and i['id'] or standard.id_quote(i['id'])
-              py.append('\t\t%s = %s'%(id_quoted, standard.str_json(i, encoding="utf-8", formatted=True, level=3, allow_booleans=False)))
-            except:
-              py.append('\t\t# ERROR: '+standard.writeError(self,'can\'t localFiles \'%s\''%i['id']))
-            py.append('')
+    l.update(getInitArtefacts(self, o, {'py':getInitPy(self, o), 'yaml':getInitYaml(self, o)}))
+  return l
+
+
+def getInitArtefacts(self, o, initFiles):
+  """
+  Generate a dictionary of initialization artefacts from the given object and initialization files.
+
+  Args:
+    self: The instance of the class containing this method.
+    o (dict): A dictionary representing the object to process. It may contain:
+      - 'id': The identifier of the object.
+      - 'acquired': A flag indicating if the object is acquired (0 or 1).
+      - '__filename__': A list representing the filename structure.
+      - '__icon__': An optional icon for the object.
+      - '__description__': An optional description for the object.
+      - 'revision': A version string in the format "0.0.0".
+      - Other keys representing attributes, where capitalized keys with list values are processed.
+    initFiles (dict): A dictionary where keys are formats (e.g., 'py') and values are lists of strings
+      representing the initialization data for each format.
+
+  Returns:
+    dict: A dictionary where keys are filenames and values are dictionaries containing:
+      - 'id': The identifier of the object.
+      - 'filename': The full path of the file.
+      - 'data': The content of the file.
+      - 'version': The version of the file as a list of integers.
+      - 'meta_type': The meta type of the object (e.g., 'Script (Python)').
+      - '__icon__': The icon of the object (if provided).
+      - '__description__': The description of the object (if provided).
+  """
+  l = {}
+  id = o.get('id','?')
+  acquired = int(o.get('acquired',0))
+  filename = o.get('__filename__', [id, ['__init__.py','__acquired__.py'][acquired]])
+  e = sorted([x for x in o if not x.startswith('__') and x==x.capitalize() and isinstance(o[x], list)])
+  for k in e:
+    v = o.get(k)
+    if v and isinstance(v, list):
+      # Are there duplicated ids after id-quoting?
+      id_list = [ standard.id_quote(i['id']) for i in v if i.get('ob') is None ] 
+      for i in v:
+        if 'id' in i:
+          ob = i.get('ob')
+          if ob is not None:
+            d = {}
+            # Someone is so kind to pass us a file-like Object with {filename,data,version,meta_type} as dict.
+            if type(ob) is dict:
+              d = ob
+            # Otherwise we have a Zope-Object and determine everything by ourselves.
+            else:
+              fileexts = {'DTML Method':'.dtml', 'DTML Document':'.dtml', 'External Method':'.py', 'Page Template':'.zpt', 'Script (Python)':'.py', 'Z SQL Method':'.zsql'}
+              fileprefix = i['id'].split('/')[-1]
+              data = zopeutil.readData(ob)
+              version = ''
+              if hasattr(ob,'_p_mtime'):
+                version = standard.getLangFmtDate(DateTime(ob._p_mtime).timeTime(), 'eng')
+              d['filename'] = os.path.sep.join(filename[:-1]+['%s%s'%(fileprefix, fileexts.get(ob.meta_type, ''))])
+              d['data'] = data
+              d['version'] = version
+              d['meta_type'] = ob.meta_type
+            d['id'] = id
+            l[d['filename']] = d
+          if 'ob' in i:
+            del i['ob']
+  for format in initFiles:
+    data = initFiles[format]
     d = {}
     d['__icon__'] = o.get('__icon__')
     d['__description__'] = o.get('__description__')
     d['id'] = id
-    d['filename'] = os.path.sep.join(filename)
-    d['data'] = '\n'.join(py)
+    d['filename'] = os.path.sep.join(filename).replace('.py', '.%s' % format)
+    d['data'] = '\n'.join(data)
     try:
       d['version'] = [int(x) for x in o.get('revision', '0.0.0').split('.')]
     except:
@@ -268,6 +280,97 @@ def localFiles(self, provider, ids=None):
     d['meta_type'] = 'Script (Python)'
     l[d['filename']] = d
   return l
+
+
+def getInitPy(self, o):
+  """
+  Generate a Python class representation of a given object.
+
+  This function takes an object `o` (typically a dictionary) and generates a Python
+  class definition as a list of strings. The generated class includes attributes
+  and nested classes based on the structure and content of the input object.
+
+  Args:
+    self: The instance of the class calling this method.
+    o (dict): The input object containing keys and values to be represented
+          as a Python class.
+
+  Returns:
+    list: A list of strings representing the Python class definition.
+  """
+  id = o.get('id','?')
+  py = []
+  py.append('class %s:'%id.replace('.','_').replace('-','_'))
+  py.append('\t"""')
+  py.append('\tpython-representation of %s'%o['id'])
+  py.append('\t"""')
+  py.append('')
+  e = sorted([x for x in o if not x.startswith('__') and x==x.capitalize() and isinstance(o[x], list)])
+  keys = sorted([x for x in o if not x.startswith('__') and x not in e])
+  for k in keys:
+    v = o.get(k)
+    py.append('\t# %s'%k.capitalize())
+    py.append('\t%s = %s'%(standard.id_quote(k), standard.str_json(v, encoding="utf-8", formatted=True, level=2, allow_booleans=False)))
+    py.append('')
+  for k in e:
+    v = o.get(k)
+    if v and isinstance(v, list):
+      py.append('\t# %s'%k.capitalize())
+      py.append('\tclass %s:'%standard.id_quote(k).capitalize())
+      # Are there duplicated ids after id-quoting?
+      id_list = [ standard.id_quote(i['id']) for i in v if i.get('ob') is None ] 
+      id_duplicates =  [ i for i in id_list if id_list.count(i) > 1 ]
+      for iv in v:
+        if 'id' in iv:
+          i = {k: v for k, v in iv.items() if k != 'ob'}
+          try:
+            # Prevent id-quoting if duplicates may result
+            id_quoted = ( i['id'].startswith('_') and ( standard.id_quote(i['id']) in id_duplicates) ) and i['id'] or standard.id_quote(i['id'])
+            py.append('\t\t%s = %s'%(id_quoted, standard.str_json(i, encoding="utf-8", formatted=True, level=3, allow_booleans=False)))
+          except:
+            py.append('\t\t# ERROR: '+standard.writeError(self,'can\'t getInitPy \'%s\''%i['id']))
+          py.append('')
+  return py
+
+
+def getInitYaml(self, o):
+  """
+  Generate a YAML representation of the given object.
+
+  Args:
+    self: The instance of the class containing this method.
+    o (dict): A dictionary representing the object to be converted to YAML.
+
+  Returns:
+    list: A list of strings representing the YAML structure of the input object.
+  """
+  id = o.get('id','?')
+  yaml = []
+  yaml.append('%s:'%id.replace('.','_').replace('-','_'))
+  e = sorted([x for x in o if not x.startswith('__') and x==x.capitalize() and isinstance(o[x], list)])
+  keys = sorted([x for x in o if not x.startswith('__') and x not in e])
+  for k in keys:
+    v = o.get(k)
+    yaml.append('  # %s'%k.capitalize())
+    yaml.append('  %s: %s'%(standard.id_quote(k), standard.str_yaml(v, encoding="utf-8", level=2)))
+  for k in e:
+    v = o.get(k)
+    if v and isinstance(v, list):
+      yaml.append('  # %s'%k.capitalize())
+      yaml.append('  %s:'%standard.id_quote(k).capitalize())
+      # Are there duplicated ids after id-quoting?
+      id_list = [ standard.id_quote(i['id']) for i in v if i.get('ob') is None ] 
+      id_duplicates =  [ i for i in id_list if id_list.count(i) > 1 ]
+      for iv in v:
+        if 'id' in iv:
+          i = {k: v for k, v in iv.items() if k != 'ob'}
+          try:
+            # Prevent id-quoting if duplicates may result
+            id_quoted = ( i['id'].startswith('_') and ( standard.id_quote(i['id']) in id_duplicates) ) and i['id'] or standard.id_quote(i['id'])
+            yaml.append('    %s: %s'%(id_quoted, standard.str_yaml(i, encoding="utf-8", level=3)))
+          except:
+            yaml.append('    # ERROR: '+standard.writeError(self,'can\'t getInitYaml \'%s\''%i['id']))
+  return yaml
 
 
 security.declarePublic('get_diffs')

@@ -1997,6 +1997,39 @@ def str_json(i, encoding='ascii', errors='xmlcharrefreplace', formatted=False, l
   return '""'
 
 
+security.declarePublic('str_yaml')
+def str_yaml(i, encoding='ascii', errors='xmlcharrefreplace', level=0, sort_keys=True):
+  """
+  Returns a YAML-string representation of the object.
+  @rtype: C{str}
+  """
+  if type(i) is list or type(i) is tuple:
+    return '' \
+      .join(['\n'+('  '*(level+1))+'- ' + str_yaml(x,encoding,errors,level+2,sort_keys) for x in i if x])
+  elif type(i) is dict:
+    k = list(i)
+    if sort_keys:
+      k = sorted(i, key=lambda x: x or '')
+    return '' \
+      .join(['\n'+('  '*(level+1))+'%s: %s'%(x,str_yaml(i[x],encoding,errors,level+2,sort_keys)) for x in k if i[x]])
+  elif type(i) is time.struct_time:
+    return '"%s"'%format_datetime_iso(i)
+  elif type(i) is int or type(i) is float:
+    return str(i)
+  elif type(i) is bool:
+    return str(i).lower()
+  elif i is not None:
+    if i in ['true', 'false']:
+      return i
+    elif not isinstance(i, str):
+      return str(i)
+    if i.find(':') >= 0 or i.find('\\') >= 0 or i.find('"') >= 0 or i.find('\n') >= 0 or i.find('\r') >= 0 or i.startswith(' ') or i.endswith(' '):
+      return '"%s"'%(i.replace('\\','\\\\').replace('"','\\"').replace('\n','\\n').replace('\r','\\r'))
+    else:
+      return i
+  return ''
+
+
 security.declarePublic('str_item')
 def str_item(i, f=False):
   """

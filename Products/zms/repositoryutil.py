@@ -34,6 +34,7 @@ import sys
 # Product Imports.
 from Products.zms import IZMSConfigurationProvider
 from Products.zms import IZMSRepositoryProvider
+from Products.zms import zopeutil
 from Products.zms import standard
 from Products.zms import yamlutil
 from Products.zms import zopeutil
@@ -146,11 +147,11 @@ def readRepository(self, basepath, deep=True):
                 traverse(base, filepath, level+1)
             elif not initialized and name.startswith('__') and name.endswith('__.py'):
               # Read python-representation of repository-object
-              data = parseInit(self, filepath)
+              py = parseInit(self, filepath)
               # Analyze python-representation of repository-object
               d = {}
               try:
-                  c = get_class(data)
+                  c = get_class(py)
                   d = c.__dict__
               except:
                   d['revision'] = standard.writeError(self,"[readRepository.traverse]: can't analyze filepath=%s"%filepath)
@@ -185,7 +186,7 @@ def readRepository(self, basepath, deep=True):
                   v = [x[1] for x in v]
                 r[id][k] = v
               initialized = True
-            elif not initialized and name.startswith('__') and name.endswith('__.yaml'):
+            elif False and not initialized and name.startswith('__') and name.endswith('__.yaml'):
               # Read YAML-representation of repository-object
               data = parseInit(self, filepath)
               # Analyze YAML-representation of repository-object
@@ -197,6 +198,7 @@ def readRepository(self, basepath, deep=True):
 
 def parseInit(self, filepath):
     # Read python-representation of repository-object
+    print("[parseInit]: read %s"%filepath)
     standard.writeLog(self,"[parseInit]: read %s"%filepath)
     f = open(filepath, "rb")
     data = standard.pystr(f.read())

@@ -1,56 +1,40 @@
 ZMSTextarea:
-  # Access
-  access: 
-      delete_deny: 
-      insert_custom: {$}
-      insert_deny: 
-  # Enabled
+  access:
+    delete_deny: 
+    insert_custom: {$}
+    insert_deny:
   enabled: 1
-  # Id
   id: ZMSTextarea
-  # Name
   name: ZMSTextarea
-  # Package
   package: com.zms.foundation
-  # Revision
   revision: 5.2.0
-  # Type
   type: ZMSObject
-  # Attrs
   Attrs:
-    icon_clazz: 
-        custom: fas fa-align-left
-        id: icon_clazz
-        name: Icon (Class)
-        type: constant
-    interface0: 
-        id: interface0
-        name: interface0
-        type: interface
-    format: 
-        default: "##\nreturn context.getTextFormatDefault()"
-        id: format
-        mandatory: 1
-        name: Format
-        type: string
-    text: 
-        id: text
-        multilang: 1
-        name: Text
-        type: richtext
-    check_constraints: 
-        id: check_constraints
-        name: "Hook: check constraints"
-        type: py
-    readme: 
-        id: readme
-        name: README.md
-        type: resource
-    standard_html: 
-        id: standard_html
-        name: "Template: ZMSTextarea"
-        type: zpt
-    standard_json_docx: 
-        id: standard_json_docx
-        name: "DOCX-JSON Template: ZMSTextarea"
-        type: py
+    - custom: fas fa-align-left
+      id: icon_clazz
+      name: Icon (Class)
+      type: constant
+    - id: interface0
+      name: interface0
+      type: interface
+    - default: "##\nreturn context.getTextFormatDefault()"
+      id: format
+      mandatory: 1
+      name: Format
+      type: string
+    - id: text
+      multilang: 1
+      name: Text
+      type: richtext
+    - id: check_constraints
+      name: "Hook: check constraints"
+      type: py
+    - id: readme
+      name: README.md
+      type: resource
+    - id: standard_html
+      name: "Template: ZMSTextarea"
+      type: zpt
+    - id: standard_json_docx
+      name: "DOCX-JSON Template: ZMSTextarea"
+      type: py

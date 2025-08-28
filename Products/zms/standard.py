@@ -1998,20 +1998,18 @@ def str_json(i, encoding='ascii', errors='xmlcharrefreplace', formatted=False, l
 
 
 security.declarePublic('str_yaml')
-def str_yaml(i, encoding='ascii', errors='xmlcharrefreplace', level=0, sort_keys=True):
+def str_yaml(i, encoding='utf-8', errors='xmlcharrefreplace', level=0):
   """
   Returns a YAML-string representation of the object.
   @rtype: C{str}
   """
   if type(i) is list or type(i) is tuple:
     return '' \
-      .join(['\n'+('  '*(level+1))+'- ' + str_yaml(x,encoding,errors,level+2,sort_keys) for x in i if x])
+      .join([('  '*(level+1))+'- '+str_yaml(x,encoding,errors,level+1)+'\n' for x in i if x])
   elif type(i) is dict:
-    k = list(i)
-    if sort_keys:
-      k = sorted(i, key=lambda x: x or '')
-    return '' \
-      .join(['\n'+('  '*(level+1))+'%s: %s'%(x,str_yaml(i[x],encoding,errors,level+2,sort_keys)) for x in k if i[x]])
+    k = sorted(list(i), key=lambda x: x or '')
+    return ('' \
+      .join([('  '*(level+1))+'%s: %s'%(x,str_yaml(i[x],encoding,errors,level+2))+'\n' for x in k if i[x]])).strip()
   elif type(i) is time.struct_time:
     return '"%s"'%format_datetime_iso(i)
   elif type(i) is int or type(i) is float:

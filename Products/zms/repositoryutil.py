@@ -185,6 +185,8 @@ def readRepository(self, basepath, deep=True):
                   v.sort()
                   v = [x[1] for x in v]
                 r[id][k] = v
+              if id == 'ZMSTextarea':
+                print("PY\n", standard.str_json(r[id], formatted=True))
               initialized = True
             elif not initialized and name.startswith('__') and name.endswith('__.yaml'):
               # Read YAML-representation of repository-object
@@ -219,6 +221,9 @@ def readRepository(self, basepath, deep=True):
                 v.sort()
                 v = [x[1] for x in v]
                 r[id][k] = v
+              if id == 'ZMSTextarea':
+                print("YAML[Source]\n", standard.str_json(d, formatted=True))
+                print("YAML\n", standard.str_json(r[id], formatted=True))
               #initialized = True
         traverse(basepath, basepath)
     return r
@@ -403,25 +408,12 @@ def getInitYaml(self, o):
   keys = sorted([x for x in o if not x.startswith('__') and x not in e])
   for k in keys:
     v = o.get(k)
-    yaml.append('  # %s'%k.capitalize())
-    yaml.append('  %s: %s'%(standard.id_quote(k), standard.str_yaml(v, encoding="utf-8", level=2)))
+    yaml.append('  %s:%s%s'%(standard.id_quote(k), [' ','\n    '][type(v) is list or type(v) is dict], standard.str_yaml(v, level=1)))
   for k in e:
     v = o.get(k)
     if v and isinstance(v, list):
-      yaml.append('  # %s'%k.capitalize())
       yaml.append('  %s:'%standard.id_quote(k).capitalize())
-      # Are there duplicated ids after id-quoting?
-      id_list = [ standard.id_quote(i['id']) for i in v if i.get('ob') is None ] 
-      id_duplicates =  [ i for i in id_list if id_list.count(i) > 1 ]
-      for iv in v:
-        if 'id' in iv:
-          i = {k: v for k, v in iv.items() if k != 'ob'}
-          try:
-            # Prevent id-quoting if duplicates may result
-            id_quoted = ( i['id'].startswith('_') and ( standard.id_quote(i['id']) in id_duplicates) ) and i['id'] or standard.id_quote(i['id'])
-            yaml.append('    %s: %s'%(id_quoted, standard.str_yaml(i, encoding="utf-8", level=3)))
-          except:
-            yaml.append('    # ERROR: '+standard.writeError(self,'can\'t getInitYaml \'%s\''%i['id']))
+      yaml.append(standard.str_yaml([{k: v for k, v in i.items() if k != 'ob'} for i in v if 'id' in i], level=1))
   return yaml
 
 

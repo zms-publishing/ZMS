@@ -150,7 +150,7 @@ def readRepository(self, basepath, deep=True):
               # Analyze python-representation of repository-object
               d = {}
               try:
-                  c = get_class(py)
+                  c = get_class(data)
                   d = c.__dict__
               except:
                   d['revision'] = standard.writeError(self,"[readRepository.traverse]: can't analyze filepath=%s"%filepath)
@@ -185,7 +185,7 @@ def readRepository(self, basepath, deep=True):
                   v = [x[1] for x in v]
                 r[id][k] = v
               initialized = True
-            elif False and not initialized and name.startswith('__') and name.endswith('__.yaml'):
+            elif not initialized and name.startswith('__') and name.endswith('__.yaml'):
               # Read YAML-representation of repository-object
               data = parseInit(self, filepath)
               # Analyze YAML-representation of repository-object

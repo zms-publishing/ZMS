@@ -35,6 +35,7 @@ import sys
 from Products.zms import IZMSConfigurationProvider
 from Products.zms import IZMSRepositoryProvider
 from Products.zms import standard
+from Products.zms import yamlutil
 from Products.zms import zopeutil
 
 security = ModuleSecurityInfo('Products.zms.repositoryutil')
@@ -185,6 +186,18 @@ def readRepository(self, basepath, deep=True):
                   v.sort()
                   v = [x[1] for x in v]
                 r[id][k] = v
+            elif name.startswith('__') and name.endswith('__.yaml'):
+              # Read YAML-representation of repository-object
+              standard.writeLog(self,"[readRepository]: read %s"%filepath)
+              f = open(filepath, "rb")
+              yaml = standard.pystr(f.read())
+              f.close()
+              # Analyze YAML-representation of repository-object
+              d = yamlutil.parse_yaml(yaml)
+              id = d.get('id',name)
+              ### Different from remoteFiles()
+              r[id] = {}
+              # @TODO: Implement here
         traverse(basepath, basepath)
     return r
 

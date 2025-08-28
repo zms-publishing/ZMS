@@ -17,4 +17,5 @@
 ################################################################################
 
 def parse_yaml(data):
-    return {}
+    from yaml import safe_load
+    return safe_load(data)

@@ -138,17 +138,15 @@ def readRepository(self, basepath, deep=True):
     r = {}
     if os.path.exists(basepath):
         def traverse(base, path, level=0):
+          initialized = False
           names = os.listdir(path)
           for name in names:
             filepath = os.path.join(path, name)
             if os.path.isdir(filepath) and (deep or level == 0):
                 traverse(base, filepath, level+1)
-            elif name.startswith('__') and name.endswith('__.py'):
+            elif not initialized and name.startswith('__') and name.endswith('__.py'):
               # Read python-representation of repository-object
-              standard.writeLog(self,"[readRepository]: read %s"%filepath)
-              f = open(filepath, "rb")
-              py = standard.pystr(f.read())
-              f.close()
+              data = parseInit(self, filepath)
               # Analyze python-representation of repository-object
               d = {}
               try:
@@ -186,20 +184,32 @@ def readRepository(self, basepath, deep=True):
                   v.sort()
                   v = [x[1] for x in v]
                 r[id][k] = v
-            elif name.startswith('__') and name.endswith('__.yaml'):
+              initialized = True
+            elif not initialized and name.startswith('__') and name.endswith('__.yaml'):
               # Read YAML-representation of repository-object
-              standard.writeLog(self,"[readRepository]: read %s"%filepath)
-              f = open(filepath, "rb")
-              yaml = standard.pystr(f.read())
-              f.close()
+              data = parseInit(self, filepath)
               # Analyze YAML-representation of repository-object
               d = yamlutil.parse_yaml(yaml)
-              id = d.get('id',name)
-              ### Different from remoteFiles()
-              r[id] = {}
-              # @TODO: Implement here
+              initialized = True
         traverse(basepath, basepath)
     return r
+
+
+def parseInit(self, filepath):
+    # Read python-representation of repository-object
+    standard.writeLog(self,"[parseInit]: read %s"%filepath)
+    f = open(filepath, "rb")
+    data = standard.pystr(f.read())
+    f.close()
+    return data
+
+
+def parseInitPy(filename):
+  pass
+
+
+def parseInitYaml(filename):
+  pass
 
 
 """

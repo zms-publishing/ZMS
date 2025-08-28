@@ -185,11 +185,11 @@ def readRepository(self, basepath, deep=True):
                   v = [x[1] for x in v]
                 r[id][k] = v
               initialized = True
-            elif not initialized and name.startswith('__') and name.endswith('__.yaml'):
+            elif False and not initialized and name.startswith('__') and name.endswith('__.yaml'):
               # Read YAML-representation of repository-object
               data = parseInit(self, filepath)
               # Analyze YAML-representation of repository-object
-              d = yamlutil.parse_yaml(yaml)
+              d = yamlutil.parse_yaml(data)
               initialized = True
         traverse(basepath, basepath)
     return r

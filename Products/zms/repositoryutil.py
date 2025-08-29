@@ -185,8 +185,6 @@ def readRepository(self, basepath, deep=True):
                   v.sort()
                   v = [x[1] for x in v]
                 r[id][k] = v
-              if id == 'ZMSTextarea':
-                print("PY\n", standard.str_json(r[id], formatted=True))
               initialized = True
             elif not initialized and name.startswith('__') and name.endswith('__.yaml'):
               # Read YAML-representation of repository-object

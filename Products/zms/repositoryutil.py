@@ -286,8 +286,6 @@ def getInitArtefacts(self, o, initFiles):
   for k in e:
     v = o.get(k)
     if v and isinstance(v, list):
-      # Are there duplicated ids after id-quoting?
-      id_list = [ standard.id_quote(i['id']) for i in v if i.get('ob') is None ] 
       for i in v:
         if 'id' in i:
           ob = i.get('ob')

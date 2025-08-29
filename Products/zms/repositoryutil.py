@@ -192,16 +192,14 @@ def readRepository(self, basepath, deep=True):
               # Read YAML-representation of repository-object
               data = parseInit(self, filepath)
               # Analyze YAML-representation of repository-object
-              d = yamlutil.parse_yaml(data)
-              id = list(d.keys())[0]
+              yaml = yamlutil.parse_yaml(data)
+              id = list(yaml.keys())[0]
+              d = yaml[id]
               ### Different from remoteFiles()
-              r[id] = {}
-              for k in [x for x in d if not x.startswith('__')]:
-                dd = d[id]
+              r[id] = d
+              for k in [x for x in d if not x.startswith('__') and type(d[x]) is list]:
                 v = []
-                for kk in [x for x in dd if not x.startswith('__')]:
-                  vv = dd[kk]
-                  # Try to read artefact.
+                for vv in d[k]:
                   if type(vv) is dict and 'id' in vv:
                     fileprefix = vv['id'].split('/')[-1]
                     for file in [x for x in names if x==fileprefix or x.startswith('%s.'%fileprefix)]:
@@ -217,14 +215,9 @@ def readRepository(self, basepath, deep=True):
                           pass
                       vv['data'] = data
                       break
-                  v.append((data.find('  %s:'%kk), vv))
-                v.sort()
-                v = [x[1] for x in v]
+                  v.append(vv)
                 r[id][k] = v
-              if id == 'ZMSTextarea':
-                print("YAML[Source]\n", standard.str_json(d, formatted=True))
-                print("YAML\n", standard.str_json(r[id], formatted=True))
-              #initialized = True
+              initialized = True
         traverse(basepath, basepath)
     return r
 

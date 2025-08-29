@@ -403,7 +403,12 @@ def getInitYaml(self, o):
     if v:
       yv = standard.str_yaml(v, level=1)
       if len(yv.strip()) > 0:
-        yaml.append('  %s:%s%s'%(standard.id_quote(k), [' ','\n    '][type(v) is list or type(v) is dict], yv))
+        sep = ' '
+        if type(v) is list:
+          sep = '\n'
+        elif type(v) is dict:
+          sep = '\n    '
+        yaml.append('  %s:%s%s'%(standard.id_quote(k), sep, yv))
   for k in e:
     v = o.get(k)
     if v and isinstance(v, list):

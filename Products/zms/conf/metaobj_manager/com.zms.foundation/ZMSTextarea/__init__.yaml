@@ -1,0 +1,40 @@
+ZMSTextarea:
+  access:
+    insert_custom: {$}
+  enabled: 1
+  id: ZMSTextarea
+  name: ZMSTextarea
+  package: com.zms.foundation
+  revision: 5.2.0
+  type: ZMSObject
+  Attrs:
+    - custom: fas fa-align-left
+      id: icon_clazz
+      name: Icon (Class)
+      type: constant
+    - id: interface0
+      name: interface0
+      type: interface
+    - default: |
+        ##
+        return context.getTextFormatDefault()
+      id: format
+      mandatory: 1
+      name: Format
+      type: string
+    - id: text
+      multilang: 1
+      name: Text
+      type: richtext
+    - id: check_constraints
+      name: "Hook: check constraints"
+      type: py
+    - id: readme
+      name: README.md
+      type: resource
+    - id: standard_html
+      name: "Template: ZMSTextarea"
+      type: zpt
+    - id: standard_json_docx
+      name: "DOCX-JSON Template: ZMSTextarea"
+      type: py

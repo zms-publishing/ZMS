@@ -31,6 +31,7 @@ import inspect
 import os
 import re
 import sys
+import yaml
 # Product Imports.
 from Products.zms import IZMSConfigurationProvider
 from Products.zms import IZMSRepositoryProvider
@@ -76,6 +77,16 @@ def get_class(py):
     exec(py)
     return eval(id)
 
+"""
+If you cannot control the input file, you can preprocess the 
+string before passing it to yaml.safe_load to automatically 
+quote such values. 
+"""
+def safe_yaml_load(data):
+    data = re.sub(r'(\w+:\s)(%.*?)(\n)', r'\1"\2"\3', data)
+    data = re.sub(r'- \*', r'- "*"', data)
+    data = re.sub(r'(\w+: )(\s*?)(- \w+\n)', r'\1\n\2\3', data)
+    return yaml.safe_load(data)
 
 """
 Read repository from base-path.
@@ -95,21 +106,24 @@ def remoteFiles(self, basepath, deep=True):
               # Read python-representation of repository-object
               standard.writeLog(self,"[remoteFiles]: read %s"%filepath)
               f = open(filepath,"rb")
-              py = standard.pystr(f.read())
+              filedata = standard.pystr(f.read())
               f.close()
-              # Analyze python-representation of repository-object
+              # Python-representation of repository-object
               d = {}
-              try:
-                  c = get_class(py)
-                  d = c.__dict__
-              except:
-                  d['revision'] = standard.writeError(self,"[remoteFiles.traverse]: can't analyze filepath=%s"%filepath)
+              if name.endswith('.yaml'):
+                   d = safe_yaml_load(filedata)
+              elif name.endswith('.py'):
+                try:
+                    c = get_class(filedata)
+                    d = c.__dict__
+                except:
+                    d['revision'] = standard.writeError(self,"[remoteFiles.traverse]: can't analyze filepath=%s"%filepath)
               id = d.get('id',name)
               ### Different from remoteFiles()
               rd = {}
               rd['id'] = id
               rd['filename'] = filepath[len(base)+1:]
-              rd['data'] = py
+              rd['data'] = filedata
               rd['version'] = d.get("revision",self.getLangFmtDate(os.path.getmtime(filepath),'eng'))
               r[rd['filename']] = rd
               # Read artefacts and avoid processing of hidden files, e.g. .DS_Store on macOS 

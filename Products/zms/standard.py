@@ -2009,7 +2009,7 @@ def str_yaml(i, encoding='utf-8', errors='xmlcharrefreplace', level=0):
   elif type(i) is dict:
     k = sorted(list(i), key=lambda x: x or '')
     return ('' \
-      .join([('  '*(level+1))+'%s: %s'%(x,str_yaml(i[x],encoding,errors,level+2))+'\n' for x in k if i[x]])).strip()
+      .join([('  '*(level+1))+'%s:%s%s'%(x,[' ','\n'][type(x) is list or type(x) is dict],str_yaml(i[x],encoding,errors,level+2))+'\n' for x in k if i[x]])).strip()
   elif type(i) is time.struct_time:
     return '"%s"'%format_datetime_iso(i)
   elif type(i) is int or type(i) is float:
@@ -2017,9 +2017,7 @@ def str_yaml(i, encoding='utf-8', errors='xmlcharrefreplace', level=0):
   elif type(i) is bool:
     return str(i).lower()
   elif i is not None:
-    if i in ['true', 'false']:
-      return i
-    elif not isinstance(i, str):
+    if not isinstance(i, str):
       return str(i)
     i = i.replace('\r\n','\n').replace('\r','\n')
     if i.find('\n') >= 0:

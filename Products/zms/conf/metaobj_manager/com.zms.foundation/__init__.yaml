@@ -1,0 +1,5 @@
+com.zms.foundation:
+  id: com.zms.foundation
+  name: com.zms.foundation
+  revision: 5.1.0
+  type: ZMSPackage

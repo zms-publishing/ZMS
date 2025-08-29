@@ -394,12 +394,15 @@ def getInitYaml(self, o):
   """
   id = o.get('id','?')
   yaml = []
-  yaml.append('%s:'%id.replace('.','_').replace('-','_'))
+  yaml.append('%s:'%id)
   e = sorted([x for x in o if not x.startswith('__') and x==x.capitalize() and isinstance(o[x], list)])
   keys = sorted([x for x in o if not x.startswith('__') and x not in e])
   for k in keys:
     v = o.get(k)
-    yaml.append('  %s:%s%s'%(standard.id_quote(k), [' ','\n    '][type(v) is list or type(v) is dict], standard.str_yaml(v, level=1)))
+    if v:
+      yv = standard.str_yaml(v, level=1)
+      if len(yv.strip()) > 0:
+        yaml.append('  %s:%s%s'%(standard.id_quote(k), [' ','\n    '][type(v) is list or type(v) is dict], yv))
   for k in e:
     v = o.get(k)
     if v and isinstance(v, list):

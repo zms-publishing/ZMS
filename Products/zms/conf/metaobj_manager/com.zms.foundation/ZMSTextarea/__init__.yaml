@@ -1,8 +1,6 @@
 ZMSTextarea:
   access:
-    delete_deny: 
     insert_custom: {$}
-    insert_deny:
   enabled: 1
   id: ZMSTextarea
   name: ZMSTextarea

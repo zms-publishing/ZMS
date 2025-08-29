@@ -91,7 +91,7 @@ def remoteFiles(self, basepath, deep=True):
             filepath = os.path.join(path, name)
             if os.path.isdir(filepath) and (deep or level == 0):
               traverse(base, filepath, level+1)
-            elif name.startswith('__') and name.endswith('__.py'):
+            elif name.startswith('__') and name.split('.')[-2].endswith('__'):
               # Read python-representation of repository-object
               standard.writeLog(self,"[remoteFiles]: read %s"%filepath)
               f = open(filepath,"rb")
@@ -145,7 +145,7 @@ def readRepository(self, basepath, deep=True):
             filepath = os.path.join(path, name)
             if os.path.isdir(filepath) and (deep or level == 0):
                 traverse(base, filepath, level+1)
-            elif not initialized and name.startswith('__') and name.endswith('__.py'):
+            elif not initialized and name.startswith('__') and name.split('.')[-2].endswith('__'):
               # Read python-representation of repository-object
               py = parseInit(self, filepath)
               # Analyze python-representation of repository-object
@@ -247,7 +247,7 @@ def localFiles(self, provider, ids=None):
   local = provider.provideRepository(ids)
   for id in local:
     o = local[id]
-    l.update(getInitArtefacts(self, o, {'py':getInitPy(self, o), 'yaml':getInitYaml(self, o)}))
+    l.update(getInitArtefacts(self, o, {'yaml':getInitYaml(self, o)}))
   return l
 
 
@@ -318,6 +318,7 @@ def getInitArtefacts(self, o, initFiles):
     d['__icon__'] = o.get('__icon__')
     d['__description__'] = o.get('__description__')
     d['id'] = id
+    d['filename_'] = os.path.sep.join(filename)
     d['filename'] = os.path.sep.join(filename).replace('.py', '.%s' % format)
     d['data'] = '\n'.join(data)
     try:

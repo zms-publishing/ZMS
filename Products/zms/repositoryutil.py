@@ -195,7 +195,7 @@ def readRepository(self, basepath, deep=True):
               d = yaml[id]
               ### Different from remoteFiles()
               r[id] = d
-              for k in [x for x in d if not x.startswith('__') and type(d[x]) is list]:
+              for k in [x for x in d if type(d[x]) is list]:
                 v = []
                 for vv in d[k]:
                   if type(vv) is dict and 'id' in vv:

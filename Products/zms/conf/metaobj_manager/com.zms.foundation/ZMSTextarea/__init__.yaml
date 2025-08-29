@@ -17,7 +17,9 @@ ZMSTextarea:
     - id: interface0
       name: interface0
       type: interface
-    - default: "##\nreturn context.getTextFormatDefault()"
+    - default: |
+        ##
+        return context.getTextFormatDefault()
       id: format
       mandatory: 1
       name: Format

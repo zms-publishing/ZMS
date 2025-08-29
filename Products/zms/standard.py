@@ -2021,8 +2021,11 @@ def str_yaml(i, encoding='utf-8', errors='xmlcharrefreplace', level=0):
       return i
     elif not isinstance(i, str):
       return str(i)
-    if i.find(':') >= 0 or i.find('\\') >= 0 or i.find('"') >= 0 or i.find('\n') >= 0 or i.find('\r') >= 0 or i.startswith(' ') or i.endswith(' '):
-      return '"%s"'%(i.replace('\\','\\\\').replace('"','\\"').replace('\n','\\n').replace('\r','\\r'))
+    i = i.replace('\r\n','\n').replace('\r','\n')
+    if i.find('\n') >= 0:
+      return '|\n' + ('  '*level) + i.replace('\n','\n' + ('  '*level))
+    elif i.find(':') >= 0 or i.find('\\') >= 0 or i.find('"') >= 0 or i.startswith(' ') or i.endswith(' '):
+      return '"%s"'%(i.replace('\\','\\\\').replace('"','\\"'))
     else:
       return i
   return ''

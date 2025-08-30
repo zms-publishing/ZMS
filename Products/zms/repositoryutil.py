@@ -468,6 +468,7 @@ def getInitYamlDump(self, o):
 
   yaml = YAML()
   yaml.preserve_quotes = True
+  yaml.indent(mapping=2, sequence=4, offset=2)
   stream = io.StringIO()
   yaml.dump(o_init, stream)
   yaml_as_text = stream.getvalue()

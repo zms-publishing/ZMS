@@ -34,7 +34,7 @@ import sys
 import io
 
 # YAML
-import yaml
+# import yaml
 from ruamel.yaml import YAML
 from ruamel.yaml.scalarstring import LiteralScalarString
 
@@ -107,7 +107,9 @@ def remoteFiles(self, basepath, deep=True):
               # Python-representation of repository-object
               d = {}
               if name.endswith('.yaml'):
-                   d = yaml.safe_load(filedata)
+                # Use ruamel.yaml
+                yaml = YAML(typ='safe')
+                d = yaml.load(filedata)
               elif name.endswith('.py'):
                 try:
                     c = get_class(filedata)
@@ -141,7 +143,7 @@ def remoteFiles(self, basepath, deep=True):
 
 
 """
-Read repository from base-path.
+Read repository from base-path for import.
 """
 security.declarePublic('readRepository')
 def readRepository(self, basepath, deep=True):
@@ -154,51 +156,72 @@ def readRepository(self, basepath, deep=True):
             filepath = os.path.join(path, name)
             if os.path.isdir(filepath) and (deep or level == 0):
               traverse(base, filepath, level+1)
+            # Read class-representation __init__
             elif name.startswith('__') and name.split('.')[-2].endswith('__'):
-              # Read python-representation of repository-object
-              # Analyze python-representation of repository-object
               d = {}
-              if filepath.endswith('.yaml'):
-                with open(filepath, 'r', encoding='utf-8') as yaml_file:
-                  d = yaml.safe_load(yaml_file.read())
+              filedata = parseInit(self, filepath)
+              init_filetype = name.split('.')[-1]
+              # A. YAML
+              if init_filetype == 'yaml':
+                # Use ruamel.yaml
+                yaml = YAML(typ='safe')
+                d = yaml.load(filedata)
                 id = list(d.keys())[0]
-              elif name.endswith('.py'):
-                filedata = parseInit(self, filepath)
+              # B. PYTHON
+              elif init_filetype == 'py':
                 try:
                   c = get_class(filedata)
                   d = c.__dict__
                 except:
                   d['revision'] = standard.writeError(self,"[readRepository.traverse]: can't analyze filepath=%s"%filepath)
                 id = d.get('id',name)
-              ### Different from remoteFiles()
+
+              # Reconstruction of repository-data
               r[id] = {}
+              kk_filtered = []
               for k in [x for x in d if not x.startswith('__')]:
                 v = d[k]
-                if inspect.isclass(v):
+
+                # Get attributes and filter out private ones
+                if init_filetype == 'yaml' and type(v)==dict:
+                  dd = v.get('Attrs')
+                  if dd is not None:
+                    kk_filtered = [x['id'] for x in dd if not [k for k in x.keys() if k.startswith('__')]]
+                elif init_filetype == 'py' and inspect.isclass(v):
+                  # Get attributes from Python class
                   dd = v.__dict__
+                  if dd is not None:
+                    kk_filtered = [x for x in dd if not x.startswith('__')]
                   v = []
-                  for kk in [x for x in dd if not x.startswith('__')]:
-                    vv = dd[kk]
-                    # Try to read artefact.
-                    if 'id' in vv:
-                      fileprefix = vv['id'].split('/')[-1]
-                      for file in [x for x in names if x==fileprefix or x.startswith('%s.'%fileprefix)]:
-                        artefact = os.path.join(path, file)
-                        standard.writeLog(self,"[readRepository]: read artefact %s"%artefact)
-                        f = open(artefact, "rb")
-                        data = f.read()
-                        f.close()
-                        try:
-                          if isinstance(data, bytes):
-                            data = data.decode('utf-8')
-                        except:
-                          pass
-                        vv['data'] = data
-                        break
+                else:
+                  break # Stop processing if unsupported format
+
+                for kk in kk_filtered:
+                  vv = init_filetype == 'py' and dd[kk] or [d for d in dd if d.get('id')==kk][0]
+                  # Try to read artefact.
+                  if 'id' in vv:
+                    fileprefix = vv['id'].split('/')[-1]
+                    for file in [x for x in names if x==fileprefix or x.startswith('%s.'%fileprefix)]:
+                      artefact = os.path.join(path, file)
+                      standard.writeLog(self,"[readRepository]: read artefact %s"%artefact)
+                      f = open(artefact, "rb")
+                      data = f.read()
+                      f.close()
+                      try:
+                        if isinstance(data, bytes):
+                          data = data.decode('utf-8')
+                      except:
+                        pass
+                      vv['data'] = data
+                      break
+                  if init_filetype == 'py':
+                    # @WORK Keep order of artefacts as in source file?
+                    # Works only if filedata is python
                     v.append((filedata.find('\t\t%s ='%kk), vv))
+                if init_filetype == 'py':
                   v.sort()
                   v = [x[1] for x in v]
-                r[id][k] = v
+              r[id][k] = v
         traverse(basepath, basepath)
     return r
 
@@ -212,14 +235,6 @@ def parseInit(self, filepath):
     return data
 
 
-def parseInitPy(filename):
-  pass
-
-
-def parseInitYaml(filename):
-  pass
-
-
 """
 Read repository from ZMS-instance.
 """
@@ -230,7 +245,7 @@ def localFiles(self, provider, ids=None):
   local = provider.provideRepository(ids)
   for id in local:
     o = local[id]
-    l.update(getInitArtefacts(self, o, {'yaml':getInitYamlDump(self, o)}))
+    l.update(getInitArtefacts(self, o, {'yaml':getInitYaml(self, o)}))
   return l
 
 
@@ -364,41 +379,6 @@ def getInitPy(self, o):
 
 
 def getInitYaml(self, o):
-  """
-  Generate a YAML representation of the given object.
-
-  Args:
-    self: The instance of the class containing this method.
-    o (dict): A dictionary representing the object to be converted to YAML.
-
-  Returns:
-    list: A list of strings representing the YAML structure of the input object.
-  """
-  id = o.get('id','?')
-  yaml = []
-  yaml.append('%s:'%id)
-  e = sorted([x for x in o if not x.startswith('__') and x==x.capitalize() and isinstance(o[x], list)])
-  keys = sorted([x for x in o if not x.startswith('__') and x not in e])
-  for k in keys:
-    v = o.get(k)
-    if v:
-      yv = standard.str_yaml(v, level=1)
-      if len(yv.strip()) > 0:
-        sep = ' '
-        if type(v) is list:
-          sep = '\n'
-        elif type(v) is dict:
-          sep = '\n    '
-        yaml.append('  %s:%s%s'%(standard.id_quote(k), sep, yv))
-  for k in e:
-    v = o.get(k)
-    if v and isinstance(v, list):
-      yaml.append('  %s:'%standard.id_quote(k).capitalize())
-      yaml.append(standard.str_yaml([{k: v for k, v in i.items() if k != 'ob'} for i in v if 'id' in i], level=1))
-  return yaml
-
-
-def getInitYamlDump(self, o):
   """
   Generate a YAML representation of the given object
   by utilizing the standard yaml library.

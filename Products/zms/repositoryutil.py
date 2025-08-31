@@ -83,16 +83,6 @@ def get_class(py):
     exec(py)
     return eval(id)
 
-"""
-If you cannot control the input file, you can preprocess the 
-string before passing it to yaml.safe_load to automatically 
-quote such values. 
-"""
-def safe_yaml_load(data):
-    data = re.sub(r'(\w+:\s)(%.*?)(\n)', r'\1"\2"\3', data)
-    data = re.sub(r'- \*', r'- "*"', data)
-    data = re.sub(r'(\w+: )(\s*?)(- \w+\n)', r'\1\n\2\3', data)
-    return yaml.safe_load(data)
 
 """
 Read repository from base-path.
@@ -159,23 +149,27 @@ def readRepository(self, basepath, deep=True):
     r = {}
     if os.path.exists(basepath):
         def traverse(base, path, level=0):
-          initialized = False
           names = os.listdir(path)
           for name in names:
             filepath = os.path.join(path, name)
             if os.path.isdir(filepath) and (deep or level == 0):
-                traverse(base, filepath, level+1)
-            elif not initialized and name.startswith('__') and name.split('.')[-2].endswith('__'):
+              traverse(base, filepath, level+1)
+            elif name.startswith('__') and name.split('.')[-2].endswith('__'):
               # Read python-representation of repository-object
-              py = parseInit(self, filepath)
               # Analyze python-representation of repository-object
               d = {}
-              try:
-                  c = get_class(py)
+              if filepath.endswith('.yaml'):
+                with open(filepath, 'r', encoding='utf-8') as yaml_file:
+                  d = yaml.safe_load(yaml_file.read())
+                id = list(d.keys())[0]
+              elif name.endswith('.py'):
+                filedata = parseInit(self, filepath)
+                try:
+                  c = get_class(filedata)
                   d = c.__dict__
-              except:
+                except:
                   d['revision'] = standard.writeError(self,"[readRepository.traverse]: can't analyze filepath=%s"%filepath)
-              id = d.get('id',name)
+                id = d.get('id',name)
               ### Different from remoteFiles()
               r[id] = {}
               for k in [x for x in d if not x.startswith('__')]:
@@ -195,47 +189,16 @@ def readRepository(self, basepath, deep=True):
                         data = f.read()
                         f.close()
                         try:
-                            if isinstance(data, bytes):
-                                data = data.decode('utf-8')
+                          if isinstance(data, bytes):
+                            data = data.decode('utf-8')
                         except:
-                            pass
+                          pass
                         vv['data'] = data
                         break
-                    v.append((py.find('\t\t%s ='%kk), vv))
+                    v.append((filedata.find('\t\t%s ='%kk), vv))
                   v.sort()
                   v = [x[1] for x in v]
                 r[id][k] = v
-              initialized = True
-            elif not initialized and name.startswith('__') and name.endswith('__.yaml'):
-              # Read YAML-representation of repository-object
-              data = parseInit(self, filepath)
-              # Analyze YAML-representation of repository-object
-              yaml = yamlutil.parse_yaml(data)
-              id = list(yaml.keys())[0]
-              d = yaml[id]
-              ### Different from remoteFiles()
-              r[id] = d
-              for k in [x for x in d if type(d[x]) is list]:
-                v = []
-                for vv in d[k]:
-                  if type(vv) is dict and 'id' in vv:
-                    fileprefix = vv['id'].split('/')[-1]
-                    for file in [x for x in names if x==fileprefix or x.startswith('%s.'%fileprefix)]:
-                      artefact = os.path.join(path, file)
-                      standard.writeLog(self,"[readRepository]: read artefact %s"%artefact)
-                      f = open(artefact, "rb")
-                      data = f.read()
-                      f.close()
-                      try:
-                          if isinstance(data, bytes):
-                              data = data.decode('utf-8')
-                      except:
-                          pass
-                      vv['data'] = data
-                      break
-                  v.append(vv)
-                r[id][k] = v
-              initialized = True
         traverse(basepath, basepath)
     return r
 

@@ -196,12 +196,10 @@ def readRepository(self, basepath, deep=True):
               # Read YAML-representation of repository-object
               data = parseInit(self, filepath)
               # Analyze YAML-representation of repository-object
-              print(data)
               yaml = yamlutil.parse(data)
-              print(yaml)
               id = list(yaml.keys())[0]
-              print(id)
               d = yaml[id]
+              d['id'] = id
               ### Different from remoteFiles()
               r[id] = d
               for k in [x for x in d if type(d[x]) is list]:

@@ -33,11 +33,6 @@ import re
 import sys
 import io
 
-# YAML
-# import yaml
-from ruamel.yaml import YAML
-from ruamel.yaml.scalarstring import LiteralScalarString
-
 # Product Imports.
 from Products.zms import IZMSConfigurationProvider
 from Products.zms import IZMSRepositoryProvider
@@ -107,9 +102,8 @@ def remoteFiles(self, basepath, deep=True):
               # Python-representation of repository-object
               d = {}
               if name.endswith('.yaml'):
-                # Use ruamel.yaml
-                yaml = YAML(typ='safe')
-                d = yaml.load(filedata)
+                # Parse.yaml
+                d = yamlutil.parse(filedata)
               elif name.endswith('.py'):
                 try:
                     c = get_class(filedata)
@@ -164,8 +158,7 @@ def readRepository(self, basepath, deep=True):
               # A. YAML
               if init_filetype == 'yaml':
                 # Use ruamel.yaml
-                yaml = YAML(typ='safe')
-                d = yaml.load(filedata)
+                d = yamlutil.parse(filedata)
                 id = list(d.keys())[0]
               # B. PYTHON
               elif init_filetype == 'py':
@@ -227,7 +220,6 @@ def readRepository(self, basepath, deep=True):
 
 
 def parseInit(self, filepath):
-    # Read python-representation of repository-object
     standard.writeLog(self,"[parseInit]: read %s"%filepath)
     f = open(filepath, "rb")
     data = standard.pystr(f.read())
@@ -245,11 +237,11 @@ def localFiles(self, provider, ids=None):
   local = provider.provideRepository(ids)
   for id in local:
     o = local[id]
-    l.update(getInitArtefacts(self, o, {'yaml':getInitYaml(self, o)}))
+    l.update(init_artefacts(o, {'yaml':init_yaml(self, o).split('\n')}))
   return l
 
 
-def getInitArtefacts(self, o, initFiles):
+def init_artefacts(o, init_files):
   """
   Generate a dictionary of initialization artefacts from the given object and initialization files.
 
@@ -308,8 +300,8 @@ def getInitArtefacts(self, o, initFiles):
             l[d['filename']] = d
           if 'ob' in i:
             del i['ob']
-  for format in initFiles:
-    data = initFiles[format]
+  for format in init_files:
+    data = init_files[format]
     d = {}
     d['__icon__'] = o.get('__icon__')
     d['__description__'] = o.get('__description__')
@@ -327,101 +319,45 @@ def getInitArtefacts(self, o, initFiles):
   return l
 
 
-def getInitPy(self, o):
+def init_yaml(self, o):
   """
-  Generate a Python class representation of a given object.
+  Serialize a Python object into a YAML-formatted string.
 
-  This function takes an object `o` (typically a dictionary) and generates a Python
-  class definition as a list of strings. The generated class includes attributes
-  and nested classes based on the structure and content of the input object.
-
-  Args:
-    self: The instance of the class calling this method.
-    o (dict): The input object containing keys and values to be represented
-          as a Python class.
-
-  Returns:
-    list: A list of strings representing the Python class definition.
-  """
-  id = o.get('id','?')
-  py = []
-  py.append('class %s:'%id.replace('.','_').replace('-','_'))
-  py.append('\t"""')
-  py.append('\tpython-representation of %s'%o['id'])
-  py.append('\t"""')
-  py.append('')
-  e = sorted([x for x in o if not x.startswith('__') and x==x.capitalize() and isinstance(o[x], list)])
-  keys = sorted([x for x in o if not x.startswith('__') and x not in e])
-  for k in keys:
-    v = o.get(k)
-    py.append('\t# %s'%k.capitalize())
-    py.append('\t%s = %s'%(standard.id_quote(k), standard.str_json(v, encoding="utf-8", formatted=True, level=2, allow_booleans=False)))
-    py.append('')
-  for k in e:
-    v = o.get(k)
-    if v and isinstance(v, list):
-      py.append('\t# %s'%k.capitalize())
-      py.append('\tclass %s:'%standard.id_quote(k).capitalize())
-      # Are there duplicated ids after id-quoting?
-      id_list = [ standard.id_quote(i['id']) for i in v if i.get('ob') is None ] 
-      id_duplicates =  [ i for i in id_list if id_list.count(i) > 1 ]
-      for iv in v:
-        if 'id' in iv:
-          i = {k: v for k, v in iv.items() if k != 'ob'}
-          try:
-            # Prevent id-quoting if duplicates may result
-            id_quoted = ( i['id'].startswith('_') and ( standard.id_quote(i['id']) in id_duplicates) ) and i['id'] or standard.id_quote(i['id'])
-            py.append('\t\t%s = %s'%(id_quoted, standard.str_json(i, encoding="utf-8", formatted=True, level=3, allow_booleans=False)))
-          except:
-            py.append('\t\t# ERROR: '+standard.writeError(self,'can\'t getInitPy \'%s\''%i['id']))
-          py.append('')
-  return py
-
-
-def getInitYaml(self, o):
-  """
-  Generate a YAML representation of the given object
-  by utilizing the standard yaml library.
+  This method processes a given object `o` and converts it into a YAML
+  representation. It handles attributes and keys in the object, ensuring
+  that non-serializable elements (e.g., Acquisition-Wrappers) are excluded.
 
   Args:
     self: The instance of the class containing this method.
-    o (dict): A dictionary representing the object to be converted to YAML.
+    o (dict): The input dictionary-like object to be serialized. It is
+          expected to have keys and values that can be processed
+          into a YAML-compatible format.
 
   Returns:
-    list: A normalized Dictionary representing the YAML structure of the input object.
+    str: A YAML-formatted string representing the serialized object.
   """
   id = o.get('id','?')
-  o_init = {id: {}}
-  # Ignore acquisition wrapper objects
-  e = sorted([x for x in o if not x.startswith('__') and x==x.capitalize() and isinstance(o[x], list)])
-  keys = sorted([x for x in o if not x.startswith('__') and x not in e])
+  attrs = sorted([x for x in o if not x.startswith('__') and x==x.capitalize() and isinstance(o[x], list)])
+  keys = sorted([x for x in o if not x.startswith('__') and x not in attrs])
+  d = {}
   for k in keys:
-    if o.get(k):
-      o_init[id][k] = o.get(k)
+    v = o.get(k)
+    nv = yamlutil.__cleanup(v)
+    if nv:
+      d[k] = nv
   # Append attribute lists
-  for k in e:
+  for k in attrs:
+    nl = []
     l = o.get(k)
-    if l and isinstance(l, list):
-      o_init[id][k] = [{k:v for k, v in i.items() if k != 'ob' and v not in [None, '', [], [''], 0] } for i in l]
-      # Remove empty attributes and apply LiteralScalarString
-      for i in list(o_init[id][k]):
-        for k1, v1 in i.items():
-          if k1 in ('custom', 'default') and type(v1) is str and str(v1).find('\n') >= 0 or str(v1).find('\r') >= 0:
-            o_init[id][k][o_init[id][k].index(i)][k1] = LiteralScalarString(str(v1))
-
-  yaml = YAML()
-  yaml.preserve_quotes = True
-  yaml.indent(mapping=2, sequence=4, offset=2)
-  stream = io.StringIO()
-  yaml.dump(o_init, stream)
-  yaml_as_text = stream.getvalue()
-
-  # Create a list of yaml lines because ZMS expects it for comparision line by line
-  yaml_list = []
-  for line in yaml_as_text.split('\n'):
-    yaml_list.append(line)
-
-  return yaml_list
+    for i in l:
+      ni = yamlutil.__cleanup(i)
+      if ni:
+        if type(ni) is dict:
+          # Remove 'ob' from attribute dict (Acquisition-Wrappers are not serializable).
+          ni = {x: ni[x] for x in ni if not x=='ob'}
+        nl.append(ni)
+    d[k] = nl
+  return yamlutil.dump({id: d})
 
 
 security.declarePublic('get_diffs')

@@ -1,6 +1,6 @@
 ZMSVideo:
   access:
-    insert_custom: {$}
+    insert_custom: '{$}'
   enabled: 1
   id: ZMSVideo
   name: ZMSVideo
@@ -8,19 +8,19 @@ ZMSVideo:
   revision: 5.0.0
   type: ZMSObject
   Attrs:
-    - custom: fas fa-film
-      id: icon_clazz
-      multilang: 1
+    - id: icon_clazz
       name: Icon (Class)
+      multilang: 1
       type: constant
+      custom: fas fa-film
     - id: title
+      name: DC.Title
       mandatory: 1
       multilang: 1
-      name: DC.Title
       type: title
     - id: attr_dc_description
-      multilang: 1
       name: DC.Description
+      multilang: 1
       type: attr_dc_description
     - id: img
       name: Preview-Screen
@@ -29,19 +29,26 @@ ZMSVideo:
       name: MP4 File Upload
       type: file
     - id: provider
+      name: Video Provider
+      type: select
       keys:
         - fileupload
         - vimeo
         - youtube
         - switch
-      name: Video Provider
-      type: select
     - id: videoId
-      mandatory: 1
       name: Video-ID
+      mandatory: 1
       type: string
     - id: videoHint
-      name: "<div id=\"tr_videoHint\" class=\"form-group row\"><label class=\"col-sm-2 control-label\" for=\"videoHint\"><span>Hinweise</span></label><div id=\"videoHint\" class=\"col-sm-10\">Der Kurztitel ist nur für die interne Darstellung/Referenzierung.<br />WICHTIG: Die Option \"Einbetten auf Anfrage\" des YouTube Videos darf nicht deaktiviert sein!<br />Die YouTube ID kann aus der URL des Browsers beim Betrachten des Videos entnommen werden:<ol><li>http://www.youtube.com/watch?v=<strong style=\"color:darkred\">7nxwgSxLA68</strong></li><li>http://youtu.be/<strong style=\"color:darkred\">7nxwgSxLA68</strong></li></ol></div></div>"
+      name: '<div id="tr_videoHint" class="form-group row"><label class="col-sm-2
+        control-label" for="videoHint"><span>Hinweise</span></label><div id="videoHint"
+        class="col-sm-10">Der Kurztitel ist nur für die interne Darstellung/Referenzierung.<br
+        />WICHTIG: Die Option "Einbetten auf Anfrage" des YouTube Videos darf nicht
+        deaktiviert sein!<br />Die YouTube ID kann aus der URL des Browsers beim Betrachten
+        des Videos entnommen werden:<ol><li>http://www.youtube.com/watch?v=<strong
+        style="color:darkred">7nxwgSxLA68</strong></li><li>http://youtu.be/<strong
+        style="color:darkred">7nxwgSxLA68</strong></li></ol></div></div>'
       type: hint
     - id: videoWidth
       name: Breite
@@ -56,5 +63,5 @@ ZMSVideo:
       name: interface
       type: interface
     - id: standard_html
-      name: "Template: YouTube Video"
+      name: 'Template: YouTube Video'
       type: zpt

@@ -137,7 +137,7 @@ def remoteFiles(self, basepath, deep=True):
 
 
 """
-Read repository from base-path for import.
+Read repository from base-path.
 """
 security.declarePublic('readRepository')
 def readRepository(self, basepath, deep=True):
@@ -145,54 +145,66 @@ def readRepository(self, basepath, deep=True):
     r = {}
     if os.path.exists(basepath):
         def traverse(base, path, level=0):
+          initialized = False
           names = os.listdir(path)
           for name in names:
             filepath = os.path.join(path, name)
             if os.path.isdir(filepath) and (deep or level == 0):
-              traverse(base, filepath, level+1)
-            # Read class-representation __init__
-            elif name.startswith('__') and name.split('.')[-2].endswith('__'):
+                traverse(base, filepath, level+1)
+            elif not initialized and name.startswith('__') and name.endswith('__.py'):
+              # Read python-representation of repository-object
+              py = parseInit(self, filepath)
+              # Analyze python-representation of repository-object
               d = {}
-              filedata = parseInit(self, filepath)
-              init_filetype = name.split('.')[-1]
-              # A. YAML
-              if init_filetype == 'yaml':
-                # Use ruamel.yaml
-                d = yamlutil.parse(filedata)
-                id = list(d.keys())[0]
-              # B. PYTHON
-              elif init_filetype == 'py':
-                try:
-                  c = get_class(filedata)
+              try:
+                  c = get_class(py)
                   d = c.__dict__
-                except:
+              except:
                   d['revision'] = standard.writeError(self,"[readRepository.traverse]: can't analyze filepath=%s"%filepath)
-                id = d.get('id',name)
-
-              # Reconstruction of repository-data
+              id = d.get('id',name)
+              ### Different from remoteFiles()
               r[id] = {}
-              kk_filtered = []
               for k in [x for x in d if not x.startswith('__')]:
                 v = d[k]
-
-                # Get attributes and filter out private ones
-                if init_filetype == 'yaml' and type(v)==dict:
-                  dd = v.get('Attrs')
-                  if dd is not None:
-                    kk_filtered = [x['id'] for x in dd if not [k for k in x.keys() if k.startswith('__')]]
-                elif init_filetype == 'py' and inspect.isclass(v):
-                  # Get attributes from Python class
+                if inspect.isclass(v):
                   dd = v.__dict__
-                  if dd is not None:
-                    kk_filtered = [x for x in dd if not x.startswith('__')]
                   v = []
-                else:
-                  break # Stop processing if unsupported format
-
-                for kk in kk_filtered:
-                  vv = init_filetype == 'py' and dd[kk] or [d for d in dd if d.get('id')==kk][0]
-                  # Try to read artefact.
-                  if 'id' in vv:
+                  for kk in [x for x in dd if not x.startswith('__')]:
+                    vv = dd[kk]
+                    # Try to read artefact.
+                    if 'id' in vv:
+                      fileprefix = vv['id'].split('/')[-1]
+                      for file in [x for x in names if x==fileprefix or x.startswith('%s.'%fileprefix)]:
+                        artefact = os.path.join(path, file)
+                        standard.writeLog(self,"[readRepository]: read artefact %s"%artefact)
+                        f = open(artefact, "rb")
+                        data = f.read()
+                        f.close()
+                        try:
+                            if isinstance(data, bytes):
+                                data = data.decode('utf-8')
+                        except:
+                            pass
+                        vv['data'] = data
+                        break
+                    v.append((py.find('\t\t%s ='%kk), vv))
+                  v.sort()
+                  v = [x[1] for x in v]
+                r[id][k] = v
+              initialized = True
+            elif not initialized and name.startswith('__') and name.endswith('__.yaml'):
+              # Read YAML-representation of repository-object
+              data = parseInit(self, filepath)
+              # Analyze YAML-representation of repository-object
+              yaml = yamlutil.parse(data)
+              id = list(yaml.keys())[0]
+              d = yaml[id]
+              ### Different from remoteFiles()
+              r[id] = d
+              for k in [x for x in d if type(d[x]) is list]:
+                v = []
+                for vv in d[k]:
+                  if type(vv) is dict and 'id' in vv:
                     fileprefix = vv['id'].split('/')[-1]
                     for file in [x for x in names if x==fileprefix or x.startswith('%s.'%fileprefix)]:
                       artefact = os.path.join(path, file)
@@ -201,20 +213,15 @@ def readRepository(self, basepath, deep=True):
                       data = f.read()
                       f.close()
                       try:
-                        if isinstance(data, bytes):
-                          data = data.decode('utf-8')
+                          if isinstance(data, bytes):
+                              data = data.decode('utf-8')
                       except:
-                        pass
+                          pass
                       vv['data'] = data
                       break
-                  if init_filetype == 'py':
-                    # @WORK Keep order of artefacts as in source file?
-                    # Works only if filedata is python
-                    v.append((filedata.find('\t\t%s ='%kk), vv))
-                if init_filetype == 'py':
-                  v.sort()
-                  v = [x[1] for x in v]
-              r[id][k] = v
+                  v.append(vv)
+                r[id][k] = v
+              initialized = True
         traverse(basepath, basepath)
     return r
 
@@ -356,7 +363,8 @@ def init_yaml(self, o):
           # Remove 'ob' from attribute dict (Acquisition-Wrappers are not serializable).
           ni = {x: ni[x] for x in ni if not x=='ob'}
         nl.append(ni)
-    d[k] = nl
+    if nl:
+      d[k] = nl
   return yamlutil.dump({id: d})
 
 

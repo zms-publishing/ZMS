@@ -16,6 +16,10 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ################################################################################
 
-def parse_yaml(data):
+def dump(data):
+    from yaml import dump
+    return dump(data)
+
+def parse(data):
     from yaml import safe_load
     return safe_load(data)

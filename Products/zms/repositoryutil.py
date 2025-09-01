@@ -190,7 +190,7 @@ def readRepository(self, basepath, deep=True):
               # Read YAML-representation of repository-object
               data = parseInit(self, filepath)
               # Analyze YAML-representation of repository-object
-              yaml = yamlutil.parse_yaml(data)
+              yaml = yamlutil.parse(data)
               id = list(yaml.keys())[0]
               d = yaml[id]
               ### Different from remoteFiles()
@@ -345,7 +345,6 @@ def getInitPy(self, o):
   Returns:
     list: A list of strings representing the Python class definition.
   """
-  id = o.get('id','?')
   py = []
   py.append('class %s:'%id.replace('.','_').replace('-','_'))
   py.append('\t"""')
@@ -392,27 +391,22 @@ def getInitYaml(self, o):
     list: A list of strings representing the YAML structure of the input object.
   """
   id = o.get('id','?')
-  yaml = []
-  yaml.append('%s:'%id)
-  e = sorted([x for x in o if not x.startswith('__') and x==x.capitalize() and isinstance(o[x], list)])
-  keys = sorted([x for x in o if not x.startswith('__') and x not in e])
-  for k in keys:
-    v = o.get(k)
-    if v:
-      yv = standard.str_yaml(v, level=1)
-      if len(yv.strip()) > 0:
-        sep = ' '
-        if type(v) is list:
-          sep = '\n'
-        elif type(v) is dict:
-          sep = '\n    '
-        yaml.append('  %s:%s%s'%(standard.id_quote(k), sep, yv))
-  for k in e:
-    v = o.get(k)
-    if v and isinstance(v, list):
-      yaml.append('  %s:'%standard.id_quote(k).capitalize())
-      yaml.append(standard.str_yaml([{k: v for k, v in i.items() if k != 'ob'} for i in v if 'id' in i], level=1))
-  return yaml
+  d = {}
+  d[id] = {}
+  for k in o:
+    if not k.startswith('__'):
+        if k == k.capitalize() and isinstance(o[k], list):
+          d[id][k] = []
+          for i in o[k]:
+              ni = {}
+              for nk in i:
+                if nk != 'ob' and i[nk]:
+                  ni[nk] = i[nk]
+              d[id][k].append(ni)
+        elif o[k]:
+          d[id][k] = o[k]
+  yaml = yamlutil.dump(d)
+  return yaml.split('\n')
 
 
 security.declarePublic('get_diffs')

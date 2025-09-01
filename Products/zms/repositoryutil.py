@@ -196,8 +196,11 @@ def readRepository(self, basepath, deep=True):
               # Read YAML-representation of repository-object
               data = parseInit(self, filepath)
               # Analyze YAML-representation of repository-object
+              print(data)
               yaml = yamlutil.parse(data)
+              print(yaml)
               id = list(yaml.keys())[0]
+              print(id)
               d = yaml[id]
               ### Different from remoteFiles()
               r[id] = d
@@ -345,7 +348,7 @@ def init_yaml(self, o):
   """
   id = o.get('id','?')
   attrs = sorted([x for x in o if not x.startswith('__') and x==x.capitalize() and isinstance(o[x], list)])
-  keys = sorted([x for x in o if not x.startswith('__') and x not in attrs])
+  keys = sorted([x for x in o if not x.startswith('__') and x!='id' and x not in attrs])
   d = {}
   for k in keys:
     v = o.get(k)

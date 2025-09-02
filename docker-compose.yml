@@ -3,7 +3,7 @@ services:
         build:
             context: .
             dockerfile: ./docker/base/Dockerfile
-        image: localhost/zms:${ZOPE_TAG:-latest}
+        image: localhost/zope:${ZOPE_TAG:-latest}
         depends_on:
             - zeo
         stop_grace_period: 1s # SIGKILL after 1s, as zope is always taking the full 10 seconds
@@ -50,8 +50,8 @@ services:
             context: .
             dockerfile: ./docker/base/Dockerfile.debug
             args:
-                BASE_IMAGE: localhost/zms:${ZOPE_TAG:-latest}
-        image: localhost/zms-debug:latest
+                BASE_IMAGE: localhost/zope:${ZOPE_TAG:-latest}
+        image: localhost/zope-debug:latest
         depends_on:
             - zeo
         stop_grace_period: 1s # SIGKILL after 1s, as zope is always taking the full 10 seconds
@@ -75,7 +75,7 @@ services:
         build:
             context: .
             dockerfile: ./docker/base/Dockerfile
-        image: localhost/zms:latest
+        image: localhost/zope:latest
         command: runzeo --configure etc/zeo.conf
         volumes:
             - ./docker/zeo/etc/:/home/zope/etc/

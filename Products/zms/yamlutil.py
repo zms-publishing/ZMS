@@ -16,11 +16,19 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ################################################################################
 
+# Imports.
+import io
+import time
 
 def dump(data):
     from ruamel.yaml import YAML
-    import io
+
+    # Custom representer for struct_time
+    def represent_struct_time(dumper, data):
+        return dumper.represent_scalar('!struct_time', time.strftime('%Y-%m-%d %H:%M:%S', data))
+        
     yaml = YAML()
+    yaml.representer.add_representer(time.struct_time, represent_struct_time)
     yaml.preserve_quotes = True
     yaml.indent(mapping=2, sequence=4, offset=2)
     stream = io.StringIO()
@@ -30,7 +38,14 @@ def dump(data):
 
 def parse(data):
     from ruamel.yaml import YAML
+
+    # Custom constructor for struct_time
+    def construct_struct_time(loader, node):
+        value = loader.construct_scalar(node)
+        return time.strptime(value, '%Y-%m-%d %H:%M:%S')
+
     yaml=YAML(typ="safe")
+    yaml.constructor.add_constructor('!struct_time', construct_struct_time)
     return yaml.load(data)
 
 

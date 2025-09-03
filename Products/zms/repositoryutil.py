@@ -27,14 +27,19 @@ from AccessControl.SecurityInfo import ModuleSecurityInfo
 from App.Common import package_home
 from DateTime import DateTime
 from zope.interface import providedBy
+import Acquisition
 import inspect
 import os
 import re
 import sys
+import io
+
 # Product Imports.
 from Products.zms import IZMSConfigurationProvider
 from Products.zms import IZMSRepositoryProvider
+from Products.zms import zopeutil
 from Products.zms import standard
+from Products.zms import yamlutil
 from Products.zms import zopeutil
 
 security = ModuleSecurityInfo('Products.zms.repositoryutil')
@@ -89,25 +94,29 @@ def remoteFiles(self, basepath, deep=True):
             filepath = os.path.join(path, name)
             if os.path.isdir(filepath) and (deep or level == 0):
               traverse(base, filepath, level+1)
-            elif name.startswith('__') and name.endswith('__.py'):
+            elif name.startswith('__') and name.split('.')[-2].endswith('__'):
               # Read python-representation of repository-object
               standard.writeLog(self,"[remoteFiles]: read %s"%filepath)
               f = open(filepath,"rb")
-              py = standard.pystr(f.read())
+              filedata = standard.pystr(f.read())
               f.close()
-              # Analyze python-representation of repository-object
+              # Python-representation of repository-object
               d = {}
-              try:
-                  c = get_class(py)
-                  d = c.__dict__
-              except:
-                  d['revision'] = standard.writeError(self,"[remoteFiles.traverse]: can't analyze filepath=%s"%filepath)
+              if name.endswith('.yaml'):
+                # Parse.yaml
+                d = yamlutil.parse(filedata)
+              elif name.endswith('.py'):
+                try:
+                    c = get_class(filedata)
+                    d = c.__dict__
+                except:
+                    d['revision'] = standard.writeError(self,"[remoteFiles.traverse]: can't analyze filepath=%s"%filepath)
               id = d.get('id',name)
               ### Different from remoteFiles()
               rd = {}
               rd['id'] = id
               rd['filename'] = filepath[len(base)+1:]
-              rd['data'] = py
+              rd['data'] = filedata
               rd['version'] = d.get("revision",self.getLangFmtDate(os.path.getmtime(filepath),'eng'))
               r[rd['filename']] = rd
               # Read artefacts and avoid processing of hidden files, e.g. .DS_Store on macOS 
@@ -137,17 +146,15 @@ def readRepository(self, basepath, deep=True):
     r = {}
     if os.path.exists(basepath):
         def traverse(base, path, level=0):
+          initialized = False
           names = os.listdir(path)
           for name in names:
             filepath = os.path.join(path, name)
             if os.path.isdir(filepath) and (deep or level == 0):
                 traverse(base, filepath, level+1)
-            elif name.startswith('__') and name.endswith('__.py'):
+            elif not initialized and name.startswith('__') and name.endswith('__.py'):
               # Read python-representation of repository-object
-              standard.writeLog(self,"[readRepository]: read %s"%filepath)
-              f = open(filepath, "rb")
-              py = standard.pystr(f.read())
-              f.close()
+              py = parseInit(self, filepath)
               # Analyze python-representation of repository-object
               d = {}
               try:
@@ -185,8 +192,48 @@ def readRepository(self, basepath, deep=True):
                   v.sort()
                   v = [x[1] for x in v]
                 r[id][k] = v
+              initialized = True
+            elif not initialized and name.startswith('__') and name.endswith('__.yaml'):
+              # Read YAML-representation of repository-object
+              data = parseInit(self, filepath)
+              # Analyze YAML-representation of repository-object
+              yaml = yamlutil.parse(data)
+              id = list(yaml.keys())[0]
+              d = yaml[id]
+              d['id'] = id
+              ### Different from remoteFiles()
+              r[id] = d
+              for k in [x for x in d if type(d[x]) is list]:
+                v = []
+                for vv in d[k]:
+                  if type(vv) is dict and 'id' in vv:
+                    fileprefix = vv['id'].split('/')[-1]
+                    for file in [x for x in names if x==fileprefix or x.startswith('%s.'%fileprefix)]:
+                      artefact = os.path.join(path, file)
+                      standard.writeLog(self,"[readRepository]: read artefact %s"%artefact)
+                      f = open(artefact, "rb")
+                      data = f.read()
+                      f.close()
+                      try:
+                          if isinstance(data, bytes):
+                              data = data.decode('utf-8')
+                      except:
+                          pass
+                      vv['data'] = data
+                      break
+                  v.append(vv)
+                r[id][k] = v
+              initialized = True
         traverse(basepath, basepath)
     return r
+
+
+def parseInit(self, filepath):
+    standard.writeLog(self,"[parseInit]: read %s"%filepath)
+    f = open(filepath, "rb")
+    data = standard.pystr(f.read())
+    f.close()
+    return data
 
 
 """
@@ -199,67 +246,78 @@ def localFiles(self, provider, ids=None):
   local = provider.provideRepository(ids)
   for id in local:
     o = local[id]
-    acquired = int(o.get('acquired',0))
-    filename = o.get('__filename__', [id, '__%s__.py'%['init','acquired'][acquired]])
-    # Write python-representation.
-    py = []
-    py.append('class %s:'%id.replace('.','_').replace('-','_'))
-    py.append('\t"""')
-    py.append('\tpython-representation of %s'%o['id'])
-    py.append('\t"""')
-    py.append('')
-    e = sorted([x for x in o if not x.startswith('__') and x==x.capitalize() and isinstance(o[x], list)])
-    keys = sorted([x for x in o if not x.startswith('__') and x not in e])
-    for k in keys:
-      v = o.get(k)
-      py.append('\t# %s'%k.capitalize())
-      py.append('\t%s = %s'%(standard.id_quote(k), standard.str_json(v, encoding="utf-8", formatted=True, level=2, allow_booleans=False)))
-      py.append('')
-    for k in e:
-      v = o.get(k)
-      if v and isinstance(v, list):
-        py.append('\t# %s'%k.capitalize())
-        py.append('\tclass %s:'%standard.id_quote(k).capitalize())
-        # Are there duplicated ids after id-quoting?
-        id_list = [ standard.id_quote(i['id']) for i in v if i.get('ob') is None ] 
-        id_duplicates =  [ i for i in id_list if id_list.count(i) > 1 ]
-        for i in v:
-          if 'id' in i:
-            ob = i.get('ob')
-            if ob is not None:
-              d = {}
-              # Someone is so kind to pass us a file-like Object with {filename,data,version,meta_type} as dict.
-              if type(ob) is dict:
-                d = ob
-              # Otherwise we have a Zope-Object and determine everything by ourselves.
-              else:
-                fileexts = {'DTML Method':'.dtml', 'DTML Document':'.dtml', 'External Method':'.py', 'Page Template':'.zpt', 'Script (Python)':'.py', 'Z SQL Method':'.zsql'}
-                fileprefix = i['id'].split('/')[-1]
-                data = zopeutil.readData(ob)
-                version = ''
-                if hasattr(ob,'_p_mtime'):
-                  version = standard.getLangFmtDate(DateTime(ob._p_mtime).timeTime(), 'eng')
-                d['filename'] = os.path.sep.join(filename[:-1]+['%s%s'%(fileprefix, fileexts.get(ob.meta_type, ''))])
-                d['data'] = data
-                d['version'] = version
-                d['meta_type'] = ob.meta_type
-              d['id'] = id
-              l[d['filename']] = d
-            if 'ob' in i:
-              del i['ob']
-            try:
-              # Prevent id-quoting if duplicates may result
-              id_quoted = ( i['id'].startswith('_') and ( standard.id_quote(i['id']) in id_duplicates) ) and i['id'] or standard.id_quote(i['id'])
-              py.append('\t\t%s = %s'%(id_quoted, standard.str_json(i, encoding="utf-8", formatted=True, level=3, allow_booleans=False)))
-            except:
-              py.append('\t\t# ERROR: '+standard.writeError(self,'can\'t localFiles \'%s\''%i['id']))
-            py.append('')
+    l.update(init_artefacts(o, {'yaml':init_yaml(self, o).split('\n')}))
+  return l
+
+
+def init_artefacts(o, init_files):
+  """
+  Generate a dictionary of initialization artefacts from the given object and initialization files.
+
+  Args:
+    self: The instance of the class containing this method.
+    o (dict): A dictionary representing the object to process. It may contain:
+      - 'id': The identifier of the object.
+      - 'acquired': A flag indicating if the object is acquired (0 or 1).
+      - '__filename__': A list representing the filename structure.
+      - '__icon__': An optional icon for the object.
+      - '__description__': An optional description for the object.
+      - 'revision': A version string in the format "0.0.0".
+      - Other keys representing attributes, where capitalized keys with list values are processed.
+    initFiles (dict): A dictionary where keys are formats (e.g., 'py') and values are lists of strings
+      representing the initialization data for each format.
+
+  Returns:
+    dict: A dictionary where keys are filenames and values are dictionaries containing:
+      - 'id': The identifier of the object.
+      - 'filename': The full path of the file.
+      - 'data': The content of the file.
+      - 'version': The version of the file as a list of integers.
+      - 'meta_type': The meta type of the object (e.g., 'Script (Python)').
+      - '__icon__': The icon of the object (if provided).
+      - '__description__': The description of the object (if provided).
+  """
+  l = {}
+  id = o.get('id','?')
+  acquired = int(o.get('acquired',0))
+  filename = o.get('__filename__', [id, ['__init__.py','__acquired__.py'][acquired]])
+  e = sorted([x for x in o if not x.startswith('__') and x==x.capitalize() and isinstance(o[x], list)])
+  for k in e:
+    v = o.get(k)
+    if v and isinstance(v, list):
+      for i in v:
+        if 'id' in i:
+          ob = i.get('ob')
+          if ob is not None:
+            d = {}
+            # Someone is so kind to pass us a file-like Object with {filename,data,version,meta_type} as dict.
+            if type(ob) is dict:
+              d = ob
+            # Otherwise we have a Zope-Object and determine everything by ourselves.
+            else:
+              fileexts = {'DTML Method':'.dtml', 'DTML Document':'.dtml', 'External Method':'.py', 'Page Template':'.zpt', 'Script (Python)':'.py', 'Z SQL Method':'.zsql'}
+              fileprefix = i['id'].split('/')[-1]
+              data = zopeutil.readData(ob)
+              version = ''
+              if hasattr(ob,'_p_mtime'):
+                version = standard.getLangFmtDate(DateTime(ob._p_mtime).timeTime(), 'eng')
+              d['filename'] = os.path.sep.join(filename[:-1]+['%s%s'%(fileprefix, fileexts.get(ob.meta_type, ''))])
+              d['data'] = data
+              d['version'] = version
+              d['meta_type'] = ob.meta_type
+            d['id'] = id
+            l[d['filename']] = d
+          if 'ob' in i:
+            del i['ob']
+  for format in init_files:
+    data = init_files[format]
     d = {}
     d['__icon__'] = o.get('__icon__')
     d['__description__'] = o.get('__description__')
     d['id'] = id
-    d['filename'] = os.path.sep.join(filename)
-    d['data'] = '\n'.join(py)
+    d['filename_'] = os.path.sep.join(filename)
+    d['filename'] = os.path.sep.join(filename).replace('.py', '.%s' % format)
+    d['data'] = '\n'.join(data)
     try:
       d['version'] = [int(x) for x in o.get('revision', '0.0.0').split('.')]
     except:
@@ -268,6 +326,48 @@ def localFiles(self, provider, ids=None):
     d['meta_type'] = 'Script (Python)'
     l[d['filename']] = d
   return l
+
+
+def init_yaml(self, o):
+  """
+  Serialize a Python object into a YAML-formatted string.
+
+  This method processes a given object `o` and converts it into a YAML
+  representation. It handles attributes and keys in the object, ensuring
+  that non-serializable elements (e.g., Acquisition-Wrappers) are excluded.
+
+  Args:
+    self: The instance of the class containing this method.
+    o (dict): The input dictionary-like object to be serialized. It is
+          expected to have keys and values that can be processed
+          into a YAML-compatible format.
+
+  Returns:
+    str: A YAML-formatted string representing the serialized object.
+  """
+  id = o.get('id','?')
+  attrs = sorted([x for x in o if not x.startswith('__') and x==x.capitalize() and isinstance(o[x], list)])
+  keys = sorted([x for x in o if not x.startswith('__') and x!='id' and x not in attrs and not isinstance(o.get(x), Acquisition.ExplicitAcquisitionWrapper)])
+  d = {}
+  for k in keys:
+    v = o.get(k)
+    nv = yamlutil.__cleanup(v)
+    if nv:
+      d[k] = nv
+  # Append attribute lists
+  for k in attrs:
+    nl = []
+    l = o.get(k)
+    for i in l:
+      ni = yamlutil.__cleanup(i)
+      if ni:
+        if type(ni) is dict:
+          # Remove 'ob' from attribute dict (Acquisition-Wrappers are not serializable).
+          ni = {x: ni[x] for x in ni if not x=='ob'}
+        nl.append(ni)
+    if nl:
+      d[k] = nl
+  return yamlutil.dump({id: d})
 
 
 security.declarePublic('get_diffs')

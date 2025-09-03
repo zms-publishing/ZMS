@@ -117,4 +117,4 @@ class ZMSSysConf(
     @see IRepositoryProvider
     """
     def updateRepository(self, r):
-      self.set_properties(r['properties'])
+      self.set_properties(r.get('Properties',r.get('properties',{})))

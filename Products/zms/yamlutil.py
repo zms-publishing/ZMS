@@ -67,6 +67,8 @@ def __cleanup(v):
                 nv = __cleanup(v[k])
                 if nv:
                     nd[k] = nv
+                elif nv in ['0', 0, False]:
+                    nd[k] = 0
             return nd
         elif isinstance(v, list):
             nl = []

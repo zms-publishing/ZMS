@@ -354,6 +354,8 @@ def init_yaml(self, o):
     nv = yamlutil.__cleanup(v)
     if nv:
       d[k] = nv
+    elif nv in ['0', 0, False]:
+      d[k] = 0
   # Append attribute lists
   for k in attrs:
     nl = []
@@ -367,6 +369,8 @@ def init_yaml(self, o):
         nl.append(ni)
     if nl:
       d[k] = nl
+    elif nl in ['0', 0, False]:
+      d[k] = 0
   return yamlutil.dump({id: d})
 
 

@@ -27,7 +27,6 @@ ftfy
 pdfminer.six
 htmldiff2
 python-docx
-ruamel.yaml
 
 # OpenSearch
 opensearch-py

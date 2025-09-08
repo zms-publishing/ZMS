@@ -246,7 +246,10 @@ def localFiles(self, provider, ids=None):
   local = provider.provideRepository(ids)
   for id in local:
     o = local[id]
-    l.update(init_artefacts(o, {'yaml':init_yaml(self, o).split('\n')}))
+    if self.getConfProperty('ZMS.repository_manager.__init__.format', '') == 'py':
+      l.update(init_artefacts(o, {'py':get_init_py(self, o)}))
+    else:
+      l.update(init_artefacts(o, {'yaml':get_init_yaml(self, o).split('\n')}))
   return l
 
 
@@ -328,7 +331,58 @@ def init_artefacts(o, init_files):
   return l
 
 
-def init_yaml(self, o):
+def get_init_py(self, o):
+  """
+  Generate a Python class representation of a given object.
+
+  This function takes an object `o` (typically a dictionary) and generates a Python
+  class definition as a list of strings. The generated class includes attributes
+  and nested classes based on the structure and content of the input object.
+
+  Args:
+    self: The instance of the class calling this method.
+    o (dict): The input object containing keys and values to be represented
+          as a Python class.
+
+  Returns:
+    list: A list of strings representing the Python class definition.
+  """
+  id = o.get('id','?')
+  py = []
+  py.append('class %s:'%id.replace('.','_').replace('-','_'))
+  py.append('\t"""')
+  py.append('\tpython-representation of %s'%o['id'])
+  py.append('\t"""')
+  py.append('')
+  e = sorted([x for x in o if not x.startswith('__') and x==x.capitalize() and isinstance(o[x], list)])
+  keys = sorted([x for x in o if not x.startswith('__') and x not in e])
+  for k in keys:
+    v = o.get(k)
+    py.append('\t# %s'%k.capitalize())
+    py.append('\t%s = %s'%(standard.id_quote(k), standard.str_json(v, encoding="utf-8", formatted=True, level=2, allow_booleans=False)))
+    py.append('')
+  for k in e:
+    v = o.get(k)
+    if v and isinstance(v, list):
+      py.append('\t# %s'%k.capitalize())
+      py.append('\tclass %s:'%standard.id_quote(k).capitalize())
+      # Are there duplicated ids after id-quoting?
+      id_list = [ standard.id_quote(i['id']) for i in v if i.get('ob') is None ] 
+      id_duplicates =  [ i for i in id_list if id_list.count(i) > 1 ]
+      for iv in v:
+        if 'id' in iv:
+          i = {k: v for k, v in iv.items() if k != 'ob'}
+          try:
+            # Prevent id-quoting if duplicates may result
+            id_quoted = ( i['id'].startswith('_') and ( standard.id_quote(i['id']) in id_duplicates) ) and i['id'] or standard.id_quote(i['id'])
+            py.append('\t\t%s = %s'%(id_quoted, standard.str_json(i, encoding="utf-8", formatted=True, level=3, allow_booleans=False)))
+          except:
+            py.append('\t\t# ERROR: '+standard.writeError(self,'can\'t getInitPy \'%s\''%i['id']))
+          py.append('')
+  return py
+
+
+def get_init_yaml(self, o):
   """
   Serialize a Python object into a YAML-formatted string.
 

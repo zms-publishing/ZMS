@@ -37,10 +37,7 @@ class ZMSNote:
 			,"default":""
 			,"id":"icon_clazz"
 			,"keys":[]
-			,"mandatory":0
-			,"multilang":0
 			,"name":"Icon (Class)"
-			,"repetitive":0
 			,"type":"constant"}
 
 		text = {"default":""
@@ -49,41 +46,28 @@ class ZMSNote:
 			,"mandatory":1
 			,"multilang":1
 			,"name":"Memotext"
-			,"repetitive":0
 			,"type":"text"}
 
 		interface = {"default":""
 			,"id":"interface"
 			,"keys":[]
-			,"mandatory":0
-			,"multilang":0
 			,"name":"interface"
-			,"repetitive":0
 			,"type":"interface"}
 
 		rendershort = {"default":""
 			,"id":"renderShort"
 			,"keys":[]
-			,"mandatory":0
-			,"multilang":0
 			,"name":"ZMI: Render short"
-			,"repetitive":0
 			,"type":"zpt"}
 
 		onchangeobjevt = {"default":""
 			,"id":"onChangeObjEvt"
 			,"keys":[]
-			,"mandatory":0
-			,"multilang":0
 			,"name":"Event: onChangeObj"
-			,"repetitive":0
 			,"type":"py"}
 
 		standard_json_docx = {"default":""
 			,"id":"standard_json_docx"
 			,"keys":[]
-			,"mandatory":0
-			,"multilang":0
 			,"name":"JSON-DOCX Template"
-			,"repetitive":0
 			,"type":"py"}

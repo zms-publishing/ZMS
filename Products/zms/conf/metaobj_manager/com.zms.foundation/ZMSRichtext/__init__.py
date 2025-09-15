@@ -37,44 +37,30 @@ class ZMSRichtext:
 			,"default":""
 			,"id":"icon_clazz"
 			,"keys":[]
-			,"mandatory":0
-			,"multilang":0
 			,"name":"Icon (Class)"
-			,"repetitive":0
 			,"type":"constant"}
 
 		interface0 = {"default":""
 			,"id":"interface0"
 			,"keys":[]
-			,"mandatory":0
-			,"multilang":0
 			,"name":"interface0"
-			,"repetitive":0
 			,"type":"interface"}
 
 		text = {"default":""
 			,"id":"text"
 			,"keys":[]
-			,"mandatory":0
 			,"multilang":1
 			,"name":"Text"
-			,"repetitive":0
 			,"type":"richtext"}
 
 		onchangeobjevt = {"default":""
 			,"id":"onChangeObjEvt"
 			,"keys":[]
-			,"mandatory":0
-			,"multilang":0
 			,"name":"Event: onChange-Object"
-			,"repetitive":0
 			,"type":"py"}
 
 		standard_html = {"default":""
 			,"id":"standard_html"
 			,"keys":[]
-			,"mandatory":0
-			,"multilang":0
 			,"name":"Template: ZMSRichtext"
-			,"repetitive":0
 			,"type":"zpt"}

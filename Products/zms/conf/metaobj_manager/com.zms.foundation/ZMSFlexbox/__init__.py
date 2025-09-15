@@ -37,17 +37,12 @@ class ZMSFlexbox:
 			,"default":""
 			,"id":"icon_clazz"
 			,"keys":[]
-			,"mandatory":0
-			,"multilang":0
 			,"name":"Icon-Class (CSS)"
-			,"repetitive":0
 			,"type":"constant"}
 
 		e = {"default":""
 			,"id":"e"
 			,"keys":["type(ZMSObject)"]
-			,"mandatory":0
-			,"multilang":0
 			,"name":"Items"
 			,"repetitive":1
 			,"type":"*"}
@@ -56,17 +51,11 @@ class ZMSFlexbox:
 			,"default":""
 			,"id":"f_css_defaults"
 			,"keys":[]
-			,"mandatory":0
-			,"multilang":0
 			,"name":"CSS Default"
-			,"repetitive":0
 			,"type":"constant"}
 
 		standard_html = {"default":""
 			,"id":"standard_html"
 			,"keys":[]
-			,"mandatory":0
-			,"multilang":0
 			,"name":"Template: Box-Container"
-			,"repetitive":0
 			,"type":"zpt"}

@@ -8,7 +8,17 @@ def opensearch_get_client(self, REQUEST=None):
 	# ${opensearch.username:admin}
 	# ${opensearch.password:admin}
 	# ${opensearch.ssl.verify:}
-	url_string = self.getConfProperty('opensearch.url')
+
+	zmscontext = self
+	# Check if the method is called from a ZMS context
+	try:
+		url_string = zmscontext.getConfProperty('opensearch.url')
+	except:
+		# Fallback if the method is not called from ZMS context
+		zmscontext = self.content
+		url_string = zmscontext.getConfProperty('opensearch.url', 'https://localhost:9200')
+
+
 	urls = [url.strip().rstrip('/') for url in url_string.split(',')]
 	hosts = []
 	use_ssl = False
@@ -17,16 +27,20 @@ def opensearch_get_client(self, REQUEST=None):
 		return None
 	else:
 		for url in urls:
-			hosts.append( { \
+			if urlparse(url).hostname:
+				hosts.append( { \
 					'host':urlparse(url).hostname, \
 					'port':urlparse(url).port } \
 				)
+			else:
+				# Ignore URL without valid hostname
+				urls.remove(url)
 			if urlparse(url).scheme=='https':
 				use_ssl = True
-	timeout = float(self.getConfProperty('opensearch.url.timeout', 3))
-	verify = bool(self.getConfProperty('opensearch.ssl.verify', False))
-	username = self.getConfProperty('opensearch.username', 'admin')
-	password = self.getConfProperty('opensearch.password', 'admin')
+	timeout = float(zmscontext.getConfProperty('opensearch.url.timeout', 3))
+	verify = bool(zmscontext.getConfProperty('opensearch.ssl.verify', False))
+	username = zmscontext.getConfProperty('opensearch.username', 'admin')
+	password = zmscontext.getConfProperty('opensearch.password', 'admin')
 	auth = (username,password)
 	
 	# CAVE: connection_class RequestsHttpConnection

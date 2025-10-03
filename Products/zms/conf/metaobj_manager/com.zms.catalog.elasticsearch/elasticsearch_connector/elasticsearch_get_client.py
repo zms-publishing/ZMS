@@ -8,7 +8,16 @@ def elasticsearch_get_client(self):
 	# ${elasticsearch.username:admin}
 	# ${elasticsearch.password:admin}
 	# ${elasticsearch.ssl.verify:}
-	url_string = self.getConfProperty('elasticsearch.url')
+
+	zmscontext = self
+	# Check if the method is called from a ZMS context
+	try:
+		url_string = zmscontext.getConfProperty('opensearch.url')
+	except:
+		# Fallback if the method is not called from ZMS context
+		zmscontext = self.content
+		url_string = zmscontext.getConfProperty('elasticsearch.url', 'https://localhost:9200')
+
 	urls = [url.strip().rstrip('/') for url in url_string.split(',')]
 	hosts = []
 	use_ssl = False
@@ -23,10 +32,10 @@ def elasticsearch_get_client(self):
 				)
 			if urlparse(url).scheme=='https':
 				use_ssl = True
-	timeout = float(self.getConfProperty('elasticsearch.url.timeout', 3))
-	verify = bool(self.getConfProperty('elasticsearch.ssl.verify', False))
-	username = self.getConfProperty('elasticsearch.username', 'admin')
-	password = self.getConfProperty('elasticsearch.password', 'admin')
+	timeout = float(zmscontext.getConfProperty('elasticsearch.url.timeout', 3))
+	verify = bool(zmscontext.getConfProperty('elasticsearch.ssl.verify', False))
+	username = zmscontext.getConfProperty('elasticsearch.username', 'admin')
+	password = zmscontext.getConfProperty('elasticsearch.password', 'admin')
 	auth = (username,password)
 	
 	client = OpenSearch(

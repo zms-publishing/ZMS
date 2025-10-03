@@ -4,9 +4,11 @@
 .vscode
 build
 dist
-docker/alpine/var
-docker/elastic
-docker/solr
-docker/ubuntu/var
+docker/variants/alpine/var
+docker/variants/ubuntu/var
+docker/variants/relstorage/var
+docker/addons/elastic/data
+docker/addons/solr/data
+docker/addons/opensearch/data
 docker/zeo/var
 docker/zope/var

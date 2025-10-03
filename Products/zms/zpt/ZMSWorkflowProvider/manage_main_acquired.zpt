@@ -21,11 +21,12 @@
 	//-->
 </script>
 
-<form class="form-horizontal card" action="manage_changeWorkflow" method="post" enctype="multipart/form-data">
+<form id="workflow_acquired_form" name="workflow_acquired_form"  
+	class="form-horizontal card" action="manage_changeWorkflow" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 	<input type="hidden" name="key" value="custom"/>
 	<legend>Acquired Workflow</legend>
-	<table id="acquired_workflow" class="table table-bordered">
+	<table class="table table-bordered">
 		<thead>
 			<tr>
 				<th class="pl-3">Status</th>

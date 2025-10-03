@@ -63,4 +63,3 @@ def manage_opensearch_test(self):
 		resp_text = json.dumps(response)
 
 	return resp_text
-

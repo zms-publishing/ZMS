@@ -953,7 +953,7 @@ def unescape(s):
 
 
 security.declarePublic('http_request')
-def http_request(url, method='GET', **kwargs):
+def http_request(url, method='GET', return_type=None, **kwargs):
   import requests
   response = None
   if method == 'POST':
@@ -962,6 +962,12 @@ def http_request(url, method='GET', **kwargs):
     response = requests.get(url, **kwargs)
   elif method == 'PURGE':
     response = requests.request('PURGE', url, **kwargs)
+  if return_type == 'status_code':
+    response = response.status_code
+  elif return_type == 'text':
+    response = response.text
+  elif return_type == 'json':
+    response = response.json()
   return response
 
 
@@ -1403,7 +1409,7 @@ def getDateTime(t):
         t = time.localtime( t)
       else:
         if t.tm_isdst == 1:
-          # In struct_time normalize tm_dst-value  
+          # In struct_time normalize tm_dst-value
           # (DST: Daylight Saving Time) to avoid mktime-error
           t = list(t)
           t[8] = -1
@@ -2254,9 +2260,9 @@ def htmldiff(original, changed):
   try:
     from htmldiff2 import render_html_diff
     def remove_curly_braces(s):
-      return re.sub(r'/[\{\}]', '', s, flags=re.IGNORECASE) 
+      return re.sub(r'/[\{\}]', '', s, flags=re.IGNORECASE)
     def remove_html_comments(s):
-      return re.sub(r'<!--.*?-->', '', s, flags=re.DOTALL) 
+      return re.sub(r'<!--.*?-->', '', s, flags=re.DOTALL)
     # Remove html comments for processing with htmldiff2/genshi.
     original = remove_html_comments(remove_curly_braces(original))
     changed = remove_html_comments(remove_curly_braces(changed))

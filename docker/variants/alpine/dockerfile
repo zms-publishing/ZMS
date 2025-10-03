@@ -1,0 +1,48 @@
+FROM python:3.13-alpine
+
+# Install OS Requirements
+RUN apk add --no-cache python3 make gcc g++ git curl bash 
+RUN apk update && apk add python3-dev mariadb-dev openldap-dev
+
+# # Install VS Code Server and Python Extension
+# # CONSTANTLY FAILS ON ALPINE
+# ----------------------------
+# RUN apk add --no-cache gcompat nodejs npm 
+# RUN npm install -g --unsafe-perm code-server
+# RUN code-server --install-extension ms-python.python
+# ----------------------------
+# # SOLUTION Attach the VSCode Server to the Container and
+# # install the Python Extension manually via the VSCode UI
+
+# Add Zope User
+# https://stackoverflow.com/questions/49955097/how-do-i-add-a-user-when-im-using-alpine-as-a-base-image 
+RUN addgroup -S zope && adduser --disabled-password -S zope -G zope
+USER zope
+WORKDIR /home/zope/
+ENV VIRTUAL_ENV=/home/zope/venv
+ENV SHELL=/bin/bash
+
+# Install Zope/ZEO
+RUN python3 -m venv venv
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+RUN pip install -U pip wheel setuptools
+RUN pip install -r https://raw.githubusercontent.com/zopefoundation/Zope/master/requirements-full.txt
+RUN pip install -r https://raw.githubusercontent.com/zms-publishing/ZMS5/main/requirements.txt
+RUN pip install git+https://github.com/zms-publishing/ZMS.git
+RUN pip install ZEO
+RUN pip install itsdangerous
+RUN pip install debugpy
+
+# Create Zope Instance
+RUN mkwsgiinstance -d . -u admin:admin
+
+COPY ./etc ./etc
+COPY ./var ./var
+COPY ./Extensions ./Extensions
+
+EXPOSE 8086
+EXPOSE 8085
+
+# Start ZEO/Zope by Script via docker-compose
+# ENTRYPOINT ["/home/zope/etc/start.sh"]
+CMD ["/bin/sh -c"]

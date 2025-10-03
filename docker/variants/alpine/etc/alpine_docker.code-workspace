@@ -1,0 +1,66 @@
+{
+	"folders": [
+		{
+			"name": "ZMS-Docker",
+			"path": "/home/zope"
+		},
+	],
+	"settings": {
+		"python.defaultInterpreterPath": "/home/zope/venv/bin/python",
+		"window.zoomLevel": 0,
+		"git.ignoreMissingGitWarning": true,
+		"editor.minimap.enabled": false,
+		"editor.renderWhitespace": "all",
+		"editor.renderControlCharacters": false,
+		"workbench.iconTheme": "vs-minimal",
+		"files.associations": {
+			"*.zpt": "html",
+			"*.zcml": "xml"
+		},
+		"scm.alwaysShowActions": true,
+		"files.exclude": {
+			"*.pyc": true,
+			"*-all.min.*":true,
+			"**/cache/**": true,
+			"**/Data.*": true,
+		},
+		"search.exclude": { 
+			"**/apidocs/**": true
+		},
+		"files.eol": "\n",
+		"files.autoSave": "afterDelay",
+		"workbench.colorTheme": "Visual Studio Light",
+		"python.linting.enabled": true
+	},
+	"launch": {
+		"configurations": [
+			{
+				"name": "ZMS-Docker:8087",
+				"type": "debugpy",
+				"request": "launch",
+				"justMyCode": false,
+				"console": "integratedTerminal",
+				"program": "/home/zope/venv/bin/runwsgi",
+				"args": [
+					"--debug",
+					"--verbose",
+					"/home/zope/etc/zope.ini",
+					"http_port=8087"
+				],
+				"env": {
+					"PYTHONUNBUFFERED":"1",
+					"CONFIG_FILE": "/home/zope/etc/zope.ini",
+					"INSTANCE_HOME": "/home/zope/",
+					"CLIENT_HOME": "/home/zope/",
+					"PYTHON": "/home/zope/venv/bin/python",
+					"SOFTWARE_HOME": "/home/zope/venv/bin"
+				},
+				"serverReadyAction":{
+					"pattern":"Serving on http://0.0.0.0:8087",
+					"uriFormat": "http://admin:admin@127.0.0.1:8087/manage_main",
+					"action": "openExternally",
+				},
+			},
+		]
+	}
+}

@@ -11,7 +11,7 @@ def manage_opensearch_destroy(self):
 	client = self.opensearch_get_client(self)
 	resp_text = '//RESPONSE\n'
 	try:
-		response = client.indices.delete(index_name)
+		response = client.indices.delete(index=index_name)
 	except opensearchpy.exceptions.RequestError as e:
 		resp_text += '//%s\n'%(e.error)
 	resp_text += json.dumps(response, indent=2)

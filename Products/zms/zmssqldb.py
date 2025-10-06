@@ -303,13 +303,16 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       dbc = da
       if not da.meta_type.startswith('SQLAlchemyDA'):
         dbc = da._v_database_connection
-      c = getattr(dbc, "execute", None)
-      if c is not None:
-        result = dbc.execute(sql, params, max_rows)
+      c = getattr(da, "execute", None)
+      # Avoid recursion: only use DA's execute if it's not this instance's execute method
+      if c is not None and getattr(c, '__func__', c) != getattr(self.execute, '__func__', self.execute):
+          # Execute via DA (preferred, for Core / Raw SQL).
+          result = c(sql, params, max_rows)
       else:
-        result = dbc.query(self.substitute_params(sql, params), max_rows)
+          # Execute via Database Connection (fallback, for ZRDB-based DAs).
+          result = dbc.query(self.substitute_params(sql, params), max_rows)
       if encoding:
-        result = self.assemble_query_result(result, encoding)
+          result = self.assemble_query_result(result, encoding)
       return result
 
 

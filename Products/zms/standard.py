@@ -1957,14 +1957,14 @@ def is_equal(x, y):
 
 security.declarePublic('scalar')
 def scalar(o):
-  if isinstance(o, list) or isinstance(o, tuple):
+  if isinstance(o, time.struct_time):
+    return format_datetime_iso(o)
+  elif isinstance(o, list) or isinstance(o, tuple):
     return [scalar(x) for x in o]
   elif type(o) is dict:
     return {k: scalar(o[k]) for k in o}
   elif type(o) in [int, float, bool, str]:
     return o
-  elif type(o) is time.struct_time:
-    return format_datetime_iso(o)
   elif o is not None:
     return str(o)
   return None

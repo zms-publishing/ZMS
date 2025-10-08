@@ -1,6 +1,8 @@
 # encoding: utf-8
 
 import unittest
+import json
+import time
 from unittest.mock import Mock, MagicMock, patch
 from Products.zms import standard
 from Products.zms import zms
@@ -100,3 +102,9 @@ class StandardTest(unittest.TestCase):
         url = "http://foo/bar?john=doe"
         v = standard.http_import(context,url)
 
+    def test_scalar(self):
+        self.assertEqual(123, standard.scalar(123))
+        self.assertEqual(12.34, standard.scalar(12.34))
+        self.assertEqual("abc", standard.scalar("abc"))
+        self.assertEqual('"2024-01-01T00:00:00-00:00"', json.dumps(standard.scalar(time.struct_time((2024, 1, 1, 0, 0, 0, 0, 1, -1)))))
+        self.assertEqual('{"key": "value"}', json.dumps(standard.scalar( {"key": "value"} ) ) )

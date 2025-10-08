@@ -227,7 +227,7 @@ class RestApiController(object):
                 try:
                     data = json.dumps(data)
                 except:
-                    data = [{k:i[k] for k in i.keys() if isinstance(i[k],(str,int,float))} for i in data]
+                    data = [{k:i[k] for k in i.keys() if isinstance(i[k],(str,int,float)) and not k=='records'} for i in data]
                     data = json.dumps(data)
             return data
         return None

@@ -1954,6 +1954,22 @@ def is_equal(x, y):
       return cmp(x.toXml(),y.toXml())==0
   return cmp(x, y)==0
 
+
+security.declarePublic('scalar')
+def scalar(o):
+  if isinstance(o, list) or isinstance(o, tuple):
+    return [scalar(x) for x in o]
+  elif type(o) is dict:
+    return {k: scalar(o[k]) for k in o}
+  elif type(o) in [int, float, bool, str]:
+    return o
+  elif type(o) is time.struct_time:
+    return format_datetime_iso(o)
+  elif o is not None:
+    return str(o)
+  return None
+
+
 security.declarePublic('parse_json')
 def parse_json(*args, **kwargs):
   """

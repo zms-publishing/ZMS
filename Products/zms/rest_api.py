@@ -221,14 +221,7 @@ class RestApiController(object):
             REQUEST.RESPONSE.setHeader('Content-Type',ct)
             REQUEST.RESPONSE.setHeader('Content-Disposition', 'inline;filename="%s.%s"'%((self.ids+['get'])[-1],ct.split('/')[-1]))
             if ct == 'application/json':
-                # Filtering data records on JSON serialization:
-                # - only str, int, float are allowed as values
-                # - lists and dicts are not allowed as values (except for Blob fields)
-                try:
-                    data = json.dumps(data)
-                except:
-                    data = [{k:i[k] for k in i.keys() if isinstance(i[k],(str,int,float)) and not k=='records'} for i in data]
-                    data = json.dumps(data)
+                data = json.dumps(standard.scalar(data))
             return data
         return None
 

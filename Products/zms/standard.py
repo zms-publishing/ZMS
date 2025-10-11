@@ -2627,6 +2627,11 @@ def is_conf_enabled(context, setting):
   return pybool(conf_property)
 
 
+security.declarePublic('get_env')
+def get_env(key, default=None):
+    return os.getenv(key, default)
+
+
 class initutil(object):
   """Define the initialize() util."""
 

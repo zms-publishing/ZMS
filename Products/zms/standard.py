@@ -2326,16 +2326,14 @@ def dt_exec(context, v, o={}):
   @rtype: C{any}
   """
   if type(v) is str:
-    prop = context.getConfProperty('ZMS.keywords.prevent')
-    if isinstance(prop, str):
-        for keyword in prop.split():
-            if keyword in v:
-                raise zExceptions.MethodNotAllowed(f'Usage of "{keyword}" is forbidden.')
     if v.startswith('##') and v.find('return ') > 0:
+      check_prevented_keywords(context, value=v, can_ignore=True)
       v = dt_py(context, v, o)
     elif v.find('<tal:') >= 0:
+      check_prevented_keywords(context, value=v, can_ignore=True)
       v = dt_tal(context, v, dict(o))
     elif v.find('<dtml-') >= 0:
+      check_prevented_keywords(context, value=v, can_ignore=True)
       v = dt_html(context, v, context.REQUEST)
   return v
 
@@ -2635,13 +2633,20 @@ def is_conf_enabled(context, setting):
 security.declarePublic('get_env')
 def get_env(key, context=None, default=None):
     if context is not None:
-        prop = context.getConfProperty('ZMS.keywords.prevent')
-        if isinstance(prop, str):
-            for keyword in prop.split():
-                if keyword in key:
-                    raise zExceptions.MethodNotAllowed(f'Usage of "{keyword}" is forbidden.')
-            return os.getenv(key, default)
+        check_prevented_keywords(context, value=key, can_ignore=False)
+        return os.getenv(key, default)
     return default
+
+
+def check_prevented_keywords(context, value, can_ignore):
+    prop = context.getConfProperty('ZMS.keywords.prevent')
+    if isinstance(prop, str):
+        for keyword in prop.split():
+            if keyword in value:
+                raise zExceptions.MethodNotAllowed(f'Usage of "{keyword}" is forbidden.')
+    else:
+        if not can_ignore:
+            raise zExceptions.MethodNotAllowed(f'Conf property "ZMS.keywords.prevent" not set.')
 
 
 class initutil(object):

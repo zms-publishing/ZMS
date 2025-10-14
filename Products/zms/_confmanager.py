@@ -545,7 +545,7 @@ class ConfManager(
         {'key':'ZMS.input.file.maxlength','title':'File.upload maxlength','desc':'ZMS can limit the maximum upload-file size to the given value (in Bytes).','datatype':'string'},
         {'key':'ZMS.input.image.maxlength','title':'Image.upload maxlength','desc':'ZMS can limit the maximum upload-image size to the given value (in Bytes).','datatype':'string'},
         {'key':'ZMS.log.root','title':'ZMS.log.root','desc':'Use ZMSLog at absolute root node instead of current portal master','datatype':'boolean'},
-        {'key':'ZMS.keywords.prevent','title':'ZMS.keywords.prevent','desc':'Prevent usage of these keywords on standard.dt_exec or standard.get_env','datatype':'string','default':''},
+        {'key':'ZMS.input.exec.restrict','title':'ZMS.input.exec.restrict','desc':'Prevent usage of these keywords on standard.dt_exec and standard.get_env','datatype':'string','default':''},
         {'key':'ZMSGraphic.superres','title':'Image superres-attribute','desc':'Super-resolution attribute for ZMS standard image-objects.','datatype':'boolean','default':0},
         {'key':'ZCatalog.TextIndexType','title':'Search with TextIndex-type','desc':'Use specified TextIndex-type (default: ZCTextIndex)','datatype':'string','default':'ZCTextIndex'},
         {'key':'ZMSIndexZCatalog.ObjectImported.reindex','title':'Reindex ZMSIndex on content import','desc':'Please be aware that activating implicit ZMSIndex-resync on content import can block bigger sites for a while','datatype':'boolean','default':0},

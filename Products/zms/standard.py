@@ -2630,14 +2630,6 @@ def is_conf_enabled(context, setting):
   return pybool(conf_property)
 
 
-security.declarePublic('get_env')
-def get_env(key, context=None, default=None):
-    if context is not None:
-        check_restricted_inputs(context, value=key, force_restriction=True)
-        return os.getenv(key, default)
-    return default
-
-
 def check_restricted_inputs(context, value, force_restriction=False):
     prop = context.getConfProperty('ZMS.input.exec.restrict')
     if isinstance(prop, str) and prop.strip() != '':

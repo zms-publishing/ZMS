@@ -2640,7 +2640,7 @@ def get_env(key, context=None, default=None):
 
 def check_restricted_inputs(context, value, force_restriction=False):
     prop = context.getConfProperty('ZMS.input.exec.restrict')
-    if isinstance(prop, str):
+    if isinstance(prop, str) and prop.strip() != '':
         for keyword in prop.split():
             if keyword in value:
                 raise zExceptions.MethodNotAllowed(f'Usage of "{keyword}" is forbidden.')

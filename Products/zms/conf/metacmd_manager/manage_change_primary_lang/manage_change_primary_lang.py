@@ -17,15 +17,17 @@ def traverse(node, prim_lang, new_prim_lang, swap_content=False):
   standard.writeLog(node,'coverage=%s'%str(coverage))
   if coverage == 'global.%s'%prim_lang:
     node.attr('attr_dc_coverage','global.%s'%new_prim_lang)
-  for obj_attr in node.getObjAttrs():
-      if obj_attr.get('multilang',False):
-        for obj_vers in node.getObjVersions():
-            prim_val = node._getObjAttrValue(obj_attr, obj_vers, prim_lang)
-            prim_key = node._getObjAttrName(obj_attr, prim_lang)
-            new_prim_val = node._getObjAttrValue(obj_attr, obj_vers, new_prim_lang)
-            new_prim_key = node._getObjAttrName(obj_attr, new_prim_lang)
-            standard.operator_setattr(obj_vers, prim_key, new_prim_val)
-            standard.operator_setattr(obj_vers, new_prim_key, prim_val)
+  if swap_content:
+    for key in node.getObjAttrs():
+        obj_attr = node.getObjAttr(key)
+        if obj_attr.get('multilang',False):
+          for obj_vers in node.getObjVersions():
+              prim_key = node.getObjAttrName(obj_attr, prim_lang)
+              prim_val = standard.operator_getattr(obj_vers, prim_key, None)
+              new_prim_key = node.getObjAttrName(obj_attr, new_prim_lang)
+              new_prim_val = standard.operator_getattr(obj_vers, new_prim_key, None)
+              standard.operator_setattr(obj_vers, prim_key, new_prim_val)
+              standard.operator_setattr(obj_vers, new_prim_key, prim_val)
   for child_node in node.getChildNodes():
     c += traverse(child_node, prim_lang, new_prim_lang, swap_content)
   if node.meta_id == 'ZMS':

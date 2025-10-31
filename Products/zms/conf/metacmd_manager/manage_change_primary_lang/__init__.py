@@ -34,7 +34,7 @@ class manage_change_primary_lang:
 	package = ""
 
 	# Revision
-	revision = "0.0.1"
+	revision = "0.0.2"
 
 	# Roles
 	roles = ["ZMSAdministrator"]

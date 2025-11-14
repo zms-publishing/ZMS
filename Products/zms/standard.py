@@ -1191,7 +1191,7 @@ def re_sub( pattern, replacement, subject, ignorecase=False):
   Convenience-function since re cannot be imported in restricted python.
 
   @param pattern: the regular expression to which this string is to be matched
-  @type pattern: C{str}
+  @type pattern: C{raw str}
   @param replacement: the string to be substituted for each match
   @type replacement: C{str}
   @param subject: the string in which the replacement has to be done
@@ -1201,13 +1201,14 @@ def re_sub( pattern, replacement, subject, ignorecase=False):
   @return: the resulting string.
   @rtype: C{str}
   """
+  pattern = r"{}".format(pattern)  # Ensure pattern is treated as a raw string
   if ignorecase:
     return re.compile( pattern, re.IGNORECASE).sub( replacement, subject)
   else:
     return re.compile( pattern).sub( replacement, subject)
 
 security.declarePublic('re_search')
-def re_search( pattern, subject, ignorecase=False):
+def re_search(pattern, subject, ignorecase=False):
   """
   Scan through string looking for a location where the regular expression
   pattern produces a match, and return a corresponding MatchObject
@@ -1216,14 +1217,15 @@ def re_search( pattern, subject, ignorecase=False):
   point in the string.
   convenience-function since re cannot be imported in restricted python
   @param pattern: the regular expression to which this string is to be matched
-  @type pattern: C{str}
+  @type pattern: C{raw str}
   @rtype: C{str}
   """
+  pattern = r"{}".format(pattern)  # Ensure pattern is treated as a raw string
   if ignorecase:
-    s = re.compile( pattern, re.IGNORECASE).split( subject)
+    s = re.compile(pattern, re.IGNORECASE).split(subject)
   else:
-    s = re.compile( pattern).split( subject)
-  return [s[x*2+1] for x in range(len(s)//2)]
+    s = re.compile(pattern).split(subject)
+  return [s[x * 2 + 1] for x in range(len(s) // 2)]
 
 security.declarePublic('re_findall')
 def re_findall( pattern, text, ignorecase=False):
@@ -1235,9 +1237,10 @@ def re_findall( pattern, text, ignorecase=False):
   Empty matches are included in the result unless they touch the beginning of another match
   convenience-function since re cannot be imported in restricted python
   @param pattern: the regular expression to which this string is to be matched
-  @type pattern: C{str}
+  @type pattern: C{raw str}
   @rtype: C{str}
   """
+  pattern = r"{}".format(pattern)  # Ensure pattern is treated as a raw string
   if ignorecase:
     r = re.compile( pattern, re.IGNORECASE)
   else:

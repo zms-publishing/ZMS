@@ -9,10 +9,12 @@ will request the html stream and extract it at the CSS node selector.
 
 First add an empty file into file system:
 <pre>$INSTANCE_HOME/var/sqlite/extracts.sqlite</pre>
-First insert a Zope-Folder 'url_extrac' into the ZMS root folder. Here add a
-ZSQLiteDA object named <code>extracts</code> connecting to the filesystem file.
-After importing the <i>url_extract_lib</i> into ZMS, inialize the databse with the ZSQL object
+First insert a Zope-Folder 'url_extract' into the ZMS root folder. Here add an Zope-
+SQLite-Database-Adapter (DA\*) object named <code>extracts</code> connecting to the filesystem file.
+After importing the <i>url_extract_lib</i> into ZMS, inialize the database with the ZSQL object
 url_extract/sql_create by clicking on the object's view' tab in Zope-ZMI.
+
+\* Hint: [SQLAlchemyDA](https://github.com/zopefoundation/Products.SQLAlchemyDA) is a general purpose DA und works with all kinds of SQL databases. To apply this DA the Python environment needs having installed the two libraries: _SQLAlchemy_ and _Products.SQLAlchemyDA_.
 
 ## Use
 

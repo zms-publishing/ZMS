@@ -86,8 +86,11 @@
 								class python:' '.join(['get_uid']+[['text-danger'],[]][cataloged]);">
 							<tal:block tal:content="python:'ID:%s'%(here.get_uid())">unique-id</tal:block>
 							<tal:block tal:condition="python:request.get('refresh_catalog','False')=='True'">
-								<tal:block tal:define="dummy0 python:standard.triggerEvent(here,'*.ObjectMoved')"></tal:block>
-                                <script>location.href='?refresh_catalog=False'</script>
+								<script tal:define="dummy0 python:standard.triggerEvent(here,'*.ObjectMoved')">
+								//<!--
+									location.href='?refresh_catalog=False';
+								//-->
+								</script>
 							</tal:block>
 							<a tal:condition="not:cataloged" 
 								href="javascript:;" title="Refresh Catalog Item"
@@ -337,8 +340,9 @@
 		<pre tal:condition="python:isinstance(here.attr('readme'),str)"
 			><span tal:define="
 				Std modules/Products.PythonScripts/standard;
-				newline_to_br nocall:Std/newline_to_br"
-				tal:replace="python:here.attr('readme')">
+				newline_to_br nocall:Std/newline_to_br;
+				readme_txt python:here.attr('readme')"
+				tal:replace="structure python:context.content.renderText('markdown','text',readme_txt,request)">
 				readme as constant/string
 			</span>
 		</pre>

@@ -8,7 +8,12 @@
 <script type="text/javascript" charset="UTF-8" src="/++resource++zmi/ace.ajax.org/ace.js"></script>
 <script type="text/javascript">
 //<!--
-	$(function(){
+	$ZMI.registerReady(function(){
+		if ($('#editor_container').length==0) {
+			show_ace_editor();
+		}
+	});
+	function show_ace_editor() {
 		$('textarea#text_'+getZMILang()).wrap('<div id="editor_container" class="form-group px-0"></div>');
 		$('textarea#text_'+getZMILang()).before('<div id="editor">ace editor text</div>');
 		var dom = ace.require("ace/lib/dom");
@@ -93,7 +98,7 @@
 		$('#tr_text_' + getZMILang() + ' label span').attr('title','Zope Programming Code: ZPT, Python-Script, DTML, JS/HTML/CSS');
 		$('#tr_info input.form-control').addClass('alert-info');
 
-	});
+	};
 //-->
 </script>
 <style>

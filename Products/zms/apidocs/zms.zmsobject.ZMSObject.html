@@ -7,7 +7,7 @@
   <head>
     
     <title>zms.zmsobject.ZMSObject</title>
-    <meta name="generator" content="pydoctor 22.5.1"> 
+    <meta name="generator" content="pydoctor 24.11.2"> 
         
     </meta>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
@@ -15,6 +15,7 @@
     <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="apidocs.css" />
     <link rel="stylesheet" type="text/css" href="extra.css" />
+    
 </head>
 
   <body>
@@ -52,7 +53,7 @@
             
             <span class="input-group-btn">
               <a style="display: none;" class="btn btn-default" id="search-clear-button" title="Clear" onclick="clearSearch()"><img src="fonts/x-circle.svg" alt="Clear" /></a>
-              <a class="btn btn-default" id="search-help-button" title="Help" onclick="toggleSearchHelpText()"><img src="fonts/info.svg" alt="Help" /></a>
+              <a class="btn btn-default" id="apidocs-help-button" title="Help" href="apidocs-help.html"><img src="fonts/info.svg" alt="Help" /></a>
             </span>
           </div>
         </div>
@@ -76,39 +77,6 @@
             <h1>Cannot search: JavaScript is not supported/enabled in your browser.</h1>
         </noscript>
 
-        <div class="hint" id="search-help-box">
-          <p class="rst-last">
-      
-            Search bar offers the following options:
-            <ul>   
-                <li>
-                  <strong>Term presence.</strong> The below example searches for documents that 
-                    must contain “foo”, might contain “bar” and must not contain “baz”: <code>+foo bar -baz</code>
-                </li> 
-
-                <li>
-                  <strong>Wildcards.</strong> The below example searches for documents with words beginning with “foo”: <code>foo*</code>
-                </li> 
-
-                <li>
-                  <strong>Search in specific fields.</strong> The following search matches all objects 
-                  in "twisted.mail" that matches “search”: <code>+qname:twisted.mail.* +search</code>
-
-                  <p>
-                    Possible fields: 'name', 'qname' (fully qualified name), 'docstring', and 'kind'.
-                    Last two fields are only applicable if "search in docstrings" is enabled.
-                  </p>
-                </li>
-
-                <li>
-                  <strong>Fuzzy matches.</strong> The following search matches all documents 
-                  that have a word within 1 edit distance of “foo”: <code>foo~1</code>
-                </li>
-            </ul>
-
-          </p>
-        </div>
-
         <div id="search-status"> </div>
 
         <div class="warning" id="search-warn-box" style="display: none;">
@@ -119,8 +87,8 @@
           <!-- Filled dynamically by JS -->
         </table>
         
-        <div style="margin-top: 8px;">
-          <p>Results provided by <a href="https://lunrjs.com">Lunr.js</a></p>
+        <div style="margin-top: 10px;">
+          <p>For more information on the search, visit the <a href="apidocs-help.html#rst-search">help page</a>.</p>
         </div>
       </div>
 
@@ -564,16 +532,6 @@
 
         
             <div class="itemName"><code><a href="#isAncestor" class="internal-link" title="zms.zmsobject.ZMSObject.isAncestor">is<wbr></wbr>Ancestor</a></code>
-            </div>
-        
-
-    </li><li class="">
-        
-        
-        
-
-        
-            <div class="itemName"><code><a href="#isFeatureEnabled" class="internal-link" title="zms.zmsobject.ZMSObject.isFeatureEnabled">is<wbr></wbr>Feature<wbr></wbr>Enabled</a></code>
             </div>
         
 
@@ -1284,7 +1242,7 @@
         </div>
 
         <div class="extrasDocstring">
-          <p><code><span class="py-keyword">class</span> <span class="py-defname">ZMSObject</span>(ZMSItem.ZMSItem, _accessmanager.AccessableObject, _versionmanager.VersionItem, ZMSWorkflowItem.ZMSWorkflowItem, _copysupport.CopySupport, _cachemanager.ReqBuff, _deprecatedapi.DeprecatedAPI, _multilangmanager.MultiLanguageObject, _exportable.Exportable, _objattrs.ObjAttrs, _objchildren.ObjChildren, _objinputs.ObjInputs, _objtypes.ObjTypes, _pathhandler.PathHandler, _textformatmanager.TextFormatObject, _zreferableitem.ZReferableItem): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L61" class="sourceLink">(source)</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSObject</span>(ZMSItem.ZMSItem, _accessmanager.AccessableObject, _versionmanager.VersionItem, ZMSWorkflowItem.ZMSWorkflowItem, _copysupport.CopySupport, _cachemanager.ReqBuff, _deprecatedapi.DeprecatedAPI, _multilangmanager.MultiLanguageObject, _exportable.Exportable, _objattrs.ObjAttrs, _objchildren.ObjChildren, _objinputs.ObjInputs, _objtypes.ObjTypes, _pathhandler.PathHandler, _textformatmanager.TextFormatObject, _zreferableitem.ZReferableItem): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L63" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms.zmsobject.ZMSObject.__init__">ZMSObject(id, sort_id)</a></code></p>
           <p><a href="classIndex.html#zms.zmsobject.ZMSObject">View In Hierarchy</a></p>
         </div>
 
@@ -1500,11 +1458,6 @@
     
     <td>Method</td>
     <td><code><a href="#isAncestor" class="internal-link" title="zms.zmsobject.ZMSObject.isAncestor">is<wbr></wbr>Ancestor</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
-  </tr><tr class="method">
-    
-    <td>Method</td>
-    <td><code><a href="#isFeatureEnabled" class="internal-link" title="zms.zmsobject.ZMSObject.isFeatureEnabled">is<wbr></wbr>Feature<wbr></wbr>Enabled</a></code></td>
     <td><span class="undocumented">Undocumented</span></td>
   </tr><tr class="method">
     
@@ -1835,17 +1788,21 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">__init__</span>(self, id=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, sort_id=0):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L128">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">__init__</span><span class="function-signature">(self, id=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, sort_id=0)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L130">
       
       (source)
+    </a>
+    <a class="headerLink" href="#__init__" title="zms.zmsobject.ZMSObject.__init__">
+      
+      
+      ¶
     </a>
   </div>
   <div class="docstring functionBody">
     
-    
-    <div><p>ZMSObject.__init__</p>
-</div>
+    <div><p>ZMSObject.__init__</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -1858,14 +1815,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">__proxy__</span>(self):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L275">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">__proxy__</span><span class="function-signature">(self)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L258">
       
       (source)
     </a>
+    <a class="headerLink" href="#__proxy__" title="zms.zmsobject.ZMSObject.__proxy__">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -1880,17 +1842,21 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">ajaxGetBodyContent</span>(self, REQUEST, forced=False):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1298">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">ajaxGetBodyContent</span><span class="function-signature">(self, REQUEST, forced=False)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1282">
       
       (source)
+    </a>
+    <a class="headerLink" href="#ajaxGetBodyContent" title="zms.zmsobject.ZMSObject.ajaxGetBodyContent">
+      
+      
+      ¶
     </a>
   </div>
   <div class="docstring functionBody">
     
-    
-    <div><p>HTML presentation in body-content.</p>
-</div>
+    <div><p>HTML presentation in body-content.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -1903,14 +1869,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">aq_absolute_url</span>(self, relative=0):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L847">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">aq_absolute_url</span><span class="function-signature">(self, relative=0)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L831">
       
       (source)
     </a>
+    <a class="headerLink" href="#aq_absolute_url" title="zms.zmsobject.ZMSObject.aq_absolute_url">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -1925,14 +1896,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">breadcrumbs_obj_path</span>(self, portalMaster=True):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L658">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">breadcrumbs_obj_path</span><span class="function-signature">(self, portalMaster=True)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L642">
       
       (source)
     </a>
+    <a class="headerLink" href="#breadcrumbs_obj_path" title="zms.zmsobject.ZMSObject.breadcrumbs_obj_path">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -1947,14 +1923,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">changeProperties</span>(self, lang):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L684">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">changeProperties</span><span class="function-signature">(self, lang)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L668">
       
       (source)
     </a>
+    <a class="headerLink" href="#changeProperties" title="zms.zmsobject.ZMSObject.changeProperties">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -1969,17 +1950,21 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">display_icon</span>(self, *args, **kwargs):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L597">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">display_icon</span><span class="function-signature">(self, *args, **kwargs)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L581">
       
       (source)
+    </a>
+    <a class="headerLink" href="#display_icon" title="zms.zmsobject.ZMSObject.display_icon">
+      
+      
+      ¶
     </a>
   </div>
   <div class="docstring functionBody">
     
-    
-    <div><p>ZMSObject.display_icon</p>
-</div>
+    <div><p>ZMSObject.display_icon</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -1992,14 +1977,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">display_type</span>(self, *args, **kwargs):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L638">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">display_type</span><span class="function-signature">(self, *args, **kwargs)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L622">
       
       (source)
     </a>
+    <a class="headerLink" href="#display_type" title="zms.zmsobject.ZMSObject.display_type">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -2014,17 +2004,21 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">f_css_defaults</span>(self, REQUEST=None):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L165">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">f_css_defaults</span><span class="function-signature">(self, REQUEST=None)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L148">
       
       (source)
+    </a>
+    <a class="headerLink" href="#f_css_defaults" title="zms.zmsobject.ZMSObject.f_css_defaults">
+      
+      
+      ¶
     </a>
   </div>
   <div class="docstring functionBody">
     
-    
-    <div><p>ZMSObject.f_css_defaults</p>
-</div>
+    <div><p>ZMSObject.f_css_defaults</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -2037,17 +2031,21 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">FileFromData</span>(self, data, filename=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, content_type=None):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L281">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">FileFromData</span><span class="function-signature">(self, data, filename=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, content_type=None)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L264">
       
       (source)
+    </a>
+    <a class="headerLink" href="#FileFromData" title="zms.zmsobject.ZMSObject.FileFromData">
+      
+      
+      ¶
     </a>
   </div>
   <div class="docstring functionBody">
     
-    
-    <div><p>Creates a new instance of a file from given data.</p>
-<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">data:</span><tt class="rst-docutils literal">string</tt></td><td class="fieldArgDesc">File-data (binary)</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">filename:</span><tt class="rst-docutils literal">string</tt></td><td class="fieldArgDesc">Filename</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">content<wbr></wbr>_type</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><code><a href="zms._blobfields.MyFile.html" class="internal-link" title="zms._blobfields.MyFile">MyFile</a></code></td><td class="fieldArgDesc">New instance of file.</td></tr></table></div>
+    <div><p>Creates a new instance of a file from given data.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">data:</span><tt class="rst-docutils rst-literal">string</tt></td><td class="fieldArgDesc">File-data (binary)</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">filename:</span><tt class="rst-docutils rst-literal">string</tt></td><td class="fieldArgDesc">Filename</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">content<wbr></wbr>_type</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><code><a href="zms._blobfields.MyFile.html" class="internal-link" title="zms._blobfields.MyFile">MyFile</a></code></td><td class="fieldArgDesc">New instance of file.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -2060,14 +2058,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">get_oid</span>(self):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L225">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">get_oid</span><span class="function-signature">(self)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L208">
       
       (source)
     </a>
+    <a class="headerLink" href="#get_oid" title="zms.zmsobject.ZMSObject.get_oid">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -2082,14 +2085,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">get_request_context</span>(self, REQUEST, key, defaultValue=None):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L254">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">get_request_context</span><span class="function-signature">(self, REQUEST, key, defaultValue=None)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L237">
       
       (source)
     </a>
+    <a class="headerLink" href="#get_request_context" title="zms.zmsobject.ZMSObject.get_request_context">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -2104,14 +2112,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">get_size</span>(self, REQUEST={}):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L512">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">get_size</span><span class="function-signature">(self, REQUEST={})</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L496">
       
       (source)
     </a>
+    <a class="headerLink" href="#get_size" title="zms.zmsobject.ZMSObject.get_size">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -2126,14 +2139,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">get_uid</span>(self, forced=False):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L201">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">get_uid</span><span class="function-signature">(self, forced=False)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L184">
       
       (source)
     </a>
+    <a class="headerLink" href="#get_uid" title="zms.zmsobject.ZMSObject.get_uid">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -2148,14 +2166,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">getAbsoluteUrlInContext</span>(self, context, abs_url=None, forced=False):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L936">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getAbsoluteUrlInContext</span><span class="function-signature">(self, context, abs_url=None, forced=False)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L920">
       
       (source)
     </a>
+    <a class="headerLink" href="#getAbsoluteUrlInContext" title="zms.zmsobject.ZMSObject.getAbsoluteUrlInContext">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -2170,14 +2193,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">getBodyContent</span>(self, REQUEST, forced=False):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1304">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getBodyContent</span><span class="function-signature">(self, REQUEST, forced=False)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1288">
       
       (source)
     </a>
+    <a class="headerLink" href="#getBodyContent" title="zms.zmsobject.ZMSObject.getBodyContent">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -2192,14 +2220,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">getDCCoverage</span>(self, REQUEST={}):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L531">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getDCCoverage</span><span class="function-signature">(self, REQUEST={})</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L515">
       
       (source)
     </a>
+    <a class="headerLink" href="#getDCCoverage" title="zms.zmsobject.ZMSObject.getDCCoverage">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -2214,14 +2247,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">getDCDescription</span>(self, REQUEST):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L544">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getDCDescription</span><span class="function-signature">(self, REQUEST)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L528">
       
       (source)
     </a>
+    <a class="headerLink" href="#getDCDescription" title="zms.zmsobject.ZMSObject.getDCDescription">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -2236,14 +2274,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">getDeclId</span>(self, REQUEST={}):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L823">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getDeclId</span><span class="function-signature">(self, REQUEST={})</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L807">
       
       (source)
     </a>
+    <a class="headerLink" href="#getDeclId" title="zms.zmsobject.ZMSObject.getDeclId">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -2258,14 +2301,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">getDeclUrl</span>(self, REQUEST={}):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L864">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getDeclUrl</span><span class="function-signature">(self, REQUEST={})</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L848">
       
       (source)
     </a>
+    <a class="headerLink" href="#getDeclUrl" title="zms.zmsobject.ZMSObject.getDeclUrl">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -2280,14 +2328,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">getHref2Html</span>(self, fct, pageext, REQUEST):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L902">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getHref2Html</span><span class="function-signature">(self, fct, pageext, REQUEST)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L886">
       
       (source)
     </a>
+    <a class="headerLink" href="#getHref2Html" title="zms.zmsobject.ZMSObject.getHref2Html">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -2302,14 +2355,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">getHref2IndexHtml</span>(self, REQUEST, deep=1):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L998">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getHref2IndexHtml</span><span class="function-signature">(self, REQUEST, deep=1)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L982">
       
       (source)
     </a>
+    <a class="headerLink" href="#getHref2IndexHtml" title="zms.zmsobject.ZMSObject.getHref2IndexHtml">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -2324,14 +2382,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">getHref2IndexHtmlInContext</span>(self, context, index_html=None, REQUEST=None, deep=1):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L972">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getHref2IndexHtmlInContext</span><span class="function-signature">(self, context, index_html=None, REQUEST=None, deep=1)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L956">
       
       (source)
     </a>
+    <a class="headerLink" href="#getHref2IndexHtmlInContext" title="zms.zmsobject.ZMSObject.getHref2IndexHtmlInContext">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -2346,14 +2409,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">getLevel</span>(self):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1037">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getLevel</span><span class="function-signature">(self)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1021">
       
       (source)
     </a>
+    <a class="headerLink" href="#getLevel" title="zms.zmsobject.ZMSObject.getLevel">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -2368,14 +2436,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">getPageExt</span>(self, REQUEST):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L883">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getPageExt</span><span class="function-signature">(self, REQUEST)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L867">
       
       (source)
     </a>
+    <a class="headerLink" href="#getPageExt" title="zms.zmsobject.ZMSObject.getPageExt">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -2390,14 +2463,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">getParentByDepth</span>(self, deep):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1078">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getParentByDepth</span><span class="function-signature">(self, deep)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1062">
       
       (source)
     </a>
+    <a class="headerLink" href="#getParentByDepth" title="zms.zmsobject.ZMSObject.getParentByDepth">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -2412,14 +2490,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">getParentByLevel</span>(self, level):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1091">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getParentByLevel</span><span class="function-signature">(self, level)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1075">
       
       (source)
     </a>
+    <a class="headerLink" href="#getParentByLevel" title="zms.zmsobject.ZMSObject.getParentByLevel">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -2434,14 +2517,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">getParentNode</span>(self):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1104">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getParentNode</span><span class="function-signature">(self)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1088">
       
       (source)
     </a>
+    <a class="headerLink" href="#getParentNode" title="zms.zmsobject.ZMSObject.getParentNode">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -2456,14 +2544,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">getPath</span>(self, *args, **kwargs):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L134">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getPath</span><span class="function-signature">(self, *args, **kwargs)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L136">
       
       (source)
     </a>
+    <a class="headerLink" href="#getPath" title="zms.zmsobject.ZMSObject.getPath">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -2478,14 +2571,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">getSelf</span>(self, meta_type=None):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L551">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getSelf</span><span class="function-signature">(self, meta_type=None)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L535">
       
       (source)
     </a>
+    <a class="headerLink" href="#getSelf" title="zms.zmsobject.ZMSObject.getSelf">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -2500,14 +2598,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">getSortId</span>(self):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1148">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getSortId</span><span class="function-signature">(self)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1132">
       
       (source)
     </a>
+    <a class="headerLink" href="#getSortId" title="zms.zmsobject.ZMSObject.getSortId">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -2522,14 +2625,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">getTitle</span>(self, REQUEST):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L351">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getTitle</span><span class="function-signature">(self, REQUEST)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L334">
       
       (source)
     </a>
+    <a class="headerLink" href="#getTitle" title="zms.zmsobject.ZMSObject.getTitle">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -2544,14 +2652,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">getTitlealt</span>(self, REQUEST):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L380">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getTitlealt</span><span class="function-signature">(self, REQUEST)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L363">
       
       (source)
     </a>
+    <a class="headerLink" href="#getTitlealt" title="zms.zmsobject.ZMSObject.getTitlealt">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -2566,14 +2679,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">getTreeNodes</span>(self, REQUEST={}, meta_types=None):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1118">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getTreeNodes</span><span class="function-signature">(self, REQUEST={}, meta_types=None)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1102">
       
       (source)
     </a>
+    <a class="headerLink" href="#getTreeNodes" title="zms.zmsobject.ZMSObject.getTreeNodes">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -2588,14 +2706,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">getType</span>(self):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L420">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getType</span><span class="function-signature">(self)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L403">
       
       (source)
     </a>
+    <a class="headerLink" href="#getType" title="zms.zmsobject.ZMSObject.getType">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -2610,14 +2733,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">ImageFromData</span>(self, data, filename=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, content_type=None):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L301">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">ImageFromData</span><span class="function-signature">(self, data, filename=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, content_type=None)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L284">
       
       (source)
     </a>
+    <a class="headerLink" href="#ImageFromData" title="zms.zmsobject.ZMSObject.ImageFromData">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -2632,14 +2760,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">is_child_of</span>(self, ob):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1050">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">is_child_of</span><span class="function-signature">(self, ob)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1034">
       
       (source)
     </a>
+    <a class="headerLink" href="#is_child_of" title="zms.zmsobject.ZMSObject.is_child_of">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -2654,14 +2787,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">is_resource</span>(self):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L430">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">is_resource</span><span class="function-signature">(self)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L413">
       
       (source)
     </a>
+    <a class="headerLink" href="#is_resource" title="zms.zmsobject.ZMSObject.is_resource">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -2676,14 +2814,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">is_translated</span>(self, lang):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L446">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">is_translated</span><span class="function-signature">(self, lang)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L429">
       
       (source)
     </a>
+    <a class="headerLink" href="#is_translated" title="zms.zmsobject.ZMSObject.is_translated">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -2698,14 +2841,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">is_visible</span>(self):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L488">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">is_visible</span><span class="function-signature">(self)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L471">
       
       (source)
     </a>
+    <a class="headerLink" href="#is_visible" title="zms.zmsobject.ZMSObject.is_visible">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -2720,36 +2868,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">isAncestor</span>(self, ob):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1064">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">isAncestor</span><span class="function-signature">(self, ob)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1048">
       
       (source)
     </a>
-  </div>
-  <div class="docstring functionBody">
-    
-    
-    <div><p class="undocumented">Undocumented</p></div>
-  </div>
-</div><div class="basemethod">
-  
-  
-  <a name="zms.zmsobject.ZMSObject.isFeatureEnabled">
-    
-  </a>
-  <a name="isFeatureEnabled">
-    
-  </a>
-  <div class="functionHeader">
-    
-    <span class="py-keyword">def</span> <span class="py-defname">isFeatureEnabled</span>(self, feature=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L144">
+    <a class="headerLink" href="#isAncestor" title="zms.zmsobject.ZMSObject.isAncestor">
       
-      (source)
+      
+      ¶
     </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -2764,14 +2895,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">isMetaType</span>(self, meta_type, REQUEST={}):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L312">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">isMetaType</span><span class="function-signature">(self, meta_type, REQUEST={})</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L295">
       
       (source)
     </a>
+    <a class="headerLink" href="#isMetaType" title="zms.zmsobject.ZMSObject.isMetaType">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -2786,14 +2922,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">isModifiedInParentLanguage</span>(self, lang, REQUEST):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L467">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">isModifiedInParentLanguage</span><span class="function-signature">(self, lang, REQUEST)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L450">
       
       (source)
     </a>
+    <a class="headerLink" href="#isModifiedInParentLanguage" title="zms.zmsobject.ZMSObject.isModifiedInParentLanguage">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -2808,14 +2949,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">isPage</span>(self):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L335">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">isPage</span><span class="function-signature">(self)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L318">
       
       (source)
     </a>
+    <a class="headerLink" href="#isPage" title="zms.zmsobject.ZMSObject.isPage">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -2830,14 +2976,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">isPageContainer</span>(self):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L328">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">isPageContainer</span><span class="function-signature">(self)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L311">
       
       (source)
     </a>
+    <a class="headerLink" href="#isPageContainer" title="zms.zmsobject.ZMSObject.isPageContainer">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -2852,14 +3003,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">isPageElement</span>(self):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L343">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">isPageElement</span><span class="function-signature">(self)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L326">
       
       (source)
     </a>
+    <a class="headerLink" href="#isPageElement" title="zms.zmsobject.ZMSObject.isPageElement">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -2874,14 +3030,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">isResource</span>(self, REQUEST):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L436">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">isResource</span><span class="function-signature">(self, REQUEST)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L419">
       
       (source)
     </a>
+    <a class="headerLink" href="#isResource" title="zms.zmsobject.ZMSObject.isResource">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -2896,14 +3057,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">isTranslated</span>(self, lang, REQUEST):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L454">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">isTranslated</span><span class="function-signature">(self, lang, REQUEST)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L437">
       
       (source)
     </a>
+    <a class="headerLink" href="#isTranslated" title="zms.zmsobject.ZMSObject.isTranslated">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -2918,14 +3084,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">isVisible</span>(self, REQUEST):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L496">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">isVisible</span><span class="function-signature">(self, REQUEST)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L479">
       
       (source)
     </a>
+    <a class="headerLink" href="#isVisible" title="zms.zmsobject.ZMSObject.isVisible">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -2940,17 +3111,21 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">manage_changeProperties</span>(self, lang, REQUEST, RESPONSE=None):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L768">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">manage_changeProperties</span><span class="function-signature">(self, lang, REQUEST, RESPONSE=None)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L752">
       
       (source)
+    </a>
+    <a class="headerLink" href="#manage_changeProperties" title="zms.zmsobject.ZMSObject.manage_changeProperties">
+      
+      
+      ¶
     </a>
   </div>
   <div class="docstring functionBody">
     
-    
-    <div><p>ZMSObject.manage_changeProperties</p>
-</div>
+    <div><p>ZMSObject.manage_changeProperties</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -2963,17 +3138,21 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">manage_executeMetacmd</span>(self, id, REQUEST, RESPONSE=None, context=None):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1231">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">manage_executeMetacmd</span><span class="function-signature">(self, id, REQUEST, RESPONSE=None, context=None)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1215">
       
       (source)
+    </a>
+    <a class="headerLink" href="#manage_executeMetacmd" title="zms.zmsobject.ZMSObject.manage_executeMetacmd">
+      
+      
+      ¶
     </a>
   </div>
   <div class="docstring functionBody">
     
-    
-    <div><p>MetacmdObject.manage_executeMetacmd</p>
-</div>
+    <div><p>MetacmdObject.manage_executeMetacmd</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -2986,17 +3165,21 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">manage_moveObjDown</span>(self, lang, REQUEST, RESPONSE):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1177">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">manage_moveObjDown</span><span class="function-signature">(self, lang, REQUEST, RESPONSE)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1161">
       
       (source)
+    </a>
+    <a class="headerLink" href="#manage_moveObjDown" title="zms.zmsobject.ZMSObject.manage_moveObjDown">
+      
+      
+      ¶
     </a>
   </div>
   <div class="docstring functionBody">
     
-    
-    <div><p>ZMSObject.manage_moveObjDown</p>
-</div>
+    <div><p>ZMSObject.manage_moveObjDown</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -3009,17 +3192,21 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">manage_moveObjToPos</span>(self, lang, pos, fmt=None, REQUEST=None, RESPONSE=None):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1193">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">manage_moveObjToPos</span><span class="function-signature">(self, lang, pos, fmt=None, REQUEST=None, RESPONSE=None)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1177">
       
       (source)
+    </a>
+    <a class="headerLink" href="#manage_moveObjToPos" title="zms.zmsobject.ZMSObject.manage_moveObjToPos">
+      
+      
+      ¶
     </a>
   </div>
   <div class="docstring functionBody">
     
-    
-    <div><p>ZMSObject.manage_moveObjToPos</p>
-</div>
+    <div><p>ZMSObject.manage_moveObjToPos</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -3032,17 +3219,21 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">manage_moveObjUp</span>(self, lang, REQUEST, RESPONSE):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1161">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">manage_moveObjUp</span><span class="function-signature">(self, lang, REQUEST, RESPONSE)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1145">
       
       (source)
+    </a>
+    <a class="headerLink" href="#manage_moveObjUp" title="zms.zmsobject.ZMSObject.manage_moveObjUp">
+      
+      
+      ¶
     </a>
   </div>
   <div class="docstring functionBody">
     
-    
-    <div><p>ZMSObject.manage_moveObjUp</p>
-</div>
+    <div><p>ZMSObject.manage_moveObjUp</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -3055,14 +3246,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">printHtml</span>(self, level, sectionizer, REQUEST, deep=True):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1357">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">printHtml</span><span class="function-signature">(self, level, sectionizer, REQUEST, deep=True)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1341">
       
       (source)
     </a>
+    <a class="headerLink" href="#printHtml" title="zms.zmsobject.ZMSObject.printHtml">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -3077,14 +3273,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">renderShort</span>(self, REQUEST, manage_main=False):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1320">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">renderShort</span><span class="function-signature">(self, REQUEST, manage_main=False)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1304">
       
       (source)
     </a>
+    <a class="headerLink" href="#renderShort" title="zms.zmsobject.ZMSObject.renderShort">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -3099,14 +3300,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">set_request_context</span>(self, REQUEST, d):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L238">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">set_request_context</span><span class="function-signature">(self, REQUEST, d)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L221">
       
       (source)
     </a>
+    <a class="headerLink" href="#set_request_context" title="zms.zmsobject.ZMSObject.set_request_context">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -3121,14 +3327,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">set_uid</span>(self, uid):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L219">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">set_uid</span><span class="function-signature">(self, uid)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L202">
       
       (source)
     </a>
+    <a class="headerLink" href="#set_uid" title="zms.zmsobject.ZMSObject.set_uid">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -3143,14 +3354,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">setSortId</span>(self, sort_id):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1137">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">setSortId</span><span class="function-signature">(self, sort_id)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1121">
       
       (source)
     </a>
+    <a class="headerLink" href="#setSortId" title="zms.zmsobject.ZMSObject.setSortId">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -3165,14 +3381,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">title</span>(self):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L266">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">title</span><span class="function-signature">(self)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L249">
       
       (source)
     </a>
+    <a class="headerLink" href="#title" title="zms.zmsobject.ZMSObject.title">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -3187,14 +3408,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">xmlGetParent</span>(self):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1423">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">xmlGetParent</span><span class="function-signature">(self)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1407">
       
       (source)
     </a>
+    <a class="headerLink" href="#xmlGetParent" title="zms.zmsobject.ZMSObject.xmlGetParent">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -3209,14 +3435,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">xmlOnCharacterData</span>(self, sData, bInCData):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1411">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">xmlOnCharacterData</span><span class="function-signature">(self, sData, bInCData)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1395">
       
       (source)
     </a>
+    <a class="headerLink" href="#xmlOnCharacterData" title="zms.zmsobject.ZMSObject.xmlOnCharacterData">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -3231,14 +3462,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">xmlOnEndElement</span>(self):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1407">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">xmlOnEndElement</span><span class="function-signature">(self)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1391">
       
       (source)
     </a>
+    <a class="headerLink" href="#xmlOnEndElement" title="zms.zmsobject.ZMSObject.xmlOnEndElement">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -3253,14 +3489,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">xmlOnStartElement</span>(self, sTagName, dTagAttrs, oParentNode):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1394">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">xmlOnStartElement</span><span class="function-signature">(self, sTagName, dTagAttrs, oParentNode)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1378">
       
       (source)
     </a>
+    <a class="headerLink" href="#xmlOnStartElement" title="zms.zmsobject.ZMSObject.xmlOnStartElement">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -3275,14 +3516,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">xmlOnUnknownEndTag</span>(self, sTagName):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1419">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">xmlOnUnknownEndTag</span><span class="function-signature">(self, sTagName)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1403">
       
       (source)
     </a>
+    <a class="headerLink" href="#xmlOnUnknownEndTag" title="zms.zmsobject.ZMSObject.xmlOnUnknownEndTag">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -3297,14 +3543,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">xmlOnUnknownStartTag</span>(self, sTagName, dTagAttrs):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1415">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">xmlOnUnknownStartTag</span><span class="function-signature">(self, sTagName, dTagAttrs)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1399">
       
       (source)
     </a>
+    <a class="headerLink" href="#xmlOnUnknownStartTag" title="zms.zmsobject.ZMSObject.xmlOnUnknownStartTag">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -3319,17 +3570,21 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">zmi_css_defaults</span>(self, REQUEST):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L171">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">zmi_css_defaults</span><span class="function-signature">(self, REQUEST)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L154">
       
       (source)
+    </a>
+    <a class="headerLink" href="#zmi_css_defaults" title="zms.zmsobject.ZMSObject.zmi_css_defaults">
+      
+      
+      ¶
     </a>
   </div>
   <div class="docstring functionBody">
     
-    
-    <div><p>ZMSObject.zmi_css_defaults</p>
-</div>
+    <div><p>ZMSObject.zmi_css_defaults</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -3342,17 +3597,21 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">zmi_icon</span>(self, *args, **kwargs):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L563">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">zmi_icon</span><span class="function-signature">(self, *args, **kwargs)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L547">
       
       (source)
+    </a>
+    <a class="headerLink" href="#zmi_icon" title="zms.zmsobject.ZMSObject.zmi_icon">
+      
+      
+      ¶
     </a>
   </div>
   <div class="docstring functionBody">
     
-    
-    <div><p>ZMSObject.zmi_icon</p>
-</div>
+    <div><p>ZMSObject.zmi_icon</p></div>
   </div>
 </div><div class="baseconstant">
   
@@ -3366,13 +3625,17 @@
   <div class="functionHeader">
     
     <span class="py-defname">FORM_LABEL_MANDATORY</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L94">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L96">
       
       (source)
     </a>
+    <a class="headerLink" href="#FORM_LABEL_MANDATORY" title="zms.zmsobject.ZMSObject.FORM_LABEL_MANDATORY">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
     <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code><span class="rst-variable-quote">'</span><span class="rst-variable-string">&lt;sup style="color:red"&gt;*&lt;/sup&gt;</span><span class="rst-variable-quote">'</span></code></pre></td></tr></table>
@@ -3389,13 +3652,17 @@
   <div class="functionHeader">
     
     <span class="py-defname">MISC_ZMS</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L93">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L95">
       
       (source)
     </a>
+    <a class="headerLink" href="#MISC_ZMS" title="zms.zmsobject.ZMSObject.MISC_ZMS">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
     <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code><span class="rst-variable-quote">'</span><span class="rst-variable-string">/++resource++zms_/img/</span><span class="rst-variable-quote">'</span></code></pre></td></tr></table>
@@ -3412,13 +3679,17 @@
   <div class="functionHeader">
     
     <span class="py-defname">QUOT</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L92">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L94">
       
       (source)
     </a>
+    <a class="headerLink" href="#QUOT" title="zms.zmsobject.ZMSObject.QUOT">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
     <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>chr(<wbr></wbr>34)</code></pre></td></tr></table>
@@ -3435,13 +3706,17 @@
   <div class="functionHeader">
     
     <span class="py-defname">__doc__</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L81">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L83">
       
       (source)
     </a>
+    <a class="headerLink" href="#__doc__" title="zms.zmsobject.ZMSObject.__doc__">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
     
@@ -3458,13 +3733,17 @@
   <div class="functionHeader">
     
     <span class="py-defname">__version__</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L83">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L85">
       
       (source)
     </a>
+    <a class="headerLink" href="#__version__" title="zms.zmsobject.ZMSObject.__version__">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
     
@@ -3481,13 +3760,17 @@
   <div class="functionHeader">
     
     <span class="py-defname">f_api_html</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L117">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L119">
       
       (source)
     </a>
+    <a class="headerLink" href="#f_api_html" title="zms.zmsobject.ZMSObject.f_api_html">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
     
@@ -3504,13 +3787,17 @@
   <div class="functionHeader">
     
     <span class="py-defname">f_api_top_html</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L118">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L120">
       
       (source)
     </a>
+    <a class="headerLink" href="#f_api_top_html" title="zms.zmsobject.ZMSObject.f_api_top_html">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
     
@@ -3527,13 +3814,17 @@
   <div class="functionHeader">
     
     <span class="py-defname">f_recordset_grid</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L114">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L116">
       
       (source)
     </a>
+    <a class="headerLink" href="#f_recordset_grid" title="zms.zmsobject.ZMSObject.f_recordset_grid">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
     
@@ -3550,13 +3841,17 @@
   <div class="functionHeader">
     
     <span class="py-defname">obj_input_elements</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L120">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L122">
       
       (source)
     </a>
+    <a class="headerLink" href="#obj_input_elements" title="zms.zmsobject.ZMSObject.obj_input_elements">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
     
@@ -3573,13 +3868,17 @@
   <div class="functionHeader">
     
     <span class="py-defname">obj_input_fields</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L119">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L121">
       
       (source)
     </a>
+    <a class="headerLink" href="#obj_input_fields" title="zms.zmsobject.ZMSObject.obj_input_fields">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
     
@@ -3596,13 +3895,17 @@
   <div class="functionHeader">
     
     <span class="py-defname">preview_html</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L115">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L117">
       
       (source)
     </a>
+    <a class="headerLink" href="#preview_html" title="zms.zmsobject.ZMSObject.preview_html">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
     
@@ -3619,13 +3922,17 @@
   <div class="functionHeader">
     
     <span class="py-defname">preview_top_html</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L116">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L118">
       
       (source)
     </a>
+    <a class="headerLink" href="#preview_top_html" title="zms.zmsobject.ZMSObject.preview_top_html">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
     
@@ -3642,13 +3949,17 @@
   <div class="functionHeader">
     
     <span class="py-defname">security</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L88">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L90">
       
       (source)
     </a>
+    <a class="headerLink" href="#security" title="zms.zmsobject.ZMSObject.security">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
     
@@ -3665,13 +3976,17 @@
   <div class="functionHeader">
     
     <span class="py-defname">spacer_gif</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L95">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L97">
       
       (source)
     </a>
+    <a class="headerLink" href="#spacer_gif" title="zms.zmsobject.ZMSObject.spacer_gif">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
     
@@ -3688,13 +4003,17 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_ace_editor</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L110">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L112">
       
       (source)
     </a>
+    <a class="headerLink" href="#zmi_ace_editor" title="zms.zmsobject.ZMSObject.zmi_ace_editor">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
     
@@ -3711,13 +4030,17 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_body_footer</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L105">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L107">
       
       (source)
     </a>
+    <a class="headerLink" href="#zmi_body_footer" title="zms.zmsobject.ZMSObject.zmi_body_footer">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
     
@@ -3734,13 +4057,17 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_body_header</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L104">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L106">
       
       (source)
     </a>
+    <a class="headerLink" href="#zmi_body_header" title="zms.zmsobject.ZMSObject.zmi_body_header">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
     
@@ -3757,13 +4084,17 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_breadcrumbs</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L100">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L102">
       
       (source)
     </a>
+    <a class="headerLink" href="#zmi_breadcrumbs" title="zms.zmsobject.ZMSObject.zmi_breadcrumbs">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
     
@@ -3780,13 +4111,17 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_breadcrumbs_obj_path</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L101">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L103">
       
       (source)
     </a>
+    <a class="headerLink" href="#zmi_breadcrumbs_obj_path" title="zms.zmsobject.ZMSObject.zmi_breadcrumbs_obj_path">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
     
@@ -3803,13 +4138,17 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_html_foot</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L106">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L108">
       
       (source)
     </a>
+    <a class="headerLink" href="#zmi_html_foot" title="zms.zmsobject.ZMSObject.zmi_html_foot">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
     
@@ -3826,13 +4165,17 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_html_head</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L103">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L105">
       
       (source)
     </a>
+    <a class="headerLink" href="#zmi_html_head" title="zms.zmsobject.ZMSObject.zmi_html_head">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
     
@@ -3849,13 +4192,17 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_manage_tabs_message</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L102">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L104">
       
       (source)
     </a>
+    <a class="headerLink" href="#zmi_manage_tabs_message" title="zms.zmsobject.ZMSObject.zmi_manage_tabs_message">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
     
@@ -3872,13 +4219,17 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_navbar_brand</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L99">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L101">
       
       (source)
     </a>
+    <a class="headerLink" href="#zmi_navbar_brand" title="zms.zmsobject.ZMSObject.zmi_navbar_brand">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
     
@@ -3895,13 +4246,17 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_pagination</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L107">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L109">
       
       (source)
     </a>
+    <a class="headerLink" href="#zmi_pagination" title="zms.zmsobject.ZMSObject.zmi_pagination">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
     
@@ -3918,13 +4273,17 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_tabs</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L108">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L110">
       
       (source)
     </a>
+    <a class="headerLink" href="#zmi_tabs" title="zms.zmsobject.ZMSObject.zmi_tabs">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
     
@@ -3941,13 +4300,17 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_tabs_sub</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L109">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L111">
       
       (source)
     </a>
+    <a class="headerLink" href="#zmi_tabs_sub" title="zms.zmsobject.ZMSObject.zmi_tabs_sub">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
     
@@ -3964,13 +4327,17 @@
   <div class="functionHeader">
     
     <span class="py-defname">dTagStack</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1397">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1381">
       
       (source)
     </a>
+    <a class="headerLink" href="#dTagStack" title="zms.zmsobject.ZMSObject.dTagStack">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
     
@@ -3987,13 +4354,17 @@
   <div class="functionHeader">
     
     <span class="py-defname">dValueStack</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1398">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1382">
       
       (source)
     </a>
+    <a class="headerLink" href="#dValueStack" title="zms.zmsobject.ZMSObject.dValueStack">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
     
@@ -4010,13 +4381,17 @@
   <div class="functionHeader">
     
     <span class="py-defname">id</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L130">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L132">
       
       (source)
     </a>
+    <a class="headerLink" href="#id" title="zms.zmsobject.ZMSObject.id">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
     
@@ -4033,13 +4408,17 @@
   <div class="functionHeader">
     
     <span class="py-defname">oParent</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1404">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1388">
       
       (source)
     </a>
+    <a class="headerLink" href="#oParent" title="zms.zmsobject.ZMSObject.oParent">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
     
@@ -4056,13 +4435,17 @@
   <div class="functionHeader">
     
     <span class="py-defname">ref_by</span>: <code>list</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L131">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L133">
       
       (source)
     </a>
+    <a class="headerLink" href="#ref_by" title="zms.zmsobject.ZMSObject.ref_by">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
     
@@ -4079,13 +4462,17 @@
   <div class="functionHeader">
     
     <span class="py-defname">sort_id</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1140">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1124">
       
       (source)
     </a>
+    <a class="headerLink" href="#sort_id" title="zms.zmsobject.ZMSObject.sort_id">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
     
@@ -4101,14 +4488,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">_getBodyContent</span>(self, REQUEST):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1293">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">_getBodyContent</span><span class="function-signature">(self, REQUEST)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1277">
       
       (source)
     </a>
+    <a class="headerLink" href="#_getBodyContent" title="zms.zmsobject.ZMSObject._getBodyContent">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -4123,14 +4515,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">_getBodyContentContentEditable</span>(self, html):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1285">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">_getBodyContentContentEditable</span><span class="function-signature">(self, html)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1269">
       
       (source)
     </a>
+    <a class="headerLink" href="#_getBodyContentContentEditable" title="zms.zmsobject.ZMSObject._getBodyContentContentEditable">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -4146,13 +4543,17 @@
   <div class="functionHeader">
     
     <span class="py-defname">_uid</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L213">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L196">
       
       (source)
     </a>
+    <a class="headerLink" href="#_uid" title="zms.zmsobject.ZMSObject._uid">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
     
@@ -4166,10 +4567,10 @@
     <footer class="navbar navbar-default">
 
   
-  <div class="container">
+  <div class="container-fluid">
     <a href="index.html">API Documentation</a> for <a href="https://github.com/zms-publishing/ZMS/" class="projecthome">ZMS</a>,
   generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
-    <!-- t:slot name="pydoctor_version" /&gt; at <t:slot name="buildtime" / -->.
+    <!-- t:slot name="pydoctor_version" /> at <t:slot name="buildtime" / -->.
   </div>
 
   <!-- Search related scripts needs to be loaded at the end of HTML 

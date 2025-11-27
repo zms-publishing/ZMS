@@ -16,7 +16,7 @@ class com_zms_mirroring:
 	package = ""
 
 	# Revision
-	revision = "5.0.0"
+	revision = "5.1.0"
 
 	# Type
 	type = "ZMSPackage"

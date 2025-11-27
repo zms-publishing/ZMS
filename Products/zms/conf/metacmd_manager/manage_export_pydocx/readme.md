@@ -17,6 +17,19 @@ pip install python-docx
 
 ## Configuration and Customization
 
-Ensure that the script is configured correctly with the necessary parameters for your specific use case (especially the global variable `docx_tmpl` as filesystem path to the DOCX file that is used as a template). You may need to modify the script to fit your data source and desired output format.
-Some (complex) ZMS content objects may need another template `standard_json_docx` (Python script) to generate a normalized JSON representation of the object's content. The standard content model contains some examples of the script. For further details, please refer to the docstring of 
+Ensure that the script is configured correctly with the necessary parameters for your specific use case, especially the global variable `docx_tmpl` as filesystem path to the DOCX file that is used as a template:
+
+```py
+# Set local path for docx-template
+docx_tmpl = open("%s/Extensions/neon.docx"%(os.getenv('INSTANCE_HOME')), "rb")
+```
+
+You may prefer to export not the committed but the working content, so set the REQUEST-variable:   
+
+```py
+# For debugging use preview content
+request.set('preview', 'preview')
+```
+
+Furthermore You may need to modify the script to fit your data source and desired output format. Some (complex) ZMS content objects may need another template `standard_json_docx` (Python script) to generate a normalized JSON representation of the object's content. The standard content model contains some examples of the script. For further details, please refer to the docstring of 
 `manage_export_pydocx.apply_standard_json_docx()`.

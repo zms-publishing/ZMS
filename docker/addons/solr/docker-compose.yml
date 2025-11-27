@@ -1,0 +1,22 @@
+version: "3.7"
+services:
+  solr:
+    # build: .
+    image: solr:8.11.2
+    ports:
+      - 8983:8983
+    networks:
+      - zms_network
+    volumes:
+      - /home/zope/instance/zms5_gez/neon/var/solr:/var/solr:rw
+    working_dir: /opt/solr
+    entrypoint: /opt/docker-solr/scripts/docker-entrypoint.sh 
+    command: /opt/docker-solr/scripts/solr-foreground
+    ### HINTS: 
+    ### 1. create the new core with an attached console
+    ###    /opt/docker-solr/scripts/precreate-core mycore
+    ### 2. set mounted volume permissions to 777
+
+networks:
+  zms_network:
+    driver: bridge

@@ -7,7 +7,7 @@
   <head>
     
     <title>zms.repositoryutil</title>
-    <meta name="generator" content="pydoctor 22.5.1"> 
+    <meta name="generator" content="pydoctor 24.11.2"> 
         
     </meta>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
@@ -15,6 +15,7 @@
     <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="apidocs.css" />
     <link rel="stylesheet" type="text/css" href="extra.css" />
+    
 </head>
 
   <body>
@@ -52,7 +53,7 @@
             
             <span class="input-group-btn">
               <a style="display: none;" class="btn btn-default" id="search-clear-button" title="Clear" onclick="clearSearch()"><img src="fonts/x-circle.svg" alt="Clear" /></a>
-              <a class="btn btn-default" id="search-help-button" title="Help" onclick="toggleSearchHelpText()"><img src="fonts/info.svg" alt="Help" /></a>
+              <a class="btn btn-default" id="apidocs-help-button" title="Help" href="apidocs-help.html"><img src="fonts/info.svg" alt="Help" /></a>
             </span>
           </div>
         </div>
@@ -76,39 +77,6 @@
             <h1>Cannot search: JavaScript is not supported/enabled in your browser.</h1>
         </noscript>
 
-        <div class="hint" id="search-help-box">
-          <p class="rst-last">
-      
-            Search bar offers the following options:
-            <ul>   
-                <li>
-                  <strong>Term presence.</strong> The below example searches for documents that 
-                    must contain “foo”, might contain “bar” and must not contain “baz”: <code>+foo bar -baz</code>
-                </li> 
-
-                <li>
-                  <strong>Wildcards.</strong> The below example searches for documents with words beginning with “foo”: <code>foo*</code>
-                </li> 
-
-                <li>
-                  <strong>Search in specific fields.</strong> The following search matches all objects 
-                  in "twisted.mail" that matches “search”: <code>+qname:twisted.mail.* +search</code>
-
-                  <p>
-                    Possible fields: 'name', 'qname' (fully qualified name), 'docstring', and 'kind'.
-                    Last two fields are only applicable if "search in docstrings" is enabled.
-                  </p>
-                </li>
-
-                <li>
-                  <strong>Fuzzy matches.</strong> The following search matches all documents 
-                  that have a word within 1 edit distance of “foo”: <code>foo~1</code>
-                </li>
-            </ul>
-
-          </p>
-        </div>
-
         <div id="search-status"> </div>
 
         <div class="warning" id="search-warn-box" style="display: none;">
@@ -119,8 +87,8 @@
           <!-- Filled dynamically by JS -->
         </table>
         
-        <div style="margin-top: 8px;">
-          <p>Results provided by <a href="https://lunrjs.com">Lunr.js</a></p>
+        <div style="margin-top: 10px;">
+          <p>For more information on the search, visit the <a href="apidocs-help.html#rst-search">help page</a>.</p>
         </div>
       </div>
 
@@ -1283,14 +1251,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">get_class</span>(py):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L66">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">get_class</span><span class="function-signature">(py)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L67">
       
       (source)
     </a>
+    <a class="headerLink" href="#get_class" title="zms.repositoryutil.get_class">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -1305,14 +1278,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">get_diffs</span>(local, remote, ignore=True):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L268">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">get_diffs</span><span class="function-signature">(local, remote, ignore=True)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L274">
       
       (source)
     </a>
+    <a class="headerLink" href="#get_diffs" title="zms.repositoryutil.get_diffs">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -1327,14 +1305,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">get_providers</span>(self):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L53">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">get_providers</span><span class="function-signature">(self)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L54">
       
       (source)
     </a>
+    <a class="headerLink" href="#get_providers" title="zms.repositoryutil.get_providers">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -1349,14 +1332,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">get_system_conf_basepath</span>():
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L45">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">get_system_conf_basepath</span><span class="function-signature">()</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L46">
       
       (source)
     </a>
+    <a class="headerLink" href="#get_system_conf_basepath" title="zms.repositoryutil.get_system_conf_basepath">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -1371,14 +1359,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">localFiles</span>(self, provider, ids=None):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L190">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">localFiles</span><span class="function-signature">(self, provider, ids=None)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L196">
       
       (source)
     </a>
+    <a class="headerLink" href="#localFiles" title="zms.repositoryutil.localFiles">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -1393,14 +1386,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">readRepository</span>(self, basepath, deep=True):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L129">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">readRepository</span><span class="function-signature">(self, basepath, deep=True)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L135">
       
       (source)
     </a>
+    <a class="headerLink" href="#readRepository" title="zms.repositoryutil.readRepository">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -1415,14 +1413,19 @@
   </a>
   <div class="functionHeader">
     
-    <span class="py-keyword">def</span> <span class="py-defname">remoteFiles</span>(self, basepath, deep=True):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L76">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">remoteFiles</span><span class="function-signature">(self, basepath, deep=True)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L82">
       
       (source)
     </a>
+    <a class="headerLink" href="#remoteFiles" title="zms.repositoryutil.remoteFiles">
+      
+      
+      ¶
+    </a>
   </div>
   <div class="docstring functionBody">
-    
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -1438,16 +1441,19 @@
   <div class="functionHeader">
     
     <span class="py-defname">security</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L39">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L40">
       
       (source)
+    </a>
+    <a class="headerLink" href="#security" title="zms.repositoryutil.security">
+      
+      
+      ¶
     </a>
   </div>
   <div class="functionBody">
     
-    
-    <div><p>Returns system conf-basepath.</p>
-</div>
+    <div><p>Returns system conf-basepath.</p></div>
     
   </div>
 </div>
@@ -1459,10 +1465,10 @@
     <footer class="navbar navbar-default">
 
   
-  <div class="container">
+  <div class="container-fluid">
     <a href="index.html">API Documentation</a> for <a href="https://github.com/zms-publishing/ZMS/" class="projecthome">ZMS</a>,
   generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
-    <!-- t:slot name="pydoctor_version" /&gt; at <t:slot name="buildtime" / -->.
+    <!-- t:slot name="pydoctor_version" /> at <t:slot name="buildtime" / -->.
   </div>
 
   <!-- Search related scripts needs to be loaded at the end of HTML 

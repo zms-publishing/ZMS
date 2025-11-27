@@ -7,7 +7,7 @@
  <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
   <LastAuthor>FH</LastAuthor>
   <Created>2007-05-16T21:18:05Z</Created>
-  <LastSaved>2016-12-03T18:00:00Z</LastSaved>
+  <LastSaved>2025-07-24T18:00:00Z</LastSaved>
   <Version>10.6871</Version>
  </DocumentProperties>
  <OfficeDocumentSettings xmlns="urn:schemas-microsoft-com:office:office">
@@ -89,28 +89,33 @@
     <Cell><Data ss:Type="String">ABOUT</Data></Cell>
     <Cell><Data ss:Type="String">Impressum</Data></Cell>
     <Cell><Data ss:Type="String">About</Data></Cell>
-    <Cell><Data ss:Type="String">Impressum</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Impressum</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">关于</Data></Cell>
+    <Cell><Data ss:Type="String">Over</Data></Cell>
+    <Cell><Data ss:Type="String">Mentions légales</Data></Cell>
+    <Cell><Data ss:Type="String">Note legali</Data></Cell>
+    <Cell><Data ss:Type="String">Aviso legal</Data></Cell>
+    <Cell><Data ss:Type="String">关于</Data></Cell>
     <Cell><Data ss:Type="String">درباره</Data></Cell>
-    <Cell><Data ss:Type="String">обо</Data></Cell>
-    <Cell><Data ss:Type="String">बारे मे</Data></Cell>
-    <Cell><Data ss:Type="String">عن</Data></Cell>
-    <Cell><Data ss:Type="String">Về</Data></Cell>
-    <Cell><Data ss:Type="String">מי אנחנו</Data></Cell>
+    <Cell><Data ss:Type="String">Об импорте</Data></Cell>
+    <Cell><Data ss:Type="String">के बारे में</Data></Cell>
+    <Cell><Data ss:Type="String">حول</Data></Cell>
+    <Cell><Data ss:Type="String">Giới thiệu</Data></Cell>
+    <Cell><Data ss:Type="String">אודות</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">ACTION_MANAGE_WFTRANSITION</Data></Cell>
-    <Cell><Data ss:Type="String">Version archiviert</Data></Cell>
+    <Cell><Data ss:Type="String">Archivierte Version</Data></Cell>
     <Cell><Data ss:Type="String">Archived version</Data></Cell>
-    <Cell><Data ss:Type="String">Versie gearchiveerd</Data></Cell>
-    <Cell><Data ss:Type="String">Archiver version</Data></Cell>
-    <Cell ss:Index="9"/>
-    <Cell/>
-    <Cell/>
-    <Cell><Data ss:Type="String">نسخة متاحة بالأرشيف</Data></Cell>
-    <Cell><Data ss:Type="String">Phiên bản đã lưu</Data></Cell>
-    <Cell><Data ss:Type="String">ורסיית ארכיון</Data></Cell>
+    <Cell><Data ss:Type="String">Gearchiveerde versie</Data></Cell>
+    <Cell><Data ss:Type="String">Version archivée</Data></Cell>
+    <Cell><Data ss:Type="String">Versione archiviata</Data></Cell>
+    <Cell><Data ss:Type="String">Versión archivada</Data></Cell>
+    <Cell><Data ss:Type="String">归档版本</Data></Cell>
+    <Cell><Data ss:Type="String">نسخه بایگانی شده</Data></Cell>
+    <Cell><Data ss:Type="String">Архивная версия</Data></Cell>
+    <Cell><Data ss:Type="String">संग्रहीत संस्करण</Data></Cell>
+    <Cell><Data ss:Type="String">الإصدار المؤرشف</Data></Cell>
+    <Cell><Data ss:Type="String">Phiên bản đã lưu trữ</Data></Cell>
+    <Cell><Data ss:Type="String">גרסה בארכיון</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">ACTION_DELETE</Data></Cell>
@@ -133,10 +138,12 @@
     <Cell><Data ss:Type="String">Zelle löschen</Data></Cell>
     <Cell><Data ss:Type="String">Delete cell</Data></Cell>
     <Cell><Data ss:Type="String">Cel verwijderen</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Cancellare casella</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">删除忕元格</Data></Cell>
+    <Cell><Data ss:Type="String">Supprimer la cellule</Data></Cell>
+    <Cell><Data ss:Type="String">Elimina cella</Data></Cell>
+    <Cell><Data ss:Type="String">Eliminar celda</Data></Cell>
+    <Cell><Data ss:Type="String">删除单元格</Data></Cell>
     <Cell><Data ss:Type="String">حذف سلول</Data></Cell>
-    <Cell><Data ss:Type="String">клетку стереть</Data></Cell>
+    <Cell><Data ss:Type="String">удалить ячейку</Data></Cell>
     <Cell><Data ss:Type="String">कोष्ठ मिटाना</Data></Cell>
     <Cell><Data ss:Type="String">حذف الخلية</Data></Cell>
     <Cell><Data ss:Type="String">Xóa ô</Data></Cell>
@@ -147,11 +154,13 @@
     <Cell><Data ss:Type="String">Zellen löschen</Data></Cell>
     <Cell><Data ss:Type="String">Delete cells</Data></Cell>
     <Cell><Data ss:Type="String">Cellen verwijderen</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Cancellare caselle</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">删除忕元格</Data></Cell>
-    <Cell><Data ss:Type="String">حذف سلول ها</Data></Cell>
-    <Cell><Data ss:Type="String">клетки стереть</Data></Cell>
-    <Cell><Data ss:Type="String">कोष्ट मिटाना</Data></Cell>
+    <Cell><Data ss:Type="String">Supprimer les cellules</Data></Cell>
+    <Cell><Data ss:Type="String">Elimina celle</Data></Cell>
+    <Cell><Data ss:Type="String">Eliminar celdas</Data></Cell>
+    <Cell><Data ss:Type="String">删除单元格</Data></Cell>
+    <Cell><Data ss:Type="String">حذف سلول‌ها</Data></Cell>
+    <Cell><Data ss:Type="String">удалить ячейки</Data></Cell>
+    <Cell><Data ss:Type="String">कोष्ठ मिटाएँ</Data></Cell>
     <Cell><Data ss:Type="String">حذف الخلايا</Data></Cell>
     <Cell><Data ss:Type="String">Xóa các ô</Data></Cell>
     <Cell><Data ss:Type="String">מחק תאים</Data></Cell>
@@ -161,13 +170,14 @@
     <Cell><Data ss:Type="String">Spalte löschen</Data></Cell>
     <Cell><Data ss:Type="String">Delete column</Data></Cell>
     <Cell><Data ss:Type="String">Kolom verwijderen</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Cancellare colonna</Data></Cell>
+    <Cell><Data ss:Type="String">Supprimer la colonne</Data></Cell>
+    <Cell><Data ss:Type="String">Cancellare colonna</Data></Cell>
     <Cell><Data ss:Type="String">Borrar columna</Data></Cell>
     <Cell><Data ss:Type="String">删除列</Data></Cell>
     <Cell><Data ss:Type="String">حذف ستون</Data></Cell>
     <Cell><Data ss:Type="String">столбик стереть</Data></Cell>
     <Cell><Data ss:Type="String">स्थंभ मिटाना</Data></Cell>
-    <Cell><Data ss:Type="String">حذف العامود</Data></Cell>
+    <Cell><Data ss:Type="String">حذف العمود</Data></Cell>
     <Cell><Data ss:Type="String">Xóa cột</Data></Cell>
     <Cell><Data ss:Type="String">מחק עמודה</Data></Cell>
    </Row>
@@ -176,12 +186,13 @@
     <Cell><Data ss:Type="String">Spalten löschen</Data></Cell>
     <Cell><Data ss:Type="String">Delete columns</Data></Cell>
     <Cell><Data ss:Type="String">Kolommen verwijderen</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Cancellare colonne</Data></Cell>
-    <Cell><Data ss:Type="String">Borrar columna</Data></Cell>
+    <Cell><Data ss:Type="String">Supprimer les colonnes</Data></Cell>
+    <Cell><Data ss:Type="String">Eliminare colonne</Data></Cell>
+    <Cell><Data ss:Type="String">Eliminar columnas</Data></Cell>
     <Cell><Data ss:Type="String">删除列</Data></Cell>
-    <Cell><Data ss:Type="String">حذف ستون ها</Data></Cell>
-    <Cell><Data ss:Type="String">столбики стереть</Data></Cell>
-    <Cell><Data ss:Type="String">स्तंभ मिटाना</Data></Cell>
+    <Cell><Data ss:Type="String">حذف ستون‌ها</Data></Cell>
+    <Cell><Data ss:Type="String">удалить столбцы</Data></Cell>
+    <Cell><Data ss:Type="String">कॉलम मिटाएँ</Data></Cell>
     <Cell><Data ss:Type="String">حذف الأعمدة</Data></Cell>
     <Cell><Data ss:Type="String">Xóa các cột</Data></Cell>
     <Cell><Data ss:Type="String">מחק עמודות</Data></Cell>
@@ -190,13 +201,14 @@
     <Cell><Data ss:Type="String">ACTION_DELETE_ROW</Data></Cell>
     <Cell><Data ss:Type="String">Zeile löschen</Data></Cell>
     <Cell><Data ss:Type="String">Delete row</Data></Cell>
-    <Cell><Data ss:Type="String">Regel verwijderen</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Cancellare fila</Data></Cell>
-    <Cell><Data ss:Type="String">Borrar fila</Data></Cell>
+    <Cell><Data ss:Type="String">Rij verwijderen</Data></Cell>
+    <Cell><Data ss:Type="String">Supprimer la ligne</Data></Cell>
+    <Cell><Data ss:Type="String">Elimina riga</Data></Cell>
+    <Cell><Data ss:Type="String">Eliminar fila</Data></Cell>
     <Cell><Data ss:Type="String">删除行</Data></Cell>
-    <Cell><Data ss:Type="String">حذف رديٿ</Data></Cell>
-    <Cell><Data ss:Type="String">строчку стереть</Data></Cell>
-    <Cell><Data ss:Type="String">पंक्ति मिटाना</Data></Cell>
+    <Cell><Data ss:Type="String">حذف ردیف</Data></Cell>
+    <Cell><Data ss:Type="String">Удалить строку</Data></Cell>
+    <Cell><Data ss:Type="String">पंक्ति मिटाएँ</Data></Cell>
     <Cell><Data ss:Type="String">حذف الصف</Data></Cell>
     <Cell><Data ss:Type="String">Xóa hàng</Data></Cell>
     <Cell><Data ss:Type="String">מחק שורה</Data></Cell>
@@ -205,13 +217,14 @@
     <Cell><Data ss:Type="String">ACTION_DELETE_ROWS</Data></Cell>
     <Cell><Data ss:Type="String">Zeilen löschen</Data></Cell>
     <Cell><Data ss:Type="String">Delete rows</Data></Cell>
-    <Cell><Data ss:Type="String">Regels verwijderen</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Cancellare file</Data></Cell>
-    <Cell><Data ss:Type="String">Borrar fila</Data></Cell>
+    <Cell><Data ss:Type="String">Rijen verwijderen</Data></Cell>
+    <Cell><Data ss:Type="String">Supprimer les lignes</Data></Cell>
+    <Cell><Data ss:Type="String">Elimina righe</Data></Cell>
+    <Cell><Data ss:Type="String">Eliminar filas</Data></Cell>
     <Cell><Data ss:Type="String">删除行</Data></Cell>
-    <Cell><Data ss:Type="String">حذف رديٿ ها</Data></Cell>
-    <Cell><Data ss:Type="String">строчки стереть</Data></Cell>
-    <Cell><Data ss:Type="String">पंक्तियाँ मिटाना</Data></Cell>
+    <Cell><Data ss:Type="String">حذف ردیف‌ها</Data></Cell>
+    <Cell><Data ss:Type="String">Удалить строки</Data></Cell>
+    <Cell><Data ss:Type="String">पंक्तियाँ मिटाएँ</Data></Cell>
     <Cell><Data ss:Type="String">حذف الصفوف</Data></Cell>
     <Cell><Data ss:Type="String">Xóa các hàng</Data></Cell>
     <Cell><Data ss:Type="String">מחק שורות</Data></Cell>
@@ -221,39 +234,47 @@
     <Cell><Data ss:Type="String">Zelle bearbeiten</Data></Cell>
     <Cell><Data ss:Type="String">Edit cell</Data></Cell>
     <Cell><Data ss:Type="String">Cel bewerken</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Modificare casella</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">编辑忕元格</Data></Cell>
-    <Cell><Data ss:Type="String">ويرايش سلول</Data></Cell>
-    <Cell><Data ss:Type="String">клетку обработать</Data></Cell>
-    <Cell><Data ss:Type="String">कोष्ठ संपादन</Data></Cell>
+    <Cell><Data ss:Type="String">Éditer la cellule</Data></Cell>
+    <Cell><Data ss:Type="String">Modifica cella</Data></Cell>
+    <Cell><Data ss:Type="String">Editar celda</Data></Cell>
+    <Cell><Data ss:Type="String">编辑单元格</Data></Cell>
+    <Cell><Data ss:Type="String">ویرایش سلول</Data></Cell>
+    <Cell><Data ss:Type="String">Редактировать ячейку</Data></Cell>
+    <Cell><Data ss:Type="String">कोष्ठ संपादित करें</Data></Cell>
     <Cell><Data ss:Type="String">تحرير الخلية</Data></Cell>
-    <Cell><Data ss:Type="String">Chỉnh sửa nội dung của ô</Data></Cell>
-    <Cell><Data ss:Type="String">הוסף תא</Data></Cell>
+    <Cell><Data ss:Type="String">Chỉnh sửa ô</Data></Cell>
+    <Cell><Data ss:Type="String">ערוך תא</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">ACTION_GENERATE_PREVIEW</Data></Cell>
     <Cell><Data ss:Type="String">Norm-Vorschau erzeugen</Data></Cell>
     <Cell><Data ss:Type="String">generate norm-preview</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Generare previsione</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">产生预览</Data></Cell>
-    <Cell><Data ss:Type="String">ايجاد پيش نمايش</Data></Cell>
-    <Cell><Data ss:Type="String">сосдать просмотр</Data></Cell>
-    <Cell><Data ss:Type="String">पूर्वप्रदर्शन उत्पन्न करे</Data></Cell>
-    <Cell><Data ss:Type="String">معاينة</Data></Cell>
-    <Cell><Data ss:Type="String">tạo ra bản xem trước</Data></Cell>
-    <Cell><Data ss:Type="String">ייצר תצוגה מקדימה</Data></Cell>
+    <Cell><Data ss:Type="String">Normvoorbeeld genereren</Data></Cell>
+    <Cell><Data ss:Type="String">Générer un aperçu de la norme</Data></Cell>
+    <Cell><Data ss:Type="String">Generare anteprima norma</Data></Cell>
+    <Cell><Data ss:Type="String">Generar vista previa de la norma</Data></Cell>
+    <Cell><Data ss:Type="String">生成规范预览</Data></Cell>
+    <Cell><Data ss:Type="String">ایجاد پیش‌نمایش استاندارد</Data></Cell>
+    <Cell><Data ss:Type="String">создать предпросмотр нормы</Data></Cell>
+    <Cell><Data ss:Type="String">मानक पूर्वावलोकन उत्पन्न करें</Data></Cell>
+    <Cell><Data ss:Type="String">إنشاء معاينة المعيار</Data></Cell>
+    <Cell><Data ss:Type="String">Tạo bản xem trước chuẩn</Data></Cell>
+    <Cell><Data ss:Type="String">צור תצוגה מקדימה של תקן</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">ACTION_INDENT</Data></Cell>
-    <Cell><Data ss:Type="String">Einzug vergrössern</Data></Cell>
+    <Cell><Data ss:Type="String">Einzug vergrößern</Data></Cell>
     <Cell><Data ss:Type="String">Increase indent</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Aumentare il rientro</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">增加缩进</Data></Cell>
-    <Cell/>
-    <Cell><Data ss:Type="String">увеличить</Data></Cell>
-    <Cell><Data ss:Type="String">इंडेंट बाराये</Data></Cell>
-    <Cell><Data ss:Type="String">توسيع النطاق</Data></Cell>
-    <Cell><Data ss:Type="String">Dịch chữ thụt vào</Data></Cell>
+    <Cell><Data ss:Type="String">Inspringing vergroten</Data></Cell>
+    <Cell><Data ss:Type="String">Augmenter le retrait</Data></Cell>
+    <Cell><Data ss:Type="String">Aumentare il rientro</Data></Cell>
+    <Cell><Data ss:Type="String">Aumentar sangría</Data></Cell>
+    <Cell><Data ss:Type="String">增加缩进</Data></Cell>
+    <Cell><Data ss:Type="String">افزایش تورفتگی</Data></Cell>
+    <Cell><Data ss:Type="String">Увеличить отступ</Data></Cell>
+    <Cell><Data ss:Type="String">इंडेंट बढ़ाएँ</Data></Cell>
+    <Cell><Data ss:Type="String">زيادة المسافة البادئة</Data></Cell>
+    <Cell><Data ss:Type="String">Tăng thụt lề</Data></Cell>
     <Cell><Data ss:Type="String">הגדל כניסה</Data></Cell>
    </Row>
    <Row>
@@ -276,12 +297,14 @@
     <Cell><Data ss:Type="String">ACTION_INSERT_CELL</Data></Cell>
     <Cell><Data ss:Type="String">Zelle einfügen</Data></Cell>
     <Cell><Data ss:Type="String">Insert cell</Data></Cell>
-    <Cell><Data ss:Type="String">Cel toevoegen</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Inserire cassella</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">濒入忕元格</Data></Cell>
-    <Cell><Data ss:Type="String">اضافه کردن سلول</Data></Cell>
-    <Cell><Data ss:Type="String">клетку внести,</Data></Cell>
-    <Cell><Data ss:Type="String">कोष्ठ निवेश करे</Data></Cell>
+    <Cell><Data ss:Type="String">Cel invoegen</Data></Cell>
+    <Cell><Data ss:Type="String">Insérer une cellule</Data></Cell>
+    <Cell><Data ss:Type="String">Inserire cella</Data></Cell>
+    <Cell><Data ss:Type="String">Insertar celda</Data></Cell>
+    <Cell><Data ss:Type="String">插入单元格</Data></Cell>
+    <Cell><Data ss:Type="String">درج سلول</Data></Cell>
+    <Cell><Data ss:Type="String">Вставить ячейку</Data></Cell>
+    <Cell><Data ss:Type="String">कोष्ठ निवेश करें</Data></Cell>
     <Cell><Data ss:Type="String">إدراج خلية</Data></Cell>
     <Cell><Data ss:Type="String">Chèn ô</Data></Cell>
     <Cell><Data ss:Type="String">הכנס תא</Data></Cell>
@@ -291,163 +314,192 @@
     <Cell><Data ss:Type="String">Spalte einfügen</Data></Cell>
     <Cell><Data ss:Type="String">Insert column</Data></Cell>
     <Cell><Data ss:Type="String">Kolom toevoegen</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Inserire colonna</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">濒入列</Data></Cell>
-    <Cell><Data ss:Type="String">اضافه کردن ستون</Data></Cell>
-    <Cell><Data ss:Type="String">столбик внести</Data></Cell>
-    <Cell><Data ss:Type="String">स्थंभ निवेश करे</Data></Cell>
-    <Cell><Data ss:Type="String">إدراج عامود</Data></Cell>
+    <Cell><Data ss:Type="String">Insérer une colonne</Data></Cell>
+    <Cell><Data ss:Type="String">Inserire colonna</Data></Cell>
+    <Cell><Data ss:Type="String">Insertar columna</Data></Cell>
+    <Cell><Data ss:Type="String">插入列</Data></Cell>
+    <Cell><Data ss:Type="String">درج ستون</Data></Cell>
+    <Cell><Data ss:Type="String">вставить столбец</Data></Cell>
+    <Cell><Data ss:Type="String">स्तंभ जोड़ें</Data></Cell>
+    <Cell><Data ss:Type="String">إدراج عمود</Data></Cell>
     <Cell><Data ss:Type="String">Chèn cột</Data></Cell>
-    <Cell><Data ss:Type="String">הכנס עמודה</Data></Cell>
+    <Cell><Data ss:Type="String">הוסף עמודה</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">ACTION_INSERT_ROW</Data></Cell>
     <Cell><Data ss:Type="String">Zeile einfügen</Data></Cell>
     <Cell><Data ss:Type="String">Insert row</Data></Cell>
-    <Cell><Data ss:Type="String">Regel toevoegen</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Inserire fila</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">濒入行</Data></Cell>
-    <Cell><Data ss:Type="String">اضافه کردن رديف</Data></Cell>
-    <Cell><Data ss:Type="String">строчку внести</Data></Cell>
-    <Cell><Data ss:Type="String">पंक्ति निवेश करे</Data></Cell>
+    <Cell><Data ss:Type="String">Rij invoegen</Data></Cell>
+    <Cell><Data ss:Type="String">Insérer une ligne</Data></Cell>
+    <Cell><Data ss:Type="String">Inserire riga</Data></Cell>
+    <Cell><Data ss:Type="String">Insertar fila</Data></Cell>
+    <Cell><Data ss:Type="String">插入行</Data></Cell>
+    <Cell><Data ss:Type="String">درج ردیف</Data></Cell>
+    <Cell><Data ss:Type="String">Вставить строку</Data></Cell>
+    <Cell><Data ss:Type="String">पंक्ति जोड़ें</Data></Cell>
     <Cell><Data ss:Type="String">إدراج صف</Data></Cell>
     <Cell><Data ss:Type="String">Chèn hàng</Data></Cell>
-    <Cell><Data ss:Type="String">הכנס שורה</Data></Cell>
+    <Cell><Data ss:Type="String">הוסף שורה</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">ACTION_MANAGE_CHANGEPROPERTIES</Data></Cell>
     <Cell><Data ss:Type="String">Objekt geändert.</Data></Cell>
     <Cell><Data ss:Type="String">Object modified.</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">Objet modifié.</Data></Cell>
-    <Cell><Data ss:Type="String">Oggetto cambiato.</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">对象已更改</Data></Cell>
-    <Cell/>
-    <Cell><Data ss:Type="String">объект изменен</Data></Cell>
-    <Cell><Data ss:Type="String">वस्तु परिवर्तन</Data></Cell>
-    <Cell><Data ss:Type="String">تم تعديل الموضوع</Data></Cell>
-    <Cell><Data ss:Type="String">Đối tượng đã thay đổi.</Data></Cell>
-    <Cell><Data ss:Type="String">אובייקט שונה</Data></Cell>
+    <Cell><Data ss:Type="String">Object gewijzigd.</Data></Cell>
+    <Cell><Data ss:Type="String">Objet modifié.</Data></Cell>
+    <Cell><Data ss:Type="String">Oggetto modificato.</Data></Cell>
+    <Cell><Data ss:Type="String">Objeto modificado.</Data></Cell>
+    <Cell><Data ss:Type="String">对象已更改</Data></Cell>
+    <Cell><Data ss:Type="String">شیء تغییر یافت.</Data></Cell>
+    <Cell><Data ss:Type="String">Объект изменён.</Data></Cell>
+    <Cell><Data ss:Type="String">वस्तु परिवर्तित की गई।</Data></Cell>
+    <Cell><Data ss:Type="String">تم تعديل الكائن.</Data></Cell>
+    <Cell><Data ss:Type="String">Đối tượng đã được sửa đổi.</Data></Cell>
+    <Cell><Data ss:Type="String">האובייקט שונה.</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">ACTION_MANAGE_MOVEOBJDOWN</Data></Cell>
     <Cell><Data ss:Type="String">Nach unten verschoben.</Data></Cell>
     <Cell><Data ss:Type="String">Moved down.</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Muovere in basso.</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">已下移</Data></Cell>
-    <Cell/>
-    <Cell><Data ss:Type="String">вниз перемещен</Data></Cell>
-    <Cell><Data ss:Type="String">निचे की ओर हत गया</Data></Cell>
-    <Cell><Data ss:Type="String">تم التحريك لأسفل</Data></Cell>
-    <Cell><Data ss:Type="String">Đã dịch xuống.</Data></Cell>
-    <Cell><Data ss:Type="String">הוזז למטה</Data></Cell>
+    <Cell><Data ss:Type="String">Naar beneden verplaatst.</Data></Cell>
+    <Cell><Data ss:Type="String">Déplacé vers le bas.</Data></Cell>
+    <Cell><Data ss:Type="String">Spostato in basso.</Data></Cell>
+    <Cell><Data ss:Type="String">Movido hacia abajo.</Data></Cell>
+    <Cell><Data ss:Type="String">已下移</Data></Cell>
+    <Cell><Data ss:Type="String">به پایین منتقل شد.</Data></Cell>
+    <Cell><Data ss:Type="String">Перемещено вниз.</Data></Cell>
+    <Cell><Data ss:Type="String">नीचे ले जाया गया।</Data></Cell>
+    <Cell><Data ss:Type="String">تم النقل لأسفل.</Data></Cell>
+    <Cell><Data ss:Type="String">Đã chuyển xuống.</Data></Cell>
+    <Cell><Data ss:Type="String">הועבר למטה</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">ACTION_MANAGE_MOVEOBJUP</Data></Cell>
     <Cell><Data ss:Type="String">Nach oben verschoben.</Data></Cell>
     <Cell><Data ss:Type="String">Moved up.</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Muovere in alto.</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">已上移</Data></Cell>
-    <Cell/>
-    <Cell><Data ss:Type="String">наверх перемещен</Data></Cell>
-    <Cell><Data ss:Type="String">ऊपर की ओर हत गया</Data></Cell>
-    <Cell><Data ss:Type="String">تم التحريك لأعلى</Data></Cell>
-    <Cell><Data ss:Type="String">Đã dịch lên.</Data></Cell>
+    <Cell><Data ss:Type="String">Omhoog verplaatst.</Data></Cell>
+    <Cell><Data ss:Type="String">Déplacé vers le haut.</Data></Cell>
+    <Cell><Data ss:Type="String">Spostato in alto.</Data></Cell>
+    <Cell><Data ss:Type="String">Movido hacia arriba.</Data></Cell>
+    <Cell><Data ss:Type="String">已上移</Data></Cell>
+    <Cell><Data ss:Type="String">به بالا منتقل شد.</Data></Cell>
+    <Cell><Data ss:Type="String">Перемещено вверх.</Data></Cell>
+    <Cell><Data ss:Type="String">ऊपर ले जाया गया।</Data></Cell>
+    <Cell><Data ss:Type="String">تم النقل لأعلى.</Data></Cell>
+    <Cell><Data ss:Type="String">Đã chuyển lên.</Data></Cell>
     <Cell><Data ss:Type="String">הוזז למעלה</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">ACTION_MANAGE_UNDOVERSION</Data></Cell>
     <Cell><Data ss:Type="String">Auf frühere Version zurückgesetzt.</Data></Cell>
     <Cell><Data ss:Type="String">Applied earlier version.</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Ritornare alla versione precedente.</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">濢夿早期版本</Data></Cell>
-    <Cell/>
-    <Cell><Data ss:Type="String">старая версия возвращена</Data></Cell>
-    <Cell><Data ss:Type="String">पहले वरशन का प्रयुक्त करे</Data></Cell>
-    <Cell><Data ss:Type="String">إضافة نسخة سابقة</Data></Cell>
+    <Cell><Data ss:Type="String">Eerdere versie toegepast.</Data></Cell>
+    <Cell><Data ss:Type="String">Version antérieure appliquée.</Data></Cell>
+    <Cell><Data ss:Type="String">Versione precedente applicata.</Data></Cell>
+    <Cell><Data ss:Type="String">Versión anterior aplicada.</Data></Cell>
+    <Cell><Data ss:Type="String">应用了早期版本。</Data></Cell>
+    <Cell><Data ss:Type="String">نسخه قبلی اعمال شد.</Data></Cell>
+    <Cell><Data ss:Type="String">Применена предыдущая версия.</Data></Cell>
+    <Cell><Data ss:Type="String">पहले संस्करण को लागू किया गया।</Data></Cell>
+    <Cell><Data ss:Type="String">تم تطبيق النسخة السابقة.</Data></Cell>
     <Cell><Data ss:Type="String">Đã áp dụng phiên bản trước.</Data></Cell>
-    <Cell><Data ss:Type="String">שנה לגרסה קודמת</Data></Cell>
+    <Cell><Data ss:Type="String">הוחלה גרסה קודמת.</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">ACTION_MERGE_CELLS</Data></Cell>
     <Cell><Data ss:Type="String">Zellen verbinden</Data></Cell>
     <Cell><Data ss:Type="String">Merge cells</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Unire caselle</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">忈并忕元格</Data></Cell>
-    <Cell/>
-    <Cell><Data ss:Type="String">клетки соединить</Data></Cell>
-    <Cell><Data ss:Type="String">कोष्ठ मिलायें</Data></Cell>
-    <Cell><Data ss:Type="String">إدماج الخلايا</Data></Cell>
-    <Cell><Data ss:Type="String">Hợp nhất các ô lại</Data></Cell>
+    <Cell><Data ss:Type="String">Cellen samenvoegen</Data></Cell>
+    <Cell><Data ss:Type="String">Fusionner les cellules</Data></Cell>
+    <Cell><Data ss:Type="String">Unire celle</Data></Cell>
+    <Cell><Data ss:Type="String">Combinar celdas</Data></Cell>
+    <Cell><Data ss:Type="String">合并单元格</Data></Cell>
+    <Cell><Data ss:Type="String">ادغام سلول‌ها</Data></Cell>
+    <Cell><Data ss:Type="String">Объединить ячейки</Data></Cell>
+    <Cell><Data ss:Type="String">कोष्ठ मिलाना</Data></Cell>
+    <Cell><Data ss:Type="String">دمج الخلايا</Data></Cell>
+    <Cell><Data ss:Type="String">Gộp các ô</Data></Cell>
     <Cell><Data ss:Type="String">מזג תאים</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">ACTION_MOVEDOWN</Data></Cell>
     <Cell><Data ss:Type="String">Nach unten verschieben</Data></Cell>
     <Cell><Data ss:Type="String">Move down</Data></Cell>
-    <Cell><Data ss:Type="String">Na onderen verschuiven</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Spostare in basso</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">下移</Data></Cell>
-    <Cell><Data ss:Type="String">حرکت به پايين</Data></Cell>
+    <Cell><Data ss:Type="String">Naar beneden verplaatsen</Data></Cell>
+    <Cell><Data ss:Type="String">Déplacer vers le bas</Data></Cell>
+    <Cell><Data ss:Type="String">Spostare in basso</Data></Cell>
+    <Cell><Data ss:Type="String">Mover hacia abajo</Data></Cell>
+    <Cell><Data ss:Type="String">下移</Data></Cell>
+    <Cell><Data ss:Type="String">حرکت به پایین</Data></Cell>
     <Cell><Data ss:Type="String">переместить вниз</Data></Cell>
-    <Cell><Data ss:Type="String">निचे ओर हतना</Data></Cell>
+    <Cell><Data ss:Type="String">नीचे ले जाएँ</Data></Cell>
     <Cell><Data ss:Type="String">تحريك لأسفل</Data></Cell>
-    <Cell><Data ss:Type="String">Dịch xuống</Data></Cell>
+    <Cell><Data ss:Type="String">Di chuyển xuống</Data></Cell>
     <Cell><Data ss:Type="String">הזז למטה</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">ACTION_MOVELEFT</Data></Cell>
     <Cell><Data ss:Type="String">Nach links verschieben</Data></Cell>
     <Cell><Data ss:Type="String">Move left</Data></Cell>
-    <Cell><Data ss:Type="String">Na links verschuiven</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Spostare a sinistra</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">忑左移</Data></Cell>
+    <Cell><Data ss:Type="String">Naar links verplaatsen</Data></Cell>
+    <Cell><Data ss:Type="String">Déplacer vers la gauche</Data></Cell>
+    <Cell><Data ss:Type="String">Spostare a sinistra</Data></Cell>
+    <Cell><Data ss:Type="String">Mover a la izquierda</Data></Cell>
+    <Cell><Data ss:Type="String">向左移动</Data></Cell>
     <Cell><Data ss:Type="String">حرکت به چپ</Data></Cell>
     <Cell><Data ss:Type="String">переместить влево</Data></Cell>
-    <Cell><Data ss:Type="String">बांयी ओर हतना</Data></Cell>
-    <Cell><Data ss:Type="String">تحريك يسارا</Data></Cell>
-    <Cell><Data ss:Type="String">Dịch trái</Data></Cell>
+    <Cell><Data ss:Type="String">बाएँ ले जाएँ</Data></Cell>
+    <Cell><Data ss:Type="String">تحريك يساراً</Data></Cell>
+    <Cell><Data ss:Type="String">Di chuyển sang trái</Data></Cell>
     <Cell><Data ss:Type="String">הזז שמאלה</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">ACTION_MOVERIGHT</Data></Cell>
     <Cell><Data ss:Type="String">Nach rechts verschieben</Data></Cell>
     <Cell><Data ss:Type="String">Move right</Data></Cell>
-    <Cell><Data ss:Type="String">Na rechts verschuiven</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Spostare a destra</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">忑忳移</Data></Cell>
+    <Cell><Data ss:Type="String">Naar rechts verplaatsen</Data></Cell>
+    <Cell><Data ss:Type="String">Déplacer vers la droite</Data></Cell>
+    <Cell><Data ss:Type="String">Spostare a destra</Data></Cell>
+    <Cell><Data ss:Type="String">Mover a la derecha</Data></Cell>
+    <Cell><Data ss:Type="String">向右移动</Data></Cell>
     <Cell><Data ss:Type="String">حرکت به راست</Data></Cell>
     <Cell><Data ss:Type="String">переместить вправо</Data></Cell>
-    <Cell><Data ss:Type="String">दाहिनी ओर हतना</Data></Cell>
-    <Cell><Data ss:Type="String">تحريك يمينا</Data></Cell>
-    <Cell><Data ss:Type="String">Dịch phải</Data></Cell>
+    <Cell><Data ss:Type="String">दाहिने ले जाएँ</Data></Cell>
+    <Cell><Data ss:Type="String">تحريك يميناً</Data></Cell>
+    <Cell><Data ss:Type="String">Di chuyển sang phải</Data></Cell>
     <Cell><Data ss:Type="String">הזז ימינה</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">ACTION_MOVEUP</Data></Cell>
     <Cell><Data ss:Type="String">Nach oben verschieben</Data></Cell>
     <Cell><Data ss:Type="String">Move up</Data></Cell>
-    <Cell><Data ss:Type="String">Na boven verschuiven</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Spostare in alto</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">上移</Data></Cell>
+    <Cell><Data ss:Type="String">Naar boven verplaatsen</Data></Cell>
+    <Cell><Data ss:Type="String">Déplacer vers le haut</Data></Cell>
+    <Cell><Data ss:Type="String">Spostare in alto</Data></Cell>
+    <Cell><Data ss:Type="String">Mover hacia arriba</Data></Cell>
+    <Cell><Data ss:Type="String">上移</Data></Cell>
     <Cell><Data ss:Type="String">حرکت به بالا</Data></Cell>
-    <Cell><Data ss:Type="String">переместить наверх</Data></Cell>
-    <Cell><Data ss:Type="String">ऊपर ओर हतना</Data></Cell>
+    <Cell><Data ss:Type="String">переместить вверх</Data></Cell>
+    <Cell><Data ss:Type="String">ऊपर ले जाएँ</Data></Cell>
     <Cell><Data ss:Type="String">تحريك لأعلى</Data></Cell>
-    <Cell><Data ss:Type="String">Dịch lên</Data></Cell>
+    <Cell><Data ss:Type="String">Di chuyển lên</Data></Cell>
     <Cell><Data ss:Type="String">הזז למעלה</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">ACTION_OUTDENT</Data></Cell>
     <Cell><Data ss:Type="String">Einzug verkleinern</Data></Cell>
     <Cell><Data ss:Type="String">Decrease indent</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Diminuire il rientro</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">凿少缩进</Data></Cell>
-    <Cell/>
-    <Cell><Data ss:Type="String">уменьшить</Data></Cell>
+    <Cell><Data ss:Type="String">Inspringing verkleinen</Data></Cell>
+    <Cell><Data ss:Type="String">Diminuer le retrait</Data></Cell>
+    <Cell><Data ss:Type="String">Diminuire il rientro</Data></Cell>
+    <Cell><Data ss:Type="String">Disminuir sangría</Data></Cell>
+    <Cell><Data ss:Type="String">减少缩进</Data></Cell>
+    <Cell><Data ss:Type="String">کاهش تورفتگی</Data></Cell>
+    <Cell><Data ss:Type="String">Уменьшить отступ</Data></Cell>
     <Cell><Data ss:Type="String">इंडेंट घटायें</Data></Cell>
-    <Cell><Data ss:Type="String">تصغير النطاق</Data></Cell>
-    <Cell><Data ss:Type="String">Dịch chữ lùi ra</Data></Cell>
-    <Cell><Data ss:Type="String">הורד פסקה</Data></Cell>
+    <Cell><Data ss:Type="String">تقليل المسافة البادئة</Data></Cell>
+    <Cell><Data ss:Type="String">Giảm thụt lề</Data></Cell>
+    <Cell><Data ss:Type="String">הקטן כניסה</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">ACTION_SELECT</Data></Cell>
@@ -467,43 +519,49 @@
    </Row>
    <Row>
     <Cell><Data ss:Type="String">ACTION_SPLIT_CELLS</Data></Cell>
-    <Cell><Data ss:Type="String">Zelle teilen</Data></Cell>
+    <Cell><Data ss:Type="String">Zellen teilen</Data></Cell>
     <Cell><Data ss:Type="String">Split cells</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Dividere cassella</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">折分忕元格</Data></Cell>
-    <Cell><Data ss:Type="String">تقسيم سلول ها</Data></Cell>
-    <Cell><Data ss:Type="String">клетку расделить</Data></Cell>
-    <Cell><Data ss:Type="String">कोष्ठ विभाजित करे</Data></Cell>
-    <Cell><Data ss:Type="String">تقسيم الخانات</Data></Cell>
-    <Cell><Data ss:Type="String">Chia ra thành các ô</Data></Cell>
+    <Cell><Data ss:Type="String">Cellen splitsen</Data></Cell>
+    <Cell><Data ss:Type="String">Diviser les cellules</Data></Cell>
+    <Cell><Data ss:Type="String">Dividere celle</Data></Cell>
+    <Cell><Data ss:Type="String">Dividir celdas</Data></Cell>
+    <Cell><Data ss:Type="String">拆分单元格</Data></Cell>
+    <Cell><Data ss:Type="String">تقسیم سلول‌ها</Data></Cell>
+    <Cell><Data ss:Type="String">Разделить ячейки</Data></Cell>
+    <Cell><Data ss:Type="String">कोष्ठ विभाजित करें</Data></Cell>
+    <Cell><Data ss:Type="String">تقسيم الخلايا</Data></Cell>
+    <Cell><Data ss:Type="String">Tách ô</Data></Cell>
     <Cell><Data ss:Type="String">פצל תאים</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">ALIGN</Data></Cell>
     <Cell><Data ss:Type="String">Ausrichtung</Data></Cell>
-    <Cell><Data ss:Type="String">alignment</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">Aligné</Data></Cell>
+    <Cell><Data ss:Type="String">Alignment</Data></Cell>
+    <Cell><Data ss:Type="String">Uitlijning</Data></Cell>
+    <Cell><Data ss:Type="String">Alignement</Data></Cell>
     <Cell><Data ss:Type="String">Allineamento</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">对齿方弿</Data></Cell>
+    <Cell><Data ss:Type="String">Alineación</Data></Cell>
+    <Cell><Data ss:Type="String">对齐</Data></Cell>
     <Cell><Data ss:Type="String">تراز</Data></Cell>
     <Cell><Data ss:Type="String">выравнивание</Data></Cell>
-    <Cell><Data ss:Type="String">सरेखण</Data></Cell>
-    <Cell><Data ss:Type="String">محازاة </Data></Cell>
-    <Cell><Data ss:Type="String">căn thẳng hàng</Data></Cell>
+    <Cell><Data ss:Type="String">संरेखण</Data></Cell>
+    <Cell><Data ss:Type="String">محاذاة</Data></Cell>
+    <Cell><Data ss:Type="String">Căn chỉnh</Data></Cell>
     <Cell><Data ss:Type="String">יישור</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">ALIGN1</Data></Cell>
     <Cell><Data ss:Type="String">Linksbündig</Data></Cell>
     <Cell><Data ss:Type="String">Left</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">à gauche</Data></Cell>
+    <Cell><Data ss:Type="String">Links</Data></Cell>
+    <Cell><Data ss:Type="String">À gauche</Data></Cell>
     <Cell><Data ss:Type="String">A sinistra</Data></Cell>
     <Cell><Data ss:Type="String">A la izquierda</Data></Cell>
-    <Cell><Data ss:Type="String">左对齿</Data></Cell>
-    <Cell/>
-    <Cell><Data ss:Type="String">слева</Data></Cell>
-    <Cell><Data ss:Type="String">बांया</Data></Cell>
-    <Cell><Data ss:Type="String">يسـار</Data></Cell>
+    <Cell><Data ss:Type="String">左对齐</Data></Cell>
+    <Cell><Data ss:Type="String">چپ‌چین</Data></Cell>
+    <Cell><Data ss:Type="String">Слева</Data></Cell>
+    <Cell><Data ss:Type="String">बाएँ</Data></Cell>
+    <Cell><Data ss:Type="String">يسار</Data></Cell>
     <Cell><Data ss:Type="String">Trái</Data></Cell>
     <Cell><Data ss:Type="String">שמאלה</Data></Cell>
    </Row>
@@ -511,13 +569,14 @@
     <Cell><Data ss:Type="String">ALIGN2</Data></Cell>
     <Cell><Data ss:Type="String">Rechtsbündig</Data></Cell>
     <Cell><Data ss:Type="String">Right</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">à droite</Data></Cell>
+    <Cell><Data ss:Type="String">Rechts</Data></Cell>
+    <Cell><Data ss:Type="String">À droite</Data></Cell>
     <Cell><Data ss:Type="String">A destra</Data></Cell>
     <Cell><Data ss:Type="String">A la derecha</Data></Cell>
-    <Cell><Data ss:Type="String">忳对齿</Data></Cell>
+    <Cell><Data ss:Type="String">右对齐</Data></Cell>
     <Cell><Data ss:Type="String">راست</Data></Cell>
     <Cell><Data ss:Type="String">справа</Data></Cell>
-    <Cell><Data ss:Type="String">दाहिना</Data></Cell>
+    <Cell><Data ss:Type="String">दायाँ</Data></Cell>
     <Cell><Data ss:Type="String">يمين</Data></Cell>
     <Cell><Data ss:Type="String">Phải</Data></Cell>
     <Cell><Data ss:Type="String">ימינה</Data></Cell>
@@ -526,15 +585,16 @@
     <Cell><Data ss:Type="String">ALIGN3</Data></Cell>
     <Cell><Data ss:Type="String">Zentriert</Data></Cell>
     <Cell><Data ss:Type="String">Center</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">centré</Data></Cell>
-    <Cell><Data ss:Type="String">A centro</Data></Cell>
-    <Cell><Data ss:Type="String">Centrar</Data></Cell>
+    <Cell><Data ss:Type="String">Gecentreerd</Data></Cell>
+    <Cell><Data ss:Type="String">Centré</Data></Cell>
+    <Cell><Data ss:Type="String">Centrato</Data></Cell>
+    <Cell><Data ss:Type="String">Centrado</Data></Cell>
     <Cell><Data ss:Type="String">居中</Data></Cell>
     <Cell><Data ss:Type="String">مرکز</Data></Cell>
-    <Cell><Data ss:Type="String">в центре</Data></Cell>
+    <Cell><Data ss:Type="String">По центру</Data></Cell>
     <Cell><Data ss:Type="String">मध्य</Data></Cell>
-    <Cell><Data ss:Type="String">وسط</Data></Cell>
-    <Cell><Data ss:Type="String">Chính giữa</Data></Cell>
+    <Cell><Data ss:Type="String">توسيط</Data></Cell>
+    <Cell><Data ss:Type="String">Căn giữa</Data></Cell>
     <Cell><Data ss:Type="String">מרכז</Data></Cell>
    </Row>
    <Row>
@@ -557,12 +617,14 @@
     <Cell><Data ss:Type="String">AT</Data></Cell>
     <Cell><Data ss:Type="String">um</Data></Cell>
     <Cell><Data ss:Type="String">at</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">A</Data></Cell>
-    <Cell><Data ss:Type="String">at</Data></Cell>
-    <Cell><Data ss:Type="String">时间</Data></Cell>
+    <Cell><Data ss:Type="String">om</Data></Cell>
+    <Cell><Data ss:Type="String">à</Data></Cell>
+    <Cell><Data ss:Type="String">a</Data></Cell>
+    <Cell><Data ss:Type="String">a</Data></Cell>
+    <Cell><Data ss:Type="String">在</Data></Cell>
     <Cell><Data ss:Type="String">در</Data></Cell>
     <Cell><Data ss:Type="String">в</Data></Cell>
-    <Cell><Data ss:Type="String">में</Data></Cell>
+    <Cell><Data ss:Type="String">पर</Data></Cell>
     <Cell><Data ss:Type="String">في</Data></Cell>
     <Cell><Data ss:Type="String">tại</Data></Cell>
     <Cell><Data ss:Type="String">ב...</Data></Cell>
@@ -591,9 +653,10 @@
     <Cell><Data ss:Type="String">tous</Data></Cell>
     <Cell><Data ss:Type="String">tutti</Data></Cell>
     <Cell><Data ss:Type="String">todos</Data></Cell>
-    <Cell ss:Index="9"/>
+    <Cell><Data ss:Type="String">所有</Data></Cell>
+    <Cell><Data ss:Type="String">همه</Data></Cell>
     <Cell><Data ss:Type="String">все</Data></Cell>
-    <Cell><Data ss:Type="String">पूरा</Data></Cell>
+    <Cell><Data ss:Type="String">सभी</Data></Cell>
     <Cell><Data ss:Type="String">الكل</Data></Cell>
     <Cell><Data ss:Type="String">tất cả</Data></Cell>
     <Cell><Data ss:Type="String">הכל</Data></Cell>
@@ -634,11 +697,13 @@
     <Cell><Data ss:Type="String">ATTR_ASC</Data></Cell>
     <Cell><Data ss:Type="String">aufsteigend</Data></Cell>
     <Cell><Data ss:Type="String">ascending</Data></Cell>
-    <Cell><Data ss:Type="String">opstijgend</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">crescente</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">忇庿</Data></Cell>
-    <Cell><Data ss:Type="String">بالارفتن</Data></Cell>
-    <Cell><Data ss:Type="String">возрастающе</Data></Cell>
+    <Cell><Data ss:Type="String">oplopend</Data></Cell>
+    <Cell><Data ss:Type="String">ascendant</Data></Cell>
+    <Cell><Data ss:Type="String">ascendente</Data></Cell>
+    <Cell><Data ss:Type="String">ascendente</Data></Cell>
+    <Cell><Data ss:Type="String">升序</Data></Cell>
+    <Cell><Data ss:Type="String">صعودی</Data></Cell>
+    <Cell><Data ss:Type="String">возрастающий</Data></Cell>
     <Cell><Data ss:Type="String">आरोही</Data></Cell>
     <Cell><Data ss:Type="String">تصاعدي</Data></Cell>
     <Cell><Data ss:Type="String">tăng dần</Data></Cell>
@@ -1372,6 +1437,22 @@
     <Cell><Data ss:Type="String">مجموعة النفايات</Data></Cell>
     <Cell><Data ss:Type="String">Bộ thu gom rác</Data></Cell>
     <Cell><Data ss:Type="String">איסוף אשפה</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">CAPTION_GARBAGE_COLLECTION</Data></Cell>
+    <Cell><Data ss:Type="String">Tage nach Objekt-Löschung</Data></Cell>
+    <Cell><Data ss:Type="String">days after object deletion</Data></Cell>
+    <Cell><Data ss:Type="String">days after object deletion</Data></Cell>
+    <Cell><Data ss:Type="String">days after object deletion</Data></Cell>
+    <Cell><Data ss:Type="String">days after object deletion</Data></Cell>
+    <Cell><Data ss:Type="String">days after object deletion</Data></Cell>
+    <Cell><Data ss:Type="String">days after object deletion</Data></Cell>
+    <Cell><Data ss:Type="String">days after object deletion</Data></Cell>
+    <Cell><Data ss:Type="String">days after object deletion</Data></Cell>
+    <Cell><Data ss:Type="String">days after object deletion</Data></Cell>
+    <Cell><Data ss:Type="String">days after object deletion</Data></Cell>
+    <Cell><Data ss:Type="String">days after object deletion</Data></Cell>
+    <Cell><Data ss:Type="String">days after object deletion</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">ATTR_HEIGHT</Data></Cell>
@@ -2365,11 +2446,31 @@
     <Cell><Data ss:Type="String">מתוך</Data></Cell>
    </Row>
    <Row>
+    <Cell><Data ss:Type="String">ATTR_STATE</Data></Cell>
+    <Cell><Data ss:Type="String">Status</Data></Cell>
+    <Cell><Data ss:Type="String">Status</Data></Cell>
+    <Cell><Data ss:Type="String">Status</Data></Cell>
+    <Cell><Data ss:Type="String">Statut</Data></Cell>
+    <Cell><Data ss:Type="String">Stato</Data></Cell>
+    <Cell><Data ss:Type="String">Estado</Data></Cell>
+    <Cell><Data ss:Type="String">状态</Data></Cell>
+    <Cell><Data ss:Type="String">وضعیت</Data></Cell>
+    <Cell><Data ss:Type="String">статус</Data></Cell>
+    <Cell><Data ss:Type="String">स्थिति</Data></Cell>
+    <Cell><Data ss:Type="String">الحالة</Data></Cell>
+    <Cell><Data ss:Type="String">Trạng thái</Data></Cell>
+    <Cell><Data ss:Type="String">סטָטוּס</Data></Cell>
+   </Row>
+   <Row>
     <Cell><Data ss:Type="String">ATTR_STATES</Data></Cell>
     <Cell><Data ss:Type="String">Stati</Data></Cell>
     <Cell><Data ss:Type="String">States</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Stati</Data></Cell>
-    <Cell ss:Index="9"/>
+    <Cell><Data ss:Type="String">States</Data></Cell>
+    <Cell><Data ss:Type="String">States</Data></Cell>
+    <Cell><Data ss:Type="String">Stati</Data></Cell>
+    <Cell><Data ss:Type="String">States</Data></Cell>
+    <Cell><Data ss:Type="String">状态</Data></Cell>
+    <Cell><Data ss:Type="String">حالت</Data></Cell>
     <Cell><Data ss:Type="String">стати</Data></Cell>
     <Cell><Data ss:Type="String">अवस्थायें</Data></Cell>
     <Cell><Data ss:Type="String">حال</Data></Cell>
@@ -2380,9 +2481,13 @@
     <Cell><Data ss:Type="String">ATTR_STATIC</Data></Cell>
     <Cell><Data ss:Type="String">statisch</Data></Cell>
     <Cell><Data ss:Type="String">static</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">statico</Data></Cell>
-    <Cell ss:Index="9"/>
-    <Cell><Data ss:Type="String">статично</Data></Cell>
+    <Cell><Data ss:Type="String">statisch</Data></Cell>
+    <Cell><Data ss:Type="String">statique</Data></Cell>
+    <Cell><Data ss:Type="String">statico</Data></Cell>
+    <Cell><Data ss:Type="String">estático</Data></Cell>
+    <Cell><Data ss:Type="String">静态</Data></Cell>
+    <Cell><Data ss:Type="String">ایستا</Data></Cell>
+    <Cell><Data ss:Type="String">статичный</Data></Cell>
     <Cell><Data ss:Type="String">स्थिर</Data></Cell>
     <Cell><Data ss:Type="String">ثابت</Data></Cell>
     <Cell><Data ss:Type="String">tĩnh</Data></Cell>
@@ -3667,6 +3772,22 @@
     <Cell><Data ss:Type="String">%s נעול</Data></Cell>
    </Row>
    <Row>
+    <Cell><Data ss:Type="String">CAPTION_NEWTARGET</Data></Cell>
+    <Cell><Data ss:Type="String">Ausgewählte Verweise auf ein neues Linkziel ändern</Data></Cell>
+    <Cell><Data ss:Type="String">Change selected references to a new link target</Data></Cell>
+    <Cell><Data ss:Type="String">Geselecteerde verwijzingen naar een nieuw linkdoel wijzigen</Data></Cell>
+    <Cell><Data ss:Type="String">Changer les références sélectionnées vers une nouvelle cible de lien</Data></Cell>
+    <Cell><Data ss:Type="String">Modificare i riferimenti selezionati a un nuovo target di collegamento</Data></Cell>
+    <Cell><Data ss:Type="String">Cambiar las referencias seleccionadas a un nuevo destino de enlace</Data></Cell>
+    <Cell><Data ss:Type="String">将选定的引用更改为新的链接目标</Data></Cell>
+    <Cell><Data ss:Type="String">تغییر ارجاعات انتخاب شده به هدف پیوند جدید</Data></Cell>
+    <Cell><Data ss:Type="String">Изменить выбранные ссылки на новую цель</Data></Cell>
+    <Cell><Data ss:Type="String">चयनित संदर्भों को एक नए लिंक लक्ष्य में बदलें</Data></Cell>
+    <Cell><Data ss:Type="String">تغيير المراجع المحددة إلى هدف ارتباط جديد</Data></Cell>
+    <Cell><Data ss:Type="String">Thay đổi các tham chiếu đã chọn sang mục tiêu liên kết mới</Data></Cell>
+    <Cell><Data ss:Type="String">שנה הפניות שנבחרו ליעד קישור חדש</Data></Cell>
+   </Row>
+   <Row>
     <Cell><Data ss:Type="String">CAPTION_NUMBER</Data></Cell>
     <Cell><Data ss:Type="String">Nummer</Data></Cell>
     <Cell><Data ss:Type="String">Number</Data></Cell>
@@ -4177,6 +4298,22 @@
     <Cell/>
     <Cell><Data ss:Type="String">Quý vị thực sự muốn chuyển đối tượng khỏi đây?</Data></Cell>
     <Cell><Data ss:Type="String">להזיז באמת את האובייקט לכאן?</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">MSG_CONFIRM_RELOAD</Data></Cell>
+    <Cell><Data ss:Type="String">Der Server verlangt ein Neuladen dieser Seite.</Data></Cell>
+    <Cell><Data ss:Type="String">The server requires this page to be reloaded.</Data></Cell>
+    <Cell><Data ss:Type="String">De server vereist dat deze pagina opnieuw wordt geladen.</Data></Cell>
+    <Cell><Data ss:Type="String">Le serveur demande un rechargement de cette page.</Data></Cell>
+    <Cell><Data ss:Type="String">Il server richiede che questa pagina venga ricaricata.</Data></Cell>
+    <Cell><Data ss:Type="String">El servidor requiere que esta página sea recargada.</Data></Cell>
+    <Cell><Data ss:Type="String">伺服器要求重新載入此頁面</Data></Cell>
+    <Cell><Data ss:Type="String">The server requires this page to be reloaded.</Data></Cell>
+    <Cell><Data ss:Type="String">Серверу требуется перезагрузка этой страницы.</Data></Cell>
+    <Cell><Data ss:Type="String">The server requires this page to be reloaded.</Data></Cell>
+    <Cell><Data ss:Type="String">يتطلب الخادم إعادة تحميل هذه الصفحة.</Data></Cell>
+    <Cell><Data ss:Type="String">The server requires this page to be reloaded.</Data></Cell>
+    <Cell><Data ss:Type="String">The server requires this page to be reloaded.</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">MSG_CONFIRM_TRASHOBJS</Data></Cell>
@@ -4947,13 +5084,15 @@
     <Cell><Data ss:Type="String">OPT_A_RIGHT</Data></Cell>
     <Cell><Data ss:Type="String">Rechtsbündig</Data></Cell>
     <Cell><Data ss:Type="String">Right</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">A destra</Data></Cell>
-    <Cell><Data ss:Type="String">A la derecha</Data></Cell>
-    <Cell><Data ss:Type="String">忳对齿</Data></Cell>
-    <Cell><Data ss:Type="String">راست</Data></Cell>
+    <Cell><Data ss:Type="String">Rechts</Data></Cell>
+    <Cell><Data ss:Type="String">Droite</Data></Cell>
+    <Cell><Data ss:Type="String">Destra</Data></Cell>
+    <Cell><Data ss:Type="String">Derecha</Data></Cell>
+    <Cell><Data ss:Type="String">右对齐</Data></Cell>
+    <Cell><Data ss:Type="String">راست‌چین</Data></Cell>
     <Cell><Data ss:Type="String">справа</Data></Cell>
     <Cell><Data ss:Type="String">दाहिना</Data></Cell>
-    <Cell><Data ss:Type="String">يمينا </Data></Cell>
+    <Cell><Data ss:Type="String">يمين</Data></Cell>
     <Cell><Data ss:Type="String">Phải</Data></Cell>
     <Cell><Data ss:Type="String">ימינה</Data></Cell>
    </Row>
@@ -4961,27 +5100,31 @@
     <Cell><Data ss:Type="String">OPT_A_RIGHT_FLOAT</Data></Cell>
     <Cell><Data ss:Type="String">Rechtsbündig (mit Textumfluss links)</Data></Cell>
     <Cell><Data ss:Type="String">Right (float text left)</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">A destra (float text left)</Data></Cell>
-    <Cell><Data ss:Type="String">A la derecha (float text left)</Data></Cell>
-    <Cell><Data ss:Type="String">忳对齿</Data></Cell>
-    <Cell><Data ss:Type="String">راست</Data></Cell>
-    <Cell><Data ss:Type="String">справа</Data></Cell>
-    <Cell><Data ss:Type="String">दाहिना (पाठ को बांये प्लव करे)</Data></Cell>
-    <Cell><Data ss:Type="String">يمينا (حرك النص يسارا)</Data></Cell>
-    <Cell><Data ss:Type="String">Phải (động phía bên trái của văn bản)</Data></Cell>
-    <Cell><Data ss:Type="String">ימינה (גלישת טקסט שמאלה)</Data></Cell>
+    <Cell><Data ss:Type="String">Rechts (Text links fließend)</Data></Cell>
+    <Cell><Data ss:Type="String">Droite (texte flottant à gauche)</Data></Cell>
+    <Cell><Data ss:Type="String">Destra (testo a sinistra)</Data></Cell>
+    <Cell><Data ss:Type="String">Derecha (texto flotante a la izquierda)</Data></Cell>
+    <Cell><Data ss:Type="String">右对齐（文本左侧环绕）</Data></Cell>
+    <Cell><Data ss:Type="String">راست‌چین (متن به چپ شناور)</Data></Cell>
+    <Cell><Data ss:Type="String">справа (текст слева обтекает)</Data></Cell>
+    <Cell><Data ss:Type="String">दाहिना (पाठ को बाएं प्लव करे)</Data></Cell>
+    <Cell><Data ss:Type="String">يمين (تحويم النص إلى اليسار)</Data></Cell>
+    <Cell><Data ss:Type="String">Phải (văn bản nổi bên trái)</Data></Cell>
+    <Cell><Data ss:Type="String">ימין (גלישת טקסט שמאלה)</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">OPT_A_TOP</Data></Cell>
     <Cell><Data ss:Type="String">Oben</Data></Cell>
     <Cell><Data ss:Type="String">Top</Data></Cell>
     <Cell><Data ss:Type="String">Boven</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Sopra</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">顶端对齿</Data></Cell>
+    <Cell><Data ss:Type="String">Haut</Data></Cell>
+    <Cell><Data ss:Type="String">Sopra</Data></Cell>
+    <Cell><Data ss:Type="String">Arriba</Data></Cell>
+    <Cell><Data ss:Type="String">顶部</Data></Cell>
     <Cell><Data ss:Type="String">بالا</Data></Cell>
-    <Cell><Data ss:Type="String">сверху</Data></Cell>
+    <Cell><Data ss:Type="String">верх</Data></Cell>
     <Cell><Data ss:Type="String">ऊपर</Data></Cell>
-    <Cell><Data ss:Type="String">بداية الصفحة</Data></Cell>
+    <Cell><Data ss:Type="String">أعلى</Data></Cell>
     <Cell><Data ss:Type="String">Trên</Data></Cell>
     <Cell><Data ss:Type="String">עליון</Data></Cell>
    </Row>
@@ -5058,11 +5201,14 @@
     <Cell><Data ss:Type="String">OPT_F_EMPHASIS</Data></Cell>
     <Cell><Data ss:Type="String">Merksatz</Data></Cell>
     <Cell><Data ss:Type="String">Emphasis</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Enfasi</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">强调</Data></Cell>
-    <Cell><Data ss:Type="String">تاکيد</Data></Cell>
+    <Cell><Data ss:Type="String">Nadruk</Data></Cell>
+    <Cell><Data ss:Type="String">Emphase</Data></Cell>
+    <Cell><Data ss:Type="String">Enfasi</Data></Cell>
+    <Cell><Data ss:Type="String">Énfasis</Data></Cell>
+    <Cell><Data ss:Type="String">强调</Data></Cell>
+    <Cell><Data ss:Type="String">تاکید</Data></Cell>
     <Cell><Data ss:Type="String">Акцент</Data></Cell>
-    <Cell><Data ss:Type="String">बल</Data></Cell>
+    <Cell><Data ss:Type="String">ज़ोर</Data></Cell>
     <Cell><Data ss:Type="String">توكيد</Data></Cell>
     <Cell><Data ss:Type="String">Nhấn mạnh</Data></Cell>
     <Cell><Data ss:Type="String">הדגשה</Data></Cell>
@@ -5167,37 +5313,46 @@
     <Cell><Data ss:Type="String">OPT_F_INDENTEDBLOCK</Data></Cell>
     <Cell><Data ss:Type="String">Einzug (z.B. Zitate)</Data></Cell>
     <Cell><Data ss:Type="String">Indented block (e.g. quotations)</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Rientro</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">缩进（例如：引文）</Data></Cell>
-    <Cell><Data ss:Type="String">بلوک دندانه دار</Data></Cell>
-    <Cell><Data ss:Type="String">вставленный блок(напр. цитата)</Data></Cell>
-    <Cell><Data ss:Type="String">इंडेंट ब्लोक (जैसे कोटेशन्स)</Data></Cell>
-    <Cell><Data ss:Type="String">محازاة الكل</Data></Cell>
-    <Cell><Data ss:Type="String">Khối thụt vào (ví dụ như đoạn trích)</Data></Cell>
-    <Cell><Data ss:Type="String">בלוק שהוכנס (כגון:ציטוטים)</Data></Cell>
+    <Cell><Data ss:Type="String">Ingesprongen blok (bijv. citaten)</Data></Cell>
+    <Cell><Data ss:Type="String">Bloc en retrait (par ex. citations)</Data></Cell>
+    <Cell><Data ss:Type="String">Blocco rientrato (ad es. citazioni)</Data></Cell>
+    <Cell><Data ss:Type="String">Bloque sangrado (p. ej. citas)</Data></Cell>
+    <Cell><Data ss:Type="String">缩进（例如：引文）</Data></Cell>
+    <Cell><Data ss:Type="String">بلوک دندانه‌دار (مثلاً نقل قول‌ها)</Data></Cell>
+    <Cell><Data ss:Type="String">вставленный блок (например, цитаты)</Data></Cell>
+    <Cell><Data ss:Type="String">इंडेंटेड ब्लॉक (जैसे कि उद्धरण)</Data></Cell>
+    <Cell><Data ss:Type="String">كتلة ذات مسافة بادئة (مثل الاقتباسات)</Data></Cell>
+    <Cell><Data ss:Type="String">Khối thụt vào (ví dụ: trích dẫn)</Data></Cell>
+    <Cell><Data ss:Type="String">בלוק מוזח (למשל: ציטוטים)</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">OPT_F_ORDEREDLIST</Data></Cell>
     <Cell><Data ss:Type="String">Nummerierung</Data></Cell>
     <Cell><Data ss:Type="String">Numbered List</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Numerazione</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">编忷</Data></Cell>
-    <Cell><Data ss:Type="String">ليست شماره دار</Data></Cell>
-    <Cell><Data ss:Type="String">нумерование</Data></Cell>
+    <Cell><Data ss:Type="String">Genummerde lijst</Data></Cell>
+    <Cell><Data ss:Type="String">Liste numérotée</Data></Cell>
+    <Cell><Data ss:Type="String">Elenco numerato</Data></Cell>
+    <Cell><Data ss:Type="String">Lista numerada</Data></Cell>
+    <Cell><Data ss:Type="String">编号列表</Data></Cell>
+    <Cell><Data ss:Type="String">فهرست شماره‌دار</Data></Cell>
+    <Cell><Data ss:Type="String">нумерованный список</Data></Cell>
     <Cell><Data ss:Type="String">संख्यांकित सूची</Data></Cell>
     <Cell><Data ss:Type="String">قائمة مرقمة</Data></Cell>
     <Cell><Data ss:Type="String">Danh sách được đánh số</Data></Cell>
-    <Cell><Data ss:Type="String">עמוד ממוספר</Data></Cell>
+    <Cell><Data ss:Type="String">רשימה ממוספרת</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">OPT_F_PLAINHTML</Data></Cell>
     <Cell><Data ss:Type="String">HTML</Data></Cell>
     <Cell><Data ss:Type="String">HTML</Data></Cell>
     <Cell><Data ss:Type="String">HTML</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">HTML</Data></Cell>
-    <Cell ss:Index="9"/>
     <Cell><Data ss:Type="String">HTML</Data></Cell>
-    <Cell><Data ss:Type="String">हच ति एम एल</Data></Cell>
+    <Cell><Data ss:Type="String">HTML</Data></Cell>
+    <Cell><Data ss:Type="String">HTML</Data></Cell>
+    <Cell><Data ss:Type="String">HTML</Data></Cell>
+    <Cell><Data ss:Type="String">HTML</Data></Cell>
+    <Cell><Data ss:Type="String">HTML</Data></Cell>
+    <Cell><Data ss:Type="String">HTML</Data></Cell>
     <Cell><Data ss:Type="String">HTML</Data></Cell>
     <Cell><Data ss:Type="String">HTML</Data></Cell>
     <Cell><Data ss:Type="String">HTML</Data></Cell>
@@ -5206,53 +5361,62 @@
     <Cell><Data ss:Type="String">OPT_F_UNORDEREDLIST</Data></Cell>
     <Cell><Data ss:Type="String">Aufzählung</Data></Cell>
     <Cell><Data ss:Type="String">Bulleted List</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Enumerazione</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">项目符忷</Data></Cell>
-    <Cell><Data ss:Type="String">ليست گلوله دار</Data></Cell>
-    <Cell><Data ss:Type="String">перечисленый список</Data></Cell>
-    <Cell><Data ss:Type="String">बुलेटेद सूची</Data></Cell>
-    <Cell><Data ss:Type="String">قائمة معلمة</Data></Cell>
-    <Cell><Data ss:Type="String">Danh sách được gạch đầu dòng</Data></Cell>
+    <Cell><Data ss:Type="String">Opsomming</Data></Cell>
+    <Cell><Data ss:Type="String">Liste à puces</Data></Cell>
+    <Cell><Data ss:Type="String">Elenco puntato</Data></Cell>
+    <Cell><Data ss:Type="String">Lista con viñetas</Data></Cell>
+    <Cell><Data ss:Type="String">项目符号列表</Data></Cell>
+    <Cell><Data ss:Type="String">فهرست نشانه‌دار</Data></Cell>
+    <Cell><Data ss:Type="String">Маркированный список</Data></Cell>
+    <Cell><Data ss:Type="String">बुलेटेड सूची</Data></Cell>
+    <Cell><Data ss:Type="String">قائمة نقطية</Data></Cell>
+    <Cell><Data ss:Type="String">Danh sách dấu đầu dòng</Data></Cell>
     <Cell><Data ss:Type="String">רשימת תבליטים</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">OPT_L_0</Data></Cell>
     <Cell><Data ss:Type="String">Arabisch (1, 2, 3)</Data></Cell>
     <Cell><Data ss:Type="String">Arabic (1, 2, 3)</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Arabo (1, 2, 3)</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">阿拉伯数字（1, 2, 3）</Data></Cell>
-    <Cell><Data ss:Type="String">عربي</Data></Cell>
-    <Cell><Data ss:Type="String">арабский (1, 2, 3)</Data></Cell>
-    <Cell><Data ss:Type="String">अराबिक (1, 2, 3)</Data></Cell>
-    <Cell><Data ss:Type="String">أرقام عربية (1,2,3) </Data></Cell>
-    <Cell><Data ss:Type="String">Ả-rập (1, 2,3)</Data></Cell>
+    <Cell><Data ss:Type="String">Arabisch (1, 2, 3)</Data></Cell>
+    <Cell><Data ss:Type="String">Arabe (1, 2, 3)</Data></Cell>
+    <Cell><Data ss:Type="String">Arabo (1, 2, 3)</Data></Cell>
+    <Cell><Data ss:Type="String">Árabe (1, 2, 3)</Data></Cell>
+    <Cell><Data ss:Type="String">阿拉伯数字（1, 2, 3）</Data></Cell>
+    <Cell><Data ss:Type="String">عربی (۱، ۲، ۳)</Data></Cell>
+    <Cell><Data ss:Type="String">арабские (1, 2, 3)</Data></Cell>
     <Cell><Data ss:Type="String">ערבית(1,2,3)</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">OPT_L_1</Data></Cell>
     <Cell><Data ss:Type="String">Großbuchstaben (A, B, C)</Data></Cell>
     <Cell><Data ss:Type="String">Uppercase letter (A, B, C)</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Lettere maiuscole (A, B, C)</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">大写字毿（A, B, C）</Data></Cell>
-    <Cell><Data ss:Type="String">حرف بزرگ</Data></Cell>
-    <Cell><Data ss:Type="String">большие буквы (А, Б, В)</Data></Cell>
-    <Cell><Data ss:Type="String">बड़े अक्षर (A, B, C)</Data></Cell>
-    <Cell><Data ss:Type="String">حروف استهلالية (A, B, C)</Data></Cell>
-    <Cell><Data ss:Type="String">Chữ viết hoa (A, B, C)</Data></Cell>
-    <Cell><Data ss:Type="String">אותיות גדולות  (A, B, C)</Data></Cell>
+    <Cell><Data ss:Type="String">Hoofdletters (A, B, C)</Data></Cell>
+    <Cell><Data ss:Type="String">Lettre majuscule (A, B, C)</Data></Cell>
+    <Cell><Data ss:Type="String">Lettere maiuscole (A, B, C)</Data></Cell>
+    <Cell><Data ss:Type="String">Letra mayúscula (A, B, C)</Data></Cell>
+    <Cell><Data ss:Type="String">大写字母（A, B, C）</Data></Cell>
+    <Cell><Data ss:Type="String">حروف بزرگ (A, B, C)</Data></Cell>
+    <Cell><Data ss:Type="String">прописные буквы (А, Б, В)</Data></Cell>
+    <Cell><Data ss:Type="String">बड़े अक्षर (A, B, C)</Data></Cell>
+    <Cell><Data ss:Type="String">حروف كبيرة (A, B, C)</Data></Cell>
+    <Cell><Data ss:Type="String">Chữ hoa (A, B, C)</Data></Cell>
+    <Cell><Data ss:Type="String">אותיות גדולות (A, B, C)</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">OPT_L_2</Data></Cell>
     <Cell><Data ss:Type="String">Kleinbuchstaben (a, b, c)</Data></Cell>
     <Cell><Data ss:Type="String">Lowercase letter (a, b, c)</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Lettere minuscole (a, b, c)</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">尿写字毿（a, b, c）</Data></Cell>
-    <Cell><Data ss:Type="String">حرف کوچک</Data></Cell>
-    <Cell><Data ss:Type="String">маленькие буквы (а, б, в)</Data></Cell>
+    <Cell><Data ss:Type="String">Kleine letter (a, b, c)</Data></Cell>
+    <Cell><Data ss:Type="String">Lettre minuscule (a, b, c)</Data></Cell>
+    <Cell><Data ss:Type="String">Lettera minuscola (a, b, c)</Data></Cell>
+    <Cell><Data ss:Type="String">Letra minúscula (a, b, c)</Data></Cell>
+    <Cell><Data ss:Type="String">小写字母（a, b, c）</Data></Cell>
+    <Cell><Data ss:Type="String">حرف کوچک (a, b, c)</Data></Cell>
+    <Cell><Data ss:Type="String">строчные буквы (а, б, в)</Data></Cell>
     <Cell><Data ss:Type="String">छोटे अक्षर (a, b, c)</Data></Cell>
     <Cell><Data ss:Type="String">حروف صغيرة (a, b, c)</Data></Cell>
-    <Cell><Data ss:Type="String">Chữ viết thường (a, b,c)</Data></Cell>
-    <Cell><Data ss:Type="String">אותיות קטנות  (a, b, c)</Data></Cell>
+    <Cell><Data ss:Type="String">Chữ thường (a, b, c)</Data></Cell>
+    <Cell><Data ss:Type="String">אותיות קטנות (a, b, c)</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">OPT_S_ANCHOR</Data></Cell>
@@ -5357,12 +5521,15 @@
     <Cell><Data ss:Type="String">OPT_S_SUP</Data></Cell>
     <Cell><Data ss:Type="String">Hochgestellt</Data></Cell>
     <Cell><Data ss:Type="String">Superscript</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Posizionato in alto</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">上标</Data></Cell>
+    <Cell><Data ss:Type="String">Superscript</Data></Cell>
+    <Cell><Data ss:Type="String">Exposant</Data></Cell>
+    <Cell><Data ss:Type="String">Apice</Data></Cell>
+    <Cell><Data ss:Type="String">Superíndice</Data></Cell>
+    <Cell><Data ss:Type="String">上标</Data></Cell>
     <Cell><Data ss:Type="String">بالانويس</Data></Cell>
-    <Cell><Data ss:Type="String">припонят</Data></Cell>
-    <Cell><Data ss:Type="String">उपरीलेखन</Data></Cell>
-    <Cell><Data ss:Type="String">علامة سفلية</Data></Cell>
+    <Cell><Data ss:Type="String">надстрочный</Data></Cell>
+    <Cell><Data ss:Type="String">ऊपरी लेखन</Data></Cell>
+    <Cell><Data ss:Type="String">مرتفع</Data></Cell>
     <Cell><Data ss:Type="String">Chỉ số trên</Data></Cell>
     <Cell><Data ss:Type="String">כתב עילי</Data></Cell>
    </Row>
@@ -5386,51 +5553,57 @@
     <Cell><Data ss:Type="String">PAGETOP</Data></Cell>
     <Cell><Data ss:Type="String">Seitenanfang</Data></Cell>
     <Cell><Data ss:Type="String">Top</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">Dessus</Data></Cell>
-    <Cell><Data ss:Type="String">Inizio della pagina</Data></Cell>
-    <Cell><Data ss:Type="String">Tapa</Data></Cell>
+    <Cell><Data ss:Type="String">Bovenkant</Data></Cell>
+    <Cell><Data ss:Type="String">Haut de page</Data></Cell>
+    <Cell><Data ss:Type="String">Inizio pagina</Data></Cell>
+    <Cell><Data ss:Type="String">Parte superior</Data></Cell>
     <Cell><Data ss:Type="String">页首</Data></Cell>
-    <Cell><Data ss:Type="String">بالا</Data></Cell>
-    <Cell><Data ss:Type="String">объем станицы</Data></Cell>
-    <Cell><Data ss:Type="String">ऊपर</Data></Cell>
-    <Cell><Data ss:Type="String">القمة</Data></Cell>
-    <Cell><Data ss:Type="String">Trên</Data></Cell>
-    <Cell><Data ss:Type="String">עליון</Data></Cell>
+    <Cell><Data ss:Type="String">بالای صفحه</Data></Cell>
+    <Cell><Data ss:Type="String">верх страницы</Data></Cell>
+    <Cell><Data ss:Type="String">पृष्ठ का शीर्ष</Data></Cell>
+    <Cell><Data ss:Type="String">أعلى الصفحة</Data></Cell>
+    <Cell><Data ss:Type="String">Đầu trang</Data></Cell>
+    <Cell><Data ss:Type="String">ראש הדף</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">RECOMMEND_THIS_PAGE</Data></Cell>
     <Cell><Data ss:Type="String">Diese Seite empfehlen</Data></Cell>
     <Cell><Data ss:Type="String">Recommend this page</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">Recommand cette page</Data></Cell>
-    <Cell><Data ss:Type="String">Consigliare questa pagina</Data></Cell>
-    <Cell ss:Index="9"/>
-    <Cell><Data ss:Type="String">порекомендовать эту станицу</Data></Cell>
-    <Cell><Data ss:Type="String">यह पृष्ठ सिफारिश करे</Data></Cell>
-    <Cell><Data ss:Type="String">زكي هذه الصفحة</Data></Cell>
-    <Cell><Data ss:Type="String">Khuyến nghị trang này</Data></Cell>
-    <Cell><Data ss:Type="String">תמליץ על העמוד הנוכחי</Data></Cell>
+    <Cell><Data ss:Type="String">Aanbevelen deze pagina</Data></Cell>
+    <Cell><Data ss:Type="String">Recommander cette page</Data></Cell>
+    <Cell><Data ss:Type="String">Consiglia questa pagina</Data></Cell>
+    <Cell><Data ss:Type="String">Recomendar esta página</Data></Cell>
+    <Cell><Data ss:Type="String">推荐此页面</Data></Cell>
+    <Cell><Data ss:Type="String">توصیه این صفحه</Data></Cell>
+    <Cell><Data ss:Type="String">Рекомендовать эту страницу</Data></Cell>
+    <Cell><Data ss:Type="String">इस पृष्ठ की सिफारिश करें</Data></Cell>
+    <Cell><Data ss:Type="String">أوصِ بهذه الصفحة</Data></Cell>
+    <Cell><Data ss:Type="String">Đề xuất trang này</Data></Cell>
+    <Cell><Data ss:Type="String">המלץ על עמוד זה</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">ROLE_ZMSADMINISTRATOR</Data></Cell>
     <Cell><Data ss:Type="String">Administrator</Data></Cell>
     <Cell><Data ss:Type="String">Administrator</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">Administrateur</Data></Cell>
-    <Cell><Data ss:Type="String">Administratore</Data></Cell>
+    <Cell><Data ss:Type="String">Beheerder</Data></Cell>
+    <Cell><Data ss:Type="String">Administrateur</Data></Cell>
+    <Cell><Data ss:Type="String">Amministratore</Data></Cell>
     <Cell><Data ss:Type="String">Administrador</Data></Cell>
-    <Cell><Data ss:Type="String">管翆员</Data></Cell>
-    <Cell><Data ss:Type="String">مدير</Data></Cell>
-    <Cell><Data ss:Type="String">админитратор</Data></Cell>
+    <Cell><Data ss:Type="String">管理员</Data></Cell>
+    <Cell><Data ss:Type="String">مدیر</Data></Cell>
+    <Cell><Data ss:Type="String">администратор</Data></Cell>
     <Cell><Data ss:Type="String">प्रशासक</Data></Cell>
-    <Cell><Data ss:Type="String">المدير</Data></Cell>
-    <Cell><Data ss:Type="String">Nhà quản trị</Data></Cell>
-    <Cell><Data ss:Type="String">מנהל המערכת</Data></Cell>
+    <Cell><Data ss:Type="String">مدير</Data></Cell>
+    <Cell><Data ss:Type="String">Quản trị viên</Data></Cell>
+    <Cell><Data ss:Type="String">מנהל</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">ROLE_ZMSAUTHOR</Data></Cell>
     <Cell><Data ss:Type="String">Autor</Data></Cell>
     <Cell><Data ss:Type="String">Author</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">Auteur</Data></Cell>
+    <Cell><Data ss:Type="String">Auteur</Data></Cell>
     <Cell><Data ss:Type="String">Autore</Data></Cell>
+    <Cell><Data ss:Type="String">Autor</Data></Cell>
     <Cell><Data ss:Type="String">Autor</Data></Cell>
     <Cell><Data ss:Type="String">作者</Data></Cell>
     <Cell><Data ss:Type="String">مولف</Data></Cell>
@@ -5444,15 +5617,16 @@
     <Cell><Data ss:Type="String">ROLE_ZMSEDITOR</Data></Cell>
     <Cell><Data ss:Type="String">Redakteur</Data></Cell>
     <Cell><Data ss:Type="String">Editor</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">Rédacteur</Data></Cell>
-    <Cell><Data ss:Type="String">Redattore</Data></Cell>
-    <Cell><Data ss:Type="String">Redactor</Data></Cell>
+    <Cell><Data ss:Type="String">Editor</Data></Cell>
+    <Cell><Data ss:Type="String">Éditeur</Data></Cell>
+    <Cell><Data ss:Type="String">Editore</Data></Cell>
+    <Cell><Data ss:Type="String">Editor</Data></Cell>
     <Cell><Data ss:Type="String">编辑</Data></Cell>
-    <Cell><Data ss:Type="String">ويرايشگر</Data></Cell>
+    <Cell><Data ss:Type="String">ویرایشگر</Data></Cell>
     <Cell><Data ss:Type="String">редактор</Data></Cell>
     <Cell><Data ss:Type="String">संपादक</Data></Cell>
     <Cell><Data ss:Type="String">المحرر</Data></Cell>
-    <Cell><Data ss:Type="String">Nhà biên tập</Data></Cell>
+    <Cell><Data ss:Type="String">Biên tập viên</Data></Cell>
     <Cell><Data ss:Type="String">עורך</Data></Cell>
    </Row>
    <Row>
@@ -5484,7 +5658,13 @@
     <Cell><Data ss:Type="String">SEARCH_CLIENTS</Data></Cell>
     <Cell><Data ss:Type="String">untergeordnete WWW-Sites einbeziehen</Data></Cell>
     <Cell><Data ss:Type="String">include subordinate WWW-sites</Data></Cell>
-    <Cell ss:Index="10"/>
+    <Cell><Data ss:Type="String">subsites opnemen</Data></Cell>
+    <Cell><Data ss:Type="String">inclure les sites WWW subordonnés</Data></Cell>
+    <Cell><Data ss:Type="String">includere siti WWW subordinati</Data></Cell>
+    <Cell><Data ss:Type="String">incluir sitios WWW subordinados</Data></Cell>
+    <Cell><Data ss:Type="String">包含下属WWW站点</Data></Cell>
+    <Cell><Data ss:Type="String">شامل سایت‌های WWW زیرمجموعه</Data></Cell>
+    <Cell><Data ss:Type="String">включить подчинённые WWW-сайты</Data></Cell>
     <Cell><Data ss:Type="String">अधीन डबल्यू डबल्यू डबल्यू-स्थल को सम्मिलित करे</Data></Cell>
     <Cell><Data ss:Type="String">ضمن المواقع الثانوية المتفرعة من الأصل</Data></Cell>
     <Cell><Data ss:Type="String">bao gồm các trang-www phụ thuộc</Data></Cell>
@@ -5524,18 +5704,19 @@
    </Row>
    <Row>
     <Cell><Data ss:Type="String">SEARCH_HEADERRESULT</Data></Cell>
-    <Cell><Data ss:Type="String">Suchresultat</Data></Cell>
+    <Cell><Data ss:Type="String">Ergebnisse</Data></Cell>
     <Cell><Data ss:Type="String">Results</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">Resultats</Data></Cell>
-    <Cell><Data ss:Type="String">Risultato della ricerca</Data></Cell>
-    <Cell><Data ss:Type="String">Results</Data></Cell>
-    <Cell><Data ss:Type="String">濜索结果</Data></Cell>
-    <Cell><Data ss:Type="String">نتيجه</Data></Cell>
-    <Cell><Data ss:Type="String">результат поиска</Data></Cell>
-    <Cell><Data ss:Type="String">परिणामें</Data></Cell>
+    <Cell><Data ss:Type="String">Resultaten</Data></Cell>
+    <Cell><Data ss:Type="String">Résultats</Data></Cell>
+    <Cell><Data ss:Type="String">Risultati</Data></Cell>
+    <Cell><Data ss:Type="String">Resultados</Data></Cell>
+    <Cell><Data ss:Type="String">结果</Data></Cell>
+    <Cell><Data ss:Type="String">نتایج</Data></Cell>
+    <Cell><Data ss:Type="String">результаты</Data></Cell>
+    <Cell><Data ss:Type="String">परिणाम</Data></Cell>
     <Cell><Data ss:Type="String">النتائج</Data></Cell>
-    <Cell><Data ss:Type="String">Các kết quả</Data></Cell>
-    <Cell><Data ss:Type="String">תוצאות חיפוש</Data></Cell>
+    <Cell><Data ss:Type="String">Kết quả</Data></Cell>
+    <Cell><Data ss:Type="String">תוצאות</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="102">
     <Cell><Data ss:Type="String">SEARCH_HINT</Data></Cell>
@@ -5566,10 +5747,15 @@
     <Cell><Data ss:Type="String">SEARCH_OVERALL</Data></Cell>
     <Cell><Data ss:Type="String">über alles</Data></Cell>
     <Cell><Data ss:Type="String">whole site</Data></Cell>
-    <Cell ss:Index="9"/>
-    <Cell/>
-    <Cell/>
-    <Cell/>
+    <Cell><Data ss:Type="String">gehele site</Data></Cell>
+    <Cell><Data ss:Type="String">site entière</Data></Cell>
+    <Cell><Data ss:Type="String">intero sito</Data></Cell>
+    <Cell><Data ss:Type="String">sitio completo</Data></Cell>
+    <Cell><Data ss:Type="String">整个网站</Data></Cell>
+    <Cell><Data ss:Type="String">کل سایت</Data></Cell>
+    <Cell><Data ss:Type="String">весь сайт</Data></Cell>
+    <Cell><Data ss:Type="String">पूरा साइट</Data></Cell>
+    <Cell><Data ss:Type="String">الموقع بالكامل</Data></Cell>
     <Cell><Data ss:Type="String">toàn bộ trang</Data></Cell>
     <Cell><Data ss:Type="String">האתר השלם</Data></Cell>
    </Row>
@@ -5577,10 +5763,15 @@
     <Cell><Data ss:Type="String">SEARCH_FROMHERE</Data></Cell>
     <Cell><Data ss:Type="String">ab hier</Data></Cell>
     <Cell><Data ss:Type="String">from here</Data></Cell>
-    <Cell ss:Index="9"/>
-    <Cell/>
-    <Cell/>
-    <Cell/>
+    <Cell><Data ss:Type="String">vanaf hier</Data></Cell>
+    <Cell><Data ss:Type="String">à partir d'ici</Data></Cell>
+    <Cell><Data ss:Type="String">da qui</Data></Cell>
+    <Cell><Data ss:Type="String">desde aquí</Data></Cell>
+    <Cell><Data ss:Type="String">从这里</Data></Cell>
+    <Cell><Data ss:Type="String">از اینجا</Data></Cell>
+    <Cell><Data ss:Type="String">отсюда</Data></Cell>
+    <Cell><Data ss:Type="String">यहाँ से</Data></Cell>
+    <Cell><Data ss:Type="String">من هنا</Data></Cell>
     <Cell><Data ss:Type="String">từ đây</Data></Cell>
     <Cell><Data ss:Type="String">מכאן</Data></Cell>
    </Row>
@@ -5646,26 +5837,33 @@
     <Cell><Data ss:Type="String">SECONDS</Data></Cell>
     <Cell><Data ss:Type="String">Sekunden</Data></Cell>
     <Cell><Data ss:Type="String">seconds</Data></Cell>
-    <Cell><Data ss:Type="String">seconde</Data></Cell>
-    <Cell ss:Index="9"/>
-    <Cell/>
-    <Cell/>
-    <Cell/>
-    <Cell ss:Index="14"><Data ss:Type="String">שניות</Data></Cell>
+    <Cell><Data ss:Type="String">seconden</Data></Cell>
+    <Cell><Data ss:Type="String">secondes</Data></Cell>
+    <Cell><Data ss:Type="String">secondi</Data></Cell>
+    <Cell><Data ss:Type="String">segundos</Data></Cell>
+    <Cell><Data ss:Type="String">秒</Data></Cell>
+    <Cell><Data ss:Type="String">ثانیه</Data></Cell>
+    <Cell><Data ss:Type="String">секунды</Data></Cell>
+    <Cell><Data ss:Type="String">सेकंड</Data></Cell>
+    <Cell><Data ss:Type="String">ثواني</Data></Cell>
+    <Cell><Data ss:Type="String">giây</Data></Cell>
+    <Cell><Data ss:Type="String">שניות</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">SEARCH_YOURQUERY</Data></Cell>
     <Cell><Data ss:Type="String">Ihre Suche nach dem Begriff: %s</Data></Cell>
     <Cell><Data ss:Type="String">Your search for: %s</Data></Cell>
     <Cell><Data ss:Type="String">Uw zoek naar: %s</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">La ricerca del termine: %s</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">%s 濜索结果</Data></Cell>
-    <Cell/>
-    <Cell><Data ss:Type="String">ваш поиск слова: %s</Data></Cell>
-    <Cell><Data ss:Type="String">आपका खोज %s  का</Data></Cell>
-    <Cell><Data ss:Type="String">بحثك عن %s</Data></Cell>
-    <Cell><Data ss:Type="String">Tìm kiếm của bạn cho:%s</Data></Cell>
-    <Cell><Data ss:Type="String">חיפוש שלך עבור:  %s</Data></Cell>
+    <Cell><Data ss:Type="String">Votre recherche pour : %s</Data></Cell>
+    <Cell><Data ss:Type="String">La ricerca per: %s</Data></Cell>
+    <Cell><Data ss:Type="String">Su búsqueda de: %s</Data></Cell>
+    <Cell><Data ss:Type="String">%s 的搜索结果</Data></Cell>
+    <Cell><Data ss:Type="String">جستجوی شما برای: %s</Data></Cell>
+    <Cell><Data ss:Type="String">Ваш поиск по: %s</Data></Cell>
+    <Cell><Data ss:Type="String">आपकी खोज: %s</Data></Cell>
+    <Cell><Data ss:Type="String">بحثك عن: %s</Data></Cell>
+    <Cell><Data ss:Type="String">Tìm kiếm của bạn cho: %s</Data></Cell>
+    <Cell><Data ss:Type="String">החיפוש שלך עבור: %s</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">SHORTDATETIME_FMT</Data></Cell>
@@ -5699,23 +5897,29 @@
    </Row>
    <Row>
     <Cell><Data ss:Type="String">SITEMAPLAYOUT0</Data></Cell>
+    <Cell><Data ss:Type="String">Explorer-Stil</Data></Cell>
     <Cell><Data ss:Type="String">Explorer-Style</Data></Cell>
-    <Cell><Data ss:Type="String">Explorer-Style</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Stile Explorer</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">Explorer 的样弿</Data></Cell>
-    <Cell><Data ss:Type="String">شکل نمايشگر</Data></Cell>
-    <Cell><Data ss:Type="String">Стиль исследователя</Data></Cell>
-    <Cell><Data ss:Type="String">अन्वेषक-शैली</Data></Cell>
-    <Cell><Data ss:Type="String">طراز المستكشف </Data></Cell>
-    <Cell><Data ss:Type="String">Kiểu-Trình duyệt</Data></Cell>
-    <Cell><Data ss:Type="String">סגנון אקספלורר</Data></Cell>
+    <Cell><Data ss:Type="String">Explorer-stijl</Data></Cell>
+    <Cell><Data ss:Type="String">Style Explorateur</Data></Cell>
+    <Cell><Data ss:Type="String">Stile Explorer</Data></Cell>
+    <Cell><Data ss:Type="String">Estilo Explorador</Data></Cell>
+    <Cell><Data ss:Type="String">资源管理器样式</Data></Cell>
+    <Cell><Data ss:Type="String">سبک اکسپلورر</Data></Cell>
+    <Cell><Data ss:Type="String">Стиль проводника</Data></Cell>
+    <Cell><Data ss:Type="String">एक्सप्लोरर-शैली</Data></Cell>
+    <Cell><Data ss:Type="String">نمط المستكشف</Data></Cell>
+    <Cell><Data ss:Type="String">Kiểu Explorer</Data></Cell>
+    <Cell><Data ss:Type="String">סגנון סייר</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">HORIZONTAL</Data></Cell>
     <Cell><Data ss:Type="String">Horizontal</Data></Cell>
     <Cell><Data ss:Type="String">Horizontal</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Orizzontale</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">横忑</Data></Cell>
+    <Cell><Data ss:Type="String">Horizontal</Data></Cell>
+    <Cell><Data ss:Type="String">Horizontal</Data></Cell>
+    <Cell><Data ss:Type="String">Orizzontale</Data></Cell>
+    <Cell><Data ss:Type="String">Horizontal</Data></Cell>
+    <Cell><Data ss:Type="String">横忑</Data></Cell>
     <Cell><Data ss:Type="String">افقی</Data></Cell>
     <Cell><Data ss:Type="String">горизонтально</Data></Cell>
     <Cell><Data ss:Type="String">क्षैतिज</Data></Cell>
@@ -5727,8 +5931,11 @@
     <Cell><Data ss:Type="String">VERTICAL</Data></Cell>
     <Cell><Data ss:Type="String">Vertikal</Data></Cell>
     <Cell><Data ss:Type="String">Vertical</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Verticale</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">纵忑</Data></Cell>
+    <Cell><Data ss:Type="String">Vertical</Data></Cell>
+    <Cell><Data ss:Type="String">Vertical</Data></Cell>
+    <Cell><Data ss:Type="String">Verticale</Data></Cell>
+    <Cell><Data ss:Type="String">Vertical</Data></Cell>
+    <Cell><Data ss:Type="String">纵忑</Data></Cell>
     <Cell><Data ss:Type="String">عمودی</Data></Cell>
     <Cell><Data ss:Type="String">вертикально</Data></Cell>
     <Cell><Data ss:Type="String">अनुलम्ब</Data></Cell>
@@ -5743,7 +5950,8 @@
     <Cell><Data ss:Type="String">Pagina</Data></Cell>
     <Cell><Data ss:Type="String">Page</Data></Cell>
     <Cell><Data ss:Type="String">Pagina</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">页</Data></Cell>
+    <Cell><Data ss:Type="String">Page</Data></Cell>
+    <Cell><Data ss:Type="String">页</Data></Cell>
     <Cell><Data ss:Type="String">صفحه</Data></Cell>
     <Cell><Data ss:Type="String">страница</Data></Cell>
     <Cell><Data ss:Type="String">पृष्ठ</Data></Cell>
@@ -5756,30 +5964,42 @@
     <Cell><Data ss:Type="String">Bibliothek</Data></Cell>
     <Cell><Data ss:Type="String">Library</Data></Cell>
     <Cell><Data ss:Type="String">Bibliotheek</Data></Cell>
-    <Cell><Data ss:Type="String">Bibliothèque </Data></Cell>
-    <Cell ss:Index="9"/>
-    <Cell/>
-    <Cell ss:Index="12"><Data ss:Type="String">مكتبة</Data></Cell>
+    <Cell><Data ss:Type="String">Bibliothèque</Data></Cell>
+    <Cell><Data ss:Type="String">Libreria</Data></Cell>
+    <Cell><Data ss:Type="String">Biblioteca</Data></Cell>
+    <Cell><Data ss:Type="String">图书馆</Data></Cell>
+    <Cell><Data ss:Type="String">کتابخانه</Data></Cell>
+    <Cell><Data ss:Type="String">Библиотека</Data></Cell>
+    <Cell><Data ss:Type="String">पुस्तकालय</Data></Cell>
+    <Cell><Data ss:Type="String">مكتبة</Data></Cell>
     <Cell><Data ss:Type="String">Thư viện</Data></Cell>
     <Cell><Data ss:Type="String">ספריה</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">SOTYPE_ZMSMODULE</Data></Cell>
     <Cell><Data ss:Type="String">Content-Modul</Data></Cell>
-    <Cell><Data ss:Type="String">Content-Module</Data></Cell>
-    <Cell ss:Index="9"/>
-    <Cell/>
-    <Cell ss:Index="12"/>
-    <Cell><Data ss:Type="String">Môđun-Nội dung</Data></Cell>
+    <Cell><Data ss:Type="String">Content Module</Data></Cell>
+    <Cell><Data ss:Type="String">Contentmodule</Data></Cell>
+    <Cell><Data ss:Type="String">Module de contenu</Data></Cell>
+    <Cell><Data ss:Type="String">Modulo di contenuto</Data></Cell>
+    <Cell><Data ss:Type="String">Módulo de contenido</Data></Cell>
+    <Cell><Data ss:Type="String">内容模块</Data></Cell>
+    <Cell><Data ss:Type="String">ماژول محتوا</Data></Cell>
+    <Cell><Data ss:Type="String">Модуль контента</Data></Cell>
+    <Cell><Data ss:Type="String">सामग्री मॉड्यूल</Data></Cell>
+    <Cell><Data ss:Type="String">وحدة محتوى</Data></Cell>
+    <Cell><Data ss:Type="String">Mô-đun nội dung</Data></Cell>
     <Cell><Data ss:Type="String">מודול תוכן</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">SOTYPE_ZMSOBJECT</Data></Cell>
     <Cell><Data ss:Type="String">Seiten-Element</Data></Cell>
     <Cell><Data ss:Type="String">Page-Element</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">Element du page</Data></Cell>
+    <Cell><Data ss:Type="String">Page-Element</Data></Cell>
+    <Cell><Data ss:Type="String">Element du page</Data></Cell>
     <Cell><Data ss:Type="String">Elemento della pagina</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">页对象</Data></Cell>
+    <Cell><Data ss:Type="String">Page-Element</Data></Cell>
+    <Cell><Data ss:Type="String">页对象</Data></Cell>
     <Cell><Data ss:Type="String">عنصر صفحه</Data></Cell>
     <Cell><Data ss:Type="String">элемент страницы</Data></Cell>
     <Cell><Data ss:Type="String">पृष्ठ-अंश</Data></Cell>
@@ -5791,15 +6011,17 @@
     <Cell><Data ss:Type="String">SOTYPE_ZMSOBJECTS</Data></Cell>
     <Cell><Data ss:Type="String">Seiten-Elemente</Data></Cell>
     <Cell><Data ss:Type="String">Page-Elements</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">Elements du page</Data></Cell>
-    <Cell><Data ss:Type="String">Elemento della pagina</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">页对象</Data></Cell>
-    <Cell><Data ss:Type="String">عنصر صفحه</Data></Cell>
-    <Cell><Data ss:Type="String">элемент страницы</Data></Cell>
-    <Cell><Data ss:Type="String">पृष्ठ-अंश</Data></Cell>
-    <Cell><Data ss:Type="String">عناصر صفحة</Data></Cell>
-    <Cell><Data ss:Type="String">Các thành phần-Trang</Data></Cell>
-    <Cell><Data ss:Type="String">רכיבים  בעמוד</Data></Cell>
+    <Cell><Data ss:Type="String">Pagina-elementen</Data></Cell>
+    <Cell><Data ss:Type="String">Éléments de page</Data></Cell>
+    <Cell><Data ss:Type="String">Elementi della pagina</Data></Cell>
+    <Cell><Data ss:Type="String">Elementos de página</Data></Cell>
+    <Cell><Data ss:Type="String">页面元素</Data></Cell>
+    <Cell><Data ss:Type="String">عناصر صفحه</Data></Cell>
+    <Cell><Data ss:Type="String">элементы страницы</Data></Cell>
+    <Cell><Data ss:Type="String">पृष्ठ-तत्व</Data></Cell>
+    <Cell><Data ss:Type="String">عناصر الصفحة</Data></Cell>
+    <Cell><Data ss:Type="String">Các thành phần trang</Data></Cell>
+    <Cell><Data ss:Type="String">רכיבי עמוד</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">SOTYPE_ZMSPACKAGE</Data></Cell>
@@ -5807,9 +6029,12 @@
     <Cell><Data ss:Type="String">Package</Data></Cell>
     <Cell><Data ss:Type="String">Pakket</Data></Cell>
     <Cell><Data ss:Type="String">Progiciel</Data></Cell>
-    <Cell ss:Index="9"/>
-    <Cell/>
-    <Cell/>
+    <Cell><Data ss:Type="String">Package</Data></Cell>
+    <Cell><Data ss:Type="String">Package</Data></Cell>
+    <Cell><Data ss:Type="String">Package</Data></Cell>
+    <Cell><Data ss:Type="String">Package</Data></Cell>
+    <Cell><Data ss:Type="String">Package</Data></Cell>
+    <Cell><Data ss:Type="String">Package</Data></Cell>
     <Cell><Data ss:Type="String">حزمة</Data></Cell>
     <Cell><Data ss:Type="String">Gói</Data></Cell>
     <Cell><Data ss:Type="String">חבילה</Data></Cell>
@@ -5818,9 +6043,11 @@
     <Cell><Data ss:Type="String">SOTYPE_ZMSRECORDSET</Data></Cell>
     <Cell><Data ss:Type="String">Datentabelle</Data></Cell>
     <Cell><Data ss:Type="String">Datatable</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">Table de données</Data></Cell>
+    <Cell><Data ss:Type="String">Datatable</Data></Cell>
+    <Cell><Data ss:Type="String">Table de données</Data></Cell>
     <Cell><Data ss:Type="String">Tabella di dati</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">数濮库</Data></Cell>
+    <Cell><Data ss:Type="String">Datatable</Data></Cell>
+    <Cell><Data ss:Type="String">数濮库</Data></Cell>
     <Cell><Data ss:Type="String">جدول داده ها</Data></Cell>
     <Cell><Data ss:Type="String">Таблица данных</Data></Cell>
     <Cell><Data ss:Type="String">आंकड़े तालिका</Data></Cell>
@@ -5834,8 +6061,11 @@
     <Cell><Data ss:Type="String">Reference</Data></Cell>
     <Cell><Data ss:Type="String">Referentie</Data></Cell>
     <Cell><Data ss:Type="String">Référence</Data></Cell>
-    <Cell ss:Index="9"/>
-    <Cell/>
+    <Cell><Data ss:Type="String">Reference</Data></Cell>
+    <Cell><Data ss:Type="String">Reference</Data></Cell>
+    <Cell><Data ss:Type="String">Reference</Data></Cell>
+    <Cell><Data ss:Type="String">Reference</Data></Cell>
+    <Cell><Data ss:Type="String">Reference</Data></Cell>
     <Cell><Data ss:Type="String">संदर्भ</Data></Cell>
     <Cell><Data ss:Type="String">مرجع</Data></Cell>
     <Cell><Data ss:Type="String">Tham chiếu</Data></Cell>
@@ -5845,9 +6075,11 @@
     <Cell><Data ss:Type="String">SOTYPE_ZMSRESOURCE</Data></Cell>
     <Cell><Data ss:Type="String">Meta-Objekt</Data></Cell>
     <Cell><Data ss:Type="String">Meta-Object</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">Meta-Objet</Data></Cell>
+    <Cell><Data ss:Type="String">Meta-Object</Data></Cell>
+    <Cell><Data ss:Type="String">Meta-Objet</Data></Cell>
     <Cell><Data ss:Type="String">Meta-Oggetto</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">资溿</Data></Cell>
+    <Cell><Data ss:Type="String">Meta-Object</Data></Cell>
+    <Cell><Data ss:Type="String">资溿</Data></Cell>
     <Cell><Data ss:Type="String">ابر شي</Data></Cell>
     <Cell><Data ss:Type="String">мета-объект</Data></Cell>
     <Cell><Data ss:Type="String">अधि-वस्तु</Data></Cell>
@@ -5859,9 +6091,11 @@
     <Cell><Data ss:Type="String">SOTYPE_ZMSTEASERELEMENT</Data></Cell>
     <Cell><Data ss:Type="String">Teaser-Element</Data></Cell>
     <Cell><Data ss:Type="String">Teaser-Element</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">Teaserelément</Data></Cell>
     <Cell><Data ss:Type="String">Teaser-Element</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">醒目标题元素</Data></Cell>
+    <Cell><Data ss:Type="String">Teaserelément</Data></Cell>
+    <Cell><Data ss:Type="String">Teaser-Element</Data></Cell>
+    <Cell><Data ss:Type="String">Teaser-Element</Data></Cell>
+    <Cell><Data ss:Type="String">醒目标题元素</Data></Cell>
     <Cell><Data ss:Type="String">عنصر معما</Data></Cell>
     <Cell><Data ss:Type="String">боковой элемент</Data></Cell>
     <Cell><Data ss:Type="String">चिढ़ानेवाला तत्व</Data></Cell>
@@ -5870,10 +6104,27 @@
     <Cell><Data ss:Type="String">נא לשים לב</Data></Cell>
    </Row>
    <Row>
+    <Cell><Data ss:Type="String">STATE_COMMITTED</Data></Cell>
+    <Cell><Data ss:Type="String">Freigegeben</Data></Cell>
+    <Cell><Data ss:Type="String">Committed</Data></Cell>
+    <Cell><Data ss:Type="String">Vastgelegd</Data></Cell>
+    <Cell><Data ss:Type="String">Validé</Data></Cell>
+    <Cell><Data ss:Type="String">Consolidato</Data></Cell>
+    <Cell><Data ss:Type="String">Confirmado</Data></Cell>
+    <Cell><Data ss:Type="String">已提交</Data></Cell>
+    <Cell><Data ss:Type="String">تایید نهایی شده</Data></Cell>
+    <Cell><Data ss:Type="String">Подтверждено</Data></Cell>
+    <Cell><Data ss:Type="String">प्रतिबद्ध </Data></Cell>
+    <Cell><Data ss:Type="String">مثبت </Data></Cell>
+    <Cell><Data ss:Type="String">Đã chốt</Data></Cell>
+    <Cell><Data ss:Type="String">אושר סופית</Data></Cell>
+   </Row>
+   <Row>
     <Cell><Data ss:Type="String">STATE_DELETED</Data></Cell>
     <Cell><Data ss:Type="String">Gelöscht</Data></Cell>
     <Cell><Data ss:Type="String">Deleted</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">Supprimé</Data></Cell>
+    <Cell><Data ss:Type="String">Deleted</Data></Cell>
+    <Cell><Data ss:Type="String">Supprimé</Data></Cell>
     <Cell><Data ss:Type="String">Cancellato</Data></Cell>
     <Cell><Data ss:Type="String">Suprimido</Data></Cell>
     <Cell><Data ss:Type="String">已删除</Data></Cell>
@@ -5888,9 +6139,11 @@
     <Cell><Data ss:Type="String">STATE_LOCKED</Data></Cell>
     <Cell><Data ss:Type="String">Gesperrt</Data></Cell>
     <Cell><Data ss:Type="String">Locked</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">Barrée</Data></Cell>
+    <Cell><Data ss:Type="String">Locked</Data></Cell>
+    <Cell><Data ss:Type="String">Barrée</Data></Cell>
     <Cell><Data ss:Type="String">Inaccessibile</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">锿定</Data></Cell>
+    <Cell><Data ss:Type="String">Locked</Data></Cell>
+    <Cell><Data ss:Type="String">锿定</Data></Cell>
     <Cell><Data ss:Type="String">قفل شده</Data></Cell>
     <Cell><Data ss:Type="String">закрыто</Data></Cell>
     <Cell><Data ss:Type="String">बंद</Data></Cell>
@@ -5902,7 +6155,8 @@
     <Cell><Data ss:Type="String">STATE_MODIFIED</Data></Cell>
     <Cell><Data ss:Type="String">Geändert</Data></Cell>
     <Cell><Data ss:Type="String">Modified</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">Modifié</Data></Cell>
+    <Cell><Data ss:Type="String">Modified</Data></Cell>
+    <Cell><Data ss:Type="String">Modifié</Data></Cell>
     <Cell><Data ss:Type="String">Cambiato</Data></Cell>
     <Cell><Data ss:Type="String">Modificado</Data></Cell>
     <Cell><Data ss:Type="String">已更改</Data></Cell>
@@ -5933,15 +6187,17 @@
     <Cell><Data ss:Type="String">STATE_TRANSLATE</Data></Cell>
     <Cell><Data ss:Type="String">Zu übersetzen!</Data></Cell>
     <Cell><Data ss:Type="String">To be translated!</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">Traduire !</Data></Cell>
-    <Cell><Data ss:Type="String">Tradurre!</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">必须翻译</Data></Cell>
-    <Cell><Data ss:Type="String">ترجمه شده</Data></Cell>
-    <Cell><Data ss:Type="String">перевесьти</Data></Cell>
-    <Cell><Data ss:Type="String">अनूवादित करने के लिए!</Data></Cell>
-    <Cell><Data ss:Type="String">للترجمة</Data></Cell>
-    <Cell><Data ss:Type="String">Được dịch!</Data></Cell>
-    <Cell><Data ss:Type="String">לתרגם!</Data></Cell>
+    <Cell><Data ss:Type="String">Te vertalen!</Data></Cell>
+    <Cell><Data ss:Type="String">À traduire !</Data></Cell>
+    <Cell><Data ss:Type="String">Da tradurre!</Data></Cell>
+    <Cell><Data ss:Type="String">¡Para traducir!</Data></Cell>
+    <Cell><Data ss:Type="String">待翻译</Data></Cell>
+    <Cell><Data ss:Type="String">برای ترجمه</Data></Cell>
+    <Cell><Data ss:Type="String">перевести</Data></Cell>
+    <Cell><Data ss:Type="String">अनुवादित किया जाना है!</Data></Cell>
+    <Cell><Data ss:Type="String">لِلترجمة</Data></Cell>
+    <Cell><Data ss:Type="String">Cần được dịch!</Data></Cell>
+    <Cell><Data ss:Type="String">לתרגום!</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">TAB_ACCESS</Data></Cell>
@@ -5963,12 +6219,17 @@
     <Cell><Data ss:Type="String">TAB_CHARFORMATS</Data></Cell>
     <Cell><Data ss:Type="String">Zeichenformate</Data></Cell>
     <Cell><Data ss:Type="String">Character formats</Data></Cell>
-    <Cell ss:Index="9"/>
-    <Cell/>
-    <Cell/>
-    <Cell/>
-    <Cell><Data ss:Type="String">Định dạng đặc tính</Data></Cell>
-    <Cell><Data ss:Type="String">עיצוב גופן</Data></Cell>
+    <Cell><Data ss:Type="String">Tekenformaten</Data></Cell>
+    <Cell><Data ss:Type="String">Formats de caractères</Data></Cell>
+    <Cell><Data ss:Type="String">Formati dei caratteri</Data></Cell>
+    <Cell><Data ss:Type="String">Formatos de caracteres</Data></Cell>
+    <Cell><Data ss:Type="String">字符格式</Data></Cell>
+    <Cell><Data ss:Type="String">قالب‌های نویسه</Data></Cell>
+    <Cell><Data ss:Type="String">Форматы символов</Data></Cell>
+    <Cell><Data ss:Type="String">अक्षर प्रारूप</Data></Cell>
+    <Cell><Data ss:Type="String">تنسيقات الأحرف</Data></Cell>
+    <Cell><Data ss:Type="String">Định dạng ký tự</Data></Cell>
+    <Cell><Data ss:Type="String">עיצוב תווים</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">TAB_CONFIGURATION</Data></Cell>
@@ -6023,24 +6284,27 @@
     <Cell><Data ss:Type="String">Filter</Data></Cell>
     <Cell><Data ss:Type="String">Filter</Data></Cell>
     <Cell><Data ss:Type="String">Filter</Data></Cell>
-    <Cell><Data ss:Type="String">Filter</Data></Cell>
+    <Cell><Data ss:Type="String">Filtre</Data></Cell>
     <Cell><Data ss:Type="String">Filtro</Data></Cell>
-    <Cell ss:Index="9"><Data ss:Type="String">راهنما</Data></Cell>
+    <Cell><Data ss:Type="String">Filtro</Data></Cell>
+    <Cell><Data ss:Type="String">过滤器</Data></Cell>
+    <Cell><Data ss:Type="String">فیلتر</Data></Cell>
     <Cell><Data ss:Type="String">фильтр</Data></Cell>
-    <Cell><Data ss:Type="String">छलनी</Data></Cell>
-    <Cell><Data ss:Type="String">ترشيح</Data></Cell>
-    <Cell><Data ss:Type="String">Lọc</Data></Cell>
-    <Cell><Data ss:Type="String">פילטר</Data></Cell>
+    <Cell><Data ss:Type="String">फ़िल्टर</Data></Cell>
+    <Cell><Data ss:Type="String">مرشح</Data></Cell>
+    <Cell><Data ss:Type="String">Bộ lọc</Data></Cell>
+    <Cell><Data ss:Type="String">מסנן</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">TAB_HELP</Data></Cell>
     <Cell><Data ss:Type="String">Hilfe</Data></Cell>
     <Cell><Data ss:Type="String">Help</Data></Cell>
     <Cell><Data ss:Type="String">Hulp</Data></Cell>
-    <Cell><Data ss:Type="String">Help</Data></Cell>
+    <Cell><Data ss:Type="String">Aide</Data></Cell>
     <Cell><Data ss:Type="String">Aiuto</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">帮助</Data></Cell>
-    <Cell><Data ss:Type="String">تاريخچه</Data></Cell>
+    <Cell><Data ss:Type="String">Ayuda</Data></Cell>
+    <Cell><Data ss:Type="String">帮助</Data></Cell>
+    <Cell><Data ss:Type="String">کمک</Data></Cell>
     <Cell><Data ss:Type="String">помощь</Data></Cell>
     <Cell><Data ss:Type="String">मदद</Data></Cell>
     <Cell><Data ss:Type="String">المساعدة</Data></Cell>
@@ -6051,15 +6315,15 @@
     <Cell><Data ss:Type="String">TAB_HISTORY</Data></Cell>
     <Cell><Data ss:Type="String">Historie</Data></Cell>
     <Cell><Data ss:Type="String">History</Data></Cell>
-    <Cell><Data ss:Type="String">Historie</Data></Cell>
+    <Cell><Data ss:Type="String">Geschiedenis</Data></Cell>
     <Cell><Data ss:Type="String">Histoire</Data></Cell>
     <Cell><Data ss:Type="String">Storia</Data></Cell>
     <Cell><Data ss:Type="String">Historia</Data></Cell>
-    <Cell><Data ss:Type="String">历忲</Data></Cell>
-    <Cell/>
+    <Cell><Data ss:Type="String">历史</Data></Cell>
+    <Cell><Data ss:Type="String">تاریخچه</Data></Cell>
     <Cell><Data ss:Type="String">история</Data></Cell>
     <Cell><Data ss:Type="String">इतिहास</Data></Cell>
-    <Cell><Data ss:Type="String">الأحداث السابقة</Data></Cell>
+    <Cell><Data ss:Type="String">التاريخ</Data></Cell>
     <Cell><Data ss:Type="String">Lịch sử</Data></Cell>
     <Cell><Data ss:Type="String">היסטוריה</Data></Cell>
    </Row>
@@ -6100,39 +6364,45 @@
     <Cell><Data ss:Type="String">Layout</Data></Cell>
     <Cell><Data ss:Type="String">Layout</Data></Cell>
     <Cell><Data ss:Type="String">Layout</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Layout</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">布局</Data></Cell>
-    <Cell><Data ss:Type="String">طرح</Data></Cell>
-    <Cell><Data ss:Type="String">Расположение</Data></Cell>
-    <Cell><Data ss:Type="String">अभिन्यास</Data></Cell>
-    <Cell><Data ss:Type="String">مخطط إجمالي</Data></Cell>
-    <Cell><Data ss:Type="String">Sơ đồ bố trí</Data></Cell>
-    <Cell><Data ss:Type="String">מתוה</Data></Cell>
+    <Cell><Data ss:Type="String">Mise en page</Data></Cell>
+    <Cell><Data ss:Type="String">Layout</Data></Cell>
+    <Cell><Data ss:Type="String">Diseño</Data></Cell>
+    <Cell><Data ss:Type="String">布局</Data></Cell>
+    <Cell><Data ss:Type="String">طرح‌بندی</Data></Cell>
+    <Cell><Data ss:Type="String">Макет</Data></Cell>
+    <Cell><Data ss:Type="String">लेआउट</Data></Cell>
+    <Cell><Data ss:Type="String">تخطيط</Data></Cell>
+    <Cell><Data ss:Type="String">Bố cục</Data></Cell>
+    <Cell><Data ss:Type="String">פריסה</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">TAB_LIVE</Data></Cell>
     <Cell><Data ss:Type="String">Live</Data></Cell>
     <Cell><Data ss:Type="String">Live</Data></Cell>
     <Cell><Data ss:Type="String">Live</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Dal vivo</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">实况</Data></Cell>
+    <Cell><Data ss:Type="String">En direct</Data></Cell>
+    <Cell><Data ss:Type="String">Dal vivo</Data></Cell>
+    <Cell><Data ss:Type="String">En vivo</Data></Cell>
+    <Cell><Data ss:Type="String">实况</Data></Cell>
     <Cell><Data ss:Type="String">زنده</Data></Cell>
-    <Cell/>
+    <Cell><Data ss:Type="String">Живой</Data></Cell>
     <Cell><Data ss:Type="String">जीवित</Data></Cell>
     <Cell><Data ss:Type="String">مباشر</Data></Cell>
-    <Cell><Data ss:Type="String">Sống</Data></Cell>
-    <Cell><Data ss:Type="String">חיי</Data></Cell>
+    <Cell><Data ss:Type="String">Trực tiếp</Data></Cell>
+    <Cell><Data ss:Type="String">חי</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">TAB_LOCKED</Data></Cell>
     <Cell><Data ss:Type="String">Gesperrt</Data></Cell>
     <Cell><Data ss:Type="String">Locked</Data></Cell>
-    <Cell><Data ss:Type="String">Blokkeerd</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Inaccessibile</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">锿定</Data></Cell>
-    <Cell><Data ss:Type="String">قفل</Data></Cell>
-    <Cell><Data ss:Type="String">закрыто</Data></Cell>
-    <Cell><Data ss:Type="String">बंद</Data></Cell>
+    <Cell><Data ss:Type="String">Geblokkeerd</Data></Cell>
+    <Cell><Data ss:Type="String">Verrouillé</Data></Cell>
+    <Cell><Data ss:Type="String">Inaccessibile</Data></Cell>
+    <Cell><Data ss:Type="String">Bloqueado</Data></Cell>
+    <Cell><Data ss:Type="String">锁定</Data></Cell>
+    <Cell><Data ss:Type="String">قفل شده</Data></Cell>
+    <Cell><Data ss:Type="String">Заблокировано</Data></Cell>
+    <Cell><Data ss:Type="String">लॉक किया गया</Data></Cell>
     <Cell><Data ss:Type="String">مغلق</Data></Cell>
     <Cell><Data ss:Type="String">Đã khóa</Data></Cell>
     <Cell><Data ss:Type="String">נעול</Data></Cell>
@@ -6155,25 +6425,33 @@
    <Row>
     <Cell><Data ss:Type="String">TAB_METADATA</Data></Cell>
     <Cell><Data ss:Type="String">Meta-Attribute</Data></Cell>
-    <Cell><Data ss:Type="String">Meta-attributes</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Metadati</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">元数濮</Data></Cell>
-    <Cell><Data ss:Type="String">ابر داده</Data></Cell>
-    <Cell><Data ss:Type="String">Метадата</Data></Cell>
-    <Cell><Data ss:Type="String">अधि अंकड़े</Data></Cell>
-    <Cell><Data ss:Type="String">توصيف البيانات</Data></Cell>
-    <Cell><Data ss:Type="String">Các đặc tính-meta</Data></Cell>
-    <Cell><Data ss:Type="String">מטא-תכונות</Data></Cell>
+    <Cell><Data ss:Type="String">Meta-Attributes</Data></Cell>
+    <Cell><Data ss:Type="String">Meta-attributen</Data></Cell>
+    <Cell><Data ss:Type="String">Meta-attributs</Data></Cell>
+    <Cell><Data ss:Type="String">Meta-attributi</Data></Cell>
+    <Cell><Data ss:Type="String">Meta-atributos</Data></Cell>
+    <Cell><Data ss:Type="String">元属性</Data></Cell>
+    <Cell><Data ss:Type="String">ابر ویژگی‌ها</Data></Cell>
+    <Cell><Data ss:Type="String">Мета-атрибуты</Data></Cell>
+    <Cell><Data ss:Type="String">मेटा-गुण</Data></Cell>
+    <Cell><Data ss:Type="String">السمات الوصفية</Data></Cell>
+    <Cell><Data ss:Type="String">Thuộc tính meta</Data></Cell>
+    <Cell><Data ss:Type="String">מטא-מאפיינים</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">ZMSLog</Data></Cell>
     <Cell><Data ss:Type="String">Logger</Data></Cell>
     <Cell><Data ss:Type="String">Logger</Data></Cell>
-    <Cell ss:Index="9"/>
+    <Cell><Data ss:Type="String">Logger</Data></Cell>
+    <Cell><Data ss:Type="String">Journal</Data></Cell>
+    <Cell><Data ss:Type="String">Registratore</Data></Cell>
+    <Cell><Data ss:Type="String">Registrador</Data></Cell>
+    <Cell><Data ss:Type="String">记录器</Data></Cell>
+    <Cell><Data ss:Type="String">لاگر</Data></Cell>
     <Cell><Data ss:Type="String">логгер</Data></Cell>
-    <Cell/>
-    <Cell/>
-    <Cell><Data ss:Type="String">Người đăng nhập</Data></Cell>
+    <Cell><Data ss:Type="String">लॉगर</Data></Cell>
+    <Cell><Data ss:Type="String">مسجل</Data></Cell>
+    <Cell><Data ss:Type="String">Bộ ghi nhật ký</Data></Cell>
     <Cell><Data ss:Type="String">רשומה</Data></Cell>
    </Row>
    <Row>
@@ -6195,24 +6473,34 @@
    <Row>
     <Cell><Data ss:Type="String">ZMSMetamodelProvider</Data></Cell>
     <Cell><Data ss:Type="String">Content-Modell</Data></Cell>
-    <Cell><Data ss:Type="String">Content-model</Data></Cell>
-    <Cell ss:Index="9"/>
-    <Cell><Data ss:Type="String">Метамодел</Data></Cell>
-    <Cell/>
-    <Cell/>
-    <Cell><Data ss:Type="String">Mô hình-Nội dung</Data></Cell>
-    <Cell><Data ss:Type="String">דגם-תוכן</Data></Cell>
+    <Cell><Data ss:Type="String">Content-Model</Data></Cell>
+    <Cell><Data ss:Type="String">Contentmodel</Data></Cell>
+    <Cell><Data ss:Type="String">Modèle de contenu</Data></Cell>
+    <Cell><Data ss:Type="String">Modello di contenuto</Data></Cell>
+    <Cell><Data ss:Type="String">Modelo de contenido</Data></Cell>
+    <Cell><Data ss:Type="String">内容模型</Data></Cell>
+    <Cell><Data ss:Type="String">مدل محتوا</Data></Cell>
+    <Cell><Data ss:Type="String">Модель контента</Data></Cell>
+    <Cell><Data ss:Type="String">सामग्री मॉडल</Data></Cell>
+    <Cell><Data ss:Type="String">نموذج المحتوى</Data></Cell>
+    <Cell><Data ss:Type="String">Mô hình nội dung</Data></Cell>
+    <Cell><Data ss:Type="String">מודל תוכן</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">TAB_METAOBJ</Data></Cell>
     <Cell><Data ss:Type="String">Content-Objekte</Data></Cell>
-    <Cell><Data ss:Type="String">Content-objects</Data></Cell>
-    <Cell ss:Index="9"/>
-    <Cell><Data ss:Type="String">Метамодел</Data></Cell>
-    <Cell/>
-    <Cell/>
-    <Cell><Data ss:Type="String">Các đối tượng-Nội dung</Data></Cell>
-    <Cell><Data ss:Type="String">פריטי -תוכן</Data></Cell>
+    <Cell><Data ss:Type="String">Content objects</Data></Cell>
+    <Cell><Data ss:Type="String">Inhoudsobjecten</Data></Cell>
+    <Cell><Data ss:Type="String">Objets de contenu</Data></Cell>
+    <Cell><Data ss:Type="String">Oggetti di contenuto</Data></Cell>
+    <Cell><Data ss:Type="String">Objetos de contenido</Data></Cell>
+    <Cell><Data ss:Type="String">内容对象</Data></Cell>
+    <Cell><Data ss:Type="String">اشیاء محتوا</Data></Cell>
+    <Cell><Data ss:Type="String">объекты контента</Data></Cell>
+    <Cell><Data ss:Type="String">सामग्री वस्तुएं</Data></Cell>
+    <Cell><Data ss:Type="String">عناصر المحتوى</Data></Cell>
+    <Cell><Data ss:Type="String">Đối tượng nội dung</Data></Cell>
+    <Cell><Data ss:Type="String">אובייקטי תוכן</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">TAB_PREVIEW</Data></Cell>
@@ -6346,9 +6634,11 @@
     <Cell><Data ss:Type="String">TAB_TEXTFORMATS</Data></Cell>
     <Cell><Data ss:Type="String">Absatzformate</Data></Cell>
     <Cell><Data ss:Type="String">Paragraph formats</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">Formats</Data></Cell>
+    <Cell><Data ss:Type="String">Paragraph formats</Data></Cell>
+    <Cell><Data ss:Type="String">Formats</Data></Cell>
     <Cell><Data ss:Type="String">Formato del testo</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">格弿</Data></Cell>
+    <Cell><Data ss:Type="String">Paragraph formats</Data></Cell>
+    <Cell><Data ss:Type="String">格弿</Data></Cell>
     <Cell><Data ss:Type="String">ساختار</Data></Cell>
     <Cell><Data ss:Type="String">Форматы</Data></Cell>
     <Cell><Data ss:Type="String">संरूपें</Data></Cell>
@@ -6360,16 +6650,16 @@
     <Cell><Data ss:Type="String">TAB_USERS</Data></Cell>
     <Cell><Data ss:Type="String">Benutzer</Data></Cell>
     <Cell><Data ss:Type="String">Users</Data></Cell>
-    <Cell><Data ss:Type="String">gebruikers</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">Utilisateurs</Data></Cell>
+    <Cell><Data ss:Type="String">Gebruikers</Data></Cell>
+    <Cell><Data ss:Type="String">Utilisateurs</Data></Cell>
     <Cell><Data ss:Type="String">Utenti</Data></Cell>
     <Cell><Data ss:Type="String">Usuarios</Data></Cell>
-    <Cell><Data ss:Type="String">Users</Data></Cell>
-    <Cell><Data ss:Type="String">کد کاربر</Data></Cell>
-    <Cell><Data ss:Type="String">участники</Data></Cell>
-    <Cell><Data ss:Type="String">प्रयोगकर्त्तायें</Data></Cell>
-    <Cell><Data ss:Type="String">مستخدمين</Data></Cell>
-    <Cell><Data ss:Type="String">Các người sử dụng</Data></Cell>
+    <Cell><Data ss:Type="String">用户</Data></Cell>
+    <Cell><Data ss:Type="String">کاربران</Data></Cell>
+    <Cell><Data ss:Type="String">пользователи</Data></Cell>
+    <Cell><Data ss:Type="String">उपयोगकर्ता</Data></Cell>
+    <Cell><Data ss:Type="String">مستخدمون</Data></Cell>
+    <Cell><Data ss:Type="String">Người dùng</Data></Cell>
     <Cell><Data ss:Type="String">משתמשים</Data></Cell>
    </Row>
    <Row>
@@ -6393,64 +6683,64 @@
     <Cell><Data ss:Type="String">Workflow</Data></Cell>
     <Cell><Data ss:Type="String">Workflow</Data></Cell>
     <Cell><Data ss:Type="String">Workflow</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow</Data></Cell>
-    <Cell><Data ss:Type="String">поток работы</Data></Cell>
-    <Cell><Data ss:Type="String">वर्कफ्लो</Data></Cell>
-    <Cell><Data ss:Type="String">تسلسل العمل</Data></Cell>
-    <Cell><Data ss:Type="String">Lịch trình công việc</Data></Cell>
-    <Cell><Data ss:Type="String">מהלך עבודה</Data></Cell>
+    <Cell><Data ss:Type="String">Flux de travail</Data></Cell>
+    <Cell><Data ss:Type="String">Flusso di lavoro</Data></Cell>
+    <Cell><Data ss:Type="String">Flujo de trabajo</Data></Cell>
+    <Cell><Data ss:Type="String">工作流</Data></Cell>
+    <Cell><Data ss:Type="String">گردش کار</Data></Cell>
+    <Cell><Data ss:Type="String">рабочий процесс</Data></Cell>
+    <Cell><Data ss:Type="String">कार्यप्रवाह</Data></Cell>
+    <Cell><Data ss:Type="String">سير العمل</Data></Cell>
+    <Cell><Data ss:Type="String">Quy trình làm việc</Data></Cell>
+    <Cell><Data ss:Type="String">תהליך עבודה</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">TAB_WORKFLOW_ASSIGNMENT</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow-Aktivierung</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Zuweisung</Data></Cell>
+    <Cell><Data ss:Type="String">Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Toewijzing</Data></Cell>
+    <Cell><Data ss:Type="String">Affectation</Data></Cell>
+    <Cell><Data ss:Type="String">Assegnazione</Data></Cell>
+    <Cell><Data ss:Type="String">Asignación</Data></Cell>
+    <Cell><Data ss:Type="String">分配</Data></Cell>
+    <Cell><Data ss:Type="String">تخصیص</Data></Cell>
+    <Cell><Data ss:Type="String">назначение</Data></Cell>
+    <Cell><Data ss:Type="String">असाइनमेंट</Data></Cell>
+    <Cell><Data ss:Type="String">تعيين</Data></Cell>
+    <Cell><Data ss:Type="String">Phân công</Data></Cell>
+    <Cell><Data ss:Type="String">הקצאה</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">TAB_WORKFLOW_MODEL</Data></Cell>
-    <Cell><Data ss:Type="String">Ablauf-Modell</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow-Modell</Data></Cell>
     <Cell><Data ss:Type="String">Workflow Model</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Model</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Model</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Model</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Model</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Model</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Model</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Model</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Model</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Model</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Model</Data></Cell>
-    <Cell><Data ss:Type="String">Workflow Model</Data></Cell>
+    <Cell><Data ss:Type="String">Workflowmodel</Data></Cell>
+    <Cell><Data ss:Type="String">Modèle de workflow</Data></Cell>
+    <Cell><Data ss:Type="String">Modello di workflow</Data></Cell>
+    <Cell><Data ss:Type="String">Modelo de flujo de trabajo</Data></Cell>
+    <Cell><Data ss:Type="String">工作流模型</Data></Cell>
+    <Cell><Data ss:Type="String">مدل جریان کار</Data></Cell>
+    <Cell><Data ss:Type="String">Модель рабочего процесса</Data></Cell>
+    <Cell><Data ss:Type="String">वर्कफ़्लो मॉडल</Data></Cell>
+    <Cell><Data ss:Type="String">نموذج سير العمل</Data></Cell>
+    <Cell><Data ss:Type="String">Mô hình quy trình làm việc</Data></Cell>
+    <Cell><Data ss:Type="String">מודל תהליך עבודה</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">TAB_WORKFLOW_VERSION</Data></Cell>
     <Cell><Data ss:Type="String">Versionierung</Data></Cell>
     <Cell><Data ss:Type="String">Version Control</Data></Cell>
-    <Cell><Data ss:Type="String">Version Control</Data></Cell>
-    <Cell><Data ss:Type="String">Version Control</Data></Cell>
-    <Cell><Data ss:Type="String">Version Control</Data></Cell>
-    <Cell><Data ss:Type="String">Version Control</Data></Cell>
-    <Cell><Data ss:Type="String">Version Control</Data></Cell>
-    <Cell><Data ss:Type="String">Version Control</Data></Cell>
-    <Cell><Data ss:Type="String">Version Control</Data></Cell>
-    <Cell><Data ss:Type="String">Version Control</Data></Cell>
-    <Cell><Data ss:Type="String">Version Control</Data></Cell>
-    <Cell><Data ss:Type="String">Version Control</Data></Cell>
-    <Cell><Data ss:Type="String">Version Control</Data></Cell>
+    <Cell><Data ss:Type="String">Versiebeheer</Data></Cell>
+    <Cell><Data ss:Type="String">Contrôle de version</Data></Cell>
+    <Cell><Data ss:Type="String">Controllo versione</Data></Cell>
+    <Cell><Data ss:Type="String">Control de versiones</Data></Cell>
+    <Cell><Data ss:Type="String">版本控制</Data></Cell>
+    <Cell><Data ss:Type="String">کنترل نسخه</Data></Cell>
+    <Cell><Data ss:Type="String">Управление версиями</Data></Cell>
+    <Cell><Data ss:Type="String">संस्करण नियंत्रण</Data></Cell>
+    <Cell><Data ss:Type="String">التحكم في الإصدارات</Data></Cell>
+    <Cell><Data ss:Type="String">Quản lý phiên bản</Data></Cell>
+    <Cell><Data ss:Type="String">בקרת גרסאות</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">HINT_WORKFLOW_ACQUIRED</Data></Cell>
@@ -6500,10 +6790,12 @@
     <Cell><Data ss:Type="String">TASK_UNTRANSLATED</Data></Cell>
     <Cell><Data ss:Type="String">zu übersetzende Objekte</Data></Cell>
     <Cell><Data ss:Type="String">objects to be translated</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">objets pour traduiser</Data></Cell>
+    <Cell><Data ss:Type="String">objects to be translated</Data></Cell>
+    <Cell><Data ss:Type="String">objets pour traduiser</Data></Cell>
     <Cell><Data ss:Type="String">Oggetti non tradotti</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">必须翻译的对象</Data></Cell>
-    <Cell/>
+    <Cell><Data ss:Type="String">objects to be translated</Data></Cell>
+    <Cell><Data ss:Type="String">必须翻译的对象</Data></Cell>
+    <Cell><Data ss:Type="String">objects to be translated</Data></Cell>
     <Cell><Data ss:Type="String">объекты примечания</Data></Cell>
     <Cell><Data ss:Type="String">अनूवादित करने के लिए वस्तुयें</Data></Cell>
     <Cell><Data ss:Type="String">سرد العناصر الواجب ترجمتها</Data></Cell>
@@ -6517,8 +6809,9 @@
     <Cell><Data ss:Type="String">Notities</Data></Cell>
     <Cell><Data ss:Type="String">Notes</Data></Cell>
     <Cell><Data ss:Type="String">Note</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">边检对象</Data></Cell>
-    <Cell/>
+    <Cell><Data ss:Type="String">note-objects</Data></Cell>
+    <Cell><Data ss:Type="String">边检对象</Data></Cell>
+    <Cell><Data ss:Type="String">یادداشت‌ها</Data></Cell>
     <Cell><Data ss:Type="String">объекты примечания</Data></Cell>
     <Cell><Data ss:Type="String">परची-वस्तु</Data></Cell>
     <Cell><Data ss:Type="String">عنصر ملاحظة خاص بالمؤلف</Data></Cell>
@@ -6529,11 +6822,12 @@
     <Cell><Data ss:Type="String">TIME_FMT</Data></Cell>
     <Cell><Data ss:Type="String">%H:%M:%S</Data></Cell>
     <Cell><Data ss:Type="String">%H:%M:%S</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">%H:%M:%S</Data></Cell>
     <Cell><Data ss:Type="String">%H:%M:%S</Data></Cell>
     <Cell><Data ss:Type="String">%H:%M:%S</Data></Cell>
     <Cell><Data ss:Type="String">%H:%M:%S</Data></Cell>
-    <Cell/>
+    <Cell><Data ss:Type="String">%H:%M:%S</Data></Cell>
+    <Cell><Data ss:Type="String">%H:%M:%S</Data></Cell>
+    <Cell><Data ss:Type="String">%H:%M:%S</Data></Cell>
     <Cell><Data ss:Type="String">%H:%M:%S</Data></Cell>
     <Cell><Data ss:Type="String">%H:%M:%S</Data></Cell>
     <Cell><Data ss:Type="String">%H:%M:%S</Data></Cell>
@@ -6940,7 +7234,10 @@
     <Cell><Data ss:Type="String">Mit freundlichen Grüßen,</Data></Cell>
     <Cell><Data ss:Type="String">With best regards,</Data></Cell>
     <Cell><Data ss:Type="String">Met friendelijk groet,</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">致以衷心的问候</Data></Cell>
+    <Cell><Data ss:Type="String">With best regards,</Data></Cell>
+    <Cell><Data ss:Type="String">With best regards,</Data></Cell>
+    <Cell><Data ss:Type="String">With best regards,</Data></Cell>
+    <Cell><Data ss:Type="String">致以衷心的问候</Data></Cell>
     <Cell><Data ss:Type="String">با بهترين آرزوها</Data></Cell>
     <Cell><Data ss:Type="String">с наилучшими пожеланиями</Data></Cell>
     <Cell><Data ss:Type="String">सर्वोत्तम सम्मान के साथ,</Data></Cell>
@@ -6972,6 +7269,13 @@
     <Cell><Data ss:Type="String">aujourd'hui</Data></Cell>
     <Cell><Data ss:Type="String">oggi</Data></Cell>
     <Cell><Data ss:Type="String">hoy</Data></Cell>
+    <Cell><Data ss:Type="String">今天</Data></Cell>
+    <Cell><Data ss:Type="String">امروز</Data></Cell>
+    <Cell><Data ss:Type="String">сегодня</Data></Cell>
+    <Cell><Data ss:Type="String">आज</Data></Cell>
+    <Cell><Data ss:Type="String">اليوم</Data></Cell>
+    <Cell><Data ss:Type="String">hôm nay</Data></Cell>
+    <Cell><Data ss:Type="String">היום</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">YESTERDAY</Data></Cell>
@@ -6981,6 +7285,13 @@
     <Cell><Data ss:Type="String">hier</Data></Cell>
     <Cell><Data ss:Type="String">ieri</Data></Cell>
     <Cell><Data ss:Type="String">ayer</Data></Cell>
+    <Cell><Data ss:Type="String">昨天</Data></Cell>
+    <Cell><Data ss:Type="String">دیروز</Data></Cell>
+    <Cell><Data ss:Type="String">вчера</Data></Cell>
+    <Cell><Data ss:Type="String">कल</Data></Cell>
+    <Cell><Data ss:Type="String">أمس</Data></Cell>
+    <Cell><Data ss:Type="String">hôm qua</Data></Cell>
+    <Cell><Data ss:Type="String">אתמול</Data></Cell>
    </Row>
   </Table>
   <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">

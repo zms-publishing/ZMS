@@ -1,174 +1,203 @@
-<tal:block tal:content="structure string:<!--bt_link_list.interface0 -->"></tal:block>
-
-<div class="form-group row" id="tr_links_interface0" tal:define="zmscontext options/zmscontext">
-	<div class="col-sm-2"></div>
-	<div class="col-sm-10">
-		<table class="table table-bordered m-0">
-			<tbody>
-			<tr class="row_insert bg-light">
-				<td class="meta-sort"><span class="btn btn-secondary btn-add" style="padding:.375rem .75rem"><i class="fas fa-plus"></i></td>
-				<td class="meta-label"><input class="form-control" name="links_label__" placeholder="Enter Label..."/>
-				<td class="meta-url"><input class="form-control url-input" name="links_url__" placeholder="Select Url..."/>
-			</tr>
-			</tbody>
-		</table>
+<tal:block tal:define="
+	zmscontext options/zmscontext;
+	id zmscontext/id">
+	<!--bt_link_list.interface0 -->
+	<div id="tr_links_interface0" 
+		tal:attributes="id python:'tr_%s_interface0'%(id)">
+		<div class="form-group col-sm-10 offset-sm-2 p-0">
+			<table class="table table-bordered m-0">
+				<tr class="row_insert bg-light">
+					<td class="meta-sort">
+						<span class="btn btn-secondary btn-add" style="padding:.375rem .75rem"><i class="fas fa-plus"></i>
+					</td>
+					<td class="meta-label">
+						<input class="form-control" name="links_label__" placeholder="Enter Label..." 
+							tal:attributes="name python:'%s_label__'%(id)" />
+					</td>
+					<td class="meta-url">
+						<input class="form-control url-input" name="links_url__" placeholder="Select Url..." 
+							tal:attributes="name python:'%s_url__'%(id)" />
+					</td>
+				</tr>
+			</table>
+		</div>
 	</div>
-</div>
-<style>
-/*<!--*/
-	div[id^='tr_links_links'] { display:none; }
-/*-->*/
-</style>
-<script>
-//<!--
-	// ######################################
-	// Global variables
-	// ######################################
-	// Avoid multiple execution of the same code
-	var done_process_bt_link_list = false;
-
-	function process_bt_link_list() {
-		// $("div[id^='tr_links_links']").hide();
-		// ######################################
-		// VARIABLES
-		// ######################################
-		var links = [];
-		var $table = $("#tr_links_interface0 table");
-		var xml = $.parseXML($("textarea[id^='links_links']").val());
-		var $xml = $(xml);
-		$("list > item > dictionary",$xml).each(function() {
-			var record = {};
-			$("item",this).each(function() {
-				var $item = $(this);
-				record[$item.attr("key")] = $item.text();
-			});
-			links.push(record);
-		});
-
-		// ######################################
-		// FUNCTIONS
-		// ######################################
-		const refreshData = function() {
-			var xml = '';
-			xml += '<list>\n';
-			for (var i=0; i < links.length; i++) {
-				var record = links[i];
-				xml += '<item type="dict">\n';
-				xml += '<dictionary>\n';
-				for (var k in record) {
-					xml += '<item key="'+k+'"><![CDATA['+record[k]+']]></item>\n';
-				}
-				xml += '</dictionary>\n';
-				xml += '</item>\n';
-			}
-			xml += '</list>';
-			$("textarea[id^='links_links']").val(xml);
-		};
-		const refreshLinks = function() {
-			links = [];
-			$table = $("#tr_links_interface0 table");
-			$("tr.url-inputs",$table).each(function() {
-				var $tr = $(this);
-				var record = {url:$("input[name^='links_url_']",$tr).val(),label:$("input[name^='links_label_']",$tr).val()};
+	<style tal:content="python:'''div[id^='tr_%s_links']{display:none;}'''%(id)"></style>
+	<script>
+	//<!--
+		function process_bt_link_list(id) {
+			// ######################################
+			// VARIABLES
+			// ######################################
+			let links = [];
+			let tr_id_prefix = 'tr_' + id;
+			let labelname_prefix = id + '_label_';
+			let urlname_prefix = id + '_url_';
+			let $linktable = $('#'+tr_id_prefix+'_interface0 table');
+			let $xml_field = $('textarea', $('#'+id));
+			let xml = $.parseXML($xml_field.val());
+			let $xml = $(xml);
+			$('list > item > dictionary',$xml).each(function() {
+				let record = {};
+				$('item',this).each(function() {
+					let $item = $(this);
+					record[$item.attr('key')] = $item.text();
+				});
 				links.push(record);
 			});
-			refreshData();
-		}
-		const refreshView = function() {
-			$("tr:not(:last)",$table).remove();
-			var $last = ("tr:last",$table);
-			var html = '';
-			for (var i=0; i < links.length; i++) {
-				var record = links[i];
-				html += '<tr class="url-inputs">\n';
-				html += '<td class="meta-sort">\n';
-				html += '<div class="input-group">\n';
-				html += '<select class="zmi-sort">\n';
-				for (var j=0; j < links.length; j++) {
-					html += '<option value="'+j+'"' + (j==i?' selected="selected"':'') + '>'+(j+1)+'<'+'/option>\n';
+
+			// ######################################
+			// FUNCTIONS
+			// ######################################
+			const refreshData = function() {
+				let xml = '';
+				xml += '<list>\n';
+				for (let i=0; i < links.length; i++) {
+					let record = links[i];
+					xml += '<item type="dict">\n';
+					xml += '<dictionary>\n';
+					for (let k in record) {
+						xml += '<item key="'+k+'"><![CDATA['+record[k]+']]></item>\n';
+					}
+					xml += '</dictionary>\n';
+					xml += '</item>\n';
 				}
-				html += '</select>\n';
-				html += '<div class="input-group-append"><a class="btn btn-secondary btn-delete" href="javascript:;"><i class="fas fa-times"></i></a></div>';
-				html += '</div>\n';
-				html += '</td>\n';
-				html += '<td class="meta-label">\n';
-				html += '<input class="form-control" name="links_label_'+i+'" value="'+record.label+'">\n';
-				html += '</td>\n';
-				html += '<td class="meta-url">\n';
-				html += '<input class="form-control url-input" name="links_url_'+i+'" value="'+record.url+'">\n';
-				html += '</td>\n';
-				html += '</tr>\n';
-			}
-			$last.prepend(html);
-			$ZMI.initUrlInput($("tr.url-inputs",$table));
-			refreshLinks();
-			$(".btn-delete",$table).click(function() {
-				if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
-					$(this).parents('tr').remove();
-					refreshLinks();
-				}
-			});
-			$("tr.url-inputs input",$table).change(refreshLinks);
-			refreshData();
-		};
-
-		// ######################################
-		// HELPER: Add Button
-		// ######################################
-		$(".btn-add",$table).click(function() {
-			var $tr = $(this).parents("tr")[0];
-			if ($("input[value='']",$tr).length==0) {
-				var record = {url:$("input[name^='links_url_']",$tr).val(),label:$("input[name^='links_label_']",$tr).val()};
-				links.push(record);
-				$("input",$tr).val("").change();
-			}
-			refreshView();
-			$ZMI.initUrlInput($("tr.url-inputs",$table));
-		});
-
-		// Execute Creating GUI
-		refreshView();
-
-		// ######################################
-		// HELPER: Sort Button
-		// ######################################
-		$('#tr_links_interface0 .meta-sort select').on('change',function() {
-			var $this_row = $(this).parents('#tr_links_interface0 table tr');
-			var pos = $(this).val();
-			// console.log(pos);
-			$(this).find('option').removeAttr('selected');
-			$(this).find('option[value="' + pos + '"]').attr('selected', 'selected');
-			var $target_row = $('#tr_links_interface0 table tr')[pos];
-			if ( pos==0 ) {
-				$this_row.insertBefore($target_row);
-			} else {
-				$this_row.insertAfter($target_row);
+				xml += '</list>';
+				$xml_field.val(xml);
 			};
-			// Refresh XML-List from Re-Ordered Table
-			refreshLinks();
-		})
-	}
+			const refreshLinks = function() {
+				links = [];
+				$('tr.url-inputs', $linktable).each(function() {
+					let $tr = $(this);
+					let record = { url:$('input[name^=' + urlname_prefix + ']', $tr).val(),label:$('input[name^=' + labelname_prefix + ']', $tr).val() };
+					links.push(record);
+				});
+				refreshData();
+			};
+			const refreshView = function() {
+				// Remove all rows except the last one
+				$('tr:not(:last)', $linktable).remove();
+				let $last = ('tr:last', $linktable);
+				// Re-Create all rows
+				let html = '';
+				for (let i=0; i < links.length; i++) {
+					let record = links[i];
+					if ( Object.keys(record).length==0 ) {
+						// Skip empty record
+						continue;
+					};
+					let labelname = labelname_prefix + i;
+					let urlname = urlname_prefix + i;
+					let options_html = '';
+					for (let j=0; j < links.length; j++) {
+						options_html += `<option value="${j}"${j==i?' selected="selected"':''}>${j+1}</option>`;
+					};
+					let tr_html =`
+						<tr class="url-inputs">
+							<td class="meta-sort">
+								<div class="input-group">
+									<select class="zmi-sort">
+										${options_html}
+									</select>
+									<div class="input-group-append">
+										<a class="btn btn-secondary btn-delete" href="javascript:;">
+											<i class="fas fa-times"></i>
+										</a>
+									</div>
+								</div>
+							</td>
+							<td class="meta-label">
+								<input class="form-control" name="${labelname}" value="${escapeHTML(record.label)}">
+							</td>
+							<td class="meta-url">
+								<input class="form-control url-input" name="${urlname}" value="${record.url}">
+							</td>
+						</tr>
+					`;
+					html += tr_html;
+				}
+				$last.prepend(html);
+				$ZMI.initUrlInput($('tr.url-inputs', $linktable));
+				refreshLinks();
+				$('.btn-delete',$linktable).click(function() {
+					if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
+						$ZMI.set_form_modified($linktable);
+						$(this).closest('tr').hide('slow',function(){
+							$(this).closest('tr').remove();
+							refreshLinks();
+						});
+					}
+				});
+				$('tr.url-inputs input', $linktable).change(refreshLinks);
+				refreshData();
+			};
+			const escapeHTML = function(str) {
+				return str
+				.replace(/&/g, '&amp;')
+				.replace(/</g, '&lt;')
+				.replace(/>/g, '&gt;')
+				.replace(/"/g, '&quot;')
+				.replace(/'/g, '&#39;');
+			};
 
+			// ######################################
+			// HELPER: Add Button
+			// ######################################
+			$('.btn-add',$linktable).click(function() {
+				let $tr = $(this).parents('tr')[0];
+				if ($('input[value=""]',$tr).length==0) {
+					let record = {url:$('input[name^=' + urlname_prefix + ']', $tr).val(),label:$('input[name^=' + labelname_prefix + ']', $tr).val()};
+					links.push(record);
+					$('input', $tr).val('').change();
+				}
+				refreshView();
+				$ZMI.initUrlInput($('tr.url-inputs',$linktable));
+				$ZMI.set_form_modified($linktable);
+			});
+
+			// Execute Creating GUI
+			refreshView();
+
+			// ######################################
+			// HELPER: Sort Button
+			// ######################################
+			$('.meta-sort select', $linktable).on('change',function() {
+				let $this_row = $(this).parents('tr', $linktable);
+				let pos = $(this).val();
+				// console.log(pos);
+				$(this).find('option').removeAttr('selected');
+				$(this).find('option[value="' + pos + '"]').attr('selected', 'selected');
+				let $target_row = $('tr', $linktable)[pos];
+				if ( pos==0 ) {
+					$this_row.insertBefore($target_row);
+				} else {
+					$this_row.insertAfter($target_row);
+				};
+				// Refresh XML-List from Re-Ordered Table
+				refreshLinks();
+			})
+		}
+
+	//-->
+	</script>
+	<!--!
 	// ######################################
-	// MAIN
+	// MAIN: Execute on Document Ready
 	// ######################################
-	// EVENT-A: Execute on Document Ready
-	$(function() {
-		if (!done_process_bt_link_list) {
-			process_bt_link_list();
-			done_process_bt_link_list = true;
-		};
-	})
+	-->
+	<script tal:content="python:'''\n
+		// Avoid multiple execution of the same code\n
+		var done_process_bt_link_list_%s = false;\n
+		\n
+		// Execute on Document Ready\n
+		$(function() {\n
+			if (!done_process_bt_link_list_%s) {\n
+				process_bt_link_list('%s');\n
+				done_process_bt_link_list_%s = true;\n
+			};\n
+		})\n
+	'''%(id, id, id, id)">
+	</script>
 
-	// EVENT-B: Execute on HTMX/AJAX-Load
-	// Cave: htmx shows formerly hidden textarea 
-	// so just use CSS instead of javascript .hide()
-	// ######################################
-	// htmx.onLoad(function() {
-	//	$("div[id^='tr_links_links']").hide();
-	// })
-
-//-->
-</script>
-
-<tal:block tal:content="structure string:<!--/bt_link_list.interface0 -->"></tal:block>
+	<!--/bt_link_list.interface0 -->
+</tal:block>

@@ -1,0 +1,126 @@
+<tal:block tal:define="
+	zmscontext options/zmscontext;
+	standard modules/Products.zms/standard;
+	keyword python:zmscontext.attr('key');
+	not_inserting python:request.get('ZMS_INSERT') is None;
+	key_is_editable python:standard.pybool(zmscontext.attr('_key_is_editable'))">
+
+	<tal:block tal:condition="not:key_is_editable">
+		<style>
+		/*<!--  # CSS making Key/Hashtag not editable */
+			div#tr_key input {
+				border:none;
+				background:#eaedef;
+				pointer-events:none;
+			}
+		/*-->*/
+		</style>
+	</tal:block>
+
+	<tal:block tal:condition="not_inserting">
+		<div class="form-group row" id="interface">
+			<label class="col-sm-2 control-label"><span>Targets</span></label>
+			<div class="col-sm-10">
+				<a id="ontology_query" class="btn btn-primary"
+					hx-indicator="body"
+					hx-target="#ontology_result"
+					hx-trigger="click"
+					tal:attributes="hx-get python:'ontology_query?return_type=json&q=%s'%(keyword);title python:'Execute Query: %s'%(keyword)">
+					List tagged documents
+				</a>
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-sm-2 control-label"><span></span></label>
+			<div class="col-sm-10">
+				<div id="ontology_result"></div>
+			</div>
+		</div>
+
+		<script>
+		//<!--
+		document.getElementById('ontology_query').addEventListener('click', function () {
+			document.body.addEventListener('htmx:afterOnLoad', function handler(evt) {
+				// Ensure it's the right target
+				if (evt.detail.target.id === 'ontology_result') {
+					try {
+						const json = JSON.parse(evt.detail.xhr.responseText);
+						renderOntologyLinks(json);
+					} catch (e) {
+						console.error('Failed to parse JSON:', e);
+					}
+					// Remove the listener after it's triggered once
+					document.body.removeEventListener('htmx:afterOnLoad', handler);
+				}
+			});
+		});
+		function renderOntologyLinks(jsonResultList) {
+			const container = document.getElementById('ontology_result');
+			if (!container) return;
+			// Clear previous content
+			container.innerHTML = '';
+			const ol = document.createElement('ol');
+			ol.setAttribute('id', 'ontology_query_results');;
+			container.appendChild(ol)
+			jsonResultList.forEach(item => {
+				if (item._source.title && item._source.loc) {
+					const li = document.createElement('li');
+					const link = document.createElement('a');
+					const href = `${item._source.loc}/manage_properties`;
+					const uid = item._source.uid;
+					link.href = href;
+					link.textContent = item._source.title;
+					link.title = `[${uid}] ${href}`;
+					link.target = '_blank'; // Optional: open in new tab
+					link.classList.add('ontology-link'); // Optional: for styling
+					li.appendChild(link);
+					let pth_node = document.createElement('ol');
+					pth_node.classList.add('ontology_item_path');
+					pth_node.dataset.id = uid;
+					li.appendChild(pth_node);
+					ol.appendChild(li);
+				}
+			});
+			const pth_nodes = Array.from(document.querySelectorAll('ol.ontology_item_path'));
+			pth_nodes.forEach(item => {
+				show_breadcrumbs(item);
+			});
+		};
+		function show_breadcrumbs(el) {
+			if ( el.dataset.id.startsWith('uid') ) {
+				$.get(url=`./opensearch_breadcrumbs_obj_path`,
+					data={ 'id' : el.dataset.id },
+					function(data, status) {
+						$(el).html(data);
+					}
+				);
+			}
+		}
+		//-->
+		</script>
+
+		<style>
+		/*<!--*/
+			ol.ontology_item_path {
+				margin:0;
+				padding:0;
+			}
+			ol.ontology_item_path {
+				margin:0 0 .5rem 0;
+				padding:0;
+			}
+			ol.ontology_item_path > li {
+				display:inline-block;
+			}
+			ol.ontology_item_path > li > a {
+				color:grey;
+				font-size:smaller
+			}
+			ol.ontology_item_path > li:not(:first-child) > a:before {
+				content:"/";
+				margin:0 .35rem 0 .25rem;
+			}
+		/*-->*/
+		</style>
+	</tal:block>
+</tal:block>

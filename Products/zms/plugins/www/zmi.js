@@ -1,10 +1,29 @@
 /**
  * $ZMI: Register functions to be executed on document.ready 
  */
-ZMI = function() { this.readyFn = []};
-ZMI.prototype.registerReady = function(fn) {this.readyFn.push(fn)};
-ZMI.prototype.ready = function(fn) {this.readyFn.push(fn)};
-ZMI.prototype.runReady = function() {this.readyFn.map(x=>x())};
+ZMI = function() { this.readyFn = {}};
+ZMI.prototype.generateUUID = function() { // Public Domain/MIT
+    var d = new Date().getTime();//Timestamp
+    var d2 = ((typeof performance !== 'undefined') && performance.now && (performance.now()*1000)) || 0;//Time in microseconds since page-load or 0 if unsupported
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random() * 16;//random number between 0 and 16
+        if(d > 0){//Use timestamp until depleted
+            r = (d + r)%16 | 0;
+            d = Math.floor(d/16);
+        } else {//Use microseconds since page-load if supported
+            r = (d2 + r)%16 | 0;
+            d2 = Math.floor(d2/16);
+        }
+        return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+}
+ZMI.prototype.registerReady = function(fn, key) {
+	key = typeof key == 'undefined' ? this.generateUUID() : key;
+	if (typeof this.readyFn[key] == 'undefined') {
+		this.readyFn[key] = fn;
+	}
+};
+ZMI.prototype.runReady = function() {Object.entries(this.readyFn).map(([k, v], i)=>v())};
 $ZMI = new ZMI();
 
 /**
@@ -23,7 +42,8 @@ if (typeof $ == "undefined") {
  * HTMX: Add loading class to body on htmx:beforeRequest and remove it on htmx:afterRequest
  * Hint: Due to DOM limitations, it’s not possible to use the outerHTML method on the <body> 
  * element. htmx will change outerHTML on <body> to use innerHTML. So, the classList will not 
- * be renewed after htmx request. To fix this, we have to add the classList to the <body> element
+ * be renewed after htmx request. That is why the classList has to be added again the <body> 
+ * element after request
  * Source: https://htmx.org/attributes/hx-swap/
  */
 if (typeof htmx != "undefined") {
@@ -35,9 +55,38 @@ if (typeof htmx != "undefined") {
 				return evt.preventDefault();
 			}
 		}
-		body.classList.add('loading');
 	});
-	document.addEventListener('htmx:afterRequest', (evt) => {
+	// Listen for the htmx response error event
+	if (window.parent.manage_main && window.parent.manage_main.htmx) {
+		window.parent.manage_main.htmx.on('htmx:beforeSwap', (evt) => {
+			// Check for 400-type errors
+			if (evt.detail.xhr.status >= 400 && evt.detail.xhr.status < 500) {
+				let msgs = {
+					400: 'Bad Request !',
+					401: 'Unauthorized Access!',
+					403: 'Forbidden !',
+					404: 'Page not found !',
+					405: 'Method Not Allowed !',
+					408: 'Request Timeout !',
+				};
+				// Remove html body and wtrite error message
+				window.parent.manage_main.document.querySelector('body').innerHTML = `
+						<header class="navbar navbar-nav p-1" style="height:2.65rem;">
+							<div class="navbar-brand text-white">
+								Error ${evt.detail.xhr.status}: ${msgs[evt.detail.xhr.status]}
+							</div>
+						</header>`;
+			};
+		});
+	};
+	document.addEventListener('htmx:sendError', (evt) => {
+		const manage_main_href = evt.detail.pathInfo.finalRequestPath;
+		if ( confirm(getZMILangStr('MSG_CONFIRM_RELOAD'))) {
+			const topWindow = window.parent || window;
+			topWindow.location.assign(manage_main_href);
+		}
+	});
+	document.addEventListener('htmx:afterSettle', (evt) => {
 		var resp_text = evt.detail.xhr.responseText;
 		var parser = new DOMParser();
 		var resp_doc = parser.parseFromString(resp_text , 'text/html');
@@ -62,19 +111,21 @@ if (typeof htmx != "undefined") {
 		Array.from(document.getElementsByClassName('form-modified')).forEach(
 			e => { e.classList.remove('form-modified') }
 		);
-		document.querySelector('body').classList.remove('loading');
-		document.querySelector('body').classList.add('loaded');
 	});
 	window.onload = function() {
 		$ZMI.runReady();
 	};
+	// https://htmx.org/quirks/#history-can-be-tricky
+	document.addEventListener('htmx:historyRestore', (e) => {
+		$ZMI.runReady();
+	});
 }
 
 /**
  * jQuery: Run $ZMI.ready() on document.ready
  */
 $ZMI.registerReady(function() {
-		// Remove loading class from body
+	// Remove loading class from body
 	if (document.querySelector('body') != null && document.querySelector('body').classList.contains("loading")) {
 		document.querySelector('body').classList.remove('loading');
 	};

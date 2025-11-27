@@ -1,6 +1,5 @@
 import json
 
-
 def manage_opensearch_schematize( self):
 	zmscontext = self
 	properties = {}
@@ -31,6 +30,45 @@ def manage_opensearch_schematize( self):
 		'text',
 		'token_count'
 	]
+	# Define custom analyzer for asciifolding to support accent-insensitive search
+	# https://opensearch.org/docs/latest/analyzers/token-filters/asciifolding/
+	# https://aws.amazon.com/de/blogs/big-data/perform-accent-insensitive-search-using-opensearch/
+	settings = {
+		"analysis": {
+			"filter": {
+				"custom_ascii_folding": {
+					"type": "asciifolding",
+					"preserve_original": True
+				}
+			},
+			"tokenizer": {
+				"path_tokenizer": {
+					"type": "path_hierarchy",
+					"delimiter": "/"
+				}
+			},
+			"analyzer": {
+				"custom_ascii_analyzer": {
+					"type": "custom",
+					"tokenizer": "standard",
+					"filter": [
+						"lowercase",
+						"custom_ascii_folding"
+					]
+				},
+				"path_analyzer": {
+					"type": "custom",
+					"tokenizer": "path_tokenizer"
+				},
+				"default": {
+					"type": "standard"
+				},
+				"default_search": {
+					"type": "standard"
+				}
+			}
+		}
+	}
 	adapter = zmscontext.getCatalogAdapter()
 	attrs = adapter.getAttrs()
 	for attr_id in adapter._getAttrIds():
@@ -42,14 +80,17 @@ def manage_opensearch_schematize( self):
 			attr_type = 'text'
 		property = {}
 		property['type'] = attr_type
+		if attr_type == 'text':
+			property['analyzer'] = 'custom_ascii_analyzer'
 		properties[attr_id] = property
 
 	# Force default properties types
 	properties['id'] = {'type':'text'}
 	properties['zmsid'] = {'type':'text'}
 	properties['uid'] = {'type':'text'}
-	properties['loc'] = {'type':'text'}
-	properties['index_html'] = {'type':'text'}
+	properties['loc'] = {'type':'text','analyzer':'path_analyzer'}
+	properties['path'] = {'type':'text','analyzer':'path_analyzer'}
+	properties['index_html'] = {'type':'text', 'analyzer':'custom_ascii_analyzer'}
 	properties['meta_id'] = {'type':'keyword'}
 	properties['lang'] = {'type':'keyword'}
 	properties['home_id'] = {'type':'keyword'}
@@ -58,7 +99,7 @@ def manage_opensearch_schematize( self):
 	properties['indexing_dt'] = {'type':'date'}
 
 	mappings = {'properties':properties}
-	dictionary = {'mappings':mappings}
+	dictionary = {'settings':settings, 'mappings':mappings}
 	schema = json.dumps(dictionary, indent=2)
 	self.setConfProperty('opensearch.schema', schema)
 	return schema

@@ -1,4 +1,6 @@
-FROM python:3.12
+ARG BUILD_PYTHON_VERSION=3.12
+FROM python:$BUILD_PYTHON_VERSION
+ARG BUILD_PYTHON_VERSION
 
 EXPOSE 80
 
@@ -21,14 +23,22 @@ RUN \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     <<EOR
     apt update
-    apt --yes install libldap2-dev libsasl2-dev
+    apt --yes install libldap2-dev libsasl2-dev git
 EOR
 
 # Drop root privileges
+# We need hardcoded uid/gid so we can later share the production files as bind mounts with the correct uid/gid
 ENV UID=1000
-RUN useradd --system --create-home --uid $UID zope
+ENV GID=1000
+RUN groupadd --gid $GID zope ; useradd --system --create-home --uid $UID --gid $GID zope
 USER zope
 WORKDIR /home/zope/
+
+# Configure git for user
+RUN <<EOR
+    git config --global user.email "zmsbot@container"
+    git config --global user.name "zmsbot"
+EOR
 
 # Install uv
 # COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
@@ -38,7 +48,10 @@ WORKDIR /home/zope/
 # ARG CREATE_VENV_COMMAND="uv venv"
 ARG CREATE_VENV_COMMAND="python3 -m venv"
 ENV VIRTUAL_ENV=/home/zope/venv
-RUN $CREATE_VENV_COMMAND $VIRTUAL_ENV
+RUN <<EOR
+    $CREATE_VENV_COMMAND $VIRTUAL_ENV
+    ln -s ${VIRTUAL_ENV}/lib/python$BUILD_PYTHON_VERSION/site-packages/ ${VIRTUAL_ENV}/site-packages
+EOR
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 # Enable caching of pip packages to speed up rebuild times
@@ -68,13 +81,22 @@ RUN --mount=type=cache,uid=$UID,target=$PIP_CACHE_DIR,sharing=locked <<EOR
 EOR
 
 # Create Zope Instance
-RUN mkwsgiinstance --dir . --user admin:admin
+# We do this, to make it easy to evaluate zms without having to create an initial zodb outside the container and map it inside.
+# However: mkwsgiinstance creates a file inituser in the top level of the deployment
+# This file is read on the first startup of zope, and creates the actual initial user in the zodb
+# consuming that file. Therefore we must be very cautious to ensuret that this file itself is _not_
+# part of the docker image. zconsole triggers that same startup behaviour.
+RUN <<EOR
+    mkdir cache Extensions customizing import
+    mkwsgiinstance --dir . --user admin:admin
+    echo | zconsole debug etc/zope.conf
+EOR
 
 # Configure Zope Instance
 ARG BUILD_DIR=docker/base
 COPY --chown=zope:zope $BUILD_DIR/zope.ini etc/zope.ini
 COPY --chown=zope:zope $BUILD_DIR/zope.conf etc/zope.conf
-RUN mkdir cache Extensions
+COPY --chown=zope:zope $BUILD_DIR/zeo.conf etc/zeo.conf
 
 COPY --chown=zope:zope Products Products
 # consider if we need the test code to be in the container to run
@@ -82,4 +104,4 @@ COPY --chown=zope:zope Products Products
 # locally it is mapped into the container via bindmounts
 # COPY --chown=zope:zope selenium_tests test_output tests ./
 
-CMD runwsgi --verbose etc/zope.ini http_port=80
+CMD ["runwsgi", "--verbose", "etc/zope.ini", "http_port=80"]

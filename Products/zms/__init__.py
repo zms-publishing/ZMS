@@ -252,7 +252,29 @@ def initialize(context):
                 standard.writeStdout(context, "add %s (Packed: %i -> %i Bytes)"%(fn, l0, l1))
               fileobj.write(fc)
             fileobj.close()
-        
+            # Finally create hash value of packed file content:
+            # a. write it into separate file and
+            # b. create a configuration parameter
+            min_fileobj = open(fileobj.name, 'r')
+            min_fileobj_content = min_fileobj.read()
+            min_hash = str(standard.encrypt_password(min_fileobj_content,hex=True))
+            min_hash_fileobj = open(fileobj.name + '.hash', 'w')
+            min_hash_fileobj.write(min_hash)
+            OFS.misc_.misc_.zms['confdict']['js_min.hash'] = min_hash
+            standard.writeStdout(context, "add %s" % min_hash_fileobj.name)
+            min_hash_fileobj.close()
+            min_fileobj.close()
+
+        # create hash value of zmi.js
+        zmi_js_fileobj = open(translate_path('/++resource++zms_/zmi.js'), 'r')
+        zmi_js_fileobj_content = zmi_js_fileobj.read()
+        zmi_js_hash = str(standard.encrypt_password(zmi_js_fileobj_content,hex=True))
+        zmi_js_hash_fileobj = open(translate_path('/++resource++zms_/zmi.js.hash'), 'w')
+        zmi_js_hash_fileobj.write(zmi_js_hash)
+        OFS.misc_.misc_.zms['confdict']['js_zmi.hash'] = zmi_js_hash
+        standard.writeStdout(context, "add %s" % zmi_js_hash_fileobj.name)
+        zmi_js_hash_fileobj.close()
+
         # automated generation of language JavaScript
         from xml.dom import minidom
         filename = os.sep.join([package_home(globals())]+['import', '_language.xml'])

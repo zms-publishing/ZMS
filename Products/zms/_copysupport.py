@@ -18,10 +18,12 @@
 
 # Imports.
 import time
+import shutil
 from OFS import Moniker
 from OFS.CopySupport import _cb_decode, _cb_encode, CopyError
 # Product Imports.
 from Products.zms import standard
+from Products.zms import _globals
 
 
 # ------------------------------------------------------------------------------
@@ -35,35 +37,75 @@ OP_MOVE = 1
 #  CopySupport._normalize_ids_after_copy:
 # ------------------------------------------------------------------------------
 def normalize_ids_after_copy(node, id_prefix='e', ids=[]):
+  """ 
+  The ids of copied objects are normalized to the context-node's id_prefix
+  and the ZMS-client's sequence incrementing (acl_sequence).
+  After the objects are moved to their new position their ids are normalized,
+  that means they are reset to a new id that consists of the id_prefix of the 
+  target-context and the next increment of the ZMS-object sequence counter.
+
+  @param node: context-node
+  @type node: ZMSNode
+  @param id_prefix: id_prefix of context-node
+  @type id_prefix: C{str}
+  @param ids: list of ids to be normalized, '*' for all
+  @type ids: C{list}
+  @note: This function is called after manage_pasteObjs() has moved the objects.
+  """
   request = node.REQUEST
   copy_of_prefix = 'copy_of_'
+  normalized_objs = []
+
+  # [A] Rename an object in the new context
   for childNode in node.getChildNodes():
     # validate id
     id = childNode.getId()
     new_id = None
     if '*' in ids or id in ids or id.startswith(copy_of_prefix):
-      # reset ref_by
-      childNode.ref_by = []
-      # init object-state
+      # new id
       if not '*' in ids:
-        lang = request.get('lang')
-        for langId in node.getLangIds():
-          request.set('lang',langId)
-          if not node.getAutocommit():
-            childNode.setObjStateNew(request,reset=0)
-          childNode.onChangeObj(request)
-        request.set('lang',lang)
-        # new id
         new_id = node.getNewId(id_prefix)
       else:
-        # new id
         new_id = node.getNewId(standard.id_prefix(id))
       # reset id
       if new_id is not None and new_id != id and childNode.getParentNode() == node:
         standard.writeBlock(node,'[CopySupport._normalize_ids_after_copy]: rename %s(%s) to %s'%(childNode.absolute_url(),childNode.meta_id,new_id))
         node.manage_renameObject(id=id,new_id=new_id)
-      # traverse tree
-      normalize_ids_after_copy(childNode, id_prefix, ids=['*'])
+        # Add normalized object to list
+        normalized_objs.extend(node.getChildNodes(reid=new_id))
+
+  # [B] Reset backlink-attribute and trigger onChangeObj for all copied child-nodes.
+  normalized_pages = [e for e in normalized_objs if e.isPage()]
+  if normalized_pages:
+
+    # [B1] Inserting page-object(s) or tree-recursion
+    for normalized_page in normalized_pages:
+      # Reset ref_by
+      normalized_page.ref_by = []
+      # Init object-state
+      if not '*' in ids:
+        lang = request.get('lang')
+        for langId in node.getLangIds():
+          request.set('lang',langId)
+          if not node.getAutocommit():
+            normalized_page.setObjStateNew(request,reset=0)
+          normalized_page.onChangeObj(request)
+        request.set('lang',lang)
+      # Traverse tree
+      tree_pages = normalized_page.getTreeNodes(request, node.PAGES)
+      if tree_pages:
+        for tree_page in tree_pages:
+          normalize_ids_after_copy(tree_page, id_prefix, ids=['*'])
+  else:
+    # [B2] Inserting pageelement-object(s)
+    lang = request.get('lang')
+    for langId in node.getLangIds():
+      request.set('lang',langId)
+      if not node.getAutocommit():
+        node.setObjStateNew(request,reset=0)
+      node.onChangeObj(request)
+    request.set('lang',lang)
+
 
 
 # ------------------------------------------------------------------------------
@@ -117,12 +159,12 @@ class CopySupport(object):
           cp=REQUEST['__cp']
       if cp is None:
         raise CopyError('No Data')
-      
-      try: 
+
+      try:
         cp=_cb_decode(cp)
-      except: 
+      except:
         raise CopyError('Invalid')
-      
+
       return cp
 
 
@@ -130,25 +172,25 @@ class CopySupport(object):
     #  CopySupport._get_obs:
     # --------------------------------------------------------------------------
     def _get_obs(self, cp):
-        
-        try: 
+
+        try:
           cp=_cb_decode(cp)
-        except: 
+        except:
           raise CopyError('Invalid')
-        
+
         oblist=[]
         op=cp[0]
         app = self.getPhysicalRoot()
-        
+
         for mdata in cp[1]:
           m = Moniker.loadMoniker(mdata)
-          try: 
+          try:
             ob = m.bind(app)
-          except: 
+          except:
             raise CopyError('Not Found')
           self._verifyObjectPaste(ob)
           oblist.append(ob)
-        
+
         return oblist
 
     def cp_get_obs(self, REQUEST):
@@ -173,8 +215,8 @@ class CopySupport(object):
 
     # --------------------------------------------------------------------------
     #  CopySupport._set_sort_ids:
-    # 
-    #  Group all objects to be copied / moved at new position (given by _sort_id) 
+    #
+    #  Group all objects to be copied / moved at new position (given by _sort_id)
     #  in correct sort-order.
     # --------------------------------------------------------------------------
     def _set_sort_ids(self, ids, op, REQUEST):
@@ -186,6 +228,63 @@ class CopySupport(object):
         if (id in ids) or (op == OP_MOVE and copy_of_prefix+id in ids):
           ob.setSortId(sort_id)
           sort_id += 1
+
+    # --------------------------------------------------------------------------
+    #  CopySupport._copy_blobs_between_clients_with_different_mediadb
+    #
+    #  If source and target have different mediadb folder settings,
+    #  then the data of blob fields is copied as well
+    #  to avoid missing images and files due to invalid references.
+    # --------------------------------------------------------------------------
+    def _copy_blobs_if_other_mediadb(self, **kwargs):
+        mode = kwargs.get('mode', None)
+        oblist = kwargs.get('oblist', [])
+        # identify all BLOB fields
+        if mode == 'read_from_source':
+            if len(oblist) > 0:
+                self.REQUEST.set('mediadb_source_location', oblist[0].getMediaDb().getLocation())
+            self.blobfields = []
+            tree_objs = []
+            for obj in oblist:
+                lang = obj.REQUEST.get('lang')
+                tree_objs.append(obj)
+                if obj.getTreeNodes():
+                    tree_objs.extend(obj.getTreeNodes())
+                for ob in tree_objs:
+                    for langId in ob.getLangIds():
+                        for key in ob.getObjAttrs():
+                            # TODO: discuss handling of getObjVersions...!? (preview vs live, activated workflow)
+                            obj_attr = ob.getObjAttr(key)
+                            datatype = obj_attr['datatype_key']
+                            if datatype in _globals.DT_BLOBS:
+                                ob.REQUEST.set('lang', langId)
+                                if ob.attr(key) is not None:
+                                    self.blobfields.append({
+                                        'id': ob.getId(),
+                                        'key': key,
+                                        'lang': langId,
+                                        'filename': ob.attr(key).getFilename(),
+                                        'mediadbfile': ob.attr(key).getMediadbfile(),
+                                    })
+                                ob.REQUEST.set('lang', lang)
+
+        # copy these files from source to target's MediaDb folder at os-level
+        # do nothing if target and source have the same MediaDb folder
+        # -> the new pasted object references the same MediaDb file as the source object
+        # -> this is true until the next change/upload of a new BLOB in either source or target object
+        if mode == 'copy_to_target':
+            mediadb_source_location = self.REQUEST.get('mediadb_source_location')
+            mediadb_target_location = self.getMediaDb().getLocation()
+            try:
+                if mediadb_target_location and (mediadb_target_location != mediadb_source_location):
+                    for blob in self.blobfields:
+                        mediadb_file = blob.get('mediadbfile')
+                        if mediadb_file is not None:
+                            shutil.copy(f'{mediadb_source_location}/{mediadb_file}', mediadb_target_location)
+            except:
+                standard.writeError(self, '[CopySupport._copy_blobs_if_other_mediadb]')
+            finally:
+                self.blobfields = []
 
 
     ############################################################################
@@ -227,7 +326,7 @@ class CopySupport(object):
       id_prefix = REQUEST.get('id_prefix','e')
       standard.writeBlock( self, "[CopySupport.manage_pasteObjs]")
       t0 = time.time()
-      
+
       # Analyze request
       cb_copy_data = self._get_cb_copy_data(cb_copy_data=None, REQUEST=REQUEST)
       op = cb_copy_data[0]
@@ -235,26 +334,32 @@ class CopySupport(object):
       cp = _cb_encode(cp)
       ids = [self._get_id(x.getId()) for x in self._get_obs(cp)]
       oblist = self._get_obs(cp)
-      
+
+      if self.getMediaDb():
+        self._copy_blobs_if_other_mediadb(mode='read_from_source', oblist=oblist)
+
       # Paste objects.
       action = ['Copy','Move'][op==OP_MOVE]
       standard.triggerEvent(self,'before%sObjsEvt'%action)
       self.manage_pasteObjects(cb_copy_data=None,REQUEST=REQUEST)
       standard.triggerEvent(self,'after%sObjsEvt'%action)
-      
+
+      if self.getMediaDb():
+        self._copy_blobs_if_other_mediadb(mode='copy_to_target')
+
       # Sort order (I).
       self._set_sort_ids(ids=ids, op=op, REQUEST=REQUEST)
-      
+
       # Move objects.
       if op == OP_MOVE:
         normalize_ids_after_move(self,id_prefix=id_prefix,ids=ids)
       # Copy objects.
       else:
         normalize_ids_after_copy(self,id_prefix=id_prefix,ids=ids)
-      
+
       # Sort order (II).
       self.normalizeSortIds()
-      
+
       # Return with message.
       if RESPONSE is not None:
         message = self.getZMILangStr('MSG_PASTED')

@@ -11,6 +11,9 @@
 				diffContainer:diffContainer
 			});
 			var $diffContainer = $(diffContainer,this);
+			if ($diffContainer === undefined) {
+				return;
+			}
 			var lines = $diffContainer.html().replace(/<span>/gi,'').replace(/<\/span>/gi,'').split("<br>");
 			var show = [];
 			var changed = false;
@@ -50,6 +53,6 @@
 	});
 	function focus_anchorid(anchorid) {
 		$('.table.focus').removeClass('focus');
-		$(document).scrollTop( $(anchorid).offset().top );
+		$(document).scrollTop( $(anchorid).offset().top - 132 );
 		$(anchorid).addClass('focus');
 	}

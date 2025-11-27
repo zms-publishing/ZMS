@@ -73,6 +73,7 @@
 	<script defer type="text/javascript" tal:condition="python:standard.once('zmiBlobJs',request)" charset="UTF-8" src="/++resource++zms_/objattrs/zmi.blob.js"></script>
 
 	<div class="zmi-image d-flex align-items-center row"
+		tal:on-error="structure string: <code class='alert alert-danger w-100'>ERROR: No image available!</code>"
 		tal:define="has_file python:value is not None and here.operator_gettype(value) is not str;
 			allowed_ext python:request.set('ZMS_ALLOWED_EXTENSIONS',['jpg', 'jpeg', 'png', 'gif','svg']);
 			filename python:has_file and value.getFilename() or 'None';
@@ -165,7 +166,8 @@
 							style python:'background-image:%s;;'%(cssimageurl);
 							id python:'img_%s'%elName;
 							data-src python:value.getHref(request)"
-						><img onload="javascript:get_img_preview_size_class($(this).parent())" tal:attributes="id python:'img_%s'%elName; src python:value.getHref(request)"/>
+						><img onload="javascript:try{get_img_preview_size_class($(this).parent())}catch{console.log('Waiting for zmi.blob.ZMSGraphic_extEdit.js')}" 
+						tal:attributes="id python:'img_%s'%elName; src python:value.getHref(request)"/>
 						<div class="zmi-zoom-in"><i class="fas fa-search-plus"></i></div>
 					</a>
 				</div>

@@ -1,7 +1,6 @@
 ## params: self, content_url, content_node, force
 
 from bs4 import BeautifulSoup
-from urllib.request import urlopen
 import hashlib
 import datetime
 import re
@@ -54,8 +53,14 @@ def url_extracting(self, content_url, content_node, force=False):
     # Check MD5/Refresh Content Once a Day or on Force
     if force or ( (now - dt_cached).days > 0 ) or len(res)==0:
         baseurl = re.compile(r'(https:\/\/(.*?)\/)').match(content_url)[0]
-        html = requests.get(content_url).text
-        # html = urlopen(content_url).read()
+        proxies = {
+            'http': self.getConfProperty('HTTP.proxy', self.getConfProperty('HTTPS.proxy',None)),
+            'https':  self.getConfProperty('HTTPS.proxy', self.getConfProperty('HTTP.proxy',None)),
+        }
+        if proxies['http'] is not None:
+            html = requests.get(content_url, proxies=proxies, verify=False).text
+        else: 
+            html = requests.get(content_url).text
         soup = BeautifulSoup(html, features='lxml')
         content = str(soup.select_one(content_node))
         md5 = hashlib.md5(content.encode()).hexdigest()

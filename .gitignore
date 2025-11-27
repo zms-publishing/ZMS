@@ -1,6 +1,7 @@
 *.egg-info/
 *.pyc
 Products/zms/plugins/www/zms-all.min.js
+Products/zms/plugins/www/zms-all.min.js.hash
 Products/zms/plugins/www/i18n/*.js
 Products/zms/overrides.zcml
 .vscode/
@@ -12,7 +13,15 @@ Products/zms/overrides.zcml
 
 dist/
 build/
-docker/**/var/*
+docker/**/var/*.*
+docker/**/var/log/*.*
+!docker/**/var/log/Readme.md
 docker/**/Extensions/*
+!docker/**/Extensions/Readme.md
+docker/**/postgres/data/*
+!docker/**/postgres/data/
+docker/**/opensearch/data/*
+!docker/**/opensearch/data/
+docker/**/elastic/data/*
+!docker/**/elastic/data/
 /revisions.txt
-

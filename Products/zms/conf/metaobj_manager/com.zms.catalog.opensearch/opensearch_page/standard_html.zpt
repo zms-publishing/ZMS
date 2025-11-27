@@ -133,7 +133,7 @@
 	<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ZMS/zmi_body_content_search.js"></script>
 	<link type="text/css" rel="stylesheet"	tal:attributes="href python:'%s/%s.style.css'%(zmscontext.getMetaobjManager().absolute_url(),zmscontext.meta_id)"/>
 	<script type="text/javascript" charset="UTF-8" tal:attributes="src python:'%s/%s.handlebars.js'%(zmscontext.getMetaobjManager().absolute_url(),zmscontext.meta_id)"></script>
-	<script type="text/javascript" charset="UTF-8" tal:attributes="src python:'%s/%s.script.js'%(zmscontext.getMetaobjManager().absolute_url(),zmscontext.meta_id)"></script>
+	<script type="text/javascript" charset="UTF-8" tal:attributes="src python:'%s/%s.script.js?v=1.8.15'%(zmscontext.getMetaobjManager().absolute_url(),zmscontext.meta_id)"></script>
 
 </tal:block>
 

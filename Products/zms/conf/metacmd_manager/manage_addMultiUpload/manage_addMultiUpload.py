@@ -110,7 +110,7 @@ def manage_addMultiUpload(self):
 							if exif_copyright.strip() != '':
 								copy = not exif_copyright.startswith('©') and '© ' + exif_copyright or exif_copyright
 
-					img_attrs_spec += '\n'.join([ 'data-EXIF-%s =\042%s\042 ' %(k, exif_data[k]) for k in exif_data.keys() ])
+					img_attrs_spec += '\n'.join([ 'data-EXIF-%s=\042%s\042 ' %(k, exif_data[k]) for k in exif_data.keys() ])
 
 				except:
 					pass

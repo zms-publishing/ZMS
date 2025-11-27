@@ -7,15 +7,9 @@ class elasticsearch_page:
 	access = {"delete_custom":""
 		,"delete_deny":[""
 			,""
-			,""
-			,""
-			,""
 			,""]
 		,"insert_custom":"{$}"
 		,"insert_deny":[""
-			,""
-			,""
-			,""
 			,""
 			,""]}
 
@@ -32,7 +26,7 @@ class elasticsearch_page:
 	package = "com.zms.catalog.elasticsearch"
 
 	# Revision
-	revision = "1.8.1"
+	revision = "1.10.0"
 
 	# Type
 	type = "ZMSDocument"

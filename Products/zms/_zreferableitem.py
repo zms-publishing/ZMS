@@ -126,14 +126,19 @@ class ZReferableItem(object):
   __authorPermissions__ = (
     'manage_RefForm', 'manage_browse_iframe',
   )
+  __administratorPermissions__ = (
+    'manage_change_refs',
+  )
   __ac_permissions__=(
     ('ZMS Author', __authorPermissions__),
+    ('ZMS Administrator', __administratorPermissions__),
   )
 
   # Management Interface.
   # ---------------------
   manage_RefForm = PageTemplateFile('zpt/ZMSLinkElement/manage_refform', globals())
-  manage_browse_iframe = PageTemplateFile('zpt/ZMSLinkElement/manage_browse_iframe', globals()) 
+  manage_browse_iframe = PageTemplateFile('zpt/ZMSLinkElement/manage_browse_iframe', globals())
+  manage_change_refs = PageTemplateFile('zpt/ZMSLinkElement/manage_changeRefsToObj', globals())
 
 
   # ----------------------------------------------------------------------------
@@ -274,6 +279,99 @@ class ZReferableItem(object):
                   d[ref] = 1
     return list(set(d))
 
+
+  # ----------------------------------------------------------------------------
+  # ZReferableItem.changeRefsToObj:
+  #
+  # Change all internal references to a new target object.
+  # @param ref_to: The target object to which all references should point
+  # @return: Dictionary with counts of changed references
+  # ----------------------------------------------------------------------------
+  def changeRefsToObj(self, ref_to):
+    standard.writeLog(self, '[changeRefToObjs]')
+    result = {'changed': [], 'unchanged': [], 'ref_to': None}
+    request = self.REQUEST
+    req_lang = request.get('lang', self.getPrimaryLanguage())
+    # Get the link of the current object
+    this_ref = str(self.getRefObjPath(self))
+    # Get selected references to change
+    # refByObjs = self.getRefByObjs() # from object
+    if 'refByObjs' in request.form: # from form
+      refByObjs = request.form.get('refByObjs', [])
+      if isinstance(refByObjs, str):
+        refByObjs = [refByObjs]
+    if not refByObjs or not ref_to:
+      # Break if there are no references or the target object is not specified
+      standard.writeLog(self, '[changeRefsToObj] No references or target object specified.')
+      return None
+    else:
+      result['ref_to'] = '%s/manage_RefForm'%(self.getLinkObj(ref_to).absolute_url())
+
+    for ref in refByObjs:
+      ref_obj = self.getLinkObj(ref,request)
+      if ref_obj is not None:
+        ref_ob_changed = False
+        # Find the attribute that is linking to the current object
+        for key in [k for k in list(ref_obj.getObjAttrs()) if ref_obj.getObjAttrs()[k]['datatype'] in ['richtext', 'string', 'text', 'url']]:
+          objAttr = ref_obj.getObjAttr(key)
+          datatype = objAttr['datatype']
+          langs = list(objAttr.get('multilang') and self.getLangs().keys() or [self.getPrimaryLanguage()])
+          for lang in langs:
+            request.set('lang', lang)
+            if datatype in ['richtext', 'string', 'text']:
+              # Reset obsolete ZMSLinkElement.ref_lang attribute if exists
+              if ref_obj.meta_id == 'ZMSLinkElement' and key=='ref_lang':
+                ref_obj.attr('ref_lang', None)
+                continue
+              # Get the value of the attribute
+              v = ref_obj.attr(key)
+              if v is not None and isinstance(v, str):
+                if str(this_ref[:-1]) in str(v):
+                  try:
+                    ref_obj.setObjStateModified(request)
+                    ref_obj.attr(key,str(v).replace(this_ref, ref_to))
+                    # Register the new reference at the target object
+                    ref_to_ob = self.getLinkObj(ref_to)
+                    if ref_to_ob is not None:
+                      ref_to_ob.registerRefObj(ref_obj)
+                    if not ref_ob_changed:
+                      result['changed'].append(ref)
+                      # Register the language change
+                      ref_ob_changed = True
+                  except Exception as e:
+                    # Handle the exception if the replacement fails
+                    standard.writeLog(self, '[changeRefsToObj] Error: %s'%str(e))
+                    result['unchanged'].append(ref)
+            elif datatype in ['url']:
+              v = ref_obj.attr(key)
+              if v is not None:
+                if str(this_ref[:-1]) in str(v):
+                  try:
+                    ref_obj.setObjStateModified(request)
+                    ref_obj.attr(key, ref_to)
+                    # Register the new reference at the target object
+                    ref_to_ob = self.getLinkObj(ref_to)
+                    if ref_to_ob is not None:
+                      ref_to_ob.registerRefObj(ref_obj)
+                    if not ref_ob_changed:
+                      result['changed'].append(ref)
+                      # Register the language change
+                      ref_ob_changed = True
+                  except Exception as e:
+                    # Handle the exception if the replacement fails
+                    standard.writeLog(self, '[changeRefsToObj] Error: %s'%str(e))
+                    result['unchanged'].append(ref)
+          # Reset the request-language
+          request.set('lang', req_lang)
+        # If any url in the object has changed, trigger onChangeObj
+        if ref_ob_changed:
+          ref_obj.onChangeObj(request,forced=True)
+          # If Workflow is active and reference object is part of a page-container:
+          if not self.getAutocommit() and not ref_obj.isPage():
+            ref_obj_page = [ ob for ob in ref_obj.breadcrumbs_obj_path() if ob.isPage() ][-1]
+            ref_obj_page.setObjStateModified(request)
+            ref_obj_page.onChangeObj(request,forced=True)
+    return result
 
   # ----------------------------------------------------------------------------
   #  ZReferableItem.prepareRefreshRefToObjs:
@@ -463,7 +561,7 @@ class ZReferableItem(object):
       url = index_html + ref_anchor
     elif isMailLink (url):
       prefix = 'mailto:'
-      url = 'javascript:window.location.href=\''+prefix+'\'+atob(\''+base64.b64encode(url[len(prefix):].encode()).decode()+'\')'
+      url = 'javascript:void(location.href=\'%s\'+String.fromCharCode(%s))'%(prefix,','.join([str(ord(x)) for x in url[len(prefix):]]))
     return url
 
   # ----------------------------------------------------------------------------

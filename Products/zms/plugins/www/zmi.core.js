@@ -82,13 +82,14 @@ $ZMI.registerReady(function(){
 			}
 		}
 	}
-	zmiParams['base_url'] = base_url;
 
 	// Content-Editable ////////////////////////////////////////////////////////
-	if ( self.location.href.indexOf('/manage')>0 || self.location.href.indexOf('preview=preview')>0 ) {
-		
+	let is_manage_ui = self.location.href.indexOf('/manage') > 0;
+	let is_preview_ui = self.location.href.indexOf('preview=preview') > 0;
+	if ( is_manage_ui || is_preview_ui ) {
+		// HIGHLIGHT CSS
 		if (!document.getElementById('zmi_highlight_css')) {
-			var hilight_css = `
+			let hilight_css = `
 				<style type="text/css" id="zmi_highlight_css">
 					body:not(.zmi) .contentEditable.zmi-highlight:hover {
 						cursor:pointer;
@@ -112,7 +113,7 @@ $ZMI.registerReady(function(){
 						position:absolute;
 						padding-right:1px;
 						z-index:10;
-						}
+					}
 				</style>`;
 			$('head').append(hilight_css);
 		}
@@ -121,7 +122,6 @@ $ZMI.registerReady(function(){
 		var page = $('.zms-page');
 		var page_href = page.attr("data-absolute-url");
 		var page_container_constructed = false;
-		//debugger;
 		if ( page.closest('article').length > 0 ) {
 			page.closest('article').wrapInner('<div class="contentEditable zms-page" data-absolute-url="'+ page_href +'"></div>');
 			page_container_constructed = true;
@@ -131,12 +131,18 @@ $ZMI.registerReady(function(){
 			page_container_constructed = true;
 			// console.log('Page = .article-Class');
 		} else {
-			page.siblings().first().wrapInner('<div class="contentEditable zms-page" data-absolute-url="'+ page_href +'"></div>');
-			page_container_constructed = true;
-			console.log('Page = 1st Sibling of Content Container; maybe use article-Element or .article-Class to mark the Content Container');
+			const firstSibling = page.siblings().first();
+			if ( firstSibling.length == 1 && !firstSibling.hasClass('portalClientId')) {
+				firstSibling.wrapInner('<div class="contentEditable zms-page" data-absolute-url="'+ page_href +'"></div>');
+				page_container_constructed = true;
+			}
 		}
-		if ( page_container_constructed == false ) {
-			console.log('Page-Container Not Found: Please Add article-Element or .article-Class to the HTML-Element that is Nesting the Page Content')
+		if (is_preview_ui) {
+			if ( page_container_constructed == false ) {
+				console.log('Page-Container Not Found: Please Add article-Element or .article-Class to the HTML-Element that is Nesting the Page Content')
+			} else {
+				console.log('Page = 1st Sibling of Content Container; maybe use article-Element or .article-Class to mark the Content Container');
+			}
 		}
 		$('.contentEditable')
 			.mouseover( function(evt) {
@@ -245,12 +251,12 @@ ZMI.prototype.setCursorAuto = function() {
  */
 function getZMILang() {
 	if (typeof zmiParams['lang'] == 'undefined') {
-	if (typeof zmiLangStr != "undefined") {
-	  zmiParams['lang'] = zmiLangStr['lang'];
-	}
-	if (typeof zmiParams['lang'] == 'undefined') {
-	  zmiParams['lang'] = 'eng';
-	}
+		if (typeof zmiLangStr != "undefined") {
+			zmiParams['lang'] = zmiLangStr['lang'];
+		}
+		if (typeof zmiParams['lang'] == 'undefined') {
+			zmiParams['lang'] = 'eng';
+		}
 	}
 	return zmiParams['lang'];
 }
@@ -293,6 +299,23 @@ ZMI.prototype.getLangStr = function(key, lang) {
 		langStr = v[key][lang];
 	};
 	return langStr;
+}
+
+/**
+ * Returns lang-parameter value of current url-input-group, e.g. "lang=eng".
+ * If no lang-parameter is found, returns null.
+ */
+function getRefLang(elem) {
+	if (typeof elem != "undefined" && $(elem).closest('.input-group').length > 0) {
+		// find closest input-group and get the first child value
+		// let attr_ref = $(elem).val();
+		let attr_ref = $(elem).closest('.input-group').children().first().val();
+		let match = attr_ref.match(/lang=([a-zA-Z]+)/);
+		let lang = match ? match[1] : null;
+		return lang;
+	} else {
+		return null;
+	}
 }
 
 /**

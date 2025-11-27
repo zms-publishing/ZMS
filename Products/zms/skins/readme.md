@@ -1,9 +1,9 @@
-# Why are ZMS Themes located in a folder named ./skins by default?
+# Skins & Themes
 
-In Zope, web design themes traditionally are referred to as “skins” because they essentially provide a layer of visual styling and presentation over the core functionality of the web application. This concept is similar to how a “skin” in other contexts (like media players or video games) changes the appearance without altering the underlying functionality.
+In Zope, web design *themes* are traditionally called *skins* because they essentially provide a layer of visual styling and presentation over the core functionality of the web application. This concept is similar to how a “skin” in other contexts (like media players or video games) changes the appearance without altering the underlying functionality.
 
 The terminology may be a bit confusing, especially for those who are new to Zope or web development in general.
-The reason why ZMS themes are located in a folder named `./skins` is because ZMS is built on top of Zope, and Zope uses the term “skin” to refer to themes. This is a historical artifact from the early days of Zope, and it has stuck around even as the web development landscape has evolved.
+The reason why ZMS offers a folder named `./skins` is because ZMS is built on top of Zope, and Zope uses the term “skin” to refer to themes. This is a historical artifact from the early days of Zope, and it has stuck around even as the web development landscape has evolved.
 The Zope Product *CMFCore* provides the infrastructure for managing file system resources. File directories are registered by *CMFCore.registerDirectory* and thus Zope can get access to file system directories containing skin resources (like CSS files, images, and templates) for customizing the appearance of a website.
 
 ## Directory Registration: Using File-System Folders in Zope/ZMS
@@ -37,7 +37,7 @@ Example: *Products.zms/overrides.zcml*
 		xmlns:cmf="http://namespaces.zope.org/cmf"
 		xmlns:zcml="http://namespaces.zope.org/zcml"
 		zcml:condition="installed Products.CMFCore">
-		<cmf:registerDirectory name="skin_zms5_minimal" recursive="True" />
+		<cmf:registerDirectory name="theme_zms_minimal" recursive="True" />
 		<cmf:registerDirectory name="themes" directory="/home/zope/src/zms_themes" recursive="True" />
 	</configure>
 </configure>
@@ -45,7 +45,7 @@ Example: *Products.zms/overrides.zcml*
 
 In this example, the new directory `/home/zope/src/zms_themes` is registered as a additional skin directory for ZMS. This allows you to organize your themes in a different location than the default `./skins` folder. The given *name*-attribute of the directory registration is essential, because it will be shown in the Zope-GUI as the root name of the declared  directory **[1]**. You can add as many directories as you like, and you can also use the `recursive` attribute to include subdirectories.
 
-## Reusing ZMI-frameworks (bootstrap, jquery etc.)
+## Re-using ZMI-frameworks (bootstrap, jquery etc.)
 
 The Zope-package `zmi` contains a set of JS/CSS resourcs for rendering the graphical user interface (GUI) both of Zope and ZMS. By default Zope requires a login to the Web-GUI (Zope Management Interface, ZMI); after login the user has got the permission "ViewManagementScreen" and thus got access to these resources. The access rights are configured in the package-configuration file:
 https://github.com/zopefoundation/Zope/blob/master/src/zmi/styles/configure.zcml#L7-L10
@@ -71,9 +71,9 @@ IMPORTANT HINT: The value of the `directory`-attribute must be the actual folder
 
 ---
 
-**[1]** *ZMS monkey patch for CMFCore.registerDirectory()*: 
-CMFCore assumes that the ./skins directory always is located in the root of the Python module's directory (e.g. for ZMS it might be `/home/zope/venv/lib/python3.12/site-packages/Products/zms/skins`). For showing the path-name in the Zope-GUI the method *CMFCore.registerDirectory()* cuts off the first part of the path before the keyword 'skins'. That cutoff length is constantly referring to the *module's path* - and not the (optionally) declared path of the directory itself. So, if you do not want to place all your theme-data into the ZMS default ./skins-folder but into a different directory structure, that code requires a path length that is identical to the length of the ZMS-skins folder.
-To avoid this inconvenience, ZMS has introduced a monkey patch that overrides the method *CMFCore.registerDirectory()* for using the *name*-attribute for path slicing instead of constantly using the keyword *skins*. Now the path-prefix *skins* is only shown in Zope-GUI by default if a directory name is not given. If a directory name is given the *name*-attribute will be used as keyword for slicing the path. \
+**[1]** *ZMS monkey patch for CMFCore.registerDirectory()*: \
+CMFCore assumes that the `./skins` directory always is located in the root of the Python module's directory (e.g. for ZMS it might be `/home/zope/venv/lib/python3.12/site-packages/Products/zms/skins`). For showing the path-name in the Zope-GUI the method *CMFCore.registerDirectory()* cuts off the first part of the path before the keyword 'skins'. That cutoff length is constantly referring to the *module's path* - and not the (optionally) declared path of the directory itself. So, if you do not want to place all your theme-data into the ZMS default ./skins-folder but into a different directory structure, that code requires a path length that is identical to the length of the ZMS-skins folder.
+To avoid this inconvenience, ZMS has introduced a monkey patch that overrides the method *CMFCore.registerDirectory()* for using the *name*-attribute for path slicing instead of constantly using the keyword *skins*. Now the path-prefix *skins* is only shown in Zope-GUI by default if a directory name is not given. If a directory name is given the *name*-attribute will be used as keyword for slicing the path.
 
 [https://github.com/zms-publishing/ZMS/blob/main/Products/zms/\_\_init\_\_.py](https://github.com/zms-publishing/ZMS/blob/main/Products/zms/__init__.py#L51-L92)
 

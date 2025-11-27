@@ -23,7 +23,7 @@
 		<script type="module">
 		//<!--
 			import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-			$(document).on('ready turbolinks:load', async function() {
+			$(document).on('htmx:afterSettle', async function() {
 				$('body').attr('data-turbolinks','false');
 				let $textarea = $('textarea[id^="diagram_code"]');
 				let $preview = $('#diagram_code_preview')
@@ -34,8 +34,9 @@
 				$textarea.dblclick(function() {
 					show_ace_editor($(this),true);
 				});
-                mermaid.initialize({ startOnLoad: false });
-                await mermaid.run();
+				mermaid.initialize({ startOnLoad: false });
+				// mermaid.contentLoaded();
+ 				await mermaid.run();
 				$textarea.on('keydown change', async function(){
 					let dgrm_code = $textarea.prop('value').trim();
 					let dgrm_html = `<pre class="mermaid" id="diagram_code_rendered">${dgrm_code}</pre>`;

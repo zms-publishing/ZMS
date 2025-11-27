@@ -34,7 +34,7 @@ class manage_collect_zope_artifacts:
 	package = ""
 
 	# Revision
-	revision = "5.0.3"
+	revision = "5.0.4"
 
 	# Roles
 	roles = ["ZMSAdministrator"]

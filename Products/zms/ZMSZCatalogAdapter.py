@@ -44,6 +44,8 @@ def get_default_data(node):
   d['id'] = node.id
   d['home_id'] = node.getHome().id
   d['meta_id'] = node.meta_id
+  d['loc'] = node.absolute_url_path()
+  d['path'] = '/'.join(node.getPhysicalPath())
   # Todo: Remove preview-parameter.
   d['index_html'] = node.getHref2IndexHtmlInContext(node.getRootElement(), REQUEST=request)
   d['lang'] = request.get('lang',node.getPrimaryLanguage())
@@ -74,9 +76,9 @@ def get_file(node, d, fileparsing=True):
           text = content_extraction.extract_content(node, data, content_type)
           d['standard_html'] = text
         else:
-          standard.writeInfo( node, "WARN - get_file: file.data is empty")
+          standard.writeLog( node, "WARN - get_file: file.data is empty")
       else:
-        standard.writeInfo( node, "WARN - get_file: file not found")
+        standard.writeLog( node, "WARN - get_file: file not found")
     except:
       standard.writeError( node, "can't extract_content")
 
@@ -137,7 +139,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
 
     def ensure_zcatalog_connector_is_initialized(self):
       root = self.getRootElement()
-      if 'zcatalog_connector' not in root.getMetaobjIds():
+      if 'zcatalog_connector' not in root.getMetaobjIds() and self.REQUEST.get('zcatalog_init', 1) == 1:
         _confmanager.initConf(root, 'conf:com.zms.catalog.zcatalog')
 
     ############################################################################
@@ -190,9 +192,19 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
             # Reindex filtered container node's content by each connector.
             for connector in connectors:
               for filtered_container_node in filtered_container_nodes:
-                self.reindex(connector, filtered_container_node, recursive=False, fileparsing=fileparsing)
-          else:
-            # Remove from catalog if editing leads to filter-not-matching.
+                # Avoid reindexing the same node multiple times.
+                if not hasattr(self.REQUEST, 'reindex_node_log'):
+                  self.REQUEST.set('reindex_node_log', [])
+                if filtered_container_node.id not in self.REQUEST.get('reindex_node_log'):
+                  self.reindex(connector, filtered_container_node, recursive=False, fileparsing=fileparsing)
+                  # Add reindexed node to log variable.
+                  reindex_node_log = self.REQUEST.get('reindex_node_log')
+                  reindex_node_log.append(filtered_container_node.id)
+                  # Update request variable.
+                  self.REQUEST.set('reindex_node_log', reindex_node_log)
+          elif container_page.getId() not in self.REQUEST.get('reindex_node_log', []):
+            # Remove from catalog if editing leads to filter-not-matching 
+            # and node was not part of current reindexing.
             for connector in connectors:
               connector.manage_objects_remove([container_page])
         return True
@@ -205,31 +217,58 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     # --------------------------------------------------------------------------
     def unindex_nodes(self, nodes=[], forced=False):
       # Is triggered by zmscontainerobject.moveObjsToTrashcan().
-      # Todo: ensure param 'nodes' does contain all ids to be indexed
-      # to avoid sequentially unindexing leading to redundant reindexing 
-      # on the same page-node.
+      if not nodes:
+        standard.writeLog( self, "No nodes given to unindex")
+        return False
       try:
         if self.getConfProperty('ZMS.CatalogAwareness.active', 1) or forced:
-          # [1] Reindex page-container nodes of deleted page-elements.
+          # ------------------------------------------------------
+          # [1] PAGELEMENTS: Reindex PAGE-container nodes of deleted page-element.
+          # ------------------------------------------------------
           pageelement_nodes = [node for node in nodes if not node.isPage()]
-          page_nodes = []
+          pageelement_pages = [] # page that contain the pageelements.
           for pageelement_node in pageelement_nodes:
               path_nodes = pageelement_node.getParentNode().breadcrumbs_obj_path()
               path_nodes.reverse()
               path_nodes = [e for e in path_nodes if e.isPage()]
-              if path_nodes[0] not in page_nodes:
-                page_nodes.append(path_nodes[0])
-          # Using set() for removing doublicates
-          for page_node in list(set(page_nodes)):
-            self.reindex_node(node=page_node)
-          # [2] Unindex deleted nodes (from trashcan) if filter-match.
-          delnodes = [delnode for delnode in nodes[0].getParentNode().getTrashcan().objectValues() if ( ( delnode in nodes) and self.matches_ids_filter(delnode) )]
+              if path_nodes[0] not in pageelement_pages:
+                pageelement_pages.append(path_nodes[0])
+          for pageelement_page in list(set(pageelement_pages)):  # Remove duplicates.
+            # Reindex page that formerly contained the deleted pageelement.
+            self.reindex_node(node=pageelement_page)
+          # ------------------------------------------------------
+          # [2] PAGES: Remove page-nodes that are moved to trashcan.
+          # ------------------------------------------------------
+          trashcan = nodes[0].getParentNode().getTrashcan()
+          if not trashcan:
+            standard.writeLog( self, "No trashcan found for %s"%(nodes[0].getParentNode().id) )
+            return False
+          trashcan_items = trashcan.objectValues()
+          if not trashcan_items:
+            standard.writeLog( self, "No trashcan items found after deleting content from  %s"%(nodes[0].getParentNode().id) )
+            return False
+          # Get page-nodes that are moved to trashcan.
+          delnodes = [i for i in trashcan_items if i in nodes and i.isPage()]
+          if not delnodes:
+            standard.writeLog( self, "No page-nodes found in trashcan after deleting content from %s"%(nodes[0].getParentNode().id) )
+            return False
+          # Eventually add all sub-pages if deleted page-node is a tree-root.
+          for delnode in delnodes:
+            # Get all sub-pages of deleted page-node.
+            subpages = delnode.getTreeNodes(self.REQUEST,self.PAGES)
+            if subpages:
+              delnodes.extend(subpages)
+          # Remove deleted nodes from catalog.
+          delnodes = list(set(delnodes))  # Remove duplicates.
           connectors = self.getCatalogAdapter().get_connectors()
-          for connector in connectors:
-            connector.manage_objects_remove(delnodes)
-        return True
+          if delnodes and connectors:
+            for connector in connectors:
+              # Remove deleted nodes from catalog.
+              connector.manage_objects_remove(delnodes)
+            standard.writeLog(self,"Unindexed %s pages after moving to trashcan."%(len(delnodes)) )
+            return True
       except:
-        standard.writeError( self, "can't unindex_nodes")
+        standard.writeError( self, "Cannot unindex_nodes. Check if catalog is initialized.")
         return False
 
     # --------------------------------------------------------------------------
@@ -269,7 +308,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     #  getter and setter for attribute-ids, that can be cataloged
     # --------------------------------------------------------------------------
     def _getAttrIds(self):
-      return ['uid', 'id', 'meta_id', 'home_id', 'index_html'] + self.getAttrIds()
+      return ['uid', 'id', 'meta_id', 'home_id', 'loc', 'path', 'index_html'] + self.getAttrIds()
 
     def getAttrIds(self):
       return list(self.getAttrs())
@@ -351,6 +390,9 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
           else:
             # Add plain text to data.
             d[attr_id] = content_extraction.extract_text_from_html(node, value)
+      # Prevent in-place redirecting by resetting status code and location header.
+      request.RESPONSE.setStatus(200) 
+      request.RESPONSE.setHeader('Location', '')
 
     # --------------------------------------------------------------------------
     #  Get catalog objects data for given node.

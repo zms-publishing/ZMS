@@ -6,17 +6,15 @@ function zmiSelectObject(sender) {
 	let $sender = $(sender);
 	$sender.parents("li").addClass("active");
 	let origin = window.location.origin;
+	let title = $sender.attr("data-page-titlealt");
 	let href = $sender.attr("href");
 	let lang = getZMILang();
-	// same origin?
+	// Same origin?
 	if (href.startsWith(origin) || href.startsWith('/')) {
-		// change location in manage_main-frame with htmx: https://htmx.org/api/#ajax
-		window.parent.manage_main.htmx.ajax("GET", href + "/manage_main?lang=" + lang, 'body');
-		window.parent.manage_main.htmx.onLoad(function() {
-			window.parent.history.pushState(null, null,  href + "/manage_main?lang=" + lang);
-		})
+		// Change location in manage_main-frame with htmx: https://htmx.org/api/#ajax
+		window.parent.manage_main.htmx.ajax("GET", href + "/manage_main?lang=" + lang, 'body')
 	} else {
-		// open new home in new tab
+		// Open new home in new tab
 		window.open(href + "/manage?lang=" + lang + "&dtpref_sitemap=1", "_blank").focus();
 	}
 	return false;
@@ -139,7 +137,7 @@ function zmiResize(init) {
 	var key = "ZMS.manage_menu.width";
 	$(window).resize(function() {
 			$ZMILocalStorageAPI.set(key,window.innerWidth);
-		});
+	});
 	var frmwidth = $ZMILocalStorageAPI.get(key,224);
 	var frmset = parent.document.getElementsByTagName('frameset');
 	var colval = frmwidth + ",*";

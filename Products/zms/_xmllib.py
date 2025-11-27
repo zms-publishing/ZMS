@@ -466,12 +466,16 @@ def toCdata(self, s, xhtml=False):
 
   # Return Text in CDATA.
   elif s is not None:
-    if isinstance(s, bytes):
-      s = s.decode('utf-8')
-    # Hack for invalid characters
-    s = s.replace(chr(30), '')
-    # Hack for nested CDATA
-    s = re.compile(r'\<\!\[CDATA\[(.*?)\]\]\>').sub(r'<!{CDATA{\1}}>', s)
+    try:
+      if isinstance(s, bytes):
+        s = s.decode('utf-8')
+      # Hack for invalid characters
+      s = s.replace(chr(30), '')
+      # Hack for nested CDATA
+      s = re.compile(r'\<\!\[CDATA\[(.*?)\]\]\>').sub(r'<!{CDATA{\1}}>', s)
+    except:
+      standard.writeBlock(self, "[toCdata]: WARNING - Cannot create file/image object from binary data")
+      pass
     # Wrap with CDATA
     rtn = '<![CDATA[%s]]>'%s
 
@@ -562,7 +566,7 @@ def toXml(self, value, indentlevel=0, xhtml=False, encoding='utf-8'):
     # Tuples (DateTime)
     elif isinstance(value, tuple) or isinstance(value, time.struct_time) or isinstance(value, DateTime):
       try:
-        s_value = self.getLangFmtDate(value, 'eng', 'DATETIME_FMT')
+        s_value = self.getLangFmtDate(value, fmt_str='ISO8601')
         if len(s_value) > 0:
           xml.append('\n' + indentlevel * INDENTSTR)
           xml.append(toCdata(self, s_value, -1))

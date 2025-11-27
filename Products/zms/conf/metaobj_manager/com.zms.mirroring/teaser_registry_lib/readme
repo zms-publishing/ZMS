@@ -11,10 +11,12 @@ complex needs.
 
 First add an empty file into file system:
 <pre>$INSTANCE_HOME/var/sqlite/teasers.sqlite</pre>
-First insert a Zope-Folder 'teaser_registry' into the ZMS root folder. Here add a
-ZSQLiteDA object named <code>teasers</code> connecting to the filesystem file.
-After importing the <i>teaser_registry_lib</i> into ZMS, inialize the databse with the ZSQL object
+First insert a Zope-Folder 'teaser_registry' into the ZMS root folder. Here add an Zope-
+SQLite-Database-Adapter (DA\*) object named <code>teasers</code> connecting to the filesystem file.
+After importing the <i>teaser_registry_lib</i> into ZMS, inialize the database with the ZSQL object
 teaser_registry/sql_create by clicking on the object's view' tab in Zope-ZMI.
+
+\* Hint: [SQLAlchemyDA](https://github.com/zopefoundation/Products.SQLAlchemyDA) is a general purpose DA und works with all kinds of SQL databases. To apply this DA the Python environment needs having installed the two libraries: _SQLAlchemy_ and _Products.SQLAlchemyDA_.
 
 ## Try out
 

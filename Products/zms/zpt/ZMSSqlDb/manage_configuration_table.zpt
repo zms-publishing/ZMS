@@ -112,9 +112,7 @@
 						</tal:block>
 					</select>
 					<table class="table table-sm text-nowrap">
-					<tal:block tal:replace="nothing">
-					##### Blob #########################################################
-					</tal:block>
+					<!--! ##### Blob ######################################################### -->
 					<tr tal:attributes="id python:'tr_blob_%s'%column['id']; class python:['d-none',''][int('blob' in column)]">
 						<td>Type</td>
 						<td>
@@ -133,9 +131,7 @@
 						<td>Remote [URL]</td>
 						<td><input class="form-control form-control-sm" type="text" tal:attributes="name python:'attr_blob_remote_%s'%column['id']; value python:column.get('blob',{}).get('remote','')"/></td>
 					</tr>
-					<tal:block tal:replace="nothing">
-					##### Details ######################################################
-					</tal:block>
+					<!--! ##### Details ###################################################### -->
 					<tr tal:attributes="id python:'tr_details_%s'%column['id']; class python:['d-none',''][int('details' in column)]">
 						<td>Tablename</td>
 						<td>
@@ -151,9 +147,7 @@
 						<td>Foreign Key</td>
 						<td><input class="form-control form-control-sm" type="text" tal:attributes="name python:'attr_details_fk_%s'%column['id']; value python:column.get('details',{}).get('fk','')"/></td>
 					</tr>
-					<tal:block tal:replace="nothing">
-					##### Fk ###########################################################
-					</tal:block>
+					<!--! ##### Fk ########################################################### -->
 					<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['d-none',''][int('fk' in column)]">
 						<td>A.Tablename <i class="fas fa-th"></i></td>
 						<td>
@@ -189,9 +183,7 @@
 						<td>C.Options</td>
 						<td><div class="zmi-single-line-edit"><textarea class="form-control form-control-sm" tal:attributes="name python:'attr_fk_options_%s'%column['id']" tal:content="python:'\n'.join([x[0] for x in column.get('fk',{}).get('options',[])])"></textarea></div></td>
 					</tr>
-					<tal:block tal:replace="nothing">
-					##### Multiselect ###########################################################
-					</tal:block>
+					<!--! ##### Multiselect ########################################################### -->
 					<tr tal:attributes="id python:'tr_multiselect_%s'%column['id']; class python:['d-none',''][int('multiselect' in column)]">
 						<td>A.Tablename <i class="fas fa-th"></i></td>
 						<td>
@@ -215,9 +207,7 @@
 						<td>B.MySQL-Set</td>
 						<td><input type="checkbox" tal:attributes="name python:'attr_multiselect_mysqlset_%s:int'%column['id']; checked python:['','checked'][int(column.get('multiselect',{}).get('mysqlset') in [1,True])]" value="1"/></td>
 					</tr>
-					<tal:block tal:replace="nothing">
-					##### Multimultiselect ###########################################################
-					</tal:block>
+					<!--! ##### Multimultiselect ########################################################### -->
 					<tr tal:attributes="id python:'tr_multimultiselect_%s'%column['id']; class python:['d-none',''][int('multimultiselect' in column)]">
 						<td>Tablename <i class="fas fa-th"></i></td>
 						<td>
@@ -276,9 +266,7 @@
 							</td>
 						</tr>
 					</tal:block>
-					<tal:block tal:replace="nothing">
-					##### Auto ###########################################################
-					</tal:block>
+					<!--! ##### Auto ########################################################### -->
 					<tr tal:attributes="id python:'tr_pk_%s'%column['id']; class python:['d-none',''][int('pk' in column or column.get('datatype') in ['date','datetime'])]">
 						<td>Auto</td>
 						<td>

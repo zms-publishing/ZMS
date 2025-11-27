@@ -497,7 +497,11 @@ class ZMSObject(ZMSItem.ZMSItem,
       size = 0
       keys = self.getObjAttrs().keys()
       if self.getType() == 'ZMSRecordSet':
-        keys = [self.getMetaobjAttrIds(self.meta_id,types=['list'])[0]]
+        try:
+          keys = [self.getMetaobjAttrIds(self.meta_id,types=['list'])[0]]
+        except:
+          standard.writeError(self, "[ZMSRecordSet]: No list attribute found!")
+          return 0
       for key in keys:
         objAttr = self.getObjAttr(key)
         value = self.getObjAttrValue( objAttr, REQUEST)
@@ -667,7 +671,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     def changeProperties(self, lang):
       request = self.REQUEST
-      request['lang'] = lang # ensure correct language is set
+      request['lang'] = lang or self.getPrimaryLanguage() # ensure correct language is set
 
       ##### Resources #####
       if 'resources' in self.getMetaobjAttrIds( self.meta_id):
@@ -774,6 +778,8 @@ class ZMSObject(ZMSItem.ZMSItem,
         except:
           message = standard.writeError(self, "[manage_changeProperties]")
           messagekey = 'manage_tabs_error_message'
+          if REQUEST.get('do_not_save_on_error', False):
+            self.rollbackObjChanges(self, REQUEST)
         message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
 
       # Return with message.

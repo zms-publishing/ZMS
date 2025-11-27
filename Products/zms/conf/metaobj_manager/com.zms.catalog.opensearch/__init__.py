@@ -16,7 +16,7 @@ class com_zms_catalog_opensearch:
 	package = ""
 
 	# Revision
-	revision = "1.8.2"
+	revision = "1.11.1"
 
 	# Type
 	type = "ZMSPackage"

@@ -1,14 +1,13 @@
-version: "3.7"
 services:
   zms5-alpine:
     build: .
-    image: zms5-alpine:latest
+    image: zms5:alpine
     ports:
-      - 8085:8085
       - 8086:8086
-      - 8080:8080
-      - 5678:5678
-    environment:
+      - 8085:8085
+    networks:
+      - zms_network
+    environment: 
       - PYTHONUNBUFFERED="1"
       - CONFIG_FILE="/home/zope/etc/zope.ini"
       - INSTANCE_HOME="/home/zope"
@@ -18,6 +17,18 @@ services:
     volumes:
       - ./etc/:/home/zope/etc/
       - ./Extensions/:/home/zope/Extensions/:rw
-      - ./var/:/home/zope/var/
+      - ./var/:/home/zope/var/:rw
 
-    # command: /home/zope/etc/start.sh
+    ### Override the default CMD to launch script and keep container alive
+    # command: sleep infinity
+    command: >
+      bash -c "
+        /home/zope/etc/start.sh &
+        sleep infinity
+      "
+
+# IMPORTANT: Create the Network first to make it external
+# > docker network create zms_network
+networks:
+  zms_network:
+    driver: bridge

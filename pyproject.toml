@@ -80,7 +80,6 @@ Download = "https://github.com/zms-publishing/ZMS"
 [tool.setuptools]
 zip-safe = false
 include-package-data = true
-# Declare namespace packages for proper Zope product discovery in editable mode
 namespace-packages = ["Products"]
 
 [tool.setuptools.packages.find]

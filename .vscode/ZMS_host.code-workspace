@@ -8,6 +8,10 @@
 			"name": "ZMS5 Dev Instance",
 			"path": "/home/zope/instance/zms5_dev"
 		},
+		{
+			"name": "Python-Packages",
+			"path": "/home/zope/vpy313/lib/python3.13/site-packages/"
+		},
 		// {
 		// 	"name": "Zope 5",
 		// 	"path": "/home/zope/src/zopefoundation/Zope"

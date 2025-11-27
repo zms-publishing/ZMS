@@ -80,11 +80,10 @@ Download = "https://github.com/zms-publishing/ZMS"
 [tool.setuptools]
 zip-safe = false
 include-package-data = true
-namespace-packages = ["Products"]
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["Products*"]
+include = ["Products.zms*"]
 
 [tool.setuptools.package-data]
 "Products.zms" = ["**/*"]

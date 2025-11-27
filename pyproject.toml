@@ -38,7 +38,7 @@ classifiers = [
     "Intended Audience :: Financial and Insurance Industry",
     "License :: OSI Approved :: GNU General Public License (GPL)",
 ]
-requires-python = ">=3.10"
+requires-python = ">=3.8"
 dependencies = [
     "docutils",
     "configparser",

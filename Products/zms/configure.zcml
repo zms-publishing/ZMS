@@ -1,11 +1,7 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser"
-    xmlns:five="http://namespaces.zope.org/five"
     >
-
-  <!-- Register this package as a Zope 2 Product to call initialize() -->
-  <five:registerPackage package="Products.zms" initialize="Products.zms.initialize" />
 
   <!-- @see http://concisionandconcinnity.blogspot.com/2009/02/how-to-create-zope-resource-package.html -->
   <!-- @example http://localhost:8080/++resource++zms_/jquery-1.4.2.min.js -->

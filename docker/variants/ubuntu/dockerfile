@@ -35,7 +35,7 @@ ENV LANGUAGE=en_US.UTF-8
 # Install ZMS and Zope in a Virtual Environment
 RUN python3 -m venv venv
 RUN pip install -U pip wheel setuptools
-RUN pip install -U -e git+https://github.com/zms-publishing/ZMS.git@main#egg=ZMS
+RUN pip install -U -e git+https://github.com/zms-publishing/ZMS.git@fb_pip_using_pyproject_toml#egg=ZMS
 RUN pip install -r https://raw.githubusercontent.com/zms-publishing/ZMS5/main/requirements-full.txt
 RUN pip install ZEO
 RUN pip install itsdangerous

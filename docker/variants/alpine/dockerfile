@@ -26,7 +26,6 @@ ENV SHELL=/bin/bash
 RUN python3 -m venv venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 RUN pip install -U pip wheel setuptools
-RUN pip install -r https://raw.githubusercontent.com/zopefoundation/Zope/master/requirements-full.txt
 RUN pip install -r https://raw.githubusercontent.com/zms-publishing/ZMS5/main/requirements.txt
 RUN pip install git+https://github.com/zms-publishing/ZMS.git
 RUN pip install ZEO

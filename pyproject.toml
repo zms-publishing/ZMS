@@ -1,0 +1,92 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ZMS"
+dynamic = ["version"]
+description = "ZMS: Simplified Content Modelling"
+readme = "README.rst"
+license = {text = "GPL"}
+authors = [
+    {name = "HOFFMANN+LIEBENBERG in association with SNTL Publishing, Berlin", email = "zms@sntl-publishing.com"}
+]
+maintainers = [
+    {name = "HOFFMANN+LIEBENBERG in association with SNTL Publishing, Berlin", email = "zms@sntl-publishing.com"}
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Framework :: Zope :: 5",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Operating System :: OS Independent",
+    "Environment :: Web Environment",
+    "Topic :: Internet :: WWW/HTTP :: Site Management",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    "Intended Audience :: Education",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Customer Service",
+    "Intended Audience :: End Users/Desktop",
+    "Intended Audience :: Healthcare Industry",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: Telecommunications Industry",
+    "Intended Audience :: Financial and Insurance Industry",
+    "License :: OSI Approved :: GNU General Public License (GPL)",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "docutils",
+    "configparser",
+    "requests",
+    "Zope[wsgi]",
+    "Products.GenericSetup",
+    "Products.MailHost",
+    "Products.ExternalMethod",
+    "Products.CMFCore",
+    "Products.PythonScripts",
+    "Products.SiteErrorLog",
+    "Products.StandardCacheManagers",
+    "Products.Sessions",
+    "Products.TemporaryFolder",
+    "zope.app.publication",
+    "zope.authentication",
+    "zope.untrustedpython",
+    "zope.error",
+    "ZopeUndo",
+    "Pillow",
+    "xmltodict",
+]
+
+[project.optional-dependencies]
+zeo = [
+    "ZEO",
+    "Products.mcdutils>=3.2",
+]
+dev = [
+    "debugpy",
+    "watching_testrunner",
+    "pytest",
+    "selenium",
+]
+
+[project.urls]
+Homepage = "https://www.zms-publishing.com"
+Repository = "https://github.com/zms-publishing/ZMS"
+Download = "https://github.com/zms-publishing/ZMS"
+
+[tool.setuptools]
+zip-safe = false
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["Products.zms*"]
+
+[tool.setuptools.package-data]
+"Products.zms" = ["**/*"]
+
+[tool.setuptools.dynamic]
+version = {attr = "Products.zms._version.__version__"}

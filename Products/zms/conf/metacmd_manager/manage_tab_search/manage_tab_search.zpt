@@ -6,7 +6,12 @@
 <div id="zmi-tab" class="pb-4">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
-<form class="card form-horizontal" name="searchform" method="get">
+<form class="card form-horizontal" name="searchform" method="get"
+	tal:define="
+		URL python:request.get('URL');
+		SERVER_URL python:request.get('SERVER_URL');
+		ZMS_ROOT python:request.get('ZMS_ROOT')"
+	tal:attributes="action python:'/content' not in URL and URL.replace(SERVER_URL,ZMS_ROOT) or URL">
 	<input type="hidden" name="id" value="manage_tab_search" />
 	<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
 	<input type="hidden" name="preview" tal:attributes="value python:request['preview']" />

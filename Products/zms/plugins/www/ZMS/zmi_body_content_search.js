@@ -109,30 +109,33 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
 	if (q.length==0) {
 		return;
 	}
-	var zmi = document.location.toString().indexOf('/manage') > 0;
+	let zmi = document.location.toString().indexOf('/manage') > 0;
 	$("#search_results").show();
 	$("input[name=search]").val(q).change();
 	$(".line.row:first").html('');
 	$(".line.row:gt(0)").remove();
-	var p = {};
+	let p = {};
 	p['q'] = q;
 	p['hl.fragsize'] = 200;
 	p['hl.simple.pre'] = '<span class="highlight">';
 	p['hl.simple.post'] = '</span>';
 	p['page_size'] = pageSize;
 	p['page_index'] = pageIndex;
-	var fq = [];
-	if (typeof zmiParams === 'object' && typeof zmiParams['home_id'] === 'object' && zmiParams['home_id'].length > 0) {
-		fq.push('home_id_s:'+zmiParams['home_id']);
+	let fq = '';
+	if (typeof zmiParams === 'object' && (typeof zmiParams['home_id'] === 'object' || typeof zmiParams['home_id'] === 'string' ) && zmiParams['home_id'].length > 0) {
+		let home_id = (typeof zmiParams['home_id'] === 'object') ? zmiParams['home_id'][0] : zmiParams['home_id'];
+		fq += 'home_id:' + home_id;
 	}
 	p['fq'] = fq;
 	var base_url = self.location.origin + self.location.pathname;
 	if (base_url.indexOf("/content")>0) {
 		base_url = base_url.substring(0,base_url.indexOf("/content")+"/content".length);
+	} else if (base_url.indexOf("/manage")>0) {
+		base_url = base_url.substring(0,base_url.indexOf("/manage"))+"/content";
 	}
-	var adapter = $ZMI.getConfProperty('zms.search.adapter.id','zcatalog_adapter');
-	var connector = $ZMI.getConfProperty('zms.search.connector.id','zcatalog_connector');
-	var url = base_url+'/'+adapter+'/'+connector+'/search_json';
+	let adapter = $ZMI.getConfProperty('zms.search.adapter.id','zcatalog_adapter');
+	let connector = $ZMI.getConfProperty('zms.search.connector.id','zcatalog_connector');
+	let url = base_url+'/'+adapter+'/'+connector+'/search_json';
 	$.ajax({
 		url:url,
 		data:p,
@@ -143,9 +146,9 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
 				+ '<code>' + xhr.status + ': ' + thrownError + '</code>');
 		},
 		success:function(result) {
-			var total = result['numFound'];
-			var docs = result['docs']
-			var html = "";
+			let total = result['numFound'];
+			let docs = result['docs']
+			let html = "";
 			if (total == 0) {
 				$("#search_results .small-head").html(getZMILangStr('SEARCH_YOURQUERY').replace('%s','<span id="q" class="badge badge-danger fa-1x"></span>')+' '+getZMILangStr('SEARCH_NORESULTS'));
 				$("#search_results .small-head #q").text(q);
@@ -154,16 +157,18 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
 				$("#search_results .small-head").html(getZMILangStr('SEARCH_YOURQUERY').replace('%s','<span id="q" class="badge badge-info fa-1x"></span>')+' '+getZMILangStr('SEARCH_RETURNEDRESULTS')+':');
 				$("#search_results .small-head #q").text(q);
 				docs.forEach(doc => {
-					var href = '';
+					let href = '';
+					let doc_headine_title = `${doc.title}`;
 					if (zmi) {
 						if (href=='' || href==undefined) href = doc.loc;
 						if (href=='' || href==undefined) href = doc.absolute_url;
 						if (href=='' || href==undefined) href = doc.path;
 						href += '/manage';
+						doc_headine_title = `ZMS-ID ${doc.home_id}\nPATH: ${doc.loc}`;
 					} else {
 						href = doc.index_html;
 					}
-					var snippet = doc.attr_dc_description || doc.standard_html || '';
+					let snippet = doc.attr_dc_description || doc.standard_html || '';
 					if (snippet.length > p['hl.fragsize']) {
 						snippet = snippet.substring(0,p['hl.fragsize']);
 						while (!snippet.lastIndexOf(" ")==snippet.length-1) {
@@ -173,7 +178,7 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
 					html += `
 						<div class="line row" data-uid="${doc.uid}" data-id="${doc.id}">
 							<div class="col-sm-12">
-								<h2 class="${doc.meta_id}">
+								<h2 class="${doc.meta_id}" title="${doc_headine_title}">
 									<a target="_blank" href="${href}">${doc.title}</a>
 								</h2>
 								<p>${snippet}</p>
@@ -182,8 +187,8 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
 					`;
 				});
 				// Pagination
-				var fn = function(pageIndex) {
-					var url = window.location.href;
+				let fn = function(pageIndex) {
+					let url = window.location.href;
 					return AssembleUrlParameter(url,{"pageIndex:int":pageIndex});
 				}
 				GetPagination(fn,total,pageSize,pageIndex);

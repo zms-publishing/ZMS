@@ -11,7 +11,7 @@
 		URL python:request.get('URL');
 		SERVER_URL python:request.get('SERVER_URL');
 		ZMS_ROOT python:request.get('ZMS_ROOT')"
-	tal:attributes="action python:'/content' not in URL and URL.replace(SERVER_URL,ZMS_ROOT) or URL">
+	tal:attributes="action python:('/content' not in URL) and URL.replace(SERVER_URL,ZMS_ROOT) or URL">
 	<input type="hidden" name="id" value="manage_tab_search" />
 	<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
 	<input type="hidden" name="preview" tal:attributes="value python:request['preview']" />

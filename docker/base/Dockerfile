@@ -41,12 +41,14 @@ RUN <<EOR
 EOR
 
 # Install uv
-# COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
-# ENV UV_LINK_MODE=copy
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
+ENV UV_LINK_MODE=copy
+# vastly improve startup time https://docs.astral.sh/uv/guides/integration/docker/#compiling-bytecode
+ENV UV_COMPILE_BYTECODE=1
 
 # Create venv and permanently enable it
-# ARG CREATE_VENV_COMMAND="uv venv"
-ARG CREATE_VENV_COMMAND="python3 -m venv"
+ARG CREATE_VENV_COMMAND="uv venv"
+# ARG CREATE_VENV_COMMAND="python3 -m venv"
 ENV VIRTUAL_ENV=/home/zope/venv
 RUN <<EOR
     $CREATE_VENV_COMMAND $VIRTUAL_ENV
@@ -54,30 +56,27 @@ RUN <<EOR
 EOR
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-# Enable caching of pip packages to speed up rebuild times
-# uv follows the new editable spec, even if the package (zms) does not provide a pyproject.toml
-# this creates entries like __editable__.ZMS-5.2.0.finder.__path_hook__ in `Products.__path__`
-# which Zope cannot handle yet
-# @see https://github.com/zopefoundation/Zope/issues/1239
-# uv also cannot install editable eggs from git repos, but I think we don't need that
-# ARG PIP_INSTALL="uv pip install"
-# may need to switch back to pip if the pyproject.toml requirement kicks in
-ARG PIP_INSTALL="pip install --config-settings editable_mode=compat"
-
-COPY --chown=zope:zope Products/zms/version.txt Products/zms/version.txt
-COPY --chown=zope:zope requirements*.txt setup.py setup.cfg README.rst ./
-
+# Local builds greatly accelerate, if we do not need to download all pip packages from scratch every time
 ENV PIP_CACHE_DIR=/home/zope/venv/cache
+# ENV PIP_CACHE_DIR=/home/zope/.cache/uv
+#
+# Enable caching of pip packages to speed up rebuild times
+# uv also cannot install editable eggs from git repos, but I think we don't need that
+ARG PIP_INSTALL="uv pip install --cache-dir $PIP_CACHE_DIR"
+# may need to switch back to pip if the pyproject.toml requirement kicks in
+# ARG PIP_INSTALL="pip install --config-settings editable_mode=compat --cache-dir $PIP_CACHE_DIR"
+
+# Only install dependenies now, to maximize layer caching
+COPY --chown=zope:zope requirements*.txt ./
 RUN --mount=type=cache,uid=$UID,target=$PIP_CACHE_DIR,sharing=locked <<EOR
     set -ex
 
     if echo ${PIP_INSTALL} | grep -qv "\buv\b"; then
-        $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --upgrade pip wheel setuptools
+        $PIP_INSTALL --upgrade pip wheel setuptools
     fi
-    $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --editable .[dev]
-    $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --requirement requirements-full.txt
-    $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --upgrade git+https://github.com/sntl-projects/Products.zmsPluggableAuthService.git#egg=Products.zmsPluggableAuthService[nginx-sso]
-    $PIP_INSTALL --cache-dir $PIP_CACHE_DIR ZEO
+    $PIP_INSTALL --requirement requirements-full.txt
+    $PIP_INSTALL --upgrade git+https://github.com/sntl-projects/Products.zmsPluggableAuthService.git#egg=Products.zmsPluggableAuthService[nginx-sso]
+    $PIP_INSTALL ZEO
 EOR
 
 # Create Zope Instance
@@ -98,7 +97,14 @@ COPY --chown=zope:zope $BUILD_DIR/zope.ini etc/zope.ini
 COPY --chown=zope:zope $BUILD_DIR/zope.conf etc/zope.conf
 COPY --chown=zope:zope $BUILD_DIR/zeo.conf etc/zeo.conf
 
-COPY --chown=zope:zope Products Products
+# Copy in and install zms last, to maximize layer caching
+COPY --chown=zope:zope requirements*.txt pyproject.toml setup.cfg README.rst ./
+COPY --chown=zope:zope src src
+RUN --mount=type=cache,uid=$UID,target=$PIP_CACHE_DIR,sharing=locked <<EOR
+    set -ex
+    $PIP_INSTALL --editable .[dev]
+EOR
+
 # consider if we need the test code to be in the container to run
 # in github actions or similar circumstances
 # locally it is mapped into the container via bindmounts

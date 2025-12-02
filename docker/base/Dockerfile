@@ -67,7 +67,7 @@ ARG PIP_INSTALL="uv pip install --cache-dir $PIP_CACHE_DIR"
 # ARG PIP_INSTALL="pip install --config-settings editable_mode=compat --cache-dir $PIP_CACHE_DIR"
 
 # Only install dependenies now, to maximize layer caching
-COPY --chown=zope:zope requirements*.txt ./
+COPY --chown=zope:zope pyproject.toml requirements*.txt ./
 RUN --mount=type=cache,uid=$UID,target=$PIP_CACHE_DIR,sharing=locked <<EOR
     set -ex
 
@@ -75,6 +75,7 @@ RUN --mount=type=cache,uid=$UID,target=$PIP_CACHE_DIR,sharing=locked <<EOR
         $PIP_INSTALL --upgrade pip wheel setuptools
     fi
     $PIP_INSTALL --requirement requirements-full.txt
+    $PIP_INSTALL --requirement pyproject.toml
     $PIP_INSTALL --upgrade git+https://github.com/sntl-projects/Products.zmsPluggableAuthService.git#egg=Products.zmsPluggableAuthService[nginx-sso]
     $PIP_INSTALL ZEO
 EOR

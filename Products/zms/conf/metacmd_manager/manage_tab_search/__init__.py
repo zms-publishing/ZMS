@@ -34,7 +34,7 @@ class manage_tab_search:
 	package = "com.zms.foundation.metacmd.tabs"
 
 	# Revision
-	revision = "5.0.1"
+	revision = "5.0.2"
 
 	# Roles
 	roles = ["*"]

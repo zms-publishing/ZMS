@@ -1037,7 +1037,7 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
     userpass = auth['username']+':'+auth['password']
     userpass = urllib.parse.unquote(userpass)
     userpass = userpass.encode('utf-8')
-    userpass = base64.encodestring(userpass).decode('utf-8').strip()
+    userpass = base64.encodebytes(userpass).decode('utf-8').strip()
     headers['Authorization'] = 'Basic '+userpass
   if method == 'GET' and query:
     path += '?' + query
@@ -1058,7 +1058,6 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
   elif reply_code==200 or debug:
     # get content
     data = response.read()
-    rtn = None
     if parse_qs:
       try:
         # return dictionary of value lists

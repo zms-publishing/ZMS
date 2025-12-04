@@ -32,7 +32,7 @@ WORKDIR /home/zope/
 RUN python3 -m venv venv
 RUN pip install -U pip wheel setuptools
 RUN pip install -r https://raw.githubusercontent.com/zms-publishing/ZMS5/main/requirements.txt
-RUN pip install git+https://github.com/zms-publishing/ZMS.git
+RUN pip install --use-pep517 --config-settings editable_mode=compat -e git+https://github.com/zms-publishing/ZMS.git@main#egg=ZMS
 RUN pip install RelStorage psycopg2-binary lxml opensearch-py
 
 # Create Zope Instance

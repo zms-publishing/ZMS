@@ -26,8 +26,8 @@ jobs:
  # Commit und Push zurück ins Repository
  - name: Commit changes
  run: |
- git config --global user.name "github-actions[bot]"
- git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+ git config --global user.email "zmsbot@container"
+ git config --global user.name "zmsbot"
  git add version.txt
  git commit -m "Update version.txt to $TAG_NAME"
  git push origin HEAD

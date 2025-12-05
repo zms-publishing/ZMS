@@ -1,0 +1,33 @@
+name: Update version.txt on tag creation
+
+on:
+ push:
+ tags:
+ - '*'
+
+jobs:
+ update-version-file:
+ runs-on: ubuntu-latest
+
+ steps:
+ # Check out the code
+ - name: Check out repository
+ uses: actions/checkout@v3
+
+ # Extrahiere den Tag-Namen
+ - name: Get tag name
+ run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
+ # Aktualisiere die Datei version.txt
+ - name: Update version.txt
+ run: |
+ echo "$TAG_NAME" > version.txt
+
+ # Commit und Push zurück ins Repository
+ - name: Commit changes
+ run: |
+ git config --global user.name "github-actions[bot]"
+ git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+ git add version.txt
+ git commit -m "Update version.txt to $TAG_NAME"
+ git push origin HEAD

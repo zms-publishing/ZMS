@@ -21,7 +21,7 @@ jobs:
  # Aktualisiere die Datei version.txt
  - name: Update version.txt
  run: |
- echo "$TAG_NAME" > version.txt
+ echo "$TAG_NAME" > ./Products/zms/version.txt
 
  # Commit und Push zurück ins Repository
  - name: Commit changes

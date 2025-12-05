@@ -1,4 +1,6 @@
-FROM python:3.12
+ARG BUILD_PYTHON_VERSION=3.12
+FROM python:$BUILD_PYTHON_VERSION
+ARG BUILD_PYTHON_VERSION
 
 EXPOSE 80
 
@@ -46,7 +48,10 @@ EOR
 # ARG CREATE_VENV_COMMAND="uv venv"
 ARG CREATE_VENV_COMMAND="python3 -m venv"
 ENV VIRTUAL_ENV=/home/zope/venv
-RUN $CREATE_VENV_COMMAND $VIRTUAL_ENV
+RUN <<EOR
+    $CREATE_VENV_COMMAND $VIRTUAL_ENV
+    ln -s ${VIRTUAL_ENV}/lib/python$BUILD_PYTHON_VERSION/site-packages/ ${VIRTUAL_ENV}/site-packages
+EOR
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 # Enable caching of pip packages to speed up rebuild times
@@ -76,14 +81,22 @@ RUN --mount=type=cache,uid=$UID,target=$PIP_CACHE_DIR,sharing=locked <<EOR
 EOR
 
 # Create Zope Instance
-RUN mkwsgiinstance --dir . --user admin:admin
+# We do this, to make it easy to evaluate zms without having to create an initial zodb outside the container and map it inside.
+# However: mkwsgiinstance creates a file inituser in the top level of the deployment
+# This file is read on the first startup of zope, and creates the actual initial user in the zodb
+# consuming that file. Therefore we must be very cautious to ensuret that this file itself is _not_
+# part of the docker image. zconsole triggers that same startup behaviour.
+RUN <<EOR
+    mkdir cache Extensions customizing import
+    mkwsgiinstance --dir . --user admin:admin
+    echo | zconsole debug etc/zope.conf
+EOR
 
 # Configure Zope Instance
 ARG BUILD_DIR=docker/base
 COPY --chown=zope:zope $BUILD_DIR/zope.ini etc/zope.ini
 COPY --chown=zope:zope $BUILD_DIR/zope.conf etc/zope.conf
 COPY --chown=zope:zope $BUILD_DIR/zeo.conf etc/zeo.conf
-RUN mkdir cache Extensions customizing import
 
 COPY --chown=zope:zope Products Products
 # consider if we need the test code to be in the container to run

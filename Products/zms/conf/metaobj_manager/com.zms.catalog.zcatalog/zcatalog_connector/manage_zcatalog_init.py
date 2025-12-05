@@ -96,6 +96,7 @@ def recreateZCatalog(context, lang):
       extra['splitter_single_chars'] = 0
     zcatalog.manage_addColumn(index_name)
     zcatalog.manage_addIndex(index_name, index_type, extra)
+  # Implicitly 'path' index is added
   zcatalog.manage_addIndex('path', PathIndex('path'))
   return '%s created'%str(cat_id)
 

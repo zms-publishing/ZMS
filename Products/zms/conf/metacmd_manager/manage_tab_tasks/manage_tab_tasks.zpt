@@ -67,7 +67,7 @@
 
 	<tal:block tal:condition="python:request['task_type']=='TASK_CHANGED_BY_DATE'">
 		<tal:block tal:define="
-			obj_tuples python:[ ( x.attr('change_dt'), x ) for x in [here]+here.getTreeNodes(request) ];
+			obj_tuples python:[ ( x.attr('change_dt'), x ) for x in ([here]+here.getTreeNodes(request)) if x.attr('change_dt') is not None ];
 			obj_tuples python:sorted(obj_tuples, key=lambda obj: obj[0], reverse=True);
 			global obs python:[obj[1] for obj in obj_tuples]"></tal:block>
 	</tal:block>

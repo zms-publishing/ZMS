@@ -49,6 +49,7 @@ def manage_elasticsearch_schematize( self):
 	properties['zmsid'] = {'type':'text'}
 	properties['uid'] = {'type':'text'}
 	properties['loc'] = {'type':'text'}
+	properties['path'] = {'type':'text'}
 	properties['index_html'] = {'type':'text'}
 	properties['meta_id'] = {'type':'keyword'}
 	properties['lang'] = {'type':'keyword'}

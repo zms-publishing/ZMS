@@ -209,9 +209,11 @@
 			<div class="form-group row inpCommand">
 				<div class="col-md-12">
 					<input type="hidden" name="el_method" tal:attributes="value process/id" />
-					<textarea tal:replace="structure python:here.zmi_ace_editor(here,request,name='inpCommand',id='filtercmd_%s'%(process.get('id')),ob=None,text=process.get('command',''))">
-						ACE Editor
-					</textarea>
+					<tal:block tal:on-error="structure python:here.zmi_ace_editor(here,request,name='inpCommand',id='filtercmd_%s'%(process.get('id')),ob=None,text='Error: No data available')">
+						<textarea tal:replace="structure python:here.zmi_ace_editor(here,request,name='inpCommand',id='filtercmd_%s'%(process.get('id')),ob=None,text=process.get('command',''))">
+							ACE Editor
+						</textarea>
+					</tal:block>
 				</div>
 			</div><!-- .form-group -->
 		</form>

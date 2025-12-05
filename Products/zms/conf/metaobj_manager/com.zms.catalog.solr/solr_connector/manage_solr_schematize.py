@@ -35,6 +35,12 @@ def manage_solr_schematize( self):
 			'required':False
 		},
 		{
+			'name':'path',
+			'type':'string',
+			'multiValued':False,
+			'required':False
+		},
+		{
 			'name':'index_html',
 			'type':'text_general',
 			'multiValued':False,
@@ -91,7 +97,7 @@ def manage_solr_schematize( self):
 	adapter = zmscontext.getCatalogAdapter()
 	attrs = adapter.getAttrs()
 	for attr_id in adapter._getAttrIds():
-		if attr_id not in ['id', 'uid', 'zmsid', 'loc', 'index_html', 'meta_id', 'lang', 'home_id']:
+		if attr_id not in ['id', 'uid', 'zmsid', 'loc', 'path', 'index_html', 'meta_id', 'lang', 'home_id']:
 			attr = attrs[attr_id]
 			attr_type = attr.get('type')
 			if attr_type in allowed_types:

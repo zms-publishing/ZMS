@@ -591,12 +591,13 @@
 		text-align:center;
 		margin-top:.375rem;
 		margin-bottom:.375rem;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 	div.activity {
 		border: 1px solid #545b62;
 		background-color: #FFFFE0;
 		width: 160px;
-		overflow:hidden;
 	}
 	div.transition {
 		border: 1px solid navy;

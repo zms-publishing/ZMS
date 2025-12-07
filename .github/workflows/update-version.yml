@@ -1,33 +1,61 @@
-name: Update version.txt on tag creation
+name: Update version.txt on push
 
 on:
- push:
- tags:
- - '*'
+  push:
+    branches:
+      - '**'
+    # Avoid self-trigger loops when only version.txt changes
+    paths-ignore:
+      - 'Products/zms/version.txt'
+
+permissions:
+  contents: write
 
 jobs:
- update-version-file:
- runs-on: ubuntu-latest
+  update-version-file:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: true
 
- steps:
- # Check out the code
- - name: Check out repository
- uses: actions/checkout@v3
+      - name: Fetch tags
+        run: |
+          git fetch --tags --force --depth=0
 
- # Extrahiere den Tag-Namen
- - name: Get tag name
- run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+      - name: Determine latest tag
+        id: tag
+        run: |
+          # Get latest tag; fall back to 0.0.0 if none
+          if TAG=$(git describe --tags --abbrev=0 2>/dev/null); then
+            echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag=0.0.0" >> "$GITHUB_OUTPUT"
+          fi
 
- # Aktualisiere die Datei version.txt
- - name: Update version.txt
- run: |
- echo "$TAG_NAME" > ./Products/zms/version.txt
+      - name: Determine 7-char commit hash
+        id: sha
+        run: |
+          SHORT_SHA=$(git rev-parse --short=7 HEAD)
+          echo "sha=$SHORT_SHA" >> "$GITHUB_OUTPUT"
 
- # Commit und Push zurück ins Repository
- - name: Commit changes
- run: |
- git config --global user.email "zmsbot@container"
- git config --global user.name "zmsbot"
- git add version.txt
- git commit -m "Update version.txt to $TAG_NAME"
- git push origin HEAD
+      - name: Update version.txt
+        run: |
+          VERSION="${{ steps.tag.outputs.tag }}-${{ steps.sha.outputs.sha }}"
+          echo "$VERSION" > ./Products/zms/version.txt
+          echo "Wrote version: $VERSION"
+
+      - name: Commit changes
+        run: |
+          git config --global user.email "zmsbot@container"
+          git config --global user.name "zmsbot"
+          git add ./Products/zms/version.txt
+          # Use [skip ci] to prevent other workflows from triggering
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: update version.txt to ${{ steps.tag.outputs.tag }}-${{ steps.sha.outputs.sha }} [skip ci]"
+            git push origin HEAD
+          fi

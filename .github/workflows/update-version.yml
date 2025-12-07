@@ -20,10 +20,10 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           persist-credentials: true
+          # Fetch full history so tags and describes work correctly
+          fetch-depth: 0
 
-      - name: Fetch tags
-        run: |
-          git fetch --tags --force --depth=0
+      # With fetch-depth: 0 above, tags are available; no extra fetch needed
 
       - name: Determine latest tag
         id: tag

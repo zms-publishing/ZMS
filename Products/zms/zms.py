@@ -417,6 +417,8 @@ class ZMS(
       file.close()
       zms_custom_version = os.environ.get('ZMS_CUSTOM_VERSION', '')
       if custom and zms_custom_version != '':
+        # Prepend ZMS5- if version.txt is PEP 440 compliant
+        rtn = 'ZMS5-' not in rtn and ('ZMS5-' + rtn) or rtn
         rtn += f'&nbsp;(<samp id="zms_custom_version">{zms_custom_version}</samp>)'
         # Generate revisions and custom version gathering commit hashes of git submodules
         # see Lines 37-46 unibe-cms/.github/workflows/build-and-push.yml

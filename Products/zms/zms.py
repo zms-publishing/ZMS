@@ -413,11 +413,13 @@ class ZMS(
     # --------------------------------------------------------------------------
     def zms_version(self, custom=False):
       file = open(_fileutil.getOSPath(package_home(globals())+'/version.txt'),'r')
-      rtn = file.read()
+      version_txt = file.read()
       file.close()
+      # Prepend ZMS5- if version.txt is PEP 440 compliant
+      version_txt = 'ZMS5-' not in version_txt and ('ZMS5-' + version_txt) or version_txt
       zms_custom_version = os.environ.get('ZMS_CUSTOM_VERSION', '')
       if custom and zms_custom_version != '':
-        rtn += f'&nbsp;(<samp id="zms_custom_version">{zms_custom_version}</samp>)'
+        version_txt += f'&nbsp;(<samp id="zms_custom_version">{zms_custom_version}</samp>)'
         # Generate revisions and custom version gathering commit hashes of git submodules
         # see Lines 37-46 unibe-cms/.github/workflows/build-and-push.yml
         revisions = _fileutil.getOSPath('/app/revisions.txt')
@@ -425,7 +427,7 @@ class ZMS(
             file = open(revisions, 'r')
             zms_submodule_revisions = file.read()
             file.close()
-            rtn += f"""
+            version_txt += f"""
                 <span class="d-inline-block" data-toggle="popover"
                     title="Git revisions"
                     data-content="{zms_submodule_revisions}">
@@ -455,14 +457,12 @@ class ZMS(
                     }}
                 </style>
                 """
-      if custom and os.path.exists(_fileutil.getOSPath(package_home(globals())+'/../../.git/FETCH_HEAD')):
-        file = open(_fileutil.getOSPath(package_home(globals())+'/../../.git/FETCH_HEAD'),'r')
-        FETCH_HEAD = file.read()
-        file.close()
-        FETCH_HEAD = FETCH_HEAD[0:7]
-        rtn += (f'<a title="ZMS commits on github.com" target="_blank" '
-                f'href="https://github.com/zms-publishing/ZMS/commits/main"> git#{FETCH_HEAD}</a>')
-      return rtn
+      if custom and len(version_txt.split('+'))>1:
+        git_hash = version_txt.split('+')[1].strip()
+        version_txt = version_txt.split('+')[0].strip()
+        version_txt += (f' <a title="ZMS commit on github.com" target="_blank" '
+          f'href="https://github.com/zms-publishing/ZMS/commits/{git_hash}">git#{git_hash}</a>')
+      return version_txt
 
     # --------------------------------------------------------------------------
     #  ZMS.getDocumentElement

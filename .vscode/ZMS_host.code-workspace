@@ -13,25 +13,13 @@
 		// 	"path": "/home/zope/src/zopefoundation/Zope"
 		// },
 		// {
-		// 	"name": "ZMS4",
-		//  	"path": "../../ZMS4"
-		//  },
-		// {
-		// 	"name": "ZMS3",
-		//  	"path": "../../ZMS3"
-		//  },
-		// {
-		// 	"name": "OpenSearchServer",
-		// 	"path": "/home/zope/src/sntl-projects/opensearch_demo"
-		// },
-		// {
 		// 	"name": "Zope-WebDAV Access",
 		// 	"uri": "webdav://admin:admin@localhost:8091/"
 		// }
 	],
 
 	"settings": {
-		"python.defaultInterpreterPath": "/home/zope/vpy313/bin/python3",
+		"python.defaultInterpreterPath": "/home/zope/vpy3/bin/python3",
 		"window.zoomLevel": 0,
 		"git.ignoreMissingGitWarning": true,
 		"editor.minimap.enabled": false,
@@ -79,7 +67,7 @@
 				"name": "ZMS5-DEV",
 				"type": "debugpy",
 				"request": "launch",
-				"program": "/home/zope/vpy313/bin/runwsgi",
+				"program": "/home/zope/vpy3/bin/runwsgi",
 				"justMyCode": false,
 				"console": "integratedTerminal",
 				"args": [
@@ -93,8 +81,8 @@
 					"CONFIG_FILE": "/home/zope/instance/zms5_dev/etc/zope.ini",
 					"INSTANCE_HOME": "/home/zope/instance/zms5_dev",
 					"CLIENT_HOME": "/home/zope/instance/zms5_dev",
-					"PYTHON": "/home/zope/vpy313/bin/python",
-					"SOFTWARE_HOME": "/home/zope/vpy313/bin/"
+					"PYTHON": "/home/zope/vpy3/bin/python",
+					"SOFTWARE_HOME": "/home/zope/vpy3/bin/"
 				},
 				"serverReadyAction": {
 					"pattern": "Serving on http://127.0.0.1:8080",

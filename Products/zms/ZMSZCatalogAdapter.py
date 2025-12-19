@@ -207,6 +207,11 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
             # and node was not part of current reindexing.
             for connector in connectors:
               connector.manage_objects_remove([container_page])
+          if (node.meta_id =='ZMSFile' and node.getId() not in self.REQUEST.get('reindex_node_log', [])):
+            # Remove ZMSFile from catalog if editing leads to filter-not-matching 
+            # and node was not part of current reindexing.
+            for connector in connectors:
+              connector.manage_objects_remove([node])
         return True
       except:
         standard.writeError( self, "can't reindex_node")
@@ -247,8 +252,8 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
           if not trashcan_items:
             standard.writeLog( self, "No trashcan items found after deleting content from  %s"%(nodes[0].getParentNode().id) )
             return False
-          # Get page-nodes that are moved to trashcan.
-          delnodes = [i for i in trashcan_items if i in nodes and i.isPage()]
+          # Get page-nodes and ZMS files that are moved to trashcan.
+          delnodes = [i for i in trashcan_items if i in nodes and (i.isPage() or i.meta_id == 'ZMSFile')]
           if not delnodes:
             standard.writeLog( self, "No page-nodes found in trashcan after deleting content from %s"%(nodes[0].getParentNode().id) )
             return False

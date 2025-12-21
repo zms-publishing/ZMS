@@ -457,6 +457,7 @@ class ZMS(
                     }}
                 </style>
                 """
+            return version_txt
       if custom and len(version_txt.split('+'))>1:
         git_hash = version_txt.split('+')[1].strip()
         version_txt = version_txt.split('+')[0].strip()

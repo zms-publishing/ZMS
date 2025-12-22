@@ -471,7 +471,8 @@ class ZMSIndex(ZMSItem.ZMSItem):
             href = re.sub(r'http://localhost:(\d)*','',href)
             for domain in domains:
               path = domains[domain]
-              href = re.sub(domain,path,href)
+              pattern = r"{}".format(domain)  # Ensure pattern is treated as a raw string
+              href = re.sub( pattern, path, href)
             log.append('INFO %s'%standard.writeBlock(node,'[ZMSIndex] handleInline href=%s'%href))
             if href.startswith('.') or href.startswith('/'):
               nf = re.compile(r'(.*?)\?op=not_found&url={\$(.*?)}').findall(href)

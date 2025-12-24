@@ -33,7 +33,8 @@ Moreover there is the possibility that no state is assigned. So these basic stat
 1. `STATE_NEW`
 2. `STATE_MODIFIED`
 3. `STATE_DELETED`
-4. `None` (no state assigned, means _committed_/published)
+4. `STATE_MODIFIED_OBJS` (has modified child objects)
+5. `None` (no state assigned, means _committed_/published)
 
 
 These states are fundamental and operate independently of any activated workflow. Once the workflow is activated, _transitions_ become relevant to add more, workflow specific state values to the content: if a content object is assigned one of basic states it automatically triggers a virtual transition to enter the workflow process, specifically the transition (tr) `TR_ENTER` for the PAGE container of the edited content object.

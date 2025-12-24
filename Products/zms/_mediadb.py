@@ -406,10 +406,16 @@ class MediaDb(
         fsize = os.path.getsize( local_filename)
         if fsize < threshold or REQUEST.RESPONSE is None:
           try:
-            f = open( local_filename, 'rb')
-            data = f.read()
-          finally:
-            f.close()
+            # Open the file and ensure it is closed after reading.
+            with open(local_filename, 'rb') as f:
+                data = f.read()
+          except FileNotFoundError:
+            msg = 'File not found: %s' % (local_filename)
+            msg = msg.encode('utf-8')
+            standard.writeBlock(self, msg)
+            filename = 'file_not_found_0.txt'
+            mt, enc, data, fsize = 'text/plain', 'utf-8', msg, len(msg)
+            REQUEST.response.setStatus(404)
         else:
           data = filestream_iterator( local_filename, 'rb')
         try:
@@ -430,11 +436,10 @@ class MediaDb(
         location = self.getLocation()
         if not filename.startswith(location):
           filename = os.path.join(location,filename)
-        f = open( filename, 'rb')
-        data = f.read()
-        f.close()
+        with open(filename, 'rb') as f:
+          data = f.read()
       except:
-        standard.writeError( self, "can't retrieveFile")
+        standard.writeError(self, "can't retrieveFile(%s)"%str(filename))
         data = ''
       return data
 

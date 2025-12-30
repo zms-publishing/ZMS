@@ -669,6 +669,11 @@ class MyBlob(object):
             data = mediadb.retrieveFile( mediadbfile)
           except:
             standard.writeError( parent, "[getData]: can't retrieve file from mediadb: %s"%str(mediadbfile))
+            # Try to return data from ZODB as fallback.
+            data = getattr(self, 'data', '')
+            if data:
+              standard.writeInfo( parent, "[getData]: retrieve zodb-persistant file as fallback.")
+
       else:
         data = getattr(self, 'data', '')
       return data

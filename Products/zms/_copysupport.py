@@ -36,79 +36,121 @@ OP_MOVE = 1
 # ------------------------------------------------------------------------------
 #  CopySupport._normalize_ids_after_copy:
 # ------------------------------------------------------------------------------
-def normalize_ids_after_copy(node, id_prefix='e', ids=[]):
-    """ 
+def normalize_ids_after_copy(node, id_prefix='e', ids=None, is_initial_node=True, processed_nodes=None):
+    """
     The ids of copied objects are normalized to the context-node's id_prefix
     and the ZMS-client's sequence incrementing (acl_sequence).
     After the objects are moved to their new position their ids are normalized,
     that means they are reset to a new id that consists of the id_prefix of the 
     target-context and the next increment of the ZMS-object sequence counter.
-
+    Hint: This function is called after manage_pasteObjs() has moved the objects.
+    
     @param node: context-node
-    @type node: ZMSNode
     @param id_prefix: id_prefix of context-node
-    @type id_prefix: C{str}
-    @param ids: list of ids to be normalized, '*' for all
-    @type ids: C{list}
-    @note: This function is called after manage_pasteObjs() has moved the objects.
+    @param ids: list of ids to be normalized, None or '*' for all
+    @param is_initial_node: True if this is the initial paste target (not a recursive call)
+    @param processed_nodes: Set of node IDs already processed (to prevent duplicate onChangeObj calls)
     """
+    if ids is None:
+        ids = []
+    
+    if processed_nodes is None:
+        processed_nodes = set()
+    
     request = node.REQUEST
     copy_of_prefix = 'copy_of_'
     normalized_objs = []
-
-    # [A] Rename an object in the new context
-    for childNode in node.getChildNodes():
-        # validate id
-        id = childNode.getId()
-        new_id = None
-        if '*' in ids or id in ids or id.startswith(copy_of_prefix):
-            # new id
-            if not '*' in ids:
-                new_id = node.getNewId(id_prefix)
-            else:
-                new_id = node.getNewId(standard.id_prefix(id))
-            # reset id
-            if new_id is not None and new_id != id and childNode.getParentNode() == node:
-                standard.writeBlock(node,'[CopySupport._normalize_ids_after_copy]: rename %s(%s) to %s'%(childNode.absolute_url(),childNode.meta_id,new_id))
-                node.manage_renameObject(id=id,new_id=new_id)
-                # Add normalized object to list
-                normalized_objs.extend(node.getChildNodes(reid=new_id))
-
-    # [B] Reset backlink-attribute and trigger onChangeObj for all copied child-nodes.
+    
+    def switch_languages_and_apply(target_node, func):
+        """Helper to apply a function for each language."""
+        current_lang = request.get('lang')
+        for lang_id in target_node.getLangIds():
+            request.set('lang', lang_id)
+            func()
+        request.set('lang', current_lang)
+    
+    # [A] Rename objects in the new context
+    for child in node.getChildNodes():
+        obj_id = child.getId()
+        needs_normalizing = '*' in ids or obj_id in ids or obj_id.startswith(copy_of_prefix)
+        
+        if not needs_normalizing: 
+            continue
+        
+        # Determine new ID
+        if '*' not in ids:
+            new_id = node.getNewId(id_prefix)
+        else:
+            new_id = node.getNewId(standard.id_prefix(obj_id))
+        
+        # Perform rename if needed
+        if new_id and new_id != obj_id and child.getParentNode() == node:
+            standard.writeBlock(
+                node, 
+                '[CopySupport._normalize_ids_after_copy]: rename %s(%s) to %s' % 
+                (child.absolute_url(), child.meta_id, new_id)
+            )
+            node.manage_renameObject(id=obj_id, new_id=new_id)
+            normalized_objs.extend(node.getChildNodes(reid=new_id))
+    
+    # [B] Reset backlink-attribute and trigger onChangeObj for all copied child-nodes
     normalized_pages = [e for e in normalized_objs if e.isPage()]
+    
     if normalized_pages:
-
-        # [B1] Inserting page-object(s) or tree-recursion
-        for normalized_page in normalized_pages:
+        # [B1] Inserting page-object(s) with tree-recursion
+        for page in normalized_pages:
+            page_uid = id(page)  # Use object identity to track processing
+            
+            # Skip if already processed
+            if page_uid in processed_nodes:
+                continue
+            
             # Reset ref_by
-            normalized_page.ref_by = []
-            # Init object-state
-            if not '*' in ids:
-                lang = request.get('lang')
-                for langId in node.getLangIds():
-                    request.set('lang',langId)
+            page.ref_by = []
+            
+            # Handle state and onChange based on context
+            if '*' not in ids:
+                # Only process if not already handled
+                def update_page():
+                    # Only set STATE_NEW for subpages, not the initial node
+                    # is_initial_node=False for all normalized_pages since they are children
                     if not node.getAutocommit():
-                        normalized_page.setObjStateNew(request,reset=0)
-                    normalized_page.onChangeObj(request)
-                request.set('lang',lang)
-            # Traverse tree
-            tree_pages = normalized_page.getTreeNodes(request, node.PAGES)
+                        page.setObjStateNew(request, reset=0)
+                    page.onChangeObj(request)
+                
+                switch_languages_and_apply(page, update_page)
+                processed_nodes.add(page_uid)
+            
+            # Recursively process tree nodes
+            tree_pages = page.getTreeNodes(request, node.PAGES)
             if tree_pages:
-                for tree_page in tree_pages:
-                    normalize_ids_after_copy(tree_page, id_prefix, ids=['*'])
+                for tree_page in tree_pages: 
+                    # Recursive call:  is_initial_node=False for all subpages
+                    normalize_ids_after_copy(
+                        tree_page, 
+                        id_prefix, 
+                        ids=['*'], 
+                        is_initial_node=False,
+                        processed_nodes=processed_nodes
+                    )
     else:
         # [B2] Inserting pageelement-object(s)
-        lang = request.get('lang')
-        for langId in node.getLangIds():
-            request.set('lang',langId)
-            node.onChangeObj(request)
-            if not node.getAutocommit():
-                normalized_pageelements = [e for e in normalized_objs if not e.isPage()]
-                for normalized_pageelement in normalized_pageelements:
-                    normalized_pageelement.setObjStateNew(request,reset=0)
-        request.set('lang',lang)
-
-
+        # Only trigger onChangeObj on the initial node if it hasn't been processed
+        node_uid = id(node)
+        if node_uid not in processed_nodes:
+            def update_node():
+                if (not node.getAutocommit()):
+                    if not is_initial_node:
+                        node.setObjStateNew(request, reset=0)
+                    else:
+                        # Handle pageelements of initial node
+                        normalized_pageelements = [e for e in normalized_objs if not e.isPage()]
+                        for normalized_pageelement in normalized_pageelements:
+                            normalized_pageelement.setObjStateNew(request,reset=0)
+                node.onChangeObj(request)
+            
+            switch_languages_and_apply(node, update_node)
+            processed_nodes.add(node_uid)
 
 # ------------------------------------------------------------------------------
 #  CopySupport._normalize_ids_after_move:

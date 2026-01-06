@@ -36,9 +36,9 @@
 
 	<div class="zmi-form-container">
 	<ul class="zmi-container">
-		<li class="zmi-item zmi-selectable pageelement" 
+		<li class="zmi-item zmi-selectable pageelement" id="zmi_item_"
 			tal:define="childNode python:here" 
-			tal:attributes="id python:'zmi_item_%s'%(childNode.id!='content' and childNode.id or '')">
+			tal:attributes="data-context_id python:childNode.id!='content' and str(childNode.id) or None">
 			<div tal:attributes="class python:'center%s'%([' inactive',''][childNode.isActive(request)])"
 				tal:content="structure python:childNode.renderShort(request,True)">
 				<h1>

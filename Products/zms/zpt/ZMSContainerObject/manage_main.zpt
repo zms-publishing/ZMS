@@ -57,11 +57,6 @@
 						<tal:block tal:content="structure python:childNode.display_icon()">the icon</tal:block>
 					</button>
 				</div><!-- .btn-group -->
-				<!--!
-				<span class="zmi-ids">
-					<input type="checkbox" name="ids:list" tal:attributes="value python:childNode.id"/>
-				</span>
-				-->
 				<div class="zmi-manage-main-change" tal:on-error="string: ERROR here.zmi_manage_main_change(childNode,request)" tal:content="structure python:here.zmi_manage_main_change(childNode,request)">
 					the info child-node
 				</div>

@@ -1503,7 +1503,6 @@ ZMIActionList.prototype.over = function(el, e, cb) {
 		return false;
 	});
 	// Build action and params.
-	debugger;
 	var action = self.location.origin + self.location.pathname;
 	action = action.substring(0,action.lastIndexOf("/"));
 	action += "/manage_ajaxZMIActions";
@@ -1646,7 +1645,6 @@ ZMIActionList.prototype.exec = function(sender, label, target, meta_id='') {
 		}
 		data['id_prefix'] = id_prefix;
 		var title = '<i class="fas fa-plus-sign"></i> ' + getZMILangStr('BTN_INSERT') + ':&nbsp;' + label;
-		// debugger;
 		if (meta_id!='') {
 			data['meta_id'] = meta_id;
 		}
@@ -1703,7 +1701,7 @@ ZMIActionList.prototype.exec = function(sender, label, target, meta_id='') {
 			$("input[name='ids:list']",$("div.right")).each(function() {if(this.checked)$fm.append(this)});
 			if ($("input[name='ids:list']", $fm).length==0) {
 				if (is_context_container && target=="manage_copyObjects") {
-					alert("No block selection found, so submit action on context container!");
+					// No element selection found, so submit copy action on context container
 					target = "../" + target + "?ids:list=" + context_id;
 				}
 			}

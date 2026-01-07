@@ -292,10 +292,13 @@ class CopySupport(object):
     ############################################################################
     # CopySupport.manage_copyObject:
     ############################################################################
-    def manage_copyObject(self, REQUEST, RESPONSE):
+    def manage_copyObject(self, ids=[], REQUEST=None, RESPONSE=None):
       """Put a reference to the objects named in ids in the clip board"""
-      ids = [self.getId()]
-      self.aq_parent.manage_copyObjects( ids, REQUEST, RESPONSE)
+      context = self
+      if not ids:
+        ids = [self.getId()]
+        context = self.aq_parent
+      context.manage_copyObjects( ids, REQUEST, RESPONSE)
       # Return with message.
       RESPONSE.redirect('manage_main?lang=%s'%(REQUEST['lang']))
 
@@ -303,10 +306,13 @@ class CopySupport(object):
     ############################################################################
     # CopySupport.manage_cutObject:
     ############################################################################
-    def manage_cutObject(self, REQUEST, RESPONSE):
+    def manage_cutObject(self, ids=[], REQUEST=None, RESPONSE=None):
       """Put a reference to the objects named in ids in the clip board"""
-      ids = [self.getId()]
-      self.aq_parent.manage_cutObjects( ids, REQUEST, RESPONSE)
+      context = self
+      if not ids:
+        ids = [self.getId()]
+        context = self.aq_parent
+      context.manage_cutObjects( ids, REQUEST, RESPONSE)
       # Return with message.
       RESPONSE.redirect('manage_main?lang=%s'%(REQUEST['lang']))
 

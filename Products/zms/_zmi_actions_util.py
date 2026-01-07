@@ -94,12 +94,12 @@ def zmi_basic_actions(container, context, objAttr, objChildren, objPath=''):
         #-- Action: Cut.
         can_cut = not context.inObjStates( [ 'STATE_DELETED'], REQUEST) and context.getAutocommit() or context.getDCCoverage(REQUEST).endswith('.'+lang)
         if can_cut:
-          action = ['manage_cutObject', 'manage_cutObjects'][bool(objPath)]
+          action = 'manage_cutObject'
           actions.append((container.getZMILangStr('BTN_CUT'), action, 'fas fa-cut')) 
       #-- Action: Copy.
       can_copy = context.getParentByLevel(1).meta_id!='ZMSTrashcan'
       if can_copy: 
-        action = ['manage_copyObject', 'manage_copyObjects'][bool(objPath)]
+        action = 'manage_copyObject'
         actions.append((container.getZMILangStr('BTN_COPY'), action, 'fas fa-copy'))
       #-- Actions: Move.
       can_move = objChildren > 1

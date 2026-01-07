@@ -292,29 +292,23 @@ class CopySupport(object):
     ############################################################################
     # CopySupport.manage_copyObject:
     ############################################################################
-    def manage_copyObject(self, REQUEST=None, RESPONSE=None):
+    def manage_copyObject(self, REQUEST, RESPONSE):
       """Put a reference to the objects named in ids in the clip board"""
-      standard.writeLog( self, "[CopySupport.manage_copyObject]")
       ids = [self.getId()]
-      super( self.__class__, self.aq_parent).manage_copyObjects( ids, REQUEST, RESPONSE)
+      self.aq_parent.manage_copyObjects( ids, REQUEST, RESPONSE)
       # Return with message.
-      if RESPONSE is not None:
-        message = ''
-        RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(REQUEST['lang'], standard.url_quote(message)))
+      RESPONSE.redirect('manage_main?lang=%s'%(REQUEST['lang']))
 
 
     ############################################################################
     # CopySupport.manage_cutObject:
     ############################################################################
-    def manage_cutObject(self, REQUEST=None, RESPONSE=None):
+    def manage_cutObject(self, REQUEST, RESPONSE):
       """Put a reference to the objects named in ids in the clip board"""
-      standard.writeLog( self, "[CopySupport.manage_cutObject]")
       ids = [self.getId()]
-      cb_copy_data = super( self.__class__, self.aq_parent).manage_cutObjects( ids, REQUEST, RESPONSE)
+      self.aq_parent.manage_cutObjects( ids, REQUEST, RESPONSE)
       # Return with message.
-      if RESPONSE is not None:
-        message = ''
-        RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(REQUEST['lang'], standard.url_quote(message)))
+      RESPONSE.redirect('manage_main?lang=%s'%(REQUEST['lang']))
 
 
     ############################################################################

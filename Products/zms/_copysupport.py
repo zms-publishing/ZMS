@@ -87,7 +87,7 @@ def normalize_ids_after_copy(node, id_prefix='e', ids=[]):
           obj.setObjStateNew(request,reset=0)
       request.set('lang',lang)
     # Traverse child-nodes.
-    for childNode in obj.getChildNodes()
+    for childNode in obj.getChildNodes():
       normalize_ids_after_copy(childNode, id_prefix, ids=['*'])
 
 

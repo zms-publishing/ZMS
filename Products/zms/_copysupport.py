@@ -54,60 +54,44 @@ def normalize_ids_after_copy(node, id_prefix='e', ids=[]):
     """
     request = node.REQUEST
     copy_of_prefix = 'copy_of_'
+    deep = '*' in ids
+
+    # [A] Rename objects in the new context
     normalized_objs = []
-
-    # [A] Rename an object in the new context
     for childNode in node.getChildNodes():
-        # validate id
-        id = childNode.getId()
-        new_id = None
-        if '*' in ids or id in ids or id.startswith(copy_of_prefix):
-            # new id
-            if not '*' in ids:
-                new_id = node.getNewId(id_prefix)
-            else:
-                new_id = node.getNewId(standard.id_prefix(id))
-            # reset id
-            if new_id is not None and new_id != id and childNode.getParentNode() == node:
-                standard.writeBlock(node, '[CopySupport._normalize_ids_after_copy]: rename %s(%s) to %s' % (childNode.absolute_url(), childNode.meta_id, new_id))
-                node.manage_renameObject(id=id, new_id=new_id)
-                # Add normalized object to list
-                normalized_objs.extend(node.getChildNodes(reid=new_id))
+      # validate id
+      id = childNode.getId()
+      new_id = None
+      if deep or id in ids or id.startswith(copy_of_prefix):
+        # new id
+        if not deep:
+            new_id = node.getNewId(id_prefix)
+        else:
+            new_id = node.getNewId(standard.id_prefix(id))
+        # reset id
+        if new_id is not None and new_id != id and childNode.getParentNode() == node:
+            standard.writeBlock(node,'[CopySupport._normalize_ids_after_copy]: rename %s(%s) to %s'%(childNode.absolute_url(),childNode.meta_id,new_id))
+            node.manage_renameObject(id=id,new_id=new_id)
+            # Add normalized object to list
+            normalized_objs.extend(node.getChildNodes(reid=new_id))
 
-    # [B] Reset backlink-attribute and trigger onChangeObj for all copied child-nodes.
-    normalized_pages = [e for e in normalized_objs if e.isPage()]
-    if normalized_pages:
-
-        # [B1] Inserting page-object(s) or tree-recursion
-        for normalized_page in normalized_pages:
-            # Reset ref_by
-            normalized_page.ref_by = []
-            # Init object-state
-            if not '*' in ids:
-                lang = request.get('lang')
-                for langId in node.getLangIds():
-                    request.set('lang', langId)
-                    if not node.getAutocommit():
-                        normalized_page.setObjStateNew(request, reset=0)
-                    normalized_page.onChangeObj(request)
-                request.set('lang', lang)
-            # Traverse tree
-            tree_pages = normalized_page.getTreeNodes(request, node.PAGES)
-            if tree_pages:
-                for tree_page in tree_pages:
-                    normalize_ids_after_copy(tree_page, id_prefix, ids=['*'])
-    else:
-        # [B2] Inserting pageelement-object(s)
+    # [B] Handle normalized objects and their deep tree
+    for obj in normalized_objs:
+      # [B1] Reset backlink-attribute
+      obj.ref_by = []
+      # [B2] Init object-state
+      if not deep:
         lang = request.get('lang')
         for langId in node.getLangIds():
-            request.set('lang', langId)
-            node.onChangeObj(request)
-            if not node.getAutocommit():
-                normalized_pageelements = [e for e in normalized_objs if not e.isPage()]
-                for normalized_pageelement in normalized_pageelements:
-                    normalized_pageelement.setObjStateNew(request, reset=0)
-        request.set('lang', lang)
-
+            request.set('lang',langId)
+            obj.setObjStateNew(request,reset=0)
+            obj.onChangeObj(request)
+        request.set('lang',lang)
+      # [B3] Traverse deep tree
+      for childNode in obj.getChildNodes():
+          normalize_ids_after_copy(childNode, id_prefix, ids=['*'])
+      # [B4] Trigger afterCopyObjEvt event
+      standard.triggerEvent(obj, 'afterCopyObjEvt')
 
 
 # ------------------------------------------------------------------------------
@@ -116,13 +100,15 @@ def normalize_ids_after_copy(node, id_prefix='e', ids=[]):
 def normalize_ids_after_move(node, id_prefix='e', ids=[]):
     request = node.REQUEST
     copy_of_prefix = 'copy_of_'
+    deep = '*' in ids
+
     for childNode in node.getChildNodes():
         # validate id
         id = childNode.getId()
         new_id = None
-        if '*' in ids or id in ids or id.startswith(copy_of_prefix):
+        if deep or id in ids or id.startswith(copy_of_prefix):
             # init object-state
-            if not '*' in ids:
+            if not deep:
                 lang = request.get('lang')
                 for langId in node.getLangIds():
                     request.set('lang', langId)
@@ -138,6 +124,8 @@ def normalize_ids_after_move(node, id_prefix='e', ids=[]):
             if new_id is not None and new_id != id:
                 standard.writeBlock(node, '[CopySupport._normalize_ids_after_move]: rename %s(%s) to %s' % (childNode.absolute_url(), childNode.meta_id, new_id))
                 node.manage_renameObject(id=id, new_id=new_id)
+        # [B4] Trigger afterMoveObjEvt event
+        standard.triggerEvent(childNode, 'afterMoveObjEvt')
 
 
 ################################################################################

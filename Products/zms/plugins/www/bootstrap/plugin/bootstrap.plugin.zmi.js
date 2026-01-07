@@ -439,7 +439,7 @@ $ZMI.registerReady(function(){
 				if ($(this).attr("id") == that.id) {
 					// var pos = $(this).position();
 					var pos = $(this.previousSibling).position();
-					var id = $ZMI.actionList.getContextId(dragSrcEl);
+					var id = $ZMI.actionList.getContextId(dragSrcEl)[0];
 					var href = id+'/manage_moveObjToPos?lang='+getZMILang()+'&pos:int='+c+'&fmt=json';
 					$.get(href,function(result){
 							var message = eval('('+result+')');
@@ -1430,7 +1430,12 @@ $ZMI.actionList = new ZMIActionList();
 ZMIActionList.prototype.getContextId = function(el) {
 	var context = $(el).hasClass("zmi-item")?$(el):$(el).parents("li.zmi-item");
 	var context_id = $(context).attr("id");
-	return typeof context_id == "undefined" || context_id == ""?"":context_id.replace(/zmi_item_/gi,"");
+	var is_context_container = 0;
+	if($(context).hasClass("zmi-context-container")) {
+		is_context_container = 1;
+	}
+	// return tuple of (context_id, is_context_container)
+	return [context_id.replace(/zmi_item_/gi,""), is_context_container];
 }
 
 /**
@@ -1470,7 +1475,8 @@ ZMIActionList.prototype.over = function(el, e, cb) {
 	$(document.body).css( "cursor", "wait");
 	// Initialize.
 	var lang = getZMILang();
-	var context_id = this.getContextId(el);
+	var context_id = this.getContextId(el)[0];
+	var is_context_container = this.getContextId(el)[1];
 	// Edit action
 	$("button.split-left",el).click(function() {
 		if (!$(el).hasClass("loading")) {
@@ -1497,12 +1503,14 @@ ZMIActionList.prototype.over = function(el, e, cb) {
 		return false;
 	});
 	// Build action and params.
+	debugger;
 	var action = self.location.origin + self.location.pathname;
 	action = action.substring(0,action.lastIndexOf("/"));
 	action += "/manage_ajaxZMIActions";
 	var params = {};
 	params['lang'] = lang;
 	params['context_id'] = context_id;
+	params['is_context_container:int'] = is_context_container;
 	// JQuery.AJAX.get
 	$.get( action, params, function(data) {
 		// Get object-id.
@@ -1608,7 +1616,11 @@ ZMIActionList.prototype.out = function(el) {
  *  Execute action.
  */
 ZMIActionList.prototype.exec = function(sender, label, target, meta_id='') {
-	var id_prefix = this.getContextId(sender);
+	var context_id = this.getContextId(sender)[0];
+	var is_context_container = this.getContextId(sender)[1];
+
+	// Normalize id_prefix
+	var id_prefix = context_id
 	if (typeof id_prefix != 'undefined' && id_prefix != '') {
 		id_prefix = id_prefix.replace(/(\d*?)$/gi,'');
 	} else {
@@ -1689,6 +1701,12 @@ ZMIActionList.prototype.exec = function(sender, label, target, meta_id='') {
 			$("input[name='id_prefix']",$fm).val(id_prefix);
 			$("input[name='ids:list']",$fm).remove();
 			$("input[name='ids:list']",$("div.right")).each(function() {if(this.checked)$fm.append(this)});
+			if ($("input[name='ids:list']", $fm).length==0) {
+				if (is_context_container && target=="manage_copyObjects") {
+					alert("No block selection found, so submit action on context container!");
+					target = "../" + target + "?ids:list=" + context_id;
+				}
+			}
 			$fm.attr("action",target);
 			$fm.attr("method","POST");
 			$fm.submit();

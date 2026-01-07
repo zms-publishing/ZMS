@@ -570,7 +570,7 @@ class ZMSContainerObject(
     ### 
     ############################################################################
 
-    def manage_ajaxZMIActions(self, context_id, REQUEST, RESPONSE):
+    def manage_ajaxZMIActions(self, context_id, is_context_container=0, REQUEST=None, RESPONSE=None):
       """
       Returns ZMI actions.
       internal use only
@@ -585,7 +585,7 @@ class ZMSContainerObject(
       container = self
       objPath = ''
       context = None 
-      if context_id == '':
+      if bool(is_context_container):
         context = container
         actions.extend( _zmi_actions_util.zmi_actions(self, self))
       else:

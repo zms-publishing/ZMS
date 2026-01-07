@@ -55,15 +55,16 @@ def normalize_ids_after_copy(node, id_prefix='e', ids=[]):
   request = node.REQUEST
   copy_of_prefix = 'copy_of_'
   normalized_objs = []
+  deep = '*' in ids
 
   # [A] Rename an object in the new context
   for childNode in node.getChildNodes():
     # validate id
     id = childNode.getId()
     new_id = None
-    if '*' in ids or id in ids or id.startswith(copy_of_prefix):
+    if deep or id in ids or id.startswith(copy_of_prefix):
       # new id
-      if not '*' in ids:
+      if not deep:
         new_id = node.getNewId(id_prefix)
       else:
         new_id = node.getNewId(standard.id_prefix(id))
@@ -74,40 +75,20 @@ def normalize_ids_after_copy(node, id_prefix='e', ids=[]):
         # Add normalized object to list
         normalized_objs.extend(node.getChildNodes(reid=new_id))
 
-  # [B] Reset backlink-attribute and trigger onChangeObj for all copied child-nodes.
-  normalized_pages = [e for e in normalized_objs if e.isPage()]
-  if normalized_pages:
-
-    # [B1] Inserting page-object(s) or tree-recursion
-    for normalized_page in normalized_pages:
-      # Reset ref_by
-      normalized_page.ref_by = []
-      # Init object-state
-      if not '*' in ids:
-        lang = request.get('lang')
-        for langId in node.getLangIds():
-          request.set('lang',langId)
-          if not node.getAutocommit():
-            normalized_page.setObjStateNew(request,reset=0)
-          normalized_page.onChangeObj(request)
-        request.set('lang',lang)
-      # Traverse tree
-      tree_pages = normalized_page.getTreeNodes(request, node.PAGES)
-      if tree_pages:
-        for tree_page in tree_pages:
-          normalize_ids_after_copy(tree_page, id_prefix, ids=['*'])
-  else:
-    # [B2] Inserting pageelement-object(s)
-    lang = request.get('lang')
-    for langId in node.getLangIds():
-      request.set('lang',langId)
-      node.onChangeObj(request)
-      if not node.getAutocommit():
-        normalized_pageelements = [e for e in normalized_objs if not e.isPage()]
-        for normalized_pageelement in normalized_pageelements:
-          normalized_pageelement.setObjStateNew(request,reset=0)
-    request.set('lang',lang)
-
+  for obj in normalized_objs:
+    if not deep:
+      # Reset workflow history
+      obj.resetWorkflowHistory()
+      # Reset object-state
+      lang = request.get('lang')
+      for langId in node.getLangIds():
+        request.set('lang',langId)
+        if not node.getAutocommit():
+          obj.setObjStateNew(request,reset=0)
+      request.set('lang',lang)
+    # Traverse child-nodes.
+    for childNode in obj.getChildNodes()
+      normalize_ids_after_copy(childNode, id_prefix, ids=['*'])
 
 
 # ------------------------------------------------------------------------------

@@ -1,10 +1,36 @@
-from Products.zms import standard
+from Products.zms import _globals
+from Products.zms import _objattrs
+from Products.zms import _blobfields
 
-def traverse(self, uid, zmsindex, catalog, page_size=100):
+def move(self):
+  """
+  Move ZODB persistent files to media folder.
+  """
+  moved = []
+  for key in self.getObjAttrs():
+    obj_attr = self.getObjAttr(key)
+    datatype = obj_attr['datatype_key']
+    if datatype in _globals.DT_BLOBS:
+      for lang in self.getLangIds():
+        for obj_vers in self.getObjVersions():
+          v = _objattrs.getobjattr(self,obj_vers,obj_attr,lang)
+          if isinstance(v,_blobfields.MyBlob):
+            size = len(v.data)
+            if size > 0:
+              # Move blob to media folder
+              _objattrs.setobjattr(self,obj_vers,obj_attr,v,lang)
+              moved.append('%s_%s[%i]'%(key,lang,size))
+  return moved
+
+def traverse(self, uid, page_size=100):
   log = []
   nodes, next_node = self.get_next_page(uid, page_size, clients=True)
   for node in nodes:
     l = [node.id, node.meta_id]
+    moved = move(node)
+    if moved: 
+      l.extend(moved)
+      l.append('@moved')
     log.append(l)
   return {'log':log, 'next_node':next_node}
 
@@ -32,9 +58,8 @@ def manage_move_zodb_persistent_files_to_mediafolder( self):
     # REST Endpoint: ajaxTraverse
     if request.get('traverse'):
       uid = request['uid']
-      catalog = zmsindex.get_catalog(uid == '{$}')
       page_size = int(request['page_size'])
-      result = traverse(self, uid, zmsindex, catalog, page_size)
+      result = traverse(self, uid, page_size)
     RESPONSE.setHeader('Cache-Control', 'no-cache')
     RESPONSE.setHeader('Content-Type', 'application/json; charset=utf-8')
     return json.dumps(result)

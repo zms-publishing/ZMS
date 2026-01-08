@@ -243,7 +243,7 @@ class CopySupport(object):
         oblist = kwargs.get('oblist', [])
         # identify all BLOB fields
         if mode == 'read_from_source':
-            if len(oblist) > 0:
+            if len(oblist) > 0 and oblist[0].getMediaDb() is not None:
                 self.REQUEST.set('mediadb_source_location', oblist[0].getMediaDb().getLocation())
             self.blobfields = []
             tree_objs = []

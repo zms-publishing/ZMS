@@ -105,7 +105,7 @@ function GetPagination(fn, size, pageSize, pageIndex) {
 	$(".pagination").replaceWith(html);
 }
 
-function zmiBodyContentSearch(q,pageSize,pageIndex) {
+function zmiBodyContentSearch(q,pageSize,pageIndex,connectorId) {
 	if (q.length==0) {
 		return;
 	}
@@ -135,6 +135,11 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
 	}
 	let adapter = $ZMI.getConfProperty('zms.search.adapter.id','zcatalog_adapter');
 	let connector = $ZMI.getConfProperty('zms.search.connector.id','zcatalog_connector');
+	// Check for connector base-url override
+	let connector_base_url = $ZMI.getConfProperty('zms.search.connector.base_url','');
+	if (connector_base_url.length > 0) {
+		base_url = connector_base_url;
+	}
 	let url = base_url+'/'+adapter+'/'+connector+'/search_json';
 	$.ajax({
 		url:url,
@@ -146,8 +151,14 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
 				+ '<code>' + xhr.status + ': ' + thrownError + '</code>');
 		},
 		success:function(result) {
+			// Connector: ZCatalog 
 			let total = result['numFound'];
 			let docs = result['docs']
+			if (connectorId == 'opensearch_connector') {
+			// Connector: OpenSearch
+				total = result['hits']['total']['value'];
+				docs =  result['hits']['hits'];
+			}
 			let html = "";
 			if (total == 0) {
 				$("#search_results .small-head").html(getZMILangStr('SEARCH_YOURQUERY').replace('%s','<span id="q" class="badge badge-danger fa-1x"></span>')+' '+getZMILangStr('SEARCH_NORESULTS'));
@@ -158,6 +169,9 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
 				$("#search_results .small-head #q").text(q);
 				docs.forEach(doc => {
 					let href = '';
+					if (connectorId == 'opensearch_connector') {
+						doc = doc._source;
+					}
 					let doc_headine_title = `${doc.title}`;
 					if (zmi) {
 						if (href=='' || href==undefined) href = doc.loc;
@@ -206,5 +220,6 @@ $(function() {
 	var q = GetURLParameter("search","").trim();
 	var pageSize = 10;
 	var pageIndex = parseInt(GetURLParameter('pageIndex:int','0'));
-	return zmiBodyContentSearch(q,pageSize,pageIndex);
+	var connectorId = $ZMI.getConfProperty('zms.search.connector.id','zcatalog_connector');
+	return zmiBodyContentSearch(q,pageSize,pageIndex,connectorId);
 });

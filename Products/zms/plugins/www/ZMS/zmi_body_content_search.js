@@ -135,6 +135,11 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
 	}
 	let adapter = $ZMI.getConfProperty('zms.search.adapter.id','zcatalog_adapter');
 	let connector = $ZMI.getConfProperty('zms.search.connector.id','zcatalog_connector');
+	// Check for connector base-url override
+	let connector_base_url = $ZMI.getConfProperty('zms.search.connector.base_url','');
+	if (connector_base_url.length > 0) {
+		base_url = connector_base_url;
+	}
 	let url = base_url+'/'+adapter+'/'+connector+'/search_json';
 	$.ajax({
 		url:url,

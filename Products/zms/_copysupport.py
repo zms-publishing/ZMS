@@ -290,29 +290,31 @@ class CopySupport(object):
 
 
     ############################################################################
-    # CopySupport.manage_copyObjects:
+    # CopySupport.manage_copyObject:
     ############################################################################
-    def manage_copyObjects(self, ids=None, REQUEST=None, RESPONSE=None):
+    def manage_copyObject(self, ids=[], REQUEST=None, RESPONSE=None):
       """Put a reference to the objects named in ids in the clip board"""
-      standard.writeLog( self, "[CopySupport.manage_copyObjects]")
-      super( self.__class__, self).manage_copyObjects( ids, REQUEST, RESPONSE)
+      context = self
+      if not ids:
+        ids = [self.getId()]
+        context = self.aq_parent
+      context.manage_copyObjects( ids, REQUEST, RESPONSE)
       # Return with message.
-      if RESPONSE is not None:
-        message = ''
-        RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(REQUEST['lang'], standard.url_quote(message)))
+      RESPONSE.redirect('manage_main?lang=%s'%(REQUEST['lang']))
 
 
     ############################################################################
-    # CopySupport.manage_cutObjects:
+    # CopySupport.manage_cutObject:
     ############################################################################
-    def manage_cutObjects(self, ids=None, REQUEST=None, RESPONSE=None):
+    def manage_cutObject(self, ids=[], REQUEST=None, RESPONSE=None):
       """Put a reference to the objects named in ids in the clip board"""
-      standard.writeLog( self, "[CopySupport.manage_cutObjects]")
-      cb_copy_data = super( self.__class__, self).manage_cutObjects( ids, REQUEST, RESPONSE)
+      context = self
+      if not ids:
+        ids = [self.getId()]
+        context = self.aq_parent
+      context.manage_cutObjects( ids, REQUEST, RESPONSE)
       # Return with message.
-      if RESPONSE is not None:
-        message = ''
-        RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(REQUEST['lang'], standard.url_quote(message)))
+      RESPONSE.redirect('manage_main?lang=%s'%(REQUEST['lang']))
 
 
     ############################################################################

@@ -167,10 +167,10 @@ def normalize_ids_after_move(node, id_prefix='e', ids=[]):
             if not '*' in ids:
                 lang = request.get('lang')
                 for langId in node.getLangIds():
-                    request.set('lang',langId)
+                    request.set('lang', langId)
                     childNode.setObjStateModified(request)
                     childNode.onChangeObj(request)
-                request.set('lang',lang)
+                request.set('lang', lang)
                 # new id
                 if id.startswith(copy_of_prefix):
                     new_id = id[len(id.startswith(copy_of_prefix)):]
@@ -178,8 +178,8 @@ def normalize_ids_after_move(node, id_prefix='e', ids=[]):
                     new_id = node.getNewId(id_prefix)
             # reset id
             if new_id is not None and new_id != id:
-                standard.writeBlock(node,'[CopySupport._normalize_ids_after_move]: rename %s(%s) to %s'%(childNode.absolute_url(),childNode.meta_id,new_id))
-                node.manage_renameObject(id=id,new_id=new_id)
+                standard.writeBlock(node, '[CopySupport._normalize_ids_after_move]: rename %s(%s) to %s' % (childNode.absolute_url(), childNode.meta_id, new_id))
+                node.manage_renameObject(id=id, new_id=new_id)
 
 
 ################################################################################
@@ -195,17 +195,17 @@ class CopySupport(object):
     #  CopySupport._get_cb_copy_data:
     # --------------------------------------------------------------------------
     def _get_cb_copy_data(self, cb_copy_data=None, REQUEST=None):
-        cp=None
+        cp = None
         if cb_copy_data is not None:
-            cp=cb_copy_data
+            cp = cb_copy_data
         else:
             if REQUEST and '__cp' in REQUEST:
-                cp=REQUEST['__cp']
+                cp = REQUEST['__cp']
         if cp is None:
             raise CopyError('No Data')
 
         try:
-            cp=_cb_decode(cp)
+            cp = _cb_decode(cp)
         except:
             raise CopyError('Invalid')
 
@@ -218,12 +218,12 @@ class CopySupport(object):
     def _get_obs(self, cp):
 
         try:
-            cp=_cb_decode(cp)
+            cp = _cb_decode(cp)
         except:
             raise CopyError('Invalid')
 
-        oblist=[]
-        op=cp[0]
+        oblist = []
+        op = cp[0]
         app = self.getPhysicalRoot()
 
         for mdata in cp[1]:
@@ -242,7 +242,7 @@ class CopySupport(object):
         op = cp[0]
         cp = (0, cp[1])
         cp = _cb_encode(cp)
-        return self._get_obs( cp)
+        return self._get_obs(cp)
 
 
     # --------------------------------------------------------------------------
@@ -254,7 +254,7 @@ class CopySupport(object):
     # --------------------------------------------------------------------------
     def _get_id(self, id):
         copy_of_prefix = 'copy_of_'
-        return copy_of_prefix+id
+        return copy_of_prefix + id
 
 
     # --------------------------------------------------------------------------
@@ -264,12 +264,12 @@ class CopySupport(object):
     #  in correct sort-order.
     # --------------------------------------------------------------------------
     def _set_sort_ids(self, ids, op, REQUEST):
-        standard.writeLog( self, "[CopySupport._set_sort_ids]: %s"%self.absolute_url())
+        standard.writeLog(self, "[CopySupport._set_sort_ids]: %s" % self.absolute_url())
         copy_of_prefix = 'copy_of_'
         sort_id = REQUEST.get('_sort_id', 0) + 1
         for ob in self.getChildNodes():
             id = ob.getId()
-            if (id in ids) or (op == OP_MOVE and copy_of_prefix+id in ids):
+            if (id in ids) or (op == OP_MOVE and copy_of_prefix + id in ids):
                 ob.setSortId(sort_id)
                 sort_id += 1
 
@@ -332,29 +332,31 @@ class CopySupport(object):
 
 
     ############################################################################
-    # CopySupport.manage_copyObjects:
+    # CopySupport.manage_copyObject:
     ############################################################################
-    def manage_copyObjects(self, ids=None, REQUEST=None, RESPONSE=None):
+    def manage_copyObject(self, ids=[], REQUEST=None, RESPONSE=None):
         """Put a reference to the objects named in ids in the clip board"""
-        standard.writeLog( self, "[CopySupport.manage_copyObjects]")
-        super( self.__class__, self).manage_copyObjects( ids, REQUEST, RESPONSE)
+        context = self
+        if not ids:
+            ids = [self.getId()]
+            context = self.aq_parent
+        context.manage_copyObjects(ids, REQUEST, RESPONSE)
         # Return with message.
-        if RESPONSE is not None:
-            message = ''
-            RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(REQUEST['lang'], standard.url_quote(message)))
+        RESPONSE.redirect('manage_main?lang=%s' % (REQUEST['lang']))
 
 
     ############################################################################
-    # CopySupport.manage_cutObjects:
+    # CopySupport.manage_cutObject:
     ############################################################################
-    def manage_cutObjects(self, ids=None, REQUEST=None, RESPONSE=None):
+    def manage_cutObject(self, ids=[], REQUEST=None, RESPONSE=None):
         """Put a reference to the objects named in ids in the clip board"""
-        standard.writeLog( self, "[CopySupport.manage_cutObjects]")
-        cb_copy_data = super( self.__class__, self).manage_cutObjects( ids, REQUEST, RESPONSE)
+        context = self
+        if not ids:
+            ids = [self.getId()]
+            context = self.aq_parent
+        context.manage_cutObjects(ids, REQUEST, RESPONSE)
         # Return with message.
-        if RESPONSE is not None:
-            message = ''
-            RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(REQUEST['lang'], standard.url_quote(message)))
+        RESPONSE.redirect('manage_main?lang=%s' % (REQUEST['lang']))
 
 
     ############################################################################
@@ -367,8 +369,8 @@ class CopySupport(object):
     ############################################################################
     def manage_pasteObjs(self, REQUEST, RESPONSE=None):
         """ CopySupport.manage_pasteObjs """
-        id_prefix = REQUEST.get('id_prefix','e')
-        standard.writeBlock( self, "[CopySupport.manage_pasteObjs]")
+        id_prefix = REQUEST.get('id_prefix', 'e')
+        standard.writeBlock(self, "[CopySupport.manage_pasteObjs]")
         t0 = time.time()
 
         # Analyze request
@@ -383,10 +385,10 @@ class CopySupport(object):
             self._copy_blobs_if_other_mediadb(mode='read_from_source', oblist=oblist)
 
         # Paste objects.
-        action = ['Copy','Move'][op==OP_MOVE]
-        standard.triggerEvent(self,'before%sObjsEvt'%action)
-        self.manage_pasteObjects(cb_copy_data=None,REQUEST=REQUEST)
-        standard.triggerEvent(self,'after%sObjsEvt'%action)
+        action = ['Copy', 'Move'][op == OP_MOVE]
+        standard.triggerEvent(self, 'before%sObjsEvt' % action)
+        self.manage_pasteObjects(cb_copy_data=None, REQUEST=REQUEST)
+        standard.triggerEvent(self, 'after%sObjsEvt' % action)
 
         if self.getMediaDb():
             self._copy_blobs_if_other_mediadb(mode='copy_to_target')
@@ -396,10 +398,10 @@ class CopySupport(object):
 
         # Move objects.
         if op == OP_MOVE:
-            normalize_ids_after_move(self,id_prefix=id_prefix,ids=ids)
+            normalize_ids_after_move(self, id_prefix=id_prefix, ids=ids)
         # Copy objects.
         else:
-            normalize_ids_after_copy(self,id_prefix=id_prefix,ids=ids)
+            normalize_ids_after_copy(self, id_prefix=id_prefix, ids=ids)
 
         # Sort order (II).
         self.normalizeSortIds()
@@ -407,7 +409,7 @@ class CopySupport(object):
         # Return with message.
         if RESPONSE is not None:
             message = self.getZMILangStr('MSG_PASTED')
-            message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
-            RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(REQUEST['lang'], standard.url_quote(message)))
+            message += ' (in ' + str(int((time.time() - t0) * 100.0) / 100.0) + ' secs.)'
+            RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s' % (REQUEST['lang'], standard.url_quote(message)))
 
 ################################################################################

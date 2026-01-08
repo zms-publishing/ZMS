@@ -36,7 +36,9 @@
 
 	<div class="zmi-form-container">
 	<ul class="zmi-container">
-		<li class="zmi-item zmi-selectable pageelement" tal:define="global childNode python:here" tal:attributes="id python:'zmi_item_'">
+		<li class="zmi-item zmi-selectable pageelement" id="zmi_item_"
+			tal:define="childNode python:here" 
+			tal:attributes="data-context_id python:childNode.id!='content' and str(childNode.id) or None">
 			<div tal:attributes="class python:'center%s'%([' inactive',''][childNode.isActive(request)])"
 				tal:content="structure python:childNode.renderShort(request,True)">
 				<h1>
@@ -55,7 +57,8 @@
 						<tal:block tal:content="structure python:childNode.display_icon()">the icon</tal:block>
 					</button>
 				</div><!-- .btn-group -->
-				<div class="zmi-manage-main-change" tal:on-error="string: ERROR here.zmi_manage_main_change(childNode,request)" tal:content="structure python:here.zmi_manage_main_change(childNode,request)">
+				<div class="zmi-manage-main-change" tal:on-error="string: ERROR here.zmi_manage_main_change(childNode,request)" 
+					tal:content="structure python:here.zmi_manage_main_change(childNode,request)">
 					the info child-node
 				</div>
 			</div><!-- .right -->

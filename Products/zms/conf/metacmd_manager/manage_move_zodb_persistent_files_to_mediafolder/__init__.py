@@ -25,7 +25,7 @@ class manage_move_zodb_persistent_files_to_mediafolder:
 	meta_types = ["ZMS"]
 
 	# Name
-	name = "Re-Index All Clients"
+	name = "Move ZODB Persistent Files to Media Folder"
 
 	# Nodes
 	nodes = "{$}"

@@ -1,19 +1,14 @@
 from Products.zms import standard
 
-def reindex_page(self, uid, zmsindex, catalog, page_size=100, regenerate_duplicates=False):
+def traverse(self, uid, zmsindex, catalog, page_size=100):
   log = []
   nodes, next_node = self.get_next_page(uid, page_size, clients=True)
   for node in nodes:
     l = [node.id, node.meta_id]
-    duplicate, regenerate = zmsindex.catalog_object(catalog, node, regenerate_duplicates)
-    if duplicate: 
-      l.append('@duplicate')
-    if regenerate: 
-      l.append('@regenerate')
     log.append(l)
   return {'log':log, 'next_node':next_node}
 
-def manage_zmsindex_reindex( self):
+def manage_move_zodb_persistent_files_to_mediafolder( self):
   self = self.getZMSIndex()
   request = self.REQUEST
   RESPONSE = request.RESPONSE
@@ -39,8 +34,7 @@ def manage_zmsindex_reindex( self):
       uid = request['uid']
       catalog = zmsindex.get_catalog(uid == '{$}')
       page_size = int(request['page_size'])
-      regenerate_duplicates = standard.pybool(request['regenerate_duplicates'])
-      result = reindex_page(self, uid, zmsindex, catalog, page_size, regenerate_duplicates)
+      result = traverse(self, uid, zmsindex, catalog, page_size)
     RESPONSE.setHeader('Cache-Control', 'no-cache')
     RESPONSE.setHeader('Content-Type', 'application/json; charset=utf-8')
     return json.dumps(result)
@@ -55,7 +49,7 @@ def manage_zmsindex_reindex( self):
   prt.append(self.zmi_breadcrumbs(self,request,extra=[{'label':'Index','action':'manage_main'}]))
   prt.append('<form class="form-horizontal card" name="form0" method="post" enctype="multipart/form-data">')
   prt.append('<input type="hidden" name="lang" value="%s"/>'%request['lang'])
-  prt.append('<legend>ZMSIndex: Incremental Re-Indexing</legend>')
+  prt.append('<legend>Media Folder: Move ZODB Persistent Files</legend>')
   prt.append('<div class="card-body">')
   prt.append("""
     <div class="form-group row">
@@ -68,13 +62,6 @@ def manage_zmsindex_reindex( self):
       <label for="root_node" class="col-sm-2 control-label">Root</label>
       <div class="col-sm-10">
         <input class="form-control url-input" id="root_node" name="root_node" type="text" value="{$}" />
-      </div>
-    </div><!-- .form-group -->
-    <div class="form-group row mb-4">
-      <label class="col-sm-2 control-label">UID-Handling</label>
-      <div class="col-sm-10">
-        <input class="btn btn-secondary mr-2" id="regenerate_duplicates" name="regenerate_duplicates" type="checkbox">
-        Regenerate UID Duplicates
       </div>
     </div><!-- .form-group -->
     <div class="form-group row d-none">
@@ -191,7 +178,7 @@ def manage_zmsindex_reindex( self):
               html += '<td class="count w-100">' + 0 + '</td>';
               html += '</tr>';
             });
-            ['duplicate','regenerate'].forEach(x => {
+            ['moved'].forEach(x => {
               html += '<tr class="' + x + '">';
               html += '<td class="id"><strong>' + x + '<strong></td>';
               html += '<td class="total">' + 0 + '</td>';
@@ -221,8 +208,7 @@ def manage_zmsindex_reindex( self):
         const root_node = $('#root_node').val();
         const uid = $('#uid').val();
         const page_size = $("input#page_size").val();
-        const regenerate_duplicates = $('#regenerate_duplicates').prop('checked')?true:false;
-        const params = {'json':true,'traverse':true,'root_node':root_node,'uid':uid,'page_size':page_size,'regenerate_duplicates':regenerate_duplicates};
+        const params = {'json':true,'traverse':true,'root_node':root_node,'uid':uid,'page_size':page_size};
         const start = new Date().getTime(); 
         $.get('manage_move_zodb_persistent_files_to_mediafolder',params,function(data) {
             const duration = new Date().getTime() - start; 
@@ -245,7 +231,7 @@ def manage_zmsindex_reindex( self):
               const meta_id = x[1];
               map[meta_id] = map[meta_id] + 1;
               $("#count_table tr." + meta_id + " .count").html(map[meta_id]);
-              ['duplicate','regenerate'].forEach(k => {
+              ['moved'].forEach(k => {
                 if (x.includes('@'+k)) {
                   map[k] = map[k] + 1;
                   $("#count_table tr." + k + " .count").html(map[k]);

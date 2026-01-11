@@ -229,12 +229,8 @@ def getPACKAGE_HOME():
   Returns path to lib/site-packages.
   @rtype: C{str}
   """
-  try:
-    from distutils.sysconfig import get_python_lib
-    return get_python_lib()
-  except:
-    import sysconfig
-    return sysconfig.get_path('purelib')
+  import sysconfig
+  return sysconfig.get_path('purelib')
 
 
 security.declarePublic('getINSTANCE_HOME')

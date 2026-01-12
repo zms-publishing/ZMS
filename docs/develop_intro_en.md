@@ -1,62 +1,61 @@
 # ZMS Installation
 
 ## Prerequisites
-The following setup is working on Ubuntu 20.4. and will run in a similar way on other unix-like operating systems (as well as *Windows Sublinux*, WSL). It is recomended to add a special non-root user like _zope_ for running the zope application server.
-ZMS needs a Python version 3.8+; please check your installed python version
+The following setup is working on Ubuntu 24.4. and will run in a similar way on other unix-like operating systems (as well as *Windows Sublinux*, WSL). It is recomended to add a special non-root user like _zope_ for running the zope application server.
+ZMS needs a Python version 3.10+; please check your installed python version
 ```console
 ~$: python3 --version
 ```
 and update or reinstall Python3, if it is missing or a former Python version is installed.
 ZMS is running on Zope (Version 5+) as the underlaying Python3 application server. The ZMS setup routine automatically installs Zope. Zope needs some basic OS packages for communication and compiling; the following packages should be installed on your system:
 ```console
-~$: sudo apt-get install gcc
-~$: sudo apt-get install openssh-server
-~$: sudo apt-get install build-essential 
-~$: sudo apt-get install libssl-dev libffi-dev
-~$: sudo apt-get install libldap2-dev libsasl2-dev 
-~$: sudo apt-get install python3-dev
-~$: sudo apt-get install python3-venv
-~$: sudo apt-get install git
+~$: sudo apt-get update
+~$: sudo apt-get install -y ca-certificates
+~$: sudo update-ca-certificates
+~$: sudo apt-get -y upgrade
+~$: sudo apt-get install -y locales locales-all
+~$: sudo apt-get install -y make gcc g++ git build-essential
+~$: sudo apt-get install -y python3 python3-dev python3-venv
+~$: sudo apt-get install -y default-libmysqlclient-dev build-essential pkg-config
+~$: sudo apt-get install -y slapd libldap2-dev libsasl2-dev
+~$: sudo apt-get install -y memcached
 ```
+
 
 ## 1. Setup virtual Python environment
 The first step is to setup a virtual Python environment which is a kind of copy of the primary Python installation which easily can be extended or replaced. The following example places the virtual environment into the home-folder of user _zope_:
 ```console
-~$: python3 -m venv /home/zope/vpy313
+~$: adduser zope && usermod -aG sudo zope
+~$: su - zope
+~$: python3 -m venv /home/zope/vpy3
 ```
 ## 2. Install ZMS into the virtual Python environment
 After changing to the `bin`-folder of the installed virtual environment, simply install ZMS with `pip` from the ZMS-github-master: https://github.com/zms-publishing/ZMS
 
 ```console
-~$: cd /home/zope/vpy313/bin/
-~$: ./pip install https://github.com/zms-publishing/ZMS/archive/master.zip
+~$: cd /home/zope/vpy3/bin/
+~$: source activate
+~$: ./pip install -U pip wheel setuptools
+~$: ./pip install -r https://raw.githubusercontent.com/zms-publishing/ZMS5/main/requirements-full.txt
+~$: ./pip install --use-pep517 --config-settings editable_mode=compat -e git+https://github.com/zms-publishing/ZMS.git@main#egg=ZMS
+~$: ./pip install ZEO
 ```
-**Developing ZMS**: If you intend to work on the code of ZMS (or Zope or any other site-package), please, pip-install it's source-code in the _editable-mode_ again: first add a folder for the git sources, clone the sources and finally install the module without dependencies:
+Hint: This installation is intended to work on the code of ZMS (or Zope or any other site-package) and installs the source-code of ZMS in the _editable-mode_. As _editable_ installed modules appear in the pip-list with it's source link:
 
 ```console
-~$: cd /home/zope/
-~$: mkdir src
-~$: cd src
-~$: git clone git@github.com:zms-publishing/ZMS.git
-~$: cd /home/zope/vpy313/bin/
-~$: ./pip install --no-deps -e /home/zope/src/ZMS/.
-```
-After this procedure the virtual-python has ommited the formely installed ZMS package and will reference the ZMS code from your git repository. The as _editable_ installed modules appear in the pip-list with it's source link:
-
-```console
-~$: cd /home/zope/vpy313/bin/
+~$: cd /home/zope/vpy3/bin/
 ~$: ./pip list
 
 Package                        Version     Location             
 ------------------------------ --------- -----------------------
-AccessControl                  5.7      
+AccessControl                  7.2      
 ...
-zipp                           3.14.0   
-ZMS                            5.1.0    /home/zope/src/ZMS
-ZODB                           5.8.0    
-zodbpickle                     2.6      
-Zope                           5.8.1    /home/zope/src/Zope/src
-zope.annotation                4.8      
+zExceptions                    5.0      
+ZMS                            5.2.0    /home/zope/src/ZMS
+ZODB                           6.8.0    
+zodbpickle                     4.1.1      
+Zope                           5.13.1   /home/zope/src/Zope/src
+zope.annotation                5.0      
 ...
 
 ~$:
@@ -119,7 +118,7 @@ Hint: The most important item actually is `python.defaultInterpreterPath` for th
 ### launch-items
 The section *launch* in the workspace-file tells VSCode how the Python extension will start the debugger. So all relevant paths must be mentioned, especially the starting `programm` and the `env`ironment variables Zope needs for starting a Zope instance. The following example config file assumes that 
 
-1. there is a user `zope` using its home folder as a location for the virtual python (`~/vpy313/`) and the zope instances (`~/instance/`)
+1. there is a user `zope` using its home folder as a location for the virtual python (`~/vpy3/`) and the zope instances (`~/instance/`)
 2. the name of the Zope instance is `zms5_dev`
 3. the git-cloned code of Zope and ZMS are placed in a source folder called `~/src`
 
@@ -130,7 +129,7 @@ The section *launch* in the workspace-file tells VSCode how the Python extension
 			"name": "ZMS5-DEV",
 			"type": "python",
 			"request": "launch",
-			"program": "~/vpy313/bin/runwsgi",
+			"program": "~/vpy3/bin/runwsgi",
 			"justMyCode": false,
 			"console": "integratedTerminal",
 			"args": [
@@ -145,8 +144,8 @@ The section *launch* in the workspace-file tells VSCode how the Python extension
 				"CONFIG_FILE": "~/instance/zms5_dev/etc/zope.ini",
 				"INSTANCE_HOME": "~/instance/zms5_dev",
 				"CLIENT_HOME": "~/instance/zms5_dev",
-				"PYTHON": "~/vpy313/bin/python",
-				"SOFTWARE_HOME": "~/vpy313/bin/"
+				"PYTHON": "~/vpy3/bin/python",
+				"SOFTWARE_HOME": "~/vpy3/bin/"
 			},
 		},
 	]
@@ -235,7 +234,7 @@ In an [ZEO environment](https://zope.readthedocs.io/en/latest/zopebook/ZEO.html#
 			"name": "ZMS5-DEV",
 			"type": "python",
 			"request": "launch",
-			"program": "~/vpy313/bin/runwsgi",
+			"program": "~/vpy3/bin/runwsgi",
 			"justMyCode": false,
 			"console": "integratedTerminal",
 			"args": [
@@ -250,8 +249,8 @@ In an [ZEO environment](https://zope.readthedocs.io/en/latest/zopebook/ZEO.html#
 				"CONFIG_FILE": "~/instance/zms5_dev/etc/zope.ini",
 				"INSTANCE_HOME": "~/instance/zms5_dev",
 				"CLIENT_HOME": "~/instance/zms5_dev",
-				"PYTHON": "~/vpy313/bin/python",
-				"SOFTWARE_HOME": "~/vpy3137/bin/"
+				"PYTHON": "~/vpy3/bin/python",
+				"SOFTWARE_HOME": "~/vpy37/bin/"
 			},
 		},
 	]
@@ -324,7 +323,7 @@ As an example the following shell scripts starts ZEO first and then the Zope ins
 #!/bin/bash
 
 instance_dir="/home/zope/instances/zms5_dev"
-venv_bin_dir="/home/zope/vpy313/bin"
+venv_bin_dir="/home/zope/vpy3/bin"
 
 nohup  $venv_bin_dir/runzeo --configure $instance_dir/etc/zeo.conf 1>/dev/null 2>/dev/null &
 echo "ZEO started"

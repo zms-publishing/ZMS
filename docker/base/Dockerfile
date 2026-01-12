@@ -40,6 +40,9 @@ RUN <<EOR
     git config --global user.name "zmsbot"
 EOR
 
+# Provide ZEO health check script
+COPY --chown=zope:zope docker/base/zeo_health_check.py /home/zope/bin/zeo_health_check.py
+
 # Install uv
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
 ENV UV_LINK_MODE=copy

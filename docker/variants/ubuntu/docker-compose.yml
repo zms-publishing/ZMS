@@ -9,6 +9,7 @@ services:
     networks:
       - zms_network
     environment:
+      - TZ=Europe/Berlin
       - PYTHONUNBUFFERED="1"
       - CONFIG_FILE="/home/zope/etc/zope.ini"
       - INSTANCE_HOME="/home/zope"

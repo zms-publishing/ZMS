@@ -6168,6 +6168,22 @@
     <Cell><Data ss:Type="String">שונה</Data></Cell>
    </Row>
    <Row>
+    <Cell><Data ss:Type="String">STATE_MODIFIED_OBJS</Data></Cell>
+    <Cell><Data ss:Type="String">Geänderte Unterobjekte</Data></Cell>
+    <Cell><Data ss:Type="String">Modified Sub-Objects</Data></Cell>
+    <Cell><Data ss:Type="String">Gewijzigde subobjecten</Data></Cell>
+    <Cell><Data ss:Type="String">Objets secondaires modifiés</Data></Cell>
+    <Cell><Data ss:Type="String">Oggetti secondari modificati</Data></Cell>
+    <Cell><Data ss:Type="String">Sub-objetos modificados</Data></Cell>
+    <Cell><Data ss:Type="String">已修改的子对象</Data></Cell>
+    <Cell><Data ss:Type="String">زیرشیءهای تغییر یافته</Data></Cell>
+    <Cell><Data ss:Type="String">Изменённые под-объекты</Data></Cell>
+    <Cell><Data ss:Type="String">परिवर्तित उप-वस्तुएँ</Data></Cell>
+    <Cell><Data ss:Type="String">الكائنات الفرعية المعدلة</Data></Cell>
+    <Cell><Data ss:Type="String">Các đối tượng con đã thay đổi</Data></Cell>
+    <Cell><Data ss:Type="String">אובייקטי משנה ששונו</Data></Cell>
+   </Row>
+   <Row>
     <Cell><Data ss:Type="String">STATE_NEW</Data></Cell>
     <Cell><Data ss:Type="String">Neu</Data></Cell>
     <Cell><Data ss:Type="String">New</Data></Cell>

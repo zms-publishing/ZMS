@@ -355,7 +355,8 @@ def get_init_py(self, o):
   py.append('\t"""')
   py.append('')
   e = sorted([x for x in o if not x.startswith('__') and x==x.capitalize() and isinstance(o[x], list)])
-  keys = sorted([x for x in o if not x.startswith('__') and x not in e])
+  # Hint: type Acquisition.ExplicitAcquisitionWrapper refers to Zope objects as part of a filter-process definition ('ob'-attribute)
+  keys = sorted([x for x in o if not x.startswith('__') and x not in e and not isinstance(o.get(x), Acquisition.ExplicitAcquisitionWrapper)])
   for k in keys:
     v = o.get(k)
     py.append('\t# %s'%k.capitalize())

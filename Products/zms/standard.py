@@ -229,8 +229,8 @@ def getPACKAGE_HOME():
   Returns path to lib/site-packages.
   @rtype: C{str}
   """
-  from distutils.sysconfig import get_python_lib
-  return get_python_lib()
+  import sysconfig
+  return sysconfig.get_path('purelib')
 
 
 security.declarePublic('getINSTANCE_HOME')
@@ -1037,7 +1037,7 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
     userpass = auth['username']+':'+auth['password']
     userpass = urllib.parse.unquote(userpass)
     userpass = userpass.encode('utf-8')
-    userpass = base64.encodestring(userpass).decode('utf-8').strip()
+    userpass = base64.encodebytes(userpass).decode('utf-8').strip()
     headers['Authorization'] = 'Basic '+userpass
   if method == 'GET' and query:
     path += '?' + query
@@ -1058,7 +1058,6 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
   elif reply_code==200 or debug:
     # get content
     data = response.read()
-    rtn = None
     if parse_qs:
       try:
         # return dictionary of value lists
@@ -1953,6 +1952,22 @@ def is_equal(x, y):
     elif inspect.isclass(x) and inspect.isclass(y) and 'toXml' in x.__dict__ and 'toXml' in y.__dict__:
       return cmp(x.toXml(),y.toXml())==0
   return cmp(x, y)==0
+
+
+security.declarePublic('scalar')
+def scalar(o):
+  if isinstance(o, time.struct_time):
+    return format_datetime_iso(o)
+  elif isinstance(o, list) or isinstance(o, tuple):
+    return [scalar(x) for x in o]
+  elif type(o) is dict:
+    return {k: scalar(o[k]) for k in o}
+  elif type(o) in [int, float, bool, str]:
+    return o
+  elif o is not None:
+    return str(o)
+  return None
+
 
 security.declarePublic('parse_json')
 def parse_json(*args, **kwargs):

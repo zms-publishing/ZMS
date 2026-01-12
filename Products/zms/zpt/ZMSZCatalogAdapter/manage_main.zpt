@@ -173,8 +173,23 @@
 						</colgroup>
 						<thead>
 							<tr>
-								<th tal:content="python:here.getZMILangStr('ATTR_OBJECTS')">the objects</th>
-								<th tal:content="python:here.getZMILangStr('ATTR_ATTRS')">the attributes</th>
+								<th>
+									<b tal:replace="python:here.getZMILangStr('ATTR_OBJECTS')">the objects</b>
+									<!-- checkbox for showing only page-like object classes-->
+									&nbsp;&nbsp;
+									<span title="Filter the list of content classes to show only those that are typically used as pages (e.g., ZMSDocument, ZMSFolder). This helps in focusing on relevant classes for catalog indexing."
+										style="opacity:0.5;">
+										<input type="checkbox" id="filter_pages" title="Show only page-like object classes." style="vertical-align:middle;"
+											onchange="filterPages()" />
+										<label for="filter_pages" 
+											style="font-size:smaller;font-weight:normal;vertical-align:middle;margin:0 0 -1px 0;">
+											Show only page-like classes
+										</label>
+									</span>
+								</th>
+								<th>
+									<b tal:replace="python:here.getZMILangStr('ATTR_ATTRS')">the attributes</b>
+								</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -184,7 +199,9 @@
 										<tbody>
 											<tal:block tal:repeat="metaObjPackage python:here.sort_list(metaObjPackages+metaObjPackages2)">
 												<tal:block tal:condition="python:metaObjPackage in metaObjPackages">
-													<tr tal:condition="python:len([x for x in metaObjs if x.get('package')==metaObjPackage])>0" tal:define="global metaObj python:here.getMetaobj(metaObjPackage)">
+													<tr tal:condition="python:len([x for x in metaObjs if x.get('package')==metaObjPackage])>0" 
+														tal:define="global metaObj python:here.getMetaobj(metaObjPackage)"
+														data-classtype="ZMSPackage">
 														<td colspan="2">
 															<tal:block tal:condition="python:metaObjPackage">
 																<a href="#" class="mr-1" target="_blank" title="Show Content Class Package Details (Big Picture)"
@@ -200,16 +217,16 @@
 													</tr>
 												</tal:block>
 												<tal:block tal:condition="not:python:metaObjPackage in metaObjPackages">
-													<tr>
+													<tr data-classtype="ZMSPackage">
 														<td colspan="2" style="text-decoration:line-through">
 															<i class="fas fa-briefcase"></i>
 															<strong tal:content="metaObjPackage">the id</strong>
 														</td>
 													</tr>
 												</tal:block>
-												<tr title="Index any of the class type."
-													tal:condition="not:metaObjPackage" 
-													tal:repeat="value python:['type(ZMSDocument)','type(ZMSObject)']">
+												<tr tal:condition="not:metaObjPackage" 
+													tal:repeat="value python:['type(ZMSDocument)','type(ZMSObject)']"
+													tal:attributes="data-classtype python:value=='type(ZMSDocument)' and 'ZMSDocument' or 'ZMSObject'">
 													<td class="text-center">
 														<input type="checkbox" name="ids:list" tal:attributes="value value;id python:'objtype_%s'%(value)" />
 													</td>
@@ -219,8 +236,8 @@
 													</td>
 												</tr>
 												<tal:block tal:repeat="metaObj metaObjs">
-													<tr title="Index the content class."
-														tal:condition="python:metaObj['type']!='ZMSPackage' and metaObj.get('package')==metaObjPackage">
+													<tr tal:condition="python:metaObj['type']!='ZMSPackage' and metaObj.get('package')==metaObjPackage"
+														tal:attributes="data-classtype python:metaObj['type']">
 														<td class="text-center">
 															<input type="checkbox" name="ids:list" tal:attributes="value metaObj/id;
 																id python:'objid_%s'%(metaObj['id']);
@@ -269,6 +286,16 @@
 
 <script>
 //<!--
+function filterPages() {
+	var showOnlyPages = $("#filter_pages").prop("checked");
+	if (showOnlyPages) {
+		$("#meta_types tr[data-classtype]").hide();
+		$("#meta_types tr[data-classtype='ZMSDocument']").show();
+	} else {
+		$("#meta_types tr[data-classtype]").show();
+	}
+}
+
 function toggleMetaobj() {
 	var selected = {};
 	$("table#indexes input:checked").each(function() {

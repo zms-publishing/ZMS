@@ -143,8 +143,7 @@ class DeprecatedAPI(object):
   """
   def js_quote(self, text, charset=None):
     warn(self, 'js_quote', 'None')
-    if isinstance(text, str):
-      text= text.encode([charset, 'utf-8'][charset==None])
+    text = standard.pystr(text)
     text = text.replace("\r", "\\r").replace("\n", "\\n")
     text = text.replace('"', '\\"').replace("'", "\\'")
     return text

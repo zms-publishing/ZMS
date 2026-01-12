@@ -4,25 +4,13 @@
 			"name": "ZMS5",
 			"path": "../"
 		},
-		// {
-		// 	"name": "ZMS5 Dev Instance",
-		// 	"path": "/home/zope/instance/zms5_dev"
-		// },
+		{
+			"name": "ZMS5 Dev Instance",
+			"path": "/home/zope/instance/zms5_dev"
+		},
 		// {
 		// 	"name": "Zope 5",
 		// 	"path": "/home/zope/src/zopefoundation/Zope"
-		// },
-		// {
-		// 	"name": "ZMS4",
-		//  	"path": "../../ZMS4"
-		//  },
-		// {
-		// 	"name": "ZMS3",
-		//  	"path": "../../ZMS3"
-		//  },
-		// {
-		// 	"name": "OpenSearchServer",
-		// 	"path": "/home/zope/src/sntl-projects/opensearch_demo"
 		// },
 		// {
 		// 	"name": "Zope-WebDAV Access",
@@ -31,7 +19,7 @@
 	],
 
 	"settings": {
-		"python.defaultInterpreterPath": "~/vpy313/bin/python",
+		"python.defaultInterpreterPath": "/home/zope/vpy3/bin/python3",
 		"window.zoomLevel": 0,
 		"git.ignoreMissingGitWarning": true,
 		"editor.minimap.enabled": false,
@@ -79,22 +67,22 @@
 				"name": "ZMS5-DEV",
 				"type": "debugpy",
 				"request": "launch",
-				"program": "~/vpy313/bin/runwsgi",
+				"program": "/home/zope/vpy3/bin/runwsgi",
 				"justMyCode": false,
 				"console": "integratedTerminal",
 				"args": [
 					"--debug",
 					"--verbose",
-					"~/instance/zms5_dev/etc/zope.ini",
+					"/home/zope/instance/zms5_dev/etc/zope.ini",
 					"debug-mode=on"
 				],
 				"env": {
 					"PYTHONUNBUFFERED": "1",
-					"CONFIG_FILE": "~/instance/zms5_dev/etc/zope.ini",
-					"INSTANCE_HOME": "~/instance/zms5_dev",
-					"CLIENT_HOME": "~/instance/zms5_dev",
-					"PYTHON": "~/vpy313/bin/python",
-					"SOFTWARE_HOME": "~/vpy313/bin/"
+					"CONFIG_FILE": "/home/zope/instance/zms5_dev/etc/zope.ini",
+					"INSTANCE_HOME": "/home/zope/instance/zms5_dev",
+					"CLIENT_HOME": "/home/zope/instance/zms5_dev",
+					"PYTHON": "/home/zope/vpy3/bin/python",
+					"SOFTWARE_HOME": "/home/zope/vpy3/bin/"
 				},
 				"serverReadyAction": {
 					"pattern": "Serving on http://127.0.0.1:8080",

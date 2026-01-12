@@ -27,7 +27,7 @@
 			<div class="col-sm-9 col-md-10">
 				<div class="btn-group">
 					<input type="hidden" id="connection_id" name="connection_id" tal:attributes="value python:getattr(here,'connection_id','')"/>
-					<button type="button" class="btn btn-secondary" tal:attributes="onclick python:'var url=$(\'span\',this).attr(\'data-url\')\073if(typeof url!=\'undefined\')window.open(url+\'/manage_main\')'">
+					<button type="button" class="btn btn-secondary" tal:attributes="onclick python:'var url=$(\'span\',this).attr(\'data-url\')\073if(typeof url!=\'undefined\')window.open(url+\'/manage_workspace\')'">
 						<tal:block tal:repeat="SQLConnectionID python:[x for x in here.SQLConnectionIDs() if getattr(here,'connection_id','')==x[1]]">
 							<span tal:attributes="data-url python:getattr(here,SQLConnectionID[1]).absolute_url()">
 								<i class="fas fa-database"></i>

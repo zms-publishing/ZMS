@@ -6,7 +6,7 @@ of depending packages (see requirements.txt).
     $ cd path/to/zms/checkout
     $ pip install -r https://raw.githubusercontent.com/zopefoundation/Zope/master/requirements-full.txt
     $ pip install -r requirements.txt
-    $ pip install -e .
+    $ pip install --use-pep517 --config-settings editable_mode=compat -e .
   to install the environment fetching the latest development snapshots from SVN/GIT-Repositories
   (currently unstable)
 

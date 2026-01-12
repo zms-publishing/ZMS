@@ -89,6 +89,7 @@ def manage_opensearch_schematize( self):
 	properties['zmsid'] = {'type':'text'}
 	properties['uid'] = {'type':'text'}
 	properties['loc'] = {'type':'text','analyzer':'path_analyzer'}
+	properties['path'] = {'type':'text','analyzer':'path_analyzer'}
 	properties['index_html'] = {'type':'text', 'analyzer':'custom_ascii_analyzer'}
 	properties['meta_id'] = {'type':'keyword'}
 	properties['lang'] = {'type':'keyword'}

@@ -312,9 +312,10 @@ class CopySupport(object):
         if not ids:
             ids = [self.getId()]
             context = self.aq_parent
-        context.manage_cutObjects(ids, REQUEST, RESPONSE)
+        context.manage_cutObjects(ids, REQUEST)
         # Return with message.
-        RESPONSE.redirect('manage_main?lang=%s' % (REQUEST['lang']))
+        if RESPONSE is not None:
+            RESPONSE.redirect('manage_main?lang=%s' % (REQUEST['lang']))
 
 
     ############################################################################

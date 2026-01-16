@@ -300,7 +300,10 @@ class CopySupport(object):
             context = self.aq_parent
         context.manage_copyObjects(ids, REQUEST, RESPONSE)
         # Return with message.
-        RESPONSE.redirect('manage_main?lang=%s' % (REQUEST['lang']))
+        message = self.getZMILangStr('MSG_COPIEDOBJS')
+        if RESPONSE is None:
+            RESPONSE = self.REQUEST.RESPONSE
+        RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s' % (REQUEST.get('lang', context.getPrimaryLanguage()), message))
 
 
     ############################################################################
@@ -314,8 +317,10 @@ class CopySupport(object):
             context = self.aq_parent
         context.manage_cutObjects(ids, REQUEST)
         # Return with message.
-        if RESPONSE is not None:
-            RESPONSE.redirect('manage_main?lang=%s' % (REQUEST['lang']))
+        message = self.getZMILangStr('MSG_CUTOBJS')
+        if RESPONSE is None:
+            RESPONSE = self.REQUEST.RESPONSE
+        RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s' % (REQUEST.get('lang', context.getPrimaryLanguage()), message)) 
 
 
     ############################################################################

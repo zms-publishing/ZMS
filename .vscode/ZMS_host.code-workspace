@@ -19,7 +19,7 @@
 	],
 
 	"settings": {
-		"python.defaultInterpreterPath": "/home/zope/vpy3/bin/python3",
+		"python.defaultInterpreterPath": "/home/zope/vpy313/bin/python",
 		"window.zoomLevel": 0,
 		"git.ignoreMissingGitWarning": true,
 		"editor.minimap.enabled": false,
@@ -49,15 +49,6 @@
 			"**/Data.*": true,
 			"**/docker/**/var/*": true
 		},
-		"python.testing.pytestEnabled": false,
-		"python.testing.unittestEnabled": true,
-		"python.testing.unittestArgs": [
-			"-v",
-			"-s",
-			"./tests",
-			"-p",
-			"test*.py"
-		],
 	},
 
 	"launch": {
@@ -65,9 +56,9 @@
 		"configurations": [
 			{
 				"name": "ZMS5-DEV",
-				"type": "debugpy",
 				"request": "launch",
-				"program": "/home/zope/vpy3/bin/runwsgi",
+				"type": "debugpy",
+				"program": "/home/zope/vpy313/bin/runwsgi",
 				"justMyCode": false,
 				"console": "integratedTerminal",
 				"args": [
@@ -81,8 +72,8 @@
 					"CONFIG_FILE": "/home/zope/instance/zms5_dev/etc/zope.ini",
 					"INSTANCE_HOME": "/home/zope/instance/zms5_dev",
 					"CLIENT_HOME": "/home/zope/instance/zms5_dev",
-					"PYTHON": "/home/zope/vpy3/bin/python",
-					"SOFTWARE_HOME": "/home/zope/vpy3/bin/"
+					"PYTHON": "/home/zope/vpy313/bin/python",
+					"SOFTWARE_HOME": "/home/zope/vpy313/bin/"
 				},
 				"serverReadyAction": {
 					"pattern": "Serving on http://127.0.0.1:8080",

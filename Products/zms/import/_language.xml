@@ -4189,13 +4189,17 @@
     <Cell><Data ss:Type="String">MSG_CHANGE_ANYWAY</Data></Cell>
     <Cell><Data ss:Type="String">Änderungen trotzdem speichern?</Data></Cell>
     <Cell><Data ss:Type="String">Save changes anyway?</Data></Cell>
-    <Cell><Data ss:Type="String">Modifikaties toch opslaan?</Data></Cell>
-    <Cell ss:Index="9"/>
-    <Cell/>
-    <Cell/>
-    <Cell/>
-    <Cell><Data ss:Type="String">Lưu lại những thay đổi dù bất kì giá nào?</Data></Cell>
-    <Cell><Data ss:Type="String">לשמור שינויים בכל זאת?</Data></Cell>
+    <Cell><Data ss:Type="String">Wijzigingen toch opslaan?</Data></Cell>
+    <Cell><Data ss:Type="String">Enregistrer les modifications quand même?</Data></Cell>
+    <Cell><Data ss:Type="String">Salvare comunque le modifiche?</Data></Cell>
+    <Cell><Data ss:Type="String">¿Guardar los cambios de todos modos?</Data></Cell>
+    <Cell><Data ss:Type="String">是否仍然保存更改？</Data></Cell>
+    <Cell><Data ss:Type="String">آیا با این وجود تغییرات ذخیره شوند؟</Data></Cell>
+    <Cell><Data ss:Type="String">Сохранить изменения всё равно?</Data></Cell>
+    <Cell><Data ss:Type="String">फिर भी परिवर्तनों को सहेजें?</Data></Cell>
+    <Cell><Data ss:Type="String">هل تحفظ التغييرات على أي حال؟</Data></Cell>
+    <Cell><Data ss:Type="String">Có lưu các thay đổi không?</Data></Cell>
+    <Cell><Data ss:Type="String">לשמור שינויים בכל מקרה?</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">MSG_CONFIRM</Data></Cell>
@@ -4217,139 +4221,205 @@
     <Cell><Data ss:Type="String">MSG_CONFIRM_CUTOBJS</Data></Cell>
     <Cell><Data ss:Type="String">Soll(en) %i ausgewählte(s) Objekt(e) wirklich ausgeschnitten werden?</Data></Cell>
     <Cell><Data ss:Type="String">Do you really want to cut %i selected object(s)?</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Volete tagliare veramente gli %i oggetti selezionati?</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">确实覿把 %i 所选对象剪切志?</Data></Cell>
-    <Cell><Data ss:Type="String">آيا مي خواهيد %i مورد انتخاب شده را ببريد ؟</Data></Cell>
-    <Cell><Data ss:Type="String">действительно вырезать %i выбранные объекты?</Data></Cell>
-    <Cell><Data ss:Type="String">क्या आप सचमुच %i चयन किया वस्तु(यें) काट करना चाहतें हें?</Data></Cell>
-    <Cell><Data ss:Type="String">هل حقا تريد قص %i البيانات المختارة؟</Data></Cell>
-    <Cell><Data ss:Type="String">Quý vị thực sự muốn cắt %i (các) đối tượng được lựa chọn?</Data></Cell>
+    <Cell><Data ss:Type="String">Wilt u de %i geselecteerde object(en) echt knippen?</Data></Cell>
+    <Cell><Data ss:Type="String">Voulez-vous vraiment couper les %i objets sélectionnés ?</Data></Cell>
+    <Cell><Data ss:Type="String">Volete davvero tagliare i %i oggetti selezionati?</Data></Cell>
+    <Cell><Data ss:Type="String">¿Desea realmente cortar los %i objetos seleccionados?</Data></Cell>
+    <Cell><Data ss:Type="String">您确定要剪切所选的 %i 个对象吗？</Data></Cell>
+    <Cell><Data ss:Type="String">آیا می‌خواهید واقعاً %i مورد انتخاب‌شده را ببرید؟</Data></Cell>
+    <Cell><Data ss:Type="String">Вы действительно хотите вырезать %i выбранных объектов?</Data></Cell>
+    <Cell><Data ss:Type="String">क्या आप वास्तव में चयनित %i वस्तु(ओं) को काटना चाहते हैं?</Data></Cell>
+    <Cell><Data ss:Type="String">هل تريد حقًا قص %i من العناصر المحددة؟</Data></Cell>
+    <Cell><Data ss:Type="String">Bạn có thực sự muốn cắt %i đối tượng được chọn không?</Data></Cell>
     <Cell><Data ss:Type="String">האם אתה באמת רוצה לגזור %i פריט(ים) שנבחר(ו)?</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">MSG_CONFIRM_DELOBJ</Data></Cell>
-    <Cell><Data ss:Type="String">Soll Objekt wirklich gelöscht werden?</Data></Cell>
+    <Cell><Data ss:Type="String">Soll das Objekt wirklich gelöscht werden?</Data></Cell>
     <Cell><Data ss:Type="String">Do you really want to delete this object?</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">Voulez-vous vraiment supprimer le objet?</Data></Cell>
-    <Cell><Data ss:Type="String">Volete cancellare veramente l`oggetto selezionato?</Data></Cell>
-    <Cell><Data ss:Type="String">¿Usted realmente desea suprimir el objeto?</Data></Cell>
-    <Cell><Data ss:Type="String">确实覿删除对象志?</Data></Cell>
-    <Cell><Data ss:Type="String">آيا مي خواهيد شي مورد نظر را حذٿ کنيد ؟</Data></Cell>
-    <Cell><Data ss:Type="String">действительно стереть выбранный объект?</Data></Cell>
-    <Cell><Data ss:Type="String">क्या आप सचमुच वस्तु मिटना चाहतें हें?</Data></Cell>
-    <Cell><Data ss:Type="String">هل حقا تريد حذف هذا البيان؟</Data></Cell>
-    <Cell><Data ss:Type="String">Quý vị thực sự muốn xóa đối tượng này?</Data></Cell>
-    <Cell><Data ss:Type="String">האם אתה באמת רוצה למחוק את הפריט?</Data></Cell>
+    <Cell><Data ss:Type="String">Wilt u dit object echt verwijderen?</Data></Cell>
+    <Cell><Data ss:Type="String">Voulez-vous vraiment supprimer cet objet ?</Data></Cell>
+    <Cell><Data ss:Type="String">Vuoi davvero eliminare questo oggetto?</Data></Cell>
+    <Cell><Data ss:Type="String">¿Desea realmente eliminar este objeto?</Data></Cell>
+    <Cell><Data ss:Type="String">您确定要删除该对象吗？</Data></Cell>
+    <Cell><Data ss:Type="String">آیا واقعاً می‌خواهید این شیء را حذف کنید؟</Data></Cell>
+    <Cell><Data ss:Type="String">Вы действительно хотите удалить этот объект?</Data></Cell>
+    <Cell><Data ss:Type="String">क्या आप वाकई में इस वस्तु को हटाना चाहते हैं?</Data></Cell>
+    <Cell><Data ss:Type="String">هل تريد حقًا حذف هذا العنصر؟</Data></Cell>
+    <Cell><Data ss:Type="String">Bạn có thực sự muốn xóa đối tượng này không?</Data></Cell>
+    <Cell><Data ss:Type="String">האם אתה בטוח שברצונך למחוק את הפריט הזה?</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">MSG_CONFIRM_DELOBJS</Data></Cell>
     <Cell><Data ss:Type="String">Soll(en) %i ausgewählte(s) Objekt(e) wirklich gelöscht werden?</Data></Cell>
     <Cell><Data ss:Type="String">Do you really want to delete %i selected object(s)?</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">Voulez-vous vraiment supprimer les %i objets?</Data></Cell>
-    <Cell><Data ss:Type="String">Volete cancellare veramente gli %i oggetti selezionati?</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">确实覿删除 %i 所选对象志?</Data></Cell>
-    <Cell><Data ss:Type="String">آيا مي خواهيد %i مورد انتخاب شده راحذٿ کنيد؟</Data></Cell>
-    <Cell><Data ss:Type="String">действительно стереть выбранные %i объекты?</Data></Cell>
-    <Cell><Data ss:Type="String">क्या आप सचमुच %i चयन किया वस्तु(यें) मिटना चाहतें हें?</Data></Cell>
-    <Cell><Data ss:Type="String">هل حقا تريد حذف %i البيانات المختارة؟</Data></Cell>
-    <Cell><Data ss:Type="String">Quý vị thực sự muốn xóa %i  (các) đối tượng được lựa chọn?</Data></Cell>
-    <Cell><Data ss:Type="String">האם אתה באמת רוצה למחוק %i פריט(ים) שנבחר(ו)</Data></Cell>
+    <Cell><Data ss:Type="String">Wilt u de %i geselecteerde object(en) echt verwijderen?</Data></Cell>
+    <Cell><Data ss:Type="String">Voulez-vous vraiment supprimer les %i objets sélectionnés ?</Data></Cell>
+    <Cell><Data ss:Type="String">Volete davvero cancellare i %i oggetti selezionati?</Data></Cell>
+    <Cell><Data ss:Type="String">¿Desea realmente eliminar los %i objetos seleccionados?</Data></Cell>
+    <Cell><Data ss:Type="String">您确实要删除 %i 个选定的对象吗？</Data></Cell>
+    <Cell><Data ss:Type="String">آیا واقعاً می‌خواهید %i شیء(ها) انتخاب‌شده را حذف کنید؟</Data></Cell>
+    <Cell><Data ss:Type="String">Вы действительно хотите удалить %i выбранных объект(ов)?</Data></Cell>
+    <Cell><Data ss:Type="String">क्या आप वाकई में %i चयनित वस्तु(ओं) को हटाना चाहते हैं?</Data></Cell>
+    <Cell><Data ss:Type="String">هل تريد حقًا حذف %i من العناصر المحددة؟</Data></Cell>
+    <Cell><Data ss:Type="String">Bạn có thực sự muốn xóa %i đối tượng đã chọn không?</Data></Cell>
+    <Cell><Data ss:Type="String">האם אתה באמת רוצה למחוק %i פריט(ים) שנבחרו?</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">MSG_CONFIRM_DUPLICATEOBJS</Data></Cell>
     <Cell><Data ss:Type="String">Soll(en) %i ausgewählte(s) Objekt(e) wirklich dupliziert werden?</Data></Cell>
     <Cell><Data ss:Type="String">Do you really want to duplicate %i selected object(s)?</Data></Cell>
+    <Cell><Data ss:Type="String">Wilt u de %i geselecteerde object(en) echt dupliceren?</Data></Cell>
+    <Cell><Data ss:Type="String">Voulez-vous vraiment dupliquer les %i objets sélectionnés ?</Data></Cell>
+    <Cell><Data ss:Type="String">Vuoi davvero duplicare i %i oggetti selezionati?</Data></Cell>
+    <Cell><Data ss:Type="String">¿Desea realmente duplicar los %i objetos seleccionados?</Data></Cell>
+    <Cell><Data ss:Type="String">您确定要复制 %i 个选定的对象吗？</Data></Cell>
+    <Cell><Data ss:Type="String">آیا واقعاً می‌خواهید %i شیء(ها) انتخاب‌شده را تکثیر کنید؟</Data></Cell>
+    <Cell><Data ss:Type="String">Вы действительно хотите продублировать %i выбранных объект(ов)?</Data></Cell>
+    <Cell><Data ss:Type="String">क्या आप वास्तव में %i चयनित वस्तु(ओं) को डुप्लिकेट करना चाहते हैं?</Data></Cell>
+    <Cell><Data ss:Type="String">هل تريد حقًا تكرار %i كائنًا/كائنات محددة؟</Data></Cell>
+    <Cell><Data ss:Type="String">Bạn có thực sự muốn nhân đôi %i đối tượng đã chọn không?</Data></Cell>
+    <Cell><Data ss:Type="String">האם ברצונך באמת לשכפל %i אובייקט(ים) שנבחרו?</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">MSG_CONFIRM_DESCENDANT_LANGS</Data></Cell>
     <Cell><Data ss:Type="String">Diese Aktion kann sich auf abhängige Sprachen (%s) auswirken. Wollen Sie trotzdem fortfahren?</Data></Cell>
     <Cell><Data ss:Type="String">This action may affect descendant languages (%s). Do you want to proceed anyway?</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Questa azione puo` avere consequenze su altre lingue correlate (%s). Volete comunque andare avanti?</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">这擿作会影哿相关语言 (%s) 您是忦覿继续?</Data></Cell>
-    <Cell><Data ss:Type="String">اين عمل ممکن است روي زبانهاي موجود اثر ب?ذارد. آيا مايليد ادامه دهيد ؟</Data></Cell>
-    <Cell><Data ss:Type="String">Эта акция может отразиться на зависимые языки  (%s). Хотите продолжать?</Data></Cell>
-    <Cell><Data ss:Type="String">यह क्रिया अवरोही भाषायें (%s) को प्रभाव कर सकता हें। क्या आप फिर भी करना चाहेंगे?</Data></Cell>
-    <Cell><Data ss:Type="String">هذا الفعل قد يؤثر على اللغات المندرجة  (%s). هل تريد الأستمرار على أي حال؟</Data></Cell>
-    <Cell><Data ss:Type="String">Hành động này có thể ảnh hướng tới các ngôn ngữ kế thừa (%s). Dù sao quý vị thực sự vẫn muốn tiếp tục?</Data></Cell>
-    <Cell><Data ss:Type="String">הפעולה הזו עלולה להשפיע על השפות מתחת(%s). האם אתה רוצה להמשיך בכל זאת?</Data></Cell>
+    <Cell><Data ss:Type="String">Deze actie kan van invloed zijn op afgeleide talen (%s). Wilt u toch doorgaan?</Data></Cell>
+    <Cell><Data ss:Type="String">Cette action peut affecter les langues descendantes (%s). Voulez-vous tout de même continuer ?</Data></Cell>
+    <Cell><Data ss:Type="String">Questa azione può influire sulle lingue discendenti (%s). Vuoi procedere comunque?</Data></Cell>
+    <Cell><Data ss:Type="String">Esta acción puede afectar a los idiomas descendientes (%s). ¿Desea continuar de todos modos?</Data></Cell>
+    <Cell><Data ss:Type="String">此操作可能会影响派生语言 (%s)。您仍然要继续吗？</Data></Cell>
+    <Cell><Data ss:Type="String">این عمل ممکن است بر زبان‌های فرزند (%s) تأثیر بگذارد. آیا با این وجود می‌خواهید ادامه دهید؟</Data></Cell>
+    <Cell><Data ss:Type="String">Это действие может повлиять на дочерние языки (%s). Вы всё равно хотите продолжить?</Data></Cell>
+    <Cell><Data ss:Type="String">यह क्रिया अवरोही भाषाओं (%s) को प्रभावित कर सकती है। क्या आप फिर भी आगे बढ़ना चाहते हैं?</Data></Cell>
+    <Cell><Data ss:Type="String">قد يؤثر هذا الإجراء على اللغات التابعة (%s). هل تريد المتابعة على أي حال؟</Data></Cell>
+    <Cell><Data ss:Type="String">Hành động này có thể ảnh hưởng tới các ngôn ngữ dẫn xuất (%s). Bạn có muốn tiếp tục không?</Data></Cell>
+    <Cell><Data ss:Type="String">פעולה זו עלולה להשפיע על שפות יורשות (%s). האם ברצונך להמשיך בכל מקרה?</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">MSG_CONFIRM_DISCARD_CHANGES</Data></Cell>
     <Cell><Data ss:Type="String">Sollen Eingaben verworfen werden?</Data></Cell>
     <Cell><Data ss:Type="String">Do you really want to discard changes?</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">Voulez-vous vraiment jeter des changements?</Data></Cell>
-    <Cell><Data ss:Type="String">Volete veramente scartare i cambiamenti?</Data></Cell>
-    <Cell><Data ss:Type="String">¿Usted realmente desea desechar cambios?</Data></Cell>
-    <Cell><Data ss:Type="String">您是忦覿放弃更改?</Data></Cell>
-    <Cell><Data ss:Type="String">آيا واقعا مي خواهيد از تغييرات صرٿ نظر کنيد ؟</Data></Cell>
-    <Cell><Data ss:Type="String">стереть заданные даты?</Data></Cell>
-    <Cell><Data ss:Type="String">क्या आप सचमुच परिवर्तनो को छोड़ देंगे?</Data></Cell>
-    <Cell><Data ss:Type="String">هل حقا تريد إلغاء التغييرات؟</Data></Cell>
-    <Cell><Data ss:Type="String">Quý vị thực sự muốn loại bỏ những thay đổi?</Data></Cell>
-    <Cell><Data ss:Type="String">האם אתה בטוח רוצה להפטר מהשינויים?</Data></Cell>
+    <Cell><Data ss:Type="String">Wilt u de wijzigingen echt negeren?</Data></Cell>
+    <Cell><Data ss:Type="String">Voulez-vous vraiment annuler les modifications?</Data></Cell>
+    <Cell><Data ss:Type="String">Volete davvero scartare le modifiche?</Data></Cell>
+    <Cell><Data ss:Type="String">¿Realmente desea descartar los cambios?</Data></Cell>
+    <Cell><Data ss:Type="String">您确定要放弃更改吗？</Data></Cell>
+    <Cell><Data ss:Type="String">آیا واقعاً می‌خواهید تغییرات را رد کنید؟</Data></Cell>
+    <Cell><Data ss:Type="String">Вы действительно хотите отменить изменения?</Data></Cell>
+    <Cell><Data ss:Type="String">क्या आप वाकई में किए गए परिवर्तनों को रद्द करना चाहते हैं?</Data></Cell>
+    <Cell><Data ss:Type="String">هل تريد فعلاً تجاهل التغييرات؟</Data></Cell>
+    <Cell><Data ss:Type="String">Bạn có thực sự muốn hủy các thay đổi không?</Data></Cell>
+    <Cell><Data ss:Type="String">האם אתה בטוח שברצונך לבטל את השינויים?</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">MSG_CONFIRM_MOVEOBJ</Data></Cell>
-    <Cell><Data ss:Type="String">Soll Objekt wirklich hierhin verschoben werden?</Data></Cell>
-    <Cell><Data ss:Type="String">Do you really want to move object here?</Data></Cell>
-    <Cell ss:Index="9"/>
-    <Cell/>
-    <Cell/>
-    <Cell/>
-    <Cell><Data ss:Type="String">Quý vị thực sự muốn chuyển đối tượng khỏi đây?</Data></Cell>
-    <Cell><Data ss:Type="String">להזיז באמת את האובייקט לכאן?</Data></Cell>
+    <Cell><Data ss:Type="String">Soll das Objekt wirklich hierhin verschoben werden?</Data></Cell>
+    <Cell><Data ss:Type="String">Do you really want to move the object here?</Data></Cell>
+    <Cell><Data ss:Type="String">Wilt u het object echt hierheen verplaatsen?</Data></Cell>
+    <Cell><Data ss:Type="String">Voulez-vous vraiment déplacer l'objet ici?</Data></Cell>
+    <Cell><Data ss:Type="String">Vuoi davvero spostare l'oggetto qui?</Data></Cell>
+    <Cell><Data ss:Type="String">¿Desea realmente mover el objeto aquí?</Data></Cell>
+    <Cell><Data ss:Type="String">您确实要将对象移到这里吗？</Data></Cell>
+    <Cell><Data ss:Type="String">آیا واقعا می‌خواهید این شی را به اینجا منتقل کنید؟</Data></Cell>
+    <Cell><Data ss:Type="String">Вы действительно хотите переместить объект сюда?</Data></Cell>
+    <Cell><Data ss:Type="String">क्या आप वास्तव में इस ऑब्जेक्ट को यहाँ स्थानांतरित करना चाहते हैं?</Data></Cell>
+    <Cell><Data ss:Type="String">هل تريد حقًا نقل العنصر إلى هنا؟</Data></Cell>
+    <Cell><Data ss:Type="String">Bạn có thực sự muốn chuyển đối tượng đến đây không?</Data></Cell>
+    <Cell><Data ss:Type="String">האם אתה באמת רוצה להעביר את האובייקט לכאן?</Data></Cell>
    </Row>
    <Row>
-    <Cell><Data ss:Type="String">MSG_CONFIRM_RELOAD</Data></Cell>
-    <Cell><Data ss:Type="String">Der Server verlangt ein Neuladen dieser Seite.</Data></Cell>
-    <Cell><Data ss:Type="String">The server requires this page to be reloaded.</Data></Cell>
-    <Cell><Data ss:Type="String">De server vereist dat deze pagina opnieuw wordt geladen.</Data></Cell>
-    <Cell><Data ss:Type="String">Le serveur demande un rechargement de cette page.</Data></Cell>
-    <Cell><Data ss:Type="String">Il server richiede che questa pagina venga ricaricata.</Data></Cell>
-    <Cell><Data ss:Type="String">El servidor requiere que esta página sea recargada.</Data></Cell>
-    <Cell><Data ss:Type="String">伺服器要求重新載入此頁面</Data></Cell>
-    <Cell><Data ss:Type="String">The server requires this page to be reloaded.</Data></Cell>
-    <Cell><Data ss:Type="String">Серверу требуется перезагрузка этой страницы.</Data></Cell>
-    <Cell><Data ss:Type="String">The server requires this page to be reloaded.</Data></Cell>
-    <Cell><Data ss:Type="String">يتطلب الخادم إعادة تحميل هذه الصفحة.</Data></Cell>
-    <Cell><Data ss:Type="String">The server requires this page to be reloaded.</Data></Cell>
-    <Cell><Data ss:Type="String">The server requires this page to be reloaded.</Data></Cell>
+   <Cell><Data ss:Type="String">MSG_CONFIRM_RELOAD</Data></Cell>
+   <Cell><Data ss:Type="String">Der Server verlangt ein Neuladen dieser Seite.</Data></Cell>
+   <Cell><Data ss:Type="String">The server requires this page to be reloaded.</Data></Cell>
+   <Cell><Data ss:Type="String">De server vereist dat deze pagina opnieuw wordt geladen.</Data></Cell>
+   <Cell><Data ss:Type="String">Le serveur demande un rechargement de cette page.</Data></Cell>
+   <Cell><Data ss:Type="String">Il server richiede che questa pagina venga ricaricata.</Data></Cell>
+   <Cell><Data ss:Type="String">El servidor requiere que esta página sea recargada.</Data></Cell>
+   <Cell><Data ss:Type="String">伺服器要求重新載入此頁面</Data></Cell>
+   <Cell><Data ss:Type="String">The server requires this page to be reloaded.</Data></Cell>
+   <Cell><Data ss:Type="String">Серверу требуется перезагрузка этой страницы.</Data></Cell>
+   <Cell><Data ss:Type="String">The server requires this page to be reloaded.</Data></Cell>
+   <Cell><Data ss:Type="String">يتطلب الخادم إعادة تحميل هذه الصفحة.</Data></Cell>
+   <Cell><Data ss:Type="String">The server requires this page to be reloaded.</Data></Cell>
+   <Cell><Data ss:Type="String">The server requires this page to be reloaded.</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">MSG_CONFIRM_TRASHOBJS</Data></Cell>
     <Cell><Data ss:Type="String">Soll(en) %i ausgewählte(s) Objekt(e) wirklich in den Papierkorb verschoben werden?</Data></Cell>
-    <Cell><Data ss:Type="String">Do you really want to move %i selected object(s) to trashcan?</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Volete cancellare veramente gli %i oggetti selezionati nel cestino?</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">确实覿把 %i 所选对象放入回收站志?</Data></Cell>
-    <Cell><Data ss:Type="String">آيا مي خواهيد %i مورد انتخاب شده را جابجا کنيد؟</Data></Cell>
-    <Cell><Data ss:Type="String">переместить %i выбранные объекты в мусорный ящик?</Data></Cell>
-    <Cell><Data ss:Type="String">क्या आप सचमुच %i चुने वस्तु(यें) को कूड़ा कोठ मे ह्टाना चाहेंगे?</Data></Cell>
-    <Cell><Data ss:Type="String">هل حقا تريد وضع البيانات المختارة i% بسلة المهملات؟</Data></Cell>
-    <Cell><Data ss:Type="String">Quý vị thực sự muốn chuyển %i (các) đối tượng được lựa chọn tới thùng rác?</Data></Cell>
-    <Cell><Data ss:Type="String">האם להשליך %i פריט(ים) שנבחר(ו) לסל המחזור?</Data></Cell>
+    <Cell><Data ss:Type="String">Do you really want to move %i selected object(s) to the trashcan?</Data></Cell>
+    <Cell><Data ss:Type="String">Wilt u de %i geselecteerde object(en) echt naar de prullenbak verplaatsen?</Data></Cell>
+    <Cell><Data ss:Type="String">Voulez-vous vraiment déplacer les %i objets sélectionnés vers la corbeille ?</Data></Cell>
+    <Cell><Data ss:Type="String">Volete veramente spostare i %i oggetti selezionati nel cestino?</Data></Cell>
+    <Cell><Data ss:Type="String">¿Desea realmente mover los %i objetos seleccionados a la papelera?</Data></Cell>
+    <Cell><Data ss:Type="String">您确定要将 %i 个选定的对象移入回收站吗？</Data></Cell>
+    <Cell><Data ss:Type="String">آیا واقعاً می‌خواهید %i مورد انتخاب‌شده را به سطل زباله منتقل کنید؟</Data></Cell>
+    <Cell><Data ss:Type="String">Вы действительно хотите переместить %i выбранных объектов в корзину?</Data></Cell>
+    <Cell><Data ss:Type="String">क्या आप वाकई %i चुने हुए वस्तुएँ(ओं) को कूड़ेदान में स्थानांतरित करना चाहते हैं?</Data></Cell>
+    <Cell><Data ss:Type="String">هل تريد حقًا نقل %i من العناصر المحددة إلى سلة المحذوفات؟</Data></Cell>
+    <Cell><Data ss:Type="String">Quý vị thực sự muốn chuyển %i đối tượng được chọn vào thùng rác không?</Data></Cell>
+    <Cell><Data ss:Type="String">האם להעבר באמת %i פריטים שנבחרו אל סל המחזור?</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">MSG_COPIEDOBJS</Data></Cell>
+    <Cell><Data ss:Type="String">Objekt(e) kopiert.</Data></Cell>
+    <Cell><Data ss:Type="String">Copied object(s).</Data></Cell>
+    <Cell><Data ss:Type="String">Gekopieerde object(en).</Data></Cell>
+    <Cell><Data ss:Type="String">Objet(s) copié(s).</Data></Cell>
+    <Cell><Data ss:Type="String">Oggetto(i) copiato(i).</Data></Cell>
+    <Cell><Data ss:Type="String">Objeto(s) copiado(s).</Data></Cell>
+    <Cell><Data ss:Type="String">对象已复制。</Data></Cell>
+    <Cell><Data ss:Type="String">موارد کپی شد.</Data></Cell>
+    <Cell><Data ss:Type="String">Скопировано объект(ов).</Data></Cell>
+    <Cell><Data ss:Type="String">कॉपी की गई वस्तु(य  ें)।</Data></Cell>
+    <Cell><Data ss:Type="String">تم نسخ العنصر(العناصر  ).</Data></Cell>
+    <Cell><Data ss:Type="String">Đã sao chép đối tượng.</Data></Cell>
+    <Cell><Data ss:Type="String">הפריט(ים) הועתקפו</Data></Cell> 
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">MSG_CUTOBJS</Data></Cell>
+    <Cell><Data ss:Type="String">Objekt(e) ausgeschnitten.</Data></Cell>
+    <Cell><Data ss:Type="String">Cut object(s).</Data></Cell>
+    <Cell><Data ss:Type="String">Geknipte object(en).</Data></Cell>
+    <Cell><Data ss:Type="String">Objet(s) coupé(s).</Data></Cell>
+    <Cell><Data ss:Type="String">Oggetto(i) tagliato(i).</Data></Cell>
+    <Cell><Data ss:Type="String">Objeto(s) cortado(s).</Data></Cell>
+    <Cell><Data ss:Type="String">对象已剪切。</Data></Cell>
+    <Cell><Data ss:Type="String">موارد بریده شد.</Data></Cell>
+    <Cell><Data ss:Type="String">Вырезано объект(ов).</Data></Cell>
+    <Cell><Data ss:Type="String">कटी हुई वस्तु(यें)।</Data></Cell>
+    <Cell><Data ss:Type="String">تم قص العنصر(العناصر).</Data></Cell>
+    <Cell><Data ss:Type="String">Đã cắt đối tượng.</Data></Cell>
+    <Cell><Data ss:Type="String">הפריט(ים) נחתכו.</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">MSG_DELETED</Data></Cell>
     <Cell><Data ss:Type="String">%i Objekt(e) gelöscht.</Data></Cell>
     <Cell><Data ss:Type="String">%i Object(s) deleted.</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">%i objets supprimé.</Data></Cell>
-    <Cell><Data ss:Type="String">%i oggetti cancellato.</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">%i 对象已删除。</Data></Cell>
-    <Cell><Data ss:Type="String">%i شي حذف گرديد</Data></Cell>
-    <Cell><Data ss:Type="String">%i выбранный объект стерт</Data></Cell>
-    <Cell><Data ss:Type="String">%i वस्तु(यें) को मिटा दियाँ</Data></Cell>
-    <Cell><Data ss:Type="String">i% تم حذف البيان البيانات</Data></Cell>
-    <Cell><Data ss:Type="String">%i (Các) đối tượng đã xóa.</Data></Cell>
-    <Cell><Data ss:Type="String">%i  פריט(ים) נמחקו</Data></Cell>
+    <Cell><Data ss:Type="String">%i object(en) verwijderd.</Data></Cell>
+    <Cell><Data ss:Type="String">%i objet(s) supprimé(s).</Data></Cell>
+    <Cell><Data ss:Type="String">%i oggetto(i) eliminato(i).</Data></Cell>
+    <Cell><Data ss:Type="String">%i objeto(s) eliminado(s).</Data></Cell>
+    <Cell><Data ss:Type="String">%i 对象已删除。</Data></Cell>
+    <Cell><Data ss:Type="String">%i مورد حذف شد.</Data></Cell>
+    <Cell><Data ss:Type="String">%i объект(ов) удалено.</Data></Cell>
+    <Cell><Data ss:Type="String">%i वस्तु(यें) हटाई गईं।</Data></Cell>
+    <Cell><Data ss:Type="String">تم حذف %i عنصر(عناصر).</Data></Cell>
+    <Cell><Data ss:Type="String">%i đối tượng đã bị xóa.</Data></Cell>
+    <Cell><Data ss:Type="String">%i פריט(ים) נמחקו</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">MSG_DTMLGENERATOR</Data></Cell>
     <Cell><Data ss:Type="String">Generierung von DTML-Code per Mausklick auf das Icon rechts neben der jeweiligen Attribut-Definition!</Data></Cell>
-    <Cell><Data ss:Type="String">Generate DTML-code by clicking on the icon right next to the attribute definiton.</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Generazione del codice via click sulla icona a destra vicino alla rispettiva definizione di attributo!</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">为产生 DTML-代砿，请忕击屬性定义旿的图标。</Data></Cell>
-    <Cell/>
-    <Cell/>
+    <Cell><Data ss:Type="String">Generate DTML-code by clicking on the icon right next to the attribute definition.</Data></Cell>
+    <Cell><Data ss:Type="String">Genereer DTML-code door op het pictogram rechts naast de attribuutdefinitie te klikken.</Data></Cell>
+    <Cell><Data ss:Type="String">Générez du code DTML en cliquant sur l'icône située à droite de la définition de l'attribut.</Data></Cell>
+    <Cell><Data ss:Type="String">Generazione del codice via click sulla icona a destra vicino alla rispettiva definizione di attributo!</Data></Cell>
+    <Cell><Data ss:Type="String">Genere código DTML haciendo clic en el icono a la derecha junto a la definición del atributo.</Data></Cell>
+    <Cell><Data ss:Type="String">为产生 DTML-代砿，请忕击屬性定义旿的图标。</Data></Cell>
+    <Cell><Data ss:Type="String">تولید کد DTML با کلیک روی آیکون کنار تعریف ویژگی انجام می‌شود.</Data></Cell>
+    <Cell><Data ss:Type="String">Генерировать код DTML щелчком по значку справа от определения атрибута.</Data></Cell>
     <Cell><Data ss:Type="String">एत्रिबूत परिभाषा के ठिक बगल के निशान चित्र को दबाके डि टि एम एल कोड उत्पन्न करे</Data></Cell>
     <Cell><Data ss:Type="String">لتوليد كود DTML رجاء الضغط على الأيقونة بجانب تعريف البيان</Data></Cell>
     <Cell><Data ss:Type="String">Tạo ra mã DTML bằng cách kích chuột vào biểu tượng phía bên phải kế bên phần định nghĩa thuộc tính.</Data></Cell>
@@ -4358,9 +4428,12 @@
    <Row>
     <Cell><Data ss:Type="String">MSG_EMPTYCONTAINER</Data></Cell>
     <Cell><Data ss:Type="String">Es gibt keine Objekte in</Data></Cell>
-    <Cell><Data ss:Type="String">There are currently no items in</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Non ci sono oggetti nel</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">正在没有项目。...</Data></Cell>
+     <Cell><Data ss:Type="String">There are currently no items in</Data></Cell>
+    <Cell><Data ss:Type="String">Er zijn momenteel geen items in</Data></Cell>
+    <Cell><Data ss:Type="String">Il n'y a actuellement aucun élément dans</Data></Cell>
+    <Cell><Data ss:Type="String">Non ci sono oggetti nel</Data></Cell>
+    <Cell><Data ss:Type="String">Actualmente no hay elementos en</Data></Cell>
+    <Cell><Data ss:Type="String">正在没有项目。...</Data></Cell>
     <Cell><Data ss:Type="String">در حال حاضر آيتمي موجود نيست</Data></Cell>
     <Cell><Data ss:Type="String">объектов не найдено в </Data></Cell>
     <Cell><Data ss:Type="String">यह मे अभी कोई भी वस्तुयें नहीं हे</Data></Cell>
@@ -4371,24 +4444,30 @@
    <Row>
     <Cell><Data ss:Type="String">MSG_EXCEPTION</Data></Cell>
     <Cell><Data ss:Type="String">Es ist ein Ausnahmefehler aufgetreten</Data></Cell>
-    <Cell><Data ss:Type="String">An exception occured</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Errore di eccezione</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">出现错误</Data></Cell>
-    <Cell/>
-    <Cell><Data ss:Type="String">возникла серьезная ошибка</Data></Cell>
-    <Cell><Data ss:Type="String">अपवाद घटित हो गया</Data></Cell>
+    <Cell><Data ss:Type="String">An exception occurred</Data></Cell>
+    <Cell><Data ss:Type="String">Er is een uitzondering opgetreden</Data></Cell>
+    <Cell><Data ss:Type="String">Une exception s'est produite</Data></Cell>
+    <Cell><Data ss:Type="String">Si è verificata un'eccezione</Data></Cell>
+    <Cell><Data ss:Type="String">Se ha producido una excepción</Data></Cell>
+    <Cell><Data ss:Type="String">发生异常</Data></Cell>
+    <Cell><Data ss:Type="String">یک استثناء رخ داد</Data></Cell>
+    <Cell><Data ss:Type="String">Произошло исключение</Data></Cell>
+    <Cell><Data ss:Type="String">एक अपवाद उत्पन्न हुआ</Data></Cell>
     <Cell><Data ss:Type="String">حدث استثناء</Data></Cell>
-    <Cell><Data ss:Type="String">Một ngoại lệ đã diễn ra</Data></Cell>
-    <Cell><Data ss:Type="String">קרתה תקלה</Data></Cell>
+    <Cell><Data ss:Type="String">Đã xảy ra một ngoại lệ</Data></Cell>
+    <Cell><Data ss:Type="String">אירעה חריגה</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">MSG_EXPORTED</Data></Cell>
     <Cell><Data ss:Type="String">%s exportiert.</Data></Cell>
     <Cell><Data ss:Type="String">%s successfully exported.</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">%s esportato.</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">%s 已导出</Data></Cell>
-    <Cell><Data ss:Type="String">%s با موفقيت ذخيره شد</Data></Cell>
-    <Cell><Data ss:Type="String">%s успешно экспортирован </Data></Cell>
+    <Cell><Data ss:Type="String">%s succesvol geëxporteerd.</Data></Cell>
+    <Cell><Data ss:Type="String">%s exporté avec succès.</Data></Cell>
+    <Cell><Data ss:Type="String">%s esportato.</Data></Cell>
+    <Cell><Data ss:Type="String">%s exportado.</Data></Cell>
+    <Cell><Data ss:Type="String">%s 已导出</Data></Cell>
+    <Cell><Data ss:Type="String">%s با موفقیت صادر شد</Data></Cell>
+    <Cell><Data ss:Type="String">%s успешно экспортирован</Data></Cell>
     <Cell><Data ss:Type="String">%s सफलता से निर्यात हो गया</Data></Cell>
     <Cell><Data ss:Type="String">تم تصدير %s بنجاح</Data></Cell>
     <Cell><Data ss:Type="String">%s đã xuất ra thành công</Data></Cell>

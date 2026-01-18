@@ -3139,7 +3139,12 @@ ul.pagination .page-item {
 	display: inline-block;
 	text-align: right !important;
 }
-
+.ZMSRecordSet.main_grid > form:not(.input_fields) .zmi-datatype-text {
+	max-width: calc(60vw / var(--grid-cols-texttype,1));
+}
+.ZMSRecordSet.main_grid > form:not(.input_fields) .zmi-datatype-date {
+	white-space:nowrap
+}
 .ZMSRecordSet.main_grid > form:not(.input_fields) .zmi-datatype-multiselect {
 	padding-top: .25rem;
 }

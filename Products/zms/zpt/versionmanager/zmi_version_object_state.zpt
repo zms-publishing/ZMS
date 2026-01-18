@@ -6,6 +6,7 @@
 <i class="zmi-state text-primary fas fa-link" 
 		tal:define="refByObjs python:here.getRefByObjs()"
 		tal:condition="refByObjs" 
+		tal:on-error="structure string:<!-- ERROR here.getRefByObjs() -->"
 		tal:attributes="
 			title python:here.getZMILangStr('MSG_REFERENCEDBY')%''+' %i %s'%(len(refByObjs),here.getZMILangStr('ATTR_OBJECTS'));
 			onclick python:'document.location.href=\042%s/manage_RefForm?lang=%s\042'%(here.absolute_url(),request['lang'])"
@@ -56,7 +57,7 @@
 					title python:'%s %s %s (%s)'%(wfActivity['name'],here.getZMILangStr('BY'),work_uid,here.getLangFmtDate(work_dt))"
 				tal:attributes="class python:'zmi-state %s'%(clazz); title title"></span
 		></tal:block>
-		<span tal:condition="python:'STATE_NEW' in objStates" class="zmi-state zmi-state-new fas fa-plus-square" tal:attributes="title python:here.getZMILangStr('STATE_NEW')"></span>
+		<span tal:condition="python:'STATE_NEW' in objStates" class="zmi-state zmi-state-new text-primary fas fa-plus-square" tal:attributes="title python:here.getZMILangStr('STATE_NEW')"></span>
 		<span tal:condition="python:( 'STATE_MODIFIED' in objStates ) or ( len(wfStates)>0 and here.isVersionContainer() and here.hasObjModifiedChildren(request) )" class="zmi-state zmi-state-modified fas fa-edit mr-0" tal:attributes="title python:here.getZMILangStr('STATE_MODIFIED')"></span>
 		<span tal:condition="python:'STATE_DELETED' in objStates" class="zmi-state zmi-state-deleted fas fa-trash" tal:attributes="title python:here.getZMILangStr('STATE_DELETED')"></span>
 	</tal:block

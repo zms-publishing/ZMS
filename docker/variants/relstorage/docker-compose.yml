@@ -5,6 +5,7 @@ services:
     image: postgres:15
     container_name: postgres_15
     environment:
+      - TZ=Europe/Berlin
       - POSTGRES_USER=zodb
       - POSTGRES_PASSWORD=zodb
       - POSTGRES_DB=zodb
@@ -32,6 +33,7 @@ services:
       - "8080:8080"
       - "8081:8081"
     environment:
+      - TZ=Europe/Berlin
       - PYTHONUNBUFFERED=1
       - CONFIG_FILE=/home/zope/etc/zope.ini
       - INSTANCE_HOME=/home/zope

@@ -64,7 +64,13 @@
 
 				<div class="table-responsive mb-2">
 					<table id="grid0" class="table table-sm table-striped table-bordered table-hover zmi-sortable mb-0" 
-						tal:attributes="data-cols python:len(metaObjAttrs)">
+						tal:define="
+							cols_count python:len(metaObjAttrs)+1;
+							cols_count_texttype python:len([metaObjAttr.get('id','') for metaObjAttr in metaObjAttrs if metaObjAttr.get('type','string')=='text'])"
+						tal:attributes="
+							data-grid-cols cols_count;
+							data-grid-cols-texttype cols_count_texttype;
+							style python:'--grid-cols: %d;;--grid-cols-texttype: %d' % (cols_count, cols_count_texttype)">
 						<colgroup>
 							<col />
 							<col tal:repeat="metaObjAttr metaObjAttrs" tal:attributes="class python:'zmi-datatype-%s'%(metaObjAttr.get('type','string'))" />

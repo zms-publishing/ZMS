@@ -183,7 +183,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
         'manage_changeRecordSet',
         'manage_properties', 'manage_changeProperties', 'manage_changeTempBlobjProperty',
         'manage_deleteObjs', 'manage_undoObjs', 'manage_moveObjUp', 'manage_moveObjDown', 'manage_moveObjToPos',
-        'manage_cutObjects', 'manage_copyObjects', 'manage_pasteObjs',
+        'manage_cutObject', 'manage_cutObjects', 'manage_copyObject', 'manage_copyObjects', 'manage_pasteObjs',
         'manage_ajaxDragDrop', 'manage_ajaxZMIActions',
         'manage_UndoVersionForm', 'manage_UndoVersion',
         'manage_wfTransition', 'manage_wfTransitionFinalize',

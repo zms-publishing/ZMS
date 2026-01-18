@@ -124,14 +124,14 @@ $ZMI.registerReady(function(){
 		}
 	});
 
-	// Toggle: OpenAI
-	$('a#navbar-openai').each(function() {
+	// Toggle: LLM
+	$('a#navbar-llm').each(function() {
 		var $a = $(this);
-		if (self.window.parent.frames.length > 1 && typeof self.window.parent != "undefined" && typeof self.window.parent.frames.manage_openai != "undefined") {
+		if (self.window.parent.frames.length > 1 && typeof self.window.parent != "undefined" && typeof self.window.parent.frames.manage_llm != "undefined") {
 			$a.attr('target','_top');
 		}
 		else {
-			$a.attr('href',$a.attr('href')+'&dtpref_openai=1');
+			$a.attr('href',$a.attr('href')+'&dtpref_llm=1');
 		}
 	});
 

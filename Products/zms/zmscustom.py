@@ -202,7 +202,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
     # ----------
     manage_properties = PageTemplateFile('zpt/ZMSObject/manage_main', globals())
     manage_menu = PageTemplateFile('zpt/object/manage_menu', globals())
-    manage_openai = PageTemplateFile('zpt/object/manage_openai', globals())
+    manage_llm = PageTemplateFile('zpt/object/manage_llm', globals())
     metaobj_recordset_main_grid = PageTemplateFile('zpt/ZMSRecordSet/main_grid', globals())
     metaobj_recordset_main = PageTemplateFile('zpt/ZMSRecordSet/main', globals())
     metaobj_recordset_input_fields = PageTemplateFile('zpt/ZMSRecordSet/input_fields', globals())

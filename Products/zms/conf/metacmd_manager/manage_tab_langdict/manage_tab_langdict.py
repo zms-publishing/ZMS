@@ -12,7 +12,7 @@ request = container.REQUEST
 RESPONSE =  request.RESPONSE
 langIds = context.getLangIds(sort=True)
 xml = context.getMetaobjManager().exportMetaobjXml(ids=[context.meta_id])
-rs = standard.distinct_list([x.split(',')[0] for x in standard.re_search('getLangStr\((.*?)\)',xml) if len(x.split(','))==2])
+rs = standard.distinct_list([x.split(',')[0] for x in standard.re_search(r'getLangStr\((.*?)\)',xml) if len(x.split(','))==2])
 rs = [x[1:-1] for x in rs if len(x)>2 and x[0] in ["'",'"'] and x[0] == x[-1]]
 rs.sort()
 

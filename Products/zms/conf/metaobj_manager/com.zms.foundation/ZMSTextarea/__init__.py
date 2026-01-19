@@ -37,49 +37,71 @@ class ZMSTextarea:
 			,"default":""
 			,"id":"icon_clazz"
 			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
 			,"name":"Icon (Class)"
+			,"repetitive":0
 			,"type":"constant"}
 
 		interface0 = {"default":""
 			,"id":"interface0"
 			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
 			,"name":"interface0"
+			,"repetitive":0
 			,"type":"interface"}
 
 		format = {"default":"##\r\nreturn context.getTextFormatDefault()"
 			,"id":"format"
 			,"keys":[]
 			,"mandatory":1
+			,"multilang":0
 			,"name":"Format"
+			,"repetitive":0
 			,"type":"string"}
 
 		text = {"default":""
 			,"id":"text"
 			,"keys":[]
+			,"mandatory":0
 			,"multilang":1
 			,"name":"Text"
+			,"repetitive":0
 			,"type":"richtext"}
 
 		check_constraints = {"default":""
 			,"id":"check_constraints"
 			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
 			,"name":"Hook: check constraints"
+			,"repetitive":0
 			,"type":"py"}
 
 		readme = {"default":""
 			,"id":"readme"
 			,"keys":[]
-			,"name":"Readme (text/markdown)"
+			,"mandatory":0
+			,"multilang":0
+			,"name":"README.md"
+			,"repetitive":0
 			,"type":"resource"}
 
 		standard_html = {"default":""
 			,"id":"standard_html"
 			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
 			,"name":"Template: ZMSTextarea"
+			,"repetitive":0
 			,"type":"zpt"}
 
 		standard_json_docx = {"default":""
 			,"id":"standard_json_docx"
 			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
 			,"name":"DOCX-JSON Template: ZMSTextarea"
+			,"repetitive":0
 			,"type":"py"}

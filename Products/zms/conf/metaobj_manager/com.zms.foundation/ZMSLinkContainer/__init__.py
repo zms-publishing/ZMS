@@ -37,19 +37,28 @@ class ZMSLinkContainer:
 			,"default":""
 			,"id":"icon_clazz"
 			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
 			,"name":"Icon (Class)"
+			,"repetitive":0
 			,"type":"constant"}
 
 		f_css_defaults = {"default":""
 			,"id":"f_css_defaults"
 			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
 			,"name":"CSS: Defaults"
+			,"repetitive":0
 			,"type":"resource"}
 
 		interface0 = {"default":""
 			,"id":"interface0"
 			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
 			,"name":"interface0"
+			,"repetitive":0
 			,"type":"interface"}
 
 		align = {"default":""
@@ -60,12 +69,16 @@ class ZMSLinkContainer:
 				,"RIGHT_FLOAT"
 				,"NONE"]
 			,"mandatory":1
+			,"multilang":0
 			,"name":"Align"
+			,"repetitive":0
 			,"type":"select"}
 
 		e = {"default":""
 			,"id":"e"
 			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
 			,"name":"Link-Elements"
 			,"repetitive":1
 			,"type":"ZMSLinkElement"}
@@ -73,11 +86,17 @@ class ZMSLinkContainer:
 		onchangeobjevt = {"default":""
 			,"id":"onChangeObjEvt"
 			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
 			,"name":"Event: onChangeObj"
+			,"repetitive":0
 			,"type":"py"}
 
 		standard_html = {"default":""
 			,"id":"standard_html"
 			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
 			,"name":"Template: ZMSLinkContainer"
+			,"repetitive":0
 			,"type":"zpt"}

@@ -37,11 +37,17 @@ class ZMSSqlDb:
 			,"default":""
 			,"id":"icon_clazz"
 			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
 			,"name":"Icon (Class)"
+			,"repetitive":0
 			,"type":"constant"}
 
 		rendershort = {"default":""
 			,"id":"renderShort"
 			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
 			,"name":"ZMI: Render short"
+			,"repetitive":0
 			,"type":"zpt"}

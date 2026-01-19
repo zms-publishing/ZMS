@@ -246,7 +246,7 @@ def localFiles(self, provider, ids=None):
   local = provider.provideRepository(ids)
   for id in local:
     o = local[id]
-    if self.getConfProperty('ZMS.repository_manager.__init__.format', '') == 'py':
+    if self.getConfProperty('ZMS.repository_manager.__init__.format', 'py') == 'py':
       l.update(init_artefacts(o, {'py':get_init_py(self, o)}))
     else:
       l.update(init_artefacts(o, {'yaml':get_init_yaml(self, o).split('\n')}))

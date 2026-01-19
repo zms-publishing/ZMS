@@ -22,6 +22,7 @@ import json
 # Product Imports.
 from Products.zms import _blobfields
 from Products.zms import mock_http
+from Products.zms import llmapi
 from Products.zms import standard
 
 class api(object):
@@ -215,6 +216,13 @@ class RestApiController(object):
                 decoration, data = self.body_content(self.context, content_type=True)
             elif self.ids == [] or self.ids == ['get']:
                 decoration, data = self.get(self.context, content_type=True)
+            elif self.ids == ['llm_chat']:
+                message = REQUEST['message']
+                data = llmapi.chat(self.context, message)
+                decoration = {'content_type':'application/json'}
+            elif self.ids == ['llm_provider_info']:
+                data = llmapi.get_provider_info(self.context)
+                decoration = {'content_type':'application/json'}
             else:
                 data = {'ERROR':'Not Found','context':str(self.context),'path_to_handle':self.path_to_handle,'ids':self.ids}
             ct = decoration['content_type']

@@ -2,7 +2,9 @@
 
 <tal:block tal:define="
 		standard modules/Products/zms/standard;
-		zmscontext python:here.getSelf(); 
+		zmscontext python:here.getSelf();
+		zmscontext_url python:zmscontext.absolute_url();
+		llm_enabled python:bool(zmscontext.getConfProperty('llm.provider','') or zmscontext.getConfProperty('llm.api.key','')); 
 		admin python:request['AUTHENTICATED_USER'].has_permission('ZMS Administrator',here)">
 	<header class="navbar navbar-nav navbar-expand navbar-dark flex-row justify-content-between bd-navbar"
 			tal:attributes="data-zmsmode python:(admin and bool(here.getConfProperty('ZMS.mode.debug',False))) and 'debug' or (bool(here.getConfProperty('ZMS.mode.maintenance',False)) and 'maintenance' or None)">
@@ -15,9 +17,13 @@
 			</li>
 			<li id="toggle_menu" class="form-inline desktop hidden-xs" title="Show/Hide Tree Menu of the Navigation Context">
 				<a id="navbar-sitemap" target="_top"
-					tal:define="zmscontext_url python:zmscontext.absolute_url()"
 					tal:attributes="href python:'%s/manage?lang=%s'%(zmscontext_url, request.get('lang','ger'))"
 					><i class="fas fa-sitemap"></i></a>
+			</li>
+			<li id="toggle_llm" class="form-inline desktop hidden-xs" title="Show/Hide LLM Chat" tal:condition="llm_enabled">
+				<a id="navbar-llm" target="_top"
+					tal:attributes="href python:'%s/manage?lang=%s'%(zmscontext_url, request.get('lang','ger'))"
+					><i class="fas fa-robot"></i></a>
 			</li>
 			<li class="dropdown">
 				<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" tal:attributes="title python:here.getZMILangStr('TAB_CONFIGURATION')">

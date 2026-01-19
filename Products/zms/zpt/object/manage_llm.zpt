@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" tal:define="standard modules/Products.zms/standard">
+<head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
+<body tal:attributes="
+	data-root python:here.getRootElement().getHome().id;
+	data-client python:here.getHome().id;
+	id python:'zmsid_%s'%(here.id);
+	class python:here.zmi_body_class(id='manage-menu manage-llm-menu')">
+<header class="navbar navbar-nav navbar-expand navbar-dark flex-row bd-navbar" 
+	tal:define="llm_provider python:here.getConfProperty('llm.provider', 'openai')">
+	<a class="navbar-brand" target="_blank" title="LLM Chat" 
+		href="https://github.com/zms-publishing/ZMS" target="_blank">
+		<i class="fas fa-robot"></i>&nbsp;&nbsp;
+		<span tal:content="python:{'openai': 'OpenAI', 'ollama': 'Ollama', 'rag': 'RAG Assistant'}.get(llm_provider, 'LLM Chat')">LLM Chat</span>
+	</a>
+</header>
+
+<div class="zmi-llm-chat-container pt-5">
+<div id="console"></div>
+<div style="position: fixed; bottom: 0; width: 100%; background: white; padding: 10px; box-shadow: 0 -2px 5px rgba(0,0,0,0.1);">
+	<div style="display: flex; align-items: center; gap: 10px;">
+		<textarea class="form-control" id="message" style="flex: 1;" placeholder="Enter your message here..."></textarea>
+		<button class="btn btn-secondary btn-sm" id="provider-info" title="Show provider information">
+			<i class="fas fa-info-circle"></i>
+		</button>
+	</div>
+</div>
+</div>
+
+<tal:block tal:content="structure python:here.zmi_html_foot(here,request)">zmi_html_foot</tal:block>
+<script>
+//<!--
+$(function() {
+	// Handle Enter key to send message
+	$('#message').on('keypress', function(e) {
+		if (e.which === 13) { // Check if Enter key is pressed
+			e.preventDefault(); // Prevent default behavior of Enter key
+			const message = $(this).val();
+			sendMessage(message);
+			$(this).val('');
+		}
+	}).focus();
+	
+	// Handle provider info button
+	$('#provider-info').on('click', function() {
+		$.ajax({
+			method: "GET",
+			url: "++rest_api/llm_provider_info",
+			dataType: "json"
+		})
+		.done(function(info) {
+			let infoHtml = '<div class="message">Provider Information:</div>';
+			infoHtml += '<div class="reply">';
+			infoHtml += '<strong>Provider:</strong> ' + info.provider + '<br>';
+			infoHtml += '<strong>Model:</strong> ' + info.model + '<br>';
+			if (info.endpoint) {
+				infoHtml += '<strong>Endpoint:</strong> ' + info.endpoint + '<br>';
+			}
+			if (info.ollama_host) {
+				infoHtml += '<strong>Ollama:</strong> ' + info.ollama_host + '<br>';
+			}
+			if (info.qdrant_host) {
+				infoHtml += '<strong>Qdrant:</strong> ' + info.qdrant_host + '<br>';
+				infoHtml += '<strong>Collection:</strong> ' + info.collection + '<br>';
+			}
+			if (info.has_api_key !== undefined) {
+				infoHtml += '<strong>API Key:</strong> ' + (info.has_api_key ? 'Configured' : 'Not configured') + '<br>';
+			}
+			infoHtml += '</div>';
+			$('#console').prepend(infoHtml);
+		})
+		.fail(function() {
+			$('#console').prepend('<div class="error">Failed to get provider information</div>');
+		});
+	});
+	
+	function sendMessage(message) {
+		if (!message.trim()) return;
+		
+		// Add a spinner for the pending reply (prepend first so it appears below the message)
+		const spinnerId = 'spinner-' + Date.now();
+		const spinnerHtml = '<div class="reply reply-pending" id="' + spinnerId + '">' +
+			'<i class="fas fa-spinner fa-spin"></i> Waiting for response...' +
+			'</div>';
+		$('#console').prepend(spinnerHtml);
+		
+		// Show the message immediately (prepend second so it appears above the spinner)
+		$('#console').prepend('<div class="message">' + $('<div/>').text(message).html() + '</div>');
+		
+		// Send the AJAX request
+		$.ajax({
+			method: "GET",
+			url: "++rest_api/llm_chat",
+			dataType: "json",
+			data: {message: message}
+		})
+		.done(function(reply) {
+			// Replace spinner with actual reply
+			if (reply.error) {
+				$('#' + spinnerId).removeClass('reply reply-pending').addClass('error')
+					.html('[' + reply.error.code + '] ' + $('<div/>').text(reply.error.message).html());
+			}
+			else {
+				$('#' + spinnerId).removeClass('reply-pending')
+					.html($('<div/>').text(reply.message.content).html());
+			}
+		})
+		.fail(function(jqXHR, textStatus, errorThrown) {
+			// Replace spinner with error message
+			$('#' + spinnerId).removeClass('reply reply-pending').addClass('error')
+				.html('[REQUEST_FAILED] ' + textStatus + ': ' + errorThrown);
+		});
+	}
+});
+//-->
+</script>
+<style>
+/*<!--*/
+	body.manage-llm-menu {
+		background-color: white !important;
+	}
+	.zmi-llm-chat-container .message {
+		color: #666;
+		background-color: #f5f5f5;
+		font-weight: bold;
+		padding: .75rem .35rem .35rem 2rem;
+		border-top: 1px solid #dee2e6;
+		border-bottom: 1px dotted #ccc;
+		min-height: 50px;
+	}
+	.zmi-llm-chat-container .reply {
+		padding: .5rem .35rem .5rem 2rem;
+		font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+	}
+	.zmi-llm-chat-container .reply-pending {
+		color: #666;
+		font-style: italic;
+		opacity: 0.8;
+	}
+	.zmi-llm-chat-container .error {
+		color: #900;
+		font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+		padding: .5rem .35rem .5rem 2rem;
+	}
+/*-->*/
+</style>
+<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/object/manage_llm.js"></script>
+</body>
+</html>

@@ -551,6 +551,13 @@ class ConfManager(
         {'key':'ZMSIndexZCatalog.ObjectImported.resync','title':'Resync ZMSIndex on content import','desc':'Please be aware that activating implicit ZMSIndex-resync on content import can block bigger sites for a while','datatype':'boolean','default':0},
         {'key':'ZReferableItem.validateLinkObj','title':'Auto-correct link-attributes on save','desc':'Ensure valid link-attributes by parsing and using ZMSIndex for refreshing target urls on save event','datatype':'boolean','default':1},
         {'key':'ZReferableItem.validateInlineLinkObj','title':'Auto-correct inline-links on save','desc':'Ensure valid inline-links by text-parsing and using ZMSIndex for refreshing target urls on save event','datatype':'boolean','default':1},
+        {'key':'llm.provider','title':'LLM Provider','desc':'LLM provider type: openai, ollama, or rag','datatype':'string','options':['openai', 'ollama', 'rag'],'default':'openai'},
+        {'key':'llm.api.key','title':'LLM API Key','desc':'API key for OpenAI (if provider is openai)','datatype':'string','default':''},
+        {'key':'llm.api.model','title':'LLM Model','desc':'Model name for the LLM provider','datatype':'string','options':['gpt-3.5-turbo', 'gpt-4', 'gpt-4o-mini', 'llama2', 'mistral', 'codellama'],'default':'gpt-4o-mini'},
+        {'key':'llm.api.endpoint','title':'LLM API Endpoint','desc':'Custom API endpoint URL','datatype':'string','default':'https://api.openai.com/v1/chat/completions'},
+        {'key':'llm.ollama.host','title':'Ollama Host','desc':'Ollama server URL (for ollama and rag providers)','datatype':'string','default':'http://localhost:11434'},
+        {'key':'llm.qdrant.host','title':'Qdrant Host','desc':'Qdrant server URL (for rag provider)','datatype':'string','default':'http://localhost:6333'},
+        {'key':'llm.qdrant.collection','title':'Qdrant Collection','desc':'Qdrant collection name (for rag provider)','datatype':'string','default':'zms_docs'}
       ]
     
     """

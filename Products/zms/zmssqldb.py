@@ -904,7 +904,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       
       #-- retrieve entities from table-browsers
       if len( entities) == 0:
-        p = re.compile(getattr(self,'table_filter','(.*?)'))
+        p = re.compile(getattr(self,'table_filter',r'(.*?)'))
         # The pattern matches digits in parenthesis.To get the digits use .group(1).
         size_p = re.compile(r'\(\s*?([0-9]+)\s*?\)')
         for tableBrwsr in tableBrwsrs:

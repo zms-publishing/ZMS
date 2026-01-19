@@ -104,10 +104,10 @@ def getInternalLinkUrl(self, url, ob):
 # ----------------------------------------------------------------------------
 def getInlineRefs(text):
   l = []
-  p = '<a(.*?)>(.*?)<\\/a>'
+  p = r'<a(.*?)>(.*?)</a>'
   r = re.compile(p)
   for f in r.findall(str(text)):
-    d = dict(re.findall('\\s(.*?)="(.*?)"', f[0]))
+    d = dict(re.findall(r'\s(.*?)="(.*?)"', f[0]))
     if 'data-id' in d:
       l.append(d['data-id'])
   return l
@@ -431,7 +431,7 @@ class ZReferableItem(object):
       q = pq[1]
       r = re.compile(p)
       for f in r.findall(str(text)):
-        d = dict(re.findall('\\s(.*?)="(.*?)"', f))
+        d = dict(re.findall(r'\s(.*?)="(.*?)"', f))
         if 'data-id' in d:
           old = p.replace('(.*?)', f)
           url = d['data-id']

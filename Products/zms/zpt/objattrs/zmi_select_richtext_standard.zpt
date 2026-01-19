@@ -109,7 +109,7 @@ function zmiRicheditInsertTab( fmName, elName) {
 			><tal:block tal:repeat="charFormat charFormats"
 				><tal:block tal:condition="python:len(charFormat)==0">&nbsp;</tal:block
 				><span tal:condition="not:python:len(charFormat)==0"
-					tal:define="fmKey python:charFormat[0].replace('\042','\'+unescape(\'\%'+'22\')+\'')"
+					tal:define="fmKey python:charFormat[0].replace('\042','\'+unescape(\'%22\')+\'')"
 					class="btn btn-secondary"
 					tal:attributes="class python:'btn btn-secondary charFormat-%s'%(fmKey);
 						onclick python:'setTextFormatInput(\'%s\',\'%s\',\'%s\')'%(fmKey,options['fmName'],options['elName'])"
@@ -129,7 +129,7 @@ function zmiRicheditInsertTab( fmName, elName) {
 					fmKey      python:charFormat.get('tag');
 					cjs        python:standard.dt_exec(here,charFormat.get('js','')).strip();
 					cattrs     python:standard.dt_exec(here,charFormat.get('attrs','')).strip();
-					conclick   python:'setTextFormatInput(\'%s\',\'%s\',\'%s\')'%((fmKey+(' ' if cattrs else '')+cattrs).replace('\042','\'+unescape(\'\%'+'22\')+\'').strip(),options['fmName'],options['elName'])"
+					conclick   python:'setTextFormatInput(\'%s\',\'%s\',\'%s\')'%((fmKey+(' ' if cattrs else '')+cattrs).replace('\042','\'+unescape(\'%22\')+\'').strip(),options['fmName'],options['elName'])"
 				><tal:block tal:condition="python:icon_clazz or btn"
 					><tal:block tal:condition="cjs"
 						><tal:block tal:condition="python:request.get('f_zmiRichtextEditor',True)" tal:content="structure python:'<script>%s</script>'%cjs"></tal:block

@@ -454,7 +454,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
             new = ref.absolute_url()
             log.append('INFO %s'%standard.writeBlock(node,'[ZMSIndex] handleInline %s->%s'%(old,new)))
             v = v.replace(old,new)
-        p = r'<a(.*?)>(.*?)<\\/a>'
+        p = r'<a(.*?)>(.*?)</a>'
         r = re.compile(p)
         for f in r.findall(v):
           data_data = ''
@@ -619,7 +619,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
       def init_domains(doc,domains):
         domain = doc.getConfProperty('ASP.ip_or_domain','')
         if domain != '':
-          domain = '^http(\\w)?://%s'%domain
+          domain = r'^http(\w)?://%s'%domain
           path = '/'.join(doc.getPhysicalPath())
           if domain in domains:
             log.append('ERROR %s'%standard.writeBlock(doc,'[ZMSIndex] ### init_domains DUPLICATE %s=%s'%(domain,path)))

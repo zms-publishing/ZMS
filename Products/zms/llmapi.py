@@ -37,6 +37,10 @@ Configuration properties:
 - llm.qdrant.collection: Qdrant collection name (default: 'zms_docs')
 - llm.embedding.model: SentenceTransformer model (default: 'all-MiniLM-L6-v2')
 - llm.rag.top_k: Number of documents to retrieve (default: '3')
+- llm.rag.score_threshold: Minimum similarity score (0.0-1.0, default: '0.0')
+- llm.temperature: LLM temperature 0.0-2.0 (default: '0.7', RAG: 0.1 recommended)
+- llm.top_p: Nucleus sampling 0.0-1.0 (default: '0.9')
+- llm.num_ctx: Context window size (default: '4096')
 
 Requirements for RAG:
 - pip install sentence-transformers
@@ -230,6 +234,12 @@ class RAGProvider(LLMProvider):
             ollama_host = self.context.getConfProperty('llm.ollama.host', 'http://localhost:11434')
             model = self.context.getConfProperty('llm.api.model', 'llama2')
             top_k = int(self.context.getConfProperty('llm.rag.top_k', '3'))
+            score_threshold = float(self.context.getConfProperty('llm.rag.score_threshold', '0.0'))
+            
+            # Get LLM parameters with RAG-optimized defaults
+            temperature = float(kwargs.get('temperature') or self.context.getConfProperty('llm.temperature', '0.1'))
+            top_p = float(kwargs.get('top_p') or self.context.getConfProperty('llm.top_p', '0.9'))
+            num_ctx = int(kwargs.get('num_ctx') or self.context.getConfProperty('llm.num_ctx', '4096'))
             
             # Step 1: Generate embeddings for the query
             try:
@@ -245,14 +255,20 @@ class RAGProvider(LLMProvider):
             
             # Step 2: Search Qdrant for relevant context using embeddings
             try:
+                search_payload = {
+                    "query": query_vector,
+                    "limit": top_k,
+                    "with_payload": True
+                }
+                
+                # Add score threshold if configured
+                if score_threshold > 0:
+                    search_payload["score_threshold"] = score_threshold
+                
                 search_response = requests.post(
                     f"{qdrant_host}/collections/{collection}/points/query",
                     headers={"Content-Type": "application/json"},
-                    json={
-                        "query": query_vector,
-                        "limit": top_k,
-                        "with_payload": True
-                    },
+                    json=search_payload,
                     timeout=10
                 )
                 
@@ -283,26 +299,39 @@ class RAGProvider(LLMProvider):
             # Step 3: Build prompt with context
             if context_docs:
                 context_text = "\n\n---\n\n".join(context_docs)
-                enhanced_message = f"""Basierend auf den folgenden Informationen, beantworte die Frage:
+                enhanced_message = f"""Basierend auf den folgenden Informationen, beantworte die Frage präzise und sachlich.
+Verwende nur Informationen aus dem bereitgestellten Kontext.
 
+KONTEXT:
 {context_text}
 
-Frage: {message}
+FRAGE: {message}
 
-Antwort:"""
+ANTWORT:"""
             else:
                 enhanced_message = message
             
-            # Step 4: Send to Ollama with context
+            # Step 4: Send to Ollama with context and optimized parameters
+            ollama_params = {
+                "model": model,
+                "messages": [{"role": "user", "content": enhanced_message}],
+                "stream": False,
+                "options": {
+                    "temperature": temperature,
+                    "top_p": top_p,
+                    "num_ctx": num_ctx
+                }
+            }
+            
+            # Add any additional kwargs
+            for key, value in kwargs.items():
+                if key not in ['temperature', 'top_p', 'num_ctx']:
+                    ollama_params[key] = value
+            
             response = requests.post(
                 f"{ollama_host}/api/chat",
                 headers={"Content-Type": "application/json"},
-                json={
-                    "model": model,
-                    "messages": [{"role": "user", "content": enhanced_message}],
-                    "stream": False,
-                    **kwargs
-                },
+                json=ollama_params,
                 timeout=120
             )
             

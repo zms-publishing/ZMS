@@ -6,6 +6,7 @@
 <i class="zmi-state text-primary fas fa-link" 
 		tal:define="refByObjs python:here.getRefByObjs()"
 		tal:condition="refByObjs" 
+		tal:on-error="structure string:<!-- ERROR here.getRefByObjs() -->"
 		tal:attributes="
 			title python:here.getZMILangStr('MSG_REFERENCEDBY')%''+' %i %s'%(len(refByObjs),here.getZMILangStr('ATTR_OBJECTS'));
 			onclick python:'document.location.href=\042%s/manage_RefForm?lang=%s\042'%(here.absolute_url(),request['lang'])"

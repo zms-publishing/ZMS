@@ -47,6 +47,9 @@ from AccessControl.SecurityInfo import ModuleSecurityInfo
 import requests
 import json
 
+# Global cache for embedding model (singleton)
+_EMBEDDING_MODEL_CACHE = {}
+
 security = ModuleSecurityInfo('Products.zms.llmapi')
 
 
@@ -203,23 +206,21 @@ class OllamaProvider(LLMProvider):
 class RAGProvider(LLMProvider):
     """RAG (Retrieval-Augmented Generation) provider using Qdrant and Ollama"""
     
-    def __init__(self, context):
-        super().__init__(context)
-        self._embedding_model = None
-    
     def _get_embedding_model(self):
-        """Lazy load the embedding model"""
-        if self._embedding_model is None:
+        """Get cached embedding model (singleton pattern to avoid repeated HuggingFace API calls)"""
+        model_name = self.context.getConfProperty('llm.embedding.model', 'all-MiniLM-L6-v2')
+        
+        # Use global cache to avoid reloading model for each request
+        if model_name not in _EMBEDDING_MODEL_CACHE:
             try:
                 from sentence_transformers import SentenceTransformer
-                model_name = self.context.getConfProperty('llm.embedding.model', 'all-MiniLM-L6-v2')
-                self._embedding_model = SentenceTransformer(model_name)
+                _EMBEDDING_MODEL_CACHE[model_name] = SentenceTransformer(model_name)
             except ImportError:
                 raise ImportError(
                     "sentence-transformers is required for RAG. "
                     "Install with: pip install sentence-transformers"
                 )
-        return self._embedding_model
+        return _EMBEDDING_MODEL_CACHE[model_name]
     
     def chat(self, message, **kwargs):
         """Send a message using RAG with vector search and LLM"""

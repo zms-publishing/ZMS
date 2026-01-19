@@ -151,9 +151,9 @@ class ZMSMetaobjManager(object):
                   attr['keys'] = keys
               if (o['type'] == 'ZMSRecordSet' and attr.get('custom')) or attr['type'] == 'constant':
                 mandatory_keys['custom'] = None
-              # Remove non-mandatory keys or keys with default values.
+              # Remove non-mandatory keys (# or keys with default values).
               for key in list(attr):
-                if key not in mandatory_keys or mandatory_keys[key] == attr[key]:
+                if key not in mandatory_keys: # attr[key] == mandatory_keys[key]
                   del attr[key]
             d['Attrs'] = attrs
           r[id] = d

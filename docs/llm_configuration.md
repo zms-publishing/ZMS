@@ -50,6 +50,13 @@ For using RAG with Qdrant vector database and Ollama:
 | `llm.qdrant.collection` | Collection name for vector search | `zms_docs` |
 | `llm.ollama.host` | Ollama server URL | `http://localhost:11434` |
 | `llm.api.model` | Model name | `llama2` |
+| `llm.embedding.model` | SentenceTransformer model for embeddings | `all-MiniLM-L6-v2` |
+| `llm.rag.top_k` | Number of documents to retrieve | `3` |
+
+**Important**: RAG requires the `sentence-transformers` package:
+```bash
+pip install sentence-transformers
+```
 
 ## Configuration Examples
 
@@ -87,6 +94,8 @@ llm.qdrant.host = http://localhost:6333
 llm.qdrant.collection = zms_documentation
 llm.ollama.host = http://localhost:11434
 llm.api.model = llama2
+llm.embedding.model = all-MiniLM-L6-v2
+llm.rag.top_k = 3
 ```
 
 For Docker Compose setup:
@@ -96,7 +105,10 @@ llm.qdrant.host = http://qdrant:6333
 llm.ollama.host = http://ollama:11434
 llm.qdrant.collection = zms_docs
 llm.api.model = llama2
+llm.embedding.model = all-MiniLM-L6-v2
 ```
+
+**Note**: Make sure to use the same embedding model (`llm.embedding.model`) that was used to ingest your data into Qdrant!
 
 ## Setting Up Ollama
 

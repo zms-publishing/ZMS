@@ -35,6 +35,11 @@ Configuration properties:
 - llm.ollama.host: Ollama host (default: 'http://localhost:11434')
 - llm.qdrant.host: Qdrant host (default: 'http://localhost:6333')
 - llm.qdrant.collection: Qdrant collection name (default: 'zms_docs')
+- llm.embedding.model: SentenceTransformer model (default: 'all-MiniLM-L6-v2')
+- llm.rag.top_k: Number of documents to retrieve (default: '3')
+
+Requirements for RAG:
+- pip install sentence-transformers
 """
 
 # Imports.
@@ -198,6 +203,24 @@ class OllamaProvider(LLMProvider):
 class RAGProvider(LLMProvider):
     """RAG (Retrieval-Augmented Generation) provider using Qdrant and Ollama"""
     
+    def __init__(self, context):
+        super().__init__(context)
+        self._embedding_model = None
+    
+    def _get_embedding_model(self):
+        """Lazy load the embedding model"""
+        if self._embedding_model is None:
+            try:
+                from sentence_transformers import SentenceTransformer
+                model_name = self.context.getConfProperty('llm.embedding.model', 'all-MiniLM-L6-v2')
+                self._embedding_model = SentenceTransformer(model_name)
+            except ImportError:
+                raise ImportError(
+                    "sentence-transformers is required for RAG. "
+                    "Install with: pip install sentence-transformers"
+                )
+        return self._embedding_model
+    
     def chat(self, message, **kwargs):
         """Send a message using RAG with vector search and LLM"""
         try:
@@ -205,19 +228,28 @@ class RAGProvider(LLMProvider):
             collection = self.context.getConfProperty('llm.qdrant.collection', 'zms_docs')
             ollama_host = self.context.getConfProperty('llm.ollama.host', 'http://localhost:11434')
             model = self.context.getConfProperty('llm.api.model', 'llama2')
+            top_k = int(self.context.getConfProperty('llm.rag.top_k', '3'))
             
-            # Step 1: Search Qdrant for relevant context
+            # Step 1: Generate embeddings for the query
             try:
-                # First, get embeddings for the query (simplified - you might want to use a proper embedding model)
+                embedding_model = self._get_embedding_model()
+                query_vector = embedding_model.encode(message).tolist()
+            except Exception as e:
+                return {
+                    'error': {
+                        'code': 'EMBEDDING_ERROR',
+                        'message': f'Failed to generate embeddings: {str(e)}'
+                    }
+                }
+            
+            # Step 2: Search Qdrant for relevant context using embeddings
+            try:
                 search_response = requests.post(
-                    f"{qdrant_host}/collections/{collection}/points/search",
+                    f"{qdrant_host}/collections/{collection}/points/query",
                     headers={"Content-Type": "application/json"},
                     json={
-                        "vector": {
-                            "name": "text",
-                            "query": message,  # This is simplified; ideally use embeddings
-                        },
-                        "limit": 3,
+                        "query": query_vector,
+                        "limit": top_k,
                         "with_payload": True
                     },
                     timeout=10
@@ -226,23 +258,41 @@ class RAGProvider(LLMProvider):
                 context_docs = []
                 if search_response.status_code == 200:
                     results = search_response.json()
-                    if 'result' in results:
-                        context_docs = [
-                            doc.get('payload', {}).get('text', '')
-                            for doc in results['result']
-                        ]
+                    if 'result' in results and 'points' in results['result']:
+                        for doc in results['result']['points']:
+                            payload = doc.get('payload', {})
+                            # Extract text from payload (adapt to your data structure)
+                            text = payload.get('text') or payload.get('body') or payload.get('content', '')
+                            if text:
+                                context_docs.append(text)
+                    elif 'result' in results:
+                        # Fallback for different Qdrant response formats
+                        for doc in results['result']:
+                            payload = doc.get('payload', {})
+                            text = payload.get('text') or payload.get('body') or payload.get('content', '')
+                            if text:
+                                context_docs.append(text)
             except Exception as e:
                 # If Qdrant search fails, continue without context
                 context_docs = []
+                # Optionally log the error for debugging
+                import traceback
+                traceback.print_exc()
             
-            # Step 2: Build prompt with context
+            # Step 3: Build prompt with context
             if context_docs:
-                context_text = "\n\n".join(context_docs)
-                enhanced_message = f"Context:\n{context_text}\n\nQuestion: {message}"
+                context_text = "\n\n---\n\n".join(context_docs)
+                enhanced_message = f"""Basierend auf den folgenden Informationen, beantworte die Frage:
+
+{context_text}
+
+Frage: {message}
+
+Antwort:"""
             else:
                 enhanced_message = message
             
-            # Step 3: Send to Ollama with context
+            # Step 4: Send to Ollama with context
             response = requests.post(
                 f"{ollama_host}/api/chat",
                 headers={"Content-Type": "application/json"},

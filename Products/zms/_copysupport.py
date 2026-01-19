@@ -285,7 +285,7 @@ class CopySupport(object):
         oblist = kwargs.get('oblist', [])
         # identify all BLOB fields
         if mode == 'read_from_source':
-            if len(oblist) > 0:
+            if len(oblist) > 0 and oblist[0].getMediaDb() is not None:
                 self.REQUEST.set('mediadb_source_location', oblist[0].getMediaDb().getLocation())
             self.blobfields = []
             tree_objs = []
@@ -342,7 +342,10 @@ class CopySupport(object):
             context = self.aq_parent
         context.manage_copyObjects(ids, REQUEST, RESPONSE)
         # Return with message.
-        RESPONSE.redirect('manage_main?lang=%s' % (REQUEST['lang']))
+        message = self.getZMILangStr('MSG_COPIEDOBJS')
+        if RESPONSE is None:
+            RESPONSE = self.REQUEST.RESPONSE
+        RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s' % (REQUEST.get('lang', context.getPrimaryLanguage()), message))
 
 
     ############################################################################
@@ -354,9 +357,12 @@ class CopySupport(object):
         if not ids:
             ids = [self.getId()]
             context = self.aq_parent
-        context.manage_cutObjects(ids, REQUEST, RESPONSE)
+        context.manage_cutObjects(ids, REQUEST)
         # Return with message.
-        RESPONSE.redirect('manage_main?lang=%s' % (REQUEST['lang']))
+        message = self.getZMILangStr('MSG_CUTOBJS')
+        if RESPONSE is None:
+            RESPONSE = self.REQUEST.RESPONSE
+        RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s' % (REQUEST.get('lang', context.getPrimaryLanguage()), message)) 
 
 
     ############################################################################

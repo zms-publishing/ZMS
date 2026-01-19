@@ -145,13 +145,15 @@ class ZMSMetaobjManager(object):
               if attr['type'] == 'interface':
                 attr['name'] = attr['id']
               # Export list of keys as string if it contains executable code.
-              if type(attr['keys']) is list:
+              if type(attr['keys']) is list and self.getConfProperty('ZMS.repository_manager.__init__.format', 'py') == 'yaml':
                 keys = '\n'.join(attr['keys'])
                 if standard.dt_executable(keys):
                   attr['keys'] = keys
               if (o['type'] == 'ZMSRecordSet' and attr.get('custom')) or attr['type'] == 'constant':
                 mandatory_keys['custom'] = None
-              # Remove non-mandatory keys (# or keys with default values).
+              # Remove non-mandatory keys.
+              # Further discussion needed: 
+              # remove keys with default values, too?
               for key in list(attr):
                 if key not in mandatory_keys: # attr[key] == mandatory_keys[key]
                   del attr[key]

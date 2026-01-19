@@ -20,37 +20,56 @@
 import io
 import time
 
+try:
+    from ruamel.yaml import YAML
+    _USE_RUAMEL = True
+except ImportError:
+    import yaml as _pyyaml
+    _USE_RUAMEL = False
+
 def dump(data):
-    from ruamel.yaml import YAML
+    if _USE_RUAMEL:
+        # Custom representer for struct_time
+        def represent_struct_time(dumper, data):
+            return dumper.represent_scalar('!struct_time', time.strftime('%Y-%m-%d %H:%M:%S', data))
+        yaml = YAML()
+        yaml.representer.add_representer(time.struct_time, represent_struct_time)
+        yaml.preserve_quotes = True
+        yaml.indent(mapping=2, sequence=4, offset=2)
+        stream = io.StringIO()
+        yaml.dump(data, stream)
+        return stream.getvalue()
+    else:
+        # PyYAML fallback
+        def struct_time_representer(dumper, data):
+            return dumper.represent_scalar('!struct_time', time.strftime('%Y-%m-%d %H:%M:%S', data))
+        _pyyaml.add_representer(time.struct_time, struct_time_representer)
+        return _pyyaml.dump(data, default_flow_style=False)
 
-    # Custom representer for struct_time
-    def represent_struct_time(dumper, data):
-        return dumper.represent_scalar('!struct_time', time.strftime('%Y-%m-%d %H:%M:%S', data))
-        
-    yaml = YAML()
-    yaml.representer.add_representer(time.struct_time, represent_struct_time)
-    yaml.preserve_quotes = True
-    yaml.indent(mapping=2, sequence=4, offset=2)
-    stream = io.StringIO()
-    yaml.dump(data, stream)
-    return stream.getvalue()
 
-
-def parse(data):
-    from ruamel.yaml import YAML
-
-    # Custom constructor for struct_time
-    def construct_struct_time(loader, node):
-        value = loader.construct_scalar(node)
-        return time.strptime(value, '%Y-%m-%d %H:%M:%S')
-
-    yaml=YAML(typ="safe")
-    yaml.constructor.add_constructor('!struct_time', construct_struct_time)
-    return yaml.load(data)
+def parse(data): 
+    if _USE_RUAMEL:
+        # Custom constructor for struct_time
+        def construct_struct_time(loader, node):
+            value = loader.construct_scalar(node)
+            return time.strptime(value, '%Y-%m-%d %H:%M:%S')
+        yaml=YAML(typ="safe")
+        yaml.constructor.add_constructor('!struct_time', construct_struct_time)
+        return yaml.load(data)
+    else:
+        # PyYAML fallback
+        def struct_time_constructor(loader, node):
+            value = loader.construct_scalar(node)
+            return time.strptime(value, '%Y-%m-%d %H:%M:%S')
+        _pyyaml.SafeLoader.add_constructor('!struct_time', struct_time_constructor)
+        return _pyyaml.safe_load(data)
 
 
 def __cleanup(v):
-    from ruamel.yaml.scalarstring import LiteralScalarString    
+    if _USE_RUAMEL:
+        from ruamel.yaml.scalarstring import LiteralScalarString    
+    else:
+        LiteralScalarString = str
     """
     Recursively cleans up a dictionary by removing keys with falsy values.
     Args:

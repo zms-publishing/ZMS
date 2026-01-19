@@ -132,13 +132,30 @@ class ZMSMetaobjManager(object):
               d['lang_dict'] = {x:lang_dict[x] for x in l}
             for attr in attrs:
               syncZopeMetaobjAttr(self, d, attr)
-              mandatory_keys = ['id', 'name', 'type', 'meta_type', 'default', 'keys', 'mandatory', 'multilang', 'ob', 'repetitive']
-              if attr['type']=='interface':
+              mandatory_keys = {'id': None, 
+                'name': None, 
+                'type': None, 
+                'meta_type': None, 
+                'default': None, 
+                'keys': None, 
+                'mandatory': 0, 
+                'multilang': 0, 
+                'ob': None, 
+                'repetitive': 0}
+              if attr['type'] == 'interface':
                 attr['name'] = attr['id']
+              # Export list of keys as string if it contains executable code.
+              if type(attr['keys']) is list and self.getConfProperty('ZMS.repository_manager.__init__.format', 'py') == 'yaml':
+                keys = '\n'.join(attr['keys'])
+                if standard.dt_executable(keys):
+                  attr['keys'] = keys
               if (o['type'] == 'ZMSRecordSet' and attr.get('custom')) or attr['type'] == 'constant':
-                mandatory_keys += ['custom']
+                mandatory_keys['custom'] = None
+              # Remove non-mandatory keys.
+              # Further discussion needed: 
+              # remove keys with default values, too?
               for key in list(attr):
-                if not key in mandatory_keys:
+                if key not in mandatory_keys: # attr[key] == mandatory_keys[key]
                   del attr[key]
             d['Attrs'] = attrs
           r[id] = d

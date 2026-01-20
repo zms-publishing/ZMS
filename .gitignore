@@ -5,8 +5,7 @@ src/Products/zms/plugins/www/zms-all.min.js
 src/Products/zms/plugins/www/zms-all.min.js.hash
 src/Products/zms/plugins/www/i18n/*.js
 src/Products/zms/overrides.zcml
-Products/zms/overrides.zcml
-Products/zms/versions.txt
+Products
 
 .vscode/
 

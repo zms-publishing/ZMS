@@ -1,4 +1,8 @@
-FROM python:3.13-alpine
+FROM python:3.14.2-alpine
+
+ENV ZOPE_VERSION=6.0b2
+ENV VIRTUAL_ENV=/home/zope/venv
+ENV SHELL=/bin/bash
 
 # Install OS Requirements
 RUN apk add --no-cache python3 make gcc g++ git curl bash 
@@ -19,19 +23,15 @@ RUN apk update && apk add python3-dev mariadb-dev openldap-dev
 RUN addgroup -S zope && adduser --disabled-password -S zope -G zope
 USER zope
 WORKDIR /home/zope/
-ENV VIRTUAL_ENV=/home/zope/venv
-ENV SHELL=/bin/bash
 
 # Install Zope/ZEO
 RUN python3 -m venv venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 RUN pip install -U pip wheel setuptools
-RUN pip install -r https://raw.githubusercontent.com/zms-publishing/ZMS5/main/requirements.txt
-RUN pip install --use-pep517 --config-settings editable_mode=compat -e git+https://github.com/zms-publishing/ZMS.git@main#egg=ZMS
+RUN pip install Zope[wsgi]==$ZOPE_VERSION -c https://zopefoundation.github.io/Zope/releases/$ZOPE_VERSION/constraints.txt
 RUN pip install ZEO
-RUN pip install itsdangerous
-RUN pip install debugpy
-
+RUN pip install -e git+https://github.com/zms-publishing/ZMS.git@zope6_pkg_registering#egg=ZMS
+ 
 # Create Zope Instance
 RUN mkwsgiinstance -d . -u admin:admin
 

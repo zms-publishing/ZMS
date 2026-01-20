@@ -5,7 +5,7 @@ set -euo pipefail
 # Format: <latest-tag>-<shortsha7>
 
 REPO_ROOT=$(git rev-parse --show-toplevel)
-VERSION_FILE="$REPO_ROOT/Products/zms/version.txt"
+VERSION_FILE="$REPO_ROOT/src/Products/zms/version.txt"
 
 mkdir -p "$(dirname "$VERSION_FILE")"
 
@@ -51,7 +51,7 @@ fi
 if [[ "$CURRENT_CONTENT" != "$NEW_VERSION" ]]; then
   echo "$NEW_VERSION" > "$VERSION_FILE"
   git add "$VERSION_FILE"
-  echo "pre-commit: updated Products/zms/version.txt to $NEW_VERSION"
+  echo "pre-commit: updated src/Products/zms/version.txt to $NEW_VERSION"
 fi
 
 exit 0

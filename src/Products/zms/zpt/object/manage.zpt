@@ -11,7 +11,7 @@
 				<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes" />
 				<meta name="version_container_abs_url" tal:attributes="content python:here.getVersionContainer().absolute_url()" />
 				<meta name="physical_path" tal:attributes="content python:'/'.join(here.getPhysicalPath())" />
-				<meta name="generator" content="ZMS5" />
+				<meta name="generator" content="ZMS6" />
 			</head>
 			<frameset tal:attributes="cols python:'%s,*'%str(request.get('manage_menu_width',224))">
 				<frame marginwidth="2" marginheight="2" scrolling="auto" name="manage_menu" tal:attributes="src python:'manage_menu?lang=%s&preview=preview'%request.get('lang','ger')+['','&zmi-debug=True'][int('zmi-debug' in request)]"/>

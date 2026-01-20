@@ -415,8 +415,8 @@ class ZMS(
       file = open(_fileutil.getOSPath(package_home(globals())+'/version.txt'),'r')
       version_txt = file.read()
       file.close()
-      # Prepend ZMS5- if version.txt is PEP 440 compliant
-      version_txt = 'ZMS5-' not in version_txt and ('ZMS5-' + version_txt) or version_txt
+      # Prepend ZMS6- if version.txt is PEP 440 compliant
+      version_txt = 'ZMS6-' not in version_txt and ('ZMS6-' + version_txt) or version_txt
       zms_custom_version = os.environ.get('ZMS_CUSTOM_VERSION', '')
       if custom and zms_custom_version != '':
         version_txt += f'&nbsp;(<samp id="zms_custom_version">{zms_custom_version}</samp>)'

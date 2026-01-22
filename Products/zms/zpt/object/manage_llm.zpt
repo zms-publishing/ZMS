@@ -41,6 +41,15 @@ $(function() {
 		}
 	}).focus();
 
+	// Handle arrow-up key to recall last message
+	$('#message').on('keydown', function(e) {
+		if (e.which === 38) { // Check if Up Arrow key is pressed
+			const lastMessage = $('#console .message').first().text();
+			$(this).val(lastMessage);
+			e.preventDefault(); // Prevent cursor movement
+		}
+	});
+
 	// Copy to clipboard functionality
 	$(document).on('click', '#copyToClipboard', function() {
 		const replyDiv = $(this).closest('.reply');
@@ -143,6 +152,7 @@ $(function() {
 	.zmi-llm-chat-container .reply {
 		padding: .5rem .35rem .5rem 2rem;
 		font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+		white-space: pre-wrap;
 	}
 	.zmi-llm-chat-container .reply i#copyToClipboard {
 		cursor: pointer;

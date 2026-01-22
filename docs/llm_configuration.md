@@ -1,6 +1,6 @@
 # LLM API Configuration Guide
 
-ZMS now supports multiple Large Language Model (LLM) providers through an abstract API interface. This allows you to use different AI backends including OpenAI, local Ollama deployments, and RAG (Retrieval-Augmented Generation) with Qdrant vector database.
+ZMS now supports multiple Large Language Model (LLM) providers through an abstract interface. This allows you to use different AI backends including OpenAI, local Ollama deployments, and RAG (Retrieval-Augmented Generation) with Qdrant vector database.
 
 ## Overview
 
@@ -20,6 +20,10 @@ All configuration is done via ZMS configuration properties. Set these in your ZM
 |----------|-------------|---------|
 | `llm.provider` | Provider type: `openai`, `ollama`, or `rag` | `openai` |
 | `llm.api.model` | Model name to use | `gpt-4o-mini` (OpenAI), `llama2` (Ollama) |
+| `llm.temperature` | Sampling temperature 0.0-2.0 (higher = more creative) | `0.7` (RAG: `0.1` recommended) |
+| `llm.top_p` | Nucleus sampling 0.0-1.0 | `0.9` |
+| `llm.max_tokens` | Maximum tokens to generate (optional) | (not set) |
+| `llm.num_ctx` | Context window size for Ollama/RAG | `4096` |
 
 ### OpenAI Configuration
 
@@ -30,6 +34,7 @@ For using OpenAI's cloud API:
 | `llm.api.key` | Your OpenAI API key | (required) |
 | `llm.api.endpoint` | Custom endpoint URL | `https://api.openai.com/v1/chat/completions` |
 | `llm.api.model` | Model name | `gpt-4o-mini` |
+| `llm.store` | Enable storage for OpenAI's responses API | `False` |
 
 ### Ollama Configuration
 
@@ -39,6 +44,7 @@ For using local Ollama deployment:
 |----------|-------------|---------|
 | `llm.ollama.host` | Ollama server URL | `http://localhost:11434` |
 | `llm.api.model` | Model name (e.g., `llama2`, `mistral`, `codellama`) | `llama2` |
+| `llm.num_ctx` | Context window size | `4096` |
 
 ### RAG Configuration
 
@@ -51,7 +57,10 @@ For using RAG with Qdrant vector database and Ollama:
 | `llm.ollama.host` | Ollama server URL | `http://localhost:11434` |
 | `llm.api.model` | Model name | `llama2` |
 | `llm.embedding.model` | SentenceTransformer model for embeddings | `all-MiniLM-L6-v2` |
-| `llm.rag.top_k` | Number of documents to retrieve | `3` |
+| `llm.rag.top_k` | Number of documents to retrieve | `16` |
+| `llm.rag.score_threshold` | Minimum similarity score (0.0-1.0) | `0.0` |
+| `llm.temperature` | Temperature for RAG responses | `0.1` (recommended) |
+| `llm.num_ctx` | Context window size | `4096` |
 
 **Important**: RAG requires the `sentence-transformers` package:
 ```bash
@@ -67,6 +76,9 @@ pip install sentence-transformers
 llm.provider = openai
 llm.api.key = sk-your-openai-api-key-here
 llm.api.model = gpt-4o-mini
+llm.temperature = 0.7
+llm.top_p = 0.9
+llm.store = True  # Enable responses API storage
 ```
 
 ### Example 2: Ollama (Local)
@@ -76,6 +88,8 @@ llm.api.model = gpt-4o-mini
 llm.provider = ollama
 llm.ollama.host = http://localhost:11434
 llm.api.model = llama2
+llm.temperature = 0.7
+llm.num_ctx = 4096
 ```
 
 For Docker deployments, you might use:
@@ -83,6 +97,8 @@ For Docker deployments, you might use:
 llm.provider = ollama
 llm.ollama.host = http://ollama:11434  # Docker service name
 llm.api.model = mistral
+llm.temperature = 0.8
+llm.num_ctx = 8192
 ```
 
 ### Example 3: RAG with Qdrant
@@ -95,7 +111,10 @@ llm.qdrant.collection = zms_documentation
 llm.ollama.host = http://localhost:11434
 llm.api.model = llama2
 llm.embedding.model = all-MiniLM-L6-v2
-llm.rag.top_k = 3
+llm.rag.top_k = 16
+llm.rag.score_threshold = 0.0
+llm.temperature = 0.1  # Lower temperature for factual answers
+llm.num_ctx = 4096
 ```
 
 For Docker Compose setup:
@@ -106,6 +125,9 @@ llm.ollama.host = http://ollama:11434
 llm.qdrant.collection = zms_docs
 llm.api.model = llama2
 llm.embedding.model = all-MiniLM-L6-v2
+llm.rag.top_k = 16
+llm.rag.score_threshold = 0.3  # Filter low-quality matches
+llm.temperature = 0.1
 ```
 
 **Note**: Make sure to use the same embedding model (`llm.embedding.model`) that was used to ingest your data into Qdrant!
@@ -192,6 +214,10 @@ You'll need to populate your Qdrant collection with embeddings. Here's a Python 
 ```python
 from qdrant_client import QdrantClient
 from qdrant_client.models import Distance, VectorParams, PointStruct
+from sentence_transformers import SentenceTransformer
+
+# Initialize embedding model (use the same as llm.embedding.model)
+model = SentenceTransformer('all-MiniLM-L6-v2')
 
 # Connect to Qdrant
 client = QdrantClient(host="localhost", port=6333)
@@ -202,15 +228,24 @@ client.create_collection(
     vectors_config=VectorParams(size=384, distance=Distance.COSINE),
 )
 
-# Add documents (you'll need to generate embeddings)
-# This is a simplified example
-points = [
-    PointStruct(
-        id=1,
-        vector=[...],  # Your embedding vector
-        payload={"text": "Your document text here"}
-    ),
+# Add documents with embeddings
+documents = [
+    "ZMS is a content management system...",
+    "To configure LLM settings...",
+    # ... your documents
 ]
+
+points = []
+for idx, doc in enumerate(documents):
+    vector = model.encode(doc).tolist()
+    points.append(
+        PointStruct(
+            id=idx,
+            vector=vector,
+            payload={"text": doc}
+        )
+    )
+
 client.upsert(collection_name="zms_docs", points=points)
 ```
 
@@ -224,9 +259,26 @@ The LLM chat is available via REST API:
 GET /++rest_api/llm_chat?message=Your+question+here
 ```
 
-Response format:
+Response format (OpenAI /v1/chat/completions compatible):
 ```json
 {
+  "id": "chatcmpl-abc123",
+  "object": "chat.completion",
+  "created": 1677652288,
+  "model": "gpt-4o-mini",
+  "choices": [{
+    "index": 0,
+    "message": {
+      "role": "assistant",
+      "content": "The AI's response"
+    },
+    "finish_reason": "stop"
+  }],
+  "usage": {
+    "prompt_tokens": 10,
+    "completion_tokens": 20,
+    "total_tokens": 30
+  },
   "message": {
     "role": "assistant",
     "content": "The AI's response"
@@ -263,23 +315,80 @@ Response:
 
 ### Python API
 
-You can also use the LLM API from Python code:
+You can use the LLM API from Python code:
 
 ```python
 from Products.zms import llmapi
 
-# Send a message
+# Send a simple message (string)
 response = llmapi.chat(context, "What is ZMS?")
 
+# Send a conversation (list of messages)
+messages = [
+    {"role": "system", "content": "You are a helpful assistant."},
+    {"role": "user", "content": "What is ZMS?"}
+]
+response = llmapi.chat(context, messages)
+
+# With additional parameters
+response = llmapi.chat(
+    context, 
+    "Explain ZMS configuration",
+    temperature=0.5,
+    max_tokens=500
+)
+
+# Check for errors
 if 'error' in response:
     print(f"Error: {response['error']['message']}")
 else:
+    # Access the response content
     print(f"Response: {response['message']['content']}")
+    # Or using the OpenAI format
+    print(f"Response: {response['choices'][0]['message']['content']}")
 
 # Get provider info
 info = llmapi.get_provider_info(context)
 print(f"Using {info['provider']} with model {info['model']}")
 ```
+
+## Configuration Parameters Explained
+
+### Temperature (`llm.temperature`)
+Controls randomness in responses:
+- **0.0**: Deterministic, always picks most likely tokens
+- **0.7**: Balanced (default for general use)
+- **0.1**: More focused and deterministic (recommended for RAG)
+- **1.5-2.0**: Very creative, more random
+
+### Top P (`llm.top_p`)
+Nucleus sampling threshold (0.0-1.0):
+- **0.9**: Default, good balance
+- Lower values = more focused responses
+- Higher values = more diverse responses
+
+### Max Tokens (`llm.max_tokens`)
+Maximum length of generated response. Useful to control costs or response length.
+
+### Context Window (`llm.num_ctx`)
+Size of context window for Ollama/RAG models:
+- **4096**: Default, good for most use cases
+- **8192** or higher: For longer conversations or documents
+
+### Score Threshold (`llm.rag.score_threshold`)
+Minimum similarity score for RAG document retrieval:
+- **0.0**: Include all retrieved documents (default)
+- **0.3-0.5**: Filter out low-quality matches
+- **0.7+**: Only very relevant documents
+
+### Top K (`llm.rag.top_k`)
+Number of documents to retrieve for RAG context:
+- **3**: Quick, focused answers
+- **16**: Default, good balance (updated from 3)
+- **30+**: Comprehensive context (may exceed token limits)
+
+### Store (`llm.store`)
+When set to `True`, enables OpenAI's responses API storage for model training and fine-tuning.
 
 ## Troubleshooting
 
@@ -322,51 +431,18 @@ docker exec -it ollama ollama pull llama2
 2. Increase Docker memory allocation
 3. Use GPU acceleration if available
 4. Consider using OpenAI for faster responses
+5. Reduce `llm.num_ctx` if using very large context windows
 
-## Migration from OpenAI-only Setup
+### RAG Not Finding Relevant Documents
 
-The old `openapi.py` module has been removed and replaced with `llmapi.py`. 
+**Problem**: RAG returns generic answers or "I don't know"
 
-### Configuration Migration
-
-If you were using the old OpenAI-only configuration, update your properties:
-
-```python
-# Old configuration (no longer supported)
-openai.api.key = sk-...
-openai.api.model = gpt-4o-mini
-
-# New configuration (required)
-llm.provider = openai  # This is the default
-llm.api.key = sk-...
-llm.api.model = gpt-4o-mini
-```
-
-### Code Migration
-
-If you have Python code using the old module:
-
-```python
-# Old code (no longer works)
-from Products.zms import openapi
-response = openapi.chat_with_gpt(context, message)
-
-# New code (required)
-from Products.zms import llmapi
-response = llmapi.chat(context, message)
-```
-
-### REST API Migration
-
-Update your REST API calls:
-
-```javascript
-// Old endpoint (removed)
-"++rest_api/openai_chat"
-
-// New endpoint (use this)
-"++rest_api/llm_chat"
-```
+**Solutions**:
+1. Check that documents are properly ingested in Qdrant
+2. Verify `llm.embedding.model` matches the model used for ingestion
+3. Lower `llm.rag.score_threshold` to include more documents
+4. Increase `llm.rag.top_k` to retrieve more context
+5. Check Qdrant collection: `curl http://localhost:6333/collections/zms_docs`
 
 ## Best Practices
 
@@ -376,6 +452,10 @@ Update your REST API calls:
 4. **Monitor costs** when using OpenAI - set up billing alerts
 5. **Test locally first** with Ollama before switching to OpenAI
 6. **Keep models updated** - regularly update Ollama models for improvements
+7. **Use lower temperature (0.1-0.3) for RAG** to ensure factual, grounded responses
+8. **Match embedding models** - always use the same `llm.embedding.model` for ingestion and retrieval
+9. **Tune score threshold** - adjust `llm.rag.score_threshold` based on your data quality
+10. **Enable OpenAI storage** (`llm.store = True`) only if you want to contribute to model training
 
 ## Security Considerations
 
@@ -385,3 +465,4 @@ Update your REST API calls:
 - Regularly rotate OpenAI API keys
 - Use HTTPS endpoints when possible
 - Implement rate limiting for the chat endpoint
+- Be aware that `llm.store = True` sends your data to OpenAI for training

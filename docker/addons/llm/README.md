@@ -46,6 +46,7 @@
    llm.api.model = llama2
    ```
 
+
 ## Features
 
 - **Multi-provider support**: Switch between OpenAI, Ollama, or RAG without code changes
@@ -99,7 +100,7 @@
 
 ## Documentation
 
-See [docs/llm_configuration.md](../docs/llm_configuration.md) for:
+See [docs/llm_configuration.md](../../../docs/llm_configuration.md) for:
 - Complete configuration reference
 - Docker setup instructions
 - RAG with Qdrant setup

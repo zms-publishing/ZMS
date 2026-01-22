@@ -44,7 +44,7 @@ $(function() {
 	// Copy to clipboard functionality
 	$(document).on('click', '#copyToClipboard', function() {
 		const replyDiv = $(this).closest('.reply');
-		const textToCopy = replyDiv.text();
+		const textToCopy = replyDiv.text().trim();
 		navigator.clipboard.writeText(textToCopy).then(function() {
 			alert('Reply copied to clipboard!');
 		}, function(err) {
@@ -114,7 +114,7 @@ $(function() {
 			else {
 				$('#' + spinnerId).removeClass('reply-pending')
 					.html($('<div/>').text(reply.message.content).html());
-				$('#' + spinnerId).prepend('<i id="copyToClipboard" title="Copy to Clipboard" class="fas fa-copy"></i> ');
+				$('#' + spinnerId).prepend('<i id="copyToClipboard" title="Copy to Clipboard" class="fas fa-copy"></i>');
 			}
 		})
 		.fail(function(jqXHR, textStatus, errorThrown) {
@@ -147,7 +147,7 @@ $(function() {
 	.zmi-llm-chat-container .reply i#copyToClipboard {
 		cursor: pointer;
 		color: #354e66;
-		margin-right:.1rem
+		padding-right:.2rem
 	}
 	.zmi-llm-chat-container .reply:hover:has(i:hover),
 	.zmi-llm-chat-container .reply i#copyToClipboard:hover {

@@ -40,7 +40,18 @@ $(function() {
 			$(this).val('');
 		}
 	}).focus();
-	
+
+	// Copy to clipboard functionality
+	$(document).on('click', '#copyToClipboard', function() {
+		const replyDiv = $(this).closest('.reply');
+		const textToCopy = replyDiv.text();
+		navigator.clipboard.writeText(textToCopy).then(function() {
+			alert('Reply copied to clipboard!');
+		}, function(err) {
+			alert('Failed to copy text: ' + err);
+		});
+	});
+
 	// Handle provider info button
 	$('#provider-info').on('click', function() {
 		$.ajax({
@@ -103,6 +114,7 @@ $(function() {
 			else {
 				$('#' + spinnerId).removeClass('reply-pending')
 					.html($('<div/>').text(reply.message.content).html());
+				$('#' + spinnerId).prepend('<i id="copyToClipboard" title="Copy to Clipboard" class="fas fa-copy"></i> ');
 			}
 		})
 		.fail(function(jqXHR, textStatus, errorThrown) {
@@ -131,6 +143,15 @@ $(function() {
 	.zmi-llm-chat-container .reply {
 		padding: .5rem .35rem .5rem 2rem;
 		font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+	}
+	.zmi-llm-chat-container .reply i#copyToClipboard {
+		cursor: pointer;
+		color: #354e66;
+		margin-right:.1rem
+	}
+	.zmi-llm-chat-container .reply:hover:has(i:hover),
+	.zmi-llm-chat-container .reply i#copyToClipboard:hover {
+		color: #2196F3;
 	}
 	.zmi-llm-chat-container .reply-pending {
 		color: #666;

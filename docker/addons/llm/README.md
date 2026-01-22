@@ -16,8 +16,8 @@
 
 1. Start Ollama service:
    ```bash
-   cd docker
-   docker-compose -f docker-compose.llm.yml up -d ollama
+   cd docker/addons/llm
+   docker compose -f docker-compose.llm.yml up -d ollama
    docker exec -it zms_ollama ollama pull llama2
    ```
 
@@ -32,8 +32,8 @@
 
 1. Start both services:
    ```bash
-   cd docker
-   docker-compose -f docker-compose.llm.yml up -d
+   cd docker/addons/llm
+   docker compose -f docker-compose.llm.yml up -d
    docker exec -it zms_ollama ollama pull llama2
    ```
 

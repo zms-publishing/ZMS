@@ -54,7 +54,7 @@ CLASSIFIERS = [
 
 setup(
   name                  = 'ZMS',
-  description           = 'ZMS: Simplified Content Modelling',
+  description           = 'ZMS6: Simplified Content Modelling',
   long_description      = open(os.path.join(setup_path, 'README.rst')).read(),
   version               = read_version(),
   author                = 'HOFFMANN+LIEBENBERG in association with SNTL Publishing, Berlin',

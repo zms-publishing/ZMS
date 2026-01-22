@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "ZMS"
 dynamic = ["version"]
-description = "ZMS: Simplified Content Modelling"
+description = "ZMS6: Simplified Content Modelling"
 readme = "README.rst"
 license = {text = "GPL"}
 authors = [
@@ -80,6 +80,9 @@ Download = "https://github.com/zms-publishing/ZMS"
 [tool.setuptools]
 zip-safe = false
 include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["Products*"]
 
 [tool.setuptools.package-data]
 "Products.zms" = ["**/*"]

@@ -65,7 +65,7 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 # uv also cannot install editable eggs from git repos, but I think we don't need that
 # ARG PIP_INSTALL="uv pip install"
 # may need to switch back to pip if the pyproject.toml requirement kicks in
-ARG PIP_INSTALL="pip install --config-settings editable_mode=compat"
+ARG PIP_INSTALL="pip install"
 
 COPY --chown=zope:zope Products/zms/version.txt Products/zms/version.txt
 COPY --chown=zope:zope requirements*.txt setup.py setup.cfg README.rst ./

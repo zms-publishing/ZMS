@@ -38,7 +38,7 @@ RUN python3 -m venv venv
 RUN pip install -U pip wheel setuptools
 RUN pip install --use-pep517 git+https://github.com/zopefoundation/Zope.git@master#egg=Zope
 RUN pip install -r https://raw.githubusercontent.com/zms-publishing/ZMS5/main/requirements-full.txt
-RUN pip install --config-settings editable_mode=compat --no-deps -e git+https://github.com/zms-publishing/ZMS.git@zms6a#egg=ZMS
+RUN pip install --no-deps -e git+https://github.com/zms-publishing/ZMS.git@zms6a#egg=ZMS
 RUN pip install ZEO
 RUN pip install itsdangerous
 # RUN pip install debugpy

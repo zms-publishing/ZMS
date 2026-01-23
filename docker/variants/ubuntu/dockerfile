@@ -12,13 +12,13 @@ RUN apt-get install -y default-libmysqlclient-dev build-essential pkg-config
 RUN apt-get install -y slapd libldap2-dev libsasl2-dev
 RUN apt-get install -y memcached
 
-# # Add Microsoft Package Servers for VSCode
-# RUN apt-get install -y curl apt-transport-https
-# RUN curl -sSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor -o /usr/share/keyrings/microsoft.gpg
-# RUN echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list
-# RUN apt-get update
-# # Install VSCode Server as User root
-# RUN curl -fsSL https://code-server.dev/install.sh | sh
+# Add Microsoft Package Servers for VSCode
+RUN apt-get install -y curl apt-transport-https
+RUN curl -sSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor -o /usr/share/keyrings/microsoft.gpg
+RUN echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list
+RUN apt-get update
+# Install VSCode Server as User root
+RUN curl -fsSL https://code-server.dev/install.sh | sh
 
 # Add Zope User and Environment
 RUN adduser --disabled-password zope && usermod -aG sudo zope
@@ -36,10 +36,9 @@ ENV LANGUAGE=en_US.UTF-8
 # Install ZMS and Zope in a Virtual Environment
 RUN python3 -m venv venv
 RUN pip install -U pip wheel setuptools
-RUN pip install --use-pep517 Zope[wsgi]==$ZOPE_VERSION -c https://zopefoundation.github.io/Zope/releases/$ZOPE_VERSION/constraints.txt
+RUN pip install --use-pep517 git+https://github.com/zopefoundation/Zope.git@master#egg=Zope
 RUN pip install -r https://raw.githubusercontent.com/zms-publishing/ZMS5/main/requirements-full.txt
-RUN pip install --use-pep517 git+https://github.com/zms-publishing/ZMS.git@zms6a#egg=ZMS
-# RUN pip install -e git+https://github.com/zms-publishing/ZMS.git@zms6a#egg=ZMS
+RUN pip install --config-settings editable_mode=compat --no-deps -e git+https://github.com/zms-publishing/ZMS.git@zms6a#egg=ZMS
 RUN pip install ZEO
 RUN pip install itsdangerous
 # RUN pip install debugpy
@@ -60,8 +59,8 @@ EXPOSE 8888
 EXPOSE 8085
 EXPOSE 8086
 
-# # Install VSCode Extension for local User zope
-# RUN code-server --install-extension ms-python.python --user-data-dir /home/zope/.local/share/code-server
+# Install VSCode Extension for local User zope
+RUN code-server --install-extension ms-python.python --user-data-dir /home/zope/.local/share/code-server
 
 # Finally apply shell-script as User zope for starting both
     # 1. VSCode-Server plus Python Extension 

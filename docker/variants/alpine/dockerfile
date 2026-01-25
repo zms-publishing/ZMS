@@ -1,6 +1,9 @@
-FROM python:3.14.2-alpine
+# FROM python:3.14.2-alpine
+# ENV ZOPE_VERSION=6.0b2
 
-ENV ZOPE_VERSION=6.0b2
+FROM python:3.13.5-alpine
+ENV ZOPE_VERSION=5.13
+
 ENV VIRTUAL_ENV=/home/zope/venv
 ENV SHELL=/bin/bash
 

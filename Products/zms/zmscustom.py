@@ -494,9 +494,9 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
 
 
     ############################################################################
-    #  ZMSCustom.manage_changeRecordSet:
+    #  ZMSCustom.manage_changeRecordGrid:
     #
-    #  Change record-set.
+    #  Change record-grid.
     ############################################################################
     def manage_changeRecordGrid(self, lang, btn, REQUEST, RESPONSE):
       """ ZMSCustom.manage_changeRecordGrid """
@@ -525,14 +525,15 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
             row['_change_dt'] = standard.getDateTime( time.time())
             for metaObjAttr in filter_columns:
               objAttr = self.getObjAttr(metaObjAttr['id'])
+              # Hint: objAttrName gets nested by REQUEST-vars objAttrNamePrefix, objAttrNameSuffix
               objAttrName = self.getObjAttrName(objAttr, lang)
               if metaObjAttr['type'] in self.metaobj_manager.valid_types or \
                  metaObjAttr['type'] not in self.metaobj_manager.valid_xtypes+self.metaobj_manager.valid_zopetypes:
                 set, value = True, self.formatObjAttrValue(objAttr, REQUEST.get(objAttrName), lang)
                 try: del value['aq_parent']
                 except: pass
-                if value is None and metaObjAttr['id'] == 'sort_id':
-                  value = len(res_abs)
+                # if value is None and metaObjAttr['id'] == 'sort_id':
+                #  value = len(res_abs) ### CAVE NameError: 'res_abs' not defined
                 if value is None and metaObjAttr['type'] in ['file', 'image'] and int(REQUEST.get('del_%s'%objAttrName, 0)) == 0:
                   set = False
                 if set:
@@ -548,18 +549,20 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
           # Update
           c = 0
           for record in records:
-            REQUEST.set('objAttrNamePrefix', '');
-            REQUEST.set('objAttrNameSuffix', '_%i'%c);
+            REQUEST.set('objAttrNamePrefix', '')
+            REQUEST.set('objAttrNameSuffix', '_%i'%c)
             record = retrieve(record)
             if record is not None:
               new_records.append(record)
             c += 1
-          # Insert
-          REQUEST.set('objAttrNamePrefix', '_');
-          REQUEST.set('objAttrNameSuffix', '');
-          record = retrieve({})
-          if record is not None:
-            new_records.append(record)
+          # Insert new records: var names start with '_'
+          REQUEST.set('objAttrNamePrefix', '_')
+          REQUEST.set('objAttrNameSuffix', '')
+          for new_col_id_idx in [k[8:] for k in REQUEST.form.keys() if k.startswith('_col_id_')]:
+            REQUEST.set('objAttrNameSuffix', '_%s'%new_col_id_idx)
+            record = retrieve({})
+            if record is not None:
+              new_records.append(record)
           message = self.getZMILangStr('MSG_CHANGED')
           # Set
           self.setObjProperty(record_id, new_records, lang)

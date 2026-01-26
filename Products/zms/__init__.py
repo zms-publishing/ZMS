@@ -24,7 +24,7 @@ import codecs
 import os
 import re
 # Product Imports.
-from Products.zms import _confmanager
+from Products.zms import _confmanager, _fileutil
 from Products.zms import _multilangmanager
 from Products.zms import _mediadb
 from Products.zms import _zmsattributecontainer
@@ -186,7 +186,26 @@ def initialize(context):
         # automated registration of configuration
         confdict = _confmanager.ConfDict.get()
         OFS.misc_.misc_.zms['confdict']=confdict
-        
+
+        # register current ZMS product name
+        product_name = 'ZMS6'
+        try:
+            # Try importlib.metadata (Python 3.8+, standard library)
+            from importlib.metadata import metadata
+            pkg_metadata = metadata('ZMS')
+            description = pkg_metadata.get('summary', 'ZMS6: Simplified Content Modelling')
+            if description and description.startswith('ZMS'):
+                base_name = description.split(':')[0].strip()
+        except Exception:
+            pass
+        OFS.misc_.misc_.zms['confdict']['ZMS.product_name'] = product_name
+
+        # register current ZMS version
+        OFS.misc_.misc_.zms['confdict']['ZMS.version_txt'] = ''
+        with open(_fileutil.getOSPath(package_home(globals())+'/version.txt'),'r') as file:
+          version_txt = file.read()
+          OFS.misc_.misc_.zms['confdict']['ZMS.version_txt'] = version_txt
+
         # automated minification
         confkeys = confdict.keys()
         for confkey in [x for x in confkeys if x.startswith('gen.') and x+'.include' in confkeys]:

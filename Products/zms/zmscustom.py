@@ -208,13 +208,13 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
     metaobj_recordset_grid = PageTemplateFile('zpt/ZMSRecordSet/grid', globals())
 
 
-    """
+
     ############################################################################
     ###
     ###   Constructor
     ###
     ############################################################################
-    """
+
 
     ############################################################################
     # ZMSCustom.__init__: 

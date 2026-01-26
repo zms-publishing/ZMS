@@ -207,9 +207,8 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST, minimal_init 
 #  initContent:
 # ------------------------------------------------------------------------------
 def initContent(self, filename, REQUEST):
-  file = open(_fileutil.getOSPath(package_home(globals())+'/import/'+filename), 'rb')
-  _importable.importFile( self, file, REQUEST, _importable.importContent)
-  file.close()
+  with open(_fileutil.getOSPath(package_home(globals())+'/import/'+filename), 'rb') as file:
+    _importable.importFile( self, file, REQUEST, _importable.importContent)
 
 
 ################################################################################
@@ -412,11 +411,7 @@ class ZMS(
     #  Get version.
     # --------------------------------------------------------------------------
     def zms_version(self, custom=False):
-      file = open(_fileutil.getOSPath(package_home(globals())+'/version.txt'),'r')
-      version_txt = file.read()
-      file.close()
-      # Prepend ZMS5- if version.txt is PEP 440 compliant
-      version_txt = 'ZMS5-' not in version_txt and ('ZMS5-' + version_txt) or version_txt
+      version_txt = '%s-%s' % (self.getConfProperty('ZMS.product_name'), self.getConfProperty('ZMS.version_txt'))
       zms_custom_version = os.environ.get('ZMS_CUSTOM_VERSION', '')
       if custom and zms_custom_version != '':
         version_txt += f'&nbsp;(<samp id="zms_custom_version">{zms_custom_version}</samp>)'
@@ -424,9 +419,8 @@ class ZMS(
         # see Lines 37-46 unibe-cms/.github/workflows/build-and-push.yml
         revisions = _fileutil.getOSPath('/app/revisions.txt')
         if os.path.exists(revisions):
-            file = open(revisions, 'r')
-            zms_submodule_revisions = file.read()
-            file.close()
+            with open(revisions, 'r') as file:
+                zms_submodule_revisions = file.read()
             version_txt += f"""
                 <span class="d-inline-block" data-toggle="popover"
                     title="Git revisions"

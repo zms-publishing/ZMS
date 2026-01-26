@@ -1167,12 +1167,12 @@
     
     <td>Class</td>
     <td><code><a href="zms._copysupport.CopySupport.html" class="internal-link" title="zms._copysupport.CopySupport"><wbr></wbr>Copy<wbr></wbr>Support</a></code></td>
-    <td><span class="undocumented">No class docstring; 3/8 methods documented</span></td>
+    <td><span class="undocumented">No class docstring; 0/1 instance variable, 3/9 methods documented</span></td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#normalize_ids_after_copy" class="internal-link" title="zms._copysupport.normalize_ids_after_copy">normalize<wbr></wbr>_ids<wbr></wbr>_after<wbr></wbr>_copy</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>The ids of copied objects are normalized to the context-node's id_prefix and the ZMS-client's sequence incrementing (acl_sequence). After the objects are moved to their new position their ids are normalized, that means they are reset to a new id that consists of the id_prefix of the target-context and the next increment of the ZMS-object sequence counter.</td>
   </tr><tr class="function">
     
     <td>Function</td>
@@ -1209,7 +1209,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">normalize_ids_after_copy</span><span class="function-signature">(node, id_prefix=<span class="rst-variable-quote">'</span><span class="rst-variable-string">e</span><span class="rst-variable-quote">'</span>, ids=[])</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_copysupport.py#L37">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_copysupport.py#L39">
       
       (source)
     </a>
@@ -1221,7 +1221,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>The ids of copied objects are normalized to the context-node's id_prefix and the ZMS-client's sequence incrementing (acl_sequence). After the objects are moved to their new position their ids are normalized, that means they are reset to a new id that consists of the id_prefix of the target-context and the next increment of the ZMS-object sequence counter.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">node:</span>ZMSNode</td><td class="fieldArgDesc">context-node</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id<wbr></wbr>_prefix:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">id_prefix of context-node</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">ids:</span><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">list of ids to be normalized, '*' for all</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Note</td></tr><tr><td colspan="2">This function is called after manage_pasteObjs() has moved the objects.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1236,7 +1236,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">normalize_ids_after_move</span><span class="function-signature">(node, id_prefix=<span class="rst-variable-quote">'</span><span class="rst-variable-string">e</span><span class="rst-variable-quote">'</span>, ids=[])</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_copysupport.py#L72">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_copysupport.py#L116">
       
       (source)
     </a>
@@ -1262,7 +1262,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">OP_COPY</span>: <code>int</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_copysupport.py#L30">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_copysupport.py#L32">
       
       (source)
     </a>
@@ -1289,7 +1289,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">OP_MOVE</span>: <code>int</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_copysupport.py#L31">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_copysupport.py#L33">
       
       (source)
     </a>

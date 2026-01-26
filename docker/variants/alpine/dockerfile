@@ -33,7 +33,7 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 RUN pip install -U pip wheel setuptools
 RUN pip install Zope[wsgi]==$ZOPE_VERSION -c https://zopefoundation.github.io/Zope/releases/$ZOPE_VERSION/constraints.txt
 RUN pip install ZEO
-RUN pip install -e git+https://github.com/zms-publishing/ZMS.git@zms6a#egg=ZMS
+RUN pip install --config-settings editable_mode=compat -e git+https://github.com/zms-publishing/ZMS.git@zms6a#egg=ZMS
  
 # Create Zope Instance
 RUN mkwsgiinstance -d . -u admin:admin

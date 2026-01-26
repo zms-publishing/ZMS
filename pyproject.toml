@@ -86,11 +86,11 @@ include-package-data = true
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["src*"]
+include = ["Products*"]
 namespaces = false
 
 [tool.setuptools.package-data]
 "Products.zms" = ["**/*"]
 
 [tool.setuptools.dynamic]
-version = {file = "src/Products/zms/version.txt"}
+version = {file = "Products/zms/version.txt"}

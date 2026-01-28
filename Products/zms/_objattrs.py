@@ -569,14 +569,15 @@ class ObjAttrs(object):
         obj_attr = obj_attrs[key]
         datatype = obj_attr['datatype_key']
         value = self.getObjAttrValue( obj_attr, REQUEST)
-        # Text-Fields
-        if datatype in _globals.DT_TEXTS:
-          value = self.validateInlineLinkObj(value)
-        # Url-Fields
-        if datatype == _globals.DT_URL:
-          value = self.validateLinkObj(value)
-        # Executable fields.
-        value = standard.dt_exec(self, value)
+        if value:
+          # Text-Fields
+          if datatype in _globals.DT_TEXTS:
+            value = self.validateInlineLinkObj(value)
+          # Url-Fields
+          if datatype == _globals.DT_URL:
+            value = self.validateLinkObj(value)
+          # Executable fields.
+          value = standard.dt_exec(self, value)
       
       # Undefined attributes.
       else:

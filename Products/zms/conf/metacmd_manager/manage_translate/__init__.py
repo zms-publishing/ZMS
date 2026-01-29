@@ -36,7 +36,7 @@ class manage_translate:
 	package = ""
 
 	# Revision
-	revision = "5.0.3"
+	revision = "6.0.0"
 
 	# Roles
 	roles = ["ZMSEditor"
@@ -52,4 +52,4 @@ class manage_translate:
 	# Impl
 	class Impl:
 		manage_translate = {"id":"manage_translate"
-			,"type":"DTML Method"}
+			,"type":"External Method"}

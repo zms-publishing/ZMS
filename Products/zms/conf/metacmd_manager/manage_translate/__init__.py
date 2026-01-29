@@ -36,7 +36,7 @@ class manage_translate:
 	package = ""
 
 	# Revision
-	revision = "5.0.2"
+	revision = "5.0.3"
 
 	# Roles
 	roles = ["ZMSEditor"

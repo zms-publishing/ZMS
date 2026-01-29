@@ -24,7 +24,8 @@ class manage_translate:
 	# Meta_types
 	meta_types = ["ZMSDocument"
 		,"ZMSFolder"
-		,"ZMS"]
+		,"ZMS"
+		,"type(ZMSObject)"]
 
 	# Name
 	name = "Translate..."
@@ -36,7 +37,7 @@ class manage_translate:
 	package = ""
 
 	# Revision
-	revision = "6.0.0"
+	revision = "6.1.0"
 
 	# Roles
 	roles = ["ZMSEditor"

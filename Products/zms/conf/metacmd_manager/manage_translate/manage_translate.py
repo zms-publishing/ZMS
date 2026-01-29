@@ -58,45 +58,40 @@ def renderHtml(zmscontext, request, SESSION, fmName='form0'):
 		html.append('<!DOCTYPE html>')
 		html.append('<html lang="en">')
 		html.append(zmscontext.zmi_html_head(zmscontext, request))
-		html.append('<body class="zmi" id="manage_translate" hx-disable="hx-disable">')
+		html.append('<body class="zmi" id="manage_translate">')
 		html.append('<header class="navbar navbar-nav navbar-expand navbar-dark notranslate">')
 		html.append(zmscontext.zmi_breadcrumbs_obj_path(zmscontext, request))
 		html.append('</header>')
+		html.append('<div id="zmi-tab">')
 		
 		# Debug info
 		html.append('''
-			<div class="debug_info" title="DEBUG INFO">
-				<i class="fas fa-flag"></i>
-				<div class="code">
-					REQUEST lang1: %s<br />
-					REQUEST lang2: %s<br />
-					SESSION lang1: %s<br />
-					SESSION lang2: %s<br />
-				</div>
-			</div>''' % (
-				request.get('lang1', ''),
-				request.get('lang2', ''),
-				SESSION.get('lang1', ''),
-				SESSION.get('lang2', '')
+<div class="debug_info" title="DEBUG INFO">
+	<i class="fas fa-flag"></i>
+	<div class="code">
+		REQUEST lang1: %s<br />
+		REQUEST lang2: %s<br />
+		SESSION lang1: %s<br />
+		SESSION lang2: %s<br />
+	</div>
+</div>''' % (
+			request.get('lang1', ''),
+			request.get('lang2', ''),
+			SESSION.get('lang1', ''),
+			SESSION.get('lang2', '')
 		))
 		
-		# Form
-		html.append('<form id="%s" method="get">' % fmName)
-		html.append('<table cellspacing="0" cellpadding="0" border="0" width="100%">')
-		html.append('<tr valign="top">')
+		# Language selector header
+		html.append('<div class="language-selector-header">')
+		html.append('<table width="100%"><tr>')
 		
-		# Get child nodes
-		childNodes = [x for x in zmscontext.getObjChildren('e', request) if x.isPageElement()]
-		exclude_langs = []
-		
-		# Render left and right columns (header row)
 		for si in ['left', 'right']:
 			lang_req_key = 'lang1' if si == 'left' else 'lang2'
 			notranslate_class = 'notranslate' if si == 'left' else 'translate'
 			
-			html.append('<td class="zmi-translate-%s %s" width="50%%">' % (si, notranslate_class))
-			html.append('<span class="zmi-translate-element-id notranslate">')
-			html.append('<a title="Open this Content Node in a New Browser Window ..." href="%s/manage_properties?lang=%s" target="_blank">%s</a>&nbsp;&nbsp;' % (
+			html.append('<td class="lang-select-cell %s" width="50%%">' % notranslate_class)
+			html.append('<span class="zmi-translate-element-id">')
+			html.append('<a title="Open in New Window" href="%s/manage_properties?lang=%s" target="_blank">%s</a>&nbsp;&nbsp;' % (
 				zmscontext.absolute_url(),
 				request.get(lang_req_key),
 				zmscontext.id
@@ -109,78 +104,104 @@ def renderHtml(zmscontext, request, SESSION, fmName='form0'):
 				selected = ' selected="selected"' if opt[0] == request.get(lang_req_key) else ''
 				lang_options_html.append('<option value="%s"%s>%s</option>' % (opt[0], selected, opt[1]['label']))
 			
-			html.append('<select class="form-control form-control-sm d-inline w-auto lang notranslate" name="%s" onchange="document.getElementById(\'%s\').submit();">' % (lang_req_key, fmName))
+			html.append('<select class="form-control form-control-sm d-inline w-auto lang notranslate" name="%s" onchange="switchLanguage(\'%s\', this.value);">' % (lang_req_key, lang_req_key))
 			html.extend(lang_options_html)
 			html.append('</select>')
 			
-			# Set language for content rendering
-			request.set('lang', request.get(lang_req_key))
+			# Add translate button on right column
+			if si == 'right':
+				html.append('''<button type="button" 
+					class="btn btn-sm btn-danger form-control-sm notranslate w-auto m-1 float-right" 
+					onclick="triggerAutoTranslate()" 
+					title="Auto-translate from %s to %s">Auto-Translate</button>''' % (
+						request.get('lang1'), 
+						request.get('lang2'))
+				)
 			
-			html.append('<div id="%s" class="zmi-translate-element">' % zmscontext.id)
-			html.append('<div class="zmiRenderShort" id="contentEditable_%s_%s">' % (zmscontext.id, request.get('lang')))
-			
-			# Render content based on meta_id
-			if zmscontext.meta_id not in ['ZMSDocument', 'ZMSFolder', 'ZMS']:
-				html.append(zmscontext.getBodyContent(request))
-			else:
-				html.append('<h1>%s</h1>' % zmscontext.getTitle(request))
-				desc = zmscontext.getDCDescription(request).replace('\n', '<br />')
-				html.append('<p class="description">%s</p>' % desc)
-			
-			html.append('</div>')
-			html.append('</div>')
 			html.append('</td>')
 		
-		html.append('</tr>')
+		html.append('</tr></table>')
+		html.append('</div>')
 		
-		# Render child nodes
-		for childNode in childNodes:
-			html.append('<tr valign="top">')
+		# Render property forms side by side
+		html.append('<form class="card form-horizontal translate-forms" action="manage_changeProperties" method="post" enctype="multipart/form-data">')
+		html.append('<input type="hidden" name="preview" value="preview"/>')
+		html.append('<input type="hidden" id="current_lang" name="lang" value="%s"/>' % request.get('lang2'))
+		
+		html.append('<table class="properties-table" width="100%">')
+		
+		# Get object attributes
+		objAttrs = zmscontext.getObjAttrs()
+		
+		# Technical attributes to exclude from translation interface
+		technical_prefixes = ('change_', 'attr_active_', 'work_', 'created_', 'modified_')
+		technical_attrs = ('active', 'uid', 'version', 'preview')
+		
+		for objAttrId in objAttrs:
+			metaObjAttr = zmscontext.getObjAttr(objAttrId)
 			
-			for si in ['left', 'right']:
-				lang_req_key = 'lang1' if si == 'left' else 'lang2'
-				notranslate_class = 'notranslate' if si == 'left' else 'translate'
-				
-				request.set('lang', request.get(lang_req_key + '_bk'))
-				
-				inactive_style = ''
-				inactive_title = ''
-				if not childNode.isActive(request):
-					inactive_style = ' style="background-color:#999"'
-					inactive_title = ' title="Inactive"'
-				
-				save_icon = ''
-				if si != 'left':
-					save_icon = '<i class="fas fa-arrow-down" title="%s: Save (Automatic Pre-) Translation" style="cursor:pointer;" onclick="save(this)"></i>' % request.get('lang')
-				
-				html.append('<td class="article zmi-translate-%s %s">' % (si, notranslate_class))
-				html.append('<span class="zmi-translate-element-id notranslate"%s%s> <a title="Open this Content Node in a New Browser Window ..." href="%s/manage?lang=%s" target="_blank">%s</a> %s</span>' % (
-					inactive_title,
-					inactive_style,
-					childNode.absolute_url(),
-					request.get('lang'),
-					childNode.id,
-					save_icon
-				))
-				html.append('<div id="%s_%s" class="zmi-translate-element">' % (str(childNode), childNode.id))
-				html.append('<div class="zmiRenderShort" contenteditable="true" id="contentEditable_%s_%s">%s</div>' % (childNode.id, request.get('lang'), childNode.renderShort(request)))
-				html.append('</div>')
-				html.append('</td>')
+			# Skip technical/system attributes
+			if objAttrId.startswith(technical_prefixes) or objAttrId in technical_attrs:
+				continue
 			
-			html.append('</tr>')
+			# Check if attribute is multilang
+			is_multilang = metaObjAttr.get('multilang') in [1, True]
+			
+			if is_multilang:
+				html.append('<tr class="form-group-row">')
+				
+				# Render for both languages
+				for si in ['left', 'right']:
+					lang = request.get('lang1' if si == 'left' else 'lang2')
+					request.set('lang', lang)
+					
+					elName = zmscontext.getObjAttrName(metaObjAttr, lang)
+					elLabel = '%s [%s_%s]' % (zmscontext.getObjAttrLabel(metaObjAttr), metaObjAttr['id'], lang)
+					is_mandatory = metaObjAttr.get('mandatory')
+					
+					html.append('<td class="form-group-cell zmi-translate-%s" width="50%%" valign="top">' % si)
+					html.append('<div class="form-group row" id="tr_%s">' % elName)
+					html.append('<label for="%s" class="col-sm-3 control-label%s">' % (elName, ' mandatory' if is_mandatory else ''))
+					html.append('<span>%s</span>' % elLabel)
+					html.append('</label>')
+					html.append('<div class="col-sm-9">')
+					
+					# Render the input field
+					try:
+						input_html = zmscontext.getObjInput(metaObjAttr['id'], request)
+						html.append(input_html)
+					except Exception as e:
+						html.append('<span class="text-danger">Error rendering field: %s</span>' % str(e))
+					
+					html.append('</div>')
+					html.append('</div>')
+					html.append('</td>')
+				
+				html.append('</tr>')
 		
 		html.append('</table>')
+		
+		# Save buttons
+		html.append('''
+			<div class="form-group row mt-3">
+				<div class="col-sm-12 controls save text-right">
+					<button type="submit" name="btn" class="btn btn-primary" value="Change">Save Translation</button>
+					<button type="button" class="btn btn-secondary" onclick="window.location.reload();">Cancel</button>
+				</div>
+			</div>''')
+		
 		html.append('</form>')
+		html.append('</div>')
 		
 		# Google Translate Element
 		html.append(renderGoogleTranslate())
 		
 	except Exception as e:
 		html.append('''
-			<div class="alert alert-danger m-3">
-				<p>ERROR: Translation not possible. Maybe not second language configured.</p>
-				<pre>%s</pre>
-			</div>''' % str(e))
+<div class="alert alert-danger m-3">
+	<p>ERROR: Translation not possible. Maybe not second language configured.</p>
+	<pre>%s</pre>
+</div>''' % str(e))
 	
 	# Add styles and scripts
 	html.append(renderStyles())
@@ -195,236 +216,347 @@ def renderHtml(zmscontext, request, SESSION, fmName='form0'):
 def renderGoogleTranslate():
 	"""Render Google Translate widget HTML and JavaScript"""
 	return '''
-		<!-- Google Translate Element -->
-		<div id="google_translate_element" style="display:block"></div>
-		<script>
-		//<!--
-			var langmap = {
-				"ger": "de",    // German
-				"eng": "en",    // English
-				"fra": "fr",    // French
-				"ita": "it",    // Italian
-				"spa": "es",    // Spanish
-				"rus": "ru",    // Russian
-				"tur": "tr"     // Turkish
-				// add more as needed
-			};
-			// Grab your source and target language values
-			var lang1 = $('select[name="lang1"] option:first').val(); // text to be translated
-			var lang2 = $('select[name="lang2"] option:first').val(); // translation target
-			lang1 = langmap[lang1];
-			lang2 = langmap[lang2]
+<!-- Google Translate Element -->
+<div id="google_translate_element" style="display:block"></div>
+<script>
+//<!--
+	var langmap = {
+		"ger": "de",    // German
+		"eng": "en",    // English
+		"fra": "fr",    // French
+		"ita": "it",    // Italian
+		"spa": "es",    // Spanish
+		"rus": "ru",    // Russian
+		"tur": "tr"     // Turkish
+		// add more as needed
+	};
+	
+	// Grab your source and target language values
+	var lang1 = $('select[name="lang1"]').val();
+	var lang2 = $('select[name="lang2"]').val();
+	var sourceLang = langmap[lang1] || 'en';
+	var targetLang = langmap[lang2] || 'en';
 
-			// Initialize Google Translate element
-			function googleTranslateElementInit() {
-				new google.translate.TranslateElement({
-				pageLanguage: lang1,   // source language
-				includedLanguages: lang2, // target language(s)
-				layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-				}, 'google_translate_element');
-			}
+	// Initialize Google Translate element
+	function googleTranslateElementInit() {
+		new google.translate.TranslateElement({
+			pageLanguage: sourceLang,
+			includedLanguages: targetLang,
+			layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+			autoDisplay: false
+		}, 'google_translate_element');
+	}
 
-			// After initialization, set the dropdown value and trigger change
-			function setGoogleTranslate(langCode) {
-				var $combo = $('#google_translate_element select.goog-te-combo');
-				if ($combo.length) {
-				$combo.val(langCode);
-				$combo.trigger('change');
+	// Function to translate text using Google Translate API (client-side)
+	function translateText(text, callback) {
+		if (!text || text.trim() === '') {
+			callback(text);
+			return;
+		}
+		
+		// Use Google Translate free endpoint
+		var url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=' + 
+				  sourceLang + '&tl=' + targetLang + '&dt=t&q=' + encodeURIComponent(text);
+		
+		fetch(url)
+			.then(response => response.json())
+			.then(data => {
+				if (data && data[0]) {
+					var translatedText = data[0].map(item => item[0]).join('');
+					callback(translatedText);
+				} else {
+					callback(text);
+				}
+			})
+			.catch(error => {
+				console.error('Translation error:', error);
+				callback(text); // Return original text on error
+			});
+	}
+
+	// Copy and translate content from left to right column
+	function translateAndCopy() {
+		var totalFields = 0;
+		var processedFields = 0;
+		
+		// Count total fields to process
+		$('.form-group-row').each(function() {
+			var $row = $(this);
+			var $leftCell = $row.find('.zmi-translate-left');
+			var $rightCell = $row.find('.zmi-translate-right');
+			
+			if ($leftCell.length && $rightCell.length) {
+				var $leftInput = $leftCell.find('input[type="text"], textarea');
+				var $rightInput = $rightCell.find('input[type="text"], textarea');
+				
+				if ($leftInput.length && $rightInput.length) {
+					totalFields++;
 				}
 			}
+		});
+		
+		if (totalFields === 0) {
+			alert('No translatable fields found.');
+			return;
+		}
+		
+		// Show progress indicator
+		$('body').append('<div id="translate-progress" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:white;padding:20px;border:2px solid #007bff;border-radius:5px;z-index:10000;"><i class="fas fa-spinner fa-spin"></i> Translating... <span id="progress-counter">0/' + totalFields + '</span></div>');
+		
+		// Process each row
+		$('.form-group-row').each(function() {
+			var $row = $(this);
+			var $leftCell = $row.find('.zmi-translate-left');
+			var $rightCell = $row.find('.zmi-translate-right');
+			
+			if ($leftCell.length && $rightCell.length) {
+				// Find input fields
+				var $leftInput = $leftCell.find('input[type="text"], textarea');
+				var $rightInput = $rightCell.find('input[type="text"], textarea');
+				
+				if ($leftInput.length && $rightInput.length) {
+					var sourceText = $leftInput.val();
+					
+					if (sourceText && sourceText.trim() !== '') {
+						// Translate and copy
+						translateText(sourceText, function(translatedText) {
+							$rightInput.val(translatedText);
+							$rightInput.css('background-color', '#ffffcc'); // Highlight changed field
+							
+							processedFields++;
+							$('#progress-counter').text(processedFields + '/' + totalFields);
+							
+							if (processedFields >= totalFields) {
+								setTimeout(function() {
+									$('#translate-progress').remove();
+									alert('Translation completed for ' + processedFields + ' field(s)!');
+								}, 500);
+							}
+						});
+					} else {
+						processedFields++;
+						$('#progress-counter').text(processedFields + '/' + totalFields);
+						
+						if (processedFields >= totalFields) {
+							setTimeout(function() {
+								$('#translate-progress').remove();
+								alert('Translation completed for ' + processedFields + ' field(s)!');
+							}, 500);
+						}
+					}
+				}
+			}
+		});
+	}
 
-			// Once the widget is ready select target-language
-			$(document).ready(function() {
-				// Wait a bit for the widget to load
-				setTimeout(function() {
-				setGoogleTranslate(lang2);
-				}, 1000);
-			});
-		//-->
-		</script>
-		<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-		<!-- /Google Translate Element -->
-	'''
+	// Manual translation trigger
+	window.triggerAutoTranslate = function() {
+		if (confirm('This will copy and translate content from ' + lang1 + ' to ' + lang2 + '. Continue?')) {
+			translateAndCopy();
+		}
+	};
+
+	// Once the widget is ready
+	$(document).ready(function() {
+		setTimeout(function() {
+			var $combo = $('#google_translate_element select.goog-te-combo');
+			if ($combo.length) {
+				$combo.val(targetLang);
+				$combo.trigger('change');
+			}
+		}, 1000);
+	});
+//-->
+</script>
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<!-- /Google Translate Element -->
+'''
 
 
 def renderStyles():
 	"""Render CSS styles"""
 	return '''
-		<style>
-			.zmi > form {
-				margin-top:-1px;
-			}
-			.zmi header > nav {
-				opacity:0.75;
-			}
-			.zmi header ol *,
-			.zmi header ol li:before {
-				color:white !important;
-			}
-			.zmi header ol {
-				padding-left:0 !important;
-			}
-			.zmi .debug_info {
-				position: absolute;
-				right: 0;
-				top: 0;
-			}
-			.zmi .debug_info .code {
-				display:none;
-				background: #ffffffa8;
-				color: black;
-				margin: 1.65rem;
-				padding: 1rem;
-				font-family: courier;
-				border: 1px solid #354f67;
-				box-shadow: 0 6px 12px rgba(0,0,0,.175);
-				font-weight: bold;
-			}
-			.zmi .debug_info:hover .code {
-				display: block;
-			}
-			.zmi .debug_info i {
-				position: absolute;
-				color: white;
-				right: 0;
-				top: 0;
-				padding: .75rem;
-			}
-			.zmi-translate-left {
-				padding:4px;
-				background-color: rgba(0, 255, 0, 0.10);
-				/* box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.20); */
-			}
-			.zmi-translate-element-id {
-				color:white;
-				position: absolute;
-				margin:-4px;
-				min-width: 6rem;
-				padding: 0 1px 0 .2rem;
-			}
-			.zmi-translate-element-id a {
-				color:white !important;
-				display:inline-block;
-				padding:0 3px;
-			}
-			.zmi-translate-element-id i {
-				cursor: pointer;
-				float: right;
-				display: inline-block;
-				margin: 0;
-				height: 1.25rem;
-				background: rgb(0 0 0 / 22%);
-				width: 1.5rem;
-				text-align: center;
-				padding: 0.25rem 0 0;
-			}
-			.zmi-translate-element-id i:hover {
-				background: rgb(0 0 0 / 100%);
-			}
-			td.zmi-translate-left .zmi-translate-element-id {
-				background-color: #28a745;
-			}
-			td.zmi-translate-right .zmi-translate-element-id {
-				background-color: red;
-			}
-			.zmi-translate-right {
-				padding:4px;
-				background-color: rgba(255, 0, 0, 0.10);
-			}
-			.zmi-translate-right.bg-alert {
-				background-color:#CCCCCC;
-			}
-			.zmi-translate-element {
-				margin:6px 12px 6px 6px;
-			}
-			.zmi-translate-element .row {
-				margin:0 !important;
-			}
-			td.zmi-translate-left {
-				border: 1px solid darkgreen;
-			}
-			td.zmi-translate-right {
-				border: 1px solid red !important;
-			}
-			.zmiRenderShort {
-				width:350px !important;
-				margin-top:1.5em;
-			}
-			body.maximized .zmiRenderShort {
-				width:auto !important;
-			}
-			.ui-widget-overlay {
-				opacity: 0.2;
-			}
-			#google_translate_element,
-			select.lang {
-				float:right;
-				margin:.3em;
-			}
-			.skiptranslate iframe {
-				min-height: 2.7rem;
-				background: #fff;
-				padding-top: .15rem;
-			}
-			.zmi figure img {
-				max-width: min(calc(50vw - 56px), 460px);
-				height: auto;
-			}
-		</style>
+<style>
+	.zmi header > nav {
+		opacity:0.75;
+	}
+	.zmi header ol *,
+	.zmi header ol li:before {
+		color:white !important;
+	}
+	.zmi header ol {
+		padding-left:0 !important;
+	}
+	.zmi .debug_info {
+		position: absolute;
+		right: 0;
+		top: 0;
+		z-index: 1000;
+	}
+	.zmi .debug_info .code {
+		display:none;
+		background: #ffffffa8;
+		color: black;
+		margin: 1.65rem;
+		padding: 1rem;
+		font-family: courier;
+		border: 1px solid #354f67;
+		box-shadow: 0 6px 12px rgba(0,0,0,.175);
+		font-weight: bold;
+	}
+	.zmi .debug_info:hover .code {
+		display: block;
+	}
+	.zmi .debug_info i {
+		position: absolute;
+		color: white;
+		right: 0;
+		top: 0;
+		padding: .75rem;
+	}
+	
+	/* Language Selector Header */
+	.language-selector-header {
+		background: #f8f9fa;
+		border-bottom: 2px solid #dee2e6;
+	}
+	.lang-select-cell {
+		padding: 0.5rem;
+		text-align: center;
+	}
+	.lang-select-cell.notranslate {
+		background-color: rgba(0, 255, 0, 0.10);
+		border-right: 2px solid gray;
+	}
+	.lang-select-cell.translate {
+		background-color: rgba(255, 0, 0, 0.10);
+	}
+	.zmi-translate-element-id {
+		display: inline-block;
+		float: left;
+		padding: .5rem 1rem;
+		font-weight: bold;
+	}
+	.zmi-translate-element-id a {
+		color: #007bff !important;
+		text-decoration: none;
+	}
+	.zmi-translate-element-id a:hover {
+		text-decoration: underline;
+	}
+	.lang-select-cell .btn {
+		vertical-align: middle;
+	}
+	.temp-translate,
+	.temp-translate-rich {
+		display: none !important;
+		visibility: hidden !important;
+		position: absolute;
+		left: -9999px;
+	}
+	
+	/* Translation Forms */
+	.translate-forms {
+		margin: 0;
+	}
+	.properties-table {
+		width: 100%;
+		border-collapse: collapse;
+	}
+	.form-group-row {
+		border-bottom: 1px solid #dee2e6;
+	}
+	.form-group-cell {
+		padding: 1rem;
+		vertical-align: top;
+	}
+	.form-group-cell.zmi-translate-left {
+		background-color: rgba(0, 255, 0, 0.05);
+		border-right: 2px solid gray;
+	}
+	.form-group-cell.zmi-translate-right {
+		background-color: rgba(255, 0, 0, 0.05);
+	}
+	
+	/* Form Groups */
+	.form-group-cell .form-group {
+		margin-bottom: 0;
+	}
+	.form-group-cell .control-label {
+		font-weight: 600;
+		font-size: 0.9rem;
+	}
+	.form-group-cell .control-label.mandatory::after {
+		content: " *";
+		color: red;
+	}
+	
+	/* Input Fields */
+	.form-group-cell input[type="text"],
+	.form-group-cell textarea,
+	.form-group-cell select {
+		width: 100%;
+	}
+	.form-group-cell textarea {
+		min-height: 100px;
+	}
+	
+	/* Rich Text Editors */
+	.form-group-cell .zmi-richtext {
+		min-height: 200px;
+	}
+	
+	/* Google Translate Element */
+	#google_translate_element,
+	select.lang {
+		float: right;
+		margin: 0.3em;
+	}
+	.skiptranslate iframe {
+		min-height: 2.7rem;
+		background: #fff;
+		padding-top: .15rem;
+	}
+	
+	/* Responsive adjustments */
+	@media (max-width: 1200px) {
+		.form-group-cell .col-sm-3 {
+			flex: 0 0 100%;
+			max-width: 100%;
+		}
+		.form-group-cell .col-sm-9 {
+			flex: 0 0 100%;
+			max-width: 100%;
+		}
+	}
+</style>
 	'''
 
 
 def renderScripts():
 	"""Render JavaScript code"""
 	return '''
-		<script>
-			function save(sender) {
-				var $container_div = $($(sender).closest('td').find('.zmi-translate-element'));
-				// var $container_div = $($(sender).parents("div")[0]);
-				// var $rendershort_div = $("div.zmiRenderShort div.contentEditable",$container_div);
-				// var $rendershort_div = $($(sender)).parent().next();
-				var $rendershort_div = $container_div.children('.zmiRenderShort')[0];
-				console.log($rendershort_div);
-			
-				var id = $($rendershort_div).attr("id");
-				id = id.substring(id.indexOf("_")+1);
-				id = id.substring(0,id.lastIndexOf("_"));
-				console.log('ID = '+id)
-			
-				var lang = $($rendershort_div).attr("id");
-				lang = lang.substring(lang.lastIndexOf("_")+1);
-				console.log('LANG = '+lang)
-			
-				var html = $('div#'+id, $rendershort_div).html();
-				var text = html; //$($rendershort_div).text();
-
-				// Removing HTML artefacts from Translator-JS or ZMI
-				text = text.replace(/<font(.*?)>|<\\/font(.*?)>/gi,'');
-				text = text.replace(/<\\/font(.*?)>/gi,'');
-				text = text.replace(/<span class=\\"unicode\\">(.*?)<\\/span>/gi,'');
-
-				// Let browser fix/normalize html
-				const parser = new DOMParser();
-				const doc = parser.parseFromString(text, "text/html");
-				text = doc.body.innerHTML;
-				console.log('TEXT = ' +text)
-				if (confirm("Save (Automatic Pre-) Translation?\\n\\n"+text)) {
-					$($container_div).addClass('bg-alert');
-					var params = {};
-					params['lang'] = lang;
-					params['text_'+lang] = text;
-					$.post(id+'/manage_changeProperties',params,function(data){
-						$($container_div).removeClass('bg-alert');
-					},'html');
-				}
-			}
-			$ZMI.registerReady(function() {
-				$('.zmiRenderShort .contentEditable').off('click');
-				$('.zmiRenderShort [onclick]').removeAttr('onclick');
-				$('.zmiRenderShort [ondblclick]').removeAttr('ondblclick');
-				$('.zmiRenderShort span.unicode').remove();
-			});
-		</script>
+<script>
+	// Switch language and reload page
+	function switchLanguage(langKey, langValue) {
+		const url = new URL(window.location);
+		url.searchParams.set(langKey, langValue);
+		window.location.href = url.toString();
+	}
+	
+	// Update current language before form submission
+	$ZMI.registerReady(function() {
+		$('form.translate-forms').on('submit', function(e) {
+			// Get the selected translation language (lang2)
+			var lang2 = $('select[name="lang2"]').val();
+			$('#current_lang').val(lang2);
+		});
+		
+		// Disable fields in the left column (read-only reference)
+		$('.zmi-translate-left input, .zmi-translate-left textarea, .zmi-translate-left select').prop('disabled', true);
+		$('.zmi-translate-left input, .zmi-translate-left textarea, .zmi-translate-left select').css('background-color', '#f8f9fa');
+	});
+</script>
 	'''
 
 

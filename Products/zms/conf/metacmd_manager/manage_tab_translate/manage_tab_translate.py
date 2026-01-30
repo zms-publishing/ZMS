@@ -194,14 +194,6 @@ def renderHtml(zmscontext, request, SESSION, fmName='form0'):
 	# Google Translate Element
 	html.append(renderGoogleTranslate())
 	
-
-	# except Exception as e:
-	# 	html.append('''
-	# 		<div class="alert alert-danger m-3">
-	# 			<p>ERROR: Translation not possible. Maybe not second language configured.</p>
-	# 			<pre>%s</pre>
-	# 		</div>''' % str(e))
-	
 	# Add styles and scripts
 	html.append(renderStyles())
 	html.append(renderScripts())

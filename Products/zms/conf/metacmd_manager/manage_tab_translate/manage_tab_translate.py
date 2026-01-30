@@ -25,170 +25,180 @@ def renderHtml(zmscontext, request, SESSION, fmName='form0'):
 	
 	html = []
 	
+
+	# PARAMETERS LANG-1
 	try:
-		# PARAMETERS LANG-1
-		lang1_options = zmscontext.getLangTree(zmscontext.getDCCoverage(request)[len('global.'):])
+		coverage_delimiter = zmscontext.getDCCoverage(request).split('.')[0]
+	except Exception:
+		coverage_delimiter = 'global'
+	lang1_options = zmscontext.getLangTree(zmscontext.getDCCoverage(request)[len(coverage_delimiter)+1:])
+	
+	if SESSION.get('lang1', '') == '':
+		SESSION.set('lang1', request.get('lang1', lang1_options[0][0]))
+		request.set('lang1', SESSION.get('lang1'))
+	elif request.get('lang1', '') == '':
+		request.set('lang1', SESSION.get('lang1', lang1_options[0][0]))
+	else:
+		SESSION.set('lang1', request.get('lang1'))
+	
+	request.set('lang1_options', lang1_options)
+	request.set('lang1_bk', request.get('lang1'))
+	
+	# PARAMETERS LANG-2
+	lang2_options = zmscontext.getLangTree(zmscontext.getDCCoverage(request)[len(coverage_delimiter)+1:])[1:]
+	
+	if SESSION.get('lang2', '') == '':
+		SESSION.set('lang2', request.get('lang2', lang2_options[0][0]))
+		request.set('lang2', SESSION.get('lang2'))
+	elif request.get('lang2', '') == '':
+		request.set('lang2', SESSION.get('lang2', lang2_options[0][0]))
+	else:
+		SESSION.set('lang2', request.get('lang2'))
+	
+	request.set('lang2_options', lang2_options)
+	request.set('lang2_bk', request.get('lang2'))
 		
-		if SESSION.get('lang1', '') == '':
-			SESSION.set('lang1', request.get('lang1', lang1_options[0][0]))
-			request.set('lang1', SESSION.get('lang1'))
-		elif request.get('lang1', '') == '':
-			request.set('lang1', SESSION.get('lang1', lang1_options[0][0]))
-		else:
-			SESSION.set('lang1', request.get('lang1'))
-		
-		request.set('lang1_options', lang1_options)
-		request.set('lang1_bk', request.get('lang1'))
-		
-		# PARAMETERS LANG-2
-		lang2_options = zmscontext.getLangTree(zmscontext.getDCCoverage(request)[len('global.'):])[1:]
-		
-		if SESSION.get('lang2', '') == '':
-			SESSION.set('lang2', request.get('lang2', lang2_options[0][0]))
-			request.set('lang2', SESSION.get('lang2'))
-		elif request.get('lang2', '') == '':
-			request.set('lang2', SESSION.get('lang2', lang2_options[0][0]))
-		else:
-			SESSION.set('lang2', request.get('lang2'))
-		
-		request.set('lang2_options', lang2_options)
-		request.set('lang2_bk', request.get('lang2'))
-		
-		# Start HTML output
-		html.append('<!DOCTYPE html>')
-		html.append('<html lang="en">')
-		html.append(zmscontext.zmi_html_head(zmscontext, request))
-		html.append('<body id="manage_translate" class="%s">'%(' '.join(['zmi',request['lang'],'cleanup_recursive', zmscontext.meta_id])))
-		html.append(zmscontext.zmi_body_header(zmscontext,request))
-		html.append('<div id="zmi-tab">')
-		html.append(zmscontext.zmi_breadcrumbs(zmscontext,request))
-		html.append('<form class="card form-horizontal translate-forms" action="manage_changeProperties" method="post" enctype="multipart/form-data">')
-		html.append('<input type="hidden" name="preview" value="preview"/>')
-		html.append('<input type="hidden" id="current_lang" name="lang" value="%s"/>' % request.get('lang2'))
-		html.append('<legend>')
-		html.append('<div>Translate Content of Node: %s</div>'%(zmscontext.id))
+	# Start HTML output
+	html.append('<!DOCTYPE html>')
+	html.append('<html lang="en">')
+	html.append(zmscontext.zmi_html_head(zmscontext, request))
+	html.append('<body id="manage_translate" class="%s">'%(' '.join(['zmi',request['lang'],'cleanup_recursive', zmscontext.meta_id])))
+	html.append(zmscontext.zmi_body_header(zmscontext,request))
+	html.append('<div id="zmi-tab">')
+	html.append(zmscontext.zmi_breadcrumbs(zmscontext,request))
+	html.append('<form class="card form-horizontal translate-forms" action="manage_changeProperties" method="post" enctype="multipart/form-data">')
+	html.append('<input type="hidden" name="preview" value="preview"/>')
+	html.append('<input type="hidden" id="current_lang" name="lang" value="%s"/>' % request.get('lang2'))
+	html.append('<legend>')
+	html.append('''<div>
+		Translate Content of Node: %s 
+		<a title="View Translation as Page" class="text-secondary mx-3" hx-target="manage_tab_translate_body"><i class="fas fa-columns"></i></a>
+		<a title="Edit Translation of Current Node" class="text-secondary" hx-target="manage_tab_translate_body"><i class="fas fa-edit"></i></a>
+		</div>'''%(zmscontext.id))
 
-		# Debug info
-		html.append('''
-			<div class="debug_info" title="DEBUG INFO">
-				<i class="fas fa-flag"></i>
-				<div class="code">
-					REQUEST lang1: %s<br />
-					REQUEST lang2: %s<br />
-					SESSION lang1: %s<br />
-					SESSION lang2: %s<br />
-				</div>
-			</div>''' % (
-			request.get('lang1', ''),
-			request.get('lang2', ''),
-			SESSION.get('lang1', ''),
-			SESSION.get('lang2', '')
-		))
-		html.append('</legend>')
+	# Debug info
+	html.append('''
+		<div class="debug_info" title="DEBUG INFO">
+			<i class="fas fa-flag"></i>
+			<div class="code">
+				REQUEST lang1: %s<br />
+				REQUEST lang2: %s<br />
+				SESSION lang1: %s<br />
+				SESSION lang2: %s<br />
+			</div>
+		</div>''' % (
+		request.get('lang1', ''),
+		request.get('lang2', ''),
+		SESSION.get('lang1', ''),
+		SESSION.get('lang2', '')
+	))
+	html.append('</legend>')
 
-		# Language selector header
-		html.append('<table class="language-selector-header"><tr class="notranslate">')
-		for si in ['left', 'right']:
-			lang_req_key = 'lang1' if si == 'left' else 'lang2'
-			
-			html.append('<td class="lang-select-cell zmi-translate-%s" width="50%%">' %(si))
-			
-			# Language selector
-			lang_options_html = []
-			for opt in request.get(lang_req_key + '_options'):
-				selected = ' selected="selected"' if opt[0] == request.get(lang_req_key) else ''
-				lang_options_html.append('<option value="%s"%s>%s</option>' % (opt[0], selected, opt[1]['label']))
-			
-			html.append('<select class="form-control form-control-sm d-inline w-auto lang" name="%s" onchange="switchLanguage(\'%s\', this.value);">' % (lang_req_key, lang_req_key))
-			html.extend(lang_options_html)
-			html.append('</select>')
-			
-			# Add translate button on right column
-			if si == 'right':
-				html.append('''<button type="button" 
-					class="btn btn-sm btn-danger form-control-sm w-auto m-1 float-right" 
-					onclick="triggerAutoTranslate()" 
-					title="Auto-translate from %s to %s">Auto-Translate</button>''' % (
-						request.get('lang1'), 
-						request.get('lang2'))
-				)
+	html.append('<div id="manage_tab_translate_body" class="card-body p-0 m-0">')
+	# Language selector header
+	html.append('<table class="language-selector-header"><tr class="notranslate">')
+	for si in ['left', 'right']:
+		lang_req_key = 'lang1' if si == 'left' else 'lang2'
+		
+		html.append('<td class="lang-select-cell zmi-translate-%s" width="50%%">' %(si))
+		
+		# Language selector
+		lang_options_html = []
+		for opt in request.get(lang_req_key + '_options'):
+			selected = ' selected="selected"' if opt[0] == request.get(lang_req_key) else ''
+			lang_options_html.append('<option value="%s"%s>%s</option>' % (opt[0], selected, opt[1]['label']))
+		
+		html.append('<select class="form-control form-control-sm d-inline w-auto lang" name="%s" onchange="switchLanguage(\'%s\', this.value);">' % (lang_req_key, lang_req_key))
+		html.extend(lang_options_html)
+		html.append('</select>')
+		
+		# Add translate button on right column
+		if si == 'right':
+			html.append('''<button type="button" 
+				class="btn btn-sm btn-danger form-control-sm w-auto m-1 float-right" 
+				onclick="triggerAutoTranslate()" 
+				title="Auto-translate from %s to %s">Auto-Translate</button>''' % (
+					request.get('lang1'), 
+					request.get('lang2'))
+			)
 
-			html.append('</td>')
-		html.append('</tr></table>')
+		html.append('</td>')
+	html.append('</tr></table>')
+	
+	# Render property forms side by side	
+	html.append('<table class="properties-table" width="100%">')
+	
+	# Get object attributes
+	objAttrs = zmscontext.getObjAttrs()
+	
+	# Technical attributes to exclude from translation interface
+	technical_prefixes = ('change_', 'work_', 'attr_active_', 'created_', 'modified_')
+	technical_attrs = ('uid', 'version', 'preview')
+	
+	for objAttrId in objAttrs:
+		metaObjAttr = zmscontext.getObjAttr(objAttrId)
 		
-		# Render property forms side by side	
-		html.append('<table class="properties-table" width="100%">')
+		# Skip technical/system attributes
+		if objAttrId.startswith(technical_prefixes) or objAttrId in technical_attrs:
+			continue
 		
-		# Get object attributes
-		objAttrs = zmscontext.getObjAttrs()
+		# Check if attribute is multilang
+		is_multilang = metaObjAttr.get('multilang') in [1, True]
 		
-		# Technical attributes to exclude from translation interface
-		technical_prefixes = ('change_', 'attr_active_', 'work_', 'created_', 'modified_')
-		technical_attrs = ('active', 'uid', 'version', 'preview')
-		
-		for objAttrId in objAttrs:
-			metaObjAttr = zmscontext.getObjAttr(objAttrId)
+		if is_multilang:
+			html.append('<tr class="form-group-row">')
 			
-			# Skip technical/system attributes
-			if objAttrId.startswith(technical_prefixes) or objAttrId in technical_attrs:
-				continue
-			
-			# Check if attribute is multilang
-			is_multilang = metaObjAttr.get('multilang') in [1, True]
-			
-			if is_multilang:
-				html.append('<tr class="form-group-row">')
+			# Render for both languages
+			for si in ['left', 'right']:
+				lang = request.get('lang1' if si == 'left' else 'lang2')
+				request.set('lang', lang)
 				
-				# Render for both languages
-				for si in ['left', 'right']:
-					lang = request.get('lang1' if si == 'left' else 'lang2')
-					request.set('lang', lang)
-					
-					elName = zmscontext.getObjAttrName(metaObjAttr, lang)
-					elLabel = '%s [%s_%s]' % (zmscontext.getObjAttrLabel(metaObjAttr), metaObjAttr['id'], lang)
-					is_mandatory = metaObjAttr.get('mandatory')
-					
-					html.append('<td class="form-group-cell zmi-translate-%s" width="50%%" valign="top">' % si)
-					html.append('<div class="form-group row" id="tr_%s">' % elName)
-					html.append('<label for="%s" class="col-sm-3 control-label%s">' % (elName, ' mandatory' if is_mandatory else ''))
-					html.append('<span>%s</span>' % elLabel)
-					html.append('</label>')
-					html.append('<div class="col-sm-9">')
-					
-					# Render the input field
-					try:
-						input_html = zmscontext.getObjInput(metaObjAttr['id'], request)
-						html.append(input_html)
-					except Exception as e:
-						html.append('<span class="text-danger">Error rendering field: %s</span>' % str(e))
-					
-					html.append('</div>')
-					html.append('</div>')
-					html.append('</td>')
+				elName = zmscontext.getObjAttrName(metaObjAttr, lang)
+				elLabel = '%s [%s_%s]' % (zmscontext.getObjAttrLabel(metaObjAttr), metaObjAttr['id'], lang)
+				is_mandatory = metaObjAttr.get('mandatory')
 				
-				html.append('</tr>')
-		
-		html.append('</table>')
-		
-		# Save buttons
-		html.append('''
-			<div class="controls save text-right p-3">
-				<button type="submit" name="btn" class="btn btn-primary" value="Change">Save Translation</button>
-				<button type="button" class="btn btn-secondary" onclick="window.location.reload();">Cancel</button>
-			</div>''')
-		
-		html.append('</form>')
-		html.append('</div>')
-		
-		# Google Translate Element
-		html.append(renderGoogleTranslate())
-		
-	except Exception as e:
-		html.append('''
-			<div class="alert alert-danger m-3">
-				<p>ERROR: Translation not possible. Maybe not second language configured.</p>
-				<pre>%s</pre>
-			</div>''' % str(e))
+				html.append('<td class="form-group-cell zmi-translate-%s" width="50%%" valign="top">' % si)
+				html.append('<div class="form-group row" id="tr_%s">' % elName)
+				html.append('<label for="%s" class="col-sm-3 control-label%s">' % (elName, ' mandatory' if is_mandatory else ''))
+				html.append('<span>%s</span>' % elLabel)
+				html.append('</label>')
+				html.append('<div class="col-sm-9">')
+				
+				# Render the input field
+				try:
+					input_html = zmscontext.getObjInput(metaObjAttr['id'], request)
+					html.append(input_html)
+				except Exception as e:
+					html.append('<span class="text-danger">Error rendering field: %s</span>' % str(e))
+				
+				html.append('</div>')
+				html.append('</div>')
+				html.append('</td>')
+			
+			html.append('</tr>')
+	
+	html.append('</table>')
+	
+	# Save buttons
+	html.append('''
+		<div class="controls save text-right p-3">
+			<button type="submit" name="btn" class="btn btn-primary" value="Change">Save Translation</button>
+			<button type="button" class="btn btn-secondary" onclick="window.location.reload();">Cancel</button>
+		</div>''')
+	
+	html.append('</form>')
+	html.append('</div>')
+	
+	# Google Translate Element
+	html.append(renderGoogleTranslate())
+	
+
+	# except Exception as e:
+	# 	html.append('''
+	# 		<div class="alert alert-danger m-3">
+	# 			<p>ERROR: Translation not possible. Maybe not second language configured.</p>
+	# 			<pre>%s</pre>
+	# 		</div>''' % str(e))
 	
 	# Add styles and scripts
 	html.append(renderStyles())
@@ -349,7 +359,7 @@ def renderGoogleTranslate():
 			$('.zmi-translate-left label span').each(function() {
 				try {
 					let currentText = $(this).text(); 
-					let newText = currentText.replace(/\[.*?\]/g, ''); 
+					let newText = currentText.replace(/\\[.*?\\]/g, ''); 
 					$(this).text(newText); 
 				} catch (error) {
 					console.log(error);
@@ -415,14 +425,14 @@ def renderStyles():
 				width: 100%;
 				border-collapse: collapse;
 				margin:0;;
-				border-bottom: 2px solid #dee2e6;
+				border-bottom: 1px solid #dee2e6;
 			}
 			.lang-select-cell {
 				padding: 0.5rem;
 				text-align: center;
 			}
 			.lang-select-cell.zmi-translate-left {
-				border-right: 2px solid gray;
+				border-right: 1px solid #dee2e6;
 			}
 			.zmi-translate-element-id {
 				display: inline-block;
@@ -464,7 +474,7 @@ def renderStyles():
 				vertical-align: top;
 			}
 			.form-group-cell.zmi-translate-left {
-				border-right: 2px solid gray;
+				border-right: 1px solid #dee2e6;
 			}
 
 			/* Form Groups */
@@ -475,9 +485,12 @@ def renderStyles():
 				font-weight: 600;
 				font-size: 0.9rem;
 			}
-			.form-group-cell  {
+			.form-group-cell {
 				font-weight: 600;
 				font-size: 0.9rem;
+			}
+			.zmi-translate-right {
+				background-color: aliceblue;
 			}
 			.form-group-cell.zmi-translate-right .control-label {
 				display:none
@@ -499,12 +512,15 @@ def renderStyles():
 			.form-group-cell textarea {
 				min-height: 100px;
 			}
-			
+
 			/* Rich Text Editors */
 			.form-group-cell .zmi-richtext {
 				min-height: 200px;
 			}
-			
+			.form-group-cell .form-richtext-wysiwyg .col-sm-12 .btn-group.pull-right .btn {
+				display: block !important;
+			}
+
 			/* Google Translate Element */
 			#google_translate_element,
 			select.lang {
@@ -537,27 +553,27 @@ def renderStyles():
 def renderScripts():
 	"""Render JavaScript code"""
 	return '''
-<script>
-	// Switch language and reload page
-	function switchLanguage(langKey, langValue) {
-		const url = new URL(window.location);
-		url.searchParams.set(langKey, langValue);
-		window.location.href = url.toString();
-	}
-	
-	// Update current language before form submission
-	$ZMI.registerReady(function() {
-		$('form.translate-forms').on('submit', function(e) {
-			// Get the selected translation language (lang2)
-			var lang2 = $('select[name="lang2"]').val();
-			$('#current_lang').val(lang2);
-		});
-		
-		// Disable fields in the left column (read-only reference)
-		$('.zmi-translate-left input, .zmi-translate-left textarea, .zmi-translate-left select').prop('disabled', true);
-		$('.zmi-translate-left input, .zmi-translate-left textarea, .zmi-translate-left select').css('background-color', '#f8f9fa');
-	});
-</script>
+		<script>
+			// Switch language and reload page
+			function switchLanguage(langKey, langValue) {
+				const url = new URL(window.location);
+				url.searchParams.set(langKey, langValue);
+				window.location.href = url.toString();
+			}
+			
+			// Update current language before form submission
+			$ZMI.registerReady(function() {
+				$('form.translate-forms').on('submit', function(e) {
+					// Get the selected translation language (lang2)
+					var lang2 = $('select[name="lang2"]').val();
+					$('#current_lang').val(lang2);
+				});
+				
+				// Disable fields in the left column (read-only reference)
+				$('.zmi-translate-left input, .zmi-translate-left textarea, .zmi-translate-left select').prop('disabled', true);
+				$('.zmi-translate-left input, .zmi-translate-left textarea, .zmi-translate-left select').css('background-color', '#f8f9fa');
+			});
+		</script>
 	'''
 
 

@@ -521,7 +521,29 @@ def renderStyles():
 			.form-group-cell .form-richtext-wysiwyg .col-sm-12 .btn-group.pull-right .btn {
 				display: block !important;
 			}
-
+			.zmi-translate-block .inlinelinks {
+				flex: 0 0 100%;
+				max-width: 100%;
+				margin: .5rem -15px 1rem;
+				font-size: 80%;
+				font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+				display: flex;
+				-ms-flex-wrap: wrap;
+				flex-wrap: wrap;
+				position: relative;
+				width: 100%;
+				min-height: 1px;
+				padding-right: 15px;
+				padding-left: 15px;
+				font-weight: normal;
+			}
+			.zmi-translate-block .inlinelinks:before {
+				content:"\\f0c1";
+				font-family:'Font Awesome 5 Free';
+				font-weight:900;
+				margin-right:.3rem;
+				color:#999;
+			}
 			/* Google Translate Element */
 			#google_translate_element,
 			select.lang {

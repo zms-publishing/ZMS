@@ -82,14 +82,11 @@ def renderHtml(zmscontext, request, SESSION, fmName='form0'):
 		))
 		
 		# Language selector header
-		html.append('<div class="language-selector-header">')
-		html.append('<table width="100%"><tr>')
-		
+		html.append('<table class="language-selector-header"><tr class="notranslate" style="background-color:#e9ecef;">')
 		for si in ['left', 'right']:
 			lang_req_key = 'lang1' if si == 'left' else 'lang2'
-			notranslate_class = 'notranslate' if si == 'left' else 'translate'
 			
-			html.append('<td class="lang-select-cell %s" width="50%%">' % notranslate_class)
+			html.append('<td class="lang-select-cell zmi-translate-%s" width="50%%">' %(si))
 			html.append('<span class="zmi-translate-element-id">')
 			html.append('<a title="Open in New Window" href="%s/manage_properties?lang=%s" target="_blank">%s</a>&nbsp;&nbsp;' % (
 				zmscontext.absolute_url(),
@@ -104,24 +101,22 @@ def renderHtml(zmscontext, request, SESSION, fmName='form0'):
 				selected = ' selected="selected"' if opt[0] == request.get(lang_req_key) else ''
 				lang_options_html.append('<option value="%s"%s>%s</option>' % (opt[0], selected, opt[1]['label']))
 			
-			html.append('<select class="form-control form-control-sm d-inline w-auto lang notranslate" name="%s" onchange="switchLanguage(\'%s\', this.value);">' % (lang_req_key, lang_req_key))
+			html.append('<select class="form-control form-control-sm d-inline w-auto lang" name="%s" onchange="switchLanguage(\'%s\', this.value);">' % (lang_req_key, lang_req_key))
 			html.extend(lang_options_html)
 			html.append('</select>')
 			
 			# Add translate button on right column
 			if si == 'right':
 				html.append('''<button type="button" 
-					class="btn btn-sm btn-danger form-control-sm notranslate w-auto m-1 float-right" 
+					class="btn btn-sm btn-danger form-control-sm w-auto m-1 float-right" 
 					onclick="triggerAutoTranslate()" 
 					title="Auto-translate from %s to %s">Auto-Translate</button>''' % (
 						request.get('lang1'), 
 						request.get('lang2'))
 				)
-			
+
 			html.append('</td>')
-		
 		html.append('</tr></table>')
-		html.append('</div>')
 		
 		# Render property forms side by side
 		html.append('<form class="card form-horizontal translate-forms" action="manage_changeProperties" method="post" enctype="multipart/form-data">')
@@ -183,11 +178,9 @@ def renderHtml(zmscontext, request, SESSION, fmName='form0'):
 		
 		# Save buttons
 		html.append('''
-			<div class="form-group row mt-3">
-				<div class="col-sm-12 controls save text-right">
-					<button type="submit" name="btn" class="btn btn-primary" value="Change">Save Translation</button>
-					<button type="button" class="btn btn-secondary" onclick="window.location.reload();">Cancel</button>
-				</div>
+			<div class="controls save text-right p-3">
+				<button type="submit" name="btn" class="btn btn-primary" value="Change">Save Translation</button>
+				<button type="button" class="btn btn-secondary" onclick="window.location.reload();">Cancel</button>
 			</div>''')
 		
 		html.append('</form>')
@@ -216,113 +209,124 @@ def renderHtml(zmscontext, request, SESSION, fmName='form0'):
 def renderGoogleTranslate():
 	"""Render Google Translate widget HTML and JavaScript"""
 	return '''
-<!-- Google Translate Element -->
-<div id="google_translate_element" style="display:block"></div>
-<script>
-//<!--
-	var langmap = {
-		"ger": "de",    // German
-		"eng": "en",    // English
-		"fra": "fr",    // French
-		"ita": "it",    // Italian
-		"spa": "es",    // Spanish
-		"rus": "ru",    // Russian
-		"tur": "tr"     // Turkish
-		// add more as needed
-	};
-	
-	// Grab your source and target language values
-	var lang1 = $('select[name="lang1"]').val();
-	var lang2 = $('select[name="lang2"]').val();
-	var sourceLang = langmap[lang1] || 'en';
-	var targetLang = langmap[lang2] || 'en';
+		<!-- Google Translate Element -->
+		<div id="google_translate_element" class="d-block p-3"></div>
+		<script>
+		//<!--
+		var langmap = {
+			"ger": "de",    // German
+			"eng": "en",    // English
+			"fra": "fr",    // French
+			"ita": "it",    // Italian
+			"spa": "es",    // Spanish
+			"rus": "ru",    // Russian
+			"tur": "tr"     // Turkish
+			// add more as needed
+		};
+		
+		// Grab your source and target language values
+		var lang1 = $('select[name="lang1"]').val();
+		var lang2 = $('select[name="lang2"]').val();
+		var sourceLang = langmap[lang1] || 'en';
+		var targetLang = langmap[lang2] || 'en';
 
-	// Initialize Google Translate element
-	function googleTranslateElementInit() {
-		new google.translate.TranslateElement({
-			pageLanguage: sourceLang,
-			includedLanguages: targetLang,
-			layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-			autoDisplay: false
-		}, 'google_translate_element');
-	}
-
-	// Function to translate text using Google Translate API (client-side)
-	function translateText(text, callback) {
-		if (!text || text.trim() === '') {
-			callback(text);
-			return;
+		// Initialize Google Translate element
+		function googleTranslateElementInit() {
+			new google.translate.TranslateElement({
+				pageLanguage: sourceLang,
+				includedLanguages: targetLang,
+				layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+				autoDisplay: false
+			}, 'google_translate_element');
 		}
-		
-		// Use Google Translate free endpoint
-		var url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=' + 
-				  sourceLang + '&tl=' + targetLang + '&dt=t&q=' + encodeURIComponent(text);
-		
-		fetch(url)
-			.then(response => response.json())
-			.then(data => {
-				if (data && data[0]) {
-					var translatedText = data[0].map(item => item[0]).join('');
-					callback(translatedText);
-				} else {
-					callback(text);
-				}
-			})
-			.catch(error => {
-				console.error('Translation error:', error);
-				callback(text); // Return original text on error
-			});
-	}
 
-	// Copy and translate content from left to right column
-	function translateAndCopy() {
-		var totalFields = 0;
-		var processedFields = 0;
-		
-		// Count total fields to process
-		$('.form-group-row').each(function() {
-			var $row = $(this);
-			var $leftCell = $row.find('.zmi-translate-left');
-			var $rightCell = $row.find('.zmi-translate-right');
-			
-			if ($leftCell.length && $rightCell.length) {
-				var $leftInput = $leftCell.find('input[type="text"], textarea');
-				var $rightInput = $rightCell.find('input[type="text"], textarea');
-				
-				if ($leftInput.length && $rightInput.length) {
-					totalFields++;
-				}
+		// Function to translate text using Google Translate API (client-side)
+		function translateText(text, callback) {
+			if (!text || text.trim() === '') {
+				callback(text);
+				return;
 			}
-		});
-		
-		if (totalFields === 0) {
-			alert('No translatable fields found.');
-			return;
-		}
-		
-		// Show progress indicator
-		$('body').append('<div id="translate-progress" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:white;padding:20px;border:2px solid #007bff;border-radius:5px;z-index:10000;"><i class="fas fa-spinner fa-spin"></i> Translating... <span id="progress-counter">0/' + totalFields + '</span></div>');
-		
-		// Process each row
-		$('.form-group-row').each(function() {
-			var $row = $(this);
-			var $leftCell = $row.find('.zmi-translate-left');
-			var $rightCell = $row.find('.zmi-translate-right');
 			
-			if ($leftCell.length && $rightCell.length) {
-				// Find input fields
-				var $leftInput = $leftCell.find('input[type="text"], textarea');
-				var $rightInput = $rightCell.find('input[type="text"], textarea');
+			// Use Google Translate free endpoint
+			var url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=' + 
+					sourceLang + '&tl=' + targetLang + '&dt=t&q=' + encodeURIComponent(text);
+			
+			fetch(url)
+				.then(response => response.json())
+				.then(data => {
+					if (data && data[0]) {
+						var translatedText = data[0].map(item => item[0]).join('');
+						callback(translatedText);
+					} else {
+						callback(text);
+					}
+				})
+				.catch(error => {
+					console.error('Translation error:', error);
+					callback(text); // Return original text on error
+				});
+		}
+
+		// Copy and translate content from left to right column
+		function translateAndCopy() {
+			var totalFields = 0;
+			var processedFields = 0;
+			
+			// Count total fields to process
+			$('.form-group-row').each(function() {
+				var $row = $(this);
+				var $leftCell = $row.find('.zmi-translate-left');
+				var $rightCell = $row.find('.zmi-translate-right');
 				
-				if ($leftInput.length && $rightInput.length) {
-					var sourceText = $leftInput.val();
+				if ($leftCell.length && $rightCell.length) {
+					var $leftInput = $leftCell.find('input[type="text"], textarea');
+					var $rightInput = $rightCell.find('input[type="text"], textarea');
 					
-					if (sourceText && sourceText.trim() !== '') {
-						// Translate and copy
-						translateText(sourceText, function(translatedText) {
-							$rightInput.val(translatedText);
-							$rightInput.css('background-color', '#ffffcc'); // Highlight changed field
-							
+					if ($leftInput.length && $rightInput.length) {
+						totalFields++;
+					}
+				}
+			});
+			
+			if (totalFields === 0) {
+				alert('No translatable fields found.');
+				return;
+			}
+			
+			// Show progress indicator
+			$('body').append('<div id="translate-progress" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:white;padding:20px;border:2px solid #007bff;border-radius:5px;z-index:10000;"><i class="fas fa-spinner fa-spin"></i> Translating... <span id="progress-counter">0/' + totalFields + '</span></div>');
+			
+			// Process each row
+			$('.form-group-row').each(function() {
+				var $row = $(this);
+				var $leftCell = $row.find('.zmi-translate-left');
+				var $rightCell = $row.find('.zmi-translate-right');
+				
+				if ($leftCell.length && $rightCell.length) {
+					// Find input fields
+					var $leftInput = $leftCell.find('input[type="text"], textarea');
+					var $rightInput = $rightCell.find('input[type="text"], textarea');
+					
+					if ($leftInput.length && $rightInput.length) {
+						var sourceText = $leftInput.val();
+						
+						if (sourceText && sourceText.trim() !== '') {
+							// Translate and copy
+							translateText(sourceText, function(translatedText) {
+								$rightInput.val(translatedText);
+								$rightInput.css('background-color', '#ffffcc'); // Highlight changed field
+								
+								processedFields++;
+								$('#progress-counter').text(processedFields + '/' + totalFields);
+								
+								if (processedFields >= totalFields) {
+									setTimeout(function() {
+										$('#translate-progress').remove();
+										alert('Translation completed for ' + processedFields + ' field(s)!');
+									}, 500);
+								}
+							});
+						} else {
 							processedFields++;
 							$('#progress-counter').text(processedFields + '/' + totalFields);
 							
@@ -332,204 +336,220 @@ def renderGoogleTranslate():
 									alert('Translation completed for ' + processedFields + ' field(s)!');
 								}, 500);
 							}
-						});
-					} else {
-						processedFields++;
-						$('#progress-counter').text(processedFields + '/' + totalFields);
-						
-						if (processedFields >= totalFields) {
-							setTimeout(function() {
-								$('#translate-progress').remove();
-								alert('Translation completed for ' + processedFields + ' field(s)!');
-							}, 500);
 						}
 					}
 				}
-			}
-		});
-	}
-
-	// Manual translation trigger
-	window.triggerAutoTranslate = function() {
-		if (confirm('This will copy and translate content from ' + lang1 + ' to ' + lang2 + '. Continue?')) {
-			translateAndCopy();
+			});
 		}
-	};
 
-	// Once the widget is ready
-	$(document).ready(function() {
-		setTimeout(function() {
-			var $combo = $('#google_translate_element select.goog-te-combo');
-			if ($combo.length) {
-				$combo.val(targetLang);
-				$combo.trigger('change');
+		// Manual translation trigger
+		window.triggerAutoTranslate = function() {
+			if (confirm('This will copy and translate content from ' + lang1 + ' to ' + lang2 + '. Continue?')) {
+				translateAndCopy();
 			}
-		}, 1000);
-	});
-//-->
-</script>
-<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-<!-- /Google Translate Element -->
-'''
+		};
+
+		// Once the widget is ready
+		$(document).ready(function() {
+			// Clean up labels by removing language codes
+			$('.zmi-translate-left label span').each(function() {
+				try {
+					let currentText = $(this).text(); 
+					let newText = currentText.replace(/\[.*?\]/g, ''); 
+					$(this).text(newText); 
+				} catch (error) {
+					console.log(error);
+				}
+			});
+			setTimeout(function() {
+				var $combo = $('#google_translate_element select.goog-te-combo');
+				if ($combo.length) {
+					$combo.val(targetLang);
+					$combo.trigger('change');
+				}
+			}, 1000);
+		});
+		//-->
+		</script>
+		<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+		<!-- /Google Translate Element -->
+	'''
 
 
 def renderStyles():
 	"""Render CSS styles"""
 	return '''
-<style>
-	.zmi header > nav {
-		opacity:0.75;
-	}
-	.zmi header ol *,
-	.zmi header ol li:before {
-		color:white !important;
-	}
-	.zmi header ol {
-		padding-left:0 !important;
-	}
-	.zmi .debug_info {
-		position: absolute;
-		right: 0;
-		top: 0;
-		z-index: 1000;
-	}
-	.zmi .debug_info .code {
-		display:none;
-		background: #ffffffa8;
-		color: black;
-		margin: 1.65rem;
-		padding: 1rem;
-		font-family: courier;
-		border: 1px solid #354f67;
-		box-shadow: 0 6px 12px rgba(0,0,0,.175);
-		font-weight: bold;
-	}
-	.zmi .debug_info:hover .code {
-		display: block;
-	}
-	.zmi .debug_info i {
-		position: absolute;
-		color: white;
-		right: 0;
-		top: 0;
-		padding: .75rem;
-	}
-	
-	/* Language Selector Header */
-	.language-selector-header {
-		background: #f8f9fa;
-		border-bottom: 2px solid #dee2e6;
-	}
-	.lang-select-cell {
-		padding: 0.5rem;
-		text-align: center;
-	}
-	.lang-select-cell.notranslate {
-		background-color: rgba(0, 255, 0, 0.10);
-		border-right: 2px solid gray;
-	}
-	.lang-select-cell.translate {
-		background-color: rgba(255, 0, 0, 0.10);
-	}
-	.zmi-translate-element-id {
-		display: inline-block;
-		float: left;
-		padding: .5rem 1rem;
-		font-weight: bold;
-	}
-	.zmi-translate-element-id a {
-		color: #007bff !important;
-		text-decoration: none;
-	}
-	.zmi-translate-element-id a:hover {
-		text-decoration: underline;
-	}
-	.lang-select-cell .btn {
-		vertical-align: middle;
-	}
-	.temp-translate,
-	.temp-translate-rich {
-		display: none !important;
-		visibility: hidden !important;
-		position: absolute;
-		left: -9999px;
-	}
-	
-	/* Translation Forms */
-	.translate-forms {
-		margin: 0;
-	}
-	.properties-table {
-		width: 100%;
-		border-collapse: collapse;
-	}
-	.form-group-row {
-		border-bottom: 1px solid #dee2e6;
-	}
-	.form-group-cell {
-		padding: 1rem;
-		vertical-align: top;
-	}
-	.form-group-cell.zmi-translate-left {
-		background-color: rgba(0, 255, 0, 0.05);
-		border-right: 2px solid gray;
-	}
-	.form-group-cell.zmi-translate-right {
-		background-color: rgba(255, 0, 0, 0.05);
-	}
-	
-	/* Form Groups */
-	.form-group-cell .form-group {
-		margin-bottom: 0;
-	}
-	.form-group-cell .control-label {
-		font-weight: 600;
-		font-size: 0.9rem;
-	}
-	.form-group-cell .control-label.mandatory::after {
-		content: " *";
-		color: red;
-	}
-	
-	/* Input Fields */
-	.form-group-cell input[type="text"],
-	.form-group-cell textarea,
-	.form-group-cell select {
-		width: 100%;
-	}
-	.form-group-cell textarea {
-		min-height: 100px;
-	}
-	
-	/* Rich Text Editors */
-	.form-group-cell .zmi-richtext {
-		min-height: 200px;
-	}
-	
-	/* Google Translate Element */
-	#google_translate_element,
-	select.lang {
-		float: right;
-		margin: 0.3em;
-	}
-	.skiptranslate iframe {
-		min-height: 2.7rem;
-		background: #fff;
-		padding-top: .15rem;
-	}
-	
-	/* Responsive adjustments */
-	@media (max-width: 1200px) {
-		.form-group-cell .col-sm-3 {
-			flex: 0 0 100%;
-			max-width: 100%;
-		}
-		.form-group-cell .col-sm-9 {
-			flex: 0 0 100%;
-			max-width: 100%;
-		}
-	}
-</style>
+		<style>
+			.zmi header > nav {
+				opacity:0.75;
+			}
+			.zmi header ol *,
+			.zmi header ol li:before {
+				color:white !important;
+			}
+			.zmi header ol {
+				padding-left:0 !important;
+			}
+			.zmi .debug_info {
+				position: absolute;
+				right: 0;
+				top: 0;
+				z-index: 1000;
+			}
+			.zmi .debug_info .code {
+				display:none;
+				background: #ffffffa8;
+				color: black;
+				margin: 1.65rem;
+				padding: 1rem;
+				font-family: courier;
+				border: 1px solid #354f67;
+				box-shadow: 0 6px 12px rgba(0,0,0,.175);
+				font-weight: bold;
+			}
+			.zmi .debug_info:hover .code {
+				display: block;
+			}
+			.zmi .debug_info i {
+				position: absolute;
+				color: white;
+				right: 0;
+				top: 0;
+				padding: .75rem;
+			}
+			.zmi #zmi-tab {
+				background-color: unset !important;
+				min-height: unset !important;
+				padding: unset !important;
+				margin: unset !important;
+			}
+			/* Language Selector Header */
+			.language-selector-header {
+				width: 100%;
+				border-collapse: collapse;
+				margin:0;;
+				border-bottom: 2px solid #dee2e6;
+			}
+			.lang-select-cell {
+				padding: 0.5rem;
+				text-align: center;
+			}
+			.lang-select-cell.zmi-translate-left {
+				border-right: 2px solid gray;
+			}
+			.lang-select-cell.zmi-translate-right {
+				background-color: #354f6714;
+			}
+			.zmi-translate-element-id {
+				display: inline-block;
+				float: left;
+				padding: .5rem 1rem;
+				font-weight: bold;
+			}
+			.zmi-translate-element-id a {
+				color: #007bff !important;
+				text-decoration: none;
+			}
+			.zmi-translate-element-id a:hover {
+				text-decoration: underline;
+			}
+			.lang-select-cell .btn {
+				vertical-align: middle;
+			}
+			.temp-translate,
+			.temp-translate-rich {
+				display: none !important;
+				visibility: hidden !important;
+				position: absolute;
+				left: -9999px;
+			}
+			
+			/* Translation Forms */
+			.translate-forms {
+				margin: 0;
+			}
+			.properties-table {
+				width: 100%;
+				border-collapse: collapse;
+			}
+			.form-group-row {
+				border-bottom: 1px solid #dee2e6;
+			}
+			.form-group-cell {
+				padding: 1rem;
+				vertical-align: top;
+			}
+			.form-group-cell.zmi-translate-left {
+				border-right: 2px solid gray;
+			}
+			.form-group-cell.zmi-translate-right {
+				background-color: #354f6714;
+			}
+
+			/* Form Groups */
+			.form-group-cell .form-group {
+				margin-bottom: 0;
+			}
+			.form-group-cell .control-label {
+				font-weight: 600;
+				font-size: 0.9rem;
+			}
+			.form-group-cell  {
+				font-weight: 600;
+				font-size: 0.9rem;
+			}
+			.form-group-cell.zmi-translate-right .control-label {
+				display:none
+			}	
+			.form-group-cell .control-label.mandatory::after {
+				content: " *";
+				color: red;
+			}
+			
+			/* Input Fields */
+			.input-group {
+				flex-wrap: nowrap !important;
+			}
+			.form-group-cell input[type="text"],
+			.form-group-cell textarea,
+			.form-group-cell select {
+				width: 100%;
+			}
+			.form-group-cell textarea {
+				min-height: 100px;
+			}
+			
+			/* Rich Text Editors */
+			.form-group-cell .zmi-richtext {
+				min-height: 200px;
+			}
+			
+			/* Google Translate Element */
+			#google_translate_element,
+			select.lang {
+				float: right;
+				margin: 0.3em;
+			}
+			.skiptranslate iframe {
+				min-height: 2.7rem;
+				background: #fff;
+				padding-top: .15rem;
+			}
+			[style*="background-color: rgb(255, 255, 204)"] {
+				background-color: #ffeef0 !important;
+			}
+			/* Responsive adjustments */
+			@media (max-width: 1200px) {
+				.form-group-cell .col-sm-3 {
+					flex: 0 0 100%;
+					max-width: 100%;
+				}
+				.form-group-cell .col-sm-9 {
+					flex: 0 0 100%;
+					max-width: 100%;
+				}
+			}
+		</style>
 	'''
 
 

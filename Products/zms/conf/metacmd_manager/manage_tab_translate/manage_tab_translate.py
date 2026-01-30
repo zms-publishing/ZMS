@@ -1,4 +1,4 @@
-## Script (Python) "manage_translate"
+## Script (Python) "manage_tab_translate"
 ##bind container=container
 ##bind context=context
 ##bind namespace=
@@ -58,42 +58,40 @@ def renderHtml(zmscontext, request, SESSION, fmName='form0'):
 		html.append('<!DOCTYPE html>')
 		html.append('<html lang="en">')
 		html.append(zmscontext.zmi_html_head(zmscontext, request))
-		html.append('<body class="zmi" id="manage_translate">')
-		html.append('<header class="navbar navbar-nav navbar-expand navbar-dark notranslate">')
-		html.append(zmscontext.zmi_breadcrumbs_obj_path(zmscontext, request))
-		html.append('</header>')
+		html.append('<body id="manage_translate" class="%s">'%(' '.join(['zmi',request['lang'],'cleanup_recursive', zmscontext.meta_id])))
+		html.append(zmscontext.zmi_body_header(zmscontext,request))
 		html.append('<div id="zmi-tab">')
-		
+		html.append(zmscontext.zmi_breadcrumbs(zmscontext,request))
+		html.append('<form class="card form-horizontal translate-forms" action="manage_changeProperties" method="post" enctype="multipart/form-data">')
+		html.append('<input type="hidden" name="preview" value="preview"/>')
+		html.append('<input type="hidden" id="current_lang" name="lang" value="%s"/>' % request.get('lang2'))
+		html.append('<legend>')
+		html.append('<div>Translate Content of Node: %s</div>'%(zmscontext.id))
+
 		# Debug info
 		html.append('''
-<div class="debug_info" title="DEBUG INFO">
-	<i class="fas fa-flag"></i>
-	<div class="code">
-		REQUEST lang1: %s<br />
-		REQUEST lang2: %s<br />
-		SESSION lang1: %s<br />
-		SESSION lang2: %s<br />
-	</div>
-</div>''' % (
+			<div class="debug_info" title="DEBUG INFO">
+				<i class="fas fa-flag"></i>
+				<div class="code">
+					REQUEST lang1: %s<br />
+					REQUEST lang2: %s<br />
+					SESSION lang1: %s<br />
+					SESSION lang2: %s<br />
+				</div>
+			</div>''' % (
 			request.get('lang1', ''),
 			request.get('lang2', ''),
 			SESSION.get('lang1', ''),
 			SESSION.get('lang2', '')
 		))
-		
+		html.append('</legend>')
+
 		# Language selector header
-		html.append('<table class="language-selector-header"><tr class="notranslate" style="background-color:#e9ecef;">')
+		html.append('<table class="language-selector-header"><tr class="notranslate">')
 		for si in ['left', 'right']:
 			lang_req_key = 'lang1' if si == 'left' else 'lang2'
 			
 			html.append('<td class="lang-select-cell zmi-translate-%s" width="50%%">' %(si))
-			html.append('<span class="zmi-translate-element-id">')
-			html.append('<a title="Open in New Window" href="%s/manage_properties?lang=%s" target="_blank">%s</a>&nbsp;&nbsp;' % (
-				zmscontext.absolute_url(),
-				request.get(lang_req_key),
-				zmscontext.id
-			))
-			html.append('</span>')
 			
 			# Language selector
 			lang_options_html = []
@@ -118,11 +116,7 @@ def renderHtml(zmscontext, request, SESSION, fmName='form0'):
 			html.append('</td>')
 		html.append('</tr></table>')
 		
-		# Render property forms side by side
-		html.append('<form class="card form-horizontal translate-forms" action="manage_changeProperties" method="post" enctype="multipart/form-data">')
-		html.append('<input type="hidden" name="preview" value="preview"/>')
-		html.append('<input type="hidden" id="current_lang" name="lang" value="%s"/>' % request.get('lang2'))
-		
+		# Render property forms side by side	
 		html.append('<table class="properties-table" width="100%">')
 		
 		# Get object attributes
@@ -191,10 +185,10 @@ def renderHtml(zmscontext, request, SESSION, fmName='form0'):
 		
 	except Exception as e:
 		html.append('''
-<div class="alert alert-danger m-3">
-	<p>ERROR: Translation not possible. Maybe not second language configured.</p>
-	<pre>%s</pre>
-</div>''' % str(e))
+			<div class="alert alert-danger m-3">
+				<p>ERROR: Translation not possible. Maybe not second language configured.</p>
+				<pre>%s</pre>
+			</div>''' % str(e))
 	
 	# Add styles and scripts
 	html.append(renderStyles())
@@ -210,7 +204,7 @@ def renderGoogleTranslate():
 	"""Render Google Translate widget HTML and JavaScript"""
 	return '''
 		<!-- Google Translate Element -->
-		<div id="google_translate_element" class="d-block p-3"></div>
+		<div id="google_translate_element" class="d-block px-3" style="margin-top: 16px;"></div>
 		<script>
 		//<!--
 		var langmap = {
@@ -398,7 +392,7 @@ def renderStyles():
 			}
 			.zmi .debug_info .code {
 				display:none;
-				background: #ffffffa8;
+				background: #ffffffcc;
 				color: black;
 				margin: 1.65rem;
 				padding: 1rem;
@@ -412,16 +406,9 @@ def renderStyles():
 			}
 			.zmi .debug_info i {
 				position: absolute;
-				color: white;
 				right: 0;
 				top: 0;
 				padding: .75rem;
-			}
-			.zmi #zmi-tab {
-				background-color: unset !important;
-				min-height: unset !important;
-				padding: unset !important;
-				margin: unset !important;
 			}
 			/* Language Selector Header */
 			.language-selector-header {
@@ -436,9 +423,6 @@ def renderStyles():
 			}
 			.lang-select-cell.zmi-translate-left {
 				border-right: 2px solid gray;
-			}
-			.lang-select-cell.zmi-translate-right {
-				background-color: #354f6714;
 			}
 			.zmi-translate-element-id {
 				display: inline-block;
@@ -481,9 +465,6 @@ def renderStyles():
 			}
 			.form-group-cell.zmi-translate-left {
 				border-right: 2px solid gray;
-			}
-			.form-group-cell.zmi-translate-right {
-				background-color: #354f6714;
 			}
 
 			/* Form Groups */
@@ -583,7 +564,7 @@ def renderScripts():
 #################################################
 # MAIN
 #################################################
-def manage_translate(self):
+def manage_tab_translate(self):
 	"""Main entry point for the translation interface"""
 	request = self.REQUEST
 	response = request.RESPONSE

@@ -1,16 +1,16 @@
-class manage_translate:
+class manage_tab_translate:
 	"""
-	python-representation of manage_translate
+	python-representation of manage_tab_translate
 	"""
 
 	# Acquired
 	acquired = 0
 
 	# Action
-	action = "%smanage_executeMetacmd?id=manage_translate"
+	action = "%smanage_executeMetacmd?id=manage_tab_translate"
 
 	# Description
-	description = ""
+	description = "Translate Node-Content"
 
 	# Execution
 	execution = False
@@ -19,7 +19,7 @@ class manage_translate:
 	icon_clazz = "fas fa-globe text-success"
 
 	# Id
-	id = "manage_translate"
+	id = "manage_tab_translate"
 
 	# Meta_types
 	meta_types = ["ZMSDocument"
@@ -28,16 +28,16 @@ class manage_translate:
 		,"type(ZMSObject)"]
 
 	# Name
-	name = "Translate..."
+	name = "Translate"
 
 	# Nodes
 	nodes = "{$}"
 
 	# Package
-	package = ""
+	package = "com.zms.foundation.metacmd.tabs"
 
 	# Revision
-	revision = "6.1.0"
+	revision = "6.2.0"
 
 	# Roles
 	roles = ["ZMSEditor"
@@ -45,12 +45,12 @@ class manage_translate:
 		,"ZMSAdministrator"]
 
 	# Stereotype
-	stereotype = ""
+	stereotype = "tab"
 
 	# Title
 	title = "Translate Node-Content"
 
 	# Impl
 	class Impl:
-		manage_translate = {"id":"manage_translate"
+		manage_tab_translate = {"id":"manage_tab_translate"
 			,"type":"External Method"}

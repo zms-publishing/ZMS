@@ -15,29 +15,22 @@
 #################################################
 
 
-def renderHtml(zmscontext, request, SESSION, fmName='form0'):
-	"""Main HTML rendering function for the translation interface"""
+def set_language_options(zmscontext, request, SESSION):
+	"""Set language options in session and request"""
 	
 	# Set request defaults
 	request.set('lang', 'ger')
 	request.set('preview', 'preview')
-	request.set('fmName', fmName)
 	
-	html = []
-	
-
 	# PARAMETERS LANG-1
-	try:
-		coverage_delimiter = zmscontext.getDCCoverage(request).split('.')[0]
-	except Exception:
-		coverage_delimiter = 'global'
+	coverage_delimiter = zmscontext.getDCCoverage(request).split('.')[0]
 	lang1_options = zmscontext.getLangTree(zmscontext.getDCCoverage(request)[len(coverage_delimiter)+1:])
 	
 	if SESSION.get('lang1', '') == '':
 		SESSION.set('lang1', request.get('lang1', lang1_options[0][0]))
 		request.set('lang1', SESSION.get('lang1'))
 	elif request.get('lang1', '') == '':
-		request.set('lang1', SESSION.get('lang1', lang1_options[0][0]))
+		request.set('lang1', SESSION.get('lang1'))
 	else:
 		SESSION.set('lang1', request.get('lang1'))
 	
@@ -51,14 +44,27 @@ def renderHtml(zmscontext, request, SESSION, fmName='form0'):
 		SESSION.set('lang2', request.get('lang2', lang2_options[0][0]))
 		request.set('lang2', SESSION.get('lang2'))
 	elif request.get('lang2', '') == '':
-		request.set('lang2', SESSION.get('lang2', lang2_options[0][0]))
+		request.set('lang2', SESSION.get('lang2'))
 	else:
 		SESSION.set('lang2', request.get('lang2'))
 	
 	request.set('lang2_options', lang2_options)
 	request.set('lang2_bk', request.get('lang2'))
-		
-	# Start HTML output
+
+
+
+def renderHtml(zmscontext, request, SESSION, fmName='form0'):
+	"""Main HTML rendering function for the translation interface"""
+	
+	# Set request defaults
+	request.set('lang', 'ger')
+	request.set('preview', 'preview')
+	request.set('fmName', fmName)
+	
+	# Set language options
+	set_language_options(zmscontext, request, SESSION)
+
+	html = []
 	html.append('<!DOCTYPE html>')
 	html.append('<html lang="en">')
 	html.append(zmscontext.zmi_html_head(zmscontext, request))
@@ -68,13 +74,9 @@ def renderHtml(zmscontext, request, SESSION, fmName='form0'):
 	html.append(zmscontext.zmi_breadcrumbs(zmscontext,request))
 	html.append('<form class="card form-horizontal translate-forms" action="manage_changeProperties" method="post" enctype="multipart/form-data">')
 	html.append('<input type="hidden" name="preview" value="preview"/>')
-	html.append('<input type="hidden" id="current_lang" name="lang" value="%s"/>' % request.get('lang2'))
+	html.append('<input type="hidden" id="translate_lang" name="lang" value="%s"/>' % request.get('lang2'))
 	html.append('<legend>')
-	html.append('''<div>
-		Translate Content of Node: %s 
-		<a title="View Translation as Page" class="text-secondary mx-3" hx-target="manage_tab_translate_body"><i class="fas fa-columns"></i></a>
-		<a title="Edit Translation of Current Node" class="text-secondary" hx-target="manage_tab_translate_body"><i class="fas fa-edit"></i></a>
-		</div>'''%(zmscontext.id))
+	html.append('<div>Translate Content of Node: <code style="font-size:100%%">%s [%s]</code></div>'%(zmscontext.meta_id, zmscontext.id))
 
 	# Debug info
 	html.append('''
@@ -157,7 +159,7 @@ def renderHtml(zmscontext, request, SESSION, fmName='form0'):
 				elLabel = '%s [%s_%s]' % (zmscontext.getObjAttrLabel(metaObjAttr), metaObjAttr['id'], lang)
 				is_mandatory = metaObjAttr.get('mandatory')
 				
-				html.append('<td class="form-group-cell zmi-translate-%s" width="50%%" valign="top">' % si)
+				html.append('<td class="form-group-cell zmi-translate-block zmi-translate-%s" width="50%%" valign="top">' % si)
 				html.append('<div class="form-group row" id="tr_%s">' % elName)
 				html.append('<label for="%s" class="col-sm-3 control-label%s">' % (elName, ' mandatory' if is_mandatory else ''))
 				html.append('<span>%s</span>' % elLabel)
@@ -303,8 +305,8 @@ def renderGoogleTranslate():
 			// Process each row
 			$('.form-group-row').each(function() {
 				var $row = $(this);
-				var $leftCell = $row.find('.zmi-translate-left');
-				var $rightCell = $row.find('.zmi-translate-right');
+				var $leftCell = $row.find('.zmi-translate-block.zmi-translate-left');
+				var $rightCell = $row.find('.zmi-translate-block.zmi-translate-right');
 				
 				if ($leftCell.length && $rightCell.length) {
 					// Find input fields
@@ -356,7 +358,7 @@ def renderGoogleTranslate():
 		// Once the widget is ready
 		$(document).ready(function() {
 			// Clean up labels by removing language codes
-			$('.zmi-translate-left label span').each(function() {
+			$('.zmi-translate-block label span').each(function() {
 				try {
 					let currentText = $(this).text(); 
 					let newText = currentText.replace(/\\[.*?\\]/g, ''); 
@@ -371,6 +373,8 @@ def renderGoogleTranslate():
 					$combo.val(targetLang);
 					$combo.trigger('change');
 				}
+				// Reset RTE fields to apply translation
+				$('.form-richtext-wysiwyg > .col-sm-12 > .btn-group > span.btn').click()
 			}, 1000);
 		});
 		//-->
@@ -402,7 +406,7 @@ def renderStyles():
 			}
 			.zmi .debug_info .code {
 				display:none;
-				background: #ffffffcc;
+				background: #ffffff;
 				color: black;
 				margin: 1.65rem;
 				padding: 1rem;
@@ -492,9 +496,6 @@ def renderStyles():
 			.zmi-translate-right {
 				background-color: aliceblue;
 			}
-			.form-group-cell.zmi-translate-right .control-label {
-				display:none
-			}	
 			.form-group-cell .control-label.mandatory::after {
 				content: " *";
 				color: red;
@@ -536,6 +537,11 @@ def renderStyles():
 				background-color: #ffeef0 !important;
 			}
 			/* Responsive adjustments */
+			@media (min-width: 1200px) {
+				.form-group-cell.zmi-translate-right .control-label {
+					display:none
+				}
+			}
 			@media (max-width: 1200px) {
 				.form-group-cell .col-sm-3 {
 					flex: 0 0 100%;
@@ -561,12 +567,12 @@ def renderScripts():
 				window.location.href = url.toString();
 			}
 			
-			// Update current language before form submission
+			// Update translate-language before form submission
 			$ZMI.registerReady(function() {
 				$('form.translate-forms').on('submit', function(e) {
 					// Get the selected translation language (lang2)
 					var lang2 = $('select[name="lang2"]').val();
-					$('#current_lang').val(lang2);
+					$('#translate_lang').val(lang2);
 				});
 				
 				// Disable fields in the left column (read-only reference)
@@ -597,4 +603,3 @@ def manage_tab_translate(self):
 	
 	response.setHeader('Content-Type', 'text/html;charset=utf-8')
 	return html
-

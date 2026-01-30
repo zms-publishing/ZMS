@@ -22,10 +22,7 @@ class manage_tab_translate:
 	id = "manage_tab_translate"
 
 	# Meta_types
-	meta_types = ["ZMSDocument"
-		,"ZMSFolder"
-		,"ZMS"
-		,"type(ZMSObject)"]
+	meta_types = ["*"]
 
 	# Name
 	name = "Translate"

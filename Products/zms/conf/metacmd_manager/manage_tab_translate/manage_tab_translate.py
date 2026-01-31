@@ -68,8 +68,8 @@ def renderHtml(zmscontext, request, SESSION, fmName='form0'):
 	html.append('<div class="translate_mode-toggle btn-group btn-group-sm float-right" role="group">')
 	edit_active = ' active' if translate_mode == 'edit' else ''
 	view_active = ' active' if translate_mode == 'view' else ''
-	html.append('<button type="button" title="View Mode: Rendered HTML in two languages side-by-side" class="btn btn-outline-secondary%s" onclick="switchViewMode(\'view\')"><i class="fas fa-columns"></i></button>' % view_active)
-	html.append('<button type="button" title="Edit Mode: Edit HTML-form of two languages side-by-side" class="btn btn-outline-secondary%s" onclick="switchViewMode(\'edit\')"><i class="far fa-edit"></i></button>' % edit_active)
+	html.append('<button type="button" title="View Mode: Rendered HTML in two languages side-by-side" class="btn btn-outline-secondary%s" onclick="switch_translate_mode(\'view\')"><i class="fas fa-columns"></i></button>' % view_active)
+	html.append('<button type="button" title="Edit Mode: Edit HTML-form of two languages side-by-side" class="btn btn-outline-secondary%s" onclick="switch_translate_mode(\'edit\')"><i class="far fa-edit"></i></button>' % edit_active)
 	html.append('</div>')
 
 	html.append('</legend>')
@@ -272,11 +272,7 @@ def renderViewMode(zmscontext, request):
 	# Render child nodes
 	for childNode in childNodes:
 		# Prepare translate URL for child node with edit mode
-		translate_url = '%s/manage_tab_translate?lang1=%s&lang2=%s&translate_mode=edit' % (
-			childNode.absolute_url(),
-			request.get('lang1'),
-			request.get('lang2')
-		)
+		translate_url = '%s/manage_tab_translate' % (childNode.absolute_url())
 		
 		# Check if node is inactive
 		inactive_class = ''
@@ -761,7 +757,7 @@ def renderScripts():
 				window.location.href = url.toString();
 			}
 
-			function switchViewMode(mode) {
+			function switch_translate_mode(mode) {
 				const url = new URL(window.location);
 				url.searchParams.set('translate_mode', mode);
 				window.location.href = url.toString();
@@ -837,15 +833,23 @@ def renderScripts():
 					});
 				});
 
+				// Add translate_mode parameter to icon#navbar-sitemap url
+				var $sitemapIcon = $('#navbar-sitemap');
+				var sitemapHref = $sitemapIcon.attr('href');
+				if (sitemapHref && !sitemapHref.includes('translate_mode')) {
+					sitemapHref += (sitemapHref.includes('?') ? '&' : '?') + 'lang1=' + lang1 + '&lang2=' + lang2 + '&translate_mode=' + viewMode;
+					$sitemapIcon.attr('href', sitemapHref);
+				}
+
 				// Handle clickable row to switch to edit mode or navigate to child node
 				$('.clickable-row').on('click', function(e) {
 					var url = $(this).data('url');
 					if (url) {
 						// Navigate to child node's translate tab in edit mode
-						window.location.href = url;
+						window.location.href = url + (url.includes('?') ? '&' : '?') + 'lang1=' + lang1 + '&lang2=' + lang2 + '&translate_mode=' + viewMode;
 					} else {
 						// Switch current node to edit mode
-						switchViewMode('edit');
+						switch_translate_mode('edit');
 					}
 				});
 			});

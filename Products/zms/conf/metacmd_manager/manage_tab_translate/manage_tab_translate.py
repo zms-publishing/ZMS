@@ -67,8 +67,8 @@ def renderHtml(zmscontext, request, SESSION, fmName='form0'):
 	html.append('<div class="view-mode-toggle btn-group btn-group-sm float-right" role="group">')
 	edit_active = ' active' if view_mode == 'edit' else ''
 	view_active = ' active' if view_mode == 'view' else ''
-	html.append('<button type="button" class="btn btn-outline-secondary%s" onclick="switchViewMode(\'view\')"><i class="fas fa-columns"></i></button>' % view_active)
-	html.append('<button type="button" class="btn btn-outline-secondary%s" onclick="switchViewMode(\'edit\')"><i class="far fa-edit"></i></button>' % edit_active)
+	html.append('<button type="button" title="View Mode: Rendered HTML in two languages side-by-side" class="btn btn-outline-secondary%s" onclick="switchViewMode(\'view\')"><i class="fas fa-columns"></i></button>' % view_active)
+	html.append('<button type="button" title="Edit Mode: Edit HTML-form of two languages side-by-side" class="btn btn-outline-secondary%s" onclick="switchViewMode(\'edit\')"><i class="far fa-edit"></i></button>' % edit_active)
 	html.append('</div>')
 
 	html.append('</legend>')

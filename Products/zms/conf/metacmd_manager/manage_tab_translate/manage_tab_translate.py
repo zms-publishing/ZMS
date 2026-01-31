@@ -31,9 +31,9 @@ def renderHtml(zmscontext, request, SESSION, fmName='form0'):
 	request.set('preview', 'preview')
 	request.set('fmName', fmName)
 	
-	# Get view mode (edit or view)
-	view_mode = request.get('view_mode', SESSION.get('view_mode', 'edit'))
-	SESSION.set('view_mode', view_mode)
+	# Get GUI mode for translation (edit or view)
+	translate_mode = request.get('translate_mode', SESSION.get('translate_mode', 'edit'))
+	SESSION.set('translate_mode', translate_mode)
 	
 	# Set language options
 	set_language_options(zmscontext, request, SESSION)
@@ -53,20 +53,21 @@ def renderHtml(zmscontext, request, SESSION, fmName='form0'):
 	html.append('<div class="d-inline-block">')
 	
 	# Create debug info tooltip content
-	debug_info = 'REQUEST lang1: %s | REQUEST lang2: %s | SESSION lang1: %s | SESSION lang2: %s' % (
+	debug_info = 'REQUEST.lang1: %s | REQUEST.lang2: %s | SESSION.lang1: %s | SESSION.lang2: %s | SESSION.translate_mode: %s' % (
 		request.get('lang1', ''),
 		request.get('lang2', ''),
 		SESSION.get('lang1', ''),
-		SESSION.get('lang2', '')
+		SESSION.get('lang2', ''),
+		SESSION.get('translate_mode', '')
 	)
 	
 	html.append('Translate Content of Node: <code style="font-size:100%%" data-toggle="tooltip" data-placement="bottom" title="%s">%s [%s]</code>'%(debug_info, zmscontext.meta_id, zmscontext.id))
 	html.append('</div>')
 
-	# View mode toggle buttons
-	html.append('<div class="view-mode-toggle btn-group btn-group-sm float-right" role="group">')
-	edit_active = ' active' if view_mode == 'edit' else ''
-	view_active = ' active' if view_mode == 'view' else ''
+	# Translate mode toggle buttons
+	html.append('<div class="translate_mode-toggle btn-group btn-group-sm float-right" role="group">')
+	edit_active = ' active' if translate_mode == 'edit' else ''
+	view_active = ' active' if translate_mode == 'view' else ''
 	html.append('<button type="button" title="View Mode: Rendered HTML in two languages side-by-side" class="btn btn-outline-secondary%s" onclick="switchViewMode(\'view\')"><i class="fas fa-columns"></i></button>' % view_active)
 	html.append('<button type="button" title="Edit Mode: Edit HTML-form of two languages side-by-side" class="btn btn-outline-secondary%s" onclick="switchViewMode(\'edit\')"><i class="far fa-edit"></i></button>' % edit_active)
 	html.append('</div>')
@@ -76,7 +77,7 @@ def renderHtml(zmscontext, request, SESSION, fmName='form0'):
 	html.append('<div id="manage_tab_translate_body" class="card-body p-0 m-0">')
 
 	# Render based on view mode
-	if view_mode == 'view':
+	if translate_mode == 'view':
 		html.append(renderViewMode(zmscontext, request))
 	else:
 		html.append(renderEditMode(zmscontext, request))
@@ -84,7 +85,7 @@ def renderHtml(zmscontext, request, SESSION, fmName='form0'):
 	html.append('</div>')
 	
 	# Save buttons (only in edit mode)
-	if view_mode == 'edit':
+	if translate_mode == 'edit':
 		html.append('''
 			<div class="controls save text-right p-3">
 				<button type="submit" name="btn" class="btn btn-primary" value="BTN_SAVE">%s</button>
@@ -243,7 +244,7 @@ def renderViewMode(zmscontext, request):
 		lang_req_key = 'lang1' if si == 'left' else 'lang2'
 		notranslate_class = 'notranslate' if si == 'left' else 'translate'
 		
-		html.append('<td class="zmi-translate-%s %s view-mode-cell" width="50%%">' % (si, notranslate_class))
+		html.append('<td class="zmi-translate-%s %s translate_mode-cell" width="50%%">' % (si, notranslate_class))
 		
 		# Set language for content rendering
 		request.set('lang', request.get(lang_req_key))
@@ -271,7 +272,7 @@ def renderViewMode(zmscontext, request):
 	# Render child nodes
 	for childNode in childNodes:
 		# Prepare translate URL for child node with edit mode
-		translate_url = '%s/manage_tab_translate?lang1=%s&lang2=%s&view_mode=edit' % (
+		translate_url = '%s/manage_tab_translate?lang1=%s&lang2=%s&translate_mode=edit' % (
 			childNode.absolute_url(),
 			request.get('lang1'),
 			request.get('lang2')
@@ -294,7 +295,7 @@ def renderViewMode(zmscontext, request):
 			
 			request.set('lang', request.get(lang_req_key + '_bk'))
 			
-			html.append('<td class="zmi-translate-%s %s view-mode-cell">' % (si, notranslate_class))
+			html.append('<td class="zmi-translate-%s %s translate_mode-cell">' % (si, notranslate_class))
 			try:
 				html.append('<div class="zmiRenderShort" id="%s_%s">%s</div>' % (childNode.id, request.get('lang'), childNode.renderShort(request)))
 			except:
@@ -493,19 +494,19 @@ def renderStyles():
 				padding-bottom: 0 !important;
 			}
 			/* View mode toggle */
-			.view-mode-toggle {
+			.translate_mode-toggle {
 				margin: -0.36rem -1.26rem;
 			}
-			.view-mode-toggle .btn {
+			.translate_mode-toggle .btn {
 				border-radius: 0 !important;
 				border-color: transparent !important;
 				background: transparent !important;
 			}
-			.view-mode-toggle .btn.active {
+			.translate_mode-toggle .btn.active {
 				border-radius: 0 !important;
 				background-color: #607D8B !important;
 			}
-			.view-mode-toggle .btn:hover {
+			.translate_mode-toggle .btn:hover {
 				background-color: #2196F3 !important;
 			}
 			
@@ -513,7 +514,7 @@ def renderStyles():
 			.content-view-table {
 				border-collapse: collapse;
 			}
-			.content-view-table .view-mode-cell {
+			.content-view-table .translate_mode-cell {
 				padding: 4px;
 				vertical-align: top;
 			}
@@ -535,8 +536,8 @@ def renderStyles():
 				opacity: 0.7;
 			}
 			/* Disable links and interactive elements in view mode cells */
-			.view-mode-cell a,
-			.view-mode-cell button:not(.lang):not([onclick*="switchLanguage"]) {
+			.translate_mode-cell a,
+			.translate_mode-cell button:not(.lang):not([onclick*="switchLanguage"]) {
 				pointer-events: none;
 				cursor: default;
 			}
@@ -762,7 +763,7 @@ def renderScripts():
 
 			function switchViewMode(mode) {
 				const url = new URL(window.location);
-				url.searchParams.set('view_mode', mode);
+				url.searchParams.set('translate_mode', mode);
 				window.location.href = url.toString();
 			}
 
@@ -790,7 +791,7 @@ def renderScripts():
 				var urlParams = new URLSearchParams(window.location.search);
 				var lang1 = urlParams.get('lang1') || $('select[name="lang1"]').val();
 				var lang2 = urlParams.get('lang2') || $('select[name="lang2"]').val();
-				var viewMode = urlParams.get('view_mode') || 'edit';
+				var viewMode = urlParams.get('translate_mode') || 'edit';
 				
 				$('ol.breadcrumb li a').each(function() {
 					var $link = $(this);
@@ -807,7 +808,7 @@ def renderScripts():
 					if (href && !href.includes('manage_tab_translate')) {
 						// Replace manage_main or any other action with manage_tab_translate
 						var newHref = href.replace(/\/manage(_main)?(\?.*)?$/, '/manage_tab_translate');
-						newHref += '?lang1=' + lang1 + '&lang2=' + lang2 + '&view_mode=' + viewMode;
+						newHref += '?lang1=' + lang1 + '&lang2=' + lang2 + '&translate_mode=' + viewMode;
 						$link.attr('href', newHref);
 					}
 					

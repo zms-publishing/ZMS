@@ -9,16 +9,27 @@ function zmiSelectObject(sender) {
 	let title = $sender.attr("data-page-titlealt");
 	let href = $sender.attr("href");
 	let lang = getZMILang();
-	// Same origin?
-	if (href.startsWith(origin) || href.startsWith('/')) {
-		// Change location in manage_main-frame with htmx: https://htmx.org/api/#ajax
-		window.parent.manage_main.htmx.ajax("GET", href + "/manage_main?lang=" + lang, 'body')
+	// Check for translation mode
+	let translate_mode = $("body").attr('data-translate_mode');
+	let lang1 = $("body").attr('data-translate_lang1');
+	let lang2 = $("body").attr('data-translate_lang2');
+	if (translate_mode) {
+		// Stick in tanslation tab and create URL like 
+		// ./manage_executeMetacmd?lang=ger&id=manage_tab_translate&lang1=ger&lang2=eng&translate_mode=view
+		href += '/manage_executeMetacmd?lang=' + lang + '&id=manage_tab_translate&lang1=' + lang1 + '&lang2=' + lang2 + '&translate_mode=view';
+		window.parent.manage_main.location.href = href;
 	} else {
-		// Open new home in new tab
-		window.open(href + "/manage?lang=" + lang + "&dtpref_sitemap=1", "_blank").focus();
+		if (href.startsWith(origin) || href.startsWith('/')) {
+			// Change location in manage_main-frame with htmx: https://htmx.org/api/#ajax
+			window.parent.manage_main.htmx.ajax("GET", href + "/manage_main?lang=" + lang, 'body')
+		} else {
+			// Open new home in new tab
+			window.open(href + "/manage?lang=" + lang + "&dtpref_sitemap=1", "_blank").focus();
+		}
 	}
 	return false;
 }
+
 function zmiRefresh() {
 	var href = $ZMI.getPhysicalPath();
 	try {

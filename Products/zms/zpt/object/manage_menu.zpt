@@ -4,6 +4,9 @@
 <body tal:attributes="
 	data-root python:here.getRootElement().getHome().id;
 	data-client python:here.getHome().id;
+	data-translate_mode python:request.get('translate_mode',None);
+	data-translate_lang1 python:request.get('lang1',None);
+	data-translate_lang2 python:request.get('lang2',None);
 	id python:'zmsid_%s'%(here.id);
 	class python:here.zmi_body_class(id='manage-menu')">
 <header class="navbar navbar-nav navbar-expand navbar-dark flex-row bd-navbar">

@@ -8,58 +8,32 @@
 ##title=*** DO NOT DELETE OR MODIFY ***
 ##
 
+
 #################################################
-# Version 6.0.0, Refactored from DTML to Python
-# Original DTML version converted to External Python Method
-# Date: 2026-01-29
+# Helper Functions
 #################################################
+# 1. renderHtml
+# 2. renderEditMode
+# 3. renderViewMode
+# 4. renderGoogleTranslate
+# 5. renderStyles
+# 6. renderScripts
+# 7. set_language_options
 
-
-def set_language_options(zmscontext, request, SESSION):
-	"""Set language options in session and request"""
-	
-	# Set request defaults
-	request.set('lang', 'ger')
-	request.set('preview', 'preview')
-	
-	# PARAMETERS LANG-1
-	coverage_delimiter = zmscontext.getDCCoverage(request).split('.')[0]
-	lang1_options = zmscontext.getLangTree(zmscontext.getDCCoverage(request)[len(coverage_delimiter)+1:])
-	
-	if SESSION.get('lang1', '') == '':
-		SESSION.set('lang1', request.get('lang1', lang1_options[0][0]))
-		request.set('lang1', SESSION.get('lang1'))
-	elif request.get('lang1', '') == '':
-		request.set('lang1', SESSION.get('lang1'))
-	else:
-		SESSION.set('lang1', request.get('lang1'))
-	
-	request.set('lang1_options', lang1_options)
-	request.set('lang1_bk', request.get('lang1'))
-	
-	# PARAMETERS LANG-2
-	lang2_options = zmscontext.getLangTree(zmscontext.getDCCoverage(request)[len(coverage_delimiter)+1:])[1:]
-	
-	if SESSION.get('lang2', '') == '':
-		SESSION.set('lang2', request.get('lang2', lang2_options[0][0]))
-		request.set('lang2', SESSION.get('lang2'))
-	elif request.get('lang2', '') == '':
-		request.set('lang2', SESSION.get('lang2'))
-	else:
-		SESSION.set('lang2', request.get('lang2'))
-	
-	request.set('lang2_options', lang2_options)
-	request.set('lang2_bk', request.get('lang2'))
-
-
-
+# ----------------------------------------
+# Basic HTML rendering function
+# ----------------------------------------
 def renderHtml(zmscontext, request, SESSION, fmName='form0'):
-	"""Main HTML rendering function for the translation interface"""
+	"""Basic HTML rendering function for the translation interface"""
 	
 	# Set request defaults
 	request.set('lang', 'ger')
 	request.set('preview', 'preview')
 	request.set('fmName', fmName)
+	
+	# Get view mode (edit or view)
+	view_mode = request.get('view_mode', SESSION.get('view_mode', 'edit'))
+	SESSION.set('view_mode', view_mode)
 	
 	# Set language options
 	set_language_options(zmscontext, request, SESSION)
@@ -76,27 +50,76 @@ def renderHtml(zmscontext, request, SESSION, fmName='form0'):
 	html.append('<input type="hidden" name="preview" value="preview"/>')
 	html.append('<input type="hidden" id="translate_lang" name="lang" value="%s"/>' % request.get('lang2'))
 	html.append('<legend>')
-	html.append('<div>Translate Content of Node: <code style="font-size:100%%">%s [%s]</code></div>'%(zmscontext.meta_id, zmscontext.id))
+	html.append('<div class="d-inline-block">')
+	html.append('Translate Content of Node: <code style="font-size:100%%">%s [%s]</code>'%(zmscontext.meta_id, zmscontext.id))
+	# html.append('''
+	# 	<div class="debug_info" title="DEBUG INFO">
+	# 		<i class="fas fa-flag"></i>
+	# 		<div class="code">
+	# 			REQUEST lang1: %s<br />
+	# 			REQUEST lang2: %s<br />
+	# 			SESSION lang1: %s<br />
+	# 			SESSION lang2: %s<br />
+	# 		</div>
+	# 	</div>''' % (
+	# 	request.get('lang1', ''),
+	# 	request.get('lang2', ''),
+	# 	SESSION.get('lang1', ''),
+	# 	SESSION.get('lang2', '')
+	# ))
+	html.append('</div>')
 
-	# Debug info
-	html.append('''
-		<div class="debug_info" title="DEBUG INFO">
-			<i class="fas fa-flag"></i>
-			<div class="code">
-				REQUEST lang1: %s<br />
-				REQUEST lang2: %s<br />
-				SESSION lang1: %s<br />
-				SESSION lang2: %s<br />
-			</div>
-		</div>''' % (
-		request.get('lang1', ''),
-		request.get('lang2', ''),
-		SESSION.get('lang1', ''),
-		SESSION.get('lang2', '')
-	))
+	# View mode toggle buttons
+	html.append('<div class="view-mode-toggle btn-group btn-group-sm float-right" role="group">')
+	edit_active = ' active' if view_mode == 'edit' else ''
+	view_active = ' active' if view_mode == 'view' else ''
+	html.append('<button type="button" class="btn btn-outline-secondary%s" onclick="switchViewMode(\'view\')"><i class="fas fa-columns"></i></button>' % view_active)
+	html.append('<button type="button" class="btn btn-outline-secondary%s" onclick="switchViewMode(\'edit\')"><i class="far fa-edit"></i></button>' % edit_active)
+	html.append('</div>')
+
 	html.append('</legend>')
 
 	html.append('<div id="manage_tab_translate_body" class="card-body p-0 m-0">')
+
+	# Render based on view mode
+	if view_mode == 'view':
+		html.append(renderViewMode(zmscontext, request))
+	else:
+		html.append(renderEditMode(zmscontext, request))
+	
+	html.append('</div>')
+	
+	# Save buttons (only in edit mode)
+	if view_mode == 'edit':
+		html.append('''
+			<div class="controls save text-right p-3">
+				<button type="submit" name="btn" class="btn btn-primary" value="BTN_SAVE">%s</button>
+				<button type="button" class="btn btn-secondary" onclick="window.location.reload();" value="BTN_CANCEL">%s</button>
+			</div>'''%(zmscontext.getZMILangStr('BTN_SAVE'), zmscontext.getZMILangStr('BTN_CANCEL')))
+	
+	html.append('</form>')
+	html.append('</div>')
+	
+	# Google Translate Element
+	html.append(renderGoogleTranslate())
+	
+	# Add styles and scripts
+	html.append(renderStyles())
+	html.append(renderScripts())
+	
+	html.append('</body>')
+	html.append('</html>')
+	
+	return '\n'.join(html)
+
+
+# ----------------------------------------
+# Render edit mode with form fields
+# ----------------------------------------
+def renderEditMode(zmscontext, request):
+	"""Render edit mode with form fields"""
+	html = []
+	
 	# Language selector header
 	html.append('<table class="language-selector-header"><tr class="notranslate">')
 	for si in ['left', 'right']:
@@ -117,7 +140,7 @@ def renderHtml(zmscontext, request, SESSION, fmName='form0'):
 		# Add translate button on right column
 		if si == 'right':
 			html.append('''<button type="button" 
-				class="btn btn-sm btn-danger form-control-sm w-auto m-1 float-right" 
+				class="btn btn-sm btn-success form-control-sm w-auto m-1" 
 				onclick="triggerAutoTranslate()" 
 				title="Auto-translate from %s to %s">Auto-Translate</button>''' % (
 					request.get('lang1'), 
@@ -181,29 +204,130 @@ def renderHtml(zmscontext, request, SESSION, fmName='form0'):
 	
 	html.append('</table>')
 	
-	# Save buttons
-	html.append('''
-		<div class="controls save text-right p-3">
-			<button type="submit" name="btn" class="btn btn-primary" value="Change">Save Translation</button>
-			<button type="button" class="btn btn-secondary" onclick="window.location.reload();">Cancel</button>
-		</div>''')
+	return '\n'.join(html)
+
+# ----------------------------------------
+# Render view mode with rendered content
+# ----------------------------------------
+def renderViewMode(zmscontext, request):
+	"""Render view mode with rendered content side-by-side"""
+	html = []
 	
-	html.append('</form>')
-	html.append('</div>')
+	# Language selector header
+	html.append('<table class="language-selector-header"><tr class="notranslate">')
+	for si in ['left', 'right']:
+		lang_req_key = 'lang1' if si == 'left' else 'lang2'
+		
+		html.append('<td class="lang-select-cell zmi-translate-%s" width="50%%">' %(si))
+		
+		# Language selector
+		lang_options_html = []
+		for opt in request.get(lang_req_key + '_options'):
+			selected = ' selected="selected"' if opt[0] == request.get(lang_req_key) else ''
+			lang_options_html.append('<option value="%s"%s>%s</option>' % (opt[0], selected, opt[1]['label']))
+		
+		html.append('<select class="form-control form-control-sm d-inline w-auto lang" name="%s" onchange="switchLanguage(\'%s\', this.value);">' % (lang_req_key, lang_req_key))
+		html.extend(lang_options_html)
+		html.append('</select>')
+		html.append('</td>')
+	html.append('</tr></table>')
 	
-	# Google Translate Element
-	html.append(renderGoogleTranslate())
+	# Content table
+	html.append('<table class="content-view-table" width="100%">')
+	html.append('<tr valign="top">')
 	
-	# Add styles and scripts
-	html.append(renderStyles())
-	html.append(renderScripts())
+	# Get child nodes for display
+	try:
+		childNodes = [x for x in zmscontext.getObjChildren('e', request) if x.isPageElement()]
+	except:
+		childNodes = []
 	
-	html.append('</body>')
-	html.append('</html>')
+	# Render left and right columns (current node)
+	for si in ['left', 'right']:
+		lang_req_key = 'lang1' if si == 'left' else 'lang2'
+		notranslate_class = 'notranslate' if si == 'left' else 'translate'
+		
+		translate_url = '%s/manage_tab_translate?lang1=%s&lang2=%s' % (
+			zmscontext.absolute_url(),
+			request.get('lang1'),
+			request.get('lang2')
+		)
+		
+		html.append('<td class="zmi-translate-%s %s view-mode-cell" width="50%%">' % (si, notranslate_class))
+		
+		# Set language for content rendering
+		request.set('lang', request.get(lang_req_key))
+		
+		html.append('<a href="%s" target="_blank" class="content-block-link" title="%s">' % (translate_url, translate_url))
+		html.append('<div id="%s" class="zmi-translate-element">' % zmscontext.id)
+		html.append('<div class="zmi-translate-element-header notranslate">%s</div>' % zmscontext.id)
+		html.append('<div class="zmiRenderShort" id="contentEditable_%s_%s">' % (zmscontext.id, request.get('lang')))
+		
+		# Render content based on meta_id
+		try:
+			if zmscontext.meta_id not in ['ZMSDocument', 'ZMSFolder', 'ZMS']:
+				html.append(zmscontext.getBodyContent(request))
+			else:
+				html.append('<h1>%s</h1>' % zmscontext.getTitle(request))
+				desc = zmscontext.getDCDescription(request).replace('\n', '<br />')
+				html.append('<p class="description">%s</p>' % desc)
+		except Exception as e:
+			html.append('<p class="text-muted">No rendered content available</p>')
+		
+		html.append('</div>')
+		html.append('</div>')
+		html.append('</a>')
+		html.append('</td>')
+	
+	html.append('</tr>')
+	
+	# Render child nodes
+	for childNode in childNodes:
+		html.append('<tr valign="top">')
+		
+		for si in ['left', 'right']:
+			lang_req_key = 'lang1' if si == 'left' else 'lang2'
+			notranslate_class = 'notranslate' if si == 'left' else 'translate'
+			
+			request.set('lang', request.get(lang_req_key + '_bk'))
+			
+			inactive_style = ''
+			inactive_title = ''
+			try:
+				if not childNode.isActive(request):
+					inactive_style = ' style="background-color:#999"'
+					inactive_title = ' title="Inactive"'
+			except:
+				pass
+			
+			translate_url = '%s/manage_tab_translate?lang1=%s&lang2=%s' % (
+				childNode.absolute_url(),
+				request.get('lang1'),
+				request.get('lang2')
+			)
+			
+			html.append('<td class="article zmi-translate-%s %s view-mode-cell"%s>' % (si, notranslate_class, inactive_style))
+			html.append('<a href="%s" target="_blank" class="content-block-link" title="%s"%s>' % (translate_url, translate_url, inactive_title))
+			html.append('<div id="%s_%s" class="zmi-translate-element">' % (str(childNode), childNode.id))
+			html.append('<div class="zmi-translate-element-header notranslate">%s</div>' % childNode.id)
+			try:
+				html.append('<div class="zmiRenderShort" id="contentEditable_%s_%s">%s</div>' % (childNode.id, request.get('lang'), childNode.renderShort(request)))
+			except:
+				html.append('<div class="zmiRenderShort" id="contentEditable_%s_%s"><p class="text-muted">Content not available</p></div>' % (childNode.id, request.get('lang')))
+			html.append('</div>')
+			html.append('</a>')
+			html.append('</td>')
+		
+		html.append('</tr>')
+	
+	html.append('</table>')
 	
 	return '\n'.join(html)
 
 
+# ----------------------------------------
+# Render Google Translate widget
+# ----------------------------------------
 def renderGoogleTranslate():
 	"""Render Google Translate widget HTML and JavaScript"""
 	return '''
@@ -375,11 +499,87 @@ def renderGoogleTranslate():
 		<!-- /Google Translate Element -->
 	'''
 
-
+# ----------------------------------------
+# Render CSS styles
+# ----------------------------------------
 def renderStyles():
 	"""Render CSS styles"""
 	return '''
 		<style>
+			.zmi #zmi-tab {
+				padding-bottom: 0 !important;
+			}
+			/* View mode toggle */
+			.view-mode-toggle {
+				margin: -0.36rem -1.26rem;
+			}
+			.view-mode-toggle .btn {
+				border-radius: 0 !important;
+				border-color: transparent !important;
+				background: transparent !important;
+			}
+			.view-mode-toggle .btn.active {
+				border-radius: 0 !important;
+				background-color: #607D8B !important;
+			}
+			.view-mode-toggle .btn:hover {
+				background-color: #2196F3 !important;
+			}
+			
+			/* View mode content table */
+			.content-view-table {
+				border-collapse: collapse;
+			}
+			.content-view-table .view-mode-cell {
+				padding: 0;
+				vertical-align: top;
+			}
+			.content-view-table .view-mode-cell.zmi-translate-left {
+				background-color: rgba(0, 255, 0, 0.10);
+				border: 1px solid darkgreen;
+			}
+			.content-view-table .view-mode-cell.zmi-translate-right {
+				background-color: rgba(255, 0, 0, 0.10);
+				border: 1px solid red;
+			}
+			
+			/* Clickable content blocks */
+			.content-block-link {
+				display: block;
+				padding: 4px;
+				text-decoration: none;
+				color: inherit;
+				transition: background-color 0.2s ease, box-shadow 0.2s ease;
+			}
+			.content-block-link:hover {
+				background-color: rgba(255, 255, 0, 0.15);
+				box-shadow: inset 0 0 0 2px rgba(0, 123, 255, 0.5);
+				cursor: pointer;
+			}
+			.content-block-link:focus {
+				outline: 2px solid #007bff;
+				outline-offset: -2px;
+			}
+			
+			/* Element header with ID */
+			.zmi-translate-element-header {
+				font-weight: bold;
+				padding: 0.25rem 0.5rem;
+				margin-bottom: 0.5rem;
+				background-color: rgba(0, 0, 0, 0.05);
+				border-left: 3px solid #007bff;
+				font-size: 0.9rem;
+				color: #007bff;
+			}
+			.zmiRenderShort {
+				margin-top: 1.5em;
+				padding: 0.5rem;
+			}
+			.zmi figure img {
+				max-width: 100%;
+				height: auto;
+			}
+			
 			.zmi header > nav {
 				opacity:0.75;
 			}
@@ -420,15 +620,21 @@ def renderStyles():
 			.language-selector-header {
 				width: 100%;
 				border-collapse: collapse;
-				margin:0;;
+				margin:0;
 				border-bottom: 1px solid #dee2e6;
 			}
 			.lang-select-cell {
 				padding: 0.5rem;
-				text-align: center;
+				text-align: left;
+			}
+			.lang-select-cell select.lang {
+				display: inline-block;
+				width: auto;
+				min-width: 9rem;
 			}
 			.lang-select-cell.zmi-translate-left {
 				border-right: 1px solid #dee2e6;
+				text-align: right;
 			}
 			.zmi-translate-element-id {
 				display: inline-block;
@@ -537,11 +743,12 @@ def renderStyles():
 				color:#999;
 			}
 			/* Google Translate Element */
-			#google_translate_element,
-			select.lang {
+			#google_translate_element{
 				float: right;
 				margin: 0.3em;
 			}
+
+			// Switch view mode
 			.skiptranslate iframe {
 				min-height: 2.7rem;
 				background: #fff;
@@ -569,6 +776,8 @@ def renderStyles():
 		</style>
 	'''
 
+# ----------------------------------------
+# Render JavaScript code
 
 def renderScripts():
 	"""Render JavaScript code"""
@@ -580,7 +789,13 @@ def renderScripts():
 				url.searchParams.set(langKey, langValue);
 				window.location.href = url.toString();
 			}
-			
+
+			function switchViewMode(mode) {
+				const url = new URL(window.location);
+				url.searchParams.set('view_mode', mode);
+				window.location.href = url.toString();
+			}
+
 			// Update translate-language before form submission
 			$ZMI.registerReady(function() {
 				$('form.translate-forms').on('submit', function(e) {
@@ -595,6 +810,46 @@ def renderScripts():
 			});
 		</script>
 	'''
+
+# ----------------------------------------
+# Set language options in session and request
+# ----------------------------------------
+def set_language_options(zmscontext, request, SESSION):
+	"""Set language options in session and request"""
+	
+	# Set request defaults
+	request.set('lang', 'ger')
+	request.set('preview', 'preview')
+	
+	# PARAMETERS LANG-1
+	coverage_delimiter = zmscontext.getDCCoverage(request).split('.')[0]
+	lang1_options = zmscontext.getLangTree(zmscontext.getDCCoverage(request)[len(coverage_delimiter)+1:])
+	
+	if SESSION.get('lang1', '') == '':
+		SESSION.set('lang1', request.get('lang1', lang1_options[0][0]))
+		request.set('lang1', SESSION.get('lang1'))
+	elif request.get('lang1', '') == '':
+		request.set('lang1', SESSION.get('lang1'))
+	else:
+		SESSION.set('lang1', request.get('lang1'))
+	
+	request.set('lang1_options', lang1_options)
+	request.set('lang1_bk', request.get('lang1'))
+	
+	# PARAMETERS LANG-2
+	lang2_options = zmscontext.getLangTree(zmscontext.getDCCoverage(request)[len(coverage_delimiter)+1:])[1:]
+	
+	if SESSION.get('lang2', '') == '':
+		SESSION.set('lang2', request.get('lang2', lang2_options[0][0]))
+		request.set('lang2', SESSION.get('lang2'))
+	elif request.get('lang2', '') == '':
+		request.set('lang2', SESSION.get('lang2'))
+	else:
+		SESSION.set('lang2', request.get('lang2'))
+	
+	request.set('lang2_options', lang2_options)
+	request.set('lang2_bk', request.get('lang2'))
+
 
 
 #################################################

@@ -51,22 +51,16 @@ def renderHtml(zmscontext, request, SESSION, fmName='form0'):
 	html.append('<input type="hidden" id="translate_lang" name="lang" value="%s"/>' % request.get('lang2'))
 	html.append('<legend>')
 	html.append('<div class="d-inline-block">')
-	html.append('Translate Content of Node: <code style="font-size:100%%">%s [%s]</code>'%(zmscontext.meta_id, zmscontext.id))
-	# html.append('''
-	# 	<div class="debug_info" title="DEBUG INFO">
-	# 		<i class="fas fa-flag"></i>
-	# 		<div class="code">
-	# 			REQUEST lang1: %s<br />
-	# 			REQUEST lang2: %s<br />
-	# 			SESSION lang1: %s<br />
-	# 			SESSION lang2: %s<br />
-	# 		</div>
-	# 	</div>''' % (
-	# 	request.get('lang1', ''),
-	# 	request.get('lang2', ''),
-	# 	SESSION.get('lang1', ''),
-	# 	SESSION.get('lang2', '')
-	# ))
+	
+	# Create debug info tooltip content
+	debug_info = 'REQUEST lang1: %s | REQUEST lang2: %s | SESSION lang1: %s | SESSION lang2: %s' % (
+		request.get('lang1', ''),
+		request.get('lang2', ''),
+		SESSION.get('lang1', ''),
+		SESSION.get('lang2', '')
+	)
+	
+	html.append('Translate Content of Node: <code style="font-size:100%%" data-toggle="tooltip" data-placement="bottom" title="%s">%s [%s]</code>'%(debug_info, zmscontext.meta_id, zmscontext.id))
 	html.append('</div>')
 
 	# View mode toggle buttons
@@ -234,7 +228,6 @@ def renderViewMode(zmscontext, request):
 	
 	# Content table
 	html.append('<table class="content-view-table" width="100%">')
-	html.append('<tr valign="top">')
 	
 	# Get child nodes for display
 	try:
@@ -242,26 +235,21 @@ def renderViewMode(zmscontext, request):
 	except:
 		childNodes = []
 	
+	# Render current node row
+	html.append('<tr class="clickable-row" title="Edit translation %s" valign="top">' % zmscontext.absolute_url())
+	
 	# Render left and right columns (current node)
 	for si in ['left', 'right']:
 		lang_req_key = 'lang1' if si == 'left' else 'lang2'
 		notranslate_class = 'notranslate' if si == 'left' else 'translate'
-		
-		translate_url = '%s/manage_tab_translate?lang1=%s&lang2=%s' % (
-			zmscontext.absolute_url(),
-			request.get('lang1'),
-			request.get('lang2')
-		)
 		
 		html.append('<td class="zmi-translate-%s %s view-mode-cell" width="50%%">' % (si, notranslate_class))
 		
 		# Set language for content rendering
 		request.set('lang', request.get(lang_req_key))
 		
-		html.append('<a href="%s" target="_blank" class="content-block-link" title="%s">' % (translate_url, translate_url))
 		html.append('<div id="%s" class="zmi-translate-element">' % zmscontext.id)
-		html.append('<div class="zmi-translate-element-header notranslate">%s</div>' % zmscontext.id)
-		html.append('<div class="zmiRenderShort" id="contentEditable_%s_%s">' % (zmscontext.id, request.get('lang')))
+		html.append('<div class="zmiRenderShort" id="%s_%s">' % (zmscontext.id, request.get('lang')))
 		
 		# Render content based on meta_id
 		try:
@@ -276,14 +264,29 @@ def renderViewMode(zmscontext, request):
 		
 		html.append('</div>')
 		html.append('</div>')
-		html.append('</a>')
 		html.append('</td>')
 	
 	html.append('</tr>')
 	
 	# Render child nodes
 	for childNode in childNodes:
-		html.append('<tr valign="top">')
+		# Prepare translate URL for child node with edit mode
+		translate_url = '%s/manage_tab_translate?lang1=%s&lang2=%s&view_mode=edit' % (
+			childNode.absolute_url(),
+			request.get('lang1'),
+			request.get('lang2')
+		)
+		
+		# Check if node is inactive
+		inactive_class = ''
+		try:
+			request.set('lang', request.get('lang1_bk'))
+			if not childNode.isActive(request):
+				inactive_class = ' inactive-node'
+		except:
+			pass
+		
+		html.append('<tr class="clickable-row%s" data-url="%s" title="Edit translation %s" valign="top">' % (inactive_class, translate_url, childNode.absolute_url()))
 		
 		for si in ['left', 'right']:
 			lang_req_key = 'lang1' if si == 'left' else 'lang2'
@@ -291,31 +294,11 @@ def renderViewMode(zmscontext, request):
 			
 			request.set('lang', request.get(lang_req_key + '_bk'))
 			
-			inactive_style = ''
-			inactive_title = ''
+			html.append('<td class="zmi-translate-%s %s view-mode-cell">' % (si, notranslate_class))
 			try:
-				if not childNode.isActive(request):
-					inactive_style = ' style="background-color:#999"'
-					inactive_title = ' title="Inactive"'
+				html.append('<div class="zmiRenderShort" id="%s_%s">%s</div>' % (childNode.id, request.get('lang'), childNode.renderShort(request)))
 			except:
-				pass
-			
-			translate_url = '%s/manage_tab_translate?lang1=%s&lang2=%s' % (
-				childNode.absolute_url(),
-				request.get('lang1'),
-				request.get('lang2')
-			)
-			
-			html.append('<td class="article zmi-translate-%s %s view-mode-cell"%s>' % (si, notranslate_class, inactive_style))
-			html.append('<a href="%s" target="_blank" class="content-block-link" title="%s"%s>' % (translate_url, translate_url, inactive_title))
-			html.append('<div id="%s_%s" class="zmi-translate-element">' % (str(childNode), childNode.id))
-			html.append('<div class="zmi-translate-element-header notranslate">%s</div>' % childNode.id)
-			try:
-				html.append('<div class="zmiRenderShort" id="contentEditable_%s_%s">%s</div>' % (childNode.id, request.get('lang'), childNode.renderShort(request)))
-			except:
-				html.append('<div class="zmiRenderShort" id="contentEditable_%s_%s"><p class="text-muted">Content not available</p></div>' % (childNode.id, request.get('lang')))
-			html.append('</div>')
-			html.append('</a>')
+				html.append('<div class="zmiRenderShort" id="%s_%s"><p class="text-muted">Content not available</p></div>' % (childNode.id, request.get('lang')))
 			html.append('</td>')
 		
 		html.append('</tr>')
@@ -531,46 +514,34 @@ def renderStyles():
 				border-collapse: collapse;
 			}
 			.content-view-table .view-mode-cell {
-				padding: 0;
+				padding: 4px;
 				vertical-align: top;
 			}
-			.content-view-table .view-mode-cell.zmi-translate-left {
-				background-color: rgba(0, 255, 0, 0.10);
-				border: 1px solid darkgreen;
-			}
-			.content-view-table .view-mode-cell.zmi-translate-right {
-				background-color: rgba(255, 0, 0, 0.10);
-				border: 1px solid red;
-			}
 			
-			/* Clickable content blocks */
-			.content-block-link {
-				display: block;
-				padding: 4px;
-				text-decoration: none;
-				color: inherit;
+			/* Clickable rows */
+			.clickable-row {
+				cursor: pointer;
 				transition: background-color 0.2s ease, box-shadow 0.2s ease;
 			}
-			.content-block-link:hover {
-				background-color: rgba(255, 255, 0, 0.15);
+			.clickable-row:hover {
+				background-color: #d1e5f6;
 				box-shadow: inset 0 0 0 2px rgba(0, 123, 255, 0.5);
-				cursor: pointer;
 			}
-			.content-block-link:focus {
-				outline: 2px solid #007bff;
-				outline-offset: -2px;
+			.clickable-row:hover td {
+				background-color: transparent !important;
 			}
-			
-			/* Element header with ID */
-			.zmi-translate-element-header {
-				font-weight: bold;
-				padding: 0.25rem 0.5rem;
-				margin-bottom: 0.5rem;
-				background-color: rgba(0, 0, 0, 0.05);
-				border-left: 3px solid #007bff;
-				font-size: 0.9rem;
-				color: #007bff;
+			.clickable-row.inactive-node {
+				background-color: #e9ecef;
+				opacity: 0.7;
 			}
+			/* Disable links and interactive elements in view mode cells */
+			.view-mode-cell a,
+			.view-mode-cell button:not(.lang):not([onclick*="switchLanguage"]) {
+				pointer-events: none;
+				cursor: default;
+			}
+
+			/* Rendered content */
 			.zmiRenderShort {
 				margin-top: 1.5em;
 				padding: 0.5rem;
@@ -579,7 +550,6 @@ def renderStyles():
 				max-width: 100%;
 				height: auto;
 			}
-			
 			.zmi header > nav {
 				opacity:0.75;
 			}
@@ -798,6 +768,9 @@ def renderScripts():
 
 			// Update translate-language before form submission
 			$ZMI.registerReady(function() {
+				// Initialize Bootstrap tooltips
+				$('[data-toggle="tooltip"]').tooltip();
+				
 				$('form.translate-forms').on('submit', function(e) {
 					// Get the selected translation language (lang2)
 					var lang2 = $('select[name="lang2"]').val();
@@ -807,6 +780,73 @@ def renderScripts():
 				// Disable fields in the left column (read-only reference)
 				$('.zmi-translate-left input, .zmi-translate-left textarea, .zmi-translate-left select').prop('disabled', true);
 				$('.zmi-translate-left input, .zmi-translate-left textarea, .zmi-translate-left select').css('background-color', '#f8f9fa');
+				
+				// Remove div.contentEditable container-elements to avoid linking into normal ZMI
+				$('div.contentEditable').each(function() {
+					$(this).replaceWith($(this).html());
+				});
+				
+				// Modify breadcrumb links to stay in translate tab
+				var urlParams = new URLSearchParams(window.location.search);
+				var lang1 = urlParams.get('lang1') || $('select[name="lang1"]').val();
+				var lang2 = urlParams.get('lang2') || $('select[name="lang2"]').val();
+				var viewMode = urlParams.get('view_mode') || 'edit';
+				
+				$('ol.breadcrumb li a').each(function() {
+					var $link = $(this);
+					var href = $link.attr('href');
+					
+					// Remove all htmx attributes to prevent htmx interception
+					$link.removeAttr('hx-get')
+						.removeAttr('hx-target')
+						.removeAttr('hx-swap')
+						.removeAttr('hx-push-url')
+						.removeAttr('hx-indicator')
+						.removeAttr('hx-boost');
+					
+					if (href && !href.includes('manage_tab_translate')) {
+						// Replace manage_main or any other action with manage_tab_translate
+						var newHref = href.replace(/\/manage(_main)?(\?.*)?$/, '/manage_tab_translate');
+						newHref += '?lang1=' + lang1 + '&lang2=' + lang2 + '&view_mode=' + viewMode;
+						$link.attr('href', newHref);
+					}
+					
+					// Add click handler to ensure standard navigation
+					$link.off('click').on('click', function(e) {
+						e.stopPropagation();
+						window.location.href = $(this).attr('href');
+						return false;
+					});
+				});
+
+				// Remove htmx-reactions from all tabs and force them to do page reloads
+				$('nav#tabs ul.nav-tabs > li.nav-item > a').each(function() {
+					var $tabLink = $(this);
+					$tabLink.removeAttr('hx-get')
+						.removeAttr('hx-target')
+						.removeAttr('hx-trigger')
+						.removeAttr('hx-swap')
+						.removeAttr('hx-push-url')
+						.removeAttr('hx-indicator')
+						.removeAttr('hx-boost');
+					$tabLink.off('click').on('click', function(e) {
+						e.stopPropagation();
+						window.location.href = $(this).attr('href');
+						return false;
+					});
+				});
+
+				// Handle clickable row to switch to edit mode or navigate to child node
+				$('.clickable-row').on('click', function(e) {
+					var url = $(this).data('url');
+					if (url) {
+						// Navigate to child node's translate tab in edit mode
+						window.location.href = url;
+					} else {
+						// Switch current node to edit mode
+						switchViewMode('edit');
+					}
+				});
 			});
 		</script>
 	'''

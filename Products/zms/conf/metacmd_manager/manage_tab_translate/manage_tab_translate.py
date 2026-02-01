@@ -66,10 +66,10 @@ def renderHtml(zmscontext, request, SESSION, fmName='form0'):
 
 	# Translate mode toggle buttons
 	html.append('<div class="translate_mode-toggle btn-group btn-group-sm float-right" role="group">')
-	edit_active = ' active' if translate_mode == 'edit' else ''
-	view_active = ' active' if translate_mode == 'view' else ''
-	html.append('<button type="button" title="View Mode: Rendered HTML in two languages side-by-side" class="btn btn-outline-secondary%s" onclick="switch_translate_mode(\'view\')"><i class="fas fa-columns"></i></button>' % view_active)
-	html.append('<button type="button" title="Edit Mode: Edit HTML-form of two languages side-by-side" class="btn btn-outline-secondary%s" onclick="switch_translate_mode(\'edit\')"><i class="far fa-edit"></i></button>' % edit_active)
+	view_active = ' active" disabled="disabled' if translate_mode == 'view' else '" onclick="switch_translate_mode(\'view\')'
+	edit_active = ' active" disabled="disabled' if translate_mode == 'edit' else '" onclick="switch_translate_mode(\'edit\')'
+	html.append('<button type="button" title="View Mode: Rendered HTML in two languages side-by-side" class="btn btn-secondary py-0 px-3%s">VIEW</button>' % view_active)
+	html.append('<button type="button" title="Edit Mode: Edit HTML-form of two languages side-by-side" class="btn btn-secondary py-0 px-3%s">EDIT</button>' % edit_active)
 	html.append('</div>')
 
 	html.append('</legend>')
@@ -491,19 +491,15 @@ def renderStyles():
 			}
 			/* View mode toggle */
 			.translate_mode-toggle {
-				margin: -0.36rem -1.26rem;
-			}
-			.translate_mode-toggle .btn {
-				border-radius: 0 !important;
-				border-color: transparent !important;
-				background: transparent !important;
+				margin: -.1rem -.85rem 0 0;
 			}
 			.translate_mode-toggle .btn.active {
-				border-radius: 0 !important;
-				background-color: #607D8B !important;
+				cursor: default;
 			}
-			.translate_mode-toggle .btn:hover {
-				background-color: #2196F3 !important;
+			.translate_mode-toggle:hover:has(.btn:not(.active):hover) .btn.active {
+				background-color: white;
+				color:#545b62;
+				transition: 1s;
 			}
 			
 			/* View mode content table */

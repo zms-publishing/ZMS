@@ -5,10 +5,11 @@
 # docstring markup (epytext): http://epydoc.sourceforge.net/epytext.html
 # How to: https://github.com/zms-publishing/ZMS/pull/72
 # ##############
-~/vpy313/bin/pydoctor ./Products/zms/ \
+cd /home/zope/src/zms-publishing/ZMS5
+~/vpy313/bin/pydoctor Products/zms/ \
 	--project-name ZMS \
 	--project-url https://github.com/zms-publishing/ZMS/ \
-	--html-output=./Products/zms/apidocs \
+	--html-output=Products/zms/apidocs \
 	--make-html \
 	--html-viewsource-base https://github.com/zms-publishing/ZMS/tree/main \
-	--template-dir=./Products/zms/apidocs/theme
+	--template-dir=Products/zms/apidocs/theme

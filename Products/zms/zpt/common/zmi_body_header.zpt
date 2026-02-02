@@ -119,8 +119,8 @@
 				</div>
 			</li><!-- .dropdown -->
 			<tal:block tal:condition="python: here.getTrashcan().getId()!=here.getId()">
-				<tal:block
-				  tal:condition="python:len([x for x in zmscontext.getAbsoluteHome().objectValues() if x.id == 'zmi_body_header_custom'])"
+				<tal:block tal:on-error="structure string: <!-- ZMS-ERROR: zmi_body_header_custom -->"
+					tal:condition="python:len([x for x in zmscontext.getAbsoluteHome().objectValues() if x.id == 'zmi_body_header_custom'])"
 					metal:use-macro="container/zmi_body_header_custom/macros/menus">
 				</tal:block>
 				<li class="view_preview">

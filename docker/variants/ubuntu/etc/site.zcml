@@ -4,8 +4,6 @@
     xmlns:five="http://namespaces.zope.org/five">
 
   <include package="Zope2.App" />
-  <!-- Register the ZMS package for late Zope 5 if ZMS is installed in editable mode -->
-  <five:registerPackage package="Products.zms" initialize="Products.zms.initialize" />
 
   <!-- Load the meta -->
   <include files="package-includes/*-meta.zcml" />

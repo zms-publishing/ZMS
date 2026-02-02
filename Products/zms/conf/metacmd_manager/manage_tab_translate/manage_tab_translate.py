@@ -654,6 +654,9 @@ def renderStyles():
 				top: 0;
 				padding: .75rem;
 			}
+			.zmi .content-view-table .contentEditable > div[class*="col-"] {
+				max-width:100% !important;
+			}
 
 			/* Language Selector Header */
 			.language-selector-header {
@@ -698,7 +701,7 @@ def renderStyles():
 				position: absolute;
 				left: -9999px;
 			}
-			
+
 			/* Translation Forms */
 			.translate-forms {
 				margin: 0;
@@ -739,8 +742,11 @@ def renderStyles():
 			}
 			
 			/* Input Fields */
-			.input-group {
+			.form-group-cell .input-group {
 				flex-wrap: nowrap !important;
+			}
+			.form-group-cell >.input-group {
+				display:block;
 			}
 			.form-group-cell input[type="text"],
 			.form-group-cell textarea,

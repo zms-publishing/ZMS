@@ -79,7 +79,7 @@ RUN --mount=type=cache,uid=$UID,target=$PIP_CACHE_DIR,sharing=locked <<EOR
     fi
     $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --editable .[dev]
     $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --requirement requirements-full.txt
-    $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --upgrade git+https://github.com/sntl-projects/Products.zmsPluggableAuthService.git#egg=Products.zmsPluggableAuthService[nginx-sso]
+    $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --upgrade 'Products.zmsPluggableAuthService[nginx-sso] @ git+https://github.com/sntl-projects/Products.zmsPluggableAuthService.git'
     $PIP_INSTALL --cache-dir $PIP_CACHE_DIR ZEO
 EOR
 

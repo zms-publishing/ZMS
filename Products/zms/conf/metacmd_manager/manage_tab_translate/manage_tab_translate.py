@@ -66,10 +66,10 @@ def renderHtml(zmscontext, request, SESSION, fmName='form0'):
 
 	# Translate mode toggle buttons
 	html.append('<div class="translate_mode-toggle btn-group btn-group-sm float-right" role="group">')
-	view_active = ' active" disabled="disabled' if translate_mode == 'view' else '" onclick="switch_translate_mode(\'view\')'
-	edit_active = ' active" disabled="disabled' if translate_mode == 'edit' else '" onclick="switch_translate_mode(\'edit\')'
-	html.append('<button type="button" title="View Mode: Rendered HTML in two languages side-by-side" class="btn btn-secondary py-0 px-3%s">VIEW</button>' % view_active)
-	html.append('<button type="button" title="Edit Mode: Edit HTML-form of two languages side-by-side" class="btn btn-secondary py-0 px-3%s">EDIT</button>' % edit_active)
+	view_active = ' active' if translate_mode == 'view' else ''
+	edit_active = ' active' if translate_mode == 'edit' else ''
+	html.append('<button id="switch_view" type="button" title="View Mode: Rendered HTML in two languages side-by-side" class="btn py-0 px-3%s" onclick="switch_translate_mode(\'view\')">VIEW</button>' % view_active)
+	html.append('<button id="switch_edit" type="button" title="Edit Mode: Edit HTML-form of two languages side-by-side" class="btn py-0 px-3%s" onclick="switch_translate_mode(\'edit\')">EDIT</button>' % edit_active)
 	html.append('</div>')
 
 	html.append('</legend>')
@@ -489,19 +489,94 @@ def renderStyles():
 			.zmi #zmi-tab {
 				padding-bottom: 0 !important;
 			}
-			/* View mode toggle */
+
+
+			/* ################################################### */
+			/* Styles for the translate mode toggle buttons */
+			/* ################################################### */
+
 			.translate_mode-toggle {
+				--anim_duration: .35s;
+				--toggle_color: #354f67;
+				--btn_width: 5rem;
 				margin: -.1rem -.85rem 0 0;
+				background-color: white;
+			}
+			.translate_mode-toggle .btn {
+				width:var(--btn_width);
+				border:1px solid var(--toggle_color);
+			}
+			.translate_mode-toggle .btn.active {
+				color:white;
+				background-color:var(--toggle_color);
+			}
+			.translate_mode-toggle:hover .btn.active {
+				color:unset;
+				background-color:unset;
+				transition: var(--anim_duration);
+			}
+			.translate_mode-toggle .btn:before {
+				content:"\\00A0";
+				display:block;
+				background-color:var(--toggle_color);
+				z-index:-1;
+				border-radius:.2rem;
+				width:calc(var(--btn_width) - 1px);
+				position:absolute;
+				left:0;
+				top:-1px;
+				border:1px solid transparent;
+				padding:0;
+			}
+			.translate_mode-toggle:hover .btn:before {
+				display:none;
+			}
+			.translate_mode-toggle .btn:not(.active):hover {
+				color:white;
+				transition: var(--anim_duration);
+			}
+			.translate_mode-toggle #switch_view.btn:hover:before {
+				display:block;
+				animation:slide_view var(--anim_duration) ease-in-out 0s 1 forwards;
+			}
+			.translate_mode-toggle #switch_edit.btn:hover:before {
+				display:block;
+				animation:slide_edit var(--anim_duration) ease-in-out 0s 1 forwards;
+			}
+			@keyframes slide_edit {
+				0% {
+					transform:translateX(-100%);
+				}
+				100% {
+					transform:translateX(0%);
+					border-top-left-radius:0;
+					border-bottom-left-radius:0;
+				}
+			}
+			@keyframes slide_view {
+				0% {
+					transform:translateX(100%);
+				}
+				100% {
+					transform:translateX(0%);
+					border-top-right-radius:0;
+					border-bottom-right-radius:0;
+				}
 			}
 			.translate_mode-toggle .btn.active {
 				cursor: default;
+				opacity: 1;
 			}
 			.translate_mode-toggle:hover:has(.btn:not(.active):hover) .btn.active {
-				background-color: white;
 				color:#545b62;
-				transition: 1s;
+				transition: var(--anim_duration);
 			}
-			
+			.translate_mode-toggle:hover .btn:hover {
+				color:white;
+				transition: var(--anim_duration);
+			}
+			/* ################################################### */
+
 			/* View mode content table */
 			.content-view-table {
 				border-collapse: collapse;
@@ -579,6 +654,7 @@ def renderStyles():
 				top: 0;
 				padding: .75rem;
 			}
+
 			/* Language Selector Header */
 			.language-selector-header {
 				width: 100%;

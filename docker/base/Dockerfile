@@ -68,7 +68,7 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 ARG PIP_INSTALL="pip install --config-settings editable_mode=compat"
 
 COPY --chown=zope:zope Products/zms/version.txt Products/zms/version.txt
-COPY --chown=zope:zope requirements*.txt setup.py setup.cfg README.rst ./
+COPY --chown=zope:zope requirements*.txt pyproject.toml README.rst ./
 
 ENV PIP_CACHE_DIR=/home/zope/venv/cache
 RUN --mount=type=cache,uid=$UID,target=$PIP_CACHE_DIR,sharing=locked <<EOR

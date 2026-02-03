@@ -68,7 +68,7 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 ARG PIP_INSTALL="pip install --config-settings editable_mode=compat"
 
 COPY --chown=zope:zope Products/zms/version.txt Products/zms/version.txt
-COPY --chown=zope:zope requirements*.txt setup.py setup.cfg README.rst ./
+COPY --chown=zope:zope requirements*.txt pyproject.toml README.rst ./
 
 ENV PIP_CACHE_DIR=/home/zope/venv/cache
 RUN --mount=type=cache,uid=$UID,target=$PIP_CACHE_DIR,sharing=locked <<EOR
@@ -79,7 +79,7 @@ RUN --mount=type=cache,uid=$UID,target=$PIP_CACHE_DIR,sharing=locked <<EOR
     fi
     $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --editable .[dev]
     $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --requirement requirements-full.txt
-    $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --upgrade git+https://github.com/sntl-projects/Products.zmsPluggableAuthService.git#egg=Products.zmsPluggableAuthService[nginx-sso]
+    $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --upgrade 'Products.zmsPluggableAuthService[nginx-sso] @ git+https://github.com/sntl-projects/Products.zmsPluggableAuthService.git'
     $PIP_INSTALL --cache-dir $PIP_CACHE_DIR ZEO
 EOR
 

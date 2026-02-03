@@ -42,7 +42,7 @@ def renderHtml(zmscontext, request, SESSION, fmName='form0'):
 	html.append('<!DOCTYPE html>')
 	html.append('<html lang="en">')
 	html.append(zmscontext.zmi_html_head(zmscontext, request))
-	html.append('<body id="manage_translate" class="%s">'%(' '.join(['zmi',request['lang'],'cleanup_recursive', zmscontext.meta_id])))
+	html.append('<body id="manage_tab_translate" class="%s">'%(' '.join(['zmi',request['lang'],'manage_tab_translate', zmscontext.meta_id])))
 	html.append(zmscontext.zmi_body_header(zmscontext,request))
 	html.append('<div id="zmi-tab">')
 	html.append(zmscontext.zmi_breadcrumbs(zmscontext,request))
@@ -470,7 +470,9 @@ def renderGoogleTranslate():
 					$combo.trigger('change');
 				}
 				// Reset RTE fields to apply translation
-				$('.form-richtext-wysiwyg > .col-sm-12 > .btn-group > span.btn').click()
+				if ($('div[id*="zmiRichtextEditor"]:visible').length > 0) {
+					$('.form-richtext-wysiwyg > .col-sm-12 > .btn-group > span.btn').click()
+				}
 			}, 1000);
 		});
 		//-->
@@ -720,6 +722,11 @@ def renderStyles():
 			.form-group-cell.zmi-translate-left {
 				border-right: 1px solid #dee2e6;
 			}
+			.properties-table .zmi-translate-block > .form-group.row > div.col-sm-5.col-md-4.col-lg-3 {
+				/* input-type: date */
+				width:unset !important;
+				max-width:unset !important;
+			}
 
 			/* Form Groups */
 			.form-group-cell .form-group {
@@ -823,7 +830,7 @@ def renderStyles():
 
 # ----------------------------------------
 # Render JavaScript code
-
+# ----------------------------------------
 def renderScripts():
 	"""Render JavaScript code"""
 	return '''

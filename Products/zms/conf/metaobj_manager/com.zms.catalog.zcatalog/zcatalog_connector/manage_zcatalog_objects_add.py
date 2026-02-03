@@ -10,10 +10,27 @@ def catalog_object(zcatalog, adapter, node, data):
 	attr_ids = adapter._getAttrIds()
 	# Prepare object.
 	for attr_id in attr_ids:
+		# ------------------------------------------------
+		# Boosting (workaround): Since ZCatalog has not a 
+		# scriptable interface for scoring content here
+		# a pseudo-weighting is introduced by simple
+		# content repetition. As an example the attribute 
+		# content of 'attr_dc_subject' is multiplied by boost 
+		# factor. HINT: Apply this only to the attributes that 
+		# are not rendered as result content.
+		# ------------------------------------------------
+		wght = 1
+		if attr_id == 'attr_dc_subject':
+			wght = int(adapter._attrs.get('attr_dc_subject',{}).get('boost',1))
 		attr_name = 'zcat_index_%s'%attr_id
 		value = data.get(attr_id)
-		if value == 'None':
-			value = None
+		if value in ['None', None]:
+			value = ''
+		elif isinstance(value, str):
+			if wght != 1:
+				value = (value.strip() + ' ') * wght
+			else:
+				value = value.strip()
 		setattr(node, attr_name, value)
 	# (Re-)Catalog object.
 	path = node.getPath()

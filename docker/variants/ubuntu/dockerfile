@@ -25,6 +25,7 @@ RUN adduser --disabled-password zope && usermod -aG sudo zope
 USER zope
 WORKDIR /home/zope/
 
+ENV ZOPE_VERSION=5.13
 ENV VIRTUAL_ENV=/home/zope/venv
 ENV SHELL=/bin/bash
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
@@ -35,8 +36,9 @@ ENV LANGUAGE=en_US.UTF-8
 # Install ZMS and Zope in a Virtual Environment
 RUN python3 -m venv venv
 RUN pip install -U pip wheel setuptools
-RUN pip install -U -e git+https://github.com/zms-publishing/ZMS.git@main#egg=ZMS
+RUN pip install Zope[wsgi]==$ZOPE_VERSION -c https://zopefoundation.github.io/Zope/releases/$ZOPE_VERSION/constraints.txt
 RUN pip install -r https://raw.githubusercontent.com/zms-publishing/ZMS5/main/requirements-full.txt
+RUN pip install --config-settings editable_mode=compat --no-deps -e git+https://github.com/zms-publishing/ZMS.git@zms6a#egg=ZMS
 RUN pip install ZEO
 RUN pip install itsdangerous
 # RUN pip install debugpy

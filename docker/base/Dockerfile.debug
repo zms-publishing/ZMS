@@ -1,4 +1,5 @@
-FROM ghcr.io/zms-publishing/zms
+ARG BASE_IMAGE=ghcr.io/zms-publishing/zms
+FROM ${BASE_IMAGE}
 
 USER root
 RUN \

@@ -8,7 +8,7 @@ services:
     networks:
       - zms_network
     volumes:
-      - /home/zope/instance/zms4_gez/neon-entw/var/solr:/var/solr:rw
+      - /home/zope/instance/zms5_gez/neon/var/solr:/var/solr:rw
     working_dir: /opt/solr
     entrypoint: /opt/docker-solr/scripts/docker-entrypoint.sh 
     command: /opt/docker-solr/scripts/solr-foreground

@@ -141,7 +141,7 @@
         
 
         
-            <div class="itemName"><code><a href="#manage_copyObjects" class="internal-link" title="zms._copysupport.CopySupport.manage_copyObjects">manage_copy<wbr></wbr>Objects</a></code>
+            <div class="itemName"><code><a href="#manage_copyObject" class="internal-link" title="zms._copysupport.CopySupport.manage_copyObject">manage_copy<wbr></wbr>Object</a></code>
             </div>
         
 
@@ -151,7 +151,7 @@
         
 
         
-            <div class="itemName"><code><a href="#manage_cutObjects" class="internal-link" title="zms._copysupport.CopySupport.manage_cutObjects">manage_cut<wbr></wbr>Objects</a></code>
+            <div class="itemName"><code><a href="#manage_cutObject" class="internal-link" title="zms._copysupport.CopySupport.manage_cutObject">manage_cut<wbr></wbr>Object</a></code>
             </div>
         
 
@@ -162,6 +162,16 @@
 
         
             <div class="itemName"><code><a href="#manage_pasteObjs" class="internal-link" title="zms._copysupport.CopySupport.manage_pasteObjs">manage_paste<wbr></wbr>Objs</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_copy_blobs_if_other_mediadb" class="internal-link" title="zms._copysupport.CopySupport._copy_blobs_if_other_mediadb">_copy<wbr></wbr>_blobs<wbr></wbr>_if<wbr></wbr>_other<wbr></wbr>_mediadb</a></code>
             </div>
         
 
@@ -211,8 +221,21 @@
         
          
 
+        <div class="childrenKindTitle">Attributes</div>
+        <ul>
+    
+    <li class="">
         
-         
+        
+        
+
+        
+            <div class="itemName"><code><a href="#blobfields" class="internal-link" title="zms._copysupport.CopySupport.blobfields">blobfields</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
 
         
          
@@ -335,7 +358,7 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">CopySupport</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_copysupport.py#L106" class="sourceLink">(source)</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">CopySupport</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_copysupport.py#L150" class="sourceLink">(source)</a></code></p>
           <p><a href="classIndex.html#zms._copysupport.CopySupport">View In Hierarchy</a></p>
         </div>
 
@@ -355,18 +378,28 @@
   </tr><tr class="method">
     
     <td>Method</td>
-    <td><code><a href="#manage_copyObjects" class="internal-link" title="zms._copysupport.CopySupport.manage_copyObjects">manage_copy<wbr></wbr>Objects</a></code></td>
+    <td><code><a href="#manage_copyObject" class="internal-link" title="zms._copysupport.CopySupport.manage_copyObject">manage_copy<wbr></wbr>Object</a></code></td>
     <td>Put a reference to the objects named in ids in the clip board</td>
   </tr><tr class="method">
     
     <td>Method</td>
-    <td><code><a href="#manage_cutObjects" class="internal-link" title="zms._copysupport.CopySupport.manage_cutObjects">manage_cut<wbr></wbr>Objects</a></code></td>
+    <td><code><a href="#manage_cutObject" class="internal-link" title="zms._copysupport.CopySupport.manage_cutObject">manage_cut<wbr></wbr>Object</a></code></td>
     <td>Put a reference to the objects named in ids in the clip board</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_pasteObjs" class="internal-link" title="zms._copysupport.CopySupport.manage_pasteObjs">manage_paste<wbr></wbr>Objs</a></code></td>
     <td>CopySupport.manage_pasteObjs</td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#blobfields" class="internal-link" title="zms._copysupport.CopySupport.blobfields">blobfields</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_copy_blobs_if_other_mediadb" class="internal-link" title="zms._copysupport.CopySupport._copy_blobs_if_other_mediadb">_copy<wbr></wbr>_blobs<wbr></wbr>_if<wbr></wbr>_other<wbr></wbr>_mediadb</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
   </tr><tr class="method private">
     
     <td>Method</td>
@@ -408,7 +441,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">cp_get_obs</span><span class="function-signature">(self, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_copysupport.py#L154">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_copysupport.py#L198">
       
       (source)
     </a>
@@ -425,21 +458,21 @@
 </div><div class="basemethod">
   
   
-  <a name="zms._copysupport.CopySupport.manage_copyObjects">
+  <a name="zms._copysupport.CopySupport.manage_copyObject">
     
   </a>
-  <a name="manage_copyObjects">
+  <a name="manage_copyObject">
     
   </a>
   <div class="functionHeader">
     
     
-    <span class="py-keyword">def</span> <span class="py-defname">manage_copyObjects</span><span class="function-signature">(self, ids=None, REQUEST=None, RESPONSE=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_copysupport.py#L194">
+    <span class="py-keyword">def</span> <span class="py-defname">manage_copyObject</span><span class="function-signature">(self, ids=[], REQUEST=None, RESPONSE=None)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_copysupport.py#L295">
       
       (source)
     </a>
-    <a class="headerLink" href="#manage_copyObjects" title="zms._copysupport.CopySupport.manage_copyObjects">
+    <a class="headerLink" href="#manage_copyObject" title="zms._copysupport.CopySupport.manage_copyObject">
       
       
       ¶
@@ -452,21 +485,21 @@
 </div><div class="basemethod">
   
   
-  <a name="zms._copysupport.CopySupport.manage_cutObjects">
+  <a name="zms._copysupport.CopySupport.manage_cutObject">
     
   </a>
-  <a name="manage_cutObjects">
+  <a name="manage_cutObject">
     
   </a>
   <div class="functionHeader">
     
     
-    <span class="py-keyword">def</span> <span class="py-defname">manage_cutObjects</span><span class="function-signature">(self, ids=None, REQUEST=None, RESPONSE=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_copysupport.py#L207">
+    <span class="py-keyword">def</span> <span class="py-defname">manage_cutObject</span><span class="function-signature">(self, ids=[], REQUEST=None, RESPONSE=None)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_copysupport.py#L312">
       
       (source)
     </a>
-    <a class="headerLink" href="#manage_cutObjects" title="zms._copysupport.CopySupport.manage_cutObjects">
+    <a class="headerLink" href="#manage_cutObject" title="zms._copysupport.CopySupport.manage_cutObject">
       
       
       ¶
@@ -489,7 +522,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_pasteObjs</span><span class="function-signature">(self, REQUEST, RESPONSE=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_copysupport.py#L225">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_copysupport.py#L334">
       
       (source)
     </a>
@@ -502,6 +535,60 @@
   <div class="docstring functionBody">
     
     <div><p>CopySupport.manage_pasteObjs</p></div>
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="zms._copysupport.CopySupport.blobfields">
+    
+  </a>
+  <a name="blobfields">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">blobfields</span>: <code>list</code> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_copysupport.py#L248">
+      
+      (source)
+    </a>
+    <a class="headerLink" href="#blobfields" title="zms._copysupport.CopySupport.blobfields">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="zms._copysupport.CopySupport._copy_blobs_if_other_mediadb">
+    
+  </a>
+  <a name="_copy_blobs_if_other_mediadb">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">_copy_blobs_if_other_mediadb</span><span class="function-signature">(self, **kwargs)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_copysupport.py#L241">
+      
+      (source)
+    </a>
+    <a class="headerLink" href="#_copy_blobs_if_other_mediadb" title="zms._copysupport.CopySupport._copy_blobs_if_other_mediadb">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
   </div>
 </div><div class="basemethod private">
   
@@ -516,7 +603,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">_get_cb_copy_data</span><span class="function-signature">(self, cb_copy_data=None, REQUEST=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_copysupport.py#L111">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_copysupport.py#L155">
       
       (source)
     </a>
@@ -543,7 +630,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">_get_id</span><span class="function-signature">(self, id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_copysupport.py#L169">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_copysupport.py#L213">
       
       (source)
     </a>
@@ -570,7 +657,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">_get_obs</span><span class="function-signature">(self, cp)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_copysupport.py#L132">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_copysupport.py#L176">
       
       (source)
     </a>
@@ -597,7 +684,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">_set_sort_ids</span><span class="function-signature">(self, ids, op, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_copysupport.py#L180">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_copysupport.py#L224">
       
       (source)
     </a>

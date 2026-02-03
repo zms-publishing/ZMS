@@ -104,10 +104,10 @@ def getInternalLinkUrl(self, url, ob):
 # ----------------------------------------------------------------------------
 def getInlineRefs(text):
   l = []
-  p = '<a(.*?)>(.*?)<\\/a>'
+  p = r'<a(.*?)>(.*?)</a>'
   r = re.compile(p)
   for f in r.findall(str(text)):
-    d = dict(re.findall('\\s(.*?)="(.*?)"', f[0]))
+    d = dict(re.findall(r'\s(.*?)="(.*?)"', f[0]))
     if 'data-id' in d:
       l.append(d['data-id'])
   return l
@@ -425,13 +425,13 @@ class ZReferableItem(object):
   #  Validates internal links.
   # ----------------------------------------------------------------------------
   def validateInlineLinkObj(self, text):
-    if not int(self.getConfProperty('ZReferableItem.validateLinkObj', 1)): return text
+    if not bool(self.getConfProperty('ZReferableItem.validateInlineLinkObj', 1)): return text
     for pq in [('<a(.*?)>', 'href'), ('<img(.*?)>', 'src')]:
       p = pq[0]
       q = pq[1]
       r = re.compile(p)
       for f in r.findall(str(text)):
-        d = dict(re.findall('\\s(.*?)="(.*?)"', f))
+        d = dict(re.findall(r'\s(.*?)="(.*?)"', f))
         if 'data-id' in d:
           old = p.replace('(.*?)', f)
           url = d['data-id']
@@ -451,7 +451,7 @@ class ZReferableItem(object):
   #  Validates internal links.
   # ----------------------------------------------------------------------------
   def validateLinkObj(self, url):
-    if not int(self.getConfProperty('ZReferableItem.validateLinkObj', 1)): return url
+    if not bool(self.getConfProperty('ZReferableItem.validateLinkObj', 1)): return url
     if isInternalLink(url):
       if not url.startswith('{$__'):
         ild = getInternalLinkDict(self, url)

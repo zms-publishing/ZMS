@@ -58,16 +58,25 @@ if (typeof htmx != "undefined") {
 	});
 	// Listen for the htmx response error event
 	if (window.parent.manage_main && window.parent.manage_main.htmx) {
-		window.parent.manage_main.htmx.on('htmx:beforeSwap', (evt) => { 
-			if (evt.detail.xhr.status === 404) {
+		window.parent.manage_main.htmx.on('htmx:beforeSwap', (evt) => {
+			// Check for 400-type errors
+			if (evt.detail.xhr.status >= 400 && evt.detail.xhr.status < 500) {
+				let msgs = {
+					400: 'Bad Request !',
+					401: 'Unauthorized Access!',
+					403: 'Forbidden !',
+					404: 'Page not found !',
+					405: 'Method Not Allowed !',
+					408: 'Request Timeout !',
+				};
 				// Remove html body and wtrite error message
 				window.parent.manage_main.document.querySelector('body').innerHTML = `
 						<header class="navbar navbar-nav p-1" style="height:2.65rem;">
 							<div class="navbar-brand text-white">
-								404: Page not found!
+								Error ${evt.detail.xhr.status}: ${msgs[evt.detail.xhr.status]}
 							</div>
 						</header>`;
-			}
+			};
 		});
 	};
 	document.addEventListener('htmx:sendError', (evt) => {

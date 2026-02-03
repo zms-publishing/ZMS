@@ -25,10 +25,10 @@ When starting from scratch, the full sequence of commands to get a working check
     $ cd /path/where/the/virtualenv/should/be
     $ virtualenv zms_virtualenv
     $ source zms_virtualenv/bin/activate # on windows probably $ path/to/zms_virtualenv/bin/activate.bat
-    $ cd /path/to/zms3/repo/checkout
+    $ cd /path/to/zms/repo/checkout
     $ pip install -r requirements.txt
     $ pip install -r selenium_tests/requirements.txt
-    $ pip install -e . # equivalent to python setup.py develop
+    $ pip install --config-settings editable_mode=compat -e . # let ZMS run in editable mode
 
 ## Run them
 

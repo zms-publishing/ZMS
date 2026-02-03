@@ -131,8 +131,11 @@ $ZMI.registerReady(function(){
 			page_container_constructed = true;
 			// console.log('Page = .article-Class');
 		} else {
-			page.siblings().first().wrapInner('<div class="contentEditable zms-page" data-absolute-url="'+ page_href +'"></div>');
-			page_container_constructed = true;
+			const firstSibling = page.siblings().first();
+			if ( firstSibling.length == 1 && !firstSibling.hasClass('portalClientId')) {
+				firstSibling.wrapInner('<div class="contentEditable zms-page" data-absolute-url="'+ page_href +'"></div>');
+				page_container_constructed = true;
+			}
 		}
 		if (is_preview_ui) {
 			if ( page_container_constructed == false ) {

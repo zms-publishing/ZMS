@@ -45,7 +45,14 @@ class ZMSObjectSet:
 
 		record_meta_ids = {"default":""
 			,"id":"record_meta_ids"
-			,"keys":"##\nl = []\nrequest = context.REQUEST\nmetaobj_manager = context.getMetaobjManager()\nl = [metaobj_manager.getMetaobj(x) for x in metaobj_manager.getMetaobjIds()]\nl = [x for x in l if x['type'] in ['ZMSDocument','ZMSObject','ZMSRecordSet']]\nl = [(x['id'],('%s %s'%(context.display_icon(meta_id=x['id']),context.display_type(meta_id=x['id']))).replace('<','<!--').replace('>','-->')) for x in l]\nreturn l"
+			,"keys":["##"
+				,"l = []"
+				,"request = context.REQUEST"
+				,"metaobj_manager = context.getMetaobjManager()"
+				,"l = [metaobj_manager.getMetaobj(x) for x in metaobj_manager.getMetaobjIds()]"
+				,"l = [x for x in l if x['type'] in ['ZMSDocument','ZMSObject','ZMSRecordSet']]"
+				,"l = [(x['id'],('%s %s'%(context.display_icon(meta_id=x['id']),context.display_type(meta_id=x['id']))).replace('<','<!--').replace('>','-->')) for x in l]"
+				,"return l"]
 			,"mandatory":1
 			,"multilang":0
 			,"name":"Type(s)"

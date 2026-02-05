@@ -244,7 +244,7 @@ def renderViewMode(zmscontext, request):
 		lang_req_key = 'lang1' if si == 'left' else 'lang2'
 		notranslate_class = 'notranslate' if si == 'left' else 'translate'
 		
-		html.append('<td class="zmi-translate-%s %s translate_mode-cell" width="50%%">' % (si, notranslate_class))
+		html.append('<td class="form-group-cell zmi-translate-%s %s translate_mode-cell" width="50%%">' % (si, notranslate_class))
 		
 		# Set language for content rendering
 		request.set('lang', request.get(lang_req_key))
@@ -291,7 +291,7 @@ def renderViewMode(zmscontext, request):
 			
 			request.set('lang', request.get(lang_req_key + '_bk'))
 			
-			html.append('<td class="zmi-translate-%s %s translate_mode-cell">' % (si, notranslate_class))
+			html.append('<td class="form-group-cell zmi-translate-%s %s translate_mode-cell">' % (si, notranslate_class))
 			try:
 				html.append('<div class="zmiRenderShort" id="%s_%s">%s</div>' % (childNode.id, request.get('lang'), childNode.renderShort(request)))
 			except:
@@ -594,7 +594,7 @@ def renderStyles():
 				transition: background-color 0.2s ease, box-shadow 0.2s ease;
 			}
 			.clickable-row:hover {
-				background-color: #d1e5f6;
+				background-color: #d1e5f688;
 				box-shadow: inset 0 0 0 2px rgba(0, 123, 255, 0.5);
 			}
 			.clickable-row:hover td {

@@ -223,7 +223,10 @@ class ZMSObject(ZMSItem.ZMSItem,
       # Remove old context-values.
       for key in [x for x in REQUEST.keys() if x.startswith(prefix)]:
         standard.writeLog(self, "[set_request_context]: DEL "+key)
-        REQUEST.set(key, None)
+        try:
+          del REQUEST[key]
+        except KeyError:
+          pass
       # Set new context-values.
       for key in d:
         context = prefix+key

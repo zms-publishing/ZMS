@@ -567,9 +567,7 @@ class MyBlob(object):
         parent = self.aq_parent
         
         if not(parent.isVisible(REQUEST) and parent.getParentNode().isVisible(REQUEST)) and not REQUEST.get('preview') == 'preview':
-           # TODO: Complete the check for visibility and access permissions, 
-           # including handling of 'preview' mode and any custom access rules
-           # defined on the parent object.
+           # TODO: Implement more fine-grained access control and visibility checks based on the specific requirements of the application. This may include checking user roles, permissions, and other contextual factors to determine if the request should be allowed or denied.
            # Note: The current implementation only checks visibility and public access.
            # Return 404 Not Found.
            RESPONSE.setStatus(404)

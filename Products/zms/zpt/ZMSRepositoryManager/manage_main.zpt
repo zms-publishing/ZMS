@@ -140,6 +140,16 @@
 				</div>
 			</div><!-- .form-group -->
 			<div class="form-group row">
+				<label class="col-sm-2 control-label" title="Ignore system configuration file">
+					Ignore sys_conf
+				</label>
+				<div class="col-sm-10">
+					<span class="btn btn-default">
+						<input type="checkbox" name="ignore_sys_conf:int" value="1" tal:attributes="checked python:['','checked'][zmscontext.getConfProperty('ZMS.conf.ignore.sys_conf',0)!=0]" />
+					</span>
+				</div>
+			</div><!-- .form-group -->
+			<div class="form-group row">
 				<label class="col-sm-2"></label>
 				<div class="col-sm-10">
 					<button type="submit" name="btn" class="btn btn-primary" value="save">Save</button>

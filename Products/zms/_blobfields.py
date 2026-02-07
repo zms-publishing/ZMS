@@ -537,6 +537,97 @@ class MyBlob(object):
 
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    MyBlob._check_fine_grained_access:
+    
+    Helper method to perform fine-grained access control checks.
+    Checks user roles, language permissions, and contextual factors.
+    
+    @param parent: Parent ZMS object
+    @param REQUEST: HTTP request object
+    @return: Tuple (access_granted: bool, reason: str)
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    def _check_fine_grained_access(self, parent, REQUEST):
+      """
+      Perform fine-grained access control checks beyond basic visibility.
+      
+      This checks:
+      - User roles and permissions at the node level
+      - Language-based access restrictions
+      - Time-based access windows (attrActiveStart/attrActiveEnd)
+      - Security roles and custom restrictions
+      
+      @param parent: Parent ZMS object containing the blob
+      @param REQUEST: The HTTP request object
+      @return: Tuple (access_granted: bool, reason: str) where reason explains denial
+      """
+      try:
+        auth_user = REQUEST.get('AUTHENTICATED_USER')
+        
+        # Anonymous users: rely on public access check only
+        if auth_user is None or str(auth_user) == 'Anonymous User':
+          return (True, 'anonymous_user')
+        
+        # Check user roles at this node
+        try:
+          user_roles = parent.getUserRoles(auth_user, aq_parent=True)
+          
+          # ZMSAdministrator and Manager always have access
+          if 'ZMSAdministrator' in user_roles or 'Manager' in user_roles:
+            return (True, 'admin_access')
+          
+          # Check if user has any valid ZMS roles (Editor, Author, Subscriber)
+          valid_roles = ['ZMSEditor', 'ZMSAuthor', 'ZMSSubscriber']
+          if not any(role in user_roles for role in valid_roles):
+            return (False, 'insufficient_roles')
+        except:
+          # If role checking fails, continue to other checks
+          standard.writeBlock(parent, '[_check_fine_grained_access]: could not check user roles')
+        
+        # Check language-based access restrictions
+        try:
+          user_langs = parent.getUserLangs(auth_user, aq_parent=1)
+          request_lang = REQUEST.get('lang', parent.getPrimaryLanguage())
+          
+          # If user has language restrictions and request language is not in allowed list
+          if user_langs and '*' not in user_langs and request_lang not in user_langs:
+            return (False, 'language_restriction')
+        except:
+          # If language checking fails, continue to other checks
+          standard.writeBlock(parent, '[_check_fine_grained_access]: could not check language access')
+        
+        # Check time-based access windows (active start/end dates)
+        try:
+          active_start = parent.getUserAttr(auth_user, 'attrActiveStart', '')
+          active_end = parent.getUserAttr(auth_user, 'attrActiveEnd', '')
+          
+          if (active_start or active_end) and not standard.todayInRange(active_start, active_end):
+            return (False, 'outside_active_period')
+        except:
+          # If time-based checking fails, continue to other checks
+          standard.writeBlock(parent, '[_check_fine_grained_access]: could not check time-based access')
+        
+        # Check for restricted access on parent nodes
+        try:
+          nodelist = parent.breadcrumbs_obj_path()
+          for node in nodelist:
+            if hasattr(node, 'hasRestrictedAccess') and node.hasRestrictedAccess():
+              # User needs explicit permission for restricted content
+              if not node.hasAccess(REQUEST):
+                return (False, 'restricted_ancestor_node')
+        except:
+          # If ancestor checking fails, continue
+          standard.writeBlock(parent, '[_check_fine_grained_access]: could not check ancestor restrictions')
+        
+        # All fine-grained checks passed
+        return (True, 'fine_grained_checks_passed')
+        
+      except Exception as e:
+        # Log error but don't deny access due to checking errors
+        standard.writeError(parent, '[_check_fine_grained_access]: error during access check: %s' % str(e))
+        return (True, 'error_during_check')
+    
+    
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     MyBlob.__call__: 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def __bobo_traverse__(self, TraversalRequest, name):
@@ -567,13 +658,22 @@ class MyBlob(object):
         parent = self.aq_parent
         
         if not(parent.isVisible(REQUEST) and parent.getParentNode().isVisible(REQUEST)) and not REQUEST.get('preview') == 'preview':
-           # TODO: Implement more fine-grained access control and visibility checks based on the specific requirements of the application. This may include checking user roles, permissions, and other contextual factors to determine if the request should be allowed or denied.
-           # Note: The current implementation only checks visibility and public access.
-           # Return 404 Not Found.
+           # Return 404 Not Found if not visible
            RESPONSE.setStatus(404)
            raise zExceptions.NotFound()
 
+        # Basic access check: hasAccess or global public access grant
         access = (parent.hasAccess( REQUEST) or parent.getConfProperty( 'ZMS.blobfields.grant_public_access', 0) == 1)
+        
+        # Fine-grained access control: check user roles, permissions, language, and contextual factors
+        if access:
+          fine_grained_access, reason = self._check_fine_grained_access(parent, REQUEST)
+          if not fine_grained_access:
+            # Log access denial with reason for audit trail
+            auth_user = REQUEST.get('AUTHENTICATED_USER', 'Unknown')
+            standard.writeLog(parent, '[blob access denied]: user=%s, reason=%s, path=%s' % (
+              str(auth_user), reason, REQUEST.get('URL', 'unknown')))
+            access = False
         # Hook for custom access rules: return True/False, return 404 (Forbidden) if you want to perform redirect
         if access:
           # @deprecated

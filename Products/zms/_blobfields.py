@@ -579,7 +579,7 @@ class MyBlob(object):
           valid_roles = ['ZMSEditor', 'ZMSAuthor', 'ZMSSubscriber']
           if not any(role in user_roles for role in valid_roles):
             return (False, 'insufficient_roles')
-        except:
+        except Exception:
           # If role checking fails, continue to other checks
           standard.writeBlock(parent, '[_check_fine_grained_access]: could not check user roles')
         
@@ -591,7 +591,7 @@ class MyBlob(object):
           # If user has language restrictions and request language is not in allowed list
           if user_langs and '*' not in user_langs and request_lang not in user_langs:
             return (False, 'language_restriction')
-        except:
+        except Exception:
           # If language checking fails, continue to other checks
           standard.writeBlock(parent, '[_check_fine_grained_access]: could not check language access')
         
@@ -602,7 +602,7 @@ class MyBlob(object):
           
           if (active_start or active_end) and not standard.todayInRange(active_start, active_end):
             return (False, 'outside_active_period')
-        except:
+        except Exception:
           # If time-based checking fails, continue to other checks
           standard.writeBlock(parent, '[_check_fine_grained_access]: could not check time-based access')
         
@@ -614,7 +614,7 @@ class MyBlob(object):
               # User needs explicit permission for restricted content
               if not node.hasAccess(REQUEST):
                 return (False, 'restricted_ancestor_node')
-        except:
+        except Exception:
           # If ancestor checking fails, continue
           standard.writeBlock(parent, '[_check_fine_grained_access]: could not check ancestor restrictions')
         

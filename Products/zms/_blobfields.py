@@ -567,11 +567,40 @@ class MyBlob(object):
         parent = self.aq_parent
         
         if not(parent.isVisible(REQUEST) and parent.getParentNode().isVisible(REQUEST)) and not REQUEST.get('preview') == 'preview':
-           # TODO: Implement more fine-grained access control and visibility checks based on the specific requirements of the application. This may include checking user roles, permissions, and other contextual factors to determine if the request should be allowed or denied.
-           # Note: The current implementation only checks visibility and public access.
-           # Return 404 Not Found.
-           RESPONSE.setStatus(404)
-           raise zExceptions.NotFound()
+           # Fine-grained access control: Check additional contextual factors
+           # before returning 404. This allows authenticated users with appropriate
+           # roles to access non-visible content in certain contexts.
+           allow_access = False
+           
+           # Get authenticated user
+           auth_user = REQUEST.get('AUTHENTICATED_USER')
+           if auth_user is not None:
+             try:
+               # Check if user has privileged roles that should bypass visibility checks
+               user_roles = parent.getUserRoles(auth_user)
+               privileged_roles = ['ZMSAdministrator', 'ZMSEditor', 'Manager']
+               
+               # Allow access if user has any privileged role
+               if any(role in user_roles for role in privileged_roles):
+                 allow_access = True
+               
+               # Check language-specific access
+               if not allow_access:
+                 user_langs = parent.getUserLangs(auth_user)
+                 request_lang = REQUEST.get('lang', parent.getPrimaryLanguage())
+                 # Allow access if user has language access or wildcard access
+                 if '*' in user_langs or request_lang in user_langs:
+                   # User has language access, check if they have at least Author role
+                   if 'ZMSAuthor' in user_roles or 'ZMSSubscriber' in user_roles:
+                     allow_access = True
+             except:
+               # If role/permission check fails, fall through to deny access
+               pass
+           
+           # If no special access is granted, return 404 Not Found
+           if not allow_access:
+             RESPONSE.setStatus(404)
+             raise zExceptions.NotFound()
 
         access = (parent.hasAccess( REQUEST) or parent.getConfProperty( 'ZMS.blobfields.grant_public_access', 0) == 1)
         # Hook for custom access rules: return True/False, return 404 (Forbidden) if you want to perform redirect

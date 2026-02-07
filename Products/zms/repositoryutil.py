@@ -199,8 +199,6 @@ def localFiles(self, provider, ids=None):
   l = {}
   local = provider.provideRepository(ids)
   for id in local:
-    if bool(self.getConfProperty('ZMS.conf.ignore.sys_conf', False)) and id=='sys_conf':
-      continue
     o = local[id]
     acquired = int(o.get('acquired',0))
     filename = o.get('__filename__', [id, '__%s__.py'%['init','acquired'][acquired]])

@@ -545,13 +545,34 @@ class MyBlob(object):
 
     __call____roles__ = None
     def __call__(self, REQUEST=None, **kw):
-      """"""
+      """
+      Handle HTTP request for blob object (file/image).
+      
+      This method processes requests for blob objects, handling:
+      - Visibility and access permission checks
+      - HTTP caching headers (Last-Modified, If-Modified-Since, ETags)
+      - Range requests for partial content delivery
+      - Content-Type and Content-Disposition headers
+      - MediaDB file retrieval or ZODB data fallback
+      
+      @param REQUEST: The HTTP request object containing headers and parameters
+      @type REQUEST: ZPublisher.HTTPRequest or None
+      @param kw: Additional keyword arguments
+      @return: Blob data as bytes or empty string, or self if not an HTTP request
+      @rtype: bytes or str or MyBlob
+      """
       if REQUEST is not None and 'path_to_handle' in REQUEST:
         REQUEST['path_to_handle']=[]
         RESPONSE = REQUEST.RESPONSE
         parent = self.aq_parent
         
-        access = parent.hasAccess( REQUEST) or parent.getConfProperty( 'ZMS.blobfields.grant_public_access', 0) == 1
+        if not(parent.isVisible(REQUEST) and parent.getParentNode().isVisible(REQUEST)) and not REQUEST.get('preview') == 'preview':
+           # TODO: Implement more fine-grained access control and visibility checks for other contextual factors to determine if the request should be allowed or denied.
+           # Return 404 Not Found.
+           RESPONSE.setStatus(404)
+           raise zExceptions.NotFound()
+
+        access = (parent.hasAccess( REQUEST) or parent.getConfProperty( 'ZMS.blobfields.grant_public_access', 0) == 1)
         # Hook for custom access rules: return True/False, return 404 (Forbidden) if you want to perform redirect
         if access:
           # @deprecated

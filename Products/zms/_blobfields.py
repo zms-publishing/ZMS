@@ -593,8 +593,9 @@ class MyBlob(object):
                    # User has language access, check if they have at least Author role
                    if 'ZMSAuthor' in user_roles or 'ZMSSubscriber' in user_roles:
                      allow_access = True
-             except:
+             except (AttributeError, KeyError, TypeError):
                # If role/permission check fails, fall through to deny access
+                # Catches: missing attributes, missing keys, type mismatches
                pass
            
            # If no special access is granted, return 404 Not Found

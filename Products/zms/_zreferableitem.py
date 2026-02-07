@@ -535,8 +535,14 @@ class ZReferableItem(object):
         if ob.id not in ids:
           ob.set_request_context(request, ref_params)
       # DEBUG: logging/counting getLinkObj calls
-      request.set('getLinkObj_calls', request.get('getLinkObj_calls', 0) + 1)
-      standard.writeStdout(self, '[getLinkObj] url=%s, ob=%s, calls=%d'%(url, getattr(ob, 'id', None), request.get('getLinkObj_calls', 0)))
+      request.set('getLinkObj_counter', request.get('getLinkObj_counter', 0) + 1)
+      standard.writeStdout(self, '[getLinkObj] url=%s, ob=%s, ref_params=%s, counter=%d'%(
+        url, 
+        ob.absolute_url() if ob is not None else None, 
+        ref_params, 
+        request.get('getLinkObj_counter', 0)
+        )
+      )
     return ob
 
 

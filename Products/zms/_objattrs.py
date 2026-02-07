@@ -570,12 +570,12 @@ class ObjAttrs(object):
         datatype = obj_attr['datatype_key']
         value = self.getObjAttrValue( obj_attr, REQUEST)
         if value:
-          # Text-Fields
-          if datatype in _globals.DT_TEXTS:
-            value = self.validateInlineLinkObj(value)
-          # Url-Fields
-          if datatype == _globals.DT_URL:
-            value = self.validateLinkObj(value)
+          # Text-Fields: validate inline-links (skip in manage to avoid redundant getLinkObj calls)
+          if datatype in _globals.DT_TEXTS and not standard.isManagementInterface(self):
+              value = self.validateInlineLinkObj(value)
+          # Url-Fields: validate link-attributes (skip in manage to avoid redundant getLinkObj calls)
+          if datatype == _globals.DT_URL and not standard.isManagementInterface(self):
+              value = self.validateLinkObj(value)
           # Executable fields.
           value = standard.dt_exec(self, value)
       

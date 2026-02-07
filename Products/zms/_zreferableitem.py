@@ -502,30 +502,41 @@ class ZReferableItem(object):
         i = max(url.find('#'),url.find(','))
         if i > 0:
           url = url[:i]
-        if url.find('id:') >= 0:
-          catalog = self.getZMSIndex().get_catalog()
-          q = catalog({'get_uid':url})
-          for r in q:
-            path  = '%s/'%r['getPath']
+        #-- [ReqBuff]: Fetch buffered value from Http-Request.
+        reqBuffId = 'getLinkObj.%s'%url
+        try:
+          ob = self.getDocumentElement().fetchReqBuff(reqBuffId)
+        except:
+          if url.find('id:') >= 0:
+            catalog = self.getZMSIndex().get_catalog()
+            q = catalog({'get_uid':url})
+            for r in q:
+              path  = '%s/'%r['getPath']
+              l = [x for x in path.split('/') if x] 
+              ob = self.getRootElement()
+              if l:
+                [l.pop(0) for x in ob.getPhysicalPath() if l[0] == x]
+                for id in l:
+                  ob = getattr(ob,id,None)
+              break
+          elif not url.startswith('__'):
+            path = url.replace('@','/content/')
             l = [x for x in path.split('/') if x] 
-            ob = self.getRootElement()
+            ob = self.getDocumentElement()
             if l:
               [l.pop(0) for x in ob.getPhysicalPath() if l[0] == x]
               for id in l:
                 ob = getattr(ob,id,None)
-            break
-        elif not url.startswith('__'):
-          path = url.replace('@','/content/')
-          l = [x for x in path.split('/') if x] 
-          ob = self.getDocumentElement()
-          if l:
-            [l.pop(0) for x in ob.getPhysicalPath() if l[0] == x]
-            for id in l:
-              ob = getattr(ob,id,None)
-      # Prepare request
-      ids = self.getPhysicalPath()
-      if ob is not None and ob.id not in ids:
-        ob.set_request_context(request, ref_params)
+          #-- [ReqBuff]: Store value in buffer of Http-Request.
+          self.getDocumentElement().storeReqBuff(reqBuffId, ob)
+      # Prepare request (only if ref_params are provided)
+      if ob is not None and ref_params:
+        ids = self.getPhysicalPath()
+        if ob.id not in ids:
+          ob.set_request_context(request, ref_params)
+      # DEBUG: logging/counting getLinkObj calls
+      request.set('getLinkObj_calls', request.get('getLinkObj_calls', 0) + 1)
+      standard.writeStdout(self, '[getLinkObj] url=%s, ob=%s, calls=%d'%(url, getattr(ob, 'id', None), request.get('getLinkObj_calls', 0)))
     return ob
 
 

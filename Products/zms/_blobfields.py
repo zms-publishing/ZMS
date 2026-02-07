@@ -567,6 +567,7 @@ class MyBlob(object):
         parent = self.aq_parent
         
         if not(parent.isVisible(REQUEST) and parent.getParentNode().isVisible(REQUEST)) and not REQUEST.get('preview') == 'preview':
+           # TODO: Implement more fine-grained access control and visibility checks for other contextual factors to determine if the request should be allowed or denied.
            # Return 404 Not Found.
            RESPONSE.setStatus(404)
            raise zExceptions.NotFound()

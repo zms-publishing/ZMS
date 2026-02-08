@@ -23,6 +23,8 @@ import re
 # Product Imports.
 from Products.zms import standard
 from zope.globalrequest import getRequest
+# FOR DEBUGGING PURPOSES ONLY: import traceback to log the call stack of getLinkObj calls
+import traceback
 
 # ------------------------------------------------------------------------------
 #  isMailLink:
@@ -534,15 +536,23 @@ class ZReferableItem(object):
         ids = self.getPhysicalPath()
         if ob.id not in ids:
           ob.set_request_context(request, ref_params)
+      # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       # DEBUG: logging/counting getLinkObj calls
+      # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       request.set('getLinkObj_counter', request.get('getLinkObj_counter', 0) + 1)
-      standard.writeStdout(self, '[getLinkObj] url=%s, ob=%s, ref_params=%s, counter=%d'%(
+      # show traceback in debugging output to identify which function is  calling getLinkObj and causing multiple calls
+      traceback_stack = []
+      for frame in reversed(traceback.extract_stack()[-5:-2]):
+        traceback_stack.append('%s:%s:%s' % (str(frame.filename).split('/')[-1], frame.lineno, frame.name))
+      standard.writeStdout(self, '%d. [getLinkObj] %s, ID=%s, ref_params=%s\n...was called from:\n\t%s\n'%(
+        request.get('getLinkObj_counter', 0),
         url, 
-        ob.absolute_url() if ob is not None else None, 
-        ref_params, 
-        request.get('getLinkObj_counter', 0)
+        ob.id if ob is not None else None, 
+        ref_params,
+        '\n\t'.join(traceback_stack)
         )
       )
+      # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     return ob
 
 

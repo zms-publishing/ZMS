@@ -544,10 +544,12 @@ class ZReferableItem(object):
       traceback_stack = []
       for frame in reversed(traceback.extract_stack()[-5:-2]):
         traceback_stack.append('%s:%s:%s' % (str(frame.filename).split('/')[-1], frame.lineno, frame.name))
-      standard.writeStdout(self, '%d. [getLinkObj] %s, ID=%s, ref_params=%s\n...was called from:\n\t%s\n'%(
+      standard.writeStdout(self, '%d. [%s:getLinkObj] %s, Target-ID=%s (%s), ref_params=%s\n...was called from:\n\t%s\n'%(
         request.get('getLinkObj_counter', 0),
+        self.meta_id,
         url, 
-        ob.id if ob is not None else None, 
+        ob.id if ob is not None else None,
+        ob.meta_id if ob is not None else None,
         ref_params,
         '\n\t'.join(traceback_stack)
         )

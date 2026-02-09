@@ -193,12 +193,18 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
     #  ZMSLinkElement.getRefObj:
     # --------------------------------------------------------------------------
     def getRefObj(self):
+      #-- [ReqBuff]: Fetch buffered value from Http-Request.
+      docelmnt = self.getDocumentElement()
+      reqBuffId = 'getRefObj.%s'%self.get_uid()
+      try: return docelmnt.fetchReqBuff(reqBuffId)
+      except: pass
       ref_obj = self.getLinkObj(self.getRef())
       if ref_obj == self:
         ref_obj = None
       if ref_obj is not None and ref_obj.meta_type == 'ZMSLinkElement':
         ref_obj = ref_obj.getRefObj()
-      return ref_obj
+      #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
+      return docelmnt.storeReqBuff(reqBuffId, ref_obj)
 
 
     # --------------------------------------------------------------------------

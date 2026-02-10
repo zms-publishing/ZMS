@@ -233,9 +233,9 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
         b = False
         if not (self.NOREF == meta_type or (isinstance(meta_type, list) and self.NOREF in meta_type)):
           b = b or zmsobject.ZMSObject.isMetaType(self, meta_type, REQUEST)
-          ref_obj = self.getRefObj()
-          if ref_obj is not None and self.isEmbedded():
-            if not (self.NORESOLVEREF == meta_type or (isinstance(meta_type, list) and self.NORESOLVEREF in meta_type)):
+          if self.isEmbedded():
+            ref_obj = self.getRefObj()
+            if ref_obj is not None and not (self.NORESOLVEREF == meta_type or (isinstance(meta_type, list) and self.NORESOLVEREF in meta_type)):
               b = b or ref_obj.isMetaType(meta_type, REQUEST)
       return b
 

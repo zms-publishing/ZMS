@@ -378,11 +378,10 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
       rtnVal = False
       if self.getEmbedType() == 'remote':
         return self.getRemoteObj().get('is_page',False)
-      else:
-        if self.isEmbedded():
-          ref_obj = self.getRefObj()
-          if ref_obj is not None:
-            rtnVal = rtnVal or ref_obj.isPage()
+      elif self.isEmbedded():
+        ref_obj = self.getRefObj()
+        if ref_obj is not None:
+          rtnVal = rtnVal or ref_obj.isPage()
       return rtnVal
 
 
@@ -415,7 +414,7 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
       rtn = 'ZMSObject'
       if proxy != self and proxy is not None and self.isEmbeddedRecursive():
         rtn = proxy.getType()
-      else:
+      elif self.isEmbedded():
         ref_obj = self.getRefObj()
         if ref_obj is not None:
            rtn = ref_obj.getType()
@@ -494,7 +493,7 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
       recursive = self.isEmbeddedRecursive()
       if proxy != self and proxy is not None and recursive:
         rtn = proxy.getNavElements( REQUEST, expand_tree, current_child, subElements)
-      else:
+      elif self.isEmbedded():
         ref_obj = self.getRefObj()
         if isinstance(ref_obj, zmscontainerobject.ZMSContainerObject):
           rtn = super(zmslinkelement.ZMSLinkElement, zself).getNavElements( REQUEST, expand_tree, current_child, subElements)
@@ -535,7 +534,6 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
     # --------------------------------------------------------------------------
     def _getBodyContent(self, REQUEST):
       rtn = ''
-      ref_obj = self.getRefObj()
       ref = self.getObjProperty('attr_ref', REQUEST)
        
       if self.getEmbedType() == 'remote':
@@ -552,6 +550,7 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
         if proxy != self and proxy is not None and self.isEmbeddedRecursive():
           rtn = proxy._getBodyContent(REQUEST)
         elif proxy == self and proxy is not None and self.isEmbedded():
+          ref_obj = self.getRefObj()
           if ref_obj is None:
             ref_obj = self.getLinkObj(ref)
           if ref_obj is not None and ref_obj != self:
@@ -570,7 +569,6 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
     # --------------------------------------------------------------------------
     def renderShort(self, REQUEST):
       rtn = ''
-      ref_obj = self.getRefObj()
       ref = self.getObjProperty('attr_ref', REQUEST) 
        
       if self.getEmbedType() == 'remote':
@@ -582,6 +580,7 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
       
       elif self.isEmbedded(): 
         REQUEST.set('ZMS_RELATIVATE_URL', False)
+        ref_obj = self.getRefObj()
         if ref_obj is None: 
           ref_obj = self.getLinkObj(ref) 
         if ref_obj is None or ref_obj.isPage(): 
@@ -705,7 +704,7 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
       recursive = self.isEmbeddedRecursive()
       if proxy != self and proxy is not None and recursive:
         rtn = proxy.printHtml( level, sectionizer, REQUEST, deep)
-      else:
+      elif self.isEmbedded():
         ref_obj = self.getRefObj()
         if ref_obj is not None:
           rtn = ref_obj.printHtml( level, sectionizer, REQUEST, deep)

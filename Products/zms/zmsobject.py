@@ -218,7 +218,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     #  ZMSObject.clear_request_context:
     # --------------------------------------------------------------------------
-    def clear_request_context(self, REQUEST, prefix = 'oid:'):
+    def clear_request_context(self, REQUEST, prefix = 'oid'):
       # Remove old context-values.
       for key in [x for x in REQUEST.keys() if x.startswith(prefix)]:
         standard.writeLog(self, "[clear_request_context]: DEL "+key)

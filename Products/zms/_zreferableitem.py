@@ -23,8 +23,7 @@ import re
 # Product Imports.
 from Products.zms import standard
 from zope.globalrequest import getRequest
-# FOR DEBUGGING PURPOSES ONLY: import traceback to log the call stack of getLinkObj calls
-import traceback
+
 
 # ------------------------------------------------------------------------------
 #  isMailLink:
@@ -490,7 +489,6 @@ class ZReferableItem(object):
   # ----------------------------------------------------------------------------
   def getLinkObj(self, url, REQUEST=None):
     request = getattr(self, 'REQUEST', getRequest())
-    was_buffered = True
     ob = None
     if isInternalLink(url):
       # Params.
@@ -510,7 +508,6 @@ class ZReferableItem(object):
         try:
           ob = self.getDocumentElement().fetchReqBuff(reqBuffId)
         except:
-          was_buffered = False
           if url.find('id:') >= 0:
             catalog = self.getZMSIndex().get_catalog()
             q = catalog({'get_uid':url})
@@ -538,29 +535,6 @@ class ZReferableItem(object):
         ids = self.getPhysicalPath()
         if ob.id not in ids:
           ob.set_request_context(request, ref_params)
-      # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      # DEBUG: logging/counting getLinkObj calls
-      # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      request.set('getLinkObj_counter', request.get('getLinkObj_counter', 0) + 1)
-      # show traceback in debugging output to identify which function is  calling getLinkObj and causing multiple calls
-      traceback_stack = []
-      for frame in reversed(traceback.extract_stack()[-5:-2]):
-        traceback_stack.append('%s:%s:%s' % (str(frame.filename).split('/')[-1], frame.lineno, frame.name))
-      request.set('count_buffered_getLinkObj_calls', request.get('count_buffered_getLinkObj_calls', 0) + int(was_buffered))
-      standard.writeStdout(self, '%d. [%s:getLinkObj] %s, Target-ID=%s (%s), URL=%s, was_buffered=%s (%s), ref_params=%s\n...was called from:\n\t%s\n'%(
-        request.get('getLinkObj_counter', 0),
-        self.meta_id,
-        url, 
-        ob.id if ob is not None else None,
-        ob.meta_id if ob is not None else None,
-        ob.absolute_url(relative=1) if ob is not None else None,
-        was_buffered,
-        request.get('count_buffered_getLinkObj_calls', 0),
-        ref_params,
-        '\n\t'.join(traceback_stack)
-        )
-      )
-      # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     return ob
 
 

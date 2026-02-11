@@ -103,15 +103,31 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
 
     # --------------------------------------------------------------------------
     #  ZMSLinkElement.getEmbedType: 
+    #
+    #  Special handling for _embed_type, because it is a raw attribute and not a property.
     # --------------------------------------------------------------------------
     def getEmbedType(self):
-      request = getattr(self, 'REQUEST', getRequest())
-      embed_type = self.getObjAttrValue( self.getObjAttr( 'attr_type'), request)
-      if embed_type in [ 'embed', 'recursive', 'remote']:
-        ref_obj = self.getRefObj()
-        if ref_obj is not None and ref_obj.isAncestor( self):
-          embed_type = 'cyclic' # Error!
+      # _embed_type is a raw attribute and should be accessed directly
+      embed_type = getattr(self, '_attr_type', None)
+      # if _embed_type is not set, try to get it from the property (for backward compatibility)
+      if embed_type is None:
+          request = getattr(self, 'REQUEST', getRequest())
+          embed_type = self.getObjAttrValue( self.getObjAttr( 'attr_type'), request)
       return embed_type
+
+    # --------------------------------------------------------------------------
+    #  ZMSLinkElement.setEmbedType:
+    # 
+    #  Special handling for _embed_type, because it is a raw attribute and not a property.
+    # --------------------------------------------------------------------------
+    def setEmbedType(self, REQUEST):
+        embed_type = REQUEST.get('attr_type', '')
+        if embed_type in [ 'embed', 'recursive', 'remote']:
+          # check for cyclic embedding
+          ref_obj = self.getRefObj()
+          if ref_obj is not None and ref_obj.isAncestor( self):
+            embed_type = 'cyclic' # Error!
+        self._embed_type = embed_type
 
 
     # --------------------------------------------------------------------------
@@ -161,10 +177,13 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
             obj_attr = self.getObjAttr(key)
             if obj_attr['xml']:
               self.setReqProperty(key, REQUEST)
-          
+
           ##### VersionManager ####
           self.onChangeObj(REQUEST)
           
+          ##### Special handling for _embed_type, because it is a raw attribute and not a property ####
+          self.setEmbedType(REQUEST)
+
           ##### Success Message ####
           message = self.getZMILangStr('MSG_CHANGED')
         
@@ -638,15 +657,14 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
     #  Returns self or referenced object (if embedded) as ZMSProxyObject
     # --------------------------------------------------------------------------
     def __proxy__(self):
-      req = getattr(self, 'REQUEST', getRequest())
       rtn = self
-      if req.get( 'ZMS_PROXY', True):
-        if req.get( 'URL', '').find( '/manage') < 0 or req.get( 'ZMS_PATH_HANDLER', False):
+      req = getattr(self, 'REQUEST', getRequest())
+      if req.get( 'URL', '').find( '/manage') < 0 or req.get( 'ZMS_PATH_HANDLER', False):
           if self.isEmbeddedRecursive():
-            ref_obj = self.getRefObj()
-            if ref_obj is not None:
-              recursive = True
-              rtn = zmsproxyobject.ZMSProxyObject( self, self.aq_parent, self.absolute_url(), self.id, ref_obj, recursive)
+              ref_obj = self.getRefObj()
+              if ref_obj is not None:
+                  recursive = True
+                  rtn = zmsproxyobject.ZMSProxyObject( self, self.aq_parent, self.absolute_url(), self.id, ref_obj, recursive)
       return rtn
 
 
@@ -658,10 +676,10 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
     # --------------------------------------------------------------------------
     def getProxy(self):
       req = getattr(self, 'REQUEST', getRequest())
-      rtn = self
-      if req.get( 'ZMS_PROXY', True):
-        rtn = req.get( 'ZMS_PROXY_%s'%self.id, self.__proxy__())
-      return rtn
+      key = 'ZMS_PROXY_%s'%self.id
+      if not req.get(key, False):
+        req.set(key, self.__proxy__())
+      return req.get(key)
 
 
     # --------------------------------------------------------------------------

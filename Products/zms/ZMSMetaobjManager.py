@@ -429,6 +429,7 @@ class ZMSMetaobjManager(object):
               v = tmplt(obj, obj.REQUEST)
               v = standard.pystr(v)
               break
+      obj.clear_request_context(obj.REQUEST)
       return v
 
 

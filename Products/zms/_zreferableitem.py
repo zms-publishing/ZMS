@@ -24,6 +24,7 @@ import re
 from Products.zms import standard
 from zope.globalrequest import getRequest
 
+
 # ------------------------------------------------------------------------------
 #  isMailLink:
 # ------------------------------------------------------------------------------

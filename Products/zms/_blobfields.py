@@ -565,13 +565,15 @@ class MyBlob(object):
         REQUEST['path_to_handle']=[]
         RESPONSE = REQUEST.RESPONSE
         parent = self.aq_parent
-        
-        if not(parent.isVisible(REQUEST) and parent.getParentNode().isVisible(REQUEST)) and not REQUEST.get('preview') == 'preview':
-           # TODO: Implement more fine-grained access control and visibility checks for other contextual factors to determine if the request should be allowed or denied.
-           # Return 404 Not Found.
-           RESPONSE.setStatus(404)
-           raise zExceptions.NotFound()
-
+        try:
+          if not(parent.isVisible(REQUEST) and parent.getParentNode().isVisible(REQUEST)) and not REQUEST.get('preview') == 'preview':
+            # TODO: Implement more fine-grained access control and visibility checks for other contextual factors to determine if the request should be allowed or denied.
+            # Return 404 Not Found.
+            RESPONSE.setStatus(404)
+            raise zExceptions.NotFound()
+        except AttributeError:
+          # If parent doesn't have isVisible or getParentNode, we assume it's visible and continue with access checks.
+          pass
         access = (parent.hasAccess( REQUEST) or parent.getConfProperty( 'ZMS.blobfields.grant_public_access', 0) == 1)
         # Hook for custom access rules: return True/False, return 404 (Forbidden) if you want to perform redirect
         if access:

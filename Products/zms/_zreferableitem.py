@@ -26,6 +26,7 @@ from zope.globalrequest import getRequest
 # FOR DEBUGGING PURPOSES ONLY: import traceback to log the call stack of getLinkObj calls
 import traceback
 
+
 # ------------------------------------------------------------------------------
 #  isMailLink:
 # ------------------------------------------------------------------------------

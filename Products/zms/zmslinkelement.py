@@ -111,8 +111,8 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
       embed_type = getattr(self, '_attr_type', None)
       # if _embed_type is not set, try to get it from the property (for backward compatibility)
       if embed_type is None:
-          request = getattr(self, 'REQUEST', getRequest())
-          embed_type = self.getObjAttrValue( self.getObjAttr( 'attr_type'), request)
+        request = getattr(self, 'REQUEST', getRequest())
+        embed_type = self.getObjAttrValue( self.getObjAttr( 'attr_type'), request)
       return embed_type
 
     # --------------------------------------------------------------------------
@@ -121,13 +121,13 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
     #  Special handling for _embed_type, because it is a raw attribute and not a property.
     # --------------------------------------------------------------------------
     def setEmbedType(self, REQUEST):
-        embed_type = REQUEST.get('attr_type', '')
-        if embed_type in [ 'embed', 'recursive', 'remote']:
-          # check for cyclic embedding
-          ref_obj = self.getRefObj()
-          if ref_obj is not None and ref_obj.isAncestor( self):
-            embed_type = 'cyclic' # Error!
-        self._embed_type = embed_type
+      embed_type = REQUEST.get('attr_type', '')
+      if embed_type in [ 'embed', 'recursive', 'remote']:
+        # check for cyclic embedding
+        ref_obj = self.getRefObj()
+        if ref_obj is not None and ref_obj.isAncestor( self):
+          embed_type = 'cyclic' # Error!
+      self._embed_type = embed_type
 
 
     # --------------------------------------------------------------------------
@@ -604,7 +604,7 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
           rtn = ref_obj.renderShort(REQUEST) 
         REQUEST.set('ZMS_RELATIVATE_URL', True)
       else: 
-          rtn = self._getBodyContent( REQUEST) 
+        rtn = self._getBodyContent( REQUEST) 
       return rtn
 
 
@@ -656,11 +656,11 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
       rtn = self
       req = getattr(self, 'REQUEST', getRequest())
       if req.get( 'URL', '').find( '/manage') < 0 or req.get( 'ZMS_PATH_HANDLER', False):
-          if self.isEmbeddedRecursive():
-              ref_obj = self.getRefObj()
-              if ref_obj is not None:
-                  recursive = True
-                  rtn = zmsproxyobject.ZMSProxyObject( self, self.aq_parent, self.absolute_url(), self.id, ref_obj, recursive)
+        if self.isEmbeddedRecursive():
+          ref_obj = self.getRefObj()
+          if ref_obj is not None:
+            recursive = True
+            rtn = zmsproxyobject.ZMSProxyObject( self, self.aq_parent, self.absolute_url(), self.id, ref_obj, recursive)
       return rtn
 
 

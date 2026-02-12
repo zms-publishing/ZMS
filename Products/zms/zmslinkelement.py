@@ -570,8 +570,6 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
           rtn = proxy._getBodyContent(REQUEST)
         elif proxy == self and proxy is not None and self.isEmbedded():
           ref_obj = self.getRefObj()
-          if ref_obj is None:
-            ref_obj = self.getLinkObj(ref)
           if ref_obj is not None and ref_obj != self:
             rtn = ref_obj._getBodyContent( REQUEST)
         else:
@@ -600,8 +598,6 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
       elif self.isEmbedded(): 
         REQUEST.set('ZMS_RELATIVATE_URL', False)
         ref_obj = self.getRefObj()
-        if ref_obj is None: 
-          ref_obj = self.getLinkObj(ref) 
         if ref_obj is None or ref_obj.isPage(): 
           rtn = super(ZMSLinkElement, self).renderShort(REQUEST) 
         elif ref_obj != self: 

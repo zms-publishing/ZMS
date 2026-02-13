@@ -547,22 +547,29 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
 
 
     # --------------------------------------------------------------------------
+    # ZMSLinkElement.embedRemoteContent:
+    #
+    # Embeds content from remote reference if embed_type is 'remote'.
+    # --------------------------------------------------------------------------
+    def embedRemoteContent(self, REQUEST):
+      rtn = None
+      if self.getEmbedType() == 'remote':
+        ref = self.getObjProperty('attr_ref', REQUEST)
+        remote_ref = rest_api.get_rest_api_url( ref)  
+        try: 
+          rtn = self.http_import( remote_ref + '/get_body_content') 
+        except: 
+          rtn = standard.writeError(self, '[_getBodyContent]: can\'t embed from remote_ref=%s'%remote_ref)
+      return rtn
+
+    # --------------------------------------------------------------------------
     #  ZMSLinkElement._getBodyContent:
     #
     #  HTML presentation of link-element.
     # --------------------------------------------------------------------------
     def _getBodyContent(self, REQUEST):
-      rtn = ''
-      ref = self.getObjProperty('attr_ref', REQUEST)
-       
-      if self.getEmbedType() == 'remote':
-        remote_ref = rest_api.get_rest_api_url( ref)  
-        try: 
-          rtn = self.http_import( remote_ref + '/get_body_content') 
-        except: 
-          rtn = standard.writeError(self, '[_getBodyContent]: can\'t embed from remote_ref=%s'%remote_ref) 
-      
-      else:
+      rtn = self.embedRemoteContent( REQUEST)
+      if rtn is None:
         if self.isEmbedded():
           REQUEST.set('ZMS_RELATIVATE_URL', False)
         proxy = self.getProxy()
@@ -585,26 +592,18 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
     #  Renders short presentation of link-element.
     # --------------------------------------------------------------------------
     def renderShort(self, REQUEST):
-      rtn = ''
-      ref = self.getObjProperty('attr_ref', REQUEST) 
-       
-      if self.getEmbedType() == 'remote':
-        remote_ref = rest_api.get_rest_api_url( ref)  
-        try: 
-          rtn = self.http_import( remote_ref + '/get_body_content') 
-        except: 
-          rtn = standard.writeError(self, '[renderShort]: can\'t embed from remote_ref=%s'%remote_ref) 
-      
-      elif self.isEmbedded(): 
-        REQUEST.set('ZMS_RELATIVATE_URL', False)
-        ref_obj = self.getRefObj()
-        if ref_obj is None or ref_obj.isPage(): 
-          rtn = super(ZMSLinkElement, self).renderShort(REQUEST) 
-        elif ref_obj != self: 
-          rtn = ref_obj.renderShort(REQUEST) 
-        REQUEST.set('ZMS_RELATIVATE_URL', True)
-      else: 
-        rtn = self._getBodyContent( REQUEST) 
+      rtn = self.embedRemoteContent( REQUEST)
+      if rtn is None:
+        if self.isEmbedded(): 
+          REQUEST.set('ZMS_RELATIVATE_URL', False)
+          ref_obj = self.getRefObj()
+          if ref_obj is None or ref_obj.isPage(): 
+            rtn = super(ZMSLinkElement, self).renderShort(REQUEST) 
+          elif ref_obj != self: 
+            rtn = ref_obj.renderShort(REQUEST) 
+          REQUEST.set('ZMS_RELATIVATE_URL', True)
+        else: 
+          rtn = self._getBodyContent( REQUEST) 
       return rtn
 
 

@@ -26,7 +26,7 @@
 		"editor.renderWhitespace": "all",
 		"editor.renderControlCharacters": false,
 		"workbench.iconTheme": "vs-minimal",
-		"workbench.colorTheme": "Visual Studio Light",
+		"workbench.colorTheme": "Visual Studio Dark",
 		"files.eol": "\n",
 		"files.autoSave": "afterDelay",
 		"files.associations": {

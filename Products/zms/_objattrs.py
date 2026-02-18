@@ -571,10 +571,10 @@ class ObjAttrs(object):
         value = self.getObjAttrValue( obj_attr, REQUEST)
         if value:
           # Text-Fields
-          if datatype in _globals.DT_TEXTS:
+          if datatype in _globals.DT_TEXTS and bool(self.getConfProperty('ZReferableItem.validateInlineLinkObj', 0)):
             value = self.validateInlineLinkObj(value)
           # Url-Fields
-          if datatype == _globals.DT_URL:
+          if datatype == _globals.DT_URL and bool(self.getConfProperty('ZReferableItem.validateLinkObj', 0)):
             value = self.validateLinkObj(value)
           # Executable fields.
           value = standard.dt_exec(self, value)

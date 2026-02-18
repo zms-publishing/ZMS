@@ -2257,6 +2257,12 @@ body.lazy_select_form footer .controls {
 	min-width: 1.5rem;
 	font-size: 1rem;
 }
+.zmi.metas_acquire .form-group.row > input {
+	margin: 0 .5rem 0 0.75rem;
+}
+.zmi.metas_acquire .form-group.row > i {
+	margin: 0 .5rem 0 0;
+}
 
 .zmi table.table-access-control {
 	background: #efefef;

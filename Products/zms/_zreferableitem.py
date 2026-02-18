@@ -445,7 +445,6 @@ class ZReferableItem(object):
             text = text.replace(old, new)
     return text
 
-
   # ----------------------------------------------------------------------------
   #  ZReferableItem.validateLinkObj:
   #
@@ -458,6 +457,17 @@ class ZReferableItem(object):
         ild = getInternalLinkDict(self, url)
         url = ild['data-id']
     return url
+
+  # ----------------------------------------------------------------------------
+  # Validates internal object-references.
+  #
+  # @param s: String to validate
+  # ----------------------------------------------------------------------------
+  def validateRefObj(self, s):
+    if isInternalLink(s):
+      return self.validateLinkObj(s)
+    return self.validateInlineLinkObj(s)
+
 
   # ----------------------------------------------------------------------------
   #  ZReferableItem.findObject:

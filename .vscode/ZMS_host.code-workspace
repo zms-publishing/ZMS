@@ -26,7 +26,7 @@
 		"editor.renderWhitespace": "all",
 		"editor.renderControlCharacters": false,
 		"workbench.iconTheme": "vs-minimal",
-		"workbench.colorTheme": "Visual Studio Dark",
+		"workbench.colorTheme": "Visual Studio Light",
 		"files.eol": "\n",
 		"files.autoSave": "afterDelay",
 		"files.associations": {
@@ -49,6 +49,15 @@
 			"**/Data.*": true,
 			"**/docker/**/var/*": true
 		},
+		"python.testing.unittestArgs": [
+			"-v",
+			"-s",
+			"./tests",
+			"-p",
+			"test*.py"
+		],
+		"python.testing.pytestEnabled": false,
+		"python.testing.unittestEnabled": true
 	},
 
 	"launch": {

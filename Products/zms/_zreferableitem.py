@@ -426,7 +426,6 @@ class ZReferableItem(object):
   #  Validates internal links.
   # ----------------------------------------------------------------------------
   def validateInlineLinkObj(self, text):
-    if not bool(self.getConfProperty('ZReferableItem.validateInlineLinkObj', 1)): return text
     for pq in [('<a(.*?)>', 'href'), ('<img(.*?)>', 'src')]:
       p = pq[0]
       q = pq[1]
@@ -445,19 +444,28 @@ class ZReferableItem(object):
             text = text.replace(old, new)
     return text
 
-
   # ----------------------------------------------------------------------------
   #  ZReferableItem.validateLinkObj:
   #
   #  Validates internal links.
   # ----------------------------------------------------------------------------
   def validateLinkObj(self, url):
-    if not bool(self.getConfProperty('ZReferableItem.validateLinkObj', 1)): return url
     if isInternalLink(url):
       if not url.startswith('{$__'):
         ild = getInternalLinkDict(self, url)
         url = ild['data-id']
     return url
+
+  # ----------------------------------------------------------------------------
+  # Validates internal object-references.
+  #
+  # @param s: String to validate
+  # ----------------------------------------------------------------------------
+  def validateRefObj(self, s):
+    if isInternalLink(s):
+      return self.validateLinkObj(s)
+    return self.validateInlineLinkObj(s)
+
 
   # ----------------------------------------------------------------------------
   #  ZReferableItem.findObject:

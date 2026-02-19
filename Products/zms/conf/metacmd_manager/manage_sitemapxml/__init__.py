@@ -31,7 +31,7 @@ class manage_sitemapxml:
 	nodes = "{$}"
 
 	# Package
-	package = "com.zms.foundation.metacmd.seo"
+	package = "com.zms.custom.metacmd.seo"
 
 	# Revision
 	revision = "5.1.3"

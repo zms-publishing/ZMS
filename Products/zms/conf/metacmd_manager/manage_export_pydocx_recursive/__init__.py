@@ -31,7 +31,7 @@ class manage_export_pydocx_recursive:
 	nodes = "{$}"
 
 	# Package
-	package = "com.zms.foundation.export"
+	package = "com.zms.custom.export"
 
 	# Revision
 	revision = "5.0.0"

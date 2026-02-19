@@ -23,7 +23,7 @@ class bt_collapse_simple:
 	name = "Collapse Item (Simple)"
 
 	# Package
-	package = "com.zms.foundation.bootstrap"
+	package = "com.zms.custom.bootstrap"
 
 	# Revision
 	revision = "4.1.0"

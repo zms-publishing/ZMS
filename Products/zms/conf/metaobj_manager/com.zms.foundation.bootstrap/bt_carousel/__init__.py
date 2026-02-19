@@ -23,7 +23,7 @@ class bt_carousel:
 	name = "Carousel"
 
 	# Package
-	package = "com.zms.foundation.bootstrap"
+	package = "com.zms.custom.bootstrap"
 
 	# Revision
 	revision = "5.0.0"

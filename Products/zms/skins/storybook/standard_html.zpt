@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html tal:define="
+		standard modules/Products.zms/standard;
+		zmscontext options/zmscontext;
+		dummy0 python:zmscontext.f_standard_html_request(); 
+		zmsroot python:zmscontext.getDocumentElement();
+		lang request/lang; 
+		theme_common python:here.common.absolute_url();
+		teasers python:zmscontext.getTeaserElements()"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xml:lang="de" lang="de"
+	xmlns:tal="http://xml.zope.org/namespaces/tal">
+<!-- MASTER TEMPLATE: Connects ZMS-Context -->
+<head>
+	<title>
+		<tal:block tal:condition="python:zmscontext.getLevel()>1"
+			><tal:block tal:content="python:zmscontext.getParentByLevel(1).getTitlealt(request)">the title-alt</tal:block> &gt;
+		</tal:block>
+		<tal:block tal:content="python:zmscontext.getTitlealt(request)">the title-alt</tal:block>
+	</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" tal:attributes="content python:zmscontext.attr('attr_dc_description')">
+	<meta name="author" tal:attributes="content python:zmscontext.attr('attr_dc_creator')">
+	<link rel="shortcut icon" href="favicon.ico">
+	<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/htmx/htmx.min.js"></script>
+	<link charset="UTF-8" tal:attributes="href python:'%s/added/web.css'%theme_common" rel="stylesheet">
+</head>
+<body tal:attributes="id python:[zmscontext.id,'zmsroot'][zmscontext.getId()=='content'];class python:'web %s %s %s'%(zmscontext.meta_id,lang,(len(teasers)>0) and 'has_teasers' or 'no_teasers' )">
+	<aside>
+		<nav tal:condition="python:zmscontext.getLevel()>-1"
+			tal:content="structure python:zmscontext.getParentByLevel(0).getNavItems(zmscontext,request,{'add_self':False,'deep':True,'complete':False, 'id':'navigationtree','cssclass':'nav'})">
+		</nav>
+	</aside>
+	<main>
+		<header>
+			<section class="title">
+				<h1 tal:content="python:zmscontext.attr('title')"></h1>
+				<p tal:content="python:zmscontext.attr('attr_dc_description')"></p>
+			</section>
+		</header>
+		<article>
+			<section class="teasers">
+				<div
+					tal:repeat="teaser python:range(2)"
+					tal:replace="structure python:here.infobox(zmscontext=zmscontext,request=request)">
+				</div>
+			</section>
+			<section class="content" tal:content="structure python:zmscontext.getBodyContent(request)"></section>
+		</article>
+		<footer>
+			<pre>© 2025 ZMS Publishing, Powered by ZMS</pre>
+		</footer>
+	</main>
+</body>
+</html>

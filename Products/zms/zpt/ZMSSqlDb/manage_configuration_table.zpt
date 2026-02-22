@@ -9,7 +9,7 @@
 		class="form-horizontal" action="manage_changeConfiguration" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="lang" tal:attributes="value request/lang" />
 		<input type="hidden" name="id" tal:attributes="value request/id" />
-		<div class="form-group row">
+		<div class="form-group row text-nowrap">
 			<label class="control-label col-sm-2 text-nowrap">
 				<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],table['id']); title python:here.getZMILangStr('ATTR_TABLE')">
 					<i tal:condition="python:table['type']!='intersection'" class="fas fa-th-list"></i>
@@ -100,7 +100,7 @@
 					<i class="fas fa-th-list"></i>
 					<span class="column-id" tal:content="column/id">column-id</span>
 					<span class="column-description text-info text-monospace" tal:attributes="title python:column.get('description','')" tal:content="python:standard.string_maxlen(s=column.get('description',''),maxlen=50)">column-description</span>
-					<span class="column-datatype badge badge-info" tal:content="column/datatype">column-datatype</span>
+					<span class="column-datatype badge badge-info" tal:condition="not:python:column.get('datatype')=='?'" tal:content="column/datatype">column-datatype</span>
 				</td>
 				<td><input class="form-control form-control-sm zmi-sort" tal:attributes="name python:'attr_label_%s'%column['id']; value column/label" type="text"></td>
 				<td><input tal:attributes="name python:'attr_display_%s:int'%column['id']; checked python:['','checked'][int(not column.get('hide',0))]" value="1" type="checkbox"/></td>

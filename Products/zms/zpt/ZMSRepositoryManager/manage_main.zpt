@@ -12,6 +12,7 @@
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[here.manage_sub_options()[0]])">zmi_breadcrumbs</tal:block>
 
 <nav id="subTab">
+	<span title="Help" class="btn float-right text-info" onclick="zmiModal('#readme',{title:$('#readme').attr('title')});return false"><i class="far fa-question-circle"></i></span>
 	<ul class="nav nav-tabs">
 		<li class="nav-item">
 			<a id="nav-link-diff" href="#diff" class="nav-link active show" data-toggle="tab" role="tab">
@@ -64,7 +65,6 @@
 						</div>
 					</div>
 				</tal:block>
-				<span title="Help" class="btn btn-secondary float-right" onclick="zmiModal('#readme',{title:$('#readme').attr('title')});return false"><i class="far fa-question-circle"></i></span>
 			</div><!-- .col-sm-10 -->
 		</div><!-- .form-group -->
 		<div class="form-group row filesystempath"

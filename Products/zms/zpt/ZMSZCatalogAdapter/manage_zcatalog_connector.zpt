@@ -618,7 +618,7 @@
 <tal:block tal:condition="python:here.getMetaobjAttr(here.id,'readme')"
 	tal:content="structure python:here.zmi_readme_modal(
 		readme_title=here.id,
-		readme_url='%s/metaobj_manager/%s.readme/manage_readme'%(here.content.absolute_url(),here.id))">
+		readme_url='%s/metaobj_manager/metaobj_readme?id=%s'%(here.content.absolute_url(),here.id))">
 	zmi_readme_modal
 </tal:block>
 

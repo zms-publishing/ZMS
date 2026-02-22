@@ -80,7 +80,7 @@ class ZMSItem(
       if hasattr(self.aq_base, 'attr'):
         raw = self.attr('readme')
         if raw:
-          return self.renderText('markdown', 'text', raw, REQUEST)
+          return '<article class="zmi-readme">%s</article>'%self.renderText('markdown', 'text', raw, REQUEST)
       # 2. Fall back to filesystem readme.md (admin GUIs)
       pkg_home = os.path.dirname(standard.__file__)
       class_name = self.__class__.__name__
@@ -88,7 +88,7 @@ class ZMSItem(
       if os.path.exists(readme_path):
         with open(readme_path, 'r', encoding='utf-8') as f:
           raw = f.read()
-        return markdown.markdown(raw, extensions=['tables', 'fenced_code'])
+        return '<article class="zmi-readme">%s</article>'%markdown.markdown(raw, extensions=['tables', 'fenced_code'])
       return ''
 
     # --------------------------------------------------------------------------

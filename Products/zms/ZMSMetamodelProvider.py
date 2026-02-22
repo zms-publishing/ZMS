@@ -99,7 +99,7 @@ class ZMSMetamodelProvider(
         readme_txt = attr['ob'].data.decode('utf-8')
         html = self.renderText('markdown', 'text', readme_txt, REQUEST, meta_id)
         REQUEST.RESPONSE.setHeader('Content-Type', 'text/html;charset=utf-8')
-        return html
+        return '<article class="zmi-readme">%s</article>'%html
       return ''
 
     ############################################################################

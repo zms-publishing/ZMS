@@ -2900,7 +2900,28 @@ ul.pagination .page-item {
 .zmi-readme.btn.btn-secondary:hover i.fa-question-circle {
 	color:white !important;
 }
-
+/* ++++++++++++++++++++++++++ */
+/* ZMI README Modal            */
+/* ++++++++++++++++++++++++++ */
+article.zmi-readme table {
+	margin:1rem 0 2rem;
+	width:100%;
+}
+article.zmi-readme table th {
+	background:aliceblue;
+	color:#607D8B;
+}
+article.zmi-readme table th,
+article.zmi-readme table td {
+	padding:.25rem;
+	border:1px solid silver
+}
+article.zmi-readme h2 {
+	margin:2rem 0 1rem
+}
+article.zmi-readme h3{
+	margin:1rem 0 .5rem
+}
 
 /* ++++++++++++++++++++++++++ */
 /* ZMSTextarea                */

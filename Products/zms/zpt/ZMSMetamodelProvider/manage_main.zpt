@@ -222,7 +222,7 @@
 										lines python:[x.strip() for x in readData.split('\n')];
 										global errors python:lines[lines.index('## Errors:')+1][2:].strip()"></tal:block
 								></tal:block>
-								<input type="hidden" class="content_type" tal:attributes="name python:'attr_type_%s'%objAttr['id']; value python:[objAttr.get('type'),objAttr.get('meta_type')][objAttr.get('meta_type') in here.getMetadictAttrs()]" />
+								<input type="hidden" class="content_type" tal:attributes="name python:'attr_type_%s'%objAttr.get('id'); value python:[objAttr.get('type'),objAttr.get('meta_type')][objAttr.get('meta_type') in here.getMetadictAttrs()]" />
 								<div class="single-line zmi-code"
 									tal:condition="python:objAttr.get('ob') is not None"
 									tal:define="zopetype python:objAttr['type'] in here.valid_zopetypes; ob python:objAttr.get('ob')">
@@ -232,11 +232,11 @@
 										ERROR: Object not created
 									</code>
 									<textarea class="form-control-ace-editor form-control form-control-sm"
-										tal:attributes="name python:'attr_custom_%s'%objAttr['id'];
-											id  python:'attr_custom_%s'%(str(objAttr['id']).replace('/','__'));
-											data-content_type python:objAttr['type'];
-											title python:['%s (%s) - Double-Click for Code-Editor'%(objAttr['id'],objAttr['type']),errors][len(errors)>0];
-											class python:' '.join(['form-control','form-control-sm']+objAttr['type'].lower().split(' ')+[[],['alert-danger']][len(errors)>0]);
+										tal:attributes="name python:'attr_custom_%s'%objAttr.get('id');
+											id  python:'attr_custom_%s'%(str(objAttr.get('id')).replace('/','__'));
+											data-content_type python:objAttr.get('type');
+											title python:['%s (%s) - Double-Click for Code-Editor'%(objAttr.get('id'),objAttr.get('type')),errors][len(errors)>0];
+											class python:' '.join(['form-control','form-control-sm']+objAttr.get('type').lower().split(' ')+[[],['alert-danger']][len(errors)>0]);
 											style python:'\073'.join([[],['color:#a94442','background:#fee']][len(errors)>0]);
 											data-class python:'fas fa-cogs';
 											data-zopeurl python:'%s/manage'%(ob.absolute_url());
@@ -249,8 +249,8 @@
 							tal:attributes="title python:here.getZMILangStr('ATTR_TYPE')"
 							colspan="5" class="meta-resource input-group-sm"
 							><div class="meta-resource-container">
-								<input type="hidden" tal:attributes="name python:'attr_type_%s'%objAttr['id']; value objAttr/type"/>
-								<input class="btn btn-file" type="file" tal:attributes="name python:'attr_custom_%s'%objAttr['id']"/>
+								<input type="hidden" tal:attributes="name python:'attr_type_%s'%objAttr.get('id'); value objAttr/type"/>
+								<input class="btn btn-file" type="file" tal:attributes="name python:'attr_custom_%s'%objAttr.get('id')"/>
 								<tal:block tal:condition="python:objAttr.get('ob')">
 									<a tal:define="fname python:objAttr['ob'].title"
 										tal:attributes="href python:'%s/manage_main'%(objAttr['ob'].absolute_url());
@@ -263,7 +263,7 @@
 							</div>
 							<span tal:condition="python:objAttr['id']=='readme'"
 								title="Readme" class="zmi-readme text-info float-right btn-sm mr-2 d-none d-lg-block"
-								tal:attributes="onclick python:'window.open(\'./metaobj_manager/%s.readme/manage_readme_iframe\')'%(id)">
+								onclick="zmiModal('#readme',{title:$('#readme').attr('title')});return false">
 								<i class="far fa-question-circle"></i>
 							</span>
 						</td>
@@ -609,31 +609,31 @@
 <footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 
 <script>
-// <!--
+//<!--
 
 	/**
 	 * Enable Button-Click.
 	 */
 	function zmiEnabledBtnClick(sender) {
 		var $sender = $(sender);
-		var $container = $sender.closest("span");
-		var id = $container.attr("id");
-		var b = $container.hasClass("enabled")?0:1;
+		var $container = $sender.closest('span');
+		var id = $container.attr('id');
+		var b = $container.hasClass('enabled')?0:1;
 		// Set wait-cursor.
-		$ZMI.setCursorWait("zmiEnabledBtnClick");
+		$ZMI.setCursorWait('zmiEnabledBtnClick');
 		// JQuery.AJAX.get
-		$.get( "manage_ajaxChangeProperties?id="+id+"&lang="+getZMILang()+"&setEnabled:int="+b,function(data) {
+		$.get( 'manage_ajaxChangeProperties?id='+id+'&lang='+getZMILang()+'&setEnabled:int='+b,function(data) {
 			// Reset wait-cursor.
-			$ZMI.setCursorAuto("zmiEnabledBtnClick");
+			$ZMI.setCursorAuto('zmiEnabledBtnClick');
 			// Get object-id.
-			var b = $("result",data).attr("enabled");
+			var b = $("result",data).attr('enabled');
 			if (b=="1") {
-				$container.addClass("enabled");
-				$('.enabled-toggle',$container).removeClass("fa-square").addClass("fa-check-square");
+				$container.addClass('enabled');
+				$('.enabled-toggle',$container).removeClass('fa-square').addClass('fa-check-square');
 			}
 			else {
-				$container.removeClass("enabled");
-				$('.enabled-toggle',$container).removeClass("fa-check-square").addClass("fa-square");
+				$container.removeClass('enabled');
+				$('.enabled-toggle',$container).removeClass('fa-check-square').addClass('fa-square');
 			}
 		});
 	}
@@ -642,7 +642,7 @@
 	 * Export xml.
 	 */
 	function zmiExportBtnClick(sender) {
-		var $fm = $(sender).closest("form");
+		var $fm = $(sender).closest('form');
 		var href = $fm.attr('action')+'?lang='+getZMILang()+'&btn=BTN_EXPORT';
 		$('input[name="id"]:text,input[name="ids:list"]:checked',$fm).each(function(){
 			href += '&ids:list='+$(this).val();
@@ -664,7 +664,7 @@
 	 * Submit form with given parameters.
 	 */
 	function zmiFormSubmit(sender,d) {
-		var $fm = $(sender).closest("form");
+		var $fm = $(sender).closest('form');
 		var html = '';
 		for (var i in d) {
 			$('input[name="' + i + '"]',$fm).remove();
@@ -894,11 +894,11 @@
 			.prepend(zmi_code_default_btn)
 			;
 		// Add Event-Listeners
-		$("table input[name='ids:list']")
+		$('table input[name="ids:list"]')
 			.change(zmiActionButtonsRefresh)
 			;
 		// Clone meta_types select lists from .row_insert-template
-		$("select[name^=attr_type_]")
+		$('select[name^="attr_type_"]')
 			.focus(function(){zmiPopulateTypeSelect(this)})
 			.hover(function(){zmiPopulateTypeSelect(this)})
 			;
@@ -916,10 +916,19 @@
 		});
 	});
 
-// -->
+//-->
 </script>
 
 <script type="text/javascript" charset="UTF-8" src="/++resource++zms_/common/zmi_ace_editor.js"></script>
+
+<!-- Readme: rendered from ZODB attr('readme') via metaobj_manager -->
+<tal:block tal:condition="python:request.get('id')">
+	<tal:block tal:define="id request/id"
+		tal:condition="python:here.getMetaobjAttr(id,'readme')"
+		tal:content="structure python:here.zmi_readme_modal(
+			readme_title=id,
+			readme_url='%s/%s.readme/manage_readme'%(here.absolute_url(),id))">zmi_readme_modal</tal:block>
+</tal:block>
 
 </body>
 </html>

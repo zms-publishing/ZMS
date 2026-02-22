@@ -234,9 +234,11 @@
 <form class="form-horizontal card" tal:attributes="action action" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<legend class="has_tooltip"
-		tal:attributes="title python:here.getZMILangStr('TIP_METACMD')"
-		tal:content="python:here.getZMILangStr('TAB_METACMD')">
-		Metacmd
+		tal:attributes="title python:here.getZMILangStr('TIP_METACMD')">
+		<span tal:content="python:here.getZMILangStr('TAB_METACMD')">Metacmd</span>
+		<span title="Help" class="zmi-readme float-right text-info" onclick="zmiModal('#readme',{title:$('#readme').attr('title')});return false">
+			<i class="far fa-question-circle"></i>
+		</span>
 	</legend>
 	<table id="meta_commands" class="table table-sm table-striped table-bordered mb-0">
 	<thead>
@@ -424,6 +426,12 @@ $(function(){
 //-->
 </script>
 
+<!-- Readme: rendered from ZODB attr('readme') or filesystem readme.md -->
+<tal:block tal:content="structure python:here.zmi_readme_modal(
+		readme_title='ZMS Meta-Command Provider',
+		readme_url='%s/readme'%here.absolute_url())">
+	zmi_readme_modal
+</tal:block>
 <footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 </body>
 </html>

@@ -81,7 +81,12 @@
 	<span class="d-none" id="getAttrs" tal:content="python:here.str_json(here.getAttrs())"></span>
 
 	<tal:block tal:condition="python:here.breadcrumbs_obj_path().index(here.getDocumentElement())==0">
-	<legend>Connectors</legend>
+	<legend>
+		Connectors
+		<span title="Help" class="zmi-readme float-right text-info" onclick="zmiModal('#readme',{title:$('#readme').attr('title')});return false">
+			<i class="far fa-question-circle"></i>
+		</span>
+	</legend>
 	<div class="card-body" tal:define="
 		connectors python:here.get_connectors();
 		available python:here.get_available_connector_ids();
@@ -465,6 +470,12 @@ function zmiFormSubmit(sender,d) {
 //-->
 </script>
 
+<!-- Readme: rendered from ZODB attr('readme') or filesystem readme.md -->
+<tal:block tal:content="structure python:here.zmi_readme_modal(
+		readme_title='ZMS ZCatalog Adapter',
+		readme_url='%s/readme'%here.absolute_url())">
+	zmi_readme_modal
+</tal:block>
 <footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 </body>
 </html>

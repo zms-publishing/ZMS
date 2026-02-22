@@ -8,7 +8,12 @@
 
 <form class="form-horizontal card" name="form0" action="manage_changeProperties" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
-	<legend tal:content="python:here.getZMILangStr('TAB_PROPERTIES')">Properties</legend>
+	<legend>
+		<span tal:content="python:here.getZMILangStr('TAB_PROPERTIES')">Properties</span>
+		<span title="Help" class="zmi-readme float-right text-info" onclick="zmiModal('#readme',{title:$('#readme').attr('title')});return false">
+			<i class="far fa-question-circle"></i>
+		</span>
+	</legend>
 	<div class="card-body">
 		<div class="form-group row">
 			<label class="col-sm-2 control-label mandatory" for="garbage_collection"><span tal:content="python:here.getZMILangStr('ATTR_GARBAGE_COLLECTION')">garbage collection</span></label>
@@ -41,6 +46,12 @@
 </form>
 
 </div><!-- #zmi-tab -->
+<!-- Readme: rendered from ZODB attr('readme') or filesystem readme.md -->
+<tal:block tal:content="structure python:here.zmi_readme_modal(
+		readme_title='ZMS Trashcan',
+		readme_url='%s/readme'%here.absolute_url())">
+	zmi_readme_modal
+</tal:block>
 <footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 </body>
 </html>

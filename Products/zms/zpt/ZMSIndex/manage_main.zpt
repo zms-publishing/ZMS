@@ -32,7 +32,12 @@ function openWindow(url) {
 </script>
 
 <div class="card">
-<legend>ZMSIndex</legend>
+<legend>
+	ZMSIndex
+	<span title="Help" class="zmi-readme float-right text-info" onclick="zmiModal('#readme',{title:$('#readme').attr('title')});return false">
+		<i class="far fa-question-circle"></i>
+	</span>
+</legend>
 <div id="zmsindex" class="collapse show">
 <div class="card-body">
 	<div class="form-group zmi-form-container zms4-row mb-0">
@@ -315,6 +320,12 @@ $(function() {
 
 </form>
 </div><!-- #zmi-tab -->
+<!-- Readme: rendered from ZODB attr('readme') or filesystem readme.md -->
+<tal:block tal:content="structure python:here.zmi_readme_modal(
+		readme_title='ZMS Index',
+		readme_url='%s/readme'%here.absolute_url())">
+	zmi_readme_modal
+</tal:block>
 <footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 </body>
 </html>

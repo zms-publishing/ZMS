@@ -502,9 +502,11 @@
 <form tal:condition="python:not request.get('id')" class="form-horizontal card" action="manage_changeProperties" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 	<legend class="has_tooltip"
-		tal:attributes="title python:here.getZMILangStr('TIP_METAOBJ')"
-		tal:content="python:here.getZMILangStr('TAB_METAOBJ')">
-		Metaobj
+		tal:attributes="title python:here.getZMILangStr('TIP_METAOBJ')">
+		<span tal:content="python:here.getZMILangStr('TAB_METAOBJ')">Metaobj</span>
+		<span title="Help" class="zmi-readme float-right text-info" onclick="zmiModal('#readme',{title:$('#readme').attr('title')});return false">
+			<i class="far fa-question-circle"></i>
+		</span>
 	</legend>
 	<table id="meta_overview" class="table table-striped table-hover table-bordered table-sm mb-0">
 	<thead>
@@ -928,6 +930,15 @@
 		tal:content="structure python:here.zmi_readme_modal(
 			readme_title=id,
 			readme_url='%s/metaobj_readme?id=%s'%(here.absolute_url(),id))">zmi_readme_modal</tal:block>
+</tal:block>
+
+<!-- Readme: filesystem readme.md -->
+ <tal:block tal:condition="python:not request.get('id')">
+	<tal:block tal:content="structure python:here.zmi_readme_modal(
+			readme_title='ZMS Meta-Model Provider',
+			readme_url='%s/readme'%here.absolute_url())">
+		zmi_readme_modal
+	</tal:block>
 </tal:block>
 
 </body>

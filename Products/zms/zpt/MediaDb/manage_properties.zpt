@@ -11,6 +11,9 @@
 			<legend>
 				<i tal:attributes="class python:here.icon_clazz"></i>
 				<tal:block tal:content="python:here.meta_type">the meta_type</tal:block>
+				<span title="Help" class="zmi-readme float-right text-info" onclick="zmiModal('#readme',{title:$('#readme').attr('title')});return false">
+					<i class="far fa-question-circle"></i>
+				</span>
 			</legend>
 		
 			<div class="card-body">
@@ -29,6 +32,12 @@
 		</form>
 	
 	</div><!-- #zmi-tab -->
+<!-- Readme: rendered from ZODB attr('readme') or filesystem readme.md -->
+<tal:block tal:content="structure python:here.zmi_readme_modal(
+		readme_title='ZMS Media Data Manager',
+		readme_url='%s/readme'%here.absolute_url())">
+	zmi_readme_modal
+</tal:block>
 	<footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 </body>
 </html>

@@ -25,7 +25,12 @@
 	class="form-horizontal card" action="manage_changeWorkflow" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 	<input type="hidden" name="key" value="custom"/>
-	<legend>Acquired Workflow</legend>
+	<legend>
+		Acquired Workflow
+		<span title="Help" class="zmi-readme float-right text-info" onclick="zmiModal('#readme',{title:$('#readme').attr('title')});return false">
+			<i class="far fa-question-circle"></i>
+		</span>
+	</legend>
 	<table class="table table-bordered">
 		<thead>
 			<tr>
@@ -51,6 +56,12 @@
 </form>
 
 </div><!-- #zmi-tab -->
+<!-- Readme: rendered from ZODB attr('readme') or filesystem readme.md -->
+<tal:block tal:content="structure python:here.zmi_readme_modal(
+		readme_title='ZMS Workflow Provider',
+		readme_url='%s/readme'%here.absolute_url())">
+	zmi_readme_modal
+</tal:block>
 <footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 </body>
 </html>

@@ -20,3 +20,4 @@ zope.error
 ZopeUndo
 Pillow
 xmltodict
+markdown

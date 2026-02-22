@@ -21,7 +21,6 @@ Products.LDAPUserFolder
 # TEXT
 beautifulsoup4
 lxml
-Markdown
 pyScss
 ftfy
 pdfminer.six

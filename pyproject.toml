@@ -61,6 +61,7 @@ dependencies = [
     "ZopeUndo",
     "Pillow",
     "xmltodict",
+    "markdown",
 ]
 
 [project.optional-dependencies]

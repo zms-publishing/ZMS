@@ -22,6 +22,8 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Persistence import Persistent
 from Acquisition import Implicit
 import OFS.SimpleItem, OFS.ObjectManager
+import os
+import markdown
 # Product Imports.
 from Products.zms import standard
 from Products.zms import _accessmanager
@@ -51,6 +53,7 @@ class ZMSItem(
     __viewPermissions__ = (
         'manage_page_header', 'manage_page_footer', 'manage_tabs',
         'manage', 'manage_main', 'manage_workspace', 'manage_menu',
+        'readme',
       )
     __ac_permissions__=(
       ('View', __viewPermissions__),
@@ -61,6 +64,32 @@ class ZMSItem(
     manage = PageTemplateFile('zpt/object/manage', globals())
     manage_workspace = PageTemplateFile('zpt/object/manage', globals())
     manage_main = PageTemplateFile('zpt/ZMSObject/manage_main', globals())
+
+    # --------------------------------------------------------------------------
+    #  ZMSItem.readme:
+    #  Unified endpoint for readme content rendered as HTML.
+    #  1. ZODB attribute 'readme' (content objects with attr())
+    #  2. Filesystem zpt/<ClassName>/readme.md (admin GUIs)
+    # --------------------------------------------------------------------------
+    def readme(self, REQUEST=None, RESPONSE=None):
+      """Returns readme rendered as HTML"""
+      if RESPONSE is None:
+        RESPONSE = self.REQUEST.RESPONSE
+      RESPONSE.setHeader('Content-Type', 'text/html;charset=utf-8')
+      # 1. Try ZODB attribute 'readme' (content objects)
+      if hasattr(self.aq_base, 'attr'):
+        raw = self.attr('readme')
+        if raw:
+          return self.renderText('markdown', 'text', raw, REQUEST)
+      # 2. Fall back to filesystem readme.md (admin GUIs)
+      pkg_home = os.path.dirname(standard.__file__)
+      class_name = self.__class__.__name__
+      readme_path = os.path.join(pkg_home, 'zpt', class_name, 'readme.md')
+      if os.path.exists(readme_path):
+        with open(readme_path, 'r', encoding='utf-8') as f:
+          raw = f.read()
+        return markdown.markdown(raw, extensions=['tables', 'fenced_code'])
+      return ''
 
     # --------------------------------------------------------------------------
     #  ZMSItem.zmi_body_content:

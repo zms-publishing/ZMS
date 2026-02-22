@@ -64,9 +64,10 @@
 						</div>
 					</div>
 				</tal:block>
+				<span title="Help" class="btn btn-secondary float-right" onclick="zmiModal('#readme',{title:$('#readme').attr('title')});return false"><i class="far fa-question-circle"></i></span>
 			</div><!-- .col-sm-10 -->
 		</div><!-- .form-group -->
-		<div class="form-group row filesystempath" 
+		<div class="form-group row filesystempath"
 			title="File System Path connected to a Versioning Repository. Please, Double-Click for Editing.">
 			<label class="col-sm-2 control-label">System-Path</label>
 			<div class="col-sm-10">
@@ -158,6 +159,11 @@
 		</form>
 	</div><!-- .tab-pane -->
 </div><!-- .tab-content -->
+
+<!-- Readme: rendered from zpt/ZMSRepositoryManager/readme.md -->
+<tal:block tal:content="structure python:here.zmi_readme_modal(
+	readme_title='Repository Manager Help',
+	readme_url='%s/readme'%here.absolute_url())">zmi_readme_modal</tal:block>
 
 </div><!-- #zmi-tab -->
 <footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>

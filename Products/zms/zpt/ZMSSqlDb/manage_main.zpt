@@ -191,39 +191,11 @@
 		metaobj_recordset_main_grid
 	</tal:block>
 </tal:block>
-<!-- Readme: markdown formatted optional 'readme' resource attribute rendered as HTML -->
-<div id="readme" class="modal" 
-	tal:condition="readme"
-	tal:define="readme python:here.attr('readme'); 
-		readme_url python:'%s/%s.readme/manage_readme'%(here.content.metaobj_manager.absolute_url(),here.meta_id)"
-	tal:attributes="title python:here.meta_id; data-readme readme_url">
-	<tal:block tal:condition="python:not isinstance(here.attr('readme'),str)">
-		<script>
-		//<!--
-			$(function() {
-				$(window).on('show.bs.modal', function (event) {
-					if ( $('#readme script').length > 0 ) {
-						$.get($('#readme').data('readme'),'',function(data) {
-							$('#readme').html(data);
-							// Needed for 1st show
-							$('#zmiModalreadme .modal-body').html(data);
-						});
-					}
-				});
-			});
-		//-->
-		</script>
-	</tal:block>
-	<pre tal:condition="python:isinstance(here.attr('readme'),str)"
-		><span tal:define="
-			Std modules/Products.PythonScripts/standard;
-			newline_to_br nocall:Std/newline_to_br;
-			readme_txt python:here.attr('readme')"
-			tal:replace="structure python:context.content.renderText('markdown','text',readme_txt,request)">
-			readme as constant/string
-		</span>
-	</pre>
-</div>
+<!-- Readme: rendered from ZODB attr('readme') or filesystem readme.md -->
+<tal:block tal:condition="python:here.attr('readme')"
+	tal:content="structure python:here.zmi_readme_modal(
+		readme_title=here.meta_id,
+		readme_url='%s/readme'%here.absolute_url())">zmi_readme_modal</tal:block>
 </tal:block>
 
 <tal:block tal:condition="python:request.get('action')=='updateForm'">

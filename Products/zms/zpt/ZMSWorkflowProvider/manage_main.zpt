@@ -17,6 +17,10 @@
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
 <nav id="subTab">
+	<span title="Workflow Manager Help" class="zmi-readme text-info btn float-right"
+		tal:attributes="data-readme python:'%s/%s/readme'%(here.getRootElement().absolute_url(), here.getId())">
+		<i class="far fa-question-circle"></i>
+	</span>
 	<ul class="nav nav-tabs" role="tablist" tal:attributes="title python:here.getRevision()">
 		<li class="nav-item">
 			<a class="nav-link" href="#workflow_properties" data-toggle="tab" 

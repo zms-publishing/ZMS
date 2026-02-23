@@ -156,7 +156,7 @@ $ZMI.registerReady(function(){
 		zmiModal(null, {
 			id: 'zmiModalreadme',
 			title: title,
-			body: '<div class="p-3 text-center"><i class="fas fa-spinner fa-spin"></i></div>',
+			body: '<div class="p-3 text-center"><i class="text-primary fas fa-spinner fa-spin fa-3x"></i></div>',
 			modal: 'show'
 		});
 		$.get(url, '', function(data) {

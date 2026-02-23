@@ -21,3 +21,4 @@ ZopeUndo
 Pillow
 xmltodict
 ruamel.yaml
+Markdown

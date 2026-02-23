@@ -188,12 +188,12 @@ def initialize(context):
         OFS.misc_.misc_.zms['confdict']=confdict
 
         # register current ZMS product name
-        product_name = 'ZMS6'
+        product_name = 'ZMS5'
         try:
             # Try importlib.metadata (Python 3.8+, standard library)
             from importlib.metadata import metadata
             pkg_metadata = metadata('ZMS')
-            description = pkg_metadata.get('summary', 'ZMS6: Simplified Content Modelling')
+            description = pkg_metadata.get('summary', 'ZMS5: Simplified Content Modelling')
             if description and description.startswith('ZMS'):
                 base_name = description.split(':')[0].strip()
         except Exception:

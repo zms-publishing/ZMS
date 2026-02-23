@@ -233,6 +233,7 @@ class ZMSRepositoryManager(
       
       if btn == 'save':
         self.ignore_orphans = REQUEST.get('ignore_orphans','')!=''
+        self.setConfProperty('ZMS.conf.ignore.sys_conf',REQUEST.get('ignore_sys_conf',0))
         self.setConfProperty('ZMS.conf.path',REQUEST.get('basepath',''))
         self.update_direction = REQUEST.get('update_direction','Loading')
         message = self.getZMILangStr('MSG_CHANGED')

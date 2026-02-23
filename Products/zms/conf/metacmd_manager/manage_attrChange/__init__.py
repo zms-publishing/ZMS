@@ -33,7 +33,7 @@ class manage_attrChange:
 	nodes = "{$}"
 
 	# Package
-	package = "com.zms.foundation.metacmd.maintenance"
+	package = "com.zms.custom.metacmd.maintenance"
 
 	# Revision
 	revision = "5.2.1"

@@ -101,7 +101,10 @@
 			></a>
 			<div class="btn zmi-changes">
 				<span tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')+' '+here.getLangFmtDate(here.attr('change_dt'))+' '+here.getZMILangStr('BY')+' '+here.attr('change_uid')">change_dt by change_uid</span>
-				<span title="Readme" tal:condition="python:here.attr('readme')" class="zmi-readme text-primary zmi-state" onclick="zmiModal('#readme',{title:$('#readme').attr('title')});return false"><i class="far fa-question-circle"></i></span>
+				<span tal:condition="python:here.attr('readme')" class="zmi-readme text-primary zmi-state"
+					tal:attributes="title here/meta_id; data-readme python:'%s/readme'%here.absolute_url()">
+					<i class="far fa-question-circle"></i>
+				</span>
 			</div>
 		</div><!-- .card-header -->
 		<div id="attrActivity" class="collapse">
@@ -191,39 +194,6 @@
 		metaobj_recordset_main_grid
 	</tal:block>
 </tal:block>
-<!-- Readme: markdown formatted optional 'readme' resource attribute rendered as HTML -->
-<div id="readme" class="modal" 
-	tal:condition="readme"
-	tal:define="readme python:here.attr('readme'); 
-		readme_url python:'%s/%s.readme/manage_readme'%(here.content.metaobj_manager.absolute_url(),here.meta_id)"
-	tal:attributes="title python:here.meta_id; data-readme readme_url">
-	<tal:block tal:condition="python:not isinstance(here.attr('readme'),str)">
-		<script>
-		//<!--
-			$(function() {
-				$(window).on('show.bs.modal', function (event) {
-					if ( $('#readme script').length > 0 ) {
-						$.get($('#readme').data('readme'),'',function(data) {
-							$('#readme').html(data);
-							// Needed for 1st show
-							$('#zmiModalreadme .modal-body').html(data);
-						});
-					}
-				});
-			});
-		//-->
-		</script>
-	</tal:block>
-	<pre tal:condition="python:isinstance(here.attr('readme'),str)"
-		><span tal:define="
-			Std modules/Products.PythonScripts/standard;
-			newline_to_br nocall:Std/newline_to_br;
-			readme_txt python:here.attr('readme')"
-			tal:replace="structure python:context.content.renderText('markdown','text',readme_txt,request)">
-			readme as constant/string
-		</span>
-	</pre>
-</div>
 </tal:block>
 
 <tal:block tal:condition="python:request.get('action')=='updateForm'">

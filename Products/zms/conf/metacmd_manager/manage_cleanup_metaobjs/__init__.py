@@ -31,7 +31,7 @@ class manage_cleanup_metaobjs:
 	nodes = "{$}"
 
 	# Package
-	package = "com.zms.foundation.metacmd.maintenance"
+	package = "com.zms.custom.metacmd.maintenance"
 
 	# Revision
 	revision = "0.0.1"

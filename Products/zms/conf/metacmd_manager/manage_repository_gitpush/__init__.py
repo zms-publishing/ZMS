@@ -31,7 +31,7 @@ class manage_repository_gitpush:
 	nodes = "{$}"
 
 	# Package
-	package = "com.zms.foundation.metacmd.gitbridge"
+	package = "com.zms.custom.metacmd.gitbridge"
 
 	# Revision
 	revision = "5.1.0"

@@ -62,6 +62,7 @@ dependencies = [
     "Pillow",
     "xmltodict",
     "ruamel.yaml",
+    "Markdown",
 ]
 
 [project.optional-dependencies]

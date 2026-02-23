@@ -103,7 +103,7 @@ class ZMSSysConf(
     """
     def provideRepository(self, ids=None):
       r = {}
-      valid_ids = ['sys_conf']
+      valid_ids = ['sys_conf'] if not bool(self.getConfProperty('ZMS.conf.ignore.sys_conf', False)) else []
       if ids is None:
         ids = valid_ids
       for id in [x for x in ids if x in valid_ids]:

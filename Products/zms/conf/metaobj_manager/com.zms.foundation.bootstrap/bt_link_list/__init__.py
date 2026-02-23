@@ -23,7 +23,7 @@ class bt_link_list:
 	name = "Links"
 
 	# Package
-	package = "com.zms.foundation.bootstrap"
+	package = "com.zms.custom.bootstrap"
 
 	# Revision
 	revision = "5.1.4"

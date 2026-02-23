@@ -175,9 +175,6 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST, minimal_init 
   ### Init ZMS index.
   obj.getZMSIndex()
 
-  ### Init ZMS default actions.
-  _confmanager.initConf(obj, 'conf:manage_tab_*')
-
   ### Init default-configuration.
   ### ###################################
   ### CAVE: 

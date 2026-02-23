@@ -12,6 +12,10 @@
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[here.manage_sub_options()[0]])">zmi_breadcrumbs</tal:block>
 
 <nav id="subTab">
+	<span title="Repository Manager Help" class="zmi-readme text-info btn float-right"
+		tal:attributes="data-readme python:'%s/readme'%here.absolute_url()">
+		<i class="far fa-question-circle"></i>
+	</span>
 	<ul class="nav nav-tabs">
 		<li class="nav-item">
 			<a id="nav-link-diff" href="#diff" class="nav-link active show" data-toggle="tab" role="tab">
@@ -66,7 +70,7 @@
 				</tal:block>
 			</div><!-- .col-sm-10 -->
 		</div><!-- .form-group -->
-		<div class="form-group row filesystempath" 
+		<div class="form-group row filesystempath"
 			title="File System Path connected to a Versioning Repository. Please, Double-Click for Editing.">
 			<label class="col-sm-2 control-label">System-Path</label>
 			<div class="col-sm-10">
@@ -136,6 +140,16 @@
 				<div class="col-sm-10">
 					<span class="btn btn-default">
 						<input type="checkbox" name="ignore_orphans" value="1" tal:attributes="checked python:['','checked'][here.get_ignore_orphans()]" />
+					</span>
+				</div>
+			</div><!-- .form-group -->
+			<div class="form-group row">
+				<label class="col-sm-2 control-label" title="Ignore system configuration file">
+					Ignore sys_conf
+				</label>
+				<div class="col-sm-10">
+					<span class="btn btn-default">
+						<input type="checkbox" name="ignore_sys_conf:int" value="1" tal:attributes="checked python:['','checked'][zmscontext.getConfProperty('ZMS.conf.ignore.sys_conf',0)!=0]" />
 					</span>
 				</div>
 			</div><!-- .form-group -->

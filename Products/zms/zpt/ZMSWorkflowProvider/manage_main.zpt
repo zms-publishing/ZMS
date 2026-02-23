@@ -629,10 +629,11 @@
 	}
 	ul.performer {
 		list-style:none;
-		padding:2px;
-		margin:2px;
-		background-color:#FFF;
-		opacity:0.50;
+		padding: .375rem;
+		margin: .375rem -.75rem -.375rem;
+		background-color: #ffffff;
+		opacity: 0.50;
+		width: calc(100% + 1.5rem);
 	}
 	/* Patch bootstrap */
 	.table tbody>tr>td {border-top:0;}

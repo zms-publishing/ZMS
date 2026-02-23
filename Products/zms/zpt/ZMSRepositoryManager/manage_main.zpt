@@ -12,7 +12,7 @@
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[here.manage_sub_options()[0]])">zmi_breadcrumbs</tal:block>
 
 <nav id="subTab">
-	<span title="Repository Manager Help" class="zmi-readme btn float-right text-info"
+	<span title="Repository Manager Help" class="zmi-readme text-info btn float-right"
 		tal:attributes="data-readme python:'%s/readme'%here.absolute_url()">
 		<i class="far fa-question-circle"></i>
 	</span>

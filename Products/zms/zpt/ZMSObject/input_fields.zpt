@@ -26,7 +26,9 @@
 		<div class="card-header attr_last_modified clearfix btn-collapse">
 			<div class="btn-group align-items-center">
 				<a id="zmi-toggle-activity-btn" class="btn card-toggle" data-toggle="collapse" href="#attrActivity"
-					><i class="fas fa-invisible"></i> <tal:block tal:content="python:here.getZMILangStr('ATTR_ACTIVITY')">Activity</tal:block></a>
+					><i class="fas fa-invisible"></i> 
+					<tal:block tal:content="python:here.getZMILangStr('ATTR_ACTIVITY')">Activity</tal:block>
+				</a>
 				<div class="btn zmi-changes"
 						tal:condition="not:python:request.get('ZMS_INSERT',False)" 
 						tal:define="change_uid python:here.attr('change_uid');change_dt python:here.attr('change_dt')">
@@ -35,11 +37,11 @@
 					<tal:block tal:content="python:here.getZMILangStr('BY')">by</tal:block>
 					<span class="zmi-change-uid" tal:content="change_uid">the change-uid</span>
 					<tal:block tal:content="structure python:here.zmi_version_object_state(here,request)">zmi_version_object_state</tal:block>
+					<span tal:condition="python:here.attr('readme')" class="zmi-readme text-info"
+						tal:attributes="title meta_id; data-readme python:'%s/readme'%here.absolute_url()">
+						<i class="far fa-question-circle"></i>
+					</span>
 				</div>
-				<span tal:condition="python:here.attr('readme')" class="zmi-readme text-info"
-					tal:attributes="title meta_id; data-readme python:'%s/readme'%here.absolute_url()">
-					<i class="far fa-question-circle"></i>
-				</span>
 			</div>
 			<div class="zmi-action loaded btn-group pull-right dropleft" tal:condition="not:python: request.get('ZMS_INSERT',False)">
 				<tal:block tal:define="

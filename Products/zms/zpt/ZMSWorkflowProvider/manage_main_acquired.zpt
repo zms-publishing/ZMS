@@ -27,7 +27,7 @@
 	<input type="hidden" name="key" value="custom"/>
 	<legend>
 		Acquired Workflow
-		<span title="ZMS Workflow Provider" class="zmi-readme float-right text-info"
+		<span title="ZMS Workflow Provider" class="zmi-readme text-info ml-2"
 			tal:attributes="data-readme python:'%s/readme'%here.absolute_url()">
 			<i class="far fa-question-circle"></i>
 		</span>

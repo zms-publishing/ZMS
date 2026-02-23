@@ -57,7 +57,15 @@
 			"test*.py"
 		],
 		"python.testing.pytestEnabled": false,
-		"python.testing.unittestEnabled": true
+		"python.testing.unittestEnabled": true,
+		"debugpy.debugJustMyCode": false,
+		"python-envs.pythonProjects": [
+			{
+				"path": "",
+				"envManager": "ms-python.python:venv",
+				"packageManager": "ms-python.python:pip"
+			}
+		]
 	},
 
 	"launch": {
@@ -67,6 +75,7 @@
 				"name": "ZMS5-DEV",
 				"request": "launch",
 				"type": "debugpy",
+				"python": "/home/zope/vpy313/bin/python3",
 				"program": "/home/zope/vpy313/bin/runwsgi",
 				"justMyCode": false,
 				"console": "integratedTerminal",

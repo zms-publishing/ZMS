@@ -68,9 +68,12 @@
 	<input type="hidden" name="target" value="zmi_manage_tabs_message">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<legend class="has_tooltip"
-		tal:attributes="title python:here.getZMILangStr('TIP_METADICT')"
-		tal:content="python:here.getZMILangStr('TAB_METADATA')">
-		Metadata
+		tal:attributes="title python:here.getZMILangStr('TIP_METADICT')">
+		<span tal:content="python:here.getZMILangStr('TAB_METADATA')">Metadata</span>
+		<span title="ZMS Meta-Model Provider" class="zmi-readme text-info ml-2"
+			tal:attributes="data-readme python:'%s/readme'%here.absolute_url()">
+			<i class="far fa-question-circle"></i>
+		</span>
 	</legend>
 	<table id="meta_properties" class="table table-striped table-bordered table-sm zmi-sortable">
 	<thead>

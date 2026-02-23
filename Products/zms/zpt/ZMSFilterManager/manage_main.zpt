@@ -297,9 +297,12 @@
 <form class="form-horizontal card" tal:attributes="action action" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<legend class="has_tooltip" 
-		tal:attributes="title python:here.getZMILangStr('TIP_FILTER')" 
-		tal:content="python:here.getZMILangStr('ATTR_FILTER')">
-		Filter
+		tal:attributes="title python:here.getZMILangStr('TIP_FILTER')">
+		<span tal:content="python:here.getZMILangStr('ATTR_FILTER')">Filter</span>
+		<span title="ZMS Filter Manager" class="zmi-readme text-info ml-2"
+			tal:attributes="data-readme python:'%s/readme'%here.absolute_url()">
+			<i class="far fa-question-circle"></i>
+		</span>
 	</legend>
 	<table class="table table-sm table-striped table-bordered zmi-sortable mb-0">
 		<thead>
@@ -426,7 +429,6 @@
 </form>
 
 </div><!-- #zmi-tab -->
-
 <footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 
 <style>

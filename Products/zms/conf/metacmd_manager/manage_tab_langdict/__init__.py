@@ -31,7 +31,7 @@ class manage_tab_langdict:
 	nodes = "{$}"
 
 	# Package
-	package = "com.zms.foundation.metacmd.tabs"
+	package = "com.zms.custom.metacmd.tabs"
 
 	# Revision
 	revision = "5.0.1"

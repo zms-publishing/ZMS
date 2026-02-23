@@ -83,7 +83,8 @@
 	<tal:block tal:condition="python:here.breadcrumbs_obj_path().index(here.getDocumentElement())==0">
 	<legend>
 		Connectors
-		<span title="Help" class="zmi-readme float-right text-info" onclick="zmiModal('#readme',{title:$('#readme').attr('title')});return false">
+		<span title="ZMS ZCatalog Adapter" class="zmi-readme float-right text-info"
+			tal:attributes="data-readme python:'%s/readme'%here.absolute_url()">
 			<i class="far fa-question-circle"></i>
 		</span>
 	</legend>
@@ -470,12 +471,6 @@ function zmiFormSubmit(sender,d) {
 //-->
 </script>
 
-<!-- Readme: rendered from ZODB attr('readme') or filesystem readme.md -->
-<tal:block tal:content="structure python:here.zmi_readme_modal(
-		readme_title='ZMS ZCatalog Adapter',
-		readme_url='%s/readme'%here.absolute_url())">
-	zmi_readme_modal
-</tal:block>
 <footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 </body>
 </html>

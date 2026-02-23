@@ -36,7 +36,10 @@
 					<span class="zmi-change-uid" tal:content="change_uid">the change-uid</span>
 					<tal:block tal:content="structure python:here.zmi_version_object_state(here,request)">zmi_version_object_state</tal:block>
 				</div>
-				<span title="Readme" tal:condition="python:here.attr('readme')" class="zmi-readme text-info" onclick="zmiModal('#readme',{title:$('#readme').attr('title')});return false"><i class="far fa-question-circle"></i></span>
+				<span tal:condition="python:here.attr('readme')" class="zmi-readme text-info"
+					tal:attributes="title meta_id; data-readme python:'%s/readme'%here.absolute_url()">
+					<i class="far fa-question-circle"></i>
+				</span>
 			</div>
 			<div class="zmi-action loaded btn-group pull-right dropleft" tal:condition="not:python: request.get('ZMS_INSERT',False)">
 				<tal:block tal:define="
@@ -313,12 +316,6 @@
 			</tal:block>
 		</tal:block>
 	</div><!-- .card -->
-
-	<!-- Readme: rendered from ZODB attr('readme') or filesystem readme.md -->
-	<tal:block tal:condition="python:here.attr('readme')"
-		tal:content="structure python:here.zmi_readme_modal(
-			readme_title=meta_id,
-			readme_url='%s/readme'%here.absolute_url())">zmi_readme_modal</tal:block>
 
 </tal:block>
 

@@ -565,6 +565,29 @@ $ZMI.registerReady(function(){
 });
 
 /**
+ * Self-contained ZMI Readme Button
+ * Handles click on .zmi-readme[data-readme] elements:
+ * reads the readme URL from data-readme and the title from the title attribute,
+ * opens a modal and loads the readme content via AJAX.
+ */
+$(document).on('click', '.zmi-readme[data-readme]', function(e) {
+	e.preventDefault();
+	var $btn = $(this);
+	var url = $btn.data('readme');
+	var title = $btn.attr('title') || 'Help';
+	zmiModal(null, {
+		id: 'zmiModalreadme',
+		title: title,
+		body: '<div class="p-3 text-center"><i class="fas fa-spinner fa-spin"></i></div>',
+		modal: 'show'
+	});
+	$.get(url, '', function(data) {
+		$('#zmiModalreadme .modal-body').html(data);
+	});
+	document.body.style.paddingRight = '0px'; // Fix scrollbar shift when opening modal
+});
+
+/**
  * Unlock form
  */
 function zmiUnlockForm(form_id) {

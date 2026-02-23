@@ -12,7 +12,10 @@
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[here.manage_sub_options()[0]])">zmi_breadcrumbs</tal:block>
 
 <nav id="subTab">
-	<span title="Help" class="btn float-right text-info" onclick="zmiModal('#readme',{title:$('#readme').attr('title')});return false"><i class="far fa-question-circle"></i></span>
+	<span title="Repository Manager Help" class="zmi-readme btn float-right text-info"
+		tal:attributes="data-readme python:'%s/readme'%here.absolute_url()">
+		<i class="far fa-question-circle"></i>
+	</span>
 	<ul class="nav nav-tabs">
 		<li class="nav-item">
 			<a id="nav-link-diff" href="#diff" class="nav-link active show" data-toggle="tab" role="tab">
@@ -159,11 +162,6 @@
 		</form>
 	</div><!-- .tab-pane -->
 </div><!-- .tab-content -->
-
-<!-- Readme: rendered from zpt/ZMSRepositoryManager/readme.md -->
-<tal:block tal:content="structure python:here.zmi_readme_modal(
-	readme_title='Repository Manager Help',
-	readme_url='%s/readme'%here.absolute_url())">zmi_readme_modal</tal:block>
 
 </div><!-- #zmi-tab -->
 <footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>

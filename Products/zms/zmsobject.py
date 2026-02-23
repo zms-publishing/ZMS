@@ -110,7 +110,6 @@ class ZMSObject(ZMSItem.ZMSItem,
     zmi_tabs = PageTemplateFile('zpt/common/zmi_tabs', globals())
     zmi_tabs_sub = PageTemplateFile('zpt/common/zmi_tabs_sub', globals())
     zmi_ace_editor = PageTemplateFile('zpt/common/zmi_ace_editor', globals())
-    zmi_readme_modal = PageTemplateFile('zpt/common/zmi_readme_modal', globals())
 
     # Templates.
     # ----------

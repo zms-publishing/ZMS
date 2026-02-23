@@ -122,7 +122,8 @@
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<legend>
 		<span tal:content="python:here.getZMILangStr('TAB_CHARFORMATS')">Char-Formats</span>
-		<span title="Help" class="zmi-readme float-right text-info" onclick="zmiModal('#readme',{title:$('#readme').attr('title')});return false">
+		<span title="ZMS Format Provider" class="zmi-readme float-right text-info"
+			tal:attributes="data-readme python:'%s/readme'%here.absolute_url()">
 			<i class="far fa-question-circle"></i>
 		</span>
 	</legend>
@@ -230,12 +231,6 @@ $ZMI.registerReady(function(){
 });
 
 </script>
-<!-- Readme: rendered from ZODB attr('readme') or filesystem readme.md -->
-<tal:block tal:content="structure python:here.zmi_readme_modal(
-		readme_title='ZMS Format Provider',
-		readme_url='%s/readme'%here.absolute_url())">
-	zmi_readme_modal
-</tal:block>
 <footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 </body>
 </html>

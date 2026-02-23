@@ -27,7 +27,8 @@
 	<input type="hidden" name="key" value="custom"/>
 	<legend>
 		Acquired Workflow
-		<span title="Help" class="zmi-readme float-right text-info" onclick="zmiModal('#readme',{title:$('#readme').attr('title')});return false">
+		<span title="ZMS Workflow Provider" class="zmi-readme float-right text-info"
+			tal:attributes="data-readme python:'%s/readme'%here.absolute_url()">
 			<i class="far fa-question-circle"></i>
 		</span>
 	</legend>
@@ -56,12 +57,6 @@
 </form>
 
 </div><!-- #zmi-tab -->
-<!-- Readme: rendered from ZODB attr('readme') or filesystem readme.md -->
-<tal:block tal:content="structure python:here.zmi_readme_modal(
-		readme_title='ZMS Workflow Provider',
-		readme_url='%s/readme'%here.absolute_url())">
-	zmi_readme_modal
-</tal:block>
 <footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 </body>
 </html>

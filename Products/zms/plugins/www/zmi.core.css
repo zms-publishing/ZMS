@@ -465,7 +465,7 @@ footer .back-to-top.hide {
 #zmi-tab .card .card-header.btn-collapse .zmi-changes,
 #zmiIframeAddDialog .card .card-header.btn-collapse .zmi-changes {
 	opacity:0.5;
-	cursor:help;
+	cursor:auto;
 }
 @media (max-width: 546px) {
 	#zmi-tab .card .card-header.btn-collapse .zmi-changes,

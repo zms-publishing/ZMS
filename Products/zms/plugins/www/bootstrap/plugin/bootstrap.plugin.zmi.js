@@ -134,13 +134,36 @@ $ZMI.registerReady(function(){
 	}
 
 	// Context-Sensitive Help On Labels
-	$(".help").each(function() {
+	$('.help').each(function() {
 			$(this).hide();
 			var data_for = $(this).attr("data-for");
-			$("label[for="+data_for+"], label[for="+data_for+"_"+getZMILang()+"]").each(function() {
+			$('label[for="'+data_for+'"], label[for="'+data_for+'_'+getZMILang()+'"]').each(function() {
 					$(this).append('<i class="fas fa-info-circle text-info ml-1" title="'+getZMILangStr('TAB_HELP')+'..." onclick="var evt=arguments[0]||window.event;evt.stopPropagation();zmiModal(\'div.help[data-for='+data_for+']\',{title:\''+getZMILangStr('TAB_HELP')+': '+$(this).text().trim()+'\'})"></i>');
 				});
 		});
+
+	/**
+	 * Self-contained ZMI Readme Button
+	 * Handles click on .zmi-readme[data-readme] elements:
+	 * reads the readme URL from data-readme and the title from the title attribute,
+	 * opens a modal and loads the readme content via AJAX.
+	 */
+	$('.zmi-readme[data-readme]').on('click', function(e) {
+		e.preventDefault();
+		var $btn = $(this);
+		var url = $btn.data('readme');
+		var title = $btn.attr('title') || 'Help';
+		zmiModal(null, {
+			id: 'zmiModalreadme',
+			title: title,
+			body: '<div class="p-3 text-center"><i class="fas fa-spinner fa-spin"></i></div>',
+			modal: 'show'
+		});
+		$.get(url, '', function(data) {
+			$('#zmiModalreadme .modal-body').html(data);
+		});
+		document.body.style.paddingRight = '0px'; // Fix scrollbar shift when opening modal
+	});
 
 	// Tooltip
 	$('[data-toggle="tooltip"]').tooltip();
@@ -564,28 +587,6 @@ $ZMI.registerReady(function(){
 
 });
 
-/**
- * Self-contained ZMI Readme Button
- * Handles click on .zmi-readme[data-readme] elements:
- * reads the readme URL from data-readme and the title from the title attribute,
- * opens a modal and loads the readme content via AJAX.
- */
-$(document).on('click', '.zmi-readme[data-readme]', function(e) {
-	e.preventDefault();
-	var $btn = $(this);
-	var url = $btn.data('readme');
-	var title = $btn.attr('title') || 'Help';
-	zmiModal(null, {
-		id: 'zmiModalreadme',
-		title: title,
-		body: '<div class="p-3 text-center"><i class="fas fa-spinner fa-spin"></i></div>',
-		modal: 'show'
-	});
-	$.get(url, '', function(data) {
-		$('#zmiModalreadme .modal-body').html(data);
-	});
-	document.body.style.paddingRight = '0px'; // Fix scrollbar shift when opening modal
-});
 
 /**
  * Unlock form

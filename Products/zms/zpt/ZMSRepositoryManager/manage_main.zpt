@@ -13,7 +13,7 @@
 
 <nav id="subTab">
 	<span title="Repository Manager Help" class="zmi-readme text-info btn float-right"
-		tal:attributes="data-readme python:'%s/readme'%here.absolute_url()">
+		tal:attributes="data-readme python:'%s/%s/readme'%(here.getRootElement().absolute_url(), here.getId())">
 		<i class="far fa-question-circle"></i>
 	</span>
 	<ul class="nav nav-tabs">

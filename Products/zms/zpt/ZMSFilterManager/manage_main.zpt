@@ -300,7 +300,7 @@
 		tal:attributes="title python:here.getZMILangStr('TIP_FILTER')">
 		<span tal:content="python:here.getZMILangStr('ATTR_FILTER')">Filter</span>
 		<span title="ZMS Filter Manager" class="zmi-readme text-info ml-2"
-			tal:attributes="data-readme python:'%s/readme'%here.absolute_url()">
+			tal:attributes="data-readme python:'%s/%s/readme'%(here.getRootElement().absolute_url(), here.getId())">
 			<i class="far fa-question-circle"></i>
 		</span>
 	</legend>

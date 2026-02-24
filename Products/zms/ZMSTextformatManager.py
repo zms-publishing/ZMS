@@ -31,6 +31,10 @@ from Products.zms import standard
 ################################################################################
 ################################################################################
 class ZMSTextformatManager(object):
+    """
+    Manages block formats (textformats) for ZMS block / rich-text editing,
+    including XML import/export, CRUD operations, and reordering.
+    """
 
     ############################################################################
     #

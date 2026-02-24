@@ -171,6 +171,16 @@
         
 
         
+            <div class="itemName"><code><a href="#readme" class="internal-link" title="zms.ZMSItem.ZMSItem.readme">readme</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
             <div class="itemName"><code><a href="#zmi_body_class" class="internal-link" title="zms.ZMSItem.ZMSItem.zmi_body_class">zmi<wbr></wbr>_body<wbr></wbr>_class</a></code>
             </div>
         
@@ -240,7 +250,7 @@
         
 
         
-            <div class="itemName"><code><a href="#__doc__" class="internal-link" title="zms.ZMSItem.ZMSItem.__doc__">__doc__</a></code>
+            <div class="itemName"><code><a href="#__roles__" class="internal-link" title="zms.ZMSItem.ZMSItem.__roles__">__roles__</a></code>
             </div>
         
 
@@ -372,12 +382,23 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSItem</span>(OFS.ObjectManager.ObjectManager, OFS.SimpleItem.Item, Persistent, Implicit): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSItem.py#L37" class="sourceLink">(source)</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSItem</span>(OFS.ObjectManager.ObjectManager, OFS.SimpleItem.Item, Persistent, Implicit): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSItem.py#L39" class="sourceLink">(source)</a></code></p>
           <p><a href="classIndex.html#zms.ZMSItem.ZMSItem">View In Hierarchy</a></p>
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>ZMS base infrastructure class providing core Zope integration and basic content management.</p>
+<p>ZMSItem serves as the foundation for all ZMS content objects. It provides:</p>
+<ul class="rst-simple">
+<li>Core Zope integration through ObjectManager and SimpleItem</li>
+<li>ZODB persistence and Acquisition support</li>
+<li>ZMI (Zope Management Interface) utilities and templates</li>
+<li>Request handling and page rendering</li>
+<li>Access control permissions framework</li>
+<li>Readme endpoint for documentation</li>
+</ul>
+<p>Subclasses extend ZMSItem with domain-specific functionality.</p>
+</div>
         </div>
 
         <div id="splitTables">
@@ -407,6 +428,11 @@
   </tr><tr class="method">
     
     <td>Method</td>
+    <td><code><a href="#readme" class="internal-link" title="zms.ZMSItem.ZMSItem.readme">readme</a></code></td>
+    <td>Returns readme rendered as HTML</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
     <td><code><a href="#zmi_body_class" class="internal-link" title="zms.ZMSItem.ZMSItem.zmi_body_class">zmi<wbr></wbr>_body<wbr></wbr>_class</a></code></td>
     <td><span class="undocumented">Undocumented</span></td>
   </tr><tr class="method">
@@ -432,7 +458,7 @@
   </tr><tr class="classvariable">
     
     <td>Class Variable</td>
-    <td><code><a href="#__doc__" class="internal-link" title="zms.ZMSItem.ZMSItem.__doc__">__doc__</a></code></td>
+    <td><code><a href="#__roles__" class="internal-link" title="zms.ZMSItem.ZMSItem.__roles__">__roles__</a></code></td>
     <td><span class="undocumented">Undocumented</span></td>
   </tr><tr class="classvariable">
     
@@ -485,7 +511,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">breadcrumbs_obj_path</span><span class="function-signature">(self, portalMaster=True)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSItem.py#L184">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSItem.py#L223">
       
       (source)
     </a>
@@ -512,7 +538,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">display_icon</span><span class="function-signature">(self, *args, **kwargs)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSItem.py#L166">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSItem.py#L205">
       
       (source)
     </a>
@@ -539,7 +565,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">f_standard_html_request</span><span class="function-signature">(self, *args, **kwargs)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSItem.py#L154">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSItem.py#L193">
       
       (source)
     </a>
@@ -566,7 +592,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getTitlealt</span><span class="function-signature">(self, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSItem.py#L177">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSItem.py#L216">
       
       (source)
     </a>
@@ -583,6 +609,33 @@
 </div><div class="basemethod">
   
   
+  <a name="zms.ZMSItem.ZMSItem.readme">
+    
+  </a>
+  <a name="readme">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">readme</span><span class="function-signature">(self, REQUEST=None, RESPONSE=None)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSItem.py#L82">
+      
+      (source)
+    </a>
+    <a class="headerLink" href="#readme" title="zms.ZMSItem.ZMSItem.readme">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Returns readme rendered as HTML</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
   <a name="zms.ZMSItem.ZMSItem.zmi_body_class">
     
   </a>
@@ -593,7 +646,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">zmi_body_class</span><span class="function-signature">(self, *args, **kwargs)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSItem.py#L82">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSItem.py#L121">
       
       (source)
     </a>
@@ -620,7 +673,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">zmi_body_content</span><span class="function-signature">(self, *args, **kwargs)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSItem.py#L68">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSItem.py#L107">
       
       (source)
     </a>
@@ -647,7 +700,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">zmi_manage_menu</span><span class="function-signature">(self, *args, **kwargs)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSItem.py#L76">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSItem.py#L115">
       
       (source)
     </a>
@@ -674,7 +727,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">zmi_page_request</span><span class="function-signature">(self, *args, **kwargs)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSItem.py#L117">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSItem.py#L156">
       
       (source)
     </a>
@@ -700,7 +753,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">__ac_permissions__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSItem.py#L55">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSItem.py#L66">
       
       (source)
     </a>
@@ -718,20 +771,20 @@
 </div><div class="baseclassvariable">
   
   
-  <a name="zms.ZMSItem.ZMSItem.__doc__">
+  <a name="zms.ZMSItem.ZMSItem.__roles__">
     
   </a>
-  <a name="__doc__">
+  <a name="__roles__">
     
   </a>
   <div class="functionHeader">
     
-    <span class="py-defname">__doc__</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSItem.py#L45">
+    <span class="py-defname">__roles__</span> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSItem.py#L60">
       
       (source)
     </a>
-    <a class="headerLink" href="#__doc__" title="zms.ZMSItem.ZMSItem.__doc__">
+    <a class="headerLink" href="#__roles__" title="zms.ZMSItem.ZMSItem.__roles__">
       
       
       ¶
@@ -754,7 +807,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">__version__</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSItem.py#L47">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSItem.py#L59">
       
       (source)
     </a>
@@ -781,7 +834,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">__viewPermissions__</span>: <code>tuple[<wbr></wbr>str, <wbr></wbr><span class="rst-variable-ellipsis">...</span>]</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSItem.py#L51">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSItem.py#L61">
       
       (source)
     </a>
@@ -808,7 +861,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSItem.py#L61">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSItem.py#L72">
       
       (source)
     </a>
@@ -835,7 +888,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_main</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSItem.py#L63">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSItem.py#L74">
       
       (source)
     </a>
@@ -862,7 +915,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_workspace</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSItem.py#L62">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSItem.py#L73">
       
       (source)
     </a>
@@ -890,7 +943,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">_zmi_page_request</span><span class="function-signature">(self, *args, **kwargs)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSItem.py#L101">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSItem.py#L140">
       
       (source)
     </a>

@@ -138,7 +138,7 @@ def get_suggest_terms(self, q='Lorem', index_name='myzms', field_names=['title',
 					cleaned_term = remove_diacritics(term.lower())
 					if cleaned_term.startswith(cleaned_q_prefix) and cleaned_term not in cleaned_q_terms:
 						# Only the prefix match gets added here. The other terms don't get altered.
-						term_without_non_word_chars = re.sub("[^\w-]+", "", term)
+						term_without_non_word_chars = re.sub(r"[^\w-]+", "", term)
 						suggestion_terms = q_terms.copy()
 						suggestion_terms.append(term_without_non_word_chars)
 						suggestion = ' '.join(suggestion_terms)

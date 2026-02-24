@@ -1,0 +1,7319 @@
+ABOUT:
+  ger: Impressum
+  eng: About
+  ned: Over
+  fra: Mentions légales
+  ita: Note legali
+  esp: Aviso legal
+  chi: 关于
+  fas: درباره
+  rus: Об импорте
+  hin: के बारे में
+  ara: حول
+  vie: Giới thiệu
+  heb: אודות
+
+ACTION_MANAGE_WFTRANSITION:
+  ger: Archivierte Version
+  eng: Archived version
+  ned: Gearchiveerde versie
+  fra: Version archivée
+  ita: Versione archiviata
+  esp: Versión archivada
+  chi: 归档版本
+  fas: نسخه بایگانی شده
+  rus: Архивная версия
+  hin: संग्रहीत संस्करण
+  ara: الإصدار المؤرشف
+  vie: Phiên bản đã lưu trữ
+  heb: גרסה בארכיון
+
+ACTION_DELETE:
+  ger: Löschen
+  eng: Delete
+  ned: Verwijderen
+  fra: Supprimer
+  ita: Cancellare
+  esp: Borrar
+  chi: 删除
+  fas: خذف
+  rus: стереть
+  hin: मिटाना
+  ara: حذف
+  vie: Xóa
+  heb: מחק
+
+ACTION_DELETE_CELL:
+  ger: Zelle löschen
+  eng: Delete cell
+  ned: Cel verwijderen
+  fra: Supprimer la cellule
+  ita: Elimina cella
+  esp: Eliminar celda
+  chi: 删除单元格
+  fas: حذف سلول
+  rus: удалить ячейку
+  hin: कोष्ठ मिटाना
+  ara: حذف الخلية
+  vie: Xóa ô
+  heb: מחק תא
+
+ACTION_DELETE_CELLS:
+  ger: Zellen löschen
+  eng: Delete cells
+  ned: Cellen verwijderen
+  fra: Supprimer les cellules
+  ita: Elimina celle
+  esp: Eliminar celdas
+  chi: 删除单元格
+  fas: حذف سلول‌ها
+  rus: удалить ячейки
+  hin: कोष्ठ मिटाएँ
+  ara: حذف الخلايا
+  vie: Xóa các ô
+  heb: מחק תאים
+
+ACTION_DELETE_COL:
+  ger: Spalte löschen
+  eng: Delete column
+  ned: Kolom verwijderen
+  fra: Supprimer la colonne
+  ita: Cancellare colonna
+  esp: Borrar columna
+  chi: 删除列
+  fas: حذف ستون
+  rus: столбик стереть
+  hin: स्थंभ मिटाना
+  ara: حذف العمود
+  vie: Xóa cột
+  heb: מחק עמודה
+
+ACTION_DELETE_COLS:
+  ger: Spalten löschen
+  eng: Delete columns
+  ned: Kolommen verwijderen
+  fra: Supprimer les colonnes
+  ita: Eliminare colonne
+  esp: Eliminar columnas
+  chi: 删除列
+  fas: حذف ستون‌ها
+  rus: удалить столбцы
+  hin: कॉलम मिटाएँ
+  ara: حذف الأعمدة
+  vie: Xóa các cột
+  heb: מחק עמודות
+
+ACTION_DELETE_ROW:
+  ger: Zeile löschen
+  eng: Delete row
+  ned: Rij verwijderen
+  fra: Supprimer la ligne
+  ita: Elimina riga
+  esp: Eliminar fila
+  chi: 删除行
+  fas: حذف ردیف
+  rus: Удалить строку
+  hin: पंक्ति मिटाएँ
+  ara: حذف الصف
+  vie: Xóa hàng
+  heb: מחק שורה
+
+ACTION_DELETE_ROWS:
+  ger: Zeilen löschen
+  eng: Delete rows
+  ned: Rijen verwijderen
+  fra: Supprimer les lignes
+  ita: Elimina righe
+  esp: Eliminar filas
+  chi: 删除行
+  fas: حذف ردیف‌ها
+  rus: Удалить строки
+  hin: पंक्तियाँ मिटाएँ
+  ara: حذف الصفوف
+  vie: Xóa các hàng
+  heb: מחק שורות
+
+ACTION_EDIT_CELL:
+  ger: Zelle bearbeiten
+  eng: Edit cell
+  ned: Cel bewerken
+  fra: Éditer la cellule
+  ita: Modifica cella
+  esp: Editar celda
+  chi: 编辑单元格
+  fas: ویرایش سلول
+  rus: Редактировать ячейку
+  hin: कोष्ठ संपादित करें
+  ara: تحرير الخلية
+  vie: Chỉnh sửa ô
+  heb: ערוך תא
+
+ACTION_GENERATE_PREVIEW:
+  ger: Norm-Vorschau erzeugen
+  eng: generate norm-preview
+  ned: Normvoorbeeld genereren
+  fra: Générer un aperçu de la norme
+  ita: Generare anteprima norma
+  esp: Generar vista previa de la norma
+  chi: 生成规范预览
+  fas: ایجاد پیش‌نمایش استاندارد
+  rus: создать предпросмотр нормы
+  hin: मानक पूर्वावलोकन उत्पन्न करें
+  ara: إنشاء معاينة المعيار
+  vie: Tạo bản xem trước chuẩn
+  heb: צור תצוגה מקדימה של תקן
+
+ACTION_INDENT:
+  ger: Einzug vergrößern
+  eng: Increase indent
+  ned: Inspringing vergroten
+  fra: Augmenter le retrait
+  ita: Aumentare il rientro
+  esp: Aumentar sangría
+  chi: 增加缩进
+  fas: افزایش تورفتگی
+  rus: Увеличить отступ
+  hin: इंडेंट बढ़ाएँ
+  ara: زيادة المسافة البادئة
+  vie: Tăng thụt lề
+  heb: הגדל כניסה
+
+ACTION_INSERT:
+  ger: Neu zu %s
+  eng: Add to %s
+  ned: Nieuw in %s
+  fra: Ajoutez au %s
+  ita: Aggiunga al %s
+  esp: Agregue al %s
+  chi: 编辑 %s
+  fas: اضافه کردن به %s
+  rus: внести к %s
+  hin: %s को जोड़े
+  ara: أضف إلى %s
+  vie: Thêm vào %s
+  heb: הוסף ל%s
+
+ACTION_INSERT_CELL:
+  ger: Zelle einfügen
+  eng: Insert cell
+  ned: Cel invoegen
+  fra: Insérer une cellule
+  ita: Inserire cella
+  esp: Insertar celda
+  chi: 插入单元格
+  fas: درج سلول
+  rus: Вставить ячейку
+  hin: कोष्ठ निवेश करें
+  ara: إدراج خلية
+  vie: Chèn ô
+  heb: הכנס תא
+
+ACTION_INSERT_COL:
+  ger: Spalte einfügen
+  eng: Insert column
+  ned: Kolom toevoegen
+  fra: Insérer une colonne
+  ita: Inserire colonna
+  esp: Insertar columna
+  chi: 插入列
+  fas: درج ستون
+  rus: вставить столбец
+  hin: स्तंभ जोड़ें
+  ara: إدراج عمود
+  vie: Chèn cột
+  heb: הוסף עמודה
+
+ACTION_INSERT_ROW:
+  ger: Zeile einfügen
+  eng: Insert row
+  ned: Rij invoegen
+  fra: Insérer une ligne
+  ita: Inserire riga
+  esp: Insertar fila
+  chi: 插入行
+  fas: درج ردیف
+  rus: Вставить строку
+  hin: पंक्ति जोड़ें
+  ara: إدراج صف
+  vie: Chèn hàng
+  heb: הוסף שורה
+
+ACTION_MANAGE_CHANGEPROPERTIES:
+  ger: Objekt geändert.
+  eng: Object modified.
+  ned: Object gewijzigd.
+  fra: Objet modifié.
+  ita: Oggetto modificato.
+  esp: Objeto modificado.
+  chi: 对象已更改
+  fas: شیء تغییر یافت.
+  rus: Объект изменён.
+  hin: वस्तु परिवर्तित की गई।
+  ara: تم تعديل الكائن.
+  vie: Đối tượng đã được sửa đổi.
+  heb: האובייקט שונה.
+
+ACTION_MANAGE_MOVEOBJDOWN:
+  ger: Nach unten verschoben.
+  eng: Moved down.
+  ned: Naar beneden verplaatst.
+  fra: Déplacé vers le bas.
+  ita: Spostato in basso.
+  esp: Movido hacia abajo.
+  chi: 已下移
+  fas: به پایین منتقل شد.
+  rus: Перемещено вниз.
+  hin: नीचे ले जाया गया।
+  ara: تم النقل لأسفل.
+  vie: Đã chuyển xuống.
+  heb: הועבר למטה
+
+ACTION_MANAGE_MOVEOBJUP:
+  ger: Nach oben verschoben.
+  eng: Moved up.
+  ned: Omhoog verplaatst.
+  fra: Déplacé vers le haut.
+  ita: Spostato in alto.
+  esp: Movido hacia arriba.
+  chi: 已上移
+  fas: به بالا منتقل شد.
+  rus: Перемещено вверх.
+  hin: ऊपर ले जाया गया।
+  ara: تم النقل لأعلى.
+  vie: Đã chuyển lên.
+  heb: הוזז למעלה
+
+ACTION_MANAGE_UNDOVERSION:
+  ger: Auf frühere Version zurückgesetzt.
+  eng: Applied earlier version.
+  ned: Eerdere versie toegepast.
+  fra: Version antérieure appliquée.
+  ita: Versione precedente applicata.
+  esp: Versión anterior aplicada.
+  chi: 应用了早期版本。
+  fas: نسخه قبلی اعمال شد.
+  rus: Применена предыдущая версия.
+  hin: पहले संस्करण को लागू किया गया।
+  ara: تم تطبيق النسخة السابقة.
+  vie: Đã áp dụng phiên bản trước.
+  heb: הוחלה גרסה קודמת.
+
+ACTION_MERGE_CELLS:
+  ger: Zellen verbinden
+  eng: Merge cells
+  ned: Cellen samenvoegen
+  fra: Fusionner les cellules
+  ita: Unire celle
+  esp: Combinar celdas
+  chi: 合并单元格
+  fas: ادغام سلول‌ها
+  rus: Объединить ячейки
+  hin: कोष्ठ मिलाना
+  ara: دمج الخلايا
+  vie: Gộp các ô
+  heb: מזג תאים
+
+ACTION_MOVEDOWN:
+  ger: Nach unten verschieben
+  eng: Move down
+  ned: Naar beneden verplaatsen
+  fra: Déplacer vers le bas
+  ita: Spostare in basso
+  esp: Mover hacia abajo
+  chi: 下移
+  fas: حرکت به پایین
+  rus: переместить вниз
+  hin: नीचे ले जाएँ
+  ara: تحريك لأسفل
+  vie: Di chuyển xuống
+  heb: הזז למטה
+
+ACTION_MOVELEFT:
+  ger: Nach links verschieben
+  eng: Move left
+  ned: Naar links verplaatsen
+  fra: Déplacer vers la gauche
+  ita: Spostare a sinistra
+  esp: Mover a la izquierda
+  chi: 向左移动
+  fas: حرکت به چپ
+  rus: переместить влево
+  hin: बाएँ ले जाएँ
+  ara: تحريك يساراً
+  vie: Di chuyển sang trái
+  heb: הזז שמאלה
+
+ACTION_MOVERIGHT:
+  ger: Nach rechts verschieben
+  eng: Move right
+  ned: Naar rechts verplaatsen
+  fra: Déplacer vers la droite
+  ita: Spostare a destra
+  esp: Mover a la derecha
+  chi: 向右移动
+  fas: حرکت به راست
+  rus: переместить вправо
+  hin: दाहिने ले जाएँ
+  ara: تحريك يميناً
+  vie: Di chuyển sang phải
+  heb: הזז ימינה
+
+ACTION_MOVEUP:
+  ger: Nach oben verschieben
+  eng: Move up
+  ned: Naar boven verplaatsen
+  fra: Déplacer vers le haut
+  ita: Spostare in alto
+  esp: Mover hacia arriba
+  chi: 上移
+  fas: حرکت به بالا
+  rus: переместить вверх
+  hin: ऊपर ले जाएँ
+  ara: تحريك لأعلى
+  vie: Di chuyển lên
+  heb: הזז למעלה
+
+ACTION_OUTDENT:
+  ger: Einzug verkleinern
+  eng: Decrease indent
+  ned: Inspringing verkleinen
+  fra: Diminuer le retrait
+  ita: Diminuire il rientro
+  esp: Disminuir sangría
+  chi: 减少缩进
+  fas: کاهش تورفتگی
+  rus: Уменьшить отступ
+  hin: इंडेंट घटायें
+  ara: تقليل المسافة البادئة
+  vie: Giảm thụt lề
+  heb: הקטן כניסה
+
+ACTION_SELECT:
+  ger: %s auswählen
+  eng: Select %s
+  ned: %s selecteren
+  fra: Choisissez %s
+  ita: Selezionare %s
+  esp: Seleccione el %s
+  chi: 选忖 %s
+  fas: انتخاب %s
+  rus: выбрать %s
+  hin: %s चुन्ने
+  ara: أختيار %s
+  vie: Lựa chọn %s
+  heb: בחר%s
+
+ACTION_SPLIT_CELLS:
+  ger: Zellen teilen
+  eng: Split cells
+  ned: Cellen splitsen
+  fra: Diviser les cellules
+  ita: Dividere celle
+  esp: Dividir celdas
+  chi: 拆分单元格
+  fas: تقسیم سلول‌ها
+  rus: Разделить ячейки
+  hin: कोष्ठ विभाजित करें
+  ara: تقسيم الخلايا
+  vie: Tách ô
+  heb: פצל תאים
+
+ALIGN:
+  ger: Ausrichtung
+  eng: Alignment
+  ned: Uitlijning
+  fra: Alignement
+  ita: Allineamento
+  esp: Alineación
+  chi: 对齐
+  fas: تراز
+  rus: выравнивание
+  hin: संरेखण
+  ara: محاذاة
+  vie: Căn chỉnh
+  heb: יישור
+
+ALIGN1:
+  ger: Linksbündig
+  eng: Left
+  ned: Links
+  fra: À gauche
+  ita: A sinistra
+  esp: A la izquierda
+  chi: 左对齐
+  fas: چپ‌چین
+  rus: Слева
+  hin: बाएँ
+  ara: يسار
+  vie: Trái
+  heb: שמאלה
+
+ALIGN2:
+  ger: Rechtsbündig
+  eng: Right
+  ned: Rechts
+  fra: À droite
+  ita: A destra
+  esp: A la derecha
+  chi: 右对齐
+  fas: راست
+  rus: справа
+  hin: दायाँ
+  ara: يمين
+  vie: Phải
+  heb: ימינה
+
+ALIGN3:
+  ger: Zentriert
+  eng: Center
+  ned: Gecentreerd
+  fra: Centré
+  ita: Centrato
+  esp: Centrado
+  chi: 居中
+  fas: مرکز
+  rus: По центру
+  hin: मध्य
+  ara: توسيط
+  vie: Căn giữa
+  heb: מרכז
+
+AND:
+  ger: Und
+  eng: And
+  ned: En
+  fra: Et
+  ita: E
+  esp: y
+  chi: 与
+  fas: و
+  rus: и
+  hin: ओर
+  ara: و
+  vie: Và
+  heb: ורסיית ארכיון
+
+AT:
+  ger: um
+  eng: at
+  ned: om
+  fra: à
+  ita: a
+  esp: a
+  chi: 在
+  fas: در
+  rus: в
+  hin: पर
+  ara: في
+  vie: tại
+  heb: ב...
+
+ATTR_ACTION:
+  ger: Aktion
+  eng: Action
+  ned: Aktie
+  fra: l'action
+  ita: Azione
+  esp: la acción
+  chi: 擿作
+  fas: عمل
+  rus: действие
+  hin: क्रिया
+  ara: عمل
+  vie: Hành động
+  heb: הפעלה
+
+ATTR_ALL:
+  ger: alle
+  eng: all
+  ned: alle
+  fra: tous
+  ita: tutti
+  esp: todos
+  chi: 所有
+  fas: همه
+  rus: все
+  hin: सभी
+  ara: الكل
+  vie: tất cả
+  heb: הכל
+
+ATTR_ACTIVE:
+  ger: aktiv
+  eng: active
+  ned: actief
+  fra: Actif
+  ita: attivo
+  esp: Activo
+  chi: 活动
+  fas: فعال
+  rus: активно
+  hin: सक्रिया
+  ara: ناشط
+  vie: tích cực
+  heb: פעיל
+
+ATTR_ACTIVITY:
+  ger: Aktivität
+  eng: Activity
+  ned: Activiteit
+  fra: Activité
+  ita: Attività
+  esp: Actividad
+  chi: 活动
+  fas: فعالیت
+  rus: деятельность
+  hin: कार्यकलाप
+  ara: نشاط
+  vie: hoạt động
+  heb: פעילות
+
+ATTR_ASC:
+  ger: aufsteigend
+  eng: ascending
+  ned: oplopend
+  fra: ascendant
+  ita: ascendente
+  esp: ascendente
+  chi: 升序
+  fas: صعودی
+  rus: возрастающий
+  hin: आरोही
+  ara: تصاعدي
+  vie: tăng dần
+  heb: עולה
+
+ATTR_ATTR:
+  ger: Attribut
+  eng: Attribute
+  ned: Attribuut
+  fra: Attribut
+  ita: Attributo
+  esp: Atributo
+  chi: 属性
+  fas: ویژگی های
+  rus: Признак
+  hin: गुण
+  ara: رمز
+  vie: Thuộc tính
+  heb: מאפיין
+
+ATTR_ATTRS:
+  ger: Attribute
+  eng: Attributes
+  ned: Attribuuten
+  fra: Attributs
+  ita: Attributi
+  esp: Atributos
+  chi: 属性
+  fas: ویژگی ها
+  rus: Признаки
+  hin: गुणे
+  ara: رموز
+  vie: Các thuộc tính
+  heb: מאפיינים
+
+ATTR_ATTRS_SPEC:
+  ger: Spezielle Attribute
+  eng: Special Attributes
+  ned: Speciale attributen
+  fra: Attributs spéciales
+  ita: Attributi speciali
+  esp: Atributos especiales
+  chi: 特殊属性
+  fas: ويژه های اختصاصی
+  rus: Специальные Признаки
+  hin: विशेष गुणे
+  ara: رموز خاصة
+  vie: Các đặc tính
+  heb: מאפיינים מיוחדים
+
+ATTR_AVAILABLE:
+  ger: vorhanden
+  eng: available
+  ned: aanwezig
+  fra: disponibles
+  ita: disponibile
+  esp: disponible
+  chi: 现有
+  fas: موجود
+  rus: в наличии
+  hin: प्राप्य
+  ara: متاح
+  vie: có sẵn
+  heb: זמין
+
+ATTR_BGCOLOR:
+  ger: Hintergrundfarbe
+  eng: Background Color
+  ned: Achtergrond kleur
+  fra: Couleur de fond
+  ita: Colore di fondo
+  esp: Color de fondo
+  chi: 背景颜色
+  fas: رنگ زمينه
+  rus: Цвет заднего плана
+  hin: पृष्ठ्भूमि रगं 
+  ara: لون الخلفية
+  vie: Màu nền
+  heb: צבע רקע
+
+ATTR_BGCOLORS:
+  ger: Hintergrundfarben
+  eng: Background Colors
+  ned: Achtergrond kleuren
+  fra: Couleurs de fond
+  ita: Colori di fondo
+  esp: Colores de fondo
+  chi: 背景颜色
+  fas: رنگهاي زمينه
+  rus: Цвета заднего плана
+  hin: पृष्ठ्भूमि रगें
+  ara: ألوان الخلفية
+  vie: Các màu nền
+  heb: צבעי רקע
+
+ATTR_BGCOLOR_BORDER:
+  ger: Rahmen
+  eng: Border
+  ned: Freem
+  fra: Encadrer
+  ita: Bordo
+  esp: Frontera
+  chi: 边框
+  fas: حاشيه
+  rus: рамка
+  hin: किनारा
+  ara: إطار
+  vie: Đường viền
+  heb: מסגרת
+
+ATTR_BGCOLOR_TEXT:
+  ger: Text
+  eng: Text
+  ned: Tekst
+  fra: Texte
+  ita: Testo
+  esp: Texto
+  chi: 正文
+  fas: متن
+  rus: текст
+  hin: पाठ
+  ara: النص
+  vie: Văn bản
+  heb: מלל
+
+ATTR_BGCOLOR_TITLE:
+  ger: Titel
+  eng: Title
+  ned: Titel
+  fra: Titre
+  ita: Titolo
+  esp: Título
+  chi: 标题
+  fas: عنوان
+  rus: Название
+  hin: शीर्षक
+  ara: العنوان
+  vie: Tiêu đề
+  heb: כותרת
+
+ATTR_BORDERSTYLE:
+  ger: Rahmen
+  eng: Borderstyle
+  ned: Freem
+  fra: Encadrer
+  ita: Stile del bordo
+  esp: Estilo de frontera
+  chi: 边框线型
+  fas: شکل حاشيه
+  rus: рамка
+  hin: किनारा शैली
+  ara: شكل الإطار
+  vie: Kiểu đường viền
+  heb: סגנון מסגרת
+
+ATTR_CACHEABLE:
+  ger: Cacheable
+  eng: Cacheable
+  ned: Cacheable
+  fra: Cacheable
+  ita: Cacheable
+  esp: Cacheable
+  chi: 忯高速缓存
+  fas: قابل ذخيره
+  rus: Кэшируемый
+  hin: केचिएबल
+  ara: قابل للتخزين
+  vie: Có thể nhớ đệm
+  heb: ניתן לשמירה בcache
+
+ATTR_CALENDAR:
+  ger: Kalender
+  eng: Calendar
+  ned: Kalender
+  fra: Calendrier
+  ita: Calendario
+  esp: Calendario
+  chi: 日历
+  fas: تقويم
+  rus: календарь
+  hin: कलेण्डर
+  ara: التقويم
+  vie: Lịch biểu
+  heb: יומן
+
+ATTR_CAPTION:
+  ger: Beschriftung
+  eng: Caption
+  ned: Belettering
+  fra: Légende
+  ita: Scritta
+  esp: Título
+  chi: 标题
+  fas: عنوان
+  rus: Заголовок
+  hin: शीर्षक
+  ara: عنوان فرعي
+  vie: Chú thích
+  heb: פסקה
+
+ATTR_CELL:
+  ger: Zelle
+  eng: Cell
+  ned: Cel
+  fra: Cellule
+  ita: Casella
+  esp: Célula
+  chi: 忕元格
+  fas: خانه
+  rus: клетка
+  hin: कोष्ठ
+  ara: خلية
+  vie: Ô
+  heb: תא
+
+ATTR_CHANGES:
+  ger: Änderungen
+  eng: Modifications
+  ned: Modifikaties
+  fra: Modifications
+  ita: Cambi
+  esp: Modificaciones
+  chi: 更改
+  fas: تغييرات
+  rus: изменения
+  hin: परिवर्तनें
+  ara: تعديلات
+  vie: Những thay đổi
+  heb: שינויים
+
+ATTR_CHANNEL:
+  ger: Channel
+  eng: Channel
+  ned: Kanaal
+  fra: Canale
+  ita: Canale
+  esp: Canal
+  chi: 通鿓
+  fas: کانال
+  rus: Канал
+  hin: मार्ग
+  ara: قناة
+  vie: Kênh
+  heb: ערוץ
+
+ATTR_CHECKED_OUT:
+  ger: In Bearbeitung
+  eng: Checking
+  ned: in bewerking
+  fra: Vérification
+  ita: In modifica
+  esp: Verificación
+  chi: 已签出
+  fas: بررسي
+  rus: в обработке
+  hin: चेक्त आउट
+  ara: تحت المراجعة
+  vie: Kiểm tra
+  heb: בתהליך
+
+ATTR_COL:
+  ger: Spalte
+  eng: Column
+  ned: Kolom
+  fra: Colon
+  ita: Colonna
+  esp: Columna
+  chi: 列
+  fas: ستون
+  rus: Колонка
+  hin: स्थंभ
+  ara: عامود
+  vie: Cột
+  heb: עמודה
+
+ATTR_COLS:
+  ger: Spalten
+  eng: Columns
+  ned: Kolommen
+  fra: Colonnes
+  ita: Colonne
+  esp: Columnas
+  chi: 列
+  fas: ستونها
+  rus: Колонки
+  hin: स्तंभ
+  ara: أعمدة
+  vie: Các cột
+  heb: עמודות
+
+ATTR_CONTENT:
+  ger: Inhalt
+  eng: Content
+  ned: Inhoud
+  fra: Contenu
+  ita: Contenuto
+  esp: Contenido
+  chi: 内容
+  fas: محتوی
+  rus: Содержание
+  hin: अंतर्वस्तु
+  ara: محتويات 
+  vie: nội dung
+  heb: תוכן
+
+ATTR_COMMANDLINE:
+  ger: Kommandozeile
+  eng: Command-line
+  ned: Commandoregel
+  fra: Ligne de commande
+  ita: Fila di comando
+  esp: Comando-línea
+  chi: 命令行
+  fas: Command-line
+  rus: командная строчка
+  hin: कमांद-लाईन
+  ara: سطر الأوامر
+  vie: Dòng lệnh
+  heb: שורת פקודה
+
+ATTR_COMPACTVIEW:
+  ger: Kompakt-Ansicht
+  eng: Compact-view
+  ned: Compacte weergave
+  fra: Vue compacte
+  ita: Vista compatta
+  esp: Vista compacta
+  chi: 压缩视图
+  fas: نظرات
+  rus: краткий просмотр
+  hin: कोम्पेक-व्यू
+  ara: معاينة 
+  vie: Xem-ngắn gọn
+  heb: צמצם\כווץ
+
+ATTR_CONFIRM:
+  ger: Bestätigung
+  eng: Confirm
+  ned: Repetitie
+  fra: Confirmer
+  ita: Conferma
+  esp: Confirmación
+  chi: 确认
+  fas: تاييد
+  rus: подтверждение
+  hin: पक्का
+  ara: تأكيد
+  vie: Xác nhận
+  heb: חזור
+
+ATTR_CREATED:
+  ger: Erstellt
+  eng: Created
+  ned: Aangemaakt
+  fra: Créé
+  ita: Creato
+  esp: Creado
+  chi: 已创建
+  fas: آفرینش
+  rus: Созданный
+  hin: बनाना
+  ara: تم
+  vie: Đã tạo ra
+  heb: נוצר
+
+ATTR_CUSTOM:
+  ger: Benutzerdefiniert
+  eng: Custom
+  ned: Gebruiker gedefineerd
+  fra: Personnalisé
+  ita: Definito dall utente
+  esp: Aduanas
+  chi: 自定义
+  fas: سفارشي
+  rus: выборочно
+  hin: कस्तम
+  ara: تخصيص
+  vie: Thói quen
+  heb: מותאם אישית
+
+ATTR_DATE:
+  ger: Datum
+  eng: Date
+  ned: Datum
+  fra: Date
+  ita: Data
+  esp: Fecha
+  chi: 日期
+  fas: تاريخ
+  rus: дата
+  hin: तारीख़
+  ara: تاريخ
+  vie: Ngày
+  heb: תאריך
+
+ATTR_DATEFORMAT:
+  ger: Datumsformat
+  eng: Date format
+  ned: Datumopmaak
+  fra: Format de date
+  ita: Formato della data
+  esp: Formato de fecha
+  chi: 日期格弿
+  fas: قالب تاريخ
+  rus: форма даты
+  hin: तारीख़ संरूप
+  ara: قالب التاريخ
+  vie: Định dạng ngày
+  heb: תבנית תאריך
+
+ATTR_DAYS:
+  ger: Tage
+  eng: Days
+  ned: Dagen
+  fra: Jours
+  ita: Giorni
+  esp: Días
+  chi: 天数
+  fas: روزهای روز
+  rus: дни
+  hin: दिन
+  ara: أيام
+  vie: Các ngày
+  heb: ימים
+
+ATTR_DC_AUTHOR:
+  ger: Autor
+  eng: Author
+  ned: Auteur
+  fra: Auteur
+  ita: Autore
+  esp: Autor
+  chi: 作者
+  fas: مولف
+  rus: автор
+  hin: लेखक
+  ara: المؤلف
+  vie: Tác giả
+  heb: מחבר
+
+ATTR_DC_COVERAGE:
+  ger: Reichweite
+  eng: Coverage
+  ned: Draagwijte
+  fra: Envergure
+  ita: Copertura
+  esp: Cobertura
+  chi: 范围
+  fas: پوشش
+  rus: Охват
+  hin: क्षेत्र
+  ara: تغطية
+  vie: Phạm vi
+  heb: פריסה
+
+ATTR_DC_DESCRIPTION:
+  ger: Zusammenfassung
+  eng: Description
+  ned: Samenvatting
+  fra: Désignation des marchandises
+  ita: Sommario
+  esp: Descripción
+  chi: 濿绘
+  fas: شرح
+  rus: Описание
+  hin: वर्णन
+  ara: توصيف
+  vie: Tóm tắt
+  heb: סיכום
+
+ATTR_DC_SUBJECT:
+  ger: Thema
+  eng: Subject
+  ned: Thema
+  fra: Sujet
+  ita: Argomento
+  esp: Asunto
+  chi: 主题
+  fas: موضوع
+  rus: тема
+  hin: विषय
+  ara: موضوع
+  vie: Chủ đề
+  heb: נושא
+
+ATTR_DC_TYPE:
+  ger: Typ
+  eng: Type
+  ned: Type
+  fra: Type
+  ita: Tipo
+  esp: Tipo
+  chi: 类型
+  fas: نوع
+  rus: тип
+  hin: वर्ग
+  ara: نوع
+  vie: Kiểu
+  heb: סוג
+
+ATTR_DEFAULT:
+  ger: Default
+  eng: Default
+  ned: Standaard
+  fra: Défaut
+  ita: Predefinito
+  esp: Falta
+  chi: 默认
+  fas: پيش فرض
+  rus: Не выполнено
+  hin: चूक
+  ara: قياسي
+  vie: Mặc định
+  heb: שגיאה
+
+ATTR_DESC:
+  ger: absteigend
+  eng: descending
+  ned: afstijgend
+  fra: descendant
+  ita: Decrescente
+  esp: descendiendo
+  chi: 陿庿
+  fas: نزولی
+  rus: опускаясь
+  hin: अवरोही
+  ara: تنازلي
+  vie: giảm dần
+  heb: יורד
+
+ATTR_DESCRIPTION:
+  ger: Beschreibung
+  eng: Description
+  ned: Descriptie
+  fra: Désignation des marchandises
+  ita: Descrizione
+  esp: Descripción
+  chi: 濿绘
+  fas: شرح
+  rus: Описание
+  hin: वर्णन
+  ara: توصيف
+  vie: Sự mô tả
+  heb: תיאור
+
+ATTR_DETAILS:
+  ger: Details
+  eng: Details
+  ned: Gegevens
+  fra: Détails
+  ita: Dettagli
+  esp: Detalles
+  chi: 细节
+  fas: جزیيات
+  rus: Детали
+  hin: विस्तार
+  ara: تفصيلي
+  vie: Các chi tiết
+  heb: פרטים
+
+ATTR_DICTIONARY:
+  ger: Wörterbuch
+  eng: Dictionary
+  ned: Dictionaire
+  fra: Dictionnaire
+  ita: Dizionario
+  esp: Diccionario
+  chi: 诿典
+  fas: فرهنگ لغت
+  rus: словарь
+  hin: शब्द्कोश
+  ara: قاموس
+  vie: Từ điển
+  heb: מילון
+
+ATTR_DISPLAY:
+  ger: Anzeige
+  eng: Display
+  ned: Weergev
+  fra: Affichage
+  ita: Visualizza
+  esp: Visualización
+  chi: 显示
+  fas: نمايش
+  rus: экран
+  hin: प्रदर्शन 
+  ara: عرض
+  vie: Hiển thị
+  heb: הצג
+
+ATTR_EMAIL:
+  ger: E-Mail
+  eng: E-Mail
+  ned: E-mail
+  fra: Courriel
+  ita: E-Mail
+  esp: E-Mail
+  chi: 电孿邮件
+  fas: پست الکترونيکی
+  rus: электронная почта
+  hin: ईमेल
+  ara: بريد إلكتروني
+  vie: Thư điện tử
+  heb: דואר אלקטרוני
+
+ATTR_EMBEDDING:
+  ger: Einbettung
+  eng: Embedding
+  ned: Inbed
+  fra: Intégration
+  ita: Embedding
+  esp: Embedding
+  chi: 嵌入
+  fas: بستری
+  rus: Встраивание
+  hin: एम्बेडिंग
+  ara: التحريض
+  vie: Nhúng vào
+  heb: שתילה
+
+ATTR_END_DAT:
+  ger: bis
+  eng: until
+  ned: tot
+  fra: jusqu'à
+  ita: fino a
+  esp: hasta
+  chi: 至
+  fas: تا
+  rus: до
+  hin: तक
+  ara: حتى
+  vie: cho tới khi
+  heb: עד
+
+ATTR_EXPORT:
+  ger: Export
+  eng: Export
+  ned: Uitvoer
+  fra: Exportations
+  ita: Esportare
+  esp: Exportación
+  chi: 导出
+  fas: صادرات
+  rus: экспорт
+  hin: निर्यात
+  ara: تصدير
+  vie: Xuất ra
+  heb: ייצוא
+
+ATTR_FGCOLOR:
+  ger: Vordergrund-Farbe
+  eng: Foreground Color
+  ned: Voorgrond kleur
+  fra: Couleur du premier plan
+  ita: Colore del primo piano
+  esp: Color de primer plano
+  chi: 剿景颜色
+  fas: پيش زمينه
+  rus: Цвет переднего плана
+  hin: अग्रभूमि रगं
+  ara: لون الواجهة الأمامية
+  vie: Màu nền của vùng hoạt động
+  heb: צבע חזית
+
+ATTR_FILE:
+  ger: Datei
+  eng: File
+  ned: Bestand
+  fra: Fichier
+  ita: File
+  esp: Archivo
+  chi: 文件
+  fas: فايل
+  rus: Файл
+  hin: फाइल
+  ara: ملف
+  vie: Tệp tin
+  heb: תיקייה
+
+ATTR_FILTER:
+  ger: Filter
+  eng: Filter
+  ned: Filter
+  fra: Filtre
+  ita: Filtro
+  esp: Filtro
+  chi: 筛选
+  fas: فيلتر
+  rus: Фильтр
+  hin: छान्ना
+  ara: مرشح
+  vie: Bộ lọc
+  heb: פילטר
+
+ATTR_FK:
+  ger: Fremdschlüssel
+  eng: External key
+  ned: Vreemdsleutel
+  fra: Clé extérieure
+  ita: Chiave straniera
+  esp: Clave externa
+  chi: 外部密钥
+  fas: کليد خارجی
+  rus: чужой ключ
+  hin: विदेशी कुंजी
+  ara: مفتاح خارجي
+  vie: Khóa ngoại lai
+  heb: external key
+
+ATTR_FORMAT:
+  ger: Format
+  eng: Format
+  ned: Formaat
+  fra: Format
+  ita: Formato
+  esp: Formato
+  chi: 格弿
+  fas: ساختار
+  rus: формат
+  hin: संरूप
+  ara: شكل/هيئة
+  vie: Định dạng
+  heb: תבנית
+
+ATTR_GARBAGE_COLLECTION:
+  ger: Müllabfuhr
+  eng: Garbage collection
+  ned: Vuilophaal
+  fra: Collecte des ordures
+  ita: Rimozione degli scarti
+  esp: Colección de basura
+  chi: 垃圾收集
+  fas: مجموعه Garbage Collection
+  rus: сброс мусора
+  hin: कूडा एकत्रित 
+  ara: مجموعة النفايات
+  vie: Bộ thu gom rác
+  heb: איסוף אשפה
+
+CAPTION_GARBAGE_COLLECTION:
+  ger: Tage nach Objekt-Löschung
+  eng: days after object deletion
+  ned: dagen na het verwijderen van object
+  fra: jours après la suppression de l'objet
+  ita: giorni dopo la cancellazione dell'oggetto
+  esp: días después de la eliminación del objeto
+  chi: 删除对象后天数
+  fas: روزهای پس از حذف شی
+  rus: дней после удаления объекта
+  hin: ऑब्जेक्ट हटाने के बाद दिन
+  ara: أيام بعد حذف الجسم
+  vie: ngày sau khi xoá đối tượng
+  heb: ימים לאחר התנגדות
+
+ATTR_HEIGHT:
+  ger: Höhe
+  eng: Height
+  ned: Hoogte
+  fra: Hauteur
+  ita: Altezza
+  esp: Altura
+  chi: 高度
+  fas: ارتفاع
+  rus: высота
+  hin: ऊंचाई
+  ara: ارتفاع
+  vie: Chiều cao
+  heb: גובה
+
+ATTR_ID:
+  ger: Id
+  eng: Id
+  ned: Id
+  fra: Idée
+  ita: Id
+  esp: Id
+  chi: 编号
+  fas: کد
+  rus: Ид
+  hin: आइदी
+  ara: بطاقة الهوية
+  vie: Giá trị nhận dạng
+  heb: זיהוי
+
+ATTR_IMAGE:
+  ger: Bild
+  eng: Image
+  ned: Plaat
+  fra: Image
+  ita: Immagine
+  esp: Imagen
+  chi: 图僿
+  fas: تصوير
+  rus: картинка
+  hin: प्रतिबिंब
+  ara: صورة
+  vie: Hình ảnh
+  heb: תמונה
+
+ATTR_IMGHIRES:
+  ger: Bild (HighRes)
+  eng: Image (HighRes)
+  ned: Plaat (HighRes)
+  fra: Image (haute résolution)
+  ita: Immagine (HighRes)
+  esp: Imagen (HighRes)
+  chi: 高解枿度
+  fas: تصویر (HighRes)
+  rus: Изображение (HighRes)
+  hin: हाईरेश
+  ara: صورة كبيرة
+  vie: Hình ảnh (Độ phân giải cao)
+  heb: תמונה(רזולוציה גבוהה)
+
+ATTR_IMGSUPERRES:
+  ger: Bild (SuperRes)
+  eng: Image (SuperRes)
+  ned: Plaat (SuperRes)
+  fra: Image (Superres)
+  ita: Immagine (SuperRes)
+  esp: Imagen (SuperRes)
+  chi: 超高解枿度
+  fas: تصویر (SuperRes)
+  rus: Фото (SuperRes)
+  hin: सूपर रेस
+  ara: درجة وضوح ممتازة
+  vie: Hình ảnh (Độ phân giải siêu cao)
+  heb: תמונה(סופר רזולוציה)
+
+ATTR_IMPORT:
+  ger: Import
+  eng: Import
+  ned: Importeren
+  fra: Importer
+  ita: Importare
+  esp: Importación
+  chi: 导入
+  fas: واردات
+  rus: импортировать
+  hin: आयात
+  ara: استيراد
+  vie: Nhập vào
+  heb: ייבוא
+
+ATTR_KEY:
+  ger: Schlüssel
+  eng: Key
+  ned: Sleutel
+  fra: Clef
+  ita: Chiave
+  esp: Llave
+  chi: 键
+  fas: کليد
+  rus: ключ
+  hin: कूंजी
+  ara: مفتاح
+  vie: Khóa
+  heb: מפתח
+
+ATTR_KEYS:
+  ger: Schlüssel
+  eng: Keys
+  ned: Sleutels
+  fra: Clefs
+  ita: Chiavi
+  esp: Llaves
+  chi: 键
+  fas: کليدها
+  rus: ключи
+  hin: कूंजीयाँ
+  ara: مفاتيح
+  vie: Các khóa
+  heb: מפתחות
+
+ATTR_KEYWORDS:
+  ger: Schlüsselwörter
+  eng: Keywords
+  ned: Trefwoorden
+  fra: Mots-clés
+  ita: Parole chiave
+  esp: Palabras claves
+  chi: 关键字
+  fas: کلمه کليدی
+  rus: ключивые слова
+  hin: मुख्य शब्दें
+  ara: كلمات مفتاحية
+  vie: Các từ khóa
+  heb: מילות מפתח
+
+ATTR_LANG:
+  ger: Sprache
+  eng: Language
+  ned: Taal
+  fra: Langue
+  ita: Lingua
+  esp: Lengua
+  chi: 语言
+  fas: زبان
+  rus: язык
+  hin: भाषा
+  ara: اللغة
+  vie: Ngôn ngữ
+  heb: שפה
+
+ATTR_LANGS:
+  ger: Sprache(n)
+  eng: Language(s)
+  ned: Talen
+  fra: Langues
+  ita: Lingue
+  esp: Lenguas
+  chi: 语言
+  fas: زبانها
+  rus: языки
+  hin: भाषा(यें)
+  ara: لغة / لغات
+  vie: (Các) ngôn ngữ
+  heb: שפות
+
+ATTR_LAST_EXECUTED:
+  ger: Zuletzt ausgeführt
+  eng: Last execution
+  ned: Laatste uitvoering
+  fra: Dernier execution
+  ita: Ultima azione eseguita
+  esp: Última ejecución
+  chi: 上次执行
+  fas: آخرین اعدام
+  rus: Последнее выполнение
+  hin: अन्तिम कार्यान्वयन
+  ara: آخر تطبيق
+  vie: Lần thi hành cuối
+  heb: ביצוע אחרון
+
+ATTR_LAST_MODIFIED:
+  ger: Zuletzt geändert
+  eng: Last modification
+  ned: Laatste wijziging
+  fra: Dernier modification
+  ita: Ultima azione di modifica
+  esp: Última modificación
+  chi: 上次修改时间
+  fas: آخرين تغييرات
+  rus: Последнее изменение
+  hin: अन्तिम परिवर्तन
+  ara: آخر تعديل 
+  vie: Sự thay đổi cuối
+  heb: שינוי אחרון
+
+ATTR_LAST_MODIFIER:
+  ger: Geändert von
+  eng: Modified by
+  ned: Gewijzigd van
+  fra: Modifié près
+  ita: Modificato da
+  esp: Modificado cerca
+  chi: 被 %s 修改
+  fas: تغيير بوسيله
+  rus: Измененный в
+  hin: ने परिवर्तन किया
+  ara: عدل بواسطة
+  vie: Được thay đổi bởi
+  heb: שונה ע"י
+
+ATTR_LEVELNFC:
+  ger: Gliederung
+  eng: Subsections
+  ned: Onderafdelingen
+  fra: Sous-sections
+  ita: Struttura
+  esp: Subsecciones
+  chi: 大纲
+  fas: زيربخش
+  rus: разделение
+  hin: उपवर्गें
+  ara: أقسام فرعية
+  vie: Những phần phụ
+  heb: תת מחלקות
+
+ATTR_LINK_EXTERNAL:
+  ger: Externer Link
+  eng: External Link
+  ned: Externe Link
+  fra: Lien interne
+  ita: Link esterno
+  esp: Enlace externo
+  chi: 外部链接
+  fas: بیرونی لنک
+  rus: екстерная ссылка
+  hin: बाहारी कड़ी
+  ara: رابط خارجي
+  vie: Liên kết ngoài
+  heb: קישור חיצוני
+
+ATTR_LINK_INTERNAL:
+  ger: Interner Link
+  eng: Internal Link
+  ned: Interne Link
+  fra: Lien interne
+  ita: Link interno
+  esp: Enlace Interno
+  chi: 内部链接
+  fas: اندرونی لنک
+  rus: внутренняя ссылка
+  hin: आंतरिक कड़ी
+  ara: رابط داخلي
+  vie: Liên kết trong
+  heb: קישור פנימי
+
+ATTR_LINK_CROSSLANGUAGE:
+  ger: Sprachwechsel
+  eng: Change Language
+  ned: Wijzig Taal
+  fra: Changer de langue
+  ita: Cambia lingua
+  esp: Cambiar el idioma
+  chi: 更改语言
+  fas: زبان تبدیل کریں
+  rus: Изменить язык
+  hin: भाषा बदलें
+  ara: تغيير اللغة
+  vie: Thay đổi ngôn ngữ
+  heb: שנת שפה
+
+ATTR_MANDATORY:
+  ger: Pflicht
+  eng: Mandatory
+  ned: Verplicht
+  fra: Obligatoire
+  ita: Obbligatorio
+  esp: Obligatorio
+  chi: 必覿的
+  fas: قيم
+  rus: обязанность
+  hin: अनिवार्य
+  ara: إلزامي
+  vie: Sự bắt buộc
+  heb: מחייב
+
+ATTR_META_TYPE:
+  ger: Dokumenttyp
+  eng: Document type
+  ned: Documenttype
+  fra: Type de document
+  ita: Tipo di documento
+  esp: Tipo de documento
+  chi: 文件类型
+  fas: نوع سند
+  rus: тип документа
+  hin: दस्तावेज वर्ग
+  ara: نوع المستند
+  vie: Kiểu tài liệu
+  heb: סוג מסמך
+
+ATTR_METHOD:
+  ger: Methode
+  eng: Method
+  ned: Methode
+  fra: Méthode
+  ita: Methode Metodo
+  esp: Método
+  chi: 方法
+  fas: Method
+  rus: метод
+  hin: क्रम
+  ara: الطريقة
+  vie: Phương pháp
+  heb: שיטה
+
+ATTR_MIME_TYPE:
+  ger: MIME-Typ
+  eng: MIME-Type
+  ned: MIME-type
+  fra: Type MIME
+  ita: Tipo-MIME
+  esp: MIME-Type
+  chi: MIME 类型
+  fas: نوع MIME
+  rus: MIME-тип
+  hin: एम आइ एम ई-वर्ग
+  ara: نمط MIME
+  vie: Kiểu-MIME
+  heb: MIME סוג
+
+ATTR_MODIFIED:
+  ger: Geändert
+  eng: Modified
+  ned: Gewijzigd
+  fra: Modifié
+  ita: Modificato
+  esp: Modificado
+  chi: 已修改
+  fas: تغييريافته
+  rus: изменен
+  hin: परिवर्तित
+  ara: معدل
+  vie: Đã thay đổi
+  heb: שונה
+
+ATTR_MULTILANG:
+  ger: multilingual
+  eng: multilingual
+  ned: meertalig
+  fra: multilingue
+  ita: multilingua
+  esp: multilingüe
+  chi: 多语言
+  fas: چندزبانه
+  rus: многоязычный
+  hin: बहु भाषा
+  ara: متعدد اللغات
+  vie: nhiều ngôn ngữ
+  heb: רב- לשוני
+
+ATTR_MULTIPLE:
+  ger: mehrfach
+  eng: multiple
+  ned: meerdere
+  fra: multiples
+  ita: multiplo
+  esp: múltiple
+  chi: 多秿
+  fas: چنددانه
+  rus: многократно
+  hin: बहु
+  ara: متعدد
+  vie: nhiều
+  heb: מרבה
+
+ATTR_NAME:
+  ger: Name
+  eng: Name
+  ned: Naam
+  fra: Nom
+  ita: Nome
+  esp: Nombre
+  chi: 忿
+  fas: نام
+  rus: название
+  hin: नाम
+  ara: اسم
+  vie: Tên
+  heb: שם
+
+ATTR_NEXT:
+  ger: Weitere
+  eng: Next
+  ned: Verdere
+  fra: Suivant
+  ita: Prossimo
+  esp: Siguiente
+  chi: 下一次
+  fas: بعد
+  rus: следующие
+  hin: अगला
+  ara: تالي
+  vie: Kế tiếp
+  heb: הבא
+
+ATTR_NODE:
+  ger: Knoten
+  eng: Node
+  ned: Knoop
+  fra: Noeud
+  ita: Nodo
+  esp: Node
+  chi: 节点
+  fas: Node
+  rus: узел
+  hin: गांठ
+  ara: مركز
+  vie: Nút
+  heb: קשר
+
+ATTR_NONE:
+  ger: Kein(e)
+  eng: None
+  ned: Geen
+  fra: Aucun
+  ita: Nessuno
+  esp: Ninguno
+  chi: 无
+  fas: هیچی
+  rus: нет
+  hin: कोई नहीं
+  ara: لاشئ
+  vie: Không có gì
+  heb: אין
+
+ATTR_OBJECT:
+  ger: Objekt
+  eng: Object
+  ned: Doel
+  fra: Objet
+  ita: Oggetto
+  esp: Objeto
+  chi: 对象
+  fas: شی
+  rus: объект
+  hin: वस्तु
+  ara: هدف
+  vie: Đối tượng
+  heb: פריט
+
+ATTR_OBJECTS:
+  ger: Objekte
+  eng: Objects
+  ned: Objecten
+  fra: Objets
+  ita: Oggetti
+  esp: Objetos
+  chi: 对象
+  fas: اشيا
+  rus: объекты
+  hin: वस्तुयें
+  ara: أهداف
+  vie: Các đối tượng
+  heb: פריטים
+
+ATTR_OF:
+  ger: von
+  eng: of
+  ned: van
+  fra: de
+  ita: von di
+  esp: de
+  chi: 的
+  fas: از
+  rus: от
+  hin: से
+  ara: من
+  vie: của
+  heb: מ
+
+ATTR_OPTION:
+  ger: Option
+  eng: Option
+  ned: Optie
+  fra: Option
+  ita: Opzione
+  esp: Opción
+  chi: 选项
+  fas: انتخاب
+  rus: выбор
+  hin: विकल्प
+  ara: خيار
+  vie: Tùy chọn
+  heb: בררה
+
+ATTR_OPTIONS:
+  ger: Optionen
+  eng: Options
+  ned: Opties
+  fra: Options
+  ita: Opziones
+  esp: Opcións
+  chi: 选项
+  fas: انتخاب
+  rus: выбор
+  hin: विकल्प
+  ara: خيار
+  vie: Các tùy chọn
+  heb: אפשרויות
+
+ATTR_ORDERBY:
+  ger: Sortierung nach
+  eng: Order by
+  ned: Schifting naar
+  fra: Ordre par
+  ita: Ordine per
+  esp: Orden por
+  chi: 排庿方弿
+  fas: سفارش توسط
+  rus: сортировка по
+  hin: क्रम से
+  ara: طلب بواسطة
+  vie: Phân loại theo
+  heb: סווג ע"י
+
+ATTR_PARAGRAPH:
+  ger: Absatz
+  eng: Paragraph
+  ned: Afzet
+  fra: Paragraphe
+  ita: Paragrafo
+  esp: Párrafo
+  chi: 段追
+  fas: پاراگراف
+  rus: абзац
+  hin: पैराग्राफ
+  ara: فقرة
+  vie: Đoạn văn
+  heb: פסקה
+
+ATTR_PARENT:
+  ger: Vorgänger
+  eng: Parent
+  ned: Vorgaanger
+  fra: Parent
+  ita: Genitore
+  esp: Parent
+  chi: 父代
+  fas: والد
+  rus: Предшественник
+  hin: मुल जनक
+  ara: اللغة الرئيسية
+  vie: Cha mẹ
+  heb: אב
+
+ATTR_PASSWORD:
+  ger: Passwort
+  eng: Password
+  ned: Paswoord
+  fra: Mot de passe
+  ita: Parola d'ordine
+  esp: Contraseña
+  chi: 密砿
+  fas: رمزعبور
+  rus: пароль
+  hin: कूट शब्द
+  ara: كلمة المرور
+  vie: Từ mã đăng nhập
+  heb: ססמה
+
+ATTR_PATH:
+  ger: Pfad
+  eng: Path
+  ned: Pad
+  fra: Chemin
+  ita: Percorso
+  esp: Camino
+  chi: 路径
+  fas: مسير
+  rus: путь
+  hin: मार्ग
+  ara: مسار
+  vie: Đường dẫn
+  heb: מעבר
+
+ATTR_PENETRANCE:
+  ger: Penetranz
+  eng: Penetrance
+  ned: Penetrance
+  fra: Pénétration
+  ita: Penetranza
+  esp: Penetrance
+  chi: 忂逿率
+  fas: Penetrance
+  rus: Пронизывание
+  hin: पेणेत्रेन्ज
+  ara: مدى التغلغل
+  vie: Thâm nhập
+  heb: חדירות
+
+ATTR_PREVIOUS:
+  ger: Vorherige
+  eng: Previous
+  ned: Vorige
+  fra: Précédent
+  ita: Precedente
+  esp: Anterior
+  chi: 剿鿢的
+  fas: قبلي
+  rus: предыдущая
+  hin: पूर्व
+  ara: سابق
+  vie: Trước
+  heb: קודם
+
+ATTR_PRIMARY:
+  ger: Primär
+  eng: Primary
+  ned: Primair
+  fra: Primaire
+  ita: Primario
+  esp: Primario
+  chi: 主覿
+  fas: اوليه
+  rus: Первоначально
+  hin: प्राथमिक
+  ara: إبتدائي
+  vie: Cơ bản
+  heb: ראשוני
+
+ATTR_PRIMITIVE:
+  ger: Primitiv
+  eng: Primitive
+  ned: Primitief
+  fra: Priorité
+  ita: Primitivo
+  esp: Primitivo
+  chi: 原始
+  fas: ابتدايی
+  rus: примитивно
+  hin: प्रारम्भिक
+  ara: أولي
+  vie: Cơ sở
+  heb: פרמיטיבי
+
+ATTR_PRINTVERSION:
+  ger: Druckversion
+  eng: Printversion
+  ned: Drukverie
+  fra: Version imprimée
+  ita: Versione stampa
+  esp: Versión impresa
+  chi: 打忰濿
+  fas: نسخه قابل چاپ
+  rus: Печатная версия
+  hin: मुद्र्णवरशन
+  ara: نسخة قابلة للطباعة
+  vie: Phiên bản in
+  heb: גרסת הדפסה
+
+ATTR_PROCESS:
+  ger: Prozessschritt
+  eng: Processing step
+  ned: Verwerkingsstap
+  fra: Processus
+  ita: Processo
+  esp: Proceso
+  chi: 处理步骤
+  fas: مرحله پردازش
+  rus: процесс
+  hin: क्रिया
+  ara: خطوة معالجة
+  vie: Bước xử lí
+  heb: שלב עיבוד
+
+ATTR_PROCESSES:
+  ger: Prozessschritt-Typen
+  eng: Processing step types
+  ned: Soorten verwerkingstap
+  fra: Types d'étapes de traitement
+  ita: Processi batch del server
+  esp: Procesando tipos de pasos
+  chi: 处理步骤类型
+  fas: انواع مرحله پردازش
+  rus: серверные (производительные) batch-процессы
+  hin: सरवर-साइद बैच-प्रक्रियाएँ
+  ara: أنواع خطوة المعالجة
+  vie: Các kiểu bước xử lí
+  heb: סוגי שלבי עיבוד
+
+ATTR_PRODUCTS:
+  ger: Produkt(e)
+  eng: Product(s)
+  ned: Produkt(en)
+  fra: Produit(s)
+  ita: Prodotti
+  esp: Producto(s)
+  chi: 产哿
+  fas: محصول
+  rus: продукты
+  hin: उत्पादन(यें)
+  ara: منتج/منتجات
+  vie: (Các) sản phẩm
+  heb: תוצר(ים)
+
+ATTR_PROFILE:
+  ger: Profil
+  eng: Profile
+  ned: Profiel
+  fra: Profil
+  ita: Profilo
+  esp: Perfil
+  chi: 简介
+  fas: پروفایل
+  rus: Профиль
+  hin: रूप रेखा
+  ara: بيانات الهوية
+  vie: Hồ sơ
+  heb: פרופיל
+
+ATTR_PROTOCOL:
+  ger: Protokoll
+  eng: Protocol
+  ned: Protocol
+  fra: Protocole
+  ita: Protocollo
+  esp: Protocolo
+  chi: 议定书
+  fas: پروتکل Protocol
+  rus: Протокол
+  hin: पूर्वसंधि
+  ara: بروتوكول
+  vie: Giao thức
+  heb: פרוטוקול
+
+ATTR_PUBLISHER:
+  ger: Verleger
+  eng: Publisher
+  ned: Uitgever
+  fra: Éditeur
+  ita: Editore
+  esp: Editorial
+  chi: 出版者
+  fas: ناشر
+  rus: Издатель
+  hin: प्रकाशक
+  ara: الناشر
+  vie: Nhà xuất bản
+  heb: מוציא לאור
+
+ATTR_RECORD:
+  ger: Datensatz
+  eng: record
+  ned: Record
+  fra: enregistrement
+  ita: Record
+  esp: récord
+  chi: 记录
+  fas: رکورد
+  rus: отчет
+  hin: रेकार्ड
+  ara: تسجيل
+  vie: bản ghi
+  heb: רשומה
+
+ATTR_RECORDS:
+  ger: Datensätze
+  eng: records
+  ned: Records
+  fra: enregistrements
+  ita: Record
+  esp: registros
+  chi: 记录
+  fas: رکوردها
+  rus: отчеты
+  hin: रेकार्ड(स)
+  ara: تسجيلات
+  vie: các bản ghi
+  heb: רשומות
+
+ATTR_REFRESH:
+  ger: Aktualisierung
+  eng: Refresh
+  ned: Verversen
+  fra: Actualiser
+  ita: Attualizzazione
+  esp: Refresh
+  chi: 刷新
+  fas: تجديد
+  rus: обновление
+  hin: ताज़ा करें
+  ara: تحديث
+  vie: Làm mới
+  heb: רענן
+
+ATTR_REPETITIVE:
+  ger: Mehrfach
+  eng: Repetitive
+  ned: Repetitief
+  fra: Répétition
+  ita: Ripetitivo
+  esp: Repetitiva
+  chi: 釿夿
+  fas: تکراری
+  rus: многократно
+  hin: पुनरावर्ती
+  ara: متكرر
+  vie: Lặp đi lặp lại
+  heb: חוזר
+
+ATTR_REQUIRES:
+  ger: benötigt
+  eng: requires
+  ned: vereist
+  fra: nécessite
+  ita: Richiesto
+  esp: requisitos
+  chi: 必需的
+  fas: نياز
+  rus: требует
+  hin: आवश्यकता
+  ara: يتطلب
+  vie: yêu cầu
+  heb: דורש
+
+ATTR_RICHEDIT:
+  ger: Richedit
+  eng: Richedit
+  ned: Richedit
+  fra: Richedit
+  ita: Ricco
+  esp: Richedit
+  chi: 多信濯文本编辑
+  fas: Richedit
+  rus: обработка
+  hin: रिच्द एदित
+  ara: تحرير متقدم
+  vie: Chỉnh sửa văn bản thêm phong phú
+  heb: עיבוד עשיר
+
+ATTR_ROBOTS:
+  ger: Suchmaschinen
+  eng: Robots
+  ned: Robots
+  fra: Robots
+  ita: Motori di ricerca
+  esp: Robots
+  chi: 濜索器
+  fas: ربات
+  rus: поисковая машина
+  hin: यंत्र-मानव
+  ara: آليون
+  vie: Người máy
+  heb: רובוטים
+
+ATTR_ROLE:
+  ger: Rolle
+  eng: Role
+  ned: Rol
+  fra: Rôle
+  ita: Ruolo
+  esp: Función
+  chi: 迌使
+  fas: نقش
+  rus: роль
+  hin: भूमिका
+  ara: دور
+  vie: Vai trò
+  heb: תפקיד
+
+ATTR_ROLES:
+  ger: Rollen
+  eng: Roles
+  ned: Rollen
+  fra: Rôles
+  ita: Ruoli
+  esp: Papeles
+  chi: 迌使
+  fas: نقش ها
+  rus: роли
+  hin: भूमिकायें
+  ara: أدوار
+  vie: Các vai trò
+  heb: תפקידים
+
+ATTR_ROWS:
+  ger: Zeilen
+  eng: Rows
+  ned: Zeilen
+  fra: Rangées
+  ita: File
+  esp: Filas
+  chi: 行
+  fas: سطر
+  rus: строчки
+  hin: पंक्तियाँ 
+  ara: أسطر
+  vie: Các hàng
+  heb: שורות
+
+ATTR_SEARCHTERM:
+  ger: Suchbegriff
+  eng: Search term
+  ned: Zoekterm
+  fra: Terme de recherche
+  ita: Termine da cercare
+  esp: Terminar búsqueda
+  chi: 濜索字
+  fas: عضو جستجو
+  rus: поисковый термин
+  hin: खोज शब्द
+  ara: بحث عن مصطلح
+  vie: Điều kiện tìm kiếm
+  heb: חפש מושג
+
+ATTR_SELECTED:
+  ger: ausgewählt
+  eng: selected
+  ned: selecteren
+  fra: choisi
+  ita: selezionato
+  esp: seleccionado
+  chi: 选定
+  fas: انتخاب شده
+  rus: выбрано
+  hin: चुन लेना
+  ara: مختار
+  vie: đã lựa chọn
+  heb: נבחר
+
+ATTR_SEPARATED:
+  ger: getrennt
+  eng: separated
+  ned: apart
+  fra: séparés
+  ita: separato
+  esp: separados
+  chi: 分离
+  fas: مجزا
+  rus: отдельно
+  hin: पृथक्कृत
+  ara: منفصل
+  vie: đã phân tách
+  heb: נפרד
+
+ATTR_SEQUENCE:
+  ger: Sequenz
+  eng: Sequence
+  ned: Sequentie
+  fra: Séquence
+  ita: Sequenza
+  esp: Secuencia
+  chi: 庿列
+  fas: ترتيب
+  rus: Последовательность
+  hin: अनुक्रम
+  ara: ترتيب
+  vie: Chuỗi
+  heb: רצף
+
+ATTR_SIZE:
+  ger: Größe
+  eng: Size
+  ned: Maat
+  fra: Taille
+  ita: Grandezza
+  esp: Tamaño
+  chi: 大尿
+  fas: اندازه
+  rus: величина
+  hin: आकार
+  ara: مقاس
+  vie: Kích cỡ
+  heb: גודל
+
+ATTR_SOURCE:
+  ger: Quelle
+  eng: Source
+  ned: Wel
+  fra: Source
+  ita: fonte
+  esp: Fuente
+  chi: 原
+  fas: منبع
+  rus: источник
+  hin: मूल
+  ara: مصدر
+  vie: Nguồn
+  heb: מקור
+
+ATTR_START_DAT:
+  ger: von
+  eng: from
+  ned: vanaf
+  fra: de
+  ita: da
+  esp: de
+  chi: 从
+  fas: از
+  rus: из
+  hin: से
+  ara: من
+  vie: từ
+  heb: מתוך
+
+ATTR_STATE:
+  ger: Status
+  eng: Status
+  ned: Status
+  fra: Statut
+  ita: Stato
+  esp: Estado
+  chi: 状态
+  fas: وضعیت
+  rus: статус
+  hin: स्थिति
+  ara: الحالة
+  vie: Trạng thái
+  heb: סטָטוּס
+
+ATTR_STATES:
+  ger: Stati
+  eng: States
+  ned: Staten
+  fra: États
+  ita: Stati
+  esp: Estados
+  chi: 状态
+  fas: حالت
+  rus: стати
+  hin: अवस्थायें
+  ara: حال
+  vie: Các trạng thái
+  heb: תצורות
+
+ATTR_STATIC:
+  ger: statisch
+  eng: static
+  ned: statisch
+  fra: statique
+  ita: statico
+  esp: estático
+  chi: 静态
+  fas: ایستا
+  rus: статичный
+  hin: स्थिर
+  ara: ثابت
+  vie: tĩnh
+  heb: סטטי
+
+ATTR_STATISTICS:
+  ger: Statistik
+  eng: Statistics
+  ned: Statistieken
+  fra: Statistiques
+  ita: Statistica
+  esp: Estadística
+  chi: 统计
+  fas: آمار
+  rus: статистика
+  hin: आंकड़े
+  ara: إحصائي
+  vie: Thống kê
+  heb: סטטיסטיקה
+
+ATTR_STYLESHEET:
+  ger: Stylesheet
+  eng: Stylesheet
+  ned: Stijlblad
+  fra: Feuille de style
+  ita: Stile della pagina
+  esp: Hoja de estilo
+  chi: 样弿表
+  fas: شيوه نامه ها
+  rus: стильный лист
+  hin: सटाईल सीत
+  ara: نموذج
+  vie: Kiểu trang
+  heb: סגנון
+
+ATTR_SUBOBJECTS:
+  ger: Unter-Objekte
+  eng: Sub-objects
+  ned: Subobjecten
+  fra: Sous-objets
+  ita: Sotto-oggetti
+  esp: Subobjetos
+  chi: 子对象
+  fas: اهداف فرعی
+  rus: Подобъекты
+  hin: उप-वस्तु
+  ara: الأهداف الفرعية
+  vie: Những đối tượng con
+  heb: תת- פריטים
+
+ATTR_TABLE:
+  ger: Tabelle
+  eng: Table
+  ned: Tabel
+  fra: Tableau
+  ita: Tabella
+  esp: Mesa
+  chi: 表格
+  fas: Table
+  rus: Столик
+  hin: तालिका
+  ara: جدول
+  vie: Bảng
+  heb: טבלה
+
+ATTR_TAG:
+  ger: Tag
+  eng: Tag
+  ned: Tag
+  fra: Balise
+  ita: Tag:
+  esp: Tag
+  chi: 标签
+  fas: برچسب
+  rus: таг
+  hin: चिप्पी
+  ara: بطاقة
+  vie: Thẻ
+  heb: תוית
+
+ATTR_TARGET:
+  ger: Ziel
+  eng: Target
+  ned: Doel
+  fra: Cible
+  ita: Obiettivo
+  esp: Blanco
+  chi: 目标
+  fas: هدف
+  rus: цель
+  hin: लक्ष्य
+  ara: هدف
+  vie: Mục đích
+  heb: מטרה
+
+ATTR_TEXT:
+  ger: Text
+  eng: Text
+  ned: Tekst
+  fra: Texte
+  ita: Testo
+  esp: Texto
+  chi: 文本
+  fas: متن
+  rus: текст
+  hin: पाठ
+  ara: نص
+  vie: Văn bản
+  heb: תמליל
+
+ATTR_TEXTALIGN:
+  ger: Textausrichtung
+  eng: Text alignment
+  ned: Tekstuitlijning
+  fra: Alignement du texte
+  ita: Allineamento del testo
+  esp: Adaptación de texto
+  chi: 对齿方弿
+  fas: تراز متن
+  rus: выравнивание текста
+  hin: पाठ सरेखण
+  ara: محازاة النص
+  vie: Căn chỉnh văn bản
+  heb: יישור טקסט
+
+ATTR_TITLE:
+  ger: Titel
+  eng: Title
+  ned: Titel
+  fra: Titre
+  ita: Titolo
+  esp: Título
+  chi: 标题
+  fas: عنوان
+  rus: название
+  hin: शीर्षक
+  ara: عنوان
+  vie: Tiêu đề
+  heb: כותרת
+
+ATTR_TITLEIMAGE:
+  ger: Titelbild
+  eng: Titleimage
+  ned: Titelplaat
+  fra: Image titre
+  ita: Immagine del titulo
+  esp: Títuloimage
+  chi: 尿鿢图片
+  fas: تصوير عنوان
+  rus: картинка названия
+  hin: शीर्षक प्रतिबिंब
+  ara: صورة العنوان
+  vie: Hình ảnh tiêu đề
+  heb: תמונת כותרת
+
+ATTR_TITLEALT:
+  ger: Kurztitel
+  eng: Short title
+  ned: Korttitel
+  fra: Titre court
+  ita: Titolo breve
+  esp: Título corto
+  chi: 短标题
+  fas: زير عنوان
+  rus: краткое название
+  hin: संक्षेप शीर्षक
+  ara: عنوان مختصر
+  vie: Tiêu đề ngắn
+  heb: כותרת קצרה
+
+ATTR_TOC:
+  ger: Inhaltsverzeichnis
+  eng: Table of contents
+  ned: Inhoudstafel
+  fra: Table des matières
+  ita: Indice
+  esp: Cuadro de contenidos
+  chi: 目录
+  fas: جدول محتويات
+  rus: Оглавление
+  hin: विषय-सूची का तालिका
+  ara: المحتوى
+  vie: Bảng các nội dung
+  heb: תוכן עניינים
+
+ATTR_TRANSITIONS:
+  ger: Übergänge
+  eng: Transitions
+  ned: Overgangen
+  fra: Transitions
+  ita: Transizioni
+  esp: Transiciones
+  chi: 过渡
+  fas: انتقال
+  rus: Переходы
+  hin: संक्रमण
+  ara: إنتقالي
+  vie: Sự chuyển đổi
+  heb: שינויים
+
+ATTR_TYPE:
+  ger: Typ
+  eng: Type
+  ned: Type
+  fra: Type
+  ita: Tipo
+  esp: Tipo
+  chi: 类型
+  fas: نوع
+  rus: тип
+  hin: वर्ग
+  ara: نوع
+  vie: Kiểu
+  heb: סוג
+
+ATTR_URL:
+  ger: URL
+  eng: URL
+  ned: URL
+  fra: URL
+  ita: URL PAGINA
+  esp: URL
+  chi: 網址
+  fas: آدرس
+  rus: URL
+  hin: यू आर एल
+  ara: عنوان الشبكة العنكبوتية
+  vie: URL
+  heb: כתובת URL
+
+ATTR_USER:
+  ger: Benutzer
+  eng: User
+  ned: Gebruiker
+  fra: Utilisateur
+  ita: Utente
+  esp: Usuario
+  chi: 用户
+  fas: کاربر
+  rus: участник
+  hin: प्रयोगकर्त्ता
+  ara: مستخدم
+  vie: Người sử dụng
+  heb: משתמש
+
+ATTR_USERS:
+  ger: Benutzer
+  eng: Users
+  ned: gebruikers
+  fra: Utilisateurs
+  ita: Utenti
+  esp: Usuarios
+  chi: 用户
+  fas: کد کاربر
+  rus: участники
+  hin: प्रयोगकर्त्तायें
+  ara: مستخدمين
+  vie: Các người sử dụng
+  heb: משתמשים
+
+ATTR_VERSION:
+  ger: Version
+  eng: Version
+  ned: Versie
+  fra: Version
+  ita: Versione
+  esp: Versión
+  chi: 版本
+  fas: نسخه
+  rus: версия
+  hin: वर्णन
+  ara: نسخة
+  vie: Phiên bản
+  heb: גירסה
+
+ATTR_WIDTH:
+  ger: Breite
+  eng: Width
+  ned: Breede
+  fra: Largeur
+  ita: Larghezza
+  esp: Anchura
+  chi: 宽度
+  fas: پهنا
+  rus: ширина
+  hin: चौड़ाई
+  ara: عرض
+  vie: Độ rộng
+  heb: רחב
+
+ATTR_WYSIWYG:
+  ger: WYSIWYG
+  eng: WYSIWYG
+  ned: WYSIWYG
+  fra: WYSIWYG
+  ita: WYSIWYG
+  esp: WYSIWYG
+  chi: 维基文库
+  fas: بديهي بودن
+  rus: РЕЖИМ ПОЛНОГО СООТВЕТСТВИЯ
+  hin: डबलयू वाइ एस आइ डबलयू वाइ जि
+  ara: صورة طبق الأصل
+  vie: WYSIWYG "Những gì bạn nhìn là những gì bạn nhận được"
+  heb: WYSIWYG
+
+BACK:
+  ger: Zurück
+  eng: Back
+  ned: Terug
+  fra: En arrière
+  ita: Indietro
+  esp: Atrás
+  chi: 上一步
+  fas: بازگشت
+  rus: назад
+  hin: पीछे
+  ara: عودة
+  vie: Quay lại
+  heb: אחורה
+
+BTN_ACQUIRE:
+  ger: Akquirieren
+  eng: Acquire
+  ned: Acquire
+  fra: Acquérir
+  ita: Acquisire
+  esp: Adquirir
+  chi: 获忖
+  fas: اکتساب
+  rus: приобритать
+  hin: उपलब्ध 
+  ara: اكتساب
+  vie: Đạt được
+  heb: רכש
+
+BTN_ADD:
+  ger: Hinzufügen
+  eng: Add
+  ned: Toevoegen
+  fra: Ajouter
+  ita: Inserire
+  esp: Añadir
+  chi: 添加
+  fas: اضافه کردن
+  rus: добавить
+  hin: जोड़ना
+  ara: أضافة
+  vie: Thêm vào
+  heb: הוספה
+
+BTN_APPLY:
+  ger: Übernehmen
+  eng: Apply
+  ned: Overnemen
+  fra: Appliquer
+  ita: Applicare
+  esp: Aplicar
+  chi: 应用
+  fas: درخواست
+  rus: Применять
+  hin: आवेदन
+  ara: التطبيق
+  vie: Áp dụng
+  heb: Apply
+
+BTN_BACK:
+  ger: Zurück
+  eng: Back
+  ned: Terug
+  fra: En arrière
+  ita: Indietro
+  esp: Atrás
+  chi: 上一步
+  fas: بازگشت
+  rus: назад
+  hin: पीछे
+  ara: عودة
+  vie: Quay lại
+  heb: אחורה
+
+BTN_CANCEL:
+  ger: Abbrechen
+  eng: Cancel
+  ned: Afbreken
+  fra: Annuler
+  ita: Annullare
+  esp: Cancelar
+  chi: 忖消
+  fas: انصراف
+  rus: оборвать
+  hin: रद्द
+  ara: إلغاء
+  vie: Hủy
+  heb: לבטל
+
+BTN_CHANGE:
+  ger: Ändern
+  eng: Change
+  ned: Wijzigen
+  fra: Changement
+  ita: Cambiare
+  esp: Cambiar
+  chi: 更改
+  fas: تغيير
+  rus: изменить
+  hin: संचय
+  ara: حفظ
+  vie: Thay đổi
+  heb: לשנות
+
+BTN_CLEAR:
+  ger: Leeren
+  eng: Clear
+  ned: Ledigen
+  fra: Libre
+  ita: Eliminare
+  esp: Claro
+  chi: 清除
+  fas: پاک کردن
+  rus: стереть
+  hin: साफ
+  ara: مسح
+  vie: Xóa
+  heb: נקה
+
+BTN_CLOSE:
+  ger: Schließen
+  eng: Close
+  ned: Sluiten
+  fra: Fin
+  ita: Chiudere
+  esp: Cierre
+  chi: 关闭
+  fas: بستن
+  rus: закрыть
+  hin: बंद
+  ara: إغلاق
+  vie: Đóng
+  heb: סגור
+
+BTN_COLLAPSE:
+  ger: Zuklappen
+  eng: Collapse
+  ned: Dichtklappen
+  fra: Effacement
+  ita: Chiudere
+  esp: Collapse
+  chi: 折叠
+  fas: سقوط
+  rus: захлопнуть
+  hin: सिमटना
+  ara: طي
+  vie: Thu lại
+  heb: צמצם
+
+BTN_COMMIT:
+  ger: Freigeben
+  eng: Commit
+  ned: Vrijgeven
+  fra: Commettez
+  ita: Impegno
+  esp: Confíe
+  chi: 濿交
+  fas: تعهد
+  rus: освободить
+  hin: करना
+  ara: تحرير
+  vie: Cam kết
+  heb: בצע
+
+BTN_COMPARE:
+  ger: Vergleichen
+  eng: Compare
+  ned: Vergelijken
+  fra: Comparer
+  ita: Paragonare
+  esp: Compare
+  chi: 比较
+  fas: مقایسه
+  rus: Сравнивать
+  hin: तुलना 
+  ara: مقارنة
+  vie: So sánh
+  heb: להשוות
+
+BTN_COPY:
+  ger: Kopieren
+  eng: Copy
+  ned: Kopiëren
+  fra: Copier
+  ita: Copiare
+  esp: Copiar
+  chi: 夿制
+  fas: کپی کردن
+  rus: скопировать
+  hin: प्रतिलिपि
+  ara: نسخ
+  vie: Sao chép
+  heb: העתק
+
+BTN_CUT:
+  ger: Ausschneiden
+  eng: Cut
+  ned: Knippen
+  fra: Découper
+  ita: Tagliare
+  esp: Cortar
+  chi: 剪切
+  fas: بريدن
+  rus: вырезать
+  hin: काट
+  ara: قص
+  vie: Cắt 
+  heb: גזור
+
+BTN_DELETE:
+  ger: Löschen
+  eng: Delete
+  ned: Verwijderen
+  fra: Supprimer
+  ita: Cancellare
+  esp: Borrar
+  chi: 删除
+  fas: حذف
+  rus: стереть
+  hin: मिटाना
+  ara: شطب/مسح
+  vie: Xóa
+  heb: מחק
+
+BTN_DESTROY:
+  ger: Löschen
+  eng: Delete
+  ned: Verwijderen
+  fra: Supprimer
+  ita: Cancellare
+  esp: Borrar
+  chi: 删除
+  fas: حذف
+  rus: стереть
+  hin: मिटाना
+  ara: شطب/مسح
+  vie: Xóa
+  heb: מחק
+
+BTN_DUPLICATE:
+  ger: Duplizieren
+  eng: Duplicate
+  ned: Duplicaat
+  fra: Double
+  ita: Duplicare
+  esp: Duplicar
+  chi: 复制
+  fas: تکراری
+  rus: Дублировать
+  hin: डुप्लिकेट
+  ara: ازدواج
+  vie: Lặp lại
+  heb: המונחים
+
+BTN_DISPLAY:
+  ger: Anzeigen
+  eng: Display
+  ned: Weergeven
+  fra: Affichage
+  ita: Mostrare
+  esp: Visualización
+  chi: 显示
+  fas: نمايش
+  rus: выдать на экран
+  hin: प्रदर्शन 
+  ara: إظهار
+  vie: Hiển thị
+  heb: הצג
+
+BTN_DOWNLOAD:
+  ger: Download
+  eng: Download
+  ned: Downloaden
+  fra: Télécharger
+  ita: Scaricare
+  esp: Descargar
+  chi: 下载
+  fas: بار کردن
+  rus: стянуть
+  hin: डाउनलोड
+  ara: تحميل
+  vie: Tải xuống
+  heb: הורד
+
+BTN_EDIT:
+  ger: Bearbeiten
+  eng: Edit
+  ned: Bewerken
+  fra: Travailler
+  ita: Modificare
+  esp: Editar
+  chi: 编辑
+  fas: ويرايش
+  rus: обработать
+  hin: संपादन
+  ara: تحرير
+  vie: Chỉnh sửa
+  heb: עריכה
+
+BTN_EXECUTE:
+  ger: Ausführen
+  eng: Execute
+  ned: Uitvoeren
+  fra: Exécuter
+  ita: Esecuzione
+  esp: Ejecutar
+  chi: 执行
+  fas: اعدام
+  rus: Казнить
+  hin: निष्पादन
+  ara: Execute
+  vie: Thi hành
+  heb: בצע
+
+BTN_EXPAND:
+  ger: Aufklappen
+  eng: Expand
+  ned: Opklappen
+  fra: Étendre
+  ita: Espandere
+  esp: Expandir
+  chi: 拓展
+  fas: وسعت
+  rus: открыть
+  hin: फैलाना
+  ara: تمديد
+  vie: Mở rộng
+  heb: הרחב
+
+BTN_EXPORT:
+  ger: Exportieren
+  eng: Export
+  ned: Exporteren
+  fra: Exporter
+  ita: Esportare
+  esp: Exportación
+  chi: 导出
+  fas: صادرات
+  rus: экспортировать
+  hin: निर्यात
+  ara: تصدير
+  vie: Xuất ra
+  heb: מייצא
+
+BTN_GITPULL:
+  ger: Git Pull
+  eng: Git Pull
+  ned: Git Pull
+  fra: Pull Git
+  ita: Git Pull
+  esp: Git Pull
+  chi: 基特拉
+  fas: گیتی
+  rus: Git Pull
+  hin: गिट पुल
+  ara: توقف
+  vie: Kéo Git
+  heb: ג'יט משוך
+
+BTN_GITPUSH:
+  ger: Git Push
+  eng: Git Push
+  ned: Git Push
+  fra: Pousse git
+  ita: Git Push
+  esp: Git Push
+  chi: Git 推动
+  fas: Git Push
+  rus: Git Push
+  hin: गिट पुश
+  ara: Git Push
+  vie: Đẩy Git
+  heb: Git Push
+
+BTN_IMPORT:
+  ger: Importieren
+  eng: Import
+  ned: Importeren
+  fra: Importer
+  ita: Importare
+  esp: Importar
+  chi: 导入
+  fas: واردات
+  rus: импортировать
+  hin: आयात
+  ara: استيراد
+  vie: Nhập vào
+  heb: מייבא
+
+BTN_INIT:
+  ger: Initialisieren
+  eng: Init
+  ned: Initiëren
+  fra: Initialiser
+  ita: Initializzare
+  esp: Inicializar
+  chi: 刿始化
+  fas: ارزش
+  rus: инициализировать
+  hin: ईनिट
+  ara: إنشاء 
+  vie: Khởi tạo
+  heb: אתחל
+
+BTN_INSERT:
+  ger: Einfügen
+  eng: Insert
+  ned: Toevoegen
+  fra: Insérer
+  ita: Inserire
+  esp: Relleno
+  chi: 濒入
+  fas: وارد کردن
+  rus: вставить
+  hin: निवेश
+  ara: حشر
+  vie: Chèn vào
+  heb: הכנס
+
+BTN_INVITE:
+  ger: Einladen
+  eng: Invite
+  ned: Inviteren
+  fra: Inviter
+  ita: Invitare
+  esp: Invitar
+  chi: 邀请
+  fas: دعوت
+  rus: загрузить
+  hin: आमन्त्रित 
+  ara: دعوة
+  vie: Mời
+  heb: הזמן
+
+BTN_NEXT:
+  ger: Weiter
+  eng: Next
+  ned: Verder
+  fra: Continuer
+  ita: Ulteriori
+  esp: Adelante
+  chi: 更多
+  fas: بعدی
+  rus: Далее
+  hin: अगला
+  ara: التالي
+  vie: Kế tiếp
+  heb: הבא
+
+BTN_OPEN:
+  ger: Öffnen
+  eng: Open
+  ned: Openen
+  fra: Ouvrir
+  ita: Aprire
+  esp: Abierto
+  chi: 打开
+  fas: باز کردن
+  rus: открыть
+  hin: खोलें
+  ara: فتح
+  vie: Mở
+  heb: פתח
+
+BTN_OVERWRITE:
+  ger: Überschreiben
+  eng: Overwrite
+  ned: Overschrijven
+  fra: Écraser
+  ita: Sovrascrivere
+  esp: Sobrescribir
+  chi: 改写
+  fas: بازنويسی
+  rus: переписать
+  hin: के ऊपर लिखना
+  ara: الكتابة على الوحدة الموجودة
+  vie: Ghi đè
+  heb: החלף
+
+BTN_PASTE:
+  ger: Einfügen
+  eng: Paste
+  ned: Toevoegen
+  fra: Insérer
+  ita: Incollare
+  esp: Pegar
+  chi: 粘贴
+  fas: چسباندن
+  rus: внести
+  hin: चिपकायें
+  ara: لصق
+  vie: Dán lên
+  heb: הדבק
+
+BTN_PING:
+  ger: Ping
+  eng: Ping
+  ned: Ping
+  fra: Ping
+  ita: Ping
+  esp: Ping
+  chi: Ing
+  fas: اتصال
+  rus: прозвонить
+  hin: सनसनाना
+  ara: محاولة الاتصال
+  vie: Bình
+  heb: פינג
+
+BTN_REDO:
+  ger: Wiederherstellen
+  eng: Restore
+  ned: Herstellen
+  fra: Restauration
+  ita: Rifare
+  esp: Restauración
+  chi: 濢夿
+  fas: تجديد
+  rus: востанновить
+  hin: फिर से करें
+  ara: التراجع عن الخطوة السابقة
+  vie: Khôi phục
+  heb: שחזר
+
+BTN_REFRESH:
+  ger: Aktualisieren
+  eng: Refresh
+  ned: Actualisieren
+  fra: Rafraîchir
+  ita: Attualizzare
+  esp: Refrescar
+  chi: 刷新
+  fas: برگشت
+  rus: обновить
+  hin: ताज़ा करें
+  ara: تحديث
+  vie: Làm mới
+  heb: רענן
+
+BTN_REJECT:
+  ger: Ablehnen
+  eng: Reject
+  ned: Afwijzen
+  fra: Rejet
+  ita: Rifituare
+  esp: Rechazo
+  chi: 拒绿
+  fas: تغيير نام
+  rus: отказать
+  hin: अस्विकार करना
+  ara: رفض
+  vie: Loại bỏ
+  heb: דחה
+
+BTN_RENAME:
+  ger: Umbenennen
+  eng: Rename
+  ned: Ombenoemen
+  fra: Renommer
+  ita: Rinominare
+  esp: Cambiare nome
+  chi: 釿命忿
+  fas: نام
+  rus: переименновать
+  hin: पुनः नामांकण
+  ara: إعادة التسمية
+  vie: Đổi tên
+  heb: שנה שם
+
+BTN_REQUESTCOMMIT:
+  ger: Freigabe beantragen
+  eng: Request commit
+  ned: Commit aanvragen
+  fra: Demande de commit
+  ita: Richiedere attuazione
+  esp: Solicitud de compromiso
+  chi: 申请濿交
+  fas: راه اندازی مجدد
+  rus: запросить освобождение
+  hin: करने का गुज़ारिश
+  ara: تسليم الطلب
+  vie: Yêu cầu cam kết
+  heb: בקש אשר ביצוע
+
+BTN_RESET:
+  ger: Zurücksetzen
+  eng: Reset
+  ned: Resetten
+  fra: Remettre
+  ita: Andare indietro
+  esp: Recomponer
+  chi: 釿置
+  fas: بازگشت
+  rus: сброс
+  hin: पुनः ठिक करना
+  ara: بداية جديدة
+  vie: Thiết lập lại
+  heb: אפס
+
+BTN_ROLLBACK:
+  ger: Zurücknehmen
+  eng: Rollback
+  ned: Revoceren
+  fra: Retour
+  ita: Riprendere
+  esp: Rollback
+  chi: 回转
+  fas: پيدا کردن
+  rus: назад
+  hin: व्यतीत हो जाना
+  ara: عودة إلى السابق
+  vie: Đi vòng lại
+  heb: שחזר
+
+BTN_SAVE:
+  ger: Speichern
+  eng: Save
+  ned: Opslaan
+  fra: Change
+  ita: Cambiare
+  esp: Cambiar
+  chi: 更改
+  fas: تغيير
+  rus: изменить
+  hin: संचय
+  ara: حفظ
+  vie: Lưu lại
+  heb: שמור
+
+BTN_SCHEMATIZE:
+  ger: Schema erzeugen
+  eng: Create Schema
+  ned: Schema maken
+  fra: Créer un schéma
+  ita: Creare lo schema
+  esp: Crear esquema
+  chi: 创建索引模式
+  fas: ایجاد طرح نمایه
+  rus: Создание схемы индекса
+  hin: अनुक्रमणिका स्कीमा बनाएँ
+  ara: إنشاء مخطط فهرس
+  vie: Tạo lược đồ chỉ mục
+  heb: יצירת סכימת אינדקס
+
+BTN_SEARCH:
+  ger: Suche
+  eng: Find
+  ned: Zoeken
+  fra: Recherche
+  ita: Ricerca
+  esp: Búsqueda
+  chi: 查找
+  fas: گزينش همه
+  rus: поиск
+  hin: खोज़
+  ara: بحث
+  vie: Tìm 
+  heb: מצא
+
+BTN_SELECT:
+  ger: Auswählen
+  eng: Select
+  ned: Selecteren
+  fra: Choisir
+  ita: Selezionare
+  esp: Seleccione
+  chi: 选忖
+  fas: انتخاب
+  rus: выбрать
+  hin: कृपया सयन करे
+  ara: رجاء الاختيار
+  vie: Hãy lựa chọn
+  heb: אנא בחר
+
+BTN_SEND:
+  ger: Abschicken
+  eng: Send
+  ned: Versturen
+  fra: Envoyer
+  ita: Spedire
+  esp: Enviar
+  chi: 发送
+  fas: ارسال
+  rus: отослать
+  hin: भेजें
+  ara: ارسال
+  vie: Gửi
+  heb: שלח
+
+BTN_SLCTALL:
+  ger: Alle auswählen
+  eng: Select all
+  ned: Alle selecteren
+  fra: Choisissez tous
+  ita: Selezionare tutto
+  esp: Seleccione todos
+  chi: 全选
+  fas: گزينش هيچکدام
+  rus: выбрать все
+  hin: सबका सयन
+  ara: اختيار الكل
+  vie: Lựa chọn tất cả
+  heb: בחר הכל
+
+BTN_SLCTNONE:
+  ger: Nichts auswählen
+  eng: Select none
+  ned: Niets selecteren
+  fra: N'en choisissez aucun
+  ita: Seleziona nessuno
+  esp: No seleccione ninguno
+  chi: 全丿选
+  fas: همگام کردن
+  rus: ничего не выбирать
+  hin: कोई भी सयन ना करे
+  ara: اختيار لاشئ
+  vie: Không lựa chọn gì
+  heb: בחר ריק
+
+BTN_SYNCHRONIZE:
+  ger: Synchronisieren
+  eng: Synchronize
+  ned: Synchronisieren
+  fra: Synchroniser
+  ita: Sincronizzare
+  esp: Sincronizar
+  chi: 忌步
+  fas: لغو کردن
+  rus: синхронизировать
+  hin: शिन्क्रोनाइज
+  ara: طابق حقوق المستخدمين
+  vie: Đồng bộ
+  heb: סנכרן
+
+BTN_UNDELETE:
+  ger: Löschen rückgängig
+  eng: Undelete
+  ned: Verwijderen herroepen
+  fra: Annuler
+  ita: Undelete
+  esp: Undelete
+  chi: 取消删除
+  fas: عدم حذف
+  rus: Не удалять
+  hin: Undelete
+  ara: إلغاء الشطب
+  vie: Không xóa
+  heb: אל תמחק
+
+BTN_UNDO:
+  ger: Rückgängig
+  eng: Undo
+  ned: Teruggaand
+  fra: Défaire
+  ita: Cancellare ultima azione
+  esp: Deshacer
+  chi: 撤销
+  fas: ارسال
+  rus: возврат
+  hin: पूर्ववत करे
+  ara: إسترجاع
+  vie: Không thực hiện
+  heb: בטל
+
+BTN_UPDATE:
+  ger: Aktualisieren
+  eng: Update
+  ned: Actualisieren
+  fra: Travailler
+  ita: Modificare
+  esp: Editar
+  chi: 编辑
+  fas: ويرايش
+  rus: обработать
+  hin: संपादन
+  ara: تحرير
+  vie: Chỉnh sửa
+  heb: עדכן
+
+BTN_UPLOAD:
+  ger: Hochladen
+  eng: Upload
+  ned: Uploaden
+  fra: Télécharger
+  ita: Caricamento
+  esp: Subir
+  chi: 上载
+  fas: بزرگنمايي
+  rus: грузить
+  hin: चढ़ाना
+  ara: رفع الملفات
+  vie: Tải lên
+  heb: העלה
+
+BTN_ZOOM:
+  ger: Zoom
+  eng: Zoom
+  ned: Zoomen
+  fra: Bourdonnement
+  ita: Zoom
+  esp: Zumbido
+  chi: 显示比例
+  fas: Zoom
+  rus: изменение размеров
+  hin: ज़ूम
+  ara: تقريب
+  vie: Phóng to
+  heb: זום
+
+BY:
+  ger: von
+  eng: by
+  ned: door
+  fra: par
+  ita: da
+  esp: por
+  chi: 由
+  fas: بوسيله
+  rus: от
+  hin: के जरिए
+  ara: بواسطة
+  vie: bởi
+  heb: ע"י
+
+CAPTION_ADDROLE:
+  ger: Neue Rolle zu %s hinzufügen
+  eng: Create new role for %s
+  ned: Nieuwe rol naar %s toevoegen
+  fra: Créer un nouveau rôle pour %s
+  ita: Inserire nuovo ruolo %s
+  esp: Crear nuevo rol para %s
+  chi: 创建 %s 的新迌使
+  fas: ايجاد نقش برای %s
+  rus: внести новую роль %s
+  hin: %s के लिए नया भूमिका पैदा करे
+  ara: إنشاء دور جديد لـ %s
+  vie: Tạo vai trò mới cho %s
+  heb: צור תפקיד חדש ל%s
+
+CAPTION_ADDUSER:
+  ger: Neuen Benutzer zu %s hinzufügen
+  eng: Create new user for %s
+  ned: Nieuwe gebruiker naar %s toevoegen
+  fra: Créer un nouvel utilisateur pour %s
+  ita: Inserire nuovo utente %s
+  esp: Crear nuevo usuario para %s
+  chi: 添加新用户到 %s
+  fas: ايجاد کاربر جديد برای %s
+  rus: внести нового пользователя %s
+  hin: %s के लिए नया प्रयोगकर्त्ता पैदा करे
+  ara: إنشاء مستخدم جديد لـ %s
+  vie: Tạo người sử dụng mới cho %s
+  heb: צור משתמש חדש ל%s
+
+CAPTION_CHOOSEOBJ:
+  ger: Wählen Sie ein Objekt aus
+  eng: Please choose an object
+  ned: Selecter een object a.t.b.
+  fra: Veuillez choisir un objet
+  ita: Scegliere un oggetto
+  esp: Por favor elija un objeto
+  chi: 请选忖对象
+  fas: يک شی را انتخاب کنيد
+  rus: выберете объект
+  hin: कृपया एक वस्तु चुन्ने
+  ara: رجاء اختيار موضوع
+  vie: Hãy lựa chọn một đối tượng
+  heb: בבקשה בחר פריט
+
+CAPTION_DELETE:
+  ger: %s löschen
+  eng: Delete %s
+  ned: %s verwijderen
+  fra: Supprimer %s
+  ita: %s cancellare
+  esp: Suprimir %
+  chi: 删除 %s
+  fas: حذف %s
+  rus: стереть %s
+  hin: %s मिटायें
+  ara: شطب %s
+  vie: Xóa %s
+  heb: מחק %s
+
+CAPTION_EDIT:
+  ger: %s bearbeiten
+  eng: Edit %s
+  ned: %s bewerken
+  fra: Travailler %s
+  ita: %s modificare
+  esp: Editar %s
+  chi: 编辑 %s
+  fas: ويرايش %s
+  rus: обработать %s
+  hin: %s संपादन करे
+  ara: تحرير %s
+  vie: Chỉnh sửa %s
+  heb: ערוך %s
+
+CAPTION_ERROR:
+  ger: Fehler
+  eng: Error
+  ned: Fout
+  fra: Erreur
+  ita: Errore
+  esp: Error
+  chi: 错误
+  fas: خطای خطا
+  rus: Ошибка
+  hin: त्रुटि
+  ara: الرعب
+  vie: Lỗi
+  heb: שגיאה
+
+CAPTION_EXPORT:
+  ger: %s exportieren
+  eng: Export %s
+  ned: %s exporteren
+  fra: Exportation %s
+  ita: %s esportare
+  esp: Porcentajes de exportación
+  chi:  导出 %s
+  fas: خروج %s
+  rus: экспортировать %s
+  hin: %s निर्यात करे
+  ara: تصدير %s
+  vie: Xuất ra %s
+  heb: ייצוא %s
+
+CAPTION_INFO:
+  ger: Info
+  eng: Info
+  ned: Informatie
+  fra: Informations
+  ita: Info
+  esp: Info
+  chi: 资讯
+  fas: Info
+  rus: Информация
+  hin: जानकारी
+  ara: المعلومات
+  vie: Thông tin
+  heb: מידע
+
+CAPTION_IMPORT:
+  ger: %s importieren
+  eng: Import %s
+  ned: %s importeren
+  fra: Importe %s
+  ita: %s importare
+  esp: Porcentajes de importación
+  chi: 导入 %s
+  fas: ورود %s
+  rus: импортировать %s
+  hin: %s आयात करे
+  ara: استيراد %s
+  vie: Nhập vào %s
+  heb: יבא %s
+
+CAPTION_IMPORTEXPORT:
+  ger: Import/Export %s
+  eng: Import/Export %s
+  ned: Importeren/Exporteren %s
+  fra: Import-Export
+  ita: Imp/Esportazione %s
+  esp: Importación/Export %s
+  chi: 导入 / 导出 %s
+  fas: خروج/ورود %s
+  rus: импорт/экспорт %s
+  hin: आयात/निर्यात %s
+  ara: استيراد/تصدير %s
+  vie: Nhập vào/Xuất ra %s
+  heb: יבא/יצא %s
+
+CAPTION_INSERT:
+  ger: %s einfügen
+  eng: Insert %s
+  ned: %s toevoegen
+  fra: Insérer %s
+  ita: Inserire %s
+  esp: Insertar %s
+  chi: 濒入 %s
+  fas: درج %s
+  rus: вставить %s
+  hin: %s निवेश करे
+  ara: إدراج %s
+  vie: Chèn vào %s
+  heb: הכנס %s
+
+CAPTION_LOCKED:
+  ger: %s gesperrt
+  eng: %s locked
+  ned: %s blokkeerd
+  fra: %s verrouillé
+  ita: %s inaccessibile
+  esp: %s bloqueados
+  chi: %s 已锿定
+  fas: %s قفل شده
+  rus: закрыто %s
+  hin: %s बंद
+  ara: s% مغلق
+  vie: %s bị khóa
+  heb: %s נעול
+
+CAPTION_NEWTARGET:
+  ger: Ausgewählte Verweise auf ein neues Linkziel ändern
+  eng: Change selected references to a new link target
+  ned: Geselecteerde verwijzingen naar een nieuw linkdoel wijzigen
+  fra: Changer les références sélectionnées vers une nouvelle cible de lien
+  ita: Modificare i riferimenti selezionati a un nuovo target di collegamento
+  esp: Cambiar las referencias seleccionadas a un nuevo destino de enlace
+  chi: 将选定的引用更改为新的链接目标
+  fas: تغییر ارجاعات انتخاب شده به هدف پیوند جدید
+  rus: Изменить выбранные ссылки на новую цель
+  hin: चयनित संदर्भों को एक नए लिंक लक्ष्य में बदलें
+  ara: تغيير المراجع المحددة إلى هدف ارتباط جديد
+  vie: Thay đổi các tham chiếu đã chọn sang mục tiêu liên kết mới
+  heb: שנה הפניות שנבחרו ליעד קישור חדש
+
+CAPTION_NUMBER:
+  ger: Nummer
+  eng: Number
+  ned: Volgnummer
+  fra: Numéro
+  ita: Numero
+  esp: Número
+  chi: 号码
+  fas: نمبر
+  rus: количество
+  hin: संख्या
+  ara: عدد
+  vie: số
+  heb: מספר
+
+CAPTION_PROPERTIES:
+  ger: %s-Eigenschaften
+  eng: Properties %s
+  ned: Eigenschappen %s
+  fra: Propriétés %s
+  ita: Proprieta %s
+  esp: Propiedades %s
+  chi: %s 属性
+  fas: خصوصيات %s
+  rus: свойства %s
+  hin: %s विषेशतायें
+  ara: خصائص %s
+  vie: Các thuộc tính %s
+  heb: מאפיינים %s
+
+CAPTION_SELECT:
+  ger: Bitte auswählen
+  eng: Please select
+  ned: Selecteer
+  fra: Selecteer a.t.b.
+  ita: Selezionare
+  esp: Seleccione
+  chi: 选忖
+  fas: انتخاب
+  rus: выбрать
+  hin: कृपया सयन करे
+  ara: رجاء الاختيار
+  vie: Hãy lựa chọn
+  heb: אנא בחר
+
+CAPTION_THEME:
+  ger: Theme
+  eng: Theme
+  ned: Thema
+  fra: Thème
+  ita: Tema
+  esp: Tema
+  chi: 主题
+  fas: Theme
+  rus: Тема
+  hin: विषय
+  ara: الموضوع
+  vie: Sắc thái
+  heb: נושא
+
+CAPTION_UPLOAD:
+  ger: %s hochladen
+  eng: Upload %s
+  ned: %s uploaden
+  fra: Télécharger %s
+  ita: %s upload
+  esp: Subir %s
+  chi: 上载 %s
+  fas: ارسال %s
+  rus: грузить %s
+  hin: %s चढ़ाना
+  ara: رفع الملفات %s
+  vie: Tải lên %s
+  heb: מעלה %s
+
+CAPTION_WARNING:
+  ger: Warnung
+  eng: Warning
+  ned: Waarschuwing
+  fra: Avertissement
+  ita: Avvertenza
+  esp: Advertencia
+  chi: 3⁄4 ̄ ̧漯B
+  fas: هشدار
+  rus: Предупреждение
+  hin: चेतावनी
+  ara: تحذير
+  vie: Cảnh báo
+  heb: אזהרה
+
+DATETIME_FMT:
+  ger: %d.%m.%Y %H:%M:%S
+  eng: %Y/%m/%d %H:%M:%S
+  ned: %d-%m-%Y %H:%M:%S
+  fra: %d.%m.%Y %H:%M:%S
+  ita: %d.%m.%Y %H:%M:%S
+  esp: %d.%m.%Y %H:%M:%S
+  chi: %Y年 %m月 %d日 %H:%M:%S
+  fas: %Y/%m/%d%H:%
+  rus: %Y/%m/%%H:%M:%S
+  hin: %Y/%m/%d%H:%M:%S
+  ara: %Y/%m/%d %H:%M:%S
+  vie: %Y/%m/%d %H:%M:%S
+  heb: %Y /%m /%H:%M:%
+
+DATE_FMT:
+  ger: %d.%m.%Y
+  eng: %Y/%m/%d
+  ned: %d-%m-%Y
+  fra: %d.%m.%Y
+  ita: %d.%m.%Y
+  esp: %d.%m.%Y
+  chi: %Y年 %m月 %d日
+  fas: %Y/%m/%d
+  rus: %Y/%m/%%
+  hin: % Y/% M/% D
+  ara: %Y/%m/%d
+  vie: %Y/%m/%d
+  heb: %d.%m.%Y
+
+HREF_MORE:
+  ger: [<a%s>Mehr</a>]
+  eng: [<a%s>More</a>]
+  ned: [<a%s>meer</a>]
+  fra: [<a%s>Plus</a>]
+  ita: [<a%s>altro</a>]
+  esp: [<a%s>Más</a>]
+  chi: [<a%s>其它</a>]
+  fas: [<a%s>بيشتر</a>]
+  rus: [<a%s>больше</a>]
+  hin: [<a%s>और</a>]
+  ara: [<a%s>أكثر</a>]
+  vie: [<a%s>Hơn nữa</a>]
+  heb: [<a%s>יותר</a>]
+
+IP_OR_DOMAIN:
+  ger: IP-Adresse / Domäne
+  eng: IP / Domain
+  ned: IP / domein
+  fra: IP / Domaine
+  ita: Indirizzo IP / Dominio
+  esp: IP / Dominio
+  chi: IP地忀
+  fas: کد / دامنه
+  rus: IP-адрес / домейн в интернете
+  hin: आई पी / डोमेंन
+  ara: آي بي/النطاق
+  vie: Địa chỉ IP/Miền
+  heb: IP/דומיין
+
+LANG:
+  ger: Deutsch
+  eng: English
+  ned: Neederlands
+  fra: Francais
+  ita: Italiano
+  esp: Espanol
+  chi: Chinese
+  fas: Farsi
+  rus: Russian
+  hin: Hindi
+  ara: عربي
+  vie: Tiếng Việt
+  heb: עִבְרִית
+
+MONTH1:
+  ger: Januar
+  eng: January
+  ned: Januari
+  fra: Janvier
+  ita: Gennaio
+  esp: Enero
+  chi: 一月
+  fas: ژانويه
+  rus: январь
+  hin: जनवरी
+  ara: يناير
+  vie: Tháng một
+  heb: ינואר
+
+MONTH10:
+  ger: Oktober
+  eng: October
+  ned: Oktober
+  fra: Octobre
+  ita: Ottobre
+  esp: Octubre
+  chi: 忿月
+  fas: اکتبر
+  rus: февраль
+  hin: अक्तूबर
+  ara: أكتوبر
+  vie: Tháng mười
+  heb: אוקטובר
+
+MONTH11:
+  ger: November
+  eng: November
+  ned: November
+  fra: Novembre
+  ita: Novembre
+  esp: Noviembre
+  chi: 忿一月
+  fas: نوامبر
+  rus: март
+  hin: नवम्बर
+  ara: نوفمبر
+  vie: Tháng mười một
+  heb: נובמבר
+
+MONTH12:
+  ger: Dezember
+  eng: December
+  ned: December
+  fra: Décembre
+  ita: Dicembre
+  esp: Diciembre
+  chi: 忿二月
+  fas: دسامبر
+  rus: апрель
+  hin: दिसम्बर
+  ara: ديسمبر
+  vie: Tháng mười hai
+  heb: דצמבר
+
+MONTH2:
+  ger: Februar
+  eng: February
+  ned: Februari
+  fra: Février
+  ita: Febraio
+  esp: Febrero
+  chi: 二月
+  fas: فوريه
+  rus: май
+  hin: फरवरी
+  ara: فبراير
+  vie: Tháng hai
+  heb: פברואר
+
+MONTH3:
+  ger: März
+  eng: March
+  ned: Maart
+  fra: Mars
+  ita: Marzo
+  esp: Marzo
+  chi: 三月
+  fas: مارس
+  rus: июнь
+  hin: मार्च
+  ara: مارس
+  vie: Tháng ba
+  heb: מרץ
+
+MONTH4:
+  ger: April
+  eng: April
+  ned: April
+  fra: Avril
+  ita: Aprile
+  esp: Abril
+  chi: 四月
+  fas: آوريل
+  rus: июль
+  hin: अप्रैल
+  ara: أبريل
+  vie: Tháng tư
+  heb: אפריל
+
+MONTH5:
+  ger: Mai
+  eng: May
+  ned: Mei
+  fra: Mai
+  ita: Maggio
+  esp: Mayo
+  chi: 五月
+  fas: مه
+  rus: август
+  hin: मई
+  ara: مايو
+  vie: Tháng năm
+  heb: מאי
+
+MONTH6:
+  ger: Juni
+  eng: June
+  ned: Juni
+  fra: Juin
+  ita: Guigno
+  esp: Junio
+  chi: 六月
+  fas: ژون
+  rus: сентябрь
+  hin: जून
+  ara: يونيو
+  vie: Tháng sáu
+  heb: יוני
+
+MONTH7:
+  ger: Juli
+  eng: July
+  ned: Juli
+  fra: Juillet
+  ita: Luglio
+  esp: Julio
+  chi: 七月
+  fas: جولای
+  rus: октябрь
+  hin: जुलाई
+  ara: يوليو
+  vie: Tháng bảy
+  heb: יולי
+
+MONTH8:
+  ger: August
+  eng: August
+  ned: Augustus
+  fra: Août
+  ita: Agosto
+  esp: Agosto
+  chi: 八月
+  fas: اوت
+  rus: ноябрь
+  hin: अगस्त
+  ara: أغسطس
+  vie: Tháng tám
+  heb: אוגוסט
+
+MONTH9:
+  ger: September
+  eng: September
+  ned: September
+  fra: Septembre
+  ita: Settembre
+  esp: Septiembre
+  chi: 乿月
+  fas: سپتامبر
+  rus: декабрь
+  hin: सितम्बर
+  ara: سبتمبر
+  vie: Tháng chín
+  heb: ספטמבר
+
+MORE:
+  ger: Mehr
+  eng: More
+  ned: meer
+  fra: Plus
+  ita: Di piu'
+  esp: Más
+  chi: 其它
+  fas: بيشتر
+  rus: больше
+  hin: और
+  ara: أكثر
+  vie: Hơn nữa
+  heb: עוד
+
+MSG_ACCESS_FORBIDDEN:
+  ger: Zugriff auf %s nicht erlaubt!
+  eng: Access to %s forbidden!
+  ned: Access op %s niet toegestaan
+  fra: Accès à %s interdit !
+  ita: Acesso %s vietato!
+  esp: ¡Se prohíbe el acceso a %s!
+  chi: 禁止进入 %s !
+  fas: دسترسی به درصد ممنوع!
+  rus: доступ на %s закрыт
+  hin: %s पर प्रवेश करना वर्जित हें!
+  ara: الإطلاع على s%غير مسموح 
+  vie: Truy cập tới %s bị cấm!
+  heb: גישה ל %s אסורה!
+
+MSG_AFTER_INSERT:
+  ger: Ändern erst nach Einfügen von %s!
+  eng: Can be changed after insert of %s!
+  ned: Kan worden gewijzigd na invoegen van %s!
+  fra: Peut être modifié après insertion de %s!
+  ita: Cambiare dopo aver inserito %s!
+  esp: Puede cambiarse después de insertar %s!
+  chi: 先濒入 %s, 冿次更改
+  fas: قابل تغيير بعد از درج %s !
+  rus: изменение только после введения %s!
+  hin:  %s निवेश से परिवर्तित होगा
+  ara: قابل للتغيير بعد حشر s%
+  vie: Có thể được thay đổi sau khi chèn vào %s!
+  heb: יכול להשתנות לאחר הכנסת %s!
+
+MSG_CHANGED:
+  ger: Änderungen gespeichert.
+  eng: Saved changes.
+  ned: Modifikaties opslaan
+  fra: Changements sauvés.
+  ita: Cambiamenti salvati.
+  esp: Cambios ahorrados.
+  chi: 更改已俿存
+  fas: تغييرات ذخيره شده
+  rus: Изменения спасены
+  hin: परिवर्तनें संचय करे
+  ara: تعديلات محفوظة
+  vie: Đã lưu lại những thay đổi.
+  heb: השינויים נשמרו
+
+MSG_CHANGE_ANYWAY:
+  ger: Änderungen trotzdem speichern?
+  eng: Save changes anyway?
+  ned: Wijzigingen toch opslaan?
+  fra: Enregistrer les modifications quand même?
+  ita: Salvare comunque le modifiche?
+  esp: ¿Guardar los cambios de todos modos?
+  chi: 是否仍然保存更改？
+  fas: آیا با این وجود تغییرات ذخیره شوند؟
+  rus: Сохранить изменения всё равно?
+  hin: फिर भी परिवर्तनों को सहेजें?
+  ara: هل تحفظ التغييرات على أي حال؟
+  vie: Có lưu các thay đổi không?
+  heb: לשמור שינויים בכל מקרה?
+
+MSG_CONFIRM:
+  ger: Änderungen bestätigen.
+  eng: Confirm changes.
+  ned: Bevestig wijzigingen.
+  fra: Confirmer les changements.
+  ita: Conferma le modifiche.
+  esp: Confirmar cambios.
+  chi: 确认更改
+  fas: تأكيد التغييرات
+  rus: Подтвердить изменения
+  hin: परिवर्तन की पुष्टि करें
+  ara: تأكيد التعديلات
+  vie: Xác nhận thay đổi.
+  heb: אשר שינויים
+
+MSG_CONFIRM_CUTOBJS:
+  ger: Soll(en) %i ausgewählte(s) Objekt(e) wirklich ausgeschnitten werden?
+  eng: Do you really want to cut %i selected object(s)?
+  ned: Wilt u de %i geselecteerde object(en) echt knippen?
+  fra: Voulez-vous vraiment couper les %i objets sélectionnés ?
+  ita: Volete davvero tagliare i %i oggetti selezionati?
+  esp: ¿Desea realmente cortar los %i objetos seleccionados?
+  chi: 您确定要剪切所选的 %i 个对象吗？
+  fas: آیا می‌خواهید واقعاً %i مورد انتخاب‌شده را ببرید؟
+  rus: Вы действительно хотите вырезать %i выбранных объектов?
+  hin: क्या आप वास्तव में चयनित %i वस्तु(ओं) को काटना चाहते हैं?
+  ara: هل تريد حقًا قص %i من العناصر المحددة؟
+  vie: Bạn có thực sự muốn cắt %i đối tượng được chọn không?
+  heb: האם אתה באמת רוצה לגזור %i פריט(ים) שנבחר(ו)?
+
+MSG_CONFIRM_DELOBJ:
+  ger: Soll das Objekt wirklich gelöscht werden?
+  eng: Do you really want to delete this object?
+  ned: Wilt u dit object echt verwijderen?
+  fra: Voulez-vous vraiment supprimer cet objet ?
+  ita: Vuoi davvero eliminare questo oggetto?
+  esp: ¿Desea realmente eliminar este objeto?
+  chi: 您确定要删除该对象吗？
+  fas: آیا واقعاً می‌خواهید این شیء را حذف کنید؟
+  rus: Вы действительно хотите удалить этот объект?
+  hin: क्या आप वाकई में इस वस्तु को हटाना चाहते हैं?
+  ara: هل تريد حقًا حذف هذا العنصر؟
+  vie: Bạn có thực sự muốn xóa đối tượng này không?
+  heb: האם אתה בטוח שברצונך למחוק את הפריט הזה?
+
+MSG_CONFIRM_DELOBJS:
+  ger: Soll(en) %i ausgewählte(s) Objekt(e) wirklich gelöscht werden?
+  eng: Do you really want to delete %i selected object(s)?
+  ned: Wilt u de %i geselecteerde object(en) echt verwijderen?
+  fra: Voulez-vous vraiment supprimer les %i objets sélectionnés ?
+  ita: Volete davvero cancellare i %i oggetti selezionati?
+  esp: ¿Desea realmente eliminar los %i objetos seleccionados?
+  chi: 您确实要删除 %i 个选定的对象吗？
+  fas: آیا واقعاً می‌خواهید %i شیء(ها) انتخاب‌شده را حذف کنید؟
+  rus: Вы действительно хотите удалить %i выбранных объект(ов)?
+  hin: क्या आप वाकई में %i चयनित वस्तु(ओं) को हटाना चाहते हैं?
+  ara: هل تريد حقًا حذف %i من العناصر المحددة؟
+  vie: Bạn có thực sự muốn xóa %i đối tượng đã chọn không?
+  heb: האם אתה באמת רוצה למחוק %i פריט(ים) שנבחרו?
+
+MSG_CONFIRM_DUPLICATEOBJS:
+  ger: Soll(en) %i ausgewählte(s) Objekt(e) wirklich dupliziert werden?
+  eng: Do you really want to duplicate %i selected object(s)?
+  ned: Wilt u de %i geselecteerde object(en) echt dupliceren?
+  fra: Voulez-vous vraiment dupliquer les %i objets sélectionnés ?
+  ita: Vuoi davvero duplicare i %i oggetti selezionati?
+  esp: ¿Desea realmente duplicar los %i objetos seleccionados?
+  chi: 您确定要复制 %i 个选定的对象吗？
+  fas: آیا واقعاً می‌خواهید %i شیء(ها) انتخاب‌شده را تکثیر کنید؟
+  rus: Вы действительно хотите продублировать %i выбранных объект(ов)?
+  hin: क्या आप वास्तव में %i चयनित वस्तु(ओं) को डुप्लिकेट करना चाहते हैं?
+  ara: هل تريد حقًا تكرار %i كائنًا/كائنات محددة؟
+  vie: Bạn có thực sự muốn nhân đôi %i đối tượng đã chọn không?
+  heb: האם ברצונך באמת לשכפל %i אובייקט(ים) שנבחרו?
+
+MSG_CONFIRM_DESCENDANT_LANGS:
+  ger: Diese Aktion kann sich auf abhängige Sprachen (%s) auswirken. Wollen Sie trotzdem fortfahren?
+  eng: This action may affect descendant languages (%s). Do you want to proceed anyway?
+  ned: Deze actie kan van invloed zijn op afgeleide talen (%s). Wilt u toch doorgaan?
+  fra: Cette action peut affecter les langues descendantes (%s). Voulez-vous tout de même continuer ?
+  ita: Questa azione può influire sulle lingue discendenti (%s). Vuoi procedere comunque?
+  esp: Esta acción puede afectar a los idiomas descendientes (%s). ¿Desea continuar de todos modos?
+  chi: 此操作可能会影响派生语言 (%s)。您仍然要继续吗？
+  fas: این عمل ممکن است بر زبان‌های فرزند (%s) تأثیر بگذارد. آیا با این وجود می‌خواهید ادامه دهید؟
+  rus: Это действие может повлиять на дочерние языки (%s). Вы всё равно хотите продолжить?
+  hin: यह क्रिया अवरोही भाषाओं (%s) को प्रभावित कर सकती है। क्या आप फिर भी आगे बढ़ना चाहते हैं?
+  ara: قد يؤثر هذا الإجراء على اللغات التابعة (%s). هل تريد المتابعة على أي حال؟
+  vie: Hành động này có thể ảnh hưởng tới các ngôn ngữ dẫn xuất (%s). Bạn có muốn tiếp tục không?
+  heb: פעולה זו עלולה להשפיע על שפות יורשות (%s). האם ברצונך להמשיך בכל מקרה?
+
+MSG_CONFIRM_DISCARD_CHANGES:
+  ger: Sollen Eingaben verworfen werden?
+  eng: Do you really want to discard changes?
+  ned: Wilt u de wijzigingen echt negeren?
+  fra: Voulez-vous vraiment annuler les modifications?
+  ita: Volete davvero scartare le modifiche?
+  esp: ¿Realmente desea descartar los cambios?
+  chi: 您确定要放弃更改吗？
+  fas: آیا واقعاً می‌خواهید تغییرات را رد کنید؟
+  rus: Вы действительно хотите отменить изменения?
+  hin: क्या आप वाकई में किए गए परिवर्तनों को रद्द करना चाहते हैं?
+  ara: هل تريد فعلاً تجاهل التغييرات؟
+  vie: Bạn có thực sự muốn hủy các thay đổi không?
+  heb: האם אתה בטוח שברצונך לבטל את השינויים?
+
+MSG_CONFIRM_MOVEOBJ:
+  ger: Soll das Objekt wirklich hierhin verschoben werden?
+  eng: Do you really want to move the object here?
+  ned: Wilt u het object echt hierheen verplaatsen?
+  fra: Voulez-vous vraiment déplacer l'objet ici?
+  ita: Vuoi davvero spostare l'oggetto qui?
+  esp: ¿Desea realmente mover el objeto aquí?
+  chi: 您确实要将对象移到这里吗？
+  fas: آیا واقعا می‌خواهید این شی را به اینجا منتقل کنید؟
+  rus: Вы действительно хотите переместить объект сюда?
+  hin: क्या आप वास्तव में इस ऑब्जेक्ट को यहाँ स्थानांतरित करना चाहते हैं?
+  ara: هل تريد حقًا نقل العنصر إلى هنا؟
+  vie: Bạn có thực sự muốn chuyển đối tượng đến đây không?
+  heb: האם אתה באמת רוצה להעביר את האובייקט לכאן?
+
+MSG_CONFIRM_RELOAD:
+  ger: Der Server verlangt ein Neuladen dieser Seite.
+  eng: The server requires this page to be reloaded.
+  ned: De server vereist dat deze pagina opnieuw wordt geladen.
+  fra: Le serveur demande un rechargement de cette page.
+  ita: Il server richiede che questa pagina venga ricaricata.
+  esp: El servidor requiere que esta página sea recargada.
+  chi: 伺服器要求重新載入此頁面
+  fas: سرور نیاز به بارگذاری مجدد این صفحه دارد.
+  rus: Серверу требуется перезагрузка этой страницы.
+  hin: सर्वर को इस पृष्ठ को पुनः लोड करने की आवश्यकता होती है।.
+  ara: يتطلب الخادم إعادة تحميل هذه الصفحة.
+  vie: Máy phục vụ cần tải lại trang này.
+  heb: השרת דורש דף זה להיטען מחדש.
+
+MSG_CONFIRM_TRASHOBJS:
+  ger: Soll(en) %i ausgewählte(s) Objekt(e) wirklich in den Papierkorb verschoben werden?
+  eng: Do you really want to move %i selected object(s) to the trashcan?
+  ned: Wilt u de %i geselecteerde object(en) echt naar de prullenbak verplaatsen?
+  fra: Voulez-vous vraiment déplacer les %i objets sélectionnés vers la corbeille ?
+  ita: Volete veramente spostare i %i oggetti selezionati nel cestino?
+  esp: ¿Desea realmente mover los %i objetos seleccionados a la papelera?
+  chi: 您确定要将 %i 个选定的对象移入回收站吗？
+  fas: آیا واقعاً می‌خواهید %i مورد انتخاب‌شده را به سطل زباله منتقل کنید؟
+  rus: Вы действительно хотите переместить %i выбранных объектов в корзину?
+  hin: क्या आप वाकई %i चुने हुए वस्तुएँ(ओं) को कूड़ेदान में स्थानांतरित करना चाहते हैं?
+  ara: هل تريد حقًا نقل %i من العناصر المحددة إلى سلة المحذوفات؟
+  vie: Quý vị thực sự muốn chuyển %i đối tượng được chọn vào thùng rác không?
+  heb: האם להעבר באמת %i פריטים שנבחרו אל סל המחזור?
+
+MSG_COPIEDOBJS:
+  ger: Objekt(e) kopiert.
+  eng: Copied object(s).
+  ned: Gekopieerde object(en).
+  fra: Objet(s) copié(s).
+  ita: Oggetto(i) copiato(i).
+  esp: Objeto(s) copiado(s).
+  chi: 对象已复制。
+  fas: موارد کپی شد.
+  rus: Скопировано объект(ов).
+  hin: कॉपी की गई वस्तु(य ें)।
+  ara: تم نسخ العنصر(العناصر ).
+  vie: Đã sao chép đối tượng.
+  heb: הפריט(ים) הועתקפו
+
+MSG_CUTOBJS:
+  ger: Objekt(e) ausgeschnitten.
+  eng: Cut object(s).
+  ned: Geknipte object(en).
+  fra: Objet(s) coupé(s).
+  ita: Oggetto(i) tagliato(i).
+  esp: Objeto(s) cortado(s).
+  chi: 对象已剪切。
+  fas: موارد بریده شد.
+  rus: Вырезано объект(ов).
+  hin: कटी हुई वस्तु(यें)।
+  ara: تم قص العنصر(العناصر).
+  vie: Đã cắt đối tượng.
+  heb: הפריט(ים) נחתכו.
+
+MSG_DELETED:
+  ger: %i Objekt(e) gelöscht.
+  eng: %i Object(s) deleted.
+  ned: %i object(en) verwijderd.
+  fra: %i objet(s) supprimé(s).
+  ita: %i oggetto(i) eliminato(i).
+  esp: %i objeto(s) eliminado(s).
+  chi: %i 对象已删除。
+  fas: %i مورد حذف شد.
+  rus: %i объект(ов) удалено.
+  hin: %i वस्तु(यें) हटाई गईं।
+  ara: تم حذف %i عنصر(عناصر).
+  vie: %i đối tượng đã bị xóa.
+  heb: %i פריט(ים) נמחקו
+
+MSG_DTMLGENERATOR:
+  ger: Generierung von DTML-Code per Mausklick auf das Icon rechts neben der jeweiligen Attribut-Definition!
+  eng: Generate DTML-code by clicking on the icon right next to the attribute definition.
+  ned: Genereer DTML-code door op het pictogram rechts naast de attribuutdefinitie te klikken.
+  fra: Générez du code DTML en cliquant sur l'icône située à droite de la définition de l'attribut.
+  ita: Generazione del codice via click sulla icona a destra vicino alla rispettiva definizione di attributo!
+  esp: Genere código DTML haciendo clic en el icono a la derecha junto a la definición del atributo.
+  chi: 为产生 DTML-代砿，请忕击屬性定义旿的图标。
+  fas: تولید کد DTML با کلیک روی آیکون کنار تعریف ویژگی انجام می‌شود.
+  rus: Генерировать код DTML щелчком по значку справа от определения атрибута.
+  hin: एत्रिबूत परिभाषा के ठिक बगल के निशान चित्र को दबाके डि टि एम एल कोड उत्पन्न करे
+  ara: لتوليد كود DTML رجاء الضغط على الأيقونة بجانب تعريف البيان
+  vie: Tạo ra mã DTML bằng cách kích chuột vào biểu tượng phía bên phải kế bên phần định nghĩa thuộc tính.
+  heb: תייצור קוד DTML ע"י הקשה על האייקון שצמוד להגדרת המאפיין
+
+MSG_EMPTYCONTAINER:
+  ger: Es gibt keine Objekte in
+  eng: There are currently no items in
+  ned: Er zijn momenteel geen items in
+  fra: Il n'y a actuellement aucun élément dans
+  ita: Non ci sono oggetti nel
+  esp: Actualmente no hay elementos en
+  chi: 正在没有项目。...
+  fas: در حال حاضر آيتمي موجود نيست
+  rus: объектов не найдено в 
+  hin: यह मे अभी कोई भी वस्तुयें नहीं हे
+  ara: لايوجد أي بنود في
+  vie: Hiện tại không có hạng mục nào trong
+  heb: אין כרגע פריטים בתוך
+
+MSG_EXCEPTION:
+  ger: Es ist ein Ausnahmefehler aufgetreten
+  eng: An exception occurred
+  ned: Er is een uitzondering opgetreden
+  fra: Une exception s'est produite
+  ita: Si è verificata un'eccezione
+  esp: Se ha producido una excepción
+  chi: 发生异常
+  fas: یک استثناء رخ داد
+  rus: Произошло исключение
+  hin: एक अपवाद उत्पन्न हुआ
+  ara: حدث استثناء
+  vie: Đã xảy ra một ngoại lệ
+  heb: אירעה חריגה
+
+MSG_EXPORTED:
+  ger: %s exportiert.
+  eng: %s successfully exported.
+  ned: %s succesvol geëxporteerd.
+  fra: %s exporté avec succès.
+  ita: %s esportato.
+  esp: %s exportado.
+  chi: %s 已导出
+  fas: %s با موفقیت صادر شد
+  rus: %s успешно экспортирован
+  hin: %s सफलता से निर्यात हो गया
+  ara: تم تصدير %s بنجاح
+  vie: %s đã xuất ra thành công
+  heb: %s הוצאו בהצלחה
+
+TIP_FILTER:
+  ger: Definieren Sie Ihre eigenen Im/Export-Filter für ZMS-Objekte und die dafür erforderlichen Prozessschritt-Typen.
+  eng: Define your own custom im/export-filters for ZMS objects and the required types of processing steps.
+  ned: Definieer uw eigen aangepaste im/export-filters voor ZMS-objecten en de vereiste soorten verwerkingsstappen.
+  fra: Définissez vos propres fichiers im/export personnalisés pour les objets ZMS et les types d'étapes de traitement requis.
+  ita: Definire i propri im/export-filtri personalizzati per oggetti ZMS e i tipi richiesti di passaggi di elaborazione.
+  esp: Defina sus propios im/exportadores personalizados para objetos ZMS y los tipos necesarios de pasos de procesamiento.
+  chi: 定义您自己的 ZMS 对象自定义的 im/export- filters 和所需的处理步骤类型 .
+  fas: فیلترهای سفارشی خود را برای اشیاء ZMS و انواع مورد نیاز مراحل پردازش تعریف کنید.
+  rus: Определите свои собственные пользовательские фильтры для объектов ZMS и необходимые типы этапов обработки.
+  hin: जेत एम एस वस्तुयें तथा सरबर साईद बेत्च क्रियाएँ पर अपना कस्तम आ/निर्यात छ्लनी के परिभाषा देना
+  ara: حدد أختيارك من مرشحات التصدير/الأستيراد لـ ZMS والأنماط المطلوبة لاستكمال خطوات العملية
+  vie: Định nghĩa các bộ lọc xuất/nhập theo thói quen của quý vị cho các đối tượng ZMS và các kiểu bước xử lí được yêu cầu. 
+  heb: הגדר פילטרי ייבוא/ייצוא מותאמים אישית עבור אובייקטי ZMS וצעדי התהליכים הדרושים 
+
+MSG_FTP:
+  ger: Geben Sie hier die Zugangsdaten für den FTP-Export der kompletten WWW-Site zu Ihrem Provider an. Geben Sie im Feld IP-Adresse / Domäne den DNS-Eintrag Ihrer Domäne an (beispielsweise www.mydomain.de). Mit Export starten Sie den FTP-Exportvorgang.
+  eng: Please enter the provider's access code for the FTP-export of the complete WWW-Site. Please enter the DNS-name of your domain into the field IP / Domain (e.g. www.mydomain.org). Press export to start the FTP-export process.
+  ned: Voer de toegangscode van de provider in voor de FTP-export van de complete WWW-Site. Voer de DNS-naam van uw domein in in het veld IP / Domain (bijv. www.mydomain.org). Druk op export om het FTP-exportproces te starten.
+  fra: Veuillez entrer le code d'accès du fournisseur pour l'exportation FTP du site WWW complet. Veuillez saisir le nom DNS de votre domaine dans le champ IP / Domaine (par exemple www.mydomain.org). Appuyez sur export pour lancer le processus d'exportation FTP.
+  ita: Si prega di inserire il codice di accesso del fornitore per l'esportazione FTP del WW-Site completo. Inserisci il nome DNS del tuo dominio nel campo IP / Domain (ad esempio www.mydomain.org). Premere l'esportazione per avviare il processo di esportazione FTP.
+  esp: Ingrese el código de acceso del proveedor para la FTP-exportación del WWW-Site completo. Por favor introduzca el nombre DNS de su dominio en el campo IP / Dominio (por ejemplo, www.mydomain.org). Presione exportación para iniciar el proceso FTP-exportación.
+  chi: 请输入您的 FTP-访问忂数，把整个网站装入濿供商的朿务器。 在"IP-地忀/域" 的字段输入 DNS 忿称 （例如：www.mydomain.com）。 在导出段开始导出。
+  fas: لطفا تمام پارامترهاي دسترسي به FTP-export سايت را وارد کنيد
+  rus: задайте здесь данные для входа в(на) FTP-експорт полного www-сейта вашего провайдера. задайте в поле IP(интернет)-адресса домайн(Область) DNS-ввод(название) вашей домайн. (например <b>www.mydomain.de</b>). с помощью экспорта начните FTP-процесс.
+  hin: अपने प्रबन्धक को पूरे डबल्यू डबल्यू डबल्यू-स्थल का एफ ति पि-निर्यात करने के लिए एक्सेस पेरामेतर को क्रिप्या दो
+  ara: رجاء إدخال معطيات الإدخال لتصدير الموقع كاملا لمورد الخدمة لديك عن طريق الـ FTP . يرجى إدخال اسم النطاق الخاص بك DNS في خانة آي بي / النطاق. ( أي www.mydomain.org ) أضغط على تصدير لبدء عملية التصدير بواسطة FTP
+  vie: Hãy nhập vào mã số truy cập của nhà cung cấp cho việc xuất FTP của trang www hoàn chỉnh. Hãy nhập vào tên DNS của miền mà quý vị dùng trong trường địa chỉ IP/Miền (ví dụ như www.mydomain.org). Hãy xuất ra để bắt đầu tiến trình xuất FTP. 
+  heb: אנא הכנס את קוד הספק עבור ייצוא FTP של האתר www השלם. אנא הכנס את שם ה-DNS של הדומיין שלך לתוך השדה פרוטוקול אינטרנט/דומיין (לדוגמא: (www.mydomain.org
+
+MSG_IMPORTED:
+  ger: Datei %s importiert.
+  eng: File %s successfully imported.
+  ned: Bestand %s is succesvol geïmporteerd.
+  fra: Fichier %s importé avec succès.
+  ita: File %s importato
+  esp: %s de archivo importados con éxito.
+  chi: %s 文件已导入
+  fas: فايل %s با موفقيت اضافه شد
+  rus: Файл %s успешно экспортирован
+  hin: %s फाइल सफलता से आयात हो गया
+  ara: تم استيراد ملف %s بنجاح
+  vie: Tệp tin %s đã nhập vào thành công
+  heb: קובץ s% יובא בהצלחה
+
+MSG_INACTIVE:
+  ger: S E R V E R - F E H L E R<br/><br/> Dokument nicht gefunden<br/><br/><br/> Die von Ihnen gewählte Adresse/URL ist auf unserem Server nicht bzw. nicht mehr vorhanden.<br/><br/> Möglicherweise haben Sie einen veralteten Link bzw. ein altes Bookmark verwendet. Versuchen Sie den von Ihnen gewünschten Inhalt über unsere Homepage oder über unser Archiv zu finden.<br/><br/> Wenn Sie einem Link in unserem Angebot gefolgt sind, versuchen Sie es bitte in einigen Minuten noch einmal.<br/><br/> Sollten Sie noch weitere Fragen zu unserem Angebot haben, so schauen Sie bitte in die Hilfe oder schreiben Sie uns eine E-Mail.
+  eng: S E R V E R - E R R O R<br/><br/> Document not found<br/><br/><br/> The document requested does not exist on this server.<br/><br/> Please double check the URL or use the search function on this page to find what you are looking for.<br/><br/> If you definitely use the correct URL and you are encountering an error still, please inform our Webmaster. Thank you.<br/><br/> 
+  ned: S E R V E R - E R R O R <br/><br/> Document niet gevonden<br/><br/><br/> Het gevraagde document bestaat niet op deze server.<br/><br/> Controleer de URL of gebruik de zoekfunctie op deze pagina om te vinden wat u zoekt.<br/><br/> Als u zeker gebruik maakt van de juiste URL en u wordt geconfronteerd met een fout nog steeds, informeer dan onze Webmaster. Dank u.<br/><br/>
+  fra: S E R V E R - E R R O R<br/><br/> Document non trouvé<br/><br/><br/><br/> Le document demandé n'existe pas sur ce serveur.<br/><br/> Veuillez vérifier l'URL ou utiliser la fonction de recherche sur cette page pour trouver ce que vous cherchez.<br/><br/> Si vous utilisez définitivement l'URL correcte et que vous rencontrez toujours une erreur, veuillez en informer notre webmaster. Je vous remercie.<br/><br/>
+  ita: S E R V E R - E R R O R Documento non trovato Il documento richiesto non esiste su questo server. Si prega di controllare doppio l'URL o utilizzare la funzione di ricerca in questa pagina per trovare quello che stai cercando. Se si utilizza definitivamente l'URL corretto e si sta riscontrando un errore ancora, si prega di informare il nostro Webmaster. Grazie
+  esp: S E R V E R - E R R R O R secuestrador/conferencista No se ha encontrado el documento no identificador/ El documento solicitado no existe en este servidor. Por favor, compruebe la URL o utilice la función de búsqueda en esta página para encontrar lo que está buscando. Si definitivamente utiliza la URL correcta y está encontrando un error todavía, por favor informe a nuestro Webmaster. Gracias
+  chi: 朿务器出错<br/><br/> 找丿到文件<br/><br/><br/> 您申请的文件丿存在。<br/><br/> 请返回首页或者在档案冿次查找。<br/><br/> 如果您忕击过链接，请几分钟以忎釿试。<br/><br/> 如果有问题的诿，请忕击"帮助"或电孿邮件忑给我们。<br/><br/>
+  fas: S E R V R - E R O R <br/><br/> <br/><br/><br/<br/> سند درخواست شده در این سرور وجود ندارد.<br/><br/> لطفا URL را دو بار چک کنید یا از تابع جستجو در این صفحه برای پیدا کردن آنچه شما به دنبال آن هستید استفاده کنید.<br/><br/> اگر شما قطعا از URL صحیح استفاده می کنید و هنوز با یک خطا مواجه هستید، لطفا به وب سایت ما اطلاع دهید. ممنون <br/><br/>
+  rus: S E R V E R - E R R R R R<br/><br/> Документ не найден <br/><br/><br/> Запрашиваемый документ не существует на этом сервере.<br/><br/> Пожалуйста, дважды проверьте URL или используйте функцию поиска на этой странице, чтобы найти то, что вы ищете. Если вы определенно используете правильный URL-адрес и все еще сталкиваетесь с ошибкой, пожалуйста, сообщите об этом нашему веб-мастеру. Спасибо.<br/><br/>
+  hin: सरबर-गलती<br/><br/> दस्तावेज नही मीला<br/><br/><br/> यह सरबर मे आपका अनुरोध किया गया दस्तावेज उपस्थित नही है।<br/><br/> क्रिप्या आपका दिया गया यु आर एल को दोबारा जाँच करे या आपके मदद के लिए पृष्ठ मे उपस्थित खोज प्रकार्य का उपयोग करे<br/><br/> अगर आप जानते हे की यु आर एल सही हे फिर भी गलती का सामना कर रहा हे तो हमारे वेबमास्तर को सूचित करे। आपका धन्यवाद<br/><br/> 
+  ara: خطأ بالسرفر<br/><br/>المستند غير موجود<br/><br/>المستند المطلوب لايوجد على هذا السرفر<br/><br/>رجاء مراجعة العنوان الإلكتروني أو استخدام وظيفة البحث بهذه الصفحة للعثور على مرادك<br/><br/> إذا كنت متأكدا من إدخال العنوان الصحيح لكنك تواجه هذا الخطأ، رجاء اخطار مدير الموقع . شكرا<br/><br/>
+  vie: MÁY CHỦ - LỖI<br/><br/> Tài liệu không được tìm thấy<br/><br/><br/> Tài liệu được yêu cầu không tồn tại trong máy chủ này.<br/><br/> Hãy kiểm tra lại URL hoặc sử dụng chức năng tìm kiếm trên trang này để tìm ra những gì quý vị tìm kiếm.<br/><br/> Nếu quý vị dùng hoàn toàn đúng tên địa chỉ URL và quý vị vẫn gặp lỗi, hãy thông báo với Webmasster của quý vị. Cám ơn.<br/><br/> 
+  heb: שרת-שגיאה <br/><br/> המסמך לא נמצא <br/><br/> המסמך הדרוש אינו קיים על השרת הזה <br/><br/> אנא בדוק שוב את כתובת האינטרנט או השתמש באפשרות חיפוש בדף הנוכחי כדי למצוא את מה שאתה מחפש <br/><br/> אם הקשת בוודאות את כתובת האינטרנט הנכונה ואתה עדיין מקבל שגיאה, אנא יידע את האחראי על תמיכת הרשת שלנו. תודה <br/><br/>
+
+MSG_INSERTED:
+  ger: %s eingefügt.
+  eng: %s inserted.
+  ned: %s ingevoegd.
+  fra: %s inséré.
+  ita: %s inserito.
+  esp: %s insertados.
+  chi: %s 已濒入
+  fas: درصد اضافه شده.
+  rus: %s вставлено
+  hin: %s निवेश कर दियाँ
+  ara: %s تم ادراج
+  vie: %s đã được chèn
+  heb: s% הוכנס 
+
+MSG_LOADING:
+  ger: laden…
+  eng: loading…
+  ned: laden…
+  fra: chargement..
+  ita: caricamento..
+  esp: cargando..
+  chi: 装入..
+  fas: بارگیری ..
+  rus: погрузка..
+  hin: लोड ..
+  ara: جاري رفع الملفات
+  vie: đang tải…
+  heb: טוען...
+
+MSG_MAX_ROWS_EXCEEDED:
+  ger: Hinweis:<br/> Aufgrund Ihrer Angaben wurden %i Datensätze (max. %i) gefunden. Bitte überprüfen Sie, ob sich Ihre Suchanfrage durch weitere Eingaben noch weiter eingrenzen läßt.
+  eng: Warning:<br/> %i records (max. %i) have been found.
+  ned: Waarschuwing:<br/> %i records (max. %i) zijn gevonden.
+  fra: Avertissement:<br/> Des enregistrements %i (max. %i) ont été trouvés.
+  ita: Attenzione: %i record (max. %i) sono stati trovati.
+  esp: Advertencia: Se han encontrado registros %i (max. %i).
+  chi: 警告:<br/> 已经找到 %i 记录(最大%i) .
+  fas: هشدار:<br/> %i Record (حداکثر. درصد) پیدا شده است.
+  rus: Предупреждение:<br/> Были найдены записи %i (max. %i).
+  hin: चेतावनी:<br/> %i रेकाड्स (अधिकतम %i) मिल गया हे
+  ara: تحذير:<br/> السجلات %i (بحد أقصى) قد تم العثور عليها
+  vie: Cảnh báo:<br/> %i các bản ghi (tối đa %i) đã được tìm thấy.
+  heb: אזהרה:<br/> i% רשומות (מקסימום i% ) נמצאו
+
+TIP_METACMD:
+  ger: Aktionen erweitern die Funktionalität von ZMS; standardmässig erscheinen sie im 'Aktion auswählen'-Segment des Aktionsmenüs. Per Namenskonvention können sie im GUI aber auch an anderer Stelle erscheinen: 1. 'manage_add...' im Einfügen-Segment der Aktionsliste, 2. 'manage_tab...' als Hauptmenü-Tab, 3. 'manage_repository...' als Custom-Function des Repository-Managers und 4. 'manage_zcatalog...' als Custom-Function des Index-Managers.
+  eng: Actions extend the functionality of ZMS; by default they appear in the 'select action' segment of the action menu. Based on a naming convention, they can appear elsewhere in the GUI: 1. 'manage_add...' in the insert segment of the action list, 2. 'manage_tab...' as main menu tab, 3. 'manage_repository...' as custom function of the repository manager and 4. 'manage_zcatalog...' as custom function of the index manager.
+  ned: Acties breiden de functionaliteit van ZMS uit; standaard verschijnen ze in het 'Selecteer actie'-segment van het actiemenu. Op basis van een naamgeving conventie kunnen ze elders in de GUI verschijnen: 1. 'manage_add...' in het invoegsegment van de actielijst, 2. 'manage_tab...' als hoofdmenutabblad, 3. 'manage_repository...' als aangepaste functie van de repositorymanager en 4. 'manage_zcatalog...' als aangepaste functie van de indexbeheerder.
+  fra: Les actions étendent la fonctionnalité de ZMS ; par défaut, elles apparaissent dans le segment « sélectionner action » du menu action. Selon une convention de nommage, ils peuvent apparaître ailleurs dans l'interface graphique : 1. 'manage_add...' dans le segment d'insertion de la liste d'action, 2. 'manage_tab...' comme onglet de menu principal, 3. 'manage_repository...' comme fonction personnalisée du gestionnaire de dépôt et 4. 'manage_zcatalog...' comme fonction personnalisée du gestionnaire d'index.
+  ita: Le azioni estendono la funzionalità di ZMS; per impostazione predefinita appaiono nel segmento 'select action' del menu di azione. Sulla base di una convenzione di denominazione, possono apparire altrove nella GUI: 1. 'manage_add...' nel segmento inserto della lista d'azione, 2. 'manage_tab...' come scheda del menu principale, 3. 'manage_repository...' come funzione personalizzata del gestore del repository e 4. 'manage_zcatalog...' come funzione personalizzata del gestore dell'indice.
+  esp: Las acciones extienden la funcionalidad de ZMS; por defecto aparecen en el segmento de acción selecta del menú de acción. Basado en una convención de nombres, pueden aparecer en otro lugar del GUI: 1. 'manage_add...' en el segmento de inserción de la lista de acción, 2. 'manage_tab...' como ficha principal del menú, 3. 'manage_repository...' como función personalizada del administrador del repositorio y 4. 'manage_zcatalog...' como función personalizada del administrador del índice.
+  chi: 在此能够定义自己的擿作和功能。
+  fas: %s به پايين منتقل شد
+  rus: Действия расширяют функциональность ZMS; по умолчанию они появляются в сегменте «выбрать действие» меню действий. Основываясь на соглашении об именах, они могут появляться в других местах GUI: 1. «manage_add...» во вставочном сегменте списка действий, 2. «manage_tab...» в качестве вкладки главного меню, 3. «manage_repository...» в качестве пользовательской функции менеджера хранилища и 4. «manage_zcatalog...» в качестве пользовательской функции менеджера индекса.
+  hin: जेत एम एस वस्तुयें पर अपना कस्तम क्रियाएँ तथा फँषन्स के परिभाषा देना
+  ara: حدد الوظائف والعمليات المطلوبة على ZMS 
+  vie: Định nghĩa các hành động quen thuộc của chính quý vị và các chức năng trên các đối tượng ZMS.
+  heb: הגדר את הפעולות המותאמות אלייך ופונקציות של פריטי ZMS.
+
+TIP_METADICT:
+  ger: Metadaten sind präzise Informationen über (meta) den Inhalt des Dokuments; sie charakterisieren den Inhalt mithilfe eines festgelegten Satzes an Beschreibungs-Elementen (z.B. Titel, Autor, Datum, Verleger, Schlagworte etc.).
+  eng: Metadata are precise information about (meta) the document content. They characterize the content with the help of a fixed number of description elements (e.g. title, author, date, editor, subjects, etc.).
+  ned: Metadata zijn nauwkeurige informatie over (meta) de documentinhoud. Ze karakteriseren de inhoud met behulp van een vast aantal beschrijvingselementen (bijv. titel, auteur, datum, editor, onderwerpen, enz.).
+  fra: Les métadonnées sont des informations précises sur (meta) le contenu du document. Ils caractérisent le contenu à l'aide d'un nombre fixe d'éléments de description (par exemple, titre, auteur, date, éditeur, sujets, etc.).
+  ita: I metadati sono informazioni precise su (meta) il contenuto del documento. Essi caratterizzano il contenuto con l'aiuto di un numero fisso di elementi di descrizione (ad esempio titolo, autore, data, editore, soggetti, ecc.).
+  esp: Los metadatos son información precisa sobre (meta) el contenido del documento. Ellos caracterizan el contenido con la ayuda de un número fijo de elementos de descripción (por ejemplo, título, autor, fecha, editor, temas, etc.).
+  chi: 元数濮包快文件确切的信濯。元数濮用固定的元素濿写文件的内容（例如：主题，作者，日期，出版者，关键诿等）。
+  fas: %s به بالا منتقل شد
+  rus: Метаданные - это точная информация о (мета) содержании документа. Они характеризуют контент с помощью фиксированного количества элементов описания (например, заголовок, автор, дата, редактор, темы и т. Д.).
+  hin: (अधि) दस्तावेज तत्व का ठीक सूचना अधि अंकड़े(मेता दाता) होता है। वह नियत संख्या व्याख्या तत्व (उदाहरण,शीर्षक,लेखक, तिथि, सम्पादक, विषय इत्यादि) के मदद से नितत्व के चरित्रचित्रण करते हे।
+  ara: البيانات المتقدمة عبارة عن معلومات مفصلة عن محتوى المستند (meta). حيث تصف المحتوى بمساعدة عدد محدد من عناصر التوصيف (مثل: العنوان، المؤلف، التاريخ،المحرر، الموضوع، ...الخ.)
+  vie: Metadata là thông tin chính xác về (meta) nội dung của tài liệu. Chúng mô tả đặc điểm nội dung với sự hỗ trợ của một số lượng cố định các thành phần mô tả (ví dụ như tiêu đề, tác giả, ngày tháng, nhà biên tập, các chủ đề, v.v. )
+  heb: מטא-נתונים הם מידע מדויק אודות (מטא) תוכן המסמך. הם מאפיינים את התוכן בעזרת מספר קבוע של אלמנטי תיאור( כגון: כותרת, מחבר, תאריך, עורך, נושאים וכו'...)
+
+TIP_METAOBJ:
+  ger: Hier können Sie Ihr eigenes Modell für ZMS-Objekte definieren.
+  eng: Define your own model of ZMS objects.
+  ned: Definieer uw eigen model van ZMS objecten.
+  fra: Définir votre propre modèle d'objets ZMS.
+  ita: Definire il proprio modello di oggetti ZMS.
+  esp: Define tu propio modelo de objetos ZMS.
+  chi: 用特殊对象创建自定的ZMS对象。对象在正文体中显示，文件代表页鿢，醒目标题元素在醒目标题中显示。
+  fas: مدل خود را از اشیاء ZMS تعریف کنید.
+  rus: Определите собственную модель объектов ЗМС.
+  hin: विशेष वस्तुयें के द्वारा अपने कस्तम स्त्रकचर जेत एम एस वस्तुयें को परिभाषित कर सक्ता हे। वस्तुयें तेक्स्बोडि मे प्रदर्शित होता हे , दस्तावेज पृष्ठ होता हे ओर तिसरइलिमेन्त्स तिसर मे प्रदर्शित होत हे।
+  ara: العناصر الخاصة تسمح بتحديد خاصيتك من عناصر ZMS. حيث تعرض  العناصر في سياق النص، وتمثل المستندات صفحات، وتظهر عناصر ومكونات الركن لافت النظر تحت ركن لافت النظر!
+  vie: Định nghĩa mô hình riêng của các đối tượng ZMS.
+  heb: הגדר את הדגם שלך של פריטי ZMS.
+
+MSG_MOVEDOBJDOWN:
+  ger: %s nach unten verschoben.
+  eng: Moved %s down.
+  ned: %s naar beneden verplaatst.
+  fra: Déplacer %s vers le bas.
+  ita: %s muovito in basso
+  esp: Un porcentaje reducido.
+  chi: %s 已下移
+  fas: هیچ موردی مشخص نشد
+  rus: %s перемещено вниз
+  hin: %s को निचे कि ओर हटा दियाँ
+  ara: تم ترحيل %s لأسفل
+  vie: Đã chuyển %s xuống.
+  heb: הועבר s% למטה.
+
+MSG_MOVEDOBJTOPOS:
+  ger: %s an Position %i verschoben.
+  eng: Moved %s to position %i.
+  ned: %s naar positie %i verplaatst.
+  fra: Transféré %s à la position %i.
+  ita: Spostato % in posizione %i.
+  esp: Porcentajes movidos a la posición %i.
+  chi: 移动到 %i 的位置.
+  fas: درصد ها را به سمت %i حرکت دهید.
+  rus: Перемещение % в положение %i.
+  hin: %s to position %i.
+  ara: تم ترحيل %s إلى موضع %s
+  vie: Đã chuyển %s tới vị trí %i.
+  heb: הועבר s% לעמדת i%.
+
+MSG_MOVEDOBJUP:
+  ger: %s nach oben verschoben.
+  eng: Moved %s up.
+  ned: %s omhoog gezet.
+  fra: Remonté %s.
+  ita: %s muovito in alto
+  esp: Subió %s.
+  chi: %s 已上移
+  fas: فعلا هیچ ارتباط داخلي با %s وجود ندارد
+  rus: %s вверх перемещено
+  hin: %s को ऊपर कि ओर हटा दियाँ
+  ara: تم ترحيل %s لأعلى
+  vie: Đã chuyển %s lên.
+  heb: הועבר s% למעלה.
+
+TIP_MULTILANG:
+  ger: In der symmetrischen Multilingualität wird für jede Sprache eine identische Variante der Objekte des Content-Baums angelegt.
+  eng: In symmetrical multiligualism for every language an identical variant of all content tree objects is realized.
+  ned: In symmetrisch multiligualisme voor elke taal wordt een identieke variant van alle inhoud boom objecten gerealiseerd.
+  fra: Dans le multiligualisme symétrique pour chaque langue une variante identique de tous les objets de l'arbre de contenu est réalisée.
+  ita: In multiligualismo simmetrico per ogni lingua viene realizzata una variante identica di tutti gli oggetti dell'albero dei contenuti.
+  esp: En multiligualismo simétrico para cada idioma se realiza una variante idéntica de todos los objetos de árbol de contenido.
+  chi: 在对称的多語言环境中为毿秿语言创建相忌的内容树为对象.
+  fas: فعلا وظيفه ای موجود نيست
+  rus: В симметричном многоязычии для каждого языка реализуется идентичный вариант всех содержательных древовидных объектов.
+  hin: सिमेट्रिकल मल्टिलिङ्वेजम मे हर भाषा के कोन्टेन्त त्रि ओब्जेक्स का आइडेन्तिक वेराइन्त होता हे।
+  ara: في حالة تعدد اللغات يتم إضافة نسخة مطابقة ومتماثلة من عناصر المحتوى لكل لغة يتم استخدامها
+  vie: Trong môi trường đa ngôn ngữ có hệ thống, đối với mỗi ngôn ngữ, sự thay đổi đồng nhất của tất cả các đối tượng cây nội dung được hiện thực hóa.
+  heb: ברב-לשונות סימטרית ממומשת לכל שפה גרסה זהה של כל פריטי העץ. 
+
+TIP_MULTILANGDICT:
+  ger: Im Wörterbuch werden Schlüsselwörter für multilinguale Templates hinterlegt.
+  eng: Register keywords for multilingual templates in the dictionary.
+  ned: Registreer zoekwoorden voor meertalige templates in het woordenboek.
+  fra: Inscrivez des mots-clés pour les modèles multilingues dans le dictionnaire.
+  ita: Registra parole chiave per i modelli multilingue nel dizionario.
+  esp: Registrar palabras clave para plantillas multilingües en el diccionario.
+  chi: 在诿典中多语言的关键诿为登记。
+  fas: ?چسبانده شده از Clip Board
+  rus: Регистрируйте ключевые слова для многоязычных шаблонов в словаре.
+  hin: शब्द्कोश मे बहूभाषायें के टेमप्लेत का कुंजीशब्दो को दर्ज करे
+  ara: سجل الكلمات الرئيسية بالنموذج المعد لذلك في القاموس.
+  vie: Đăng kí những từ khóa cho các bản mẫu đa ngôn ngữ trong từ điển.
+  heb: הכנס מילות מפתח לתבנית רב-לשונית במילון
+
+MSG_NOITEMSSPECIFIED:
+  ger: Es wurden keine Einträge ausgewählt!
+  eng: No items have been specified!
+  ned: Er zijn geen items opgegeven!
+  fra: Aucun article n'a été spécifié !
+  ita: Non sono stati selezzionati oggetti!
+  esp: ¡No se han especificado artículos!
+  chi: 未指定项目
+  fas: %s برگرفته از
+  rus: Никаких элементов не было выбрано 
+  hin: कोई भी वस्तु को विवरण नहीं कियाँ
+  ara: لم يتم تحديد آية بنود
+  vie: Không có hạng mục nào được xác định cụ thể!
+  heb: לא הוגדרו פריטים!
+
+MSG_NOREFERENCES:
+  ger: Es gibt keine internen Referenzen auf %s
+  eng: There are currently no internal references to %s
+  ned: Er zijn momenteel geen interne verwijzingen naar %s
+  fra: Il n'y a aucune référence interne à %s
+  ita: Non ci sono riferimenti interni %s
+  esp: No hay referencias internas a %s
+  chi: 没有%s 的內部忂照
+  fas: جايگزيني>%s<
+  rus: внутренних ссылок на %s не найдено
+  hin: अभी कोई भी आंतरिक संदर्भे %s पर नही हे
+  ara: لا يوجد حاليا أي مراجع داخلية لـ %s
+  vie: Hiện tại không có những tham chiếu bên trong tới %s
+  heb: אין כרגע התייחסויות פנימיות לs%
+
+MSG_NOTASKS:
+  ger: Es gibt keine Aufgaben in
+  eng: There are currently no tasks in
+  ned: Er zijn momenteel geen taken in
+  fra: Il n'y a actuellement aucune tâche dans
+  ita: Non ci sono incarichi nel
+  esp: Actualmente no hay tareas en
+  chi: 正在 ... 没有任务。
+  fas: آيا مي خواهيد تمام رويداد هاي i %s را جانشين کنيد
+  rus: никаких заданий не находится в
+  hin: यह अभी कोई भी क्रियायें नहीं हे
+  ara: لا يوجد حاليا آية مهام معلقة
+  vie: Hiện tại không có nhiệm vụ nào trong
+  heb: אין כרגע מטלות ב
+
+MSG_PASTED:
+  ger: Aus Zwischenablage eingefügt.
+  eng: Pasted from clipboard.
+  ned: Geplakt van klembord.
+  fra: Collé du presse-papiers.
+  ita: Copiato.
+  esp: Pasado del portapapeles.
+  chi: 从剪贴濿濒入
+  fas: براي (ستون s%) مقدارنامشخص است
+  rus: Из клипборда введено
+  hin: क्लिप बोर्द से चिप्का दियाँ
+  ara: تم اللصق من الذاكرة
+  vie: Được cắt dán từ clipboard.
+  heb: הודבק מלוח גזירים.
+
+MSG_REFERENCEDBY:
+  ger: %s wird referenziert von
+  eng: %s is referenced by
+  ned: %s wordt verwezen door
+  fra: %s est référencé par
+  ita: %s referenze da
+  esp: %s se refiere por
+  chi: توسط>%s<?
+  fas: درصد ها توسط
+  rus: ссылки от %s
+  hin: %s को रिफरेन्स किया हे
+  ara: s% روجع بواسطة
+  vie: %s được tham chiếu bởi
+  heb: %s הופנה ע"י 
+
+MSG_REPLACE:
+  ger: Soll >%s< durch >%s< ersetzt werden?
+  eng: Should >%s< be replaced by >%s<?
+  ned: Moet >%s< worden vervangen door >%s<?
+  fra: Faut-il remplacer >%s< par >%s<?
+  ita: Sostituire >%s< >%s<?
+  esp: ¿Deberían sustituirse los títulos?
+  chi: 您是忦覿以 %t 代替 %s （
+  fas: %i شي به سطل زباله انتقال يافت
+  rus: измененить >%s< на >%s< ?
+  hin: कया >%s< को >%s< से बदलदे?
+  ara: إحلال >%s< بـ >%s<؟
+  vie: Có nên thay thế >%s< bởi >%s<?
+  heb: האם להחליף >%s< ע"י >%s<?
+
+MSG_REPLACEALL:
+  ger: Sollen alle %i Vorkommnisse von >%s< ausgezeichnet werden?
+  eng: Should be replaced all %i occurances of >%s<?
+  ned: Moeten alle %i voorvallen van >%s < worden vervangen?
+  fra: Faut-il remplacer toutes les apparitions %i de > %s<?
+  ita: Sostituire tutto %i >%s<?
+  esp: ¿Debería ser reemplazado todos los porcentajes de ocurrencias de ¢%s realizados?
+  chi: 您覿把 %i 个 %s 的现象都忖代志？
+  fas: آیا باید جایگزین همه ی نشانه های درصد از >% شود؟?
+  rus: помечать все %i изменения из >%s<?
+  hin: %i बार मिले >%s< को बदलदे?
+  ara: إحلال كل %i معاملات من >%s<؟
+  vie: Có nên thay thế tất cả %i những sự xuất hiện của >%s<?
+  heb: האם לתייג את כל מופעי ה%i מתוך >%s<?
+
+MSG_REQUIRED:
+  ger: Feld '%s' muß einen Wert haben!
+  eng: Field '%s' must have a value.
+  ned: Veld "%s' moet een waarde hebben.
+  fra: Le champ « %s » doit avoir une valeur.
+  ita: Richiesto '%s'!
+  esp: El campo debe tener un valor.
+  chi: 需覿濒入 %s 字段的值。
+  fas: فايل %s ارسال شد
+  rus: место занесения информации %s должно быть заполненно
+  hin: फिल्ड '%s' का मूल्य अनुपस्थित हे
+  ara: رجاء إدخال قيمة لـلحقل '%s'!
+  vie: Trường dữ liệu '%s' phải có một giá trị.
+  heb: הכנס ערך לשדה '%s'.
+
+MSG_ROLLBACKVERSIONCHANGES:
+  ger: Mit Zurücknehmen löschen Sie unwiderruflich die Arbeitsversion und ersetzen diese durch die aktuelle Liveversion!
+  eng: Rollback irrevocably replaces the working version with the current live version!
+  ned: Rollback vervangt de werkversie onherroepelijk door de huidige live versie!
+  fra: Rollback remplace irrévocablement la version de travail par la version live actuelle !
+  ita: Cancellare definitivamente la versione e sostituire con la versione attuale!
+  esp: Rollback reemplaza irrevocablemente la versión de trabajo con la versión actual en directo!
+  chi: "转回"丿能忖消地以工作版本代替当剿的实况版本。
+  fas: Rollback به طور برگشت ناپذیر جایگزین نسخه کاری با نسخه زنده فعلی!
+  rus: Rollback безвозвратно заменяет рабочую версию текущей живой версией!
+  hin: रोल्बेक अखण्डनीय रूप से वर्किङ वरसन को करेन्त लाइव वरसन से बदल दिया !
+  ara: سيؤدي التراجع إلى حذف النسخة العاملة وإحلالها بالنسخة النشطة الحالية نهائيا 
+  vie: Sự vòng lại sẽ thay thế phiên bản đang làm việc bởi phiên bản hiện tại!
+  heb: חזרה לאחור תחליף בצורה בלתי הפיכה את הגרסה הנוכחית בגרסה החיה הקיימת!
+
+MSG_TRASHED:
+  ger: %i Objekt(e) in den Papierkorb verschoben.
+  eng: %i Object(s) moved to trashcan.
+  ned: %i Object(s) verplaatst naar prullenbak.
+  fra: %i Objet(s) déplacé(s) vers la poubelle.
+  ita: %i oggetti spostati nel cestino.
+  esp: %i Object(s) se mudó a basura.
+  chi: %i 对象已放入回收站。
+  fas: %i Object (s) به سطل زباله منتقل شد.
+  rus: %i объекты перемещенны в мусорный ящик
+  hin: %i वस्तु(यें) को कूड़े काठ मे दाल दियाँ
+  ara: تم حذف عدد %i عنصر/ عناصر إلى سلة المهملات 
+  vie: %i (Các) đối tượng đã chuyển tới thùng rác.
+  heb: %i פריט(ים ) נשלח(ו) לסל המיחזור
+
+MSG_UNDONE:
+  ger: %i Objekt(e) rückgängig gemacht.
+  eng: %i Object(s) undone.
+  ned: %i Object(s) ongedaan gemaakt.
+  fra: %i Objet(s) annulé(s).
+  ita: %i Oggetto(i) annullato.
+  esp: %i Object(s) undone.
+  chi: %i 对象已撤销.
+  fas: %i Object (بازدید کنندگان).
+  rus: %i Объект(ы) не выполнен(ы).
+  hin: %i ऑब्जेक्ट (s) undone.
+  ara: عدد %i عنصر/ عناصر قد تم التراجع عنها
+  vie: %i (Các) đối tượng đã không được thực hiện.
+  heb: %i פריט(ים) שלא נעשו
+
+MSG_UNDOVERSION:
+  ger: Unten sehen Sie die Historie aller Versionen dieses Objekts. Sie können Versionen miteinander vergleichen oder das Objekt auf eine frühere Version zurücksetzen.
+  eng: Below you see the history of all versions of this object. You can compare two versions or reset this object to an earlier version.
+  ned: Hieronder ziet u de geschiedenis van alle versies van dit object. U kunt twee versies vergelijken of dit object resetten naar een eerdere versie.
+  fra: Ci-dessous vous voyez l'historique de toutes les versions de cet objet. Vous pouvez comparer deux versions ou réinitialiser cet objet à une version antérieure.
+  ita: Sotto vedete la storia di tutte le versioni riguardanti questo oggetto. Potete riportare l`oggetto a una versione precedente.
+  esp: A continuación se muestra la historia de todas las versiones de este objeto. Puede comparar dos versiones o restablecer este objeto a una versión anterior.
+  chi: 在下鿢显示该对象的版本历忲。 您忯以濢夿早期的版本。
+  fas: از
+  rus: Ниже представлена история всех версий этого объекта. Вы можете сравнить две версии или сбросить этот объект на более раннюю версию.
+  hin: इस वस्तुयें के सब वर्क-फ्लो वरशन के इतिहास निचे दिये हे। आप यह वस्तु के पहले वरशन मे पुनःठिक कर सकता हे
+  ara: يظهر بالأسفل تاريخ جميع النسخ من هذا العنصر، يمكنك مقارنة أي نسختين أو إعادة هذا العنصر إلى نسخة سابقة
+  vie: Ở phía dưới quý vị có thể nhìn thấy lịch sử của tất cả các phiên bản của đối tượng này. Quý vị có thể so sánh hai phiên bản hoặc thiết lập lại đối tượng này tới một phiên bản sớm hơn.
+  heb: למטה תוכל לראות את ההיסטוריה של כל הגרסאות של הפריט הנוכחי. תוכל להשוות בין שתי גרסאות או לאפס את הפריט לגרסה הקודמת.
+
+MSG_UPLOADED:
+  ger: Datei hochgeladen.
+  eng: File uploaded.
+  ned: Bestand geüpload.
+  fra: Fichier téléchargé.
+  ita: File caricato.
+  esp: El archivo subido.
+  chi: 文件已上载
+  fas: فایل آپلود شده.
+  rus: Файл загружен
+  hin: फाइल चढ़ा दियाँ
+  ara: تم رفع الملفات
+  vie: Tệp tin đã được tải lên.
+  heb: קובץ נטען.
+
+MSG_ZMSTABLE_TYPE:
+  ger: Hinweis: Typ kann nachträglich nicht mehr geändert werden.
+  eng: Note: Type can not be changed later
+  ned: Opmerking: Type kan later niet worden gewijzigd
+  fra: Note: Type ne peut pas être modifié ultérieurement
+  ita: Nota: Tipo non può essere modificato in seguito
+  esp: Nota: Tipo no se puede cambiar más adelante
+  chi: 注：类型不能改变以后
+  fas: رنوٹ: پروپوزل کی گذارش بعد میں تبدیل نہیں کر سکتے ہیں
+  rus: Примечание: тип не может быть изменен позднее
+  hin: नोट: प्रकार बाद में बदला नहीं जा सकता
+  ara: ملاحظة: نوع لا يمكن تغييرها لاحقا
+  vie: Lưu ý: loại không thể được thay đổi sau
+  heb: הערה: סוג לא ניתן לשנות מאוחר יותר
+
+MSG_WORKFLOW:
+  ger: Hier können Sie Ihren eigenen Workflow für ZMS-Objekte definieren.
+  eng: Define your own custom workflow on ZMS objects.
+  ned: Definieer uw eigen aangepaste workflow op ZMS objecten.
+  fra: Définissez votre propre workflow personnalisé sur les objets ZMS.
+  ita: Qui potete definire il vostro workflow per oggetti ZMS
+  esp: Define tu propio flujo de trabajo personalizado en objetos ZMS.
+  chi: 定义您在 ZMS 对象上的自定义工作流程 .
+  fas: جریان کار سفارشی خود را بر روی اشیاء ZMS تعریف کنید.
+  rus: Определите свой собственный рабочий процесс на объектах ZMS.
+  hin: जेत एम एस वस्तुयें पर अपना कस्तम वर्कफ्लो के परिभाषा देना
+  ara: حدد طريقة تسلسل العمل الخاصة بك لعناصر ZMS
+  vie: Định nghĩa lịch trình công việc theo thói quen của riêng quý vị trên các đối tượng ZMS.
+  heb: הגדר את רצף הפעולות המותאם אלייך עבור פריטיZMS.
+
+OBJECTS_OLDER_THAN:
+  ger: für Objekte älter als
+  eng: for objects older than
+  ned: voor objecten ouder dan
+  fra: pour les objets plus âgés que
+  ita: Ogetti piu' vecchi di
+  esp: para objetos mayores que
+  chi: 对于大于
+  fas: برای اشیاء قدیمی تر از
+  rus: для объектов, которые старше чем
+  hin: उसे पुरानावाला वस्तुयें
+  ara: للعناصر أقدم من 
+  vie: cho các đối tượng cũ hơn
+  heb: עבור פריטים ישנים יותר מ
+
+OF:
+  ger: von
+  eng: of
+  ned: van
+  fra: de
+  ita: di
+  esp: de
+  chi: 共
+  fas: از
+  rus: из
+  hin: का 
+  ara: من
+  vie: của
+  heb: מ
+
+ON:
+  ger: am
+  eng: on
+  ned: op
+  fra: á
+  ita: su
+  esp: en
+  chi: 日期
+  fas: در
+  rus: при
+  hin: पर 
+  ara: على
+  vie: trên
+  heb: על
+
+TO:
+  ger: zu
+  eng: to
+  ned: in
+  fra: au
+  ita: al
+  esp: al
+  chi: 改为
+  fas: برای
+  rus: то
+  hin: to
+  ara: إلى
+  vie: tới
+  heb: ל
+
+OPT_AB_NONE:
+  ger: Kein
+  eng: None
+  ned: Geen
+  fra: Personne
+  ita: Nessuno
+  esp: Ninguno
+  chi: 无
+  fas: هیچ
+  rus: нет
+  hin: कोई भी नहीं
+  ara: لاشئ
+  vie: Không có gì
+  heb: אין
+
+OPT_AB_SINGLE:
+  ger: Einzeln
+  eng: Single
+  ned: Los
+  fra: Simple
+  ita: Singolo
+  esp: Solo
+  chi: 忕线
+  fas: مجرد
+  rus: отдельно
+  hin: एक मात्र
+  ara: مفرد
+  vie: Đơn
+  heb: יחיד
+
+OPT_AB_SOLID:
+  ger: Komplett
+  eng: Solid
+  ned: Compleet
+  fra: Solide
+  ita: Completo
+  esp: Sólido
+  chi: 实线
+  fas: جامد
+  rus: полностью
+  hin: ठोस
+  ara: صلب
+  vie: Rắn
+  heb: מלא
+
+OPT_AP_SUB_ALL:
+  ger: komplette Subhierarchie
+  eng: complete sub-hierarchy
+  ned: volledige subhiërarchie
+  fra: sous-hiérarchie complète
+  ita: Sottogerarchia completa
+  esp: subhierarquía completa
+  chi: 所有次层次
+  fas: کامل زیر هرج ومرج
+  rus: полная подхирархия
+  hin: पूरा उप-पदानुक्रम
+  ara: تسلسل هرمي فرعي
+  vie: hoàn thành phân cấp phụ
+  heb: תת-היררכיה שלמה
+
+OPT_AP_SUB_NAV:
+  ger: nur Ordner der Subhierarchie
+  eng: only folders of sub-hierarchy
+  ned: alleen mappen van subhiërarchie
+  fra: seuls les dossiers de sous-hiérarchie
+  ita: tutte le pagina rubrica della sottogerarchia
+  esp: sólo carpetas de sub-hierarquía
+  chi: 次层次的所有类别页
+  fas: فقط پوشه های sub-hierarchy
+  rus: все рубрики подхирархии
+  hin: उप-पदानुक्रम के सम्पूर्ण निर्देशिका-पृष्ठ
+  ara: كل مجلدات الصفحات تحت التسلسل الهرمي الفرعي
+  vie: chỉ những thư mục của phân cấp phụ
+  heb: רק תיקיות של תת-היררכיה
+
+OPT_AP_THIS:
+  ger: dieses Objekt
+  eng: this object
+  ned: dit object
+  fra: cet objet
+  ita: questo oggetto
+  esp: este objeto
+  chi: 该对象
+  fas: این شی
+  rus: этот объект
+  hin: यह वस्तु
+  ara: هذا العنصر
+  vie: đối tượng này
+  heb: הפריט הזה
+
+OPT_AT_EMBED:
+  ger: Ziel einbetten
+  eng: embed target
+  ned: doel insluiten
+  fra: intégrer la cible
+  ita: inserire scopo
+  esp: blanco
+  chi: 嵌入目标
+  fas: هدف را جاسازی کنید
+  rus: вставить цель
+  hin: लक्ष्य अंतःस्थापित करे
+  ara: إظهار محتوى الرابط فقط دون المساس بالمحتوى
+  vie: nhúng vào các mục tiêu
+  heb: לשתול מטרה
+
+OPT_AT_NEW:
+  ger: in neuem Fenster öffnen
+  eng: open in new window
+  ned: openen in nieuw venster
+  fra: ouvrir dans une nouvelle fenêtre
+  ita: aprire in una nuova finestra
+  esp: abierto en nueva ventana
+  chi: 在新窗忣中打开
+  fas: باز در پنجره جدید
+  rus: открыть в новом окошке
+  hin: नया खिड़की पर खोले
+  ara: أفتح في نافذة جديدة
+  vie: mở trong một cửa sổ mới
+  heb: פתח בחלון חדש
+
+OPT_AT_RECURSIVE:
+  ger: Ziel rekursiv einbetten
+  eng: embed recursively
+  ned: recursief inbedden
+  fra: intégrer récursivement
+  ita: inserire scopo recursivo
+  esp: incrustado recursivamente
+  chi: 连续嵌入
+  fas: دانلود بازی recursively
+  rus: рекурсивно встраивать
+  hin: रिकरसिव्ली अंतःस्थापित करे
+  ara: إظهار محتوى مجلد الرابط بالكامل دون المساس بالمحتوى
+  vie: nhúng trở lại
+  heb: שתול בצורה רקורסיבית
+
+OPT_AT_REMOTE:
+  ger: Ziel remote einbetten
+  eng: embed remote
+  ned: afstandsbediening insluiten
+  fra: intégrer la télécommande
+  ita: telecomando incorporato
+  esp: embedida remota
+  chi: 嵌入远程
+  fas: دانلود بازی اندروید
+  rus: встроить удаленный
+  hin: रिमोट एम्बेड
+  ara: عن بعد
+  vie: nhúng từ xa
+  heb: שתול ... מרוחק
+
+OPT_AT_REPLACE:
+  ger: im gleichen Fenster öffnen
+  eng: follow in same window
+  ned: volgen in hetzelfde venster
+  fra: suivre dans la même fenêtre
+  ita: aprire mella stessa finestra
+  esp: seguir en la misma ventana
+  chi: 在该窗忣中打开
+  fas: در همان پنجره
+  rus: открыть в этом же окне
+  hin: उसी खिड़की पर अनुगमन करे
+  ara: افتح في ذات النافذة
+  vie: theo cùng một cửa sổ
+  heb: עקוב באותו חלון
+
+OPT_AT_IFRAME:
+  ger: Ziel als iFrame einbetten
+  eng: embed as iframe
+  ned: insluiten als iframe
+  fra: intégrer que iframe
+  ita: incorporare come iframe
+  esp: incrustar como iframe
+  chi: 嵌入的IFRAME
+  fas: iframe کے طور پر سرایت
+  rus: вставлять в IFRAME
+  hin: iframe के रूप में एम्बेड
+  ara: تضمين كما IFRAME
+  vie: nhúng như iframe
+  heb: להטביע כiframe
+
+OPT_A_BOTTOM:
+  ger: Unten
+  eng: Bottom
+  ned: Onderen
+  fra: le fond
+  ita: Sotto
+  esp: Bottom
+  chi: 底端对齿
+  fas: پايين
+  rus: внизу
+  hin: निचे
+  ara: القاع
+  vie: Phía dưới
+  heb: למטה
+
+OPT_A_CENTER:
+  ger: Zentriert
+  eng: Center
+  ned: Midden
+  fra: Centre
+  ita: A centro
+  esp: Centrar
+  chi: 居中
+  fas: مرکز
+  rus: в центре
+  hin: मध्य
+  ara: المنتصف
+  vie: Chính giữa
+  heb: מרכז
+
+OPT_A_LEFT:
+  ger: Linksbündig
+  eng: Left
+  ned: Links
+  fra: Gauche
+  ita: A sinsitra
+  esp: A la izquierda
+  chi: 左对齿
+  fas: چپ
+  rus: слева
+  hin: बांया
+  ara: يسارا
+  vie: Trái
+  heb: שמאלה
+
+OPT_A_LEFT_FLOAT:
+  ger: Linksbündig (mit Textumfluss rechts)
+  eng: Left (float text right)
+  ned: Links (float tekst rechts)
+  fra: Gauche (texte flottant à droite)
+  ita: A sinsitra (float text right)
+  esp: A la izquierda (float text right)
+  chi: 左对齿
+  fas: چپ
+  rus: слева
+  hin: बांया (पाठ को दाहिने प्लव करे)
+  ara: يسارا (حرك النص يمينا)
+  vie: Trái (động phía bên phải của văn bản)
+  heb: שמאלה(גלישת טקסט ימינה)
+
+OPT_A_MIDDLE:
+  ger: Mitte
+  eng: Middle
+  ned: Midden
+  fra: Moyenne
+  ita: Al centro
+  esp: Medio ambiente
+  chi: 中部
+  fas: ميانه
+  rus: середина
+  hin: मध्य
+  ara: متوسط
+  vie: Giữa
+  heb: אמצע
+
+OPT_A_NONE:
+  ger: Keine
+  eng: None
+  ned: Geen
+  fra: Aucun
+  ita: Nessuno
+  esp: Ninguno
+  chi: 无
+  fas: هیچ
+  rus: нет
+  hin: कोई नहीं
+  ara: لاشئ
+  vie: Không có gì
+  heb: אין
+
+OPT_A_RIGHT:
+  ger: Rechtsbündig
+  eng: Right
+  ned: Rechts
+  fra: Droite
+  ita: Destra
+  esp: Derecha
+  chi: 右对齐
+  fas: راست‌چین
+  rus: справа
+  hin: दाहिना
+  ara: يمين
+  vie: Phải
+  heb: ימינה
+
+OPT_A_RIGHT_FLOAT:
+  ger: Rechtsbündig (mit Textumfluss links)
+  eng: Right (float text left)
+  ned: Rechts (Text links fließend)
+  fra: Droite (texte flottant à gauche)
+  ita: Destra (testo a sinistra)
+  esp: Derecha (texto flotante a la izquierda)
+  chi: 右对齐（文本左侧环绕）
+  fas: راست‌چین (متن به چپ شناور)
+  rus: справа (текст слева обтекает)
+  hin: दाहिना (पाठ को बाएं प्लव करे)
+  ara: يمين (تحويم النص إلى اليسار)
+  vie: Phải (văn bản nổi bên trái)
+  heb: ימין (גלישת טקסט שמאלה)
+
+OPT_A_TOP:
+  ger: Oben
+  eng: Top
+  ned: Boven
+  fra: Haut
+  ita: Sopra
+  esp: Arriba
+  chi: 顶部
+  fas: بالا
+  rus: верх
+  hin: ऊपर
+  ara: أعلى
+  vie: Trên
+  heb: עליון
+
+OPT_AC_0:
+  ger: Nein
+  eng: No
+  ned: Nee
+  fra: Numéro
+  ita: No
+  esp: No
+  chi: 无
+  fas: هیچی
+  rus: нет
+  hin: कोई नहीं
+  ara: لاشئ
+  vie: Không
+  heb: לא
+
+OPT_AC_1:
+  ger: Seite
+  eng: Page
+  ned: Pagina
+  fra: Page
+  ita: Pagina
+  esp: Página
+  chi: 页
+  fas: صفحه
+  rus: страница
+  hin: पृष्ठ
+  ara: صفحة
+  vie: Trang
+  heb: עמוד
+
+OPT_AC_2:
+  ger: Seite (dyn. Textkörper)
+  eng: Page (dyn. bodytext)
+  ned: Pagina (dyn. tekst)
+  fra: Page (dyn. corpstext)
+  ita: Pagina (tessico del corpo)
+  esp: Página (disn. bodytext)
+  chi: 页 (dyn. bodytext)
+  fas: صفحه (Dyn. Bodytext)
+  rus: Страница (dyn. bodytext)
+  hin: पृष्ठ (dyn. bodytext)
+  ara: الصفحة
+  vie: Trang (phần thân văn bản động)
+  heb: עמוד (תוכן דינמי)
+
+OPT_F_BODY:
+  ger: Bodytext
+  eng: Body
+  ned: Lichaam
+  fra: Corps
+  ita: Corpo del testo
+  esp: Cuerpo
+  chi: 正文
+  fas: بدنه
+  rus: корпус
+  hin: शरीर
+  ara: النص
+  vie: Thân
+  heb: גוף
+
+OPT_F_CAPTION:
+  ger: Beschriftung
+  eng: Caption
+  ned: Titel
+  fra: Légende
+  ita: Scritta
+  esp: Caption
+  chi: 标题
+  fas: عنوان
+  rus: Заголовок
+  hin: शीर्षक
+  ara: عنوان فرعي
+  vie: Chú thích
+  heb: כותרת
+
+OPT_F_EMPHASIS:
+  ger: Merksatz
+  eng: Emphasis
+  ned: Nadruk
+  fra: Emphase
+  ita: Enfasi
+  esp: Énfasis
+  chi: 强调
+  fas: تاکید
+  rus: Акцент
+  hin: ज़ोर
+  ara: توكيد
+  vie: Nhấn mạnh
+  heb: הדגשה
+
+OPT_F_HEADLINE1:
+  ger: Überschrift 1
+  eng: Headline 1
+  ned: Opschrift 1
+  fra: Titre 1
+  ita: Titolo 1
+  esp: Titular 1
+  chi: 标题1
+  fas: عنوان اول
+  rus: Заголовок 1
+  hin: शीर्ष पंक्ति १
+  ara: عنوان 1
+  vie: Tiêu đề 1
+  heb: כותרת 1
+
+OPT_F_HEADLINE2:
+  ger: Überschrift 2
+  eng: Headline 2
+  ned: Opschrift 2
+  fra: Titre 2
+  ita: Titolo 2
+  esp: Titular 2
+  chi: 标题2
+  fas: عنوان دوم
+  rus: Заголовок 2
+  hin: शीर्ष पंक्ति २
+  ara: عنوان 2
+  vie: Tiêu đề 2
+  heb: כותרת 2
+
+OPT_F_HEADLINE3:
+  ger: Überschrift 3
+  eng: Headline 3
+  ned: Opschrift 3
+  fra: Titre 3
+  ita: Titolo 3
+  esp: Titular 3
+  chi: 标题3
+  fas: عنوان سوم
+  rus: Заголовок 3
+  hin: शीर्ष पंक्ति ३
+  ara: عنوان 3
+  vie: Tiêu đề 3
+  heb: כותרת 3
+
+OPT_F_HEADLINE4:
+  ger: Überschrift 4
+  eng: Headline 4
+  ned: Opschrift 4
+  fra: Titre 4
+  ita: Titolo 4
+  esp: Titular 4
+  chi: 标题4
+  fas: عنوان چهارم
+  rus: Заголовок 4
+  hin: शीर्ष पंक्ति ४
+  ara: عنوان 4
+  vie: Tiêu đề 4
+  heb: כותרת 4
+
+OPT_F_HEADLINE5:
+  ger: Überschrift 5
+  eng: Headline 5
+  ned: Opschrift 5
+  fra: Titre 5
+  ita: Titolo 5
+  esp: Titular 5
+  chi: 标题5
+  fas: عنوان پنجم
+  rus: Заголовок 5
+  hin: शीर्ष पंक्ति ५
+  ara: عنوان 5
+  vie: Tiêu đề 5
+  heb: כותרת 5
+
+OPT_F_HEADLINE6:
+  ger: Überschrift 6
+  eng: Headline 6
+  ned: Opschrift 6
+  fra: Titre 6
+  ita: Titolo 6
+  esp: Titular 6
+  chi: 标题6
+  fas: عنوان ششم
+  rus: Заголовок 6
+  hin: शीर्ष पंक्ति ६
+  ara: عنوان 6
+  vie: Tiêu đề 6
+  heb: כותרת 6
+
+OPT_F_INDENTEDBLOCK:
+  ger: Einzug (z.B. Zitate)
+  eng: Indented block (e.g. quotations)
+  ned: Ingesprongen blok (bijv. citaten)
+  fra: Bloc en retrait (par ex. citations)
+  ita: Blocco rientrato (ad es. citazioni)
+  esp: Bloque sangrado (p. ej. citas)
+  chi: 缩进（例如：引文）
+  fas: بلوک دندانه‌دار (مثلاً نقل قول‌ها)
+  rus: вставленный блок (например, цитаты)
+  hin: इंडेंटेड ब्लॉक (जैसे कि उद्धरण)
+  ara: كتلة ذات مسافة بادئة (مثل الاقتباسات)
+  vie: Khối thụt vào (ví dụ: trích dẫn)
+  heb: בלוק מוזח (למשל: ציטוטים)
+
+OPT_F_ORDEREDLIST:
+  ger: Nummerierung
+  eng: Numbered List
+  ned: Genummerde lijst
+  fra: Liste numérotée
+  ita: Elenco numerato
+  esp: Lista numerada
+  chi: 编号列表
+  fas: فهرست شماره‌دار
+  rus: нумерованный список
+  hin: संख्यांकित सूची
+  ara: قائمة مرقمة
+  vie: Danh sách được đánh số
+  heb: רשימה ממוספרת
+
+OPT_F_PLAINHTML:
+  ger: HTML
+  eng: HTML
+  ned: HTML
+  fra: HTML
+  ita: HTML
+  esp: HTML
+  chi: HTML 语句
+  fas: HTML
+  rus: HTML
+  hin: एचटीएमएल
+  ara: HTML
+  vie: HTML
+  heb: HTML
+
+OPT_F_UNORDEREDLIST:
+  ger: Aufzählung
+  eng: Bulleted List
+  ned: Opsomming
+  fra: Liste à puces
+  ita: Elenco puntato
+  esp: Lista con viñetas
+  chi: 项目符号列表
+  fas: فهرست نشانه‌دار
+  rus: Маркированный список
+  hin: बुलेटेड सूची
+  ara: قائمة نقطية
+  vie: Danh sách dấu đầu dòng
+  heb: רשימת תבליטים
+
+OPT_L_0:
+  ger: Arabisch (1, 2, 3)
+  eng: Arabic (1, 2, 3)
+  ned: Arabisch (1, 2, 3)
+  fra: Arabe (1, 2, 3)
+  ita: Arabo (1, 2, 3)
+  esp: Árabe (1, 2, 3)
+  chi: 阿拉伯数字（1, 2, 3）
+  fas: عربی (۱، ۲، ۳)
+  rus: арабские (1, 2, 3)
+  hin: ערבית(1,2,3)
+  ara: العربية (1، 2، 3)
+  vie: Ả Rập (1, 2, 3)
+  heb: ערבית (1, 2, 3)
+
+OPT_L_1:
+  ger: Großbuchstaben (A, B, C)
+  eng: Uppercase letter (A, B, C)
+  ned: Hoofdletters (A, B, C)
+  fra: Lettre majuscule (A, B, C)
+  ita: Lettere maiuscole (A, B, C)
+  esp: Letra mayúscula (A, B, C)
+  chi: 大写字母（A, B, C）
+  fas: حروف بزرگ (A, B, C)
+  rus: прописные буквы (А, Б, В)
+  hin: बड़े अक्षर (A, B, C)
+  ara: حروف كبيرة (A, B, C)
+  vie: Chữ hoa (A, B, C)
+  heb: אותיות גדולות (A, B, C)
+
+OPT_L_2:
+  ger: Kleinbuchstaben (a, b, c)
+  eng: Lowercase letter (a, b, c)
+  ned: Kleine letter (a, b, c)
+  fra: Lettre minuscule (a, b, c)
+  ita: Lettera minuscola (a, b, c)
+  esp: Letra minúscula (a, b, c)
+  chi: 小写字母（a, b, c）
+  fas: حرف کوچک (a, b, c)
+  rus: строчные буквы (а, б, в)
+  hin: छोटे अक्षर (a, b, c)
+  ara: حروف صغيرة (a, b, c)
+  vie: Chữ thường (a, b, c)
+  heb: אותיות קטנות (a, b, c)
+
+OPT_S_ANCHOR:
+  ger: Hyperlink
+  eng: Hyperlink
+  ned: Hyperlink
+  fra: Hyperlien
+  ita: Ipertestazione
+  esp: Hiperlink
+  chi: 超链接
+  fas: ابرپيوند
+  rus: Гиперссылка
+  hin: हाईपरलिंक
+  ara: رابط
+  vie: Siêu liên kết
+  heb: קשור
+
+OPT_S_STRONG:
+  ger: Fett
+  eng: Bold
+  ned: Vet
+  fra: Poêle
+  ita: Grassetto
+  esp: Negrita
+  chi: 粗体
+  fas: ضخيم
+  rus: толстый шрифт
+  hin: सथूलाक्षर
+  ara: منضد
+  vie: Chữ in đậm
+  heb: אותיות מודגשות
+
+OPT_S_CODE:
+  ger: Code
+  eng: Code
+  ned: Rubriek
+  fra: Code
+  ita: Codice
+  esp: Código
+  chi: 代砿
+  fas: کد
+  rus: код
+  hin: कूट संकेत
+  ara: الشفرة
+  vie: Mã
+  heb: קוד
+
+OPT_S_HORIZRULE:
+  ger: Waagerechte Linie
+  eng: Horizontal Rule
+  ned: Horizontale regel
+  fra: Règle horizontale
+  ita: Linea orizzontale
+  esp: Regla horizontal
+  chi: 水平线
+  fas: قانون افقی
+  rus: горизонтальная линия
+  hin: क्षैतिज रेखा 
+  ara: قاعدة أفقية
+  vie: Thước kẻ ngang
+  heb: קו מאוזן
+
+OPT_S_INSCHAR:
+  ger: Symbol
+  eng: Special Character
+  ned: Speciaal teken
+  fra: Caractère spécial
+  ita: Simbolo
+  esp: Carácter especial
+  chi: 特殊字符
+  fas: کاراکتر ويژه
+  rus: символ
+  hin: पड़ी रेखा
+  ara: رمز خاص
+  vie: Kí tự đặc biệt
+  heb: תו מיוחד
+
+OPT_S_EM:
+  ger: Kursiv
+  eng: Italic
+  ned: Cursief
+  fra: Italique
+  ita: Corsivo
+  esp: Cursiva
+  chi: 斜体
+  fas: مورب
+  rus: Курсив
+  hin: तिर्यग अक्षर
+  ara: مائل
+  vie: Chữ in nghiêng
+  heb: נטוי
+
+OPT_S_SUB:
+  ger: Tiefgestellt
+  eng: Subscript
+  ned: Subscript
+  fra: Sous-titre
+  ita: Posizionato in basso
+  esp: Subscript
+  chi: 下标
+  fas: زيرنويس
+  rus: опущен
+  hin: सब्सक्रिप्ट
+  ara: علامة فرعية 
+  vie: Chỉ số dưới
+  heb: כתב תחתי
+
+OPT_S_SUP:
+  ger: Hochgestellt
+  eng: Superscript
+  ned: Superscript
+  fra: Exposant
+  ita: Apice
+  esp: Superíndice
+  chi: 上标
+  fas: بالانويس
+  rus: надстрочный
+  hin: ऊपरी लेखन
+  ara: مرتفع
+  vie: Chỉ số trên
+  heb: כתב עילי
+
+OR:
+  ger: Oder
+  eng: Or
+  ned: Of
+  fra: Ou
+  ita: O
+  esp: o
+  chi: 或
+  fas: يا
+  rus: или
+  hin: या
+  ara: أو
+  vie: Hoặc
+  heb: או
+
+PAGETOP:
+  ger: Seitenanfang
+  eng: Top
+  ned: Bovenkant
+  fra: Haut de page
+  ita: Inizio pagina
+  esp: Parte superior
+  chi: 页首
+  fas: بالای صفحه
+  rus: верх страницы
+  hin: पृष्ठ का शीर्ष
+  ara: أعلى الصفحة
+  vie: Đầu trang
+  heb: ראש הדף
+
+RECOMMEND_THIS_PAGE:
+  ger: Diese Seite empfehlen
+  eng: Recommend this page
+  ned: Aanbevelen deze pagina
+  fra: Recommander cette page
+  ita: Consiglia questa pagina
+  esp: Recomendar esta página
+  chi: 推荐此页面
+  fas: توصیه این صفحه
+  rus: Рекомендовать эту страницу
+  hin: इस पृष्ठ की सिफारिश करें
+  ara: أوصِ بهذه الصفحة
+  vie: Đề xuất trang này
+  heb: המלץ על עמוד זה
+
+ROLE_ZMSADMINISTRATOR:
+  ger: Administrator
+  eng: Administrator
+  ned: Beheerder
+  fra: Administrateur
+  ita: Amministratore
+  esp: Administrador
+  chi: 管理员
+  fas: مدیر
+  rus: администратор
+  hin: प्रशासक
+  ara: مدير
+  vie: Quản trị viên
+  heb: מנהל
+
+ROLE_ZMSAUTHOR:
+  ger: Autor
+  eng: Author
+  ned: Auteur
+  fra: Autore
+  ita: Autor
+  esp: Autor
+  chi: 作者
+  fas: مولف
+  rus: автор
+  hin: लेखक
+  ara: المؤلف
+  vie: Tác giả
+  heb: מחבר
+
+ROLE_ZMSEDITOR:
+  ger: Redakteur
+  eng: Editor
+  ned: Editor
+  fra: Éditeur
+  ita: Editore
+  esp: Editor
+  chi: 编辑
+  fas: ویرایشگر
+  rus: редактор
+  hin: संपादक
+  ara: المحرر
+  vie: Biên tập viên
+  heb: עורך
+
+ROLE_ZMSSUBSCRIBER:
+  ger: Abonnent
+  eng: Subscriber
+  ned: Abonnee
+  fra: Abonné
+  ita: Abbonato
+  esp: Suscriptor
+  chi: 用户
+  fas: درخواست ثبت
+  rus: подписщик
+  hin: अभिदाता
+  ara: المشترك
+  vie: Thuê bao
+  heb: מנוי
+
+ROLE_ZMSUSERADMINISTRATOR:
+  ger: Benutzerverwaltung
+  eng: User-Administration
+  ned: Gebruikersadministratie
+  fra: Administration des utilisateurs
+  ita: Gestione utente
+  esp: Administración de usuarios
+  chi: 用户管理
+  fas: User-Administration
+  rus: админитратор (участник)
+  hin: प्रयोगकर्त्ता-प्रशासन
+  ara: إدارة المستعمل
+  vie: Sự quản trị-Người sử dụng
+  heb: משתמש אדמיניסטרטיבי
+
+SEARCH_CLIENTS:
+  ger: untergeordnete WWW-Sites einbeziehen
+  eng: include subordinate WWW-sites
+  ned: subsites opnemen
+  fra: inclure les sites WWW subordonnés
+  ita: includere siti WWW subordinati
+  esp: incluir sitios WWW subordinados
+  chi: 包含下属WWW站点
+  fas: شامل سایت‌های WWW زیرمجموعه
+  rus: включить подчинённые WWW-сайты
+  hin: अधीन डबल्यू डबल्यू डबल्यू-स्थल को सम्मिलित करे
+  ara: ضمن المواقع الثانوية المتفرعة من الأصل
+  vie: bao gồm các trang-www phụ thuộc
+  heb: כלול אתרי WWW כפופוים
+
+SEARCH_HEADER:
+  ger: Suche
+  eng: Search
+  ned: Zoeken
+  fra: Recherche
+  ita: Ricerca
+  esp: Búsqueda
+  chi: 濜索
+  fas: جستجو
+  rus: поиск
+  hin: खोज
+  ara: البحث
+  vie: Tìm kiếm
+  heb: חיפוש
+
+SEARCH_HEADERAGAIN:
+  ger: Erneute Suche
+  eng: Search again
+  ned: Opnieuw zoeken
+  fra: Recherche ensuite
+  ita: Nuova ricerca
+  esp: Buscar de nuevo
+  chi: 冿濜索一次
+  fas: جستجوی مجدد
+  rus: новый поиск
+  hin: फिर से खोजे
+  ara: عاود البحث
+  vie: Tìm kiếm lại
+  heb: חפש שוב
+
+SEARCH_HEADERRESULT:
+  ger: Ergebnisse
+  eng: Results
+  ned: Resultaten
+  fra: Résultats
+  ita: Risultati
+  esp: Resultados
+  chi: 结果
+  fas: نتایج
+  rus: результаты
+  hin: परिणाम
+  ara: النتائج
+  vie: Kết quả
+  heb: תוצאות
+
+SEARCH_HINT:
+  ger: Bitte tragen Sie einen Begriff ein und klicken Sie auf "Suchen". Die Optionen können normalerweise unverändert bleiben.
+  eng: Please enter a String and click "search". In most cases the Options can remain unchanged.
+  ned: Voer een tekenreeks in en klik op "zoeken." In de meeste gevallen kunnen de opties ongewijzigd blijven.
+  fra: Saisissez une chaîne et cliquez sur "recherche". Dans la plupart des cas, les Options peuvent rester inchangées.
+  ita: Si prega di inserire una stringa e fare clic su "ricerca". Nella maggior parte dei casi le Opzioni possono rimanere invariate.
+  esp: Por favor, introduzca una cuerda y haga clic en "busca". En la mayoría de los casos las Opciones pueden permanecer inalteradas.
+  chi: 请濒入濜索字，然忎忕击"濜索"。 在多数情况下选项丿用更改。
+  fas: لطفا کلمه اي وارد کنيد و سپس دکمه جستجو را فشار دهيد
+  rus: пожайлуста внесите слово (название) и нажмите на поиск. опции(критерии) изменять не обязательно. (могут оставаться не измененными.)
+  hin: कृप्या कोई पाठ को डाल्कर "खोज" पर दबाये। विकल्पें अधिकतम अवसर मे अपरिवर्तित रह सकते हे
+  ara: رجاء إدخال المعطيات ثم الضغط على "بحث" ، في معظم الحالات يمكن الاحتفاظ بنفس الخيارات دون تغيير
+  vie: Hãy nhập vào một Chuỗi và kích chuột vào "tìm kiếm". Trong hầu hết các trường hợp, mục Các tùy chọn có thể vẫn không thay đổi.
+  heb: אנא הכנס טקסט והקש "חיפוש". ברוב המקרים האפשרויות יכולות להשאר ללא שינוי.
+
+SEARCH_NORESULTS:
+  ger: erzielte keinen Treffer, bitte versuchen Sie es erneut. Überprüfen Sie die Schreibweise Ihres Suchbegriffs.
+  eng: returned no results. Please revise your search.
+  ned: geen resultaten. Herzie uw zoektocht.
+  fra: n'a donné aucun résultat. Veuillez réviser votre recherche.
+  ita: non ha dato risultati. Riprovare di nuovo.
+  esp: no devolvió resultados. Por favor revise su búsqueda.
+  chi: 找丿到濜索项目。请检查输入字诿有无错误。
+  fas: نتيجه ای حاصل نشد . دوباره جستجو کنيد .
+  rus: если ваш поиск не дал результатов, попробуйте еще раз. убдитесь, что слово написано правильно.
+  hin: कोई भी परिणाम नहीं लोटायें. कृपया खोज को जरा तबदीली करे
+  ara: لايوجد نتائج. رجاء مراجعة بنود البحث
+  vie: không có kết quả. Hãy sửa lại tìm kiếm của bạn.
+  heb: אין תוצאות. אנא חדש את החיפוש.
+
+SEARCH_OVERALL:
+  ger: über alles
+  eng: whole site
+  ned: gehele site
+  fra: site entière
+  ita: intero sito
+  esp: sitio completo
+  chi: 整个网站
+  fas: کل سایت
+  rus: весь сайт
+  hin: पूरा साइट
+  ara: الموقع بالكامل
+  vie: toàn bộ trang
+  heb: האתר השלם
+
+SEARCH_FROMHERE:
+  ger: ab hier
+  eng: from here
+  ned: vanaf hier
+  fra: à partir d'ici
+  ita: da qui
+  esp: desde aquí
+  chi: 从这里
+  fas: از اینجا
+  rus: отсюда
+  hin: यहाँ से
+  ara: من هنا
+  vie: từ đây
+  heb: מכאן
+
+SEARCH_ORDERBY1:
+  ger: Relevanz
+  eng: Score
+  ned: Relevantie
+  fra: Score
+  ita: Cerca per risultato
+  esp: Cuenta
+  chi: 得分
+  fas: رتبه
+  rus: попадания
+  hin: प्राप्तांक
+  ara: النقاط
+  vie: Điểm
+  heb: תוצאה
+
+SEARCH_ORDERBY2:
+  ger: Datum
+  eng: Date
+  ned: Datum
+  fra: Date
+  ita: Cerca per data
+  esp: Fecha
+  chi: 日期
+  fas: تاريخ
+  rus: дата
+  hin: दिनांङ्क
+  ara: التاريخ
+  vie: Ngày tháng
+  heb: תאריך
+
+SEARCH_RETURNEDRESULTS:
+  ger: erzielte folgende Ergebnisse
+  eng: returned the following results
+  ned: gaf de volgende resultaten terug
+  fra: retourné les résultats suivants
+  ita: sono stati trovati i seguenti risultati
+  esp: devuelto los siguientes resultados
+  chi: 找到下列的结果
+  fas: نتايج موجود
+  rus: выдал следующие результаты
+  hin: निम्नलिखित परिणामों को लोटायें
+  ara: عادت بالنتائج التالية
+  vie: trả về các kết quả sau
+  heb: החזיר את התוצאות הבאות
+
+SEARCH_RETURNEDSTATS:
+  ger: Ergebnisse %s - %s von %s für %s
+  eng: Results %s - %s of %s for %s
+  ned: Resultaten %s - %s van %s voor %s
+  fra: Résultats %s - %s de %s pour %s
+  ita: Risultati %s - %s da %s di %s
+  esp: Resultados % - % de % para %s
+  chi: 列出 %s 到 %is共 %s 件 %s
+  fas: سند %i از يافته ها
+  rus: результаты %s - %s имеет %s попаданий %s
+  hin: कागज़ात %s - %s का %s समान %s
+  ara: المستندات %i - i % من %i تتطابق
+  vie: Các tài liệu %s - %s của %s phù hợp %s
+  heb: מסמכים %s% - s מתוך %s תוצאות
+
+SECONDS:
+  ger: Sekunden
+  eng: seconds
+  ned: seconden
+  fra: secondes
+  ita: secondi
+  esp: segundos
+  chi: 秒
+  fas: ثانیه
+  rus: секунды
+  hin: सेकंड
+  ara: ثواني
+  vie: giây
+  heb: שניות
+
+SEARCH_YOURQUERY:
+  ger: Ihre Suche nach dem Begriff: %s
+  eng: Your search for: %s
+  ned: Uw zoek naar: %s
+  fra: Votre recherche pour : %s
+  ita: La ricerca per: %s
+  esp: Su búsqueda de: %s
+  chi: %s 的搜索结果
+  fas: جستجوی شما برای: %s
+  rus: Ваш поиск по: %s
+  hin: आपकी खोज: %s
+  ara: بحثك عن: %s
+  vie: Tìm kiếm của bạn cho: %s
+  heb: החיפוש שלך עבור: %s
+
+SHORTDATETIME_FMT:
+  ger: %d.%m.%y %H:%M:%S
+  eng: %y/%m/%d %H:%M:%S
+  ned: %y-%m-%d %H:%M:%S
+  fra: %d.%m.%y %H:%M:%S
+  ita: %d.%m.%y %H:%M:%S
+  esp: %d.%m.%y %H:%M:%S
+  chi: %y年 %m月 %d日 %H:%M:%S
+  fas: %y/%m/%d%H:%
+  rus: %y/%m/%%H:%M:%S
+  hin: %y/%m/%d %H:%M:%S
+  ara: %y/%m/%d %H:%M:%S
+  vie: %H:%M:%S
+  heb: %d.%m.%y %H:%M:%S
+
+SHORTDATE_FMT:
+  ger: %d.%m.%y
+  eng: %y/%m/%d
+  ned: %y-%m-%d
+  fra: %d.%m.%y
+  ita: %d.%m.%y
+  esp: %d.%m.%y
+  chi: %y年 %m月 %d日
+  fas: %y/%m/%d
+  rus: %y/%m/%%
+  hin: %y/%m/%d
+  ara: النسبة المئوية/نسبة مئوية
+  vie: %y/%m/%d
+  heb: %d.%m.%y
+
+SITEMAPLAYOUT0:
+  ger: Explorer-Stil
+  eng: Explorer-Style
+  ned: Explorer-stijl
+  fra: Style Explorateur
+  ita: Stile Explorer
+  esp: Estilo Explorador
+  chi: 资源管理器样式
+  fas: سبک اکسپلورر
+  rus: Стиль проводника
+  hin: एक्सप्लोरर-शैली
+  ara: نمط المستكشف
+  vie: Kiểu Explorer
+  heb: סגנון סייר
+
+HORIZONTAL:
+  ger: Horizontal
+  eng: Horizontal
+  ned: Horizontaal
+  fra: Horizontale
+  ita: Orizzontale
+  esp: Horizontal
+  chi: 横忑
+  fas: افقی
+  rus: горизонтально
+  hin: क्षैतिज
+  ara: أفقي
+  vie: Ngang
+  heb: מאוזן
+
+VERTICAL:
+  ger: Vertikal
+  eng: Vertical
+  ned: Verticaal
+  fra: Vertical
+  ita: Verticale
+  esp: Vertical
+  chi: 纵忑
+  fas: عمودی
+  rus: вертикально
+  hin: अनुलम्ब
+  ara: رأسي
+  vie: Dọc
+  heb: מאונך
+
+SOTYPE_ZMSDOCUMENT:
+  ger: Seite
+  eng: Page
+  ned: Pagina
+  fra: Page
+  ita: Pagina
+  esp: Página
+  chi: 页
+  fas: صفحه
+  rus: страница
+  hin: पृष्ठ
+  ara: صفحة
+  vie: Trang
+  heb: עמוד
+
+SOTYPE_ZMSLIBRARY:
+  ger: Bibliothek
+  eng: Library
+  ned: Bibliotheek
+  fra: Bibliothèque
+  ita: Libreria
+  esp: Biblioteca
+  chi: 图书馆
+  fas: کتابخانه
+  rus: Библиотека
+  hin: पुस्तकालय
+  ara: مكتبة
+  vie: Thư viện
+  heb: ספריה
+
+SOTYPE_ZMSMODULE:
+  ger: Content-Modul
+  eng: Content Module
+  ned: Contentmodule
+  fra: Module de contenu
+  ita: Modulo di contenuto
+  esp: Módulo de contenido
+  chi: 内容模块
+  fas: ماژول محتوا
+  rus: Модуль контента
+  hin: सामग्री मॉड्यूल
+  ara: وحدة محتوى
+  vie: Mô-đun nội dung
+  heb: מודול תוכן
+
+SOTYPE_ZMSOBJECT:
+  ger: Seiten-Element
+  eng: Page-Element
+  ned: Page-Element
+  fra: Element du page
+  ita: Elemento della pagina
+  esp: Page-Element
+  chi: 页对象
+  fas: عنصر صفحه
+  rus: элемент страницы
+  hin: पृष्ठ-अंश
+  ara: عنصر صفحة
+  vie: Thành phần-Trang
+  heb: רכיב בעמוד
+
+SOTYPE_ZMSOBJECTS:
+  ger: Seiten-Elemente
+  eng: Page-Elements
+  ned: Pagina-elementen
+  fra: Éléments de page
+  ita: Elementi della pagina
+  esp: Elementos de página
+  chi: 页面元素
+  fas: عناصر صفحه
+  rus: элементы страницы
+  hin: पृष्ठ-तत्व
+  ara: عناصر الصفحة
+  vie: Các thành phần trang
+  heb: רכיבי עמוד
+
+SOTYPE_ZMSPACKAGE:
+  ger: Paket
+  eng: Package
+  ned: Pakket
+  fra: Progiciel
+  ita: Pacchetto
+  esp: Paquete
+  chi: 软件包
+  fas: بسته بسته بندی
+  rus: Пакет
+  hin: पैकेज
+  ara: حزمة
+  vie: Gói
+  heb: חבילה
+
+SOTYPE_ZMSRECORDSET:
+  ger: Datentabelle
+  eng: Datatable
+  ned: Gegevenstabel
+  fra: Table de données
+  ita: Tabella di dati
+  esp: Datatable
+  chi: 数濮库
+  fas: جدول داده ها
+  rus: Таблица данных
+  hin: आंकड़े तालिका
+  ara: جدول بيانات
+  vie: Bảng dữ liệu
+  heb: טבלת נתונים
+
+SOTYPE_ZMSREFERENCE:
+  ger: Referenz
+  eng: Reference
+  ned: Referentie
+  fra: Référence
+  ita: Riferimento
+  esp: Referencia
+  chi: 参考
+  fas: مرجع
+  rus: Ссылка
+  hin: संदर्भ
+  ara: مرجع
+  vie: Tham chiếu
+  heb: הפניה
+
+SOTYPE_ZMSRESOURCE:
+  ger: Meta-Objekt
+  eng: Meta-Object
+  ned: Meta-object
+  fra: Meta-Objet
+  ita: Meta-Oggetto
+  esp: Meta-Objeto
+  chi: 资溿
+  fas: ابر شي
+  rus: мета-объект
+  hin: अधि-वस्तु
+  ara: عنصر متقدم
+  vie: Đối tượng-Meta
+  heb: מטא-פריט
+
+SOTYPE_ZMSTEASERELEMENT:
+  ger: Teaser-Element
+  eng: Teaser-Element
+  ned: Teaser-element
+  fra: Teaserelément
+  ita: Teaser-Element
+  esp: Teaser-Element
+  chi: 醒目标题元素
+  fas: عنصر معما
+  rus: боковой элемент
+  hin: चिढ़ानेवाला तत्व
+  ara: عنصر لافت النظر
+  vie: Thành phần-Cửa sổ quan sát
+  heb: נא לשים לב
+
+STATE_COMMITTED:
+  ger: Freigegeben
+  eng: Committed
+  ned: Vastgelegd
+  fra: Validé
+  ita: Consolidato
+  esp: Confirmado
+  chi: 已提交
+  fas: تایید نهایی شده
+  rus: Подтверждено
+  hin: प्रतिबद्ध 
+  ara: مثبت 
+  vie: Đã chốt
+  heb: אושר סופית
+
+STATE_DELETED:
+  ger: Gelöscht
+  eng: Deleted
+  ned: Verwijderd
+  fra: Supprimé
+  ita: Cancellato
+  esp: Suprimido
+  chi: 已删除
+  fas: محذوف
+  rus: стерто
+  hin: मिट गया
+  ara: محذوف
+  vie: Đã xóa
+  heb: נמחק
+
+STATE_LOCKED:
+  ger: Gesperrt
+  eng: Locked
+  ned: Vergrendeld
+  fra: Barrée
+  ita: Inaccessibile
+  esp: Cerrado
+  chi: 锿定
+  fas: قفل شده
+  rus: закрыто
+  hin: बंद
+  ara: مغلق
+  vie: Đã khóa
+  heb: נעול
+
+STATE_MODIFIED:
+  ger: Geändert
+  eng: Modified
+  ned: Gewijzigd
+  fra: Modifié
+  ita: Cambiato
+  esp: Modificado
+  chi: 已更改
+  fas: تغيير يافته
+  rus: изменено
+  hin: परिवर्तित
+  ara: معدل
+  vie: Đã thay đổi
+  heb: שונה
+
+STATE_MODIFIED_OBJS:
+  ger: Geänderte Unterobjekte
+  eng: Modified Sub-Objects
+  ned: Gewijzigde subobjecten
+  fra: Objets secondaires modifiés
+  ita: Oggetti secondari modificati
+  esp: Sub-objetos modificados
+  chi: 已修改的子对象
+  fas: زیرشیءهای تغییر یافته
+  rus: Изменённые под-объекты
+  hin: परिवर्तित उप-वस्तुएँ
+  ara: الكائنات الفرعية المعدلة
+  vie: Các đối tượng con đã thay đổi
+  heb: אובייקטי משנה ששונו
+
+STATE_NEW:
+  ger: Neu
+  eng: New
+  ned: Nieuw
+  fra: Nouveau
+  ita: Nuovo
+  esp: Nuevo
+  chi: 新
+  fas: جديد
+  rus: новый
+  hin: नया
+  ara: جديد
+  vie: Mới
+  heb: חדש
+
+STATE_TRANSLATE:
+  ger: Zu übersetzen!
+  eng: To be translated!
+  ned: Te vertalen!
+  fra: À traduire !
+  ita: Da tradurre!
+  esp: ¡Para traducir!
+  chi: 待翻译
+  fas: برای ترجمه
+  rus: перевести
+  hin: अनुवादित किया जाना है!
+  ara: لِلترجمة
+  vie: Cần được dịch!
+  heb: לתרגום!
+
+TAB_ACCESS:
+  ger: Zugriff
+  eng: Access
+  ned: Toegang
+  fra: Accès
+  ita: Accesso
+  esp: Acceso
+  chi: 访问
+  fas: دسترسی
+  rus: доступ
+  hin: प्रवेश
+  ara: حقوق الإطلاع والولوج
+  vie: Truy cập
+  heb: גישה
+
+TAB_CHARFORMATS:
+  ger: Zeichenformate
+  eng: Character formats
+  ned: Tekenformaten
+  fra: Formats de caractères
+  ita: Formati dei caratteri
+  esp: Formatos de caracteres
+  chi: 字符格式
+  fas: قالب‌های نویسه
+  rus: Форматы символов
+  hin: अक्षर प्रारूप
+  ara: تنسيقات الأحرف
+  vie: Định dạng ký tự
+  heb: עיצוב תווים
+
+TAB_CONFIGURATION:
+  ger: Konfiguration
+  eng: Configuration
+  ned: Configuratie
+  fra: Configuration
+  ita: Configurazione
+  esp: Configuración
+  chi: 酿置
+  fas: پيکربندی
+  rus: Конфигурация
+  hin: समाकृति
+  ara: إعدادات
+  vie: Cấu hình
+  heb: תצורה
+
+TAB_DESIGN:
+  ger: Design
+  eng: Design
+  ned: Ontwerp
+  fra: Conception
+  ita: Design
+  esp: Diseño
+  chi: 设计
+  fas: طراحي
+  rus: Дизайн
+  hin: डिज़ाइन
+  ara: تصميم
+  vie: Thiết kế
+  heb: עיצוב
+
+TAB_EDIT:
+  ger: Bearbeiten
+  eng: Edit
+  ned: Bewerken
+  fra: Modifier
+  ita: Modificare
+  esp: Editar
+  chi: 编辑
+  fas: ويرايش
+  rus: Oтредактировать
+  hin: संपादन
+  ara: تحرير
+  vie: Chỉnh sửa
+  heb: עריכה
+
+TAB_FILTER:
+  ger: Filter
+  eng: Filter
+  ned: Filter
+  fra: Filtre
+  ita: Filtro
+  esp: Filtro
+  chi: 过滤器
+  fas: فیلتر
+  rus: фильтр
+  hin: फ़िल्टर
+  ara: مرشح
+  vie: Bộ lọc
+  heb: מסנן
+
+TAB_HELP:
+  ger: Hilfe
+  eng: Help
+  ned: Hulp
+  fra: Aide
+  ita: Aiuto
+  esp: Ayuda
+  chi: 帮助
+  fas: کمک
+  rus: помощь
+  hin: मदद
+  ara: المساعدة
+  vie: Giúp đỡ
+  heb: עזרה
+
+TAB_HISTORY:
+  ger: Historie
+  eng: History
+  ned: Geschiedenis
+  fra: Histoire
+  ita: Storia
+  esp: Historia
+  chi: 历史
+  fas: تاریخچه
+  rus: история
+  hin: इतिहास
+  ara: التاريخ
+  vie: Lịch sử
+  heb: היסטוריה
+
+TAB_IMPORTEXPORT:
+  ger: Im/Export
+  eng: Im/Export
+  ned: Im/Exporteren
+  fra: Im/Exportation
+  ita: Im/Esportazione
+  esp: Im/Exportación
+  chi: 导入/导出
+  fas: ورود/خروج
+  rus: им/экспорт
+  hin: आ/निर्यात
+  ara: استيراد/تصدير
+  vie: Nhập vào/Xuất ra
+  heb: ייבוא\ייצוא
+
+TAB_LANGUAGES:
+  ger: Sprachen
+  eng: Languages
+  ned: Talen
+  fra: Langues
+  ita: Lingue
+  esp: Lenguas
+  chi: 语言
+  fas: زبانها
+  rus: языки
+  hin: भाषायें
+  ara: اللغات
+  vie: Các ngôn ngữ
+  heb: שפות
+
+TAB_LAYOUT:
+  ger: Layout
+  eng: Layout
+  ned: Indeling
+  fra: Mise en page
+  ita: Telaio
+  esp: Diseño
+  chi: 布局
+  fas: طرح‌بندی
+  rus: Макет
+  hin: लेआउट
+  ara: تخطيط
+  vie: Bố cục
+  heb: פריסה
+
+TAB_LIVE:
+  ger: Live
+  eng: Live
+  ned: Levend
+  fra: En direct
+  ita: Dal vivo
+  esp: En vivo
+  chi: 实况
+  fas: زنده
+  rus: Живой
+  hin: जीवित
+  ara: مباشر
+  vie: Trực tiếp
+  heb: חי
+
+TAB_LOCKED:
+  ger: Gesperrt
+  eng: Locked
+  ned: Geblokkeerd
+  fra: Verrouillé
+  ita: Inaccessibile
+  esp: Bloqueado
+  chi: 锁定
+  fas: قفل شده
+  rus: Заблокировано
+  hin: लॉक किया गया
+  ara: مغلق
+  vie: Đã khóa
+  heb: נעול
+
+TAB_METACMD:
+  ger: Aktionen
+  eng: Actions
+  ned: Akties
+  fra: Actions
+  ita: Azioni
+  esp: Acciones
+  chi: 擿作
+  fas: اعمال
+  rus: Действия
+  hin: क्रियायें
+  ara: أفعال
+  vie: Các hành động
+  heb: פעולות
+
+TAB_METADATA:
+  ger: Meta-Attribute
+  eng: Meta-Attributes
+  ned: Meta-attributen
+  fra: Meta-attributs
+  ita: Meta-attributi
+  esp: Meta-atributos
+  chi: 元属性
+  fas: ابر ویژگی‌ها
+  rus: Мета-атрибуты
+  hin: मेटा-गुण
+  ara: السمات الوصفية
+  vie: Thuộc tính meta
+  heb: מטא-מאפיינים
+
+ZMSLog:
+  ger: Logger
+  eng: Logger
+  ned: Logger
+  fra: Journal
+  ita: Registratore
+  esp: Registrador
+  chi: 记录器
+  fas: لاگر
+  rus: логгер
+  hin: लॉगर
+  ara: مسجل
+  vie: Bộ ghi nhật ký
+  heb: רשומה
+
+ZMSFormatProvider:
+  ger: Formate
+  eng: Formats
+  ned: Formaten
+  fra: Formats
+  ita: Formato del testo
+  esp: Formatos
+  chi: 格弿
+  fas: ساختار
+  rus: Форматы
+  hin: संरूपें
+  ara: تنضيد
+  vie: Các định dạng
+  heb: תבניות
+
+ZMSMetamodelProvider:
+  ger: Content-Modell
+  eng: Content-Model
+  ned: Contentmodel
+  fra: Modèle de contenu
+  ita: Modello di contenuto
+  esp: Modelo de contenido
+  chi: 内容模型
+  fas: مدل محتوا
+  rus: Модель контента
+  hin: सामग्री मॉडल
+  ara: نموذج المحتوى
+  vie: Mô hình nội dung
+  heb: מודל תוכן
+
+TAB_METAOBJ:
+  ger: Content-Objekte
+  eng: Content objects
+  ned: Inhoudsobjecten
+  fra: Objets de contenu
+  ita: Oggetti di contenuto
+  esp: Objetos de contenido
+  chi: 内容对象
+  fas: اشیاء محتوا
+  rus: объекты контента
+  hin: सामग्री वस्तुएं
+  ara: عناصر المحتوى
+  vie: Đối tượng nội dung
+  heb: אובייקטי תוכן
+
+TAB_PREVIEW:
+  ger: Vorschau
+  eng: Preview
+  ned: Voorbeschouwing
+  fra: Prévision
+  ita: Previsione
+  esp: Previo
+  chi: 预览
+  fas: ?پيش نمايش
+  rus: просмотр
+  hin: पूर्वप्रदर्शन 
+  ara: عرض مبدئي
+  vie: Xem trước
+  heb: תצוגה מקדימה
+
+TAB_PROPERTIES:
+  ger: Eigenschaften
+  eng: Properties
+  ned: Eigenschappen
+  fra: Propriétés
+  ita: Proprieta
+  esp: Propiedades
+  chi: 属性
+  fas: خصوصيات
+  rus: Свойства
+  hin: विषेशतायें
+  ara: خصائص
+  vie: Các đặc tính
+  heb: מאפיינים
+
+TAB_REFERENCES:
+  ger: Linkquellen
+  eng: Linksources
+  ned: Linksources
+  fra: Sources de lien
+  ita: Fonti di collegamento
+  esp: Fuentes del acoplamiento
+  chi: 链接溿
+  fas: منابع پيوند
+  rus: источники ссылок
+  hin: कड़ी स्रोतें
+  ara: مصادر الرابط
+  vie: Các nguồn liên kết
+  heb: מקורות קישור
+
+TAB_SEARCH:
+  ger: Suche
+  eng: Search
+  ned: Zoeken
+  fra: Recherche
+  ita: Ricerca
+  esp: Búsqueda
+  chi: 濜索
+  fas: جستجو
+  rus: Поиск
+  hin: खोज
+  ara: البحث
+  vie: Tìm kiếm
+  heb: חיפוש
+
+TAB_SECURITY:
+  ger: Sicherheit
+  eng: Security
+  ned: Veiligheid
+  fra: sécurité
+  ita: Sicurezza
+  esp: Seguridad
+  chi: 安全
+  fas: امنيت
+  rus: Надежность
+  hin: सुरक्षा
+  ara: الحماية
+  vie: An ninh
+  heb: אבטחה
+
+TAB_SITEMAP:
+  ger: Sitemap
+  eng: Sitemap
+  ned: Sitemap
+  fra: Plan du site
+  ita: Mappa del sito
+  esp: Mapa
+  chi: 网站地图
+  fas: نقشه سايت
+  rus: обзор сейта
+  hin: स्थल नक्षा
+  ara: خريطة الموقع
+  vie: Sơ đồ trang
+  heb: מפת האתר
+
+TAB_SYSTEM:
+  ger: System
+  eng: System
+  ned: Systeem
+  fra: Systèm
+  ita: Sistema
+  esp: Sistema
+  chi: 系统
+  fas: سیستم
+  rus: Система
+  hin: समुदाय
+  ara: نظام
+  vie: Hệ thống
+  heb: מערכת
+
+TAB_TASKS:
+  ger: Aufgaben
+  eng: Tasks
+  ned: Taken
+  fra: Tâches
+  ita: Incarichi
+  esp: Tareas
+  chi: 任务
+  fas: وظايف
+  rus: задания
+  hin: कार्यें
+  ara: مهام
+  vie: Các nhiệm vụ
+  heb: מטלות
+
+TAB_TEXTFORMATS:
+  ger: Absatzformate
+  eng: Paragraph formats
+  ned: Paragraafformaten
+  fra: Formats
+  ita: Formato del testo
+  esp: Formatos de párrafo
+  chi: 格弿
+  fas: ساختار
+  rus: Форматы
+  hin: संरूपें
+  ara: تنضيد
+  vie: Các định dạng đoạn văn
+  heb: עיצוב פסקה
+
+TAB_USERS:
+  ger: Benutzer
+  eng: Users
+  ned: Gebruikers
+  fra: Utilisateurs
+  ita: Utenti
+  esp: Usuarios
+  chi: 用户
+  fas: کاربران
+  rus: пользователи
+  hin: उपयोगकर्ता
+  ara: مستخدمون
+  vie: Người dùng
+  heb: משתמשים
+
+TAB_USERSITEMAP:
+  ger: Benutzer-Sitemap
+  eng: User Sitemap
+  ned: Gebruiker Sitemap
+  fra: Plan du site utilisateur
+  ita: Mappa del sito l'utente
+  esp: Mapa del sitio del usuario
+  chi: 网站地图
+  fas: نقشه سایت کاربر
+  rus: Карта сайта Пользователь
+  hin: उपयोगकर्ता साइटमैप
+  ara: خريطة الموقع المستخدم
+  vie: người sử dụng Sơ đồ trang web
+  heb: מפת האתר משתמש
+
+TAB_WORKFLOW:
+  ger: Workflow
+  eng: Workflow
+  ned: Werkstroom
+  fra: Flux de travail
+  ita: Flusso di lavoro
+  esp: Flujo de trabajo
+  chi: 工作流
+  fas: گردش کار
+  rus: рабочий процесс
+  hin: कार्यप्रवाह
+  ara: سير العمل
+  vie: Quy trình làm việc
+  heb: תהליך עבודה
+
+TAB_WORKFLOW_ASSIGNMENT:
+  ger: Zuweisung
+  eng: Assignment
+  ned: Toewijzing
+  fra: Affectation
+  ita: Assegnazione
+  esp: Asignación
+  chi: 分配
+  fas: تخصیص
+  rus: назначение
+  hin: असाइनमेंट
+  ara: تعيين
+  vie: Phân công
+  heb: הקצאה
+
+TAB_WORKFLOW_MODEL:
+  ger: Workflow-Modell
+  eng: Workflow Model
+  ned: Workflowmodel
+  fra: Modèle de workflow
+  ita: Modello di workflow
+  esp: Modelo de flujo de trabajo
+  chi: 工作流模型
+  fas: مدل جریان کار
+  rus: Модель рабочего процесса
+  hin: वर्कफ़्लो मॉडल
+  ara: نموذج سير العمل
+  vie: Mô hình quy trình làm việc
+  heb: מודל תהליך עבודה
+
+TAB_WORKFLOW_VERSION:
+  ger: Versionierung
+  eng: Version Control
+  ned: Versiebeheer
+  fra: Contrôle de version
+  ita: Controllo versione
+  esp: Control de versiones
+  chi: 版本控制
+  fas: کنترل نسخه
+  rus: Управление версиями
+  hin: संस्करण नियंत्रण
+  ara: التحكم في الإصدارات
+  vie: Quản lý phiên bản
+  heb: בקרת גרסאות
+
+HINT_WORKFLOW_ACQUIRED:
+  ger: Hinweis: Die Workflow-Konfiguration wird akquiriert vom Master dieses ZMS-Clients.
+  eng: Hint: The workflow configuration is acquired from the master of this ZMS client
+  ned: Hint: De workflow configuratie wordt verkregen van de master van deze ZMS client
+  fra: Conseil: La configuration du workflow est acquise du maître de ce client ZMS
+  ita: Risultati: La configurazione del flusso di lavoro viene acquisita dal master di questo client ZMS
+  esp: Hint: La configuración del flujo de trabajo se adquiere del maestro de este cliente ZMS
+  chi: 提示: 工作流程配置是从 ZMS 客户端的主人那里获取的
+  fas: Hint: پیکربندی گردش کار از استاد این مشتری ZMS به دست می آید
+  rus: Подсказка: конфигурация рабочего процесса приобретается у мастера этого клиента ZMS
+  hin: Hint: इस ZMS क्लाइंट के मास्टर से वर्कफ़्लो कॉन्फ़िगरेशन प्राप्त की जाती है
+  ara: Hint: The workflow formation is acquired from the master of this ZMS client
+  vie: Gợi ý: cấu hình dòng làm việc được thu thập từ bậc thầy của trình khách ZMS này
+  heb: Hint: תצורת זרימת העבודה נרכשת מהאדון של לקוח ZMS זה
+
+TASK_CHANGED_BY_DATE:
+  ger: Zuletzt geänderte Objekte
+  eng: latest-modified objects
+  ned: nieuwste objecten
+  fra: derniers objets modifiés
+  ita: Ultimo oggetto cambiato
+  esp: objetos más recientes
+  chi: 最近修改的对象
+  fas: آخرین اشیاء
+  rus: последние-измененные объекты
+  hin: नवीनतम-परिवर्तित वस्तुयें
+  ara: سرد آخر العناصر التي تم عليها تعديلات
+  vie: Các đối tượng được thay đổi gần đây nhất
+  heb: פריטים ששונו לאחרונה
+
+TASK_INACTIVE_NODES:
+  ger: Inaktive Inhalte auflisten
+  eng: List inactive contents
+  ned: Lijst van inactieve inhoud
+  fra: Contenu inactif de la liste
+  ita: Elenco dei contenuti inattivi
+  esp: Lista de contenido inactivo
+  chi: 列出不活动内容
+  fas: محتوای غیر فعال
+  rus: Список неактивного контента
+  hin: सूची निष्क्रिय सामग्री
+  ara: List inactive contents
+  vie: Liệt kê nội dung bị động
+  heb: רשימת תכנים לא פעילים
+
+TASK_UNTRANSLATED:
+  ger: zu übersetzende Objekte
+  eng: objects to be translated
+  ned: te vertalen objecten
+  fra: objets pour traduiser
+  ita: Oggetti non tradotti
+  esp: objetos a traducir
+  chi: 必须翻译的对象
+  fas: اشیایی که باید ترجمه شوند
+  rus: объекты примечания
+  hin: अनूवादित करने के लिए वस्तुयें
+  ara: سرد العناصر الواجب ترجمتها
+  vie: Các đối tượng được dịch
+  heb: פריטים לתרגום
+
+TASK_ZMSNOTE:
+  ger: Notiz-Objekte
+  eng: note-objects
+  ned: Notities
+  fra: Notes
+  ita: Note
+  esp: nota-objetos
+  chi: 边检对象
+  fas: یادداشت‌ها
+  rus: объекты примечания
+  hin: परची-वस्तु
+  ara: عنصر ملاحظة خاص بالمؤلف
+  vie: các đối tượng ghi chú
+  heb: הערות
+
+TIME_FMT:
+  ger: %H:%M:%S
+  eng: %H:%M:%S
+  ned: %H:%M:%S
+  fra: %H & #160;: %M & #160;: %S
+  ita: %H:%M:%S
+  esp: SÍ
+  chi: %H:%M:%S (韩语)
+  fas: %H:%M:%S
+  rus: %H:%M:%S
+  hin: %H:%M:%S
+  ara: %H:%M:%S
+  vie: %H:%M:%S
+  heb: %H:%M:%
+
+TYPE_ZMS:
+  ger: WWW-Site
+  eng: WWW-site
+  ned: WWW-site
+  fra: Site WWW
+  ita: Sito-WWW
+  esp: WWW-site
+  chi: 网站
+  fas: سايت
+  rus: WWW-сейт
+  hin: वेब स्थल
+  ara: www-موقع
+  vie: trang-www
+  heb: אתר-www
+
+TYPE_ZMSCUSTOM:
+  ger: Metaobjekt
+  eng: Metaobject
+  ned: Metaobject
+  fra: Métaobjectif
+  ita: Meta-Oggetto
+  esp: Metaobject
+  chi: 元对象
+  fas: ابرشی
+  rus: метаобъект
+  hin: आधिवस्तु
+  ara: عنصر متقدم
+  vie: Đối tượng meta
+  heb: מטאפריט
+
+TYPE_ZMSDOCUMENT:
+  ger: Dokument
+  eng: Document
+  ned: Document
+  fra: Numéro
+  ita: Documento
+  esp: Documento
+  chi: 文件
+  fas: سند
+  rus: документ
+  hin: दस्तावेज 
+  ara: مستند
+  vie: Tài liệu
+  heb: מסמך
+
+TYPE_ZMSFIGURE:
+  ger: Abbildung
+  eng: Figure
+  ned: Afbeelding
+  fra: Image
+  ita: Grafico
+  esp: Imagen
+  chi: 图僿
+  fas: تصوير
+  rus: картинка
+  hin: प्रतिबिंब
+  ara: صورة
+  vie: Hình ảnh
+  heb: תמונה
+
+TYPE_ZMSFILE:
+  ger: Datei
+  eng: File
+  ned: Bestand
+  fra: Fichier
+  ita: File
+  esp: Archivo
+  chi: 文件
+  fas: فايل
+  rus: файл
+  hin: फाइल
+  ara: ملف
+  vie: Tệp tin
+  heb: קובץ
+
+TYPE_ZMSFOLDER:
+  ger: Ordner
+  eng: Folder
+  ned: Map
+  fra: Dossier
+  ita: Rubrica
+  esp: Carpeta
+  chi: 文件夹
+  fas: پوشه
+  rus: Рубрика
+  hin: निर्देशिका
+  ara: مجلد
+  vie: Thư mục
+  heb: תיקיה
+
+TYPE_ZMSGRAPHIC:
+  ger: Abbildung
+  eng: Image
+  ned: Afbeelding
+  fra: Image
+  ita: Grafico
+  esp: Imagen
+  chi: 图僿
+  fas: تصوير
+  rus: картинка
+  hin: प्रतिबिंब
+  ara: صورة
+  vie: Hình ảnh
+  heb: תמונה
+
+TYPE_ZMSLINKCONTAINER:
+  ger: Linksammlung
+  eng: Linkcollection
+  ned: Link-collectie
+  fra: Collecte de liens
+  ita: Collezione di Link
+  esp: Linkcollection
+  chi: 链接收藿
+  fas: مجموعه پيوندها
+  rus: набор ссылок
+  hin: कड़ी समूह
+  ara: مجموعة روابط
+  vie: Tập hợp liên kết
+  heb: אוסף לינקים
+
+TYPE_ZMSLINKELEMENT:
+  ger: Link
+  eng: Link
+  ned: Verband
+  fra: Lien
+  ita: Link
+  esp: Enlace
+  chi: 链接
+  fas: پيوند
+  rus: ссылка
+  hin: कड़ी
+  ara: رابط
+  vie: Đường liên kết
+  heb: קישור
+
+TYPE_ZMSNOTE:
+  ger: Notiz
+  eng: Note
+  ned: Notitie
+  fra: Remarque
+  ita: Nota
+  esp: Nota
+  chi: 便笺
+  fas: يادداشت
+  rus: заметка
+  hin: परची
+  ara: ملحوظة
+  vie: Chú thích
+  heb: הערה
+
+TYPE_ZMSOBJECT:
+  ger: Objekt
+  eng: Object
+  ned: Doel
+  fra: Objet
+  ita: Oggetto
+  esp: Objeto
+  chi: 对象
+  fas: شی
+  rus: объект
+  hin: वस्तु
+  ara: عنصر
+  vie: Đối tượng
+  heb: פריט
+
+TYPE_ZMSOBJECTSET:
+  ger: Objekttabelle
+  eng: Objecttable
+  ned: Objecttabel
+  fra: Table de objets
+  ita: Tabella di oggetti
+  esp: Objetotable
+  chi: 可反对
+  fas: Objecttable
+  rus: Объектный
+  hin: उद्देश्य
+  ara: الاعتراض
+  vie: Name
+  heb: התנגדות
+
+TYPE_ZMSSQLDB:
+  ger: SQL-Datenquelle
+  eng: SQL-Datasource
+  ned: SQL-Gegevensbron
+  fra: SQL-Source de données
+  ita: Fonte di dati SQL
+  esp: SQL-Datasource
+  chi: SQL 数濮溿
+  fas: منبع SQL
+  rus: SQL-источник дат
+  hin: एस क्यू एल- अंकड़े स्रोत
+  ara: مصدر SQL
+  vie: Nguồn dữ liệu-SQL
+  heb: SQL מקור נתונים 
+
+TYPE_ZMSSYSFOLDER:
+  ger: Systemordner
+  eng: Systemfolder
+  ned: System-map
+  fra: Dossier système
+  ita: Cartella di sistema
+  esp: Systemfolder
+  chi: 系统文件夹
+  fas: پوشه سيستم
+  rus: Системная папка
+  hin: प्राणाली निर्देशिका
+  ara: مجلد النظام
+  vie: Thư mục hệ thống
+  heb: תיקיית מערכת
+
+TYPE_ZMSTABLE:
+  ger: Tabelle
+  eng: Table
+  ned: Tabel
+  fra: Tableau
+  ita: Tabella
+  esp: Mesa
+  chi: 表格
+  fas: جدول
+  rus: таблица
+  hin: तालिका
+  ara: جدول
+  vie: Bảng
+  heb: טבלה
+
+TYPE_ZMSTEASERCONTAINER:
+  ger: Teaser
+  eng: Teaser
+  ned: Teaser
+  fra: Lésion
+  ita: Teaser
+  esp: Teaser
+  chi: 醒目标题
+  fas: معما
+  rus: боковая часть
+  hin: चिढ़ानेवाला
+  ara: لافت النظر
+  vie: Cửa sổ quan sát
+  heb: חלק צדדי
+
+TYPE_ZMSTEASERELEMENT:
+  ger: Teaser-Element
+  eng: Teaserelement
+  ned: Teaser-element
+  fra: Teaserelément
+  ita: Teaser-Element
+  esp: Teaserelemento
+  chi: 醒目标题元素
+  fas: عنصر معما
+  rus: боковой элемент
+  hin: चिढ़ानेवाला तत्व
+  ara: عنصر لافت النظر
+  vie: Thành phần-Cửa sổ quan sát
+  heb: פריט צדדי
+
+TYPE_ZMSTEXTAREA:
+  ger: Textabschnitt
+  eng: Text
+  ned: Tekst
+  fra: Texte
+  ita: Capitolo
+  esp: Texto
+  chi: 文件
+  fas: متن
+  rus: часть текста
+  hin: पाठ
+  ara: النص
+  vie: Văn bản
+  heb: תמליל
+
+TYPE_ZMSTRASHCAN:
+  ger: Papierkorb
+  eng: Trashcan
+  ned: Snippermand
+  fra: Corbeille
+  ita: Cestino
+  esp: Trashcan
+  chi: 回收站
+  fas: سطل آشغال
+  rus: мусорка
+  hin: कूड़ा कोठ
+  ara: سلة المهملات
+  vie: Thùng rác
+  heb: סל מיחזור
+
+DAYOFWEEK0:
+  ger: Sonntag
+  eng: Sunday
+  ned: Zondag
+  fra: Dimanche
+  ita: Domenica
+  esp: Domingo
+  chi: 星期日
+  fas: يکشنبه
+  rus: воскресенье
+  hin: रविवार
+  ara: الأحد
+  vie: Chủ nhật
+  heb: יום ראשון
+
+DAYOFWEEK1:
+  ger: Montag
+  eng: Monday
+  ned: Maandag
+  fra: Lundi
+  ita: Lunedi
+  esp: Lunes
+  chi: 星期一
+  fas: دوشنبه
+  rus: понедельник
+  hin: सोमवार
+  ara: الأثنين
+  vie: Thứ hai
+  heb: יום שני
+
+DAYOFWEEK2:
+  ger: Dienstag
+  eng: Tuesday
+  ned: Dinsdag
+  fra: Mardi
+  ita: Martedi
+  esp: Martes
+  chi: 星期二
+  fas: سه شنبه
+  rus: вторник
+  hin: मंगलवार
+  ara: الثلاثاء
+  vie: Thứ ba
+  heb: יום שלישי
+
+DAYOFWEEK3:
+  ger: Mittwoch
+  eng: Wednesday
+  ned: Woensdag
+  fra: Mercredi
+  ita: Mercoledi
+  esp: Miércoles
+  chi: 星期三
+  fas: چهارشنبه
+  rus: среда
+  hin: बुधवार
+  ara: الأربعاء
+  vie: Thứ tư
+  heb: יום רביעי
+
+DAYOFWEEK4:
+  ger: Donnerstag
+  eng: Thursday
+  ned: Donderdag
+  fra: Jeudi
+  ita: Giovedi
+  esp: Jueves
+  chi: 星期四
+  fas: پنج شنبه
+  rus: четверг
+  hin: बृहस्पतिवार
+  ara: الخميس
+  vie: Thứ năm
+  heb: יום חמישי
+
+DAYOFWEEK5:
+  ger: Freitag
+  eng: Friday
+  ned: Vrijdag
+  fra: Vendredi
+  ita: Venerdi
+  esp: Viernes
+  chi: 星期五
+  fas: جمعه
+  rus: пятница
+  hin: शुक्रवार
+  ara: الجمعة
+  vie: Thứ sáu
+  heb: יום שישי
+
+DAYOFWEEK6:
+  ger: Samstag
+  eng: Saturday
+  ned: Zaterdag
+  fra: Samedi
+  ita: Sabato
+  esp: Sábado
+  chi: 星期六
+  fas: شنبه
+  rus: суббота
+  hin: शनिवार
+  ara: السبت
+  vie: Thứ bảy
+  heb: יום שבת
+
+WITH_BEST_REGARDS:
+  ger: Mit freundlichen Grüßen,
+  eng: With best regards,
+  ned: Met friendelijk groet,
+  fra: Avec le plus grand respect,
+  ita: Per quanto riguarda,
+  esp: Con mucho respeto,
+  chi: 致以衷心的问候
+  fas: با بهترين آرزوها
+  rus: с наилучшими пожеланиями
+  hin: सर्वोत्तम सम्मान के साथ,
+  ara: مع خالص التحية
+  vie: Kính thư,
+  heb: בברכה
+
+YOU_ARE:
+  ger: Sie sind
+  eng: You are
+  ned: Jij bent
+  fra: Vous êtes
+  ita: Vi'trovate
+  esp: Ud es
+  chi: 您是
+  fas: شما هستيد
+  rus: вы
+  hin: आप हो
+  ara: أهلا بك
+  vie: Quý vị là
+  heb: אתה\את\אתם
+
+TODAY:
+  ger: heute
+  eng: today
+  ned: vandaag
+  fra: aujourd'hui
+  ita: oggi
+  esp: hoy
+  chi: 今天
+  fas: امروز
+  rus: сегодня
+  hin: आज
+  ara: اليوم
+  vie: hôm nay
+  heb: היום
+
+YESTERDAY:
+  ger: gestern
+  eng: yesterday
+  ned: gisteren
+  fra: hier
+  ita: ieri
+  esp: ayer
+  chi: 昨天
+  fas: دیروز
+  rus: вчера
+  hin: कल
+  ara: أمس
+  vie: hôm qua
+  heb: אתמול

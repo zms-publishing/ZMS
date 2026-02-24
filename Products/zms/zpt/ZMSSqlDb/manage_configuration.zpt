@@ -205,36 +205,17 @@ function mms_normalize_rows(el_tbody) {
 	entities python:here.getEntities();
 	tables entities">
 
-<form class="form-horizontal" method="get" action="manage_changeConfiguration">
-	<input type="hidden" name="key" value="">
-	<input type="hidden" name="lang" tal:attributes="value request/lang">
-	<input type="hidden" name="preview" tal:attributes="value request/preview">
-
-	<div class="d-none">
-		<div id="importConf" class="inner">
-			<div class="form-group row">
-				<label for="file" class="col-sm-3 col-lg-2 control-label">
-					<i class="fas fa-folder-open"></i>
-					<span tal:content="python:here.getZMILangStr('ATTR_FILE')">File</span>
-				</label>
-				<div class="col-sm-9 col-lg-10"><input class="btn btn-file" name="file" type="file" /></div><!-- .col-lg-10 -->
-			</div><!-- .form-group -->
-			<div class="form-group row mt-5">
-				<div class="controls save">
-					<button type="submit" name="btn" class="btn btn-primary" value="BTN_IMPORT" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
-				</div><!-- .controls -->
-			</div><!-- .form-group -->
-		</div><!-- .inner -->
-	</div><!-- #importConf -->
-
-	<div class="btn-group" style="padding:1em;">
-		<span class="btn btn-secondary" 
-			tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" 
-			onclick="zmiModal('#importConf',{title:$(this).attr('title')});return false;">
-			<i class="fas fa-upload"></i>
+<form class="form-horizontal card" method="get" action="manage_changeConfiguration">
+	<input type="hidden" name="key" value="" />
+	<input type="hidden" name="lang" tal:attributes="value request/lang" />
+	<input type="hidden" name="preview" tal:attributes="value request/preview" />
+	<legend>
+		<span>Table List and Column Editor</span>
+		<span class="zmi-readme ml-2 text-info" title="SQL-DB Manager"
+			tal:attributes="data-readme python:'%s/%s/readme'%(here.getRootElement().absolute_url(), here.getId())">
+			<i class="far fa-question-circle"></i>
 		</span>
-	</div>
-	<br/>
+	</legend>
 	<div tal:repeat="table tables"
 		tal:attributes="class python:' '.join(['card']+[[''],['inactive']][int(table['type']!='table')])">
 		<div class="card-header btn-collapse">
@@ -246,7 +227,7 @@ function mms_normalize_rows(el_tbody) {
 				<tal:block tal:content="table/label">table-label</tal:block>
 				(<tal:block tal:content="table/id">table-id</tal:block>)
 			</a>
-			<a href="javascript:;" class="btn btn-primary pull-right rounded-0" title="Edit Table Definition" 
+			<a href="javascript:;" class="btn btn-primary pull-left rounded-0" title="Edit Table Definition" 
 				tal:attributes="onclick python:'javascript:return loadTableEditor(urlparams=\'lang=%s&id=%s\')'%(request['lang'],table['id']); ">
 				<i class="far fa-edit"></i>
 			</a>
@@ -266,49 +247,45 @@ function mms_normalize_rows(el_tbody) {
 							<i tal:condition="python:column.get('pk')" class="fas fa-key text-warninng"></i>
 							<span class="column-id" tal:content="column/id">column-id</span>
 							<span class="column-description text-info text-monospace" tal:attributes="title python:column.get('description','')" tal:content="python:standard.string_maxlen(s=column.get('description',''),maxlen=48)">column-description</span>
-							<tal:block tal:condition="python:column.get('fk') and column.get('fk').get('tablename')">
-								<span class="column-datatype">
-									<i class="fas fa-long-arrow-alt-right" tal:attributes="title python:column['fk'].get('fieldname','?')"></i>
+							<span class="column-datatype" tal:condition="python:column.get('fk') and column.get('fk').get('tablename')">
+								<i class="fas fa-long-arrow-alt-right" tal:attributes="title python:column['fk'].get('fieldname','?')"></i>
+								<i class="fas fa-th"></i>
+								<tal:block tal:content="column/fk/tablename">the fk-tablename</tal:block>
+								(<tal:block tal:content="python:column['fk'].get('displayfield','?')">the fk-displayfield</tal:block>)
+							</span>
+							<span class="column-datatype" tal:condition="python:column.get('multiselect') and column.get('multiselect').get('tablename')">
+								<i class="fas fa-long-arrow-alt-right" tal:attributes="title python:column['multiselect'].get('fk','?')"></i>
+								<i class="fas fa-link"></i>
+								<tal:block tal:content="column/multiselect/tablename">the multiselect-tablename</tal:block>
+								<tal:block tal:on-error="python:'ERROR'" 
+									tal:define="global
+										intersection python:here.getEntity(column['multiselect']['tablename']);
+										dst python:[x for x in intersection['columns'] if x.get('fk') is not None and x.get('fk',{}).get('tablename')!=table['id']][0];
+										dstentity python:here.getEntity(dst['fk']['tablename']);
+										">
+									<i class="fas fa-long-arrow-alt-right" tal:attributes="title python:dst['id']"></i>
 									<i class="fas fa-th"></i>
-									<tal:block tal:content="column/fk/tablename">the fk-tablename</tal:block>
-									(<tal:block tal:content="python:column['fk'].get('displayfield','?')">the fk-displayfield</tal:block>)
-								</span>
-							</tal:block>
-							<tal:block tal:condition="python:column.get('multiselect') and column.get('multiselect').get('tablename')">
-								<span class="column-datatype">
-									<i class="fas fa-long-arrow-alt-right" tal:attributes="title python:column['multiselect'].get('fk','?')"></i>
-									<i class="fas fa-link"></i>
-									<tal:block tal:content="column/multiselect/tablename">the multiselect-tablename</tal:block>
-									<tal:block tal:on-error="python:'ERROR'" tal:define="global
-											intersection python:here.getEntity(column['multiselect']['tablename']);
-											dst python:[x for x in intersection['columns'] if x.get('fk') is not None and x.get('fk',{}).get('tablename')!=table['id']][0];
-											dstentity python:here.getEntity(dst['fk']['tablename']);
-											">
-										<i class="fas fa-long-arrow-alt-right" tal:attributes="title python:dst['id']"></i>
-										<i class="fas fa-th"></i>
-										<tal:block tal:content="dstentity/id">the details-tablename</tal:block>
-									</tal:block>
-								</span>
-							</tal:block>
-							<tal:block tal:condition="python:column.get('details')">
-								<span class="column-datatype">
-									<i class="fas fa-long-arrow-alt-right" tal:attributes="title python:column['details'].get('fk','?')"></i>
-									<i class="fas fa-link"></i>
-									<tal:block tal:content="column/details/tablename">the intersection-tablename</tal:block>
-									<tal:block tal:on-error="python:'ERROR'" tal:define="global
-											intersection python:here.getEntity(column['details']['tablename']);
-											dst python:[x for x in intersection['columns'] if x.get('fk') is not None and x.get('fk',{}).get('tablename')!=table['id']][0];
-											dstentity python:here.getEntity(dst['fk']['tablename']);
-											">
-										<i class="fas fa-long-arrow-alt-right" tal:attributes="title python:dst['id']"></i>
-										<i class="fas fa-th"></i>
-										<tal:block tal:content="dstentity/id">the details-tablename</tal:block>
-									</tal:block>
-								</span>
-							</tal:block>
-							<tal:block tal:condition="not:python:column.get('datatype')=='?'">
-								<span class="column-datatype badge badge-info text-monospace" tal:content="column/datatype">column-datatype</span>
-							</tal:block>
+									<tal:block tal:content="dstentity/id">the details-tablename</tal:block>
+								</tal:block>
+							</span>
+							<span class="column-datatype" tal:condition="python:column.get('details')">
+								<i class="fas fa-long-arrow-alt-right" tal:attributes="title python:column['details'].get('fk','?')"></i>
+								<i class="fas fa-link"></i>
+								<tal:block tal:content="column/details/tablename">the intersection-tablename</tal:block>
+								<tal:block tal:on-error="python:'ERROR'" tal:define="global
+										intersection python:here.getEntity(column['details']['tablename']);
+										dst python:[x for x in intersection['columns'] if x.get('fk') is not None and x.get('fk',{}).get('tablename')!=table['id']][0];
+										dstentity python:here.getEntity(dst['fk']['tablename']);
+										">
+									<i class="fas fa-long-arrow-alt-right" tal:attributes="title python:dst['id']"></i>
+									<i class="fas fa-th"></i>
+									<tal:block tal:content="dstentity/id">the details-tablename</tal:block>
+								</tal:block>
+							</span>
+							<span class="column-datatype badge badge-info text-monospace" 
+								tal:condition="not:python:column.get('datatype')=='?'"
+								tal:content="column/datatype">column-datatype
+							</span>
 						</div><!-- .col-lg-10 -->
 					</div><!-- .form-group -->
 				</tal:block>

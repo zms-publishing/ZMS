@@ -217,7 +217,7 @@ class ZMSFormulator_class:
         if len(item)>0:
           itemobj = item[0]
           if itemobj.type == 'email':
-            emailpattern = '^([a-zA-Z0-9_.+-])+\\@(([a-zA-Z0-9-])+\\.)+([a-zA-Z0-9]{2,4})+$'
+            emailpattern = r'^([a-zA-Z0-9_.+-])+\\@(([a-zA-Z0-9-])+\\.)+([a-zA-Z0-9]{2,4})+$'
             if self.this.re_search(emailpattern, ZMS_FRM_RES) is not None:
               self.replyAddress = itemobj.replyToField and ZMS_FRM_RES or None
               self.copyAddress = itemobj.copyToField and ZMS_FRM_RES or None

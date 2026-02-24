@@ -83,6 +83,8 @@ def manage_addZMSCustom(self, meta_id, lang, _sort_id, btn, REQUEST, RESPONSE):
     meta_id = standard.nvl(REQUEST.get('ZMS_INSERT'),meta_id)
     id_prefix = standard.id_prefix(REQUEST.get('id_prefix', 'e'))
     new_id = self.getNewId(id_prefix)
+    while new_id in self.objectIds():
+      new_id = self.getNewId(id_prefix)
     globalAttr = self.dGlobalAttrs.get(meta_id, self.dGlobalAttrs['ZMSCustom'])
     constructor = globalAttr.get('obj_class', self.dGlobalAttrs['ZMSCustom']['obj_class'])
     obj = constructor(new_id, _sort_id+1, meta_id)
@@ -183,7 +185,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
         'manage_changeRecordSet',
         'manage_properties', 'manage_changeProperties', 'manage_changeTempBlobjProperty',
         'manage_deleteObjs', 'manage_undoObjs', 'manage_moveObjUp', 'manage_moveObjDown', 'manage_moveObjToPos',
-        'manage_cutObjects', 'manage_copyObjects', 'manage_pasteObjs',
+        'manage_cutObject', 'manage_cutObjects', 'manage_copyObject', 'manage_copyObjects', 'manage_pasteObjs',
         'manage_ajaxDragDrop', 'manage_ajaxZMIActions',
         'manage_UndoVersionForm', 'manage_UndoVersion',
         'manage_wfTransition', 'manage_wfTransitionFinalize',
@@ -208,13 +210,13 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
     metaobj_recordset_grid = PageTemplateFile('zpt/ZMSRecordSet/grid', globals())
 
 
-    """
+
     ############################################################################
     ###
     ###   Constructor
     ###
     ############################################################################
-    """
+
 
     ############################################################################
     # ZMSCustom.__init__: 

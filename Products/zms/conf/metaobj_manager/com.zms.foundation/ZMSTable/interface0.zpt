@@ -768,7 +768,7 @@
 						tal:on-error="structure string:<td><pre>Table Col Error</pre></td>">
 						<tal:block tal:define="
 							cell python:table_table[row_index][col_index];
-							pattern python:'%3Cdtml-var%20\042 getlinkurl\\((.*?),request\\)\042=\042\042>\042&gt\073';
+							pattern python:r'%3Cdtml-var%20\042 getlinkurl\\((.*?),request\\)\042=\042\042>\042&gt\073';
 							replacement python:'<dtml-var \042getLinkUrl(\\1,REQUEST)\042>\042>';
 							cell_content python:here.re_sub(pattern,replacement,cell.get('content',''));
 							cell_format python:cell.get('format',textFormatDefault);

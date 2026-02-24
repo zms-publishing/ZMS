@@ -66,7 +66,7 @@ def get_providers(self):
 Get class from py-string.
 """
 def get_class(py):
-  id = re.findall('class (.*?):', py)[0]
+  id = re.findall(r'class (.*?):', py)[0]
   if sys.version_info >= (3, 13):
     py = py + "\nglobal c\nc = " + id
     exec(py, globals=globals(), locals=locals())

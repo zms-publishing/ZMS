@@ -12,22 +12,22 @@
 <script>
 </script>
 
-<form class="form-horizontal" name="form0" action="manage_changeProperties" method="post" onsubmit="return onImportFormSubmit(this)" enctype="multipart/form-data">
-	<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
-	<div class="card">
-	<div class="card-header btn-collapse">
-		<a class="btn card-toggle pull-left" data-toggle="collapse" href="#TAB_PROPERTIES">
-			<i class="fas fa-caret-down"></i> <tal:block tal:content="python:here.getZMILangStr('TAB_PROPERTIES')">Properties</tal:block>
-		</a>
-	</div><!-- .card-header -->
-	<div id="TAB_PROPERTIES" class="collapse show">
-		<div class="card-body">
+<form class="form-horizontal card" name="form0" action="manage_changeProperties" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="lang" tal:attributes="value request/lang" />
+	<legend>
+		<span tal:content="python:here.getZMILangStr('TAB_PROPERTIES')">Properties</span>
+		<span class="zmi-readme ml-2 text-info" title="SQL-DB Manager"
+			tal:attributes="data-readme python:'%s/%s/readme'%(here.getRootElement().absolute_url(), here.getId())">
+			<i class="far fa-question-circle"></i>
+		</span>
+	</legend>
+	<div id="TAB_PROPERTIES" class="card-body">
 		<div class="form-group row">
 			<label class="col-sm-3 col-md-2 control-label mandatory" for="connection_id"><span>Connection Id</span></label>
 			<div class="col-sm-9 col-md-10">
 				<div class="btn-group">
 					<input type="hidden" id="connection_id" name="connection_id" tal:attributes="value python:getattr(here,'connection_id','')"/>
-					<button type="button" class="btn btn-secondary" tal:attributes="onclick python:'var url=$(\'span\',this).attr(\'data-url\')\073if(typeof url!=\'undefined\')window.open(url+\'/manage_main\')'">
+					<button type="button" class="btn btn-secondary" tal:attributes="onclick python:'var url=$(\'span\',this).attr(\'data-url\')\073if(typeof url!=\'undefined\')window.open(url+\'/manage_workspace\')'">
 						<tal:block tal:repeat="SQLConnectionID python:[x for x in here.SQLConnectionIDs() if getattr(here,'connection_id','')==x[1]]">
 							<span tal:attributes="data-url python:getattr(here,SQLConnectionID[1]).absolute_url()">
 								<i class="fas fa-database"></i>
@@ -71,14 +71,29 @@
 				<!-- /ACE Editor -->
 			</div>
 		</div><!-- .form-group -->
-		<div class="form-group row">
-			<div class="controls save">
-				<button type="submit" class="btn btn-primary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+		<div class="form-group row" title="Select Local File for Uploading">
+			<label class="col-sm-3 col-md-2 control-label mandatory" for="table_filter"><span>Upload</span></label>
+			<div class="col-sm-9 col-md-10">
+				<div class="custom-file">
+					<input type="file" name="file" id="file" class="custom-file-input" value="" 
+						onchange="$('.custom-file label span').html($(this).val().replace(/^.*(\\|\/|\:)/, ''));" />
+					<label class="custom-file-label" for="file"><span tal:content="python:here.getZMILangStr('ATTR_FILE')">Choose file</span></label>
+				</div>
 			</div>
-		</div>
-		</div><!-- .card-body -->
-	</div><!-- .collapse -->
-	</div><!-- .card -->
+		</div><!-- .form-group -->
+		<div class="form-group row mt-5">
+			<div class="controls save">
+				<button type="submit" class="btn btn-primary" name="btn" value="BTN_SAVE" 
+					tal:content="python:here.getZMILangStr('BTN_SAVE')">
+					Save
+				</button>
+				<button type="submit" class="btn btn-secondary" name="btn" value="BTN_CANCEL" 
+					tal:content="python:here.getZMILangStr('BTN_CANCEL')">
+					Cancel
+				</button>
+			</div>
+		</div><!-- .form-group -->
+	</div><!-- .card-body -->
 </form>
 
 </div><!-- #zmi-tab -->

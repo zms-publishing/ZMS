@@ -24,6 +24,7 @@ import re
 from Products.zms import standard
 from zope.globalrequest import getRequest
 
+
 # ------------------------------------------------------------------------------
 #  isMailLink:
 # ------------------------------------------------------------------------------
@@ -104,10 +105,10 @@ def getInternalLinkUrl(self, url, ob):
 # ----------------------------------------------------------------------------
 def getInlineRefs(text):
   l = []
-  p = '<a(.*?)>(.*?)<\\/a>'
+  p = r'<a(.*?)>(.*?)</a>'
   r = re.compile(p)
   for f in r.findall(str(text)):
-    d = dict(re.findall('\\s(.*?)="(.*?)"', f[0]))
+    d = dict(re.findall(r'\s(.*?)="(.*?)"', f[0]))
     if 'data-id' in d:
       l.append(d['data-id'])
   return l
@@ -425,13 +426,12 @@ class ZReferableItem(object):
   #  Validates internal links.
   # ----------------------------------------------------------------------------
   def validateInlineLinkObj(self, text):
-    if not int(self.getConfProperty('ZReferableItem.validateLinkObj', 1)): return text
     for pq in [('<a(.*?)>', 'href'), ('<img(.*?)>', 'src')]:
       p = pq[0]
       q = pq[1]
       r = re.compile(p)
       for f in r.findall(str(text)):
-        d = dict(re.findall('\\s(.*?)="(.*?)"', f))
+        d = dict(re.findall(r'\s(.*?)="(.*?)"', f))
         if 'data-id' in d:
           old = p.replace('(.*?)', f)
           url = d['data-id']
@@ -444,19 +444,28 @@ class ZReferableItem(object):
             text = text.replace(old, new)
     return text
 
-
   # ----------------------------------------------------------------------------
   #  ZReferableItem.validateLinkObj:
   #
   #  Validates internal links.
   # ----------------------------------------------------------------------------
   def validateLinkObj(self, url):
-    if not int(self.getConfProperty('ZReferableItem.validateLinkObj', 1)): return url
     if isInternalLink(url):
       if not url.startswith('{$__'):
         ild = getInternalLinkDict(self, url)
         url = ild['data-id']
     return url
+
+  # ----------------------------------------------------------------------------
+  # Validates internal object-references.
+  #
+  # @param s: String to validate
+  # ----------------------------------------------------------------------------
+  def validateRefObj(self, s):
+    if isInternalLink(s):
+      return self.validateLinkObj(s)
+    return self.validateInlineLinkObj(s)
+
 
   # ----------------------------------------------------------------------------
   #  ZReferableItem.findObject:
@@ -502,30 +511,38 @@ class ZReferableItem(object):
         i = max(url.find('#'),url.find(','))
         if i > 0:
           url = url[:i]
-        if url.find('id:') >= 0:
-          catalog = self.getZMSIndex().get_catalog()
-          q = catalog({'get_uid':url})
-          for r in q:
-            path  = '%s/'%r['getPath']
+        #-- [ReqBuff]: Fetch buffered value from Http-Request.
+        reqBuffId = 'getLinkObj.%s'%url
+        try:
+          ob = self.getDocumentElement().fetchReqBuff(reqBuffId)
+        except:
+          if url.find('id:') >= 0:
+            catalog = self.getZMSIndex().get_catalog()
+            q = catalog({'get_uid':url})
+            for r in q:
+              path  = '%s/'%r['getPath']
+              l = [x for x in path.split('/') if x] 
+              ob = self.getRootElement()
+              if l:
+                [l.pop(0) for x in ob.getPhysicalPath() if l[0] == x]
+                for id in l:
+                  ob = getattr(ob,id,None)
+              break
+          elif not url.startswith('__'):
+            path = url.replace('@','/content/')
             l = [x for x in path.split('/') if x] 
-            ob = self.getRootElement()
+            ob = self.getDocumentElement()
             if l:
               [l.pop(0) for x in ob.getPhysicalPath() if l[0] == x]
               for id in l:
                 ob = getattr(ob,id,None)
-            break
-        elif not url.startswith('__'):
-          path = url.replace('@','/content/')
-          l = [x for x in path.split('/') if x] 
-          ob = self.getDocumentElement()
-          if l:
-            [l.pop(0) for x in ob.getPhysicalPath() if l[0] == x]
-            for id in l:
-              ob = getattr(ob,id,None)
-      # Prepare request
-      ids = self.getPhysicalPath()
-      if ob is not None and ob.id not in ids:
-        ob.set_request_context(request, ref_params)
+          #-- [ReqBuff]: Store value in buffer of Http-Request.
+          self.getDocumentElement().storeReqBuff(reqBuffId, ob)
+      # Prepare request (only if ref_params are provided)
+      if ob is not None and ref_params:
+        ids = self.getPhysicalPath()
+        if ob.id not in ids:
+          ob.set_request_context(request, ref_params)
     return ob
 
 

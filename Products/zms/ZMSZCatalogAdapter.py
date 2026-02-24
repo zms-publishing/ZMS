@@ -45,6 +45,7 @@ def get_default_data(node):
   d['home_id'] = node.getHome().id
   d['meta_id'] = node.meta_id
   d['loc'] = node.absolute_url_path()
+  d['path'] = '/'.join(node.getPhysicalPath())
   # Todo: Remove preview-parameter.
   d['index_html'] = node.getHref2IndexHtmlInContext(node.getRootElement(), REQUEST=request)
   d['lang'] = request.get('lang',node.getPrimaryLanguage())
@@ -206,6 +207,11 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
             # and node was not part of current reindexing.
             for connector in connectors:
               connector.manage_objects_remove([container_page])
+          if (node.meta_id =='ZMSFile' and node.getId() not in self.REQUEST.get('reindex_node_log', [])):
+            # Remove ZMSFile from catalog if editing leads to filter-not-matching 
+            # and node was not part of current reindexing.
+            for connector in connectors:
+              connector.manage_objects_remove([node])
         return True
       except:
         standard.writeError( self, "can't reindex_node")
@@ -246,8 +252,8 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
           if not trashcan_items:
             standard.writeLog( self, "No trashcan items found after deleting content from  %s"%(nodes[0].getParentNode().id) )
             return False
-          # Get page-nodes that are moved to trashcan.
-          delnodes = [i for i in trashcan_items if i in nodes and i.isPage()]
+          # Get page-nodes and ZMS files that are moved to trashcan.
+          delnodes = [i for i in trashcan_items if i in nodes and (i.isPage() or i.meta_id == 'ZMSFile')]
           if not delnodes:
             standard.writeLog( self, "No page-nodes found in trashcan after deleting content from %s"%(nodes[0].getParentNode().id) )
             return False
@@ -307,7 +313,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     #  getter and setter for attribute-ids, that can be cataloged
     # --------------------------------------------------------------------------
     def _getAttrIds(self):
-      return ['uid', 'id', 'meta_id', 'home_id', 'loc','index_html'] + self.getAttrIds()
+      return ['uid', 'id', 'meta_id', 'home_id', 'loc', 'path', 'index_html'] + self.getAttrIds()
 
     def getAttrIds(self):
       return list(self.getAttrs())

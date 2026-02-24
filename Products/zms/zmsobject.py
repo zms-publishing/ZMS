@@ -216,14 +216,21 @@ class ZMSObject(ZMSItem.ZMSItem,
       return 'oid:%s'%oid
 
     # --------------------------------------------------------------------------
+    #  ZMSObject.clear_request_context:
+    # --------------------------------------------------------------------------
+    def clear_request_context(self, REQUEST, prefix = 'oid'):
+      # Remove old context-values.
+      for key in [x for x in REQUEST.keys() if x.startswith(prefix)]:
+        standard.writeLog(self, "[clear_request_context]: DEL "+key)
+        REQUEST.set(key, None)
+
+    # --------------------------------------------------------------------------
     #  ZMSObject.set_request_context:
     # --------------------------------------------------------------------------
     def set_request_context(self, REQUEST, d):
       prefix = '%s_'%(standard.id_quote(self.get_oid()))
       # Remove old context-values.
-      for key in [x for x in REQUEST.keys() if x.startswith(prefix)]:
-        standard.writeLog(self, "[set_request_context]: DEL "+key)
-        REQUEST.set(key, None)
+      self.clear_request_context(REQUEST, prefix)
       # Set new context-values.
       for key in d:
         context = prefix+key

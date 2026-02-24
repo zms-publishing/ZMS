@@ -71,8 +71,6 @@ class ZMSMetamodelProvider(
     manage_bigpicture = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_bigpicture', globals())
     manage_analyze = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_analyze', globals())
     manage_metas = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_metas', globals())
-    manage_readme = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_readme', globals())
-    manage_readme_iframe = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_readme_iframe', globals())
 
     # Management Permissions.
     # -----------------------
@@ -82,12 +80,27 @@ class ZMSMetamodelProvider(
     )
     __authorPermissions__ = (
         'manage_bigpicture',
-        'manage_readme', 'manage_readme_iframe',
+        'metaobj_readme',
     )
     __ac_permissions__=(
       ('ZMS Administrator', __administratorPermissions__),
       ('ZMS Author', __authorPermissions__),
     )
+
+    # --------------------------------------------------------------------------
+    #  ZMSMetamodelProvider.metaobj_readme:
+    #  Serve a metaobj's readme resource as rendered HTML.
+    # --------------------------------------------------------------------------
+    def metaobj_readme(self, REQUEST):
+      """Returns a metaobj's readme resource rendered as HTML."""
+      meta_id = REQUEST.get('id', '')
+      attr = self.getMetaobjAttr(meta_id, 'readme')
+      if attr and 'ob' in attr:
+        readme_txt = attr['ob'].data.decode('utf-8')
+        html = self.renderText('markdown', 'text', readme_txt, REQUEST, meta_id)
+        REQUEST.RESPONSE.setHeader('Content-Type', 'text/html;charset=utf-8')
+        return '<article class="zmi-readme">%s</article>'%html
+      return ''
 
     ############################################################################
     #  ZMSMetamodelProvider.__init__: 

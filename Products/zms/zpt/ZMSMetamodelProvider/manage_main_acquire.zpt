@@ -14,10 +14,11 @@
 	<tal:block tal:repeat="metaObjId python:[x for x in masterMetaObjIds if x not in metaObjIds or not here.getMetaobj(x).get('acquired')]">
 		<tal:block tal:define="global metaObj python:master.getMetaobj(metaObjId)">
 			<tal:block tal:define="global dummy0 python:acquireObjs.append(
-				(['',metaObj['package']+'.'][int(len(metaObj['package'])>0)]+metaObj['id']
-				,metaObj['id']
-				,[['','-&quot;- '][int(len(metaObj['package'])>0)]+metaObj['id']+' ('+metaObj['name']+')',metaObj['id']][int(metaObj['type']=='ZMSPackage')]
-				))"></tal:block>
+					(['',metaObj['package']+'.'][int(len(metaObj['package'])>0)]+metaObj['id']
+					,metaObj['id']
+					,[['','-&quot;- '][int(len(metaObj['package'])>0)]+metaObj['id']+' ('+metaObj['name']+')',metaObj['id']][int(metaObj['type']=='ZMSPackage')]
+					))"
+				tal:on-error="nothing"></tal:block>
 		</tal:block>
 	</tal:block>
 

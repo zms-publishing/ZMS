@@ -64,6 +64,7 @@ class ZMSItem(
     manage = PageTemplateFile('zpt/object/manage', globals())
     manage_workspace = PageTemplateFile('zpt/object/manage', globals())
     manage_main = PageTemplateFile('zpt/ZMSObject/manage_main', globals())
+    readme_html = PageTemplateFile('zpt/object/readme_html', globals())
 
     # --------------------------------------------------------------------------
     #  ZMSItem.readme:

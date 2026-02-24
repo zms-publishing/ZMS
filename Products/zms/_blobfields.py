@@ -256,11 +256,24 @@ def thumbnailImage(self, hiresKey, loresKey, maxdim, lang, REQUEST):
 ################################################################################
 ################################################################################
 class MyBlob(object):
-
-    # Documentation string.
-    __doc__ = """ZMS product module."""
-    # Version string. 
-    __version__ = '0.1' 
+    """Base class for binary large objects (blobs) stored in ZMS.
+    
+    MyBlob provides the core functionality for managing files and images in ZMS,
+    including HTTP request handling, caching, range requests, and MediaDB integration.
+    
+    Features:
+    
+        - HTTP request/response handling via __call__() method
+        - Visibility and access permission checks
+        - HTTP caching headers (Last-Modified, If-Modified-Since, ETags)
+        - HTTP Range requests for partial content delivery
+        - Content-Type and Content-Disposition header management
+        - MediaDB file storage and retrieval with ZODB fallback
+        - Data serialization to XML format
+        - File copying and cloning support
+    
+    This is an abstract base class; use L{MyImage} for images or L{MyFile} for files.
+    """
 
     __class_name__ = '{{MyBlob}}'
     
@@ -549,17 +562,17 @@ class MyBlob(object):
       Handle HTTP request for blob object (file/image).
       
       This method processes requests for blob objects, handling:
-      - Visibility and access permission checks
-      - HTTP caching headers (Last-Modified, If-Modified-Since, ETags)
-      - Range requests for partial content delivery
-      - Content-Type and Content-Disposition headers
-      - MediaDB file retrieval or ZODB data fallback
+        - Visibility and access permission checks
+        - HTTP caching headers (Last-Modified, If-Modified-Since, ETags)
+        - Range requests for partial content delivery
+        - Content-Type and Content-Disposition headers
+        - MediaDB file retrieval or ZODB data fallback
       
       @param REQUEST: The HTTP request object containing headers and parameters
       @type REQUEST: ZPublisher.HTTPRequest or None
       @param kw: Additional keyword arguments
       @return: Blob data as bytes or empty string, or self if not an HTTP request
-      @rtype: bytes or str or MyBlob
+      @rtype: C{bytes} or C{str} or C{MyBlob}
       """
       if REQUEST is not None and 'path_to_handle' in REQUEST:
         REQUEST['path_to_handle']=[]
@@ -861,12 +874,25 @@ class MyBlob(object):
 ################################################################################
 
 class MyImage(MyBlob, Image):
-
-    # Documentation string.
-    __doc__ = """ZMS product module."""
-    # Version string. 
-    __version__ = '0.1' 
+    """ZMS image blob class for managing image files with metadata.
     
+    MyImage extends L{MyBlob} with image-specific functionality including:
+    
+    Image Features:
+    
+        - Width and height metadata tracking
+        - Automatic dimension detection from SVG and raster images
+        - Image resizing and thumbnail generation
+        - Configurable default dimensions (width, height)
+    
+    Data Management:
+    
+        - Inherits blob storage from L{MyBlob} (ZODB or MediaDB)
+        - XML serialization with width/height attributes
+        - Content-type handling (image/png, image/jpeg, image/svg+xml, etc.)
+    
+    Uses OFS.Image.Image as the underlying Zope file storage mechanism.
+    """
 
     __obj_attrs__  = ['content_type', 'size', 'data', 'filename', 'mediadbfile', 'width', 'height', 'aq_parent']
     __xml_attrs__  = ['content_type', 'width', 'height']
@@ -977,12 +1003,26 @@ class MyImage(MyBlob, Image):
 ################################################################################
 
 class MyFile(MyBlob, File):
-
-    # Documentation string.
-    __doc__ = """ZMS product module."""
-    # Version string. 
-    __version__ = '0.1' 
-
+    """ZMS file blob class for managing binary and text files.
+    
+    MyFile extends L{MyBlob} with file-specific functionality including:
+    
+    File Features:
+    
+        - Generic binary and text file storage
+        - Support for documents, archives, code files, etc.
+        - Content-type detection and management
+        - File size tracking and reporting
+    
+    Data Management:
+    
+        - Inherits blob storage from L{MyBlob} (ZODB or MediaDB)
+        - XML serialization with content-type attributes
+        - Support for text-based content (CSS, JavaScript, SVG, etc.)
+        - HTTP caching and range request handling
+    
+    Uses OFS.File.File as the underlying Zope file storage mechanism.
+    """
 
     __obj_attrs__  = ['content_type', 'size', 'data', 'filename', 'mediadbfile', 'aq_parent']
     __xml_attrs__  = ['content_type']
@@ -1047,8 +1087,18 @@ class MyFile(MyBlob, File):
 ################################################################################
 
 class MyBlobDelegate(object):
+  """Simple delegate wrapper for blob objects.
+  
+  MyBlobDelegate provides a lightweight proxy pattern for wrapping blob objects,
+  allowing delegation of method calls to the wrapped blob instance.
+  """
 
   def __init__(self, delegate):
+    """Initialize the delegate wrapper.
+    
+    @param delegate: The blob object to wrap and delegate to
+    @type delegate: L{MyBlob} | L{MyImage} | L{MyFile}
+    """
     self._delegate = delegate
 
   delegate__roles__ = None
@@ -1060,11 +1110,23 @@ class MyBlobDelegate(object):
 ################################################################################
 
 class MyBlobWrapper(object):
-
-    # Documentation string.
-    __doc__ = """ZMS product module."""
-    # Version string. 
-    __version__ = '0.1' 
+    """Wrapper for external Zope file objects to provide blob-like interface.
+    
+    MyBlobWrapper adapts external file objects (OFS.File.File, OFS.Image.Image)
+    from other Zope containers to provide a consistent blob-like interface compatible
+    with ZMS blob field handling.
+    
+    Features:
+    
+        - Wraps external file objects
+        - Provides blob-compatible method signatures
+        - Lazy data access through delegation
+        - URI data retrieval as base64-encoded data URIs
+        - Filename and URL extraction
+    
+    This class is used for cross-container file references and external file handling
+    while maintaining compatibility with native ZMS blob operations.
+    """
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     MyBlobWrapper.__init__:

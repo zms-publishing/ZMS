@@ -2329,10 +2329,13 @@ def dt_exec(context, v, o={}):
   """
   if type(v) is str:
     if v.startswith('##') and v.find('return ') > 0:
+      check_restricted_inputs(context, value=v)
       v = dt_py(context, v, o)
     elif v.find('<tal:') >= 0:
+      check_restricted_inputs(context, value=v)
       v = dt_tal(context, v, dict(o))
     elif v.find('<dtml-') >= 0:
+      check_restricted_inputs(context, value=v)
       v = dt_html(context, v, context.REQUEST)
   return v
 
@@ -2627,6 +2630,17 @@ def is_conf_enabled(context, setting):
       return False
 
   return pybool(conf_property)
+
+
+def check_restricted_inputs(context, value, force_restriction=False):
+    prop = context.getConfProperty('ZMS.input.exec.restrict')
+    if isinstance(prop, str) and prop.strip() != '':
+        for keyword in prop.split():
+            if keyword in value:
+                raise zExceptions.MethodNotAllowed(f'Usage of "{keyword}" is forbidden.')
+    else:
+        if force_restriction:
+            raise zExceptions.MethodNotAllowed(f'Conf property "ZMS.input.exec.restrict" not set.')
 
 
 class initutil(object):

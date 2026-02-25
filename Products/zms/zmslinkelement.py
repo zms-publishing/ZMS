@@ -108,7 +108,7 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
     # --------------------------------------------------------------------------
     def getEmbedType(self):
       # _embed_type is a raw attribute and should be accessed directly
-      embed_type = getattr(self, '_attr_type', None)
+      embed_type = getattr(self, '_embed_type', None)
       # if _embed_type is not set, try to get it from the property (for backward compatibility)
       if embed_type is None:
         request = getattr(self, 'REQUEST', getRequest())
@@ -672,9 +672,12 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
     def getProxy(self):
       req = getattr(self, 'REQUEST', getRequest())
       key = 'ZMS_PROXY_%s'%self.id
-      if not req.get(key, False):
-        req.set(key, self.__proxy__())
-      return req.get(key)
+      rtn = req.get(key, None)
+      if not rtn:
+        rtn = self.__proxy__()
+        if rtn != self:
+          req.set(key, rtn)
+      return rtn
 
 
     # --------------------------------------------------------------------------

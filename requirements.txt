@@ -20,4 +20,5 @@ zope.error
 ZopeUndo
 Pillow
 xmltodict
+ruamel.yaml
 Markdown

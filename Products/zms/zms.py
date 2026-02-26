@@ -259,6 +259,10 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
     # Initialize access.
     obj.synchronizePublicAccess()
 
+    # Reindex ZMS index.
+    zmsindex = obj.getZMSIndex()
+    zmsindex.manage_reindex(regenerate_all=True)
+
     # Return with message.
     message = obj.getLangStr('MSG_INSERTED', manage_lang)%obj.meta_type
     message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'

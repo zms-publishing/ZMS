@@ -23,7 +23,7 @@ class bt_scrollspy:
 	name = "Scrollspy"
 
 	# Package
-	package = "com.zms.custom.bootstrap"
+	package = "com.zms.bootstrap"
 
 	# Revision
 	revision = "0.0.0"

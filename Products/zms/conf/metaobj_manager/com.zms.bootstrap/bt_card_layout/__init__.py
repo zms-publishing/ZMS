@@ -23,7 +23,7 @@ class bt_card_layout:
 	name = "Card-Layout"
 
 	# Package
-	package = "com.zms.custom.bootstrap"
+	package = "com.zms.bootstrap"
 
 	# Revision
 	revision = "4.1.0"

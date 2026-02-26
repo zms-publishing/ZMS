@@ -1,16 +1,16 @@
 class com_zms_foundation_bootstrap:
 	"""
-	python-representation of com.zms.custom.bootstrap
+	python-representation of com.zms.bootstrap
 	"""
 
 	# Enabled
 	enabled = 1
 
 	# Id
-	id = "com.zms.custom.bootstrap"
+	id = "com.zms.bootstrap"
 
 	# Name
-	name = "com.zms.custom.bootstrap"
+	name = "com.zms.bootstrap"
 
 	# Package
 	package = ""

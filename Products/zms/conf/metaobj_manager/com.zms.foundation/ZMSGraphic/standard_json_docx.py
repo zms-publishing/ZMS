@@ -15,13 +15,14 @@
 # manage_export_pydocx.apply_standard_json_docx().
 #
 from Products.zms import standard
+from Products.zms import content_extraction
 request = zmscontext.REQUEST
 
 id = zmscontext.id
 meta_id = zmscontext.meta_id
 parent_id = zmscontext.getParentNode().id 
 parent_meta_id = zmscontext.getParentNode().meta_id 
-text = zmscontext.attr('text')
+text = content_extraction.extract_text_from_html(context=zmscontext, html_data=zmscontext.attr('text'))
 img = zmscontext.attr('imghires') or zmscontext.attr('img')
 img_url = '%s/%s'%(zmscontext.absolute_url(),img.getHref(request).split('/')[-1])
 imgwidth = img and int(img.getWidth()) or 0;

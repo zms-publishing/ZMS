@@ -238,6 +238,7 @@ def clean_html(html, wrap_trailling_text=False):
 
 	html = re.sub(r'<!.*?->','', html)
 	html = re.sub(r'<style.*?</style>','', html)
+	html = re.sub(r'<script.*?</script>','', html)
 	html = standard.re_sub(r'\n|\t', ' ', html)
 	html = standard.re_sub(r'\s\s', ' ', html)
 	html = html.replace('<span class="unicode">&crarr;</span><br />','')
@@ -749,8 +750,8 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 				# OTHER ELEMENTS
 				# #############################################
 				elif element.name == 'hr':
-					# Omit horizontal rule
-					pass
+					# horizontal rule
+					p = docx_doc.add_paragraph('   ', style='HorizontaleLinie')
 				elif element.name == 'script':
 					# Omit javascript
 					pass

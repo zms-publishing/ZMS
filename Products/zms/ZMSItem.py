@@ -23,7 +23,6 @@ from Persistence import Persistent
 from Acquisition import Implicit
 import OFS.SimpleItem, OFS.ObjectManager
 import os
-import markdown
 # Product Imports.
 from Products.zms import standard
 from Products.zms import _accessmanager
@@ -74,6 +73,7 @@ class ZMSItem(
     # --------------------------------------------------------------------------
     def readme(self, REQUEST=None, RESPONSE=None):
       """Returns readme rendered as HTML"""
+      import markdown
       if RESPONSE is None:
         RESPONSE = self.REQUEST.RESPONSE
       RESPONSE.setHeader('Content-Type', 'text/html;charset=utf-8')

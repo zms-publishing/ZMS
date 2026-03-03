@@ -58,7 +58,7 @@ $(function() {
 		const home_id = $('#home_id').attr('value') || '';
 		const multisite_search = $('#multisite_search').attr('value') || 1;
 		const multisite_exclusions = $('#multisite_exclusions').attr('value') || '';
-		const qurl = `${root_url}/elasticsearch_query?q=${q}&pageIndex:int=${pageIndex}&facet=${facet}&home_id=${home_id}&multisite_search=${multisite_search}&multisite_exclusions=${multisite_exclusions}`;
+		const qurl = `${root_url}/elasticsearch_query?q=${encodeURIComponent(q)}&pageIndex:int=${pageIndex}&facet=${encodeURIComponent(facet)}&home_id=${encodeURIComponent(home_id)}&multisite_search=${encodeURIComponent(multisite_search)}&multisite_exclusions=${encodeURIComponent(multisite_exclusions)}`;
 		const response = await fetch(qurl);
 		const res = await response.json();
 		const res_processed = postprocess_results(q, res, facet);
@@ -75,7 +75,6 @@ $(function() {
 
 		//# Add pagination ###################
 		var fn = (pageIndex) => {
-			q = encodeURI(decodeURI(q));
 			return `javascript:show_results('${q}',${pageIndex},'${facet}')`
 		};
 		GetPagination(fn, total, 10, pageIndex);
@@ -180,17 +179,16 @@ $(function() {
 
 	//# Execute on submit event
 	$('.search-form form').submit(function() {
-		var q = decodeURI($('input[name="q"]',this).val());
-		var facet = 'all';
+		var q = $('input[name="q"]',this).val();
 		winloc.searchParams.set('q', q);
 		history.pushState({}, '', winloc);
-		show_results(q, 0, facet);
+		show_results(q, 0);
 		return false;
 	});
 
-	// POSSIBLE SECURITY ISSUE: auto-execute on ULR parameter
-	if ( winloc.searchParams.get('q', undefined) ) {
-		$('#form-keyword').val(encodeURI(winloc.searchParams.get('q','')));
+	//# Auto-execute search on URL parameter
+	if ( winloc.searchParams.get('q') ) {
+		$('#form-keyword').val(winloc.searchParams.get('q',''));
 		$('.search-form form').trigger('submit');
 	}
 

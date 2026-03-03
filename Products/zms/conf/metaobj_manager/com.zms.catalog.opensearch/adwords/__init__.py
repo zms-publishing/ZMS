@@ -26,7 +26,7 @@ class adwords:
 	package = "com.zms.catalog.opensearch"
 
 	# Revision
-	revision = "1.9.1"
+	revision = "1.12.1"
 
 	# Type
 	type = "ZMSRecordSet"

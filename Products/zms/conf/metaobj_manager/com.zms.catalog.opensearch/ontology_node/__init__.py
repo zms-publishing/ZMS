@@ -26,7 +26,7 @@ class ontology_node:
 	package = "com.zms.catalog.opensearch"
 
 	# Revision
-	revision = "0.3.2"
+	revision = "1.12.1"
 
 	# Type
 	type = "ZMSDocument"

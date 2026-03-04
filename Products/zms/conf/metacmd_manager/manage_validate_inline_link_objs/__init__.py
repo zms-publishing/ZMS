@@ -34,7 +34,7 @@ class manage_validate_inline_link_objs:
 	package = "com.zms.custom.metacmd"
 
 	# Revision
-	revision = "0.0.1"
+	revision = "0.0.2"
 
 	# Roles
 	roles = ["ZMSAdministrator"]

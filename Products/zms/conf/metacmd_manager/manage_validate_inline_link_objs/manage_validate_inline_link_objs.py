@@ -1,5 +1,18 @@
+# README ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Provides the ZMS management action for validating inline link objects.
+# This action exposes:
+# - Server-side validation routines (`validate`, `traverse`) that iterate over
+#   language-specific object attributes, normalize inline link data, and collect
+#   validation logs.
+# - A management view (`manage_validate_inline_link_objs`) with both HTML and JSON
+#   (REST-like) endpoints to count, traverse, and report validation progress.
+# - Client-side helpers (progress meters, AJAX callbacks) that orchestrate
+#   traversal, render live statistics, and allow start/pause/stop interactions.
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 from Products.zms import _globals
 from Products.zms import _objattrs
+from Products.zms import standard
 
 def validate(self):
   """
@@ -13,7 +26,11 @@ def validate(self):
       for lang in self.getLangIds():
         for obj_vers in self.getObjVersions():
           v = _objattrs.getobjattr(self,obj_vers,obj_attr,lang)
-          w = self.validateInlineLinkObj(v)
+          try:
+            w = self.validateInlineLinkObj(v)
+          except Exception as e:
+            standard.writeStdout(self, '[manage_validate_inline_link_objs] validateInlineLinkObj(%s) failed: %s'%(v,e)) 
+            w = v
           if v != w:
            validated.append(['%s_%s'%(key,lang),v,w])
   return validated

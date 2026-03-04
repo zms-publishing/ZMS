@@ -516,26 +516,26 @@ class ZReferableItem(object):
         try:
           ob = self.getDocumentElement().fetchReqBuff(reqBuffId)
         except:
+          path = ''
+          ob = None
+          # Find object by uid.
           if url.find('id:') >= 0:
             catalog = self.getZMSIndex().get_catalog()
             q = catalog({'get_uid':url})
             for r in q:
               path  = '%s/'%r['getPath']
-              l = [x for x in path.split('/') if x] 
               ob = self.getRootElement()
-              if l:
-                [l.pop(0) for x in ob.getPhysicalPath() if l[0] == x]
-                for id in l:
-                  ob = getattr(ob,id,None)
               break
+          # Find object by path.
           elif not url.startswith('__'):
             path = url.replace('@','/content/')
-            l = [x for x in path.split('/') if x] 
             ob = self.getDocumentElement()
-            if l:
-              [l.pop(0) for x in ob.getPhysicalPath() if l[0] == x]
-              for id in l:
-                ob = getattr(ob,id,None)
+          # Traverse path.
+          if path and ob:
+            l = [x for x in path.split('/') if x] 
+            [l.pop(0) for x in ob.getPhysicalPath() if l and l[0] == x]
+            for id in l:
+              ob = getattr(ob,id,None)
           #-- [ReqBuff]: Store value in buffer of Http-Request.
           self.getDocumentElement().storeReqBuff(reqBuffId, ob)
       # Prepare request (only if ref_params are provided)

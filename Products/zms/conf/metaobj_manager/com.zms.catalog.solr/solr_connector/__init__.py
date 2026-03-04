@@ -28,7 +28,7 @@ class solr_connector:
 	package = "com.zms.catalog.solr"
 
 	# Revision
-	revision = "1.1.0"
+	revision = "1.1.1"
 
 	# Type
 	type = "ZMSLibrary"

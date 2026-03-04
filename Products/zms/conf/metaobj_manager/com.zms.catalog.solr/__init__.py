@@ -22,7 +22,7 @@ class com_zms_catalog_solr:
 	package = ""
 
 	# Revision
-	revision = "1.0.0"
+	revision = "1.1.1"
 
 	# Type
 	type = "ZMSPackage"

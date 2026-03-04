@@ -26,7 +26,7 @@ class zcatalog_connector:
 	package = "com.zms.catalog.zcatalog"
 
 	# Revision
-	revision = "1.2.0"
+	revision = "1.2.1"
 
 	# Type
 	type = "ZMSLibrary"

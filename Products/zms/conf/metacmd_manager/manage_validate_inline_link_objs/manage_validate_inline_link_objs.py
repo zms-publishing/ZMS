@@ -29,7 +29,7 @@ def validate(self):
           try:
             w = self.validateInlineLinkObj(v)
           except Exception as e:
-            standard.writeStdout(self, '[manage_validate_inline_link_objs] validateInlineLinkObj(%s) failed: %s'%(v,e)) 
+            standard.writeStdout(self, '[manage_validate_inline_link_objs] validateInlineLinkObj() failed: %s'%(self.absolute_url_path())) 
             w = v
           if v != w:
            validated.append(['%s_%s'%(key,lang),v,w])

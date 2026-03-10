@@ -23,7 +23,7 @@ class bt_jumbotron:
 	name = "Jumbotron"
 
 	# Package
-	package = "com.zms.custom.bootstrap"
+	package = "com.zms.bootstrap"
 
 	# Revision
 	revision = "5.0.0"

@@ -409,3 +409,58 @@ body[data-type='News'] .zmi-action .dropdown-menu a.dropdown-item[title='ZMSFold
 	display:block;
 }
 ```
+
+## 10. Products.PluggableAuthService: Acquired ZMS-Logout
+
+By default ZMS utilizes the standard-ZMI-logout method `manage_zmi_logout()`: the endpoint is called when clicking the ZMS-menu item "logout". To customize the logout-procedure with Products.PluggableAuthService (PAS) use the configuration parameter `ZMS.logout.href` for defining your own endpoint.
+
+Let's asume you want to redirect each client of a multisite after logout to the website-domain that is published by the ZMS-client:
+to archieve this we use 
+
+1. the configuration parameter `ASP.ip_or_domain` (that is introduced for creating domain-specific URLs) to define the redirect-target,
+2. a Python-Script object named "zmi_logout" to implement the logout by the zope API function `manage_zmi_logout` and returning a message,
+3. the configuration parameter `ZMS.logout.href` simply set to the Python-Script object name
+
+In a multisite we need to set the parameter `ZMS.logout.href` only once - in the root-node. By Zope aquisition the currect context is regularily give to the zmi_logout-Script and thus the contextual `ASP.ip_or_domain`-parameter can be fetched to do the final redirect.
+
+![ZMS-Logout](images/develop_api_zmi_logout.png)
+
+### Simple Python-Script zmi_logout()
+
+```py
+request = container.REQUEST
+response =  request.response
+zmscontext = context.content
+redirect_url = 'https://%s'%(zmscontext.getConfProperty('ASP.ip_or_domain','www.desy.de'))
+request.set('HTTP_REFERER',redirect_url)
+logged_out = context.manage_zmi_logout(request, response)
+response.setHeader('Content-Type', 'text/html')
+return '''
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="1;url=%s">
+  <link rel="stylesheet" type="text/css" href="/++resource++zmi/bootstrap-4.6.0/bootstrap.min.css" />
+  <title>Redirecting...</title>
+</head>
+<body class="container mx-auto my-5">
+  <p class="alert alert-danger">You will be redirected shortly to %s...</p>
+</body>
+</html>
+'''%(redirect_url, redirect_url)
+```
+
+_Hint:_ This approach does not work with the basic authentication in Zope, because this induces the browsers authentication input alert. 
+
+_Zope Code References:_
+
+1. Zope-Application: [`def manage_zmi_logout(self, REQUEST, RESPONSE)`](https://github.com/zopefoundation/Zope/blob/36cfb1a4d7603e0950a4befa833a245d1d9584c4/src/App/Management.py#L189-L207)
+
+
+2. Products.PluggableAuthService: [`def manage_zmi_logout(self, REQUEST, RESPONSE)`](https://github.com/zopefoundation/Products.PluggableAuthService/blob/68e4e84b468468016ddd68a317c673d4f2fb5781/src/Products/PluggableAuthService/__init__.py#L70-L87)
+
+
+3. Products.PluggableAuthService: [`def logout(self, REQUEST)`](https://github.com/zopefoundation/Products.PluggableAuthService/blob/68e4e84b468468016ddd68a317c673d4f2fb5781/src/Products/PluggableAuthService/PluggableAuthService.py#L1155-L1165)]
+
+

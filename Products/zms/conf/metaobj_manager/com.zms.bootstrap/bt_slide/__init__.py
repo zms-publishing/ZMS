@@ -1,6 +1,6 @@
-class bt_card:
+class bt_slide:
 	"""
-	python-representation of bt_card
+	python-representation of bt_slide
 	"""
 
 	# Access
@@ -17,13 +17,13 @@ class bt_card:
 	enabled = 0
 
 	# Id
-	id = "bt_card"
+	id = "bt_slide"
 
 	# Name
-	name = "Card"
+	name = "Carousel-Slide"
 
 	# Package
-	package = "com.zms.custom.bootstrap"
+	package = "com.zms.bootstrap"
 
 	# Revision
 	revision = "4.1.0"
@@ -33,48 +33,46 @@ class bt_card:
 
 	# Attrs
 	class Attrs:
-		header = {"default":""
-			,"id":"header"
+		icon_clazz = {"custom":"far fa-image"
+			,"default":""
+			,"id":"icon_clazz"
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":1
-			,"name":"Header (Optional)"
+			,"name":"Icon (Class)"
 			,"repetitive":0
-			,"type":"string"}
-
-		interface0 = {"default":""
-			,"id":"interface0"
-			,"keys":[]
-			,"mandatory":0
-			,"multilang":0
-			,"name":"interface0"
-			,"repetitive":0
-			,"type":"interface"}
+			,"type":"constant"}
 
 		image = {"default":""
 			,"id":"image"
 			,"keys":[]
-			,"mandatory":0
+			,"mandatory":1
 			,"multilang":0
-			,"name":"Image (286x180)"
+			,"name":"Image"
 			,"repetitive":0
 			,"type":"image"}
+
+		image_filter = {"default":""
+			,"id":"image_filter"
+			,"keys":["##"
+				,"return ["
+				,"('#00000000','No Filter'),"
+				,"('#00000033','12% Darker'),"
+				,"('#00000066','25% Darker'),"
+				,"('#00000099','40% Darker')"
+				,"]"]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"Image Filter"
+			,"repetitive":0
+			,"type":"select"}
 
 		title = {"default":""
 			,"id":"title"
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":1
-			,"name":"Title"
-			,"repetitive":0
-			,"type":"string"}
-
-		subtitle = {"default":""
-			,"id":"subtitle"
-			,"keys":[]
-			,"mandatory":0
-			,"multilang":1
-			,"name":"Subtitle"
+			,"name":"title"
 			,"repetitive":0
 			,"type":"string"}
 
@@ -87,39 +85,29 @@ class bt_card:
 			,"repetitive":0
 			,"type":"text"}
 
-		footer = {"default":""
-			,"id":"footer"
+		url = {"default":""
+			,"id":"url"
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":1
-			,"name":"Footer (Optional)"
+			,"name":"Link"
+			,"repetitive":0
+			,"type":"url"}
+
+		url_title = {"default":""
+			,"id":"url_title"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":1
+			,"name":"Link-Titel"
 			,"repetitive":0
 			,"type":"string"}
-
-		links = {"default":""
-			,"id":"links"
-			,"keys":[]
-			,"mandatory":1
-			,"multilang":0
-			,"name":"Links"
-			,"repetitive":0
-			,"type":"bt_link_list"}
-
-		icon_clazz = {"custom":"far fa-address-card"
-			,"default":""
-			,"id":"icon_clazz"
-			,"keys":[]
-			,"mandatory":0
-			,"multilang":1
-			,"name":"Icon (Class)"
-			,"repetitive":0
-			,"type":"constant"}
 
 		standard_html = {"default":""
 			,"id":"standard_html"
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
-			,"name":"Template: Card"
+			,"name":"Template: Slide"
 			,"repetitive":0
 			,"type":"zpt"}

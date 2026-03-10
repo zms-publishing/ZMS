@@ -34,7 +34,7 @@ class manage_export_pydocx:
 	package = "com.zms.custom.export"
 
 	# Revision
-	revision = "5.0.5"
+	revision = "5.0.6"
 
 	# Roles
 	roles = ["ZMSAdministrator"]

@@ -163,6 +163,8 @@ $ZMI.registerReady(function(){
 			$('#zmiModalreadme .modal-body').html(data);
 		});
 		document.body.style.paddingRight = '0px'; // Fix scrollbar shift when opening modal
+		// Add print button to modal footer
+		$('#zmiModalreadme .modal-footer').html('<a href="./readme_html" target="_blank" class="btn btn-secondary" title="Print/HTML"><i class="fas fa-print"></i></a>');
 	});
 
 	// Tooltip

@@ -205,36 +205,17 @@ function mms_normalize_rows(el_tbody) {
 	entities python:here.getEntities();
 	tables entities">
 
-<form class="form-horizontal" method="get" action="manage_changeConfiguration">
-	<input type="hidden" name="key" value="">
-	<input type="hidden" name="lang" tal:attributes="value request/lang">
-	<input type="hidden" name="preview" tal:attributes="value request/preview">
-
-	<div class="d-none">
-		<div id="importConf" class="inner">
-			<div class="form-group row">
-				<label for="file" class="col-sm-3 col-lg-2 control-label">
-					<i class="fas fa-folder-open"></i>
-					<span tal:content="python:here.getZMILangStr('ATTR_FILE')">File</span>
-				</label>
-				<div class="col-sm-9 col-lg-10"><input class="btn btn-file" name="file" type="file" /></div><!-- .col-lg-10 -->
-			</div><!-- .form-group -->
-			<div class="form-group row mt-5">
-				<div class="controls save">
-					<button type="submit" name="btn" class="btn btn-primary" value="BTN_IMPORT" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
-				</div><!-- .controls -->
-			</div><!-- .form-group -->
-		</div><!-- .inner -->
-	</div><!-- #importConf -->
-
-	<div class="btn-group" style="padding:1em;">
-		<span class="btn btn-secondary" 
-			tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" 
-			onclick="zmiModal('#importConf',{title:$(this).attr('title')});return false;">
-			<i class="fas fa-upload"></i>
+<form class="form-horizontal card" method="get" action="manage_changeConfiguration">
+	<input type="hidden" name="key" value="" />
+	<input type="hidden" name="lang" tal:attributes="value request/lang" />
+	<input type="hidden" name="preview" tal:attributes="value request/preview" />
+	<legend>
+		<span>Table List and Column Editor</span>
+		<span class="zmi-readme ml-2 text-info" title="SQL-DB Manager"
+			tal:attributes="data-readme python:'%s/%s/readme'%(here.getRootElement().absolute_url(), here.getId())">
+			<i class="far fa-question-circle"></i>
 		</span>
-	</div>
-	<br/>
+	</legend>
 	<div tal:repeat="table tables"
 		tal:attributes="class python:' '.join(['card']+[[''],['inactive']][int(table['type']!='table')])">
 		<div class="card-header btn-collapse">
@@ -246,7 +227,7 @@ function mms_normalize_rows(el_tbody) {
 				<tal:block tal:content="table/label">table-label</tal:block>
 				(<tal:block tal:content="table/id">table-id</tal:block>)
 			</a>
-			<a href="javascript:;" class="btn btn-primary pull-right rounded-0" title="Edit Table Definition" 
+			<a href="javascript:;" class="btn btn-primary pull-left rounded-0" title="Edit Table Definition" 
 				tal:attributes="onclick python:'javascript:return loadTableEditor(urlparams=\'lang=%s&id=%s\')'%(request['lang'],table['id']); ">
 				<i class="far fa-edit"></i>
 			</a>

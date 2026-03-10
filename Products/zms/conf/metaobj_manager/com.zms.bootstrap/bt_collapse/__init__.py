@@ -23,7 +23,7 @@ class bt_collapse:
 	name = "Collapsible Content"
 
 	# Package
-	package = "com.zms.custom.bootstrap"
+	package = "com.zms.bootstrap"
 
 	# Revision
 	revision = "4.1.0"

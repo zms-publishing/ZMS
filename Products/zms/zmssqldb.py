@@ -1890,15 +1890,26 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
     def manage_changeProperties(self, lang, REQUEST=None, RESPONSE=None): 
       """ ZMSSqlDb.manage_changeProperties """
       message = ''
+      btn = REQUEST.get('btn', '')
       el_data = REQUEST.get('el_data', '')
+      f = REQUEST.get('file')
       target = 'manage_properties'
       
-      if REQUEST.get('btn', '') not in [ 'BTN_CANCEL', 'BTN_BACK']:
+      # Change.
+      # -------
+      if btn == 'BTN_SAVE':
         self.connection_id = REQUEST['connection_id']
         self.charset = REQUEST['charset']
         self.table_filter = REQUEST.get('table_filter','')
-        self.setModel(REQUEST['model'])
-        message = self.getZMILangStr('MSG_CHANGED')
+        if f and f.filename:
+          self.setModel(f.read())
+          message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%f.filename)
+        else:
+          self.setModel(REQUEST['model'])
+          message = self.getZMILangStr('MSG_CHANGED')
+      
+      elif btn == 'BTN_CANCEL':
+        message = ''
       
       # Return with message.
       message = standard.url_quote(message)

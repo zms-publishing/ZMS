@@ -1,6 +1,6 @@
-class bt_collapse_complex:
+class bt_collapse_simple:
 	"""
-	python-representation of bt_collapse_complex
+	python-representation of bt_collapse_simple
 	"""
 
 	# Access
@@ -17,13 +17,13 @@ class bt_collapse_complex:
 	enabled = 0
 
 	# Id
-	id = "bt_collapse_complex"
+	id = "bt_collapse_simple"
 
 	# Name
-	name = "Collapse Item (Complex)"
+	name = "Collapse Item (Simple)"
 
 	# Package
-	package = "com.zms.custom.bootstrap"
+	package = "com.zms.bootstrap"
 
 	# Revision
 	revision = "4.1.0"
@@ -33,7 +33,7 @@ class bt_collapse_complex:
 
 	# Attrs
 	class Attrs:
-		icon_clazz = {"custom":"fas fa-indent"
+		icon_clazz = {"custom":"fas fa-grip-lines"
 			,"default":""
 			,"id":"icon_clazz"
 			,"keys":[]
@@ -54,20 +54,18 @@ class bt_collapse_complex:
 
 		body = {"default":""
 			,"id":"body"
-			,"keys":["type(ZMSObject)"
-				,"type(ZMSRecordSet)"
-				,"type(ZMSModule)"]
-			,"mandatory":0
-			,"multilang":0
+			,"keys":[]
+			,"mandatory":1
+			,"multilang":1
 			,"name":"Body"
-			,"repetitive":1
-			,"type":"*"}
+			,"repetitive":0
+			,"type":"richtext"}
 
 		standard_html = {"default":""
 			,"id":"standard_html"
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
-			,"name":"Template: Complex-Item"
+			,"name":"Template: Simple-Item"
 			,"repetitive":0
 			,"type":"zpt"}

@@ -200,7 +200,7 @@
         
 
         
-            <div class="itemName"><code><a href="#__doc__" class="internal-link" title="zms._blobfields.MyBlobWrapper.__doc__">__doc__</a></code>
+            <div class="itemName"><code><a href="#__roles__" class="internal-link" title="zms._blobfields.MyBlobWrapper.__roles__">__roles__</a></code>
             </div>
         
 
@@ -475,12 +475,23 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">MyBlobWrapper</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L1039" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms._blobfields.MyBlobWrapper.__init__">MyBlobWrapper(f)</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">MyBlobWrapper</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L1123" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms._blobfields.MyBlobWrapper.__init__">MyBlobWrapper(f)</a></code></p>
           <p><a href="classIndex.html#zms._blobfields.MyBlobWrapper">View In Hierarchy</a></p>
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>Wrapper for external Zope file objects to provide blob-like interface.</p>
+<p>MyBlobWrapper adapts external file objects (OFS.File.File, OFS.Image.Image) from other Zope containers to provide a consistent blob-like interface compatible with ZMS blob field handling.</p>
+<p>Features:</p>
+<ul class="rst-simple">
+<li>Wraps external file objects</li>
+<li>Provides blob-compatible method signatures</li>
+<li>Lazy data access through delegation</li>
+<li>URI data retrieval as base64-encoded data URIs</li>
+<li>Filename and URL extraction</li>
+</ul>
+<p>This class is used for cross-container file references and external file handling while maintaining compatibility with native ZMS blob operations.</p>
+</div>
         </div>
 
         <div id="splitTables">
@@ -520,8 +531,8 @@
   </tr><tr class="classvariable">
     
     <td>Class Variable</td>
-    <td><code><a href="#__doc__" class="internal-link" title="zms._blobfields.MyBlobWrapper.__doc__">__doc__</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td><code><a href="#__roles__" class="internal-link" title="zms._blobfields.MyBlobWrapper.__roles__">__roles__</a></code></td>
+    <td>MyBlobWrapper.__init__:</td>
   </tr><tr class="classvariable">
     
     <td>Class Variable</td>
@@ -531,7 +542,7 @@
     
     <td>Class Variable</td>
     <td><code><a href="#__version__" class="internal-link" title="zms._blobfields.MyBlobWrapper.__version__">__version__</a></code></td>
-    <td>MyBlobWrapper.__init__:</td>
+    <td><span class="undocumented">Undocumented</span></td>
   </tr><tr class="classvariable">
     
     <td>Class Variable</td>
@@ -578,7 +589,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">__init__</span><span class="function-signature">(self, f)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L1051">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L1150">
       
       (source)
     </a>
@@ -605,7 +616,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">__str__</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L1087">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L1186">
       
       (source)
     </a>
@@ -632,7 +643,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getData</span><span class="function-signature">(self, parent=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L1072">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L1171">
       
       (source)
     </a>
@@ -659,7 +670,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getDataURI</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L1079">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L1178">
       
       (source)
     </a>
@@ -686,7 +697,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getFilename</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L1065">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L1164">
       
       (source)
     </a>
@@ -713,7 +724,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getHref</span><span class="function-signature">(self, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L1058">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L1157">
       
       (source)
     </a>
@@ -730,20 +741,20 @@
 </div><div class="baseclassvariable">
   
   
-  <a name="zms._blobfields.MyBlobWrapper.__doc__">
+  <a name="zms._blobfields.MyBlobWrapper.__roles__">
     
   </a>
-  <a name="__doc__">
+  <a name="__roles__">
     
   </a>
   <div class="functionHeader">
     
-    <span class="py-defname">__doc__</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L1042">
+    <span class="py-defname">__roles__</span> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L1143">
       
       (source)
     </a>
-    <a class="headerLink" href="#__doc__" title="zms._blobfields.MyBlobWrapper.__doc__">
+    <a class="headerLink" href="#__roles__" title="zms._blobfields.MyBlobWrapper.__roles__">
       
       
       ¶
@@ -751,7 +762,9 @@
   </div>
   <div class="functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>MyBlobWrapper.__init__:</p>
+<p>Constructor</p>
+</div>
     
   </div>
 </div><div class="baseclassvariable">
@@ -766,7 +779,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">__str____roles__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L1086">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L1185">
       
       (source)
     </a>
@@ -793,7 +806,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">__version__</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L1044">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L1142">
       
       (source)
     </a>
@@ -805,9 +818,7 @@
   </div>
   <div class="functionBody">
     
-    <div><p>MyBlobWrapper.__init__:</p>
-<p>Constructor</p>
-</div>
+    <div><p class="undocumented">Undocumented</p></div>
     
   </div>
 </div><div class="baseclassvariable">
@@ -822,7 +833,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">getData__roles__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L1071">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L1170">
       
       (source)
     </a>
@@ -849,7 +860,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">getDataURI__roles__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L1078">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L1177">
       
       (source)
     </a>
@@ -876,7 +887,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">getFilename__roles__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L1064">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L1163">
       
       (source)
     </a>
@@ -903,7 +914,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">getHref__roles__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L1057">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L1156">
       
       (source)
     </a>
@@ -930,7 +941,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">f</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L1052">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L1151">
       
       (source)
     </a>

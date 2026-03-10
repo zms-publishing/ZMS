@@ -26,6 +26,8 @@ USER zope
 WORKDIR /home/zope/
 
 ENV ZOPE_VERSION=6.0
+ENV ZMS_BRANCH=zms6
+# ENV ZMS_BRANCH=main
 ENV VIRTUAL_ENV=/home/zope/venv
 ENV SHELL=/bin/bash
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
@@ -38,7 +40,7 @@ RUN python3 -m venv venv
 RUN pip install -U pip wheel setuptools
 RUN pip install Zope[wsgi]==$ZOPE_VERSION -c https://zopefoundation.github.io/Zope/releases/$ZOPE_VERSION/constraints.txt
 RUN pip install -r https://raw.githubusercontent.com/zms-publishing/ZMS/main/requirements-full.txt
-RUN pip install --config-settings editable_mode=compat --no-deps -e git+https://github.com/zms-publishing/ZMS.git@zms6#egg=ZMS
+RUN pip install --config-settings editable_mode=compat --no-deps -e git+https://github.com/zms-publishing/ZMS.git@$ZMS_BRANCH#egg=ZMS
 RUN pip install ZEO
 RUN pip install itsdangerous
 # RUN pip install debugpy

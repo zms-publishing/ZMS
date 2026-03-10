@@ -1,7 +1,7 @@
 services:
-  zms5-ubuntu:
+  zms6-ubuntu:
     build: .
-    image: zms5:ubuntu
+    image: zms6:ubuntu
     ports:
       - 8888:8888
       - 8085:8085

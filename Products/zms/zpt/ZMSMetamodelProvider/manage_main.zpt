@@ -692,7 +692,7 @@
 	/**
 	 * ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	 * Generator for Default-ZPT-Code.
-	 * Cave: ZPT Processing in Zope5 requires $$
+	 * Cave: ZPT Processing in Zope requires $$
 	 * for JS String Templates
 	 * ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	 */

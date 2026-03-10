@@ -1,0 +1,146 @@
+ZMSTable:
+  access:
+    insert_custom: '{$}'
+  enabled: 1
+  lang_dict:
+    ZMSTable.MSG_ZMSTABLE_EDITOR:
+      eng: |-
+        <small class="form-text text-muted">HINTS:
+        	<span class="badge badge-dark">Click</span> cell to edit,
+        	<span class="badge badge-dark">Double-click</span> cell to open WYSIWYG-editor,
+        	<span class="badge badge-dark">Right-click</span> to insert, move or delete cells.
+        </small>
+      ger: |-
+        <small class="form-text text-muted">HINWEISE:
+        	<span class="badge badge-dark">Klick</span> auf Zelle zum Editieren,
+        	<span class="badge badge-dark">Doppel-Klick</span> auf Zelle zum Öffnen des WYSIWYG-Editors,
+        	<span class="badge badge-dark">Rechts-Klick</span> zum Einfügen, Verschieben oder Löschen von Zellen.
+        </small>
+    ZMSTable.MSG_ZMSTABLE_TYPE:
+      eng: 'Note: Type can not be changed later'
+      ger: 'Hinweis: Tabellen-Typ kann nachträglich nicht mehr geändert werden.'
+  name: ZMSTable
+  package: com.zms.foundation
+  revision: 5.1.2
+  type: ZMSObject
+  Attrs:
+    - id: titlealt
+      name: DC.Title.Alt
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: py
+    - id: caption
+      name: Caption
+      mandatory: 1
+      multilang: 1
+      repetitive: 0
+      type: string
+    - id: caption_side
+      name: Align
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: select
+      keys:
+        - bottom
+        - top
+    - id: attr_dc_description
+      name: DC.Description
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: attr_dc_description
+    - id: sortable
+      name: Sortable
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: boolean
+      default: '0'
+    - id: colgroup
+      name: Colgroup
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: boolean
+      default: '0'
+    - id: interface0
+      name: interface0
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: interface
+    - id: type
+      name: Type
+      mandatory: 1
+      multilang: 0
+      repetitive: 0
+      type: int
+    - id: table
+      name: Table
+      mandatory: 1
+      multilang: 1
+      repetitive: 0
+      type: list
+    - id: cols
+      name: Cols
+      mandatory: 1
+      multilang: 1
+      repetitive: 0
+      type: list
+    - id: jquery.tablesorter.min.js
+      name: https://github.com/Mottie/tablesorter
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: resource
+    - id: jquery.tablesorter.css
+      name: https://github.com/Mottie/tablesorter
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: resource
+    - id: icon_clazz
+      name: Icon (CSS)
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: constant
+      custom: fas fa-table
+    - id: readme
+      name: README.md
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: resource
+    - id: onChangeObjEvt
+      name: 'Event: onChange'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: py
+    - id: widths
+      name: Col-Widths [list]
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: py
+    - id: zmstable_colgroup_css
+      name: CSS Colgroup
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: zpt
+    - id: zmstable_sortable_js
+      name: JS Sortable
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: zpt
+    - id: standard_html
+      name: 'Template: ZMSTable'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: zpt

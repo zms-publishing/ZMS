@@ -1,0 +1,67 @@
+codeblock:
+  access:
+    insert_custom: '{$}'
+  enabled: 1
+  name: Code-Block
+  package: com.zms.foundation
+  revision: 5.0.2
+  type: ZMSObject
+  Attrs:
+    - id: info
+      name: Info-Text
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: string
+      default: 'HINT: This object contains programming code.'
+    - id: text
+      name: Code
+      mandatory: 1
+      multilang: 1
+      repetitive: 0
+      type: text
+    - id: codeeditor
+      name: codeeditor
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: interface
+    - id: display
+      name: Display-Mode
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: select
+      keys:
+        - rendered
+        - rendered_preview_only
+        - as_raw_code
+    - id: attr_dc_accessrights_restrictedEditors
+      name: Access
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: multiselect
+      keys:
+        - ZMSAdministrator
+        - ZMSEditor
+    - id: icon_clazz
+      name: Icon (Class)
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: constant
+      custom: fas fa-code
+    - id: omit_div_container
+      name: Omit DIV-Container
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: boolean
+      default: '0'
+    - id: standard_html
+      name: 'Template: HTML-Block'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: zpt

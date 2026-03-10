@@ -1,0 +1,30 @@
+ZMSSqlDb:
+  access:
+    delete:
+      - ZMSAdministrator
+      - ZMSAuthor
+      - ZMSEditor
+    insert:
+      - ZMSAdministrator
+      - ZMSAuthor
+      - ZMSEditor
+    insert_custom: '{$}'
+  enabled: 0
+  name: ZMSSqlDb
+  package: com.zms.foundation
+  revision: 5.0.0
+  type: ZMSObject
+  Attrs:
+    - id: icon_clazz
+      name: Icon (Class)
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: constant
+      custom: fas fa-database
+    - id: renderShort
+      name: 'ZMI: Render short'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: zpt

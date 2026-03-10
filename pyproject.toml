@@ -8,7 +8,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "ZMS"
 dynamic = ["version"]
-description = "ZMS5: Simplified Content Modelling"
+description = "ZMS6: Simplified Content Modelling"
 readme = "README.rst"
 license = {text = "GPL"}
 authors = [
@@ -18,13 +18,14 @@ maintainers = [
     {name = "HOFFMANN+LIEBENBERG in association with SNTL Publishing, Berlin", email = "zms@sntl-publishing.com"}
 ]
 classifiers = [
-    "Development Status :: 5 - Production/Stable",
-    "Framework :: Zope :: 5",
+    "Development Status :: 6 - Production/Stable",
+    "Framework :: Zope :: 6",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Operating System :: OS Independent",
     "Environment :: Web Environment",
     "Topic :: Internet :: WWW/HTTP :: Site Management",

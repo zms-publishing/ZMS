@@ -34,7 +34,7 @@ class manage_tab_translate:
 	package = "com.zms.custom.metacmd.tabs"
 
 	# Revision
-	revision = "6.1.2"
+	revision = "6.1.3"
 
 	# Roles
 	roles = ["ZMSEditor"

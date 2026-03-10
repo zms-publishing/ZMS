@@ -41,8 +41,9 @@ COPY ./etc ./etc
 COPY ./var ./var
 COPY ./Extensions ./Extensions
 
-EXPOSE 8086
 EXPOSE 8085
+EXPOSE 8086
+EXPOSE 8087
 
 # Start ZEO/Zope by Script via docker-compose
 # ENTRYPOINT ["/home/zope/etc/start.sh"]

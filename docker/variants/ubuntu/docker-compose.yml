@@ -1,37 +1,86 @@
-services:
-  zms6-ubuntu:
-    build: .
-    image: zms6:ubuntu
-    ports:
-      - 8888:8888
-      - 8085:8085
-      - 8086:8086
-    networks:
-      - zms_network
-    environment:
-      - TZ=Europe/Berlin
-      - PYTHONUNBUFFERED="1"
-      - CONFIG_FILE="/home/zope/etc/zope.ini"
-      - INSTANCE_HOME="/home/zope"
-      - CLIENT_HOME="/home/zope"
-      - PYTHON="/home/zope/venv/bin/python"
-      - SOFTWARE_HOME="/home/zope/venv/bin"
-    volumes:
-      - ./etc/:/home/zope/etc/
-      - ./Extensions/:/home/zope/Extensions/:rw
-      - ./var/:/home/zope/var/:rw
+x-instance-common: &instance_common
+  image: zms6:ubuntu
+  build:
+    context: .
+    dockerfile: ./dockerfile
+    args:
+      - INSTANCE_DIR=${INSTANCE_DIR}
+      - VENV_DIR=${VENV_DIR}
+      - IS_DEBUG=false
+      - UID=${UID}
+      - GID=${GID}
+  depends_on:
+    - zeo
+  user: zope
+  volumes:
+    - ./etc/:${INSTANCE_DIR}/etc:rw
+    - ./var/:${INSTANCE_DIR}/var:rw
+    - ./import/:${INSTANCE_DIR}/import:rw
+    - ./Extensions/:${INSTANCE_DIR}/Extensions:rw
+    - ${SRC_MOUNT}/:${SRC_DIR}/:rw
+  command: >
+    bash -c "
+      memcached -u zope -m 64 -p 11211 &
+      ${SRC_DIR}/docker/variants/ubuntu/etc/start_instance.sh &&
+      sleep infinity
+    "
+  networks:
+    - zms_network
 
-    ### Override the default CMD to launch script and keep container alive
-    # command: sleep infinity
-    command: >
-      bash -c "
-        /home/zope/etc/start.sh &
-        sleep infinity
-      "
-
-# IMPORTANT: Create the Network first to make it external
-# > docker network create zms_network
 networks:
   zms_network:
     driver: bridge
 
+services:
+  ### Zope: Zope Application Server
+  instance1:
+    <<: *instance_common
+    environment:
+      - PYTHONUNBUFFERED="1"
+      - SOFTWARE_HOME="${VENV_DIR}/bin"
+      - PYTHON="${VENV_DIR}/bin/python"
+      - HTTP_PORT=8085
+      - READ_ONLY=false
+    ports:
+      - "8085:8080"
+
+  instance2:
+    <<: *instance_common
+    environment:
+      - PYTHONUNBUFFERED="1"
+      - SOFTWARE_HOME="${VENV_DIR}/bin"
+      - PYTHON="${VENV_DIR}/bin/python"
+      - HTTP_PORT=8086
+      - READ_ONLY=true
+    ports:
+      - "8086:8080"
+
+  instance3:
+    ### Code-Server for Remote Development
+    ### Note: This instance initially is not running Zope, 
+    ### but code-server for remote development.
+    <<: *instance_common
+    environment:
+      - PYTHONUNBUFFERED="1"
+      - SOFTWARE_HOME="${VENV_DIR}/bin"
+      - PYTHON="${VENV_DIR}/bin/python"
+      - HTTP_PORT=8087
+      - READ_ONLY=false
+    ports:
+      - "8087:8080"
+      - "8888:8888"
+    command: >
+      bash -c "
+        memcached -u zope -m 64 -p 11211 &
+        code-server --bind-addr 0.0.0.0:8888 --auth none  $INSTANCE_DIR
+      "
+
+  ### ZEO: Zope Enterprise Objects
+  zeo:
+    <<: *instance_common
+    depends_on: []
+    command: >
+      bash -c "
+      ${SRC_DIR}/docker/variants/ubuntu/etc/start_zeo.sh &
+      sleep infinity
+      "

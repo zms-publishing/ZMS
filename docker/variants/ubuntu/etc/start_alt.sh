@@ -13,7 +13,7 @@ echo "Step-1: Starting ZEO"
 nohup $venv_bin_dir/runzeo --configure $instance_dir/etc/zeo.conf 1>/dev/null 2>/dev/null &
 
 echo "Step-2: Starting ZOPE on port $zope_port"
-#\* $venv_bin_dir/runwsgi --debug --verbose $instance_dir/etc/zope.ini debug-mode=on http_port=8085
+# /home/zope/venv/bin/runwsgi --debug --verbose ~/etc/zope.ini debug-mode=on http_port=8085
 nohup $venv_bin_dir/runwsgi --debug --verbose $instance_dir/etc/zope.ini debug-mode=on http_port=$zope_port 1>/dev/null 2>/dev/null &
 
 echo "Start VSCode-Server on port $vscode_port"

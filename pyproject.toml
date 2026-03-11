@@ -95,4 +95,4 @@ namespaces = false
 "Products.zms" = ["**/*"]
 
 [tool.setuptools.dynamic]
-version = {file = "Products/zms/version.txt"}
+version = {attr = "Products.zms._version.__version__"}

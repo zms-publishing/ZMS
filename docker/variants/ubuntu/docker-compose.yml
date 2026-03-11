@@ -21,7 +21,7 @@ x-instance-common: &instance_common
   command: >
     bash -c "
       memcached -u zope -m 64 -p 11211 &
-      ${SRC_DIR}/docker/variants/ubuntu/etc/start_instance.sh &&
+      ${SRC_DIR}/docker/variants/ubuntu/etc/start_zope.sh &&
       sleep infinity
     "
   networks:
@@ -64,10 +64,10 @@ services:
       - PYTHONUNBUFFERED="1"
       - SOFTWARE_HOME="${VENV_DIR}/bin"
       - PYTHON="${VENV_DIR}/bin/python"
-      - HTTP_PORT=8087
+      - HTTP_PORT=8889
       - READ_ONLY=false
     ports:
-      - "8087:8080"
+      - "8889:8080"
       - "8888:8888"
     command: >
       bash -c "

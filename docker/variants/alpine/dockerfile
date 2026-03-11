@@ -9,6 +9,7 @@ ENV SHELL=/bin/bash
 # Install OS Requirements
 RUN apk add --no-cache python3 make gcc g++ git curl bash 
 RUN apk update && apk add python3-dev mariadb-dev openldap-dev
+RUN apk add --no-cache memcached
 
 # # Install VS Code Server and Python Extension
 # # CONSTANTLY FAILS ON ALPINE

@@ -3,7 +3,7 @@
 * update `Products/zms/version.txt` to the desired semantic version (for example `5.2.1`).
 * create a release build with `python -m build` (creates both sdist and wheel from `pyproject.toml`).
 * verify package metadata with `python -m twine check dist/*`.
-* test upload to testpypi via `python -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*`
+* test upload to testpypi via `python -m twine upload --verbose --repository-url https://test.pypi.org/legacy/ dist/*`
 * check release on https://test.pypi.org/project/ZMS/
 * If content, tag and upload release to real pypi via `python -m twine upload dist/*`
 * update `Products/zms/version.txt` and add `dev` suffix to the patch version

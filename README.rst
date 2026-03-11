@@ -65,4 +65,4 @@ Users of Microsoft Windows 11 can enable the Windows subsystem for Linux (WSL) f
 
 ____
 
-Copyright (c) 2000-2025 `HOFFMANN+LIEBENBERG <http://www.hoffmannliebenberg.de>`_ in association with `SNTL Publishing <http://www.sntl-publishing.com>`_, Berlin. Code released under the `GNU General Public License v3 <http://www.gnu.org/licenses/gpl.html>`_ license.
+Copyright (c) 2000-2026 `HOFFMANN+LIEBENBERG <http://www.hoffmannliebenberg.de>`_ in association with `SNTL Publishing <http://www.sntl-publishing.com>`_, Berlin. Code released under the `GNU General Public License v3 <http://www.gnu.org/licenses/gpl.html>`_ license.

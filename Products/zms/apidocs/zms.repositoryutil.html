@@ -151,6 +151,26 @@
         
 
         
+            <div class="itemName"><code><a href="#get_init_py" class="internal-link" title="zms.repositoryutil.get_init_py">get<wbr></wbr>_init<wbr></wbr>_py</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#get_init_yaml" class="internal-link" title="zms.repositoryutil.get_init_yaml">get<wbr></wbr>_init<wbr></wbr>_yaml</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
             <div class="itemName"><code><a href="#get_providers" class="internal-link" title="zms.repositoryutil.get_providers">get<wbr></wbr>_providers</a></code>
             </div>
         
@@ -171,7 +191,27 @@
         
 
         
+            <div class="itemName"><code><a href="#init_artefacts" class="internal-link" title="zms.repositoryutil.init_artefacts">init<wbr></wbr>_artefacts</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
             <div class="itemName"><code><a href="#localFiles" class="internal-link" title="zms.repositoryutil.localFiles">local<wbr></wbr>Files</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#parseInit" class="internal-link" title="zms.repositoryutil.parseInit">parse<wbr></wbr>Init</a></code>
             </div>
         
 
@@ -401,6 +441,16 @@
 
         
             <div class="itemName"><code><a href="zms.svgutil.html" class="internal-link" title="zms.svgutil">svgutil</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.yamlutil.html" class="internal-link" title="zms.yamlutil">yamlutil</a></code>
             </div>
         
 
@@ -970,6 +1020,16 @@
         
 
         
+            <div class="itemName"><code><a href="zms._version.html" class="internal-link" title="zms._version">_version</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
             <div class="itemName"><code><a href="zms._versionmanager.html" class="internal-link" title="zms._versionmanager">_versionmanager</a></code>
             </div>
         
@@ -1189,7 +1249,7 @@
         </div>
 
         <div id="splitTables">
-          <table class="children sortable" id="id148">
+          <table class="children sortable" id="id149">
   
   
   <tr class="function">
@@ -1205,6 +1265,16 @@
   </tr><tr class="function">
     
     <td>Function</td>
+    <td><code><a href="#get_init_py" class="internal-link" title="zms.repositoryutil.get_init_py">get<wbr></wbr>_init<wbr></wbr>_py</a></code></td>
+    <td>Generate a Python class representation of a given object.</td>
+  </tr><tr class="function">
+    
+    <td>Function</td>
+    <td><code><a href="#get_init_yaml" class="internal-link" title="zms.repositoryutil.get_init_yaml">get<wbr></wbr>_init<wbr></wbr>_yaml</a></code></td>
+    <td>Serialize a Python object into a YAML-formatted string.</td>
+  </tr><tr class="function">
+    
+    <td>Function</td>
     <td><code><a href="#get_providers" class="internal-link" title="zms.repositoryutil.get_providers">get<wbr></wbr>_providers</a></code></td>
     <td><span class="undocumented">Undocumented</span></td>
   </tr><tr class="function">
@@ -1215,7 +1285,17 @@
   </tr><tr class="function">
     
     <td>Function</td>
+    <td><code><a href="#init_artefacts" class="internal-link" title="zms.repositoryutil.init_artefacts">init<wbr></wbr>_artefacts</a></code></td>
+    <td>Generate a dictionary of initialization artefacts from the given object and initialization files.</td>
+  </tr><tr class="function">
+    
+    <td>Function</td>
     <td><code><a href="#localFiles" class="internal-link" title="zms.repositoryutil.localFiles">local<wbr></wbr>Files</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="function">
+    
+    <td>Function</td>
+    <td><code><a href="#parseInit" class="internal-link" title="zms.repositoryutil.parseInit">parse<wbr></wbr>Init</a></code></td>
     <td><span class="undocumented">Undocumented</span></td>
   </tr><tr class="function">
     
@@ -1253,7 +1333,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_class</span><span class="function-signature">(py)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L68">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L72">
       
       (source)
     </a>
@@ -1280,7 +1360,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_diffs</span><span class="function-signature">(local, remote, ignore=True)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L276">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L431">
       
       (source)
     </a>
@@ -1297,6 +1377,68 @@
 </div><div class="basefunction">
   
   
+  <a name="zms.repositoryutil.get_init_py">
+    
+  </a>
+  <a name="get_init_py">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">get_init_py</span><span class="function-signature">(self, o)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L334">
+      
+      (source)
+    </a>
+    <a class="headerLink" href="#get_init_py" title="zms.repositoryutil.get_init_py">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Generate a Python class representation of a given object.</p>
+<p>This function takes an object `o` (typically a dictionary) and generates a Python class definition as a list of strings. The generated class includes attributes and nested classes based on the structure and content of the input object.</p>
+<p>Args: self: The instance of the class calling this method. o (dict): The input object containing keys and values to be represented as a Python class.</p>
+<p>Returns: list: A list of strings representing the Python class definition.</p>
+</div>
+  </div>
+</div><div class="basefunction">
+  
+  
+  <a name="zms.repositoryutil.get_init_yaml">
+    
+  </a>
+  <a name="get_init_yaml">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">get_init_yaml</span><span class="function-signature">(self, o)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L384">
+      
+      (source)
+    </a>
+    <a class="headerLink" href="#get_init_yaml" title="zms.repositoryutil.get_init_yaml">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Serialize a Python object into a YAML-formatted string.</p>
+<p>This method processes a given object `o` and converts it into a YAML representation. It handles attributes and keys in the object, ensuring that non-serializable elements (e.g., Acquisition-Wrappers) are excluded.</p>
+<p>Args: self: The instance of the class containing this method. o (dict): The input dictionary-like object to be serialized. It is expected to have keys and values that can be processed into a YAML-compatible format.</p>
+<p>Returns: str: A YAML-formatted string representing the serialized object.</p>
+</div>
+  </div>
+</div><div class="basefunction">
+  
+  
   <a name="zms.repositoryutil.get_providers">
     
   </a>
@@ -1307,7 +1449,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_providers</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L55">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L59">
       
       (source)
     </a>
@@ -1334,7 +1476,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_system_conf_basepath</span><span class="function-signature">()</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L47">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L51">
       
       (source)
     </a>
@@ -1351,6 +1493,55 @@
 </div><div class="basefunction">
   
   
+  <a name="zms.repositoryutil.init_artefacts">
+    
+  </a>
+  <a name="init_artefacts">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">init_artefacts</span><span class="function-signature">(o, init_files)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L256">
+      
+      (source)
+    </a>
+    <a class="headerLink" href="#init_artefacts" title="zms.repositoryutil.init_artefacts">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Generate a dictionary of initialization artefacts from the given object and initialization files.</p>
+<p>Args: self: The instance of the class containing this method. o (dict): A dictionary representing the object to process. It may contain:</p>
+<ul class="rst-simple">
+<li>'id': The identifier of the object.</li>
+<li>'acquired': A flag indicating if the object is acquired (0 or 1).</li>
+<li>'__filename__': A list representing the filename structure.</li>
+<li>'__icon__': An optional icon for the object.</li>
+<li>'__description__': An optional description for the object.</li>
+<li>'revision': A version string in the format "0.0.0".</li>
+<li>Other keys representing attributes, where capitalized keys with list values are processed.</li>
+</ul>
+<p>initFiles (dict): A dictionary where keys are formats (e.g., 'py') and values are lists of strings representing the initialization data for each format.</p>
+<p>Returns: dict: A dictionary where keys are filenames and values are dictionaries containing:</p>
+<ul class="rst-simple">
+<li>'id': The identifier of the object.</li>
+<li>'filename': The full path of the file.</li>
+<li>'data': The content of the file.</li>
+<li>'version': The version of the file as a list of integers.</li>
+<li>'meta_type': The meta type of the object (e.g., 'Script (Python)').</li>
+<li>'__icon__': The icon of the object (if provided).</li>
+<li>'__description__': The description of the object (if provided).</li>
+</ul>
+</div>
+  </div>
+</div><div class="basefunction">
+  
+  
   <a name="zms.repositoryutil.localFiles">
     
   </a>
@@ -1361,11 +1552,38 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">localFiles</span><span class="function-signature">(self, provider, ids=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L197">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L243">
       
       (source)
     </a>
     <a class="headerLink" href="#localFiles" title="zms.repositoryutil.localFiles">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basefunction">
+  
+  
+  <a name="zms.repositoryutil.parseInit">
+    
+  </a>
+  <a name="parseInit">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">parseInit</span><span class="function-signature">(self, filepath)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L231">
+      
+      (source)
+    </a>
+    <a class="headerLink" href="#parseInit" title="zms.repositoryutil.parseInit">
       
       
       ¶
@@ -1388,7 +1606,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">readRepository</span><span class="function-signature">(self, basepath, deep=True)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L136">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L144">
       
       (source)
     </a>
@@ -1415,7 +1633,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">remoteFiles</span><span class="function-signature">(self, basepath, deep=True)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L83">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L87">
       
       (source)
     </a>
@@ -1441,7 +1659,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">security</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L41">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L45">
       
       (source)
     </a>

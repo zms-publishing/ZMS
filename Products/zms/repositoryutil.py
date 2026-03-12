@@ -258,27 +258,27 @@ def init_artefacts(o, init_files):
   Generate a dictionary of initialization artefacts from the given object and initialization files.
 
   Args:
-    self: The instance of the class containing this method.
-    o (dict): A dictionary representing the object to process. It may contain:
-      - 'id': The identifier of the object.
-      - 'acquired': A flag indicating if the object is acquired (0 or 1).
-      - '__filename__': A list representing the filename structure.
-      - '__icon__': An optional icon for the object.
-      - '__description__': An optional description for the object.
-      - 'revision': A version string in the format "0.0.0".
-      - Other keys representing attributes, where capitalized keys with list values are processed.
-    initFiles (dict): A dictionary where keys are formats (e.g., 'py') and values are lists of strings
-      representing the initialization data for each format.
+  self: The instance of the class containing this method.
+  o (dict): A dictionary representing the object to process. It may contain:
+    - 'id': The identifier of the object.
+    - 'acquired': A flag indicating if the object is acquired (0 or 1).
+    - '__filename__': A list representing the filename structure.
+    - '__icon__': An optional icon for the object.
+    - '__description__': An optional description for the object.
+    - 'revision': A version string in the format "0.0.0".
+    - Other keys representing attributes, where capitalized keys with list values are processed.
+  initFiles (dict): A dictionary where keys are formats (e.g., 'py') and values are lists of strings
+  representing the initialization data for each format.
 
   Returns:
-    dict: A dictionary where keys are filenames and values are dictionaries containing:
-      - 'id': The identifier of the object.
-      - 'filename': The full path of the file.
-      - 'data': The content of the file.
-      - 'version': The version of the file as a list of integers.
-      - 'meta_type': The meta type of the object (e.g., 'Script (Python)').
-      - '__icon__': The icon of the object (if provided).
-      - '__description__': The description of the object (if provided).
+  dict: A dictionary where keys are filenames and values are dictionaries containing:
+    - 'id': The identifier of the object.
+    - 'filename': The full path of the file.
+    - 'data': The content of the file.
+    - 'version': The version of the file as a list of integers.
+    - 'meta_type': The meta type of the object (e.g., 'Script (Python)').
+    - '__icon__': The icon of the object (if provided).
+    - '__description__': The description of the object (if provided).
   """
   l = {}
   id = o.get('id','?')
@@ -340,12 +340,11 @@ def get_init_py(self, o):
   and nested classes based on the structure and content of the input object.
 
   Args:
-    self: The instance of the class calling this method.
-    o (dict): The input object containing keys and values to be represented
-          as a Python class.
+  self: The instance of the class calling this method.
+  o (dict): The input object containing keys and values to be represented as a Python class.
 
   Returns:
-    list: A list of strings representing the Python class definition.
+  list: A list of strings representing the Python class definition.
   """
   id = o.get('id','?')
   py = []
@@ -391,13 +390,13 @@ def get_init_yaml(self, o):
   that non-serializable elements (e.g., Acquisition-Wrappers) are excluded.
 
   Args:
-    self: The instance of the class containing this method.
-    o (dict): The input dictionary-like object to be serialized. It is
-          expected to have keys and values that can be processed
-          into a YAML-compatible format.
+  self: The instance of the class containing this method.
+  o (dict): The input dictionary-like object to be serialized. It is
+  expected to have keys and values that can be processed
+  into a YAML-compatible format.
 
   Returns:
-    str: A YAML-formatted string representing the serialized object.
+  str: A YAML-formatted string representing the serialized object.
   """
   id = o.get('id','?')
   attrs = sorted([x for x in o if not x.startswith('__') and x==x.capitalize() and isinstance(o[x], list)])

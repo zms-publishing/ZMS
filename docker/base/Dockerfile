@@ -69,6 +69,7 @@ ARG PIP_INSTALL="pip install --config-settings editable_mode=compat"
 
 COPY --chown=zope:zope Products/zms/version.txt Products/zms/version.txt
 COPY --chown=zope:zope requirements*.txt pyproject.toml README.rst ./
+COPY --chown=zope:zope Products Products
 
 ENV PIP_CACHE_DIR=/home/zope/venv/cache
 RUN --mount=type=cache,uid=$UID,target=$PIP_CACHE_DIR,sharing=locked <<EOR
@@ -101,7 +102,6 @@ COPY --chown=zope:zope $BUILD_DIR/zope.ini etc/zope.ini
 COPY --chown=zope:zope $BUILD_DIR/zope.conf etc/zope.conf
 COPY --chown=zope:zope $BUILD_DIR/zeo.conf etc/zeo.conf
 
-COPY --chown=zope:zope Products Products
 # consider if we need the test code to be in the container to run
 # in github actions or similar circumstances
 # locally it is mapped into the container via bindmounts

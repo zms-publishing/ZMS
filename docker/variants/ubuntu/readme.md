@@ -19,7 +19,7 @@ These sources will be copied into the *image* (on building)
 # dockerfile
 COPY ./etc etc
 COPY ./var var
-COPY ./imort imort
+COPY ./import import
 COPY ./Extensions Extensions
 ```
 or referenced as *volume mounts* from the *container* (on composing):
@@ -27,7 +27,8 @@ or referenced as *volume mounts* from the *container* (on composing):
 # docker-compose
     volumes:
       - ./etc/:/home/zope/etc/
-      - ./var/:/home/zope/var/:rw
+      - ./var/:/home/zope/var:rw
+      - ./import/:/home/zope/import/
       - ./Extensions/:/home/zope/Extensions:rw
 ```
 

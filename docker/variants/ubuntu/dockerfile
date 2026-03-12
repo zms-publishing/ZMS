@@ -97,20 +97,12 @@ COPY ./Extensions Extensions
 COPY ./import import
 
 # Expose Ports:
-    # 8888 = Running VSCode-Server 
-    # 8085 = Running Default Zope-Server on ZEO
-    # 8086 = Running Secondary Zope-Server on ZEO
-    # 8087 = Provided for Debugger-Zope-Instance
+# 8888 = VSCode-Server (Zope instance runs by VSCode launch)
+# 8080 = Zope-Server (1 instance, for more instances, use docker-compose to map additional ports)
 EXPOSE 8888
-EXPOSE 8085
-EXPOSE 8086
-EXPOSE 8087
+EXPOSE 8080
 
 # Install VSCode Extension for local User zope
-RUN code-server --install-extension ms-python.python --user-data-dir /home/zope/.local/share/code-server
+# RUN code-server --install-extension ms-python.python --user-data-dir /home/zope/.local/share/code-server
 
-# Finally apply shell-script as User zope for starting both
-    # 1. VSCode-Server plus Python Extension 
-    # 2. ZEO/Zope-Instance
-CMD ["/home/zope/etc/start.sh"]
- 
+# Start Zope Instance / VSCode-Server via docker-compose

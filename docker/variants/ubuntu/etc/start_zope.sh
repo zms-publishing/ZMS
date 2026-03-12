@@ -7,6 +7,7 @@
 # - READ_ONLY: The read-only flag for the Zope instance
 # -----------------------------------------------------------------
 
+
 # Check if required environment variables are set
 if [ -z "$HTTP_PORT" ]; then
   echo "Error: HTTP_PORT is not set."

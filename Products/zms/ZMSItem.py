@@ -42,14 +42,20 @@ class ZMSItem(
     Persistent,  # Persistent.
     Implicit,    # Acquisition.
     ):
-
-    # Documentation string.
-    __doc__ = """ZMS product module."""
-    # Version string. 
-    __version__ = '0.1' 
+    """ZMS base infrastructure class providing core Zope integration and basic content management.
     
-    # Management Permissions.
-    # -----------------------
+    ZMSItem serves as the foundation for all ZMS content objects. It provides:
+    
+        - Core Zope integration through ObjectManager and SimpleItem
+        - ZODB persistence and Acquisition support
+        - ZMI (Zope Management Interface) utilities and templates
+        - Request handling and page rendering
+        - Access control permissions framework
+        - Readme endpoint for documentation
+    
+    Subclasses extend ZMSItem with domain-specific functionality.
+    """
+
     __viewPermissions__ = (
         'manage_page_header', 'manage_page_footer', 'manage_tabs',
         'manage', 'manage_main', 'manage_workspace', 'manage_menu',

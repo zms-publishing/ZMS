@@ -30,14 +30,16 @@ from Products.zms import standard
 ################################################################################
 ################################################################################
 class ZMSCharformatManager(object):
-
     """
+    Manages character formats (charformats) for ZMS rich-text editing,
+    including XML import/export, CRUD operations, and reordering.
+    """
+
     ############################################################################
     #
     #  XML IM/EXPORT
     #
     ############################################################################
-    """
 
     # --------------------------------------------------------------------------
     #  ZMSCharformatManager.importCharformatXml

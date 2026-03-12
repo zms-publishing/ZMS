@@ -353,27 +353,7 @@
         
 
         
-            <div class="itemName"><code><a href="#__doc__" class="internal-link" title="zms._blobfields.MyFile.__doc__">__doc__</a></code>
-            </div>
-        
-
-    </li><li class="">
-        
-        
-        
-
-        
             <div class="itemName"><code><a href="#__obj_attrs__" class="internal-link" title="zms._blobfields.MyFile.__obj_attrs__">__obj<wbr></wbr>_attrs__</a></code>
-            </div>
-        
-
-    </li><li class="">
-        
-        
-        
-
-        
-            <div class="itemName"><code><a href="#__version__" class="internal-link" title="zms._blobfields.MyFile.__version__">__version__</a></code>
             </div>
         
 
@@ -761,12 +741,29 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">MyFile</span>(<a href="zms._blobfields.MyBlob.html" class="internal-link" title="zms._blobfields.MyBlob">MyBlob</a>, File): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L979" class="sourceLink">(source)</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">MyFile</span>(<a href="zms._blobfields.MyBlob.html" class="internal-link" title="zms._blobfields.MyBlob">MyBlob</a>, File): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L1005" class="sourceLink">(source)</a></code></p>
           <p><a href="classIndex.html#zms._blobfields.MyFile">View In Hierarchy</a></p>
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>ZMS file blob class for managing binary and text files.</p>
+<p>MyFile extends <code><a href="zms._blobfields.MyBlob.html" class="internal-link" title="zms._blobfields.MyBlob">MyBlob</a></code> with file-specific functionality including:</p>
+<p>File Features:</p>
+<ul class="rst-simple">
+<li>Generic binary and text file storage</li>
+<li>Support for documents, archives, code files, etc.</li>
+<li>Content-type detection and management</li>
+<li>File size tracking and reporting</li>
+</ul>
+<p>Data Management:</p>
+<ul class="rst-simple">
+<li>Inherits blob storage from <code><a href="zms._blobfields.MyBlob.html" class="internal-link" title="zms._blobfields.MyBlob">MyBlob</a></code> (ZODB or MediaDB)</li>
+<li>XML serialization with content-type attributes</li>
+<li>Support for text-based content (CSS, JavaScript, SVG, etc.)</li>
+<li>HTTP caching and range request handling</li>
+</ul>
+<p>Uses OFS.File.File as the underlying Zope file storage mechanism.</p>
+</div>
         </div>
 
         <div id="splitTables">
@@ -786,17 +783,7 @@
   </tr><tr class="classvariable">
     
     <td>Class Variable</td>
-    <td><code><a href="#__doc__" class="internal-link" title="zms._blobfields.MyFile.__doc__">__doc__</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
-  </tr><tr class="classvariable">
-    
-    <td>Class Variable</td>
     <td><code><a href="#__obj_attrs__" class="internal-link" title="zms._blobfields.MyFile.__obj_attrs__">__obj<wbr></wbr>_attrs__</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
-  </tr><tr class="classvariable">
-    
-    <td>Class Variable</td>
-    <td><code><a href="#__version__" class="internal-link" title="zms._blobfields.MyFile.__version__">__version__</a></code></td>
     <td><span class="undocumented">Undocumented</span></td>
   </tr><tr class="classvariable">
     
@@ -1013,7 +1000,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">toXml</span><span class="function-signature">(self, sender=None, base_path=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, data2hex=True)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L1007">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L1047">
       
       (source)
     </a>
@@ -1039,7 +1026,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">__class_name__</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L989">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L1029">
       
       (source)
     </a>
@@ -1057,33 +1044,6 @@
 </div><div class="baseclassvariable">
   
   
-  <a name="zms._blobfields.MyFile.__doc__">
-    
-  </a>
-  <a name="__doc__">
-    
-  </a>
-  <div class="functionHeader">
-    
-    <span class="py-defname">__doc__</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L982">
-      
-      (source)
-    </a>
-    <a class="headerLink" href="#__doc__" title="zms._blobfields.MyFile.__doc__">
-      
-      
-      ¶
-    </a>
-  </div>
-  <div class="functionBody">
-    <div class="interfaceinfo">overrides <code><a href="zms._blobfields.MyBlob.html#__doc__" class="internal-link">zms._blobfields.MyBlob.__doc__</a></code></div>
-    <div><p class="undocumented">Undocumented</p></div>
-    
-  </div>
-</div><div class="baseclassvariable">
-  
-  
   <a name="zms._blobfields.MyFile.__obj_attrs__">
     
   </a>
@@ -1093,7 +1053,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">__obj_attrs__</span>: <code>list[<wbr></wbr>str]</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L987">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L1027">
       
       (source)
     </a>
@@ -1111,33 +1071,6 @@
 </div><div class="baseclassvariable">
   
   
-  <a name="zms._blobfields.MyFile.__version__">
-    
-  </a>
-  <a name="__version__">
-    
-  </a>
-  <div class="functionHeader">
-    
-    <span class="py-defname">__version__</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L984">
-      
-      (source)
-    </a>
-    <a class="headerLink" href="#__version__" title="zms._blobfields.MyFile.__version__">
-      
-      
-      ¶
-    </a>
-  </div>
-  <div class="functionBody">
-    <div class="interfaceinfo">overrides <code><a href="zms._blobfields.MyBlob.html#__version__" class="internal-link">zms._blobfields.MyBlob.__version__</a></code></div>
-    <div><p class="undocumented">Undocumented</p></div>
-    
-  </div>
-</div><div class="baseclassvariable">
-  
-  
   <a name="zms._blobfields.MyFile.__xml_attrs__">
     
   </a>
@@ -1147,7 +1080,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">__xml_attrs__</span>: <code>list[<wbr></wbr>str]</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L988">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L1028">
       
       (source)
     </a>
@@ -1175,7 +1108,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">_getCopy</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L991">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L1031">
       
       (source)
     </a>

@@ -17,6 +17,12 @@
 #
 ################################################################################
 
+"""ZMS product initialization module.
+
+Registers ZMS content types, configures language resources,
+and performs automated minification of static assets on startup.
+"""
+
 # Imports.
 from App.Common import package_home
 import OFS.misc_
@@ -35,18 +41,14 @@ from Products.zms import zmssqldb
 from Products.zms import zmslinkcontainer
 from Products.zms import zmslinkelement
 
+#################################################################################################################
 # ### Allow additional Python modules in restricted context
 # ### Use with:
 # ### import pdb; pdb.set_trace()
 # 
 # from AccessControl import allow_module
 # allow_module('pdb')
-
-"""ZMS Product"""
-# Documentation string.
-__doc__ = """initialization module."""
-# Version string.
-__version__ = '0.1'
+#################################################################################################################
 
 #################################################################################################################
 # FilesystemDirectoryView: Monkey patched Products.CMFCore.zcml

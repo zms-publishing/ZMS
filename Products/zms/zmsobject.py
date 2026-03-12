@@ -61,28 +61,55 @@ __all__= ['ZMSObject']
 ################################################################################
 ################################################################################
 class ZMSObject(ZMSItem.ZMSItem,
-  #CatalogPathAwareness.CatalogAware,  # Catalog awareness.
-  _accessmanager.AccessableObject,	# Access manager.
-  _versionmanager.VersionItem,		# Version Item.
-  ZMSWorkflowItem.ZMSWorkflowItem,
-  _copysupport.CopySupport,		# Copy Support (Paste Objects).
-  _cachemanager.ReqBuff,		# Request Buffer (Cache).
-  _deprecatedapi.DeprecatedAPI,		# Deprecated API.
-  _multilangmanager.MultiLanguageObject,	# Multi-Language.
-  _exportable.Exportable,			# XML Export.
-  _objattrs.ObjAttrs,			# Object-Attributes.
-  _objchildren.ObjChildren,		# Object-Children.
-  _objinputs.ObjInputs,			# Object-Inputs.
-  _objtypes.ObjTypes,			# Object-Types.
-  _pathhandler.PathHandler,		# Path-Handler.
-  _textformatmanager.TextFormatObject,	# Text-Formats.
-  _zreferableitem.ZReferableItem		# ZReferable Item.
+  #CatalogPathAwareness.CatalogAware,    # Catalog awareness.
+  _accessmanager.AccessableObject,       # Access manager.
+  _versionmanager.VersionItem,           # Version Item.
+  ZMSWorkflowItem.ZMSWorkflowItem,       # Workflow Item.
+  _copysupport.CopySupport,              # Copy Support (Paste Objects).
+  _cachemanager.ReqBuff,                 # Request Buffer (Cache).
+  _deprecatedapi.DeprecatedAPI,          # Deprecated API.
+  _multilangmanager.MultiLanguageObject, # Multi-Language.
+  _exportable.Exportable,                # XML Export.
+  _objattrs.ObjAttrs,                    # Object-Attributes.
+  _objchildren.ObjChildren,              # Object-Children.
+  _objinputs.ObjInputs,                  # Object-Inputs.
+  _objtypes.ObjTypes,                    # Object-Types.
+  _pathhandler.PathHandler,              # Path-Handler.
+  _textformatmanager.TextFormatObject,   # Text-Formats.
+  _zreferableitem.ZReferableItem         # ZReferable Item.
   ):
-
-    # Documentation string.
-    __doc__ = """ZMS product module."""
-    # Version string.
-    __version__ = '0.1'
+    """Full-featured ZMS content management object extending ZMSItem with comprehensive capabilities.
+    
+    ZMSObject is the primary content class providing extensive content management features through
+    multiple mixin classes:
+    
+    Core Management:
+    
+        - Version control and history tracking (VersionItem)
+        - Workflow state management (ZMSWorkflowItem)
+        - Access control and permissions (AccessableObject)
+    
+    Content Features:
+    
+        - Multilingual/localization support (MultiLanguageObject)
+        - Object attributes and metadata (ObjAttrs)
+        - Child object management (ObjChildren)
+        - Input validation and processing (ObjInputs)
+        - Object type management (ObjTypes)
+    
+    Technical Features:
+    
+        - Copy/paste and cloning support (CopySupport)
+        - Request-level caching (ReqBuff)
+        - URL path handling (PathHandler)
+        - Text format conversion (TextFormatObject)
+        - Reference/link management (ZReferableItem)
+        - XML import/export (Exportable)
+        - Backward compatibility layer (DeprecatedAPI)
+    
+    ZMSObject instances represent pages, page elements, resources, and other content types
+    with full versioning, workflow, and multilingual capabilities.
+    """
 
     # Create a SecurityInfo for this class. We will use this
     # in the rest of our class definition to make security

@@ -18,7 +18,7 @@ maintainers = [
     {name = "HOFFMANN+LIEBENBERG in association with SNTL Publishing, Berlin", email = "zms@sntl-publishing.com"}
 ]
 classifiers = [
-    "Development Status :: 6 - Production/Stable",
+    "Development Status :: 5 - Production/Stable",
     "Framework :: Zope :: 6",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",

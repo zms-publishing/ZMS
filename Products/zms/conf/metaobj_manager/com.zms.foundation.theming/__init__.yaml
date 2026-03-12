@@ -1,0 +1,5 @@
+com.zms.foundation.theming:
+  enabled: 1
+  name: com.zms.foundation.theming
+  revision: 5.1.0
+  type: ZMSPackage

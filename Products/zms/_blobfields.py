@@ -549,11 +549,11 @@ class MyBlob(object):
       Handle HTTP request for blob object (file/image).
       
       This method processes requests for blob objects, handling:
-      - Visibility and access permission checks
-      - HTTP caching headers (Last-Modified, If-Modified-Since, ETags)
-      - Range requests for partial content delivery
-      - Content-Type and Content-Disposition headers
-      - MediaDB file retrieval or ZODB data fallback
+        - Visibility and access permission checks
+        - HTTP caching headers (Last-Modified, If-Modified-Since, ETags)
+        - Range requests for partial content delivery
+        - Content-Type and Content-Disposition headers
+        - MediaDB file retrieval or ZODB data fallback
       
       @param REQUEST: The HTTP request object containing headers and parameters
       @type REQUEST: ZPublisher.HTTPRequest or None

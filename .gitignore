@@ -5,6 +5,7 @@ Products/zms/plugins/www/zms-all.min.js.hash
 Products/zms/plugins/www/i18n/*.js
 Products/zms/overrides.zcml
 .vscode/
+!docker/**/.vscode/
 
 *~
 .*.swp

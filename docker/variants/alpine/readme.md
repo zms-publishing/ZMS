@@ -1,4 +1,4 @@
-# Running ZMS in a Docker container with Alpine Linux
+# Running multiple ZMS/Zope-Instances in a Docker container with Alpine Linux
 
 Important: *The here presented Docker environment is not recommended for production, just for testing and exploration.*
 
@@ -11,13 +11,15 @@ The Docker image utilizes a minimal *alpine*-Linux with a fresh compiled Python3
 To make Zope running there are some crucial config files needed which usually (created by `mkwsgiinstance`) are set on default values. In a Docker environment these defaults must be modified; moreover the Docker container provides a ZEO-server for running multiple Zope processes in parallel (e.g. an additional one for debugging). That is why a small set of config files is provided as presets via the the source-folders
 1. ./docker/variants/alpine/var
 2. ./docker/variants/alpine/etc
-3. ./docker/variants/alpine/Extensions
+3. ./docker/variants/alpine/import
+4. ./docker/variants/alpine/Extensions
 
 These sources will be copied into the *image* (on building) 
 ```yaml
 # dockerfile
 COPY ./etc etc
 COPY ./var var
+COPY ./import import
 COPY ./Extensions Extensions
 ```
 or referenced as *volume mounts* from the *container* (on composing):
@@ -26,9 +28,9 @@ or referenced as *volume mounts* from the *container* (on composing):
     volumes:
       - ./etc/:/home/zope/etc/
       - ./var/:/home/zope/var/
+      - ./import/:/home/zope/import/
       - ./Extensions/:/home/zope/Extensions
 ```
-
 
 ## Overview of Docker- and all Zope config-files
 

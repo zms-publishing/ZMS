@@ -246,10 +246,9 @@
 		<w:rPr>
 			<w:rFonts w:ascii="Courier New" w:hAnsi="Courier New"/>
 			<w:b/>
-			<w:color w:val="EEEEEE"/>
-			<w:sz w:val="16"/>
-			<w:bdr w:val="single" w:sz="20" w:space="0" w:color="000000"/>
-			<w:shd w:val="clear" w:color="auto" w:fill="000000"/>
+			<w:color w:val="auto"/>
+			<w:sz w:val="18"/>
+			<w:bdr w:val="single" w:sz="12" w:space="0" w:color="000000" w:shadow="1"/>
 		</w:rPr>
 	</w:style>
 
@@ -539,6 +538,24 @@
 				<w:tab w:val="left" w:pos="0"/>
 			</w:tabs>
 		</w:pPr>
+	</w:style>
+
+	<w:style w:type="paragraph" w:styleId="HorizontaleLinie">
+		<w:name w:val="Horizontale Linie"/>
+		<w:basedOn w:val="Normal"/>
+		<w:next w:val="Standard"/>
+		<w:qFormat/>
+		<w:pPr>
+			<w:suppressLineNumbers/>
+			<w:pBdr>
+				<w:bottom w:val="single" w:sz="2" w:space="0" w:color="808080"/>
+			</w:pBdr>
+			<w:spacing w:before="120" w:after="280"/>
+		</w:pPr>
+		<w:rPr>
+			<w:sz w:val="12"/>
+			<w:szCs w:val="12"/>
+		</w:rPr>
 	</w:style>
 
 	<w:style w:type="paragraph" w:customStyle="1" w:styleId="Grundsatz">

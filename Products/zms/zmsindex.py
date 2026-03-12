@@ -75,7 +75,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
     ############################################################################
     #  ZMSIndex.__init__: 
     #
-    #  Initialise a new instance of ZMSInddex.
+    #  Initialize a new instance of ZMSIndex.
     ############################################################################
     def __init__(self):
       self.id = 'zmsindex'
@@ -492,8 +492,11 @@ class ZMSIndex(ZMSItem.ZMSItem):
             new = '<a %s>%s</a>'%(' '.join(['%s="%s"'%(x,d[x]) for x in d]),title)
             if old != new:
               ref = getLinkObj('{$%s}'%brain['get_uid'])
-              ref.registerRefObj(node)
-              log.append('INFO %s'%standard.writeBlock(node,'[ZMSIndex] handleInline %s->%s'%(old,new)))
+              if ref is not None:
+                ref.registerRefObj(node)
+                log.append('INFO %s'%standard.writeBlock(node,'[ZMSIndex] handleInline %s->%s'%(old,new)))
+              else:
+                log.append('ERROR %s'%standard.writeBlock(node,'[ZMSIndex] handleInline ### MISSING LINKTARGET %s'%(data_id)))
               v = v.replace(old,new)
         return v
 

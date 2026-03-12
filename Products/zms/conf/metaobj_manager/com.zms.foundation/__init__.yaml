@@ -1,0 +1,5 @@
+com.zms.foundation:
+  enabled: 0
+  name: com.zms.foundation
+  revision: 5.2.1
+  type: ZMSPackage

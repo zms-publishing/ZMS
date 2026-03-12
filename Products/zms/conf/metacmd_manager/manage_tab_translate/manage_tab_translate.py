@@ -729,16 +729,15 @@ def renderStyles():
 			}
 
 			/* Form Groups */
+			.form-group-cell {
+				font-size: 0.9rem;
+			}
 			.form-group-cell .form-group {
 				margin-bottom: 0;
 			}
+			.form-group-cell .description,
 			.form-group-cell .control-label {
 				font-weight: 600;
-				font-size: 0.9rem;
-			}
-			.form-group-cell {
-				font-weight: 600;
-				font-size: 0.9rem;
 			}
 			.zmi-translate-right {
 				background-color: aliceblue;

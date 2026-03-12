@@ -1,0 +1,45 @@
+
+# Environment variable substitution:
+# Created at $CONF_TS
+# - READ_ONLY: Set to true to start Zope in read-only mode.
+# - HTTP_PORT: The container port on which the Zope port is mapped to.
+%define READ_ONLY $READ_ONLY
+%define HTTP_PORT $HTTP_PORT
+
+# Zope configuration variables
+%define INSTANCE_HOME /home/zope
+%define VIRTUAL_ENV /home/zope/venv
+
+%import ZEO
+
+instancehome $INSTANCE_HOME
+# ip-address 0.0.0.0
+
+# debug-mode on
+
+<zodb_db main>
+	mount-point /
+	cache-size 5000
+	<clientstorage>
+		# server localhost:9999
+		server $INSTANCE_HOME/var/zeosocket
+		storage main
+		name zeostorage Data.fs
+		cache-size 20MB
+		client-label $INSTANCE_HOME/var/zms_zeo_$HTTP_PORT
+		read-only $READ_ONLY
+	</clientstorage>
+</zodb_db>
+
+<zodb_db temporary>
+	# Temporary storage database (for sessions)
+	<temporarystorage>
+		name temporary storage for sessioning
+	</temporarystorage>
+	mount-point /temp_folder
+	container-class Products.TemporaryFolder.TemporaryContainer
+</zodb_db>
+
+<environment>
+  CHAMELEON_CACHE $INSTANCE_HOME/var/cache
+</environment>

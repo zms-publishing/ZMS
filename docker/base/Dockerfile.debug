@@ -18,8 +18,9 @@ EOR
 
 USER zope
 
-# Install VSCode Extension for local User zope
-# RUN code-server --install-extension ms-python.python --user-data-dir /home/zope/.local/share/code-server
+# Install VSCode Extension for local User zope (best-effort; don't fail build on transient marketplace outages)
+RUN code-server --install-extension ms-python.python --user-data-dir /home/zope/.local/share/code-server \
+ || echo "WARNING: failed to install ms-python.python (transient network/marketplace error); continuing build"
 
 CMD ["code-server", "--bind-addr", "0.0.0.0:8080", "--auth", "none", "/home/zope"]
 # COPY --chown=zope:zope docker/base/start-debug.sh start-debug.sh

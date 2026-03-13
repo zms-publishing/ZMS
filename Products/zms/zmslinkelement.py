@@ -603,7 +603,7 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
             rtn = ref_obj.renderShort(REQUEST, is_embedded=True) 
           REQUEST.set('ZMS_RELATIVATE_URL', True)
         else: 
-          rtn = self._getBodyContent(REQUEST, is_embedded=is_embedded) 
+          rtn = self._getBodyContent(REQUEST, is_embedded=True) 
       return rtn
 
 

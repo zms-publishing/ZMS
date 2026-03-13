@@ -574,7 +574,7 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
           REQUEST.set('ZMS_RELATIVATE_URL', False)
         proxy = self.getProxy()
         if proxy != self and proxy is not None and self.isEmbeddedRecursive():
-          rtn = proxy._getBodyContent(REQUEST, is_embedded=True)
+          rtn = proxy._getBodyContent(REQUEST)
         elif proxy == self and proxy is not None and self.isEmbedded():
           ref_obj = self.getRefObj()
           if ref_obj is not None and ref_obj != self:

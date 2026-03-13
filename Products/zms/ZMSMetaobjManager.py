@@ -444,7 +444,11 @@ class ZMSMetaobjManager(object):
               v = tmplt(obj, obj.REQUEST)
               v = standard.pystr(v)
               break
-      obj.clear_request_context(obj.REQUEST)
+      # Clear only this object's own request-context namespace. Clearing all
+      # "oid*" keys can remove context (for example lang=...) needed by other
+      # embedded objects rendered later in the same request.
+      prefix = '%s_' % (standard.id_quote(obj.get_oid()))
+      obj.clear_request_context(obj.REQUEST, prefix)
       return v
 
 

@@ -426,6 +426,16 @@ class ZMSMetaobjManager(object):
     #  Renders template for meta-object.
     # --------------------------------------------------------------------------
     def renderTemplate(self, obj, is_embedded=False):
+      # Snapshot relevant REQUEST context for embedded renders so that any
+      # oid* keys introduced during this render do not leak into subsequent
+      # renders within the same HTTP request.
+      if is_embedded:
+        request = obj.REQUEST
+        original_request_keys = set(request.keys())
+        original_oid_context = {}
+        for k in original_request_keys:
+          if str(k).startswith('oid'):
+            original_oid_context[k] = request.get(k)
       v = ""
       id = obj.meta_id
       tmpltIds = []
@@ -446,6 +456,21 @@ class ZMSMetaobjManager(object):
               break
       if not is_embedded: 
         obj.clear_request_context(obj.REQUEST)
+      else:
+        # Restore REQUEST oid* context to its state before this embedded render.
+        request = obj.REQUEST
+        current_keys = list(request.keys())
+        for k in current_keys:
+          if str(k).startswith('oid') and k not in original_oid_context:
+            try:
+              del request[k]
+            except Exception:
+              pass
+        for k, v_orig in original_oid_context.items():
+          try:
+            request[k] = v_orig
+          except Exception:
+            pass
       return v
 
 

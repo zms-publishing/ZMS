@@ -567,20 +567,20 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
     #
     #  HTML presentation of link-element.
     # --------------------------------------------------------------------------
-    def _getBodyContent(self, REQUEST, is_embedded=False):
+    def _getBodyContent(self, REQUEST):
       rtn = self.embedRemoteContent( REQUEST)
       if rtn is None:
         if self.isEmbedded():
           REQUEST.set('ZMS_RELATIVATE_URL', False)
         proxy = self.getProxy()
         if proxy != self and proxy is not None and self.isEmbeddedRecursive():
-          rtn = proxy._getBodyContent(REQUEST, is_embedded=True)
+          rtn = proxy._getBodyContent(REQUEST)
         elif proxy == self and proxy is not None and self.isEmbedded():
           ref_obj = self.getRefObj()
           if ref_obj is not None and ref_obj != self:
-            rtn = ref_obj._getBodyContent( REQUEST, is_embedded=True)
+            rtn = ref_obj._getBodyContent( REQUEST)
         else:
-          rtn = self._getBodyContentContentEditable(self.metaobj_manager.renderTemplate(self, is_embedded=is_embedded))
+          rtn = self._getBodyContentContentEditable(self.metaobj_manager.renderTemplate( self))
         if self.isEmbedded():
           REQUEST.set('ZMS_RELATIVATE_URL', True)
       return rtn
@@ -591,7 +591,7 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
     #
     #  Renders short presentation of link-element.
     # --------------------------------------------------------------------------
-    def renderShort(self, REQUEST, is_embedded=False):
+    def renderShort(self, REQUEST):
       rtn = self.embedRemoteContent( REQUEST)
       if rtn is None:
         if self.isEmbedded(): 
@@ -600,10 +600,10 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
           if ref_obj is None or ref_obj.isPage(): 
             rtn = super(ZMSLinkElement, self).renderShort(REQUEST) 
           elif ref_obj != self: 
-            rtn = ref_obj.renderShort(REQUEST, is_embedded=True) 
+            rtn = ref_obj.renderShort(REQUEST) 
           REQUEST.set('ZMS_RELATIVATE_URL', True)
         else: 
-          rtn = self._getBodyContent(REQUEST, is_embedded=True) 
+          rtn = self._getBodyContent( REQUEST) 
       return rtn
 
 

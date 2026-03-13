@@ -1314,8 +1314,8 @@ class ZMSObject(ZMSItem.ZMSItem,
         html = '<div class="%s" data-absolute-url="%s">%s</div>'%(' '.join(css), self.absolute_url()[len(self.REQUEST['BASE0']):], html)
       return html
 
-    def _getBodyContent(self, REQUEST, is_embedded=False):
-      rtn = self._getBodyContentContentEditable(self.metaobj_manager.renderTemplate( self, is_embedded=is_embedded))
+    def _getBodyContent(self, REQUEST):
+      rtn = self._getBodyContentContentEditable(self.metaobj_manager.renderTemplate( self))
       return rtn
 
     security.declareProtected('View', 'ajaxGetBodyContent')
@@ -1341,7 +1341,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     #
     #  Renders short presentation of object.
     # --------------------------------------------------------------------------
-    def renderShort(self, REQUEST, manage_main=False, is_embedded=False):
+    def renderShort(self, REQUEST, manage_main=False):
       html = ''
       metaObjAttrIds = self.getMetaobjAttrIds(self.meta_id)
       try:
@@ -1359,7 +1359,7 @@ class ZMSObject(ZMSItem.ZMSItem,
             html = self.getTitlealt(REQUEST)
           html = self._getBodyContentContentEditable(html)
         else:
-          html = self._getBodyContent(REQUEST, is_embedded=is_embedded)
+          html = self._getBodyContent(REQUEST)
       except:
         html = standard.writeError(self, "[renderShort]")
         html = '<br/>'.join(standard.html_quote(html).split('\n'))

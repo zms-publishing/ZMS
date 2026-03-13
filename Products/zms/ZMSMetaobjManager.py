@@ -425,7 +425,7 @@ class ZMSMetaobjManager(object):
     #
     #  Renders template for meta-object.
     # --------------------------------------------------------------------------
-    def renderTemplate(self, obj, is_embedded=False):
+    def renderTemplate(self, obj):
       v = ""
       id = obj.meta_id
       tmpltIds = []
@@ -444,8 +444,7 @@ class ZMSMetaobjManager(object):
               v = tmplt(obj, obj.REQUEST)
               v = standard.pystr(v)
               break
-      if not is_embedded: 
-        obj.clear_request_context(obj.REQUEST)
+      obj.clear_request_context(obj.REQUEST)
       return v
 
 

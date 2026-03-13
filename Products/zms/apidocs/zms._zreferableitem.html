@@ -1174,32 +1174,32 @@
     
     <td>Class</td>
     <td><code><a href="zms._zreferableitem.ZReferableItem.html" class="internal-link" title="zms._zreferableitem.ZReferableItem"><wbr></wbr>ZReferable<wbr></wbr>Item</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Mixin for internal reference handling in ZMS objects.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#getInlineRefs" class="internal-link" title="zms._zreferableitem.getInlineRefs">get<wbr></wbr>Inline<wbr></wbr>Refs</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Extracts internal link references from inline HTML content.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#getInternalLinkDict" class="internal-link" title="zms._zreferableitem.getInternalLinkDict">get<wbr></wbr>Internal<wbr></wbr>Link<wbr></wbr>Dict</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Resolves an internal link and returns a dictionary with link metadata.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#getInternalLinkUrl" class="internal-link" title="zms._zreferableitem.getInternalLinkUrl">get<wbr></wbr>Internal<wbr></wbr>Link<wbr></wbr>Url</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Resolves the internal index_html URL for a given object and internal link.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#isInternalLink" class="internal-link" title="zms._zreferableitem.isInternalLink">is<wbr></wbr>Internal<wbr></wbr>Link</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Checks if the given URL is an internal link.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#isMailLink" class="internal-link" title="zms._zreferableitem.isMailLink">is<wbr></wbr>Mail<wbr></wbr>Link</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Checks if the given URL is a mailto link.</td>
   </tr>
 </table>
           
@@ -1221,7 +1221,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getInlineRefs</span><span class="function-signature">(text)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L106">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L132">
       
       (source)
     </a>
@@ -1233,7 +1233,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Extracts internal link references from inline HTML content.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">text:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">The HTML content.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Internal link identifiers found in anchor tags.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1248,7 +1248,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getInternalLinkDict</span><span class="function-signature">(self, url)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L45">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L57">
       
       (source)
     </a>
@@ -1260,7 +1260,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Resolves an internal link and returns a dictionary with link metadata.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">The object context.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">url:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">The internal link to resolve.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Metadata about the internal link such as <tt class="rst-docutils rst-literal"><span class="pre">data-id</span></tt>, <tt class="rst-docutils rst-literal"><span class="pre">data-url</span></tt>, and <tt class="rst-docutils rst-literal"><span class="pre">data-target</span></tt>.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1275,7 +1275,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getInternalLinkUrl</span><span class="function-signature">(self, url, ob)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L91">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L110">
       
       (source)
     </a>
@@ -1287,7 +1287,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Resolves the internal index_html URL for a given object and internal link.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">The object context.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">url:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">The internal link.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">ob:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">The referenced object.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">The resolved <tt class="rst-docutils rst-literal">index_html</tt> URL.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1302,7 +1302,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">isInternalLink</span><span class="function-signature">(url)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L38">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L44">
       
       (source)
     </a>
@@ -1314,7 +1314,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Checks if the given URL is an internal link.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">url:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">The URL to check.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">True if the URL is in the internal link format <tt class="rst-docutils rst-literal"><span class="pre">{$...}</span></tt>, False otherwise.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1329,7 +1329,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">isMailLink</span><span class="function-signature">(url)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L31">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L32">
       
       (source)
     </a>
@@ -1341,7 +1341,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Checks if the given URL is a mailto link.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">url:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">The URL to check.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">True if the URL starts with <tt class="rst-docutils rst-literal">mailto:</tt>, False otherwise.</td></tr></table></div>
   </div>
 </div>
         </div>

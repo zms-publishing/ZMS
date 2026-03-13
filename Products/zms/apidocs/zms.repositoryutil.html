@@ -1340,7 +1340,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_diffs</span><span class="function-signature">(local, remote, ignore=True)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L431">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L438">
       
       (source)
     </a>
@@ -1367,7 +1367,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_init_py</span><span class="function-signature">(self, o)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L334">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L343">
       
       (source)
     </a>
@@ -1381,9 +1381,7 @@
     
     <div><p>Generate a Python class representation of a given object.</p>
 <p>This function takes an object `o` (typically a dictionary) and generates a Python class definition as a list of strings. The generated class includes attributes and nested classes based on the structure and content of the input object.</p>
-<p>Args: self: The instance of the class calling this method. o (dict): The input object containing keys and values to be represented as a Python class.</p>
-<p>Returns: list: A list of strings representing the Python class definition.</p>
-</div>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">The object context.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">o:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Input object containing keys and values to be represented as a Python class.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Python class definition lines.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1398,7 +1396,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_init_yaml</span><span class="function-signature">(self, o)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L384">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L393">
       
       (source)
     </a>
@@ -1412,9 +1410,7 @@
     
     <div><p>Serialize a Python object into a YAML-formatted string.</p>
 <p>This method processes a given object `o` and converts it into a YAML representation. It handles attributes and keys in the object, ensuring that non-serializable elements (e.g., Acquisition-Wrappers) are excluded.</p>
-<p>Args: self: The instance of the class containing this method. o (dict): The input dictionary-like object to be serialized. It is expected to have keys and values that can be processed into a YAML-compatible format.</p>
-<p>Returns: str: A YAML-formatted string representing the serialized object.</p>
-</div>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">The object context.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">o:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Input dictionary-like object to be serialized.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">YAML-formatted string representing the serialized object.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1496,28 +1492,27 @@
   <div class="docstring functionBody">
     
     <div><p>Generate a dictionary of initialization artefacts from the given object and initialization files.</p>
-<p>Args: self: The instance of the class containing this method. o (dict): A dictionary representing the object to process. It may contain:</p>
+<p>The input object <em>o</em> is expected to have certain keys and structure, and the function processes this object to create a mapping of filenames to their corresponding data and metadata. The initialization files are provided as a dictionary where the key is the format (e.g., 'py' or 'yaml') and the value is a list of strings representing the content of the initialization file. It may contain:</p>
 <ul class="rst-simple">
-<li>'id': The identifier of the object.</li>
-<li>'acquired': A flag indicating if the object is acquired (0 or 1).</li>
-<li>'__filename__': A list representing the filename structure.</li>
-<li>'__icon__': An optional icon for the object.</li>
-<li>'__description__': An optional description for the object.</li>
-<li>'revision': A version string in the format "0.0.0".</li>
+<li><em>id</em>: The identifier of the object.</li>
+<li><em>acquired</em>: A flag indicating if the object is acquired (0 or 1).</li>
+<li><em>__filename__</em>: A list representing the filename structure.</li>
+<li><em>__icon__</em>: An optional icon for the object.</li>
+<li><em>__description__</em>: An optional description for the object.</li>
+<li><em>revision</em>: A version string in the format "0.0.0".</li>
 <li>Other keys representing attributes, where capitalized keys with list values are processed.</li>
 </ul>
-<p>initFiles (dict): A dictionary where keys are formats (e.g., 'py') and values are lists of strings representing the initialization data for each format.</p>
-<p>Returns: dict: A dictionary where keys are filenames and values are dictionaries containing:</p>
+<p>The <em>initFiles</em> (dict) is a dictionary where keys are formats (e.g., 'py') and values are lists of strings representing the initialization data for each format. The return value is a dictionary where keys are filenames and values are dictionaries containing:</p>
 <ul class="rst-simple">
-<li>'id': The identifier of the object.</li>
-<li>'filename': The full path of the file.</li>
-<li>'data': The content of the file.</li>
-<li>'version': The version of the file as a list of integers.</li>
-<li>'meta_type': The meta type of the object (e.g., 'Script (Python)').</li>
-<li>'__icon__': The icon of the object (if provided).</li>
-<li>'__description__': The description of the object (if provided).</li>
+<li><em>id</em>: The identifier of the object.</li>
+<li><em>filename</em>: The full path of the file.</li>
+<li><em>data</em>: The content of the file.</li>
+<li><em>version</em>: The version of the file as a list of integers.</li>
+<li><em>meta_type</em>: The meta type of the object (e.g., 'Script (Python)').</li>
+<li><em>__icon__</em>: The icon of the object (if provided).</li>
+<li><em>__description__</em>: The description of the object (if provided).</li>
 </ul>
-</div>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">o:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Dictionary representing the repository object.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">init<wbr></wbr>_files:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Initialization content grouped by format, for example <tt class="rst-docutils rst-literal">{'py': <span class="pre">[...]}</span></tt> or <tt class="rst-docutils rst-literal">{'yaml': <span class="pre">[...]}</span></tt>.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Mapping from generated filenames to artefact dictionaries with metadata and file content.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   

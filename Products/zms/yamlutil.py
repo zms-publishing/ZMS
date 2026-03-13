@@ -53,12 +53,11 @@ def __cleanup(v):
     from ruamel.yaml.scalarstring import LiteralScalarString    
     """
     Recursively cleans up a dictionary by removing keys with falsy values.
-    Args:
-        v (dict or any): The input value, which can be a dictionary or any other type.
-    Returns:
-        dict or any: If the input is a dictionary, returns a new dictionary with keys
-        whose values are falsy removed. If the input is not a dictionary, returns the
-        input value unchanged.
+    @param v: Input value, typically a dictionary, list, or scalar.
+    @type v: C{object}
+    @return: Cleaned value with empty entries removed while preserving numeric
+        zero and boolean false semantics used by the repository format.
+    @rtype: C{object}
     """
     if v:
         if isinstance(v, dict):

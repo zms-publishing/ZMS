@@ -257,28 +257,37 @@ def init_artefacts(o, init_files):
   """
   Generate a dictionary of initialization artefacts from the given object and initialization files.
 
-  Args:
-  self: The instance of the class containing this method.
-  o (dict): A dictionary representing the object to process. It may contain:
-    - 'id': The identifier of the object.
-    - 'acquired': A flag indicating if the object is acquired (0 or 1).
-    - '__filename__': A list representing the filename structure.
-    - '__icon__': An optional icon for the object.
-    - '__description__': An optional description for the object.
-    - 'revision': A version string in the format "0.0.0".
+  The input object I{o} is expected to have certain keys and structure, and the function processes 
+  this object to create a mapping of filenames to their corresponding data and metadata. 
+  The initialization files are provided as a dictionary where the key is the format 
+  (e.g., 'py' or 'yaml') and the value is a list of strings representing the content 
+  of the initialization file. It may contain:
+    - I{id}: The identifier of the object.
+    - I{acquired}: A flag indicating if the object is acquired (0 or 1).
+    - I{__filename__}: A list representing the filename structure.
+    - I{__icon__}: An optional icon for the object.
+    - I{__description__}: An optional description for the object.
+    - I{revision}: A version string in the format "0.0.0".
     - Other keys representing attributes, where capitalized keys with list values are processed.
-  initFiles (dict): A dictionary where keys are formats (e.g., 'py') and values are lists of strings
+  The I{initFiles} (dict) is a dictionary where keys are formats (e.g., 'py') and values are lists of strings
   representing the initialization data for each format.
-
-  Returns:
-  dict: A dictionary where keys are filenames and values are dictionaries containing:
-    - 'id': The identifier of the object.
-    - 'filename': The full path of the file.
-    - 'data': The content of the file.
-    - 'version': The version of the file as a list of integers.
-    - 'meta_type': The meta type of the object (e.g., 'Script (Python)').
-    - '__icon__': The icon of the object (if provided).
-    - '__description__': The description of the object (if provided).
+  The return value is a dictionary where keys are filenames and values are dictionaries containing:
+    - I{id}: The identifier of the object.
+    - I{filename}: The full path of the file.
+    - I{data}: The content of the file.
+    - I{version}: The version of the file as a list of integers.
+    - I{meta_type}: The meta type of the object (e.g., 'Script (Python)').
+    - I{__icon__}: The icon of the object (if provided).
+    - I{__description__}: The description of the object (if provided).
+  
+  @param o: Dictionary representing the repository object.
+  @type o: C{dict}
+  @param init_files: Initialization content grouped by format, for example
+      C{{'py': [...]}} or C{{'yaml': [...]}}.
+  @type init_files: C{dict}
+  @return: Mapping from generated filenames to artefact dictionaries with
+      metadata and file content.
+  @rtype: C{dict}
   """
   l = {}
   id = o.get('id','?')
@@ -338,13 +347,13 @@ def get_init_py(self, o):
   This function takes an object `o` (typically a dictionary) and generates a Python
   class definition as a list of strings. The generated class includes attributes
   and nested classes based on the structure and content of the input object.
-
-  Args:
-  self: The instance of the class calling this method.
-  o (dict): The input object containing keys and values to be represented as a Python class.
-
-  Returns:
-  list: A list of strings representing the Python class definition.
+  @param self: The object context.
+  @type self: C{object}
+  @param o: Input object containing keys and values to be represented as a
+      Python class.
+  @type o: C{dict}
+  @return: Python class definition lines.
+  @rtype: C{list}
   """
   id = o.get('id','?')
   py = []
@@ -389,14 +398,12 @@ def get_init_yaml(self, o):
   representation. It handles attributes and keys in the object, ensuring
   that non-serializable elements (e.g., Acquisition-Wrappers) are excluded.
 
-  Args:
-  self: The instance of the class containing this method.
-  o (dict): The input dictionary-like object to be serialized. It is
-  expected to have keys and values that can be processed
-  into a YAML-compatible format.
-
-  Returns:
-  str: A YAML-formatted string representing the serialized object.
+  @param self: The object context.
+  @type self: C{object}
+  @param o: Input dictionary-like object to be serialized.
+  @type o: C{dict}
+  @return: YAML-formatted string representing the serialized object.
+  @rtype: C{str}
   """
   id = o.get('id','?')
   attrs = sorted([x for x in o if not x.startswith('__') and x==x.capitalize() and isinstance(o[x], list)])

@@ -18,7 +18,7 @@ x-instance-common: &instance_common
     - ./import/:${INSTANCE_DIR}/import:rw
     - ./Extensions/:${INSTANCE_DIR}/Extensions:rw
     ### For utilizing a local path as SRC_MOUNT
-    #- ${SRC_MOUNT}/:${SRC_DIR}/:rw
+    - ${SRC_MOUNT}/:${SRC_DIR}/:rw
   command: >
     bash -c "
       ${SRC_DIR}/docker/variants/ubuntu/etc/start_zope.sh &&
@@ -40,7 +40,7 @@ services:
       - SOFTWARE_HOME="${VENV_DIR}/bin"
       - PYTHON="${VENV_DIR}/bin/python"
       - HTTP_PORT=8085
-      - READ_ONLY=false
+      - READ_ONLY=true
     ports:
       - "8085:8080"
 

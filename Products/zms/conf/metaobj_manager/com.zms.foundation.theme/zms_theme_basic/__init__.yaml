@@ -2,7 +2,7 @@ zms_theme_basic:
   enabled: 0
   name: zms_theme_basic
   package: com.zms.foundation.theme
-  revision: 5.0.3
+  revision: 5.0.4
   type: ZMSLibrary
   Attrs:
     - id: preview
@@ -71,3 +71,9 @@ zms_theme_basic:
       multilang: 0
       repetitive: 0
       type: File
+    - id: zms_theme_basic/login_form
+      name: login_form
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: Page Template

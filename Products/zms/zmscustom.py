@@ -1,20 +1,11 @@
-################################################################################
-# zmscustom.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+zmscustom.py
+
+Implementation of the custom ZMS content type and related XML import helpers.
+
+License: GNU General Public License v2 or later
+Organization: ZMS Publishing
+"""
 
 # Imports.
 from AccessControl import ClassSecurityInfo
@@ -30,10 +21,15 @@ from Products.zms import standard
 from Products.zms import zmscontainerobject
 
 
-# ------------------------------------------------------------------------------
-#  zmscustom.parseXmlString
-# ------------------------------------------------------------------------------
 def parseXmlString(self, file):
+  """
+  Import record-set rows from an XML payload into the current object.
+
+  @param file: Uploaded XML file.
+  @type file: C{ZPublisher.HTTPRequest.FileUpload}
+  @return: Import status message.
+  @rtype: C{str}
+  """
   standard.writeBlock( self, '[parseXmlString]')
   message = ''
   REQUEST = self.REQUEST
@@ -48,15 +44,9 @@ def parseXmlString(self, file):
   self.onChangeObj(REQUEST)
   return message
 
-
-################################################################################
-################################################################################
-###
-###  Constructor
-###
-################################################################################
-################################################################################
 manage_addZMSCustomForm = PageTemplateFile('manage_addzmscustomform', globals()) 
+
+
 def manage_addZMSCustom(self, meta_id, lang, _sort_id, btn, REQUEST, RESPONSE):
   """
   Constructor function for adding custom content nodes 
@@ -134,17 +124,12 @@ def manage_addZMSCustom(self, meta_id, lang, _sort_id, btn, REQUEST, RESPONSE):
 
 
 def containerFilter(container):
+  """Return C{True} for ZMS containers that may host custom content."""
   return container.meta_type.startswith('ZMS')
 
 
-################################################################################
-################################################################################
-###
-###  Class
-###
-################################################################################
-################################################################################
 class ZMSCustom(zmscontainerobject.ZMSContainerObject):
+    """Custom content node with record-set editing and import helpers."""
 
     # Create a SecurityInfo for this class. We will use this
     # in the rest of our class definition to make security
@@ -157,6 +142,8 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
 
     # Management Options.
     # -------------------
+
+
     def manage_options(self):
       pc = 'e' in [x['id'] for x in self.getMetaobjAttrs(self.meta_id, types=['*'])]
       opts = []
@@ -210,37 +197,30 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
     metaobj_recordset_grid = PageTemplateFile('zpt/ZMSRecordSet/grid', globals())
 
 
-
-    ############################################################################
-    ###
-    ###   Constructor
-    ###
-    ############################################################################
-
-
-    ############################################################################
-    # ZMSCustom.__init__: 
-    #
-    # Constructor (initialise a new instance of ZMSCustom).
-    ############################################################################
     def __init__(self, id='', sort_id=0, meta_id=None, uid=''):
-      """ ZMSCustom.__init__ """
+      """
+      Initialize a custom content node instance.
+
+      @param id: Object id.
+      @type id: C{str}
+      @param sort_id: Sort position.
+      @type sort_id: C{int}
+      @param meta_id: Meta-object id describing the custom type.
+      @type meta_id: C{str}
+      @param uid: Optional persistent uid.
+      @type uid: C{str}
+      """
       zmscontainerobject.ZMSContainerObject.__init__(self, id, sort_id)
       self.meta_id = standard.nvl(meta_id, self.meta_type)
       self._uid = uid
-
-
-    ############################################################################
-    ###
-    ###   ZMSRecordSet
-    ###
-    ############################################################################
 
     """
     Initialize record-set.
     @return: list of records
     @rtype: C{list}
     """
+
+
     def recordSet_Init(self, REQUEST):
       request = self.REQUEST
       metaObj = self.getMetaobj(self.meta_id)
@@ -256,6 +236,8 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
     @return: filtered list of records
     @rtype: C{list}
     """
+
+
     def recordSet_Filter(self, REQUEST):
       metaObj = self.getMetaobj(self.meta_id)
       res = REQUEST['res']
@@ -329,6 +311,8 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
     @return: sorted list of records
     @rtype: C{list}
     """
+
+
     def recordSet_Sort(self, REQUEST=None):
       request = self.REQUEST
       metaObj = self.getMetaobj(self.meta_id)
@@ -376,11 +360,9 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
       request.set('res', res)
       return res
 
-
-    # --------------------------------------------------------------------------
-    #  ZMSCustom.recordSet_Export:
-    # --------------------------------------------------------------------------
     security.declareProtected('View', 'recordSet_Export')
+
+
     def recordSet_Export(self, lang, qorder, qorderdir, qindex=[], REQUEST=None, RESPONSE=None, mode='xml'):
       """
       Export record-set to XML or CSV via /recordSet_Export?lang=&qorder=&qorderdir=&mode=csv
@@ -456,11 +438,20 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
       return export
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSCustom.getEntityRecordHandler
-    # --------------------------------------------------------------------------
     def getEntityRecordHandler(self, id):
+      """
+      Create a helper that resolves foreign-key values for record exports.
+
+      @param id: Meta-object id of the exported record set.
+      @type id: C{str}
+      @return: Record transformation helper.
+      @rtype: C{object}
+      """
+
+
       class EntityRecordHandler(object):
+
+
         def __init__(self, parent, id):
           self.parent = parent 
           self.id = id
@@ -478,6 +469,8 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
                 fkMetaObjIdId = parent.getMetaobjAttrIdentifierId(fkContainer.meta_id)
                 self.fk[k] = {'fkMetaObj':fkMetaObj,'fkMetaObjRecordSet':fkMetaObjRecordSet,'fkMetaObjIdId':fkMetaObjIdId}
         handle_record__roles__ = None
+
+
         def handle_record(self, r):
           d = {}
           for k in r:
@@ -495,13 +488,19 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
       return EntityRecordHandler(self, id)
 
 
-    ############################################################################
-    #  ZMSCustom.manage_changeRecordSet:
-    #
-    #  Change record-set.
-    ############################################################################
     def manage_changeRecordGrid(self, lang, btn, REQUEST, RESPONSE):
-      """ ZMSCustom.manage_changeRecordGrid """
+      """
+      Update the record-set grid view with edited row values.
+
+      @param lang: Active language.
+      @type lang: C{str}
+      @param btn: Submitted button id.
+      @type btn: C{str}
+      @param REQUEST: Current request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param RESPONSE: Current response.
+      @type RESPONSE: C{ZPublisher.HTTPResponse}
+      """
       message = ''
       messagekey = 'manage_tabs_message'
       target = REQUEST.get('target', 'manage_main')
@@ -520,7 +519,8 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
                             x['id'] not in ['__sort_id']
                             and x['type'] in self.metaobj_manager.valid_types+self.getMetaobjIds()
                             and x['type'] not in ['resource']]
-          
+
+
           def retrieve(row):
             changed = False
             row['_change_uid'] = REQUEST['AUTHENTICATED_USER'].getUserName()
@@ -577,13 +577,21 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
       return REQUEST.RESPONSE.redirect(target)
 
 
-    ############################################################################
-    #  ZMSCustom.manage_changeRecordSet:
-    #
-    #  Change record-set.
-    ############################################################################
     def manage_changeRecordSet(self, lang, btn, action, REQUEST, RESPONSE):
-      """ ZMSCustom.manage_changeRecordSet """
+      """
+      Insert, update, move, duplicate, or delete record-set entries.
+
+      @param lang: Active language.
+      @type lang: C{str}
+      @param btn: Submitted button id.
+      @type btn: C{str}
+      @param action: Requested record-set action.
+      @type action: C{str}
+      @param REQUEST: Current request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param RESPONSE: Current response.
+      @type RESPONSE: C{ZPublisher.HTTPResponse}
+      """
       message = ''
       messagekey = 'manage_tabs_message'
       target = REQUEST.get('target', 'manage_main')
@@ -687,13 +695,21 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
       return REQUEST.RESPONSE.redirect(target)
 
 
-    ############################################################################
-    #  ZMSCustom.manage_import:
-    #
-    #  Import XML-file.
-    ############################################################################
     def manage_import(self, file, lang, REQUEST, RESPONSE=None):
-      """ ZMSCustom.manage_import """
+      """
+      Import content or record-set data into the custom object.
+
+      @param file: Uploaded import file.
+      @type file: C{ZPublisher.HTTPRequest.FileUpload}
+      @param lang: Active language.
+      @type lang: C{str}
+      @param REQUEST: Current request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param RESPONSE: Optional response used for redirect handling.
+      @type RESPONSE: C{ZPublisher.HTTPResponse}
+      @return: Imported object when no response redirect is used.
+      @rtype: C{object}
+      """
       ob = self
       message = ''
       
@@ -719,5 +735,3 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
 # call this to initialize framework classes, which
 # does the right thing with the security assertions.
 InitializeClass(ZMSCustom)
-
-################################################################################

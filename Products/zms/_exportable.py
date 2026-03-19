@@ -1,20 +1,11 @@
-################################################################################
-# _exportable.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+_exportable.py
+
+Export helpers for serializing ZMS objects, assets, and related metadata.
+
+License: GNU General Public License v2 or later
+Organization: ZMS Publishing
+"""
 
 # Imports.
 from AccessControl import ClassSecurityInfo
@@ -36,6 +27,18 @@ from zope.globalrequest import getRequest
 
 
 def writeFile(self, filename, data, mode='w', encoding='utf-8'):
+  """
+  Write export data to disk using the preferred encoding.
+
+  @param filename: Target file path.
+  @type filename: C{str}
+  @param data: Export payload to persist.
+  @type data: C{str} or C{bytes}
+  @param mode: File open mode.
+  @type mode: C{str}
+  @param encoding: Text encoding used for unicode content.
+  @type encoding: C{str}
+  """
   try:
     f = codecs.open( filename, mode=mode, encoding=encoding)
     f.write( data)
@@ -47,10 +50,17 @@ def writeFile(self, filename, data, mode='w', encoding='utf-8'):
     f.close()
 
 
-# ------------------------------------------------------------------------------
-#  _exportable.exportFiles:
-# ------------------------------------------------------------------------------
 def exportFiles(self, root, id, path):
+  """
+  Export binary file and image objects from a folder to the filesystem.
+
+  @param root: Container holding the exported folder.
+  @type root: C{OFS.ObjectManager.ObjectManager}
+  @param id: Folder id on the container.
+  @type id: C{str}
+  @param path: Destination directory.
+  @type path: C{str}
+  """
   if hasattr(root, id):
     folder = getattr(root, id)
     for ob in folder.objectValues(['File', 'Image']):
@@ -61,10 +71,21 @@ def exportFiles(self, root, id, path):
       _fileutil.exportObj(ob, '%s/%s'%(path, ob_id))
 
 
-# ------------------------------------------------------------------------------
-#  _exportable.exportFolder:
-# ------------------------------------------------------------------------------
 def exportFolder(self, root, path, id, REQUEST, depth=0):
+  """
+  Recursively export a Zope folder and its renderable objects.
+
+  @param root: Parent folder that contains the exported folder.
+  @type root: C{OFS.ObjectManager.ObjectManager}
+  @param path: Base export directory.
+  @type path: C{str}
+  @param id: Folder id to export.
+  @type id: C{str}
+  @param REQUEST: Current request used to render templates.
+  @type REQUEST: C{ZPublisher.HTTPRequest}
+  @param depth: Additional relative path depth for nested exports.
+  @type depth: C{int}
+  """
   if hasattr(root, id):
     folder = getattr(root, id)
     for ob in folder.objectValues():
@@ -86,10 +107,17 @@ def exportFolder(self, root, path, id, REQUEST, depth=0):
         _fileutil.exportObj(ob, '%s/%s/%s'%(path, id, ob_id))
 
 
-# ------------------------------------------------------------------------------
-#  _exportable.findDelimiter:
-# ------------------------------------------------------------------------------
 def findDelimiter(s, delimiters=['"', "'"]):
+  """
+  Find the first occurrence of any delimiter in a string.
+
+  @param s: Text to search.
+  @type s: C{str}
+  @param delimiters: Candidate delimiter characters.
+  @type delimiters: C{list}
+  @return: Position of the first delimiter or C{-1}.
+  @rtype: C{int}
+  """
   rtn = -1
   for delimiter in delimiters:
     i = s.find(delimiter)
@@ -100,10 +128,17 @@ def findDelimiter(s, delimiters=['"', "'"]):
   return rtn
 
 
-# ------------------------------------------------------------------------------
-#  _exportable.rfindDelimiter:
-# ------------------------------------------------------------------------------
 def rfindDelimiter(s, delimiters=['"', "'"]):
+  """
+  Find the last occurrence of any delimiter in a string.
+
+  @param s: Text to search.
+  @type s: C{str}
+  @param delimiters: Candidate delimiter characters.
+  @type delimiters: C{list}
+  @return: Position of the last delimiter or C{-1}.
+  @rtype: C{int}
+  """
   rtn = -1
   for delimiter in delimiters:
     i = s.rfind(delimiter)
@@ -111,12 +146,15 @@ def rfindDelimiter(s, delimiters=['"', "'"]):
   return rtn
 
 
-# ------------------------------------------------------------------------------
-#  _exportable.localHtml:
-#
-#  Process encoding.
-# ------------------------------------------------------------------------------
 def localHtml(self, html):
+  """
+  Convert rendered HTML to the charset configured for the request.
+
+  @param html: Rendered markup.
+  @type html: C{str} or C{bytes}
+  @return: Encoded markup.
+  @rtype: C{bytes} or C{str}
+  """
   try:
     default_charset = 'utf-8'
     charset = self.REQUEST.get('ZMS_CHARSET', default_charset)
@@ -141,113 +179,118 @@ def localHtml(self, html):
   return html
 
 
-# ------------------------------------------------------------------------------
-#  _exportable.localIndexHtml:
-# ------------------------------------------------------------------------------
 def localIndexHtml(self, obj, level, html, xhtml=False):
-   REQUEST = self.REQUEST
-   
-   sRoot = ''
-   for i in range(level):
-     sRoot = '../%s'%sRoot
-   
-   # Process aliases.
-   doc_url = self.getDocumentElement().absolute_url()
-   url = doc_url
-   url = url[url.find('://')+3:]
-   url = url[url.find('/'):]
-   base_url = doc_url
-   base_url = base_url[ : base_url.find(url)]
-   html = re.sub(r'"([^("\')]*?)'+url+'([^("\')]*?)"', '"'+base_url+url+'\\2"', standard.pystr(html))
-   
-   # Process absolute URLs.
-   s_new = '%s'%sRoot
-   s_old = '%s/'%self.absolute_url()
-   if xhtml or level != 0:
-     html = html.replace( s_old, s_new)
-   if self.getConfProperty('ZMS.pathhandler', 0) != 0:
-     s_old = '%s/'%self.getDeclUrl( REQUEST)
-     html = html.replace( s_old, s_new)
-   s_old = '%s/'%self.getDocumentElement().absolute_url()
-   html = html.replace( s_old, s_new)
-   s_old = '%s/'%self.getHome().absolute_url()
-   html = html.replace( s_old, s_new)
-   
-   # Process links to resource-folders: images and assets.
-   for container in self.getResourceFolders():
-     id = container.id
-     s_new = '"%s%s/'%(sRoot, id)
-     s_old = '"./%s/'%(id)
-     html = html.replace(s_old, s_new)
-     s_old = '"%s/'%(id)
-     html = html.replace(s_old, s_new)
-   
-   # Process links to product-folder: images and assets.
-   s_new = '"%smisc_/zms/'%sRoot
-   s_old = '"/++resource++zms_/img/'
-   html = html.replace(s_old, s_new)
-   s_old = '"misc_/zms/'
-   html = html.replace(s_old, s_new)
-   # starting with '(' (in styles)
-   s_new = '(%smisc_/zms/'%sRoot
-   s_old = '(/++resource++zms_/img/'
-   html = html.replace(s_old, s_new)
-   s_old = '(misc_/zms/'
-   html = html.replace(s_old, s_new)
-   
-   # Remove preview parameters.
-   html = re.sub(r'(\?|&)preview=preview', '', html)
-   
-   # Process declarative URLs
-   if self.getConfProperty('ZMS.pathhandler', 0):
-     for x in html.split('href="./'):
-       href = x[:x.find('"')]
-       if href.endswith('.html'):
-         href = href.split('/')
-         new_href = []
-         ob = self
-         for ob_id in href[:-1]:
-           if ob is not None:
-             if ob_id == '..':
-               ob = ob.getParentNode()
-               if ob is not None:
-                 new_href.append(ob_id)
-             else:
-               ob = getattr(ob, ob_id, None)
-               if ob is not None:
-                 new_href.append(ob.getDeclId(REQUEST))
-         if ob is not None:
-           new_href.append(href[-1])
-           html = html.replace('"./%s"'%('/'.join(href)), '"./%s"'%('/'.join(new_href)))
-     if self.getConfProperty('ZMS.export.pathhandler', 0):
-       newTmp = '..\\'
-       oldTmp = '../'
-       # Save links to root.
-       html = html.replace( oldTmp, newTmp)
-       # Replace 'index' in declarative URLs
-       pageexts = ['.html']
-       if 'attr_pageext' in self.getObjAttrs().keys():
-         obj_attr = self.getObjAttr('attr_pageext')
-         if 'keys' in obj_attr and len(obj_attr.get('keys')) > 0:
-           pageexts = obj_attr.get('keys')
-       for pageext in pageexts:
-         s_new = pageext
-         s_old = '/index_%s%s'%(REQUEST['lang'], pageext)
-         html = html.replace( s_old, s_new)
-       # Restore links to root.
-       html = html.replace( newTmp, oldTmp)
-   
-   return html
+  """
+  Rewrite exported markup so links resolve in static HTML archives.
+
+  @param obj: Exported content object.
+  @type obj: C{OFS.SimpleItem.Item}
+  @param level: Relative depth from the export root.
+  @type level: C{int}
+  @param html: Rendered markup.
+  @type html: C{str} or C{bytes}
+  @param xhtml: Flag indicating XHTML export mode.
+  @type xhtml: C{bool}
+  @return: Localized markup with rewritten links.
+  @rtype: C{str}
+  """
+  REQUEST = self.REQUEST
+
+  sRoot = ''
+  for i in range(level):
+    sRoot = '../%s'%sRoot
+
+  # Process aliases.
+  doc_url = self.getDocumentElement().absolute_url()
+  url = doc_url
+  url = url[url.find('://')+3:]
+  url = url[url.find('/'):]
+  base_url = doc_url
+  base_url = base_url[ : base_url.find(url)]
+  html = re.sub(r'"([^("\')]*?)'+url+'([^("\')]*?)"', '"'+base_url+url+'\\2"', standard.pystr(html))
+
+  # Process absolute URLs.
+  s_new = '%s'%sRoot
+  s_old = '%s/'%self.absolute_url()
+  if xhtml or level != 0:
+    html = html.replace( s_old, s_new)
+  if self.getConfProperty('ZMS.pathhandler', 0) != 0:
+    s_old = '%s/'%self.getDeclUrl( REQUEST)
+    html = html.replace( s_old, s_new)
+  s_old = '%s/'%self.getDocumentElement().absolute_url()
+  html = html.replace( s_old, s_new)
+  s_old = '%s/'%self.getHome().absolute_url()
+  html = html.replace( s_old, s_new)
+
+  # Process links to resource-folders: images and assets.
+  for container in self.getResourceFolders():
+    id = container.id
+    s_new = '"%s%s/'%(sRoot, id)
+    s_old = '"./%s/'%(id)
+    html = html.replace(s_old, s_new)
+    s_old = '"%s/'%(id)
+    html = html.replace(s_old, s_new)
+
+  # Process links to product-folder: images and assets.
+  s_new = '"%smisc_/zms/'%sRoot
+  s_old = '"/++resource++zms_/img/'
+  html = html.replace(s_old, s_new)
+  s_old = '"misc_/zms/'
+  html = html.replace(s_old, s_new)
+  # starting with '(' (in styles)
+  s_new = '(%smisc_/zms/'%sRoot
+  s_old = '(/++resource++zms_/img/'
+  html = html.replace(s_old, s_new)
+  s_old = '(misc_/zms/'
+  html = html.replace(s_old, s_new)
+
+  # Remove preview parameters.
+  html = re.sub(r'(\?|&)preview=preview', '', html)
+
+  # Process declarative URLs
+  if self.getConfProperty('ZMS.pathhandler', 0):
+    for x in html.split('href="./'):
+      href = x[:x.find('"')]
+      if href.endswith('.html'):
+        href = href.split('/')
+        new_href = []
+        ob = self
+        for ob_id in href[:-1]:
+          if ob is not None:
+            if ob_id == '..':
+              ob = ob.getParentNode()
+              if ob is not None:
+                new_href.append(ob_id)
+            else:
+              ob = getattr(ob, ob_id, None)
+              if ob is not None:
+                new_href.append(ob.getDeclId(REQUEST))
+        if ob is not None:
+          new_href.append(href[-1])
+          html = html.replace('"./%s"'%('/'.join(href)), '"./%s"'%('/'.join(new_href)))
+    if self.getConfProperty('ZMS.export.pathhandler', 0):
+      newTmp = '..\\'
+      oldTmp = '../'
+      # Save links to root.
+      html = html.replace( oldTmp, newTmp)
+      # Replace 'index' in declarative URLs
+      pageexts = ['.html']
+      if 'attr_pageext' in self.getObjAttrs().keys():
+        obj_attr = self.getObjAttr('attr_pageext')
+        if 'keys' in obj_attr and len(obj_attr.get('keys')) > 0:
+          pageexts = obj_attr.get('keys')
+      for pageext in pageexts:
+        s_new = pageext
+        s_old = '/index_%s%s'%(REQUEST['lang'], pageext)
+        html = html.replace( s_old, s_new)
+      # Restore links to root.
+      html = html.replace( newTmp, oldTmp)
+
+  return html
 
 
-################################################################################
-################################################################################
-###
-###   Class
-###
-################################################################################
-################################################################################
 class Exportable(_filtermanager.FilterItem):
+    """Mixin that provides XML, HTML, and archive export helpers."""
 
     # Create a SecurityInfo for this class. We will use this
     # in the rest of our class definition to make security
@@ -255,13 +298,21 @@ class Exportable(_filtermanager.FilterItem):
     security = ClassSecurityInfo()
 
 
-    ############################################################################
-    #  Exportable.manage_export:
-    #
-    #  Exports ZMS-object.
-    ############################################################################
     def manage_export(self, export_format, lang, REQUEST, RESPONSE):
-      """ Exportable.manage_export """
+      """
+      Export the current object in one of the configured formats.
+
+      @param export_format: Requested export format id.
+      @type export_format: C{int} or C{str}
+      @param lang: Active language.
+      @type lang: C{str}
+      @param REQUEST: Current request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param RESPONSE: Current response.
+      @type RESPONSE: C{ZPublisher.HTTPResponse}
+      @return: Export payload when downloading directly.
+      @rtype: C{str} or C{bytes}
+      """
       
       title = self.getHome().id + '_' + standard.id_quote( self.getTitlealt( REQUEST))
       
@@ -322,12 +373,13 @@ class Exportable(_filtermanager.FilterItem):
         RESPONSE.redirect( url)
 
 
-    # --------------------------------------------------------------------------
-    #  Exportable.getObjToXml:
-    #
-    #  myXML
-    # --------------------------------------------------------------------------
     def getObjToXml(self):
+      """
+      Render the current object as its custom XML fragment.
+
+      @return: Serialized XML fragment.
+      @rtype: C{str}
+      """
       xml = []
       method = getattr( self, 'getObjToXml_%s'%self.meta_id, None)
       if method is not None:
@@ -335,12 +387,13 @@ class Exportable(_filtermanager.FilterItem):
       return ''.join(xml)
 
 
-    # --------------------------------------------------------------------------
-    #  Exportable.getObjChildrenToXml:
-    #
-    #  myXML
-    # --------------------------------------------------------------------------
     def getObjChildrenToXml(self):
+      """
+      Render all filtered child nodes as XML fragments.
+
+      @return: Serialized XML for child nodes.
+      @rtype: C{str}
+      """
       REQUEST = self.REQUEST
       xml = []
       for context in self.filteredChildNodes(REQUEST):
@@ -348,12 +401,17 @@ class Exportable(_filtermanager.FilterItem):
       return ''.join(xml)
 
 
-    # --------------------------------------------------------------------------
-    #  Exportable.toXhtml:
-    #
-    #  (X)HTML
-    # --------------------------------------------------------------------------
     def toXhtml(self, REQUEST, deep=True):
+      """
+      Render the current object as localized standalone HTML.
+
+      @param REQUEST: Current request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param deep: Include child content recursively.
+      @type deep: C{bool}
+      @return: Exportable HTML or XHTML markup.
+      @rtype: C{str} or C{bytes}
+      """
       standard.writeLog( self, '[toXhtml]')
       level = 0
       html = ''
@@ -381,10 +439,21 @@ class Exportable(_filtermanager.FilterItem):
       return html
 
 
-    # --------------------------------------------------------------------------
-    #  Exportable.toXml:
-    # --------------------------------------------------------------------------
     def toXml(self, REQUEST=None, deep=True, data2hex=False, multilang=True):
+      """
+      Render the current object tree as an XML export document.
+
+      @param REQUEST: Request used to resolve export context.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param deep: Include child nodes recursively.
+      @type deep: C{bool}
+      @param data2hex: Hex-encode binary data values.
+      @type data2hex: C{bool}
+      @param multilang: Include all language variants.
+      @type multilang: C{bool}
+      @return: Serialized XML export.
+      @rtype: C{str}
+      """
       if REQUEST is None:
         REQUEST = getattr(self, 'REQUEST', getRequest())
       xml = ''
@@ -392,12 +461,24 @@ class Exportable(_filtermanager.FilterItem):
       xml += _xmllib.getObjToXml( self, REQUEST, deep, base_path='', data2hex=data2hex, multilang=multilang)
       return xml 
 
-    # --------------------------------------------------------------------------
-    #  Exportable.exportRessources:
-    #
-    #  Returns list of exported resources (Images, StyleSheets, etc.)
-    # --------------------------------------------------------------------------
+
     def exportRessources(self, tempfolder, REQUEST, from_content=True, from_zms=False, from_home=False):
+      """
+      Export auxiliary resources required by an archive export.
+
+      @param tempfolder: Temporary export directory.
+      @type tempfolder: C{str}
+      @param REQUEST: Current request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param from_content: Export resources referenced by content.
+      @type from_content: C{bool}
+      @param from_zms: Export shared ZMS product resources.
+      @type from_zms: C{bool}
+      @param from_home: Export resources from the site root.
+      @type from_home: C{bool}
+      @return: Paths of exported resources.
+      @rtype: C{list}
+      """
       ressources = []
       
       if from_zms:
@@ -416,10 +497,21 @@ class Exportable(_filtermanager.FilterItem):
       return ressources
 
 
-    # --------------------------------------------------------------------------
-    #  Exportable.exportExternalResources
-    # --------------------------------------------------------------------------
     def exportExternalResources(self, obj, html, path, REQUEST):
+      """
+      Download configured remote resources and relink them locally.
+
+      @param obj: Content object whose HTML is being exported.
+      @type obj: C{OFS.SimpleItem.Item}
+      @param html: Rendered markup.
+      @type html: C{str}
+      @param path: Directory receiving downloaded resources.
+      @type path: C{str}
+      @param REQUEST: Current request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @return: Markup with localized external resource links.
+      @rtype: C{str}
+      """
       domains = []
       for domain in self.getConfProperty('ZMS.export.domains', '').split(','):
         domain = domain.strip()
@@ -470,10 +562,19 @@ class Exportable(_filtermanager.FilterItem):
       return html
 
 
-    # --------------------------------------------------------------------------
-    #  Exportable.recurse_downloadHtmlPages:
-    # --------------------------------------------------------------------------
     def recurse_downloadHtmlPages(self, obj, path, lang, REQUEST):
+      """
+      Recursively render and store HTML pages for a content subtree.
+
+      @param obj: Root object of the subtree.
+      @type obj: C{OFS.SimpleItem.Item}
+      @param path: Destination directory.
+      @type path: C{str}
+      @param lang: Active export language.
+      @type lang: C{str}
+      @param REQUEST: Current request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      """
       try:
         os.mkdir(path)
       except:
@@ -561,10 +662,17 @@ class Exportable(_filtermanager.FilterItem):
         self.recurse_downloadHtmlPages(child, '%s/%s'%(path, child.getDeclId(REQUEST)), lang, REQUEST)
 
 
-    # --------------------------------------------------------------------------
-    #  Exportable.toZippedHtml:
-    # --------------------------------------------------------------------------
     def toZippedHtml(self, REQUEST, get_data=True):
+      """
+      Build a ZIP archive containing localized HTML export pages.
+
+      @param REQUEST: Current request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param get_data: Return archive bytes instead of a file path.
+      @type get_data: C{bool}
+      @return: ZIP archive payload or path.
+      @rtype: C{str} or C{bytes}
+      """
       REQUEST.set('ZMS_INDEX_HTML', 1)
       REQUEST.set('ZMS_HTML_EXPORT', 1)
       
@@ -589,10 +697,17 @@ class Exportable(_filtermanager.FilterItem):
       return rtn
 
 
-    # --------------------------------------------------------------------------
-    #  Exportable.toZippedXml:
-    # --------------------------------------------------------------------------
     def toZippedXml(self, REQUEST, get_data=True):
+      """
+      Build a ZIP archive containing the XML export and resources.
+
+      @param REQUEST: Current request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param get_data: Return archive bytes instead of a file path.
+      @type get_data: C{bool}
+      @return: ZIP archive payload or path.
+      @rtype: C{str} or C{bytes}
+      """
 
       #-- Create temporary folder.
       tempfolder = tempfile.mkdtemp()
@@ -619,5 +734,3 @@ class Exportable(_filtermanager.FilterItem):
 # call this to initialize framework classes, which
 # does the right thing with the security assertions.
 InitializeClass(Exportable)
-
-################################################################################

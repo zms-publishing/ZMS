@@ -1,20 +1,11 @@
-################################################################################
-# ZMSIndex.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+zmsindex.py
+
+ZMS index content type and catalog index management helpers.
+
+License: GNU General Public License v2 or later
+Organization: ZMS Publishing
+"""
 
 
 # Imports.
@@ -31,20 +22,13 @@ from Products.zms import IZMSConfigurationProvider
 from Products.zms import standard
 from Products.zms import ZMSItem
 
-
-################################################################################
-################################################################################
-###
-###   Class
-###
-################################################################################
-################################################################################
-
 @zope.interface.implementer(
     IZMSConfigurationProvider.IZMSConfigurationProvider,
 )
 
+
 class ZMSIndex(ZMSItem.ZMSItem):
+    """Catalog-backed index manager for ZMS content trees."""
 
     # Properties.
     # -----------
@@ -56,8 +40,11 @@ class ZMSIndex(ZMSItem.ZMSItem):
     # Management Options.
     # -------------------
     manage_options_default_action = '../manage_customize'
+
+
     def manage_options(self):
       return [self.operator_setitem( x, 'action', '../'+x['action']) for x in copy.deepcopy(self.aq_parent.manage_options())]
+
 
     def manage_sub_options(self):
       return (
@@ -72,25 +59,25 @@ class ZMSIndex(ZMSItem.ZMSItem):
     # Catalog Id
     catalog_id = 'zcatalog_index'
 
-    ############################################################################
-    #  ZMSIndex.__init__: 
-    #
-    #  Initialize a new instance of ZMSIndex.
-    ############################################################################
+
     def __init__(self):
+      """Initialize the singleton index object."""
       self.id = 'zmsindex'
 
-    ############################################################################
-    #  Initialize 
-    ############################################################################
+
     def initialize(self):
+      """Ensure the catalog exists and build its initial index entries."""
       self.get_catalog()
       self.manage_reindex(regenerate_duplicates=True)
 
-    ##############################################################################
-    # Event: Object Imported
-    ##############################################################################
+
     def ObjectImported(self, context):
+      """
+      Refresh the catalog after an object import operation.
+
+      @param context: Imported object context.
+      @type context: C{OFS.SimpleItem.Item}
+      """
       request = self.REQUEST
       base = list(self.getRootElement().getPhysicalPath())[:-1]
       url = list(self.getDocumentElement().getPhysicalPath())[len(base):-1]
@@ -100,11 +87,19 @@ class ZMSIndex(ZMSItem.ZMSItem):
       if standard.pybool(self.getConfProperty('ZMSIndexZCatalog.ObjectImported.resync',False)):
         self.manage_resync()
 
-    ##############################################################################
-    # Event: Object Added
-    ##############################################################################
+
     def ObjectAdded(self, context):
+      """
+      Catalog a newly added object and its descendants.
+
+      @param context: Added object context.
+      @type context: C{OFS.SimpleItem.Item}
+      @return: Always C{True} after cataloging.
+      @rtype: C{bool}
+      """
       catalog = self.get_catalog()
+
+
       def traverse(node):
          # Create new uid.
         node.get_uid(True)
@@ -117,11 +112,16 @@ class ZMSIndex(ZMSItem.ZMSItem):
       return True
 
 
-    ##############################################################################
-    # Event: Object Moved
-    ##############################################################################
     def ObjectMoved(self, context):
+      """
+      Re-catalog a moved object tree under its new path.
+
+      @param context: Moved object context.
+      @type context: C{OFS.SimpleItem.Item}
+      """
       catalog = self.get_catalog()
+
+
       def traverse(node):
         # Refresh index: add and remove.
         query = {'get_uid':node.get_uid()}
@@ -134,11 +134,17 @@ class ZMSIndex(ZMSItem.ZMSItem):
           traverse(childNode)
       traverse(context)
 
-    ##############################################################################
-    # Event: Object Removed
-    ##############################################################################
+
     def ObjectRemoved(self, context):
+      """
+      Remove a deleted object tree from the catalog.
+
+      @param context: Removed object context.
+      @type context: C{OFS.SimpleItem.Item}
+      """
       catalog = self.get_catalog()
+
+
       def traverse(node):
         # Uncatalog object.
         catalog.uncatalog_object(node.getPath())
@@ -147,17 +153,31 @@ class ZMSIndex(ZMSItem.ZMSItem):
           traverse(childNode)
       traverse(context)
 
-    ##############################################################################
-    # Get Log
-    ##############################################################################
+
     def get_log(self, log, request):
+      """
+      Filter collected log lines by the requested log level.
+
+      @param log: Accumulated log lines.
+      @type log: C{list}
+      @param request: Current request or C{None}.
+      @type request: C{ZPublisher.HTTPRequest}
+      @return: Joined log output.
+      @rtype: C{str}
+      """
       loglevel = request.get('loglevel','<NONE>') if request else '<NONE>'
       return '\n'.join([x for x in log if x.startswith('%s '%loglevel)])
 
-    ##############################################################################
-    # Get Catalog
-    ##############################################################################
+
     def get_catalog(self, recreate=False):
+      """
+      Return the site catalog, creating or recreating it when needed.
+
+      @param recreate: Drop and rebuild the catalog first.
+      @type recreate: C{bool}
+      @return: Catalog used by the ZMS index.
+      @rtype: C{Products.ZCatalog.ZCatalog.ZCatalog}
+      """
       zmsroot = self.getRootElement()
       home = zmsroot.getHome()
       catalog = getattr(home,self.catalog_id,None)
@@ -187,21 +207,35 @@ class ZMSIndex(ZMSItem.ZMSItem):
           catalog.manage_addColumn(index_name)
       return catalog
 
-    ##############################################################################
-    # Get Index-Names
-    ##############################################################################
+
     def get_index_names(self, complete=True):
+      """
+      Return configured catalog field names.
+
+      @param complete: Prefix names for catalog storage fields.
+      @type complete: C{bool}
+      @return: Catalog index names.
+      @rtype: C{list}
+      """
       index_names = [x for x in getattr(self,'index_names','').split(',') if x]
       if complete:
         index_names = ['id','meta_id','get_uid'] + ['zcat_%s'%x for x in index_names]
       return index_names
 
-    ##############################################################################
-    # Duplicate Object
-    #
-    # Sanity check: if uid is already catalogued we have to generate new uid
-    ##############################################################################
+
     def duplicate_object(self, catalog, node, regenerate_duplicates=False):
+      """
+      Detect duplicate uids and optionally regenerate them.
+
+      @param catalog: Active catalog.
+      @type catalog: C{Products.ZCatalog.ZCatalog.ZCatalog}
+      @param node: Object being cataloged.
+      @type node: C{OFS.SimpleItem.Item}
+      @param regenerate_duplicates: Regenerate duplicate uids when possible.
+      @type regenerate_duplicates: C{bool}
+      @return: Duplicate flag and regenerate flag.
+      @rtype: C{tuple}
+      """
       duplicate, regenerate = False, False
       if regenerate_duplicates:
         uid = node.get_uid()
@@ -221,10 +255,20 @@ class ZMSIndex(ZMSItem.ZMSItem):
       # return printed
       return duplicate, regenerate
 
-    ##############################################################################
-    # Catalog Object
-    ##############################################################################
+
     def catalog_object(self, catalog, node, regenerate_duplicates=False):
+      """
+      Catalog a single object after duplicate-uid checks.
+
+      @param catalog: Active catalog.
+      @type catalog: C{Products.ZCatalog.ZCatalog.ZCatalog}
+      @param node: Object being cataloged.
+      @type node: C{OFS.SimpleItem.Item}
+      @param regenerate_duplicates: Regenerate duplicate uids when possible.
+      @type regenerate_duplicates: C{bool}
+      @return: Duplicate flag and regenerate flag.
+      @rtype: C{tuple}
+      """
       # Duplicate object.
       duplicate, regenerate = self.duplicate_object(catalog, node, regenerate_duplicates)
       # Catalog object.
@@ -233,22 +277,39 @@ class ZMSIndex(ZMSItem.ZMSItem):
       # return printed
       return duplicate, regenerate
 
-    ##############################################################################
-    # Uncatalog Object
-    ##############################################################################
+
     def uncatalog_object(self, catalog, node):
+      """
+      Remove a single object from the catalog by its path.
+
+      @param catalog: Active catalog.
+      @type catalog: C{Products.ZCatalog.ZCatalog.ZCatalog}
+      @param node: Object being removed.
+      @type node: C{OFS.SimpleItem.Item}
+      """
       # Prepare object.
       path = node.getPath()
       # Uncatalog object.
       catalog.uncatalog_object(node, path)
 
-    ##############################################################################
-    # Reindex
-    ##############################################################################
+
     def manage_reindex(self, regenerate_all=None, regenerate_duplicates=None, REQUEST=None):
-      """ ZMSIndex.manage_reindex """
+      """
+      Rebuild catalog entries for the requested site roots.
+
+      @param regenerate_all: Force a full rebuild for matching roots.
+      @type regenerate_all: C{bool}
+      @param regenerate_duplicates: Regenerate duplicate uids during indexing.
+      @type regenerate_duplicates: C{bool}
+      @param REQUEST: Optional request overriding the current one.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @return: Filtered log output.
+      @rtype: C{str}
+      """
 
       # Visit tree
+
+
       def visit(node, regenerate_all=False):
         l = []
         l.append(1)
@@ -282,11 +343,14 @@ class ZMSIndex(ZMSItem.ZMSItem):
           log.append('INFO %s'%standard.writeBlock(self,'[ZMSIndex] reindex for %s done: %i in %.2fsecs.'%(url,len(count),time.time()-t0)))
       return self.get_log(log,REQUEST)
 
-    ##############################################################################
-    # Test
-    ##############################################################################
+
     def manage_test(self):
-      """ ZMSIndex.manage_test """
+      """
+      Compare catalog contents with the live content tree.
+
+      @return: Filtered validation log.
+      @rtype: C{str}
+      """
       request = self.REQUEST
       response = request.RESPONSE
       log = []
@@ -296,12 +360,16 @@ class ZMSIndex(ZMSItem.ZMSItem):
       catalog = getattr(home,self.catalog_id,None)
 
       # Read catalog
+
+
       def read_catalog(node):
         path = '/'.join(node.getPhysicalPath())
         standard.writeBlock(self,'[ZMSIndex] ### read_catalog for %s'%path)
         return [(i['getPath'],i['get_uid']) for i in catalog({'path':path}) if i['getPath'].startswith(path)]
       
       # Visit tree
+
+
       def visit(node):
         l = [(node.getPath(),str(node.get_uid()))]
         for childNode in node.getChildNodes():
@@ -334,11 +402,14 @@ class ZMSIndex(ZMSItem.ZMSItem):
             log.append('INFO %s'%standard.writeBlock(self,'[ZMSIndex] test for %s done: %i / %i in %.2fsecs.'%(url,len(from_catalog),len(from_tree),time.time()-t0)))
       return self.get_log(log,request)
 
-    ##############################################################################
-    # Resync
-    ##############################################################################
+
     def manage_resync(self):
-      """ ZMSIndex.manage_resync """
+      """
+      Rewrite stored inline references and URL fields to current targets.
+
+      @return: Filtered resync log.
+      @rtype: C{str}
+      """
       request = self.REQUEST
       response = request.RESPONSE
       session = request.SESSION
@@ -350,8 +421,10 @@ class ZMSIndex(ZMSItem.ZMSItem):
       home = zmsroot.getHome()
       catalog = getattr(home,self.catalog_id,None)
 
+
       def query(k,v):
         return catalog({k:v})
+
 
       def getLinkObj(data_id):
         if data_id.startswith('{$') and data_id.find('id:')>0 and data_id.endswith('}'):
@@ -366,6 +439,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
                 break
             return ob
         return None
+
 
       def find_brain(data_id):
         rtn = None
@@ -404,6 +478,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
         log.append('INFO %s'%standard.writeBlock(self,'[ZMSIndex] find_brain %s->%s'%(data_id,str(rtn is not None))))
         return rtn
 
+
       def find_decl_id(base, id):
         for o in base.getChildNodes():
           for l in o.getLanguages():
@@ -412,6 +487,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
             if decl_id == id:
               return o
         return None
+
 
       def find_node(base, path):
         ref = base
@@ -442,6 +518,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
             return find_brain(o.get_uid())
           ref = ref.getParentNode()
         return ref
+
 
       def handleInline(node,v):
         p = r'<dtml-var "getLinkUrl\(\'(.*?)\'(,REQUEST)?\)">'
@@ -500,6 +577,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
               v = v.replace(old,new)
         return v
 
+
       def handleUrl(node,v):
         standard.writeLog(node,'[ZMSIndex] handleUrl %s'%v)
         if v.startswith('{$') and v.endswith('}'):
@@ -523,6 +601,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
               v = '{$__%s__}'%v[2:-1]
         return v
 
+
       def handleItem(node,v):
         if type(v) is list:
           v = handleList(node,v)
@@ -532,11 +611,13 @@ class ZMSIndex(ZMSItem.ZMSItem):
           v = handleInline(node,v)
         return v
 
+
       def handleDict(node,v):
         nd = {}
         for i in v:
           nd[i] = handleItem(node,v[i])
         return nd
+
 
       def handleList(node,v):
         nl = []
@@ -545,6 +626,8 @@ class ZMSIndex(ZMSItem.ZMSItem):
         return nl
 
       objAttrCache = {}
+
+
       def getObjAttrsFast(node):
         if node.meta_id not in objAttrCache:
           objAttrs = []
@@ -555,6 +638,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
               objAttrs.append(objAttr)
           objAttrCache[node.meta_id] = objAttrs
         return objAttrCache[node.meta_id]
+
 
       def visit(node):
         count = []
@@ -619,6 +703,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
 
         return count
 
+
       def init_domains(doc,domains):
         domain = doc.getConfProperty('ASP.ip_or_domain','')
         if domain != '':
@@ -648,20 +733,17 @@ class ZMSIndex(ZMSItem.ZMSItem):
           log.append('INFO %s'%standard.writeBlock(self,'[ZMSIndex] resync for %s done: %i in %.2fsecs.'%(url,len(count),time.time()-t0)))
       return self.get_log(log,request)
 
-    # README: To use redirecting short urls like /doi/10.1109/5.771073 or /doi/faq 
-    # based on ZMSIndex, please add a meta-attribute 'attr_dc_identifier_doi' to the 
-    # document nodes definition (ZMSFolder, ZMSDocument) and add this meta-attribute-
-    # name to the ZMSIndex 'Attributes' list. You can fill the new attribute implicitly
-    # with any other (existing) attribute value by declaring it's type as Py-Script 
-    # and using following code snippet:
-    # ---------------------
-    #  from Products.zms import standard
-    #  return standard.id_quote(zmscontext.attr('titlealt'))
-    # ---------------------
-    # After REINDEXING the ZMSIndex contains a new field index 'zcat_attr_dc_identifier_doi'. 
-    # Based on this additional index any indexed string can be resolved as redirect to 
-    # the path oft its containing document.
+
     def doi(self):
+      """
+      Resolve DOI-style short URLs via the catalog and redirect to the target.
+
+      Configure the catalog to index C{attr_dc_identifier_doi} on document nodes to
+      enable redirects such as C{/doi/faq} or C{/doi/10.1109/5.771073}.
+
+      @return: Redirect response payload or a not-found message.
+      @rtype: C{object}
+      """
       request = self.REQUEST
       RESPONSE =  request.RESPONSE
       zmscontext = self.getDocumentElement()
@@ -687,5 +769,3 @@ class ZMSIndex(ZMSItem.ZMSItem):
 
       # Return a string identifying this script.
       return standard.FileFromData(zmscontext,"'%s' not found!"%path_)
-
-################################################################################

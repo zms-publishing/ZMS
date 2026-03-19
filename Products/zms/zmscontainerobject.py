@@ -1,20 +1,12 @@
-################################################################################
-# zmscontainerobject.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+zmscontainerobject.py
+
+Container object implementation for managing ZMS child nodes.
+
+License: GNU General Public License v2 or later
+Organization: ZMS Publishing
+"""
+
 
 # Imports.
 from OFS.role import RoleManager
@@ -34,22 +26,32 @@ from Products.zms import _zmi_actions_util
 __all__= ['ZMSContainerObject']
 
 
-# ------------------------------------------------------------------------------
-#  zmscontainerobject.isPageWithElements:
-# ------------------------------------------------------------------------------
 def isPageWithElements(obs):
+  """
+  Return whether a list of nodes contains at least one page element.
+
+  @param obs: Nodes to inspect.
+  @type obs: C{list}
+  @return: C{True} if any node is a page element.
+  @rtype: C{bool}
+  """
   for ob in obs:
     if ob.isPageElement():
       return True
   return False
 
 
-# ------------------------------------------------------------------------------
-#  zmscontainerobject.getPrevSibling: 
-#
-#  The node immediately preceding this node, otherwise returns None. 
-# ------------------------------------------------------------------------------
 def getPrevSibling(self, REQUEST, incResource=False):
+  """
+  Return the previous visible sibling node.
+
+  @param REQUEST: Current request.
+  @type REQUEST: C{ZPublisher.HTTPRequest}
+  @param incResource: Include resource nodes in the sibling search.
+  @type incResource: C{bool}
+  @return: Previous visible sibling or C{None}.
+  @rtype: C{zmsobject.ZMSObject}
+  """
   parent = self.getParentNode()
   if parent is not None:
     siblings = parent.getChildNodes(REQUEST, [self.PAGES, self.NORESOLVEREF]) 
@@ -62,12 +64,18 @@ def getPrevSibling(self, REQUEST, incResource=False):
         i = i - 1
   return None
 
-# ------------------------------------------------------------------------------
-#  zmscontainerobject.getNextSibling: 
-#
-#  The node immediately following this node, otherwise returns None. 
-# ------------------------------------------------------------------------------
+
 def getNextSibling(self, REQUEST, incResource=False):
+  """
+  Return the next visible sibling node.
+
+  @param REQUEST: Current request.
+  @type REQUEST: C{ZPublisher.HTTPRequest}
+  @param incResource: Include resource nodes in the sibling search.
+  @type incResource: C{bool}
+  @return: Next visible sibling or C{None}.
+  @rtype: C{zmsobject.ZMSObject}
+  """
   parent = self.getParentNode()
   if parent is not None:
     siblings = parent.getChildNodes(REQUEST, [self.PAGES, self.NORESOLVEREF]) 
@@ -81,20 +89,18 @@ def getNextSibling(self, REQUEST, incResource=False):
         i = i + 1
   return None
 
+############################################################################
+### CLASS ZMSContainerObject
+############################################################################
 
-################################################################################
-################################################################################
-###
-###   Abstract Class ZMSContainerObject
-###
-################################################################################
-################################################################################
+
 class ZMSContainerObject(
     zmsobject.ZMSObject,
     RoleManager,
     _accessmanager.AccessableContainer,
     _versionmanager.VersionManagerContainer
     ):
+    """Base container object that manages child-node creation, ordering, and deletion."""
 
     # Management Permissions.
     # -----------------------
@@ -117,8 +123,6 @@ class ZMSContainerObject(
     manage_importexportDebugFilter = PageTemplateFile('zpt/ZMSContainerObject/manage_importexportdebugfilter', globals())
 
 
-    # Role Manager.
-    # -------------
     def manage_addZMSCustom(self, meta_id=None, values={}, REQUEST=None):
       """
       Add a custom node of the type designated by meta_id in current context.
@@ -136,9 +140,6 @@ class ZMSContainerObject(
       return self.manage_addZMSObject('ZMSCustom', values, request)
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSContainerObject.manage_addZMSObject:
-    # --------------------------------------------------------------------------
     def manage_addZMSObject(self, meta_id, values, REQUEST):
       """
       Add a node of type designated by meta_id in current context.
@@ -230,20 +231,15 @@ class ZMSContainerObject(
       return node
 
 
-    ############################################################################
-    ###
-    ###   Trashcan
-    ###
-    ############################################################################
-
-    # --------------------------------------------------------------------------
-    # Move objects to trashcan.
-    #
-    # @param ids: List of object-ids.
-    # @type ids: C{list}
-    # @rtype: C{None}
-    # --------------------------------------------------------------------------
     def moveObjsToTrashcan(self, ids, REQUEST):
+      """
+      Move subordinate objects to the trashcan and update search state.
+
+      @param ids: List of object ids.
+      @type ids: C{list}
+      @param REQUEST: Current request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      """
       if self.meta_id == 'ZMSTrashcan':
         return
       trashcan = self.getTrashcan()
@@ -271,9 +267,6 @@ class ZMSContainerObject(
       self.normalizeSortIds()
 
 
-    ############################################################################
-    #  ZMSContainerObject.manage_eraseObjs:
-    ############################################################################
     def manage_eraseObjs(self, lang, ids, REQUEST, RESPONSE=None):
       """ 
       Delete a subordinate object physically:
@@ -303,9 +296,6 @@ class ZMSContainerObject(
         return RESPONSE.redirect('%s?lang=%s&manage_tabs_message=%s'%(target, lang, standard.url_quote(message)))
 
 
-    ############################################################################
-    #  ZMSContainerObject.manage_undoObjs:
-    ############################################################################
     def manage_undoObjs(self, lang, ids, REQUEST, RESPONSE=None):
       """
       Undo a subordinate object:
@@ -339,9 +329,6 @@ class ZMSContainerObject(
         return RESPONSE.redirect('%s?preview=preview&lang=%s&manage_tabs_message=%s'%(target, lang, standard.url_quote(message)))
 
 
-    ############################################################################
-    #  ZMSContainerObject.manage_deleteObjs:
-    ############################################################################
     def manage_deleteObjs(self, lang, ids, REQUEST, RESPONSE=None):
       """
       Delete a subordinate object logically:
@@ -382,9 +369,6 @@ class ZMSContainerObject(
         return RESPONSE.redirect('%s?preview=preview&lang=%s&manage_tabs_message=%s'%(target, lang, standard.url_quote(message)))
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSContainerObject.getContentType
-    # --------------------------------------------------------------------------
     def getContentType( self, REQUEST):
       """
       Returns MIME-type (text/html).
@@ -396,19 +380,18 @@ class ZMSContainerObject(
       return 'text/html'
 
 
-    ############################################################################
-    ###
-    ###  Drag'n Drop
-    ###
-    ############################################################################
-
-    # --------------------------------------------------------------------------
-    #  ZMSContainerObject.manage_ajaxDragDrop:
-    # --------------------------------------------------------------------------
     def manage_ajaxDragDrop( self, lang, target, REQUEST, RESPONSE):
-      """ 
-      ZMSContainerObject.manage_ajaxDragDrop
-      internal use only
+      """
+      Move the current object relative to another node using drag-and-drop.
+
+      @param lang: Active language.
+      @type lang: C{str}
+      @param target: Drag-and-drop target marker.
+      @type target: C{str}
+      @param REQUEST: Current request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param RESPONSE: Current response.
+      @type RESPONSE: C{ZPublisher.HTTPResponse}
       """
       rc = 0
       message = self.getZMILangStr('MSG_PASTED')
@@ -455,15 +438,11 @@ class ZMSContainerObject(
       xml += "</result>\n"
       return xml
 
-    ############################################################################
-    ###
-    ###  Page-Navigation
-    ###
-    ############################################################################
+    #----------------------------------------------------------------------------
+    # Page-Navigation
+    #----------------------------------------------------------------------------
 
-    # --------------------------------------------------------------------------
-    #  ZMSContainerObject.getFirstPage:
-    # --------------------------------------------------------------------------
+
     def getFirstPage(self, REQUEST, incResource=False, root=None):
       """
       Returns the first page of the tree from root (or document-element if root
@@ -475,10 +454,8 @@ class ZMSContainerObject(
       """
       root = standard.nvl(root, self.getDocumentElement())
       return root
-    
-    # --------------------------------------------------------------------------
-    #  ZMSContainerObject.getPrevPage:
-    # --------------------------------------------------------------------------
+
+
     def getPrevPage(self, REQUEST, incResource=False, root=None):
       """
       Returns the previous page of this node from root (or document-element if root
@@ -507,9 +484,7 @@ class ZMSContainerObject(
           break
       return ob
 
-    # --------------------------------------------------------------------------
-    #  ZMSContainerObject.getNextPage:
-    # --------------------------------------------------------------------------
+
     def getNextPage(self, REQUEST, incResource=False, root=None): 
       """
       Returns the next page of this node from root (or document-element if root
@@ -536,9 +511,7 @@ class ZMSContainerObject(
           break
       return ob
 
-    # --------------------------------------------------------------------------
-    #  ZMSContainerObject.getLastPage:
-    # --------------------------------------------------------------------------
+
     def getLastPage(self, REQUEST, incResource=False, root=None):
       """
       Returns the last page of the tree from root (or document-element if root
@@ -563,12 +536,6 @@ class ZMSContainerObject(
         children = ob.filteredChildNodes(REQUEST, self.PAGES)
       return ob
 
-
-    ############################################################################
-    ###  
-    ###  Object-actions of management interface
-    ### 
-    ############################################################################
 
     def manage_ajaxZMIActions(self, context_id, REQUEST, RESPONSE):
       """
@@ -606,15 +573,6 @@ class ZMSContainerObject(
       return rtn
 
 
-    ############################################################################
-    ###
-    ###  HTML-Presentation
-    ###
-    ############################################################################
-
-    # --------------------------------------------------------------------------
-    #  ZMSContainerObject.getNavItems:
-    # --------------------------------------------------------------------------
     def getNavItems(self, current, REQUEST, opt={}, depth=0):
       """
       Returns html-formatted (unordered) list of navigation-items.
@@ -694,12 +652,21 @@ class ZMSContainerObject(
       return ''.join(items)
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSContainerObject.getNavElements: 
-    #
-    #  Elements of main-navigation in content-area.
-    # --------------------------------------------------------------------------
     def getNavElements(self, REQUEST, expand_tree=1, current_child=None, subElements=[]):
+      """
+      Return the content-area navigation elements for the current subtree.
+
+      @param REQUEST: Current request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param expand_tree: Include the full subtree when true.
+      @type expand_tree: C{bool}
+      @param current_child: Current child node if the traversal is recursive.
+      @type current_child: C{zmsobject.ZMSObject}
+      @param subElements: Child navigation elements collected so far.
+      @type subElements: C{list}
+      @return: Navigation elements.
+      @rtype: C{list}
+      """
       elmnts = []
       # Child navigation.
       obs = self.filteredChildNodes(REQUEST)
@@ -723,36 +690,47 @@ class ZMSContainerObject(
       return elmnts
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSContainerObject.getIndexNavElements: 
-    #
-    #  Elements of index-navigation in content-area.
-    # --------------------------------------------------------------------------
     def getIndexNavElements(self, REQUEST):
+      """
+      Return the index-navigation elements for the current content context.
+
+      @param REQUEST: Current request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @return: Index navigation elements.
+      @rtype: C{list}
+      """
       indexNavElmnts = []
       # Retrieve elements.
       if REQUEST.get('op', '')=='':
-        indexNavElmnts = [x for x in self.filteredChildNodes(REQUEST, self.PAGES) if ob.isPage() and ob.isMetaType(['ZMSDocument', 'ZMSCustom']) and not ob.isResource(REQUEST)]
+        indexNavElmnts = [x for x in self.filteredChildNodes(REQUEST, self.PAGES) if x.isPage() and x.isMetaType(['ZMSDocument', 'ZMSCustom']) and not x.isResource(REQUEST)]
       # Return elements.
       return indexNavElmnts
 
 
-    ############################################################################
-    ###
-    ###   DOM-Methods
-    ###
-    ############################################################################
-
     def get_next_page(self, uid, page_size=100, clients=False):
+      """
+      Return a page-sized sequence of nodes following the given uid.
+
+      @param uid: Start node uid.
+      @type uid: C{str}
+      @param page_size: Maximum number of nodes to return.
+      @type page_size: C{int}
+      @param clients: Traverse portal clients as well.
+      @type clients: C{bool}
+      @return: Tuple of nodes and next-page marker.
+      @rtype: C{tuple}
+      """
       nodes, next = [], None
       meta_types = list(self.dGlobalAttrs)
       child_nodes = {}
+
 
       def get_child_nodes(self):
         key = str(self)
         if key not in child_nodes:
           child_nodes[key] = self.objectValues(meta_types)
         return child_nodes[key]
+
 
       def get_next_node(self, allow_children=True):
         # children
@@ -802,10 +780,6 @@ class ZMSContainerObject(
       return nodes, next        
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSContainerObject.filteredTreeNodes:
-    #
-    # --------------------------------------------------------------------------
     def filteredTreeNodes(self, REQUEST, meta_types, order_by=None, order_dir=None, max_len=None, recursive=True):
       """
       Returns a node-list that contains all visible children of this subtree 
@@ -867,9 +841,6 @@ class ZMSContainerObject(
       return rtn
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSContainerObject.firstFilteredChildNode:
-    # --------------------------------------------------------------------------
     def firstFilteredChildNode(self, REQUEST=None, meta_types=None):
       """
       Returns the first visible child of this node.
@@ -886,9 +857,6 @@ class ZMSContainerObject(
       return None
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSContainerObject.filteredChildNodes:
-    # --------------------------------------------------------------------------
     def filteredChildNodes(self, REQUEST=None, meta_types=None):
       """
       Returns a node-list that contains all visible children of this node in 
@@ -910,6 +878,8 @@ class ZMSContainerObject(
     PAGEELEMENTS = 1 # virtual meta_type for all Page-Elements
     NOREF        = 4 # virtual meta_type for resolving meta-type of ZMSLinkElement-target-object.
     NORESOLVEREF = 5 # virtual meta_type for not resolving meta-type of ZMSLinkElement-target-object.
+
+
     def getChildNodes(self, REQUEST=None, meta_types=None, reid=None):
       """
       Returns a node-list that contains all children of this node in correct 
@@ -946,12 +916,6 @@ class ZMSContainerObject(
       return childNodes
 
 
-    ############################################################################
-    ###  
-    ###  Sort-Order
-    ### 
-    ############################################################################
-
     def normalizeSortIds(self, id_prefix='e'):
       """
       Normalizes sort-ids for all children with given prefix of this node.
@@ -981,11 +945,10 @@ class ZMSContainerObject(
       return new_sort_id
 
 
-    ############################################################################
-    #
-    #   Module
-    #
-    ############################################################################
+    # --------------------------------------------------------------------------
+    # ZMS-"Module"
+    # --------------------------------------------------------------------------
+
 
     def manage_addZMSCustomDefault(self, lang, id_prefix, _sort_id, REQUEST, RESPONSE):
       """
@@ -1008,6 +971,7 @@ class ZMSContainerObject(
       # Return with message.
       message = self.getZMILangStr('MSG_INSERTED')%attr['name']
       RESPONSE.redirect('%s/%s/manage_main?lang=%s&manage_tabs_message=%s'%(self.absolute_url(), new_id, lang, standard.url_quote(message)))
+
 
     def manage_addZMSModule(self, lang, _sort_id, custom, REQUEST, RESPONSE):
       """
@@ -1036,5 +1000,3 @@ class ZMSContainerObject(
       # Return with message.
       message = self.getZMILangStr('MSG_INSERTED')%custom
       RESPONSE.redirect('%s/%s/manage_main?lang=%s&manage_tabs_message=%s'%(self.absolute_url(), new_id, lang, standard.url_quote(message)))
-
-################################################################################

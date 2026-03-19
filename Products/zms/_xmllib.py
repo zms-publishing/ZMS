@@ -1,20 +1,17 @@
-################################################################################
-# _xmllib.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""_xmllib.py
+
+XML parsing and serialization utilities for ZMS.
+
+Provides functions for converting ZMS objects to/from XML representation,
+including support for complex data types (dictionaries, lists, blobs),
+multilingual attributes, and CDATA handling. Contains the L{XmlAttrBuilder}
+parser for complex Python attributes and the L{XmlBuilder} parser for custom
+XML structures.
+
+License: GNU General Public License v2 or later
+Organization: ZMS Publishing
+"""
+
 
 # Imports.
 from io import StringIO
@@ -36,18 +33,19 @@ from Products.zms import zopeutil
 INDENTSTR = '  '
 
 
-"""
-################################################################################
-#
-#  Datatypes
-#
-################################################################################
-"""
+# ------------------------------------------------------------------------------
+#  Datatype Functions
+# ------------------------------------------------------------------------------
 
-# ------------------------------------------------------------------------------
-#  _xmllib.serialize:
-# ------------------------------------------------------------------------------
 def serialize(node):
+  """
+  Serialize a DOM node to an XML string.
+
+  @param node: DOM node to serialize
+  @type node: C{xml.dom.Node}
+  @return: XML string representation
+  @rtype: C{str}
+  """
   xml = ''
   if node.nodeType == node.ELEMENT_NODE:
     xml += '<' + node.nodeName
@@ -60,10 +58,17 @@ def serialize(node):
     xml += '>'
   return xml
 
-# ------------------------------------------------------------------------------
-#  _xmllib.getText:
-# ------------------------------------------------------------------------------
+
 def getText(nodelist, encoding='utf-8'):
+  """
+  Extract text content from a list of DOM nodes.
+
+  @param nodelist: DOM node or list of DOM nodes
+  @param encoding: Character encoding (unused, kept for compatibility)
+  @type encoding: C{str}
+  @return: Concatenated text content
+  @rtype: C{str}
+  """
   rc = []
   if not isinstance(nodelist, list):
     nodelist = [nodelist]
@@ -73,25 +78,27 @@ def getText(nodelist, encoding='utf-8'):
         rc.append(childNode.data)
   return ''.join(rc)
 
-# ------------------------------------------------------------------------------
-#  _xmllib.parseString:
-# ------------------------------------------------------------------------------
+
 def parseString(s):
+  """
+  Parse an XML string into a DOM document.
+
+  @param s: XML string to parse
+  @type s: C{str}
+  @return: Parsed DOM document
+  @rtype: C{xml.dom.minidom.Document}
+  """
   return xml.dom.minidom.parseString(s)
 
 
-"""
-################################################################################
-#
-#  Datatypes
-#
-################################################################################
-"""
-
-# ------------------------------------------------------------------------------
-#  _xmllib.getXmlType:
-# ------------------------------------------------------------------------------
 def getXmlType(v):
+  """
+  Return an XML type attribute string for a Python value.
+
+  @param v: Python value to determine XML type for
+  @return: XML type attribute (e.g. ' type="int"') or empty string
+  @rtype: C{str}
+  """
   t = ''
   if isinstance(v, float):
     t = ' type="float"'
@@ -110,10 +117,16 @@ def getXmlType(v):
   return t
 
 
-# ------------------------------------------------------------------------------
-#  _xmllib.getXmlTypeSaveValue:
-# ------------------------------------------------------------------------------
 def getXmlTypeSaveValue(v, attrs):
+  """
+  Convert a string value to the appropriate Python type based on XML attrs.
+
+  @param v: Value to convert (typically a string from XML parsing)
+  @type v: C{str}
+  @param attrs: Dictionary of XML attributes, expects 'type' key
+  @type attrs: C{dict}
+  @return: Converted value (int, float, datetime, or stripped string)
+  """
   # Strip.
   if isinstance(v, str):
     while len(v) > 0 and v[0] <= ' ' and v[0] != '\t':
@@ -139,35 +152,55 @@ def getXmlTypeSaveValue(v, attrs):
   return v
 
 
-"""
-################################################################################
-#
-#  XML-Encoding
-#
-################################################################################
-"""
+def xmlParse(xml):
+  """
+  Parse arbitrary XML-Structure into dictionary.
+
+  @param xml: xml data
+  @type xml: C{str} or C{StringIO}
+  @return: Dictionary of XML-Structure.
+  @rtype: C{dict}
+  """
+  builder = XmlBuilder()
+  if isinstance(xml, str):
+    xml = StringIO(xml)
+  v = builder.parse(xml)
+  return v
+
 
 # ------------------------------------------------------------------------------
-#  _xmllib.xml_header:
+#  XML-Encoding Functions
 # ------------------------------------------------------------------------------
+
 def xml_header(encoding='utf-8'):
+  """
+  Return an XML declaration header.
+
+  @param encoding: Character encoding for the header
+  @type encoding: C{str}
+  @return: XML declaration string
+  @rtype: C{str}
+  """
   return '<?xml version="1.0" encoding="%s"?>\n' % encoding
 
 
-"""
-################################################################################
-#
-#  Import
-#
-################################################################################
-"""
+# ------------------------------------------------------------------------------
+#  Import Functions
+# ------------------------------------------------------------------------------
 
-# ------------------------------------------------------------------------------
-#  _xmllib.xmlInitObjProperty:
-#
-#  Only for internal use: init specified property with value.
-# ------------------------------------------------------------------------------
 def xmlInitObjProperty(self, key, value, lang=None):
+  """
+  Initialize a ZMS object property with a value during XML import.
+
+  Handles type conversion for date, integer, float, and string fields.
+
+  @param self: ZMS object being imported
+  @param key: Property key/attribute name
+  @type key: C{str}
+  @param value: Property value to set
+  @param lang: Language identifier (optional)
+  @type lang: C{str} or C{None}
+  """
 
   # -- DEFINITION
   obj_attr = self.getObjAttr(key)
@@ -202,10 +235,20 @@ def xmlInitObjProperty(self, key, value, lang=None):
     setattr(ob, attr, value)
 
 
-# ------------------------------------------------------------------------------
-#  _xmllib.xmlOnCharacterData:
-# ------------------------------------------------------------------------------
 def xmlOnCharacterData(self, sData, bInCData):
+    """
+    Handle character data during XML import parsing.
+
+    Appends character data to the current tag on the tag stack.
+
+    @param self: ZMS object being imported
+    @param sData: Character data string
+    @type sData: C{str}
+    @param bInCData: Whether data is inside a CDATA section
+    @type bInCData: C{bool}
+    @return: 1 to accept any character data
+    @rtype: C{int}
+    """
     # -- TAG-STACK
     if len(self.dTagStack) > 0:
       tag = self.dTagStack.pop()
@@ -216,10 +259,21 @@ def xmlOnCharacterData(self, sData, bInCData):
     return 1  # accept any character data
 
 
-# ------------------------------------------------------------------------------
-#  _xmllib.xmlOnUnknownStartTag:
-# ------------------------------------------------------------------------------
 def xmlOnUnknownStartTag(self, sTagName, dTagAttrs):
+    """
+    Handle unknown start tags during ZMS XML import.
+
+    Manages the tag stack and value stack for nested XML elements
+    including dictionaries, lists, data blobs, and language variants.
+
+    @param self: ZMS object being imported
+    @param sTagName: XML element name
+    @type sTagName: C{str}
+    @param dTagAttrs: Dictionary of element attributes
+    @type dTagAttrs: C{dict}
+    @return: 1 to accept any unknown tag
+    @rtype: C{int}
+    """
     # -- TAG-STACK
     tag = {}
     tag['name'] = sTagName
@@ -259,10 +313,20 @@ def xmlOnUnknownStartTag(self, sTagName, dTagAttrs):
     return 1  # accept any unknown tag
 
 
-# ------------------------------------------------------------------------------
-#  _xmllib.xmlOnUnknownEndTag:
-# ------------------------------------------------------------------------------
 def xmlOnUnknownEndTag(self, sTagName):
+    """
+    Handle unknown end tags during ZMS XML import.
+
+    Processes the completed element by popping it from the tag stack
+    and handling its data according to element type (dict/list items,
+    data blobs, language variants, conf-properties, or object attributes).
+
+    @param self: ZMS object being imported
+    @param sTagName: XML element name
+    @type sTagName: C{str}
+    @return: 1 to accept matching end tag, 0 on mismatch
+    @rtype: C{int}
+    """
     # -- TAG-STACK
     tag = self.dTagStack.pop()
     skip = len([x for x in self.oCurrNode.dTagStack if x.get('skip')]) > 0
@@ -446,18 +510,25 @@ def xmlOnUnknownEndTag(self, sTagName):
     return 1  # accept matching end tag
 
 
-"""
-################################################################################
-#
-#  Export
-#
-################################################################################
-"""
+# ------------------------------------------------------------------------------
+#  Export Functions
+# ------------------------------------------------------------------------------
 
-# ------------------------------------------------------------------------------
-#  _xmllib.toCdata
-# ------------------------------------------------------------------------------
 def toCdata(self, s, xhtml=False):
+  """
+  Wrap a string value in a CDATA section for safe XML embedding.
+
+  Returns the string as-is if it contains no special characters,
+  otherwise wraps it in C{<![CDATA[...]]>}.
+
+  @param self: ZMS context object
+  @param s: String value to wrap
+  @type s: C{str} or C{bytes}
+  @param xhtml: Whether output is XHTML (unused)
+  @type xhtml: C{bool}
+  @return: CDATA-wrapped string or original string
+  @rtype: C{str}
+  """
   rtn = ''
 
   # Return Text.
@@ -483,10 +554,24 @@ def toCdata(self, s, xhtml=False):
   return rtn
 
 
-# ------------------------------------------------------------------------------
-#  _xmllib.toXml:
-# ------------------------------------------------------------------------------
 def toXml(self, value, indentlevel=0, xhtml=False, encoding='utf-8'):
+  """
+  Convert a Python value to its XML string representation.
+
+  Handles images, files, dictionaries, lists, datetime tuples,
+  numbers, and string values.
+
+  @param self: ZMS context object
+  @param value: Python value to convert
+  @param indentlevel: Current XML indentation level
+  @type indentlevel: C{int}
+  @param xhtml: Whether output is XHTML
+  @type xhtml: C{bool}
+  @param encoding: Character encoding
+  @type encoding: C{str}
+  @return: XML string representation
+  @rtype: C{str}
+  """
   xml = []
   if value is not None:
 
@@ -590,10 +675,21 @@ def toXml(self, value, indentlevel=0, xhtml=False, encoding='utf-8'):
   return ''.join([str(x) for x in xml])
 
 
-# ------------------------------------------------------------------------------
-#  _xmllib.getAttrToXml:
-# ------------------------------------------------------------------------------
 def getAttrToXml(self, base_path, data2hex, obj_attr, REQUEST):
+  """
+  Convert a single ZMS object attribute to its XML representation.
+
+  @param self: ZMS object
+  @param base_path: Base path for resolving blob references
+  @type base_path: C{str}
+  @param data2hex: Whether to hex-encode binary data
+  @type data2hex: C{bool}
+  @param obj_attr: Object attribute definition dict
+  @type obj_attr: C{dict}
+  @param REQUEST: Zope request object
+  @return: XML string for the attribute value
+  @rtype: C{str}
+  """
   xml = ''
 
   # -- DATATYPE
@@ -646,10 +742,23 @@ def getAttrToXml(self, base_path, data2hex, obj_attr, REQUEST):
   return xml
 
 
-# ------------------------------------------------------------------------------
-#  _xmllib.getObjPropertyToXml:
-# ------------------------------------------------------------------------------
 def getObjPropertyToXml(self, REQUEST, base_path='', data2hex=False, obj_attr={}, multilang=True):
+  """
+  Convert a ZMS object property to XML, handling multilingual attributes.
+
+  @param self: ZMS object
+  @param REQUEST: Zope request object
+  @param base_path: Base path for resolving references
+  @type base_path: C{str}
+  @param data2hex: Whether to hex-encode binary data
+  @type data2hex: C{bool}
+  @param obj_attr: Object attribute definition dict
+  @type obj_attr: C{dict}
+  @param multilang: Whether to export all language variants
+  @type multilang: C{bool}
+  @return: XML string for the property
+  @rtype: C{str}
+  """
   xml = ''
   # Multi-Language Attributes.
   indentlevel = len(base_path.split('/'))
@@ -669,10 +778,23 @@ def getObjPropertyToXml(self, REQUEST, base_path='', data2hex=False, obj_attr={}
   return xml
 
 
-# ------------------------------------------------------------------------------
-#  _xmllib.getObjToXml:
-# ------------------------------------------------------------------------------
 def getObjToXml(self, REQUEST, deep=True, base_path='', data2hex=False, multilang=True):
+  """
+  Export a ZMS object and optionally its children to XML.
+
+  @param self: ZMS object to export
+  @param REQUEST: Zope request object
+  @param deep: Whether to recursively export child nodes
+  @type deep: C{bool}
+  @param base_path: Base path for resolving references
+  @type base_path: C{str}
+  @param data2hex: Whether to hex-encode binary data
+  @type data2hex: C{bool}
+  @param multilang: Whether to export all language variants
+  @type multilang: C{bool}
+  @return: XML string for the object tree
+  @rtype: C{str}
+  """
   # Check Constraints.
   root = getattr(self, '__root__', None)
   if root is not None:
@@ -716,51 +838,45 @@ def getObjToXml(self, REQUEST, deep=True, base_path='', data2hex=False, multilan
   return ''.join(xml)
 
 
-"""
 ################################################################################
-# class ParseError(Exception):
-#
-# General exception class to indicate parsing errors.
+# CLASS ParseError(Exception):
 ################################################################################
-"""
-class ParseError(Exception): pass
+
+class ParseError(Exception):
+    """Exception class to indicate XML parsing errors."""
+    pass
 
 
 
-"""
 ################################################################################
-# class XmlAttrBuilder:
-#
-# Parser for complex Python-Attributes (dictionaries, lists).
+# CLASS XmlAttrBuilder:
 ################################################################################
-"""
+
 class XmlAttrBuilder(object):
-    "class XmlAttrBuilder"
+    """
+    XML parser for complex Python attributes (dictionaries, lists, blobs).
 
-    ######## class variables ########
+    Parses XML documents into Python data structures using expat.
+    Used internally by ZMS for importing attribute values.
+    """
+
+    # Class variables
     iBufferSize = 1028 * 32  # buffer size for XML file parsing
 
-    ############################################################################
-    # XmlAttrBuilder.__init__(self):
-    #
-    # Constructor.
-    ############################################################################
     def __init__(self):
-      """ XmlAttrBuilder.__init__ """
+      """Constructor."""
       pass
 
 
-    ############################################################################
-    # XmlAttrBuilder.parse(self, input):
-    #
-    # Parse a given XML document.
-    #
-    # IN:  input = XML document as string
-    #            = XML document as file object
-    # OUT: value or None, if nothing was parsed
-    ############################################################################
     def parse(self, input):
-      """ XmlAttrBuilder.parse """
+      """
+      Parse a given XML document into Python data structures.
+
+      @param input: XML document as string or file object
+      @type input: C{bytes} or file-like
+      @return: Parsed value (dict, list, or blob), or None if nothing was parsed
+      @raise ParseError: If the XML document contains syntax errors
+      """
 
       # prepare builder
       self.dValueStack = collections.deque()
@@ -804,21 +920,20 @@ class XmlAttrBuilder(object):
       return self.dValueStack.pop()
 
 
-    ############################################################################
-    # XmlAttrBuilder.OnStartElement(self, name, attrs):
-    #
-    # Handler of XML-Parser:
-    # Called at the start of a XML element (resp. on occurence of a XML start tag).
-    # Usually, the occurence of a XML tag induces the instanciation of a new node object. Therefore,
-    # XmlAttrBuilder contains a mapping table ("dGlobalAttrs"), that maps XML tags to python classes. The
-    # newly created node object is then made current. If no matching class is found for a XML tag,
-    # the event handler "xmlOnUnknownStart()" is called on the current object.
-    #
-    # IN: name  = element name (=tag name)
-    #     attrs = dictionary of element attributes
-    ############################################################################
     def OnStartElement(self, sTagName, dTagAttrs):
-      """ XmlAttrBuilder.OnStartElement """
+      """
+      Handle the start of an XML element.
+
+      Called by the expat parser on occurrence of an XML start tag.
+      Pushes a new tag onto the tag stack and, for container elements
+      (C{data}, C{dictionary}, C{list}), pushes an initial value
+      onto the value stack.
+
+      @param sTagName: Element (tag) name
+      @type sTagName: C{str}
+      @param dTagAttrs: Dictionary of element attributes
+      @type dTagAttrs: C{dict}
+      """
 
       # -- TAG-STACK
       tag = {'name':sTagName, 'attrs':dTagAttrs, 'cdata':''}
@@ -834,16 +949,18 @@ class XmlAttrBuilder(object):
         self.dValueStack.append([])
 
 
-    ############################################################################
-    # XmlAttrBuilder.OnEndElement(self, name):
-    #
-    # Handler of XML-Parser:
-    # Called at the end of a XML element (resp. on occurence of a XML end tag).
-    #
-    # IN: name  = element name (=tag name)
-    ############################################################################
     def OnEndElement(self, sTagName):
-      """ XmlAttrBuilder.OnEndElement """
+      """
+      Handle the end of an XML element.
+
+      Pops the current tag from the stack, processes its content
+      depending on element type (C{data} or C{item}), and updates
+      the value stack accordingly.
+
+      @param sTagName: Element (tag) name
+      @type sTagName: C{str}
+      @raise ParseError: If end tag does not match the expected start tag
+      """
 
       # -- TAG-STACK
       tag = self.dTagStack.pop()
@@ -890,18 +1007,15 @@ class XmlAttrBuilder(object):
         self.dValueStack.append(value)
 
 
-    ############################################################################
-    # XmlAttrBuilder.OnCharacterData(self, data):
-    #
-    # Handler of XML-Parser:
-    # Called after plain character data was parsed. Forwards the character data to the current
-    # node. The class attribute "bInCData" determines, wether the character data is nested in a
-    # CDATA block.
-    #
-    # IN: data = character data string
-    ############################################################################
     def OnCharacterData(self, sData):
-      """ XmlAttrBuilder.OnCharacterData """
+      """
+      Handle character data from the XML parser.
+
+      Appends character data to the current tag's cdata buffer.
+
+      @param sData: Character data string
+      @type sData: C{str}
+      """
 
       # -- TAG-STACK
       if len(self.dTagStack) > 0:
@@ -910,79 +1024,57 @@ class XmlAttrBuilder(object):
         self.dTagStack.append(tag)
 
 
-    ############################################################################
-    # XmlAttrBuilder.OnStartCData(self):
-    #
-    # Handler of XML-Parser:
-    # Called at the start of a CDATA block (resp. on occurence of the "CDATA[" tag).
-    ############################################################################
     def OnStartCData(self):
-      """ XmlAttrBuilder.OnStartCData """
+      """Handle start of a CDATA section."""
       self.bInCData = 1
 
 
-    ############################################################################
-    # XmlAttrBuilder.OnEndCData(self):
-    #
-    # Handler of XML-Parser:
-    # Called at the end of a CDATA block (resp. on occurence of the "]" tag).
-    ############################################################################
     def OnEndCData(self):
-      """ XmlAttrBuilder.OnEndCData """
+      """Handle end of a CDATA section."""
       self.bInCData = 0
 
 
-    ############################################################################
-    # XmlAttrBuilder.OnProcessingInstruction(self, target, data):
-    #
-    # Handler of XML-Parser:
-    # Called on occurence of a processing instruction.
-    #
-    # IN: target = target (processing instruction)
-    #     data   = dictionary of data
-    ############################################################################
     def OnProcessingInstruction(self, target, data):
-      """ XmlAttrBuilder.OnProcessingInstruction """
+      """
+      Handle a processing instruction (ignored).
+
+      @param target: Processing instruction target
+      @type target: C{str}
+      @param data: Processing instruction data
+      @type data: C{str}
+      """
       pass  # ignored
 
 
-    ############################################################################
-    # XmlAttrBuilder.OnComment(self, data):
-    #
-    # Handler of XML-Parser:
-    # Called on occurence of a comment.
-    #
-    # IN: data = comment string
-    ############################################################################
     def OnComment(self, data):
-      """ XmlAttrBuilder.OnComment """
+      """
+      Handle an XML comment (ignored).
+
+      @param data: Comment string
+      @type data: C{str}
+      """
       pass  # ignored
 
 
-    ############################################################################
-    # XmlAttrBuilder.OnStartNamespaceDecl(self, prefix, uri):
-    #
-    # Handler of XML-Parser:
-    # Called at the start of a namespace declaration.
-    #
-    # IN: prefix = prefix of namespace
-    #     uri    = namespace identifier
-    ############################################################################
     def OnStartNamespaceDecl(self, prefix, uri):
-      """ XmlAttrBuilder.OnStartNamespaceDecl """
+      """
+      Handle start of a namespace declaration (ignored).
+
+      @param prefix: Namespace prefix
+      @type prefix: C{str}
+      @param uri: Namespace URI
+      @type uri: C{str}
+      """
       pass  # ignored
 
 
-    ############################################################################
-    # XmlAttrBuilder.OnEndNamespaceDecl(self, prefix):
-    #
-    # Handler of XML-Parser:
-    # Called at the end of a namespace declaration.
-    #
-    # IN: prefix = prefix of namespace
-    ############################################################################
     def OnEndNamespaceDecl(self, prefix):
-      """ XmlAttrBuilder.OnEndNamespaceDecl """
+      """
+      Handle end of a namespace declaration (ignored).
+
+      @param prefix: Namespace prefix
+      @type prefix: C{str}
+      """
       pass  # ignored
 
 
@@ -1007,57 +1099,37 @@ def xmlNodeSet(mNode, sTagName='', iDeep=0):
   return lNodeSet
 
 
-"""
+
 ################################################################################
-# class XmlBuilder:
-#
-# Parser for custom xml.
+# CLASS XmlBuilder:
 ################################################################################
-"""
-
-def xmlParse(xml):
-  """
-  Parse arbitrary XML-Structure into dictionary.
-
-  @param xml: xml data
-  @type xml: C{str} or C{StringIO}
-  @return: Dictionary of XML-Structure.
-  @rtype: C{dict}
-  """
-  builder = XmlBuilder()
-  if isinstance(xml, str):
-    xml = StringIO(xml)
-  v = builder.parse(xml)
-  return v
-
 
 class XmlBuilder(object):
-    "class XmlBuilder"
+    """
+    XML parser for custom XML structures.
+
+    Parses arbitrary XML into a nested dictionary/list structure
+    with tag names, attributes, cdata, and child tags.
+    """
 
     ######## class variables ########
     iBufferSize = 1028 * 32  # buffer size for XML file parsing
 
-    ############################################################################
-    # XmlBuilder.__init__(self):
-    #
-    # Constructor.
-    ############################################################################
     def __init__(self):
-      """ XmlBuilder.__init__ """
+      """Constructor."""
       pass
 
 
-    ############################################################################
-    # XmlBuilder.parse(self, input):
-    #
-    # Parse a given XML document.
-    #
-    # IN:  input = XML document as string
-    #            = XML document as file object
-    # OUT: value or None, if nothing was parsed
-    ############################################################################
     def parse(self, input):
-        """ XmlBuilder.parse """
+        """
+        Parse a given XML document into a nested tag structure.
+
+        @param input: XML document as string or file object
+        @type input: C{bytes} or file-like
+        @return: List of parsed tags
+        @rtype: C{list}
+        @raise ParseError: If the XML document contains syntax errors
+        """
 
         # prepare builder
         self.dTagStack = collections.deque()
@@ -1101,35 +1173,32 @@ class XmlBuilder(object):
         return self.dTagStack.pop()['tags']
 
 
-    ############################################################################
-    # XmlBuilder.OnStartElement(self, name, attrs):
-    #
-    # Handler of XML-Parser:
-    # Called at the start of a XML element (resp. on occurence of a XML start tag).
-    # Usually, the occurence of a XML tag induces the instanciation of a new node object. Therefore,
-    # XmlBuilder contains a mapping table ("dGlobalAttrs"), that maps XML tags to python classes. The
-    # newly created node object is then made current. If no matching class is found for a XML tag,
-    # the event handler "xmlOnUnknownStart()" is called on the current object.
-    #
-    # IN: name  = element name (=tag name)
-    #     attrs = dictionary of element attributes
-    ############################################################################
     def OnStartElement(self, sTagName, dTagAttrs):
-      """ XmlBuilder.OnStartElement """
+      """
+      Handle the start of an XML element.
+
+      Pushes a new tag dictionary onto the tag stack.
+
+      @param sTagName: Element (tag) name
+      @type sTagName: C{str}
+      @param dTagAttrs: Dictionary of element attributes
+      @type dTagAttrs: C{dict}
+      """
       tag = {'name':sTagName, 'attrs':dTagAttrs, 'cdata':'', 'tags':[]}
       self.dTagStack.append(tag)
 
 
-    ############################################################################
-    # XmlBuilder.OnEndElement(self, name):
-    #
-    # Handler of XML-Parser:
-    # Called at the end of a XML element (resp. on occurence of a XML end tag).
-    #
-    # IN: name  = element name (=tag name)
-    ############################################################################
     def OnEndElement(self, sTagName):
-      """ XmlBuilder.OnEndElement """
+      """
+      Handle the end of an XML element.
+
+      Pops the current tag, assembles it into a structured dict,
+      and appends it to the parent tag's children.
+
+      @param sTagName: Element (tag) name
+      @type sTagName: C{str}
+      @raise ParseError: If end tag does not match the expected start tag
+      """
       
       lTag = self.dTagStack.pop()
       name = standard.unencode(lTag['name'])
@@ -1155,96 +1224,71 @@ class XmlBuilder(object):
       self.dTagStack.append(parent)
 
 
-    ############################################################################
-    # XmlBuilder.OnCharacterData(self, data):
-    #
-    # Handler of XML-Parser:
-    # Called after plain character data was parsed. Forwards the character data to the current
-    # node. The class attribute "bInCData" determines, wether the character data is nested in a
-    # CDATA block.
-    #
-    # IN: data = character data string
-    ############################################################################
     def OnCharacterData(self, sData):
-      """ XmlBuilder.OnCharacterData """
+      """
+      Handle character data from the XML parser.
+
+      Appends character data to the current tag's cdata buffer.
+
+      @param sData: Character data string
+      @type sData: C{str}
+      """
       tag = self.dTagStack.pop()
       tag['cdata'] = tag['cdata'] + sData
       self.dTagStack.append(tag)
 
 
-    ############################################################################
-    # XmlBuilder.OnStartCData(self):
-    #
-    # Handler of XML-Parser:
-    # Called at the start of a CDATA block (resp. on occurence of the "CDATA[" tag).
-    ############################################################################
     def OnStartCData(self):
-      """ XmlBuilder.OnStartCData """
+      """Handle start of a CDATA section."""
       self.bInCData = 1
 
 
-    ############################################################################
-    # XmlBuilder.OnEndCData(self):
-    #
-    # Handler of XML-Parser:
-    # Called at the end of a CDATA block (resp. on occurence of the "]" tag).
-    ############################################################################
     def OnEndCData(self):
-      """ XmlBuilder.OnEndCData """
+      """Handle end of a CDATA section."""
       self.bInCData = 0
 
 
-    ############################################################################
-    # XmlBuilder.OnProcessingInstruction(self, target, data):
-    #
-    # Handler of XML-Parser:
-    # Called on occurence of a processing instruction.
-    #
-    # IN: target = target (processing instruction)
-    #     data   = dictionary of data
-    ############################################################################
     def OnProcessingInstruction(self, target, data):
-      """ XmlBuilder.OnProcessingInstruction """
+      """
+      Handle a processing instruction (ignored).
+
+      @param target: Processing instruction target
+      @type target: C{str}
+      @param data: Processing instruction data
+      @type data: C{str}
+      """
       pass  # ignored
 
 
-    ############################################################################
-    # XmlBuilder.OnComment(self, data):
-    #
-    # Handler of XML-Parser:
-    # Called on occurence of a comment.
-    #
-    # IN: data = comment string
-    ############################################################################
     def OnComment(self, data):
-      """ XmlBuilder.OnComment """
+      """
+      Handle an XML comment (ignored).
+
+      @param data: Comment string
+      @type data: C{str}
+      """
       pass  # ignored
 
 
-    ############################################################################
-    # XmlBuilder.OnStartNamespaceDecl(self, prefix, uri):
-    #
-    # Handler of XML-Parser:
-    # Called at the start of a namespace declaration.
-    #
-    # IN: prefix = prefix of namespace
-    #     uri    = namespace identifier
-    ############################################################################
     def OnStartNamespaceDecl(self, prefix, uri):
-      """ XmlBuilder.OnStartNamespaceDecl """
+      """
+      Handle start of a namespace declaration (ignored).
+
+      @param prefix: Namespace prefix
+      @type prefix: C{str}
+      @param uri: Namespace URI
+      @type uri: C{str}
+      """
       pass  # ignored
 
 
-    ############################################################################
-    # XmlBuilder.OnEndNamespaceDecl(self, prefix):
-    #
-    # Handler of XML-Parser:
-    # Called at the end of a namespace declaration.
-    #
-    # IN: prefix = prefix of namespace
-    ############################################################################
     def OnEndNamespaceDecl(self, prefix):
-      """ XmlBuilder.OnEndNamespaceDecl """
+      """
+      Handle end of a namespace declaration (ignored).
+
+      @param prefix: Namespace prefix
+      @type prefix: C{str}
+      """
       pass  # ignored
 
 ###############################################################################################

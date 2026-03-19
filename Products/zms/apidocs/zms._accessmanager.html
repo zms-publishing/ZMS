@@ -1236,7 +1236,10 @@
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>_accessmanager.py</p>
+<p>This module provides user, role, and public-access management helpers for ZMS objects and containers.</p>
+<p>License: GNU General Public License v2 or later Organization: ZMS Publishing</p>
+</div>
         </div>
 
         <div id="splitTables">
@@ -1247,57 +1250,57 @@
     
     <td>Class</td>
     <td><code><a href="zms._accessmanager.AccessableContainer.html" class="internal-link" title="zms._accessmanager.AccessableContainer"><wbr></wbr>Accessable<wbr></wbr>Container</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Access-control mixin for container-like ZMS objects.</td>
   </tr><tr class="class">
     
     <td>Class</td>
     <td><code><a href="zms._accessmanager.AccessableObject.html" class="internal-link" title="zms._accessmanager.AccessableObject"><wbr></wbr>Accessable<wbr></wbr>Object</a></code></td>
-    <td><span class="undocumented">No class docstring; 0/1 class variable, 1/9 method documented</span></td>
+    <td>Mixin providing access-control helpers for ZMS objects.</td>
   </tr><tr class="class">
     
     <td>Class</td>
     <td><code><a href="zms._accessmanager.AccessManager.html" class="internal-link" title="zms._accessmanager.AccessManager"><wbr></wbr>Access<wbr></wbr>Manager</a></code></td>
-    <td><span class="undocumented">No class docstring; 0/2 class variable, 2/21 methods documented</span></td>
+    <td>Main access-management mixin for users, roles, and local permissions.</td>
   </tr><tr class="class">
     
     <td>Class</td>
     <td><code><a href="zms._accessmanager.UserFolderIAddUserPluginWrapper.html" class="internal-link" title="zms._accessmanager.UserFolderIAddUserPluginWrapper"><wbr></wbr>User<wbr></wbr>Folder<wbr></wbr>IAdd<wbr></wbr>User<wbr></wbr>Plugin<wbr></wbr>Wrapper</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Adapter exposing a uniform add/remove-user API for classic user folders.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#addRole" class="internal-link" title="zms._accessmanager.addRole">add<wbr></wbr>Role</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Add a role and initialize its security configuration entry.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#deleteUser" class="internal-link" title="zms._accessmanager.deleteUser">delete<wbr></wbr>User</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Delete a user and all of its local role assignments.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#delLocalRoles" class="internal-link" title="zms._accessmanager.delLocalRoles">del<wbr></wbr>Local<wbr></wbr>Roles</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Remove all local roles for a user from the current node.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#getUserId" class="internal-link" title="zms._accessmanager.getUserId">get<wbr></wbr>User<wbr></wbr>Id</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Normalize a user reference to its user id string.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#setLocalRoles" class="internal-link" title="zms._accessmanager.setLocalRoles">set<wbr></wbr>Local<wbr></wbr>Roles</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Assign filtered local roles to a user on the current node.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#updateUserPassword" class="internal-link" title="zms._accessmanager.updateUserPassword">update<wbr></wbr>User<wbr></wbr>Password</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Update a user's password in the underlying user folder.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#updateVersion" class="internal-link" title="zms._accessmanager.updateVersion">update<wbr></wbr>Version</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Migrate persisted security settings to the current configuration schema.</td>
   </tr><tr class="variable">
     
     <td>Variable</td>
@@ -1341,7 +1344,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Add a role and initialize its security configuration entry.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self</span></td><td class="fieldArgDesc">ZMS context object</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Role id</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1356,7 +1359,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">deleteUser</span><span class="function-signature">(self, id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L202">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L216">
       
       (source)
     </a>
@@ -1368,7 +1371,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Delete a user and all of its local role assignments.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self</span></td><td class="fieldArgDesc">ZMS context object</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">User id</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1383,7 +1386,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">delLocalRoles</span><span class="function-signature">(self, id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L193">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L203">
       
       (source)
     </a>
@@ -1395,7 +1398,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Remove all local roles for a user from the current node.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self</span></td><td class="fieldArgDesc">ZMS context object</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">User id</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1410,7 +1413,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getUserId</span><span class="function-signature">(user)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L140">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L125">
       
       (source)
     </a>
@@ -1422,7 +1425,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Normalize a user reference to its user id string.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">user</span></td><td class="fieldArgDesc">User object, user dict, or user id</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">User id</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1437,7 +1440,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">setLocalRoles</span><span class="function-signature">(self, id, roles=[])</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L182">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L186">
       
       (source)
     </a>
@@ -1449,7 +1452,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Assign filtered local roles to a user on the current node.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self</span></td><td class="fieldArgDesc">ZMS context object</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">User id</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">roles:</span><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Role ids to assign</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1464,7 +1467,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">updateUserPassword</span><span class="function-signature">(self, user, password, confirm)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L150">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L139">
       
       (source)
     </a>
@@ -1476,7 +1479,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Update a user's password in the underlying user folder.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self</span></td><td class="fieldArgDesc">ZMS context object</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">user:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">User descriptor dictionary</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">password:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">New password</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">confirm:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Password confirmation</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc"><tt class="rst-docutils rst-literal">True</tt> if the password was changed</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Raises</td></tr><tr><td class="fieldArgContainer"><code>zExceptions.InternalError</code></td><td>If password and confirmation differ</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1491,7 +1494,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">updateVersion</span><span class="function-signature">(root)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L36">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L25">
       
       (source)
     </a>
@@ -1503,7 +1506,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Migrate persisted security settings to the current configuration schema.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">root</span></td><td class="fieldArgDesc">Root ZMS object</td></tr></table></div>
   </div>
 </div><div class="basevariable">
   
@@ -1517,7 +1520,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">role_defs</span>: <code>dict</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L129">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L117">
       
       (source)
     </a>
@@ -1544,7 +1547,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">user_folder_meta_types</span>: <code>list[<wbr></wbr>str]</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L122">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L113">
       
       (source)
     </a>

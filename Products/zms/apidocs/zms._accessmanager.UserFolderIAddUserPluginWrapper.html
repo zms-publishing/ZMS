@@ -428,12 +428,12 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">UserFolderIAddUserPluginWrapper</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L217" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms._accessmanager.UserFolderIAddUserPluginWrapper.__init__">UserFolderIAddUserPluginWrapper(userFldr)</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">UserFolderIAddUserPluginWrapper</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L235" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms._accessmanager.UserFolderIAddUserPluginWrapper.__init__">UserFolderIAddUserPluginWrapper(userFldr)</a></code></p>
           <p><a href="classIndex.html#zms._accessmanager.UserFolderIAddUserPluginWrapper">View In Hierarchy</a></p>
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>Adapter exposing a uniform add/remove-user API for classic user folders.</p></div>
         </div>
 
         <div id="splitTables">
@@ -444,22 +444,22 @@
     
     <td>Method</td>
     <td><code><a href="#__init__" class="internal-link" title="zms._accessmanager.UserFolderIAddUserPluginWrapper.__init__">__init__</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Initialize the wrapper.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#absolute_url" class="internal-link" title="zms._accessmanager.UserFolderIAddUserPluginWrapper.absolute_url">absolute<wbr></wbr>_url</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the absolute URL of the wrapped user folder.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#doAddUser" class="internal-link" title="zms._accessmanager.UserFolderIAddUserPluginWrapper.doAddUser">do<wbr></wbr>Add<wbr></wbr>User</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Add a user through the wrapped user folder.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#removeUser" class="internal-link" title="zms._accessmanager.UserFolderIAddUserPluginWrapper.removeUser">remove<wbr></wbr>User</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Remove a user through the wrapped user folder.</td>
   </tr><tr class="classvariable">
     
     <td>Class Variable</td>
@@ -506,7 +506,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">__init__</span><span class="function-signature">(self, userFldr)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L219">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L238">
       
       (source)
     </a>
@@ -518,7 +518,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Initialize the wrapper.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">user<wbr></wbr>Fldr</span></td><td class="fieldArgDesc">Wrapped user folder</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -533,7 +533,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">absolute_url</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L226">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L250">
       
       (source)
     </a>
@@ -545,7 +545,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the absolute URL of the wrapped user folder.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -560,7 +560,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">doAddUser</span><span class="function-signature">(self, login, password)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L229">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L254">
       
       (source)
     </a>
@@ -572,7 +572,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Add a user through the wrapped user folder.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">login:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Login name</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">password:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Password</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -587,7 +587,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">removeUser</span><span class="function-signature">(self, login)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L234">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L267">
       
       (source)
     </a>
@@ -599,7 +599,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Remove a user through the wrapped user folder.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">login:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Login name</td></tr></table></div>
   </div>
 </div><div class="baseclassvariable">
   
@@ -613,7 +613,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">absolute_url__roles__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L225">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L249">
       
       (source)
     </a>
@@ -640,7 +640,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">id</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L221">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L245">
       
       (source)
     </a>
@@ -667,7 +667,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">meta_type</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L222">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L246">
       
       (source)
     </a>
@@ -694,7 +694,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">userFldr</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L220">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L244">
       
       (source)
     </a>
@@ -721,7 +721,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_icon</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L223">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L247">
       
       (source)
     </a>

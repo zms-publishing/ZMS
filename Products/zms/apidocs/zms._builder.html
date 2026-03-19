@@ -1120,7 +1120,30 @@
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>_builder.py</p>
+<p>This module provides the generic XML builder used to construct ZMS object trees from expat parser events.</p>
+<p>Implements a builder class (cp. design pattern "BUILDER") to build a tree of ZOPE objects out of an XML formatted document. Uses the class "pyexpat" (cp. module "Shared.DC.xml") for parsing the XML document. The general approach of the XML parser "pyexpat" is event driven, where handler methods are called on occurence of XML tags. Builder redirects these events to a set of own handler methods (see below). To build up the object tree, Builder provides the following functionality:</p>
+<ol class="rst-simple">
+<li>Usually, the occurence of a XML tag induces the instanciation of a new node object. Therefore, Builder contains a mapping table ("dGlobalAttrs"), that maps XML tags to python classes. The handler method "Builder.OnStartElement()" creates a node object of the corresponding class. This node object is then made current.</li>
+<li>In General, events are directed to the current node object. Therefore, they have to contain a set of interface methods (see below). The node objects are responsible for handling these events. This includes the insertion into the object tree as well as the interpretation of XML tag parameters.</li>
+<li>A dedicated root object is managed by Builder. The root object may be predefined or created during the parsing process.</li>
+</ol>
+<p>Builder is usually used as a mix-in base class for other classes. For usage, the following issues must be taken into consideration:</p>
+<ol class="rst-simple">
+<li>Overwrite "dGlobalAttrs" with a dictionary, that maps XML-Tags to python classes.</li>
+<li>Call "Builder.parse()" to initiate the parsing and building process.</li>
+<li>Equip all python classes with the following interface methods:<ul>
+<li>xmlOnStartElement(self, dTagName, dTagAttrs, oParentNode)</li>
+<li>xmlOnCharacterData(self, sData, bInCData)</li>
+<li>xmlOnEndElement(self)</li>
+<li>xmlOnUnknownStartTag(self, sTagName, dTagAttrs)</li>
+<li>xmlOnUnknownEndTag(self, sTagName)</li>
+<li>xmlGetParent(self)</li>
+</ul>
+</li>
+</ol>
+<p>License: GNU General Public License v2 or later Organization: ZMS Publishing</p>
+</div>
         </div>
 
         <div id="splitTables">
@@ -1131,12 +1154,12 @@
     
     <td>Class</td>
     <td><code><a href="zms._builder.Builder.html" class="internal-link" title="zms._builder.Builder"><wbr></wbr>Builder</a></code></td>
-    <td>Builder</td>
+    <td>Generic XML builder for constructing ZMS object trees.</td>
   </tr><tr class="exception">
     
     <td>Exception</td>
     <td><code><a href="zms._builder.ParseError.html" class="internal-link" title="zms._builder.ParseError"><wbr></wbr>Parse<wbr></wbr>Error</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Exception raised when XML parsing fails.</td>
   </tr>
 </table>
           

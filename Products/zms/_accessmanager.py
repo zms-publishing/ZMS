@@ -1,20 +1,12 @@
-################################################################################
-# _accessmanager.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+_accessmanager.py
+
+This module provides user, role, and public-access management helpers for ZMS
+objects and containers.
+
+License: GNU General Public License v2 or later
+Organization: ZMS Publishing
+"""
 
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -30,10 +22,12 @@ from Products.zms import _xmllib
 from Products.zms import standard
 
 
-# ------------------------------------------------------------------------------
-#  _accessmanager.updateVersion:
-# ------------------------------------------------------------------------------
 def updateVersion(root):
+  """
+  Migrate persisted security settings to the current configuration schema.
+
+  @param root: Root ZMS object
+  """
   if not root.REQUEST.get('_accessmanager_updateVersion', False):
     root.REQUEST.set('_accessmanager_updateVersion', True)
     if root.getConfProperty('ZMS.security.build', 0) == 0:
@@ -114,18 +108,12 @@ def updateVersion(root):
       root.setConfProperty('ZMS.security.build', 5)
       root.synchronizeRolesAccess()
 
-# ------------------------------------------------------------------------------
-#  _accessmanager.user_folder_meta_types:
 #
 #  User Folder Meta-Types.
-# ------------------------------------------------------------------------------
 user_folder_meta_types = ['LDAPUserFolder', 'User Folder', 'Simple User Folder', 'Pluggable Auth Service']
 
-# ------------------------------------------------------------------------------
-#  _accessmanager.role_defs:
 #
 #  Role Definitions.
-# ------------------------------------------------------------------------------
 role_defs = {
    'ZMSAdministrator':['*']
   ,'ZMSEditor':['View management screens', 'Access contents information', 'Add ZMSs', 'Add Documents, Images, and Files', 'Copy or Move', 'Delete objects', 'Manage properties', 'Use Database Methods', 'View', 'ZMS Author']
@@ -134,20 +122,35 @@ role_defs = {
   ,'ZMSUserAdministrator':['View management screens', 'Access contents information', 'View', 'ZMS UserAdministrator']
 }
 
-# ------------------------------------------------------------------------------
-#  _accessmanager.getUserId:
-# ------------------------------------------------------------------------------
 def getUserId(user):
+  """
+  Normalize a user reference to its user id string.
+
+  @param user: User object, user dict, or user id
+  @return: User id
+  @rtype: C{str}
+  """
   if isinstance(user, dict):
     user = user['name']
   elif user is not None and not isinstance(user,str):
     user = user.getId()
   return user
 
-# ------------------------------------------------------------------------------
-#  _accessmanager.updateUserPassword:
-# ------------------------------------------------------------------------------
 def updateUserPassword(self, user, password, confirm):
+  """
+  Update a user's password in the underlying user folder.
+
+  @param self: ZMS context object
+  @param user: User descriptor dictionary
+  @type user: C{dict}
+  @param password: New password
+  @type password: C{str}
+  @param confirm: Password confirmation
+  @type confirm: C{str}
+  @return: C{True} if the password was changed
+  @rtype: C{bool}
+  @raise zExceptions.InternalError: If password and confirmation differ
+  """
   if password!='******':
     if password != confirm:
       raise zExceptions.InternalError("Passwort <> Confirm")
@@ -162,10 +165,14 @@ def updateUserPassword(self, user, password, confirm):
     return True
   return False
 
-# ------------------------------------------------------------------------------
-#  _accessmanager.addRole:
-# ------------------------------------------------------------------------------
 def addRole(self, id):
+  """
+  Add a role and initialize its security configuration entry.
+
+  @param self: ZMS context object
+  @param id: Role id
+  @type id: C{str}
+  """
   #-- Add local role.
   root = self.getRootElement()
   home = root.getHome()
@@ -176,10 +183,16 @@ def addRole(self, id):
   security_roles[id] = security_roles.get(id, {'nodes':{}})
   root.setConfProperty('ZMS.security.roles', security_roles)
 
-# ------------------------------------------------------------------------------
-#  _accessmanager.setLocalRoles:
-# ------------------------------------------------------------------------------
 def setLocalRoles(self, id, roles=[]):
+  """
+  Assign filtered local roles to a user on the current node.
+
+  @param self: ZMS context object
+  @param id: User id
+  @type id: C{str}
+  @param roles: Role ids to assign
+  @type roles: C{list}
+  """
   filtered_roles = [x for x in roles if x in self.valid_roles()]
   if len(filtered_roles) > 0:
     self.manage_setLocalRoles(id, filtered_roles)
@@ -187,19 +200,27 @@ def setLocalRoles(self, id, roles=[]):
     home = self.aq_parent
     setLocalRoles(home, id, roles)
 
-# ------------------------------------------------------------------------------
-#  _accessmanager.delLocalRoles:
-# ------------------------------------------------------------------------------
 def delLocalRoles(self, id):
+  """
+  Remove all local roles for a user from the current node.
+
+  @param self: ZMS context object
+  @param id: User id
+  @type id: C{str}
+  """
   self.manage_delLocalRoles(userids=[id])
   if self.meta_type == 'ZMS':
     home = self.aq_parent
     delLocalRoles(home, id)
 
-# ------------------------------------------------------------------------------
-#  _accessmanager.deleteUser:
-# ------------------------------------------------------------------------------
 def deleteUser(self, id):
+  """
+  Delete a user and all of its local role assignments.
+
+  @param self: ZMS context object
+  @param id: User id
+  @type id: C{str}
+  """
   
   # Delete local roles in node.
   nodes = self.getUserAttr(id, 'nodes', {})
@@ -211,12 +232,15 @@ def deleteUser(self, id):
   # Delete user from ZMS dictionary.
   self.delUserAttr(id)
 
-# ------------------------------------------------------------------------------
-#  _accessmanager.UserFolderIAddUserPluginWrapper:
-# ------------------------------------------------------------------------------
 class UserFolderIAddUserPluginWrapper(object):
+  """Adapter exposing a uniform add/remove-user API for classic user folders."""
 
   def __init__(self, userFldr):
+    """
+    Initialize the wrapper.
+
+    @param userFldr: Wrapped user folder
+    """
     self.userFldr = userFldr
     self.id = userFldr.id
     self.meta_type = userFldr.meta_type
@@ -224,30 +248,43 @@ class UserFolderIAddUserPluginWrapper(object):
 
   absolute_url__roles__ = None
   def absolute_url( self):
+    """Return the absolute URL of the wrapped user folder."""
     return self.userFldr.absolute_url()
   
   def doAddUser( self, login, password ):
+    """
+    Add a user through the wrapped user folder.
+
+    @param login: Login name
+    @type login: C{str}
+    @param password: Password
+    @type password: C{str}
+    """
     roles =  []
     domains =  []
     self.userFldr.userFolderAddUser(login, password, roles, domains)
   
   def removeUser( self, login):
+    """
+    Remove a user through the wrapped user folder.
+
+    @param login: Login name
+    @type login: C{str}
+    """
     self.userFldr.userFolderDelUsers([login])
 
 
-################################################################################
-################################################################################
-###
-###   Class AccessableObject
-###
-################################################################################
-################################################################################
 class AccessableObject(object): 
+    """Mixin providing access-control helpers for ZMS objects."""
 
-    # --------------------------------------------------------------------------
-    #  AccessableObject.getUsers:
-    # --------------------------------------------------------------------------
     def getUsers(self, REQUEST=None):
+      """
+      Return all users with effective roles and languages on this object.
+
+      @param REQUEST: Optional request object
+      @return: Mapping of user ids to access information
+      @rtype: C{dict}
+      """
       users = {}
       d = self.getSecurityUsers()
       for user in d:
@@ -257,20 +294,32 @@ class AccessableObject(object):
           users[ user] = {'roles':roles,'langs':langs}
       return users
 
-    # --------------------------------------------------------------------------
-    #  AccessableObject.hasAccess:
-    # --------------------------------------------------------------------------
     def hasAccess(self, REQUEST):
+      """
+      Check whether the authenticated user can view this object.
+
+      @param REQUEST: Zope request object
+      @return: C{True} if access is granted
+      @rtype: C{bool}
+      """
       auth_user = REQUEST.get('AUTHENTICATED_USER')
       access = auth_user.has_permission( 'View', self) in [ 1, True]
       if not access:
         access = access or self.hasPublicAccess() 
       return access
 
-    # --------------------------------------------------------------------------
-    #  AccessableObject.getUserRoles:
-    # --------------------------------------------------------------------------
     def getUserRoles(self, userObj, aq_parent=True, resolve=True):
+      """
+      Resolve effective user roles for this object.
+
+      @param userObj: User object or identifier
+      @param aq_parent: Whether to inspect parent nodes
+      @type aq_parent: C{bool}
+      @param resolve: Whether to resolve security roles recursively
+      @type resolve: C{bool}
+      @return: Effective role ids
+      @rtype: C{list}
+      """
       roles = []
       try:
         roles.extend(list(userObj.getRolesInContext(self)))
@@ -305,10 +354,16 @@ class AccessableObject(object):
                 roles.append( role)
       return roles
 
-    # --------------------------------------------------------------------------
-    #  AccessableObject.getUserLangs:
-    # --------------------------------------------------------------------------
     def getUserLangs(self, userObj, aq_parent=1):
+      """
+      Resolve effective language permissions for a user on this object.
+
+      @param userObj: User object or identifier
+      @param aq_parent: Whether to inspect parent nodes
+      @type aq_parent: C{bool}
+      @return: Allowed language ids
+      @rtype: C{list}
+      """
       langs = []
       try:
         langs.extend(list(getattr(userObj, 'langs', ['*'])))
@@ -336,6 +391,11 @@ class AccessableObject(object):
     # @see ZMSItem#zmi_page_request
     #
     def zmi_page_request(self, *args, **kwargs):
+      """
+      Preprocess ZMI page requests and enforce access restrictions.
+
+      @return: Redirect response for registration flows when applicable
+      """
       request = self.REQUEST
       RESPONSE = request.RESPONSE
       auth_user = request['AUTHENTICATED_USER']
@@ -377,25 +437,17 @@ class AccessableObject(object):
           raise zExceptions.Unauthorized
 
 
-    ############################################################################
-    ###
     ###  Public Access (Subscribers)
-    ###
-    ############################################################################
 
-    # --------------------------------------------------------------------------
-    #  AccessableObject.hasRestrictedAccess:
-    # --------------------------------------------------------------------------
     def hasRestrictedAccess(self):
+      """Return whether this object is explicitly marked as restricted."""
       restricted = False
       if 'attr_dc_accessrights_restricted' in self.getMetaobjAttrIds(self.meta_id):
         restricted = restricted or self.attr( 'attr_dc_accessrights_restricted') in [ 1, True]
       return restricted
 
-    # --------------------------------------------------------------------------
-    #  AccessableObject.hasPublicAccess:
-    # --------------------------------------------------------------------------
     def hasPublicAccess(self):
+      """Return whether public access is effectively allowed for this object."""
       public = True
       if 'attr_dc_accessrights_public' in self.getMetaobjAttrIds(self.meta_id):
         public = public and self.attr( 'attr_dc_accessrights_public') in [ 1, True]
@@ -412,10 +464,8 @@ class AccessableObject(object):
       return public
 
 
-    # --------------------------------------------------------------------------
-    #  AccessableObject.synchronizePublicAccess:
-    # --------------------------------------------------------------------------
     def synchronizePublicAccess(self):
+      """Synchronize public-access permissions with the current restriction flags."""
       # This is ugly, but necessary since ZMSObject is inherited from 
       # AccessableObject and ZMSContainerObject is inherited from 
       # AccessableContainer!
@@ -436,20 +486,22 @@ class AccessableObject(object):
           self.grantPublicAccess()
       
 
-    ############################################################################
-    ###
     ###  Properties
-    ###
-    ############################################################################
 
-    ############################################################################
-    #  AccessableObject.manage_user:
     #
     #  Change user.
-    ############################################################################
     manage_userForm = PageTemplateFile('zpt/ZMS/manage_user', globals())
     def manage_user(self, btn, lang, REQUEST, RESPONSE):
-      """ AccessManager.manage_user """
+      """
+      Update properties of the currently authenticated user.
+
+      @param btn: Action button id
+      @type btn: C{str}
+      @param lang: UI language id
+      @type lang: C{str}
+      @param REQUEST: Zope request object
+      @param RESPONSE: Zope response object
+      """
       message = ''
       
       # Change.
@@ -471,20 +523,15 @@ class AccessableObject(object):
         message = standard.url_quote(message)
         return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(lang, message))
 
+################################################################################
+# CLASS AccessableContainer
+################################################################################
 
-################################################################################
-################################################################################
-###
-###   Class AccessableContainer
-###
-################################################################################
-################################################################################
 class AccessableContainer(AccessableObject): 
+    """Access-control mixin for container-like ZMS objects."""
 
-    # --------------------------------------------------------------------------
-    #  AccessableContainer.synchronizeRolesAccess:
-    # --------------------------------------------------------------------------
     def synchronizeRolesAccess(self):
+      """Synchronize local role permission settings for this container."""
       standard.writeLog(self, '[synchronizeRolesAccess]')
       root = self.getRootElement()
       l = [(x, [x]) for x in role_defs]
@@ -517,10 +564,8 @@ class AccessableContainer(AccessableObject):
         permissions = standard.concat_list(permissions, role_permissions)
         self.manage_role(role_to_manage=role, permissions=permissions)
 
-    # --------------------------------------------------------------------------
-    #  AccessableContainer.grantPublicAccess:
-    # --------------------------------------------------------------------------
     def grantPublicAccess(self):
+      """Grant anonymous and authenticated public access for this container."""
       standard.writeLog(self, '[grantPublicAccess]')
       self.synchronizeRolesAccess()
       manager_permissions = [x['name'] for x in self.permissionsOfRole('Manager') if x['selected'] == 'SELECTED']
@@ -530,10 +575,8 @@ class AccessableContainer(AccessableObject):
       for role_to_manage in ['Anonymous', 'Authenticated']:
         self.manage_role(role_to_manage, permissions=[])
 
-    # --------------------------------------------------------------------------
-    #  AccessableContainer.revokePublicAccess:
-    # --------------------------------------------------------------------------
     def revokePublicAccess(self):
+      """Revoke public access and restore restricted permission handling."""
       standard.writeLog(self, '[revokePublicAccess]')
       self.synchronizeRolesAccess()
       manager_permissions = [x['name'] for x in self.permissionsOfRole('Manager') if x['selected'] == 'SELECTED']
@@ -545,21 +588,13 @@ class AccessableContainer(AccessableObject):
         self.manage_role(role_to_manage, permissions=['Access contents information'])
 
 
-################################################################################
-################################################################################
-###
-###   Class AccessManager
-###
-################################################################################
-################################################################################
 class AccessManager(AccessableContainer): 
+    """Main access-management mixin for users, roles, and local permissions."""
 
-    # -------------------------------------------------------------------------- 
-    #  AccessManager.initRoleDefs: 
     # 
     #  Init Role-Definitions and Permission Settings 
-    # -------------------------------------------------------------------------- 
     def initRoleDefs(self): 
+      """Initialize built-in role definitions and synchronize public access."""
       
       # Init Roles. 
       manager_permissions = [x['name'] for x in self.permissionsOfRole('Manager') if x['selected'] == 'SELECTED']
@@ -577,20 +612,23 @@ class AccessManager(AccessableContainer):
       # Grant public access. 
       self.synchronizePublicAccess() 
 
-    # --------------------------------------------------------------------------
-    #  AccessManager.getRoleName
-    # --------------------------------------------------------------------------
     def getRoleName(self, role):
+      """
+      Return the localized display name for a role.
+
+      @param role: Role id
+      @type role: C{str}
+      @return: Localized role name
+      @rtype: C{str}
+      """
       langKey = 'ROLE_%s'%role.upper()
       langStr = self.getZMILangStr(langKey)
       if langKey == langStr:
         return role
       return langStr
 
-    # --------------------------------------------------------------------------
-    #  AccessManager.getSecurityRoles:
-    # --------------------------------------------------------------------------
     def getSecurityRoles(self):
+      """Return configured security-role definitions relevant for this home context."""
       roleDefs = {}
       root = self.getRootElement()
       d = root.getConfProperty('ZMS.security.roles', {})
@@ -611,10 +649,15 @@ class AccessManager(AccessableContainer):
           roleDefs[name] = roleDef
       return roleDefs
 
-    # --------------------------------------------------------------------------
-    #  AccessManager.getSecurityUsers:
-    # --------------------------------------------------------------------------
     def getSecurityUsers(self, acquired=False):
+      """
+      Return configured security-user definitions for this home context.
+
+      @param acquired: Include acquired users from parent homes
+      @type acquired: C{bool}
+      @return: User definition mapping
+      @rtype: C{dict}
+      """
       userDefs = {}
       root = self.getRootElement()
       d = root.getConfProperty('ZMS.security.users', {})
@@ -641,10 +684,15 @@ class AccessManager(AccessableContainer):
             userDefs[name] = userDef
       return userDefs
 
-    # --------------------------------------------------------------------------
-    #  AccessManager.searchUsers:
-    # --------------------------------------------------------------------------
     def searchUsers(self, search_term=''):
+      """
+      Search the underlying user folder for matching users.
+
+      @param search_term: Search string
+      @type search_term: C{str}
+      @return: Matching user ids or logins
+      @rtype: C{list}
+      """
       users = []
       if search_term:
         userFldr = self.getUserFolder()
@@ -659,12 +707,10 @@ class AccessManager(AccessableContainer):
             users.extend([x for x in userFldr.getUserNames() if x == search_term])
       return users
 
-    # --------------------------------------------------------------------------
-    #  AccessManager.getSearchableAttrs:
     #
     #  Return searchable attributes for current user-folder.
-    # --------------------------------------------------------------------------
     def getSearchableAttrs(self):
+      """Return searchable attributes supported by the current user folder."""
       attrs = []
       def traverseUserFolders(context):
         if context.meta_type == 'LDAPUserFolder':
@@ -687,10 +733,20 @@ class AccessManager(AccessableContainer):
       attrs = sorted(attrs,key=lambda x:x[1])
       return attrs
 
-    # --------------------------------------------------------------------------
-    #  AccessManager.getValidUserids:
-    # --------------------------------------------------------------------------
     def getValidUserids(self, search_term='', search_term_param=None, without_node_check=True, exact_match=False):
+      """
+      Query user-folder backends and return normalized user records.
+
+      @param search_term: Search string
+      @type search_term: C{str}
+      @param search_term_param: Optional backend-specific search attribute
+      @type search_term_param: C{str}
+      @param without_node_check: Whether to skip local-role checks for simple folders
+      @type without_node_check: C{bool}
+      @param exact_match: Whether to return a single exact-match record
+      @type exact_match: C{bool}
+      @return: Normalized user record or table data depending on C{exact_match}
+      """
       encoding = self.getConfProperty('LDAPUserFolder.encoding','latin-1')
       local_userFldr = self.getUserFolder()
       columns = None
@@ -815,10 +871,15 @@ class AccessManager(AccessableContainer):
       return {'columns':columns,'records':records}
 
 
-    # --------------------------------------------------------------------------
-    #  AccessManager.findUser:
-    # --------------------------------------------------------------------------
     def findUser(self, name):
+      """
+      Return the normalized user record for a given user id.
+
+      @param name: User id or login name
+      @type name: C{str}
+      @return: User record or C{None}
+      @rtype: C{dict}
+      """
       user = self.getValidUserids(search_term=name,exact_match=True)
       if user is not None:
         userFldr = user['localUserFldr']
@@ -862,10 +923,15 @@ class AccessManager(AccessableContainer):
       return user
 
 
-    # --------------------------------------------------------------------------
-    #  AccessManager.setUserAttr:
-    # --------------------------------------------------------------------------
     def setUserAttr(self, user, name, value):
+      """
+      Persist a user attribute in the central security configuration.
+
+      @param user: User reference
+      @param name: Attribute name
+      @type name: C{str}
+      @param value: Attribute value
+      """
       user = getUserId(user)
       root = self.getRootElement()
       d = root.getConfProperty('ZMS.security.users', {})
@@ -882,10 +948,16 @@ class AccessManager(AccessableContainer):
       d[user] = i.copy()
       root.setConfProperty('ZMS.security.users', d)
 
-    # --------------------------------------------------------------------------
-    #  AccessManager.getUserAttr:
-    # --------------------------------------------------------------------------
     def getUserAttr(self, user, name=None, default=None):
+      """
+      Retrieve a stored or derived user attribute.
+
+      @param user: User reference
+      @param name: Attribute name
+      @type name: C{str}
+      @param default: Default value if attribute is missing
+      @return: Attribute value or full user definition
+      """
       user = getUserId(user)
       root = self.getRootElement()
       d = root.getConfProperty('ZMS.security.users', {})
@@ -904,16 +976,21 @@ class AccessManager(AccessableContainer):
           v = self.getUserAttr(user, 'mail')
       return v
 
-    # --------------------------------------------------------------------------
-    #  AccessManager.delUser:
-    # --------------------------------------------------------------------------
     def delUser(self, id):
+      """
+      Delete a user and all of its configured assignments.
+
+      @param id: User id
+      @type id: C{str}
+      """
       deleteUser(self, id)
 
-    # --------------------------------------------------------------------------
-    #  AccessManager.delUserAttr:
-    # --------------------------------------------------------------------------
     def delUserAttr(self, user):
+      """
+      Remove a stored user configuration entry.
+
+      @param user: User reference
+      """
       user = getUserId(user)
       root = self.getRootElement()
       d = root.getConfProperty('ZMS.security.users', {})
@@ -924,10 +1001,8 @@ class AccessManager(AccessableContainer):
         standard.writeError(root, '[delUserAttr]: user=%s not deleted!'%str(user))
 
 
-    # --------------------------------------------------------------------------
-    #  AccessManager.getUserAdderPlugin:
-    # --------------------------------------------------------------------------
     def getUserAdderPlugin(self):
+      """Return the plugin responsible for creating and deleting users."""
       userFldr = self.getUserFolder()
       if userFldr.meta_type == 'User Folder':
         return UserFolderIAddUserPluginWrapper(userFldr)
@@ -938,10 +1013,8 @@ class AccessManager(AccessableContainer):
       return None
 
 
-    # --------------------------------------------------------------------------
-    #  AccessManager.getUserFolder:
-    # --------------------------------------------------------------------------
     def getUserFolder(self):
+      """Return the active user folder, creating a default one if necessary."""
       root = self.getRootElement()
       updateVersion(root)
       home = root.getHome()
@@ -953,22 +1026,24 @@ class AccessManager(AccessableContainer):
         home._setObject(userFldr.id, userFldr)
       return userFldr
 
-    # --------------------------------------------------------------------------
-    #  AccessManager.getUserDefinedRoles:
-    # --------------------------------------------------------------------------
     def getUserDefinedRoles(self):
+      """Return user-defined roles from both the home object and the current object."""
       return list(self.aq_parent.userdefined_roles())+list(self.userdefined_roles())
 
-    ############################################################################
-    ###
     ###  Local Users
-    ###
-    ############################################################################
 
-    # ------------------------------------------------------------------------------
-    #  AccessManager.purgeLocalUsers
-    # ------------------------------------------------------------------------------
     def purgeLocalUsers(self, ob=None, valid_userids=[], invalid_userids=[]):
+      """
+      Remove stale local user assignments from a subtree.
+
+      @param ob: Start object for traversal
+      @param valid_userids: Cache of known valid user ids
+      @type valid_userids: C{list}
+      @param invalid_userids: Cache of known invalid user ids
+      @type invalid_userids: C{list}
+      @return: HTML status report
+      @rtype: C{str}
+      """
       rtn = ""
       if ob is None:
         ob = self
@@ -1013,10 +1088,13 @@ class AccessManager(AccessableContainer):
       return rtn
 
 
-    # --------------------------------------------------------------------------
-    #  AccessManager.toggleUserActive:
-    # --------------------------------------------------------------------------
     def toggleUserActive(self, id):
+      """
+      Apply or remove local roles depending on the user's active state.
+
+      @param id: User id
+      @type id: C{str}
+      """
       active = self.getUserAttr(id, 'attrActive', 1)
       attrActiveStart = standard.parseLangFmtDate(self.getUserAttr(id, 'attrActiveStart', None))
       if attrActiveStart is not None:
@@ -1037,10 +1115,19 @@ class AccessManager(AccessableContainer):
             delLocalRoles(ob, id)
 
 
-    # --------------------------------------------------------------------------
-    #  AccessManager.setLocalUser:
-    # --------------------------------------------------------------------------
     def setLocalUser(self, id, node, roles, langs):
+      """
+      Assign a local user definition to a node and set local roles.
+
+      @param id: User id
+      @type id: C{str}
+      @param node: Node reference path
+      @type node: C{str}
+      @param roles: Role ids
+      @type roles: C{list}
+      @param langs: Language ids
+      @type langs: C{list}
+      """
       
       # Insert node to user-properties.
       root = self.getRootElement()
@@ -1059,10 +1146,15 @@ class AccessManager(AccessableContainer):
         setLocalRoles(ob, id, roles)
 
 
-    # --------------------------------------------------------------------------
-    #  AccessManager.delLocalUser:
-    # --------------------------------------------------------------------------
     def delLocalUser(self, id, node):
+      """
+      Remove a local user assignment from a node.
+
+      @param id: User id
+      @type id: C{str}
+      @param node: Node reference path
+      @type node: C{str}
+      """
       
       # Delete node from user-properties.
       root = self.getRootElement()
@@ -1077,24 +1169,27 @@ class AccessManager(AccessableContainer):
         delLocalRoles(ob, id)
 
 
-    ############################################################################
-    ###
     ###  Properties
-    ###
-    ############################################################################
 
     # Management Interface.
-    # ---------------------
     manage_users = PageTemplateFile('zpt/ZMS/manage_users', globals())
     manage_users_sitemap = PageTemplateFile('zpt/ZMS/manage_users_sitemap', globals())
 
-    ############################################################################
-    #  AccessManager.manage_roleProperties:
     #
     #  Change or delete roles.
-    ############################################################################
     def manage_roleProperties(self, btn, key, lang, REQUEST, RESPONSE=None):
-      """ AccessManager.manage_roleProperties """
+      """
+      Create, update, or delete role definitions and role-node bindings.
+
+      @param btn: Action button id
+      @type btn: C{str}
+      @param key: Edited object type selector
+      @type key: C{str}
+      @param lang: UI language id
+      @type lang: C{str}
+      @param REQUEST: Zope request object
+      @param RESPONSE: Optional Zope response object
+      """
       message = ''
       messagekey = 'manage_tabs_message'
       id = REQUEST.get('id', '')
@@ -1174,13 +1269,21 @@ class AccessManager(AccessableContainer):
         return RESPONSE.redirect(target)
 
 
-    ############################################################################
-    #  AccessManager.manage_userProperties:
     #
     #  Change or delete users.
-    ############################################################################
     def manage_userProperties(self, btn, key, lang, REQUEST, RESPONSE=None):
-      """ AccessManager.manage_userProperties """
+      """
+      Create, update, delete, import, export, or invite managed users.
+
+      @param btn: Action button id
+      @type btn: C{str}
+      @param key: Edited object type selector
+      @type key: C{str}
+      @param lang: UI language id
+      @type lang: C{str}
+      @param REQUEST: Zope request object
+      @param RESPONSE: Optional Zope response object
+      """
       message = ''
       messagekey = 'manage_tabs_message'
       id = REQUEST.get('id', '')
@@ -1433,4 +1536,3 @@ class AccessManager(AccessableContainer):
         target = standard.url_append_params( target, { 'lang': lang, messagekey: message, 'id':id})
         return RESPONSE.redirect(target)
 
-################################################################################

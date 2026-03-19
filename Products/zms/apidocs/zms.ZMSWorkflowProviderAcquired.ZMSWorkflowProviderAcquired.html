@@ -442,12 +442,12 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSWorkflowProviderAcquired</span>(ZMSItem.ZMSItem): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L30" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms.ZMSWorkflowProviderAcquired.ZMSWorkflowProviderAcquired.__init__">ZMSWorkflowProviderAcquired(autocommit, nodes)</a></code></p><p>Implements interfaces: Products.zms.IZMSConfigurationProvider.IZMSConfigurationProvider, Products.zms.IZMSWorkflowProvider.IZMSWorkflowProvider</p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSWorkflowProviderAcquired</span>(ZMSItem.ZMSItem): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L20" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms.ZMSWorkflowProviderAcquired.ZMSWorkflowProviderAcquired.__init__">ZMSWorkflowProviderAcquired(autocommit, nodes)</a></code></p><p>Implements interfaces: Products.zms.IZMSConfigurationProvider.IZMSConfigurationProvider, Products.zms.IZMSWorkflowProvider.IZMSWorkflowProvider</p>
           <p><a href="classIndex.html#zms.ZMSWorkflowProviderAcquired.ZMSWorkflowProviderAcquired">View In Hierarchy</a></p>
         </div>
 
         <div class="moduleDocstring">
-          <div><p>"" Properties</p></div>
+          <div><p>Delegate workflow settings and definitions to the portal master.</p></div>
         </div>
 
         <div id="splitTables">
@@ -458,72 +458,72 @@
     
     <td>Method</td>
     <td><code><a href="#__init__" class="internal-link" title="zms.ZMSWorkflowProviderAcquired.ZMSWorkflowProviderAcquired.__init__">__init__</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Initialize the acquired workflow manager stub.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#doAutocommit" class="internal-link" title="zms.ZMSWorkflowProviderAcquired.ZMSWorkflowProviderAcquired.doAutocommit">do<wbr></wbr>Autocommit</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Trigger a workflow autocommit run through the shared provider.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getActivities" class="internal-link" title="zms.ZMSWorkflowProviderAcquired.ZMSWorkflowProviderAcquired.getActivities">get<wbr></wbr>Activities</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return workflow activities from the portal master.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getActivity" class="internal-link" title="zms.ZMSWorkflowProviderAcquired.ZMSWorkflowProviderAcquired.getActivity">get<wbr></wbr>Activity</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return a workflow activity definition from the portal master.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getActivityDetails" class="internal-link" title="zms.ZMSWorkflowProviderAcquired.ZMSWorkflowProviderAcquired.getActivityDetails">get<wbr></wbr>Activity<wbr></wbr>Details</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return detailed workflow activity information from the portal master.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getActivityIds" class="internal-link" title="zms.ZMSWorkflowProviderAcquired.ZMSWorkflowProviderAcquired.getActivityIds">get<wbr></wbr>Activity<wbr></wbr>Ids</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return workflow activity ids from the portal master.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getAutocommit" class="internal-link" title="zms.ZMSWorkflowProviderAcquired.ZMSWorkflowProviderAcquired.getAutocommit">get<wbr></wbr>Autocommit</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return whether workflow autocommit is enabled locally.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getNodes" class="internal-link" title="zms.ZMSWorkflowProviderAcquired.ZMSWorkflowProviderAcquired.getNodes">get<wbr></wbr>Nodes</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return workflow-enabled node paths.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getTransition" class="internal-link" title="zms.ZMSWorkflowProviderAcquired.ZMSWorkflowProviderAcquired.getTransition">get<wbr></wbr>Transition</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return a workflow transition definition from the portal master.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getTransitionIds" class="internal-link" title="zms.ZMSWorkflowProviderAcquired.ZMSWorkflowProviderAcquired.getTransitionIds">get<wbr></wbr>Transition<wbr></wbr>Ids</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return workflow transition ids from the portal master.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getTransitions" class="internal-link" title="zms.ZMSWorkflowProviderAcquired.ZMSWorkflowProviderAcquired.getTransitions">get<wbr></wbr>Transitions</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return workflow transitions from the portal master.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_changeWorkflow" class="internal-link" title="zms.ZMSWorkflowProviderAcquired.ZMSWorkflowProviderAcquired.manage_changeWorkflow">manage_change<wbr></wbr>Workflow</a></code></td>
-    <td>ZMSWorkflowProvider.manage_changeWorkflow</td>
+    <td>Handle ZMI updates for acquired workflow settings.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_options" class="internal-link" title="zms.ZMSWorkflowProviderAcquired.ZMSWorkflowProviderAcquired.manage_options">manage<wbr></wbr>_options</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return parent management tabs with local relative actions.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_sub_options" class="internal-link" title="zms.ZMSWorkflowProviderAcquired.ZMSWorkflowProviderAcquired.manage_sub_options">manage<wbr></wbr>_sub<wbr></wbr>_options</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the workflow manager sub tabs shown in the ZMI.</td>
   </tr><tr class="classvariable">
     
     <td>Class Variable</td>
@@ -533,7 +533,7 @@
     
     <td>Class Variable</td>
     <td><code><a href="#manage_main" class="internal-link" title="zms.ZMSWorkflowProviderAcquired.ZMSWorkflowProviderAcquired.manage_main">manage<wbr></wbr>_main</a></code></td>
-    <td>"" ZMSWorkflowProviderAcquired.__init__:</td>
+    <td><span class="undocumented">Undocumented</span></td>
   </tr><tr class="classvariable">
     
     <td>Class Variable</td>
@@ -590,7 +590,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">__init__</span><span class="function-signature">(self, autocommit=1, nodes=[<wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">{$}</span><span class="rst-variable-quote">'</span>])</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L68">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L47">
       
       (source)
     </a>
@@ -602,7 +602,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Initialize the acquired workflow manager stub.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">autocommit:</span><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">Flag controlling automatic workflow commits.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">nodes:</span><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Workflow-enabled node paths.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -617,7 +617,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">doAutocommit</span><span class="function-signature">(self, lang, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L93">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L67">
       
       (source)
     </a>
@@ -629,7 +629,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Trigger a workflow autocommit run through the shared provider.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">lang:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Active UI language.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">The active HTTP request.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -644,7 +644,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getActivities</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L99">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L77">
       
       (source)
     </a>
@@ -656,7 +656,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return workflow activities from the portal master.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -671,7 +671,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getActivity</span><span class="function-signature">(self, id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L111">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L85">
       
       (source)
     </a>
@@ -683,7 +683,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return a workflow activity definition from the portal master.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Activity identifier.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Workflow activity definition.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -698,7 +698,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getActivityDetails</span><span class="function-signature">(self, id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L117">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L95">
       
       (source)
     </a>
@@ -710,7 +710,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return detailed workflow activity information from the portal master.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Activity identifier.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Detailed workflow activity information.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -725,7 +725,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getActivityIds</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L105">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L81">
       
       (source)
     </a>
@@ -737,7 +737,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return workflow activity ids from the portal master.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -752,7 +752,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getAutocommit</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L77">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L59">
       
       (source)
     </a>
@@ -764,7 +764,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return whether workflow autocommit is enabled locally.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -779,7 +779,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getNodes</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L84">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L63">
       
       (source)
     </a>
@@ -791,7 +791,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return workflow-enabled node paths.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -806,7 +806,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getTransition</span><span class="function-signature">(self, id, for_export=False)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L135">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L113">
       
       (source)
     </a>
@@ -818,7 +818,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return a workflow transition definition from the portal master.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Transition identifier.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">for<wbr></wbr>_export:</span><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">Include export-safe payload details when true.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Workflow transition definition.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -833,7 +833,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getTransitionIds</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L129">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L109">
       
       (source)
     </a>
@@ -845,7 +845,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return workflow transition ids from the portal master.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -860,7 +860,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getTransitions</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L123">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L105">
       
       (source)
     </a>
@@ -872,7 +872,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return workflow transitions from the portal master.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -887,7 +887,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_changeWorkflow</span><span class="function-signature">(self, lang, key=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, btn=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, REQUEST=None, RESPONSE=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L143">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L125">
       
       (source)
     </a>
@@ -899,7 +899,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>ZMSWorkflowProvider.manage_changeWorkflow</p></div>
+    <div><p>Handle ZMI updates for acquired workflow settings.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">lang:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Active UI language.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">key:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Edited settings section.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">btn:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Submitted button id.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">The active HTTP request.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">RESPONSE:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPResponse</tt></td><td class="fieldArgDesc">The active HTTP response.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">Redirect response.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -914,7 +914,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_options</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L47">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L33">
       
       (source)
     </a>
@@ -926,7 +926,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return parent management tabs with local relative actions.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -941,7 +941,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_sub_options</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L51">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L38">
       
       (source)
     </a>
@@ -953,7 +953,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the workflow manager sub tabs shown in the ZMI.</p></div>
   </div>
 </div><div class="baseclassvariable">
   
@@ -967,7 +967,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L59">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L44">
       
       (source)
     </a>
@@ -994,7 +994,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_main</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L60">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L45">
       
       (source)
     </a>
@@ -1006,9 +1006,7 @@
   </div>
   <div class="functionBody">
     
-    <div><p>"" ZMSWorkflowProviderAcquired.__init__:</p>
-<p>Constructor.</p>
-</div>
+    <div><p class="undocumented">Undocumented</p></div>
     
   </div>
 </div><div class="baseclassvariable">
@@ -1023,7 +1021,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_options_default_action</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L46">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L32">
       
       (source)
     </a>
@@ -1050,7 +1048,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_sub_options__roles__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L50">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L37">
       
       (source)
     </a>
@@ -1077,7 +1075,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">meta_type</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L39">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L28">
       
       (source)
     </a>
@@ -1104,7 +1102,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_icon</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L40">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L29">
       
       (source)
     </a>
@@ -1131,7 +1129,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">autocommit</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L70">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L56">
       
       (source)
     </a>
@@ -1158,7 +1156,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">id</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L69">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L55">
       
       (source)
     </a>
@@ -1185,7 +1183,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">nodes</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L71">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProviderAcquired.py#L57">
       
       (source)
     </a>

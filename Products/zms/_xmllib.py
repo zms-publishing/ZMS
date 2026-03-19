@@ -1,4 +1,5 @@
-"""_xmllib.py
+"""
+_xmllib.py
 
 XML parsing and serialization utilities for ZMS.
 

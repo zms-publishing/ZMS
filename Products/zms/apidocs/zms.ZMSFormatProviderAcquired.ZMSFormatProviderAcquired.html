@@ -282,12 +282,14 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSFormatProviderAcquired</span>(ZMSFormatProvider.ZMSFormatProvider): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFormatProviderAcquired.py#L34" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms.ZMSFormatProviderAcquired.ZMSFormatProviderAcquired.__init__">ZMSFormatProviderAcquired(textformats, charformats)</a></code></p><p>Implements interfaces: Products.zms.IZMSFormatProvider.IZMSFormatProvider</p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSFormatProviderAcquired</span>(ZMSFormatProvider.ZMSFormatProvider): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFormatProviderAcquired.py#L17" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms.ZMSFormatProviderAcquired.ZMSFormatProviderAcquired.__init__">ZMSFormatProviderAcquired(textformats, charformats)</a></code></p><p>Implements interfaces: Products.zms.IZMSFormatProvider.IZMSFormatProvider</p>
           <p><a href="classIndex.html#zms.ZMSFormatProviderAcquired.ZMSFormatProviderAcquired">View In Hierarchy</a></p>
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>Delegate formatting configuration to the portal master.</p>
+<p>The acquired provider exposes text and character formats from the master portal while adapting URLs for local editor usage.</p>
+</div>
         </div>
 
         <div id="splitTables">
@@ -298,32 +300,32 @@
     
     <td>Method</td>
     <td><code><a href="#__init__" class="internal-link" title="zms.ZMSFormatProviderAcquired.ZMSFormatProviderAcquired.__init__">__init__</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Initialize the acquired format manager stub.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getCharFormats" class="internal-link" title="zms.ZMSFormatProviderAcquired.ZMSFormatProviderAcquired.getCharFormats">get<wbr></wbr>Char<wbr></wbr>Formats</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return character formats from the portal master with local button URLs.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getTextFormat" class="internal-link" title="zms.ZMSFormatProviderAcquired.ZMSFormatProviderAcquired.getTextFormat">get<wbr></wbr>Text<wbr></wbr>Format</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return a text format definition delegated from the portal master.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getTextFormatDefault" class="internal-link" title="zms.ZMSFormatProviderAcquired.ZMSFormatProviderAcquired.getTextFormatDefault">get<wbr></wbr>Text<wbr></wbr>Format<wbr></wbr>Default</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the default text format from the portal master.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getTextFormats" class="internal-link" title="zms.ZMSFormatProviderAcquired.ZMSFormatProviderAcquired.getTextFormats">get<wbr></wbr>Text<wbr></wbr>Formats</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return all available text formats from the portal master.</td>
   </tr><tr class="classvariable">
     
     <td>Class Variable</td>
     <td><code><a href="#meta_type" class="internal-link" title="zms.ZMSFormatProviderAcquired.ZMSFormatProviderAcquired.meta_type">meta<wbr></wbr>_type</a></code></td>
-    <td>############################################################################ # #   Constructor # ############################################################################</td>
+    <td><span class="undocumented">Undocumented</span></td>
   </tr><tr class="instancevariable">
     
     <td>Instance Variable</td>
@@ -350,7 +352,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">__init__</span><span class="function-signature">(self, textformats=[], charformats=[])</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFormatProviderAcquired.py#L56">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFormatProviderAcquired.py#L33">
       
       (source)
     </a>
@@ -362,7 +364,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Initialize the acquired format manager stub.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">textformats:</span><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Unused compatibility argument.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">charformats:</span><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Unused compatibility argument.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -377,7 +379,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getCharFormats</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFormatProviderAcquired.py#L78">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFormatProviderAcquired.py#L87">
       
       (source)
     </a>
@@ -389,7 +391,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return character formats from the portal master with local button URLs.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Character format definitions.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -404,7 +406,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getTextFormat</span><span class="function-signature">(self, id, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFormatProviderAcquired.py#L65">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFormatProviderAcquired.py#L56">
       
       (source)
     </a>
@@ -416,7 +418,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return a text format definition delegated from the portal master.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Text format identifier.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">The active HTTP request.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Text format definition or <tt class="rst-docutils rst-literal">None</tt>.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -431,7 +433,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getTextFormatDefault</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFormatProviderAcquired.py#L59">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFormatProviderAcquired.py#L44">
       
       (source)
     </a>
@@ -443,7 +445,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the default text format from the portal master.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">The default text format id or <tt class="rst-docutils rst-literal">None</tt>.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -458,7 +460,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getTextFormats</span><span class="function-signature">(self, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFormatProviderAcquired.py#L71">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFormatProviderAcquired.py#L72">
       
       (source)
     </a>
@@ -470,7 +472,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return all available text formats from the portal master.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">The active HTTP request.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Text format definitions.</td></tr></table></div>
   </div>
 </div><div class="baseclassvariable">
   
@@ -484,7 +486,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">meta_type</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFormatProviderAcquired.py#L41">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFormatProviderAcquired.py#L30">
       
       (source)
     </a>
@@ -496,7 +498,7 @@
   </div>
   <div class="functionBody">
     
-    <div><p>############################################################################ # #   Constructor # ############################################################################</p></div>
+    <div><p class="undocumented">Undocumented</p></div>
     
   </div>
 </div><div class="baseinstancevariable">
@@ -511,7 +513,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">id</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFormatProviderAcquired.py#L57">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFormatProviderAcquired.py#L41">
       
       (source)
     </a>

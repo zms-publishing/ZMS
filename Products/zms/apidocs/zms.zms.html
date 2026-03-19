@@ -1196,7 +1196,10 @@
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>zms.py</p>
+<p>Main ZMS product implementation and top-level content type behavior.</p>
+<p>License: GNU General Public License v2 or later Organization: ZMS Publishing</p>
+</div>
         </div>
 
         <div id="splitTables">
@@ -1212,37 +1215,37 @@
     
     <td>Class</td>
     <td><code><a href="zms.zms.ZMS.html" class="internal-link" title="zms.zms.ZMS">ZMS</a></code></td>
-    <td><span class="undocumented">No class docstring; 0/4 instance variable, 1/25 class variable, 1/16 method documented</span></td>
+    <td>Root ZMS content object that combines configuration, editing, and indexing.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#containerFilter" class="internal-link" title="zms.zms.containerFilter">container<wbr></wbr>Filter</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Restrict add-dialog containers to plain folders.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#importTheme" class="internal-link" title="zms.zms.importTheme">import<wbr></wbr>Theme</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Import or acquire the configured theme for a newly created site.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#initContent" class="internal-link" title="zms.zms.initContent">init<wbr></wbr>Content</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Import initial site content from a bundled archive.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#initZMS" class="internal-link" title="zms.zms.initZMS">init<wbr></wbr>ZMS</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Create and initialize a new ZMS site below the given container.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#manage_addZMS" class="internal-link" title="zms.zms.manage_addZMS">manage_add<wbr></wbr>ZMS</a></code></td>
-    <td>manage_addZMS</td>
+    <td>Create the top-level home folder and initial ZMS site from the add form.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#subscriber" class="internal-link" title="zms.zms.subscriber">subscriber</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Dispatch ZMS object lifecycle events to the internal event framework.</td>
   </tr><tr class="variable">
     
     <td>Variable</td>
@@ -1269,7 +1272,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">containerFilter</span><span class="function-signature">(container)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zms.py#L275">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zms.py#L289">
       
       (source)
     </a>
@@ -1281,7 +1284,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Restrict add-dialog containers to plain folders.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">container:</span>object</td><td class="fieldArgDesc">Candidate container displayed by the add dialog.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer">bool</td><td class="fieldArgDesc"><tt class="rst-docutils rst-literal">True</tt> when the container is a folder.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1296,7 +1299,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">importTheme</span><span class="function-signature">(self, theme)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zms.py#L90">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zms.py#L73">
       
       (source)
     </a>
@@ -1308,7 +1311,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Import or acquire the configured theme for a newly created site.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self:</span>ZMS</td><td class="fieldArgDesc">ZMS site that receives the theme configuration.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">theme:</span>str</td><td class="fieldArgDesc">Theme package identifier or import source.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer">str | None</td><td class="fieldArgDesc">Identifier of the imported theme, or <tt class="rst-docutils rst-literal">None</tt> when the theme is acquired from a portal master.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1323,7 +1326,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">initContent</span><span class="function-signature">(self, filename, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zms.py#L206">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zms.py#L205">
       
       (source)
     </a>
@@ -1335,7 +1338,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Import initial site content from a bundled archive.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self:</span>ZMS</td><td class="fieldArgDesc">ZMS site that receives the imported content.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">filename:</span>str</td><td class="fieldArgDesc">Name of the import archive below the product import folder.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span>ZPublisher.HTTPRequest.HTTPRequest</td><td class="fieldArgDesc">Active HTTP request.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1350,7 +1353,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">initZMS</span><span class="function-signature">(self, id, titlealt, title, lang, manage_lang, REQUEST, minimal_init=False)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zms.py#L111">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zms.py#L99">
       
       (source)
     </a>
@@ -1362,7 +1365,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Create and initialize a new ZMS site below the given container.</p>
+<p>A new site can either be initialized as a standalone master site or as a client that acquires its content model from a portal master when the request variable <tt class="rst-docutils rst-literal">acquire</tt> is set.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self:</span>OFS.ObjectManager.ObjectManager</td><td class="fieldArgDesc">Container that receives the new ZMS site.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span>str</td><td class="fieldArgDesc">Identifier of the created ZMS object.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">titlealt:</span>str</td><td class="fieldArgDesc">Alternative title shown in the management interface.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">title:</span>str</td><td class="fieldArgDesc">Human readable title of the site.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">lang:</span>str</td><td class="fieldArgDesc">Primary content language.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">manage<wbr></wbr>_lang:</span>str</td><td class="fieldArgDesc">Management interface language.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span>ZPublisher.HTTPRequest.HTTPRequest</td><td class="fieldArgDesc">HTTP request with initialization options.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">minimal<wbr></wbr>_init:</span>bool</td><td class="fieldArgDesc">Initialize only the minimal default configuration.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer">ZMS</td><td class="fieldArgDesc">Newly created and initialized ZMS site.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1377,7 +1382,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_addZMS</span><span class="function-signature">(self, lang, manage_lang, REQUEST, RESPONSE)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zms.py#L217">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zms.py#L223">
       
       (source)
     </a>
@@ -1389,7 +1394,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>manage_addZMS</p></div>
+    <div><p>Create the top-level home folder and initial ZMS site from the add form.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self:</span>OFS.ObjectManager.ObjectManager</td><td class="fieldArgDesc">Container in which the home folder is created.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">lang:</span>str</td><td class="fieldArgDesc">Primary content language.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">manage<wbr></wbr>_lang:</span>str</td><td class="fieldArgDesc">Management interface language.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span>ZPublisher.HTTPRequest.HTTPRequest</td><td class="fieldArgDesc">HTTP request containing form input.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">RESPONSE:</span>ZPublisher.HTTPResponse.HTTPResponse</td><td class="fieldArgDesc">HTTP response used for redirects.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1404,7 +1409,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">subscriber</span><span class="function-signature">(event)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zms.py#L61">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zms.py#L47">
       
       (source)
     </a>
@@ -1416,7 +1421,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Dispatch ZMS object lifecycle events to the internal event framework.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">event:</span>zope.lifecycleevent.interfaces.IObjectEvent</td><td class="fieldArgDesc">Zope container lifecycle event.</td></tr></table></div>
   </div>
 </div><div class="basevariable">
   
@@ -1430,7 +1435,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_addZMSForm</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zms.py#L216">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zms.py#L220">
       
       (source)
     </a>

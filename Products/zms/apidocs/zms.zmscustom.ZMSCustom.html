@@ -488,12 +488,12 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSCustom</span>(zmscontainerobject.ZMSContainerObject): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L147" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms.zmscustom.ZMSCustom.__init__">ZMSCustom(id, sort_id, meta_id, uid)</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSCustom</span>(zmscontainerobject.ZMSContainerObject): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L131" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms.zmscustom.ZMSCustom.__init__">ZMSCustom(id, sort_id, meta_id, uid)</a></code></p>
           <p><a href="classIndex.html#zms.zmscustom.ZMSCustom">View In Hierarchy</a></p>
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>Custom content node with record-set editing and import helpers.</p></div>
         </div>
 
         <div id="splitTables">
@@ -504,27 +504,27 @@
     
     <td>Method</td>
     <td><code><a href="#__init__" class="internal-link" title="zms.zmscustom.ZMSCustom.__init__">__init__</a></code></td>
-    <td>ZMSCustom.__init__</td>
+    <td>Initialize a custom content node instance.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getEntityRecordHandler" class="internal-link" title="zms.zmscustom.ZMSCustom.getEntityRecordHandler">get<wbr></wbr>Entity<wbr></wbr>Record<wbr></wbr>Handler</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Create a helper that resolves foreign-key values for record exports.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_changeRecordGrid" class="internal-link" title="zms.zmscustom.ZMSCustom.manage_changeRecordGrid">manage_change<wbr></wbr>Record<wbr></wbr>Grid</a></code></td>
-    <td>ZMSCustom.manage_changeRecordGrid</td>
+    <td>Update the record-set grid view with edited row values.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_changeRecordSet" class="internal-link" title="zms.zmscustom.ZMSCustom.manage_changeRecordSet">manage_change<wbr></wbr>Record<wbr></wbr>Set</a></code></td>
-    <td>ZMSCustom.manage_changeRecordSet</td>
+    <td>Insert, update, move, duplicate, or delete record-set entries.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_import" class="internal-link" title="zms.zmscustom.ZMSCustom.manage_import">manage<wbr></wbr>_import</a></code></td>
-    <td>ZMSCustom.manage_import</td>
+    <td>Import content or record-set data into the custom object.</td>
   </tr><tr class="method">
     
     <td>Method</td>
@@ -636,7 +636,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">__init__</span><span class="function-signature">(self, id=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, sort_id=0, meta_id=None, uid=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L226">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L200">
       
       (source)
     </a>
@@ -648,7 +648,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>ZMSCustom.__init__</p></div>
+    <div><p>Initialize a custom content node instance.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Object id.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">sort<wbr></wbr>_id:</span><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">Sort position.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">meta<wbr></wbr>_id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Meta-object id describing the custom type.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">uid:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Optional persistent uid.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -663,7 +663,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getEntityRecordHandler</span><span class="function-signature">(self, id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L462">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L441">
       
       (source)
     </a>
@@ -675,7 +675,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Create a helper that resolves foreign-key values for record exports.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Meta-object id of the exported record set.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">Record transformation helper.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -690,7 +690,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_changeRecordGrid</span><span class="function-signature">(self, lang, btn, REQUEST, RESPONSE)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L503">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L491">
       
       (source)
     </a>
@@ -702,7 +702,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>ZMSCustom.manage_changeRecordGrid</p></div>
+    <div><p>Update the record-set grid view with edited row values.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">lang:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Active language.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">btn:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Submitted button id.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Current request.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">RESPONSE:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPResponse</tt></td><td class="fieldArgDesc">Current response.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -717,7 +717,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_changeRecordSet</span><span class="function-signature">(self, lang, btn, action, REQUEST, RESPONSE)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L585">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L580">
       
       (source)
     </a>
@@ -729,7 +729,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>ZMSCustom.manage_changeRecordSet</p></div>
+    <div><p>Insert, update, move, duplicate, or delete record-set entries.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">lang:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Active language.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">btn:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Submitted button id.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">action:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Requested record-set action.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Current request.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">RESPONSE:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPResponse</tt></td><td class="fieldArgDesc">Current response.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -744,7 +744,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_import</span><span class="function-signature">(self, file, lang, REQUEST, RESPONSE=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L695">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L698">
       
       (source)
     </a>
@@ -756,7 +756,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>ZMSCustom.manage_import</p></div>
+    <div><p>Import content or record-set data into the custom object.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">file:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest.FileUpload</tt></td><td class="fieldArgDesc">Uploaded import file.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">lang:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Active language.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Current request.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">RESPONSE:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPResponse</tt></td><td class="fieldArgDesc">Optional response used for redirect handling.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">Imported object when no response redirect is used.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -771,7 +771,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_options</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L160">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L147">
       
       (source)
     </a>
@@ -798,7 +798,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">recordSet_Export</span><span class="function-signature">(self, lang, qorder, qorderdir, qindex=[], REQUEST=None, RESPONSE=None, mode=<span class="rst-variable-quote">'</span><span class="rst-variable-string">xml</span><span class="rst-variable-quote">'</span>)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L384">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L366">
       
       (source)
     </a>
@@ -825,7 +825,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">recordSet_Filter</span><span class="function-signature">(self, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L259">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L241">
       
       (source)
     </a>
@@ -852,7 +852,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">recordSet_Init</span><span class="function-signature">(self, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L244">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L224">
       
       (source)
     </a>
@@ -879,7 +879,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">recordSet_Sort</span><span class="function-signature">(self, REQUEST=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L332">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L316">
       
       (source)
     </a>
@@ -905,7 +905,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">__ac_permissions__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L197">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L184">
       
       (source)
     </a>
@@ -932,7 +932,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">__authorPermissions__</span>: <code>tuple[<wbr></wbr>str, <wbr></wbr><span class="rst-variable-ellipsis">...</span>]</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L182">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L169">
       
       (source)
     </a>
@@ -959,7 +959,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">__viewPermissions__</span>: <code>tuple[<wbr></wbr>str, <wbr></wbr><span class="rst-variable-ellipsis">...</span>]</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L179">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L166">
       
       (source)
     </a>
@@ -986,7 +986,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_menu</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L206">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L193">
       
       (source)
     </a>
@@ -1013,7 +1013,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_properties</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L205">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L192">
       
       (source)
     </a>
@@ -1040,7 +1040,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">meta_type</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L156">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L141">
       
       (source)
     </a>
@@ -1067,7 +1067,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">metaobj_recordset_grid</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L210">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L197">
       
       (source)
     </a>
@@ -1094,7 +1094,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">metaobj_recordset_input_fields</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L209">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L196">
       
       (source)
     </a>
@@ -1121,7 +1121,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">metaobj_recordset_main</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L208">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L195">
       
       (source)
     </a>
@@ -1148,7 +1148,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">metaobj_recordset_main_grid</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L207">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L194">
       
       (source)
     </a>
@@ -1175,7 +1175,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">security</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L152">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L137">
       
       (source)
     </a>
@@ -1202,7 +1202,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">meta_id</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L229">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L214">
       
       (source)
     </a>
@@ -1229,7 +1229,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">_uid</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L230">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L215">
       
       (source)
     </a>

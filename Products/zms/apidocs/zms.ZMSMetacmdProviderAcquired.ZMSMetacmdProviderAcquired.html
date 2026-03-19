@@ -272,12 +272,12 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSMetacmdProviderAcquired</span>(ZMSMetacmdProvider.ZMSMetacmdProvider): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProviderAcquired.py#L33" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms.ZMSMetacmdProviderAcquired.ZMSMetacmdProviderAcquired.__init__">ZMSMetacmdProviderAcquired(commands)</a></code></p><p>Implements interfaces: Products.zms.IZMSMetacmdProvider.IZMSMetacmdProvider</p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSMetacmdProviderAcquired</span>(ZMSMetacmdProvider.ZMSMetacmdProvider): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProviderAcquired.py#L16" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms.ZMSMetacmdProviderAcquired.ZMSMetacmdProviderAcquired.__init__">ZMSMetacmdProviderAcquired(commands)</a></code></p><p>Implements interfaces: Products.zms.IZMSMetacmdProvider.IZMSMetacmdProvider</p>
           <p><a href="classIndex.html#zms.ZMSMetacmdProviderAcquired.ZMSMetacmdProviderAcquired">View In Hierarchy</a></p>
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>Delegate metacommand definitions to the portal master.</p></div>
         </div>
 
         <div id="splitTables">
@@ -288,22 +288,22 @@
     
     <td>Method</td>
     <td><code><a href="#__init__" class="internal-link" title="zms.ZMSMetacmdProviderAcquired.ZMSMetacmdProviderAcquired.__init__">__init__</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Initialize the acquired metacommand manager stub.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getMetaCmdDescription" class="internal-link" title="zms.ZMSMetacmdProviderAcquired.ZMSMetacmdProviderAcquired.getMetaCmdDescription">get<wbr></wbr>Meta<wbr></wbr>Cmd<wbr></wbr>Description</a></code></td>
-    <td>getMetaCmdDescription</td>
+    <td>Return a metacommand description from the portal master.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getMetaCmdIds" class="internal-link" title="zms.ZMSMetacmdProviderAcquired.ZMSMetacmdProviderAcquired.getMetaCmdIds">get<wbr></wbr>Meta<wbr></wbr>Cmd<wbr></wbr>Ids</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return metacommand ids from the portal master.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getMetaCmds" class="internal-link" title="zms.ZMSMetacmdProviderAcquired.ZMSMetacmdProviderAcquired.getMetaCmds">get<wbr></wbr>Meta<wbr></wbr>Cmds</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return metacommand definitions from the portal master.</td>
   </tr><tr class="classvariable">
     
     <td>Class Variable</td>
@@ -335,7 +335,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">__init__</span><span class="function-signature">(self, commands=[])</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProviderAcquired.py#L47">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProviderAcquired.py#L27">
       
       (source)
     </a>
@@ -347,7 +347,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Initialize the acquired metacommand manager stub.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">commands:</span><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Unused compatibility argument.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -362,7 +362,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getMetaCmdDescription</span><span class="function-signature">(self, id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProviderAcquired.py#L50">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProviderAcquired.py#L35">
       
       (source)
     </a>
@@ -374,7 +374,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>getMetaCmdDescription</p></div>
+    <div><p>Return a metacommand description from the portal master.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Metacommand identifier.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Metacommand description text.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -389,7 +389,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getMetaCmdIds</span><span class="function-signature">(self, sort=True)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProviderAcquired.py#L57">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProviderAcquired.py#L48">
       
       (source)
     </a>
@@ -401,7 +401,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return metacommand ids from the portal master.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">sort:</span><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">Sort the command ids when true.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Metacommand identifiers.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -416,7 +416,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getMetaCmds</span><span class="function-signature">(self, context=None, stereotype=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, sort=True)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProviderAcquired.py#L64">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProviderAcquired.py#L62">
       
       (source)
     </a>
@@ -428,7 +428,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return metacommand definitions from the portal master.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">context:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">Optional content context used for filtering.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">stereotype:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Optional command stereotype filter.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">sort:</span><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">Sort the command list when true.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Metacommand definitions marked as acquired.</td></tr></table></div>
   </div>
 </div><div class="baseclassvariable">
   
@@ -442,7 +442,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">meta_type</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProviderAcquired.py#L40">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProviderAcquired.py#L25">
       
       (source)
     </a>
@@ -469,7 +469,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">id</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProviderAcquired.py#L48">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProviderAcquired.py#L33">
       
       (source)
     </a>

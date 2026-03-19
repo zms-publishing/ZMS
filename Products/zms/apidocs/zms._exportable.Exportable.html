@@ -395,12 +395,12 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">Exportable</span>(_filtermanager.FilterItem): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L250" class="sourceLink">(source)</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">Exportable</span>(_filtermanager.FilterItem): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L292" class="sourceLink">(source)</a></code></p>
           <p><a href="classIndex.html#zms._exportable.Exportable">View In Hierarchy</a></p>
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>Mixin that provides XML, HTML, and archive export helpers.</p></div>
         </div>
 
         <div id="splitTables">
@@ -411,52 +411,52 @@
     
     <td>Method</td>
     <td><code><a href="#exportExternalResources" class="internal-link" title="zms._exportable.Exportable.exportExternalResources">export<wbr></wbr>External<wbr></wbr>Resources</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Download configured remote resources and relink them locally.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#exportRessources" class="internal-link" title="zms._exportable.Exportable.exportRessources">export<wbr></wbr>Ressources</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Export auxiliary resources required by an archive export.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getObjChildrenToXml" class="internal-link" title="zms._exportable.Exportable.getObjChildrenToXml">get<wbr></wbr>Obj<wbr></wbr>Children<wbr></wbr>To<wbr></wbr>Xml</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Render all filtered child nodes as XML fragments.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getObjToXml" class="internal-link" title="zms._exportable.Exportable.getObjToXml">get<wbr></wbr>Obj<wbr></wbr>To<wbr></wbr>Xml</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Render the current object as its custom XML fragment.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_export" class="internal-link" title="zms._exportable.Exportable.manage_export">manage<wbr></wbr>_export</a></code></td>
-    <td>Exportable.manage_export</td>
+    <td>Export the current object in one of the configured formats.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#recurse_downloadHtmlPages" class="internal-link" title="zms._exportable.Exportable.recurse_downloadHtmlPages">recurse_download<wbr></wbr>Html<wbr></wbr>Pages</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Recursively render and store HTML pages for a content subtree.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#toXhtml" class="internal-link" title="zms._exportable.Exportable.toXhtml">to<wbr></wbr>Xhtml</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Render the current object as localized standalone HTML.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#toXml" class="internal-link" title="zms._exportable.Exportable.toXml">to<wbr></wbr>Xml</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Render the current object tree as an XML export document.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#toZippedHtml" class="internal-link" title="zms._exportable.Exportable.toZippedHtml">to<wbr></wbr>Zipped<wbr></wbr>Html</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Build a ZIP archive containing localized HTML export pages.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#toZippedXml" class="internal-link" title="zms._exportable.Exportable.toZippedXml">to<wbr></wbr>Zipped<wbr></wbr>Xml</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Build a ZIP archive containing the XML export and resources.</td>
   </tr><tr class="classvariable">
     
     <td>Class Variable</td>
@@ -483,7 +483,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">exportExternalResources</span><span class="function-signature">(self, obj, html, path, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L422">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L500">
       
       (source)
     </a>
@@ -495,7 +495,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Download configured remote resources and relink them locally.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">obj:</span><tt class="rst-docutils rst-literal">OFS.SimpleItem.Item</tt></td><td class="fieldArgDesc">Content object whose HTML is being exported.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">html:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Rendered markup.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">path:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Directory receiving downloaded resources.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Current request.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Markup with localized external resource links.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -510,7 +510,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">exportRessources</span><span class="function-signature">(self, tempfolder, REQUEST, from_content=True, from_zms=False, from_home=False)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L400">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L465">
       
       (source)
     </a>
@@ -522,7 +522,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Export auxiliary resources required by an archive export.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">tempfolder:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Temporary export directory.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Current request.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">from<wbr></wbr>_content:</span><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">Export resources referenced by content.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">from<wbr></wbr>_zms:</span><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">Export shared ZMS product resources.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">from<wbr></wbr>_home:</span><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">Export resources from the site root.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Paths of exported resources.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -537,7 +537,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getObjChildrenToXml</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L343">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L390">
       
       (source)
     </a>
@@ -549,7 +549,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Render all filtered child nodes as XML fragments.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Serialized XML for child nodes.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -564,7 +564,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getObjToXml</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L330">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L376">
       
       (source)
     </a>
@@ -576,7 +576,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Render the current object as its custom XML fragment.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Serialized XML fragment.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -591,7 +591,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_export</span><span class="function-signature">(self, export_format, lang, REQUEST, RESPONSE)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L263">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L301">
       
       (source)
     </a>
@@ -603,7 +603,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Exportable.manage_export</p></div>
+    <div><p>Export the current object in one of the configured formats.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">export<wbr></wbr>_format:</span><tt class="rst-docutils rst-literal">int</tt> or <tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Requested export format id.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">lang:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Active language.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Current request.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">RESPONSE:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPResponse</tt></td><td class="fieldArgDesc">Current response.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt> or <tt class="rst-docutils rst-literal">bytes</tt></td><td class="fieldArgDesc">Export payload when downloading directly.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -618,7 +618,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">recurse_downloadHtmlPages</span><span class="function-signature">(self, obj, path, lang, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L476">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L565">
       
       (source)
     </a>
@@ -630,7 +630,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Recursively render and store HTML pages for a content subtree.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">obj:</span><tt class="rst-docutils rst-literal">OFS.SimpleItem.Item</tt></td><td class="fieldArgDesc">Root object of the subtree.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">path:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Destination directory.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">lang:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Active export language.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Current request.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -645,7 +645,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">toXhtml</span><span class="function-signature">(self, REQUEST, deep=True)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L356">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L404">
       
       (source)
     </a>
@@ -657,7 +657,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Render the current object as localized standalone HTML.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Current request.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">deep:</span><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">Include child content recursively.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt> or <tt class="rst-docutils rst-literal">bytes</tt></td><td class="fieldArgDesc">Exportable HTML or XHTML markup.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -672,7 +672,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">toXml</span><span class="function-signature">(self, REQUEST=None, deep=True, data2hex=False, multilang=True)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L387">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L442">
       
       (source)
     </a>
@@ -684,7 +684,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Render the current object tree as an XML export document.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Request used to resolve export context.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">deep:</span><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">Include child nodes recursively.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">data2hex:</span><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">Hex-encode binary data values.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">multilang:</span><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">Include all language variants.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Serialized XML export.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -699,7 +699,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">toZippedHtml</span><span class="function-signature">(self, REQUEST, get_data=True)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L567">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L665">
       
       (source)
     </a>
@@ -711,7 +711,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Build a ZIP archive containing localized HTML export pages.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Current request.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">get<wbr></wbr>_data:</span><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">Return archive bytes instead of a file path.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt> or <tt class="rst-docutils rst-literal">bytes</tt></td><td class="fieldArgDesc">ZIP archive payload or path.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -726,7 +726,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">toZippedXml</span><span class="function-signature">(self, REQUEST, get_data=True)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L595">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L700">
       
       (source)
     </a>
@@ -738,7 +738,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Build a ZIP archive containing the XML export and resources.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Current request.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">get<wbr></wbr>_data:</span><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">Return archive bytes instead of a file path.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt> or <tt class="rst-docutils rst-literal">bytes</tt></td><td class="fieldArgDesc">ZIP archive payload or path.</td></tr></table></div>
   </div>
 </div><div class="baseclassvariable">
   
@@ -752,7 +752,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">security</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L255">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L298">
       
       (source)
     </a>

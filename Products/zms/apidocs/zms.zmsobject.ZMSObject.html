@@ -1232,7 +1232,7 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSObject</span>(ZMSItem.ZMSItem, _accessmanager.AccessableObject, _versionmanager.VersionItem, ZMSWorkflowItem.ZMSWorkflowItem, _copysupport.CopySupport, _cachemanager.ReqBuff, _deprecatedapi.DeprecatedAPI, _multilangmanager.MultiLanguageObject, _exportable.Exportable, _objattrs.ObjAttrs, _objchildren.ObjChildren, _objinputs.ObjInputs, _objtypes.ObjTypes, _pathhandler.PathHandler, _textformatmanager.TextFormatObject, _zreferableitem.ZReferableItem): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L63" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms.zmsobject.ZMSObject.__init__">ZMSObject(id, sort_id)</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSObject</span>(ZMSItem.ZMSItem, _accessmanager.AccessableObject, _versionmanager.VersionItem, ZMSWorkflowItem.ZMSWorkflowItem, _copysupport.CopySupport, _cachemanager.ReqBuff, _deprecatedapi.DeprecatedAPI, _multilangmanager.MultiLanguageObject, _exportable.Exportable, _objattrs.ObjAttrs, _objchildren.ObjChildren, _objinputs.ObjInputs, _objtypes.ObjTypes, _pathhandler.PathHandler, _textformatmanager.TextFormatObject, _zreferableitem.ZReferableItem): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L48" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms.zmsobject.ZMSObject.__init__">ZMSObject(id, sort_id)</a></code></p>
           <p><a href="classIndex.html#zms.zmsobject.ZMSObject">View In Hierarchy</a></p>
         </div>
 
@@ -1275,52 +1275,52 @@
     
     <td>Method</td>
     <td><code><a href="#__init__" class="internal-link" title="zms.zmsobject.ZMSObject.__init__">__init__</a></code></td>
-    <td>ZMSObject.__init__</td>
+    <td>Initialize a ZMS object with its persistent id and sort order.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#__proxy__" class="internal-link" title="zms.zmsobject.ZMSObject.__proxy__">__proxy__</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the acquisition-wrapped object proxy.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#ajaxGetBodyContent" class="internal-link" title="zms.zmsobject.ZMSObject.ajaxGetBodyContent">ajax<wbr></wbr>Get<wbr></wbr>Body<wbr></wbr>Content</a></code></td>
-    <td>HTML presentation in body-content.</td>
+    <td>Return body content for AJAX requests.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#aq_absolute_url" class="internal-link" title="zms.zmsobject.ZMSObject.aq_absolute_url">aq<wbr></wbr>_absolute<wbr></wbr>_url</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the absolute URL adjusted for acquisition-aware container context.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#breadcrumbs_obj_path" class="internal-link" title="zms.zmsobject.ZMSObject.breadcrumbs_obj_path">breadcrumbs<wbr></wbr>_obj<wbr></wbr>_path</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the object chain used for ZMI breadcrumb rendering.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#changeProperties" class="internal-link" title="zms.zmsobject.ZMSObject.changeProperties">change<wbr></wbr>Properties</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Apply request values to the object's editable properties.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#clear_request_context" class="internal-link" title="zms.zmsobject.ZMSObject.clear_request_context">clear<wbr></wbr>_request<wbr></wbr>_context</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Remove request-scoped context values for the current object.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#display_icon" class="internal-link" title="zms.zmsobject.ZMSObject.display_icon">display<wbr></wbr>_icon</a></code></td>
-    <td>ZMSObject.display_icon</td>
+    <td>Return the HTML icon markup for a meta object.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#display_type" class="internal-link" title="zms.zmsobject.ZMSObject.display_type">display<wbr></wbr>_type</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the localized display label for a meta object.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#f_css_defaults" class="internal-link" title="zms.zmsobject.ZMSObject.f_css_defaults">f<wbr></wbr>_css<wbr></wbr>_defaults</a></code></td>
-    <td>ZMSObject.f_css_defaults</td>
+    <td>Return CSS defaults for the current object.</td>
   </tr><tr class="method">
     
     <td>Method</td>
@@ -1330,292 +1330,292 @@
     
     <td>Method</td>
     <td><code><a href="#get_oid" class="internal-link" title="zms.zmsobject.ZMSObject.get_oid">get<wbr></wbr>_oid</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the ZODB object id in a stable printable form.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#get_request_context" class="internal-link" title="zms.zmsobject.ZMSObject.get_request_context">get<wbr></wbr>_request<wbr></wbr>_context</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Read an object-scoped value from the request with fallback to a plain key.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#get_size" class="internal-link" title="zms.zmsobject.ZMSObject.get_size">get<wbr></wbr>_size</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Calculate the approximate size of the object's stored attribute values.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#get_uid" class="internal-link" title="zms.zmsobject.ZMSObject.get_uid">get<wbr></wbr>_uid</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the persistent uid of the object, generating one if needed.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getAbsoluteUrlInContext" class="internal-link" title="zms.zmsobject.ZMSObject.getAbsoluteUrlInContext">get<wbr></wbr>Absolute<wbr></wbr>Url<wbr></wbr>In<wbr></wbr>Context</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Rewrite an absolute URL so it stays in the configured context domain.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getBodyContent" class="internal-link" title="zms.zmsobject.ZMSObject.getBodyContent">get<wbr></wbr>Body<wbr></wbr>Content</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the rendered body content when the object is visible.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getDCCoverage" class="internal-link" title="zms.zmsobject.ZMSObject.getDCCoverage">get<wbr></wbr>DCCoverage</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the Dublin Core coverage value for the current object.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getDCDescription" class="internal-link" title="zms.zmsobject.ZMSObject.getDCDescription">get<wbr></wbr>DCDescription</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the Dublin Core description for the current object.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getDeclId" class="internal-link" title="zms.zmsobject.ZMSObject.getDeclId">get<wbr></wbr>Decl<wbr></wbr>Id</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the declarative id used for path-handler based URLs.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getDeclUrl" class="internal-link" title="zms.zmsobject.ZMSObject.getDeclUrl">get<wbr></wbr>Decl<wbr></wbr>Url</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the declarative URL assembled from path-handler ids.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getHref2Html" class="internal-link" title="zms.zmsobject.ZMSObject.getHref2Html">get<wbr></wbr>Href2<wbr></wbr>Html</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Build an HTML href for the object or the owning page.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getHref2IndexHtml" class="internal-link" title="zms.zmsobject.ZMSObject.getHref2IndexHtml">get<wbr></wbr>Href2<wbr></wbr>Index<wbr></wbr>Html</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the default public URL for the object in the current request.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getHref2IndexHtmlInContext" class="internal-link" title="zms.zmsobject.ZMSObject.getHref2IndexHtmlInContext">get<wbr></wbr>Href2<wbr></wbr>Index<wbr></wbr>Html<wbr></wbr>In<wbr></wbr>Context</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Rewrite an index URL so it matches the current context and domain rules.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getLevel" class="internal-link" title="zms.zmsobject.ZMSObject.getLevel">get<wbr></wbr>Level</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the hierarchical level relative to the document element.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getPageExt" class="internal-link" title="zms.zmsobject.ZMSObject.getPageExt">get<wbr></wbr>Page<wbr></wbr>Ext</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the configured page extension for the current object.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getParentByDepth" class="internal-link" title="zms.zmsobject.ZMSObject.getParentByDepth">get<wbr></wbr>Parent<wbr></wbr>By<wbr></wbr>Depth</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the ancestor reached by walking up a fixed number of levels.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getParentByLevel" class="internal-link" title="zms.zmsobject.ZMSObject.getParentByLevel">get<wbr></wbr>Parent<wbr></wbr>By<wbr></wbr>Level</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the ancestor located at the requested tree level.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getParentNode" class="internal-link" title="zms.zmsobject.ZMSObject.getParentNode">get<wbr></wbr>Parent<wbr></wbr>Node</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the logical parent node of this object.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getPath" class="internal-link" title="zms.zmsobject.ZMSObject.getPath">get<wbr></wbr>Path</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the physical path without duplicate trailing `content` ids.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getSelf" class="internal-link" title="zms.zmsobject.ZMSObject.getSelf">get<wbr></wbr>Self</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return this object or the nearest ancestor matching the requested type.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getSortId" class="internal-link" title="zms.zmsobject.ZMSObject.getSortId">get<wbr></wbr>Sort<wbr></wbr>Id</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the numeric sort id extracted from the stored format.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getTitle" class="internal-link" title="zms.zmsobject.ZMSObject.getTitle">get<wbr></wbr>Title</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the localized title used for navigation and rendering.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getTitlealt" class="internal-link" title="zms.zmsobject.ZMSObject.getTitlealt">get<wbr></wbr>Titlealt</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the alternate localized title used in URLs and exports.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getTreeNodes" class="internal-link" title="zms.zmsobject.ZMSObject.getTreeNodes">get<wbr></wbr>Tree<wbr></wbr>Nodes</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return a depth-first list of subtree nodes matching the optional filter.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getType" class="internal-link" title="zms.zmsobject.ZMSObject.getType">get<wbr></wbr>Type</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the semantic content type declared by the meta object.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#ImageFromData" class="internal-link" title="zms.zmsobject.ZMSObject.ImageFromData"><wbr></wbr>Image<wbr></wbr>From<wbr></wbr>Data</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Create an image blob field instance from binary data.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#is_child_of" class="internal-link" title="zms.zmsobject.ZMSObject.is_child_of">is<wbr></wbr>_child<wbr></wbr>_of</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return whether this object is a descendant of the given object.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#is_resource" class="internal-link" title="zms.zmsobject.ZMSObject.is_resource">is<wbr></wbr>_resource</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Compatibility alias for <code><a href="zms.zmsobject.ZMSObject.html#isResource" class="internal-link" title="zms.zmsobject.ZMSObject.isResource">isResource</a></code> using the current request.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#is_translated" class="internal-link" title="zms.zmsobject.ZMSObject.is_translated">is<wbr></wbr>_translated</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Compatibility alias for <code><a href="zms.zmsobject.ZMSObject.html#isTranslated" class="internal-link" title="zms.zmsobject.ZMSObject.isTranslated">isTranslated</a></code> using the current request.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#is_visible" class="internal-link" title="zms.zmsobject.ZMSObject.is_visible">is<wbr></wbr>_visible</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Compatibility alias for <code><a href="zms.zmsobject.ZMSObject.html#isVisible" class="internal-link" title="zms.zmsobject.ZMSObject.isVisible">isVisible</a></code> using the current request.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#isAncestor" class="internal-link" title="zms.zmsobject.ZMSObject.isAncestor">is<wbr></wbr>Ancestor</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return whether this object is an ancestor of the given object.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#isMetaType" class="internal-link" title="zms.zmsobject.ZMSObject.isMetaType">is<wbr></wbr>Meta<wbr></wbr>Type</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Check whether the object matches the requested meta type selector.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#isModifiedInParentLanguage" class="internal-link" title="zms.zmsobject.ZMSObject.isModifiedInParentLanguage">is<wbr></wbr>Modified<wbr></wbr>In<wbr></wbr>Parent<wbr></wbr>Language</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return whether the current language version is newer than its parent language.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#isPage" class="internal-link" title="zms.zmsobject.ZMSObject.isPage">is<wbr></wbr>Page</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return whether the object represents a page node.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#isPageContainer" class="internal-link" title="zms.zmsobject.ZMSObject.isPageContainer">is<wbr></wbr>Page<wbr></wbr>Container</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return whether the object behaves as a page container.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#isPageElement" class="internal-link" title="zms.zmsobject.ZMSObject.isPageElement">is<wbr></wbr>Page<wbr></wbr>Element</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return whether the object represents a page element node.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#isResource" class="internal-link" title="zms.zmsobject.ZMSObject.isResource">is<wbr></wbr>Resource</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return whether the object is treated as a resource node.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#isTranslated" class="internal-link" title="zms.zmsobject.ZMSObject.isTranslated">is<wbr></wbr>Translated</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return whether the object contains data for the requested language.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#isVisible" class="internal-link" title="zms.zmsobject.ZMSObject.isVisible">is<wbr></wbr>Visible</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return whether the object is visible in the current request context.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_changeProperties" class="internal-link" title="zms.zmsobject.ZMSObject.manage_changeProperties">manage_change<wbr></wbr>Properties</a></code></td>
-    <td>ZMSObject.manage_changeProperties</td>
+    <td>Persist edited properties and redirect back to the management UI.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_executeMetacmd" class="internal-link" title="zms.zmsobject.ZMSObject.manage_executeMetacmd">manage_execute<wbr></wbr>Metacmd</a></code></td>
-    <td>MetacmdObject.manage_executeMetacmd</td>
+    <td>Execute a meta-object attribute or configured meta command.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_moveObjDown" class="internal-link" title="zms.zmsobject.ZMSObject.manage_moveObjDown">manage_move<wbr></wbr>Obj<wbr></wbr>Down</a></code></td>
-    <td>ZMSObject.manage_moveObjDown</td>
+    <td>Move the object down within its parent's sort order.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_moveObjToPos" class="internal-link" title="zms.zmsobject.ZMSObject.manage_moveObjToPos">manage_move<wbr></wbr>Obj<wbr></wbr>To<wbr></wbr>Pos</a></code></td>
-    <td>ZMSObject.manage_moveObjToPos</td>
+    <td>Move the object to a specific position within its siblings.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_moveObjUp" class="internal-link" title="zms.zmsobject.ZMSObject.manage_moveObjUp">manage_move<wbr></wbr>Obj<wbr></wbr>Up</a></code></td>
-    <td>ZMSObject.manage_moveObjUp</td>
+    <td>Move the object up within its parent's sort order.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#printHtml" class="internal-link" title="zms.zmsobject.ZMSObject.printHtml">print<wbr></wbr>Html</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Render a printable HTML representation of the object subtree.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#renderShort" class="internal-link" title="zms.zmsobject.ZMSObject.renderShort">render<wbr></wbr>Short</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Render a short management or content preview of the object.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#set_request_context" class="internal-link" title="zms.zmsobject.ZMSObject.set_request_context">set<wbr></wbr>_request<wbr></wbr>_context</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Store a set of request-scoped context values for the object.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#set_uid" class="internal-link" title="zms.zmsobject.ZMSObject.set_uid">set<wbr></wbr>_uid</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Set the persistent uid of the object.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#setSortId" class="internal-link" title="zms.zmsobject.ZMSObject.setSortId">set<wbr></wbr>Sort<wbr></wbr>Id</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Store the sort id in the canonical prefixed internal format.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#title" class="internal-link" title="zms.zmsobject.ZMSObject.title">title</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the basic title attribute or a fallback product label.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#xmlGetParent" class="internal-link" title="zms.zmsobject.ZMSObject.xmlGetParent">xml<wbr></wbr>Get<wbr></wbr>Parent</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the temporary parent stored for XML builder object creation.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#xmlOnCharacterData" class="internal-link" title="zms.zmsobject.ZMSObject.xmlOnCharacterData">xml<wbr></wbr>On<wbr></wbr>Character<wbr></wbr>Data</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Delegate character-data handling to the shared XML helper.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#xmlOnEndElement" class="internal-link" title="zms.zmsobject.ZMSObject.xmlOnEndElement">xml<wbr></wbr>On<wbr></wbr>End<wbr></wbr>Element</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Finalize XML builder state after the current element closes.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#xmlOnStartElement" class="internal-link" title="zms.zmsobject.ZMSObject.xmlOnStartElement">xml<wbr></wbr>On<wbr></wbr>Start<wbr></wbr>Element</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Initialize XML builder state for a new element.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#xmlOnUnknownEndTag" class="internal-link" title="zms.zmsobject.ZMSObject.xmlOnUnknownEndTag">xml<wbr></wbr>On<wbr></wbr>Unknown<wbr></wbr>End<wbr></wbr>Tag</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Delegate unknown end-tag handling to the shared XML helper.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#xmlOnUnknownStartTag" class="internal-link" title="zms.zmsobject.ZMSObject.xmlOnUnknownStartTag">xml<wbr></wbr>On<wbr></wbr>Unknown<wbr></wbr>Start<wbr></wbr>Tag</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Delegate unknown start-tag handling to the shared XML helper.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#zmi_css_defaults" class="internal-link" title="zms.zmsobject.ZMSObject.zmi_css_defaults">zmi<wbr></wbr>_css<wbr></wbr>_defaults</a></code></td>
-    <td>ZMSObject.zmi_css_defaults</td>
+    <td>Build the generated CSS import list for this object.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#zmi_icon" class="internal-link" title="zms.zmsobject.ZMSObject.zmi_icon">zmi<wbr></wbr>_icon</a></code></td>
-    <td>ZMSObject.zmi_icon</td>
+    <td>Return the CSS icon class used for the object in the management UI.</td>
   </tr><tr class="constant">
     
     <td>Constant</td>
@@ -1770,12 +1770,12 @@
     
     <td>Method</td>
     <td><code><a href="#_getBodyContent" class="internal-link" title="zms.zmsobject.ZMSObject._getBodyContent">_get<wbr></wbr>Body<wbr></wbr>Content</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Render the raw body content template for the object.</td>
   </tr><tr class="method private">
     
     <td>Method</td>
     <td><code><a href="#_getBodyContentContentEditable" class="internal-link" title="zms.zmsobject.ZMSObject._getBodyContentContentEditable">_get<wbr></wbr>Body<wbr></wbr>Content<wbr></wbr>Content<wbr></wbr>Editable</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Wrap rendered body content with editable markup when preview mode allows it.</td>
   </tr><tr class="instancevariable private">
     
     <td>Instance Variable</td>
@@ -1802,7 +1802,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">__init__</span><span class="function-signature">(self, id=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, sort_id=0)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L157">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L137">
       
       (source)
     </a>
@@ -1814,7 +1814,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>ZMSObject.__init__</p></div>
+    <div><p>Initialize a ZMS object with its persistent id and sort order.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Object id.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">sort<wbr></wbr>_id:</span><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">Initial sort position.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1829,7 +1829,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">__proxy__</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L292">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L319">
       
       (source)
     </a>
@@ -1841,7 +1841,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the acquisition-wrapped object proxy.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -1856,7 +1856,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">ajaxGetBodyContent</span><span class="function-signature">(self, REQUEST, forced=False)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1322">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1473">
       
       (source)
     </a>
@@ -1868,7 +1868,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>HTML presentation in body-content.</p></div>
+    <div><p>Return body content for AJAX requests.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Current request.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">forced:</span><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">Ignore visibility checks.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Rendered body content.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1883,7 +1883,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">aq_absolute_url</span><span class="function-signature">(self, relative=0)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L871">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L951">
       
       (source)
     </a>
@@ -1895,7 +1895,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the absolute URL adjusted for acquisition-aware container context.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">relative:</span><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">Return a relative URL when true.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Absolute or relative URL.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1910,7 +1910,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">breadcrumbs_obj_path</span><span class="function-signature">(self, portalMaster=True)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L680">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L749">
       
       (source)
     </a>
@@ -1922,7 +1922,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the object chain used for ZMI breadcrumb rendering.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">portal<wbr></wbr>Master:</span><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">Include portal master ancestors when configured.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Breadcrumb object path.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1937,7 +1937,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">changeProperties</span><span class="function-signature">(self, lang)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L706">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L782">
       
       (source)
     </a>
@@ -1949,7 +1949,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Apply request values to the object's editable properties.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">lang:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Active language for the update.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1964,7 +1964,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">clear_request_context</span><span class="function-signature">(self, REQUEST, prefix=<span class="rst-variable-quote">'</span><span class="rst-variable-string">oid</span><span class="rst-variable-quote">'</span>)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L248">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L254">
       
       (source)
     </a>
@@ -1976,7 +1976,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Remove request-scoped context values for the current object.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Current request.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">prefix:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Key prefix used for stored values.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1991,7 +1991,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">display_icon</span><span class="function-signature">(self, *args, **kwargs)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L619">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L672">
       
       (source)
     </a>
@@ -2003,7 +2003,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>ZMSObject.display_icon</p></div>
+    <div><p>Return the HTML icon markup for a meta object.</p>
+<p>Optional identifiers may be passed positionally or via keyword arguments. The legacy <tt class="rst-docutils rst-literal">meta_type</tt> keyword is still accepted.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">*args</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">meta<wbr></wbr>_id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Optional meta object id.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">meta<wbr></wbr>_type:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Legacy alias for <tt class="rst-docutils rst-literal">meta_id</tt>.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">HTML fragment containing the icon element.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -2018,7 +2020,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">display_type</span><span class="function-signature">(self, *args, **kwargs)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L660">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L719">
       
       (source)
     </a>
@@ -2030,7 +2032,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the localized display label for a meta object.</p>
+<p>Optional identifiers may be passed positionally or via keyword arguments. The legacy <tt class="rst-docutils rst-literal">meta_type</tt> keyword is still accepted.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">*args</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">meta<wbr></wbr>_id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Optional meta object id.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">meta<wbr></wbr>_type:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Legacy alias for <tt class="rst-docutils rst-literal">meta_id</tt>.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Localized type label.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -2045,7 +2049,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">f_css_defaults</span><span class="function-signature">(self, REQUEST=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L175">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L159">
       
       (source)
     </a>
@@ -2057,7 +2061,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>ZMSObject.f_css_defaults</p></div>
+    <div><p>Return CSS defaults for the current object.</p>
+<p>Deprecated: use <code><a href="#zmi_css_defaults" class="internal-link" title="zms.zmsobject.ZMSObject.zmi_css_defaults">zmi_css_defaults</a></code> instead.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Optional request to use for rendering.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">CSS imports for matching meta-object defaults.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -2072,7 +2078,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">FileFromData</span><span class="function-signature">(self, data, filename=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, content_type=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L298">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L324">
       
       (source)
     </a>
@@ -2099,7 +2105,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_oid</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L235">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L237">
       
       (source)
     </a>
@@ -2111,7 +2117,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the ZODB object id in a stable printable form.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Object id prefixed with <tt class="rst-docutils rst-literal">oid:</tt>.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -2126,7 +2132,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_request_context</span><span class="function-signature">(self, REQUEST, key, defaultValue=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L271">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L289">
       
       (source)
     </a>
@@ -2138,7 +2144,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Read an object-scoped value from the request with fallback to a plain key.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Current request.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">key:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Context key.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">default<wbr></wbr>Value:</span><tt class="rst-docutils rst-literal">any</tt></td><td class="fieldArgDesc">Value returned when no context key exists.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">any</tt></td><td class="fieldArgDesc">Stored request context value or fallback.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -2153,7 +2159,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_size</span><span class="function-signature">(self, REQUEST={})</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L530">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L572">
       
       (source)
     </a>
@@ -2165,7 +2171,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Calculate the approximate size of the object's stored attribute values.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Optional request context.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">Estimated object size.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -2180,7 +2186,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_uid</span><span class="function-signature">(self, forced=False)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L211">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L203">
       
       (source)
     </a>
@@ -2192,7 +2198,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the persistent uid of the object, generating one if needed.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">forced:</span><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">Force generation of a new uid.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Object uid prefixed with <tt class="rst-docutils rst-literal">uid:</tt>.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -2207,7 +2213,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getAbsoluteUrlInContext</span><span class="function-signature">(self, context, abs_url=None, forced=False)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L960">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1046">
       
       (source)
     </a>
@@ -2219,7 +2225,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Rewrite an absolute URL so it stays in the configured context domain.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">context:</span><tt class="rst-docutils rst-literal">zmsobject.ZMSObject</tt></td><td class="fieldArgDesc">Current context object.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">abs<wbr></wbr>_url:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Absolute URL to contextualize.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">forced:</span><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">Force contextualization rules.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Context-aware absolute URL.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -2234,7 +2240,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getBodyContent</span><span class="function-signature">(self, REQUEST, forced=False)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1328">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1487">
       
       (source)
     </a>
@@ -2246,7 +2252,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the rendered body content when the object is visible.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Current request.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">forced:</span><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">Ignore visibility checks.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Rendered body content.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -2261,7 +2267,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getDCCoverage</span><span class="function-signature">(self, REQUEST={})</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L553">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L596">
       
       (source)
     </a>
@@ -2273,7 +2279,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the Dublin Core coverage value for the current object.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Optional request context.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Coverage value.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -2288,7 +2294,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getDCDescription</span><span class="function-signature">(self, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L566">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L610">
       
       (source)
     </a>
@@ -2300,7 +2306,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the Dublin Core description for the current object.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Current request.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Description value.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -2315,7 +2321,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getDeclId</span><span class="function-signature">(self, REQUEST={})</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L847">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L924">
       
       (source)
     </a>
@@ -2327,7 +2333,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the declarative id used for path-handler based URLs.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Optional request context.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Declarative id.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -2342,7 +2348,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getDeclUrl</span><span class="function-signature">(self, REQUEST={})</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L888">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L971">
       
       (source)
     </a>
@@ -2354,7 +2360,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the declarative URL assembled from path-handler ids.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Optional request context.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Declarative URL.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -2369,7 +2375,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getHref2Html</span><span class="function-signature">(self, fct, pageext, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L926">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1013">
       
       (source)
     </a>
@@ -2381,7 +2387,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Build an HTML href for the object or the owning page.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">fct:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Target page function name.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">pageext:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">File extension used for generated pages.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Current request.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Context-aware href.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -2396,7 +2402,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getHref2IndexHtml</span><span class="function-signature">(self, REQUEST, deep=1)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1022">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1130">
       
       (source)
     </a>
@@ -2408,7 +2414,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the default public URL for the object in the current request.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Current request.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">deep:</span><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">Traverse into descendant pages when needed.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Public object URL.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -2423,7 +2429,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getHref2IndexHtmlInContext</span><span class="function-signature">(self, context, index_html=None, REQUEST=None, deep=1)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L996">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1088">
       
       (source)
     </a>
@@ -2435,7 +2441,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Rewrite an index URL so it matches the current context and domain rules.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">context:</span><tt class="rst-docutils rst-literal">zmsobject.ZMSObject</tt></td><td class="fieldArgDesc">Current context object.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">index<wbr></wbr>_html:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Existing index URL.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Current request.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">deep:</span><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">Fallback depth for generated URLs.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Context-aware index URL.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -2450,7 +2456,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getLevel</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1061">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1170">
       
       (source)
     </a>
@@ -2462,7 +2468,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the hierarchical level relative to the document element.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">Tree level.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -2477,7 +2483,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getPageExt</span><span class="function-signature">(self, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L907">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L993">
       
       (source)
     </a>
@@ -2489,7 +2495,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the configured page extension for the current object.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Current request.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Page extension.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -2504,7 +2510,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getParentByDepth</span><span class="function-signature">(self, deep)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1102">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1215">
       
       (source)
     </a>
@@ -2516,7 +2522,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the ancestor reached by walking up a fixed number of levels.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">deep:</span><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">Number of parent steps.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">zmsobject.ZMSObject</tt></td><td class="fieldArgDesc">Ancestor object.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -2531,7 +2537,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getParentByLevel</span><span class="function-signature">(self, level)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1115">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1230">
       
       (source)
     </a>
@@ -2543,7 +2549,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the ancestor located at the requested tree level.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">level:</span><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">Target level.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">zmsobject.ZMSObject</tt></td><td class="fieldArgDesc">Ancestor object.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -2558,7 +2564,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getParentNode</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1128">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1245">
       
       (source)
     </a>
@@ -2570,7 +2576,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the logical parent node of this object.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">zmsobject.ZMSObject</tt></td><td class="fieldArgDesc">Parent object or <tt class="rst-docutils rst-literal">None</tt>.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -2585,7 +2591,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getPath</span><span class="function-signature">(self, *args, **kwargs)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L163">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L151">
       
       (source)
     </a>
@@ -2597,7 +2603,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the physical path without duplicate trailing `content` ids.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -2612,7 +2618,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getSelf</span><span class="function-signature">(self, meta_type=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L573">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L622">
       
       (source)
     </a>
@@ -2624,7 +2630,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return this object or the nearest ancestor matching the requested type.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">meta<wbr></wbr>_type:</span><tt class="rst-docutils rst-literal">str</tt> or <tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Optional meta-type selector.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">zmsobject.ZMSObject</tt></td><td class="fieldArgDesc">Matching object.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -2639,7 +2645,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getSortId</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1172">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1289">
       
       (source)
     </a>
@@ -2651,7 +2657,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the numeric sort id extracted from the stored format.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">Numeric sort id.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -2666,7 +2672,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getTitle</span><span class="function-signature">(self, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L368">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L401">
       
       (source)
     </a>
@@ -2678,7 +2684,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the localized title used for navigation and rendering.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Current request.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Display title.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -2693,7 +2699,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getTitlealt</span><span class="function-signature">(self, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L397">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L435">
       
       (source)
     </a>
@@ -2705,7 +2711,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the alternate localized title used in URLs and exports.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Current request.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Alternate display title.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -2720,7 +2726,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getTreeNodes</span><span class="function-signature">(self, REQUEST={}, meta_types=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1142">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1259">
       
       (source)
     </a>
@@ -2732,7 +2738,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return a depth-first list of subtree nodes matching the optional filter.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Optional request context.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">meta<wbr></wbr>_types:</span><tt class="rst-docutils rst-literal">str</tt> or <tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Optional meta-type filter.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Matching subtree nodes.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -2747,7 +2753,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getType</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L437">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L469">
       
       (source)
     </a>
@@ -2759,7 +2765,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the semantic content type declared by the meta object.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">One of the configured ZMS content type identifiers.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -2774,7 +2780,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">ImageFromData</span><span class="function-signature">(self, data, filename=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, content_type=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L318">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L341">
       
       (source)
     </a>
@@ -2786,7 +2792,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Create an image blob field instance from binary data.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">data:</span><tt class="rst-docutils rst-literal">bytes</tt> or <tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Image payload.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">filename:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Original filename.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">content<wbr></wbr>_type:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Optional MIME type.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><code><a href="zms._blobfields.MyImage.html" class="internal-link" title="zms._blobfields.MyImage">MyImage</a></code></td><td class="fieldArgDesc">New image blob wrapper.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -2801,7 +2807,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">is_child_of</span><span class="function-signature">(self, ob)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1074">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1183">
       
       (source)
     </a>
@@ -2813,7 +2819,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return whether this object is a descendant of the given object.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">ob:</span><tt class="rst-docutils rst-literal">zmsobject.ZMSObject</tt></td><td class="fieldArgDesc">Potential ancestor object.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc"><tt class="rst-docutils rst-literal">True</tt> if this object is below <tt class="rst-docutils rst-literal">ob</tt>.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -2828,7 +2834,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">is_resource</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L447">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L480">
       
       (source)
     </a>
@@ -2840,7 +2846,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Compatibility alias for <code><a href="#isResource" class="internal-link" title="zms.zmsobject.ZMSObject.isResource">isResource</a></code> using the current request.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -2855,7 +2861,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">is_translated</span><span class="function-signature">(self, lang)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L463">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L498">
       
       (source)
     </a>
@@ -2867,7 +2873,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Compatibility alias for <code><a href="#isTranslated" class="internal-link" title="zms.zmsobject.ZMSObject.isTranslated">isTranslated</a></code> using the current request.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -2882,7 +2888,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">is_visible</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L505">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L547">
       
       (source)
     </a>
@@ -2894,7 +2900,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Compatibility alias for <code><a href="#isVisible" class="internal-link" title="zms.zmsobject.ZMSObject.isVisible">isVisible</a></code> using the current request.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -2909,7 +2915,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">isAncestor</span><span class="function-signature">(self, ob)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1088">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1199">
       
       (source)
     </a>
@@ -2921,7 +2927,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return whether this object is an ancestor of the given object.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">ob:</span><tt class="rst-docutils rst-literal">zmsobject.ZMSObject</tt></td><td class="fieldArgDesc">Potential descendant object.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc"><tt class="rst-docutils rst-literal">True</tt> if this object contains <tt class="rst-docutils rst-literal">ob</tt> in its subtree.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -2936,7 +2942,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">isMetaType</span><span class="function-signature">(self, meta_type, REQUEST={})</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L329">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L361">
       
       (source)
     </a>
@@ -2948,7 +2954,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Check whether the object matches the requested meta type selector.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">meta<wbr></wbr>_type:</span><tt class="rst-docutils rst-literal">str</tt> or <tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Single selector or list of selectors.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Optional request context.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc"><tt class="rst-docutils rst-literal">True</tt> if the object matches.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -2963,7 +2969,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">isModifiedInParentLanguage</span><span class="function-signature">(self, lang, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L484">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L521">
       
       (source)
     </a>
@@ -2975,7 +2981,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return whether the current language version is newer than its parent language.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">lang:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Language id to compare.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Current request.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc"><tt class="rst-docutils rst-literal">True</tt> if the current language is newer.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -2990,7 +2996,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">isPage</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L352">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L389">
       
       (source)
     </a>
@@ -3002,7 +3008,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return whether the object represents a page node.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -3017,7 +3023,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">isPageContainer</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L345">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L384">
       
       (source)
     </a>
@@ -3029,7 +3035,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return whether the object behaves as a page container.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -3044,7 +3050,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">isPageElement</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L360">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L395">
       
       (source)
     </a>
@@ -3056,7 +3062,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return whether the object represents a page element node.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -3071,7 +3077,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">isResource</span><span class="function-signature">(self, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L453">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L485">
       
       (source)
     </a>
@@ -3083,7 +3089,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return whether the object is treated as a resource node.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Current request.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc"><tt class="rst-docutils rst-literal">True</tt> if the object is a resource.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -3098,7 +3104,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">isTranslated</span><span class="function-signature">(self, lang, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L471">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L503">
       
       (source)
     </a>
@@ -3110,7 +3116,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return whether the object contains data for the requested language.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">lang:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Language id to check.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Current request.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc"><tt class="rst-docutils rst-literal">True</tt> if translated content exists.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -3125,7 +3131,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">isVisible</span><span class="function-signature">(self, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L513">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L552">
       
       (source)
     </a>
@@ -3137,7 +3143,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return whether the object is visible in the current request context.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Current request.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc"><tt class="rst-docutils rst-literal">True</tt> if the object is visible.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -3152,7 +3158,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_changeProperties</span><span class="function-signature">(self, lang, REQUEST, RESPONSE=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L790">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L867">
       
       (source)
     </a>
@@ -3164,7 +3170,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>ZMSObject.manage_changeProperties</p></div>
+    <div><p>Persist edited properties and redirect back to the management UI.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">lang:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Active language.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Current request.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">RESPONSE:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPResponse</tt></td><td class="fieldArgDesc">Optional response used for redirect handling.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">Redirect response when <tt class="rst-docutils rst-literal">RESPONSE</tt> is provided.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -3179,7 +3185,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_executeMetacmd</span><span class="function-signature">(self, id, REQUEST, RESPONSE=None, context=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1255">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1391">
       
       (source)
     </a>
@@ -3191,7 +3197,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>MetacmdObject.manage_executeMetacmd</p></div>
+    <div><p>Execute a meta-object attribute or configured meta command.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Meta attribute or meta command id.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Current request.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">RESPONSE:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPResponse</tt></td><td class="fieldArgDesc">Optional response used for redirects.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">context:</span><tt class="rst-docutils rst-literal">zmsobject.ZMSObject</tt></td><td class="fieldArgDesc">Optional execution context.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">Meta command result when executed directly.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -3206,7 +3212,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_moveObjDown</span><span class="function-signature">(self, lang, REQUEST, RESPONSE)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1201">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1323">
       
       (source)
     </a>
@@ -3218,7 +3224,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>ZMSObject.manage_moveObjDown</p></div>
+    <div><p>Move the object down within its parent's sort order.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">lang:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Active language.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Current request.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">RESPONSE:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPResponse</tt></td><td class="fieldArgDesc">Current response.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -3233,7 +3239,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_moveObjToPos</span><span class="function-signature">(self, lang, pos, fmt=None, REQUEST=None, RESPONSE=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1217">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1343">
       
       (source)
     </a>
@@ -3245,7 +3251,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>ZMSObject.manage_moveObjToPos</p></div>
+    <div><p>Move the object to a specific position within its siblings.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">lang:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Active language.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">pos:</span><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">Target one-based position.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">fmt:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Optional response format.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Current request.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">RESPONSE:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPResponse</tt></td><td class="fieldArgDesc">Optional response for redirect handling.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">JSON message when <tt class="rst-docutils rst-literal">fmt == 'json'</tt>.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -3260,7 +3266,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_moveObjUp</span><span class="function-signature">(self, lang, REQUEST, RESPONSE)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1185">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1303">
       
       (source)
     </a>
@@ -3272,7 +3278,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>ZMSObject.manage_moveObjUp</p></div>
+    <div><p>Move the object up within its parent's sort order.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">lang:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Active language.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Current request.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">RESPONSE:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPResponse</tt></td><td class="fieldArgDesc">Current response.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -3287,7 +3293,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">printHtml</span><span class="function-signature">(self, level, sectionizer, REQUEST, deep=True)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1381">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1544">
       
       (source)
     </a>
@@ -3299,7 +3305,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Render a printable HTML representation of the object subtree.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">level:</span><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">Current heading level.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">sectionizer:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">Section numbering helper.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Current request.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">deep:</span><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">Include child pages recursively.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Printable HTML.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -3314,7 +3320,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">renderShort</span><span class="function-signature">(self, REQUEST, manage_main=False)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1344">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1508">
       
       (source)
     </a>
@@ -3326,7 +3332,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Render a short management or content preview of the object.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Current request.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">manage<wbr></wbr>_main:</span><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">Render the management-main variant.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Short HTML fragment.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -3341,7 +3347,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">set_request_context</span><span class="function-signature">(self, REQUEST, d)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L257">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L269">
       
       (source)
     </a>
@@ -3353,7 +3359,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Store a set of request-scoped context values for the object.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Current request.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">d:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Mapping of context keys to values.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -3368,7 +3374,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">set_uid</span><span class="function-signature">(self, uid)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L229">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L227">
       
       (source)
     </a>
@@ -3380,7 +3386,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Set the persistent uid of the object.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">uid:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Raw or prefixed uid.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -3395,7 +3401,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">setSortId</span><span class="function-signature">(self, sort_id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1161">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1277">
       
       (source)
     </a>
@@ -3407,7 +3413,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Store the sort id in the canonical prefixed internal format.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">sort<wbr></wbr>_id:</span><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">Numeric sort value.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -3422,7 +3428,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">title</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L283">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L311">
       
       (source)
     </a>
@@ -3434,7 +3440,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the basic title attribute or a fallback product label.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -3449,7 +3455,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">xmlGetParent</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1447">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1622">
       
       (source)
     </a>
@@ -3461,7 +3467,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the temporary parent stored for XML builder object creation.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -3476,7 +3482,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">xmlOnCharacterData</span><span class="function-signature">(self, sData, bInCData)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1435">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1607">
       
       (source)
     </a>
@@ -3488,7 +3494,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Delegate character-data handling to the shared XML helper.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -3503,7 +3509,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">xmlOnEndElement</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1431">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1602">
       
       (source)
     </a>
@@ -3515,7 +3521,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Finalize XML builder state after the current element closes.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -3530,7 +3536,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">xmlOnStartElement</span><span class="function-signature">(self, sTagName, dTagAttrs, oParentNode)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1418">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1579">
       
       (source)
     </a>
@@ -3542,7 +3548,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Initialize XML builder state for a new element.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">s<wbr></wbr>Tag<wbr></wbr>Name:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Tag name.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">d<wbr></wbr>Tag<wbr></wbr>Attrs:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Tag attributes.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">o<wbr></wbr>Parent<wbr></wbr>Node:</span><tt class="rst-docutils rst-literal">zmsobject.ZMSObject</tt></td><td class="fieldArgDesc">Parent node during XML object creation.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -3557,7 +3563,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">xmlOnUnknownEndTag</span><span class="function-signature">(self, sTagName)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1443">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1617">
       
       (source)
     </a>
@@ -3569,7 +3575,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Delegate unknown end-tag handling to the shared XML helper.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -3584,7 +3590,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">xmlOnUnknownStartTag</span><span class="function-signature">(self, sTagName, dTagAttrs)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1439">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1612">
       
       (source)
     </a>
@@ -3596,7 +3602,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Delegate unknown start-tag handling to the shared XML helper.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -3611,7 +3617,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">zmi_css_defaults</span><span class="function-signature">(self, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L181">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L174">
       
       (source)
     </a>
@@ -3623,7 +3629,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>ZMSObject.zmi_css_defaults</p></div>
+    <div><p>Build the generated CSS import list for this object.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Current request.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">CSS source text.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -3638,7 +3644,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">zmi_icon</span><span class="function-signature">(self, *args, **kwargs)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L585">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L639">
       
       (source)
     </a>
@@ -3650,7 +3656,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>ZMSObject.zmi_icon</p></div>
+    <div><p>Return the CSS icon class used for the object in the management UI.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Font Awesome class string.</td></tr></table></div>
   </div>
 </div><div class="baseconstant">
   
@@ -3664,7 +3670,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">FORM_LABEL_MANDATORY</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L123">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L108">
       
       (source)
     </a>
@@ -3691,7 +3697,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">MISC_ZMS</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L122">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L107">
       
       (source)
     </a>
@@ -3718,7 +3724,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">QUOT</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L121">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L106">
       
       (source)
     </a>
@@ -3745,7 +3751,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">f_api_html</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L146">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L131">
       
       (source)
     </a>
@@ -3772,7 +3778,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">f_api_top_html</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L147">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L132">
       
       (source)
     </a>
@@ -3799,7 +3805,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">f_recordset_grid</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L143">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L128">
       
       (source)
     </a>
@@ -3826,7 +3832,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">obj_input_elements</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L149">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L134">
       
       (source)
     </a>
@@ -3853,7 +3859,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">obj_input_fields</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L148">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L133">
       
       (source)
     </a>
@@ -3880,7 +3886,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">preview_html</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L144">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L129">
       
       (source)
     </a>
@@ -3907,7 +3913,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">preview_top_html</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L145">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L130">
       
       (source)
     </a>
@@ -3934,7 +3940,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">security</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L117">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L102">
       
       (source)
     </a>
@@ -3961,7 +3967,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">spacer_gif</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L124">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L109">
       
       (source)
     </a>
@@ -3988,7 +3994,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_ace_editor</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L139">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L124">
       
       (source)
     </a>
@@ -4015,7 +4021,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_body_footer</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L134">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L119">
       
       (source)
     </a>
@@ -4042,7 +4048,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_body_header</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L133">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L118">
       
       (source)
     </a>
@@ -4069,7 +4075,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_breadcrumbs</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L129">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L114">
       
       (source)
     </a>
@@ -4096,7 +4102,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_breadcrumbs_obj_path</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L130">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L115">
       
       (source)
     </a>
@@ -4123,7 +4129,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_html_foot</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L135">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L120">
       
       (source)
     </a>
@@ -4150,7 +4156,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_html_head</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L132">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L117">
       
       (source)
     </a>
@@ -4177,7 +4183,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_manage_tabs_message</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L131">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L116">
       
       (source)
     </a>
@@ -4204,7 +4210,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_navbar_brand</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L128">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L113">
       
       (source)
     </a>
@@ -4231,7 +4237,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_pagination</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L136">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L121">
       
       (source)
     </a>
@@ -4258,7 +4264,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_tabs</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L137">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L122">
       
       (source)
     </a>
@@ -4285,7 +4291,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_tabs_sub</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L138">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L123">
       
       (source)
     </a>
@@ -4312,7 +4318,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">dTagStack</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1421">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1592">
       
       (source)
     </a>
@@ -4339,7 +4345,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">dValueStack</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1422">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1593">
       
       (source)
     </a>
@@ -4366,7 +4372,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">id</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L159">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L146">
       
       (source)
     </a>
@@ -4393,7 +4399,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">oParent</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1428">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1599">
       
       (source)
     </a>
@@ -4420,7 +4426,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">ref_by</span>: <code>list</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L160">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L147">
       
       (source)
     </a>
@@ -4447,7 +4453,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">sort_id</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1164">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1286">
       
       (source)
     </a>
@@ -4475,7 +4481,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">_getBodyContent</span><span class="function-signature">(self, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1317">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1465">
       
       (source)
     </a>
@@ -4487,7 +4493,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Render the raw body content template for the object.</p></div>
   </div>
 </div><div class="basemethod private">
   
@@ -4502,7 +4508,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">_getBodyContentContentEditable</span><span class="function-signature">(self, html)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1309">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsobject.py#L1455">
       
       (source)
     </a>
@@ -4514,7 +4520,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Wrap rendered body content with editable markup when preview mode allows it.</p></div>
   </div>
 </div><div class="baseinstancevariable private">
   

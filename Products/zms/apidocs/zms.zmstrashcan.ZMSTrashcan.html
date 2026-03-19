@@ -382,12 +382,12 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSTrashcan</span>(zmscontainerobject.ZMSContainerObject): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmstrashcan.py#L34" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms.zmstrashcan.ZMSTrashcan.__init__">ZMSTrashcan()</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSTrashcan</span>(zmscontainerobject.ZMSContainerObject): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmstrashcan.py#L17" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms.zmstrashcan.ZMSTrashcan.__init__">ZMSTrashcan()</a></code></p>
           <p><a href="classIndex.html#zms.zmstrashcan.ZMSTrashcan">View In Hierarchy</a></p>
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>Store deleted ZMS objects until garbage collection removes them.</p></div>
         </div>
 
         <div id="splitTables">
@@ -398,52 +398,52 @@
     
     <td>Method</td>
     <td><code><a href="#__init__" class="internal-link" title="zms.zmstrashcan.ZMSTrashcan.__init__">__init__</a></code></td>
-    <td>ZMSTrashcan.__init__</td>
+    <td>Initialize the trashcan container.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getDCCoverage" class="internal-link" title="zms.zmstrashcan.ZMSTrashcan.getDCCoverage">get<wbr></wbr>DCCoverage</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return global DC coverage for trashcan content.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getObjProperty" class="internal-link" title="zms.zmstrashcan.ZMSTrashcan.getObjProperty">get<wbr></wbr>Obj<wbr></wbr>Property</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return an empty property value for synthetic trashcan attributes.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getTitle" class="internal-link" title="zms.zmstrashcan.ZMSTrashcan.getTitle">get<wbr></wbr>Title</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the localized trashcan title including the object count.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#isActive" class="internal-link" title="zms.zmstrashcan.ZMSTrashcan.isActive">is<wbr></wbr>Active</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return whether the trashcan currently contains objects.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#isPage" class="internal-link" title="zms.zmstrashcan.ZMSTrashcan.isPage">is<wbr></wbr>Page</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return whether the trashcan behaves like a page.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#isPageContainer" class="internal-link" title="zms.zmstrashcan.ZMSTrashcan.isPageContainer">is<wbr></wbr>Page<wbr></wbr>Container</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return whether the trashcan can contain page-like children.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_changeProperties" class="internal-link" title="zms.zmstrashcan.ZMSTrashcan.manage_changeProperties">manage_change<wbr></wbr>Properties</a></code></td>
-    <td>ZMSTrashcan.manage_changeProperties</td>
+    <td>Handle trashcan property updates from the ZMI.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_options" class="internal-link" title="zms.zmstrashcan.ZMSTrashcan.manage_options">manage<wbr></wbr>_options</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the trashcan management tabs shown in the ZMI.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#run_garbage_collection" class="internal-link" title="zms.zmstrashcan.ZMSTrashcan.run_garbage_collection">run<wbr></wbr>_garbage<wbr></wbr>_collection</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Delete expired trashcan entries.</td>
   </tr><tr class="classvariable">
     
     <td>Class Variable</td>
@@ -458,7 +458,7 @@
     
     <td>Class Variable</td>
     <td><code><a href="#manage_properties" class="internal-link" title="zms.zmstrashcan.ZMSTrashcan.manage_properties">manage<wbr></wbr>_properties</a></code></td>
-    <td>############################################################################ ### ###   Constructor ### ############################################################################</td>
+    <td><span class="undocumented">Undocumented</span></td>
   </tr><tr class="classvariable">
     
     <td>Class Variable</td>
@@ -478,7 +478,7 @@
     
     <td>Method</td>
     <td><code><a href="#_verifyObjectPaste" class="internal-link" title="zms.zmstrashcan.ZMSTrashcan._verifyObjectPaste">_verify<wbr></wbr>Object<wbr></wbr>Paste</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Allow paste operations into the trashcan without additional checks.</td>
   </tr>
 </table>
           
@@ -500,7 +500,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">__init__</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmstrashcan.py#L80">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmstrashcan.py#L53">
       
       (source)
     </a>
@@ -512,7 +512,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>ZMSTrashcan.__init__</p></div>
+    <div><p>Initialize the trashcan container.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -527,7 +527,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getDCCoverage</span><span class="function-signature">(self, REQUEST={})</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmstrashcan.py#L159">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmstrashcan.py#L120">
       
       (source)
     </a>
@@ -539,7 +539,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return global DC coverage for trashcan content.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">The active HTTP request.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Global coverage namespace.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -554,7 +554,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getObjProperty</span><span class="function-signature">(self, key, REQUEST={}, par=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmstrashcan.py#L183">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmstrashcan.py#L160">
       
       (source)
     </a>
@@ -566,7 +566,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return an empty property value for synthetic trashcan attributes.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">key:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Property identifier.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">The active HTTP request.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">par:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">Optional parent context.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Always an empty string.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -581,7 +581,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getTitle</span><span class="function-signature">(self, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmstrashcan.py#L189">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmstrashcan.py#L175">
       
       (source)
     </a>
@@ -593,7 +593,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the localized trashcan title including the object count.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">The active HTTP request.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Localized title with item count.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -608,7 +608,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">isActive</span><span class="function-signature">(self, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmstrashcan.py#L165">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmstrashcan.py#L131">
       
       (source)
     </a>
@@ -620,7 +620,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return whether the trashcan currently contains objects.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">The active HTTP request.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc"><tt class="rst-docutils rst-literal">True</tt> when the trashcan has child nodes.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -635,7 +635,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">isPage</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmstrashcan.py#L171">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmstrashcan.py#L142">
       
       (source)
     </a>
@@ -647,7 +647,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return whether the trashcan behaves like a page.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">Always <tt class="rst-docutils rst-literal">False</tt>.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -662,7 +662,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">isPageContainer</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmstrashcan.py#L177">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmstrashcan.py#L151">
       
       (source)
     </a>
@@ -674,7 +674,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return whether the trashcan can contain page-like children.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">Always <tt class="rst-docutils rst-literal">True</tt>.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -689,7 +689,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_changeProperties</span><span class="function-signature">(self, lang, REQUEST=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmstrashcan.py#L100">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmstrashcan.py#L60">
       
       (source)
     </a>
@@ -701,7 +701,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>ZMSTrashcan.manage_changeProperties</p></div>
+    <div><p>Handle trashcan property updates from the ZMI.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">lang:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Active UI language.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">The active HTTP request.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">Redirect response when triggered from the ZMI.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -716,7 +716,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_options</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmstrashcan.py#L44">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmstrashcan.py#L29">
       
       (source)
     </a>
@@ -728,7 +728,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the trashcan management tabs shown in the ZMI.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -743,7 +743,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">run_garbage_collection</span><span class="function-signature">(self, forced=0)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmstrashcan.py#L122">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmstrashcan.py#L85">
       
       (source)
     </a>
@@ -755,7 +755,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Delete expired trashcan entries.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">forced:</span><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">Run the cleanup regardless of the last execution time.</td></tr></table></div>
   </div>
 </div><div class="baseclassvariable">
   
@@ -769,7 +769,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">__ac_permissions__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmstrashcan.py#L58">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmstrashcan.py#L44">
       
       (source)
     </a>
@@ -796,7 +796,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">__authorPermissions__</span>: <code>tuple[<wbr></wbr>str, <wbr></wbr><span class="rst-variable-ellipsis">...</span>]</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmstrashcan.py#L52">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmstrashcan.py#L38">
       
       (source)
     </a>
@@ -823,7 +823,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_properties</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmstrashcan.py#L64">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmstrashcan.py#L50">
       
       (source)
     </a>
@@ -835,7 +835,7 @@
   </div>
   <div class="functionBody">
     
-    <div><p>############################################################################ ### ###   Constructor ### ############################################################################</p></div>
+    <div><p class="undocumented">Undocumented</p></div>
     
   </div>
 </div><div class="baseclassvariable">
@@ -850,7 +850,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">meta_id</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmstrashcan.py#L38">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmstrashcan.py#L23">
       
       (source)
     </a>
@@ -877,7 +877,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">meta_type</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmstrashcan.py#L38">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmstrashcan.py#L23">
       
       (source)
     </a>
@@ -904,7 +904,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_icon</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmstrashcan.py#L39">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmstrashcan.py#L24">
       
       (source)
     </a>
@@ -932,7 +932,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">_verifyObjectPaste</span><span class="function-signature">(self, object, validate_src=1)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmstrashcan.py#L151">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmstrashcan.py#L115">
       
       (source)
     </a>
@@ -944,7 +944,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Allow paste operations into the trashcan without additional checks.</p></div>
   </div>
 </div>
         </div>

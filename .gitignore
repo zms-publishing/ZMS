@@ -11,6 +11,7 @@ Products/zms/overrides.zcml
 .*.swp
 
 /.idea/
+/**/BAK/*
 
 dist/
 build/

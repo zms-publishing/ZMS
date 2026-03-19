@@ -578,12 +578,12 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">MySectionizer</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_globals.py#L133" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms._globals.MySectionizer.__init__">MySectionizer(levelnfc)</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">MySectionizer</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_globals.py#L162" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms._globals.MySectionizer.__init__">MySectionizer(levelnfc)</a></code></p>
           <p><a href="classIndex.html#zms._globals.MySectionizer">View In Hierarchy</a></p>
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>Helper class for generating hierarchical section numbers (e.g. '1.2.3.') with support for different numbering formats (numeric, uppercase, lowercase).</p></div>
         </div>
 
         <div id="splitTables">
@@ -594,27 +594,27 @@
     
     <td>Method</td>
     <td><code><a href="#__init__" class="internal-link" title="zms._globals.MySectionizer.__init__">__init__</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Initialise a new MySectionizer.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#__str__" class="internal-link" title="zms._globals.MySectionizer.__str__">__str__</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return a string representation of the current section number.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#clone" class="internal-link" title="zms._globals.MySectionizer.clone">clone</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Create and return a deep copy of this sectionizer.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getLevel" class="internal-link" title="zms._globals.MySectionizer.getLevel">get<wbr></wbr>Level</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the current nesting depth.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#processLevel" class="internal-link" title="zms._globals.MySectionizer.processLevel">process<wbr></wbr>Level</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Update the section counter for the given nesting level.</td>
   </tr><tr class="instancevariable">
     
     <td>Instance Variable</td>
@@ -646,7 +646,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">__init__</span><span class="function-signature">(self, levelnfc=<span class="rst-variable-quote">'</span><span class="rst-variable-string">0</span><span class="rst-variable-quote">'</span>)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_globals.py#L140">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_globals.py#L174">
       
       (source)
     </a>
@@ -658,7 +658,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Initialise a new MySectionizer.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">levelnfc:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Numbering format code: '0'=numeric, '1'=uppercase, '2'=lowercase</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -673,7 +673,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">__str__</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_globals.py#L149">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_globals.py#L189">
       
       (source)
     </a>
@@ -685,7 +685,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return a string representation of the current section number.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Section string (e.g. '1.2.3.')</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -700,7 +700,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">clone</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_globals.py#L165">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_globals.py#L211">
       
       (source)
     </a>
@@ -712,7 +712,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Create and return a deep copy of this sectionizer.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">MySectionizer</tt></td><td class="fieldArgDesc">Cloned MySectionizer instance</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -727,7 +727,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getLevel</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_globals.py#L173">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_globals.py#L225">
       
       (source)
     </a>
@@ -739,7 +739,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the current nesting depth.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">Current level (number of sections)</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -754,7 +754,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">processLevel</span><span class="function-signature">(self, level)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_globals.py#L179">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_globals.py#L237">
       
       (source)
     </a>
@@ -766,7 +766,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Update the section counter for the given nesting level.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">level:</span><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">The heading level to process</td></tr></table></div>
   </div>
 </div><div class="baseinstancevariable">
   
@@ -780,7 +780,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">levelnfc</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_globals.py#L141">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_globals.py#L181">
       
       (source)
     </a>
@@ -807,7 +807,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">sections</span>: <code>list</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_globals.py#L142">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_globals.py#L182">
       
       (source)
     </a>

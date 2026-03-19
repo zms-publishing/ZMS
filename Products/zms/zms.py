@@ -1,20 +1,12 @@
-################################################################################
-# zms.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+zms.py
+
+Main ZMS product implementation and top-level content type behavior.
+
+License: GNU General Public License v2 or later
+Organization: ZMS Publishing
+"""
+
 
 # Imports.
 from App.Common import package_home
@@ -46,19 +38,19 @@ from Products.zms.zmstrashcan import ZMSTrashcan
 
 __all__= ['ZMS']
 
-
-################################################################################
-#
-# ZMS Object Index
-#
-################################################################################
-
 import zope.event
 from zope.container.contained import ObjectAddedEvent
 from zope.container.contained import ObjectMovedEvent
 from zope.container.contained import ObjectRemovedEvent
 
+
 def subscriber(event):
+  """
+  Dispatch ZMS object lifecycle events to the internal event framework.
+
+  @param event: Zope container lifecycle event.
+  @type event: zope.lifecycleevent.interfaces.IObjectEvent
+  """
   if isinstance(event, ObjectAddedEvent):
     if isinstance(event.object, ZMSObject):
       if isinstance(event.newParent, ZMSObject):
@@ -78,16 +70,18 @@ def subscriber(event):
 zope.event.subscribers.append(subscriber)
 
 
-################################################################################
-#
-# Common Function(s)
-#
-################################################################################
-
-# ------------------------------------------------------------------------------
-#  importTheme:
-# ------------------------------------------------------------------------------
 def importTheme(self, theme):
+  """
+  Import or acquire the configured theme for a newly created site.
+
+  @param self: ZMS site that receives the theme configuration.
+  @type self: ZMS
+  @param theme: Theme package identifier or import source.
+  @type theme: str
+  @return: Identifier of the imported theme, or C{None} when the theme is
+      acquired from a portal master.
+  @rtype: str | None
+  """
   if not theme or theme == 'conf:acquire':
     return None
   if theme.startswith('conf:'):
@@ -102,25 +96,44 @@ def importTheme(self, theme):
   return id
 
 
-# ------------------------------------------------------------------------------
-#  initZMS:
-# ------------------------------------------------------------------------------
-# A new ZMS node can be initalized as a stand-alone client (master) or 
-# as subordinated client acquiring content models and sharing the zmsindex.
-# Use a request variable 'acquire' =  1 to initalize ZMS as a client
 def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST, minimal_init = False):
+  """
+  Create and initialize a new ZMS site below the given container.
 
-  ### Constructor.
+  A new site can either be initialized as a standalone master site or as a
+  client that acquires its content model from a portal master when the request
+  variable C{acquire} is set.
+
+  @param self: Container that receives the new ZMS site.
+  @type self: OFS.ObjectManager.ObjectManager
+  @param id: Identifier of the created ZMS object.
+  @type id: str
+  @param titlealt: Alternative title shown in the management interface.
+  @type titlealt: str
+  @param title: Human readable title of the site.
+  @type title: str
+  @param lang: Primary content language.
+  @type lang: str
+  @param manage_lang: Management interface language.
+  @type manage_lang: str
+  @param REQUEST: HTTP request with initialization options.
+  @type REQUEST: ZPublisher.HTTPRequest.HTTPRequest
+  @param minimal_init: Initialize only the minimal default configuration.
+  @type minimal_init: bool
+  @return: Newly created and initialized ZMS site.
+  @rtype: ZMS
+  """
+
   obj = ZMS()
   obj.id = id
   self._setObject(obj.id, obj)
   obj = getattr(self, obj.id)
 
-  ### Trashcan.
+  # Add the built-in trashcan used for soft deletion.
   trashcan = ZMSTrashcan()
   obj._setObject(trashcan.id, trashcan)
 
-  ### Manager.
+  # Register the default metamodel, metacmd, and format managers.
   manager = ZMSMetamodelProvider.ZMSMetamodelProvider()
   obj._setObject( manager.id, manager)
   manager = ZMSMetacmdProvider.ZMSMetacmdProvider()
@@ -128,22 +141,19 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST, minimal_init 
   manager = ZMSFormatProvider.ZMSFormatProvider()
   obj._setObject( manager.id, manager)
 
-  ### Init languages.
   obj.setLanguage(lang, REQUEST['lang_label'], '', manage_lang)
 
-  ### Log.
   if REQUEST.get('zmslog_init', 0)==1:
     zmslog = ZMSLog( copy_to_stdout=True, logged_entries=[ 'ERROR', 'INFO'])
     obj._setObject(zmslog.id, zmslog)
 
-  ### Init Configuration.
   if REQUEST.get('http_proxy'):
     obj.setConfProperty('HTTP.proxy', REQUEST.get('http_proxy', ''))
     obj.setConfProperty('HTTPS.proxy', REQUEST.get('http_proxy', ''))
   obj.setConfProperty('ZMS.autocommit', 1)
 
   if REQUEST.get('acquire', 0) == 0:
-    ### Init ZMS default content-model.
+    # Initialize the default content model for standalone sites.
     minimal_init = minimal_init == True or REQUEST.get('minimal_init', 0) == 1
     if minimal_init:
       _confmanager.initConf(obj, 'conf:com.zms.foundation')
@@ -154,7 +164,7 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST, minimal_init 
       _confmanager.initConf(obj, 'conf:com.zms.catalog.zcatalog')
 
   else:
-    ### Acquire content-model from master.
+    # Acquire the content model and theme from the portal master.
     master = hasattr(self.aq_parent,'content') and (self.aq_parent.content or self.aq_parent.content.getPortalMaster()) or None
     if master:
       obj.setConfProperty('Portal.Master',master.getHome().id)
@@ -172,21 +182,14 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST, minimal_init 
         client.synchronizeObjAttrs()
       obj.setConfProperty('ZMS.theme', master.getConfProperty('ZMS.theme'))
 
-  ### Init ZMS index.
   obj.getZMSIndex()
 
-  ### Init default-configuration.
-  ### ###################################
-  ### CAVE: 
-  ### zcatalog-connecter shall not 
-  ### get initialized by default again.
-  ### ###################################
+  # Keep the historic default configuration order so the catalog connector is
+  # not initialized implicitly a second time.
   _confmanager.initConf(obj, ':default')
 
-  ### Init Role-Definitions and Permission Settings.
   obj.initRoleDefs()
 
-  ### Init Properties: active, titlealt, title.
   obj.setObjStateNew(REQUEST)
   obj.setObjProperty('active', 1, lang)
   obj.setObjProperty('titlealt', titlealt, lang)
@@ -196,53 +199,64 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST, minimal_init 
   # Init Object-Children
   obj.initObjChildren(REQUEST)
   
-  ### Return new ZMS instance.
   return obj
 
 
-# ------------------------------------------------------------------------------
-#  initContent:
-# ------------------------------------------------------------------------------
 def initContent(self, filename, REQUEST):
+  """
+  Import initial site content from a bundled archive.
+
+  @param self: ZMS site that receives the imported content.
+  @type self: ZMS
+  @param filename: Name of the import archive below the product import folder.
+  @type filename: str
+  @param REQUEST: Active HTTP request.
+  @type REQUEST: ZPublisher.HTTPRequest.HTTPRequest
+  """
   with open(_fileutil.getOSPath(package_home(globals())+'/import/'+filename), 'rb') as file:
     _importable.importFile( self, file, REQUEST, _importable.importContent)
 
 
-################################################################################
-#
-# Constructor
-#
-################################################################################
 manage_addZMSForm = PageTemplateFile('manage_addzmsform', globals())
+
+
 def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
-  """ manage_addZMS """
+  """
+  Create the top-level home folder and initial ZMS site from the add form.
+
+  @param self: Container in which the home folder is created.
+  @type self: OFS.ObjectManager.ObjectManager
+  @param lang: Primary content language.
+  @type lang: str
+  @param manage_lang: Management interface language.
+  @type manage_lang: str
+  @param REQUEST: HTTP request containing form input.
+  @type REQUEST: ZPublisher.HTTPRequest.HTTPRequest
+  @param RESPONSE: HTTP response used for redirects.
+  @type RESPONSE: ZPublisher.HTTPResponse.HTTPResponse
+  """
   message = ''
   t0 = time.time()
 
   if REQUEST['btn'] == 'Add':
 
-    ##### Add Home ####
+    # Create the folder that contains the new site root.
     homeElmnt = Folder(REQUEST['folder_id'])
     self._setObject(homeElmnt.id, homeElmnt)
     homeElmnt = [x for x in self.objectValues() if x.id == homeElmnt.id][0]
     
-    ##### Add ZMS ####
     titlealt = 'ZMS home'
     title = 'ZMS - Python-based Content Management System for Science, Technology and Medicine'
     obj = initZMS(homeElmnt, 'content', titlealt, title, lang, manage_lang, REQUEST)
     
-    ##### Add Theme ####
     theme_none = 'conf:acquire'
     if REQUEST.get('theme',theme_none) != 'conf:acquire':
       theme_id = importTheme(obj,REQUEST.get('theme','conf:acquire'))
       # Set theme property: id may not contain dots.
       obj.setConfProperty('ZMS.theme',theme_id.replace('.','_'))
 
-    ##### Default content ####
     if REQUEST.get('content_init', 0)==1:
       initContent(obj, 'content.default.zip', REQUEST)
-
-    ##### Configuration ####
 
     # Initialize catalog adapter / connector.
     if REQUEST.get('zcatalog_init', 0)==1:
@@ -273,14 +287,17 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
 
 
 def containerFilter(container):
+  """
+  Restrict add-dialog containers to plain folders.
+
+  @param container: Candidate container displayed by the add dialog.
+  @type container: object
+  @return: C{True} when the container is a folder.
+  @rtype: bool
+  """
   return container.meta_type == 'Folder'
 
 
-################################################################################
-#
-#  Class
-#
-################################################################################
 class ZMS(
         ZMSCustom,
         _accessmanager.AccessManager,
@@ -289,6 +306,9 @@ class ZMS(
         _objattrs.ObjAttrsManager,
         _zcatalogmanager.ZCatalogManager,
         ):
+    """
+    Root ZMS content object that combines configuration, editing, and indexing.
+    """
 
     # Version-Info.
     # -------------
@@ -373,45 +393,60 @@ class ZMS(
     # -------------
     enumManager = _enummanager.EnumManager()
 
-
-    """
-    ############################################################################
-    ###
-    ###   Constructor
-    ###
-    ############################################################################
-    """
-
-    # --------------------------------------------------------------------------
-    #  ZMS.__init__:
-    # --------------------------------------------------------------------------
-    """
-    Constructor.
-    """
     def __init__(self):
+      """Initialize the root object with the default content id."""
       self.id = 'content'
 
 
-    # --------------------------------------------------------------------------
-    #  ZMS.initZMS:
-    # --------------------------------------------------------------------------
     def initZMS(self, container, id, titlealt, title, lang, manage_lang, REQUEST, minimal_init = False):
+      """
+      Delegate site initialization to the module-level helper.
+
+      @param container: Container that receives the new ZMS object.
+      @type container: OFS.ObjectManager.ObjectManager
+      @param id: Identifier of the created object.
+      @type id: str
+      @param titlealt: Alternative title shown in management views.
+      @type titlealt: str
+      @param title: Human readable site title.
+      @type title: str
+      @param lang: Primary content language.
+      @type lang: str
+      @param manage_lang: Management interface language.
+      @type manage_lang: str
+      @param REQUEST: HTTP request with initialization options.
+      @type REQUEST: ZPublisher.HTTPRequest.HTTPRequest
+      @param minimal_init: Initialize only the minimal default configuration.
+      @type minimal_init: bool
+      @return: Newly created and initialized ZMS site.
+      @rtype: ZMS
+      """
       return initZMS(container, id, titlealt, title, lang, manage_lang, REQUEST, minimal_init)
 
 
-    # --------------------------------------------------------------------------
-    #  ZMS.manage_addMediaDb:
-    # --------------------------------------------------------------------------
     def manage_addMediaDb(self, location, REQUEST=None, RESPONSE=None):
+      """
+      Add the media database helper object.
+
+      @param location: Filesystem location of the media database.
+      @type location: str
+      @param REQUEST: Optional HTTP request.
+      @type REQUEST: ZPublisher.HTTPRequest.HTTPRequest | None
+      @param RESPONSE: Optional HTTP response.
+      @type RESPONSE: ZPublisher.HTTPResponse.HTTPResponse | None
+      """
       _mediadb.manage_addMediaDb(self, location, REQUEST, RESPONSE)
 
 
-    # --------------------------------------------------------------------------
-    #  ZMS.zms_version:
-    #
-    #  Get version.
-    # --------------------------------------------------------------------------
     def zms_version(self, custom=False):
+      """
+      Return the product version string, optionally including custom metadata.
+
+      @param custom: Include deployment-specific version decorations.
+      @type custom: bool
+      @return: Version text for UI rendering.
+      @rtype: str
+      """
       version_txt = '%s-%s' % (self.getConfProperty('ZMS.product_name'), self.getConfProperty('ZMS.version_txt'))
       zms_custom_version = os.environ.get('ZMS_CUSTOM_VERSION', '')
       if custom and zms_custom_version != '':
@@ -460,22 +495,12 @@ class ZMS(
           f'href="https://github.com/zms-publishing/ZMS/commits/{git_hash}">git#{git_hash}</a>')
       return version_txt
 
-    # --------------------------------------------------------------------------
-    #  ZMS.getDocumentElement
-    # --------------------------------------------------------------------------
-    """
-    The document-element of the site.
-    """
     def getDocumentElement(self):
+      """Return the document element of the site tree."""
       return self
 
-    # --------------------------------------------------------------------------
-    #  ZMS.getRootElement
-    # --------------------------------------------------------------------------
-    """
-    The root element of the site.
-    """
     def getRootElement(self):
+      """Return the topmost portal master in the current site hierarchy."""
       doc_elmnt = self
       while True:
         portal_mstr = doc_elmnt.getPortalMaster()
@@ -484,19 +509,15 @@ class ZMS(
         doc_elmnt = portal_mstr
       return doc_elmnt
 
-    # --------------------------------------------------------------------------
-    #  ZMS.getAbsoluteHome
-    # --------------------------------------------------------------------------
     def getAbsoluteHome(self):
+      """Return the home folder of the portal master or the local site."""
       portalMaster = self.getPortalMaster()
       if portalMaster:
         return portalMaster.getAbsoluteHome()
       return self.getHome()
 
-    """
-    Returns the home-folder of the site.
-    """
     def getHome(self):
+      """Return the folder that contains the document element."""
       docElmnt = self.getDocumentElement()
       ob = docElmnt
       try:
@@ -513,36 +534,36 @@ class ZMS(
           ob = docElmnt.aq_parent
       return ob
 
-    """
-    Returns the trashcan of the site.
-    """
     def getTrashcan(self):
+      """Return the site's trashcan object."""
       return self.objectValues(['ZMSTrashcan'])[0]
 
-    """
-    Returns new (unique) Object-ID.
-    """
     def getNewId(self, id_prefix='e'):
+      """
+      Return a new unique object identifier.
+
+      @param id_prefix: Prefix used for the generated id.
+      @type id_prefix: str
+      @return: Unique object id.
+      @rtype: str
+      """
       return '%s%i'%(id_prefix, self.getSequence().nextVal())
 
-    """
-    Returns Dublin-Core Meta-Attribute Coverage.
-    """
     def getDCCoverage(self, REQUEST={}):
+      """
+      Return the Dublin Core coverage string for the primary language.
+
+      @param REQUEST: Optional request mapping.
+      @type REQUEST: dict
+      @return: Global coverage identifier.
+      @rtype: str
+      """
       return 'global.'+self.getPrimaryLanguage()
 
 
-
-    ############################################################################
-    #
-    #   ZMS - Portals
-    #
-    ############################################################################
-
-    """
-    Returns portal-master, none if it does not exist.
-    """
+    # Portal helpers.
     def getPortalMaster(self):
+      """Return the configured portal master, or C{None} if absent."""
       v = self.get_conf_properties().get('Portal.Master', '')
       if v:
         try:
@@ -551,10 +572,8 @@ class ZMS(
           pass
       return None
 
-    """
-    Returns portal-clients, empty list if none exist.
-    """
     def getPortalClients(self):
+      """Return portal clients configured below the site home folder."""
       docElmnts = []
       v = self.get_conf_properties().get('Portal.Clients', [])
       if v:
@@ -567,29 +586,23 @@ class ZMS(
       return docElmnts
 
 
-    ############################################################################
-    ###
-    ###   DOM-Methods
-    ###
-    ############################################################################
-
-    """
-    The parent of this node.
-    All nodes except root may have a parent.
-    """
+    # DOM methods.
     def getParentNode(self):
+      """Return C{None} because the site root has no parent node."""
       return None
 
-    ############################################################################
-    ###
-    ###   XML-Builder
-    ###
-    ############################################################################
-
-    # --------------------------------------------------------------------------
-    # Handler for XML-Builder (_builder.py)
-    # --------------------------------------------------------------------------
+    # XML builder.
     def xmlOnStartElement(self, sTagName, dTagAttrs, oParentNode):
+      """
+      Reset root-level import state before XML builder processing starts.
+
+      @param sTagName: Name of the XML start tag.
+      @type sTagName: str
+      @param dTagAttrs: Attributes of the XML start tag.
+      @type dTagAttrs: dict
+      @param oParentNode: Parent node passed by the XML builder.
+      @type oParentNode: object
+      """
       standard.writeLog( self, "[xmlOnStartElement]: sTagName=%s"%sTagName)
 
       # remove all ZMS-objects.
@@ -648,13 +661,12 @@ class ZMS(
         t.addBeforeCommitHook(maintenance_hook)
 
 ################################################################################
-
-
 # Workaround for an incompatibility with zope.browserresource 3.11.0 and newer
 # which requires an ETagAdapter to be provided by the application.
 # Sent a patch upstream to lift this requirement, at which point this
 # workaround could be removed:
 #  https://github.com/zopefoundation/zope.browserresource/pull/1
+################################################################################
 try:
     from zope.browserresource.interfaces import IFileResource, IETag
     from zope.publisher.interfaces.browser import IBrowserRequest

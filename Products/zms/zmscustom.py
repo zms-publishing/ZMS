@@ -58,10 +58,10 @@ def manage_addZMSCustom(self, meta_id, lang, _sort_id, btn, REQUEST, RESPONSE):
   @param _sort_id: the sort value.
   @type _sort_id: C{int}
   @param btn: the submitting button value.
-  @type lang: C{str}
+  @type btn: C{str}
   @param REQUEST: the triggering request
   @type REQUEST: C{ZPublisher.HTTPRequest}
-  @param RESPONSE: the triggering request
+  @param RESPONSE: the triggering response
   @type RESPONSE: C{ZPublisher.HTTPResponse}
   """
   message = ''

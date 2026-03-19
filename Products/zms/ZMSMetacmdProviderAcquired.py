@@ -1,21 +1,11 @@
-################################################################################
-# ZMSMetacmdProviderAcquired.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+ZMSMetacmdProviderAcquired.py
 
+ZMS support for zmsmetacmd provider acquired.
+
+License: GNU General Public License v2 or later
+Organization: ZMS Publishing
+"""
 
 # Imports.
 from zope.interface import implementer
@@ -23,38 +13,46 @@ from zope.interface import implementer
 from Products.zms import IZMSMetacmdProvider, ZMSMetacmdProvider
 
 
-################################################################################
-################################################################################
-###
-###   Class
-###
-################################################################################
-################################################################################
 @implementer(
         IZMSMetacmdProvider.IZMSMetacmdProvider)
 class ZMSMetacmdProviderAcquired(
         ZMSMetacmdProvider.ZMSMetacmdProvider):
 
+    """Delegate metacommand definitions to the portal master."""
+
     # Properties.
     # -----------
     meta_type = 'ZMSMetacmdProviderAcquired'
 
-    ############################################################################
-    #  ZMSMetacmdProviderAcquired.__init__: 
-    #
-    #  Constructor.
-    ############################################################################
     def __init__(self, commands=[]):
+      """Initialize the acquired metacommand manager stub.
+
+      @param commands: Unused compatibility argument.
+      @type commands: C{list}
+      """
       self.id = 'metacmd_manager'
 
     def getMetaCmdDescription(self, id):
-      """ getMetaCmdDescription """
+      """Return a metacommand description from the portal master.
+
+      @param id: Metacommand identifier.
+      @type id: C{str}
+      @return: Metacommand description text.
+      @rtype: C{str}
+      """
       portal_master = self.getPortalMaster()
       if portal_master is not None:
         return self.getPortalMaster().getMetaCmdDescription(id)
       return ''
 
     def getMetaCmdIds(self, sort=True):
+      """Return metacommand ids from the portal master.
+
+      @param sort: Sort the command ids when true.
+      @type sort: C{bool}
+      @return: Metacommand identifiers.
+      @rtype: C{list}
+      """
       rtn = []
       portal_master = self.getPortalMaster()
       if portal_master is not None:
@@ -62,6 +60,17 @@ class ZMSMetacmdProviderAcquired(
       return rtn
 
     def getMetaCmds(self, context=None, stereotype='', sort=True):
+      """Return metacommand definitions from the portal master.
+
+      @param context: Optional content context used for filtering.
+      @type context: C{object}
+      @param stereotype: Optional command stereotype filter.
+      @type stereotype: C{str}
+      @param sort: Sort the command list when true.
+      @type sort: C{bool}
+      @return: Metacommand definitions marked as acquired.
+      @rtype: C{list}
+      """
       rtn = []
       portal_master = self.getPortalMaster()
       if portal_master is not None:
@@ -70,4 +79,3 @@ class ZMSMetacmdProviderAcquired(
             d['acquired'] = 1
       return rtn
 
-################################################################################

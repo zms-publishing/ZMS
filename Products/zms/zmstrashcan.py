@@ -1,21 +1,11 @@
-################################################################################
-# zmstrashcan.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+zmstrashcan.py
 
+Trashcan support for deleted ZMS objects and recovery workflows.
+
+License: GNU General Public License v2 or later
+Organization: ZMS Publishing
+"""
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import time
@@ -24,14 +14,9 @@ from Products.zms import standard
 from Products.zms import zmscontainerobject
 
 
-################################################################################
-################################################################################
-###
-###   Class
-###
-################################################################################
-################################################################################
 class ZMSTrashcan(zmscontainerobject.ZMSContainerObject):
+
+    """Store deleted ZMS objects until garbage collection removes them."""
 
     # Properties.
     # -----------
@@ -42,6 +27,7 @@ class ZMSTrashcan(zmscontainerobject.ZMSContainerObject):
     # Management Options.
     # -------------------
     def manage_options(self):
+      """Return the trashcan management tabs shown in the ZMI."""
       return ( 
         {'label': 'TYPE_ZMSTRASHCAN', 'action': 'manage_main'},
         {'label': 'TAB_PROPERTIES',   'action': 'manage_properties'},
@@ -64,41 +50,23 @@ class ZMSTrashcan(zmscontainerobject.ZMSContainerObject):
     manage_properties = PageTemplateFile('zpt/ZMSTrashcan/manage_properties', globals())
 
 
-    """
-    ############################################################################
-    ###
-    ###   Constructor
-    ###
-    ############################################################################
-    """
-
-    ############################################################################
-    #  ZMSTrashcan.__init__: 
-    #
-    #  Constructor (initialise a new instance of ZMSTrashcan).
-    ############################################################################
     def __init__(self):
-      """ ZMSTrashcan.__init__ """
+      """Initialize the trashcan container."""
       id = 'trashcan'
       sort_id = 0
       zmscontainerobject.ZMSContainerObject.__init__(self, id, sort_id)
 
 
-    """
-    ############################################################################
-    ###
-    ###   Properties
-    ###
-    ############################################################################
-    """
-
-    ############################################################################
-    #  ZMSTrashcan.manage_changeProperties: 
-    #
-    #  Change properties.
-    ############################################################################
     def manage_changeProperties(self, lang, REQUEST=None): 
-      """ ZMSTrashcan.manage_changeProperties """
+      """Handle trashcan property updates from the ZMI.
+
+      @param lang: Active UI language.
+      @type lang: C{str}
+      @param REQUEST: The active HTTP request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @return: Redirect response when triggered from the ZMI.
+      @rtype: C{object}
+      """
       
       if REQUEST.get('btn') in  [ 'BTN_CANCEL', 'BTN_BACK']:
         return REQUEST.RESPONSE.redirect('manage_main?lang=%s'%lang)
@@ -114,12 +82,12 @@ class ZMSTrashcan(zmscontainerobject.ZMSContainerObject):
           return REQUEST.RESPONSE.redirect('manage_properties?lang=%s&manage_tabs_message=%s'%(lang, standard.url_quote(message)))
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSTrashcan.run_garbage_collection:
-    #
-    #  Runs garbage collection.
-    # --------------------------------------------------------------------------
     def run_garbage_collection(self, forced=0):
+      """Delete expired trashcan entries.
+
+      @param forced: Run the cleanup regardless of the last execution time.
+      @type forced: C{int}
+      """
       now = time.time()
       last_run = getattr(self, 'last_garbage_collection', None)
       if forced or \
@@ -143,50 +111,74 @@ class ZMSTrashcan(zmscontainerobject.ZMSContainerObject):
         # Update time-stamp.
         setattr(self, 'last_garbage_collection', now)
 
-    # --------------------------------------------------------------------------
-    #  ZMSTrashcan._verifyObjectPaste:
-    #
-    #  Overrides _verifyObjectPaste of OFS.CopySupport.
-    # --------------------------------------------------------------------------
+
     def _verifyObjectPaste(self, object, validate_src=1): 
+      """Allow paste operations into the trashcan without additional checks."""
       return
 
-    # --------------------------------------------------------------------------
-    #  ZMSTrashcan.getDCCoverage:
-    #
-    #  Overrides getDCCoverage of ZMSObject.
-    # --------------------------------------------------------------------------
+
     def getDCCoverage(self, REQUEST={}):
+      """Return global DC coverage for trashcan content.
+
+      @param REQUEST: The active HTTP request.
+      @type REQUEST: C{dict}
+      @return: Global coverage namespace.
+      @rtype: C{str}
+      """
       return 'global.'+self.getPrimaryLanguage()
 
-    # --------------------------------------------------------------------------
-    #  ZMSTrashcan.isActive
-    # --------------------------------------------------------------------------
+
     def isActive(self, REQUEST):
+      """Return whether the trashcan currently contains objects.
+
+      @param REQUEST: The active HTTP request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @return: C{True} when the trashcan has child nodes.
+      @rtype: C{bool}
+      """
       return len(self.getChildNodes(REQUEST))>0
 
-    # --------------------------------------------------------------------------
-    #  ZMSTrashcan.isPage
-    # --------------------------------------------------------------------------
+
     def isPage(self):
+      """Return whether the trashcan behaves like a page.
+
+      @return: Always C{False}.
+      @rtype: C{bool}
+      """
       return False
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.isPageContainer:
-    # --------------------------------------------------------------------------
+
     def isPageContainer(self):
+      """Return whether the trashcan can contain page-like children.
+
+      @return: Always C{True}.
+      @rtype: C{bool}
+      """
       return True
 
-    # --------------------------------------------------------------------------
-    #  ZMSTrashcan.getObjProperty
-    # --------------------------------------------------------------------------
+
     def getObjProperty(self, key, REQUEST={}, par=None):
+      """Return an empty property value for synthetic trashcan attributes.
+
+      @param key: Property identifier.
+      @type key: C{str}
+      @param REQUEST: The active HTTP request.
+      @type REQUEST: C{dict}
+      @param par: Optional parent context.
+      @type par: C{object}
+      @return: Always an empty string.
+      @rtype: C{str}
+      """
       return ''
 
-    # --------------------------------------------------------------------------
-    #  ZMSTrashcan.getTitle
-    # --------------------------------------------------------------------------
+
     def getTitle(self, REQUEST):
+      """Return the localized trashcan title including the object count.
+
+      @param REQUEST: The active HTTP request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @return: Localized title with item count.
+      @rtype: C{str}
+      """
       return self.display_type() + " (" + str(len(self.getChildNodes(REQUEST))) + " " + self.getLangStr('ATTR_OBJECTS', REQUEST['lang']) + ")"
 
-################################################################################

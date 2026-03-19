@@ -1,21 +1,11 @@
-################################################################################
-# ZMSWorkflowProviderAcquired.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+ZMSWorkflowProviderAcquired.py
 
+ZMS support for zmsworkflow provider acquired.
+
+License: GNU General Public License v2 or later
+Organization: ZMS Publishing
+"""
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
@@ -33,115 +23,121 @@ from Products.zms import ZMSItem
 class ZMSWorkflowProviderAcquired(
         ZMSItem.ZMSItem):
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    Properties
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    """Delegate workflow settings and definitions to the portal master."""
+
     meta_type = 'ZMSWorkflowProviderAcquired'
     zmi_icon = "fas fa-random acquired"
     icon_clazz = zmi_icon
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    Management Options
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     manage_options_default_action = '../manage_customize'
     def manage_options(self):
+      """Return parent management tabs with local relative actions."""
       return [self.operator_setitem( x, 'action', '../'+x['action']) for x in copy.deepcopy(self.aq_parent.manage_options())]
 
     manage_sub_options__roles__ = None
     def manage_sub_options(self):
+      """Return the workflow manager sub tabs shown in the ZMI."""
       return (
         {'label': 'TAB_WORKFLOW','action': 'manage_main'},
         )
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    Management Interface
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     manage = PageTemplateFile('zpt/ZMSWorkflowProvider/manage_main_acquired', globals())
     manage_main = PageTemplateFile('zpt/ZMSWorkflowProvider/manage_main_acquired', globals())
 
-
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    ZMSWorkflowProviderAcquired.__init__: 
-    
-    Constructor.
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def __init__(self, autocommit=1, nodes=['{$}']):
+      """Initialize the acquired workflow manager stub.
+
+      @param autocommit: Flag controlling automatic workflow commits.
+      @type autocommit: C{int}
+      @param nodes: Workflow-enabled node paths.
+      @type nodes: C{list}
+      """
       self.id = 'workflow_manager'
       self.autocommit = autocommit
       self.nodes = nodes
 
-
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    ZMSWorkflowProviderAcquired.getAutocommit
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def getAutocommit(self):
+      """Return whether workflow autocommit is enabled locally."""
       return getattr(self, 'autocommit', 1)
 
-
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    ZMSWorkflowProviderAcquired.getNodes
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def getNodes(self):
+      """Return workflow-enabled node paths."""
       return getattr(self, 'nodes', ['{$}'])
 
-
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    ZMSWorkflowProviderAcquired.doAutocommit:
-    
-    Auto-Commit ZMS-tree.
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def doAutocommit(self, lang, REQUEST):
+      """Trigger a workflow autocommit run through the shared provider.
+
+      @param lang: Active UI language.
+      @type lang: C{str}
+      @param REQUEST: The active HTTP request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      """
       ZMSWorkflowProvider.doAutocommit(self, REQUEST)
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    @see IZMSWorkflowProvider.getActivities()
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def getActivities(self):
+      """Return workflow activities from the portal master."""
       return self.getPortalMaster().getWorkflowManager().getActivities()
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    @see IZMSWorkflowProvider.getActitiesIds()
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def getActivityIds(self):
+      """Return workflow activity ids from the portal master."""
       return self.getPortalMaster().getWorkflowManager().getActivityIds()
   
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    @see IZMSWorkflowProvider.getActivity()
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def getActivity(self, id):
+      """Return a workflow activity definition from the portal master.
+
+      @param id: Activity identifier.
+      @type id: C{str}
+      @return: Workflow activity definition.
+      @rtype: C{dict}
+      """
       return self.getPortalMaster().getWorkflowManager().getActivity(id)
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    @see IZMSWorkflowProvider.getActivityDetails()
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def getActivityDetails(self, id):
+      """Return detailed workflow activity information from the portal master.
+
+      @param id: Activity identifier.
+      @type id: C{str}
+      @return: Detailed workflow activity information.
+      @rtype: C{dict}
+      """
       return self.getPortalMaster().getWorkflowManager().getActivityDetails(id)
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    @see IZMSWorkflowProvider.getTransitions()
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def getTransitions(self):
+      """Return workflow transitions from the portal master."""
       return self.getPortalMaster().getWorkflowManager().getTransitions()
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    @see IZMSWorkflowProvider.getTransitionIds()
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def getTransitionIds(self):
+      """Return workflow transition ids from the portal master."""
       return self.getPortalMaster().getWorkflowManager().getTransitionIds()
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    @see IZMSWorkflowProvider.getTransition()
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def getTransition(self, id, for_export=False):
+      """Return a workflow transition definition from the portal master.
+
+      @param id: Transition identifier.
+      @type id: C{str}
+      @param for_export: Include export-safe payload details when true.
+      @type for_export: C{bool}
+      @return: Workflow transition definition.
+      @rtype: C{dict}
+      """
       return self.getPortalMaster().getWorkflowManager().getTransition(id, for_export)
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    ZMSWorkflowProviderAcquired.manage_changeWorkflow:
-    
-    Chang workflow.
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def manage_changeWorkflow(self, lang, key='', btn='', REQUEST=None, RESPONSE=None):
-      """ ZMSWorkflowProvider.manage_changeWorkflow """
+      """Handle ZMI updates for acquired workflow settings.
+
+      @param lang: Active UI language.
+      @type lang: C{str}
+      @param key: Edited settings section.
+      @type key: C{str}
+      @param btn: Submitted button id.
+      @type btn: C{str}
+      @param REQUEST: The active HTTP request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param RESPONSE: The active HTTP response.
+      @type RESPONSE: C{ZPublisher.HTTPResponse}
+      @return: Redirect response.
+      @rtype: C{object}
+      """
       message = ''
       
       # Active.
@@ -160,4 +156,3 @@ class ZMSWorkflowProviderAcquired(
       message = standard.url_quote(message)
       return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s#_%s'%(lang, message, key))
 
-################################################################################

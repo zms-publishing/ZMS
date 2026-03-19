@@ -89,11 +89,6 @@ def getNextSibling(self, REQUEST, incResource=False):
         i = i + 1
   return None
 
-############################################################################
-### CLASS ZMSContainerObject
-############################################################################
-
-
 class ZMSContainerObject(
     zmsobject.ZMSObject,
     RoleManager,
@@ -128,7 +123,7 @@ class ZMSContainerObject(
       Add a custom node of the type designated by meta_id in current context.
       @param meta_id: the meta-id / type of the new ZMSObject
       @type meta_id: C{str}
-      @param values: the dictionary of initial attribut-values assigned to the new ZMSObject 
+      @param values: the dictionary of initial attribute values assigned to the new ZMSObject 
       @type values: C{dict}
       @param REQUEST: the triggering request
       @type REQUEST: C{ZPublisher.HTTPRequest}
@@ -145,7 +140,7 @@ class ZMSContainerObject(
       Add a node of type designated by meta_id in current context.
       @param meta_id: the meta-id / type of the new ZMSObject
       @type meta_id: C{str}
-      @param values: the dictionary of initial attribut-values assigned to the new ZMSObject 
+      @param values: the dictionary of initial attribute values assigned to the new ZMSObject 
           - I{id_prefix} (C{str=''}) the id-prefix used to generate the new id
           - I{id} (C{str=''}) the new id (fixed)
           - I{sort_id} (C{str=''}) the sort-id
@@ -277,7 +272,7 @@ class ZMSContainerObject(
       @type ids: C{list}
       @param REQUEST: the triggering request
       @type REQUEST: C{ZPublisher.HTTPRequest}
-      @param RESPONSE: the triggering request
+      @param RESPONSE: the triggering response
       @type RESPONSE: C{ZPublisher.HTTPResponse}
       """ 
       
@@ -306,7 +301,7 @@ class ZMSContainerObject(
       @type ids: C{list}
       @param REQUEST: the triggering request
       @type REQUEST: C{ZPublisher.HTTPRequest}
-      @param RESPONSE: the triggering request
+      @param RESPONSE: the triggering response
       @type RESPONSE: C{ZPublisher.HTTPResponse}
       """ 
       
@@ -339,7 +334,7 @@ class ZMSContainerObject(
       @type ids: C{list}
       @param REQUEST: the triggering request
       @type REQUEST: C{ZPublisher.HTTPRequest}
-      @param RESPONSE: the triggering request
+      @param RESPONSE: the triggering response
       @type RESPONSE: C{ZPublisher.HTTPResponse}
       """
       message = ''
@@ -870,10 +865,6 @@ class ZMSContainerObject(
       """
       return [x for x in self.getChildNodes(REQUEST, meta_types) if x.isVisible(REQUEST)]
 
-
-    # --------------------------------------------------------------------------
-    #  ZMSContainerObject.getChildNodes:
-    # --------------------------------------------------------------------------
     PAGES        = 0 # virtual meta_type for all Pages (Containers)
     PAGEELEMENTS = 1 # virtual meta_type for all Page-Elements
     NOREF        = 4 # virtual meta_type for resolving meta-type of ZMSLinkElement-target-object.
@@ -882,8 +873,16 @@ class ZMSContainerObject(
 
     def getChildNodes(self, REQUEST=None, meta_types=None, reid=None):
       """
-      Returns a node-list that contains all children of this node in correct 
-      order. If none, this is a empty node-list. 
+      Return all child nodes of this object in stable sort order.
+
+      @param REQUEST: Optional request used for language and visibility filtering.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param meta_types: Optional meta-type selector.
+      @type meta_types: C{str|list}
+      @param reid: Optional regular expression for child ids.
+      @type reid: C{str}
+      @return: Matching child nodes.
+      @rtype: C{list<ZMSObject>}
       """
       childNodes = []
       obs = self.objectValues(list(self.dGlobalAttrs))
@@ -944,23 +943,18 @@ class ZMSContainerObject(
         new_sort_id = new_sort_id + 10
       return new_sort_id
 
-
-    # --------------------------------------------------------------------------
-    # ZMS-"Module"
-    # --------------------------------------------------------------------------
-
-
     def manage_addZMSCustomDefault(self, lang, id_prefix, _sort_id, REQUEST, RESPONSE):
       """
       Add default node.
-      internal use only
+
+      Internal use only.
       @param lang: the language-id.
       @type lang: C{str}
       @param id_prefix: the id-prefix.
       @type id_prefix: C{str}
       @param REQUEST: the triggering request
       @type REQUEST: C{ZPublisher.HTTPRequest}
-      @param RESPONSE: the triggering request
+      @param RESPONSE: the triggering response
       @type RESPONSE: C{ZPublisher.HTTPResponse}
       """
       attr = self.getMetaobjAttr( self.meta_id, id_prefix)
@@ -976,6 +970,7 @@ class ZMSContainerObject(
     def manage_addZMSModule(self, lang, _sort_id, custom, REQUEST, RESPONSE):
       """
       Add module-node.
+
       Internal use only.
       @param lang: the language-id.
       @type lang: C{str}
@@ -985,7 +980,7 @@ class ZMSContainerObject(
       @type custom: C{str}
       @param REQUEST: the triggering request
       @type REQUEST: C{ZPublisher.HTTPRequest}
-      @param RESPONSE: the triggering request
+      @param RESPONSE: the triggering response
       @type RESPONSE: C{ZPublisher.HTTPResponse}
       """
       meta_id = self.getMetaobjId( custom)

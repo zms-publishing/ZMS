@@ -1,51 +1,29 @@
-################################################################################
-# ZMSCharformatManager.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+ZMSCharformatManager.py
 
+ZMS support for zmscharformat manager.
+
+License: GNU General Public License v2 or later
+Organization: ZMS Publishing
+"""
 # Imports.
 import copy
 # Product Imports.
 from Products.zms import standard
 
 
-################################################################################
-################################################################################
-###
-###   Class
-###
-################################################################################
-################################################################################
 class ZMSCharformatManager(object):
     """
     Manages character formats (charformats) for ZMS rich-text editing,
     including XML import/export, CRUD operations, and reordering.
     """
 
-    ############################################################################
-    #
-    #  XML IM/EXPORT
-    #
-    ############################################################################
-
-    # --------------------------------------------------------------------------
-    #  ZMSCharformatManager.importCharformatXml
-    # --------------------------------------------------------------------------
-
     def _importCharformatXml(self, item):
+        """Import a single character format definition from parsed XML data.
+
+        @param item: Parsed character format description.
+        @type item: C{dict}
+        """
         newId = standard.id_quote(item.get('display', ''))
         if len(newId) == 0:
           newId = self.getNewId('fmt')
@@ -59,7 +37,13 @@ class ZMSCharformatManager(object):
         # Make persistent.
         self.charformats = copy.deepcopy(self.charformats)
 
+
     def importCharformatXml(self, xml):
+      """Import one or more character formats from XML data.
+
+      @param xml: XML string or uploaded file-like object.
+      @type xml: C{str}
+      """
       v = standard.parseXmlString(xml)
       if isinstance(v, list):
         for item in v:
@@ -68,17 +52,23 @@ class ZMSCharformatManager(object):
         self._importCharformatXml(v)
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSCharformatManager.getCharFormats:
-    # --------------------------------------------------------------------------
     def getCharFormats(self):
+      """Return the configured character format definitions.
+
+      @return: Character format definitions.
+      @rtype: C{list}
+      """
       return self.charformats
 
 
-    # ------------------------------------------------------------------------------
-    #  ZMSCharformatManager.moveCharformat:
-    # ------------------------------------------------------------------------------
     def moveCharformat(self, id, pos):
+      """Move a character format to another list position.
+
+      @param id: Character format identifier.
+      @type id: C{str}
+      @param pos: Target list position.
+      @type pos: C{int}
+      """
       obs = self.charformats
       charformats = [x for x in obs if x['id'] == id]
       if len(charformats) == 1:
@@ -89,10 +79,14 @@ class ZMSCharformatManager(object):
         self.charformats = copy.deepcopy(self.charformats)
 
 
-    # ------------------------------------------------------------------------------
-    #  ZMSCharformatManager.delCharformat:
-    # ------------------------------------------------------------------------------
     def delCharformat(self, id):
+      """Delete a character format by id.
+
+      @param id: Character format identifier.
+      @type id: C{str}
+      @return: Empty string for legacy callers.
+      @rtype: C{str}
+      """
       obs = self.charformats
       charformats = [x for x in obs if x['id'] == id]
       if len(charformats) > 0:
@@ -103,10 +97,26 @@ class ZMSCharformatManager(object):
       return ''
 
 
-    # ------------------------------------------------------------------------------
-    #  ZMSCharformatManager.setCharformat:
-    # ------------------------------------------------------------------------------
     def setCharformat(self, oldId, newId, newIconClazz, newDisplay, newTag='', newAttrs='', newJS=''):
+      """Create or update a character format definition.
+
+      @param oldId: Existing character format id to replace.
+      @type oldId: C{str}
+      @param newId: Target character format id.
+      @type newId: C{str}
+      @param newIconClazz: Icon CSS class.
+      @type newIconClazz: C{str}
+      @param newDisplay: Display label.
+      @type newDisplay: C{str}
+      @param newTag: HTML tag wrapper.
+      @type newTag: C{str}
+      @param newAttrs: HTML attributes.
+      @type newAttrs: C{str}
+      @param newJS: Client-side JavaScript hook.
+      @type newJS: C{str}
+      @return: The persisted character format id.
+      @rtype: C{str}
+      """
       obs = self.charformats
       if oldId is None:
         oldId = newId
@@ -128,13 +138,20 @@ class ZMSCharformatManager(object):
       return newId
 
 
-    ############################################################################
-    #  ZMSCharformatManager.manage_changeCharformat:
-    #
-    #  Change char-formats.
-    ############################################################################
     def manage_changeCharformat(self, lang, btn, REQUEST, RESPONSE):
-      """ ZMSCharformatManager.manage_changeCharformat """
+      """Handle ZMI actions for creating, editing, and deleting char formats.
+
+      @param lang: Active UI language.
+      @type lang: C{str}
+      @param btn: Submitted button id.
+      @type btn: C{str}
+      @param REQUEST: The active HTTP request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param RESPONSE: The active HTTP response.
+      @type RESPONSE: C{ZPublisher.HTTPResponse}
+      @return: Redirect response or XML export payload.
+      @rtype: C{object}
+      """
       message = ''
       id = REQUEST.get('id', '')
       target = REQUEST.get('target', None)
@@ -217,4 +234,3 @@ class ZMSCharformatManager(object):
         message = standard.url_quote(message)
         return RESPONSE.redirect('manage_charformats?lang=%s&manage_tabs_message=%s&id=%s'%(lang, message, id))
 
-################################################################################

@@ -1,21 +1,12 @@
 # -*- coding: utf-8 -*-
-################################################################################
-# zmssqldb.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+zmssqldb.py
+
+SQL-backed custom content object with schema, query, and record-set helpers.
+
+License: GNU General Public License v2 or later
+Organization: ZMS Publishing
+"""
 
 # Imports.
 from AccessControl import ClassSecurityInfo
@@ -32,33 +23,35 @@ from Products.zms import standard
 from Products.zms import zmscustom
 from Products.zms import zopeutil
 
-
-################################################################################
-################################################################################
-###
-###   Constructor
-###
-################################################################################
-################################################################################
 manage_addZMSSqlDbForm = PageTemplateFile('manage_addzmssqldbform', globals()) 
+
+
 def manage_addZMSSqlDb(self, lang, _sort_id, REQUEST, RESPONSE):
-  """ manage_addZMSSqlDb """
+  """
+  Create a new SQL database content object in the current container.
+
+  @param self: Container that receives the SQL database object.
+  @type self: OFS.ObjectManager.ObjectManager
+  @param lang: Active content language.
+  @type lang: str
+  @param _sort_id: Sort position after which the new object is inserted.
+  @type _sort_id: int
+  @param REQUEST: Current request containing add-form values.
+  @type REQUEST: ZPublisher.HTTPRequest.HTTPRequest
+  @param RESPONSE: Response used for redirect handling.
+  @type RESPONSE: ZPublisher.HTTPResponse.HTTPResponse
+  """
   
-  ##### Create ####
   id_prefix = standard.id_prefix(REQUEST.get('id_prefix', 'e'))
   new_id = self.getNewId(id_prefix)
   obj = ZMSSqlDb(new_id, _sort_id+1)
   self._setObject(obj.id, obj)
   
   obj = getattr(self, obj.id)
-  ##### Object State ####
   obj.setObjStateNew(REQUEST)
-  ##### Init Properties ####
   obj.manage_changeProperties(lang, REQUEST, RESPONSE)
-  ##### VersionManager ####
   obj.onChangeObj(REQUEST)
   
-  ##### Normalize Sort-IDs ####
   self.normalizeSortIds(id_prefix)
   
   # Return with message.
@@ -67,15 +60,10 @@ def manage_addZMSSqlDb(self, lang, _sort_id, REQUEST, RESPONSE):
     REQUEST.RESPONSE.redirect('%s/%s/manage_main?lang=%s&manage_tabs_message=%s'%(self.absolute_url(), obj.id, lang, standard.url_quote(message)))
 
 
-################################################################################
-################################################################################
-###   
-###   Class
-###   
-################################################################################
-################################################################################
-
 class ZMSSqlDb(zmscustom.ZMSCustom):
+    """
+    Custom ZMS content type that exposes relational database backed records.
+    """
 
     # Create a SecurityInfo for this class. We will use this
     # in the rest of our class definition to make security
@@ -146,24 +134,27 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       'url': 1,
     }
 
-
-    ############################################################################
-    ###
-    ###   CONSTRUCTOR
-    ###
-    ############################################################################
-
-    # --------------------------------------------------------------------------
-    #  ZMSSqlDb.filteredChildNodes:
-    # --------------------------------------------------------------------------
     def filteredChildNodes(self, REQUEST={}, meta_types=None): 
+      """
+      Return an empty list because SQL database objects do not expose child nodes.
+
+      @param REQUEST: Optional request context.
+      @type REQUEST: dict
+      @param meta_types: Ignored meta-type selector.
+      @type meta_types: object
+      @return: Always an empty list.
+      @rtype: list
+      """
       return []
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSSqlDb.getModelContainer:
-    # --------------------------------------------------------------------------
     def getModelContainer( self):
+      """
+      Return the Zope object that stores the serialized SQL model definition.
+
+      @return: DTML method containing the SQL model XML.
+      @rtype: object
+      """
       id = 'sqlmodel.xml'
       container = zopeutil.getObject(self,id)
       if container is None:
@@ -172,10 +163,13 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       return container
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSSqlDb.getModel:
-    # --------------------------------------------------------------------------
     def getModel(self):
+      """
+      Return the parsed SQL model and refresh the cached copy when needed.
+
+      @return: Parsed SQL model definition.
+      @rtype: list
+      """
       container = self.getModelContainer()
       container_xml = zopeutil.readData(container)
       model_xml =  getattr(self, 'model_xml', None)
@@ -189,20 +183,32 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       return self.model
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSSqlDb.setModel:
-    # --------------------------------------------------------------------------
     def setModel(self, newModel):
+      """
+      Replace the persisted SQL model definition.
+
+      @param newModel: Serialized SQL model payload.
+      @type newModel: str
+      """
       container = self.getModelContainer()
       id = container.id()
       zopeutil.removeObject(self,id)
       zopeutil.addObject(self,'DTML Method',id,'SQL-Model (XML)',newModel)
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSSqlDb.record_encode__:
-    # --------------------------------------------------------------------------
     def record_encode__(self, cols, record, encoding='utf-8'):
+      """
+      Decode byte values in a database row according to the given encoding.
+
+      @param cols: Column descriptors for the row.
+      @type cols: list
+      @param record: Raw database record.
+      @type record: dict
+      @param encoding: Text encoding used for byte strings.
+      @type encoding: str
+      @return: Normalized row dictionary.
+      @rtype: dict
+      """
       row = {}
       for col in cols:
         k = col['id']
@@ -213,12 +219,13 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       return row
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSSqlDb.getDA:
-    #
-    #  Return Database Adapter (DA).
-    # --------------------------------------------------------------------------
     def getDA(self):
+      """
+      Return the configured database adapter object.
+
+      @return: Database adapter referenced by C{connection_id}, or C{None}.
+      @rtype: object
+      """
       da = None
       conn_id = getattr( self, "connection_id", None)
       if conn_id is not None:
@@ -226,12 +233,19 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       return da
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSSqlDb.sql_quote__:
-    #
-    #  Return quoted value of table-column.
-    # --------------------------------------------------------------------------
     def sql_quote__(self, tablename, columnname, v):
+      """
+      Quote a value according to the declared type of a table column.
+
+      @param tablename: Entity name.
+      @type tablename: str
+      @param columnname: Column identifier.
+      @type columnname: str
+      @param v: Raw value to quote.
+      @type v: object
+      @return: SQL literal suitable for inline substitution.
+      @rtype: str
+      """
       entities = self.getEntities()
       entity = [x for x in entities if x['id'].upper()==tablename.upper()][0]
       col = ([x for x in entity['columns'] if x['id'].upper()==columnname.upper()]+[{'type':'string'}])[0]
@@ -261,11 +275,13 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         return "'%s'"%v
 
 
-    """
-    Makes all changes made since the previous commit/rollback permanent and 
-    releases any database locks currently held by the Connection object.
-    """
     def commit(self):
+      """
+      Commit the current database transaction.
+
+      Makes all changes made since the previous commit or rollback permanent and
+      releases the database locks currently held by the connection object.
+      """
       da = self.getDA()
       dbc = da
       if not da.meta_type.startswith('SQLAlchemyDA'):
@@ -274,11 +290,13 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       conn.commit()
 
 
-    """
-    Undoes all changes made in the current transaction and releases any database
-    locks currently held by this Connection object.
-    """
     def rollback(self):
+      """
+      Roll back the current database transaction.
+
+      Undo all changes made in the current transaction and release the database
+      locks currently held by the connection object.
+      """
       da = self.getDA()
       dbc = da
       if not da.meta_type.startswith('SQLAlchemyDA'):
@@ -287,18 +305,23 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       conn.rollback()
 
 
-    """
-    Execute sql-statement.
-    Supports parameter-markers of python DB API.
-    
-    @param sql: The sql-statement
-    @type sql: C{str}
-    @param params: The values for the parameter-markers.
-    @type params: C{tuple}
-    @param max_rows: The maximum number of rows (default: 0, unlimited)
-    @type max_rows: C{str}
-    """
     def execute(self, sql, params=(), max_rows=0, encoding=None):
+      """
+      Execute an SQL statement using the configured database adapter.
+
+      Supports parameter markers of the Python DB API.
+
+      @param sql: SQL statement.
+      @type sql: str
+      @param params: Values for the parameter markers.
+      @type params: tuple
+      @param max_rows: Maximum number of rows to return, or C{0} for unlimited.
+      @type max_rows: int
+      @param encoding: Optional text encoding applied to byte columns.
+      @type encoding: str
+      @return: Raw or normalized query result depending on the adapter.
+      @rtype: object
+      """
       da = self.getDA()
       dbc = da
       if not da.meta_type.startswith('SQLAlchemyDA'):
@@ -316,15 +339,17 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       return result
 
 
-    """
-    Substitute parameter-markers.
-    
-    @param sql: The sql-statement
-    @type sql: C{str}
-    @param params: The values for the parameter-markers.
-    @type params: C{tuple}
-    """
     def substitute_params(self, sql, params=()):
+      """
+      Substitute positional parameter markers with quoted SQL literals.
+
+      @param sql: SQL statement containing C{?} placeholders.
+      @type sql: str
+      @param params: Values for the placeholders.
+      @type params: tuple
+      @return: SQL statement with substituted literals.
+      @rtype: str
+      """
       nsl = [int,float]
       try:
         from psycopg2.extensions import Binary
@@ -347,13 +372,17 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       return sql
 
 
-    """
-    Assemble query-result.
-    
-    @return: Dictionary: columns C{list}, records C{list}.
-    @rtype: C{dict}
-    """
     def assemble_query_result(self, res, encoding=None):
+      """
+      Normalize a database query result into ZMS column and record structures.
+
+      @param res: Raw adapter result.
+      @type res: object
+      @param encoding: Optional text encoding applied to byte columns.
+      @type encoding: str
+      @return: Dictionary with C{columns} and C{records} lists.
+      @rtype: dict
+      """
       from io import StringIO
       from Shared.DC.ZRDB.Results import Results
       from Shared.DC.ZRDB import RDB
@@ -388,17 +417,19 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       return {'columns':columns,'records':result}
 
 
-    """
-    Execute select-statement.
-    
-    @param sql: The select-statement
-    @type sql: C{str}
-    @param max_rows: The maximum number of rows (default: 0, unlimited)
-    @type max_rows: C{str}
-    @return: Dictionary: columns C{list}, records C{list}.
-    @rtype: C{dict}
-    """
     def query(self, sql, max_rows=0, encoding=None):
+      """
+      Execute a select statement and normalize the result for ZMS forms.
+
+      @param sql: Select statement.
+      @type sql: str
+      @param max_rows: Maximum number of rows to return, or C{0} for unlimited.
+      @type max_rows: int
+      @param encoding: Optional text encoding applied to byte columns.
+      @type encoding: str
+      @return: Dictionary with C{columns} and C{records} lists.
+      @rtype: dict
+      """
       standard.writeLog( self, '[query]: sql=%s, max_rows=%i'%(sql, max_rows))
       da = self.getDA()
       dbc = da
@@ -408,14 +439,15 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       return self.assemble_query_result(dbc.query(sql, max_rows), encoding)
 
 
-    """
-    Execute modify-statement.
-    @param sql: The modify-statement
-    @type sql: C{str}
-    @return: Number of affected rows.
-    @rtype: C{int}
-    """
     def executeQuery(self, sql):
+      """
+      Execute an SQL modifying statement and return the affected row count.
+
+      @param sql: SQL modification statement.
+      @type sql: str
+      @return: Number of affected rows.
+      @rtype: int
+      """
       from io import StringIO
       from Shared.DC.ZRDB.Results import Results
       from Shared.DC.ZRDB import RDB
@@ -441,22 +473,34 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       return result
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSSqlDb.getEntityPK:
-    #
-    #  Returns primary key.
-    # --------------------------------------------------------------------------
     def getEntityPK(self, tableName):
+      """
+      Return the primary-key column name of an entity.
+
+      @param tableName: Entity name.
+      @type tableName: str
+      @return: Primary-key column identifier.
+      @rtype: str
+      """
       columns = self.getEntity( tableName)['columns']
       # @todo
       pk = columns[0]['id']
       return pk
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSSqlDb.getEntityRecordHandler
-    # --------------------------------------------------------------------------
     def getEntityRecordHandler(self, tableName, stereotypes=['*'], colNames=[]):
+      """
+      Build a helper that post-processes rows for export and display.
+
+      @param tableName: Entity name.
+      @type tableName: str
+      @param stereotypes: Column stereotypes to keep or resolve.
+      @type stereotypes: list
+      @param colNames: Optional whitelist of exported column names.
+      @type colNames: list
+      @return: Record handler instance.
+      @rtype: object
+      """
       class EntityRecordHandler(object):
         def __init__(self, parent, tableName):
           self.parent = parent 
@@ -1072,17 +1116,19 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
       return self.storeReqBuff( reqBuffId, entities)
 
-
-    ############################################################################
-    ###
-    ###   RecordSet
-    ###
-    ############################################################################
-
-    """
-    @rtype: C{string}
-    """
     def recordSet_Select(self, tablename, select=None, where=None):
+      """
+      Build the base select statement for a record-set query.
+
+      @param tablename: Entity name.
+      @type tablename: str
+      @param select: Optional explicit select clause.
+      @type select: str
+      @param where: Optional initial where clause.
+      @type where: str
+      @return: SQL select statement.
+      @rtype: str
+      """
       tabledef = self.getEntity(tablename)
       tablecols = tabledef['columns']
       selectClause = []
@@ -1120,14 +1166,13 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       return ''.join(sqlStatement)
 
 
-    """
-    Initializes record-set.
-    
-    @param REQUEST: the triggering request
-    @type REQUEST: ZPublisher.HTTPRequest
-    @rtype: C{None}
-    """
     def recordSet_Init(self, REQUEST):
+      """
+      Initialize record-set request state for listing and filtering.
+
+      @param REQUEST: Triggering request.
+      @type REQUEST: ZPublisher.HTTPRequest.HTTPRequest
+      """
       tabledefs = [x for x in self.getEntities() if not x.get('not_found')]
       tablename = standard.get_session_value(self,'qentity_%s'%self.id)
       #-- Sanity check.
@@ -1156,14 +1201,15 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       REQUEST.set('sqlStatement', sqlStatement)
 
 
-    """
-    Assemble filter for where-clause
-    
-    @param l list of columns to filter
-    @return: expression
-    @rtype: C{string}
-    """
     def assembleFilter(self, l):
+      """
+      Assemble the SQL filter expression for a where clause.
+
+      @param l: Filter descriptors for columns and operators.
+      @type l: list
+      @return: SQL expression joined with C{AND}.
+      @rtype: str
+      """
       sql = []
       for d in l:
         tablename     = d['tablename']
@@ -1184,14 +1230,13 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       return ' AND '.join(sql)
 
 
-    """
-    Filter record-set by appending where clause to sql-statement.
-    
-    @param REQUEST: the triggering request
-    @type REQUEST: ZPublisher.HTTPRequest
-    @rtype: C{None}
-    """
     def recordSet_Filter(self, REQUEST):
+      """
+      Apply persisted and submitted filters to the current record-set query.
+
+      @param REQUEST: Triggering request.
+      @type REQUEST: ZPublisher.HTTPRequest.HTTPRequest
+      """
       sqlStatement = REQUEST.get('sqlStatement', [])
       # init filter from request.
       index = 0
@@ -1279,14 +1324,13 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       REQUEST.set('sqlStatement', sqlStatement)
 
 
-    """
-    Sort record-set by appending order-by clause to sql-statement.
-    
-    @param REQUEST: the triggering request
-    @type REQUEST: ZPublisher.HTTPRequest
-    @rtype: C{None}
-    """
     def recordSet_Sort(self, REQUEST):
+      """
+      Apply order-by clauses to the current record-set query.
+
+      @param REQUEST: Triggering request.
+      @type REQUEST: ZPublisher.HTTPRequest.HTTPRequest
+      """
       tablename = standard.get_session_value(self,'qentity_%s'%self.id)
       tabledefs = [x for x in self.getEntities() if not x.get('not_found')]
       #-- Sanity check.
@@ -1314,21 +1358,23 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       standard.set_session_value(self,'qorderdir_%s'%self.id, qorderdir)
 
 
-    ############################################################################
-    ###
-    ###   Actions
-    ###
-    ############################################################################
-
-    """
-    Get reference for foreign-key relation.
-    
-    @param tablename: Name of the SQL-Table.
-    @type tablename: C{string}
-    @return: ID of the row that was inserted.
-    @rtype: int
-    """
     def getFk(self, tablename, id, name, value, createIfNotExists=True):
+      """
+      Resolve or create a referenced row for a foreign-key relation.
+
+      @param tablename: Name of the SQL table.
+      @type tablename: str
+      @param id: Foreign-key column id.
+      @type id: str
+      @param name: Display column used for lookup.
+      @type name: str
+      @param value: Submitted foreign-key value.
+      @type value: object
+      @param createIfNotExists: Create a new referenced row when no match exists.
+      @type createIfNotExists: bool
+      @return: Referenced row id.
+      @rtype: int
+      """
       standard.writeBlock(self, '[getFk]: tablename=%s, id=%s, name=%s, value=%s, createIfNotExists=%s'%(tablename, id, name, str(value), str(createIfNotExists)))
       tabledefs = self.getEntities()
       tabledef = [x for x in tabledefs if x['id'].upper()==tablename.upper()][0]
@@ -1394,16 +1440,19 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       return rowid
 
 
-    """
-    Insert row into record-set.
-    @param tablename: Name of the SQL-Table.
-    @type tablename: C{string}
-    @param values: Columns (id/value) to be inserted.
-    @type values: C{dict}
-    @return: ID of the row that was inserted.
-    @rtype: C{any}
-    """
     def recordSet_Insert(self, tablename, values={}, update_intersections=False):
+      """
+      Insert a new row into the selected record-set table.
+
+      @param tablename: Name of the SQL table.
+      @type tablename: str
+      @param values: Column values to insert.
+      @type values: dict
+      @param update_intersections: Update related intersection tables afterwards.
+      @type update_intersections: bool
+      @return: Primary-key value of the inserted row.
+      @rtype: object
+      """
       standard.triggerEvent(self.getParentNode(), '%s%sBeforeInsert'%(self.id, tablename.capitalize()))
       REQUEST = self.REQUEST
       auth_user = REQUEST.get('AUTHENTICATED_USER')
@@ -1510,18 +1559,23 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       return rowid
 
 
-    """
-    Update row in table.
-    @param tablename: Name of the SQL-Table.
-    @type tablename: C{string}
-    @param rowid: ID of the row to be updated.
-    @type rowid: C{any}
-    @param values: Columns (id/value) to be updated.
-    @type values: C{dict}
-    @return: ID of the row that was updated.
-    @rtype: C{any}
-    """
     def recordSet_Update(self, tablename, rowid, values={}, old_values={}, update_intersections=False):
+      """
+      Update an existing row in the selected record-set table.
+
+      @param tablename: Name of the SQL table.
+      @type tablename: str
+      @param rowid: Primary-key value of the row to update.
+      @type rowid: object
+      @param values: New column values.
+      @type values: dict
+      @param old_values: Optional previous values used for change detection.
+      @type old_values: dict
+      @param update_intersections: Update related intersection tables afterwards.
+      @type update_intersections: bool
+      @return: Primary-key value of the updated row.
+      @rtype: object
+      """
       standard.triggerEvent(self.getParentNode(), '%s%sBeforeUpdate'%(self.id, tablename.capitalize()))
       REQUEST = self.REQUEST
       auth_user = REQUEST.get('AUTHENTICATED_USER')
@@ -1626,16 +1680,17 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       return rowid
 
 
-    """
-    Update row-intersections in table.
-    @param tablename: Name of the SQL-Table.
-    @type tablename: C{string}
-    @param rowid: ID of the row to be updated.
-    @type rowid: C{any}
-    @param values: Columns (id/value) to be updated.
-    @type values: C{dict}
-    """
     def recordSet_UpdateIntersections(self, tablename, rowid, values={}):
+      """
+      Synchronize intersection tables for multi-select style columns.
+
+      @param tablename: Name of the SQL table.
+      @type tablename: str
+      @param rowid: Primary-key value of the parent row.
+      @type rowid: object
+      @param values: Submitted column values.
+      @type values: dict
+      """
       tabledefs = self.getEntities()
       tabledef = [x for x in tabledefs if x['id'].upper()==tablename.upper()][0]
       tablecols = tabledef['columns']
@@ -1693,15 +1748,15 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
             self.executeQuery('\n'.join(sql))
 
 
-    """
-    Delete row from table.
-    @param tablename: Name of the SQL-Table.
-    @type tablename: C{string}
-    @param rowid: ID of the row to be deleted.
-    @type rowid: C{any}
-    @rtype: C{None}
-    """
     def recordSet_Delete(self, tablename, rowid):
+      """
+      Delete a row from the selected record-set table.
+
+      @param tablename: Name of the SQL table.
+      @type tablename: str
+      @param rowid: Primary-key value of the row to delete.
+      @type rowid: object
+      """
       standard.triggerEvent(self.getParentNode(), '%s%sBeforeDelete'%(self.id, tablename.capitalize()))
       REQUEST = self.REQUEST
       auth_user = REQUEST.get('AUTHENTICATED_USER')      
@@ -1729,17 +1784,19 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         raise zExceptions.InternalError(standard.writeError( self, '[recordSet_Delete]: can\'t delete row - sqlStatement=' + sqlStatement))
       standard.triggerEvent(self.getParentNode(), '%s%sAfterDelete'%(self.id, tablename.capitalize()))
 
-
-    ############################################################################
-    ###
-    ###   Blob (remote)
-    ###
-    ############################################################################
-
-    # --------------------------------------------------------------------------
-    #  ZMSSqlDb.delete_blob:
-    # --------------------------------------------------------------------------
     def _delete_blob( self, tablename, id, rowid):
+      """
+      Delete the file referenced by a blob column and return its replacement value.
+
+      @param tablename: Entity name.
+      @type tablename: str
+      @param id: Blob column id.
+      @type id: str
+      @param rowid: Primary-key value of the affected row.
+      @type rowid: object
+      @return: Replacement column value after deletion.
+      @rtype: object
+      """
       tabledefs = self.getEntities()
       tabledef = [x for x in tabledefs if x['id'].upper()==tablename.upper()][0]
       tablecols = tabledef['columns']
@@ -1767,18 +1824,49 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       except:
         raise zExceptions.InternalError(standard.writeError( self, '[get_blob]: can\'t delete blob - sqlStatement=' + sqlStatement))
 
+
     def delete_blob( self, auth_user, tablename, id, rowid, REQUEST=None, RESPONSE=None):
-      """ ZMSSqlDb.delete_blob """
+      """
+      Delete a blob after authorizing the remote caller.
+
+      @param auth_user: User id to authorize.
+      @type auth_user: str
+      @param tablename: Entity name.
+      @type tablename: str
+      @param id: Blob column id.
+      @type id: str
+      @param rowid: Primary-key value of the affected row.
+      @type rowid: object
+      @param REQUEST: Optional request context.
+      @type REQUEST: ZPublisher.HTTPRequest.HTTPRequest
+      @param RESPONSE: Optional response context.
+      @type RESPONSE: ZPublisher.HTTPResponse.HTTPResponse
+      @return: Replacement value returned by C{_delete_blob}.
+      @rtype: object
+      """
       user = self.findUser( auth_user)
       if user is None:
         raise zExceptions.Unauthorized
       return self._delete_blob( tablename=tablename, id=id, rowid=rowid)
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSSqlDb._set_blob:
-    # --------------------------------------------------------------------------
     def _set_blob( self, tablename, id, rowid=None, file=None, xml=None):
+      """
+      Store blob data on the server filesystem and return the stored filename.
+
+      @param tablename: Entity name.
+      @type tablename: str
+      @param id: Blob column id.
+      @type id: str
+      @param rowid: Optional primary-key value of the affected row.
+      @type rowid: object
+      @param file: Uploaded file object.
+      @type file: object
+      @param xml: Optional XML payload used to reconstruct the uploaded file.
+      @type xml: str
+      @return: Stored filename.
+      @rtype: str
+      """
       tabledefs = self.getEntities()
       tabledef = [x for x in tabledefs if x['id'].upper()==tablename.upper()][0]
       tablecols = tabledef['columns']
@@ -1822,17 +1910,51 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
 
     security.declareProtected('View', 'set_blob')
     def set_blob( self, auth_user, tablename, id, rowid=None, xml=None, REQUEST=None, RESPONSE=None):
-      """ ZMSSqlDb.set_blob """
+      """
+      Store a blob payload after authorizing the remote caller.
+
+      @param auth_user: User id to authorize.
+      @type auth_user: str
+      @param tablename: Entity name.
+      @type tablename: str
+      @param id: Blob column id.
+      @type id: str
+      @param rowid: Optional primary-key value of the affected row.
+      @type rowid: object
+      @param xml: Optional XML payload containing the uploaded file.
+      @type xml: str
+      @param REQUEST: Optional request context.
+      @type REQUEST: ZPublisher.HTTPRequest.HTTPRequest
+      @param RESPONSE: Optional response context.
+      @type RESPONSE: ZPublisher.HTTPResponse.HTTPResponse
+      @return: Stored filename.
+      @rtype: str
+      """
       user = self.findUser( auth_user)
       if user is None:
         raise zExceptions.Unauthorized
       return self._set_blob( tablename=tablename, id=id, rowid=rowid, xml=xml)
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSSqlDb._get_blob:
-    # --------------------------------------------------------------------------
     def _get_blob( self, tablename, id, rowid, cache='public, max-age=3600', REQUEST=None, RESPONSE=None):
+      """
+      Load a blob from the filesystem and return it as a ZMS file object.
+
+      @param tablename: Entity name.
+      @type tablename: str
+      @param id: Blob column id.
+      @type id: str
+      @param rowid: Primary-key value of the affected row.
+      @type rowid: object
+      @param cache: Cache-Control header value for responses.
+      @type cache: str
+      @param REQUEST: Optional request context.
+      @type REQUEST: ZPublisher.HTTPRequest.HTTPRequest
+      @param RESPONSE: Optional response used to set headers.
+      @type RESPONSE: ZPublisher.HTTPResponse.HTTPResponse
+      @return: Image or file wrapper, or C{None} when no blob exists.
+      @rtype: object
+      """
       data = ''
       tabledefs = self.getEntities()
       tabledef = [x for x in tabledefs if x['id'].upper()==tablename.upper()][0]
@@ -1866,29 +1988,41 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       return None
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSSqlDb.get_blob:
-    # --------------------------------------------------------------------------
     security.declareProtected('View', 'get_blob')
     def get_blob( self, tablename, id, rowid, REQUEST=None, RESPONSE=None):
-      """ ZMSSqlDb.get_blob """
+      """
+      Return the raw data payload of a stored blob.
+
+      @param tablename: Entity name.
+      @type tablename: str
+      @param id: Blob column id.
+      @type id: str
+      @param rowid: Primary-key value of the affected row.
+      @type rowid: object
+      @param REQUEST: Optional request context.
+      @type REQUEST: ZPublisher.HTTPRequest.HTTPRequest
+      @param RESPONSE: Optional response used to set headers.
+      @type RESPONSE: ZPublisher.HTTPResponse.HTTPResponse
+      @return: Raw blob data.
+      @rtype: bytes
+      """
       blob = self._get_blob( tablename, id, rowid, REQUEST=REQUEST, RESPONSE=RESPONSE)
       return blob.getData()
 
 
-    ############################################################################
-    ###
-    ###   Properties
-    ###
-    ############################################################################
-
-    ############################################################################
-    #  ZMSSqlDb.manage_changeProperties: 
-    #
-    #  Change Sql-Database properties.
-    ############################################################################
     def manage_changeProperties(self, lang, REQUEST=None, RESPONSE=None): 
-      """ ZMSSqlDb.manage_changeProperties """
+      """
+      Persist SQL database properties and the serialized model definition.
+
+      @param lang: Active language.
+      @type lang: str
+      @param REQUEST: Current request containing form values.
+      @type REQUEST: ZPublisher.HTTPRequest.HTTPRequest
+      @param RESPONSE: Response used for redirect handling.
+      @type RESPONSE: ZPublisher.HTTPResponse.HTTPResponse
+      @return: Redirect response to the properties form.
+      @rtype: object
+      """
       message = ''
       btn = REQUEST.get('btn', '')
       el_data = REQUEST.get('el_data', '')
@@ -1917,17 +2051,15 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       return RESPONSE.redirect('%s?lang=%s&manage_tabs_message=%s&el_data=%s'%(target, lang, message, el_data))
 
 
-    ############################################################################
-    ###
-    ###   Configuration
-    ###
-    ############################################################################
-
-    # --------------------------------------------------------------------------
-    #  ObjAttrs.ajaxGetObjOptions:
-    # --------------------------------------------------------------------------
     def ajaxGetObjOptions(self, REQUEST):
-      """ ObjAttrs.ajaxGetObjOptions """
+      """
+      Return autocomplete option labels for a configured entity column.
+
+      @param REQUEST: Current request containing entity, column, and filter values.
+      @type REQUEST: ZPublisher.HTTPRequest.HTTPRequest
+      @return: Plain-text or JSON encoded option list.
+      @rtype: str
+      """
       tablename = REQUEST['obj_id']
       columnname = REQUEST['attr_id']
       RESPONSE = REQUEST.RESPONSE
@@ -1952,12 +2084,20 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         return self.str_json(l,encoding='utf-8')
       return '\n'.join(l)
 
-    # --------------------------------------------------------------------------
-    #  ZMSSqlDb.ajaxGetAutocompleteColumns:
-    # --------------------------------------------------------------------------
     security.declareProtected('View', 'ajaxGetAutocompleteColumns')
     def ajaxGetAutocompleteColumns(self, tableName, fmt=None, REQUEST=None):
-      """ ZMSSqlDb.ajaxGetAutocompleteColumns """
+      """
+      Return matching entity column names for autocomplete widgets.
+
+      @param tableName: Entity name.
+      @type tableName: str
+      @param fmt: Optional output format, e.g. C{'json'}.
+      @type fmt: str
+      @param REQUEST: Current request containing filter values.
+      @type REQUEST: ZPublisher.HTTPRequest.HTTPRequest
+      @return: Plain-text or JSON encoded column list.
+      @rtype: str
+      """
       RESPONSE = REQUEST.RESPONSE
       content_type = 'text/plain; charset=utf-8'
       filename = 'ajaxGetAutocompleteColumns.txt'
@@ -1976,13 +2116,23 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         return self.str_json(l)
       return '\n'.join(l)
 
-    ############################################################################
-    #  ZMSSqlDb.manage_changeConfiguration: 
-    #
-    #  Change Sql-Database configuration.
-    ############################################################################
     def manage_changeConfiguration(self, lang, btn='', key='all', REQUEST=None, RESPONSE=None):
-      """ ZMSSqlDb.manage_changeConfiguration """
+      """
+      Update SQL entity configuration and field metadata from the management UI.
+
+      @param lang: Active language.
+      @type lang: str
+      @param btn: Submitted action button id.
+      @type btn: str
+      @param key: Configuration subsection to update.
+      @type key: str
+      @param REQUEST: Current request containing submitted configuration values.
+      @type REQUEST: ZPublisher.HTTPRequest.HTTPRequest
+      @param RESPONSE: Response used for redirect handling.
+      @type RESPONSE: ZPublisher.HTTPResponse.HTTPResponse
+      @return: Redirect response back to the configuration form.
+      @rtype: object
+      """
       message = ''
       t0 = time.time()
       id = REQUEST.get('id', '')
@@ -2197,4 +2347,3 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
 # does the right thing with the security assertions.
 InitializeClass(ZMSSqlDb)
 
-################################################################################

@@ -1,21 +1,11 @@
-################################################################################
-# ZMSFormatProvider.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+ZMSFormatProvider.py
 
+ZMS support for zmsformat provider.
+
+License: GNU General Public License v2 or later
+Organization: ZMS Publishing
+"""
 
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -27,13 +17,6 @@ from Products.zms import IZMSFormatProvider, ZMSTextformatManager, ZMSCharformat
 from Products.zms import ZMSItem
 
 
-################################################################################
-################################################################################
-###
-###   Class
-###
-################################################################################
-################################################################################
 @implementer(
         IZMSConfigurationProvider.IZMSConfigurationProvider,
         IZMSFormatProvider.IZMSFormatProvider)
@@ -41,6 +24,8 @@ class ZMSFormatProvider(
         ZMSItem.ZMSItem,
         ZMSTextformatManager.ZMSTextformatManager,
         ZMSCharformatManager.ZMSCharformatManager):
+
+    """Provide editable text and character formats for the local portal."""
 
     # Properties.
     # -----------
@@ -52,10 +37,12 @@ class ZMSFormatProvider(
     # -------------------
     manage_options_default_action = '../manage_customize'
     def manage_options(self):
+      """Return parent management tabs with local relative actions."""
       return [self.operator_setitem( x, 'action', '../'+x['action']) for x in copy.deepcopy(self.aq_parent.manage_options())]
 
     manage_sub_options__roles__ = None
     def manage_sub_options(self):
+      """Return the text and character format tabs shown in the ZMI."""
       return (
         {'label': 'TAB_TEXTFORMATS','action': 'manage_textformats'},
         {'label': 'TAB_CHARFORMATS','action': 'manage_charformats'},
@@ -78,22 +65,15 @@ class ZMSFormatProvider(
       ('ZMS Administrator', __administratorPermissions__),
     )
 
-    """
-    ############################################################################
-    #
-    #   Constructor
-    #
-    ############################################################################
-    """
-
-    ############################################################################
-    #  ZMSFormatProvider.__init__: 
-    #
-    #  Initialise a new instance.
-    ############################################################################
     def __init__(self, textformats=[], charformats=[]):
+      """Initialize the format manager with persisted format definitions.
+
+      @param textformats: Stored text format definitions.
+      @type textformats: C{list}
+      @param charformats: Stored character format definitions.
+      @type charformats: C{list}
+      """
       self.id = 'format_manager'
       self.textformats = copy.deepcopy(textformats)
       self.charformats = copy.deepcopy(charformats)
 
-################################################################################

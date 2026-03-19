@@ -1,21 +1,11 @@
-################################################################################
-# ZMSFilterManager.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+ZMSFilterManager.py
 
+ZMS support for zmsfilter manager.
+
+License: GNU General Public License v2 or later
+Organization: ZMS Publishing
+"""
 # Imports.
 from DateTime import DateTime
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -30,48 +20,36 @@ from Products.zms import standard
 from Products.zms import zopeutil
 
 
-################################################################################
-################################################################################
-###
-###   Class
-###
-################################################################################
-################################################################################
 @implementer(
         IZMSConfigurationProvider.IZMSConfigurationProvider,
         IZMSRepositoryProvider.IZMSRepositoryProvider,)
 class ZMSFilterManager(
         ZMSItem.ZMSItem):
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    Properties
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    """Manage reusable content filters and their executable process chains.
+
+    The filter manager persists local filter definitions, optional uploaded
+    process assets, and repository import/export payloads used for sync.
+    """
     meta_type = 'ZMSFilterManager'
     zmi_icon = "fas fa-filter"
     icon_clazz = zmi_icon
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    Management Options
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     manage_options_default_action = '../manage_customize'
     def manage_options(self):
+      """Return parent management tabs with local relative actions."""
       return [self.operator_setitem( x, 'action', '../'+x['action']) for x in copy.deepcopy(self.aq_parent.manage_options())]
 
     manage_sub_options__roles__ = None
     def manage_sub_options(self):
+      """Return the filter manager sub tabs shown in the ZMI."""
       return (
         {'label': 'TAB_FILTER','action': 'manage_main'},
         )
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    Management Interface
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     manage = PageTemplateFile('zpt/ZMSFilterManager/manage_main', globals())
     manage_main = PageTemplateFile('zpt/ZMSFilterManager/manage_main', globals())
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    Management Permissions
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     __administratorPermissions__ = (
         'manage_main',
         'manage_changeFilter',
@@ -82,12 +60,14 @@ class ZMSFilterManager(
         )
 
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    ZMSFilterManager.__init__: 
-    
-    Constructor.
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def __init__(self, filters={}, processes={}):
+      """Initialize the manager from serialized filters and processes.
+
+      @param filters: Persisted filter definitions.
+      @type filters: C{list}
+      @param processes: Persisted process definitions.
+      @type processes: C{list}
+      """
       self.id = 'filter_manager'
       self.filters = {}
       for x in filters:
@@ -107,16 +87,16 @@ class ZMSFilterManager(
           standard.writeError(self,'can\'t __init__ process: %s'%str(x))
 
 
-    ############################################################################
-    #
-    #  IRepositoryProvider
-    #
-    ############################################################################
-
-    """
-    @see IRepositoryProvider
-    """
     def provideRepository(self, r, ids=None):
+      """Build a repository export mapping for filters and processes.
+
+      @param r: Repository accumulator passed by the caller.
+      @type r: C{dict}
+      @param ids: Optional subset of ids to export.
+      @type ids: C{list}
+      @return: Repository data keyed by object id.
+      @rtype: C{dict}
+      """
       r = {}
       for id in self.getFilterIds():
         d = self.getFilter(id)
@@ -153,10 +133,14 @@ class ZMSFilterManager(
         r[id] = d
       return r
 
-    """
-    @see IRepositoryProvider
-    """
     def updateRepository(self, r):
+      """Apply one repository item to the local filter manager state.
+
+      @param r: Repository item describing a filter or process.
+      @type r: C{dict}
+      @return: The imported id.
+      @rtype: C{str}
+      """
       id = r['id']
       if not id.startswith('__') and not id.endswith('__'):
         standard.writeBlock(self,"[updateRepository]: id=%s"%id)
@@ -194,17 +178,12 @@ class ZMSFilterManager(
       return id
 
 
-    ################################################################################
-    #
-    #  XML IM/EXPORT
-    #
-    ################################################################################
-    
-    # ------------------------------------------------------------------------------
-    #  importXml
-    # ------------------------------------------------------------------------------
-    
     def _importXml(self, item):
+      """Import a single parsed XML item.
+
+      @param item: Parsed filter or process description.
+      @type item: C{dict}
+      """
       itemType = item.get('type')
       itemOb = item.get('value')
       if itemType == 'filter':
@@ -234,6 +213,11 @@ class ZMSFilterManager(
         standard.writeError(self, "[_importXml]: Unknown type >%s<"%itemType)
     
     def importXml(self, xml):
+      """Import one or more filter manager entries from XML data.
+
+      @param xml: XML string or uploaded file-like object.
+      @type xml: C{str}
+      """
       v = standard.parseXmlString(xml)
       if isinstance(v, list):
         for item in v:
@@ -241,10 +225,16 @@ class ZMSFilterManager(
       else:
         id = self._importXml(v)
     
-    # ------------------------------------------------------------------------------
-    #  exportXml
-    # ------------------------------------------------------------------------------
     def exportXml(self, REQUEST, RESPONSE):
+      """Export selected filters and processes as an XML download.
+
+      @param REQUEST: The active HTTP request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param RESPONSE: The active HTTP response.
+      @type RESPONSE: C{ZPublisher.HTTPResponse}
+      @return: Serialized XML export data.
+      @rtype: C{str}
+      """
       value = []
       ids = REQUEST.get('ids', [])
       filterIds = []
@@ -281,12 +271,14 @@ class ZMSFilterManager(
       return export
     
     
-    # --------------------------------------------------------------------------
-    #  FilterManager.getProcessIds:
-    # 
-    #  Returns list of process-Ids.
-    # --------------------------------------------------------------------------
     def getProcessIds(self, sort=True):
+      """Return the available process ids, including acquired ones.
+
+      @param sort: Sort by display name when true.
+      @type sort: C{bool}
+      @return: Process ids.
+      @rtype: C{list}
+      """
       obs = self.processes
       ids = list(obs)
       portalMaster = self.getPortalMaster()
@@ -296,12 +288,14 @@ class ZMSFilterManager(
         ids = sorted(ids,key=lambda x:self.getProcess(x)['name'])
       return ids
 
-    # --------------------------------------------------------------------------
-    #  FilterManager.getProcess:
-    # 
-    #  Returns process specified by Id.
-    # --------------------------------------------------------------------------
     def getProcess(self, id):
+      """Return a process definition, falling back to the portal master.
+
+      @param id: Process identifier.
+      @type id: C{str}
+      @return: Process metadata and synchronized command data.
+      @rtype: C{dict}
+      """
       processes = self.processes
       process = {}
       if id in processes:
@@ -324,12 +318,14 @@ class ZMSFilterManager(
       return process
 
 
-    # --------------------------------------------------------------------------
-    #  FilterManager.getFilterIds:
-    # 
-    #  Returns list of filter-Ids.
-    # --------------------------------------------------------------------------
     def getFilterIds(self, sort=True):
+      """Return the available filter ids, including acquired ones.
+
+      @param sort: Sort by display name when true.
+      @type sort: C{bool}
+      @return: Filter ids.
+      @rtype: C{list}
+      """
       obs = self.filters
       ids = list(obs)
       portalMaster = self.getPortalMaster()
@@ -340,12 +336,14 @@ class ZMSFilterManager(
       return ids
 
 
-    # --------------------------------------------------------------------------
-    #  FilterManager.getFilter:
-    # 
-    #  Returns filter specified by Id.
-    # --------------------------------------------------------------------------
     def getFilter(self, id):
+      """Return a filter definition, falling back to the portal master.
+
+      @param id: Filter identifier.
+      @type id: C{str}
+      @return: Filter metadata.
+      @rtype: C{dict}
+      """
       obs = self.filters
       ob = {}
       if id in obs:
@@ -361,20 +359,30 @@ class ZMSFilterManager(
       return ob
 
 
-    """
-    ################################################################################
-    #
-    #   F I L T E R S
-    #
-    ################################################################################
-    """
-
-    # ------------------------------------------------------------------------------
-    #  _filtermanager.setFilter:
-    # 
-    #  Set/add filter specified by given Id.
-    # ------------------------------------------------------------------------------
     def setFilter(self, oldId, newId, newAcquired=0, newName='', newFormat='', newContentType='', newDescription='', newRoles=[], newMetaTypes=[]):
+      """Create or update a filter definition.
+
+      @param oldId: Existing filter id to replace.
+      @type oldId: C{str}
+      @param newId: Target filter id.
+      @type newId: C{str}
+      @param newAcquired: Whether the filter is acquired from a master portal.
+      @type newAcquired: C{int}
+      @param newName: Display name.
+      @type newName: C{str}
+      @param newFormat: Filter input format.
+      @type newFormat: C{str}
+      @param newContentType: Filter output content type.
+      @type newContentType: C{str}
+      @param newDescription: Descriptive help text.
+      @type newDescription: C{str}
+      @param newRoles: Allowed roles.
+      @type newRoles: C{list}
+      @param newMetaTypes: Supported content meta types.
+      @type newMetaTypes: C{list}
+      @return: The persisted filter id.
+      @rtype: C{str}
+      """
       # Set.
       obs = self.filters
       ob = {}
@@ -397,13 +405,14 @@ class ZMSFilterManager(
       self.filters = obs.copy()
       # Return with new id.
       return newId
-
-    # ------------------------------------------------------------------------------
-    #  _filtermanager.delFilter:
-    # 
-    #  Delete filter specified by given Id.
-    # ------------------------------------------------------------------------------
     def delFilter(self, id):
+      """Delete a filter definition and its uploaded assets.
+
+      @param id: Filter identifier.
+      @type id: C{str}
+      @return: Empty string for legacy callers.
+      @rtype: C{str}
+      """
       # Delete.
       cp = self.filters
       obs = {}
@@ -421,20 +430,15 @@ class ZMSFilterManager(
       return ''
 
 
-    """
-    ################################################################################
-    #
-    #   F I L T E R - P R O C E S S E S
-    #
-    ################################################################################
-    """
 
-    # --------------------------------------------------------------------------
-    #  FilterManager.getFilterProcesses:
-    # 
-    #  Returns list of processes for filter specified by Id.
-    # --------------------------------------------------------------------------
     def getFilterProcesses(self, id):
+      """Return process definitions attached to a filter.
+
+      @param id: Filter identifier.
+      @type id: C{str}
+      @return: Filter process descriptors with optional uploaded files.
+      @rtype: C{list}
+      """
       obs = []
       index = 0
       for process in self.getFilter( id).get( 'processes', []):
@@ -456,12 +460,20 @@ class ZMSFilterManager(
         index += 1
       return obs
 
-    # ------------------------------------------------------------------------------
-    #  _filtermanager.setFilterProcess:
-    # 
-    #  Set/add filter-process specified by given id.
-    # ------------------------------------------------------------------------------
     def setFilterProcess(self, id, index, newProcessId, newProcessFile=None):
+      """Append a process to a filter and persist its optional file asset.
+
+      @param id: Filter identifier.
+      @type id: C{str}
+      @param index: Process position inside the filter pipeline.
+      @type index: C{int}
+      @param newProcessId: Linked process id.
+      @type newProcessId: C{str}
+      @param newProcessFile: Optional uploaded process file.
+      @type newProcessFile: C{_blobfields.MyBlob}
+      @return: The appended process index.
+      @rtype: C{int}
+      """
       # Set.
       obs = self.filters
       ob = {}
@@ -486,11 +498,16 @@ class ZMSFilterManager(
       return len(pobs)-1
 
     # ------------------------------------------------------------------------------
-    #  _filtermanager.delFilterProcess:
-    # 
-    #  Delete filter-process specified by given Ids.
-    # ------------------------------------------------------------------------------
     def delFilterProcess(self, id, index):
+      """Remove a process from a filter and renumber stored assets.
+
+      @param id: Filter identifier.
+      @type id: C{str}
+      @param index: Process position to remove.
+      @type index: C{int}
+      @return: Legacy sentinel value.
+      @rtype: C{int}
+      """
       # Delete.
       obs = self.filters
       p = obs[ id].get('processes', [])
@@ -518,11 +535,18 @@ class ZMSFilterManager(
       return -1
 
     # ------------------------------------------------------------------------------
-    #  _filtermanager.moveFilterProcess:
-    # 
-    #  Move filter-process by given id and index to specified position.
-    # ------------------------------------------------------------------------------
     def moveFilterProcess(self, id, index, pos):
+      """Move a filter process to a new position in the pipeline.
+
+      @param id: Filter identifier.
+      @type id: C{str}
+      @param index: Current process position.
+      @type index: C{int}
+      @param pos: Target process position.
+      @type pos: C{int}
+      @return: The new position.
+      @rtype: C{int}
+      """
       # Set.
       obs = self.filters
       p = obs[id].get('processes', [])
@@ -555,13 +579,22 @@ class ZMSFilterManager(
       return pos
 
 
-    ############################################################################
-    #  FilterManager.manage_changeFilter:
-    #
-    #  Customize filter.
-    ############################################################################
     def manage_changeFilter(self, lang, btn='', key='', REQUEST=None, RESPONSE=None):
-      """ FilterManager.manage_changeFilter """
+      """Handle ZMI actions for filters and filter-process assignments.
+
+      @param lang: Active UI language.
+      @type lang: C{str}
+      @param btn: Submitted button id.
+      @type btn: C{str}
+      @param key: Secondary action key.
+      @type key: C{str}
+      @param REQUEST: The active HTTP request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param RESPONSE: The active HTTP response.
+      @type RESPONSE: C{ZPublisher.HTTPResponse}
+      @return: Redirect response or export payload.
+      @rtype: C{object}
+      """
       message = ''
       id = REQUEST.get('id', '')
       index = REQUEST.get('index', -1)
@@ -658,20 +691,24 @@ class ZMSFilterManager(
       return RESPONSE.redirect('manage_main?id=%s&index:int=%i&lang=%s&manage_tabs_message=%s'%(id, index, lang, message))
 
 
-    """
-    ################################################################################
-    #
-    #   P R O C E S S E S
-    #
-    ################################################################################
-    """
-    
-    # ------------------------------------------------------------------------------
-    #  _filtermanager.setProcess:
-    # 
-    #  Set/add process specified by given Id.
-    # ------------------------------------------------------------------------------
     def setProcess(self, oldId, newId, newAcquired=0, newName='', newType='process', newCommand=None):
+      """Create or update an executable process definition.
+
+      @param oldId: Existing process id to replace.
+      @type oldId: C{str}
+      @param newId: Target process id.
+      @type newId: C{str}
+      @param newAcquired: Whether the process is acquired from a master portal.
+      @type newAcquired: C{int}
+      @param newName: Display name.
+      @type newName: C{str}
+      @param newType: Backing Zope object type.
+      @type newType: C{str}
+      @param newCommand: Source text or uploaded blob for the process.
+      @type newCommand: C{object}
+      @return: The persisted process id.
+      @rtype: C{str}
+      """
       if newCommand is None:
         newCommand = ''
         if newType in [ 'Script (Python)']:
@@ -717,12 +754,14 @@ class ZMSFilterManager(
       return newId
 
 
-    # ------------------------------------------------------------------------------
-    #  _filtermanager.delProcess:
-    # 
-    #  Delete process specified by given Id.
-    # ------------------------------------------------------------------------------
     def delProcess(self, id):
+      """Delete a process definition and its backing Zope object.
+
+      @param id: Process identifier.
+      @type id: C{str}
+      @return: Empty string for legacy callers.
+      @rtype: C{str}
+      """
       # Delete.
       obs = self.processes
       del obs[id]
@@ -733,13 +772,22 @@ class ZMSFilterManager(
       return ''
 
 
-    ############################################################################
-    #  FilterManager.manage_changeProcess:
-    #
-    #  Customize process.
-    ############################################################################
     def manage_changeProcess(self, lang, btn='', key='', REQUEST=None, RESPONSE=None):
-      """ FilterManager.manage_changeProcess """
+      """Handle ZMI actions for creating, editing, and deleting processes.
+
+      @param lang: Active UI language.
+      @type lang: C{str}
+      @param btn: Submitted button id.
+      @type btn: C{str}
+      @param key: Secondary action key.
+      @type key: C{str}
+      @param REQUEST: The active HTTP request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param RESPONSE: The active HTTP response.
+      @type RESPONSE: C{ZPublisher.HTTPResponse}
+      @return: Redirect response or export payload.
+      @rtype: C{object}
+      """
       message = ''
       id = REQUEST.get('id', '')
 

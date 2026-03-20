@@ -7,16 +7,16 @@ This module concentrates the low-level helpers and the main manager class used
 to read, store, and expose configuration in a ZMS site.  It covers three main
 areas:
 
-1. Global system configuration:
-  C{ConfDict} loads and caches values from C{etc/zms.conf} so process-wide
-  settings are available as a flat dictionary.
-2. Site configuration import and persistence:
-  module-level helper C{initConf} and methods on C{ConfManager} import zipped
-  packages, repository-backed configuration trees, and single XML files.
-3. Configuration service layer:
-  C{ConfManager} provides access to configuration properties, design and system
-  customization actions, and delegates to related managers such as workflow,
-  filter, meta-object, text-format, media database, and catalog adapters.
+  1. Global system configuration:
+    C{ConfDict} loads and caches values from C{etc/zms.conf} so process-wide
+    settings are available as a flat dictionary.
+  2. Site configuration import and persistence:
+    module-level helper C{initConf} and methods on C{ConfManager} import zipped
+    packages, repository-backed configuration trees, and single XML files.
+  3. Configuration service layer:
+    C{ConfManager} provides access to configuration properties, design and system
+    customization actions, and delegates to related managers such as workflow,
+    filter, meta-object, text-format, media database, and catalog adapters.
 
 The module is therefore the central bridge between static configuration sources
 on disk, persisted configuration stored in the Zope object tree, and the higher
@@ -707,14 +707,19 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
 
     def get_conf_property(self, *args, **kwargs):
       """
-      Returns property from configuration.
-      
-      @param key: The key.
-      @type key: C{string}
-      @param default: The default-value.
+      Return a configuration value, resolving local and inherited defaults.
+
+      Positional arguments are mapped in order to C{key}, C{default}, and
+      C{REQUEST}. Keyword arguments are supported with the same names.
+
+      @keyword key: Configuration key to resolve.
+      @type key: C{str}
+      @keyword default: Fallback value when the key is not configured.
       @type default: C{any}
-      @var REQUEST: the triggering request
+      @keyword REQUEST: Triggering request used for optional base64 decoding of
+        C{key}.
       @type REQUEST: ZPublisher.HTTPRequest
+      @return: Resolved configuration value.
       @rtype: C{any}
       """
       params = ('key', 'default', 'REQUEST')

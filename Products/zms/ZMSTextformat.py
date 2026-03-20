@@ -5,11 +5,11 @@ Text-format model and rendering helpers for ZMS rich-text output.
 
 This module contains:
 
-1. C{br_quote}: a helper that transforms plain text into HTML fragments while
-  preserving line breaks, indentation, and simple nested list markers.
-2. C{ZMSTextformat}: a small value object representing one configured text
-  format (tag, optional sub-tag, attributes, and usage metadata), plus
-  rendering helpers to convert input text into wrapped HTML.
+  1. C{br_quote}: a helper that transforms plain text into HTML fragments while
+    preserving line breaks, indentation, and simple nested list markers.
+  2. C{ZMSTextformat}: a small value object representing one configured text
+    format (tag, optional sub-tag, attributes, and usage metadata), plus
+    rendering helpers to convert input text into wrapped HTML.
 
 License: GNU General Public License v2 or later
 Organization: ZMS Publishing
@@ -28,8 +28,8 @@ def br_quote(self, text, subtag):
 
   The function preserves leading whitespace, supports C{<br>} handling,
   injects management-interface markers for visible line breaks, and converts
-  simple tab-prefixed list syntax (C{'\t* '} / C{'\t# '}) into nested
-  C{<ul>} / C{<ol>} structures.
+  simple tab-prefixed list syntax '\t* '/'\t#' into nested
+  '<ul>'/'<ol>' structures.
 
   @param self: Rendering context used to detect management interface mode.
   @type self: C{object}

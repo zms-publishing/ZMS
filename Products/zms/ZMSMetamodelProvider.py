@@ -18,13 +18,6 @@ from Products.zms import IZMSMetamodelProvider, ZMSMetaobjManager, ZMSMetadictMa
 from Products.zms import ZMSItem
 
 
-################################################################################
-################################################################################
-###
-###   Class
-###
-################################################################################
-################################################################################
 @implementer(
         IZMSConfigurationProvider.IZMSConfigurationProvider,
         IZMSMetamodelProvider.IZMSMetamodelProvider,
@@ -33,11 +26,14 @@ class ZMSMetamodelProvider(
         ZMSItem.ZMSItem,
         ZMSMetaobjManager.ZMSMetaobjManager,
         ZMSMetadictManager.ZMSMetadictManager):
+    """
+    Central provider for ZMS object-model definitions (meta-objects and
+    meta-dictionaries), including ZMI management and repository I/O.
+    """
 
-    # Properties.
-    # -----------
     meta_type = 'ZMSMetamodelProvider'
-    icon_clazz = "icon-briefcase"
+    zmi_icon = "fas fa-briefcase"
+    icon_clazz = zmi_icon
 
     # Management Options.
     # -------------------
@@ -92,18 +88,14 @@ class ZMSMetamodelProvider(
         return '<article class="zmi-readme">%s</article>'%html
       return ''
 
-    ############################################################################
-    #  ZMSMetamodelProvider.__init__: 
-    #
-    #  Constructor.
-    ############################################################################
     def __init__(self, model={}, metas=[]):
+      """Initialise the metaobj/metadict manager with an optional model dict and metas list."""
       self.id = 'metaobj_manager'
       self.model = model.copy()
       self.metas = copy.deepcopy(metas)
 
-    # @see _confmanager:TemplateWrapper.__get__
     def getConfProperty(self, key, default=None):
+      """Return configuration property from the root content object, or default."""
       v = default
       try:
         if self.content is not None:
@@ -112,12 +104,11 @@ class ZMSMetamodelProvider(
         pass
       return v
 
-    # --------------------------------------------------------------------------
-    #  ZMSMetamodelProvider.__bobo_traverse__
-    # --------------------------------------------------------------------------
     def __bobo_traverse__(self, TraversalRequest, name):
-      
-      # If the name is in the list of attributes, call it.
+      """
+      Custom traversal hook that resolves attributes and delegates upward
+      through portal hierarchy when not found locally.
+      """
       attr = getattr( self, name, None)
       if attr is not None:
         return attr
@@ -139,26 +130,30 @@ class ZMSMetamodelProvider(
         return None
 
 
-    ############################################################################
-    #
-    #  IRepositoryProvider
-    #
-    ############################################################################
-
-    """
-    @see IRepositoryProvider
-    """
     def provideRepository(self, ids=None):
+      """
+      Export all local model and meta-dictionary records into a repository dict.
+
+      @param ids: Optional subset of record ids to include.
+      @type ids: C{list} | C{None}
+      @return: Repository payload keyed by record id.
+      @rtype: C{dict}
+      """
       standard.writeBlock(self, "[provideRepository]: ids=%s"%str(ids))
       r = {}
       self.provideRepositoryMetas(r, ids)
       self.provideRepositoryModel(r, ids)
       return r
 
-    """
-    @see IRepositoryProvider
-    """
     def updateRepository(self, r):
+      """
+      Import one record from a repository payload into the local model.
+
+      @param r: Repository record mapping.
+      @type r: C{dict}
+      @return: Imported record id.
+      @rtype: C{str}
+      """
       id = r['id']
       self.updateRepositoryMetas(r)
       self.updateRepositoryModel(r)

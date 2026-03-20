@@ -12,13 +12,16 @@ from Products.zms import _globals
 from zope.globalrequest import getRequest
 
 class TextFormatObject(object):
+  """Provide text-format helper methods shared by content objects."""
 
-  # ----------------------------------------------------------------------------
-  #  TextFormatObject.getSecNo
-  #
-  #  Returns section-number.
-  # ----------------------------------------------------------------------------
+
   def getSecNo( self):
+    """
+    Return the computed section number for this node.
+
+    Section numbers are generated from headline/page sibling order and cached in
+    the request buffer for repeated lookups.
+    """
     request = getattr(self, 'REQUEST', getRequest())
     sec_no = ''
     #-- [ReqBuff]: Fetch buffered value from Http-Request.
@@ -58,12 +61,10 @@ class TextFormatObject(object):
     return sec_no
 
 
-  # ----------------------------------------------------------------------------
-  #  TextFormatObject.getText
-  #
-  #  Returns text with section-number.
-  # ----------------------------------------------------------------------------
   def getText( self, REQUEST, key='text', encoding='utf-8', errors='strict'):
+    """
+    Return an object text value, optionally prefixed with the section number.
+    """
     s = self.getObjProperty(key, REQUEST)
     if self.isPageElement():
       sec_no = self.getSecNo()
@@ -71,10 +72,13 @@ class TextFormatObject(object):
         s = '%s %s'%(sec_no, s)
     return s
 
-  # ----------------------------------------------------------------------------
-  #  TextFormatObject.renderText:
-  # ----------------------------------------------------------------------------
+
   def renderText( self, format, key, text, REQUEST, id=None, clazz=None):
+    """
+    Render text using the configured text format and optional custom hook.
+
+    Supports markdown conversion and UUID link substitution for markdown output.
+    """
     # Process format.
     if format is not None:
       textformat = self.getTextFormat( format, REQUEST)
@@ -102,4 +106,3 @@ class TextFormatObject(object):
     # Return.
     return text
 
-################################################################################

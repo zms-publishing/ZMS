@@ -841,4 +841,3 @@ class ZMSFilterManager(
       message = standard.url_quote(message)
       return RESPONSE.redirect('manage_main?id=%s&lang=%s&manage_tabs_message=%s'%(id, lang, message))
 
-################################################################################

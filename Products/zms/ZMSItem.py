@@ -94,6 +94,7 @@ class ZMSItem(
     #  ZMSItem.zmi_body_content:
     # --------------------------------------------------------------------------
     def zmi_body_content(self, *args, **kwargs):
+      """Implement 'zmi_body_content'."""
       request = self.REQUEST
       response = request.RESPONSE
       return self.getBodyContent(request)
@@ -102,12 +103,14 @@ class ZMSItem(
     #  ZMSItem.zmi_manage_menu:
     # --------------------------------------------------------------------------
     def zmi_manage_menu(self, *args, **kwargs):
+      """Implement 'zmi_manage_menu'."""
       return self.manage_menu(args, kwargs)
 
     # --------------------------------------------------------------------------
     #  zmi_body_attrs:
     # --------------------------------------------------------------------------
     def zmi_body_class(self, *args, **kwargs):
+      """Implement 'zmi_body_class'."""
       request = self.REQUEST
       l = ['zmi','zms', 'loading']
       l.append(request.get('lang'))
@@ -127,6 +130,7 @@ class ZMSItem(
     #  ZMSItem.zmi_page_request:
     # --------------------------------------------------------------------------
     def _zmi_page_request(self, *args, **kwargs):
+      """Implement '_zmi_page_request'."""
       request = self.REQUEST
       request.set( 'ZMS_THIS', self.getSelf())
       request.set( 'ZMS_DOCELMNT', self.breadcrumbs_obj_path()[0])
@@ -143,6 +147,7 @@ class ZMSItem(
           request.set( 'ZMS_COMMON', request['ZMS_COMMON'][len(base):])
     
     def zmi_page_request(self, *args, **kwargs):
+      """Implement 'zmi_page_request'."""
       request = self.REQUEST
       RESPONSE = request.RESPONSE
       self._zmi_page_request()
@@ -180,6 +185,7 @@ class ZMSItem(
       RESPONSE.setHeader('HX-Push-Url', '%s?%s'%(path_to_handle, qs))
 
     def f_standard_html_request(self, *args, **kwargs):
+      """Implement 'f_standard_html_request'."""
       request = self.REQUEST
       self._zmi_page_request()
       if not request.get( 'lang'):
@@ -192,6 +198,7 @@ class ZMSItem(
     #  @param REQUEST
     # --------------------------------------------------------------------------
     def display_icon(self, *args, **kwargs):
+      """Implement 'display_icon'."""
       meta_id = kwargs.get('meta_id')
       if meta_id is None:
         return self.icon
@@ -203,6 +210,7 @@ class ZMSItem(
     #  ZMSItem.getTitlealt
     # --------------------------------------------------------------------------
     def getTitlealt( self, REQUEST):
+      """Return titlealt."""
       return self.getZMILangStr( self.meta_type)
 
 
@@ -210,6 +218,6 @@ class ZMSItem(
     #  ZMSItem.breadcrumbs_obj_path:
     # --------------------------------------------------------------------------
     def breadcrumbs_obj_path(self, portalMaster=True):
+      """Implement 'breadcrumbs_obj_path'."""
       return self.aq_parent.breadcrumbs_obj_path(portalMaster)
 
-################################################################################

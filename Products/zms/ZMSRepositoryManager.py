@@ -46,10 +46,12 @@ class ZMSRepositoryManager(
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     manage_options_default_action = '../manage_customize'
     def manage_options(self):
+      """Handle the ZMI action 'manage_options'."""
       return [self.operator_setitem( x, 'action', '../'+x['action']) for x in copy.deepcopy(self.aq_parent.manage_options())]
 
     manage_sub_options__roles__ = None
     def manage_sub_options(self):
+      """Handle the ZMI action 'manage_sub_options'."""
       return (
         {'label': 'Repository','action': 'manage_main'},
         )
@@ -78,6 +80,7 @@ class ZMSRepositoryManager(
     Constructor.
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def __init__(self):
+      """Initialize the instance state."""
       self.id = 'repository_manager'
 
 
@@ -87,6 +90,7 @@ class ZMSRepositoryManager(
     Saving to file system (coloring filesystem changes)
     """
     def get_update_direction(self):
+      """Return update direction."""
       return getattr(self,'update_direction','Loading')
 
 
@@ -94,6 +98,7 @@ class ZMSRepositoryManager(
     Returns ignore-orphans.
     """
     def get_ignore_orphans(self):
+      """Return ignore orphans."""
       return getattr(self, 'ignore_orphans', True)
 
 
@@ -101,6 +106,7 @@ class ZMSRepositoryManager(
     Returns conf-basepath.
     """
     def get_conf_basepath(self, id=''):
+      """Return conf basepath."""
       basepath = self.get_conf_property('ZMS.conf.path')
       basepath = basepath.replace('$INSTANCE_HOME', standard.getINSTANCE_HOME())
       basepath = basepath.replace('$HOME_ID',"/".join([x.getHome().id for x in self.breadcrumbs_obj_path() if x.meta_id=='ZMS']))
@@ -110,12 +116,14 @@ class ZMSRepositoryManager(
 
 
     def remoteFiles(self, provider):
+      """Implement 'remoteFiles'."""
       standard.writeLog(self,"[remoteFiles]: provider=%s"%str(provider))
       basepath = self.get_conf_basepath(provider.id)
       return repositoryutil.remoteFiles(self, basepath)
 
 
     def readRepository(self, provider):
+      """Implement 'readRepository'."""
       standard.writeLog(self,"[readRepository]: provider=%s"%str(provider))
       basepath = self.get_conf_basepath(provider.id)
       return repositoryutil.readRepository(self, basepath)
@@ -125,6 +133,7 @@ class ZMSRepositoryManager(
     Export: Commit ZODB to repository.
     """
     def commitChanges(self, ids):
+      """Implement 'commitChanges'."""
       standard.writeLog(self,"[commitChanges]: ids=%s"%str(ids))
       standard.triggerEvent(self,'beforeCommitRepositoryEvt')
       success = []
@@ -184,6 +193,7 @@ class ZMSRepositoryManager(
     Import: Update ZODB from repository.
     """
     def updateChanges(self, ids, override=False):
+      """Implement 'updateChanges'."""
       standard.writeLog(self,"[updateChanges]: ids=%s"%str(ids))
       standard.triggerEvent(self,'beforeUpdateRepositoryEvt')
       success = []
@@ -248,4 +258,3 @@ class ZMSRepositoryManager(
         target = standard.url_append_params(target,{'manage_tabs_error_message':error_message})
       return RESPONSE.redirect(target)
 
-################################################################################

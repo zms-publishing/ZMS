@@ -29,6 +29,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     # --------------------------------------------------------------------------
     #  ZMSProxyObject.__init__: 
     # --------------------------------------------------------------------------
+    """Provide helpers for ZMSProxyObject."""
     def __init__(self, root, base, url_base, id, proxy, recursive=False):
       """ Constructor """
       self.__root__ = root
@@ -47,6 +48,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject.__proxy__:
     # --------------------------------------------------------------------------
     def __proxy__(self):
+      """Implement '__proxy__'."""
       return self
 
 
@@ -54,6 +56,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject.getProxy
     # --------------------------------------------------------------------------
     def getProxy(self):
+      """Return proxy."""
       return self
 
 
@@ -61,6 +64,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject.getPhysicalPath
     # --------------------------------------------------------------------------
     def getPhysicalPath(self):
+      """Return physicalpath."""
       rtn = list( self.__root__.getPhysicalPath())
       for id in list( self.base.getPhysicalPath())+[self.id]:
         if id not in rtn:
@@ -72,6 +76,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject.__request__ 
     # --------------------------------------------------------------------------
     def __request__(self, REQUEST):
+      """Implement '__request__'."""
       proxy = self.proxy
       if isinstance(REQUEST, bytes) or isinstance(REQUEST, str):
         return proxy.REQUEST
@@ -82,6 +87,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject.absolute_url
     # --------------------------------------------------------------------------
     def absolute_url(self, relative=0):
+      """Implement 'absolute_url'."""
       url_base = self.url_base
       rtn = url_base
       return rtn
@@ -91,6 +97,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject.getMetaobjAttrIds:
     # --------------------------------------------------------------------------
     def getMetaobjAttrIds(self, meta_id, types=[]):
+      """Return metaobjattrids."""
       proxy = self.proxy
       rtn = proxy.getMetaobjAttrIds( meta_id, types)
       return rtn
@@ -100,6 +107,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  MetaobjManager.getMetaobjAttr:
     # --------------------------------------------------------------------------
     def getMetaobjAttr(self, meta_id, key):
+      """Return metaobjattr."""
       proxy = self.proxy
       rtn = proxy.getMetaobjAttr( meta_id, key)
       return rtn
@@ -109,6 +117,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject.getConfProperty
     # --------------------------------------------------------------------------
     def getConfProperty(self, key, default=None):
+      """Return confproperty."""
       proxy = self.proxy
       rtn = proxy.getConfProperty( key, default)
       return rtn
@@ -118,6 +127,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject.getObjAttrs
     # --------------------------------------------------------------------------
     def getObjAttrs(self, meta_type=None):
+      """Return objattrs."""
       proxy = self.proxy
       rtn = proxy.getObjAttrs( meta_type)
       return rtn
@@ -127,6 +137,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject._getObjAttrValue
     # --------------------------------------------------------------------------
     def _getObjAttrValue(self, obj_attr, obj_vers, lang):
+      """Implement '_getObjAttrValue'."""
       proxy = self.proxy
       rtn = proxy._getObjAttrValue( obj_attr, obj_vers, lang)
       return rtn
@@ -136,6 +147,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject.getObjAttrValue
     # --------------------------------------------------------------------------
     def getObjAttrValue(self, obj_attr, REQUEST):
+      """Return objattrvalue."""
       proxy = self.proxy
       req = self.__request__( REQUEST)
       rtn = proxy.getObjAttrValue( obj_attr, req)
@@ -146,6 +158,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject.getRootElement
     # --------------------------------------------------------------------------
     def getRootElement(self):
+      """Return rootelement."""
       base = self.base
       rtn = base.getRootElement( )
       return rtn
@@ -155,6 +168,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject.getDocumentElement
     # --------------------------------------------------------------------------
     def getDocumentElement(self):
+      """Return documentelement."""
       base = self.base
       rtn = base.getDocumentElement( )
       return rtn
@@ -164,6 +178,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject.getHome
     # --------------------------------------------------------------------------
     def getHome(self):
+      """Return home."""
       base = self.base
       rtn = base.getHome( )
       return rtn
@@ -173,6 +188,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject.getDCCoverage
     # --------------------------------------------------------------------------
     def getDCCoverage(self, REQUEST={}):
+      """Return dccoverage."""
       proxy = self.proxy
       rtn = proxy.getDCCoverage( REQUEST)
       return rtn
@@ -182,6 +198,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject.getDCDescription
     # --------------------------------------------------------------------------
     def getDCDescription(self, REQUEST):
+      """Return dcdescription."""
       proxy = self.proxy
       rtn = proxy.getDCDescription( REQUEST)
       return rtn
@@ -193,6 +210,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  Overrides AccessManager.getUserAttr.
     # --------------------------------------------------------------------------
     def getUserAttr(self, user, name, default, flag=0):
+      """Return userattr."""
       proxy = self.proxy
       rtn = proxy.getUserAttr( user, name, default, flag)
       return rtn
@@ -202,6 +220,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject.getPageExt
     # --------------------------------------------------------------------------
     def getPageExt(self, REQUEST):
+      """Return pageext."""
       proxy = self.proxy
       req = self.__request__( REQUEST)
       rtn = proxy.getPageExt( req)
@@ -212,6 +231,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject.getTitle
     # --------------------------------------------------------------------------
     def getTitle(self, REQUEST):
+      """Return title."""
       proxy = self.proxy
       req = self.__request__( REQUEST)
       rtn = proxy.getTitle( req)
@@ -222,6 +242,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject.getTitlealt:
     # --------------------------------------------------------------------------
     def getTitlealt(self, REQUEST):
+      """Return titlealt."""
       proxy = self.proxy
       req = self.__request__( REQUEST)
       rtn = proxy.getTitlealt( req)
@@ -232,6 +253,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject.getPenetrance:
     # --------------------------------------------------------------------------
     def getPenetrance(self, REQUEST):
+      """Return penetrance."""
       proxy = self.proxy
       req = self.__request__( REQUEST)
       rtn = proxy.getPenetrance( req)
@@ -242,6 +264,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject.getChildNodes:
     # --------------------------------------------------------------------------
     def getChildNodes(self, REQUEST={}, meta_types=None, reid=None):
+      """Return childnodes."""
       rtn = []
       recursive = self.recursive
       if recursive:
@@ -258,6 +281,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject.getSecNo
     # --------------------------------------------------------------------------
     def getSecNo(self):
+      """Return secno."""
       proxy = self.proxy
       rtn = proxy.getSecNo( )
       return rtn
@@ -267,6 +291,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject.getLevel
     # --------------------------------------------------------------------------
     def getLevel(self):
+      """Return level."""
       proxy = self.proxy
       base = self.base
       rtn = base.getLevel( ) + 1
@@ -283,6 +308,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject.getObjProperty
     # --------------------------------------------------------------------------
     def getObjProperty(self, key, REQUEST={}, default=None):
+      """Return objproperty."""
       proxy = self.proxy
       req = self.__request__( REQUEST)
       if hasattr( proxy, 'getObjPropertyPROXY'):
@@ -309,6 +335,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject.getType
     # --------------------------------------------------------------------------
     def getType(self):
+      """Return type."""
       proxy = self.proxy
       rtn = proxy.getType()
       return rtn
@@ -318,6 +345,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject.isActive
     # --------------------------------------------------------------------------
     def isActive(self, REQUEST):
+      """Return whether active."""
       proxy = self.proxy
       root = self.__root__
       rtn = proxy.isActive(REQUEST) and root.isActive(REQUEST)
@@ -328,6 +356,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject.isMetaType:
     # --------------------------------------------------------------------------
     def isMetaType(self, meta_type, REQUEST={'preview':'preview'}):
+      """Return whether metatype."""
       proxy = self.proxy
       req = self.__request__( REQUEST)
       rtn = proxy.isMetaType( meta_type, req)
@@ -338,6 +367,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject.isResource:
     # --------------------------------------------------------------------------
     def isResource(self, REQUEST):
+      """Return whether resource."""
       proxy = self.proxy
       req = self.__request__( REQUEST)
       rtn = proxy.isResource( req)
@@ -348,6 +378,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject.isPage:
     # --------------------------------------------------------------------------
     def isPage(self):
+      """Return whether page."""
       proxy = self.proxy
       rtn = proxy.isPage( )
       return rtn
@@ -357,6 +388,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject.isPageElement:
     # --------------------------------------------------------------------------
     def isPageElement(self):
+      """Return whether pageelement."""
       proxy = self.proxy
       rtn = proxy.isPageElement( )
       return rtn
@@ -366,6 +398,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject.isVisible:
     # --------------------------------------------------------------------------
     def isVisible(self, REQUEST):
+      """Return whether visible."""
       proxy = self.proxy
       req = self.__request__( REQUEST)
       rtn = proxy.isVisible( req)
@@ -376,6 +409,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject._getBodyContent:
     # --------------------------------------------------------------------------
     def _getBodyContent(self, REQUEST):
+      """Implement '_getBodyContent'."""
       proxy = self.proxy
       req = self.__request__( REQUEST)
       rtn = proxy._getBodyContent( req)
@@ -395,6 +429,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject.display_icon:
     # --------------------------------------------------------------------------
     def display_icon(self, *args, **kwargs): 
+      """Implement 'display_icon'."""
       proxy = self.proxy
       rtn = proxy.display_icon(args, kwargs)
       return rtn
@@ -404,6 +439,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject.getLangIds:
     # --------------------------------------------------------------------------
     def getLangIds(self, sort=False):
+      """Return langids."""
       proxy = self.proxy
       rtn = proxy.getLangIds( sort)
       return rtn
@@ -413,6 +449,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #	ZMSProxyObject.get_manage_lang:
     # --------------------------------------------------------------------------
     def get_manage_lang(self):
+      """Return manage lang."""
       proxy = self.proxy
       rtn = proxy.get_manage_lang( )
       return rtn
@@ -422,6 +459,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #	ZMSProxyObject.getZMILangStr:
     # --------------------------------------------------------------------------
     def getZMILangStr(self, key, REQUEST=None, RESPONSE=None):
+      """Return zmilangstr."""
       proxy = self.proxy
       rtn = proxy.getZMILangStr( key, REQUEST, RESPONSE)
       return rtn
@@ -431,6 +469,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject.getLangStr:
     # --------------------------------------------------------------------------
     def getLangStr(self, key, lang=None):
+      """Return langstr."""
       proxy = self.proxy
       rtn = proxy.getLangStr( key, lang)
       return rtn
@@ -440,6 +479,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject.getPrimaryLanguage:
     # --------------------------------------------------------------------------
     def getPrimaryLanguage(self):
+      """Return primarylanguage."""
       proxy = self.proxy
       rtn = proxy.getPrimaryLanguage()
       return rtn
@@ -449,6 +489,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject.hasAccess:
     # --------------------------------------------------------------------------
     def hasAccess(self, REQUEST):
+      """Return whether access."""
       proxy = self.proxy
       req = self.__request__( REQUEST)
       rtn = proxy.hasAccess( req)
@@ -459,6 +500,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject.getObjVersion:
     # --------------------------------------------------------------------------
     def getObjVersion(self, REQUEST={}):
+      """Return objversion."""
       proxy = self.proxy
       req = self.__request__( REQUEST)
       rtn = proxy.getObjVersion( req)
@@ -469,6 +511,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject.breadcrumbs_obj_path:
     # --------------------------------------------------------------------------
     def breadcrumbs_obj_path(self, portalMaster=True):
+      """Implement 'breadcrumbs_obj_path'."""
       proxy = self.proxy
       base = self.base
       rtn = base.breadcrumbs_obj_path( ) + [ self]
@@ -485,6 +528,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject.getDeclUrl:
     # --------------------------------------------------------------------------
     def getDeclUrl(self, REQUEST={}):
+      """Return declurl."""
       if self.getConfProperty('ZMS.pathhandler', 0) == 0:
         rtn = self.absolute_url()
       else:
@@ -499,6 +543,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject.getHref2IndexHtml:
     # --------------------------------------------------------------------------
     def getHref2IndexHtml(self, REQUEST, deep=1): 
+      """Return href2indexhtml."""
       proxy = self.proxy
       rtn = zmscontainerobject.ZMSContainerObject.getHref2IndexHtml( self, REQUEST, deep)
       return rtn
@@ -508,6 +553,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject.getStylesheet:
     # --------------------------------------------------------------------------
     def getStylesheet(self, id=None):
+      """Return stylesheet."""
       base = self.base
       rtn = base.getStylesheet( id)
       return rtn
@@ -517,6 +563,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     #  ZMSProxyObject.printHtml:
     # --------------------------------------------------------------------------
     def printHtml(self, level, sectionizer, REQUEST, deep=True):
+      """Implement 'printHtml'."""
       proxy = self.proxy
       rtn = proxy.printHtml( level, sectionizer, REQUEST, deep)
       return rtn
@@ -529,18 +576,23 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     ############################################################################
 
     def getMetaobjId(self, name):
+      """Return metaobjid."""
       return self.proxy.getMetaobjId( name)
 
     def getMetaobjIds(self, sort=None, excl_ids=[]):
+      """Return metaobjids."""
       return self.proxy.getMetaobjIds( sort, excl_ids)
 
     def getMetaobj(self, id):
+      """Return metaobj."""
       return self.proxy.getMetaobj( id)
 
     def getMetaobjAttrIds(self, meta_id, types=[]):
+      """Return metaobjattrids."""
       return self.proxy.getMetaobjAttrIds( meta_id, types)
 
     def getMetaobjAttr(self, meta_id, key):
+      """Return metaobjattr."""
       return self.proxy.getMetaobjAttr( meta_id, key)
 
 
@@ -551,15 +603,18 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     ############################################################################
 
     def getTextFormatDefault(self):
+      """Return textformatdefault."""
       return self.proxy.getTextFormatDefault()
 
     def getTextFormat(self, id, REQUEST):
+      """Return textformat."""
       return self.proxy.getTextFormat(id, REQUEST)
 
     def getTextFormats(self, REQUEST):
+      """Return textformats."""
       return self.proxy.getTextFormats(REQUEST)
 
     def getCharFormats(self):
+      """Return charformats."""
       return self.proxy.getCharFormats()
 
-################################################################################

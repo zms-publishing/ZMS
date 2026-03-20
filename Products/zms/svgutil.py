@@ -13,7 +13,14 @@ import xml.dom.minidom
 security = ModuleSecurityInfo('Products.zms.svgutil')
 
 security.declarePublic('get_svg_dimensions')
+
+
 def get_dimensions(image):
+    """
+    Return intrinsic SVG dimensions as C{(width, height)} in pixel units.
+
+    Width/height attributes are preferred; C{viewBox} is used as fallback.
+    """
     size = None
     if image.filename.endswith('.svg'):
         data = bytes(image.getData())
@@ -46,7 +53,15 @@ def get_dimensions(image):
     return size
 
 security.declarePublic('set_svg_dimensions')
+
+
 def set_dimensions(image, size):
+    """
+    Update width/height attributes in SVG data and return the image object.
+
+    If the object is not an SVG or has no detectable dimensions, the image is
+    returned unchanged.
+    """
     svg_dim = get_dimensions(image)
     if svg_dim is not None:
         w = int(float(size[0]))
@@ -71,4 +86,3 @@ def set_dimensions(image, size):
 
 security.apply(globals())
 
-################################################################################

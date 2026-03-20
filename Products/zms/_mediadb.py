@@ -1,11 +1,25 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 """
 _mediadb.py
 
-Internal helpers for mediadb in ZMS.
+The mediadb module provides functionality for managing binary assets 
+(files, images, blobs) in a ZMS instance. It handles storage, retrieval, 
+and organization of uploaded files in a filesystem-based repository.
 
-License: GNU General Public License v2 or later
+Key Features:
+  - Store and retrieve binary files (blobs) from disk
+  - Organize files in flat or hierarchical directory structures
+  - Track file references across ZMS objects and recordsets
+  - Migrate between different directory structures
+  - Identify and manage orphaned files
+  - Serve files as HTTP streaming responses
+  - Validate file integrity and references
+
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
+
 # Imports.
 from AccessControl import ClassSecurityInfo
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -28,11 +42,20 @@ from Products.zms import _globals
 from Products.zms import _objattrs
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Constructor
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def manage_addMediaDb(self, location, REQUEST=None, RESPONSE=None):
-  """ manage_addMediaDb """
+  """
+  Initialize a new MediaDb instance at the specified filesystem location and
+  recursively attach all existing blob attributes from the object tree.
+
+  @param self: ZMS object to attach the mediadb to.
+  @type self: C{object}
+  @param location: Filesystem path where the mediadb should store its files.
+  @type location: C{str}
+  @param REQUEST: Optional HTTP request object (not used).
+  @type REQUEST: C{HTTPRequest}
+  @param RESPONSE: Optional HTTP response object for redirection after creation.
+  @type RESPONSE: C{HTTPResponse}
+  """
   obj = MediaDb(location)
   self._setObject(obj.id, obj)
   recurse_addMediaDb(self,self.getMediaDb())
@@ -41,17 +64,12 @@ def manage_addMediaDb(self, location, REQUEST=None, RESPONSE=None):
 
 
 def containerFilter(container):
+  """Return True for containers whose meta_type is 'ZMS' (used by addable object filter)."""
   return container.meta_type == 'ZMS'
 
 
-################################################################################
-###
-###   Create
-###
-################################################################################
 def recurse_addMediaDb(self, mediadb):
-
-  # Process recordset.
+  """Recursively attach all blob attributes of the object tree to the given mediadb."""
   if self.getType() == 'ZMSRecordSet':
     key = self.getMetaobjAttrIds(self.meta_id,types=['list'])[0]
     obj_attr = self.getObjAttr(key)
@@ -85,12 +103,8 @@ def recurse_addMediaDb(self, mediadb):
     recurse_addMediaDb(ob,mediadb)
 
 
-################################################################################
-###
-###   Compress
-###
-################################################################################
-def getFilenamesFromValue( v):
+def getFilenamesFromValue(v):
+  """Return a flat list of mediadb filenames referenced inside an attribute value."""
   rtn = []
   if type( v) is list:
     for i in v:
@@ -106,7 +120,18 @@ def getFilenamesFromValue( v):
 
 
 def manage_structureMediaDb(self, structure, REQUEST=None, RESPONSE=None):
-  """ manage_structureMediaDb """
+  """
+  Reorganise mediadb files into the requested directory structure.
+  The method moves all files into their new target location as computed by
+  mediadb.targetFile(), which may involve creating intermediate directories for
+  hierarchical structures. The method also updates the mediadb structure property
+  to ensure future uploads are stored in the correct location.
+
+  @param structure: Desired directory nesting depth (0 = flat).
+  @type structure: C{int}
+  @return: Message summarizing the restructuring outcome.
+  @rtype: C{str}
+  """
   message = ''
   mediadb = self.getMediaDb()
   mediadb.structure = structure
@@ -119,6 +144,15 @@ def manage_structureMediaDb(self, structure, REQUEST=None, RESPONSE=None):
 
   # Traverse existing structure.
   def traverse(path, p):
+    """
+    Walk path recursively and move each file into its target location.
+    The target location is computed by mediadb.targetFile() and may involve
+    creating intermediate directories for hierarchical structures.
+    @param path: Current filesystem path to traverse.
+    @type path: C{str}
+    @param p: Progress dict tracking total files processed (p['t']).
+    @type p: C{dict}
+    """
     standard.writeBlock( self, "[manage_structureMediaDb]: traverse %s"%path)
     for filename in os.listdir(path):
       filepath = os.path.join(path,filename)
@@ -133,6 +167,7 @@ def manage_structureMediaDb(self, structure, REQUEST=None, RESPONSE=None):
           os.makedirs(targetdir)
         shutil.move(filepath,targetpath)
         p['t'] += 1
+
   standard.writeBlock( self, "[manage_structureMediaDb]: makedirs %s"%temp)
   os.makedirs(temp)
   p = {'t':0}
@@ -152,7 +187,16 @@ def manage_structureMediaDb(self, structure, REQUEST=None, RESPONSE=None):
 
 
 def manage_packMediaDb(self, REQUEST=None, RESPONSE=None):
-  """ manage_packMediaDb """
+  """
+  Scan the mediadb and move all orphaned files (not referenced by any ZMS object)
+  to a temporary folder for cleanup or archival.
+  
+  The method traverses the entire mediadb directory structure and identifies files
+  that are not referenced by any blob attribute in the ZMS object tree. 
+  It moves these  orphaned files to a temporary folder for manual review and cleanup. 
+  The method returns a message summarizing the number of orphaned files found 
+  and their new location.
+  """
   message = ''
   mediadb = self.getMediaDb()
   path = mediadb.getLocation()
@@ -166,6 +210,7 @@ def manage_packMediaDb(self, REQUEST=None, RESPONSE=None):
 
   # Traverse existing structure.
   def traverse(path, p):
+    """Walk path recursively and identify unreferenced files."""
     for filename in os.listdir(path):
       filepath = os.path.join(path,filename)
       if os.path.isdir(filepath):
@@ -185,14 +230,22 @@ def manage_packMediaDb(self, REQUEST=None, RESPONSE=None):
   return message
 
 
-################################################################################
-###
-###   Destroy
-###
-################################################################################
 def recurse_delMediaDb(self, mediadb):
+  """
+  Recursively detach blobs from the mediadb and restore their data back into ZODB.
+  The method traverses the object tree and for each blob attribute found, it
+  retrieves the file from the mediadb using the stored filename reference, restores
+  the blob's data attribute with the file content, and removes the mediadb reference.
+  The method also processes recordsets by iterating through their list attributes 
+  and applying the same logic to any blob values found within the records. Finally, 
+  the method recurses into child objects to ensure all blobs in the tree are processed.
+  CAVE: Restoring the blob-files back into the ZODB can massively enlarge it's size.
 
-  # Process recordset.
+  @param self: Root object to start traversal from.
+  @type self: C{object}
+  @param mediadb: MediaDb instance to retrieve files from.
+  @type mediadb: C{MediaDb}
+  """
   if self.getType() == 'ZMSRecordSet':
     key = self.getMetaobjAttrIds(self.meta_id,types=['list'])[0]
     obj_attr = self.getObjAttr(key)
@@ -230,35 +283,42 @@ def recurse_delMediaDb(self, mediadb):
 
 
 def manage_delMediaDb(self, REQUEST=None, RESPONSE=None):
-  """ manage_delMediaDb """
+  """
+  Detach the mediadb from this object and remove the acl_mediadb child.
+  The method calls recurse_delMediaDb to restore all blob data back 
+  into the ZODB, then deletes the mediadb object itself. 
+  CAVE: Restoring the blob-files back into the ZODB can massively enlarge it's size.
+  """
   message = ''
   recurse_delMediaDb(self,self.getMediaDb())
   self.manage_delObjects(ids=['acl_mediadb'])
   return message
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Class
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 class MediaDb(
       OFS.SimpleItem.Item,
       Persistent,
       Acquisition.Implicit):
+    """
+    Persistent Zope object that stores uploaded binary assets in a flat 
+    or hierarchical filesystem.
+    
+    The MediaDb provides methods to store and retrieve files, compute target
+    paths, and manage the storage structure.
+    The mediadb is designed to be attached to a ZMS content object as a child
+    with a fixed id (acl_mediadb) and accessed via the getMediaDb() method.
+    The mediadb location is configurable and supports expansion of $INSTANCE_HOME.
+    The mediadb also provides management interface methods to serve files as HTTP
+    responses and to reorganize the storage structure.
+    """
 
-    # Create a SecurityInfo for this class. We will use this
-    # in the rest of our class definition to make security
-    # assertions.
     security = ClassSecurityInfo()
 
     # Properties.
     # -----------
     meta_type = 'MediaDb'
-    if python_version().startswith("3."): # py3
-      zmi_icon = "fas fa-images"
-      icon_clazz = zmi_icon
-    else: # py2
-      zmi_icon = "icon-folder-close"
-      icon_clazz = zmi_icon
+    zmi_icon = "fas fa-images"
+    icon_clazz = zmi_icon
 
     # Management Options.
     # -------------------
@@ -274,75 +334,61 @@ class MediaDb(
     manage_properties = PageTemplateFile('zpt/MediaDb/manage_properties', globals())
 
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    Constructor
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def __init__(self, location, structure=0):
+      """Initialize the instance state."""
       self.id = 'acl_mediadb'
       self.setLocation(location)
       self.structure = structure
       _fileutil.mkDir(self.getLocation())
 
-    # --------------------------------------------------------------------------
-    # MediaDb.setLocation
-    # --------------------------------------------------------------------------
+
     def setLocation(self, location):
+      """Set the filesystem root path for the mediadb, stripping any trailing slash."""
       if location.endswith('/'):
         location = location[:-1]
       self.location = location
 
-    # --------------------------------------------------------------------------
-    # MediaDb.getLocation
-    # --------------------------------------------------------------------------
+
     def getLocation(self):
+      """Return the resolved filesystem root path, expanding $INSTANCE_HOME."""
       return self.location.replace('$INSTANCE_HOME', standard.getINSTANCE_HOME())
 
-    # --------------------------------------------------------------------------
-    # MediaDb.getStructure
-    # --------------------------------------------------------------------------
     def getStructure(self):
+      """Return the directory nesting depth used for hierarchical storage (0 = flat)."""
       return getattr(self,'structure',0)
 
-    # --------------------------------------------------------------------------
-    #  MediaDb.urlQuote
-    # --------------------------------------------------------------------------
+
     def urlQuote(self, s):
+      """Return the URL-encoded form of the given string."""
       return standard.url_quote(s)
 
-    # --------------------------------------------------------------------------
-    #  MediaDb.getPath
-    # --------------------------------------------------------------------------
+
     def getPath(self, REQUEST):
+      """Return the requested filesystem path, defaulting to the mediadb root."""
       path = REQUEST.get('path','')
       if len(path) < len(self.getLocation()):
         path = self.getLocation()
       return path
 
-    # --------------------------------------------------------------------------
-    #	MediaDb.readDir
-    # --------------------------------------------------------------------------
+
     def readDir(self, path):
+      """Return a directory listing for the given filesystem path."""
       return _fileutil.readDir(path)
 
-    # --------------------------------------------------------------------------
-    #  MediaDb.getParentDir
-    # --------------------------------------------------------------------------
+
     def getParentDir(self, path):
+      """Return the parent directory of the given filesystem path."""
       return _fileutil.getFilePath(path)
 
-    # --------------------------------------------------------------------------
-    #  MediaDb.getFile
-    # --------------------------------------------------------------------------
+
     def getFile(self, REQUEST,RESPONSE):
+      """Stream the file identified by the request path as an HTTP response."""
       filename = _fileutil.extractFilename( self.getPath( REQUEST))
       return self.retrieveFileStreamIterator( filename, REQUEST)
 
-    # --------------------------------------------------------------------------
-    #  MediaDb.targetFile
-    #
-    #  Get target filename in flat or hierarchical structure.
-    # --------------------------------------------------------------------------
+
     def targetFile(self, filename):
+      """Compute the full filesystem path where a file should be stored."""
       filepath = ''
       filename = _fileutil.extractFilename(filename)
       filename = filename.replace('..','')
@@ -356,10 +402,9 @@ class MediaDb(
         filepath = os.sep.join(location)
       return filepath
 
-    # --------------------------------------------------------------------------
-    #  MediaDb.storeFile
-    # --------------------------------------------------------------------------
+
     def storeFile(self, file):
+      """Store an uploaded file object into the mediadb and return its unique filename."""
       filepath = ''
       filename = _fileutil.extractFilename(file.filename)
       if len(filename) > 0:
@@ -369,18 +414,15 @@ class MediaDb(
         _fileutil.exportObj(file,filepath)
       return filename
 
-    # --------------------------------------------------------------------------
-    #  MediaDb.manage_index_html
-    # --------------------------------------------------------------------------
+
     security.declareProtected('ZMS Administrator', 'manage_index_html')
     def manage_index_html(self, filename, REQUEST=None):
-      """ MediaDb.manage_index_html """
+      """Serve a mediadb file as a streaming HTTP response."""
       return self.retrieveFileStreamIterator(filename,REQUEST)
 
-    # --------------------------------------------------------------------------
-    #  MediaDb.retrieveFileStreamIterator
-    # --------------------------------------------------------------------------
+
     def retrieveFileStreamIterator(self, filename, REQUEST=None):
+      """Retrieve a mediadb file and return its content as a stream or bytes object."""
       threshold = 2 << 16 # 128 kb
       local_filename = self.targetFile(filename)
       if not os.path.exists(local_filename):
@@ -417,10 +459,9 @@ class MediaDb(
       standard.set_response_headers(filename,mt,fsize,REQUEST)
       return data
 
-    # --------------------------------------------------------------------------
-    #  MediaDb.retrieveFile
-    # --------------------------------------------------------------------------
+
     def retrieveFile(self, filename):
+      """Return the raw bytes of the given mediadb file."""
       filename = filename.replace('..','')
       try:
         location = self.getLocation()
@@ -433,20 +474,18 @@ class MediaDb(
         data = ''
       return data
 
-    # --------------------------------------------------------------------------
-    #	MediaDb.getFileSize
-    # --------------------------------------------------------------------------
+
     def getFileSize(self, filename):
+      """Return the size in bytes of the given mediadb file."""
       location = self.getLocation()
       if not filename.startswith(location):
         filename = os.path.join(location,filename)
       fsize = os.path.getsize( filename)
       return fsize
 
-    # --------------------------------------------------------------------------
-    #  MediaDb.valid_filenames
-    # --------------------------------------------------------------------------
+
     def valid_filenames(self):
+      """Return a list of (attr_path, filename) pairs for all mediadb-referenced files."""
       filenames = []
       objs = [self.getSelf()]
       objs.extend(objs[0].getTreeNodes())
@@ -492,14 +531,14 @@ class MediaDb(
                       filenames.append(('/'.join(obj.getPhysicalPath())+'#'+obj_attr_name, filename))
       return filenames
 
-    ############################################################################
-    #  MediaDb.manage_test:
-    ############################################################################
+
     def manage_test(self, REQUEST, RESPONSE):
-      """ manage_test """
+      """Scan the mediadb and return a JSON report of OK/MISSING file statuses."""
       RESPONSE.setHeader('Cache-Control', 'no-cache')
       RESPONSE.setHeader('Content-Type', 'application/json; charset=utf-8')
+
       def traverse(path):
+        """Collect filenames by walking path recursively."""
         files = []
         for filename in os.listdir(path):
           filepath = os.path.join(path,filename)
@@ -508,6 +547,7 @@ class MediaDb(
           elif os.path.isfile(filepath):
             files.append(filename)
         return files
+
       # Get filenames.
       path_filenames = traverse(self.getLocation())
       valid_filenames = self.valid_filenames()
@@ -516,31 +556,17 @@ class MediaDb(
       l.extend([(None, filename, 'MISSING') for filename in path_filenames if filename not in [y[1] for y in valid_filenames]])
       return json.dumps(l, indent=2)
 
-    """
-    ############################################################################
-    ###
-    ###   P r o p e r t i e s
-    ###
-    ############################################################################
-    """
 
-    ############################################################################
-    #  MediaDb.manage_changeProperties:
-    #
-    #  Change MediaDb properties.
-    ############################################################################
     def manage_changeProperties(self, submit, REQUEST, RESPONSE):
-      """ MediaDb.manage_changeProperties """
-
+      """
+      Apply submitted form changes to MediaDb location and redirect back 
+      to properties.
+      """
       message = ''
-
       # Change.
       if submit == 'Change':
         location = REQUEST.get('location',self.location)
         self.setLocation(location)
-
       # Return.
       if RESPONSE is not None:
         RESPONSE.redirect('manage_properties?manage_tabs_message=%s'%standard.url_quote(message))
-
-################################################################################

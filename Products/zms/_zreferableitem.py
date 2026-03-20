@@ -137,9 +137,6 @@ def getInlineRefs(text):
   return l
 
 
-################################################################################
-# OBJECT CLASS ZReferableItem
-################################################################################
 class ZReferableItem(object): 
   """
   Mixin for internal reference handling in ZMS objects.

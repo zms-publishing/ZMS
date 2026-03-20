@@ -34,6 +34,7 @@ class ZMSZCatalogConnector(
 
     # Properties.
     # -----------
+    """Provide helpers for ZMSZCatalogConnector."""
     meta_type = 'ZMSZCatalogConnector'
     zmi_icon = "fas fa-search"
 
@@ -57,6 +58,7 @@ class ZMSZCatalogConnector(
     #  Constructor.
     ############################################################################
     def __init__(self, id):
+      """Initialize the instance state."""
       self.id = id
 
     ############################################################################
@@ -69,6 +71,7 @@ class ZMSZCatalogConnector(
     @see IRepositoryProvider
     """
     def provideRepository(self, r, ids=None):
+      """Implement 'provideRepository'."""
       standard.writeBlock(self, "[provideRepository]: ids=%s"%str(ids))
       r = {}
       id = self.id
@@ -89,6 +92,7 @@ class ZMSZCatalogConnector(
     @see IRepositoryProvider
     """
     def updateRepository(self, r):
+      """Implement 'updateRepository'."""
       id = r['id']
       [self.setConfProperty('opensearch.schema',x['data']) for x in r['Opensearch'] if x['id'] == 'schema']
       return id
@@ -97,6 +101,7 @@ class ZMSZCatalogConnector(
     @see IRepositoryProvider
     """
     def translateRepositoryModel(self, r):
+      """Implement 'translateRepositoryModel'."""
       d = {}
       return d
 
@@ -104,12 +109,14 @@ class ZMSZCatalogConnector(
     #  ZMSZCatalogConnector.getProperties
     # --------------------------------------------------------------------------
     def getProperties(self):
+      """Return properties."""
       return standard.parse_json(self.evalMetaobjAttr('%s.properties'%self.id))
 
     # --------------------------------------------------------------------------
     #  ZMSZCatalogConnector.getActions
     # --------------------------------------------------------------------------
     def getActions(self, pattern=None):
+      """Return actions."""
       root = self.getRootElement()
       metaobjAttrs = root.getMetaobjAttrs(self.id)
       actions = [root.getMetaobjAttr(self.id, x['id']) for x in metaobjAttrs if x['type'] in ['py','External Method','Script (Python)']]
@@ -121,6 +128,7 @@ class ZMSZCatalogConnector(
     #  ZMSZCatalogConnector.manage_init
     # --------------------------------------------------------------------------
     def manage_init(self):
+      """Handle the ZMI action 'manage_init'."""
       [x['ob'](self) for x in self.getActions(r'^manage_(.*?)_init$')]
 
     # --------------------------------------------------------------------------
@@ -132,6 +140,7 @@ class ZMSZCatalogConnector(
     #  @rtype   C{tuple}
     # --------------------------------------------------------------------------
     def manage_objects_add(self, objects):
+      """Handle the ZMI action 'manage_objects_add'."""
       return [x['ob'](self, objects) for x in self.getActions(r'^manage_(.*?)_objects_add$')][0]
 
     # --------------------------------------------------------------------------
@@ -143,6 +152,7 @@ class ZMSZCatalogConnector(
     #  @rtype   C{tuple}
     # --------------------------------------------------------------------------
     def manage_objects_remove(self, nodes):
+      """Handle the ZMI action 'manage_objects_remove'."""
       return [x['ob'](self, nodes) for x in self.getActions(r'^manage_(.*?)_objects_remove$')][0]
 
     # --------------------------------------------------------------------------
@@ -154,12 +164,14 @@ class ZMSZCatalogConnector(
     #  @rtype  tuple
     # --------------------------------------------------------------------------
     def manage_objects_clear(self, home_id):
+      """Handle the ZMI action 'manage_objects_clear'."""
       return [x['ob'](self, home_id) for x in self.getActions(r'^manage_(.*?)_objects_clear$')][0]
 
     # --------------------------------------------------------------------------
     #  ZMSZCatalogConnector.manage_destroy
     # --------------------------------------------------------------------------
     def manage_destroy(self):
+      """Handle the ZMI action 'manage_destroy'."""
       [x['ob'](self) for x in self.getActions(r'^manage_(.*?)_destroy$')]
 
     # --------------------------------------------------------------------------
@@ -364,4 +376,3 @@ class ZMSZCatalogConnector(
         message = standard.url_quote(message)
         return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s#%s'%(lang, message, REQUEST.get('tab')))
 
-################################################################################

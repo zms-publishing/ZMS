@@ -15,9 +15,6 @@ from Products.zms import standard
 from Products.zms import ZMSItem
 
 
-################################################################################
-# CLASS Sequence
-################################################################################
 class Sequence(ZMSItem.ZMSItem):
     """
     Auto-incrementing integer sequence used to generate unique IDs
@@ -49,11 +46,6 @@ class Sequence(ZMSItem.ZMSItem):
     # ---------------------
     manage_main = PageTemplateFile('zpt/Sequence/manage_main', globals())
 
-
-    #--------------------------------------------------------------------------
-    # Constructor
-    #--------------------------------------------------------------------------
-
     def __init__(self, startvalue=0):
       """
       Initialise a new Sequence instance.
@@ -63,11 +55,6 @@ class Sequence(ZMSItem.ZMSItem):
       """
       self.id = 'acl_sequence'
       self.value = startvalue
-
-
-    #--------------------------------------------------------------------------
-    # Functions
-    #--------------------------------------------------------------------------
 
     def nextVal(self):
       """
@@ -89,11 +76,8 @@ class Sequence(ZMSItem.ZMSItem):
       """
       return self.value
 
-    #--------------------------------------------------------------------------
-    #  Change Sequence properties.
-    #--------------------------------------------------------------------------
     def manage_changeProperties(self, submit, currentvalue, REQUEST, RESPONSE): 
-      """ Sequence.manage_changeProperties """
+      """Handle ZMI actions for updating or advancing the sequence value."""
       
       message = ''
 

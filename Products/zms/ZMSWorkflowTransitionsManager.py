@@ -28,7 +28,9 @@ class ZMSWorkflowTransitionsManager(object):
   #
   ############################################################################
 
+  """Provide helpers for ZMSWorkflowTransitionsManager."""
   def provideRepositoryTransitions(self, r, ids=None):
+    """Implement 'provideRepositoryTransitions'."""
     standard.writeBlock(self, "[provideRepositoryTransitions]: ids=%s"%str(ids))
     r['workflow']['Transitions'] = []
     for id in self.getTransitionIds():
@@ -40,6 +42,7 @@ class ZMSWorkflowTransitionsManager(object):
   @see IRepositoryProvider
   """
   def updateRepositoryTransitions(self, r):
+    """Implement 'updateRepositoryTransitions'."""
     id = r['id']
     standard.writeBlock(self, "[updateRepositoryTransitions]: id=%s"%id)
     # Clear.
@@ -54,6 +57,7 @@ class ZMSWorkflowTransitionsManager(object):
   ZMSWorkflowTransitionsManager.setTransition
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   def setTransition(self, id, newId, newName, newType, newIconClass='', newFrom=[], newTo='', newPerformer=[], newData=''):
+    """Set transition."""
     message = ''
     obs = self.transitions
     # Remove exisiting entry.
@@ -89,6 +93,7 @@ class ZMSWorkflowTransitionsManager(object):
   ZMSWorkflowTransitionsManager.getTransitions
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   def getTransitions(self):
+    """Return transitions."""
     obs = self.transitions
     transitions = []
     for i in range(len(obs)//2):
@@ -103,6 +108,7 @@ class ZMSWorkflowTransitionsManager(object):
   ZMSWorkflowTransitionsManager.getTransitionIds
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   def getTransitionIds(self):
+    """Return transitionids."""
     return [x['id'] for x in self.getTransitions()] 
 
 
@@ -110,6 +116,7 @@ class ZMSWorkflowTransitionsManager(object):
   ZMSWorkflowTransitionsManager.getTransition
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   def getTransition(self, id, for_export=False):
+    """Return transition."""
     transition = [x for x in self.getTransitions() if x['id'] == id][0]
     transition = copy.deepcopy(transition)
     ob = zopeutil.getObject(self, transition['id'])
@@ -180,4 +187,3 @@ class ZMSWorkflowTransitionsManager(object):
     message = standard.url_quote(message)
     return RESPONSE.redirect('manage_main?id=%s&lang=%s&key=%s&manage_tabs_message=%s'%(id, lang, key, message))
 
-################################################################################

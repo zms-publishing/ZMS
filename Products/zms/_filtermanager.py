@@ -25,6 +25,7 @@ from Products.zms import zopeutil
 """
 
 def getTransFilename(self, folder, trans):
+      """Return transfilename."""
       transid = trans.getId()
       transid = '.'.join(transid.split('.')[2:]) # <process-id>.<process-nr>.<filename>
       transfilename = os.path.join(folder, transid)
@@ -39,6 +40,7 @@ def getTransFilename(self, folder, trans):
 # ------------------------------------------------------------------------------
 def processData(self, processId, data, trans=None):
   # Create temporary folder.
+  """Implement 'processData'."""
   tempfolder = tempfile.mkdtemp()
   # Save data to file.
   filename = _fileutil.getOSPath('%s/in.dat'%tempfolder)
@@ -65,6 +67,7 @@ def processData(self, processId, data, trans=None):
 #  Process DTML method.
 # ------------------------------------------------------------------------------
 def processMethod(self, processId, filename, trans, REQUEST):
+  """Implement 'processMethod'."""
   standard.writeBlock( self, '[processMethod]: processId=%s'%processId)
   infilename = filename
   outfilename = filename
@@ -89,6 +92,7 @@ def processMethod(self, processId, filename, trans, REQUEST):
 #  Process file with command.
 # ------------------------------------------------------------------------------
 def processCommand(self, filename, command):
+  """Implement 'processCommand'."""
   standard.writeBlock( self, '[processCommand]: infilename=%s'%filename)
   infilename = _fileutil.getOSPath( filename)
   outfilename = _fileutil.getOSPath( filename)
@@ -146,6 +150,7 @@ def processCommand(self, filename, command):
 #  Process file with custom transformation.
 # ------------------------------------------------------------------------------
 def processFile(self, processId, filename, trans=None):
+  """Implement 'processFile'."""
   standard.writeBlock( self, '[processFile]: processId=%s'%processId)
   folder = _fileutil.getFilePath(filename)
   processOb = self.getFilterManager().getProcess(processId)
@@ -165,6 +170,7 @@ def processFile(self, processId, filename, trans=None):
 #  Process filter.
 # ------------------------------------------------------------------------------
 def processFilter(self, ob_filter, folder, filename, REQUEST):
+  """Implement 'processFilter'."""
   for ob_process in self.getFilterManager().getFilterProcesses(ob_filter['id']):
     filename = self.execProcessFilter( ob_process, folder, filename, REQUEST)
   # Return filename.
@@ -175,6 +181,7 @@ def processFilter(self, ob_filter, folder, filename, REQUEST):
 #  _filtermanager.importFilter:
 # ------------------------------------------------------------------------------
 def importFilter(self, filename, id, REQUEST):
+  """Implement 'importFilter'."""
   ob_filter = self.getFilterManager().getFilter(id)
   folder = _fileutil.getFilePath(filename)
   # Process filter.
@@ -188,6 +195,7 @@ def importFilter(self, filename, id, REQUEST):
 # ------------------------------------------------------------------------------
 def exportFilter(self, id, REQUEST):
   # Set local variables.
+  """Implement 'exportFilter'."""
   ob_filter = self.getFilterManager().getFilter(id)
   tempfolder, outfilename = self.initExportFilter( id, REQUEST)
   # Process filter.
@@ -223,8 +231,10 @@ class FilterItem(object):
     # --------------------------------------------------------------------------
     #  FilterItem.initExportFilter:
     # --------------------------------------------------------------------------
+    """Provide helpers for FilterItem."""
     def initExportFilter(self, id, REQUEST):
       # Set environment variables.
+      """Implement 'initExportFilter'."""
       instance_home = standard.getINSTANCE_HOME()
       package_home = standard.getPACKAGE_HOME()
       package_home = os.path.normpath(package_home)
@@ -267,6 +277,7 @@ class FilterItem(object):
     #  FilterItem.execProcessFilter:
     # --------------------------------------------------------------------------
     def execProcessFilter(self, ob_process, folder, filename, REQUEST):
+      """Implement 'execProcessFilter'."""
       processId = ob_process.get( 'id')
       standard.writeBlock(self,"[execProcessFilter]: processId=%s"%(processId))
       processOb = self.getFilterManager().getProcess(processId)
@@ -284,4 +295,3 @@ class FilterItem(object):
       # Return filename.
       return filename
 
-################################################################################

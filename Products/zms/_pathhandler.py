@@ -23,6 +23,7 @@ from zope.globalrequest import getRequest
 #  Validates id against list of possible declarative id.
 # ------------------------------------------------------------------------------
 def validateId(self, id, REQUEST):
+    """Implement 'validateId'."""
     langs = []
     lang = REQUEST.get( 'lang')
     if lang is None:
@@ -48,6 +49,7 @@ def validateId(self, id, REQUEST):
 #  Filters object by id.
 # ------------------------------------------------------------------------------
 def filterId(self, id, REQUEST):
+  """Implement 'filterId'."""
   obs = self.objectValues(list(self.dGlobalAttrs))
   filtered_obs = [x for x in obs if x.id == id]
   if len( filtered_obs) > 0:
@@ -65,6 +67,7 @@ def filterId(self, id, REQUEST):
 #  If the object has blob-fields find by filename and display data.
 # ------------------------------------------------------------------------------
 def handleBlobAttrs(self, name, REQUEST):
+  """Implement 'handleBlobAttrs'."""
   langs = self.getLangIds()
   name_without_lang_suffix = name
   if len(langs) == 1 and name.find('_%s.'%langs[0]) > 0:
@@ -106,9 +109,11 @@ class PathHandler(object):
     # --------------------------------------------------------------------------
     #  PathHandler.__bobo_traverse__
     # --------------------------------------------------------------------------
+    """Provide helpers for PathHandler."""
     def __bobo_traverse__(self, TraversalRequest, name):
       # If this is the first time this __bob_traverse__ method has been called
       # in handling this traversal request, store the path_to_handle
+      """Implement '__bobo_traverse__'."""
       request = getattr(self, 'REQUEST', getRequest())
       url = request.get('URL', '')
       zmi = url.find('/manage') >= 0
@@ -345,6 +350,7 @@ class PathHandler(object):
     #  PathHandler.pathob
     # --------------------------------------------------------------------------
     def pathob(self, path_to_handle, REQUEST):
+      """Implement 'pathob'."""
       path_ob = self
       path_index = 0
       while True:
@@ -357,4 +363,3 @@ class PathHandler(object):
           return path_ob
         path_index += 1
 
-################################################################################

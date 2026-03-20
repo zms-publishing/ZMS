@@ -20,12 +20,19 @@ from Products.zms import _filtermanager
 from Products.zms import _globals
 
 
-# ------------------------------------------------------------------------------
-#  _importable.recurse_importContent:
-#
-#  Process objects after import.
-# ------------------------------------------------------------------------------
 def recurse_importContent(self, folder):
+  """
+  Post-process imported objects and restore persisted blob payloads.
+
+  The function clears parser helper attributes, restores blob fields from the
+  extracted import folder, commits object changes, and then recurses into child
+  nodes.
+
+  @param self: Imported object node acting as recursion root.
+  @type self: C{object}
+  @param folder: Temporary directory containing extracted import artifacts.
+  @type folder: C{str}
+  """
   # Cleanup.
   for key in ['oRootTag', 'oCurrNode', 'oParent', 'dTagStack', 'dValueStack']:
     try: delattr(self, key)
@@ -74,11 +81,20 @@ def recurse_importContent(self, folder):
     recurse_importContent(ob, folder)
 
 
-# ------------------------------------------------------------------------------
-#  _importable.importContent
-# ------------------------------------------------------------------------------
 def importContent(self, file):
-  
+  """
+  Import one XML content stream into the current object tree.
+
+  The method temporarily disables catalog awareness, parses the XML stream,
+  triggers post-processing via L{recurse_importContent}, and finally fires the
+  import event hook.
+
+  @param file: Open XML file-like object to parse.
+  @type file: file-like object
+  @return: Imported object root.
+  @rtype: C{object}
+  """
+
   # Setup.
   catalog_awareness = self.getConfProperty('ZMS.CatalogAwareness.active', 1)
   self.setConfProperty('ZMS.CatalogAwareness.active', 0)
@@ -103,11 +119,23 @@ def importContent(self, file):
   return ob
 
 
-# ------------------------------------------------------------------------------
-#  _importable.importFile
-# ------------------------------------------------------------------------------
 def importFile(self, file, REQUEST, handler):
-  
+  """
+  Import content from an uploaded file or archive.
+
+  Supports direct C{.zexp} import, zipped packages containing XML/HTML, and
+  optional import-filter preprocessing before delegating to C{handler}.
+
+  @param file: Uploaded file object or path-like input.
+  @type file: file-like object
+  @param REQUEST: Current request containing optional filter configuration.
+  @type REQUEST: ZPublisher.HTTPRequest
+  @param handler: Callable that performs the final XML import step.
+  @type handler: C{callable}
+  @return: Imported object root.
+  @rtype: C{object}
+  """
+
   # Get filename.
   if isinstance(file, ZPublisher.HTTPRequest.FileUpload):
     filename = file.filename
@@ -159,4 +187,3 @@ def importFile(self, file, REQUEST, handler):
   # Return imported object.
   return ob
 
-################################################################################

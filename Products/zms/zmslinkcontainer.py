@@ -10,17 +10,13 @@ Organization: ZMS Publishing
 from Products.zms import zmscustom
 
 
-################################################################################
-################################################################################
-###
-###  Class
-###
-################################################################################
-################################################################################
-class ZMSLinkContainer(zmscustom.ZMSCustom): 
+class ZMSLinkContainer(zmscustom.ZMSCustom):
+    """
+    Represent a lightweight container for link reference objects.
+    The container provides a dedicated meta-type and rendering context for link
+    references, but otherwise inherits all behavior from C{ZMSCustom}.
+    """
 
     # Properties.
     # -----------
     meta_type = meta_id = "ZMSLinkContainer"
-
-################################################################################

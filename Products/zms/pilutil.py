@@ -18,6 +18,7 @@ security = ModuleSecurityInfo('Products.zms.pilutil')
 
 security.declarePublic('enabled')
 def enabled():
+  """Return whether Pillow is available in the current runtime."""
   try:
     from PIL import Image
     return True
@@ -26,6 +27,12 @@ def enabled():
 
 security.declarePublic('generate_preview')
 def generate_preview(self, hiresKey, loresKey, maxdim):
+  """
+  Generate and persist a low-resolution preview image from a hi-res source.
+
+  The method reads object properties, derives a thumbnail via L{thumbnail}, and
+  stores both low-res and hi-res values back into object properties.
+  """
   request = self.REQUEST
   lang = request['lang']
   hires = self.attr(hiresKey)
@@ -242,4 +249,3 @@ def optimize(img, qual=75):
 
 security.apply(globals())
 
-################################################################################

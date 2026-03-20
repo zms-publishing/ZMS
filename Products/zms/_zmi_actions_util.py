@@ -6,13 +6,25 @@ Internal helpers for zmi actions util in ZMS.
 License: GNU General Public License v2 or later
 Organization: ZMS Publishing
 """
+
 # Product imports.
 from Products.zms import standard
 
+
 def zmi_actions(container, context, attr_id='e'):
   """
-  Returns list of actions.
+  Return list of actions.
+  
+  @param container: The container for which to compute actions.
+  @type container: C{object}
+  @param context: The context object for which to compute actions. May be None.
+  @type context: C{object}
+  @param attr_id: The attribute ID for which to compute actions. Default is 'e' (edit).
+  @type attr_id: C{str}
+  @return: List of action tuples (id, label, url, icon_clazz, tooltip).
+  @rtype: C{list}
   """
+
   actions = []
   
   REQUEST = container.REQUEST
@@ -203,8 +215,11 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
   #-- Pre-Sort by display-label.
   actions.sort(key=lambda x: x[1])
   actions = [[len(actions)+actions.index(x)]+list(x) for x in actions]
+
+
   #-- Sort by custom-sort-id.
   def get_sort(x):
+    """Return sortable value for insert actions using optional language SORT key."""
     sort_key = '%s.SORT'%x[1]
     # Default sort value is display-label
     sort_val = x[0]
@@ -245,4 +260,3 @@ def zmi_command_actions(context, stereotype='', objPath=''):
   # Return sorted action list
   return actions
 
-################################################################################

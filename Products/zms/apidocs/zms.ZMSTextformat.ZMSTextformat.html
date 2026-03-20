@@ -615,12 +615,14 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSTextformat</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L117" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms.ZMSTextformat.ZMSTextformat.__init__">ZMSTextformat(id, ob, manage_lang)</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSTextformat</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L134" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms.ZMSTextformat.ZMSTextformat.__init__">ZMSTextformat(id, ob, manage_lang)</a></code></p>
           <p><a href="classIndex.html#zms.ZMSTextformat.ZMSTextformat">View In Hierarchy</a></p>
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>Represent one text-format definition and provide rendering helpers.</p>
+<p>A text format defines the outer tag, optional inner sub-tag, additional HTML attributes, editor-availability flag, and usage categories.</p>
+</div>
         </div>
 
         <div id="splitTables">
@@ -631,102 +633,102 @@
     
     <td>Method</td>
     <td><code><a href="#__init__" class="internal-link" title="zms.ZMSTextformat.ZMSTextformat.__init__">__init__</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Initialize the text-format object from its persisted configuration mapping.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getAttrs" class="internal-link" title="zms.ZMSTextformat.ZMSTextformat.getAttrs">get<wbr></wbr>Attrs</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the raw HTML attribute string for the outer tag.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getDisplay" class="internal-link" title="zms.ZMSTextformat.ZMSTextformat.getDisplay">get<wbr></wbr>Display</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the management label shown for this text format.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getEndTag" class="internal-link" title="zms.ZMSTextformat.ZMSTextformat.getEndTag">get<wbr></wbr>End<wbr></wbr>Tag</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the closing HTML tag for the configured outer tag.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getHtml" class="internal-link" title="zms.ZMSTextformat.ZMSTextformat.getHtml">get<wbr></wbr>Html</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return a management-preview HTML snippet for this text format.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getId" class="internal-link" title="zms.ZMSTextformat.ZMSTextformat.getId">get<wbr></wbr>Id</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the text-format identifier.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getRichedit" class="internal-link" title="zms.ZMSTextformat.ZMSTextformat.getRichedit">get<wbr></wbr>Richedit</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return whether this format is available in rich-text editing.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getStartTag" class="internal-link" title="zms.ZMSTextformat.ZMSTextformat.getStartTag">get<wbr></wbr>Start<wbr></wbr>Tag</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Build the opening HTML tag for this text format.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getSubTag" class="internal-link" title="zms.ZMSTextformat.ZMSTextformat.getSubTag">get<wbr></wbr>Sub<wbr></wbr>Tag</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the optional sub-tag used for line-level wrapping.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getTag" class="internal-link" title="zms.ZMSTextformat.ZMSTextformat.getTag">get<wbr></wbr>Tag</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the outer HTML tag used for rendering.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getUsage" class="internal-link" title="zms.ZMSTextformat.ZMSTextformat.getUsage">get<wbr></wbr>Usage</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the usage categories where this format is offered.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#parseAttrs" class="internal-link" title="zms.ZMSTextformat.ZMSTextformat.parseAttrs">parse<wbr></wbr>Attrs</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Parse the raw attribute string into <tt class="rst-docutils rst-literal">(name, value)</tt> tuples.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#renderText" class="internal-link" title="zms.ZMSTextformat.ZMSTextformat.renderText">render<wbr></wbr>Text</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Render input text according to this text format definition.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#setAttrs" class="internal-link" title="zms.ZMSTextformat.ZMSTextformat.setAttrs">set<wbr></wbr>Attrs</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Set the raw HTML attribute string for the outer tag.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#setDisplay" class="internal-link" title="zms.ZMSTextformat.ZMSTextformat.setDisplay">set<wbr></wbr>Display</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Set the management label shown for this text format.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#setId" class="internal-link" title="zms.ZMSTextformat.ZMSTextformat.setId">set<wbr></wbr>Id</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Set the text-format identifier.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#setRichedit" class="internal-link" title="zms.ZMSTextformat.ZMSTextformat.setRichedit">set<wbr></wbr>Richedit</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Set the rich-text-editor availability flag.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#setSubTag" class="internal-link" title="zms.ZMSTextformat.ZMSTextformat.setSubTag">set<wbr></wbr>Sub<wbr></wbr>Tag</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Set the optional sub-tag used for line-level wrapping.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#setTag" class="internal-link" title="zms.ZMSTextformat.ZMSTextformat.setTag">set<wbr></wbr>Tag</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Set the outer HTML tag used for rendering.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#setUsage" class="internal-link" title="zms.ZMSTextformat.ZMSTextformat.setUsage">set<wbr></wbr>Usage</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Set the usage categories where this format is offered.</td>
   </tr><tr class="classvariable">
     
     <td>Class Variable</td>
@@ -843,7 +845,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">__init__</span><span class="function-signature">(self, id, ob, manage_lang)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L124">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L142">
       
       (source)
     </a>
@@ -855,7 +857,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Initialize the text-format object from its persisted configuration mapping.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Text-format identifier.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">ob:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Persisted format definition containing keys like <tt class="rst-docutils rst-literal">display</tt>, <tt class="rst-docutils rst-literal">tag</tt>, <tt class="rst-docutils rst-literal">subtag</tt>, <tt class="rst-docutils rst-literal">attrs</tt>, optional <tt class="rst-docutils rst-literal">richedit</tt>, and optional <tt class="rst-docutils rst-literal">usage</tt>.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">manage<wbr></wbr>_lang:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Language used to select the display label.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -870,7 +872,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getAttrs</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L196">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L246">
       
       (source)
     </a>
@@ -882,7 +884,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the raw HTML attribute string for the outer tag.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -897,7 +899,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getDisplay</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L144">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L175">
       
       (source)
     </a>
@@ -909,7 +911,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the management label shown for this text format.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -924,7 +926,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getEndTag</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L177">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L224">
       
       (source)
     </a>
@@ -936,7 +938,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the closing HTML tag for the configured outer tag.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -951,7 +953,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getHtml</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L227">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L302">
       
       (source)
     </a>
@@ -963,7 +965,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return a management-preview HTML snippet for this text format.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">HTML preview showing opening tag, sample content, and closing tag.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -978,7 +980,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getId</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L137">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L164">
       
       (source)
     </a>
@@ -990,7 +992,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the text-format identifier.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -1005,7 +1007,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getRichedit</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L210">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L273">
       
       (source)
     </a>
@@ -1017,7 +1019,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return whether this format is available in rich-text editing.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -1032,7 +1034,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getStartTag</span><span class="function-signature">(self, id=None, clazz=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L158">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L197">
       
       (source)
     </a>
@@ -1044,7 +1046,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Build the opening HTML tag for this text format.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt> or <tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc">Optional DOM id attribute for the opening tag.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">clazz:</span><tt class="rst-docutils rst-literal">str</tt> or <tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc">Optional CSS class attribute for the opening tag.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Opening tag HTML or an empty string when no outer tag is defined.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1059,7 +1061,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getSubTag</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L189">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L235">
       
       (source)
     </a>
@@ -1071,7 +1073,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the optional sub-tag used for line-level wrapping.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -1086,7 +1088,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getTag</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L151">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L186">
       
       (source)
     </a>
@@ -1098,7 +1100,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the outer HTML tag used for rendering.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -1113,7 +1115,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getUsage</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L220">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L291">
       
       (source)
     </a>
@@ -1125,7 +1127,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the usage categories where this format is offered.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -1140,7 +1142,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">parseAttrs</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L198">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L253">
       
       (source)
     </a>
@@ -1152,7 +1154,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Parse the raw attribute string into <tt class="rst-docutils rst-literal">(name, value)</tt> tuples.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">List of parsed attribute-name/value tuples.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1167,7 +1169,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">renderText</span><span class="function-signature">(self, context, text, id=None, clazz=None, encoding=<span class="rst-variable-quote">'</span><span class="rst-variable-string">utf-8</span><span class="rst-variable-quote">'</span>, errors=<span class="rst-variable-quote">'</span><span class="rst-variable-string">strict</span><span class="rst-variable-quote">'</span>)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L260">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L338">
       
       (source)
     </a>
@@ -1179,7 +1181,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Render input text according to this text format definition.</p>
+<p>The method wraps transformed text with opening/closing tags generated by this format.  Line handling is delegated to <code><a href="zms.ZMSTextformat.html#br_quote" class="internal-link" title="zms.ZMSTextformat.br_quote">br_quote</a></code>.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">context:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">Rendering context passed to <code><a href="zms.ZMSTextformat.html#br_quote" class="internal-link" title="zms.ZMSTextformat.br_quote">br_quote</a></code>.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">text:</span><tt class="rst-docutils rst-literal">str</tt> or <tt class="rst-docutils rst-literal">bytes</tt></td><td class="fieldArgDesc">Input text or bytes to render.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt> or <tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc">Optional DOM id for the opening tag.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">clazz:</span><tt class="rst-docutils rst-literal">str</tt> or <tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc">Optional CSS class for the opening tag.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">encoding:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Character encoding used when decoding byte strings.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">errors:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Error handling mode for byte decoding.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Rendered HTML fragment.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1194,7 +1198,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">setAttrs</span><span class="function-signature">(self, attrs)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L204">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L267">
       
       (source)
     </a>
@@ -1206,7 +1210,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Set the raw HTML attribute string for the outer tag.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -1221,7 +1225,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">setDisplay</span><span class="function-signature">(self, display)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L145">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L180">
       
       (source)
     </a>
@@ -1233,7 +1237,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Set the management label shown for this text format.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -1248,7 +1252,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">setId</span><span class="function-signature">(self, id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L138">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L169">
       
       (source)
     </a>
@@ -1260,7 +1264,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Set the text-format identifier.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -1275,7 +1279,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">setRichedit</span><span class="function-signature">(self, richedit)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L211">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L278">
       
       (source)
     </a>
@@ -1287,7 +1291,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Set the rich-text-editor availability flag.</p>
+<p>Non-empty string/bytes values are normalized to <tt class="rst-docutils rst-literal">1</tt> for compatibility with historic persisted values.</p>
+</div>
   </div>
 </div><div class="basemethod">
   
@@ -1302,7 +1308,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">setSubTag</span><span class="function-signature">(self, subtag)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L190">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L240">
       
       (source)
     </a>
@@ -1314,7 +1320,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Set the optional sub-tag used for line-level wrapping.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -1329,7 +1335,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">setTag</span><span class="function-signature">(self, tag)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L152">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L191">
       
       (source)
     </a>
@@ -1341,7 +1347,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Set the outer HTML tag used for rendering.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -1356,7 +1362,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">setUsage</span><span class="function-signature">(self, usage)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L221">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L296">
       
       (source)
     </a>
@@ -1368,7 +1374,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Set the usage categories where this format is offered.</p></div>
   </div>
 </div><div class="baseclassvariable">
   
@@ -1382,7 +1388,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">getAttrs__roles__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L195">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L244">
       
       (source)
     </a>
@@ -1409,7 +1415,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">getDisplay__roles__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L143">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L173">
       
       (source)
     </a>
@@ -1436,7 +1442,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">getEndTag__roles__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L176">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L222">
       
       (source)
     </a>
@@ -1463,7 +1469,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">getHtml__roles__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L226">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L300">
       
       (source)
     </a>
@@ -1490,7 +1496,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">getId__roles__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L136">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L162">
       
       (source)
     </a>
@@ -1517,7 +1523,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">getRichedit__roles__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L209">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L271">
       
       (source)
     </a>
@@ -1544,7 +1550,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">getStartTag__roles__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L157">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L195">
       
       (source)
     </a>
@@ -1571,7 +1577,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">getSubTag__roles__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L188">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L233">
       
       (source)
     </a>
@@ -1598,7 +1604,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">getTag__roles__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L150">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L184">
       
       (source)
     </a>
@@ -1625,7 +1631,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">getUsage__roles__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L219">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L289">
       
       (source)
     </a>
@@ -1652,7 +1658,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">parseAttrs__roles__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L197">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L251">
       
       (source)
     </a>
@@ -1679,7 +1685,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">renderText__roles__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L259">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L336">
       
       (source)
     </a>
@@ -1706,7 +1712,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">attrs</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L204">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L269">
       
       (source)
     </a>
@@ -1733,7 +1739,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">display</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L145">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L182">
       
       (source)
     </a>
@@ -1760,7 +1766,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">id</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L138">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L171">
       
       (source)
     </a>
@@ -1787,7 +1793,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">richedit</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L214">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L287">
       
       (source)
     </a>
@@ -1814,7 +1820,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">subtag</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L190">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L242">
       
       (source)
     </a>
@@ -1841,7 +1847,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">tag</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L152">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L193">
       
       (source)
     </a>
@@ -1868,7 +1874,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">usage</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L221">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L298">
       
       (source)
     </a>

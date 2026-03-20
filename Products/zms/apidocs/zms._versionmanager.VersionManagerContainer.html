@@ -352,12 +352,12 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">VersionManagerContainer</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1075" class="sourceLink">(source)</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">VersionManagerContainer</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1110" class="sourceLink">(source)</a></code></p>
           <p><a href="classIndex.html#zms._versionmanager.VersionManagerContainer">View In Hierarchy</a></p>
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>Provide helpers for VersionManagerContainer.</p></div>
         </div>
 
         <div id="splitTables">
@@ -368,32 +368,32 @@
     
     <td>Method</td>
     <td><code><a href="#autoWfTransition" class="internal-link" title="zms._versionmanager.VersionManagerContainer.autoWfTransition">auto<wbr></wbr>Wf<wbr></wbr>Transition</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Implement 'autoWfTransition'.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#commitObj" class="internal-link" title="zms._versionmanager.VersionManagerContainer.commitObj">commit<wbr></wbr>Obj</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Implement 'commitObj'.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getRecipientsByRole" class="internal-link" title="zms._versionmanager.VersionManagerContainer.getRecipientsByRole">get<wbr></wbr>Recipients<wbr></wbr>By<wbr></wbr>Role</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return recipientsbyrole.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getRecipientWf" class="internal-link" title="zms._versionmanager.VersionManagerContainer.getRecipientWf">get<wbr></wbr>Recipient<wbr></wbr>Wf</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return recipientwf.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getVersionContainer" class="internal-link" title="zms._versionmanager.VersionManagerContainer.getVersionContainer">get<wbr></wbr>Version<wbr></wbr>Container</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return versioncontainer.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#isVersionContainer" class="internal-link" title="zms._versionmanager.VersionManagerContainer.isVersionContainer">is<wbr></wbr>Version<wbr></wbr>Container</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return whether versioncontainer.</td>
   </tr><tr class="method">
     
     <td>Method</td>
@@ -408,12 +408,12 @@
     
     <td>Method</td>
     <td><code><a href="#resetWfStates" class="internal-link" title="zms._versionmanager.VersionManagerContainer.resetWfStates">reset<wbr></wbr>Wf<wbr></wbr>States</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Implement 'resetWfStates'.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#rollbackObj" class="internal-link" title="zms._versionmanager.VersionManagerContainer.rollbackObj">rollback<wbr></wbr>Obj</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Implement 'rollbackObj'.</td>
   </tr>
 </table>
           
@@ -435,7 +435,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">autoWfTransition</span><span class="function-signature">(self, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1166">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1207">
       
       (source)
     </a>
@@ -447,7 +447,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Implement 'autoWfTransition'.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -462,7 +462,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">commitObj</span><span class="function-signature">(self, REQUEST={}, forced=False, do_history=True)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1274">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1316">
       
       (source)
     </a>
@@ -474,7 +474,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Implement 'commitObj'.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -489,7 +489,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getRecipientsByRole</span><span class="function-signature">(self, roles=[<wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">ZMSEditor</span><span class="rst-variable-quote">'</span>], REQUEST=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1125">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1164">
       
       (source)
     </a>
@@ -501,7 +501,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return recipientsbyrole.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -516,7 +516,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getRecipientWf</span><span class="function-signature">(self, REQUEST=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1109">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1147">
       
       (source)
     </a>
@@ -528,7 +528,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return recipientwf.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -543,7 +543,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getVersionContainer</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1094">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1131">
       
       (source)
     </a>
@@ -555,7 +555,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return versioncontainer.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -570,7 +570,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">isVersionContainer</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1080">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1116">
       
       (source)
     </a>
@@ -582,7 +582,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return whether versioncontainer.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -597,7 +597,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_wfTransition</span><span class="function-signature">(self, lang, custom, REQUEST, RESPONSE)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1217">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1259">
       
       (source)
     </a>
@@ -624,7 +624,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_wfTransitionFinalize</span><span class="function-signature">(self, lang, custom, REQUEST, RESPONSE=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1234">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1276">
       
       (source)
     </a>
@@ -651,7 +651,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">resetWfStates</span><span class="function-signature">(self, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1158">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1198">
       
       (source)
     </a>
@@ -663,7 +663,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Implement 'resetWfStates'.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -678,7 +678,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">rollbackObj</span><span class="function-signature">(self, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1335">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1378">
       
       (source)
     </a>
@@ -690,7 +690,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Implement 'rollbackObj'.</p></div>
   </div>
 </div>
         </div>

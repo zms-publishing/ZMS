@@ -1124,7 +1124,12 @@
 
         <div class="moduleDocstring">
           <div><p>ZMSTextformat.py</p>
-<p>ZMS support for zmstextformat.</p>
+<p>Text-format model and rendering helpers for ZMS rich-text output.</p>
+<p>This module contains:</p>
+<ol class="rst-simple">
+<li><tt class="rst-docutils rst-literal">br_quote</tt>: a helper that transforms plain text into HTML fragments while preserving line breaks, indentation, and simple nested list markers.</li>
+<li><tt class="rst-docutils rst-literal">ZMSTextformat</tt>: a small value object representing one configured text format (tag, optional sub-tag, attributes, and usage metadata), plus rendering helpers to convert input text into wrapped HTML.</li>
+</ol>
 <p>License: GNU General Public License v2 or later Organization: ZMS Publishing</p>
 </div>
         </div>
@@ -1137,12 +1142,12 @@
     
     <td>Class</td>
     <td><code><a href="zms.ZMSTextformat.ZMSTextformat.html" class="internal-link" title="zms.ZMSTextformat.ZMSTextformat"><wbr></wbr>ZMSTextformat</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Represent one text-format definition and provide rendering helpers.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#br_quote" class="internal-link" title="zms.ZMSTextformat.br_quote">br<wbr></wbr>_quote</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Convert a plain text fragment to HTML according to the configured sub-tag.</td>
   </tr>
 </table>
           
@@ -1164,7 +1169,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">br_quote</span><span class="function-signature">(self, text, subtag)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L18">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformat.py#L25">
       
       (source)
     </a>
@@ -1176,7 +1181,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Convert a plain text fragment to HTML according to the configured sub-tag.</p>
+<p>The function preserves leading whitespace, supports <tt class="rst-docutils rst-literal">&lt;br&gt;</tt> handling, injects management-interface markers for visible line breaks, and converts simple tab-prefixed list syntax '     * '/'   #' into nested '&lt;ul&gt;'/'&lt;ol&gt;' structures.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">Rendering context used to detect management interface mode.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">text:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Input text to transform.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">subtag:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Optional sub-tag name used for line wrapping (e.g. <tt class="rst-docutils rst-literal">'br'</tt>).</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">HTML fragment with transformed line and list markup.</td></tr></table></div>
   </div>
 </div>
         </div>

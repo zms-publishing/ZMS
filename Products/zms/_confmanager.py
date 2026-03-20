@@ -55,7 +55,6 @@ from Products.zms import _mediadb
 from Products.zms import _multilangmanager
 from Products.zms import _sequence
 from Products.zms import repositoryutil
-from Products.zms import standard
 from Products.zms import zopeutil
 from Products.zms import zmsindex
 from Products.zms import zmslog

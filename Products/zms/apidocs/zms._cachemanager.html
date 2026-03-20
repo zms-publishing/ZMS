@@ -1121,7 +1121,24 @@
 
         <div class="moduleDocstring">
           <div><p>_cachemanager.py</p>
-<p>Internal helpers for cachemanager in ZMS.</p>
+<p>Request-local caching helpers used across ZMS managers.</p>
+<p>This module provides a tiny request buffer abstraction to avoid recomputing expensive values multiple times during a single HTTP request.</p>
+<p>Key concepts:</p>
+<ul class="rst-simple">
+<li><tt class="rst-docutils rst-literal">Buff</tt>: A minimal attribute container stored on <tt class="rst-docutils rst-literal"><span class="pre">REQUEST['__buff__']</span></tt>.</li>
+<li><tt class="rst-docutils rst-literal">ReqBuff</tt>: Mixin-style helper with methods to create, read, and clear namespaced cache entries.</li>
+</ul>
+<p>Namespacing strategy:</p>
+<ul class="rst-simple">
+<li>Buffer keys are prefixed with the object's physical path (see <tt class="rst-docutils rst-literal">ReqBuff.getReqBuffId</tt>) to avoid collisions between different objects using the same logical key.</li>
+</ul>
+<p>Typical usage pattern:</p>
+<ol class="rst-simple">
+<li>Try <tt class="rst-docutils rst-literal"><span class="pre">fetchReqBuff('some.key')</span></tt>.</li>
+<li>On cache miss, compute the value.</li>
+<li>Persist it with <tt class="rst-docutils rst-literal"><span class="pre">storeReqBuff('some.key',</span> value)</tt>.</li>
+<li>Invalidate with <tt class="rst-docutils rst-literal"><span class="pre">clearReqBuff('some')</span></tt> when related state changes.</li>
+</ol>
 <p>License: GNU General Public License v2 or later Organization: ZMS Publishing</p>
 </div>
         </div>
@@ -1134,12 +1151,12 @@
     
     <td>Class</td>
     <td><code><a href="zms._cachemanager.Buff.html" class="internal-link" title="zms._cachemanager.Buff"><wbr></wbr>Buff</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Lightweight attribute container used for request-local buffering.</td>
   </tr><tr class="class">
     
     <td>Class</td>
     <td><code><a href="zms._cachemanager.ReqBuff.html" class="internal-link" title="zms._cachemanager.ReqBuff"><wbr></wbr>Req<wbr></wbr>Buff</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Request-scoped buffer helpers for expensive values computed during one request.</td>
   </tr>
 </table>
           

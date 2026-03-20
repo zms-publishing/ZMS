@@ -1144,17 +1144,17 @@
     
     <td>Function</td>
     <td><code><a href="#importContent" class="internal-link" title="zms._importable.importContent">import<wbr></wbr>Content</a></code></td>
-    <td>Implement 'importContent'.</td>
+    <td>Import one XML content stream into the current object tree.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#importFile" class="internal-link" title="zms._importable.importFile">import<wbr></wbr>File</a></code></td>
-    <td>Implement 'importFile'.</td>
+    <td>Import content from an uploaded file or archive.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#recurse_importContent" class="internal-link" title="zms._importable.recurse_importContent">recurse_import<wbr></wbr>Content</a></code></td>
-    <td>Implement 'recurse_importContent'.</td>
+    <td>Post-process imported objects and restore persisted blob payloads.</td>
   </tr>
 </table>
           
@@ -1176,7 +1176,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">importContent</span><span class="function-signature">(self, file)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_importable.py#L81">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_importable.py#L84">
       
       (source)
     </a>
@@ -1188,7 +1188,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement 'importContent'.</p></div>
+    <div><p>Import one XML content stream into the current object tree.</p>
+<p>The method temporarily disables catalog awareness, parses the XML stream, triggers post-processing via <code><a href="#recurse_importContent" class="internal-link" title="zms._importable.recurse_importContent">recurse_importContent</a></code>, and finally fires the import event hook.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">file:</span>file-like object</td><td class="fieldArgDesc">Open XML file-like object to parse.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">Imported object root.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1203,7 +1205,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">importFile</span><span class="function-signature">(self, file, REQUEST, handler)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_importable.py#L111">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_importable.py#L122">
       
       (source)
     </a>
@@ -1215,7 +1217,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement 'importFile'.</p></div>
+    <div><p>Import content from an uploaded file or archive.</p>
+<p>Supports direct <tt class="rst-docutils rst-literal">.zexp</tt> import, zipped packages containing XML/HTML, and optional import-filter preprocessing before delegating to <tt class="rst-docutils rst-literal">handler</tt>.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">file:</span>file-like object</td><td class="fieldArgDesc">Uploaded file object or path-like input.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span>ZPublisher.HTTPRequest</td><td class="fieldArgDesc">Current request containing optional filter configuration.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">handler:</span><tt class="rst-docutils rst-literal">callable</tt></td><td class="fieldArgDesc">Callable that performs the final XML import step.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">Imported object root.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1230,7 +1234,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">recurse_importContent</span><span class="function-signature">(self, folder)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_importable.py#L28">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_importable.py#L23">
       
       (source)
     </a>
@@ -1242,7 +1246,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement 'recurse_importContent'.</p></div>
+    <div><p>Post-process imported objects and restore persisted blob payloads.</p>
+<p>The function clears parser helper attributes, restores blob fields from the extracted import folder, commits object changes, and then recurses into child nodes.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">Imported object node acting as recursion root.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">folder:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Temporary directory containing extracted import artifacts.</td></tr></table></div>
   </div>
 </div>
         </div>

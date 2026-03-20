@@ -575,12 +575,14 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">MediaDb</span>(OFS.SimpleItem.Item, Persistent, Acquisition.Implicit): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L249" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms._mediadb.MediaDb.__init__">MediaDb(location, structure)</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">MediaDb</span>(OFS.SimpleItem.Item, Persistent, Acquisition.Implicit): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L298" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms._mediadb.MediaDb.__init__">MediaDb(location, structure)</a></code></p>
           <p><a href="classIndex.html#zms._mediadb.MediaDb">View In Hierarchy</a></p>
         </div>
 
         <div class="moduleDocstring">
-          <div><p>Provide helpers for MediaDb.</p></div>
+          <div><p>Persistent Zope object that stores uploaded binary assets in a flat or hierarchical filesystem.</p>
+<p>The MediaDb provides methods to store and retrieve files, compute target paths, and manage the storage structure. The mediadb is designed to be attached to a ZMS content object as a child with a fixed id (acl_mediadb) and accessed via the getMediaDb() method. The mediadb location is configurable and supports expansion of $INSTANCE_HOME. The mediadb also provides management interface methods to serve files as HTTP responses and to reorganize the storage structure.</p>
+</div>
         </div>
 
         <div id="splitTables">
@@ -596,87 +598,87 @@
     
     <td>Method</td>
     <td><code><a href="#getFile" class="internal-link" title="zms._mediadb.MediaDb.getFile">get<wbr></wbr>File</a></code></td>
-    <td>Return file.</td>
+    <td>Stream the file identified by the request path as an HTTP response.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getFileSize" class="internal-link" title="zms._mediadb.MediaDb.getFileSize">get<wbr></wbr>File<wbr></wbr>Size</a></code></td>
-    <td>Return filesize.</td>
+    <td>Return the size in bytes of the given mediadb file.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getLocation" class="internal-link" title="zms._mediadb.MediaDb.getLocation">get<wbr></wbr>Location</a></code></td>
-    <td>Return location.</td>
+    <td>Return the resolved filesystem root path, expanding $INSTANCE_HOME.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getParentDir" class="internal-link" title="zms._mediadb.MediaDb.getParentDir">get<wbr></wbr>Parent<wbr></wbr>Dir</a></code></td>
-    <td>Return parentdir.</td>
+    <td>Return the parent directory of the given filesystem path.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getPath" class="internal-link" title="zms._mediadb.MediaDb.getPath">get<wbr></wbr>Path</a></code></td>
-    <td>Return path.</td>
+    <td>Return the requested filesystem path, defaulting to the mediadb root.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getStructure" class="internal-link" title="zms._mediadb.MediaDb.getStructure">get<wbr></wbr>Structure</a></code></td>
-    <td>Return structure.</td>
+    <td>Return the directory nesting depth used for hierarchical storage (0 = flat).</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_changeProperties" class="internal-link" title="zms._mediadb.MediaDb.manage_changeProperties">manage_change<wbr></wbr>Properties</a></code></td>
-    <td>MediaDb.manage_changeProperties</td>
+    <td>Apply submitted form changes to MediaDb location and redirect back to properties.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_index_html" class="internal-link" title="zms._mediadb.MediaDb.manage_index_html">manage<wbr></wbr>_index<wbr></wbr>_html</a></code></td>
-    <td>MediaDb.manage_index_html</td>
+    <td>Serve a mediadb file as a streaming HTTP response.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_test" class="internal-link" title="zms._mediadb.MediaDb.manage_test">manage<wbr></wbr>_test</a></code></td>
-    <td>manage_test</td>
+    <td>Scan the mediadb and return a JSON report of OK/MISSING file statuses.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#readDir" class="internal-link" title="zms._mediadb.MediaDb.readDir">read<wbr></wbr>Dir</a></code></td>
-    <td>Implement 'readDir'.</td>
+    <td>Return a directory listing for the given filesystem path.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#retrieveFile" class="internal-link" title="zms._mediadb.MediaDb.retrieveFile">retrieve<wbr></wbr>File</a></code></td>
-    <td>Implement 'retrieveFile'.</td>
+    <td>Return the raw bytes of the given mediadb file.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#retrieveFileStreamIterator" class="internal-link" title="zms._mediadb.MediaDb.retrieveFileStreamIterator">retrieve<wbr></wbr>File<wbr></wbr>Stream<wbr></wbr>Iterator</a></code></td>
-    <td>Implement 'retrieveFileStreamIterator'.</td>
+    <td>Retrieve a mediadb file and return its content as a stream or bytes object.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#setLocation" class="internal-link" title="zms._mediadb.MediaDb.setLocation">set<wbr></wbr>Location</a></code></td>
-    <td>Set location.</td>
+    <td>Set the filesystem root path for the mediadb, stripping any trailing slash.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#storeFile" class="internal-link" title="zms._mediadb.MediaDb.storeFile">store<wbr></wbr>File</a></code></td>
-    <td>Implement 'storeFile'.</td>
+    <td>Store an uploaded file object into the mediadb and return its unique filename.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#targetFile" class="internal-link" title="zms._mediadb.MediaDb.targetFile">target<wbr></wbr>File</a></code></td>
-    <td>Implement 'targetFile'.</td>
+    <td>Compute the full filesystem path where a file should be stored.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#urlQuote" class="internal-link" title="zms._mediadb.MediaDb.urlQuote">url<wbr></wbr>Quote</a></code></td>
-    <td>Implement 'urlQuote'.</td>
+    <td>Return the URL-encoded form of the given string.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#valid_filenames" class="internal-link" title="zms._mediadb.MediaDb.valid_filenames">valid<wbr></wbr>_filenames</a></code></td>
-    <td>Implement 'valid_filenames'.</td>
+    <td>Return a list of (attr_path, filename) pairs for all mediadb-referenced files.</td>
   </tr><tr class="classvariable">
     
     <td>Class Variable</td>
@@ -696,7 +698,7 @@
     
     <td>Class Variable</td>
     <td><code><a href="#manage_properties" class="internal-link" title="zms._mediadb.MediaDb.manage_properties">manage<wbr></wbr>_properties</a></code></td>
-    <td>"" Constructor</td>
+    <td><span class="undocumented">Undocumented</span></td>
   </tr><tr class="classvariable">
     
     <td>Class Variable</td>
@@ -748,7 +750,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">__init__</span><span class="function-signature">(self, location, structure=0)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L287">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L337">
       
       (source)
     </a>
@@ -775,7 +777,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getFile</span><span class="function-signature">(self, REQUEST, RESPONSE)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L351">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L384">
       
       (source)
     </a>
@@ -787,7 +789,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Return file.</p></div>
+    <div><p>Stream the file identified by the request path as an HTTP response.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -802,7 +804,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getFileSize</span><span class="function-signature">(self, filename)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L459">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L478">
       
       (source)
     </a>
@@ -814,7 +816,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Return filesize.</p></div>
+    <div><p>Return the size in bytes of the given mediadb file.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -829,7 +831,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getLocation</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L306">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L352">
       
       (source)
     </a>
@@ -841,7 +843,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Return location.</p></div>
+    <div><p>Return the resolved filesystem root path, expanding $INSTANCE_HOME.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -856,7 +858,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getParentDir</span><span class="function-signature">(self, path)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L344">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L379">
       
       (source)
     </a>
@@ -868,7 +870,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Return parentdir.</p></div>
+    <div><p>Return the parent directory of the given filesystem path.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -883,7 +885,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getPath</span><span class="function-signature">(self, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L327">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L366">
       
       (source)
     </a>
@@ -895,7 +897,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Return path.</p></div>
+    <div><p>Return the requested filesystem path, defaulting to the mediadb root.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -910,7 +912,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getStructure</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L313">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L356">
       
       (source)
     </a>
@@ -922,7 +924,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Return structure.</p></div>
+    <div><p>Return the directory nesting depth used for hierarchical storage (0 = flat).</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -937,7 +939,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_changeProperties</span><span class="function-signature">(self, submit, REQUEST, RESPONSE)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L555">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L560">
       
       (source)
     </a>
@@ -949,7 +951,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>MediaDb.manage_changeProperties</p></div>
+    <div><p>Apply submitted form changes to MediaDb location and redirect back to properties.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -964,7 +966,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_index_html</span><span class="function-signature">(self, filename, REQUEST=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L394">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L419">
       
       (source)
     </a>
@@ -976,7 +978,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>MediaDb.manage_index_html</p></div>
+    <div><p>Serve a mediadb file as a streaming HTTP response.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -991,7 +993,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_test</span><span class="function-signature">(self, REQUEST, RESPONSE)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L520">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L535">
       
       (source)
     </a>
@@ -1003,7 +1005,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>manage_test</p></div>
+    <div><p>Scan the mediadb and return a JSON report of OK/MISSING file statuses.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -1018,7 +1020,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">readDir</span><span class="function-signature">(self, path)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L337">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L374">
       
       (source)
     </a>
@@ -1030,7 +1032,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement 'readDir'.</p></div>
+    <div><p>Return a directory listing for the given filesystem path.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -1045,7 +1047,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">retrieveFile</span><span class="function-signature">(self, filename)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L442">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L463">
       
       (source)
     </a>
@@ -1057,7 +1059,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement 'retrieveFile'.</p></div>
+    <div><p>Return the raw bytes of the given mediadb file.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -1072,7 +1074,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">retrieveFileStreamIterator</span><span class="function-signature">(self, filename, REQUEST=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L401">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L424">
       
       (source)
     </a>
@@ -1084,7 +1086,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement 'retrieveFileStreamIterator'.</p></div>
+    <div><p>Retrieve a mediadb file and return its content as a stream or bytes object.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -1099,7 +1101,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">setLocation</span><span class="function-signature">(self, location)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L297">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L345">
       
       (source)
     </a>
@@ -1111,7 +1113,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Set location.</p></div>
+    <div><p>Set the filesystem root path for the mediadb, stripping any trailing slash.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -1126,7 +1128,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">storeFile</span><span class="function-signature">(self, file)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L379">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L406">
       
       (source)
     </a>
@@ -1138,7 +1140,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement 'storeFile'.</p></div>
+    <div><p>Store an uploaded file object into the mediadb and return its unique filename.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -1153,7 +1155,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">targetFile</span><span class="function-signature">(self, filename)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L361">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L390">
       
       (source)
     </a>
@@ -1165,7 +1167,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement 'targetFile'.</p></div>
+    <div><p>Compute the full filesystem path where a file should be stored.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -1180,7 +1182,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">urlQuote</span><span class="function-signature">(self, s)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L320">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L361">
       
       (source)
     </a>
@@ -1192,7 +1194,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement 'urlQuote'.</p></div>
+    <div><p>Return the URL-encoded form of the given string.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -1207,7 +1209,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">valid_filenames</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L470">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L487">
       
       (source)
     </a>
@@ -1219,7 +1221,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement 'valid_filenames'.</p></div>
+    <div><p>Return a list of (attr_path, filename) pairs for all mediadb-referenced files.</p></div>
   </div>
 </div><div class="baseclassvariable">
   
@@ -1233,7 +1235,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_browse</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L279">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L332">
       
       (source)
     </a>
@@ -1260,7 +1262,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_main</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L280">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L333">
       
       (source)
     </a>
@@ -1287,7 +1289,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_options</span>: <code>tuple</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L272">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L325">
       
       (source)
     </a>
@@ -1314,7 +1316,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_properties</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L281">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L334">
       
       (source)
     </a>
@@ -1326,7 +1328,7 @@
   </div>
   <div class="functionBody">
     
-    <div><p>"" Constructor</p></div>
+    <div><p class="undocumented">Undocumented</p></div>
     
   </div>
 </div><div class="baseclassvariable">
@@ -1341,7 +1343,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">meta_type</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L262">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L319">
       
       (source)
     </a>
@@ -1368,7 +1370,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">security</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L258">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L315">
       
       (source)
     </a>
@@ -1395,7 +1397,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_icon</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L264">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L320">
       
       (source)
     </a>
@@ -1422,7 +1424,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">id</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L289">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L339">
       
       (source)
     </a>
@@ -1449,7 +1451,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">location</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L301">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L349">
       
       (source)
     </a>
@@ -1476,7 +1478,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">structure</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L291">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L341">
       
       (source)
     </a>

@@ -385,12 +385,12 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ObjTypes</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objtypes.py#L28" class="sourceLink">(source)</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ObjTypes</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objtypes.py#L31" class="sourceLink">(source)</a></code></p>
           <p><a href="classIndex.html#zms._objtypes.ObjTypes">View In Hierarchy</a></p>
         </div>
 
         <div class="moduleDocstring">
-          <div><p>Provide helpers for ObjTypes.</p></div>
+          <div><p>Provide rendering helpers for display-type dependent object output.</p></div>
         </div>
 
         <div id="splitTables">
@@ -401,7 +401,7 @@
     
     <td>Method</td>
     <td><code><a href="#renderDisplaytype" class="internal-link" title="zms._objtypes.ObjTypes.renderDisplaytype">render<wbr></wbr>Displaytype</a></code></td>
-    <td>Implement 'renderDisplaytype'.</td>
+    <td>Render image/text HTML according to the selected display type template.</td>
   </tr><tr class="classvariable">
     
     <td>Class Variable</td>
@@ -498,7 +498,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">renderDisplaytype</span><span class="function-signature">(self, displaytype=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, imgattr=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, imghiresattr=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, imgurl=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, imgthumb=None, imgspecial=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, imgclass=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, text=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, textalign=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, textclass=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, REQUEST=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objtypes.py#L99">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objtypes.py#L75">
       
       (source)
     </a>
@@ -510,7 +510,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement 'renderDisplaytype'.</p></div>
+    <div><p>Render image/text HTML according to the selected display type template.</p>
+<p>The method resolves image and optional hi-res image variants, prepares the final image markup (including zoom links where configured), and delegates layout rendering to the matching <tt class="rst-docutils rst-literal">zmi_displaytype_*</tt> template.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">displaytype:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Display type identifier (e.g. 'left', 'right', 'export').</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">imgattr:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Object attribute name for the image to display.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">imghiresattr:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Object attribute name for the hi-res image variant.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">imgurl:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Optional URL to link the image to.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">imgthumb:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">@deprecated Thumbnail image object (use <tt class="rst-docutils rst-literal">imghiresattr</tt> instead).</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">imgspecial:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Special attributes for the &lt;img&gt; tag (e.g. usemap).</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">imgclass:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">CSS class for the &lt;img&gt; tag.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">text:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Text content to display alongside the image.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">textalign:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Text alignment (e.g. 'Left', 'Right', 'Center').</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">textclass:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">CSS class for the text container.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span>ZPublisher.HTTPRequest</td><td class="fieldArgDesc">Current request object for URL generation and context.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Rendered HTML fragment for the requested display type.</td></tr></table></div>
   </div>
 </div><div class="baseclassvariable">
   
@@ -524,7 +526,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">dctDisplaytype</span>: <code>dict[<wbr></wbr>str, <wbr></wbr>str]</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objtypes.py#L68">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objtypes.py#L64">
       
       (source)
     </a>
@@ -551,7 +553,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">f_selectFile</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objtypes.py#L57">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objtypes.py#L58">
       
       (source)
     </a>
@@ -578,7 +580,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">f_selectImage</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objtypes.py#L61">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objtypes.py#L62">
       
       (source)
     </a>
@@ -605,7 +607,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">f_selectRichtext</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objtypes.py#L43">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objtypes.py#L44">
       
       (source)
     </a>
@@ -632,7 +634,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_displaytype_bottom</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objtypes.py#L51">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objtypes.py#L52">
       
       (source)
     </a>
@@ -659,7 +661,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_displaytype_export</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objtypes.py#L53">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objtypes.py#L54">
       
       (source)
     </a>
@@ -686,7 +688,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_displaytype_left</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objtypes.py#L52">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objtypes.py#L53">
       
       (source)
     </a>
@@ -713,7 +715,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_displaytype_right</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objtypes.py#L50">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objtypes.py#L51">
       
       (source)
     </a>
@@ -740,7 +742,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_displaytype_top</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objtypes.py#L49">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objtypes.py#L50">
       
       (source)
     </a>
@@ -767,7 +769,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_input_autocomplete</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objtypes.py#L33">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objtypes.py#L34">
       
       (source)
     </a>
@@ -794,7 +796,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_input_color</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objtypes.py#L39">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objtypes.py#L40">
       
       (source)
     </a>
@@ -821,7 +823,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_input_multiselect</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objtypes.py#L37">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objtypes.py#L38">
       
       (source)
     </a>
@@ -848,7 +850,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_input_select</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objtypes.py#L38">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objtypes.py#L39">
       
       (source)
     </a>
@@ -875,7 +877,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_select_richtext_standard</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objtypes.py#L44">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objtypes.py#L45">
       
       (source)
     </a>
@@ -902,7 +904,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_select_richtext_wysiwyg</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objtypes.py#L45">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objtypes.py#L46">
       
       (source)
     </a>

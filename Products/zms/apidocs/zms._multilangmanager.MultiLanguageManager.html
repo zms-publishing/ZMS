@@ -545,12 +545,12 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">MultiLanguageManager</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L220" class="sourceLink">(source)</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">MultiLanguageManager</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L181" class="sourceLink">(source)</a></code></p>
           <p><a href="classIndex.html#zms._multilangmanager.MultiLanguageManager">View In Hierarchy</a></p>
         </div>
 
         <div class="moduleDocstring">
-          <div><p>Provide helpers for MultiLanguageManager.</p></div>
+          <div><p>Manage content languages and custom language-dictionary entries.</p></div>
         </div>
 
         <div id="splitTables">
@@ -561,122 +561,122 @@
     
     <td>Method</td>
     <td><code><a href="#delLanguage" class="internal-link" title="zms._multilangmanager.MultiLanguageManager.delLanguage">del<wbr></wbr>Language</a></code></td>
-    <td>Implement 'delLanguage'.</td>
+    <td>Delete one language entry from the language metadata mapping.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#get_lang_dict" class="internal-link" title="zms._multilangmanager.MultiLanguageManager.get_lang_dict">get<wbr></wbr>_lang<wbr></wbr>_dict</a></code></td>
-    <td>MultiLanguageManager.get_lang_dict</td>
+    <td>Return merged language dictionary from master, custom config, and metaobj providers.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#get_manage_lang" class="internal-link" title="zms._multilangmanager.MultiLanguageManager.get_manage_lang">get<wbr></wbr>_manage<wbr></wbr>_lang</a></code></td>
-    <td>Returns preferred of manage-language for current content-language.</td>
+    <td>Return preferred manage-language for the current management request.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#get_manage_langs" class="internal-link" title="zms._multilangmanager.MultiLanguageManager.get_manage_langs">get<wbr></wbr>_manage<wbr></wbr>_langs</a></code></td>
-    <td>Returns list of manage-languages.</td>
+    <td>Return the list of available ZMI manage languages.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getHttpAcceptLanguage" class="internal-link" title="zms._multilangmanager.MultiLanguageManager.getHttpAcceptLanguage">get<wbr></wbr>Http<wbr></wbr>Accept<wbr></wbr>Language</a></code></td>
-    <td>Return httpacceptlanguage.</td>
+    <td>Map HTTP accept-language header to one configured language id if enabled.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getLang" class="internal-link" title="zms._multilangmanager.MultiLanguageManager.getLang">get<wbr></wbr>Lang</a></code></td>
-    <td>Return lang.</td>
+    <td>Return language metadata for one language id.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getLangDict" class="internal-link" title="zms._multilangmanager.MultiLanguageManager.getLangDict">get<wbr></wbr>Lang<wbr></wbr>Dict</a></code></td>
-    <td>Return langdict.</td>
+    <td>Return language-dictionary entries as ordered list including their key field.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getLangIds" class="internal-link" title="zms._multilangmanager.MultiLanguageManager.getLangIds">get<wbr></wbr>Lang<wbr></wbr>Ids</a></code></td>
-    <td>Return langids.</td>
+    <td>Return configured language ids, optionally sorted by display label.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getLangs" class="internal-link" title="zms._multilangmanager.MultiLanguageManager.getLangs">get<wbr></wbr>Langs</a></code></td>
-    <td>Return langs.</td>
+    <td>Return the configured language metadata mapping.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getLangStr" class="internal-link" title="zms._multilangmanager.MultiLanguageManager.getLangStr">get<wbr></wbr>Lang<wbr></wbr>Str</a></code></td>
-    <td>Returns language-string for current content-language.</td>
+    <td>Public wrapper returning translated string for the given key and language.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getLangTree" class="internal-link" title="zms._multilangmanager.MultiLanguageManager.getLangTree">get<wbr></wbr>Lang<wbr></wbr>Tree</a></code></td>
-    <td>Return langtree.</td>
+    <td>Return depth-first language tree as <tt class="rst-docutils rst-literal">(id, metadata)</tt> tuples.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getLanguage" class="internal-link" title="zms._multilangmanager.MultiLanguageManager.getLanguage">get<wbr></wbr>Language</a></code></td>
-    <td>Return language.</td>
+    <td>Resolve request language from parameter, URL suffix, accept-language, or primary.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getLanguageFromName" class="internal-link" title="zms._multilangmanager.MultiLanguageManager.getLanguageFromName">get<wbr></wbr>Language<wbr></wbr>From<wbr></wbr>Name</a></code></td>
-    <td>Return languagefromname.</td>
+    <td>Extract language suffix from a filename and return matching language id.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getLanguageLabel" class="internal-link" title="zms._multilangmanager.MultiLanguageManager.getLanguageLabel">get<wbr></wbr>Language<wbr></wbr>Label</a></code></td>
-    <td>getLanguageLabel</td>
+    <td>Return the configured display label for the given language id.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getParentLanguage" class="internal-link" title="zms._multilangmanager.MultiLanguageManager.getParentLanguage">get<wbr></wbr>Parent<wbr></wbr>Language</a></code></td>
-    <td>getParentLanguage</td>
+    <td>Return the parent language id for the given language id.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getParentLanguages" class="internal-link" title="zms._multilangmanager.MultiLanguageManager.getParentLanguages">get<wbr></wbr>Parent<wbr></wbr>Languages</a></code></td>
-    <td>Return parentlanguages.</td>
+    <td>Return all parent language ids up to the root language.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getPrimaryLanguage" class="internal-link" title="zms._multilangmanager.MultiLanguageManager.getPrimaryLanguage">get<wbr></wbr>Primary<wbr></wbr>Language</a></code></td>
-    <td>Return primarylanguage.</td>
+    <td>Return the id of the configured primary content language.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getZMILangStr" class="internal-link" title="zms._multilangmanager.MultiLanguageManager.getZMILangStr">get<wbr></wbr>ZMILang<wbr></wbr>Str</a></code></td>
-    <td>Returns language-string for current manage-language.</td>
+    <td>Return translated ZMI label text for the current manage-language.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_changeLangDictProperties" class="internal-link" title="zms._multilangmanager.MultiLanguageManager.manage_changeLangDictProperties">manage_change<wbr></wbr>Lang<wbr></wbr>Dict<wbr></wbr>Properties</a></code></td>
-    <td>MultiLanguageManager.manage_changeLangDictProperties</td>
+    <td>Handle ZMI language-dictionary actions (save/delete/import/export).</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_changeLanguages" class="internal-link" title="zms._multilangmanager.MultiLanguageManager.manage_changeLanguages">manage_change<wbr></wbr>Languages</a></code></td>
-    <td>MultiLanguageManager.manage_changeLanguages</td>
+    <td>Handle ZMI language management actions (save/delete) and redirect with message.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#set_lang_dict" class="internal-link" title="zms._multilangmanager.MultiLanguageManager.set_lang_dict">set<wbr></wbr>_lang<wbr></wbr>_dict</a></code></td>
-    <td>Set lang dict.</td>
+    <td>Persist custom language dictionary and clear request buffer cache.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#setLangs" class="internal-link" title="zms._multilangmanager.MultiLanguageManager.setLangs">set<wbr></wbr>Langs</a></code></td>
-    <td>Set langs.</td>
+    <td>Persist the complete language metadata mapping.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#setLanguage" class="internal-link" title="zms._multilangmanager.MultiLanguageManager.setLanguage">set<wbr></wbr>Language</a></code></td>
-    <td>Set language.</td>
+    <td>Create or update one language entry and update primary/parent links if needed.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#setPrimaryLanguage" class="internal-link" title="zms._multilangmanager.MultiLanguageManager.setPrimaryLanguage">set<wbr></wbr>Primary<wbr></wbr>Language</a></code></td>
-    <td>Set primarylanguage.</td>
+    <td>Set the id of the primary content language.</td>
   </tr><tr class="instancevariable">
     
     <td>Instance Variable</td>
@@ -691,7 +691,7 @@
     
     <td>Method</td>
     <td><code><a href="#_getLangStr" class="internal-link" title="zms._multilangmanager.MultiLanguageManager._getLangStr">_get<wbr></wbr>Lang<wbr></wbr>Str</a></code></td>
-    <td>Returns language-string for current content-language.</td>
+    <td>Resolve one translation value from custom dictionary first, then system fallback.</td>
   </tr>
 </table>
           
@@ -713,7 +713,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">delLanguage</span><span class="function-signature">(self, lang)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L494">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L396">
       
       (source)
     </a>
@@ -725,7 +725,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement 'delLanguage'.</p></div>
+    <div><p>Delete one language entry from the language metadata mapping.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -740,7 +740,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_lang_dict</span><span class="function-signature">(self, REQUEST=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L561">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L451">
       
       (source)
     </a>
@@ -752,7 +752,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>MultiLanguageManager.get_lang_dict</p></div>
+    <div><p>Return merged language dictionary from master, custom config, and metaobj providers.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -767,7 +767,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_manage_lang</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L229">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L187">
       
       (source)
     </a>
@@ -779,7 +779,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Returns preferred of manage-language for current content-language.</p></div>
+    <div><p>Return preferred manage-language for the current management request.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -794,7 +794,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_manage_langs</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L223">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L183">
       
       (source)
     </a>
@@ -806,7 +806,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Returns list of manage-languages.</p></div>
+    <div><p>Return the list of available ZMI manage languages.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -821,7 +821,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getHttpAcceptLanguage</span><span class="function-signature">(self, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L446">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L357">
       
       (source)
     </a>
@@ -833,7 +833,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Return httpacceptlanguage.</p></div>
+    <div><p>Map HTTP accept-language header to one configured language id if enabled.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -848,7 +848,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getLang</span><span class="function-signature">(self, id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L366">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L292">
       
       (source)
     </a>
@@ -860,7 +860,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Return lang.</p></div>
+    <div><p>Return language metadata for one language id.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -875,7 +875,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getLangDict</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L627">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L503">
       
       (source)
     </a>
@@ -887,7 +887,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Return langdict.</p></div>
+    <div><p>Return language-dictionary entries as ordered list including their key field.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -902,7 +902,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getLangIds</span><span class="function-signature">(self, sort=False)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L387">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L307">
       
       (source)
     </a>
@@ -914,7 +914,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Return langids.</p></div>
+    <div><p>Return configured language ids, optionally sorted by display label.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -929,7 +929,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getLangs</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L320">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L261">
       
       (source)
     </a>
@@ -941,7 +941,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Return langs.</p></div>
+    <div><p>Return the configured language metadata mapping.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -956,7 +956,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getLangStr</span><span class="function-signature">(self, key, lang=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L296">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L248">
       
       (source)
     </a>
@@ -968,7 +968,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Returns language-string for current content-language.</p></div>
+    <div><p>Public wrapper returning translated string for the given key and language.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -983,7 +983,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getLangTree</span><span class="function-signature">(self, base=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L373">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L296">
       
       (source)
     </a>
@@ -995,7 +995,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Return langtree.</p></div>
+    <div><p>Return depth-first language tree as <tt class="rst-docutils rst-literal">(id, metadata)</tt> tuples.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -1010,7 +1010,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getLanguage</span><span class="function-signature">(self, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L422">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L336">
       
       (source)
     </a>
@@ -1022,7 +1022,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Return language.</p></div>
+    <div><p>Resolve request language from parameter, URL suffix, accept-language, or primary.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -1037,7 +1037,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getLanguageFromName</span><span class="function-signature">(self, name)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L405">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L322">
       
       (source)
     </a>
@@ -1049,7 +1049,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Return languagefromname.</p></div>
+    <div><p>Extract language suffix from a filename and return matching language id.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -1064,7 +1064,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getLanguageLabel</span><span class="function-signature">(self, id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L341">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L273">
       
       (source)
     </a>
@@ -1076,7 +1076,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>getLanguageLabel</p></div>
+    <div><p>Return the configured display label for the given language id.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -1091,7 +1091,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getParentLanguage</span><span class="function-signature">(self, id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L334">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L269">
       
       (source)
     </a>
@@ -1103,7 +1103,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>getParentLanguage</p></div>
+    <div><p>Return the parent language id for the given language id.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -1118,7 +1118,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getParentLanguages</span><span class="function-signature">(self, id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L348">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L277">
       
       (source)
     </a>
@@ -1130,7 +1130,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Return parentlanguages.</p></div>
+    <div><p>Return all parent language ids up to the root language.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -1145,7 +1145,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getPrimaryLanguage</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L306">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L253">
       
       (source)
     </a>
@@ -1157,7 +1157,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Return primarylanguage.</p></div>
+    <div><p>Return the id of the configured primary content language.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -1172,7 +1172,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getZMILangStr</span><span class="function-signature">(self, key, REQUEST=None, RESPONSE=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L258">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L214">
       
       (source)
     </a>
@@ -1184,7 +1184,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Returns language-string for current manage-language.</p></div>
+    <div><p>Return translated ZMI label text for the current manage-language.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -1199,7 +1199,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_changeLangDictProperties</span><span class="function-signature">(self, lang, btn, REQUEST, RESPONSE=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L644">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L514">
       
       (source)
     </a>
@@ -1211,7 +1211,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>MultiLanguageManager.manage_changeLangDictProperties</p></div>
+    <div><p>Handle ZMI language-dictionary actions (save/delete/import/export).</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -1226,7 +1226,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_changeLanguages</span><span class="function-signature">(self, lang, btn, REQUEST, RESPONSE)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L506">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L402">
       
       (source)
     </a>
@@ -1238,7 +1238,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>MultiLanguageManager.manage_changeLanguages</p></div>
+    <div><p>Handle ZMI language management actions (save/delete) and redirect with message.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -1253,7 +1253,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">set_lang_dict</span><span class="function-signature">(self, d)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L616">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L498">
       
       (source)
     </a>
@@ -1265,7 +1265,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Set lang dict.</p></div>
+    <div><p>Persist custom language dictionary and clear request buffer cache.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -1280,7 +1280,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">setLangs</span><span class="function-signature">(self, v)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L327">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L265">
       
       (source)
     </a>
@@ -1292,7 +1292,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Set langs.</p></div>
+    <div><p>Persist the complete language metadata mapping.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -1307,7 +1307,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">setLanguage</span><span class="function-signature">(self, lang, label, parent, newManage)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L469">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L377">
       
       (source)
     </a>
@@ -1319,7 +1319,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Set language.</p></div>
+    <div><p>Create or update one language entry and update primary/parent links if needed.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -1334,7 +1334,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">setPrimaryLanguage</span><span class="function-signature">(self, v)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L313">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L257">
       
       (source)
     </a>
@@ -1346,7 +1346,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Set primarylanguage.</p></div>
+    <div><p>Set the id of the primary content language.</p></div>
   </div>
 </div><div class="baseinstancevariable">
   
@@ -1360,7 +1360,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">attr_languages</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L329">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L267">
       
       (source)
     </a>
@@ -1387,7 +1387,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">language_primary</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L315">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L259">
       
       (source)
     </a>
@@ -1415,7 +1415,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">_getLangStr</span><span class="function-signature">(self, key, lang=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L272">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L226">
       
       (source)
     </a>
@@ -1427,7 +1427,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Returns language-string for current content-language.</p></div>
+    <div><p>Resolve one translation value from custom dictionary first, then system fallback.</p></div>
   </div>
 </div>
         </div>

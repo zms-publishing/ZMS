@@ -1147,12 +1147,12 @@
     
     <td>Function</td>
     <td><code><a href="#get_dimensions" class="internal-link" title="zms.svgutil.get_dimensions">get<wbr></wbr>_dimensions</a></code></td>
-    <td>Return dimensions.</td>
+    <td>Return intrinsic SVG dimensions as <tt class="rst-docutils rst-literal">(width, height)</tt> in pixel units.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#set_dimensions" class="internal-link" title="zms.svgutil.set_dimensions">set<wbr></wbr>_dimensions</a></code></td>
-    <td>Set dimensions.</td>
+    <td>Update width/height attributes in SVG data and return the image object.</td>
   </tr><tr class="variable">
     
     <td>Variable</td>
@@ -1179,7 +1179,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_dimensions</span><span class="function-signature">(image)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/svgutil.py#L16">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/svgutil.py#L18">
       
       (source)
     </a>
@@ -1191,7 +1191,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Return dimensions.</p></div>
+    <div><p>Return intrinsic SVG dimensions as <tt class="rst-docutils rst-literal">(width, height)</tt> in pixel units.</p>
+<p>Width/height attributes are preferred; <tt class="rst-docutils rst-literal">viewBox</tt> is used as fallback.</p>
+</div>
   </div>
 </div><div class="basefunction">
   
@@ -1206,7 +1208,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">set_dimensions</span><span class="function-signature">(image, size)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/svgutil.py#L50">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/svgutil.py#L58">
       
       (source)
     </a>
@@ -1218,7 +1220,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Set dimensions.</p></div>
+    <div><p>Update width/height attributes in SVG data and return the image object.</p>
+<p>If the object is not an SVG or has no detectable dimensions, the image is returned unchanged.</p>
+</div>
   </div>
 </div><div class="basevariable">
   

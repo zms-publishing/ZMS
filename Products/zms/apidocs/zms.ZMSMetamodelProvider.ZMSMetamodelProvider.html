@@ -250,16 +250,6 @@
         
 
         
-            <div class="itemName"><code><a href="#icon_clazz" class="internal-link" title="zms.ZMSMetamodelProvider.ZMSMetamodelProvider.icon_clazz">icon<wbr></wbr>_clazz</a></code>
-            </div>
-        
-
-    </li><li class="">
-        
-        
-        
-
-        
             <div class="itemName"><code><a href="#manage" class="internal-link" title="zms.ZMSMetamodelProvider.ZMSMetamodelProvider.manage">manage</a></code>
             </div>
         
@@ -351,6 +341,16 @@
 
         
             <div class="itemName"><code><a href="#meta_type" class="internal-link" title="zms.ZMSMetamodelProvider.ZMSMetamodelProvider.meta_type">meta<wbr></wbr>_type</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#zmi_icon" class="internal-link" title="zms.ZMSMetamodelProvider.ZMSMetamodelProvider.zmi_icon">zmi<wbr></wbr>_icon</a></code>
             </div>
         
 
@@ -462,12 +462,12 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSMetamodelProvider</span>(ZMSItem.ZMSItem, ZMSMetaobjManager.ZMSMetaobjManager, ZMSMetadictManager.ZMSMetadictManager): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L28" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms.ZMSMetamodelProvider.ZMSMetamodelProvider.__init__">ZMSMetamodelProvider(model, metas)</a></code></p><p>Implements interfaces: Products.zms.IZMSConfigurationProvider.IZMSConfigurationProvider, Products.zms.IZMSMetamodelProvider.IZMSMetamodelProvider, Products.zms.IZMSRepositoryProvider.IZMSRepositoryProvider</p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSMetamodelProvider</span>(ZMSItem.ZMSItem, ZMSMetaobjManager.ZMSMetaobjManager, ZMSMetadictManager.ZMSMetadictManager): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L21" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms.ZMSMetamodelProvider.ZMSMetamodelProvider.__init__">ZMSMetamodelProvider(model, metas)</a></code></p><p>Implements interfaces: Products.zms.IZMSConfigurationProvider.IZMSConfigurationProvider, Products.zms.IZMSMetamodelProvider.IZMSMetamodelProvider, Products.zms.IZMSRepositoryProvider.IZMSRepositoryProvider</p>
           <p><a href="classIndex.html#zms.ZMSMetamodelProvider.ZMSMetamodelProvider">View In Hierarchy</a></p>
         </div>
 
         <div class="moduleDocstring">
-          <div><p>Provide helpers for ZMSMetamodelProvider.</p></div>
+          <div><p>Central provider for ZMS object-model definitions (meta-objects and meta-dictionaries), including ZMI management and repository I/O.</p></div>
         </div>
 
         <div id="splitTables">
@@ -478,27 +478,27 @@
     
     <td>Method</td>
     <td><code><a href="#__bobo_traverse__" class="internal-link" title="zms.ZMSMetamodelProvider.ZMSMetamodelProvider.__bobo_traverse__">__bobo<wbr></wbr>_traverse__</a></code></td>
-    <td>Implement '__bobo_traverse__'.</td>
+    <td>Custom traversal hook that resolves attributes and delegates upward through portal hierarchy when not found locally.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#__init__" class="internal-link" title="zms.ZMSMetamodelProvider.ZMSMetamodelProvider.__init__">__init__</a></code></td>
-    <td>Initialize the instance state.</td>
+    <td>Initialise the metaobj/metadict manager with an optional model dict and metas list.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getConfProperty" class="internal-link" title="zms.ZMSMetamodelProvider.ZMSMetamodelProvider.getConfProperty">get<wbr></wbr>Conf<wbr></wbr>Property</a></code></td>
-    <td>Return confproperty.</td>
+    <td>Return configuration property from the root content object, or default.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_options" class="internal-link" title="zms.ZMSMetamodelProvider.ZMSMetamodelProvider.manage_options">manage<wbr></wbr>_options</a></code></td>
-    <td>Handle the ZMI action 'manage_options'.</td>
+    <td><span class="undocumented">Undocumented</span></td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_sub_options" class="internal-link" title="zms.ZMSMetamodelProvider.ZMSMetamodelProvider.manage_sub_options">manage<wbr></wbr>_sub<wbr></wbr>_options</a></code></td>
-    <td>Handle the ZMI action 'manage_sub_options'.</td>
+    <td><span class="undocumented">Undocumented</span></td>
   </tr><tr class="method">
     
     <td>Method</td>
@@ -508,12 +508,12 @@
     
     <td>Method</td>
     <td><code><a href="#provideRepository" class="internal-link" title="zms.ZMSMetamodelProvider.ZMSMetamodelProvider.provideRepository">provide<wbr></wbr>Repository</a></code></td>
-    <td>Implement 'provideRepository'.</td>
+    <td>Export all local model and meta-dictionary records into a repository dict.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#updateRepository" class="internal-link" title="zms.ZMSMetamodelProvider.ZMSMetamodelProvider.updateRepository">update<wbr></wbr>Repository</a></code></td>
-    <td>Implement 'updateRepository'.</td>
+    <td>Import one record from a repository payload into the local model.</td>
   </tr><tr class="classvariable">
     
     <td>Class Variable</td>
@@ -528,11 +528,6 @@
     
     <td>Class Variable</td>
     <td><code><a href="#__authorPermissions__" class="internal-link" title="zms.ZMSMetamodelProvider.ZMSMetamodelProvider.__authorPermissions__">__author<wbr></wbr>Permissions__</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
-  </tr><tr class="classvariable">
-    
-    <td>Class Variable</td>
-    <td><code><a href="#icon_clazz" class="internal-link" title="zms.ZMSMetamodelProvider.ZMSMetamodelProvider.icon_clazz">icon<wbr></wbr>_clazz</a></code></td>
     <td><span class="undocumented">Undocumented</span></td>
   </tr><tr class="classvariable">
     
@@ -584,6 +579,11 @@
     <td>Class Variable</td>
     <td><code><a href="#meta_type" class="internal-link" title="zms.ZMSMetamodelProvider.ZMSMetamodelProvider.meta_type">meta<wbr></wbr>_type</a></code></td>
     <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="classvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="#zmi_icon" class="internal-link" title="zms.ZMSMetamodelProvider.ZMSMetamodelProvider.zmi_icon">zmi<wbr></wbr>_icon</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
   </tr><tr class="instancevariable">
     
     <td>Instance Variable</td>
@@ -620,7 +620,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">__bobo_traverse__</span><span class="function-signature">(self, TraversalRequest, name)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L123">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L107">
       
       (source)
     </a>
@@ -632,7 +632,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement '__bobo_traverse__'.</p></div>
+    <div><p>Custom traversal hook that resolves attributes and delegates upward through portal hierarchy when not found locally.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -647,7 +647,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">__init__</span><span class="function-signature">(self, model={}, metas=[])</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L103">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L91">
       
       (source)
     </a>
@@ -659,7 +659,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Initialize the instance state.</p></div>
+    <div><p>Initialise the metaobj/metadict manager with an optional model dict and metas list.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -674,7 +674,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getConfProperty</span><span class="function-signature">(self, key, default=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L110">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L97">
       
       (source)
     </a>
@@ -686,7 +686,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Return confproperty.</p></div>
+    <div><p>Return configuration property from the root content object, or default.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -701,7 +701,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_options</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L46">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L41">
       
       (source)
     </a>
@@ -713,7 +713,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Handle the ZMI action 'manage_options'.</p></div>
+    <div><p class="undocumented">Undocumented</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -728,7 +728,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_sub_options</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L51">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L45">
       
       (source)
     </a>
@@ -740,7 +740,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Handle the ZMI action 'manage_sub_options'.</p></div>
+    <div><p class="undocumented">Undocumented</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -755,7 +755,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">metaobj_readme</span><span class="function-signature">(self, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L87">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L80">
       
       (source)
     </a>
@@ -782,7 +782,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">provideRepository</span><span class="function-signature">(self, ids=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L157">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L133">
       
       (source)
     </a>
@@ -794,7 +794,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement 'provideRepository'.</p></div>
+    <div><p>Export all local model and meta-dictionary records into a repository dict.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">ids:</span><tt class="rst-docutils rst-literal">list</tt> | <tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc">Optional subset of record ids to include.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Repository payload keyed by record id.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -809,7 +809,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">updateRepository</span><span class="function-signature">(self, r)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L168">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L148">
       
       (source)
     </a>
@@ -821,7 +821,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement 'updateRepository'.</p></div>
+    <div><p>Import one record from a repository payload into the local model.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">r:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Repository record mapping.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Imported record id.</td></tr></table></div>
   </div>
 </div><div class="baseclassvariable">
   
@@ -835,7 +835,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">__ac_permissions__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L78">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L71">
       
       (source)
     </a>
@@ -862,7 +862,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">__administratorPermissions__</span>: <code>tuple[<wbr></wbr>str, <wbr></wbr><span class="rst-variable-ellipsis">...</span>]</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L70">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L63">
       
       (source)
     </a>
@@ -889,38 +889,11 @@
   <div class="functionHeader">
     
     <span class="py-defname">__authorPermissions__</span>: <code>tuple[<wbr></wbr>str, <wbr></wbr><span class="rst-variable-ellipsis">...</span>]</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L74">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L67">
       
       (source)
     </a>
     <a class="headerLink" href="#__authorPermissions__" title="zms.ZMSMetamodelProvider.ZMSMetamodelProvider.__authorPermissions__">
-      
-      
-      ¶
-    </a>
-  </div>
-  <div class="functionBody">
-    
-    <div><p class="undocumented">Undocumented</p></div>
-    
-  </div>
-</div><div class="baseclassvariable">
-  
-  
-  <a name="zms.ZMSMetamodelProvider.ZMSMetamodelProvider.icon_clazz">
-    
-  </a>
-  <a name="icon_clazz">
-    
-  </a>
-  <div class="functionHeader">
-    
-    <span class="py-defname">icon_clazz</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L41">
-      
-      (source)
-    </a>
-    <a class="headerLink" href="#icon_clazz" title="zms.ZMSMetamodelProvider.ZMSMetamodelProvider.icon_clazz">
       
       
       ¶
@@ -943,7 +916,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L60">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L53">
       
       (source)
     </a>
@@ -970,7 +943,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_analyze</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L65">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L58">
       
       (source)
     </a>
@@ -997,7 +970,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_bigpicture</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L64">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L57">
       
       (source)
     </a>
@@ -1024,7 +997,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_main</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L61">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L54">
       
       (source)
     </a>
@@ -1051,7 +1024,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_main_acquire</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L63">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L56">
       
       (source)
     </a>
@@ -1078,7 +1051,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_main_import</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L62">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L55">
       
       (source)
     </a>
@@ -1105,7 +1078,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_metas</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L66">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L59">
       
       (source)
     </a>
@@ -1132,7 +1105,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_options_default_action</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L45">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L40">
       
       (source)
     </a>
@@ -1159,7 +1132,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_sub_options__roles__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L50">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L44">
       
       (source)
     </a>
@@ -1186,11 +1159,38 @@
   <div class="functionHeader">
     
     <span class="py-defname">meta_type</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L40">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L34">
       
       (source)
     </a>
     <a class="headerLink" href="#meta_type" title="zms.ZMSMetamodelProvider.ZMSMetamodelProvider.meta_type">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseclassvariable">
+  
+  
+  <a name="zms.ZMSMetamodelProvider.ZMSMetamodelProvider.zmi_icon">
+    
+  </a>
+  <a name="zmi_icon">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">zmi_icon</span>: <code>str</code> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L35">
+      
+      (source)
+    </a>
+    <a class="headerLink" href="#zmi_icon" title="zms.ZMSMetamodelProvider.ZMSMetamodelProvider.zmi_icon">
       
       
       ¶
@@ -1213,7 +1213,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">id</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L105">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L93">
       
       (source)
     </a>
@@ -1240,7 +1240,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">metas</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L107">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L95">
       
       (source)
     </a>
@@ -1267,7 +1267,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">model</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L106">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetamodelProvider.py#L94">
       
       (source)
     </a>

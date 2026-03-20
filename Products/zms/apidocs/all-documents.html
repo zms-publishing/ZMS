@@ -651,7 +651,7 @@
             <div class="type">Module</div>
             <div class="kind">Module</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">ZMS standard utility module</div>
+            <div class="summary">standard.py</div>
           </li><li id="zms.svgutil">
             
             <div class="fullName">zms<wbr></wbr>.svgutil</div>
@@ -1867,7 +1867,7 @@
             <div class="type">Class</div>
             <div class="kind">Class</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Provide helpers for ZMSMetacmdProvider.</div>
+            <div class="summary">Provider for configurable meta-commands and their repository/xml sync.</div>
           </li><li id="zms.ZMSMetacmdProvider.ZMSMetacmdProvider.meta_type">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSMetacmd<wbr></wbr>Provider<wbr></wbr>.<wbr></wbr>ZMSMetacmd<wbr></wbr>Provider<wbr></wbr>.meta<wbr></wbr>_type</div>
@@ -1963,7 +1963,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Initialize the instance state.</div>
+            <div class="summary">Initialise the manager with a persistent copy of command definitions.</div>
           </li><li id="zms.ZMSMetacmdProvider.ZMSMetacmdProvider.id">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSMetacmd<wbr></wbr>Provider<wbr></wbr>.<wbr></wbr>ZMSMetacmd<wbr></wbr>Provider<wbr></wbr>.id</div>
@@ -1987,7 +1987,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement 'provideRepository'.</div>
+            <div class="summary">Build repository export data for selected meta-commands.</div>
           </li><li id="zms.ZMSMetacmdProvider.ZMSMetacmdProvider.updateRepository">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSMetacmd<wbr></wbr>Provider<wbr></wbr>.<wbr></wbr>ZMSMetacmd<wbr></wbr>Provider<wbr></wbr>.update<wbr></wbr>Repository</div>
@@ -1995,7 +1995,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement 'updateRepository'.</div>
+            <div class="summary">Import one command from repository payload and persist it locally.</div>
           </li><li id="zms.ZMSMetacmdProvider.ZMSMetacmdProvider.translateRepositoryModel">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSMetacmd<wbr></wbr>Provider<wbr></wbr>.<wbr></wbr>ZMSMetacmd<wbr></wbr>Provider<wbr></wbr>.translate<wbr></wbr>Repository<wbr></wbr>Model</div>
@@ -2003,7 +2003,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement 'translateRepositoryModel'.</div>
+            <div class="summary">Translate repository records from Impl-based format into flat command maps.</div>
           </li><li id="zms.ZMSMetacmdProvider.ZMSMetacmdProvider._importXml">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSMetacmd<wbr></wbr>Provider<wbr></wbr>.<wbr></wbr>ZMSMetacmd<wbr></wbr>Provider<wbr></wbr>._import<wbr></wbr>Xml</div>
@@ -2011,7 +2011,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PRIVATE</div>
-            <div class="summary">Implement '_importXml'.</div>
+            <div class="summary">Import one command entry from parsed XML payload.</div>
           </li><li id="zms.ZMSMetacmdProvider.ZMSMetacmdProvider.importXml">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSMetacmd<wbr></wbr>Provider<wbr></wbr>.<wbr></wbr>ZMSMetacmd<wbr></wbr>Provider<wbr></wbr>.import<wbr></wbr>Xml</div>
@@ -2019,7 +2019,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement 'importXml'.</div>
+            <div class="summary">Import one or many command entries from XML text or file-like input.</div>
           </li><li id="zms.ZMSMetacmdProvider.ZMSMetacmdProvider.__get_metacmd__">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSMetacmd<wbr></wbr>Provider<wbr></wbr>.<wbr></wbr>ZMSMetacmd<wbr></wbr>Provider<wbr></wbr>.__get<wbr></wbr>_metacmd__</div>
@@ -2027,7 +2027,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement '__get_metacmd__'.</div>
+            <div class="summary">Return the raw command dict from <tt class="rst-docutils rst-literal">self.commands</tt> for the given id.</div>
           </li><li id="zms.ZMSMetacmdProvider.ZMSMetacmdProvider.delMetacmd">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSMetacmd<wbr></wbr>Provider<wbr></wbr>.<wbr></wbr>ZMSMetacmd<wbr></wbr>Provider<wbr></wbr>.del<wbr></wbr>Metacmd</div>
@@ -2035,7 +2035,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement 'delMetacmd'.</div>
+            <div class="summary">Delete one meta-command definition and remove its underlying Zope object.</div>
           </li><li id="zms.ZMSMetacmdProvider.ZMSMetacmdProvider.setMetacmd">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSMetacmd<wbr></wbr>Provider<wbr></wbr>.<wbr></wbr>ZMSMetacmd<wbr></wbr>Provider<wbr></wbr>.set<wbr></wbr>Metacmd</div>
@@ -2043,7 +2043,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Set metacmd.</div>
+            <div class="summary">Create or update one meta-command and synchronise its implementation object.</div>
           </li><li id="zms.ZMSMetacmdProvider.ZMSMetacmdProvider.getMetaCmdDescription">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSMetacmd<wbr></wbr>Provider<wbr></wbr>.<wbr></wbr>ZMSMetacmd<wbr></wbr>Provider<wbr></wbr>.get<wbr></wbr>Meta<wbr></wbr>Cmd<wbr></wbr>Description</div>
@@ -2059,7 +2059,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return metacmd.</div>
+            <div class="summary">Return one fully-resolved meta-command, including object metadata and code.</div>
           </li><li id="zms.ZMSMetacmdProvider.ZMSMetacmdProvider.getMetaCmdIds">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSMetacmd<wbr></wbr>Provider<wbr></wbr>.<wbr></wbr>ZMSMetacmd<wbr></wbr>Provider<wbr></wbr>.get<wbr></wbr>Meta<wbr></wbr>Cmd<wbr></wbr>Ids</div>
@@ -2067,7 +2067,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return metacmdids.</div>
+            <div class="summary">Return all meta-command ids, optionally sorted by command name.</div>
           </li><li id="zms.ZMSMetacmdProvider.ZMSMetacmdProvider.getMetaCmds">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSMetacmd<wbr></wbr>Provider<wbr></wbr>.<wbr></wbr>ZMSMetacmd<wbr></wbr>Provider<wbr></wbr>.get<wbr></wbr>Meta<wbr></wbr>Cmds</div>
@@ -2075,7 +2075,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return metacmds.</div>
+            <div class="summary">Return meta-commands filtered by stereotype and optionally executable context.</div>
           </li><li id="zms.ZMSMetacmdProvider.ZMSMetacmdProvider.manage_changeMetacmds">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSMetacmd<wbr></wbr>Provider<wbr></wbr>.<wbr></wbr>ZMSMetacmd<wbr></wbr>Provider<wbr></wbr>.manage_change<wbr></wbr>Metacmds</div>
@@ -2083,7 +2083,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">ZMSMetacmdProvider.manage_changeMetacmds</div>
+            <div class="summary">Handle ZMI actions for meta-commands (acquire/save/copy/delete/export/import/insert).</div>
           </li><li id="zms.ZMSMetacmdProviderAcquired.ZMSMetacmdProviderAcquired">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSMetacmd<wbr></wbr>Provider<wbr></wbr>Acquired<wbr></wbr>.<wbr></wbr>ZMSMetacmd<wbr></wbr>Provider<wbr></wbr>Acquired</div>
@@ -2147,7 +2147,7 @@
             <div class="type">Class</div>
             <div class="kind">Class</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Provide helpers for ZMSMetadictManager.</div>
+            <div class="summary">Manage Dublin-Core meta-dictionary attributes and their repository persistence.</div>
           </li><li id="zms.ZMSMetadictManager.ZMSMetadictManager.provideRepositoryMetas">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSMetadict<wbr></wbr>Manager<wbr></wbr>.<wbr></wbr>ZMSMetadict<wbr></wbr>Manager<wbr></wbr>.provide<wbr></wbr>Repository<wbr></wbr>Metas</div>
@@ -2155,7 +2155,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement 'provideRepositoryMetas'.</div>
+            <div class="summary">Write configured meta-dictionary records into the repository export payload.</div>
           </li><li id="zms.ZMSMetadictManager.ZMSMetadictManager.updateRepositoryMetas">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSMetadict<wbr></wbr>Manager<wbr></wbr>.<wbr></wbr>ZMSMetadict<wbr></wbr>Manager<wbr></wbr>.update<wbr></wbr>Repository<wbr></wbr>Metas</div>
@@ -2163,7 +2163,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement 'updateRepositoryMetas'.</div>
+            <div class="summary">Replace local meta-dictionary records from a repository import payload.</div>
           </li><li id="zms.ZMSMetadictManager.ZMSMetadictManager.metas">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSMetadict<wbr></wbr>Manager<wbr></wbr>.<wbr></wbr>ZMSMetadict<wbr></wbr>Manager<wbr></wbr>.metas</div>
@@ -2179,7 +2179,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PRIVATE</div>
-            <div class="summary">Implement '_importMetadictXml'.</div>
+            <div class="summary">Import a single serialized meta-dictionary attribute record.</div>
           </li><li id="zms.ZMSMetadictManager.ZMSMetadictManager.importMetadictXml">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSMetadict<wbr></wbr>Manager<wbr></wbr>.<wbr></wbr>ZMSMetadict<wbr></wbr>Manager<wbr></wbr>.import<wbr></wbr>Metadict<wbr></wbr>Xml</div>
@@ -2187,7 +2187,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement 'importMetadictXml'.</div>
+            <div class="summary">Import one or many meta-dictionary attribute records from XML content.</div>
           </li><li id="zms.ZMSMetadictManager.ZMSMetadictManager.getMetadictAttrs">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSMetadict<wbr></wbr>Manager<wbr></wbr>.<wbr></wbr>ZMSMetadict<wbr></wbr>Manager<wbr></wbr>.get<wbr></wbr>Metadict<wbr></wbr>Attrs</div>
@@ -2195,7 +2195,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return metadictattrs.</div>
+            <div class="summary">Return a list of meta-dictionary attribute ids.</div>
           </li><li id="zms.ZMSMetadictManager.ZMSMetadictManager.getMetadictAttr">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSMetadict<wbr></wbr>Manager<wbr></wbr>.<wbr></wbr>ZMSMetadict<wbr></wbr>Manager<wbr></wbr>.get<wbr></wbr>Metadict<wbr></wbr>Attr</div>
@@ -2203,7 +2203,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return metadictattr.</div>
+            <div class="summary">Return one meta-dictionary attribute dict by id.</div>
           </li><li id="zms.ZMSMetadictManager.ZMSMetadictManager.delMetadictAttr">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSMetadict<wbr></wbr>Manager<wbr></wbr>.<wbr></wbr>ZMSMetadict<wbr></wbr>Manager<wbr></wbr>.del<wbr></wbr>Metadict<wbr></wbr>Attr</div>
@@ -2211,7 +2211,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement 'delMetadictAttr'.</div>
+            <div class="summary">Remove a meta-dictionary attribute by id and persist the updated list.</div>
           </li><li id="zms.ZMSMetadictManager.ZMSMetadictManager.setMetadictAttr">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSMetadict<wbr></wbr>Manager<wbr></wbr>.<wbr></wbr>ZMSMetadict<wbr></wbr>Manager<wbr></wbr>.set<wbr></wbr>Metadict<wbr></wbr>Attr</div>
@@ -2227,7 +2227,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement 'moveMetadictAttr'.</div>
+            <div class="summary">Move the meta-dictionary attribute with the given id to the given list position.</div>
           </li><li id="zms.ZMSMetadictManager.ZMSMetadictManager.manage_changeMetaProperties">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSMetadict<wbr></wbr>Manager<wbr></wbr>.<wbr></wbr>ZMSMetadict<wbr></wbr>Manager<wbr></wbr>.manage_change<wbr></wbr>Meta<wbr></wbr>Properties</div>
@@ -2235,7 +2235,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">MetadictManager.manage_changeMetaProperties</div>
+            <div class="summary">Handle add/edit/delete/copy/import/export/reorder actions for meta-dictionary attributes.</div>
           </li><li id="zms.ZMSMetamodelProvider.ZMSMetamodelProvider">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSMetamodel<wbr></wbr>Provider<wbr></wbr>.<wbr></wbr>ZMSMetamodel<wbr></wbr>Provider</div>
@@ -2243,7 +2243,7 @@
             <div class="type">Class</div>
             <div class="kind">Class</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Provide helpers for ZMSMetamodelProvider.</div>
+            <div class="summary">Central provider for ZMS object-model definitions (meta-objects and meta-dictionaries), including ZMI management and repository I/O.</div>
           </li><li id="zms.ZMSMetamodelProvider.ZMSMetamodelProvider.meta_type">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSMetamodel<wbr></wbr>Provider<wbr></wbr>.<wbr></wbr>ZMSMetamodel<wbr></wbr>Provider<wbr></wbr>.meta<wbr></wbr>_type</div>
@@ -2252,10 +2252,10 @@
             <div class="kind">Class Variable</div>
             <div class="privacy">PUBLIC</div>
             <div class="summary"><span class="undocumented">Undocumented</span></div>
-          </li><li id="zms.ZMSMetamodelProvider.ZMSMetamodelProvider.icon_clazz">
+          </li><li id="zms.ZMSMetamodelProvider.ZMSMetamodelProvider.zmi_icon">
             
-            <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSMetamodel<wbr></wbr>Provider<wbr></wbr>.<wbr></wbr>ZMSMetamodel<wbr></wbr>Provider<wbr></wbr>.icon<wbr></wbr>_clazz</div>
-            <div class="url">zms.ZMSMetamodelProvider.ZMSMetamodelProvider.html#icon_clazz</div>
+            <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSMetamodel<wbr></wbr>Provider<wbr></wbr>.<wbr></wbr>ZMSMetamodel<wbr></wbr>Provider<wbr></wbr>.zmi<wbr></wbr>_icon</div>
+            <div class="url">zms.ZMSMetamodelProvider.ZMSMetamodelProvider.html#zmi_icon</div>
             <div class="type">Attribute</div>
             <div class="kind">Class Variable</div>
             <div class="privacy">PUBLIC</div>
@@ -2275,7 +2275,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Handle the ZMI action 'manage_options'.</div>
+            <div class="summary"><span class="undocumented">Undocumented</span></div>
           </li><li id="zms.ZMSMetamodelProvider.ZMSMetamodelProvider.manage_sub_options__roles__">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSMetamodel<wbr></wbr>Provider<wbr></wbr>.<wbr></wbr>ZMSMetamodel<wbr></wbr>Provider<wbr></wbr>.manage<wbr></wbr>_sub<wbr></wbr>_options<wbr></wbr>_<wbr></wbr>_roles__</div>
@@ -2291,7 +2291,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Handle the ZMI action 'manage_sub_options'.</div>
+            <div class="summary"><span class="undocumented">Undocumented</span></div>
           </li><li id="zms.ZMSMetamodelProvider.ZMSMetamodelProvider.manage">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSMetamodel<wbr></wbr>Provider<wbr></wbr>.<wbr></wbr>ZMSMetamodel<wbr></wbr>Provider<wbr></wbr>.manage</div>
@@ -2387,7 +2387,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Initialize the instance state.</div>
+            <div class="summary">Initialise the metaobj/metadict manager with an optional model dict and metas list.</div>
           </li><li id="zms.ZMSMetamodelProvider.ZMSMetamodelProvider.id">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSMetamodel<wbr></wbr>Provider<wbr></wbr>.<wbr></wbr>ZMSMetamodel<wbr></wbr>Provider<wbr></wbr>.id</div>
@@ -2419,7 +2419,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return confproperty.</div>
+            <div class="summary">Return configuration property from the root content object, or default.</div>
           </li><li id="zms.ZMSMetamodelProvider.ZMSMetamodelProvider.__bobo_traverse__">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSMetamodel<wbr></wbr>Provider<wbr></wbr>.<wbr></wbr>ZMSMetamodel<wbr></wbr>Provider<wbr></wbr>.__bobo<wbr></wbr>_traverse__</div>
@@ -2427,7 +2427,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement '__bobo_traverse__'.</div>
+            <div class="summary">Custom traversal hook that resolves attributes and delegates upward through portal hierarchy when not found locally.</div>
           </li><li id="zms.ZMSMetamodelProvider.ZMSMetamodelProvider.provideRepository">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSMetamodel<wbr></wbr>Provider<wbr></wbr>.<wbr></wbr>ZMSMetamodel<wbr></wbr>Provider<wbr></wbr>.provide<wbr></wbr>Repository</div>
@@ -2435,7 +2435,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement 'provideRepository'.</div>
+            <div class="summary">Export all local model and meta-dictionary records into a repository dict.</div>
           </li><li id="zms.ZMSMetamodelProvider.ZMSMetamodelProvider.updateRepository">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSMetamodel<wbr></wbr>Provider<wbr></wbr>.<wbr></wbr>ZMSMetamodel<wbr></wbr>Provider<wbr></wbr>.update<wbr></wbr>Repository</div>
@@ -2443,7 +2443,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement 'updateRepository'.</div>
+            <div class="summary">Import one record from a repository payload into the local model.</div>
           </li><li id="zms.ZMSMetaobjManager.syncZopeMetaobjAttr">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSMetaobj<wbr></wbr>Manager<wbr></wbr>.sync<wbr></wbr>Zope<wbr></wbr>Metaobj<wbr></wbr>Attr</div>
@@ -3291,7 +3291,7 @@
             <div class="type">Class</div>
             <div class="kind">Class</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Manages block formats (textformats) for ZMS block / rich-text editing, including XML import/export, CRUD operations, and reordering.</div>
+            <div class="summary">Manage block text formats used by rich-text editing and export/import.</div>
           </li><li id="zms.ZMSTextformatManager.ZMSTextformatManager._importTextformatXml">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSTextformat<wbr></wbr>Manager<wbr></wbr>.<wbr></wbr>ZMSTextformat<wbr></wbr>Manager<wbr></wbr>._import<wbr></wbr>Textformat<wbr></wbr>Xml</div>
@@ -3299,7 +3299,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PRIVATE</div>
-            <div class="summary">Implement '_importTextformatXml'.</div>
+            <div class="summary">Import a single serialized text-format entry into <tt class="rst-docutils rst-literal">self.textformats</tt>.</div>
           </li><li id="zms.ZMSTextformatManager.ZMSTextformatManager.textformats">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSTextformat<wbr></wbr>Manager<wbr></wbr>.<wbr></wbr>ZMSTextformat<wbr></wbr>Manager<wbr></wbr>.textformats</div>
@@ -3315,7 +3315,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement 'importTextformatXml'.</div>
+            <div class="summary">Import one or many text-format records from XML content.</div>
           </li><li id="zms.ZMSTextformatManager.ZMSTextformatManager.delTextformat">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSTextformat<wbr></wbr>Manager<wbr></wbr>.<wbr></wbr>ZMSTextformat<wbr></wbr>Manager<wbr></wbr>.del<wbr></wbr>Textformat</div>
@@ -3323,7 +3323,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement 'delTextformat'.</div>
+            <div class="summary">Remove one text format by id and persist the resulting list.</div>
           </li><li id="zms.ZMSTextformatManager.ZMSTextformatManager.setTextformat">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSTextformat<wbr></wbr>Manager<wbr></wbr>.<wbr></wbr>ZMSTextformat<wbr></wbr>Manager<wbr></wbr>.set<wbr></wbr>Textformat</div>
@@ -3331,7 +3331,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Set textformat.</div>
+            <div class="summary">Create or update one text-format definition.</div>
           </li><li id="zms.ZMSTextformatManager.ZMSTextformatManager.getTextFormat">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSTextformat<wbr></wbr>Manager<wbr></wbr>.<wbr></wbr>ZMSTextformat<wbr></wbr>Manager<wbr></wbr>.get<wbr></wbr>Text<wbr></wbr>Format</div>
@@ -3339,7 +3339,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return textformat.</div>
+            <div class="summary">Return one <tt class="rst-docutils rst-literal">ZMSTextformat</tt> wrapper for the given format id.</div>
           </li><li id="zms.ZMSTextformatManager.ZMSTextformatManager.getTextFormats">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSTextformat<wbr></wbr>Manager<wbr></wbr>.<wbr></wbr>ZMSTextformat<wbr></wbr>Manager<wbr></wbr>.get<wbr></wbr>Text<wbr></wbr>Formats</div>
@@ -3347,7 +3347,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return textformats.</div>
+            <div class="summary">Return all configured text formats sorted by display label.</div>
           </li><li id="zms.ZMSTextformatManager.ZMSTextformatManager.setDefaultTextformat">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSTextformat<wbr></wbr>Manager<wbr></wbr>.<wbr></wbr>ZMSTextformat<wbr></wbr>Manager<wbr></wbr>.set<wbr></wbr>Default<wbr></wbr>Textformat</div>
@@ -3355,7 +3355,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Set defaulttextformat.</div>
+            <div class="summary">Mark the given text-format id as default and clear previous defaults.</div>
           </li><li id="zms.ZMSTextformatManager.ZMSTextformatManager.getTextFormatDefault">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSTextformat<wbr></wbr>Manager<wbr></wbr>.<wbr></wbr>ZMSTextformat<wbr></wbr>Manager<wbr></wbr>.get<wbr></wbr>Text<wbr></wbr>Format<wbr></wbr>Default</div>
@@ -3363,7 +3363,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return textformatdefault.</div>
+            <div class="summary">Return the default text-format id, falling back to the first or <tt class="rst-docutils rst-literal">body</tt>.</div>
           </li><li id="zms.ZMSTextformatManager.ZMSTextformatManager.manage_changeTextformat">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSTextformat<wbr></wbr>Manager<wbr></wbr>.<wbr></wbr>ZMSTextformat<wbr></wbr>Manager<wbr></wbr>.manage_change<wbr></wbr>Textformat</div>
@@ -3371,7 +3371,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">ZMSTextformatManager.manage_changeTextformat</div>
+            <div class="summary">Handle add/edit/delete/import/export actions for text-format entries.</div>
           </li><li id="zms.ZMSWorkflowActivitiesManager.ZMSWorkflowActivitiesManager">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSWorkflow<wbr></wbr>Activities<wbr></wbr>Manager<wbr></wbr>.<wbr></wbr>ZMSWorkflow<wbr></wbr>Activities<wbr></wbr>Manager</div>
@@ -3379,7 +3379,7 @@
             <div class="type">Class</div>
             <div class="kind">Class</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Provide helpers for ZMSWorkflowActivitiesManager.</div>
+            <div class="summary">Manage workflow activities used by transitions and repository export.</div>
           </li><li id="zms.ZMSWorkflowActivitiesManager.ZMSWorkflowActivitiesManager.provideRepositoryActivities">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSWorkflow<wbr></wbr>Activities<wbr></wbr>Manager<wbr></wbr>.<wbr></wbr>ZMSWorkflow<wbr></wbr>Activities<wbr></wbr>Manager<wbr></wbr>.provide<wbr></wbr>Repository<wbr></wbr>Activities</div>
@@ -3387,7 +3387,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement 'provideRepositoryActivities'.</div>
+            <div class="summary">Write local workflow activities into the repository export payload.</div>
           </li><li id="zms.ZMSWorkflowActivitiesManager.ZMSWorkflowActivitiesManager.updateRepositoryActivities">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSWorkflow<wbr></wbr>Activities<wbr></wbr>Manager<wbr></wbr>.<wbr></wbr>ZMSWorkflow<wbr></wbr>Activities<wbr></wbr>Manager<wbr></wbr>.update<wbr></wbr>Repository<wbr></wbr>Activities</div>
@@ -3395,7 +3395,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement 'updateRepositoryActivities'.</div>
+            <div class="summary">Replace local activities from a repository import payload.</div>
           </li><li id="zms.ZMSWorkflowActivitiesManager.ZMSWorkflowActivitiesManager.activities">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSWorkflow<wbr></wbr>Activities<wbr></wbr>Manager<wbr></wbr>.<wbr></wbr>ZMSWorkflow<wbr></wbr>Activities<wbr></wbr>Manager<wbr></wbr>.activities</div>
@@ -3411,7 +3411,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Set activity.</div>
+            <div class="summary">Create or update one workflow activity and optional icon blob.</div>
           </li><li id="zms.ZMSWorkflowActivitiesManager.ZMSWorkflowActivitiesManager.getActivities">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSWorkflow<wbr></wbr>Activities<wbr></wbr>Manager<wbr></wbr>.<wbr></wbr>ZMSWorkflow<wbr></wbr>Activities<wbr></wbr>Manager<wbr></wbr>.get<wbr></wbr>Activities</div>
@@ -3419,7 +3419,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return activities.</div>
+            <div class="summary">Return all configured activities as a list of dictionaries.</div>
           </li><li id="zms.ZMSWorkflowActivitiesManager.ZMSWorkflowActivitiesManager.getActivityIds">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSWorkflow<wbr></wbr>Activities<wbr></wbr>Manager<wbr></wbr>.<wbr></wbr>ZMSWorkflow<wbr></wbr>Activities<wbr></wbr>Manager<wbr></wbr>.get<wbr></wbr>Activity<wbr></wbr>Ids</div>
@@ -3427,7 +3427,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return activityids.</div>
+            <div class="summary">Return all workflow activity ids in configured order.</div>
           </li><li id="zms.ZMSWorkflowActivitiesManager.ZMSWorkflowActivitiesManager.getActivity">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSWorkflow<wbr></wbr>Activities<wbr></wbr>Manager<wbr></wbr>.<wbr></wbr>ZMSWorkflow<wbr></wbr>Activities<wbr></wbr>Manager<wbr></wbr>.get<wbr></wbr>Activity</div>
@@ -3435,7 +3435,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return activity.</div>
+            <div class="summary">Return one activity by id.</div>
           </li><li id="zms.ZMSWorkflowActivitiesManager.ZMSWorkflowActivitiesManager.getActivityDetails">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSWorkflow<wbr></wbr>Activities<wbr></wbr>Manager<wbr></wbr>.<wbr></wbr>ZMSWorkflow<wbr></wbr>Activities<wbr></wbr>Manager<wbr></wbr>.get<wbr></wbr>Activity<wbr></wbr>Details</div>
@@ -3443,7 +3443,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return activitydetails.</div>
+            <div class="summary">Return transition relation indexes for an activity graph view.</div>
           </li><li id="zms.ZMSWorkflowActivitiesManager.ZMSWorkflowActivitiesManager.manage_changeActivities">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSWorkflow<wbr></wbr>Activities<wbr></wbr>Manager<wbr></wbr>.<wbr></wbr>ZMSWorkflow<wbr></wbr>Activities<wbr></wbr>Manager<wbr></wbr>.manage_change<wbr></wbr>Activities</div>
@@ -3451,7 +3451,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">ZMSWorkflowActivitiesManager.manage_changeActivities</div>
+            <div class="summary">Handle add/edit/delete/reorder actions for workflow activities in the ZMI.</div>
           </li><li id="zms.ZMSWorkflowItem.ZMSWorkflowItem">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSWorkflow<wbr></wbr>Item<wbr></wbr>.<wbr></wbr>ZMSWorkflow<wbr></wbr>Item</div>
@@ -3459,7 +3459,7 @@
             <div class="type">Class</div>
             <div class="kind">Class</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">"" ZMSWorkflowItem.getAutocommit</div>
+            <div class="summary"><span class="undocumented">No class docstring; 2/2 methods documented</span></div>
           </li><li id="zms.ZMSWorkflowItem.ZMSWorkflowItem.getAutocommit">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSWorkflow<wbr></wbr>Item<wbr></wbr>.<wbr></wbr>ZMSWorkflow<wbr></wbr>Item<wbr></wbr>.get<wbr></wbr>Autocommit</div>
@@ -3467,7 +3467,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return autocommit.</div>
+            <div class="summary">Return whether this object should bypass workflow transitions.</div>
           </li><li id="zms.ZMSWorkflowItem.ZMSWorkflowItem.filtered_workflow_actions">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSWorkflow<wbr></wbr>Item<wbr></wbr>.<wbr></wbr>ZMSWorkflow<wbr></wbr>Item<wbr></wbr>.filtered<wbr></wbr>_workflow<wbr></wbr>_actions</div>
@@ -3475,7 +3475,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement 'filtered_workflow_actions'.</div>
+            <div class="summary">Build the list of workflow transition actions visible to the user.</div>
           </li><li id="zms.ZMSWorkflowProvider.doAutocommit">
             
             <div class="fullName">zms<wbr></wbr>.<wbr></wbr>ZMSWorkflow<wbr></wbr>Provider<wbr></wbr>.do<wbr></wbr>Autocommit</div>
@@ -5763,7 +5763,7 @@
             <div class="type">Class</div>
             <div class="kind">Class</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary"><span class="undocumented">Undocumented</span></div>
+            <div class="summary">Lightweight attribute container used for request-local buffering.</div>
           </li><li id="zms._cachemanager.ReqBuff">
             
             <div class="fullName">zms<wbr></wbr>._cachemanager<wbr></wbr>.<wbr></wbr>Req<wbr></wbr>Buff</div>
@@ -5771,7 +5771,7 @@
             <div class="type">Class</div>
             <div class="kind">Class</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary"><span class="undocumented">Undocumented</span></div>
+            <div class="summary">Request-scoped buffer helpers for expensive values computed during one request.</div>
           </li><li id="zms._cachemanager.ReqBuff.getReqBuffId">
             
             <div class="fullName">zms<wbr></wbr>._cachemanager<wbr></wbr>.<wbr></wbr>Req<wbr></wbr>Buff<wbr></wbr>.get<wbr></wbr>Req<wbr></wbr>Buff<wbr></wbr>Id</div>
@@ -5779,7 +5779,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary"><span class="undocumented">Undocumented</span></div>
+            <div class="summary">Return a stable request-buffer key namespaced by the object's physical path.</div>
           </li><li id="zms._cachemanager.ReqBuff.clearReqBuff">
             
             <div class="fullName">zms<wbr></wbr>._cachemanager<wbr></wbr>.<wbr></wbr>Req<wbr></wbr>Buff<wbr></wbr>.clear<wbr></wbr>Req<wbr></wbr>Buff</div>
@@ -5787,7 +5787,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary"><span class="undocumented">Undocumented</span></div>
+            <div class="summary">Remove buffered entries from the current request, optionally filtered by prefix.</div>
           </li><li id="zms._cachemanager.ReqBuff.fetchReqBuff">
             
             <div class="fullName">zms<wbr></wbr>._cachemanager<wbr></wbr>.<wbr></wbr>Req<wbr></wbr>Buff<wbr></wbr>.fetch<wbr></wbr>Req<wbr></wbr>Buff</div>
@@ -5795,7 +5795,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary"><span class="undocumented">Undocumented</span></div>
+            <div class="summary">Fetch one buffered value from the current request (raises if missing).</div>
           </li><li id="zms._cachemanager.ReqBuff.storeReqBuff">
             
             <div class="fullName">zms<wbr></wbr>._cachemanager<wbr></wbr>.<wbr></wbr>Req<wbr></wbr>Buff<wbr></wbr>.store<wbr></wbr>Req<wbr></wbr>Buff</div>
@@ -5803,7 +5803,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary"><span class="undocumented">Undocumented</span></div>
+            <div class="summary">Store and return a value in the current request buffer. The value is stored under a key namespaced by the object's physical path to avoid conflicts with other objects.</div>
           </li><li id="zms._conf.ZMSSysConf">
             
             <div class="fullName">zms<wbr></wbr>._conf<wbr></wbr>.<wbr></wbr>ZMSSys<wbr></wbr>Conf</div>
@@ -8107,7 +8107,7 @@
             <div class="type">Function</div>
             <div class="kind">Function</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement 'recurse_importContent'.</div>
+            <div class="summary">Post-process imported objects and restore persisted blob payloads.</div>
           </li><li id="zms._importable.importContent">
             
             <div class="fullName">zms<wbr></wbr>._importable<wbr></wbr>.import<wbr></wbr>Content</div>
@@ -8115,7 +8115,7 @@
             <div class="type">Function</div>
             <div class="kind">Function</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement 'importContent'.</div>
+            <div class="summary">Import one XML content stream into the current object tree.</div>
           </li><li id="zms._importable.importFile">
             
             <div class="fullName">zms<wbr></wbr>._importable<wbr></wbr>.import<wbr></wbr>File</div>
@@ -8123,7 +8123,7 @@
             <div class="type">Function</div>
             <div class="kind">Function</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement 'importFile'.</div>
+            <div class="summary">Import content from an uploaded file or archive.</div>
           </li><li id="zms._mediadb.manage_addMediaDb">
             
             <div class="fullName">zms<wbr></wbr>._mediadb<wbr></wbr>.manage_add<wbr></wbr>Media<wbr></wbr>Db</div>
@@ -8131,7 +8131,7 @@
             <div class="type">Function</div>
             <div class="kind">Function</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">manage_addMediaDb</div>
+            <div class="summary">Initialize a new MediaDb instance at the specified filesystem location and recursively attach all existing blob attributes from the object tree.</div>
           </li><li id="zms._mediadb.containerFilter">
             
             <div class="fullName">zms<wbr></wbr>._mediadb<wbr></wbr>.container<wbr></wbr>Filter</div>
@@ -8139,7 +8139,7 @@
             <div class="type">Function</div>
             <div class="kind">Function</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement 'containerFilter'.</div>
+            <div class="summary">Return True for containers whose meta_type is 'ZMS' (used by addable object filter).</div>
           </li><li id="zms._mediadb.recurse_addMediaDb">
             
             <div class="fullName">zms<wbr></wbr>._mediadb<wbr></wbr>.recurse_add<wbr></wbr>Media<wbr></wbr>Db</div>
@@ -8147,7 +8147,7 @@
             <div class="type">Function</div>
             <div class="kind">Function</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement 'recurse_addMediaDb'.</div>
+            <div class="summary">Recursively attach all blob attributes of the object tree to the given mediadb.</div>
           </li><li id="zms._mediadb.getFilenamesFromValue">
             
             <div class="fullName">zms<wbr></wbr>._mediadb<wbr></wbr>.get<wbr></wbr>Filenames<wbr></wbr>From<wbr></wbr>Value</div>
@@ -8155,7 +8155,7 @@
             <div class="type">Function</div>
             <div class="kind">Function</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return filenamesfromvalue.</div>
+            <div class="summary">Return a flat list of mediadb filenames referenced inside an attribute value.</div>
           </li><li id="zms._mediadb.manage_structureMediaDb">
             
             <div class="fullName">zms<wbr></wbr>._mediadb<wbr></wbr>.manage_structure<wbr></wbr>Media<wbr></wbr>Db</div>
@@ -8163,7 +8163,7 @@
             <div class="type">Function</div>
             <div class="kind">Function</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">manage_structureMediaDb</div>
+            <div class="summary">Reorganise mediadb files into the requested directory structure. The method moves all files into their new target location as computed by mediadb.targetFile(), which may involve creating intermediate directories for hierarchical structures...</div>
           </li><li id="zms._mediadb.manage_packMediaDb">
             
             <div class="fullName">zms<wbr></wbr>._mediadb<wbr></wbr>.manage_pack<wbr></wbr>Media<wbr></wbr>Db</div>
@@ -8171,7 +8171,7 @@
             <div class="type">Function</div>
             <div class="kind">Function</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">manage_packMediaDb</div>
+            <div class="summary">Scan the mediadb and move all orphaned files (not referenced by any ZMS object) to a temporary folder for cleanup or archival.</div>
           </li><li id="zms._mediadb.recurse_delMediaDb">
             
             <div class="fullName">zms<wbr></wbr>._mediadb<wbr></wbr>.recurse_del<wbr></wbr>Media<wbr></wbr>Db</div>
@@ -8179,7 +8179,7 @@
             <div class="type">Function</div>
             <div class="kind">Function</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement 'recurse_delMediaDb'.</div>
+            <div class="summary">Recursively detach blobs from the mediadb and restore their data back into ZODB. The method traverses the object tree and for each blob attribute found, it retrieves the file from the mediadb using the stored filename reference, restores the blob's data attribute with the file content, and removes the mediadb reference...</div>
           </li><li id="zms._mediadb.manage_delMediaDb">
             
             <div class="fullName">zms<wbr></wbr>._mediadb<wbr></wbr>.manage_del<wbr></wbr>Media<wbr></wbr>Db</div>
@@ -8187,7 +8187,7 @@
             <div class="type">Function</div>
             <div class="kind">Function</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">manage_delMediaDb</div>
+            <div class="summary">Detach the mediadb from this object and remove the acl_mediadb child. The method calls recurse_delMediaDb to restore all blob data back into the ZODB, then deletes the mediadb object itself. CAVE: Restoring the blob-files back into the ZODB can massively enlarge it's size.</div>
           </li><li id="zms._mediadb.MediaDb">
             
             <div class="fullName">zms<wbr></wbr>._mediadb<wbr></wbr>.<wbr></wbr>Media<wbr></wbr>Db</div>
@@ -8195,7 +8195,7 @@
             <div class="type">Class</div>
             <div class="kind">Class</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Provide helpers for MediaDb.</div>
+            <div class="summary">Persistent Zope object that stores uploaded binary assets in a flat or hierarchical filesystem.</div>
           </li><li id="zms._mediadb.MediaDb.security">
             
             <div class="fullName">zms<wbr></wbr>._mediadb<wbr></wbr>.<wbr></wbr>Media<wbr></wbr>Db<wbr></wbr>.security</div>
@@ -8251,7 +8251,7 @@
             <div class="type">Attribute</div>
             <div class="kind">Class Variable</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">"" Constructor</div>
+            <div class="summary"><span class="undocumented">Undocumented</span></div>
           </li><li id="zms._mediadb.MediaDb.__init__">
             
             <div class="fullName">zms<wbr></wbr>._mediadb<wbr></wbr>.<wbr></wbr>Media<wbr></wbr>Db<wbr></wbr>.__init__</div>
@@ -8283,7 +8283,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Set location.</div>
+            <div class="summary">Set the filesystem root path for the mediadb, stripping any trailing slash.</div>
           </li><li id="zms._mediadb.MediaDb.location">
             
             <div class="fullName">zms<wbr></wbr>._mediadb<wbr></wbr>.<wbr></wbr>Media<wbr></wbr>Db<wbr></wbr>.location</div>
@@ -8299,7 +8299,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return location.</div>
+            <div class="summary">Return the resolved filesystem root path, expanding $INSTANCE_HOME.</div>
           </li><li id="zms._mediadb.MediaDb.getStructure">
             
             <div class="fullName">zms<wbr></wbr>._mediadb<wbr></wbr>.<wbr></wbr>Media<wbr></wbr>Db<wbr></wbr>.get<wbr></wbr>Structure</div>
@@ -8307,7 +8307,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return structure.</div>
+            <div class="summary">Return the directory nesting depth used for hierarchical storage (0 = flat).</div>
           </li><li id="zms._mediadb.MediaDb.urlQuote">
             
             <div class="fullName">zms<wbr></wbr>._mediadb<wbr></wbr>.<wbr></wbr>Media<wbr></wbr>Db<wbr></wbr>.url<wbr></wbr>Quote</div>
@@ -8315,7 +8315,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement 'urlQuote'.</div>
+            <div class="summary">Return the URL-encoded form of the given string.</div>
           </li><li id="zms._mediadb.MediaDb.getPath">
             
             <div class="fullName">zms<wbr></wbr>._mediadb<wbr></wbr>.<wbr></wbr>Media<wbr></wbr>Db<wbr></wbr>.get<wbr></wbr>Path</div>
@@ -8323,7 +8323,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return path.</div>
+            <div class="summary">Return the requested filesystem path, defaulting to the mediadb root.</div>
           </li><li id="zms._mediadb.MediaDb.readDir">
             
             <div class="fullName">zms<wbr></wbr>._mediadb<wbr></wbr>.<wbr></wbr>Media<wbr></wbr>Db<wbr></wbr>.read<wbr></wbr>Dir</div>
@@ -8331,7 +8331,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement 'readDir'.</div>
+            <div class="summary">Return a directory listing for the given filesystem path.</div>
           </li><li id="zms._mediadb.MediaDb.getParentDir">
             
             <div class="fullName">zms<wbr></wbr>._mediadb<wbr></wbr>.<wbr></wbr>Media<wbr></wbr>Db<wbr></wbr>.get<wbr></wbr>Parent<wbr></wbr>Dir</div>
@@ -8339,7 +8339,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return parentdir.</div>
+            <div class="summary">Return the parent directory of the given filesystem path.</div>
           </li><li id="zms._mediadb.MediaDb.getFile">
             
             <div class="fullName">zms<wbr></wbr>._mediadb<wbr></wbr>.<wbr></wbr>Media<wbr></wbr>Db<wbr></wbr>.get<wbr></wbr>File</div>
@@ -8347,7 +8347,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return file.</div>
+            <div class="summary">Stream the file identified by the request path as an HTTP response.</div>
           </li><li id="zms._mediadb.MediaDb.targetFile">
             
             <div class="fullName">zms<wbr></wbr>._mediadb<wbr></wbr>.<wbr></wbr>Media<wbr></wbr>Db<wbr></wbr>.target<wbr></wbr>File</div>
@@ -8355,7 +8355,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement 'targetFile'.</div>
+            <div class="summary">Compute the full filesystem path where a file should be stored.</div>
           </li><li id="zms._mediadb.MediaDb.storeFile">
             
             <div class="fullName">zms<wbr></wbr>._mediadb<wbr></wbr>.<wbr></wbr>Media<wbr></wbr>Db<wbr></wbr>.store<wbr></wbr>File</div>
@@ -8363,7 +8363,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement 'storeFile'.</div>
+            <div class="summary">Store an uploaded file object into the mediadb and return its unique filename.</div>
           </li><li id="zms._mediadb.MediaDb.manage_index_html">
             
             <div class="fullName">zms<wbr></wbr>._mediadb<wbr></wbr>.<wbr></wbr>Media<wbr></wbr>Db<wbr></wbr>.manage<wbr></wbr>_index<wbr></wbr>_html</div>
@@ -8371,7 +8371,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">MediaDb.manage_index_html</div>
+            <div class="summary">Serve a mediadb file as a streaming HTTP response.</div>
           </li><li id="zms._mediadb.MediaDb.retrieveFileStreamIterator">
             
             <div class="fullName">zms<wbr></wbr>._mediadb<wbr></wbr>.<wbr></wbr>Media<wbr></wbr>Db<wbr></wbr>.retrieve<wbr></wbr>File<wbr></wbr>Stream<wbr></wbr>Iterator</div>
@@ -8379,7 +8379,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement 'retrieveFileStreamIterator'.</div>
+            <div class="summary">Retrieve a mediadb file and return its content as a stream or bytes object.</div>
           </li><li id="zms._mediadb.MediaDb.retrieveFile">
             
             <div class="fullName">zms<wbr></wbr>._mediadb<wbr></wbr>.<wbr></wbr>Media<wbr></wbr>Db<wbr></wbr>.retrieve<wbr></wbr>File</div>
@@ -8387,7 +8387,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement 'retrieveFile'.</div>
+            <div class="summary">Return the raw bytes of the given mediadb file.</div>
           </li><li id="zms._mediadb.MediaDb.getFileSize">
             
             <div class="fullName">zms<wbr></wbr>._mediadb<wbr></wbr>.<wbr></wbr>Media<wbr></wbr>Db<wbr></wbr>.get<wbr></wbr>File<wbr></wbr>Size</div>
@@ -8395,7 +8395,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return filesize.</div>
+            <div class="summary">Return the size in bytes of the given mediadb file.</div>
           </li><li id="zms._mediadb.MediaDb.valid_filenames">
             
             <div class="fullName">zms<wbr></wbr>._mediadb<wbr></wbr>.<wbr></wbr>Media<wbr></wbr>Db<wbr></wbr>.valid<wbr></wbr>_filenames</div>
@@ -8403,7 +8403,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement 'valid_filenames'.</div>
+            <div class="summary">Return a list of (attr_path, filename) pairs for all mediadb-referenced files.</div>
           </li><li id="zms._mediadb.MediaDb.manage_test">
             
             <div class="fullName">zms<wbr></wbr>._mediadb<wbr></wbr>.<wbr></wbr>Media<wbr></wbr>Db<wbr></wbr>.manage<wbr></wbr>_test</div>
@@ -8411,7 +8411,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">manage_test</div>
+            <div class="summary">Scan the mediadb and return a JSON report of OK/MISSING file statuses.</div>
           </li><li id="zms._mediadb.MediaDb.manage_changeProperties">
             
             <div class="fullName">zms<wbr></wbr>._mediadb<wbr></wbr>.<wbr></wbr>Media<wbr></wbr>Db<wbr></wbr>.manage_change<wbr></wbr>Properties</div>
@@ -8419,7 +8419,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">MediaDb.manage_changeProperties</div>
+            <div class="summary">Apply submitted form changes to MediaDb location and redirect back to properties.</div>
           </li><li id="zms._mimetypes.application_epub">
             
             <div class="fullName">zms<wbr></wbr>._mimetypes<wbr></wbr>.application<wbr></wbr>_epub</div>
@@ -8635,7 +8635,7 @@
             <div class="type">Function</div>
             <div class="kind">Function</div>
             <div class="privacy">PRIVATE</div>
-            <div class="summary">Implement '_importXml'.</div>
+            <div class="summary">Import one language-dictionary row into custom language configuration.</div>
           </li><li id="zms._multilangmanager.importXml">
             
             <div class="fullName">zms<wbr></wbr>._multilangmanager<wbr></wbr>.import<wbr></wbr>Xml</div>
@@ -8643,7 +8643,7 @@
             <div class="type">Function</div>
             <div class="kind">Function</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement 'importXml'.</div>
+            <div class="summary">Import one or many language-dictionary rows from XML or worksheet XML.</div>
           </li><li id="zms._multilangmanager.exportXml">
             
             <div class="fullName">zms<wbr></wbr>._multilangmanager<wbr></wbr>.export<wbr></wbr>Xml</div>
@@ -8651,7 +8651,7 @@
             <div class="type">Function</div>
             <div class="kind">Function</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement 'exportXml'.</div>
+            <div class="summary">Export selected language-dictionary rows as XML payload.</div>
           </li><li id="zms._multilangmanager.getDescLangs">
             
             <div class="fullName">zms<wbr></wbr>._multilangmanager<wbr></wbr>.get<wbr></wbr>Desc<wbr></wbr>Langs</div>
@@ -8659,7 +8659,7 @@
             <div class="type">Function</div>
             <div class="kind">Function</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return desclangs.</div>
+            <div class="summary">Return <tt class="rst-docutils rst-literal">(label, id)</tt> tuples for one language and all descendants.</div>
           </li><li id="zms._multilangmanager.langdict">
             
             <div class="fullName">zms<wbr></wbr>._multilangmanager<wbr></wbr>.langdict</div>
@@ -8667,7 +8667,7 @@
             <div class="type">Class</div>
             <div class="kind">Class</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Provide helpers for langdict.</div>
+            <div class="summary">Load and provide access to the built-in ZMI language dictionary.</div>
           </li><li id="zms._multilangmanager.langdict.__init__">
             
             <div class="fullName">zms<wbr></wbr>._multilangmanager<wbr></wbr>.langdict<wbr></wbr>.__init__</div>
@@ -8675,7 +8675,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Constructor</div>
+            <div class="summary">Parse the bundled language XML file into manage-language and key mappings.</div>
           </li><li id="zms._multilangmanager.langdict.manage_langs">
             
             <div class="fullName">zms<wbr></wbr>._multilangmanager<wbr></wbr>.langdict<wbr></wbr>.manage<wbr></wbr>_langs</div>
@@ -8699,7 +8699,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Returns list of manage-languages.</div>
+            <div class="summary">Return the list of available ZMI manage languages.</div>
           </li><li id="zms._multilangmanager.langdict.get_langdict">
             
             <div class="fullName">zms<wbr></wbr>._multilangmanager<wbr></wbr>.langdict<wbr></wbr>.get<wbr></wbr>_langdict</div>
@@ -8707,7 +8707,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Returns list of manage-languages.</div>
+            <div class="summary">Return the base language-dictionary mapping loaded from XML.</div>
           </li><li id="zms._multilangmanager.MultiLanguageObject">
             
             <div class="fullName">zms<wbr></wbr>._multilangmanager<wbr></wbr>.<wbr></wbr>Multi<wbr></wbr>Language<wbr></wbr>Object</div>
@@ -8715,7 +8715,7 @@
             <div class="type">Class</div>
             <div class="kind">Class</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Provide helpers for MultiLanguageObject.</div>
+            <div class="summary">Language selection helpers for content objects.</div>
           </li><li id="zms._multilangmanager.MultiLanguageObject.getLanguages">
             
             <div class="fullName">zms<wbr></wbr>._multilangmanager<wbr></wbr>.<wbr></wbr>Multi<wbr></wbr>Language<wbr></wbr>Object<wbr></wbr>.get<wbr></wbr>Languages</div>
@@ -8723,7 +8723,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Returns IDs of languages (primary language 1st)</div>
+            <div class="summary">Return language ids available to the current user (primary language first).</div>
           </li><li id="zms._multilangmanager.MultiLanguageObject.getDescendantLanguages">
             
             <div class="fullName">zms<wbr></wbr>._multilangmanager<wbr></wbr>.<wbr></wbr>Multi<wbr></wbr>Language<wbr></wbr>Object<wbr></wbr>.get<wbr></wbr>Descendant<wbr></wbr>Languages</div>
@@ -8731,7 +8731,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Returns IDs of descendant languages</div>
+            <div class="summary">Return descendant language ids below <tt class="rst-docutils rst-literal">id</tt>, optionally as JSON response.</div>
           </li><li id="zms._multilangmanager.MultiLanguageManager">
             
             <div class="fullName">zms<wbr></wbr>._multilangmanager<wbr></wbr>.<wbr></wbr>Multi<wbr></wbr>Language<wbr></wbr>Manager</div>
@@ -8739,7 +8739,7 @@
             <div class="type">Class</div>
             <div class="kind">Class</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Provide helpers for MultiLanguageManager.</div>
+            <div class="summary">Manage content languages and custom language-dictionary entries.</div>
           </li><li id="zms._multilangmanager.MultiLanguageManager.get_manage_langs">
             
             <div class="fullName">zms<wbr></wbr>._multilangmanager<wbr></wbr>.<wbr></wbr>Multi<wbr></wbr>Language<wbr></wbr>Manager<wbr></wbr>.get<wbr></wbr>_manage<wbr></wbr>_langs</div>
@@ -8747,7 +8747,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Returns list of manage-languages.</div>
+            <div class="summary">Return the list of available ZMI manage languages.</div>
           </li><li id="zms._multilangmanager.MultiLanguageManager.get_manage_lang">
             
             <div class="fullName">zms<wbr></wbr>._multilangmanager<wbr></wbr>.<wbr></wbr>Multi<wbr></wbr>Language<wbr></wbr>Manager<wbr></wbr>.get<wbr></wbr>_manage<wbr></wbr>_lang</div>
@@ -8755,7 +8755,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Returns preferred of manage-language for current content-language.</div>
+            <div class="summary">Return preferred manage-language for the current management request.</div>
           </li><li id="zms._multilangmanager.MultiLanguageManager.getZMILangStr">
             
             <div class="fullName">zms<wbr></wbr>._multilangmanager<wbr></wbr>.<wbr></wbr>Multi<wbr></wbr>Language<wbr></wbr>Manager<wbr></wbr>.get<wbr></wbr>ZMILang<wbr></wbr>Str</div>
@@ -8763,7 +8763,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Returns language-string for current manage-language.</div>
+            <div class="summary">Return translated ZMI label text for the current manage-language.</div>
           </li><li id="zms._multilangmanager.MultiLanguageManager._getLangStr">
             
             <div class="fullName">zms<wbr></wbr>._multilangmanager<wbr></wbr>.<wbr></wbr>Multi<wbr></wbr>Language<wbr></wbr>Manager<wbr></wbr>._get<wbr></wbr>Lang<wbr></wbr>Str</div>
@@ -8771,7 +8771,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PRIVATE</div>
-            <div class="summary">Returns language-string for current content-language.</div>
+            <div class="summary">Resolve one translation value from custom dictionary first, then system fallback.</div>
           </li><li id="zms._multilangmanager.MultiLanguageManager.getLangStr">
             
             <div class="fullName">zms<wbr></wbr>._multilangmanager<wbr></wbr>.<wbr></wbr>Multi<wbr></wbr>Language<wbr></wbr>Manager<wbr></wbr>.get<wbr></wbr>Lang<wbr></wbr>Str</div>
@@ -8779,7 +8779,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Returns language-string for current content-language.</div>
+            <div class="summary">Public wrapper returning translated string for the given key and language.</div>
           </li><li id="zms._multilangmanager.MultiLanguageManager.getPrimaryLanguage">
             
             <div class="fullName">zms<wbr></wbr>._multilangmanager<wbr></wbr>.<wbr></wbr>Multi<wbr></wbr>Language<wbr></wbr>Manager<wbr></wbr>.get<wbr></wbr>Primary<wbr></wbr>Language</div>
@@ -8787,7 +8787,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return primarylanguage.</div>
+            <div class="summary">Return the id of the configured primary content language.</div>
           </li><li id="zms._multilangmanager.MultiLanguageManager.setPrimaryLanguage">
             
             <div class="fullName">zms<wbr></wbr>._multilangmanager<wbr></wbr>.<wbr></wbr>Multi<wbr></wbr>Language<wbr></wbr>Manager<wbr></wbr>.set<wbr></wbr>Primary<wbr></wbr>Language</div>
@@ -8795,7 +8795,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Set primarylanguage.</div>
+            <div class="summary">Set the id of the primary content language.</div>
           </li><li id="zms._multilangmanager.MultiLanguageManager.language_primary">
             
             <div class="fullName">zms<wbr></wbr>._multilangmanager<wbr></wbr>.<wbr></wbr>Multi<wbr></wbr>Language<wbr></wbr>Manager<wbr></wbr>.language<wbr></wbr>_primary</div>
@@ -8811,7 +8811,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return langs.</div>
+            <div class="summary">Return the configured language metadata mapping.</div>
           </li><li id="zms._multilangmanager.MultiLanguageManager.setLangs">
             
             <div class="fullName">zms<wbr></wbr>._multilangmanager<wbr></wbr>.<wbr></wbr>Multi<wbr></wbr>Language<wbr></wbr>Manager<wbr></wbr>.set<wbr></wbr>Langs</div>
@@ -8819,7 +8819,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Set langs.</div>
+            <div class="summary">Persist the complete language metadata mapping.</div>
           </li><li id="zms._multilangmanager.MultiLanguageManager.attr_languages">
             
             <div class="fullName">zms<wbr></wbr>._multilangmanager<wbr></wbr>.<wbr></wbr>Multi<wbr></wbr>Language<wbr></wbr>Manager<wbr></wbr>.attr<wbr></wbr>_languages</div>
@@ -8835,7 +8835,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">getParentLanguage</div>
+            <div class="summary">Return the parent language id for the given language id.</div>
           </li><li id="zms._multilangmanager.MultiLanguageManager.getLanguageLabel">
             
             <div class="fullName">zms<wbr></wbr>._multilangmanager<wbr></wbr>.<wbr></wbr>Multi<wbr></wbr>Language<wbr></wbr>Manager<wbr></wbr>.get<wbr></wbr>Language<wbr></wbr>Label</div>
@@ -8843,7 +8843,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">getLanguageLabel</div>
+            <div class="summary">Return the configured display label for the given language id.</div>
           </li><li id="zms._multilangmanager.MultiLanguageManager.getParentLanguages">
             
             <div class="fullName">zms<wbr></wbr>._multilangmanager<wbr></wbr>.<wbr></wbr>Multi<wbr></wbr>Language<wbr></wbr>Manager<wbr></wbr>.get<wbr></wbr>Parent<wbr></wbr>Languages</div>
@@ -8851,7 +8851,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return parentlanguages.</div>
+            <div class="summary">Return all parent language ids up to the root language.</div>
           </li><li id="zms._multilangmanager.MultiLanguageManager.getLang">
             
             <div class="fullName">zms<wbr></wbr>._multilangmanager<wbr></wbr>.<wbr></wbr>Multi<wbr></wbr>Language<wbr></wbr>Manager<wbr></wbr>.get<wbr></wbr>Lang</div>
@@ -8859,7 +8859,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return lang.</div>
+            <div class="summary">Return language metadata for one language id.</div>
           </li><li id="zms._multilangmanager.MultiLanguageManager.getLangTree">
             
             <div class="fullName">zms<wbr></wbr>._multilangmanager<wbr></wbr>.<wbr></wbr>Multi<wbr></wbr>Language<wbr></wbr>Manager<wbr></wbr>.get<wbr></wbr>Lang<wbr></wbr>Tree</div>
@@ -8867,7 +8867,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return langtree.</div>
+            <div class="summary">Return depth-first language tree as <tt class="rst-docutils rst-literal">(id, metadata)</tt> tuples.</div>
           </li><li id="zms._multilangmanager.MultiLanguageManager.getLangIds">
             
             <div class="fullName">zms<wbr></wbr>._multilangmanager<wbr></wbr>.<wbr></wbr>Multi<wbr></wbr>Language<wbr></wbr>Manager<wbr></wbr>.get<wbr></wbr>Lang<wbr></wbr>Ids</div>
@@ -8875,7 +8875,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return langids.</div>
+            <div class="summary">Return configured language ids, optionally sorted by display label.</div>
           </li><li id="zms._multilangmanager.MultiLanguageManager.getLanguageFromName">
             
             <div class="fullName">zms<wbr></wbr>._multilangmanager<wbr></wbr>.<wbr></wbr>Multi<wbr></wbr>Language<wbr></wbr>Manager<wbr></wbr>.get<wbr></wbr>Language<wbr></wbr>From<wbr></wbr>Name</div>
@@ -8883,7 +8883,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return languagefromname.</div>
+            <div class="summary">Extract language suffix from a filename and return matching language id.</div>
           </li><li id="zms._multilangmanager.MultiLanguageManager.getLanguage">
             
             <div class="fullName">zms<wbr></wbr>._multilangmanager<wbr></wbr>.<wbr></wbr>Multi<wbr></wbr>Language<wbr></wbr>Manager<wbr></wbr>.get<wbr></wbr>Language</div>
@@ -8891,7 +8891,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return language.</div>
+            <div class="summary">Resolve request language from parameter, URL suffix, accept-language, or primary.</div>
           </li><li id="zms._multilangmanager.MultiLanguageManager.getHttpAcceptLanguage">
             
             <div class="fullName">zms<wbr></wbr>._multilangmanager<wbr></wbr>.<wbr></wbr>Multi<wbr></wbr>Language<wbr></wbr>Manager<wbr></wbr>.get<wbr></wbr>Http<wbr></wbr>Accept<wbr></wbr>Language</div>
@@ -8899,7 +8899,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return httpacceptlanguage.</div>
+            <div class="summary">Map HTTP accept-language header to one configured language id if enabled.</div>
           </li><li id="zms._multilangmanager.MultiLanguageManager.setLanguage">
             
             <div class="fullName">zms<wbr></wbr>._multilangmanager<wbr></wbr>.<wbr></wbr>Multi<wbr></wbr>Language<wbr></wbr>Manager<wbr></wbr>.set<wbr></wbr>Language</div>
@@ -8907,7 +8907,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Set language.</div>
+            <div class="summary">Create or update one language entry and update primary/parent links if needed.</div>
           </li><li id="zms._multilangmanager.MultiLanguageManager.delLanguage">
             
             <div class="fullName">zms<wbr></wbr>._multilangmanager<wbr></wbr>.<wbr></wbr>Multi<wbr></wbr>Language<wbr></wbr>Manager<wbr></wbr>.del<wbr></wbr>Language</div>
@@ -8915,7 +8915,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement 'delLanguage'.</div>
+            <div class="summary">Delete one language entry from the language metadata mapping.</div>
           </li><li id="zms._multilangmanager.MultiLanguageManager.manage_changeLanguages">
             
             <div class="fullName">zms<wbr></wbr>._multilangmanager<wbr></wbr>.<wbr></wbr>Multi<wbr></wbr>Language<wbr></wbr>Manager<wbr></wbr>.manage_change<wbr></wbr>Languages</div>
@@ -8923,7 +8923,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">MultiLanguageManager.manage_changeLanguages</div>
+            <div class="summary">Handle ZMI language management actions (save/delete) and redirect with message.</div>
           </li><li id="zms._multilangmanager.MultiLanguageManager.get_lang_dict">
             
             <div class="fullName">zms<wbr></wbr>._multilangmanager<wbr></wbr>.<wbr></wbr>Multi<wbr></wbr>Language<wbr></wbr>Manager<wbr></wbr>.get<wbr></wbr>_lang<wbr></wbr>_dict</div>
@@ -8931,7 +8931,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">MultiLanguageManager.get_lang_dict</div>
+            <div class="summary">Return merged language dictionary from master, custom config, and metaobj providers.</div>
           </li><li id="zms._multilangmanager.MultiLanguageManager.set_lang_dict">
             
             <div class="fullName">zms<wbr></wbr>._multilangmanager<wbr></wbr>.<wbr></wbr>Multi<wbr></wbr>Language<wbr></wbr>Manager<wbr></wbr>.set<wbr></wbr>_lang<wbr></wbr>_dict</div>
@@ -8939,7 +8939,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Set lang dict.</div>
+            <div class="summary">Persist custom language dictionary and clear request buffer cache.</div>
           </li><li id="zms._multilangmanager.MultiLanguageManager.getLangDict">
             
             <div class="fullName">zms<wbr></wbr>._multilangmanager<wbr></wbr>.<wbr></wbr>Multi<wbr></wbr>Language<wbr></wbr>Manager<wbr></wbr>.get<wbr></wbr>Lang<wbr></wbr>Dict</div>
@@ -8947,7 +8947,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return langdict.</div>
+            <div class="summary">Return language-dictionary entries as ordered list including their key field.</div>
           </li><li id="zms._multilangmanager.MultiLanguageManager.manage_changeLangDictProperties">
             
             <div class="fullName">zms<wbr></wbr>._multilangmanager<wbr></wbr>.<wbr></wbr>Multi<wbr></wbr>Language<wbr></wbr>Manager<wbr></wbr>.manage_change<wbr></wbr>Lang<wbr></wbr>Dict<wbr></wbr>Properties</div>
@@ -8955,7 +8955,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">MultiLanguageManager.manage_changeLangDictProperties</div>
+            <div class="summary">Handle ZMI language-dictionary actions (save/delete/import/export).</div>
           </li><li id="zms._objattrs.getobjattrdefault">
             
             <div class="fullName">zms<wbr></wbr>._objattrs<wbr></wbr>.getobjattrdefault</div>
@@ -9395,7 +9395,7 @@
             <div class="type">Function</div>
             <div class="kind">Function</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return href2zoom.</div>
+            <div class="summary">Return the URL used for the zoom target of an image.</div>
           </li><li id="zms._objtypes.ObjTypes">
             
             <div class="fullName">zms<wbr></wbr>._objtypes<wbr></wbr>.<wbr></wbr>Obj<wbr></wbr>Types</div>
@@ -9403,7 +9403,7 @@
             <div class="type">Class</div>
             <div class="kind">Class</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Provide helpers for ObjTypes.</div>
+            <div class="summary">Provide rendering helpers for display-type dependent object output.</div>
           </li><li id="zms._objtypes.ObjTypes.zmi_input_autocomplete">
             
             <div class="fullName">zms<wbr></wbr>._objtypes<wbr></wbr>.<wbr></wbr>Obj<wbr></wbr>Types<wbr></wbr>.zmi<wbr></wbr>_input<wbr></wbr>_autocomplete</div>
@@ -9531,7 +9531,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement 'renderDisplaytype'.</div>
+            <div class="summary">Render image/text HTML according to the selected display type template.</div>
           </li><li id="zms._pathhandler.validateId">
             
             <div class="fullName">zms<wbr></wbr>._pathhandler<wbr></wbr>.validate<wbr></wbr>Id</div>
@@ -9683,7 +9683,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Sequence.manage_changeProperties</div>
+            <div class="summary">Handle ZMI actions for updating or advancing the sequence value.</div>
           </li><li id="zms._textformatmanager.TextFormatObject">
             
             <div class="fullName">zms<wbr></wbr>._textformatmanager<wbr></wbr>.<wbr></wbr>Text<wbr></wbr>Format<wbr></wbr>Object</div>
@@ -9691,7 +9691,7 @@
             <div class="type">Class</div>
             <div class="kind">Class</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Provide helpers for TextFormatObject.</div>
+            <div class="summary">Provide text-format helper methods shared by content objects.</div>
           </li><li id="zms._textformatmanager.TextFormatObject.getSecNo">
             
             <div class="fullName">zms<wbr></wbr>._textformatmanager<wbr></wbr>.<wbr></wbr>Text<wbr></wbr>Format<wbr></wbr>Object<wbr></wbr>.get<wbr></wbr>Sec<wbr></wbr>No</div>
@@ -9699,7 +9699,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return secno.</div>
+            <div class="summary">Return the computed section number for this node.</div>
           </li><li id="zms._textformatmanager.TextFormatObject.getText">
             
             <div class="fullName">zms<wbr></wbr>._textformatmanager<wbr></wbr>.<wbr></wbr>Text<wbr></wbr>Format<wbr></wbr>Object<wbr></wbr>.get<wbr></wbr>Text</div>
@@ -9707,7 +9707,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return text.</div>
+            <div class="summary">Return an object text value, optionally prefixed with the section number.</div>
           </li><li id="zms._textformatmanager.TextFormatObject.renderText">
             
             <div class="fullName">zms<wbr></wbr>._textformatmanager<wbr></wbr>.<wbr></wbr>Text<wbr></wbr>Format<wbr></wbr>Object<wbr></wbr>.render<wbr></wbr>Text</div>
@@ -9715,7 +9715,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement 'renderText'.</div>
+            <div class="summary">Render text using the configured text format and optional custom hook.</div>
           </li><li id="zms._version._raw">
             
             <div class="fullName">zms<wbr></wbr>._version<wbr></wbr>._raw</div>
@@ -10627,7 +10627,7 @@
             <div class="type">Function</div>
             <div class="kind">Function</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Returns list of actions.</div>
+            <div class="summary">Return list of actions.</div>
           </li><li id="zms._zmi_actions_util.zmi_basic_actions">
             
             <div class="fullName">zms<wbr></wbr>._zmi<wbr></wbr>_actions<wbr></wbr>_util<wbr></wbr>.zmi<wbr></wbr>_basic<wbr></wbr>_actions</div>
@@ -10659,7 +10659,7 @@
             <div class="type">Function</div>
             <div class="kind">Function</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">manage_addZMSAttributeContainer</div>
+            <div class="summary">Create and attach a new <tt class="rst-docutils rst-literal">ZMSAttributeContainer</tt> below the current object.</div>
           </li><li id="zms._zmsattributecontainer.containerFilter">
             
             <div class="fullName">zms<wbr></wbr>._zmsattributecontainer<wbr></wbr>.container<wbr></wbr>Filter</div>
@@ -10667,7 +10667,7 @@
             <div class="type">Function</div>
             <div class="kind">Function</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement 'containerFilter'.</div>
+            <div class="summary">Return <tt class="rst-docutils rst-literal">True</tt> when <tt class="rst-docutils rst-literal">container</tt> can be listed as a ZMS child container.</div>
           </li><li id="zms._zmsattributecontainer.ZMSAttributeContainer">
             
             <div class="fullName">zms<wbr></wbr>._zmsattributecontainer<wbr></wbr>.<wbr></wbr>ZMSAttribute<wbr></wbr>Container</div>
@@ -10675,7 +10675,7 @@
             <div class="type">Class</div>
             <div class="kind">Class</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Provide helpers for ZMSAttributeContainer.</div>
+            <div class="summary">Container object that stores and edits custom attribute values.</div>
           </li><li id="zms._zmsattributecontainer.ZMSAttributeContainer.meta_type">
             
             <div class="fullName">zms<wbr></wbr>._zmsattributecontainer<wbr></wbr>.<wbr></wbr>ZMSAttribute<wbr></wbr>Container<wbr></wbr>.meta<wbr></wbr>_type</div>
@@ -10699,7 +10699,7 @@
             <div class="type">Attribute</div>
             <div class="kind">Class Variable</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">"" Constructor</div>
+            <div class="summary"><span class="undocumented">Undocumented</span></div>
           </li><li id="zms._zmsattributecontainer.ZMSAttributeContainer.__init__">
             
             <div class="fullName">zms<wbr></wbr>._zmsattributecontainer<wbr></wbr>.<wbr></wbr>ZMSAttribute<wbr></wbr>Container<wbr></wbr>.__init__</div>
@@ -10707,7 +10707,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Initialize the instance state.</div>
+            <div class="summary">Initialize the container with a generated object id.</div>
           </li><li id="zms._zmsattributecontainer.ZMSAttributeContainer.id">
             
             <div class="fullName">zms<wbr></wbr>._zmsattributecontainer<wbr></wbr>.<wbr></wbr>ZMSAttribute<wbr></wbr>Container<wbr></wbr>.id</div>
@@ -10723,7 +10723,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return objattrs.</div>
+            <div class="summary">Delegate attribute schema lookup to the parent ZMS object.</div>
           </li><li id="zms._zmsattributecontainer.ZMSAttributeContainer.getObjVersion">
             
             <div class="fullName">zms<wbr></wbr>._zmsattributecontainer<wbr></wbr>.<wbr></wbr>ZMSAttribute<wbr></wbr>Container<wbr></wbr>.get<wbr></wbr>Obj<wbr></wbr>Version</div>
@@ -10731,7 +10731,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return objversion.</div>
+            <div class="summary">Return self as version object because containers are not versioned.</div>
           </li><li id="zms._zmsattributecontainer.ZMSAttributeContainer.getParentNode__roles__">
             
             <div class="fullName">zms<wbr></wbr>._zmsattributecontainer<wbr></wbr>.<wbr></wbr>ZMSAttribute<wbr></wbr>Container<wbr></wbr>.get<wbr></wbr>Parent<wbr></wbr>Node__roles__</div>
@@ -10747,7 +10747,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Delegates getParentNode to parent.</div>
+            <div class="summary">Delegate parent node lookup to the acquisition parent.</div>
           </li><li id="zms._zmsattributecontainer.ZMSAttributeContainer.getChildNodes">
             
             <div class="fullName">zms<wbr></wbr>._zmsattributecontainer<wbr></wbr>.<wbr></wbr>ZMSAttribute<wbr></wbr>Container<wbr></wbr>.get<wbr></wbr>Child<wbr></wbr>Nodes</div>
@@ -10755,7 +10755,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return childnodes.</div>
+            <div class="summary">Return an empty list because attribute containers have no children.</div>
           </li><li id="zms._zmsattributecontainer.ZMSAttributeContainer.manage_changeProperties">
             
             <div class="fullName">zms<wbr></wbr>._zmsattributecontainer<wbr></wbr>.<wbr></wbr>ZMSAttribute<wbr></wbr>Container<wbr></wbr>.manage_change<wbr></wbr>Properties</div>
@@ -10763,7 +10763,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">ZMSAttributeContainer.manage_changeProperties</div>
+            <div class="summary">Persist submitted attribute values for all configured object attributes.</div>
           </li><li id="zms._zreferableitem.isMailLink">
             
             <div class="fullName">zms<wbr></wbr>._zreferableitem<wbr></wbr>.is<wbr></wbr>Mail<wbr></wbr>Link</div>
@@ -11339,7 +11339,7 @@
             <div class="type">Function</div>
             <div class="kind">Function</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement 'enabled'.</div>
+            <div class="summary">Return whether Pillow is available in the current runtime.</div>
           </li><li id="zms.pilutil.generate_preview">
             
             <div class="fullName">zms<wbr></wbr>.pilutil<wbr></wbr>.generate<wbr></wbr>_preview</div>
@@ -11347,7 +11347,7 @@
             <div class="type">Function</div>
             <div class="kind">Function</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement 'generate_preview'.</div>
+            <div class="summary">Generate and persist a low-resolution preview image from a hi-res source.</div>
           </li><li id="zms.pilutil.thumbnail">
             
             <div class="fullName">zms<wbr></wbr>.pilutil<wbr></wbr>.thumbnail</div>
@@ -11963,7 +11963,7 @@
             <div class="type">Function</div>
             <div class="kind">Function</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary"><span class="undocumented">Undocumented</span></div>
+            <div class="summary">Return HTML-escaped string representation of the given value.</div>
           </li><li id="zms.standard.remove_tags">
             
             <div class="fullName">zms<wbr></wbr>.standard<wbr></wbr>.remove<wbr></wbr>_tags</div>
@@ -11971,7 +11971,7 @@
             <div class="type">Function</div>
             <div class="kind">Function</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary"><span class="undocumented">Undocumented</span></div>
+            <div class="summary">Strip HTML/script/style/meta tags and normalize whitespace.</div>
           </li><li id="zms.standard.encrypt_schemes">
             
             <div class="fullName">zms<wbr></wbr>.standard<wbr></wbr>.encrypt<wbr></wbr>_schemes</div>
@@ -12707,7 +12707,7 @@
             <div class="type">Function</div>
             <div class="kind">Function</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return dimensions.</div>
+            <div class="summary">Return intrinsic SVG dimensions as <tt class="rst-docutils rst-literal">(width, height)</tt> in pixel units.</div>
           </li><li id="zms.svgutil.set_dimensions">
             
             <div class="fullName">zms<wbr></wbr>.svgutil<wbr></wbr>.set<wbr></wbr>_dimensions</div>
@@ -12715,7 +12715,7 @@
             <div class="type">Function</div>
             <div class="kind">Function</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Set dimensions.</div>
+            <div class="summary">Update width/height attributes in SVG data and return the image object.</div>
           </li><li id="zms.yamlutil.dump">
             
             <div class="fullName">zms<wbr></wbr>.yamlutil<wbr></wbr>.dump</div>
@@ -13971,7 +13971,7 @@
             <div class="type">Class</div>
             <div class="kind">Class</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Provide helpers for ZMSLinkContainer.</div>
+            <div class="summary">Represent a lightweight container for link reference objects. The container provides a dedicated meta-type and rendering context for link references, but otherwise inherits all behavior from <tt class="rst-docutils rst-literal">ZMSCustom</tt>.</div>
           </li><li id="zms.zmslinkcontainer.ZMSLinkContainer.meta_type">
             
             <div class="fullName">zms<wbr></wbr>.zmslinkcontainer<wbr></wbr>.<wbr></wbr>ZMSLink<wbr></wbr>Container<wbr></wbr>.meta<wbr></wbr>_type</div>
@@ -14467,7 +14467,7 @@
             <div class="type">Function</div>
             <div class="kind">Function</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return a simple time string without spaces suitable for logging.</div>
+            <div class="summary">Return a compact ISO-like timestamp suitable for log lines.</div>
           </li><li id="zms.zmslog.ZMSLog">
             
             <div class="fullName">zms<wbr></wbr>.zmslog<wbr></wbr>.<wbr></wbr>ZMSLog</div>
@@ -14475,7 +14475,7 @@
             <div class="type">Class</div>
             <div class="kind">Class</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Provide helpers for ZMSLog.</div>
+            <div class="summary">ZMI-accessible log viewer and remote filesystem utility.</div>
           </li><li id="zms.zmslog.ZMSLog.meta_type">
             
             <div class="fullName">zms<wbr></wbr>.zmslog<wbr></wbr>.<wbr></wbr>ZMSLog<wbr></wbr>.meta<wbr></wbr>_type</div>
@@ -14499,7 +14499,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Handle the ZMI action 'manage_options'.</div>
+            <div class="summary">Return ZMI tabs for this item.</div>
           </li><li id="zms.zmslog.ZMSLog.manage_main">
             
             <div class="fullName">zms<wbr></wbr>.zmslog<wbr></wbr>.<wbr></wbr>ZMSLog<wbr></wbr>.manage<wbr></wbr>_main</div>
@@ -14531,7 +14531,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Initialize the instance state.</div>
+            <div class="summary">Initialize with stdout-mirroring option and active severity list.</div>
           </li><li id="zms.zmslog.ZMSLog.id">
             
             <div class="fullName">zms<wbr></wbr>.zmslog<wbr></wbr>.<wbr></wbr>ZMSLog<wbr></wbr>.id</div>
@@ -14563,7 +14563,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">ZMSLog.setProperties</div>
+            <div class="summary">Persist logging settings submitted from the ZMI form.</div>
           </li><li id="zms.zmslog.ZMSLog.tail_event_log_linesback">
             
             <div class="fullName">zms<wbr></wbr>.zmslog<wbr></wbr>.<wbr></wbr>ZMSLog<wbr></wbr>.tail<wbr></wbr>_event<wbr></wbr>_log<wbr></wbr>_linesback</div>
@@ -14579,7 +14579,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return whether severity.</div>
+            <div class="summary">Return whether the given severity level is currently being logged.</div>
           </li><li id="zms.zmslog.ZMSLog.LOG">
             
             <div class="fullName">zms<wbr></wbr>.zmslog<wbr></wbr>.<wbr></wbr>ZMSLog<wbr></wbr>.LOG</div>
@@ -14587,7 +14587,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement 'LOG'.</div>
+            <div class="summary">Emit one log record at the given severity and optionally echo to stdout.</div>
           </li><li id="zms.zmslog.ZMSLog.getLOG">
             
             <div class="fullName">zms<wbr></wbr>.zmslog<wbr></wbr>.<wbr></wbr>ZMSLog<wbr></wbr>.get<wbr></wbr>LOG</div>
@@ -14595,7 +14595,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">ZMSLog.getLOG</div>
+            <div class="summary">Stream the active Zope event log file as a plain-text download.</div>
           </li><li id="zms.zmslog.ZMSLog.tail_event_log">
             
             <div class="fullName">zms<wbr></wbr>.zmslog<wbr></wbr>.<wbr></wbr>ZMSLog<wbr></wbr>.tail<wbr></wbr>_event<wbr></wbr>_log</div>
@@ -14603,7 +14603,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement 'tail_event_log'.</div>
+            <div class="summary">Return the last <tt class="rst-docutils rst-literal">linesback</tt> lines of the active event log.</div>
           </li><li id="zms.zmslog.ZMSLog.get_log_filename">
             
             <div class="fullName">zms<wbr></wbr>.zmslog<wbr></wbr>.<wbr></wbr>ZMSLog<wbr></wbr>.get<wbr></wbr>_log<wbr></wbr>_filename</div>
@@ -14611,7 +14611,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return log filename.</div>
+            <div class="summary">Return the filesystem path of the active Zope event log file.</div>
           </li><li id="zms.zmslog.ZMSLog.getPath">
             
             <div class="fullName">zms<wbr></wbr>.zmslog<wbr></wbr>.<wbr></wbr>ZMSLog<wbr></wbr>.get<wbr></wbr>Path</div>
@@ -14619,7 +14619,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return path.</div>
+            <div class="summary">Return the filesystem path from the request, defaulting to the package home.</div>
           </li><li id="zms.zmslog.ZMSLog.readDir">
             
             <div class="fullName">zms<wbr></wbr>.zmslog<wbr></wbr>.<wbr></wbr>ZMSLog<wbr></wbr>.read<wbr></wbr>Dir</div>
@@ -14627,7 +14627,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Implement 'readDir'.</div>
+            <div class="summary">Return a directory listing for the given filesystem path.</div>
           </li><li id="zms.zmslog.ZMSLog.getParentDir">
             
             <div class="fullName">zms<wbr></wbr>.zmslog<wbr></wbr>.<wbr></wbr>ZMSLog<wbr></wbr>.get<wbr></wbr>Parent<wbr></wbr>Dir</div>
@@ -14635,7 +14635,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Return parentdir.</div>
+            <div class="summary">Return the parent directory component of a filesystem path.</div>
           </li><li id="zms.zmslog.ZMSLog.manage_index_html">
             
             <div class="fullName">zms<wbr></wbr>.zmslog<wbr></wbr>.<wbr></wbr>ZMSLog<wbr></wbr>.manage<wbr></wbr>_index<wbr></wbr>_html</div>
@@ -14643,7 +14643,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">ZMSLog.manage_index_html</div>
+            <div class="summary">Serve a binary file from the remote filesystem as an inline download.</div>
           </li><li id="zms.zmslog.ZMSLog.manage_submit">
             
             <div class="fullName">zms<wbr></wbr>.zmslog<wbr></wbr>.<wbr></wbr>ZMSLog<wbr></wbr>.manage<wbr></wbr>_submit</div>
@@ -14651,7 +14651,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">ZMSLog.manage_submit</div>
+            <div class="summary">Handle remote-filesystem actions: execute a shell command or upload a file.</div>
           </li><li id="zms.zmsobject.ZMSObject">
             
             <div class="fullName">zms<wbr></wbr>.zmsobject<wbr></wbr>.<wbr></wbr>ZMSObject</div>

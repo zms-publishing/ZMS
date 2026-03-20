@@ -1,7 +1,13 @@
 """
 ZMSMetaobjManager.py
 
-ZMS support for zmsmetaobj manager.
+Meta-object model management for ZMS.
+
+This module provides the meta-object registry used by ZMS to define content
+types, their attributes, and the associated implementation artefacts
+(templates, scripts, resources, and other Zope-native objects). It includes
+helpers for repository import/export, XML import/export, runtime rendering
+lookup, and synchronization of attribute metadata with persistent objects.
 
 License: GNU General Public License v2 or later
 Organization: ZMS Publishing
@@ -21,11 +27,20 @@ from Products.zms import _globals
 from Products.zms import _ziputil
 
 
-# ------------------------------------------------------------------------------
-#  Synchronize type.
-# ------------------------------------------------------------------------------
 def syncZopeMetaobjAttr( self, metaObj, attr):
-  """Implement 'syncZopeMetaobjAttr'."""
+  """
+  Resolve and attach the backing Zope artefact for one meta-object attribute.
+
+  @param self: Context exposing home/object lookup helpers.
+  @type self: C{object}
+  @param metaObj: Meta-object mapping containing at least C{'id'}.
+  @type metaObj: C{dict}
+  @param attr: Meta-object attribute mapping containing at least C{'id'} and
+    C{'type'}.
+  @type attr: C{dict}
+  @return: C{None}. The method mutates C{attr} in-place by setting C{'ob'}.
+  @rtype: C{None}
+  """
   id = metaObj['id']
   attr_id = attr['id']
   try:
@@ -43,11 +58,18 @@ def syncZopeMetaobjAttr( self, metaObj, attr):
   except:
     standard.writeError(self, "[syncZopeMetaobjAttr]: %s.%s"%(id, attr_id))
 
-# ------------------------------------------------------------------------------
-#  Effective ids.
-# ------------------------------------------------------------------------------
+
 def effective_ids(self, ids):
-  """Implement 'effective_ids'."""
+  """
+  Expand a selected id list with package-contained meta-object ids.
+
+  @param self: Meta-object manager context.
+  @type self: C{object}
+  @param ids: Selected meta-object ids. C{None} or empty means all model keys.
+  @type ids: C{list} | C{None}
+  @return: Sorted effective id list including package members.
+  @rtype: C{list}
+  """
   l = []
   keys = list(self.model)
   if ids:
@@ -65,18 +87,9 @@ def effective_ids(self, ids):
   return l
 
 
-################################################################################
-################################################################################
-###
-###   Class
-###
-################################################################################
-################################################################################
 class ZMSMetaobjManager(object):
+    """Manage ZMS meta-object definitions, attributes, and related artefacts."""
 
-    # Globals.
-    # --------
-    """Provide helpers for ZMSMetaobjManager."""
     valid_types =       ['amount', 'autocomplete', 'boolean', 'color', 'date', 'datetime', 'dictionary', 'file', 'float', 'identifier', 'image', 'int', 'list', 'multiautocomplete', 'multiselect', 'password', 'richtext', 'select', 'string', 'text', 'time', 'url', 'xml']
     valid_zopeattrs =   ['method', 'py', 'zpt', 'interface', 'resource']
     valid_uploadtypes = ['resource', 'File', 'Folder', 'Image']
@@ -87,14 +100,17 @@ class ZMSMetaobjManager(object):
     deprecated_types =  [ 'DTML Method', 'DTML Document', 'method']
 
 
-    ############################################################################
-    #
-    #  IRepositoryProvider
-    #
-    ############################################################################
-
     def provideRepositoryModel(self, r, ids=None):
-      """Implement 'provideRepositoryModel'."""
+      """
+      Export meta-object model records into repository payload structure.
+
+      @param r: Repository accumulator mapping to be filled in-place.
+      @type r: C{dict}
+      @param ids: Optional subset of meta-object ids. C{None} exports all ids.
+      @type ids: C{list} | C{None}
+      @return: C{None}. The payload is written into C{r}.
+      @rtype: C{None}
+      """
       standard.writeBlock(self,"[provideRepositoryModel]: ids=%s"%str(ids))
       valid_ids = self.getMetaobjIds()
       if ids is None:
@@ -152,11 +168,16 @@ class ZMSMetaobjManager(object):
             d['Attrs'] = attrs
           r[id] = d
 
-    """
-    @see IRepositoryProvider
-    """
+
     def updateRepositoryModel(self, r):
-      """Implement 'updateRepositoryModel'."""
+      """
+      Import one repository record into the local meta-object model.
+
+      @param r: Repository record containing object metadata and attributes.
+      @type r: C{dict}
+      @return: Imported meta-object id.
+      @rtype: C{str}
+      """
       id = r['id']
       if not id.startswith('__') and not id.endswith('__'):
         standard.writeBlock(self,"[updateRepositoryModel]: id=%s"%id)
@@ -187,11 +208,15 @@ class ZMSMetaobjManager(object):
       return id
 
 
-    """
-    @see IRepositoryProvider
-    """
     def translateRepositoryModel(self, r):
-      """Implement 'translateRepositoryModel'."""
+      """
+      Translate repository payload into import-friendly key/value records.
+
+      @param r: Repository model payload keyed by meta-object id.
+      @type r: C{dict}
+      @return: List of C{{'key': id, 'value': record}} mappings.
+      @rtype: C{list}
+      """
       l = []
       for k in r:
           v  = r[k]
@@ -210,17 +235,17 @@ class ZMSMetaobjManager(object):
       return l
 
 
-    ############################################################################
-    #
-    #  XML IM/EXPORT
-    #
-    ############################################################################
-
-    # --------------------------------------------------------------------------
-    #  ZMSMetaobjManager.importMetaobjXml
-    # --------------------------------------------------------------------------
     def _importMetaobjXml(self, item, createIdsFilter=None):
-      """Implement '_importMetaobjXml'."""
+      """
+      Import one meta-object XML item into the local model.
+
+      @param item: Parsed XML item with C{'key'} and C{'value'}.
+      @type item: C{dict}
+      @param createIdsFilter: Optional whitelist of ids to import.
+      @type createIdsFilter: C{list} | C{None}
+      @return: Imported meta-object id.
+      @rtype: C{str}
+      """
       ids = []
       id = item['key']
       standard.writeBlock(self,'[ZMSMetaobjManager._importMetaobjXml]: id=%s'%str(id))
@@ -309,8 +334,18 @@ class ZMSMetaobjManager(object):
           self.set_lang_dict(lang_dict)
       return id
 
+
     def importMetaobjXml(self, xml, createIdsFilter=None):
-      """Implement 'importMetaobjXml'."""
+      """
+      Import one or many meta-object records from XML content.
+
+      @param xml: XML string, bytes, or file-like content.
+      @type xml: C{str} | C{bytes} | C{file}
+      @param createIdsFilter: Optional whitelist of ids to import.
+      @type createIdsFilter: C{list} | C{None}
+      @return: Imported id or list of imported ids.
+      @rtype: C{str} | C{list}
+      """
       self.REQUEST.set( '__get_metaobjs__', True)
       ids = []
       v = standard.parseXmlString(xml)
@@ -324,8 +359,20 @@ class ZMSMetaobjManager(object):
       standard.writeBlock(self,'[ZMSMetaobjManager.importMetaobjXml]: ids=%s'%str(ids))
       return ids
 
+
     def exportMetaobjXml(self, ids, REQUEST=None, RESPONSE=None):
-      """Implement 'exportMetaobjXml'."""
+      """
+      Export selected meta-objects to XML.
+
+      @param ids: Meta-object ids to export. Empty list exports all effective ids.
+      @type ids: C{list}
+      @param REQUEST: Optional request context controlling export key pruning.
+      @type REQUEST: C{ZPublisher.HTTPRequest} | C{None}
+      @param RESPONSE: Optional response to receive download headers.
+      @type RESPONSE: C{ZPublisher.HTTPResponse} | C{None}
+      @return: XML payload string.
+      @rtype: C{str}
+      """
       value = []
       revision = '0.0.0'
       valid_ids = self.getMetaobjIds()
@@ -386,16 +433,20 @@ class ZMSMetaobjManager(object):
       return export
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSMetaobjManager.importTheme
-    #
-    #  Import theme.
-    # --------------------------------------------------------------------------
     def importTheme(self, id):
-      """Implement 'importTheme'."""
+      """
+      Import a theme folder structure into a C{ZMSLibrary} meta-object.
+
+      @param id: Theme container id.
+      @type id: C{str}
+      @return: C{None}
+      @rtype: C{None}
+      """
       home = self.getHome()
+
+
       def traverse(context, container_id):
-        """Implement 'traverse'."""
+        """Traverse theme resources recursively and register each artefact as metaobj attr."""
         for childNode in context.objectValues():
           if childNode.meta_type in ['Folder', 'Filesystem Directory View']:
             traverse(childNode, container_id)
@@ -415,19 +466,18 @@ class ZMSMetaobjManager(object):
       traverse(container,id)
 
 
-    ############################################################################
-    #
-    #   OBJECTS
-    #
-    ############################################################################
-
-    # --------------------------------------------------------------------------
-    #  ZMSMetaobjManager.renderTemplate
-    #
-    #  Renders template for meta-object.
-    # --------------------------------------------------------------------------
     def renderTemplate(self, obj):
-      """Implement 'renderTemplate'."""
+      """
+      Render the first matching template source for the given meta-object.
+
+      Resolution order prefers skin/extension specific templates, then
+      C{standard_html}, then C{bodyContentZMSCustom_<meta_id>}.
+
+      @param obj: Content object providing C{meta_id}, request, and attr access.
+      @type obj: C{object}
+      @return: Rendered HTML fragment or empty string.
+      @rtype: C{str}
+      """
       v = ""
       id = obj.meta_id
       tmpltIds = []
@@ -454,14 +504,16 @@ class ZMSMetaobjManager(object):
       return v
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSMetaobjManager.__get_metaobjs__:
-    #
-    #  Returns all meta-objects (including acquisitions).
-    # --------------------------------------------------------------------------
     def __get_metaobjs__(self):
-      #-- [ReqBuff]: Fetch buffered value from Http-Request.
-      """Implement '__get_metaobjs__'."""
+      """
+      Return all meta-objects, including acquired entries from portal master.
+
+      The result is request-buffered to avoid repeated recomputation during one
+      request cycle.
+
+      @return: Mapping C{{meta_id: meta_object_dict}}.
+      @rtype: C{dict}
+      """
       reqBuffId = 'ZMSMetaobjManager.__get_metaobjs__'
       try: return self.fetchReqBuff(reqBuffId)
       except: pass
@@ -495,28 +547,35 @@ class ZMSMetaobjManager(object):
                   obs[aq_id] =  ob
         else:
           obs[id] = ob
-      #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
       return self.storeReqBuff( reqBuffId, obs)
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSMetaobjManager.__get_metaobj__:
-    #
-    #  Returns meta-object identified by id.
-    # --------------------------------------------------------------------------
     def __get_metaobj__(self, id):
-      """Implement '__get_metaobj__'."""
+      """
+      Return one meta-object record by id.
+
+      @param id: Meta-object id.
+      @type id: C{str}
+      @return: Meta-object mapping or C{None}.
+      @rtype: C{dict} | C{None}
+      """
       obs = self.__get_metaobjs__()
       ob = obs.get( id)
       return ob
 
-    # --------------------------------------------------------------------------
-    #  ZMSMetaobjManager.getTypedMetaIds:
-    #
-    #  Returns list of all typed meta-ids in model.
-    # --------------------------------------------------------------------------
+
     def getTypedMetaIds(self, meta_ids):
-      """Return typedmetaids."""
+      """
+      Expand type-selector entries into concrete meta-object ids.
+
+      Selectors use the form C{type(<meta_type>)} and are resolved against
+      enabled meta-objects.
+
+      @param meta_ids: Mixed list of meta ids and type selectors.
+      @type meta_ids: C{list}
+      @return: Concrete list of matching meta-object ids.
+      @rtype: C{list}
+      """
       metaObjIds = self.getMetaobjIds()
       typed_meta_ids = []
       # iterate types
@@ -534,13 +593,19 @@ class ZMSMetaobjManager(object):
           continue
       return typed_meta_ids
 
-    # --------------------------------------------------------------------------
-    #  ZMSMetaobjManager.getMetaobjIds:
-    #
-    #  Returns list of all meta-ids in model.
-    # --------------------------------------------------------------------------
+
     def getMetaobjIds(self, sort=None, excl_ids=[]):
-      """Return metaobjids."""
+      """
+      Return available meta-object ids with optional sorting and exclusion.
+
+      @param sort: C{True} sorts by display type, C{False} by name, C{None}
+        keeps model iteration order.
+      @type sort: C{bool} | C{None}
+      @param excl_ids: Ids to exclude from the result.
+      @type excl_ids: C{list}
+      @return: Meta-object id list.
+      @rtype: C{list}
+      """
       obs = self.__get_metaobjs__()
       ids = [obs[x]['id'] for x in obs]
       # exclude ids
@@ -554,13 +619,18 @@ class ZMSMetaobjManager(object):
       return ids
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSMetaobjManager.getMetaobj:
-    #
-    #  Returns meta-object specified by id.
-    # --------------------------------------------------------------------------
     def getMetaobj(self, id, aq_attrs=[]):
-      """Return metaobj."""
+      """
+      Return one meta-object and optionally overlay acquired configuration.
+
+      @param id: Meta-object id.
+      @type id: C{str}
+      @param aq_attrs: Attribute names to read from local configuration when the
+        object is acquired from portal master.
+      @type aq_attrs: C{list}
+      @return: Meta-object mapping.
+      @rtype: C{dict}
+      """
       ob = standard.nvl( self.__get_metaobj__(id), {'id': id, 'attrs': [], })
       if ob.get('acquired'):
         for k in aq_attrs:
@@ -570,13 +640,18 @@ class ZMSMetaobjManager(object):
       return ob
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSMetaobjManager.getMetaobjRevision:
-    #
-    #  Returns meta-object-revision specified by id.
-    # --------------------------------------------------------------------------
     def getMetaobjRevision(self, id):
-      """Return metaobjrevision."""
+      """
+      Return the effective revision string for a meta-object.
+
+      For package objects this also considers child objects that belong to the
+      same package and returns the highest semantic version.
+
+      @param id: Meta-object id.
+      @type id: C{str}
+      @return: Revision string, for example C{'0.0.0'}.
+      @rtype: C{str}
+      """
       ob = self.getMetaobj(id)
       if ob is not None and ob.get('type') == 'ZMSPackage':
         metaobjs = [x for x in self.__get_metaobjs__().values() if x.get('package') == ob['id']]
@@ -588,26 +663,33 @@ class ZMSMetaobjManager(object):
       return ob.get('revision', '0.0.0')
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSMetaobjManager.getMetaobjId:
-    #
-    #  Returns id of meta-object specified by name.
-    # --------------------------------------------------------------------------
     def getMetaobjId(self, name):
-      """Return metaobjid."""
+      """
+      Resolve one meta-object id by its display name.
+
+      @param name: Display name as returned by C{display_type}.
+      @type name: C{str}
+      @return: Matching meta-object id or C{None}.
+      @rtype: C{str} | C{None}
+      """
       for id in self.getMetaobjIds():
         if name == self.display_type(meta_id=id):
           return id
       return None
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSMetaobjManager.setMetaobj:
-    #
-    #  Sets meta-object with specified values.
-    # --------------------------------------------------------------------------
     def setMetaobj(self, ob):
-      """Set metaobj."""
+      """
+      Insert or update one meta-object definition in the model.
+
+      The method normalizes optional fields and forces persistence by copying
+      the model mapping.
+
+      @param ob: Meta-object definition.
+      @type ob: C{dict}
+      @return: C{None}
+      @rtype: C{None}
+      """
       self.clearReqBuff('ZMSMetaobjManager')
       obs = self.model
       ob = ob.copy()
@@ -625,13 +707,17 @@ class ZMSMetaobjManager(object):
       self.model = self.model.copy()
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSMetaobjManager.acquireMetaobj:
-    #
-    #  Acquires meta-object specified by id.
-    # --------------------------------------------------------------------------
     def acquireMetaobj(self, id, subobjects=1):
-      """Implement 'acquireMetaobj'."""
+      """
+      Mark a meta-object as acquired from portal master.
+
+      @param id: Meta-object id.
+      @type id: C{str}
+      @param subobjects: If C{1}, package subobjects are also acquired.
+      @type subobjects: C{int}
+      @return: C{None}
+      @rtype: C{None}
+      """
       self.clearReqBuff('ZMSMetaobjManager')
       obs = self.model
       ob = self.getMetaobj( id)
@@ -651,13 +737,17 @@ class ZMSMetaobjManager(object):
       self.model = self.model.copy()
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSMetaobjManager.delMetaobj:
-    #
-    #  Delete meta-object specified by id.
-    # --------------------------------------------------------------------------
     def delMetaobj(self, id, acquire=False):
-      """Implement 'delMetaobj'."""
+      """
+      Delete one meta-object and its managed attribute artefacts.
+
+      @param id: Meta-object id.
+      @type id: C{str}
+      @param acquire: If true, keep native Zope artefacts used by acquisition.
+      @type acquire: C{bool}
+      @return: C{None}
+      @rtype: C{None}
+      """
       self.clearReqBuff('ZMSMetaobjManager')
       # Handle type.
       ids = [x for x in self.objectIds() if x.startswith(id+'.')]
@@ -678,19 +768,24 @@ class ZMSMetaobjManager(object):
       self.model = obs.copy()
 
 
-    ############################################################################
-    #
-    #   ATTRIBUTES
-    #
-    ############################################################################
-
-    # --------------------------------------------------------------------------
-    #  ZMSMetaobjManager.notifyMetaobjAttrAboutValue:
-    #
-    #  Notify attribute for meta-object specified by attribute-id about value.
-    # --------------------------------------------------------------------------
     def notifyMetaobjAttrAboutValue(self, meta_id, key, value):
-      """Implement 'notifyMetaobjAttrAboutValue'."""
+      """
+      Notify one meta-object attribute about a newly observed runtime value.
+
+      For auto-complete attribute types (C{'autocomplete'} and
+      C{'multiautocomplete'}) this method extends the static key list when the
+      attribute keys are not executable snippets.
+
+      @param meta_id: Meta-object id that owns the attribute.
+      @type meta_id: C{str}
+      @param key: Attribute id.
+      @type key: C{str}
+      @param value: Observed value. Expected value is either a single scalar or
+        a list of scalar values.
+      @type value: C{str} | C{int} | C{float} | C{list}
+      @return: C{None}
+      @rtype: C{None}
+      """
       sync_id = False
       
       attr = self.getMetaobjAttr( meta_id, key)
@@ -708,40 +803,52 @@ class ZMSMetaobjManager(object):
             if sync_id:
               self.setMetaobjAttr( meta_id, key, key, attr['name'], attr['mandatory'], attr['multilang'], attr['repetitive'], attr['type'], keys, attr.get('custom',None), attr['default'])
       
-      ##### SYNCHRONIZE ####
+      # Synchronize object attributes after detected key-list changes.
       if sync_id:
         self.synchronizeObjAttrs( sync_id)
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSMetaobjManager.getMetaobjAttrIdentifierId:
-    #
-    #  Get attribute-id of identifier for datatable specified by meta-id.
-    # --------------------------------------------------------------------------
     def getMetaobjAttrIdentifierId(self, meta_id):
-      """Return metaobjattridentifierid."""
+      """
+      Return the preferred identifier attribute id for a record-like meta-object.
+
+      Candidate types are checked in order: C{identifier}, C{string}, C{int}.
+
+      @param meta_id: Meta-object id.
+      @type meta_id: C{str}
+      @return: First matching attribute id or C{None}.
+      @rtype: C{str} | C{None}
+      """
       for attr_id in self.getMetaobjAttrIds( meta_id, types=[ 'identifier', 'string', 'int']):
         return attr_id
       return None
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSMetaobjManager.getMetaobjAttrIds:
-    #
-    #  Returns list of attribute-ids for meta-object specified by meta-id.
-    # --------------------------------------------------------------------------
     def getMetaobjAttrIds(self, id, types=[]):
-      """Return metaobjattrids."""
+      """
+      Return attribute ids for one meta-object, optionally filtered by type.
+
+      @param id: Meta-object id.
+      @type id: C{str}
+      @param types: Optional list of accepted attribute types.
+      @type types: C{list}
+      @return: Attribute id list.
+      @rtype: C{list}
+      """
       return [x['id'] for x in self.getMetaobjAttrs( id, types)]
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSMetaobjManager.getMetaobjAttrs:
-    #
-    #  Returns list of attribute-ids for meta-object specified by meta-id.
-    # --------------------------------------------------------------------------
     def getMetaobjAttrs(self, id, types=[]):
-      """Return metaobjattrs."""
+      """
+      Return attribute mappings for one meta-object.
+
+      @param id: Meta-object id.
+      @type id: C{str}
+      @param types: Optional list of accepted attribute types.
+      @type types: C{list}
+      @return: List of attribute mappings.
+      @rtype: C{list}
+      """
       attrs = []
       ob = self.__get_metaobj__(id)
       if ob is not None:
@@ -751,11 +858,21 @@ class ZMSMetaobjManager(object):
       return attrs
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSMetaobjManager.evalMetaobjAttr
-    # --------------------------------------------------------------------------
     def evalMetaobjAttr(self, id, attr_id, zmscontext=None, options={}):
-      """Implement 'evalMetaobjAttr'."""
+      """
+      Evaluate one computed meta-object attribute and return its runtime value.
+
+      @param id: Meta-object id or C{'*'} for all meta-objects.
+      @type id: C{str}
+      @param attr_id: Attribute id to evaluate.
+      @type attr_id: C{str}
+      @param zmscontext: Optional context passed to callable attributes.
+      @type zmscontext: C{object} | C{None}
+      @param options: Optional call options for executable attributes.
+      @type options: C{dict}
+      @return: Evaluated value or C{None} when unresolved.
+      @rtype: C{any}
+      """
       value = None
       # Find meta-object attributes by given id.
       metaObjAttrs = []
@@ -784,13 +901,20 @@ class ZMSMetaobjManager(object):
       return value
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSMetaobjManager.getMetaobjAttr:
-    # 
-    #  Get attribute for meta-object specified by attribute-id.
-    # --------------------------------------------------------------------------
     def getMetaobjAttr(self, id, attr_id, sync=True):
-      """Return metaobjattr."""
+      """
+      Return one attribute mapping for a given meta-object and attribute id.
+
+      @param id: Meta-object id.
+      @type id: C{str}
+      @param attr_id: Attribute id.
+      @type attr_id: C{str}
+      @param sync: If true, attach backing Zope artefact reference when
+        applicable.
+      @type sync: C{bool}
+      @return: Attribute mapping or C{None}.
+      @rtype: C{dict} | C{None}
+      """
       meta_objs = self.__get_metaobjs__()
       if meta_objs.get(id, {}).get('acquired', 0) == 1:
         portalMaster = self.getPortalMaster()
@@ -822,13 +946,38 @@ class ZMSMetaobjManager(object):
       return None
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSMetaobjManager.setMetaobjAttr:
-    #
-    #  Set/add meta-object attribute with specified values.
-    # --------------------------------------------------------------------------
     def setMetaobjAttr(self, id, oldId, newId, newName='', newMandatory=0, newMultilang=1, newRepetitive=0, newType='string', newKeys=[], newCustom='', newDefault=''):
-      """Set metaobjattr."""
+      """
+      Create or update one meta-object attribute definition.
+
+      This method also manages dependent Zope objects for executable/native
+      attribute types and preserves ordering constraints in the attribute list.
+
+      @param id: Meta-object id.
+      @type id: C{str}
+      @param oldId: Previous attribute id, or C{None} for insertion.
+      @type oldId: C{str} | C{None}
+      @param newId: New attribute id.
+      @type newId: C{str}
+      @param newName: Attribute display name.
+      @type newName: C{str}
+      @param newMandatory: Mandatory flag (expected values: C{0} or C{1}).
+      @type newMandatory: C{int}
+      @param newMultilang: Multilang flag (expected values: C{0} or C{1}).
+      @type newMultilang: C{int}
+      @param newRepetitive: Repetitive flag (expected values: C{0} or C{1}).
+      @type newRepetitive: C{int}
+      @param newType: Attribute type identifier.
+      @type newType: C{str}
+      @param newKeys: Optional key list for select-like attributes.
+      @type newKeys: C{list}
+      @param newCustom: Optional custom payload/content.
+      @type newCustom: C{str} | C{int} | C{_blobfields.MyBlob}
+      @param newDefault: Optional default value.
+      @type newDefault: C{str}
+      @return: Message fragment generated during update.
+      @rtype: C{str}
+      """
       standard.writeBlock(self, "[setMetaobjAttr]: %s %s %s"%(str(id), str(oldId), str(newId)))
       self.clearReqBuff('ZMSMetaobjManager')
       ob = self.__get_metaobj__(id)
@@ -1044,13 +1193,19 @@ class ZMSMetaobjManager(object):
       return message
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSMetaobjManager.delMetaobjAttr:
-    #
-    #  Delete attribute from meta-object specified by id.
-    # --------------------------------------------------------------------------
     def delMetaobjAttr(self, id, attr_id, acquire=False):
-      """Implement 'delMetaobjAttr'."""
+      """
+      Delete one attribute from a meta-object definition.
+
+      @param id: Meta-object id.
+      @type id: C{str}
+      @param attr_id: Attribute id to remove.
+      @type attr_id: C{str}
+      @param acquire: If true, avoid removing acquired native artefacts.
+      @type acquire: C{bool}
+      @return: C{None}
+      @rtype: C{None}
+      """
       ob = self.__get_metaobj__(id)
       attrs = copy.copy(ob.get('attrs', []))
       
@@ -1080,13 +1235,19 @@ class ZMSMetaobjManager(object):
       self.model = self.model.copy()
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSMetaobjManager.moveMetaobjAttr:
-    #
-    #  Move meta-object attribute to specified position.
-    # --------------------------------------------------------------------------
     def moveMetaobjAttr(self, id, attr_id, pos):
-      """Implement 'moveMetaobjAttr'."""
+      """
+      Move one attribute to a new position in the meta-object attribute list.
+
+      @param id: Meta-object id.
+      @type id: C{str}
+      @param attr_id: Attribute id to move.
+      @type attr_id: C{str}
+      @param pos: Zero-based target position.
+      @type pos: C{int}
+      @return: C{None}
+      @rtype: C{None}
+      """
       ob = self.__get_metaobj__(id)
       attrs = copy.copy(ob['attrs'])
       # Move Attribute.
@@ -1102,13 +1263,19 @@ class ZMSMetaobjManager(object):
       self.model = self.model.copy()
 
 
-    ############################################################################
-    #  ZMSMetaobjManager.manage_ajaxChangeProperties:
-    #
-    #  Change properties.
-    ############################################################################
     def manage_ajaxChangeProperties(self, id, REQUEST, RESPONSE=None):
-      """ MetaobjManager.manage_ajaxChangeProperties """
+      """
+      Update editable object properties from AJAX form values.
+
+      @param id: Meta-object id.
+      @type id: C{str}
+      @param REQUEST: HTTP request containing C{set*} form fields.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param RESPONSE: Optional HTTP response for XML output headers.
+      @type RESPONSE: C{ZPublisher.HTTPResponse} | C{None}
+      @return: XML result payload when C{RESPONSE} is passed.
+      @rtype: C{str} | C{None}
+      """
       xml = self.getXmlHeader()
       xml += '<result '
       xml += ' id="%s"'%id
@@ -1140,13 +1307,26 @@ class ZMSMetaobjManager(object):
         return xml
 
 
-    ############################################################################
-    #  ZMSMetaobjManager.manage_changeProperties:
-    #
-    #  Change properties.
-    ############################################################################
     def manage_changeProperties(self, lang, btn='', key='all', REQUEST=None, RESPONSE=None):
-        """ ZMSMetaobjManager.manage_changeProperties """
+        """
+        Handle meta-object manager actions from the ZMI properties form.
+
+        Supported actions include insert/update/delete, import/export,
+        acquisition handling, and attribute reordering.
+
+        @param lang: Active UI language id.
+        @type lang: C{str}
+        @param btn: Submitted action button id.
+        @type btn: C{str}
+        @param key: Edited section key (for example C{'obj'} or C{'attr'}).
+        @type key: C{str}
+        @param REQUEST: Incoming request carrying form payload.
+        @type REQUEST: C{ZPublisher.HTTPRequest}
+        @param RESPONSE: Optional response used for redirects and downloads.
+        @type RESPONSE: C{ZPublisher.HTTPResponse} | C{None}
+        @return: Redirect response or localized status message.
+        @rtype: C{object} | C{str}
+        """
         old_model = copy.deepcopy(self.model)
         message = ''
         messagekey = 'manage_tabs_message'
@@ -1417,7 +1597,7 @@ class ZMSMetaobjManager(object):
           self.moveMetaobjAttr( id, attr_id, pos)
           message = self.getZMILangStr('MSG_MOVEDOBJTOPOS')%(("<em>%s</em>"%attr_id), (pos+1))
         
-        ##### SYNCHRONIZE ####
+        # Synchronize object attributes after model-level type changes.
         types = self.valid_types+[self.metas[x*2] for x in range(len(self.metas)//2)]
         for k in self.getMetaobjIds():
           if k not in sync_id:

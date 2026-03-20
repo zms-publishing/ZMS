@@ -158,5 +158,3 @@ class ZMSMetamodelProvider(
       self.updateRepositoryMetas(r)
       self.updateRepositoryModel(r)
       return id
-
-################################################################################

@@ -369,4 +369,3 @@ class ZMSMetadictManager(object):
           target = standard.url_append_params( target, { 'manage_tabs_message':message})
         return RESPONSE.redirect( target)
 
-################################################################################

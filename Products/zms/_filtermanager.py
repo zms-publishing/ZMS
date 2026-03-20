@@ -1,7 +1,15 @@
 """
 _filtermanager.py
 
-Internal helpers for filtermanager in ZMS.
+Import/export filter pipeline helpers for ZMS.
+
+This module provides the procedural building blocks that execute configured
+filter pipelines during import/export. A pipeline consists of ordered process
+steps (commands, methods, scripts) and optional transformation files.
+
+The module-level functions handle file-based processing and command execution,
+while C{FilterItem} integrates those helpers with object export context and
+request/session state.
 
 License: GNU General Public License v2 or later
 Organization: ZMS Publishing
@@ -15,17 +23,20 @@ from Products.zms import _fileutil
 from Products.zms import standard
 from Products.zms import zopeutil
 
-
-"""
-################################################################################
-#
-#   I M / E X P O R T
-#
-################################################################################
-"""
-
 def getTransFilename(self, folder, trans):
-      """Return transfilename."""
+      """
+      Build the filesystem path for a transformation resource.
+
+      @param self: Context object providing logging utilities.
+      @type self: C{object}
+      @param folder: Working directory used by the current filter run.
+      @type folder: C{str}
+      @param trans: Transformation object with an id in
+        C{<process-id>.<nr>.<filename>} format.
+      @type trans: C{object}
+      @return: Absolute transformation filename inside C{folder}.
+      @rtype: C{str}
+      """
       transid = trans.getId()
       transid = '.'.join(transid.split('.')[2:]) # <process-id>.<process-nr>.<filename>
       transfilename = os.path.join(folder, transid)
@@ -33,14 +44,23 @@ def getTransFilename(self, folder, trans):
       return transfilename
 
 
-# ------------------------------------------------------------------------------
-#  _filtermanager.processData:
-#
-#  Process data with custom transformation.
-# ------------------------------------------------------------------------------
 def processData(self, processId, data, trans=None):
+  """
+  Process raw bytes data with one configured process step.
+
+  @param self: Context object exposing filter manager and configuration.
+  @type self: C{object}
+  @param processId: Filter-process id to execute.
+  @type processId: C{str}
+  @param data: Input payload written to a temporary input file.
+  @type data: C{bytes} | C{str}
+  @param trans: Optional transformation object written to disk and referenced
+    by the process command.
+  @type trans: C{object} | C{None}
+  @return: Processed payload read from the resulting output file.
+  @rtype: C{bytes}
+  """
   # Create temporary folder.
-  """Implement 'processData'."""
   tempfolder = tempfile.mkdtemp()
   # Save data to file.
   filename = _fileutil.getOSPath('%s/in.dat'%tempfolder)
@@ -61,13 +81,23 @@ def processData(self, processId, data, trans=None):
   return data
 
 
-# ------------------------------------------------------------------------------
-#  _filtermanager.processMethod:
-#
-#  Process DTML method.
-# ------------------------------------------------------------------------------
 def processMethod(self, processId, filename, trans, REQUEST):
-  """Implement 'processMethod'."""
+  """
+  Execute a method/script-based process step with request-bound file markers.
+
+  @param self: Context object exposing filter manager.
+  @type self: C{object}
+  @param processId: Filter-process id to execute.
+  @type processId: C{str}
+  @param filename: Input filename to be processed.
+  @type filename: C{str}
+  @param trans: Optional transformation object used by the process.
+  @type trans: C{object} | C{None}
+  @param REQUEST: Active request used to pass process variables.
+  @type REQUEST: C{ZPublisher.HTTPRequest}
+  @return: Output filename selected by the process step.
+  @rtype: C{str}
+  """
   standard.writeBlock( self, '[processMethod]: processId=%s'%processId)
   infilename = filename
   outfilename = filename
@@ -86,13 +116,22 @@ def processMethod(self, processId, filename, trans, REQUEST):
   return outfilename
 
 
-# ------------------------------------------------------------------------------
-#  _filtermanager.processCommand:
-#
-#  Process file with command.
-# ------------------------------------------------------------------------------
 def processCommand(self, filename, command):
-  """Implement 'processCommand'."""
+  """
+  Execute an external command-based process step on a file.
+
+  Placeholders supported in C{command} include C{{in}}, C{{out}},
+  C{{cur_dir}}, C{{package_home}}, and C{{instance_home}}.
+
+  @param self: Context object exposing configuration and logging.
+  @type self: C{object}
+  @param filename: Input filename passed into the command.
+  @type filename: C{str}
+  @param command: Command template containing replacement markers.
+  @type command: C{str}
+  @return: Final output filename (or original input filename on failure).
+  @rtype: C{str}
+  """
   standard.writeBlock( self, '[processCommand]: infilename=%s'%filename)
   infilename = _fileutil.getOSPath( filename)
   outfilename = _fileutil.getOSPath( filename)
@@ -144,13 +183,21 @@ def processCommand(self, filename, command):
   return outfilename
 
 
-# ------------------------------------------------------------------------------
-#  _filtermanager.processFile:
-#
-#  Process file with custom transformation.
-# ------------------------------------------------------------------------------
 def processFile(self, processId, filename, trans=None):
-  """Implement 'processFile'."""
+  """
+  Process one file using the configured command for a process id.
+
+  @param self: Context object exposing filter manager.
+  @type self: C{object}
+  @param processId: Filter-process id whose command is executed.
+  @type processId: C{str}
+  @param filename: Input filename.
+  @type filename: C{str}
+  @param trans: Optional transformation object referenced by command.
+  @type trans: C{object} | C{None}
+  @return: Output filename.
+  @rtype: C{str}
+  """
   standard.writeBlock( self, '[processFile]: processId=%s'%processId)
   folder = _fileutil.getFilePath(filename)
   processOb = self.getFilterManager().getProcess(processId)
@@ -164,24 +211,44 @@ def processFile(self, processId, filename, trans=None):
   return filename
 
 
-# ------------------------------------------------------------------------------
-#  _filtermanager.processFilter:
-#
-#  Process filter.
-# ------------------------------------------------------------------------------
 def processFilter(self, ob_filter, folder, filename, REQUEST):
-  """Implement 'processFilter'."""
+  """
+  Execute all process steps configured for a filter definition.
+
+  @param self: Context object exposing filter manager.
+  @type self: C{object}
+  @param ob_filter: Filter definition containing id and process assignments.
+  @type ob_filter: C{dict}
+  @param folder: Working folder used during filter execution.
+  @type folder: C{str}
+  @param filename: Input filename passed through each process step.
+  @type filename: C{str}
+  @param REQUEST: Active request context.
+  @type REQUEST: C{ZPublisher.HTTPRequest}
+  @return: Final output filename after all process steps.
+  @rtype: C{str}
+  """
   for ob_process in self.getFilterManager().getFilterProcesses(ob_filter['id']):
     filename = self.execProcessFilter( ob_process, folder, filename, REQUEST)
   # Return filename.
   return filename
 
 
-# ------------------------------------------------------------------------------
-#  _filtermanager.importFilter:
-# ------------------------------------------------------------------------------
 def importFilter(self, filename, id, REQUEST):
-  """Implement 'importFilter'."""
+  """
+  Run the import pipeline for one configured filter.
+
+  @param self: Context object exposing filter manager.
+  @type self: C{object}
+  @param filename: Source filename to import/process.
+  @type filename: C{str}
+  @param id: Filter id.
+  @type id: C{str}
+  @param REQUEST: Active request context.
+  @type REQUEST: C{ZPublisher.HTTPRequest}
+  @return: Final processed filename.
+  @rtype: C{str}
+  """
   ob_filter = self.getFilterManager().getFilter(id)
   folder = _fileutil.getFilePath(filename)
   # Process filter.
@@ -190,12 +257,20 @@ def importFilter(self, filename, id, REQUEST):
   return filename
 
 
-# ------------------------------------------------------------------------------
-#  _filtermanager.exportFilter:
-# ------------------------------------------------------------------------------
 def exportFilter(self, id, REQUEST):
+  """
+  Run the export pipeline and return downloadable file payload metadata.
+
+  @param self: Context object exposing filter manager and export helpers.
+  @type self: C{object}
+  @param id: Filter id to execute.
+  @type id: C{str}
+  @param REQUEST: Active request context.
+  @type REQUEST: C{ZPublisher.HTTPRequest}
+  @return: Tuple C{(filename, data, content_type)}.
+  @rtype: C{tuple}
+  """
   # Set local variables.
-  """Implement 'exportFilter'."""
   ob_filter = self.getFilterManager().getFilter(id)
   tempfolder, outfilename = self.initExportFilter( id, REQUEST)
   # Process filter.
@@ -218,23 +293,21 @@ def exportFilter(self, id, REQUEST):
   # Return.
   return filename, data, content_type
 
-
-################################################################################
-################################################################################
-###
-###   class FilterItem
-###
-################################################################################
-################################################################################
 class FilterItem(object):
+    """Mixin exposing helper methods to initialise and execute filter exports."""
 
-    # --------------------------------------------------------------------------
-    #  FilterItem.initExportFilter:
-    # --------------------------------------------------------------------------
-    """Provide helpers for FilterItem."""
     def initExportFilter(self, id, REQUEST):
+      """
+      Prepare export context, temp workspace, and initial export input file.
+
+      @param id: Filter id.
+      @type id: C{str}
+      @param REQUEST: Active request used for env/session variables.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @return: Tuple C{(tempfolder, outfilename)} used by subsequent steps.
+      @rtype: C{tuple}
+      """
       # Set environment variables.
-      """Implement 'initExportFilter'."""
       instance_home = standard.getINSTANCE_HOME()
       package_home = standard.getPACKAGE_HOME()
       package_home = os.path.normpath(package_home)
@@ -272,12 +345,21 @@ class FilterItem(object):
         raise zExceptions.InternalError("Unknown format '%s'"%ob_filter.get('format', ''))
       return tempfolder, outfilename
 
-
-    # --------------------------------------------------------------------------
-    #  FilterItem.execProcessFilter:
-    # --------------------------------------------------------------------------
     def execProcessFilter(self, ob_process, folder, filename, REQUEST):
-      """Implement 'execProcessFilter'."""
+      """
+      Execute one process step inside a filter pipeline.
+
+      @param ob_process: Filter-process assignment record.
+      @type ob_process: C{dict}
+      @param folder: Working folder for temp process artefacts.
+      @type folder: C{str}
+      @param filename: Current pipeline filename.
+      @type filename: C{str}
+      @param REQUEST: Active request context.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @return: Updated pipeline filename.
+      @rtype: C{str}
+      """
       processId = ob_process.get( 'id')
       standard.writeBlock(self,"[execProcessFilter]: processId=%s"%(processId))
       processOb = self.getFilterManager().getProcess(processId)

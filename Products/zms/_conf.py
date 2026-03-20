@@ -6,6 +6,10 @@ configuration properties for a ZMS instance. It also implements the
 IZMSRepositoryProvider interface for persisting configuration to the
 file-system repository.
 
+The class acts as a thin adapter around the parent container attribute
+C{__attr_conf_dict__}, exposing helper methods for reading/writing single
+properties and for serializing/deserializing settings during repository sync.
+
 License: GNU General Public License v2 or later
 Organization: ZMS Publishing
 """
@@ -19,9 +23,6 @@ from Products.zms import IZMSRepositoryProvider
 from Products.zms import ZMSItem
 
 
-################################################################################
-# CLASS ZMSSysConf
-################################################################################
 @implementer(
         IZMSRepositoryProvider.IZMSRepositoryProvider)
 class ZMSSysConf(
@@ -32,8 +33,6 @@ class ZMSSysConf(
     and implements IZMSRepositoryProvider for repository persistence.
     """
 
-    # Properties.
-    # -----------
     meta_type = 'ZMSSysConf'
     zmi_icon = "fas fa-wrench"
     icon_clazz = zmi_icon
@@ -42,6 +41,9 @@ class ZMSSysConf(
     def __init__(self):
       """
       Initialise a new ZMSSysConf instance with id 'sys_conf'.
+
+      @return: C{None}
+      @rtype: C{None}
       """
       self.id = 'sys_conf'
 
@@ -49,13 +51,13 @@ class ZMSSysConf(
     def initialize(self):
       """
       Hook for post-creation initialization (currently a no-op).
+
+      @return: C{None}
+      @rtype: C{None}
       """
       pass
 
 
-    # ----------------------------------------------------------------------------
-    # Configuration Property Management
-    # ----------------------------------------------------------------------------
     def get_properties(self):
       """
       Return the full configuration properties dictionary.
@@ -71,8 +73,11 @@ class ZMSSysConf(
       """
       Replace the full configuration properties dictionary.
 
-      @param properties: New configuration properties
+      @param properties: New configuration properties mapping.
+        Expected value is a plain C{dict} with string keys.
       @type properties: C{dict}
+      @return: C{None}
+      @rtype: C{None}
       """
       id = '__attr_conf_dict__'
       container = self.aq_parent
@@ -83,10 +88,12 @@ class ZMSSysConf(
       """
       Return a single configuration property value.
 
-      @param key: Property key
+      @param key: Property key.
       @type key: C{str}
-      @param default: Default value if key not found
-      @return: Property value or default
+      @param default: Default value returned when C{key} does not exist.
+      @type default: C{any}
+      @return: Property value or C{default}.
+      @rtype: C{any}
       """
       properties = self.get_properties()
       return properties.get(key, default)
@@ -97,9 +104,12 @@ class ZMSSysConf(
       Set a single configuration property. If value is None, the
       property is deleted. Clears the request buffer for Portal keys.
 
-      @param key: Property key
+      @param key: Property key.
       @type key: C{str}
-      @param value: Property value (None to delete)
+      @param value: Property value. Use C{None} to delete the key.
+      @type value: C{any} | C{None}
+      @return: C{None}
+      @rtype: C{None}
       """
       if key.startswith("Portal"):
         self.clearReqBuff()
@@ -115,24 +125,23 @@ class ZMSSysConf(
       """
       Delete a configuration property by key.
 
-      @param key: Property key to delete
+      @param key: Property key to delete.
       @type key: C{str}
+      @return: C{None}
+      @rtype: C{None}
       """
       properties = self.get_properties()
       if key in properties:
         del properties[key]
 
 
-    # ----------------------------------------------------------------------------
-    # IRepositoryProvider
-    # ----------------------------------------------------------------------------
-
     def provideRepository(self, ids=None):
       """
       Provide configuration data for the repository export.
 
       @see: IZMSRepositoryProvider
-      @param ids: List of IDs to export (default: all valid)
+      @param ids: List of IDs to export. Expected values include C{'sys_conf'};
+        C{None} exports all valid ids.
       @type ids: C{list} or C{None}
       @return: Dictionary of repository data keyed by id
       @rtype: C{dict}
@@ -153,7 +162,10 @@ class ZMSSysConf(
       Update configuration from repository import data.
 
       @see: IZMSRepositoryProvider
-      @param r: Repository data dictionary containing 'Properties'
+      @param r: Repository data dictionary containing C{'Properties'}
+        (or legacy C{'properties'}).
       @type r: C{dict}
+      @return: C{None}
+      @rtype: C{None}
       """
       self.set_properties(r.get('Properties',r.get('properties',{})))

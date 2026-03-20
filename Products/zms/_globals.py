@@ -92,9 +92,6 @@ def get_size(v):
   return sys.getsizeof(v)
 
 
-################################################################################
-# CLASS StaticPageTemplateFile.
-################################################################################
 class StaticPageTemplateFile(PageTemplateFile):
     """
     A PageTemplateFile subclass that allows injecting a custom context
@@ -134,18 +131,12 @@ class StaticPageTemplateFile(PageTemplateFile):
       return c
 
 
-################################################################################
-# CLASS MyClass
-################################################################################
 class MyClass(object):
     """
     Generic attribute container that exposes its instance attributes
     via a keys() method, similar to a dictionary.
     """
   
-    # ----------------------------------------------------------------------------
-    #  MyClass.keys:
-    # ----------------------------------------------------------------------------
     def keys(self):
       """
       Return the names of all instance attributes.
@@ -156,9 +147,6 @@ class MyClass(object):
       return self.__dict__.keys()
 
 
-################################################################################
-# CLASS MySectionizer
-################################################################################
 class MySectionizer(object):
     """
     Helper class for generating hierarchical section numbers
@@ -166,26 +154,18 @@ class MySectionizer(object):
     (numeric, uppercase, lowercase).
     """
 
-    # --------------------------------------------------------------------------
-    #  MySectionizer.__init__:
-    #
-    #  Constructor.
-    # --------------------------------------------------------------------------
     def __init__(self, levelnfc='0'):
       """
       Initialise a new MySectionizer.
 
-      @param levelnfc: Numbering format code: '0'=numeric, '1'=uppercase, '2'=lowercase
+      @param levelnfc: Numbering format code. Expected values are
+        C{'0'} for numeric sections (1.2.3), C{'1'} for uppercase letters
+        (A.B.C), and C{'2'} for lowercase letters (a.b.c).
       @type levelnfc: C{str}
       """
       self.levelnfc = levelnfc
       self.sections = []
 
-    # --------------------------------------------------------------------------
-    #  MySectionizer.__str__:
-    #
-    #  Returns a string representation of the object.
-    # --------------------------------------------------------------------------
     def __str__(self):
       """
       Return a string representation of the current section number.
@@ -203,11 +183,6 @@ class MySectionizer(object):
           s += chr(self.sections[i] - 1 + ord('a')) + '.'
       return s
 
-    # --------------------------------------------------------------------------
-    #  MySectionizer.clone:
-    #
-    #  Creates and returns a copy of this object.
-    # --------------------------------------------------------------------------
     def clone(self):
       """
       Create and return a deep copy of this sectionizer.
@@ -219,9 +194,6 @@ class MySectionizer(object):
       ob.sections = copy.deepcopy(self.sections)
       return ob
 
-    # --------------------------------------------------------------------------
-    #  MySectionizer.getLevel:
-    # --------------------------------------------------------------------------
     def getLevel(self):
       """
       Return the current nesting depth.
@@ -231,14 +203,13 @@ class MySectionizer(object):
       """
       return len(self.sections)
 
-    # --------------------------------------------------------------------------
-    #  MySectionizer.processLevel:
-    # --------------------------------------------------------------------------
     def processLevel(self, level):
       """
       Update the section counter for the given nesting level.
 
-      @param level: The heading level to process
+      @param level: Heading level to process. Expected values are positive
+        integers where C{1} is the top-level section and larger values
+        increase nesting depth.
       @type level: C{int}
       """
       # Increase section counter on this level.

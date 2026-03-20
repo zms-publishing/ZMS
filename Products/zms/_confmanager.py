@@ -120,10 +120,6 @@ class ConfDict(object):
       return clazz
 
 
-################################################################################
-# Initialization
-################################################################################
-
 def initConf(self, pattern):
     """
     Initialize a ZMS configuration by importing a set of configuration files 
@@ -163,23 +159,14 @@ def initConf(self, pattern):
                     self.importConf(filename)
 
 
-################################################################################
-# CLASS ConfManager
-################################################################################
-
 @implementer(
     IZMSMetamodelProvider.IZMSMetamodelProvider,
     IZMSFormatProvider.IZMSFormatProvider)
 class ConfManager(_multilangmanager.MultiLanguageManager):
     """Provide helpers for ConfManager."""
 
-    # Create a SecurityInfo for this class. We will use this
-    # in the rest of our class definition to make security
-    # assertions.
     security = ClassSecurityInfo()
 
-    # Management Interface.
-    # ---------------------
     manage_customize = PageTemplateFile('zpt/ZMS/manage_customize', globals())
     manage_customizeInstalledProducts = PageTemplateFile('zpt/ZMS/manage_customizeinstalledproducts', globals())
     manage_customizeLanguagesForm = PageTemplateFile('zpt/ZMS/manage_customizelanguagesform', globals())
@@ -386,11 +373,6 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
           return json.dumps( filenames)
       return filenames
 
-
-    ############################################################################
-    # Configuration-Properties Getters
-    ############################################################################
-
     def getSequence(self):
       """
       Return the site-wide sequence counter object used for generating unique
@@ -538,11 +520,6 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
                   obs.append( ob)
       return obs
 
-
-    ############################################################################
-    # Configuration-Tab Options
-    ############################################################################
-
     customize_manage_options__roles__ = None
     def customize_manage_options(self):
       """
@@ -573,11 +550,6 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
       if p:
         l = [x for x in l if self.restrictedTraverse(x['action'], None) is not None]
       return l
-
-
-    ############################################################################
-    # Configuration-Properties
-    ############################################################################
 
     def getConfManager(self):
       """Return confmanager."""
@@ -784,11 +756,6 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
         d[key] = value
       self.__attr_conf_dict__ = d
       self.__attr_conf_dict__ = self.__attr_conf_dict__.copy()
-
-
-    ############################################################################
-    # Customize system properties.
-    ############################################################################
 
     def manage_customizeSystem(self, btn, key, lang, REQUEST, RESPONSE=None):
       """
@@ -1221,7 +1188,14 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
           importXml__roles__ = None
 
           def importXml(self, xml):
-            """Implement 'importXml'."""
+            """
+            Placeholder import hook for default in-memory filter manager.
+
+            @param xml: Serialized filter-manager payload.
+            @type xml: C{str} | C{bytes}
+            @return: C{None}
+            @rtype: C{None}
+            """
             pass
 
         manager = [DefaultManager()]
@@ -1244,7 +1218,14 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
           """Provide helpers for DefaultMetaobjManager."""
 
           def importXml(self, xml):
-            """Implement 'importXml'."""
+            """
+            Placeholder import hook for default in-memory metaobj manager.
+
+            @param xml: Serialized meta-object payload.
+            @type xml: C{str} | C{bytes}
+            @return: C{None}
+            @rtype: C{None}
+            """
             pass
 
           def getMetaobjId(self, name):
@@ -1276,7 +1257,18 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
             return None
 
           def notifyMetaobjAttrAboutValue(self, meta_id, key, value):
-            """Implement 'notifyMetaobjAttrAboutValue'."""
+            """
+            Placeholder callback for meta-object attribute value notifications.
+
+            @param meta_id: Meta-object id.
+            @type meta_id: C{str}
+            @param key: Attribute id.
+            @type key: C{str}
+            @param value: Observed value.
+            @type value: C{any}
+            @return: C{None}
+            @rtype: C{None}
+            """
             return None
 
         manager = DefaultMetaobjManager()
@@ -1370,7 +1362,14 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
           """Provide helpers for DefaultManager."""
 
           def importXml(self, xml):
-            """Implement 'importXml'."""
+            """
+            Placeholder import hook for default in-memory metacmd manager.
+
+            @param xml: Serialized meta-command payload.
+            @type xml: C{str} | C{bytes}
+            @return: C{None}
+            @rtype: C{None}
+            """
             pass
 
           def getMetaCmdDescription(self, id):
@@ -1412,13 +1411,6 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
       """Return metacmds."""
       return self.getMetacmdManager().getMetaCmds(context, stereotype, sort)
 
-
-    ############################################################################
-    ###
-    ###   Interface IZMSWorkflowProvider: delegate
-    ###
-    ############################################################################
-
     def getWorkflowManager(self):
       """
       Return the workflow manager.
@@ -1435,7 +1427,14 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
           """Provide helpers for DefaultManager."""
 
           def importXml(self, xml):
-            """Implement 'importXml'."""
+            """
+            Placeholder import hook for default in-memory workflow manager.
+
+            @param xml: Serialized workflow payload.
+            @type xml: C{str} | C{bytes}
+            @return: C{None}
+            @rtype: C{None}
+            """
             pass
 
           def getAutocommit(self):

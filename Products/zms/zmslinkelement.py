@@ -3,6 +3,12 @@ zmslinkelement.py
 
 Link element implementation for ZMS content trees.
 
+This module defines the link-element content type used to reference, embed,
+proxy, and render other ZMS objects. It contains the link-specific exception
+type and the C{ZMSLinkElement} implementation that resolves internal
+references, supports recursive embedding through proxy objects, and delegates
+navigation/printing/title access to referenced content when appropriate.
+
 License: GNU General Public License v2 or later
 Organization: ZMS Publishing
 """
@@ -21,42 +27,28 @@ from Products.zms import zmsproxyobject
 from Products.zms import zmslinkelement
 from zope.globalrequest import getRequest
 
-
-"""
-################################################################################
-# class ConstraintViolation(Exception):
-#
-# General exception class to indicate constraint violations.
-################################################################################
-"""
 class ConstraintViolation(Exception):
   """Signal that a link element update violates an embedding constraint."""
   pass
 
 
-################################################################################
-################################################################################
-###
-###  Class
-###
-################################################################################
-################################################################################
 class ZMSLinkElement(zmscustom.ZMSCustom):
     """
     Represent a link element that can resolve, embed, or proxy other content.
+
+    Link elements can either behave like a normal local content node or expose
+    another object inline by reference. Depending on C{attr_type}/C{_embed_type}
+    they may:
+      - link to another object without embedding it,
+      - embed the referenced object directly,
+      - recursively proxy the referenced subtree,
+      - or retrieve remote content through the REST API.
     """
 
-    # Create a SecurityInfo for this class. We will use this
-    # in the rest of our class definition to make security
-    # assertions.
     security = ClassSecurityInfo()
 
-    # Properties.
-    # -----------
     meta_type = meta_id = "ZMSLinkElement"
 
-    # Management Options.
-    # -------------------
     def manage_options(self):
       """Handle the ZMI action 'manage_options'."""
       return ( 
@@ -64,8 +56,6 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
         {'label': 'TAB_HISTORY', 'action': 'manage_UndoVersionForm'},
         )
 
-    # Management Permissions.
-    # -----------------------
     __authorPermissions__ = (
         'manage', 'manage_main', 'manage_workspace',
         'manage_changeProperties', 'manage_changeTempBlobjProperty',
@@ -137,9 +127,13 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
       ancestor, the value is replaced with C{'cyclic'} so callers can react 
       to the invalid state.
 
+      Expected values for C{REQUEST['attr_type']} are for example C{'embed'},
+      C{'recursive'}, C{'remote'}, or an empty string for a plain non-embedded
+      link. Cyclic recursive references are normalized to C{'cyclic'}.
+
       @param REQUEST: Request carrying the submitted C{attr_type} value.
-      @type REQUEST: ZPublisher.HTTPRequest
-      @return: None
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @return: C{None}
       @rtype: C{None}
       """
       embed_type = REQUEST.get('attr_type', '')
@@ -162,11 +156,6 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
       rtn = self.getEmbedType() in [ 'recursive']
       return rtn
 
-
-    ############################################################################
-    # Properties
-    ############################################################################
-
     def manage_changeProperties(self, lang, REQUEST, RESPONSE): 
       """
       Update link element properties from the ZMI form submission.
@@ -175,14 +164,16 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
       recalculates the raw embed type, and redirects back to the management UI
       with a status message.
 
-      @param lang: Active management language.
+      @param lang: Active management language, usually a three-letter ZMS
+        language id such as C{'eng'} or C{'ger'}.
       @type lang: C{str}
-      @param REQUEST: Current ZMI request.
-      @type REQUEST: ZPublisher.HTTPRequest
-      @param RESPONSE: Response used for the redirect.
-      @type RESPONSE: ZPublisher.HTTPResponse
+      @param REQUEST: Current ZMI request containing edited attribute values
+        (especially XML-backed object attributes and C{attr_type}).
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param RESPONSE: Response used for the redirect back to the management UI.
+      @type RESPONSE: C{ZPublisher.HTTPResponse}
       @return: Redirect response pointing back to the management form.
-      @rtype: ZPublisher.HTTPResponse
+      @rtype: C{ZPublisher.HTTPResponse}
       """
 
       target_ob = self.getParentNode()
@@ -195,14 +186,14 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
         try:
           # Object State
           self.setObjStateModified(REQUEST)
-          # Properties
+          # Persist XML-backed object properties from the request.
           for key in self.getObjAttrs():
             obj_attr = self.getObjAttr(key)
             if obj_attr['xml']:
               self.setReqProperty(key, REQUEST)
           # VersionManager
           self.onChangeObj(REQUEST)
-          # Special handling for _embed_type, because it is a raw attribute and not a property
+          # Persist the raw embed-type attribute after the regular property update.
           self.setEmbedType(REQUEST)
           # Success Message
           message = self.getZMILangStr('MSG_CHANGED')
@@ -742,11 +733,6 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
       rtn = self.getNavElementsPROXY( proxy, REQUEST, expand_tree, current_child, subElements)
       return rtn
 
-
-    ############################################################################
-    # HTML-Presentation
-    ############################################################################
-
     def getHref2IndexHtmlPROXY(self, proxy, REQUEST, deep=1): 
       """
       Return the index HTML URL resolved through the current proxy context.
@@ -861,11 +847,6 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
         else: 
           rtn = self._getBodyContent( REQUEST) 
       return rtn
-
-
-    ############################################################################
-    # DOM-Methods
-    ############################################################################
 
     def breadcrumbs_obj_pathPROXY(self, proxy, portalMaster=True):
       """
@@ -1019,11 +1000,6 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
       proxy = self.getProxy()
       rtn = self.getChildNodesPROXY( proxy, REQUEST, meta_types, reid)
       return rtn
-
-
-    ############################################################################
-    # Printable
-    ############################################################################
 
     def printHtmlPROXY(self, proxy, level, sectionizer, REQUEST, deep=True):
       """

@@ -1,9 +1,10 @@
 """
 _pathhandler.py
 
-Internal helpers for pathhandler in ZMS.
+Defines PathHandler for URL routing, path traversal, and request dispatch.
+It resolves tree paths to objects, handles traversal logic, and maps URLs to handlers.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 # Imports.
@@ -17,13 +18,9 @@ from Products.zms import _fileutil
 from Products.zms import _globals
 from zope.globalrequest import getRequest
 
-# ------------------------------------------------------------------------------
-#  _pathhandler.validateId:
-#
-#  Validates id against list of possible declarative id.
-# ------------------------------------------------------------------------------
+
 def validateId(self, id, REQUEST):
-    """Implement 'validateId'."""
+    """Validates id against list of possible declarative id."""
     langs = []
     lang = REQUEST.get( 'lang')
     if lang is None:
@@ -43,13 +40,8 @@ def validateId(self, id, REQUEST):
     return False
 
 
-# ------------------------------------------------------------------------------
-#  _pathhandler.filterId:
-#
-#  Filters object by id.
-# ------------------------------------------------------------------------------
 def filterId(self, id, REQUEST):
-  """Implement 'filterId'."""
+  """Filters object by id."""
   obs = self.objectValues(list(self.dGlobalAttrs))
   filtered_obs = [x for x in obs if x.id == id]
   if len( filtered_obs) > 0:
@@ -61,13 +53,8 @@ def filterId(self, id, REQUEST):
   return None
 
 
-# ------------------------------------------------------------------------------
-#  _pathhandler.handleBlobAttrs:
-#
-#  If the object has blob-fields find by filename and display data.
-# ------------------------------------------------------------------------------
 def handleBlobAttrs(self, name, REQUEST):
-  """Implement 'handleBlobAttrs'."""
+  """Handles blob attributes by filename."""
   langs = self.getLangIds()
   name_without_lang_suffix = name
   if len(langs) == 1 and name.find('_%s.'%langs[0]) > 0:
@@ -93,23 +80,9 @@ def handleBlobAttrs(self, name, REQUEST):
   return None
 
 
-
-################################################################################
-################################################################################
-###
-###   class PathHandler:
-###
-###   Based on the Zope-Product PathHandler
-###   http://www.zope.org/Members/NIP/PathHandler).
-###
-################################################################################
-################################################################################
 class PathHandler(object): 
-
-    # --------------------------------------------------------------------------
-    #  PathHandler.__bobo_traverse__
-    # --------------------------------------------------------------------------
     """Provide helpers for PathHandler."""
+
     def __bobo_traverse__(self, TraversalRequest, name):
       # If this is the first time this __bob_traverse__ method has been called
       # in handling this traversal request, store the path_to_handle
@@ -346,9 +319,6 @@ class PathHandler(object):
         standard.raiseError('NotFound',''.join([x+'/' for x in TraversalRequest['path_to_handle']]))
 
 
-    # --------------------------------------------------------------------------
-    #  PathHandler.pathob
-    # --------------------------------------------------------------------------
     def pathob(self, path_to_handle, REQUEST):
       """Implement 'pathob'."""
       path_ob = self

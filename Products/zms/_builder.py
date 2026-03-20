@@ -38,7 +38,7 @@ issues must be taken into consideration:
     - xmlOnUnknownEndTag(self, sTagName)
     - xmlGetParent(self)
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 

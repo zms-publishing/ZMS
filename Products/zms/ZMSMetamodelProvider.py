@@ -1,9 +1,10 @@
 """
 ZMSMetamodelProvider.py
 
-ZMS support for zmsmetamodel provider.
+Defines ZMSMetamodelProvider for metamodel schema definitions and attribute metadata.
+It stores and retrieves type information, constraints, and structural metadata for content objects.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 

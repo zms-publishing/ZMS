@@ -1,9 +1,10 @@
 """
 ZMSWorkflowTransitionsManager.py
 
-ZMS support for zmsworkflow transitions manager.
+Defines ZMSWorkflowTransitionsManager for workflow state machines and activity processing.
+It manages activity definitions, transitions, permission checks, and state lifecycle events.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 # Imports.
@@ -12,23 +13,9 @@ import copy
 from Products.zms import standard
 from Products.zms import zopeutil
 
-
-################################################################################
-################################################################################
-###
-###   Class
-###
-################################################################################
-################################################################################
 class ZMSWorkflowTransitionsManager(object):
-
-  ############################################################################
-  #
-  #  IRepositoryProvider
-  #
-  ############################################################################
-
   """Provide helpers for ZMSWorkflowTransitionsManager."""
+
   def provideRepositoryTransitions(self, r, ids=None):
     """Implement 'provideRepositoryTransitions'."""
     standard.writeBlock(self, "[provideRepositoryTransitions]: ids=%s"%str(ids))
@@ -38,9 +25,7 @@ class ZMSWorkflowTransitionsManager(object):
       d['id'] = id
       r['workflow']['Transitions'].append(d)
 
-  """
-  @see IRepositoryProvider
-  """
+
   def updateRepositoryTransitions(self, r):
     """Implement 'updateRepositoryTransitions'."""
     id = r['id']
@@ -53,9 +38,6 @@ class ZMSWorkflowTransitionsManager(object):
     return id
 
 
-  """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  ZMSWorkflowTransitionsManager.setTransition
-  """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   def setTransition(self, id, newId, newName, newType, newIconClass='', newFrom=[], newTo='', newPerformer=[], newData=''):
     """Set transition."""
     message = ''
@@ -89,9 +71,6 @@ class ZMSWorkflowTransitionsManager(object):
     return message
 
 
-  """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  ZMSWorkflowTransitionsManager.getTransitions
-  """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   def getTransitions(self):
     """Return transitions."""
     obs = self.transitions
@@ -104,17 +83,11 @@ class ZMSWorkflowTransitionsManager(object):
     return transitions
 
 
-  """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  ZMSWorkflowTransitionsManager.getTransitionIds
-  """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   def getTransitionIds(self):
     """Return transitionids."""
     return [x['id'] for x in self.getTransitions()] 
 
 
-  """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  ZMSWorkflowTransitionsManager.getTransition
-  """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   def getTransition(self, id, for_export=False):
     """Return transition."""
     transition = [x for x in self.getTransitions() if x['id'] == id][0]
@@ -128,9 +101,6 @@ class ZMSWorkflowTransitionsManager(object):
     return transition
 
 
-  """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  ZMSWorkflowTransitionsManager.manage_changeTransitions:
-  """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   def manage_changeTransitions(self, lang, btn='', key='', REQUEST=None, RESPONSE=None):
     """ ZMSWorkflowTransitionsManager.manage_changeTransitions """
     message = ''
@@ -186,4 +156,3 @@ class ZMSWorkflowTransitionsManager(object):
     # Return with message.
     message = standard.url_quote(message)
     return RESPONSE.redirect('manage_main?id=%s&lang=%s&key=%s&manage_tabs_message=%s'%(id, lang, key, message))
-

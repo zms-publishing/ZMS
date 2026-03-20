@@ -2,9 +2,10 @@
 """
 zmssqldb.py
 
-SQL-backed custom content object with schema, query, and record-set helpers.
+Defines ZMSSqlDb for relational database integration and SQL queries.
+It enables direct database access, executes queries, and marshals result sets as Python objects.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 

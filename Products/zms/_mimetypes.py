@@ -5,7 +5,7 @@ This module defines MIME type icon mappings for the ZMS content
 management system. It provides a dictionary mapping MIME type strings
 to their corresponding icon filenames for display in the ZMS UI.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 

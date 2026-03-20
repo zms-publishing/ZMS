@@ -4,7 +4,7 @@ _ziputil.py
 This module provides utility functions for exporting ZODB
 objects to ZIP archives and importing ZIP archives into the ZODB.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 

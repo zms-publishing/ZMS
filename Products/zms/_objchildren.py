@@ -1,9 +1,10 @@
 """
 _objchildren.py
 
-Internal helpers for objchildren in ZMS.
+Defines ObjChildren for parent-child relationship traversal and hierarchy navigation.
+It manages object containment, recursive queries, and tree-structure operations.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 # Product Imports.

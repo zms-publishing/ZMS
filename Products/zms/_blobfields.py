@@ -4,7 +4,7 @@ _blobfields.py
 This module provides blob, image, and file helpers used by ZMS for storing,
 exporting, and serving binary content.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 

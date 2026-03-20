@@ -1,9 +1,10 @@
 """
 _importable.py
 
-Internal helpers for importable in ZMS.
+Provides recurse_importContent, importContent, importFile helper functions for object import, deserialization, and batch uploads.
+It parses incoming ZEXP/ZIP uploads, reconstructs object graphs, and validates imported content.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 # Imports.

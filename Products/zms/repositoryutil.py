@@ -3,7 +3,7 @@
 This module provides helper functions and classes for repository access from
 Python scripts and other ZMS internals.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 # Imports.

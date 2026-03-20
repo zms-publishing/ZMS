@@ -11,7 +11,7 @@ This module contains:
     format (tag, optional sub-tag, attributes, and usage metadata), plus
     rendering helpers to convert input text into wrapped HTML.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 

@@ -1,9 +1,84 @@
 """
 _objattrs.py
 
-Internal helpers for objattrs in ZMS.
+This module provides comprehensive attribute management functionality for ZMS content objects.
 
-License: GNU General Public License v2 or later
+Overview:
+The _objattrs module is central to ZMS's content management architecture, implementing
+the meta-object model that enables flexible attribute handling for arbitrary content types.
+It encapsulates logic for content-object traversal, attribute access, and child-node
+handling, providing reusable behaviors shared by the ZMS runtime.
+
+Key Functionality:
+  - Attribute retrieval, defaults, and access with multilingual and blob field support
+  - Form input generation (text areas, select menus, file uploads, rich text editors, etc.)
+  - Value formatting and validation including blob handling and datetime parsing
+  - Multilingual support with language-specific fallback behavior
+  - Object activation status determination based on active flags and datetime attributes
+  - Object versioning integration for preview vs. live version management
+  - Blob field management (images/files) with upload, preview, and manipulation support
+  - AJAX endpoints for autocomplete and dynamic form updates
+  - Attribute cloning and synchronization across object instances
+
+  ObjAttrs:
+  Mixin class providing attribute access, form rendering, and manipulation methods
+  for ZMS content objects. Enables getting/setting attributes, generating form fields,
+  and managing multilingual content.
+
+  ObjAttrsManager:
+  Manager class for synchronizing and maintaining the centralized attribute
+  metadata dictionary (dObjAttrs) across the ZMS instance. Coordinates attribute
+  definitions from the meta-object model with actual object instances.
+
+Core Functions:
+  - getobjattrdefault(obj, obj_attr, lang):
+    Returns the default value for an object attribute based on datatype, considering
+    translation status and special handling for the 'active' attribute.
+  - getobjattr(self, obj, obj_attr, lang):
+    Retrieves an object attribute value with fallback to primary language for
+    mono-lingual attributes and default value resolution.
+  - setobjattr(self, obj, obj_attr, value, lang):
+    Assigns a value to an object attribute, handling blob field callbacks.
+  - cloneobjattr(self, src, dst, obj_attr, lang):
+    Copies an attribute value from source to destination object with proper
+    handling of complex datatypes, blobs, lists, and dictionaries.
+
+Architecture:
+  - The module integrates with:
+    - ZMS meta-object model for attribute definitions
+    - Object versioning system for preview/live state management
+    - Blob field management for media handling
+    - Multilingual content system with per-language attribute variants
+    - AJAX framework for dynamic form interactions
+    - PIL (Python Imaging Library) for image manipulation via pilutil
+
+  - Attribute Types Supported:
+    - Text/Rich Text: Standard text, DTML, TAL expressions, rich text editors
+    - Media: Images and files with upload, preview, resize, and crop capabilities
+    - Numeric: Integers, floats, and currency amounts
+    - Temporal: Date, time, datetime with format parsing
+    - Structured: Lists, dictionaries with XML serialization
+    - Selection: Select menus, multiselect, autocomplete with custom options
+    - Security: Password fields with proper handling
+    - Utility: Identifiers, URLs, coverage (i18n), status tracking
+
+  - Multilingual Features:
+    - Per-language attribute variants with fallback chains
+    - Coverage tracking for attribute availability by language
+    - Translation status awareness affecting default values
+    - Language-specific form field generation and rendering
+
+  - Special Attributes:
+    - active: Boolean activation flag with multilingual support
+    - attr_active_start/end: Datetime-based activation windows with cache expiration
+    - created_uid/dt: Creation metadata
+    - change_uid/dt: Modification tracking with multilingual support
+    - change_history: Audit trail of modifications
+    - Version tracking: master, major, minor version numbers
+    - work_*: Workflow state attributes
+    - internal_dict: Internal metadata storage
+
+License: GNU General Public License v2 or later, 
 Organization: ZMS Publishing
 """
 # Imports.

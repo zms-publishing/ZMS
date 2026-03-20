@@ -1,9 +1,10 @@
 """
 _objtypes.py
 
-Internal helpers for objtypes in ZMS.
+Defines ObjTypes for object type definitions and meta-class registration.
+It registers content classes, defines allowed object hierarchies, and enforces type constraints.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 

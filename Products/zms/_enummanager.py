@@ -1,9 +1,10 @@
 """
 _enummanager.py
 
-Internal helpers for enummanager in ZMS.
+Defines EnumManager for enumeration definitions and choice option management.
+It registers controlled vocabularies and option lists for use in form fields and filters.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 # Imports.

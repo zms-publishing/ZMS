@@ -1,9 +1,10 @@
 """
 ZMSFormatProviderAcquired.py
 
-ZMS support for zmsformat provider acquired.
+Defines ZMSFormatProviderAcquired for text content formatting and rendering.
+It applies format-specific conversion, escaping, and transformation rules to content at display time.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 

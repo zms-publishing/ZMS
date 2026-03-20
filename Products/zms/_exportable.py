@@ -1,9 +1,10 @@
 """
 _exportable.py
 
-Export helpers for serializing ZMS objects, assets, and related metadata.
+Defines Exportable for object export, serialization, and batch downloads.
+It generates ZEXP files, prepares content for external storage, and handles format conversion.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 

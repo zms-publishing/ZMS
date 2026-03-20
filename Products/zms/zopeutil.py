@@ -1,9 +1,10 @@
 """
 zopeutil.py
 
-Utility helpers for interacting with Zope objects and APIs.
+Defines MissingArtefactProxy for general-purpose ZMS utilities and shared helper functions.
+It provides common patterns like type checking, data transformation, and error handling.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 # Imports.

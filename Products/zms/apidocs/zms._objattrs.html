@@ -1164,8 +1164,80 @@
 
         <div class="moduleDocstring">
           <div><p>_objattrs.py</p>
-<p>Internal helpers for objattrs in ZMS.</p>
-<p>License: GNU General Public License v2 or later Organization: ZMS Publishing</p>
+<p>This module provides comprehensive attribute management functionality for ZMS content objects.</p>
+<p>Overview: The _objattrs module is central to ZMS's content management architecture, implementing the meta-object model that enables flexible attribute handling for arbitrary content types. It encapsulates logic for content-object traversal, attribute access, and child-node handling, providing reusable behaviors shared by the ZMS runtime.</p>
+<p>Key Functionality:</p>
+<ul>
+<li><p class="rst-first">Attribute retrieval, defaults, and access with multilingual and blob field support</p>
+</li>
+<li><p class="rst-first">Form input generation (text areas, select menus, file uploads, rich text editors, etc.)</p>
+</li>
+<li><p class="rst-first">Value formatting and validation including blob handling and datetime parsing</p>
+</li>
+<li><p class="rst-first">Multilingual support with language-specific fallback behavior</p>
+</li>
+<li><p class="rst-first">Object activation status determination based on active flags and datetime attributes</p>
+</li>
+<li><p class="rst-first">Object versioning integration for preview vs. live version management</p>
+</li>
+<li><p class="rst-first">Blob field management (images/files) with upload, preview, and manipulation support</p>
+</li>
+<li><p class="rst-first">AJAX endpoints for autocomplete and dynamic form updates</p>
+</li>
+<li><p class="rst-first">Attribute cloning and synchronization across object instances</p>
+<p>ObjAttrs: Mixin class providing attribute access, form rendering, and manipulation methods for ZMS content objects. Enables getting/setting attributes, generating form fields, and managing multilingual content.</p>
+<p>ObjAttrsManager: Manager class for synchronizing and maintaining the centralized attribute metadata dictionary (dObjAttrs) across the ZMS instance. Coordinates attribute definitions from the meta-object model with actual object instances.</p>
+</li>
+</ul>
+<p>Core Functions:</p>
+<ul class="rst-simple">
+<li>getobjattrdefault(obj, obj_attr, lang): Returns the default value for an object attribute based on datatype, considering translation status and special handling for the 'active' attribute.</li>
+<li>getobjattr(self, obj, obj_attr, lang): Retrieves an object attribute value with fallback to primary language for mono-lingual attributes and default value resolution.</li>
+<li>setobjattr(self, obj, obj_attr, value, lang): Assigns a value to an object attribute, handling blob field callbacks.</li>
+<li>cloneobjattr(self, src, dst, obj_attr, lang): Copies an attribute value from source to destination object with proper handling of complex datatypes, blobs, lists, and dictionaries.</li>
+</ul>
+<p>Architecture:</p>
+<ul class="rst-simple">
+<li>The module integrates with:<ul>
+<li>ZMS meta-object model for attribute definitions</li>
+<li>Object versioning system for preview/live state management</li>
+<li>Blob field management for media handling</li>
+<li>Multilingual content system with per-language attribute variants</li>
+<li>AJAX framework for dynamic form interactions</li>
+<li>PIL (Python Imaging Library) for image manipulation via pilutil</li>
+</ul>
+</li>
+<li>Attribute Types Supported:<ul>
+<li>Text/Rich Text: Standard text, DTML, TAL expressions, rich text editors</li>
+<li>Media: Images and files with upload, preview, resize, and crop capabilities</li>
+<li>Numeric: Integers, floats, and currency amounts</li>
+<li>Temporal: Date, time, datetime with format parsing</li>
+<li>Structured: Lists, dictionaries with XML serialization</li>
+<li>Selection: Select menus, multiselect, autocomplete with custom options</li>
+<li>Security: Password fields with proper handling</li>
+<li>Utility: Identifiers, URLs, coverage (i18n), status tracking</li>
+</ul>
+</li>
+<li>Multilingual Features:<ul>
+<li>Per-language attribute variants with fallback chains</li>
+<li>Coverage tracking for attribute availability by language</li>
+<li>Translation status awareness affecting default values</li>
+<li>Language-specific form field generation and rendering</li>
+</ul>
+</li>
+<li>Special Attributes:<ul>
+<li>active: Boolean activation flag with multilingual support</li>
+<li>attr_active_start/end: Datetime-based activation windows with cache expiration</li>
+<li>created_uid/dt: Creation metadata</li>
+<li>change_uid/dt: Modification tracking with multilingual support</li>
+<li>change_history: Audit trail of modifications</li>
+<li>Version tracking: master, major, minor version numbers</li>
+<li>work_*: Workflow state attributes</li>
+<li>internal_dict: Internal metadata storage</li>
+</ul>
+</li>
+</ul>
+<p>License: GNU General Public License v2 or later, Organization: ZMS Publishing</p>
 </div>
         </div>
 
@@ -1224,7 +1296,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">cloneobjattr</span><span class="function-signature">(self, src, dst, obj_attr, lang)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objattrs.py#L97">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objattrs.py#L172">
       
       (source)
     </a>
@@ -1251,7 +1323,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getobjattr</span><span class="function-signature">(self, obj, obj_attr, lang)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objattrs.py#L58">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objattrs.py#L133">
       
       (source)
     </a>
@@ -1278,7 +1350,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getobjattrdefault</span><span class="function-signature">(obj, obj_attr, lang)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objattrs.py#L29">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objattrs.py#L104">
       
       (source)
     </a>
@@ -1305,7 +1377,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">setobjattr</span><span class="function-signature">(self, obj, obj_attr, value, lang)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objattrs.py#L85">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objattrs.py#L160">
       
       (source)
     </a>

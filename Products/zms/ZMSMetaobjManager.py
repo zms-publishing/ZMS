@@ -9,7 +9,7 @@ types, their attributes, and the associated implementation artefacts
 helpers for repository import/export, XML import/export, runtime rendering
 lookup, and synchronization of attribute metadata with persistent objects.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 

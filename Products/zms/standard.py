@@ -1,6 +1,3 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-
 """
 standard.py
 
@@ -10,6 +7,9 @@ This module contains low-level helpers (string/list/dict utilities, HTTP and
 filesystem wrappers, date/time formatting, logging helpers, templating
 execution helpers, and XML/serialization functions) that are imported across
 the codebase.
+
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
 """
 # Imports.
 from AccessControl.SecurityInfo import ModuleSecurityInfo

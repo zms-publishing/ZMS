@@ -1,9 +1,10 @@
 """
 ZMSMetadictManager.py
 
-ZMS support for zmsmetadict manager.
+Defines ZMSMetadictManager for metadata dictionary storage and lookup.
+It caches and retrieves metamodel definitions, providing fast access to schema and constraint data.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 # Imports.

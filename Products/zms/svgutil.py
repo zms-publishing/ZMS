@@ -1,9 +1,10 @@
 """
 svgutil.py
 
-SVG parsing and dimension helpers for ZMS image handling.
+Provides get_dimensions, set_dimensions helper functions for SVG image generation, manipulation, and rendering.
+It creates scalable vector graphics, applies transformations, and generates dynamic diagrams.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 # Imports.

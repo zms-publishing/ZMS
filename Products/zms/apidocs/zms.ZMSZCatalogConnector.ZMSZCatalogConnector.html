@@ -452,7 +452,7 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSZCatalogConnector</span>(ZMSItem.ZMSItem): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L29" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms.ZMSZCatalogConnector.ZMSZCatalogConnector.__init__">ZMSZCatalogConnector(id)</a></code></p><p>Implements interfaces: Products.zms.IZMSCatalogConnector.IZMSCatalogConnector, Products.zms.IZMSRepositoryProvider.IZMSRepositoryProvider</p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSZCatalogConnector</span>(ZMSItem.ZMSItem): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L47" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms.ZMSZCatalogConnector.ZMSZCatalogConnector.__init__">ZMSZCatalogConnector(id)</a></code></p><p>Implements interfaces: Products.zms.IZMSCatalogConnector.IZMSCatalogConnector, Products.zms.IZMSRepositoryProvider.IZMSRepositoryProvider</p>
           <p><a href="classIndex.html#zms.ZMSZCatalogConnector.ZMSZCatalogConnector">View In Hierarchy</a></p>
         </div>
 
@@ -468,7 +468,7 @@
     
     <td>Method</td>
     <td><code><a href="#__init__" class="internal-link" title="zms.ZMSZCatalogConnector.ZMSZCatalogConnector.__init__">__init__</a></code></td>
-    <td>Initialize the instance state.</td>
+    <td>Constructor</td>
   </tr><tr class="method">
     
     <td>Method</td>
@@ -513,7 +513,7 @@
     
     <td>Method</td>
     <td><code><a href="#provideRepository" class="internal-link" title="zms.ZMSZCatalogConnector.ZMSZCatalogConnector.provideRepository">provide<wbr></wbr>Repository</a></code></td>
-    <td>Implement 'provideRepository'.</td>
+    <td>Returns a repository model for export.</td>
   </tr><tr class="method">
     
     <td>Method</td>
@@ -605,7 +605,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">__init__</span><span class="function-signature">(self, id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L60">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L70">
       
       (source)
     </a>
@@ -617,7 +617,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Initialize the instance state.</p></div>
+    <div><p>Constructor</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -632,7 +632,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getActions</span><span class="function-signature">(self, pattern=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L118">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L122">
       
       (source)
     </a>
@@ -659,7 +659,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getProperties</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L111">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L115">
       
       (source)
     </a>
@@ -686,7 +686,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_changeProperties</span><span class="function-signature">(self, btn, lang, REQUEST, RESPONSE)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L351">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L355">
       
       (source)
     </a>
@@ -713,7 +713,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_destroy</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L173">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L177">
       
       (source)
     </a>
@@ -740,7 +740,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_init</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L130">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L134">
       
       (source)
     </a>
@@ -767,7 +767,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_objects_add</span><span class="function-signature">(self, objects)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L142">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L146">
       
       (source)
     </a>
@@ -794,7 +794,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_objects_clear</span><span class="function-signature">(self, home_id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L166">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L170">
       
       (source)
     </a>
@@ -821,7 +821,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_objects_remove</span><span class="function-signature">(self, nodes)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L154">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L158">
       
       (source)
     </a>
@@ -848,7 +848,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">provideRepository</span><span class="function-signature">(self, r, ids=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L73">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L75">
       
       (source)
     </a>
@@ -860,7 +860,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement 'provideRepository'.</p></div>
+    <div><p>Returns a repository model for export.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -875,7 +875,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">reindex_page</span><span class="function-signature">(self, uid, page_size, clients=False, fileparsing=True, REQUEST=None, RESPONSE=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L314">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L318">
       
       (source)
     </a>
@@ -902,7 +902,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">search_json</span><span class="function-signature">(self, REQUEST, RESPONSE)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L180">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L184">
       
       (source)
     </a>
@@ -929,7 +929,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">search_xml</span><span class="function-signature">(self, REQUEST, RESPONSE)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L191">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L195">
       
       (source)
     </a>
@@ -956,7 +956,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">suggest_json</span><span class="function-signature">(self, REQUEST, RESPONSE)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L263">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L267">
       
       (source)
     </a>
@@ -983,7 +983,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">suggest_xml</span><span class="function-signature">(self, REQUEST, RESPONSE)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L274">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L278">
       
       (source)
     </a>
@@ -1010,7 +1010,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">translateRepositoryModel</span><span class="function-signature">(self, r)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L103">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L107">
       
       (source)
     </a>
@@ -1037,7 +1037,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">updateRepository</span><span class="function-signature">(self, r)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L94">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L98">
       
       (source)
     </a>
@@ -1063,7 +1063,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">__ac_permissions__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L51">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L66">
       
       (source)
     </a>
@@ -1090,7 +1090,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">__administratorPermissions__</span>: <code>tuple[<wbr></wbr>str, <wbr></wbr><span class="rst-variable-ellipsis">...</span>]</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L48">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L63">
       
       (source)
     </a>
@@ -1117,7 +1117,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L43">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L59">
       
       (source)
     </a>
@@ -1144,7 +1144,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_main</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L44">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L60">
       
       (source)
     </a>
@@ -1171,7 +1171,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">meta_type</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L38">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L55">
       
       (source)
     </a>
@@ -1198,7 +1198,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_icon</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L39">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L56">
       
       (source)
     </a>
@@ -1225,7 +1225,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">id</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L62">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSZCatalogConnector.py#L72">
       
       (source)
     </a>

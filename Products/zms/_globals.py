@@ -6,7 +6,7 @@ the ZMS product, including datatype constants (DT_*), a static page
 template wrapper, a generic attribute container (MyClass), and a
 section-numbering helper (MySectionizer).
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 

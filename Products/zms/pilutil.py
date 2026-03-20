@@ -1,9 +1,10 @@
 """
 pilutil.py
 
-Image processing helpers built around Pillow integration for ZMS.
+Provides enabled, generate_preview, thumbnail helper functions for image processing and PIL/Pillow operations.
+It resizes images, applies filters, generates thumbnails, and manipulates image metadata.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 # Imports.

@@ -1,9 +1,34 @@
 """
 ZMSZCatalogConnector.py
 
-ZMS support for zmszcatalog connector.
+Provides ZMSZCatalogConnector for catalog indexing and search operations.
+This module implements a Zope connector that integrates with ZCatalog to provide
+centralized indexing, querying, and suggestion capabilities for the ZMS publishing
+platform. It handles the complete lifecycle of catalog management including object
+indexing, removal, and clearing, while supporting multiple output formats (JSON/XML)
+and search interfaces.
 
-License: GNU General Public License v2 or later
+The connector serves as a bridge between ZMS content objects and external search
+engines (such as Solr/OpenSearch), managing repository exports/imports and implementing
+repository provider patterns for catalog schema management.
+
+Key responsibilities:
+  - Manage catalog object indexing and removal operations
+  - Execute search and suggestion queries against indexed content
+  - Transform search results between JSON and XML formats
+  - Handle progressive reindexing of content pages
+  - Provide repository-based schema and configuration persistence
+  - Support property management through the Zope Management Interface (ZMI)
+Features:
+  - Multi-language indexing support via language-specific requests
+  - Configurable file parsing for document extraction
+  - XML prettification of search results
+  - Pagination support for large-scale reindexing operations
+  - ZMI integration with role-based access control
+
+@see: Products.zms.IZMSCatalogConnector, Products.zms.IZMSRepositoryProvider
+
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 # Imports.
@@ -19,32 +44,22 @@ from Products.zms import IZMSRepositoryProvider
 from Products.zms import ZMSItem
 
 
-################################################################################
-################################################################################
-###
-###   Class
-###
-################################################################################
-################################################################################
 @implementer(
         IZMSCatalogConnector.IZMSCatalogConnector,
         IZMSRepositoryProvider.IZMSRepositoryProvider,)
 class ZMSZCatalogConnector(
         ZMSItem.ZMSItem):
+    """Provide helpers for ZMSZCatalogConnector."""
 
     # Properties.
-    # -----------
-    """Provide helpers for ZMSZCatalogConnector."""
     meta_type = 'ZMSZCatalogConnector'
     zmi_icon = "fas fa-search"
 
     # Management Interface.
-    # ---------------------
     manage = PageTemplateFile('zpt/ZMSZCatalogAdapter/manage_zcatalog_connector', globals())
     manage_main = PageTemplateFile('zpt/ZMSZCatalogAdapter/manage_zcatalog_connector', globals())
 
     # Management Permissions.
-    # -----------------------
     __administratorPermissions__ = (
         'manage_changeProperties', 'manage_main',
         )
@@ -52,26 +67,15 @@ class ZMSZCatalogConnector(
         ('ZMS Administrator', __administratorPermissions__),
         )
 
-    ############################################################################
-    #  ZMSZCatalogConnector.__init__: 
-    #
-    #  Constructor.
-    ############################################################################
     def __init__(self, id):
-      """Initialize the instance state."""
+      """Constructor"""
       self.id = id
 
-    ############################################################################
-    #
-    #  IRepositoryProvider
-    #
-    ############################################################################
 
-    """
-    @see IRepositoryProvider
-    """
     def provideRepository(self, r, ids=None):
-      """Implement 'provideRepository'."""
+      """
+      Returns a repository model for export.
+      """
       standard.writeBlock(self, "[provideRepository]: ids=%s"%str(ids))
       r = {}
       id = self.id

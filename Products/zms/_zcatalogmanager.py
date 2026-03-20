@@ -1,16 +1,21 @@
 """
 _zcatalogmanager.py
 
-Internal helpers for zcatalogmanager in ZMS.
+Provides ZCatalogManager for catalog indexing.
+It centralizes manager methods for catalog indexing, connector integration, and search-facing metadata, keeping administrative logic in one place and reducing duplication in callers.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
-################################################################################
-# CLASS ZCatalogManager
-################################################################################
+
 
 class ZCatalogManager(object):
+    """
+    Provide catalog utility methods for search query formatting and object traversal.
+    
+    Includes helpers for building catalog search query strings with AND/OR operators,
+    executing catalog queries, and resolving catalog object paths for ZMS objects.
+    """
 
     # @deprecated
     def getCatalogQueryString(self, raw, option='AND', only_words=False):

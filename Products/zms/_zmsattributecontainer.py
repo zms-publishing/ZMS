@@ -1,9 +1,10 @@
 """
 _zmsattributecontainer.py
 
-Internal helpers for zmsattributecontainer in ZMS.
+Defines ZMSAttributeContainer for object persistence, Zope integration, and container protocols.
+It implements Zope's ObjectManager interface, handles acquisition, and manages object lifecycle.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 from OFS.Folder import Folder

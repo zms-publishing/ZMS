@@ -1,9 +1,10 @@
 """
 _objinputs.py
 
-Internal helpers for objinputs in ZMS.
+Defines ObjInputs for form input field generation and HTML form rendering.
+It generates form controls, applies client-side validation, and handles multipart form submissions.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 # Product Imports.

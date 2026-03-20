@@ -1,9 +1,10 @@
 """
 ZMSMetacmdProviderAcquired.py
 
-ZMS support for zmsmetacmd provider acquired.
+Defines ZMSMetacmdProviderAcquired for command and action metadata registration.
+It registers custom ZMI actions, toolbar commands, and context-menu entries for admin interfaces.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 

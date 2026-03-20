@@ -1,9 +1,10 @@
 """
 ZMSMetacmdProvider.py
 
-ZMS support for zmsmetacmd provider.
+Defines ZMSMetacmdProvider for command and action metadata registration.
+It registers custom ZMI actions, toolbar commands, and context-menu entries for admin interfaces.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 

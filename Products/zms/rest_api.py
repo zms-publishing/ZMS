@@ -1,9 +1,10 @@
 """
 rest_api.py
 
-REST API decorators and response serialization helpers for ZMS.
+Defines api, RestApiController for REST API endpoints and HTTP protocol handling.
+It exposes content via JSON/XML, handles authentication, and implements HTTP semantics.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 

@@ -4,7 +4,7 @@ _sequence.py
 This module provides the Sequence class for generating unique,
 auto-incrementing IDs for ZMS objects (e.g. for new content nodes).
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 

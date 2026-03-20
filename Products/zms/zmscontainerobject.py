@@ -1,9 +1,10 @@
 """
 zmscontainerobject.py
 
-Container object implementation for managing ZMS child nodes.
+Defines ZMSContainerObject for object persistence, Zope integration, and container protocols.
+It implements Zope's ObjectManager interface, handles acquisition, and manages object lifecycle.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 

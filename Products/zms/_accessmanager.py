@@ -4,7 +4,7 @@ _accessmanager.py
 This module provides user, role, and public-access management helpers for ZMS
 objects and containers.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 

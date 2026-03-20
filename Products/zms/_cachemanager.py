@@ -22,7 +22,7 @@ Typical usage pattern:
   3. Persist it with C{storeReqBuff('some.key', value)}.
   4. Invalidate with C{clearReqBuff('some')} when related state changes.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 # Imports.

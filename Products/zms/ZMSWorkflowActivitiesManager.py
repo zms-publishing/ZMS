@@ -1,9 +1,10 @@
 """
 ZMSWorkflowActivitiesManager.py
 
-ZMS support for zmsworkflow activities manager.
+Defines ZMSWorkflowActivitiesManager for workflow state machines and activity processing.
+It manages activity definitions, transitions, permission checks, and state lifecycle events.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 import ZPublisher.HTTPRequest

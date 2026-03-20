@@ -1,9 +1,10 @@
 """
 ZMSFilterManager.py
 
-ZMS support for zmsfilter manager.
+Defines ZMSFilterManager for content filtering and transformation pipelines.
+It registers and invokes filter functions across processing stages, enabling custom data munging.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 # Imports.

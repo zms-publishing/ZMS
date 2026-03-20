@@ -1,9 +1,10 @@
 """
 zmscustom.py
 
-Implementation of the custom ZMS content type and related XML import helpers.
+Defines ZMSCustom for site-specific customization and plugin extensions.
+It allows overriding default behavior through configuration, subclassing, or plugin hooks.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 

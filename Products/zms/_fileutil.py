@@ -5,7 +5,7 @@ This module provides file-system utility functions for ZMS, including
 path handling, file reading/writing, ZEXP import/export, ZIP archive
 creation/extraction, and data size formatting.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 

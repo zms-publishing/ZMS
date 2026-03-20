@@ -1,9 +1,10 @@
 """
 zmslinkcontainer.py
 
-Container implementation for managing ZMS link references.
+Defines ZMSLinkContainer for object persistence, Zope integration, and container protocols.
+It implements Zope's ObjectManager interface, handles acquisition, and manages object lifecycle.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 # Product Imports.

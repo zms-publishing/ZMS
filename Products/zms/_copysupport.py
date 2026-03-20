@@ -5,7 +5,7 @@ This module provides support for copying and moving ZMS objects,
 including normalization of IDs, handling of BLOB fields, and 
 clipboard operations.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 

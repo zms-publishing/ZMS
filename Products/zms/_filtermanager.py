@@ -11,7 +11,7 @@ The module-level functions handle file-based processing and command execution,
 while C{FilterItem} integrates those helpers with object export context and
 request/session state.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 # Imports.
@@ -24,24 +24,24 @@ from Products.zms import standard
 from Products.zms import zopeutil
 
 def getTransFilename(self, folder, trans):
-      """
-      Build the filesystem path for a transformation resource.
+  """
+  Build the filesystem path for a transformation resource.
 
-      @param self: Context object providing logging utilities.
-      @type self: C{object}
-      @param folder: Working directory used by the current filter run.
-      @type folder: C{str}
-      @param trans: Transformation object with an id in
-        C{<process-id>.<nr>.<filename>} format.
-      @type trans: C{object}
-      @return: Absolute transformation filename inside C{folder}.
-      @rtype: C{str}
-      """
-      transid = trans.getId()
-      transid = '.'.join(transid.split('.')[2:]) # <process-id>.<process-nr>.<filename>
-      transfilename = os.path.join(folder, transid)
-      standard.writeLog(self,"[getTransFilename]: transfilename=%s"%(transfilename))
-      return transfilename
+  @param self: Context object providing logging utilities.
+  @type self: C{object}
+  @param folder: Working directory used by the current filter run.
+  @type folder: C{str}
+  @param trans: Transformation object with an id in
+    C{<process-id>.<nr>.<filename>} format.
+  @type trans: C{object}
+  @return: Absolute transformation filename inside C{folder}.
+  @rtype: C{str}
+  """
+  transid = trans.getId()
+  transid = '.'.join(transid.split('.')[2:]) # <process-id>.<process-nr>.<filename>
+  transfilename = os.path.join(folder, transid)
+  standard.writeLog(self,"[getTransFilename]: transfilename=%s"%(transfilename))
+  return transfilename
 
 
 def processData(self, processId, data, trans=None):
@@ -344,6 +344,7 @@ class FilterItem(object):
       else:
         raise zExceptions.InternalError("Unknown format '%s'"%ob_filter.get('format', ''))
       return tempfolder, outfilename
+
 
     def execProcessFilter(self, ob_process, folder, filename, REQUEST):
       """

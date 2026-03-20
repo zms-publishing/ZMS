@@ -1,9 +1,10 @@
 """
 yamlutil.py
 
-YAML parsing and dumping helpers for ZMS repository data.
+Provides dump, parse helper functions for general-purpose ZMS utilities and shared helper functions.
+It provides common patterns like type checking, data transformation, and error handling.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 

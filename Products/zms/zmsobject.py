@@ -4,7 +4,7 @@ zmsobject.py
 Base ZMS object implementation combining access, versioning, export, and
 object-attribute behavior.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 

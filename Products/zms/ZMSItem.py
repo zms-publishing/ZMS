@@ -1,9 +1,10 @@
 """
 ZMSItem.py
 
-ZMS support for zmsitem.
+Provides ZMSItem for core content-object traversal.
+It implements core object persistence and Zope integration for core content-object traversal, attribute access, and child-node handling, enabling standard container and traversal protocols.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 # Imports.
@@ -19,13 +20,6 @@ from Products.zms import standard
 from Products.zms import _accessmanager
 
 
-################################################################################
-################################################################################
-###
-###   Abstract Class ZMSItem
-###
-################################################################################
-################################################################################
 class ZMSItem(
     OFS.ObjectManager.ObjectManager,
     OFS.SimpleItem.Item,
@@ -90,25 +84,19 @@ class ZMSItem(
         return '<article class="zmi-readme">%s</article>'%markdown.markdown(raw, extensions=['tables', 'fenced_code'])
       return ''
 
-    # --------------------------------------------------------------------------
-    #  ZMSItem.zmi_body_content:
-    # --------------------------------------------------------------------------
+
     def zmi_body_content(self, *args, **kwargs):
       """Implement 'zmi_body_content'."""
       request = self.REQUEST
       response = request.RESPONSE
       return self.getBodyContent(request)
 
-    # --------------------------------------------------------------------------
-    #  ZMSItem.zmi_manage_menu:
-    # --------------------------------------------------------------------------
+
     def zmi_manage_menu(self, *args, **kwargs):
       """Implement 'zmi_manage_menu'."""
       return self.manage_menu(args, kwargs)
 
-    # --------------------------------------------------------------------------
-    #  zmi_body_attrs:
-    # --------------------------------------------------------------------------
+
     def zmi_body_class(self, *args, **kwargs):
       """Implement 'zmi_body_class'."""
       request = self.REQUEST
@@ -126,9 +114,7 @@ class ZMSItem(
       l.append(self.getConfProperty('ZMS.added.zmi.body_class',''))
       return ' '.join(l)
 
-    # --------------------------------------------------------------------------
-    #  ZMSItem.zmi_page_request:
-    # --------------------------------------------------------------------------
+
     def _zmi_page_request(self, *args, **kwargs):
       """Implement '_zmi_page_request'."""
       request = self.REQUEST
@@ -185,20 +171,22 @@ class ZMSItem(
       RESPONSE.setHeader('HX-Push-Url', '%s?%s'%(path_to_handle, qs))
 
     def f_standard_html_request(self, *args, **kwargs):
-      """Implement 'f_standard_html_request'."""
+      """
+      Set up request for standard HTML page rendering, 
+      including headers and context variables.
+      """
       request = self.REQUEST
       self._zmi_page_request()
       if not request.get( 'lang'):
         request.set( 'lang', self.getLanguage(request))
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSItem.display_icon:
-    #
-    #  @param REQUEST
-    # --------------------------------------------------------------------------
     def display_icon(self, *args, **kwargs):
-      """Implement 'display_icon'."""
+      """
+      Returns the icon for the object.
+       - If meta_id is provided, return the icon for the specified meta_id
+       - Otherwise, return the default icon for the object
+      """
       meta_id = kwargs.get('meta_id')
       if meta_id is None:
         return self.icon
@@ -206,18 +194,20 @@ class ZMSItem(
         return self.aq_parent.display_icon(meta_id=meta_id)
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSItem.getTitlealt
-    # --------------------------------------------------------------------------
     def getTitlealt( self, REQUEST):
-      """Return titlealt."""
+      """
+      Returns the translated meta_type as title alt text for icons and links.
+       - If meta_type is defined in self.getZMILangStr, return the translated string
+       - Otherwise, return the raw meta_type
+      """
       return self.getZMILangStr( self.meta_type)
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSItem.breadcrumbs_obj_path:
-    # --------------------------------------------------------------------------
     def breadcrumbs_obj_path(self, portalMaster=True):
-      """Implement 'breadcrumbs_obj_path'."""
+      """
+      Return the acquisition path of objects from the root to self's parent as a list.
+      If portalMaster is True, the path is returned from the portal master object; 
+      otherwise, from the root of the acquisition context.
+      """
       return self.aq_parent.breadcrumbs_obj_path(portalMaster)
 

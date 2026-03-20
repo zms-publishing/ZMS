@@ -10,7 +10,7 @@ The class acts as a thin adapter around the parent container attribute
 C{__attr_conf_dict__}, exposing helper methods for reading/writing single
 properties and for serializing/deserializing settings during repository sync.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 

@@ -1,9 +1,10 @@
 """
 zmstrashcan.py
 
-Trashcan support for deleted ZMS objects and recovery workflows.
+Defines ZMSTrashcan for trashcan management, deletion recovery, and object lifecycle cleanup.
+It retains recently deleted objects, enables recovery, and enforces retention policies.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 # Imports.

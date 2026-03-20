@@ -1,9 +1,10 @@
 """
 zmsindex.py
 
-ZMS index content type and catalog index management helpers.
+Defines ZMSIndex for ZMS indexing, catalog navigation, and search result display.
+It renders index pages, applies sorting/filtering, and formats search result listings.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 

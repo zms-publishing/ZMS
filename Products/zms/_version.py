@@ -1,9 +1,10 @@
 """
 _version.py
 
-This module reads the ZMS version string from version.txt.
+Provides core utilities for version lifecycle, publication flow, and semantic versioning.
+It manages draft/live transitions, version numbering, approval workflows, and content staging.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 from pathlib import Path

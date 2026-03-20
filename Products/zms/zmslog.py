@@ -1,9 +1,10 @@
 """
 zmslog.py
 
-Logging helpers and log-entry management for ZMS.
+Defines ZMSLog for runtime logging, error reporting, and debugging output.
+It writes to application logs, formats diagnostic messages, and provides trace-level introspection.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile

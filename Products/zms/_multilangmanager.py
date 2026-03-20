@@ -1,9 +1,10 @@
 """
 _multilangmanager.py
 
-Internal helpers for multilangmanager in ZMS.
+Defines langdict, MultiLanguageObject for multilingual content management and language-specific variants.
+It maps language codes to content variants, handles fallback logic, and manages translations.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 # Imports.

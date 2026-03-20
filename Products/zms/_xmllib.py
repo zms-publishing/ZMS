@@ -9,7 +9,7 @@ multilingual attributes, and CDATA handling. Contains the L{XmlAttrBuilder}
 parser for complex Python attributes and the L{XmlBuilder} parser for custom
 XML structures.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 

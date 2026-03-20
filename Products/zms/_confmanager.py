@@ -22,7 +22,7 @@ The module is therefore the central bridge between static configuration sources
 on disk, persisted configuration stored in the Zope object tree, and the higher
 level APIs that the rest of ZMS uses during rendering and administration.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 # Imports.

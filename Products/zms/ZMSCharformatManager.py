@@ -1,9 +1,10 @@
 """
 ZMSCharformatManager.py
 
-ZMS support for zmscharformat manager.
+Defines ZMSCharformatManager for text content formatting and rendering.
+It applies format-specific conversion, escaping, and transformation rules to content at display time.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 # Imports.

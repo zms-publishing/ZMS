@@ -9,7 +9,7 @@ type and the C{ZMSLinkElement} implementation that resolves internal
 references, supports recursive embedding through proxy objects, and delegates
 navigation/printing/title access to referenced content when appropriate.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 # Imports.

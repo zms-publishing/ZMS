@@ -1,9 +1,10 @@
 """
 IZMSActionListContributor.py
 
-Interface definitions for ZMS components that contribute action lists.
+Defines IZMSActionListContributor for ZMS plugin interfaces.
+It establishes contracts for provider implementations, ensuring loose coupling and extensibility.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 

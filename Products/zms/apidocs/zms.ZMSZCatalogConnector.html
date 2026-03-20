@@ -1111,9 +1111,28 @@
 
         <div class="moduleDocstring">
           <div><p>ZMSZCatalogConnector.py</p>
-<p>ZMS support for zmszcatalog connector.</p>
-<p>License: GNU General Public License v2 or later Organization: ZMS Publishing</p>
-</div>
+<p>Provides ZMSZCatalogConnector for catalog indexing and search operations. This module implements a Zope connector that integrates with ZCatalog to provide centralized indexing, querying, and suggestion capabilities for the ZMS publishing platform. It handles the complete lifecycle of catalog management including object indexing, removal, and clearing, while supporting multiple output formats (JSON/XML) and search interfaces.</p>
+<p>The connector serves as a bridge between ZMS content objects and external search engines (such as Solr/OpenSearch), managing repository exports/imports and implementing repository provider patterns for catalog schema management.</p>
+<p>Key responsibilities:</p>
+<ul class="rst-simple">
+<li>Manage catalog object indexing and removal operations</li>
+<li>Execute search and suggestion queries against indexed content</li>
+<li>Transform search results between JSON and XML formats</li>
+<li>Handle progressive reindexing of content pages</li>
+<li>Provide repository-based schema and configuration persistence</li>
+<li>Support property management through the Zope Management Interface (ZMI)</li>
+</ul>
+<p>Features:</p>
+<ul class="rst-simple">
+<li>Multi-language indexing support via language-specific requests</li>
+<li>Configurable file parsing for document extraction</li>
+<li>XML prettification of search results</li>
+<li>Pagination support for large-scale reindexing operations</li>
+<li>ZMI integration with role-based access control</li>
+</ul>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">See Also</td></tr><tr><td colspan="2"><p>Products.zms.IZMSCatalogConnector, Products.zms.IZMSRepositoryProvider</p>
+<p>License: GNU General Public License v2 or later, Organization: ZMS Publishing</p>
+</td></tr></table></div>
         </div>
 
         <div id="splitTables">

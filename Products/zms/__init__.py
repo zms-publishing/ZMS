@@ -3,7 +3,7 @@
 Registers ZMS content types, configures language resources,
 and performs automated minification of static assets on startup.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 

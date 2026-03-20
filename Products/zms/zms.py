@@ -1,9 +1,10 @@
 """
 zms.py
 
-Main ZMS product implementation and top-level content type behavior.
+Provides ZMS, subscriber for core ZMS services and cross-module integration behavior.
+It encapsulates logic for core ZMS services and cross-module integration behavior, providing reusable behaviors shared by the surrounding ZMS runtime.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 

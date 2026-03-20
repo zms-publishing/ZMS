@@ -1,9 +1,10 @@
 """
 IZMSMetacmdProvider.py
 
-Interface definitions for ZMS metacommand providers.
+Defines IZMSMetacmdProvider for ZMS plugin interfaces.
+It establishes contracts for provider implementations, ensuring loose coupling and extensibility.
 
-License: GNU General Public License v2 or later
+License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 

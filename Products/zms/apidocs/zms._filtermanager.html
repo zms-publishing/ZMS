@@ -1194,7 +1194,9 @@
 
         <div class="moduleDocstring">
           <div><p>_filtermanager.py</p>
-<p>Internal helpers for filtermanager in ZMS.</p>
+<p>Import/export filter pipeline helpers for ZMS.</p>
+<p>This module provides the procedural building blocks that execute configured filter pipelines during import/export. A pipeline consists of ordered process steps (commands, methods, scripts) and optional transformation files.</p>
+<p>The module-level functions handle file-based processing and command execution, while <tt class="rst-docutils rst-literal">FilterItem</tt> integrates those helpers with object export context and request/session state.</p>
 <p>License: GNU General Public License v2 or later Organization: ZMS Publishing</p>
 </div>
         </div>
@@ -1207,47 +1209,47 @@
     
     <td>Class</td>
     <td><code><a href="zms._filtermanager.FilterItem.html" class="internal-link" title="zms._filtermanager.FilterItem"><wbr></wbr>Filter<wbr></wbr>Item</a></code></td>
-    <td>Provide helpers for FilterItem.</td>
+    <td>Mixin exposing helper methods to initialise and execute filter exports.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#exportFilter" class="internal-link" title="zms._filtermanager.exportFilter">export<wbr></wbr>Filter</a></code></td>
-    <td>Implement 'exportFilter'.</td>
+    <td>Run the export pipeline and return downloadable file payload metadata.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#getTransFilename" class="internal-link" title="zms._filtermanager.getTransFilename">get<wbr></wbr>Trans<wbr></wbr>Filename</a></code></td>
-    <td>Return transfilename.</td>
+    <td>Build the filesystem path for a transformation resource.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#importFilter" class="internal-link" title="zms._filtermanager.importFilter">import<wbr></wbr>Filter</a></code></td>
-    <td>Implement 'importFilter'.</td>
+    <td>Run the import pipeline for one configured filter.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#processCommand" class="internal-link" title="zms._filtermanager.processCommand">process<wbr></wbr>Command</a></code></td>
-    <td>Implement 'processCommand'.</td>
+    <td>Execute an external command-based process step on a file.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#processData" class="internal-link" title="zms._filtermanager.processData">process<wbr></wbr>Data</a></code></td>
-    <td>Implement 'processData'.</td>
+    <td>Process raw bytes data with one configured process step.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#processFile" class="internal-link" title="zms._filtermanager.processFile">process<wbr></wbr>File</a></code></td>
-    <td>Implement 'processFile'.</td>
+    <td>Process one file using the configured command for a process id.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#processFilter" class="internal-link" title="zms._filtermanager.processFilter">process<wbr></wbr>Filter</a></code></td>
-    <td>Implement 'processFilter'.</td>
+    <td>Execute all process steps configured for a filter definition.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#processMethod" class="internal-link" title="zms._filtermanager.processMethod">process<wbr></wbr>Method</a></code></td>
-    <td>Implement 'processMethod'.</td>
+    <td>Execute a method/script-based process step with request-bound file markers.</td>
   </tr>
 </table>
           
@@ -1269,7 +1271,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">exportFilter</span><span class="function-signature">(self, id, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_filtermanager.py#L196">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_filtermanager.py#L260">
       
       (source)
     </a>
@@ -1281,7 +1283,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement 'exportFilter'.</p></div>
+    <div><p>Run the export pipeline and return downloadable file payload metadata.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">Context object exposing filter manager and export helpers.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Filter id to execute.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Active request context.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">tuple</tt></td><td class="fieldArgDesc">Tuple <tt class="rst-docutils rst-literal">(filename, data, content_type)</tt>.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1296,7 +1298,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getTransFilename</span><span class="function-signature">(self, folder, trans)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_filtermanager.py#L27">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_filtermanager.py#L26">
       
       (source)
     </a>
@@ -1308,7 +1310,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Return transfilename.</p></div>
+    <div><p>Build the filesystem path for a transformation resource.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">Context object providing logging utilities.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">folder:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Working directory used by the current filter run.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">trans:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">Transformation object with an id in <tt class="rst-docutils rst-literal"><span class="pre">&lt;process-id&gt;.&lt;nr&gt;.&lt;filename&gt;</span></tt> format.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Absolute transformation filename inside <tt class="rst-docutils rst-literal">folder</tt>.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1323,7 +1325,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">importFilter</span><span class="function-signature">(self, filename, id, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_filtermanager.py#L183">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_filtermanager.py#L237">
       
       (source)
     </a>
@@ -1335,7 +1337,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement 'importFilter'.</p></div>
+    <div><p>Run the import pipeline for one configured filter.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">Context object exposing filter manager.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">filename:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Source filename to import/process.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Filter id.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Active request context.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Final processed filename.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1350,7 +1352,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">processCommand</span><span class="function-signature">(self, filename, command)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_filtermanager.py#L94">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_filtermanager.py#L119">
       
       (source)
     </a>
@@ -1362,7 +1364,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement 'processCommand'.</p></div>
+    <div><p>Execute an external command-based process step on a file.</p>
+<p>Placeholders supported in <tt class="rst-docutils rst-literal">command</tt> include <tt class="rst-docutils rst-literal">{in}</tt>, <tt class="rst-docutils rst-literal">{out}</tt>, <tt class="rst-docutils rst-literal">{cur_dir}</tt>, <tt class="rst-docutils rst-literal">{package_home}</tt>, and <tt class="rst-docutils rst-literal">{instance_home}</tt>.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">Context object exposing configuration and logging.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">filename:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Input filename passed into the command.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">command:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Command template containing replacement markers.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Final output filename (or original input filename on failure).</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1377,7 +1381,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">processData</span><span class="function-signature">(self, processId, data, trans=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_filtermanager.py#L41">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_filtermanager.py#L47">
       
       (source)
     </a>
@@ -1389,7 +1393,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement 'processData'.</p></div>
+    <div><p>Process raw bytes data with one configured process step.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">Context object exposing filter manager and configuration.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">process<wbr></wbr>Id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Filter-process id to execute.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">data:</span><tt class="rst-docutils rst-literal">bytes</tt> | <tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Input payload written to a temporary input file.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">trans:</span><tt class="rst-docutils rst-literal">object</tt> | <tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc">Optional transformation object written to disk and referenced by the process command.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">bytes</tt></td><td class="fieldArgDesc">Processed payload read from the resulting output file.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1404,7 +1408,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">processFile</span><span class="function-signature">(self, processId, filename, trans=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_filtermanager.py#L152">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_filtermanager.py#L186">
       
       (source)
     </a>
@@ -1416,7 +1420,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement 'processFile'.</p></div>
+    <div><p>Process one file using the configured command for a process id.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">Context object exposing filter manager.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">process<wbr></wbr>Id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Filter-process id whose command is executed.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">filename:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Input filename.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">trans:</span><tt class="rst-docutils rst-literal">object</tt> | <tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc">Optional transformation object referenced by command.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Output filename.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1431,7 +1435,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">processFilter</span><span class="function-signature">(self, ob_filter, folder, filename, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_filtermanager.py#L172">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_filtermanager.py#L214">
       
       (source)
     </a>
@@ -1443,7 +1447,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement 'processFilter'.</p></div>
+    <div><p>Execute all process steps configured for a filter definition.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">Context object exposing filter manager.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">ob<wbr></wbr>_filter:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Filter definition containing id and process assignments.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">folder:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Working folder used during filter execution.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">filename:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Input filename passed through each process step.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Active request context.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Final output filename after all process steps.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1458,7 +1462,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">processMethod</span><span class="function-signature">(self, processId, filename, trans, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_filtermanager.py#L69">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_filtermanager.py#L84">
       
       (source)
     </a>
@@ -1470,7 +1474,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement 'processMethod'.</p></div>
+    <div><p>Execute a method/script-based process step with request-bound file markers.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">Context object exposing filter manager.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">process<wbr></wbr>Id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Filter-process id to execute.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">filename:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Input filename to be processed.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">trans:</span><tt class="rst-docutils rst-literal">object</tt> | <tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc">Optional transformation object used by the process.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Active request used to pass process variables.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Output filename selected by the process step.</td></tr></table></div>
   </div>
 </div>
         </div>

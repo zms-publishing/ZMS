@@ -1134,7 +1134,8 @@
 
         <div class="moduleDocstring">
           <div><p>ZMSMetaobjManager.py</p>
-<p>ZMS support for zmsmetaobj manager.</p>
+<p>Meta-object model management for ZMS.</p>
+<p>This module provides the meta-object registry used by ZMS to define content types, their attributes, and the associated implementation artefacts (templates, scripts, resources, and other Zope-native objects). It includes helpers for repository import/export, XML import/export, runtime rendering lookup, and synchronization of attribute metadata with persistent objects.</p>
 <p>License: GNU General Public License v2 or later Organization: ZMS Publishing</p>
 </div>
         </div>
@@ -1147,17 +1148,17 @@
     
     <td>Class</td>
     <td><code><a href="zms.ZMSMetaobjManager.ZMSMetaobjManager.html" class="internal-link" title="zms.ZMSMetaobjManager.ZMSMetaobjManager"><wbr></wbr>ZMSMetaobj<wbr></wbr>Manager</a></code></td>
-    <td>Provide helpers for ZMSMetaobjManager.</td>
+    <td>Manage ZMS meta-object definitions, attributes, and related artefacts.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#effective_ids" class="internal-link" title="zms.ZMSMetaobjManager.effective_ids">effective<wbr></wbr>_ids</a></code></td>
-    <td>Implement 'effective_ids'.</td>
+    <td>Expand a selected id list with package-contained meta-object ids.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#syncZopeMetaobjAttr" class="internal-link" title="zms.ZMSMetaobjManager.syncZopeMetaobjAttr">sync<wbr></wbr>Zope<wbr></wbr>Metaobj<wbr></wbr>Attr</a></code></td>
-    <td>Implement 'syncZopeMetaobjAttr'.</td>
+    <td>Resolve and attach the backing Zope artefact for one meta-object attribute.</td>
   </tr>
 </table>
           
@@ -1179,7 +1180,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">effective_ids</span><span class="function-signature">(self, ids)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L49">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L62">
       
       (source)
     </a>
@@ -1191,7 +1192,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement 'effective_ids'.</p></div>
+    <div><p>Expand a selected id list with package-contained meta-object ids.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">Meta-object manager context.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">ids:</span><tt class="rst-docutils rst-literal">list</tt> | <tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc">Selected meta-object ids. <tt class="rst-docutils rst-literal">None</tt> or empty means all model keys.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Sorted effective id list including package members.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1206,7 +1207,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">syncZopeMetaobjAttr</span><span class="function-signature">(self, metaObj, attr)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L27">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L30">
       
       (source)
     </a>
@@ -1218,7 +1219,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement 'syncZopeMetaobjAttr'.</p></div>
+    <div><p>Resolve and attach the backing Zope artefact for one meta-object attribute.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">Context exposing home/object lookup helpers.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">meta<wbr></wbr>Obj:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Meta-object mapping containing at least <tt class="rst-docutils rst-literal">'id'</tt>.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">attr:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Meta-object attribute mapping containing at least <tt class="rst-docutils rst-literal">'id'</tt> and <tt class="rst-docutils rst-literal">'type'</tt>.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc"><tt class="rst-docutils rst-literal">None</tt>. The method mutates <tt class="rst-docutils rst-literal">attr</tt> in-place by setting <tt class="rst-docutils rst-literal">'ob'</tt>.</td></tr></table></div>
   </div>
 </div>
         </div>

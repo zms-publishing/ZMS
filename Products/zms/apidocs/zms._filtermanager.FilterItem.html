@@ -312,12 +312,12 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">FilterItem</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_filtermanager.py#L229" class="sourceLink">(source)</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">FilterItem</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_filtermanager.py#L296" class="sourceLink">(source)</a></code></p>
           <p><a href="classIndex.html#zms._filtermanager.FilterItem">View In Hierarchy</a></p>
         </div>
 
         <div class="moduleDocstring">
-          <div><p>Provide helpers for FilterItem.</p></div>
+          <div><p>Mixin exposing helper methods to initialise and execute filter exports.</p></div>
         </div>
 
         <div id="splitTables">
@@ -328,12 +328,12 @@
     
     <td>Method</td>
     <td><code><a href="#execProcessFilter" class="internal-link" title="zms._filtermanager.FilterItem.execProcessFilter">exec<wbr></wbr>Process<wbr></wbr>Filter</a></code></td>
-    <td>Implement 'execProcessFilter'.</td>
+    <td>Execute one process step inside a filter pipeline.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#initExportFilter" class="internal-link" title="zms._filtermanager.FilterItem.initExportFilter">init<wbr></wbr>Export<wbr></wbr>Filter</a></code></td>
-    <td>Implement 'initExportFilter'.</td>
+    <td>Prepare export context, temp workspace, and initial export input file.</td>
   </tr>
 </table>
           
@@ -355,7 +355,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">execProcessFilter</span><span class="function-signature">(self, ob_process, folder, filename, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_filtermanager.py#L279">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_filtermanager.py#L348">
       
       (source)
     </a>
@@ -367,7 +367,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement 'execProcessFilter'.</p></div>
+    <div><p>Execute one process step inside a filter pipeline.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">ob<wbr></wbr>_process:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Filter-process assignment record.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">folder:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Working folder for temp process artefacts.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">filename:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Current pipeline filename.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Active request context.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Updated pipeline filename.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -382,7 +382,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">initExportFilter</span><span class="function-signature">(self, id, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_filtermanager.py#L235">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_filtermanager.py#L299">
       
       (source)
     </a>
@@ -394,7 +394,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement 'initExportFilter'.</p></div>
+    <div><p>Prepare export context, temp workspace, and initial export input file.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Filter id.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Active request used for env/session variables.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">tuple</tt></td><td class="fieldArgDesc">Tuple <tt class="rst-docutils rst-literal">(tempfolder, outfilename)</tt> used by subsequent steps.</td></tr></table></div>
   </div>
 </div>
         </div>

@@ -578,7 +578,7 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">MySectionizer</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_globals.py#L162" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms._globals.MySectionizer.__init__">MySectionizer(levelnfc)</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">MySectionizer</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_globals.py#L150" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms._globals.MySectionizer.__init__">MySectionizer(levelnfc)</a></code></p>
           <p><a href="classIndex.html#zms._globals.MySectionizer">View In Hierarchy</a></p>
         </div>
 
@@ -646,7 +646,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">__init__</span><span class="function-signature">(self, levelnfc=<span class="rst-variable-quote">'</span><span class="rst-variable-string">0</span><span class="rst-variable-quote">'</span>)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_globals.py#L174">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_globals.py#L157">
       
       (source)
     </a>
@@ -658,7 +658,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Initialise a new MySectionizer.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">levelnfc:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Numbering format code: '0'=numeric, '1'=uppercase, '2'=lowercase</td></tr></table></div>
+    <div><p>Initialise a new MySectionizer.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">levelnfc:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Numbering format code. Expected values are <tt class="rst-docutils rst-literal">'0'</tt> for numeric sections (1.2.3), <tt class="rst-docutils rst-literal">'1'</tt> for uppercase letters (A.B.C), and <tt class="rst-docutils rst-literal">'2'</tt> for lowercase letters (a.b.c).</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -673,7 +673,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">__str__</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_globals.py#L189">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_globals.py#L169">
       
       (source)
     </a>
@@ -700,7 +700,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">clone</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_globals.py#L211">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_globals.py#L186">
       
       (source)
     </a>
@@ -727,7 +727,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getLevel</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_globals.py#L225">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_globals.py#L197">
       
       (source)
     </a>
@@ -754,7 +754,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">processLevel</span><span class="function-signature">(self, level)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_globals.py#L237">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_globals.py#L206">
       
       (source)
     </a>
@@ -766,7 +766,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Update the section counter for the given nesting level.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">level:</span><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">The heading level to process</td></tr></table></div>
+    <div><p>Update the section counter for the given nesting level.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">level:</span><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">Heading level to process. Expected values are positive integers where <tt class="rst-docutils rst-literal">1</tt> is the top-level section and larger values increase nesting depth.</td></tr></table></div>
   </div>
 </div><div class="baseinstancevariable">
   
@@ -780,7 +780,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">levelnfc</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_globals.py#L181">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_globals.py#L166">
       
       (source)
     </a>
@@ -807,7 +807,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">sections</span>: <code>list</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_globals.py#L182">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_globals.py#L167">
       
       (source)
     </a>

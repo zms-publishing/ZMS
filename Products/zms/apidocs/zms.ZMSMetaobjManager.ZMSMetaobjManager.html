@@ -615,12 +615,12 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSMetaobjManager</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L75" class="sourceLink">(source)</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSMetaobjManager</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L90" class="sourceLink">(source)</a></code></p>
           <p><a href="classIndex.html#zms.ZMSMetaobjManager.ZMSMetaobjManager">View In Hierarchy</a></p>
         </div>
 
         <div class="moduleDocstring">
-          <div><p>Provide helpers for ZMSMetaobjManager.</p></div>
+          <div><p>Manage ZMS meta-object definitions, attributes, and related artefacts.</p></div>
         </div>
 
         <div id="splitTables">
@@ -631,142 +631,142 @@
     
     <td>Method</td>
     <td><code><a href="#__get_metaobj__" class="internal-link" title="zms.ZMSMetaobjManager.ZMSMetaobjManager.__get_metaobj__">__get<wbr></wbr>_metaobj__</a></code></td>
-    <td>Implement '__get_metaobj__'.</td>
+    <td>Return one meta-object record by id.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#__get_metaobjs__" class="internal-link" title="zms.ZMSMetaobjManager.ZMSMetaobjManager.__get_metaobjs__">__get<wbr></wbr>_metaobjs__</a></code></td>
-    <td>Implement '__get_metaobjs__'.</td>
+    <td>Return all meta-objects, including acquired entries from portal master.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#acquireMetaobj" class="internal-link" title="zms.ZMSMetaobjManager.ZMSMetaobjManager.acquireMetaobj">acquire<wbr></wbr>Metaobj</a></code></td>
-    <td>Implement 'acquireMetaobj'.</td>
+    <td>Mark a meta-object as acquired from portal master.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#delMetaobj" class="internal-link" title="zms.ZMSMetaobjManager.ZMSMetaobjManager.delMetaobj">del<wbr></wbr>Metaobj</a></code></td>
-    <td>Implement 'delMetaobj'.</td>
+    <td>Delete one meta-object and its managed attribute artefacts.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#delMetaobjAttr" class="internal-link" title="zms.ZMSMetaobjManager.ZMSMetaobjManager.delMetaobjAttr">del<wbr></wbr>Metaobj<wbr></wbr>Attr</a></code></td>
-    <td>Implement 'delMetaobjAttr'.</td>
+    <td>Delete one attribute from a meta-object definition.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#evalMetaobjAttr" class="internal-link" title="zms.ZMSMetaobjManager.ZMSMetaobjManager.evalMetaobjAttr">eval<wbr></wbr>Metaobj<wbr></wbr>Attr</a></code></td>
-    <td>Implement 'evalMetaobjAttr'.</td>
+    <td>Evaluate one computed meta-object attribute and return its runtime value.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#exportMetaobjXml" class="internal-link" title="zms.ZMSMetaobjManager.ZMSMetaobjManager.exportMetaobjXml">export<wbr></wbr>Metaobj<wbr></wbr>Xml</a></code></td>
-    <td>Implement 'exportMetaobjXml'.</td>
+    <td>Export selected meta-objects to XML.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getMetaobj" class="internal-link" title="zms.ZMSMetaobjManager.ZMSMetaobjManager.getMetaobj">get<wbr></wbr>Metaobj</a></code></td>
-    <td>Return metaobj.</td>
+    <td>Return one meta-object and optionally overlay acquired configuration.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getMetaobjAttr" class="internal-link" title="zms.ZMSMetaobjManager.ZMSMetaobjManager.getMetaobjAttr">get<wbr></wbr>Metaobj<wbr></wbr>Attr</a></code></td>
-    <td>Return metaobjattr.</td>
+    <td>Return one attribute mapping for a given meta-object and attribute id.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getMetaobjAttrIdentifierId" class="internal-link" title="zms.ZMSMetaobjManager.ZMSMetaobjManager.getMetaobjAttrIdentifierId">get<wbr></wbr>Metaobj<wbr></wbr>Attr<wbr></wbr>Identifier<wbr></wbr>Id</a></code></td>
-    <td>Return metaobjattridentifierid.</td>
+    <td>Return the preferred identifier attribute id for a record-like meta-object.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getMetaobjAttrIds" class="internal-link" title="zms.ZMSMetaobjManager.ZMSMetaobjManager.getMetaobjAttrIds">get<wbr></wbr>Metaobj<wbr></wbr>Attr<wbr></wbr>Ids</a></code></td>
-    <td>Return metaobjattrids.</td>
+    <td>Return attribute ids for one meta-object, optionally filtered by type.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getMetaobjAttrs" class="internal-link" title="zms.ZMSMetaobjManager.ZMSMetaobjManager.getMetaobjAttrs">get<wbr></wbr>Metaobj<wbr></wbr>Attrs</a></code></td>
-    <td>Return metaobjattrs.</td>
+    <td>Return attribute mappings for one meta-object.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getMetaobjId" class="internal-link" title="zms.ZMSMetaobjManager.ZMSMetaobjManager.getMetaobjId">get<wbr></wbr>Metaobj<wbr></wbr>Id</a></code></td>
-    <td>Return metaobjid.</td>
+    <td>Resolve one meta-object id by its display name.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getMetaobjIds" class="internal-link" title="zms.ZMSMetaobjManager.ZMSMetaobjManager.getMetaobjIds">get<wbr></wbr>Metaobj<wbr></wbr>Ids</a></code></td>
-    <td>Return metaobjids.</td>
+    <td>Return available meta-object ids with optional sorting and exclusion.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getMetaobjRevision" class="internal-link" title="zms.ZMSMetaobjManager.ZMSMetaobjManager.getMetaobjRevision">get<wbr></wbr>Metaobj<wbr></wbr>Revision</a></code></td>
-    <td>Return metaobjrevision.</td>
+    <td>Return the effective revision string for a meta-object.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getTypedMetaIds" class="internal-link" title="zms.ZMSMetaobjManager.ZMSMetaobjManager.getTypedMetaIds">get<wbr></wbr>Typed<wbr></wbr>Meta<wbr></wbr>Ids</a></code></td>
-    <td>Return typedmetaids.</td>
+    <td>Expand type-selector entries into concrete meta-object ids.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#importMetaobjXml" class="internal-link" title="zms.ZMSMetaobjManager.ZMSMetaobjManager.importMetaobjXml">import<wbr></wbr>Metaobj<wbr></wbr>Xml</a></code></td>
-    <td>Implement 'importMetaobjXml'.</td>
+    <td>Import one or many meta-object records from XML content.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#importTheme" class="internal-link" title="zms.ZMSMetaobjManager.ZMSMetaobjManager.importTheme">import<wbr></wbr>Theme</a></code></td>
-    <td>Implement 'importTheme'.</td>
+    <td>Import a theme folder structure into a <tt class="rst-docutils rst-literal">ZMSLibrary</tt> meta-object.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_ajaxChangeProperties" class="internal-link" title="zms.ZMSMetaobjManager.ZMSMetaobjManager.manage_ajaxChangeProperties">manage_ajax<wbr></wbr>Change<wbr></wbr>Properties</a></code></td>
-    <td>MetaobjManager.manage_ajaxChangeProperties</td>
+    <td>Update editable object properties from AJAX form values.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_changeProperties" class="internal-link" title="zms.ZMSMetaobjManager.ZMSMetaobjManager.manage_changeProperties">manage_change<wbr></wbr>Properties</a></code></td>
-    <td>ZMSMetaobjManager.manage_changeProperties</td>
+    <td>Handle meta-object manager actions from the ZMI properties form.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#moveMetaobjAttr" class="internal-link" title="zms.ZMSMetaobjManager.ZMSMetaobjManager.moveMetaobjAttr">move<wbr></wbr>Metaobj<wbr></wbr>Attr</a></code></td>
-    <td>Implement 'moveMetaobjAttr'.</td>
+    <td>Move one attribute to a new position in the meta-object attribute list.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#notifyMetaobjAttrAboutValue" class="internal-link" title="zms.ZMSMetaobjManager.ZMSMetaobjManager.notifyMetaobjAttrAboutValue">notify<wbr></wbr>Metaobj<wbr></wbr>Attr<wbr></wbr>About<wbr></wbr>Value</a></code></td>
-    <td>Implement 'notifyMetaobjAttrAboutValue'.</td>
+    <td>Notify one meta-object attribute about a newly observed runtime value.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#provideRepositoryModel" class="internal-link" title="zms.ZMSMetaobjManager.ZMSMetaobjManager.provideRepositoryModel">provide<wbr></wbr>Repository<wbr></wbr>Model</a></code></td>
-    <td>Implement 'provideRepositoryModel'.</td>
+    <td>Export meta-object model records into repository payload structure.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#renderTemplate" class="internal-link" title="zms.ZMSMetaobjManager.ZMSMetaobjManager.renderTemplate">render<wbr></wbr>Template</a></code></td>
-    <td>Implement 'renderTemplate'.</td>
+    <td>Render the first matching template source for the given meta-object.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#setMetaobj" class="internal-link" title="zms.ZMSMetaobjManager.ZMSMetaobjManager.setMetaobj">set<wbr></wbr>Metaobj</a></code></td>
-    <td>Set metaobj.</td>
+    <td>Insert or update one meta-object definition in the model.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#setMetaobjAttr" class="internal-link" title="zms.ZMSMetaobjManager.ZMSMetaobjManager.setMetaobjAttr">set<wbr></wbr>Metaobj<wbr></wbr>Attr</a></code></td>
-    <td>Set metaobjattr.</td>
+    <td>Create or update one meta-object attribute definition.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#translateRepositoryModel" class="internal-link" title="zms.ZMSMetaobjManager.ZMSMetaobjManager.translateRepositoryModel">translate<wbr></wbr>Repository<wbr></wbr>Model</a></code></td>
-    <td>Implement 'translateRepositoryModel'.</td>
+    <td>Translate repository payload into import-friendly key/value records.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#updateRepositoryModel" class="internal-link" title="zms.ZMSMetaobjManager.ZMSMetaobjManager.updateRepositoryModel">update<wbr></wbr>Repository<wbr></wbr>Model</a></code></td>
-    <td>Implement 'updateRepositoryModel'.</td>
+    <td>Import one repository record into the local meta-object model.</td>
   </tr><tr class="classvariable">
     
     <td>Class Variable</td>
@@ -816,7 +816,7 @@
     
     <td>Method</td>
     <td><code><a href="#_importMetaobjXml" class="internal-link" title="zms.ZMSMetaobjManager.ZMSMetaobjManager._importMetaobjXml">_import<wbr></wbr>Metaobj<wbr></wbr>Xml</a></code></td>
-    <td>Implement '_importMetaobjXml'.</td>
+    <td>Import one meta-object XML item into the local model.</td>
   </tr>
 </table>
           
@@ -838,7 +838,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">__get_metaobj__</span><span class="function-signature">(self, id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L507">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L553">
       
       (source)
     </a>
@@ -850,7 +850,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement '__get_metaobj__'.</p></div>
+    <div><p>Return one meta-object record by id.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Meta-object id.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">dict</tt> | <tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc">Meta-object mapping or <tt class="rst-docutils rst-literal">None</tt>.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -865,7 +865,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">__get_metaobjs__</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L462">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L507">
       
       (source)
     </a>
@@ -877,7 +877,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement '__get_metaobjs__'.</p></div>
+    <div><p>Return all meta-objects, including acquired entries from portal master.</p>
+<p>The result is request-buffered to avoid repeated recomputation during one request cycle.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Mapping <tt class="rst-docutils rst-literal">{meta_id: meta_object_dict}</tt>.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -892,7 +894,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">acquireMetaobj</span><span class="function-signature">(self, id, subobjects=1)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L633">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L710">
       
       (source)
     </a>
@@ -904,7 +906,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement 'acquireMetaobj'.</p></div>
+    <div><p>Mark a meta-object as acquired from portal master.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Meta-object id.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">subobjects:</span><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">If <tt class="rst-docutils rst-literal">1</tt>, package subobjects are also acquired.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc"><tt class="rst-docutils rst-literal">None</tt></td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -919,7 +921,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">delMetaobj</span><span class="function-signature">(self, id, acquire=False)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L659">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L740">
       
       (source)
     </a>
@@ -931,7 +933,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement 'delMetaobj'.</p></div>
+    <div><p>Delete one meta-object and its managed attribute artefacts.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Meta-object id.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">acquire:</span><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">If true, keep native Zope artefacts used by acquisition.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc"><tt class="rst-docutils rst-literal">None</tt></td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -946,7 +948,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">delMetaobjAttr</span><span class="function-signature">(self, id, attr_id, acquire=False)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L1052">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L1196">
       
       (source)
     </a>
@@ -958,7 +960,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement 'delMetaobjAttr'.</p></div>
+    <div><p>Delete one attribute from a meta-object definition.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Meta-object id.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">attr<wbr></wbr>_id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Attribute id to remove.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">acquire:</span><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">If true, avoid removing acquired native artefacts.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc"><tt class="rst-docutils rst-literal">None</tt></td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -973,7 +975,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">evalMetaobjAttr</span><span class="function-signature">(self, id, attr_id, zmscontext=None, options={})</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L757">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L861">
       
       (source)
     </a>
@@ -985,7 +987,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement 'evalMetaobjAttr'.</p></div>
+    <div><p>Evaluate one computed meta-object attribute and return its runtime value.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Meta-object id or <tt class="rst-docutils rst-literal">'*'</tt> for all meta-objects.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">attr<wbr></wbr>_id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Attribute id to evaluate.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">zmscontext:</span><tt class="rst-docutils rst-literal">object</tt> | <tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc">Optional context passed to callable attributes.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">options:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Optional call options for executable attributes.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">any</tt></td><td class="fieldArgDesc">Evaluated value or <tt class="rst-docutils rst-literal">None</tt> when unresolved.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1000,7 +1002,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">exportMetaobjXml</span><span class="function-signature">(self, ids, REQUEST=None, RESPONSE=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L327">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L363">
       
       (source)
     </a>
@@ -1012,7 +1014,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement 'exportMetaobjXml'.</p></div>
+    <div><p>Export selected meta-objects to XML.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">ids:</span><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Meta-object ids to export. Empty list exports all effective ids.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt> | <tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc">Optional request context controlling export key pruning.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">RESPONSE:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPResponse</tt> | <tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc">Optional response to receive download headers.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">XML payload string.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1027,7 +1029,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getMetaobj</span><span class="function-signature">(self, id, aq_attrs=[])</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L562">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L622">
       
       (source)
     </a>
@@ -1039,7 +1041,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Return metaobj.</p></div>
+    <div><p>Return one meta-object and optionally overlay acquired configuration.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Meta-object id.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">aq<wbr></wbr>_attrs:</span><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Attribute names to read from local configuration when the object is acquired from portal master.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Meta-object mapping.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1054,7 +1056,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getMetaobjAttr</span><span class="function-signature">(self, id, attr_id, sync=True)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L792">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L904">
       
       (source)
     </a>
@@ -1066,7 +1068,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Return metaobjattr.</p></div>
+    <div><p>Return one attribute mapping for a given meta-object and attribute id.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Meta-object id.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">attr<wbr></wbr>_id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Attribute id.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">sync:</span><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">If true, attach backing Zope artefact reference when applicable.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">dict</tt> | <tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc">Attribute mapping or <tt class="rst-docutils rst-literal">None</tt>.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1081,7 +1083,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getMetaobjAttrIdentifierId</span><span class="function-signature">(self, meta_id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L721">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L811">
       
       (source)
     </a>
@@ -1093,7 +1095,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Return metaobjattridentifierid.</p></div>
+    <div><p>Return the preferred identifier attribute id for a record-like meta-object.</p>
+<p>Candidate types are checked in order: <tt class="rst-docutils rst-literal">identifier</tt>, <tt class="rst-docutils rst-literal">string</tt>, <tt class="rst-docutils rst-literal">int</tt>.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">meta<wbr></wbr>_id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Meta-object id.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt> | <tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc">First matching attribute id or <tt class="rst-docutils rst-literal">None</tt>.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1108,7 +1112,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getMetaobjAttrIds</span><span class="function-signature">(self, id, types=[])</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L733">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L827">
       
       (source)
     </a>
@@ -1120,7 +1124,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Return metaobjattrids.</p></div>
+    <div><p>Return attribute ids for one meta-object, optionally filtered by type.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Meta-object id.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">types:</span><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Optional list of accepted attribute types.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Attribute id list.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1135,7 +1139,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getMetaobjAttrs</span><span class="function-signature">(self, id, types=[])</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L743">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L841">
       
       (source)
     </a>
@@ -1147,7 +1151,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Return metaobjattrs.</p></div>
+    <div><p>Return attribute mappings for one meta-object.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Meta-object id.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">types:</span><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Optional list of accepted attribute types.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">List of attribute mappings.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1162,7 +1166,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getMetaobjId</span><span class="function-signature">(self, name)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L596">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L666">
       
       (source)
     </a>
@@ -1174,7 +1178,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Return metaobjid.</p></div>
+    <div><p>Resolve one meta-object id by its display name.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">name:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Display name as returned by <tt class="rst-docutils rst-literal">display_type</tt>.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt> | <tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc">Matching meta-object id or <tt class="rst-docutils rst-literal">None</tt>.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1189,7 +1193,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getMetaobjIds</span><span class="function-signature">(self, sort=None, excl_ids=[])</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L542">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L597">
       
       (source)
     </a>
@@ -1201,7 +1205,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Return metaobjids.</p></div>
+    <div><p>Return available meta-object ids with optional sorting and exclusion.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">sort:</span><tt class="rst-docutils rst-literal">bool</tt> | <tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc"><tt class="rst-docutils rst-literal">True</tt> sorts by display type, <tt class="rst-docutils rst-literal">False</tt> by name, <tt class="rst-docutils rst-literal">None</tt> keeps model iteration order.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">excl<wbr></wbr>_ids:</span><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Ids to exclude from the result.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Meta-object id list.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1216,7 +1220,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getMetaobjRevision</span><span class="function-signature">(self, id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L578">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L643">
       
       (source)
     </a>
@@ -1228,7 +1232,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Return metaobjrevision.</p></div>
+    <div><p>Return the effective revision string for a meta-object.</p>
+<p>For package objects this also considers child objects that belong to the same package and returns the highest semantic version.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Meta-object id.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Revision string, for example <tt class="rst-docutils rst-literal">'0.0.0'</tt>.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1243,7 +1249,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getTypedMetaIds</span><span class="function-signature">(self, meta_ids)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L518">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L567">
       
       (source)
     </a>
@@ -1255,7 +1261,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Return typedmetaids.</p></div>
+    <div><p>Expand type-selector entries into concrete meta-object ids.</p>
+<p>Selectors use the form <tt class="rst-docutils rst-literal"><span class="pre">type(&lt;meta_type&gt;)</span></tt> and are resolved against enabled meta-objects.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">meta<wbr></wbr>_ids:</span><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Mixed list of meta ids and type selectors.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Concrete list of matching meta-object ids.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1270,7 +1278,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">importMetaobjXml</span><span class="function-signature">(self, xml, createIdsFilter=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L312">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L338">
       
       (source)
     </a>
@@ -1282,7 +1290,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement 'importMetaobjXml'.</p></div>
+    <div><p>Import one or many meta-object records from XML content.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">xml:</span><tt class="rst-docutils rst-literal">str</tt> | <tt class="rst-docutils rst-literal">bytes</tt> | <tt class="rst-docutils rst-literal">file</tt></td><td class="fieldArgDesc">XML string, bytes, or file-like content.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">create<wbr></wbr>Ids<wbr></wbr>Filter:</span><tt class="rst-docutils rst-literal">list</tt> | <tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc">Optional whitelist of ids to import.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt> | <tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Imported id or list of imported ids.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1297,7 +1305,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">importTheme</span><span class="function-signature">(self, id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L394">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L436">
       
       (source)
     </a>
@@ -1309,7 +1317,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement 'importTheme'.</p></div>
+    <div><p>Import a theme folder structure into a <tt class="rst-docutils rst-literal">ZMSLibrary</tt> meta-object.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Theme container id.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc"><tt class="rst-docutils rst-literal">None</tt></td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1324,7 +1332,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_ajaxChangeProperties</span><span class="function-signature">(self, id, REQUEST, RESPONSE=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L1110">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L1266">
       
       (source)
     </a>
@@ -1336,7 +1344,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>MetaobjManager.manage_ajaxChangeProperties</p></div>
+    <div><p>Update editable object properties from AJAX form values.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Meta-object id.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">HTTP request containing <tt class="rst-docutils rst-literal">set*</tt> form fields.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">RESPONSE:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPResponse</tt> | <tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc">Optional HTTP response for XML output headers.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt> | <tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc">XML result payload when <tt class="rst-docutils rst-literal">RESPONSE</tt> is passed.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1351,7 +1359,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_changeProperties</span><span class="function-signature">(self, lang, btn=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, key=<span class="rst-variable-quote">'</span><span class="rst-variable-string">all</span><span class="rst-variable-quote">'</span>, REQUEST=None, RESPONSE=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L1148">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L1310">
       
       (source)
     </a>
@@ -1363,7 +1371,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>ZMSMetaobjManager.manage_changeProperties</p></div>
+    <div><p>Handle meta-object manager actions from the ZMI properties form.</p>
+<p>Supported actions include insert/update/delete, import/export, acquisition handling, and attribute reordering.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">lang:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Active UI language id.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">btn:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Submitted action button id.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">key:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Edited section key (for example <tt class="rst-docutils rst-literal">'obj'</tt> or <tt class="rst-docutils rst-literal">'attr'</tt>).</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Incoming request carrying form payload.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">RESPONSE:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPResponse</tt> | <tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc">Optional response used for redirects and downloads.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">object</tt> | <tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Redirect response or localized status message.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1378,7 +1388,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">moveMetaobjAttr</span><span class="function-signature">(self, id, attr_id, pos)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L1088">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L1238">
       
       (source)
     </a>
@@ -1390,7 +1400,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement 'moveMetaobjAttr'.</p></div>
+    <div><p>Move one attribute to a new position in the meta-object attribute list.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Meta-object id.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">attr<wbr></wbr>_id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Attribute id to move.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">pos:</span><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">Zero-based target position.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc"><tt class="rst-docutils rst-literal">None</tt></td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1405,7 +1415,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">notifyMetaobjAttrAboutValue</span><span class="function-signature">(self, meta_id, key, value)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L692">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L771">
       
       (source)
     </a>
@@ -1417,7 +1427,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement 'notifyMetaobjAttrAboutValue'.</p></div>
+    <div><p>Notify one meta-object attribute about a newly observed runtime value.</p>
+<p>For auto-complete attribute types (<tt class="rst-docutils rst-literal">'autocomplete'</tt> and <tt class="rst-docutils rst-literal">'multiautocomplete'</tt>) this method extends the static key list when the attribute keys are not executable snippets.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">meta<wbr></wbr>_id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Meta-object id that owns the attribute.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">key:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Attribute id.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">value:</span><tt class="rst-docutils rst-literal">str</tt> | <tt class="rst-docutils rst-literal">int</tt> | <tt class="rst-docutils rst-literal">float</tt> | <tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Observed value. Expected value is either a single scalar or a list of scalar values.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc"><tt class="rst-docutils rst-literal">None</tt></td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1432,7 +1444,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">provideRepositoryModel</span><span class="function-signature">(self, r, ids=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L96">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L103">
       
       (source)
     </a>
@@ -1444,7 +1456,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement 'provideRepositoryModel'.</p></div>
+    <div><p>Export meta-object model records into repository payload structure.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">r:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Repository accumulator mapping to be filled in-place.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">ids:</span><tt class="rst-docutils rst-literal">list</tt> | <tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc">Optional subset of meta-object ids. <tt class="rst-docutils rst-literal">None</tt> exports all ids.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc"><tt class="rst-docutils rst-literal">None</tt>. The payload is written into <tt class="rst-docutils rst-literal">r</tt>.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1459,7 +1471,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">renderTemplate</span><span class="function-signature">(self, obj)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L429">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L469">
       
       (source)
     </a>
@@ -1471,7 +1483,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement 'renderTemplate'.</p></div>
+    <div><p>Render the first matching template source for the given meta-object.</p>
+<p>Resolution order prefers skin/extension specific templates, then <tt class="rst-docutils rst-literal">standard_html</tt>, then <tt class="rst-docutils rst-literal">bodyContentZMSCustom_&lt;meta_id&gt;</tt>.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">obj:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">Content object providing <tt class="rst-docutils rst-literal">meta_id</tt>, request, and attr access.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Rendered HTML fragment or empty string.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1486,7 +1500,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">setMetaobj</span><span class="function-signature">(self, ob)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L609">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L681">
       
       (source)
     </a>
@@ -1498,7 +1512,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Set metaobj.</p></div>
+    <div><p>Insert or update one meta-object definition in the model.</p>
+<p>The method normalizes optional fields and forces persistence by copying the model mapping.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">ob:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Meta-object definition.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc"><tt class="rst-docutils rst-literal">None</tt></td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1513,7 +1529,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">setMetaobjAttr</span><span class="function-signature">(self, id, oldId, newId, newName=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, newMandatory=0, newMultilang=1, newRepetitive=0, newType=<span class="rst-variable-quote">'</span><span class="rst-variable-string">string</span><span class="rst-variable-quote">'</span>, newKeys=[], newCustom=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, newDefault=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L830">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L949">
       
       (source)
     </a>
@@ -1525,7 +1541,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Set metaobjattr.</p></div>
+    <div><p>Create or update one meta-object attribute definition.</p>
+<p>This method also manages dependent Zope objects for executable/native attribute types and preserves ordering constraints in the attribute list.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Meta-object id.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">old<wbr></wbr>Id:</span><tt class="rst-docutils rst-literal">str</tt> | <tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc">Previous attribute id, or <tt class="rst-docutils rst-literal">None</tt> for insertion.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">new<wbr></wbr>Id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">New attribute id.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">new<wbr></wbr>Name:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Attribute display name.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">new<wbr></wbr>Mandatory:</span><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">Mandatory flag (expected values: <tt class="rst-docutils rst-literal">0</tt> or <tt class="rst-docutils rst-literal">1</tt>).</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">new<wbr></wbr>Multilang:</span><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">Multilang flag (expected values: <tt class="rst-docutils rst-literal">0</tt> or <tt class="rst-docutils rst-literal">1</tt>).</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">new<wbr></wbr>Repetitive:</span><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">Repetitive flag (expected values: <tt class="rst-docutils rst-literal">0</tt> or <tt class="rst-docutils rst-literal">1</tt>).</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">new<wbr></wbr>Type:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Attribute type identifier.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">new<wbr></wbr>Keys:</span><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Optional key list for select-like attributes.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">new<wbr></wbr>Custom:</span><tt class="rst-docutils rst-literal">str</tt> | <tt class="rst-docutils rst-literal">int</tt> | <tt class="rst-docutils rst-literal">_blobfields.MyBlob</tt></td><td class="fieldArgDesc">Optional custom payload/content.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">new<wbr></wbr>Default:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Optional default value.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Message fragment generated during update.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1540,7 +1558,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">translateRepositoryModel</span><span class="function-signature">(self, r)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L193">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L211">
       
       (source)
     </a>
@@ -1552,7 +1570,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement 'translateRepositoryModel'.</p></div>
+    <div><p>Translate repository payload into import-friendly key/value records.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">r:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Repository model payload keyed by meta-object id.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">List of <tt class="rst-docutils rst-literal">{'key': id, 'value': record}</tt> mappings.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1567,7 +1585,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">updateRepositoryModel</span><span class="function-signature">(self, r)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L158">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L172">
       
       (source)
     </a>
@@ -1579,7 +1597,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement 'updateRepositoryModel'.</p></div>
+    <div><p>Import one repository record into the local meta-object model.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">r:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Repository record containing object metadata and attributes.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Imported meta-object id.</td></tr></table></div>
   </div>
 </div><div class="baseclassvariable">
   
@@ -1593,7 +1611,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">deprecated_types</span>: <code>list[<wbr></wbr>str]</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L87">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L100">
       
       (source)
     </a>
@@ -1620,7 +1638,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">valid_datatypes</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L84">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L97">
       
       (source)
     </a>
@@ -1647,7 +1665,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">valid_objtypes</span>: <code>list[<wbr></wbr>str]</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L85">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L98">
       
       (source)
     </a>
@@ -1674,7 +1692,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">valid_types</span>: <code>list[<wbr></wbr>str]</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L80">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L93">
       
       (source)
     </a>
@@ -1701,7 +1719,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">valid_uploadtypes</span>: <code>list[<wbr></wbr>str]</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L82">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L95">
       
       (source)
     </a>
@@ -1728,7 +1746,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">valid_xtypes</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L83">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L96">
       
       (source)
     </a>
@@ -1755,7 +1773,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">valid_zopeattrs</span>: <code>list[<wbr></wbr>str]</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L81">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L94">
       
       (source)
     </a>
@@ -1782,7 +1800,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">valid_zopetypes</span>: <code>list[<wbr></wbr>str]</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L86">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L99">
       
       (source)
     </a>
@@ -1809,7 +1827,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">model</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L625">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L707">
       
       (source)
     </a>
@@ -1837,7 +1855,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">_importMetaobjXml</span><span class="function-signature">(self, item, createIdsFilter=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L222">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L238">
       
       (source)
     </a>
@@ -1849,7 +1867,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Implement '_importMetaobjXml'.</p></div>
+    <div><p>Import one meta-object XML item into the local model.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">item:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Parsed XML item with <tt class="rst-docutils rst-literal">'key'</tt> and <tt class="rst-docutils rst-literal">'value'</tt>.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">create<wbr></wbr>Ids<wbr></wbr>Filter:</span><tt class="rst-docutils rst-literal">list</tt> | <tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc">Optional whitelist of ids to import.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Imported meta-object id.</td></tr></table></div>
   </div>
 </div>
         </div>

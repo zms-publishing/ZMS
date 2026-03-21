@@ -101,6 +101,10 @@ class ZMSMetaobjManager(object):
     ############################################################################
 
     def provideRepositoryModel(self, r, ids=None):
+      
+      # Model data format: py | yaml (default: yaml)
+      model_data_format = self.getConfProperty('ZMS.repository_manager.__init__.format', 'yaml')
+
       standard.writeBlock(self,"[provideRepositoryModel]: ids=%s"%str(ids))
       valid_ids = self.getMetaobjIds()
       if ids is None:
@@ -145,9 +149,13 @@ class ZMSMetaobjManager(object):
               if attr['type'] == 'interface':
                 attr['name'] = attr['id']
               # Export list of keys as string if it contains executable code.
-              if type(attr['keys']) is list:
+              # Note: This avoids YAML parsing issues with complex list structures
+              # and results in better readability of the YAML files.
+              # But a worse readability of the traditional py format;
+              # so we keep the list format for py-type model files:
+              if model_data_format == 'yaml' and type(attr['keys']) is list:
                 keys = '\n'.join(attr['keys'])
-                if standard.dt_executable(keys):
+                if keys!='' and standard.dt_executable(keys):
                   attr['keys'] = keys
               if (o['type'] == 'ZMSRecordSet' and attr.get('custom')) or attr['type'] == 'constant':
                 mandatory_keys['custom'] = None

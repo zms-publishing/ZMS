@@ -1,8 +1,31 @@
 """
-_accessmanager.py
+_accessmanager.py - Access and permission management for ZMS
 
-This module provides user, role, and public-access management helpers for ZMS
-objects and containers.
+Access and permission management module for ZMS (Zope Management System).
+This module provides comprehensive user, role, and public-access management 
+functionality for ZMS objects and containers, including:
+  - User management: user creation, deletion, password updates, and attribute 
+    persistence through various user folder backends (LDAP, Pluggable Auth Service, 
+    classic Zope User Folders)
+  - Role management: definition and synchronization of security roles with 
+    permission assignments across object hierarchies
+  - Local role assignment: fine-grained access control through local role bindings 
+    to specific nodes and users
+  - Public access control: management of public/restricted content access with 
+    synchronized permission inheritance
+  - User import/export: bulk user data operations via XML format with fast 
+    pickle-based serialization
+  - SSO integration: support for Single Sign-On plugins with credential extraction 
+    and user attribute synchronization
+  - User invitation system: email-based user notification with role information
+  - Access validation: permission checking and ZMI (Zope Management Interface) 
+    access enforcement with optional registration flow redirects
+  - Configuration migration: versioning and upgrade mechanisms for security schema 
+    persistence
+The module defines role hierarchies (ZMSAdministrator, ZMSEditor, ZMSAuthor, 
+ZMSSubscriber, ZMSUserAdministrator) and provides security object mixins 
+(AccessableObject, AccessableContainer, AccessManager) that integrate with Zope's 
+acquisition model and ZODB persistence layer.
 
 License: GNU General Public License v2 or later,
 Organization: ZMS Publishing

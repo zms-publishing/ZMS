@@ -1,8 +1,11 @@
 """
-ZMSFormatProvider.py
+ZMSFormatProvider.py - ZMS Format Provider
 
-Defines ZMSFormatProvider for text content formatting and rendering.
-It applies format-specific conversion, escaping, and transformation rules to content at display time.
+Defines ZMSFormatProvider for editable text and character formats.
+The format provider manages local format definitions for text and character
+content, providing a ZMI interface for editing and applying these formats 
+at display time. It supports acquisition from a portal master and persists 
+format definitions for use in content rendering.
 
 License: GNU General Public License v2 or later,
 Organization: ZMS Publishing

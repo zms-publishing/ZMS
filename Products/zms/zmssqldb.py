@@ -1,9 +1,44 @@
-# -*- coding: utf-8 -*-
 """
-zmssqldb.py
+zmssqldb.py - Relational Database Content Type for ZMS
 
-Defines ZMSSqlDb for relational database integration and SQL queries.
-It enables direct database access, executes queries, and marshals result sets as Python objects.
+The ZMSSqlDb class provides a comprehensive abstraction layer for managing relational
+database-backed content in ZMS. It enables direct database access through configured
+database adapters (supporting both traditional ZRDB and SQLAlchemy-based connections),
+executes parameterized SQL queries with proper escaping, and marshals result sets as
+Python objects for use in ZMS templates and Python scripts.
+
+Key Capabilities:
+  - B{Database Connectivity}: Maintains connections to multiple database backends
+    (MySQL, PostgreSQL, Oracle, SQLite) via Zope database adapters (DA).
+  - B{Schema Reflection}: Automatically discovers and introspects database schemas,
+    creating entity models from table and column metadata. Supports custom entity
+    definitions stored in persistent XML models.
+  - B{Query Execution}: Provides high-level query methods (C{query()}, C{execute()})
+    with automatic parameter substitution, type-based SQL quoting, and result
+    normalization into column/record dictionaries.
+  - B{CRUD Operations}: Implements record-set management through C{recordSet_Insert()},
+    C{recordSet_Update()}, C{recordSet_Delete()} with support for:
+      - Auto-incrementing and timestamp columns
+      - Foreign-key references with optional lazy loading
+      - Single and multi-select relationships
+      - Intersection table synchronization
+      - Blob (file/image) storage with filesystem persistence
+  - B{Filtering and Sorting}: Builds dynamic WHERE and ORDER BY clauses from user input,
+    with table-level filter expressions and per-column operators (LIKE, =, NULL, etc.).
+  - B{Configuration UI}: Provides ZMI forms to:
+      - Select and configure database connections
+      - Define custom entity interfaces and column stereotypes
+      - Set access control rules (insert, update, delete, select)
+      - Import/export model definitions as XML
+  - B{Model Persistence}: Stores schema customizations (labels, stereotypes, validation)
+    in a persistent C{model_xml} attribute, allowing schema extensions beyond physical
+    database structure.
+
+Integration Points:
+  - Used by ZMS content types to expose database records as queryable content
+  - Integrates with ZMS authentication/authorization framework
+  - Supports inter-ZMS communication via HTTP blob transfer
+  - Extends C{zmscustom.ZMSCustom} for full ZMS content management features
 
 License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
@@ -72,11 +107,9 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
     security = ClassSecurityInfo()
 
     # Properties.
-    # -----------
     meta_type = meta_id = "ZMSSqlDb"
 
     # Management Options.
-    # -------------------
     manage_options = ( 
     {'label': 'TAB_EDIT',          'action': 'manage_main'},
     {'label': 'TAB_PROPERTIES',    'action': 'manage_properties'},
@@ -84,7 +117,6 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
     )
 
     # Management Permissions.
-    # -----------------------
     __authorPermissions__ = (
         'preview_html', 'preview_top_html',
         'manage', 'manage_main', 'manage_workspace',
@@ -105,7 +137,6 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         )
 
     # Management Interface.
-    # ---------------------
     manage_zmi_input_form = PageTemplateFile('zpt/ZMSSqlDb/input_form', globals())
     manage_zmi_details_grid = PageTemplateFile('zpt/ZMSSqlDb/zmi_details_grid', globals())
     manage_zmi_details_form = PageTemplateFile('zpt/ZMSSqlDb/zmi_details_form', globals())
@@ -116,7 +147,6 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
     manage_configuration_table = PageTemplateFile('zpt/ZMSSqlDb/manage_configuration_table', globals())
 
     # Valid Types.
-    # ------------
     valid_types = {
       'blob': {},
       'date': 1,
@@ -542,10 +572,19 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       return EntityRecordHandler(self, tableName)
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSSqlDb.getEntityColumn:
-    # --------------------------------------------------------------------------
     def getEntityColumn(self, tableName, columnName, row=None):
+      """
+      Return a column descriptor with metadata and value for a given table column.
+
+      @param tableName: Entity name.
+      @type tableName: str
+      @param columnName: Column name.
+      @type columnName: str
+      @param row: Optional row data for value extraction.
+      @type row: dict
+      @return: Column descriptor with metadata and value.
+      @rtype: dict
+      """
       column = {}
       try:
         request = self.REQUEST
@@ -837,18 +876,25 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         return standard.writeError(self, '[getEntityColumn]: can\'t %s.%s (%s)'%(tableName, columnName, str(column)))
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSSqlDb.getEntity:
-    # --------------------------------------------------------------------------
     def getEntity(self, tableName):
+      """
+      Return an entity descriptor with metadata and columns for a given table.
+      @param tableName: Entity name.
+      @type tableName: str
+      @return: Entity descriptor with metadata and columns.
+      @rtype: dict
+      """
       entities = self.getEntities()
       return [x for x in entities if x['id'].upper()==tableName.upper()][0]
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSSqlDb.getEntitiesSQLAlchemyDA:
-    # --------------------------------------------------------------------------
     def getEntitiesSQLAlchemyDA(self):
+      """
+      Return a list of entity descriptors by reflecting the database schema via SQLAlchemy.
+
+      @return: List of entity descriptors.
+      @rtype: list
+      """
       from sqlalchemy import create_engine
       from sqlalchemy import inspect
       from sqlalchemy import MetaData
@@ -921,6 +967,33 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
     #  ZMSSqlDb.getEntities:
     # --------------------------------------------------------------------------
     def getEntities(self):
+      """
+      Retrieve and process a comprehensive list of entity descriptors from the database.
+
+      This method performs the following operations:
+        1. Attempts to return a cached result from the HTTP request buffer
+        2. Fetches entities from custom connection-specific methods (if defined)
+        3. Falls back to SQLAlchemy-based entity retrieval if available
+        4. Builds entities from database table browsers with column metadata
+        5. Merges custom entities and properties from the data model configuration
+        6. Applies sorting and default values to all entities and columns
+        7. Caches and returns the final entity list
+
+      The method handles multiple database connection types (SQLite, Oracle, etc.) and 
+      parses column type information from database descriptions. It supports custom 
+      entity definitions through model configuration files and merges database-introspected 
+      data with user-defined model properties.
+
+      @return: List of entity descriptors, each containing:
+           - id: Entity identifier
+           - type: Entity type (e.g., 'table')
+           - label: Human-readable entity name
+           - sort_id: Uppercase label for sorting
+           - columns: List of column descriptors with type, size, and custom properties
+           - interface: Optional interface specification
+           - not_found: Flag indicating if entity exists only in model (custom entity)
+      @rtype: list of dict
+      """
 
       #-- [ReqBuff]: Fetch buffered value from Http-Request.
       REQUEST = self.REQUEST
@@ -935,7 +1008,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       tableBrwsrs = da.tpValues()
       
       # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
-      # +- ENTITES
+      # +- ENTITIES
       # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
       
       #-- for custom entities please refer to $ZMS_HOME/conf/db/getEntities.Oracle.py

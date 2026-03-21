@@ -1,5 +1,5 @@
 """
-ZMSRepositoryManager.py
+ZMSRepositoryManager.py - ZMS Repository Manager
 
 The ZMSRepositoryManager Module is comprehensive repository management system for ZMS 
 that handles synchronization, configuration management, and bi-directional data exchange

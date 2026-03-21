@@ -1,5 +1,5 @@
 """
-_mediadb.py
+_mediadb.py - ZMS Media Data Management
 
 The mediadb module provides functionality for managing binary assets 
 (files, images, blobs) in a ZMS instance. It handles storage, retrieval, 

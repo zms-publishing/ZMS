@@ -1,8 +1,9 @@
 """
-_textformatmanager.py
+_textformatmanager.py - ZMS Text Format Manager for Content Formatting and Rendering
 
 Defines TextFormatObject for text content formatting and rendering.
-It applies format-specific conversion, escaping, and transformation rules to content at display time.
+It applies format-specific conversion, escaping, and transformation 
+rules to content at display time.
 
 License: GNU General Public License v2 or later,
 Organization: ZMS Publishing

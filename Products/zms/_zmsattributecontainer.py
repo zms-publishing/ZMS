@@ -1,5 +1,5 @@
 """
-_zmsattributecontainer.py
+_zmsattributecontainer.py - ZMS Attribute Container for Custom Attribute Storage and Management
 
 Defines ZMSAttributeContainer for object persistence, Zope integration, and container protocols.
 It implements Zope's ObjectManager interface, handles acquisition, and manages object lifecycle.

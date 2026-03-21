@@ -1,5 +1,5 @@
 """
-ZMSZCatalogConnector.py
+ZMSZCatalogConnector.py - ZMS Catalog Connector for ZCatalog Integration
 
 Provides ZMSZCatalogConnector for catalog indexing and search operations.
 This module implements a Zope connector that integrates with ZCatalog to provide

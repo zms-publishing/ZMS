@@ -1,8 +1,10 @@
 """
-_blobfields.py
+_blobfields.py - Blob, Image, and File Field Management for ZMS
 
-This module provides blob, image, and file helpers used by ZMS for storing,
-exporting, and serving binary content.
+Blob fields are content attributes that store binary data (images, documents)
+within ZMS objects. This module provides the foundational classes and utilities
+for the entire blob field subsystem, enabling seamless integration of file uploads,
+secure access control, efficient HTTP delivery, and flexible storage backends.
 
 License: GNU General Public License v2 or later,
 Organization: ZMS Publishing

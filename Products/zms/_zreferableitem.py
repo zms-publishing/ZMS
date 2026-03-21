@@ -1,5 +1,5 @@
 """
-_zreferableitem.py
+_zreferableitem.py - ZMS Referable Item Mixin for Internal Reference Handling and Link Validation
 
 Defines ZReferableItem for object persistence, Zope integration, and container protocols.
 It implements Zope's ObjectManager interface, handles acquisition, and manages object lifecycle.

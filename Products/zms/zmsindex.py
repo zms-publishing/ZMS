@@ -1,8 +1,14 @@
 """
-zmsindex.py
+zmsindex.py - ZMS Object Index
 
-Defines ZMSIndex for ZMS indexing, catalog navigation, and search result display.
-It renders index pages, applies sorting/filtering, and formats search result listings.
+Defines ZMSIndex for catalog-backed indexing of ZMS objects.
+The index manages a ZCatalog instance, catalogs objects on lifecycle events, 
+and provides management interfaces for reindexing and validation. 
+It supports duplicate UID detection and optional regeneration, 
+as well as resynchronization of stored references.
+The index serves as a central utility for maintaining linkage of 
+content across the ZMS portal.
+
 
 License: GNU General Public License v2 or later,
 Organization: ZMS Publishing

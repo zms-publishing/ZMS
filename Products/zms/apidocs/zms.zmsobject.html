@@ -1110,8 +1110,57 @@
         </div>
 
         <div class="moduleDocstring">
-          <div><p>zmsobject.py</p>
-<p>Base ZMS object implementation combining access, versioning, export, and object-attribute behavior.</p>
+          <div><p>zmsobject.py - Base ZMS object implementation.</p>
+<p>ZMSObject is the primary content management class in ZMS framework, extending ZMSItem with comprehensive capabilities for managing versioned, multilingual content with workflow support.</p>
+<p>This module defines the core ZMSObject class that serves as the foundation for all major content types in ZMS. It combines multiple mixin classes to provide:</p>
+<ul class="rst-simple">
+<li><strong>Version Control</strong>: Complete version history tracking and rollback capabilities through the <code><a href="zms._versionmanager.VersionItem.html" class="internal-link" title="zms._versionmanager.VersionItem">_versionmanager.VersionItem</a></code> mixin</li>
+<li><strong>Workflow Management</strong>: State machine-based workflow control via <code><a href="zms.ZMSWorkflowItem.ZMSWorkflowItem.html" class="internal-link" title="zms.ZMSWorkflowItem.ZMSWorkflowItem">ZMSWorkflowItem.ZMSWorkflowItem</a></code></li>
+<li><strong>Access Control</strong>: Fine-grained permission and role-based access through <code><a href="zms._accessmanager.AccessableObject.html" class="internal-link" title="zms._accessmanager.AccessableObject">_accessmanager.AccessableObject</a></code></li>
+<li><strong>Multilingual Support</strong>: Full internationalization for content attributes via <code><a href="zms._multilangmanager.MultiLanguageObject.html" class="internal-link" title="zms._multilangmanager.MultiLanguageObject">_multilangmanager.MultiLanguageObject</a></code></li>
+<li><strong>Content Hierarchy</strong>: Parent-child relationships and tree traversal using <code><a href="zms._objchildren.ObjChildren.html" class="internal-link" title="zms._objchildren.ObjChildren">_objchildren.ObjChildren</a></code></li>
+<li><strong>Metadata Management</strong>: Object attributes and Dublin Core support through <code><a href="zms._objattrs.ObjAttrs.html" class="internal-link" title="zms._objattrs.ObjAttrs">_objattrs.ObjAttrs</a></code></li>
+<li><strong>Input Validation</strong>: Request-based property validation and processing via <code><a href="zms._objinputs.ObjInputs.html" class="internal-link" title="zms._objinputs.ObjInputs">_objinputs.ObjInputs</a></code></li>
+<li><strong>Copy/Paste</strong>: Object cloning and clipboard operations through <code><a href="zms._copysupport.CopySupport.html" class="internal-link" title="zms._copysupport.CopySupport">_copysupport.CopySupport</a></code></li>
+<li><strong>Caching</strong>: Request-level caching and buffering via <code><a href="zms._cachemanager.ReqBuff.html" class="internal-link" title="zms._cachemanager.ReqBuff">_cachemanager.ReqBuff</a></code></li>
+<li><strong>URL Path Handling</strong>: Declarative URL generation and path-based routing through <code><a href="zms._pathhandler.PathHandler.html" class="internal-link" title="zms._pathhandler.PathHandler">_pathhandler.PathHandler</a></code></li>
+<li><strong>Reference Management</strong>: Link tracking and reference resolution via <code><a href="zms._zreferableitem.ZReferableItem.html" class="internal-link" title="zms._zreferableitem.ZReferableItem">_zreferableitem.ZReferableItem</a></code></li>
+<li><strong>XML Import/Export</strong>: Serialization and deserialization using <code><a href="zms._exportable.Exportable.html" class="internal-link" title="zms._exportable.Exportable">_exportable.Exportable</a></code></li>
+<li><strong>Text Formatting</strong>: Rich text format conversion through <code><a href="zms._textformatmanager.TextFormatObject.html" class="internal-link" title="zms._textformatmanager.TextFormatObject">_textformatmanager.TextFormatObject</a></code></li>
+</ul>
+<p>Primary Use Cases:</p>
+<ol class="rst-simple">
+<li><strong>Page Management</strong>: ZMSObject instances represent pages and page containers with full versioning and workflow capabilities</li>
+<li><strong>Content Elements</strong>: Reusable content components with version control and multilingual support</li>
+<li><strong>Resource Management</strong>: Binary and media object handling through integrated blob field support</li>
+<li><strong>Workflow-Driven Publishing</strong>: State-based content approval and publication workflows</li>
+<li><strong>Internationalization</strong>: Content authoring and publishing for multiple languages with translation workflows</li>
+</ol>
+<p>ZMSObject instances form hierarchical structures where a typical content tree contains:</p>
+<ul class="rst-simple">
+<li>Root document element (ZMSDocument meta-type)</li>
+<li>Page containers and intermediate pages</li>
+<li>Page elements (ZMSObject meta-type)</li>
+<li>Resources (ZMSResource meta-type)</li>
+<li>RecordSets (ZMSRecordSet meta-type)</li>
+<li>References and cross-links (ZMSReference meta-type)</li>
+</ul>
+<p>Security Model: Uses Zope's AccessControl framework with ClassSecurityInfo declarations to enforce role-based permissions on all public methods. The <code><a href="zms._accessmanager.AccessableObject.html" class="internal-link" title="zms._accessmanager.AccessableObject">_accessmanager.AccessableObject</a></code> mixin provides granular access control at the object level.</p>
+<p>Key Properties:</p>
+<ul>
+<li><p class="rst-first"><strong>meta_id</strong>: Identifies the meta-object template defining object structure</p>
+</li>
+<li><p class="rst-first"><strong>meta_type</strong>: Semantic content type (e.g., 'ZMSDocument', 'ZMSObject', 'ZMSResource')</p>
+</li>
+<li><p class="rst-first"><strong>sort_id</strong>: Determines display order within parent container</p>
+</li>
+<li><p class="rst-first"><strong>_uid</strong>: Persistent unique identifier for cross-system references</p>
+</li>
+<li><p class="rst-first"><strong>_p_oid</strong>: ZODB object identifier for internal system use</p>
+<p>Language Support:</p>
+</li>
+</ul>
+<p>The module fully integrates multilingual content management allowing objects to have content in multiple languages with independent versioning and workflows per language variant.</p>
 <p>License: GNU General Public License v2 or later, Organization: ZMS Publishing</p>
 </div>
         </div>

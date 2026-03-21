@@ -1,5 +1,5 @@
 """
-zopeutil.py
+zopeutil.py - ZMS Zope Utility for Object Management and Data Handling
 
 Defines MissingArtefactProxy for general-purpose ZMS utilities and shared helper functions.
 It provides common patterns like type checking, data transformation, and error handling.

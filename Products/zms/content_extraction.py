@@ -1,11 +1,21 @@
 """
-content_extraction.py
+content_extraction.py - ZMS Content Extraction Toolkit for Search Indexing
 
-ZMS content extraction toolkit module (for search indexing, etc.)
+This module provides functions for extracting text content from various 
+file types, including HTML and PDF. It uses Apache Tika for content analysis 
+and pdfminer.six for PDF text extraction. The extracted text can be used 
+for search indexing or other text processing tasks within ZMS. It also 
+includes a helper function for extracting text from HTML content by 
+removing tags and unescaping entities. The main function, C{extract_content}, 
+takes a byte stream and content type, and attempts to extract text content 
+using the appropriate method based on the content type. 
 
-This module provides helpful functions and classes for use in Python
-Scripts. It can be accessed from Python with the statement
-"import Products.zms.content_extraction"
+If Tika is configured, it will be used for extraction; otherwise, pdfminer.six 
+will be used for PDFs, and plain text extraction will be applied for certain 
+text-based content types.
+
+It can be accessed from Python with the statement::
+    import Products.zms.content_extraction
 
 License: GNU General Public License v2 or later,
 Organization: ZMS Publishing

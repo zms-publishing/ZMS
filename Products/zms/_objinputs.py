@@ -1,8 +1,10 @@
 """
-_objinputs.py
+_objinputs.py - ZMS Object Input Field Generation and Form Rendering
 
-Defines ObjInputs for form input field generation and HTML form rendering.
-It generates form controls, applies client-side validation, and handles multipart form submissions.
+This module defines the ObjInputs class, which provides methods for generating
+form input fields and rendering HTML forms in a ZMS content management system.
+It includes functionality for creating various types of input controls, applying
+client-side validation, and handling multipart form submissions.
 
 License: GNU General Public License v2 or later,
 Organization: ZMS Publishing

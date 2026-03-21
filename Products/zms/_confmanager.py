@@ -1,5 +1,5 @@
 """
-_confmanager.py
+_confmanager.py - ZMS Configuration Manager
 
 Configuration infrastructure for ZMS.
 

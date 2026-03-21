@@ -1,5 +1,5 @@
 """
-_version.py
+_version.py - ZMS Version Information
 
 Provides core utilities for version lifecycle, publication flow, and semantic versioning.
 It manages draft/live transitions, version numbering, approval workflows, and content staging.

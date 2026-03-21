@@ -1,5 +1,5 @@
 """
-ZMSCharformatManager.py
+ZMSCharformatManager.py - ZMS Character Format Manager
 
 Defines ZMSCharformatManager for text content formatting and rendering.
 It applies format-specific conversion, escaping, and transformation rules to content at display time.

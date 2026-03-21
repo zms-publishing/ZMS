@@ -1,8 +1,5 @@
 """
-_builder.py
-
-This module provides the generic XML builder used to construct ZMS object
-trees from expat parser events.
+_builder.py - XML builder for ZMS object tree construction
 
 Implements a builder class (cp. design pattern "BUILDER") to build a tree of ZOPE objects
 out of an XML formatted document. Uses the class "pyexpat" (cp. module "Shared.DC.xml") for

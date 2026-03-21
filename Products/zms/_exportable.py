@@ -1,8 +1,12 @@
 """
-_exportable.py
+_exportable.py - ZMS Exportable Mixin
 
-Defines Exportable for object export, serialization, and batch downloads.
-It generates ZEXP files, prepares content for external storage, and handles format conversion.
+This module implements the Exportable mixin, which provides methods for
+exporting Zope objects to the filesystem, including binary files, images,
+and folder structures. It handles encoding, file writing, and recursive
+export of folder contents. The module also includes helper functions for 
+localizing HTML content and managing export paths. The Exportable mixin 
+can be used by ZMS content classes to enable export functionality.
 
 License: GNU General Public License v2 or later,
 Organization: ZMS Publishing

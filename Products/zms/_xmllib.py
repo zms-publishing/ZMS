@@ -1,7 +1,5 @@
 """
-_xmllib.py
-
-XML parsing and serialization utilities for ZMS.
+_xmllib.py - ZMS XML Parsing and Serialization Utilities
 
 Provides functions for converting ZMS objects to/from XML representation,
 including support for complex data types (dictionaries, lists, blobs),

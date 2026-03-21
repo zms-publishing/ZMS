@@ -1,8 +1,13 @@
 """
-ZMSItem.py
+ZMSItem.py - ZMS Base Content Object
 
-Provides ZMSItem for core content-object traversal.
-It implements core object persistence and Zope integration for core content-object traversal, attribute access, and child-node handling, enabling standard container and traversal protocols.
+Defines ZMSItem as the base class for all ZMS content objects, 
+providing core Zope integration, persistence, and basic content 
+management functionality. ZMSItem serves as the foundation for all 
+ZMS content types, offering a unified interface for request handling, 
+page rendering, access control, and a readme endpoint for documentation. 
+Subclasses extend ZMSItem with domain-specific features while 
+inheriting its core capabilities.
 
 License: GNU General Public License v2 or later,
 Organization: ZMS Publishing

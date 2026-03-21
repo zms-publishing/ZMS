@@ -1,7 +1,5 @@
 """
-_cachemanager.py
-
-Request-local caching helpers used across ZMS managers.
+_cachemanager.py - Request-local caching helpers used across ZMS managers.
 
 This module provides a tiny request buffer abstraction to avoid recomputing
 expensive values multiple times during a single HTTP request.

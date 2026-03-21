@@ -1,5 +1,5 @@
 """
-zmsproxyobject.py
+zmsproxyobject.py - ZMS Proxy Object
 
 Provides ZMSProxyObject for core content-object traversal and manipulation.
 

@@ -1,8 +1,13 @@
 """
-_pathhandler.py
+_pathhandler.py - ZMS Path Handler for URL Routing and Traversal
 
-Defines PathHandler for URL routing, path traversal, and request dispatch.
-It resolves tree paths to objects, handles traversal logic, and maps URLs to handlers.
+This module defines the PathHandler class, which provides helpers for URL routing,
+object traversal, and dynamic content resolution in a ZMS content management system.
+The PathHandler class implements the __bobo_traverse__ method to handle custom
+traversal logic, including REST API routing, declarative URL handling, and dynamic
+object resolution based on request parameters and object attributes. It also includes
+helper functions for validating and filtering objects by ID, as well as handling blob
+attributes by filename.
 
 License: GNU General Public License v2 or later,
 Organization: ZMS Publishing

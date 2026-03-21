@@ -1,5 +1,5 @@
 """
-ZMSMetadictManager.py
+ZMSMetadictManager.py - ZMS Meta-Dictionary Manager
 
 Defines ZMSMetadictManager for metadata dictionary storage and lookup.
 It caches and retrieves metamodel definitions, providing fast access to schema and constraint data.

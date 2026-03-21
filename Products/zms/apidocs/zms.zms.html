@@ -1196,8 +1196,26 @@
         </div>
 
         <div class="moduleDocstring">
-          <div><p>zms.py</p>
-<p>Provides ZMS, subscriber for core ZMS services and cross-module integration behavior. It encapsulates logic for core ZMS services and cross-module integration behavior, providing reusable behaviors shared by the surrounding ZMS runtime.</p>
+          <div><p>zms.py - ZMS Root Object and Lifecycle Management</p>
+<p>This module provides the core ZMS (Zope Management System) root content object and lifecycle event handling for the ZMS publishing platform. The module encapsulates:</p>
+<ul class="rst-simple">
+<li><strong>Root Content Object</strong>: The <code><a href="zms.zms.ZMS.html" class="internal-link" title="zms.zms.ZMS">ZMS</a></code> class serves as the top-level content container combining configuration management, content editing capabilities, and search indexing functionality.</li>
+<li><strong>Lifecycle Event Handling</strong>: The <code><a href="#subscriber" class="internal-link" title="zms.zms.subscriber">subscriber</a></code> function dispatches Zope container lifecycle events (object addition, movement, removal) to the internal ZMS event framework, enabling custom business logic triggers throughout the object hierarchy.</li>
+<li><strong>Site Initialization</strong>: The <code><a href="#initZMS" class="internal-link" title="zms.zms.initZMS">initZMS</a></code> function handles creation and configuration of new ZMS sites, supporting both standalone master sites and client sites that acquire their content model from a portal master.</li>
+<li><strong>Theme Management</strong>: The <code><a href="#importTheme" class="internal-link" title="zms.zms.importTheme">importTheme</a></code> function imports or acquires configured themes for newly created sites.</li>
+<li><strong>Content Import</strong>: The <code><a href="#initContent" class="internal-link" title="zms.zms.initContent">initContent</a></code> function imports initial site content from bundled archive files.</li>
+<li><strong>Management Interface</strong>: The <code><a href="#manage_addZMS" class="internal-link" title="zms.zms.manage_addZMS">manage_addZMS</a></code> function provides the factory method for creating top-level ZMS installations through the Zope add form.</li>
+</ul>
+<p>The ZMS class inherits from multiple managers providing specific functionality:</p>
+<ul class="rst-simple">
+<li>ZMSCustom: Custom user extensions</li>
+<li>AccessManager: Permission and role management</li>
+<li>Builder: XML content model building</li>
+<li>ConfManager: Configuration property management</li>
+<li>ObjAttrsManager: Object attribute management</li>
+<li>ZCatalogManager: Search catalog integration</li>
+</ul>
+<p>This module also includes a workaround for zope.browserresource compatibility to provide ETag adapter functionality required by zope.browserresource 3.11.0+.</p>
 <p>License: GNU General Public License v2 or later, Organization: ZMS Publishing</p>
 </div>
         </div>
@@ -1272,7 +1290,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">containerFilter</span><span class="function-signature">(container)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zms.py#L290">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zms.py#L318">
       
       (source)
     </a>
@@ -1299,7 +1317,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">importTheme</span><span class="function-signature">(self, theme)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zms.py#L74">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zms.py#L102">
       
       (source)
     </a>
@@ -1326,7 +1344,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">initContent</span><span class="function-signature">(self, filename, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zms.py#L206">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zms.py#L234">
       
       (source)
     </a>
@@ -1353,7 +1371,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">initZMS</span><span class="function-signature">(self, id, titlealt, title, lang, manage_lang, REQUEST, minimal_init=False)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zms.py#L100">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zms.py#L128">
       
       (source)
     </a>
@@ -1382,7 +1400,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_addZMS</span><span class="function-signature">(self, lang, manage_lang, REQUEST, RESPONSE)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zms.py#L224">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zms.py#L252">
       
       (source)
     </a>
@@ -1409,7 +1427,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">subscriber</span><span class="function-signature">(event)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zms.py#L48">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zms.py#L76">
       
       (source)
     </a>
@@ -1435,7 +1453,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_addZMSForm</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zms.py#L221">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zms.py#L249">
       
       (source)
     </a>

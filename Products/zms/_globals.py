@@ -1,5 +1,5 @@
 """
-_globals.py
+_globals.py - ZMS Global Constants and Utilities
 
 This module defines global constants and utility classes used throughout
 the ZMS product, including datatype constants (DT_*), a static page

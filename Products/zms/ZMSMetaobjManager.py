@@ -1,7 +1,5 @@
 """
-ZMSMetaobjManager.py
-
-Meta-object model management for ZMS.
+ZMSMetaobjManager.py - Meta-object model management for ZMS.
 
 This module provides the meta-object registry used by ZMS to define content
 types, their attributes, and the associated implementation artefacts

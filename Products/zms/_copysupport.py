@@ -1,5 +1,5 @@
 """
-_copysupport.py
+_copysupport.py - ZMS Copy and Move Support
 
 This module provides support for copying and moving ZMS objects, 
 including normalization of IDs, handling of BLOB fields, and 

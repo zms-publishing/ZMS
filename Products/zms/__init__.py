@@ -1,7 +1,32 @@
-"""ZMS product initialization module.
+"""
+__init__.py - ZMS product initialization module.
 
-Registers ZMS content types, configures language resources,
-and performs automated minification of static assets on startup.
+This module handles the core initialization of the ZMS (Zope Management System)
+product during Zope startup. It is responsible for:
+  - Registering ZMS content types (ZMS, ZMSCustom, ZMSSqlDb, ZMSLinkContainer,
+    ZMSLinkElement, MediaDb, ZMSAttributeContainer) with the Zope application
+    context to make them available for object instantiation.
+  - Configuring language resources by parsing the C{_language.xml} import file
+    and automatically generating language-specific JavaScript files
+    (C{i18n/<lang>.js}) for client-side internationalization support.
+  - Setting up session storage infrastructure by ensuring the existence of
+    C{temp_folder} and C{session_data} containers for temporary data storage
+    during user sessions.
+  - Performing automated minification of static assets (JavaScript and CSS files)
+    based on configuration parameters to reduce file sizes and improve
+    performance. This includes generation of hash values for cache-busting.
+  - Registering language dictionaries and configuration dictionaries in the
+    Zope misc container (C{OFS.misc_.misc_.zms}) for global access across
+    the application.
+  - Monkey-patching C{Products.CMFCore.zcml.registerDirectory()} to support
+    directory registration outside of package context, and registering additional
+    file extensions (xlsx, xls, doc, docx, ppt, pptx, svg, etc.) for proper
+    content type handling.
+
+
+Note: The module expects configuration files to be present at specific paths
+within the package home directory, particularly C{version.txt} and
+C{import/_language.xml}.
 
 License: GNU General Public License v2 or later,
 Organization: ZMS Publishing

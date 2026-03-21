@@ -1,5 +1,5 @@
 """
-_conf.py
+_conf.py - ZMS Configuration Class
 
 This module implements the ZMSSysConf class, which manages system-level
 configuration properties for a ZMS instance. It also implements the

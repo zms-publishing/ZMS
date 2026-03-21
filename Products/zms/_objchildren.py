@@ -1,8 +1,13 @@
 """
-_objchildren.py
+_objchildren.py - ZMS Object Children Management
 
-Defines ObjChildren for parent-child relationship traversal and hierarchy navigation.
-It manages object containment, recursive queries, and tree-structure operations.
+This module defines the ObjChildren class, which provides methods for managing
+child objects in a ZMS content management system. It includes functionality for
+creating child objects based on meta-object definitions, retrieving child nodes
+matching specific criteria, and handling ZMI actions related to child object
+creation. The ObjChildren class interacts with the meta-object model to ensure 
+that child objects are created and organized according to the defined content 
+structure and type constraints.
 
 License: GNU General Public License v2 or later,
 Organization: ZMS Publishing

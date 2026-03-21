@@ -1,5 +1,5 @@
 """
-ZMSWorkflowTransitionsManager.py
+ZMSWorkflowTransitionsManager.py - ZMS Workflow Transitions Manager
 
 Defines ZMSWorkflowTransitionsManager for workflow state machines and activity processing.
 It manages activity definitions, transitions, permission checks, and state lifecycle events.

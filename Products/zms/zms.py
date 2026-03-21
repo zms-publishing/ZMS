@@ -1,8 +1,36 @@
 """
-zms.py
+zms.py - ZMS Root Object and Lifecycle Management
 
-Provides ZMS, subscriber for core ZMS services and cross-module integration behavior.
-It encapsulates logic for core ZMS services and cross-module integration behavior, providing reusable behaviors shared by the surrounding ZMS runtime.
+This module provides the core ZMS (Zope Management System) root content object
+and lifecycle event handling for the ZMS publishing platform.
+The module encapsulates:
+  - B{Root Content Object}: The L{ZMS} class serves as the top-level content
+    container combining configuration management, content editing capabilities,
+    and search indexing functionality.
+  - B{Lifecycle Event Handling}: The L{subscriber} function dispatches Zope
+    container lifecycle events (object addition, movement, removal) to the
+    internal ZMS event framework, enabling custom business logic triggers
+    throughout the object hierarchy.
+  - B{Site Initialization}: The L{initZMS} function handles creation and
+    configuration of new ZMS sites, supporting both standalone master sites
+    and client sites that acquire their content model from a portal master.
+  - B{Theme Management}: The L{importTheme} function imports or acquires
+    configured themes for newly created sites.
+  - B{Content Import}: The L{initContent} function imports initial site content
+    from bundled archive files.
+  - B{Management Interface}: The L{manage_addZMS} function provides the factory
+    method for creating top-level ZMS installations through the Zope add form.
+
+The ZMS class inherits from multiple managers providing specific functionality:
+  - ZMSCustom: Custom user extensions
+  - AccessManager: Permission and role management
+  - Builder: XML content model building
+  - ConfManager: Configuration property management
+  - ObjAttrsManager: Object attribute management
+  - ZCatalogManager: Search catalog integration
+
+This module also includes a workaround for zope.browserresource compatibility
+to provide ETag adapter functionality required by zope.browserresource 3.11.0+.
 
 License: GNU General Public License v2 or later,
 Organization: ZMS Publishing

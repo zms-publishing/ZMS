@@ -1183,8 +1183,8 @@
         </div>
 
         <div class="moduleDocstring">
-          <div><p>_exportable.py</p>
-<p>Defines Exportable for object export, serialization, and batch downloads. It generates ZEXP files, prepares content for external storage, and handles format conversion.</p>
+          <div><p>_exportable.py - ZMS Exportable Mixin</p>
+<p>This module implements the Exportable mixin, which provides methods for exporting Zope objects to the filesystem, including binary files, images, and folder structures. It handles encoding, file writing, and recursive export of folder contents. The module also includes helper functions for localizing HTML content and managing export paths. The Exportable mixin can be used by ZMS content classes to enable export functionality.</p>
 <p>License: GNU General Public License v2 or later, Organization: ZMS Publishing</p>
 </div>
         </div>
@@ -1254,7 +1254,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">exportFiles</span><span class="function-signature">(self, root, id, path)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L54">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L58">
       
       (source)
     </a>
@@ -1281,7 +1281,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">exportFolder</span><span class="function-signature">(self, root, path, id, REQUEST, depth=0)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L75">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L79">
       
       (source)
     </a>
@@ -1308,7 +1308,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">findDelimiter</span><span class="function-signature">(s, delimiters=[<wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">"</span><span class="rst-variable-quote">'</span>, <wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">\'</span><span class="rst-variable-quote">'</span>])</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L111">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L115">
       
       (source)
     </a>
@@ -1335,7 +1335,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">localHtml</span><span class="function-signature">(self, html)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L150">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L154">
       
       (source)
     </a>
@@ -1362,7 +1362,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">localIndexHtml</span><span class="function-signature">(self, obj, level, html, xhtml=False)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L183">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L187">
       
       (source)
     </a>
@@ -1389,7 +1389,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">rfindDelimiter</span><span class="function-signature">(s, delimiters=[<wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">"</span><span class="rst-variable-quote">'</span>, <wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">\'</span><span class="rst-variable-quote">'</span>])</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L132">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L136">
       
       (source)
     </a>
@@ -1416,7 +1416,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">writeFile</span><span class="function-signature">(self, filename, data, mode=<span class="rst-variable-quote">'</span><span class="rst-variable-string">w</span><span class="rst-variable-quote">'</span>, encoding=<span class="rst-variable-quote">'</span><span class="rst-variable-string">utf-8</span><span class="rst-variable-quote">'</span>)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L30">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L34">
       
       (source)
     </a>

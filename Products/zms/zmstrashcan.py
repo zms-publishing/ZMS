@@ -1,5 +1,5 @@
 """
-zmstrashcan.py
+zmstrashcan.py- Trashcan Management and Deletion Recovery
 
 Defines ZMSTrashcan for trashcan management, deletion recovery, and object lifecycle cleanup.
 It retains recently deleted objects, enables recovery, and enforces retention policies.

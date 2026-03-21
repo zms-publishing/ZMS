@@ -1,7 +1,5 @@
 """
-ZMSWorkflowProvider.py
-
-Workflow management provider for ZMS content objects.
+ZMSWorkflowProvider.py - Workflow management provider for ZMS content objects.
 
 This module defines workflow import/export helpers, autocommit behavior, and
 the provider class that coordinates activities and transitions used by the

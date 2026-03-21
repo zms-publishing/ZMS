@@ -1,5 +1,5 @@
 """
-_sequence.py
+_sequence.py - ZMS Sequence Object for Unique ID Generation
 
 This module provides the Sequence class for generating unique,
 auto-incrementing IDs for ZMS objects (e.g. for new content nodes).

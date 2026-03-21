@@ -1,8 +1,10 @@
 """
-_versionmanager.py
+_versionmanager.py - ZMS Version Manager for Content Versioning and Workflow
 
 Provides VersionItem, VersionManagerContainer for version lifecycle handling.
-It centralizes manager methods for version lifecycle handling, version state access, and publication flow, keeping administrative logic in one place and reducing duplication in callers.
+It centralizes manager methods for version lifecycle handling, version state 
+access, and publication flow, keeping administrative logic in one place and 
+reducing duplication in callers.
 
 License: GNU General Public License v2 or later,
 Organization: ZMS Publishing

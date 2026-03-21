@@ -1,5 +1,5 @@
 """
-ZMSWorkflowProviderAcquired.py
+ZMSWorkflowProviderAcquired.py - Acquired Workflow Provider for ZMS
 
 Defines ZMSWorkflowProviderAcquired for workflow state machines and activity processing.
 It manages activity definitions, transitions, permission checks, and state lifecycle events.

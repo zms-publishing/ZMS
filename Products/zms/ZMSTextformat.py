@@ -1,5 +1,5 @@
 """
-ZMSTextformat.py
+ZMSTextformat.py - Text-format model and rendering helpers for ZMS rich-text output.
 
 Text-format model and rendering helpers for ZMS rich-text output.
 

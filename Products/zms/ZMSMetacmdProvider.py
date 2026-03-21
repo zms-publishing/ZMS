@@ -1,8 +1,9 @@
 """
-ZMSMetacmdProvider.py
+ZMSMetacmdProvider.py - ZMS Meta-Command Provider
 
 Defines ZMSMetacmdProvider for command and action metadata registration.
-It registers custom ZMI actions, toolbar commands, and context-menu entries for admin interfaces.
+It registers custom ZMI actions, toolbar commands, and context-menu entries
+for admin interfaces.
 
 License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
@@ -21,8 +22,6 @@ from Products.zms import ZMSItem
 
 
 # Example code.
-# -------------
-
 dtmlExampleCode = '<!-- @deprecated -->'
 
 pageTemplateExampleCode = \
@@ -69,7 +68,6 @@ class ZMSMetacmdProvider(
     icon_clazz = zmi_icon
 
     # Management Options.
-    # -------------------
     manage_options_default_action = '../manage_customize'
     def manage_options(self):
       """Handle the ZMI action 'manage_options'."""
@@ -83,13 +81,11 @@ class ZMSMetacmdProvider(
         )
 
     # Management Interface.
-    # ---------------------
     manage = PageTemplateFile('zpt/ZMSMetacmdProvider/manage_main', globals()) 
     manage_main = PageTemplateFile('zpt/ZMSMetacmdProvider/manage_main', globals()) 
     manage_main_acquire = PageTemplateFile('zpt/ZMSMetacmdProvider/manage_main_acquire', globals()) 
 
     # Management Permissions.
-    # -----------------------
     __administratorPermissions__ = (
       'manage_changeMetacmds', 'manage_main', 'manage_main_acquire'
     )
@@ -97,10 +93,12 @@ class ZMSMetacmdProvider(
       ('ZMS Administrator', __administratorPermissions__),
     )
 
+
     def __init__(self, commands=[]):
       """Initialise the manager with a persistent copy of command definitions."""
       self.id = 'metacmd_manager'
       self.commands = copy.deepcopy(commands)
+
 
     def provideRepository(self, ids=None):
       """
@@ -138,6 +136,7 @@ class ZMSMetacmdProvider(
               d['Impl'] = [attr]
           r[id] = d
       return r
+
 
     def updateRepository(self, r):
       """
@@ -212,6 +211,7 @@ class ZMSMetacmdProvider(
           newData, newExecution, newDescription, newIconClazz, newMetaTypes, newRoles, \
           newNodes)
 
+
     def importXml(self, xml):
       """Import one or many command entries from XML text or file-like input."""
       v = standard.parseXmlString(xml)
@@ -224,6 +224,7 @@ class ZMSMetacmdProvider(
     def __get_metacmd__(self, id):
       """Return the raw command dict from C{self.commands} for the given id."""
       return ([x for x in self.commands if x['id']==id]+[None])[0]
+
 
     def delMetacmd(self, id):
       """Delete one meta-command definition and remove its underlying Zope object."""
@@ -240,6 +241,8 @@ class ZMSMetacmdProvider(
       
       # Return with empty id.
       return ''
+
+
     def setMetacmd(self, id, newId, newAcquired, newPackage='', newRevision='0.0.0', newName='', newTitle='', newMethod=None, \
           newData=None, newExecution=0, newDescription='', newIconClazz='', newMetaTypes=[], \
           newRoles=['ZMSAdministrator'], newNodes='{$}'):
@@ -296,12 +299,14 @@ class ZMSMetacmdProvider(
       # Return with new id.
       return newId
 
+
     def getMetaCmdDescription(self, id):
       """
       Returns description of meta-command specified by ID.
       """
       metaCmd = self.getMetaCmd(id)
       return metaCmd.get('description', '')
+
 
     def getMetaCmd(self, id):
       """Return one fully-resolved meta-command, including object metadata and code."""
@@ -335,6 +340,7 @@ class ZMSMetacmdProvider(
         metaCmd['data'] = zopeutil.readObject(container, metaCmd['id'], '')
         metaCmd['bobobase_modification_time'] = DateTime(ob._p_mtime)
       return metaCmd
+
 
     def getMetaCmdIds(self, sort=True):
       """Return all meta-command ids, optionally sorted by command name."""
@@ -414,6 +420,7 @@ class ZMSMetacmdProvider(
             l.append(metaCmd)
         metaCmds = l
       return metaCmds
+
 
     def manage_changeMetacmds(self, btn, lang, REQUEST, RESPONSE):
         """Handle ZMI actions for meta-commands (acquire/save/copy/delete/export/import/insert)."""

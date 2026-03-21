@@ -1,8 +1,11 @@
 """
-ZMSTextformatManager.py
+ZMSTextformatManager.py - ZMS Text-format Manager
 
-Defines ZMSTextformatManager for text content formatting and rendering.
-It applies format-specific conversion, escaping, and transformation rules to content at display time.
+This module defines the ZMSTextformatManager class responsible
+for managing text-format definitions used by ZMS for rich-text editing and
+export/import operations. It provides methods for creating, updating,
+deleting, and retrieving text-format configurations, as well as handling
+XML serialization for data exchange.
 
 License: GNU General Public License v2 or later,
 Organization: ZMS Publishing

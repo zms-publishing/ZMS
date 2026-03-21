@@ -1,9 +1,6 @@
 """
-_objattrs.py
+_objattrs.py - ZMS Object Attributes Management
 
-This module provides comprehensive attribute management functionality for ZMS content objects.
-
-Overview:
 The _objattrs module is central to ZMS's content management architecture, implementing
 the meta-object model that enables flexible attribute handling for arbitrary content types.
 It encapsulates logic for content-object traversal, attribute access, and child-node

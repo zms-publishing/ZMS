@@ -1120,8 +1120,7 @@
         </div>
 
         <div class="moduleDocstring">
-          <div><p>_builder.py</p>
-<p>This module provides the generic XML builder used to construct ZMS object trees from expat parser events.</p>
+          <div><p>_builder.py - XML builder for ZMS object tree construction</p>
 <p>Implements a builder class (cp. design pattern "BUILDER") to build a tree of ZOPE objects out of an XML formatted document. Uses the class "pyexpat" (cp. module "Shared.DC.xml") for parsing the XML document. The general approach of the XML parser "pyexpat" is event driven, where handler methods are called on occurence of XML tags. Builder redirects these events to a set of own handler methods (see below). To build up the object tree, Builder provides the following functionality:</p>
 <ol class="rst-simple">
 <li>Usually, the occurence of a XML tag induces the instanciation of a new node object. Therefore, Builder contains a mapping table ("dGlobalAttrs"), that maps XML tags to python classes. The handler method "Builder.OnStartElement()" creates a node object of the corresponding class. This node object is then made current.</li>

@@ -1,5 +1,5 @@
 """
-_deprecatedapi.py
+_deprecatedapi.py - ZMS Deprecated API
 
 Defines DeprecatedAPI for REST API endpoints and HTTP protocol handling.
 It exposes content via JSON/XML, handles authentication, and implements HTTP semantics.

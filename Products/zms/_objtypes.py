@@ -1,8 +1,12 @@
 """
-_objtypes.py
+_objtypes.py - ZMS Object Type Definitions and Meta-Class Registration
 
-Defines ObjTypes for object type definitions and meta-class registration.
-It registers content classes, defines allowed object hierarchies, and enforces type constraints.
+This module defines the ObjTypes class, which provides rendering helpers for
+display-type dependent object output in the ZMS content management system. It includes
+methods for rendering images and text according to specified display types, as well
+as a collection of PageTemplateFile instances for different input and display type templates.
+The ObjTypes class serves as a central utility for content objects to generate
+HTML output based on their display type configuration.
 
 License: GNU General Public License v2 or later,
 Organization: ZMS Publishing

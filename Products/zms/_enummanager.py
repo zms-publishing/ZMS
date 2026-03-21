@@ -1,8 +1,13 @@
 """
-_enummanager.py
+_enummanager.py - ZMS Enumeration Manager
 
-Defines EnumManager for enumeration definitions and choice option management.
-It registers controlled vocabularies and option lists for use in form fields and filters.
+This module implements EnumManager, a mixin class that loads enumeration values 
+from XML files in the product import folder. It provides a method getValues
+that reads an XML file corresponding to a given enumeration ID and returns 
+the entries as a list of key/value pairs. The XML files are expected to be
+named in the format 'enum.{id}.xml' and located in the import directory 
+of the product. The module uses the XmlAttrBuilder from the _xmllib module to 
+parse the XML files and extract the enumeration values.
 
 License: GNU General Public License v2 or later,
 Organization: ZMS Publishing

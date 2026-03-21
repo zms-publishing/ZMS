@@ -1,5 +1,5 @@
 """
-_fileutil.py
+_fileutil.py - ZMS File System Utilities
 
 This module provides file-system utility functions for ZMS, including
 path handling, file reading/writing, ZEXP import/export, ZIP archive

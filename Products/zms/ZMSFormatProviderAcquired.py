@@ -1,8 +1,12 @@
 """
-ZMSFormatProviderAcquired.py
+ZMSFormatProviderAcquired.py - ZMS Acquired Format Provider
 
-Defines ZMSFormatProviderAcquired for text content formatting and rendering.
-It applies format-specific conversion, escaping, and transformation rules to content at display time.
+Defines ZMSFormatProviderAcquired for delegated text and character format provision.
+The acquired format provider delegates all formatting configuration to the portal
+master, exposing formats defined at the master while adapting character format
+button URLs for local editor usage. It serves as a lightweight proxy to the
+master's format manager, allowing local content to utilize shared formatting
+definitions without duplication.
 
 License: GNU General Public License v2 or later,
 Organization: ZMS Publishing

@@ -1,5 +1,5 @@
 """
-_ziputil.py
+_ziputil.py - ZMS ZIP Utility for Exporting and Importing ZODB Objects
 
 This module provides utility functions for exporting ZODB
 objects to ZIP archives and importing ZIP archives into the ZODB.

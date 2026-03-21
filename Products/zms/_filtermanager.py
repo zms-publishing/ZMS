@@ -1,7 +1,5 @@
 """
-_filtermanager.py
-
-Import/export filter pipeline helpers for ZMS.
+_filtermanager.py - ZMS Import/Export Filter Pipeline Helpers
 
 This module provides the procedural building blocks that execute configured
 filter pipelines during import/export. A pipeline consists of ordered process

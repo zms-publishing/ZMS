@@ -1,5 +1,5 @@
 """
-ZMSWorkflowItem.py
+ZMSWorkflowItem.py - ZMS Workflow Item
 
 Defines ZMSWorkflowItem for workflow state machines and activity processing.
 It manages activity definitions, transitions, permission checks, and state lifecycle events.

@@ -1,5 +1,5 @@
 """
-ZMSMetacmdProviderAcquired.py
+ZMSMetacmdProviderAcquired.py - ZMS Acquired Metacommand Provider
 
 Defines ZMSMetacmdProviderAcquired for command and action metadata registration.
 It registers custom ZMI actions, toolbar commands, and context-menu entries for admin interfaces.

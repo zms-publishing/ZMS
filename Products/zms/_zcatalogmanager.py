@@ -1,8 +1,10 @@
 """
-_zcatalogmanager.py
+_zcatalogmanager.py - ZMS Catalog Manager for Search Query Formatting and Object Traversal
 
-Provides ZCatalogManager for catalog indexing.
-It centralizes manager methods for catalog indexing, connector integration, and search-facing metadata, keeping administrative logic in one place and reducing duplication in callers.
+Provides ZCatalogManager for catalog indexing. It centralizes manager 
+methods for catalog indexing, connector integration, and search-facing 
+metadata, keeping administrative logic in one place and reducing duplication
+in callers.
 
 License: GNU General Public License v2 or later,
 Organization: ZMS Publishing

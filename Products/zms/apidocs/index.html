@@ -1068,8 +1068,17 @@
         </div>
 
         <div class="moduleDocstring">
-          <div><p>ZMS product initialization module.</p>
-<p>Registers ZMS content types, configures language resources, and performs automated minification of static assets on startup.</p>
+          <div><p>__init__.py - ZMS product initialization module.</p>
+<p>This module handles the core initialization of the ZMS (Zope Management System) product during Zope startup. It is responsible for:</p>
+<ul class="rst-simple">
+<li>Registering ZMS content types (ZMS, ZMSCustom, ZMSSqlDb, ZMSLinkContainer, ZMSLinkElement, MediaDb, ZMSAttributeContainer) with the Zope application context to make them available for object instantiation.</li>
+<li>Configuring language resources by parsing the <tt class="rst-docutils rst-literal">_language.xml</tt> import file and automatically generating language-specific JavaScript files (<tt class="rst-docutils rst-literal"><span class="pre">i18n/&lt;lang&gt;.js</span></tt>) for client-side internationalization support.</li>
+<li>Setting up session storage infrastructure by ensuring the existence of <tt class="rst-docutils rst-literal">temp_folder</tt> and <tt class="rst-docutils rst-literal">session_data</tt> containers for temporary data storage during user sessions.</li>
+<li>Performing automated minification of static assets (JavaScript and CSS files) based on configuration parameters to reduce file sizes and improve performance. This includes generation of hash values for cache-busting.</li>
+<li>Registering language dictionaries and configuration dictionaries in the Zope misc container (<tt class="rst-docutils rst-literal">OFS.misc_.misc_.zms</tt>) for global access across the application.</li>
+<li>Monkey-patching <tt class="rst-docutils rst-literal">Products.CMFCore.zcml.registerDirectory()</tt> to support directory registration outside of package context, and registering additional file extensions (xlsx, xls, doc, docx, ppt, pptx, svg, etc.) for proper content type handling.</li>
+</ul>
+<p>Note: The module expects configuration files to be present at specific paths within the package home directory, particularly <tt class="rst-docutils rst-literal">version.txt</tt> and <tt class="rst-docutils rst-literal">import/_language.xml</tt>.</p>
 <p>License: GNU General Public License v2 or later, Organization: ZMS Publishing</p>
 </div>
         </div>
@@ -1082,7 +1091,7 @@
     
     <td>Module</td>
     <td><code><a href="zms.content_extraction.html" class="internal-link" title="zms.content_extraction">content<wbr></wbr>_extraction</a></code></td>
-    <td>content_extraction.py</td>
+    <td>content_extraction.py - ZMS Content Extraction Toolkit for Search Indexing</td>
   </tr><tr class="module">
     
     <td>Module</td>
@@ -1172,47 +1181,47 @@
     
     <td>Module</td>
     <td><code><a href="zms.zms.html" class="internal-link" title="zms.zms">zms</a></code></td>
-    <td>zms.py</td>
+    <td>zms.py - ZMS Root Object and Lifecycle Management</td>
   </tr><tr class="module">
     
     <td>Module</td>
     <td><code><a href="zms.ZMSCharformatManager.html" class="internal-link" title="zms.ZMSCharformatManager"><wbr></wbr>ZMSCharformat<wbr></wbr>Manager</a></code></td>
-    <td>ZMSCharformatManager.py</td>
+    <td>ZMSCharformatManager.py - ZMS Character Format Manager</td>
   </tr><tr class="module">
     
     <td>Module</td>
     <td><code><a href="zms.zmscontainerobject.html" class="internal-link" title="zms.zmscontainerobject">zmscontainerobject</a></code></td>
-    <td>zmscontainerobject.py</td>
+    <td>zmscontainerobject.py - ZMS Container Object</td>
   </tr><tr class="module">
     
     <td>Module</td>
     <td><code><a href="zms.zmscustom.html" class="internal-link" title="zms.zmscustom">zmscustom</a></code></td>
-    <td>zmscustom.py</td>
+    <td>zmscustom.py - ZMS Custom Content Class for Site-Specific Customization and Plugin Extensions</td>
   </tr><tr class="module">
     
     <td>Module</td>
     <td><code><a href="zms.ZMSFilterManager.html" class="internal-link" title="zms.ZMSFilterManager"><wbr></wbr>ZMSFilter<wbr></wbr>Manager</a></code></td>
-    <td>ZMSFilterManager.py</td>
+    <td>ZMSFilterManager.py - ZMS Filter Manager</td>
   </tr><tr class="module">
     
     <td>Module</td>
     <td><code><a href="zms.ZMSFormatProvider.html" class="internal-link" title="zms.ZMSFormatProvider"><wbr></wbr>ZMSFormat<wbr></wbr>Provider</a></code></td>
-    <td>ZMSFormatProvider.py</td>
+    <td>ZMSFormatProvider.py - ZMS Format Provider</td>
   </tr><tr class="module">
     
     <td>Module</td>
     <td><code><a href="zms.ZMSFormatProviderAcquired.html" class="internal-link" title="zms.ZMSFormatProviderAcquired"><wbr></wbr>ZMSFormat<wbr></wbr>Provider<wbr></wbr>Acquired</a></code></td>
-    <td>ZMSFormatProviderAcquired.py</td>
+    <td>ZMSFormatProviderAcquired.py - ZMS Acquired Format Provider</td>
   </tr><tr class="module">
     
     <td>Module</td>
     <td><code><a href="zms.zmsindex.html" class="internal-link" title="zms.zmsindex">zmsindex</a></code></td>
-    <td>zmsindex.py</td>
+    <td>zmsindex.py - ZMS Object Index</td>
   </tr><tr class="module">
     
     <td>Module</td>
     <td><code><a href="zms.ZMSItem.html" class="internal-link" title="zms.ZMSItem"><wbr></wbr>ZMSItem</a></code></td>
-    <td>ZMSItem.py</td>
+    <td>ZMSItem.py - ZMS Base Content Object</td>
   </tr><tr class="module">
     
     <td>Module</td>
@@ -1227,267 +1236,267 @@
     
     <td>Module</td>
     <td><code><a href="zms.zmslog.html" class="internal-link" title="zms.zmslog">zmslog</a></code></td>
-    <td>zmslog.py</td>
+    <td>zmslog.py - ZMS Log Viewer</td>
   </tr><tr class="module">
     
     <td>Module</td>
     <td><code><a href="zms.ZMSMetacmdProvider.html" class="internal-link" title="zms.ZMSMetacmdProvider"><wbr></wbr>ZMSMetacmd<wbr></wbr>Provider</a></code></td>
-    <td>ZMSMetacmdProvider.py</td>
+    <td>ZMSMetacmdProvider.py - ZMS Meta-Command Provider</td>
   </tr><tr class="module">
     
     <td>Module</td>
     <td><code><a href="zms.ZMSMetacmdProviderAcquired.html" class="internal-link" title="zms.ZMSMetacmdProviderAcquired"><wbr></wbr>ZMSMetacmd<wbr></wbr>Provider<wbr></wbr>Acquired</a></code></td>
-    <td>ZMSMetacmdProviderAcquired.py</td>
+    <td>ZMSMetacmdProviderAcquired.py - ZMS Acquired Metacommand Provider</td>
   </tr><tr class="module">
     
     <td>Module</td>
     <td><code><a href="zms.ZMSMetadictManager.html" class="internal-link" title="zms.ZMSMetadictManager"><wbr></wbr>ZMSMetadict<wbr></wbr>Manager</a></code></td>
-    <td>ZMSMetadictManager.py</td>
+    <td>ZMSMetadictManager.py - ZMS Meta-Dictionary Manager</td>
   </tr><tr class="module">
     
     <td>Module</td>
     <td><code><a href="zms.ZMSMetamodelProvider.html" class="internal-link" title="zms.ZMSMetamodelProvider"><wbr></wbr>ZMSMetamodel<wbr></wbr>Provider</a></code></td>
-    <td>ZMSMetamodelProvider.py</td>
+    <td>ZMSMetamodelProvider.py - ZMS Metamodel Provider</td>
   </tr><tr class="module">
     
     <td>Module</td>
     <td><code><a href="zms.ZMSMetaobjManager.html" class="internal-link" title="zms.ZMSMetaobjManager"><wbr></wbr>ZMSMetaobj<wbr></wbr>Manager</a></code></td>
-    <td>ZMSMetaobjManager.py</td>
+    <td>ZMSMetaobjManager.py - Meta-object model management for ZMS.</td>
   </tr><tr class="module">
     
     <td>Module</td>
     <td><code><a href="zms.zmsobject.html" class="internal-link" title="zms.zmsobject">zmsobject</a></code></td>
-    <td>zmsobject.py</td>
+    <td>zmsobject.py - Base ZMS object implementation.</td>
   </tr><tr class="module">
     
     <td>Module</td>
     <td><code><a href="zms.zmsproxyobject.html" class="internal-link" title="zms.zmsproxyobject">zmsproxyobject</a></code></td>
-    <td>zmsproxyobject.py</td>
+    <td>zmsproxyobject.py - ZMS Proxy Object</td>
   </tr><tr class="module">
     
     <td>Module</td>
     <td><code><a href="zms.ZMSRepositoryManager.html" class="internal-link" title="zms.ZMSRepositoryManager"><wbr></wbr>ZMSRepository<wbr></wbr>Manager</a></code></td>
-    <td>ZMSRepositoryManager.py</td>
+    <td>ZMSRepositoryManager.py - ZMS Repository Manager</td>
   </tr><tr class="module">
     
     <td>Module</td>
     <td><code><a href="zms.zmssqldb.html" class="internal-link" title="zms.zmssqldb">zmssqldb</a></code></td>
-    <td>zmssqldb.py</td>
+    <td>zmssqldb.py - Relational Database Content Type for ZMS</td>
   </tr><tr class="module">
     
     <td>Module</td>
     <td><code><a href="zms.ZMSTextformat.html" class="internal-link" title="zms.ZMSTextformat"><wbr></wbr>ZMSTextformat</a></code></td>
-    <td>ZMSTextformat.py</td>
+    <td>ZMSTextformat.py - Text-format model and rendering helpers for ZMS rich-text output.</td>
   </tr><tr class="module">
     
     <td>Module</td>
     <td><code><a href="zms.ZMSTextformatManager.html" class="internal-link" title="zms.ZMSTextformatManager"><wbr></wbr>ZMSTextformat<wbr></wbr>Manager</a></code></td>
-    <td>ZMSTextformatManager.py</td>
+    <td>ZMSTextformatManager.py - ZMS Text-format Manager</td>
   </tr><tr class="module">
     
     <td>Module</td>
     <td><code><a href="zms.zmstrashcan.html" class="internal-link" title="zms.zmstrashcan">zmstrashcan</a></code></td>
-    <td>zmstrashcan.py</td>
+    <td>zmstrashcan.py- Trashcan Management and Deletion Recovery</td>
   </tr><tr class="module">
     
     <td>Module</td>
     <td><code><a href="zms.ZMSWorkflowActivitiesManager.html" class="internal-link" title="zms.ZMSWorkflowActivitiesManager"><wbr></wbr>ZMSWorkflow<wbr></wbr>Activities<wbr></wbr>Manager</a></code></td>
-    <td>ZMSWorkflowActivitiesManager.py</td>
+    <td>ZMSWorkflowActivitiesManager.py - ZMS Workflow Activities Manager</td>
   </tr><tr class="module">
     
     <td>Module</td>
     <td><code><a href="zms.ZMSWorkflowItem.html" class="internal-link" title="zms.ZMSWorkflowItem"><wbr></wbr>ZMSWorkflow<wbr></wbr>Item</a></code></td>
-    <td>ZMSWorkflowItem.py</td>
+    <td>ZMSWorkflowItem.py - ZMS Workflow Item</td>
   </tr><tr class="module">
     
     <td>Module</td>
     <td><code><a href="zms.ZMSWorkflowProvider.html" class="internal-link" title="zms.ZMSWorkflowProvider"><wbr></wbr>ZMSWorkflow<wbr></wbr>Provider</a></code></td>
-    <td>ZMSWorkflowProvider.py</td>
+    <td>ZMSWorkflowProvider.py - Workflow management provider for ZMS content objects.</td>
   </tr><tr class="module">
     
     <td>Module</td>
     <td><code><a href="zms.ZMSWorkflowProviderAcquired.html" class="internal-link" title="zms.ZMSWorkflowProviderAcquired"><wbr></wbr>ZMSWorkflow<wbr></wbr>Provider<wbr></wbr>Acquired</a></code></td>
-    <td>ZMSWorkflowProviderAcquired.py</td>
+    <td>ZMSWorkflowProviderAcquired.py - Acquired Workflow Provider for ZMS</td>
   </tr><tr class="module">
     
     <td>Module</td>
     <td><code><a href="zms.ZMSWorkflowTransitionsManager.html" class="internal-link" title="zms.ZMSWorkflowTransitionsManager"><wbr></wbr>ZMSWorkflow<wbr></wbr>Transitions<wbr></wbr>Manager</a></code></td>
-    <td>ZMSWorkflowTransitionsManager.py</td>
+    <td>ZMSWorkflowTransitionsManager.py - ZMS Workflow Transitions Manager</td>
   </tr><tr class="module">
     
     <td>Module</td>
     <td><code><a href="zms.ZMSZCatalogAdapter.html" class="internal-link" title="zms.ZMSZCatalogAdapter"><wbr></wbr>ZMSZCatalog<wbr></wbr>Adapter</a></code></td>
-    <td>ZMSZCatalogAdapter.py</td>
+    <td>ZMSZCatalogAdapter.py - Catalog adapter implementation for indexing ZMS content.</td>
   </tr><tr class="module">
     
     <td>Module</td>
     <td><code><a href="zms.ZMSZCatalogConnector.html" class="internal-link" title="zms.ZMSZCatalogConnector"><wbr></wbr>ZMSZCatalog<wbr></wbr>Connector</a></code></td>
-    <td>ZMSZCatalogConnector.py</td>
+    <td>ZMSZCatalogConnector.py - ZMS Catalog Connector for ZCatalog Integration</td>
   </tr><tr class="module">
     
     <td>Module</td>
     <td><code><a href="zms.zopeutil.html" class="internal-link" title="zms.zopeutil">zopeutil</a></code></td>
-    <td>zopeutil.py</td>
+    <td>zopeutil.py - ZMS Zope Utility for Object Management and Data Handling</td>
   </tr><tr class="module private">
     
     <td>Module</td>
     <td><code><a href="zms._accessmanager.html" class="internal-link" title="zms._accessmanager">_accessmanager</a></code></td>
-    <td>_accessmanager.py</td>
+    <td>_accessmanager.py - Access and permission management for ZMS</td>
   </tr><tr class="module private">
     
     <td>Module</td>
     <td><code><a href="zms._blobfields.html" class="internal-link" title="zms._blobfields">_blobfields</a></code></td>
-    <td>_blobfields.py</td>
+    <td>_blobfields.py - Blob, Image, and File Field Management for ZMS</td>
   </tr><tr class="module private">
     
     <td>Module</td>
     <td><code><a href="zms._builder.html" class="internal-link" title="zms._builder">_builder</a></code></td>
-    <td>_builder.py</td>
+    <td>_builder.py - XML builder for ZMS object tree construction</td>
   </tr><tr class="module private">
     
     <td>Module</td>
     <td><code><a href="zms._cachemanager.html" class="internal-link" title="zms._cachemanager">_cachemanager</a></code></td>
-    <td>_cachemanager.py</td>
+    <td>_cachemanager.py - Request-local caching helpers used across ZMS managers.</td>
   </tr><tr class="module private">
     
     <td>Module</td>
     <td><code><a href="zms._conf.html" class="internal-link" title="zms._conf">_conf</a></code></td>
-    <td>_conf.py</td>
+    <td>_conf.py - ZMS Configuration Class</td>
   </tr><tr class="module private">
     
     <td>Module</td>
     <td><code><a href="zms._confmanager.html" class="internal-link" title="zms._confmanager">_confmanager</a></code></td>
-    <td>_confmanager.py</td>
+    <td>_confmanager.py - ZMS Configuration Manager</td>
   </tr><tr class="module private">
     
     <td>Module</td>
     <td><code><a href="zms._copysupport.html" class="internal-link" title="zms._copysupport">_copysupport</a></code></td>
-    <td>_copysupport.py</td>
+    <td>_copysupport.py - ZMS Copy and Move Support</td>
   </tr><tr class="module private">
     
     <td>Module</td>
     <td><code><a href="zms._deprecatedapi.html" class="internal-link" title="zms._deprecatedapi">_deprecatedapi</a></code></td>
-    <td>_deprecatedapi.py</td>
+    <td>_deprecatedapi.py - ZMS Deprecated API</td>
   </tr><tr class="module private">
     
     <td>Module</td>
     <td><code><a href="zms._enummanager.html" class="internal-link" title="zms._enummanager">_enummanager</a></code></td>
-    <td>_enummanager.py</td>
+    <td>_enummanager.py - ZMS Enumeration Manager</td>
   </tr><tr class="module private">
     
     <td>Module</td>
     <td><code><a href="zms._exportable.html" class="internal-link" title="zms._exportable">_exportable</a></code></td>
-    <td>_exportable.py</td>
+    <td>_exportable.py - ZMS Exportable Mixin</td>
   </tr><tr class="module private">
     
     <td>Module</td>
     <td><code><a href="zms._fileutil.html" class="internal-link" title="zms._fileutil">_fileutil</a></code></td>
-    <td>_fileutil.py</td>
+    <td>_fileutil.py - ZMS File System Utilities</td>
   </tr><tr class="module private">
     
     <td>Module</td>
     <td><code><a href="zms._filtermanager.html" class="internal-link" title="zms._filtermanager">_filtermanager</a></code></td>
-    <td>_filtermanager.py</td>
+    <td>_filtermanager.py - ZMS Import/Export Filter Pipeline Helpers</td>
   </tr><tr class="module private">
     
     <td>Module</td>
     <td><code><a href="zms._globals.html" class="internal-link" title="zms._globals">_globals</a></code></td>
-    <td>_globals.py</td>
+    <td>_globals.py - ZMS Global Constants and Utilities</td>
   </tr><tr class="module private">
     
     <td>Module</td>
     <td><code><a href="zms._importable.html" class="internal-link" title="zms._importable">_importable</a></code></td>
-    <td>_importable.py</td>
+    <td>_importable.py - ZMS Importable Mixin</td>
   </tr><tr class="module private">
     
     <td>Module</td>
     <td><code><a href="zms._mediadb.html" class="internal-link" title="zms._mediadb">_mediadb</a></code></td>
-    <td>_mediadb.py</td>
+    <td>_mediadb.py - ZMS Media Data Management</td>
   </tr><tr class="module private">
     
     <td>Module</td>
     <td><code><a href="zms._mimetypes.html" class="internal-link" title="zms._mimetypes">_mimetypes</a></code></td>
-    <td>_mimetypes.py</td>
+    <td>_mimetypes.py - ZMS MIME Type Icon Mappings</td>
   </tr><tr class="module private">
     
     <td>Module</td>
     <td><code><a href="zms._multilangmanager.html" class="internal-link" title="zms._multilangmanager">_multilangmanager</a></code></td>
-    <td>_multilangmanager.py</td>
+    <td>_multilangmanager.py - ZMS Multi-Language Manager</td>
   </tr><tr class="module private">
     
     <td>Module</td>
     <td><code><a href="zms._objattrs.html" class="internal-link" title="zms._objattrs">_objattrs</a></code></td>
-    <td>_objattrs.py</td>
+    <td>_objattrs.py - ZMS Object Attributes Management</td>
   </tr><tr class="module private">
     
     <td>Module</td>
     <td><code><a href="zms._objchildren.html" class="internal-link" title="zms._objchildren">_objchildren</a></code></td>
-    <td>_objchildren.py</td>
+    <td>_objchildren.py - ZMS Object Children Management</td>
   </tr><tr class="module private">
     
     <td>Module</td>
     <td><code><a href="zms._objinputs.html" class="internal-link" title="zms._objinputs">_objinputs</a></code></td>
-    <td>_objinputs.py</td>
+    <td>_objinputs.py - ZMS Object Input Field Generation and Form Rendering</td>
   </tr><tr class="module private">
     
     <td>Module</td>
     <td><code><a href="zms._objtypes.html" class="internal-link" title="zms._objtypes">_objtypes</a></code></td>
-    <td>_objtypes.py</td>
+    <td>_objtypes.py - ZMS Object Type Definitions and Meta-Class Registration</td>
   </tr><tr class="module private">
     
     <td>Module</td>
     <td><code><a href="zms._pathhandler.html" class="internal-link" title="zms._pathhandler">_pathhandler</a></code></td>
-    <td>_pathhandler.py</td>
+    <td>_pathhandler.py - ZMS Path Handler for URL Routing and Traversal</td>
   </tr><tr class="module private">
     
     <td>Module</td>
     <td><code><a href="zms._sequence.html" class="internal-link" title="zms._sequence">_sequence</a></code></td>
-    <td>_sequence.py</td>
+    <td>_sequence.py - ZMS Sequence Object for Unique ID Generation</td>
   </tr><tr class="module private">
     
     <td>Module</td>
     <td><code><a href="zms._textformatmanager.html" class="internal-link" title="zms._textformatmanager">_textformatmanager</a></code></td>
-    <td>_textformatmanager.py</td>
+    <td>_textformatmanager.py - ZMS Text Format Manager for Content Formatting and Rendering</td>
   </tr><tr class="module private">
     
     <td>Module</td>
     <td><code><a href="zms._version.html" class="internal-link" title="zms._version">_version</a></code></td>
-    <td>_version.py</td>
+    <td>_version.py - ZMS Version Information</td>
   </tr><tr class="module private">
     
     <td>Module</td>
     <td><code><a href="zms._versionmanager.html" class="internal-link" title="zms._versionmanager">_versionmanager</a></code></td>
-    <td>_versionmanager.py</td>
+    <td>_versionmanager.py - ZMS Version Manager for Content Versioning and Workflow</td>
   </tr><tr class="module private">
     
     <td>Module</td>
     <td><code><a href="zms._xmllib.html" class="internal-link" title="zms._xmllib">_xmllib</a></code></td>
-    <td>_xmllib.py</td>
+    <td>_xmllib.py - ZMS XML Parsing and Serialization Utilities</td>
   </tr><tr class="module private">
     
     <td>Module</td>
     <td><code><a href="zms._zcatalogmanager.html" class="internal-link" title="zms._zcatalogmanager">_zcatalogmanager</a></code></td>
-    <td>_zcatalogmanager.py</td>
+    <td>_zcatalogmanager.py - ZMS Catalog Manager for Search Query Formatting and Object Traversal</td>
   </tr><tr class="module private">
     
     <td>Module</td>
     <td><code><a href="zms._ziputil.html" class="internal-link" title="zms._ziputil">_ziputil</a></code></td>
-    <td>_ziputil.py</td>
+    <td>_ziputil.py - ZMS ZIP Utility for Exporting and Importing ZODB Objects</td>
   </tr><tr class="module private">
     
     <td>Module</td>
     <td><code><a href="zms._zmi_actions_util.html" class="internal-link" title="zms._zmi_actions_util">_zmi<wbr></wbr>_actions<wbr></wbr>_util</a></code></td>
-    <td>_zmi_actions_util.py</td>
+    <td>_zmi_actions_util.py - ZMS ZMI Actions Utility for Action List Generation and Command Handling</td>
   </tr><tr class="module private">
     
     <td>Module</td>
     <td><code><a href="zms._zmsattributecontainer.html" class="internal-link" title="zms._zmsattributecontainer">_zmsattributecontainer</a></code></td>
-    <td>_zmsattributecontainer.py</td>
+    <td>_zmsattributecontainer.py - ZMS Attribute Container for Custom Attribute Storage and Management</td>
   </tr><tr class="module private">
     
     <td>Module</td>
     <td><code><a href="zms._zreferableitem.html" class="internal-link" title="zms._zreferableitem">_zreferableitem</a></code></td>
-    <td>_zreferableitem.py</td>
+    <td>_zreferableitem.py - ZMS Referable Item Mixin for Internal Reference Handling and Link Validation</td>
   </tr>
 </table>
           
@@ -1548,7 +1557,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">create_session_storage_if_neccessary</span><span class="function-signature">(context)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/__init__.py#L370">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/__init__.py#L395">
       
       (source)
     </a>
@@ -1575,7 +1584,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getData</span><span class="function-signature">(cell)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/__init__.py#L346">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/__init__.py#L371">
       
       (source)
     </a>
@@ -1602,7 +1611,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getText</span><span class="function-signature">(nodelist)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/__init__.py#L354">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/__init__.py#L379">
       
       (source)
     </a>
@@ -1629,7 +1638,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">initialize</span><span class="function-signature">(context)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/__init__.py#L112">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/__init__.py#L137">
       
       (source)
     </a>
@@ -1656,7 +1665,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">registerDirectory</span><span class="function-signature">(_context, name, directory=None, recursive=False, ignore=ignore)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/__init__.py#L57">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/__init__.py#L82">
       
       (source)
     </a>
@@ -1683,7 +1692,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">translate_path</span><span class="function-signature">(s)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/__init__.py#L361">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/__init__.py#L386">
       
       (source)
     </a>
@@ -1709,7 +1718,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">_directory_regs</span>: <code>list</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/__init__.py#L55">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/__init__.py#L80">
       
       (source)
     </a>

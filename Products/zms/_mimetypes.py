@@ -1,5 +1,5 @@
 """
-_mimetypes.py
+_mimetypes.py - ZMS MIME Type Icon Mappings
 
 This module defines MIME type icon mappings for the ZMS content
 management system. It provides a dictionary mapping MIME type strings

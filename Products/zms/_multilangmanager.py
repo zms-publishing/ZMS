@@ -1,8 +1,13 @@
 """
-_multilangmanager.py
+_multilangmanager.py - ZMS Multi-Language Manager
 
-Defines langdict, MultiLanguageObject for multilingual content management and language-specific variants.
-It maps language codes to content variants, handles fallback logic, and manages translations.
+This module implements the MultiLanguageManager class, which provides
+methods for managing content languages and custom language-dictionary entries
+in a ZMS instance. It includes functionality for retrieving available
+languages, resolving request languages, and handling ZMI language management
+actions such as saving, deleting, importing, and exporting language-dictionary
+entries. The MultiLanguageManager class interacts with the ZMS configuration
+and content objects to provide a unified interface for multi-language support.
 
 License: GNU General Public License v2 or later,
 Organization: ZMS Publishing

@@ -1,5 +1,5 @@
 """
-zmscontainerobject.py
+zmscontainerobject.py - ZMS Container Object
 
 Defines ZMSContainerObject for object persistence, Zope integration, and container protocols.
 It implements Zope's ObjectManager interface, handles acquisition, and manages object lifecycle.

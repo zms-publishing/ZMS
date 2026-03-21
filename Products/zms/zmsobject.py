@@ -1,8 +1,73 @@
 """
-zmsobject.py
+zmsobject.py - Base ZMS object implementation.
 
-Base ZMS object implementation combining access, versioning, export, and
-object-attribute behavior.
+ZMSObject is the primary content management class in ZMS framework, extending 
+ZMSItem with comprehensive capabilities for managing versioned, multilingual 
+content with workflow support.
+
+This module defines the core ZMSObject class that serves as the foundation for
+all major content types in ZMS. It combines multiple mixin classes to provide:
+  - B{Version Control}: Complete version history tracking and rollback capabilities
+    through the L{_versionmanager.VersionItem} mixin
+  - B{Workflow Management}: State machine-based workflow control via
+    L{ZMSWorkflowItem.ZMSWorkflowItem}
+  - B{Access Control}: Fine-grained permission and role-based access through
+    L{_accessmanager.AccessableObject}
+  - B{Multilingual Support}: Full internationalization for content attributes via
+    L{_multilangmanager.MultiLanguageObject}
+  - B{Content Hierarchy}: Parent-child relationships and tree traversal using
+    L{_objchildren.ObjChildren}
+  - B{Metadata Management}: Object attributes and Dublin Core support through
+    L{_objattrs.ObjAttrs}
+  - B{Input Validation}: Request-based property validation and processing via
+    L{_objinputs.ObjInputs}
+  - B{Copy/Paste}: Object cloning and clipboard operations through
+    L{_copysupport.CopySupport}
+  - B{Caching}: Request-level caching and buffering via L{_cachemanager.ReqBuff}
+  - B{URL Path Handling}: Declarative URL generation and path-based routing through
+    L{_pathhandler.PathHandler}
+  - B{Reference Management}: Link tracking and reference resolution via
+    L{_zreferableitem.ZReferableItem}
+  - B{XML Import/Export}: Serialization and deserialization using L{_exportable.Exportable}
+  - B{Text Formatting}: Rich text format conversion through L{_textformatmanager.TextFormatObject}
+
+Primary Use Cases:
+  1. B{Page Management}: ZMSObject instances represent pages and page containers with
+     full versioning and workflow capabilities
+  2. B{Content Elements}: Reusable content components with version control and
+     multilingual support
+  3. B{Resource Management}: Binary and media object handling through integrated
+     blob field support
+  4. B{Workflow-Driven Publishing}: State-based content approval and publication
+     workflows
+  5. B{Internationalization}: Content authoring and publishing for multiple languages
+     with translation workflows
+
+ZMSObject instances form hierarchical structures where a typical content tree
+contains:
+  - Root document element (ZMSDocument meta-type)
+  - Page containers and intermediate pages
+  - Page elements (ZMSObject meta-type)
+  - Resources (ZMSResource meta-type)
+  - RecordSets (ZMSRecordSet meta-type)
+  - References and cross-links (ZMSReference meta-type)
+
+Security Model:
+Uses Zope's AccessControl framework with ClassSecurityInfo declarations to enforce
+role-based permissions on all public methods. The L{_accessmanager.AccessableObject}
+mixin provides granular access control at the object level.
+
+Key Properties:
+  - B{meta_id}: Identifies the meta-object template defining object structure
+  - B{meta_type}: Semantic content type (e.g., 'ZMSDocument', 'ZMSObject', 'ZMSResource')
+  - B{sort_id}: Determines display order within parent container
+  - B{_uid}: Persistent unique identifier for cross-system references
+  - B{_p_oid}: ZODB object identifier for internal system use
+
+  Language Support:
+The module fully integrates multilingual content management allowing objects to
+have content in multiple languages with independent versioning and workflows per
+language variant.
 
 License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
@@ -102,14 +167,12 @@ class ZMSObject(ZMSItem.ZMSItem,
     security = ClassSecurityInfo()
 
     # Properties.
-    # -----------
     QUOT = chr(34)
     MISC_ZMS = '/++resource++zms_/img/'
     FORM_LABEL_MANDATORY = '<sup style="color:red">*</sup>'
     spacer_gif = '/++resource++zms_/img/spacer.gif'
 
     # ZPT Templates.
-    # --------------
     zmi_navbar_brand = PageTemplateFile('zpt/common/zmi_navbar_brand', globals())
     zmi_breadcrumbs = PageTemplateFile('zpt/common/zmi_breadcrumbs', globals())
     zmi_breadcrumbs_obj_path = PageTemplateFile('zpt/common/zmi_breadcrumbs_obj_path', globals())
@@ -124,7 +187,6 @@ class ZMSObject(ZMSItem.ZMSItem,
     zmi_ace_editor = PageTemplateFile('zpt/common/zmi_ace_editor', globals())
 
     # Templates.
-    # ----------
     f_recordset_grid = PageTemplateFile('zpt/object/f_recordset_grid', globals()) # ZMI RecordSet::Grid
     preview_html = PageTemplateFile('zpt/object/preview', globals())
     preview_top_html = PageTemplateFile('zpt/object/preview_top', globals())

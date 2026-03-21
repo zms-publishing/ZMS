@@ -1,8 +1,10 @@
 """
-ZMSMetamodelProvider.py
+ZMSMetamodelProvider.py - ZMS Metamodel Provider
 
-Defines ZMSMetamodelProvider for metamodel schema definitions and attribute metadata.
-It stores and retrieves type information, constraints, and structural metadata for content objects.
+Defines ZMSMetamodelProvider for central management of ZMS meta-objects and meta-dictionaries.
+The provider serves as a repository for meta-model definitions, including schema and constraint data,
+and offers ZMI interfaces for editing and synchronizing these definitions. It supports acquisition
+from a portal master and provides repository import/export functionality for content synchronization.
 
 License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
@@ -37,7 +39,6 @@ class ZMSMetamodelProvider(
     icon_clazz = zmi_icon
 
     # Management Options.
-    # -------------------
     manage_options_default_action = '../manage_customize'
     def manage_options(self):
       return [self.operator_setitem( x, 'action', '../'+x['action']) for x in copy.deepcopy(self.aq_parent.manage_options())]
@@ -50,7 +51,6 @@ class ZMSMetamodelProvider(
         )
 
     # Management Interface.
-    # ---------------------
     manage = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_main', globals())
     manage_main = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_main', globals())
     manage_main_import = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_main_import', globals())
@@ -60,7 +60,6 @@ class ZMSMetamodelProvider(
     manage_metas = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_metas', globals())
 
     # Management Permissions.
-    # -----------------------
     __administratorPermissions__ = (
       'manage_changeProperties', 'manage_ajaxChangeProperties', 'manage_main', 'manage_main_import', 'manage_bigpicture',
       'manage_changeMetaProperties', 'manage_metas',
@@ -89,11 +88,13 @@ class ZMSMetamodelProvider(
         return '<article class="zmi-readme">%s</article>'%html
       return ''
 
+
     def __init__(self, model={}, metas=[]):
       """Initialise the metaobj/metadict manager with an optional model dict and metas list."""
       self.id = 'metaobj_manager'
       self.model = model.copy()
       self.metas = copy.deepcopy(metas)
+
 
     def getConfProperty(self, key, default=None):
       """Return configuration property from the root content object, or default."""
@@ -104,6 +105,7 @@ class ZMSMetamodelProvider(
       except:
         pass
       return v
+
 
     def __bobo_traverse__(self, TraversalRequest, name):
       """
@@ -145,6 +147,7 @@ class ZMSMetamodelProvider(
       self.provideRepositoryMetas(r, ids)
       self.provideRepositoryModel(r, ids)
       return r
+
 
     def updateRepository(self, r):
       """

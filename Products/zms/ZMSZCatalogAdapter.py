@@ -1,7 +1,5 @@
 """
-ZMSZCatalogAdapter.py
-
-Catalog adapter implementation for indexing ZMS content.
+ZMSZCatalogAdapter.py - Catalog adapter implementation for indexing ZMS content.
 
 This module collects normalized metadata and extracted text for ZMS objects,
 prepares index payloads, and exposes adapter logic used by catalog connectors

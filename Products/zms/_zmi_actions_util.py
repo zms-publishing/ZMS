@@ -1,8 +1,9 @@
 """
-_zmi_actions_util.py
+_zmi_actions_util.py - ZMS ZMI Actions Utility for Action List Generation and Command Handling
 
-Provides zmi_actions, zmi_basic_actions, zmi_insert_actions helper functions for general-purpose ZMS utilities and shared helper functions.
-It provides common patterns like type checking, data transformation, and error handling.
+Provides zmi_actions, zmi_basic_actions, zmi_insert_actions helper functions 
+for general-purpose ZMS utilities and shared helper functions. It provides 
+common patterns like type checking, data transformation, and error handling.
 
 License: GNU General Public License v2 or later,
 Organization: ZMS Publishing

@@ -1,5 +1,5 @@
 """
-zmscustom.py
+zmscustom.py - ZMS Custom Content Class for Site-Specific Customization and Plugin Extensions
 
 Defines ZMSCustom for site-specific customization and plugin extensions.
 It allows overriding default behavior through configuration, subclassing, or plugin hooks.
@@ -138,13 +138,9 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
     security = ClassSecurityInfo()
 
     # Properties.
-    # -----------
     meta_type = "ZMSCustom"
 
     # Management Options.
-    # -------------------
-
-
     def manage_options(self):
       pc = 'e' in [x['id'] for x in self.getMetaobjAttrs(self.meta_id, types=['*'])]
       opts = []
@@ -163,7 +159,6 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
       return tuple(opts)
 
     # Management Permissions.
-    # -----------------------
     __viewPermissions__ = (
         'manage', 'manage_main', 'manage_container', 'manage_workspace', 'manage_menu',
         )
@@ -189,7 +184,6 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
 
 
     # Templates.
-    # ----------
     manage_properties = PageTemplateFile('zpt/ZMSObject/manage_main', globals())
     manage_menu = PageTemplateFile('zpt/object/manage_menu', globals())
     metaobj_recordset_main_grid = PageTemplateFile('zpt/ZMSRecordSet/main_grid', globals())
@@ -215,14 +209,13 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
       self.meta_id = standard.nvl(meta_id, self.meta_type)
       self._uid = uid
 
-    """
-    Initialize record-set.
-    @return: list of records
-    @rtype: C{list}
-    """
-
 
     def recordSet_Init(self, REQUEST):
+      """
+      Initialize record-set.
+      @return: list of records
+      @rtype: C{list}
+      """
       request = self.REQUEST
       metaObj = self.getMetaobj(self.meta_id)
       res_id = metaObj['attrs'][0]['id']
@@ -232,14 +225,12 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
       return res
 
 
-    """
-    Filter record-set.
-    @return: filtered list of records
-    @rtype: C{list}
-    """
-
-
     def recordSet_Filter(self, REQUEST):
+      """
+      Filter record-set.
+      @return: filtered list of records
+      @rtype: C{list}
+      """
       metaObj = self.getMetaobj(self.meta_id)
       res = REQUEST['res']
       # foreign key
@@ -307,14 +298,12 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
       return res
 
 
-    """
-    Sort record-set.
-    @return: sorted list of records
-    @rtype: C{list}
-    """
-
-
     def recordSet_Sort(self, REQUEST=None):
+      """
+      Sort record-set.
+      @return: sorted list of records
+      @rtype: C{list}
+      """
       request = self.REQUEST
       metaObj = self.getMetaobj(self.meta_id)
       res = request['res']

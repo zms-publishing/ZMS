@@ -322,12 +322,12 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSMetadictManager</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetadictManager.py#L34" class="sourceLink">(source)</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSMetadictManager</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetadictManager.py#L18" class="sourceLink">(source)</a></code></p>
           <p><a href="classIndex.html#zms.ZMSMetadictManager.ZMSMetadictManager">View In Hierarchy</a></p>
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>Manage Dublin-Core meta-dictionary attributes and their repository persistence.</p></div>
         </div>
 
         <div id="splitTables">
@@ -338,37 +338,37 @@
     
     <td>Method</td>
     <td><code><a href="#delMetadictAttr" class="internal-link" title="zms.ZMSMetadictManager.ZMSMetadictManager.delMetadictAttr">del<wbr></wbr>Metadict<wbr></wbr>Attr</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Remove a meta-dictionary attribute by id and persist the updated list.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getMetadictAttr" class="internal-link" title="zms.ZMSMetadictManager.ZMSMetadictManager.getMetadictAttr">get<wbr></wbr>Metadict<wbr></wbr>Attr</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return one meta-dictionary attribute dict by id.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getMetadictAttrs" class="internal-link" title="zms.ZMSMetadictManager.ZMSMetadictManager.getMetadictAttrs">get<wbr></wbr>Metadict<wbr></wbr>Attrs</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return a list of meta-dictionary attribute ids.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#importMetadictXml" class="internal-link" title="zms.ZMSMetadictManager.ZMSMetadictManager.importMetadictXml">import<wbr></wbr>Metadict<wbr></wbr>Xml</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Import one or many meta-dictionary attribute records from XML content.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_changeMetaProperties" class="internal-link" title="zms.ZMSMetadictManager.ZMSMetadictManager.manage_changeMetaProperties">manage_change<wbr></wbr>Meta<wbr></wbr>Properties</a></code></td>
-    <td>MetadictManager.manage_changeMetaProperties</td>
+    <td>Handle add/edit/delete/copy/import/export/reorder actions for meta-dictionary attributes.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#moveMetadictAttr" class="internal-link" title="zms.ZMSMetadictManager.ZMSMetadictManager.moveMetadictAttr">move<wbr></wbr>Metadict<wbr></wbr>Attr</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Move the meta-dictionary attribute with the given id to the given list position.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#provideRepositoryMetas" class="internal-link" title="zms.ZMSMetadictManager.ZMSMetadictManager.provideRepositoryMetas">provide<wbr></wbr>Repository<wbr></wbr>Metas</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Write configured meta-dictionary records into the repository export payload.</td>
   </tr><tr class="method">
     
     <td>Method</td>
@@ -378,7 +378,7 @@
     
     <td>Method</td>
     <td><code><a href="#updateRepositoryMetas" class="internal-link" title="zms.ZMSMetadictManager.ZMSMetadictManager.updateRepositoryMetas">update<wbr></wbr>Repository<wbr></wbr>Metas</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Replace local meta-dictionary records from a repository import payload.</td>
   </tr><tr class="instancevariable">
     
     <td>Instance Variable</td>
@@ -388,7 +388,7 @@
     
     <td>Method</td>
     <td><code><a href="#_importMetadictXml" class="internal-link" title="zms.ZMSMetadictManager.ZMSMetadictManager._importMetadictXml">_import<wbr></wbr>Metadict<wbr></wbr>Xml</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Import a single serialized meta-dictionary attribute record.</td>
   </tr>
 </table>
           
@@ -410,7 +410,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">delMetadictAttr</span><span class="function-signature">(self, id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetadictManager.py#L171">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetadictManager.py#L161">
       
       (source)
     </a>
@@ -422,7 +422,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Remove a meta-dictionary attribute by id and persist the updated list.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -437,7 +437,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getMetadictAttr</span><span class="function-signature">(self, key)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetadictManager.py#L137">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetadictManager.py#L121">
       
       (source)
     </a>
@@ -449,7 +449,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return one meta-dictionary attribute dict by id.</p>
+<p>Attributes configured as <tt class="rst-docutils rst-literal">acquired</tt> are resolved transparently from the portal master. Returns <tt class="rst-docutils rst-literal">None</tt> when the key is not found.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">key:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Attribute id.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">dict</tt> | <tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc">Attribute mapping or <tt class="rst-docutils rst-literal">None</tt>.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -464,7 +466,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getMetadictAttrs</span><span class="function-signature">(self, meta_type=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetadictManager.py#L118">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetadictManager.py#L97">
       
       (source)
     </a>
@@ -476,7 +478,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return a list of meta-dictionary attribute ids.</p>
+<p>When <tt class="rst-docutils rst-literal">meta_type</tt> is given, only ids shared with that meta type are returned.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">meta<wbr></wbr>_type:</span><tt class="rst-docutils rst-literal">str</tt> | <tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc">Limit results to attributes used by this meta type.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">List of attribute ids.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -491,7 +495,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">importMetadictXml</span><span class="function-signature">(self, xml)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetadictManager.py#L104">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetadictManager.py#L87">
       
       (source)
     </a>
@@ -503,7 +507,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Import one or many meta-dictionary attribute records from XML content.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -518,7 +522,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_changeMetaProperties</span><span class="function-signature">(self, btn, lang, REQUEST, RESPONSE=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetadictManager.py#L262">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetadictManager.py#L239">
       
       (source)
     </a>
@@ -530,7 +534,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>MetadictManager.manage_changeMetaProperties</p></div>
+    <div><p>Handle add/edit/delete/copy/import/export/reorder actions for meta-dictionary attributes.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -545,7 +549,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">moveMetadictAttr</span><span class="function-signature">(self, attr, pos)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetadictManager.py#L241">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetadictManager.py#L223">
       
       (source)
     </a>
@@ -557,7 +561,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Move the meta-dictionary attribute with the given id to the given list position.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -572,7 +576,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">provideRepositoryMetas</span><span class="function-signature">(self, r, ids=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetadictManager.py#L43">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetadictManager.py#L22">
       
       (source)
     </a>
@@ -584,7 +588,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Write configured meta-dictionary records into the repository export payload.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">r:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Repository export accumulator.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">ids:</span><tt class="rst-docutils rst-literal">list</tt> | <tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc">Optional subset of repository keys to export.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -599,7 +603,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">setMetadictAttr</span><span class="function-signature">(self, oldId, newId, newAcquired, newName=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, newType=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, newMandatory=0, newMultilang=1, newRepetitive=0, newCustom=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, newKeys=[], newDefault=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetadictManager.py#L187">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetadictManager.py#L174">
       
       (source)
     </a>
@@ -626,7 +630,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">updateRepositoryMetas</span><span class="function-signature">(self, r)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetadictManager.py#L63">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetadictManager.py#L47">
       
       (source)
     </a>
@@ -638,7 +642,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Replace local meta-dictionary records from a repository import payload.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">r:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Imported repository payload.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Imported record id.</td></tr></table></div>
   </div>
 </div><div class="baseinstancevariable">
   
@@ -652,7 +656,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">metas</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetadictManager.py#L67">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetadictManager.py#L59">
       
       (source)
     </a>
@@ -680,7 +684,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">_importMetadictXml</span><span class="function-signature">(self, item)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetadictManager.py#L85">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetadictManager.py#L67">
       
       (source)
     </a>
@@ -692,7 +696,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Import a single serialized meta-dictionary attribute record.</p></div>
   </div>
 </div>
         </div>

@@ -1130,7 +1130,10 @@
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>_ziputil.py - ZMS ZIP Utility for Exporting and Importing ZODB Objects</p>
+<p>This module provides utility functions for exporting ZODB objects to ZIP archives and importing ZIP archives into the ZODB.</p>
+<p>License: GNU General Public License v2 or later, Organization: ZMS Publishing</p>
+</div>
         </div>
 
         <div id="splitTables">
@@ -1141,17 +1144,17 @@
     
     <td>Function</td>
     <td><code><a href="#exportZodb2Zip" class="internal-link" title="zms._ziputil.exportZodb2Zip">export<wbr></wbr>Zodb2<wbr></wbr>Zip</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Export ZODB objects from root container to a ZIP archive.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#importZip2Zodb" class="internal-link" title="zms._ziputil.importZip2Zodb">import<wbr></wbr>Zip2<wbr></wbr>Zodb</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Extract and import a ZIP archive into the ZODB.</td>
   </tr><tr class="function private">
     
     <td>Function</td>
     <td><code><a href="#_exportZodb2Zip" class="internal-link" title="zms._ziputil._exportZodb2Zip">_export<wbr></wbr>Zodb2<wbr></wbr>Zip</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Recursively export ZODB objects (Images/Files) from a container into a ZIP file.</td>
   </tr>
 </table>
           
@@ -1173,7 +1176,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">exportZodb2Zip</span><span class="function-signature">(root)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_ziputil.py#L47">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_ziputil.py#L45">
       
       (source)
     </a>
@@ -1185,7 +1188,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Export ZODB objects from root container to a ZIP archive.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">root:</span><tt class="rst-docutils rst-literal">OFS.ObjectManager</tt></td><td class="fieldArgDesc">Root container to export</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">bytes</tt></td><td class="fieldArgDesc">ZIP archive data</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1200,7 +1203,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">importZip2Zodb</span><span class="function-signature">(root, data)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_ziputil.py#L58">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_ziputil.py#L59">
       
       (source)
     </a>
@@ -1212,7 +1215,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Extract and import a ZIP archive into the ZODB.</p>
+<p>Creates Folder, Image, and File objects in the ZODB hierarchy matching the ZIP archive structure.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">root:</span><tt class="rst-docutils rst-literal">OFS.ObjectManager</tt></td><td class="fieldArgDesc">Root container to import into</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">data:</span><tt class="rst-docutils rst-literal">bytes</tt> or <tt class="rst-docutils rst-literal">str</tt> or <tt class="rst-docutils rst-literal">io.BytesIO</tt></td><td class="fieldArgDesc">ZIP archive data</td></tr></table></div>
   </div>
 </div><div class="basefunction private">
   
@@ -1227,7 +1232,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">_exportZodb2Zip</span><span class="function-signature">(zf, root, container)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_ziputil.py#L29">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_ziputil.py#L17">
       
       (source)
     </a>
@@ -1239,7 +1244,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Recursively export ZODB objects (Images/Files) from a container into a ZIP file.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">zf:</span><tt class="rst-docutils rst-literal">zipfile.ZipFile</tt></td><td class="fieldArgDesc">Open ZIP file object to write to</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">root:</span><tt class="rst-docutils rst-literal">OFS.ObjectManager</tt></td><td class="fieldArgDesc">Root container for calculating relative archive paths</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">container:</span><tt class="rst-docutils rst-literal">OFS.ObjectManager</tt></td><td class="fieldArgDesc">Container whose child objects are exported</td></tr></table></div>
   </div>
 </div>
         </div>

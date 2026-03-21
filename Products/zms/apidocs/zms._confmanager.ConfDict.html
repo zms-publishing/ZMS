@@ -298,12 +298,12 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ConfDict</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L60" class="sourceLink">(source)</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ConfDict</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L65" class="sourceLink">(source)</a></code></p>
           <p><a href="classIndex.html#zms._confmanager.ConfDict">View In Hierarchy</a></p>
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>Provide helpers for ConfDict.</p></div>
         </div>
 
         <div id="splitTables">
@@ -314,12 +314,12 @@
     
     <td>Class Method</td>
     <td><code><a href="#forName" class="internal-link" title="zms._confmanager.ConfDict.forName">for<wbr></wbr>Name</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Import and return a class object identified by a fully-qualified dotted name relative to the <tt class="rst-docutils rst-literal">Products.zms</tt> namespace.</td>
   </tr><tr class="classmethod">
     
     <td>Class Method</td>
     <td><code><a href="#get" class="internal-link" title="zms._confmanager.ConfDict.get">get</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the global ZMS system configuration dictionary by reading system-configuration from $ZMS_HOME/etc/zms.conf.</td>
   </tr><tr class="classvariable">
     
     <td>Class Variable</td>
@@ -346,7 +346,7 @@
     
     @classmethod<br />
     <span class="py-keyword">def</span> <span class="py-defname">forName</span><span class="function-signature">(cls, name)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L81">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L100">
       
       (source)
     </a>
@@ -358,7 +358,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Import and return a class object identified by a fully-qualified dotted name relative to the <tt class="rst-docutils rst-literal">Products.zms</tt> namespace.</p>
+<p>The name is expected to be in the form <tt class="rst-docutils rst-literal">modulename.ClassName</tt>.  The module is imported with <tt class="rst-docutils rst-literal">importlib.import_module</tt> and the class is retrieved with <tt class="rst-docutils rst-literal">getattr</tt>.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">name:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Dotted qualified name, e.g. <tt class="rst-docutils rst-literal">'ZMSFilterManager.ZMSFilterManager'</tt>.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">type</tt></td><td class="fieldArgDesc">The class object found at the given name.</td></tr></table></div>
   </div>
 </div><div class="baseclassmethod">
   
@@ -373,7 +375,7 @@
     
     @classmethod<br />
     <span class="py-keyword">def</span> <span class="py-defname">get</span><span class="function-signature">(cls)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L64">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L70">
       
       (source)
     </a>
@@ -385,7 +387,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the global ZMS system configuration dictionary by reading system-configuration from $ZMS_HOME/etc/zms.conf.</p>
+<p>On first call the dictionary is built by reading <tt class="rst-docutils rst-literal">etc/zms.conf</tt> from both the ZMS product home and the current INSTANCE_HOME.  All <tt class="rst-docutils rst-literal">section.option</tt> pairs found in the INI-formatted file are merged into a flat <tt class="rst-docutils rst-literal">dict</tt>.  Subsequent calls return the already-built dict from the class variable <tt class="rst-docutils rst-literal">__confdict__</tt> without re-reading the files.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Merged configuration dictionary from all <tt class="rst-docutils rst-literal">zms.conf</tt> files.</td></tr></table></div>
   </div>
 </div><div class="baseclassvariable">
   
@@ -399,7 +403,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">__confdict__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L62">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L68">
       
       (source)
     </a>

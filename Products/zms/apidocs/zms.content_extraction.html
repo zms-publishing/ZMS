@@ -1153,8 +1153,14 @@
         </div>
 
         <div class="moduleDocstring">
-          <div><p>ZMS content extraction toolkit module</p>
-<p>This module provides helpful functions and classes for use in Python Scripts.  It can be accessed from Python with the statement "import Products.zms.content_extraction"</p>
+          <div><p>content_extraction.py - ZMS Content Extraction Toolkit for Search Indexing</p>
+<p>This module provides functions for extracting text content from various file types, including HTML and PDF. It uses Apache Tika for content analysis and pdfminer.six for PDF text extraction. The extracted text can be used for search indexing or other text processing tasks within ZMS. It also includes a helper function for extracting text from HTML content by removing tags and unescaping entities. The main function, <tt class="rst-docutils rst-literal">extract_content</tt>, takes a byte stream and content type, and attempts to extract text content using the appropriate method based on the content type.</p>
+<p>If Tika is configured, it will be used for extraction; otherwise, pdfminer.six will be used for PDFs, and plain text extraction will be applied for certain text-based content types.</p>
+<p>It can be accessed from Python with the statement:</p>
+<pre class="rst-literal-block">
+    import Products.zms.content_extraction
+</pre>
+<p>License: GNU General Public License v2 or later, Organization: ZMS Publishing</p>
 </div>
         </div>
 
@@ -1208,7 +1214,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">extract_content</span><span class="function-signature">(context, b, content_type=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/content_extraction.py#L38">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/content_extraction.py#L33">
       
       (source)
     </a>
@@ -1235,7 +1241,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">extract_content_pdfminer</span><span class="function-signature">(context, b, content_type=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/content_extraction.py#L97">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/content_extraction.py#L92">
       
       (source)
     </a>
@@ -1262,7 +1268,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">extract_content_tika</span><span class="function-signature">(context, b, content_type=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/content_extraction.py#L75">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/content_extraction.py#L70">
       
       (source)
     </a>
@@ -1289,7 +1295,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">extract_text_from_html</span><span class="function-signature">(context, html_data)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/content_extraction.py#L54">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/content_extraction.py#L49">
       
       (source)
     </a>
@@ -1315,7 +1321,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">security</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/content_extraction.py#L35">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/content_extraction.py#L30">
       
       (source)
     </a>

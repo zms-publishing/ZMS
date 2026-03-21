@@ -1166,7 +1166,17 @@
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>_confmanager.py - ZMS Configuration Manager</p>
+<p>Configuration infrastructure for ZMS.</p>
+<p>This module concentrates the low-level helpers and the main manager class used to read, store, and expose configuration in a ZMS site.  It covers three main areas:</p>
+<ol class="rst-simple">
+<li>Global system configuration: <tt class="rst-docutils rst-literal">ConfDict</tt> loads and caches values from <tt class="rst-docutils rst-literal">etc/zms.conf</tt> so process-wide settings are available as a flat dictionary.</li>
+<li>Site configuration import and persistence: module-level helper <tt class="rst-docutils rst-literal">initConf</tt> and methods on <tt class="rst-docutils rst-literal">ConfManager</tt> import zipped packages, repository-backed configuration trees, and single XML files.</li>
+<li>Configuration service layer: <tt class="rst-docutils rst-literal">ConfManager</tt> provides access to configuration properties, design and system customization actions, and delegates to related managers such as workflow, filter, meta-object, text-format, media database, and catalog adapters.</li>
+</ol>
+<p>The module is therefore the central bridge between static configuration sources on disk, persisted configuration stored in the Zope object tree, and the higher level APIs that the rest of ZMS uses during rendering and administration.</p>
+<p>License: GNU General Public License v2 or later, Organization: ZMS Publishing</p>
+</div>
         </div>
 
         <div id="splitTables">
@@ -1177,17 +1187,17 @@
     
     <td>Class</td>
     <td><code><a href="zms._confmanager.ConfDict.html" class="internal-link" title="zms._confmanager.ConfDict"><wbr></wbr>Conf<wbr></wbr>Dict</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Provide helpers for ConfDict.</td>
   </tr><tr class="class">
     
     <td>Class</td>
     <td><code><a href="zms._confmanager.ConfManager.html" class="internal-link" title="zms._confmanager.ConfManager"><wbr></wbr>Conf<wbr></wbr>Manager</a></code></td>
-    <td><span class="undocumented">No class docstring; 0/1 instance variable, 0/8 class variable, 8/53 methods documented</span></td>
+    <td>Provide helpers for ConfManager.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#getRegistry" class="internal-link" title="zms._confmanager.getRegistry">get<wbr></wbr>Registry</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the registry of configuration properties. The registry is a global dictionary that holds configuration properties for the application. If the registry does not exist, it is created and initialized with the configuration properties from ConfDict.</td>
   </tr><tr class="function">
     
     <td>Function</td>
@@ -1202,7 +1212,7 @@
     
     <td>Constant</td>
     <td><code><a href="#UNINHERITED_PROPERTIES" class="internal-link" title="zms._confmanager.UNINHERITED_PROPERTIES">UNINHERITED<wbr></wbr>_PROPERTIES</a></code></td>
-    <td>"" Read system-configuration from $ZMS_HOME/etc/zms.conf</td>
+    <td><span class="undocumented">Undocumented</span></td>
   </tr>
 </table>
           
@@ -1224,7 +1234,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getRegistry</span><span class="function-signature">()</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1174">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1572">
       
       (source)
     </a>
@@ -1236,7 +1246,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the registry of configuration properties. The registry is a global dictionary that holds configuration properties for the application. If the registry does not exist, it is created and initialized with the configuration properties from ConfDict.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer">dict</td><td class="fieldArgDesc">The registry of configuration properties.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1251,7 +1261,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">initConf</span><span class="function-signature">(self, pattern)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L102">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L123">
       
       (source)
     </a>
@@ -1277,7 +1287,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">__REGISTRY__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1173">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L1571">
       
       (source)
     </a>
@@ -1304,7 +1314,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">UNINHERITED_PROPERTIES</span>: <code>list[<wbr></wbr>str]</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L55">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_confmanager.py#L63">
       
       (source)
     </a>
@@ -1316,7 +1326,7 @@
   </div>
   <div class="functionBody">
     
-    <div><p>"" Read system-configuration from $ZMS_HOME/etc/zms.conf</p></div>
+    <div><p class="undocumented">Undocumented</p></div>
     <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>[<wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">ASP</span><span class="rst-variable-quote">'</span>, <wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">Portal</span><span class="rst-variable-quote">'</span>]</code></pre></td></tr></table>
   </div>
 </div>

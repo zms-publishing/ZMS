@@ -1183,7 +1183,10 @@
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>_exportable.py - ZMS Exportable Mixin</p>
+<p>This module implements the Exportable mixin, which provides methods for exporting Zope objects to the filesystem, including binary files, images, and folder structures. It handles encoding, file writing, and recursive export of folder contents. The module also includes helper functions for localizing HTML content and managing export paths. The Exportable mixin can be used by ZMS content classes to enable export functionality.</p>
+<p>License: GNU General Public License v2 or later, Organization: ZMS Publishing</p>
+</div>
         </div>
 
         <div id="splitTables">
@@ -1194,42 +1197,42 @@
     
     <td>Class</td>
     <td><code><a href="zms._exportable.Exportable.html" class="internal-link" title="zms._exportable.Exportable"><wbr></wbr>Exportable</a></code></td>
-    <td><span class="undocumented">No class docstring; 0/1 class variable, 1/10 method documented</span></td>
+    <td>Mixin that provides XML, HTML, and archive export helpers.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#exportFiles" class="internal-link" title="zms._exportable.exportFiles">export<wbr></wbr>Files</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Export binary file and image objects from a folder to the filesystem.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#exportFolder" class="internal-link" title="zms._exportable.exportFolder">export<wbr></wbr>Folder</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Recursively export a Zope folder and its renderable objects.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#findDelimiter" class="internal-link" title="zms._exportable.findDelimiter">find<wbr></wbr>Delimiter</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Find the first occurrence of any delimiter in a string.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#localHtml" class="internal-link" title="zms._exportable.localHtml">local<wbr></wbr>Html</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Convert rendered HTML to the charset configured for the request.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#localIndexHtml" class="internal-link" title="zms._exportable.localIndexHtml">local<wbr></wbr>Index<wbr></wbr>Html</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Rewrite exported markup so links resolve in static HTML archives.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#rfindDelimiter" class="internal-link" title="zms._exportable.rfindDelimiter">rfind<wbr></wbr>Delimiter</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Find the last occurrence of any delimiter in a string.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#writeFile" class="internal-link" title="zms._exportable.writeFile">write<wbr></wbr>File</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Write export data to disk using the preferred encoding.</td>
   </tr>
 </table>
           
@@ -1251,7 +1254,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">exportFiles</span><span class="function-signature">(self, root, id, path)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L53">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L58">
       
       (source)
     </a>
@@ -1263,7 +1266,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Export binary file and image objects from a folder to the filesystem.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">root:</span><tt class="rst-docutils rst-literal">OFS.ObjectManager.ObjectManager</tt></td><td class="fieldArgDesc">Container holding the exported folder.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Folder id on the container.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">path:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Destination directory.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1278,7 +1281,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">exportFolder</span><span class="function-signature">(self, root, path, id, REQUEST, depth=0)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L67">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L79">
       
       (source)
     </a>
@@ -1290,7 +1293,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Recursively export a Zope folder and its renderable objects.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">root:</span><tt class="rst-docutils rst-literal">OFS.ObjectManager.ObjectManager</tt></td><td class="fieldArgDesc">Parent folder that contains the exported folder.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">path:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Base export directory.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Folder id to export.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Current request used to render templates.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">depth:</span><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">Additional relative path depth for nested exports.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1305,7 +1308,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">findDelimiter</span><span class="function-signature">(s, delimiters=[<wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">"</span><span class="rst-variable-quote">'</span>, <wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">\'</span><span class="rst-variable-quote">'</span>])</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L92">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L115">
       
       (source)
     </a>
@@ -1317,7 +1320,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Find the first occurrence of any delimiter in a string.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">s:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Text to search.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">delimiters:</span><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Candidate delimiter characters.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">Position of the first delimiter or <tt class="rst-docutils rst-literal"><span class="pre">-1</span></tt>.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1332,7 +1335,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">localHtml</span><span class="function-signature">(self, html)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L119">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L154">
       
       (source)
     </a>
@@ -1344,7 +1347,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Convert rendered HTML to the charset configured for the request.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">html:</span><tt class="rst-docutils rst-literal">str</tt> or <tt class="rst-docutils rst-literal">bytes</tt></td><td class="fieldArgDesc">Rendered markup.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">bytes</tt> or <tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Encoded markup.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1359,7 +1362,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">localIndexHtml</span><span class="function-signature">(self, obj, level, html, xhtml=False)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L147">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L187">
       
       (source)
     </a>
@@ -1371,7 +1374,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Rewrite exported markup so links resolve in static HTML archives.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">obj:</span><tt class="rst-docutils rst-literal">OFS.SimpleItem.Item</tt></td><td class="fieldArgDesc">Exported content object.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">level:</span><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">Relative depth from the export root.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">html:</span><tt class="rst-docutils rst-literal">str</tt> or <tt class="rst-docutils rst-literal">bytes</tt></td><td class="fieldArgDesc">Rendered markup.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">xhtml:</span><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">Flag indicating XHTML export mode.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Localized markup with rewritten links.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1386,7 +1389,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">rfindDelimiter</span><span class="function-signature">(s, delimiters=[<wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">"</span><span class="rst-variable-quote">'</span>, <wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">\'</span><span class="rst-variable-quote">'</span>])</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L106">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L136">
       
       (source)
     </a>
@@ -1398,7 +1401,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Find the last occurrence of any delimiter in a string.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">s:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Text to search.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">delimiters:</span><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Candidate delimiter characters.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">Position of the last delimiter or <tt class="rst-docutils rst-literal"><span class="pre">-1</span></tt>.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1413,7 +1416,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">writeFile</span><span class="function-signature">(self, filename, data, mode=<span class="rst-variable-quote">'</span><span class="rst-variable-string">w</span><span class="rst-variable-quote">'</span>, encoding=<span class="rst-variable-quote">'</span><span class="rst-variable-string">utf-8</span><span class="rst-variable-quote">'</span>)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L38">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_exportable.py#L34">
       
       (source)
     </a>
@@ -1425,7 +1428,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Write export data to disk using the preferred encoding.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">filename:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Target file path.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">data:</span><tt class="rst-docutils rst-literal">str</tt> or <tt class="rst-docutils rst-literal">bytes</tt></td><td class="fieldArgDesc">Export payload to persist.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">mode:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">File open mode.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">encoding:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Text encoding used for unicode content.</td></tr></table></div>
   </div>
 </div>
         </div>

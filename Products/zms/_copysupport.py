@@ -1,20 +1,13 @@
-################################################################################
-# _copysupport.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+_copysupport.py - ZMS Copy and Move Support
+
+This module provides support for copying and moving ZMS objects, 
+including normalization of IDs, handling of BLOB fields, and 
+clipboard operations.
+
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
+"""
 
 # Imports.
 import time
@@ -26,16 +19,13 @@ from Products.zms import standard
 from Products.zms import _globals
 
 
-# ------------------------------------------------------------------------------
-#  CopySupport
-# ------------------------------------------------------------------------------
-OP_COPY = 0
-OP_MOVE = 1
+OP_COPY = 0 # Constant for copy operation
+OP_MOVE = 1 # Constant for move operation
 
+################################################################################
+# Module-level helper functions
+################################################################################
 
-# ------------------------------------------------------------------------------
-#  CopySupport._normalize_ids_after_copy:
-# ------------------------------------------------------------------------------
 def normalize_ids_after_copy(node, id_prefix='e', ids=[]):
     """ 
     The ids of copied objects are normalized to the context-node's id_prefix
@@ -45,7 +35,7 @@ def normalize_ids_after_copy(node, id_prefix='e', ids=[]):
     target-context and the next increment of the ZMS-object sequence counter.
 
     @param node: context-node
-    @type node: ZMSNode
+    @type node: C{ZMSNode}
     @param id_prefix: id_prefix of context-node
     @type id_prefix: C{str}
     @param ids: list of ids to be normalized, '*' for all
@@ -109,11 +99,17 @@ def normalize_ids_after_copy(node, id_prefix='e', ids=[]):
         request.set('lang', lang)
 
 
-
-# ------------------------------------------------------------------------------
-#  CopySupport._normalize_ids_after_move:
-# ------------------------------------------------------------------------------
 def normalize_ids_after_move(node, id_prefix='e', ids=[]):
+    """
+    Normalize the IDs of moved objects after they are pasted into a new context.
+
+    @param node: The context node where objects are pasted.
+    @type node: C{ZMSNode}
+    @param id_prefix: The ID prefix for the new context.
+    @type id_prefix: C{str}
+    @param ids: List of IDs to normalize, or '*' for all.
+    @type ids: C{list}
+    """
     request = node.REQUEST
     copy_of_prefix = 'copy_of_'
     for childNode in node.getChildNodes():
@@ -141,18 +137,27 @@ def normalize_ids_after_move(node, id_prefix='e', ids=[]):
 
 
 ################################################################################
+# CLASS CopySupport
 ################################################################################
-###
-###   class CopySupport
-###
-################################################################################
-################################################################################
-class CopySupport(object):
 
-    # --------------------------------------------------------------------------
-    #  CopySupport._get_cb_copy_data:
-    # --------------------------------------------------------------------------
+class CopySupport(object):
+    """
+    Provides copy and move support for ZMS objects, including clipboard operations,
+    BLOB field handling, and normalization of object IDs after paste.
+    """
+
     def _get_cb_copy_data(self, cb_copy_data=None, REQUEST=None):
+        """
+        Retrieve and decode clipboard copy data from the request or argument.
+
+        @param cb_copy_data: Encoded clipboard data (optional)
+        @type cb_copy_data: C{any}
+        @param REQUEST: Zope request object (optional)
+        @type REQUEST: C{ZPublisher.HTTPRequest}
+        @return: Decoded clipboard data
+        @rtype: C{tuple}
+        @raise CopyError: If no data or invalid data is found
+        """
         cp = None
         if cb_copy_data is not None:
             cp = cb_copy_data
@@ -170,11 +175,16 @@ class CopySupport(object):
         return cp
 
 
-    # --------------------------------------------------------------------------
-    #  CopySupport._get_obs:
-    # --------------------------------------------------------------------------
     def _get_obs(self, cp):
+        """
+        Decode clipboard data and return the list of objects to be pasted.
 
+        @param cp: Encoded clipboard data
+        @type cp: C{any}
+        @return: List of objects to paste
+        @rtype: C{list}
+        @raise CopyError: If data is invalid or objects not found
+        """
         try:
             cp = _cb_decode(cp)
         except:
@@ -196,6 +206,14 @@ class CopySupport(object):
         return oblist
 
     def cp_get_obs(self, REQUEST):
+        """
+        Get the list of objects from the clipboard for the current request.
+
+        @param REQUEST: Zope request object
+        @type REQUEST: C{ZPublisher.HTTPRequest}
+        @return: List of objects to paste
+        @rtype: C{list}
+        """
         cp = self._get_cb_copy_data(cb_copy_data=None, REQUEST=REQUEST)
         op = cp[0]
         cp = (0, cp[1])
@@ -203,25 +221,34 @@ class CopySupport(object):
         return self._get_obs(cp)
 
 
-    # --------------------------------------------------------------------------
-    #  CopySupport._get_id:
-    #
-    #  Allow containers to override the generation of
-    #  object copy id by attempting to call its _get_id
-    #  method, if it exists.
-    # --------------------------------------------------------------------------
     def _get_id(self, id):
+        """
+        Generate a new ID for a copied object.
+        Allow containers to override the generation of
+        object copy id by attempting to call its _get_id
+        method, if it exists.
+
+        @param id: Original object ID
+        @type id: C{str}
+        @return: New object ID with 'copy_of_' prefix
+        @rtype: C{str}
+        """
         copy_of_prefix = 'copy_of_'
         return copy_of_prefix + id
 
 
-    # --------------------------------------------------------------------------
-    #  CopySupport._set_sort_ids:
-    #
-    #  Group all objects to be copied / moved at new position (given by _sort_id)
-    #  in correct sort-order.
-    # --------------------------------------------------------------------------
     def _set_sort_ids(self, ids, op, REQUEST):
+        """
+        Group all objects to be copied / moved at new position (given by _sort_id)
+        in correct sort-order.
+
+        @param ids: List of object IDs to sort
+        @type ids: C{list}
+        @param op: Operation type (OP_COPY or OP_MOVE)
+        @type op: C{int}
+        @param REQUEST: Zope request object
+        @type REQUEST: C{ZPublisher.HTTPRequest}
+        """
         standard.writeLog(self, "[CopySupport._set_sort_ids]: %s" % self.absolute_url())
         copy_of_prefix = 'copy_of_'
         sort_id = REQUEST.get('_sort_id', 0) + 1
@@ -231,14 +258,16 @@ class CopySupport(object):
                 ob.setSortId(sort_id)
                 sort_id += 1
 
-    # --------------------------------------------------------------------------
-    #  CopySupport._copy_blobs_between_clients_with_different_mediadb
-    #
-    #  If source and target have different mediadb folder settings,
-    #  then the data of blob fields is copied as well
-    #  to avoid missing images and files due to invalid references.
-    # --------------------------------------------------------------------------
+
     def _copy_blobs_if_other_mediadb(self, **kwargs):
+        """
+        If source and target have different mediadb folder settings,
+        then the data of blob fields is copied as well
+        to avoid missing images and files due to invalid references.
+
+        @param kwargs: mode ('read_from_source' or 'copy_to_target'), oblist (list of objects)
+        @type kwargs: C{dict}
+        """
         mode = kwargs.get('mode', None)
         oblist = kwargs.get('oblist', [])
         # identify all BLOB fields
@@ -289,11 +318,17 @@ class CopySupport(object):
                 self.blobfields = []
 
 
-    ############################################################################
-    # CopySupport.manage_copyObject:
-    ############################################################################
     def manage_copyObject(self, ids=[], REQUEST=None, RESPONSE=None):
-        """Put a reference to the objects named in ids in the clip board"""
+        """
+        Put a reference to the objects named in ids in the clipboard.
+
+        @param ids: List of object IDs to copy (optional)
+        @type ids: C{list}
+        @param REQUEST: Zope request object (optional)
+        @type REQUEST: C{ZPublisher.HTTPRequest}
+        @param RESPONSE: Zope response object (optional)
+        @type RESPONSE: C{ZPublisher.HTTPResponse}
+        """
         context = self
         if not ids:
             ids = [self.getId()]
@@ -306,11 +341,17 @@ class CopySupport(object):
         RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s' % (REQUEST.get('lang', context.getPrimaryLanguage()), message))
 
 
-    ############################################################################
-    # CopySupport.manage_cutObject:
-    ############################################################################
     def manage_cutObject(self, ids=[], REQUEST=None, RESPONSE=None):
-        """Put a reference to the objects named in ids in the clip board"""
+        """
+        Put a reference to the objects named in ids in the clipboard for cutting.
+
+        @param ids: List of object IDs to cut (optional)
+        @type ids: C{list}
+        @param REQUEST: Zope request object (optional)
+        @type REQUEST: C{ZPublisher.HTTPRequest}
+        @param RESPONSE: Zope response object (optional)
+        @type RESPONSE: C{ZPublisher.HTTPResponse}
+        """
         context = self
         if not ids:
             ids = [self.getId()]
@@ -323,16 +364,20 @@ class CopySupport(object):
         RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s' % (REQUEST.get('lang', context.getPrimaryLanguage()), message)) 
 
 
-    ############################################################################
-    # CopySupport.manage_pasteObjs:
-    #
-    # Paste previously copied objects into the current object.
-    # If calling manage_pasteObjects from python code, pass
-    # the result of a previous call to manage_cutObjects or
-    # manage_copyObjects as the first argument.
-    ############################################################################
     def manage_pasteObjs(self, REQUEST, RESPONSE=None):
-        """ CopySupport.manage_pasteObjs """
+        """
+        Paste previously copied or cut objects into the current object.
+
+        Handles both copy and move operations, manages BLOB data if necessary,
+        triggers before/after events, normalizes object IDs, and ensures correct
+        sort order after the paste.
+
+        @param REQUEST: The current Zope request object.
+        @type REQUEST: C{ZPublisher.HTTPRequest}
+        @param RESPONSE: Optional Zope response object.
+        @type RESPONSE: C{ZPublisher.HTTPResponse} or C{None}
+        @return: None. Redirects to the management interface with a status message.
+        """
         id_prefix = REQUEST.get('id_prefix', 'e')
         standard.writeBlock(self, "[CopySupport.manage_pasteObjs]")
         t0 = time.time()
@@ -375,5 +420,3 @@ class CopySupport(object):
             message = self.getZMILangStr('MSG_PASTED')
             message += ' (in ' + str(int((time.time() - t0) * 100.0) / 100.0) + ' secs.)'
             RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s' % (REQUEST['lang'], standard.url_quote(message)))
-
-################################################################################

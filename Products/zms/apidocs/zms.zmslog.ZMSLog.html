@@ -455,12 +455,12 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSLog</span>(ZMSItem.ZMSItem): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L50" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms.zmslog.ZMSLog.__init__">ZMSLog(copy_to_stdout, logged_entries)</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSLog</span>(ZMSItem.ZMSItem): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L35" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms.zmslog.ZMSLog.__init__">ZMSLog(copy_to_stdout, logged_entries)</a></code></p>
           <p><a href="classIndex.html#zms.zmslog.ZMSLog">View In Hierarchy</a></p>
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>ZMI-accessible log viewer and remote filesystem utility.</p></div>
         </div>
 
         <div id="splitTables">
@@ -471,67 +471,67 @@
     
     <td>Method</td>
     <td><code><a href="#__init__" class="internal-link" title="zms.zmslog.ZMSLog.__init__">__init__</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Initialize with stdout-mirroring option and active severity list.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#get_log_filename" class="internal-link" title="zms.zmslog.ZMSLog.get_log_filename">get<wbr></wbr>_log<wbr></wbr>_filename</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the filesystem path of the active Zope event log file.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getLOG" class="internal-link" title="zms.zmslog.ZMSLog.getLOG">get<wbr></wbr>LOG</a></code></td>
-    <td>ZMSLog.getLOG</td>
+    <td>Stream the active Zope event log file as a plain-text download.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getParentDir" class="internal-link" title="zms.zmslog.ZMSLog.getParentDir">get<wbr></wbr>Parent<wbr></wbr>Dir</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the parent directory component of a filesystem path.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getPath" class="internal-link" title="zms.zmslog.ZMSLog.getPath">get<wbr></wbr>Path</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the filesystem path from the request, defaulting to the package home.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#hasSeverity" class="internal-link" title="zms.zmslog.ZMSLog.hasSeverity">has<wbr></wbr>Severity</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return whether the given severity level is currently being logged.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#LOG" class="internal-link" title="zms.zmslog.ZMSLog.LOG">LOG</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Emit one log record at the given severity and optionally echo to stdout.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_index_html" class="internal-link" title="zms.zmslog.ZMSLog.manage_index_html">manage<wbr></wbr>_index<wbr></wbr>_html</a></code></td>
-    <td>ZMSLog.manage_index_html</td>
+    <td>Serve a binary file from the remote filesystem as an inline download.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_options" class="internal-link" title="zms.zmslog.ZMSLog.manage_options">manage<wbr></wbr>_options</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return ZMI tabs for this item.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_submit" class="internal-link" title="zms.zmslog.ZMSLog.manage_submit">manage<wbr></wbr>_submit</a></code></td>
-    <td>ZMSLog.manage_submit</td>
+    <td>Handle remote-filesystem actions: execute a shell command or upload a file.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#readDir" class="internal-link" title="zms.zmslog.ZMSLog.readDir">read<wbr></wbr>Dir</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return a directory listing for the given filesystem path.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#setProperties" class="internal-link" title="zms.zmslog.ZMSLog.setProperties">set<wbr></wbr>Properties</a></code></td>
-    <td>ZMSLog.setProperties</td>
+    <td>Persist logging settings submitted from the ZMI form.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#tail_event_log" class="internal-link" title="zms.zmslog.ZMSLog.tail_event_log">tail<wbr></wbr>_event<wbr></wbr>_log</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the last <tt class="rst-docutils rst-literal">linesback</tt> lines of the active event log.</td>
   </tr><tr class="constant">
     
     <td>Constant</td>
@@ -598,7 +598,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">__init__</span><span class="function-signature">(self, copy_to_stdout=False, logged_entries=[<wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">ERROR</span><span class="rst-variable-quote">'</span>])</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L78">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L53">
       
       (source)
     </a>
@@ -610,7 +610,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Initialize with stdout-mirroring option and active severity list.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -625,7 +625,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_log_filename</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L135">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L100">
       
       (source)
     </a>
@@ -637,7 +637,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the filesystem path of the active Zope event log file.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -652,7 +652,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getLOG</span><span class="function-signature">(self, REQUEST, RESPONSE=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L115">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L85">
       
       (source)
     </a>
@@ -664,7 +664,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>ZMSLog.getLOG</p></div>
+    <div><p>Stream the active Zope event log file as a plain-text download.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -679,7 +679,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getParentDir</span><span class="function-signature">(self, path)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L169">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L121">
       
       (source)
     </a>
@@ -691,7 +691,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the parent directory component of a filesystem path.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -706,7 +706,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getPath</span><span class="function-signature">(self, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L153">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L108">
       
       (source)
     </a>
@@ -718,7 +718,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the filesystem path from the request, defaulting to the package home.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -733,7 +733,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">hasSeverity</span><span class="function-signature">(self, severity)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L98">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L68">
       
       (source)
     </a>
@@ -745,7 +745,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return whether the given severity level is currently being logged.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -760,7 +760,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">LOG</span><span class="function-signature">(self, severity, info)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L104">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L73">
       
       (source)
     </a>
@@ -772,7 +772,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Emit one log record at the given severity and optionally echo to stdout.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -787,7 +787,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_index_html</span><span class="function-signature">(self, REQUEST, RESPONSE)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L178">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L126">
       
       (source)
     </a>
@@ -799,7 +799,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>ZMSLog.manage_index_html</p></div>
+    <div><p>Serve a binary file from the remote filesystem as an inline download.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -814,7 +814,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_options</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L61">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L42">
       
       (source)
     </a>
@@ -826,7 +826,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return ZMI tabs for this item.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -841,7 +841,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_submit</span><span class="function-signature">(self, REQUEST, RESPONSE)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L194">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L135">
       
       (source)
     </a>
@@ -853,7 +853,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>ZMSLog.manage_submit</p></div>
+    <div><p>Handle remote-filesystem actions: execute a shell command or upload a file.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -868,7 +868,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">readDir</span><span class="function-signature">(self, path)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L163">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L116">
       
       (source)
     </a>
@@ -880,7 +880,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return a directory listing for the given filesystem path.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -895,7 +895,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">setProperties</span><span class="function-signature">(self, REQUEST, RESPONSE)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L88">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L60">
       
       (source)
     </a>
@@ -907,7 +907,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>ZMSLog.setProperties</p></div>
+    <div><p>Persist logging settings submitted from the ZMI form.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -922,7 +922,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">tail_event_log</span><span class="function-signature">(self, linesback=100, returnlist=True)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L128">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L94">
       
       (source)
     </a>
@@ -934,7 +934,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the last <tt class="rst-docutils rst-literal">linesback</tt> lines of the active event log.</p></div>
   </div>
 </div><div class="baseconstant">
   
@@ -948,7 +948,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">LOGGER</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L71">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L51">
       
       (source)
     </a>
@@ -975,7 +975,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_main</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L68">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L48">
       
       (source)
     </a>
@@ -1002,7 +1002,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_remote</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L69">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L49">
       
       (source)
     </a>
@@ -1029,7 +1029,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">meta_type</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L54">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L38">
       
       (source)
     </a>
@@ -1056,7 +1056,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_icon</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L55">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L39">
       
       (source)
     </a>
@@ -1083,7 +1083,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">copy_to_stdout</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L80">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L56">
       
       (source)
     </a>
@@ -1110,7 +1110,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">id</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L79">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L55">
       
       (source)
     </a>
@@ -1137,7 +1137,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">logged_entries</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L81">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L57">
       
       (source)
     </a>
@@ -1164,7 +1164,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">tail_event_log_linesback</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L90">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L62">
       
       (source)
     </a>

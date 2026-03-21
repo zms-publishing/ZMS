@@ -1136,7 +1136,40 @@
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>zmssqldb.py - Relational Database Content Type for ZMS</p>
+<p>The ZMSSqlDb class provides a comprehensive abstraction layer for managing relational database-backed content in ZMS. It enables direct database access through configured database adapters (supporting both traditional ZRDB and SQLAlchemy-based connections), executes parameterized SQL queries with proper escaping, and marshals result sets as Python objects for use in ZMS templates and Python scripts.</p>
+<p>Key Capabilities:</p>
+<ul class="rst-simple">
+<li><strong>Database Connectivity</strong>: Maintains connections to multiple database backends (MySQL, PostgreSQL, Oracle, SQLite) via Zope database adapters (DA).</li>
+<li><strong>Schema Reflection</strong>: Automatically discovers and introspects database schemas, creating entity models from table and column metadata. Supports custom entity definitions stored in persistent XML models.</li>
+<li><strong>Query Execution</strong>: Provides high-level query methods (<tt class="rst-docutils rst-literal">query()</tt>, <tt class="rst-docutils rst-literal">execute()</tt>) with automatic parameter substitution, type-based SQL quoting, and result normalization into column/record dictionaries.</li>
+<li><strong>CRUD Operations</strong>: Implements record-set management through <tt class="rst-docutils rst-literal">recordSet_Insert()</tt>, <tt class="rst-docutils rst-literal">recordSet_Update()</tt>, <tt class="rst-docutils rst-literal">recordSet_Delete()</tt> with support for:<ul>
+<li>Auto-incrementing and timestamp columns</li>
+<li>Foreign-key references with optional lazy loading</li>
+<li>Single and multi-select relationships</li>
+<li>Intersection table synchronization</li>
+<li>Blob (file/image) storage with filesystem persistence</li>
+</ul>
+</li>
+<li><strong>Filtering and Sorting</strong>: Builds dynamic WHERE and ORDER BY clauses from user input, with table-level filter expressions and per-column operators (LIKE, =, NULL, etc.).</li>
+<li><strong>Configuration UI</strong>: Provides ZMI forms to:<ul>
+<li>Select and configure database connections</li>
+<li>Define custom entity interfaces and column stereotypes</li>
+<li>Set access control rules (insert, update, delete, select)</li>
+<li>Import/export model definitions as XML</li>
+</ul>
+</li>
+<li><strong>Model Persistence</strong>: Stores schema customizations (labels, stereotypes, validation) in a persistent <tt class="rst-docutils rst-literal">model_xml</tt> attribute, allowing schema extensions beyond physical database structure.</li>
+</ul>
+<p>Integration Points:</p>
+<ul class="rst-simple">
+<li>Used by ZMS content types to expose database records as queryable content</li>
+<li>Integrates with ZMS authentication/authorization framework</li>
+<li>Supports inter-ZMS communication via HTTP blob transfer</li>
+<li>Extends <tt class="rst-docutils rst-literal">zmscustom.ZMSCustom</tt> for full ZMS content management features</li>
+</ul>
+<p>License: GNU General Public License v2 or later, Organization: ZMS Publishing</p>
+</div>
         </div>
 
         <div id="splitTables">
@@ -1147,12 +1180,12 @@
     
     <td>Class</td>
     <td><code><a href="zms.zmssqldb.ZMSSqlDb.html" class="internal-link" title="zms.zmssqldb.ZMSSqlDb"><wbr></wbr>ZMSSql<wbr></wbr>Db</a></code></td>
-    <td><span class="undocumented">No class docstring; 0/5 instance variable, 0/16 class variable, 7/40 methods documented</span></td>
+    <td>Custom ZMS content type that exposes relational database backed records.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#manage_addZMSSqlDb" class="internal-link" title="zms.zmssqldb.manage_addZMSSqlDb">manage_add<wbr></wbr>ZMSSql<wbr></wbr>Db</a></code></td>
-    <td>manage_addZMSSqlDb</td>
+    <td>Create a new SQL database content object in the current container.</td>
   </tr><tr class="variable">
     
     <td>Variable</td>
@@ -1179,7 +1212,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_addZMSSqlDb</span><span class="function-signature">(self, lang, _sort_id, REQUEST, RESPONSE)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L44">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L65">
       
       (source)
     </a>
@@ -1191,7 +1224,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>manage_addZMSSqlDb</p></div>
+    <div><p>Create a new SQL database content object in the current container.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self:</span>OFS.ObjectManager.ObjectManager</td><td class="fieldArgDesc">Container that receives the SQL database object.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">lang:</span>str</td><td class="fieldArgDesc">Active content language.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">_sort<wbr></wbr>_id:</span>int</td><td class="fieldArgDesc">Sort position after which the new object is inserted.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span>ZPublisher.HTTPRequest.HTTPRequest</td><td class="fieldArgDesc">Current request containing add-form values.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">RESPONSE:</span>ZPublisher.HTTPResponse.HTTPResponse</td><td class="fieldArgDesc">Response used for redirect handling.</td></tr></table></div>
   </div>
 </div><div class="basevariable">
   
@@ -1205,7 +1238,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_addZMSSqlDbForm</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L43">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L62">
       
       (source)
     </a>

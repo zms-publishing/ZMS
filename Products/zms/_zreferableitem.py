@@ -1,21 +1,12 @@
-################################################################################
-# _zreferableitem.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+_zreferableitem.py - ZMS Referable Item Mixin for Internal Reference Handling and Link Validation
 
+Defines ZReferableItem for object persistence, Zope integration, and container protocols.
+It implements Zope's ObjectManager interface, handles acquisition, and manages object lifecycle.
+
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
+"""
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import base64
@@ -147,9 +138,6 @@ def getInlineRefs(text):
   return l
 
 
-################################################################################
-# OBJECT CLASS ZReferableItem
-################################################################################
 class ZReferableItem(object): 
   """
   Mixin for internal reference handling in ZMS objects.

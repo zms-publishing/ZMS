@@ -568,12 +568,14 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">XmlAttrBuilder</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L737" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms._xmllib.XmlAttrBuilder.__init__">XmlAttrBuilder()</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">XmlAttrBuilder</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L854" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms._xmllib.XmlAttrBuilder.__init__">XmlAttrBuilder()</a></code></p>
           <p><a href="classIndex.html#zms._xmllib.XmlAttrBuilder">View In Hierarchy</a></p>
         </div>
 
         <div class="moduleDocstring">
-          <div><p>class XmlAttrBuilder</p></div>
+          <div><p>XML parser for complex Python attributes (dictionaries, lists, blobs).</p>
+<p>Parses XML documents into Python data structures using expat. Used internally by ZMS for importing attribute values.</p>
+</div>
         </div>
 
         <div id="splitTables">
@@ -584,57 +586,57 @@
     
     <td>Method</td>
     <td><code><a href="#__init__" class="internal-link" title="zms._xmllib.XmlAttrBuilder.__init__">__init__</a></code></td>
-    <td>XmlAttrBuilder.__init__</td>
+    <td>Constructor.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#OnCharacterData" class="internal-link" title="zms._xmllib.XmlAttrBuilder.OnCharacterData"><wbr></wbr>On<wbr></wbr>Character<wbr></wbr>Data</a></code></td>
-    <td>XmlAttrBuilder.OnCharacterData</td>
+    <td>Handle character data from the XML parser.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#OnComment" class="internal-link" title="zms._xmllib.XmlAttrBuilder.OnComment"><wbr></wbr>On<wbr></wbr>Comment</a></code></td>
-    <td>XmlAttrBuilder.OnComment</td>
+    <td>Handle an XML comment (ignored).</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#OnEndCData" class="internal-link" title="zms._xmllib.XmlAttrBuilder.OnEndCData"><wbr></wbr>On<wbr></wbr>End<wbr></wbr>CData</a></code></td>
-    <td>XmlAttrBuilder.OnEndCData</td>
+    <td>Handle end of a CDATA section.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#OnEndElement" class="internal-link" title="zms._xmllib.XmlAttrBuilder.OnEndElement"><wbr></wbr>On<wbr></wbr>End<wbr></wbr>Element</a></code></td>
-    <td>XmlAttrBuilder.OnEndElement</td>
+    <td>Handle the end of an XML element.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#OnEndNamespaceDecl" class="internal-link" title="zms._xmllib.XmlAttrBuilder.OnEndNamespaceDecl"><wbr></wbr>On<wbr></wbr>End<wbr></wbr>Namespace<wbr></wbr>Decl</a></code></td>
-    <td>XmlAttrBuilder.OnEndNamespaceDecl</td>
+    <td>Handle end of a namespace declaration (ignored).</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#OnProcessingInstruction" class="internal-link" title="zms._xmllib.XmlAttrBuilder.OnProcessingInstruction"><wbr></wbr>On<wbr></wbr>Processing<wbr></wbr>Instruction</a></code></td>
-    <td>XmlAttrBuilder.OnProcessingInstruction</td>
+    <td>Handle a processing instruction (ignored).</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#OnStartCData" class="internal-link" title="zms._xmllib.XmlAttrBuilder.OnStartCData"><wbr></wbr>On<wbr></wbr>Start<wbr></wbr>CData</a></code></td>
-    <td>XmlAttrBuilder.OnStartCData</td>
+    <td>Handle start of a CDATA section.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#OnStartElement" class="internal-link" title="zms._xmllib.XmlAttrBuilder.OnStartElement"><wbr></wbr>On<wbr></wbr>Start<wbr></wbr>Element</a></code></td>
-    <td>XmlAttrBuilder.OnStartElement</td>
+    <td>Handle the start of an XML element.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#OnStartNamespaceDecl" class="internal-link" title="zms._xmllib.XmlAttrBuilder.OnStartNamespaceDecl"><wbr></wbr>On<wbr></wbr>Start<wbr></wbr>Namespace<wbr></wbr>Decl</a></code></td>
-    <td>XmlAttrBuilder.OnStartNamespaceDecl</td>
+    <td>Handle start of a namespace declaration (ignored).</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#parse" class="internal-link" title="zms._xmllib.XmlAttrBuilder.parse">parse</a></code></td>
-    <td>XmlAttrBuilder.parse</td>
+    <td>Parse a given XML document into Python data structures.</td>
   </tr><tr class="classvariable">
     
     <td>Class Variable</td>
@@ -676,7 +678,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">__init__</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L748">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L865">
       
       (source)
     </a>
@@ -688,7 +690,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>XmlAttrBuilder.__init__</p></div>
+    <div><p>Constructor.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -703,7 +705,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">OnCharacterData</span><span class="function-signature">(self, sData)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L903">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L1009">
       
       (source)
     </a>
@@ -715,7 +717,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>XmlAttrBuilder.OnCharacterData</p></div>
+    <div><p>Handle character data from the XML parser.</p>
+<p>Appends character data to the current tag's cdata buffer.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">s<wbr></wbr>Data:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Character data string</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -730,7 +734,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">OnComment</span><span class="function-signature">(self, data)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L957">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L1048">
       
       (source)
     </a>
@@ -742,7 +746,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>XmlAttrBuilder.OnComment</p></div>
+    <div><p>Handle an XML comment (ignored).</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">data:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Comment string</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -757,7 +761,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">OnEndCData</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L930">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L1031">
       
       (source)
     </a>
@@ -769,7 +773,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>XmlAttrBuilder.OnEndCData</p></div>
+    <div><p>Handle end of a CDATA section.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -784,7 +788,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">OnEndElement</span><span class="function-signature">(self, sTagName)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L845">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L951">
       
       (source)
     </a>
@@ -796,7 +800,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>XmlAttrBuilder.OnEndElement</p></div>
+    <div><p>Handle the end of an XML element.</p>
+<p>Pops the current tag from the stack, processes its content depending on element type (<tt class="rst-docutils rst-literal">data</tt> or <tt class="rst-docutils rst-literal">item</tt>), and updates the value stack accordingly.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">s<wbr></wbr>Tag<wbr></wbr>Name:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Element (tag) name</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Raises</td></tr><tr><td class="fieldArgContainer"><code><a href="zms._xmllib.ParseError.html" class="internal-link" title="zms._xmllib.ParseError">ParseError</a></code></td><td>If end tag does not match the expected start tag</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -811,7 +817,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">OnEndNamespaceDecl</span><span class="function-signature">(self, prefix)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L984">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L1070">
       
       (source)
     </a>
@@ -823,7 +829,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>XmlAttrBuilder.OnEndNamespaceDecl</p></div>
+    <div><p>Handle end of a namespace declaration (ignored).</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">prefix:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Namespace prefix</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -838,7 +844,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">OnProcessingInstruction</span><span class="function-signature">(self, target, data)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L944">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L1036">
       
       (source)
     </a>
@@ -850,7 +856,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>XmlAttrBuilder.OnProcessingInstruction</p></div>
+    <div><p>Handle a processing instruction (ignored).</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">target:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Processing instruction target</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">data:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Processing instruction data</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -865,7 +871,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">OnStartCData</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L919">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L1026">
       
       (source)
     </a>
@@ -877,7 +883,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>XmlAttrBuilder.OnStartCData</p></div>
+    <div><p>Handle start of a CDATA section.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -892,7 +898,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">OnStartElement</span><span class="function-signature">(self, sTagName, dTagAttrs)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L820">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L922">
       
       (source)
     </a>
@@ -904,7 +910,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>XmlAttrBuilder.OnStartElement</p></div>
+    <div><p>Handle the start of an XML element.</p>
+<p>Called by the expat parser on occurrence of an XML start tag. Pushes a new tag onto the tag stack and, for container elements (<tt class="rst-docutils rst-literal">data</tt>, <tt class="rst-docutils rst-literal">dictionary</tt>, <tt class="rst-docutils rst-literal">list</tt>), pushes an initial value onto the value stack.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">s<wbr></wbr>Tag<wbr></wbr>Name:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Element (tag) name</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">d<wbr></wbr>Tag<wbr></wbr>Attrs:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Dictionary of element attributes</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -919,7 +927,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">OnStartNamespaceDecl</span><span class="function-signature">(self, prefix, uri)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L971">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L1058">
       
       (source)
     </a>
@@ -931,7 +939,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>XmlAttrBuilder.OnStartNamespaceDecl</p></div>
+    <div><p>Handle start of a namespace declaration (ignored).</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">prefix:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Namespace prefix</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">uri:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Namespace URI</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -946,7 +954,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">parse</span><span class="function-signature">(self, input)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L762">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L870">
       
       (source)
     </a>
@@ -958,7 +966,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>XmlAttrBuilder.parse</p></div>
+    <div><p>Parse a given XML document into Python data structures.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">input:</span><tt class="rst-docutils rst-literal">bytes</tt> or file-like</td><td class="fieldArgDesc">XML document as string or file object</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">Parsed value (dict, list, or blob), or None if nothing was parsed</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Raises</td></tr><tr><td class="fieldArgContainer"><code><a href="zms._xmllib.ParseError.html" class="internal-link" title="zms._xmllib.ParseError">ParseError</a></code></td><td>If the XML document contains syntax errors</td></tr></table></div>
   </div>
 </div><div class="baseclassvariable">
   
@@ -972,7 +980,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">iBufferSize</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L741">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L863">
       
       (source)
     </a>
@@ -999,7 +1007,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">bInCData</span>: <code>int</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L921">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L1028">
       
       (source)
     </a>
@@ -1026,7 +1034,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">dTagStack</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L767">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L882">
       
       (source)
     </a>
@@ -1053,7 +1061,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">dValueStack</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L766">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L881">
       
       (source)
     </a>

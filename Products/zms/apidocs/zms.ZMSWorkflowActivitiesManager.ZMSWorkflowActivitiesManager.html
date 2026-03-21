@@ -302,12 +302,12 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSWorkflowActivitiesManager</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowActivitiesManager.py#L34" class="sourceLink">(source)</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSWorkflowActivitiesManager</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowActivitiesManager.py#L17" class="sourceLink">(source)</a></code></p>
           <p><a href="classIndex.html#zms.ZMSWorkflowActivitiesManager.ZMSWorkflowActivitiesManager">View In Hierarchy</a></p>
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>Manage workflow activities used by transitions and repository export.</p></div>
         </div>
 
         <div id="splitTables">
@@ -318,42 +318,42 @@
     
     <td>Method</td>
     <td><code><a href="#getActivities" class="internal-link" title="zms.ZMSWorkflowActivitiesManager.ZMSWorkflowActivitiesManager.getActivities">get<wbr></wbr>Activities</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return all configured activities as a list of dictionaries.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getActivity" class="internal-link" title="zms.ZMSWorkflowActivitiesManager.ZMSWorkflowActivitiesManager.getActivity">get<wbr></wbr>Activity</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return one activity by id.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getActivityDetails" class="internal-link" title="zms.ZMSWorkflowActivitiesManager.ZMSWorkflowActivitiesManager.getActivityDetails">get<wbr></wbr>Activity<wbr></wbr>Details</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return transition relation indexes for an activity graph view.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getActivityIds" class="internal-link" title="zms.ZMSWorkflowActivitiesManager.ZMSWorkflowActivitiesManager.getActivityIds">get<wbr></wbr>Activity<wbr></wbr>Ids</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return all workflow activity ids in configured order.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_changeActivities" class="internal-link" title="zms.ZMSWorkflowActivitiesManager.ZMSWorkflowActivitiesManager.manage_changeActivities">manage_change<wbr></wbr>Activities</a></code></td>
-    <td>ZMSWorkflowActivitiesManager.manage_changeActivities</td>
+    <td>Handle add/edit/delete/reorder actions for workflow activities in the ZMI.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#provideRepositoryActivities" class="internal-link" title="zms.ZMSWorkflowActivitiesManager.ZMSWorkflowActivitiesManager.provideRepositoryActivities">provide<wbr></wbr>Repository<wbr></wbr>Activities</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Write local workflow activities into the repository export payload.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#setActivity" class="internal-link" title="zms.ZMSWorkflowActivitiesManager.ZMSWorkflowActivitiesManager.setActivity">set<wbr></wbr>Activity</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Create or update one workflow activity and optional icon blob.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#updateRepositoryActivities" class="internal-link" title="zms.ZMSWorkflowActivitiesManager.ZMSWorkflowActivitiesManager.updateRepositoryActivities">update<wbr></wbr>Repository<wbr></wbr>Activities</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Replace local activities from a repository import payload.</td>
   </tr><tr class="instancevariable">
     
     <td>Instance Variable</td>
@@ -380,7 +380,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getActivities</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowActivitiesManager.py#L96">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowActivitiesManager.py#L71">
       
       (source)
     </a>
@@ -392,7 +392,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return all configured activities as a list of dictionaries.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -407,7 +407,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getActivity</span><span class="function-signature">(self, id, for_export=False)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowActivitiesManager.py#L118">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowActivitiesManager.py#L89">
       
       (source)
     </a>
@@ -419,7 +419,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return one activity by id.</p>
+<p>When <tt class="rst-docutils rst-literal">for_export</tt> is false and an icon exists, the icon value is converted to an absolute icon URL.</p>
+</div>
   </div>
 </div><div class="basemethod">
   
@@ -434,7 +436,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getActivityDetails</span><span class="function-signature">(self, id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowActivitiesManager.py#L137">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowActivitiesManager.py#L111">
       
       (source)
     </a>
@@ -446,7 +448,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return transition relation indexes for an activity graph view.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -461,7 +463,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getActivityIds</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowActivitiesManager.py#L110">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowActivitiesManager.py#L83">
       
       (source)
     </a>
@@ -473,7 +475,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return all workflow activity ids in configured order.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -488,7 +490,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_changeActivities</span><span class="function-signature">(self, lang, btn=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, REQUEST=None, RESPONSE=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowActivitiesManager.py#L164">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowActivitiesManager.py#L136">
       
       (source)
     </a>
@@ -500,7 +502,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>ZMSWorkflowActivitiesManager.manage_changeActivities</p></div>
+    <div><p>Handle add/edit/delete/reorder actions for workflow activities in the ZMI.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -515,7 +517,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">provideRepositoryActivities</span><span class="function-signature">(self, r, ids=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowActivitiesManager.py#L42">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowActivitiesManager.py#L20">
       
       (source)
     </a>
@@ -527,7 +529,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Write local workflow activities into the repository export payload.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -542,7 +544,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">setActivity</span><span class="function-signature">(self, id, newId, newName, newIconClazz=None, newIcon=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowActivitiesManager.py#L67">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowActivitiesManager.py#L47">
       
       (source)
     </a>
@@ -554,7 +556,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Create or update one workflow activity and optional icon blob.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -569,7 +571,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">updateRepositoryActivities</span><span class="function-signature">(self, r)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowActivitiesManager.py#L53">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowActivitiesManager.py#L30">
       
       (source)
     </a>
@@ -581,7 +583,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Replace local activities from a repository import payload.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">r:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Imported workflow activity payload.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Imported workflow id.</td></tr></table></div>
   </div>
 </div><div class="baseinstancevariable">
   
@@ -595,7 +597,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">activities</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowActivitiesManager.py#L57">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowActivitiesManager.py#L41">
       
       (source)
     </a>

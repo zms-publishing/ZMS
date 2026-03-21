@@ -292,12 +292,12 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">MultiLanguageObject</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L184" class="sourceLink">(source)</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">MultiLanguageObject</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L158" class="sourceLink">(source)</a></code></p>
           <p><a href="classIndex.html#zms._multilangmanager.MultiLanguageObject">View In Hierarchy</a></p>
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>Language selection helpers for content objects.</p></div>
         </div>
 
         <div id="splitTables">
@@ -308,12 +308,12 @@
     
     <td>Method</td>
     <td><code><a href="#getDescendantLanguages" class="internal-link" title="zms._multilangmanager.MultiLanguageObject.getDescendantLanguages">get<wbr></wbr>Descendant<wbr></wbr>Languages</a></code></td>
-    <td>Returns IDs of descendant languages</td>
+    <td>Return descendant language ids below <tt class="rst-docutils rst-literal">id</tt>, optionally as JSON response.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getLanguages" class="internal-link" title="zms._multilangmanager.MultiLanguageObject.getLanguages">get<wbr></wbr>Languages</a></code></td>
-    <td>Returns IDs of languages (primary language 1st)</td>
+    <td>Return language ids available to the current user (primary language first).</td>
   </tr>
 </table>
           
@@ -335,7 +335,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getDescendantLanguages</span><span class="function-signature">(self, id, REQUEST=None, RESPONSE=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L197">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L169">
       
       (source)
     </a>
@@ -347,7 +347,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Returns IDs of descendant languages</p></div>
+    <div><p>Return descendant language ids below <tt class="rst-docutils rst-literal">id</tt>, optionally as JSON response.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -362,7 +362,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getLanguages</span><span class="function-signature">(self, REQUEST=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L186">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L160">
       
       (source)
     </a>
@@ -374,7 +374,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Returns IDs of languages (primary language 1st)</p></div>
+    <div><p>Return language ids available to the current user (primary language first).</p></div>
   </div>
 </div>
         </div>

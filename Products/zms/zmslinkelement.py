@@ -1,21 +1,17 @@
-################################################################################
-# zmslinkelement.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+zmslinkelement.py
 
+Link element implementation for ZMS content trees.
+
+This module defines the link-element content type used to reference, embed,
+proxy, and render other ZMS objects. It contains the link-specific exception
+type and the C{ZMSLinkElement} implementation that resolves internal
+references, supports recursive embedding through proxy objects, and delegates
+navigation/printing/title access to referenced content when appropriate.
+
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
+"""
 # Imports.
 from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
@@ -31,45 +27,35 @@ from Products.zms import zmsproxyobject
 from Products.zms import zmslinkelement
 from zope.globalrequest import getRequest
 
-
-"""
-################################################################################
-# class ConstraintViolation(Exception):
-#
-# General exception class to indicate constraint violations.
-################################################################################
-"""
-class ConstraintViolation(Exception): pass
+class ConstraintViolation(Exception):
+  """Signal that a link element update violates an embedding constraint."""
+  pass
 
 
-################################################################################
-################################################################################
-###
-###  Class
-###
-################################################################################
-################################################################################
 class ZMSLinkElement(zmscustom.ZMSCustom):
+    """
+    Represent a link element that can resolve, embed, or proxy other content.
 
-    # Create a SecurityInfo for this class. We will use this
-    # in the rest of our class definition to make security
-    # assertions.
+    Link elements can either behave like a normal local content node or expose
+    another object inline by reference. Depending on C{attr_type}/C{_embed_type}
+    they may:
+      - link to another object without embedding it,
+      - embed the referenced object directly,
+      - recursively proxy the referenced subtree,
+      - or retrieve remote content through the REST API.
+    """
+
     security = ClassSecurityInfo()
 
-    # Properties.
-    # -----------
     meta_type = meta_id = "ZMSLinkElement"
 
-    # Management Options.
-    # -------------------
     def manage_options(self):
+      """Handle the ZMI action 'manage_options'."""
       return ( 
         {'label': 'TAB_EDIT',    'action': 'manage_main'},
         {'label': 'TAB_HISTORY', 'action': 'manage_UndoVersionForm'},
         )
 
-    # Management Permissions.
-    # -----------------------
     __authorPermissions__ = (
         'manage', 'manage_main', 'manage_workspace',
         'manage_changeProperties', 'manage_changeTempBlobjProperty',
@@ -83,30 +69,46 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
         )
 
 
-    ############################################################################
-    #
-    #   Constructor
-    #
-    ############################################################################
-
-    # --------------------------------------------------------------------------
-    #  ZMSLinkElement.getSelf:
-    # --------------------------------------------------------------------------
     def getSelfPROXY(self, proxy, meta_type=None):
+      """
+      Resolve the effective object for the proxy context.
+
+      @param proxy: Proxy or referenced object to resolve against.
+      @type proxy: C{object}
+      @param meta_type: Optional meta type constraint.
+      @type meta_type: C{str} | C{None}
+      @return: The resolved object for the current proxy context.
+      @rtype: C{object}
+      """
       return zmsobject.ZMSObject.getSelf( proxy, meta_type)
 
+
     def getSelf(self, meta_type=None):
+      """
+      Return the effective object for this link element.
+
+      @param meta_type: Optional meta type constraint.
+      @type meta_type: C{str} | C{None}
+      @return: The resolved object for this element or its proxy.
+      @rtype: C{object}
+      """
       proxy = self.getProxy()
       rtn = self.getSelfPROXY( proxy, meta_type)
       return rtn
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSLinkElement.getEmbedType: 
-    #
-    #  Special handling for _embed_type, because it is a raw attribute and not a property.
-    # --------------------------------------------------------------------------
     def getEmbedType(self):
+      """
+      Return the configured embedding mode for this link element.
+
+      Special handling for _embed_type, because it is a raw attribute and not a property.
+      The value is stored as the raw attribute C{_embed_type}. If it is not set,
+      the method falls back to the legacy object property C{attr_type}.
+
+      @return: Embedding mode such as C{'embed'}, C{'recursive'}, C{'remote'},
+        or an empty value.
+      @rtype: C{str} | C{None}
+      """
       # _embed_type is a raw attribute and should be accessed directly
       embed_type = getattr(self, '_embed_type', None)
       # if _embed_type is not set, try to get it from the property (for backward compatibility)
@@ -115,12 +117,25 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
         embed_type = self.getObjAttrValue( self.getObjAttr( 'attr_type'), request)
       return embed_type
 
-    # --------------------------------------------------------------------------
-    #  ZMSLinkElement.setEmbedType:
-    # 
-    #  Special handling for _embed_type, because it is a raw attribute and not a property.
-    # --------------------------------------------------------------------------
+
     def setEmbedType(self, REQUEST):
+      """
+      Persist the requested embedding mode on the raw C{_embed_type} attribute.
+
+      Special handling for _embed_type, because it is a raw attribute 
+      and not a property. If the selected mode would recursively embed an 
+      ancestor, the value is replaced with C{'cyclic'} so callers can react 
+      to the invalid state.
+
+      Expected values for C{REQUEST['attr_type']} are for example C{'embed'},
+      C{'recursive'}, C{'remote'}, or an empty string for a plain non-embedded
+      link. Cyclic recursive references are normalized to C{'cyclic'}.
+
+      @param REQUEST: Request carrying the submitted C{attr_type} value.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @return: C{None}
+      @rtype: C{None}
+      """
       embed_type = REQUEST.get('attr_type', '')
       if embed_type in [ 'embed', 'recursive', 'remote']:
         # check for cyclic embedding
@@ -130,35 +145,36 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
       self._embed_type = embed_type
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSLinkElement.isEmbedded: 
-    # --------------------------------------------------------------------------
     def isEmbedded(self, REQUEST=None):
+      """Return whether this element renders another object inline."""
       rtn = self.getEmbedType() in [ 'embed', 'recursive', 'remote']
       return rtn
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSLinkElement.isEmbeddedRecursive: 
-    # --------------------------------------------------------------------------
     def isEmbeddedRecursive(self, REQUEST=None):
+      """Return whether this element uses recursive embedding."""
       rtn = self.getEmbedType() in [ 'recursive']
       return rtn
 
-
-    ############################################################################
-    ###
-    ###   Properties
-    ###
-    ############################################################################
-
-    ############################################################################
-    #  ZMSLinkElement.manage_changeProperties: 
-    #
-    #  Change Linkelement properties.
-    ############################################################################
     def manage_changeProperties(self, lang, REQUEST, RESPONSE): 
-      """ ZMSLinkElement.manage_changeProperties """
+      """
+      Update link element properties from the ZMI form submission.
+
+      The method stores XML-backed properties, marks the object as modified,
+      recalculates the raw embed type, and redirects back to the management UI
+      with a status message.
+
+      @param lang: Active management language, usually a three-letter ZMS
+        language id such as C{'eng'} or C{'ger'}.
+      @type lang: C{str}
+      @param REQUEST: Current ZMI request containing edited attribute values
+        (especially XML-backed object attributes and C{attr_type}).
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param RESPONSE: Response used for the redirect back to the management UI.
+      @type RESPONSE: C{ZPublisher.HTTPResponse}
+      @return: Redirect response pointing back to the management form.
+      @rtype: C{ZPublisher.HTTPResponse}
+      """
 
       target_ob = self.getParentNode()
       if REQUEST.get('menulock',0) == 1:
@@ -168,26 +184,20 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
       message = ''
       if REQUEST.get('btn', '') not in  [ 'BTN_CANCEL', 'BTN_BACK']:
         try:
-          
-          ##### Object State ####
+          # Object State
           self.setObjStateModified(REQUEST)
-          
-          ##### Properties ####
+          # Persist XML-backed object properties from the request.
           for key in self.getObjAttrs():
             obj_attr = self.getObjAttr(key)
             if obj_attr['xml']:
               self.setReqProperty(key, REQUEST)
-
-          ##### VersionManager ####
+          # VersionManager
           self.onChangeObj(REQUEST)
-          
-          ##### Special handling for _embed_type, because it is a raw attribute and not a property ####
+          # Persist the raw embed-type attribute after the regular property update.
           self.setEmbedType(REQUEST)
-
-          ##### Success Message ####
+          # Success Message
           message = self.getZMILangStr('MSG_CHANGED')
-        
-        ##### Failure Message ####
+        # Failure Message
         except ConstraintViolation:
           target = REQUEST.get( 'manage_target', '%s/manage_main'%self.absolute_url())
           message = "[ConstraintViolation]: " + str( sys.exc_info()[1])
@@ -198,20 +208,32 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
       return RESPONSE.redirect( target)
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSLinkElement.getRef:
-    # --------------------------------------------------------------------------
     def getRef(self):
+      """
+      Return the stored link target reference.
+
+      The reference is read from C{attr_ref} in the language derived from the
+      current coverage value.
+
+      @return: Link target reference string.
+      @rtype: C{str}
+      """
       coverage = self.getDCCoverage()
       req = {'preview':'preview','lang':coverage[coverage.find('.')+1:]}
       ref = self.getObjAttrValue( self.getObjAttr( 'attr_ref'), req) 
       return ref
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSLinkElement.getRefObj:
-    # --------------------------------------------------------------------------
     def getRefObj(self):
+      """
+      Resolve and cache the referenced object for this link element.
+
+      The lookup result is buffered in the request to avoid repeated traversal
+      and link resolution while rendering a page.
+
+      @return: Referenced object or C{None} if the target cannot be resolved.
+      @rtype: C{object} | C{None}
+      """
       #-- [ReqBuff]: Fetch buffered value from Http-Request.
       docelmnt = self.getDocumentElement()
       reqBuffId = 'getRefObj.%s'%self.get_uid()
@@ -226,10 +248,17 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
       return docelmnt.storeReqBuff(reqBuffId, ref_obj)
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSLinkElement.getRemoteObj:
-    # --------------------------------------------------------------------------
     def getRemoteObj(self):
+      """
+      Fetch remote metadata for a link element with embed type C{'remote'}.
+
+      The returned mapping is expected to be JSON produced by the remote REST
+      API endpoint for the current language.
+
+      @return: Parsed JSON payload from the remote object, or an empty mapping
+        on failure.
+      @rtype: C{dict}
+      """
       value = {}
       ref = self.getRef()
       remote_ref = rest_api.get_rest_api_url( ref)  
@@ -242,10 +271,23 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
       return value
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSLinkElement.isMetaType:
-    # --------------------------------------------------------------------------
     def isMetaTypePROXY(self, proxy, meta_type, REQUEST={'preview':'preview'}):
+      """
+      Check whether this element or its resolved target matches a meta type.
+
+      For recursively embedded elements the check is delegated to the proxy.
+      For directly embedded elements it also checks the referenced object unless
+      the special C{NOREF} or C{NORESOLVEREF} markers suppress resolution.
+
+      @param proxy: Active proxy object.
+      @type proxy: C{object}
+      @param meta_type: Meta type or list of meta types to test.
+      @type meta_type: C{str} | C{list}
+      @param REQUEST: Request context used by downstream checks.
+      @type REQUEST: C{dict}
+      @return: C{True} if the element or resolved target matches.
+      @rtype: C{bool}
+      """
       if proxy != self and proxy is not None and self.isEmbeddedRecursive():
         b = proxy.isMetaType( meta_type, REQUEST)
       else:
@@ -259,36 +301,56 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
       return b
 
     def isMetaType(self, meta_type, REQUEST={'preview':'preview'}):
+      """
+      Return whether this element matches the requested meta type.
+
+      @param meta_type: Meta type or list of meta types to test.
+      @type meta_type: C{str} | C{list}
+      @param REQUEST: Request context used by downstream checks.
+      @type REQUEST: C{dict}
+      @return: C{True} if this element or its resolved target matches.
+      @rtype: C{bool}
+      """
       proxy = self.getProxy()
       rtn = self.isMetaTypePROXY( proxy, meta_type, REQUEST)
       return rtn
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSLinkElement.getLevel:
-    # --------------------------------------------------------------------------
     def getLevelPROXY(self, proxy):
+      """
+      Return the level resolved through the active proxy context.
+      For recursively embedded elements the level is delegated to the proxy.
+      For directly embedded elements the level is calculated based on the parent
+      node level unless the parent is the same as the proxy, in which case it is
+      treated as the root of the embedding context and assigned level 0.
+
+      @param proxy: Active proxy object.
+      @type proxy: C{object}
+      @return: Effective hierarchy level for this element.
+      @rtype: C{int}
+      """
       if proxy != self and proxy is not None and self.isEmbeddedRecursive():
         rtn = proxy.getLevel()
       else:
         rtn = self.getParentNode().getLevel() + 1
       return rtn
 
+
     def getLevel(self):
+      """Return the effective hierarchy level of this element."""
       proxy = self.getProxy()
       rtn = self.getLevelPROXY( proxy)
       return rtn
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSLinkElement.getParentNode:
-    # --------------------------------------------------------------------------
     def getParentNodePROXY(self, proxy):
+      """Return the parent node visible through the current proxy context."""
       if proxy != self and proxy is not None and self.isEmbeddedRecursive():
         rtn = proxy.getParentNode()
       else:
         rtn = getattr( self, 'aq_parent', getattr( self, 'base', None))
       return rtn
+
 
     getParentNode__roles__ = None
     def getParentNode(self):
@@ -301,10 +363,17 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
       return rtn
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSLinkElement.getTitlealt:
-    # --------------------------------------------------------------------------
     def getTitlealtPROXY(self, proxy, REQUEST):
+      """
+      Resolve the alternate title through the proxy or reference chain.
+
+      @param proxy: Active proxy object.
+      @type proxy: C{object}
+      @param REQUEST: Current request context.
+      @type REQUEST: ZPublisher.HTTPRequest
+      @return: Alternate title resolved for the current embedding context.
+      @rtype: C{str}
+      """
       if proxy != self and proxy is not None and self.isEmbeddedRecursive():
         rtn = proxy.getTitlealt( REQUEST)
       else:
@@ -317,7 +386,19 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
             rtn = ref_obj.getTitlealt(REQUEST)
       return rtn
 
+
     def getTitlealt(self, REQUEST):
+      """
+      Return the alternate title for this element.
+
+      Remote embeddings read the value from the remote payload; other modes use
+      the local proxy or referenced object and fall back to the display type.
+
+      @param REQUEST: Current request context.
+      @type REQUEST: ZPublisher.HTTPRequest
+      @return: Alternate title string.
+      @rtype: C{str}
+      """
       rtn = ''
       if self.getEmbedType() == 'remote':
         return self.getRemoteObj().get('titlealt','Unknown')
@@ -329,10 +410,17 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
       return rtn
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSLinkElement.getTitle:
-    # --------------------------------------------------------------------------
     def getTitlePROXY(self, proxy, REQUEST):
+      """
+      Resolve the title through the proxy or reference chain.
+
+      @param proxy: Active proxy object.
+      @type proxy: C{object}
+      @param REQUEST: Current request context.
+      @type REQUEST: ZPublisher.HTTPRequest
+      @return: Title resolved for the current embedding context.
+      @rtype: C{str}
+      """
       if proxy != self and proxy is not None and self.isEmbeddedRecursive():
         rtn = proxy.getTitle( REQUEST)
       else:
@@ -345,7 +433,16 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
             rtn = ref_obj.getTitle(REQUEST)
       return rtn
 
+
     def getTitle(self, REQUEST):
+      """
+      Return the display title for this element.
+
+      @param REQUEST: Current request context.
+      @type REQUEST: ZPublisher.HTTPRequest
+      @return: Resolved title or a fallback display type label.
+      @rtype: C{str}
+      """
       rtn = ''
       if self.getEmbedType() == 'remote':
         return self.getRemoteObj().get('title','Unknown')
@@ -357,10 +454,17 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
       return rtn
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSLinkElement.display_icon:
-    # --------------------------------------------------------------------------
     def display_icon(self, *args, **kwargs): 
+      """
+      Return the icon markup for this element or its referenced target.
+
+      @param args: Positional arguments for the icon display.
+      @type args: tuple
+      @param kwargs: Keyword arguments for the icon display.
+      @type kwargs: dict
+      @return: Icon markup for this element or its referenced target.
+      @rtype: C{str}
+      """
       context = self
       if self.isEmbedded():
         ref_obj = self.getRefObj()
@@ -369,10 +473,18 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
       return zmsobject.ZMSObject.display_icon(context, args, kwargs)
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSLinkElement.isActive:
-    # --------------------------------------------------------------------------
     def isActive(self, REQUEST):
+      """
+      Return whether the element is active in the current request context.
+
+      Embedded and remote link elements additionally respect the resolved target
+      activity state.
+
+      @param REQUEST: Current request context.
+      @type REQUEST: ZPublisher.HTTPRequest
+      @return: C{True} if the element should be treated as active.
+      @rtype: C{bool}
+      """
       active = super(ZMSLinkElement, self).isActive(REQUEST) 
       if self.getEmbedType() == 'remote':
         return self.getRemoteObj().get('active',False)
@@ -383,17 +495,25 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
       return active
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSLinkElement.isPageContainer:
-    # --------------------------------------------------------------------------
     def isPageContainer(self):
+      """
+      Return C{False} because link elements are never page containers.
+
+      @return: C{False} because link elements are never page containers.
+      @rtype: C{bool}
+      """
       return False
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSLinkElement.isPage
-    # --------------------------------------------------------------------------
     def isPage(self):
+      """
+      Return whether this element resolves to a page-like target.
+      Embedded and remote link elements are treated as pages when their resolved
+      target has the corresponding flag set.
+
+      @return: C{True} if this element should be treated as a page-like target.
+      @rtype: C{bool}
+       """
       rtnVal = False
       if self.getEmbedType() == 'remote':
         return self.getRemoteObj().get('is_page',False)
@@ -404,10 +524,14 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
       return rtnVal
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSLinkElement.isPageElement
-    # --------------------------------------------------------------------------
     def isPageElement(self):
+      """
+      Return whether this element behaves like a page element.
+      Embedded and remote link elements are treated as page elements when their
+      resolved target has the corresponding flag set.
+      @return: C{True} if this element should be treated as a page element.
+      @rtype: C{bool}
+      """
       request = getattr(self, 'REQUEST', getRequest())
       rtnVal = False
       if self.getEmbedType() == 'remote':
@@ -424,12 +548,16 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
       return rtnVal
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSLinkElement.getType
-    #
-    #  Overrides getType of zmscustom.ZMSCustom. 
-    # --------------------------------------------------------------------------
     def getTypePROXY(self, proxy): 
+      """
+      Return the effective type resolved through embedding or proxying.
+      Overrides getType of zmscustom.ZMSCustom.
+
+      @param proxy: Active proxy object.
+      @type proxy: C{object}
+      @return: Effective type.
+      @rtype: C{str}
+      """
       rtn = 'ZMSObject'
       if proxy != self and proxy is not None and self.isEmbeddedRecursive():
         rtn = proxy.getType()
@@ -438,24 +566,53 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
         if ref_obj is not None:
            rtn = ref_obj.getType()
       return rtn
-    
+
+
     def getType(self): 
+      """Return the effective type for this link element."""
       proxy = self.getProxy()
       rtn = self.getTypePROXY( proxy)
       return rtn
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSLinkElement.getObjProperty
-    #
-    #  Overrides getObjProperty of _objattrs.ObjAttrs. 
-    # --------------------------------------------------------------------------
     def getObjPropertyPROXY(self, proxy, key, REQUEST={}, default=None):
+      """
+      Read an object property directly from the supplied proxy object.
+      Overrides getObjProperty of _objattrs.ObjAttrs. 
+
+      @param proxy: Object or proxy that owns the attribute.
+      @type proxy: C{object}
+      @param key: Attribute identifier.
+      @type key: C{str}
+      @param REQUEST: Request context used for multilingual values.
+      @type REQUEST: C{dict}
+      @param default: Unused compatibility parameter.
+      @type default: C{any}
+      @return: Attribute value resolved from the proxy.
+      @rtype: C{any}
+      """
       obj_attr = proxy.getObjAttr( key)
       value = proxy.getObjAttrValue( obj_attr, REQUEST) 
       return value
 
+
     def getObjProperty(self, key, REQUEST={}, default=None):
+      """
+      Return a property value from this element, its proxy, or its reference.
+
+      The method first checks the link element itself, then falls back to the
+      local base implementation, recursive proxies, or the referenced object,
+      depending on the embedding mode.
+
+      @param key: Attribute identifier.
+      @type key: C{str}
+      @param REQUEST: Request context used for multilingual and preview values.
+      @type REQUEST: C{dict}
+      @param default: Default value when no property can be resolved.
+      @type default: C{any}
+      @return: Resolved property value.
+      @rtype: C{any}
+      """
       value = None
       value = self.getObjPropertyPROXY( self, key, REQUEST, default)
       # First exit...
@@ -480,12 +637,24 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
       return value
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSLinkElement.getNavItems:
-    #
-    #  Overrides getNavItems of zmscontainerobject.ZMSContainerObject.
-    # --------------------------------------------------------------------------
     def getNavItemsPROXY(self, proxy, current, REQUEST, opt={}, depth=0):
+      """
+      Return navigation items for the current proxy context.
+      Overrides getNavItems of zmscontainerobject.ZMSContainerObject.
+
+      @param proxy: Active proxy object.
+      @type proxy: C{object}
+      @param current: Current navigation node.
+      @type current: C{object}
+      @param REQUEST: Current request context.
+      @type REQUEST: ZPublisher.HTTPRequest
+      @param opt: Navigation options.
+      @type opt: C{dict}
+      @param depth: Current navigation depth.
+      @type depth: C{int}
+      @return: Navigation items visible through the embedding context.
+      @rtype: C{list}
+      """
       rtn = []
       recursive = self.isEmbeddedRecursive()
       if proxy != self and proxy is not None and recursive:
@@ -496,18 +665,44 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
           rtn = super(zmslinkelement.ZMSLinkElement, self).getNavItems( current, REQUEST, opt, depth)
       return rtn
 
+
     def getNavItems(self, current, REQUEST, opt={}, depth=0):
+      """
+      Return navigation items for this element.
+
+      @param current: Current navigation node.
+      @type current: C{object}
+      @param REQUEST: Current request context.
+      @type REQUEST: ZPublisher.HTTPRequest
+      @param opt: Navigation options.
+      @type opt: C{dict}
+      @param depth: Current navigation depth.
+      @type depth: C{int}
+      @return: Navigation items visible for this element.
+      @rtype: C{list}
+      """
       proxy = self.getProxy()
       rtn = self.getNavItemsPROXY( proxy, current, REQUEST, opt, depth)
       return rtn
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSLinkElement.getNavElements:
-    #
-    #  Overrides getNavElements of zmscontainerobject.ZMSContainerObject.
-    # --------------------------------------------------------------------------
     def getNavElementsPROXY(self, proxy, REQUEST, expand_tree=1, current_child=None, subElements=[]):
+      """
+      Return navigation elements for the current proxy context.
+
+      @param proxy: Active proxy object.
+      @type proxy: C{object}
+      @param REQUEST: Current request context.
+      @type REQUEST: ZPublisher.HTTPRequest
+      @param expand_tree: Flag controlling tree expansion.
+      @type expand_tree: C{int}
+      @param current_child: Currently selected child node.
+      @type current_child: C{object} | C{None}
+      @param subElements: Accumulator for nested elements.
+      @type subElements: C{list}
+      @return: Navigation elements visible through the embedding context.
+      @rtype: C{list}
+      """
       rtn = []
       recursive = self.isEmbeddedRecursive()
       if proxy != self and proxy is not None and recursive:
@@ -518,40 +713,74 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
           rtn = super(zmslinkelement.ZMSLinkElement, zself).getNavElements( REQUEST, expand_tree, current_child, subElements)
       return rtn
 
+
     def getNavElements(self, REQUEST, expand_tree=1, current_child=None, subElements=[]):
+      """
+      Return navigation elements for this link element.
+
+      @param REQUEST: Current request context.
+      @type REQUEST: ZPublisher.HTTPRequest
+      @param expand_tree: Flag controlling tree expansion.
+      @type expand_tree: C{int}
+      @param current_child: Currently selected child node.
+      @type current_child: C{object} | C{None}
+      @param subElements: Accumulator for nested elements.
+      @type subElements: C{list}
+      @return: Navigation elements visible for this element.
+      @rtype: C{list}
+      """
       proxy = self.getProxy()
       rtn = self.getNavElementsPROXY( proxy, REQUEST, expand_tree, current_child, subElements)
       return rtn
 
-
-    ############################################################################
-    ###
-    ###  HTML-Presentation
-    ###
-    ############################################################################
-
-    # --------------------------------------------------------------------------
-    #  ZMSLinkElement.getHref2IndexHtml:
-    # --------------------------------------------------------------------------
     def getHref2IndexHtmlPROXY(self, proxy, REQUEST, deep=1): 
+      """
+      Return the index HTML URL resolved through the current proxy context.
+
+      @param proxy: Active proxy object.
+      @type proxy: C{object}
+      @param REQUEST: Current request context.
+      @type REQUEST: ZPublisher.HTTPRequest
+      @param deep: Depth flag forwarded to the base implementation.
+      @type deep: C{int}
+      @return: Resolved index HTML URL.
+      @rtype: C{str}
+      """
       if proxy != self and proxy is not None and self.isEmbeddedRecursive():
         rtn = proxy.getHref2IndexHtml( REQUEST, deep)
       else:
         rtn = zmsobject.ZMSObject.getHref2IndexHtml( proxy, REQUEST, deep)
       return rtn
-    
+
+
     def getHref2IndexHtml(self, REQUEST, deep=1): 
+      """
+      Return the index HTML URL for this link element.
+
+      @param REQUEST: Current request context.
+      @type REQUEST: ZPublisher.HTTPRequest
+      @param deep: Depth flag forwarded to the proxy lookup.
+      @type deep: C{int}
+      @return: Resolved index HTML URL.
+      @rtype: C{str}
+      """
       proxy = self.getProxy()
       rtn = self.getHref2IndexHtmlPROXY( proxy, REQUEST, deep)
       return rtn
 
 
-    # --------------------------------------------------------------------------
-    # ZMSLinkElement.embedRemoteContent:
-    #
-    # Embeds content from remote reference if embed_type is 'remote'.
-    # --------------------------------------------------------------------------
     def embedRemoteContent(self, REQUEST):
+      """
+      Retrieve rendered body content from a remote reference.
+
+      The remote endpoint is only contacted when the embed type is C{'remote'}.
+
+      @param REQUEST: Current request context.
+      @type REQUEST: ZPublisher.HTTPRequest
+      @return: Remote HTML fragment or C{None} when remote embedding is not
+        active.
+      @rtype: C{str} | C{None}
+      """
       rtn = None
       if self.getEmbedType() == 'remote':
         ref = self.getObjProperty('attr_ref', REQUEST)
@@ -562,12 +791,19 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
           rtn = standard.writeError(self, '[_getBodyContent]: can\'t embed from remote_ref=%s'%remote_ref)
       return rtn
 
-    # --------------------------------------------------------------------------
-    #  ZMSLinkElement._getBodyContent:
-    #
-    #  HTML presentation of link-element.
-    # --------------------------------------------------------------------------
+
     def _getBodyContent(self, REQUEST):
+      """
+      Render the body content for the link element (as HTML).
+
+      Depending on the embedding mode this may use remote content, a recursive
+      proxy, the referenced object, or the local template output.
+
+      @param REQUEST: Current rendering request.
+      @type REQUEST: ZPublisher.HTTPRequest
+      @return: Rendered HTML body for the element.
+      @rtype: C{str}
+      """
       rtn = self.embedRemoteContent( REQUEST)
       if rtn is None:
         if self.isEmbedded():
@@ -586,12 +822,18 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
       return rtn
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSLinkElement.renderShort:
-    #
-    #  Renders short presentation of link-element.
-    # --------------------------------------------------------------------------
     def renderShort(self, REQUEST):
+      """
+      Render the compact presentation of the link element.
+
+      Embedded links delegate to the referenced object when possible, while
+      non-embedded links fall back to the regular body rendering.
+
+      @param REQUEST: Current rendering request.
+      @type REQUEST: ZPublisher.HTTPRequest
+      @return: Short HTML rendering for the element.
+      @rtype: C{str}
+      """
       rtn = self.embedRemoteContent( REQUEST)
       if rtn is None:
         if self.isEmbedded(): 
@@ -606,52 +848,80 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
           rtn = self._getBodyContent( REQUEST) 
       return rtn
 
-
-    ############################################################################
-    ###
-    ###  DOM-Methods
-    ###
-    ############################################################################
-
-    # --------------------------------------------------------------------------
-    #  ZMSLinkElement.breadcrumbs_obj_path:
-    # --------------------------------------------------------------------------
     def breadcrumbs_obj_pathPROXY(self, proxy, portalMaster=True):
+      """
+      Return the breadcrumb path resolved through the current proxy context.
+
+      @param proxy: Active proxy object.
+      @type proxy: C{object}
+      @param portalMaster: Include the portal master in the breadcrumb path.
+      @type portalMaster: C{bool}
+      @return: Breadcrumb object path.
+      @rtype: C{list}
+      """
       if proxy != self and proxy is not None and self.isEmbeddedRecursive():
         rtn = proxy.breadcrumbs_obj_path()
       else:
         rtn = zmsobject.ZMSObject.breadcrumbs_obj_path( proxy, portalMaster)
       return rtn
-    
+
+
     def breadcrumbs_obj_path(self, portalMaster=True):
+      """
+      Return the breadcrumb path for this element.
+
+      @param portalMaster: Include the portal master in the breadcrumb path.
+      @type portalMaster: C{bool}
+      @return: Breadcrumb object path.
+      @rtype: C{list}
+      """
       proxy = self.getProxy()
       rtn = self.breadcrumbs_obj_pathPROXY( proxy, portalMaster)
       return rtn
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSLinkElement.getTreeNodes:
-    #
-    #  Returns an empty NodeList that contains all children of this subtree in 
-    #  correct order. If none, this is a empty NodeList. 
-    # --------------------------------------------------------------------------
     def getTreeNodes(self, REQUEST={}, meta_types=None):
+      """
+      Return an empty tree node list for link elements.
+
+      Link elements do not contribute their own tree structure here.
+      If none, this is a empty node list.
+
+      @param REQUEST: Current request context.
+      @type REQUEST: C{dict}
+      @param meta_types: Optional meta type filter.
+      @type meta_types: C{list} | C{None}
+      @return: Empty node list.
+      @rtype: C{list}
+      """
       return []
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSLinkElement.initProxy: 
-    # --------------------------------------------------------------------------
     def initProxy(self, base, url_base, proxy, recursive=False):
+      """
+      Create a C{ZMSProxyObject} for a resolved embedded target.
+
+      @param base: Acquisition base for the proxy.
+      @type base: C{object}
+      @param url_base: Absolute URL base for the proxy.
+      @type url_base: C{str}
+      @param proxy: Referenced object that should be exposed as proxy.
+      @type proxy: C{object}
+      @param recursive: Flag indicating recursive embedding.
+      @type recursive: C{bool}
+      @return: Proxy object wrapping the referenced node.
+      @rtype: ZMSProxyObject
+      """
       return zmsproxyobject.ZMSProxyObject( self, base, url_base, proxy.id, proxy, recursive)
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSLinkElement.__proxy__:
-    #
-    #  Returns self or referenced object (if embedded) as ZMSProxyObject
-    # --------------------------------------------------------------------------
     def __proxy__(self):
+      """
+      Build the proxy object used for recursive embedded traversal.
+
+      @return: This element itself or a proxy wrapping the referenced object.
+      @rtype: C{object}
+      """
       rtn = self
       req = getattr(self, 'REQUEST', getRequest())
       if req.get( 'URL', '').find( '/manage') < 0 or req.get( 'ZMS_PATH_HANDLER', False):
@@ -663,13 +933,16 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
       return rtn
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSLinkElement.getProxy:
-    #
-    #  Returns self or proxy-object from Path-Handler (if embedded) as 
-    #  ZMSProxyObject.
-    # --------------------------------------------------------------------------
     def getProxy(self):
+      """
+      Return the cached proxy object for this (embedding) link element.
+
+      The proxy is stored in the request so repeated rendering and traversal use
+      the same resolved object.
+
+      @return: This element or its request-cached proxy.
+      @rtype: C{object}
+      """
       req = getattr(self, 'REQUEST', getRequest())
       key = 'ZMS_PROXY_%s'%self.id
       rtn = req.get(key, None)
@@ -680,12 +953,25 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
       return rtn
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSLinkElement.getChildNodes:
-    #
-    #  Overrides original method of zmscontainerobject.ZMSContainerObject. 
-    # --------------------------------------------------------------------------
     def getChildNodesPROXY(self, proxy, REQUEST={}, meta_types=None, reid=None):
+      """
+      Return child nodes for the active proxy or referenced object.
+
+      Recursively embedded elements expose proxied child nodes. Direct embedded
+      elements expose non-page children of the referenced object.  
+      Overrides original method of zmscontainerobject.ZMSContainerObject.
+
+      @param proxy: Active proxy object.
+      @type proxy: C{object}
+      @param REQUEST: Current request context.
+      @type REQUEST: C{dict}
+      @param meta_types: Optional meta type filter.
+      @type meta_types: C{list} | C{None}
+      @param reid: Optional regular-expression id filter.
+      @type reid: C{str} | C{None}
+      @return: Child nodes visible through the embedding context.
+      @rtype: C{list}
+      """
       rtn = []
       if proxy != self and proxy is not None and self.isEmbeddedRecursive():
         recursive = True
@@ -699,23 +985,42 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
       return rtn
 
     def getChildNodes(self, REQUEST={}, meta_types=None, reid=None):
+      """
+      Return child nodes visible for this link element.
+
+      @param REQUEST: Current request context.
+      @type REQUEST: C{dict}
+      @param meta_types: Optional meta type filter.
+      @type meta_types: C{list} | C{None}
+      @param reid: Optional regular-expression id filter.
+      @type reid: C{str} | C{None}
+      @return: Resolved child node list.
+      @rtype: C{list}
+      """
       proxy = self.getProxy()
       rtn = self.getChildNodesPROXY( proxy, REQUEST, meta_types, reid)
       return rtn
 
-
-    ############################################################################
-    ###
-    ###  Printable
-    ###
-    ############################################################################
-
-    # --------------------------------------------------------------------------
-    #  ZMSLinkElement.printHtml:
-    #
-    #  Renders printable presentation of a ContainerObject.
-    # --------------------------------------------------------------------------
     def printHtmlPROXY(self, proxy, level, sectionizer, REQUEST, deep=True):
+      """
+      Render the printable HTML through the current proxy or reference.
+
+      Recursive embeddings delegate to the proxy tree, while direct embeddings
+      delegate to the referenced object.
+
+      @param proxy: Active proxy object for recursive rendering.
+      @type proxy: C{object}
+      @param level: Current print depth.
+      @type level: C{int}
+      @param sectionizer: Helper used to build printable section numbering.
+      @type sectionizer: C{any}
+      @param REQUEST: Current rendering request.
+      @type REQUEST: ZPublisher.HTTPRequest
+      @param deep: If true, render nested content recursively.
+      @type deep: C{bool}
+      @return: Printable HTML fragment.
+      @rtype: C{str}
+      """
       rtn = ''
       recursive = self.isEmbeddedRecursive()
       if proxy != self and proxy is not None and recursive:
@@ -727,6 +1032,20 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
       return rtn
 
     def printHtml(self, level, sectionizer, REQUEST, deep=True):
+      """
+      Return the printable HTML for this link element.
+
+      @param level: Current print depth.
+      @type level: C{int}
+      @param sectionizer: Helper used to build printable section numbering.
+      @type sectionizer: C{any}
+      @param REQUEST: Current rendering request.
+      @type REQUEST: ZPublisher.HTTPRequest
+      @param deep: If true, render nested content recursively.
+      @type deep: C{bool}
+      @return: Printable HTML fragment.
+      @rtype: C{str}
+      """
       proxy = self.getProxy()
       rtn = self.printHtmlPROXY( proxy, level, sectionizer, REQUEST, deep)
       return rtn
@@ -735,5 +1054,3 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
 # call this to initialize framework classes, which
 # does the right thing with the security assertions.
 InitializeClass(ZMSLinkElement)
-
-################################################################################

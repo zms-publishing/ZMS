@@ -1,20 +1,13 @@
-################################################################################
-# _fileutil.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+_fileutil.py - ZMS File System Utilities
+
+This module provides file-system utility functions for ZMS, including
+path handling, file reading/writing, ZEXP import/export, ZIP archive
+creation/extraction, and data size formatting.
+
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
+"""
 
 # Imports.
 from ZPublisher.Iterators import filestream_iterator
@@ -30,12 +23,24 @@ from Products.zms import _blobfields
 from Products.zms import zopeutil
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-_fileutil.import_zexp:
+################################################################################
+# Module-level helper functions
+################################################################################
 
-Import zexp.
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def import_zexp(self, zexp, new_id, id_prefix, _sort_id=0):
+  """
+  Import a ZEXP file into the current container and normalize sort IDs.
+
+  @param self: The container object to import into
+  @type self: C{OFS.ObjectManager}
+  @param zexp: The ZEXP file object to import
+  @param new_id: Target ID for the imported object
+  @type new_id: C{str}
+  @param id_prefix: ID prefix for sort-ID normalization
+  @type id_prefix: C{str}
+  @param _sort_id: Initial sort ID
+  @type _sort_id: C{int}
+  """
   INSTANCE_HOME = getConfiguration().instancehome
   # Import
   filename = zexp.title_or_id()
@@ -54,12 +59,15 @@ def import_zexp(self, zexp, new_id, id_prefix, _sort_id=0):
   self.normalizeSortIds( id_prefix)
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-_fileutil.importZexp:
-
-Import file from specified path.
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def importZexp(self, filename):
+  """
+  Import a ZEXP file from the INSTANCE_HOME/import folder.
+
+  @param self: The container object to import into
+  @type self: C{OFS.ObjectManager}
+  @param filename: Name of the ZEXP file in the import folder
+  @type filename: C{str}
+  """
   ### Store copy of ZEXP in INSTANCE_HOME/import-folder.
   INSTANCE_HOME = getConfiguration().instancehome
   filepath = INSTANCE_HOME + '/import/' + filename
@@ -67,13 +75,19 @@ def importZexp(self, filename):
   remove(filepath)
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-_fileutil.extractFilename:
-
-Extract filename from path.
-IN:  path
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def extractFilename(path, sep=None, undoable=False):
+  """
+  Extract the filename from a file path.
+
+  @param path: File path
+  @type path: C{str}
+  @param sep: Custom separator (default: OS separator)
+  @type sep: C{str} or C{None}
+  @param undoable: Whether special characters should be preserved
+  @type undoable: C{bool}
+  @return: Filename portion of the path
+  @rtype: C{str}
+  """
   if sep is None:
     path = getOSPath(path, undoable=undoable)
   items = path.split( os.sep)
@@ -81,25 +95,33 @@ def extractFilename(path, sep=None, undoable=False):
   return lastitem
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-_fileutil.extractFileExt:
-
-Extract fileextension from path.
-IN:  path
-OUT: extension
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def extractFileExt(path):
+  """
+  Extract the file extension from a path.
+
+  @param path: File path
+  @type path: C{str}
+  @return: File extension (without dot)
+  @rtype: C{str}
+  """
   items = path.split('.')
   lastitem = items[len(items)-1]
   return lastitem
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-_fileutil.getOSPath:
-
-Return path with OS separators.
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def getOSPath(path, chs=list(range(32))+[34, 39, 60, 62, 63, 127], undoable=False):
+  """
+  Normalize a path string to use OS-appropriate separators.
+
+  @param path: File path to normalize
+  @type path: C{str} or C{bytes}
+  @param chs: List of character codes to strip (unused)
+  @type chs: C{list}
+  @param undoable: Whether special characters should be preserved
+  @type undoable: C{bool}
+  @return: Normalized path
+  @rtype: C{str}
+  """
   if isinstance(path, bytes):
     path = path.decode('utf-8')
   path = path.replace('\\', os.sep)
@@ -114,12 +136,15 @@ def getOSPath(path, chs=list(range(32))+[34, 39, 60, 62, 63, 127], undoable=Fals
   return path
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-_fileutil.absoluteOSPath:
-
-Return absolute-path with OS separators.
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def absoluteOSPath(path):
+  """
+  Convert a relative path to an absolute path, resolving '..' segments.
+
+  @param path: File path (may contain '..' segments)
+  @type path: C{str}
+  @return: Absolute path with resolved parent references
+  @rtype: C{str}
+  """
   path = getOSPath(path)
   l0 = path.split(os.sep)
   l1 = []
@@ -132,14 +157,15 @@ def absoluteOSPath(path):
   return path
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-_fileutil.getFilePath:
-
-Extract filepath from path (cut-off filename).
-IN:  path
-OUT: filepath
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def getFilePath(path):
+  """
+  Extract the directory path from a full file path (removing filename).
+
+  @param path: Full file path
+  @type path: C{str}
+  @return: Directory path
+  @rtype: C{str}
+  """
   items = getOSPath(path).split(os.sep)
   filepath = ''
   for i in range(len(items)-1):
@@ -150,16 +176,19 @@ def getFilePath(path):
   return filepath
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
- _fileutil.findExtension:
-
-Searches path and all subdirectories for file with extension and returns 
-complete filepath. Returns None if no file with specified extension exists.
-IN:  extension
-     path
-OUT: filepath
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def findExtension(extension, path, deep=1):
+  """
+  Search a directory (optionally recursively) for a file with the given extension.
+
+  @param extension: File extension to search for (without dot)
+  @type extension: C{str}
+  @param path: Directory path to search in
+  @type path: C{str}
+  @param deep: Whether to search subdirectories recursively
+  @type deep: C{int}
+  @return: Full path to the first matching file, or None
+  @rtype: C{str} or C{None}
+  """
   rtn = None
   path = getOSPath(path)
   for file in os.listdir(path):
@@ -174,12 +203,20 @@ def findExtension(extension, path, deep=1):
   return rtn
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-_fileutil.readPath:
-
-Reads path.
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def readPath(path, data=True, recursive=True):
+  """
+  Read directory contents and return a list of file/directory info dicts.
+
+  @param path: Directory path (may include glob wildcards)
+  @type path: C{str}
+  @param data: Whether to read file data
+  @type data: C{bool}
+  @param recursive: Whether to recurse into subdirectories
+  @type recursive: C{bool}
+  @return: List of dicts with keys: local_filename, filename, mtime, size,
+           content_type, encoding, data (if requested), isdir
+  @rtype: C{list}
+  """
   l = []
   path = path.replace('\\', os.sep)
   path = path.replace('/', os.sep)
@@ -227,12 +264,22 @@ def readPath(path, data=True, recursive=True):
   return l
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-_fileutil.readFile:
-
-Reads file (threshold for filesteam_iterator is 128 kb).
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def readFile(filename, mode='b', threshold=2 << 16):
+  """
+  Read a file and return its data along with content-type information.
+
+  Uses a filestream_iterator for files larger than the threshold.
+
+  @param filename: Path to the file to read
+  @type filename: C{str}
+  @param mode: File open mode ('b' for binary, 't' for text)
+  @type mode: C{str}
+  @param threshold: Size threshold in bytes for using filestream_iterator
+                    (-1 to always read into memory)
+  @type threshold: C{int}
+  @return: Tuple of (data, content_type, encoding, file_size)
+  @rtype: C{tuple}
+  """
   size = os.path.getsize( filename)
   if size < threshold or -1 == threshold:
     f = None
@@ -251,12 +298,15 @@ def readFile(filename, mode='b', threshold=2 << 16):
   return data, mt, enc, size
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-_fileutil.remove:
-
-Removes path.
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def remove(path, deep=0):
+  """
+  Remove a file or directory.
+
+  @param path: Path to remove
+  @type path: C{str}
+  @param deep: Unused (directories are always removed recursively)
+  @type deep: C{int}
+  """
   path = getOSPath(path)
   if os.path.isdir(path):
     shutil.rmtree(path)
@@ -264,12 +314,15 @@ def remove(path, deep=0):
     os.remove(path)
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-_fileutil.getDataSizeStr: 
-
-Display string for file-size.
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def getDataSizeStr(len):
+  """
+  Format a file size in bytes as a human-readable string.
+
+  @param len: File size in bytes
+  @type len: C{int} or C{float}
+  @return: Human-readable size string (e.g. '1KB', '2.5 MB')
+  @rtype: C{str}
+  """
   s = ''
   try:
     mod = 0
@@ -291,18 +344,32 @@ def getDataSizeStr(len):
   return s
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-_fileutil.executeCommand:
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def executeCommand(path, command):
+  """
+  Execute a shell command in the given directory.
+
+  @param path: Working directory for the command
+  @type path: C{str}
+  @param command: Shell command to execute
+  @type command: C{str}
+  """
   os.chdir(path)
   os.system(command)
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-_fileutil.exportObj:
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def exportObj(obj, filename):
+  """
+  Export an object's data to a file on disk.
+
+  Supports MyBlob objects, Zope objects, ImageFile objects,
+  file-like objects, and raw data.
+
+  @param obj: The object to export
+  @param filename: Destination file path
+  @type filename: C{str}
+  @return: The exported data, or None if no data
+  @rtype: C{bytes} or C{None}
+  """
   
   #-- Try to create directory-tree.
   filename = getOSPath(filename)
@@ -341,22 +408,29 @@ def exportObj(obj, filename):
   return data
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-_fileutil.mkDir:
-
-Make directory.
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def mkDir(path):
+  """
+  Create a directory and any necessary parent directories.
+
+  @param path: Directory path to create
+  @type path: C{str}
+  """
   try:
     os.makedirs( path)
   except:
     pass
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-_fileutil.readDir
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def readDir(path):
+  """
+  List directory contents with metadata.
+
+  @param path: Directory path to list
+  @type path: C{str}
+  @return: List of dicts with keys: path, file, mtime, size, type ('d' or 'f'),
+           sorted by type (directories first)
+  @rtype: C{list}
+  """
   obs = []
   path = getOSPath(path)
   for file in os.listdir(path):
@@ -374,18 +448,21 @@ def readDir(path):
   return sorted(obs, key=lambda x:x['type'])
 
 
-################################################################################
-###
-###  ZIP
-###
-################################################################################
+#--------------------------------------------------------------------------
+#  ZIP
+#--------------------------------------------------------------------------
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-_fileutil.getZipArchive:
-
-Extract files from zip-archive and return list of extracted files.
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def getZipArchive(f):
+  """
+  Extract files from a ZIP archive and return a list of extracted files.
+
+  Creates a temporary directory, extracts the archive, reads the contents,
+  then cleans up.
+
+  @param f: ZIP file data or object to extract
+  @return: List of file info dicts (from L{readPath})
+  @rtype: C{list}
+  """
   l = []
   
   # Saved zip-file in temp-folder.
@@ -409,12 +486,17 @@ def getZipArchive(f):
   return l
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-_fileutil.extractZipArchive:
-
-Unpack ZIP-Archive.
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def extractZipArchive(file):
+  """
+  Unpack a ZIP archive to the directory containing the archive file.
+
+  Skips macOS metadata files (__MACOSX/, .DS_Store).
+
+  @param file: Path to the ZIP archive file
+  @type file: C{str}
+  @return: List of extracted file paths
+  @rtype: C{list}
+  """
   l = []
   
   zf = zipfile.ZipFile( file, 'r')
@@ -438,10 +520,19 @@ def extractZipArchive(file):
   return l
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-_fileutil.writeZipFile:
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def writeZipFile( zf, basepath, path, filter):
+  """
+  Recursively write files matching a filter pattern to a ZIP archive.
+
+  @param zf: Open ZipFile object to write to
+  @type zf: C{zipfile.ZipFile}
+  @param basepath: Base path for computing archive names
+  @type basepath: C{str}
+  @param path: Current directory path to scan
+  @type path: C{str}
+  @param filter: Semicolon-separated glob patterns to match files
+  @type filter: C{str}
+  """
   for file in os.listdir( path):
     filepath = path+os.sep+file
     if os.path.isdir(filepath): 
@@ -454,12 +545,18 @@ def writeZipFile( zf, basepath, path, filter):
       if match:
         zf.write( filepath, str(arcname))
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-_fileutil.buildZipArchive:
 
-Pack ZIP-Archive and return data.
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def buildZipArchive( files, get_data=True):
+  """
+  Build a ZIP archive from files matching a pattern and return data.
+
+  @param files: File path pattern (e.g. '/path/to/dir/*.txt')
+  @type files: C{str}
+  @param get_data: If True, return archive data; if False, return temp filename
+  @type get_data: C{bool}
+  @return: ZIP archive data (bytes) or temporary file path
+  @rtype: C{bytes} or C{str}
+  """
   
   # Create temporary zip-file.
   zipfilename = tempfile.mktemp() + '.zip'
@@ -486,15 +583,19 @@ def buildZipArchive( files, get_data=True):
   return data
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-_fileutil.tail_lines:
-
-Does what "tail -10 filename" would have done
-@param filename   file to read
-@param linesback  Number of lines to read from end of file
-@param returnlist Return a list containing the lines instead of a string
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def tail_lines(filename,linesback=10,returnlist=0):
+    """
+    Read the last N lines from a file, similar to 'tail -N filename'.
+
+    @param filename: Path to the file to read
+    @type filename: C{str}
+    @param linesback: Number of lines to read from end of file
+    @type linesback: C{int}
+    @param returnlist: If true, return a list of lines; otherwise a string
+    @type returnlist: C{int}
+    @return: Last N lines as a string or list
+    @rtype: C{str} or C{list}
+    """
     avgcharsperline=75
     
     file = open(filename, 'r')
@@ -517,5 +618,3 @@ def tail_lines(filename,linesback=10,returnlist=0):
     out=""
     for l in lines[start:len(lines)-1]: out=out + l + "\n"
     return out
-
-################################################################################

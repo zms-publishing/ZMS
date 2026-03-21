@@ -452,12 +452,12 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSIndex</span>(ZMSItem.ZMSItem): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L43" class="sourceLink">(source)</a></code></p><p>Implements interfaces: Products.zms.IZMSConfigurationProvider.IZMSConfigurationProvider</p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSIndex</span>(ZMSItem.ZMSItem): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L32" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms.zmsindex.ZMSIndex.__init__">ZMSIndex()</a></code></p><p>Implements interfaces: Products.zms.IZMSConfigurationProvider.IZMSConfigurationProvider</p>
           <p><a href="classIndex.html#zms.zmsindex.ZMSIndex">View In Hierarchy</a></p>
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>Catalog-backed index manager for ZMS content trees.</p></div>
         </div>
 
         <div id="splitTables">
@@ -468,42 +468,42 @@
     
     <td>Method</td>
     <td><code><a href="#__init__" class="internal-link" title="zms.zmsindex.ZMSIndex.__init__">__init__</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Initialize the singleton index object.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#catalog_object" class="internal-link" title="zms.zmsindex.ZMSIndex.catalog_object">catalog<wbr></wbr>_object</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Catalog a single object after duplicate-uid checks.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#doi" class="internal-link" title="zms.zmsindex.ZMSIndex.doi">doi</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Resolve DOI-style short URLs via the catalog and redirect to the target.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#duplicate_object" class="internal-link" title="zms.zmsindex.ZMSIndex.duplicate_object">duplicate<wbr></wbr>_object</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Detect duplicate uids and optionally regenerate them.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#get_catalog" class="internal-link" title="zms.zmsindex.ZMSIndex.get_catalog">get<wbr></wbr>_catalog</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the site catalog, creating or recreating it when needed.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#get_index_names" class="internal-link" title="zms.zmsindex.ZMSIndex.get_index_names">get<wbr></wbr>_index<wbr></wbr>_names</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return configured catalog field names.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#get_log" class="internal-link" title="zms.zmsindex.ZMSIndex.get_log">get<wbr></wbr>_log</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Filter collected log lines by the requested log level.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#initialize" class="internal-link" title="zms.zmsindex.ZMSIndex.initialize">initialize</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Ensure the catalog exists and build its initial index entries.</td>
   </tr><tr class="method">
     
     <td>Method</td>
@@ -513,12 +513,12 @@
     
     <td>Method</td>
     <td><code><a href="#manage_reindex" class="internal-link" title="zms.zmsindex.ZMSIndex.manage_reindex">manage<wbr></wbr>_reindex</a></code></td>
-    <td>ZMSIndex.manage_reindex</td>
+    <td>Rebuild catalog entries for the requested site roots.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_resync" class="internal-link" title="zms.zmsindex.ZMSIndex.manage_resync">manage<wbr></wbr>_resync</a></code></td>
-    <td>ZMSIndex.manage_resync</td>
+    <td>Rewrite stored inline references and URL fields to current targets.</td>
   </tr><tr class="method">
     
     <td>Method</td>
@@ -528,32 +528,32 @@
     
     <td>Method</td>
     <td><code><a href="#manage_test" class="internal-link" title="zms.zmsindex.ZMSIndex.manage_test">manage<wbr></wbr>_test</a></code></td>
-    <td>ZMSIndex.manage_test</td>
+    <td>Compare catalog contents with the live content tree.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#ObjectAdded" class="internal-link" title="zms.zmsindex.ZMSIndex.ObjectAdded"><wbr></wbr>Object<wbr></wbr>Added</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Catalog a newly added object and its descendants.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#ObjectImported" class="internal-link" title="zms.zmsindex.ZMSIndex.ObjectImported"><wbr></wbr>Object<wbr></wbr>Imported</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Refresh the catalog after an object import operation.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#ObjectMoved" class="internal-link" title="zms.zmsindex.ZMSIndex.ObjectMoved"><wbr></wbr>Object<wbr></wbr>Moved</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Re-catalog a moved object tree under its new path.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#ObjectRemoved" class="internal-link" title="zms.zmsindex.ZMSIndex.ObjectRemoved"><wbr></wbr>Object<wbr></wbr>Removed</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Remove a deleted object tree from the catalog.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#uncatalog_object" class="internal-link" title="zms.zmsindex.ZMSIndex.uncatalog_object">uncatalog<wbr></wbr>_object</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Remove a single object from the catalog by its path.</td>
   </tr><tr class="classvariable">
     
     <td>Class Variable</td>
@@ -605,7 +605,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">__init__</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L80">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L70">
       
       (source)
     </a>
@@ -617,7 +617,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Initialize the singleton index object.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -632,7 +632,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">catalog_object</span><span class="function-signature">(self, catalog, node, regenerate_duplicates=False)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L227">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L266">
       
       (source)
     </a>
@@ -644,7 +644,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Catalog a single object after duplicate-uid checks.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">catalog:</span><tt class="rst-docutils rst-literal">Products.ZCatalog.ZCatalog.ZCatalog</tt></td><td class="fieldArgDesc">Active catalog.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">node:</span><tt class="rst-docutils rst-literal">OFS.SimpleItem.Item</tt></td><td class="fieldArgDesc">Object being cataloged.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">regenerate<wbr></wbr>_duplicates:</span><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">Regenerate duplicate uids when possible.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">tuple</tt></td><td class="fieldArgDesc">Duplicate flag and regenerate flag.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -659,7 +659,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">doi</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L664">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L744">
       
       (source)
     </a>
@@ -671,7 +671,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Resolve DOI-style short URLs via the catalog and redirect to the target.</p>
+<p>Configure the catalog to index <tt class="rst-docutils rst-literal">attr_dc_identifier_doi</tt> on document nodes to enable redirects such as <tt class="rst-docutils rst-literal">/doi/faq</tt> or <tt class="rst-docutils rst-literal">/doi/10.1109/5.771073</tt>.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">Redirect response payload or a not-found message.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -686,7 +688,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">duplicate_object</span><span class="function-signature">(self, catalog, node, regenerate_duplicates=False)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L204">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L233">
       
       (source)
     </a>
@@ -698,7 +700,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Detect duplicate uids and optionally regenerate them.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">catalog:</span><tt class="rst-docutils rst-literal">Products.ZCatalog.ZCatalog.ZCatalog</tt></td><td class="fieldArgDesc">Active catalog.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">node:</span><tt class="rst-docutils rst-literal">OFS.SimpleItem.Item</tt></td><td class="fieldArgDesc">Object being cataloged.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">regenerate<wbr></wbr>_duplicates:</span><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">Regenerate duplicate uids when possible.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">tuple</tt></td><td class="fieldArgDesc">Duplicate flag and regenerate flag.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -713,7 +715,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_catalog</span><span class="function-signature">(self, recreate=False)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L160">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L179">
       
       (source)
     </a>
@@ -725,7 +727,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the site catalog, creating or recreating it when needed.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">recreate:</span><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">Drop and rebuild the catalog first.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">Products.ZCatalog.ZCatalog.ZCatalog</tt></td><td class="fieldArgDesc">Catalog used by the ZMS index.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -740,7 +742,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_index_names</span><span class="function-signature">(self, complete=True)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L193">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L218">
       
       (source)
     </a>
@@ -752,7 +754,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return configured catalog field names.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">complete:</span><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">Prefix names for catalog storage fields.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Catalog index names.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -767,7 +769,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_log</span><span class="function-signature">(self, log, request)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L153">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L164">
       
       (source)
     </a>
@@ -779,7 +781,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Filter collected log lines by the requested log level.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">log:</span><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Accumulated log lines.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">request:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Current request or <tt class="rst-docutils rst-literal">None</tt>.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Joined log output.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -794,7 +796,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">initialize</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L86">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L75">
       
       (source)
     </a>
@@ -806,7 +808,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Ensure the catalog exists and build its initial index entries.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -821,7 +823,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_options</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L59">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L52">
       
       (source)
     </a>
@@ -848,7 +850,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_reindex</span><span class="function-signature">(self, regenerate_all=None, regenerate_duplicates=None, REQUEST=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L248">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L303">
       
       (source)
     </a>
@@ -860,7 +862,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>ZMSIndex.manage_reindex</p></div>
+    <div><p>Rebuild catalog entries for the requested site roots.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">regenerate<wbr></wbr>_all:</span><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">Force a full rebuild for matching roots.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">regenerate<wbr></wbr>_duplicates:</span><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">Regenerate duplicate uids during indexing.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Optional request overriding the current one.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Filtered log output.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -875,7 +877,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_resync</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L340">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L413">
       
       (source)
     </a>
@@ -887,7 +889,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>ZMSIndex.manage_resync</p></div>
+    <div><p>Rewrite stored inline references and URL fields to current targets.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Filtered resync log.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -902,7 +904,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_sub_options</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L62">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L56">
       
       (source)
     </a>
@@ -929,7 +931,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_test</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L288">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L354">
       
       (source)
     </a>
@@ -941,7 +943,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>ZMSIndex.manage_test</p></div>
+    <div><p>Compare catalog contents with the live content tree.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Filtered validation log.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -956,7 +958,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">ObjectAdded</span><span class="function-signature">(self, context)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L106">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L98">
       
       (source)
     </a>
@@ -968,7 +970,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Catalog a newly added object and its descendants.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">context:</span><tt class="rst-docutils rst-literal">OFS.SimpleItem.Item</tt></td><td class="fieldArgDesc">Added object context.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">Always <tt class="rst-docutils rst-literal">True</tt> after cataloging.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -983,7 +985,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">ObjectImported</span><span class="function-signature">(self, context)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L93">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L81">
       
       (source)
     </a>
@@ -995,7 +997,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Refresh the catalog after an object import operation.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">context:</span><tt class="rst-docutils rst-literal">OFS.SimpleItem.Item</tt></td><td class="fieldArgDesc">Imported object context.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1010,7 +1012,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">ObjectMoved</span><span class="function-signature">(self, context)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L123">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L122">
       
       (source)
     </a>
@@ -1022,7 +1024,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Re-catalog a moved object tree under its new path.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">context:</span><tt class="rst-docutils rst-literal">OFS.SimpleItem.Item</tt></td><td class="fieldArgDesc">Moved object context.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1037,7 +1039,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">ObjectRemoved</span><span class="function-signature">(self, context)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L140">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L145">
       
       (source)
     </a>
@@ -1049,7 +1051,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Remove a deleted object tree from the catalog.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">context:</span><tt class="rst-docutils rst-literal">OFS.SimpleItem.Item</tt></td><td class="fieldArgDesc">Removed object context.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1064,7 +1066,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">uncatalog_object</span><span class="function-signature">(self, catalog, node)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L239">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L288">
       
       (source)
     </a>
@@ -1076,7 +1078,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Remove a single object from the catalog by its path.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">catalog:</span><tt class="rst-docutils rst-literal">Products.ZCatalog.ZCatalog.ZCatalog</tt></td><td class="fieldArgDesc">Active catalog.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">node:</span><tt class="rst-docutils rst-literal">OFS.SimpleItem.Item</tt></td><td class="fieldArgDesc">Object being removed.</td></tr></table></div>
   </div>
 </div><div class="baseclassvariable">
   
@@ -1090,7 +1092,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">catalog_id</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L73">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L67">
       
       (source)
     </a>
@@ -1117,7 +1119,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_main</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L70">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L64">
       
       (source)
     </a>
@@ -1144,7 +1146,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_options_default_action</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L58">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L49">
       
       (source)
     </a>
@@ -1171,7 +1173,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">meta_type</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L51">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L42">
       
       (source)
     </a>
@@ -1198,7 +1200,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_icon</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L52">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L43">
       
       (source)
     </a>
@@ -1225,7 +1227,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">id</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L81">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmsindex.py#L72">
       
       (source)
     </a>

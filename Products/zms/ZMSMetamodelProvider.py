@@ -1,21 +1,14 @@
-################################################################################
-# ZMSMetamodelProvider.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+ZMSMetamodelProvider.py - ZMS Metamodel Provider
 
+Defines ZMSMetamodelProvider for central management of ZMS meta-objects and meta-dictionaries.
+The provider serves as a repository for meta-model definitions, including schema and constraint data,
+and offers ZMI interfaces for editing and synchronizing these definitions. It supports acquisition
+from a portal master and provides repository import/export functionality for content synchronization.
+
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
+"""
 
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -28,13 +21,6 @@ from Products.zms import IZMSMetamodelProvider, ZMSMetaobjManager, ZMSMetadictMa
 from Products.zms import ZMSItem
 
 
-################################################################################
-################################################################################
-###
-###   Class
-###
-################################################################################
-################################################################################
 @implementer(
         IZMSConfigurationProvider.IZMSConfigurationProvider,
         IZMSMetamodelProvider.IZMSMetamodelProvider,
@@ -43,14 +29,16 @@ class ZMSMetamodelProvider(
         ZMSItem.ZMSItem,
         ZMSMetaobjManager.ZMSMetaobjManager,
         ZMSMetadictManager.ZMSMetadictManager):
+    """
+    Central provider for ZMS object-model definitions (meta-objects and
+    meta-dictionaries), including ZMI management and repository I/O.
+    """
 
-    # Properties.
-    # -----------
     meta_type = 'ZMSMetamodelProvider'
-    icon_clazz = "icon-briefcase"
+    zmi_icon = "fas fa-briefcase"
+    icon_clazz = zmi_icon
 
     # Management Options.
-    # -------------------
     manage_options_default_action = '../manage_customize'
     def manage_options(self):
       return [self.operator_setitem( x, 'action', '../'+x['action']) for x in copy.deepcopy(self.aq_parent.manage_options())]
@@ -63,7 +51,6 @@ class ZMSMetamodelProvider(
         )
 
     # Management Interface.
-    # ---------------------
     manage = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_main', globals())
     manage_main = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_main', globals())
     manage_main_import = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_main_import', globals())
@@ -73,7 +60,6 @@ class ZMSMetamodelProvider(
     manage_metas = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_metas', globals())
 
     # Management Permissions.
-    # -----------------------
     __administratorPermissions__ = (
       'manage_changeProperties', 'manage_ajaxChangeProperties', 'manage_main', 'manage_main_import', 'manage_bigpicture',
       'manage_changeMetaProperties', 'manage_metas',
@@ -102,18 +88,16 @@ class ZMSMetamodelProvider(
         return '<article class="zmi-readme">%s</article>'%html
       return ''
 
-    ############################################################################
-    #  ZMSMetamodelProvider.__init__: 
-    #
-    #  Constructor.
-    ############################################################################
+
     def __init__(self, model={}, metas=[]):
+      """Initialise the metaobj/metadict manager with an optional model dict and metas list."""
       self.id = 'metaobj_manager'
       self.model = model.copy()
       self.metas = copy.deepcopy(metas)
 
-    # @see _confmanager:TemplateWrapper.__get__
+
     def getConfProperty(self, key, default=None):
+      """Return configuration property from the root content object, or default."""
       v = default
       try:
         if self.content is not None:
@@ -122,12 +106,12 @@ class ZMSMetamodelProvider(
         pass
       return v
 
-    # --------------------------------------------------------------------------
-    #  ZMSMetamodelProvider.__bobo_traverse__
-    # --------------------------------------------------------------------------
+
     def __bobo_traverse__(self, TraversalRequest, name):
-      
-      # If the name is in the list of attributes, call it.
+      """
+      Custom traversal hook that resolves attributes and delegates upward
+      through portal hierarchy when not found locally.
+      """
       attr = getattr( self, name, None)
       if attr is not None:
         return attr
@@ -149,29 +133,32 @@ class ZMSMetamodelProvider(
         return None
 
 
-    ############################################################################
-    #
-    #  IRepositoryProvider
-    #
-    ############################################################################
-
-    """
-    @see IRepositoryProvider
-    """
     def provideRepository(self, ids=None):
+      """
+      Export all local model and meta-dictionary records into a repository dict.
+
+      @param ids: Optional subset of record ids to include.
+      @type ids: C{list} | C{None}
+      @return: Repository payload keyed by record id.
+      @rtype: C{dict}
+      """
       standard.writeBlock(self, "[provideRepository]: ids=%s"%str(ids))
       r = {}
       self.provideRepositoryMetas(r, ids)
       self.provideRepositoryModel(r, ids)
       return r
 
-    """
-    @see IRepositoryProvider
-    """
+
     def updateRepository(self, r):
+      """
+      Import one record from a repository payload into the local model.
+
+      @param r: Repository record mapping.
+      @type r: C{dict}
+      @return: Imported record id.
+      @rtype: C{str}
+      """
       id = r['id']
       self.updateRepositoryMetas(r)
       self.updateRepositoryModel(r)
       return id
-
-################################################################################

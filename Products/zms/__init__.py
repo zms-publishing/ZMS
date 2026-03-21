@@ -1,26 +1,35 @@
-################################################################################
-# Initialisation file for the ZMS Product for Zope
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-#
-################################################################################
+"""
+__init__.py - ZMS product initialization module.
 
-"""ZMS product initialization module.
+This module handles the core initialization of the ZMS (Zope Management System)
+product during Zope startup. It is responsible for:
+  - Registering ZMS content types (ZMS, ZMSCustom, ZMSSqlDb, ZMSLinkContainer,
+    ZMSLinkElement, MediaDb, ZMSAttributeContainer) with the Zope application
+    context to make them available for object instantiation.
+  - Configuring language resources by parsing the C{_language.xml} import file
+    and automatically generating language-specific JavaScript files
+    (C{i18n/<lang>.js}) for client-side internationalization support.
+  - Setting up session storage infrastructure by ensuring the existence of
+    C{temp_folder} and C{session_data} containers for temporary data storage
+    during user sessions.
+  - Performing automated minification of static assets (JavaScript and CSS files)
+    based on configuration parameters to reduce file sizes and improve
+    performance. This includes generation of hash values for cache-busting.
+  - Registering language dictionaries and configuration dictionaries in the
+    Zope misc container (C{OFS.misc_.misc_.zms}) for global access across
+    the application.
+  - Monkey-patching C{Products.CMFCore.zcml.registerDirectory()} to support
+    directory registration outside of package context, and registering additional
+    file extensions (xlsx, xls, doc, docx, ppt, pptx, svg, etc.) for proper
+    content type handling.
 
-Registers ZMS content types, configures language resources,
-and performs automated minification of static assets on startup.
+
+Note: The module expects configuration files to be present at specific paths
+within the package home directory, particularly C{version.txt} and
+C{import/_language.xml}.
+
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
 """
 
 # Imports.

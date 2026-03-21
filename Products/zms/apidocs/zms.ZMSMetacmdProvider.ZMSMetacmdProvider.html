@@ -515,12 +515,12 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSMetacmdProvider</span>(ZMSItem.ZMSItem): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L75" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms.ZMSMetacmdProvider.ZMSMetacmdProvider.__init__">ZMSMetacmdProvider(commands)</a></code></p><p>Implements interfaces: Products.zms.IZMSConfigurationProvider.IZMSConfigurationProvider, Products.zms.IZMSMetacmdProvider.IZMSMetacmdProvider, Products.zms.IZMSRepositoryProvider.IZMSRepositoryProvider</p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSMetacmdProvider</span>(ZMSItem.ZMSItem): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L58" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms.ZMSMetacmdProvider.ZMSMetacmdProvider.__init__">ZMSMetacmdProvider(commands)</a></code></p><p>Implements interfaces: Products.zms.IZMSConfigurationProvider.IZMSConfigurationProvider, Products.zms.IZMSMetacmdProvider.IZMSMetacmdProvider, Products.zms.IZMSRepositoryProvider.IZMSRepositoryProvider</p>
           <p><a href="classIndex.html#zms.ZMSMetacmdProvider.ZMSMetacmdProvider">View In Hierarchy</a></p>
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>Provider for configurable meta-commands and their repository/xml sync.</p></div>
         </div>
 
         <div id="splitTables">
@@ -531,22 +531,22 @@
     
     <td>Method</td>
     <td><code><a href="#__get_metacmd__" class="internal-link" title="zms.ZMSMetacmdProvider.ZMSMetacmdProvider.__get_metacmd__">__get<wbr></wbr>_metacmd__</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the raw command dict from <tt class="rst-docutils rst-literal">self.commands</tt> for the given id.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#__init__" class="internal-link" title="zms.ZMSMetacmdProvider.ZMSMetacmdProvider.__init__">__init__</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Initialise the manager with a persistent copy of command definitions.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#delMetacmd" class="internal-link" title="zms.ZMSMetacmdProvider.ZMSMetacmdProvider.delMetacmd">del<wbr></wbr>Metacmd</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Delete one meta-command definition and remove its underlying Zope object.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getMetaCmd" class="internal-link" title="zms.ZMSMetacmdProvider.ZMSMetacmdProvider.getMetaCmd">get<wbr></wbr>Meta<wbr></wbr>Cmd</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return one fully-resolved meta-command, including object metadata and code.</td>
   </tr><tr class="method">
     
     <td>Method</td>
@@ -556,52 +556,52 @@
     
     <td>Method</td>
     <td><code><a href="#getMetaCmdIds" class="internal-link" title="zms.ZMSMetacmdProvider.ZMSMetacmdProvider.getMetaCmdIds">get<wbr></wbr>Meta<wbr></wbr>Cmd<wbr></wbr>Ids</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return all meta-command ids, optionally sorted by command name.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getMetaCmds" class="internal-link" title="zms.ZMSMetacmdProvider.ZMSMetacmdProvider.getMetaCmds">get<wbr></wbr>Meta<wbr></wbr>Cmds</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return meta-commands filtered by stereotype and optionally executable context.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#importXml" class="internal-link" title="zms.ZMSMetacmdProvider.ZMSMetacmdProvider.importXml">import<wbr></wbr>Xml</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Import one or many command entries from XML text or file-like input.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_changeMetacmds" class="internal-link" title="zms.ZMSMetacmdProvider.ZMSMetacmdProvider.manage_changeMetacmds">manage_change<wbr></wbr>Metacmds</a></code></td>
-    <td>ZMSMetacmdProvider.manage_changeMetacmds</td>
+    <td>Handle ZMI actions for meta-commands (acquire/save/copy/delete/export/import/insert).</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_options" class="internal-link" title="zms.ZMSMetacmdProvider.ZMSMetacmdProvider.manage_options">manage<wbr></wbr>_options</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Handle the ZMI action 'manage_options'.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_sub_options" class="internal-link" title="zms.ZMSMetacmdProvider.ZMSMetacmdProvider.manage_sub_options">manage<wbr></wbr>_sub<wbr></wbr>_options</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Handle the ZMI action 'manage_sub_options'.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#provideRepository" class="internal-link" title="zms.ZMSMetacmdProvider.ZMSMetacmdProvider.provideRepository">provide<wbr></wbr>Repository</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Build repository export data for selected meta-commands.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#setMetacmd" class="internal-link" title="zms.ZMSMetacmdProvider.ZMSMetacmdProvider.setMetacmd">set<wbr></wbr>Metacmd</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Create or update one meta-command and synchronise its implementation object.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#translateRepositoryModel" class="internal-link" title="zms.ZMSMetacmdProvider.ZMSMetacmdProvider.translateRepositoryModel">translate<wbr></wbr>Repository<wbr></wbr>Model</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Translate repository records from Impl-based format into flat command maps.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#updateRepository" class="internal-link" title="zms.ZMSMetacmdProvider.ZMSMetacmdProvider.updateRepository">update<wbr></wbr>Repository</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Import one command from repository payload and persist it locally.</td>
   </tr><tr class="classvariable">
     
     <td>Class Variable</td>
@@ -661,7 +661,7 @@
     
     <td>Method</td>
     <td><code><a href="#_importXml" class="internal-link" title="zms.ZMSMetacmdProvider.ZMSMetacmdProvider._importXml">_import<wbr></wbr>Xml</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Import one command entry from parsed XML payload.</td>
   </tr>
 </table>
           
@@ -683,7 +683,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">__get_metacmd__</span><span class="function-signature">(self, id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L254">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L224">
       
       (source)
     </a>
@@ -695,7 +695,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the raw command dict from <tt class="rst-docutils rst-literal">self.commands</tt> for the given id.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -710,7 +710,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">__init__</span><span class="function-signature">(self, commands=[])</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L120">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L97">
       
       (source)
     </a>
@@ -722,7 +722,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Initialise the manager with a persistent copy of command definitions.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -737,7 +737,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">delMetacmd</span><span class="function-signature">(self, id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L263">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L229">
       
       (source)
     </a>
@@ -749,7 +749,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Delete one meta-command definition and remove its underlying Zope object.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -764,7 +764,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getMetaCmd</span><span class="function-signature">(self, id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L354">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L311">
       
       (source)
     </a>
@@ -776,7 +776,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return one fully-resolved meta-command, including object metadata and code.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -791,7 +791,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getMetaCmdDescription</span><span class="function-signature">(self, id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L341">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L303">
       
       (source)
     </a>
@@ -818,7 +818,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getMetaCmdIds</span><span class="function-signature">(self, sort=True)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L392">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L345">
       
       (source)
     </a>
@@ -830,7 +830,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return all meta-command ids, optionally sorted by command name.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -845,7 +845,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getMetaCmds</span><span class="function-signature">(self, context=None, stereotype=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, sort=True)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L407">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L355">
       
       (source)
     </a>
@@ -857,7 +857,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return meta-commands filtered by stereotype and optionally executable context.</p>
+<p>When <tt class="rst-docutils rst-literal">context</tt> is provided, role/meta-type/node constraints are evaluated.</p>
+</div>
   </div>
 </div><div class="basemethod">
   
@@ -872,7 +874,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">importXml</span><span class="function-signature">(self, xml)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L242">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L215">
       
       (source)
     </a>
@@ -884,7 +886,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Import one or many command entries from XML text or file-like input.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -899,7 +901,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_changeMetacmds</span><span class="function-signature">(self, btn, lang, REQUEST, RESPONSE)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L477">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L425">
       
       (source)
     </a>
@@ -911,7 +913,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>ZMSMetacmdProvider.manage_changeMetacmds</p></div>
+    <div><p>Handle ZMI actions for meta-commands (acquire/save/copy/delete/export/import/insert).</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -926,7 +928,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_options</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L91">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L72">
       
       (source)
     </a>
@@ -938,7 +940,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Handle the ZMI action 'manage_options'.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -953,7 +955,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_sub_options</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L95">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L77">
       
       (source)
     </a>
@@ -965,7 +967,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Handle the ZMI action 'manage_sub_options'.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -980,7 +982,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">provideRepository</span><span class="function-signature">(self, ids=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L134">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L103">
       
       (source)
     </a>
@@ -992,7 +994,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Build repository export data for selected meta-commands.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">ids:</span><tt class="rst-docutils rst-literal">list</tt> | <tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc">Optional list of command ids to export.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Mapping keyed by command id.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1007,7 +1009,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">setMetacmd</span><span class="function-signature">(self, id, newId, newAcquired, newPackage=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, newRevision=<span class="rst-variable-quote">'</span><span class="rst-variable-string">0.0.0</span><span class="rst-variable-quote">'</span>, newName=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, newTitle=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, newMethod=None, newData=None, newExecution=0, newDescription=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, newIconClazz=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, newMetaTypes=[], newRoles=[<wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">ZMSAdministrator</span><span class="rst-variable-quote">'</span>], newNodes=<span class="rst-variable-quote">'</span><span class="rst-variable-string">{$}</span><span class="rst-variable-quote">'</span>)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L285">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L246">
       
       (source)
     </a>
@@ -1019,7 +1021,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Create or update one meta-command and synchronise its implementation object.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Effective command id.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1034,7 +1036,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">translateRepositoryModel</span><span class="function-signature">(self, r)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L192">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L172">
       
       (source)
     </a>
@@ -1046,7 +1048,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Translate repository records from Impl-based format into flat command maps.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -1061,7 +1063,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">updateRepository</span><span class="function-signature">(self, r)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L166">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L141">
       
       (source)
     </a>
@@ -1073,7 +1075,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Import one command from repository payload and persist it locally.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">r:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Repository record for one command.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Imported command id.</td></tr></table></div>
   </div>
 </div><div class="baseclassvariable">
   
@@ -1087,7 +1089,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">__ac_permissions__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L111">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L92">
       
       (source)
     </a>
@@ -1114,7 +1116,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">__administratorPermissions__</span>: <code>tuple[<wbr></wbr>str, <wbr></wbr><span class="rst-variable-ellipsis">...</span>]</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L108">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L89">
       
       (source)
     </a>
@@ -1141,7 +1143,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L102">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L84">
       
       (source)
     </a>
@@ -1168,7 +1170,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_main</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L103">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L85">
       
       (source)
     </a>
@@ -1195,7 +1197,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_main_acquire</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L104">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L86">
       
       (source)
     </a>
@@ -1222,7 +1224,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_options_default_action</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L90">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L71">
       
       (source)
     </a>
@@ -1249,7 +1251,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_sub_options__roles__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L94">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L76">
       
       (source)
     </a>
@@ -1276,7 +1278,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">meta_type</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L84">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L66">
       
       (source)
     </a>
@@ -1303,7 +1305,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_icon</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L85">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L67">
       
       (source)
     </a>
@@ -1330,7 +1332,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">commands</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L122">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L100">
       
       (source)
     </a>
@@ -1357,7 +1359,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">id</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L121">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L99">
       
       (source)
     </a>
@@ -1385,7 +1387,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">_importXml</span><span class="function-signature">(self, item)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L214">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetacmdProvider.py#L185">
       
       (source)
     </a>
@@ -1397,7 +1399,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Import one command entry from parsed XML payload.</p></div>
   </div>
 </div>
         </div>

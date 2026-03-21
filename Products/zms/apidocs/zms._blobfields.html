@@ -1233,7 +1233,10 @@
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>_blobfields.py - Blob, Image, and File Field Management for ZMS</p>
+<p>Blob fields are content attributes that store binary data (images, documents) within ZMS objects. This module provides the foundational classes and utilities for the entire blob field subsystem, enabling seamless integration of file uploads, secure access control, efficient HTTP delivery, and flexible storage backends.</p>
+<p>License: GNU General Public License v2 or later, Organization: ZMS Publishing</p>
+</div>
         </div>
 
         <div id="splitTables">
@@ -1269,42 +1272,42 @@
     
     <td>Function</td>
     <td><code><a href="#bytes_hex" class="internal-link" title="zms._blobfields.bytes_hex">bytes<wbr></wbr>_hex</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Convert binary or text data to a hexadecimal string.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#createBlobField" class="internal-link" title="zms._blobfields.createBlobField">create<wbr></wbr>Blob<wbr></wbr>Field</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Create a blob field instance and initialize it from uploaded data.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#getLangFilename" class="internal-link" title="zms._blobfields.getLangFilename">get<wbr></wbr>Lang<wbr></wbr>Filename</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Append a language suffix to a filename when needed.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#recurse_downloadRessources" class="internal-link" title="zms._blobfields.recurse_downloadRessources">recurse_download<wbr></wbr>Ressources</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Export blob resources from the ZODB to the filesystem.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#rfc1123_date" class="internal-link" title="zms._blobfields.rfc1123_date">rfc1123<wbr></wbr>_date</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Format a UNIX timestamp as an RFC 1123 HTTP date.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#thumbnailImage" class="internal-link" title="zms._blobfields.thumbnailImage">thumbnail<wbr></wbr>Image</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Generate a thumbnail image from one image attribute into another.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#thumbnailImageFields" class="internal-link" title="zms._blobfields.thumbnailImageFields">thumbnail<wbr></wbr>Image<wbr></wbr>Fields</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Generate configured thumbnail variants for all image fields.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#uploadBlobField" class="internal-link" title="zms._blobfields.uploadBlobField">upload<wbr></wbr>Blob<wbr></wbr>Field</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Build a blob field from raw uploaded content.</td>
   </tr>
 </table>
           
@@ -1326,7 +1329,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">bytes_hex</span><span class="function-signature">(data)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L58">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L54">
       
       (source)
     </a>
@@ -1338,7 +1341,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Convert binary or text data to a hexadecimal string.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">data:</span><tt class="rst-docutils rst-literal">bytes</tt> or <tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Input data</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Hexadecimal representation</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1353,7 +1356,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">createBlobField</span><span class="function-signature">(self, objtype, file=b<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L143">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L146">
       
       (source)
     </a>
@@ -1365,7 +1368,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Create a blob field instance and initialize it from uploaded data.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self</span></td><td class="fieldArgDesc">ZMS context object</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">objtype:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Desired blob type</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">file:</span><tt class="rst-docutils rst-literal">bytes</tt>, file-like, or <tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Uploaded file data or metadata dictionary</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><code><a href="zms._blobfields.MyImage.html" class="internal-link" title="zms._blobfields.MyImage">MyImage</a></code> or <code><a href="zms._blobfields.MyFile.html" class="internal-link" title="zms._blobfields.MyFile">MyFile</a></code></td><td class="fieldArgDesc">Created blob object</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1380,7 +1383,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getLangFilename</span><span class="function-signature">(self, filename, lang)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L199">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L218">
       
       (source)
     </a>
@@ -1392,7 +1395,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Append a language suffix to a filename when needed.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self</span></td><td class="fieldArgDesc">ZMS context object</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">filename:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Original filename</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">lang:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Language identifier</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Language-aware filename</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1419,7 +1422,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Export blob resources from the ZODB to the filesystem.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self</span></td><td class="fieldArgDesc">ZMS context object</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">base<wbr></wbr>_path:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Export base path</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST</span></td><td class="fieldArgDesc">Zope request object</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Exported resource metadata entries</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1434,7 +1437,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">rfc1123_date</span><span class="function-signature">(dt)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L49">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L40">
       
       (source)
     </a>
@@ -1446,7 +1449,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Format a UNIX timestamp as an RFC 1123 HTTP date.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">dt:</span><tt class="rst-docutils rst-literal">float</tt> or <tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">Timestamp value</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">RFC 1123 formatted date string</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1461,7 +1464,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">thumbnailImage</span><span class="function-signature">(self, hiresKey, loresKey, maxdim, lang, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L241">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L272">
       
       (source)
     </a>
@@ -1473,7 +1476,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Generate a thumbnail image from one image attribute into another.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self</span></td><td class="fieldArgDesc">ZMS context object</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">hires<wbr></wbr>Key:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Source image attribute id</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">lores<wbr></wbr>Key:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Target image attribute id</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">maxdim:</span><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">Maximum thumbnail dimension</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">lang:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Language identifier</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST</span></td><td class="fieldArgDesc">Zope request object</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Status message</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1488,7 +1491,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">thumbnailImageFields</span><span class="function-signature">(self, lang, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L222">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L248">
       
       (source)
     </a>
@@ -1500,7 +1503,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Generate configured thumbnail variants for all image fields.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self</span></td><td class="fieldArgDesc">ZMS context object</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">lang:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Language identifier</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST</span></td><td class="fieldArgDesc">Zope request object</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Status message</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1515,7 +1518,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">uploadBlobField</span><span class="function-signature">(self, clazz, file=b<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, filename=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L159">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L170">
       
       (source)
     </a>
@@ -1527,7 +1530,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Build a blob field from raw uploaded content.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self</span></td><td class="fieldArgDesc">ZMS context object</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">clazz</span></td><td class="fieldArgDesc">Requested blob datatype or class</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">file:</span><tt class="rst-docutils rst-literal">bytes</tt>, <tt class="rst-docutils rst-literal">str</tt>, or file-like</td><td class="fieldArgDesc">Uploaded file content</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">filename:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Original filename</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><code><a href="zms._blobfields.MyImage.html" class="internal-link" title="zms._blobfields.MyImage">MyImage</a></code> or <code><a href="zms._blobfields.MyFile.html" class="internal-link" title="zms._blobfields.MyFile">MyFile</a></code></td><td class="fieldArgDesc">Initialized blob object</td></tr></table></div>
   </div>
 </div>
         </div>

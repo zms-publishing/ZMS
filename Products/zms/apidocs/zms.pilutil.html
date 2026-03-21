@@ -1183,7 +1183,10 @@
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>pilutil.py</p>
+<p>Provides enabled, generate_preview, thumbnail helper functions for image processing and PIL/Pillow operations. It resizes images, applies filters, generates thumbnails, and manipulates image metadata.</p>
+<p>License: GNU General Public License v2 or later, Organization: ZMS Publishing</p>
+</div>
         </div>
 
         <div id="splitTables">
@@ -1199,12 +1202,12 @@
     
     <td>Function</td>
     <td><code><a href="#enabled" class="internal-link" title="zms.pilutil.enabled">enabled</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return whether Pillow is available in the current runtime.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#generate_preview" class="internal-link" title="zms.pilutil.generate_preview">generate<wbr></wbr>_preview</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Generate and persist a low-resolution preview image from a hi-res source.</td>
   </tr><tr class="function">
     
     <td>Function</td>
@@ -1251,7 +1254,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">crop</span><span class="function-signature">(img, box, qual=75)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/pilutil.py#L151">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/pilutil.py#L149">
       
       (source)
     </a>
@@ -1278,7 +1281,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">enabled</span><span class="function-signature">()</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/pilutil.py#L30">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/pilutil.py#L21">
       
       (source)
     </a>
@@ -1290,7 +1293,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return whether Pillow is available in the current runtime.</p></div>
   </div>
 </div><div class="basefunction">
   
@@ -1305,7 +1308,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">generate_preview</span><span class="function-signature">(self, hiresKey, loresKey, maxdim)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/pilutil.py#L38">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/pilutil.py#L30">
       
       (source)
     </a>
@@ -1317,7 +1320,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Generate and persist a low-resolution preview image from a hi-res source.</p>
+<p>The method reads object properties, derives a thumbnail via <code><a href="#thumbnail" class="internal-link" title="zms.pilutil.thumbnail">thumbnail</a></code>, and stores both low-res and hi-res values back into object properties.</p>
+</div>
   </div>
 </div><div class="basefunction">
   
@@ -1332,7 +1337,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">optimize</span><span class="function-signature">(img, qual=75)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/pilutil.py#L220">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/pilutil.py#L218">
       
       (source)
     </a>
@@ -1359,7 +1364,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">resize</span><span class="function-signature">(img, size, mode=<span class="rst-variable-quote">'</span><span class="rst-variable-string">resize</span><span class="rst-variable-quote">'</span>, sffx=<span class="rst-variable-quote">'</span><span class="rst-variable-string">_thumbnail</span><span class="rst-variable-quote">'</span>, qual=75)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/pilutil.py#L69">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/pilutil.py#L67">
       
       (source)
     </a>
@@ -1386,7 +1391,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">rotate</span><span class="function-signature">(img, direction, qual=75)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/pilutil.py#L186">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/pilutil.py#L184">
       
       (source)
     </a>
@@ -1413,7 +1418,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">thumbnail</span><span class="function-signature">(img, maxdim, qual=75)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/pilutil.py#L53">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/pilutil.py#L51">
       
       (source)
     </a>
@@ -1439,7 +1444,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">security</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/pilutil.py#L27">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/pilutil.py#L18">
       
       (source)
     </a>

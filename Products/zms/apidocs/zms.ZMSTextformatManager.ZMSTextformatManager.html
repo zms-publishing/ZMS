@@ -312,12 +312,12 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSTextformatManager</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformatManager.py#L33" class="sourceLink">(source)</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSTextformatManager</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformatManager.py#L19" class="sourceLink">(source)</a></code></p>
           <p><a href="classIndex.html#zms.ZMSTextformatManager.ZMSTextformatManager">View In Hierarchy</a></p>
         </div>
 
         <div class="moduleDocstring">
-          <div><p>Manages block formats (textformats) for ZMS block / rich-text editing, including XML import/export, CRUD operations, and reordering.</p></div>
+          <div><p>Manage block text formats used by rich-text editing and export/import.</p></div>
         </div>
 
         <div id="splitTables">
@@ -328,42 +328,42 @@
     
     <td>Method</td>
     <td><code><a href="#delTextformat" class="internal-link" title="zms.ZMSTextformatManager.ZMSTextformatManager.delTextformat">del<wbr></wbr>Textformat</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Remove one text format by id and persist the resulting list.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getTextFormat" class="internal-link" title="zms.ZMSTextformatManager.ZMSTextformatManager.getTextFormat">get<wbr></wbr>Text<wbr></wbr>Format</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return one <tt class="rst-docutils rst-literal">ZMSTextformat</tt> wrapper for the given format id.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getTextFormatDefault" class="internal-link" title="zms.ZMSTextformatManager.ZMSTextformatManager.getTextFormatDefault">get<wbr></wbr>Text<wbr></wbr>Format<wbr></wbr>Default</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the default text-format id, falling back to the first or <tt class="rst-docutils rst-literal">body</tt>.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getTextFormats" class="internal-link" title="zms.ZMSTextformatManager.ZMSTextformatManager.getTextFormats">get<wbr></wbr>Text<wbr></wbr>Formats</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return all configured text formats sorted by display label.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#importTextformatXml" class="internal-link" title="zms.ZMSTextformatManager.ZMSTextformatManager.importTextformatXml">import<wbr></wbr>Textformat<wbr></wbr>Xml</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Import one or many text-format records from XML content.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_changeTextformat" class="internal-link" title="zms.ZMSTextformatManager.ZMSTextformatManager.manage_changeTextformat">manage_change<wbr></wbr>Textformat</a></code></td>
-    <td>ZMSTextformatManager.manage_changeTextformat</td>
+    <td>Handle add/edit/delete/import/export actions for text-format entries.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#setDefaultTextformat" class="internal-link" title="zms.ZMSTextformatManager.ZMSTextformatManager.setDefaultTextformat">set<wbr></wbr>Default<wbr></wbr>Textformat</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Mark the given text-format id as default and clear previous defaults.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#setTextformat" class="internal-link" title="zms.ZMSTextformatManager.ZMSTextformatManager.setTextformat">set<wbr></wbr>Textformat</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Create or update one text-format definition.</td>
   </tr><tr class="instancevariable">
     
     <td>Instance Variable</td>
@@ -373,7 +373,7 @@
     
     <td>Method</td>
     <td><code><a href="#_importTextformatXml" class="internal-link" title="zms.ZMSTextformatManager.ZMSTextformatManager._importTextformatXml">_import<wbr></wbr>Textformat<wbr></wbr>Xml</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Import a single serialized text-format entry into <tt class="rst-docutils rst-literal">self.textformats</tt>.</td>
   </tr>
 </table>
           
@@ -395,7 +395,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">delTextformat</span><span class="function-signature">(self, id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformatManager.py#L73">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformatManager.py#L45">
       
       (source)
     </a>
@@ -407,7 +407,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Remove one text format by id and persist the resulting list.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -422,7 +422,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getTextFormat</span><span class="function-signature">(self, id, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformatManager.py#L106">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformatManager.py#L72">
       
       (source)
     </a>
@@ -434,7 +434,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return one <tt class="rst-docutils rst-literal">ZMSTextformat</tt> wrapper for the given format id.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -449,7 +449,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getTextFormatDefault</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformatManager.py#L138">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformatManager.py#L97">
       
       (source)
     </a>
@@ -461,7 +461,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the default text-format id, falling back to the first or <tt class="rst-docutils rst-literal">body</tt>.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -476,7 +476,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getTextFormats</span><span class="function-signature">(self, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformatManager.py#L118">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformatManager.py#L82">
       
       (source)
     </a>
@@ -488,7 +488,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return all configured text formats sorted by display label.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -503,7 +503,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">importTextformatXml</span><span class="function-signature">(self, xml)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformatManager.py#L61">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformatManager.py#L35">
       
       (source)
     </a>
@@ -515,7 +515,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Import one or many text-format records from XML content.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -530,7 +530,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_changeTextformat</span><span class="function-signature">(self, lang, btn, REQUEST, RESPONSE)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformatManager.py#L155">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformatManager.py#L110">
       
       (source)
     </a>
@@ -542,7 +542,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>ZMSTextformatManager.manage_changeTextformat</p></div>
+    <div><p>Handle add/edit/delete/import/export actions for text-format entries.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -557,7 +557,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">setDefaultTextformat</span><span class="function-signature">(self, id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformatManager.py#L126">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformatManager.py#L88">
       
       (source)
     </a>
@@ -569,7 +569,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Mark the given text-format id as default and clear previous defaults.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -584,7 +584,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">setTextformat</span><span class="function-signature">(self, id, newId, newDisplay, newZMILang, newTag=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, newSubtag=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, newAttrs=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, newRichedit=0, newUsage=[])</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformatManager.py#L84">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformatManager.py#L53">
       
       (source)
     </a>
@@ -596,7 +596,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Create or update one text-format definition.</p></div>
   </div>
 </div><div class="baseinstancevariable">
   
@@ -610,7 +610,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">textformats</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformatManager.py#L59">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformatManager.py#L32">
       
       (source)
     </a>
@@ -638,7 +638,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">_importTextformatXml</span><span class="function-signature">(self, item)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformatManager.py#L49">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSTextformatManager.py#L22">
       
       (source)
     </a>
@@ -650,7 +650,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Import a single serialized text-format entry into <tt class="rst-docutils rst-literal">self.textformats</tt>.</p></div>
   </div>
 </div>
         </div>

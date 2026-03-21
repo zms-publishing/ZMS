@@ -1,34 +1,25 @@
-################################################################################
-# _objchildren.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+_objchildren.py - ZMS Object Children Management
 
+This module defines the ObjChildren class, which provides methods for managing
+child objects in a ZMS content management system. It includes functionality for
+creating child objects based on meta-object definitions, retrieving child nodes
+matching specific criteria, and handling ZMI actions related to child object
+creation. The ObjChildren class interacts with the meta-object model to ensure 
+that child objects are created and organized according to the defined content 
+structure and type constraints.
+
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
+"""
 # Product Imports.
 from Products.zms import _fileutil
 from Products.zms import standard
 
 
-################################################################################
-################################################################################
-###
-###   Object Children
-###
-################################################################################
-################################################################################
 class ObjChildren(object):
+
+    """Manage child-object creation and filtered child lookups."""
 
     # Management Permissions.
     # -----------------------
@@ -39,17 +30,20 @@ class ObjChildren(object):
       ('ZMS Author', __authorPermissions__),
     )
 
-    """
-    ############################################################################
-    ###
-    ###  Constructor
-    ###
-    ############################################################################
-    """
-    # --------------------------------------------------------------------------
-    #	ObjChildren.initObjChild
-    # --------------------------------------------------------------------------
     def initObjChild(self, id, _sort_id, type, REQUEST):
+      """Create and initialize a child object for the current container.
+
+      @param id: Base object id.
+      @type id: C{str}
+      @param _sort_id: Sort position before normalization.
+      @type _sort_id: C{int}
+      @param type: Child meta type.
+      @type type: C{str}
+      @param REQUEST: The active HTTP request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @return: The created or reused child object.
+      @rtype: C{object}
+      """
       ##### ID ####
       metaObjAttr = self.getObjChildrenAttr(id)
       repetitive = metaObjAttr.get('repetitive', 0)==1
@@ -80,10 +74,14 @@ class ObjChildren(object):
       return oItem
 
 
-    # --------------------------------------------------------------------------
-    #  ObjChildren._initObjChildren
-    # --------------------------------------------------------------------------
     def _initObjChildren(self, obj_attr, REQUEST):
+      """Ensure mandatory and repetitive child objects match metaobject rules.
+
+      @param obj_attr: Metaobject child attribute definition.
+      @type obj_attr: C{dict}
+      @param REQUEST: The active HTTP request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      """
       id = obj_attr['id']
       ids = [x.getId() for x in self.getChildNodes() if x.getId().startswith(id)]
       mandatory = obj_attr.get('mandatory',0)
@@ -119,10 +117,12 @@ class ObjChildren(object):
               ob._setId(id) 
 
 
-    # --------------------------------------------------------------------------
-    #	ObjChildren.initObjChildren
-    # --------------------------------------------------------------------------
     def initObjChildren(self, REQUEST):
+      """Initialize all configured child objects for the current metaobject.
+
+      @param REQUEST: The active HTTP request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      """
       standard.writeLog( self, "[initObjChildren]")
       self.getObjProperty( 'initObjChildren', REQUEST)
       metaObj = self.getMetaobj(self.meta_id)
@@ -133,10 +133,16 @@ class ObjChildren(object):
            self._initObjChildren( metaObjAttr, REQUEST)
 
 
-    # --------------------------------------------------------------------------
-    #  ObjChildren.getObjChildrenAttr:
-    # --------------------------------------------------------------------------
     def getObjChildrenAttr(self, key, meta_type=None):
+      """Return the configured child definition for an object key.
+
+      @param key: Child attribute key.
+      @type key: C{str}
+      @param meta_type: Optional metaobject type override.
+      @type meta_type: C{str}
+      @return: Child attribute configuration.
+      @rtype: C{dict}
+      """
       meta_type = standard.nvl(meta_type, self.meta_id)
       ##### Meta-Objects ####
       if meta_type in self.getMetaobjIds() and key in self.getMetaobjAttrIds(meta_type):
@@ -147,13 +153,17 @@ class ObjChildren(object):
       return obj_attr
 
 
-    # --------------------------------------------------------------------------
-    #  ObjChildren.getObjChildren
-    # --------------------------------------------------------------------------
     def getObjChildren(self, id, REQUEST, meta_types=None):
-      """
-      Returns a NodeList that contains all children of this node in 
-      correct order. If none, this is a empty NodeList. 
+      """Return child nodes matching the configured child attribute.
+
+      @param id: Child attribute key.
+      @type id: C{str}
+      @param REQUEST: The active HTTP request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param meta_types: Optional meta type filter.
+      @type meta_types: C{list}
+      @return: Matching child nodes in document order.
+      @rtype: C{list}
       """
       objAttr = self.getObjChildrenAttr(id)
       reid = None
@@ -165,24 +175,37 @@ class ObjChildren(object):
       return self.getChildNodes(REQUEST, meta_types, reid)
 
 
-    # --------------------------------------------------------------------------
-    #  ObjChildren.getObjChildren
-    # --------------------------------------------------------------------------
     def filteredObjChildren(self, id, REQUEST, meta_types=None):
-      """
-      Returns a NodeList that contains all visible children of this node in 
-      correct order. If none, this is a empty NodeList. 
+      """Return visible child nodes matching the configured child attribute.
+
+      @param id: Child attribute key.
+      @type id: C{str}
+      @param REQUEST: The active HTTP request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param meta_types: Optional meta type filter.
+      @type meta_types: C{list}
+      @return: Visible matching child nodes.
+      @rtype: C{list}
       """
       return [x for x in self.getObjChildren(id, REQUEST, meta_types) if x.isVisible(REQUEST)]
 
 
-    ############################################################################
-    #  ObjChildren.manage_initObjChild: 
-    #
-    #  Create object-child.
-    ############################################################################
     def manage_initObjChild(self, id, type, lang, REQUEST, RESPONSE=None): 
-      """ ObjChildren.manage_initObjChild """
+      """Handle ZMI creation of a new child object.
+
+      @param id: Base object id.
+      @type id: C{str}
+      @param type: Child meta type.
+      @type type: C{str}
+      @param lang: Active UI language.
+      @type lang: C{str}
+      @param REQUEST: The active HTTP request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param RESPONSE: Optional HTTP response for redirects.
+      @type RESPONSE: C{ZPublisher.HTTPResponse}
+      @return: Redirect response when C{RESPONSE} is provided.
+      @rtype: C{object}
+      """
       
       # Create.      
       obj = self.initObjChild(id, self.getNewSortId(), type, REQUEST)
@@ -194,4 +217,3 @@ class ObjChildren(object):
         target = REQUEST.get('manage_target', '%s/manage_main'%obj.id)
         RESPONSE.redirect('%s?lang=%s&manage_tabs_message=%s'%(target, lang, message))
 
-################################################################################

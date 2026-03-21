@@ -1193,7 +1193,20 @@
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>_mediadb.py - ZMS Media Data Management</p>
+<p>The mediadb module provides functionality for managing binary assets (files, images, blobs) in a ZMS instance. It handles storage, retrieval, and organization of uploaded files in a filesystem-based repository.</p>
+<p>Key Features:</p>
+<ul class="rst-simple">
+<li>Store and retrieve binary files (blobs) from disk</li>
+<li>Organize files in flat or hierarchical directory structures</li>
+<li>Track file references across ZMS objects and recordsets</li>
+<li>Migrate between different directory structures</li>
+<li>Identify and manage orphaned files</li>
+<li>Serve files as HTTP streaming responses</li>
+<li>Validate file integrity and references</li>
+</ul>
+<p>License: GNU General Public License v2 or later, Organization: ZMS Publishing</p>
+</div>
         </div>
 
         <div id="splitTables">
@@ -1204,47 +1217,47 @@
     
     <td>Class</td>
     <td><code><a href="zms._mediadb.MediaDb.html" class="internal-link" title="zms._mediadb.MediaDb"><wbr></wbr>Media<wbr></wbr>Db</a></code></td>
-    <td><span class="undocumented">No class docstring; 0/3 instance variable, 1/7 class variable, 3/18 methods documented</span></td>
+    <td>Persistent Zope object that stores uploaded binary assets in a flat or hierarchical filesystem.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#containerFilter" class="internal-link" title="zms._mediadb.containerFilter">container<wbr></wbr>Filter</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return True for containers whose meta_type is 'ZMS' (used by addable object filter).</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#getFilenamesFromValue" class="internal-link" title="zms._mediadb.getFilenamesFromValue">get<wbr></wbr>Filenames<wbr></wbr>From<wbr></wbr>Value</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return a flat list of mediadb filenames referenced inside an attribute value.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#manage_addMediaDb" class="internal-link" title="zms._mediadb.manage_addMediaDb">manage_add<wbr></wbr>Media<wbr></wbr>Db</a></code></td>
-    <td>manage_addMediaDb</td>
+    <td>Initialize a new MediaDb instance at the specified filesystem location and recursively attach all existing blob attributes from the object tree.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#manage_delMediaDb" class="internal-link" title="zms._mediadb.manage_delMediaDb">manage_del<wbr></wbr>Media<wbr></wbr>Db</a></code></td>
-    <td>manage_delMediaDb</td>
+    <td>Detach the mediadb from this object and remove the acl_mediadb child. The method calls recurse_delMediaDb to restore all blob data back into the ZODB, then deletes the mediadb object itself. CAVE: Restoring the blob-files back into the ZODB can massively enlarge it's size.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#manage_packMediaDb" class="internal-link" title="zms._mediadb.manage_packMediaDb">manage_pack<wbr></wbr>Media<wbr></wbr>Db</a></code></td>
-    <td>manage_packMediaDb</td>
+    <td>Scan the mediadb and move all orphaned files (not referenced by any ZMS object) to a temporary folder for cleanup or archival.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#manage_structureMediaDb" class="internal-link" title="zms._mediadb.manage_structureMediaDb">manage_structure<wbr></wbr>Media<wbr></wbr>Db</a></code></td>
-    <td>manage_structureMediaDb</td>
+    <td>Reorganise mediadb files into the requested directory structure. The method moves all files into their new target location as computed by mediadb.targetFile(), which may involve creating intermediate directories for hierarchical structures...</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#recurse_addMediaDb" class="internal-link" title="zms._mediadb.recurse_addMediaDb">recurse_add<wbr></wbr>Media<wbr></wbr>Db</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Recursively attach all blob attributes of the object tree to the given mediadb.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#recurse_delMediaDb" class="internal-link" title="zms._mediadb.recurse_delMediaDb">recurse_del<wbr></wbr>Media<wbr></wbr>Db</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Recursively detach blobs from the mediadb and restore their data back into ZODB. The method traverses the object tree and for each blob attribute found, it retrieves the file from the mediadb using the stored filename reference, restores the blob's data attribute with the file content, and removes the mediadb reference...</td>
   </tr>
 </table>
           
@@ -1266,7 +1279,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">containerFilter</span><span class="function-signature">(container)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L53">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L64">
       
       (source)
     </a>
@@ -1278,7 +1291,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return True for containers whose meta_type is 'ZMS' (used by addable object filter).</p></div>
   </div>
 </div><div class="basefunction">
   
@@ -1293,7 +1306,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getFilenamesFromValue</span><span class="function-signature">(v)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L103">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L104">
       
       (source)
     </a>
@@ -1305,7 +1318,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return a flat list of mediadb filenames referenced inside an attribute value.</p></div>
   </div>
 </div><div class="basefunction">
   
@@ -1320,7 +1333,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_addMediaDb</span><span class="function-signature">(self, location, REQUEST=None, RESPONSE=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L44">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L43">
       
       (source)
     </a>
@@ -1332,7 +1345,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>manage_addMediaDb</p></div>
+    <div><p>Initialize a new MediaDb instance at the specified filesystem location and recursively attach all existing blob attributes from the object tree.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">ZMS object to attach the mediadb to.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">location:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Filesystem path where the mediadb should store its files.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">HTTPRequest</tt></td><td class="fieldArgDesc">Optional HTTP request object (not used).</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">RESPONSE:</span><tt class="rst-docutils rst-literal">HTTPResponse</tt></td><td class="fieldArgDesc">Optional HTTP response object for redirection after creation.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1347,7 +1360,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_delMediaDb</span><span class="function-signature">(self, REQUEST=None, RESPONSE=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L242">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L283">
       
       (source)
     </a>
@@ -1359,7 +1372,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>manage_delMediaDb</p></div>
+    <div><p>Detach the mediadb from this object and remove the acl_mediadb child. The method calls recurse_delMediaDb to restore all blob data back into the ZODB, then deletes the mediadb object itself. CAVE: Restoring the blob-files back into the ZODB can massively enlarge it's size.</p></div>
   </div>
 </div><div class="basefunction">
   
@@ -1374,7 +1387,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_packMediaDb</span><span class="function-signature">(self, REQUEST=None, RESPONSE=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L164">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L187">
       
       (source)
     </a>
@@ -1386,7 +1399,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>manage_packMediaDb</p></div>
+    <div><p>Scan the mediadb and move all orphaned files (not referenced by any ZMS object) to a temporary folder for cleanup or archival.</p>
+<p>The method traverses the entire mediadb directory structure and identifies files that are not referenced by any blob attribute in the ZMS object tree. It moves these  orphaned files to a temporary folder for manual review and cleanup. The method returns a message summarizing the number of orphaned files found and their new location.</p>
+</div>
   </div>
 </div><div class="basefunction">
   
@@ -1401,7 +1416,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_structureMediaDb</span><span class="function-signature">(self, structure, REQUEST=None, RESPONSE=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L118">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L120">
       
       (source)
     </a>
@@ -1413,7 +1428,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>manage_structureMediaDb</p></div>
+    <div><p>Reorganise mediadb files into the requested directory structure. The method moves all files into their new target location as computed by mediadb.targetFile(), which may involve creating intermediate directories for hierarchical structures. The method also updates the mediadb structure property to ensure future uploads are stored in the correct location.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">structure:</span><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">Desired directory nesting depth (0 = flat).</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">RESPONSE</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Message summarizing the restructuring outcome.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1428,7 +1443,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">recurse_addMediaDb</span><span class="function-signature">(self, mediadb)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L62">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L69">
       
       (source)
     </a>
@@ -1440,7 +1455,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Recursively attach all blob attributes of the object tree to the given mediadb.</p></div>
   </div>
 </div><div class="basefunction">
   
@@ -1455,7 +1470,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">recurse_delMediaDb</span><span class="function-signature">(self, mediadb)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L203">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L231">
       
       (source)
     </a>
@@ -1467,7 +1482,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Recursively detach blobs from the mediadb and restore their data back into ZODB. The method traverses the object tree and for each blob attribute found, it retrieves the file from the mediadb using the stored filename reference, restores the blob's data attribute with the file content, and removes the mediadb reference. The method also processes recordsets by iterating through their list attributes and applying the same logic to any blob values found within the records. Finally, the method recurses into child objects to ensure all blobs in the tree are processed. CAVE: Restoring the blob-files back into the ZODB can massively enlarge it's size.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">Root object to start traversal from.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">mediadb:</span><tt class="rst-docutils rst-literal">MediaDb</tt></td><td class="fieldArgDesc">MediaDb instance to retrieve files from.</td></tr></table></div>
   </div>
 </div>
         </div>

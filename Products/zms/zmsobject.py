@@ -1,20 +1,77 @@
-################################################################################
-# zmsobject.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+zmsobject.py - Base ZMS object implementation.
+
+ZMSObject is the primary content management class in ZMS framework, extending 
+ZMSItem with comprehensive capabilities for managing versioned, multilingual 
+content with workflow support.
+
+This module defines the core ZMSObject class that serves as the foundation for
+all major content types in ZMS. It combines multiple mixin classes to provide:
+  - B{Version Control}: Complete version history tracking and rollback capabilities
+    through the L{_versionmanager.VersionItem} mixin
+  - B{Workflow Management}: State machine-based workflow control via
+    L{ZMSWorkflowItem.ZMSWorkflowItem}
+  - B{Access Control}: Fine-grained permission and role-based access through
+    L{_accessmanager.AccessableObject}
+  - B{Multilingual Support}: Full internationalization for content attributes via
+    L{_multilangmanager.MultiLanguageObject}
+  - B{Content Hierarchy}: Parent-child relationships and tree traversal using
+    L{_objchildren.ObjChildren}
+  - B{Metadata Management}: Object attributes and Dublin Core support through
+    L{_objattrs.ObjAttrs}
+  - B{Input Validation}: Request-based property validation and processing via
+    L{_objinputs.ObjInputs}
+  - B{Copy/Paste}: Object cloning and clipboard operations through
+    L{_copysupport.CopySupport}
+  - B{Caching}: Request-level caching and buffering via L{_cachemanager.ReqBuff}
+  - B{URL Path Handling}: Declarative URL generation and path-based routing through
+    L{_pathhandler.PathHandler}
+  - B{Reference Management}: Link tracking and reference resolution via
+    L{_zreferableitem.ZReferableItem}
+  - B{XML Import/Export}: Serialization and deserialization using L{_exportable.Exportable}
+  - B{Text Formatting}: Rich text format conversion through L{_textformatmanager.TextFormatObject}
+
+Primary Use Cases:
+  1. B{Page Management}: ZMSObject instances represent pages and page containers with
+     full versioning and workflow capabilities
+  2. B{Content Elements}: Reusable content components with version control and
+     multilingual support
+  3. B{Resource Management}: Binary and media object handling through integrated
+     blob field support
+  4. B{Workflow-Driven Publishing}: State-based content approval and publication
+     workflows
+  5. B{Internationalization}: Content authoring and publishing for multiple languages
+     with translation workflows
+
+ZMSObject instances form hierarchical structures where a typical content tree
+contains:
+  - Root document element (ZMSDocument meta-type)
+  - Page containers and intermediate pages
+  - Page elements (ZMSObject meta-type)
+  - Resources (ZMSResource meta-type)
+  - RecordSets (ZMSRecordSet meta-type)
+  - References and cross-links (ZMSReference meta-type)
+
+Security Model:
+Uses Zope's AccessControl framework with ClassSecurityInfo declarations to enforce
+role-based permissions on all public methods. The L{_accessmanager.AccessableObject}
+mixin provides granular access control at the object level.
+
+Key Properties:
+  - B{meta_id}: Identifies the meta-object template defining object structure
+  - B{meta_type}: Semantic content type (e.g., 'ZMSDocument', 'ZMSObject', 'ZMSResource')
+  - B{sort_id}: Determines display order within parent container
+  - B{_uid}: Persistent unique identifier for cross-system references
+  - B{_p_oid}: ZODB object identifier for internal system use
+
+  Language Support:
+The module fully integrates multilingual content management allowing objects to
+have content in multiple languages with independent versioning and workflows per
+language variant.
+
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
+"""
 
 # Imports.
 from AccessControl import ClassSecurityInfo
@@ -53,13 +110,6 @@ from zope.globalrequest import getRequest
 __all__= ['ZMSObject']
 
 
-################################################################################
-################################################################################
-###
-###   Abstract Class ZMSObject
-###
-################################################################################
-################################################################################
 class ZMSObject(ZMSItem.ZMSItem,
   #CatalogPathAwareness.CatalogAware,    # Catalog awareness.
   _accessmanager.AccessableObject,       # Access manager.
@@ -117,14 +167,12 @@ class ZMSObject(ZMSItem.ZMSItem,
     security = ClassSecurityInfo()
 
     # Properties.
-    # -----------
     QUOT = chr(34)
     MISC_ZMS = '/++resource++zms_/img/'
     FORM_LABEL_MANDATORY = '<sup style="color:red">*</sup>'
     spacer_gif = '/++resource++zms_/img/spacer.gif'
 
     # ZPT Templates.
-    # --------------
     zmi_navbar_brand = PageTemplateFile('zpt/common/zmi_navbar_brand', globals())
     zmi_breadcrumbs = PageTemplateFile('zpt/common/zmi_breadcrumbs', globals())
     zmi_breadcrumbs_obj_path = PageTemplateFile('zpt/common/zmi_breadcrumbs_obj_path', globals())
@@ -139,7 +187,6 @@ class ZMSObject(ZMSItem.ZMSItem,
     zmi_ace_editor = PageTemplateFile('zpt/common/zmi_ace_editor', globals())
 
     # Templates.
-    # ----------
     f_recordset_grid = PageTemplateFile('zpt/object/f_recordset_grid', globals()) # ZMI RecordSet::Grid
     preview_html = PageTemplateFile('zpt/object/preview', globals())
     preview_top_html = PageTemplateFile('zpt/object/preview_top', globals())
@@ -149,37 +196,52 @@ class ZMSObject(ZMSItem.ZMSItem,
     obj_input_elements = PageTemplateFile('zpt/ZMSObject/input_elements', globals())
 
 
-    ############################################################################
-    #  ZMSObject.__init__:
-    #
-    #  Constructor (initialise a new instance of ZMSObject).
-    ############################################################################
     def __init__(self, id='', sort_id=0):
-      """ ZMSObject.__init__ """
+      """
+      Initialize a ZMS object with its persistent id and sort order.
+
+      @param id: Object id.
+      @type id: C{str}
+      @param sort_id: Initial sort position.
+      @type sort_id: C{int}
+      """
       self.id = id
       self.ref_by = []
       self.setSortId(sort_id)
 
+
     def getPath(self, *args, **kwargs):
+      """Return the physical path without duplicate trailing `content` ids."""
       ids = self.getPhysicalPath()
       # avoid content/content (seen in xml-import of zms-default-content)
       ids = [ids[x] for x in range(len(ids)) if x == 0 or not ids[x-1] == ids[x]]
       return '/'.join(ids)
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.f_css_defaults:
-    #
-    #  @deprecated
-    # --------------------------------------------------------------------------
     def f_css_defaults(self, REQUEST=None):
-      """ ZMSObject.f_css_defaults """
+      """
+      Return CSS defaults for the current object.
+
+      Deprecated: use L{zmi_css_defaults} instead.
+      @param REQUEST: Optional request to use for rendering.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @return: CSS imports for matching meta-object defaults.
+      @rtype: C{str}
+      """
       if REQUEST is None:
         REQUEST = self.REQUEST
       return self.zmi_css_defaults(REQUEST)
 
+
     def zmi_css_defaults(self, REQUEST):
-      """ ZMSObject.zmi_css_defaults """
+      """
+      Build the generated CSS import list for this object.
+
+      @param REQUEST: Current request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @return: CSS source text.
+      @rtype: C{str}
+      """
       RESPONSE = REQUEST.RESPONSE
       RESPONSE.setHeader('Last-Modified', DateTime(self.getConfProperty('last_modified')-10000).toZone('GMT+1').rfc822())
       if 'cache-control' not in RESPONSE.headers:
@@ -199,16 +261,16 @@ class ZMSObject(ZMSItem.ZMSItem,
             l.append('/* >>>>>>>>>> ERROR in %s <<<<<<<<<< */'%standard.writeError(self, "[zmi_css_defaults]: %s"%s))
       return '\n'.join([x for x in l])
 
-    ############################################################################
-    #
-    # ZMS Object Index
-    #
-    ############################################################################
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.get_uid:
-    # --------------------------------------------------------------------------
     def get_uid(self, forced=False):
+      """
+      Return the persistent uid of the object, generating one if needed.
+
+      @param forced: Force generation of a new uid.
+      @type forced: C{bool}
+      @return: Object uid prefixed with C{uid:}.
+      @rtype: C{str}
+      """
       import uuid
       uid = getattr(self,'_uid','')
       new_uid = None
@@ -223,16 +285,24 @@ class ZMSObject(ZMSItem.ZMSItem,
         self._uid = new_uid
       return 'uid:%s'%self._uid
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.set_uid:
-    # --------------------------------------------------------------------------
+
     def set_uid(self, uid):
+      """
+      Set the persistent uid of the object.
+
+      @param uid: Raw or prefixed uid.
+      @type uid: C{str}
+      """
       self._uid = uid.replace('uid:', '')
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.get_oid:
-    # --------------------------------------------------------------------------
+
     def get_oid(self):
+      """
+      Return the ZODB object id in a stable printable form.
+
+      @return: Object id prefixed with C{oid:}.
+      @rtype: C{str}
+      """
       try:
         from Shared.DC.xml.ppml import u64 as decodeObjectId
       except:
@@ -242,19 +312,31 @@ class ZMSObject(ZMSItem.ZMSItem,
         oid = decodeObjectId(self._p_oid)
       return 'oid:%s'%oid
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.clear_request_context:
-    # --------------------------------------------------------------------------
+
     def clear_request_context(self, REQUEST, prefix = 'oid'):
+      """
+      Remove request-scoped context values for the current object.
+
+      @param REQUEST: Current request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param prefix: Key prefix used for stored values.
+      @type prefix: C{str}
+      """
       # Remove old context-values.
       for key in [x for x in REQUEST.keys() if x.startswith(prefix)]:
         standard.writeLog(self, "[clear_request_context]: DEL "+key)
         REQUEST.set(key, None)
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.set_request_context:
-    # --------------------------------------------------------------------------
+
     def set_request_context(self, REQUEST, d):
+      """
+      Store a set of request-scoped context values for the object.
+
+      @param REQUEST: Current request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param d: Mapping of context keys to values.
+      @type d: C{dict}
+      """
       prefix = '%s_'%(standard.id_quote(self.get_oid()))
       # Remove old context-values.
       self.clear_request_context(REQUEST, prefix)
@@ -265,10 +347,20 @@ class ZMSObject(ZMSItem.ZMSItem,
         standard.writeLog(self, "[set_request_context]: SET "+context+"="+str(value))
         REQUEST.set(context, value)
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.get_request_context:
-    # --------------------------------------------------------------------------
+
     def get_request_context(self, REQUEST, key, defaultValue=None):
+      """
+      Read an object-scoped value from the request with fallback to a plain key.
+
+      @param REQUEST: Current request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param key: Context key.
+      @type key: C{str}
+      @param defaultValue: Value returned when no context key exists.
+      @type defaultValue: C{any}
+      @return: Stored request context value or fallback.
+      @rtype: C{any}
+      """
       context = '%s_%s'%(standard.id_quote(self.get_oid()), key)
       # Get context-value.
       value = REQUEST.get(context, None)
@@ -277,24 +369,20 @@ class ZMSObject(ZMSItem.ZMSItem,
         return value
       return REQUEST.get(key, defaultValue)
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.title:
-    # --------------------------------------------------------------------------
+
     def title(self):
+      """Return the basic title attribute or a fallback product label."""
       try:
         return self.attr('title')
       except:
         return 'ZMS'
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.__proxy__:
-    # --------------------------------------------------------------------------
+
     def __proxy__(self):
+      """Return the acquisition-wrapped object proxy."""
       return self
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.FileFromData
-    # --------------------------------------------------------------------------
+
     def FileFromData( self, data, filename='', content_type=None):
         """
         Creates a new instance of a file from given data.
@@ -312,10 +400,19 @@ class ZMSObject(ZMSItem.ZMSItem,
         return _blobfields.createBlobField( self, _blobfields.MyFile, file=file)
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.ImageFromData:
-    # --------------------------------------------------------------------------
     def ImageFromData( self, data, filename='', content_type=None):
+        """
+        Create an image blob field instance from binary data.
+
+        @param data: Image payload.
+        @type data: C{bytes} or C{str}
+        @param filename: Original filename.
+        @type filename: C{str}
+        @param content_type: Optional MIME type.
+        @type content_type: C{str}
+        @return: New image blob wrapper.
+        @rtype: L{MyImage}
+        """
         file = {}
         file['data'] = data
         file['filename'] = filename
@@ -323,10 +420,17 @@ class ZMSObject(ZMSItem.ZMSItem,
         return _blobfields.createBlobField( self, _blobfields.MyImage, file=file)
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.isMetaType:
-    # --------------------------------------------------------------------------
     def isMetaType(self, meta_type, REQUEST={}):
+      """
+      Check whether the object matches the requested meta type selector.
+
+      @param meta_type: Single selector or list of selectors.
+      @type meta_type: C{str} or C{list}
+      @param REQUEST: Optional request context.
+      @type REQUEST: C{dict}
+      @return: C{True} if the object matches.
+      @rtype: C{bool}
+      """
       if meta_type is None:
         return True
       if not isinstance(meta_type, list):
@@ -339,33 +443,32 @@ class ZMSObject(ZMSItem.ZMSItem,
       return b
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.isPageContainer:
-    # --------------------------------------------------------------------------
     def isPageContainer(self):
+      """Return whether the object behaves as a page container."""
       return self.getType() in [ 'ZMSDocument']
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.isPage:
-    # --------------------------------------------------------------------------
     def isPage(self):
+      """Return whether the object represents a page node."""
       return self.getType() in [ 'ZMSDocument', 'ZMSReference'] \
         and not self.meta_id in [ 'ZMSNote', 'ZMSTeaserContainer']
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.isPageElement:
-    # --------------------------------------------------------------------------
     def isPageElement(self):
+      """Return whether the object represents a page element node."""
       return self.getType() in [ 'ZMSObject', 'ZMSRecordSet' ] \
         and not self.meta_id in [ 'ZMSNote', 'ZMSTeaserContainer']
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.getTitle
-    # --------------------------------------------------------------------------
     def getTitle( self, REQUEST):
+      """
+      Return the localized title used for navigation and rendering.
+
+      @param REQUEST: Current request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @return: Display title.
+      @rtype: C{str}
+      """
       s = self.getObjProperty('title', REQUEST)
       if s is None or len(s) == 0:
         if self.isPage():
@@ -391,10 +494,15 @@ class ZMSObject(ZMSItem.ZMSItem,
       return s
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.getTitlealt
-    # --------------------------------------------------------------------------
     def getTitlealt( self, REQUEST):
+      """
+      Return the alternate localized title used in URLs and exports.
+
+      @param REQUEST: Current request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @return: Alternate display title.
+      @rtype: C{str}
+      """
       s = self.getObjProperty('titlealt', REQUEST) or self.getObjProperty('titlealt', {'lang':self.getPrimaryLanguage()})
       if not s:
         s = self.display_type()
@@ -420,55 +528,51 @@ class ZMSObject(ZMSItem.ZMSItem,
       return s
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.getType
-    #
-    #  Returns type of object. Valid types are:
-    #  <li>ZMSDocument: Page</li>
-    #  <li>ZMSObject: Page-Element</li>
-    #  <li>ZMSTeaserElement: Teaser-Element</li>
-    #  <li>ZMSRecordSet</li>
-    #  <li>ZMSResource</li>
-    #  <li>ZMSReference</li>
-    #  <li>ZMSLibrary</li>
-    #  <li>ZMSPackage</li>
-    #  <li>ZMSModule</li>
-    # --------------------------------------------------------------------------
     def getType(self):
+      """
+      Return the semantic content type declared by the meta object.
+
+      @return: One of the configured ZMS content type identifiers.
+      @rtype: C{str}
+      """
       metaObj = self.getMetaobj(self.meta_id)
       return metaObj.get('type', 'ZMSDocument')
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.is_resource:
-    #
-    #  alias for isResource(request)
-    # --------------------------------------------------------------------------
     def is_resource(self):
+      """Compatibility alias for L{isResource} using the current request."""
       return self.isResource(self.REQUEST)
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.isResource
-    # --------------------------------------------------------------------------
+
     def isResource(self, REQUEST):
+      """
+      Return whether the object is treated as a resource node.
+
+      @param REQUEST: Current request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @return: C{True} if the object is a resource.
+      @rtype: C{bool}
+      """
       return self.getObjProperty('attr_dc_type', REQUEST) == 'Resource' or \
         self.id in REQUEST.get( 'ZMS_IDS_RESOURCE', [])
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.is_translated:
-    #
-    #  alias for isTranslated(lang,request)
-    # --------------------------------------------------------------------------
     def is_translated(self, lang):
+      """Compatibility alias for L{isTranslated} using the current request."""
       return self.isTranslated(lang, self.REQUEST)
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.isTranslated
-    #
-    #  Returns True if current object is translated to given language.
-    # --------------------------------------------------------------------------
+
     def isTranslated(self, lang, REQUEST):
+      """
+      Return whether the object contains data for the requested language.
+
+      @param lang: Language id to check.
+      @type lang: C{str}
+      @param REQUEST: Current request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @return: C{True} if translated content exists.
+      @rtype: C{bool}
+      """
       rtnVal = False
       req = {'lang':lang,'preview':REQUEST.get('preview', '')}
       value = self.getObjProperty('change_uid', req)
@@ -476,12 +580,17 @@ class ZMSObject(ZMSItem.ZMSItem,
       return rtnVal
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.isModifiedInParentLanguage
-    #
-    #  Returns True if current object is modified in parent language.
-    # --------------------------------------------------------------------------
     def isModifiedInParentLanguage(self, lang, REQUEST):
+      """
+      Return whether the current language version is newer than its parent language.
+
+      @param lang: Language id to compare.
+      @type lang: C{str}
+      @param REQUEST: Current request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @return: C{True} if the current language is newer.
+      @rtype: C{bool}
+      """
       rtnVal = False
       parent = self.getParentLanguage(lang)
       if parent is not None:
@@ -497,20 +606,20 @@ class ZMSObject(ZMSItem.ZMSItem,
       return rtnVal
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.visible:
-    #
-    #  alias for isVisible(request)
-    # --------------------------------------------------------------------------
     def is_visible(self):
+      """Compatibility alias for L{isVisible} using the current request."""
       return self.isVisible(self.REQUEST)
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.isVisible:
-    #
-    #  Returns 1 if current object is visible.
-    # --------------------------------------------------------------------------
+
     def isVisible(self, REQUEST):
+      """
+      Return whether the object is visible in the current request context.
+
+      @param REQUEST: Current request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @return: C{True} if the object is visible.
+      @rtype: C{bool}
+      """
       request = getattr(self, 'REQUEST', getRequest())
       REQUEST = standard.nvl(REQUEST, request)
       lang = standard.nvl(REQUEST.get('lang'), self.getPrimaryLanguage())
@@ -522,12 +631,15 @@ class ZMSObject(ZMSItem.ZMSItem,
       return visible
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.get_size
-    #
-    #  @param REQUEST
-    # --------------------------------------------------------------------------
     def get_size(self, REQUEST={}):
+      """
+      Calculate the approximate size of the object's stored attribute values.
+
+      @param REQUEST: Optional request context.
+      @type REQUEST: C{dict}
+      @return: Estimated object size.
+      @rtype: C{int}
+      """
       size = 0
       keys = self.getObjAttrs().keys()
       if self.getType() == 'ZMSRecordSet':
@@ -543,34 +655,41 @@ class ZMSObject(ZMSItem.ZMSItem,
       return size
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.getDCCoverage
-    #
-    #  Returns "Dublin Core: Coverage".
-    #
-    #  @param REQUEST
-    # --------------------------------------------------------------------------
     def getDCCoverage(self, REQUEST={}):
+      """
+      Return the Dublin Core coverage value for the current object.
+
+      @param REQUEST: Optional request context.
+      @type REQUEST: C{dict}
+      @return: Coverage value.
+      @rtype: C{str}
+      """
       obj_vers = self.getObjVersion(REQUEST)
       obj_attr = {'id':'attr_dc_coverage'}
       return _objattrs.getobjattr(self, obj_vers, obj_attr, REQUEST.get('lang'))
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.getDCDescription
-    #
-    #  Returns "Dublin Core: Description".
-    #
-    #  @param REQUEST
-    # --------------------------------------------------------------------------
     def getDCDescription(self, REQUEST):
+      """
+      Return the Dublin Core description for the current object.
+
+      @param REQUEST: Current request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @return: Description value.
+      @rtype: C{str}
+      """
       return self.getObjProperty('attr_dc_description', REQUEST)
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.getSelf:
-    # --------------------------------------------------------------------------
     def getSelf(self, meta_type=None):
+      """
+      Return this object or the nearest ancestor matching the requested type.
+
+      @param meta_type: Optional meta-type selector.
+      @type meta_type: C{str} or C{list}
+      @return: Matching object.
+      @rtype: C{zmsobject.ZMSObject}
+      """
       ob = self
       if meta_type is not None and not ob.isMetaType( meta_type):
         parent = ob.getParentNode()
@@ -579,11 +698,13 @@ class ZMSObject(ZMSItem.ZMSItem,
       return ob
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.zmi_icon:
-    # --------------------------------------------------------------------------
     def zmi_icon(self,*args, **kwargs):
-      """ ZMSObject.zmi_icon """
+      """
+      Return the CSS icon class used for the object in the management UI.
+
+      @return: Font Awesome class string.
+      @rtype: C{str}
+      """
       if 'name' in kwargs:
         clazz = kwargs['name'].replace('icon-','fas fa-')
       else:
@@ -610,14 +731,20 @@ class ZMSObject(ZMSItem.ZMSItem,
       return clazz
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.display_icon:
-    #
-    #  @param meta_id
-    #  @deprecated @param meta_type
-    # --------------------------------------------------------------------------
     def display_icon(self, *args, **kwargs):
-      """ ZMSObject.display_icon """
+      """
+      Return the HTML icon markup for a meta object.
+
+      Optional identifiers may be passed positionally or via keyword arguments.
+      The legacy C{meta_type} keyword is still accepted.
+
+      @keyword meta_id: Optional meta object id.
+      @type meta_id: C{str}
+      @keyword meta_type: Legacy alias for C{meta_id}.
+      @type meta_type: C{str}
+      @return: HTML fragment containing the icon element.
+      @rtype: C{str}
+      """
       meta_id = self.meta_id
       if len(args) == 2 and not kwargs:
          meta_id = len(args[1]) > 0 and args[1] or meta_id
@@ -651,13 +778,20 @@ class ZMSObject(ZMSItem.ZMSItem,
       return '<i class="%s" title="%s"%s></i>'%(name,title,extra)
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.display_type:
-    #
-    #  @param meta_id
-    #  @deprecated @param meta_type
-    # --------------------------------------------------------------------------
     def display_type(self, *args, **kwargs):
+      """
+      Return the localized display label for a meta object.
+
+      Optional identifiers may be passed positionally or via keyword arguments.
+      The legacy C{meta_type} keyword is still accepted.
+
+      @keyword meta_id: Optional meta object id.
+      @type meta_id: C{str}
+      @keyword meta_type: Legacy alias for C{meta_id}.
+      @type meta_type: C{str}
+      @return: Localized type label.
+      @rtype: C{str}
+      """
       meta_id = self.meta_id
       if len(args) == 2 and not kwargs:
          meta_id = args[1]
@@ -674,10 +808,17 @@ class ZMSObject(ZMSItem.ZMSItem,
         return lang_str
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.breadcrumbs_obj_path:
-    # --------------------------------------------------------------------------
     def breadcrumbs_obj_path(self, portalMaster=True):
+      """
+      Return the object chain used for ZMI breadcrumb rendering.
+
+      @param portalMaster: Include portal master ancestors when configured.
+      @type portalMaster: C{bool}
+      @return: Breadcrumb object path.
+      @rtype: C{list}
+      """
+
+
       def is_reserved_name(name):
         import keyword
         return keyword.iskeyword(name) or name in dir(__builtins__)
@@ -700,10 +841,13 @@ class ZMSObject(ZMSItem.ZMSItem,
       return rtn
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.changeProperties:
-    # --------------------------------------------------------------------------
     def changeProperties(self, lang):
+      """
+      Apply request values to the object's editable properties.
+
+      @param lang: Active language for the update.
+      @type lang: C{str}
+      """
       request = self.REQUEST
       request['lang'] = lang or self.getPrimaryLanguage() # ensure correct language is set
 
@@ -782,13 +926,19 @@ class ZMSObject(ZMSItem.ZMSItem,
             request.set('objAttrNamePrefix', '')
 
 
-    ############################################################################
-    #  ZMSObject.manage_changeProperties:
-    #
-    #  Change properties.
-    ############################################################################
     def manage_changeProperties(self, lang, REQUEST, RESPONSE=None):
-      """ ZMSObject.manage_changeProperties """
+      """
+      Persist edited properties and redirect back to the management UI.
+
+      @param lang: Active language.
+      @type lang: C{str}
+      @param REQUEST: Current request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param RESPONSE: Optional response used for redirect handling.
+      @type RESPONSE: C{ZPublisher.HTTPResponse}
+      @return: Redirect response when C{RESPONSE} is provided.
+      @rtype: C{object}
+      """
       message = ''
       messagekey = 'manage_tabs_message'
       t0 = time.time()
@@ -833,18 +983,15 @@ class ZMSObject(ZMSItem.ZMSItem,
         return RESPONSE.redirect( target)
 
 
-    ############################################################################
-    ###
-    ###  Common Functions
-    ###
-    ############################################################################
-
-    # --------------------------------------------------------------------------
-    #  ZMSObject.getDeclId:
-    #
-    #  Returns declarative id.
-    # --------------------------------------------------------------------------
     def getDeclId(self, REQUEST={}):
+      """
+      Return the declarative id used for path-handler based URLs.
+
+      @param REQUEST: Optional request context.
+      @type REQUEST: C{dict}
+      @return: Declarative id.
+      @rtype: C{str}
+      """
       declId = ''
       try:
         if self.getConfProperty( 'ZMS.pathhandler', 0) != 0:
@@ -863,12 +1010,15 @@ class ZMSObject(ZMSItem.ZMSItem,
       return declId
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.aq_absolute_url:
-    #
-    #  Object is called in a different context and we want to use acquisition.
-    # --------------------------------------------------------------------------
     def aq_absolute_url(self, relative=0):
+      """
+      Return the absolute URL adjusted for acquisition-aware container context.
+
+      @param relative: Return a relative URL when true.
+      @type relative: C{bool}
+      @return: Absolute or relative URL.
+      @rtype: C{str}
+      """
       abs_url = self.absolute_url( relative)
       i = abs_url.find('/content')
       if i > 0:
@@ -880,12 +1030,15 @@ class ZMSObject(ZMSItem.ZMSItem,
       return abs_url
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.getDeclUrl:
-    #
-    #  Returns declarative url.
-    # --------------------------------------------------------------------------
     def getDeclUrl(self, REQUEST={}):
+      """
+      Return the declarative URL assembled from path-handler ids.
+
+      @param REQUEST: Optional request context.
+      @type REQUEST: C{dict}
+      @return: Declarative URL.
+      @rtype: C{str}
+      """
       if self.getConfProperty('ZMS.pathhandler', 0) == 0 or REQUEST.get('preview', '')=='preview':
         url = self.aq_absolute_url()
       else:
@@ -899,12 +1052,15 @@ class ZMSObject(ZMSItem.ZMSItem,
       return url
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.getPageExt:
-    #
-    #  Get page-extension.
-    # --------------------------------------------------------------------------
     def getPageExt(self, REQUEST):
+      """
+      Return the configured page extension for the current object.
+
+      @param REQUEST: Current request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @return: Page extension.
+      @rtype: C{str}
+      """
       pageexts = ['.html']
       if 'attr_pageext' in self.getObjAttrs():
         obj_attr = self.getObjAttr('attr_pageext')
@@ -916,14 +1072,19 @@ class ZMSObject(ZMSItem.ZMSItem,
       return pageext
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.getHref2Html:
-    #  ZMSObject.getHref2IndexHtml:
-    #
-    #  "Sans-Document"-Navigation: reference to first page that contains visible
-    #  page-elements.
-    # --------------------------------------------------------------------------
     def getHref2Html(self, fct, pageext, REQUEST):
+      """
+      Build an HTML href for the object or the owning page.
+
+      @param fct: Target page function name.
+      @type fct: C{str}
+      @param pageext: File extension used for generated pages.
+      @type pageext: C{str}
+      @param REQUEST: Current request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @return: Context-aware href.
+      @rtype: C{str}
+      """
       if not self.isPage():
         parent = self.getParentNode()
         pageext = parent.getPageExt(REQUEST)
@@ -943,24 +1104,25 @@ class ZMSObject(ZMSItem.ZMSItem,
           href = href[len(base):]
       return href
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.getAbsoluteUrlInContext:
-    #  @param context the current context
-    #  @param abs_url e.g. file.getHref(request)
-    #  @param forced if True ignore any other conditions
-    #  @Configuration
-    #  ZMSObject.getAbsoluteUrlInContext=True
-    #  ASP.protocol=[http]
-    #  ASP.ip_or_domain=[Not empty]
-    #
-    #  Contextualize absolute_url used in ZMI with subdomain from
-    #  config-properties.
-    #  Used to keep ZMS-users in configured subdomain-context.
-    # --------------------------------------------------------------------------
+
     def getAbsoluteUrlInContext(self, context, abs_url=None, forced=False):
+      """
+      Rewrite an absolute URL so it stays in the configured context domain.
+
+      @param context: Current context object.
+      @type context: C{zmsobject.ZMSObject}
+      @param abs_url: Absolute URL to contextualize.
+      @type abs_url: C{str}
+      @param forced: Force contextualization rules.
+      @type forced: C{bool}
+      @return: Context-aware absolute URL.
+      @rtype: C{str}
+      """
       context = standard.nvl(context,self)
       if abs_url is None:
         abs_url = self.absolute_url()
+
+
       def default(*args, **kwargs):
         context = args[1]['context']
         abs_url = args[1]['abs_url']
@@ -984,16 +1146,22 @@ class ZMSObject(ZMSItem.ZMSItem,
         return abs_url
       return self.evalExtensionPoint('ExtensionPoint.ZMSObject.getAbsoluteUrlInContext',default,context=context,abs_url=abs_url,forced=forced)
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.getHref2IndexHtmlInContext:
-    #  @param context the current-context
-    #  @param index_html the index-html
-    #  @param REQUEST the http-request
-    #  @param deep the depth-parameter passed to fallback getHref2IndexHtml
-    #
-    #  Contextualize index_html with subdomain from config-properties.
-    # --------------------------------------------------------------------------
+
     def getHref2IndexHtmlInContext(self, context, index_html=None, REQUEST=None, deep=1):
+      """
+      Rewrite an index URL so it matches the current context and domain rules.
+
+      @param context: Current context object.
+      @type context: C{zmsobject.ZMSObject}
+      @param index_html: Existing index URL.
+      @type index_html: C{str}
+      @param REQUEST: Current request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param deep: Fallback depth for generated URLs.
+      @type deep: C{int}
+      @return: Context-aware index URL.
+      @rtype: C{str}
+      """
       context = standard.nvl(context,self)
       if index_html is None:
         index_html = self.getHref2IndexHtml(REQUEST, deep)
@@ -1019,7 +1187,19 @@ class ZMSObject(ZMSItem.ZMSItem,
       return index_html
 
     #++
+
+
     def getHref2IndexHtml(self, REQUEST, deep=1):
+      """
+      Return the default public URL for the object in the current request.
+
+      @param REQUEST: Current request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param deep: Traverse into descendant pages when needed.
+      @type deep: C{int}
+      @return: Public object URL.
+      @rtype: C{str}
+      """
       deep = int(self.getConfProperty('ZMSObject.getHref2IndexHtml.deep', deep))
       ob = self
       if 'getHref2IndexHtml' in ob.getMetaobjAttrIds(ob.meta_id):
@@ -1033,6 +1213,8 @@ class ZMSObject(ZMSItem.ZMSItem,
               value = standard.url_append_params(value, {param:REQUEST[param]})
         else:
           if deep:
+
+
             def get_page_with_elements(node):
               if node.isPageContainer():
                 for childNode in node.getChildNodes(REQUEST):
@@ -1047,31 +1229,28 @@ class ZMSObject(ZMSItem.ZMSItem,
       return value
 
 
-    ############################################################################
-    ###
-    ###  DOM-Methods
-    ###
-    ############################################################################
-
-    # --------------------------------------------------------------------------
-    #  ZMSObject.getLevel:
-    #
-    #  The hierarchical level of this node.
-    # --------------------------------------------------------------------------
     def getLevel(self):
+      """
+      Return the hierarchical level relative to the document element.
+
+      @return: Tree level.
+      @rtype: C{int}
+      """
       docElmnt = self.getDocumentElement()
       docPath = docElmnt.getPhysicalPath()
       path = self.getPhysicalPath()
       return len(path)-len(docPath)
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.is_child:
-    #  @param ob the object
-    #
-    #  True if self is child of given object.
-    # --------------------------------------------------------------------------
     def is_child_of(self, ob):
+      """
+      Return whether this object is a descendant of the given object.
+
+      @param ob: Potential ancestor object.
+      @type ob: C{zmsobject.ZMSObject}
+      @return: C{True} if this object is below C{ob}.
+      @rtype: C{bool}
+      """
       if ob is not None:
         path = '/'.join(self.getPhysicalPath())
         obPath = '/'.join(ob.getPhysicalPath())
@@ -1079,13 +1258,15 @@ class ZMSObject(ZMSItem.ZMSItem,
       return False
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.isAncestor:
-    #  @param ob the object
-    #
-    #  True if self is ancestor of given object.
-    # --------------------------------------------------------------------------
     def isAncestor(self, ob):
+      """
+      Return whether this object is an ancestor of the given object.
+
+      @param ob: Potential descendant object.
+      @type ob: C{zmsobject.ZMSObject}
+      @return: C{True} if this object contains C{ob} in its subtree.
+      @rtype: C{bool}
+      """
       if ob is not None:
         path = '/'.join(self.getPhysicalPath())
         obPath = '/'.join(ob.getPhysicalPath())
@@ -1093,39 +1274,43 @@ class ZMSObject(ZMSItem.ZMSItem,
       return False
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.getParentByDepth:
-    #  @param deep the depth
-    #
-    #  The parent of this node by depth.
-    # --------------------------------------------------------------------------
     def getParentByDepth(self, deep):
+      """
+      Return the ancestor reached by walking up a fixed number of levels.
+
+      @param deep: Number of parent steps.
+      @type deep: C{int}
+      @return: Ancestor object.
+      @rtype: C{zmsobject.ZMSObject}
+      """
       rtn = self
       for i in range(deep):
         rtn = rtn.getParentNode()
       return rtn
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.getParentByLevel:
-    #  @param level the level
-    #
-    #  The parent of this node by level.
-    # --------------------------------------------------------------------------
     def getParentByLevel(self, level):
+      """
+      Return the ancestor located at the requested tree level.
+
+      @param level: Target level.
+      @type level: C{int}
+      @return: Ancestor object.
+      @rtype: C{zmsobject.ZMSObject}
+      """
       rtn = self
       while rtn.getLevel() > level:
         rtn = rtn.getParentNode()
       return rtn
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.getParentNode:
-    #
-    #  The parent of this node.
-    #  All nodes except root may have a parent.
-    # --------------------------------------------------------------------------
     def getParentNode(self):
+      """
+      Return the logical parent node of this object.
+
+      @return: Parent object or C{None}.
+      @rtype: C{zmsobject.ZMSObject}
+      """
       rtn = getattr(self, 'aq_parent', None)
       # Handle ZMSProxyObjects.
       if hasattr( rtn, 'is_blob') or hasattr( rtn, 'base'):
@@ -1133,13 +1318,17 @@ class ZMSObject(ZMSItem.ZMSItem,
       return rtn
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.getTreeNodes:
-    #
-    #  Returns a NodeList that contains all children of this subtree in correct order.
-    #  If none, this is a empty NodeList.
-    # --------------------------------------------------------------------------
     def getTreeNodes(self, REQUEST={}, meta_types=None):
+      """
+      Return a depth-first list of subtree nodes matching the optional filter.
+
+      @param REQUEST: Optional request context.
+      @type REQUEST: C{dict}
+      @param meta_types: Optional meta-type filter.
+      @type meta_types: C{str} or C{list}
+      @return: Matching subtree nodes.
+      @rtype: C{list}
+      """
       rtn = []
       for ob in self.getChildNodes(REQUEST):
         if ob.isMetaType(meta_types): rtn.append(ob)
@@ -1147,29 +1336,25 @@ class ZMSObject(ZMSItem.ZMSItem,
       return rtn
 
 
-    ############################################################################
-    ###
-    ###  Sort-Order
-    ###
-    ############################################################################
-
-    # --------------------------------------------------------------------------
-    #  ZMSObject.setSortId:
-    #
-    #  Sets Sort-ID (integer).
-    # --------------------------------------------------------------------------
     def setSortId(self, sort_id):
+      """
+      Store the sort id in the canonical prefixed internal format.
+
+      @param sort_id: Numeric sort value.
+      @type sort_id: C{int}
+      """
       sort_id = '0000%i'%sort_id
       sort_id = 's' + sort_id[-4:]
       self.sort_id = sort_id
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.getSortId:
-    #
-    #  Returns Sort-ID (integer).
-    # --------------------------------------------------------------------------
     def getSortId(self):
+      """
+      Return the numeric sort id extracted from the stored format.
+
+      @return: Numeric sort id.
+      @rtype: C{int}
+      """
       rtnVal = 0
       sort_id = getattr( self, 'sort_id','')
       if sort_id:
@@ -1177,13 +1362,17 @@ class ZMSObject(ZMSItem.ZMSItem,
       return rtnVal
 
 
-    ############################################################################
-    # ZMSObject.manage_moveObjUp:
-    #
-    # Moves an object up in sort order.
-    ############################################################################
     def manage_moveObjUp(self, lang, REQUEST, RESPONSE):
-      """ ZMSObject.manage_moveObjUp """
+      """
+      Move the object up within its parent's sort order.
+
+      @param lang: Active language.
+      @type lang: C{str}
+      @param REQUEST: Current request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param RESPONSE: Current response.
+      @type RESPONSE: C{ZPublisher.HTTPResponse}
+      """
       parent = self.getParentNode()
       sort_id = self.getSortId()
       self.setSortId(sort_id - 15)
@@ -1193,13 +1382,17 @@ class ZMSObject(ZMSItem.ZMSItem,
       RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s#zmi_item_%s'%(parent.absolute_url(), lang, standard.url_quote(message), self.id))
 
 
-    ############################################################################
-    # ZMSObject.manage_moveObjDown:
-    #
-    # Moves an object down in sort order.
-    ############################################################################
     def manage_moveObjDown(self, lang, REQUEST, RESPONSE):
-      """ ZMSObject.manage_moveObjDown """
+      """
+      Move the object down within its parent's sort order.
+
+      @param lang: Active language.
+      @type lang: C{str}
+      @param REQUEST: Current request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param RESPONSE: Current response.
+      @type RESPONSE: C{ZPublisher.HTTPResponse}
+      """
       parent = self.getParentNode()
       sort_id = self.getSortId()
       self.setSortId(sort_id + 15)
@@ -1209,13 +1402,23 @@ class ZMSObject(ZMSItem.ZMSItem,
       RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s#zmi_item_%s'%(parent.absolute_url(), lang, standard.url_quote(message), self.id))
 
 
-    ############################################################################
-    # ZMSObject.manage_moveObjToPos:
-    #
-    # Moves an object to specified position in sort order.
-    ############################################################################
     def manage_moveObjToPos(self, lang, pos, fmt=None, REQUEST=None, RESPONSE=None):
-      """ ZMSObject.manage_moveObjToPos """
+      """
+      Move the object to a specific position within its siblings.
+
+      @param lang: Active language.
+      @type lang: C{str}
+      @param pos: Target one-based position.
+      @type pos: C{int}
+      @param fmt: Optional response format.
+      @type fmt: C{str}
+      @param REQUEST: Current request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param RESPONSE: Optional response for redirect handling.
+      @type RESPONSE: C{ZPublisher.HTTPResponse}
+      @return: JSON message when C{fmt == 'json'}.
+      @rtype: C{str}
+      """
       parent = self.getParentNode()
       if parent is not None:
         id_prefix = standard.id_prefix(self.id)
@@ -1247,13 +1450,21 @@ class ZMSObject(ZMSItem.ZMSItem,
         RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s#zmi_item_%s'%(parent.absolute_url(),lang,standard.url_quote(message),self.id))
 
 
-    ############################################################################
-    #  MetacmdObject.manage_executeMetacmd:
-    #
-    #  Execute Meta-Command.
-    ############################################################################
     def manage_executeMetacmd(self, id, REQUEST, RESPONSE=None, context=None):
-      """ MetacmdObject.manage_executeMetacmd """
+      """
+      Execute a meta-object attribute or configured meta command.
+
+      @param id: Meta attribute or meta command id.
+      @type id: C{str}
+      @param REQUEST: Current request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param RESPONSE: Optional response used for redirects.
+      @type RESPONSE: C{ZPublisher.HTTPResponse}
+      @param context: Optional execution context.
+      @type context: C{zmsobject.ZMSObject}
+      @return: Meta command result when executed directly.
+      @rtype: C{object}
+      """
       if RESPONSE:
         RESPONSE.setHeader('Cache-Control', 'no-cache')
         RESPONSE.setHeader('Pragma', 'no-cache')
@@ -1303,10 +1514,8 @@ class ZMSObject(ZMSItem.ZMSItem,
         return RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s'%(target.absolute_url(), lang, message))
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.getBodyContent:
-    # --------------------------------------------------------------------------
     def _getBodyContentContentEditable(self, html):
+      """Wrap rendered body content with editable markup when preview mode allows it."""
       request = self.REQUEST
       if standard.isPreviewRequest(request) and \
          (request.get('URL').find('/manage')>0 or self.getConfProperty('ZMS.preview.contentEditable', 1)==1):
@@ -1314,18 +1523,40 @@ class ZMSObject(ZMSItem.ZMSItem,
         html = '<div class="%s" data-absolute-url="%s">%s</div>'%(' '.join(css), self.absolute_url()[len(self.REQUEST['BASE0']):], html)
       return html
 
+
     def _getBodyContent(self, REQUEST):
+      """Render the raw body content template for the object."""
       rtn = self._getBodyContentContentEditable(self.metaobj_manager.renderTemplate( self))
       return rtn
 
     security.declareProtected('View', 'ajaxGetBodyContent')
+
+
     def ajaxGetBodyContent(self, REQUEST, forced=False):
       """
-      HTML presentation in body-content. 
+      Return body content for AJAX requests.
+
+      @param REQUEST: Current request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param forced: Ignore visibility checks.
+      @type forced: C{bool}
+      @return: Rendered body content.
+      @rtype: C{str}
       """
       return self.getBodyContent(REQUEST, forced)
 
+
     def getBodyContent(self, REQUEST, forced=False):
+      """
+      Return the rendered body content when the object is visible.
+
+      @param REQUEST: Current request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param forced: Ignore visibility checks.
+      @type forced: C{bool}
+      @return: Rendered body content.
+      @rtype: C{str}
+      """
       html = ''
       if forced or self.isVisible( REQUEST):
         html = self._getBodyContent( REQUEST)
@@ -1336,12 +1567,17 @@ class ZMSObject(ZMSItem.ZMSItem,
       return html
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSObject.renderShort:
-    #
-    #  Renders short presentation of object.
-    # --------------------------------------------------------------------------
     def renderShort(self, REQUEST, manage_main=False):
+      """
+      Render a short management or content preview of the object.
+
+      @param REQUEST: Current request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param manage_main: Render the management-main variant.
+      @type manage_main: C{bool}
+      @return: Short HTML fragment.
+      @rtype: C{str}
+      """
       html = ''
       metaObjAttrIds = self.getMetaobjAttrIds(self.meta_id)
       try:
@@ -1367,18 +1603,21 @@ class ZMSObject(ZMSItem.ZMSItem,
       return html
 
 
-    ############################################################################
-    ###
-    ###  Printable
-    ###
-    ############################################################################
-
-    # --------------------------------------------------------------------------
-    #  ZMSObject.printHtml:
-    #
-    #  Renders printable presentation.
-    # --------------------------------------------------------------------------
     def printHtml(self, level, sectionizer, REQUEST, deep=True):
+      """
+      Render a printable HTML representation of the object subtree.
+
+      @param level: Current heading level.
+      @type level: C{int}
+      @param sectionizer: Section numbering helper.
+      @type sectionizer: C{object}
+      @param REQUEST: Current request.
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param deep: Include child pages recursively.
+      @type deep: C{bool}
+      @return: Printable HTML.
+      @rtype: C{str}
+      """
       html = ''
 
       # Title.
@@ -1399,57 +1638,54 @@ class ZMSObject(ZMSItem.ZMSItem,
       return html
 
 
-    ############################################################################
-    ###
-    ###  XML-Builder
-    ###
-    ############################################################################
-
-    ############################################################################
-    # ZMSObject.xmlOnStartElement(self, dTagName, dAttrs, oCurrNodes):
-    # ZMSObject.xmlOnCharacterData(self, data, bInCData):
-    # ZMSObject.xmlOnEndElement(self):
-    # ZMSObject.xmlOnUnknownStartTag(self, sTagName, dTagAttrs)
-    # ZMSObject.xmlOnUnknownEndTag(self, sTagName)
-    # ZMSObject.xmlGetParent(self):
-    #
-    # handler for XML-Builder (_builder.py)
-    ############################################################################
     def xmlOnStartElement(self, sTagName, dTagAttrs, oParentNode):
-        standard.writeLog( self, "[xmlOnStartElement]: sTagName=%s"%sTagName)
+      """
+      Initialize XML builder state for a new element.
 
-        self.dTagStack    = collections.deque()
-        self.dValueStack  = collections.deque()
+      @param sTagName: Tag name.
+      @type sTagName: C{str}
+      @param dTagAttrs: Tag attributes.
+      @type dTagAttrs: C{dict}
+      @param oParentNode: Parent node during XML object creation.
+      @type oParentNode: C{zmsobject.ZMSObject}
+      """
+      standard.writeLog( self, "[xmlOnStartElement]: sTagName=%s"%sTagName)
 
-        # WORKAROUND! The member variable "aq_parent" does not contain the right
-        # parent object at this stage of the creation process (it will later
-        # on!). Therefore, we introduce a special attribute containing the
-        # parent object, which will be used by xmlGetParent() (see below).
-        self.oParent = oParentNode
+      self.dTagStack    = collections.deque()
+      self.dValueStack  = collections.deque()
+
+      # WORKAROUND! The member variable "aq_parent" does not contain the right
+      # parent object at this stage of the creation process (it will later
+      # on!). Therefore, we introduce a special attribute containing the
+      # parent object, which will be used by xmlGetParent() (see below).
+      self.oParent = oParentNode
 
 
     def xmlOnEndElement(self):
-        self.initObjChildren( self.REQUEST)
+      """Finalize XML builder state after the current element closes."""
+      self.initObjChildren( self.REQUEST)
 
 
     def xmlOnCharacterData(self, sData, bInCData):
-        return _xmllib.xmlOnCharacterData(self, sData, bInCData)
+      """Delegate character-data handling to the shared XML helper."""
+      return _xmllib.xmlOnCharacterData(self, sData, bInCData)
 
 
     def xmlOnUnknownStartTag(self, sTagName, dTagAttrs):
-        return _xmllib.xmlOnUnknownStartTag(self, sTagName, dTagAttrs)
+      """Delegate unknown start-tag handling to the shared XML helper."""
+      return _xmllib.xmlOnUnknownStartTag(self, sTagName, dTagAttrs)
 
 
     def xmlOnUnknownEndTag(self, sTagName):
-        return _xmllib.xmlOnUnknownEndTag(self, sTagName)
+      """Delegate unknown end-tag handling to the shared XML helper."""
+      return _xmllib.xmlOnUnknownEndTag(self, sTagName)
 
 
     def xmlGetParent(self):
-        return self.oParent
+      """Return the temporary parent stored for XML builder object creation."""
+      return self.oParent
 
 
 # call this to initialize framework classes, which
 # does the right thing with the security assertions.
 InitializeClass(ZMSObject)
-
-################################################################################

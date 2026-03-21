@@ -332,12 +332,12 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSSysConf</span>(ZMSItem.ZMSItem): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_conf.py#L35" class="sourceLink">(source)</a></code></p><p>Implements interfaces: Products.zms.IZMSRepositoryProvider.IZMSRepositoryProvider</p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSSysConf</span>(ZMSItem.ZMSItem): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_conf.py#L26" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms._conf.ZMSSysConf.__init__">ZMSSysConf()</a></code></p><p>Implements interfaces: Products.zms.IZMSRepositoryProvider.IZMSRepositoryProvider</p>
           <p><a href="classIndex.html#zms._conf.ZMSSysConf">View In Hierarchy</a></p>
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>System configuration container for a ZMS instance. Stores key/value configuration properties in __attr_conf_dict__ and implements IZMSRepositoryProvider for repository persistence.</p></div>
         </div>
 
         <div id="splitTables">
@@ -348,47 +348,47 @@
     
     <td>Method</td>
     <td><code><a href="#__init__" class="internal-link" title="zms._conf.ZMSSysConf.__init__">__init__</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Initialise a new ZMSSysConf instance with id 'sys_conf'.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#del_property" class="internal-link" title="zms._conf.ZMSSysConf.del_property">del<wbr></wbr>_property</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Delete a configuration property by key.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#get_properties" class="internal-link" title="zms._conf.ZMSSysConf.get_properties">get<wbr></wbr>_properties</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the full configuration properties dictionary.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#get_property" class="internal-link" title="zms._conf.ZMSSysConf.get_property">get<wbr></wbr>_property</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return a single configuration property value.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#initialize" class="internal-link" title="zms._conf.ZMSSysConf.initialize">initialize</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Hook for post-creation initialization (currently a no-op).</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#provideRepository" class="internal-link" title="zms._conf.ZMSSysConf.provideRepository">provide<wbr></wbr>Repository</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Provide configuration data for the repository export.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#set_properties" class="internal-link" title="zms._conf.ZMSSysConf.set_properties">set<wbr></wbr>_properties</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Replace the full configuration properties dictionary.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#set_property" class="internal-link" title="zms._conf.ZMSSysConf.set_property">set<wbr></wbr>_property</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Set a single configuration property. If value is None, the property is deleted. Clears the request buffer for Portal keys.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#updateRepository" class="internal-link" title="zms._conf.ZMSSysConf.updateRepository">update<wbr></wbr>Repository</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Update configuration from repository import data.</td>
   </tr><tr class="classvariable">
     
     <td>Class Variable</td>
@@ -425,7 +425,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">__init__</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_conf.py#L51">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_conf.py#L41">
       
       (source)
     </a>
@@ -437,7 +437,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Initialise a new ZMSSysConf instance with id 'sys_conf'.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc"><tt class="rst-docutils rst-literal">None</tt></td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -452,7 +452,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">del_property</span><span class="function-signature">(self, key)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_conf.py#L89">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_conf.py#L124">
       
       (source)
     </a>
@@ -464,7 +464,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Delete a configuration property by key.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">key:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Property key to delete.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc"><tt class="rst-docutils rst-literal">None</tt></td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -479,7 +479,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_properties</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_conf.py#L65">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_conf.py#L61">
       
       (source)
     </a>
@@ -491,7 +491,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the full configuration properties dictionary.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Configuration properties</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -506,7 +506,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_property</span><span class="function-signature">(self, key, default=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_conf.py#L75">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_conf.py#L87">
       
       (source)
     </a>
@@ -518,7 +518,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return a single configuration property value.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">key:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Property key.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">default:</span><tt class="rst-docutils rst-literal">any</tt></td><td class="fieldArgDesc">Default value returned when <tt class="rst-docutils rst-literal">key</tt> does not exist.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">any</tt></td><td class="fieldArgDesc">Property value or <tt class="rst-docutils rst-literal">default</tt>.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -533,7 +533,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">initialize</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_conf.py#L58">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_conf.py#L51">
       
       (source)
     </a>
@@ -545,7 +545,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Hook for post-creation initialization (currently a no-op).</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc"><tt class="rst-docutils rst-literal">None</tt></td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -560,7 +560,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">provideRepository</span><span class="function-signature">(self, ids=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_conf.py#L104">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_conf.py#L138">
       
       (source)
     </a>
@@ -572,7 +572,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Provide configuration data for the repository export.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">ids:</span><tt class="rst-docutils rst-literal">list</tt> or <tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc">List of IDs to export. Expected values include <tt class="rst-docutils rst-literal">'sys_conf'</tt>; <tt class="rst-docutils rst-literal">None</tt> exports all valid ids.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Dictionary of repository data keyed by id</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">See Also</td></tr><tr><td colspan="2">IZMSRepositoryProvider</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -587,7 +587,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">set_properties</span><span class="function-signature">(self, properties)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_conf.py#L70">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_conf.py#L72">
       
       (source)
     </a>
@@ -599,7 +599,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Replace the full configuration properties dictionary.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">properties:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">New configuration properties mapping. Expected value is a plain <tt class="rst-docutils rst-literal">dict</tt> with string keys.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc"><tt class="rst-docutils rst-literal">None</tt></td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -614,7 +614,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">set_property</span><span class="function-signature">(self, key, value)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_conf.py#L79">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_conf.py#L102">
       
       (source)
     </a>
@@ -626,7 +626,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Set a single configuration property. If value is None, the property is deleted. Clears the request buffer for Portal keys.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">key:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Property key.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">value:</span><tt class="rst-docutils rst-literal">any</tt> | <tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc">Property value. Use <tt class="rst-docutils rst-literal">None</tt> to delete the key.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc"><tt class="rst-docutils rst-literal">None</tt></td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -641,7 +641,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">updateRepository</span><span class="function-signature">(self, r)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_conf.py#L119">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_conf.py#L160">
       
       (source)
     </a>
@@ -653,7 +653,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Update configuration from repository import data.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">r:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Repository data dictionary containing <tt class="rst-docutils rst-literal">'Properties'</tt> (or legacy <tt class="rst-docutils rst-literal">'properties'</tt>).</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc"><tt class="rst-docutils rst-literal">None</tt></td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">See Also</td></tr><tr><td colspan="2">IZMSRepositoryProvider</td></tr></table></div>
   </div>
 </div><div class="baseclassvariable">
   
@@ -667,7 +667,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">meta_type</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_conf.py#L42">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_conf.py#L36">
       
       (source)
     </a>
@@ -694,7 +694,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_icon</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_conf.py#L43">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_conf.py#L37">
       
       (source)
     </a>
@@ -721,7 +721,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">id</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_conf.py#L52">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_conf.py#L48">
       
       (source)
     </a>

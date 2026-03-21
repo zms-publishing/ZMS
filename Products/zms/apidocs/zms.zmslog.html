@@ -1133,7 +1133,10 @@
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>zmslog.py - ZMS Log Viewer</p>
+<p>Defines ZMSLog for runtime logging, error reporting, and debugging output. It writes to application logs, formats diagnostic messages, and provides trace-level introspection.</p>
+<p>License: GNU General Public License v2 or later, Organization: ZMS Publishing</p>
+</div>
         </div>
 
         <div id="splitTables">
@@ -1144,12 +1147,12 @@
     
     <td>Class</td>
     <td><code><a href="zms.zmslog.ZMSLog.html" class="internal-link" title="zms.zmslog.ZMSLog"><wbr></wbr>ZMSLog</a></code></td>
-    <td><span class="undocumented">No class docstring; 0/4 instance variable, 0/4 class variable, 0/1 constant, 4/13 methods documented</span></td>
+    <td>ZMI-accessible log viewer and remote filesystem utility.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#log_time" class="internal-link" title="zms.zmslog.log_time">log<wbr></wbr>_time</a></code></td>
-    <td>Return a simple time string without spaces suitable for logging.</td>
+    <td>Return a compact ISO-like timestamp suitable for log lines.</td>
   </tr><tr class="function">
     
     <td>Function</td>
@@ -1176,7 +1179,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">log_time</span><span class="function-signature">()</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L39">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L30">
       
       (source)
     </a>
@@ -1188,7 +1191,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Return a simple time string without spaces suitable for logging.</p></div>
+    <div><p>Return a compact ISO-like timestamp suitable for log lines.</p></div>
   </div>
 </div><div class="basefunction">
   
@@ -1203,7 +1206,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">severity_string</span><span class="function-signature">(severity, mapping={<wbr></wbr>logging.DEBUG: <span class="rst-variable-quote">'</span><span class="rst-variable-string">DEBUG</span><span class="rst-variable-quote">'</span>, <wbr></wbr>logging.INFO: <span class="rst-variable-quote">'</span><span class="rst-variable-string">INFO</span><span class="rst-variable-quote">'</span>, <wbr></wbr>logging.ERROR: <span class="rst-variable-quote">'</span><span class="rst-variable-string">ERROR</span><span class="rst-variable-quote">'</span>})</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L30">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L21">
       
       (source)
     </a>

@@ -1123,7 +1123,10 @@
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>_objtypes.py - ZMS Object Type Definitions and Meta-Class Registration</p>
+<p>This module defines the ObjTypes class, which provides rendering helpers for display-type dependent object output in the ZMS content management system. It includes methods for rendering images and text according to specified display types, as well as a collection of PageTemplateFile instances for different input and display type templates. The ObjTypes class serves as a central utility for content objects to generate HTML output based on their display type configuration.</p>
+<p>License: GNU General Public License v2 or later, Organization: ZMS Publishing</p>
+</div>
         </div>
 
         <div id="splitTables">
@@ -1134,12 +1137,12 @@
     
     <td>Class</td>
     <td><code><a href="zms._objtypes.ObjTypes.html" class="internal-link" title="zms._objtypes.ObjTypes"><wbr></wbr>Obj<wbr></wbr>Types</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Provide rendering helpers for display-type dependent object output.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#getHref2Zoom" class="internal-link" title="zms._objtypes.getHref2Zoom">get<wbr></wbr>Href2<wbr></wbr>Zoom</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the URL used for the zoom target of an image.</td>
   </tr>
 </table>
           
@@ -1161,7 +1164,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getHref2Zoom</span><span class="function-signature">(self, img, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objtypes.py#L28">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objtypes.py#L21">
       
       (source)
     </a>
@@ -1173,7 +1176,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the URL used for the zoom target of an image.</p>
+<p>If a custom hook <tt class="rst-docutils rst-literal">getCustomHref2Zoom</tt> exists it is used; otherwise the image's own href is returned.</p>
+</div>
   </div>
 </div>
         </div>

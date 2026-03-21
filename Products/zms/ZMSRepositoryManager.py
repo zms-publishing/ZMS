@@ -1,21 +1,51 @@
-################################################################################
-# ZMSRepositoryManager.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+ZMSRepositoryManager.py - ZMS Repository Manager
 
+The ZMSRepositoryManager Module is comprehensive repository management system for ZMS 
+that handles synchronization, configuration management, and bi-directional data exchange
+between ZODB (Zope Object Database) and the (versioning) file system (e.g., Git).
+
+Core Responsibilities:
+
+  - Repository Synchronization: Manages bidirectional synchronization between ZODB and 
+    file system repositories, allowing ZMS to maintain consistency across storage backends.
+  - Configuration Management: Handles reading, writing, and validation of ZMS configuration
+    files stored in the repository with support for environment variable substitution
+    ($INSTANCE_HOME, $HOME_ID).
+  - Import/Export Operations: Facilitates exporting ZMS objects and configurations to the
+    file system (ZODB -> repository) and importing updates back into ZODB 
+    (repository -> ZODB).
+  - Model Exchange: Provides mechanisms to exchange model definitions and configurations
+    between multiple providers/repositories, supporting distributed ZMS deployments.
+  - Multi-Provider Support: Supports multiple repository providers, allowing organizations
+    to manage different configuration sets across separate storage locations.
+
+Key Features:
+  - Directional Control: Configurable update direction determines whether changes are
+    highlighted from the file system (Loading mode) or the ZODB (Saving mode).
+  - Orphan Management: Optional handling of orphaned configuration files to maintain
+    clean repository states.
+  - Event Triggering: Emits repository lifecycle events (beforeCommitRepositoryEvt,
+    afterCommitRepositoryEvt, beforeUpdateRepositoryEvt, afterUpdateRepositoryEvt)
+    for integration with other ZMS plugins.
+  - Transaction Safety: Provides rollback capability through success/failure tracking
+    during batch operations.
+
+Use Cases in ZMS:
+  - Configuration Backup and Recovery
+  - Multi-environment Deployment (development, staging, production)
+  - Team Collaboration on ZMS Models and Content Structures
+  - Version Control Integration for ZMS Configurations
+  - Migration and Data Exchange Between ZMS Instances
+
+Implements:
+  - IZMSConfigurationProvider: Configuration retrieval and management
+  - IZMSRepositoryManager: Repository operations and synchronization
+
+
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
+"""
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
@@ -31,48 +61,35 @@ from Products.zms import repositoryutil
 from Products.zms import standard
 
 
-################################################################################
-################################################################################
-###
-###   Class
-###
-################################################################################
-################################################################################
 @implementer(
         IZMSConfigurationProvider.IZMSConfigurationProvider,
         IZMSRepositoryManager.IZMSRepositoryManager)
 class ZMSRepositoryManager(
         ZMSItem.ZMSItem):
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    Properties
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    #Properties
     meta_type = 'ZMSRepositoryManager'
     zmi_icon = "fas fa-database"
     icon_clazz = zmi_icon
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    Management Options
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    # Management Options
     manage_options_default_action = '../manage_customize'
     def manage_options(self):
+      """Handle the ZMI action 'manage_options'."""
       return [self.operator_setitem( x, 'action', '../'+x['action']) for x in copy.deepcopy(self.aq_parent.manage_options())]
 
     manage_sub_options__roles__ = None
     def manage_sub_options(self):
+      """Handle the ZMI action 'manage_sub_options'."""
       return (
         {'label': 'Repository','action': 'manage_main'},
         )
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    Management Interface
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    # Management Interface
     manage = PageTemplateFile('zpt/ZMSRepositoryManager/manage_main', globals())
     manage_main = PageTemplateFile('zpt/ZMSRepositoryManager/manage_main', globals())
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    Management Permissions
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    # Management Permissions
     __administratorPermissions__ = (
         'manage_main',
         'manage_change',
@@ -82,35 +99,28 @@ class ZMSRepositoryManager(
         )
 
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    ZMSRepositoryManager.__init__: 
-    
-    Constructor.
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    # Constructor
     def __init__(self):
+      """Initialize the instance state."""
       self.id = 'repository_manager'
 
 
-    """
-    Returns direction of copying config files: 
-    Loading from file system (coloring ZMS changes) vs.
-    Saving to file system (coloring filesystem changes)
-    """
     def get_update_direction(self):
+      """
+      Returns direction of copying config files: 
+      Loading from file system (coloring ZMS changes) vs.
+      Saving to file system (coloring filesystem changes)
+      """
       return getattr(self,'update_direction','Loading')
 
 
-    """
-    Returns ignore-orphans.
-    """
     def get_ignore_orphans(self):
+      """Return ignore orphans."""
       return getattr(self, 'ignore_orphans', True)
 
 
-    """
-    Returns conf-basepath.
-    """
     def get_conf_basepath(self, id=''):
+      """Return conf basepath."""
       basepath = self.get_conf_property('ZMS.conf.path')
       basepath = basepath.replace('$INSTANCE_HOME', standard.getINSTANCE_HOME())
       basepath = basepath.replace('$HOME_ID',"/".join([x.getHome().id for x in self.breadcrumbs_obj_path() if x.meta_id=='ZMS']))
@@ -120,21 +130,52 @@ class ZMSRepositoryManager(
 
 
     def remoteFiles(self, provider):
+      """
+      Retrieve remote files from a repository provider.
+
+      This method retrieves a list of remote files from the specified provider
+      by constructing the base path configuration and delegating to the
+      repository utility function.
+
+      @param provider: The repository provider object containing configuration
+               and connection details for accessing remote files
+      @type provider: object
+
+      @return: A list of remote files available from the provider
+      @rtype: list
+
+      @see: L{repositoryutil.remoteFiles}
+      @see: L{get_conf_basepath}
+      """
       standard.writeLog(self,"[remoteFiles]: provider=%s"%str(provider))
       basepath = self.get_conf_basepath(provider.id)
       return repositoryutil.remoteFiles(self, basepath)
 
 
     def readRepository(self, provider):
+      """
+      Read repository data from a provider.
+      
+      Implements the 'readRepository' interface. This method retrieves repository
+      information from the specified provider by reading the repository structure
+      from the configured base path.
+      
+      @param provider: The provider object from which to read the repository.
+          Must have an 'id' attribute.
+      @type provider: Provider
+      
+      @return: Repository data read from the provider's base path.
+      @rtype: dict
+    
+      @see: repositoryutil.readRepository()
+      """
       standard.writeLog(self,"[readRepository]: provider=%s"%str(provider))
       basepath = self.get_conf_basepath(provider.id)
       return repositoryutil.readRepository(self, basepath)
 
 
-    """
-    Export: Commit ZODB to repository.
-    """
     def commitChanges(self, ids):
+      """Export: Commit ZODB to repository."""
       standard.writeLog(self,"[commitChanges]: ids=%s"%str(ids))
       standard.triggerEvent(self,'beforeCommitRepositoryEvt')
       success = []
@@ -190,10 +231,13 @@ class ZMSRepositoryManager(
       standard.triggerEvent(self,'afterCommitRepositoryEvt')
       return success,failure
 
-    """
-    Import: Update ZODB from repository.
-    """
+
     def updateChanges(self, ids, override=False):
+      """ 
+      Import: Update ZODB from repository.
+        - If override is False, only update if there are changes in the repository compared to ZODB (highlighted filesystem changes)
+        - If override is True, update regardless of changes (highlighted ZMS changes)
+      """
       standard.writeLog(self,"[updateChanges]: ids=%s"%str(ids))
       standard.triggerEvent(self,'beforeUpdateRepositoryEvt')
       success = []
@@ -221,13 +265,26 @@ class ZMSRepositoryManager(
       return success,failure
 
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    ZMSRepositoryManager.manage_change:
-    
-    Change.
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def manage_change(self, btn, lang, REQUEST=None, RESPONSE=None):
-      """ ZMSRepositoryManager.manage_change """
+      """ 
+      Manage changes in the ZMS repository.
+
+        - For 'save': Save current settings (ignore orphans, update direction) and return with confirmation message.
+        - For 'commit': Commit changes from ZODB to repository and return with success/failure messages.
+        - For 'override'/'update': Update ZODB from repository (with or without override) and return with success/failure messages.
+        - Redirect to manage_main with appropriate messages in query parameters.
+        - Messages are localized using getZMILangStr and include lists of successfully processed and failed items.
+        - Events 'beforeCommitRepositoryEvt', 'afterCommitRepositoryEvt', 'beforeUpdateRepositoryEvt', and 'afterUpdateRepositoryEvt' are triggered at appropriate stages of processing.
+
+      @param btn: Action button clicked ('save', 'commit', 'override', 'update')
+      @type btn: str
+      @param lang: Language code for messages
+      @type lang: str
+      @param REQUEST: Current request object
+      @type REQUEST: ZPublisher.HTTPRequest
+      @param RESPONSE: Current response object
+      @type RESPONSE: ZPublisher.HTTPResponse 
+      """
       message = ''
       error_message = ''
       
@@ -258,4 +315,3 @@ class ZMSRepositoryManager(
         target = standard.url_append_params(target,{'manage_tabs_error_message':error_message})
       return RESPONSE.redirect(target)
 
-################################################################################

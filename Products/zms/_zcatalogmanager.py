@@ -1,35 +1,25 @@
-################################################################################
-# _zcatalogmanager.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+_zcatalogmanager.py - ZMS Catalog Manager for Search Query Formatting and Object Traversal
 
-################################################################################
-################################################################################
-###
-###   class ZCatalogManager
-###
-################################################################################
-################################################################################
+Provides ZCatalogManager for catalog indexing. It centralizes manager 
+methods for catalog indexing, connector integration, and search-facing 
+metadata, keeping administrative logic in one place and reducing duplication
+in callers.
+
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
+"""
+
+
 class ZCatalogManager(object):
+    """
+    Provide catalog utility methods for search query formatting and object traversal.
+    
+    Includes helpers for building catalog search query strings with AND/OR operators,
+    executing catalog queries, and resolving catalog object paths for ZMS objects.
+    """
 
-    # --------------------------------------------------------------------------
-    #  ZCatalogManager.getCatalogQueryString:
-    #    
-    #  @deprecated
-    # --------------------------------------------------------------------------
+    # @deprecated
     def getCatalogQueryString(self, raw, option='AND', only_words=False):
       qs = []
       i = 0
@@ -53,12 +43,7 @@ class ZCatalogManager(object):
       return (' %s '%option).join([x for x in qs if x.strip()])
 
 
-    # --------------------------------------------------------------------------
-    #  ZCatalogManager.getCatalogPathObject:
-    #
-    #  Returns object from catalog-path.
-    #  @deprecated
-    # --------------------------------------------------------------------------
+    # @deprecated
     def getCatalogPathObject(self, path):
       ob = self.getHome()
       l = path.split( '/')
@@ -74,13 +59,7 @@ class ZCatalogManager(object):
       return ob
 
 
-    # --------------------------------------------------------------------------
-    #  ZCatalogManager.submitCatalogQuery:
-    #
-    #  Submits query to catalog.
-    #  @deprecated
-    # --------------------------------------------------------------------------
+    # @deprecated
     def submitCatalogQuery(self, search_query, search_order_by, search_meta_types=[], search_clients=False, REQUEST=None):
       return self.getCatalogAdapter().search(search_query, search_order_by)
 
-################################################################################

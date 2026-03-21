@@ -1,21 +1,17 @@
-################################################################################
-# _pathhandler.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+_pathhandler.py - ZMS Path Handler for URL Routing and Traversal
 
+This module defines the PathHandler class, which provides helpers for URL routing,
+object traversal, and dynamic content resolution in a ZMS content management system.
+The PathHandler class implements the __bobo_traverse__ method to handle custom
+traversal logic, including REST API routing, declarative URL handling, and dynamic
+object resolution based on request parameters and object attributes. It also includes
+helper functions for validating and filtering objects by ID, as well as handling blob
+attributes by filename.
+
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
+"""
 # Imports.
 import copy
 import re
@@ -27,12 +23,9 @@ from Products.zms import _fileutil
 from Products.zms import _globals
 from zope.globalrequest import getRequest
 
-# ------------------------------------------------------------------------------
-#  _pathhandler.validateId:
-#
-#  Validates id against list of possible declarative id.
-# ------------------------------------------------------------------------------
+
 def validateId(self, id, REQUEST):
+    """Validates id against list of possible declarative id."""
     langs = []
     lang = REQUEST.get( 'lang')
     if lang is None:
@@ -52,12 +45,8 @@ def validateId(self, id, REQUEST):
     return False
 
 
-# ------------------------------------------------------------------------------
-#  _pathhandler.filterId:
-#
-#  Filters object by id.
-# ------------------------------------------------------------------------------
 def filterId(self, id, REQUEST):
+  """Filters object by id."""
   obs = self.objectValues(list(self.dGlobalAttrs))
   filtered_obs = [x for x in obs if x.id == id]
   if len( filtered_obs) > 0:
@@ -69,12 +58,8 @@ def filterId(self, id, REQUEST):
   return None
 
 
-# ------------------------------------------------------------------------------
-#  _pathhandler.handleBlobAttrs:
-#
-#  If the object has blob-fields find by filename and display data.
-# ------------------------------------------------------------------------------
 def handleBlobAttrs(self, name, REQUEST):
+  """Handles blob attributes by filename."""
   langs = self.getLangIds()
   name_without_lang_suffix = name
   if len(langs) == 1 and name.find('_%s.'%langs[0]) > 0:
@@ -100,25 +85,13 @@ def handleBlobAttrs(self, name, REQUEST):
   return None
 
 
-
-################################################################################
-################################################################################
-###
-###   class PathHandler:
-###
-###   Based on the Zope-Product PathHandler
-###   http://www.zope.org/Members/NIP/PathHandler).
-###
-################################################################################
-################################################################################
 class PathHandler(object): 
+    """Provide helpers for PathHandler."""
 
-    # --------------------------------------------------------------------------
-    #  PathHandler.__bobo_traverse__
-    # --------------------------------------------------------------------------
     def __bobo_traverse__(self, TraversalRequest, name):
       # If this is the first time this __bob_traverse__ method has been called
       # in handling this traversal request, store the path_to_handle
+      """Implement '__bobo_traverse__'."""
       request = getattr(self, 'REQUEST', getRequest())
       url = request.get('URL', '')
       zmi = url.find('/manage') >= 0
@@ -351,10 +324,8 @@ class PathHandler(object):
         standard.raiseError('NotFound',''.join([x+'/' for x in TraversalRequest['path_to_handle']]))
 
 
-    # --------------------------------------------------------------------------
-    #  PathHandler.pathob
-    # --------------------------------------------------------------------------
     def pathob(self, path_to_handle, REQUEST):
+      """Implement 'pathob'."""
       path_ob = self
       path_index = 0
       while True:
@@ -367,4 +338,3 @@ class PathHandler(object):
           return path_ob
         path_index += 1
 
-################################################################################

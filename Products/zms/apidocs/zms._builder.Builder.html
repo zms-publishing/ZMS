@@ -382,12 +382,14 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">Builder</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_builder.py#L73" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms._builder.Builder.__init__">Builder()</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">Builder</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_builder.py#L54" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms._builder.Builder.__init__">Builder()</a></code></p>
           <p><a href="classIndex.html#zms._builder.Builder">View In Hierarchy</a></p>
         </div>
 
         <div class="moduleDocstring">
-          <div><p>Builder</p></div>
+          <div><p>Generic XML builder for constructing ZMS object trees.</p>
+<p>The builder wires expat parser callbacks to object-creation and object-update hooks implemented by ZMS node classes.</p>
+</div>
         </div>
 
         <div id="splitTables">
@@ -398,57 +400,57 @@
     
     <td>Method</td>
     <td><code><a href="#__init__" class="internal-link" title="zms._builder.Builder.__init__">__init__</a></code></td>
-    <td>Builder.__init__</td>
+    <td>Initialize builder state.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#OnCharacterData" class="internal-link" title="zms._builder.Builder.OnCharacterData"><wbr></wbr>On<wbr></wbr>Character<wbr></wbr>Data</a></code></td>
-    <td>Builder.OnCharacterData</td>
+    <td>Handle character data parsed by expat.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#OnComment" class="internal-link" title="zms._builder.Builder.OnComment"><wbr></wbr>On<wbr></wbr>Comment</a></code></td>
-    <td>Builder.OnComment</td>
+    <td>Handle an XML comment.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#OnEndCData" class="internal-link" title="zms._builder.Builder.OnEndCData"><wbr></wbr>On<wbr></wbr>End<wbr></wbr>CData</a></code></td>
-    <td>Builder.OnEndCData</td>
+    <td>Handle the end of a CDATA section.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#OnEndElement" class="internal-link" title="zms._builder.Builder.OnEndElement"><wbr></wbr>On<wbr></wbr>End<wbr></wbr>Element</a></code></td>
-    <td>Builder.OnEndElement</td>
+    <td>Handle the end of an XML element.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#OnEndNamespaceDecl" class="internal-link" title="zms._builder.Builder.OnEndNamespaceDecl"><wbr></wbr>On<wbr></wbr>End<wbr></wbr>Namespace<wbr></wbr>Decl</a></code></td>
-    <td>Builder.OnEndNamespaceDecl</td>
+    <td>Handle the end of a namespace declaration.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#OnProcessingInstruction" class="internal-link" title="zms._builder.Builder.OnProcessingInstruction"><wbr></wbr>On<wbr></wbr>Processing<wbr></wbr>Instruction</a></code></td>
-    <td>Builder.OnProcessingInstruction</td>
+    <td>Handle a processing instruction.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#OnStartCData" class="internal-link" title="zms._builder.Builder.OnStartCData"><wbr></wbr>On<wbr></wbr>Start<wbr></wbr>CData</a></code></td>
-    <td>Builder.OnStartCData</td>
+    <td>Handle the start of a CDATA section.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#OnStartElement" class="internal-link" title="zms._builder.Builder.OnStartElement"><wbr></wbr>On<wbr></wbr>Start<wbr></wbr>Element</a></code></td>
-    <td>Builder.OnStartElement</td>
+    <td>Handle the start of an XML element.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#OnStartNamespaceDecl" class="internal-link" title="zms._builder.Builder.OnStartNamespaceDecl"><wbr></wbr>On<wbr></wbr>Start<wbr></wbr>Namespace<wbr></wbr>Decl</a></code></td>
-    <td>Builder.OnStartNamespaceDecl</td>
+    <td>Handle the start of a namespace declaration.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#parse" class="internal-link" title="zms._builder.Builder.parse">parse</a></code></td>
-    <td>Builder.parse</td>
+    <td>Parse an XML document and build a recursive object tree.</td>
   </tr><tr class="classvariable">
     
     <td>Class Variable</td>
@@ -495,7 +497,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">__init__</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_builder.py#L85">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_builder.py#L64">
       
       (source)
     </a>
@@ -507,7 +509,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Builder.__init__</p></div>
+    <div><p>Initialize builder state.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -522,7 +524,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">OnCharacterData</span><span class="function-signature">(self, data)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_builder.py#L298">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_builder.py#L227">
       
       (source)
     </a>
@@ -534,7 +536,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Builder.OnCharacterData</p></div>
+    <div><p>Handle character data parsed by expat.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">data:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Character data</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -549,7 +551,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">OnComment</span><span class="function-signature">(self, data)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_builder.py#L348">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_builder.py#L257">
       
       (source)
     </a>
@@ -561,7 +563,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Builder.OnComment</p></div>
+    <div><p>Handle an XML comment.</p>
+<p>Comments are ignored by this builder.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">data:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Comment content</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -576,7 +580,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">OnEndCData</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_builder.py#L321">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_builder.py#L240">
       
       (source)
     </a>
@@ -588,7 +592,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Builder.OnEndCData</p></div>
+    <div><p>Handle the end of a CDATA section.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -603,7 +607,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">OnEndElement</span><span class="function-signature">(self, name)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_builder.py#L261">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_builder.py#L197">
       
       (source)
     </a>
@@ -615,7 +619,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Builder.OnEndElement</p></div>
+    <div><p>Handle the end of an XML element.</p>
+<p>Finalizes the current node or delegates unknown end tags to the current node.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">name:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Element name</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Raises</td></tr><tr><td class="fieldArgContainer"><code><a href="zms._builder.ParseError.html" class="internal-link" title="zms._builder.ParseError">ParseError</a></code></td><td>If an unknown end tag cannot be handled</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -630,7 +636,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">OnEndNamespaceDecl</span><span class="function-signature">(self, prefix)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_builder.py#L375">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_builder.py#L281">
       
       (source)
     </a>
@@ -642,7 +648,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Builder.OnEndNamespaceDecl</p></div>
+    <div><p>Handle the end of a namespace declaration.</p>
+<p>Namespace declarations are ignored by this builder.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">prefix:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Namespace prefix</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -657,7 +665,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">OnProcessingInstruction</span><span class="function-signature">(self, target, data)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_builder.py#L335">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_builder.py#L244">
       
       (source)
     </a>
@@ -669,7 +677,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Builder.OnProcessingInstruction</p></div>
+    <div><p>Handle a processing instruction.</p>
+<p>Processing instructions are ignored by this builder.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">target:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Processing instruction target</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">data:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Processing instruction data</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -684,7 +694,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">OnStartCData</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_builder.py#L310">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_builder.py#L236">
       
       (source)
     </a>
@@ -696,7 +706,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Builder.OnStartCData</p></div>
+    <div><p>Handle the start of a CDATA section.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -711,7 +721,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">OnStartElement</span><span class="function-signature">(self, name, attrs)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_builder.py#L171">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_builder.py#L123">
       
       (source)
     </a>
@@ -723,7 +733,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Builder.OnStartElement</p></div>
+    <div><p>Handle the start of an XML element.</p>
+<p>Creates a new node for known meta objects or forwards unknown tags to the current node.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">name:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Element name</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">attrs:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Dictionary of element attributes</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -738,7 +750,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">OnStartNamespaceDecl</span><span class="function-signature">(self, prefix, uri)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_builder.py#L362">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_builder.py#L268">
       
       (source)
     </a>
@@ -750,7 +762,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Builder.OnStartNamespaceDecl</p></div>
+    <div><p>Handle the start of a namespace declaration.</p>
+<p>Namespace declarations are ignored by this builder.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">prefix:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Namespace prefix</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">uri:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Namespace URI</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -765,7 +779,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">parse</span><span class="function-signature">(self, input, root=None, bInRootTag=0)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_builder.py#L106">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_builder.py#L70">
       
       (source)
     </a>
@@ -777,7 +791,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Builder.parse</p></div>
+    <div><p>Parse an XML document and build a recursive object tree.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">input:</span><tt class="rst-docutils rst-literal">bytes</tt> or file-like</td><td class="fieldArgDesc">XML document as bytes or file-like object</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">root:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">Optional pre-existing root node</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">b<wbr></wbr>In<wbr></wbr>Root<wbr></wbr>Tag:</span><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">Flag indicating parsing starts inside an existing root tag</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">Last parsed node or root object</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Raises</td></tr><tr><td class="fieldArgContainer"><code><a href="zms._builder.ParseError.html" class="internal-link" title="zms._builder.ParseError">ParseError</a></code></td><td>If the XML document contains syntax errors</td></tr></table></div>
   </div>
 </div><div class="baseclassvariable">
   
@@ -791,7 +805,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">iBufferSize</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_builder.py#L77">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_builder.py#L62">
       
       (source)
     </a>
@@ -818,7 +832,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">bInCData</span>: <code>int</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_builder.py#L89">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_builder.py#L68">
       
       (source)
     </a>
@@ -845,7 +859,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">oCurrNode</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_builder.py#L88">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_builder.py#L67">
       
       (source)
     </a>
@@ -872,7 +886,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">oLastNode</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_builder.py#L278">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_builder.py#L220">
       
       (source)
     </a>
@@ -899,7 +913,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">oRootTag</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_builder.py#L87">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_builder.py#L66">
       
       (source)
     </a>

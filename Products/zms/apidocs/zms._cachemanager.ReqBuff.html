@@ -259,12 +259,12 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ReqBuff</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_cachemanager.py#L31" class="sourceLink">(source)</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ReqBuff</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_cachemanager.py#L34" class="sourceLink">(source)</a></code></p>
           <p><a href="classIndex.html#zms._cachemanager.ReqBuff">View In Hierarchy</a></p>
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>Request-scoped buffer helpers for expensive values computed during one request.</p></div>
         </div>
 
         <div id="splitTables">
@@ -275,22 +275,22 @@
     
     <td>Method</td>
     <td><code><a href="#clearReqBuff" class="internal-link" title="zms._cachemanager.ReqBuff.clearReqBuff">clear<wbr></wbr>Req<wbr></wbr>Buff</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Remove buffered entries from the current request, optionally filtered by prefix.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#fetchReqBuff" class="internal-link" title="zms._cachemanager.ReqBuff.fetchReqBuff">fetch<wbr></wbr>Req<wbr></wbr>Buff</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Fetch one buffered value from the current request (raises if missing).</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getReqBuffId" class="internal-link" title="zms._cachemanager.ReqBuff.getReqBuffId">get<wbr></wbr>Req<wbr></wbr>Buff<wbr></wbr>Id</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return a stable request-buffer key namespaced by the object's physical path.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#storeReqBuff" class="internal-link" title="zms._cachemanager.ReqBuff.storeReqBuff">store<wbr></wbr>Req<wbr></wbr>Buff</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Store and return a value in the current request buffer. The value is stored under a key namespaced by the object's physical path to avoid conflicts with other objects.</td>
   </tr>
 </table>
           
@@ -312,7 +312,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">clearReqBuff</span><span class="function-signature">(self, prefix=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, REQUEST=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_cachemanager.py#L46">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_cachemanager.py#L50">
       
       (source)
     </a>
@@ -324,7 +324,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Remove buffered entries from the current request, optionally filtered by prefix.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">prefix:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Optional prefix to filter buffer keys.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">Optional request object.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -339,7 +339,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">fetchReqBuff</span><span class="function-signature">(self, key=None, REQUEST=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_cachemanager.py#L63">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_cachemanager.py#L69">
       
       (source)
     </a>
@@ -351,7 +351,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Fetch one buffered value from the current request (raises if missing).</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">key:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Buffer key (namespaced by physical path).</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">The buffered value.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -378,7 +378,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return a stable request-buffer key namespaced by the object's physical path.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">key:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Buffer key (namespaced by physical path).</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Namespaced buffer key.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -393,7 +393,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">storeReqBuff</span><span class="function-signature">(self, key, value, REQUEST=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_cachemanager.py#L76">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_cachemanager.py#L86">
       
       (source)
     </a>
@@ -405,7 +405,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Store and return a value in the current request buffer. The value is stored under a key namespaced by the object's physical path to avoid conflicts with other objects.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">key:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Buffer key (namespaced by physical path).</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">value:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">Value to store in the buffer.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">The value that was stored.</td></tr></table></div>
   </div>
 </div>
         </div>

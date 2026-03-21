@@ -1,29 +1,24 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
+"""
+content_extraction.py - ZMS Content Extraction Toolkit for Search Indexing
 
-################################################################################
-# content_extraction.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+This module provides functions for extracting text content from various 
+file types, including HTML and PDF. It uses Apache Tika for content analysis 
+and pdfminer.six for PDF text extraction. The extracted text can be used 
+for search indexing or other text processing tasks within ZMS. It also 
+includes a helper function for extracting text from HTML content by 
+removing tags and unescaping entities. The main function, C{extract_content}, 
+takes a byte stream and content type, and attempts to extract text content 
+using the appropriate method based on the content type. 
 
-"""ZMS content extraction toolkit module
+If Tika is configured, it will be used for extraction; otherwise, pdfminer.six 
+will be used for PDFs, and plain text extraction will be applied for certain 
+text-based content types.
 
-This module provides helpful functions and classes for use in Python
-Scripts.  It can be accessed from Python with the statement
-"import Products.zms.content_extraction"
+It can be accessed from Python with the statement::
+    import Products.zms.content_extraction
+
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
 """
 # Imports.
 import html

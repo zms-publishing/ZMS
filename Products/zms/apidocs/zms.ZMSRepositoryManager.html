@@ -1110,7 +1110,38 @@
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>ZMSRepositoryManager.py - ZMS Repository Manager</p>
+<p>The ZMSRepositoryManager Module is comprehensive repository management system for ZMS that handles synchronization, configuration management, and bi-directional data exchange between ZODB (Zope Object Database) and the (versioning) file system (e.g., Git).</p>
+<p>Core Responsibilities:</p>
+<ul class="rst-simple">
+<li>Repository Synchronization: Manages bidirectional synchronization between ZODB and file system repositories, allowing ZMS to maintain consistency across storage backends.</li>
+<li>Configuration Management: Handles reading, writing, and validation of ZMS configuration files stored in the repository with support for environment variable substitution ($INSTANCE_HOME, $HOME_ID).</li>
+<li>Import/Export Operations: Facilitates exporting ZMS objects and configurations to the file system (ZODB -&gt; repository) and importing updates back into ZODB (repository -&gt; ZODB).</li>
+<li>Model Exchange: Provides mechanisms to exchange model definitions and configurations between multiple providers/repositories, supporting distributed ZMS deployments.</li>
+<li>Multi-Provider Support: Supports multiple repository providers, allowing organizations to manage different configuration sets across separate storage locations.</li>
+</ul>
+<p>Key Features:</p>
+<ul class="rst-simple">
+<li>Directional Control: Configurable update direction determines whether changes are highlighted from the file system (Loading mode) or the ZODB (Saving mode).</li>
+<li>Orphan Management: Optional handling of orphaned configuration files to maintain clean repository states.</li>
+<li>Event Triggering: Emits repository lifecycle events (beforeCommitRepositoryEvt, afterCommitRepositoryEvt, beforeUpdateRepositoryEvt, afterUpdateRepositoryEvt) for integration with other ZMS plugins.</li>
+<li>Transaction Safety: Provides rollback capability through success/failure tracking during batch operations.</li>
+</ul>
+<p>Use Cases in ZMS:</p>
+<ul class="rst-simple">
+<li>Configuration Backup and Recovery</li>
+<li>Multi-environment Deployment (development, staging, production)</li>
+<li>Team Collaboration on ZMS Models and Content Structures</li>
+<li>Version Control Integration for ZMS Configurations</li>
+<li>Migration and Data Exchange Between ZMS Instances</li>
+</ul>
+<p>Implements:</p>
+<ul class="rst-simple">
+<li>IZMSConfigurationProvider: Configuration retrieval and management</li>
+<li>IZMSRepositoryManager: Repository operations and synchronization</li>
+</ul>
+<p>License: GNU General Public License v2 or later, Organization: ZMS Publishing</p>
+</div>
         </div>
 
         <div id="splitTables">
@@ -1121,7 +1152,7 @@
     
     <td>Class</td>
     <td><code><a href="zms.ZMSRepositoryManager.ZMSRepositoryManager.html" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager"><wbr></wbr>ZMSRepository<wbr></wbr>Manager</a></code></td>
-    <td>"" Properties</td>
+    <td><span class="undocumented">No class docstring; 0/3 instance variable, 0/8 class variable, 11/11 methods documented</span></td>
   </tr>
 </table>
           

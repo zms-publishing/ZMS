@@ -542,12 +542,14 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSFilterManager</span>(ZMSItem.ZMSItem): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L40" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms.ZMSFilterManager.ZMSFilterManager.__init__">ZMSFilterManager(filters, processes)</a></code></p><p>Implements interfaces: Products.zms.IZMSConfigurationProvider.IZMSConfigurationProvider, Products.zms.IZMSRepositoryProvider.IZMSRepositoryProvider</p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSFilterManager</span>(ZMSItem.ZMSItem): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L27" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms.ZMSFilterManager.ZMSFilterManager.__init__">ZMSFilterManager(filters, processes)</a></code></p><p>Implements interfaces: Products.zms.IZMSConfigurationProvider.IZMSConfigurationProvider, Products.zms.IZMSRepositoryProvider.IZMSRepositoryProvider</p>
           <p><a href="classIndex.html#zms.ZMSFilterManager.ZMSFilterManager">View In Hierarchy</a></p>
         </div>
 
         <div class="moduleDocstring">
-          <div><p>"" Properties</p></div>
+          <div><p>Manage reusable content filters and their executable process chains.</p>
+<p>The filter manager persists local filter definitions, optional uploaded process assets, and repository import/export payloads used for sync.</p>
+</div>
         </div>
 
         <div id="splitTables">
@@ -558,112 +560,112 @@
     
     <td>Method</td>
     <td><code><a href="#__init__" class="internal-link" title="zms.ZMSFilterManager.ZMSFilterManager.__init__">__init__</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Initialize the manager from serialized filters and processes.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#delFilter" class="internal-link" title="zms.ZMSFilterManager.ZMSFilterManager.delFilter">del<wbr></wbr>Filter</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Delete a filter definition and its uploaded assets.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#delFilterProcess" class="internal-link" title="zms.ZMSFilterManager.ZMSFilterManager.delFilterProcess">del<wbr></wbr>Filter<wbr></wbr>Process</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Remove a process from a filter and renumber stored assets.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#delProcess" class="internal-link" title="zms.ZMSFilterManager.ZMSFilterManager.delProcess">del<wbr></wbr>Process</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Delete a process definition and its backing Zope object.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#exportXml" class="internal-link" title="zms.ZMSFilterManager.ZMSFilterManager.exportXml">export<wbr></wbr>Xml</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Export selected filters and processes as an XML download.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getFilter" class="internal-link" title="zms.ZMSFilterManager.ZMSFilterManager.getFilter">get<wbr></wbr>Filter</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return a filter definition, falling back to the portal master.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getFilterIds" class="internal-link" title="zms.ZMSFilterManager.ZMSFilterManager.getFilterIds">get<wbr></wbr>Filter<wbr></wbr>Ids</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the available filter ids, including acquired ones.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getFilterProcesses" class="internal-link" title="zms.ZMSFilterManager.ZMSFilterManager.getFilterProcesses">get<wbr></wbr>Filter<wbr></wbr>Processes</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return process definitions attached to a filter.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getProcess" class="internal-link" title="zms.ZMSFilterManager.ZMSFilterManager.getProcess">get<wbr></wbr>Process</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return a process definition, falling back to the portal master.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getProcessIds" class="internal-link" title="zms.ZMSFilterManager.ZMSFilterManager.getProcessIds">get<wbr></wbr>Process<wbr></wbr>Ids</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the available process ids, including acquired ones.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#importXml" class="internal-link" title="zms.ZMSFilterManager.ZMSFilterManager.importXml">import<wbr></wbr>Xml</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Import one or more filter manager entries from XML data.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_changeFilter" class="internal-link" title="zms.ZMSFilterManager.ZMSFilterManager.manage_changeFilter">manage_change<wbr></wbr>Filter</a></code></td>
-    <td>FilterManager.manage_changeFilter</td>
+    <td>Handle ZMI actions for filters and filter-process assignments.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_changeProcess" class="internal-link" title="zms.ZMSFilterManager.ZMSFilterManager.manage_changeProcess">manage_change<wbr></wbr>Process</a></code></td>
-    <td>FilterManager.manage_changeProcess</td>
+    <td>Handle ZMI actions for creating, editing, and deleting processes.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_options" class="internal-link" title="zms.ZMSFilterManager.ZMSFilterManager.manage_options">manage<wbr></wbr>_options</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return parent management tabs with local relative actions.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_sub_options" class="internal-link" title="zms.ZMSFilterManager.ZMSFilterManager.manage_sub_options">manage<wbr></wbr>_sub<wbr></wbr>_options</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the filter manager sub tabs shown in the ZMI.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#moveFilterProcess" class="internal-link" title="zms.ZMSFilterManager.ZMSFilterManager.moveFilterProcess">move<wbr></wbr>Filter<wbr></wbr>Process</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Move a filter process to a new position in the pipeline.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#provideRepository" class="internal-link" title="zms.ZMSFilterManager.ZMSFilterManager.provideRepository">provide<wbr></wbr>Repository</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Build a repository export mapping for filters and processes.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#setFilter" class="internal-link" title="zms.ZMSFilterManager.ZMSFilterManager.setFilter">set<wbr></wbr>Filter</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Create or update a filter definition.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#setFilterProcess" class="internal-link" title="zms.ZMSFilterManager.ZMSFilterManager.setFilterProcess">set<wbr></wbr>Filter<wbr></wbr>Process</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Append a process to a filter and persist its optional file asset.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#setProcess" class="internal-link" title="zms.ZMSFilterManager.ZMSFilterManager.setProcess">set<wbr></wbr>Process</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Create or update an executable process definition.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#updateRepository" class="internal-link" title="zms.ZMSFilterManager.ZMSFilterManager.updateRepository">update<wbr></wbr>Repository</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Apply one repository item to the local filter manager state.</td>
   </tr><tr class="classvariable">
     
     <td>Class Variable</td>
     <td><code><a href="#__ac_permissions__" class="internal-link" title="zms.ZMSFilterManager.ZMSFilterManager.__ac_permissions__">__ac<wbr></wbr>_permissions__</a></code></td>
-    <td>"" ZMSFilterManager.__init__:</td>
+    <td><span class="undocumented">Undocumented</span></td>
   </tr><tr class="classvariable">
     
     <td>Class Variable</td>
@@ -678,7 +680,7 @@
     
     <td>Class Variable</td>
     <td><code><a href="#manage_main" class="internal-link" title="zms.ZMSFilterManager.ZMSFilterManager.manage_main">manage<wbr></wbr>_main</a></code></td>
-    <td>"" Management Permissions</td>
+    <td><span class="undocumented">Undocumented</span></td>
   </tr><tr class="classvariable">
     
     <td>Class Variable</td>
@@ -718,7 +720,7 @@
     
     <td>Method</td>
     <td><code><a href="#_importXml" class="internal-link" title="zms.ZMSFilterManager.ZMSFilterManager._importXml">_import<wbr></wbr>Xml</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Import a single parsed XML item.</td>
   </tr>
 </table>
           
@@ -740,7 +742,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">__init__</span><span class="function-signature">(self, filters={}, processes={})</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L90">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L67">
       
       (source)
     </a>
@@ -752,7 +754,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Initialize the manager from serialized filters and processes.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">filters:</span><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Persisted filter definitions.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">processes:</span><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Persisted process definitions.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -767,7 +769,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">delFilter</span><span class="function-signature">(self, id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L406">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L412">
       
       (source)
     </a>
@@ -779,7 +781,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Delete a filter definition and its uploaded assets.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Filter identifier.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Empty string for legacy callers.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -794,7 +796,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">delFilterProcess</span><span class="function-signature">(self, id, index)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L493">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L505">
       
       (source)
     </a>
@@ -806,7 +808,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Remove a process from a filter and renumber stored assets.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Filter identifier.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">index:</span><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">Process position to remove.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">Legacy sentinel value.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -821,7 +823,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">delProcess</span><span class="function-signature">(self, id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L725">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L761">
       
       (source)
     </a>
@@ -833,7 +835,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Delete a process definition and its backing Zope object.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Process identifier.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Empty string for legacy callers.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -848,7 +850,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">exportXml</span><span class="function-signature">(self, REQUEST, RESPONSE)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L247">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L232">
       
       (source)
     </a>
@@ -860,7 +862,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Export selected filters and processes as an XML download.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">The active HTTP request.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">RESPONSE:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPResponse</tt></td><td class="fieldArgDesc">The active HTTP response.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Serialized XML export data.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -875,7 +877,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getFilter</span><span class="function-signature">(self, id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L348">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L343">
       
       (source)
     </a>
@@ -887,7 +889,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return a filter definition, falling back to the portal master.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Filter identifier.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Filter metadata.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -902,7 +904,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getFilterIds</span><span class="function-signature">(self, sort=True)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L332">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L325">
       
       (source)
     </a>
@@ -914,7 +916,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the available filter ids, including acquired ones.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">sort:</span><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">Sort by display name when true.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Filter ids.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -929,7 +931,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getFilterProcesses</span><span class="function-signature">(self, id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L437">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L438">
       
       (source)
     </a>
@@ -941,7 +943,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return process definitions attached to a filter.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Filter identifier.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Filter process descriptors with optional uploaded files.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -956,7 +958,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getProcess</span><span class="function-signature">(self, id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L304">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L295">
       
       (source)
     </a>
@@ -968,7 +970,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return a process definition, falling back to the portal master.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Process identifier.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Process metadata and synchronized command data.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -983,7 +985,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getProcessIds</span><span class="function-signature">(self, sort=True)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L289">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L278">
       
       (source)
     </a>
@@ -995,7 +997,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the available process ids, including acquired ones.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">sort:</span><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">Sort by display name when true.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Process ids.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1010,7 +1012,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">importXml</span><span class="function-signature">(self, xml)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L236">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L219">
       
       (source)
     </a>
@@ -1022,7 +1024,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Import one or more filter manager entries from XML data.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">xml:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">XML string or uploaded file-like object.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1037,7 +1039,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_changeFilter</span><span class="function-signature">(self, lang, btn=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, key=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, REQUEST=None, RESPONSE=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L563">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L586">
       
       (source)
     </a>
@@ -1049,7 +1051,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>FilterManager.manage_changeFilter</p></div>
+    <div><p>Handle ZMI actions for filters and filter-process assignments.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">lang:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Active UI language.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">btn:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Submitted button id.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">key:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Secondary action key.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">The active HTTP request.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">RESPONSE:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPResponse</tt></td><td class="fieldArgDesc">The active HTTP response.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">Redirect response or export payload.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1064,7 +1066,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_changeProcess</span><span class="function-signature">(self, lang, btn=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, key=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, REQUEST=None, RESPONSE=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L741">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L779">
       
       (source)
     </a>
@@ -1076,7 +1078,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>FilterManager.manage_changeProcess</p></div>
+    <div><p>Handle ZMI actions for creating, editing, and deleting processes.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">lang:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Active UI language.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">btn:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Submitted button id.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">key:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Secondary action key.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">The active HTTP request.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">RESPONSE:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPResponse</tt></td><td class="fieldArgDesc">The active HTTP response.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">Redirect response or export payload.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1091,7 +1093,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_options</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L57">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L43">
       
       (source)
     </a>
@@ -1103,7 +1105,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return parent management tabs with local relative actions.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -1118,7 +1120,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_sub_options</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L61">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L48">
       
       (source)
     </a>
@@ -1130,7 +1132,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the filter manager sub tabs shown in the ZMI.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -1145,7 +1147,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">moveFilterProcess</span><span class="function-signature">(self, id, index, pos)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L525">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L542">
       
       (source)
     </a>
@@ -1157,7 +1159,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Move a filter process to a new position in the pipeline.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Filter identifier.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">index:</span><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">Current process position.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">pos:</span><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">Target process position.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">The new position.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1172,7 +1174,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">provideRepository</span><span class="function-signature">(self, r, ids=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L119">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L94">
       
       (source)
     </a>
@@ -1184,7 +1186,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Build a repository export mapping for filters and processes.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">r:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Repository accumulator passed by the caller.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">ids:</span><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Optional subset of ids to export.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Repository data keyed by object id.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1199,7 +1201,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">setFilter</span><span class="function-signature">(self, oldId, newId, newAcquired=0, newName=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, newFormat=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, newContentType=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, newDescription=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, newRoles=[], newMetaTypes=[])</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L377">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L366">
       
       (source)
     </a>
@@ -1211,7 +1213,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Create or update a filter definition.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">old<wbr></wbr>Id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Existing filter id to replace.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">new<wbr></wbr>Id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Target filter id.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">new<wbr></wbr>Acquired:</span><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">Whether the filter is acquired from a master portal.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">new<wbr></wbr>Name:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Display name.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">new<wbr></wbr>Format:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Filter input format.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">new<wbr></wbr>Content<wbr></wbr>Type:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Filter output content type.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">new<wbr></wbr>Description:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Descriptive help text.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">new<wbr></wbr>Roles:</span><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Allowed roles.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">new<wbr></wbr>Meta<wbr></wbr>Types:</span><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Supported content meta types.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">The persisted filter id.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1226,7 +1228,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">setFilterProcess</span><span class="function-signature">(self, id, index, newProcessId, newProcessFile=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L464">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L467">
       
       (source)
     </a>
@@ -1238,7 +1240,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Append a process to a filter and persist its optional file asset.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Filter identifier.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">index:</span><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">Process position inside the filter pipeline.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">new<wbr></wbr>Process<wbr></wbr>Id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Linked process id.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">new<wbr></wbr>Process<wbr></wbr>File:</span><tt class="rst-docutils rst-literal">_blobfields.MyBlob</tt></td><td class="fieldArgDesc">Optional uploaded process file.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">The appended process index.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1253,7 +1255,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">setProcess</span><span class="function-signature">(self, oldId, newId, newAcquired=0, newName=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, newType=<span class="rst-variable-quote">'</span><span class="rst-variable-string">process</span><span class="rst-variable-quote">'</span>, newCommand=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L674">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L698">
       
       (source)
     </a>
@@ -1265,7 +1267,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Create or update an executable process definition.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">old<wbr></wbr>Id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Existing process id to replace.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">new<wbr></wbr>Id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Target process id.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">new<wbr></wbr>Acquired:</span><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">Whether the process is acquired from a master portal.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">new<wbr></wbr>Name:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Display name.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">new<wbr></wbr>Type:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Backing Zope object type.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">new<wbr></wbr>Command:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">Source text or uploaded blob for the process.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">The persisted process id.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1280,7 +1282,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">updateRepository</span><span class="function-signature">(self, r)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L159">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L140">
       
       (source)
     </a>
@@ -1292,7 +1294,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Apply one repository item to the local filter manager state.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">r:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Repository item describing a filter or process.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">The imported id.</td></tr></table></div>
   </div>
 </div><div class="baseclassvariable">
   
@@ -1306,7 +1308,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">__ac_permissions__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L80">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L62">
       
       (source)
     </a>
@@ -1318,9 +1320,7 @@
   </div>
   <div class="functionBody">
     
-    <div><p>"" ZMSFilterManager.__init__:</p>
-<p>Constructor.</p>
-</div>
+    <div><p class="undocumented">Undocumented</p></div>
     
   </div>
 </div><div class="baseclassvariable">
@@ -1335,7 +1335,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">__administratorPermissions__</span>: <code>tuple[<wbr></wbr>str, <wbr></wbr><span class="rst-variable-ellipsis">...</span>]</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L75">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L57">
       
       (source)
     </a>
@@ -1362,7 +1362,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L69">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L54">
       
       (source)
     </a>
@@ -1389,7 +1389,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_main</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L70">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L55">
       
       (source)
     </a>
@@ -1401,7 +1401,7 @@
   </div>
   <div class="functionBody">
     
-    <div><p>"" Management Permissions</p></div>
+    <div><p class="undocumented">Undocumented</p></div>
     
   </div>
 </div><div class="baseclassvariable">
@@ -1416,7 +1416,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_options_default_action</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L56">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L42">
       
       (source)
     </a>
@@ -1443,7 +1443,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_sub_options__roles__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L60">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L47">
       
       (source)
     </a>
@@ -1470,7 +1470,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">meta_type</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L49">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L38">
       
       (source)
     </a>
@@ -1497,7 +1497,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_icon</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L50">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L39">
       
       (source)
     </a>
@@ -1524,7 +1524,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">filters</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L92">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L76">
       
       (source)
     </a>
@@ -1551,7 +1551,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">id</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L91">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L75">
       
       (source)
     </a>
@@ -1578,7 +1578,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">processes</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L102">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L86">
       
       (source)
     </a>
@@ -1606,7 +1606,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">_importXml</span><span class="function-signature">(self, item)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L207">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSFilterManager.py#L185">
       
       (source)
     </a>
@@ -1618,7 +1618,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Import a single parsed XML item.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">item:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Parsed filter or process description.</td></tr></table></div>
   </div>
 </div>
         </div>

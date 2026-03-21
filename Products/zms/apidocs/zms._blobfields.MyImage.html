@@ -801,7 +801,7 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">MyImage</span>(<a href="zms._blobfields.MyBlob.html" class="internal-link" title="zms._blobfields.MyBlob">MyBlob</a>, Image): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L876" class="sourceLink">(source)</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">MyImage</span>(<a href="zms._blobfields.MyBlob.html" class="internal-link" title="zms._blobfields.MyBlob">MyBlob</a>, Image): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L910" class="sourceLink">(source)</a></code></p>
           <p><a href="classIndex.html#zms._blobfields.MyImage">View In Hierarchy</a></p>
         </div>
 
@@ -892,7 +892,7 @@
     
     <td>Method</td>
     <td><code><a href="zms._blobfields.MyBlob.html#__bobo_traverse__" class="internal-link" title="zms._blobfields.MyBlob.__bobo_traverse__">__bobo<wbr></wbr>_traverse__</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the blob itself during traversal.</td>
   </tr><tr class="basemethod">
     
     <td>Method</td>
@@ -907,7 +907,7 @@
     
     <td>Method</td>
     <td><code><a href="zms._blobfields.MyBlob.html#equals" class="internal-link" title="zms._blobfields.MyBlob.equals">equals</a></code></td>
-    <td>Indicates whether some other MyBlob-object is "equal to" this one.</td>
+    <td>Indicate whether another blob is equal to this one.</td>
   </tr><tr class="basemethod">
     
     <td>Method</td>
@@ -932,7 +932,7 @@
     
     <td>Method</td>
     <td><code><a href="zms._blobfields.MyBlob.html#getDataURI" class="internal-link" title="zms._blobfields.MyBlob.getDataURI">get<wbr></wbr>Data<wbr></wbr>URI</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the blob payload as a data URI.</td>
   </tr><tr class="basemethod">
     
     <td>Method</td>
@@ -942,7 +942,7 @@
     
     <td>Method</td>
     <td><code><a href="zms._blobfields.MyBlob.html#getHref" class="internal-link" title="zms._blobfields.MyBlob.getHref">get<wbr></wbr>Href</a></code></td>
-    <td>Returns absolute url.</td>
+    <td>Return the absolute URL for this blob.</td>
   </tr><tr class="basemethod">
     
     <td>Method</td>
@@ -957,12 +957,12 @@
     
     <td>Method</td>
     <td><code><a href="zms._blobfields.MyBlob.html#getObjAttrs" class="internal-link" title="zms._blobfields.MyBlob.getObjAttrs">get<wbr></wbr>Obj<wbr></wbr>Attrs</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return object attribute definitions for this blob.</td>
   </tr><tr class="basemethod">
     
     <td>Method</td>
     <td><code><a href="zms._blobfields.MyBlob.html#on_setobjattr" class="internal-link" title="zms._blobfields.MyBlob.on_setobjattr">on<wbr></wbr>_setobjattr</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Persist blob data to MediaDB and detach acquisition wrappers when needed.</td>
   </tr><tr class="baseclassvariable">
     
     <td>Class Variable</td>
@@ -982,7 +982,7 @@
     
     <td>Class Variable</td>
     <td><code><a href="zms._blobfields.MyBlob.html#get_size__roles__" class="internal-link" title="zms._blobfields.MyBlob.get_size__roles__">get<wbr></wbr>_size<wbr></wbr>_<wbr></wbr>_roles__</a></code></td>
-    <td>MyBlob.get_real_size:</td>
+    <td><span class="undocumented">Undocumented</span></td>
   </tr><tr class="baseclassvariable">
     
     <td>Class Variable</td>
@@ -1032,7 +1032,7 @@
     
     <td>Class Variable</td>
     <td><code><a href="zms._blobfields.MyBlob.html#index_html" class="internal-link" title="zms._blobfields.MyBlob.index_html">index<wbr></wbr>_html</a></code></td>
-    <td>MyBlob.getObjAttrs:</td>
+    <td><span class="undocumented">Undocumented</span></td>
   </tr><tr class="baseinstancevariable">
     
     <td>Instance Variable</td>
@@ -1057,7 +1057,7 @@
     
     <td>Method</td>
     <td><code><a href="zms._blobfields.MyBlob.html#_createCopy" class="internal-link" title="zms._blobfields.MyBlob._createCopy">_create<wbr></wbr>Copy</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Create a copy of the blob bound to a new acquisition parent.</td>
   </tr><tr class="basemethod private">
     
     <td>Method</td>
@@ -1089,7 +1089,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getHeight</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L981">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L1015">
       
       (source)
     </a>
@@ -1116,7 +1116,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getWidth</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L959">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L993">
       
       (source)
     </a>
@@ -1143,7 +1143,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">toXml</span><span class="function-signature">(self, sender=None, base_path=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, data2hex=True)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L917">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L951">
       
       (source)
     </a>
@@ -1169,7 +1169,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">__obj_attrs__</span>: <code>list[<wbr></wbr>str]</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L897">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L931">
       
       (source)
     </a>
@@ -1196,7 +1196,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">__xml_attrs__</span>: <code>list[<wbr></wbr>str]</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L898">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L932">
       
       (source)
     </a>
@@ -1223,7 +1223,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">getHeight__roles__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L980">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L1014">
       
       (source)
     </a>
@@ -1250,7 +1250,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">getWidth__roles__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L958">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L992">
       
       (source)
     </a>
@@ -1277,7 +1277,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">height</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L971">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L1005">
       
       (source)
     </a>
@@ -1304,7 +1304,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">width</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L970">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L1004">
       
       (source)
     </a>
@@ -1332,7 +1332,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">_getCopy</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L901">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L935">
       
       (source)
     </a>

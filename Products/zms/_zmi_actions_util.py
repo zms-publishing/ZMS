@@ -1,28 +1,32 @@
-################################################################################
-# _zmi_actions_util.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+_zmi_actions_util.py - ZMS ZMI Actions Utility for Action List Generation and Command Handling
+
+Provides zmi_actions, zmi_basic_actions, zmi_insert_actions helper functions 
+for general-purpose ZMS utilities and shared helper functions. It provides 
+common patterns like type checking, data transformation, and error handling.
+
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
+"""
 
 # Product imports.
 from Products.zms import standard
 
+
 def zmi_actions(container, context, attr_id='e'):
   """
-  Returns list of actions.
+  Return list of actions.
+  
+  @param container: The container for which to compute actions.
+  @type container: C{object}
+  @param context: The context object for which to compute actions. May be None.
+  @type context: C{object}
+  @param attr_id: The attribute ID for which to compute actions. Default is 'e' (edit).
+  @type attr_id: C{str}
+  @return: List of action tuples (id, label, url, icon_clazz, tooltip).
+  @rtype: C{list}
   """
+
   actions = []
   
   REQUEST = container.REQUEST
@@ -213,8 +217,11 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
   #-- Pre-Sort by display-label.
   actions.sort(key=lambda x: x[1])
   actions = [[len(actions)+actions.index(x)]+list(x) for x in actions]
+
+
   #-- Sort by custom-sort-id.
   def get_sort(x):
+    """Return sortable value for insert actions using optional language SORT key."""
     sort_key = '%s.SORT'%x[1]
     # Default sort value is display-label
     sort_val = x[0]
@@ -255,4 +262,3 @@ def zmi_command_actions(context, stereotype='', objPath=''):
   # Return sorted action list
   return actions
 
-################################################################################

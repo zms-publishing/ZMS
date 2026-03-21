@@ -1223,8 +1223,9 @@
         </div>
 
         <div class="moduleDocstring">
-          <div><p>ZMS repository utility module</p>
-<p>This module provides helpful functions and classes for use in Python Scripts.  It can be accessed from Python with the statement "import Products.zms.repository"</p>
+          <div><p>repositoryutil.py - ZMS repository utility module.</p>
+<p>This module provides helper functions and classes for repository access from Python scripts and other ZMS internals.</p>
+<p>License: GNU General Public License v2 or later, Organization: ZMS Publishing</p>
 </div>
         </div>
 
@@ -1236,7 +1237,7 @@
     
     <td>Function</td>
     <td><code><a href="#get_class" class="internal-link" title="zms.repositoryutil.get_class">get<wbr></wbr>_class</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Get class from py-string.</td>
   </tr><tr class="function">
     
     <td>Function</td>
@@ -1256,12 +1257,12 @@
     
     <td>Function</td>
     <td><code><a href="#get_providers" class="internal-link" title="zms.repositoryutil.get_providers">get<wbr></wbr>_providers</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Returns list of repository-providers.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#get_system_conf_basepath" class="internal-link" title="zms.repositoryutil.get_system_conf_basepath">get<wbr></wbr>_system<wbr></wbr>_conf<wbr></wbr>_basepath</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Returns system conf-basepath.</td>
   </tr><tr class="function">
     
     <td>Function</td>
@@ -1271,7 +1272,7 @@
     
     <td>Function</td>
     <td><code><a href="#localFiles" class="internal-link" title="zms.repositoryutil.localFiles">local<wbr></wbr>Files</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Read repository from ZMS-instance.</td>
   </tr><tr class="function">
     
     <td>Function</td>
@@ -1281,17 +1282,17 @@
     
     <td>Function</td>
     <td><code><a href="#readRepository" class="internal-link" title="zms.repositoryutil.readRepository">read<wbr></wbr>Repository</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Read repository from base-path.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#remoteFiles" class="internal-link" title="zms.repositoryutil.remoteFiles">remote<wbr></wbr>Files</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Read repository from base-path.</td>
   </tr><tr class="variable">
     
     <td>Variable</td>
     <td><code><a href="#security" class="internal-link" title="zms.repositoryutil.security">security</a></code></td>
-    <td>Returns system conf-basepath.</td>
+    <td><span class="undocumented">Undocumented</span></td>
   </tr>
 </table>
           
@@ -1313,7 +1314,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_class</span><span class="function-signature">(py)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L72">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L59">
       
       (source)
     </a>
@@ -1325,7 +1326,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Get class from py-string.</p></div>
   </div>
 </div><div class="basefunction">
   
@@ -1340,7 +1341,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_diffs</span><span class="function-signature">(local, remote, ignore=True)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L438">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L445">
       
       (source)
     </a>
@@ -1367,7 +1368,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_init_py</span><span class="function-signature">(self, o)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L343">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L350">
       
       (source)
     </a>
@@ -1396,7 +1397,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_init_yaml</span><span class="function-signature">(self, o)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L393">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L400">
       
       (source)
     </a>
@@ -1425,7 +1426,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_providers</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L59">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L41">
       
       (source)
     </a>
@@ -1437,7 +1438,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Returns list of repository-providers.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">The object context.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">List of repository-providers.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1452,7 +1453,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_system_conf_basepath</span><span class="function-signature">()</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L51">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L33">
       
       (source)
     </a>
@@ -1464,7 +1465,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Returns system conf-basepath.</p></div>
   </div>
 </div><div class="basefunction">
   
@@ -1479,7 +1480,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">init_artefacts</span><span class="function-signature">(o, init_files)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L256">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L263">
       
       (source)
     </a>
@@ -1527,7 +1528,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">localFiles</span><span class="function-signature">(self, provider, ids=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L243">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L231">
       
       (source)
     </a>
@@ -1539,7 +1540,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Read repository from ZMS-instance.</p>
+<p>This function retrieves repository data from a ZMS instance using a provided repository provider. It processes the retrieved data to generate a dictionary of initialization artefacts, which includes metadata and file content for each repository object. The function supports both Python and YAML formats for the initialization.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">The object context.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">provider:</span><tt class="rst-docutils rst-literal">IZMSRepositoryProvider</tt></td><td class="fieldArgDesc">An object that provides repository data, expected to implement the <em>provideRepository</em> method.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">ids:</span><tt class="rst-docutils rst-literal">list</tt> or <tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc">Optional list of identifiers to specify which repository objects to retrieve. If None, all objects are retrieved.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">A dictionary mapping filenames to their corresponding data and metadata, generated from the repository objects provided by the repository provider.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1554,7 +1557,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">parseInit</span><span class="function-signature">(self, filepath)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L231">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L222">
       
       (source)
     </a>
@@ -1581,7 +1584,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">readRepository</span><span class="function-signature">(self, basepath, deep=True)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L144">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L132">
       
       (source)
     </a>
@@ -1593,7 +1596,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Read repository from base-path.</p></div>
   </div>
 </div><div class="basefunction">
   
@@ -1608,7 +1611,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">remoteFiles</span><span class="function-signature">(self, basepath, deep=True)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L87">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L75">
       
       (source)
     </a>
@@ -1620,7 +1623,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Read repository from base-path.</p></div>
   </div>
 </div><div class="basevariable">
   
@@ -1634,7 +1637,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">security</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L45">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L30">
       
       (source)
     </a>
@@ -1646,7 +1649,7 @@
   </div>
   <div class="functionBody">
     
-    <div><p>Returns system conf-basepath.</p></div>
+    <div><p class="undocumented">Undocumented</p></div>
     
   </div>
 </div>

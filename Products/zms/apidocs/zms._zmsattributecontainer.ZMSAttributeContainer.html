@@ -345,12 +345,12 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSAttributeContainer</span>(Folder, _objattrs.ObjAttrs, _pathhandler.PathHandler): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zmsattributecontainer.py#L50" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms._zmsattributecontainer.ZMSAttributeContainer.__init__">ZMSAttributeContainer(id)</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSAttributeContainer</span>(Folder, _objattrs.ObjAttrs, _pathhandler.PathHandler): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zmsattributecontainer.py#L35" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms._zmsattributecontainer.ZMSAttributeContainer.__init__">ZMSAttributeContainer(id)</a></code></p>
           <p><a href="classIndex.html#zms._zmsattributecontainer.ZMSAttributeContainer">View In Hierarchy</a></p>
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>Container object that stores and edits custom attribute values.</p></div>
         </div>
 
         <div id="splitTables">
@@ -361,32 +361,32 @@
     
     <td>Method</td>
     <td><code><a href="#__init__" class="internal-link" title="zms._zmsattributecontainer.ZMSAttributeContainer.__init__">__init__</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Initialize the container with a generated object id.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getChildNodes" class="internal-link" title="zms._zmsattributecontainer.ZMSAttributeContainer.getChildNodes">get<wbr></wbr>Child<wbr></wbr>Nodes</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return an empty list because attribute containers have no children.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getObjAttrs" class="internal-link" title="zms._zmsattributecontainer.ZMSAttributeContainer.getObjAttrs">get<wbr></wbr>Obj<wbr></wbr>Attrs</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Delegate attribute schema lookup to the parent ZMS object.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getObjVersion" class="internal-link" title="zms._zmsattributecontainer.ZMSAttributeContainer.getObjVersion">get<wbr></wbr>Obj<wbr></wbr>Version</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return self as version object because containers are not versioned.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getParentNode" class="internal-link" title="zms._zmsattributecontainer.ZMSAttributeContainer.getParentNode">get<wbr></wbr>Parent<wbr></wbr>Node</a></code></td>
-    <td>Delegates getParentNode to parent.</td>
+    <td>Delegate parent node lookup to the acquisition parent.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_changeProperties" class="internal-link" title="zms._zmsattributecontainer.ZMSAttributeContainer.manage_changeProperties">manage_change<wbr></wbr>Properties</a></code></td>
-    <td>ZMSAttributeContainer.manage_changeProperties</td>
+    <td>Persist submitted attribute values for all configured object attributes.</td>
   </tr><tr class="classvariable">
     
     <td>Class Variable</td>
@@ -401,7 +401,7 @@
     
     <td>Class Variable</td>
     <td><code><a href="#manage_propertiesForm" class="internal-link" title="zms._zmsattributecontainer.ZMSAttributeContainer.manage_propertiesForm">manage_properties<wbr></wbr>Form</a></code></td>
-    <td>"" Constructor</td>
+    <td><span class="undocumented">Undocumented</span></td>
   </tr><tr class="classvariable">
     
     <td>Class Variable</td>
@@ -433,7 +433,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">__init__</span><span class="function-signature">(self, id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zmsattributecontainer.py#L74">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zmsattributecontainer.py#L51">
       
       (source)
     </a>
@@ -445,7 +445,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Initialize the container with a generated object id.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -460,7 +460,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getChildNodes</span><span class="function-signature">(self, REQUEST={}, meta_types=None, reid=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zmsattributecontainer.py#L112">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zmsattributecontainer.py#L74">
       
       (source)
     </a>
@@ -472,7 +472,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return an empty list because attribute containers have no children.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -487,7 +487,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getObjAttrs</span><span class="function-signature">(self, meta_type=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zmsattributecontainer.py#L83">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zmsattributecontainer.py#L56">
       
       (source)
     </a>
@@ -499,7 +499,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Delegate attribute schema lookup to the parent ZMS object.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -514,7 +514,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getObjVersion</span><span class="function-signature">(self, REQUEST={})</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zmsattributecontainer.py#L92">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zmsattributecontainer.py#L61">
       
       (source)
     </a>
@@ -526,7 +526,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return self as version object because containers are not versioned.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -541,7 +541,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getParentNode</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zmsattributecontainer.py#L102">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zmsattributecontainer.py#L69">
       
       (source)
     </a>
@@ -553,7 +553,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Delegates getParentNode to parent.</p></div>
+    <div><p>Delegate parent node lookup to the acquisition parent.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -568,7 +568,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_changeProperties</span><span class="function-signature">(self, REQUEST, RESPONSE)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zmsattributecontainer.py#L121">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zmsattributecontainer.py#L79">
       
       (source)
     </a>
@@ -580,7 +580,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>ZMSAttributeContainer.manage_changeProperties</p></div>
+    <div><p>Persist submitted attribute values for all configured object attributes.</p>
+<p>Multilingual attributes are written for every language, while single-language attributes are written for the primary language only.</p>
+</div>
   </div>
 </div><div class="baseclassvariable">
   
@@ -594,7 +596,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">getParentNode__roles__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zmsattributecontainer.py#L101">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zmsattributecontainer.py#L66">
       
       (source)
     </a>
@@ -621,7 +623,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_options</span>: <code>tuple</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zmsattributecontainer.py#L61">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zmsattributecontainer.py#L43">
       
       (source)
     </a>
@@ -648,7 +650,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_propertiesForm</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zmsattributecontainer.py#L68">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zmsattributecontainer.py#L48">
       
       (source)
     </a>
@@ -660,7 +662,7 @@
   </div>
   <div class="functionBody">
     
-    <div><p>"" Constructor</p></div>
+    <div><p class="undocumented">Undocumented</p></div>
     
   </div>
 </div><div class="baseclassvariable">
@@ -675,7 +677,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">meta_type</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zmsattributecontainer.py#L57">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zmsattributecontainer.py#L41">
       
       (source)
     </a>
@@ -702,7 +704,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">id</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zmsattributecontainer.py#L75">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zmsattributecontainer.py#L53">
       
       (source)
     </a>

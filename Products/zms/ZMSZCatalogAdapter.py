@@ -1,23 +1,13 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
+"""
+ZMSZCatalogAdapter.py - Catalog adapter implementation for indexing ZMS content.
 
-################################################################################
-# ZMSZCatalogAdapter.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+This module collects normalized metadata and extracted text for ZMS objects,
+prepares index payloads, and exposes adapter logic used by catalog connectors
+for search, faceting, and retrieval.
+
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
+"""
 
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -55,6 +45,7 @@ def get_default_data(node):
   return d
 
 def get_zoned_dt(struct_dt):
+  """Return zoned dt."""
   try:
     dt = datetime.fromtimestamp(time.mktime(struct_dt))
     zdt = dt.replace(tzinfo=timezone.utc)
@@ -99,6 +90,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
 
     # Properties.
     # -----------
+    """Provide helpers for ZMSZCatalogAdapter."""
     meta_type = 'ZMSZCatalogAdapter'
     zmi_icon = "fas fa-search"
     icon_clazz = zmi_icon
@@ -107,9 +99,11 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     # -------------------
     manage_options_default_action = '../manage_customize'
     def manage_options(self):
+      """Handle the ZMI action 'manage_options'."""
       return [self.operator_setitem( x, 'action', '../'+x['action']) for x in copy.deepcopy(self.aq_parent.manage_options())]
 
     def manage_sub_options(self):
+      """Handle the ZMI action 'manage_sub_options'."""
       return (
         {'label': 'TAB_SEARCH','action': 'manage_main'},
         )
@@ -135,9 +129,11 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     #  Constructor.
     ############################################################################
     def __init__(self):
+      """Initialize the instance state."""
       self.id = 'zcatalog_adapter'
 
     def ensure_zcatalog_connector_is_initialized(self):
+      """Implement 'ensure_zcatalog_connector_is_initialized'."""
       root = self.getRootElement()
       if 'zcatalog_connector' not in root.getMetaobjIds() and self.REQUEST.get('zcatalog_init', 1) == 1:
         _confmanager.initConf(root, 'conf:com.zms.catalog.zcatalog')
@@ -146,6 +142,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     #  Initialize 
     ############################################################################
     def initialize(self):
+      """Implement 'initialize'."""
       self.setIds(['ZMSFolder', 'ZMSDocument', 'ZMSFile'])
       self.setAttrIds(['title', 'titlealt', 'attr_dc_description', 'standard_html'])
 
@@ -153,7 +150,9 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     #  ZMSZCatalogAdapter.reindex
     # --------------------------------------------------------------------------
     def reindex(self, connector, base, recursive=True, fileparsing=True):
+      """Implement 'reindex'."""
       def traverse(node, recursive):
+        """Implement 'traverse'."""
         objects = self.get_catalog_objects(node, fileparsing)
         success, failed = connector.manage_objects_add(objects)
         if recursive:
@@ -172,6 +171,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     #  ZMSZCatalogAdapter.reindex_node
     # --------------------------------------------------------------------------
     def reindex_node(self, node):
+      """Implement 'reindex_node'."""
       connectors = []
       fileparsing = False
       try:
@@ -222,6 +222,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     # --------------------------------------------------------------------------
     def unindex_nodes(self, nodes=[], forced=False):
       # Is triggered by zmscontainerobject.moveObjsToTrashcan().
+      """Implement 'unindex_nodes'."""
       if not nodes:
         standard.writeLog( self, "No nodes given to unindex")
         return False
@@ -281,6 +282,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     # --------------------------------------------------------------------------
     def matches_ids_filter(self, node):
       # Meta-Ids in context of current node.
+      """Implement 'matches_ids_filter'."""
       meta_ids = node.getMetaobjManager().getTypedMetaIds(self.getIds())
       if self.getCustomFilterFunction()=='':
         # Default filter-function.
@@ -293,9 +295,11 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     #  getter and setter for meta-ids, that can be cataloged
     # --------------------------------------------------------------------------
     def getIds(self):
+      """Return ids."""
       return getattr(self, '_ids', [])
 
     def setIds(self, ids):
+      """Set ids."""
       setattr(self, '_ids', ids)
 
     # --------------------------------------------------------------------------
@@ -303,9 +307,11 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     #  getter and setter for custom filter-function
     # --------------------------------------------------------------------------
     def getCustomFilterFunction(self):
+      """Return customfilterfunction."""
       return getattr(self, '_custom_filter_function', '##\nreturn context.meta_id in meta_ids\\\n    and (context.isVisible(context.REQUEST))')
 
     def setCustomFilterFunction(self, custom_filter_function):
+      """Set customfilterfunction."""
       setattr(self, '_custom_filter_function', custom_filter_function)
 
     # --------------------------------------------------------------------------
@@ -313,33 +319,40 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     #  getter and setter for attribute-ids, that can be cataloged
     # --------------------------------------------------------------------------
     def _getAttrIds(self):
+      """Implement '_getAttrIds'."""
       return ['uid', 'id', 'meta_id', 'home_id', 'loc', 'path', 'index_html'] + self.getAttrIds()
 
     def getAttrIds(self):
+      """Return attrids."""
       return list(self.getAttrs())
 
     def setAttrIds(self, attr_ids):
+      """Set attrids."""
       attrs = self.getAttrs()
       for attr_id in attr_ids:
         attrs[attr_id] = {'boost':1.0,'type':'text'}
       self.setAttrs(attrs)
 
     def getAttrs(self):
+      """Return attrs."""
       return getattr(self, '_attrs', {})
 
     def setAttrs(self, attrs):
+      """Set attrs."""
       setattr(self, '_attrs', attrs)
 
     # --------------------------------------------------------------------------
     #  ZMSZCatalogAdapter.get_available_connector_ids
     # --------------------------------------------------------------------------
     def get_available_connector_ids(self):
+      """Return available connector ids."""
       return sorted([y for y in [self.getMetaobj(x) for x in self.getMetaobjIds()] if y['id'].endswith('_connector') and y['type'] in ['ZMSLibrary']],key=lambda x:x['id']);
 
     # --------------------------------------------------------------------------
     #  ZMSZCatalogAdapter.get_connectors
     # --------------------------------------------------------------------------
     def get_connectors(self):
+      """Return connectors."""
       self.ensure_zcatalog_connector_is_initialized()
       root = self.getRootElement()
       return list(sorted([x for x in root.getCatalogAdapter().objectValues(['ZMSZCatalogConnector']) if x.__name__!='broken object']))
@@ -348,12 +361,14 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     #  ZMSZCatalogAdapter.get_connector
     # --------------------------------------------------------------------------
     def get_connector(self, id):
+      """Return connector."""
       return [[x for x in self.get_connectors() if x.id == id]+[None]][0]
 
     # --------------------------------------------------------------------------
     #  Add connector.
     # --------------------------------------------------------------------------
     def add_connector(self, id):
+      """Implement 'add_connector'."""
       from Products.zms import ZMSZCatalogConnector 
       connector = ZMSZCatalogConnector.ZMSZCatalogConnector(id)
       self._setObject(connector.id, connector)
@@ -363,6 +378,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     #   Get adapter's ids & attributes catalog-data.
     # --------------------------------------------------------------------------
     def get_attr_data(self, node, d):
+      """Return attr data."""
       request = node.REQUEST
       # Is request['lang'] set?
       lang = request.get('lang', d.get('lang', node.getPrimaryLanguage()))
@@ -403,6 +419,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     #  Get catalog objects data for given node.
     # --------------------------------------------------------------------------
     def get_catalog_objects_data(self, node, d, fileparsing=True):
+      """Return catalog objects data."""
       request = node.REQUEST
       lang = standard.nvl(request.get('lang'), node.getPrimaryLanguage())
       # Additional defaults.
@@ -420,6 +437,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     #  Get catalog objects.
     # --------------------------------------------------------------------------
     def get_catalog_objects(self, node, fileparsing=True):
+      """Return catalog objects."""
       objects = []
       indexable = True
       # Custom hook:
@@ -482,4 +500,3 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
         message = standard.url_quote(message)
         return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s#%s'%(lang, message, REQUEST.get('tab')))
 
-################################################################################

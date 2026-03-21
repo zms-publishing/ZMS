@@ -1,26 +1,11 @@
-################################################################################
-# repositoryutil.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+repositoryutil.py - ZMS repository utility module.
 
-"""ZMS repository utility module
+This module provides helper functions and classes for repository access from
+Python scripts and other ZMS internals.
 
-This module provides helpful functions and classes for use in Python
-Scripts.  It can be accessed from Python with the statement
-"import Products.zms.repository"
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
 """
 # Imports.
 from AccessControl.SecurityInfo import ModuleSecurityInfo
@@ -44,19 +29,23 @@ from Products.zms import zopeutil
 
 security = ModuleSecurityInfo('Products.zms.repositoryutil')
 
-"""
-Returns system conf-basepath.
-"""
 security.declarePublic('get_system_conf_basepath')
 def get_system_conf_basepath():
+    """
+    Returns system conf-basepath.
+    """
     return package_home(globals())+'/conf'
 
 
-"""
-Returns list of repository-providers.
-"""
 security.declarePublic('get_providers')
 def get_providers(self):
+  """
+  Returns list of repository-providers.
+  @param self: The object context.
+  @type self: C{object}
+  @return: List of repository-providers.
+  @rtype: C{list}
+  """
   def get_repo_providers(context):
     children = context.objectValues()
     repo_providers = []
@@ -66,10 +55,11 @@ def get_providers(self):
   return get_repo_providers(self.getDocumentElement())
 
 
-"""
-Get class from py-string.
-"""
+
 def get_class(py):
+  """
+  Get class from py-string.
+  """
   id = re.findall(r'class (.*?):', py)[0]
   if sys.version_info >= (3, 13):
     py = py + "\nglobal c\nc = " + id
@@ -80,11 +70,12 @@ def get_class(py):
     return eval(id)
 
 
-"""
-Read repository from base-path.
-"""
+
 security.declarePublic('remoteFiles')
 def remoteFiles(self, basepath, deep=True):
+    """
+    Read repository from base-path.
+    """
     standard.writeLog(self,"[remoteFiles]: basepath=%s"%basepath)
     r = {}
     if os.path.exists(basepath):
@@ -112,7 +103,7 @@ def remoteFiles(self, basepath, deep=True):
                 except:
                     d['revision'] = standard.writeError(self,"[remoteFiles.traverse]: can't analyze filepath=%s"%filepath)
               id = d.get('id',name)
-              ### Different from remoteFiles()
+              # Different from remoteFiles()
               rd = {}
               rd['id'] = id
               rd['filename'] = filepath[len(base)+1:]
@@ -137,11 +128,11 @@ def remoteFiles(self, basepath, deep=True):
     return r
 
 
-"""
-Read repository from base-path.
-"""
 security.declarePublic('readRepository')
 def readRepository(self, basepath, deep=True):
+    """
+    Read repository from base-path.
+    """
     standard.writeLog(self,"[readRepository]: basepath=%s"%basepath)
     r = {}
     if os.path.exists(basepath):
@@ -163,7 +154,7 @@ def readRepository(self, basepath, deep=True):
               except:
                   d['revision'] = standard.writeError(self,"[readRepository.traverse]: can't analyze filepath=%s"%filepath)
               id = d.get('id',name)
-              ### Different from remoteFiles()
+              # Different from remoteFiles()
               r[id] = {}
               for k in [x for x in d if not x.startswith('__')]:
                 v = d[k]
@@ -201,7 +192,7 @@ def readRepository(self, basepath, deep=True):
               id = list(yaml.keys())[0]
               d = yaml[id]
               d['id'] = id
-              ### Different from remoteFiles()
+              # Different from remoteFiles()
               r[id] = d
               for k in [x for x in d if type(d[x]) is list]:
                 v = []
@@ -236,11 +227,27 @@ def parseInit(self, filepath):
     return data
 
 
-"""
-Read repository from ZMS-instance.
-"""
 security.declarePublic('localFiles')
 def localFiles(self, provider, ids=None):
+  """
+  Read repository from ZMS-instance.
+
+  This function retrieves repository data from a ZMS instance using 
+  a provided repository provider. It processes the retrieved data 
+  to generate a dictionary of initialization artefacts, which includes
+  metadata and file content for each repository object. The function 
+  supports both Python and YAML formats for the initialization.
+
+  @param self: The object context.
+  @type self: C{object}
+  @param provider: An object that provides repository data, expected to implement the I{provideRepository} method.
+  @type provider: C{IZMSRepositoryProvider}
+  @param ids: Optional list of identifiers to specify which repository objects to retrieve. If None, all objects are retrieved.
+  @type ids: C{list} or C{None}
+  @return: A dictionary mapping filenames to their corresponding data and metadata, generated from the repository
+  objects provided by the repository provider.
+  @rtype: C{dict}
+  """
   standard.writeLog(self,"[localFiles]: provider=%s"%str(provider))
   l = {}
   local = provider.provideRepository(ids)

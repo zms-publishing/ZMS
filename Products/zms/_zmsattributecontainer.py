@@ -1,36 +1,23 @@
-################################################################################
-# _zmsattributecontainer.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+_zmsattributecontainer.py - ZMS Attribute Container for Custom Attribute Storage and Management
 
-# Imports.
-from Products.PageTemplates.PageTemplateFile import PageTemplateFile
+Defines ZMSAttributeContainer for object persistence, Zope integration, and container protocols.
+It implements Zope's ObjectManager interface, handles acquisition, and manages object lifecycle.
+
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
+"""
 from OFS.Folder import Folder
+from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import time
-# Product Imports.
+
 from Products.zms import _objattrs
 from Products.zms import _pathhandler
 from Products.zms import standard
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Constructor
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def manage_addZMSAttributeContainer(self):
-  """ manage_addZMSAttributeContainer """
+  """Create and attach a new C{ZMSAttributeContainer} below the current object."""
   id = str(time.time())
   while id in self.objectIds():
     id = str(time.time())
@@ -41,88 +28,64 @@ def manage_addZMSAttributeContainer(self):
 
 
 def containerFilter(container):
+  """Return C{True} when C{container} can be listed as a ZMS child container."""
   return container.meta_type.startswith('ZMS')
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Class
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 class ZMSAttributeContainer(
       Folder,
       _objattrs.ObjAttrs,
       _pathhandler.PathHandler):
+  """Container object that stores and edits custom attribute values."""
 
-  # Properties.
-  # -----------
   meta_type = 'ZMSAttributeContainer'
 
-  # Management Options.
-  # -------------------
   manage_options = (
     {'label': 'Contents', 'action': 'manage_main'},
     {'label': 'Properties', 'action': 'manage_propertiesForm'},
-  ) 
+  )
 
-  # Management Interface.
-  # ---------------------
   manage_propertiesForm = PageTemplateFile('zpt/objattrs/manage_propertiesform', globals())
 
 
-  """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  Constructor
-  """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  def __init__(self, id): 
+  def __init__(self, id):
+    """Initialize the container with a generated object id."""
     self.id = id
 
 
-  # ----------------------------------------------------------------------------
-  #  ZMSAttributeContainer.getObjAttrs:
-  #
-  #  Delegates getObjAttrs to parent.
-  # ----------------------------------------------------------------------------
   def getObjAttrs(self, meta_type=None):
+    """Delegate attribute schema lookup to the parent ZMS object."""
     return self.aq_parent.getObjAttrs(meta_type)
 
 
-  # ----------------------------------------------------------------------------
-  #  ZMSAttributeContainer.getObjVersion:
-  #
-  #  Overrides method from _versionmanager.VersionManager.
-  # ----------------------------------------------------------------------------
   def getObjVersion(self, REQUEST={}):
+    """Return self as version object because containers are not versioned."""
     return self
 
 
-  # ----------------------------------------------------------------------------
-  #  ZMSAttributeContainer.getParentNode:
-  #
-  #  Delegates getParentNode to parent.
-  # ----------------------------------------------------------------------------
   getParentNode__roles__ = None
+
+
   def getParentNode(self):
-    """
-    Delegates getParentNode to parent.
-    """
+    """Delegate parent node lookup to the acquisition parent."""
     return self.aq_parent.getParentNode()
 
 
-  # ----------------------------------------------------------------------------
-  #  ZMSAttributeContainer.getChildNodes:
-  # ----------------------------------------------------------------------------
   def getChildNodes(self, REQUEST={}, meta_types=None, reid=None):
+    """Return an empty list because attribute containers have no children."""
     return []
 
 
-  ##############################################################################
-  #  ZMSAttributeContainer.manage_changeProperties: 
-  #
-  #  Change properties.
-  ##############################################################################
-  def manage_changeProperties(self, REQUEST, RESPONSE): 
-    """ ZMSAttributeContainer.manage_changeProperties """
+  def manage_changeProperties(self, REQUEST, RESPONSE):
+    """
+    Persist submitted attribute values for all configured object attributes.
+
+    Multilingual attributes are written for every language, while single-language
+    attributes are written for the primary language only.
+    """
     message = ''
     for key in self.getObjAttrs():
-      obj_attr=self.getObjAttr(key)
+      obj_attr = self.getObjAttr(key)
       if obj_attr['multilang']:
         for lang in self.getLangIds():
           REQUEST.set('lang', lang)
@@ -130,7 +93,6 @@ class ZMSAttributeContainer(
       else:
         REQUEST.set('lang', self.getPrimaryLanguage())
         self.setReqProperty(key, REQUEST, 1)
-    # Return with message.
-    return RESPONSE.redirect('manage_propertiesForm?manage_tabs_message=%s'%(standard.url_quote(message)))
-
-################################################################################
+    return RESPONSE.redirect(
+      'manage_propertiesForm?manage_tabs_message=%s' % (standard.url_quote(message))
+    )

@@ -1156,7 +1156,10 @@
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>zmscustom.py - ZMS Custom Content Class for Site-Specific Customization and Plugin Extensions</p>
+<p>Defines ZMSCustom for site-specific customization and plugin extensions. It allows overriding default behavior through configuration, subclassing, or plugin hooks.</p>
+<p>License: GNU General Public License v2 or later, Organization: ZMS Publishing</p>
+</div>
         </div>
 
         <div id="splitTables">
@@ -1167,12 +1170,12 @@
     
     <td>Class</td>
     <td><code><a href="zms.zmscustom.ZMSCustom.html" class="internal-link" title="zms.zmscustom.ZMSCustom"><wbr></wbr>ZMSCustom</a></code></td>
-    <td><span class="undocumented">No class docstring; 0/2 instance variable, 0/11 class variable, 5/10 methods documented</span></td>
+    <td>Custom content node with record-set editing and import helpers.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#containerFilter" class="internal-link" title="zms.zmscustom.containerFilter">container<wbr></wbr>Filter</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return <tt class="rst-docutils rst-literal">True</tt> for ZMS containers that may host custom content.</td>
   </tr><tr class="function">
     
     <td>Function</td>
@@ -1182,7 +1185,7 @@
     
     <td>Function</td>
     <td><code><a href="#parseXmlString" class="internal-link" title="zms.zmscustom.parseXmlString">parse<wbr></wbr>Xml<wbr></wbr>String</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Import record-set rows from an XML payload into the current object.</td>
   </tr><tr class="variable">
     
     <td>Variable</td>
@@ -1209,7 +1212,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">containerFilter</span><span class="function-signature">(container)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L136">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L127">
       
       (source)
     </a>
@@ -1221,7 +1224,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return <tt class="rst-docutils rst-literal">True</tt> for ZMS containers that may host custom content.</p></div>
   </div>
 </div><div class="basefunction">
   
@@ -1236,7 +1239,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_addZMSCustom</span><span class="function-signature">(self, meta_id, lang, _sort_id, btn, REQUEST, RESPONSE)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L60">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L51">
       
       (source)
     </a>
@@ -1248,7 +1251,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Constructor function for adding custom content nodes</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">meta<wbr></wbr>_id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">the meta-id / type of the new ZMSObject</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">lang:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">the language-id.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">_sort<wbr></wbr>_id:</span><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">the sort value.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">btn</span></td><td class="fieldArgDesc">the submitting button value.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">the triggering request</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">RESPONSE:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPResponse</tt></td><td class="fieldArgDesc">the triggering request</td></tr></table></div>
+    <div><p>Constructor function for adding custom content nodes</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">meta<wbr></wbr>_id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">the meta-id / type of the new ZMSObject</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">lang:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">the language-id.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">_sort<wbr></wbr>_id:</span><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">the sort value.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">btn:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">the submitting button value.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">the triggering request</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">RESPONSE:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPResponse</tt></td><td class="fieldArgDesc">the triggering response</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1263,7 +1266,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">parseXmlString</span><span class="function-signature">(self, file)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L36">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L25">
       
       (source)
     </a>
@@ -1275,7 +1278,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Import record-set rows from an XML payload into the current object.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">file:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest.FileUpload</tt></td><td class="fieldArgDesc">Uploaded XML file.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Import status message.</td></tr></table></div>
   </div>
 </div><div class="basevariable">
   
@@ -1289,7 +1292,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_addZMSCustomForm</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L59">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L48">
       
       (source)
     </a>

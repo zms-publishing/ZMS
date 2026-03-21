@@ -1,21 +1,12 @@
-################################################################################
-# pilutil.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+pilutil.py
 
+Provides enabled, generate_preview, thumbnail helper functions for image processing and PIL/Pillow operations.
+It resizes images, applies filters, generates thumbnails, and manipulates image metadata.
+
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
+"""
 # Imports.
 from AccessControl.SecurityInfo import ModuleSecurityInfo
 import tempfile
@@ -28,6 +19,7 @@ security = ModuleSecurityInfo('Products.zms.pilutil')
 
 security.declarePublic('enabled')
 def enabled():
+  """Return whether Pillow is available in the current runtime."""
   try:
     from PIL import Image
     return True
@@ -36,6 +28,12 @@ def enabled():
 
 security.declarePublic('generate_preview')
 def generate_preview(self, hiresKey, loresKey, maxdim):
+  """
+  Generate and persist a low-resolution preview image from a hi-res source.
+
+  The method reads object properties, derives a thumbnail via L{thumbnail}, and
+  stores both low-res and hi-res values back into object properties.
+  """
   request = self.REQUEST
   lang = request['lang']
   hires = self.attr(hiresKey)
@@ -252,4 +250,3 @@ def optimize(img, qual=75):
 
 security.apply(globals())
 
-################################################################################

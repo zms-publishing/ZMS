@@ -292,7 +292,7 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSCharformatManager</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSCharformatManager.py#L32" class="sourceLink">(source)</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSCharformatManager</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSCharformatManager.py#L16" class="sourceLink">(source)</a></code></p>
           <p><a href="classIndex.html#zms.ZMSCharformatManager.ZMSCharformatManager">View In Hierarchy</a></p>
         </div>
 
@@ -308,32 +308,32 @@
     
     <td>Method</td>
     <td><code><a href="#delCharformat" class="internal-link" title="zms.ZMSCharformatManager.ZMSCharformatManager.delCharformat">del<wbr></wbr>Charformat</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Delete a character format by id.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getCharFormats" class="internal-link" title="zms.ZMSCharformatManager.ZMSCharformatManager.getCharFormats">get<wbr></wbr>Char<wbr></wbr>Formats</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the configured character format definitions.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#importCharformatXml" class="internal-link" title="zms.ZMSCharformatManager.ZMSCharformatManager.importCharformatXml">import<wbr></wbr>Charformat<wbr></wbr>Xml</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Import one or more character formats from XML data.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_changeCharformat" class="internal-link" title="zms.ZMSCharformatManager.ZMSCharformatManager.manage_changeCharformat">manage_change<wbr></wbr>Charformat</a></code></td>
-    <td>ZMSCharformatManager.manage_changeCharformat</td>
+    <td>Handle ZMI actions for creating, editing, and deleting char formats.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#moveCharformat" class="internal-link" title="zms.ZMSCharformatManager.ZMSCharformatManager.moveCharformat">move<wbr></wbr>Charformat</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Move a character format to another list position.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#setCharformat" class="internal-link" title="zms.ZMSCharformatManager.ZMSCharformatManager.setCharformat">set<wbr></wbr>Charformat</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Create or update a character format definition.</td>
   </tr><tr class="instancevariable">
     
     <td>Instance Variable</td>
@@ -343,7 +343,7 @@
     
     <td>Method</td>
     <td><code><a href="#_importCharformatXml" class="internal-link" title="zms.ZMSCharformatManager.ZMSCharformatManager._importCharformatXml">_import<wbr></wbr>Charformat<wbr></wbr>Xml</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Import a single character format definition from parsed XML data.</td>
   </tr>
 </table>
           
@@ -365,7 +365,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">delCharformat</span><span class="function-signature">(self, id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSCharformatManager.py#L95">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSCharformatManager.py#L83">
       
       (source)
     </a>
@@ -377,7 +377,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Delete a character format by id.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Character format identifier.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Empty string for legacy callers.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -392,7 +392,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getCharFormats</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSCharformatManager.py#L74">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSCharformatManager.py#L56">
       
       (source)
     </a>
@@ -404,7 +404,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the configured character format definitions.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Character format definitions.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -419,7 +419,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">importCharformatXml</span><span class="function-signature">(self, xml)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSCharformatManager.py#L62">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSCharformatManager.py#L42">
       
       (source)
     </a>
@@ -431,7 +431,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Import one or more character formats from XML data.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">xml:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">XML string or uploaded file-like object.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -446,7 +446,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_changeCharformat</span><span class="function-signature">(self, lang, btn, REQUEST, RESPONSE)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSCharformatManager.py#L136">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSCharformatManager.py#L142">
       
       (source)
     </a>
@@ -458,7 +458,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>ZMSCharformatManager.manage_changeCharformat</p></div>
+    <div><p>Handle ZMI actions for creating, editing, and deleting char formats.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">lang:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Active UI language.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">btn:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Submitted button id.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">The active HTTP request.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">RESPONSE:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPResponse</tt></td><td class="fieldArgDesc">The active HTTP response.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">Redirect response or XML export payload.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -473,7 +473,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">moveCharformat</span><span class="function-signature">(self, id, pos)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSCharformatManager.py#L81">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSCharformatManager.py#L65">
       
       (source)
     </a>
@@ -485,7 +485,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Move a character format to another list position.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Character format identifier.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">pos:</span><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">Target list position.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -500,7 +500,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">setCharformat</span><span class="function-signature">(self, oldId, newId, newIconClazz, newDisplay, newTag=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, newAttrs=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, newJS=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSCharformatManager.py#L109">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSCharformatManager.py#L101">
       
       (source)
     </a>
@@ -512,7 +512,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Create or update a character format definition.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">old<wbr></wbr>Id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Existing character format id to replace.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">new<wbr></wbr>Id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Target character format id.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">new<wbr></wbr>Icon<wbr></wbr>Clazz:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Icon CSS class.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">new<wbr></wbr>Display:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Display label.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">new<wbr></wbr>Tag:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">HTML tag wrapper.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">new<wbr></wbr>Attrs:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">HTML attributes.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">new<wbr></wbr>JS:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Client-side JavaScript hook.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">The persisted character format id.</td></tr></table></div>
   </div>
 </div><div class="baseinstancevariable">
   
@@ -526,7 +526,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">charformats</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSCharformatManager.py#L60">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSCharformatManager.py#L39">
       
       (source)
     </a>
@@ -554,7 +554,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">_importCharformatXml</span><span class="function-signature">(self, item)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSCharformatManager.py#L48">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSCharformatManager.py#L22">
       
       (source)
     </a>
@@ -566,7 +566,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Import a single character format definition from parsed XML data.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">item:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Parsed character format description.</td></tr></table></div>
   </div>
 </div>
         </div>

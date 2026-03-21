@@ -1143,7 +1143,10 @@
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>zmscontainerobject.py - ZMS Container Object</p>
+<p>Defines ZMSContainerObject for object persistence, Zope integration, and container protocols. It implements Zope's ObjectManager interface, handles acquisition, and manages object lifecycle.</p>
+<p>License: GNU General Public License v2 or later, Organization: ZMS Publishing</p>
+</div>
         </div>
 
         <div id="splitTables">
@@ -1154,22 +1157,22 @@
     
     <td>Class</td>
     <td><code><a href="zms.zmscontainerobject.ZMSContainerObject.html" class="internal-link" title="zms.zmscontainerobject.ZMSContainerObject"><wbr></wbr>ZMSContainer<wbr></wbr>Object</a></code></td>
-    <td><span class="undocumented">No class docstring; 0/10 class variable, 0/4 constant, 21/25 methods documented</span></td>
+    <td>Base container object that manages child-node creation, ordering, and deletion.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#getNextSibling" class="internal-link" title="zms.zmscontainerobject.getNextSibling">get<wbr></wbr>Next<wbr></wbr>Sibling</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the next visible sibling node.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#getPrevSibling" class="internal-link" title="zms.zmscontainerobject.getPrevSibling">get<wbr></wbr>Prev<wbr></wbr>Sibling</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the previous visible sibling node.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#isPageWithElements" class="internal-link" title="zms.zmscontainerobject.isPageWithElements">is<wbr></wbr>Page<wbr></wbr>With<wbr></wbr>Elements</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return whether a list of nodes contains at least one page element.</td>
   </tr>
 </table>
           
@@ -1191,7 +1194,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getNextSibling</span><span class="function-signature">(self, REQUEST, incResource=False)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscontainerobject.py#L70">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscontainerobject.py#L69">
       
       (source)
     </a>
@@ -1203,7 +1206,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the next visible sibling node.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Current request.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">inc<wbr></wbr>Resource:</span><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">Include resource nodes in the sibling search.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">zmsobject.ZMSObject</tt></td><td class="fieldArgDesc">Next visible sibling or <tt class="rst-docutils rst-literal">None</tt>.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1218,7 +1221,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getPrevSibling</span><span class="function-signature">(self, REQUEST, incResource=False)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscontainerobject.py#L52">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscontainerobject.py#L45">
       
       (source)
     </a>
@@ -1230,7 +1233,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the previous visible sibling node.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">Current request.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">inc<wbr></wbr>Resource:</span><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">Include resource nodes in the sibling search.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">zmsobject.ZMSObject</tt></td><td class="fieldArgDesc">Previous visible sibling or <tt class="rst-docutils rst-literal">None</tt>.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1245,7 +1248,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">isPageWithElements</span><span class="function-signature">(obs)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscontainerobject.py#L40">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscontainerobject.py#L30">
       
       (source)
     </a>
@@ -1257,7 +1260,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return whether a list of nodes contains at least one page element.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">obs:</span><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Nodes to inspect.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc"><tt class="rst-docutils rst-literal">True</tt> if any node is a page element.</td></tr></table></div>
   </div>
 </div>
         </div>

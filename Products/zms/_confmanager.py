@@ -1,21 +1,30 @@
-################################################################################
-# _confmanager.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+_confmanager.py - ZMS Configuration Manager
 
+Configuration infrastructure for ZMS.
+
+This module concentrates the low-level helpers and the main manager class used
+to read, store, and expose configuration in a ZMS site.  It covers three main
+areas:
+
+  1. Global system configuration:
+    C{ConfDict} loads and caches values from C{etc/zms.conf} so process-wide
+    settings are available as a flat dictionary.
+  2. Site configuration import and persistence:
+    module-level helper C{initConf} and methods on C{ConfManager} import zipped
+    packages, repository-backed configuration trees, and single XML files.
+  3. Configuration service layer:
+    C{ConfManager} provides access to configuration properties, design and system
+    customization actions, and delegates to related managers such as workflow,
+    filter, meta-object, text-format, media database, and catalog adapters.
+
+The module is therefore the central bridge between static configuration sources
+on disk, persisted configuration stored in the Zope object tree, and the higher
+level APIs that the rest of ZMS uses during rendering and administration.
+
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
+"""
 # Imports.
 from fnmatch import fnmatch
 from io import StringIO
@@ -46,7 +55,6 @@ from Products.zms import _mediadb
 from Products.zms import _multilangmanager
 from Products.zms import _sequence
 from Products.zms import repositoryutil
-from Products.zms import standard
 from Products.zms import zopeutil
 from Products.zms import zmsindex
 from Products.zms import zmslog
@@ -54,15 +62,26 @@ from Products.zms import zmslog
 
 UNINHERITED_PROPERTIES = ['ASP','Portal']
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Read system-configuration from $ZMS_HOME/etc/zms.conf
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 class ConfDict(object):
 
+    """Provide helpers for ConfDict."""
     __confdict__ = None
 
     @classmethod
     def get(cls):
+        """
+        Return the global ZMS system configuration dictionary by reading 
+        system-configuration from $ZMS_HOME/etc/zms.conf.
+
+        On first call the dictionary is built by reading C{etc/zms.conf} from
+        both the ZMS product home and the current INSTANCE_HOME.  All
+        C{section.option} pairs found in the INI-formatted file are merged into
+        a flat C{dict}.  Subsequent calls return the already-built dict from the
+        class variable C{__confdict__} without re-reading the files.
+
+        @return: Merged configuration dictionary from all C{zms.conf} files.
+        @rtype: C{dict}
+        """
         if cls.__confdict__ is None:
             cls.__confdict__ = {'last_modified':int(DateTime().timeTime())}
             PRODUCT_HOME = os.path.dirname(os.path.abspath(__file__))
@@ -80,6 +99,19 @@ class ConfDict(object):
 
     @classmethod
     def forName(cls, name):
+      """
+      Import and return a class object identified by a fully-qualified dotted
+      name relative to the C{Products.zms} namespace.
+
+      The name is expected to be in the form C{modulename.ClassName}.  The
+      module is imported with C{importlib.import_module} and the class is
+      retrieved with C{getattr}.
+
+      @param name: Dotted qualified name, e.g. C{'ZMSFilterManager.ZMSFilterManager'}.
+      @type name: C{str}
+      @return: The class object found at the given name.
+      @rtype: C{type}
+      """
       d = name.rfind(".")
       modulname = name[:d]
       clazzname = name[d+1:len(name)]
@@ -88,17 +120,6 @@ class ConfDict(object):
       return clazz
 
 
-"""
-################################################################################
-###
-###   Initialization
-###
-################################################################################
-"""
-
-# ------------------------------------------------------------------------------
-#  _confmanager.initConf:
-# ------------------------------------------------------------------------------
 def initConf(self, pattern):
     """
     Initialize a ZMS configuration by importing a set of configuration files 
@@ -138,27 +159,14 @@ def initConf(self, pattern):
                     self.importConf(filename)
 
 
-################################################################################
-################################################################################
-###
-###   Class
-###
-################################################################################
-################################################################################
 @implementer(
     IZMSMetamodelProvider.IZMSMetamodelProvider,
     IZMSFormatProvider.IZMSFormatProvider)
-class ConfManager(
-    _multilangmanager.MultiLanguageManager,
-    ):
+class ConfManager(_multilangmanager.MultiLanguageManager):
+    """Provide helpers for ConfManager."""
 
-    # Create a SecurityInfo for this class. We will use this
-    # in the rest of our class definition to make security
-    # assertions.
     security = ClassSecurityInfo()
 
-    # Management Interface.
-    # ---------------------
     manage_customize = PageTemplateFile('zpt/ZMS/manage_customize', globals())
     manage_customizeInstalledProducts = PageTemplateFile('zpt/ZMS/manage_customizeinstalledproducts', globals())
     manage_customizeLanguagesForm = PageTemplateFile('zpt/ZMS/manage_customizelanguagesform', globals())
@@ -167,10 +175,20 @@ class ConfManager(
     manage_main_diff = PageTemplateFile('zpt/ZMSRepositoryManager/manage_main_diff', globals())
 
 
-    # --------------------------------------------------------------------------
-    #  ConfManager.importConfPackage:
-    # --------------------------------------------------------------------------
     def importConfPackage(self, file):
+      """
+      Import a zipped configuration package and delegate each contained file
+      to L{importConf}.
+
+      If C{file} is a string starting with C{http://} or C{https://}, the
+      archive is fetched via HTTP first.  Otherwise the string is treated as a
+      local filesystem path.  Every non-directory entry in the ZIP archive is
+      passed to C{importConf} one by one.
+
+      @param file: Local file path, HTTP(S) URL, or file-like object of the
+        ZIP archive to import.
+      @type file: C{str} or file-like object
+      """
       if isinstance(file, str):
         if file.startswith('http://') or file.startswith('https://'):
           file = StringIO( self.http_import(file))
@@ -182,10 +200,27 @@ class ConfManager(
           self.importConf(f)
 
 
-    # --------------------------------------------------------------------------
-    #  ConfManager.getConfXmlFile:
-    # --------------------------------------------------------------------------
     def getConfXmlFile(self, file):
+      """
+      Resolve a configuration reference to a C{(filename, xmlfile)} pair.
+
+      Three input forms are handled:
+
+        - C{dict} — the dict has C{'filename'} and C{'data'} keys (e.g. entry
+          from a ZIP archive); the data is wrapped in a C{StringIO}.
+        - C{str} starting with C{'conf:'} — the remainder is treated as a
+          repository path inside the ZMS conf base directory.  The repository
+          model is read and translated to XML by the matching container object.
+        - Any other C{str} — treated as a plain filesystem path; the file is
+          opened in binary mode.
+
+      @param file: Configuration reference — dict entry, C{'conf:'}-prefixed
+          path, or a plain filesystem path string.
+      @type file: C{dict} or C{str}
+      @return: Tuple of C{(filename, xmlfile)} where C{filename} is the bare
+          filename and C{xmlfile} is a readable file-like object.
+      @rtype: C{tuple}
+      """
       if isinstance(file, dict):
           filename = file['filename']
           xml = file['data']
@@ -211,9 +246,6 @@ class ConfManager(
       return filename, xmlfile
 
 
-    # --------------------------------------------------------------------------
-    #  ConfManager.importConf:
-    # --------------------------------------------------------------------------
     def importConf(self, file, syncIfNecessary=True):
       """
       Imports configuration from the given file and processes 
@@ -261,10 +293,21 @@ class ConfManager(
       return message
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSTextformatManager.getPluginIds:
-    # --------------------------------------------------------------------------
     def getPluginIds(self, path=[]):
+      """
+      Return the IDs of installed ZMS plug-ins located under the product's
+      C{plugins/} subdirectory.
+
+      Only non-empty sub-directories are included.  The optional C{path}
+      argument descends into a sub-directory of C{plugins/} first, enabling
+      discovery of plug-in sub-categories such as C{['rte']} for rich-text
+      editor plug-ins.
+
+      @param path: Path segments appended below C{plugins/} before scanning.
+      @type path: C{list}
+      @return: List of plug-in directory names.
+      @rtype: C{list}
+      """
       ids = []
       filepath = os.sep.join([package_home(globals()), 'plugins']+path)
       for filename in os.listdir(filepath):
@@ -274,9 +317,6 @@ class ConfManager(
       return ids
 
 
-    # --------------------------------------------------------------------------
-    #  Returns configuration-files from $ZMS_HOME/import-Folder
-    # --------------------------------------------------------------------------
     security.declareProtected('ZMS Administrator', 'getConfFiles')
     def getConfFiles(self, pattern=None, REQUEST=None, RESPONSE=None):
       """
@@ -333,21 +373,20 @@ class ConfManager(
           return json.dumps( filenames)
       return filenames
 
-
-    """
-    ############################################################################
-    ###
-    ###   Configuration-Properties Getters
-    ###
-    ############################################################################
-    """
-
-    # --------------------------------------------------------------------------
-    #  ConfManager.getSequence:
-    #
-    #  Returns sequence.
-    # --------------------------------------------------------------------------
     def getSequence(self):
+      """
+      Return the site-wide sequence counter object used for generating unique
+      numeric IDs.
+
+      If a portal master is configured the sequence counter is kept on the
+      master node so that all client portals draw from a single shared counter.
+      In that case any local counter is removed and its current value is
+      transferred to the master to avoid gaps.  If no master exists the local
+      counter is created on demand.
+
+      @return: The C{Sequence} object whose C{.value} attribute is the next ID.
+      @rtype: C{_sequence.Sequence}
+      """
       id = 'acl_sequence'
       exists = id in self.objectIds(['Sequence'])
       portalMaster = self.getPortalMaster()
@@ -367,23 +406,31 @@ class ConfManager(
         ob = getattr(self, id)
       return ob
 
-    # --------------------------------------------------------------------------
-    #  ConfManager.getMediaDb:
-    #
-    #  Returns mediadb.
-    # --------------------------------------------------------------------------
+
     def getMediaDb(self):
+      """
+      Return the MediaDb storage object attached to the document element, or
+      C{None} if no MediaDb has been configured.
+
+      @return: The MediaDb object, or C{None}.
+      @rtype: C{_mediadb.MediaDb} or C{None}
+      """
       for ob in self.getDocumentElement().objectValues(['MediaDb']):
         return ob
       return None
 
 
-    # --------------------------------------------------------------------------
-    #  ConfManager.getThemes:
-    #
-    #  Returns list of theme-folders.
-    # --------------------------------------------------------------------------
     def getThemes(self):
+      """
+      Return the list of theme folder objects available at the site home.
+
+      A folder qualifies as a theme when it contains a C{standard_html} object.
+      Both the direct home and the absolute home are scanned; duplicates (same
+      ID) are excluded.
+
+      @return: Distinct list of Zope folder objects that serve as theme folders.
+      @rtype: C{list}
+      """
       obs = []
       for ob in standard.distinct_list(self.getHome().objectValues() + self.getAbsoluteHome().objectValues()):
         if isinstance(ob, Folder) and ( ob.getId() not in [x.getId() for x in obs] ) and 'standard_html' in ob.objectIds():
@@ -391,12 +438,20 @@ class ConfManager(
       return obs
 
 
-    # --------------------------------------------------------------------------
-    #  ConfManager.getResourceFolders:
-    #
-    #  Returns list of resource-folders.
-    # --------------------------------------------------------------------------
     def getResourceFolders(self):
+      """
+      Return the ordered list of resource-container folders used by the current
+      theme.
+
+      The folder IDs to include are read from the C{'ZMS.resourceFolders'}
+      configuration property (comma-separated, default C{'instance,common'}).
+      A wildcard C{'*'} entry expands to all sub-folders of the theme home.
+      Folders that contain ZMS content nodes are excluded so that only pure
+      resource containers are returned.
+
+      @return: List of Zope folder objects serving as resource containers.
+      @rtype: C{list}
+      """
       obs = []
       ids = self.getConfProperty('ZMS.resourceFolders', 'instance,common').split(',')
       home = self.getHome()
@@ -414,12 +469,19 @@ class ConfManager(
       return obs
 
 
-    # --------------------------------------------------------------------------
-    #  ConfManager.getStylesheet:
-    #
-    #  Returns stylesheet.
-    # --------------------------------------------------------------------------
     def getStylesheet(self, id=None):
+      """
+      Return a single stylesheet object from the available stylesheets.
+
+      If C{id} is C{None} the first (primary) stylesheet is returned.
+      Otherwise the stylesheet whose C{getId()} matches C{id} is returned, or
+      C{None} if no match is found.
+
+      @param id: Stylesheet object ID to look up, or C{None} for the primary.
+      @type id: C{str} or C{None}
+      @return: The matching stylesheet file object, or C{None}.
+      @rtype: file-like Zope object or C{None}
+      """
       stylesheets = self.getStylesheets()
       if id is None:
         return stylesheets[0]
@@ -428,12 +490,20 @@ class ConfManager(
           if css.getId() == id:
             return css
 
-    # --------------------------------------------------------------------------
-    #  ConfManager.getStylesheets:
-    #
-    #  Returns list of stylesheets.
-    # --------------------------------------------------------------------------
+
     def getStylesheets(self):
+      """
+      Return the ordered list of all CSS stylesheet objects found in the
+      configured resource folders.
+
+      The method walks each resource folder's optional C{css} sub-folder and
+      then the folder itself, collecting File and DTML objects whose path
+      contains a C{.css} component.  The stylesheet configured as
+      C{'ZMS.stylesheet'} (default C{'style.css'}) is promoted to the front.
+
+      @return: Ordered list of stylesheet objects, primary stylesheet first.
+      @rtype: C{list}
+      """
       ids = []
       obs = []
       for container in self.getResourceFolders():
@@ -450,20 +520,22 @@ class ConfManager(
                   obs.append( ob)
       return obs
 
-
-    """
-    ############################################################################
-    ###
-    ###   Configuration-Tab Options
-    ###
-    ############################################################################
-    """
-
-    # --------------------------------------------------------------------------
-    #  ConfManager.customize_manage_options:
-    # --------------------------------------------------------------------------
     customize_manage_options__roles__ = None
     def customize_manage_options(self):
+      """
+      Build and return the ordered list of ZMI management tab descriptors for
+      this ZMS instance.
+
+      Each descriptor is a C{dict} with C{'label'} and C{'action'} keys
+      compatible with Zope's C{manage_options} convention.  The list always
+      starts with the main view and user tab, followed by any tabs contributed
+      by installed C{IZMSConfigurationProvider} sub-objects, and ends with the
+      design tab.  When the current request is a management request, tabs that
+      cannot be traversed are filtered out.
+
+      @return: List of tab descriptor dicts with C{'label'} and C{'action'}.
+      @rtype: C{list}
+      """
       l = []
       l.append({'label':'<i class="%s"></i>'%self.zmi_icon(),'action':'manage_main'})
       l.append({'label':'TAB_USERS','action':'manage_users'})
@@ -479,32 +551,31 @@ class ConfManager(
         l = [x for x in l if self.restrictedTraverse(x['action'], None) is not None]
       return l
 
-
-    ############################################################################
-    ###
-    ###   Configuration-Properties
-    ###
-    ############################################################################
-
-    """
-    Returns configuration-manager.
-    """
     def getConfManager(self):
+      """Return confmanager."""
       return self
 
-    """
-    Returns conf-properties.
-    """
+
     def get_conf_properties(self):
+      """Return conf properties."""
       self.getZMSSysConf()
       return getattr( self, '__attr_conf_dict__', {})
 
 
-    """
-    Returns defaults for configuration-properties.
-    @rtype: C{dict}
-    """
     def getConfPropertiesDefaults(self):
+      """
+      Return configuration properties defaults.
+      The method returns a list of dicts, each describing a configuration property with keys.
+        - C{'key'}: The unique identifier for the configuration property, used for retrieval and storage.
+        - C{'title'}: A human-readable title for the configuration property, used in the management interface.
+        - C{'desc'}: A description of the configuration property, providing context and usage information for administrators.
+        - C{'datatype'}: The data type of the configuration property, indicating how the value should be interpreted and validated (e.g., 'string', 'boolean', 'text').
+        - C{'default'}: The default value of the configuration property, used when no explicit value is set.
+        - C{'options'}: A list of valid options for the configuration property, used for validation and selection in the management interface.
+
+      @return: A list of dictionaries, each representing a configuration property with its metadata and default value.
+      @rtype: C{list}
+      """
       return [
         {'key':'ZMS.conf.path','title':'ZMS conf-path','desc':'ZMS conf-path','datatype':'string','default':'$INSTANCE_HOME/var/$HOME_ID'}, 
         {'key':'ZMS.mode.debug','title':'ZMS Debug Mode','desc':'Run ZMS in debug mode','datatype':'boolean','default':0}, 
@@ -554,12 +625,13 @@ class ConfManager(
         {'key':'ZReferableItem.validateInlineLinkObj','title':'Auto-correct inline-links','desc':'Ensure valid inline-links by text-parsing and using ZMSIndex for refreshing target urls on rendering','datatype':'boolean','default':1},
       ]
     
-    """
-    Returns property from configuration.
-    @rtype: C{dict}
-    """
     def getConfProperties(self, prefix=None, inherited=False, REQUEST=None):
-      """ ConfManager.getConfProperties """
+      """
+      Returns properties from configuration.
+
+      @return: A dictionary of configuration properties, optionally filtered by a prefix and including inherited properties from the portal master if specified.
+      @rtype: C{dict}
+      """
       d = self.get_conf_properties()
       if REQUEST is not None:
         prefix = str(base64.b64decode(prefix),'utf-8')
@@ -575,47 +647,53 @@ class ConfManager(
       return d
 
 
-    """
-    Removes property from configuration.
-    
-    @param key: The key.
-    @type key: C{string}
-    @return None
-    """
+
     def delConfProperty(self, key):
+      """
+      Removes property from configuration.
+      
+      @param key: The key.
+      @type key: C{string}
+      @return None
+      """
       self.setConfProperty(key, None)
 
 
-    """
-    Returns property from request (used to get zope-request-properties,
-    e.g. SERVER_URL oder AUTHENTICATED_USER).
-    
-    @param key: The key.
-    @type key: C{string}
-    @param default: The default-value.
-    @type default: C{any}
-    @rtype: C{any}
-    """
+
     def getReqProperty(self, key, default=None, REQUEST=None):
-      """ ConfManager.getReqProperty """
+      """
+      Returns property from request (used to get zope-request-properties,
+      e.g. SERVER_URL oder AUTHENTICATED_USER).
+      
+      @param key: The key.
+      @type key: C{string}
+      @param default: The default-value.
+      @type default: C{any}
+      @rtype: C{any}
+      """
       authorized = REQUEST['AUTHENTICATED_USER'].has_role('Authenticated')
       if not authorized:
         raise zExceptions.Unauthorized
       return REQUEST.get(key, default)
 
 
-    """
-    Returns property from configuration.
-    
-    @param key: The key.
-    @type key: C{string}
-    @param default: The default-value.
-    @type default: C{any}
-    @var REQUEST: the triggering request
-    @type REQUEST: ZPublisher.HTTPRequest
-    @rtype: C{any}
-    """
     def get_conf_property(self, *args, **kwargs):
+      """
+      Return a configuration value, resolving local and inherited defaults.
+
+      Positional arguments are mapped in order to C{key}, C{default}, and
+      C{REQUEST}. Keyword arguments are supported with the same names.
+
+      @keyword key: Configuration key to resolve.
+      @type key: C{str}
+      @keyword default: Fallback value when the key is not configured.
+      @type default: C{any}
+      @keyword REQUEST: Triggering request used for optional base64 decoding of
+        C{key}.
+      @type REQUEST: ZPublisher.HTTPRequest
+      @return: Resolved configuration value.
+      @rtype: C{any}
+      """
       params = ('key', 'default', 'REQUEST')
       [operator.setitem(kwargs, params[x], args[x]) for x in range(len(args))]
       key = kwargs['key']
@@ -642,21 +720,32 @@ class ConfManager(
               value = default.get('default', None)
       return value 
 
+
     def getConfProperty(self, key, default=None, REQUEST=None):
-      """ ConfManager.getConfProperty """
+      """
+      Returns property from configuration.
+
+      @param key: The key.
+      @type key: C{string}
+      @param default: The default-value.
+      @type default: C{any}
+      @var REQUEST: the triggering request
+      @type REQUEST: ZPublisher.HTTPRequest
+      @rtype: C{any}
+      """
       return self.get_conf_property(key, default, REQUEST)
 
 
-    """
-    Sets property into configuration.
-    
-    @param key: The key.
-    @type key: C{string}
-    @param value: The value.
-    @type value: C{any}
-    @return None
-    """
     def setConfProperty(self, key, value):
+      """
+      Sets property into configuration.
+      
+      @param key: The key.
+      @type key: C{string}
+      @param value: The value.
+      @type value: C{any}
+      @return None
+      """
       if key.startswith("Portal"):
         self.clearReqBuff()
       d = self.getConfProperties()
@@ -668,20 +757,28 @@ class ConfManager(
       self.__attr_conf_dict__ = d
       self.__attr_conf_dict__ = self.__attr_conf_dict__.copy()
 
-
-    """
-    ############################################################################
-    ###
-    ###   Configuration-System
-    ###
-    ############################################################################
-    """
-
-    ############################################################################
-    #  Customize system properties.
-    ############################################################################
     def manage_customizeSystem(self, btn, key, lang, REQUEST, RESPONSE=None):
-      """ ConfManager.manage_customizeSystem """
+      """
+      Manage the system customization.
+
+      The method handles various system customization actions based on the 
+      provided key and button parameters. It processes configuration changes, 
+      imports, history management, client management, media database operations, 
+      and custom configuration properties.
+      
+      @param btn: The button that was clicked to trigger the action.
+      @type btn: C{string}
+      @param key: The key indicating the type of action to perform (e.g., 'Import', 'History', 'Clients', 'MediaDb', 'Custom', 'Configuration', 'Manager').
+      @type key: C{string}
+      @param lang: The language code for localization purposes.
+      @type lang: C{string}
+      @param REQUEST: The HTTP request object containing form data and other request information.
+      @type REQUEST: ZPublisher.HTTPRequest
+      @param RESPONSE: The HTTP response object for sending responses.
+      @type RESPONSE: ZPublisher.HTTPResponse
+      @return: A message indicating the result of the customization action.
+      @rtype: C{string}
+      """
       
       message = ''
       params = []
@@ -719,7 +816,7 @@ class ConfManager(
             message += '[%s: %i]'%(node, ob.packHistory())
         message = self.getZMILangStr('MSG_CHANGED')+message
       
-      ##### Clients ####
+      # Clients
       elif key == 'Clients':
         if btn == 'Change':
           home = self.getHome()
@@ -741,7 +838,7 @@ class ConfManager(
           self.setConfProperty('Portal.Clients', l)
           message = self.getZMILangStr('MSG_CHANGED')
       
-      ##### MediaDb ####
+      # MediaDb
       elif key == 'MediaDb':
         if btn == 'Create':
           location = REQUEST['mediadb_location'].strip()
@@ -755,7 +852,7 @@ class ConfManager(
         elif btn == 'Remove':
           message = _mediadb.manage_delMediaDb(self)
       
-      ##### Custom ####
+      # Custom
       elif key == 'Custom':
         k = REQUEST.get( 'conf_key', '')
         if btn == 'Change':
@@ -780,7 +877,7 @@ class ConfManager(
               portalClient.delConfProperty( k)
           message = self.getZMILangStr('MSG_DELETED')%int(1)
       
-      ##### Configuration ####
+      # Configuration
       elif key == 'Configuration':
         if btn == 'Change':
           self.setConfProperty('InstalledProducts.lesscss', REQUEST.get('lesscss', ''))
@@ -788,7 +885,7 @@ class ConfManager(
           self.setConfProperty('InstalledProducts.pil.hires.thumbnail.max', REQUEST.get('pil_hires_thumbnail_max', self.getConfProperty('InstalledProducts.pil.hires.thumbnail.max')))
           message = self.getZMILangStr('MSG_CHANGED')
       
-      ##### Manager ####
+      # Manager
       elif key == 'Manager':
         if btn == 'Add':
           meta_type = REQUEST.get('meta_type', '')
@@ -814,17 +911,31 @@ class ConfManager(
         for param in params:
           d[param] = REQUEST.get( param, '')
         return RESPONSE.redirect( standard.url_append_params( 'manage_customize', d) + '#%s'%key)
-      
       return message
 
 
-    ############################################################################
-    #  ConfManager.manage_customizeDesign: 
-    #
-    #  Customize design properties.
-    ############################################################################
     def manage_customizeDesign(self, btn, lang, REQUEST, RESPONSE):
-      """ ConfManager.manage_customizeDesign """
+      """
+      Customize design properties.
+
+      The method handles various design customization actions based on 
+      the provided button parameter. It processes actions related to 
+      saving CSS, saving themes, deleting themes, copying themes, 
+      importing themes, and inserting new themes. The method also constructs 
+      appropriate messages based on the actions performed and redirects the 
+      user to the design customization form with the relevant message.
+
+      @param btn: The button that was clicked to trigger the action.
+      @type btn: C{string}
+      @param lang: The language code for localization purposes.
+      @type lang: C{string}
+      @param REQUEST: The HTTP request object containing form data and other request information.
+      @type REQUEST: ZPublisher.HTTPRequest
+      @param RESPONSE: The HTTP response object for sending responses.
+      @type RESPONSE: ZPublisher.HTTPResponse
+      @return: A message indicating the result of the design customization action.
+      @rtype: C{string}
+      """
       message = ''
       home = self.getHome()
       section = REQUEST.get('section','')
@@ -896,13 +1007,17 @@ class ConfManager(
       return RESPONSE.redirect('manage_customizeDesignForm?lang=%s&manage_tabs_message=%s'%(lang, message))
 
 
-    ############################################################################
-    ###
-    ###   Component ZMSSysConf
-    ###
-    ############################################################################
-
     def getZMSSysConf(self):
+      """
+      Return the ZMSSysConf object, creating and initializing it if it does not already exist.
+      
+      The method checks if the ZMSSysConf object is already present as an attribute of the 
+      current instance. If it is not found, a new ZMSSysConf object is created, added to 
+      the current instance using _setObject, and then initialized. Finally, the method 
+      returns the ZMSSysConf object.
+
+      @return: The ZMSSysConf object associated with the current instance.
+      @rtype: ZMSSysConf"""
       sys_conf = getattr(self,"sys_conf",None)
       if sys_conf is None:
         sys_conf = _conf.ZMSSysConf()
@@ -912,13 +1027,13 @@ class ConfManager(
       return sys_conf
 
 
-    ############################################################################
-    ###
-    ###   Component ZMSIndex
-    ###
-    ############################################################################
-
     def getZMSIndex(self):
+      """
+      Return the ZMSIndex object, creating and initializing it if it does not already exist.
+      
+      @return: The ZMSIndex object associated with the root element.
+      @rtype: ZMSIndex
+      """
       root = self.getRootElement()
       index = getattr(root,"zmsindex",None)
       if index is not None and index.meta_type != "ZMSIndex":
@@ -934,51 +1049,95 @@ class ConfManager(
       return index
 
 
-    ############################################################################
-    ###
-    ###   Interface IZMSWorkflowProvider: delegate to workflow_manager
-    ###
-    ############################################################################
-
     def getWfActivities(self):
+      """
+      Return the workflow activities.
+
+      It delegates the retrieval of workflow activities to the workflow manager. 
+      If the workflow manager is not available, it returns an empty list.  
+      
+      @return: A list of workflow activities.
+      @rtype: list
+      """
       workflow_manager = getattr(self, 'workflow_manager', None)
       if workflow_manager is None:
         return []
       return workflow_manager.getActivities()
 
+
     def getWfActivitiesIds(self):
+      """
+      Return the workflow activities IDs.
+      It delegates the retrieval of workflow activity IDs to the workflow manager. 
+      If the workflow manager is not available, it returns an empty list.
+      
+      @return: A list of workflow activities IDs.
+      @rtype: list
+      """
       workflow_manager = getattr(self, 'workflow_manager', None)
       if workflow_manager is None:
         return []
       return workflow_manager.getActivityIds()
 
+
     def getWfActivity(self, id):
+      """
+      Return a specific workflow activity by its ID.
+      It delegates the retrieval of a specific workflow activity to the workflow manager.
+      
+      @param id: The ID of the workflow activity.
+      @type id: str
+      @return: The workflow activity associated with the given ID.
+      @rtype: dict or None
+      """
       workflow_manager = getattr(self, 'workflow_manager', None)
       if workflow_manager is None:
         return None
       return workflow_manager.getActivity(id)
 
+
     def getWfTransitions(self):
+      """
+      Return the workflow transitions.
+      It delegates the retrieval of workflow transitions to the workflow manager.
+      If the workflow manager is not available, it returns an empty list.
+      
+      @return: A list of workflow transitions.
+      @rtype: list
+      """
       workflow_manager = getattr(self, 'workflow_manager', None)
       if workflow_manager is None:
         return []
       return workflow_manager.getTransitions()
 
+
     def getWfTransition(self, id):
+      """
+      Return a specific workflow transition by its ID.
+      It delegates the retrieval of a specific workflow transition to the workflow manager.
+      If the workflow manager is not available, it returns None.
+
+      @param id: The ID of the workflow transition.
+      @type id: str
+      @return: The workflow transition associated with the given ID.
+      @rtype: dict or None
+      """
       workflow_manager = getattr(self, 'workflow_manager', None)
       if workflow_manager is None:
         return None
       return workflow_manager.getTransition(id)
 
 
-    ############################################################################
-    ###
-    ###   Interface IZMSFilterManager: delegate
-    ###
-    ############################################################################
-
     def getFilterManager(self):
-      ### updateVersion
+      """
+      Return the filter manager.
+
+      It delegates the retrieval of the filter manager to the filter manager object.
+      If the filter manager is not available, it returns a default filter manager.
+      
+      @return: The filter manager object.
+      @rtype: ZMSFilterManager
+      """
       filters = self.getConfProperty('ZMS.filter.filters', {})
       processes = self.getConfProperty('ZMS.filter.processes', {})
       if filters or processes:
@@ -990,167 +1149,406 @@ class ConfManager(
           self.delConfProperty('ZMS.filter.processes')
         except:
           standard.writeError(self, "[getFilterManager]: can't init new %s"%meta_type)
-      ###
+
       manager = [x for x in self.getDocumentElement().objectValues() if isinstance(x,ZMSFilterManager.ZMSFilterManager)]
+
       if len(manager)==0:
         class DefaultManager(object):
+          """Provide helpers for DefaultManager."""
           getFilter__roles__ = None
-          def getFilter(self, id): return {}
+
+          def getFilter(self, id):
+            """Return filter."""
+            return {}
+
           getFilterIds__roles__ = None
-          def getFilterIds(self, sort=True): return []
+
+          def getFilterIds(self, sort=True):
+            """Return filterids."""
+            return []
+
           getFilterProcesses__roles__ = None
-          def getFilterProcesses(self, id): return []
+
+          def getFilterProcesses(self, id):
+            """Return filterprocesses."""
+            return []
+
           getProcess__roles__ = None
-          def getProcess(self, id): return {}
+
+          def getProcess(self, id):
+            """Return process."""
+            return {}
+
           getProcessIds__roles__ = None
-          def getProcessIds(self, sort=True): return []
+
+          def getProcessIds(self, sort=True):
+            """Return processids."""
+            return []
+
           importXml__roles__ = None
-          def importXml(self, xml): pass
+
+          def importXml(self, xml):
+            """
+            Placeholder import hook for default in-memory filter manager.
+
+            @param xml: Serialized filter-manager payload.
+            @type xml: C{str} | C{bytes}
+            @return: C{None}
+            @rtype: C{None}
+            """
+            pass
+
         manager = [DefaultManager()]
       return manager[0]
 
 
-    ############################################################################
-    ###
-    ###   Interface IZMSMetamodelProvider: delegate
-    ###
-    ############################################################################
-
     def getMetaobjManager(self):
+      """
+      Return the metaobj manager.
+
+      It delegates the retrieval of the metaobj manager to the metaobj manager object.
+      If the metaobj manager is not available, it returns a default metaobj manager.
+      
+      @return: The metaobj manager object.
+      @rtype: DefaultMetaobjManager
+      """
       manager = getattr(self, 'metaobj_manager', None)
       if manager is None:
         class DefaultMetaobjManager(object):
-          def importXml(self, xml): pass
-          def getMetaobjId(self, name): return None
-          def getMetaobjIds(self, sort=None, excl_ids=[]): return []
-          def getMetaobj(self, id): return None
-          def getMetaobjAttrIds(self, meta_id, types=[]): return []
-          def getMetaobjAttrs(self, meta_id,  types=[]): return []
-          def getMetaobjAttr(self, id, attr_id, sync=True): return None
-          def getMetaobjAttrIdentifierId(self, meta_id): return None
-          def notifyMetaobjAttrAboutValue(self, meta_id, key, value): return None
+          """Provide helpers for DefaultMetaobjManager."""
+
+          def importXml(self, xml):
+            """
+            Placeholder import hook for default in-memory metaobj manager.
+
+            @param xml: Serialized meta-object payload.
+            @type xml: C{str} | C{bytes}
+            @return: C{None}
+            @rtype: C{None}
+            """
+            pass
+
+          def getMetaobjId(self, name):
+            """Return metaobjid."""
+            return None
+
+          def getMetaobjIds(self, sort=None, excl_ids=[]):
+            """Return metaobjids."""
+            return []
+
+          def getMetaobj(self, id):
+            """Return metaobj."""
+            return None
+
+          def getMetaobjAttrIds(self, meta_id, types=[]):
+            """Return metaobjattrids."""
+            return []
+
+          def getMetaobjAttrs(self, meta_id,  types=[]):
+            """Return metaobjattrs."""
+            return []
+
+          def getMetaobjAttr(self, id, attr_id, sync=True):
+            """Return metaobjattr."""
+            return None
+
+          def getMetaobjAttrIdentifierId(self, meta_id):
+            """Return metaobjattridentifierid."""
+            return None
+
+          def notifyMetaobjAttrAboutValue(self, meta_id, key, value):
+            """
+            Placeholder callback for meta-object attribute value notifications.
+
+            @param meta_id: Meta-object id.
+            @type meta_id: C{str}
+            @param key: Attribute id.
+            @type key: C{str}
+            @param value: Observed value.
+            @type value: C{any}
+            @return: C{None}
+            @rtype: C{None}
+            """
+            return None
+
         manager = DefaultMetaobjManager()
       return manager
 
+
     def getMetaobjRevision(self, id):
+      """
+      Return meta-object revision.
+      It delegates the retrieval of the meta-object revision to 
+      the meta-object manager. If the metaobj manager is not available, 
+      it returns None.
+      """
       return self.getMetaobjManager().getMetaobjRevision( id)
-    
+
+
     def getMetaobjId(self, name):
+      """Return meta-object id."""
       return self.getMetaobjManager().getMetaobjId( name)
 
+
     def getMetaobjIds(self, sort=None, excl_ids=[]):
+      """Return meta-object ids."""
       return self.getMetaobjManager().getMetaobjIds( sort, excl_ids)
 
+
     def getMetaobj(self, id):
+      """Return meta-object."""
       return self.getMetaobjManager().getMetaobj( id)
 
+
     def getMetaobjAttrIds(self, meta_id, types=[]):
+      """Return meta-object attribute ids."""
       return self.getMetaobjManager().getMetaobjAttrIds( meta_id, types)
 
+
     def getMetaobjAttrs(self, meta_id,  types=[]):
+      """Return meta-object attributes."""
       return self.getMetaobjManager().getMetaobjAttrs( meta_id, types)
 
+
     def getMetaobjAttr(self, id, attr_id, sync=True):
+      """Return meta-object attribute."""
       return self.getMetaobjManager().getMetaobjAttr( id, attr_id, sync)
 
+
     def getMetaobjAttrIdentifierId(self, meta_id):
+      """Return meta-object attribute identifier id."""
       return self.getMetaobjManager().getMetaobjAttrIdentifierId( meta_id)
 
+
     def notifyMetaobjAttrAboutValue(self, meta_id, key, value):
+      """
+      Notify meta-object attribute definition about (a new) value.
+      It delegates the notification of a meta-object attribute about a value to the meta-object manager.
+      If the meta-object manager is not available, it returns None.
+
+      @param meta_id: The ID of the meta-object.
+      @type meta_id: str
+      @param key: The key of the attribute to notify.
+      @type key: str
+      @param value: The value to notify the attribute about.
+      @type value: any
+      @return: The result of the notification, or None if the meta-object manager is not available.
+      @rtype: any
+      """
       return self.getMetaobjManager().notifyMetaobjAttrAboutValue( meta_id, key, value)
 
 
-    ############################################################################
-    ###
-    ###   Interface IZMSMetacmdProvider: delegate
-    ###
-    ############################################################################
-
     def getMetacmdManager(self):
-      ### updateVersion
+      """
+      Return the metacmd manager.
+
+      It delegates the retrieval of the metacmd manager to the metacmd manager object.
+      If the metacmd manager is not available, it returns a default metacmd manager.
+      
+      @return: The metacmd manager object.
+      @rtype: DefaultMetacmdManager
+      """
       commands = self.getConfProperty('ZMS.custom.commands', [])
       if len(commands)>0:
         meta_type = 'ZMSMetacmdProvider'
         obj = ConfDict.forName(meta_type+'.'+meta_type)(commands)
         self._setObject( obj.id, obj)
         self.delConfProperty('ZMS.custom.commands')
-      ###
+
       metacmd_manager = getattr(self, 'metacmd_manager', None)
+
       if metacmd_manager is None:
         class DefaultManager(object):
-          def importXml(self, xml): pass
-          def getMetaCmdDescription(self, id): return None
-          def getMetaCmd(self, id): return None
-          def getMetaCmdIds(self, sort=True): return []
-          def getMetaCmds(self, context=None, stereotype='', sort=True): return []
+          """Provide helpers for DefaultManager."""
+
+          def importXml(self, xml):
+            """
+            Placeholder import hook for default in-memory metacmd manager.
+
+            @param xml: Serialized meta-command payload.
+            @type xml: C{str} | C{bytes}
+            @return: C{None}
+            @rtype: C{None}
+            """
+            pass
+
+          def getMetaCmdDescription(self, id):
+            """Return metacmddescription."""
+            return None
+
+          def getMetaCmd(self, id):
+            """Return metacmd."""
+            return None
+
+          def getMetaCmdIds(self, sort=True):
+            """Return metacmdids."""
+            return []
+
+          def getMetaCmds(self, context=None, stereotype='', sort=True):
+            """Return metacmds."""
+            return []
+
         metacmd_manager = DefaultManager()
       return metacmd_manager
+
 
     def getMetaCmdDescription(self, id):
        """ getMetaCmdDescription """
        return self.getMetacmdManager().getMetaCmdDescription(id)
 
+
     def getMetaCmd(self, id):
+       """Return metacmd."""
        return self.getMetacmdManager().getMetaCmd(id)
 
+
     def getMetaCmdIds(self, sort=1):
+       """Return metacmdids."""
        return self.getMetacmdManager().getMetaCmdIds(sort)
 
+
     def getMetaCmds(self, context=None, stereotype='', sort=True):
+      """Return metacmds."""
       return self.getMetacmdManager().getMetaCmds(context, stereotype, sort)
 
-
-    ############################################################################
-    ###
-    ###   Interface IZMSWorkflowProvider: delegate
-    ###
-    ############################################################################
-
     def getWorkflowManager(self):
+      """
+      Return the workflow manager.
+
+      It delegates the retrieval of the workflow manager to the workflow manager object.
+      If the workflow manager is not available, it returns a default workflow manager.
+      
+      @return: The workflow manager object.
+      @rtype: DefaultWorkflowManager
+      """
       manager = getattr(self.getDocumentElement(),'workflow_manager',None)
       if manager is None:
         class DefaultManager(object):
-          def importXml(self, xml): pass
-          def getAutocommit(self): return True
-          def getActivities(self): return []
-          def getActivityIds(self): return []
-          def getActivity(self, id): return None
-          def getActivityDetails(self, id): return None
-          def getTransitions(self): return []
-          def getTransitionIds(self): return []
+          """Provide helpers for DefaultManager."""
+
+          def importXml(self, xml):
+            """
+            Placeholder import hook for default in-memory workflow manager.
+
+            @param xml: Serialized workflow payload.
+            @type xml: C{str} | C{bytes}
+            @return: C{None}
+            @rtype: C{None}
+            """
+            pass
+
+          def getAutocommit(self):
+            """Return autocommit."""
+            return True
+
+          def getActivities(self):
+            """Return activities."""
+            return []
+
+          def getActivityIds(self):
+            """Return activityids."""
+            return []
+
+          def getActivity(self, id):
+            """Return activity."""
+            return None
+
+          def getActivityDetails(self, id):
+            """Return activitydetails."""
+            return None
+
+          def getTransitions(self):
+            """Return transitions."""
+            return []
+
+          def getTransitionIds(self):
+            """Return transitionids."""
+            return []
+
         manager = DefaultManager()
       return manager
 
 
-    ############################################################################
-    ###
-    ###   Interface IZMSFormatProvider: delegate
-    ###
-    ############################################################################
-
     def getFormatManager(self):
+      """Return the format manager.
+
+      It delegates the retrieval of the format manager to the format manager object.
+      If the format manager is not available, it returns a default format manager.
+
+      @return: The format manager object.
+      @rtype: DefaultFormatManager
+      """
       return self.format_manager
 
+
     def getTextFormatDefault(self):
+      """
+      Return the default text format.
+
+      It delegates the retrieval of the default text format to the format manager object.
+      If the format manager is not available, it returns a default text format.
+
+      @return: The default text format object.
+      @rtype: C{string}
+      """
       return self.getFormatManager().getTextFormatDefault()
 
+
     def getTextFormat(self, id, REQUEST):
+      """
+      Return the text format for the given ID.
+
+      It delegates the retrieval of the text format to the format manager object.
+      If the format manager is not available, it returns a default text format.
+
+      @param id: The ID of the text format.
+      @type id: str
+      @param REQUEST: The request object.
+      @type REQUEST: ZopeRequest
+      @return: The text format object.
+      @rtype: TextFormat
+      """
       return self.getFormatManager().getTextFormat(id, REQUEST)
 
+
     def getTextFormats(self, REQUEST):
+      """
+      Return the set of text formats.
+
+      It delegates the retrieval of the text formats to the format manager object.
+      If the format manager is not available, it returns a default set of text formats.
+
+      @param REQUEST: The request object.
+      @type REQUEST: ZopeRequest
+      @return: The set of text format objects.
+      @rtype: list of text formats
+      """
       return self.getFormatManager().getTextFormats(REQUEST)
 
+
     def getCharFormats(self):
+      """
+      Return the set of character formats.
+
+      It delegates the retrieval of the character formats to the format manager object.
+      If the format manager is not available, it returns a default set of character formats.
+
+      @return: The set of character format objects.
+      @rtype: list of character formats
+      """
       return self.getFormatManager().getCharFormats()
 
 
-    ############################################################################
-    ###
-    ###   Interface IZMSCatalogAdapter: delegate
-    ###
-    ############################################################################
-
     def getCatalogAdapter(self):
+      """
+      Return the catalog adapter.
+
+      It delegates the retrieval of the catalog adapter to the catalog adapter object.
+      If the catalog adapter is not available, it returns a default catalog adapter.
+
+      @return: The catalog adapter object.
+      @rtype: IZMSCatalogAdapter
+      """
       from Products.zms import IZMSCatalogAdapter, ZMSZCatalogAdapter
       path_nodes = self.breadcrumbs_obj_path()
       path_nodes.reverse()
@@ -1172,6 +1570,13 @@ InitializeClass(ConfManager)
 
 __REGISTRY__ = None
 def getRegistry():
+    """
+    Return the registry of configuration properties.
+    The registry is a global dictionary that holds configuration properties for the application.
+    If the registry does not exist, it is created and initialized with the configuration properties from ConfDict.
+    @return: The registry of configuration properties.
+    @rtype: dict
+    """
     global __REGISTRY__
     if __REGISTRY__ is None:
         __REGISTRY__ = {}
@@ -1183,5 +1588,3 @@ def getRegistry():
           sys.stderr.write(''.join(traceback.format_exception(type, val, tb)))
     return __REGISTRY__
 getRegistry()
-
-################################################################################

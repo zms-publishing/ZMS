@@ -1,21 +1,14 @@
-################################################################################
-# _objinputs.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+_objinputs.py - ZMS Object Input Field Generation and Form Rendering
 
+This module defines the ObjInputs class, which provides methods for generating
+form input fields and rendering HTML forms in a ZMS content management system.
+It includes functionality for creating various types of input controls, applying
+client-side validation, and handling multipart form submissions.
+
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
+"""
 # Product Imports.
 from Products.zms import standard
 
@@ -34,7 +27,9 @@ class ObjInputs(object):
   #	@param css	CSS-Class
   #	@return String
   # ----------------------------------------------------------------------------
+  """Provide helpers for ObjInputs."""
   def getUrlInput(self, fmName, elName, elTextName='', size=None, value='', enabled=True, css='form-control'):
+    """Return urlinput."""
     return self.getTextInput(fmName, elName, size, value, 'text', enabled=enabled, css=css+' url-input')
 
 
@@ -50,6 +45,7 @@ class ObjInputs(object):
   #	@return String
   # ----------------------------------------------------------------------------
   def getDateTimeInput(self, fmName, elName, size=8, value=None, enabled=True, fmt_str='DATETIME_FMT', css='form-control'):
+    """Return datetimeinput."""
     html = []
     input_type = 'date'
     if value is not None and standard.parseLangFmtDate(value) is not None:
@@ -84,6 +80,7 @@ class ObjInputs(object):
   #	@return String
   # ----------------------------------------------------------------------------
   def getPasswordInput(self, fmName, elName, size=15, value='', enabled=True, css='form-control'):
+    """Return passwordinput."""
     return self.getTextInput(fmName, elName, size, value, 'password', enabled, css)
 
 
@@ -99,6 +96,7 @@ class ObjInputs(object):
   #	@return String
   # ----------------------------------------------------------------------------
   def getTextInput(self, fmName, elName, size=None, value='', type='text', enabled=True, css='form-control', placeholder=''):
+    """Return textinput."""
     lang = standard.nvl(self.REQUEST.get('lang'), self.getPrimaryLanguage())
     elId = elName
     if elId.endswith('_%s'%lang):
@@ -136,6 +134,7 @@ class ObjInputs(object):
   #	@return String
   # ----------------------------------------------------------------------------
   def getSelect(self, fmName, elName, value, inputtype, lang_str, required=False, optpl=[], enabled=True, css='form-control', maxlen=30):
+    """Return select."""
     if inputtype in ['select', 'multiline']:
       return self.zmi_input_select(self, name=elName, value=value, lang_str=lang_str, mandatory=required, options=optpl, enabled=enabled)
     elif inputtype in ['color']:
@@ -165,6 +164,7 @@ class ObjInputs(object):
   # call getCheckbox(..., elId='', ...) with an empty string for elId
   # ----------------------------------------------------------------------------
   def getCheckbox(self, fmName, elName, elId=None, value=None, enabled=True, hidden=True, css='', btn=False, options=[0, 1]):
+    """Return checkbox."""
     lang = standard.nvl(self.REQUEST.get('lang'), self.getPrimaryLanguage())
     if elId==None:
       elId = elName
@@ -211,6 +211,7 @@ class ObjInputs(object):
   #	@return String
   # ----------------------------------------------------------------------------
   def getTextArea(self, fmName, elName, cols, rows, value, enabled=True, css='form-control', wrap='virtual'):
+    """Return textarea."""
     lang = standard.nvl(self.REQUEST.get('lang'), self.getPrimaryLanguage())
     elId = elName
     if elId.endswith('_%s'%lang):
@@ -237,4 +238,3 @@ class ObjInputs(object):
     html.append('</textarea>')
     return ''.join(html)
 
-################################################################################

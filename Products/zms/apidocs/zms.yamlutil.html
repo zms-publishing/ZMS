@@ -155,14 +155,37 @@
             </div>
         
 
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_load_yaml" class="internal-link" title="zms.yamlutil._load_yaml">_load<wbr></wbr>_yaml</a></code>
+            </div>
+        
+
     </li>
 </ul> 
 
         
          
 
+        <div class="childrenKindTitle">Variables</div>
+        <ul>
+    
+    <li class="">
         
-         
+        
+        
+
+        
+            <div class="itemName"><code><a href="#IMPORT_ERROR_MSG" class="internal-link" title="zms.yamlutil.IMPORT_ERROR_MSG">IMPORT<wbr></wbr>_ERROR<wbr></wbr>_MSG</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
 
         
          
@@ -1144,17 +1167,27 @@
     
     <td>Function</td>
     <td><code><a href="#dump" class="internal-link" title="zms.yamlutil.dump">dump</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Serializes a Python object to a YAML-formatted string.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#parse" class="internal-link" title="zms.yamlutil.parse">parse</a></code></td>
+    <td>Deserializes a YAML-formatted string to a Python object.</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#IMPORT_ERROR_MSG" class="internal-link" title="zms.yamlutil.IMPORT_ERROR_MSG">IMPORT<wbr></wbr>_ERROR<wbr></wbr>_MSG</a></code></td>
     <td><span class="undocumented">Undocumented</span></td>
   </tr><tr class="function private">
     
     <td>Function</td>
     <td><code><a href="#__cleanup" class="internal-link" title="zms.yamlutil.__cleanup">__cleanup</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Recursively cleans up a dictionary by removing keys with falsy values.</td>
+  </tr><tr class="function private">
+    
+    <td>Function</td>
+    <td><code><a href="#_load_yaml" class="internal-link" title="zms.yamlutil._load_yaml">_load<wbr></wbr>_yaml</a></code></td>
+    <td>Helper function to load the YAML library and handle import errors.</td>
   </tr>
 </table>
           
@@ -1176,7 +1209,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">dump</span><span class="function-signature">(data)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/yamlutil.py#L15">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/yamlutil.py#L30">
       
       (source)
     </a>
@@ -1188,7 +1221,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Serializes a Python object to a YAML-formatted string.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">data:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">The Python object to serialize.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">YAML-formatted string or error message if YAML library is not available.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1203,7 +1236,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">parse</span><span class="function-signature">(data)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/yamlutil.py#L31">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/yamlutil.py#L58">
       
       (source)
     </a>
@@ -1215,7 +1248,34 @@
   </div>
   <div class="docstring functionBody">
     
+    <div><p>Deserializes a YAML-formatted string to a Python object.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">data:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">The YAML-formatted string to deserialize.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">The deserialized Python object or error message if YAML library is not available.</td></tr></table></div>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="zms.yamlutil.IMPORT_ERROR_MSG">
+    
+  </a>
+  <a name="IMPORT_ERROR_MSG">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">IMPORT_ERROR_MSG</span>: <code>str</code> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/yamlutil.py#L15">
+      
+      (source)
+    </a>
+    <a class="headerLink" href="#IMPORT_ERROR_MSG" title="zms.yamlutil.IMPORT_ERROR_MSG">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
     <div><p class="undocumented">Undocumented</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code><span class="rst-variable-quote">'</span><span class="rst-variable-string">Import Error: ruamel.yaml not installed</span><span class="rst-variable-quote">'</span></code></pre></td></tr></table>
   </div>
 </div><div class="basefunction private">
   
@@ -1230,7 +1290,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">__cleanup</span><span class="function-signature">(v)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/yamlutil.py#L44">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/yamlutil.py#L80">
       
       (source)
     </a>
@@ -1242,7 +1302,34 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Recursively cleans up a dictionary by removing keys with falsy values.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">v:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">Input value, typically a dictionary, list, or scalar.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">Cleaned value with empty entries removed while preserving numeric zero and boolean false semantics used by the repository format.</td></tr></table></div>
+  </div>
+</div><div class="basefunction private">
+  
+  
+  <a name="zms.yamlutil._load_yaml">
+    
+  </a>
+  <a name="_load_yaml">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">_load_yaml</span><span class="function-signature">()</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/yamlutil.py#L17">
+      
+      (source)
+    </a>
+    <a class="headerLink" href="#_load_yaml" title="zms.yamlutil._load_yaml">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Helper function to load the YAML library and handle import errors.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">tuple</tt></td><td class="fieldArgDesc">Tuple containing the YAML class and an error message if import fails.</td></tr></table></div>
   </div>
 </div>
         </div>

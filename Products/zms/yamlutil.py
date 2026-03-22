@@ -1,5 +1,5 @@
 """
-yamlutil.py
+yamlutil.py - Utility helpers for YAML.
 
 Provides dump, parse helper functions for general-purpose ZMS utilities and shared helper functions.
 It provides common patterns like type checking, data transformation, and error handling.
@@ -13,6 +13,8 @@ import io
 import time
 
 IMPORT_ERROR_MSG = "Import Error: ruamel.yaml not installed"
+"""Message returned when `ruamel.yaml` cannot be imported."""
+
 
 def _load_yaml():
     """

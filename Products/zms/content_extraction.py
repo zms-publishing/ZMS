@@ -28,12 +28,19 @@ from AccessControl.SecurityInfo import ModuleSecurityInfo
 from Products.zms import standard
 
 security = ModuleSecurityInfo('Products.zms.content_extraction')
+"""Security declaration for the content_extraction module.
+
+This ModuleSecurityInfo object declares public access permissions for functions
+in the Products.zms.content_extraction module, allowing authorized users to call
+extract_content() and extract_text_from_html() functions through Zope's 
+AccessControl security mechanism.
+"""
 
 security.declarePublic('extract_content')
 def extract_content(context, b, content_type=''):
     """
     @param context: the ZMS-context
-    @type b: C{ZMS}
+    @type context: C{ZMS}
     @param b: the bytes
     @type b: C{bytes}
     """

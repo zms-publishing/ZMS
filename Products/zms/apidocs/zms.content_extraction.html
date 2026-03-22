@@ -1192,7 +1192,7 @@
     
     <td>Variable</td>
     <td><code><a href="#security" class="internal-link" title="zms.content_extraction.security">security</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Security declaration for the content_extraction module.</td>
   </tr>
 </table>
           
@@ -1214,7 +1214,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">extract_content</span><span class="function-signature">(context, b, content_type=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/content_extraction.py#L33">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/content_extraction.py#L40">
       
       (source)
     </a>
@@ -1226,7 +1226,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">context</span></td><td class="fieldArgDesc">the ZMS-context</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">b:</span><tt class="rst-docutils rst-literal">bytes</tt></td><td class="fieldArgDesc">the bytes</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">content<wbr></wbr>_type</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr></table></div>
+    <div><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">context:</span><tt class="rst-docutils rst-literal">ZMS</tt></td><td class="fieldArgDesc">the ZMS-context</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">b:</span><tt class="rst-docutils rst-literal">bytes</tt></td><td class="fieldArgDesc">the bytes</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">content<wbr></wbr>_type</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1241,7 +1241,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">extract_content_pdfminer</span><span class="function-signature">(context, b, content_type=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/content_extraction.py#L92">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/content_extraction.py#L99">
       
       (source)
     </a>
@@ -1268,7 +1268,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">extract_content_tika</span><span class="function-signature">(context, b, content_type=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/content_extraction.py#L70">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/content_extraction.py#L77">
       
       (source)
     </a>
@@ -1295,7 +1295,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">extract_text_from_html</span><span class="function-signature">(context, html_data)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/content_extraction.py#L49">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/content_extraction.py#L56">
       
       (source)
     </a>
@@ -1333,7 +1333,9 @@
   </div>
   <div class="functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Security declaration for the content_extraction module.</p>
+<p>This ModuleSecurityInfo object declares public access permissions for functions in the Products.zms.content_extraction module, allowing authorized users to call extract_content() and extract_text_from_html() functions through Zope's AccessControl security mechanism.</p>
+</div>
     
   </div>
 </div>

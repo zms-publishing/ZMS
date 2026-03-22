@@ -67,8 +67,17 @@ class ZMSItem(
     #  1. ZODB attribute 'readme' (content objects with attr())
     #  2. Filesystem zpt/<ClassName>/readme.md (admin GUIs)
     # --------------------------------------------------------------------------
+    def get_filesystem_readme_path(self, REQUEST=None):
+      """Return filesystem path to a readme.md for the current admin context."""
+      pkg_home = os.path.dirname(standard.__file__)
+      class_name = self.__class__.__name__
+      return os.path.join(pkg_home, 'zpt', class_name, 'readme.md')
+
+
     def readme(self, REQUEST=None, RESPONSE=None):
       """Returns readme rendered as HTML"""
+      if REQUEST is None:
+        REQUEST = self.REQUEST
       if RESPONSE is None:
         RESPONSE = self.REQUEST.RESPONSE
       RESPONSE.setHeader('Content-Type', 'text/html;charset=utf-8')
@@ -80,9 +89,7 @@ class ZMSItem(
             raw = raw.getData().decode('utf-8')
           return '<article class="zmi-readme">%s</article>'%self.renderText('markdown', 'text', raw, REQUEST)
       # 2. Fall back to filesystem readme.md (admin GUIs)
-      pkg_home = os.path.dirname(standard.__file__)
-      class_name = self.__class__.__name__
-      readme_path = os.path.join(pkg_home, 'zpt', class_name, 'readme.md')
+      readme_path = self.get_filesystem_readme_path(REQUEST)
       if os.path.exists(readme_path):
         with open(readme_path, 'r', encoding='utf-8') as f:
           raw = f.read()

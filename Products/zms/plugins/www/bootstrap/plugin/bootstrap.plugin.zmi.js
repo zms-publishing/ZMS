@@ -153,6 +153,18 @@ $ZMI.registerReady(function(){
 		var $btn = $(this);
 		var url = $btn.data('readme');
 		var title = $btn.attr('title') || 'Help';
+		var print_url = './readme_html';
+		if (typeof url === 'string' && url.length > 0) {
+			if (url.indexOf('/readme?') >= 0) {
+				print_url = url.replace('/readme?', '/readme_html?');
+			}
+			else if (url.slice(-7) === '/readme') {
+				print_url = url + '_html';
+			}
+			else if (url.indexOf('readme?') >= 0) {
+				print_url = url.replace('readme?', 'readme_html?');
+			}
+		}
 		zmiModal(null, {
 			id: 'zmiModalreadme',
 			title: title,
@@ -164,7 +176,7 @@ $ZMI.registerReady(function(){
 		});
 		document.body.style.paddingRight = '0px'; // Fix scrollbar shift when opening modal
 		// Add print button to modal footer
-		$('#zmiModalreadme .modal-footer').html('<a href="./readme_html" target="_blank" class="btn btn-secondary" title="Print/HTML"><i class="fas fa-print"></i></a>');
+		$('#zmiModalreadme .modal-footer').html('<a href="'+print_url+'" target="_blank" class="btn btn-secondary" title="Print/HTML"><i class="fas fa-print"></i></a>');
 	});
 
 	// Tooltip

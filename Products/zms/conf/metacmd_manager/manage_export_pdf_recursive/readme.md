@@ -28,23 +28,22 @@ The recursive metacommand reuses these helpers and applies them to all pages in 
 
 1. Install dependency in the Python environment used by Zope/ZMS:
 
-```sh
-pip install weasyprint
-```
+    ```
+    pip install weasyprint
+    ```
 
 2. Ensure the new metacommand package exists:
-
-- `Products/zms/conf/metacmd_manager/manage_export_pdf_recursive/__init__.py`
-- `Products/zms/conf/metacmd_manager/manage_export_pdf_recursive/manage_export_pdf_recursive.py`
+    - `Products/zms/conf/metacmd_manager/manage_export_pdf_recursive/__init__.py`
+    - `Products/zms/conf/metacmd_manager/manage_export_pdf_recursive/manage_export_pdf_recursive.py`
 
 3. Open a `ZMSDocument` in ZMS and run `PDF Export (Recursive)`.
 
 4. Test first with a small subtree so you can verify:
 
-- document order
-- page breaks
-- image loading
-- rendering of custom page-elements
+    - document order
+    - page breaks
+    - image loading
+    - rendering of custom page-elements
 
 ## Document selection and order
 
@@ -162,12 +161,6 @@ If that is too strict for your use case, you can change or remove this rule.
 
 - PDF is too large or slow to render
   Test with a smaller subtree first and inspect image sizes and the number of rendered pages.
-
-## Relationship to `manage_export_pydocx_recursive`
-
-`manage_export_pydocx_recursive` loops over documents and delegates repeatedly to `manage_export_pydocx(...)`.
-
-`manage_export_pdf_recursive` cannot safely work the same way, because it needs one final combined PDF document. For that reason it reuses the HTML-generation helpers from `manage_export_pdf` and renders once at the end.
 
 ## File reference
 

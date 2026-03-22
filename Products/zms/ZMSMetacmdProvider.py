@@ -13,6 +13,7 @@ Organization: ZMS Publishing
 from DateTime import DateTime
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
+import os
 from zope.interface import implementer
 # Product Imports.
 from Products.zms import standard
@@ -98,6 +99,31 @@ class ZMSMetacmdProvider(
       """Initialise the manager with a persistent copy of command definitions."""
       self.id = 'metacmd_manager'
       self.commands = copy.deepcopy(commands)
+
+
+    def getMetaCmdReadmePath(self, id):
+      """Return filesystem path to the readme.md of a meta-command folder."""
+      pkg_home = os.path.dirname(standard.__file__)
+      return os.path.join(pkg_home, 'conf', 'metacmd_manager', id, 'readme.md')
+
+
+    def hasMetaCmdReadme(self, id):
+      """Check whether a filesystem readme.md exists for meta-command id."""
+      if not id:
+        return False
+      return os.path.exists(self.getMetaCmdReadmePath(id))
+
+
+    def get_filesystem_readme_path(self, REQUEST=None):
+      """Resolve provider and metacmd readme paths for ZMSItem.readme()."""
+      if REQUEST is None:
+        REQUEST = self.REQUEST
+      metacmd_id = REQUEST.get('id', '').strip()
+      if metacmd_id:
+        metacmd_readme = self.getMetaCmdReadmePath(metacmd_id)
+        if os.path.exists(metacmd_readme):
+          return metacmd_readme
+      return super().get_filesystem_readme_path(REQUEST)
 
 
     def provideRepository(self, ids=None):

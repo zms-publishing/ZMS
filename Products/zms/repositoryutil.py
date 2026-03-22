@@ -24,8 +24,15 @@ from Products.zms import IZMSConfigurationProvider
 from Products.zms import IZMSRepositoryProvider
 from Products.zms import zopeutil
 from Products.zms import standard
-from Products.zms import yamlutil
-from Products.zms import zopeutil
+
+# Conditional import of yamlutil
+yamlutil = None
+try:
+    from ruamel.yaml import YAML
+    from Products.zms import yamlutil
+except ImportError:
+    standard.writeError(None, "[repositoryutil]: Import error - Python-package ruamel.yaml is required for YAML serialization")
+    pass
 
 security = ModuleSecurityInfo('Products.zms.repositoryutil')
 
@@ -253,7 +260,7 @@ def localFiles(self, provider, ids=None):
   local = provider.provideRepository(ids)
   for id in local:
     o = local[id]
-    if self.getConfProperty('ZMS.repository_manager.__init__.format', '') == 'py':
+    if self.getConfProperty('ZMS.repository_manager.__init__.format', '') == 'py' or yamlutil is None:
       l.update(init_artefacts(o, {'py':get_init_py(self, o)}))
     else:
       l.update(init_artefacts(o, {'yaml':get_init_yaml(self, o).split('\n')}))
@@ -412,6 +419,9 @@ def get_init_yaml(self, o):
   @return: YAML-formatted string representing the serialized object.
   @rtype: C{str}
   """
+  if yamlutil is None:
+    raise ImportError("Products.zms.yamlutil is required for YAML serialization")
+
   id = o.get('id','?')
   attrs = sorted([x for x in o if not x.startswith('__') and x==x.capitalize() and isinstance(o[x], list)])
   keys = sorted([x for x in o if not x.startswith('__') and x!='id' and x not in attrs and not isinstance(o.get(x), Acquisition.ExplicitAcquisitionWrapper)])

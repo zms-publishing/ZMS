@@ -12,8 +12,32 @@ Organization: ZMS Publishing
 import io
 import time
 
+IMPORT_ERROR_MSG = "Import Error: ruamel.yaml not installed"
+
+def _load_yaml():
+    """
+    Helper function to load the YAML library and handle import errors.
+    @return: Tuple containing the YAML class and an error message if import fails.
+    @rtype: C{tuple}
+    """
+    try:
+        from ruamel.yaml import YAML
+        return YAML, None
+    except ImportError:
+        return None, IMPORT_ERROR_MSG
+
+
 def dump(data):
-    from ruamel.yaml import YAML
+    """
+    Serializes a Python object to a YAML-formatted string.
+    @param data: The Python object to serialize.
+    @type data: C{object}
+    @return: YAML-formatted string or error message if YAML library is not available.
+    @rtype: C{str}
+    """
+    YAML, err = _load_yaml()
+    if err:
+        return err
 
     # Custom representer for struct_time
     def represent_struct_time(dumper, data):
@@ -29,7 +53,16 @@ def dump(data):
 
 
 def parse(data):
-    from ruamel.yaml import YAML
+    """
+    Deserializes a YAML-formatted string to a Python object.
+    @param data: The YAML-formatted string to deserialize.
+    @type data: C{str}
+    @return: The deserialized Python object or error message if YAML library is not available.
+    @rtype: C{object}
+    """
+    YAML, err = _load_yaml()
+    if err:
+        return err
 
     # Custom constructor for struct_time
     def construct_struct_time(loader, node):
@@ -42,7 +75,6 @@ def parse(data):
 
 
 def __cleanup(v):
-    from ruamel.yaml.scalarstring import LiteralScalarString    
     """
     Recursively cleans up a dictionary by removing keys with falsy values.
     @param v: Input value, typically a dictionary, list, or scalar.
@@ -51,6 +83,12 @@ def __cleanup(v):
         zero and boolean false semantics used by the repository format.
     @rtype: C{object}
     """
+    YAML, err = _load_yaml()
+    if err:
+        return err
+    
+    from ruamel.yaml.scalarstring import LiteralScalarString
+
     if v:
         if isinstance(v, dict):
             nd = {}

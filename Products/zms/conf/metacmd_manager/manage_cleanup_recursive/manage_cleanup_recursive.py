@@ -230,9 +230,10 @@ def html_page(self):
 					<nav>
 						<a target="_blank" href="manage_cleanup_recursive?content_type=csv" title="Show this List as CSV for Importing to Excel">CSV</a>&nbsp;&nbsp;&vert;&nbsp;
 						<a target="_blank" href="manage_cleanup_recursive?content_type=json" title="Show Complete Tree in Details as JSON">JSON</a>&nbsp;&nbsp;&vert;&nbsp;
-						<a href="manage_cleanup_recursive?content_type=html" class="active" title="Reload and Update this List"><i class="fas fa-sync text-primary"></i></a>
+						<a href="manage_cleanup_recursive?content_type=html" class="active" title="Reload and Update this List"><i class="fas fa-sync text-primary"></i></a>&nbsp;&nbsp;&vert;
+						<span class="zmi-readme text-info btn-sm" data-readme="%s/content/metacmd_manager/readme?id=manage_cleanup_recursive"><i class="far fa-question-circle"></i></span>
 					</nav>
-					''')
+					'''%(zmscontext.getHome().absolute_url()))
 		html.append('</legend>')
 		html.append('<div class="card-body" hx-target="this" hx-get="manage_cleanup_recursive?lang=%s&do_execution=1" hx-trigger="load">'%(request.get('lang','ger')))
 		html.append('<div style="text-align:center;margin:2rem auto;"><i class="text-primary fas fa-spinner fa-spin fa-3x"></i></div>')

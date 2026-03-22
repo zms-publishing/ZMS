@@ -48,7 +48,10 @@ def dump(data):
     yaml.preserve_quotes = True
     yaml.indent(mapping=2, sequence=4, offset=2)
     stream = io.StringIO()
-    yaml.dump(data, stream)
+    try:
+        yaml.dump(__cleanup(data), stream)
+    except Exception as e:
+        return f"Error during YAML serialization: {str(e)}"
     return stream.getvalue()
 
 
@@ -108,4 +111,8 @@ def __cleanup(v):
             return nl
         elif isinstance(v, str) and (v.find('\n') >= 0 or v.find('\r') >= 0):
             return LiteralScalarString(str(v))
+        # If v is a Zope Python-Script object with a read method, 
+        # we need to convert it to a string before dumping. 
+        elif hasattr(v, 'read') and callable(v.read):
+            return str(v.read())
     return v

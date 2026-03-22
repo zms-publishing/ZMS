@@ -107,23 +107,63 @@ class ZMSMetacmdProvider(
       return os.path.join(pkg_home, 'conf', 'metacmd_manager', id, 'readme.md')
 
 
+    def _get_metacmd_readme_container(self):
+      """Return or lazily create the OFS.Folder 'metacmd_readme' inside metacmd_manager."""
+      from OFS.Folder import Folder
+      if not hasattr(self, 'metacmd_readme'):
+        self._setObject('metacmd_readme', Folder('metacmd_readme'))
+      return self.metacmd_readme
+
+
+    def _get_metacmd_readme_object(self, id):
+      """Return OFS.File for the metacmd readme, syncing from filesystem on first access.
+
+      Uses aq_base to prevent Zope acquisition from returning unrelated objects
+      (e.g. RequestContainer) when the file does not yet exist in the container.
+      """
+      file_id = id + '_readme'
+      container = self._get_metacmd_readme_container()
+      ob = getattr(container.aq_base, file_id, None)
+      if ob is None:
+        # Lazy one-time sync from core filesystem (bundled commands, dev mode).
+        readme_fs_path = self.getMetaCmdReadmePath(id)
+        if os.path.exists(readme_fs_path):
+          with open(readme_fs_path, 'r', encoding='utf-8') as fh:
+            self._set_metacmd_readme_object(id, fh.read())
+          ob = getattr(container.aq_base, file_id, None)
+      return ob
+
+
+    def _set_metacmd_readme_object(self, id, content):
+      """Create or replace the OFS.File readme for metacmd id inside metacmd_readme/."""
+      from OFS.Image import File
+      container = self._get_metacmd_readme_container()
+      file_id = id + '_readme'
+      if hasattr(container.aq_base, file_id):
+        container._delObject(file_id)
+      if isinstance(content, str):
+        content = content.encode('utf-8')
+      container._setObject(file_id, File(file_id, file_id, content, 'text/markdown'))
+
+
     def hasMetaCmdReadme(self, id):
-      """Check whether a filesystem readme.md exists for meta-command id."""
+      """Check whether a ZODB readme object exists for metacmd id."""
       if not id:
         return False
-      return os.path.exists(self.getMetaCmdReadmePath(id))
+      return self._get_metacmd_readme_object(id) is not None
 
 
-    def get_filesystem_readme_path(self, REQUEST=None):
-      """Resolve provider and metacmd readme paths for ZMSItem.readme()."""
+    def get_readme_path(self, REQUEST=None):
+      """Resolve readme for ZMSItem.readme(): ZODB only for metacmd ids."""
       if REQUEST is None:
         REQUEST = self.REQUEST
       metacmd_id = REQUEST.get('id', '').strip()
       if metacmd_id:
-        metacmd_readme = self.getMetaCmdReadmePath(metacmd_id)
-        if os.path.exists(metacmd_readme):
-          return metacmd_readme
-      return super().get_filesystem_readme_path(REQUEST)
+        readme_ob = self._get_metacmd_readme_object(metacmd_id)
+        if readme_ob:
+          return ('zodb', readme_ob)
+        return None  # not yet imported; no filesystem fallback at request time
+      return super().get_readme_path(REQUEST)
 
 
     def provideRepository(self, ids=None):
@@ -160,6 +200,15 @@ class ZMSMetacmdProvider(
               attr['ob'] = ob
               attr['type'] = ob.meta_type
               d['Impl'] = [attr]
+            # Include readme content so it travels with repository snapshots.
+            readme_ob = self._get_metacmd_readme_object(id)
+            if readme_ob:
+              d['readme'] = readme_ob.data.decode('utf-8')
+            else:
+              readme_path = self.getMetaCmdReadmePath(id)
+              if os.path.exists(readme_path):
+                with open(readme_path, 'r', encoding='utf-8') as fh:
+                  d['readme'] = fh.read()
           r[id] = d
       return r
 
@@ -190,9 +239,12 @@ class ZMSMetacmdProvider(
       newRoles = r.get('roles',[])
       newNodes = r.get('nodes', '{$}')
       self.delMetacmd(id)
-      return self.setMetacmd(None, newId, newAcquired, newPackage, newRevision, newName, newTitle, newMethod, \
+      newId = self.setMetacmd(None, newId, newAcquired, newPackage, newRevision, newName, newTitle, newMethod, \
         newData, newExecution, newDescription, newIconClazz, newMetaTypes, newRoles, \
         newNodes)
+      if 'readme' in r:
+        self._set_metacmd_readme_object(newId, r['readme'])
+      return newId
 
 
     def translateRepositoryModel(self, r):
@@ -233,9 +285,12 @@ class ZMSMetacmdProvider(
         newData = item['data']
         
         # Return with new id.
-        return self.setMetacmd(None, newId, newAcquired, newPackage, newRevision, newName, newTitle, newMethod, \
+        newId = self.setMetacmd(None, newId, newAcquired, newPackage, newRevision, newName, newTitle, newMethod, \
           newData, newExecution, newDescription, newIconClazz, newMetaTypes, newRoles, \
           newNodes)
+        if 'readme' in item:
+          self._set_metacmd_readme_object(newId, item['readme'])
+        return newId
 
 
     def importXml(self, xml):

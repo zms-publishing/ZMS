@@ -190,6 +190,18 @@ def readRepository(self, basepath, deep=True):
                   v.sort()
                   v = [x[1] for x in v]
                 r[id][k] = v
+              readme_path = os.path.join(path, 'readme.md')
+              if os.path.isfile(readme_path):
+                standard.writeLog(self,"[readRepository]: read artefact %s"%readme_path)
+                f = open(readme_path, "rb")
+                data = f.read()
+                f.close()
+                try:
+                    if isinstance(data, bytes):
+                        data = data.decode('utf-8')
+                except:
+                    pass
+                r[id]['readme'] = data
               initialized = True
             elif not initialized and name.startswith('__') and name.endswith('__.yaml'):
               # Read YAML-representation of repository-object
@@ -221,6 +233,18 @@ def readRepository(self, basepath, deep=True):
                       break
                   v.append(vv)
                 r[id][k] = v
+              readme_path = os.path.join(path, 'readme.md')
+              if os.path.isfile(readme_path):
+                standard.writeLog(self,"[readRepository]: read artefact %s"%readme_path)
+                f = open(readme_path, "rb")
+                data = f.read()
+                f.close()
+                try:
+                    if isinstance(data, bytes):
+                        data = data.decode('utf-8')
+                except:
+                    pass
+                r[id]['readme'] = data
               initialized = True
         traverse(basepath, basepath)
     return r
@@ -307,6 +331,7 @@ def init_artefacts(o, init_files):
   id = o.get('id','?')
   acquired = int(o.get('acquired',0))
   filename = o.get('__filename__', [id, ['__init__.py','__acquired__.py'][acquired]])
+  folder = filename[:-1]
   e = sorted([x for x in o if not x.startswith('__') and x==x.capitalize() and isinstance(o[x], list)])
   for k in e:
     v = o.get(k)
@@ -335,6 +360,19 @@ def init_artefacts(o, init_files):
             l[d['filename']] = d
           if 'ob' in i:
             del i['ob']
+  # Persist readme as conventional sibling artefact instead of embedding it in __init__.*.
+  readme = o.get('readme')
+  if readme:
+    readme_filename = os.path.sep.join(folder + ['readme.md'])
+    l[readme_filename] = {
+      'id': id,
+      'filename': readme_filename,
+      'data': readme,
+      'version': o.get('revision', '0.0.0'),
+      'meta_type': 'File',
+      '__icon__': o.get('__icon__'),
+      '__description__': o.get('__description__'),
+    }
   for format in init_files:
     data = init_files[format]
     d = {}
@@ -377,7 +415,7 @@ def get_init_py(self, o):
   py.append('\t"""')
   py.append('')
   e = sorted([x for x in o if not x.startswith('__') and x==x.capitalize() and isinstance(o[x], list)])
-  keys = sorted([x for x in o if not x.startswith('__') and x not in e])
+  keys = sorted([x for x in o if not x.startswith('__') and x not in e and x != 'readme'])
   for k in keys:
     v = o.get(k)
     py.append('\t# %s'%k.capitalize())
@@ -424,7 +462,7 @@ def get_init_yaml(self, o):
 
   id = o.get('id','?')
   attrs = sorted([x for x in o if not x.startswith('__') and x==x.capitalize() and isinstance(o[x], list)])
-  keys = sorted([x for x in o if not x.startswith('__') and x!='id' and x not in attrs and not isinstance(o.get(x), Acquisition.ExplicitAcquisitionWrapper)])
+  keys = sorted([x for x in o if not x.startswith('__') and x not in ['id', 'readme'] and x not in attrs and not isinstance(o.get(x), Acquisition.ExplicitAcquisitionWrapper)])
   d = {}
   for k in keys:
     v = o.get(k)

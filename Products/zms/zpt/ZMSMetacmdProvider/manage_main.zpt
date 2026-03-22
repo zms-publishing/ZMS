@@ -332,7 +332,8 @@
 					<td class="text-center">
 						<span tal:condition="python:here.hasMetaCmdReadme(metaCmd['id'])"
 							class="zmi-readme text-info"
-							tal:attributes="title python:metaCmd['id']; data-readme python:'%s/readme?id=%s'%(here.absolute_url(),metaCmd['id'])">
+							tal:attributes="title python:metaCmd['id']; 
+								data-readme python:'%s/readme?id=%s'%(here.absolute_url(),metaCmd['id'])">
 							<i class="far fa-question-circle"></i>
 						</span>
 					</td>

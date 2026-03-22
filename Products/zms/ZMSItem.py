@@ -65,9 +65,10 @@ class ZMSItem(
     #  ZMSItem.readme:
     #  Unified endpoint for readme content rendered as HTML.
     #  1. ZODB attribute 'readme' (content objects with attr())
-    #  2. Filesystem zpt/<ClassName>/readme.md (admin GUIs)
+    #  2. ZODB OFS.File in metacmd_readme/ (imported metacommands — via ZMSMetacmdProvider)
+    #  3. Filesystem zpt/<ClassName>/readme.md or conf/metacmd_manager/metacms_readme/<id>_readme (dev/bundled)
     # --------------------------------------------------------------------------
-    def get_filesystem_readme_path(self, REQUEST=None):
+    def get_readme_path(self, REQUEST=None):
       """Return filesystem path to a readme.md for the current admin context."""
       pkg_home = os.path.dirname(standard.__file__)
       class_name = self.__class__.__name__
@@ -88,9 +89,15 @@ class ZMSItem(
           if not isinstance(raw, (bytes,str)):
             raw = raw.getData().decode('utf-8')
           return '<article class="zmi-readme">%s</article>'%self.renderText('markdown', 'text', raw, REQUEST)
-      # 2. Fall back to filesystem readme.md (admin GUIs)
-      readme_path = self.get_filesystem_readme_path(REQUEST)
-      if os.path.exists(readme_path):
+      # 2. ZODB OFS.File readme (imported metacommands — sentinel tuple from ZMSMetacmdProvider)
+      readme_path = self.get_readme_path(REQUEST)
+      if isinstance(readme_path, tuple) and readme_path[0] == 'zodb':
+        raw = readme_path[1].data
+        if isinstance(raw, bytes):
+          raw = raw.decode('utf-8')
+        return '<article class="zmi-readme">%s</article>'%markdown.markdown(raw, extensions=['tables', 'fenced_code'])
+      # 3. Fall back to filesystem readme.md (bundled core commands, dev mode)
+      if isinstance(readme_path, str) and os.path.exists(readme_path):
         with open(readme_path, 'r', encoding='utf-8') as f:
           raw = f.read()
         return '<article class="zmi-readme">%s</article>'%markdown.markdown(raw, extensions=['tables', 'fenced_code'])

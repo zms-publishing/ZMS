@@ -5,7 +5,10 @@
 <header tal:replace="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</header>
 <div id="zmi-tab">
 <tal:block tal:define="
-		execution_options python:[(0,'None'),(1,'Omit UI'),(2,'Script')];
+		execution_options python:[
+			(0,'Normal: Execute server-side, then redirect back to the UI'),
+			(1,'Omit UI: Execute without rendering any management UI (headless)'),
+			(2,'Script: Client-side JavaScript execution')];
 		action python:'manage_changeMetacmds';
 		metaCmdIds python:standard.sort_list(here.getMetaCmdIds());
 		metaCmds python:[here.getMetaCmd(x) for x in metaCmdIds];

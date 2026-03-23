@@ -69,7 +69,7 @@ def manage_collect_zope_artifacts(self, request=None):
 	rtn.append('<form class="form-horizontal pt-0" method="post" enctype="multipart/form-data">')
 	rtn.append('<input type="hidden" name="lang" value="%s"/>'%request['lang'])
 	rtn.append('<input type="hidden" name="came_from" value="%s"/>'%came_from)
-	rtn.append('<p class="zmi_help alert alert-info rounded-0"><b>Transfer Zope Artifacts to a ZMS Content-Object Library:</b> Please make sure, that the ZMS Content-Object Library you want to place the Zope objects is existing in the select list. If not, please change to the <a target="_blank" href="../content/metaobj_manager/manage_main">ZMS Content Object Menu</a> first, add a new one and refresh this page. After selecting the ZMS Lib as a target then select one more items from the Zope artifact list below. To start the transfer, please click the button <i>Collect</i>.</p>')
+	rtn.append('<p class="zmi_help alert alert-info rounded-0 m-0"><b>Transfer Zope Artifacts to a ZMS Content-Object Library:</b> Please make sure, that the ZMS Content-Object Library you want to place the Zope objects is existing in the select list. If not, please change to the <a target="_blank" href="../content/metaobj_manager/manage_main">ZMS Content Object Menu</a> first, add a new one and refresh this page. After selecting the ZMS Lib as a target then select one more items from the Zope artifact list below. To start the transfer, please click the button <i>Collect</i>.</p>')
 
 	# --- Cancel.
 	# ---------------------------------
@@ -92,6 +92,7 @@ def manage_collect_zope_artifacts(self, request=None):
 	rtn.append('<button type="submit" name="btn" class="btn btn-primary m-2" value="Collect"><i class="fas fa-briefcase mr-2"></i>  %s</button>'%('Collect'))
 	rtn.append('<button type="submit" name="btn" class="btn btn-secondary m-2" value="BTN_REFRESH"><i class="fas fa-sync mr-2"></i> %s</button>'%(self.getZMILangStr('BTN_REFRESH')))
 	rtn.append('<button type="submit" name="btn" class="btn btn-secondary m-2" value="BTN_CANCEL">%s</button>'%(self.getZMILangStr('BTN_CANCEL')))
+	rtn.append('<span class="zmi-readme text-info btn float-right mt-2" data-readme="%s/content/metacmd_manager/readme?id=manage_collect_zope_artifacts"><i class="far fa-question-circle"></i></span>'%(self.getHome().absolute_url()))
 	rtn.append('</div><!-- .col-9 -->')
 	rtn.append('</div><!-- .row -->')
 

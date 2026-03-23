@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- IMPORTANT: This script needs an External Method cache_purge(url) purging the cached data from file system -->
+	<head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
+	<body class="zmi">
+	<header tal:replace="structure python:here.zmi_body_header(here,request)">zmi_body_header</header>
+
+	<div id="zmi-tab">
+
+		<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
+
+		<div class="alert alert-success"
+				tal:define="urls python:here.string_list(request.get('url_list',''))"
+				tal:condition="python:request.get('btn','')=='purge' and len(urls)>0">
+			<ol>
+				<li tal:repeat="u urls" tal:content="python:here.cache_purge(u.replace('&','\&').split('#')[0])">u</li>
+			</ol>
+		</div>
+
+		<form action="manage_cachepurge_list" method="post" class="form-horizontal form-initialized card"
+			tal:define="ip_or_domain python:here.getConfProperty('ASP.ip_or_domain',request.get('BASE0','').split('://')[1] );
+				protocol python:here.getConfProperty('ASP.protocol',request.get('BASE0','').split('://')[0])">
+		    <input type="hidden" name="lang" tal:attributes="value request/lang" />
+			<div class="formform-group row card-body align-items-start" tal:define="reset_preview python:request.set('preview',None)">
+				<label class="col-sm-2 control-label pt-1" for="urlList"><span>URL List</span></label>
+				<div class="col-sm-10">
+					<textarea class="form-control url_list zmi-code" id="url_list" name="url_list" rows="15" wrap="virtual"
+						tal:attributes="placeholder python:'%s://%s'%(protocol,ip_or_domain)"
+						><tal:block tal:condition="python:request.get('btn','')=='all_urls' or request.get('btn','')=='this_url'"
+							tal:define="url python:here.getHref2IndexHtml({'lang':request.get('lang',here.getPrimaryLanguage()),'preview':''});
+								url python:( ip_or_domain in url ) and url or ( protocol + '://' + ip_or_domain + url.split('/content')[1] )"
+								tal:replace="python: len(url.split('index_'))>1 and '%s\n%s\n'%(url,url.split('index_')[0]) or '%s\n'%(url)">node url</tal:block
+						><tal:block
+							tal:condition="python:request.get('btn','')=='all_urls'"
+							tal:repeat="ob python:here.filteredTreeNodes(request,here.PAGES,max_len=None)"
+							><tal:block tal:define="url python:ob.getHref2IndexHtml({'lang':request.get('lang',here.getPrimaryLanguage()),'preview':''});
+								url python:( ip_or_domain in url ) and url or ( protocol + '://' + ip_or_domain + url.split('/content')[1] )"
+								tal:replace="python: len(url.split('index_'))>1 and '%s\n%s\n'%(url,url.split('index_')[0]) or '%s\n'%(url)">node url</tal:block
+						></tal:block
+					></textarea>
+				</div>
+			</div>
+			<div class="form-group" tal:define="reset_preview python:request.set('preview','preview')">
+				<div class="controls save">
+					<button type="submit" name="btn" class="btn btn-secondary" value="this_url" title="Write this URL into List">Get this URL</button>
+					<button type="submit" name="btn" class="btn btn-warning" value="all_urls" title="Recursively write all dependent URLs into List">Get URLs recursivly</button>
+					<button type="submit" name="btn" class="btn btn-primary" value="purge" title="Start Purging the listed URLs">Purge Listed URLs</button>
+					<button type="submit" name="btn" class="btn btn-secondary" value="back" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
+				</div>
+			</div>
+		</form>
+	</div>
+	<footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
+</body>
+</html>

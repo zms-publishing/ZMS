@@ -13,7 +13,7 @@ class manage_removeClient:
 	description = "Do you really want to remove ZMS-Client?"
 
 	# Execution
-	execution = False
+	execution = 0
 
 	# Icon_clazz
 	icon_clazz = "fas fa-times text-danger"

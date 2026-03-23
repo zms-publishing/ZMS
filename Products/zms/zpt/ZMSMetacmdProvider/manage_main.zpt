@@ -343,7 +343,7 @@
 					<td>
 						<tal:block 
 							tal:on-error="structure python:'<span title=\042ERROR\042 class=\042badge badge-danger\042>%s</span>'%(metaCmd.get('execution'))"
-							tal:content="python:' '.join([x[1] for x in execution_options if int(metaCmd['execution'])==x[0]])">
+							tal:content="python:' '.join([str(x[1].split(':')[0]) for x in execution_options if int(metaCmd['execution'])==x[0]])">
 							execution
 						</tal:block>
 					</td>

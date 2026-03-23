@@ -13,7 +13,7 @@ class manage_change_primary_lang:
 	description = ""
 
 	# Execution
-	execution = False
+	execution = 0
 
 	# Icon_clazz
 	icon_clazz = "fas fa-flag text-danger"

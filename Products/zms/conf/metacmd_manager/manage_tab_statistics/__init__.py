@@ -13,7 +13,7 @@ class manage_tab_statistics:
 	description = ""
 
 	# Execution
-	execution = False
+	execution = 0
 
 	# Icon_clazz
 	icon_clazz = "icon-cogs fas fa-chart-bar"

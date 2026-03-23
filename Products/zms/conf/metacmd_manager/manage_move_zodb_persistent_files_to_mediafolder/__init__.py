@@ -13,7 +13,7 @@ class manage_move_zodb_persistent_files_to_mediafolder:
 	description = ""
 
 	# Execution
-	execution = False
+	execution = 0
 
 	# Icon_clazz
 	icon_clazz = "fas fa-cogs"

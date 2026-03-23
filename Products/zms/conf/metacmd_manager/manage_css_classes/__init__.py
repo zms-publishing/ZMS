@@ -13,7 +13,7 @@ class manage_css_classes:
 	description = ""
 
 	# Execution
-	execution = False
+	execution = 0
 
 	# Icon_clazz
 	icon_clazz = "fab fa-css3 text-primary"

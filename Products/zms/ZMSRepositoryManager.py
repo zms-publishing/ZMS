@@ -200,7 +200,7 @@ class ZMSRepositoryManager(
                   standard.writeLog(self,"[commitChanges]: remove file %s"%filepath)
                   _fileutil.remove(filepath)
             # Clear folders.
-            dir = list(set([os.path.join(basepath,x[:x.rfind(os.path.sep)]) for x in files if x.split('.')[-2].endswith('__')]))
+            dir = list(set([os.path.join(basepath,x[:x.rfind(os.path.sep)]) for x in files if x.split('.') and len(x.split('.')) > 1 and x.split('.')[-2].endswith('__')]))
             dir = [x for x in dir if x.split(os.path.sep)[-1] in [y.split(':')[-1] for y in ids]]
             [[os.remove(z) for z in [os.path.join(x,y) for y in os.listdir(x)] if os.path.isfile(z)] for x in dir if os.path.isdir(x)]
             # Write files.

@@ -220,7 +220,8 @@
 								<div class="form-group mb-4">
 									<label class="d-none" for="meta_type">ZMS base-components</label>
 									<div class="btn-group">
-										<select class="form-control form-control" id="meta_type" name="meta_type" title="Add New ZMS base-components"
+										<select class="form-control" id="meta_type" name="meta_type" 
+											title="Add New ZMS base-components"
 											onchange="if($(this).val().indexOf('manage_add')==0){self.location.href=$(this).val();}else if ($(this).val()!=''){document.getElementById('addMetaTypeBtn').click();}">
 											<option value="">Select type to add...</option>
 											<tal:block tal:repeat="meta_type meta_types"
@@ -229,7 +230,7 @@
 													tal:content="python:here.getZMILangStr(meta_type['name'])">name</option>
 											</tal:block>
 										</select>
-										<button name="btn" type="submit" class="btn btn-secondary btn" value="Add">Add</button>
+										<button name="btn" type="submit" class="btn btn-primary" value="Add">Add</button>
 									</div>
 								</div><!-- .form-group -->
 								<div class="form-group text-truncate" tal:repeat="si python:here.objectValues(['MediaDb']+[x['name'] for x in meta_types])">
@@ -253,20 +254,17 @@
 								<input type="hidden" name="key" value="Import" />
 								<div class="form-group row">
 									<label class="col-sm-4 control-label" for="file">Package-File</label>
-									<div class="col-sm-6">
+									<div class="col-sm-8 input-group">
 										<div class="custom-file new">
-											<input class="custom-file-input" type="file" name="file" id="file" size="25" value=""
+											<input class="custom-file-input" type="file" name="file" id="file" value=""
 												onchange="$(this).next().html($(this).val().replace(/^.*(\\|\/|\:)/, ''));" />
-											<label class="custom-file-label" for="file"
-												tal:content="python:here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_FILE')">Choose file
+											<label class="custom-file-label" for="file">
+												<span tal:content="python:here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_FILE')">Choose file</span>
 											</label>
 										</div>
-									</div>
-								</div><!-- .form-group -->
-								<div class="form-group row">
-									<div class="col-sm-4">&nbsp;</div>
-									<div class="col-sm-6">
-										<button name="btn" type="submit" class="btn btn-primary" value="Import">Import</button>
+										<div class="input-group-append">
+											<button name="btn" type="submit" class="btn btn-primary" value="Import">Import</button>
+										</div>
 									</div>
 								</div><!-- .form-group -->
 							</form>
@@ -284,19 +282,19 @@
 											<strong><a href="https://github.com/python-pillow/Pillow" target="_blank">Pillow</a></strong>
 										</label>
 									</div>
-									<div class="col-sm-6" tal:condition="python: pilutil.enabled()">
+									<div class="col-sm-4" tal:condition="python: pilutil.enabled()">
 										<div class="form-group form-inline">
 											<input type="text" id="pil_thumbnail_max" name="pil_thumbnail_max:int"
 												tal:attributes="value python:here.getConfProperty('InstalledProducts.pil.thumbnail.max')"
-												class="form-control form-control-sm mr-3" size="4" style="text-align:right;width:4rem" />
-											<label class="control-label text-left" for="pil_thumbnail_max">
+												class="form-control form-control-sm" size="4" style="text-align:right;width:4rem" />
+											<label class="control-label text-left text-small" for="pil_thumbnail_max">
 												Max. Pixels for Automatic Resizing of High-Res to Base Images
 											</label>
 										</div>
 										<div class="form-group form-inline">
 											<input type="text" id="pil_hires_thumbnail_max" name="pil_hires_thumbnail_max:int"
 												tal:attributes="value python:here.getConfProperty('InstalledProducts.pil.hires.thumbnail.max')"
-												class="form-control form-control-sm mr-3" size="4" style="text-align:right;width:4rem" />
+												class="form-control form-control-sm" size="4" style="text-align:right;width:4rem" />
 											<label class="control-label text-left" for="pil_hires_thumbnail_max">
 												Max. Pixels for Automatic Resizing of Super-Res to High-Res Images
 											</label>

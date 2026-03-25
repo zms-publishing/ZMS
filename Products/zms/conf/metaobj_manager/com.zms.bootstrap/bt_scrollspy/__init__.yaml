@@ -1,0 +1,41 @@
+bt_scrollspy:
+  access:
+    insert_custom: '{$}'
+  enabled: 1
+  name: Scrollspy
+  package: com.zms.bootstrap
+  revision: 0.0.0
+  type: ZMSRecordSet
+  Attrs:
+    - id: records
+      mandatory: 1
+      multilang: 0
+      name: Datensätze
+      repetitive: 0
+      type: list
+    - id: bt_id
+      mandatory: 0
+      multilang: 0
+      name: Id
+      repetitive: 0
+      type: identifier
+    - custom: 1
+      id: title
+      mandatory: 0
+      multilang: 0
+      name: Title
+      repetitive: 0
+      type: string
+    - custom: 1
+      id: body
+      mandatory: 0
+      multilang: 0
+      name: Body
+      repetitive: 0
+      type: text
+    - id: standard_html
+      name: 'Template: Scrollspy'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: zpt

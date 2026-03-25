@@ -1,0 +1,66 @@
+bt_slide:
+  access:
+    insert_custom: '{$}'
+  enabled: 0
+  name: Carousel-Slide
+  package: com.zms.bootstrap
+  revision: 4.1.0
+  type: ZMSObject
+  Attrs:
+    - custom: far fa-image
+      id: icon_clazz
+      mandatory: 0
+      multilang: 1
+      name: Icon (Class)
+      repetitive: 0
+      type: constant
+    - id: image
+      mandatory: 1
+      multilang: 0
+      name: Image
+      repetitive: 0
+      type: image
+    - id: image_filter
+      keys: |-
+        ##
+        return [
+        ('#00000000','No Filter'),
+        ('#00000033','12% Darker'),
+        ('#00000066','25% Darker'),
+        ('#00000099','40% Darker')
+        ]
+      mandatory: 0
+      multilang: 0
+      name: Image Filter
+      repetitive: 0
+      type: select
+    - id: title
+      mandatory: 0
+      multilang: 1
+      name: title
+      repetitive: 0
+      type: string
+    - id: text
+      mandatory: 0
+      multilang: 1
+      name: Text
+      repetitive: 0
+      type: text
+    - id: url
+      mandatory: 0
+      multilang: 1
+      name: Link
+      repetitive: 0
+      type: url
+    - id: url_title
+      mandatory: 0
+      multilang: 1
+      name: Link-Titel
+      repetitive: 0
+      type: string
+    - id: standard_html
+      name: 'Template: Slide'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: zpt

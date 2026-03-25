@@ -1,0 +1,41 @@
+bt_card_layout:
+  access:
+    insert_custom: '{$}'
+  enabled: 1
+  name: Card-Layout
+  package: com.zms.bootstrap
+  revision: 4.1.0
+  type: ZMSObject
+  Attrs:
+    - custom: far fa-address-card
+      id: icon_clazz
+      mandatory: 0
+      multilang: 1
+      name: Icon (Class)
+      repetitive: 0
+      type: constant
+    - id: layout
+      keys: |-
+        ##
+        return [
+        ('card-group','Group'),
+        ('card-deck','Deck'),
+        ('card-columms','Columns'),
+        ]
+      mandatory: 1
+      multilang: 0
+      name: Layout
+      repetitive: 0
+      type: select
+    - id: cards
+      mandatory: 0
+      multilang: 0
+      name: Cards
+      repetitive: 1
+      type: bt_card
+    - id: standard_html
+      name: 'Template: Card-Columns'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: zpt

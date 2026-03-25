@@ -1,0 +1,34 @@
+bt_collapse_simple:
+  access:
+    insert_custom: '{$}'
+  enabled: 0
+  name: Collapse Item (Simple)
+  package: com.zms.bootstrap
+  revision: 4.1.0
+  type: ZMSObject
+  Attrs:
+    - custom: fas fa-grip-lines
+      id: icon_clazz
+      mandatory: 0
+      multilang: 1
+      name: Icon (Class)
+      repetitive: 0
+      type: constant
+    - id: headline
+      mandatory: 1
+      multilang: 1
+      name: Headline
+      repetitive: 0
+      type: string
+    - id: body
+      mandatory: 1
+      multilang: 1
+      name: Body
+      repetitive: 0
+      type: richtext
+    - id: standard_html
+      name: 'Template: Simple-Item'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: zpt

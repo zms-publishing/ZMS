@@ -1,0 +1,68 @@
+bt_carousel:
+  access:
+    insert_custom: '{$}'
+  enabled: 1
+  name: Carousel
+  package: com.zms.bootstrap
+  revision: 5.0.0
+  type: ZMSObject
+  Attrs:
+    - custom: far fa-images
+      id: icon_clazz
+      mandatory: 0
+      multilang: 1
+      name: Icon (Class)
+      repetitive: 0
+      type: constant
+    - id: interface0
+      name: interface0
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: interface
+    - default: '5000'
+      id: interval
+      mandatory: 1
+      multilang: 0
+      name: Interval
+      repetitive: 0
+      type: int
+    - default: '1'
+      id: indicators
+      mandatory: 0
+      multilang: 0
+      name: Show indicators
+      repetitive: 0
+      type: boolean
+    - default: '1'
+      id: controls
+      mandatory: 0
+      multilang: 0
+      name: Show controls (prev/next)
+      repetitive: 0
+      type: boolean
+    - default: '1'
+      id: captions
+      mandatory: 0
+      multilang: 0
+      name: Show captions
+      repetitive: 0
+      type: boolean
+    - id: slides
+      mandatory: 0
+      multilang: 0
+      name: Slides
+      repetitive: 1
+      type: bt_slide
+    - id: standard_html
+      name: 'Template: Carousel'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: zpt
+    - id: standard_json_docx
+      name: JSON-DOCX Template
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: py

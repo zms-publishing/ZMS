@@ -1,0 +1,21 @@
+bt_link_list:
+  access:
+    insert_custom: '{$}'
+  enabled: 0
+  name: Links
+  package: com.zms.bootstrap
+  revision: 5.1.4
+  type: ZMSResource
+  Attrs:
+    - id: links
+      mandatory: 1
+      multilang: 1
+      name: Links
+      repetitive: 0
+      type: list
+    - id: interface0
+      name: interface0
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: interface

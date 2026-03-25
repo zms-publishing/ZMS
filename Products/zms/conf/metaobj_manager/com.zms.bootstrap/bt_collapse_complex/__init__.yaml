@@ -1,0 +1,38 @@
+bt_collapse_complex:
+  access:
+    insert_custom: '{$}'
+  enabled: 0
+  name: Collapse Item (Complex)
+  package: com.zms.bootstrap
+  revision: 4.1.0
+  type: ZMSObject
+  Attrs:
+    - custom: fas fa-indent
+      id: icon_clazz
+      mandatory: 0
+      multilang: 1
+      name: Icon (Class)
+      repetitive: 0
+      type: constant
+    - id: headline
+      mandatory: 1
+      multilang: 1
+      name: Headline
+      repetitive: 0
+      type: string
+    - id: body
+      keys:
+        - type(ZMSObject)
+        - type(ZMSRecordSet)
+        - type(ZMSModule)
+      mandatory: 0
+      multilang: 0
+      name: Body
+      repetitive: 1
+      type: '*'
+    - id: standard_html
+      name: 'Template: Complex-Item'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: zpt

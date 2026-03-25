@@ -66,6 +66,10 @@ def get_providers(self):
 def get_class(py):
   """
   Get class from py-string.
+
+  This function extracts the class definition from a given Python code string 
+  and executes it to return the defined class object. It uses regular expressions 
+  to identify the class name and then executes the code to obtain the class object.
   """
   id = re.findall(r'class (.*?):', py)[0]
   if sys.version_info >= (3, 13):
@@ -77,12 +81,53 @@ def get_class(py):
     return eval(id)
 
 
+def parseInit(self, filepath):
+    """
+    Read file and return data as string.
+    @param self: The object context.
+    @type self: C{object}
+    @param filepath: The path to the file to be read.
+    @type filepath: C{str}
+    @return: The content of the file as a string.
+    @rtype: C{str}
+    @note: Logging is performed via L{standard.writeLog()} for debugging purposes.
+    @raise IOError: If the file cannot be read.
+    """
+    standard.writeLog(self,"[parseInit]: read %s"%filepath)
+    with open(filepath, "rb") as f:
+        data = standard.pystr(f.read())
+    return data
+
 
 security.declarePublic('remoteFiles')
 def remoteFiles(self, basepath, deep=True):
     """
-    Read repository from base-path.
+    Read configuration data from filesystem base-path.
+
+    This function recursively traverses a directory structure to locate and parse
+    repository object definitions stored as YAML or Python files. Files matching
+    the pattern C{__*.(__yaml|.py)} are treated as repository object definitions.
+    Associated artefacts (non-hidden files in the same directory) are collected
+    as related resources.
+    @param basepath: The root filesystem path to scan for repository objects.
+      Must be an existing directory.
+    @type basepath: C{str}
+    @param deep: If C{True}, recursively traverse subdirectories. If C{False},
+      only scan the root basepath directory. Defaults to C{True}.
+    @type deep: C{bool}
+    @return: Dictionary mapping relative file paths to metadata dictionaries.
+      Each metadata dictionary contains:
+        - C{id}: Object identifier from repository definition or filename
+        - C{filename}: Relative path from basepath
+        - C{data}: File content as string (for .yaml/.py) or bytes (for artefacts)
+        - C{version}: Revision from repository definition or file modification time
+    @rtype: C{dict}
+    @note: Logging is performed via L{standard.writeLog()} for debugging purposes.
+    @note: Hidden files (starting with '.') such as C{.DS_Store} are excluded
+      from artefact processing.
+    @raise IOError: If file read operations fail during traversal.
     """
+
     standard.writeLog(self,"[remoteFiles]: basepath=%s"%basepath)
     r = {}
     if os.path.exists(basepath):
@@ -95,9 +140,8 @@ def remoteFiles(self, basepath, deep=True):
             elif name.startswith('__') and name.split('.')[-2].endswith('__'):
               # Read python-representation of repository-object
               standard.writeLog(self,"[remoteFiles]: read %s"%filepath)
-              f = open(filepath,"rb")
-              filedata = standard.pystr(f.read())
-              f.close()
+              with open(filepath,"rb") as f:
+                  filedata = standard.pystr(f.read())
               # Python-representation of repository-object
               d = {}
               if name.endswith('.yaml'):
@@ -138,8 +182,28 @@ def remoteFiles(self, basepath, deep=True):
 security.declarePublic('readRepository')
 def readRepository(self, basepath, deep=True):
     """
-    Read repository from base-path.
+    Read repository from filesystem base-path.
+
+    Read repository structure from filesystem and parse repository objects.
+    This function traverses a filesystem directory structure to discover and parse
+    repository object definitions. It supports both Python-style (__init__.py) and
+    YAML-style (__init__.yaml) repository object representations.
+    @param basepath: The root filesystem path from which to read the repository.
+    Must be an existing directory.
+    @type basepath: C{str}
+    @param deep: If C{True}, recursively traverse subdirectories. If C{False},
+    only process the top-level directory (level 0). Defaults to C{True}.
+    @type deep: C{bool}
+    @return: Dictionary mapping repository object IDs to their parsed metadata.
+    Each entry contains:
+      - For Python objects: class attributes (excluding those starting with '__')
+        with nested class definitions converted to sorted lists of attribute dicts
+      - For YAML objects: parsed YAML structure with resolved 'id' field
+      - Both formats: 'data' field populated for artefacts (binary files) matching
+        object IDs, and 'readme' field if readme.md exists in the directory
+    @rtype: C{dict}
     """
+
     standard.writeLog(self,"[readRepository]: basepath=%s"%basepath)
     r = {}
     if os.path.exists(basepath):
@@ -250,20 +314,12 @@ def readRepository(self, basepath, deep=True):
     return r
 
 
-def parseInit(self, filepath):
-    standard.writeLog(self,"[parseInit]: read %s"%filepath)
-    f = open(filepath, "rb")
-    data = standard.pystr(f.read())
-    f.close()
-    return data
-
-
 security.declarePublic('localFiles')
 def localFiles(self, provider, ids=None):
   """
-  Read repository from ZMS-instance.
+  Read configuration data from ZMS-instance.
 
-  This function retrieves repository data from a ZMS instance using 
+  This function retrieves configuration data from a ZMS instance using 
   a provided repository provider. It processes the retrieved data 
   to generate a dictionary of initialization artefacts, which includes
   metadata and file content for each repository object. The function 
@@ -271,12 +327,12 @@ def localFiles(self, provider, ids=None):
 
   @param self: The object context.
   @type self: C{object}
-  @param provider: An object that provides repository data, expected to implement the I{provideRepository} method.
+  @param provider: An object that provides configuration data, expected to implement the I{provideRepository} method.
   @type provider: C{IZMSRepositoryProvider}
-  @param ids: Optional list of identifiers to specify which repository objects to retrieve. If None, all objects are retrieved.
+  @param ids: Optional list of identifiers to specify which configuration objects to retrieve. If None, all objects are retrieved.
   @type ids: C{list} or C{None}
-  @return: A dictionary mapping filenames to their corresponding data and metadata, generated from the repository
-  objects provided by the repository provider.
+  @return: A dictionary mapping filenames to their corresponding data and metadata, generated from the configuration
+  objects provided by the configuration provider.
   @rtype: C{dict}
   """
   standard.writeLog(self,"[localFiles]: provider=%s"%str(provider))

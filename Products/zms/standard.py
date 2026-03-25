@@ -1058,6 +1058,15 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
 def getLog(context):
   """
   Get zms_log.
+
+  The ZMS component zms_log is a wrapper for the standard Zope-logger which can be enabled in ZMS-configuration. 
+  If zms_log is enabled, debug-information can be logged with writeLog, writeBlock and writeError. 
+  The log-messages are stored in a log-file on the server and can be viewed in the ZMS-Management-Interface.
+
+  @param context: Context
+  @type context: C{object}
+  @return: zms_log or None if zms_log is not enabled in ZMS-configuration.
+  @rtype: C{object}
   """
   request = context.REQUEST
   if 'ZMSLOG' in request:
@@ -1088,6 +1097,9 @@ security.declarePublic('writeLog')
 def writeLog(context, info):
   """
   Log debug-information.
+
+  Important: zms_log must be enabled in ZMS-configuration.
+
   @param info: Debug-information
   @type info: C{any}
   @rtype: C{str}
@@ -1109,6 +1121,9 @@ security.declarePublic('writeBlock')
 def writeBlock(context, info):
   """
   Log information.
+
+  Important: zms_log must be enabled in ZMS-configuration.
+
   @param info: Information
   @type info: C{any}
   @rtype: C{str}
@@ -1130,6 +1145,9 @@ security.declarePublic('writeError')
 def writeError(context, info):
   """
   Log error.
+
+  Important: zms_log must be enabled in ZMS-configuration.
+
   @param info: Information
   @type info: C{any}
   @rtype: C{str}

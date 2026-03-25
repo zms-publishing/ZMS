@@ -160,7 +160,7 @@ class ZMSMetaobjManager(object):
               # and results in better readability of the YAML files.
               # But a worse readability of the traditional py format;
               # so we keep the list format for py-type model files:
-              if model_data_format == 'yaml' and type(attr['keys']) is list:
+              if model_data_format == 'yaml' and type(attr.get('keys')) is list:
                 keys = '\n'.join(attr['keys'])
                 if keys!='' and standard.dt_executable(keys):
                   attr['keys'] = keys

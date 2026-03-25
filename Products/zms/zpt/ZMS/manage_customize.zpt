@@ -67,8 +67,14 @@
 							<select class="form-control zmi-code" id="conf_opt" name="conf_opt" tal:attributes="onchange python:'self.location.href=\'%s?lang=%s&amp;conf_key=\'+$(this).val()+\'#Custom\''%(request['URL'],request['lang'])">
 								<option></option>
 								<tal:block tal:repeat="res_key res_keys">
-									<tal:block tal:define="global res_item python:[x for x in res if x['key']==res_key][0]">
-										<option tal:attributes="value python:res_item['key']; title python:res_item['desc']; selected python:['','selected'][int(request.get('conf_key')==res_item['key'])]" tal:content="python:res_item['title']">the title</option>
+									<tal:block tal:define="res_item python:[x for x in res if x['key']==res_key][0]">
+										<option tal:attributes="
+												value python:res_item['key']; 
+												title python:res_item['desc']; 
+												selected python:['','selected'][int(request.get('conf_key')==res_item['key'])]" 
+											tal:content="python:res_item['title']">
+											the title
+										</option>
 									</tal:block>
 								</tal:block>
 							</select>
@@ -88,7 +94,7 @@
 								<input class="form-control zmi-code" type="text" id="conf_value" name="conf_value" tal:attributes="type python:['text','password'][int(request.get('conf_key','').endswith('.password'))]; value python:here.getConfProperty(request.get('conf_key'),'')">
 							</tal:block>
 							<tal:block tal:condition="python:request.get('conf_key') in res_keys">
-								<tal:block tal:define="global res_item python:[x for x in res if x['key']==request.get('conf_key')][0]">
+								<tal:block tal:define="res_item python:[x for x in res if x['key']==request.get('conf_key')][0]">
 									<tal:block tal:condition="python:not (res_item['datatype']=='boolean' or 'options' in res_item)">
 										<input class="form-control zmi-code" type="text" id="conf_value" name="conf_value" tal:attributes="type python:['text','password'][int(request.get('conf_key','').endswith('.password'))]; value python:here.getConfProperty(request.get('conf_key'),res_item.get('default',''))">
 									</tal:block>
@@ -99,7 +105,10 @@
 										<select class="form-control" id="conf_value" name="conf_value">
 											<option></option>
 											<tal:block tal:repeat="option res_item/options">
-												<option tal:attributes="value option; selected python:['','selected'][int(here.getConfProperty(request.get('conf_key'),res_item.get('default',''))==option)]" tal:content="option">option</option>
+												<option tal:attributes="
+														value option; 
+														selected python:['','selected'][int(here.getConfProperty(request.get('conf_key'),res_item.get('default',''))==option)]"
+													tal:content="option">option</option>
 											</tal:block>
 										</select>
 									</tal:block>
@@ -129,7 +138,10 @@
 									<a tal:condition="python:conf_key in conf" class="btn btn-secondary" tal:attributes="href python:'manage_customizeSystem?lang=%s&amp;conf_key=%s&btn=Delete&key=Custom#Custom'%(request['lang'],conf_key); title python:'Delete'"><i class="fas fa-times text-danger"></i></a>
 								</td>
 								<td class="systemprop-key">
-									<a class="zmi-code pt-1" tal:attributes="href python:'%s?lang=%s&amp;conf_key=%s#Custom'%(request['URL'],request['lang'],conf_key); title python:'Change'">
+									<a class="zmi-code pt-1" 
+										tal:attributes="
+											href python:'%s?lang=%s&amp;conf_key=%s#Custom'%(request['URL'],request['lang'],conf_key); 
+											title python:{i['key']:i['title'] for i in res}.get(conf_key, 'Change')">
 										<strong tal:content="conf_key">the conf_key</strong>
 										(<tal:block tal:content="python:standard.operator_getattr(standard.operator_gettype(here.getConfProperty(conf_key)),'__name__')"></tal:block>)
 									</a>
@@ -191,12 +203,16 @@
 			<div class="tab-pane fade card" id="Manager" role="tabpanel">
 				<table class="table table-borderless">
 					<tr>
-						<th class="text-muted">Components</th>
-						<th width="5%" style="border-right:1px solid #dfdfdf !important"></th>
-						<th class="text-muted">Configurations</th>
+						<th class="text-muted col-6" 
+							style="border-right:1px solid #dfdfdf !important">
+							Components
+						</th>
+						<th class="text-muted col-6">
+							Configurations
+						</th>
 					</tr>
 					<tr>
-						<td>
+						<td style="border-right:1px solid #dfdfdf !important">
 							<form class="form-horizontal" title="Compontent-Manager" name="ManagerForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
 								<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
 								<input type="hidden" name="key" value="Manager" />
@@ -231,7 +247,6 @@
 								</div>
 							</form>
 						</td>
-						<td width="5%" style="border-right:1px solid #dfdfdf !important"></td>
 						<td>
 							<form class="form-horizontal" title="Import Configuration Packages" name="ImportForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
 								<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
@@ -305,7 +320,9 @@
 						<div class="form-group row">
 							<label class="col-sm-2 control-label" for="mediadb_location">Location</label>
 							<div class="col-sm-10">
-								<input class="form-control" type="text" name="mediadb_location" tal:attributes="value python:'$INSTANCE_HOME/var/%s/mediadb'%here.getHome().id" />
+								<input class="form-control" type="text" name="mediadb_location"
+									tal:define="mediadb_location python:'$INSTANCE_HOME/var/%s/mediadb'%here.getHome().id"
+									tal:attributes="value mediadb_location; placeholder mediadb_location" />
 							</div>
 						</div><!-- .form-group -->
 						<div class="form-group row">

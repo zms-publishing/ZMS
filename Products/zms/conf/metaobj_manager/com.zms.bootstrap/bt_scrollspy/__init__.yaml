@@ -8,31 +8,31 @@ bt_scrollspy:
   type: ZMSRecordSet
   Attrs:
     - id: records
+      name: Datensätze
       mandatory: 1
       multilang: 0
-      name: Datensätze
       repetitive: 0
       type: list
     - id: bt_id
+      name: Id
       mandatory: 0
       multilang: 0
-      name: Id
       repetitive: 0
       type: identifier
-    - custom: 1
-      id: title
+    - id: title
+      name: Title
       mandatory: 0
       multilang: 0
-      name: Title
       repetitive: 0
       type: string
-    - custom: 1
-      id: body
+      custom: 1
+    - id: body
+      name: Body
       mandatory: 0
       multilang: 0
-      name: Body
       repetitive: 0
       type: text
+      custom: 1
     - id: standard_html
       name: 'Template: Scrollspy'
       mandatory: 0

@@ -1,0 +1,142 @@
+opensearch_connector:
+  enabled: 0
+  lang_dict:
+    opensearch_connector.BTN_DESTROY:
+      eng: Delete Index
+      fra: Supprimer l'index
+      ger: Index löschen
+      ita: Eliminare l'indice
+    opensearch_connector.BTN_SCHEMATIZE:
+      eng: Create Schema (JSON)
+      fra: Créer le schéma (JSON)
+      ger: Schema erzeugen (JSON)
+      ita: Creare lo schema (JSON)
+  name: Opensearch-Connector
+  package: com.zms.catalog.opensearch
+  revision: 1.12.1
+  type: ZMSLibrary
+  Attrs:
+    - id: properties
+      name: Property-Definitions (JSON)
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: constant
+      custom: |-
+        [
+          {
+            "id": "opensearch.url",
+            "type": "string",
+            "label": "URL(s)",
+            "default_value": "https://localhost:9200",
+            "is_target_of": ""
+          },
+          {
+            "id": "opensearch.url.timeout",
+            "type": "number",
+            "label": "URL-Timeout",
+            "default_value": "5",
+            "is_target_of": ""
+          },
+          {
+            "id": "opensearch.username",
+            "type": "string",
+            "label": "Username",
+            "default_value": "admin",
+            "is_target_of": ""
+          },
+          {
+            "id": "opensearch.password",
+            "type": "password",
+            "label": "Password",
+            "default_value": "admin",
+            "is_target_of": ""
+          },
+          {
+            "id": "opensearch.schema",
+            "type": "text",
+            "label": "Schema",
+            "default_value": "{}",
+            "is_target_of": "schematize"
+          },
+          {
+            "id": "opensearch.parser",
+            "type": "string",
+            "label": "Parser",
+            "default_value": "http://localhost:9998/tika",
+            "is_target_of": ""
+          },
+          {
+            "id": "opensearch.score_script",
+            "type": "text",
+            "label": "Score-Script (Painless)",
+            "default_value": "return _score;",
+            "is_target_of": ""
+          }
+        ]
+    - id: readme
+      name: README.md
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: resource
+    - id: manage_opensearch_schematize
+      name: 'Schematize: Generate Schema'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: opensearch_get_client
+      name: Get Opensearch Client
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: manage_opensearch_init
+      name: 'Init: Put Schema'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: manage_opensearch_objects_add
+      name: 'Objects: Index Opensearch'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: manage_opensearch_objects_remove
+      name: 'Objects: Delete Opensearch'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: manage_opensearch_objects_clear
+      name: 'Objects: Clear Client from Opensearch'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: manage_opensearch_destroy
+      name: 'Destroy: Delete Schema'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: manage_opensearch_test
+      name: 'Test: OpenSearch connection'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: opensearch_query
+      name: Query
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: opensearch_suggest
+      name: Suggest
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method

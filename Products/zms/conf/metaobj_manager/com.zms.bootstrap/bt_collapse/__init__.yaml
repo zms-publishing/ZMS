@@ -7,13 +7,13 @@ bt_collapse:
   revision: 4.1.0
   type: ZMSObject
   Attrs:
-    - custom: fas fa-align-justify
-      id: icon_clazz
+    - id: icon_clazz
+      name: Icon (Class)
       mandatory: 0
       multilang: 1
-      name: Icon (Class)
       repetitive: 0
       type: constant
+      custom: fas fa-align-justify
     - id: interface0
       name: interface0
       mandatory: 0
@@ -21,29 +21,29 @@ bt_collapse:
       repetitive: 0
       type: interface
     - id: stereotype
+      name: Stereotype
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: select
       keys:
         - Accordion
         - Tabs
-      mandatory: 0
-      multilang: 1
-      name: Stereotype
-      repetitive: 0
-      type: select
     - id: title
+      name: Title
       mandatory: 0
       multilang: 1
-      name: Title
       repetitive: 0
       type: string
     - id: items
+      name: Items
+      mandatory: 0
+      multilang: 0
+      repetitive: 1
+      type: '*'
       keys:
         - bt_collapse_simple
         - bt_collapse_complex
-      mandatory: 0
-      multilang: 0
-      name: Items
-      repetitive: 1
-      type: '*'
     - id: standard_html
       name: 'Template: Accordion'
       mandatory: 0

@@ -1,0 +1,16 @@
+manage_copyClient:
+  acquired: 0
+  action: '%smanage_executeMetacmd?id=manage_copyClient'
+  execution: 0
+  icon_clazz: fas fa-copy
+  meta_types:
+    - ZMS
+  name: Copy ZMS-Client...
+  nodes: '{$}'
+  revision: 5.0.0
+  roles:
+    - ZMSAdministrator
+  title: Copy ZMS-Client...
+  Impl:
+    - id: manage_copyClient
+      type: Script (Python)

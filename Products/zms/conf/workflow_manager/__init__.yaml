@@ -1,0 +1,87 @@
+workflow:
+  revision: 0.0.1
+  Activities:
+    - name: Bearbeitet
+      icon_clazz: fas fa-pencil-alt text-primary wf-icon
+      id: AC_CHANGED
+    - name: Eingereicht
+      icon_clazz: far fa-bell text-primary wf-icon
+      id: AC_REQUESTED
+    - name: Abgelehnt
+      icon_clazz: far fa-thumbs-down text-danger wf-icon
+      id: AC_REJECTED
+    - name: Publiziert
+      icon_clazz: far fa-thumbs-up text-success wf-icon
+      id: AC_COMMITTED
+    - name: Frühere Version
+      icon_clazz: fas fa-reply text-danger wf-icon
+      id: AC_ROLLEDBACK
+  Transitions:
+    - name: Enter Workflow
+      icon_clazz: fas fa-play-circle text-success
+      to:
+        - AC_CHANGED
+      id: TR_ENTER
+    - name: Sofort publizieren
+      icon_clazz: fas fa-external-link-alt
+      to:
+        - AC_COMMITTED
+      id: TR_EXPRESSCOMMIT
+      type: Page Template
+    - name: Einreichen
+      icon_clazz: far fa-bell wf-icon
+      from:
+        - AC_CHANGED
+        - AC_REJECTED
+      to:
+        - AC_REQUESTED
+      performer:
+        - ZMSAdministrator
+        - ZMSEditor
+        - ZMSAuthor
+      id: TR_REQUEST
+      type: Page Template
+    - name: Ablehnen
+      icon_clazz: far fa-thumbs-down wf-icon
+      from:
+        - AC_REQUESTED
+      to:
+        - AC_REJECTED
+      performer:
+        - ZMSAdministrator
+        - ZMSEditor
+      id: TR_REJECT
+      type: Page Template
+    - name: Publizieren
+      icon_clazz: far fa-thumbs-up wf-icon
+      from:
+        - AC_CHANGED
+        - AC_REQUESTED
+        - AC_REJECTED
+      to:
+        - AC_COMMITTED
+      performer:
+        - ZMSAdministrator
+        - ZMSEditor
+      id: TR_COMMIT
+      type: Script (Python)
+    - name: Zurückziehen
+      icon_clazz: fas fa-reply wf-icon
+      from:
+        - AC_CHANGED
+        - AC_REQUESTED
+        - AC_REJECTED
+      to:
+        - AC_ROLLEDBACK
+      performer:
+        - ZMSAdministrator
+        - ZMSEditor
+        - ZMSAuthor
+      id: TR_ROLLBACK
+      type: Script (Python)
+    - name: Leave Workflow
+      icon_clazz: fas fa-stop-circle text-danger
+      from:
+        - AC_COMMITTED
+        - AC_ROLLEDBACK
+      id: TR_LEAVE

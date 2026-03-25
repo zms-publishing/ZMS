@@ -7,23 +7,23 @@ bt_collapse_simple:
   revision: 4.1.0
   type: ZMSObject
   Attrs:
-    - custom: fas fa-grip-lines
-      id: icon_clazz
+    - id: icon_clazz
+      name: Icon (Class)
       mandatory: 0
       multilang: 1
-      name: Icon (Class)
       repetitive: 0
       type: constant
+      custom: fas fa-grip-lines
     - id: headline
+      name: Headline
       mandatory: 1
       multilang: 1
-      name: Headline
       repetitive: 0
       type: string
     - id: body
+      name: Body
       mandatory: 1
       multilang: 1
-      name: Body
       repetitive: 0
       type: richtext
     - id: standard_html

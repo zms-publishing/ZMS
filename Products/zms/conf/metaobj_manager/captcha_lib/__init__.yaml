@@ -1,0 +1,71 @@
+captcha_lib:
+  enabled: 0
+  lang_dict:
+    captcha_lib.captcha_hint:
+      ger: Bitte geben Sie nun abschliessend folgende vier-stellige Prüfziffer 
+        zum Schutz vor Spam in das weisse Feld ein; beachten Sie, dass sich die 
+        Prüfziffer alle zwei Minuten erneuert. Durch Klick auf das blaue 
+        Stoppuhr-Symbol "Reload" können Sie jederzeit eine erneut zwei Minuten 
+        gütige Prüfziffer anfordern.
+    captcha_lib.captcha_input:
+      ger: Bitte Prüfziffer eingeben und absenden.
+    captcha_lib.captcha_invalid:
+      ger: Leider ist die Eingabe der Prüfziffer nicht korrekt; bitte betätigen 
+        Sie die "Zurück"-Taste des Webbrowsers und versuchen Sie es bitte 
+        nochmals.
+    captcha_lib.captcha_reload:
+      ger: Erneuern
+    captcha_lib.captcha_valid:
+      ger: Prüfziffer korrekt.
+  name: Captcha-Lib
+  revision: 0.5.1
+  type: ZMSLibrary
+  Attrs:
+    - id: captcha_func
+      name: captcha_func
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: captcha_create
+      name: Create Captcha
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: Script (Python)
+    - id: captcha_validate
+      name: Validate Captcha
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: Script (Python)
+    - id: captcha.ipynb
+      name: Jupyter Notebook
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: resource
+    - id: captcha_js
+      name: Captcha JS
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: resource
+    - id: captcha_css
+      name: Captcha CSS
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: resource
+    - id: readme
+      name: README.md
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: resource
+    - id: captcha_html
+      name: Captcha HTML
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: Page Template

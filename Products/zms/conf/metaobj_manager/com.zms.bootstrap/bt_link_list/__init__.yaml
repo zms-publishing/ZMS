@@ -8,9 +8,9 @@ bt_link_list:
   type: ZMSResource
   Attrs:
     - id: links
+      name: Links
       mandatory: 1
       multilang: 1
-      name: Links
       repetitive: 0
       type: list
     - id: interface0

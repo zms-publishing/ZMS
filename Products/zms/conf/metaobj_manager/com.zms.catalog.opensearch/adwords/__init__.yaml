@@ -1,0 +1,106 @@
+adwords:
+  access:
+    insert_custom: '{$}'
+  enabled: 1
+  name: Adwords (Toptreffer)
+  package: com.zms.catalog.opensearch
+  revision: 1.12.1
+  type: ZMSRecordSet
+  Attrs:
+    - id: records
+      name: Datensätze
+      mandatory: 1
+      multilang: 0
+      repetitive: 0
+      type: list
+    - id: _grid
+      name: Grid?
+      mandatory: 1
+      multilang: 0
+      repetitive: 0
+      type: boolean
+      default: 0
+    - id: col_id
+      name: COL_ID
+      mandatory: 1
+      multilang: 0
+      repetitive: 0
+      type: identifier
+    - id: adword
+      name: Adword
+      mandatory: 1
+      multilang: 0
+      repetitive: 0
+      type: string
+      custom: 1
+    - id: url
+      name: URL
+      mandatory: 1
+      multilang: 0
+      repetitive: 0
+      type: url
+      custom: 1
+    - id: synonyms
+      name: Synonyms
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: text
+      custom: 1
+    - id: category
+      name: Category
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: select
+      keys:
+        - direkt
+        - universitaet
+        - study
+        - forschung
+        - weiterbildung
+        - fakultaeten
+        - institute
+        - microsites
+        - apps
+        - extern
+      custom: 1
+    - id: title
+      name: 'Ext.Link: Title'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: string
+      custom: 1
+    - id: attr_dc_description
+      name: 'Ext.Link: Text'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: string
+      custom: 1
+    - id: icon_clazz
+      name: Icon-Class (CSS)
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: constant
+      custom: far fa-list-alt text-danger
+    - id: get_targets
+      name: Get targets by keyword as dict
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: py
+    - id: get_targets_json
+      name: 'REST-Interface: Return targets as JSON'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: Script (Python)
+    - id: standard_html
+      name: 'Template: Adwords (Toptreffer)'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: zpt

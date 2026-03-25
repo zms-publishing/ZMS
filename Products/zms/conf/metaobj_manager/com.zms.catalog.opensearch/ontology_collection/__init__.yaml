@@ -1,0 +1,82 @@
+ontology_collection:
+  access:
+    insert_custom: '{$}'
+  enabled: 1
+  name: Ontology-Collection
+  package: com.zms.catalog.opensearch
+  revision: 1.12.1
+  type: ZMSObject
+  Attrs:
+    - id: title
+      name: DC.Title
+      mandatory: 1
+      multilang: 1
+      repetitive: 0
+      type: title
+    - id: attr_dc_subject_ontology
+      name: Ontology-Keywords
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: multiselect
+      keys: |-
+        ##
+        return context.get_ontology_attropts()
+    - id: interface
+      name: interface
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: interface
+    - id: queryinput
+      name: 'GUI: Textinput'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: boolean
+      default: '1'
+    - id: filtertype
+      name: 'GUI: Filter'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: select
+      keys: |-
+        ##
+        return [
+        (None,'No Filter shown'),
+        ('parallel','Parallel Facet-Filtering'),
+        ('sequential','Sequential Facet-Filtering'),
+        ]
+    - id: navigationtype
+      name: 'GUI: Load More'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: boolean
+      default: '1'
+    - id: icon_clazz
+      name: CSS-Icon
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: constant
+      custom: fas fa-table
+    - id: get_titles_dict
+      name: Get All Titles (Lang-Dict)
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: py
+    - id: ontology_query
+      name: Query
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: standard_html
+      name: 'Template: Ontology-Results'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: zpt

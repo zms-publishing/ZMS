@@ -1,0 +1,17 @@
+manage_move_zodb_persistent_files_to_mediafolder:
+  acquired: 0
+  action: '%smanage_executeMetacmd?id=manage_move_zodb_persistent_files_to_mediafolder'
+  execution: 0
+  icon_clazz: fas fa-cogs
+  meta_types:
+    - ZMS
+  name: Move ZODB Persistent Files to Media Folder
+  nodes: '{$}'
+  package: com.zms.mediafolder
+  revision: 0.0.1
+  roles:
+    - ZMSAdministrator
+  title: Move ZODB Persistent Files to Media Folder
+  Impl:
+    - id: manage_move_zodb_persistent_files_to_mediafolder
+      type: External Method

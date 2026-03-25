@@ -7,29 +7,29 @@ bt_collapse_complex:
   revision: 4.1.0
   type: ZMSObject
   Attrs:
-    - custom: fas fa-indent
-      id: icon_clazz
+    - id: icon_clazz
+      name: Icon (Class)
       mandatory: 0
       multilang: 1
-      name: Icon (Class)
       repetitive: 0
       type: constant
+      custom: fas fa-indent
     - id: headline
+      name: Headline
       mandatory: 1
       multilang: 1
-      name: Headline
       repetitive: 0
       type: string
     - id: body
+      name: Body
+      mandatory: 0
+      multilang: 0
+      repetitive: 1
+      type: '*'
       keys:
         - type(ZMSObject)
         - type(ZMSRecordSet)
         - type(ZMSModule)
-      mandatory: 0
-      multilang: 0
-      name: Body
-      repetitive: 1
-      type: '*'
     - id: standard_html
       name: 'Template: Complex-Item'
       mandatory: 0

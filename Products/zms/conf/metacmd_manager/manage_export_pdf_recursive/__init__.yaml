@@ -1,0 +1,18 @@
+manage_export_pdf_recursive:
+  acquired: 0
+  action: '%smanage_executeMetacmd?id=manage_export_pdf_recursive'
+  description: Export current document tree as one PDF (weasyprint)
+  execution: 0
+  icon_clazz: fas fa-file-pdf text-danger
+  meta_types:
+    - type(ZMSDocument)
+  name: PDF Export (Recursive)
+  nodes: '{$}'
+  package: com.zms.custom.export
+  revision: 1.0.0
+  roles:
+    - ZMSAdministrator
+  title: PDF Export (Recursive)
+  Impl:
+    - id: manage_export_pdf_recursive
+      type: External Method

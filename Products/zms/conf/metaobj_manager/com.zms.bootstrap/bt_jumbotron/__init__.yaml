@@ -7,13 +7,13 @@ bt_jumbotron:
   revision: 5.0.0
   type: ZMSObject
   Attrs:
-    - custom: fas fa-republican
-      id: icon_clazz
+    - id: icon_clazz
+      name: Icon (Class)
       mandatory: 0
       multilang: 1
-      name: Icon (Class)
       repetitive: 0
       type: constant
+      custom: fas fa-republican
     - id: interface0
       name: interface0
       mandatory: 0
@@ -21,27 +21,27 @@ bt_jumbotron:
       repetitive: 0
       type: interface
     - id: title
+      name: Title
       mandatory: 1
       multilang: 1
-      name: Title
       repetitive: 0
       type: string
     - id: subtitle
+      name: Subtitle
       mandatory: 0
       multilang: 1
-      name: Subtitle
       repetitive: 0
       type: string
     - id: text
+      name: Text
       mandatory: 0
       multilang: 1
-      name: Text
       repetitive: 0
       type: richtext
     - id: links
+      name: Links
       mandatory: 1
       multilang: 0
-      name: Links
       repetitive: 0
       type: bt_link_list
     - id: standard_html

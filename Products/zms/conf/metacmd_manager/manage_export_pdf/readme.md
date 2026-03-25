@@ -236,4 +236,3 @@ if meta_id == 'MyChapterStart':
 3. Wrap dynamic values with `standard.pystr(...)`.
 4. Run export and inspect one representative page per content type.
 5. Adjust `PDF_CSS` only after HTML structure is stable.
-

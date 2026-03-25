@@ -8,9 +8,9 @@ bt_card:
   type: ZMSObject
   Attrs:
     - id: header
+      name: Header (Optional)
       mandatory: 0
       multilang: 1
-      name: Header (Optional)
       repetitive: 0
       type: string
     - id: interface0
@@ -20,48 +20,48 @@ bt_card:
       repetitive: 0
       type: interface
     - id: image
+      name: Image (286x180)
       mandatory: 0
       multilang: 0
-      name: Image (286x180)
       repetitive: 0
       type: image
     - id: title
+      name: Title
       mandatory: 0
       multilang: 1
-      name: Title
       repetitive: 0
       type: string
     - id: subtitle
+      name: Subtitle
       mandatory: 0
       multilang: 1
-      name: Subtitle
       repetitive: 0
       type: string
     - id: text
+      name: Text
       mandatory: 0
       multilang: 1
-      name: Text
       repetitive: 0
       type: text
     - id: footer
+      name: Footer (Optional)
       mandatory: 0
       multilang: 1
-      name: Footer (Optional)
       repetitive: 0
       type: string
     - id: links
+      name: Links
       mandatory: 1
       multilang: 0
-      name: Links
       repetitive: 0
       type: bt_link_list
-    - custom: far fa-address-card
-      id: icon_clazz
+    - id: icon_clazz
+      name: Icon (Class)
       mandatory: 0
       multilang: 1
-      name: Icon (Class)
       repetitive: 0
       type: constant
+      custom: far fa-address-card
     - id: standard_html
       name: 'Template: Card'
       mandatory: 0

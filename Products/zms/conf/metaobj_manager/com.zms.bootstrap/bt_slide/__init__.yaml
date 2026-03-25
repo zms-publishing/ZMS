@@ -7,20 +7,25 @@ bt_slide:
   revision: 4.1.0
   type: ZMSObject
   Attrs:
-    - custom: far fa-image
-      id: icon_clazz
+    - id: icon_clazz
+      name: Icon (Class)
       mandatory: 0
       multilang: 1
-      name: Icon (Class)
       repetitive: 0
       type: constant
+      custom: far fa-image
     - id: image
+      name: Image
       mandatory: 1
       multilang: 0
-      name: Image
       repetitive: 0
       type: image
     - id: image_filter
+      name: Image Filter
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: select
       keys: |-
         ##
         return [
@@ -29,33 +34,28 @@ bt_slide:
         ('#00000066','25% Darker'),
         ('#00000099','40% Darker')
         ]
-      mandatory: 0
-      multilang: 0
-      name: Image Filter
-      repetitive: 0
-      type: select
     - id: title
+      name: title
       mandatory: 0
       multilang: 1
-      name: title
       repetitive: 0
       type: string
     - id: text
+      name: Text
       mandatory: 0
       multilang: 1
-      name: Text
       repetitive: 0
       type: text
     - id: url
+      name: Link
       mandatory: 0
       multilang: 1
-      name: Link
       repetitive: 0
       type: url
     - id: url_title
+      name: Link-Titel
       mandatory: 0
       multilang: 1
-      name: Link-Titel
       repetitive: 0
       type: string
     - id: standard_html

@@ -7,14 +7,19 @@ bt_card_layout:
   revision: 4.1.0
   type: ZMSObject
   Attrs:
-    - custom: far fa-address-card
-      id: icon_clazz
+    - id: icon_clazz
+      name: Icon (Class)
       mandatory: 0
       multilang: 1
-      name: Icon (Class)
       repetitive: 0
       type: constant
+      custom: far fa-address-card
     - id: layout
+      name: Layout
+      mandatory: 1
+      multilang: 0
+      repetitive: 0
+      type: select
       keys: |-
         ##
         return [
@@ -22,15 +27,10 @@ bt_card_layout:
         ('card-deck','Deck'),
         ('card-columms','Columns'),
         ]
-      mandatory: 1
-      multilang: 0
-      name: Layout
-      repetitive: 0
-      type: select
     - id: cards
+      name: Cards
       mandatory: 0
       multilang: 0
-      name: Cards
       repetitive: 1
       type: bt_card
     - id: standard_html

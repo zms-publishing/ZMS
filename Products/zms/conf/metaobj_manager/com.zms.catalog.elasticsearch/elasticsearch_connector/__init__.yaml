@@ -1,0 +1,139 @@
+elasticsearch_connector:
+  enabled: 0
+  lang_dict:
+    elasticsearch_connector.BTN_DESTROY:
+      eng: Delete Index
+      ger: Index löschen
+    elasticsearch_connector.BTN_SCHEMATIZE:
+      eng: Create Schema (JSON)
+      ger: Schema erzeugen (JSON)
+  name: elasticsearch-Connector
+  package: com.zms.catalog.elasticsearch
+  revision: 1.10.3
+  type: ZMSLibrary
+  Attrs:
+    - id: properties
+      name: Property-Definitions (JSON)
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: constant
+      custom: |-
+        [
+          {
+            "id": "elasticsearch.url",
+            "type": "string",
+            "label": "URL",
+            "default_value": "https://localhost:9200",
+            "is_target_of": ""
+          },
+          {
+            "id": "elasticsearch.url.timeout",
+            "type": "number",
+            "label": "URL-Timeout",
+            "default_value": "5",
+            "is_target_of": ""
+          },
+          {
+            "id": "elasticsearch.username",
+            "type": "string",
+            "label": "Username",
+            "default_value": "admin",
+            "is_target_of": ""
+          },
+          {
+            "id": "elasticsearch.password",
+            "type": "password",
+            "label": "Password",
+            "default_value": "admin",
+            "is_target_of": ""
+          },
+          {
+            "id": "elasticsearch.index_name",
+            "type": "string",
+            "label": "Index Name",
+            "default_value": "",
+            "is_target_of": ""
+          },
+          {
+            "id": "elasticsearch.schema",
+            "type": "text",
+            "label": "Schema",
+            "default_value": "{}",
+            "is_target_of": "schematize"
+          },
+          {
+            "id": "elasticsearch.suggest.fields",
+            "type": "string",
+            "label": "Suggest-Fields",
+            "default_value": "['title','titlealt','attr_dc_description']",
+            "is_target_of": ""
+          },
+          {
+            "id": "elasticsearch.parser",
+            "type": "string",
+            "label": "Parser",
+            "default_value": "http://localhost:9998/tika",
+            "is_target_of": ""
+          }
+        ]
+    - id: readme
+      name: README.md
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: resource
+    - id: manage_elasticsearch_schematize
+      name: 'Schematize: Generate Schema'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: elasticsearch_get_client
+      name: Get Elasticsearch Client
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: manage_elasticsearch_init
+      name: 'Init: Put Schema'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: manage_elasticsearch_objects_add
+      name: 'Objects: Index elasticsearch'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: manage_elasticsearch_objects_remove
+      name: 'Objects: Delete elasticsearch'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: manage_elasticsearch_objects_clear
+      name: 'Objects: Clear Client from elasticsearch'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: manage_elasticsearch_destroy
+      name: 'Destroy: Delete Schema'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: elasticsearch_query
+      name: Query
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: elasticsearch_suggest
+      name: Suggest
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method

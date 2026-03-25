@@ -7,51 +7,51 @@ bt_carousel:
   revision: 5.0.0
   type: ZMSObject
   Attrs:
-    - custom: far fa-images
-      id: icon_clazz
+    - id: icon_clazz
+      name: Icon (Class)
       mandatory: 0
       multilang: 1
-      name: Icon (Class)
       repetitive: 0
       type: constant
+      custom: far fa-images
     - id: interface0
       name: interface0
       mandatory: 0
       multilang: 0
       repetitive: 0
       type: interface
-    - default: '5000'
-      id: interval
+    - id: interval
+      name: Interval
       mandatory: 1
       multilang: 0
-      name: Interval
       repetitive: 0
       type: int
-    - default: '1'
-      id: indicators
-      mandatory: 0
-      multilang: 0
+      default: '5000'
+    - id: indicators
       name: Show indicators
-      repetitive: 0
-      type: boolean
-    - default: '1'
-      id: controls
       mandatory: 0
       multilang: 0
+      repetitive: 0
+      type: boolean
+      default: '1'
+    - id: controls
       name: Show controls (prev/next)
-      repetitive: 0
-      type: boolean
-    - default: '1'
-      id: captions
       mandatory: 0
       multilang: 0
+      repetitive: 0
+      type: boolean
+      default: '1'
+    - id: captions
       name: Show captions
-      repetitive: 0
-      type: boolean
-    - id: slides
       mandatory: 0
       multilang: 0
+      repetitive: 0
+      type: boolean
+      default: '1'
+    - id: slides
       name: Slides
+      mandatory: 0
+      multilang: 0
       repetitive: 1
       type: bt_slide
     - id: standard_html

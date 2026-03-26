@@ -1,0 +1,78 @@
+<!-- creation_slider.standard_html -->
+<tal:block tal:define="
+    zmscontext options/zmscontext;
+    slider_id python:'creation-slider-%s' % zmscontext.id;
+    slides python:zmscontext.filteredObjChildren('items',request);
+    slide_count python:len(slides);
+    is_manage python:'/manage' in request.get('URL','');
+    prev_label python:zmscontext.getZMILangStr('ATTR_PREVIOUS');
+    next_label python:zmscontext.getZMILangStr('ATTR_NEXT');
+    has_items python:slide_count > 0;
+    css_href python:'%s/%s.style.css' % (zmscontext.getMetaobjManager().absolute_url(), zmscontext.meta_id);
+    css_once python:request.get('creation_slider_css_loaded', False);
+    set_css_once python:request.set('creation_slider_css_loaded', True);
+">
+  <link tal:condition="python:not css_once" rel="stylesheet" type="text/css" tal:attributes="href css_href" />
+  <div class="creation-slider" tal:attributes="id slider_id; data-slide-count python:slide_count">
+    <div tal:condition="not:has_items" class="creation-slider__empty">
+      Add one or more slider items to populate this slider.
+    </div>
+    <tal:block tal:condition="has_items">
+      <div class="creation-slider__viewport">
+        <div class="creation-slider__track">
+          <tal:block tal:repeat="slide slides">
+            <div tal:replace="structure python:slide.getBodyContent(request)">slider item</div>
+          </tal:block>
+        </div>
+        <div class="creation-slider__status" aria-live="polite">
+          <span class="creation-slider__status-current">01</span>
+          /
+          <span class="creation-slider__status-total" tal:content="python:'%02d' % slide_count">01</span>
+        </div>
+        <div class="creation-slider__controls" tal:condition="python:slide_count > 1">
+          <button type="button" class="creation-slider__control creation-slider__control--prev" tal:attributes="aria-label prev_label; title prev_label">
+            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M10.8 2.2 5 8l5.8 5.8-1.4 1.4L2.2 8l7.2-7.2z" /></svg>
+          </button>
+          <button type="button" class="creation-slider__control creation-slider__control--next" tal:attributes="aria-label next_label; title next_label">
+            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="m5.2 13.8 5.8-5.8-5.8-5.8 1.4-1.4L13.8 8l-7.2 7.2z" /></svg>
+          </button>
+        </div>
+      </div>
+      <script tal:condition="not:is_manage">
+        (function() {
+          var root = document.getElementById('<tal:block tal:replace="slider_id" />');
+          if (!root || root.dataset.bound === '1') {
+            return;
+          }
+          root.dataset.bound = '1';
+          var slides = Array.prototype.slice.call(root.querySelectorAll('.creation-slider__slide'));
+          if (slides.length <= 1) {
+            return;
+          }
+          var current = 0;
+          var currentNode = root.querySelector('.creation-slider__status-current');
+          var update = function(index) {
+            current = (index + slides.length) % slides.length;
+            slides.forEach(function(slide, slideIndex) {
+              slide.classList.toggle('is-active', slideIndex === current);
+              slide.setAttribute('aria-hidden', slideIndex === current ? 'false' : 'true');
+            });
+            if (currentNode) {
+              currentNode.textContent = String(current + 1).padStart(2, '0');
+            }
+          };
+          var prev = root.querySelector('.creation-slider__control--prev');
+          var next = root.querySelector('.creation-slider__control--next');
+          if (prev) {
+            prev.addEventListener('click', function() { update(current - 1); });
+          }
+          if (next) {
+            next.addEventListener('click', function() { update(current + 1); });
+          }
+          update(0);
+        })();
+      </script>
+    </tal:block>
+  </div>
+</tal:block>
+<!-- /creation_slider.standard_html -->

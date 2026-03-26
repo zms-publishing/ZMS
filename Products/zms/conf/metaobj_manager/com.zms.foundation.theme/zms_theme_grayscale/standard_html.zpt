@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en" tal:define="
+		Std modules/Products.PythonScripts/standard;
+		standard modules/Products.zms/standard;
+		newline_to_br nocall:Std/newline_to_br;
+		zmscontext options/zmscontext;
+		dummy0 python:zmscontext.f_standard_html_request();
+		zmsroot python:zmscontext.breadcrumbs_obj_path()[0];
+		zmsclient python:zmscontext.content;
+		lang request/lang;
+		this here;
+		title python:zmscontext.attr('title');
+		attr_dc_type python:zmscontext.attr('attr_dc_type').lower();
+		search_conf python:zmscontext.getConfProperty('ZMS.permalink.search', default='');
+		imprint_conf python:zmscontext.getConfProperty('ZMS.permalink.imprint', default='');
+		privacy_conf python:zmscontext.getConfProperty('ZMS.permalink.privacy', default='');
+		login_conf python:zmscontext.getConfProperty('ZMS.permalink.login', default='');
+		contact_conf python:zmscontext.getConfProperty('ZMS.permalink.contact', default='');
+		search_node python:search_conf and zmscontext.getLinkObj(search_conf, request) or None;
+		imprint_node python:imprint_conf and zmscontext.getLinkObj(imprint_conf, request) or None;
+		privacy_node python:privacy_conf and zmscontext.getLinkObj(privacy_conf, request) or None;
+		login_node python:login_conf and zmscontext.getLinkObj(login_conf, request) or None;
+		contact_node python:contact_conf and zmscontext.getLinkObj(contact_conf, request) or None;
+		dummy python:request.set('ZMS_THIS',here);
+		common python:container.common.absolute_url();
+		tmpl_url python:container.absolute_url();
+		channels python:{};
+		dummy0 python:[x.operator_setitem(channels,standard.id_quote(x.getTitlealt(request)),x) for x in zmscontext.getDocumentElement().filteredChildNodes(request,zmscontext.PAGES)];
+		site_nodes python:[node for node in zmsclient.filteredChildNodes(request, zmsroot.PAGES) if node.attr('attr_dc_type') != 'Resource'];
+		child_nodes python:[node for node in zmscontext.filteredChildNodes(request, zmsroot.PAGES) if node.attr('attr_dc_type') != 'Resource'];
+		teasers python:zmscontext.getTeaserElements();
+		is_root python:zmscontext.getId() == zmsroot.getId();
+		hero_image python:zmscontext.attr('titleimage') or zmsclient.attr('titleimage');
+		hero_image_url python:hero_image and hero_image.getHref(request) or '';
+		hero_style python:hero_image_url and &quot;background-image: linear-gradient(rgba(0, 0, 0, 0.58), rgba(0, 0, 0, 0.88)), url('%s')&quot;%hero_image_url or default;
+		current_year python:context.ZopeTime().strftime('%Y');
+		">
+<head>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="generator" content="ZMS6" />
+	<title tal:content="structure python:zmscontext.getTitlealt(request)">ZMS</title>
+	<meta tal:attributes="content python:zmscontext.attr('attr_dc_description')" name="description" content="" />
+	<meta tal:attributes="content python:zmscontext.attr('attr_dc_subject')" name="keywords" content="" />
+	<meta name="author" tal:attributes="content python:zmscontext.attr('attr_dc_creator')" />
+
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&amp;family=Varela+Round&amp;display=swap" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+	<link rel="stylesheet" href="theme.css" tal:attributes="href python:'%s/common/css/style.css'%(tmpl_url)" />
+	<link rel="stylesheet" href="custom.css" tal:attributes="href python:'%s/added/web.css'%(common)" />
+
+	<script src="/++resource++zms_/zmi.js"></script>
+	<link rel="shortcut icon" href="favicon.ico" type="image/ico" tal:attributes="href python:'%s/common/img/favicon.ico'%(tmpl_url)" />
+</head>
+<body tal:attributes="
+	data-path python:zmscontext.getRootElement().getRefObjPath(here);
+	data-root python:zmscontext.getRootElement().getHome().id;
+	data-client python:zmsclient.getHome().id;
+	data-level python:zmscontext.getLevel();
+	id python:'zmsid_%s'%(zmscontext.id);
+	class python:'zms web grayscale %s %s %s'%(zmscontext.meta_id, attr_dc_type, is_root and 'is-root' or 'is-detail')">
+	<nav id="mainNav" class="navbar navbar-expand-lg navbar-dark fixed-top" aria-label="Main navigation">
+		<div class="container px-4 px-lg-5">
+			<a class="navbar-brand d-flex align-items-center gap-3" href="#"
+				tal:attributes="href python:zmsclient.getHref2IndexHtml(request)">
+				<img class="brand-logo" src="common/img/zmslogo.svg" alt="Logo"
+					tal:attributes="src python:'%s/common/img/zmslogo.svg'%(tmpl_url); title python:zmsclient.getTitlealt(request)" />
+			</a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+				Menu <i class="bi bi-list"></i>
+			</button>
+			<div id="navbarResponsive" class="collapse navbar-collapse">
+				<ul class="navbar-nav ms-auto">
+					<li class="nav-item" tal:repeat="child_node site_nodes"
+						tal:attributes="class python:child_node in zmscontext.breadcrumbs_obj_path() and 'nav-item active' or 'nav-item'">
+						<a class="nav-link" href="#"
+							tal:attributes="href python:child_node.getHref2IndexHtml(request); title python:child_node.attr('title')"
+							tal:content="python:child_node.getTitlealt(request)">Section</a>
+					</li>
+					<li class="nav-item" tal:condition="python:search_node is not None">
+						<a class="nav-link nav-link-utility" href="#" tal:attributes="href python:search_node.getHref2IndexHtml(request)">
+							<i class="bi bi-search"></i>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<header class="masthead" tal:attributes="style hero_style | nothing; class python:hero_image_url and 'masthead has-titleimage' or 'masthead no-titleimage'">
+		<div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
+			<div class="hero-copy text-center">
+				<p class="eyebrow">ZMS Design Templateset</p>
+				<h1 class="mx-auto my-0 text-uppercase" tal:content="structure python:zmscontext.getTitlealt(request)">Grayscale</h1>
+				<p class="lead-copy mx-auto mt-3 mb-5"
+					tal:content="structure python:newline_to_br(zmscontext.attr('attr_dc_description') or zmsclient.attr('attr_dc_description') or '')">
+					A responsive ZMS theme based on Start Bootstrap Grayscale.
+				</p>
+				<a class="btn btn-primary" href="#content-start" tal:attributes="href python:is_root and '#content-start' or '#page-body'">
+					<span tal:content="python:is_root and 'Explore' or 'Read page'">Explore</span>
+				</a>
+			</div>
+		</div>
+	</header>
+
+	<section id="content-start" class="about-section" tal:condition="is_root">
+		<div class="container px-4 px-lg-5">
+			<div class="row gx-4 gx-lg-5 justify-content-center">
+				<div class="col-lg-9 text-center">
+					<h2 class="section-heading text-white">Built for ZMS content structures</h2>
+					<p class="section-copy text-white-50">
+						This templateset keeps the dark, cinematic Grayscale atmosphere while wiring it to ZMS navigation, page content, teaser elements, and service links.
+					</p>
+				</div>
+			</div>
+			<div class="row gx-4 gx-lg-5 justify-content-center">
+				<div class="col-lg-10">
+					<div class="grayscale-flow flow-on-dark" tal:content="structure python:zmscontext.getBodyContent(request)">CONTENT BODY</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section id="projects" class="projects-section bg-light" tal:condition="python:is_root and len(site_nodes) &gt; 0">
+		<div class="container px-4 px-lg-5">
+			<div class="section-intro text-center">
+				<p class="eyebrow text-primary">Site Navigation</p>
+				<h2 class="section-heading text-dark">Sections as feature panels</h2>
+				<p class="section-copy text-muted">Top-level ZMS pages are presented as editorial entry points in the visual language of Grayscale.</p>
+			</div>
+			<div class="row gx-4 gy-4 gx-lg-5">
+				<div class="col-lg-6" tal:repeat="child_node site_nodes">
+					<a class="project-card h-100" href="#"
+						tal:attributes="href python:child_node.getHref2IndexHtml(request); data-card python:child_node.getId()">
+						<div class="project-card-inner">
+							<p class="project-kicker">Page</p>
+							<h3 tal:content="python:child_node.getTitlealt(request)">Section</h3>
+							<p tal:content="python:child_node.attr('attr_dc_description') or zmscontext.getLangStr('BTN_READMORE')">Description</p>
+							<span class="project-link">Open page</span>
+						</div>
+					</a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<main id="page-body" class="page-shell" tal:condition="not:is_root">
+		<div class="container px-4 px-lg-5">
+			<nav aria-label="breadcrumb" class="breadcrumb-shell">
+				<ol class="breadcrumb mb-0">
+					<li class="breadcrumb-item" tal:repeat="node python:zmscontext.breadcrumbs_obj_path()"
+						tal:attributes="class python:node == zmscontext and 'breadcrumb-item active' or 'breadcrumb-item'">
+						<a href="#" tal:attributes="href python:node.getHref2IndexHtml(request, deep=1)" tal:content="python:node.getTitlealt(request)">the titlealt</a>
+					</li>
+				</ol>
+			</nav>
+
+			<article class="content-sheet">
+				<div class="page-header">
+					<p class="eyebrow text-primary">Current page</p>
+					<h2 tal:content="structure python:zmscontext.attr('title')">TITLE</h2>
+					<p class="page-lead" tal:content="structure python:newline_to_br(zmscontext.attr('attr_dc_description') or '')">DESCRIPTION</p>
+				</div>
+
+				<div class="grayscale-flow" tal:content="structure python:zmscontext.getBodyContent(request)">CONTENT BODY</div>
+
+				<div class="teaser-strip" tal:condition="python:len(teasers) &gt; 0">
+					<div tal:repeat="teaser teasers" tal:replace="structure python:teaser.renderShort(request)">TEASER</div>
+				</div>
+
+				<nav class="toc-shell" metal:use-macro="container/pageelements/macros/toc">TABLE OF CONTENT</nav>
+			</article>
+		</div>
+	</main>
+
+	<section class="contact-section bg-black" tal:condition="python:is_root and (contact_node is not None or imprint_node is not None or privacy_node is not None)">
+		<div class="container px-4 px-lg-5">
+			<div class="row gx-4 gy-4 gx-lg-5 justify-content-center">
+				<div class="col-md-4" tal:condition="python:contact_node is not None">
+					<div class="contact-card text-center h-100">
+						<i class="bi bi-chat-square-text text-primary mb-3"></i>
+						<h3 tal:content="python:zmscontext.getLangStr('CONTACT')">Contact</h3>
+						<p>Direct visitors to your editorial contact or service page.</p>
+						<a href="#" tal:attributes="href python:contact_node.getHref2IndexHtml(request)">Open page</a>
+					</div>
+				</div>
+				<div class="col-md-4" tal:condition="python:privacy_node is not None">
+					<div class="contact-card text-center h-100">
+						<i class="bi bi-shield-lock text-primary mb-3"></i>
+						<h3 tal:content="python:zmscontext.getLangStr('PRIVACY')">Privacy</h3>
+						<p>Present compliance pages in a consistent, prominent place.</p>
+						<a href="#" tal:attributes="href python:privacy_node.getHref2IndexHtml(request)">Open page</a>
+					</div>
+				</div>
+				<div class="col-md-4" tal:condition="python:imprint_node is not None">
+					<div class="contact-card text-center h-100">
+						<i class="bi bi-building text-primary mb-3"></i>
+						<h3 tal:content="python:zmscontext.getLangStr('IMPRINT')">Imprint</h3>
+						<p>Expose legal information with the same visual treatment as other calls to action.</p>
+						<a href="#" tal:attributes="href python:imprint_node.getHref2IndexHtml(request)">Open page</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section id="overview" class="footer-shell" metal:use-macro="container/pageelements/macros/footer">FOOTER</section>
+
+	<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/i18n/ger.js" tal:attributes="src python:'/++resource++zms_/i18n/%s.js'%request.get('lang','eng')"></script>
+	<script type="text/javascript" charset="UTF-8" src="/++resource++zmi/jquery-3.5.1.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+	<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/zmi.core.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ZMS/zmi_body_content_search.js"></script>
+	<script src="theme.js" tal:attributes="src python:'%s/added/web.js'%(common)"></script>
+
+	<tal:block tal:define="
+		standard modules/Products.zms/standard;
+		cache_expire python:standard.set_response_headers_cache(this, request, cache_max_age=6*3600, cache_s_maxage=-1)">
+	</tal:block>
+</body>
+</html>

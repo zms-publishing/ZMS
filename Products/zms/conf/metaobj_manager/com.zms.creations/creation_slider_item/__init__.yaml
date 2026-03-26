@@ -1,0 +1,46 @@
+creation_slider_item:
+  access:
+    insert_custom: '{$}'
+  enabled: 1
+  name: Creation Slider Item
+  package: com.zms.creations
+  revision: 1.0.0
+  type: ZMSObject
+  Attrs:
+    - id: icon_clazz
+      name: Icon (Class)
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: constant
+      custom: far fa-square
+    - id: title
+      name: Title
+      mandatory: 1
+      multilang: 1
+      repetitive: 0
+      type: title
+    - id: description
+      name: Description
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: text
+    - id: image
+      name: Image
+      mandatory: 1
+      multilang: 1
+      repetitive: 0
+      type: image
+    - id: link
+      name: Link
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: url
+    - id: standard_html
+      name: 'Template: Creation Slider Item'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: zpt

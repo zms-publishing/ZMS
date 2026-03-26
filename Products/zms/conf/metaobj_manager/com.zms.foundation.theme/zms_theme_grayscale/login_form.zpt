@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Login Form</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&amp;family=Varela+Round&amp;display=swap" />
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+	</head>
+	<body>
+		<div class="login-shell">
+			<form class="login-form" method="post" action="" autocomplete="off" tal:attributes="action string:${here/absolute_url}/login">
+				<p class="form-header">ZMS</p>
+				<p class="form-subtitle">The Python CMS in a Grayscale-inspired login layout.</p>
+				<input type="hidden" name="came_from" value="" tal:attributes="value request/came_from | string:" />
+				<div class="mb-3">
+					<label for="login_name">Login</label>
+					<input id="login_name" type="text" class="form-control font-monospace" required="required" autofocus="autofocus" name="__ac_name" title="Login-Name" value="" />
+				</div>
+				<div class="mb-4">
+					<label for="login_password">Password</label>
+					<input id="login_password" type="password" class="form-control font-monospace" required="required" name="__ac_password" title="Password" value="" />
+				</div>
+				<input type="submit" class="btn btn-primary" value="Log In" />
+			</form>
+		</div>
+	</body>
+	<style>
+	/*<!--*/
+	:root {
+		--gs-black: #0b0f10;
+		--gs-primary: #64a19d;
+		--gs-primary-deep: #3f7370;
+	}
+	*,
+	*::before,
+	*::after {
+		box-sizing: border-box;
+	}
+	body {
+		margin: 0;
+		font-family: 'Nunito', sans-serif;
+		background:
+			radial-gradient(circle at top, rgba(100, 161, 157, 0.25), transparent 32%),
+			linear-gradient(145deg, #091112 0%, #172322 48%, #081012 100%);
+	}
+	.login-shell {
+		min-height: 100vh;
+		display: grid;
+		place-items: center;
+		padding: 1.5rem;
+	}
+	.login-form {
+		width: min(100%, 31rem);
+		padding: 2rem;
+		border-radius: 1.5rem;
+		background: rgba(255, 255, 255, 0.94);
+		box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.28);
+	}
+	.form-header {
+		margin: 0 0 0.6rem;
+		font-family: 'Varela Round', sans-serif;
+		font-size: 1.5rem;
+		color: #132120;
+	}
+	.form-subtitle {
+		margin: 0 0 1.5rem;
+		color: #61706e;
+	}
+	label {
+		display: block;
+		margin-bottom: 0.45rem;
+		font-size: 0.85rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: #435250;
+	}
+	.form-control {
+		height: 3.2rem;
+		border-radius: 0.95rem;
+		border: 1px solid rgba(34, 49, 48, 0.12);
+	}
+	.form-control:focus {
+		border-color: rgba(100, 161, 157, 0.48);
+		box-shadow: 0 0 0 0.25rem rgba(100, 161, 157, 0.14);
+	}
+	.font-monospace {
+		font-family: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+	}
+	.btn-primary {
+		width: 100%;
+		padding: 0.95rem 1.25rem;
+		border: 0;
+		border-radius: 999px;
+		background: var(--gs-primary);
+		font-size: 0.82rem;
+		font-weight: 800;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+	}
+	.btn-primary:hover,
+	.btn-primary:focus {
+		background: var(--gs-primary-deep);
+	}
+	/*-->*/
+	</style>
+</html>

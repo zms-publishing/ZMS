@@ -1,0 +1,45 @@
+.zmi .ZMS h1,
+.zmi .ZMS h1 small,
+.zmi .ZMSFolder h1,
+.zmi .ZMSFolder h1 small,
+.zmi .ZMSDocument h1,
+.zmi .ZMSDocument h1 small {
+	color: rgb(0,138,199);
+}
+
+.zmi-container .carousel-item {
+	display:block;
+	height:7rem;
+	width:100%
+}
+
+.zmi .contentEditable.bt_card {
+	display:inline-block;
+	padding:0;
+	width:33%;
+	margin:0;
+}
+.zmi .contentEditable.bt_card .card {
+	margin:.5rem 0 0.5rem 1rem;
+	height: 100%;
+}
+.zmi .contentEditable.bt_card .card .card-img-top {
+	width: 100%;
+	max-height:7rem;
+	background: #354f6757;
+	padding: 0;
+	object-fit: cover;
+}
+.zmi .ZMSTeaserElement h2 {
+	font-size:1rem;
+	font-weight:bold
+}
+#sc_members {
+	column-count: 3;
+}
+
+@media (max-width: 768px) {
+	#sc_members {
+		column-count: 2;
+	}
+}

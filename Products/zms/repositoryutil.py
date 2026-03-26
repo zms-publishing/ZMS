@@ -102,13 +102,10 @@ def parseInit(self, filepath):
 security.declarePublic('remoteFiles')
 def remoteFiles(self, basepath, deep=True):
     """
-    Read configuration data from filesystem base-path.
+    Read repository object files from filesystem base-path.
 
-    This function recursively traverses a directory structure to locate and parse
-    repository object definitions stored as YAML or Python files. Files matching
-    the pattern C{__*.(__yaml|.py)} are treated as repository object definitions.
-    Associated artefacts (non-hidden files in the same directory) are collected
-    as related resources.
+    This function recursively traverses a directory structure to read
+    repository object files (identified by __init__) and their related file-resources.  
     @param basepath: The root filesystem path to scan for repository objects.
       Must be an existing directory.
     @type basepath: C{str}
@@ -122,9 +119,6 @@ def remoteFiles(self, basepath, deep=True):
         - C{data}: File content as string (for .yaml/.py) or bytes (for artefacts)
         - C{version}: Revision from repository definition or file modification time
     @rtype: C{dict}
-    @note: Logging is performed via L{standard.writeLog()} for debugging purposes.
-    @note: Hidden files (starting with '.') such as C{.DS_Store} are excluded
-      from artefact processing.
     @raise IOError: If file read operations fail during traversal.
     """
 
@@ -132,62 +126,54 @@ def remoteFiles(self, basepath, deep=True):
     r = {}
     if os.path.exists(basepath):
         def traverse(base, path, level=0):
+          initialized = False
           names = os.listdir(path)
           for name in names:
             filepath = os.path.join(path, name)
             if os.path.isdir(filepath) and (deep or level == 0):
               traverse(base, filepath, level+1)
-            elif name.startswith('__') and name.split('.')[-2].endswith('__'):
-              # Read python-representation of repository-object
-              standard.writeLog(self,"[remoteFiles]: read %s"%filepath)
-              with open(filepath,"rb") as f:
-                  filedata = standard.pystr(f.read())
-              # Python-representation of repository-object
-              d = {}
-              if name.endswith('.yaml'):
-                # Parse.yaml
-                d = yamlutil.parse(filedata)
-              elif name.endswith('.py'):
-                try:
-                    c = get_class(filedata)
-                    d = c.__dict__
-                except:
-                    d['revision'] = standard.writeError(self,"[remoteFiles.traverse]: can't analyze filepath=%s"%filepath)
-              id = d.get('id',name)
-              # Different from remoteFiles()
-              rd = {}
-              rd['id'] = id
-              rd['filename'] = filepath[len(base)+1:]
-              rd['data'] = filedata
-              rd['version'] = d.get("revision",self.getLangFmtDate(os.path.getmtime(filepath),'eng'))
+            elif not initialized \
+                and name.startswith('__') \
+                and name.split('.')[-2].endswith('__') \
+                and name.split('.')[-1] in ['py', 'yaml']:
+              # Read repository object definition.
+              rd = read_remote_file(self, base, path, name)
               r[rd['filename']] = rd
-              # Read artefacts and avoid processing of hidden files, e.g. .DS_Store on macOS 
+              # Get version from repository definition if available,
+              # otherwise use file modification time.
+              artefact = parse_artefact(self, path, name, rd['data'])
+              rd['version'] = artefact.get("revision",rd['version'])
+              # Read related file-resources. 
               for file in [x for x in names if x != name and not x.startswith('.')]:
-                artefact = os.path.join(path,file)
-                if os.path.isfile(artefact):
-                    standard.writeLog(self,"[remoteFiles]: read artefact %s"%artefact)
-                    f = open(artefact,"rb")
-                    data = f.read()
-                    f.close()
-                    rd = {}
-                    rd['id'] = id
-                    rd['filename'] = artefact[len(base)+1:]
-                    rd['data'] = data
-                    rd['version'] = self.getLangFmtDate(os.path.getmtime(artefact),'eng')
+                filepath = os.path.join(path,file)
+                if os.path.isfile(filepath):
+                    rd = read_remote_file(self, base, path, file)
                     r[rd['filename']] = rd
+              initialized = True
         traverse(basepath,basepath)
     return r
+
+def read_remote_file(self, base, path, name):
+    filepath = os.path.join(path, name)
+    filedata = read_artefact(self, path, name)
+    d = {}
+    d['id'] = id
+    d['filename'] = filepath[len(base)+1:]
+    d['data'] = filedata
+    d['version'] = self.getLangFmtDate(os.path.getmtime(filepath),'eng')
+    return d
 
 
 security.declarePublic('readRepository')
 def readRepository(self, basepath, deep=True):
     """
-    Read repository from filesystem base-path.
+    Read and parse repository from filesystem base-path.
 
     Read repository structure from filesystem and parse repository objects.
     This function traverses a filesystem directory structure to discover and parse
-    repository object definitions. It supports both Python-style (__init__.py) and
-    YAML-style (__init__.yaml) repository object representations.
+    repository object definitions. 
+    It supports both Python-style (__init__.py) and YAML-style (__init__.yaml) 
+    repository object representations.
     @param basepath: The root filesystem path from which to read the repository.
     Must be an existing directory.
     @type basepath: C{str}
@@ -214,104 +200,83 @@ def readRepository(self, basepath, deep=True):
             filepath = os.path.join(path, name)
             if os.path.isdir(filepath) and (deep or level == 0):
                 traverse(base, filepath, level+1)
-            elif not initialized and name.startswith('__') and name.endswith('__.py'):
-              # Read python-representation of repository-object
-              py = parseInit(self, filepath)
-              # Analyze python-representation of repository-object
-              d = {}
-              try:
-                  c = get_class(py)
-                  d = c.__dict__
-              except:
-                  d['revision'] = standard.writeError(self,"[readRepository.traverse]: can't analyze filepath=%s"%filepath)
+            elif not initialized \
+                and name.startswith('__') \
+                and name.split('.')[-2].endswith('__') \
+                and name.split('.')[-1] in ['py', 'yaml']:
+              filedata = read_artefact(self, path, name)
+              d = parse_artefact(self, path, name, filedata)
               id = d.get('id',name)
-              # Different from remoteFiles()
-              r[id] = {}
-              for k in [x for x in d if not x.startswith('__')]:
-                v = d[k]
-                if inspect.isclass(v):
-                  dd = v.__dict__
+              # For Python-style repository objects, 
+              # convert nested class definitions to sorted lists of attribute dicts.
+              if name.endswith('.py'):
+                r[id] = {}
+                for k in [x for x in d if not x.startswith('__')]:
+                  v = d[k]
+                  if inspect.isclass(v):
+                    dd = v.__dict__
+                    v = []
+                    for kk in [x for x in dd if not x.startswith('__')]:
+                      vv = value_data(self, dd[kk], names, path, name)
+                      # Sort by position in file to preserve order of definitions.
+                      v.append((filedata.find('\t\t%s ='%kk), vv))
+                    # Sort by position in file and remove position from value.
+                    v = [x[1] for x in sorted(v, key=lambda x: x[0])]
+                  r[id][k] = v
+              # For YAML-style repository objects, 
+              # use the parsed YAML structure directly.
+              elif name.endswith('.yaml'):
+                r[id] = d
+                for k in [x for x in d if type(d[x]) is list]:
                   v = []
-                  for kk in [x for x in dd if not x.startswith('__')]:
-                    vv = dd[kk]
-                    # Try to read artefact.
-                    if 'id' in vv:
-                      fileprefix = vv['id'].split('/')[-1]
-                      for file in [x for x in names if x==fileprefix or x.startswith('%s.'%fileprefix)]:
-                        artefact = os.path.join(path, file)
-                        standard.writeLog(self,"[readRepository]: read artefact %s"%artefact)
-                        f = open(artefact, "rb")
-                        data = f.read()
-                        f.close()
-                        try:
-                            if isinstance(data, bytes):
-                                data = data.decode('utf-8')
-                        except:
-                            pass
-                        vv['data'] = data
-                        break
-                    v.append((py.find('\t\t%s ='%kk), vv))
-                  v.sort()
-                  v = [x[1] for x in v]
-                r[id][k] = v
-              readme_path = os.path.join(path, 'readme.md')
-              if os.path.isfile(readme_path):
-                standard.writeLog(self,"[readRepository]: read artefact %s"%readme_path)
-                f = open(readme_path, "rb")
-                data = f.read()
-                f.close()
-                try:
-                    if isinstance(data, bytes):
-                        data = data.decode('utf-8')
-                except:
-                    pass
-                r[id]['readme'] = data
-              initialized = True
-            elif not initialized and name.startswith('__') and name.endswith('__.yaml'):
-              # Read YAML-representation of repository-object
-              data = parseInit(self, filepath)
-              # Analyze YAML-representation of repository-object
-              yaml = yamlutil.parse(data)
-              id = list(yaml.keys())[0]
-              d = yaml[id]
-              d['id'] = id
-              # Different from remoteFiles()
-              r[id] = d
-              for k in [x for x in d if type(d[x]) is list]:
-                v = []
-                for vv in d[k]:
-                  if type(vv) is dict and 'id' in vv:
-                    fileprefix = vv['id'].split('/')[-1]
-                    for file in [x for x in names if x==fileprefix or x.startswith('%s.'%fileprefix)]:
-                      artefact = os.path.join(path, file)
-                      standard.writeLog(self,"[readRepository]: read artefact %s"%artefact)
-                      f = open(artefact, "rb")
-                      data = f.read()
-                      f.close()
-                      try:
-                          if isinstance(data, bytes):
-                              data = data.decode('utf-8')
-                      except:
-                          pass
-                      vv['data'] = data
-                      break
-                  v.append(vv)
-                r[id][k] = v
-              readme_path = os.path.join(path, 'readme.md')
-              if os.path.isfile(readme_path):
-                standard.writeLog(self,"[readRepository]: read artefact %s"%readme_path)
-                f = open(readme_path, "rb")
-                data = f.read()
-                f.close()
-                try:
-                    if isinstance(data, bytes):
-                        data = data.decode('utf-8')
-                except:
-                    pass
-                r[id]['readme'] = data
+                  for vv in d[k]:
+                    v.append(value_data(self, vv, names, path, name))
+                  r[id][k] = v
+              r[id]['readme'] = read_artefact(self, path, 'readme.md')
               initialized = True
         traverse(basepath, basepath)
     return r
+
+def value_data(self, vv, names, path, file):
+    if type(vv) is dict and 'id' in vv:
+      fileprefix = vv['id'].split('/')[-1]
+      for file in [x for x in names if x==fileprefix or x.startswith('%s.'%fileprefix)]:
+        vv['data'] = read_artefact(self, path, file)
+        break
+    return vv
+
+def parse_artefact(self, path, filename, data):
+    d = {}
+    filepath = os.path.join(path, filename)
+    try:
+        # For .yaml files, parse the YAML content and extract the object definition.
+        if filename.endswith('.yaml'):
+            yaml = yamlutil.parse(data)
+            id = list(yaml.keys())[0]
+            d = yaml[id]
+            d['id'] = id
+        # For .py files, execute the Python code to obtain the class definition 
+        # and extract its attributes.
+        elif filename.endswith('.py'):
+            py = get_class(data)
+            d = py.__dict__
+    except:
+        d['revision'] = standard.writeError(self,"[remoteFiles.traverse]: can't analyze filepath=%s"%filepath)
+    return d
+
+def read_artefact(self, path, filename):
+    data = None
+    filepath = os.path.join(path, filename)
+    if os.path.isfile(filepath):
+      standard.writeLog(self,"[read_artefact]: %s"%filepath)
+      with open(filepath,"rb") as f:
+          data = standard.pystr(f.read())
+      try:
+          if isinstance(data, bytes):
+              data = data.decode('utf-8')
+      except:
+          pass
+    return data
 
 
 security.declarePublic('localFiles')

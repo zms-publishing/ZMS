@@ -265,17 +265,17 @@ def parse_artefact(self, path, filename, data):
     return d
 
 def read_artefact(self, path, filename):
-    data = None
-    filepath = os.path.join(path, filename)
-    if os.path.isfile(filepath):
-      standard.writeLog(self,"[read_artefact]: %s"%filepath)
-      with open(filepath,"rb") as f:
-          data = standard.pystr(f.read())
+  data = None
+  filepath = os.path.join(path, filename)
+  if os.path.isfile(filepath):
+    standard.writeLog(self,"[read_artefact]: %s"%filepath)
+    with open(filepath,"rb") as f:
+      data = f.read()
       try:
-          if isinstance(data, bytes):
-              data = data.decode('utf-8')
+        if isinstance(data, bytes):
+          data = data.decode('utf-8')
       except:
-          pass
+        pass
     return data
 
 

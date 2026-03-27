@@ -129,7 +129,7 @@ class ZMSRepositoryManager(
       return basepath
 
 
-    def remoteFiles(self, provider):
+    def get_modelfileset_from_disk(self, provider):
       """
       Retrieve remote files from a repository provider.
 
@@ -144,19 +144,19 @@ class ZMSRepositoryManager(
       @return: A list of remote files available from the provider
       @rtype: list
 
-      @see: L{repositoryutil.remoteFiles}
+      @see: L{repositoryutil.get_modelfileset_from_disk}
       @see: L{get_conf_basepath}
       """
-      standard.writeLog(self,"[remoteFiles]: provider=%s"%str(provider))
+      standard.writeLog(self,"[get_modelfileset_from_disk]: provider=%s"%str(provider))
       basepath = self.get_conf_basepath(provider.id)
-      return repositoryutil.remoteFiles(self, basepath)
+      return repositoryutil.get_modelfileset_from_disk(self, basepath)
 
 
-    def readRepository(self, provider):
+    def get_models_from_disk(self, provider):
       """
       Read repository data from a provider.
       
-      Implements the 'readRepository' interface. This method retrieves repository
+      Implements the 'get_models_from_disk' interface. This method retrieves repository
       information from the specified provider by reading the repository structure
       from the configured base path.
       
@@ -167,11 +167,11 @@ class ZMSRepositoryManager(
       @return: Repository data read from the provider's base path.
       @rtype: dict
     
-      @see: repositoryutil.readRepository()
+      @see: repositoryutil.get_models_from_disk()
       """
-      standard.writeLog(self,"[readRepository]: provider=%s"%str(provider))
+      standard.writeLog(self,"[get_models_from_disk]: provider=%s"%str(provider))
       basepath = self.get_conf_basepath(provider.id)
-      return repositoryutil.readRepository(self, basepath)
+      return repositoryutil.get_models_from_disk(self, basepath)
 
 
     def commitChanges(self, ids):
@@ -187,7 +187,7 @@ class ZMSRepositoryManager(
         for id in list(set([x.split(':')[1] for x in ids if x.split(':')[0]==provider_id])):
           try:
             # Read local-files from provider.
-            files = repositoryutil.localFiles(self, provider, [id])
+            files = repositoryutil.get_modelfileset_from_zodb(self, provider, [id])
             # Recreate folder.
             if os.path.exists(basepath):
               for name in os.listdir(basepath):
@@ -251,7 +251,7 @@ class ZMSRepositoryManager(
         provider = [x for x in providers if x.id == provider_id][0]
         # Read repositories for provider.
         if provider_id not in repositories:
-          repositories[provider_id] = self.readRepository(provider)
+          repositories[provider_id] = self.get_models_from_disk(provider)
         repository = repositories[provider_id]
         # Update.
         try:

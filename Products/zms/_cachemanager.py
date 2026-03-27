@@ -24,6 +24,7 @@ License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 # Imports.
+from AccessControl import ClassSecurityInfo
 from Products.zms import standard
 from zope.globalrequest import getRequest
 
@@ -37,6 +38,9 @@ class SharedBuff(object):
     This allows data persistence across different requests and users.
     """
 
+    security = ClassSecurityInfo()
+
+    security.declarePublic('get_cache_manager')
     def get_cache_manager(self, cache_id='zms_cache'):
         """
         Fetch the configured Zope Cache Manager.
@@ -52,22 +56,57 @@ class SharedBuff(object):
                 pass
         return None
 
+    security.declarePublic('fetchSharedBuff')
     def fetchSharedBuff(self, key):
         """Fetch a value from the shared global cache."""
         cache = self.get_cache_manager()
         if cache:
             # Note: keywords/view_name can be used for namespacing if needed.
-            standard.writeLog(None, 'SharedBuff: Fetching key "%s" from cache...' % key)
             return cache.ZCache_get(self, view_name='shared', keywords={'key': key})
         return None
 
+    security.declarePublic('storeSharedBuff')
     def storeSharedBuff(self, key, value):
         """Store a value in the shared global cache."""
         cache = self.get_cache_manager()
         if cache:
-            standard.writeLog(None, 'SharedBuff: Storing key "%s" in cache...' % key)
-            cache.ZCache_set(self, value, view_name='shared', keywords={'key': key})
+            # We use the DocumentElement (ZMS site root) as the context 
+            # to ensure the cache is shared globally across the entire site.
+            doc_element = self.getDocumentElement()
+            cache.ZCache_set(doc_element, value, view_name='', keywords={'key': key})
         return value
+
+    security.declarePublic('getSharedBuffJSON')
+    def getSharedBuffJSON(self):
+        """
+        Return the contents of the shared cache as a JSON-formatted string.
+        Leverages the internal tracking mechanism of mcdutils using the 
+        DocumentElement as the global context.
+        """
+        import json
+        cache = self.get_cache_manager()
+        data = {}
+        if cache:
+            # Always look at the DocumentElement's path for the global cache
+            doc_element = self.getDocumentElement()
+            path = '/'.join(doc_element.getPhysicalPath())
+            tracked_keys = cache.proxy.get(path)
+            
+            if tracked_keys:
+                for k in tracked_keys.keys():
+                    val = cache.proxy.get(k)
+                    data[str(k)] = str(val) if val is not None else "EXPIRED/NONE"
+            
+            if not data:
+                data = {
+                    'info': 'Global cache is empty.',
+                    'path_searched': path,
+                    'manager': str(cache)
+                }
+        else:
+            data = {'error': 'No cache manager found.'}
+            
+        return json.dumps(data, indent=2)
 
 
 class ReqBuff(object):
@@ -103,7 +142,7 @@ class ReqBuff(object):
       for key in list(buff.__dict__):
         if key.startswith(reqBuffId):
           delattr(buff, key)
-          standard.writeLog(None, 'ReqBuff: Cleared key "%s" from request buffer...' % key)
+          standard.writeStdout('ReqBuff: Cleared key "%s" from request buffer...' % key)
 
     def fetchReqBuff(self, key=None, REQUEST=None):
       """
@@ -120,7 +159,7 @@ class ReqBuff(object):
       buff = request['__buff__']
       reqBuffId = self.getReqBuffId(key)
       value = getattr(buff, reqBuffId)
-      standard.writeLog(None, 'ReqBuff: Fetched key "%s" from request buffer...' % key)
+      standard.writeStdout(None, 'ReqBuff: Fetched key "%s" from request buffer...' % key)
       return value
 
 

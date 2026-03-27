@@ -565,33 +565,44 @@ class ZReferableItem(object):
         i = max(url.find('#'),url.find(','))
         if i > 0:
           url = url[:i]
-        #-- [ReqBuff]: Fetch buffered value from Http-Request.
+        #-- [ReqBuff/SharedBuff]: Fetch buffered value.
         reqBuffId = 'getLinkObj.%s'%url
         try:
-          ob = self.getDocumentElement().fetchReqBuff(reqBuffId)
+          # Try Request-Local first.
+          ob = self.fetchReqBuff(reqBuffId)
         except:
-          if url.find('id:') >= 0:
-            catalog = self.getZMSIndex().get_catalog()
-            q = catalog({'get_uid':url})
-            for r in q:
-              path  = '%s/'%r['getPath']
+          # Try Shared Global Context if configured.
+          if hasattr(self, 'fetchSharedBuff'):
+            cached_path = self.fetchSharedBuff(reqBuffId)
+            if cached_path:
+               ob = self.unrestrictedTraverse(cached_path, None)
+
+          if ob is None:
+            if url.find('id:') >= 0:
+              catalog = self.getZMSIndex().get_catalog()
+              q = catalog({'get_uid':url})
+              for r in q:
+                path  = '%s/'%r['getPath']
+                l = [x for x in path.split('/') if x] 
+                ob = self.getRootElement()
+                if l:
+                  [l.pop(0) for x in ob.getPhysicalPath() if l[0] == x]
+                  for id in l:
+                    ob = getattr(ob,id,None)
+                break
+            elif not url.startswith('__'):
+              path = url.replace('@','/content/')
               l = [x for x in path.split('/') if x] 
-              ob = self.getRootElement()
+              ob = self.getDocumentElement()
               if l:
                 [l.pop(0) for x in ob.getPhysicalPath() if l[0] == x]
                 for id in l:
                   ob = getattr(ob,id,None)
-              break
-          elif not url.startswith('__'):
-            path = url.replace('@','/content/')
-            l = [x for x in path.split('/') if x] 
-            ob = self.getDocumentElement()
-            if l:
-              [l.pop(0) for x in ob.getPhysicalPath() if l[0] == x]
-              for id in l:
-                ob = getattr(ob,id,None)
-          #-- [ReqBuff]: Store value in buffer of Http-Request.
-          self.getDocumentElement().storeReqBuff(reqBuffId, ob)
+            
+            #-- [ReqBuff/SharedBuff]: Store value.
+            self.storeReqBuff(reqBuffId, ob)
+            if ob and hasattr(self, 'storeSharedBuff'):
+               self.storeSharedBuff(reqBuffId, '/'.join(ob.getPhysicalPath()))
       # Prepare request (only if ref_params are provided)
       if ob is not None and ref_params:
         ids = self.getPhysicalPath()

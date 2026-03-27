@@ -117,6 +117,7 @@ class ZMSObject(ZMSItem.ZMSItem,
   ZMSWorkflowItem.ZMSWorkflowItem,       # Workflow Item.
   _copysupport.CopySupport,              # Copy Support (Paste Objects).
   _cachemanager.ReqBuff,                 # Request Buffer (Cache).
+  _cachemanager.SharedBuff,              # Shared Buffer (Global Cache).
   _deprecatedapi.DeprecatedAPI,          # Deprecated API.
   _multilangmanager.MultiLanguageObject, # Multi-Language.
   _exportable.Exportable,                # XML Export.

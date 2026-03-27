@@ -31,6 +31,45 @@ class Buff(object):
   """Lightweight attribute container used for request-local buffering."""
   pass
 
+class SharedBuff(object):
+    """
+    Shared buffer helpers using a multi-user cache (RAM or Memcache).
+    This allows data persistence across different requests and users.
+    """
+
+    def get_cache_manager(self, cache_id='zms_cache'):
+        """
+        Fetch the configured Zope Cache Manager.
+        Expects a configuration property 'ZMS.cache.path' pointing to the 
+        manager (e.g., '/zms/my_ram_cache').
+        """
+        cache_path = self.getConfProperty('ZMS.cache.path', None)
+        if cache_path:
+            try:
+                manager = self.unrestrictedTraverse(cache_path)
+                return manager.ZCacheManager_getCache()
+            except:
+                pass
+        return None
+
+    def fetchSharedBuff(self, key):
+        """Fetch a value from the shared global cache."""
+        cache = self.get_cache_manager()
+        if cache:
+            # Note: keywords/view_name can be used for namespacing if needed.
+            standard.writeLog(None, 'SharedBuff: Fetching key "%s" from cache...' % key)
+            return cache.ZCache_get(self, view_name='shared', keywords={'key': key})
+        return None
+
+    def storeSharedBuff(self, key, value):
+        """Store a value in the shared global cache."""
+        cache = self.get_cache_manager()
+        if cache:
+            standard.writeLog(None, 'SharedBuff: Storing key "%s" in cache...' % key)
+            cache.ZCache_set(self, value, view_name='shared', keywords={'key': key})
+        return value
+
+
 class ReqBuff(object):
     """Request-scoped buffer helpers for expensive values computed during one request."""
 
@@ -64,7 +103,7 @@ class ReqBuff(object):
       for key in list(buff.__dict__):
         if key.startswith(reqBuffId):
           delattr(buff, key)
- 
+          standard.writeLog(None, 'ReqBuff: Cleared key "%s" from request buffer...' % key)
 
     def fetchReqBuff(self, key=None, REQUEST=None):
       """
@@ -80,7 +119,9 @@ class ReqBuff(object):
         return None   # request.get('__buff__',{})
       buff = request['__buff__']
       reqBuffId = self.getReqBuffId(key)
-      return getattr(buff, reqBuffId)
+      value = getattr(buff, reqBuffId)
+      standard.writeLog(None, 'ReqBuff: Fetched key "%s" from request buffer...' % key)
+      return value
 
 
     def storeReqBuff(self, key, value, REQUEST=None):

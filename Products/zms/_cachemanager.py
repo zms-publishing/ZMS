@@ -142,7 +142,7 @@ class ReqBuff(object):
       for key in list(buff.__dict__):
         if key.startswith(reqBuffId):
           delattr(buff, key)
-          standard.writeStdout('ReqBuff: Cleared key "%s" from request buffer...' % key)
+ 
 
     def fetchReqBuff(self, key=None, REQUEST=None):
       """
@@ -158,9 +158,7 @@ class ReqBuff(object):
         return None   # request.get('__buff__',{})
       buff = request['__buff__']
       reqBuffId = self.getReqBuffId(key)
-      value = getattr(buff, reqBuffId)
-      standard.writeStdout(None, 'ReqBuff: Fetched key "%s" from request buffer...' % key)
-      return value
+      return getattr(buff, reqBuffId)
 
 
     def storeReqBuff(self, key, value, REQUEST=None):

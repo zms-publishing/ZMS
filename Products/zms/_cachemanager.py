@@ -59,20 +59,21 @@ class SharedBuff(object):
     security.declarePublic('fetchSharedBuff')
     def fetchSharedBuff(self, key):
         """Fetch a value from the shared global cache."""
-        cache = self.get_cache_manager()
+        doc_element = self.getPortalMaster() or self.getDocumentElement()
+        cache = doc_element.get_cache_manager()
         if cache:
             # Note: keywords/view_name can be used for namespacing if needed.
-            return cache.ZCache_get(self, view_name='shared', keywords={'key': key})
+            return cache.ZCache_get(doc_element, view_name='shared', keywords={'key': key})
         return None
 
     security.declarePublic('storeSharedBuff')
     def storeSharedBuff(self, key, value):
         """Store a value in the shared global cache."""
-        cache = self.get_cache_manager()
+        doc_element = self.getPortalMaster() or self.getDocumentElement()
+        cache = doc_element.get_cache_manager()
         if cache:
             # We use the DocumentElement (ZMS site root) as the context 
             # to ensure the cache is shared globally across the entire site.
-            doc_element = self.getPortalMaster() or self.getDocumentElement()
             cache.ZCache_set(doc_element, value, view_name='shared', keywords={'key': key})
         return value
 

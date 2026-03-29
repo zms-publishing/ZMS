@@ -72,8 +72,8 @@ class SharedBuff(object):
         if cache:
             # We use the DocumentElement (ZMS site root) as the context 
             # to ensure the cache is shared globally across the entire site.
-            doc_element = self.getDocumentElement()
-            cache.ZCache_set(doc_element, value, view_name='', keywords={'key': key})
+            doc_element = self.getPortalMaster() or self.getDocumentElement()
+            cache.ZCache_set(doc_element, value, view_name='shared', keywords={'key': key})
         return value
 
     security.declarePublic('getSharedBuffJSON')
@@ -88,7 +88,7 @@ class SharedBuff(object):
         data = {}
         if cache:
             # Always look at the DocumentElement's path for the global cache
-            doc_element = self.getDocumentElement()
+            doc_element = self.getPortalMaster() or self.getDocumentElement()
             path = '/'.join(doc_element.getPhysicalPath())
             tracked_keys = cache.proxy.get(path)
             

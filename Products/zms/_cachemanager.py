@@ -59,7 +59,7 @@ class SharedBuff(object):
     security.declarePublic('fetchSharedBuff')
     def fetchSharedBuff(self, key):
         """Fetch a value from the shared global cache."""
-        doc_element = self.getPortalMaster() or self.getDocumentElement()
+        doc_element = self.getAbsoluteHome().content # or self.getPortalMaster() or self.getDocumentElement()
         cache = doc_element.get_cache_manager()
         if cache:
             # Note: keywords/view_name can be used for namespacing if needed.
@@ -69,7 +69,7 @@ class SharedBuff(object):
     security.declarePublic('storeSharedBuff')
     def storeSharedBuff(self, key, value):
         """Store a value in the shared global cache."""
-        doc_element = self.getPortalMaster() or self.getDocumentElement()
+        doc_element = self.getAbsoluteHome().content # or self.getPortalMaster() or self.getDocumentElement()
         cache = doc_element.get_cache_manager()
         if cache:
             # We use the DocumentElement (ZMS site root) as the context 
@@ -89,7 +89,7 @@ class SharedBuff(object):
         data = {}
         if cache:
             # Always look at the DocumentElement's path for the global cache
-            doc_element = self.getPortalMaster() or self.getDocumentElement()
+            doc_element = self.getAbsoluteHome().content # or self.getPortalMaster() or self.getDocumentElement()
             path = '/'.join(doc_element.getPhysicalPath())
             tracked_keys = cache.proxy.get(path)
             

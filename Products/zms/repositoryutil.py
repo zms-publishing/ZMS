@@ -226,7 +226,7 @@ def get_models_from_disk(self, basepath, deep=True):
                 and name.split('.')[-1] in ['py', 'yaml']:
               filedata = read_file_from_disk(self, path, name)
               d = parse_modelfile(self, path, name, filedata)
-              id = d.get('id',name)
+              id = d.get('id', path.split(os.sep)[-1])
               # For Python-style repository objects, 
               # convert nested class definitions to sorted lists of attribute dicts.
               if name.endswith('.py'):
@@ -295,15 +295,23 @@ def parse_modelfile(self, path, filename, data):
         # For .yaml files, parse the YAML content and extract the object definition.
         if filename.endswith('.yaml'):
             yaml = yamlutil.parse(data)
-            id = list(yaml.keys())[0]
-            d = yaml[id]
-            d['id'] = id
+            if not yaml or len(yaml) == 0 or list(yaml.keys())[0] is None or len(yaml.keys()) > 1:
+                # Invalid YAML structure: must contain exactly one top-level key representing the object ID.
+                d['id'] = path.split(os.sep)[-1]
+                d['name'] = path.split(os.sep)[-1]
+                d['revision'] = standard.writeError(self,"[get_modelfileset_from_disk.traverse]: can't analyze filepath=%s"%filepath)
+            else:
+                id = list(yaml.keys())[0]
+                d = yaml[id]
+                d['id'] = id
         # For .py files, execute the Python code to obtain the class definition 
         # and extract its attributes.
         elif filename.endswith('.py'):
             py = get_class(data)
             d = py.__dict__
     except:
+        d['id'] = path.split(os.sep)[-1]
+        d['name'] = path.split(os.sep)[-1]
         d['revision'] = standard.writeError(self,"[get_modelfileset_from_disk.traverse]: can't analyze filepath=%s"%filepath)
     return d
 

@@ -134,18 +134,19 @@ def get_modelfileset_from_disk(self, basepath, deep=True):
               # Get version from repository definition if available,
               # otherwise use file modification time.
               artefact = parse_modelfile(self, path, name, rd['data'])
+              obj_id = artefact.get('id', rd['filename'].split(os.sep)[0])
               rd['version'] = artefact.get("revision",rd['version'])
               # Read related file-resources. 
               for file in [x for x in names if x != name and not x.startswith('.')]:
                 filepath = os.path.join(path,file)
                 if os.path.isfile(filepath):
-                    rd = get_file_from_disk(self, base, path, file)
+                    rd = get_file_from_disk(self, base, path, file, id=obj_id)
                     r[rd['filename']] = rd
               initialized = True
         traverse(basepath,basepath)
     return r
 
-def get_file_from_disk(self, base, path, name):
+def get_file_from_disk(self, base, path, name, id=None):
     """Mid-level: Read a single file from disk and return a metadata record.
 
     Delegates to L{read_file_from_disk} for the actual I/O, then packages the
@@ -167,7 +168,7 @@ def get_file_from_disk(self, base, path, name):
     filepath = os.path.join(path, name)
     filedata = read_file_from_disk(self, path, name)
     d = {}
-    d['id'] = id
+    d['id'] = id or path[len(base)+1:].split(os.sep)[0] or name
     d['filename'] = filepath[len(base)+1:]
     d['data'] = filedata
     d['version'] = self.getLangFmtDate(os.path.getmtime(filepath),'eng')

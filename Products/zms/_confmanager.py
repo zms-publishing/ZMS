@@ -1017,7 +1017,8 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
       returns the ZMSSysConf object.
 
       @return: The ZMSSysConf object associated with the current instance.
-      @rtype: ZMSSysConf"""
+      @rtype: ZMSSysConf
+      """
       sys_conf = getattr(self,"sys_conf",None)
       if sys_conf is None:
         sys_conf = _conf.ZMSSysConf()

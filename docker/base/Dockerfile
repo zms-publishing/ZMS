@@ -1,4 +1,4 @@
-ARG BUILD_PYTHON_VERSION=3.12
+ARG BUILD_PYTHON_VERSION=3.14
 FROM python:$BUILD_PYTHON_VERSION
 ARG BUILD_PYTHON_VERSION
 
@@ -38,6 +38,7 @@ RUN \
         libfop-java \
         libldap2-dev \
         libsasl2-dev \
+        libxalan2-java \
         ttf-mscorefonts-installer \
         xalan \
         xsltproc

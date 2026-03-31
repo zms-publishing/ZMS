@@ -428,7 +428,8 @@ def get_modelfileset_from_zodb(self, provider, ids=None):
 
 
 def create_modelfileset(o, init_files):
-  """Mid-level: Build the complete set of file records for one model object.
+  """Mid-level: Build the complete set of file records for one model 
+  object from its ZODB representation.
 
   Given a ZODB model object dict C{o} and its pre-serialized init file
   content (from L{get_init_py} or L{get_init_yaml}), this function
@@ -543,6 +544,8 @@ def get_init_py(self, o):
   py.append('')
   e = sorted([x for x in o if not x.startswith('__') and x==x.capitalize() and isinstance(o[x], list)])
   keys = sorted([x for x in o if not x.startswith('__') and x not in e and x != 'readme'])
+  if 'ob' in keys and o.get('meta_type')=='process':
+    keys.remove('ob') # 'ob' is not serializable and will be handled separately in create_modelfileset_from_zodb
   for k in keys:
     v = o.get(k)
     py.append('\t# %s'%k.capitalize())

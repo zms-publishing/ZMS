@@ -5,6 +5,13 @@ zms_theme_basic:
   revision: 5.0.4
   type: ZMSLibrary
   Attrs:
+    - id: icon_clazz
+      name: Icon-Class (CSS)
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: constant
+      custom: far fa-object-group text-primary
     - id: preview
       name: Preview (250x174)
       mandatory: 0

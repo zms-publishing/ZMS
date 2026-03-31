@@ -9,6 +9,11 @@ ENV CI_COMMIT_SHA=$CI_COMMIT_SHA
 
 # Ensure all system packages are up to date
 ENV DEBIAN_FRONTEND=noninteractive
+RUN <<EOR
+    set -eux
+    sed -i 's/^Components: main$/Components: main contrib non-free non-free-firmware/' /etc/apt/sources.list.d/debian.sources
+EOR
+
 RUN \
     --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
@@ -22,8 +27,20 @@ RUN \
     --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     <<EOR
+    set -eux
+    echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | debconf-set-selections
     apt update
-    apt --yes install libldap2-dev libsasl2-dev git
+    apt --yes install \
+        docbook-xml \
+        docbook-xsl \
+        fop \
+        git \
+        libfop-java \
+        libldap2-dev \
+        libsasl2-dev \
+        ttf-mscorefonts-installer \
+        xalan \
+        xsltproc
 EOR
 
 # Drop root privileges

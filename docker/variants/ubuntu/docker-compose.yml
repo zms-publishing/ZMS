@@ -1,5 +1,5 @@
 x-instance-common: &instance_common
-  image: zms6:ubuntu
+  image: zms6:ubuntu26.04
   build:
     context: .
     dockerfile: ./dockerfile

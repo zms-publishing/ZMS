@@ -593,6 +593,8 @@ def get_init_yaml(self, o):
   id = o.get('id','?')
   attrs = sorted([x for x in o if not x.startswith('__') and x==x.capitalize() and isinstance(o[x], list)])
   keys = sorted([x for x in o if not x.startswith('__') and x not in ['id', 'readme'] and x not in attrs and not isinstance(o.get(x), Acquisition.ExplicitAcquisitionWrapper)])
+  if 'ob' in keys and o.get('meta_type')=='process':
+    keys.remove('ob') # 'ob' is not serializable and will be handled separately in create_modelfileset_from_zodb
   d = {}
   for k in keys:
     v = o.get(k)

@@ -131,6 +131,16 @@
         
 
         
+            <div class="itemName"><code><a href="#create_modelfileset" class="internal-link" title="zms.repositoryutil.create_modelfileset">create<wbr></wbr>_modelfileset</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
             <div class="itemName"><code><a href="#get_class" class="internal-link" title="zms.repositoryutil.get_class">get<wbr></wbr>_class</a></code>
             </div>
         
@@ -142,6 +152,16 @@
 
         
             <div class="itemName"><code><a href="#get_diffs" class="internal-link" title="zms.repositoryutil.get_diffs">get<wbr></wbr>_diffs</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#get_file_from_disk" class="internal-link" title="zms.repositoryutil.get_file_from_disk">get<wbr></wbr>_file<wbr></wbr>_from<wbr></wbr>_disk</a></code>
             </div>
         
 
@@ -171,6 +191,36 @@
         
 
         
+            <div class="itemName"><code><a href="#get_modelfileset_from_disk" class="internal-link" title="zms.repositoryutil.get_modelfileset_from_disk">get<wbr></wbr>_modelfileset<wbr></wbr>_from<wbr></wbr>_disk</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#get_modelfileset_from_zodb" class="internal-link" title="zms.repositoryutil.get_modelfileset_from_zodb">get<wbr></wbr>_modelfileset<wbr></wbr>_from<wbr></wbr>_zodb</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#get_models_from_disk" class="internal-link" title="zms.repositoryutil.get_models_from_disk">get<wbr></wbr>_models<wbr></wbr>_from<wbr></wbr>_disk</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
             <div class="itemName"><code><a href="#get_providers" class="internal-link" title="zms.repositoryutil.get_providers">get<wbr></wbr>_providers</a></code>
             </div>
         
@@ -191,7 +241,7 @@
         
 
         
-            <div class="itemName"><code><a href="#init_artefacts" class="internal-link" title="zms.repositoryutil.init_artefacts">init<wbr></wbr>_artefacts</a></code>
+            <div class="itemName"><code><a href="#parse_modelfile" class="internal-link" title="zms.repositoryutil.parse_modelfile">parse<wbr></wbr>_modelfile</a></code>
             </div>
         
 
@@ -201,7 +251,7 @@
         
 
         
-            <div class="itemName"><code><a href="#localFiles" class="internal-link" title="zms.repositoryutil.localFiles">local<wbr></wbr>Files</a></code>
+            <div class="itemName"><code><a href="#read_file_from_disk" class="internal-link" title="zms.repositoryutil.read_file_from_disk">read<wbr></wbr>_file<wbr></wbr>_from<wbr></wbr>_disk</a></code>
             </div>
         
 
@@ -211,27 +261,7 @@
         
 
         
-            <div class="itemName"><code><a href="#parseInit" class="internal-link" title="zms.repositoryutil.parseInit">parse<wbr></wbr>Init</a></code>
-            </div>
-        
-
-    </li><li class="">
-        
-        
-        
-
-        
-            <div class="itemName"><code><a href="#readRepository" class="internal-link" title="zms.repositoryutil.readRepository">read<wbr></wbr>Repository</a></code>
-            </div>
-        
-
-    </li><li class="">
-        
-        
-        
-
-        
-            <div class="itemName"><code><a href="#remoteFiles" class="internal-link" title="zms.repositoryutil.remoteFiles">remote<wbr></wbr>Files</a></code>
+            <div class="itemName"><code><a href="#value_data" class="internal-link" title="zms.repositoryutil.value_data">value<wbr></wbr>_data</a></code>
             </div>
         
 
@@ -1246,6 +1276,11 @@
   <tr class="function">
     
     <td>Function</td>
+    <td><code><a href="#create_modelfileset" class="internal-link" title="zms.repositoryutil.create_modelfileset">create<wbr></wbr>_modelfileset</a></code></td>
+    <td>Mid-level: Build the complete set of file records for one model object from its ZODB representation.</td>
+  </tr><tr class="function">
+    
+    <td>Function</td>
     <td><code><a href="#get_class" class="internal-link" title="zms.repositoryutil.get_class">get<wbr></wbr>_class</a></code></td>
     <td>Get class from py-string.</td>
   </tr><tr class="function">
@@ -1253,6 +1288,11 @@
     <td>Function</td>
     <td><code><a href="#get_diffs" class="internal-link" title="zms.repositoryutil.get_diffs">get<wbr></wbr>_diffs</a></code></td>
     <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="function">
+    
+    <td>Function</td>
+    <td><code><a href="#get_file_from_disk" class="internal-link" title="zms.repositoryutil.get_file_from_disk">get<wbr></wbr>_file<wbr></wbr>_from<wbr></wbr>_disk</a></code></td>
+    <td>Mid-level: Read a single file from disk and return a metadata record.</td>
   </tr><tr class="function">
     
     <td>Function</td>
@@ -1266,6 +1306,21 @@
   </tr><tr class="function">
     
     <td>Function</td>
+    <td><code><a href="#get_modelfileset_from_disk" class="internal-link" title="zms.repositoryutil.get_modelfileset_from_disk">get<wbr></wbr>_modelfileset<wbr></wbr>_from<wbr></wbr>_disk</a></code></td>
+    <td>High-level: Collect all model files from a filesystem repository path.</td>
+  </tr><tr class="function">
+    
+    <td>Function</td>
+    <td><code><a href="#get_modelfileset_from_zodb" class="internal-link" title="zms.repositoryutil.get_modelfileset_from_zodb">get<wbr></wbr>_modelfileset<wbr></wbr>_from<wbr></wbr>_zodb</a></code></td>
+    <td>High-level: Export model files from ZODB via a repository provider.</td>
+  </tr><tr class="function">
+    
+    <td>Function</td>
+    <td><code><a href="#get_models_from_disk" class="internal-link" title="zms.repositoryutil.get_models_from_disk">get<wbr></wbr>_models<wbr></wbr>_from<wbr></wbr>_disk</a></code></td>
+    <td>High-level: Load and parse all model definitions from a filesystem repository path.</td>
+  </tr><tr class="function">
+    
+    <td>Function</td>
     <td><code><a href="#get_providers" class="internal-link" title="zms.repositoryutil.get_providers">get<wbr></wbr>_providers</a></code></td>
     <td>Returns list of repository-providers.</td>
   </tr><tr class="function">
@@ -1276,28 +1331,18 @@
   </tr><tr class="function">
     
     <td>Function</td>
-    <td><code><a href="#init_artefacts" class="internal-link" title="zms.repositoryutil.init_artefacts">init<wbr></wbr>_artefacts</a></code></td>
-    <td>Generate a dictionary of initialization artefacts from the given object and initialization files.</td>
+    <td><code><a href="#parse_modelfile" class="internal-link" title="zms.repositoryutil.parse_modelfile">parse<wbr></wbr>_modelfile</a></code></td>
+    <td>Low-level: Parse in-memory model file contents into a model definition dict.</td>
   </tr><tr class="function">
     
     <td>Function</td>
-    <td><code><a href="#localFiles" class="internal-link" title="zms.repositoryutil.localFiles">local<wbr></wbr>Files</a></code></td>
-    <td>Read configuration data from ZMS-instance.</td>
+    <td><code><a href="#read_file_from_disk" class="internal-link" title="zms.repositoryutil.read_file_from_disk">read<wbr></wbr>_file<wbr></wbr>_from<wbr></wbr>_disk</a></code></td>
+    <td>Low-level: Read raw file contents from the filesystem.</td>
   </tr><tr class="function">
     
     <td>Function</td>
-    <td><code><a href="#parseInit" class="internal-link" title="zms.repositoryutil.parseInit">parse<wbr></wbr>Init</a></code></td>
-    <td>Read file and return data as string.</td>
-  </tr><tr class="function">
-    
-    <td>Function</td>
-    <td><code><a href="#readRepository" class="internal-link" title="zms.repositoryutil.readRepository">read<wbr></wbr>Repository</a></code></td>
-    <td>Read repository from filesystem base-path.</td>
-  </tr><tr class="function">
-    
-    <td>Function</td>
-    <td><code><a href="#remoteFiles" class="internal-link" title="zms.repositoryutil.remoteFiles">remote<wbr></wbr>Files</a></code></td>
-    <td>Read configuration data from filesystem base-path.</td>
+    <td><code><a href="#value_data" class="internal-link" title="zms.repositoryutil.value_data">value<wbr></wbr>_data</a></code></td>
+    <td>Helper function to resolve embedded attribute data from sibling resource files.</td>
   </tr><tr class="variable">
     
     <td>Variable</td>
@@ -1319,6 +1364,41 @@
           <div class="basefunction">
   
   
+  <a name="zms.repositoryutil.create_modelfileset">
+    
+  </a>
+  <a name="create_modelfileset">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">create_modelfileset</span><span class="function-signature">(o, init_files)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L430">
+      
+      (source)
+    </a>
+    <a class="headerLink" href="#create_modelfileset" title="zms.repositoryutil.create_modelfileset">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Mid-level: Build the complete set of file records for one model object from its ZODB representation.</p>
+<p>Given a ZODB model object dict <tt class="rst-docutils rst-literal">o</tt> and its pre-serialized init file content (from <code><a href="#get_init_py" class="internal-link" title="zms.repositoryutil.get_init_py">get_init_py</a></code> or <code><a href="#get_init_yaml" class="internal-link" title="zms.repositoryutil.get_init_yaml">get_init_yaml</a></code>), this function produces the full filename-to-metadata mapping that represents the object on disk.  The mapping includes:</p>
+<ul class="rst-simple">
+<li>The init file itself (<tt class="rst-docutils rst-literal">__init__.py</tt> or <tt class="rst-docutils rst-literal">__init__.yaml</tt>).</li>
+<li>Sibling resource files (templates, scripts, images) extracted from the object's attribute lists.</li>
+<li>A <tt class="rst-docutils rst-literal">readme.md</tt> sibling if the object carries a <tt class="rst-docutils rst-literal">readme</tt> field.</li>
+</ul>
+<p>Does <strong>not</strong> perform filesystem I/O — it operates purely on in-memory data.  Called by <code><a href="#get_modelfileset_from_zodb" class="internal-link" title="zms.repositoryutil.get_modelfileset_from_zodb">get_modelfileset_from_zodb</a></code> for each model object.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">o:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Repository object dict.  Expected keys include <tt class="rst-docutils rst-literal">id</tt>, <tt class="rst-docutils rst-literal">acquired</tt>, <tt class="rst-docutils rst-literal">__filename__</tt>, <tt class="rst-docutils rst-literal">__icon__</tt>, <tt class="rst-docutils rst-literal">__description__</tt>, <tt class="rst-docutils rst-literal">revision</tt>, and capitalized attribute-list keys.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">init<wbr></wbr>_files:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Pre-serialized init content grouped by format, e.g. <tt class="rst-docutils rst-literal">{'py': [line, <span class="pre">...]}</span></tt> or <tt class="rst-docutils rst-literal">{'yaml': [line, <span class="pre">...]}</span></tt>.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Mapping from generated filenames to file-record dicts, each containing <tt class="rst-docutils rst-literal">id</tt>, <tt class="rst-docutils rst-literal">filename</tt>, <tt class="rst-docutils rst-literal">data</tt>, <tt class="rst-docutils rst-literal">version</tt>, <tt class="rst-docutils rst-literal">meta_type</tt>.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">See Also</td></tr><tr><td colspan="2"><code><a href="#get_modelfileset_from_zodb" class="internal-link" title="zms.repositoryutil.get_modelfileset_from_zodb">get_modelfileset_from_zodb</a></code>, <code><a href="#get_init_py" class="internal-link" title="zms.repositoryutil.get_init_py">get_init_py</a></code>, <code><a href="#get_init_yaml" class="internal-link" title="zms.repositoryutil.get_init_yaml">get_init_yaml</a></code></td></tr></table></div>
+  </div>
+</div><div class="basefunction">
+  
+  
   <a name="zms.repositoryutil.get_class">
     
   </a>
@@ -1329,7 +1409,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_class</span><span class="function-signature">(py)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L66">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L72">
       
       (source)
     </a>
@@ -1343,7 +1423,7 @@
     
     <div><p>Get class from py-string.</p>
 <p>This function extracts the class definition from a given Python code string and executes it to return the defined class object. It uses regular expressions to identify the class name and then executes the code to obtain the class object.</p>
-</div>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">py:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">A string containing Python code that defines a class.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">type</tt></td><td class="fieldArgDesc">The class object defined in the input string.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1358,7 +1438,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_diffs</span><span class="function-signature">(local, remote, ignore=True)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L549">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L625">
       
       (source)
     </a>
@@ -1375,6 +1455,36 @@
 </div><div class="basefunction">
   
   
+  <a name="zms.repositoryutil.get_file_from_disk">
+    
+  </a>
+  <a name="get_file_from_disk">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">get_file_from_disk</span><span class="function-signature">(self, base, path, name, id=None)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L160">
+      
+      (source)
+    </a>
+    <a class="headerLink" href="#get_file_from_disk" title="zms.repositoryutil.get_file_from_disk">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Mid-level: Read a single file from disk and return a metadata record.</p>
+<p>Delegates to <code><a href="#read_file_from_disk" class="internal-link" title="zms.repositoryutil.read_file_from_disk">read_file_from_disk</a></code> for the actual I/O, then packages the result into a dict with <tt class="rst-docutils rst-literal">id</tt>, <tt class="rst-docutils rst-literal">filename</tt> (relative to <tt class="rst-docutils rst-literal">base</tt>), <tt class="rst-docutils rst-literal">data</tt>, and <tt class="rst-docutils rst-literal">version</tt> (file modification time).</p>
+<p>Called by <code><a href="#get_modelfileset_from_disk" class="internal-link" title="zms.repositoryutil.get_modelfileset_from_disk">get_modelfileset_from_disk</a></code>.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">base:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">The repository base path used to compute relative filenames.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">path:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">The directory containing the file.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">name:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">The filename to read.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Metadata record <tt class="rst-docutils rst-literal">{id, filename, data, version}</tt>.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">See Also</td></tr><tr><td colspan="2"><code><a href="#read_file_from_disk" class="internal-link" title="zms.repositoryutil.read_file_from_disk">read_file_from_disk</a></code></td></tr></table></div>
+  </div>
+</div><div class="basefunction">
+  
+  
   <a name="zms.repositoryutil.get_init_py">
     
   </a>
@@ -1385,7 +1495,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_init_py</span><span class="function-signature">(self, o)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L451">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L523">
       
       (source)
     </a>
@@ -1414,7 +1524,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_init_yaml</span><span class="function-signature">(self, o)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L501">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L575">
       
       (source)
     </a>
@@ -1429,6 +1539,125 @@
     <div><p>Serialize a Python object into a YAML-formatted string.</p>
 <p>This method processes a given object `o` and converts it into a YAML representation. It handles attributes and keys in the object, ensuring that non-serializable elements (e.g., Acquisition-Wrappers) are excluded.</p>
 <table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">The object context.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">o:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Input dictionary-like object to be serialized.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">YAML-formatted string representing the serialized object.</td></tr></table></div>
+  </div>
+</div><div class="basefunction">
+  
+  
+  <a name="zms.repositoryutil.get_modelfileset_from_disk">
+    
+  </a>
+  <a name="get_modelfileset_from_disk">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">get_modelfileset_from_disk</span><span class="function-signature">(self, basepath, deep=True)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L96">
+      
+      (source)
+    </a>
+    <a class="headerLink" href="#get_modelfileset_from_disk" title="zms.repositoryutil.get_modelfileset_from_disk">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>High-level: Collect all model files from a filesystem repository path.</p>
+<p>Recursively traverses the directory tree rooted at <tt class="rst-docutils rst-literal">basepath</tt> looking for repository object folders (identified by <tt class="rst-docutils rst-literal">__init__.py</tt> or <tt class="rst-docutils rst-literal">__init__.yaml</tt>).  For each folder found, the init file and all sibling resource files are read into metadata records.</p>
+<p>Delegates to:</p>
+<ul class="rst-simple">
+<li><code><a href="#get_file_from_disk" class="internal-link" title="zms.repositoryutil.get_file_from_disk">get_file_from_disk</a></code> — to read each individual file and build its metadata record <tt class="rst-docutils rst-literal">{id, filename, data, version}</tt>.</li>
+<li><code><a href="#parse_modelfile" class="internal-link" title="zms.repositoryutil.parse_modelfile">parse_modelfile</a></code> — to extract the revision from the init file's parsed object definition.</li>
+</ul>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">basepath:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">The root filesystem path to scan for repository objects. Must be an existing directory.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">deep:</span><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">If <tt class="rst-docutils rst-literal">True</tt>, recursively traverse subdirectories. If <tt class="rst-docutils rst-literal">False</tt>, only scan the root basepath directory. Defaults to <tt class="rst-docutils rst-literal">True</tt>.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc"><p>Dictionary mapping relative file paths to metadata dictionaries. Each metadata dictionary contains:</p>
+<ul class="rst-simple">
+<li><tt class="rst-docutils rst-literal">id</tt>: Object identifier from repository definition or filename</li>
+<li><tt class="rst-docutils rst-literal">filename</tt>: Relative path from basepath</li>
+<li><tt class="rst-docutils rst-literal">data</tt>: File content as string (for .yaml/.py) or bytes</li>
+<li><tt class="rst-docutils rst-literal">version</tt>: Revision from repository definition or file modification time</li>
+</ul>
+</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Raises</td></tr><tr><td class="fieldArgContainer"><code>IOError</code></td><td>If file read operations fail during traversal.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">See Also</td></tr><tr><td colspan="2"><code><a href="#get_file_from_disk" class="internal-link" title="zms.repositoryutil.get_file_from_disk">get_file_from_disk</a></code>, <code><a href="#parse_modelfile" class="internal-link" title="zms.repositoryutil.parse_modelfile">parse_modelfile</a></code></td></tr></table></div>
+  </div>
+</div><div class="basefunction">
+  
+  
+  <a name="zms.repositoryutil.get_modelfileset_from_zodb">
+    
+  </a>
+  <a name="get_modelfileset_from_zodb">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">get_modelfileset_from_zodb</span><span class="function-signature">(self, provider, ids=None)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L390">
+      
+      (source)
+    </a>
+    <a class="headerLink" href="#get_modelfileset_from_zodb" title="zms.repositoryutil.get_modelfileset_from_zodb">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>High-level: Export model files from ZODB via a repository provider.</p>
+<p>Queries the <tt class="rst-docutils rst-literal">provider</tt> for repository objects stored in the ZODB, then serializes each object into a set of filesystem-ready file records (init file + sibling resource files).</p>
+<p>This is the ZODB counterpart to <code><a href="#get_modelfileset_from_disk" class="internal-link" title="zms.repositoryutil.get_modelfileset_from_disk">get_modelfileset_from_disk</a></code>; both return the same <tt class="rst-docutils rst-literal">{filename: {{id, filename, data, version, <span class="pre">...}}}</span></tt> dict structure so that results can be compared with <code><a href="#get_diffs" class="internal-link" title="zms.repositoryutil.get_diffs">get_diffs</a></code>.</p>
+<p>Delegates to:</p>
+<ul class="rst-simple">
+<li><tt class="rst-docutils rst-literal">provider.provideRepository(ids)</tt> — to retrieve objects from ZODB.</li>
+<li><code><a href="#get_init_py" class="internal-link" title="zms.repositoryutil.get_init_py">get_init_py</a></code> / <code><a href="#get_init_yaml" class="internal-link" title="zms.repositoryutil.get_init_yaml">get_init_yaml</a></code> — to serialize objects into init file content (Python class or YAML).</li>
+<li><code><a href="#create_modelfileset" class="internal-link" title="zms.repositoryutil.create_modelfileset">create_modelfileset</a></code> — to build the filename-to-metadata mapping from the serialized init content and sibling resource objects.</li>
+</ul>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">provider:</span><tt class="rst-docutils rst-literal">IZMSRepositoryProvider</tt></td><td class="fieldArgDesc">A repository provider implementing <tt class="rst-docutils rst-literal">IZMSRepositoryProvider.provideRepository()</tt>.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">ids:</span><tt class="rst-docutils rst-literal">list</tt> or <tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc">Optional list of object IDs to export. If <tt class="rst-docutils rst-literal">None</tt>, all objects from the provider are exported.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Dictionary mapping filenames to metadata records.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">See Also</td></tr><tr><td colspan="2"><code><a href="#get_modelfileset_from_disk" class="internal-link" title="zms.repositoryutil.get_modelfileset_from_disk">get_modelfileset_from_disk</a></code>, <code><a href="#create_modelfileset" class="internal-link" title="zms.repositoryutil.create_modelfileset">create_modelfileset</a></code>, <code><a href="#get_init_py" class="internal-link" title="zms.repositoryutil.get_init_py">get_init_py</a></code>, <code><a href="#get_init_yaml" class="internal-link" title="zms.repositoryutil.get_init_yaml">get_init_yaml</a></code></td></tr></table></div>
+  </div>
+</div><div class="basefunction">
+  
+  
+  <a name="zms.repositoryutil.get_models_from_disk">
+    
+  </a>
+  <a name="get_models_from_disk">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">get_models_from_disk</span><span class="function-signature">(self, basepath, deep=True)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L190">
+      
+      (source)
+    </a>
+    <a class="headerLink" href="#get_models_from_disk" title="zms.repositoryutil.get_models_from_disk">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>High-level: Load and parse all model definitions from a filesystem repository path.</p>
+<p>Traverses the directory tree rooted at <tt class="rst-docutils rst-literal">basepath</tt>, reads each init file (<tt class="rst-docutils rst-literal">__init__.py</tt> / <tt class="rst-docutils rst-literal">__init__.yaml</tt>), parses it into a structured model definition, and resolves embedded attribute data from sibling resource files.</p>
+<p>Unlike <code><a href="#get_modelfileset_from_disk" class="internal-link" title="zms.repositoryutil.get_modelfileset_from_disk">get_modelfileset_from_disk</a></code> (which returns raw file records), this function returns fully parsed model objects keyed by object ID.</p>
+<p>Delegates to:</p>
+<ul class="rst-simple">
+<li><code><a href="#read_file_from_disk" class="internal-link" title="zms.repositoryutil.read_file_from_disk">read_file_from_disk</a></code> — low-level file I/O for init and readme files.</li>
+<li><code><a href="#parse_modelfile" class="internal-link" title="zms.repositoryutil.parse_modelfile">parse_modelfile</a></code> — to parse the init file contents into a model dict.</li>
+<li><code><a href="#value_data" class="internal-link" title="zms.repositoryutil.value_data">value_data</a></code> — to resolve embedded attribute data from sibling files.</li>
+</ul>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">basepath:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">The root filesystem path from which to read the repository. Must be an existing directory.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">deep:</span><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">If <tt class="rst-docutils rst-literal">True</tt>, recursively traverse subdirectories. If <tt class="rst-docutils rst-literal">False</tt>, only process the top-level directory (level 0). Defaults to <tt class="rst-docutils rst-literal">True</tt>.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc"><p>Dictionary mapping repository object IDs to their parsed metadata. Each entry contains:</p>
+<ul class="rst-simple">
+<li>For Python objects: class attributes (excluding those starting with '__') with nested class definitions converted to sorted lists of attribute dicts</li>
+<li>For YAML objects: parsed YAML structure with resolved 'id' field</li>
+<li>Both formats: 'data' field populated for sibling resource files matching object IDs, and 'readme' field if readme.md exists in the directory</li>
+</ul>
+</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">See Also</td></tr><tr><td colspan="2"><code><a href="#get_modelfileset_from_disk" class="internal-link" title="zms.repositoryutil.get_modelfileset_from_disk">get_modelfileset_from_disk</a></code>, <code><a href="#read_file_from_disk" class="internal-link" title="zms.repositoryutil.read_file_from_disk">read_file_from_disk</a></code>, <code><a href="#parse_modelfile" class="internal-link" title="zms.repositoryutil.parse_modelfile">parse_modelfile</a></code>, <code><a href="#value_data" class="internal-link" title="zms.repositoryutil.value_data">value_data</a></code></td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1455,7 +1684,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Returns list of repository-providers.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">The object context.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">List of repository-providers.</td></tr></table></div>
+    <div><p>Returns list of repository-providers.</p>
+<p>These are collected by traversing the ZMS object tree starting from the document element and checking for objects that provide the IZMSRepositoryProvider interface. The traversal also includes objects that provide the IZMSConfigurationProvider interface, allowing for nested configurations that may contain additional repository providers.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">The object context.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">List of repository-providers.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1487,21 +1718,21 @@
 </div><div class="basefunction">
   
   
-  <a name="zms.repositoryutil.init_artefacts">
+  <a name="zms.repositoryutil.parse_modelfile">
     
   </a>
-  <a name="init_artefacts">
+  <a name="parse_modelfile">
     
   </a>
   <div class="functionHeader">
     
     
-    <span class="py-keyword">def</span> <span class="py-defname">init_artefacts</span><span class="function-signature">(o, init_files)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L350">
+    <span class="py-keyword">def</span> <span class="py-defname">parse_modelfile</span><span class="function-signature">(self, path, filename, data)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L305">
       
       (source)
     </a>
-    <a class="headerLink" href="#init_artefacts" title="zms.repositoryutil.init_artefacts">
+    <a class="headerLink" href="#parse_modelfile" title="zms.repositoryutil.parse_modelfile">
       
       
       ¶
@@ -1509,47 +1740,34 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Generate a dictionary of initialization artefacts from the given object and initialization files.</p>
-<p>The input object <em>o</em> is expected to have certain keys and structure, and the function processes this object to create a mapping of filenames to their corresponding data and metadata. The initialization files are provided as a dictionary where the key is the format (e.g., 'py' or 'yaml') and the value is a list of strings representing the content of the initialization file. It may contain:</p>
+    <div><p>Low-level: Parse in-memory model file contents into a model definition dict.</p>
+<p>Interprets the <tt class="rst-docutils rst-literal">data</tt> string (previously read by <code><a href="#read_file_from_disk" class="internal-link" title="zms.repositoryutil.read_file_from_disk">read_file_from_disk</a></code>) according to the file extension:</p>
 <ul class="rst-simple">
-<li><em>id</em>: The identifier of the object.</li>
-<li><em>acquired</em>: A flag indicating if the object is acquired (0 or 1).</li>
-<li><em>__filename__</em>: A list representing the filename structure.</li>
-<li><em>__icon__</em>: An optional icon for the object.</li>
-<li><em>__description__</em>: An optional description for the object.</li>
-<li><em>revision</em>: A version string in the format "0.0.0".</li>
-<li>Other keys representing attributes, where capitalized keys with list values are processed.</li>
+<li><tt class="rst-docutils rst-literal">.yaml</tt>: parsed via <code><a href="zms.yamlutil.html#parse" class="internal-link" title="zms.yamlutil.parse">yamlutil.parse</a></code> into a dict keyed by object ID.</li>
+<li><tt class="rst-docutils rst-literal">.py</tt>: executed via <code><a href="#get_class" class="internal-link" title="zms.repositoryutil.get_class">get_class</a></code> to extract the class <tt class="rst-docutils rst-literal">__dict__</tt>.</li>
 </ul>
-<p>The <em>initFiles</em> (dict) is a dictionary where keys are formats (e.g., 'py') and values are lists of strings representing the initialization data for each format. The return value is a dictionary where keys are filenames and values are dictionaries containing:</p>
-<ul class="rst-simple">
-<li><em>id</em>: The identifier of the object.</li>
-<li><em>filename</em>: The full path of the file.</li>
-<li><em>data</em>: The content of the file.</li>
-<li><em>version</em>: The version of the file as a list of integers.</li>
-<li><em>meta_type</em>: The meta type of the object (e.g., 'Script (Python)').</li>
-<li><em>__icon__</em>: The icon of the object (if provided).</li>
-<li><em>__description__</em>: The description of the object (if provided).</li>
-</ul>
-<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">o:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Dictionary representing the repository object.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">init<wbr></wbr>_files:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Initialization content grouped by format, for example <tt class="rst-docutils rst-literal">{'py': <span class="pre">[...]}</span></tt> or <tt class="rst-docutils rst-literal">{'yaml': <span class="pre">[...]}</span></tt>.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Mapping from generated filenames to artefact dictionaries with metadata and file content.</td></tr></table></div>
+<p>Does <strong>not</strong> perform any filesystem I/O — it operates solely on the <tt class="rst-docutils rst-literal">data</tt> parameter.</p>
+<p>Called by <code><a href="#get_modelfileset_from_disk" class="internal-link" title="zms.repositoryutil.get_modelfileset_from_disk">get_modelfileset_from_disk</a></code> and <code><a href="#get_models_from_disk" class="internal-link" title="zms.repositoryutil.get_models_from_disk">get_models_from_disk</a></code>.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">path:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Directory path (used only for error messages).</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">filename:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Filename including extension (determines parse strategy).</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">data:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">The file contents to parse (text string).</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Parsed model definition dict; on error contains a <tt class="rst-docutils rst-literal">revision</tt> key with the error message.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">See Also</td></tr><tr><td colspan="2"><code><a href="#read_file_from_disk" class="internal-link" title="zms.repositoryutil.read_file_from_disk">read_file_from_disk</a></code>, <code><a href="#get_class" class="internal-link" title="zms.repositoryutil.get_class">get_class</a></code>, <code><a href="zms.yamlutil.html#parse" class="internal-link" title="zms.yamlutil.parse">yamlutil.parse</a></code></td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
   
-  <a name="zms.repositoryutil.localFiles">
+  <a name="zms.repositoryutil.read_file_from_disk">
     
   </a>
-  <a name="localFiles">
+  <a name="read_file_from_disk">
     
   </a>
   <div class="functionHeader">
     
     
-    <span class="py-keyword">def</span> <span class="py-defname">localFiles</span><span class="function-signature">(self, provider, ids=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L318">
+    <span class="py-keyword">def</span> <span class="py-defname">read_file_from_disk</span><span class="function-signature">(self, path, filename)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L356">
       
       (source)
     </a>
-    <a class="headerLink" href="#localFiles" title="zms.repositoryutil.localFiles">
+    <a class="headerLink" href="#read_file_from_disk" title="zms.repositoryutil.read_file_from_disk">
       
       
       ¶
@@ -1557,28 +1775,29 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Read configuration data from ZMS-instance.</p>
-<p>This function retrieves configuration data from a ZMS instance using a provided repository provider. It processes the retrieved data to generate a dictionary of initialization artefacts, which includes metadata and file content for each repository object. The function supports both Python and YAML formats for the initialization.</p>
-<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">The object context.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">provider:</span><tt class="rst-docutils rst-literal">IZMSRepositoryProvider</tt></td><td class="fieldArgDesc">An object that provides configuration data, expected to implement the <em>provideRepository</em> method.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">ids:</span><tt class="rst-docutils rst-literal">list</tt> or <tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc">Optional list of identifiers to specify which configuration objects to retrieve. If None, all objects are retrieved.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">A dictionary mapping filenames to their corresponding data and metadata, generated from the configuration objects provided by the configuration provider.</td></tr></table></div>
+    <div><p>Low-level: Read raw file contents from the filesystem.</p>
+<p>Opens the file at <tt class="rst-docutils rst-literal">path/filename</tt> in binary mode and attempts UTF-8 decoding.  Returns <tt class="rst-docutils rst-literal">str</tt> if decodable, raw <tt class="rst-docutils rst-literal">bytes</tt> otherwise, or <tt class="rst-docutils rst-literal">None</tt> if the file does not exist.</p>
+<p>This is the lowest-level I/O helper in the repository utilities. Called by <code><a href="#get_file_from_disk" class="internal-link" title="zms.repositoryutil.get_file_from_disk">get_file_from_disk</a></code>, <code><a href="#get_models_from_disk" class="internal-link" title="zms.repositoryutil.get_models_from_disk">get_models_from_disk</a></code>, <code><a href="#value_data" class="internal-link" title="zms.repositoryutil.value_data">value_data</a></code>, and any other function needing raw file contents.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">path:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Directory containing the file.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">filename:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Name of the file to read.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt> or <tt class="rst-docutils rst-literal">bytes</tt> or <tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc">File contents as <tt class="rst-docutils rst-literal">str</tt> (UTF-8) or <tt class="rst-docutils rst-literal">bytes</tt>, or <tt class="rst-docutils rst-literal">None</tt> if the file does not exist.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
   
-  <a name="zms.repositoryutil.parseInit">
+  <a name="zms.repositoryutil.value_data">
     
   </a>
-  <a name="parseInit">
+  <a name="value_data">
     
   </a>
   <div class="functionHeader">
     
     
-    <span class="py-keyword">def</span> <span class="py-defname">parseInit</span><span class="function-signature">(self, filepath)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L84">
+    <span class="py-keyword">def</span> <span class="py-defname">value_data</span><span class="function-signature">(self, vv, names, path, file)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L273">
       
       (source)
     </a>
-    <a class="headerLink" href="#parseInit" title="zms.repositoryutil.parseInit">
+    <a class="headerLink" href="#value_data" title="zms.repositoryutil.value_data">
       
       
       ¶
@@ -1586,78 +1805,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Read file and return data as string.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">The object context.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">filepath:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">The path to the file to be read.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">The content of the file as a string.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Raises</td></tr><tr><td class="fieldArgContainer"><code>IOError</code></td><td>If the file cannot be read.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Note</td></tr><tr><td colspan="2">Logging is performed via <code><a href="zms.standard.html#writeLog" class="internal-link" title="zms.standard.writeLog">standard.writeLog()</a></code> for debugging purposes.</td></tr></table></div>
-  </div>
-</div><div class="basefunction">
-  
-  
-  <a name="zms.repositoryutil.readRepository">
-    
-  </a>
-  <a name="readRepository">
-    
-  </a>
-  <div class="functionHeader">
-    
-    
-    <span class="py-keyword">def</span> <span class="py-defname">readRepository</span><span class="function-signature">(self, basepath, deep=True)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L183">
-      
-      (source)
-    </a>
-    <a class="headerLink" href="#readRepository" title="zms.repositoryutil.readRepository">
-      
-      
-      ¶
-    </a>
-  </div>
-  <div class="docstring functionBody">
-    
-    <div><p>Read repository from filesystem base-path.</p>
-<p>Read repository structure from filesystem and parse repository objects. This function traverses a filesystem directory structure to discover and parse repository object definitions. It supports both Python-style (__init__.py) and YAML-style (__init__.yaml) repository object representations.</p>
-<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">basepath:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">The root filesystem path from which to read the repository. Must be an existing directory.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">deep:</span><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">If <tt class="rst-docutils rst-literal">True</tt>, recursively traverse subdirectories. If <tt class="rst-docutils rst-literal">False</tt>, only process the top-level directory (level 0). Defaults to <tt class="rst-docutils rst-literal">True</tt>.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc"><p>Dictionary mapping repository object IDs to their parsed metadata. Each entry contains:</p>
-<ul class="rst-simple">
-<li>For Python objects: class attributes (excluding those starting with '__') with nested class definitions converted to sorted lists of attribute dicts</li>
-<li>For YAML objects: parsed YAML structure with resolved 'id' field</li>
-<li>Both formats: 'data' field populated for artefacts (binary files) matching object IDs, and 'readme' field if readme.md exists in the directory</li>
-</ul>
-</td></tr></table></div>
-  </div>
-</div><div class="basefunction">
-  
-  
-  <a name="zms.repositoryutil.remoteFiles">
-    
-  </a>
-  <a name="remoteFiles">
-    
-  </a>
-  <div class="functionHeader">
-    
-    
-    <span class="py-keyword">def</span> <span class="py-defname">remoteFiles</span><span class="function-signature">(self, basepath, deep=True)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/repositoryutil.py#L103">
-      
-      (source)
-    </a>
-    <a class="headerLink" href="#remoteFiles" title="zms.repositoryutil.remoteFiles">
-      
-      
-      ¶
-    </a>
-  </div>
-  <div class="docstring functionBody">
-    
-    <div><p>Read configuration data from filesystem base-path.</p>
-<p>This function recursively traverses a directory structure to locate and parse repository object definitions stored as YAML or Python files. Files matching the pattern <tt class="rst-docutils rst-literal"><span class="pre">__*.(__yaml|.py)</span></tt> are treated as repository object definitions. Associated artefacts (non-hidden files in the same directory) are collected as related resources.</p>
-<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">basepath:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">The root filesystem path to scan for repository objects. Must be an existing directory.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">deep:</span><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">If <tt class="rst-docutils rst-literal">True</tt>, recursively traverse subdirectories. If <tt class="rst-docutils rst-literal">False</tt>, only scan the root basepath directory. Defaults to <tt class="rst-docutils rst-literal">True</tt>.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc"><p>Dictionary mapping relative file paths to metadata dictionaries. Each metadata dictionary contains:</p>
-<ul class="rst-simple">
-<li><tt class="rst-docutils rst-literal">id</tt>: Object identifier from repository definition or filename</li>
-<li><tt class="rst-docutils rst-literal">filename</tt>: Relative path from basepath</li>
-<li><tt class="rst-docutils rst-literal">data</tt>: File content as string (for .yaml/.py) or bytes (for artefacts)</li>
-<li><tt class="rst-docutils rst-literal">version</tt>: Revision from repository definition or file modification time</li>
-</ul>
-</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Raises</td></tr><tr><td class="fieldArgContainer"><code>IOError</code></td><td>If file read operations fail during traversal.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Notes</td></tr><tr><td colspan="2">Logging is performed via <code><a href="zms.standard.html#writeLog" class="internal-link" title="zms.standard.writeLog">standard.writeLog()</a></code> for debugging purposes.</td></tr><tr><td colspan="2">Hidden files (starting with '.') such as <tt class="rst-docutils rst-literal">.DS_Store</tt> are excluded from artefact processing.</td></tr></table></div>
+    <div><p>Helper function to resolve embedded attribute data from sibling resource files.</p>
+<p>For a given attribute value <tt class="rst-docutils rst-literal">vv</tt> (which may be a dict representing an object reference), this function checks if it contains an 'id' field that matches any of the sibling files in the same directory. If a match is found, it reads the corresponding file content and assigns it to the 'data' field of <tt class="rst-docutils rst-literal">vv</tt>. This allows repository definitions to reference external resource files by ID, which are then loaded and included in the final model representation.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">The object context.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">vv:</span><tt class="rst-docutils rst-literal">any</tt></td><td class="fieldArgDesc">The attribute value to check for embedded data references.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">names:</span><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">List of sibling filenames in the same directory as the repository object.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">path:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">The directory path where the repository object is located.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">file:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">The filename of the repository object's init file (used for error messages).</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">any</tt></td><td class="fieldArgDesc">The original attribute value <tt class="rst-docutils rst-literal">vv</tt> with an added 'data' field if a matching file was found and read.</td></tr></table></div>
   </div>
 </div><div class="basevariable">
   

@@ -171,6 +171,26 @@
         
 
         
+            <div class="itemName"><code><a href="#get_modelfileset_from_disk" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.get_modelfileset_from_disk">get<wbr></wbr>_modelfileset<wbr></wbr>_from<wbr></wbr>_disk</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#get_models_from_disk" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.get_models_from_disk">get<wbr></wbr>_models<wbr></wbr>_from<wbr></wbr>_disk</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
             <div class="itemName"><code><a href="#get_update_direction" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.get_update_direction">get<wbr></wbr>_update<wbr></wbr>_direction</a></code>
             </div>
         
@@ -202,26 +222,6 @@
 
         
             <div class="itemName"><code><a href="#manage_sub_options" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.manage_sub_options">manage<wbr></wbr>_sub<wbr></wbr>_options</a></code>
-            </div>
-        
-
-    </li><li class="">
-        
-        
-        
-
-        
-            <div class="itemName"><code><a href="#readRepository" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.readRepository">read<wbr></wbr>Repository</a></code>
-            </div>
-        
-
-    </li><li class="">
-        
-        
-        
-
-        
-            <div class="itemName"><code><a href="#remoteFiles" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.remoteFiles">remote<wbr></wbr>Files</a></code>
             </div>
         
 
@@ -467,6 +467,16 @@
   </tr><tr class="method">
     
     <td>Method</td>
+    <td><code><a href="#get_modelfileset_from_disk" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.get_modelfileset_from_disk">get<wbr></wbr>_modelfileset<wbr></wbr>_from<wbr></wbr>_disk</a></code></td>
+    <td>Retrieve remote files from a repository provider.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#get_models_from_disk" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.get_models_from_disk">get<wbr></wbr>_models<wbr></wbr>_from<wbr></wbr>_disk</a></code></td>
+    <td>Read repository data from a provider.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
     <td><code><a href="#get_update_direction" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.get_update_direction">get<wbr></wbr>_update<wbr></wbr>_direction</a></code></td>
     <td>Returns direction of copying config files: Loading from file system (coloring ZMS changes) vs. Saving to file system (coloring filesystem changes)</td>
   </tr><tr class="method">
@@ -484,16 +494,6 @@
     <td>Method</td>
     <td><code><a href="#manage_sub_options" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.manage_sub_options">manage<wbr></wbr>_sub<wbr></wbr>_options</a></code></td>
     <td>Handle the ZMI action 'manage_sub_options'.</td>
-  </tr><tr class="method">
-    
-    <td>Method</td>
-    <td><code><a href="#readRepository" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.readRepository">read<wbr></wbr>Repository</a></code></td>
-    <td>Read repository data from a provider.</td>
-  </tr><tr class="method">
-    
-    <td>Method</td>
-    <td><code><a href="#remoteFiles" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.remoteFiles">remote<wbr></wbr>Files</a></code></td>
-    <td>Retrieve remote files from a repository provider.</td>
   </tr><tr class="method">
     
     <td>Method</td>
@@ -673,6 +673,64 @@
 </div><div class="basemethod">
   
   
+  <a name="zms.ZMSRepositoryManager.ZMSRepositoryManager.get_modelfileset_from_disk">
+    
+  </a>
+  <a name="get_modelfileset_from_disk">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">get_modelfileset_from_disk</span><span class="function-signature">(self, provider)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSRepositoryManager.py#L132">
+      
+      (source)
+    </a>
+    <a class="headerLink" href="#get_modelfileset_from_disk" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.get_modelfileset_from_disk">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Retrieve remote files from a repository provider.</p>
+<p>This method retrieves a list of remote files from the specified provider by constructing the base path configuration and delegating to the repository utility function.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">provider:</span>object</td><td class="fieldArgDesc">The repository provider object containing configuration and connection details for accessing remote files</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer">list</td><td class="fieldArgDesc">A list of remote files available from the provider</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">See Also</td></tr><tr><td colspan="2"><code><a href="zms.repositoryutil.html#get_modelfileset_from_disk" class="internal-link" title="zms.repositoryutil.get_modelfileset_from_disk">repositoryutil.get_modelfileset_from_disk</a></code></td></tr><tr><td colspan="2"><code><a href="#get_conf_basepath" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.get_conf_basepath">get_conf_basepath</a></code></td></tr></table></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms.ZMSRepositoryManager.ZMSRepositoryManager.get_models_from_disk">
+    
+  </a>
+  <a name="get_models_from_disk">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">get_models_from_disk</span><span class="function-signature">(self, provider)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSRepositoryManager.py#L155">
+      
+      (source)
+    </a>
+    <a class="headerLink" href="#get_models_from_disk" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.get_models_from_disk">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Read repository data from a provider.</p>
+<p>Implements the 'get_models_from_disk' interface. This method retrieves repository information from the specified provider by reading the repository structure from the configured base path.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">provider:</span>Provider</td><td class="fieldArgDesc">The provider object from which to read the repository. Must have an 'id' attribute.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer">dict</td><td class="fieldArgDesc">Repository data read from the provider's base path.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">See Also</td></tr><tr><td colspan="2">repositoryutil.get_models_from_disk()</td></tr></table></div>
+  </div>
+</div><div class="basemethod">
+  
+  
   <a name="zms.ZMSRepositoryManager.ZMSRepositoryManager.get_update_direction">
     
   </a>
@@ -786,64 +844,6 @@
   <div class="docstring functionBody">
     
     <div><p>Handle the ZMI action 'manage_sub_options'.</p></div>
-  </div>
-</div><div class="basemethod">
-  
-  
-  <a name="zms.ZMSRepositoryManager.ZMSRepositoryManager.readRepository">
-    
-  </a>
-  <a name="readRepository">
-    
-  </a>
-  <div class="functionHeader">
-    
-    
-    <span class="py-keyword">def</span> <span class="py-defname">readRepository</span><span class="function-signature">(self, provider)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSRepositoryManager.py#L155">
-      
-      (source)
-    </a>
-    <a class="headerLink" href="#readRepository" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.readRepository">
-      
-      
-      ¶
-    </a>
-  </div>
-  <div class="docstring functionBody">
-    
-    <div><p>Read repository data from a provider.</p>
-<p>Implements the 'readRepository' interface. This method retrieves repository information from the specified provider by reading the repository structure from the configured base path.</p>
-<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">provider:</span>Provider</td><td class="fieldArgDesc">The provider object from which to read the repository. Must have an 'id' attribute.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer">dict</td><td class="fieldArgDesc">Repository data read from the provider's base path.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">See Also</td></tr><tr><td colspan="2">repositoryutil.readRepository()</td></tr></table></div>
-  </div>
-</div><div class="basemethod">
-  
-  
-  <a name="zms.ZMSRepositoryManager.ZMSRepositoryManager.remoteFiles">
-    
-  </a>
-  <a name="remoteFiles">
-    
-  </a>
-  <div class="functionHeader">
-    
-    
-    <span class="py-keyword">def</span> <span class="py-defname">remoteFiles</span><span class="function-signature">(self, provider)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSRepositoryManager.py#L132">
-      
-      (source)
-    </a>
-    <a class="headerLink" href="#remoteFiles" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.remoteFiles">
-      
-      
-      ¶
-    </a>
-  </div>
-  <div class="docstring functionBody">
-    
-    <div><p>Retrieve remote files from a repository provider.</p>
-<p>This method retrieves a list of remote files from the specified provider by constructing the base path configuration and delegating to the repository utility function.</p>
-<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">provider:</span>object</td><td class="fieldArgDesc">The repository provider object containing configuration and connection details for accessing remote files</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer">list</td><td class="fieldArgDesc">A list of remote files available from the provider</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">See Also</td></tr><tr><td colspan="2"><code><a href="zms.repositoryutil.html#remoteFiles" class="internal-link" title="zms.repositoryutil.remoteFiles">repositoryutil.remoteFiles</a></code></td></tr><tr><td colspan="2"><code><a href="#get_conf_basepath" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.get_conf_basepath">get_conf_basepath</a></code></td></tr></table></div>
   </div>
 </div><div class="basemethod">
   

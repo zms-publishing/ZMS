@@ -48,6 +48,13 @@ security.declarePublic('get_providers')
 def get_providers(self):
   """
   Returns list of repository-providers.
+  
+  These are collected by traversing the ZMS object tree starting from the 
+  document element and checking for objects that provide the 
+  IZMSRepositoryProvider interface. The traversal also includes objects 
+  that provide the IZMSConfigurationProvider interface, allowing for 
+  nested configurations that may contain additional repository providers.
+
   @param self: The object context.
   @type self: C{object}
   @return: List of repository-providers.
@@ -62,7 +69,6 @@ def get_providers(self):
   return get_repo_providers(self.getDocumentElement())
 
 
-
 def get_class(py):
   """
   Get class from py-string.
@@ -70,6 +76,11 @@ def get_class(py):
   This function extracts the class definition from a given Python code string 
   and executes it to return the defined class object. It uses regular expressions 
   to identify the class name and then executes the code to obtain the class object.
+
+  @param py: A string containing Python code that defines a class.
+  @type py: C{str}
+  @return: The class object defined in the input string.
+  @rtype: C{type}
   """
   id = re.findall(r'class (.*?):', py)[0]
   if sys.version_info >= (3, 13):
@@ -81,34 +92,22 @@ def get_class(py):
     return eval(id)
 
 
-def parseInit(self, filepath):
+security.declarePublic('get_modelfileset_from_disk')
+def get_modelfileset_from_disk(self, basepath, deep=True):
     """
-    Read file and return data as string.
-    @param self: The object context.
-    @type self: C{object}
-    @param filepath: The path to the file to be read.
-    @type filepath: C{str}
-    @return: The content of the file as a string.
-    @rtype: C{str}
-    @note: Logging is performed via L{standard.writeLog()} for debugging purposes.
-    @raise IOError: If the file cannot be read.
-    """
-    standard.writeLog(self,"[parseInit]: read %s"%filepath)
-    with open(filepath, "rb") as f:
-        data = standard.pystr(f.read())
-    return data
+    High-level: Collect all model files from a filesystem repository path.
 
+    Recursively traverses the directory tree rooted at C{basepath} looking
+    for repository object folders (identified by C{__init__.py} or
+    C{__init__.yaml}).  For each folder found, the init file and all sibling
+    resource files are read into metadata records.
 
-security.declarePublic('remoteFiles')
-def remoteFiles(self, basepath, deep=True):
-    """
-    Read configuration data from filesystem base-path.
+    Delegates to:
+      - L{get_file_from_disk} — to read each individual file and build its
+        metadata record C{{id, filename, data, version}}.
+      - L{parse_modelfile} — to extract the revision from the init file's
+        parsed object definition.
 
-    This function recursively traverses a directory structure to locate and parse
-    repository object definitions stored as YAML or Python files. Files matching
-    the pattern C{__*.(__yaml|.py)} are treated as repository object definitions.
-    Associated artefacts (non-hidden files in the same directory) are collected
-    as related resources.
     @param basepath: The root filesystem path to scan for repository objects.
       Must be an existing directory.
     @type basepath: C{str}
@@ -119,92 +118,111 @@ def remoteFiles(self, basepath, deep=True):
       Each metadata dictionary contains:
         - C{id}: Object identifier from repository definition or filename
         - C{filename}: Relative path from basepath
-        - C{data}: File content as string (for .yaml/.py) or bytes (for artefacts)
+        - C{data}: File content as string (for .yaml/.py) or bytes
         - C{version}: Revision from repository definition or file modification time
     @rtype: C{dict}
-    @note: Logging is performed via L{standard.writeLog()} for debugging purposes.
-    @note: Hidden files (starting with '.') such as C{.DS_Store} are excluded
-      from artefact processing.
     @raise IOError: If file read operations fail during traversal.
+    @see: L{get_file_from_disk}, L{parse_modelfile}
     """
 
-    standard.writeLog(self,"[remoteFiles]: basepath=%s"%basepath)
+    standard.writeLog(self,"[get_modelfileset_from_disk]: basepath=%s"%basepath)
     r = {}
     if os.path.exists(basepath):
         def traverse(base, path, level=0):
+          initialized = False
           names = os.listdir(path)
           for name in names:
             filepath = os.path.join(path, name)
             if os.path.isdir(filepath) and (deep or level == 0):
               traverse(base, filepath, level+1)
-            elif name.startswith('__') and name.split('.')[-2].endswith('__'):
-              # Read python-representation of repository-object
-              standard.writeLog(self,"[remoteFiles]: read %s"%filepath)
-              with open(filepath,"rb") as f:
-                  filedata = standard.pystr(f.read())
-              # Python-representation of repository-object
-              d = {}
-              if name.endswith('.yaml'):
-                # Parse.yaml
-                d = yamlutil.parse(filedata)
-              elif name.endswith('.py'):
-                try:
-                    c = get_class(filedata)
-                    d = c.__dict__
-                except:
-                    d['revision'] = standard.writeError(self,"[remoteFiles.traverse]: can't analyze filepath=%s"%filepath)
-              id = d.get('id',name)
-              # Different from remoteFiles()
-              rd = {}
-              rd['id'] = id
-              rd['filename'] = filepath[len(base)+1:]
-              rd['data'] = filedata
-              rd['version'] = d.get("revision",self.getLangFmtDate(os.path.getmtime(filepath),'eng'))
+            elif not initialized \
+                and name.startswith('__') \
+                and name.split('.')[-2].endswith('__') \
+                and name.split('.')[-1] in ['py', 'yaml']:
+              # Read repository object definition.
+              rd = get_file_from_disk(self, base, path, name)
               r[rd['filename']] = rd
-              # Read artefacts and avoid processing of hidden files, e.g. .DS_Store on macOS 
+              # Get version from repository definition if available,
+              # otherwise use file modification time.
+              artefact = parse_modelfile(self, path, name, rd['data'])
+              obj_id = artefact.get('id', rd['filename'].split(os.sep)[0])
+              rd['version'] = artefact.get("revision",rd['version'])
+              # Read related file-resources. 
               for file in [x for x in names if x != name and not x.startswith('.')]:
-                artefact = os.path.join(path,file)
-                if os.path.isfile(artefact):
-                    standard.writeLog(self,"[remoteFiles]: read artefact %s"%artefact)
-                    f = open(artefact,"rb")
-                    data = f.read()
-                    f.close()
-                    rd = {}
-                    rd['id'] = id
-                    rd['filename'] = artefact[len(base)+1:]
-                    rd['data'] = data
-                    rd['version'] = self.getLangFmtDate(os.path.getmtime(artefact),'eng')
+                filepath = os.path.join(path,file)
+                if os.path.isfile(filepath) and not os.path.islink(filepath):
+                    rd = get_file_from_disk(self, base, path, file, id=obj_id)
                     r[rd['filename']] = rd
+              initialized = True
         traverse(basepath,basepath)
     return r
 
+def get_file_from_disk(self, base, path, name, id=None):
+    """Mid-level: Read a single file from disk and return a metadata record.
 
-security.declarePublic('readRepository')
-def readRepository(self, basepath, deep=True):
+    Delegates to L{read_file_from_disk} for the actual I/O, then packages the
+    result into a dict with C{id}, C{filename} (relative to C{base}), C{data},
+    and C{version} (file modification time).
+
+    Called by L{get_modelfileset_from_disk}.
+
+    @param base: The repository base path used to compute relative filenames.
+    @type base: C{str}
+    @param path: The directory containing the file.
+    @type path: C{str}
+    @param name: The filename to read.
+    @type name: C{str}
+    @return: Metadata record C{{id, filename, data, version}}.
+    @rtype: C{dict}
+    @see: L{read_file_from_disk}
     """
-    Read repository from filesystem base-path.
+    filepath = os.path.join(path, name)
+    filedata = read_file_from_disk(self, path, name)
+    filemetadata = {}
+    filemetadata['id'] = id or path[len(base)+1:].split(os.sep)[0] or name
+    filemetadata['filename'] = filepath[len(base)+1:]
+    filemetadata['data'] = filedata
+    filemetadata['version'] = self.getLangFmtDate(os.path.getmtime(filepath),'eng')
+    return filemetadata
 
-    Read repository structure from filesystem and parse repository objects.
-    This function traverses a filesystem directory structure to discover and parse
-    repository object definitions. It supports both Python-style (__init__.py) and
-    YAML-style (__init__.yaml) repository object representations.
+
+security.declarePublic('get_models_from_disk')
+def get_models_from_disk(self, basepath, deep=True):
+    """
+    High-level: Load and parse all model definitions from a filesystem
+    repository path.
+
+    Traverses the directory tree rooted at C{basepath}, reads each init
+    file (C{__init__.py} / C{__init__.yaml}), parses it into a structured
+    model definition, and resolves embedded attribute data from sibling
+    resource files.
+
+    Unlike L{get_modelfileset_from_disk} (which returns raw file records),
+    this function returns fully parsed model objects keyed by object ID.
+
+    Delegates to:
+      - L{read_file_from_disk} — low-level file I/O for init and readme files.
+      - L{parse_modelfile} — to parse the init file contents into a model dict.
+      - L{value_data} — to resolve embedded attribute data from sibling files.
+
     @param basepath: The root filesystem path from which to read the repository.
-    Must be an existing directory.
+      Must be an existing directory.
     @type basepath: C{str}
     @param deep: If C{True}, recursively traverse subdirectories. If C{False},
-    only process the top-level directory (level 0). Defaults to C{True}.
+      only process the top-level directory (level 0). Defaults to C{True}.
     @type deep: C{bool}
     @return: Dictionary mapping repository object IDs to their parsed metadata.
-    Each entry contains:
-      - For Python objects: class attributes (excluding those starting with '__')
-        with nested class definitions converted to sorted lists of attribute dicts
-      - For YAML objects: parsed YAML structure with resolved 'id' field
-      - Both formats: 'data' field populated for artefacts (binary files) matching
-        object IDs, and 'readme' field if readme.md exists in the directory
+      Each entry contains:
+        - For Python objects: class attributes (excluding those starting with '__')
+          with nested class definitions converted to sorted lists of attribute dicts
+        - For YAML objects: parsed YAML structure with resolved 'id' field
+        - Both formats: 'data' field populated for sibling resource files matching
+          object IDs, and 'readme' field if readme.md exists in the directory
     @rtype: C{dict}
+    @see: L{get_modelfileset_from_disk}, L{read_file_from_disk}, L{parse_modelfile}, L{value_data}
     """
 
-    standard.writeLog(self,"[readRepository]: basepath=%s"%basepath)
+    standard.writeLog(self,"[get_models_from_disk]: basepath=%s"%basepath)
     r = {}
     if os.path.exists(basepath):
         def traverse(base, path, level=0):
@@ -214,176 +232,230 @@ def readRepository(self, basepath, deep=True):
             filepath = os.path.join(path, name)
             if os.path.isdir(filepath) and (deep or level == 0):
                 traverse(base, filepath, level+1)
-            elif not initialized and name.startswith('__') and name.endswith('__.py'):
-              # Read python-representation of repository-object
-              py = parseInit(self, filepath)
-              # Analyze python-representation of repository-object
-              d = {}
-              try:
-                  c = get_class(py)
-                  d = c.__dict__
-              except:
-                  d['revision'] = standard.writeError(self,"[readRepository.traverse]: can't analyze filepath=%s"%filepath)
-              id = d.get('id',name)
-              # Different from remoteFiles()
-              r[id] = {}
-              for k in [x for x in d if not x.startswith('__')]:
-                v = d[k]
-                if inspect.isclass(v):
-                  dd = v.__dict__
+            elif not initialized \
+                and name.startswith('__') \
+                and name.split('.')[-2].endswith('__') \
+                and name.split('.')[-1] in ['py', 'yaml']:
+              filedata = read_file_from_disk(self, path, name)
+              d = parse_modelfile(self, path, name, filedata)
+              id = d.get('id', path.split(os.sep)[-1])
+              # For Python-style repository objects, 
+              # convert nested class definitions to sorted lists of attribute dicts.
+              if name.endswith('.py'):
+                r[id] = {}
+                for k in [x for x in d if not x.startswith('__')]:
+                  v = d[k]
+                  if inspect.isclass(v):
+                    dd = v.__dict__
+                    v = []
+                    for kk in [x for x in dd if not x.startswith('__')]:
+                      vv = value_data(self, dd[kk], names, path, name)
+                      # Sort by position in file to preserve order of definitions.
+                      v.append((filedata.find('\t\t%s ='%kk), vv))
+                    # Sort by position in file and remove position from value.
+                    v = [x[1] for x in sorted(v, key=lambda x: x[0])]
+                  r[id][k] = v
+              # For YAML-style repository objects, 
+              # use the parsed YAML structure directly.
+              elif name.endswith('.yaml'):
+                r[id] = d
+                for k in [x for x in d if type(d[x]) is list]:
                   v = []
-                  for kk in [x for x in dd if not x.startswith('__')]:
-                    vv = dd[kk]
-                    # Try to read artefact.
-                    if 'id' in vv:
-                      fileprefix = vv['id'].split('/')[-1]
-                      for file in [x for x in names if x==fileprefix or x.startswith('%s.'%fileprefix)]:
-                        artefact = os.path.join(path, file)
-                        standard.writeLog(self,"[readRepository]: read artefact %s"%artefact)
-                        f = open(artefact, "rb")
-                        data = f.read()
-                        f.close()
-                        try:
-                            if isinstance(data, bytes):
-                                data = data.decode('utf-8')
-                        except:
-                            pass
-                        vv['data'] = data
-                        break
-                    v.append((py.find('\t\t%s ='%kk), vv))
-                  v.sort()
-                  v = [x[1] for x in v]
-                r[id][k] = v
-              readme_path = os.path.join(path, 'readme.md')
-              if os.path.isfile(readme_path):
-                standard.writeLog(self,"[readRepository]: read artefact %s"%readme_path)
-                f = open(readme_path, "rb")
-                data = f.read()
-                f.close()
-                try:
-                    if isinstance(data, bytes):
-                        data = data.decode('utf-8')
-                except:
-                    pass
-                r[id]['readme'] = data
-              initialized = True
-            elif not initialized and name.startswith('__') and name.endswith('__.yaml'):
-              # Read YAML-representation of repository-object
-              data = parseInit(self, filepath)
-              # Analyze YAML-representation of repository-object
-              yaml = yamlutil.parse(data)
-              id = list(yaml.keys())[0]
-              d = yaml[id]
-              d['id'] = id
-              # Different from remoteFiles()
-              r[id] = d
-              for k in [x for x in d if type(d[x]) is list]:
-                v = []
-                for vv in d[k]:
-                  if type(vv) is dict and 'id' in vv:
-                    fileprefix = vv['id'].split('/')[-1]
-                    for file in [x for x in names if x==fileprefix or x.startswith('%s.'%fileprefix)]:
-                      artefact = os.path.join(path, file)
-                      standard.writeLog(self,"[readRepository]: read artefact %s"%artefact)
-                      f = open(artefact, "rb")
-                      data = f.read()
-                      f.close()
-                      try:
-                          if isinstance(data, bytes):
-                              data = data.decode('utf-8')
-                      except:
-                          pass
-                      vv['data'] = data
-                      break
-                  v.append(vv)
-                r[id][k] = v
-              readme_path = os.path.join(path, 'readme.md')
-              if os.path.isfile(readme_path):
-                standard.writeLog(self,"[readRepository]: read artefact %s"%readme_path)
-                f = open(readme_path, "rb")
-                data = f.read()
-                f.close()
-                try:
-                    if isinstance(data, bytes):
-                        data = data.decode('utf-8')
-                except:
-                    pass
-                r[id]['readme'] = data
+                  for vv in d[k]:
+                    v.append(value_data(self, vv, names, path, name))
+                  r[id][k] = v
+              r[id]['readme'] = read_file_from_disk(self, path, 'readme.md')
               initialized = True
         traverse(basepath, basepath)
     return r
 
 
-security.declarePublic('localFiles')
-def localFiles(self, provider, ids=None):
+def value_data(self, vv, names, path, file):
+    """
+    Helper function to resolve embedded attribute data from sibling resource files.
+
+    For a given attribute value C{vv} (which may be a dict representing an 
+    object reference), this function checks if it contains an 'id' field 
+    that matches any of the sibling files in the same directory. If a match is found, 
+    it reads the corresponding file content and assigns it to the 'data' field of C{vv}. 
+    This allows repository definitions to reference external resource files by ID, which 
+    are then loaded and included in the final model representation.
+
+    @param self: The object context.
+    @type self: C{object}
+    @param vv: The attribute value to check for embedded data references.
+    @type vv: C{any}
+    @param names: List of sibling filenames in the same directory as the repository object.
+    @type names: C{list}
+    @param path: The directory path where the repository object is located.
+    @type path: C{str}
+    @param file: The filename of the repository object's init file (used for error messages).
+    @type file: C{str}
+    @return: The original attribute value C{vv} with an added 'data' field if a matching file was found and read.
+    @rtype: C{any}
+    """
+    if type(vv) is dict and 'id' in vv:
+      fileprefix = vv['id'].split('/')[-1]
+      for file in [x for x in names if x==fileprefix or x.startswith('%s.'%fileprefix)]:
+        vv['data'] = read_file_from_disk(self, path, file)
+        break
+    return vv
+
+
+def parse_modelfile(self, path, filename, data):
+    """
+    Low-level: Parse in-memory model file contents into a model definition dict.
+
+    Interprets the C{data} string (previously read by L{read_file_from_disk})
+    according to the file extension:
+      - C{.yaml}: parsed via L{yamlutil.parse} into a dict keyed by object ID.
+      - C{.py}: executed via L{get_class} to extract the class C{__dict__}.
+
+    Does B{not} perform any filesystem I/O — it operates solely on the
+    C{data} parameter.
+
+    Called by L{get_modelfileset_from_disk} and L{get_models_from_disk}.
+
+    @param path: Directory path (used only for error messages).
+    @type path: C{str}
+    @param filename: Filename including extension (determines parse strategy).
+    @type filename: C{str}
+    @param data: The file contents to parse (text string).
+    @type data: C{str}
+    @return: Parsed model definition dict; on error contains a C{revision} key
+      with the error message.
+    @rtype: C{dict}
+    @see: L{read_file_from_disk}, L{get_class}, L{yamlutil.parse}
+    """
+    d = {}
+    filepath = os.path.join(path, filename)
+    try:
+        # For .yaml files, parse the YAML content and extract the object definition.
+        if filename.endswith('.yaml'):
+            yaml = yamlutil.parse(data)
+            if not yaml or len(yaml) == 0 or list(yaml.keys())[0] is None or len(yaml.keys()) > 1:
+                # Invalid YAML structure: must contain exactly one top-level key representing the object ID.
+                d['id'] = path.split(os.sep)[-1]
+                d['name'] = path.split(os.sep)[-1]
+                d['revision'] = standard.writeError(self,"[get_modelfileset_from_disk.traverse]: can't analyze filepath=%s"%filepath)
+            else:
+                id = list(yaml.keys())[0]
+                d = yaml[id]
+                d['id'] = id
+        # For .py files, execute the Python code to obtain the class definition 
+        # and extract its attributes.
+        elif filename.endswith('.py'):
+            py = get_class(data)
+            d = py.__dict__
+    except:
+        d['id'] = path.split(os.sep)[-1]
+        d['name'] = path.split(os.sep)[-1]
+        d['revision'] = standard.writeError(self,"[get_modelfileset_from_disk.traverse]: can't analyze filepath=%s"%filepath)
+    return d
+
+def read_file_from_disk(self, path, filename):
+  """Low-level: Read raw file contents from the filesystem.
+
+  Opens the file at C{path/filename} in binary mode and attempts UTF-8
+  decoding.  Returns C{str} if decodable, raw C{bytes} otherwise, or
+  C{None} if the file does not exist.
+
+  This is the lowest-level I/O helper in the repository utilities.
+  Called by L{get_file_from_disk}, L{get_models_from_disk}, L{value_data},
+  and any other function needing raw file contents.
+
+  @param path: Directory containing the file.
+  @type path: C{str}
+  @param filename: Name of the file to read.
+  @type filename: C{str}
+  @return: File contents as C{str} (UTF-8) or C{bytes}, or C{None} if
+    the file does not exist.
+  @rtype: C{str} or C{bytes} or C{None}
   """
-  Read configuration data from ZMS-instance.
+  data = None
+  filepath = os.path.join(path, filename)
+  if os.path.isfile(filepath):
+    # standard.writeLog(self,"[read_file_from_disk]: %s"%filepath)
+    with open(filepath,"rb") as f:
+      data = f.read()
+      try:
+        if isinstance(data, bytes):
+          data = data.decode('utf-8')
+      except:
+        pass
+    return data
 
-  This function retrieves configuration data from a ZMS instance using 
-  a provided repository provider. It processes the retrieved data 
-  to generate a dictionary of initialization artefacts, which includes
-  metadata and file content for each repository object. The function 
-  supports both Python and YAML formats for the initialization.
 
-  @param self: The object context.
-  @type self: C{object}
-  @param provider: An object that provides configuration data, expected to implement the I{provideRepository} method.
+security.declarePublic('get_modelfileset_from_zodb')
+def get_modelfileset_from_zodb(self, provider, ids=None):
+  """High-level: Export model files from ZODB via a repository provider.
+
+  Queries the C{provider} for repository objects stored in the ZODB, then
+  serializes each object into a set of filesystem-ready file records (init
+  file + sibling resource files).
+
+  This is the ZODB counterpart to L{get_modelfileset_from_disk}; both
+  return the same C{{filename: {{id, filename, data, version, ...}}}} dict
+  structure so that results can be compared with L{get_diffs}.
+
+  Delegates to:
+    - C{provider.provideRepository(ids)} — to retrieve objects from ZODB.
+    - L{get_init_py} / L{get_init_yaml} — to serialize objects into init
+      file content (Python class or YAML).
+    - L{create_modelfileset} — to build the filename-to-metadata mapping
+      from the serialized init content and sibling resource objects.
+
+  @param provider: A repository provider implementing
+    C{IZMSRepositoryProvider.provideRepository()}.
   @type provider: C{IZMSRepositoryProvider}
-  @param ids: Optional list of identifiers to specify which configuration objects to retrieve. If None, all objects are retrieved.
+  @param ids: Optional list of object IDs to export. If C{None}, all
+    objects from the provider are exported.
   @type ids: C{list} or C{None}
-  @return: A dictionary mapping filenames to their corresponding data and metadata, generated from the configuration
-  objects provided by the configuration provider.
+  @return: Dictionary mapping filenames to metadata records.
   @rtype: C{dict}
+  @see: L{get_modelfileset_from_disk}, L{create_modelfileset}, L{get_init_py}, L{get_init_yaml}
   """
-  standard.writeLog(self,"[localFiles]: provider=%s"%str(provider))
-  l = {}
+  standard.writeLog(self,"[get_modelfileset_from_zodb]: provider=%s"%str(provider))
+  modelfileset = {}
   local = provider.provideRepository(ids)
   for id in local:
     o = local[id]
     if self.getConfProperty('ZMS.repository_manager.__init__.format', '') == 'py' or yamlutil is None:
-      l.update(init_artefacts(o, {'py':get_init_py(self, o)}))
+      modelfileset.update(create_modelfileset(o, {'py':get_init_py(self, o)}))
     else:
-      l.update(init_artefacts(o, {'yaml':get_init_yaml(self, o).split('\n')}))
-  return l
+      modelfileset.update(create_modelfileset(o, {'yaml':get_init_yaml(self, o).split('\n')}))
+  return modelfileset
 
 
-def init_artefacts(o, init_files):
-  """
-  Generate a dictionary of initialization artefacts from the given object and initialization files.
+def create_modelfileset(o, init_files):
+  """Mid-level: Build the complete set of file records for one model 
+  object from its ZODB representation.
 
-  The input object I{o} is expected to have certain keys and structure, and the function processes 
-  this object to create a mapping of filenames to their corresponding data and metadata. 
-  The initialization files are provided as a dictionary where the key is the format 
-  (e.g., 'py' or 'yaml') and the value is a list of strings representing the content 
-  of the initialization file. It may contain:
-    - I{id}: The identifier of the object.
-    - I{acquired}: A flag indicating if the object is acquired (0 or 1).
-    - I{__filename__}: A list representing the filename structure.
-    - I{__icon__}: An optional icon for the object.
-    - I{__description__}: An optional description for the object.
-    - I{revision}: A version string in the format "0.0.0".
-    - Other keys representing attributes, where capitalized keys with list values are processed.
-  The I{initFiles} (dict) is a dictionary where keys are formats (e.g., 'py') and values are lists of strings
-  representing the initialization data for each format.
-  The return value is a dictionary where keys are filenames and values are dictionaries containing:
-    - I{id}: The identifier of the object.
-    - I{filename}: The full path of the file.
-    - I{data}: The content of the file.
-    - I{version}: The version of the file as a list of integers.
-    - I{meta_type}: The meta type of the object (e.g., 'Script (Python)').
-    - I{__icon__}: The icon of the object (if provided).
-    - I{__description__}: The description of the object (if provided).
-  
-  @param o: Dictionary representing the repository object.
+  Given a ZODB model object dict C{o} and its pre-serialized init file
+  content (from L{get_init_py} or L{get_init_yaml}), this function
+  produces the full filename-to-metadata mapping that represents the
+  object on disk.  The mapping includes:
+    - The init file itself (C{__init__.py} or C{__init__.yaml}).
+    - Sibling resource files (templates, scripts, images) extracted from
+      the object's attribute lists.
+    - A C{readme.md} sibling if the object carries a C{readme} field.
+
+  Does B{not} perform filesystem I/O — it operates purely on in-memory
+  data.  Called by L{get_modelfileset_from_zodb} for each model object.
+
+  @param o: Repository object dict.  Expected keys include C{id},
+    C{acquired}, C{__filename__}, C{__icon__}, C{__description__},
+    C{revision}, and capitalized attribute-list keys.
   @type o: C{dict}
-  @param init_files: Initialization content grouped by format, for example
-      C{{'py': [...]}} or C{{'yaml': [...]}}.
+  @param init_files: Pre-serialized init content grouped by format,
+    e.g. C{{'py': [line, ...]}} or C{{'yaml': [line, ...]}}.
   @type init_files: C{dict}
-  @return: Mapping from generated filenames to artefact dictionaries with
-      metadata and file content.
+  @return: Mapping from generated filenames to file-record dicts, each
+    containing C{id}, C{filename}, C{data}, C{version}, C{meta_type}.
   @rtype: C{dict}
+  @see: L{get_modelfileset_from_zodb}, L{get_init_py}, L{get_init_yaml}
   """
-  l = {}
+  modelfileset = {}
   id = o.get('id','?')
   acquired = int(o.get('acquired',0))
   filename = o.get('__filename__', [id, ['__init__.py','__acquired__.py'][acquired]])
@@ -413,14 +485,14 @@ def init_artefacts(o, init_files):
               d['version'] = version
               d['meta_type'] = ob.meta_type
             d['id'] = id
-            l[d['filename']] = d
+            modelfileset[d['filename']] = d
           if 'ob' in i:
             del i['ob']
   # Persist readme as conventional sibling artefact instead of embedding it in __init__.*.
   readme = o.get('readme')
   if readme:
     readme_filename = os.path.sep.join(folder + ['readme.md'])
-    l[readme_filename] = {
+    modelfileset[readme_filename] = {
       'id': id,
       'filename': readme_filename,
       'data': readme,
@@ -444,8 +516,8 @@ def init_artefacts(o, init_files):
       # version schmeme 0.0.0 must not contain strings
       d['version'] = list(map(int, re.findall(r'\d+', o.get('revision', '0.0.0'))))
     d['meta_type'] = 'Script (Python)'
-    l[d['filename']] = d
-  return l
+    modelfileset[d['filename']] = d
+  return modelfileset
 
 
 def get_init_py(self, o):
@@ -472,6 +544,8 @@ def get_init_py(self, o):
   py.append('')
   e = sorted([x for x in o if not x.startswith('__') and x==x.capitalize() and isinstance(o[x], list)])
   keys = sorted([x for x in o if not x.startswith('__') and x not in e and x != 'readme'])
+  if 'ob' in keys and o.get('meta_type')=='process':
+    keys.remove('ob') # 'ob' is not serializable and will be handled separately in create_modelfileset_from_zodb
   for k in keys:
     v = o.get(k)
     py.append('\t# %s'%k.capitalize())
@@ -519,6 +593,8 @@ def get_init_yaml(self, o):
   id = o.get('id','?')
   attrs = sorted([x for x in o if not x.startswith('__') and x==x.capitalize() and isinstance(o[x], list)])
   keys = sorted([x for x in o if not x.startswith('__') and x not in ['id', 'readme'] and x not in attrs and not isinstance(o.get(x), Acquisition.ExplicitAcquisitionWrapper)])
+  if 'ob' in keys and o.get('meta_type')=='process':
+    keys.remove('ob') # 'ob' is not serializable and will be handled separately in create_modelfileset_from_zodb
   d = {}
   for k in keys:
     v = o.get(k)

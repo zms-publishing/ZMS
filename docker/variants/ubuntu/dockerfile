@@ -63,6 +63,7 @@ RUN set -eux; \
         libldap2-dev \
         libfop-java \
         libsasl2-dev \
+        libxalan2-java \
         locales \
         locales-all \
         lsof \

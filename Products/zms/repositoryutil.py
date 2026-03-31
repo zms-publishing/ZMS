@@ -48,6 +48,13 @@ security.declarePublic('get_providers')
 def get_providers(self):
   """
   Returns list of repository-providers.
+  
+  These are collected by traversing the ZMS object tree starting from the 
+  document element and checking for objects that provide the 
+  IZMSRepositoryProvider interface. The traversal also includes objects 
+  that provide the IZMSConfigurationProvider interface, allowing for 
+  nested configurations that may contain additional repository providers.
+
   @param self: The object context.
   @type self: C{object}
   @return: List of repository-providers.
@@ -62,7 +69,6 @@ def get_providers(self):
   return get_repo_providers(self.getDocumentElement())
 
 
-
 def get_class(py):
   """
   Get class from py-string.
@@ -70,6 +76,11 @@ def get_class(py):
   This function extracts the class definition from a given Python code string 
   and executes it to return the defined class object. It uses regular expressions 
   to identify the class name and then executes the code to obtain the class object.
+
+  @param py: A string containing Python code that defines a class.
+  @type py: C{str}
+  @return: The class object defined in the input string.
+  @rtype: C{type}
   """
   id = re.findall(r'class (.*?):', py)[0]
   if sys.version_info >= (3, 13):
@@ -139,7 +150,7 @@ def get_modelfileset_from_disk(self, basepath, deep=True):
               # Read related file-resources. 
               for file in [x for x in names if x != name and not x.startswith('.')]:
                 filepath = os.path.join(path,file)
-                if os.path.isfile(filepath):
+                if os.path.isfile(filepath) and not os.path.islink(filepath):
                     rd = get_file_from_disk(self, base, path, file, id=obj_id)
                     r[rd['filename']] = rd
               initialized = True
@@ -167,12 +178,12 @@ def get_file_from_disk(self, base, path, name, id=None):
     """
     filepath = os.path.join(path, name)
     filedata = read_file_from_disk(self, path, name)
-    d = {}
-    d['id'] = id or path[len(base)+1:].split(os.sep)[0] or name
-    d['filename'] = filepath[len(base)+1:]
-    d['data'] = filedata
-    d['version'] = self.getLangFmtDate(os.path.getmtime(filepath),'eng')
-    return d
+    filemetadata = {}
+    filemetadata['id'] = id or path[len(base)+1:].split(os.sep)[0] or name
+    filemetadata['filename'] = filepath[len(base)+1:]
+    filemetadata['data'] = filedata
+    filemetadata['version'] = self.getLangFmtDate(os.path.getmtime(filepath),'eng')
+    return filemetadata
 
 
 security.declarePublic('get_models_from_disk')
@@ -258,7 +269,31 @@ def get_models_from_disk(self, basepath, deep=True):
         traverse(basepath, basepath)
     return r
 
+
 def value_data(self, vv, names, path, file):
+    """
+    Helper function to resolve embedded attribute data from sibling resource files.
+
+    For a given attribute value C{vv} (which may be a dict representing an 
+    object reference), this function checks if it contains an 'id' field 
+    that matches any of the sibling files in the same directory. If a match is found, 
+    it reads the corresponding file content and assigns it to the 'data' field of C{vv}. 
+    This allows repository definitions to reference external resource files by ID, which 
+    are then loaded and included in the final model representation.
+
+    @param self: The object context.
+    @type self: C{object}
+    @param vv: The attribute value to check for embedded data references.
+    @type vv: C{any}
+    @param names: List of sibling filenames in the same directory as the repository object.
+    @type names: C{list}
+    @param path: The directory path where the repository object is located.
+    @type path: C{str}
+    @param file: The filename of the repository object's init file (used for error messages).
+    @type file: C{str}
+    @return: The original attribute value C{vv} with an added 'data' field if a matching file was found and read.
+    @rtype: C{any}
+    """
     if type(vv) is dict and 'id' in vv:
       fileprefix = vv['id'].split('/')[-1]
       for file in [x for x in names if x==fileprefix or x.startswith('%s.'%fileprefix)]:
@@ -266,8 +301,10 @@ def value_data(self, vv, names, path, file):
         break
     return vv
 
+
 def parse_modelfile(self, path, filename, data):
-    """Low-level: Parse in-memory model file contents into a model definition dict.
+    """
+    Low-level: Parse in-memory model file contents into a model definition dict.
 
     Interprets the C{data} string (previously read by L{read_file_from_disk})
     according to the file extension:
@@ -338,7 +375,7 @@ def read_file_from_disk(self, path, filename):
   data = None
   filepath = os.path.join(path, filename)
   if os.path.isfile(filepath):
-    standard.writeLog(self,"[read_file_from_disk]: %s"%filepath)
+    # standard.writeLog(self,"[read_file_from_disk]: %s"%filepath)
     with open(filepath,"rb") as f:
       data = f.read()
       try:
@@ -379,15 +416,15 @@ def get_modelfileset_from_zodb(self, provider, ids=None):
   @see: L{get_modelfileset_from_disk}, L{create_modelfileset}, L{get_init_py}, L{get_init_yaml}
   """
   standard.writeLog(self,"[get_modelfileset_from_zodb]: provider=%s"%str(provider))
-  l = {}
+  modelfileset = {}
   local = provider.provideRepository(ids)
   for id in local:
     o = local[id]
     if self.getConfProperty('ZMS.repository_manager.__init__.format', '') == 'py' or yamlutil is None:
-      l.update(create_modelfileset(o, {'py':get_init_py(self, o)}))
+      modelfileset.update(create_modelfileset(o, {'py':get_init_py(self, o)}))
     else:
-      l.update(create_modelfileset(o, {'yaml':get_init_yaml(self, o).split('\n')}))
-  return l
+      modelfileset.update(create_modelfileset(o, {'yaml':get_init_yaml(self, o).split('\n')}))
+  return modelfileset
 
 
 def create_modelfileset(o, init_files):
@@ -417,7 +454,7 @@ def create_modelfileset(o, init_files):
   @rtype: C{dict}
   @see: L{get_modelfileset_from_zodb}, L{get_init_py}, L{get_init_yaml}
   """
-  l = {}
+  modelfileset = {}
   id = o.get('id','?')
   acquired = int(o.get('acquired',0))
   filename = o.get('__filename__', [id, ['__init__.py','__acquired__.py'][acquired]])
@@ -447,14 +484,14 @@ def create_modelfileset(o, init_files):
               d['version'] = version
               d['meta_type'] = ob.meta_type
             d['id'] = id
-            l[d['filename']] = d
+            modelfileset[d['filename']] = d
           if 'ob' in i:
             del i['ob']
   # Persist readme as conventional sibling artefact instead of embedding it in __init__.*.
   readme = o.get('readme')
   if readme:
     readme_filename = os.path.sep.join(folder + ['readme.md'])
-    l[readme_filename] = {
+    modelfileset[readme_filename] = {
       'id': id,
       'filename': readme_filename,
       'data': readme,
@@ -478,8 +515,8 @@ def create_modelfileset(o, init_files):
       # version schmeme 0.0.0 must not contain strings
       d['version'] = list(map(int, re.findall(r'\d+', o.get('revision', '0.0.0'))))
     d['meta_type'] = 'Script (Python)'
-    l[d['filename']] = d
-  return l
+    modelfileset[d['filename']] = d
+  return modelfileset
 
 
 def get_init_py(self, o):

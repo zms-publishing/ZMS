@@ -8,6 +8,8 @@ License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 # Imports.
+import time
+
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import base64
 import re
@@ -551,6 +553,11 @@ class ZReferableItem(object):
     @rtype: C{object} or C{None}
     """
     request = getattr(self, 'REQUEST', getRequest())
+    request.set('counter_getlinkobj', float(request.get('counter_getlinkobj', 0)) + 1)
+    # ///////////////////////////////////////////////////
+    # MEASURING PERFORMANCE:
+    start_getlinkobj = time.time()
+    # ///////////////////////////////////////////////////
     ob = None
     if isInternalLink(url):
       # Params.
@@ -565,38 +572,67 @@ class ZReferableItem(object):
         i = max(url.find('#'),url.find(','))
         if i > 0:
           url = url[:i]
-        #-- [ReqBuff]: Fetch buffered value from Http-Request.
+        #-- [ReqBuff/SharedBuff]: Fetch buffered value.
         reqBuffId = 'getLinkObj.%s'%url
         try:
-          ob = self.getDocumentElement().fetchReqBuff(reqBuffId)
+          # Try Request-Local first.
+          ob = self.fetchReqBuff(reqBuffId)
         except:
-          if url.find('id:') >= 0:
-            catalog = self.getZMSIndex().get_catalog()
-            q = catalog({'get_uid':url})
-            for r in q:
-              path  = '%s/'%r['getPath']
+          # Try Shared Global Context if configured.
+          if hasattr(self, 'fetchSharedBuff'):
+            cached_path = self.fetchSharedBuff(reqBuffId)
+            if cached_path:
+               ob = self.unrestrictedTraverse(cached_path, None)
+
+          if ob is None:
+            # ///////////////////////////////////////////////////
+            # MEASURING PERFORMANCE:
+            # For summing up the time needed find object by URL via ZMSIndex:
+            # add the current time to the request-parameter 'total_time_consumed_by_zmsindex_requests'/int (in ms)
+            start_zmsindex_request = time.time()
+            # ///////////////////////////////////////////////////
+            if url.find('id:') >= 0:
+              catalog = self.getZMSIndex().get_catalog()
+              q = catalog({'get_uid':url})
+              for r in q:
+                path  = '%s/'%r['getPath']
+                l = [x for x in path.split('/') if x] 
+                ob = self.getRootElement()
+                if l:
+                  [l.pop(0) for x in ob.getPhysicalPath() if l[0] == x]
+                  for id in l:
+                    ob = getattr(ob,id,None)
+                break
+            elif not url.startswith('__'):
+              path = url.replace('@','/content/')
               l = [x for x in path.split('/') if x] 
-              ob = self.getRootElement()
+              ob = self.getDocumentElement()
               if l:
                 [l.pop(0) for x in ob.getPhysicalPath() if l[0] == x]
                 for id in l:
                   ob = getattr(ob,id,None)
-              break
-          elif not url.startswith('__'):
-            path = url.replace('@','/content/')
-            l = [x for x in path.split('/') if x] 
-            ob = self.getDocumentElement()
-            if l:
-              [l.pop(0) for x in ob.getPhysicalPath() if l[0] == x]
-              for id in l:
-                ob = getattr(ob,id,None)
-          #-- [ReqBuff]: Store value in buffer of Http-Request.
-          self.getDocumentElement().storeReqBuff(reqBuffId, ob)
+            
+            #-- [ReqBuff/SharedBuff]: Store value.
+            self.storeReqBuff(reqBuffId, ob)
+            if ob and hasattr(self, 'storeSharedBuff'):
+               self.storeSharedBuff(reqBuffId, '/'.join(ob.getPhysicalPath()))
+            # ///////////////////////////////////////////////////
+            # MEASURING PERFORMANCE: Count and time for requests to ZMSIndex to find object by URL.
+            request.set('counter_zmsindex_requests', float(request.get('counter_zmsindex_requests', 0)) + 1)
+            request.set('time_consumed_by_zmsindex_requests_in_ms', round(float(request.get('time_consumed_by_zmsindex_requests_in_ms', 0)) + float((time.time() - start_zmsindex_request)*1000),2))
+            # ///////////////////////////////////////////////////
       # Prepare request (only if ref_params are provided)
       if ob is not None and ref_params:
         ids = self.getPhysicalPath()
         if ob.id not in ids:
           ob.set_request_context(request, ref_params)
+    # ///////////////////////////////////////////////////
+    # MEASURING PERFORMANCE: Count and time for getLinkObj calls.
+    request.set('time_consumed_by_getlinkobj_in_ms', round(float(request.get('time_consumed_by_getlinkobj_in_ms', 0)) + float((time.time() - start_getlinkobj)*1000),2))
+    time_consumed_by_getlinkobj_datalist = request.get('time_consumed_by_getlinkobj_datalist', [])
+    time_consumed_by_getlinkobj_datalist.append(round(float((time.time() - start_getlinkobj)*1000),2)) # in ms
+    request.set('time_consumed_by_getlinkobj_datalist', time_consumed_by_getlinkobj_datalist)
+    # ///////////////////////////////////////////////////
     return ob
 
 

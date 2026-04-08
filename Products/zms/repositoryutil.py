@@ -150,7 +150,7 @@ def get_modelfileset_from_disk(self, basepath, deep=True):
               # Read related file-resources. 
               for file in [x for x in names if x != name and not x.startswith('.')]:
                 filepath = os.path.join(path,file)
-                if os.path.isfile(filepath) and not os.path.islink(filepath):
+                if os.path.isfile(filepath): # and not os.path.islink(filepath):
                     rd = get_file_from_disk(self, base, path, file, id=obj_id)
                     r[rd['filename']] = rd
               initialized = True

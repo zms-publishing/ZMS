@@ -2,11 +2,44 @@ from Products.zms import _globals
 from Products.zms import _objattrs
 from Products.zms import _blobfields
 
+def ensure_mediafolder(node):
+  """Add mediafolder to the ZMS client if not present. Returns location or None."""
+  from Products.zms._mediadb import MediaDb
+  doc_elmnt = node.getDocumentElement()
+  if doc_elmnt.getMediaDb() is not None:
+    return None
+  client_id = doc_elmnt.getHome().id
+  location = '$INSTANCE_HOME/var/mediafolder/%s' % client_id
+  obj = MediaDb(location)
+  doc_elmnt._setObject(obj.id, obj)
+  return location
+
+def fix_mediafolder(node):
+  """Fix mediafolder path if the configured location does not exist on disk."""
+  import os
+  from Products.zms import _fileutil
+  doc_elmnt = node.getDocumentElement()
+  mediadb = doc_elmnt.getMediaDb()
+  if mediadb is None:
+    return None
+  resolved = mediadb.getLocation()
+  if os.path.isdir(resolved):
+    return None
+  client_id = doc_elmnt.getHome().id
+  new_location = '$INSTANCE_HOME/var/mediafolder/%s' % client_id
+  mediadb.setLocation(new_location)
+  _fileutil.mkDir(mediadb.getLocation())
+  return new_location
+
 def move(self):
   """
   Move ZODB persistent files to media folder.
+  Returns list of new OS file paths for each exported blob.
   """
   moved = []
+  mediadb = self.getMediaDb()
+  if mediadb is None:
+    return moved
   for key in self.getObjAttrs():
     obj_attr = self.getObjAttr(key)
     datatype = obj_attr['datatype_key']
@@ -19,20 +52,22 @@ def move(self):
             if size > 0:
               # Move blob to media folder
               _objattrs.setobjattr(self,obj_vers,obj_attr,v,lang)
-              moved.append('%s_%s[%i]'%(key,lang,size))
+              filepath = mediadb.targetFile(v.mediadbfile)
+              moved.append(filepath)
   return moved
 
-def traverse(self, uid, page_size=100):
+def traverse(self, uid, page_size=100, add_mediafolder=False, fix_mediafolder_path=False):
   log = []
   nodes, next_node = self.get_next_page(uid, page_size, clients=True)
   for node in nodes:
-    l = [node.id, node.meta_id]
+    if add_mediafolder:
+      ensure_mediafolder(node)
+    if fix_mediafolder_path:
+      fix_mediafolder(node)
     moved = move(node)
-    if moved: 
-      l.extend(moved)
-      l.append('@moved')
-    log.append(l)
-  return {'log':log, 'next_node':next_node}
+    if moved:
+      log.append([node.id, node.meta_id] + moved + ['@moved'])
+  return {'log':log, 'next_node':next_node, 'processed':len(nodes)}
 
 def manage_move_zodb_persistent_files_to_mediafolder( self):
   self = self.getZMSIndex()
@@ -59,7 +94,9 @@ def manage_move_zodb_persistent_files_to_mediafolder( self):
     if request.get('traverse'):
       uid = request['uid']
       page_size = int(request['page_size'])
-      result = traverse(self, uid, page_size)
+      add_mediafolder = request.get('add_mediafolder') in ['true','1','on']
+      fix_mediafolder_path = request.get('fix_mediafolder_path') in ['true','1','on']
+      result = traverse(self, uid, page_size, add_mediafolder=add_mediafolder, fix_mediafolder_path=fix_mediafolder_path)
     RESPONSE.setHeader('Cache-Control', 'no-cache')
     RESPONSE.setHeader('Content-Type', 'application/json; charset=utf-8')
     return json.dumps(result)
@@ -81,6 +118,19 @@ def manage_move_zodb_persistent_files_to_mediafolder( self):
       <label for="page_size" class="col-sm-2 control-label" title="Page Size" >Increment Size</label>
       <div class="col-sm-10">
         <input class="form-control" id="page_size" name="page_size:int" type="number" value="200" />
+      </div>
+    </div><!-- .form-group -->
+    <div class="form-group row">
+      <label class="col-sm-2 control-label"></label>
+      <div class="col-sm-10">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="add_mediafolder" name="add_mediafolder" checked="checked" />
+          <label class="form-check-label" for="add_mediafolder">Add ZMS-Client's mediafolder if not available</label>
+        </div>
+        <div class="form-check mt-1">
+          <input class="form-check-input" type="checkbox" id="fix_mediafolder_path" name="fix_mediafolder_path" checked="checked" />
+          <label class="form-check-label" for="fix_mediafolder_path">Fix ZMS-Client's given mediafolder path if not available</label>
+        </div>
       </div>
     </div><!-- .form-group -->
     <div class="form-group row d-none">
@@ -233,7 +283,9 @@ def manage_move_zodb_persistent_files_to_mediafolder( self):
         const root_node = $('#root_node').val();
         const uid = $('#uid').val();
         const page_size = $("input#page_size").val();
-        const params = {'json':true,'traverse':true,'root_node':root_node,'uid':uid,'page_size':page_size};
+        const add_mediafolder = $('#add_mediafolder').is(':checked');
+        const fix_mediafolder_path = $('#fix_mediafolder_path').is(':checked');
+        const params = {'json':true,'traverse':true,'root_node':root_node,'uid':uid,'page_size':page_size,'add_mediafolder':add_mediafolder,'fix_mediafolder_path':fix_mediafolder_path};
         const start = new Date().getTime(); 
         $.get('manage_move_zodb_persistent_files_to_mediafolder',params,function(data) {
             const duration = new Date().getTime() - start; 
@@ -263,8 +315,9 @@ def manage_move_zodb_persistent_files_to_mediafolder( self):
                 }
               });
             });
-            // absolute total
-            map['Total'] = map['Total'] + log.length;
+            // absolute total (use processed count for progress tracking)
+            const processed = data['processed'] || log.length;
+            map['Total'] = map['Total'] + processed;
             $("#count_table tr." + 'Total' + " .count").html(map['Total']);
             // absolute time
             map['Time'] = map['Time'] + duration;

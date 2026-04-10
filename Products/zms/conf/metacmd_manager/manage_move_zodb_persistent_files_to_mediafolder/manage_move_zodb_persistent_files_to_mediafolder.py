@@ -165,7 +165,8 @@ def manage_move_zodb_persistent_files_to_mediafolder( self):
     <div class="d-none progress">
       <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
     </div>
-    <div class="d-none alert alert-info mx-0" role="alert"></div>
+    <div class="d-none spinner-border text-primary m-2" style="position:absolute;z-index:1" role="status"><span class="sr-only">Loading...</span></div>
+    <div class="d-none log alert alert-info mx-0" role="alert"></div>
     """)
 
   prt.append('</div><!-- .card-body -->')
@@ -195,8 +196,9 @@ def manage_move_zodb_persistent_files_to_mediafolder( self):
         $(".progress .progress-bar").addClass("progress-bar-striped").removeClass("bg-danger bg-warning bg-success");
         $("#stop-button").prop("disabled","");
         $(".progress.d-none").removeClass("d-none");
-        $(".alert.alert-info").removeClass("d-none");
-        $(".alert.alert-info").html('<div class="spinner-border text-primary mx-auto" role="status"><span class="sr-only">Loading...</span></div>');
+        $(".spinner-border.d-none").removeClass("d-none");
+        $(".alert.alert-info.d-none").removeClass("d-none");
+        $(".alert.alert-info").empty();
         if (!started) {
           // prepare counters
           map = {};
@@ -244,10 +246,16 @@ def manage_move_zodb_persistent_files_to_mediafolder( self):
         const params = {'json':true,'count':true,'root_node':root_node};
         $.get('manage_move_zodb_persistent_files_to_mediafolder',params,function(data) {
             $('#uid').val(root_node);
-            var html = '';
-            html += '<table id="count_table" class="table table-bordered">';
+            var html = `<table id="count_table" class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>&nbsp;</th>
+                  <th>Total</th>
+                  <th>Processed</th></tr>
+              </thead>
+              <tbody>`;
             Object.entries(data['count']).forEach((k,v) => {
-              html += '<tr class="' + k[0] + '">';
+              html += '<tr class="text-nowrap ' + k[0] + '">';
               html += '<td class="id">' + k[0] + '</td>';
               html += '<td class="total">' + k[1] + '</td>';
               html += '<td class="count w-100">' + 0 + '</td>';
@@ -255,21 +263,22 @@ def manage_move_zodb_persistent_files_to_mediafolder( self):
             });
             ['moved'].forEach(x => {
               html += '<tr class="' + x + '">';
-              html += '<td class="id"><strong>' + x + '<strong></td>';
+              html += '<td class="text-nowrap id" title="Moved Files"><strong>moved</strong></td>';
               html += '<td class="total">' + 0 + '</td>';
               html += '<td class="count w-100">' + 0 + '</td>';
               html += '</tr>';
             });
             html += '<tr class="Total">';
-            html += '<td class="id"><strong>Total</strong></td>';
+            html += '<td class="text-nowrap id" title="Content Items (ZMSIndex)"><strong>Total</strong></td>';
             html += '<td class="total">' + data['total'] + '</td>';
             html += '<td class="count w-100">' + 0 + '</td>';
             html += '</tr>';
             html += '<tr class="Time">';
-            html += '<td class="id"><strong>Time</strong></td>';
+            html += '<td class="text-nowrap id" title="Speed: Operations per second"><strong>Time</strong></td>';
             html += '<td class="time">' + 0 + '</td>';
             html += '<td class="count w-100">' + 0 + '</td>';
             html += '</tr>';
+            html += '</tbody>';
             html += '</table>';
             $("#count").html(html);
             // show progress
@@ -300,7 +309,8 @@ def manage_move_zodb_persistent_files_to_mediafolder( self):
               stop();
               $(".progress .progress-bar").removeClass("bg-warning progress-bar-striped").addClass("bg-success")
             }
-            $(".alert.alert-info").html($('<pre/>',{text:JSON.stringify(data,null,2)}))
+            $(".alert.alert-info").append($('<pre/>',{text:JSON.stringify(data,null,2)}))
+            $(".spinner-border").addClass("d-none");
             const log = data['log'];
             log.forEach(x => {
               // increase counter
@@ -340,7 +350,6 @@ def manage_move_zodb_persistent_files_to_mediafolder( self):
         $('.progress').addClass('d-none');
         $('.progress .progress-bar').css("width",0);
         $('.alert.alert-info').addClass('d-none').empty();
-        $("#count").html('<div class="spinner-border text-primary mx-auto" role="status"><span class="sr-only">Loading...</span></div>');
         // Show object classes table
         ajaxCount(stop);
       }).change();

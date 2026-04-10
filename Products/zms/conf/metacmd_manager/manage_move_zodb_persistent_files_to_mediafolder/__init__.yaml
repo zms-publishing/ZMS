@@ -8,7 +8,7 @@ manage_move_zodb_persistent_files_to_mediafolder:
   name: Move ZODB Persistent Files to Media Folder
   nodes: '{$}'
   package: com.zms.mediafolder
-  revision: 0.1.0
+  revision: 0.1.1
   roles:
     - ZMSAdministrator
   title: Move ZODB Persistent Files to Media Folder

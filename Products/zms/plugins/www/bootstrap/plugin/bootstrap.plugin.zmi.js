@@ -12,7 +12,7 @@ $ZMI.registerReady(function(){
 			if (manage_menu) {
 				$("#zmi-tab .breadcrumb").each(function() {
 					if ($(".btn-bookmark",this).length==0) {
-						$(this).append('<li class="btn-bookmark"><a href="javascript:;" title="Set Bookmark" class="align-text-top"><i class="far fa-bookmark text-muted"></a><li>');
+						$(this).append('<li class="btn-bookmark ml-1 text-primary"><a href="javascript:;" title="Set Bookmark" class="align-text-top"><i class="far fa-bookmark"></i></a></li>');
 					};
 					var key = "ZMS."+data_root+".bookmarks";
 					var bookmarks = $ZMILocalStorageAPI.get(key,[]);
@@ -39,9 +39,9 @@ $ZMI.registerReady(function(){
 					});
 					var index = bookmarks.indexOf(data_path);
 					if (index >= 0) {
-						$('.fa-bookmark',this).removeClass("far").addClass("fas text-primary");
+						$('.fa-bookmark',this).removeClass("far").addClass("fas");
 					} else {
-						$('.fa-bookmark',this).removeClass("fas text-primary").addClass("far text-muted");
+						$('.fa-bookmark',this).removeClass("fas").addClass("far");
 					}
 				});
 			}

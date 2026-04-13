@@ -59,7 +59,9 @@ RUN <<EOR
 EOR
 
 # Provide ZEO health check script
-COPY --chown=zope:zope docker/base/zeo_health_check.py /home/zope/bin/zeo_health_check.py
+COPY --chown=zope:zope docker/base/zeo_health_check.py bin/zeo_health_check.py
+# generic run script
+COPY --chown=zope:zope docker/base/run-zope.sh bin/run-zope.sh
 
 # Install uv
 # COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
@@ -125,4 +127,6 @@ COPY --chown=zope:zope $BUILD_DIR/zeo.conf etc/zeo.conf
 # locally it is mapped into the container via bindmounts
 # COPY --chown=zope:zope selenium_tests test_output tests ./
 
+ENV HTTP_PORT=${HTTP_PORT:-80}
+CMD ["bin/run-zope.sh"]
 CMD ["runwsgi", "--verbose", "etc/zope.ini", "http_port=80"]

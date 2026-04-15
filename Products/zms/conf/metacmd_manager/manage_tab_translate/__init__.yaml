@@ -9,7 +9,7 @@ manage_tab_translate:
   name: Translate
   nodes: '{$}'
   package: com.zms.custom.metacmd.tabs
-  revision: 6.1.3
+  revision: 6.1.4
   roles:
     - ZMSEditor
     - ZMSAuthor

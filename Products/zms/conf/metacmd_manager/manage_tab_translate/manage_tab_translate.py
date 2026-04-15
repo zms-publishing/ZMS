@@ -832,7 +832,7 @@ def renderStyles():
 # ----------------------------------------
 def renderScripts():
 	"""Render JavaScript code"""
-	return '''
+	return r'''
 		<script>
 			// Switch language and reload page
 			function switchLanguage(langKey, langValue) {

@@ -14,7 +14,7 @@
 	tal:attributes="id python:'tr_%s'%(elName)">
 	<div class="card-header btn-collapse">
 		<a class="btn card-toggle mr-1" data-toggle="collapse" 
-			tal:attributes="href python:'#%s'%(collapseId);id python:'zmi-toggle-detailstable_%s-btn'%(elName)">
+			tal:attributes="href python:'#%s'%(collapseId);id python:'zmi-toggle-%s-btn'%(collapseId)">
 			<i class="fas fas fa-th"></i>
 			<tal:block tal:content="elLabel">the heading</tal:block>
 		</a>

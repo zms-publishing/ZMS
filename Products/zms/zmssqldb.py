@@ -888,6 +888,34 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       return [x for x in entities if x['id'].upper()==tableName.upper()][0]
 
 
+    def getEntityTarget(self, sourceTableName, targetTableName):
+      """
+      Resolve the effective target entity for relation-like stereotypes.
+
+      If the referenced entity is an intersection table, return the opposite
+      foreign-key target. Otherwise return the referenced entity itself.
+
+      @param sourceTableName: Source entity name.
+      @type sourceTableName: str
+      @param targetTableName: Referenced entity or intersection table name.
+      @type targetTableName: str
+      @return: Resolved target entity descriptor.
+      @rtype: dict
+      """
+      entity = self.getEntity(targetTableName)
+      if entity.get('type') != 'intersection':
+        return entity
+      target_columns = [
+        x for x in entity.get('columns', [])
+        if isinstance(x.get('fk'), dict) and \
+           x['fk'].get('tablename') and \
+           x['fk']['tablename'].upper() != sourceTableName.upper()
+      ]
+      if len(target_columns) > 0:
+        return self.getEntity(target_columns[0]['fk']['tablename'])
+      return entity
+
+
     def getEntitiesSQLAlchemyDA(self):
       """
       Return a list of entity descriptors by reflecting the database schema via SQLAlchemy.

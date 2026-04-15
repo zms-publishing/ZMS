@@ -257,13 +257,11 @@ function mms_normalize_rows(el_tbody) {
 								<i class="fas fa-long-arrow-alt-right" tal:attributes="title python:column['multiselect'].get('fk','?')"></i>
 								<i class="fas fa-link"></i>
 								<tal:block tal:content="column/multiselect/tablename">the multiselect-tablename</tal:block>
-								<tal:block tal:on-error="python:'ERROR'" 
+								<tal:block 
 									tal:define="global
-										intersection python:here.getEntity(column['multiselect']['tablename']);
-										dst python:[x for x in intersection['columns'] if x.get('fk') is not None and x.get('fk',{}).get('tablename')!=table['id']][0];
-										dstentity python:here.getEntity(dst['fk']['tablename']);
+										dstentity python:here.getEntityTarget(table['id'], column['multiselect']['tablename']);
 										">
-									<i class="fas fa-long-arrow-alt-right" tal:attributes="title python:dst['id']"></i>
+										<i class="fas fa-long-arrow-alt-right" tal:attributes="title python:dstentity['id']"></i>
 									<i class="fas fa-th"></i>
 									<tal:block tal:content="dstentity/id">the details-tablename</tal:block>
 								</tal:block>
@@ -273,11 +271,9 @@ function mms_normalize_rows(el_tbody) {
 								<i class="fas fa-link"></i>
 								<tal:block tal:content="column/details/tablename">the intersection-tablename</tal:block>
 								<tal:block tal:on-error="python:'ERROR'" tal:define="global
-										intersection python:here.getEntity(column['details']['tablename']);
-										dst python:[x for x in intersection['columns'] if x.get('fk') is not None and x.get('fk',{}).get('tablename')!=table['id']][0];
-										dstentity python:here.getEntity(dst['fk']['tablename']);
+										dstentity python:here.getEntityTarget(table['id'], column['details']['tablename']);
 										">
-									<i class="fas fa-long-arrow-alt-right" tal:attributes="title python:dst['id']"></i>
+									<i class="fas fa-long-arrow-alt-right" tal:attributes="title python:dstentity['id']"></i>
 									<i class="fas fa-th"></i>
 									<tal:block tal:content="dstentity/id">the details-tablename</tal:block>
 								</tal:block>

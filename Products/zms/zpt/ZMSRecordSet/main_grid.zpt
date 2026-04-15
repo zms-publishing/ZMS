@@ -118,7 +118,9 @@
 					name python:['qindices:list','qindex'][int('select' in actions)]">
 
 					<tal:block tal:condition="python:'record_handler' in options"
-						><tal:block tal:define="global record python:options['record_handler'].handle_record(record)"></tal:block
+						><tal:block tal:define="
+							recordHandled python:options['record_handler'].handle_record(record);
+							record python:(recordHandled is not None and here.operator_gettype(record) is dict and here.operator_gettype(recordHandled) is dict and dict(record,**recordHandled)) or (recordHandled is not None and recordHandled) or record"></tal:block
 					></tal:block>
 
 					<tr tal:define="value python:record.get('__id__',qindex)" 

@@ -120,7 +120,13 @@
 					<tal:block tal:condition="python:'record_handler' in options"
 						><tal:block tal:define="
 							recordHandled python:options['record_handler'].handle_record(record);
-							record python:(recordHandled is not None and here.operator_gettype(record) is dict and here.operator_gettype(recordHandled) is dict and dict(record,**recordHandled)) or (recordHandled is not None and recordHandled) or record"></tal:block
+							bothDicts python:here.operator_gettype(record) == dict and here.operator_gettype(recordHandled) == dict"></tal:block
+						><tal:block tal:condition="python:recordHandled is not None">
+							<tal:block tal:condition="bothDicts"
+								tal:define="record python:{**record,**recordHandled}"></tal:block>
+							<tal:block tal:condition="not:bothDicts"
+								tal:define="record recordHandled"></tal:block>
+						</tal:block>
 					></tal:block>
 
 					<tr tal:define="value python:record.get('__id__',qindex)" 

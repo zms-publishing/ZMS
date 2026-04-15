@@ -9,11 +9,12 @@
 		metaObjAttr python:here.getEntityColumn(entity['id'],column['id'],row);
 		elName python:metaObjAttr['id'];
 		elLabel python:metaObjAttr['label'];
+		collapseId python:'detailstable_%s'%(elName);
 		details python:here.getEntity(metaObjAttr['details']['tablename']);"
 	tal:attributes="id python:'tr_%s'%(elName)">
 	<div class="card-header btn-collapse">
 		<a class="btn card-toggle mr-1" data-toggle="collapse" 
-			tal:attributes="href python:'#detailstable_%s'%(elLabel);id python:'zmi-toggle-detailstable_%s-btn'%(elLabel)">
+			tal:attributes="href python:'#%s'%(collapseId);id python:'zmi-toggle-detailstable_%s-btn'%(elName)">
 			<i class="fas fas fa-th"></i>
 			<tal:block tal:content="elLabel">the heading</tal:block>
 		</a>
@@ -33,13 +34,12 @@
 			metaObjAttrs python:[here.getEntityColumn(details['id'],x['id']) for x in metaObjAttrs];
 			dummy0 python:[here.operator_setitem(x,'name',x['label']) for x in metaObjAttrs];
 			metaObjAttrIds python:[x['id'] for x in metaObjAttrs];"
-		tal:attributes="id python:'#detailstable_%s'%(elLabel)">
+		tal:attributes="id collapseId">
 		<div class="ZMSRecordSet main_grid" 
 			tal:replace="structure python:here.metaobj_recordset_main_grid(
 				metaObjAttrIds=metaObjAttrIds,
 				metaObjAttrs=metaObjAttrs,
 				records=r,
-				record_handler=here.getEntityRecordHandler(details['id']),
 				form_action=request['URL'],
 				url_params={'qentity':details['id']},
 				actions=['insert','update','delete'],

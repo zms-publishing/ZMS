@@ -151,6 +151,46 @@
         
 
         
+            <div class="itemName"><code><a href="#getRecordSetMainGridContext" class="internal-link" title="zms.zmscustom.ZMSCustom.getRecordSetMainGridContext">get<wbr></wbr>Record<wbr></wbr>Set<wbr></wbr>Main<wbr></wbr>Grid<wbr></wbr>Context</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#getRecordSetMainGridDefaultAction" class="internal-link" title="zms.zmscustom.ZMSCustom.getRecordSetMainGridDefaultAction">get<wbr></wbr>Record<wbr></wbr>Set<wbr></wbr>Main<wbr></wbr>Grid<wbr></wbr>Default<wbr></wbr>Action</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#getRecordSetMainGridInsertAction" class="internal-link" title="zms.zmscustom.ZMSCustom.getRecordSetMainGridInsertAction">get<wbr></wbr>Record<wbr></wbr>Set<wbr></wbr>Main<wbr></wbr>Grid<wbr></wbr>Insert<wbr></wbr>Action</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#getRecordSetMainGridUpdateAction" class="internal-link" title="zms.zmscustom.ZMSCustom.getRecordSetMainGridUpdateAction">get<wbr></wbr>Record<wbr></wbr>Set<wbr></wbr>Main<wbr></wbr>Grid<wbr></wbr>Update<wbr></wbr>Action</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
             <div class="itemName"><code><a href="#manage_changeRecordGrid" class="internal-link" title="zms.zmscustom.ZMSCustom.manage_changeRecordGrid">manage_change<wbr></wbr>Record<wbr></wbr>Grid</a></code>
             </div>
         
@@ -513,6 +553,26 @@
   </tr><tr class="method">
     
     <td>Method</td>
+    <td><code><a href="#getRecordSetMainGridContext" class="internal-link" title="zms.zmscustom.ZMSCustom.getRecordSetMainGridContext">get<wbr></wbr>Record<wbr></wbr>Set<wbr></wbr>Main<wbr></wbr>Grid<wbr></wbr>Context</a></code></td>
+    <td>Build rendering context for <tt class="rst-docutils rst-literal">zpt/ZMSRecordSet/main_grid.zpt</tt>.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#getRecordSetMainGridDefaultAction" class="internal-link" title="zms.zmscustom.ZMSCustom.getRecordSetMainGridDefaultAction">get<wbr></wbr>Record<wbr></wbr>Set<wbr></wbr>Main<wbr></wbr>Grid<wbr></wbr>Default<wbr></wbr>Action</a></code></td>
+    <td>Return default JS onclick callback for row/grid actions.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#getRecordSetMainGridInsertAction" class="internal-link" title="zms.zmscustom.ZMSCustom.getRecordSetMainGridInsertAction">get<wbr></wbr>Record<wbr></wbr>Set<wbr></wbr>Main<wbr></wbr>Grid<wbr></wbr>Insert<wbr></wbr>Action</a></code></td>
+    <td>Return default JS onclick for opening the record-set insert form.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#getRecordSetMainGridUpdateAction" class="internal-link" title="zms.zmscustom.ZMSCustom.getRecordSetMainGridUpdateAction">get<wbr></wbr>Record<wbr></wbr>Set<wbr></wbr>Main<wbr></wbr>Grid<wbr></wbr>Update<wbr></wbr>Action</a></code></td>
+    <td>Return default JS onclick for opening the record-set update form.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
     <td><code><a href="#manage_changeRecordGrid" class="internal-link" title="zms.zmscustom.ZMSCustom.manage_changeRecordGrid">manage_change<wbr></wbr>Record<wbr></wbr>Grid</a></code></td>
     <td>Update the record-set grid view with edited row values.</td>
   </tr><tr class="method">
@@ -663,7 +723,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getEntityRecordHandler</span><span class="function-signature">(self, id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L431">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L548">
       
       (source)
     </a>
@@ -680,6 +740,114 @@
 </div><div class="basemethod">
   
   
+  <a name="zms.zmscustom.ZMSCustom.getRecordSetMainGridContext">
+    
+  </a>
+  <a name="getRecordSetMainGridContext">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getRecordSetMainGridContext</span><span class="function-signature">(self, options, request)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L389">
+      
+      (source)
+    </a>
+    <a class="headerLink" href="#getRecordSetMainGridContext" title="zms.zmscustom.ZMSCustom.getRecordSetMainGridContext">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Build rendering context for <tt class="rst-docutils rst-literal">zpt/ZMSRecordSet/main_grid.zpt</tt>.</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms.zmscustom.ZMSCustom.getRecordSetMainGridDefaultAction">
+    
+  </a>
+  <a name="getRecordSetMainGridDefaultAction">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getRecordSetMainGridDefaultAction</span><span class="function-signature">(self, action, qindex=None)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L381">
+      
+      (source)
+    </a>
+    <a class="headerLink" href="#getRecordSetMainGridDefaultAction" title="zms.zmscustom.ZMSCustom.getRecordSetMainGridDefaultAction">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Return default JS onclick callback for row/grid actions.</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms.zmscustom.ZMSCustom.getRecordSetMainGridInsertAction">
+    
+  </a>
+  <a name="getRecordSetMainGridInsertAction">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getRecordSetMainGridInsertAction</span><span class="function-signature">(self, url, lang, params=None, sort_id=None)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L354">
+      
+      (source)
+    </a>
+    <a class="headerLink" href="#getRecordSetMainGridInsertAction" title="zms.zmscustom.ZMSCustom.getRecordSetMainGridInsertAction">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Return default JS onclick for opening the record-set insert form.</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms.zmscustom.ZMSCustom.getRecordSetMainGridUpdateAction">
+    
+  </a>
+  <a name="getRecordSetMainGridUpdateAction">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getRecordSetMainGridUpdateAction</span><span class="function-signature">(self, url, lang, qindex, params=None)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L368">
+      
+      (source)
+    </a>
+    <a class="headerLink" href="#getRecordSetMainGridUpdateAction" title="zms.zmscustom.ZMSCustom.getRecordSetMainGridUpdateAction">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Return default JS onclick for opening the record-set update form.</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
   <a name="zms.zmscustom.ZMSCustom.manage_changeRecordGrid">
     
   </a>
@@ -690,7 +858,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_changeRecordGrid</span><span class="function-signature">(self, lang, btn, REQUEST, RESPONSE)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L481">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L598">
       
       (source)
     </a>
@@ -717,7 +885,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_changeRecordSet</span><span class="function-signature">(self, lang, btn, action, REQUEST, RESPONSE)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L570">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L687">
       
       (source)
     </a>
@@ -744,7 +912,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_import</span><span class="function-signature">(self, file, lang, REQUEST, RESPONSE=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L688">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L805">
       
       (source)
     </a>
@@ -798,7 +966,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">recordSet_Export</span><span class="function-signature">(self, lang, qorder, qorderdir, qindex=[], REQUEST=None, RESPONSE=None, mode=<span class="rst-variable-quote">'</span><span class="rst-variable-string">xml</span><span class="rst-variable-quote">'</span>)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L356">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmscustom.py#L473">
       
       (source)
     </a>

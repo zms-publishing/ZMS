@@ -572,6 +572,97 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       return EntityRecordHandler(self, tableName)
 
 
+    def getEntityDetailsGridContext(self, request):
+      """
+      Build the full rendering context for C{manage_zmi_details_grid}.
+
+      This moves detail-grid preparation logic from TAL into Python so the
+      template focuses on markup only.
+
+      @param request: Current request.
+      @type request: ZPublisher.HTTPRequest.HTTPRequest
+      @return: Context dictionary used by C{zmi_details_grid.zpt}.
+      @rtype: dict
+      """
+      entity = self.getEntity(request['qentity'])
+      primary_key = self.getEntityPK(entity['id']).lower()
+      column = {'id': request['qcolumn']}
+      qentitypkval = request['qentitypkval']
+      row = {primary_key: qentitypkval}
+      meta_obj_attr = self.getEntityColumn(entity['id'], column['id'], row)
+      el_name = meta_obj_attr['id']
+      el_label = meta_obj_attr['label']
+      details = self.getEntity(meta_obj_attr['details']['tablename'])
+      collapse_id = 'detailstable_%s' % el_name
+      detail_columns = [
+        x for x in details['columns']
+        if not x.get('pk') and not x.get('fk', {}).get('tablename') == entity['id']
+      ]
+      meta_obj_attrs = [self.getEntityColumn(details['id'], x['id']) for x in detail_columns]
+      for item in meta_obj_attrs:
+        item['name'] = item['label']
+      meta_obj_attr_ids = [x['id'] for x in meta_obj_attrs]
+
+      lang = request.get('lang', '')
+      form_action = request['URL']
+      url_params = {
+        'lang': lang,
+        'qentity': request['qentity'],
+        'qcolumn': request['qcolumn'],
+        'qentitypk': request['qentitypk'],
+        'qentitypkval': request['qentitypkval'],
+        'qsize': request.get('qsize', 10),
+      }
+
+      insert_action = (
+        "return $ZMI.iframe('%s/manage_zmi_details_form',{lang:'%s',action:'insertForm',"
+        "qentity:'%s',qentitypk:'%s',qentitypkval:'%s',qcolumn:'%s'},"
+        "{title:getZMILangStr('BTN_INSERT')+': %s',iframe:true,width:800,height:600})"
+      ) % (
+        self.absolute_url(), lang, entity['id'], primary_key,
+        qentitypkval, meta_obj_attr['id'], el_label
+      )
+      update_action = (
+        "return $ZMI.iframe('%s/manage_zmi_details_form',{lang:'%s',action:'updateForm',"
+        "qentity:'%s',qentitypk:'%s',qentitypkval:'%s',qcolumn:'%s',"
+        "qindex:$('input:checkbox',$(this).parents('tr')).val()},"
+        "{title:getZMILangStr('BTN_EDIT')+': %s',iframe:true,width:800,height:600})"
+      ) % (
+        self.absolute_url(), lang, entity['id'], primary_key,
+        qentitypkval, meta_obj_attr['id'], el_label
+      )
+      delete_action = (
+        "if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {$ZMI.iframe('%s/manage_zmi_details_form',"
+        "{lang:'%s',action:'delete',qentity:'%s',qentitypk:'%s',qentitypkval:'%s',qcolumn:'%s',"
+        "qindex:$('input:checkbox',$(this).parents('tr')).val()},"
+        "{title:getZMILangStr('BTN_DELETE')+': %s',iframe:true,width:800,height:600})} return false;"
+      ) % (
+        self.absolute_url(), lang, entity['id'], primary_key,
+        qentitypkval, meta_obj_attr['id'], el_label
+      )
+
+      return {
+        'entity': entity,
+        'primary_key': primary_key,
+        'column': column,
+        'qentitypkval': qentitypkval,
+        'metaObjAttr': meta_obj_attr,
+        'elName': el_name,
+        'elLabel': el_label,
+        'details': details,
+        'collapseId': collapse_id,
+        'records': meta_obj_attr.get('value'),
+        'metaObjAttrs': meta_obj_attrs,
+        'metaObjAttrIds': meta_obj_attr_ids,
+        'record_handler': self.getEntityRecordHandler(details['id']),
+        'form_action': form_action,
+        'url_params': url_params,
+        'insert_action': insert_action,
+        'update_action': update_action,
+        'delete_action': delete_action,
+      }
+
+
     def getEntityColumn(self, tableName, columnName, row=None):
       """
       Return a column descriptor with metadata and value for a given table column.

@@ -1,16 +1,12 @@
 <!-- zmi_details_grid -->
 
 <div class="card zmi_details_grid" 
-	tal:define="entity python:here.getEntity(request['qentity']);
-		primary_key python:here.getEntityPK(entity['id']).lower();
-		column python:{'id':request['qcolumn']};
-		qentitypkval request/qentitypkval;
-		row python:{primary_key:qentitypkval};
-		metaObjAttr python:here.getEntityColumn(entity['id'],column['id'],row);
-		elName python:metaObjAttr['id'];
-		elLabel python:metaObjAttr['label'];
-		details python:here.getEntity(metaObjAttr['details']['tablename']);
-		collapseId python:'detailstable_%s'%(elName)"
+	tal:define="ctx python:here.getEntityDetailsGridContext(request);
+		column ctx/column;
+		metaObjAttr ctx/metaObjAttr;
+		collapseId ctx/collapseId;
+		elName ctx/elName;
+		elLabel ctx/elLabel"
 	tal:attributes="id python:'tr_%s'%(elName)">
 	<div class="card-header btn-collapse">
 		<a class="btn card-toggle mr-1" data-toggle="collapse" 
@@ -28,41 +24,28 @@
 		</code>
 	</div><!-- card-header -->
 	<div class="collapse" 
-		tal:define="global
-			r metaObjAttr/value;
-			metaObjAttrs python:[x for x in details['columns'] if not x.get('pk') and not x.get('fk',{}).get('tablename')==entity['id']];
-			metaObjAttrs python:[here.getEntityColumn(details['id'],x['id']) for x in metaObjAttrs];
-			dummy0 python:[here.operator_setitem(x,'name',x['label']) for x in metaObjAttrs];
-			metaObjAttrIds python:[x['id'] for x in metaObjAttrs];"
 		tal:attributes="id collapseId">
 		<div tal:attributes="id python:'div_%s' % column['id']">
-			<tal:block tal:replace="nothing">
-				<!--! DEBUG HELPER -->
+			<tal:block tal:condition="python:'debug'=='not-debug'">
+				<!--! DEBUG INFO -->
 				<pre tal:content="python:'DETAILS-SQL: ' + metaObjAttr.get('valuesql','')">sql</pre>
 				<pre tal:content="python:'DETAILS-ERROR: ' + metaObjAttr.get('error','')">err</pre>
-				<pre tal:content="python:'DETAILS-COUNT: %s' % (len(metaObjAttr.get('value',[])) if metaObjAttr.get('value') is not None else -1)">cnt</pre>
+				<pre tal:content="python:'DETAILS-COUNT: %s' % (len(ctx.get('records',[])) if ctx.get('records') is not None else -1)">cnt</pre>
 				<pre tal:content="python:'DETAILS-VAL[0]: %s' % metaObjAttr['value'][0]">row0</pre>
-				<pre tal:content="python:'DETAILS-COLS: %s' % len(metaObjAttrs)">cols</pre>
+				<pre tal:content="python:'DETAILS-COLS: %s' % len(ctx['metaObjAttrs'])">cols</pre>
 			</tal:block>
 			<div class="ZMSRecordSet main_grid" 
 				tal:replace="structure python:here.metaobj_recordset_main_grid(
-					metaObjAttrIds=metaObjAttrIds,
-					metaObjAttrs=metaObjAttrs,
-					records=r,
-					record_handler=here.getEntityRecordHandler(details['id']),
-					form_action=request['URL'],
-					url_params={
-						'lang': request.get('lang',''),
-						'qentity': request['qentity'],
-						'qcolumn': request['qcolumn'],
-						'qentitypk': request['qentitypk'],
-						'qentitypkval': request['qentitypkval'],
-						'qsize': request.get('qsize',10)
-						},
+					metaObjAttrIds=ctx['metaObjAttrIds'],
+					metaObjAttrs=ctx['metaObjAttrs'],
+					records=ctx['records'],
+					record_handler=ctx['record_handler'],
+					form_action=ctx['form_action'],
+					url_params=ctx['url_params'],
 					actions=['insert','update','delete'],
-					insert='return $ZMI.iframe(\'%s/manage_zmi_details_form\',{lang:\'%s\',action:\'insertForm\',qentity:\'%s\',qentitypk:\'%s\',qentitypkval:\'%s\',qcolumn:\'%s\'},{title:getZMILangStr(\'BTN_INSERT\')+\': %s\',iframe:true,width:800,height:600})'%(here.absolute_url(),request.get('lang',''),entity['id'],primary_key,qentitypkval,metaObjAttr['id'],elLabel),
-					update='return $ZMI.iframe(\'%s/manage_zmi_details_form\',{lang:\'%s\',action:\'updateForm\',qentity:\'%s\',qentitypk:\'%s\',qentitypkval:\'%s\',qcolumn:\'%s\',qindex:$(\'input:checkbox\',$(this).parents(\'tr\')).val()},{title:getZMILangStr(\'BTN_EDIT\')+\': %s\',iframe:true,width:800,height:600})'%(here.absolute_url(),request.get('lang',''),entity['id'],primary_key,qentitypkval,metaObjAttr['id'],elLabel),
-					delete='if (confirm(getZMILangStr(\'MSG_CONFIRM_DELOBJ\'))) {$ZMI.iframe(\'%s/manage_zmi_details_form\',{lang:\'%s\',action:\'delete\',qentity:\'%s\',qentitypk:\'%s\',qentitypkval:\'%s\',qcolumn:\'%s\',qindex:$(\'input:checkbox\',$(this).parents(\'tr\')).val()},{title:getZMILangStr(\'BTN_DELETE\')+\': %s\',iframe:true,width:800,height:600})} return false;'%(here.absolute_url(),request.get('lang',''),entity['id'],primary_key,qentitypkval,metaObjAttr['id'],elLabel),
+					insert=ctx['insert_action'],
+					update=ctx['update_action'],
+					delete=ctx['delete_action'],
 					)">
 				metaobj_recordset_main_grid
 			</div>

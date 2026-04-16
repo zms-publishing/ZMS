@@ -519,7 +519,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       return pk
 
 
-    def getEntityRecordHandler(self, tableName, stereotypes=['*'], colNames=[]):
+    def getEntityRecordHandler(self, tableName, stereotypes=None, colNames=None):
       """
       Build a helper that post-processes rows for export and display.
 
@@ -532,6 +532,10 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       @return: Record handler instance.
       @rtype: object
       """
+      if stereotypes is None:
+        stereotypes = ['*']
+      selected_col_names = list(colNames) if colNames else []
+
       class EntityRecordHandler(object):
         def __init__(self, parent, tableName):
           self.parent = parent 
@@ -539,15 +543,18 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         handle_record__roles__ = None
         def handle_record(self, r):
           context = self.parent
-          primary_key = context.getEntityPK(tableName)
-          colNames.append(primary_key)
+          primary_key = context.getEntityPK(self.tableName)
+          include_columns = list(selected_col_names)
+          if include_columns and not standard.operator_contains(include_columns, primary_key, ignorecase=True):
+            include_columns.append(primary_key)
           d = {}
-          if len(colNames)>0:
-            r = { k: r[k] for k in r if standard.operator_contains(colNames,k,ignorecase=True) }
-          for k in r:
-            value = r[k]
+          row_data = r
+          if len(include_columns) > 0:
+            row_data = {k: r[k] for k in r if standard.operator_contains(include_columns, k, ignorecase=True)}
+          for k in row_data:
+            value = row_data[k]
             try:
-              column = context.getEntityColumn(self.tableName, k, r)
+              column = context.getEntityColumn(self.tableName, k, row_data)
               if '*' in stereotypes or len([x for x in stereotypes if x in column]) > 0:
                 value =  column.get('value', value)
                 if 'options' in column:
@@ -565,7 +572,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
             except:
               standard.writeError( self, '[getEntityRecordHandler]: can\'t %s'%k)
             d[k] = value
-          rowid = standard.operator_getitem(r, primary_key, ignorecase=True)
+          rowid = standard.operator_getitem(row_data, primary_key, ignorecase=True)
           d['__id__'] = rowid
           d['params'] = {'rowid':rowid}
           return d

@@ -1,0 +1,179 @@
+<list>
+    <item type="dictionary">
+        <dictionary>
+            <item key="access" type="dictionary">
+                <dictionary>
+                    <item key="delete" type="list">
+                        <list>
+                            <item>ZMSAdministrator</item>
+                            <item>ZMSEditor</item>
+                            <item>ZMSAuthor</item>
+                        </list>
+                    </item>
+                    <item key="insert" type="list">
+                        <list>
+                            <item>ZMSAdministrator</item>
+                            <item>ZMSEditor</item>
+                            <item>ZMSAuthor</item>
+                        </list>
+                    </item>
+                    <item key="select" type="list">
+                        <list>
+                            <item>ZMSAdministrator</item>
+                            <item>ZMSEditor</item>
+                            <item>ZMSAuthor</item>
+                        </list>
+                    </item>
+                    <item key="update" type="list">
+                        <list>
+                            <item>ZMSAdministrator</item>
+                            <item>ZMSEditor</item>
+                            <item>ZMSAuthor</item>
+                        </list>
+                    </item>
+                </dictionary>
+            </item>
+            <item key="columns" type="list">
+                <list>
+                    <item type="dictionary">
+                        <dictionary>
+                            <item key="auto">db</item>
+                            <item key="hide" type="int">0</item>
+                            <item key="id">company_id</item>
+                            <item key="index" type="int">1</item>
+                            <item key="label"><![CDATA[Company Id]]></item>
+                            <item key="pk" type="int">1</item>
+                        </dictionary>
+                    </item>
+                    <item type="dictionary">
+                        <dictionary>
+                            <item key="auto"></item>
+                            <item key="hide" type="int">0</item>
+                            <item key="id">name</item>
+                            <item key="index" type="int">2</item>
+                            <item key="label">Name</item>
+                        </dictionary>
+                    </item>
+                    <item type="dictionary">
+                        <dictionary>
+                            <item key="auto"></item>
+                            <item key="hide" type="int">0</item>
+                            <item key="id">location</item>
+                            <item key="index" type="int">3</item>
+                            <item key="label">Location</item>
+                        </dictionary>
+                    </item>
+                    <item type="dictionary">
+                        <dictionary>
+                            <item key="auto"></item>
+                            <item key="details" type="dictionary">
+                                <dictionary>
+                                    <item key="fk">company_id</item>
+                                    <item key="tablename">employees</item>
+                                </dictionary>
+                            </item>
+                            <item key="hide" type="int">0</item>
+                            <item key="id">employees</item>
+                            <item key="index" type="int">4</item>
+                            <item key="label">Employees</item>
+                        </dictionary>
+                    </item>
+                </list>
+            </item>
+            <item key="filter"></item>
+            <item key="id">company</item>
+            <item key="interface"></item>
+            <item key="label">Company</item>
+            <item key="type">table</item>
+        </dictionary>
+    </item>
+    <item type="dictionary">
+        <dictionary>
+            <item key="access" type="dictionary">
+                <dictionary>
+                    <item key="delete" type="list">
+                        <list>
+                            <item>ZMSAdministrator</item>
+                            <item>ZMSEditor</item>
+                            <item>ZMSAuthor</item>
+                        </list>
+                    </item>
+                    <item key="insert" type="list">
+                        <list>
+                            <item>ZMSAdministrator</item>
+                            <item>ZMSEditor</item>
+                            <item>ZMSAuthor</item>
+                        </list>
+                    </item>
+                    <item key="select" type="list">
+                        <list>
+                            <item>ZMSAdministrator</item>
+                            <item>ZMSEditor</item>
+                            <item>ZMSAuthor</item>
+                        </list>
+                    </item>
+                    <item key="update" type="list">
+                        <list>
+                            <item>ZMSAdministrator</item>
+                            <item>ZMSEditor</item>
+                            <item>ZMSAuthor</item>
+                        </list>
+                    </item>
+                </dictionary>
+            </item>
+            <item key="columns" type="list">
+                <list>
+                    <item type="dictionary">
+                        <dictionary>
+                            <item key="auto">db</item>
+                            <item key="hide" type="int">0</item>
+                            <item key="id">employee_id</item>
+                            <item key="index" type="int">1</item>
+                            <item key="label"><![CDATA[Employee Id]]></item>
+                            <item key="pk" type="int">1</item>
+                        </dictionary>
+                    </item>
+                    <item type="dictionary">
+                        <dictionary>
+                            <item key="auto"></item>
+                            <item key="fk" type="dictionary">
+                                <dictionary>
+                                    <item key="displayfield">name</item>
+                                    <item key="fieldname">company_id</item>
+                                    <item key="tablename">company</item>
+                                </dictionary>
+                            </item>
+                            <item key="hide" type="int">0</item>
+                            <item key="id">company_id</item>
+                            <item key="index" type="int">2</item>
+                            <item key="label"><![CDATA[Company Id]]></item>
+                        </dictionary>
+                    </item>
+                    <item type="dictionary">
+                        <dictionary>
+                            <item key="auto"></item>
+                            <item key="hide" type="int">0</item>
+                            <item key="id">name</item>
+                            <item key="index" type="int">3</item>
+                            <item key="label">Name</item>
+                        </dictionary>
+                    </item>
+                    <item type="dictionary">
+                        <dictionary>
+                            <item key="auto"></item>
+                            <item key="hide" type="int">0</item>
+                            <item key="id">email</item>
+                            <item key="index" type="int">4</item>
+                            <item key="label">Email</item>
+                        </dictionary>
+                    </item>
+                </list>
+            </item>
+            <item key="filter"></item>
+            <item key="id">employees</item>
+            <item key="interface"></item>
+            <item key="label">Employees</item>
+            <item key="type">table</item>
+        </dictionary>
+    </item>
+</list>

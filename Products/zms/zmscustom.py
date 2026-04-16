@@ -350,9 +350,126 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
       request.set('res', res)
       return res
 
+
+    def getRecordSetMainGridInsertAction(self, url, lang, params=None, sort_id=None):
+      """Return default JS onclick for opening the record-set insert form."""
+      params = params or {}
+      query = [
+        'lang=%s' % lang,
+        'action=insertForm',
+      ]
+      if sort_id is not None:
+        query.append('sort_id:int=%i' % sort_id)
+      for key in params:
+        query.append('%s=%s' % (key, str(params[key])))
+      return "return window.open('%s?%s','_self')" % (url, '&'.join(query))
+
+
+    def getRecordSetMainGridUpdateAction(self, url, lang, qindex, params=None):
+      """Return default JS onclick for opening the record-set update form."""
+      params = params or {}
+      query = [
+        'lang=%s' % lang,
+        'action=updateForm',
+        'qindex:int=%i' % int(qindex),
+      ]
+      for key in params:
+        query.append('%s=%s' % (key, str(params[key])))
+      return "return window.open('%s?%s','_self')" % (url, '&'.join(query))
+
+
+    def getRecordSetMainGridDefaultAction(self, action, qindex=None):
+      """Return default JS onclick callback for row/grid actions."""
+      action_name = action.capitalize()
+      if qindex is None:
+        return 'return zmiRecordSet%sRow(this)' % action_name
+      return 'return zmiRecordSet%sRow(this,%i)' % (action_name, int(qindex))
+
+
+    def getRecordSetMainGridContext(self, options, request):
+      """Build rendering context for C{zpt/ZMSRecordSet/main_grid.zpt}."""
+      form_action = options.get('form_action', 'manage_changeRecordSet')
+      input_target = options.get('input_target', '')
+      meta_obj_attr_ids = options.get('metaObjAttrIds', [])
+      meta_obj_attrs = [x for x in options.get('metaObjAttrs', []) if x.get('hide', 0) == 0]
+      filtered = options.get('filtered', False)
+      sorted_rows = 'sort_id' in meta_obj_attr_ids
+      request_url = options.get('url', request['URL'])
+      url_params = options.get('url_params', {})
+      actions = options.get('actions', ['insert', 'update', 'delete', 'sort'])
+      records = options.get('records', [])
+      filtered_records = options.get('filtered_records', records)
+      size = options.get('size', len(filtered_records))
+      total = options.get('total', len(records))
+
+      page_size = request.get('qsize', 20)
+      if page_size <= 0:
+        page_size = 20
+      page_count = size // page_size
+      page_index = request.get('pageIndex', int(request.get('qindex', -1)) // page_size)
+      page_index = page_index if page_index >= 0 and page_index <= page_count else 0
+      page_start = page_index * page_size
+      page_end = min(page_start + page_size, size)
+      offset = options.get('offset', page_start)
+
+      record_handler = options.get('record_handler')
+      selected_values = [str(x) for x in request.get('qindices', [])]
+      rows = []
+      for rindex in range(max(0, page_end - page_start)):
+        index = offset + rindex
+        if index >= len(filtered_records):
+          break
+        raw_record = filtered_records[index]
+        qindex = records.index(raw_record)
+        row_record = raw_record
+        if record_handler is not None:
+          row_record = record_handler.handle_record(row_record)
+        value = row_record.get('__id__', qindex)
+        rows.append({
+          'rindex': rindex,
+          'index': index,
+          'qindex': qindex,
+          'record': row_record,
+          'value': value,
+          'selected': str(value) == str(request.get('qindex')) or str(value) in selected_values,
+          'params': dict(url_params, **row_record.get('params', {})),
+          'title': (
+            self.getLangFmtDate(row_record.get('_change_dt')) + ' ' +
+            self.getZMILangStr('BY') + ' ' + str(row_record.get('_change_uid'))
+          ) if '_change_uid' in row_record else '',
+        })
+
+      return {
+        'form_action': form_action,
+        'input_target': input_target,
+        'metaObjAttrIds': meta_obj_attr_ids,
+        'metaObjAttrs': meta_obj_attrs,
+        'filtered': filtered,
+        'sorted': sorted_rows,
+        'url': request_url,
+        'url_params': url_params,
+        'url_param_names': list(url_params),
+        'actions': actions,
+        'records': records,
+        'filtered_records': filtered_records,
+        'size': size,
+        'total': total,
+        'pageSize': page_size,
+        'pageCount': page_count,
+        'pageIndex': page_index,
+        'pageStart': page_start,
+        'pageEnd': page_end,
+        'offset': offset,
+        'rows': rows,
+        'cols_count': len(meta_obj_attrs) + 1,
+        'cols_count_texttype': len([x.get('id', '') for x in meta_obj_attrs if x.get('type', 'string') == 'text']),
+        'pagination': self.zmi_pagination(size=size, pageSize=page_size, pageIndex=page_index),
+        'request_qsize': request.get('qsize', 10),
+        'row_select_name': ['qindices:list', 'qindex'][int('select' in actions)],
+      }
+
+
     security.declareProtected('View', 'recordSet_Export')
-
-
     def recordSet_Export(self, lang, qorder, qorderdir, qindex=[], REQUEST=None, RESPONSE=None, mode='xml'):
       """
       Export record-set to XML or CSV via /recordSet_Export?lang=&qorder=&qorderdir=&mode=csv

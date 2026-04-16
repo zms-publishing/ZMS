@@ -1,34 +1,28 @@
 <!-- ZMSRecordSet/main_grid -->
 
 <div class="ZMSRecordSet main_grid" tal:define="standard modules/Products.zms/standard;
-	form_action python:options.get('form_action','manage_changeRecordSet');
-	input_target python:options.get('input_target','');
-	metaObjAttrIds options/metaObjAttrIds;
-	metaObjAttrs python:[x for x in options['metaObjAttrs'] if x.get('hide',0) == 0];
-	filtered python:options.get('filtered',False);
-	sorted python:'sort_id' in metaObjAttrIds;
-	url python:options.get('url',request['URL']);
-	url_params python:options.get('url_params',{});
-	actions python:options.get('actions',['insert','update','delete','sort']);
-	records python:options['records'];
-	filtered_records python:options.get('filtered_records',records);
-	size python:options.get('size',len(filtered_records));
-	total python:options.get('total',len(records));
-	pageSize python:request.get('qsize',20);
-	pageCount python:size//pageSize;
-	pageIndex python:request.get('pageIndex',int(request.get('qindex',-1))//pageSize);
-	pageIndex python:pageIndex if pageIndex >= 0 and pageIndex <= pageCount else 0;
-	pageStart python:pageIndex*pageSize;
-	pageEnd python:min(pageStart+pageSize,size);
-	offset python:options.get('offset',pageStart);">
+	ctx python:here.getRecordSetMainGridContext(options, request);
+	form_action ctx/form_action;
+	input_target ctx/input_target;
+	metaObjAttrs ctx/metaObjAttrs;
+	filtered ctx/filtered;
+	sorted ctx/sorted;
+	url ctx/url;
+	url_params ctx/url_params;
+	actions ctx/actions;
+	size ctx/size;
+	total ctx/total;
+	pageStart ctx/pageStart;
+	row_select_name ctx/row_select_name;
+	request_qsize ctx/request_qsize;">
 
 <div class="d-flex justify-content-between pagination-pre">
-	<div class="pull-left" tal:content="structure python:here.zmi_pagination(size=size,pageSize=pageSize,pageIndex=pageIndex)">
+	<div class="pull-left" tal:content="structure ctx/pagination">
 		zmi_pagination
 	</div>
 	<form class="pull-right btn-group form-group mb-0">
-		<label class="control-label pt-2 pr-3" for="qsize" style="min-width:4em" tal:content="python:here.getZMILangStr('ATTR_ROWS')" tal:define="global dummy0 python:request.set('qsize',request.get('qsize',10))">Rows</label>
-		<input class="form-control form-control-sm" size="6" id="qsize" type="number" name="qsize:int" tal:attributes="value request/qsize" onchange="this.form.submit()"/>
+		<label class="control-label pt-2 pr-3" for="qsize" style="min-width:4em" tal:content="python:here.getZMILangStr('ATTR_ROWS')">Rows</label>
+		<input class="form-control form-control-sm" size="6" id="qsize" type="number" name="qsize:int" tal:attributes="value request_qsize" onchange="this.form.submit()"/>
 	</form>
 </div>
 <form method="get" tal:attributes="action form_action">
@@ -38,19 +32,16 @@
 <input type="hidden" id="btn" name="btn" value="" />
 <input type="hidden" id="target" name="target" tal:condition="python:len(input_target)>0" tal:attributes="value input_target" />
 <input type="hidden" id="form_id" name="form_id" tal:condition="python:'ZMI_TIME' in request" tal:attributes="value request/ZMI_TIME" />
-<tal:block tal:repeat="name python:list(url_params)"
+<tal:block tal:repeat="name ctx/url_param_names"
 	><input type="hidden" tal:attributes="name name; value python:url_params[name]" />
 </tal:block>
 
 <div class="table-responsive mb-2">
 	<table class="table table-sm table-striped table-bordered table-hover zmi-sortable zmi-selectable mb-0"
-		tal:define="
-			cols_count python:len(metaObjAttrs)+1;
-			cols_count_texttype python:len([metaObjAttr.get('id','') for metaObjAttr in metaObjAttrs if metaObjAttr.get('type','string')=='text'])"
 		tal:attributes="
-			data-grid-cols cols_count;
-			data-grid-cols-texttype cols_count_texttype;
-			style python:'--grid-cols: %d;;--grid-cols-texttype: %d' % (cols_count, cols_count_texttype)">
+			data-grid-cols ctx/cols_count;
+			data-grid-cols-texttype ctx/cols_count_texttype;
+			style python:'--grid-cols: %d;;--grid-cols-texttype: %d' % (ctx['cols_count'], ctx['cols_count_texttype'])">
 		<colgroup>
 			<col class="zmi-datatype-action" />
 			<col tal:repeat="metaObjAttr metaObjAttrs" tal:attributes="class python:'zmi-datatype-%s'%(metaObjAttr.get('type','string'))" />
@@ -73,13 +64,13 @@
 									<tal:block tal:content="python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))">Select all/none</tal:block>
 								</a>
 								<a tal:condition="python:'insert' in actions"
-									class="dropdown-item" href="javascript:;" tal:attributes="onclick python:options.get('insert','return window.open(\'%s?lang=%s&amp;action=insertForm%s\',\'_self\')'%(url,request['lang'],''.join(['&amp;'+x+'='+str(url_params[x]) for x in url_params])))">
+									class="dropdown-item" href="javascript:;" tal:attributes="onclick python:options.get('insert', here.getRecordSetMainGridInsertAction(url=url, lang=request['lang'], params=url_params))">
 									<i class="fas fa-plus"></i>
 									<tal:block tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</tal:block>
 								</a>
 								<tal:block tal:repeat="action python:['delete','cut','copy','paste','duplicate']"
 									><a tal:condition="python:action in actions"
-										class="dropdown-item" href="javascript:;" tal:attributes="onclick python:options.get(action,'return zmiRecordSet%sRow(this)'%action.capitalize())">
+										class="dropdown-item" href="javascript:;" tal:attributes="onclick python:options.get(action, here.getRecordSetMainGridDefaultAction(action))">
 										<i tal:attributes="class python:'fas fa-%s'%{'delete':'times','duplicate':'clone'}.get(action,action)"></i>
 										<tal:block tal:content="python:here.getZMILangStr('BTN_%s'%action.upper())">Action</tal:block
 									></a>
@@ -110,55 +101,38 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tal:block tal:repeat="rindex python:range(pageEnd-pageStart)"
-				><tal:block tal:define="
-					index python:offset+rindex;
-					record python:filtered_records[index];
-					qindex python:records.index(record);
-					name python:['qindices:list','qindex'][int('select' in actions)]">
-
-					<tal:block tal:condition="python:'record_handler' in options"
-						><tal:block tal:define="global record python:options['record_handler'].handle_record(record)"></tal:block
-					></tal:block>
-
-					<tr tal:define="value python:record.get('__id__',qindex)" 
-					tal:attributes="id python:'tr_%i'%qindex; 
-					class python:['','zmi-selected'][int(str(value)==str(request.get('qindex')) or str(value) in [str(x) for x in request.get('qindices',[])])]">
+			<tal:block tal:repeat="row ctx/rows"
+				><tr tal:attributes="id python:'tr_%i'%row['qindex']; class python:['','zmi-selected'][int(row['selected'])]">
 					<td class="zmi-datatype-action"
-							tal:define="global title python:'';
-							record_params python:record.get('params',{});
-							params python:dict(url_params,**record_params)">
-						<tal:block tal:condition="python:'_change_uid' in record">
-							<tal:block tal:define="global title python:here.getLangFmtDate(record.get('_change_dt'))+' '+here.getZMILangStr('BY')+' '+str(record.get('_change_uid'))"></tal:block>
-						</tal:block>
-						<div class="btn-group" tal:attributes="title title">
+							>
+						<div class="btn-group" tal:attributes="title python:row['title']">
 							<span class="checkbox btn btn-secondary text-nowrap">
-								<input tal:attributes="name name; type python:['checkbox','radio'][int('select' in actions)]; class python:['','radio-inline'][int('select' in actions)]; value value" />
-								<span class="index"><tal:block tal:content="python:pageStart+rindex+1">index</tal:block>.</span>
+								<input tal:attributes="name row_select_name; type python:['checkbox','radio'][int('select' in actions)]; class python:['','radio-inline'][int('select' in actions)]; value python:row['value']" />
+								<span class="index"><tal:block tal:content="python:pageStart+row['rindex']+1">index</tal:block>.</span>
 							</span>
 							<tal:block tal:condition="python:'update' in actions or 'delete' in actions or 'sort' in actions">
 								<button class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"></button>
 								<div class="dropdown-menu">
 									<a tal:condition="python:'insert' in actions"
-										class="dropdown-item" href="javascript:;" tal:attributes="onclick python:options.get('insert','return window.open(\'%s?lang=%s&amp;action=insertForm%s\',\'_self\')'%(url,request['lang'],''.join([[],['&sort_id:int=%i'%(index+1)]][sorted]+['&amp;'+x+'='+str(params[x]) for x in params])))">
+										class="dropdown-item" href="javascript:;" tal:attributes="onclick python:options.get('insert', here.getRecordSetMainGridInsertAction(url=url, lang=request['lang'], params=row['params'], sort_id=sorted and row['index']+1 or None))">
 										<i class="fas fa-plus"></i>
 										<tal:block tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</tal:block>
 									</a>
 									<a tal:condition="python:'update' in actions"
-										class="dropdown-item" href="javascript:;" tal:attributes="onclick python:options.get('update','return window.open(\'%s?lang=%s&amp;action=updateForm&amp;qindex:int=%i%s\',\'_self\')'%(url,request['lang'],qindex,''.join(['&amp;'+x+'='+str(params[x]) for x in params])))">
+										class="dropdown-item" href="javascript:;" tal:attributes="onclick python:options.get('update', here.getRecordSetMainGridUpdateAction(url=url, lang=request['lang'], qindex=row['qindex'], params=row['params']))">
 										<i class="fas fa-pencil-alt"></i>
 										<tal:block tal:content="python:here.getZMILangStr('BTN_EDIT')">Edit</tal:block>
 									</a>
 									<tal:block tal:repeat="action python:['delete','cut','copy','paste','duplicate']">
 										<a tal:condition="python:action in actions"
-											class="dropdown-item" href="javascript:;" tal:attributes="onclick python:options.get(action,'return zmiRecordSet%sRow(this,%i)'%(action.capitalize(),qindex))">
+											class="dropdown-item" href="javascript:;" tal:attributes="onclick python:options.get(action, here.getRecordSetMainGridDefaultAction(action, row['qindex']))">
 											<i tal:attributes="class python:'fas fa-%s'%{'delete':'times','duplicate':'clone'}.get(action,action)"></i>
 											<tal:block tal:content="python:here.getZMILangStr('BTN_%s'%action.upper())">Action</tal:block>
 										</a>
 									</tal:block>
 									<tal:block tal:condition="sorted">
-										<a class="dropdown-item" href="javascript:;" tal:attributes="onclick python:options.get('sort','javascript:return zmiRecordSetMoveRow(this,%i,-1)'%index)"><i class="fas fa-arrow-up"></i> <tal:block tal:content="python:here.getZMILangStr('ACTION_MOVEUP')">Move up</tal:block></a>
-										<a class="dropdown-item" href="javascript:;" tal:attributes="onclick python:options.get('sort','javascript:return zmiRecordSetMoveRow(this,%i,1)'%index)"><i class="fas fa-arrow-down"></i> <tal:block tal:content="python:here.getZMILangStr('ACTION_MOVEDOWN')">Move down</tal:block></a>
+										<a class="dropdown-item" href="javascript:;" tal:attributes="onclick python:options.get('sort','javascript:return zmiRecordSetMoveRow(this,%i,-1)'%row['index'])"><i class="fas fa-arrow-up"></i> <tal:block tal:content="python:here.getZMILangStr('ACTION_MOVEUP')">Move up</tal:block></a>
+										<a class="dropdown-item" href="javascript:;" tal:attributes="onclick python:options.get('sort','javascript:return zmiRecordSetMoveRow(this,%i,1)'%row['index'])"><i class="fas fa-arrow-down"></i> <tal:block tal:content="python:here.getZMILangStr('ACTION_MOVEDOWN')">Move down</tal:block></a>
 									</tal:block>
 								</div>
 							</tal:block>
@@ -166,7 +140,7 @@
 					</td>
 					<tal:block tal:repeat="metaObjAttr metaObjAttrs"
 						><tal:block tal:define="elName python:metaObjAttr['id'];
-								elValue python:here.operator_getitem(record,elName,metaObjAttr.get('default'),ignorecase=True);
+								elValue python:here.operator_getitem(row['record'],elName,metaObjAttr.get('default'),ignorecase=True);
 								elType python:metaObjAttr.get('type','string')"
 							><td class="data" tal:attributes="class python:'data data-%s zmi-datatype-%s'%(elName, metaObjAttr.get('fk') and 'fk'or elType)"
 								><div tal:attributes="class elType" 
@@ -220,15 +194,13 @@
 					</tal:block>
 				</tr>
 			</tal:block>
-		</tal:block>
 	</tbody>
 	</table>
 </div>
 </form>
 <div class="pagination-post clearfix"
-	tal:define="pagination python:here.zmi_pagination(size=size,pageSize=pageSize,pageIndex=pageIndex)"
 	tal:condition="python:request.get('has_pagination',True)">
-	<div class="pull-left" tal:content="structure pagination">zmi_pagination</div>
+	<div class="pull-left" tal:content="structure ctx/pagination">zmi_pagination</div>
 </div>
 
 </div>

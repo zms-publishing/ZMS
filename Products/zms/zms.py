@@ -230,8 +230,18 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST, minimal_init 
   
   return obj
 
+def createZMS(context, id, name, REQUEST):
+  # Create the folder that contains the new client root.
+  home = Folder(id)
+  context._setObject(home.id, home)
+  home = [x for x in context.objectValues() if x.id == home.id][0]
+  lang = REQUEST['lang ']
+  manage_lang = REQUEST['manage_lang']
+  titlealt = '%s home'%name
+  title = '%s - Python-based Content Management System for Science, Technology and Medicine'%name
+  return initZMS(home, 'content', titlealt, title, lang, manage_lang, REQUEST)
 
-def initContent(self, filename, REQUEST):
+def init_content(self, filename, REQUEST):
   """
   Import initial site content from a bundled archive.
 
@@ -245,7 +255,7 @@ def initContent(self, filename, REQUEST):
   with open(_fileutil.getOSPath(package_home(globals())+'/import/'+filename), 'rb') as file:
     _importable.importFile( self, file, REQUEST, _importable.importContent)
 
-def initMultisite(context, depth, clients, REQUEST):
+def init_multisite(context, depth, clients, prefix='client', REQUEST=None):
   """
   Initialize a multisite content structure with the given depth and number of clients.
 
@@ -259,16 +269,13 @@ def initMultisite(context, depth, clients, REQUEST):
   @type REQUEST: ZPublisher.HTTPRequest.HTTPRequest
   """
   for i in range(clients):
-    # Create the folder that contains the new client root.
-    home = Folder('client%i'%i)
-    context._setObject(home.id, home)
-    home = [x for x in context.objectValues() if x.id == home.id][0]
-    lang = REQUEST['lang ']
-    manage_lang = REQUEST['manage_lang']
-    name = 'Client%i'%i
-    titlealt = '%s home'%name
-    title = '%s - Python-based Content Management System for Science, Technology and Medicine'%name
-    content = initZMS(home, 'content', titlealt, title, lang, manage_lang, REQUEST)
+    id = '%s%i'%(prefix,i)
+    name = id.capitalize()
+    content = createZMS(context, id, name, REQUEST)
+    if depth > 0:
+      home = content.aq_parent
+      init_multisite(home, depth-1, clients, id, REQUEST)
+
   
 manage_addZMSForm = PageTemplateFile('manage_addzmsform', globals())
 def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
@@ -307,12 +314,12 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
       obj.setConfProperty('ZMS.theme',theme_id.replace('.','_'))
 
     if REQUEST.get('content_init', 0)==1:
-      initContent(obj, 'content.default.zip', REQUEST)
+      init_content(obj, 'content.default.zip', REQUEST)
 
     if REQUEST.get('multisite_init', 0)==1:
       depth = REQUEST.get('multisite_depth')
       clients = REQUEST.get('multisite_clients')
-      initMultisite(obj, depth, clients, REQUEST)
+      init_multisite(obj, depth, clients, REQUEST)
 
     # Initialize catalog adapter / connector.
     if REQUEST.get('zcatalog_init', 0)==1:

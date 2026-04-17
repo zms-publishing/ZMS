@@ -195,7 +195,7 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   ##### Add ZMS ####
   from Products.zms import zms
   content = zms.initZMS(homeElmnt, 'content', titlealt, title, lang, manage_lang, REQUEST)
-  zms.initContent(content, 'content.default.zip', REQUEST)
+  zms.init_content(content, 'content.default.zip', REQUEST)
 
   return content
 

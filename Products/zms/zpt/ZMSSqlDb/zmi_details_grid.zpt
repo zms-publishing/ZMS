@@ -2,15 +2,47 @@
 
 <div class="card zmi_details_grid" 
 	tal:define="ctx python:here.getEntityDetailsGridContext(request);
+		entity ctx/entity;
+		primary_key ctx/primary_key;
 		column ctx/column;
 		metaObjAttr ctx/metaObjAttr;
-		collapseId ctx/collapseId;
+		qentitypkval ctx/qentitypkval;
 		elName ctx/elName;
-		elLabel ctx/elLabel"
+		collapseId python:'details_grid_%s'%(elName);
+		elLabel ctx/elLabel;
+		lang python:request.get('lang',here.getPrimaryLanguage());
+		insert_action python:(
+			'return $ZMI.iframe(\'%s/manage_zmi_details_form\',{lang:\'%s\',action:\'insertForm\','
+			'qentity:\'%s\',qentitypk:\'%s\',qentitypkval:\'%s\',qcolumn:\'%s\'},'
+			'{title:getZMILangStr(\'BTN_INSERT\')+\': %s\',iframe:true,width:800,height:600})'
+		) % (
+			here.absolute_url(), lang, entity['id'], primary_key,
+			qentitypkval, metaObjAttr['id'], elLabel
+		);
+		update_action python:(
+			'return $ZMI.iframe(\'%s/manage_zmi_details_form\',{lang:\'%s\',action:\'updateForm\','
+			'qentity:\'%s\',qentitypk:\'%s\',qentitypkval:\'%s\',qcolumn:\'%s\','
+			'qindex:$(\'input:checkbox\',$(this).parents(\'tr\')).val()},'
+			'{title:getZMILangStr(\'BTN_EDIT\')+\': %s\',iframe:true,width:800,height:600})'
+		) % (
+			here.absolute_url(), lang, entity['id'], primary_key,
+			qentitypkval, metaObjAttr['id'], elLabel
+		);
+		delete_action python:(
+			'if (confirm(getZMILangStr(\'MSG_CONFIRM_DELOBJ\'))) {$ZMI.iframe(\'%s/manage_zmi_details_form\','
+			'{lang:\'%s\',action:\'delete\',qentity:\'%s\',qentitypk:\'%s\',qentitypkval:\'%s\',qcolumn:\'%s\','
+			'qindex:$(\'input:checkbox\',$(this).parents(\'tr\')).val()},'
+			'{title:getZMILangStr(\'BTN_DELETE\')+\': %s\',iframe:true,width:800,height:600})} return false'
+		) % (
+			here.absolute_url(), lang, entity['id'], primary_key,
+			qentitypkval, metaObjAttr['id'], elLabel
+		);"
 	tal:attributes="id python:'tr_%s'%(elName)">
 	<div class="card-header btn-collapse">
 		<a class="btn card-toggle mr-1" data-toggle="collapse" 
-			tal:attributes="href python:'#%s'%(collapseId);id python:'zmi-toggle-%s-btn'%(collapseId)">
+			tal:attributes="
+				href python:'#%s'%(collapseId);
+				id python:'zmi-toggle-%s-btn'%(collapseId)">
 			<i class="fas fas fa-th"></i>
 			<tal:block tal:content="elLabel">the heading</tal:block>
 		</a>
@@ -35,9 +67,9 @@
 					form_action=ctx['form_action'],
 					url_params=ctx['url_params'],
 					actions=['insert','update','delete'],
-					insert=ctx['insert_action'],
-					update=ctx['update_action'],
-					delete=ctx['delete_action'],
+					insert=insert_action,
+					update=update_action,
+					delete=delete_action,
 					)">
 				metaobj_recordset_main_grid
 			</div>
@@ -45,11 +77,15 @@
 	</div><!--! .collapse -->
 
 	<script tal:content="python:'''\n
+		// Define JavaScript variables from TAL-Context\n
 		var collapseId = \042%s\042;;\n
-		var $detailsgrid = $(\042#detailsgrid_%s\042);
-		'''%(collapseId, column['id'])">
+		var $detailsgrid = $(\042#detailsgrid_%s\042);\n
+	'''%(
+		collapseId,
+		column['id']
+		)">
 		var collapseId = "the collapseId";
-		$detailsgrid = $("#detailsgrid_columnid");
+		var $detailsgrid = $("#detailsgrid_columnid");
 	</script>
 	<script>
 		//<!-- Persist collapse state using localStorage 
@@ -76,7 +112,6 @@
 
 		// Switch to Ajax Pagination (delegated binding so it survives $detailsgrid.html(data))
 			var spinner = '<i class="fas fa-spinner fa-spin"></i>';
-
 			$detailsgrid.on('click', 'ul.pagination a.page-link, table th:not(:first-child) a', function(e) {
 				e.preventDefault();
 

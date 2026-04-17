@@ -200,8 +200,8 @@
 	</table>
 </div>
 </form>
-<div class="pagination-post clearfix"
-	tal:condition="python:request.get('has_pagination',True)">
+<div tal:condition="python:request.get('has_pagination',True)"
+	class="pagination-post clearfix">
 	<div class="pull-left" tal:content="structure ctx/pagination">zmi_pagination</div>
 </div>
 

@@ -600,7 +600,6 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       el_name = meta_obj_attr['id']
       el_label = meta_obj_attr['label']
       details = self.getEntity(meta_obj_attr['details']['tablename'])
-      collapse_id = 'detailstable_%s' % el_name
       detail_columns = [
         x for x in details['columns']
         if not x.get('pk') and not x.get('fk', {}).get('tablename') == entity['id']
@@ -621,33 +620,6 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         'qsize': request.get('qsize', 10),
       }
 
-      insert_action = (
-        "return $ZMI.iframe('%s/manage_zmi_details_form',{lang:'%s',action:'insertForm',"
-        "qentity:'%s',qentitypk:'%s',qentitypkval:'%s',qcolumn:'%s'},"
-        "{title:getZMILangStr('BTN_INSERT')+': %s',iframe:true,width:800,height:600})"
-      ) % (
-        self.absolute_url(), lang, entity['id'], primary_key,
-        qentitypkval, meta_obj_attr['id'], el_label
-      )
-      update_action = (
-        "return $ZMI.iframe('%s/manage_zmi_details_form',{lang:'%s',action:'updateForm',"
-        "qentity:'%s',qentitypk:'%s',qentitypkval:'%s',qcolumn:'%s',"
-        "qindex:$('input:checkbox',$(this).parents('tr')).val()},"
-        "{title:getZMILangStr('BTN_EDIT')+': %s',iframe:true,width:800,height:600})"
-      ) % (
-        self.absolute_url(), lang, entity['id'], primary_key,
-        qentitypkval, meta_obj_attr['id'], el_label
-      )
-      delete_action = (
-        "if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {$ZMI.iframe('%s/manage_zmi_details_form',"
-        "{lang:'%s',action:'delete',qentity:'%s',qentitypk:'%s',qentitypkval:'%s',qcolumn:'%s',"
-        "qindex:$('input:checkbox',$(this).parents('tr')).val()},"
-        "{title:getZMILangStr('BTN_DELETE')+': %s',iframe:true,width:800,height:600})} return false;"
-      ) % (
-        self.absolute_url(), lang, entity['id'], primary_key,
-        qentitypkval, meta_obj_attr['id'], el_label
-      )
-
       return {
         'entity': entity,
         'primary_key': primary_key,
@@ -657,16 +629,12 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         'elName': el_name,
         'elLabel': el_label,
         'details': details,
-        'collapseId': collapse_id,
         'records': meta_obj_attr.get('value'),
         'metaObjAttrs': meta_obj_attrs,
         'metaObjAttrIds': meta_obj_attr_ids,
         'record_handler': self.getEntityRecordHandler(details['id']),
         'form_action': form_action,
-        'url_params': url_params,
-        'insert_action': insert_action,
-        'update_action': update_action,
-        'delete_action': delete_action,
+        'url_params': url_params
       }
 
 

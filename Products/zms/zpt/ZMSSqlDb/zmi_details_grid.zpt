@@ -54,6 +54,27 @@
 
 	<script>
 		$(function(){ 
+			var collapseId = '<tal:block tal:content="collapseId">collapseId</tal:block>';
+			var dataRoot = $('body').attr('data-root');
+			var collapseKey = 'ZMS.' + dataRoot + '.collapse-' + collapseId;
+			var $collapse = $('#' + collapseId);
+			var $toggle = $('#zmi-toggle-' + collapseId + '-btn');
+
+			if ($collapse.length > 0 && typeof $ZMILocalStorageAPI != 'undefined') {
+				var persisted = $ZMILocalStorageAPI.get(collapseKey, $collapse.hasClass('show') ? '1' : '0');
+				var isShown = String(persisted) === '1';
+				$collapse.toggleClass('show', isShown);
+				$toggle.toggleClass('collapsed', !isShown);
+				$toggle.attr('aria-expanded', isShown ? 'true' : 'false');
+
+				$collapse.on('shown.bs.collapse', function() {
+					$ZMILocalStorageAPI.set(collapseKey, '1');
+				});
+				$collapse.on('hidden.bs.collapse', function() {
+					$ZMILocalStorageAPI.set(collapseKey, '0');
+				});
+			}
+
 		// Switch to Ajax Pagination (delegated binding so it survives $div.html(data))
 			var $div = $('#div_<tal:block tal:content="column/id">column/id</tal:block>');
 			var spinner = '<i class="fas fa-spinner fa-spin"></i>';

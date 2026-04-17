@@ -10,45 +10,47 @@
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
 <style>
-.zmi .form-horizontal .card.inactive a {
-	opacity:0.6;
-}
-.zmi .form-horizontal .fieldlist label.control-label {
-	text-align:left; 
-}
-@media (min-width: 768px) {
-	.zmi .form-horizontal .fieldlist label.control-label {
-		padding-left:3rem;
+	/*<!-- Specific styles for SQL-DB Manager */
+	.zmi .form-horizontal .card.inactive a {
+		opacity:0.6;
 	}
-}
-.zmi .form-horizontal .fieldlist i,
-.zmi .form-horizontal .column-description i,
-.zmi .form-horizontal .column-description.text-info {
-	color:#75a7c0 !important;
-}
-.zmi .form-horizontal .fieldlist i {
-	opacity:0.5;
-}
-.zmi .form-horizontal .badge.badge-info {
-	background-color:#75a7c0;
-}
-.zmi .form-horizontal .fieldlist .form-group {
-	margin-bottom:0px;
-}
-.zmi .form-horizontal select.zmi-sort {
-	width: 4rem;
-}
-.zmi .modal.show .modal-content {
-	overflow-x: auto;
-}
-.zmi .modal.show .modal-dialog {
-	margin-left: auto;
-	margin-right: auto;
-}
-.zmi table td.column-description {
-	padding-top:.75rem !important;
-	max-width:30vw;
-}
+	.zmi .form-horizontal .fieldlist label.control-label {
+		text-align:left; 
+	}
+	@media (min-width: 768px) {
+		.zmi .form-horizontal .fieldlist label.control-label {
+			padding-left:3rem;
+		}
+	}
+	.zmi .form-horizontal .fieldlist i,
+	.zmi .form-horizontal .column-description i,
+	.zmi .form-horizontal .column-description.text-info {
+		color:#75a7c0 !important;
+	}
+	.zmi .form-horizontal .fieldlist i {
+		opacity:0.5;
+	}
+	.zmi .form-horizontal .badge.badge-info {
+		background-color:#75a7c0;
+	}
+	.zmi .form-horizontal .fieldlist .form-group {
+		margin-bottom:0px;
+	}
+	.zmi .form-horizontal select.zmi-sort {
+		width: 4rem;
+	}
+	.zmi .modal.show .modal-content {
+		overflow-x: auto;
+	}
+	.zmi .modal.show .modal-dialog {
+		margin-left: auto;
+		margin-right: auto;
+	}
+	.zmi table td.column-description {
+		padding-top:.75rem !important;
+		max-width:30vw;
+	}
+	/*-->*/
 </style>
 
 <script>
@@ -231,7 +233,7 @@ function mms_normalize_rows(el_tbody) {
 				tal:attributes="onclick python:'javascript:return loadTableEditor(urlparams=\'lang=%s&id=%s\')'%(request['lang'],table['id']); ">
 				<i class="far fa-edit"></i>
 			</a>
-		</div><!-- .card-header -->
+		</div><!--! .card-header -->
 		<div tal:attributes="id python:'%s-columns'%table['id']; class python:' '.join(['collapse']+[[],['show']][int(table==tables[0])])">
 			<div class="card-body fieldlist">
 				<tal:block tal:repeat="column table/columns">
@@ -246,33 +248,41 @@ function mms_normalize_rows(el_tbody) {
 							<i class="fas fa-th-list"></i>
 							<i tal:condition="python:column.get('pk')" class="fas fa-key text-warninng"></i>
 							<span class="column-id" tal:content="column/id">column-id</span>
-							<span class="column-description text-info text-monospace" tal:attributes="title python:column.get('description','')" tal:content="python:standard.string_maxlen(s=column.get('description',''),maxlen=48)">column-description</span>
-							<span class="column-datatype" tal:condition="python:column.get('fk') and column.get('fk').get('tablename')">
+							<span class="column-description text-info text-monospace" 
+								tal:attributes="title python:column.get('description','')" 
+								tal:content="python:standard.string_maxlen(s=column.get('description',''),maxlen=48)">
+								column-description
+							</span>
+							<!--! Column Datatype and Relations -->
+							<!--! Relation Indicator: FK / Singlesselect -->
+							<span tal:condition="python:column.get('fk') and column.get('fk').get('tablename')"
+								class="column-datatype">
 								<i class="fas fa-long-arrow-alt-right" tal:attributes="title python:column['fk'].get('fieldname','?')"></i>
 								<i class="fas fa-th"></i>
 								<tal:block tal:content="column/fk/tablename">the fk-tablename</tal:block>
 								(<tal:block tal:content="python:column['fk'].get('displayfield','?')">the fk-displayfield</tal:block>)
 							</span>
-							<span class="column-datatype" tal:condition="python:column.get('multiselect') and column.get('multiselect').get('tablename')">
+							<!--! Relation Indicator: Multiselect -->
+							<span tal:condition="python:column.get('multiselect') and column.get('multiselect').get('tablename')"
+								class="column-datatype">
 								<i class="fas fa-long-arrow-alt-right" tal:attributes="title python:column['multiselect'].get('fk','?')"></i>
 								<i class="fas fa-link"></i>
 								<tal:block tal:content="column/multiselect/tablename">the multiselect-tablename</tal:block>
-								<tal:block 
-									tal:define="global
-										dstentity python:here.getEntityTarget(table['id'], column['multiselect']['tablename']);
-										">
-										<i class="fas fa-long-arrow-alt-right" tal:attributes="title python:dstentity['id']"></i>
+								<tal:block tal:define="dstentity python:here.getEntityTarget(table['id'], column['multiselect']['tablename'])"
+									tal:on-error="python:'ERROR'">
+									<i class="fas fa-long-arrow-alt-right" tal:attributes="title python:dstentity['id']"></i>
 									<i class="fas fa-th"></i>
-									<tal:block tal:content="dstentity/id">the details-tablename</tal:block>
+									<tal:block tal:content="dstentity/id">the multiselect-tablename</tal:block>
 								</tal:block>
 							</span>
-							<span class="column-datatype" tal:condition="python:column.get('details')">
+							<!--! Relation Indicator: Details -->
+							<span tal:condition="python:column.get('details')"
+								class="column-datatype">
 								<i class="fas fa-long-arrow-alt-right" tal:attributes="title python:column['details'].get('fk','?')"></i>
 								<i class="fas fa-link"></i>
 								<tal:block tal:content="column/details/tablename">the intersection-tablename</tal:block>
-								<tal:block tal:on-error="python:'ERROR'" tal:define="global
-										dstentity python:here.getEntityTarget(table['id'], column['details']['tablename']);
-										">
+								<tal:block tal:define="dstentity python:here.getEntityTarget(table['id'], column['details']['tablename'])"
+									tal:on-error="python:'ERROR'">
 									<i class="fas fa-long-arrow-alt-right" tal:attributes="title python:dstentity['id']"></i>
 									<i class="fas fa-th"></i>
 									<tal:block tal:content="dstentity/id">the details-tablename</tal:block>
@@ -282,18 +292,18 @@ function mms_normalize_rows(el_tbody) {
 								tal:condition="not:python:column.get('datatype')=='?'"
 								tal:content="column/datatype">column-datatype
 							</span>
-						</div><!-- .col-lg-10 -->
-					</div><!-- .form-group -->
+						</div><!--! .col-lg-10 -->
+					</div><!--! .form-group -->
 				</tal:block>
-			</div><!-- .card-body -->
-		</div><!-- .collapse -->
-	</div><!-- .card -->
+			</div><!--! .card-body -->
+		</div><!--! .collapse -->
+	</div><!--! .card -->
 
 </form>
 
 </tal:block>
 
-</div><!-- #zmi-tab -->
+</div><!--! #zmi-tab -->
 <footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 </body>
 </html>

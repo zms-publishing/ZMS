@@ -57,16 +57,28 @@
                     <item type="dictionary">
                         <dictionary>
                             <item key="auto"></item>
+                            <item key="datatype">?</item>
+                            <item key="datatype_key" type="int">0</item>
                             <item key="details" type="dictionary">
                                 <dictionary>
                                     <item key="fk">location_id</item>
                                     <item key="tablename">company</item>
                                 </dictionary>
                             </item>
-                            <item key="hide" type="int">0</item>
+                            <item key="hide" type="int">1</item>
                             <item key="id">company</item>
                             <item key="index" type="int">3</item>
+                            <item key="key">company</item>
                             <item key="label">Company</item>
+                            <item key="multilang" type="int">False</item>
+                            <item key="name">company</item>
+                            <item key="not_found" type="int">False</item>
+                            <item key="stereotypes" type="list">
+                                <list>
+                                    <item>details</item>
+                                </list>
+                            </item>
+                            <item key="type">?</item>
                         </dictionary>
                     </item>
                 </list>
@@ -152,28 +164,16 @@
                     <item type="dictionary">
                         <dictionary>
                             <item key="auto"></item>
-                            <item key="datatype">?</item>
-                            <item key="datatype_key" type="int">0</item>
                             <item key="details" type="dictionary">
                                 <dictionary>
                                     <item key="fk">company_id</item>
                                     <item key="tablename">employees</item>
                                 </dictionary>
                             </item>
-                            <item key="hide" type="int">0</item>
+                            <item key="hide" type="int">1</item>
                             <item key="id">employees</item>
                             <item key="index" type="int">4</item>
-                            <item key="key">employees</item>
                             <item key="label">Employees</item>
-                            <item key="multilang" type="int">False</item>
-                            <item key="name">employees</item>
-                            <item key="not_found" type="int">False</item>
-                            <item key="stereotypes" type="list">
-                                <list>
-                                    <item>details</item>
-                                </list>
-                            </item>
-                            <item key="type">?</item>
                         </dictionary>
                     </item>
                 </list>

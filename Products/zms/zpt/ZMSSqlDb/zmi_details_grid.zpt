@@ -25,15 +25,7 @@
 	</div><!-- card-header -->
 	<div class="collapse" 
 		tal:attributes="id collapseId">
-		<div tal:attributes="id python:'div_%s' % column['id']">
-			<tal:block tal:condition="python:'debug'=='not-debug'">
-				<!--! DEBUG INFO -->
-				<pre tal:content="python:'DETAILS-SQL: ' + metaObjAttr.get('valuesql','')">sql</pre>
-				<pre tal:content="python:'DETAILS-ERROR: ' + metaObjAttr.get('error','')">err</pre>
-				<pre tal:content="python:'DETAILS-COUNT: %s' % (len(ctx.get('records',[])) if ctx.get('records') is not None else -1)">cnt</pre>
-				<pre tal:content="python:'DETAILS-VAL[0]: %s' % metaObjAttr['value'][0]">row0</pre>
-				<pre tal:content="python:'DETAILS-COLS: %s' % len(ctx['metaObjAttrs'])">cols</pre>
-			</tal:block>
+		<div tal:attributes="id python:'detailsgrid_%s' % column['id']">
 			<div class="ZMSRecordSet main_grid" 
 				tal:replace="structure python:here.metaobj_recordset_main_grid(
 					metaObjAttrIds=ctx['metaObjAttrIds'],
@@ -50,11 +42,18 @@
 				metaobj_recordset_main_grid
 			</div>
 		</div>
-	</div><!-- .collapse -->
+	</div><!--! .collapse -->
 
+	<script tal:content="python:'''\n
+		var collapseId = \042%s\042;;\n
+		var $detailsgrid = $(\042#detailsgrid_%s\042);
+		'''%(collapseId, column['id'])">
+		var collapseId = "the collapseId";
+		$detailsgrid = $("#detailsgrid_columnid");
+	</script>
 	<script>
+		//<!-- Persist collapse state using localStorage 
 		$(function(){ 
-			var collapseId = '<tal:block tal:content="collapseId">collapseId</tal:block>';
 			var dataRoot = $('body').attr('data-root');
 			var collapseKey = 'ZMS.' + dataRoot + '.collapse-' + collapseId;
 			var $collapse = $('#' + collapseId);
@@ -75,11 +74,10 @@
 				});
 			}
 
-		// Switch to Ajax Pagination (delegated binding so it survives $div.html(data))
-			var $div = $('#div_<tal:block tal:content="column/id">column/id</tal:block>');
+		// Switch to Ajax Pagination (delegated binding so it survives $detailsgrid.html(data))
 			var spinner = '<i class="fas fa-spinner fa-spin"></i>';
 
-			$div.on('click', 'ul.pagination a.page-link, table th:not(:first-child) a', function(e) {
+			$detailsgrid.on('click', 'ul.pagination a.page-link, table th:not(:first-child) a', function(e) {
 				e.preventDefault();
 
 				var $a = $(this);
@@ -90,16 +88,17 @@
 				$a.removeAttr('href');
 
 				$a.html(spinner);
-				$('form', $div).fadeTo("slow", 0.33);
+				$('form', $detailsgrid).fadeTo("slow", 0.33);
 
 				$.get(plnk, function(data, status) {
-				$div.html(data);
+				$detailsgrid.html(data);
 				// no re-binding needed because we used delegated events
 				});
 
 				return false;
 			});
 		});
+		//-->
 	</script>
 </div><!-- .card -->
 

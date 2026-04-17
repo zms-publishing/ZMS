@@ -245,10 +245,32 @@ def initContent(self, filename, REQUEST):
   with open(_fileutil.getOSPath(package_home(globals())+'/import/'+filename), 'rb') as file:
     _importable.importFile( self, file, REQUEST, _importable.importContent)
 
+def initMultisite(context, depth, clients, REQUEST):
+  """
+  Initialize a multisite content structure with the given depth and number of clients.
 
+  @param context: ZMS site that receives the multisite content structure.
+  @type context: ZMS
+  @param depth: Depth of the multisite folder hierarchy.
+  @type depth: int
+  @param clients: Number of client folders at each level.
+  @type clients: int
+  @param REQUEST: Active HTTP request.
+  @type REQUEST: ZPublisher.HTTPRequest.HTTPRequest
+  """
+  for i in range(clients):
+    # Create the folder that contains the new client root.
+    home = Folder('client%i'%i)
+    context._setObject(home.id, home)
+    home = [x for x in context.objectValues() if x.id == home.id][0]
+    lang = REQUEST['lang ']
+    manage_lang = REQUEST['manage_lang']
+    name = 'Client%i'%i
+    titlealt = '%s home'%name
+    title = '%s - Python-based Content Management System for Science, Technology and Medicine'%name
+    content = initZMS(home, 'content', titlealt, title, lang, manage_lang, REQUEST)
+  
 manage_addZMSForm = PageTemplateFile('manage_addzmsform', globals())
-
-
 def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
   """
   Create the top-level home folder and initial ZMS site from the add form.
@@ -286,6 +308,11 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
 
     if REQUEST.get('content_init', 0)==1:
       initContent(obj, 'content.default.zip', REQUEST)
+
+    if REQUEST.get('multisite_init', 0)==1:
+      depth = REQUEST.get('multisite_depth')
+      clients = REQUEST.get('multisite_clients')
+      initMultisite(obj, depth, clients, REQUEST)
 
     # Initialize catalog adapter / connector.
     if REQUEST.get('zcatalog_init', 0)==1:

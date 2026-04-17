@@ -272,6 +272,8 @@ def init_multisite(context, depth, clients, prefix='client', REQUEST=None):
     id = '%s%i'%(prefix,i)
     name = id.capitalize()
     content = createZMS(context, id, name, REQUEST)
+    if REQUEST.get('content_init', 0)==1:
+      init_content(content, 'content.default.zip', REQUEST)
     if depth > 0:
       home = content.aq_parent
       init_multisite(home, depth-1, clients, id, REQUEST)

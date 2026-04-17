@@ -13,6 +13,7 @@ column model — all without leaving the ZMI.
 | **Database Adapter** | Connects to the database through a Zope Database Adapter (e.g. `Z MySQL`, `Z PostgreSQL`, `Z SQLite`). The adapter ID is stored as the `connection_id` property. |
 | **Table Filter** | A regex pattern (`table_filter`) controlling which tables are visible in the management interface. |
 | **Column Model** | An optional XML/DTML configuration (`model`) that customizes column display, stereotypes, and foreign key relationships beyond what schema introspection provides. |
+| **Relation Target Resolver** | `getEntityTarget(...)` resolves effective relation targets for `details`/`multiselect`, including intersection-table mappings. |
 | **Stereotypes** | Column type annotations controlling rendering and validation: `string`, `date`, `datetime`, `int`, `float`, `html`, `multiselect`, `multimultiselect`, `image`, `file`, `checkbox`, `password`, `richtext`, `text`, `amount`, `url`. |
 | **Blob Storage** | Binary columns (images, files) are stored on the filesystem linked to the database row, not in the database itself. |
 | **Event Hooks** | Insert, update, and delete operations fire `onChangeObj` events with patterns like `BeforeInsert`/`AfterInsert`, enabling custom triggers. |
@@ -65,9 +66,10 @@ Table and column configuration:
 |---|---|---|
 | `getEntities()` | `list` | All table definitions (tries custom method → SQLAlchemy → introspection) |
 | `getEntity(tablename)` | `dict` | Single table definition by name |
+| `getEntityTarget(sourceTableName, targetTableName)` | `dict` | Resolves relation targets and unwraps intersection-table relations to the effective destination entity |
 | `getEntityColumn(tablename, columnname)` | `dict` | Full column metadata including FK, blob, multiselect stereotypes |
 | `getEntityPK(tablename)` | `str` | Primary key column name for a table |
-| `getEntitiesFromSqlAlchemy()` | `list` | Schema introspection via SQLAlchemy |
+| `getEntitiesSQLAlchemyDA()` | `list` | Schema introspection via SQLAlchemy |
 
 ### CRUD Operations
 
@@ -81,10 +83,16 @@ Table and column configuration:
 
 | Method | Returns | Description |
 |---|---|---|
-| `getEntityRecordHandler(tablename)` | SQL | Build SELECT with JOINs from entity definition |
+| `getEntityRecordHandler(tablename, stereotypes=None, colNames=None)` | object | Builds a row post-processor; when `colNames` is set, it still injects the primary key for row actions |
 | `sql_record_init(tablename, REQUEST)` | — | Initialize SQL statement and request context |
 | `sql_record_where(tablename, REQUEST)` | SQL | Build WHERE clause from session filters |
 | `sql_record_order(tablename, REQUEST)` | SQL | Build ORDER BY clause |
+
+### Grid Context & Rendering
+
+| Method | Returns | Description |
+|---|---|---|
+| `getEntityDetailsGridContext(REQUEST)` | `dict` | Prepares detail-grid context (columns, records, URL params, and insert/update/delete actions) for `manage_zmi_details_grid` |
 
 ### Blob Management
 
@@ -107,6 +115,9 @@ Table and column configuration:
   accurate schema detection across database backends.
 - Define a **Column Model** to customize stereotypes, labels, and FK
   relationships that cannot be auto-detected from the schema.
+- For relation stereotypes (`details`, `multiselect`) that reference
+  intersection tables, target resolution now follows the non-source FK via
+  `getEntityTarget(...)`.
 - The **Table Filter** regex is useful to hide system tables or limit
   access to specific tables in multi-schema databases.
 - **Blob columns** store files on the filesystem, not in the database —

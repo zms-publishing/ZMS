@@ -1,19 +1,48 @@
 <!-- zmi_details_grid -->
 
 <div class="card zmi_details_grid" 
-	tal:define="entity python:here.getEntity(request['qentity']);
-		primary_key python:here.getEntityPK(entity['id']).lower();
-		column python:{'id':request['qcolumn']};
-		qentitypkval request/qentitypkval;
-		row python:{primary_key:qentitypkval};
-		metaObjAttr python:here.getEntityColumn(entity['id'],column['id'],row);
-		elName python:metaObjAttr['id'];
-		elLabel python:metaObjAttr['label'];
-		details python:here.getEntity(metaObjAttr['details']['tablename']);"
+	tal:define="ctx python:here.getEntityDetailsGridContext(request);
+		entity ctx/entity;
+		primary_key ctx/primary_key;
+		column ctx/column;
+		metaObjAttr ctx/metaObjAttr;
+		qentitypkval ctx/qentitypkval;
+		elName ctx/elName;
+		collapseId python:'details_grid_%s'%(elName);
+		elLabel ctx/elLabel;
+		lang python:request.get('lang',here.getPrimaryLanguage());
+		insert_action python:(
+			'return $ZMI.iframe(\'%s/manage_zmi_details_form\',{lang:\'%s\',action:\'insertForm\','
+			'qentity:\'%s\',qentitypk:\'%s\',qentitypkval:\'%s\',qcolumn:\'%s\'},'
+			'{title:getZMILangStr(\'BTN_INSERT\')+\': %s\',iframe:true,width:800,height:600})'
+		) % (
+			here.absolute_url(), lang, entity['id'], primary_key,
+			qentitypkval, metaObjAttr['id'], elLabel
+		);
+		update_action python:(
+			'return $ZMI.iframe(\'%s/manage_zmi_details_form\',{lang:\'%s\',action:\'updateForm\','
+			'qentity:\'%s\',qentitypk:\'%s\',qentitypkval:\'%s\',qcolumn:\'%s\','
+			'qindex:$(\'input:checkbox\',$(this).parents(\'tr\')).val()},'
+			'{title:getZMILangStr(\'BTN_EDIT\')+\': %s\',iframe:true,width:800,height:600})'
+		) % (
+			here.absolute_url(), lang, entity['id'], primary_key,
+			qentitypkval, metaObjAttr['id'], elLabel
+		);
+		delete_action python:(
+			'if (confirm(getZMILangStr(\'MSG_CONFIRM_DELOBJ\'))) {$ZMI.iframe(\'%s/manage_zmi_details_form\','
+			'{lang:\'%s\',action:\'delete\',qentity:\'%s\',qentitypk:\'%s\',qentitypkval:\'%s\',qcolumn:\'%s\','
+			'qindex:$(\'input:checkbox\',$(this).parents(\'tr\')).val()},'
+			'{title:getZMILangStr(\'BTN_DELETE\')+\': %s\',iframe:true,width:800,height:600})} return false'
+		) % (
+			here.absolute_url(), lang, entity['id'], primary_key,
+			qentitypkval, metaObjAttr['id'], elLabel
+		);"
 	tal:attributes="id python:'tr_%s'%(elName)">
 	<div class="card-header btn-collapse">
 		<a class="btn card-toggle mr-1" data-toggle="collapse" 
-			tal:attributes="href python:'#detailstable_%s'%(elLabel);id python:'zmi-toggle-detailstable_%s-btn'%(elLabel)">
+			tal:attributes="
+				href python:'#%s'%(collapseId);
+				id python:'zmi-toggle-%s-btn'%(collapseId)">
 			<i class="fas fas fa-th"></i>
 			<tal:block tal:content="elLabel">the heading</tal:block>
 		</a>
@@ -26,52 +55,85 @@
 			<tal:block tal:content="python:metaObjAttr.get('error','')"></tal:block>
 		</code>
 	</div><!-- card-header -->
-	<div class="X-collapse" 
-		tal:define="global
-			r metaObjAttr/value;
-			metaObjAttrs python:[x for x in details['columns'] if not x.get('pk') and not x.get('fk',{}).get('tablename')==entity['id']];
-			metaObjAttrs python:[here.getEntityColumn(details['id'],x['id']) for x in metaObjAttrs];
-			dummy0 python:[here.operator_setitem(x,'name',x['label']) for x in metaObjAttrs];
-			metaObjAttrIds python:[x['id'] for x in metaObjAttrs];"
-		tal:attributes="id python:'#detailstable_%s'%(elLabel)">
-		<div class="ZMSRecordSet main_grid" 
-			tal:replace="structure python:here.metaobj_recordset_main_grid(
-				metaObjAttrIds=metaObjAttrIds,
-				metaObjAttrs=metaObjAttrs,
-				records=r,
-				record_handler=here.getEntityRecordHandler(details['id']),
-				form_action=request['URL'],
-				url_params={'qentity':details['id']},
-				actions=['insert','update','delete'],
-				insert='return $ZMI.iframe(\'%s/manage_zmi_details_form\',{action:\'insertForm\',qentity:\'%s\',qentitypk:\'%s\',qentitypkval:\'%s\',qcolumn:\'%s\'},{title:getZMILangStr(\'BTN_INSERT\')+\': %s\',iframe:true,width:800,height:600})'%(here.absolute_url(),entity['id'],primary_key,qentitypkval,metaObjAttr['id'],elLabel),
-				update='return $ZMI.iframe(\'%s/manage_zmi_details_form\',{action:\'updateForm\',qentity:\'%s\',qentitypk:\'%s\',qentitypkval:\'%s\',qcolumn:\'%s\',qindex:$(\'input:checkbox\',$(this).parents(\'tr\')).val()},{title:getZMILangStr(\'BTN_EDIT\')+\': %s\',iframe:true,width:800,height:600})'%(here.absolute_url(),entity['id'],primary_key,qentitypkval,metaObjAttr['id'],elLabel),
-				delete='if (confirm(getZMILangStr(\'MSG_CONFIRM_DELOBJ\'))) {$ZMI.iframe(\'%s/manage_zmi_details_form\',{action:\'delete\',qentity:\'%s\',qentitypk:\'%s\',qentitypkval:\'%s\',qcolumn:\'%s\',qindex:$(\'input:checkbox\',$(this).parents(\'tr\')).val()},{title:getZMILangStr(\'BTN_DELETE\')+\': %s\',iframe:true,width:800,height:600})} return false;'%(here.absolute_url(),entity['id'],primary_key,qentitypkval,metaObjAttr['id'],elLabel),
-				)">
-			metaobj_recordset_main_grid
+	<div class="collapse" 
+		tal:attributes="id collapseId">
+		<div tal:attributes="id python:'detailsgrid_%s' % column['id']">
+			<div class="ZMSRecordSet main_grid" 
+				tal:replace="structure python:here.metaobj_recordset_main_grid(
+					metaObjAttrIds=ctx['metaObjAttrIds'],
+					metaObjAttrs=ctx['metaObjAttrs'],
+					records=ctx['records'],
+					record_handler=ctx['record_handler'],
+					form_action=ctx['form_action'],
+					url_params=ctx['url_params'],
+					actions=['insert','update','delete'],
+					insert=insert_action,
+					update=update_action,
+					delete=delete_action,
+					)">
+				metaobj_recordset_main_grid
+			</div>
 		</div>
-	</div><!-- .collapse -->
+	</div><!--! .collapse -->
 
+	<script tal:content="python:'''\n
+		// Define JavaScript variables from TAL-Context\n
+		var collapseId = \042%s\042;;\n
+		var $detailsgrid = $(\042#detailsgrid_%s\042);\n
+	'''%(
+		collapseId,
+		column['id']
+		)">
+		var collapseId = "the collapseId";
+		var $detailsgrid = $("#detailsgrid_columnid");
+	</script>
 	<script>
+		//<!-- Persist collapse state using localStorage 
 		$(function(){ 
-			// Switch to Ajax Pagination
-			var $div = $('#div_<tal:block tal:content="column/id">column/id</tal:block>');
+			var dataRoot = $('body').attr('data-root');
+			var collapseKey = 'ZMS.' + dataRoot + '.collapse-' + collapseId;
+			var $collapse = $('#' + collapseId);
+			var $toggle = $('#zmi-toggle-' + collapseId + '-btn');
+
+			if ($collapse.length > 0 && typeof $ZMILocalStorageAPI != 'undefined') {
+				var persisted = $ZMILocalStorageAPI.get(collapseKey, $collapse.hasClass('show') ? '1' : '0');
+				var isShown = String(persisted) === '1';
+				$collapse.toggleClass('show', isShown);
+				$toggle.toggleClass('collapsed', !isShown);
+				$toggle.attr('aria-expanded', isShown ? 'true' : 'false');
+
+				$collapse.on('shown.bs.collapse', function() {
+					$ZMILocalStorageAPI.set(collapseKey, '1');
+				});
+				$collapse.on('hidden.bs.collapse', function() {
+					$ZMILocalStorageAPI.set(collapseKey, '0');
+				});
+			}
+
+		// Switch to Ajax Pagination (delegated binding so it survives $detailsgrid.html(data))
 			var spinner = '<i class="fas fa-spinner fa-spin"></i>';
-			$('ul.pagination a.page-link, table th:not(:first-child) a',$div).each(
-				function() {
-					plnk = $(this).attr('href');
-					$(this).attr('data-href',plnk);
-					$(this).removeAttr('href');
-					$(this).on('click', function() {
-						$(this).html(spinner);
-						$('form',$div).fadeTo( "slow", 0.33);
-						$.get($(this).attr('data-href'),
-						function(data, status) {
-							$div.html(data);
-						})
-					})
-				}
-			)
+			$detailsgrid.on('click', 'ul.pagination a.page-link, table th:not(:first-child) a', function(e) {
+				e.preventDefault();
+
+				var $a = $(this);
+				var plnk = $a.attr('href') || $a.attr('data-href');
+				if (!plnk) return false;
+
+				$a.attr('data-href', plnk);
+				$a.removeAttr('href');
+
+				$a.html(spinner);
+				$('form', $detailsgrid).fadeTo("slow", 0.33);
+
+				$.get(plnk, function(data, status) {
+				$detailsgrid.html(data);
+				// no re-binding needed because we used delegated events
+				});
+
+				return false;
+			});
 		});
+		//-->
 	</script>
 </div><!-- .card -->
 

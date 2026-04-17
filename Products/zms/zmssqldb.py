@@ -519,7 +519,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       return pk
 
 
-    def getEntityRecordHandler(self, tableName, stereotypes=['*'], colNames=[]):
+    def getEntityRecordHandler(self, tableName, stereotypes=None, colNames=None):
       """
       Build a helper that post-processes rows for export and display.
 
@@ -532,6 +532,10 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       @return: Record handler instance.
       @rtype: object
       """
+      if stereotypes is None:
+        stereotypes = ['*']
+      selected_col_names = list(colNames) if colNames else []
+
       class EntityRecordHandler(object):
         def __init__(self, parent, tableName):
           self.parent = parent 
@@ -539,15 +543,18 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         handle_record__roles__ = None
         def handle_record(self, r):
           context = self.parent
-          primary_key = context.getEntityPK(tableName)
-          colNames.append(primary_key)
+          primary_key = context.getEntityPK(self.tableName)
+          include_columns = list(selected_col_names)
+          if include_columns and not standard.operator_contains(include_columns, primary_key, ignorecase=True):
+            include_columns.append(primary_key)
           d = {}
-          if len(colNames)>0:
-            r = { k: r[k] for k in r if standard.operator_contains(colNames,k,ignorecase=True) }
-          for k in r:
-            value = r[k]
+          row_data = r
+          if len(include_columns) > 0:
+            row_data = {k: r[k] for k in r if standard.operator_contains(include_columns, k, ignorecase=True)}
+          for k in row_data:
+            value = row_data[k]
             try:
-              column = context.getEntityColumn(self.tableName, k, r)
+              column = context.getEntityColumn(self.tableName, k, row_data)
               if '*' in stereotypes or len([x for x in stereotypes if x in column]) > 0:
                 value =  column.get('value', value)
                 if 'options' in column:
@@ -565,11 +572,70 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
             except:
               standard.writeError( self, '[getEntityRecordHandler]: can\'t %s'%k)
             d[k] = value
-          rowid = standard.operator_getitem(r, primary_key, ignorecase=True)
+          rowid = standard.operator_getitem(row_data, primary_key, ignorecase=True)
           d['__id__'] = rowid
           d['params'] = {'rowid':rowid}
           return d
       return EntityRecordHandler(self, tableName)
+
+
+    def getEntityDetailsGridContext(self, request):
+      """
+      Build the full rendering context for C{manage_zmi_details_grid}.
+
+      This moves detail-grid preparation logic from TAL into Python so the
+      template focuses on markup only.
+
+      @param request: Current request.
+      @type request: ZPublisher.HTTPRequest.HTTPRequest
+      @return: Context dictionary used by C{zmi_details_grid.zpt}.
+      @rtype: dict
+      """
+      entity = self.getEntity(request['qentity'])
+      primary_key = self.getEntityPK(entity['id']).lower()
+      column = {'id': request['qcolumn']}
+      qentitypkval = request['qentitypkval']
+      row = {primary_key: qentitypkval}
+      meta_obj_attr = self.getEntityColumn(entity['id'], column['id'], row)
+      el_name = meta_obj_attr['id']
+      el_label = meta_obj_attr['label']
+      details = self.getEntity(meta_obj_attr['details']['tablename'])
+      detail_columns = [
+        x for x in details['columns']
+        if not x.get('pk') and not x.get('fk', {}).get('tablename') == entity['id']
+      ]
+      meta_obj_attrs = [self.getEntityColumn(details['id'], x['id']) for x in detail_columns]
+      for item in meta_obj_attrs:
+        item['name'] = item['label']
+      meta_obj_attr_ids = [x['id'] for x in meta_obj_attrs]
+
+      lang = request.get('lang', '')
+      form_action = request['URL']
+      url_params = {
+        'lang': lang,
+        'qentity': request['qentity'],
+        'qcolumn': request['qcolumn'],
+        'qentitypk': request['qentitypk'],
+        'qentitypkval': request['qentitypkval'],
+        'qsize': request.get('qsize', 10),
+      }
+
+      return {
+        'entity': entity,
+        'primary_key': primary_key,
+        'column': column,
+        'qentitypkval': qentitypkval,
+        'metaObjAttr': meta_obj_attr,
+        'elName': el_name,
+        'elLabel': el_label,
+        'details': details,
+        'records': meta_obj_attr.get('value'),
+        'metaObjAttrs': meta_obj_attrs,
+        'metaObjAttrIds': meta_obj_attr_ids,
+        'record_handler': self.getEntityRecordHandler(details['id']),
+        'form_action': form_action,
+        'url_params': url_params
+      }
 
 
     def getEntityColumn(self, tableName, columnName, row=None):
@@ -886,6 +952,34 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       """
       entities = self.getEntities()
       return [x for x in entities if x['id'].upper()==tableName.upper()][0]
+
+
+    def getEntityTarget(self, sourceTableName, targetTableName):
+      """
+      Resolve the effective target entity for relation-like stereotypes.
+
+      If the referenced entity is an intersection table, return the opposite
+      foreign-key target. Otherwise return the referenced entity itself.
+
+      @param sourceTableName: Source entity name.
+      @type sourceTableName: str
+      @param targetTableName: Referenced entity or intersection table name.
+      @type targetTableName: str
+      @return: Resolved target entity descriptor.
+      @rtype: dict
+      """
+      entity = self.getEntity(targetTableName)
+      if entity.get('type') != 'intersection':
+        return entity
+      target_columns = [
+        x for x in entity.get('columns', [])
+        if isinstance(x.get('fk'), dict) and \
+           x['fk'].get('tablename') and \
+           x['fk']['tablename'].upper() != sourceTableName.upper()
+      ]
+      if len(target_columns) > 0:
+        return self.getEntity(target_columns[0]['fk']['tablename'])
+      return entity
 
 
     def getEntitiesSQLAlchemyDA(self):

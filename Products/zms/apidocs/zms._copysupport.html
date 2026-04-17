@@ -1224,7 +1224,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>The ids of copied objects are normalized to the context-node's id_prefix and the ZMS-client's sequence incrementing (acl_sequence). After the objects are moved to their new position their ids are normalized, that means they are reset to a new id that consists of the id_prefix of the target-context and the next increment of the ZMS-object sequence counter.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">node:</span><tt class="rst-docutils rst-literal">ZMSNode</tt></td><td class="fieldArgDesc">context-node</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id<wbr></wbr>_prefix:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">id_prefix of context-node</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">ids:</span><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">list of ids to be normalized, '*' for all</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Note</td></tr><tr><td colspan="2">This function is called after manage_pasteObjs() has moved the objects.</td></tr></table></div>
+    <div><p>The ids of copied objects are normalized to the context-node's id_prefix and the ZMS-client's sequence incrementing (acl_sequence). After the objects are moved to their new position their ids are normalized, that means they are reset to a new id that consists of the id_prefix of the target-context and the next increment of the ZMS-object sequence counter.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">node</span></td><td class="fieldArgDesc">context-node</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id<wbr></wbr>_prefix</span></td><td class="fieldArgDesc">id_prefix of context-node</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">ids</span></td><td class="fieldArgDesc">list of ids to be normalized, '*' for all</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Note</td></tr><tr><td colspan="2">This function is called after manage_pasteObjs() has moved the objects.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1239,7 +1239,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">normalize_ids_after_move</span><span class="function-signature">(node, id_prefix=<span class="rst-variable-quote">'</span><span class="rst-variable-string">e</span><span class="rst-variable-quote">'</span>, ids=[])</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_copysupport.py#L102">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_copysupport.py#L99">
       
       (source)
     </a>

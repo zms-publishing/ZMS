@@ -1,15 +1,24 @@
 -- Create a test database
-CREATE DATABASE testdb
+CREATE DATABASE dbtest
   CHARACTER SET utf8mb4
   COLLATE utf8mb4_general_ci;
 
-USE testdb;
+USE dbtest;
 
--- Create company table
+-- Create location table
+CREATE TABLE location (
+  location_id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100) NOT NULL UNIQUE
+) ENGINE=InnoDB;
+
+-- Create company table with FK to location (1:n)
 CREATE TABLE company (
   company_id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
-  location VARCHAR(100)
+  location_id INT NOT NULL,
+  FOREIGN KEY (location_id) REFERENCES location(location_id)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
 -- Create employees table with FK to company
@@ -23,11 +32,17 @@ CREATE TABLE employees (
     ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
+-- Insert sample locations
+INSERT INTO location (name) VALUES
+('Berlin'),
+('Taipei'),
+('Munich');
+
 -- Insert sample companies
-INSERT INTO company (name, location) VALUES
-('TechCorp', 'Berlin'),
-('DesignStudio', 'Taipei'),
-('HealthPlus', 'Munich');
+INSERT INTO company (name, location_id) VALUES
+('TechCorp', 1),
+('DesignStudio', 2),
+('HealthPlus', 3);
 
 -- Insert sample employees
 INSERT INTO employees (company_id, name, email) VALUES

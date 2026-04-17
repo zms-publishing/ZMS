@@ -149,8 +149,8 @@ class ZMSSqlDbMySQLGridContextTest(unittest.TestCase):
       sql_text = f.read()
 
     # Keep fixture semantics but isolate each test run by db name.
-    sql_text = sql_text.replace('CREATE DATABASE testdb', 'CREATE DATABASE `%s`' % db_name)
-    sql_text = sql_text.replace('USE testdb;', 'USE `%s`;' % db_name)
+    sql_text = sql_text.replace('CREATE DATABASE dbtest', 'CREATE DATABASE `%s`' % db_name)
+    sql_text = sql_text.replace('USE dbtest;', 'USE `%s`;' % db_name)
 
     conn = self._connect_mysql()
     try:
@@ -216,14 +216,14 @@ class ZMSSqlDbMySQLGridContextTest(unittest.TestCase):
 
   def test_get_recordset_main_grid_context_rows_from_mysql_fixture(self):
     records = self._fetch_records(
-      'SELECT company_id, name, location FROM company ORDER BY company_id',
+      'SELECT company_id, name, location_id FROM company ORDER BY company_id',
       self.db_name,
     )
 
     meta_obj_attrs = [
       self.sql_db.getEntityColumn('company', 'company_id'),
       self.sql_db.getEntityColumn('company', 'name'),
-      self.sql_db.getEntityColumn('company', 'location'),
+      self.sql_db.getEntityColumn('company', 'location_id'),
     ]
     for attr in meta_obj_attrs:
       attr['name'] = attr.get('label', attr['id'])
@@ -236,12 +236,12 @@ class ZMSSqlDbMySQLGridContextTest(unittest.TestCase):
     request.response = request.RESPONSE
 
     options = {
-      'metaObjAttrIds': ['company_id', 'name', 'location'],
+      'metaObjAttrIds': ['company_id', 'name', 'location_id'],
       'metaObjAttrs': meta_obj_attrs,
       'records': records,
       'filtered_records': records,
       'url_params': {'qentity': 'company'},
-      'record_handler': self.sql_db.getEntityRecordHandler('company', colNames=['name', 'location']),
+      'record_handler': self.sql_db.getEntityRecordHandler('company', colNames=['name', 'location_id']),
       'actions': ['insert', 'update', 'delete'],
     }
 
@@ -258,6 +258,7 @@ class ZMSSqlDbMySQLGridContextTest(unittest.TestCase):
     self.assertEqual(0, first_row['qindex'])
     self.assertEqual(1, first_row['value'])
     self.assertEqual('TechCorp', first_row['record']['name'])
+    self.assertEqual(1, first_row['record']['location_id'])
 
     # Validate branch behavior: PK is preserved even when colNames excludes it.
     self.assertEqual(1, first_row['record']['company_id'])

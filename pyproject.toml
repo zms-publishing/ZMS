@@ -6,7 +6,7 @@ requires = [
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "ZMS"
+name = "Products.zms"
 dynamic = ["version"]
 description = "ZMS6: Simplified Content Modelling"
 readme = "README.rst"

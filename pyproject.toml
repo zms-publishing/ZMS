@@ -90,7 +90,7 @@ include-package-data = true
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["Products*"]
-namespaces = false
+namespaces = true
 
 [tool.setuptools.package-data]
 "Products.zms" = ["**/*"]

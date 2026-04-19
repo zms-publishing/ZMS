@@ -61,6 +61,7 @@ from Products.zms import zmslog
 
 
 UNINHERITED_PROPERTIES = ['ASP','Portal']
+_NO_DEFAULT = object()
 
 class ConfDict(object):
 
@@ -697,14 +698,16 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
       params = ('key', 'default', 'REQUEST')
       [operator.setitem(kwargs, params[x], args[x]) for x in range(len(args))]
       key = kwargs['key']
-      default = kwargs.get('default')
+      default = kwargs.get('default', _NO_DEFAULT)
+      default_provided = default is not _NO_DEFAULT
       REQUEST = kwargs.get('REQUEST')
       if REQUEST is not None:
         key = str(base64.b64decode(key),'utf-8')
       if hasattr(OFS.misc_.misc_,'zms'):
         if key in OFS.misc_.misc_.zms['confdict']:
           default = OFS.misc_.misc_.zms['confdict'].get(key)
-      value = default
+          default_provided = True
+      value = [None, default][int(default_provided)]
       confdict = self.getConfProperties()
       if key in confdict:
         value = confdict.get(key)
@@ -713,7 +716,7 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
         if portalMaster is not None:
           value = portalMaster.getConfProperty( key)
         if value is None:
-          if 'default' in kwargs:
+          if default_provided:
             value = default
           else:
             for default in [x for x in self.getConfPropertiesDefaults() if x['key'] == key]:
@@ -721,7 +724,7 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
       return value 
 
 
-    def getConfProperty(self, key, default=None, REQUEST=None):
+    def getConfProperty(self, key, default=_NO_DEFAULT, REQUEST=None):
       """
       Returns property from configuration.
 
@@ -733,6 +736,10 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
       @type REQUEST: ZPublisher.HTTPRequest
       @rtype: C{any}
       """
+      if default is _NO_DEFAULT:
+        if REQUEST is None:
+          return self.get_conf_property(key)
+        return self.get_conf_property(key=key, REQUEST=REQUEST)
       return self.get_conf_property(key, default, REQUEST)
 
 

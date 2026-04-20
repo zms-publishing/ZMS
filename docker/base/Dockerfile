@@ -129,4 +129,3 @@ COPY --chown=zope:zope $BUILD_DIR/zeo.conf etc/zeo.conf
 
 ENV HTTP_PORT=${HTTP_PORT:-80}
 CMD ["bin/run-zope.sh"]
-CMD ["runwsgi", "--verbose", "etc/zope.ini", "http_port=80"]

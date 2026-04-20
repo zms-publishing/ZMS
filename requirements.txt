@@ -5,7 +5,7 @@ requests
 Zope[wsgi]
 # Zope 6.0 startup schema conflicts with ZODB 6.3 (duplicate class-factory key):
 # https://github.com/zopefoundation/Zope/issues/1291
-ZODB==6.2
+ZODB<6.3
 Products.GenericSetup
 Products.MailHost
 Products.ExternalMethod

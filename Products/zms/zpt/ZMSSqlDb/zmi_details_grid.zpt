@@ -132,6 +132,17 @@
 
 				return false;
 			});
+			// Double-Clickable Rows for Edit
+			$('table.table-hover tbody tr')
+				.dblclick( function(evt) {
+					try {
+						return $("a .fa-pencil-alt",this).parents("a")[0].click();
+					} catch(e) {
+						// No edit button, do nothing
+						return true;
+					}
+				})
+				.attr( "title", "Double-click to edit!");
 		});
 		//-->
 	</script>

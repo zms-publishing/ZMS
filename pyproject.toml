@@ -45,7 +45,7 @@ dependencies = [
     "docutils",
     "configparser",
     "requests",
-    "Zope[wsgi]==6.1.dev0",
+    "Zope[wsgi]",
     "Products.GenericSetup",
     "Products.MailHost",
     "Products.ExternalMethod",

@@ -46,6 +46,7 @@ dependencies = [
     "configparser",
     "requests",
     "Zope[wsgi]",
+    "ZODB<6.3",
     "Products.GenericSetup",
     "Products.MailHost",
     "Products.ExternalMethod",
@@ -64,6 +65,8 @@ dependencies = [
     "xmltodict",
     "ruamel.yaml",
     "Markdown",
+    "htmldiff2",
+    "pdfminer.six"
 ]
 
 [project.optional-dependencies]

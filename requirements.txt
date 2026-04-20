@@ -25,3 +25,5 @@ Pillow
 xmltodict
 ruamel.yaml
 Markdown
+htmldiff2
+pdfminer.six

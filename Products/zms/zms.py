@@ -197,6 +197,7 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST, minimal_init 
     master = hasattr(self.aq_parent,'content') and (self.aq_parent.content or self.aq_parent.content.getPortalMaster()) or None
     if master:
       obj.setConfProperty('Portal.Master',master.getHome().id)
+      master.setConfProperty('Portal.Clients', master.getConfProperty('Portal.Clients', []) + [self.id])
       masterMetaObjIds_ignore = ['ZMSIndexZCatalog','com.zms.index'] # Ignore obsolete object classes.
       if REQUEST.get('zcatalog_init', 0) == 0:
         masterMetaObjIds_ignore.extend(['com.zms.catalog.zcatalog','zcatalog_connector','zcatalog_page'])
@@ -267,17 +268,19 @@ def init_multisite(zms, depth, clients, prefix='client', REQUEST=None):
   """
   lang = REQUEST['lang']
   for i in range(clients):
+    # Create client site that acquires from the portal master.
     id = '%s%i'%(prefix,i)
     name = id.capitalize()
     print('[DEBUG] init_multisite', id, name, depth, clients, prefix)
     home = zms.getHome()
+    REQUEST.set('acquire', 1)
     content = createZMS(home, id, name, REQUEST)
-    content.setConfProperty('Portal.Master', home.id)
-    zms.setConfProperty('Portal.Clients', zms.getConfProperty('Portal.Clients', []) + [id])
     if REQUEST.get('content_init', 0)==1:
-      title = content.getObjProperty('title', lang)
-      titlealt = content.getObjProperty('titlealt', lang)
+      # Init content
       init_content(content, 'content.default.zip', REQUEST)
+      # Restore title and titlealt after content import.
+      titlealt = '%s home'%name
+      title = '%s - Python-based Content Management System for Science, Technology and Medicine'%name
       content.setObjProperty('titlealt', titlealt, lang)
       content.setObjProperty('title', title, lang)
     if depth > 0:

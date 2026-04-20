@@ -160,6 +160,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       'checkbox': 1,
       'password': 1,
       'richtext': 1,
+      'string': 1,
       'text': 1,
       'time': 1,
       'url': 1,
@@ -717,6 +718,10 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         stereotype = column.get('richtext')
         if stereotype not in ['', None]:
           column['type'] = 'richtext'
+        # String
+        stereotype = column.get('string')
+        if stereotype not in ['', None]:
+          column['type'] = 'string'
         # Select
         stereotype = column.get('fk')
         if isinstance(stereotype, dict):
@@ -2414,15 +2419,19 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         cols.sort()
         cols = [x[1] for x in cols]
         # Insert
-        attr_id = REQUEST.get('attr_id', '').strip()
-        attr_label = REQUEST.get('attr_label', '').strip()
-        attr_type = REQUEST.get('attr_type', '').strip()
-        if attr_id and attr_label and attr_type:
-          newValue = {}
-          newValue['id'] = attr_id
-          newValue['label'] = attr_label
-          newValue['hide'] = int(not REQUEST.get('attr_display', 0)==1)
-          newValue[attr_type] = {}
+        new_keys = [x for x in REQUEST.form if x.startswith('new_id_') and x[len('new_id_'):] != '']
+        for new_key in new_keys:
+          newname = new_key[len('new_id_'):]
+          attr_id = REQUEST.get('new_id_%s'%newname, '').strip()
+          attr_label = REQUEST.get('new_label_%s'%newname, '').strip()
+          attr_type = REQUEST.get('new_type_%s'%newname, '').strip()
+          if attr_id and attr_label and attr_type in self.valid_types or attr_type == '':
+            newValue = {}
+            newValue['id'] = attr_id
+            newValue['label'] = attr_label
+            newValue['hide'] = int(not REQUEST.get('new_display', 0)==1)
+            if attr_type in self.valid_types:
+              newValue[attr_type] = {}
           cols.append(newValue)
         entity['columns'] = cols
         f = self.toXmlString( model)

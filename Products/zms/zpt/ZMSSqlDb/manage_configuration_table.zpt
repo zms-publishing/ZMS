@@ -79,7 +79,7 @@
 				</table>
 			</div><!-- .col-lg-10 -->
 		</div><!-- .form-group -->
-		<table class="table table-sm table-striped table-bordered zmi-sortable">
+		<table class="table table-sm table-striped table-bordered zmi-sortable" id="tablecolumns">
 		<thead>
 			<th>&nbsp;</th>
 			<th tal:content="python:'%s / %s'%(here.getZMILangStr('ATTR_ID'),here.getZMILangStr('ATTR_DESCRIPTION'))">Id / Description</th>
@@ -91,8 +91,14 @@
 			<tr tal:repeat="column table/columns"
 				tal:attributes="class python:' '.join([[],['zmi-selected']][int(column['id']==request.get('attr_id'))])">
 				<td>
-					<select class="form-control form-control-sm zmi-sort"  tal:attributes="name python:'attr_index_%s:int'%column['id']; onchange python:'zmiFormSubmit(this,{btn:\'move_to\',id:\'%s\',\'attr_id\':\'%s\',key:\'attr\',\'pos:int\':this.selectedIndex})'%(table['id'],column['id'])">
-						<option tal:repeat="i python:range(0,len(table['columns']))" tal:attributes="selected python:['','selected'][int(i==table['columns'].index(column))]" tal:content="python:i+1">i+1</option>
+					<select class="form-control form-control-sm zmi-sort" tal:attributes="
+							name python:'attr_index_%s:int'%column['id']; 
+							onchange python:'zmiFormSubmit(this,{btn:\'move_to\',id:\'%s\',\'attr_id\':\'%s\',key:\'attr\',\'pos:int\':this.selectedIndex})'%(table['id'],column['id'])">
+						<option tal:repeat="i python:range(0,len(table['columns']))" 
+							tal:attributes="selected python:['','selected'][int(i==table['columns'].index(column))]" 
+							tal:content="python:i+1">
+							i+1
+						</option>
 					</select>
 				</td>
 				<td class="column-description text-nowrap text-truncate">
@@ -223,11 +229,14 @@
 						<td>Foreign Key</td>
 						<td><input type="text" class="form-control form-control-sm" tal:attributes="name python:'attr_multimultiselect_fk_%s'%column['id']; value python:column.get('multimultiselect',{}).get('fk','')"/></td>
 					</tr>
-					<tal:block tal:define="global
+					<tal:block tal:define="
 							mmstablename python:column.get('multimultiselect',{}).get('tablename','');
 							mmsfk python:column.get('multimultiselect',{}).get('fk','');
 							mmsentity python:([x for x in here.getEntities() if x['id'].upper()==mmstablename.upper()]+[None])[0]">
-						<tr tal:condition="python:mmsfk!='' and mmsentity is not None" tal:attributes="id python:'tr_multimultiselect_%s'%column['id']; class python:['d-none',''][int('multimultiselect' in column)]">
+						<tr tal:condition="python:mmsfk!='' and mmsentity is not None" 
+							tal:attributes="
+								id python:'tr_multimultiselect_%s'%column['id']; 
+								class python:['d-none',''][int('multimultiselect' in column)]">
 							<td colspan="2">Tables
 								<table class="table table-sm text-nowrap">
 								<tr>
@@ -239,26 +248,47 @@
 									<th>Label</th>
 									<th>Lazy</th>
 								</tr>
-								<tal:block tal:define="global
+								<tal:block tal:define="
 										ts0 python:[x for x in mmsentity['columns'] if x['id'].upper()!=mmsfk.upper()];
 										ts1 python:[{'fk':x['id']} for x in ts0];
 										ts python:column.get('multimultiselect',{}).get('tables',ts1);">
 									<tal:block tal:repeat="ti python:range(len(ts))">
-										<tr tal:define="global t python:ts[ti]">
+										<tr tal:define="t python:ts[ti]">
 											<td></td>
-											<td><input class="form-control form-control-sm" type="text" tal:attributes="name python:'attr_multimultiselect_tables_fk_%i_%s'%(ti,column['id']); value python:t.get('fk','')" size="5"/></td>
+											<td>
+												<input class="form-control form-control-sm" type="text" size="5" tal:attributes="
+														name python:'attr_multimultiselect_tables_fk_%i_%s'%(ti,column['id']); 
+														value python:t.get('fk','')" />
+											</td>
 											<td>
 												<select class="form-control form-control-sm zmi-tablename" tal:attributes="name python:'attr_multimultiselect_tables_tablename_%i_%s'%(ti,column['id']); onchange python:'zmiChangeTablename(this,[\'%s\',\'%s\'])'%('attr_multimultiselect_tables_fieldname_%i_%s'%(ti,column['id']),'attr_multimultiselect_tables_displayfield_%i_%s'%(ti,column['id']))">
 													<option value=""></option>
 													<tal:block tal:repeat="value python:[x['id'] for x in tables]">
-														<option tal:attributes="value value; selected python:['','selected'][int(t.get('tablename','').upper()==value.upper())]" tal:content="value">the value</option>
+														<option tal:attributes="value value; selected python:['','selected'][int(t.get('tablename','').upper()==value.upper())]" 
+															tal:content="value">
+															the value
+														</option>
 													</tal:block>
 												</select>
 											</td>
-											<td><input class="form-control form-control-sm" type="text" tal:attributes="name python:'attr_multimultiselect_tables_fieldname_%i_%s'%(ti,column['id']); value python:t.get('fieldname','')" size="5"/></td>
-											<td><input class="form-control form-control-sm" type="text" tal:attributes="name python:'attr_multimultiselect_tables_displayfield_%i_%s'%(ti,column['id']); value python:t.get('displayfield','')" size="5"/></td>
-											<td><input class="form-control form-control-sm" type="text" tal:attributes="name python:'attr_multimultiselect_tables_label_%i_%s'%(ti,column['id']); value python:t.get('label','')" size="5"/></td>
-											<td style="text-align:center;"><input type="checkbox" tal:attributes="name python:'attr_multimultiselect_tables_lazy_%i_%s:int'%(ti,column['id']); checked python:['','checked'][int(t.get('lazy')==1)]" value="1"/></td>
+											<td>
+												<input class="form-control form-control-sm" type="text" size="5" tal:attributes="
+														name python:'attr_multimultiselect_tables_fieldname_%i_%s'%(ti,column['id']); 
+														value python:t.get('fieldname','')"/>
+											</td>
+											<td>
+												<input class="form-control form-control-sm" type="text" size="5" tal:attributes="
+														name python:'attr_multimultiselect_tables_displayfield_%i_%s'%(ti,column['id']); 
+														value python:t.get('displayfield','')" />
+													</td>
+											<td>
+												<input class="form-control form-control-sm" type="text" size="5" tal:attributes="
+													name python:'attr_multimultiselect_tables_label_%i_%s'%(ti,column['id']); 
+													value python:t.get('label','')" />
+											</td>
+											<td style="text-align:center;">
+												<input type="checkbox" tal:attributes="name python:'attr_multimultiselect_tables_lazy_%i_%s:int'%(ti,column['id']); checked python:['','checked'][int(t.get('lazy')==1)]" value="1" />
+											</td>
 										</tr>
 									</tal:block>
 								</tal:block>
@@ -267,7 +297,9 @@
 						</tr>
 					</tal:block>
 					<!--! ##### Auto ########################################################### -->
-					<tr tal:attributes="id python:'tr_pk_%s'%column['id']; class python:['d-none',''][int('pk' in column or column.get('datatype') in ['date','datetime'])]">
+					<tr tal:attributes="
+						id python:'tr_pk_%s'%column['id']; 
+						class python:['d-none',''][int('pk' in column or column.get('datatype') in ['date','datetime'])]">
 						<td>Auto</td>
 						<td>
 							<select class="form-control form-control-sm" tal:attributes="name python:'attr_auto_%s'%column['id']">
@@ -281,12 +313,12 @@
 				</td>
 			</tr>
 			<tr class="row_insert">
-				<td><span class="btn btn-light"><i class="fas fa-plus"></i></span></td>
-				<td><input class="form-control form-control-sm" name="attr_id" type="text"/></td>
-				<td><input class="form-control form-control-sm" name="attr_label" type="text"/></td>
-				<td><input name="attr_display:int" value="1" checked="checked" type="checkbox"/></td>
+				<td class="meta-sort"><span class="btn btn-light"><i class="fas fa-plus"></i></span></td>
+				<td><input name="new_id" class="form-control form-control-sm"type="text"/></td>
+				<td><input name="new_label" class="form-control form-control-sm" type="text"/></td>
+				<td><input name="new_display:int" value="1" checked="checked" type="checkbox"/></td>
 				<td>
-					<select class="form-control form-control-sm" name="attr_type">
+					<select name="new_type" class="form-control form-control-sm">
 						<option value=""></option>
 						<tal:block tal:repeat="type python:here.sort_list(list(here.valid_types))">
 							<option tal:attributes="value type" tal:content="type">the type</option>)

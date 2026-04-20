@@ -256,31 +256,32 @@ def init_content(self, filename, REQUEST):
   with open(_fileutil.getOSPath(package_home(globals())+'/import/'+filename), 'rb') as file:
     _importable.importFile( self, file, REQUEST, _importable.importContent)
 
-def init_multisite(context, depth, clients, prefix='client', REQUEST=None):
+def init_multisite(zms, depth, clients, prefix='client', REQUEST=None):
   """
   Initialize a multisite content structure with the given depth and number of clients.
 
-  @param context: ZMS site that receives the multisite content structure.
-  @type context: ZMS
+  @param zms: ZMS site that receives the multisite content structure.
   @param depth: Depth of the multisite folder hierarchy.
-  @type depth: int
   @param clients: Number of client folders at each level.
-  @type clients: int
   @param REQUEST: Active HTTP request.
-  @type REQUEST: ZPublisher.HTTPRequest.HTTPRequest
   """
+  lang = REQUEST['lang']
   for i in range(clients):
     id = '%s%i'%(prefix,i)
     name = id.capitalize()
     print('[DEBUG] init_multisite', id, name, depth, clients, prefix)
-    content = createZMS(context.getHome(), id, name, REQUEST)
-    content.setConfProperty('Portal.Master', context.getHome().id)
-    context.setConfProperty('Portal.Clients', context.getConfProperty('Portal.Clients', []) + [id])
+    home = zms.getHome()
+    content = createZMS(home, id, name, REQUEST)
+    content.setConfProperty('Portal.Master', home.id)
+    zms.setConfProperty('Portal.Clients', zms.getConfProperty('Portal.Clients', []) + [id])
     if REQUEST.get('content_init', 0)==1:
+      title = content.getObjProperty('title', lang)
+      titlealt = content.getObjProperty('titlealt', lang)
       init_content(content, 'content.default.zip', REQUEST)
+      content.setObjProperty('titlealt', titlealt, lang)
+      content.setObjProperty('title', title, lang)
     if depth > 0:
-      home = content.aq_parent
-      init_multisite(home, depth-1, clients, id, REQUEST=REQUEST)
+      init_multisite(content, depth-1, clients, id, REQUEST=REQUEST)
 
   
 manage_addZMSForm = PageTemplateFile('manage_addzmsform', globals())

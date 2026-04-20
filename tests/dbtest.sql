@@ -32,6 +32,25 @@ CREATE TABLE employees (
     ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
+-- Create teams table
+CREATE TABLE teams (
+  team_id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100) NOT NULL UNIQUE
+) ENGINE=InnoDB;
+
+-- Create n:m relation table between teams and employees
+CREATE TABLE team_has_employee (
+  team_id INT NOT NULL,
+  employee_id INT NOT NULL,
+  PRIMARY KEY (team_id, employee_id),
+  FOREIGN KEY (team_id) REFERENCES teams(team_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
 -- Insert sample locations
 INSERT INTO location (name) VALUES
 ('Berlin'),
@@ -51,3 +70,18 @@ INSERT INTO employees (company_id, name, email) VALUES
 (2, 'Chen Wei', 'chen.wei@designstudio.tw'),
 (2, 'Lin Mei', 'lin.mei@designstudio.tw'),
 (3, 'Olga Idelevich', 'olga.idelevich@healthplus.de');
+
+-- Insert sample teams
+INSERT INTO teams (name) VALUES
+('Sales'),
+('Operations'),
+('Finance');
+
+-- Insert sample n:m assignments (employees can be in multiple teams)
+INSERT INTO team_has_employee (team_id, employee_id) VALUES
+(1, 1),
+(1, 2),
+(2, 2),
+(2, 3),
+(3, 1),
+(3, 5);

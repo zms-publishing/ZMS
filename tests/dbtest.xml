@@ -164,6 +164,8 @@
                     <item type="dictionary">
                         <dictionary>
                             <item key="auto"></item>
+                            <item key="datatype">?</item>
+                            <item key="datatype_key" type="int">0</item>
                             <item key="details" type="dictionary">
                                 <dictionary>
                                     <item key="fk">company_id</item>
@@ -173,7 +175,17 @@
                             <item key="hide" type="int">1</item>
                             <item key="id">employees</item>
                             <item key="index" type="int">4</item>
+                            <item key="key">employees</item>
                             <item key="label">Employees</item>
+                            <item key="multilang" type="int">False</item>
+                            <item key="name">employees</item>
+                            <item key="not_found" type="int">False</item>
+                            <item key="stereotypes" type="list">
+                                <list>
+                                    <item>details</item>
+                                </list>
+                            </item>
+                            <item key="type">?</item>
                         </dictionary>
                     </item>
                 </list>
@@ -271,6 +283,162 @@
             <item key="id">employees</item>
             <item key="interface"></item>
             <item key="label">Employees</item>
+            <item key="type">table</item>
+        </dictionary>
+    </item>
+    <item type="dictionary">
+        <dictionary>
+            <item key="access" type="dictionary">
+                <dictionary>
+                    <item key="delete" type="list">
+                        <list>
+                            <item>ZMSAdministrator</item>
+                            <item>ZMSEditor</item>
+                            <item>ZMSAuthor</item>
+                        </list>
+                    </item>
+                    <item key="insert" type="list">
+                        <list>
+                            <item>ZMSAdministrator</item>
+                            <item>ZMSEditor</item>
+                            <item>ZMSAuthor</item>
+                        </list>
+                    </item>
+                    <item key="select" type="list">
+                        <list>
+                            <item>ZMSAdministrator</item>
+                            <item>ZMSEditor</item>
+                            <item>ZMSAuthor</item>
+                        </list>
+                    </item>
+                    <item key="update" type="list">
+                        <list>
+                            <item>ZMSAdministrator</item>
+                            <item>ZMSEditor</item>
+                            <item>ZMSAuthor</item>
+                        </list>
+                    </item>
+                </dictionary>
+            </item>
+            <item key="columns" type="list">
+                <list>
+                    <item type="dictionary">
+                        <dictionary>
+                            <item key="auto"></item>
+                            <item key="fk" type="dictionary">
+                                <dictionary>
+                                    <item key="displayfield">name</item>
+                                    <item key="fieldname">team_id</item>
+                                    <item key="tablename">teams</item>
+                                </dictionary>
+                            </item>
+                            <item key="hide" type="int">0</item>
+                            <item key="id">team_id</item>
+                            <item key="index" type="int">1</item>
+                            <item key="label"><![CDATA[Team Id]]></item>
+                        </dictionary>
+                    </item>
+                    <item type="dictionary">
+                        <dictionary>
+                            <item key="auto"></item>
+                            <item key="fk" type="dictionary">
+                                <dictionary>
+                                    <item key="displayfield">name</item>
+                                    <item key="fieldname">employee_id</item>
+                                    <item key="tablename">employees</item>
+                                </dictionary>
+                            </item>
+                            <item key="hide" type="int">0</item>
+                            <item key="id">employee_id</item>
+                            <item key="index" type="int">2</item>
+                            <item key="label"><![CDATA[Employee Id]]></item>
+                        </dictionary>
+                    </item>
+                </list>
+            </item>
+            <item key="filter"></item>
+            <item key="id">team_has_employee</item>
+            <item key="interface"></item>
+            <item key="label"><![CDATA[Team Has Employee]]></item>
+            <item key="type">intersection</item>
+        </dictionary>
+    </item>
+    <item type="dictionary">
+        <dictionary>
+            <item key="access" type="dictionary">
+                <dictionary>
+                    <item key="delete" type="list">
+                        <list>
+                            <item>ZMSAdministrator</item>
+                            <item>ZMSEditor</item>
+                            <item>ZMSAuthor</item>
+                        </list>
+                    </item>
+                    <item key="insert" type="list">
+                        <list>
+                            <item>ZMSAdministrator</item>
+                            <item>ZMSEditor</item>
+                            <item>ZMSAuthor</item>
+                        </list>
+                    </item>
+                    <item key="select" type="list">
+                        <list>
+                            <item>ZMSAdministrator</item>
+                            <item>ZMSEditor</item>
+                            <item>ZMSAuthor</item>
+                        </list>
+                    </item>
+                    <item key="update" type="list">
+                        <list>
+                            <item>ZMSAdministrator</item>
+                            <item>ZMSEditor</item>
+                            <item>ZMSAuthor</item>
+                        </list>
+                    </item>
+                </dictionary>
+            </item>
+            <item key="columns" type="list">
+                <list>
+                    <item type="dictionary">
+                        <dictionary>
+                            <item key="auto">db</item>
+                            <item key="hide" type="int">0</item>
+                            <item key="id">team_id</item>
+                            <item key="index" type="int">1</item>
+                            <item key="label"><![CDATA[Team Id]]></item>
+                            <item key="pk" type="int">1</item>
+                        </dictionary>
+                    </item>
+                    <item type="dictionary">
+                        <dictionary>
+                            <item key="auto"></item>
+                            <item key="hide" type="int">0</item>
+                            <item key="id">name</item>
+                            <item key="index" type="int">2</item>
+                            <item key="label">Name</item>
+                        </dictionary>
+                    </item>
+                    <item type="dictionary">
+                        <dictionary>
+                            <item key="auto"></item>
+                            <item key="hide" type="int">1</item>
+                            <item key="id">teammembers</item>
+                            <item key="index" type="int">3</item>
+                            <item key="label">Members</item>
+                            <item key="multiselect" type="dictionary">
+                                <dictionary>
+                                    <item key="fk">team_id</item>
+                                    <item key="tablename">team_has_employee</item>
+                                </dictionary>
+                            </item>
+                        </dictionary>
+                    </item>
+                </list>
+            </item>
+            <item key="filter"></item>
+            <item key="id">teams</item>
+            <item key="interface"></item>
+            <item key="label">Teams</item>
             <item key="type">table</item>
         </dictionary>
     </item>

@@ -31,8 +31,16 @@ WORKDIR /home/zope/
 RUN python3 -m venv venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 RUN pip install -U pip wheel setuptools
-RUN pip install Zope[wsgi]==$ZOPE_VERSION -c https://zopefoundation.github.io/Zope/releases/$ZOPE_VERSION/constraints.txt
-# RUN pip install Zope[wsgi]==$ZOPE_VERSION -c https://raw.githubusercontent.com/zopefoundation/Zope/refs/heads/master/constraints.txt
+
+# Check if Zope version contains "dev" 
+# and install from master branch if so, 
+# otherwise install specified version from github.
+RUN if echo "$ZOPE_VERSION" | grep -q "dev"; then \
+        pip install -c https://raw.githubusercontent.com/zopefoundation/Zope/refs/heads/master/constraints.txt "Zope[wsgi] @ git+https://github.com/zopefoundation/Zope.git@master"; \
+    else \
+        pip install "Zope[wsgi]==$ZOPE_VERSION" -c https://zopefoundation.github.io/Zope/releases/$ZOPE_VERSION/constraints.txt; \
+    fi
+
 RUN pip install ZEO
 RUN pip install --config-settings editable_mode=compat -e git+https://github.com/zms-publishing/ZMS.git@$ZMS_BRANCH#egg=ZMS
  

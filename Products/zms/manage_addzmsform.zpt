@@ -64,26 +64,6 @@
 		</div>
 
 		<div class="form-group row">
-			<div class="col-sm-3 col-md-2">Multisite</div>
-			<div class="col-sm-9 col-md-10">
-				<div class="form-group px-4">
-					<label for="multisite_init" class="form-radio-label m-0 mr-3">
-						<input class="form-check-input" type="checkbox" id="multisite_init" name="multisite_init:int" value="1"/>
-						Add Multisite
-					</label>
-					<label for="multisite_depth" class="form-number-label m-0 mr-3">
-						Depth
-						<input class="form-number-input" type="number" id="multisite_depth" name="multisite_depth:int" value="2" size="2" min="0" max="9"/>
-					</label>
-					<label for="multisite_clients" class="form-number-label m-0 mr-3">
-						Clients
-						<input class="form-number-input" type="number" id="multisite_clients" name="multisite_clients:int" value="2" min="0" max="9"/>
-					</label>
-				</div>
-			</div>
-		</div>
-
-		<div class="form-group row">
 			<div class="col-sm-3 col-md-2 text-nowrap">Configuration</div>
 			<div class="col-sm-9 col-md-10">
 				<div class="form-group px-1">
@@ -123,6 +103,33 @@
 							As Multisite-Client (acquiring configuration from existing parent node)
 						</label>
 					</div>
+					<hr class="my-4"/>
+					<div class="form-group form-inline mb-0" 
+						title="Creates (for testing) a multisite with the given depth and number of clients.">
+						<div class="input-group input-group-sm mb-3 pl-1">
+							<input class="form-check-input mr-2" type="checkbox" id="multisite_init" name="multisite_init:int" value="1"/>
+							<label for="multisite_init" class="input-group-append">
+								Create Multisite
+							</label>
+						</div>
+						<div class="input-group input-group-sm mb-3 mx-2">
+							<label for="multisite_depth" class="input-group-prepend">
+								<span class="input-group-text">Depth</span>
+							</label>
+							<input class="form-number-input form-control" type="number" id="multisite_depth" 
+								name="multisite_depth:int" value="2" size="1" min="0" max="9" style="width:3rem" />
+						</div>
+						<div class="input-group input-group-sm mb-3">
+							<label for="multisite_clients" class="input-group-prepend">
+								<span class="input-group-text">Clients</span>
+							</label>
+							<input class="form-number-input form-control" type="number" id="multisite_clients" 
+								name="multisite_clients:int" value="2" size="1" min="0" max="9" style="width:3rem" />
+						</div>
+					</div>
+					<p class="text-muted">
+						Note: Can take some time to create a multisite with the given depth and number of clients.
+					</p>
 				</div>
 			</div>
 		</div>

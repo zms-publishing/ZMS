@@ -98,6 +98,9 @@ RUN --mount=type=cache,uid=$UID,target=$PIP_CACHE_DIR,sharing=locked <<EOR
     if echo ${PIP_INSTALL} | grep -qv "\buv\b"; then
         $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --upgrade pip wheel setuptools
     fi
+    ZOPE_VERSION=$(pip index versions zope 2>/dev/null | head -1 | grep --only-matching --perl-regexp '[\d.]+')
+    PIP_INSTALL="$PIP_INSTALL --constraint https://zopefoundation.github.io/Zope/releases/$ZOPE_VERSION/constraints.txt"
+
     $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --editable .[dev]
     $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --requirement requirements-full.txt
     $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --upgrade 'Products.zmsPluggableAuthService[nginx-sso] @ git+https://github.com/sntl-projects/Products.zmsPluggableAuthService.git'

@@ -105,7 +105,7 @@
 					</div>
 					<hr class="my-4"/>
 					<div class="form-group form-inline mb-0" 
-						title="Creates (for testing) a multisite with the given depth and number of clients.">
+						title="Creates a multisite with the given depth and number of clients by recursively copying the root node as template for each client.">
 						<div class="input-group input-group-sm mb-3 pl-1">
 							<input class="form-check-input mr-2" type="checkbox" id="multisite_init" name="multisite_init:int" value="1"/>
 							<label for="multisite_init" class="input-group-append">
@@ -120,9 +120,9 @@
 								name="multisite_depth:int" value="2" size="1" min="0" max="9" style="width:3rem" />
 						</div>
 						<div class="form-group form-inline mb-3">
-							<span>×</span>
+							<span>^</span>
 						</div>
-						<div class="input-group input-group-sm mb-3">
+						<div class="input-group input-group-sm mb-3 mx-2">
 							<label for="multisite_clients" class="input-group-prepend">
 								<span class="input-group-text">Clients</span>
 							</label>
@@ -133,7 +133,11 @@
 					<small class="text-muted">
 						Note: The Multisite option is intended for testing and demonstration purposes.<br/>
 						Depending on the selected values and options, the creation of all 
-						clients of the multisite may take a while.
+						clients of the multisite may take a while 
+						because the number of created nodes grows exponentially with the depth and 
+						number of clients: <code>Total Nodes = (Clients^(Depth+1) - 1) / (Clients - 1)</code><br/>
+						<i>Example</i>: Depth=3 and Clients=3 will create 1 root node with 3 clients, each client 
+						will have 3 sub-clients and each sub-client will have 3 sub-sub-clients (total 40 nodes).
 					</small>
 				</div>
 			</div>

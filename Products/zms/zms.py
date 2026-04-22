@@ -257,6 +257,7 @@ def init_content(self, filename, REQUEST):
   with open(_fileutil.getOSPath(package_home(globals())+'/import/'+filename), 'rb') as file:
     _importable.importFile( self, file, REQUEST, _importable.importContent)
 
+
 def init_multisite(zms, depth, clients, prefix='client', REQUEST=None):
   """
   Initialize a multisite content structure with the given depth and number of clients.
@@ -286,7 +287,7 @@ def init_multisite(zms, depth, clients, prefix='client', REQUEST=None):
     if depth > 0:
       init_multisite(content, depth-1, clients, id, REQUEST=REQUEST)
 
-  
+
 manage_addZMSForm = PageTemplateFile('manage_addzmsform', globals())
 def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
   """
@@ -327,8 +328,12 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
       init_content(obj, 'content.default.zip', REQUEST)
 
     if REQUEST.get('multisite_init', 0)==1:
-      depth = REQUEST.get('multisite_depth')
-      clients = REQUEST.get('multisite_clients')
+      # Initialize multisite content structure with the given depth 
+      # and number of clients. The depth is reduced by one because 
+      # the first level of the multisite structure is already created 
+      # at this point (the newly created site).
+      depth = max(int(REQUEST.get('multisite_depth', 1))-1,0)
+      clients = int(REQUEST.get('multisite_clients', 0))
       init_multisite(obj, depth, clients, REQUEST=REQUEST)
 
     # Initialize catalog adapter / connector.

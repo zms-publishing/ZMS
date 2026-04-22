@@ -82,7 +82,7 @@
 						</a>
 					</span>
 				</div>
-				<div class="collapse" id="TAB_ADVANCED">
+				<div class="alert alert-info collapse" id="TAB_ADVANCED">
 					<div class="form-group px-4">
 						<label for="zcatalog_init_toggle" class="form-check-label m-0">
 							<!--! Hint: zcatalog_init-option needs a value 0|1 to control ZMSZCatalogAdapter.ensure_zcatalog_connector_is_initialized() -->
@@ -119,6 +119,9 @@
 							<input class="form-number-input form-control" type="number" id="multisite_depth" 
 								name="multisite_depth:int" value="2" size="1" min="0" max="9" style="width:3rem" />
 						</div>
+						<div class="form-group form-inline mb-3">
+							<span>×</span>
+						</div>
 						<div class="input-group input-group-sm mb-3">
 							<label for="multisite_clients" class="input-group-prepend">
 								<span class="input-group-text">Clients</span>
@@ -127,9 +130,11 @@
 								name="multisite_clients:int" value="2" size="1" min="0" max="9" style="width:3rem" />
 						</div>
 					</div>
-					<p class="text-muted">
-						Note: Can take some time to create a multisite with the given depth and number of clients.
-					</p>
+					<small class="text-muted">
+						Note: The Multisite option is intended for testing and demonstration purposes.<br/>
+						Depending on the selected values and options, the creation of all 
+						clients of the multisite may take a while.
+					</small>
 				</div>
 			</div>
 		</div>

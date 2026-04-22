@@ -197,6 +197,7 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST, minimal_init 
     master = hasattr(self.aq_parent,'content') and (self.aq_parent.content or self.aq_parent.content.getPortalMaster()) or None
     if master:
       obj.setConfProperty('Portal.Master',master.getHome().id)
+      master.setConfProperty('Portal.Clients', master.getConfProperty('Portal.Clients', []) + [self.id])
       masterMetaObjIds_ignore = ['ZMSIndexZCatalog','com.zms.index'] # Ignore obsolete object classes.
       if REQUEST.get('zcatalog_init', 0) == 0:
         masterMetaObjIds_ignore.extend(['com.zms.catalog.zcatalog','zcatalog_connector','zcatalog_page'])
@@ -230,8 +231,19 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST, minimal_init 
   
   return obj
 
+def createZMS(context, id, name, REQUEST):
+  # Create the folder that contains the new client root.
+  print('[DEBUG] createZMS', id, name)
+  home = Folder(id)
+  context._setObject(home.id, home)
+  home = [x for x in context.objectValues() if x.id == home.id][0]
+  lang = REQUEST['lang']
+  manage_lang = REQUEST['manage_lang']
+  titlealt = '%s home'%name
+  title = '%s - Python-based Content Management System for Science, Technology and Medicine'%name
+  return initZMS(home, 'content', titlealt, title, lang, manage_lang, REQUEST)
 
-def initContent(self, filename, REQUEST):
+def init_content(self, filename, REQUEST):
   """
   Import initial site content from a bundled archive.
 
@@ -246,9 +258,37 @@ def initContent(self, filename, REQUEST):
     _importable.importFile( self, file, REQUEST, _importable.importContent)
 
 
+def init_multisite(zms, depth, clients, prefix='client', REQUEST=None):
+  """
+  Initialize a multisite content structure with the given depth and number of clients.
+
+  @param zms: ZMS site that receives the multisite content structure.
+  @param depth: Depth of the multisite folder hierarchy.
+  @param clients: Number of client folders at each level.
+  @param REQUEST: Active HTTP request.
+  """
+  lang = REQUEST['lang']
+  for i in range(clients):
+    # Create client site that acquires from the portal master.
+    id = '%s%i'%(prefix,i)
+    name = id.capitalize()
+    print('[DEBUG] init_multisite', id, name, depth, clients, prefix)
+    home = zms.getHome()
+    REQUEST.set('acquire', 1)
+    content = createZMS(home, id, name, REQUEST)
+    if REQUEST.get('content_init', 0)==1:
+      # Init content
+      init_content(content, 'content.default.zip', REQUEST)
+      # Restore title and titlealt after content import.
+      titlealt = '%s home'%name
+      title = '%s - Python-based Content Management System for Science, Technology and Medicine'%name
+      content.setObjProperty('titlealt', titlealt, lang)
+      content.setObjProperty('title', title, lang)
+    if depth > 0:
+      init_multisite(content, depth-1, clients, id, REQUEST=REQUEST)
+
+
 manage_addZMSForm = PageTemplateFile('manage_addzmsform', globals())
-
-
 def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
   """
   Create the top-level home folder and initial ZMS site from the add form.
@@ -285,7 +325,16 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
       obj.setConfProperty('ZMS.theme',theme_id.replace('.','_'))
 
     if REQUEST.get('content_init', 0)==1:
-      initContent(obj, 'content.default.zip', REQUEST)
+      init_content(obj, 'content.default.zip', REQUEST)
+
+    if REQUEST.get('multisite_init', 0)==1:
+      # Initialize multisite content structure with the given depth 
+      # and number of clients. The depth is reduced by one because 
+      # the first level of the multisite structure is already created 
+      # at this point (the newly created site).
+      depth = max(int(REQUEST.get('multisite_depth', 1))-1,0)
+      clients = int(REQUEST.get('multisite_clients', 0))
+      init_multisite(obj, depth, clients, REQUEST=REQUEST)
 
     # Initialize catalog adapter / connector.
     if REQUEST.get('zcatalog_init', 0)==1:

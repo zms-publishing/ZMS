@@ -2204,7 +2204,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       
       # Change.
       # -------
-      if btn == 'BTN_SAVE':
+      if btn == 'BTN_SAVE' or REQUEST.get('ZMS_INSERT'):
         self.connection_id = REQUEST['connection_id']
         self.charset = REQUEST['charset']
         self.table_filter = REQUEST.get('table_filter','')

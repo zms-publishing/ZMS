@@ -109,6 +109,98 @@ Table and column configuration:
 | `manage_changeProperties(REQUEST)` | redirect | Save connection_id, charset, table_filter, model |
 | `manage_changeConfiguration(REQUEST)` | redirect | Full table/column model CRUD |
 
+## FK-Stereotypes: GUI-Elements for Related Tables
+
+The ZMS-SQLDB-Configurator provides a No-Code-GUI that interconnects related tables
+as one configurable relation layer in the same editor.
+Through stereotypes, ZMS can map single FKs, n:m links, n-ary combinations, and
+full child-record grids into one coherent GUI workflow, including lazy loading and
+automatic intersection-target resolution.
+
+- Prefer `Select` for single FK
+- Prefer `Multiselect` for one target domain (set of values)
+- Prefer `Multi-Multiselect` for n-ary combinations across multiple target domains
+- Prefer `Details` for child-record collections with dedicated columns and CRUD
+
+
+### Select
+
+Use `fk` when one row references exactly one row in another table.
+
+- Typical relation: many-to-one (`n:1`) from source table to lookup table
+- GUI behavior: single dropdown or lazy picker (for large lookup tables)
+- Best for: master-data references such as `employee`, `category`, `status`
+- Efficient when: users choose one value from a bounded or searchable list
+
+Example shape:
+
+```sql
+main.employee_id -> employees.employeeid
+```
+
+### Multiselect
+
+Use `multiselect` when one row can be linked to multiple rows of one target domain.
+
+- Typical relation: many-to-many (`n:m`) between source and one target table
+- Storage variants:
+- Intersection table mode: recommended for normalized schemas
+- MySQL-Set mode: legacy/string-set style storage
+- GUI behavior: multi-select list with add/remove controls; optional lazy loading
+- Best for: tags, categories, features, permissions
+- Efficient when: one source row needs an arbitrary set of values from one target table
+
+Example shape (intersection mode):
+
+```sql
+article_tags(article_id, tag_id)
+```
+
+### Multi-Multiselect
+
+Use `multimultiselect` for composite relation rows where each entry is a combination
+of multiple foreign keys.
+
+- Typical relation: one source row to many relation rows (`1:n`), each relation row
+  contains multiple FK dimensions
+- Data model: one relation table with parent FK plus additional FK columns
+- GUI behavior: users build one combination row at a time (dimension A + B + C),
+  add it with `+`, and maintain a selected combinations list
+- Best for: matrix-like assignments such as `employee x role x project` or
+  `customer x channel x language`
+- Efficient when: the business object is the combination itself, not independent
+  single selections
+
+Example shape:
+
+```sql
+assignment(main_id, employee_id, role_id, project_id)
+```
+
+### Details
+
+Use `details` when a parent record should manage a related child record set directly
+inside the same edit context.
+
+- Typical relation: one-to-many (`1:n`) from parent table to detail table
+- Also supports: intersection-table based detail relations
+- Data model: `details.tablename` points to the related table and `details.fk`
+  references the parent key column in that table
+- GUI behavior: renders an AJAX-loaded details grid below the main form with
+  list, paging, and insert/update/delete actions
+- Best for: line items, subordinate rows, translations, and other related rows
+  that have their own attributes
+- Efficient when: related records have their own lifecycle and columns, so a
+  simple select or multiselect control is not sufficient
+
+Example shape:
+
+```sql
+orders(order_id, customer_id, order_date)
+order_items(item_id, order_id, product_id, qty, unit_price)
+```
+
+
 ## Tips
 
 - Use **SQLAlchemy** introspection for best results — it provides the most

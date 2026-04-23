@@ -64,7 +64,7 @@ $ZMI.registerReady(function(){
 						frames[i].zmiHistoryChanged();
 					}
 				}
-			} catch (e) { 
+			} catch (e) {
 			}
 		}
 	});
@@ -165,18 +165,27 @@ $ZMI.registerReady(function(){
 				print_url = url.replace('readme?', 'readme_html?');
 			}
 		}
-		zmiModal(null, {
-			id: 'zmiModalreadme',
-			title: title,
-			body: '<div class="p-3 text-center"><i class="text-primary fas fa-circle-notch fa-spin fa-3x"></i></div>',
-			modal: 'show'
-		});
 		$.get(url, '', function(data) {
-			$('#zmiModalreadme .modal-body').html(data);
+            // if readme starts with a link, open it in a new tab
+            // otherwise show modal with rendered markdown content
+            const match = data.match(/<p>(https?:\/\/[^\s<"]+)/);
+            const url = match?.[1];
+            if (url) {
+                window.open(url, '_blank');
+            }
+            else {
+                zmiModal(null, {
+                    id: 'zmiModalreadme',
+                    title: title,
+                    body: '<div class="p-3 text-center"><i class="text-primary fas fa-circle-notch fa-spin fa-3x"></i></div>',
+                    modal: 'show'
+                });
+                $('#zmiModalreadme .modal-body').html(data);
+                document.body.style.paddingRight = '0px'; // Fix scrollbar shift when opening modal
+                // Add print button to modal footer
+                $('#zmiModalreadme .modal-footer').html('<a href="'+print_url+'" target="_blank" class="btn btn-secondary" title="Print/HTML"><i class="fas fa-print"></i></a>');
+            }
 		});
-		document.body.style.paddingRight = '0px'; // Fix scrollbar shift when opening modal
-		// Add print button to modal footer
-		$('#zmiModalreadme .modal-footer').html('<a href="'+print_url+'" target="_blank" class="btn btn-secondary" title="Print/HTML"><i class="fas fa-print"></i></a>');
 	});
 
 	// Tooltip

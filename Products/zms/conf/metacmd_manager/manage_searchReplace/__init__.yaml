@@ -8,7 +8,7 @@ manage_searchReplace:
     - type(ZMSObject)
   name: Search+Replace...
   nodes: '{$}'
-  revision: 5.5.0
+  revision: 5.6.0
   roles:
     - ZMSAdministrator
     - ZMSEditor

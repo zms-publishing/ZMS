@@ -63,8 +63,10 @@ def manage_searchReplace(self):
 								# Do only replace if checkbox 'replace' was clicked
 								here.operator_setattr(objVers,objAttrName, newVal)
 							rtn.append({'node':here,'attr_name':str(objAttrName),'text':objAttrVal})
-		for childNode in here.getChildNodes():
-			rtn.extend(run(childNode,old,new))
+		
+		if here.meta_id!='ZMSLinkElement': # avoid recursion for link elements
+			for childNode in here.getChildNodes():
+				rtn.extend(run(childNode,old,new))
 		return rtn
 
 
@@ -215,8 +217,7 @@ def manage_searchReplace(self):
 			message = []
 			res = run(context,old,new)
 			if did_replace:
-				message.append('<p>%s results found for <em>%s</em>&nbsp;&rarr;&nbsp;replaced by <i>%s</i></p>'%(len(res),old,
-																									   new))
+				message.append('<p>%s results found for <em>%s</em>&nbsp;&rarr;&nbsp;replaced by <i>%s</i></p>'%(len(res),old,new))
 			else:
 				message.append('<p>%s results found for <em>%s</em>&nbsp;&rarr;&nbsp;<u>not</u> replaced</p>'%(len(res),old))
 			if case_sensitive:
@@ -369,73 +370,57 @@ def manage_searchReplace(self):
 		''')
 
 		html.append('''
-            <style>
-                .loader-wrapper {
-                  width: 100%;
-                  height: 100%;
-                  position: absolute;
-                  top: 0;
-                  left: 0;
-                  background-color: #40617e;
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                  z-index: 10;
-                  opacity: 0.8;
-                }
-                .loader {
-                  display: inline-block;
-                  width: 30px;
-                  height: 30px;
-                  position: relative;
-                  border: 4px solid #fff;
-                  animation: loader 2s infinite ease;
-                }
-                .loader-inner {
-                  vertical-align: top;
-                  display: inline-block;
-                  width: 100%;
-                  background-color: #fff;
-                  animation: loader-inner 2s infinite ease-in;
-                }
-                @keyframes loader {
-                  0% { transform: rotate(0deg); }
-                  25% { transform: rotate(180deg); }
-                  50% { transform: rotate(180deg); }
-                  75% { transform: rotate(360deg); }
-                  100% { transform: rotate(360deg); }
-                }
-                @keyframes loader-inner {
-                  0% { height: 0%; }
-                  25% { height: 0%; }
-                  50% { height: 100%; }
-                  75% { height: 100%; }
-                  100% { height: 0%; }
-                }
-            </style>
-            <div class="loader-wrapper">
-                <span class="loader"><span class="loader-inner"></span></span>
-            </div>
-            <script>
-                // https://redstapler.co/add-loading-animation-to-website/
-                // https://codepen.io/tashfene/pen/raEqrJ
-                $(window).on("load", function() {
-                  $(".loader-wrapper").fadeOut("slow");
-                });
-                $(document).ready(function() {
-                  $(".loader-wrapper").fadeOut("slow");
-                  $("#form_searchreplace").submit(function() {
-                      $.ajax({
-                          method: "POST",
-                          url: "manage_searchReplace",
-                          dataType: "html",
-                          beforeSend: function() {
-                              $(".loader-wrapper").show();
-                          }
-                      });
-                  });
-              });
-            </script>''')
+			<style>
+				.loader-wrapper {
+					width: 100%;
+					height: 100%;
+					position: absolute;
+					top: 0;
+					left: 0;
+					background-color: #40617e;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					z-index: 10;
+					opacity: 0.8;
+				}
+				.loader {
+					display: inline-block;
+					width: 40px;
+					height: 40px;
+					border: 4px solid rgba(255, 255, 255, 0.35);
+					border-top-color: #fff;
+					border-left-color: #fff;
+					border-radius: 50%;
+					animation: spinner-rotate 0.85s linear infinite;
+				}
+				@keyframes spinner-rotate {
+					100% { transform: rotate(360deg); }
+				}
+			</style>
+			<div class="loader-wrapper">
+				<span class="loader"></span>
+			</div>
+			<script>
+				// https://redstapler.co/add-loading-animation-to-website/
+				// https://codepen.io/tashfene/pen/raEqrJ
+				$(window).on("load", function() {
+					$(".loader-wrapper").fadeOut("slow");
+				});
+				$(document).ready(function() {
+					$(".loader-wrapper").fadeOut("slow");
+					$("#form_searchreplace").submit(function() {
+						$.ajax({
+							method: "POST",
+							url: "manage_searchReplace",
+							dataType: "html",
+							beforeSend: function() {
+								$(".loader-wrapper").show();
+							}
+						});
+					});
+				});
+			</script>''')
 		html.append('</body>')
 		html.append('</html>')
 		return '\n'.join(list(html))

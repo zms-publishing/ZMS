@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 
 from Products.zms import yamlutil
-from Products.zms.__init__ import normalize_yaml_values
+from Products.zms._multilangmanager import normalize_yaml_values
 from Products.zms._multilangmanager import langdict
 
 

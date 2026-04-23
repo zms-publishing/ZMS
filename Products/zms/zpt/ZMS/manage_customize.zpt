@@ -422,7 +422,7 @@
 									hx-get="manage_customizeInstalledProducts"
 									hx-target="#installed_products"
 									hx-vals='{"pip_cmd": "freeze"}'
-									hx-on:htmx:before-request="document.getElementById('installed_products').innerHTML='<i class=\'fas fa-spinner fa-spin fa-3x text-primary m-1\'></i>'"
+									hx-on:htmx:before-request="document.getElementById('installed_products').innerHTML='<i class=\'fas fa-circle-notch fa-spin fa-3x text-primary m-1\'></i>'"
 									hx-on:htmx:response-error="document.getElementById('installed_products').innerHTML='<div class=\'alert alert-danger mx-0 my-3\'>Error ' + event.detail.xhr.status + ' on loading data ...</div>'"
 									id="pip_cmd1" name="pip_cmd" value="freeze" checked="checked" />
 								<label class="custom-control-label" for="pip_cmd1"><samp>pip freeze --all</samp></label>
@@ -432,7 +432,7 @@
 									hx-get="manage_customizeInstalledProducts"
 									hx-target="#installed_products"
 									hx-vals='{"pip_cmd": "list"}'
-									hx-on:htmx:before-request="document.getElementById('installed_products').innerHTML='<i class=\'fas fa-spinner fa-spin fa-3x text-primary m-1\'></i>'"
+									hx-on:htmx:before-request="document.getElementById('installed_products').innerHTML='<i class=\'fas fa-circle-notch fa-spin fa-3x text-primary m-1\'></i>'"
 									hx-on:htmx:response-error="document.getElementById('installed_products').innerHTML='<div class=\'alert alert-danger mx-0 my-3\'>Error ' + event.detail.xhr.status + ' on loading data ...</div>'"
 									id="pip_cmd2" name="pip_cmd" value="list" />
 								<label class="custom-control-label" for="pip_cmd2"><samp>pip list</samp></label>

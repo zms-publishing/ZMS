@@ -4,6 +4,11 @@
 	<p class="my-2" style="color:#008ac7;">
 		<i class="fas fa-database"></i>
 		<strong tal:content="python:zmscontext.connection_id">the connection-id</strong>
+		<br/>
+		<code tal:condition="python:zmscontext.getEntities()==[]" 
+			tal:content="python:zmscontext.getLangStr('MSG_DATABASE_ERROR')">
+			Database connection error
+		</code>
 	</p>
 	<ul class="fa-ul">
 		<li tal:repeat="table python:[x for x in zmscontext.getEntities() if x['type']=='table']">

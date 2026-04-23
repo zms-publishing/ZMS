@@ -4303,6 +4303,21 @@ MSG_CUTOBJS:
   vie: Đã cắt đối tượng.
   heb: הפריט(ים) נחתכו.
 
+MSG_DATABASE_ERROR:
+  ger: Datenbank-Connection-Fehler
+  eng: Database connection error
+  ned: Database-verbinding fout
+  fra: Erreur de connexion à la base de données
+  ita: Errore di connessione al database
+  esp: Error de conexión a la base de datos
+  chi: 数据库连接错误
+  fas: خطای اتصال به پایگاه داده
+  rus: Ошибка подключения к базе данных
+  hin: डेटाबेस कनेक्शन त्रुटि
+  ara: خطأ في اتصال قاعدة البيانات
+  vie: Lỗi kết nối cơ sở dữ liệu
+  heb: שגיאת חיבור למסד הנתונים
+
 MSG_DELETED:
   ger: %i Objekt(e) gelöscht.
   eng: %i Object(s) deleted.

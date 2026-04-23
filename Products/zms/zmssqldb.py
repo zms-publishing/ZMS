@@ -1102,7 +1102,8 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       
       entities = []
       da = self.getDA()
-      if da is None: return entities
+      if da is None:
+        return []
       
       tableBrwsrs = da.tpValues()
       
@@ -1117,7 +1118,14 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       
       #-- retrieve entities from sqlalchemy
       if len( entities) == 0 and da.meta_type.startswith('SQLAlchemyDA'):
-        entities = self.getEntitiesSQLAlchemyDA()
+        try:
+          entities = self.getEntitiesSQLAlchemyDA()
+        except Exception:
+          standard.writeError(
+            self,
+            '[getEntities]: SQLAlchemy entity reflection failed for connection_id=%s' % getattr(self, 'connection_id', ''),
+          )
+          return []
       
       #-- retrieve entities from table-browsers
       if len( entities) == 0:

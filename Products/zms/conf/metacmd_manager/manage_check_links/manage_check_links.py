@@ -17,35 +17,33 @@ def manage_check_links( self):
   html += '<legend class="card-header row mb-3">Check links...</legend>'
   html += '<div class="col-sm-12">'
   html += '<div class="form-group form-inline">'
-  html += '<button class="btn btn-primary" value="Start" name="btn" type="submit">Start</button>'
 
-  manage_lang = request.get('manage_lang', 'eng')
+  manage_lang = request.get('manage_lang') or request.get('lang') or 'eng'
   manage_lang = manage_lang in ['ger', 'eng'] and manage_lang or 'eng'
   options_dict = {
       'all': {
-          'ger': 'Alle',
-          'eng': 'All'
+          'ger': 'Check alle Links',
+          'eng': 'Check all links'
       },
       'missing': {
-          'ger': 'Defekt',
-          'eng': 'Missing'
+          'ger': 'Nur defekte',
+          'eng': 'Only missing'
       },
       'inactive': {
-          'ger': 'Inaktiv',
-          'eng': 'Inactive'
+          'ger': 'Nur inaktive',
+          'eng': 'Only inactive'
       },
       'trashcan': {
-          'ger': 'Papierkorb',
-          'eng': 'Trashcan'
+          'ger': 'Nur Papierkorb',
+          'eng': 'Only trashcan'
       }
   }
   for opt in options_dict.keys():
-    html += f'''<div class="radio btn btn-default btn-secondary">
-        <label>
-          <input type="radio" name="check_links_option" value="{opt}" {['','checked="checked" '][int(opt == request.get('check_links_option',''))]}>
-          &nbsp;{options_dict[opt][manage_lang]}
-          </label>
-        </div>'''
+    html += f'''<button title="Start: {options_dict[opt][manage_lang]}"
+        class="btn {['btn-secondary','btn-primary'][int(opt == request.get('check_links_option',''))]}" 
+        name="check_links_option" type="submit" value="{opt}">
+        {options_dict[opt][manage_lang]}
+      </button>'''
 
   html += '</div><!-- .form-group -->'
   html += '</div><!-- .col-sm-12 -->'
@@ -94,7 +92,7 @@ def manage_check_links( self):
     else:
       if (not 'inactive' == request.get('check_links_option','')) and \
         (not 'trashcan' == request.get('check_links_option','')):
-        l.append('<span class="alert-danger missing">'+old+'</span>')
+        l.append('<span class="alert-danger missing">'+old+'</span> <i class="fas fa-arrow-right mx-2"></i> <span class="missing">Target not found</span>')
   
   def handleInline(node,v): 
     l = []
@@ -171,8 +169,64 @@ def manage_check_links( self):
                     + '</tr>')
     except:
       html.append(standard.writeError(node,"can't visit"))
-    for childNode in node.getChildNodes():
-      visit(childNode,html)
+    if node.meta_id!='ZMSLinkElement': # avoid recursion for link elements
+      for childNode in node.getChildNodes():
+        visit(childNode,html)
+
+  html += '''<table class="table checklinks table-sm">
+      <tr>
+        <th class="checklinks_name">Attribute-Type</th>
+        <th class="checklinks_link">Link</th>
+      </tr>'''
+  l = []
+  if request.get('check_links_option','') in options_dict.keys():
+    visit(self.getTrashcan(),l)
+    visit(self,l)
+  if len(l)==0:
+    if request.get('check_links_option','') in options_dict.keys():
+      l.append('''<tr>
+        <td class="checklinks_name">&nbsp;</td>
+        <td class="checklinks_link"><code>No links found for the selected option.</code></td>
+      </tr>''')
+    else:
+      l.append('''<tr>
+        <td class="checklinks_name">&nbsp;</td>
+        <td class="checklinks_link">Please click one of the checking options.<br/>
+          Take into account that some options may not have any links.<br/>
+          And depending on the amount of content the process may take some time.
+        </td>
+      </tr>''')
+  html += '\n'.join(l)
+  html += '</table>'
+
+  html += '</form><!-- .form-horizontal -->'
+  html += '</div><!-- #zmi-tab -->'
+  html += self.zmi_body_footer(self,request)
+  html += """
+    <div class="loader-wrapper">
+      <span class="loader"></span>
+    </div>
+    <script>
+      // https://redstapler.co/add-loading-animation-to-website/
+      // https://codepen.io/tashfene/pen/raEqrJ
+      $(window).on("load", function() {
+        $(".loader-wrapper").fadeOut("slow");
+      });
+      $(document).ready(function() {
+        $(".loader-wrapper").fadeOut("slow");
+        $("#form").submit(function() {
+          $.ajax({
+            method: "POST",
+            url: "manage_check_links",
+            dataType: "html",
+            beforeSend: function() {
+              $(".loader-wrapper").show();
+            }
+          });
+        });
+      });
+    </script>
+  """
 
   html += """
     <style>
@@ -294,57 +348,6 @@ def manage_check_links( self):
         100% { transform: rotate(360deg); }
       }
     </style>
-    <table class="table checklinks table-sm">
-    <tr>
-      <th class="checklinks_name">Type</th>
-      <th class="checklinks_link">Link</th>
-    </tr>
-  """
-
-  l = []
-  if request.form.get('btn', None) == 'Start' and (
-    'missing' == request.get('check_links_option','') or
-    'inactive' == request.get('check_links_option','') or
-    'trashcan' == request.get('check_links_option','') or
-    'all' == request.get('check_links_option','')):
-    visit(self.getTrashcan(),l)
-    visit(self,l)
-  if len(l)==0:
-    l.append('<tr><td class="checklinks_name">&mdash;</td><td class="checklinks_link">&mdash;</td></tr>')
-  html += '\n'.join(l)
-  html += '</table><!-- .table -->'
-
-  html += '</form><!-- .form-horizontal -->'
-  html += '</div><!-- #zmi-tab -->'
-  html += self.zmi_body_footer(self,request)
-  html += """
-    <div class="loader-wrapper">
-      <span class="loader"></span>
-    </div>
-    <script>
-      // https://redstapler.co/add-loading-animation-to-website/
-      // https://codepen.io/tashfene/pen/raEqrJ
-      $(window).on("load", function() {
-        $(".loader-wrapper").fadeOut("slow");
-      });
-      $(document).ready(function() {
-        $(".loader-wrapper").fadeOut("slow");
-        $("#form").submit(function() {
-          $.ajax({
-            method: "POST",
-            url: "manage_check_links",
-            dataType: "html",
-            beforeSend: function() {
-              $(".loader-wrapper").show();
-            }
-          });
-        });
-        $("#form .btn.radio").on("click", function() {
-          $(this).find("input[type='radio']").prop("checked", true);
-          $("#form button[type='submit']").click();
-        });
-      });
-    </script>
   """
   html += '</body>'
   html += '</html>'

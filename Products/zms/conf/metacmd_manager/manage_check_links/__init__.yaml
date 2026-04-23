@@ -2,13 +2,13 @@ manage_check_links:
   acquired: 0
   action: '%smanage_executeMetacmd?id=manage_check_links'
   execution: 0
-  icon_clazz: fas fa-cogs
+  icon_clazz: fas fa-unlink text-danger
   meta_types:
     - ZMSFolder
     - ZMS
   name: Check links...
   nodes: '{$}'
-  revision: 1.2.0
+  revision: 1.3.0
   roles:
     - ZMSEditor
   title: Check links...

@@ -21,6 +21,41 @@ from zope.interface import implementer
 from Products.zms import _fileutil
 from Products.zms import _xmllib
 from Products.zms import standard
+from Products.zms import yamlutil
+
+
+def normalize_yaml_values(data):
+  """
+  Normalize import/_language.yaml to strict YAML by quoting all values.
+  """
+  normalized_lines = []
+  for line in data.splitlines():
+    stripped = line.strip()
+    if stripped == '' or stripped.startswith('#'):
+      normalized_lines.append(line)
+      continue
+
+    # Keep top-level keys unchanged, e.g. ACTION_INSERT:
+    if not line.startswith('  '):
+      normalized_lines.append(line)
+      continue
+
+    # Normalize language/value lines, e.g. "  eng: Add to %s"
+    language_line = line[2:]
+    if ':' not in language_line:
+      normalized_lines.append(line)
+      continue
+    lang, value = language_line.split(':', 1)
+    lang = lang.strip()
+    value = value.lstrip(' ')
+    if len(value) >= 2 and ((value[0] == '"' and value[-1] == '"') or (value[0] == "'" and value[-1] == "'")):
+      value = value[1:-1]
+
+    # YAML-safe quoted scalar value.
+    value = value.replace('\\', '\\\\').replace('"', '\\"')
+    normalized_lines.append('  %s: "%s"' % (lang, value))
+
+  return '\n'.join(normalized_lines)
 
 
 def _importXml(self, item):
@@ -108,41 +143,25 @@ def getDescLangs(self, id, langs):
 
 class langdict(object):
     """Load and provide access to the built-in ZMI language dictionary."""
-    def __init__(self, filename='_language.xml'):
-      """Parse the bundled language XML file into manage-language and key mappings."""
+    def __init__(self, filename='_language.yaml'):
+      """Parse the bundled language YAML file into manage-language and key mappings."""
       manage_langs = []
       lang_dict = {}
       filepath = package_home(globals())+'/import/'
-      xmlfile = open(_fileutil.getOSPath(filepath+filename), 'rb')
-      builder = _xmllib.XmlBuilder()
-      nWorkbook = builder.parse(xmlfile)
-      for nWorksheet in _xmllib.xmlNodeSet(nWorkbook, 'Worksheet'):
-        for nTable in _xmllib.xmlNodeSet(nWorksheet, 'Table'):
-          for nRow in _xmllib.xmlNodeSet(nTable, 'Row'):
-            lRow = []
-            currIndex = 0
-            for nCell in _xmllib.xmlNodeSet(nRow, 'Cell'):
-              ssIndex = int(nCell.get('attrs', {}).get('ss:Index', currIndex+1))
-              currData = None
-              for i in range(currIndex+1, ssIndex):
-                lRow.append(currData)
-              for nData in _xmllib.xmlNodeSet(nCell, 'Data'):
-                currData = nData['cdata']
-              lRow.append(currData)
-              currIndex = ssIndex
-            if len(manage_langs) == 0:
-              del lRow[0]
-              manage_langs = lRow
-            else:
-              if len(lRow) > 0:
-                key = lRow[0]
-                value = {}
-                for i in range(len(manage_langs)):
-                  if i+1 < len(lRow):
-                    if lRow[i+1] is not None:
-                      value[manage_langs[i]] = lRow[i+1]
-                lang_dict[key] = value
-      xmlfile.close()
+      with open(_fileutil.getOSPath(filepath+filename), 'r', encoding='utf-8') as yamlfile:
+        normalized_yaml = normalize_yaml_values(yamlfile.read())
+      parsed_yaml = yamlutil.parse(normalized_yaml)
+      if isinstance(parsed_yaml, str):
+        raise ValueError(parsed_yaml)
+
+      for key, values in parsed_yaml.items():
+        if not isinstance(values, dict):
+          continue
+        for lang in values.keys():
+          if lang not in manage_langs:
+            manage_langs.append(lang)
+        lang_dict[key] = values
+
       self.manage_langs = manage_langs
       self.langdict = lang_dict
 
@@ -151,7 +170,7 @@ class langdict(object):
       return self.manage_langs
 
     def get_langdict(self):
-      """Return the base language-dictionary mapping loaded from XML."""
+      """Return the base language-dictionary mapping loaded from YAML."""
       return self.langdict
 
 

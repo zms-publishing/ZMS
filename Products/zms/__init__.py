@@ -6,7 +6,7 @@ product during Zope startup. It is responsible for:
   - Registering ZMS content types (ZMS, ZMSCustom, ZMSSqlDb, ZMSLinkContainer,
     ZMSLinkElement, MediaDb, ZMSAttributeContainer) with the Zope application
     context to make them available for object instantiation.
-  - Configuring language resources by parsing the C{_language.xml} import file
+  - Configuring language resources by parsing the C{_language.yaml} import file
     and automatically generating language-specific JavaScript files
     (C{i18n/<lang>.js}) for client-side internationalization support.
   - Setting up session storage infrastructure by ensuring the existence of
@@ -26,7 +26,7 @@ product during Zope startup. It is responsible for:
 
 Note: The module expects configuration files to be present at specific paths
 within the package home directory, particularly C{version.txt} and
-C{import/_language.xml}.
+C{import/_language.yaml}.
 
 License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
@@ -44,6 +44,7 @@ from Products.zms import _multilangmanager
 from Products.zms import _mediadb
 from Products.zms import _zmsattributecontainer
 from Products.zms import standard
+from Products.zms import yamlutil
 from Products.zms import zms
 from Products.zms import zmscustom
 from Products.zms import zmssqldb
@@ -306,33 +307,26 @@ def initialize(context):
         zmi_js_hash_fileobj.close()
 
         # automated generation of language JavaScript
-        from xml.dom import minidom
-        filename = os.sep.join([package_home(globals())]+['import', '_language.xml'])
+        filename = os.sep.join([package_home(globals())]+['import', '_language.yaml'])
         standard.writeStdout(context, "automated generation of language JavaScript: %s"%filename)
-        xmldoc = minidom.parse(filename)
-        langs = None
+        with codecs.open(filename, mode='r', encoding='utf-8') as fileobj:
+          # Hint: The _language.yaml file may contain unquoted values with special 
+          # characters that are not valid YAML. To ensure proper parsing, we first 
+          # normalize the YAML content by quoting all values before parsing
+          normalized_yaml = _multilangmanager.normalize_yaml_values(fileobj.read())
+          yaml_data = yamlutil.parse(normalized_yaml)
+        if isinstance(yaml_data, str):
+          raise ValueError(yaml_data)
+
         d = {}
-        for row in xmldoc.getElementsByTagName('Row'):
-          cells = row.getElementsByTagName('Cell')
-          if langs is None:
-            langs = []
-            for cell in cells:
-              data = getData(cell)
-              if data is not None:
-                langs.append(data)
-          else:
-            l = []
-            for cell in cells:
-              data = getData(cell)
-              if cell.attributes.get('ss:Index') is not None:
-                while len(l) < int(cell.attributes['ss:Index'].value) - 1:
-                  l.append(None)
-              l.append(data)
-            if len(l) > 1:
-              k = l[0]
-              d[k] = {}
-              for i in range(len(l)-1):
-                d[k][langs[i]] = l[i+1]
+        langs = []
+        for key, values in yaml_data.items():
+          if not isinstance(values, dict):
+            continue
+          for lang in values.keys():
+            if lang not in langs:
+              langs.append(lang)
+          d[key] = values
 
         # populate language-strings to i18n-js
         path = os.sep.join([package_home(globals())]+['plugins', 'www', 'i18n'])
@@ -346,7 +340,7 @@ def initialize(context):
           for k in d.keys():
             v = d[k].get(lang)
             if v is not None:
-              v = v.replace('\'', '\\\'').replace('\n', '\\n')
+              v = str(v).replace('\'', '\\\'').replace('\n', '\\n')
               fileobj.write(',\'%s\':\''%k)
               fileobj.write(v)
               fileobj.write('\'')

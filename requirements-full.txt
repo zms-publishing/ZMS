@@ -38,3 +38,6 @@ Products.PluginRegistry
 
 # MemCacheD to replace mappingstorage
 Products.mcdutils>=3.2
+
+# Redis Queue
+rq

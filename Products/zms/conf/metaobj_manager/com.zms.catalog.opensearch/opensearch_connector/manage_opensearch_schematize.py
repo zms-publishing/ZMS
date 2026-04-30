@@ -97,6 +97,7 @@ def manage_opensearch_schematize( self):
 	properties['created_dt'] = {'type':'date'}
 	properties['change_dt'] = {'type':'date'}
 	properties['indexing_dt'] = {'type':'date'}
+	properties['sortid'] = {'type':'text'}
 
 	mappings = {'properties':properties}
 	dictionary = {'settings':settings, 'mappings':mappings}

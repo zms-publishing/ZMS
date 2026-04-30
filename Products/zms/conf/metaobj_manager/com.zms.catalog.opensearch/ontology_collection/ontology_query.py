@@ -85,6 +85,13 @@ def ontology_query(self, return_type='list'):
 				}
 			}
 		},
+		"sort": [
+			{
+				"sortid": {
+					"order": "asc"
+				}
+			}
+		],
 		"aggs": {
 			"response_codes": {
 				"terms": {

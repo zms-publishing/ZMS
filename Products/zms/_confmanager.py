@@ -608,12 +608,7 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
         r = {x:d[x] for x in d if x.startswith(prefix+'.')}
         return json.dumps(r)
       if inherited:
-        d = list(d)
-        portalMaster = self.getPortalMaster()
-        if portalMaster is not None:
-          l = portalMaster.getConfProperties(prefix,inherited,REQUEST)
-          l = [x for x in l if x not in d and x[:x.find('.')] not in UNINHERITED_PROPERTIES]
-          d.extend(l)
+        d = self.__aq_conf__()
       return d
 
 
@@ -645,6 +640,23 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
       if not authorized:
         raise zExceptions.Unauthorized
       return REQUEST.get(key, default)
+
+
+    def __aq_conf__(self, deep=0):
+        if deep == 0:
+            reqBuffId = 'CacheManager.__aq_conf__'
+            try: return self.fetchReqBuff(reqBuffId)
+            except: pass
+        aq_conf = self.get_conf_properties()
+        portalMaster = self.getPortalMaster()
+        if portalMaster:
+            # merge, portal master first to allow local override
+            master_conf = {k:v for k,v in portalMaster.__aq_conf__(deep+1).items() \
+                if k not in UNINHERITED_PROPERTIES and k[:k.find('.')] not in UNINHERITED_PROPERTIES}
+            aq_conf = {**master_conf, **aq_conf}
+        if deep == 0:
+          return self.storeReqBuff( reqBuffId, aq_conf)
+        return aq_conf
 
 
     def get_conf_property(self, *args, **kwargs):
@@ -718,14 +730,13 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
       """
       if key.startswith("Portal"):
         self.clearReqBuff()
-      d = self.getConfProperties()
+      d = getattr( self, '__attr_conf_dict__', {})
       if value is None:
         if key in d:
           del d[key]
       else:
         d[key] = value
-      self.__attr_conf_dict__ = d
-      self.__attr_conf_dict__ = self.__attr_conf_dict__.copy()
+      setattr(self, '__attr_conf_dict__', d.copy())
 
     def manage_customizeSystem(self, btn, key, lang, REQUEST, RESPONSE=None):
       """
@@ -977,7 +988,7 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
       return RESPONSE.redirect('manage_customizeDesignForm?lang=%s&manage_tabs_message=%s'%(lang, message))
 
 
-    def getZMSSysConf(self):
+    def getZMSSysConf(self, createIfNotExists=True):
       """
       Return the ZMSSysConf object, creating and initializing it if it does not already exist.
       
@@ -990,7 +1001,7 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
       @rtype: ZMSSysConf
       """
       sys_conf = getattr(self,"sys_conf",None)
-      if sys_conf is None:
+      if sys_conf is None and createIfNotExists:
         sys_conf = _conf.ZMSSysConf()
         self._setObject(sys_conf.id, sys_conf)
         sys_conf = getattr(self, sys_conf.id, None)

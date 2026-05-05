@@ -45,10 +45,12 @@ def get_default_data(node):
   # WIP: https://github.com/idasm-unibe-ch/unibe-cms/issues/1244
   parent_node = node.getParentNode()
   if parent_node:
+    if parent_node == node:
+      parent_node = parent_node.getParentNode()
     parent_sortid = parent_node.getSortId()
   else:
     parent_sortid = 0
-  d['sortid'] = '%02i%02i%02i'%(node.getLevel(), parent_sortid, node.getSortId() or 0)
+  d['sortid'] = '%03i%03i%03i'%(node.getLevel(), parent_sortid, node.getSortId() or 0)
   return d
 
 def get_zoned_dt(struct_dt):

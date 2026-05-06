@@ -134,50 +134,61 @@ $(function() {
     var inputs;
     var index = 0;
              
-    function run() {
-      var fn = function() {
-        if (!started) {
-          return;
+function run() {
+    const runAjax = (index) => {
+        if (!started || index >= $inputs.length) {
+            stop();
+            return;
         }
-        if (index < $inputs.length) {
-          var $input = $($inputs[index]);
-          var $a = $input.next("a");
-			    $a.after('<span class="response">&nbsp;&nbsp;<i class="fas fa-spinner fa-spin text-primary"></i>&nbsp;&nbsp;<span id="progress' + index + '"></span></span>');
-          var href = $a.attr('href');
-          var url = $('#url').val();
-          var index_html = href.substring(0, href.lastIndexOf('/')) + '/' + url;
-          var count = parseInt($('#count').val());
-          console.log(index + '. Run: ' + index_html);
-          let total_time = 0;
-          for (var j=0; j<count; j++) {
-             if (!started) {
-               return;
-             }
-            const t0 = performance.now();
-             $.ajax({
-                url: index_html,
-                data: {ts: new Date().getTime()},
-                method: 'GET',
-                async: false,               
-                success: function() {
-                  const t1 = performance.now();
-                  const response_time = t1 - t0;
-                  total_time += response_time;
-                  $("#progress" + index).text(index + '/' + count + ': ' + response_time.toFixed(2) + ' ms');
-                  console.log(index + '/' + count + ': ' + response_time.toFixed(2) + ' ms');
-             }});
-          }   
-          $("#progress" + index).text((total_time / count).toFixed(2) + ' ms');
-          console.log((total_time / count).toFixed(2) + ' ms');
-          index++;
-          fn();
-        }
-        else {
-          stop();
-        }
-      }
-      fn();             
-    }
+
+        const $input = $($inputs[index]);
+        const $a = $input.next("a");
+        const messageId = "progress" + index;
+        $a.after('<span class="response">&nbsp;&nbsp;<i class="fas fa-spinner fa-spin text-primary"></i>&nbsp;&nbsp;<span id="' + messageId + '"></span></span>');
+        const $message = $("#" + messageId);
+        const href = $a.attr('href');
+        const url = $('#url').val();
+        const index_html = href.substring(0, href.lastIndexOf('/')) + '/' + url;
+        const count = parseInt($('#count').val());
+        let total_time = 0;
+
+        const ajaxRequest = (j) => {
+            return new Promise((resolve) => {
+                const t0 = performance.now();
+                $.ajax({
+                    url: index_html,
+                    data: { ts: new Date().getTime() },
+                    method: 'GET',
+                    success: function () {
+                        const t1 = performance.now();
+                        const response_time = t1 - t0;
+                        total_time += response_time;
+                        const message = index + '/' + count + ': ' + response_time.toFixed(2) + ' ms';
+                        $message.text(message);
+                        console.log(message);
+                        resolve();
+                    }
+                });
+            });
+        };
+
+        // Execute AJAX requests sequentially for the current input
+        const ajaxSequence = async () => {
+            for (let j = 0; j < count; j++) {
+                if (!started) return;
+                await ajaxRequest(j);
+            }
+            const message = (total_time / count).toFixed(2) + ' ms';
+            $message.text(message);
+            console.log(message);
+            runAjax(index + 1); // Move to the next input
+        };
+
+        ajaxSequence();
+    };
+
+    runAjax(0); // Start with the first input
+}
 
     function start() {
         console.log('Start');
@@ -196,6 +207,7 @@ $(function() {
         started = false;
         $("#start-button").prop("disabled","");
         $("#stop-button").prop("disabled","disabled");
+        $(".zmi-sitemap .response .fa-spinner").remove();
         return false;
     }
 

@@ -29,7 +29,7 @@ class MissingArtefactProxy(object):
   icon__roles__=None
   zmi_icon__roles__ = None
   def zmi_icon(self):
-    return 'fas fa-skull-crossbones text-danger'
+    return 'fas fa-exclamation-triangle text-danger'
   getId__roles__=None
   def getId(self):
     return self.id

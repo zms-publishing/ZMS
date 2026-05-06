@@ -1189,7 +1189,8 @@ input.btn.btn-file {
 .zmi .single-line.zmi-code.input-group .input-group-append {
 	height: 1.8rem;
 }
-.zmi td.meta-code:has(textarea.alert-danger):before {
+.zmi .meta-code:has(textarea.alert-danger):before,
+.zmi .meta-cmd.zmi-code div.alert-danger:before {
 	font-family: 'Font Awesome 5 Free';
 	font-size:1rem;
 	font-weight: 900;

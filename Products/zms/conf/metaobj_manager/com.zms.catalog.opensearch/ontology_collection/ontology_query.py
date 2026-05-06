@@ -3,7 +3,7 @@ from opensearchpy import OpenSearch
 import json
 from Products.zms import standard
 
-def ontology_query(self, return_type='list'):
+def ontology_query(self, return_type='list', sort_by='sortid'):
 	request = self.REQUEST
 	q = request.get('q','*')
 	q = q.strip()=='' and '*' or q.strip()
@@ -85,13 +85,6 @@ def ontology_query(self, return_type='list'):
 				}
 			}
 		},
-		"sort": [
-			{
-				"sortid": {
-					"order": "asc"
-				}
-			}
-		],
 		"aggs": {
 			"response_codes": {
 				"terms": {
@@ -101,6 +94,15 @@ def ontology_query(self, return_type='list'):
 			}
 		}
 	}
+	# Only apply sorting if no specific query is given, otherwise rely on relevance scoring
+	if sort_by and q in (None, '*'):
+		query['sort'] = [
+			{
+				sort_by: {
+					"order": "asc"
+				}
+			}
+		]
 
 	try:
 		response = client.search(body = json.dumps(query), index = index_names)

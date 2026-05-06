@@ -27,6 +27,7 @@ class MissingArtefactProxy(object):
     self.meta_type=meta_type
     self.data = data
   icon__roles__=None
+  zmi_icon__roles__ = None
   def zmi_icon(self):
     return 'fas fa-skull-crossbones text-danger'
   getId__roles__=None
@@ -275,11 +276,7 @@ def addExternalMethod(container, id, title, data):
           context = context.getParentNode()
         except:
           context= None
-  try:
-    ExternalMethod.manage_addExternalMethod( container, id, title, m, f)
-  except:
-    standard.writeError(container,"[addExternalMethod]: %s does not exist.\n"%id)
-    pass
+  ExternalMethod.manage_addExternalMethod( container, id, title, m, f)
   initPermissions(container, id)
 
 def addPageTemplate(container, id, title, data):

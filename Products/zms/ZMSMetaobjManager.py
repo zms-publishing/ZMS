@@ -1179,7 +1179,7 @@ class ZMSMetaobjManager(object):
                  lines.pop(i)
              newCustom = '\n'.join(lines)
         try:
-          newOb = zopeutil.addObject(container, newType, newObId, newName, newCustom)
+          newOb = zopeutil.addObject(container, newType, newObId, newName, newCustom, force_save=False)
           if newOb is not None:
             del attr['custom']
         except Exception as e:

@@ -27,8 +27,9 @@ class MissingArtefactProxy(object):
     self.meta_type=meta_type
     self.data = data
   icon__roles__=None
+  zmi_icon__roles__ = None
   def zmi_icon(self):
-    return 'fas fa-skull-crossbones text-danger'
+    return 'fas fa-exclamation-triangle text-danger'
   getId__roles__=None
   def getId(self):
     return self.id
@@ -252,6 +253,34 @@ def addExternalMethod(container, id, title, data):
   """
   m = id
   filepath = standard.getINSTANCE_HOME()+'/Extensions/'+m+'.py'
+
+  # Helper function to check syntax and imports 
+  # of external method before adding it to Zope.
+  def upfront_syntax_check(data):
+    import ast
+    import importlib.util
+    try:
+      tree = ast.parse(data, filename=filepath)
+    except SyntaxError as e:
+      standard.writeError(container, "[SyntaxError in External Method '%s']: %s"%(id, str(e)))
+      return False
+    missing = []
+    for node in ast.walk(tree):
+      if isinstance(node, ast.Import):
+        names = [alias.name for alias in node.names]
+      elif isinstance(node, ast.ImportFrom):
+        names = [node.module] if node.module else []
+      else:
+        continue
+      for name in names:
+        top = name.split('.')[0]
+        if importlib.util.find_spec(top) is None:
+          missing.append(name)
+    if missing:
+      standard.writeError(container, "[Missing imports in External Method '%s']: %s"%(id, ', '.join(missing)))
+      return False
+    return True
+
   # Acquired external methods.
   if m.find('.') > 0 and os.path.exists(filepath):
     id = m[m.find('.')+1:]
@@ -275,12 +304,28 @@ def addExternalMethod(container, id, title, data):
           context = context.getParentNode()
         except:
           context= None
-  try:
+
+  if upfront_syntax_check(data):
     ExternalMethod.manage_addExternalMethod( container, id, title, m, f)
-  except:
-    standard.writeError(container,"[addExternalMethod]: %s does not exist.\n"%id)
-    pass
-  initPermissions(container, id)
+    initPermissions(container, id)
+  else:
+    # Code has errors: ensure the Zope pointer still exists in ZMI so the
+    # user can correct the code there. manage_addExternalMethod compiles the
+    # file on construction, so we temporarily write a valid stub, register
+    # the object, then restore the broken code (with an error header) so it
+    # is visible in the ZMI editor.
+    if id not in container.objectIds():
+      stub = "## Errors:\n## File contains errors - correct via ZMI\ndef %s(*args, **kw): pass\n" %(f)
+      _fileutil.exportObj(stub, filepath)
+      try:
+        ExternalMethod.manage_addExternalMethod( container, id, title, m, f)
+        initPermissions(container, id)
+      except Exception:
+        standard.writeStdout(container, "[External Method '%s' not registered]: could not create Zope pointer."%(id,))
+    # Restore the broken code so the user sees it in ZMI.
+    if data:
+      broken = "## Errors:\n## Syntax/import error in '%s' - correct and re-save.\n%s" % (filepath, data)
+      _fileutil.exportObj(broken, filepath)
 
 def addPageTemplate(container, id, title, data):
   """

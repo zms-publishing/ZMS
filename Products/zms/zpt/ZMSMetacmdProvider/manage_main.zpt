@@ -66,16 +66,22 @@
 			</div>
 
 			<!-- ACE Editor -->
-			<tal:block tal:define="ob python:getattr(here,request['id'],None)"
-				><tal:block tal:condition="python:ob is not None"
-					><input type="hidden" class="content_type" name="el_method" tal:attributes="value ob/meta_type"
-					/><textarea tal:replace="structure python:here.zmi_ace_editor(here,request,name='el_data',id='cmd_%s'%(ob.getId()),ob=ob,text=metaCmd['data'])">ACE Editor</textarea
-				></tal:block
-				><tal:block tal:condition="python:ob is None"
-					><input type="hidden" class="content_type" name="el_method"
-					/><textarea tal:replace="structure python:here.zmi_ace_editor(here,request,name='el_data',id='cmd',ob=ob,text='# An error occurred.')">ACE Editor</textarea
-				></tal:block
-			></tal:block>
+			<div class="meta-cmd zmi-code" tal:define="ob python:getattr(here,request['id'],None)">
+				<tal:block tal:condition="python:(ob is not None) and (not metaCmd.get('data').startswith('## Errors'))">
+					<input type="hidden" class="content_type" name="el_method" tal:attributes="value ob/meta_type"/>
+					<textarea 
+						tal:replace="structure python:here.zmi_ace_editor(here, request, name='el_data', id='cmd_%s'%(ob.getId()), ob=ob, text=metaCmd['data'])">
+						ACE Editor
+					</textarea>
+				</tal:block>
+				<tal:block tal:condition="python:ob is None or metaCmd.get('data').startswith('## Errors')">
+					<textarea 
+						tal:define="text python: ob==None and '## Errors:\n## Object not found.' or metaCmd.get('data')"
+						tal:replace="structure python:here.zmi_ace_editor(here, request, name='el_data', id='cmd', ob=ob, text=text, has_error=True)">
+						ACE Editor
+					</textarea>
+				</tal:block>
+			</div>
 			<!-- /ACE Editor -->
 
 			<div class="form-group row">
@@ -259,8 +265,8 @@
 				</div><!-- .btn-group -->
 				<div class="btn-group packaging mr-1">
 					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_ACQUIRE')+'...'" onclick="$ZMI.iframe('manage_main_acquire',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')});return false" tal:condition="python:here.getPortalMaster() is not None"><i class="fas fa-share fa-flip-vertical"></i></button>
-					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).attr('title')});return false"><i class="fas fa-upload"></i></button>
-					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this);return false"><i class="fas fa-download"></i></button>
+				<div class="meta-cmd zmi-code" tal:define="ob python:getattr(here,request['id'],None);
+				syntax_valid python:not getattr(ob,'errors',None);"
 				</div><!-- .btn-group -->
 			</th>
 		</tr>

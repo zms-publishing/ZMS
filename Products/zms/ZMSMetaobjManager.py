@@ -1182,8 +1182,9 @@ class ZMSMetaobjManager(object):
           newOb = zopeutil.addObject(container, newType, newObId, newName, newCustom)
           if newOb is not None:
             del attr['custom']
-        except:
-          attr['custom'] = "## Errors:\n" + "##  " + standard.writeError(self,"") + "\n" + "##\n" + newCustom
+        except Exception as e:
+          if str(e) not in newCustom:
+            attr['custom'] = "## Errors:\n" + "##  " + str(e) + "\n" + "##\n" + newCustom
         # Change Zope-Object (special).
         newOb = zopeutil.getObject(container, newObId)
         if newType == 'Folder':

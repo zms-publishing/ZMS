@@ -680,6 +680,16 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
       return REQUEST.get(key, default)
 
 
+    def __aq_conf__(self):
+        aq_conf = self.get_conf_properties()
+        portalMaster = self.getPortalMaster()
+        if portalMaster:
+            # merge, portal master first to allow local override
+            master_conf = {k:v for k,v in portalMaster.__aq_conf__().items() if k[:k.find('.')] not in UNINHERITED_PROPERTIES}
+            aq_conf = {**master_conf, **aq_conf}
+        return aq_conf
+
+
     def get_conf_property(self, *args, **kwargs):
       """
       Return a configuration value, resolving local and inherited defaults.

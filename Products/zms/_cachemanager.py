@@ -75,6 +75,14 @@ class ReqBuff(object):
       @return: The buffered value.
       @rtype: C{object}
       """
+      try:
+        if False:
+          ram_cache = self.restrictedTraverse("ram_cache")
+          cache = ram_cache.ZCacheManager_getCache()
+          value = cache.ZCache_get(self,key)
+          print("RAMCacheManager ", key, "=", value)
+      except Exception as e:
+        print("RAMCacheManager not available:", e)
       request = getattr(self, 'REQUEST', getRequest())
       if key is None: # For debugging purposes, return whole buffer.
         return None   # request.get('__buff__',{})
@@ -96,6 +104,15 @@ class ReqBuff(object):
       @return: The value that was stored.
       @rtype: C{object}
       """
+      try:
+        if False:
+          ram_cache = self.restrictedTraverse("ram_cache")
+          cache = ram_cache.ZCacheManager_getCache()
+          print("RAMCacheManager.set", key, "=", value)
+          value = cache.ZCache_set(self,key, value)
+      except Exception as e:
+        print("RAMCacheManager not available:", e)
+      request = getattr(self, 'REQUEST', getRequest())
       request = getattr(self, 'REQUEST', getRequest())
       buff = request.get('__buff__', None)
       if buff is None:

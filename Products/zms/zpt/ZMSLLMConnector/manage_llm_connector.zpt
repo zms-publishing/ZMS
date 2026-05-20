@@ -96,10 +96,10 @@
 									tal:attributes="value python:here.getConfProperty('llm.api.model','gpt-4o-mini')"
 									placeholder="gpt-4o-mini / llama3 / mistral" />
 								<div class="input-group-append" id="ollama-model-picker" style="display:none">
-									<button type="button" class="btn btn-outline-secondary" id="btn-load-models" title="Load available models from Ollama">
+									<button type="button" class="btn btn-secondary" id="btn-load-models" title="Load available models from Ollama">
 										<i class="fas fa-sync-alt"></i>
 									</button>
-									<select class="form-control" id="ollama-model-select" style="max-width:200px">
+									<select class="form-control input-group-text" id="ollama-model-select" style="max-width:200px">
 										<option value="">— select model —</option>
 									</select>
 								</div>
@@ -351,6 +351,17 @@
 					$.each(data.models, function(i, m) {
 						$sel.append('<option value="' + m + '">' + m + '</option>');
 					});
+					// Pre-select current model if it matches one of the available models
+					var current = $('#llm-model-input').val();
+					// Flash button to indicate success
+					$btn.attr('class','btn btn-success');
+					setTimeout(function() { $btn.attr('class','btn btn-secondary'); }, 750);
+					if (current) {
+						$sel.val(current);
+						if ($sel.val() !== current) { // if current value is not in the options
+							$sel.prepend('<option value="' + current + '" selected>' + current + ' (not installed)</option>');
+						}
+					}
 				} else {
 					$sel.append('<option disabled>No models found — run: ollama pull &lt;model&gt;</option>');
 				}
@@ -481,8 +492,8 @@
 
 	<style>
 	.ZMSLLMConnector .llm-console {
-		min-height: 300px;
-		max-height: 55vh;
+		min-height: max(300px, 55vh);
+		max-height: 70vh;
 		overflow-y: auto;
 		background: #fafafa;
 		border-top: 1px solid #dee2e6;

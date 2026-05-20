@@ -42,6 +42,10 @@ def get_default_data(node):
   d['created_dt'] = get_zoned_dt(node.attr('created_dt'))
   d['change_dt'] = get_zoned_dt(node.attr('change_dt')) or d['created_dt']
   d['indexing_dt'] = get_zoned_dt(time.gmtime())
+  # WIP: https://github.com/idasm-unibe-ch/unibe-cms/issues/1244
+  # sortid is composed of sort-ids (3 digits each) up to 5 levels.
+  sortid = ''.join(['%03i'%(e.getSortId()) for e in node.breadcrumbs_obj_path(False)[1:]])
+  d['sortid'] = sortid + ('0' * (15 - len(sortid)))
   return d
 
 def get_zoned_dt(struct_dt):

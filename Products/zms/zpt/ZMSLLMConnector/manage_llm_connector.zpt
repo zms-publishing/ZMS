@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en" tal:define="standard modules/Products.zms/standard">
+<head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
+<body tal:attributes="
+	data-path python:here.getRootElement().getRefObjPath(here);
+	data-root python:here.getRootElement().getHome().id;
+	data-client python:here.getHome().id;
+	id python:'zmsid_%s'%(here.id);
+	class python:here.zmi_body_class(id='ZMSLLMConnector llm-connector')"
+	xmlns:hx-on="https://htmx.org/">
+	<header tal:replace="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</header>
+	<div id="zmi-tab" tal:define="
+		provider python:here.getConfProperty('llm.provider','openai');
+		model python:here.getConfProperty('llm.api.model','gpt-4o-mini');
+		features python:here.getEnabledFeatures();">
+		<nav aria-label="breadcrumb" tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[{'action':'manage_main','label':here.getLangStr('TAB_LLM')}])">zmi_breadcrumbs</nav>
+		<div tal:content="structure python:here.zmi_manage_tabs_message(here,request)">zmi_manage_tabs_message</div>
+
+		<nav id="subTab">
+
+			<ul class="nav nav-tabs" id="llmConnectorTabs" role="tablist">
+				<li class="nav-item">
+					<a class="nav-link active" id="tab-chat" data-toggle="tab" href="#panel-chat" role="tab">
+						Chat
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" id="tab-config" data-toggle="tab" href="#panel-config" role="tab">
+						Configuration
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" id="tab-features" data-toggle="tab" href="#panel-features" role="tab"
+						title="Enable or disable individual AI features for the ZMS editing interface.">
+						Features
+					</a>
+				</li>
+			</ul>
+		</nav>
+
+		<div class="tab-content">
+
+			<!-- ===== CHAT TAB ===== -->
+			<div class="tab-pane card fade show active" id="panel-chat" role="tabpanel">
+				<div class="card-header d-flex align-items-center justify-content-between">
+					<span>
+						<i class="fas fa-robot mr-2"></i>
+						<strong tal:content="python:{'openai':'OpenAI','ollama':'Ollama','rag':'RAG Assistant'}.get(provider,'LLM Chat')">LLM Chat</strong>
+						&nbsp;<small class="text-muted" tal:content="python:'(%s)' % model">model</small>
+					</span>
+					<button class="btn btn-sm" id="btn-provider-info" title="Show provider information">
+						<i class="fas fa-info-circle"></i>
+					</button>
+				</div>
+				<div class="card-body p-0">
+					<div id="llm-console" class="llm-console"></div>
+					<div class="llm-input-bar">
+						<div class="input-group">
+							<textarea class="form-control" id="llm-message" rows="2"
+								placeholder="Enter your message here… (Enter to send, Shift+Enter for newline)"></textarea>
+							<div class="input-group-append">
+								<button class="btn btn-primary" id="btn-send">
+									<i class="fas fa-paper-plane"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div><!-- #panel-chat -->
+
+
+			<!-- ===== CONFIG TAB ===== -->
+			<div class="tab-pane fade card" id="panel-config" role="tabpanel">
+				<form class="form-horizontal" method="post" action="manage_changeProperties" id="form-config">
+					<input type="hidden" name="lang" tal:attributes="value python:request.get('lang','eng')" />
+					<input type="hidden" name="btn" value="BTN_SAVE" />
+
+					<!-- Provider -->
+					<div class="form-group row">
+						<label class="col-sm-3 control-label">Provider</label>
+						<div class="col-sm-9">
+							<select class="form-control" name="llm.provider" id="llm-provider">
+								<option value="openai"  tal:attributes="selected python:provider=='openai'">OpenAI</option>
+								<option value="ollama"  tal:attributes="selected python:provider=='ollama'">Ollama (local)</option>
+								<option value="rag"     tal:attributes="selected python:provider=='rag'">RAG (Qdrant + Ollama)</option>
+							</select>
+						</div>
+					</div>
+
+					<!-- Model -->
+					<div class="form-group row">
+						<label class="col-sm-3 control-label">Model</label>
+						<div class="col-sm-9">
+							<input class="form-control zmi-code" type="text" name="llm.api.model"
+								tal:attributes="value python:here.getConfProperty('llm.api.model','gpt-4o-mini')"
+								placeholder="gpt-4o-mini / llama2 / mistral" />
+							<small class="form-text text-muted">
+								OpenAI: gpt-4o-mini, gpt-4, gpt-3.5-turbo &nbsp;|&nbsp;
+								Ollama: llama2, mistral, codellama
+							</small>
+						</div>
+					</div>
+
+					<!-- OpenAI Settings -->
+					<fieldset class="provider-section" id="section-openai">
+						<legend class="row my-3">OpenAI Settings</legend>
+						<div class="form-group row">
+							<label class="col-sm-3 control-label">API Key</label>
+							<div class="col-sm-9">
+								<input class="form-control zmi-code" type="password" name="llm.api.key"
+									placeholder="sk-..." />
+								<small class="form-text text-muted">Stored encrypted. Leave blank to keep existing key.</small>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-sm-3 control-label">Endpoint URL</label>
+							<div class="col-sm-9">
+								<input class="form-control zmi-code" type="text" name="llm.api.endpoint"
+									tal:attributes="value python:here.getConfProperty('llm.api.endpoint','https://api.openai.com/v1/chat/completions')"
+									placeholder="https://api.openai.com/v1/chat/completions" />
+							</div>
+						</div>
+					</fieldset>
+
+					<!-- Ollama Settings -->
+					<fieldset class="provider-section" id="section-ollama">
+						<legend class="row my-3">Ollama Settings</legend>
+						<div class="form-group row">
+							<label class="col-sm-3 control-label">Ollama Host</label>
+							<div class="col-sm-9">
+								<input class="form-control zmi-code" type="text" name="llm.ollama.host"
+									tal:attributes="value python:here.getConfProperty('llm.ollama.host','http://localhost:11434')"
+									placeholder="http://localhost:11434" />
+							</div>
+						</div>
+					</fieldset>
+
+					<!-- RAG Settings -->
+					<fieldset class="provider-section" id="section-rag">
+						<legend class="row my-3">RAG Settings (Qdrant)</legend>
+						<div class="form-group row">
+							<label class="col-sm-3 control-label">Qdrant Host</label>
+							<div class="col-sm-9">
+								<input class="form-control zmi-code" type="text" name="llm.qdrant.host"
+									tal:attributes="value python:here.getConfProperty('llm.qdrant.host','http://localhost:6333')"
+									placeholder="http://localhost:6333" />
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-sm-3 control-label">Collection</label>
+							<div class="col-sm-9">
+								<input class="form-control zmi-code" type="text" name="llm.qdrant.collection"
+									tal:attributes="value python:here.getConfProperty('llm.qdrant.collection','zms_docs')"
+									placeholder="zms_docs" />
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-sm-3 control-label">Embedding Model</label>
+							<div class="col-sm-9">
+								<input class="form-control zmi-code" type="text" name="llm.embedding.model"
+									tal:attributes="value python:here.getConfProperty('llm.embedding.model','all-MiniLM-L6-v2')"
+									placeholder="all-MiniLM-L6-v2" />
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-sm-3 control-label">Top-K results</label>
+							<div class="col-sm-9">
+								<input class="form-control zmi-code" type="number" name="llm.rag.top_k"
+									tal:attributes="value python:here.getConfProperty('llm.rag.top_k','16')"
+									min="1" max="50" step="1" />
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-sm-3 control-label">Score Threshold</label>
+							<div class="col-sm-9">
+								<input class="form-control zmi-code" type="number" name="llm.rag.score_threshold"
+									tal:attributes="value python:here.getConfProperty('llm.rag.score_threshold','0.0')"
+									min="0.0" max="1.0" step="0.05" />
+							</div>
+						</div>
+					</fieldset>
+
+					<!-- Generation Parameters -->
+					<fieldset>
+						<legend class="row my-3">Generation Parameters</legend>
+						<div class="form-group row">
+							<label class="col-sm-3 control-label">Temperature</label>
+							<div class="col-sm-9">
+								<input class="form-control zmi-code" type="number" name="llm.temperature"
+									tal:attributes="value python:here.getConfProperty('llm.temperature','0.7')"
+									min="0.0" max="2.0" step="0.1" placeholder="0.7" />
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-sm-3 control-label">Top-P</label>
+							<div class="col-sm-9">
+								<input class="form-control zmi-code" type="number" name="llm.top_p"
+									tal:attributes="value python:here.getConfProperty('llm.top_p','0.9')"
+									min="0.0" max="1.0" step="0.05" placeholder="0.9" />
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-sm-3 control-label">Max Tokens</label>
+							<div class="col-sm-9">
+								<input class="form-control zmi-code" type="number" name="llm.max_tokens"
+									tal:attributes="value python:here.getConfProperty('llm.max_tokens','')"
+									min="1" step="1" placeholder="(no limit)" />
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-sm-3 control-label">Context Window (Ollama)</label>
+							<div class="col-sm-9">
+								<input class="form-control zmi-code" type="number" name="llm.num_ctx"
+									tal:attributes="value python:here.getConfProperty('llm.num_ctx','4096')"
+									min="512" step="512" placeholder="4096" />
+							</div>
+						</div>
+					</fieldset>
+
+					<div class="form-group row mt-3">
+						<div class="col-sm-9 offset-sm-3">
+							<button type="submit" class="btn btn-primary" tal:content="structure python:here.getZMILangStr('BTN_SAVE')">Save</button>
+							<button type="button" class="btn btn-secondary ml-2" id="btn-test-connection">
+								Test Connection
+							</button>
+							<span id="connection-status" class="ml-2"></span>
+						</div>
+					</div>
+				</form>
+			</div><!-- #panel-config -->
+
+
+			<!-- ===== FEATURES TAB ===== -->
+			<div class="tab-pane card fade" id="panel-features" role="tabpanel">
+				<form class=" form-horizontal" method="post" action="manage_changeProperties" id="form-features">
+					<input type="hidden" name="lang" tal:attributes="value python:request.get('lang','eng')" />
+					<input type="hidden" name="btn" value="BTN_SAVE" />
+					<!-- Re-post config fields so they are not lost when saving features -->
+					<input type="hidden" name="llm.provider" tal:attributes="value python:here.getConfProperty('llm.provider','openai')" />
+					<input type="hidden" name="llm.api.model" tal:attributes="value python:here.getConfProperty('llm.api.model','gpt-4o-mini')" />
+					<input type="hidden" name="llm.api.endpoint" tal:attributes="value python:here.getConfProperty('llm.api.endpoint','')" />
+					<input type="hidden" name="llm.ollama.host" tal:attributes="value python:here.getConfProperty('llm.ollama.host','')" />
+					<input type="hidden" name="llm.qdrant.host" tal:attributes="value python:here.getConfProperty('llm.qdrant.host','')" />
+					<input type="hidden" name="llm.qdrant.collection" tal:attributes="value python:here.getConfProperty('llm.qdrant.collection','')" />
+					<input type="hidden" name="llm.embedding.model" tal:attributes="value python:here.getConfProperty('llm.embedding.model','')" />
+					<input type="hidden" name="llm.temperature" tal:attributes="value python:here.getConfProperty('llm.temperature','')" />
+					<input type="hidden" name="llm.top_p" tal:attributes="value python:here.getConfProperty('llm.top_p','')" />
+					<input type="hidden" name="llm.max_tokens" tal:attributes="value python:here.getConfProperty('llm.max_tokens','')" />
+					<input type="hidden" name="llm.num_ctx" tal:attributes="value python:here.getConfProperty('llm.num_ctx','')" />
+					<input type="hidden" name="llm.rag.top_k" tal:attributes="value python:here.getConfProperty('llm.rag.top_k','')" />
+					<input type="hidden" name="llm.rag.score_threshold" tal:attributes="value python:here.getConfProperty('llm.rag.score_threshold','')" />
+					<input type="hidden" name="llm.store" tal:attributes="value python:here.getConfProperty('llm.store','')" />
+
+					<div class="alert alert-danger">
+						NOTE: These feature are still work in progress 
+						and not available now. Please ask the developers 
+						if you want to help testing and improving them.
+					</div>
+					<div class="form-group row align-items-start">
+						<div class="col-sm-1 text-right pt-1">
+							<input type="checkbox" class="feature-check" name="feature_rte_assist" value="1"
+								tal:attributes="checked python:features.get('rte_assist',False)" />
+						</div>
+						<label class="col-sm-11">
+							<strong><i class="fas fa-pen-nib mr-1"></i> RTE Writing Assistant</strong><br/>
+							<small class="text-muted">Adds an AI toolbar to the Rich Text Editor (summarize, expand, rephrase, check readability).</small>
+						</label>
+					</div>
+
+					<div class="form-group row align-items-start">
+						<div class="col-sm-1 text-right pt-1">
+							<input type="checkbox" class="feature-check" name="feature_translate_assist" value="1"
+								tal:attributes="checked python:features.get('translate_assist',False)" />
+						</div>
+						<label class="col-sm-11">
+							<strong><i class="fas fa-language mr-1"></i> AI-powered Translation Assist</strong><br/>
+							<small class="text-muted">Enhances the Translation tab with LLM suggestions (better scientific terminology than plain MT).</small>
+						</label>
+					</div>
+
+					<div class="form-group row align-items-start">
+						<div class="col-sm-1 text-right pt-1">
+							<input type="checkbox" class="feature-check" name="feature_metadata_gen" value="1"
+								tal:attributes="checked python:features.get('metadata_gen',False)" />
+						</div>
+						<label class="col-sm-11">
+							<strong><i class="fas fa-tags mr-1"></i> Auto Metadata Generation</strong><br/>
+							<small class="text-muted">On content save, suggests keywords, abstracts and SEO metadata for the current document.</small>
+						</label>
+					</div>
+
+					<div class="form-group row align-items-start">
+						<div class="col-sm-1 text-right pt-1">
+							<input type="checkbox" class="feature-check" name="feature_rag_chat" value="1"
+								tal:attributes="checked python:features.get('rag_chat',False)" />
+						</div>
+						<label class="col-sm-11">
+							<strong><i class="fas fa-database mr-1"></i> RAG Chat (Document Q&amp;A)</strong><br/>
+							<small class="text-muted">Enables retrieval-augmented Q&amp;A over indexed site content via Qdrant vector search. Requires RAG provider.</small>
+						</label>
+					</div>
+
+					<div class="form-group row mt-3">
+						<div class="col-sm-11 offset-sm-1">
+							<button type="submit" class="btn btn-primary" tal:content="structure python:here.getZMILangStr('BTN_SAVE')">Save</button>
+						</div>
+					</div>
+				</form>
+			</div><!-- #panel-features -->
+
+		</div><!-- .tab-content -->
+
+	</div><!-- #zmi-tab -->
+	<tal:block tal:content="structure python:here.zmi_html_foot(here,request)">zmi_html_foot</tal:block>
+
+	<script>
+	$(function() {
+
+		// Provider-section visibility
+		function updateProviderSections() {
+			var p = $('#llm-provider').val() || $('input[name="llm.provider"]').val() || 'openai';
+			$('#section-openai').toggle(p === 'openai');
+			$('#section-ollama').toggle(p === 'ollama' || p === 'rag');
+			$('#section-rag').toggle(p === 'rag');
+		}
+		$('#llm-provider').on('change', updateProviderSections);
+		updateProviderSections();
+
+		// Connection test
+		$('#btn-test-connection').on('click', function() {
+			var $btn = $(this);
+			var $status = $('#connection-status');
+			$btn.prop('disabled', true);
+			$status.html('<i class="fas fa-spinner fa-spin"></i>');
+			$.ajax({
+				method: 'GET',
+				url: '../../++rest_api/llm_provider_info',
+				dataType: 'json'
+			})
+			.done(function(info) {
+				$status.html('<span class="text-success"><i class="fas fa-check-circle"></i> Connected: ' +
+					info.provider + ' / ' + info.model + '</span>');
+			})
+			.fail(function() {
+				$status.html('<span class="text-danger"><i class="fas fa-times-circle"></i> Connection failed</span>');
+			})
+			.always(function() { $btn.prop('disabled', false); });
+		});
+
+		// Chat functionality
+		var chatHistory = [];
+
+		$('#llm-message').on('keydown', function(e) {
+			if (e.which === 13 && !e.shiftKey) {
+				e.preventDefault();
+				sendMessage($(this).val());
+				$(this).val('');
+			}
+			// Arrow-up: recall last sent message
+			if (e.which === 38 && $(this).val() === '') {
+				var last = $('#llm-console .llm-msg-user').first().text();
+				if (last) { $(this).val(last); }
+				e.preventDefault();
+			}
+		});
+
+		$('#btn-send').on('click', function() {
+			var msg = $('#llm-message').val();
+			sendMessage(msg);
+			$('#llm-message').val('');
+		});
+
+		$('#btn-provider-info').on('click', function() {
+			$.ajax({ method: 'GET', url: '../../++rest_api/llm_provider_info', dataType: 'json' })
+			.done(function(info) {
+				var html = '<div class="llm-msg-system"><strong>Provider Info:</strong> ' +
+					info.provider + ' / ' + info.model;
+				if (info.endpoint) html += ' &mdash; ' + $('<div/>').text(info.endpoint).html();
+				html += '</div>';
+				$('#llm-console').prepend(html);
+			});
+		});
+
+		function sendMessage(message) {
+			if (!message.trim()) return;
+			chatHistory.push({role: 'user', content: message});
+
+			var spinnerId = 'spin-' + Date.now();
+			$('#llm-console').prepend(
+				'<div class="llm-reply llm-reply-pending" id="' + spinnerId + '">' +
+				'<i class="fas fa-spinner fa-spin"></i> Waiting…</div>'
+			);
+			$('#llm-console').prepend(
+				'<div class="llm-msg-user">' + $('<div/>').text(message).html() + '</div>'
+			);
+
+			$.ajax({
+				method: 'GET',
+				url: '../../++rest_api/llm_chat',
+				dataType: 'json',
+				data: {message: message}
+			})
+			.done(function(reply) {
+				if (reply.error) {
+					$('#' + spinnerId).removeClass('llm-reply llm-reply-pending').addClass('llm-error')
+						.html('[' + reply.error.code + '] ' + $('<div/>').text(reply.error.message).html());
+				} else {
+					var content = reply.message ? reply.message.content : '';
+					chatHistory.push({role: 'assistant', content: content});
+					$('#' + spinnerId).removeClass('llm-reply-pending')
+						.html('<i id="copy-' + spinnerId + '" class="fas fa-copy llm-copy-btn" title="Copy to clipboard"></i>' +
+							$('<div/>').text(content).html());
+				}
+			})
+			.fail(function(jqXHR, textStatus, errorThrown) {
+				$('#' + spinnerId).removeClass('llm-reply llm-reply-pending').addClass('llm-error')
+					.html('[REQUEST_FAILED] ' + textStatus + ': ' + errorThrown);
+			});
+		}
+
+		$(document).on('click', '.llm-copy-btn', function() {
+			var text = $(this).closest('.llm-reply').text().trim();
+			navigator.clipboard.writeText(text).catch(function() {
+				alert('Copy failed – please select and copy manually.');
+			});
+		});
+
+		// Focus chat textarea when Chat tab is shown
+		$('a[href="#panel-chat"]').on('shown.bs.tab', function() {
+			$('#llm-message').focus();
+		});
+
+		// Activate tab from URL hash
+		var hash = window.location.hash;
+		if (hash) {
+			$('#llmConnectorTabs a[href="' + hash + '"]').tab('show');
+		}
+		$('#llmConnectorTabs a').on('shown.bs.tab', function(e) {
+			history.replaceState(null, null, e.target.getAttribute('href'));
+		});
+
+	});
+	</script>
+
+	<style>
+	.ZMSLLMConnector .llm-console {
+		min-height: 300px;
+		max-height: 55vh;
+		overflow-y: auto;
+		background: #fafafa;
+		border-top: 1px solid #dee2e6;
+		padding-bottom: 0.5rem;
+		display: flex;
+		flex-direction: column-reverse;
+	}
+	.ZMSLLMConnector .llm-msg-user {
+		color: #444;
+		background: #f5f5f5;
+		font-weight: 600;
+		padding: .65rem .75rem .5rem 2rem;
+		border-top: 1px solid #dee2e6;
+		border-bottom: 1px dotted #ccc;
+		min-height: 46px;
+	}
+	.ZMSLLMConnector .llm-reply {
+		padding: .5rem .75rem .5rem 2rem;
+		font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+		white-space: pre-wrap;
+		word-break: break-word;
+	}
+	.ZMSLLMConnector .llm-reply-pending {
+		color: #888;
+		font-style: italic;
+	}
+	.ZMSLLMConnector .llm-error {
+		color: #900;
+		padding: .5rem .75rem .5rem 2rem;
+		font-family: monospace;
+	}
+	.ZMSLLMConnector .llm-msg-system {
+		color: #555;
+		background: #e8f4f8;
+		padding: .4rem .75rem .4rem 2rem;
+		font-size: .875rem;
+		border-left: 3px solid #17a2b8;
+	}
+	.ZMSLLMConnector .llm-copy-btn {
+		cursor: pointer;
+		color: #354e66;
+		margin-right: .3rem;
+	}
+	.ZMSLLMConnector .llm-copy-btn:hover { color: #2196F3; }
+	.ZMSLLMConnector .llm-input-bar {
+		padding: .5rem .75rem;
+		background: #fff;
+		border-top: 1px solid #dee2e6;
+	}
+	</style>
+
+</body>
+</html>

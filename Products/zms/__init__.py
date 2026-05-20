@@ -49,6 +49,7 @@ from Products.zms import zmscustom
 from Products.zms import zmssqldb
 from Products.zms import zmslinkcontainer
 from Products.zms import zmslinkelement
+from Products.zms import ZMSLLMConnector
 
 #################################################################################################################
 # ### Allow additional Python modules in restricted context
@@ -186,6 +187,11 @@ def initialize(context):
             permission = 'Add ZMSs',
             constructors = (_zmsattributecontainer.manage_addZMSAttributeContainer, _zmsattributecontainer.manage_addZMSAttributeContainer),
             container_filter = _zmsattributecontainer.containerFilter,
+            )
+        context.registerClass(
+            ZMSLLMConnector.ZMSLLMConnector,
+            permission = 'Add ZMSs',
+            constructors = (ZMSLLMConnector.manage_addZMSLLMConnectorForm, ZMSLLMConnector.manage_addZMSLLMConnector),
             )
         
         # register deprecated classes

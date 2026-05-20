@@ -14,7 +14,6 @@ import json
 # Product Imports.
 from Products.zms import _blobfields
 from Products.zms import mock_http
-from Products.zms import llmapi
 from Products.zms import standard
 
 class api(object):
@@ -209,11 +208,16 @@ class RestApiController(object):
             elif self.ids == [] or self.ids == ['get']:
                 decoration, data = self.get(self.context, content_type=True)
             elif self.ids == ['llm_chat']:
-                message = REQUEST['message']
-                data = llmapi.chat(self.context, message)
+                connector = self.context.getLLMConnector()
+                if connector is None:
+                    data = {'error': 'No LLM connector configured. Add a ZMSLLMConnector to the ZMS root.'}
+                else:
+                    message = REQUEST['message']
+                    data = connector.chat(message)
                 decoration = {'content_type':'application/json'}
             elif self.ids == ['llm_provider_info']:
-                data = llmapi.get_provider_info(self.context)
+                connector = self.context.getLLMConnector()
+                data = connector.get_provider_info() if connector is not None else {'error': 'No LLM connector configured.'}
                 decoration = {'content_type':'application/json'}
             else:
                 data = {'ERROR':'Not Found','context':str(self.context),'path_to_handle':self.path_to_handle,'ids':self.ids}

@@ -6448,6 +6448,21 @@ TAB_LAYOUT:
   vie: Bố cục
   heb: פריסה
 
+TAB_LLM:
+  ger: AI
+  eng: AI
+  ned: AI
+  fra: AI
+  ita: AI
+  esp: AI
+  chi: AI
+  fas: AI
+  rus: AI
+  hin: AI
+  ara: AI
+  vie: AI
+  heb: AI
+
 TAB_LIVE:
   ger: Live
   eng: Live

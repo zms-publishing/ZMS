@@ -321,228 +321,244 @@
 		</div><!-- .tab-content -->
 
 	</div><!-- #zmi-tab -->
-	<tal:block tal:content="structure python:here.zmi_html_foot(here,request)">zmi_html_foot</tal:block>
+	<tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
+
 
 	<script>
-	$(function() {
+	//<!--
+		$(function() {
 
-		// Provider-section visibility
-		function updateProviderSections() {
-			var p = $('#llm-provider').val() || $('input[name="llm.provider"]').val() || 'openai';
-			$('#section-openai').toggle(p === 'openai');
-			$('#section-ollama').toggle(p === 'ollama' || p === 'rag');
-			$('#section-rag').toggle(p === 'rag');
-			$('#ollama-model-picker').toggle(p === 'ollama' || p === 'rag');
-		}
-		$('#llm-provider').on('change', updateProviderSections);
-		updateProviderSections();
+			// Provider-section visibility
+			function updateProviderSections() {
+				var p = $('#llm-provider').val() || $('input[name="llm.provider"]').val() || 'openai';
+				$('#section-openai').toggle(p === 'openai');
+				$('#section-ollama').toggle(p === 'ollama' || p === 'rag');
+				$('#section-rag').toggle(p === 'rag');
+				$('#ollama-model-picker').toggle(p === 'ollama' || p === 'rag');
+			}
+			$('#llm-provider').on('change', updateProviderSections);
+			updateProviderSections();
 
-		// Load Ollama models into picker
-		$('#btn-load-models').on('click', function() {
-			var $btn = $(this);
-			var $sel = $('#ollama-model-select');
-			$btn.prop('disabled', true).find('i').addClass('fa-spin');
-			$.ajax({ method: 'GET', url: '../../content/++rest_api/llm_ollama_models', dataType: 'json' })
-			.done(function(data) {
-				$sel.find('option:not(:first)').remove();
-				if (data.error) {
-					$sel.append('<option disabled>' + data.error + '</option>');
-				} else if (data.models && data.models.length) {
-					$.each(data.models, function(i, m) {
-						$sel.append('<option value="' + m + '">' + m + '</option>');
-					});
-					// Pre-select current model if it matches one of the available models
-					var current = $('#llm-model-input').val();
-					// Flash button to indicate success
-					$btn.attr('class','btn btn-success');
-					setTimeout(function() { $btn.attr('class','btn btn-secondary'); }, 750);
-					if (current) {
-						$sel.val(current);
-						if ($sel.val() !== current) { // if current value is not in the options
-							$sel.prepend('<option value="' + current + '" selected>' + current + ' (not installed)</option>');
+			// Load Ollama models into picker
+			$('#btn-load-models').on('click', function() {
+				var $btn = $(this);
+				var $sel = $('#ollama-model-select');
+				$btn.prop('disabled', true).find('i').addClass('fa-spin');
+				$.ajax({ method: 'GET', url: '../../content/++rest_api/llm_ollama_models', dataType: 'json' })
+				.done(function(data) {
+					$sel.find('option:not(:first)').remove();
+					if (data.error) {
+						$sel.append('<option disabled>' + data.error + '</option>');
+					} else if (data.models && data.models.length) {
+						$.each(data.models, function(i, m) {
+							$sel.append('<option value="' + m + '">' + m + '</option>');
+						});
+						// Pre-select current model if it matches one of the available models
+						var current = $('#llm-model-input').val();
+						// Flash button to indicate success
+						$btn.attr('class','btn btn-success');
+						setTimeout(function() { $btn.attr('class','btn btn-secondary'); }, 750);
+						if (current) {
+							$sel.val(current);
+							if ($sel.val() !== current) { // if current value is not in the options
+								$sel.prepend('<option value="' + current + '" selected>' + current + ' (not installed)</option>');
+							}
 						}
+					} else {
+						$sel.append('<option disabled>No models found — run: ollama pull &lt;model&gt;</option>');
 					}
-				} else {
-					$sel.append('<option disabled>No models found — run: ollama pull &lt;model&gt;</option>');
-				}
-			})
-			.fail(function() { $sel.append('<option disabled>Request failed</option>'); })
-			.always(function() { $btn.prop('disabled', false).find('i').removeClass('fa-spin'); });
-		});
-		$('#ollama-model-select').on('change', function() {
-			var val = $(this).val();
-			if (val) { $('#llm-model-input').val(val); }
-		});
-
-		// Connection test
-		$('#btn-test-connection').on('click', function() {
-			var $btn = $(this);
-			var $status = $('#connection-status');
-			$btn.prop('disabled', true);
-			$status.html('<i class="fas fa-spinner fa-spin"></i>');
-			$.ajax({
-				method: 'GET',
-				url: '../../content/++rest_api/llm_provider_info',
-				dataType: 'json'
-			})
-			.done(function(info) {
-				$status.html('<span class="text-success"><i class="fas fa-check-circle"></i> Connected: ' +
-					info.provider + ' / ' + info.model + '</span>');
-			})
-			.fail(function() {
-				$status.html('<span class="text-danger"><i class="fas fa-times-circle"></i> Connection failed</span>');
-			})
-			.always(function() { $btn.prop('disabled', false); });
-		});
-
-		// Chat functionality
-		var chatHistory = [];
-
-		$('#llm-message').on('keydown', function(e) {
-			if (e.which === 13 && !e.shiftKey) {
-				e.preventDefault();
-				sendMessage($(this).val());
-				$(this).val('');
-			}
-			// Arrow-up: recall last sent message
-			if (e.which === 38 && $(this).val() === '') {
-				var last = $('#llm-console .llm-msg-user').first().text();
-				if (last) { $(this).val(last); }
-				e.preventDefault();
-			}
-		});
-
-		$('#btn-send').on('click', function() {
-			var msg = $('#llm-message').val();
-			sendMessage(msg);
-			$('#llm-message').val('');
-		});
-
-		$('#btn-provider-info').on('click', function() {
-			$.ajax({ method: 'GET', url: '../../content/++rest_api/llm_provider_info', dataType: 'json' })
-			.done(function(info) {
-				var html = '<div class="llm-msg-system"><strong>Provider Info:</strong> ' +
-					info.provider + ' / ' + info.model;
-				if (info.endpoint) html += ' &mdash; ' + $('<div/>').text(info.endpoint).html();
-				html += '</div>';
-				$('#llm-console').prepend(html);
+				})
+				.fail(function() { $sel.append('<option disabled>Request failed</option>'); })
+				.always(function() { $btn.prop('disabled', false).find('i').removeClass('fa-spin'); });
 			});
-		});
+			$('#ollama-model-select').on('change', function() {
+				var val = $(this).val();
+				if (val) { $('#llm-model-input').val(val); }
+			});
 
-		function sendMessage(message) {
-			if (!message.trim()) return;
-			chatHistory.push({role: 'user', content: message});
+			// Connection test
+			$('#btn-test-connection').on('click', function() {
+				var $btn = $(this);
+				var $status = $('#connection-status');
+				$btn.prop('disabled', true);
+				$status.html('<i class="fas fa-spinner fa-spin"></i>');
+				$.ajax({
+					method: 'GET',
+					url: '../../content/++rest_api/llm_provider_info',
+					dataType: 'json'
+				})
+				.done(function(info) {
+					$status.html('<span class="text-success"><i class="fas fa-check-circle"></i> Connected: ' +
+						info.provider + ' / ' + info.model + '</span>');
+				})
+				.fail(function() {
+					$status.html('<span class="text-danger"><i class="fas fa-times-circle"></i> Connection failed</span>');
+				})
+				.always(function() { $btn.prop('disabled', false); });
+			});
 
-			var spinnerId = 'spin-' + Date.now();
-			$('#llm-console').prepend(
-				'<div class="llm-reply llm-reply-pending" id="' + spinnerId + '">' +
-				'<i class="fas fa-spinner fa-spin"></i> Waiting…</div>'
-			);
-			$('#llm-console').prepend(
-				'<div class="llm-msg-user">' + $('<div/>').text(message).html() + '</div>'
-			);
+			// Chat functionality
+			var chatHistory = [];
 
-			$.ajax({
-				method: 'GET',
-				url: '../../content/++rest_api/llm_chat',
-				dataType: 'json',
-				data: {message: message}
-			})
-			.done(function(reply) {
-				if (reply.error) {
+			$('#llm-message').on('keydown', function(e) {
+				if (e.which === 13 && !e.shiftKey) {
+					e.preventDefault();
+					sendMessage($(this).val());
+					$(this).val('');
+				}
+				// Arrow-up: recall last sent message
+				if (e.which === 38 && $(this).val() === '') {
+					var last = $('#llm-console .llm-msg-user').first().text();
+					if (last) { $(this).val(last); }
+					e.preventDefault();
+				}
+			});
+
+			$('#btn-send').on('click', function() {
+				var msg = $('#llm-message').val();
+				sendMessage(msg);
+				$('#llm-message').val('');
+			});
+
+			$('#btn-provider-info').on('click', function() {
+				$.ajax({ method: 'GET', url: '../../content/++rest_api/llm_provider_info', dataType: 'json' })
+				.done(function(info) {
+					var html = '<div class="llm-msg-system"><strong>Provider Info:</strong> ' +
+						info.provider + ' / ' + info.model;
+					if (info.endpoint) html += ' &mdash; ' + $('<div/>').text(info.endpoint).html();
+					html += '</div>';
+					$('#llm-console').append(html);
+					// Animate scrolling console to bottom
+					$('#llm-console').animate({ scrollTop: $('#llm-console')[0].scrollHeight }, 500);
+				});
+			});
+
+			function sendMessage(message) {
+				if (!message.trim()) return;
+				chatHistory.push({role: 'user', content: message});
+
+				var spinnerId = 'spin-' + Date.now();
+				$('#llm-console').append(`
+					<div class="llm-msg-user">
+						${$('<div/>').text(message).html()}
+					</div>
+					<div class="llm-reply llm-reply-pending"
+						id="${spinnerId}"><i class="fas fa-spinner fa-spin"></i> Waiting…
+					</div>`
+				);
+				// Animate scrolling console to bottom
+				$('#llm-console').animate({ scrollTop: $('#llm-console')[0].scrollHeight }, 500);
+
+				$.ajax({
+					method: 'GET',
+					url: '../../content/++rest_api/llm_chat',
+					dataType: 'json',
+					data: {message: message}
+				})
+				.done(function(reply) {
+					if (reply.error) {
+						$('#' + spinnerId).removeClass('llm-reply llm-reply-pending').addClass('llm-error')
+							.html('[' + reply.error.code + '] ' + $('<div/>').text(reply.error.message).html());
+					} else {
+						var content = reply.message ? reply.message.content : '';
+						chatHistory.push({role: 'assistant', content: content});
+						$('#' + spinnerId).removeClass('llm-reply-pending')
+							.html('<i id="copy-' + spinnerId + '" class="fas fa-copy llm-copy-btn" title="Copy to clipboard"></i>' +
+								$('<div/>').text(content).html());
+						// Animate scrolling console to bottom
+						$('#llm-console').animate({ scrollTop: $('#llm-console')[0].scrollHeight }, 500);
+					}
+				})
+				.fail(function(jqXHR, textStatus, errorThrown) {
 					$('#' + spinnerId).removeClass('llm-reply llm-reply-pending').addClass('llm-error')
-						.html('[' + reply.error.code + '] ' + $('<div/>').text(reply.error.message).html());
-				} else {
-					var content = reply.message ? reply.message.content : '';
-					chatHistory.push({role: 'assistant', content: content});
-					$('#' + spinnerId).removeClass('llm-reply-pending')
-						.html('<i id="copy-' + spinnerId + '" class="fas fa-copy llm-copy-btn" title="Copy to clipboard"></i>' +
-							$('<div/>').text(content).html());
-				}
-			})
-			.fail(function(jqXHR, textStatus, errorThrown) {
-				$('#' + spinnerId).removeClass('llm-reply llm-reply-pending').addClass('llm-error')
-					.html('[REQUEST_FAILED] ' + textStatus + ': ' + errorThrown);
+						.html('[REQUEST_FAILED] ' + textStatus + ': ' + errorThrown);
+				});
+			}
+
+			$(document).on('click', '.llm-copy-btn', function() {
+				var text = $(this).closest('.llm-reply').text().trim();
+				navigator.clipboard.writeText(text).catch(function() {
+					alert('Copy failed – please select and copy manually.');
+				});
 			});
-		}
 
-		$(document).on('click', '.llm-copy-btn', function() {
-			var text = $(this).closest('.llm-reply').text().trim();
-			navigator.clipboard.writeText(text).catch(function() {
-				alert('Copy failed – please select and copy manually.');
+			// Focus chat textarea when Chat tab is shown
+			$('a[href="#panel-chat"]').on('shown.bs.tab', function() {
+				$('#llm-message').focus();
 			});
-		});
 
-		// Focus chat textarea when Chat tab is shown
-		$('a[href="#panel-chat"]').on('shown.bs.tab', function() {
-			$('#llm-message').focus();
-		});
+			// Activate tab from URL hash
+			var hash = window.location.hash;
+			if (hash) {
+				$('#llmConnectorTabs a[href="' + hash + '"]').tab('show');
+			}
+			$('#llmConnectorTabs a').on('shown.bs.tab', function(e) {
+				history.replaceState(null, null, e.target.getAttribute('href'));
+			});
 
-		// Activate tab from URL hash
-		var hash = window.location.hash;
-		if (hash) {
-			$('#llmConnectorTabs a[href="' + hash + '"]').tab('show');
-		}
-		$('#llmConnectorTabs a').on('shown.bs.tab', function(e) {
-			history.replaceState(null, null, e.target.getAttribute('href'));
 		});
-
-	});
+	//-->
 	</script>
 
 	<style>
-	.ZMSLLMConnector .llm-console {
-		min-height: max(300px, 55vh);
-		max-height: 70vh;
-		overflow-y: auto;
-		background: #fafafa;
-		border-top: 1px solid #dee2e6;
-		padding-bottom: 0.5rem;
-		display: flex;
-		flex-direction: column-reverse;
-	}
-	.ZMSLLMConnector .llm-msg-user {
-		color: #444;
-		background: #f5f5f5;
-		font-weight: 600;
-		padding: .65rem .75rem .5rem 2rem;
-		border-top: 1px solid #dee2e6;
-		border-bottom: 1px dotted #ccc;
-		min-height: 46px;
-	}
-	.ZMSLLMConnector .llm-reply {
-		padding: .5rem .75rem .5rem 2rem;
-		font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-		white-space: pre-wrap;
-		word-break: break-word;
-	}
-	.ZMSLLMConnector .llm-reply-pending {
-		color: #888;
-		font-style: italic;
-	}
-	.ZMSLLMConnector .llm-error {
-		color: #900;
-		padding: .5rem .75rem .5rem 2rem;
-		font-family: monospace;
-	}
-	.ZMSLLMConnector .llm-msg-system {
-		color: #555;
-		background: #e8f4f8;
-		padding: .4rem .75rem .4rem 2rem;
-		font-size: .875rem;
-		border-left: 3px solid #17a2b8;
-	}
-	.ZMSLLMConnector .llm-copy-btn {
-		cursor: pointer;
-		color: #354e66;
-		margin-right: .3rem;
-	}
-	.ZMSLLMConnector .llm-copy-btn:hover { color: #2196F3; }
-	.ZMSLLMConnector .llm-input-bar {
-		padding: .5rem .75rem;
-		background: #fff;
-		border-top: 1px solid #dee2e6;
-	}
+	/*<!-- Custom styles for LLM Connector manage interface */
+		.ZMSLLMConnector .llm-console {
+			min-height: max(300px, 55vh);
+			max-height: 70vh;
+			overflow-y: auto;
+			background: #fafafa;
+			border-top: 1px solid #dee2e6;
+			padding-bottom: 0.5rem;
+			display: flex;
+			flex-direction: column;
+			justify-content: start;
+		}
+		.ZMSLLMConnector .llm-msg-user {
+			color: #444;
+			background: #f5f5f5;
+			font-weight: 600;
+			padding: .65rem .75rem .5rem 2rem;
+			border-top: 1px solid #dee2e6;
+			border-bottom: 1px dotted #ccc;
+			min-height: 46px;
+		}
+		.ZMSLLMConnector .llm-reply {
+			padding: .5rem .75rem .5rem 2rem;
+			font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+			white-space: pre-wrap;
+			word-break: break-word;
+		}
+		.ZMSLLMConnector .llm-reply:last-child {
+			background-color:#e6f0fb;
+		}
+		.ZMSLLMConnector .llm-reply-pending {
+			color: #888;
+			font-style: italic;
+		}
+		.ZMSLLMConnector .llm-error {
+			color: #900;
+			padding: .5rem .75rem .5rem 2rem;
+			font-family: monospace;
+		}
+		.ZMSLLMConnector .llm-msg-system {
+			color: #555;
+			background: #e8f4f8;
+			padding: .4rem .75rem .4rem 2rem;
+			font-size: .875rem;
+			border-left: 3px solid #17a2b8;
+		}
+		.ZMSLLMConnector .llm-copy-btn {
+			cursor: pointer;
+			color: #354e66;
+			margin-right: .3rem;
+		}
+		.ZMSLLMConnector .llm-copy-btn:hover { color: #2196F3; }
+		.ZMSLLMConnector .llm-input-bar {
+			padding: .5rem .75rem;
+			background: #fff;
+			border-top: 1px solid #dee2e6;
+		}
+	/*-->*/
 	</style>
 
 </body>

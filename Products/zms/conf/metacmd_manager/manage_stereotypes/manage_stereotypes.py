@@ -1,4 +1,4 @@
-## Script (Python) "manage_stereotype"
+## Script (Python) "manage_stereotypes"
 ##bind container=container
 ##bind context=context
 ##bind namespace=

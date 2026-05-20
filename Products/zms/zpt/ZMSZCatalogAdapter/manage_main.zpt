@@ -81,7 +81,13 @@
 	<span class="d-none" id="getAttrs" tal:content="python:here.str_json(here.getAttrs())"></span>
 
 	<tal:block tal:condition="python:here.breadcrumbs_obj_path().index(here.getDocumentElement())==0">
-	<legend>Connectors</legend>
+	<legend>
+		Connectors
+		<span title="ZMS ZCatalog Adapter" class="zmi-readme text-info ml-2"
+			tal:attributes="data-readme python:'%s/%s/readme'%(here.getRootElement().absolute_url(), here.getId())">
+			<i class="far fa-question-circle"></i>
+		</span>
+	</legend>
 	<div class="card-body" tal:define="
 		connectors python:here.get_connectors();
 		available python:here.get_available_connector_ids();

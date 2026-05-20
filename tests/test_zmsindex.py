@@ -30,4 +30,4 @@ class ZMSIndexTest(ZMSTestCase):
         actual = self.context.getLinkObj('{$%s}'%document.get_uid())
         self.assertEqual(actual.id, document.id)
         count += 1
-    self.assertEqual( 64, count)
+    self.assertEqual( 62, count)

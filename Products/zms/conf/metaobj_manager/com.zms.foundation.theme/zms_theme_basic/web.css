@@ -557,7 +557,10 @@ main > div.row > article h1.title {
 		flex-flow: column-reverse;
 	}
 }
-
+main img,
+main .graphic:has(img) {
+	max-width:100% !important
+}
 
 /* ASIDE CONTENT */
 

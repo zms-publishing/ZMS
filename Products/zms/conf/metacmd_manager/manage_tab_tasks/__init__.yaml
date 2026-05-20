@@ -1,0 +1,18 @@
+manage_tab_tasks:
+  acquired: 0
+  action: '%smanage_executeMetacmd?id=manage_tab_tasks'
+  execution: 0
+  icon_clazz: fas fa-cogs
+  meta_types:
+    - type(ZMSDocument)
+  name: TAB_TASKS
+  nodes: '{$}'
+  package: com.zms.custom.metacmd.tabs
+  revision: 5.0.5
+  roles:
+    - '*'
+  stereotype: tab
+  title: TAB_TASKS
+  Impl:
+    - id: manage_tab_tasks
+      type: Page Template

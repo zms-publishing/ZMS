@@ -438,12 +438,12 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">AccessableObject</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L245" class="sourceLink">(source)</a></code></p><p>Known subclasses: <code><a href="zms._accessmanager.AccessableContainer.html" class="internal-link">zms._accessmanager.AccessableContainer</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">AccessableObject</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L300" class="sourceLink">(source)</a></code></p><p>Known subclasses: <code><a href="zms._accessmanager.AccessableContainer.html" class="internal-link">zms._accessmanager.AccessableContainer</a></code></p>
           <p><a href="classIndex.html#zms._accessmanager.AccessableObject">View In Hierarchy</a></p>
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>Mixin providing access-control helpers for ZMS objects.</p></div>
         </div>
 
         <div id="splitTables">
@@ -454,47 +454,47 @@
     
     <td>Method</td>
     <td><code><a href="#getUserLangs" class="internal-link" title="zms._accessmanager.AccessableObject.getUserLangs">get<wbr></wbr>User<wbr></wbr>Langs</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Resolve effective language permissions for a user on this object.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getUserRoles" class="internal-link" title="zms._accessmanager.AccessableObject.getUserRoles">get<wbr></wbr>User<wbr></wbr>Roles</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Resolve effective user roles for this object.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getUsers" class="internal-link" title="zms._accessmanager.AccessableObject.getUsers">get<wbr></wbr>Users</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return all users with effective roles and languages on this object.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#hasAccess" class="internal-link" title="zms._accessmanager.AccessableObject.hasAccess">has<wbr></wbr>Access</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Check whether the authenticated user can view this object.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#hasPublicAccess" class="internal-link" title="zms._accessmanager.AccessableObject.hasPublicAccess">has<wbr></wbr>Public<wbr></wbr>Access</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return whether public access is effectively allowed for this object.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#hasRestrictedAccess" class="internal-link" title="zms._accessmanager.AccessableObject.hasRestrictedAccess">has<wbr></wbr>Restricted<wbr></wbr>Access</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return whether this object is explicitly marked as restricted.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_user" class="internal-link" title="zms._accessmanager.AccessableObject.manage_user">manage<wbr></wbr>_user</a></code></td>
-    <td>AccessManager.manage_user</td>
+    <td>Update properties of the currently authenticated user.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#synchronizePublicAccess" class="internal-link" title="zms._accessmanager.AccessableObject.synchronizePublicAccess">synchronize<wbr></wbr>Public<wbr></wbr>Access</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Synchronize public-access permissions with the current restriction flags.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#zmi_page_request" class="internal-link" title="zms._accessmanager.AccessableObject.zmi_page_request">zmi<wbr></wbr>_page<wbr></wbr>_request</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Preprocess ZMI page requests and enforce access restrictions.</td>
   </tr><tr class="classvariable">
     
     <td>Class Variable</td>
@@ -521,7 +521,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getUserLangs</span><span class="function-signature">(self, userObj, aq_parent=1)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L311">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L380">
       
       (source)
     </a>
@@ -533,7 +533,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Resolve effective language permissions for a user on this object.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">user<wbr></wbr>Obj</span></td><td class="fieldArgDesc">User object or identifier</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">aq<wbr></wbr>_parent:</span><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">Whether to inspect parent nodes</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Allowed language ids</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -548,7 +548,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getUserRoles</span><span class="function-signature">(self, userObj, aq_parent=True, resolve=True)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L273">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L334">
       
       (source)
     </a>
@@ -560,7 +560,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Resolve effective user roles for this object.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">user<wbr></wbr>Obj</span></td><td class="fieldArgDesc">User object or identifier</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">aq<wbr></wbr>_parent:</span><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">Whether to inspect parent nodes</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">resolve:</span><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc">Whether to resolve security roles recursively</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Effective role ids</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -575,7 +575,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getUsers</span><span class="function-signature">(self, REQUEST=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L250">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L303">
       
       (source)
     </a>
@@ -587,7 +587,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return all users with effective roles and languages on this object.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST</span></td><td class="fieldArgDesc">Optional request object</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Mapping of user ids to access information</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -602,7 +602,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">hasAccess</span><span class="function-signature">(self, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L263">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L320">
       
       (source)
     </a>
@@ -614,7 +614,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Check whether the authenticated user can view this object.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST</span></td><td class="fieldArgDesc">Zope request object</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">bool</tt></td><td class="fieldArgDesc"><tt class="rst-docutils rst-literal">True</tt> if access is granted</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -629,7 +629,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">hasPublicAccess</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L398">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L472">
       
       (source)
     </a>
@@ -641,7 +641,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return whether public access is effectively allowed for this object.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -656,7 +656,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">hasRestrictedAccess</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L389">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L465">
       
       (source)
     </a>
@@ -668,7 +668,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return whether this object is explicitly marked as restricted.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -683,7 +683,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_user</span><span class="function-signature">(self, btn, lang, REQUEST, RESPONSE)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L451">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L517">
       
       (source)
     </a>
@@ -695,7 +695,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>AccessManager.manage_user</p></div>
+    <div><p>Update properties of the currently authenticated user.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">btn:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Action button id</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">lang:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">UI language id</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST</span></td><td class="fieldArgDesc">Zope request object</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">RESPONSE</span></td><td class="fieldArgDesc">Zope response object</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -710,7 +710,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">synchronizePublicAccess</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L418">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L490">
       
       (source)
     </a>
@@ -722,7 +722,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Synchronize public-access permissions with the current restriction flags.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -737,7 +737,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">zmi_page_request</span><span class="function-signature">(self, *args, **kwargs)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L338">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L416">
       
       (source)
     </a>
@@ -749,7 +749,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Preprocess ZMI page requests and enforce access restrictions.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">Redirect response for registration flows when applicable</td></tr></table></div>
   </div>
 </div><div class="baseclassvariable">
   
@@ -763,7 +763,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_userForm</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L450">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L516">
       
       (source)
     </a>

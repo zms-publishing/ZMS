@@ -337,6 +337,16 @@
         
 
         
+            <div class="itemName"><code><a href="zms.yamlutil.html" class="internal-link" title="zms.yamlutil">yamlutil</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
             <div class="itemName"><code><a href="zms.zms.html" class="internal-link" title="zms.zms">zms</a></code>
             </div>
         
@@ -897,6 +907,16 @@
         
 
         
+            <div class="itemName"><code><a href="zms._version.html" class="internal-link" title="zms._version">_version</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
             <div class="itemName"><code><a href="zms._versionmanager.html" class="internal-link" title="zms._versionmanager">_versionmanager</a></code>
             </div>
         
@@ -1039,27 +1059,7 @@
         <div class="childrenKindTitle">Variables</div>
         <ul>
     
-    <li class="">
-        
-        
-        
-
-        
-            <div class="itemName"><code><a href="index.html#__doc__" class="internal-link" title="zms.__doc__">__doc__</a></code>
-            </div>
-        
-
-    </li><li class="">
-        
-        
-        
-
-        
-            <div class="itemName"><code><a href="index.html#__version__" class="internal-link" title="zms.__version__">__version__</a></code>
-            </div>
-        
-
-    </li><li class="private">
+    <li class="private">
         
         
         
@@ -1110,18 +1110,40 @@
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>zmsproxyobject.py - ZMS Proxy Object</p>
+<p>Provides ZMSProxyObject for core content-object traversal and manipulation.</p>
+<p>The ZMSProxyObject class is a wrapper/proxy object used throughout the ZMS runtime to:</p>
+<ul class="rst-simple">
+<li>Enable transparent traversal of ZMS content hierarchies by encapsulating access to underlying content objects and their metadata.</li>
+<li>Provide a consistent interface for accessing object attributes, child nodes, and properties while delegating actual operations to the proxied object.</li>
+<li>Support recursive traversal of nested content structures, allowing child nodes to be wrapped as proxy objects for uniform access patterns.</li>
+<li>Implement metadata access protocols (IZMSMetamodelProvider, IZMSFormatProvider) for introspection of object type definitions and text formatting capabilities.</li>
+<li>Handle URL construction and physical path resolution within the ZMS content tree.</li>
+<li>Facilitate request/response handling and access control checks across the object hierarchy.</li>
+<li>Enable lazy evaluation and computed properties without exposing underlying implementation details.</li>
+</ul>
+<p>This abstraction enables flexible content traversal strategies, caching mechanisms, and alternative rendering pipelines while maintaining a unified API for ZMS components that work with content objects.</p>
+<p>Key responsibilities:</p>
+<ul class="rst-simple">
+<li>Wrapping proxied ZMS objects with additional traversal metadata (root, base, url_base)</li>
+<li>Delegating method calls to the proxied object while transforming return values as needed</li>
+<li>Supporting both simple and recursive child node traversal patterns</li>
+<li>Managing object hierarchy relationships (parent/child navigation, physical paths)</li>
+<li>Providing unified access to metadata definitions and format specifications</li>
+</ul>
+<p>License: GNU General Public License v2 or later, Organization: ZMS Publishing</p>
+</div>
         </div>
 
         <div id="splitTables">
-          <table class="children sortable" id="id172">
+          <table class="children sortable" id="id174">
   
   
   <tr class="class">
     
     <td>Class</td>
     <td><code><a href="zms.zmsproxyobject.ZMSProxyObject.html" class="internal-link" title="zms.zmsproxyobject.ZMSProxyObject"><wbr></wbr>ZMSProxy<wbr></wbr>Object</a></code></td>
-    <td><span class="undocumented">No class docstring; 0/10 instance variable, 0/1 class variable, 3/56 methods documented</span></td>
+    <td>Provide helpers for ZMSProxyObject.</td>
   </tr>
 </table>
           

@@ -5,7 +5,10 @@
 <header tal:replace="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</header>
 <div id="zmi-tab">
 <tal:block tal:define="
-		execution_options python:[(0,'None'),(1,'Omit UI'),(2,'Script')];
+		execution_options python:[
+			(0,'Normal: Execute server-side, then redirect back to the UI'),
+			(1,'Omit UI: Execute without rendering any management UI (headless)'),
+			(2,'Script: Client-side JavaScript execution')];
 		action python:'manage_changeMetacmds';
 		metaCmdIds python:standard.sort_list(here.getMetaCmdIds());
 		metaCmds python:[here.getMetaCmd(x) for x in metaCmdIds];
@@ -63,16 +66,22 @@
 			</div>
 
 			<!-- ACE Editor -->
-			<tal:block tal:define="ob python:getattr(here,request['id'],None)"
-				><tal:block tal:condition="python:ob is not None"
-					><input type="hidden" class="content_type" name="el_method" tal:attributes="value ob/meta_type"
-					/><textarea tal:replace="structure python:here.zmi_ace_editor(here,request,name='el_data',id='cmd_%s'%(ob.getId()),ob=ob,text=metaCmd['data'])">ACE Editor</textarea
-				></tal:block
-				><tal:block tal:condition="python:ob is None"
-					><input type="hidden" class="content_type" name="el_method"
-					/><textarea tal:replace="structure python:here.zmi_ace_editor(here,request,name='el_data',id='cmd',ob=ob,text='# An error occurred.')">ACE Editor</textarea
-				></tal:block
-			></tal:block>
+			<div class="meta-cmd zmi-code" tal:define="ob python:getattr(here,request['id'],None)">
+				<tal:block tal:condition="python:(ob is not None) and (not metaCmd.get('data').startswith('## Errors'))">
+					<input type="hidden" class="content_type" name="el_method" tal:attributes="value ob/meta_type"/>
+					<textarea 
+						tal:replace="structure python:here.zmi_ace_editor(here, request, name='el_data', id='cmd_%s'%(ob.getId()), ob=ob, text=metaCmd['data'])">
+						ACE Editor
+					</textarea>
+				</tal:block>
+				<tal:block tal:condition="python:ob is None or metaCmd.get('data').startswith('## Errors')">
+					<textarea 
+						tal:define="text python: ob==None and '## Errors:\n## Object not found.' or metaCmd.get('data')"
+						tal:replace="structure python:here.zmi_ace_editor(here, request, name='el_data', id='cmd', ob=ob, text=text, has_error=True)">
+						ACE Editor
+					</textarea>
+				</tal:block>
+			</div>
 			<!-- /ACE Editor -->
 
 			<div class="form-group row">
@@ -234,9 +243,12 @@
 <form class="form-horizontal card" tal:attributes="action action" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<legend class="has_tooltip"
-		tal:attributes="title python:here.getZMILangStr('TIP_METACMD')"
-		tal:content="python:here.getZMILangStr('TAB_METACMD')">
-		Metacmd
+		tal:attributes="title python:here.getZMILangStr('TIP_METACMD')">
+		<span tal:content="python:here.getZMILangStr('TAB_METACMD')">Metacmd</span>
+		<span title="ZMS Meta-Command Provider" class="zmi-readme text-info ml-2"
+			tal:attributes="data-readme python:'%s/%s/readme'%(here.getRootElement().absolute_url(), here.getId())">
+			<i class="far fa-question-circle"></i>
+		</span>
 	</legend>
 	<table id="meta_commands" class="table table-sm table-striped table-bordered mb-0">
 	<thead>
@@ -246,21 +258,22 @@
 					<button class="btn btn-secondary" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this);return false"><i class="fas fa-check-square"></i></button>
 				</div>
 			</th>
-			<th colspan="5" class="w-100">
+			<th colspan="6" class="w-100">
 				<div class="btn-group managing mr-1">
 					<button type="button" class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="zmiModal('#insertObj',{title:$(this).attr('title')});return false"><i class="fas fa-plus"></i></button>
 					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:'BTN_DELETE',key:'obj'});return false"><i class="fas fa-times"></i></button>
 				</div><!-- .btn-group -->
 				<div class="btn-group packaging mr-1">
 					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_ACQUIRE')+'...'" onclick="$ZMI.iframe('manage_main_acquire',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')});return false" tal:condition="python:here.getPortalMaster() is not None"><i class="fas fa-share fa-flip-vertical"></i></button>
-					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).attr('title')});return false"><i class="fas fa-upload"></i></button>
-					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this);return false"><i class="fas fa-download"></i></button>
+				<div class="meta-cmd zmi-code" tal:define="ob python:getattr(here,request['id'],None);
+				syntax_valid python:not getattr(ob,'errors',None);"
 				</div><!-- .btn-group -->
 			</th>
 		</tr>
 		<tr>
 			<th class="meta-ids text-center"></th>
 			<th colspan="2" tal:content="python:here.getZMILangStr('ATTR_NAME')">Name</th>
+			<th>Readme</th>
 			<th>Execution</th>
 			<th tal:content="python:here.getZMILangStr('ATTR_SIZE')">Size</th>
 			<th tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')">Last Modified</th>
@@ -272,7 +285,7 @@
 			<td class="meta-check text-center">
 				<input type="checkbox" name="ids:list" tal:attributes="value package"/>
 			</td>
-			<td colspan="5">
+			<td colspan="6">
 				<i class="fas fa-briefcase mr-2"></i>
 				<strong tal:condition="not:package">[default package]</strong>
 				<strong tal:condition="package" tal:content="package">the package</strong>
@@ -325,10 +338,18 @@
 							></a>
 						</tal:block>
 					</td>
+					<td class="text-center">
+						<span tal:condition="python:here.hasMetaCmdReadme(metaCmd['id'])"
+							class="zmi-readme text-info"
+							tal:attributes="title python:metaCmd['id']; 
+								data-readme python:'%s/readme?id=%s'%(here.absolute_url(),metaCmd['id'])">
+							<i class="far fa-question-circle"></i>
+						</span>
+					</td>
 					<td>
 						<tal:block 
 							tal:on-error="structure python:'<span title=\042ERROR\042 class=\042badge badge-danger\042>%s</span>'%(metaCmd.get('execution'))"
-							tal:content="python:' '.join([x[1] for x in execution_options if int(metaCmd['execution'])==x[0]])">
+							tal:content="python:' '.join([str(x[1].split(':')[0]) for x in execution_options if int(metaCmd['execution'])==x[0]])">
 							execution
 						</tal:block>
 					</td>

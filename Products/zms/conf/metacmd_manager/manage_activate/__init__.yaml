@@ -1,0 +1,20 @@
+manage_activate:
+  acquired: 0
+  action: '%smanage_executeMetacmd?id=manage_activate'
+  execution: 1
+  icon_clazz: far fa-check-square
+  meta_types:
+    - type(ZMSDocument)
+    - type(ZMSObject)
+    - type(ZMSTeaserElement)
+  name: Activate
+  nodes: '{$}'
+  revision: 4.0.1
+  roles:
+    - ZMSAdministrator
+    - ZMSEditor
+    - ZMSAuthor
+  title: Activate selected content items
+  Impl:
+    - id: manage_activate
+      type: Script (Python)

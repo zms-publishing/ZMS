@@ -1,8 +1,9 @@
-<tal:block tal:define="global 
+<tal:block tal:define="global
 		is_system python:request.get('dtpref_system','0')=='1';
 		is_sitemap python:request.get('dtpref_sitemap','0')=='1' and not (is_system and request['URL'].find('/manage_workspace')>0);
-		is_llm python:request.get('dtpref_llm','0')=='1' and not (is_system and request['URL'].find('/manage_workspace')>0);
-		target python:request.get('came_from',['manage_main','manage_system'][int(is_system)]+'?lang=%s'%request.get('lang',here.getPrimaryLanguage()));">
+		is_llm python:request.get('dtpref_llm','0')=='1' and not (is_system and request['URL'].find('/manage_workspace')>0);		
+		target python:request.get('came_from',['manage_main','manage_system'][int(is_system)]+'?lang=%s'%request.get('lang',here.getPrimaryLanguage()));
+		more_zmi_parameters python:['','&zmi-debug=True'][int('zmi-debug' in request)] + ['','&translate_mode=%s'%request.get('translate_mode','')][int('translate_mode' in request)] + ['','&lang1=%s'%request.get('lang1','')][int('lang1' in request)] + ['','&lang2=%s'%request.get('lang2','')][int('lang2' in request)];">
 	<tal:block tal:condition="python:is_sitemap or is_llm">
 		<!DOCTYPE html>
 		<html lang="en" tal:define="standard modules/Products.zms/standard">
@@ -12,7 +13,7 @@
 				<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes" />
 				<meta name="version_container_abs_url" tal:attributes="content python:here.getVersionContainer().absolute_url()" />
 				<meta name="physical_path" tal:attributes="content python:'/'.join(here.getPhysicalPath())" />
-				<meta name="generator" content="ZMS5" />
+				<meta name="generator" content="ZMS6" />
 			</head>
 			<frameset tal:attributes="cols python:','.join(
 					[[],[str(request.get('manage_menu_width',224))]][is_sitemap or is_llm] +
@@ -24,5 +25,5 @@
 			</frameset>
 		</html>
 	</tal:block>
-	<tal:block tal:condition="not:python:is_sitemap or is_llm" tal:content="python:request.RESPONSE.redirect(target)">redirect to target</tal:block>
+	<tal:block tal:condition="not:is_sitemap" tal:content="python:request.RESPONSE.redirect(target)">redirect to target</tal:block>
 </tal:block>

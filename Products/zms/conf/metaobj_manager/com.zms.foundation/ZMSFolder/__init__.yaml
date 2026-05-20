@@ -1,0 +1,87 @@
+ZMSFolder:
+  access:
+    insert_custom: '{$}'
+  enabled: 1
+  name: ZMSFolder
+  package: com.zms.foundation
+  revision: 5.0.0
+  type: ZMSDocument
+  Attrs:
+    - id: icon_clazz
+      name: Icon (Class)
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: constant
+      custom: far fa-folder
+    - id: titlealt
+      name: DC.Title.Alt
+      mandatory: 1
+      multilang: 1
+      repetitive: 0
+      type: titlealt
+    - id: title
+      name: DC.Title
+      mandatory: 1
+      multilang: 1
+      repetitive: 0
+      type: title
+    - id: titleimage
+      name: Titleimage
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: image
+    - id: levelnfc
+      name: Level
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: levelnfc
+    - id: TAB_METADATA
+      name: TAB_METADATA
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: delimiter
+    - id: attr_dc_description
+      name: DC.Description
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: attr_dc_description
+    - id: attr_dc_subject
+      name: DC.Subject
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: attr_dc_subject
+    - id: attr_dc_type
+      name: DC.Type
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: attr_dc_type
+    - id: attr_dc_creator
+      name: DC.Creator
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: attr_dc_creator
+    - id: e
+      name: Objects
+      mandatory: 0
+      multilang: 0
+      repetitive: 1
+      type: '*'
+      keys:
+        - type(ZMSDocument)
+        - type(ZMSObject)
+        - type(ZMSRecordSet)
+        - type(ZMSModule)
+    - id: standard_html
+      name: 'Template: ZMSFolder'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: zpt

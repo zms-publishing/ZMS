@@ -1,29 +1,15 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
+"""
+standard.py
 
-################################################################################
-# standard.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+Shared utility helpers used throughout ZMS.
 
-"""ZMS standard utility module
+This module contains low-level helpers (string/list/dict utilities, HTTP and
+filesystem wrappers, date/time formatting, logging helpers, templating
+execution helpers, and XML/serialization functions) that are imported across
+the codebase.
 
-This module provides helpful functions and classes for use in Python
-Scripts.  It can be accessed from Python with the statement
-"import Products.zms.standard"
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
 """
 # Imports.
 from AccessControl.SecurityInfo import ModuleSecurityInfo
@@ -209,7 +195,7 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   ##### Add ZMS ####
   from Products.zms import zms
   content = zms.initZMS(homeElmnt, 'content', titlealt, title, lang, manage_lang, REQUEST)
-  zms.initContent(content, 'content.default.zip', REQUEST)
+  zms.init_content(content, 'content.default.zip', REQUEST)
 
   return content
 
@@ -548,21 +534,18 @@ def guess_content_type(filename, data):
   return mt, enc
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-html_quote:
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def html_quote(v, name='(Unknown name)', md={}):
+  """Return HTML-escaped string representation of the given value."""
   import html
   if not isinstance(v,str):
     v = str(v)
   return html.escape(v, 1)
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-remove_tags
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 security.declarePublic('remove_tags')
 def remove_tags(s):
+  """Strip HTML/script/style/meta tags and normalize whitespace."""
+
   d = {
     '&ndash;':'-',
     '&nbsp;':' ',
@@ -635,6 +618,7 @@ def encrypt_password(pw, algorithm='md5', hex=False):
     else:
       enc = h.digest()
   return enc
+
 
 security.declarePublic('encrypt_ordtype')
 def encrypt_ordtype(s):
@@ -922,13 +906,7 @@ def isPreviewRequest(REQUEST):
          REQUEST.get('preview', '') == 'preview'
 
 
-"""
-################################################################################
-#
-#  Http
-#
-################################################################################
-"""
+# HTTP helpers.
 
 security.declarePublic('unescape')
 def unescape(s):
@@ -1077,15 +1055,18 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
     return result
 
 
-################################################################################
-#
-#{ Logging
-#
-################################################################################
-
 def getLog(context):
   """
   Get zms_log.
+
+  The ZMS component zms_log is a wrapper for the standard Zope-logger which can be enabled in ZMS-configuration. 
+  If zms_log is enabled, debug-information can be logged with writeLog, writeBlock and writeError. 
+  The log-messages are stored in a log-file on the server and can be viewed in the ZMS-Management-Interface.
+
+  @param context: Context
+  @type context: C{object}
+  @return: zms_log or None if zms_log is not enabled in ZMS-configuration.
+  @rtype: C{object}
   """
   request = context.REQUEST
   if 'ZMSLOG' in request:
@@ -1099,6 +1080,7 @@ def getLog(context):
     request.set('ZMSLOG', zms_log)
   return zms_log
 
+
 security.declarePublic('writeStdout')
 def writeStdout(context, info):
   """
@@ -1110,10 +1092,14 @@ def writeStdout(context, info):
   print(info)
   return info
 
+
 security.declarePublic('writeLog')
 def writeLog(context, info):
   """
   Log debug-information.
+
+  Important: zms_log must be enabled in ZMS-configuration.
+
   @param info: Debug-information
   @type info: C{any}
   @rtype: C{str}
@@ -1130,10 +1116,14 @@ def writeLog(context, info):
     pass
   return info
 
+
 security.declarePublic('writeBlock')
 def writeBlock(context, info):
   """
   Log information.
+
+  Important: zms_log must be enabled in ZMS-configuration.
+
   @param info: Information
   @type info: C{any}
   @rtype: C{str}
@@ -1150,10 +1140,14 @@ def writeBlock(context, info):
     pass
   return info
 
+
 security.declarePublic('writeError')
 def writeError(context, info):
   """
   Log error.
+
+  Important: zms_log must be enabled in ZMS-configuration.
+
   @param info: Information
   @type info: C{any}
   @rtype: C{str}
@@ -1173,14 +1167,6 @@ def writeError(context, info):
     t = info
   return '%s: %s'%(t, v)
 
-#)
-
-
-################################################################################
-#
-#( Regular Expressions
-#
-################################################################################
 
 security.declarePublic('re_sub')
 def re_sub( pattern, replacement, subject, ignorecase=False):
@@ -1207,6 +1193,7 @@ def re_sub( pattern, replacement, subject, ignorecase=False):
   else:
     return re.compile( pattern).sub( replacement, subject)
 
+
 security.declarePublic('re_search')
 def re_search(pattern, subject, ignorecase=False):
   """
@@ -1226,6 +1213,7 @@ def re_search(pattern, subject, ignorecase=False):
   else:
     s = re.compile(pattern).split(subject)
   return [s[x * 2 + 1] for x in range(len(s) // 2)]
+
 
 security.declarePublic('re_findall')
 def re_findall( pattern, text, ignorecase=False):
@@ -1247,14 +1235,7 @@ def re_findall( pattern, text, ignorecase=False):
     r = re.compile( pattern)
   return r.findall(text)
 
-#)
 
-
-############################################################################
-#
-#  DATE TIME
-#
-############################################################################
 
 # ==========================================================================
 # Index Field Values
@@ -1328,6 +1309,7 @@ def format_datetime_iso(t):
   tzh = tz//60//60
   tzm = (tz-tzh*60*60)//60
   return time.strftime('%Y-%m-%dT%H:%M:%S', t)+tch+('00%d'%tzh)[-2:]+':'+('00%d'%tzm)[-2:]
+
 
 def getLangFmtDate(context, t, lang=None, fmt_str='SHORTDATETIME_FMT'):
   """
@@ -1420,6 +1402,7 @@ def getDateTime(t):
       pass
   return t
 
+
 security.declarePublic('stripDateTime')
 def stripDateTime(t):
   """
@@ -1434,6 +1417,7 @@ def stripDateTime(t):
     t = getDateTime(t)
     d = (t[0], t[1], t[2], 0, 0, 0, t[6], t[7], t[8])
   return d
+
 
 security.declarePublic('daysBetween')
 def daysBetween(t0, t1):
@@ -1491,6 +1475,7 @@ def compareDate(t0, t1):
     return -1
   else:
     return 0
+
 
 security.declarePublic('parseLangFmtDate')
 def parseLangFmtDate(s):
@@ -1555,14 +1540,6 @@ def parseLangFmtDate(s):
         pass
   return value
 
-#)
-
-
-############################################################################
-#
-#( Operators
-#
-############################################################################
 
 security.declarePublic('operator_contains')
 def operator_contains(c, v, ignorecase=False):
@@ -1582,6 +1559,7 @@ def operator_contains(c, v, ignorecase=False):
   else:
     return v in c
 
+
 security.declarePublic('operator_gettype')
 def operator_gettype(v):
   """
@@ -1592,6 +1570,7 @@ def operator_gettype(v):
   @rtype: C{type}
   """
   return type(v)
+
 
 security.declarePublic('operator_setitem')
 def operator_setitem(a, b, c):
@@ -1609,6 +1588,7 @@ def operator_setitem(a, b, c):
   """
   operator.setitem(a, b, c)
   return a
+
 
 security.declarePublic('operator_getitem')
 def operator_getitem(a, b, c=None, ignorecase=True):
@@ -1634,6 +1614,7 @@ def operator_getitem(a, b, c=None, ignorecase=True):
     return operator.getitem(a, b)
   return c
 
+
 security.declarePublic('operator_delitem')
 def operator_delitem(a, b):
   """
@@ -1644,6 +1625,7 @@ def operator_delitem(a, b):
   @type b: C{any}
   """
   operator.delitem(a, b)
+
 
 security.declarePublic('operator_setattr')
 def operator_setattr(a, b, c):
@@ -1662,6 +1644,7 @@ def operator_setattr(a, b, c):
   setattr(a, b, c)
   return a
 
+
 security.declarePublic('operator_getattr')
 def operator_getattr(a, b, c=None):
   """
@@ -1678,6 +1661,7 @@ def operator_getattr(a, b, c=None):
   """
   return getattr(a, b, c)
 
+
 security.declarePublic('operator_delattr')
 def operator_delattr(a, b):
   """
@@ -1689,6 +1673,7 @@ def operator_delattr(a, b):
   """
   return delattr(a, b)
 
+
 security.declarePublic('operator_itemgetter')
 def operator_itemgetter(key, val, dictionary):
 
@@ -1696,14 +1681,6 @@ def operator_itemgetter(key, val, dictionary):
         return True
     return False
 
-#)
-
-
-############################################################################
-#
-#() Local File-System
-#
-############################################################################
 
 security.declarePublic('localfs_read')
 def localfs_read(filename, mode='b', cache='public, max-age=3600', REQUEST=None):
@@ -1782,14 +1759,6 @@ def localfs_readPath(filename, data=False, recursive=False, REQUEST=None):
   # Read path.
   return _fileutil.readPath(filename, data, recursive)
 
-#)
-
-
-############################################################################
-#
-#( Mappings
-#
-############################################################################
 
 security.declarePublic('intersection_list')
 def intersection_list(l1, l2):
@@ -1933,6 +1902,7 @@ def string_list(s, sep='\n', trim=True):
 def cmp(x, y):
   return (x > y) - (x < y)
 
+
 security.declarePublic('is_equal')
 def is_equal(x, y):
   """
@@ -1980,6 +1950,7 @@ def parse_json(*args, **kwargs):
   """
   return json.loads(*args, **kwargs)
 
+
 security.declarePublic('str_json')
 def str_json(i, encoding='ascii', errors='xmlcharrefreplace', formatted=False, level=0, allow_booleans=True, sort_keys=True):
   """
@@ -2013,6 +1984,38 @@ def str_json(i, encoding='ascii', errors='xmlcharrefreplace', formatted=False, l
         i = str(i)
     return '"%s"'%(i.replace('\\','\\\\').replace('"','\\"').replace('\n','\\n').replace('\r','\\r'))
   return '""'
+
+
+security.declarePublic('str_yaml')
+def str_yaml(i, encoding='utf-8', errors='xmlcharrefreplace', level=0):
+  """
+  Returns a YAML-string representation of the object.
+  @rtype: C{str}
+  """
+  if type(i) is list or type(i) is tuple:
+    return '' \
+      .join([('  '*(level+1))+'- '+str_yaml(x,encoding,errors,level+1)+'\n' for x in i if x])
+  elif type(i) is dict:
+    k = sorted(list(i), key=lambda x: x or '')
+    return ('' \
+      .join([('  '*(level+1))+'%s:%s%s'%(x,[' ','\n'][type(x) is list or type(x) is dict],str_yaml(i[x],encoding,errors,level+2))+'\n' for x in k if i[x]])).strip()
+  elif type(i) is time.struct_time:
+    return '"%s"'%format_datetime_iso(i)
+  elif type(i) is int or type(i) is float:
+    return str(i)
+  elif type(i) is bool:
+    return str(i).lower()
+  elif i is not None:
+    if not isinstance(i, str):
+      return str(i)
+    i = i.replace('\r\n','\n').replace('\r','\n')
+    if i.find('\n') >= 0:
+      return '|\n' + ('  '*level) + i.replace('\n','\n' + ('  '*level))
+    elif i.find(':') >= 0 or i.find('\\') >= 0 or i.find('"') >= 0 or i.startswith(' ') or i.endswith(' '):
+      return '"%s"'%(i.replace('\\','\\\\').replace('"','\\"'))
+    else:
+      return i
+  return ''
 
 
 security.declarePublic('str_item')
@@ -2189,14 +2192,6 @@ def aggregate_list(l, i):
     m.append(mi)
   return m
 
-#)
-
-
-############################################################################
-#
-#{ XML
-#
-############################################################################
 
 security.declarePublic('getXmlHeader')
 def getXmlHeader(encoding='utf-8'):
@@ -2290,12 +2285,6 @@ def htmldiff(original, changed):
   return diff
 
 
-############################################################################
-#
-#{  Executable
-#
-############################################################################
-
 security.declarePublic('dt_executable')
 def dt_executable(v):
   """
@@ -2313,6 +2302,7 @@ def dt_executable(v):
     elif v.find('<dtml-') >= 0:
       return 'method'
   return False
+
 
 security.declarePublic('dt_exec')
 def dt_exec(context, v, o={}):
@@ -2335,6 +2325,7 @@ def dt_exec(context, v, o={}):
     elif v.find('<dtml-') >= 0:
       v = dt_html(context, v, context.REQUEST)
   return v
+
 
 def dt_html(context, value, REQUEST):
   """
@@ -2365,6 +2356,7 @@ def dt_html(context, value, REQUEST):
   dtml = DocumentTemplate.DT_HTML.HTML(value)
   value = dtml( context, REQUEST)
   return value
+
 
 def dt_py( context, script, kw={}):
   """
@@ -2403,6 +2395,7 @@ def dt_py( context, script, kw={}):
   args = ()
   return ps._exec(bound_names, args, kw)
 
+
 def dt_tal(context, text, options={}):
   """
   Execute given TAL-snippet.
@@ -2427,8 +2420,6 @@ def dt_tal(context, text, options={}):
   request = getattr(context, 'REQUEST', getRequest())
   rendered = pt.pt_render(extra_context={'here':context,'request':request})
   return rendered
-
-#}
 
 
 security.declarePublic('sendMail')

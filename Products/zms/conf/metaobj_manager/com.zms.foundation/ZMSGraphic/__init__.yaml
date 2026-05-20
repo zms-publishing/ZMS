@@ -1,0 +1,121 @@
+ZMSGraphic:
+  access:
+    insert_custom: '{$}'
+  enabled: 1
+  name: ZMSGraphic
+  package: com.zms.foundation
+  revision: 5.2.1
+  type: ZMSObject
+  Attrs:
+    - id: icon_clazz
+      name: Icon (Class)
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: constant
+      custom: far fa-image
+    - id: f_css_defaults
+      name: 'CSS: Default'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: resource
+    - id: displaytype
+      name: Display-Type
+      mandatory: 1
+      multilang: 0
+      repetitive: 0
+      type: int
+      default: '2'
+    - id: img
+      name: Image
+      mandatory: 1
+      multilang: 1
+      repetitive: 0
+      type: image
+    - id: imghires
+      name: Image (Hires)
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: image
+    - id: imgsuperres
+      name: Image (Superres)
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: image
+    - id: img_attrs_spec
+      name: WAI-Attributes
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: string
+      default: alt=""
+    - id: attr_url
+      name: Image (URL)
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: url
+    - id: align
+      name: Align
+      mandatory: 1
+      multilang: 0
+      repetitive: 0
+      type: select
+      keys:
+        - LEFT
+        - LEFT_FLOAT
+        - RIGHT
+        - RIGHT_FLOAT
+        - CENTER
+    - id: text
+      name: Text
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: richtext
+    - id: format
+      name: Format
+      mandatory: 1
+      multilang: 0
+      repetitive: 0
+      type: string
+      default: |-
+        ##
+        return context.getTextFormatDefault()
+    - id: textalign
+      name: Text-Align
+      mandatory: 1
+      multilang: 0
+      repetitive: 0
+      type: select
+      keys:
+        - LEFT
+        - RIGHT
+        - CENTER
+    - id: titlealt
+      name: DC.Title.Alt
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: py
+    - id: getHref2IndexHtml
+      name: 'Function: index_html'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: py
+    - id: standard_html
+      name: 'Template: ZMSGraphic'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: zpt
+    - id: standard_json_docx
+      name: 'DOCX-JSON Template: ZMSGraphic'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: py

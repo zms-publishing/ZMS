@@ -1,21 +1,12 @@
-################################################################################
-# zopeutil.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+zopeutil.py - ZMS Zope Utility for Object Management and Data Handling
 
+Defines MissingArtefactProxy for general-purpose ZMS utilities and shared helper functions.
+It provides common patterns like type checking, data transformation, and error handling.
+
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
+"""
 # Imports.
 from AccessControl.SecurityInfo import ModuleSecurityInfo
 from Products.ExternalMethod import ExternalMethod
@@ -36,8 +27,9 @@ class MissingArtefactProxy(object):
     self.meta_type=meta_type
     self.data = data
   icon__roles__=None
+  zmi_icon__roles__ = None
   def zmi_icon(self):
-    return 'fas fa-skull-crossbones text-danger'
+    return 'fas fa-exclamation-triangle text-danger'
   getId__roles__=None
   def getId(self):
     return self.id
@@ -67,9 +59,18 @@ def getExternalMethodModuleName(container, id):
   return m
 
 security.declarePublic('addObject')
-def addObject(container, meta_type, id, title, data, permissions={}):
+def addObject(container, meta_type, id, title, data, permissions={}, force_save=False):
   """
   Add Zope-object to container.
+  @param container: Zope container to add the object to
+  @param meta_type: Zope meta_type of the object to add (e.g. 'DTML Document', 'External Method', etc.)
+  @param id: id of the object to add
+  @param title: title of the object to add
+  @param data: data of the object to add (e.g. DTML source, Python code, file data, etc.)
+  @param permissions: dict of permissions to set for the object (e.g. {'Authenticated': ['View'], 'Manager': ['Access contents information']})
+  @param force_save: boolean flag to force saving the object even if there are errors in the data (e.g. syntax errors in Python code). 
+    - If True, the object will be added with a stub and the broken code will be restored for correction in ZMI.
+    - If False, the object will not be added if there are errors, and an error message will be logged.
   """
   if meta_type == 'DTML Document':
     if not isinstance(data, str):
@@ -82,7 +83,7 @@ def addObject(container, meta_type, id, title, data, permissions={}):
       data = standard.pystr(data, encoding='utf-8', errors='replace').encode('utf-8')
     addDTMLMethod( container, id, title, data)
   elif meta_type == 'External Method':
-    addExternalMethod( container, id, title, data)
+    addExternalMethod( container, id, title, data, force_save=force_save)
   elif meta_type == 'File':
     addFile( container, id, title, data)
   elif meta_type == 'Image':
@@ -255,12 +256,13 @@ def addDTMLDocument(container, id, title, data):
   container.manage_addDTMLDocument( id, title, data)
   initPermissions(container, id)
 
-def addExternalMethod(container, id, title, data):
+def addExternalMethod(container, id, title, data, force_save=False):
   """
   Add External Method to container.
   """
   m = id
   filepath = standard.getINSTANCE_HOME()+'/Extensions/'+m+'.py'
+
   # Acquired external methods.
   if m.find('.') > 0 and os.path.exists(filepath):
     id = m[m.find('.')+1:]
@@ -284,12 +286,65 @@ def addExternalMethod(container, id, title, data):
           context = context.getParentNode()
         except:
           context= None
-  try:
+
+  if upfront_syntax_check(container, data, filepath, id):
     ExternalMethod.manage_addExternalMethod( container, id, title, m, f)
-  except:
-    standard.writeError(container,"[addExternalMethod]: %s does not exist.\n"%id)
-    pass
-  initPermissions(container, id)
+    initPermissions(container, id)
+  elif force_save:
+    # Code has errors but shall be saved: ensure the Zope pointer still 
+    # exists in ZMI so the user can correct the code there.
+    # temporarily a valid stub is written that Zopes manage_addExternalMethod 
+    # is able to compile it for adding the object with the pointer to the tree.
+    # Then the broken code (with an error header) is restored so it
+    # is visible in the ZMI editor.
+    if id not in container.objectIds():
+      stub = "## Errors:\n## File contains errors - correct via ZMI\ndef %s(*args, **kw): pass\n" %(f)
+      _fileutil.exportObj(stub, filepath)
+      try:
+        ExternalMethod.manage_addExternalMethod( container, id, title, m, f)
+        initPermissions(container, id)
+      except Exception:
+        standard.writeStdout(container, "[External Method '%s' not registered]: could not create Zope pointer."%(id,))
+    # Restore the broken code so the user sees it in ZMI.
+    if data:
+      broken = "## Errors:\n## Syntax/import error in '%s' - correct and re-save.\n%s" % (filepath, data)
+      _fileutil.exportObj(broken, filepath)
+  else:
+    # Code has errors, but forced saving is not set: 
+    # so Zope will run into an error when trying to compile the file.
+    # ZMSMetaobjManager will catch this and display the error message in ZMI, so the user can correct it there.
+    standard.writeStdout(container, "[zopeutils.addExternalMethod]: External Method '%s' contains errors]"%(id,))
+    ExternalMethod.manage_addExternalMethod( container, id, title, m, f)
+
+
+def upfront_syntax_check(container, data, filepath, id):
+  """
+  Helper function to check syntax and imports 
+  of external method code. 
+  """
+  import ast
+  import importlib.util
+  try:
+    tree = ast.parse(data, filename=filepath)
+  except SyntaxError as e:
+    standard.writeError(container, "[SyntaxError in External Method '%s']: %s"%(id, str(e)))
+    return False
+  missing = []
+  for node in ast.walk(tree):
+    if isinstance(node, ast.Import):
+      names = [alias.name for alias in node.names]
+    elif isinstance(node, ast.ImportFrom):
+      names = [node.module] if node.module else []
+    else:
+      continue
+    for name in names:
+      top = name.split('.')[0]
+      if importlib.util.find_spec(top) is None:
+        missing.append(name)
+  if missing:
+    standard.writeError(container, "[Missing imports in External Method '%s']: %s"%(id, ', '.join(missing)))
+    return False
+  return True
 
 def addPageTemplate(container, id, title, data):
   """

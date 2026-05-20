@@ -1,0 +1,8 @@
+<dtml-call "REQUEST.set('count',0)">
+<dtml-in "getTreeNodes(REQUEST)">
+ <dtml-call "setObjStateModified(REQUEST)">
+ <dtml-call "setObjProperty('active',1,REQUEST['lang'])">
+ <dtml-call "onChangeObj(REQUEST,forced=1)">
+ <dtml-call "REQUEST.set('count',REQUEST['count']+1)">
+</dtml-in>
+<dtml-return "'%i Objects activated!'%REQUEST['count']">

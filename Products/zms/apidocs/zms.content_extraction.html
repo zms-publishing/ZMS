@@ -380,6 +380,16 @@
         
 
         
+            <div class="itemName"><code><a href="zms.yamlutil.html" class="internal-link" title="zms.yamlutil">yamlutil</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
             <div class="itemName"><code><a href="zms.zms.html" class="internal-link" title="zms.zms">zms</a></code>
             </div>
         
@@ -940,6 +950,16 @@
         
 
         
+            <div class="itemName"><code><a href="zms._version.html" class="internal-link" title="zms._version">_version</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
             <div class="itemName"><code><a href="zms._versionmanager.html" class="internal-link" title="zms._versionmanager">_versionmanager</a></code>
             </div>
         
@@ -1082,27 +1102,7 @@
         <div class="childrenKindTitle">Variables</div>
         <ul>
     
-    <li class="">
-        
-        
-        
-
-        
-            <div class="itemName"><code><a href="index.html#__doc__" class="internal-link" title="zms.__doc__">__doc__</a></code>
-            </div>
-        
-
-    </li><li class="">
-        
-        
-        
-
-        
-            <div class="itemName"><code><a href="index.html#__version__" class="internal-link" title="zms.__version__">__version__</a></code>
-            </div>
-        
-
-    </li><li class="private">
+    <li class="private">
         
         
         
@@ -1153,13 +1153,19 @@
         </div>
 
         <div class="moduleDocstring">
-          <div><p>ZMS content extraction toolkit module</p>
-<p>This module provides helpful functions and classes for use in Python Scripts.  It can be accessed from Python with the statement "import Products.zms.content_extraction"</p>
+          <div><p>content_extraction.py - ZMS Content Extraction Toolkit for Search Indexing</p>
+<p>This module provides functions for extracting text content from various file types, including HTML and PDF. It uses Apache Tika for content analysis and pdfminer.six for PDF text extraction. The extracted text can be used for search indexing or other text processing tasks within ZMS. It also includes a helper function for extracting text from HTML content by removing tags and unescaping entities. The main function, <tt class="rst-docutils rst-literal">extract_content</tt>, takes a byte stream and content type, and attempts to extract text content using the appropriate method based on the content type.</p>
+<p>If Tika is configured, it will be used for extraction; otherwise, pdfminer.six will be used for PDFs, and plain text extraction will be applied for certain text-based content types.</p>
+<p>It can be accessed from Python with the statement:</p>
+<pre class="rst-literal-block">
+    import Products.zms.content_extraction
+</pre>
+<p>License: GNU General Public License v2 or later, Organization: ZMS Publishing</p>
 </div>
         </div>
 
         <div id="splitTables">
-          <table class="children sortable" id="id139">
+          <table class="children sortable" id="id140">
   
   
   <tr class="function">
@@ -1186,7 +1192,7 @@
     
     <td>Variable</td>
     <td><code><a href="#security" class="internal-link" title="zms.content_extraction.security">security</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Security declaration for the content_extraction module.</td>
   </tr>
 </table>
           
@@ -1208,7 +1214,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">extract_content</span><span class="function-signature">(context, b, content_type=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/content_extraction.py#L38">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/content_extraction.py#L40">
       
       (source)
     </a>
@@ -1220,7 +1226,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">context</span></td><td class="fieldArgDesc">the ZMS-context</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">b:</span><tt class="rst-docutils rst-literal">bytes</tt></td><td class="fieldArgDesc">the bytes</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">content<wbr></wbr>_type</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr></table></div>
+    <div><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">context:</span><tt class="rst-docutils rst-literal">ZMS</tt></td><td class="fieldArgDesc">the ZMS-context</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">b:</span><tt class="rst-docutils rst-literal">bytes</tt></td><td class="fieldArgDesc">the bytes</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">content<wbr></wbr>_type</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1235,7 +1241,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">extract_content_pdfminer</span><span class="function-signature">(context, b, content_type=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/content_extraction.py#L97">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/content_extraction.py#L99">
       
       (source)
     </a>
@@ -1262,7 +1268,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">extract_content_tika</span><span class="function-signature">(context, b, content_type=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/content_extraction.py#L75">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/content_extraction.py#L77">
       
       (source)
     </a>
@@ -1289,7 +1295,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">extract_text_from_html</span><span class="function-signature">(context, html_data)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/content_extraction.py#L54">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/content_extraction.py#L56">
       
       (source)
     </a>
@@ -1315,7 +1321,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">security</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/content_extraction.py#L35">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/content_extraction.py#L30">
       
       (source)
     </a>
@@ -1327,7 +1333,9 @@
   </div>
   <div class="functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Security declaration for the content_extraction module.</p>
+<p>This ModuleSecurityInfo object declares public access permissions for functions in the Products.zms.content_extraction module, allowing authorized users to call extract_content() and extract_text_from_html() functions through Zope's AccessControl security mechanism.</p>
+</div>
     
   </div>
 </div>

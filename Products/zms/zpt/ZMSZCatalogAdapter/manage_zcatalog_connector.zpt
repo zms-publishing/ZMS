@@ -77,8 +77,8 @@
 							</tal:block>
 						</div>
 						<span tal:condition="python:here.getMetaobjAttr(here.id,'readme')"
-							title="Readme" class="zmi-readme text-info btn btn-secondary"
-							tal:attributes="onclick python:'javascript:$ZMI.iframe(\'./metaobj_manager/%s.readme/manage_readme\',{ },{id:\'readme\',json:false,title:\'<i class=\042far fa-question-circle text-info mr-2\042></i> Readme\' });;return false'%(here.id)">
+							class="zmi-readme text-info btn"
+							tal:attributes="title here/id; data-readme python:'%s/metaobj_manager/metaobj_readme?id=%s'%(here.content.absolute_url(),here.id)">
 							<i class="far fa-question-circle"></i>
 						</span>
 					</div>
@@ -613,6 +613,7 @@
 </style>
 
 <footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
+
 <script type="text/javascript" defer charset="UTF-8" src="/++resource++zms_/common/zmi_ace_editor.js"></script>
 </body>
 </html>

@@ -1,56 +1,54 @@
-################################################################################
-# ZMSItem.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+ZMSItem.py - ZMS Base Content Object
 
+Defines ZMSItem as the base class for all ZMS content objects, 
+providing core Zope integration, persistence, and basic content 
+management functionality. ZMSItem serves as the foundation for all 
+ZMS content types, offering a unified interface for request handling, 
+page rendering, access control, and a readme endpoint for documentation. 
+Subclasses extend ZMSItem with domain-specific features while 
+inheriting its core capabilities.
+
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
+"""
 # Imports.
 from DateTime.DateTime import DateTime
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Persistence import Persistent
 from Acquisition import Implicit
 import OFS.SimpleItem, OFS.ObjectManager
+import os
+import markdown
 # Product Imports.
 from Products.zms import standard
 from Products.zms import _accessmanager
 
 
-################################################################################
-################################################################################
-###
-###   Abstract Class ZMSItem
-###
-################################################################################
-################################################################################
 class ZMSItem(
     OFS.ObjectManager.ObjectManager,
     OFS.SimpleItem.Item,
     Persistent,  # Persistent.
     Implicit,    # Acquisition.
     ):
-
-    # Documentation string.
-    __doc__ = """ZMS product module."""
-    # Version string. 
-    __version__ = '0.1' 
+    """ZMS base infrastructure class providing core Zope integration and basic content management.
     
-    # Management Permissions.
-    # -----------------------
+    ZMSItem serves as the foundation for all ZMS content objects. It provides:
+    
+        - Core Zope integration through ObjectManager and SimpleItem
+        - ZODB persistence and Acquisition support
+        - ZMI (Zope Management Interface) utilities and templates
+        - Request handling and page rendering
+        - Access control permissions framework
+        - Readme endpoint for documentation
+    
+    Subclasses extend ZMSItem with domain-specific functionality.
+    """
+
     __viewPermissions__ = (
         'manage_page_header', 'manage_page_footer', 'manage_tabs',
         'manage', 'manage_main', 'manage_workspace', 'manage_menu',
+        'readme',
       )
     __ac_permissions__=(
       ('View', __viewPermissions__),
@@ -61,25 +59,65 @@ class ZMSItem(
     manage = PageTemplateFile('zpt/object/manage', globals())
     manage_workspace = PageTemplateFile('zpt/object/manage', globals())
     manage_main = PageTemplateFile('zpt/ZMSObject/manage_main', globals())
+    readme_html = PageTemplateFile('zpt/object/readme_html', globals())
 
     # --------------------------------------------------------------------------
-    #  ZMSItem.zmi_body_content:
+    #  ZMSItem.readme:
+    #  Unified endpoint for readme content rendered as HTML.
+    #  1. ZODB attribute 'readme' (content objects with attr())
+    #  2. ZODB OFS.File in metacmd_readme/ (imported metacommands — via ZMSMetacmdProvider)
+    #  3. Filesystem zpt/<ClassName>/readme.md or conf/metacmd_manager/metacms_readme/<id>_readme (dev/bundled)
     # --------------------------------------------------------------------------
+    def get_readme_path(self, REQUEST=None):
+      """Return filesystem path to a readme.md for the current admin context."""
+      pkg_home = os.path.dirname(standard.__file__)
+      class_name = self.__class__.__name__
+      return os.path.join(pkg_home, 'zpt', class_name, 'readme.md')
+
+
+    def readme(self, REQUEST=None, RESPONSE=None):
+      """Returns readme rendered as HTML"""
+      if REQUEST is None:
+        REQUEST = self.REQUEST
+      if RESPONSE is None:
+        RESPONSE = self.REQUEST.RESPONSE
+      RESPONSE.setHeader('Content-Type', 'text/html;charset=utf-8')
+      # 1. Try ZODB attribute 'readme' (content objects)
+      if hasattr(self.aq_base, 'attr'):
+        raw = self.attr('readme')
+        if raw:
+          if not isinstance(raw, (bytes,str)):
+            raw = raw.getData().decode('utf-8')
+          return '<article class="zmi-readme">%s</article>'%self.renderText('markdown', 'text', raw, REQUEST)
+      # 2. ZODB OFS.File readme (imported metacommands — sentinel tuple from ZMSMetacmdProvider)
+      readme_path = self.get_readme_path(REQUEST)
+      if isinstance(readme_path, tuple) and readme_path[0] == 'zodb':
+        raw = readme_path[1].data
+        if isinstance(raw, bytes):
+          raw = raw.decode('utf-8')
+        return '<article class="zmi-readme">%s</article>'%markdown.markdown(raw, extensions=['tables', 'fenced_code'])
+      # 3. Fall back to filesystem readme.md (bundled core commands, dev mode)
+      if isinstance(readme_path, str) and os.path.exists(readme_path):
+        with open(readme_path, 'r', encoding='utf-8') as f:
+          raw = f.read()
+        return '<article class="zmi-readme">%s</article>'%markdown.markdown(raw, extensions=['tables', 'fenced_code'])
+      return ''
+
+
     def zmi_body_content(self, *args, **kwargs):
+      """Implement 'zmi_body_content'."""
       request = self.REQUEST
       response = request.RESPONSE
       return self.getBodyContent(request)
 
-    # --------------------------------------------------------------------------
-    #  ZMSItem.zmi_manage_menu:
-    # --------------------------------------------------------------------------
+
     def zmi_manage_menu(self, *args, **kwargs):
+      """Implement 'zmi_manage_menu'."""
       return self.manage_menu(args, kwargs)
 
-    # --------------------------------------------------------------------------
-    #  zmi_body_attrs:
-    # --------------------------------------------------------------------------
+
     def zmi_body_class(self, *args, **kwargs):
+      """Implement 'zmi_body_class'."""
       request = self.REQUEST
       l = ['zmi','zms', 'loading']
       l.append(request.get('lang'))
@@ -95,10 +133,9 @@ class ZMSItem(
       l.append(self.getConfProperty('ZMS.added.zmi.body_class',''))
       return ' '.join(l)
 
-    # --------------------------------------------------------------------------
-    #  ZMSItem.zmi_page_request:
-    # --------------------------------------------------------------------------
+
     def _zmi_page_request(self, *args, **kwargs):
+      """Implement '_zmi_page_request'."""
       request = self.REQUEST
       request.set( 'ZMS_THIS', self.getSelf())
       request.set( 'ZMS_DOCELMNT', self.breadcrumbs_obj_path()[0])
@@ -115,6 +152,7 @@ class ZMSItem(
           request.set( 'ZMS_COMMON', request['ZMS_COMMON'][len(base):])
     
     def zmi_page_request(self, *args, **kwargs):
+      """Implement 'zmi_page_request'."""
       request = self.REQUEST
       RESPONSE = request.RESPONSE
       self._zmi_page_request()
@@ -152,18 +190,22 @@ class ZMSItem(
       RESPONSE.setHeader('HX-Push-Url', '%s?%s'%(path_to_handle, qs))
 
     def f_standard_html_request(self, *args, **kwargs):
+      """
+      Set up request for standard HTML page rendering, 
+      including headers and context variables.
+      """
       request = self.REQUEST
       self._zmi_page_request()
       if not request.get( 'lang'):
         request.set( 'lang', self.getLanguage(request))
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSItem.display_icon:
-    #
-    #  @param REQUEST
-    # --------------------------------------------------------------------------
     def display_icon(self, *args, **kwargs):
+      """
+      Returns the icon for the object.
+       - If meta_id is provided, return the icon for the specified meta_id
+       - Otherwise, return the default icon for the object
+      """
       meta_id = kwargs.get('meta_id')
       if meta_id is None:
         return self.icon
@@ -171,17 +213,20 @@ class ZMSItem(
         return self.aq_parent.display_icon(meta_id=meta_id)
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSItem.getTitlealt
-    # --------------------------------------------------------------------------
     def getTitlealt( self, REQUEST):
+      """
+      Returns the translated meta_type as title alt text for icons and links.
+       - If meta_type is defined in self.getZMILangStr, return the translated string
+       - Otherwise, return the raw meta_type
+      """
       return self.getZMILangStr( self.meta_type)
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSItem.breadcrumbs_obj_path:
-    # --------------------------------------------------------------------------
     def breadcrumbs_obj_path(self, portalMaster=True):
+      """
+      Return the acquisition path of objects from the root to self's parent as a list.
+      If portalMaster is True, the path is returned from the portal master object; 
+      otherwise, from the root of the acquisition context.
+      """
       return self.aq_parent.breadcrumbs_obj_path(portalMaster)
 
-################################################################################

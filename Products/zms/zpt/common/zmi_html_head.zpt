@@ -15,7 +15,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes" />
 	<meta name="version_container_abs_url" tal:attributes="content python:here.getVersionContainer().absolute_url()" />
 	<meta name="physical_path" tal:attributes="content python:'/'.join(here.getPhysicalPath())" />
-	<meta name="generator" content="ZMS5" />
+	<meta name="generator" content="ZMS6" />
 	<tal:block tal:repeat="href python:list(zmi_paths['css_paths'])+[here.getConfProperty(x) for x in here.getConfProperty('zmi.css','').split(',')]"
 		><link tal:condition="href" type="text/css" rel="stylesheet" tal:attributes="
 			href python:href.replace('$ZMS_HOME/',ZMS_HOME).replace('$ZMS_THEME/',ZMS_THEME)" />

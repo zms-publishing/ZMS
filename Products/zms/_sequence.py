@@ -1,20 +1,12 @@
-################################################################################
-# _sequence.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+_sequence.py - ZMS Sequence Object for Unique ID Generation
+
+This module provides the Sequence class for generating unique,
+auto-incrementing IDs for ZMS objects (e.g. for new content nodes).
+
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
+"""
 
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -23,14 +15,11 @@ from Products.zms import standard
 from Products.zms import ZMSItem
 
 
-################################################################################
-################################################################################
-###
-###   Class
-###
-################################################################################
-################################################################################
 class Sequence(ZMSItem.ZMSItem):
+    """
+    Auto-incrementing integer sequence used to generate unique IDs
+    for ZMS content objects (stored as 'acl_sequence' in the ZODB).
+    """
 
     # Properties.
     # -----------
@@ -57,62 +46,38 @@ class Sequence(ZMSItem.ZMSItem):
     # ---------------------
     manage_main = PageTemplateFile('zpt/Sequence/manage_main', globals())
 
-
-    """
-    ############################################################################
-    ###
-    ###   Constructor
-    ###
-    ############################################################################
-    """
-
-    ############################################################################
-    #  Sequence.__init__: 
-    #
-    #  Initialise a new instance.
-    ############################################################################
     def __init__(self, startvalue=0):
+      """
+      Initialise a new Sequence instance.
+
+      @param startvalue: Initial counter value
+      @type startvalue: C{int}
+      """
       self.id = 'acl_sequence'
       self.value = startvalue
 
-
-    """
-    ############################################################################
-    ###
-    ###   Functions
-    ###
-    ############################################################################
-    """
-
-    # --------------------------------------------------------------------------
-    #  Sequence.nextVal
-    # --------------------------------------------------------------------------
     def nextVal(self):
+      """
+      Increment the sequence counter and return the new value.
+
+      @return: Next sequence value
+      @rtype: C{int}
+      """
       self.value = self.value + 1
       return self.currVal()
 
-    # --------------------------------------------------------------------------
-    #  Sequence.currVal
-    # --------------------------------------------------------------------------
+
     def currVal(self):
+      """
+      Return the current sequence value without incrementing.
+
+      @return: Current sequence value
+      @rtype: C{int}
+      """
       return self.value
 
-
-    """
-    ############################################################################
-    ###
-    ###   Properties
-    ###
-    ############################################################################
-    """
-
-    ############################################################################
-    #  Sequence.manage_changeProperties: 
-    #
-    #  Change Sequence properties.
-    ############################################################################
     def manage_changeProperties(self, submit, currentvalue, REQUEST, RESPONSE): 
-      """ Sequence.manage_changeProperties """
+      """Handle ZMI actions for updating or advancing the sequence value."""
       
       message = ''
 
@@ -129,4 +94,3 @@ class Sequence(ZMSItem.ZMSItem):
       if RESPONSE is not None:
         RESPONSE.redirect('%s?manage_tabs_message=%s'%(REQUEST[ 'HTTP_REFERER'], standard.url_quote(message)))
 
-################################################################################

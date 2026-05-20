@@ -1,26 +1,19 @@
-################################################################################
-# ZMSMetacmdProvider.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+ZMSMetacmdProvider.py - ZMS Meta-Command Provider
 
+Defines ZMSMetacmdProvider for command and action metadata registration.
+It registers custom ZMI actions, toolbar commands, and context-menu entries
+for admin interfaces.
+
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
+"""
 
 # Imports.
 from DateTime import DateTime
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
+import os
 from zope.interface import implementer
 # Product Imports.
 from Products.zms import standard
@@ -30,8 +23,6 @@ from Products.zms import ZMSItem
 
 
 # Example code.
-# -------------
-
 dtmlExampleCode = '<!-- @deprecated -->'
 
 pageTemplateExampleCode = \
@@ -65,46 +56,37 @@ pyScriptExampleCode = \
   ''
 
 
-################################################################################
-################################################################################
-###
-###   Class
-###
-################################################################################
-################################################################################
 @implementer(
         IZMSConfigurationProvider.IZMSConfigurationProvider,
         IZMSMetacmdProvider.IZMSMetacmdProvider,
         IZMSRepositoryProvider.IZMSRepositoryProvider)
 class ZMSMetacmdProvider(
         ZMSItem.ZMSItem):
+    """Provider for configurable meta-commands and their repository/xml sync."""
 
-    # Properties.
-    # -----------
     meta_type = 'ZMSMetacmdProvider'
     zmi_icon = "fas fa-wrench"
     icon_clazz = zmi_icon
 
     # Management Options.
-    # -------------------
     manage_options_default_action = '../manage_customize'
     def manage_options(self):
+      """Handle the ZMI action 'manage_options'."""
       return [self.operator_setitem( x, 'action', '../'+x['action']) for x in  copy.deepcopy(self.aq_parent.manage_options())]
 
     manage_sub_options__roles__ = None
     def manage_sub_options(self):
+      """Handle the ZMI action 'manage_sub_options'."""
       return (
         {'label': 'TAB_METACMD','action': 'manage_main'},
         )
 
     # Management Interface.
-    # ---------------------
     manage = PageTemplateFile('zpt/ZMSMetacmdProvider/manage_main', globals()) 
     manage_main = PageTemplateFile('zpt/ZMSMetacmdProvider/manage_main', globals()) 
     manage_main_acquire = PageTemplateFile('zpt/ZMSMetacmdProvider/manage_main_acquire', globals()) 
 
     # Management Permissions.
-    # -----------------------
     __administratorPermissions__ = (
       'manage_changeMetacmds', 'manage_main', 'manage_main_acquire'
     )
@@ -112,26 +94,87 @@ class ZMSMetacmdProvider(
       ('ZMS Administrator', __administratorPermissions__),
     )
 
-    ############################################################################
-    #  ZMSMetacmdProvider.__init__: 
-    #
-    #  Constructor.
-    ############################################################################
+
     def __init__(self, commands=[]):
+      """Initialise the manager with a persistent copy of command definitions."""
       self.id = 'metacmd_manager'
       self.commands = copy.deepcopy(commands)
 
 
-    ############################################################################
-    #
-    #  IRepositoryProvider
-    #
-    ############################################################################
+    def getMetaCmdReadmePath(self, id):
+      """Return filesystem path to the readme.md of a meta-command folder."""
+      pkg_home = os.path.dirname(standard.__file__)
+      return os.path.join(pkg_home, 'conf', 'metacmd_manager', id, 'readme.md')
 
-    """
-    @see IRepositoryProvider
-    """
+
+    def _get_metacmd_readme_container(self):
+      """Return or lazily create the OFS.Folder 'metacmd_readme' inside metacmd_manager."""
+      from OFS.Folder import Folder
+      if not hasattr(self, 'metacmd_readme'):
+        self._setObject('metacmd_readme', Folder('metacmd_readme'))
+      return self.metacmd_readme
+
+
+    def _get_metacmd_readme_object(self, id):
+      """Return OFS.File for the metacmd readme, syncing from filesystem on first access.
+
+      Uses aq_base to prevent Zope acquisition from returning unrelated objects
+      (e.g. RequestContainer) when the file does not yet exist in the container.
+      """
+      file_id = id + '_readme'
+      container = self._get_metacmd_readme_container()
+      ob = getattr(container.aq_base, file_id, None)
+      if ob is None:
+        # Lazy one-time sync from core filesystem (bundled commands, dev mode).
+        readme_fs_path = self.getMetaCmdReadmePath(id)
+        if os.path.exists(readme_fs_path):
+          with open(readme_fs_path, 'r', encoding='utf-8') as fh:
+            self._set_metacmd_readme_object(id, fh.read())
+          ob = getattr(container.aq_base, file_id, None)
+      return ob
+
+
+    def _set_metacmd_readme_object(self, id, content):
+      """Create or replace the OFS.File readme for metacmd id inside metacmd_readme/."""
+      from OFS.Image import File
+      container = self._get_metacmd_readme_container()
+      file_id = id + '_readme'
+      if hasattr(container.aq_base, file_id):
+        container._delObject(file_id)
+      if isinstance(content, str):
+        content = content.encode('utf-8')
+      container._setObject(file_id, File(file_id, file_id, content, 'text/markdown'))
+
+
+    def hasMetaCmdReadme(self, id):
+      """Check whether a ZODB readme object exists for metacmd id."""
+      if not id:
+        return False
+      return self._get_metacmd_readme_object(id) is not None
+
+
+    def get_readme_path(self, REQUEST=None):
+      """Resolve readme for ZMSItem.readme(): ZODB only for metacmd ids."""
+      if REQUEST is None:
+        REQUEST = self.REQUEST
+      metacmd_id = REQUEST.get('id', '').strip()
+      if metacmd_id:
+        readme_ob = self._get_metacmd_readme_object(metacmd_id)
+        if readme_ob:
+          return ('zodb', readme_ob)
+        return None  # not yet imported; no filesystem fallback at request time
+      return super().get_readme_path(REQUEST)
+
+
     def provideRepository(self, ids=None):
+      """
+      Build repository export data for selected meta-commands.
+
+      @param ids: Optional list of command ids to export.
+      @type ids: C{list} | C{None}
+      @return: Mapping keyed by command id.
+      @rtype: C{dict}
+      """
       r = {}
       if ids is None:
         ids = self.getMetaCmdIds()
@@ -157,13 +200,28 @@ class ZMSMetacmdProvider(
               attr['ob'] = ob
               attr['type'] = ob.meta_type
               d['Impl'] = [attr]
+            # Include readme content so it travels with repository snapshots.
+            readme_ob = self._get_metacmd_readme_object(id)
+            if readme_ob:
+              d['readme'] = readme_ob.data.decode('utf-8')
+            else:
+              readme_path = self.getMetaCmdReadmePath(id)
+              if os.path.exists(readme_path):
+                with open(readme_path, 'r', encoding='utf-8') as fh:
+                  d['readme'] = fh.read()
           r[id] = d
       return r
 
-    """
-    @see IRepositoryProvider
-    """
+
     def updateRepository(self, r):
+      """
+      Import one command from repository payload and persist it locally.
+
+      @param r: Repository record for one command.
+      @type r: C{dict}
+      @return: Imported command id.
+      @rtype: C{str}
+      """
       id = r['id']
       impl = r['Impl'][0]
       newId = id
@@ -181,15 +239,16 @@ class ZMSMetacmdProvider(
       newRoles = r.get('roles',[])
       newNodes = r.get('nodes', '{$}')
       self.delMetacmd(id)
-      return self.setMetacmd(None, newId, newAcquired, newPackage, newRevision, newName, newTitle, newMethod, \
+      newId = self.setMetacmd(None, newId, newAcquired, newPackage, newRevision, newName, newTitle, newMethod, \
         newData, newExecution, newDescription, newIconClazz, newMetaTypes, newRoles, \
         newNodes)
+      if 'readme' in r:
+        self._set_metacmd_readme_object(newId, r['readme'])
+      return newId
 
 
-    """
-    @see IRepositoryProvider
-    """
     def translateRepositoryModel(self, r):
+      """Translate repository records from Impl-based format into flat command maps."""
       l = []
       for k in r:
           v  = r[k]
@@ -201,17 +260,8 @@ class ZMSMetacmdProvider(
           l.append(v)
       return l
 
-
-    ############################################################################
-    #
-    #  XML IM/EXPORT
-    #
-    ############################################################################
-
-    # ------------------------------------------------------------------------------
-    #  ZMSMetacmdProvider.importXml
-    # ------------------------------------------------------------------------------
     def _importXml(self, item):
+        """Import one command entry from parsed XML payload."""
         id = item['id']
         
         # Delete existing object.
@@ -235,11 +285,16 @@ class ZMSMetacmdProvider(
         newData = item['data']
         
         # Return with new id.
-        return self.setMetacmd(None, newId, newAcquired, newPackage, newRevision, newName, newTitle, newMethod, \
+        newId = self.setMetacmd(None, newId, newAcquired, newPackage, newRevision, newName, newTitle, newMethod, \
           newData, newExecution, newDescription, newIconClazz, newMetaTypes, newRoles, \
           newNodes)
+        if 'readme' in item:
+          self._set_metacmd_readme_object(newId, item['readme'])
+        return newId
+
 
     def importXml(self, xml):
+      """Import one or many command entries from XML text or file-like input."""
       v = standard.parseXmlString(xml)
       if isinstance(v, list):
         for item in v:
@@ -247,22 +302,13 @@ class ZMSMetacmdProvider(
       else:
         id = self._importXml(v)
 
-
-    # ------------------------------------------------------------------------------
-    #  ZMSMetacmdProvider.__get_metacmd__
-    # ------------------------------------------------------------------------------
     def __get_metacmd__(self, id):
+      """Return the raw command dict from C{self.commands} for the given id."""
       return ([x for x in self.commands if x['id']==id]+[None])[0]
 
 
-    # ------------------------------------------------------------------------------
-    #  ZMSMetacmdProvider.delMetacmd:
-    # 
-    #  Delete Action specified by given Id.
-    # ------------------------------------------------------------------------------
     def delMetacmd(self, id):
-      
-      # Catalog.
+      """Delete one meta-command definition and remove its underlying Zope object."""
       obs = self.commands
       old = [x for x in obs if x['id'] == id]
       if len(old) > 0:
@@ -277,16 +323,16 @@ class ZMSMetacmdProvider(
       # Return with empty id.
       return ''
 
-    # ------------------------------------------------------------------------------
-    #  ZMSMetacmdProvider.setMetacmd:
-    #
-    #  Set/add Action specified by given Id.
-    # ------------------------------------------------------------------------------
+
     def setMetacmd(self, id, newId, newAcquired, newPackage='', newRevision='0.0.0', newName='', newTitle='', newMethod=None, \
           newData=None, newExecution=0, newDescription='', newIconClazz='', newMetaTypes=[], \
           newRoles=['ZMSAdministrator'], newNodes='{$}'):
-      
-      # Catalog.
+      """
+      Create or update one meta-command and synchronise its implementation object.
+
+      @return: Effective command id.
+      @rtype: C{str}
+      """
       obs = self.commands
       old = [x for x in obs if x['id'] in [id, newId]]
       if len(old) > 0:
@@ -329,15 +375,12 @@ class ZMSMetacmdProvider(
             newData += '  return "This is the external method ' + newId + '"\n'
         zopeutil.removeObject(container, id)
         zopeutil.removeObject(container, newId)
-        object = zopeutil.addObject(container, newMethod, newId, newTitle, newData, permissions={'Authenticated':['View']})
+        object = zopeutil.addObject(container, newMethod, newId, newTitle, newData, permissions={'Authenticated':['View']}, force_save=True)
       
       # Return with new id.
       return newId
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSMetacmdProvider.getMetaCmdDescription
-    # --------------------------------------------------------------------------
     def getMetaCmdDescription(self, id):
       """
       Returns description of meta-command specified by ID.
@@ -346,12 +389,8 @@ class ZMSMetacmdProvider(
       return metaCmd.get('description', '')
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSMetacmdProvider.getMetaCmd
-    # 
-    # Returns action.
-    # --------------------------------------------------------------------------
     def getMetaCmd(self, id):
+      """Return one fully-resolved meta-command, including object metadata and code."""
       obs = self.getMetaCmds(sort=False)
       # Filter by id.
       obs = [x for x in obs if x['id'] == id]
@@ -375,7 +414,7 @@ class ZMSMetacmdProvider(
         newMethod = src.meta_type
         newTitle = '*** DO NOT DELETE OR MODIFY ***'
         zopeutil.removeObject(container, newId, removeFile=False)
-        zopeutil.addObject(container, newMethod, ['',metaCmd['home'].getHome().getId()+'.'][acquiredExternalMethod]+newId, newTitle, newData)
+        zopeutil.addObject(container, newMethod, ['',metaCmd['home'].getHome().getId()+'.'][acquiredExternalMethod]+newId, newTitle, newData, force_save=True)
       ob = zopeutil.getObject(container, metaCmd['id'])
       if ob is not None:
         metaCmd['meta_type'] = ob.meta_type
@@ -384,12 +423,8 @@ class ZMSMetacmdProvider(
       return metaCmd
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSMetacmdProvider.getMetaCmdIds
-    #
-    #  Returns list of action-ids.
-    # --------------------------------------------------------------------------
     def getMetaCmdIds(self, sort=True):
+      """Return all meta-command ids, optionally sorted by command name."""
       obs = self.commands
       if sort:
         obs = [self.getMetaCmd(x['id']) for x in obs]
@@ -398,13 +433,12 @@ class ZMSMetacmdProvider(
       ids = [x['id'] for x in obs]
       return ids
 
-
-    # --------------------------------------------------------------------------
-    #  ZMSMetacmdProvider.getMetaCmds
-    #
-    #  Returns list of actions.
-    # --------------------------------------------------------------------------
     def getMetaCmds(self, context=None, stereotype='', sort=True):
+      """
+      Return meta-commands filtered by stereotype and optionally executable context.
+
+      When C{context} is provided, role/meta-type/node constraints are evaluated.
+      """
       stereotypes = {
         'insert':'manage_add',
         'tab':'manage_tab',
@@ -469,13 +503,8 @@ class ZMSMetacmdProvider(
       return metaCmds
 
 
-    ############################################################################
-    #  ZMSMetacmdProvider.manage_changeMetacmds:
-    #
-    #  Change Meta-Commands.
-    ############################################################################
     def manage_changeMetacmds(self, btn, lang, REQUEST, RESPONSE):
-        """ ZMSMetacmdProvider.manage_changeMetacmds """
+        """Handle ZMI actions for meta-commands (acquire/save/copy/delete/export/import/insert)."""
         message = ''
         id = REQUEST.get('id', '')
         
@@ -610,4 +639,3 @@ class ZMSMetacmdProvider(
         message = standard.url_quote(message)
         return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s&id=%s'%(lang, message, id))
 
-################################################################################

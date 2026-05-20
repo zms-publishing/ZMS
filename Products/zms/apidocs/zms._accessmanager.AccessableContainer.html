@@ -471,12 +471,12 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">AccessableContainer</span>(<a href="zms._accessmanager.AccessableObject.html" class="internal-link" title="zms._accessmanager.AccessableObject">AccessableObject</a>): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L482" class="sourceLink">(source)</a></code></p><p>Known subclasses: <code><a href="zms._accessmanager.AccessManager.html" class="internal-link">zms._accessmanager.AccessManager</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">AccessableContainer</span>(<a href="zms._accessmanager.AccessableObject.html" class="internal-link" title="zms._accessmanager.AccessableObject">AccessableObject</a>): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L553" class="sourceLink">(source)</a></code></p><p>Known subclasses: <code><a href="zms._accessmanager.AccessManager.html" class="internal-link">zms._accessmanager.AccessManager</a></code></p>
           <p><a href="classIndex.html#zms._accessmanager.AccessableContainer">View In Hierarchy</a></p>
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>Access-control mixin for container-like ZMS objects.</p></div>
         </div>
 
         <div id="splitTables">
@@ -487,17 +487,17 @@
     
     <td>Method</td>
     <td><code><a href="#grantPublicAccess" class="internal-link" title="zms._accessmanager.AccessableContainer.grantPublicAccess">grant<wbr></wbr>Public<wbr></wbr>Access</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Grant anonymous and authenticated public access for this container.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#revokePublicAccess" class="internal-link" title="zms._accessmanager.AccessableContainer.revokePublicAccess">revoke<wbr></wbr>Public<wbr></wbr>Access</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Revoke public access and restore restricted permission handling.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#synchronizeRolesAccess" class="internal-link" title="zms._accessmanager.AccessableContainer.synchronizeRolesAccess">synchronize<wbr></wbr>Roles<wbr></wbr>Access</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Synchronize local role permission settings for this container.</td>
   </tr>
 </table>
           
@@ -511,47 +511,47 @@
     
     <td>Method</td>
     <td><code><a href="zms._accessmanager.AccessableObject.html#getUserLangs" class="internal-link" title="zms._accessmanager.AccessableObject.getUserLangs">get<wbr></wbr>User<wbr></wbr>Langs</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Resolve effective language permissions for a user on this object.</td>
   </tr><tr class="basemethod">
     
     <td>Method</td>
     <td><code><a href="zms._accessmanager.AccessableObject.html#getUserRoles" class="internal-link" title="zms._accessmanager.AccessableObject.getUserRoles">get<wbr></wbr>User<wbr></wbr>Roles</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Resolve effective user roles for this object.</td>
   </tr><tr class="basemethod">
     
     <td>Method</td>
     <td><code><a href="zms._accessmanager.AccessableObject.html#getUsers" class="internal-link" title="zms._accessmanager.AccessableObject.getUsers">get<wbr></wbr>Users</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return all users with effective roles and languages on this object.</td>
   </tr><tr class="basemethod">
     
     <td>Method</td>
     <td><code><a href="zms._accessmanager.AccessableObject.html#hasAccess" class="internal-link" title="zms._accessmanager.AccessableObject.hasAccess">has<wbr></wbr>Access</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Check whether the authenticated user can view this object.</td>
   </tr><tr class="basemethod">
     
     <td>Method</td>
     <td><code><a href="zms._accessmanager.AccessableObject.html#hasPublicAccess" class="internal-link" title="zms._accessmanager.AccessableObject.hasPublicAccess">has<wbr></wbr>Public<wbr></wbr>Access</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return whether public access is effectively allowed for this object.</td>
   </tr><tr class="basemethod">
     
     <td>Method</td>
     <td><code><a href="zms._accessmanager.AccessableObject.html#hasRestrictedAccess" class="internal-link" title="zms._accessmanager.AccessableObject.hasRestrictedAccess">has<wbr></wbr>Restricted<wbr></wbr>Access</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return whether this object is explicitly marked as restricted.</td>
   </tr><tr class="basemethod">
     
     <td>Method</td>
     <td><code><a href="zms._accessmanager.AccessableObject.html#manage_user" class="internal-link" title="zms._accessmanager.AccessableObject.manage_user">manage<wbr></wbr>_user</a></code></td>
-    <td>AccessManager.manage_user</td>
+    <td>Update properties of the currently authenticated user.</td>
   </tr><tr class="basemethod">
     
     <td>Method</td>
     <td><code><a href="zms._accessmanager.AccessableObject.html#synchronizePublicAccess" class="internal-link" title="zms._accessmanager.AccessableObject.synchronizePublicAccess">synchronize<wbr></wbr>Public<wbr></wbr>Access</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Synchronize public-access permissions with the current restriction flags.</td>
   </tr><tr class="basemethod">
     
     <td>Method</td>
     <td><code><a href="zms._accessmanager.AccessableObject.html#zmi_page_request" class="internal-link" title="zms._accessmanager.AccessableObject.zmi_page_request">zmi<wbr></wbr>_page<wbr></wbr>_request</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Preprocess ZMI page requests and enforce access restrictions.</td>
   </tr><tr class="baseclassvariable">
     
     <td>Class Variable</td>
@@ -578,7 +578,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">grantPublicAccess</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L523">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L590">
       
       (source)
     </a>
@@ -590,7 +590,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Grant anonymous and authenticated public access for this container.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -605,7 +605,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">revokePublicAccess</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L536">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L601">
       
       (source)
     </a>
@@ -617,7 +617,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Revoke public access and restore restricted permission handling.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -632,7 +632,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">synchronizeRolesAccess</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L487">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L556">
       
       (source)
     </a>
@@ -644,7 +644,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Synchronize local role permission settings for this container.</p></div>
   </div>
 </div>
         </div>

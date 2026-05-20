@@ -1,0 +1,10 @@
+services:
+  nginx:
+    image: nginx:stable-alpine
+    container_name: zms5_nginx
+    restart: unless-stopped
+    # Use host networking so nginx can reach the Zope instances
+    # running on localhost:8080/8085/8086.
+    network_mode: host
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro

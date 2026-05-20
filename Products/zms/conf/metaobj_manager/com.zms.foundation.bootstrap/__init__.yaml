@@ -1,0 +1,5 @@
+com.zms.foundation.bootstrap:
+  enabled: 1
+  name: com.zms.foundation.bootstrap
+  revision: 5.1.4
+  type: ZMSPackage

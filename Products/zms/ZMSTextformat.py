@@ -1,31 +1,45 @@
-################################################################################
-# ZMSTextformat.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+ZMSTextformat.py - Text-format model and rendering helpers for ZMS rich-text output.
+
+Text-format model and rendering helpers for ZMS rich-text output.
+
+This module contains:
+
+  1. C{br_quote}: a helper that transforms plain text into HTML fragments while
+    preserving line breaks, indentation, and simple nested list markers.
+  2. C{ZMSTextformat}: a small value object representing one configured text
+    format (tag, optional sub-tag, attributes, and usage metadata), plus
+    rendering helpers to convert input text into wrapped HTML.
+
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
+"""
 
 # Imports.
 import re
+
 # Product Imports.
 from Products.zms import standard
 
 
-# ------------------------------------------------------------------------------
-#  br_quote
-# ------------------------------------------------------------------------------
 def br_quote(self, text, subtag):
+  """
+  Convert a plain text fragment to HTML according to the configured sub-tag.
+
+  The function preserves leading whitespace, supports C{<br>} handling,
+  injects management-interface markers for visible line breaks, and converts
+  simple tab-prefixed list syntax '\t* '/'\t#' into nested
+  '<ul>'/'<ol>' structures.
+
+  @param self: Rendering context used to detect management interface mode.
+  @type self: C{object}
+  @param text: Input text to transform.
+  @type text: C{str}
+  @param subtag: Optional sub-tag name used for line wrapping (e.g. C{'br'}).
+  @type subtag: C{str}
+  @return: HTML fragment with transformed line and list markup.
+  @rtype: C{str}
+  """
   if len(subtag) == 0:
     return text
   if type(text) not in [str, str]:
@@ -117,21 +131,26 @@ def br_quote(self, text, subtag):
   return rtn
 
 
-################################################################################
-################################################################################
-###
-###   Class
-###
-################################################################################
-################################################################################
 class ZMSTextformat(object):
+  """
+  Represent one text-format definition and provide rendering helpers.
 
-  # ----------------------------------------------------------------------------
-  #  ZMSTextformat.__init__:
-  #
-  #  Constructor.
-  # ----------------------------------------------------------------------------
+  A text format defines the outer tag, optional inner sub-tag, additional
+  HTML attributes, editor-availability flag, and usage categories.
+  """
+
   def __init__(self, id, ob, manage_lang):
+    """
+    Initialize the text-format object from its persisted configuration mapping.
+
+    @param id: Text-format identifier.
+    @type id: C{str}
+    @param ob: Persisted format definition containing keys like C{display},
+      C{tag}, C{subtag}, C{attrs}, optional C{richedit}, and optional C{usage}.
+    @type ob: C{dict}
+    @param manage_lang: Language used to select the display label.
+    @type manage_lang: C{str}
+    """
     self.setId(id)
     self.setDisplay(ob['display'].get(manage_lang,id))
     self.setTag(ob['tag'])
@@ -140,32 +159,52 @@ class ZMSTextformat(object):
     self.setRichedit(ob.get('richedit', 0))
     self.setUsage(ob.get('usage', ['standard']))
 
-  # ----------------------------------------------------------------------------
-  #  Get/Set Id.
-  # ----------------------------------------------------------------------------
   getId__roles__ = None
-  def getId(self): return self.id
-  def setId(self, id): self.id = id
 
-  # ----------------------------------------------------------------------------
-  #  Get/Set Display.
-  # ----------------------------------------------------------------------------
+  def getId(self):
+    """Return the text-format identifier."""
+    return self.id
+
+
+  def setId(self, id):
+    """Set the text-format identifier."""
+    self.id = id
+
   getDisplay__roles__ = None
-  def getDisplay(self): return self.display
-  def setDisplay(self, display): self.display = display
 
-  # ----------------------------------------------------------------------------
-  #  Get/Set <Tag>.
-  # ----------------------------------------------------------------------------
+  def getDisplay(self):
+    """Return the management label shown for this text format."""
+    return self.display
+
+
+  def setDisplay(self, display):
+    """Set the management label shown for this text format."""
+    self.display = display
+
   getTag__roles__ = None
-  def getTag(self): return self.tag
-  def setTag(self, tag): self.tag = tag
 
-  # ----------------------------------------------------------------------------
-  #  Assemble <Start-Tag>.
-  # ----------------------------------------------------------------------------
+  def getTag(self):
+    """Return the outer HTML tag used for rendering."""
+    return self.tag
+
+
+  def setTag(self, tag):
+    """Set the outer HTML tag used for rendering."""
+    self.tag = tag
+
   getStartTag__roles__ = None
+
   def getStartTag(self, id=None, clazz=None): 
+    """
+    Build the opening HTML tag for this text format.
+
+    @param id: Optional DOM id attribute for the opening tag.
+    @type id: C{str} or C{None}
+    @param clazz: Optional CSS class attribute for the opening tag.
+    @type clazz: C{str} or C{None}
+    @return: Opening tag HTML or an empty string when no outer tag is defined.
+    @rtype: C{str}
+    """
     html = ''
     tag = self.getTag()
     if len(tag) > 0:
@@ -180,11 +219,10 @@ class ZMSTextformat(object):
       html += '>'
     return html
 
-  # ----------------------------------------------------------------------------
-  #  Assemble <End-Tag>.
-  # ----------------------------------------------------------------------------
   getEndTag__roles__ = None
+
   def getEndTag(self): 
+    """Return the closing HTML tag for the configured outer tag."""
     html = ''
     tag = self.getTag()
     if len(tag) > 0:
@@ -192,49 +230,82 @@ class ZMSTextformat(object):
       html += '>'
     return html
 
-  # ----------------------------------------------------------------------------
-  #  Get/Set <Sub-Tag>.
-  # ----------------------------------------------------------------------------
   getSubTag__roles__ = None
-  def getSubTag(self): return self.subtag
-  def setSubTag(self, subtag): self.subtag = subtag
 
-  # ----------------------------------------------------------------------------
-  #  Get/Set <Tag>-Attributes.
-  # ----------------------------------------------------------------------------
+  def getSubTag(self):
+    """Return the optional sub-tag used for line-level wrapping."""
+    return self.subtag
+
+
+  def setSubTag(self, subtag):
+    """Set the optional sub-tag used for line-level wrapping."""
+    self.subtag = subtag
+
   getAttrs__roles__ = None
-  def getAttrs(self): return self.attrs
+
+  def getAttrs(self):
+    """Return the raw HTML attribute string for the outer tag."""
+    return self.attrs
+
+
   parseAttrs__roles__ = None
+
   def parseAttrs(self):
+    """
+    Parse the raw attribute string into C{(name, value)} tuples.
+
+    @return: List of parsed attribute-name/value tuples.
+    @rtype: C{list}
+    """
     d = []
     l = re.split('(.*?)="(.*?)"', self.attrs)
     for i in range(len(l)//3):
       d.append((l[i*3+1], l[i*3+2]))
     return d
-  def setAttrs(self, attrs): self.attrs = attrs
 
-  # ----------------------------------------------------------------------------
-  #  Get/Set Richedit.
-  # ----------------------------------------------------------------------------
+
+  def setAttrs(self, attrs):
+    """Set the raw HTML attribute string for the outer tag."""
+    self.attrs = attrs
+
   getRichedit__roles__ = None
-  def getRichedit(self): return self.richedit
+
+  def getRichedit(self):
+    """Return whether this format is available in rich-text editing."""
+    return self.richedit
+
+
   def setRichedit(self, richedit):
+    """
+    Set the rich-text-editor availability flag.
+
+    Non-empty string/bytes values are normalized to C{1} for compatibility with
+    historic persisted values.
+    """
     if isinstance(richedit, bytes) or isinstance(richedit, str) and len(richedit) > 0:
       richedit = 1
     self.richedit = richedit
 
-  # ----------------------------------------------------------------------------
-  #  Get/Set Usage.
-  # ----------------------------------------------------------------------------
   getUsage__roles__ = None
-  def getUsage(self): return self.usage
-  def setUsage(self, usage): self.usage = usage
 
-  # ----------------------------------------------------------------------------
-  #  HTML.
-  # ----------------------------------------------------------------------------
+  def getUsage(self):
+    """Return the usage categories where this format is offered."""
+    return self.usage
+
+
+  def setUsage(self, usage):
+    """Set the usage categories where this format is offered."""
+    self.usage = usage
+
   getHtml__roles__ = None
+
   def getHtml(self): 
+    """
+    Return a management-preview HTML snippet for this text format.
+
+    @return: HTML preview showing opening tag, sample content, and closing tag.
+    @rtype: C{str}
+    """
     html = ''
     # Open tag.
     if len(self.getTag()) > 0:
@@ -260,14 +331,32 @@ class ZMSTextformat(object):
       html += self.getTag()
       html += '&gt;'
       html += '<br />'
-    # Return.
     return html
 
-  # ----------------------------------------------------------------------------
-  #  Render text.
-  # ----------------------------------------------------------------------------
   renderText__roles__ = None
+
   def renderText(self, context, text, id=None, clazz=None, encoding='utf-8', errors='strict'):
+    """
+    Render input text according to this text format definition.
+
+    The method wraps transformed text with opening/closing tags generated by
+    this format.  Line handling is delegated to L{br_quote}.
+
+    @param context: Rendering context passed to L{br_quote}.
+    @type context: C{object}
+    @param text: Input text or bytes to render.
+    @type text: C{str} or C{bytes}
+    @param id: Optional DOM id for the opening tag.
+    @type id: C{str} or C{None}
+    @param clazz: Optional CSS class for the opening tag.
+    @type clazz: C{str} or C{None}
+    @param encoding: Character encoding used when decoding byte strings.
+    @type encoding: C{str}
+    @param errors: Error handling mode for byte decoding.
+    @type errors: C{str}
+    @return: Rendered HTML fragment.
+    @rtype: C{str}
+    """
     html = ''
     # Open tag.
     html += self.getStartTag( id, clazz)
@@ -283,4 +372,3 @@ class ZMSTextformat(object):
     # Return.
     return html
 
-################################################################################

@@ -1,0 +1,91 @@
+CSSLib:
+  enabled: 0
+  name: CSSLib
+  package: com.zms.foundation.theming
+  revision: 5.0.0
+  type: ZMSLibrary
+  Attrs:
+    - id: default_scss
+      name: Example SCSS
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: constant
+      custom: |-
+        /* Example SCSS Code as a Content Object Attribute */
+        $col-h2: green;
+        .zmi_dummy {
+        	h1 { color:red; }
+        	h2 { color: $col-h2; }
+        }
+    - id: default_css
+      name: Example CSS
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: constant
+      custom: |-
+        /* Example CSS Code as a Content Object Attribute */
+        .zmi_dummy h1 { color:red; }
+        .zmi_dummy h2 { color: green; }
+    - id: compile_scss
+      name: SCSS Compile
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: get_metaobj_css
+      name: Get MetaObj CSS
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: py
+    - id: all_metaobj_css
+      name: Aggregate All Default CSS
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: py
+    - id: readme
+      name: README.md
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: constant
+      custom: |-
+        The CSSLib contains some helper functions to deal with default CSS or SCSS snippets that 
+        are associated as attributes to the content objects. Typically there are two kinds of attributes 
+        1. id = 'default_(s)css', type = 'constant' 
+        2. id = 'f_css_defaults', type = 'resource/file'
+
+        Three functions are provided to extract the CSS code stored in content model attributes:
+
+        A. Function get_metaobj_css(meta_id='CSSLib', css_attr='default_scss', syntax='scss')
+        Extracts the CSS text by a given meta_id and its attributes name. Moreover it calls 
+        a SCSS preprocessor of the attributes name contains the phrase '_scss'.
+
+        B. Function all_metaobj_css()
+        Iterates the whole content model and detects all CSS containing attributes by their names
+        containing the phrases 'default' and ('_css' or '_scss'). For any CSS containing attribute the 
+        function get_metaobj_css will be called to extract/process the CSS text. The function will
+        return an concatinated CSS text stream.
+
+        C. Function compile_scss(scss)
+        This external methods needs pyScss to be installed in your python environment. It proesses the 
+        SCSS attribute values and returns CSS text.
+
+        Integrating all the default CSS snippets into the zmi oder web CSS is simply done by a single
+        line of CSS code:
+
+        /* EXAMPLE: CSS IMPORT RULE FOR ALL DEFAULTS */
+        @import url('/content/metaobj_manager/csslib.all_metaobj_css');
+         
+        /* EXAMPLE: CSS IMPORT RULE FOR A DEFAULTS */
+        @import url('/content/metaobj_manager/CSSLib.get_metaobj_css?meta_id=CSSLib&css_attr='default_css');
+
+        See also ZMS API functions:
+        * ZMSObject.f_css_defaults
+        * ZMSObject.zmi_css_defaults
+        * standard.zmi_paths
+        and the ZMS-Action
+        * manage_css_classes

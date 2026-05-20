@@ -1,21 +1,12 @@
-################################################################################
-# _zreferableitem.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+_zreferableitem.py - ZMS Referable Item Mixin for Internal Reference Handling and Link Validation
 
+Defines ZReferableItem for object persistence, Zope integration, and container protocols.
+It implements Zope's ObjectManager interface, handles acquisition, and manages object lifecycle.
+
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
+"""
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import base64
@@ -24,25 +15,54 @@ import re
 from Products.zms import standard
 from zope.globalrequest import getRequest
 
-# ------------------------------------------------------------------------------
-#  isMailLink:
-# ------------------------------------------------------------------------------
+
+_INLINE_LINK_ATTR_RE = re.compile(r'\s(.*?)="(.*?)"')
+_INLINE_LINK_TAGS = (
+  (re.compile(r'<a(.*?)>'), 'href', '<a'),
+  (re.compile(r'<img(.*?)>'), 'src', '<img'),
+)
+
+
+# ----------------------------------------------------------------------------
+# Internal Link Utilities for ZMS Objects
+# ----------------------------------------------------------------------------
+
 def isMailLink(url):
+  """
+  Checks if the given URL is a mailto link.
+  @param url: The URL to check.
+  @type url: C{str}
+  @return: True if the URL starts with C{mailto:}, False otherwise.
+  @rtype: C{bool}
+  """
   rtn = isinstance(url, str) and url.lower().startswith('mailto:')
   return rtn
 
-# ------------------------------------------------------------------------------
-#  isInternalLink:
-# ------------------------------------------------------------------------------
+
 def isInternalLink(url):
+  """
+  Checks if the given URL is an internal link.
+  @param url: The URL to check.
+  @type url: C{str}
+  @return: True if the URL is in the internal link format C{{$...}},
+      False otherwise.
+  @rtype: C{bool}
+  """
   rtn = isinstance(url, str) and url.startswith('{$') and url.endswith('}')
   return rtn
 
-# ------------------------------------------------------------------------------
-#  getInternalLinkDict:
-# ------------------------------------------------------------------------------
+
 def getInternalLinkDict(self, url):
-  #-- [ReqBuff]: Fetch buffered value from Http-Request.
+  """
+  Resolves an internal link and returns a dictionary with link metadata.
+  @param self: The object context.
+  @type self: C{object}
+  @param url: The internal link to resolve.
+  @type url: C{str}
+  @return: Metadata about the internal link such as C{data-id},
+      C{data-url}, and C{data-target}.
+  @rtype: C{dict}
+  """
   docelmnt = self.getDocumentElement()
   reqBuffId = 'getInternalLinkDict.%s'%url
   try: return docelmnt.fetchReqBuff(reqBuffId)
@@ -84,10 +104,19 @@ def getInternalLinkDict(self, url):
   #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
   return docelmnt.storeReqBuff( reqBuffId, d)
 
-# ------------------------------------------------------------------------------
-#  getInternalLinkUrl:
-# ------------------------------------------------------------------------------
+
 def getInternalLinkUrl(self, url, ob):
+  """
+  Resolves the internal index_html URL for a given object and internal link.
+  @param self: The object context.
+  @type self: C{object}
+  @param url: The internal link.
+  @type url: C{str}
+  @param ob: The referenced object.
+  @type ob: C{object}
+  @return: The resolved C{index_html} URL.
+  @rtype: C{str}
+  """
   request = getattr(self, 'REQUEST', getRequest())
   if ob is None:
     index_html = './index_%s.html?error_type=NotFound&op=not_found&url=%s'%(request.get('lang', self.getPrimaryLanguage()), str(url))
@@ -97,12 +126,15 @@ def getInternalLinkUrl(self, url, ob):
     index_html = ob.getHref2IndexHtmlInContext(context, REQUEST=request)
   return index_html
 
-# ----------------------------------------------------------------------------
-#  getInlineRefs:
-#
-#  Parses internal links.
-# ----------------------------------------------------------------------------
+
 def getInlineRefs(text):
+  """
+  Extracts internal link references from inline HTML content.
+  @param text: The HTML content.
+  @type text: C{str}
+  @return: Internal link identifiers found in anchor tags.
+  @rtype: C{list}
+  """
   l = []
   p = r'<a(.*?)>(.*?)</a>'
   r = re.compile(p)
@@ -112,14 +144,14 @@ def getInlineRefs(text):
       l.append(d['data-id'])
   return l
 
-################################################################################
-################################################################################
-###
-###   class ZReferableItem
-###
-################################################################################
-################################################################################
+
 class ZReferableItem(object): 
+  """
+  Mixin for internal reference handling in ZMS objects.
+
+  This mixin resolves internal link tokens, collects outgoing references,
+  maintains incoming backlinks in C{ref_by}, and validates stored references.
+  """
 
   # Management Permissions.
   # -----------------------
@@ -142,9 +174,19 @@ class ZReferableItem(object):
 
 
   # ----------------------------------------------------------------------------
-  #  ZReferableItem.getRelativeUrl:
+  # ZReferableItem Functions for Getting object reference path or relative URL.
   # ----------------------------------------------------------------------------
   def getRelativeUrl(self, path, url):
+    """
+    Computes a relative URL from a source path to a destination URL.
+    @param path: The source path.
+    @type path: C{str}
+    @param url: The destination URL.
+    @type url: C{str}
+    @return: The relative URL if both URLs share the same base, otherwise
+        the original destination URL.
+    @rtype: C{str}
+    """
     import posixpath
     from urllib.parse import urlsplit
     from urllib.parse import urlunsplit
@@ -158,30 +200,35 @@ class ZReferableItem(object):
     _relpath = posixpath.relpath(u_dest.path, posixpath.dirname(u_src.path))
     return './%s'%urlunsplit(('', '', _relpath, u_dest.query, u_dest.fragment))
 
-  # ----------------------------------------------------------------------------
-  #  ZReferableItem.getRefObjPath:
-  # ----------------------------------------------------------------------------
+
   def getRefObjPath(self, ob, anchor=''):
+    """
+    Returns the internal reference path for a given object.
+    @param ob: The object to reference.
+    @type ob: C{object}
+    @param anchor: Anchor string to append.
+    @type anchor: C{str}
+    @return: The internal reference path in C{{$...}} format.
+    @rtype: C{str}
+    """
     ref = ob.get_uid()
     if anchor:
       ref += '#'+anchor
     return '{$%s}'%ref
 
 
-  """
-  ##############################################################################
-  ###  
-  ###  References FROM other objects.
-  ### 
-  ##############################################################################
-  """
+  # ----------------------------------------------------------------------------
+  #  FROM: ZReferableItem Functions for Referencing FROM Other Objects.
+  # ----------------------------------------------------------------------------
 
-  # ----------------------------------------------------------------------------
-  #  ZReferableItem.getRefByObjs:
-  #
-  #  Returns references FROM other objects.
-  # ----------------------------------------------------------------------------
   def getRefByObjs(self, REQUEST=None):
+    """
+    Returns a list of references FROM other objects to this object.
+    @param REQUEST: The request object.
+    @type REQUEST: C{object}
+    @return: References from other objects to this object.
+    @rtype: C{list}
+    """
     ref_by = []
     if 'ref_by' in self.__dict__:
       ref_by = self.ref_by
@@ -189,12 +236,14 @@ class ZReferableItem(object):
     return ref_by
 
 
-  # ----------------------------------------------------------------------------
-  #  ZReferableItem.synchronizeRefByObjs:
-  #
-  #  Synchronizes references FROM other objects.
-  # ----------------------------------------------------------------------------
   def synchronizeRefByObjs(self, strict=1):
+    """
+    Synchronizes the list of references FROM other objects.
+    @param strict: Flag kept for API compatibility.
+    @type strict: C{int}
+    @return: The updated list of references from other objects.
+    @rtype: C{list}
+    """
     v = self.getRefByObjs()
     ref_by = []
     for i in v:
@@ -212,12 +261,12 @@ class ZReferableItem(object):
     return ref_by
 
 
-  # ----------------------------------------------------------------------------
-  #  ZReferableItem.registerRefObj:
-  #
-  #  Registers reference FROM other object.
-  # ----------------------------------------------------------------------------
   def registerRefObj(self, ob):
+    """
+    Registers a reference FROM another object to this object.
+    @param ob: The object referencing this object.
+    @type ob: C{object}
+    """
     ref = self.getRefObjPath(ob)
     standard.writeLog(self, '[registerRefObj]: ref='+ref)
     ref_by = self.synchronizeRefByObjs()
@@ -226,12 +275,12 @@ class ZReferableItem(object):
       self.ref_by = ref_by
 
 
-  # ----------------------------------------------------------------------------
-  #  ZReferableItem.unregisterRefObj:
-  #
-  #  Unregisters reference FROM other object.
-  # ----------------------------------------------------------------------------
   def unregisterRefObj(self, ob):
+    """
+    Unregisters a reference FROM another object to this object.
+    @param ob: The object referencing this object.
+    @type ob: C{object}
+    """
     ref = self.getRefObjPath(ob)
     standard.writeLog(self, '[unregisterRefObj]: ref='+ref)
     ref_by = self.synchronizeRefByObjs()
@@ -240,20 +289,16 @@ class ZReferableItem(object):
       self.ref_by = ref_by
 
 
-  """
-  ##############################################################################
-  ###  
-  ###  References TO other objects.
-  ### 
-  ##############################################################################
-  """
+  # ----------------------------------------------------------------------------
+  #  TO: ZReferableItem Functions for Referencing TO Other Objects.
+  # ----------------------------------------------------------------------------
 
-  # ----------------------------------------------------------------------------
-  #  ZReferableItem.getRefToObjs:
-  #
-  #  Returns list of references TO other objects.
-  # ----------------------------------------------------------------------------
   def getRefToObjs(self):
+    """
+    Returns a list of references from this object TO other objects.
+    @return: References from this object to other objects.
+    @rtype: C{list}
+    """
     d = {}
     for key in self.getObjAttrs():
       objAttr = self.getObjAttr(key)
@@ -280,14 +325,16 @@ class ZReferableItem(object):
     return list(set(d))
 
 
-  # ----------------------------------------------------------------------------
-  # ZReferableItem.changeRefsToObj:
-  #
-  # Change all internal references to a new target object.
-  # @param ref_to: The target object to which all references should point
-  # @return: Dictionary with counts of changed references
-  # ----------------------------------------------------------------------------
   def changeRefsToObj(self, ref_to):
+    """
+    Changes all internal references TO a new target object.
+    @param ref_to: The target reference to which all selected references
+      should point.
+    @type ref_to: C{str}
+    @return: A result dictionary with changed and unchanged references, or
+      C{None} if no update could be performed.
+    @rtype: C{dict} or C{None}
+    """
     standard.writeLog(self, '[changeRefToObjs]')
     result = {'changed': [], 'unchanged': [], 'ref_to': None}
     request = self.REQUEST
@@ -373,23 +420,26 @@ class ZReferableItem(object):
             ref_obj_page.onChangeObj(request,forced=True)
     return result
 
-  # ----------------------------------------------------------------------------
-  #  ZReferableItem.prepareRefreshRefToObjs:
-  #
-  #  Prepare refresh of references TO other objects.
-  # ----------------------------------------------------------------------------
+
   def prepareRefreshRefToObjs(self):
+    """
+    Prepares the refresh of references TO other objects by storing the current references.
+    This method stores the current outgoing references in C{self.ref_to} for
+    later comparison by L{refreshRefToObjs}.
+    """
     standard.writeLog( self, '[prepareRefreshRefToObjs]')
     if 'ref_to' not in self.__dict__:
       self.ref_to = self.getRefToObjs()
 
 
-  # ----------------------------------------------------------------------------
-  #  ZReferableItem.refreshRefToObjs:
-  #
-  #  Synchronizes references TO other objects.
-  # ----------------------------------------------------------------------------
   def refreshRefToObjs(self):
+    """
+    Synchronizes references TO other objects, updating registrations as
+    needed.
+
+    The method unregisters obsolete backlinks and registers newly created
+    backlinks.
+    """
     standard.writeLog( self, '[refreshRefToObjs]')
     if 'ref_to' in self.__dict__:
       old_ref_to = self.ref_to
@@ -411,27 +461,27 @@ class ZReferableItem(object):
             ref_ob.registerRefObj(self)
 
 
-  """
-  ##############################################################################
-  ###  
-  ###  Resolve Links 
-  ### 
-  ##############################################################################
-  """
+  # ----------------------------------------------------------------------------
+  #  ZReferableItem Functions for Resolving/Validating Internal Links
+  # ----------------------------------------------------------------------------
 
-  # ----------------------------------------------------------------------------
-  #  ZReferableItem.validateInlineLinkObj:
-  #
-  #  Validates internal links.
-  # ----------------------------------------------------------------------------
   def validateInlineLinkObj(self, text):
-    if not bool(self.getConfProperty('ZReferableItem.validateInlineLinkObj', 1)): return text
-    for pq in [('<a(.*?)>', 'href'), ('<img(.*?)>', 'src')]:
-      p = pq[0]
-      q = pq[1]
-      r = re.compile(p)
-      for f in r.findall(str(text)):
-        d = dict(re.findall(r'\s(.*?)="(.*?)"', f))
+    """
+    Validates internal links within inline HTML content.
+    @param text: The HTML content to validate.
+    @type text: C{str}
+    @return: The validated HTML content with updated internal links.
+    @rtype: C{str}
+    """
+    text = str(text)
+    if '<a' not in text and '<img' not in text:
+      return text
+    for r, q, marker in _INLINE_LINK_TAGS:
+      if marker not in text:
+        continue
+      p = r.pattern
+      for f in r.findall(text):
+        d = dict(_INLINE_LINK_ATTR_RE.findall(f))
         if 'data-id' in d:
           old = p.replace('(.*?)', f)
           url = d['data-id']
@@ -440,32 +490,49 @@ class ZReferableItem(object):
             d[{'data-url':q}.get(k, k)] = ild[k]
           new = p.replace('(.*?)', ' '.join(['']+['%s="%s"'%(x,d[x]) for x in d]))
           if old != new:
-            # @FIXME UnicodeDecodeError: 'ascii' codec can't decode byte 0x## in position ###: ordinal not in range(128)
             text = text.replace(old, new)
     return text
 
 
-  # ----------------------------------------------------------------------------
-  #  ZReferableItem.validateLinkObj:
-  #
-  #  Validates internal links.
-  # ----------------------------------------------------------------------------
   def validateLinkObj(self, url):
-    if not bool(self.getConfProperty('ZReferableItem.validateLinkObj', 1)): return url
+    """
+    Validates a single internal link.
+    @param url: The internal link to validate.
+    @type url: C{str}
+    @return: The validated internal link.
+    @rtype: C{str}
+    """
     if isInternalLink(url):
       if not url.startswith('{$__'):
         ild = getInternalLinkDict(self, url)
         url = ild['data-id']
     return url
 
-  # ----------------------------------------------------------------------------
-  #  ZReferableItem.findObject:
-  #
-  #  Find object.
-  #  Fast access to object of what we know that it must exist,
-  #  since we have just calculated the url a short period before.
-  # ----------------------------------------------------------------------------
+
+  def validateRefObj(self, s):
+    """
+    Validates internal object-references.
+    @param s: String to validate. This can be an internal link token or an
+        inline HTML fragment.
+    @type s: C{str}
+    @return: The validated link or HTML string.
+    @rtype: C{str}
+    """
+    if isInternalLink(s):
+      return self.validateLinkObj(s)
+    return self.validateInlineLinkObj(s)
+
+
   def findObject(self, url):
+    """
+    Quickly finds and returns an object based on an internal URL.
+    Assumes the object exists as a recently calculated uid in 
+    ZMSIndex or as a object path.
+    @param url: Internal URL string in the format C{{$...}}.
+    @type url: C{str}
+    @return: The resolved object if found, otherwise C{None}.
+    @rtype: C{object} or C{None}
+    """
     url = url[2:-1]
     if url.find('id:') >= 0:
       catalog = self.getZMSIndex().get_catalog()
@@ -481,12 +548,17 @@ class ZReferableItem(object):
       ob = getattr(ob,id,None)
     return ob
 
-  # ----------------------------------------------------------------------------
-  #  ZReferableItem.getLinkObj:
-  #
-  #  Resolves internal/external links and returns Object.
-  # ----------------------------------------------------------------------------
+
   def getLinkObj(self, url, REQUEST=None):
+    """
+    Resolves internal or external links and returns the corresponding object.
+    @param url: The link to resolve. It can be internal or external.
+    @type url: C{str}
+    @param REQUEST: The request object.
+    @type REQUEST: C{object}
+    @return: The resolved object if found, otherwise C{None}.
+    @rtype: C{object} or C{None}
+    """
     request = getattr(self, 'REQUEST', getRequest())
     ob = None
     if isInternalLink(url):
@@ -502,46 +574,63 @@ class ZReferableItem(object):
         i = max(url.find('#'),url.find(','))
         if i > 0:
           url = url[:i]
-        if url.find('id:') >= 0:
-          catalog = self.getZMSIndex().get_catalog()
-          q = catalog({'get_uid':url})
-          for r in q:
-            path  = '%s/'%r['getPath']
+        #-- [ReqBuff]: Fetch buffered value from Http-Request.
+        reqBuffId = 'getLinkObj.%s'%url
+        try:
+          ob = self.getDocumentElement().fetchReqBuff(reqBuffId)
+        except:
+          if url.find('id:') >= 0:
+            catalog = self.getZMSIndex().get_catalog()
+            q = catalog({'get_uid':url})
+            for r in q:
+              path  = '%s/'%r['getPath']
+              l = [x for x in path.split('/') if x] 
+              ob = self.getRootElement()
+              if l:
+                [l.pop(0) for x in ob.getPhysicalPath() if l[0] == x]
+                for id in l:
+                  ob = getattr(ob,id,None)
+              break
+          elif not url.startswith('__'):
+            path = url.replace('@','/content/')
             l = [x for x in path.split('/') if x] 
-            ob = self.getRootElement()
+            ob = self.getDocumentElement()
             if l:
               [l.pop(0) for x in ob.getPhysicalPath() if l[0] == x]
               for id in l:
                 ob = getattr(ob,id,None)
-            break
-        elif not url.startswith('__'):
-          path = url.replace('@','/content/')
-          l = [x for x in path.split('/') if x] 
-          ob = self.getDocumentElement()
-          if l:
-            [l.pop(0) for x in ob.getPhysicalPath() if l[0] == x]
-            for id in l:
-              ob = getattr(ob,id,None)
-      # Prepare request
-      ids = self.getPhysicalPath()
-      if ob is not None and ob.id not in ids:
-        ob.set_request_context(request, ref_params)
+          #-- [ReqBuff]: Store value in buffer of Http-Request.
+          self.getDocumentElement().storeReqBuff(reqBuffId, ob)
+      # Prepare request (only if ref_params are provided)
+      if ob is not None and ref_params:
+        ids = self.getPhysicalPath()
+        if ob.id not in ids:
+          ob.set_request_context(request, ref_params)
     return ob
 
 
-  # ----------------------------------------------------------------------------
-  #  ZReferableItem.getLinkUrl:
-  #
-  #  Resolves internal/external links and returns URL.
-  # ----------------------------------------------------------------------------
-  def getLinkUrl( self, url, REQUEST=None):
+  def getLinkUrl(self, url, REQUEST=None):
+    """
+    Combines internal/external link resolution and returns the final URL string, 
+    handling anchors and mailto obfuscation.
+    @param url: The link to resolve. It can be internal or external.
+    @type url: C{str}
+    @param REQUEST: The request object.
+    @type REQUEST: C{object}
+    @return: The resolved URL as a string.
+    @rtype: C{str}
+
+    This method differs from L{getLinkObj}, which returns the referenced
+    object, and from L{getInternalLinkUrl}, which renders an internal
+    C{index_html} URL for a specific object.
+    """
     request = self.REQUEST
     if isInternalLink(url):
       # Params.
       ref_params = {}
       if url.find(';') > 0:
         ref_params = dict(re.findall(r';(\w*)=(\w*)', url[url.find(';'):-1]))
-        url = '{$%s}'%url[2:url.find(';')]
+        url = '{$%s}'%(url[2:url.find(';')])
       # Anchor.
       ref_anchor = ''
       if url.find('#') > 0:
@@ -559,23 +648,28 @@ class ZReferableItem(object):
         request.set(key, bak_params[key])
       # Return index_html.
       url = index_html + ref_anchor
-    elif isMailLink (url):
+    elif isMailLink(url):
       prefix = 'mailto:'
-      url = 'javascript:void(location.href=\'%s\'+String.fromCharCode(%s))'%(prefix,','.join([str(ord(x)) for x in url[len(prefix):]]))
+      url = 'javascript:void(location.href=\'%s\'+String.fromCharCode(%s))'%(
+        prefix, ','.join([str(ord(x)) for x in url[len(prefix):]])
+      )
     return url
 
-  # ----------------------------------------------------------------------------
-  #  ZReferableItem.tal_anchor:
-  #  
-  #  @param href
-  #  @param target
-  #  @param attrs
-  #  @param content
-  #  @return
-  # ----------------------------------------------------------------------------
+
   def tal_anchor(self, href, target='', attrs={}, content=''):
+    """
+    Generate an HTML anchor (<a>) tag.
+    @param href: The URL for the anchor's C{href} attribute.
+    @type href: C{str}
+    @param target: The target attribute for the anchor, for example C{_blank}.
+    @type target: C{str}
+    @param attrs: Additional HTML attributes for the anchor tag.
+    @type attrs: C{dict}
+    @param content: The inner HTML or text content of the anchor.
+    @type content: C{str}
+    @return: The formatted HTML anchor tag as a string.
+    @rtype: C{str}
+    """
     filtered_attrs_keys = [x for x in attrs if x]
     str_attrs = ' '.join(['%s=\042%s\042'%(str(x),str(attrs[x])) for x in filtered_attrs_keys])
     return '<a href="%s" %s %s>%s</a>'%(href, ['', ' target="%s"'%target][int(len(target)>0)], str_attrs, content)
-
-################################################################################

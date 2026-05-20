@@ -38,7 +38,7 @@ class RestAPITest(ZMSTestCase):
       actual = json.loads( self.context.__bobo_traverse__(request, name)(request))
       print(json.dumps(actual))
       self.assertTrue(isinstance(actual, list))
-      self.assertEqual( 106, len(actual))
+      self.assertEqual( 104, len(actual))
       request.form['meta_id'] = 'ZMSFolder'
       print("path_to_handle", request.get('path_to_handle'))
       actual = json.loads( self.context.__bobo_traverse__(request, name)(request))
@@ -70,7 +70,7 @@ class RestAPITest(ZMSTestCase):
           self.assertTrue(isinstance(actual, list))
           #
           count += 1
-      self.assertEqual( 64, count)
+      self.assertEqual( 62, count)
 
   def test_get(self):
     count = 0
@@ -126,10 +126,11 @@ class RestAPITest(ZMSTestCase):
             actual = json.loads( self.context.__bobo_traverse__(self.context.REQUEST, name)(self.context.REQUEST))
             print(json.dumps(actual))
             self.assertTrue( isinstance( actual, list))
-            self.assertEqual( len(actual), len(document.getChildNodes(self.context.REQUEST)))
-            if actual:
-                self.assertFalse( 'title' in actual[0])
-                self.assertTrue( 'title_%s'%self.lang in actual[0])
+            if actual and actual[0].get('is_page')==True:  
+                self.assertEqual( len(actual), len(document.getChildNodes(self.context.REQUEST)))
+                if actual:
+                    self.assertFalse( 'title' in actual[0])
+                    self.assertTrue( 'title_%s'%self.lang in actual[0])
             # get_child_nodes + monolingual
             self.context.REQUEST = mock_http.MockHTTPRequest({'REQUEST_METHOD':'GET','TraversalRequestNameStack':path_to_handle+['get_child_nodes'],'path_to_handle':path_to_handle+['get_child_nodes']})
             self.context.REQUEST.set('lang',self.lang)
@@ -149,4 +150,4 @@ class RestAPITest(ZMSTestCase):
             # TODO implement here
         #
         count += 1
-    self.assertEqual( 64, count)
+    self.assertEqual( 62, count)

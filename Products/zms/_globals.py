@@ -1,23 +1,14 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
+"""
+_globals.py - ZMS Global Constants and Utilities
 
-################################################################################
-# _globals.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+This module defines global constants and utility classes used throughout
+the ZMS product, including datatype constants (DT_*), a static page
+template wrapper, a generic attribute container (MyClass), and a
+section-numbering helper (MySectionizer).
+
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
+"""
 
 # Imports.
 import sys
@@ -73,6 +64,14 @@ datatype_map = [
 ]
 
 def datatype_key(datatype):
+  """
+  Return the integer key for a given datatype name.
+
+  @param datatype: Datatype name (e.g. 'string', 'int', 'image')
+  @type datatype: C{str}
+  @return: Integer datatype key, or DT_UNKNOWN if not found
+  @rtype: C{int}
+  """
   for dt_index in range(len(datatype_map)):
     if datatype_map[dt_index][0] == datatype:
       return dt_index
@@ -93,60 +92,87 @@ def get_size(v):
   return sys.getsizeof(v)
 
 
-################################################################################
-# Define StaticPageTemplateFile.
-################################################################################
 class StaticPageTemplateFile(PageTemplateFile):
-  def setEnv(self, context, options):
-    self.context = context
-    self.options = options
-  def pt_getContext(self):
-    root = self.context.getPhysicalRoot()
-    context = self.context
-    options = self.options
-    c = {'template': self,
-         'here': context,
-         'context': context,
-         'options': options,
-         'root': root,
-         'request': getattr(root, 'REQUEST', None),
-         'modules': SecureModuleImporter,
-         }
-    return c
+    """
+    A PageTemplateFile subclass that allows injecting a custom context
+    and options dictionary into the template rendering environment.
+    """
+
+    def setEnv(self, context, options):
+        """
+        Set the rendering context and options for this template.
+
+        @param context: The ZMS object used as rendering context
+        @type context: C{ZMSObject}
+        @param options: Additional template options
+        @type options: C{dict}
+        """
+        self.context = context
+        self.options = options
+
+    def pt_getContext(self):
+      """
+      Build and return the namespace dictionary for page template rendering.
+
+      @return: Template namespace with 'template', 'here', 'context', etc.
+      @rtype: C{dict}
+      """
+      root = self.context.getPhysicalRoot()
+      context = self.context
+      options = self.options
+      c = {'template': self,
+          'here': context,
+          'context': context,
+          'options': options,
+          'root': root,
+          'request': getattr(root, 'REQUEST', None),
+          'modules': SecureModuleImporter,
+          }
+      return c
 
 
-################################################################################
-# Define MyClass.
-################################################################################
 class MyClass(object):
+    """
+    Generic attribute container that exposes its instance attributes
+    via a keys() method, similar to a dictionary.
+    """
   
-    # ----------------------------------------------------------------------------
-    #  MyClass.keys:
-    # ----------------------------------------------------------------------------
     def keys(self):
+      """
+      Return the names of all instance attributes.
+
+      @return: Attribute names
+      @rtype: C{dict_keys}
+      """
       return self.__dict__.keys()
 
 
-################################################################################
-# Define MySectionizer.
-################################################################################
 class MySectionizer(object):
+    """
+    Helper class for generating hierarchical section numbers
+    (e.g. '1.2.3.') with support for different numbering formats
+    (numeric, uppercase, lowercase).
+    """
 
-    # --------------------------------------------------------------------------
-    #  MySectionizer.__init__:
-    #
-    #  Constructor.
-    # --------------------------------------------------------------------------
     def __init__(self, levelnfc='0'):
+      """
+      Initialise a new MySectionizer.
+
+      @param levelnfc: Numbering format code. Expected values are
+        C{'0'} for numeric sections (1.2.3), C{'1'} for uppercase letters
+        (A.B.C), and C{'2'} for lowercase letters (a.b.c).
+      @type levelnfc: C{str}
+      """
       self.levelnfc = levelnfc
       self.sections = []
 
-    # --------------------------------------------------------------------------
-    #  MySectionizer.__str__:
-    #
-    #  Returns a string representation of the object.
-    # --------------------------------------------------------------------------
     def __str__(self):
+      """
+      Return a string representation of the current section number.
+
+      @return: Section string (e.g. '1.2.3.')
+      @rtype: C{str}
+      """
       s = ''
       for i in range(len(self.sections)):
         if self.levelnfc == '0':
@@ -157,26 +183,35 @@ class MySectionizer(object):
           s += chr(self.sections[i] - 1 + ord('a')) + '.'
       return s
 
-    # --------------------------------------------------------------------------
-    #  MySectionizer.clone:
-    #
-    #  Creates and returns a copy of this object.
-    # --------------------------------------------------------------------------
     def clone(self):
+      """
+      Create and return a deep copy of this sectionizer.
+
+      @return: Cloned MySectionizer instance
+      @rtype: C{MySectionizer}
+      """
       ob = MySectionizer(self.levelnfc)
       ob.sections = copy.deepcopy(self.sections)
       return ob
 
-    # --------------------------------------------------------------------------
-    #  MySectionizer.getLevel:
-    # --------------------------------------------------------------------------
     def getLevel(self):
+      """
+      Return the current nesting depth.
+
+      @return: Current level (number of sections)
+      @rtype: C{int}
+      """
       return len(self.sections)
 
-    # --------------------------------------------------------------------------
-    #  MySectionizer.processLevel:
-    # --------------------------------------------------------------------------
     def processLevel(self, level):
+      """
+      Update the section counter for the given nesting level.
+
+      @param level: Heading level to process. Expected values are positive
+        integers where C{1} is the top-level section and larger values
+        increase nesting depth.
+      @type level: C{int}
+      """
       # Increase section counter on this level.
       if level > 0:
         if level == len(self.sections):
@@ -188,5 +223,3 @@ class MySectionizer(object):
           for i in range(level, len(self.sections)):
             del self.sections[len(self.sections)-1]
           self.sections[level-1] = self.sections[level-1] + 1
-
-################################################################################

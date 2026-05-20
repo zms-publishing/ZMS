@@ -302,12 +302,12 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ObjChildren</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objchildren.py#L31" class="sourceLink">(source)</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ObjChildren</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objchildren.py#L20" class="sourceLink">(source)</a></code></p>
           <p><a href="classIndex.html#zms._objchildren.ObjChildren">View In Hierarchy</a></p>
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>Manage child-object creation and filtered child lookups.</p></div>
         </div>
 
         <div id="splitTables">
@@ -318,37 +318,37 @@
     
     <td>Method</td>
     <td><code><a href="#filteredObjChildren" class="internal-link" title="zms._objchildren.ObjChildren.filteredObjChildren">filtered<wbr></wbr>Obj<wbr></wbr>Children</a></code></td>
-    <td>Returns a NodeList that contains all visible children of this node in correct order. If none, this is a empty NodeList.</td>
+    <td>Return visible child nodes matching the configured child attribute.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getObjChildren" class="internal-link" title="zms._objchildren.ObjChildren.getObjChildren">get<wbr></wbr>Obj<wbr></wbr>Children</a></code></td>
-    <td>Returns a NodeList that contains all children of this node in correct order. If none, this is a empty NodeList.</td>
+    <td>Return child nodes matching the configured child attribute.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getObjChildrenAttr" class="internal-link" title="zms._objchildren.ObjChildren.getObjChildrenAttr">get<wbr></wbr>Obj<wbr></wbr>Children<wbr></wbr>Attr</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return the configured child definition for an object key.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#initObjChild" class="internal-link" title="zms._objchildren.ObjChildren.initObjChild">init<wbr></wbr>Obj<wbr></wbr>Child</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Create and initialize a child object for the current container.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#initObjChildren" class="internal-link" title="zms._objchildren.ObjChildren.initObjChildren">init<wbr></wbr>Obj<wbr></wbr>Children</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Initialize all configured child objects for the current metaobject.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#manage_initObjChild" class="internal-link" title="zms._objchildren.ObjChildren.manage_initObjChild">manage_init<wbr></wbr>Obj<wbr></wbr>Child</a></code></td>
-    <td>ObjChildren.manage_initObjChild</td>
+    <td>Handle ZMI creation of a new child object.</td>
   </tr><tr class="classvariable">
     
     <td>Class Variable</td>
     <td><code><a href="#__ac_permissions__" class="internal-link" title="zms._objchildren.ObjChildren.__ac_permissions__">__ac<wbr></wbr>_permissions__</a></code></td>
-    <td>############################################################################ ### ###  Constructor ### ############################################################################</td>
+    <td><span class="undocumented">Undocumented</span></td>
   </tr><tr class="classvariable">
     
     <td>Class Variable</td>
@@ -358,7 +358,7 @@
     
     <td>Method</td>
     <td><code><a href="#_initObjChildren" class="internal-link" title="zms._objchildren.ObjChildren._initObjChildren">_init<wbr></wbr>Obj<wbr></wbr>Children</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Ensure mandatory and repetitive child objects match metaobject rules.</td>
   </tr>
 </table>
           
@@ -380,7 +380,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">filteredObjChildren</span><span class="function-signature">(self, id, REQUEST, meta_types=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objchildren.py#L171">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objchildren.py#L178">
       
       (source)
     </a>
@@ -392,7 +392,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Returns a NodeList that contains all visible children of this node in correct order. If none, this is a empty NodeList.</p></div>
+    <div><p>Return visible child nodes matching the configured child attribute.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Child attribute key.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">The active HTTP request.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">meta<wbr></wbr>_types:</span><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Optional meta type filter.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Visible matching child nodes.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -407,7 +407,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getObjChildren</span><span class="function-signature">(self, id, REQUEST, meta_types=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objchildren.py#L153">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objchildren.py#L156">
       
       (source)
     </a>
@@ -419,7 +419,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Returns a NodeList that contains all children of this node in correct order. If none, this is a empty NodeList.</p></div>
+    <div><p>Return child nodes matching the configured child attribute.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Child attribute key.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">The active HTTP request.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">meta<wbr></wbr>_types:</span><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Optional meta type filter.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">Matching child nodes in document order.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -434,7 +434,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getObjChildrenAttr</span><span class="function-signature">(self, key, meta_type=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objchildren.py#L139">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objchildren.py#L136">
       
       (source)
     </a>
@@ -446,7 +446,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return the configured child definition for an object key.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">key:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Child attribute key.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">meta<wbr></wbr>_type:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Optional metaobject type override.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Child attribute configuration.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -461,7 +461,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">initObjChild</span><span class="function-signature">(self, id, _sort_id, type, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objchildren.py#L52">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objchildren.py#L33">
       
       (source)
     </a>
@@ -473,7 +473,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Create and initialize a child object for the current container.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Base object id.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">_sort<wbr></wbr>_id:</span><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">Sort position before normalization.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">type:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Child meta type.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">The active HTTP request.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">The created or reused child object.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -488,7 +488,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">initObjChildren</span><span class="function-signature">(self, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objchildren.py#L125">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objchildren.py#L120">
       
       (source)
     </a>
@@ -500,7 +500,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Initialize all configured child objects for the current metaobject.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">The active HTTP request.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -515,7 +515,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_initObjChild</span><span class="function-signature">(self, id, type, lang, REQUEST, RESPONSE=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objchildren.py#L184">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objchildren.py#L193">
       
       (source)
     </a>
@@ -527,7 +527,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>ObjChildren.manage_initObjChild</p></div>
+    <div><p>Handle ZMI creation of a new child object.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Base object id.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">type:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Child meta type.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">lang:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Active UI language.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">The active HTTP request.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">RESPONSE:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPResponse</tt></td><td class="fieldArgDesc">Optional HTTP response for redirects.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">Redirect response when <tt class="rst-docutils rst-literal">RESPONSE</tt> is provided.</td></tr></table></div>
   </div>
 </div><div class="baseclassvariable">
   
@@ -541,7 +541,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">__ac_permissions__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objchildren.py#L38">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objchildren.py#L29">
       
       (source)
     </a>
@@ -553,7 +553,7 @@
   </div>
   <div class="functionBody">
     
-    <div><p>############################################################################ ### ###  Constructor ### ############################################################################</p></div>
+    <div><p class="undocumented">Undocumented</p></div>
     
   </div>
 </div><div class="baseclassvariable">
@@ -568,7 +568,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">__authorPermissions__</span>: <code>tuple[<wbr></wbr>str, <wbr></wbr><span class="rst-variable-ellipsis">...</span>]</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objchildren.py#L35">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objchildren.py#L26">
       
       (source)
     </a>
@@ -596,7 +596,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">_initObjChildren</span><span class="function-signature">(self, obj_attr, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objchildren.py#L86">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_objchildren.py#L77">
       
       (source)
     </a>
@@ -608,7 +608,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Ensure mandatory and repetitive child objects match metaobject rules.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">obj<wbr></wbr>_attr:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Metaobject child attribute definition.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt></td><td class="fieldArgDesc">The active HTTP request.</td></tr></table></div>
   </div>
 </div>
         </div>

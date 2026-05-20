@@ -12,7 +12,7 @@ $ZMI.registerReady(function(){
 			if (manage_menu) {
 				$("#zmi-tab .breadcrumb").each(function() {
 					if ($(".btn-bookmark",this).length==0) {
-						$(this).append('<li class="btn-bookmark"><a href="javascript:;" title="Set Bookmark" class="align-text-top"><i class="far fa-bookmark text-muted"></a><li>');
+						$(this).append('<li class="btn-bookmark ml-1 text-primary"><a href="javascript:;" title="Set Bookmark" class="align-text-top"><i class="far fa-bookmark"></i></a></li>');
 					};
 					var key = "ZMS."+data_root+".bookmarks";
 					var bookmarks = $ZMILocalStorageAPI.get(key,[]);
@@ -39,9 +39,9 @@ $ZMI.registerReady(function(){
 					});
 					var index = bookmarks.indexOf(data_path);
 					if (index >= 0) {
-						$('.fa-bookmark',this).removeClass("far").addClass("fas text-primary");
+						$('.fa-bookmark',this).removeClass("far").addClass("fas");
 					} else {
-						$('.fa-bookmark',this).removeClass("fas text-primary").addClass("far text-muted");
+						$('.fa-bookmark',this).removeClass("fas").addClass("far");
 					}
 				});
 			}
@@ -64,7 +64,7 @@ $ZMI.registerReady(function(){
 						frames[i].zmiHistoryChanged();
 					}
 				}
-			} catch (e) { 
+			} catch (e) {
 			}
 		}
 	});
@@ -145,13 +145,59 @@ $ZMI.registerReady(function(){
 	}
 
 	// Context-Sensitive Help On Labels
-	$(".help").each(function() {
+	$('.help').each(function() {
 			$(this).hide();
 			var data_for = $(this).attr("data-for");
-			$("label[for="+data_for+"], label[for="+data_for+"_"+getZMILang()+"]").each(function() {
+			$('label[for="'+data_for+'"], label[for="'+data_for+'_'+getZMILang()+'"]').each(function() {
 					$(this).append('<i class="fas fa-info-circle text-info ml-1" title="'+getZMILangStr('TAB_HELP')+'..." onclick="var evt=arguments[0]||window.event;evt.stopPropagation();zmiModal(\'div.help[data-for='+data_for+']\',{title:\''+getZMILangStr('TAB_HELP')+': '+$(this).text().trim()+'\'})"></i>');
 				});
 		});
+
+	/**
+	 * Self-contained ZMI Readme Button
+	 * Handles click on .zmi-readme[data-readme] elements:
+	 * reads the readme URL from data-readme and the title from the title attribute,
+	 * opens a modal and loads the readme content via AJAX.
+	 */
+	$('.zmi-readme[data-readme]').on('click', function(e) {
+		e.preventDefault();
+		var $btn = $(this);
+		var url = $btn.data('readme');
+		var title = $btn.attr('title') || 'Help';
+		var print_url = './readme_html';
+		if (typeof url === 'string' && url.length > 0) {
+			if (url.indexOf('/readme?') >= 0) {
+				print_url = url.replace('/readme?', '/readme_html?');
+			}
+			else if (url.slice(-7) === '/readme') {
+				print_url = url + '_html';
+			}
+			else if (url.indexOf('readme?') >= 0) {
+				print_url = url.replace('readme?', 'readme_html?');
+			}
+		}
+		$.get(url, '', function(data) {
+            // if readme starts with a link, open it in a new tab
+            // otherwise show modal with rendered markdown content
+            const match = data.match(/<p>(https?:\/\/[^\s<"]+)/);
+            const url = match?.[1];
+            if (url) {
+                window.open(url, '_blank');
+            }
+            else {
+                zmiModal(null, {
+                    id: 'zmiModalreadme',
+                    title: title,
+                    body: '<div class="p-3 text-center"><i class="text-primary fas fa-circle-notch fa-spin fa-3x"></i></div>',
+                    modal: 'show'
+                });
+                $('#zmiModalreadme .modal-body').html(data);
+                document.body.style.paddingRight = '0px'; // Fix scrollbar shift when opening modal
+                // Add print button to modal footer
+                $('#zmiModalreadme .modal-footer').html('<a href="'+print_url+'" target="_blank" class="btn btn-secondary" title="Print/HTML"><i class="fas fa-print"></i></a>');
+            }
+		});
+	});
 
 	// Tooltip
 	$('[data-toggle="tooltip"]').tooltip();
@@ -574,6 +620,7 @@ $ZMI.registerReady(function(){
 	});
 
 });
+
 
 /**
  * Unlock form

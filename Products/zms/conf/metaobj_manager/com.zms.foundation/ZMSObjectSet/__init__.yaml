@@ -1,0 +1,190 @@
+ZMSObjectSet:
+  access:
+    insert_custom: '{$}'
+  enabled: 0
+  name: ZMSObjectSet
+  package: com.zms.foundation
+  revision: 5.0.1
+  type: ZMSObject
+  Attrs:
+    - id: icon_clazz
+      name: Icon (Class)
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: constant
+      custom: far fa-list-alt
+    - id: record_meta_ids
+      name: Type(s)
+      mandatory: 1
+      multilang: 0
+      repetitive: 0
+      type: multiselect
+      keys: |-
+        ##
+        l = []
+        request = context.REQUEST
+        metaobj_manager = context.getMetaobjManager()
+        l = [metaobj_manager.getMetaobj(x) for x in metaobj_manager.getMetaobjIds()]
+        l = [x for x in l if x['type'] in ['ZMSDocument','ZMSObject','ZMSRecordSet']]
+        l = [(x['id'],('%s %s'%(context.display_icon(meta_id=x['id']),context.display_type(meta_id=x['id']))).replace('<','<!--').replace('>','-->')) for x in l]
+        return l
+    - id: record_attr_ids
+      name: Attribute(s) [id:type,...]
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: string
+    - id: record_order_default
+      name: Sort-Order (Default) [id:asc|desc]
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: string
+    - id: effective_standard_html
+      name: Standard Html
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: text
+      default: |-
+        <!-- effective_standard_html(default) -->
+
+        <tal:block tal:define="zmscontext context">
+
+        <script src="/++resource++zms_/jquery/plugin/jquery.plugin.zmi_highlight.js"></script>
+        <script>
+        $(function() {
+        	var applyListFilter = function() {
+        			var filter = $('input.filter').val().toLowerCase().trim();
+        			var v = filter;
+        			var regexp = new RegExp('<span class="highlight(.*?)">(.*?)</span>', "gi");
+        			$(".card .card-header.matched").removeClass("matched").each(function() {
+        					var html = $(this).html();
+        					html = html.replace(regexp,'$2');
+        					$(this).html(html);
+        				});
+        			if (v.length>0) {
+        				$(".card .card-header a").each(function() {
+        						if ($(this).text().toLowerCase().indexOf(v)>=0) {
+        							htmlReplace($(this),'('+v+')','<span class="highlight">$1</span>');
+        							$(this).parent(".card-header").addClass("matched");
+        						}
+        					});
+        			}
+        			$(".card").each(function() {
+        					if ($(this).text().toLowerCase().indexOf(v)>=0) {
+        						$(this).show();
+        					}
+        					else {
+        						$(this).hide();
+        					}
+        				});
+        			$(window).trigger('resize');
+        		};
+        	var t = null;
+        	$('input.filter').focus().keyup(function(e) {
+        		var that = this;
+        		if (t != null) {
+        			clearTimeout(t);
+        		}
+        		t = setTimeout(applyListFilter, 500);
+        	});
+        });
+        </script>
+
+        	<form class="form-filter" method="get" tal:attributes="action request/URL">
+        		<div class="row">
+        			<div class="col-md-12">
+        				<div class="input-group">
+        					<div class="input-group-prepend">
+        						<span class="input-group-text"><i class="fas fa-filter"></i> <span class="badge badge-pill badge-info">0</span></span>
+        					</div>
+        					<input type="text" class="form-control filter" name="search" placeholder="Filter"/>
+        				</div><!-- .input-group -->
+        			</div>
+        		</div><!-- .row -->
+        	</form>
+
+        	<div class="ZMSObjectSet accordion" tal:define="recordSet python:zmscontext.getSelf().evalMetaobjAttr('recordSet_Prepare')">
+        		<div class="card" tal:repeat="record recordSet">
+        			<h3 class="card-header" tal:define="childNode python:zmscontext.operator_getattr(zmscontext,record['__id__'])">
+        				<a tal:attributes="href python:childNode.getHref2IndexHtml(request,deep=False); class python:childNode.meta_id;" tal:content="python:childNode.getTitle(request)">
+        					the title
+        				</a>
+        			</h3><!-- .card-header -->
+        		</div><!-- .card -->
+        	</div>
+
+        </tal:block>
+
+        <!-- /effective_standard_html(default) -->
+    - id: script.zmi.js
+      name: Script ZMI (JS)
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: resource
+    - id: attr_dc_identifier_doi
+      name: 'DC.Identifier: DOI (Declarative ID)'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: py
+    - id: interface0
+      name: interface0
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: interface
+    - id: records
+      name: Records
+      mandatory: 0
+      multilang: 0
+      repetitive: 1
+      type: '*'
+      keys:
+        - type(ZMSObject)
+        - type(ZMSDocument)
+    - id: publicRecordSetGrid
+      name: Grid record-set.
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: py
+    - id: sortChildNodes
+      name: Sort record-set
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: py
+    - id: recordSet_Prepare
+      name: Prepare record-set
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: py
+    - id: record_attrs
+      name: Record-Attrs
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: py
+    - id: record_handler
+      name: Record-Handler
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: py
+    - id: record_duplicate
+      name: Record-Duplicate
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: py
+    - id: standard_html
+      name: 'Template: ZMSObjectSet'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: zpt

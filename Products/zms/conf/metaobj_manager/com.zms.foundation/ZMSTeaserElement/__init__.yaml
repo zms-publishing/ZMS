@@ -1,0 +1,80 @@
+ZMSTeaserElement:
+  access:
+    insert_custom: '{$}'
+  enabled: 1
+  name: ZMSTeaserElement
+  package: com.zms.foundation
+  revision: 5.0.0
+  type: ZMSTeaserElement
+  Attrs:
+    - id: icon_clazz
+      name: Icon (Class)
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: constant
+      custom: fas fa-bullhorn
+    - id: f_css_defaults
+      name: 'CSS: Default'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: resource
+    - id: attr_penetrance
+      name: Penetrance
+      mandatory: 1
+      multilang: 0
+      repetitive: 0
+      type: select
+      keys:
+        - this
+        - sub_nav
+        - sub_all
+    - id: attr_url
+      name: Url
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: url
+    - id: attr_img
+      name: Image
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: image
+    - id: title
+      name: DC.Title
+      mandatory: 1
+      multilang: 1
+      repetitive: 0
+      type: title
+    - id: text
+      name: Text
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: richtext
+    - id: attr_img_src
+      name: 'Alias: Image'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: py
+    - id: attr_abstract
+      name: 'Alias: Abstract'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: py
+    - id: pageelement_TeaserElement
+      name: 'Template: Teaser-Element'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: Page Template
+    - id: standard_html
+      name: 'Template: ZMSTeaserElement'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: zpt

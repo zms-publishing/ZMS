@@ -1,20 +1,14 @@
-################################################################################
-# _blobfields.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+_blobfields.py - Blob, Image, and File Field Management for ZMS
+
+Blob fields are content attributes that store binary data (images, documents)
+within ZMS objects. This module provides the foundational classes and utilities
+for the entire blob field subsystem, enabling seamless integration of file uploads,
+secure access control, efficient HTTP delivery, and flexible storage backends.
+
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
+"""
 
 # Imports.
 from DateTime.DateTime import DateTime
@@ -43,32 +37,48 @@ def rfc1123_date():
  return 'ERROR rfc1123_date()'
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-_blobfields.rfc1123_date:
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def rfc1123_date(dt):
+  """
+  Format a UNIX timestamp as an RFC 1123 HTTP date.
+
+  @param dt: Timestamp value
+  @type dt: C{float} or C{int}
+  @return: RFC 1123 formatted date string
+  @rtype: C{str}
+  """
   from wsgiref.handlers import format_date_time
   stamp = time.mktime(time.gmtime(dt))
   return format_date_time(stamp)
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-_blobfields.bytes_hex:
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def bytes_hex(data):
-    hexdata = None
-    try:
-        hexdata = bytes(data).hex()
-    except:
-        hexdata = bytes(data, encoding='utf-8').hex()
-    return hexdata
+  """
+  Convert binary or text data to a hexadecimal string.
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-_blobfields.recurse_downloadRessources:
+  @param data: Input data
+  @type data: C{bytes} or C{str}
+  @return: Hexadecimal representation
+  @rtype: C{str}
+  """
+  hexdata = None
+  try:
+    hexdata = bytes(data).hex()
+  except:
+    hexdata = bytes(data, encoding='utf-8').hex()
+  return hexdata
 
-Download from ZODB to file-system during Export.
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 def recurse_downloadRessources(self, base_path, REQUEST):
+  """
+  Export blob resources from the ZODB to the filesystem.
+
+  @param self: ZMS context object
+  @param base_path: Export base path
+  @type base_path: C{str}
+  @param REQUEST: Zope request object
+  @return: Exported resource metadata entries
+  @rtype: C{list}
+  """
   ressources = []
   # Check Constraints.
   root = getattr( self, '__root__', None)
@@ -131,16 +141,20 @@ def recurse_downloadRessources(self, base_path, REQUEST):
   return ressources
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-_blobfields.createBlobField:
 
-Create blob-field of desired object-type and initialize it with given file.
 
-IN:    clazz        [C{MyImage}|C{MyFile}]
-        file        [ZPublisher.HTTPRequest.FileUpload|dictionary]
-OUT:    blob        [MyImage|MyFile]
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def createBlobField(self, objtype, file=b''):
+  """
+  Create a blob field instance and initialize it from uploaded data.
+
+  @param self: ZMS context object
+  @param objtype: Desired blob type
+  @type objtype: C{str}
+  @param file: Uploaded file data or metadata dictionary
+  @type file: C{bytes}, file-like, or C{dict}
+  @return: Created blob object
+  @rtype: L{MyImage} or L{MyFile}
+  """
   if isinstance(file,bytes):
     blob = uploadBlobField( self, objtype, file)
   elif isinstance(file, dict):
@@ -153,10 +167,19 @@ def createBlobField(self, objtype, file=b''):
   return blob
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-_blobfields.uploadBlobField
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def uploadBlobField(self, clazz, file=b'', filename=''):
+  """
+  Build a blob field from raw uploaded content.
+
+  @param self: ZMS context object
+  @param clazz: Requested blob datatype or class
+  @param file: Uploaded file content
+  @type file: C{bytes}, C{str}, or file-like
+  @param filename: Original filename
+  @type filename: C{str}
+  @return: Initialized blob object
+  @rtype: L{MyImage} or L{MyFile}
+  """
   try:
     file = file.read()
   except:
@@ -191,12 +214,19 @@ def uploadBlobField(self, clazz, file=b'', filename=''):
   return blob
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-_blobfields.getLangFilename:
   
-Returns filename concatenated with language suffix.
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def getLangFilename(self, filename, lang):
+  """
+  Append a language suffix to a filename when needed.
+
+  @param self: ZMS context object
+  @param filename: Original filename
+  @type filename: C{str}
+  @param lang: Language identifier
+  @type lang: C{str}
+  @return: Language-aware filename
+  @rtype: C{str}
+  """
   i = filename.rfind('.')
   name = filename[:i]
   ext = filename[i+1:]
@@ -214,12 +244,18 @@ def getLangFilename(self, filename, lang):
 ###
 ################################################################################
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-_blobfields.thumbnailImageFields:
 
-Process image-fields and shrink superres to hires and hires to lores. 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def thumbnailImageFields(self, lang, REQUEST):
+  """
+  Generate configured thumbnail variants for all image fields.
+
+  @param self: ZMS context object
+  @param lang: Language identifier
+  @type lang: C{str}
+  @param REQUEST: Zope request object
+  @return: Status message
+  @rtype: C{str}
+  """
   message = ''
   if pilutil.enabled():
     obj_attrs = self.getObjAttrs()
@@ -232,13 +268,24 @@ def thumbnailImageFields(self, lang, REQUEST):
   return message
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-_blobfields.thumbnailImage:
 
-Process image-field and shrink attribute given by hiresKey to attribute given 
-by loresKey. 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def thumbnailImage(self, hiresKey, loresKey, maxdim, lang, REQUEST):
+  """
+  Generate a thumbnail image from one image attribute into another.
+
+  @param self: ZMS context object
+  @param hiresKey: Source image attribute id
+  @type hiresKey: C{str}
+  @param loresKey: Target image attribute id
+  @type loresKey: C{str}
+  @param maxdim: Maximum thumbnail dimension
+  @type maxdim: C{int}
+  @param lang: Language identifier
+  @type lang: C{str}
+  @param REQUEST: Zope request object
+  @return: Status message
+  @rtype: C{str}
+  """
   message = ''
   try:
     if hiresKey in self.getObjAttrs() and REQUEST.get('generate_preview_%s_%s'%(hiresKey,lang),0) == 1:
@@ -249,18 +296,28 @@ def thumbnailImage(self, hiresKey, loresKey, maxdim, lang, REQUEST):
 
 
 ################################################################################
+# CLASS MyBlob
 ################################################################################
-###
-###   Class
-###
-################################################################################
-################################################################################
-class MyBlob(object):
 
-    # Documentation string.
-    __doc__ = """ZMS product module."""
-    # Version string. 
-    __version__ = '0.1' 
+class MyBlob(object):
+    """Base class for binary large objects (blobs) stored in ZMS.
+    
+    MyBlob provides the core functionality for managing files and images in ZMS,
+    including HTTP request handling, caching, range requests, and MediaDB integration.
+    
+    Features:
+    
+        - HTTP request/response handling via __call__() method
+        - Visibility and access permission checks
+        - HTTP caching headers (Last-Modified, If-Modified-Since, ETags)
+        - HTTP Range requests for partial content delivery
+        - Content-Type and Content-Disposition header management
+        - MediaDB file storage and retrieval with ZODB fallback
+        - Data serialization to XML format
+        - File copying and cloning support
+    
+    This is an abstract base class; use L{MyImage} for images or L{MyFile} for files.
+    """
 
     __class_name__ = '{{MyBlob}}'
     
@@ -502,12 +559,14 @@ class MyBlob(object):
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    MyBlob.equals
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def equals(self, ob):
       """
-      Indicates whether some other MyBlob-object is "equal to" this one.
+      Indicate whether another blob is equal to this one.
+
+      @param ob: Blob to compare against
+      @type ob: L{MyBlob}
+      @return: C{True} if both blobs have identical relevant attributes
+      @rtype: C{bool}
       """
       b = ob is not None
       try:
@@ -521,10 +580,18 @@ class MyBlob(object):
       return b
 
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    MyBlob._createCopy:
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def _createCopy(self, aq_parent, key, lang=None):
+      """
+      Create a copy of the blob bound to a new acquisition parent.
+
+      @param aq_parent: New acquisition parent
+      @param key: Attribute key
+      @type key: C{str}
+      @param lang: Optional language identifier
+      @type lang: C{str}
+      @return: Copied blob instance
+      @rtype: L{MyBlob}
+      """
       value = self._getCopy()
       value.is_blob = True
       value.aq_parent = aq_parent
@@ -536,22 +603,43 @@ class MyBlob(object):
       return value
 
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    MyBlob.__call__: 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def __bobo_traverse__(self, TraversalRequest, name):
+      """Return the blob itself during traversal."""
       return self
 
 
     __call____roles__ = None
     def __call__(self, REQUEST=None, **kw):
-      """"""
+      """
+      Handle HTTP request for blob object (file/image).
+      
+      This method processes requests for blob objects, handling:
+        - Visibility and access permission checks
+        - HTTP caching headers (Last-Modified, If-Modified-Since, ETags)
+        - Range requests for partial content delivery
+        - Content-Type and Content-Disposition headers
+        - MediaDB file retrieval or ZODB data fallback
+      
+      @param REQUEST: The HTTP request object containing headers and parameters
+      @type REQUEST: ZPublisher.HTTPRequest or None
+      @param kw: Additional keyword arguments
+      @return: Blob data as bytes or empty string, or self if not an HTTP request
+      @rtype: C{bytes} or C{str} or C{MyBlob}
+      """
       if REQUEST is not None and 'path_to_handle' in REQUEST:
         REQUEST['path_to_handle']=[]
         RESPONSE = REQUEST.RESPONSE
         parent = self.aq_parent
-        
-        access = parent.hasAccess( REQUEST) or parent.getConfProperty( 'ZMS.blobfields.grant_public_access', 0) == 1
+        try:
+          if not(parent.isVisible(REQUEST) and parent.getParentNode().isVisible(REQUEST)) and not REQUEST.get('preview') == 'preview':
+            # TODO: Implement more fine-grained access control and visibility checks for other contextual factors to determine if the request should be allowed or denied.
+            # Return 404 Not Found.
+            RESPONSE.setStatus(404)
+            raise zExceptions.NotFound()
+        except AttributeError:
+          # If parent doesn't have isVisible or getParentNode, we assume it's visible and continue with access checks.
+          pass
+        access = (parent.hasAccess( REQUEST) or parent.getConfProperty( 'ZMS.blobfields.grant_public_access', 0) == 1)
         # Hook for custom access rules: return True/False, return 404 (Forbidden) if you want to perform redirect
         if access:
           # @deprecated
@@ -642,17 +730,19 @@ class MyBlob(object):
     index_html=None
 
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    MyBlob.getObjAttrs:
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     getObjAttrs__roles__ = None
     def getObjAttrs(self, meta_type=None):
+      """
+      Return object attribute definitions for this blob.
+
+      @param meta_type: Optional meta type filter
+      @type meta_type: C{str}
+      @return: Attribute definition mapping
+      @rtype: C{dict}
+      """
       return {}
 
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    MyBlob.getData:
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     getData__roles__ = None
     def getData(self, parent=None):
       """
@@ -679,24 +769,27 @@ class MyBlob(object):
       return data
 
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    MyBlob.getDataURI
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     getDataURI__roles__ = None
     def getDataURI(self):
+      """
+      Return the blob payload as a data URI.
+
+      @return: Data URI for the blob
+      @rtype: C{str}
+      """
       dataURI = 'data:%s;base64,%s'%(self.getContentType(),base64.b64encode(self.getData()))
       return dataURI
 
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    MyBlob.getHref:
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     getHref__roles__ = None
     def getHref(self, REQUEST):
       """
-      Returns absolute url.
-      @var REQUEST: the triggering request
+      Return the absolute URL for this blob.
+
+      @param REQUEST: The triggering request
       @type REQUEST: ZPublisher.HTTPRequest
+      @return: Absolute URL including preview/version parameters when needed
+      @rtype: C{str}
       """
       parent = self.aq_parent
       key = self.key
@@ -717,10 +810,8 @@ class MyBlob(object):
       return href
 
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    MyBlob.on_setobjattr: 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def on_setobjattr(self):
+      """Persist blob data to MediaDB and detach acquisition wrappers when needed."""
       # store data in media-db.
       parent = self.aq_parent
       if parent is not None:
@@ -733,9 +824,6 @@ class MyBlob(object):
           self.aq_parent = None
 
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    MyBlob.getMediadbfile: 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     getMediadbfile__roles__ = None
     def getMediadbfile(self):
       """
@@ -745,9 +833,6 @@ class MyBlob(object):
       return getattr(self, 'mediadbfile', None)
 
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    MyBlob.getFilename: 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     getFilename__roles__ = None
     def getFilename(self):
       """
@@ -763,15 +848,9 @@ class MyBlob(object):
       return filename
 
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    MyBlob.get_size: 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     get_size__roles__ = None
 
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    MyBlob.get_real_size: 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     get_real_size__roles__ = None
     def get_real_size(self):
       """
@@ -784,9 +863,6 @@ class MyBlob(object):
         return len(self.mediadbfile)
 
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    MyBlob.getDataSizeStr:
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     getDataSizeStr__roles__ = None
     def getDataSizeStr(self):
       """
@@ -802,9 +878,6 @@ class MyBlob(object):
       return _fileutil.getDataSizeStr(self.get_size())
 
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    MyBlob.getContentType:
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     getContentType__roles__ = None
     def getContentType(self):
       """
@@ -815,9 +888,6 @@ class MyBlob(object):
       return self.content_type
 
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    MyBlob.getMimeTypeIconSrc:
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     getMimeTypeIconSrc__roles__ = None
     def getMimeTypeIconSrc(self):
       """
@@ -838,12 +908,25 @@ class MyBlob(object):
 ################################################################################
 
 class MyImage(MyBlob, Image):
-
-    # Documentation string.
-    __doc__ = """ZMS product module."""
-    # Version string. 
-    __version__ = '0.1' 
+    """ZMS image blob class for managing image files with metadata.
     
+    MyImage extends L{MyBlob} with image-specific functionality including:
+    
+    Image Features:
+    
+        - Width and height metadata tracking
+        - Automatic dimension detection from SVG and raster images
+        - Image resizing and thumbnail generation
+        - Configurable default dimensions (width, height)
+    
+    Data Management:
+    
+        - Inherits blob storage from L{MyBlob} (ZODB or MediaDB)
+        - XML serialization with width/height attributes
+        - Content-type handling (image/png, image/jpeg, image/svg+xml, etc.)
+    
+    Uses OFS.Image.Image as the underlying Zope file storage mechanism.
+    """
 
     __obj_attrs__  = ['content_type', 'size', 'data', 'filename', 'mediadbfile', 'width', 'height', 'aq_parent']
     __xml_attrs__  = ['content_type', 'width', 'height']
@@ -951,15 +1034,30 @@ class MyImage(MyBlob, Image):
 
 
 ################################################################################
+# CLASS MyFile
 ################################################################################
 
 class MyFile(MyBlob, File):
-
-    # Documentation string.
-    __doc__ = """ZMS product module."""
-    # Version string. 
-    __version__ = '0.1' 
-
+    """ZMS file blob class for managing binary and text files.
+    
+    MyFile extends L{MyBlob} with file-specific functionality including:
+    
+    File Features:
+    
+        - Generic binary and text file storage
+        - Support for documents, archives, code files, etc.
+        - Content-type detection and management
+        - File size tracking and reporting
+    
+    Data Management:
+    
+        - Inherits blob storage from L{MyBlob} (ZODB or MediaDB)
+        - XML serialization with content-type attributes
+        - Support for text-based content (CSS, JavaScript, SVG, etc.)
+        - HTTP caching and range request handling
+    
+    Uses OFS.File.File as the underlying Zope file storage mechanism.
+    """
 
     __obj_attrs__  = ['content_type', 'size', 'data', 'filename', 'mediadbfile', 'aq_parent']
     __xml_attrs__  = ['content_type']
@@ -1021,11 +1119,22 @@ class MyFile(MyBlob, File):
 
 
 ################################################################################
+# CLASS MyBlobDelegate
 ################################################################################
 
 class MyBlobDelegate(object):
+  """Simple delegate wrapper for blob objects.
+  
+  MyBlobDelegate provides a lightweight proxy pattern for wrapping blob objects,
+  allowing delegation of method calls to the wrapped blob instance.
+  """
 
   def __init__(self, delegate):
+    """Initialize the delegate wrapper.
+    
+    @param delegate: The blob object to wrap and delegate to
+    @type delegate: L{MyBlob} | L{MyImage} | L{MyFile}
+    """
     self._delegate = delegate
 
   delegate__roles__ = None
@@ -1034,57 +1143,81 @@ class MyBlobDelegate(object):
 
 
 ################################################################################
+# CLASS MyBlobWrapper
 ################################################################################
 
 class MyBlobWrapper(object):
-
-    # Documentation string.
-    __doc__ = """ZMS product module."""
-    # Version string. 
-    __version__ = '0.1' 
-
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    MyBlobWrapper.__init__:
+    """Wrapper for external Zope file objects to provide blob-like interface.
     
-    Constructor
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    MyBlobWrapper adapts external file objects (OFS.File.File, OFS.Image.Image)
+    from other Zope containers to provide a consistent blob-like interface compatible
+    with ZMS blob field handling.
+    
+    Features:
+    
+        - Wraps external file objects
+        - Provides blob-compatible method signatures
+        - Lazy data access through delegation
+        - URI data retrieval as base64-encoded data URIs
+        - Filename and URL extraction
+    
+    This class is used for cross-container file references and external file handling
+    while maintaining compatibility with native ZMS blob operations.
+    """
+
+    
     def __init__(self, f):
+      """
+      Initialize the wrapper around an external file object.
+
+      @param f: Wrapped file or image object
+      """
       self.f = f
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    MyBlobWrapper.getHref:
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     getHref__roles__ = None
     def getHref(self, REQUEST):
+      """
+      Return the absolute URL of the wrapped file object.
+
+      @param REQUEST: Triggering request
+      @type REQUEST: ZPublisher.HTTPRequest
+      @return: Absolute URL
+      @rtype: C{str}
+      """
       return self.f.absolute_url()
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    MyBlobWrapper.getFilename: 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     getFilename__roles__ = None
     def getFilename(self):
+      """
+      Return the identifier of the wrapped file object.
+
+      @return: Filename or id
+      @rtype: C{str}
+      """
       return self.f.getId()
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    MyBlobWrapper.getData:
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     getData__roles__ = None
     def getData(self, parent=None):
+      """
+      Return the wrapped file data.
+
+      @param parent: Unused compatibility parameter
+      @return: Raw file data
+      """
       return self.f.data
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    MyBlobWrapper.getDataURI:
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     getDataURI__roles__ = None
     def getDataURI(self):
+      """
+      Return the wrapped file as a data URI.
+
+      @return: Data URI for the wrapped file
+      @rtype: C{str}
+      """
       dataURI = 'data:%s;base64,%s'%(self.getContentType(),base64.b64encode(self.getData()))
       return dataURI
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    MyBlobWrapper.__str__:
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     __str____roles__ = None
     def __str__(self):
+      """Return the wrapped data decoded as text."""
       return self.getData().decode()
-
-################################################################################

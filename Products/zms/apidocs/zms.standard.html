@@ -924,6 +924,16 @@
         
 
         
+            <div class="itemName"><code><a href="#scalar" class="internal-link" title="zms.standard.scalar">scalar</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
             <div class="itemName"><code><a href="#sendMail" class="internal-link" title="zms.standard.sendMail">send<wbr></wbr>Mail</a></code>
             </div>
         
@@ -995,6 +1005,16 @@
 
         
             <div class="itemName"><code><a href="#str_json" class="internal-link" title="zms.standard.str_json">str<wbr></wbr>_json</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#str_yaml" class="internal-link" title="zms.standard.str_yaml">str<wbr></wbr>_yaml</a></code>
             </div>
         
 
@@ -1404,6 +1424,16 @@
 
         
             <div class="itemName"><code><a href="zms.svgutil.html" class="internal-link" title="zms.svgutil">svgutil</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.yamlutil.html" class="internal-link" title="zms.yamlutil">yamlutil</a></code>
             </div>
         
 
@@ -1973,6 +2003,16 @@
         
 
         
+            <div class="itemName"><code><a href="zms._version.html" class="internal-link" title="zms._version">_version</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
             <div class="itemName"><code><a href="zms._versionmanager.html" class="internal-link" title="zms._versionmanager">_versionmanager</a></code>
             </div>
         
@@ -2115,27 +2155,7 @@
         <div class="childrenKindTitle">Variables</div>
         <ul>
     
-    <li class="">
-        
-        
-        
-
-        
-            <div class="itemName"><code><a href="index.html#__doc__" class="internal-link" title="zms.__doc__">__doc__</a></code>
-            </div>
-        
-
-    </li><li class="">
-        
-        
-        
-
-        
-            <div class="itemName"><code><a href="index.html#__version__" class="internal-link" title="zms.__version__">__version__</a></code>
-            </div>
-        
-
-    </li><li class="private">
+    <li class="private">
         
         
         
@@ -2186,13 +2206,15 @@
         </div>
 
         <div class="moduleDocstring">
-          <div><p>ZMS standard utility module</p>
-<p>This module provides helpful functions and classes for use in Python Scripts.  It can be accessed from Python with the statement "import Products.zms.standard"</p>
+          <div><p>standard.py</p>
+<p>Shared utility helpers used throughout ZMS.</p>
+<p>This module contains low-level helpers (string/list/dict utilities, HTTP and filesystem wrappers, date/time formatting, logging helpers, templating execution helpers, and XML/serialization functions) that are imported across the codebase.</p>
+<p>License: GNU General Public License v2 or later, Organization: ZMS Publishing</p>
 </div>
         </div>
 
         <div id="splitTables">
-          <table class="children sortable" id="id152">
+          <table class="children sortable" id="id153">
   
   
   <tr class="class">
@@ -2389,7 +2411,7 @@
     
     <td>Function</td>
     <td><code><a href="#html_quote" class="internal-link" title="zms.standard.html_quote">html<wbr></wbr>_quote</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Return HTML-escaped string representation of the given value.</td>
   </tr><tr class="function">
     
     <td>Function</td>
@@ -2589,6 +2611,11 @@
     
     <td>Function</td>
     <td><code><a href="#remove_tags" class="internal-link" title="zms.standard.remove_tags">remove<wbr></wbr>_tags</a></code></td>
+    <td>Strip HTML/script/style/meta tags and normalize whitespace.</td>
+  </tr><tr class="function">
+    
+    <td>Function</td>
+    <td><code><a href="#scalar" class="internal-link" title="zms.standard.scalar">scalar</a></code></td>
     <td><span class="undocumented">Undocumented</span></td>
   </tr><tr class="function">
     
@@ -2630,6 +2657,11 @@
     <td>Function</td>
     <td><code><a href="#str_json" class="internal-link" title="zms.standard.str_json">str<wbr></wbr>_json</a></code></td>
     <td>Returns a json-string representation of the object.</td>
+  </tr><tr class="function">
+    
+    <td>Function</td>
+    <td><code><a href="#str_yaml" class="internal-link" title="zms.standard.str_yaml">str<wbr></wbr>_yaml</a></code></td>
+    <td>Returns a YAML-string representation of the object.</td>
   </tr><tr class="function">
     
     <td>Function</td>
@@ -2756,7 +2788,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">addZMSCustom</span><span class="function-signature">(self, meta_id=None, values={}, REQUEST=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L176">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L162">
       
       (source)
     </a>
@@ -2783,7 +2815,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">aggregate_list</span><span class="function-signature">(l, i)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2155">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2175">
       
       (source)
     </a>
@@ -2810,7 +2842,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">cmp</span><span class="function-signature">(x, y)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1932">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1902">
       
       (source)
     </a>
@@ -2837,7 +2869,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">compareDate</span><span class="function-signature">(t0, t1)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1476">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1461">
       
       (source)
     </a>
@@ -2870,7 +2902,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">concat_list</span><span class="function-signature">(l1, l2)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1824">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1794">
       
       (source)
     </a>
@@ -2897,7 +2929,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">copy_list</span><span class="function-signature">(l)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2117">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2137">
       
       (source)
     </a>
@@ -2924,7 +2956,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">daysBetween</span><span class="function-signature">(t0, t1)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1438">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1423">
       
       (source)
     </a>
@@ -2951,7 +2983,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">dict_list</span><span class="function-signature">(l)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1842">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1812">
       
       (source)
     </a>
@@ -2978,7 +3010,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">difference_list</span><span class="function-signature">(l1, l2)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1808">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1778">
       
       (source)
     </a>
@@ -3005,7 +3037,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">distinct_list</span><span class="function-signature">(l, i=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1859">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1829">
       
       (source)
     </a>
@@ -3032,7 +3064,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">dt_exec</span><span class="function-signature">(context, v, o={})</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2301">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2308">
       
       (source)
     </a>
@@ -3059,7 +3091,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">dt_executable</span><span class="function-signature">(v)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2283">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2289">
       
       (source)
     </a>
@@ -3086,7 +3118,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">dt_html</span><span class="function-signature">(context, value, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2322">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2330">
       
       (source)
     </a>
@@ -3113,7 +3145,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">dt_py</span><span class="function-signature">(context, script, kw={})</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2352">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2361">
       
       (source)
     </a>
@@ -3140,7 +3172,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">dt_tal</span><span class="function-signature">(context, text, options={})</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2389">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2399">
       
       (source)
     </a>
@@ -3167,7 +3199,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">encrypt_ordtype</span><span class="function-signature">(s)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L653">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L624">
       
       (source)
     </a>
@@ -3194,7 +3226,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">encrypt_password</span><span class="function-signature">(pw, algorithm=<span class="rst-variable-quote">'</span><span class="rst-variable-string">md5</span><span class="rst-variable-quote">'</span>, hex=False)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L628">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L598">
       
       (source)
     </a>
@@ -3221,7 +3253,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">encrypt_schemes</span><span class="function-signature">()</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L618">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L588">
       
       (source)
     </a>
@@ -3248,7 +3280,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">FileFromData</span><span class="function-signature">(context, data, filename=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, content_type=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L267">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L244">
       
       (source)
     </a>
@@ -3275,7 +3307,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">filter_list</span><span class="function-signature">(l, i, v, o=<span class="rst-variable-quote">'</span><span class="rst-variable-string">%</span><span class="rst-variable-quote">'</span>)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2019">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2039">
       
       (source)
     </a>
@@ -3302,7 +3334,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">format_datetime_iso</span><span class="function-signature">(t)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1306">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1288">
       
       (source)
     </a>
@@ -3329,7 +3361,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_installed_packages</span><span class="function-signature">(pip_cmd=<span class="rst-variable-quote">'</span><span class="rst-variable-string">freeze</span><span class="rst-variable-quote">'</span>)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L377">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L350">
       
       (source)
     </a>
@@ -3356,7 +3388,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_session</span><span class="function-signature">(context)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L838">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L809">
       
       (source)
     </a>
@@ -3383,7 +3415,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_session_value</span><span class="function-signature">(context, key, defaultValue=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L846">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L817">
       
       (source)
     </a>
@@ -3410,7 +3442,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getDataSizeStr</span><span class="function-signature">(len)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L688">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L659">
       
       (source)
     </a>
@@ -3437,7 +3469,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getDateTime</span><span class="function-signature">(t)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1383">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1366">
       
       (source)
     </a>
@@ -3464,7 +3496,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getFileTypeIconCSS</span><span class="function-signature">(fn)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L710">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L681">
       
       (source)
     </a>
@@ -3491,7 +3523,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getINSTANCE_HOME</span><span class="function-signature">()</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L246">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L223">
       
       (source)
     </a>
@@ -3518,7 +3550,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getLangFmtDate</span><span class="function-signature">(context, t, lang=None, fmt_str=<span class="rst-variable-quote">'</span><span class="rst-variable-string">SHORTDATETIME_FMT</span><span class="rst-variable-quote">'</span>)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1331">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1314">
       
       (source)
     </a>
@@ -3545,7 +3577,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getLog</span><span class="function-signature">(context)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1088">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1058">
       
       (source)
     </a>
@@ -3557,7 +3589,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Get zms_log.</p></div>
+    <div><p>Get zms_log.</p>
+<p>The ZMS component zms_log is a wrapper for the standard Zope-logger which can be enabled in ZMS-configuration. If zms_log is enabled, debug-information can be logged with writeLog, writeBlock and writeError. The log-messages are stored in a log-file on the server and can be viewed in the ZMS-Management-Interface.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">context:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">Context</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">zms_log or None if zms_log is not enabled in ZMS-configuration.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -3572,7 +3606,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getMimeTypeIconSrc</span><span class="function-signature">(mt)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L699">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L670">
       
       (source)
     </a>
@@ -3599,7 +3633,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getPACKAGE_HOME</span><span class="function-signature">()</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L236">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L213">
       
       (source)
     </a>
@@ -3626,7 +3660,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getPlugin</span><span class="function-signature">(context, path, options={})</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2535">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2543">
       
       (source)
     </a>
@@ -3653,7 +3687,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getPRODUCT_HOME</span><span class="function-signature">()</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L226">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L203">
       
       (source)
     </a>
@@ -3680,7 +3714,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getTempFile</span><span class="function-signature">(context, id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2562">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2570">
       
       (source)
     </a>
@@ -3707,7 +3741,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getXmlHeader</span><span class="function-signature">(encoding=<span class="rst-variable-quote">'</span><span class="rst-variable-string">utf-8</span><span class="rst-variable-quote">'</span>)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2185">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2197">
       
       (source)
     </a>
@@ -3734,7 +3768,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">guess_content_type</span><span class="function-signature">(filename, data)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L531">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L504">
       
       (source)
     </a>
@@ -3761,7 +3795,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">html_quote</span><span class="function-signature">(v, name=<span class="rst-variable-quote">'</span><span class="rst-variable-string">(Unknown name)</span><span class="rst-variable-quote">'</span>, md={})</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L567">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L537">
       
       (source)
     </a>
@@ -3773,7 +3807,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Return HTML-escaped string representation of the given value.</p></div>
   </div>
 </div><div class="basefunction">
   
@@ -3788,7 +3822,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">htmldiff</span><span class="function-signature">(original, changed)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2253">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2265">
       
       (source)
     </a>
@@ -3815,7 +3849,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">http_import</span><span class="function-signature">(context, url, method=<span class="rst-variable-quote">'</span><span class="rst-variable-string">GET</span><span class="rst-variable-quote">'</span>, auth=None, parse_qs=0, timeout=10, headers={<wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">Accept</span><span class="rst-variable-quote">'</span>: <span class="rst-variable-quote">'</span><span class="rst-variable-string">*/*</span><span class="rst-variable-quote">'</span>}, debug=0)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L982">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L953">
       
       (source)
     </a>
@@ -3841,8 +3875,8 @@
   <div class="functionHeader">
     
     
-    <span class="py-keyword">def</span> <span class="py-defname">http_request</span><span class="function-signature">(url, method=<span class="rst-variable-quote">'</span><span class="rst-variable-string">GET</span><span class="rst-variable-quote">'</span>, **kwargs)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L969">
+    <span class="py-keyword">def</span> <span class="py-defname">http_request</span><span class="function-signature">(url, method=<span class="rst-variable-quote">'</span><span class="rst-variable-string">GET</span><span class="rst-variable-quote">'</span>, return_type=None, **kwargs)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L934">
       
       (source)
     </a>
@@ -3869,7 +3903,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">id_prefix</span><span class="function-signature">(s)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L773">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L744">
       
       (source)
     </a>
@@ -3896,7 +3930,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">id_quote</span><span class="function-signature">(s, mapping={<wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string"> </span><span class="rst-variable-quote">'</span>: <span class="rst-variable-quote">'</span><span class="rst-variable-string">_</span><span class="rst-variable-quote">'</span>, <wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">-</span><span class="rst-variable-quote">'</span>: <span class="rst-variable-quote">'</span><span class="rst-variable-string">_</span><span class="rst-variable-quote">'</span>, <wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">/</span><span class="rst-variable-quote">'</span>: <span class="rst-variable-quote">'</span><span class="rst-variable-string">_</span><span class="rst-variable-quote">'</span>})</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L785">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L756">
       
       (source)
     </a>
@@ -3923,7 +3957,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">ImageFromData</span><span class="function-signature">(context, data, filename=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, content_type=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L280">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L257">
       
       (source)
     </a>
@@ -3950,7 +3984,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">initZMS</span><span class="function-signature">(self, id, titlealt, title, lang, manage_lang, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L211">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L188">
       
       (source)
     </a>
@@ -3977,7 +4011,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">intersection_list</span><span class="function-signature">(l1, l2)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1794">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1764">
       
       (source)
     </a>
@@ -4004,7 +4038,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">is_conf_enabled</span><span class="function-signature">(context, setting)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2595">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2603">
       
       (source)
     </a>
@@ -4031,7 +4065,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">is_equal</span><span class="function-signature">(x, y)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1936">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1907">
       
       (source)
     </a>
@@ -4058,7 +4092,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">isManagementInterface</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L914">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L885">
       
       (source)
     </a>
@@ -4085,7 +4119,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">isPreviewRequest</span><span class="function-signature">(REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L929">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L900">
       
       (source)
     </a>
@@ -4112,7 +4146,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">localfs_read</span><span class="function-signature">(filename, mode=<span class="rst-variable-quote">'</span><span class="rst-variable-string">b</span><span class="rst-variable-quote">'</span>, cache=<span class="rst-variable-quote">'</span><span class="rst-variable-string">public, max-age=3600</span><span class="rst-variable-quote">'</span>, REQUEST=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1708">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1686">
       
       (source)
     </a>
@@ -4139,7 +4173,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">localfs_readPath</span><span class="function-signature">(filename, data=False, recursive=False, REQUEST=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1770">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1748">
       
       (source)
     </a>
@@ -4166,7 +4200,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">localfs_remove</span><span class="function-signature">(path, deep=0)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1759">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1737">
       
       (source)
     </a>
@@ -4193,7 +4227,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">localfs_write</span><span class="function-signature">(filename, v, mode=<span class="rst-variable-quote">'</span><span class="rst-variable-string">b</span><span class="rst-variable-quote">'</span>)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1744">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1722">
       
       (source)
     </a>
@@ -4220,7 +4254,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">nvl</span><span class="function-signature">(a1, a2, n=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L821">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L792">
       
       (source)
     </a>
@@ -4247,7 +4281,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">once</span><span class="function-signature">(key, request)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L362">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L335">
       
       (source)
     </a>
@@ -4274,7 +4308,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">operator_contains</span><span class="function-signature">(c, v, ignorecase=False)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1567">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1545">
       
       (source)
     </a>
@@ -4301,7 +4335,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">operator_delattr</span><span class="function-signature">(a, b)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1681">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1666">
       
       (source)
     </a>
@@ -4328,7 +4362,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">operator_delitem</span><span class="function-signature">(a, b)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1637">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1619">
       
       (source)
     </a>
@@ -4355,7 +4389,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">operator_getattr</span><span class="function-signature">(a, b, c=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1665">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1649">
       
       (source)
     </a>
@@ -4382,7 +4416,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">operator_getitem</span><span class="function-signature">(a, b, c=None, ignorecase=True)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1613">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1594">
       
       (source)
     </a>
@@ -4409,7 +4443,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">operator_gettype</span><span class="function-signature">(v)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1585">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1564">
       
       (source)
     </a>
@@ -4436,7 +4470,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">operator_itemgetter</span><span class="function-signature">(key, val, dictionary)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1692">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1678">
       
       (source)
     </a>
@@ -4463,7 +4497,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">operator_setattr</span><span class="function-signature">(a, b, c)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1648">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1631">
       
       (source)
     </a>
@@ -4490,7 +4524,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">operator_setitem</span><span class="function-signature">(a, b, c)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1596">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1576">
       
       (source)
     </a>
@@ -4517,7 +4551,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">parse_json</span><span class="function-signature">(*args, **kwargs)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1959">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1946">
       
       (source)
     </a>
@@ -4544,7 +4578,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">parseLangFmtDate</span><span class="function-signature">(s)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1495">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1481">
       
       (source)
     </a>
@@ -4571,7 +4605,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">parseXmlString</span><span class="function-signature">(xml)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2215">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2227">
       
       (source)
     </a>
@@ -4598,7 +4632,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">processData</span><span class="function-signature">(context, processId, data, trans=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2234">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2246">
       
       (source)
     </a>
@@ -4625,7 +4659,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">pybool</span><span class="function-signature">(v)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L61">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L47">
       
       (source)
     </a>
@@ -4652,7 +4686,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">pystr</span><span class="function-signature">(v, encoding=<span class="rst-variable-quote">'</span><span class="rst-variable-string">utf-8</span><span class="rst-variable-quote">'</span>, errors=<span class="rst-variable-quote">'</span><span class="rst-variable-string">strict</span><span class="rst-variable-quote">'</span>)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L65">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L51">
       
       (source)
     </a>
@@ -4679,7 +4713,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">qs_append</span><span class="function-signature">(qs, p, v)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L807">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L778">
       
       (source)
     </a>
@@ -4706,7 +4740,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">raiseError</span><span class="function-signature">(error_type, error_value)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2581">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2589">
       
       (source)
     </a>
@@ -4733,7 +4767,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">rand_int</span><span class="function-signature">(n)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L675">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L646">
       
       (source)
     </a>
@@ -4760,7 +4794,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">re_findall</span><span class="function-signature">(pattern, text, ignorecase=False)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1231">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1219">
       
       (source)
     </a>
@@ -4772,7 +4806,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Return all non-overlapping matches of pattern in string, as a list of strings. The string is scanned left-to-right, and matches are returned in the order found. If one or more groups are present in the pattern, return a list of groups; this will be a list of tuples if the pattern has more than one group. Empty matches are included in the result unless they touch the beginning of another match convenience-function since re cannot be imported in restricted python</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">pattern:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">the regular expression to which this string is to be matched</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">text</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">ignorecase</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr></table></div>
+    <div><p>Return all non-overlapping matches of pattern in string, as a list of strings. The string is scanned left-to-right, and matches are returned in the order found. If one or more groups are present in the pattern, return a list of groups; this will be a list of tuples if the pattern has more than one group. Empty matches are included in the result unless they touch the beginning of another match convenience-function since re cannot be imported in restricted python</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">pattern:</span><tt class="rst-docutils rst-literal">raw str</tt></td><td class="fieldArgDesc">the regular expression to which this string is to be matched</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">text</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">ignorecase</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -4787,7 +4821,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">re_search</span><span class="function-signature">(pattern, subject, ignorecase=False)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1212">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1198">
       
       (source)
     </a>
@@ -4799,7 +4833,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Scan through string looking for a location where the regular expression pattern produces a match, and return a corresponding MatchObject instance. Return None if no position in the string matches the pattern; note that this is different from finding a zero-length match at some point in the string. convenience-function since re cannot be imported in restricted python</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">pattern:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">the regular expression to which this string is to be matched</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">subject</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">ignorecase</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr></table></div>
+    <div><p>Scan through string looking for a location where the regular expression pattern produces a match, and return a corresponding MatchObject instance. Return None if no position in the string matches the pattern; note that this is different from finding a zero-length match at some point in the string. convenience-function since re cannot be imported in restricted python</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">pattern:</span><tt class="rst-docutils rst-literal">raw str</tt></td><td class="fieldArgDesc">the regular expression to which this string is to be matched</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">subject</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">ignorecase</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -4814,7 +4848,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">re_sub</span><span class="function-signature">(pattern, replacement, subject, ignorecase=False)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1188">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1172">
       
       (source)
     </a>
@@ -4826,7 +4860,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Performs a search-and-replace across subject, replacing all matches of regex in subject with replacement. The result is returned by the sub() function. The subject string you pass is not modified. Convenience-function since re cannot be imported in restricted python.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">pattern:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">the regular expression to which this string is to be matched</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">replacement:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">the string to be substituted for each match</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">subject:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">the string in which the replacement has to be done</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">ignorecase:</span><tt class="rst-docutils rst-literal">Bool=False</tt></td><td class="fieldArgDesc">ignore case considerations</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">the resulting string.</td></tr></table></div>
+    <div><p>Performs a search-and-replace across subject, replacing all matches of regex in subject with replacement. The result is returned by the sub() function. The subject string you pass is not modified. Convenience-function since re cannot be imported in restricted python.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">pattern:</span><tt class="rst-docutils rst-literal">raw str</tt></td><td class="fieldArgDesc">the regular expression to which this string is to be matched</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">replacement:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">the string to be substituted for each match</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">subject:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">the string in which the replacement has to be done</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">ignorecase:</span><tt class="rst-docutils rst-literal">Bool=False</tt></td><td class="fieldArgDesc">ignore case considerations</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">the resulting string.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -4841,11 +4875,38 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">remove_tags</span><span class="function-signature">(s)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L578">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L546">
       
       (source)
     </a>
     <a class="headerLink" href="#remove_tags" title="zms.standard.remove_tags">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Strip HTML/script/style/meta tags and normalize whitespace.</p></div>
+  </div>
+</div><div class="basefunction">
+  
+  
+  <a name="zms.standard.scalar">
+    
+  </a>
+  <a name="scalar">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">scalar</span><span class="function-signature">(o)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1931">
+      
+      (source)
+    </a>
+    <a class="headerLink" href="#scalar" title="zms.standard.scalar">
       
       
       ¶
@@ -4868,7 +4929,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">sendMail</span><span class="function-signature">(context, mto, msubject, mbody, REQUEST=None, mattach=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2418">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2426">
       
       (source)
     </a>
@@ -4895,7 +4956,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">set_response_headers</span><span class="function-signature">(fn, mt=<span class="rst-variable-quote">'</span><span class="rst-variable-string">application/octet-stream</span><span class="rst-variable-quote">'</span>, size=None, request=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L294">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L271">
       
       (source)
     </a>
@@ -4922,7 +4983,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">set_response_headers_cache</span><span class="function-signature">(context, request=None, cache_max_age=24 * 3600, cache_s_maxage=-1)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L309">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L286">
       
       (source)
     </a>
@@ -4962,7 +5023,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">set_session_value</span><span class="function-signature">(context, key, value)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L857">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L828">
       
       (source)
     </a>
@@ -4989,7 +5050,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">sort_item</span><span class="function-signature">(i)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1879">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1849">
       
       (source)
     </a>
@@ -5016,7 +5077,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">sort_list</span><span class="function-signature">(l, qorder=None, qorderdir=<span class="rst-variable-quote">'</span><span class="rst-variable-string">asc</span><span class="rst-variable-quote">'</span>, ignorecase=1)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1893">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1863">
       
       (source)
     </a>
@@ -5043,7 +5104,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">str_item</span><span class="function-signature">(i, f=False)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2002">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2022">
       
       (source)
     </a>
@@ -5070,7 +5131,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">str_json</span><span class="function-signature">(i, encoding=<span class="rst-variable-quote">'</span><span class="rst-variable-string">ascii</span><span class="rst-variable-quote">'</span>, errors=<span class="rst-variable-quote">'</span><span class="rst-variable-string">xmlcharrefreplace</span><span class="rst-variable-quote">'</span>, formatted=False, level=0, allow_booleans=True, sort_keys=True)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1967">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1955">
       
       (source)
     </a>
@@ -5087,6 +5148,33 @@
 </div><div class="basefunction">
   
   
+  <a name="zms.standard.str_yaml">
+    
+  </a>
+  <a name="str_yaml">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">str_yaml</span><span class="function-signature">(i, encoding=<span class="rst-variable-quote">'</span><span class="rst-variable-string">utf-8</span><span class="rst-variable-quote">'</span>, errors=<span class="rst-variable-quote">'</span><span class="rst-variable-string">xmlcharrefreplace</span><span class="rst-variable-quote">'</span>, level=0)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1990">
+      
+      (source)
+    </a>
+    <a class="headerLink" href="#str_yaml" title="zms.standard.str_yaml">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Returns a YAML-string representation of the object.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr></table></div>
+  </div>
+</div><div class="basefunction">
+  
+  
   <a name="zms.standard.string_list">
     
   </a>
@@ -5097,7 +5185,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">string_list</span><span class="function-signature">(s, sep=<span class="rst-variable-quote">'</span><span class="rst-variable-string">\n</span><span class="rst-variable-quote">'</span>, trim=True)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1917">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1887">
       
       (source)
     </a>
@@ -5124,7 +5212,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">string_maxlen</span><span class="function-signature">(s, maxlen=20, etc=<span class="rst-variable-quote">'</span><span class="rst-variable-string">...</span><span class="rst-variable-quote">'</span>, encoding=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L478">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L451">
       
       (source)
     </a>
@@ -5151,7 +5239,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">stripDateTime</span><span class="function-signature">(t)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1423">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1407">
       
       (source)
     </a>
@@ -5178,7 +5266,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">sync_list</span><span class="function-signature">(l, nl, i)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2133">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2153">
       
       (source)
     </a>
@@ -5205,7 +5293,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">todayInRange</span><span class="function-signature">(start, end)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1455">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1440">
       
       (source)
     </a>
@@ -5232,7 +5320,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">toXmlString</span><span class="function-signature">(context, v, xhtml=False, encoding=<span class="rst-variable-quote">'</span><span class="rst-variable-string">utf-8</span><span class="rst-variable-quote">'</span>)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2197">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2209">
       
       (source)
     </a>
@@ -5259,7 +5347,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">triggerEvent</span><span class="function-signature">(context, *args, **kwargs)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L868">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L839">
       
       (source)
     </a>
@@ -5286,7 +5374,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">umlaut_quote</span><span class="function-signature">(s, mapping={})</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L157">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L143">
       
       (source)
     </a>
@@ -5313,7 +5401,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">unencode</span><span class="function-signature">(p, enc=<span class="rst-variable-quote">'</span><span class="rst-variable-string">utf-8</span><span class="rst-variable-quote">'</span>)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L760">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L731">
       
       (source)
     </a>
@@ -5340,7 +5428,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">unescape</span><span class="function-signature">(s)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L947">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L912">
       
       (source)
     </a>
@@ -5367,7 +5455,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">url_append_params</span><span class="function-signature">(url, dict, sep=<span class="rst-variable-quote">'</span><span class="rst-variable-string">&amp;</span><span class="rst-variable-quote">'</span>)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L393">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L366">
       
       (source)
     </a>
@@ -5394,7 +5482,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">url_encode</span><span class="function-signature">(url)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L517">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L490">
       
       (source)
     </a>
@@ -5421,7 +5509,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">url_inherit_params</span><span class="function-signature">(url, REQUEST, exclude=[], sep=<span class="rst-variable-quote">'</span><span class="rst-variable-string">&amp;amp;</span><span class="rst-variable-quote">'</span>)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L437">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L410">
       
       (source)
     </a>
@@ -5448,7 +5536,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">url_quote</span><span class="function-signature">(string, safe=<span class="rst-variable-quote">'</span><span class="rst-variable-string">/</span><span class="rst-variable-quote">'</span>, encoding=None, errors=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L195">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L182">
       
       (source)
     </a>
@@ -5475,7 +5563,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">writeBlock</span><span class="function-signature">(context, info)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1136">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1121">
       
       (source)
     </a>
@@ -5487,7 +5575,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Log information.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">context</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">info:</span><tt class="rst-docutils rst-literal">any</tt></td><td class="fieldArgDesc">Information</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr></table></div>
+    <div><p>Log information.</p>
+<p>Important: zms_log must be enabled in ZMS-configuration.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">context</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">info:</span><tt class="rst-docutils rst-literal">any</tt></td><td class="fieldArgDesc">Information</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -5502,7 +5592,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">writeError</span><span class="function-signature">(context, info)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1156">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1145">
       
       (source)
     </a>
@@ -5514,7 +5604,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Log error.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">context</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">info:</span><tt class="rst-docutils rst-literal">any</tt></td><td class="fieldArgDesc">Information</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr></table></div>
+    <div><p>Log error.</p>
+<p>Important: zms_log must be enabled in ZMS-configuration.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">context</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">info:</span><tt class="rst-docutils rst-literal">any</tt></td><td class="fieldArgDesc">Information</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -5529,7 +5621,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">writeLog</span><span class="function-signature">(context, info)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1116">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1097">
       
       (source)
     </a>
@@ -5541,7 +5633,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Log debug-information.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">context</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">info:</span><tt class="rst-docutils rst-literal">any</tt></td><td class="fieldArgDesc">Debug-information</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr></table></div>
+    <div><p>Log debug-information.</p>
+<p>Important: zms_log must be enabled in ZMS-configuration.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">context</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">info:</span><tt class="rst-docutils rst-literal">any</tt></td><td class="fieldArgDesc">Debug-information</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -5556,7 +5650,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">writeStdout</span><span class="function-signature">(context, info)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1105">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L1085">
       
       (source)
     </a>
@@ -5583,7 +5677,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">zmi_paths</span><span class="function-signature">(context)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L255">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L232">
       
       (source)
     </a>
@@ -5609,7 +5703,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">security</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L58">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L44">
       
       (source)
     </a>
@@ -5636,7 +5730,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">umlaut_map</span>: <code>dict[<wbr></wbr>str, <wbr></wbr>str]</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L80">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L66">
       
       (source)
     </a>

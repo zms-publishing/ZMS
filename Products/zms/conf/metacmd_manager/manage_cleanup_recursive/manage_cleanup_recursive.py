@@ -225,17 +225,18 @@ def html_page(self):
 		html.append('<input type="hidden" name="form_id" value="manage_cleanup_recursive"/>')
 		html.append('<input type="hidden" name="do_execution:boolean" value="1"/>')
 		html.append('<legend>')
-		html.append('<div>Content Cleanup for <i class="fas fa-home"></i> <span>%s</span> containing <span id="info_page_count">...</span> Nodes in <span id="info_lang_count">...</span> Languages <span id="info_proc_time">(... sec)</span></div>'%(zmscontext.getHome().id))
+		html.append('<div>Content Cleanup for <i class="fas fa-home"></i> <span>%s</span> containing <span id="info_page_count">000</span> Nodes in <span id="info_lang_count">0</span> Languages <span id="info_proc_time">(0.00 sec)</span></div>'%(zmscontext.getHome().id))
 		html.append('''
 					<nav>
 						<a target="_blank" href="manage_cleanup_recursive?content_type=csv" title="Show this List as CSV for Importing to Excel">CSV</a>&nbsp;&nbsp;&vert;&nbsp;
 						<a target="_blank" href="manage_cleanup_recursive?content_type=json" title="Show Complete Tree in Details as JSON">JSON</a>&nbsp;&nbsp;&vert;&nbsp;
-						<a href="manage_cleanup_recursive?content_type=html" class="active" title="Reload and Update this List"><i class="fas fa-sync text-primary"></i></a>
+						<a href="manage_cleanup_recursive?content_type=html" class="active" title="Reload and Update this List"><i class="fas fa-sync text-primary"></i></a>&nbsp;&nbsp;&vert;
+						<span class="zmi-readme text-info btn-sm" data-readme="%s/content/metacmd_manager/readme?id=manage_cleanup_recursive"><i class="far fa-question-circle"></i></span>
 					</nav>
-					''')
+					'''%(zmscontext.getHome().absolute_url()))
 		html.append('</legend>')
 		html.append('<div class="card-body" hx-target="this" hx-get="manage_cleanup_recursive?lang=%s&do_execution=1" hx-trigger="load">'%(request.get('lang','ger')))
-		html.append('<div style="text-align:center;margin:2rem auto;"><i class="text-primary fas fa-spinner fa-spin fa-3x"></i></div>')
+		html.append('<div style="text-align:center;margin:2rem auto;"><i class="text-primary fas fa-circle-notch fa-spin fa-3x"></i></div>')
 		html.append('</div>')
 		html.append('</form>')
 		html.append('</div>')

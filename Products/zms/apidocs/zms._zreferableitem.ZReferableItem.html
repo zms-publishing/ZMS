@@ -131,6 +131,16 @@
         
 
         
+            <div class="itemName"><code><a href="#changeRefsToObj" class="internal-link" title="zms._zreferableitem.ZReferableItem.changeRefsToObj">change<wbr></wbr>Refs<wbr></wbr>To<wbr></wbr>Obj</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
             <div class="itemName"><code><a href="#findObject" class="internal-link" title="zms._zreferableitem.ZReferableItem.findObject">find<wbr></wbr>Object</a></code>
             </div>
         
@@ -275,6 +285,16 @@
             </div>
         
 
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#validateRefObj" class="internal-link" title="zms._zreferableitem.ZReferableItem.validateRefObj">validate<wbr></wbr>Ref<wbr></wbr>Obj</a></code>
+            </div>
+        
+
     </li>
 </ul> 
 
@@ -300,6 +320,16 @@
         
 
         
+            <div class="itemName"><code><a href="#__administratorPermissions__" class="internal-link" title="zms._zreferableitem.ZReferableItem.__administratorPermissions__">__administrator<wbr></wbr>Permissions__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
             <div class="itemName"><code><a href="#__authorPermissions__" class="internal-link" title="zms._zreferableitem.ZReferableItem.__authorPermissions__">__author<wbr></wbr>Permissions__</a></code>
             </div>
         
@@ -311,6 +341,16 @@
 
         
             <div class="itemName"><code><a href="#manage_browse_iframe" class="internal-link" title="zms._zreferableitem.ZReferableItem.manage_browse_iframe">manage<wbr></wbr>_browse<wbr></wbr>_iframe</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#manage_change_refs" class="internal-link" title="zms._zreferableitem.ZReferableItem.manage_change_refs">manage<wbr></wbr>_change<wbr></wbr>_refs</a></code>
             </div>
         
 
@@ -475,97 +515,114 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZReferableItem</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L122" class="sourceLink">(source)</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZReferableItem</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L141" class="sourceLink">(source)</a></code></p>
           <p><a href="classIndex.html#zms._zreferableitem.ZReferableItem">View In Hierarchy</a></p>
         </div>
 
         <div class="moduleDocstring">
-          <div><p class="undocumented">Undocumented</p></div>
+          <div><p>Mixin for internal reference handling in ZMS objects.</p>
+<p>This mixin resolves internal link tokens, collects outgoing references, maintains incoming backlinks in <tt class="rst-docutils rst-literal">ref_by</tt>, and validates stored references.</p>
+</div>
         </div>
 
         <div id="splitTables">
-          <table class="children sortable" id="id138">
+          <table class="children sortable" id="id139">
   
   
   <tr class="method">
     
     <td>Method</td>
+    <td><code><a href="#changeRefsToObj" class="internal-link" title="zms._zreferableitem.ZReferableItem.changeRefsToObj">change<wbr></wbr>Refs<wbr></wbr>To<wbr></wbr>Obj</a></code></td>
+    <td>Changes all internal references TO a new target object.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
     <td><code><a href="#findObject" class="internal-link" title="zms._zreferableitem.ZReferableItem.findObject">find<wbr></wbr>Object</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Quickly finds and returns an object based on an internal URL. Assumes the object exists as a recently calculated uid in ZMSIndex or as a object path.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getLinkObj" class="internal-link" title="zms._zreferableitem.ZReferableItem.getLinkObj">get<wbr></wbr>Link<wbr></wbr>Obj</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Resolves internal or external links and returns the corresponding object.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getLinkUrl" class="internal-link" title="zms._zreferableitem.ZReferableItem.getLinkUrl">get<wbr></wbr>Link<wbr></wbr>Url</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Combines internal/external link resolution and returns the final URL string, handling anchors and mailto obfuscation.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getRefByObjs" class="internal-link" title="zms._zreferableitem.ZReferableItem.getRefByObjs">get<wbr></wbr>Ref<wbr></wbr>By<wbr></wbr>Objs</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Returns a list of references FROM other objects to this object.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getRefObjPath" class="internal-link" title="zms._zreferableitem.ZReferableItem.getRefObjPath">get<wbr></wbr>Ref<wbr></wbr>Obj<wbr></wbr>Path</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Returns the internal reference path for a given object.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getRefToObjs" class="internal-link" title="zms._zreferableitem.ZReferableItem.getRefToObjs">get<wbr></wbr>Ref<wbr></wbr>To<wbr></wbr>Objs</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Returns a list of references from this object TO other objects.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#getRelativeUrl" class="internal-link" title="zms._zreferableitem.ZReferableItem.getRelativeUrl">get<wbr></wbr>Relative<wbr></wbr>Url</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Computes a relative URL from a source path to a destination URL.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#prepareRefreshRefToObjs" class="internal-link" title="zms._zreferableitem.ZReferableItem.prepareRefreshRefToObjs">prepare<wbr></wbr>Refresh<wbr></wbr>Ref<wbr></wbr>To<wbr></wbr>Objs</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Prepares the refresh of references TO other objects by storing the current references. This method stores the current outgoing references in <tt class="rst-docutils rst-literal">self.ref_to</tt> for later comparison by <code><a href="zms._zreferableitem.ZReferableItem.html#refreshRefToObjs" class="internal-link" title="zms._zreferableitem.ZReferableItem.refreshRefToObjs">refreshRefToObjs</a></code>.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#refreshRefToObjs" class="internal-link" title="zms._zreferableitem.ZReferableItem.refreshRefToObjs">refresh<wbr></wbr>Ref<wbr></wbr>To<wbr></wbr>Objs</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Synchronizes references TO other objects, updating registrations as needed.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#registerRefObj" class="internal-link" title="zms._zreferableitem.ZReferableItem.registerRefObj">register<wbr></wbr>Ref<wbr></wbr>Obj</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Registers a reference FROM another object to this object.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#synchronizeRefByObjs" class="internal-link" title="zms._zreferableitem.ZReferableItem.synchronizeRefByObjs">synchronize<wbr></wbr>Ref<wbr></wbr>By<wbr></wbr>Objs</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Synchronizes the list of references FROM other objects.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#tal_anchor" class="internal-link" title="zms._zreferableitem.ZReferableItem.tal_anchor">tal<wbr></wbr>_anchor</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Generate an HTML anchor (&lt;a&gt;) tag.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#unregisterRefObj" class="internal-link" title="zms._zreferableitem.ZReferableItem.unregisterRefObj">unregister<wbr></wbr>Ref<wbr></wbr>Obj</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Unregisters a reference FROM another object to this object.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#validateInlineLinkObj" class="internal-link" title="zms._zreferableitem.ZReferableItem.validateInlineLinkObj">validate<wbr></wbr>Inline<wbr></wbr>Link<wbr></wbr>Obj</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Validates internal links within inline HTML content.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#validateLinkObj" class="internal-link" title="zms._zreferableitem.ZReferableItem.validateLinkObj">validate<wbr></wbr>Link<wbr></wbr>Obj</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
+    <td>Validates a single internal link.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#validateRefObj" class="internal-link" title="zms._zreferableitem.ZReferableItem.validateRefObj">validate<wbr></wbr>Ref<wbr></wbr>Obj</a></code></td>
+    <td>Validates internal object-references.</td>
   </tr><tr class="classvariable">
     
     <td>Class Variable</td>
     <td><code><a href="#__ac_permissions__" class="internal-link" title="zms._zreferableitem.ZReferableItem.__ac_permissions__">__ac<wbr></wbr>_permissions__</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="classvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="#__administratorPermissions__" class="internal-link" title="zms._zreferableitem.ZReferableItem.__administratorPermissions__">__administrator<wbr></wbr>Permissions__</a></code></td>
     <td><span class="undocumented">Undocumented</span></td>
   </tr><tr class="classvariable">
     
@@ -576,6 +633,11 @@
     
     <td>Class Variable</td>
     <td><code><a href="#manage_browse_iframe" class="internal-link" title="zms._zreferableitem.ZReferableItem.manage_browse_iframe">manage<wbr></wbr>_browse<wbr></wbr>_iframe</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="classvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="#manage_change_refs" class="internal-link" title="zms._zreferableitem.ZReferableItem.manage_change_refs">manage<wbr></wbr>_change<wbr></wbr>_refs</a></code></td>
     <td><span class="undocumented">Undocumented</span></td>
   </tr><tr class="classvariable">
     
@@ -603,6 +665,33 @@
           <div class="basemethod">
   
   
+  <a name="zms._zreferableitem.ZReferableItem.changeRefsToObj">
+    
+  </a>
+  <a name="changeRefsToObj">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">changeRefsToObj</span><span class="function-signature">(self, ref_to)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L321">
+      
+      (source)
+    </a>
+    <a class="headerLink" href="#changeRefsToObj" title="zms._zreferableitem.ZReferableItem.changeRefsToObj">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Changes all internal references TO a new target object.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">ref<wbr></wbr>_to:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">The target reference to which all selected references should point.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">dict</tt> or <tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc">A result dictionary with changed and unchanged references, or <tt class="rst-docutils rst-literal">None</tt> if no update could be performed.</td></tr></table></div>
+  </div>
+</div><div class="basemethod">
+  
+  
   <a name="zms._zreferableitem.ZReferableItem.findObject">
     
   </a>
@@ -613,7 +702,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">findObject</span><span class="function-signature">(self, url)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L370">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L517">
       
       (source)
     </a>
@@ -625,7 +714,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Quickly finds and returns an object based on an internal URL. Assumes the object exists as a recently calculated uid in ZMSIndex or as a object path.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">url:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Internal URL string in the format <tt class="rst-docutils rst-literal"><span class="pre">{$...}</span></tt>.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">object</tt> or <tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc">The resolved object if found, otherwise <tt class="rst-docutils rst-literal">None</tt>.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -640,7 +729,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getLinkObj</span><span class="function-signature">(self, url, REQUEST=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L391">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L543">
       
       (source)
     </a>
@@ -652,7 +741,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Resolves internal or external links and returns the corresponding object.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">url:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">The link to resolve. It can be internal or external.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">The request object.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">object</tt> or <tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc">The resolved object if found, otherwise <tt class="rst-docutils rst-literal">None</tt>.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -667,7 +756,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getLinkUrl</span><span class="function-signature">(self, url, REQUEST=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L439">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L603">
       
       (source)
     </a>
@@ -679,7 +768,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Combines internal/external link resolution and returns the final URL string, handling anchors and mailto obfuscation.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">url:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">The link to resolve. It can be internal or external.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">The request object.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><p><tt class="rst-docutils rst-literal">str</tt></p>
+<p>This method differs from <code><a href="#getLinkObj" class="internal-link" title="zms._zreferableitem.ZReferableItem.getLinkObj">getLinkObj</a></code>, which returns the referenced object, and from <code><a href="zms._zreferableitem.html#getInternalLinkUrl" class="internal-link" title="zms._zreferableitem.getInternalLinkUrl">getInternalLinkUrl</a></code>, which renders an internal <tt class="rst-docutils rst-literal">index_html</tt> URL for a specific object.</p>
+</td><td class="fieldArgDesc">The resolved URL as a string.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -694,7 +785,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getRefByObjs</span><span class="function-signature">(self, REQUEST=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L179">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L217">
       
       (source)
     </a>
@@ -706,7 +797,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Returns a list of references FROM other objects to this object.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">The request object.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">References from other objects to this object.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -721,7 +812,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getRefObjPath</span><span class="function-signature">(self, ob, anchor=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L159">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L197">
       
       (source)
     </a>
@@ -733,7 +824,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Returns the internal reference path for a given object.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">ob:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">The object to reference.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">anchor:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Anchor string to append.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">The internal reference path in <tt class="rst-docutils rst-literal"><span class="pre">{$...}</span></tt> format.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -748,7 +839,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getRefToObjs</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L251">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L289">
       
       (source)
     </a>
@@ -760,7 +851,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Returns a list of references from this object TO other objects.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">References from this object to other objects.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -775,7 +866,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getRelativeUrl</span><span class="function-signature">(self, path, url)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L142">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L172">
       
       (source)
     </a>
@@ -787,7 +878,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Computes a relative URL from a source path to a destination URL.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">path:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">The source path.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">url:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">The destination URL.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">The relative URL if both URLs share the same base, otherwise the original destination URL.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -802,7 +893,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">prepareRefreshRefToObjs</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L283">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L417">
       
       (source)
     </a>
@@ -814,7 +905,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Prepares the refresh of references TO other objects by storing the current references. This method stores the current outgoing references in <tt class="rst-docutils rst-literal">self.ref_to</tt> for later comparison by <code><a href="#refreshRefToObjs" class="internal-link" title="zms._zreferableitem.ZReferableItem.refreshRefToObjs">refreshRefToObjs</a></code>.</p></div>
   </div>
 </div><div class="basemethod">
   
@@ -829,7 +920,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">refreshRefToObjs</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L294">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L428">
       
       (source)
     </a>
@@ -841,7 +932,9 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Synchronizes references TO other objects, updating registrations as needed.</p>
+<p>The method unregisters obsolete backlinks and registers newly created backlinks.</p>
+</div>
   </div>
 </div><div class="basemethod">
   
@@ -856,7 +949,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">registerRefObj</span><span class="function-signature">(self, ob)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L215">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L257">
       
       (source)
     </a>
@@ -868,7 +961,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Registers a reference FROM another object to this object.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">ob:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">The object referencing this object.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -883,7 +976,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">synchronizeRefByObjs</span><span class="function-signature">(self, strict=1)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L192">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L232">
       
       (source)
     </a>
@@ -895,7 +988,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Synchronizes the list of references FROM other objects.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">strict:</span><tt class="rst-docutils rst-literal">int</tt></td><td class="fieldArgDesc">Flag kept for API compatibility.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">list</tt></td><td class="fieldArgDesc">The updated list of references from other objects.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -910,7 +1003,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">tal_anchor</span><span class="function-signature">(self, href, target=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, attrs={}, content=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L478">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L650">
       
       (source)
     </a>
@@ -922,7 +1015,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Generate an HTML anchor (&lt;a&gt;) tag.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">href:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">The URL for the anchor's <tt class="rst-docutils rst-literal">href</tt> attribute.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">target:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">The target attribute for the anchor, for example <tt class="rst-docutils rst-literal">_blank</tt>.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">attrs:</span><tt class="rst-docutils rst-literal">dict</tt></td><td class="fieldArgDesc">Additional HTML attributes for the anchor tag.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">content:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">The inner HTML or text content of the anchor.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">The formatted HTML anchor tag as a string.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -937,7 +1030,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">unregisterRefObj</span><span class="function-signature">(self, ob)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L229">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L271">
       
       (source)
     </a>
@@ -949,7 +1042,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Unregisters a reference FROM another object to this object.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">ob:</span><tt class="rst-docutils rst-literal">object</tt></td><td class="fieldArgDesc">The object referencing this object.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -964,7 +1057,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">validateInlineLinkObj</span><span class="function-signature">(self, text)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L329">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L461">
       
       (source)
     </a>
@@ -976,7 +1069,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Validates internal links within inline HTML content.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">text:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">The HTML content to validate.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">The validated HTML content with updated internal links.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -991,7 +1084,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">validateLinkObj</span><span class="function-signature">(self, url)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L355">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L488">
       
       (source)
     </a>
@@ -1003,7 +1096,34 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Validates a single internal link.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">url:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">The internal link to validate.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">The validated internal link.</td></tr></table></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._zreferableitem.ZReferableItem.validateRefObj">
+    
+  </a>
+  <a name="validateRefObj">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">validateRefObj</span><span class="function-signature">(self, s)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L503">
+      
+      (source)
+    </a>
+    <a class="headerLink" href="#validateRefObj" title="zms._zreferableitem.ZReferableItem.validateRefObj">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Validates internal object-references.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">s:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">String to validate. This can be an internal link token or an inline HTML fragment.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">The validated link or HTML string.</td></tr></table></div>
   </div>
 </div><div class="baseclassvariable">
   
@@ -1017,11 +1137,38 @@
   <div class="functionHeader">
     
     <span class="py-defname">__ac_permissions__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L129">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L157">
       
       (source)
     </a>
     <a class="headerLink" href="#__ac_permissions__" title="zms._zreferableitem.ZReferableItem.__ac_permissions__">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseclassvariable">
+  
+  
+  <a name="zms._zreferableitem.ZReferableItem.__administratorPermissions__">
+    
+  </a>
+  <a name="__administratorPermissions__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">__administratorPermissions__</span>: <code>tuple[<wbr></wbr>str, <wbr></wbr><span class="rst-variable-ellipsis">...</span>]</code> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L154">
+      
+      (source)
+    </a>
+    <a class="headerLink" href="#__administratorPermissions__" title="zms._zreferableitem.ZReferableItem.__administratorPermissions__">
       
       
       ¶
@@ -1044,7 +1191,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">__authorPermissions__</span>: <code>tuple[<wbr></wbr>str, <wbr></wbr><span class="rst-variable-ellipsis">...</span>]</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L126">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L151">
       
       (source)
     </a>
@@ -1071,11 +1218,38 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_browse_iframe</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L136">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L165">
       
       (source)
     </a>
     <a class="headerLink" href="#manage_browse_iframe" title="zms._zreferableitem.ZReferableItem.manage_browse_iframe">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseclassvariable">
+  
+  
+  <a name="zms._zreferableitem.ZReferableItem.manage_change_refs">
+    
+  </a>
+  <a name="manage_change_refs">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">manage_change_refs</span> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L166">
+      
+      (source)
+    </a>
+    <a class="headerLink" href="#manage_change_refs" title="zms._zreferableitem.ZReferableItem.manage_change_refs">
       
       
       ¶
@@ -1098,7 +1272,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_RefForm</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L135">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L164">
       
       (source)
     </a>
@@ -1125,7 +1299,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">ref_by</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L206">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L253">
       
       (source)
     </a>
@@ -1152,7 +1326,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">ref_to</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L286">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_zreferableitem.py#L425">
       
       (source)
     </a>

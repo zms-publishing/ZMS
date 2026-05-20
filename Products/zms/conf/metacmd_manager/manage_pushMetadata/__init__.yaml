@@ -1,0 +1,19 @@
+manage_pushMetadata:
+  acquired: 0
+  action: '%smanage_executeMetacmd?id=manage_pushMetadata'
+  execution: 0
+  icon_clazz: fas fa-snowplow
+  meta_types:
+    - ZMSDocument
+    - ZMSFolder
+    - ZMS
+  name: Push metadata...
+  nodes: '{$}'
+  revision: 0.0.0
+  roles:
+    - ZMSAdministrator
+    - ZMSAuthor
+    - ZMSEditor
+  Impl:
+    - id: manage_pushMetadata
+      type: DTML Method

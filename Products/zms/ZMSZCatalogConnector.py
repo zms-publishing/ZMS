@@ -1,21 +1,36 @@
-################################################################################
-# ZMSZCatalogConnector.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+ZMSZCatalogConnector.py - ZMS Catalog Connector for ZCatalog Integration
 
+Provides ZMSZCatalogConnector for catalog indexing and search operations.
+This module implements a Zope connector that integrates with ZCatalog to provide
+centralized indexing, querying, and suggestion capabilities for the ZMS publishing
+platform. It handles the complete lifecycle of catalog management including object
+indexing, removal, and clearing, while supporting multiple output formats (JSON/XML)
+and search interfaces.
+
+The connector serves as a bridge between ZMS content objects and external search
+engines (such as Solr/OpenSearch), managing repository exports/imports and implementing
+repository provider patterns for catalog schema management.
+
+Key responsibilities:
+  - Manage catalog object indexing and removal operations
+  - Execute search and suggestion queries against indexed content
+  - Transform search results between JSON and XML formats
+  - Handle progressive reindexing of content pages
+  - Provide repository-based schema and configuration persistence
+  - Support property management through the Zope Management Interface (ZMI)
+Features:
+  - Multi-language indexing support via language-specific requests
+  - Configurable file parsing for document extraction
+  - XML prettification of search results
+  - Pagination support for large-scale reindexing operations
+  - ZMI integration with role-based access control
+
+@see: Products.zms.IZMSCatalogConnector, Products.zms.IZMSRepositoryProvider
+
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
+"""
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from zope.interface import implementer
@@ -29,31 +44,22 @@ from Products.zms import IZMSRepositoryProvider
 from Products.zms import ZMSItem
 
 
-################################################################################
-################################################################################
-###
-###   Class
-###
-################################################################################
-################################################################################
 @implementer(
         IZMSCatalogConnector.IZMSCatalogConnector,
         IZMSRepositoryProvider.IZMSRepositoryProvider,)
 class ZMSZCatalogConnector(
         ZMSItem.ZMSItem):
+    """Provide helpers for ZMSZCatalogConnector."""
 
     # Properties.
-    # -----------
     meta_type = 'ZMSZCatalogConnector'
     zmi_icon = "fas fa-search"
 
     # Management Interface.
-    # ---------------------
     manage = PageTemplateFile('zpt/ZMSZCatalogAdapter/manage_zcatalog_connector', globals())
     manage_main = PageTemplateFile('zpt/ZMSZCatalogAdapter/manage_zcatalog_connector', globals())
 
     # Management Permissions.
-    # -----------------------
     __administratorPermissions__ = (
         'manage_changeProperties', 'manage_main',
         )
@@ -61,24 +67,15 @@ class ZMSZCatalogConnector(
         ('ZMS Administrator', __administratorPermissions__),
         )
 
-    ############################################################################
-    #  ZMSZCatalogConnector.__init__: 
-    #
-    #  Constructor.
-    ############################################################################
     def __init__(self, id):
+      """Constructor"""
       self.id = id
 
-    ############################################################################
-    #
-    #  IRepositoryProvider
-    #
-    ############################################################################
 
-    """
-    @see IRepositoryProvider
-    """
     def provideRepository(self, r, ids=None):
+      """
+      Returns a repository model for export.
+      """
       standard.writeBlock(self, "[provideRepository]: ids=%s"%str(ids))
       r = {}
       id = self.id
@@ -99,6 +96,7 @@ class ZMSZCatalogConnector(
     @see IRepositoryProvider
     """
     def updateRepository(self, r):
+      """Implement 'updateRepository'."""
       id = r['id']
       [self.setConfProperty('opensearch.schema',x['data']) for x in r['Opensearch'] if x['id'] == 'schema']
       return id
@@ -107,6 +105,7 @@ class ZMSZCatalogConnector(
     @see IRepositoryProvider
     """
     def translateRepositoryModel(self, r):
+      """Implement 'translateRepositoryModel'."""
       d = {}
       return d
 
@@ -114,12 +113,14 @@ class ZMSZCatalogConnector(
     #  ZMSZCatalogConnector.getProperties
     # --------------------------------------------------------------------------
     def getProperties(self):
+      """Return properties."""
       return standard.parse_json(self.evalMetaobjAttr('%s.properties'%self.id))
 
     # --------------------------------------------------------------------------
     #  ZMSZCatalogConnector.getActions
     # --------------------------------------------------------------------------
     def getActions(self, pattern=None):
+      """Return actions."""
       root = self.getRootElement()
       metaobjAttrs = root.getMetaobjAttrs(self.id)
       actions = [root.getMetaobjAttr(self.id, x['id']) for x in metaobjAttrs if x['type'] in ['py','External Method','Script (Python)']]
@@ -131,6 +132,7 @@ class ZMSZCatalogConnector(
     #  ZMSZCatalogConnector.manage_init
     # --------------------------------------------------------------------------
     def manage_init(self):
+      """Handle the ZMI action 'manage_init'."""
       [x['ob'](self) for x in self.getActions(r'^manage_(.*?)_init$')]
 
     # --------------------------------------------------------------------------
@@ -142,6 +144,7 @@ class ZMSZCatalogConnector(
     #  @rtype   C{tuple}
     # --------------------------------------------------------------------------
     def manage_objects_add(self, objects):
+      """Handle the ZMI action 'manage_objects_add'."""
       return [x['ob'](self, objects) for x in self.getActions(r'^manage_(.*?)_objects_add$')][0]
 
     # --------------------------------------------------------------------------
@@ -153,6 +156,7 @@ class ZMSZCatalogConnector(
     #  @rtype   C{tuple}
     # --------------------------------------------------------------------------
     def manage_objects_remove(self, nodes):
+      """Handle the ZMI action 'manage_objects_remove'."""
       return [x['ob'](self, nodes) for x in self.getActions(r'^manage_(.*?)_objects_remove$')][0]
 
     # --------------------------------------------------------------------------
@@ -164,12 +168,14 @@ class ZMSZCatalogConnector(
     #  @rtype  tuple
     # --------------------------------------------------------------------------
     def manage_objects_clear(self, home_id):
+      """Handle the ZMI action 'manage_objects_clear'."""
       return [x['ob'](self, home_id) for x in self.getActions(r'^manage_(.*?)_objects_clear$')][0]
 
     # --------------------------------------------------------------------------
     #  ZMSZCatalogConnector.manage_destroy
     # --------------------------------------------------------------------------
     def manage_destroy(self):
+      """Handle the ZMI action 'manage_destroy'."""
       [x['ob'](self) for x in self.getActions(r'^manage_(.*?)_destroy$')]
 
     # --------------------------------------------------------------------------
@@ -374,4 +380,3 @@ class ZMSZCatalogConnector(
         message = standard.url_quote(message)
         return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s#%s'%(lang, message, REQUEST.get('tab')))
 
-################################################################################

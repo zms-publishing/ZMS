@@ -1,0 +1,22 @@
+manage_addZIPMultiUpload:
+  acquired: 0
+  action: '%smanage_executeMetacmd?id=manage_addZIPMultiUpload'
+  execution: 0
+  icon_clazz: fa fa-upload text-warning
+  meta_types:
+    - ZMS
+    - ZMSDocument
+    - ZMSFolder
+    - gallery
+  name: ZIP-Multi-Upload
+  nodes: '{$}'
+  revision: 5.0.0
+  roles:
+    - ZMSAdministrator
+    - ZMSAuthor
+    - ZMSEditor
+  stereotype: insert
+  title: Upload multiple files as a ZIP-file
+  Impl:
+    - id: manage_addZIPMultiUpload
+      type: External Method

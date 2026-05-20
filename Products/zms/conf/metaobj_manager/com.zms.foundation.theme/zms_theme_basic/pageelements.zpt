@@ -16,7 +16,7 @@
 			<p class="description" 
 				tal:on-error="string: <!-- ERROR Description-->"
 				tal:define="description python:child_node.attr('attr_dc_description');
-					text python:context.html2text(child_node.getBodyContent(request))"
+					text python:zmscontext.re_sub(r'<[^<]+?>', '', child_node.getBodyContent(request))"
 				tal:content="python:description and description or (len(text)>16 and '%s ...'%(str(text)[0:256]) or '')">
 				DESCRIPTION
 			</p>

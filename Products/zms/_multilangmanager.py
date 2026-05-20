@@ -1,21 +1,17 @@
-################################################################################
-# _multilangmanager.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+_multilangmanager.py - ZMS Multi-Language Manager
 
+This module implements the MultiLanguageManager class, which provides
+methods for managing content languages and custom language-dictionary entries
+in a ZMS instance. It includes functionality for retrieving available
+languages, resolving request languages, and handling ZMI language management
+actions such as saving, deleting, importing, and exporting language-dictionary
+entries. The MultiLanguageManager class interacts with the ZMS configuration
+and content objects to provide a unified interface for multi-language support.
+
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
+"""
 # Imports.
 from App.Common import package_home
 import OFS.misc_
@@ -27,10 +23,8 @@ from Products.zms import _xmllib
 from Products.zms import standard
 
 
-# ------------------------------------------------------------------------------
-#  importXml
-# ------------------------------------------------------------------------------
 def _importXml(self, item):
+    """Import one language-dictionary row into custom language configuration."""
     key = item['key']
     lang_dict = self.get_lang_dict()
     lang_dict[key] = {}
@@ -40,6 +34,7 @@ def _importXml(self, item):
     self.setConfProperty('ZMS.custom.langs.dict', lang_dict.copy())
 
 def importXml(self, xml):
+  """Import one or many language-dictionary rows from XML or worksheet XML."""
   if not isinstance(xml, str):
     xml = xml.read()
   value = standard.parseXmlString(xml)
@@ -74,6 +69,7 @@ def importXml(self, xml):
     _importXml( self, value)
 
 def exportXml(self, ids, REQUEST=None, RESPONSE=None):
+  """Export selected language-dictionary rows as XML payload."""
   value = []
   d = self.get_lang_dict()
   for id in sorted(d):
@@ -92,10 +88,8 @@ def exportXml(self, ids, REQUEST=None, RESPONSE=None):
   return export
 
 
-# ------------------------------------------------------------------------------
-#  _multilangmanager.getDescLangs
-# ------------------------------------------------------------------------------
 def getDescLangs(self, id, langs):
+  """Return C{(label, id)} tuples for one language and all descendants."""
   obs = []
   # Primary language is always the first item in the sorted list.
   if id == self.getPrimaryLanguage():
@@ -112,19 +106,10 @@ def getDescLangs(self, id, langs):
   return obs
 
 
-################################################################################
-################################################################################
-###
-###   class langdict:
-###
-################################################################################
-################################################################################
 class langdict(object):
-
+    """Load and provide access to the built-in ZMI language dictionary."""
     def __init__(self, filename='_language.xml'):
-      """
-      Constructor 
-      """
+      """Parse the bundled language XML file into manage-language and key mappings."""
       manage_langs = []
       lang_dict = {}
       filepath = package_home(globals())+'/import/'
@@ -162,31 +147,18 @@ class langdict(object):
       self.langdict = lang_dict
 
     def get_manage_langs(self):
-      """
-      Returns list of manage-languages.
-      """
+      """Return the list of available ZMI manage languages."""
       return self.manage_langs
 
     def get_langdict(self):
-      """
-      Returns list of manage-languages.
-      """
+      """Return the base language-dictionary mapping loaded from XML."""
       return self.langdict
 
 
-################################################################################
-################################################################################
-###
-###   C l a s s   M u l t i L a n g u a g e O b j e c t
-###
-################################################################################
-################################################################################
 class MultiLanguageObject(object):
-
+    """Language selection helpers for content objects."""
     def getLanguages(self, REQUEST=None):
-      """
-      Returns IDs of languages (primary language 1st)
-      """
+      """Return language ids available to the current user (primary language first)."""
       value = ['*']
       if REQUEST is not None:
         value = self.getUserLangs(str(REQUEST.get('AUTHENTICATED_USER',None)))
@@ -195,9 +167,7 @@ class MultiLanguageObject(object):
 
 
     def getDescendantLanguages(self, id, REQUEST=None, RESPONSE=None):
-      """
-      Returns IDs of descendant languages
-      """
+      """Return descendant language ids below C{id}, optionally as JSON response."""
       obs = []
       user_langs = ['*']
       if REQUEST is not None:
@@ -214,25 +184,14 @@ class MultiLanguageObject(object):
       return rtn
 
 
-################################################################################
-################################################################################
-###
-###   C l a s s   M u l t i L a n g u a g e M a n a g e r
-###
-################################################################################
-################################################################################
 class MultiLanguageManager(object):
-
+    """Manage content languages and custom language-dictionary entries."""
     def get_manage_langs(self):
-      """
-      Returns list of manage-languages.
-      """
+      """Return the list of available ZMI manage languages."""
       return OFS.misc_.misc_.zms['langdict'].get_manage_langs()
 
     def get_manage_lang(self):
-      """
-      Returns preferred of manage-language for current content-language.
-      """
+      """Return preferred manage-language for the current management request."""
       manage_lang = None
       request = self.REQUEST
       if standard.isManagementInterface(self):
@@ -259,9 +218,7 @@ class MultiLanguageManager(object):
       return manage_lang
 
     def getZMILangStr(self, key, REQUEST=None, RESPONSE=None):
-      """
-      Returns language-string for current manage-language.
-      """
+      """Return translated ZMI label text for the current manage-language."""
       lang_str = self.getLangStr( key, self.get_manage_lang())
       if RESPONSE is not None:
         if REQUEST.get('nocache'):
@@ -273,9 +230,7 @@ class MultiLanguageManager(object):
       return lang_str
 
     def _getLangStr(self, key, lang=None):
-      """
-      Returns language-string for current content-language.
-      """
+      """Resolve one translation value from custom dictionary first, then system fallback."""
       if lang is None:
         lang = standard.nvl(self.REQUEST.get('lang'), self.getPrimaryLanguage())
 
@@ -297,54 +252,36 @@ class MultiLanguageManager(object):
 
 
     def getLangStr(self, key, lang=None):
-      """
-      Returns language-string for current content-language.
-      """
+      """Public wrapper returning translated string for the given key and language."""
       return self._getLangStr(key,lang)
 
 
-    # --------------------------------------------------------------------------
-    # Get id of primary-language
-    # --------------------------------------------------------------------------
     def getPrimaryLanguage(self):
+      """Return the id of the configured primary content language."""
       return self.language_primary
 
-    # --------------------------------------------------------------------------
-    # Set id of primary-language
-    # --------------------------------------------------------------------------
     def setPrimaryLanguage(self, v):
+      """Set the id of the primary content language."""
       self.language_primary = v
 
-    # --------------------------------------------------------------------------
-    # Get language-dictionary
-    # --------------------------------------------------------------------------
     def getLangs(self):
+      """Return the configured language metadata mapping."""
       return getattr(self, 'attr_languages', {})
 
-    # --------------------------------------------------------------------------
-    # Set language-dictionary
-    # --------------------------------------------------------------------------
     def setLangs(self, v):
+      """Persist the complete language metadata mapping."""
       self.attr_languages = v.copy()
 
-    # --------------------------------------------------------------------------
-    # Returns label of language specified by ID.
-    # --------------------------------------------------------------------------
     def getParentLanguage(self, id):
-      """ getParentLanguage """
+      """Return the parent language id for the given language id."""
       return self.getLang(id).get('parent')
 
-    # --------------------------------------------------------------------------
-    # Returns label of language specified by ID.
-    # --------------------------------------------------------------------------
     def getLanguageLabel(self, id):
-      """ getLanguageLabel """
+      """Return the configured display label for the given language id."""
       return self.getLang(id).get('label', id)
 
-    # --------------------------------------------------------------------------
-    # Returns IDs of parent languages.
-    # --------------------------------------------------------------------------
     def getParentLanguages(self, id):
+      """Return all parent language ids up to the root language."""
       obs = []
       langs = self.getLangs()
       if id not in langs:
@@ -358,16 +295,12 @@ class MultiLanguageManager(object):
           break
       return obs
 
-    # --------------------------------------------------------------------------
-    #  MultiLanguageManager.getLang: 
-    # --------------------------------------------------------------------------
     def getLang(self, id):
+      """Return language metadata for one language id."""
       return self.getLangs().get(id, {})
 
-    # --------------------------------------------------------------------------
-    #  Returns list of Ids of languages (primary language 1st).
-    # --------------------------------------------------------------------------
     def getLangTree(self, base=None):
+      """Return depth-first language tree as C{(id, metadata)} tuples."""
       if base is None:
         base = self.getPrimaryLanguage()
       l = [(base, self.getLang(base))]
@@ -377,10 +310,8 @@ class MultiLanguageManager(object):
           l.extend(self.getLangTree(langId))
       return l
 
-    # --------------------------------------------------------------------------
-    # Returns list of Ids of languages (primary language 1st).
-    # --------------------------------------------------------------------------
     def getLangIds(self, sort=False):
+      """Return configured language ids, optionally sorted by display label."""
       obs = []
       langs = self.getLangs()
       if sort:
@@ -394,10 +325,8 @@ class MultiLanguageManager(object):
         return [x[1] for x in obs]
       return list(langs.keys())
 
-    # --------------------------------------------------------------------------
-    # MultiLanguageManager.getLanguageFromName: 
-    # --------------------------------------------------------------------------
     def getLanguageFromName(self, name): 
+      """Extract language suffix from a filename and return matching language id."""
       lang = None
       i = name.rfind('.')
       if i > 0:
@@ -410,10 +339,8 @@ class MultiLanguageManager(object):
             lang = suffix
       return lang
 
-    # --------------------------------------------------------------------------
-    # Get requested language of specified URL (used by index_html).
-    # --------------------------------------------------------------------------
     def getLanguage(self, REQUEST): 
+      """Resolve request language from parameter, URL suffix, accept-language, or primary."""
       lang = REQUEST.get('lang', None)
       langs = self.getLangIds()
       if lang not in langs:
@@ -433,10 +360,8 @@ class MultiLanguageManager(object):
         lang = self.getPrimaryLanguage()
       return lang
 
-    # --------------------------------------------------------------------------
-    # MultiLanguageManager.getHttpAcceptLanguage: 
-    # --------------------------------------------------------------------------
     def getHttpAcceptLanguage(self, REQUEST): 
+      """Map HTTP accept-language header to one configured language id if enabled."""
       lang = None
       langs = self.getLangIds()
       if self.getConfProperty('ZMS.http_accept_language', 0)==1:
@@ -455,11 +380,8 @@ class MultiLanguageManager(object):
             break
       return lang
 
-    # --------------------------------------------------------------------------
-    # Set/add language with specified values.
-    # --------------------------------------------------------------------------
     def setLanguage(self, lang, label, parent, newManage):
-      
+      """Create or update one language entry and update primary/parent links if needed."""
       if len(parent) == 0:
         for id in self.getLangs().keys():
           if id != lang and self.getParentLanguage(id) == '':
@@ -477,24 +399,14 @@ class MultiLanguageManager(object):
       self.setLangs( attr_languages)
 
 
-    # --------------------------------------------------------------------------
-    #  MultiLanguageManager.delLanguage: 
-    # 
-    #  Delete language.
-    # --------------------------------------------------------------------------
     def delLanguage(self, lang):
+      """Delete one language entry from the language metadata mapping."""
       attr_languages = self.getLangs()
       del attr_languages[lang]
       self.setLangs( attr_languages)
 
-
-    ############################################################################
-    #  MultiLanguageManager.manage_changeLanguages:
-    #
-    #  Change languages.
-    ############################################################################
     def manage_changeLanguages(self, lang, btn, REQUEST, RESPONSE):
-      """ MultiLanguageManager.manage_changeLanguages """
+      """Handle ZMI language management actions (save/delete) and redirect with message."""
 
       target = REQUEST.get('target', None)
 
@@ -542,16 +454,8 @@ class MultiLanguageManager(object):
         message = standard.url_quote(self.getZMILangStr('MSG_CHANGED'))
         return RESPONSE.redirect('manage_customizeLanguagesForm?lang=%s&manage_tabs_message=%s'%(lang, message))
 
-
-    # --------------------------------------------------------------------------
-    #  MultiLanguageManager.get_lang_dict:
-    #
-    #  Returns language-dictionary.
-    # --------------------------------------------------------------------------
     def get_lang_dict(self, REQUEST=None):
-      """
-      MultiLanguageManager.get_lang_dict
-      """
+      """Return merged language dictionary from master, custom config, and metaobj providers."""
       
       #-- [ReqBuff]: Fetch buffered value from Http-Request.
       reqBuffId = 'MultiLanguageManager.get_lang_dict'
@@ -597,23 +501,13 @@ class MultiLanguageManager(object):
       
       return d
 
-
-    # --------------------------------------------------------------------------
-    #  MultiLanguageManager.set_lang_dict:
-    #
-    #  Sets language-dictionary.
-    # --------------------------------------------------------------------------
     def set_lang_dict(self, d):
+      """Persist custom language dictionary and clear request buffer cache."""
       self.clearReqBuff('MultiLanguageManager')
       self.setConfProperty('ZMS.custom.langs.dict', d.copy())
 
-
-    # --------------------------------------------------------------------------
-    #  MultiLanguageManager.getLangDict:
-    #
-    #  Returns list of entries from language-dictionary (ordered by key).
-    # --------------------------------------------------------------------------
     def getLangDict(self):
+      """Return language-dictionary entries as ordered list including their key field."""
       lang_dict = self.get_lang_dict()
       lang_list = []
       keys = sorted(lang_dict)
@@ -623,14 +517,8 @@ class MultiLanguageManager(object):
         lang_list.append(d)
       return lang_list
 
-
-    ############################################################################
-    #  MultiLanguageManager.manage_changeLangDictProperties:
-    #
-    #  Change property of language-dictionary.
-    ############################################################################
     def manage_changeLangDictProperties(self, lang, btn, REQUEST, RESPONSE=None):
-        """ MultiLanguageManager.manage_changeLangDictProperties """
+        """Handle ZMI language-dictionary actions (save/delete/import/export)."""
         
         target = REQUEST.get('target', None)
 
@@ -700,4 +588,3 @@ class MultiLanguageManager(object):
           message = standard.url_quote(self.getZMILangStr('MSG_CHANGED'))
           return RESPONSE.redirect('manage_customizeLanguagesForm?lang=%s&manage_tabs_message=%s#langdict'%(lang, message))
 
-################################################################################

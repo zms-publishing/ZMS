@@ -113,6 +113,15 @@ def _normalize_response(response_data, provider, model, original_message):
     """
     # Handle error responses
     if 'error' in response_data:
+        # Enrich Ollama "model not found" errors with actionable hint
+        err = response_data.get('error', '')
+        if isinstance(err, str) and 'not found' in err and 'model' in err:
+            response_data = {
+                'error': {
+                    'code': 'MODEL_NOT_FOUND',
+                    'message': err + ". Run 'ollama pull <model>' to download it, or change the model in the LLM Connector config."
+                }
+            }
         return response_data
     
     # If already in OpenAI format (from OpenAI provider), ensure backwards compatibility
@@ -663,6 +672,26 @@ def get_provider_info(context):
         info['top_k'] = context.getConfProperty('llm.rag.top_k', '3')
     
     return info
+
+
+security.declarePublic('get_ollama_models')
+def get_ollama_models(context):
+    """
+    Fetch the list of locally available models from the configured Ollama server.
+
+    Returns a dict with 'models' (list of name strings) on success, or 'error' on failure.
+    This is used by the Config tab to populate the model dropdown for Ollama/RAG providers.
+    """
+    host = context.getConfProperty('llm.ollama.host', 'http://localhost:11434')
+    try:
+        response = requests.get(f"{host}/api/tags", timeout=5)
+        data = response.json()
+        models = [m['name'] for m in data.get('models', [])]
+        return {'models': models, 'host': host}
+    except requests.exceptions.ConnectionError:
+        return {'error': f"Cannot connect to Ollama at {host}.", 'models': []}
+    except Exception as e:
+        return {'error': str(e), 'models': []}
 
 
 security.apply(globals())

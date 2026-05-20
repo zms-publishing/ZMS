@@ -44,12 +44,12 @@
 			<div class="tab-pane card fade show active" id="panel-chat" role="tabpanel">
 				<div class="card-header d-flex align-items-center justify-content-between">
 					<span>
-						<i class="fas fa-robot mr-2"></i>
+						<i class="fas fa-robot mr-2 fa-2x text-primary"></i>
 						<strong tal:content="python:{'openai':'OpenAI','ollama':'Ollama','rag':'RAG Assistant'}.get(provider,'LLM Chat')">LLM Chat</strong>
 						&nbsp;<small class="text-muted" tal:content="python:'(%s)' % model">model</small>
 					</span>
 					<button class="btn btn-sm" id="btn-provider-info" title="Show provider information">
-						<i class="fas fa-info-circle"></i>
+						<i class="fas fa-info-circle text-info"></i>
 					</button>
 				</div>
 				<div class="card-body p-0">
@@ -91,12 +91,22 @@
 					<div class="form-group row">
 						<label class="col-sm-3 control-label">Model</label>
 						<div class="col-sm-9">
-							<input class="form-control zmi-code" type="text" name="llm.api.model"
-								tal:attributes="value python:here.getConfProperty('llm.api.model','gpt-4o-mini')"
-								placeholder="gpt-4o-mini / llama2 / mistral" />
+							<div class="input-group">
+								<input class="form-control zmi-code" type="text" name="llm.api.model" id="llm-model-input"
+									tal:attributes="value python:here.getConfProperty('llm.api.model','gpt-4o-mini')"
+									placeholder="gpt-4o-mini / llama3 / mistral" />
+								<div class="input-group-append" id="ollama-model-picker" style="display:none">
+									<button type="button" class="btn btn-outline-secondary" id="btn-load-models" title="Load available models from Ollama">
+										<i class="fas fa-sync-alt"></i>
+									</button>
+									<select class="form-control" id="ollama-model-select" style="max-width:200px">
+										<option value="">— select model —</option>
+									</select>
+								</div>
+							</div>
 							<small class="form-text text-muted">
 								OpenAI: gpt-4o-mini, gpt-4, gpt-3.5-turbo &nbsp;|&nbsp;
-								Ollama: llama2, mistral, codellama
+								Ollama: use <i class="fas fa-sync-alt"></i> to load installed models, or run <code>ollama pull &lt;model&gt;</code>
 							</small>
 						</div>
 					</div>
@@ -322,9 +332,36 @@
 			$('#section-openai').toggle(p === 'openai');
 			$('#section-ollama').toggle(p === 'ollama' || p === 'rag');
 			$('#section-rag').toggle(p === 'rag');
+			$('#ollama-model-picker').toggle(p === 'ollama' || p === 'rag');
 		}
 		$('#llm-provider').on('change', updateProviderSections);
 		updateProviderSections();
+
+		// Load Ollama models into picker
+		$('#btn-load-models').on('click', function() {
+			var $btn = $(this);
+			var $sel = $('#ollama-model-select');
+			$btn.prop('disabled', true).find('i').addClass('fa-spin');
+			$.ajax({ method: 'GET', url: '../../content/++rest_api/llm_ollama_models', dataType: 'json' })
+			.done(function(data) {
+				$sel.find('option:not(:first)').remove();
+				if (data.error) {
+					$sel.append('<option disabled>' + data.error + '</option>');
+				} else if (data.models && data.models.length) {
+					$.each(data.models, function(i, m) {
+						$sel.append('<option value="' + m + '">' + m + '</option>');
+					});
+				} else {
+					$sel.append('<option disabled>No models found — run: ollama pull &lt;model&gt;</option>');
+				}
+			})
+			.fail(function() { $sel.append('<option disabled>Request failed</option>'); })
+			.always(function() { $btn.prop('disabled', false).find('i').removeClass('fa-spin'); });
+		});
+		$('#ollama-model-select').on('change', function() {
+			var val = $(this).val();
+			if (val) { $('#llm-model-input').val(val); }
+		});
 
 		// Connection test
 		$('#btn-test-connection').on('click', function() {
@@ -334,7 +371,7 @@
 			$status.html('<i class="fas fa-spinner fa-spin"></i>');
 			$.ajax({
 				method: 'GET',
-				url: '../../++rest_api/llm_provider_info',
+				url: '../../content/++rest_api/llm_provider_info',
 				dataType: 'json'
 			})
 			.done(function(info) {
@@ -371,7 +408,7 @@
 		});
 
 		$('#btn-provider-info').on('click', function() {
-			$.ajax({ method: 'GET', url: '../../++rest_api/llm_provider_info', dataType: 'json' })
+			$.ajax({ method: 'GET', url: '../../content/++rest_api/llm_provider_info', dataType: 'json' })
 			.done(function(info) {
 				var html = '<div class="llm-msg-system"><strong>Provider Info:</strong> ' +
 					info.provider + ' / ' + info.model;
@@ -396,7 +433,7 @@
 
 			$.ajax({
 				method: 'GET',
-				url: '../../++rest_api/llm_chat',
+				url: '../../content/++rest_api/llm_chat',
 				dataType: 'json',
 				data: {message: message}
 			})

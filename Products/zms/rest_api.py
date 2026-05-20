@@ -219,6 +219,10 @@ class RestApiController(object):
                 connector = self.context.getLLMConnector()
                 data = connector.get_provider_info() if connector is not None else {'error': 'No LLM connector configured.'}
                 decoration = {'content_type':'application/json'}
+            elif self.ids == ['llm_ollama_models']:
+                connector = self.context.getLLMConnector()
+                data = connector.get_ollama_models() if connector is not None else {'error': 'No LLM connector configured.', 'models': []}
+                decoration = {'content_type':'application/json'}
             else:
                 data = {'ERROR':'Not Found','context':str(self.context),'path_to_handle':self.path_to_handle,'ids':self.ids}
             ct = decoration['content_type']

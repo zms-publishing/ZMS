@@ -137,6 +137,19 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
         return llmapi.get_provider_info(self)
 
     # -------------------------------------------------------------------------
+    #  ZMSLLMConnector.get_ollama_models
+    # -------------------------------------------------------------------------
+    def get_ollama_models(self):
+        """
+        Fetch the list of locally available models from the configured Ollama server.
+
+        @return: Dict with 'models' list (name strings) or 'error'.
+        @rtype: dict
+        """
+        from Products.zms import llmapi
+        return llmapi.get_ollama_models(self)
+
+    # -------------------------------------------------------------------------
     #  ZMSLLMConnector.getEnabledFeatures
     # -------------------------------------------------------------------------
     def getEnabledFeatures(self):

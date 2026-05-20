@@ -78,7 +78,7 @@
 
 			<!-- ===== CONFIG TAB ===== -->
 			<div class="tab-pane fade card" id="panel-config" role="tabpanel">
-				<form class="form-horizontal" method="post" action="manage_changeProperties" id="form-config">
+				<form class="form-horizontal" method="post" action="manage_changeConfig" id="form-config">
 					<input type="hidden" name="lang" tal:attributes="value python:request.get('lang','eng')" />
 					<input type="hidden" name="btn" value="BTN_SAVE" />
 
@@ -249,24 +249,9 @@
 
 			<!-- ===== FEATURES TAB ===== -->
 			<div class="tab-pane card fade" id="panel-features" role="tabpanel">
-				<form class=" form-horizontal" method="post" action="manage_changeProperties" id="form-features">
+				<form class="form-horizontal" method="post" action="manage_changeFeatures" id="form-features">
 					<input type="hidden" name="lang" tal:attributes="value python:request.get('lang','eng')" />
 					<input type="hidden" name="btn" value="BTN_SAVE" />
-					<!-- Re-post config fields so they are not lost when saving features -->
-					<input type="hidden" name="llm.provider" tal:attributes="value python:here.getConfProperty('llm.provider','openai')" />
-					<input type="hidden" name="llm.api.model" tal:attributes="value python:here.getConfProperty('llm.api.model','gpt-4o-mini')" />
-					<input type="hidden" name="llm.api.endpoint" tal:attributes="value python:here.getConfProperty('llm.api.endpoint','')" />
-					<input type="hidden" name="llm.ollama.host" tal:attributes="value python:here.getConfProperty('llm.ollama.host','')" />
-					<input type="hidden" name="llm.qdrant.host" tal:attributes="value python:here.getConfProperty('llm.qdrant.host','')" />
-					<input type="hidden" name="llm.qdrant.collection" tal:attributes="value python:here.getConfProperty('llm.qdrant.collection','')" />
-					<input type="hidden" name="llm.embedding.model" tal:attributes="value python:here.getConfProperty('llm.embedding.model','')" />
-					<input type="hidden" name="llm.temperature" tal:attributes="value python:here.getConfProperty('llm.temperature','')" />
-					<input type="hidden" name="llm.top_p" tal:attributes="value python:here.getConfProperty('llm.top_p','')" />
-					<input type="hidden" name="llm.max_tokens" tal:attributes="value python:here.getConfProperty('llm.max_tokens','')" />
-					<input type="hidden" name="llm.num_ctx" tal:attributes="value python:here.getConfProperty('llm.num_ctx','')" />
-					<input type="hidden" name="llm.rag.top_k" tal:attributes="value python:here.getConfProperty('llm.rag.top_k','')" />
-					<input type="hidden" name="llm.rag.score_threshold" tal:attributes="value python:here.getConfProperty('llm.rag.score_threshold','')" />
-					<input type="hidden" name="llm.store" tal:attributes="value python:here.getConfProperty('llm.store','')" />
 
 					<div class="alert alert-danger">
 						NOTE: These feature are still work in progress 

@@ -63,7 +63,7 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
 
     # Management Permissions.
     __administratorPermissions__ = (
-        'manage_changeProperties', 'manage_main',
+        'manage_changeProperties', 'manage_changeConfig', 'manage_changeFeatures', 'manage_main',
     )
     __ac_permissions__ = (
         ('ZMS Administrator', __administratorPermissions__),
@@ -220,14 +220,10 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
         return id
 
     # -------------------------------------------------------------------------
-    #  ZMSLLMConnector.manage_changeProperties
+    #  ZMSLLMConnector.manage_changeConfig
     # -------------------------------------------------------------------------
-    def manage_changeProperties(self, btn, lang, REQUEST, RESPONSE=None):
-        """
-        Save connector configuration from the ZMI form.
-
-        Reads ``llm.*`` fields from REQUEST and persists them in ``_config``.
-        """
+    def manage_changeConfig(self, btn, lang, REQUEST, RESPONSE=None):
+        """Save connector configuration fields from the Config tab form."""
         message = ''
         try:
             config_keys = [
@@ -247,28 +243,53 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
                 'llm.rag.score_threshold',
                 'llm.store',
             ]
-            config = {}
+            config = dict(self._config)  # preserve existing values (e.g. llm.features)
             for key in config_keys:
                 val = REQUEST.get(key, '').strip()
+                # Never overwrite an existing API key with an empty submission
+                if key == 'llm.api.key' and not val:
+                    continue
                 config[key] = val
-
-            # Feature flags: collect checkboxes from REQUEST
-            features = {}
-            for fkey in ['rte_assist', 'translate_assist', 'metadata_gen', 'rag_chat']:
-                features[fkey] = REQUEST.get('feature_%s' % fkey, '') in ('1', 'on', 'true', 'True')
-            config['llm.features'] = json.dumps(features)
-
             self._config = config
             self._p_changed = True
             message = self.getZMILangStr('MSG_CHANGED')
         except Exception:
-            message = standard.writeError(self, "can't manage_changeProperties")
-
+            message = standard.writeError(self, "can't manage_changeConfig")
         if RESPONSE is not None:
-            target = '%s/manage_main?lang=%s&manage_tabs_message=%s' % (
+            target = '%s/manage_main?lang=%s&manage_tabs_message=%s#panel-config' % (
                 self.absolute_url(), lang, standard.url_encode(message))
             return RESPONSE.redirect(target)
         return message
+
+    # -------------------------------------------------------------------------
+    #  ZMSLLMConnector.manage_changeFeatures
+    # -------------------------------------------------------------------------
+    def manage_changeFeatures(self, btn, lang, REQUEST, RESPONSE=None):
+        """Save feature-flag checkboxes from the Features tab form."""
+        message = ''
+        try:
+            features = {}
+            for fkey in ['rte_assist', 'translate_assist', 'metadata_gen', 'rag_chat']:
+                features[fkey] = REQUEST.get('feature_%s' % fkey, '') in ('1', 'on', 'true', 'True')
+            config = dict(self._config)  # preserve all other config values
+            config['llm.features'] = json.dumps(features)
+            self._config = config
+            self._p_changed = True
+            message = self.getZMILangStr('MSG_CHANGED')
+        except Exception:
+            message = standard.writeError(self, "can't manage_changeFeatures")
+        if RESPONSE is not None:
+            target = '%s/manage_main?lang=%s&manage_tabs_message=%s#panel-features' % (
+                self.absolute_url(), lang, standard.url_encode(message))
+            return RESPONSE.redirect(target)
+        return message
+
+    # -------------------------------------------------------------------------
+    #  ZMSLLMConnector.manage_changeProperties (kept for backwards compat)
+    # -------------------------------------------------------------------------
+    def manage_changeProperties(self, btn, lang, REQUEST, RESPONSE=None):
+        """Backwards-compatible shim: delegates to manage_changeConfig."""
+        return self.manage_changeConfig(btn, lang, REQUEST, RESPONSE)
 
 
 # --------------------------------------------------------------------------

@@ -87,6 +87,13 @@ if context.getLLMConnector().isFeatureEnabled('rte_assist'):
     pass
 ```
 
+```html
+<tal:block tal:define="connector python:here.getLLMConnector()"
+    tal:condition="python:connector and connector.isFeatureEnabled('rte_assist')">
+  <!-- inject AI toolbar JS here -->
+</tal:block>
+```
+
 ## REST API
 
 | Endpoint | Method | Description |

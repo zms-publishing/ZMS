@@ -25,7 +25,32 @@ from Products.zms import ZMSItem
 
 def get_default_data(node):
   """
-  Get default catalog-data for node.
+  Extract and prepare default catalog metadata for a ZMS node.
+  
+  This function collects comprehensive metadata about a ZMS object for indexing
+  in the catalog system. It gathers identification data (uid, id, meta_id),
+  structural information (path hierarchy, sort order), temporal data (creation,
+  modification, and activity timestamps), linguistic context (language), and
+  navigation details (URLs). The collected data is used by catalog connectors
+  for search indexing, sorting, filtering, and result retrieval.
+  
+  Args:
+  node: A ZMS object instance containing metadata and content attributes.
+  
+  Returns:
+  dict: A dictionary containing normalized catalog fields including:
+    - uid: Unique identifier
+    - id: Object ID
+    - home_id: Root container ID
+    - meta_id: Meta object type
+    - loc: Absolute URL path
+    - path: Physical path
+    - index_html: URL to index.html in context
+    - lang: Current language context
+    - created_dt, change_dt: Creation and modification timestamps (UTC)
+    - start_dt, end_dt: Activation time window
+    - indexing_dt: Current indexing timestamp
+    - sortid: 15-character tree sort identifier (up to 5 levels, 3 digits each)
   """
   request = node.REQUEST
   request.set('ZMS_CONTEXT_URL', True)
@@ -41,9 +66,11 @@ def get_default_data(node):
   d['lang'] = request.get('lang',node.getPrimaryLanguage())
   d['created_dt'] = get_zoned_dt(node.attr('created_dt'))
   d['change_dt'] = get_zoned_dt(node.attr('change_dt')) or d['created_dt']
+  d['start_dt'] = get_zoned_dt(node.attr('attr_active_start'))
+  d['end_dt'] = get_zoned_dt(node.attr('attr_active_end'))
   d['indexing_dt'] = get_zoned_dt(time.gmtime())
-  # WIP: https://github.com/idasm-unibe-ch/unibe-cms/issues/1244
-  # sortid is composed of sort-ids (3 digits each) up to 5 levels.
+  # Note: sortid refers to the tree and is composed of sort-ids (3 digits each) up to 5 levels.
+  # Ref: https://github.com/idasm-unibe-ch/unibe-cms/issues/1244
   sortid = ''.join(['%03i'%(e.getSortId()) for e in node.breadcrumbs_obj_path(False)[1:]])
   d['sortid'] = sortid + ('0' * (15 - len(sortid)))
   return d

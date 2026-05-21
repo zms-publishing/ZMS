@@ -9,7 +9,7 @@ elasticsearch_connector:
       ger: Schema erzeugen (JSON)
   name: elasticsearch-Connector
   package: com.zms.catalog.elasticsearch
-  revision: 1.10.3
+  revision: 1.10.4
   type: ZMSLibrary
   Attrs:
     - id: properties

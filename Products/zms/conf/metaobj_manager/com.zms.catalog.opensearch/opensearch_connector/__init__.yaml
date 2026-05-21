@@ -13,7 +13,7 @@ opensearch_connector:
       ita: Creare lo schema (JSON)
   name: Opensearch-Connector
   package: com.zms.catalog.opensearch
-  revision: 1.12.2
+  revision: 1.12.3
   type: ZMSLibrary
   Attrs:
     - id: properties

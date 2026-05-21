@@ -4,53 +4,53 @@ This module provides an abstract interface for Large Language Model providers.
 All providers follow the OpenAI /v1/chat/completions API schema for consistency.
 
 Supported providers:
-- OpenAI (gpt-4, gpt-3.5-turbo, etc.)
-- Ollama (local deployment)
-- RAG with Qdrant vector database
+    - OpenAI (gpt-4, gpt-3.5-turbo, etc.)
+    - Ollama (local deployment)
+    - RAG with Qdrant vector database
 
 Configuration properties:
-- llm.provider: 'openai', 'ollama', or 'rag' (default: 'openai')
-- llm.api.key: API key for OpenAI (if provider is 'openai')
-- llm.api.model: Model name (default: 'gpt-4o-mini' for OpenAI, 'llama2' for Ollama)
-- llm.api.endpoint: Custom endpoint URL
-- llm.ollama.host: Ollama host (default: 'http://localhost:11434')
-- llm.qdrant.host: Qdrant host (default: 'http://localhost:6333')
-- llm.qdrant.collection: Qdrant collection name (default: 'zms_docs')
-- llm.embedding.model: SentenceTransformer model (default: 'all-MiniLM-L6-v2')
-- llm.rag.top_k: Number of documents to retrieve (default: '3')
-- llm.rag.score_threshold: Minimum similarity score (0.0-1.0, default: '0.0')
-- llm.temperature: LLM temperature 0.0-2.0 (default: '0.7', RAG: 0.1 recommended)
-- llm.top_p: Nucleus sampling 0.0-1.0 (default: '0.9')
-- llm.max_tokens: Maximum tokens to generate (optional)
-- llm.num_ctx: Context window size (default: '4096')
-- llm.store: Enable storage for 'responses' API (default: False)
+    - llm.provider: 'openai', 'ollama', or 'rag' (default: 'openai')
+    - llm.api.key: API key for OpenAI (if provider is 'openai')
+    - llm.api.model: Model name (default: 'gpt-4o-mini' for OpenAI, 'llama2' for Ollama)
+    - llm.api.endpoint: Custom endpoint URL
+    - llm.ollama.host: Ollama host (default: 'http://localhost:11434')
+    - llm.qdrant.host: Qdrant host (default: 'http://localhost:6333')
+    - llm.qdrant.collection: Qdrant collection name (default: 'zms_docs')
+    - llm.embedding.model: SentenceTransformer model (default: 'all-MiniLM-L6-v2')
+    - llm.rag.top_k: Number of documents to retrieve (default: '3')
+    - llm.rag.score_threshold: Minimum similarity score (0.0-1.0, default: '0.0')
+    - llm.temperature: LLM temperature 0.0-2.0 (default: '0.7', RAG: 0.1 recommended)
+    - llm.top_p: Nucleus sampling 0.0-1.0 (default: '0.9')
+    - llm.max_tokens: Maximum tokens to generate (optional)
+    - llm.num_ctx: Context window size (default: '4096')
+    - llm.store: Enable storage for 'responses' API (default: False)
 
-Response format (OpenAI /v1/chat/completions compatible):
-{
-    "id": "chatcmpl-123",
-    "object": "chat.completion",
-    "created": 1677652288,
-    "model": "gpt-4o-mini",
-    "choices": [{
-        "index": 0,
-        "message": {
-            "role": "assistant",
-            "content": "Response text"
-        },
-        "finish_reason": "stop"
-    }],
-    "usage": {
-        "prompt_tokens": 10,
-        "completion_tokens": 20,
-        "total_tokens": 30
+Response format (OpenAI /v1/chat/completions compatible)::
+    {
+        "id": "chatcmpl-123",
+        "object": "chat.completion",
+        "created": 1677652288,
+        "model": "gpt-4o-mini",
+        "choices": [{
+            "index": 0,
+            "message": {
+                "role": "assistant",
+                "content": "Response text"
+            },
+            "finish_reason": "stop"
+        }],
+        "usage": {
+            "prompt_tokens": 10,
+            "completion_tokens": 20,
+            "total_tokens": 30
+        }
     }
-}
 
 For backwards compatibility, a convenience property 'message' is also provided
 at the top level containing the first choice's message.
 
 Requirements for RAG:
-- pip install sentence-transformers
+    - pip install sentence-transformers
 """
 
 # Imports.
@@ -82,13 +82,13 @@ def _normalize_response(response_data, provider, model, original_message):
     OpenAI API and the upcoming 'responses' schema.
     
     Args:
-        response_data: Raw response from provider
-        provider: Provider name ('openai', 'ollama', 'rag')
-        model: Model name used
-        original_message: Original user message
+        - response_data: Raw response from provider
+        - provider: Provider name ('openai', 'ollama', 'rag')
+        - model: Model name used
+        - original_message: Original user message
         
     Returns:
-        dict: Normalized response in OpenAI format
+    dict: Normalized response in OpenAI format
     """
     # Handle error responses
     if 'error' in response_data:
@@ -175,12 +175,11 @@ class LLMProvider:
         Send messages to the LLM and get a response.
         
         Args:
-            messages (list|str): List of message dicts [{"role": "user", "content": "..."}]
-                                 or a string for simple single-turn conversations
-            **kwargs: Additional provider-specific parameters
+        messages (list|str): List of message dicts [{"role": "user", "content": "..."}] or a string for simple single-turn conversations
+        **kwargs: Additional provider-specific parameters
             
         Returns:
-            dict: Response in OpenAI /v1/chat/completions format or error dict
+        dict: Response in OpenAI /v1/chat/completions format or error dict
         """
         raise NotImplementedError("Subclasses must implement chat()")
     
@@ -553,10 +552,10 @@ def _get_provider(context):
     Factory function to get the appropriate LLM provider based on configuration.
     
     Args:
-        context: ZMS context object
+    context: ZMS context object
         
     Returns:
-        LLMProvider: An instance of the configured provider
+    LLMProvider: An instance of the configured provider
     """
     provider_type = context.getConfProperty('llm.provider', 'openai').lower()
     
@@ -579,66 +578,69 @@ def chat(context, messages, **kwargs):
     This is the main entry point for LLM interactions in ZMS.
     All responses follow the OpenAI /v1/chat/completions format.
     
-    Args:
-        context: ZMS context object
-        messages (list|str): List of message dicts [{"role": "user", "content": "..."}]
-                            or a string for backwards compatibility
-        **kwargs: Additional provider-specific parameters:
-            - temperature (float): Sampling temperature 0.0-2.0
-            - top_p (float): Nucleus sampling 0.0-1.0
-            - max_tokens (int): Maximum tokens to generate
-            - store (bool): Enable storage for responses API
-            - metadata (dict): Metadata for responses API
-            
-    Returns:
-        dict: Response in OpenAI /v1/chat/completions format:
-            Success: {
-                "id": "chatcmpl-123",
-                "object": "chat.completion",
-                "created": 1677652288,
-                "model": "gpt-4o-mini",
-                "choices": [{
-                    "index": 0,
-                    "message": {
-                        "role": "assistant",
-                        "content": "Response text"
-                    },
-                    "finish_reason": "stop"
-                }],
-                "usage": {
-                    "prompt_tokens": 10,
-                    "completion_tokens": 20,
-                    "total_tokens": 30
-                },
-                "message": {...}  # Backwards compatibility: first choice's message
-            }
-            
-            Error: {
-                "error": {
-                    "code": "ERROR_CODE",
-                    "message": "error description"
-                }
-            }
+    @param context: ZMS context object
+    @type context: object
+    @param messages: List of message dicts [{"role": "user", "content": "..."}] or a string for backwards compatibility
+    @type messages: list | str
+    @keyword temperature: Sampling temperature 0.0-2.0 (optional)
+    @keyword top_p: Nucleus sampling 0.0-1.0 (optional)
+    @keyword max_tokens: Maximum tokens to generate (optional)
+    @keyword store: Enable storage for responses API (optional)
+    @keyword metadata: Metadata for responses API (optional)
     
-    Configuration:
-        Set llm.provider to one of: 'openai', 'ollama', 'rag'
-        
-        For OpenAI:
-            - llm.api.key: Your OpenAI API key
-            - llm.api.model: Model name (default: 'gpt-4o-mini')
-            - llm.api.endpoint: Custom endpoint (default: https://api.openai.com/v1/chat/completions)
-            - llm.store: Enable responses API storage (default: False)
-            
-        For Ollama:
-            - llm.ollama.host: Ollama server URL (default: 'http://localhost:11434')
-            - llm.api.model: Model name (default: 'llama2')
-            
-        For RAG:
-            - llm.qdrant.host: Qdrant server URL (default: 'http://localhost:6333')
-            - llm.qdrant.collection: Collection name (default: 'zms_docs')
-            - llm.ollama.host: Ollama server URL (default: 'http://localhost:11434')
-            - llm.api.model: Model name (default: 'llama2')
-            - llm.rag.top_k: Number of documents to retrieve (default: '3')
+    @return: Response in OpenAI /v1/chat/completions format
+    @rtype: dict
+    
+    Success format::
+    
+        {
+            "id": "chatcmpl-123",
+            "object": "chat.completion",
+            "created": 1677652288,
+            "model": "gpt-4o-mini",
+            "choices": [{
+                "index": 0,
+                "message": {
+                    "role": "assistant",
+                    "content": "Response text"
+                },
+                "finish_reason": "stop"
+            }],
+            "usage": {
+                "prompt_tokens": 10,
+                "completion_tokens": 20,
+                "total_tokens": 30
+            },
+            "message": {...}  # Backwards compatibility: first choice's message
+        }
+    
+    Error format::
+    
+        {
+            "error": {
+                "code": "ERROR_CODE",
+                "message": "error description"
+            }
+        }
+    
+    @note: Configuration - Set llm.provider to one of: 'openai', 'ollama', 'rag'
+    
+    @note: For OpenAI:
+        - llm.api.key: Your OpenAI API key
+        - llm.api.model: Model name (default: 'gpt-4o-mini')
+        - llm.api.endpoint: Custom endpoint (default: https://api.openai.com/v1/chat/completions)
+        - llm.store: Enable responses API storage (default: False)
+    
+    @note: For Ollama:
+        - llm.ollama.host: Ollama server URL (default: 'http://localhost:11434')
+        - llm.api.model: Model name (default: 'llama2')
+    
+    @note: For RAG:
+        - llm.qdrant.host: Qdrant server URL (default: 'http://localhost:6333')
+        - llm.qdrant.collection: Collection name (default: 'zms_docs')
+        - llm.ollama.host: Ollama server URL (default: 'http://localhost:11434')
+        - llm.api.model: Model name (default: 'llama2')
+        - llm.rag.top_k: Number of documents to retrieve (default: '3')
     """
     provider = _get_provider(context)
     return provider.chat(messages, **kwargs)
@@ -650,10 +652,10 @@ def get_provider_info(context):
     Get information about the currently configured LLM provider.
     
     Args:
-        context: ZMS context object
-        
+    context: ZMS context object
+
     Returns:
-        dict: Provider information including type, model, and endpoint
+    dict: Provider information including type, model, and endpoint
     """
     provider_type = context.getConfProperty('llm.provider', 'openai').lower()
     

@@ -2,9 +2,9 @@
 llmtools.py – ZMS tool registry for LLM function/tool calling.
 
 Provides:
-- ``LLM_TOOLS``: list of OpenAI-format tool schemas (also accepted by Ollama v0.3+).
-- ``execute_llmtool(name, args, context)``: dispatcher that maps tool names to live ZMS
-  API calls via ``context.metaobj_manager``.
+    - ``LLM_TOOLS``: list of OpenAI-format tool schemas (also accepted by Ollama v0.3+).
+    - ``execute_llmtool(name, args, context)``: dispatcher that maps tool names to live ZMS
+    API calls via ``context.metaobj_manager``.
 
 All tools operate on the metamodel manager reachable via the ZMS acquisition context.
 """

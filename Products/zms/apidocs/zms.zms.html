@@ -164,6 +164,16 @@
         
 
         
+            <div class="itemName"><code><a href="#createZMS" class="internal-link" title="zms.zms.createZMS">create<wbr></wbr>ZMS</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
             <div class="itemName"><code><a href="#importTheme" class="internal-link" title="zms.zms.importTheme">import<wbr></wbr>Theme</a></code>
             </div>
         
@@ -174,7 +184,17 @@
         
 
         
-            <div class="itemName"><code><a href="#initContent" class="internal-link" title="zms.zms.initContent">init<wbr></wbr>Content</a></code>
+            <div class="itemName"><code><a href="#init_content" class="internal-link" title="zms.zms.init_content">init<wbr></wbr>_content</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#init_multisite" class="internal-link" title="zms.zms.init_multisite">init<wbr></wbr>_multisite</a></code>
             </div>
         
 
@@ -313,6 +333,16 @@
         
 
         
+            <div class="itemName"><code><a href="zms.IZMSLLMConnector.html" class="internal-link" title="zms.IZMSLLMConnector"><wbr></wbr>IZMSLLMConnector</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
             <div class="itemName"><code><a href="zms.IZMSMetacmdProvider.html" class="internal-link" title="zms.IZMSMetacmdProvider"><wbr></wbr>IZMSMetacmd<wbr></wbr>Provider</a></code>
             </div>
         
@@ -354,6 +384,26 @@
 
         
             <div class="itemName"><code><a href="zms.IZMSWorkflowProvider.html" class="internal-link" title="zms.IZMSWorkflowProvider"><wbr></wbr>IZMSWorkflow<wbr></wbr>Provider</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.llmapi.html" class="internal-link" title="zms.llmapi">llmapi</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.llmtools.html" class="internal-link" title="zms.llmtools">llmtools</a></code>
             </div>
         
 
@@ -534,6 +584,16 @@
 
         
             <div class="itemName"><code><a href="zms.zmslinkelement.html" class="internal-link" title="zms.zmslinkelement">zmslinkelement</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.ZMSLLMConnector.html" class="internal-link" title="zms.ZMSLLMConnector"><wbr></wbr>ZMSLLMConnector</a></code>
             </div>
         
 
@@ -1203,7 +1263,7 @@
 <li><strong>Lifecycle Event Handling</strong>: The <code><a href="#subscriber" class="internal-link" title="zms.zms.subscriber">subscriber</a></code> function dispatches Zope container lifecycle events (object addition, movement, removal) to the internal ZMS event framework, enabling custom business logic triggers throughout the object hierarchy.</li>
 <li><strong>Site Initialization</strong>: The <code><a href="#initZMS" class="internal-link" title="zms.zms.initZMS">initZMS</a></code> function handles creation and configuration of new ZMS sites, supporting both standalone master sites and client sites that acquire their content model from a portal master.</li>
 <li><strong>Theme Management</strong>: The <code><a href="#importTheme" class="internal-link" title="zms.zms.importTheme">importTheme</a></code> function imports or acquires configured themes for newly created sites.</li>
-<li><strong>Content Import</strong>: The <code><a href="#initContent" class="internal-link" title="zms.zms.initContent">initContent</a></code> function imports initial site content from bundled archive files.</li>
+<li><strong>Content Import</strong>: The <code><a href="#init_content" class="internal-link" title="zms.zms.init_content">init_content</a></code> function imports initial site content from bundled archive files.</li>
 <li><strong>Management Interface</strong>: The <code><a href="#manage_addZMS" class="internal-link" title="zms.zms.manage_addZMS">manage_addZMS</a></code> function provides the factory method for creating top-level ZMS installations through the Zope add form.</li>
 </ul>
 <p>The ZMS class inherits from multiple managers providing specific functionality:</p>
@@ -1221,7 +1281,7 @@
         </div>
 
         <div id="splitTables">
-          <table class="children sortable" id="id157">
+          <table class="children sortable" id="id170">
   
   
   <tr class="class">
@@ -1242,13 +1302,23 @@
   </tr><tr class="function">
     
     <td>Function</td>
+    <td><code><a href="#createZMS" class="internal-link" title="zms.zms.createZMS">create<wbr></wbr>ZMS</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="function">
+    
+    <td>Function</td>
     <td><code><a href="#importTheme" class="internal-link" title="zms.zms.importTheme">import<wbr></wbr>Theme</a></code></td>
     <td>Import or acquire the configured theme for a newly created site.</td>
   </tr><tr class="function">
     
     <td>Function</td>
-    <td><code><a href="#initContent" class="internal-link" title="zms.zms.initContent">init<wbr></wbr>Content</a></code></td>
+    <td><code><a href="#init_content" class="internal-link" title="zms.zms.init_content">init<wbr></wbr>_content</a></code></td>
     <td>Import initial site content from a bundled archive.</td>
+  </tr><tr class="function">
+    
+    <td>Function</td>
+    <td><code><a href="#init_multisite" class="internal-link" title="zms.zms.init_multisite">init<wbr></wbr>_multisite</a></code></td>
+    <td>Initialize a multisite content structure with the given depth and number of clients.</td>
   </tr><tr class="function">
     
     <td>Function</td>
@@ -1290,7 +1360,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">containerFilter</span><span class="function-signature">(container)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zms.py#L318">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zms.py#L367">
       
       (source)
     </a>
@@ -1303,6 +1373,33 @@
   <div class="docstring functionBody">
     
     <div><p>Restrict add-dialog containers to plain folders.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">container:</span>object</td><td class="fieldArgDesc">Candidate container displayed by the add dialog.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer">bool</td><td class="fieldArgDesc"><tt class="rst-docutils rst-literal">True</tt> when the container is a folder.</td></tr></table></div>
+  </div>
+</div><div class="basefunction">
+  
+  
+  <a name="zms.zms.createZMS">
+    
+  </a>
+  <a name="createZMS">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">createZMS</span><span class="function-signature">(context, id, name, REQUEST)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zms.py#L234">
+      
+      (source)
+    </a>
+    <a class="headerLink" href="#createZMS" title="zms.zms.createZMS">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
   </div>
 </div><div class="basefunction">
   
@@ -1334,21 +1431,21 @@
 </div><div class="basefunction">
   
   
-  <a name="zms.zms.initContent">
+  <a name="zms.zms.init_content">
     
   </a>
-  <a name="initContent">
+  <a name="init_content">
     
   </a>
   <div class="functionHeader">
     
     
-    <span class="py-keyword">def</span> <span class="py-defname">initContent</span><span class="function-signature">(self, filename, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zms.py#L234">
+    <span class="py-keyword">def</span> <span class="py-defname">init_content</span><span class="function-signature">(self, filename, REQUEST)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zms.py#L246">
       
       (source)
     </a>
-    <a class="headerLink" href="#initContent" title="zms.zms.initContent">
+    <a class="headerLink" href="#init_content" title="zms.zms.init_content">
       
       
       ¶
@@ -1357,6 +1454,33 @@
   <div class="docstring functionBody">
     
     <div><p>Import initial site content from a bundled archive.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">self:</span>ZMS</td><td class="fieldArgDesc">ZMS site that receives the imported content.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">filename:</span>str</td><td class="fieldArgDesc">Name of the import archive below the product import folder.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span>ZPublisher.HTTPRequest.HTTPRequest</td><td class="fieldArgDesc">Active HTTP request.</td></tr></table></div>
+  </div>
+</div><div class="basefunction">
+  
+  
+  <a name="zms.zms.init_multisite">
+    
+  </a>
+  <a name="init_multisite">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">init_multisite</span><span class="function-signature">(zms, depth, clients, prefix=<span class="rst-variable-quote">'</span><span class="rst-variable-string">client</span><span class="rst-variable-quote">'</span>, REQUEST=None)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zms.py#L261">
+      
+      (source)
+    </a>
+    <a class="headerLink" href="#init_multisite" title="zms.zms.init_multisite">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Initialize a multisite content structure with the given depth and number of clients.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">zms</span></td><td class="fieldArgDesc">ZMS site that receives the multisite content structure.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">depth</span></td><td class="fieldArgDesc">Depth of the multisite folder hierarchy.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">clients</span></td><td class="fieldArgDesc">Number of client folders at each level.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">prefix</span></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST</span></td><td class="fieldArgDesc">Active HTTP request.</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1400,7 +1524,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_addZMS</span><span class="function-signature">(self, lang, manage_lang, REQUEST, RESPONSE)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zms.py#L252">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zms.py#L292">
       
       (source)
     </a>
@@ -1453,7 +1577,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_addZMSForm</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zms.py#L249">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zms.py#L291">
       
       (source)
     </a>

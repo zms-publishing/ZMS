@@ -6448,6 +6448,21 @@ TAB_LAYOUT:
   vie: Bố cục
   heb: פריסה
 
+TAB_LLM:
+  ger: AI-Lab
+  eng: AI-Lab
+  ned: AI-Lab
+  fra: AI-Lab
+  ita: AI-Lab
+  esp: AI-Lab
+  chi: AI-Lab
+  fas: AI-Lab
+  rus: AI-Lab
+  hin: AI-Lab
+  ara: AI-Lab
+  vie: AI-Lab
+  heb: AI-Lab
+
 TAB_LIVE:
   ger: Live
   eng: Live

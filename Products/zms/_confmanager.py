@@ -624,6 +624,9 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
         {'key':'ZMS.repository_manager.__init__.format','title':'Repository format of __init__','desc':'Repository format of __init__','datatype':'string','options':['yaml','py'],'default':'yaml'},
         {'key':'ZReferableItem.validateLinkObj','title':'Auto-correct link-attributes','desc':'Ensure valid link-attributes by parsing and using ZMSIndex for refreshing target urls on rendering','datatype':'boolean','default':1},
         {'key':'ZReferableItem.validateInlineLinkObj','title':'Auto-correct inline-links','desc':'Ensure valid inline-links by text-parsing and using ZMSIndex for refreshing target urls on rendering','datatype':'boolean','default':1},
+        # Note: LLM settings are managed by ZMSLLMConnector (getLLMConnector()).
+        # The entries below are kept only as migration hints; the connector's own
+        # _config dict is the authoritative source of llm.* properties.
       ]
     
     def getConfProperties(self, prefix=None, inherited=False, REQUEST=None):
@@ -1571,8 +1574,26 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
       adapter.initialize()
       return adapter
 
+    def getLLMConnector(self):
+      """
+      Return the LLM connector.
 
-# call this to initialize framework classes, which
+      Walks the breadcrumb path upward to find a ``ZMSLLMConnector`` object.
+      Returns ``None`` if no connector has been added — it must be added manually
+      like other ZMS components (e.g. workflow_manager, ZMSLog).
+
+      @return: The LLM connector object, or None.
+      @rtype: IZMSLLMConnector or None
+      """
+      from Products.zms import IZMSLLMConnector
+      from zope.interface import providedBy
+      path_nodes = self.breadcrumbs_obj_path()
+      path_nodes.reverse()
+      for path_node in path_nodes:
+        for ob in path_node.objectValues():
+          if IZMSLLMConnector.IZMSLLMConnector in list(providedBy(ob)):
+            return ob
+      return None
 # does the right thing with the security assertions.
 InitializeClass(ConfManager)
 

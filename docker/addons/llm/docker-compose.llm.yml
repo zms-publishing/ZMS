@@ -1,0 +1,96 @@
+version: '3.8'
+
+# Example Docker Compose setup for ZMS with LLM providers
+# This adds Ollama and Qdrant services to support local LLM capabilities
+
+services:
+  # Ollama - Local LLM server
+  ollama:
+    image: ollama/ollama:latest
+    container_name: zms_ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - zms_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Qdrant - Vector database for RAG
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: zms_qdrant
+    ports:
+      - "6333:6333"  # REST API
+      - "6334:6334"  # gRPC API
+    volumes:
+      - qdrant_storage:/qdrant/storage
+    networks:
+      - zms_network
+    restart: unless-stopped
+    environment:
+      - QDRANT__SERVICE__GRPC_PORT=6334
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6333/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  ollama_data:
+    driver: local
+  qdrant_storage:
+    driver: local
+
+networks:
+  zms_network:
+    driver: bridge
+
+# Usage Instructions:
+# 
+# 1. Start the services:
+#    docker-compose -f docker-compose.llm.yml up -d
+#
+# 2. Pull an Ollama model:
+#    docker exec -it zms_ollama ollama pull llama2
+#    # or
+#    docker exec -it zms_ollama ollama pull mistral
+#
+# 3. Configure ZMS with these properties:
+#
+#    For Ollama:
+#      llm.provider = ollama
+#      llm.ollama.host = http://ollama:11434
+#      llm.api.model = llama2
+#
+#    For RAG:
+#      llm.provider = rag
+#      llm.ollama.host = http://ollama:11434
+#      llm.qdrant.host = http://qdrant:6333
+#      llm.qdrant.collection = zms_docs
+#      llm.api.model = llama2
+#
+# 4. (Optional) Populate Qdrant with your documents for RAG
+#
+# 5. Access the services:
+#    - Ollama API: http://localhost:11434
+#    - Qdrant Dashboard: http://localhost:6333/dashboard
+#
+# Available Ollama models:
+#   - llama2 (7B, 13B, 70B variants)
+#   - mistral (7B)
+#   - codellama (for code generation)
+#   - neural-chat (optimized for chat)
+#   - starling-lm (high quality responses)
+#
+# To see all available models:
+#   docker exec -it zms_ollama ollama list
+#
+# To pull a specific model variant:
+#   docker exec -it zms_ollama ollama pull llama2:7b
+#   docker exec -it zms_ollama ollama pull llama2:13b

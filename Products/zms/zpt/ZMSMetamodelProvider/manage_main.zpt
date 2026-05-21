@@ -812,11 +812,11 @@
 		Object.keys(meta_model).forEach(tal_content_render);
 
 		// Assemble TAL-Code
-		var default_template = `<div title="Default-ZPT-Code"
-			tal:define="zmscontext options/zmscontext;
-			id python:zmscontext.getId();
-			css_class python:zmscontext.meta_id;${tal_defs}"
-		tal:attributes="id id;class css_class">${tal_content}\n</div>`;
+		var default_template = `<div title="Default-ZPT-Code"`
+			+ `\n\ttal:define="zmscontext options/zmscontext;`
+			+ `\n\t\tid python:zmscontext.getId();`
+			+ `\n\t\tcss_class python:zmscontext.meta_id;${tal_defs}"`
+			+ `\n\t\ttal:attributes="id id;class css_class">${tal_content}\n</div>`;
 
 		// Write TAL-Code into Textarea
 		$target.val(`${comment1}\n${default_template}\n${comment1}`);

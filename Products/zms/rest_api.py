@@ -207,6 +207,40 @@ class RestApiController(object):
                 decoration, data = self.body_content(self.context, content_type=True)
             elif self.ids == [] or self.ids == ['get']:
                 decoration, data = self.get(self.context, content_type=True)
+            elif self.ids == ['llm_chat']:
+                connector = self.context.getLLMConnector()
+                if connector is None:
+                    data = {'error': 'No LLM connector configured. Add a ZMSLLMConnector to the ZMS root.'}
+                else:
+                    # Accept either a full messages[] array (multi-turn) or a single message string
+                    raw_messages = REQUEST.get('messages', '')
+                    if raw_messages:
+                        try:
+                            messages = json.loads(raw_messages) if isinstance(raw_messages, str) else raw_messages
+                        except (ValueError, TypeError):
+                            messages = [{'role': 'user', 'content': str(raw_messages)}]
+                    else:
+                        message = REQUEST.get('message', '')
+                        messages = [{'role': 'user', 'content': message}]
+                    agent_mode = REQUEST.get('agent_mode', '0') in ('1', 'true', 'True')
+                    if agent_mode:
+                        data = connector.chat_with_tools(messages, self.context)
+                    else:
+                        raw = connector.chat(messages)
+                        if 'error' in raw:
+                            data = {'error': raw['error']}
+                        else:
+                            msg = raw.get('message') or {}
+                            data = {'reply': msg.get('content', '')}
+                decoration = {'content_type':'application/json'}
+            elif self.ids == ['llm_provider_info']:
+                connector = self.context.getLLMConnector()
+                data = connector.get_provider_info() if connector is not None else {'error': 'No LLM connector configured.'}
+                decoration = {'content_type':'application/json'}
+            elif self.ids == ['llm_ollama_models']:
+                connector = self.context.getLLMConnector()
+                data = connector.get_ollama_models() if connector is not None else {'error': 'No LLM connector configured.', 'models': []}
+                decoration = {'content_type':'application/json'}
             else:
                 data = {'ERROR':'Not Found','context':str(self.context),'path_to_handle':self.path_to_handle,'ids':self.ids}
             ct = decoration['content_type']

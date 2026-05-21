@@ -1,24 +1,3 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-
-################################################################################
-# llmapi.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
-
 """ZMS LLM API utility module
 
 This module provides an abstract interface for Large Language Model providers.
@@ -133,6 +112,30 @@ def _normalize_response(response_data, provider, model, original_message):
     
     # Normalize Ollama/RAG format to OpenAI format
     if 'message' in response_data:
+        msg = response_data['message']
+
+        # Normalize Ollama tool_calls to OpenAI format:
+        # - Ollama omits 'id' and 'type' on each call
+        # - Ollama 'arguments' is already a parsed dict, OpenAI expects a JSON string
+        tool_calls = msg.get('tool_calls')
+        if tool_calls:
+            normalized_tcs = []
+            for i, tc in enumerate(tool_calls):
+                fn = tc.get('function', {})
+                args = fn.get('arguments', {})
+                if isinstance(args, dict):
+                    args = json.dumps(args)
+                normalized_tcs.append({
+                    'id': tc.get('id') or f'call_{i}_{fn.get("name","tool")}',
+                    'type': tc.get('type', 'function'),
+                    'function': {
+                        'name': fn.get('name', ''),
+                        'arguments': args,
+                    },
+                })
+            msg = dict(msg)
+            msg['tool_calls'] = normalized_tcs
+
         normalized = {
             "id": _generate_request_id(provider, model, original_message),
             "object": "chat.completion",
@@ -140,17 +143,16 @@ def _normalize_response(response_data, provider, model, original_message):
             "model": model,
             "choices": [{
                 "index": 0,
-                "message": response_data['message'],
-                "finish_reason": "stop"
+                "message": msg,
+                "finish_reason": "tool_calls" if tool_calls else "stop",
             }],
             "usage": {
-                "prompt_tokens": 0,  # Not provided by Ollama
+                "prompt_tokens": 0,
                 "completion_tokens": 0,
                 "total_tokens": 0
             }
         }
-        # Add backwards compatibility
-        normalized['message'] = response_data['message']
+        normalized['message'] = msg
         return normalized
     
     # Unexpected format
@@ -334,9 +336,9 @@ class OllamaProvider(LLMProvider):
             if options:
                 payload['options'] = options
             
-            # Add any other kwargs
+            # Add any other kwargs (tools go at top level, not in options; tool_choice unsupported by Ollama)
             for key, value in kwargs.items():
-                if key not in ['temperature', 'top_p', 'num_ctx']:
+                if key not in ['temperature', 'top_p', 'num_ctx', 'tool_choice']:
                     payload[key] = value
             
             response = requests.post(
@@ -560,6 +562,7 @@ def _get_provider(context):
     
     providers = {
         'openai': OpenAIProvider,
+        'github': OpenAIProvider,  # GitHub Models uses the OpenAI-compatible API
         'ollama': OllamaProvider,
         'rag': RAGProvider,
     }
@@ -659,8 +662,13 @@ def get_provider_info(context):
         'model': context.getConfProperty('llm.api.model', 'not configured'),
     }
     
-    if provider_type == 'openai':
-        info['endpoint'] = context.getConfProperty('llm.api.endpoint', 'https://api.openai.com/v1/chat/completions')
+    if provider_type in ('openai', 'github'):
+        endpoint_default = (
+            'https://models.inference.ai.azure.com/chat/completions'
+            if provider_type == 'github'
+            else 'https://api.openai.com/v1/chat/completions'
+        )
+        info['endpoint'] = context.getConfProperty('llm.api.endpoint', endpoint_default)
         info['has_api_key'] = bool(context.getConfProperty('llm.api.key'))
         info['store_enabled'] = context.getConfProperty('llm.store', '').lower() in ['true', '1', 'yes']
     elif provider_type == 'ollama':

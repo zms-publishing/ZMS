@@ -45,7 +45,7 @@
 				<div class="card-header d-flex align-items-center justify-content-between">
 					<span>
 						<i class="fas fa-robot mr-2 fa-2x text-primary"></i>
-						<strong tal:content="python:{'openai':'OpenAI','ollama':'Ollama','rag':'RAG Assistant'}.get(provider,'LLM Chat')">LLM Chat</strong>
+						<strong tal:content="python:{'openai':'OpenAI','github':'GitHub Models','ollama':'Ollama','rag':'RAG Assistant'}.get(provider,'LLM Chat')">LLM Chat</strong>
 						&nbsp;
 						<small class="text-muted" tal:content="python:'(%s)' % model">model</small>
 						&nbsp;
@@ -66,6 +66,10 @@
 							<textarea class="form-control" id="llm-message" rows="2"
 								placeholder="Enter your message here… (Enter to send, Shift+Enter for newline)"></textarea>
 							<div class="input-group-append">
+								<div class="input-group-text llm-agent-toggle" title="Agent mode: enables ZMS tool calling (create content types, etc.)">
+									<input type="checkbox" id="chk-agent-mode" class="mr-1" />
+									<label for="chk-agent-mode" class="mb-0 small" style="cursor:pointer;user-select:none">Agent</label>
+								</div>
 								<button class="btn btn-primary" id="btn-send">
 									<i class="fas fa-paper-plane"></i>
 								</button>
@@ -88,6 +92,7 @@
 						<div class="col-sm-9">
 							<select class="form-control" name="llm.provider" id="llm-provider">
 								<option value="openai"  tal:attributes="selected python:provider=='openai'">OpenAI</option>
+								<option value="github"  tal:attributes="selected python:provider=='github'">GitHub Models</option>
 								<option value="ollama"  tal:attributes="selected python:provider=='ollama'">Ollama (local)</option>
 								<option value="rag"     tal:attributes="selected python:provider=='rag'">RAG (Qdrant + Ollama)</option>
 							</select>
@@ -118,23 +123,28 @@
 						</div>
 					</div>
 
-					<!-- OpenAI Settings -->
+					<!-- OpenAI / GitHub Models Settings -->
 					<fieldset class="provider-section" id="section-openai">
-						<legend class="row my-3">OpenAI Settings</legend>
+						<legend class="row my-3" id="section-openai-legend">OpenAI Settings</legend>
 						<div class="form-group row">
 							<label class="col-sm-3 control-label">API Key</label>
 							<div class="col-sm-9">
 								<input class="form-control zmi-code" type="password" name="llm.api.key"
-									placeholder="sk-..." />
-								<small class="form-text text-muted">Stored encrypted. Leave blank to keep existing key.</small>
+									placeholder="sk-...  or  github_pat_..." />
+								<small class="form-text text-muted" id="apikey-hint">
+									OpenAI: <code>sk-...</code> key &nbsp;|&nbsp;
+									GitHub Models: Personal Access Token from <a href="https://github.com/settings/tokens" target="_blank">github.com/settings/tokens</a>
+								</small>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-sm-3 control-label">Endpoint URL</label>
 							<div class="col-sm-9">
 								<input class="form-control zmi-code" type="text" name="llm.api.endpoint"
-									tal:attributes="value python:here.getConfProperty('llm.api.endpoint','https://api.openai.com/v1/chat/completions')"
+									id="llm-api-endpoint"
+									tal:attributes="value python:here.getConfProperty('llm.api.endpoint','')"
 									placeholder="https://api.openai.com/v1/chat/completions" />
+								<small class="form-text text-muted" id="endpoint-hint"></small>
 							</div>
 						</div>
 					</fieldset>
@@ -323,10 +333,26 @@
 			// Provider-section visibility
 			function updateProviderSections() {
 				var p = $('#llm-provider').val() || $('input[name="llm.provider"]').val() || 'openai';
-				$('#section-openai').toggle(p === 'openai');
+				var isOpenAI = (p === 'openai' || p === 'github');
+				$('#section-openai').toggle(isOpenAI);
 				$('#section-ollama').toggle(p === 'ollama' || p === 'rag');
 				$('#section-rag').toggle(p === 'rag');
 				$('#ollama-model-picker').toggle(p === 'ollama' || p === 'rag');
+				if (p === 'github') {
+					$('#section-openai-legend').text('GitHub Models Settings');
+					var $ep = $('#llm-api-endpoint');
+					if (!$ep.val()) {
+						$ep.val('https://models.inference.ai.azure.com/chat/completions');
+					}
+					$('#endpoint-hint').text('GitHub Models inference endpoint (pre-filled).');
+				} else if (p === 'openai') {
+					$('#section-openai-legend').text('OpenAI Settings');
+					var $ep = $('#llm-api-endpoint');
+					if (!$ep.val()) {
+						$ep.val('https://api.openai.com/v1/chat/completions');
+					}
+					$('#endpoint-hint').text('');
+				}
 			}
 			$('#llm-provider').on('change', updateProviderSections);
 			updateProviderSections();
@@ -391,10 +417,24 @@
 
 			// Chat functionality with localStorage persistence
 		var CHAT_STORAGE_KEY = 'zms_llm_chat_' + window.location.pathname.replace(/\//g, '_');
+		var AGENT_MODE_KEY = 'zms_llm_agent_' + window.location.pathname.replace(/\//g, '_');
+		// chatHistory: flat array of message objects sent to the LLM (role + content)
+		// chatTurns:   richer array of all turns including tool-call bubbles, for UI replay
 		var chatHistory = [];
+		var chatTurns = [];
+
+		// Restore agent-mode checkbox from localStorage
+		try {
+			$('#chk-agent-mode').prop('checked', localStorage.getItem(AGENT_MODE_KEY) === '1');
+		} catch(e) {}
+		$('#chk-agent-mode').on('change', function() {
+			try { localStorage.setItem(AGENT_MODE_KEY, this.checked ? '1' : '0'); } catch(e) {}
+		});
 
 		function saveChatHistory() {
-			try { localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(chatHistory)); } catch(e) {}
+			try {
+				localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify({history: chatHistory, turns: chatTurns}));
+			} catch(e) {}
 		}
 
 		function renderMessage(role, content, isError) {
@@ -409,19 +449,66 @@
 			}
 		}
 
+		function renderToolCall(turn) {
+			var tcs = turn.tool_calls || [];
+			var html = '<div class="llm-tool-group">';
+			for (var i = 0; i < tcs.length; i++) {
+				var tc = tcs[i];
+				var fn = tc['function'] || {};
+				var tcId = 'tc-' + tc.id + '-' + i;
+				var argsStr = fn['arguments'] || '{}';
+				var argsObj = {};
+				try { argsObj = JSON.parse(argsStr); } catch(e) { argsObj = argsStr; }
+				var argsDisplay = JSON.stringify(argsObj, null, 2);
+				html += '<div class="llm-tool-call">' +
+					'<span class="llm-tool-badge"><i class="fas fa-wrench mr-1"></i>' +
+					$('<div/>').text(fn['name'] || 'tool').html() + '</span> ' +
+					'<a class="llm-tool-toggle text-muted small" data-toggle="collapse" href="#' + tcId + '" role="button">' +
+					'<i class="fas fa-chevron-down"></i></a>' +
+					'<div class="collapse" id="' + tcId + '">' +
+					'<pre class="llm-tool-args">' + $('<div/>').text(argsDisplay).html() + '</pre>' +
+					(turn.result ? '<pre class="llm-tool-result">' + $('<div/>').text(JSON.stringify(turn.result, null, 2)).html() + '</pre>' : '') +
+					'</div></div>';
+			}
+			html += '</div>';
+			return html;
+		}
+
+		function renderTurns(turns) {
+			var html = '';
+			for (var i = 0; i < turns.length; i++) {
+				var t = turns[i];
+				if (t.role === 'user') {
+					html += renderMessage('user', t.content, false);
+				} else if (t.role === 'tool') {
+					// tool result — attached to the preceding tool_call turn, skip standalone render
+				} else if (t.tool_calls && t.tool_calls.length) {
+					html += renderToolCall(t);
+				} else if (t.error) {
+					html += renderMessage('assistant', t.content, true);
+				} else {
+					html += renderMessage('assistant', t.content || '', false);
+				}
+			}
+			return html;
+		}
+
 		function loadChatHistory() {
 			try {
 				var stored = localStorage.getItem(CHAT_STORAGE_KEY);
 				if (!stored) return;
 				var saved = JSON.parse(stored);
-				if (!Array.isArray(saved) || !saved.length) return;
-				chatHistory = saved;
-				var html = '';
-				for (var i = 0; i < saved.length; i++) {
-					var entry = saved[i];
-					html += renderMessage(entry.role, entry.content, entry.error);
+				if (!saved) return;
+				// Support both old format (array) and new format ({history, turns})
+				if (Array.isArray(saved)) {
+					chatHistory = saved;
+					chatTurns = saved;
+				} else {
+					chatHistory = saved.history || [];
+					chatTurns = saved.turns || [];
 				}
-				$('#llm-console').html(html);
+				if (!chatTurns.length) return;
+				$('#llm-console').html(renderTurns(chatTurns));
 				$('#llm-console').scrollTop($('#llm-console')[0].scrollHeight);
 			} catch(e) {}
 		}
@@ -449,6 +536,7 @@
 
 		$('#btn-clear-chat').on('click', function() {
 			chatHistory = [];
+			chatTurns = [];
 			$('#llm-console').empty();
 			try { localStorage.removeItem(CHAT_STORAGE_KEY); } catch(e) {}
 		});
@@ -467,13 +555,19 @@
 
 		function sendMessage(message) {
 			if (!message.trim()) return;
+			var agentMode = $('#chk-agent-mode').is(':checked');
+
+			// Append user message to history and UI
 			chatHistory.push({role: 'user', content: message});
+			chatTurns.push({role: 'user', content: message});
 			saveChatHistory();
 
 			var spinnerId = 'spin-' + Date.now();
+			var modeLabel = agentMode ? '<i class="fas fa-robot mr-1 text-muted" title="Agent mode"></i>' : '';
 			$('#llm-console').append(
 				renderMessage('user', message) +
-				'<div class="llm-reply llm-reply-pending" id="' + spinnerId + '"><i class="fas fa-spinner fa-spin"></i> Waiting…</div>'
+				'<div class="llm-reply llm-reply-pending" id="' + spinnerId + '">' + modeLabel +
+				'<i class="fas fa-spinner fa-spin"></i> Waiting…</div>'
 			);
 			$('#llm-console').animate({ scrollTop: $('#llm-console')[0].scrollHeight }, 500);
 
@@ -481,28 +575,42 @@
 				method: 'GET',
 				url: '../../content/++rest_api/llm_chat',
 				dataType: 'json',
-				data: {message: message}
+				data: {messages: JSON.stringify(chatHistory), agent_mode: agentMode ? '1' : '0'}
 			})
-			.done(function(reply) {
-				if (reply.error) {
-					var errText = '[' + reply.error.code + '] ' + reply.error.message;
-					chatHistory.push({role: 'assistant', content: errText, error: true});
+			.done(function(resp) {
+				$('#' + spinnerId).remove();
+				if (resp.error) {
+					var errText = typeof resp.error === 'object'
+						? '[' + resp.error.code + '] ' + resp.error.message
+						: String(resp.error);
+					chatTurns.push({role: 'assistant', content: errText, error: true});
 					saveChatHistory();
-					$('#' + spinnerId).removeClass('llm-reply llm-reply-pending').addClass('llm-error')
-						.html($('<div/>').text(errText).html());
+					$('#llm-console').append(renderMessage('assistant', errText, true));
+				} else if (resp.turns) {
+					// Agent mode: multi-turn response with possible tool calls
+					var newTurns = resp.turns;
+					for (var i = 0; i < newTurns.length; i++) {
+						var t = newTurns[i];
+						chatTurns.push(t);
+						if (t.role === 'assistant' && !t.tool_calls) {
+							chatHistory.push({role: 'assistant', content: t.content || ''});
+						}
+					}
+					saveChatHistory();
+					$('#llm-console').append(renderTurns(newTurns));
 				} else {
-					var content = reply.message ? reply.message.content : '';
+					// Plain chat mode: single response {reply}
+					var content = resp.reply || '';
 					chatHistory.push({role: 'assistant', content: content});
+					chatTurns.push({role: 'assistant', content: content});
 					saveChatHistory();
-					$('#' + spinnerId).removeClass('llm-reply-pending')
-						.html('<i class="fas fa-copy llm-copy-btn" title="Copy to clipboard"></i>' +
-							$('<div/>').text(content).html());
-					$('#llm-console').animate({ scrollTop: $('#llm-console')[0].scrollHeight }, 500);
+					$('#llm-console').append(renderMessage('assistant', content, false));
 				}
+				$('#llm-console').animate({ scrollTop: $('#llm-console')[0].scrollHeight }, 500);
 			})
 			.fail(function(jqXHR, textStatus, errorThrown) {
 				var errText = '[REQUEST_FAILED] ' + textStatus + ': ' + errorThrown;
-				chatHistory.push({role: 'assistant', content: errText, error: true});
+				chatTurns.push({role: 'assistant', content: errText, error: true});
 				saveChatHistory();
 				$('#' + spinnerId).removeClass('llm-reply llm-reply-pending').addClass('llm-error')
 					.html($('<div/>').text(errText).html());
@@ -581,17 +689,17 @@
 			font-size: .875rem;
 			border-left: 3px solid #17a2b8;
 		}
-		.ZMSLLMConnector .llm-copy-btn {
-			cursor: pointer;
-			color: #354e66;
-			margin-right: .3rem;
-		}
+		.ZMSLLMConnector .llm-copy-btn { cursor: pointer; color: #354e66; margin-right: .3rem; }
 		.ZMSLLMConnector .llm-copy-btn:hover { color: #2196F3; }
-		.ZMSLLMConnector .llm-input-bar {
-			padding: .5rem .75rem;
-			background: #fff;
-			border-top: 1px solid #dee2e6;
-		}
+		.ZMSLLMConnector .llm-input-bar { padding: .5rem .75rem; background: #fff; border-top: 1px solid #dee2e6; }
+		.ZMSLLMConnector .llm-agent-toggle { background: #f8f9fa; border: 1px solid #ced4da; border-right: 0; cursor: pointer; }
+		.ZMSLLMConnector .llm-agent-toggle input[type=checkbox]:checked + label { color: #007bff; font-weight: 600; }
+		.ZMSLLMConnector .llm-tool-group { padding: .3rem .75rem .3rem 2rem; background: #f8f9fa; border-left: 3px solid #6c757d; margin: .25rem 0; }
+		.ZMSLLMConnector .llm-tool-call { font-size: .85rem; }
+		.ZMSLLMConnector .llm-tool-badge { display: inline-block; background: #6c757d; color: #fff; border-radius: 3px; padding: .1rem .4rem; font-family: monospace; font-size: .8rem; }
+		.ZMSLLMConnector .llm-tool-toggle { margin-left: .5rem; }
+		.ZMSLLMConnector .llm-tool-args { font-size: .75rem; background: #fff; border: 1px solid #dee2e6; padding: .3rem .5rem; margin: .3rem 0 0; max-height: 200px; overflow-y: auto; }
+		.ZMSLLMConnector .llm-tool-result { font-size: .75rem; background: #e8f5e9; border: 1px solid #c3e6cb; padding: .3rem .5rem; margin: .2rem 0 0; max-height: 200px; overflow-y: auto; }
 	/*-->*/
 	</style>
 

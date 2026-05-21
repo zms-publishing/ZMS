@@ -212,8 +212,26 @@ class RestApiController(object):
                 if connector is None:
                     data = {'error': 'No LLM connector configured. Add a ZMSLLMConnector to the ZMS root.'}
                 else:
-                    message = REQUEST['message']
-                    data = connector.chat(message)
+                    # Accept either a full messages[] array (multi-turn) or a single message string
+                    raw_messages = REQUEST.get('messages', '')
+                    if raw_messages:
+                        try:
+                            messages = json.loads(raw_messages) if isinstance(raw_messages, str) else raw_messages
+                        except (ValueError, TypeError):
+                            messages = [{'role': 'user', 'content': str(raw_messages)}]
+                    else:
+                        message = REQUEST.get('message', '')
+                        messages = [{'role': 'user', 'content': message}]
+                    agent_mode = REQUEST.get('agent_mode', '0') in ('1', 'true', 'True')
+                    if agent_mode:
+                        data = connector.chat_with_tools(messages, self.context)
+                    else:
+                        raw = connector.chat(messages)
+                        if 'error' in raw:
+                            data = {'error': raw['error']}
+                        else:
+                            msg = raw.get('message') or {}
+                            data = {'reply': msg.get('content', '')}
                 decoration = {'content_type':'application/json'}
             elif self.ids == ['llm_provider_info']:
                 connector = self.context.getLLMConnector()

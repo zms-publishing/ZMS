@@ -124,6 +124,100 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
         return provider.chat(messages, **kwargs)
 
     # -------------------------------------------------------------------------
+    #  ZMSLLMConnector.chat_with_tools
+    # -------------------------------------------------------------------------
+    def chat_with_tools(self, messages, context, max_rounds=5):
+        """
+        Agentic chat loop with ZMS tool calling.
+
+        Sends ``messages`` plus ``LLM_TOOLS`` definitions to the LLM. If the
+        LLM responds with ``tool_calls``, each call is executed via
+        ``llmtools.execute_llmtool()`` against the given ZMS ``context``, the
+        results are appended as ``tool`` role messages, and the conversation
+        continues until the LLM produces a plain text response or ``max_rounds``
+        is reached.
+
+        @param messages: List of ``{"role": ..., "content": ...}`` dicts or a
+          plain string (auto-wrapped as user message).
+        @param context: ZMS acquisition context exposing ``metaobj_manager``.
+        @param max_rounds: Maximum tool-calling iterations to prevent infinite loops.
+        @return: Dict with keys:
+          - ``reply`` (str): Final assistant text response.
+          - ``turns`` (list): All conversation turns including tool calls/results,
+            each as ``{"role", "content", "tool_calls"?}`` for UI rendering.
+          - ``error`` (str): Set only on unrecoverable errors.
+        @rtype: dict
+        """
+        from Products.zms import llmtools
+
+        # Normalise messages
+        if isinstance(messages, str):
+            msgs = [{'role': 'user', 'content': messages}]
+        else:
+            msgs = list(messages)
+
+        turns = []  # records for UI / localStorage
+
+        for _round in range(max_rounds):
+            response = self.chat(msgs, tools=llmtools.LLM_TOOLS, tool_choice='auto')
+
+            if 'error' in response:
+                err = response['error']
+                err_msg = err.get('message', str(err)) if isinstance(err, dict) else str(err)
+                return {'error': err_msg, 'turns': turns, 'reply': ''}
+
+            message = response.get('message') or {}
+            tool_calls = message.get('tool_calls') or []
+
+            if not tool_calls:
+                # Final plain-text response
+                reply = message.get('content', '')
+                turns.append({'role': 'assistant', 'content': reply})
+                return {'reply': reply, 'turns': turns}
+
+            # Record assistant message with tool calls for UI
+            turns.append({
+                'role': 'assistant',
+                'content': message.get('content') or '',
+                'tool_calls': tool_calls,
+            })
+            msgs.append({
+                'role': 'assistant',
+                'content': message.get('content') or '',
+                'tool_calls': tool_calls,
+            })
+
+            # Execute each tool and append results
+            for tc in tool_calls:
+                call_id = tc.get('id', '')
+                fn = tc.get('function', {})
+                tool_name = fn.get('name', '')
+                try:
+                    raw_args = fn.get('arguments', '{}')
+                    args = json.loads(raw_args) if isinstance(raw_args, str) else raw_args
+                except (ValueError, TypeError):
+                    args = {}
+
+                result = llmtools.execute_llmtool(tool_name, args, context)
+                result_str = json.dumps(result)
+
+                tool_turn = {
+                    'role': 'tool',
+                    'tool_call_id': call_id,
+                    'name': tool_name,
+                    'content': result_str,
+                }
+                turns.append(tool_turn)
+                msgs.append(tool_turn)
+
+        # Exhausted max rounds without a final text reply
+        return {
+            'reply': 'The assistant used too many tool calls without a final answer.',
+            'turns': turns,
+        }
+
+
+    # -------------------------------------------------------------------------
     #  ZMSLLMConnector.get_provider_info
     # -------------------------------------------------------------------------
     def get_provider_info(self):

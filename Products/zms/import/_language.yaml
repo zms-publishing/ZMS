@@ -6449,19 +6449,19 @@ TAB_LAYOUT:
   heb: פריסה
 
 TAB_LLM:
-  ger: AI
-  eng: AI
-  ned: AI
-  fra: AI
-  ita: AI
-  esp: AI
-  chi: AI
-  fas: AI
-  rus: AI
-  hin: AI
-  ara: AI
-  vie: AI
-  heb: AI
+  ger: AI-Lab
+  eng: AI-Lab
+  ned: AI-Lab
+  fra: AI-Lab
+  ita: AI-Lab
+  esp: AI-Lab
+  chi: AI-Lab
+  fas: AI-Lab
+  rus: AI-Lab
+  hin: AI-Lab
+  ara: AI-Lab
+  vie: AI-Lab
+  heb: AI-Lab
 
 TAB_LIVE:
   ger: Live

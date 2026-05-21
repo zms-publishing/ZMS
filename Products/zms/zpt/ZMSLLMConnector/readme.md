@@ -1,6 +1,6 @@
 # ZMSLLMConnector
 
-`ZMSLLMConnector` is a Zope object that bridges ZMS content management with Large Language Model (LLM) provider backends. It is added as a child object to the ZMS root and exposes a tabbed ZMI management interface for configuration and live testing.
+`ZMSLLMConnector` is a Zope object that bridges ZMS content management with Large Language Model (LLM) provider backends. It can be added as _ZMS component_ like the workflow- or repository-manager; like these ZMSLLMConnector is instanciated as a child object to the ZMS root. A new item "AI-Lab" will appear in the tab-navigation and offers a UI for configuration, communication and live testing.
 
 ## Architecture
 

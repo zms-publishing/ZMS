@@ -422,6 +422,8 @@
 		// chatTurns:   richer array of all turns including tool-call bubbles, for UI replay
 		var chatHistory = [];
 		var chatTurns = [];
+		var inputHistoryIndex = -1;
+		var inputHistoryDraft = '';
 
 		// Restore agent-mode checkbox from localStorage
 		try {
@@ -514,17 +516,59 @@
 		}
 		loadChatHistory();
 
+		function getUserInputHistory() {
+			return chatHistory.filter(function(m) {
+				return m.role === 'user';
+			});
+		}
+
+		function resetInputHistoryNavigation() {
+			inputHistoryIndex = -1;
+			inputHistoryDraft = '';
+		}
+
 		$('#llm-message').on('keydown', function(e) {
 			if (e.which === 13 && !e.shiftKey) {
 				e.preventDefault();
 				sendMessage($(this).val());
 				$(this).val('');
+				resetInputHistoryNavigation();
 			}
-			// Arrow-up: recall last sent message
-			if (e.which === 38 && $(this).val() === '') {
-				var last = chatHistory.filter(function(m){ return m.role === 'user'; }).pop();
-				if (last) { $(this).val(last.content); }
-				e.preventDefault();
+
+			// Arrow-up/down: stepwise walkthrough of former user entries.
+			if (e.which === 38 || e.which === 40) {
+				var userEntries = getUserInputHistory();
+				if (!userEntries.length) {
+					return;
+				}
+
+				if (e.which === 38) {
+					if (inputHistoryIndex === -1) {
+						inputHistoryDraft = $(this).val();
+						inputHistoryIndex = userEntries.length - 1;
+					} else if (inputHistoryIndex > 0) {
+						inputHistoryIndex -= 1;
+					}
+					$(this).val(userEntries[inputHistoryIndex].content);
+					e.preventDefault();
+					return;
+				}
+
+				if (inputHistoryIndex !== -1) {
+					if (inputHistoryIndex < userEntries.length - 1) {
+						inputHistoryIndex += 1;
+						$(this).val(userEntries[inputHistoryIndex].content);
+					} else {
+						$(this).val(inputHistoryDraft);
+						resetInputHistoryNavigation();
+					}
+					e.preventDefault();
+				}
+				return;
+			}
+
+			if (inputHistoryIndex !== -1) {
+				resetInputHistoryNavigation();
 			}
 		});
 
@@ -532,11 +576,13 @@
 			var msg = $('#llm-message').val();
 			sendMessage(msg);
 			$('#llm-message').val('');
+			resetInputHistoryNavigation();
 		});
 
 		$('#btn-clear-chat').on('click', function() {
 			chatHistory = [];
 			chatTurns = [];
+			resetInputHistoryNavigation();
 			$('#llm-console').empty();
 			try { localStorage.removeItem(CHAT_STORAGE_KEY); } catch(e) {}
 		});
@@ -563,7 +609,7 @@
 			saveChatHistory();
 
 			var spinnerId = 'spin-' + Date.now();
-			var modeLabel = agentMode ? '<i class="fas fa-robot mr-1 text-muted" title="Agent mode"></i>' : '';
+			var modeLabel = agentMode ? '<i class="fas fa-robot mr-2 text-muted" title="Agent mode"></i>' : '';
 			$('#llm-console').append(
 				renderMessage('user', message) +
 				'<div class="llm-reply llm-reply-pending" id="' + spinnerId + '">' + modeLabel +

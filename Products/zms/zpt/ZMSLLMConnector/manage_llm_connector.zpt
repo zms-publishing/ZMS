@@ -129,11 +129,13 @@
 						<div class="form-group row">
 							<label class="col-sm-3 control-label">API Key</label>
 							<div class="col-sm-9">
-								<input class="form-control zmi-code" type="password" name="llm.api.key"
+								<input class="form-control zmi-code" type="text" name="llm.api.key" autocomplete="off"
+									tal:attributes="data-api_key_is_available python:bool(here.getConfProperty('llm.api.key'))"
 									placeholder="sk-...  or  github_pat_..." />
 								<small class="form-text text-muted" id="apikey-hint">
 									OpenAI: <code>sk-...</code> key &nbsp;|&nbsp;
-									GitHub Models: Personal Access Token from <a href="https://github.com/settings/tokens" target="_blank">github.com/settings/tokens</a>
+									GitHub Models: Personal Access Token from 
+									<a href="https://github.com/settings/tokens" target="_blank">github.com/settings/tokens</a>
 								</small>
 							</div>
 						</div>
@@ -735,17 +737,80 @@
 			font-size: .875rem;
 			border-left: 3px solid #17a2b8;
 		}
-		.ZMSLLMConnector .llm-copy-btn { cursor: pointer; color: #354e66; margin-right: .3rem; }
-		.ZMSLLMConnector .llm-copy-btn:hover { color: #2196F3; }
-		.ZMSLLMConnector .llm-input-bar { padding: .5rem .75rem; background: #fff; border-top: 1px solid #dee2e6; }
-		.ZMSLLMConnector .llm-agent-toggle { background: #f8f9fa; border: 1px solid #ced4da; border-right: 0; cursor: pointer; }
-		.ZMSLLMConnector .llm-agent-toggle input[type=checkbox]:checked + label { color: #007bff; font-weight: 600; }
-		.ZMSLLMConnector .llm-tool-group { padding: .3rem .75rem .3rem 2rem; background: #f8f9fa; border-left: 3px solid #6c757d; margin: .25rem 0; }
-		.ZMSLLMConnector .llm-tool-call { font-size: .85rem; }
-		.ZMSLLMConnector .llm-tool-badge { display: inline-block; background: #6c757d; color: #fff; border-radius: 3px; padding: .1rem .4rem; font-family: monospace; font-size: .8rem; }
-		.ZMSLLMConnector .llm-tool-toggle { margin-left: .5rem; }
-		.ZMSLLMConnector .llm-tool-args { font-size: .75rem; background: #fff; border: 1px solid #dee2e6; padding: .3rem .5rem; margin: .3rem 0 0; max-height: 200px; overflow-y: auto; }
-		.ZMSLLMConnector .llm-tool-result { font-size: .75rem; background: #e8f5e9; border: 1px solid #c3e6cb; padding: .3rem .5rem; margin: .2rem 0 0; max-height: 200px; overflow-y: auto; }
+		.ZMSLLMConnector .llm-copy-btn { 
+			cursor: pointer; 
+			color: #354e66; 
+			margin-right: .3rem; 
+		}
+		.ZMSLLMConnector .llm-copy-btn:hover { 
+			color: #2196F3;
+		}
+		.ZMSLLMConnector .llm-input-bar { 
+			padding: .5rem .75rem; 
+			background: #fff; 
+			border-top: 1px solid #dee2e6; 
+		}
+		.ZMSLLMConnector .llm-agent-toggle { 
+			background: #f8f9fa; 
+			border: 1px solid #ced4da; 
+			border-right: 0; 
+			cursor: pointer; 
+		}
+		.ZMSLLMConnector .llm-agent-toggle input[type=checkbox]:checked + label { 
+			color: #007bff; 
+			font-weight: 600; 
+		}
+		.ZMSLLMConnector .llm-tool-group { 
+			padding: .3rem .75rem .3rem 2rem; 
+			background: #f8f9fa; 
+			border-left: 3px solid #6c757d; 
+			margin: .25rem 0; 
+		}
+		.ZMSLLMConnector .llm-tool-call { 
+			font-size: .85rem; 
+		}
+		.ZMSLLMConnector .llm-tool-badge { 
+			display: inline-block; 
+			background: #6c757d; 
+			color: #fff; 
+			border-radius: 3px; 
+			padding: .1rem .4rem; 
+			font-family: monospace; 
+			font-size: .8rem; 
+		}
+		.ZMSLLMConnector .llm-tool-toggle { 
+			margin-left: .5rem; 
+		}
+		.ZMSLLMConnector .llm-tool-args { 
+			font-size: .75rem; 
+			background: #fff; 
+			border: 1px solid #dee2e6; 
+			padding: .3rem .5rem; 
+			margin: .3rem 0 0; 
+			max-height: 200px; 
+			overflow-y: auto; 
+		}
+		.ZMSLLMConnector .llm-tool-result { 
+			font-size: .75rem; 
+			background: #e8f5e9; 
+			border: 1px solid #c3e6cb; 
+			padding: .3rem .5rem; 
+			margin: .2rem 0 0; 
+			max-height: 200px; 
+			overflow-y: auto; 
+		}
+		.ZMSLLMConnector div.col-sm-9:has(input[data-api_key_is_available="True"]:not(:focus)):before {
+			content:"API-key is available";
+			display:block;
+			color:#e83e8c;
+			z-index:1000;
+			position:absolute;
+			padding:.5rem 1rem;
+			font-family:monospace;
+		}
+		.ZMSLLMConnector input[data-api_key_is_available="True"]:not(:focus)::placeholder {
+			color:transparent !important;
+		}
 	/*-->*/
 	</style>
 

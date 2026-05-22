@@ -11,6 +11,8 @@ All tools operate on the metamodel manager reachable via the ZMS acquisition con
 
 import json
 
+from Products.zms import zopeutil
+
 
 def _shorten_attr_id(attr_id):
     """Mirror manage_main.zpt shorten_id() for default template generation."""
@@ -324,11 +326,48 @@ LLM_TOOLS = [
     {
         "type": "function",
         "function": {
+            "name": "update_attribute_custom",
+            "description": (
+                "Update the custom/source payload of an existing content type "
+                "attribute without regenerating defaults. Use this to write back "
+                "edited ZPT, Python, method, interface, resource, or constant "
+                "code/content after the user asked to save a specific change. "
+                "Preserves the existing attribute metadata and does not invent "
+                "default template code."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "meta_id": {
+                        "type": "string",
+                        "description": "Content type ID, e.g. 'alertbox'.",
+                    },
+                    "attr_id": {
+                        "type": "string",
+                        "description": "Existing attribute ID, e.g. 'standard_html'.",
+                    },
+                    "custom": {
+                        "type": "string",
+                        "description": (
+                            "New raw source/content to store in the attribute's "
+                            "custom payload, for example beautified ZPT code."
+                        ),
+                    },
+                },
+                "required": ["meta_id", "attr_id", "custom"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
             "name": "regenerate_standard_html",
             "description": (
-                "Regenerate the standard_html zpt template from the current "
-                "attribute list of an existing content type. "
-                "Useful after adding or changing attributes."
+                "Generate default standard_html code from the current attribute "
+                "list of an existing content type, but only write it when the "
+                "standard_html attribute is missing or empty. Existing non-empty "
+                "templates are always preserved. Do not use this tool to edit, "
+                "beautify, optimize, or rewrite existing custom template code."
             ),
             "parameters": {
                 "type": "object",
@@ -348,6 +387,43 @@ LLM_TOOLS = [
                         "description": (
                             "If true, return generated template only and do not "
                             "persist any changes. Default false."
+                        ),
+                    },
+                },
+                "required": ["id"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "reset_standard_html_to_default",
+            "description": (
+                "Explicitly replace the current standard_html template with newly "
+                "generated default code based on the current attribute list. "
+                "Use only when the user clearly and explicitly asks to reset, "
+                "replace, or overwrite the existing standard_html template with "
+                "default generated code. Never use this for beautifying, "
+                "reviewing, or preserving existing custom code."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Content type ID, e.g. 'ZMSTeaser'.",
+                    },
+                    "dry_run": {
+                        "type": "boolean",
+                        "description": (
+                            "If true, return generated template only and do not "
+                            "persist any changes. Default false."
+                        ),
+                    },
+                    "create_if_missing": {
+                        "type": "boolean",
+                        "description": (
+                            "Create standard_html as zpt when missing. Default true."
                         ),
                     },
                 },
@@ -433,13 +509,24 @@ def execute_llmtool(name, args, context):
             if not ob:
                 return {'error': f"Content type '{tid}' not found."}
             attrs = []
-            for a in ob.get('attrs', []):
+            for attr_id in mm.getMetaobjAttrIds(tid):
+                a = mm.getMetaobjAttr(tid, attr_id, sync=True)
+                if not a:
+                    continue
+                custom = a.get('custom', '')
+                if a.get('type') in mm.valid_zopeattrs + mm.valid_zopetypes:
+                    ob_attr = a.get('ob')
+                    if ob_attr is not None:
+                        custom = zopeutil.readData(ob_attr, default=custom)
                 attrs.append({
                     'id': a.get('id'),
                     'name': a.get('name', ''),
                     'datatype': a.get('type', 'string'),
                     'mandatory': bool(a.get('mandatory', 0)),
                     'multilang': bool(a.get('multilang', 1)),
+                    'keys': a.get('keys', []),
+                    'custom': custom,
+                    'default': a.get('default', '')
                 })
             return {
                 'id': ob.get('id'),
@@ -562,7 +649,41 @@ def execute_llmtool(name, args, context):
                 'custom': custom_value,
             }
 
-        elif name == 'regenerate_standard_html':
+        elif name == 'update_attribute_custom':
+            meta_id = args['meta_id']
+            attr_id = args['attr_id']
+            custom_value = args.get('custom', '')
+
+            existing = mm.getMetaobjAttr(meta_id, attr_id, sync=True)
+            if not existing:
+                return {
+                    'error': (
+                        f"Attribute '{attr_id}' not found in content type '{meta_id}'."
+                    )
+                }
+
+            mm.setMetaobjAttr(
+                meta_id,
+                attr_id,
+                attr_id,
+                existing.get('name', attr_id),
+                existing.get('mandatory', 0),
+                existing.get('multilang', 1),
+                existing.get('repetitive', 0),
+                existing.get('type', 'string'),
+                existing.get('keys', []),
+                custom_value,
+                existing.get('default', ''),
+            )
+
+            return {
+                'updated': attr_id,
+                'to': meta_id,
+                'datatype': existing.get('type', 'string'),
+                'custom_length': len(custom_value),
+            }
+
+        elif name in ('regenerate_standard_html', 'reset_standard_html_to_default'):
             tid = args['id']
             ob = mm.getMetaobj(tid)
             if not ob:
@@ -582,6 +703,7 @@ def execute_llmtool(name, args, context):
             has_standard_html = 'standard_html' in mm.getMetaobjAttrIds(tid)
             create_if_missing = args.get('create_if_missing', True)
             dry_run = args.get('dry_run', False)
+            allow_overwrite = (name == 'reset_standard_html_to_default')
             if not has_standard_html and not create_if_missing:
                 return {
                     'error': (
@@ -590,18 +712,41 @@ def execute_llmtool(name, args, context):
                     )
                 }
 
+            existing = {}
+            existing_template = ''
+            if has_standard_html:
+                existing = mm.getMetaobjAttr(tid, 'standard_html', sync=True) or {}
+                existing_template = existing.get('custom', '')
+                existing_ob = existing.get('ob')
+                if existing_ob is not None:
+                    existing_template = zopeutil.readData(existing_ob, default=existing_template)
+                existing_template = existing_template or ''
+
             template = _build_default_standard_html(tid, attrs, target_id='standard_html')
             if dry_run:
                 return {
                     'dry_run': True,
                     'id': tid,
                     'would_create_standard_html': not has_standard_html,
+                    'would_overwrite_existing': bool(has_standard_html and existing_template and allow_overwrite),
+                    'has_existing_template': bool(existing_template),
                     'attributes_seen': len(attrs),
                     'template': template,
                 }
 
+            if has_standard_html and existing_template and not allow_overwrite:
+                return {
+                    'skipped': tid,
+                    'reason': (
+                        "standard_html already contains template code. "
+                        "Use reset_standard_html_to_default only when the user "
+                        "explicitly requests overwriting it."
+                    ),
+                    'attributes_seen': len(attrs),
+                    'has_existing_template': True,
+                }
+
             if has_standard_html:
-                existing = mm.getMetaobjAttr(tid, 'standard_html') or {}
                 mm.setMetaobjAttr(
                     tid,
                     'standard_html',

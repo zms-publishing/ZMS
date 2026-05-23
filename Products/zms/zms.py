@@ -16,7 +16,7 @@ The module encapsulates:
     and client sites that acquire their content model from a portal master.
   - B{Theme Management}: The L{importTheme} function imports or acquires
     configured themes for newly created sites.
-  - B{Content Import}: The L{initContent} function imports initial site content
+  - B{Content Import}: The L{init_content} function imports initial site content
     from bundled archive files.
   - B{Management Interface}: The L{manage_addZMS} function provides the factory
     method for creating top-level ZMS installations through the Zope add form.

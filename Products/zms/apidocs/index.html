@@ -185,6 +185,16 @@
         
 
         
+            <div class="itemName"><code><a href="zms.IZMSLLMConnector.html" class="internal-link" title="zms.IZMSLLMConnector"><wbr></wbr>IZMSLLMConnector</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
             <div class="itemName"><code><a href="zms.IZMSMetacmdProvider.html" class="internal-link" title="zms.IZMSMetacmdProvider"><wbr></wbr>IZMSMetacmd<wbr></wbr>Provider</a></code>
             </div>
         
@@ -226,6 +236,26 @@
 
         
             <div class="itemName"><code><a href="zms.IZMSWorkflowProvider.html" class="internal-link" title="zms.IZMSWorkflowProvider"><wbr></wbr>IZMSWorkflow<wbr></wbr>Provider</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.llmapi.html" class="internal-link" title="zms.llmapi">llmapi</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.llmtools.html" class="internal-link" title="zms.llmtools">llmtools</a></code>
             </div>
         
 
@@ -406,6 +436,16 @@
 
         
             <div class="itemName"><code><a href="zms.zmslinkelement.html" class="internal-link" title="zms.zmslinkelement">zmslinkelement</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.ZMSLLMConnector.html" class="internal-link" title="zms.ZMSLLMConnector"><wbr></wbr>ZMSLLMConnector</a></code>
             </div>
         
 
@@ -1072,13 +1112,13 @@
 <p>This module handles the core initialization of the ZMS (Zope Management System) product during Zope startup. It is responsible for:</p>
 <ul class="rst-simple">
 <li>Registering ZMS content types (ZMS, ZMSCustom, ZMSSqlDb, ZMSLinkContainer, ZMSLinkElement, MediaDb, ZMSAttributeContainer) with the Zope application context to make them available for object instantiation.</li>
-<li>Configuring language resources by parsing the <tt class="rst-docutils rst-literal">_language.xml</tt> import file and automatically generating language-specific JavaScript files (<tt class="rst-docutils rst-literal"><span class="pre">i18n/&lt;lang&gt;.js</span></tt>) for client-side internationalization support.</li>
+<li>Configuring language resources by parsing the <tt class="rst-docutils rst-literal">_language.yaml</tt> import file and automatically generating language-specific JavaScript files (<tt class="rst-docutils rst-literal"><span class="pre">i18n/&lt;lang&gt;.js</span></tt>) for client-side internationalization support.</li>
 <li>Setting up session storage infrastructure by ensuring the existence of <tt class="rst-docutils rst-literal">temp_folder</tt> and <tt class="rst-docutils rst-literal">session_data</tt> containers for temporary data storage during user sessions.</li>
 <li>Performing automated minification of static assets (JavaScript and CSS files) based on configuration parameters to reduce file sizes and improve performance. This includes generation of hash values for cache-busting.</li>
 <li>Registering language dictionaries and configuration dictionaries in the Zope misc container (<tt class="rst-docutils rst-literal">OFS.misc_.misc_.zms</tt>) for global access across the application.</li>
 <li>Monkey-patching <tt class="rst-docutils rst-literal">Products.CMFCore.zcml.registerDirectory()</tt> to support directory registration outside of package context, and registering additional file extensions (xlsx, xls, doc, docx, ppt, pptx, svg, etc.) for proper content type handling.</li>
 </ul>
-<p>Note: The module expects configuration files to be present at specific paths within the package home directory, particularly <tt class="rst-docutils rst-literal">version.txt</tt> and <tt class="rst-docutils rst-literal">import/_language.xml</tt>.</p>
+<p>Note: The module expects configuration files to be present at specific paths within the package home directory, particularly <tt class="rst-docutils rst-literal">version.txt</tt> and <tt class="rst-docutils rst-literal">import/_language.yaml</tt>.</p>
 <p>License: GNU General Public License v2 or later, Organization: ZMS Publishing</p>
 </div>
         </div>
@@ -1120,6 +1160,11 @@
   </tr><tr class="module">
     
     <td>Module</td>
+    <td><code><a href="zms.IZMSLLMConnector.html" class="internal-link" title="zms.IZMSLLMConnector"><wbr></wbr>IZMSLLMConnector</a></code></td>
+    <td>IZMSLLMConnector.py</td>
+  </tr><tr class="module">
+    
+    <td>Module</td>
     <td><code><a href="zms.IZMSMetacmdProvider.html" class="internal-link" title="zms.IZMSMetacmdProvider"><wbr></wbr>IZMSMetacmd<wbr></wbr>Provider</a></code></td>
     <td>IZMSMetacmdProvider.py</td>
   </tr><tr class="module">
@@ -1142,6 +1187,16 @@
     <td>Module</td>
     <td><code><a href="zms.IZMSWorkflowProvider.html" class="internal-link" title="zms.IZMSWorkflowProvider"><wbr></wbr>IZMSWorkflow<wbr></wbr>Provider</a></code></td>
     <td>IZMSWorkflowProvider.py</td>
+  </tr><tr class="module">
+    
+    <td>Module</td>
+    <td><code><a href="zms.llmapi.html" class="internal-link" title="zms.llmapi">llmapi</a></code></td>
+    <td>ZMS LLM API utility module</td>
+  </tr><tr class="module">
+    
+    <td>Module</td>
+    <td><code><a href="zms.llmtools.html" class="internal-link" title="zms.llmtools">llmtools</a></code></td>
+    <td>llmtools.py – ZMS tool registry for LLM function/tool calling.</td>
   </tr><tr class="module">
     
     <td>Module</td>
@@ -1232,6 +1287,11 @@
     <td>Module</td>
     <td><code><a href="zms.zmslinkelement.html" class="internal-link" title="zms.zmslinkelement">zmslinkelement</a></code></td>
     <td>zmslinkelement.py</td>
+  </tr><tr class="module">
+    
+    <td>Module</td>
+    <td><code><a href="zms.ZMSLLMConnector.html" class="internal-link" title="zms.ZMSLLMConnector"><wbr></wbr>ZMSLLMConnector</a></code></td>
+    <td>ZMSLLMConnector.py - ZMS LLM Connector for AI/LLM Integration</td>
   </tr><tr class="module">
     
     <td>Module</td>
@@ -1557,7 +1617,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">create_session_storage_if_neccessary</span><span class="function-signature">(context)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/__init__.py#L395">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/__init__.py#L399">
       
       (source)
     </a>
@@ -1584,7 +1644,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getData</span><span class="function-signature">(cell)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/__init__.py#L371">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/__init__.py#L375">
       
       (source)
     </a>
@@ -1611,7 +1671,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getText</span><span class="function-signature">(nodelist)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/__init__.py#L379">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/__init__.py#L383">
       
       (source)
     </a>
@@ -1638,7 +1698,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">initialize</span><span class="function-signature">(context)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/__init__.py#L137">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/__init__.py#L143">
       
       (source)
     </a>
@@ -1665,7 +1725,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">registerDirectory</span><span class="function-signature">(_context, name, directory=None, recursive=False, ignore=ignore)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/__init__.py#L82">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/__init__.py#L84">
       
       (source)
     </a>
@@ -1692,7 +1752,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">translate_path</span><span class="function-signature">(s)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/__init__.py#L386">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/__init__.py#L390">
       
       (source)
     </a>
@@ -1718,7 +1778,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">_directory_regs</span>: <code>list</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/__init__.py#L80">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/__init__.py#L82">
       
       (source)
     </a>

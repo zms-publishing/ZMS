@@ -216,7 +216,7 @@
 							<form class="form-horizontal" title="Compontent-Manager" name="ManagerForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
 								<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
 								<input type="hidden" name="key" value="Manager" />
-								<tal:block tal:define="global meta_types python:[x for x in here.filtered_meta_types() if not x['product']=='zms' and x['name'].startswith('ZMS')] + [{'name':x,'action':x,} for x in ['Sequence', 'ZMSIndex', 'ZMSLog', 'ZMSZCatalogAdapter', 'ZMSFilterManager', 'ZMSFormatProvider', 'ZMSFormatProviderAcquired', 'ZMSMetacmdProvider', 'ZMSMetacmdProviderAcquired', 'ZMSWorkflowProvider', 'ZMSWorkflowProviderAcquired', 'ZMSRepositoryManager']]">
+								<tal:block tal:define="global meta_types python:[x for x in here.filtered_meta_types() if not x['product']=='zms' and x['name'].startswith('ZMS')] + [{'name':x,'action':x,} for x in ['Sequence', 'ZMSIndex', 'ZMSLog', 'ZMSLLMConnector', 'ZMSZCatalogAdapter', 'ZMSFilterManager', 'ZMSFormatProvider', 'ZMSFormatProviderAcquired', 'ZMSMetacmdProvider', 'ZMSMetacmdProviderAcquired', 'ZMSWorkflowProvider', 'ZMSWorkflowProviderAcquired', 'ZMSRepositoryManager']]">
 								<div class="form-group mb-4">
 									<label class="d-none" for="meta_type">ZMS base-components</label>
 									<div class="btn-group">

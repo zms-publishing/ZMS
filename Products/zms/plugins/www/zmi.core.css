@@ -1189,6 +1189,26 @@ input.btn.btn-file {
 .zmi .single-line.zmi-code.input-group .input-group-append {
 	height: 1.8rem;
 }
+.zmi .meta-code:has(textarea.alert-danger):before,
+.zmi .meta-cmd.zmi-code div.alert-danger:before {
+	font-family: 'Font Awesome 5 Free';
+	font-size:1rem;
+	font-weight: 900;
+	content:'\f071';
+	z-index:1000;
+	display: inline-block;
+	font-style: normal;
+	font-variant: normal;
+	text-rendering: auto;
+	line-height: 1;
+	position:absolute;
+	padding:.4rem;
+	margin:1px;
+	border-radius:.25rem;
+	right:1rem;
+	color:rgb(169, 68, 66)
+}
+
 
 /* Using ACE Editor*/
 .ace_editor {

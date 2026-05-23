@@ -22,6 +22,10 @@ connector = context.getLLMConnector()
 reply = connector.chat("Summarise this document")
 ```
 
+## Frontend block integration
+
+The metaobject class `llm_chat` (package `com.zms.foundation`) provides a page-embed chat block that reuses the same REST API (`++rest_api/llm_chat`) and connector backend (`llmapi` / `llmtools`) used by the connector UI.
+
 ## Supported Providers
 
 | Provider | Description |

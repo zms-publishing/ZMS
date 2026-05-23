@@ -10,6 +10,16 @@ The LLM integration provides a chat interface accessible from the ZMS management
 - **Ollama**: Local LLM deployment (no API key needed, runs on your infrastructure)
 - **RAG**: Retrieval-Augmented Generation using Qdrant vector database with Ollama
 
+## LLM-Chat content block (`llm_chat`)
+
+Besides the connector management UI, ZMS ships the metaobject class `llm_chat` so you can embed a chat frontend directly in web documents as a normal block element.
+
+- Add a **ZMSLLMConnector** at the site root and configure provider/model as usual.
+- Import or enable the `llm_chat` metaobject from package `com.zms.llm`.
+- Insert an `llm_chat` block into a page.
+
+The block uses the existing `++rest_api/llm_chat` endpoint, supports multi-turn history, optional agent mode (tool-calling via `llmtools`), and stores chat history per block in browser localStorage.
+
 ## Configuration Properties
 
 All configuration is done via the **ZMSLLMConnector** object in your ZMS instance. You can configure it through the ZMS management interface or by setting properties on the ZMSLLMConnector instance.

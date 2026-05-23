@@ -143,9 +143,9 @@ $status.text(message || '');
 $status.toggleClass('text-danger', !!isError);
 $status.toggleClass('text-muted', !isError);
 if (message) {
-	setTimeout(function() {
-		$status.text('');
-	}, STATUS_TIMEOUT_MS);
+        setTimeout(function() {
+          $status.text('');
+        }, STATUS_TIMEOUT_MS);
 }
 }
 
@@ -252,17 +252,17 @@ try { localStorage.removeItem(storageKey); } catch(e) {}
 $root.on('click', '.llm-copy-btn', function() {
 var text = $(this).closest('.llm-reply').clone().find('.llm-copy-btn').remove().end().text().trim();
 if (!navigator.clipboard || !navigator.clipboard.writeText) {
-	setStatus('Copy is not supported in this browser.', true);
-	return;
+        setStatus('Copy is not supported in this browser.', true);
+        return;
 }
 navigator.clipboard.writeText(text)
-	.then(function() { setStatus('Copied.'); })
-	.catch(function() { setStatus('Copy failed – please select and copy manually.', true); });
+        .then(function() { setStatus('Copied.'); })
+        .catch(function() { setStatus('Copy failed – please select and copy manually.', true); });
 });
 $root.on('keydown', '.llm-copy-btn', function(e) {
 if (e.which === 13 || e.which === 32) {
-	e.preventDefault();
-	$(this).trigger('click');
+        e.preventDefault();
+        $(this).trigger('click');
 }
 });
 });

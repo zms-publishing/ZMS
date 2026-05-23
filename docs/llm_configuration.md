@@ -12,7 +12,7 @@ The LLM integration provides a chat interface accessible from the ZMS management
 
 ## Configuration Properties
 
-All configuration is done via ZMS configuration properties. Set these in your ZMS instance configuration.
+All configuration is done via the **ZMSLLMConnector** object in your ZMS instance. You can configure it through the ZMS management interface or by setting properties on the ZMSLLMConnector instance.
 
 ### General Settings
 

@@ -135,26 +135,6 @@
             </div>
         
 
-    </li><li class="private">
-        
-        
-        
-
-        
-            <div class="itemName"><code><a href="#_build_default_standard_html" class="internal-link" title="zms.llmtools._build_default_standard_html">_build<wbr></wbr>_default<wbr></wbr>_standard<wbr></wbr>_html</a></code>
-            </div>
-        
-
-    </li><li class="private">
-        
-        
-        
-
-        
-            <div class="itemName"><code><a href="#_shorten_attr_id" class="internal-link" title="zms.llmtools._shorten_attr_id">_shorten<wbr></wbr>_attr<wbr></wbr>_id</a></code>
-            </div>
-        
-
     </li>
 </ul> 
 
@@ -1190,6 +1170,7 @@
 <li>``execute_llmtool(name, args, context)``: dispatcher that maps tool names to live ZMS API calls via ``context.metaobj_manager``.</li>
 </ul>
 <p>All tools operate on the metamodel manager reachable via the ZMS acquisition context.</p>
+<p>License: GNU General Public License v2 or later, Organization: ZMS Publishing</p>
 </div>
         </div>
 
@@ -1207,16 +1188,6 @@
     <td>Constant</td>
     <td><code><a href="#LLM_TOOLS" class="internal-link" title="zms.llmtools.LLM_TOOLS">LLM<wbr></wbr>_TOOLS</a></code></td>
     <td><span class="undocumented">Undocumented</span></td>
-  </tr><tr class="function private">
-    
-    <td>Function</td>
-    <td><code><a href="#_build_default_standard_html" class="internal-link" title="zms.llmtools._build_default_standard_html">_build<wbr></wbr>_default<wbr></wbr>_standard<wbr></wbr>_html</a></code></td>
-    <td>Build a default ZPT template and include bindings for known attributes.</td>
-  </tr><tr class="function private">
-    
-    <td>Function</td>
-    <td><code><a href="#_shorten_attr_id" class="internal-link" title="zms.llmtools._shorten_attr_id">_shorten<wbr></wbr>_attr<wbr></wbr>_id</a></code></td>
-    <td>Mirror manage_main.zpt shorten_id() for default template generation.</td>
   </tr>
 </table>
           
@@ -1238,7 +1209,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">execute_llmtool</span><span class="function-signature">(name, args, context)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmtools.py#L406">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmtools.py#L387">
       
       (source)
     </a>
@@ -1264,7 +1235,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">LLM_TOOLS</span>: <code>list[<wbr></wbr>dict]</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmtools.py#L117">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmtools.py#L24">
       
       (source)
     </a>
@@ -1285,60 +1256,6 @@
                <wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">parameters</span><span class="rst-variable-quote">'</span>: {<wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">type</span><span class="rst-variable-quote">'</span>: <span class="rst-variable-quote">'</span><span class="rst-variable-string">object</span><span class="rst-variable-quote">'</span>,
                               <wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">properties</span><span class="rst-variable-quote">'</span>: {},
 <span class="rst-variable-ellipsis">...</span></code></pre></td></tr></table>
-  </div>
-</div><div class="basefunction private">
-  
-  
-  <a name="zms.llmtools._build_default_standard_html">
-    
-  </a>
-  <a name="_build_default_standard_html">
-    
-  </a>
-  <div class="functionHeader">
-    
-    
-    <span class="py-keyword">def</span> <span class="py-defname">_build_default_standard_html</span><span class="function-signature">(meta_id, attrs=None, target_id=<span class="rst-variable-quote">'</span><span class="rst-variable-string">standard_html</span><span class="rst-variable-quote">'</span>)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmtools.py#L24">
-      
-      (source)
-    </a>
-    <a class="headerLink" href="#_build_default_standard_html" title="zms.llmtools._build_default_standard_html">
-      
-      
-      ¶
-    </a>
-  </div>
-  <div class="docstring functionBody">
-    
-    <div><p>Build a default ZPT template and include bindings for known attributes.</p></div>
-  </div>
-</div><div class="basefunction private">
-  
-  
-  <a name="zms.llmtools._shorten_attr_id">
-    
-  </a>
-  <a name="_shorten_attr_id">
-    
-  </a>
-  <div class="functionHeader">
-    
-    
-    <span class="py-keyword">def</span> <span class="py-defname">_shorten_attr_id</span><span class="function-signature">(attr_id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmtools.py#L15">
-      
-      (source)
-    </a>
-    <a class="headerLink" href="#_shorten_attr_id" title="zms.llmtools._shorten_attr_id">
-      
-      
-      ¶
-    </a>
-  </div>
-  <div class="docstring functionBody">
-    
-    <div><p>Mirror manage_main.zpt shorten_id() for default template generation.</p></div>
   </div>
 </div>
         </div>

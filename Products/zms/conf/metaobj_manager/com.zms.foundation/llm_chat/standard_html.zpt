@@ -28,6 +28,7 @@ welcome python:zmscontext.attr('welcome_text') or ''">
 <button class="btn btn-primary" type="button" tal:attributes="id python:'llm-send-%s'%uid"><i class="fas fa-paper-plane"></i></button>
 <button class="btn btn-secondary" type="button" tal:attributes="id python:'llm-clear-%s'%uid"><i class="fas fa-trash"></i></button>
 </div>
+<div class="zms-llm-chat-status" tal:attributes="id python:'llm-status-%s'%uid" aria-live="polite"></div>
 </div>
 </div>
 </div>
@@ -51,6 +52,7 @@ var $message = $('#llm-message-' + uid);
 var $send = $('#llm-send-' + uid);
 var $clear = $('#llm-clear-' + uid);
 var $agent = $('#llm-agent-' + uid);
+var $status = $('#llm-status-' + uid);
 
 var chatHistory = [];
 var chatTurns = [];
@@ -77,7 +79,7 @@ if (isError) {
 return '<div class="llm-error">' + $('<div/>').text(content).html() + '</div>';
 }
 var id = 'copy-' + Date.now() + '-' + Math.random().toString(36).substring(2,7);
-return '<div class="llm-reply"><i id="' + id + '" class="fas fa-copy llm-copy-btn" title="Copy"></i>' + $('<div/>').text(content).html() + '</div>';
+return '<div class="llm-reply"><i id="' + id + '" class="fas fa-copy llm-copy-btn" title="Copy" tabindex="0" role="button" aria-label="Copy reply"></i>' + $('<div/>').text(content).html() + '</div>';
 }
 
 function renderToolCall(turn) {
@@ -135,6 +137,17 @@ inputHistoryIndex = -1;
 inputHistoryDraft = '';
 }
 
+function setStatus(message, isError) {
+$status.text(message || '');
+$status.toggleClass('text-danger', !!isError);
+$status.toggleClass('text-muted', !isError);
+if (message) {
+	setTimeout(function() {
+		$status.text('');
+	}, 1600);
+}
+}
+
 function sendMessage(message) {
 if (!message || !message.trim()) return;
 var agentMode = $agent.is(':checked');
@@ -147,7 +160,7 @@ $console.append(renderMessage('user', message, false) + '<div class="llm-reply l
 $console.scrollTop($console[0].scrollHeight);
 
 $.ajax({
-method: 'GET',
+method: 'POST',
 url: restBase + '/llm_chat',
 dataType: 'json',
 data: {messages: JSON.stringify(chatHistory), agent_mode: agentMode ? '1' : '0'}
@@ -237,9 +250,15 @@ try { localStorage.removeItem(storageKey); } catch(e) {}
 
 $root.on('click', '.llm-copy-btn', function() {
 var text = $(this).closest('.llm-reply').text().trim();
-navigator.clipboard.writeText(text).catch(function() {
-	alert('Copy failed – please select and copy manually.');
+navigator.clipboard.writeText(text)
+	.then(function() { setStatus('Copied.'); })
+	.catch(function() { setStatus('Copy failed – please select and copy manually.', true); });
 });
+$root.on('keydown', '.llm-copy-btn', function(e) {
+if (e.which === 13 || e.which === 32) {
+	e.preventDefault();
+	$(this).trigger('click');
+}
 });
 });
 });
@@ -325,6 +344,11 @@ font-size: .75rem;
 padding: .5rem;
 background: #fff;
 border-top: 1px solid #dee2e6;
+}
+.zms-llm-chat .zms-llm-chat-status {
+min-height: 1.1rem;
+font-size: .75rem;
+margin-top: .35rem;
 }
 .zms-llm-chat .zms-llm-agent-toggle {
 background: #f8f9fa;

@@ -3,8 +3,8 @@ llm_chat:
     insert_custom: '{$}'
   enabled: 1
   name: LLM-Chat
-  package: com.zms.foundation
-  revision: 5.0.0
+  package: com.zms.llm
+  revision: 0.0.1
   type: ZMSObject
   Attrs:
     - id: icon_clazz

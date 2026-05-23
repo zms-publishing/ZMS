@@ -76,7 +76,7 @@ return '<div class="llm-msg-user">' + $('<div/>').text(content).html() + '</div>
 if (isError) {
 return '<div class="llm-error">' + $('<div/>').text(content).html() + '</div>';
 }
-var id = 'copy-' + Date.now() + '-' + Math.random().toString(36).substr(2,5);
+var id = 'copy-' + Date.now() + '-' + Math.random().toString(36).substring(2,7);
 return '<div class="llm-reply"><i id="' + id + '" class="fas fa-copy llm-copy-btn" title="Copy"></i>' + $('<div/>').text(content).html() + '</div>';
 }
 
@@ -180,7 +180,7 @@ $console.append(renderMessage('assistant', content, false));
 $console.scrollTop($console[0].scrollHeight);
 })
 .fail(function(jqXHR, textStatus, errorThrown) {
-var errText = '[REQUEST_FAILED] ' + textStatus + ': ' + errorThrown;
+var errText = '[REQUEST_FAILED] Status: ' + textStatus + ', Error: ' + errorThrown;
 chatTurns.push({role: 'assistant', content: errText, error: true});
 saveChatHistory();
 $('#' + spinnerId).removeClass('llm-reply llm-reply-pending').addClass('llm-error').html($('<div/>').text(errText).html());
@@ -237,7 +237,9 @@ try { localStorage.removeItem(storageKey); } catch(e) {}
 
 $root.on('click', '.llm-copy-btn', function() {
 var text = $(this).closest('.llm-reply').text().trim();
-navigator.clipboard.writeText(text).catch(function() {});
+navigator.clipboard.writeText(text).catch(function() {
+	alert('Copy failed – please select and copy manually.');
+});
 });
 });
 });

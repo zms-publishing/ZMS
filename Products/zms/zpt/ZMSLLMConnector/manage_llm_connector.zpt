@@ -124,6 +124,15 @@
 							</small>
 						</div>
 					</div>
+					<!--! Timeout: default=120 -->
+					<div class="form-group row">
+						<label class="col-sm-3 control-label">LLM Response Timeout (seconds)</label>
+						<div class="col-sm-9">
+							<input class="form-control zmi-code" type="number" name="llm.timeout"
+								tal:attributes="value python:here.getConfProperty('llm.timeout','120')"
+								min="1" step="1" placeholder="120" />
+						</div>
+					</div>
 
 					<!-- OpenAI / GitHub Models Settings -->
 					<fieldset class="provider-section" id="section-openai">
@@ -151,6 +160,22 @@
 								<small class="form-text text-muted" id="endpoint-hint"></small>
 							</div>
 						</div>
+						<!--! llm.store: default=0 -->
+						<div class="form-group row">
+							<label class="col-sm-3 control-label" for="llm-store">Enable responses storage</label>
+							<div class="col-sm-9"
+								tal:on-error="structure python:'''<code>Invalid value: %s (please, save again)</code>
+									<input type=\042hidden\042 name=\042llm.store\042 value=\0420\042 />''' % str(here.getConfProperty('llm.store','0'))">
+								<div class="btn btn-secondary">
+									<!--! Toggle value 0|1 on click -->
+									<input type="checkbox" name="llm.store" id="llm-store" value="0"
+										onclick="this.value = this.checked ? '1' : '0';"
+										tal:attributes="
+											checked python:bool(int(here.getConfProperty('llm.store','0')))==True and 'checked' or '';
+											value python:'1' if bool(int(here.getConfProperty('llm.store','0')))==True else '0'" />
+								</div>
+							</div>
+						</div>
 					</fieldset>
 
 					<!-- Ollama Settings -->
@@ -175,6 +200,15 @@
 								<input class="form-control zmi-code" type="text" name="llm.qdrant.host"
 									tal:attributes="value python:here.getConfProperty('llm.qdrant.host','http://localhost:6333')"
 									placeholder="http://localhost:6333" />
+							</div>
+						</div>
+						<!--! RAG Timeout: default=10 -->
+						<div class="form-group row">
+							<label class="col-sm-3 control-label">RAG Retrieval Timeout (seconds)</label>
+							<div class="col-sm-9">
+								<input class="form-control zmi-code" type="number" name="llm.rag.timeout"
+									tal:attributes="value python:here.getConfProperty('llm.rag.timeout','10')"
+									min="1" step="1" placeholder="10" />
 							</div>
 						</div>
 						<div class="form-group row">
@@ -599,6 +633,7 @@
 					var html = '<div class="llm-msg-system"><strong>Provider Info:</strong> ' +
 						info.provider + ' / ' + info.model;
 					if (info.endpoint) html += ' &mdash; ' + $('<div/>').text(info.endpoint).html();
+					if (info.llm_timeout) html += ' &mdash; Timeout: ' + info.llm_timeout + 's';
 					html += '</div>';
 					$('#llm-console').append(html);
 					$('#llm-console').animate({ scrollTop: $('#llm-console')[0].scrollHeight }, 500);
@@ -616,12 +651,20 @@
 
 				var spinnerId = 'spin-' + Date.now();
 				var modeLabel = agentMode ? '<i class="fas fa-robot mr-2 text-muted" title="Agent mode"></i>' : '';
-				$('#llm-console').append(
-					renderMessage('user', message) +
-					'<div class="llm-reply llm-reply-pending" id="' + spinnerId + '">' + modeLabel +
-					'<i class="fas fa-spinner fa-spin"></i> Waiting…</div>'
-				);
+				$('#llm-console').append(`
+					${renderMessage('user', message)}
+					<div class="llm-reply llm-reply-pending" id="${spinnerId}">${modeLabel}
+						<i class="fas fa-spinner fa-spin"></i> Waiting…
+						<span id="seconds-waiting">0</span>
+					</div>
+				`);
 				$('#llm-console').animate({ scrollTop: $('#llm-console')[0].scrollHeight }, 500);
+
+				var secondsElapsed = 0;
+				var countInterval = setInterval(function() {
+					secondsElapsed++;
+					$('#seconds-waiting').text(secondsElapsed);
+				}, 1000);
 
 				$.ajax({
 					method: 'GET',
@@ -630,6 +673,7 @@
 					data: {messages: JSON.stringify(chatHistory), agent_mode: agentMode ? '1' : '0'}
 				})
 				.done(function(resp) {
+					clearInterval(countInterval);
 					$('#' + spinnerId).remove();
 					if (resp.error) {
 						var errText = typeof resp.error === 'object'
@@ -740,6 +784,15 @@
 		.ZMSLLMConnector .llm-reply-pending {
 			color: #888;
 			font-style: italic;
+			white-space: nowrap !important;
+			word-break: normal !important;
+		}
+		.ZMSLLMConnector .llm-reply-pending #seconds-waiting {
+			font-style: normal;
+			margin-left: .25rem;
+		}
+		.ZMSLLMConnector .llm-reply-pending #seconds-waiting:after {
+			content: "s";
 		}
 		.ZMSLLMConnector .llm-error {
 			color: #900;

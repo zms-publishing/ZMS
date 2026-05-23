@@ -336,6 +336,8 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
                 'llm.rag.top_k',
                 'llm.rag.score_threshold',
                 'llm.store',
+                'llm.timeout',
+                'llm.rag.timeout',
             ]
             config = dict(self._config)  # preserve existing values (e.g. llm.features)
             for key in config_keys:

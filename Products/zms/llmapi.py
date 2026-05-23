@@ -24,6 +24,8 @@ Configuration properties:
     - llm.max_tokens: Maximum tokens to generate (optional)
     - llm.num_ctx: Context window size (default: '4096')
     - llm.store: Enable storage for 'responses' API (default: False)
+    - llm.timeout: Timeout for LLM responses in seconds (default: '120')
+    - llm.rag.timeout: Timeout for RAG retrieval in seconds (default: '10')
 
 Response format (OpenAI /v1/chat/completions compatible)::
     {
@@ -51,6 +53,7 @@ at the top level containing the first choice's message.
 
 Requirements for RAG:
     - pip install sentence-transformers
+    - pip install qdrant-client
 
 License: GNU General Public License v2 or later,
 Organization: ZMS Publishing    
@@ -213,6 +216,7 @@ class OpenAIProvider(LLMProvider):
             
             model = self.context.getConfProperty('llm.api.model', 'gpt-4o-mini')
             endpoint = self.context.getConfProperty('llm.api.endpoint', 'https://api.openai.com/v1/chat/completions')
+            llm_timeout = int(self.context.getConfProperty('llm.timeout', '120'))
             
             # Prepare messages array
             messages_array = self._prepare_messages(messages)
@@ -243,7 +247,7 @@ class OpenAIProvider(LLMProvider):
             if 'store' in kwargs:
                 payload['store'] = bool(kwargs['store'])
             elif self.context.getConfProperty('llm.store'):
-                payload['store'] = self.context.getConfProperty('llm.store', '').lower() in ['true', '1', 'yes']
+                payload['store'] = str(self.context.getConfProperty('llm.store', '')).lower() in ['true', '1', 'yes']
             
             # Add metadata for responses API
             if 'metadata' in kwargs:
@@ -261,7 +265,7 @@ class OpenAIProvider(LLMProvider):
                     "Authorization": f"Bearer {api_key}",
                 },
                 json=payload,
-                timeout=30
+                timeout=llm_timeout
             )
             
             result = response.json()
@@ -306,6 +310,8 @@ class OllamaProvider(LLMProvider):
         try:
             host = self.context.getConfProperty('llm.ollama.host', 'http://localhost:11434')
             model = self.context.getConfProperty('llm.api.model', 'llama2')
+            llm_timeout = int(self.context.getConfProperty('llm.timeout', '120'))
+
             endpoint = f"{host}/api/chat"
             
             # Prepare messages array
@@ -347,7 +353,7 @@ class OllamaProvider(LLMProvider):
                 endpoint,
                 headers={"Content-Type": "application/json"},
                 json=payload,
-                timeout=60
+                timeout=llm_timeout
             )
             
             result = response.json()
@@ -407,6 +413,8 @@ class RAGProvider(LLMProvider):
             model = self.context.getConfProperty('llm.api.model', 'llama2')
             top_k = int(self.context.getConfProperty('llm.rag.top_k', '16'))
             score_threshold = float(self.context.getConfProperty('llm.rag.score_threshold', '0.0'))
+            llm_timeout = int(self.context.getConfProperty('llm.timeout', '120'))
+            rag_timeout = int(self.context.getConfProperty('llm.rag.timeout', '10'))
             
             # Prepare messages array
             messages_array = self._prepare_messages(messages)
@@ -460,7 +468,7 @@ class RAGProvider(LLMProvider):
                     f"{qdrant_host}/collections/{collection}/points/query",
                     headers={"Content-Type": "application/json"},
                     json=search_payload,
-                    timeout=10
+                    timeout=rag_timeout
                 )
                 
                 if search_response.status_code == 200:
@@ -484,7 +492,7 @@ class RAGProvider(LLMProvider):
                 import traceback
                 traceback.print_exc()
             
-            # Step 3: Build enhanced messages with context
+            # Step 3: Build enhanced messages with context documents
             enhanced_messages = messages_array.copy()
             if context_docs:
                 context_text = "\n\n---\n\n".join(context_docs)
@@ -526,7 +534,7 @@ ANTWORT:"""
                 f"{ollama_host}/api/chat",
                 headers={"Content-Type": "application/json"},
                 json=ollama_params,
-                timeout=600
+                timeout=llm_timeout
             )
             
             result = response.json()
@@ -637,6 +645,10 @@ def chat(context, messages, **kwargs):
     @note: For Ollama:
         - llm.ollama.host: Ollama server URL (default: 'http://localhost:11434')
         - llm.api.model: Model name (default: 'llama2')
+        - llm.temperature: LLM temperature 0.0-2.0 (default: '0.7')
+        - llm.top_p: Nucleus sampling 0.0-1.0 (default: '0.9')
+        - llm.num_ctx: Context window size (default: '4096')
+        - llm.timeout: Timeout for LLM response in seconds (default: '120')
     
     @note: For RAG:
         - llm.qdrant.host: Qdrant server URL (default: 'http://localhost:6333')
@@ -644,6 +656,8 @@ def chat(context, messages, **kwargs):
         - llm.ollama.host: Ollama server URL (default: 'http://localhost:11434')
         - llm.api.model: Model name (default: 'llama2')
         - llm.rag.top_k: Number of documents to retrieve (default: '3')
+        - llm.rag.score_threshold: Minimum similarity score (0.0-1.0, default: '0.0')
+        - llm.rag.timeout: Timeout for RAG retrieval in seconds (default: '10')
     """
     provider = _get_provider(context)
     return provider.chat(messages, **kwargs)
@@ -665,6 +679,7 @@ def get_provider_info(context):
     info = {
         'provider': provider_type,
         'model': context.getConfProperty('llm.api.model', 'not configured'),
+        'llm_timeout': context.getConfProperty('llm.timeout', '120')
     }
     
     if provider_type in ('openai', 'github'):
@@ -675,7 +690,7 @@ def get_provider_info(context):
         )
         info['endpoint'] = context.getConfProperty('llm.api.endpoint', endpoint_default)
         info['has_api_key'] = bool(context.getConfProperty('llm.api.key'))
-        info['store_enabled'] = context.getConfProperty('llm.store', '').lower() in ['true', '1', 'yes']
+        info['store_enabled'] = str(context.getConfProperty('llm.store', '')).lower() in ['true', '1', 'yes']
     elif provider_type == 'ollama':
         info['endpoint'] = context.getConfProperty('llm.ollama.host', 'http://localhost:11434')
     elif provider_type == 'rag':
@@ -683,6 +698,8 @@ def get_provider_info(context):
         info['qdrant_host'] = context.getConfProperty('llm.qdrant.host', 'http://localhost:6333')
         info['collection'] = context.getConfProperty('llm.qdrant.collection', 'zms_docs')
         info['top_k'] = context.getConfProperty('llm.rag.top_k', '3')
+        info['score_threshold'] = context.getConfProperty('llm.rag.score_threshold', '0.0')
+        info['rag_timeout'] = context.getConfProperty('llm.rag.timeout', '10')
     
     return info
 

@@ -15,7 +15,7 @@ The LLM integration provides a chat interface accessible from the ZMS management
 Besides the connector management UI, ZMS ships the metaobject class `llm_chat` so you can embed a chat frontend directly in web documents as a normal block element.
 
 - Add a **ZMSLLMConnector** at the site root and configure provider/model as usual.
-- Import or enable the `llm_chat` metaobject from package `com.zms.foundation`.
+- Import or enable the `llm_chat` metaobject from package `com.zms.llm`.
 - Insert an `llm_chat` block into a page.
 
 The block uses the existing `++rest_api/llm_chat` endpoint, supports multi-turn history, optional agent mode (tool-calling via `llmtools`), and stores chat history per block in browser localStorage.

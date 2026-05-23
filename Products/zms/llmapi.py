@@ -526,7 +526,7 @@ ANTWORT:"""
                 f"{ollama_host}/api/chat",
                 headers={"Content-Type": "application/json"},
                 json=ollama_params,
-                timeout=120
+                timeout=600
             )
             
             result = response.json()

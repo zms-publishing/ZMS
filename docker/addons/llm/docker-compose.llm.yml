@@ -54,7 +54,7 @@ networks:
 # Usage Instructions:
 # 
 # 1. Start the services:
-#    docker-compose -f docker-compose.llm.yml up -d
+#    docker compose -f docker-compose.llm.yml up -d
 #
 # 2. Pull an Ollama model:
 #    docker exec -it zms_ollama ollama pull llama2

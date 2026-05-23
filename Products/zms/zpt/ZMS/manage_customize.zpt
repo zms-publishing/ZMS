@@ -221,8 +221,7 @@
 									<label class="d-none" for="meta_type">ZMS base-components</label>
 									<div class="btn-group">
 										<select class="form-control" id="meta_type" name="meta_type" 
-											title="Add New ZMS base-components"
-											onchange="if($(this).val().indexOf('manage_add')==0){self.location.href=$(this).val();}else if ($(this).val()!=''){document.getElementById('addMetaTypeBtn').click();}">
+											title="Add New ZMS base-components">
 											<option value="">Select type to add...</option>
 											<tal:block tal:repeat="meta_type meta_types"
 												><option tal:condition="python:len(here.objectValues(meta_type['name']))==0"

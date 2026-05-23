@@ -149,6 +149,34 @@ if (message) {
           $status.text('');
         }, STATUS_TIMEOUT_MS);
 }
+
+function handleChatResponse(resp, spinnerId) {
+$('#' + spinnerId).remove();
+if (resp.error) {
+var errText = typeof resp.error === 'object' ? '[' + resp.error.code + '] ' + resp.error.message : String(resp.error);
+chatTurns.push({role: 'assistant', content: errText, error: true});
+saveChatHistory();
+$console.append(renderMessage('assistant', errText, true));
+} else if (resp.turns) {
+var newTurns = resp.turns;
+for (var i = 0; i < newTurns.length; i++) {
+var t = newTurns[i];
+chatTurns.push(t);
+if (t.role === 'assistant' && !t.tool_calls) {
+chatHistory.push({role: 'assistant', content: t.content || ''});
+}
+}
+saveChatHistory();
+$console.append(renderTurns(newTurns));
+} else {
+var content = resp.reply || '';
+chatHistory.push({role: 'assistant', content: content});
+chatTurns.push({role: 'assistant', content: content});
+saveChatHistory();
+$console.append(renderMessage('assistant', content, false));
+}
+$console.scrollTop($console[0].scrollHeight);
+}
 }
 
 function sendMessage(message) {
@@ -170,31 +198,7 @@ dataType: 'json',
 data: payload
 })
 .done(function(resp) {
-$('#' + spinnerId).remove();
-if (resp.error) {
-var errText = typeof resp.error === 'object' ? '[' + resp.error.code + '] ' + resp.error.message : String(resp.error);
-chatTurns.push({role: 'assistant', content: errText, error: true});
-saveChatHistory();
-$console.append(renderMessage('assistant', errText, true));
-} else if (resp.turns) {
-var newTurns = resp.turns;
-for (var i = 0; i < newTurns.length; i++) {
-var t = newTurns[i];
-chatTurns.push(t);
-if (t.role === 'assistant' && !t.tool_calls) {
-chatHistory.push({role: 'assistant', content: t.content || ''});
-}
-}
-saveChatHistory();
-$console.append(renderTurns(newTurns));
-} else {
-var content = resp.reply || '';
-chatHistory.push({role: 'assistant', content: content});
-chatTurns.push({role: 'assistant', content: content});
-saveChatHistory();
-$console.append(renderMessage('assistant', content, false));
-}
-$console.scrollTop($console[0].scrollHeight);
+handleChatResponse(resp, spinnerId);
 })
 .fail(function(jqXHR, textStatus, errorThrown) {
 $.ajax({
@@ -204,31 +208,7 @@ dataType: 'json',
 data: payload
 })
 .done(function(resp) {
-$('#' + spinnerId).remove();
-if (resp.error) {
-var errText = typeof resp.error === 'object' ? '[' + resp.error.code + '] ' + resp.error.message : String(resp.error);
-chatTurns.push({role: 'assistant', content: errText, error: true});
-saveChatHistory();
-$console.append(renderMessage('assistant', errText, true));
-} else if (resp.turns) {
-var newTurns = resp.turns;
-for (var i = 0; i < newTurns.length; i++) {
-var t = newTurns[i];
-chatTurns.push(t);
-if (t.role === 'assistant' && !t.tool_calls) {
-chatHistory.push({role: 'assistant', content: t.content || ''});
-}
-}
-saveChatHistory();
-$console.append(renderTurns(newTurns));
-} else {
-var content = resp.reply || '';
-chatHistory.push({role: 'assistant', content: content});
-chatTurns.push({role: 'assistant', content: content});
-saveChatHistory();
-$console.append(renderMessage('assistant', content, false));
-}
-$console.scrollTop($console[0].scrollHeight);
+handleChatResponse(resp, spinnerId);
 })
 .fail(function() {
 var errText = '[REQUEST_FAILED] Status: ' + textStatus + ', Error: ' + errorThrown;

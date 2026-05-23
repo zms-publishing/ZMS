@@ -5,7 +5,8 @@
 	agent_key python:'zms_llm_agent_%s'%oid;
 	title python:zmscontext.attr('title') or 'LLM Chat';
 	placeholder python:zmscontext.attr('placeholder') or 'Ask me anything…';
-	welcome python:zmscontext.attr('welcome_text') or ''">
+	welcome python:zmscontext.attr('welcome_text') or '';
+	agent_mode_supported python:zmscontext.attr('agent_mode_supported') and '1' or ''">
 	<div class="zms-llm-chat"
 		tal:attributes="data-uid oid; data-rest-base rest_base; data-storage-key storage_key; data-agent-key agent_key">
 		<div class="zms-llm-chat-header">
@@ -19,8 +20,11 @@
 		<div class="zms-llm-chat-input-bar">
 			<div class="input-group input-group-sm">
 				<div class="input-group-prepend">
-					<div class="input-group-text zms-llm-agent-toggle">
-						<input type="checkbox" tal:attributes="id python:'llm-agent-%s'%oid" class="mr-1" />
+					<div class="input-group-text zms-llm-agent-toggle"
+						tal:attributes="title python:'Agent Mode is %s supported'%(bool(agent_mode_supported) and '' or 'not')">
+						<input type="checkbox" class="mr-1" tal:attributes="
+							id python:'llm-agent-%s'%oid;
+							disabled python:not bool(agent_mode_supported) and 'disabled' or None" />
 						<label tal:attributes="for python:'llm-agent-%s'%oid" class="mb-0 small"
 							style="cursor:pointer;user-select:none">Agent</label>
 					</div>
@@ -29,9 +33,9 @@
 					tal:attributes="id python:'llm-message-%s'%oid; placeholder placeholder"></textarea>
 				<div class="input-group-append">
 					<button class="btn btn-primary" type="button" tal:attributes="id python:'llm-send-%s'%oid"><i
-							class="fas fa-paper-plane"></i></button>
+						class="fas fa-paper-plane"></i></button>
 					<button class="btn btn-secondary" type="button" tal:attributes="id python:'llm-clear-%s'%oid"><i
-							class="fas fa-trash"></i></button>
+						class="fas fa-trash"></i></button>
 				</div>
 				<div class="zms-llm-chat-status" tal:attributes="id python:'llm-status-%s'%oid" aria-live="polite">
 				</div>

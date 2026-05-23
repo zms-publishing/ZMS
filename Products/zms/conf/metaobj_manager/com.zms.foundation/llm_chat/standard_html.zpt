@@ -58,6 +58,8 @@ var chatHistory = [];
 var chatTurns = [];
 var inputHistoryIndex = -1;
 var inputHistoryDraft = '';
+var copyButtonSeq = 0;
+// Keep status feedback short to avoid visual noise while still being readable.
 var STATUS_TIMEOUT_MS = 1600;
 
 try {
@@ -79,7 +81,7 @@ return '<div class="llm-msg-user">' + $('<div/>').text(content).html() + '</div>
 if (isError) {
 return '<div class="llm-error">' + $('<div/>').text(content).html() + '</div>';
 }
-var id = 'copy-' + Date.now() + '-' + Math.random().toString(36).substring(2,7);
+var id = 'copy-' + uid + '-' + (++copyButtonSeq);
 return '<div class="llm-reply"><i id="' + id + '" class="fas fa-copy llm-copy-btn" title="Copy" tabindex="0" role="button" aria-label="Copy reply"></i>' + $('<div/>').text(content).html() + '</div>';
 }
 
@@ -252,7 +254,10 @@ try { localStorage.removeItem(storageKey); } catch(e) {}
 $root.on('click', '.llm-copy-btn', function() {
 var text = $(this).closest('.llm-reply').clone().find('.llm-copy-btn').remove().end().text().trim();
 if (!navigator.clipboard || !navigator.clipboard.writeText) {
-        setStatus('Copy is not supported in this browser.', true);
+        var $fallback = $('<textarea class="sr-only"></textarea>').val(text).appendTo('body');
+        $fallback.trigger('focus').trigger('select');
+        setStatus('Clipboard API unavailable. Press Ctrl+C/Cmd+C to copy.', true);
+        setTimeout(function() { $fallback.remove(); }, STATUS_TIMEOUT_MS);
         return;
 }
 navigator.clipboard.writeText(text)

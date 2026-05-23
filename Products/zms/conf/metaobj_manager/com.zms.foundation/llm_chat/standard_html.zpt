@@ -211,10 +211,8 @@ data: {messages: payload.messages, agent_mode: payload.agent_mode}
 handleChatResponse(resp, spinnerId);
 })
 .fail(function(jqXHR2, textStatus2, errorThrown2) {
-var errText = '[REQUEST_FAILED] Status: ' + textStatus + ', Error: ' + errorThrown;
-if (!textStatus && textStatus2) {
-errText = '[REQUEST_FAILED] Status: ' + textStatus2 + ', Error: ' + errorThrown2;
-}
+var errText = '[REQUEST_FAILED] POST Status: ' + textStatus + ', Error: ' + errorThrown;
+errText += ' | GET Status: ' + textStatus2 + ', Error: ' + errorThrown2;
 chatTurns.push({role: 'assistant', content: errText, error: true});
 saveChatHistory();
 $('#' + spinnerId).removeClass('llm-reply llm-reply-pending').addClass('llm-error').html($('<div/>').text(errText).html());

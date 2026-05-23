@@ -1,5 +1,6 @@
-<tal:block tal:define="zmscontext options/zmscontext">
-<p class="form-text text-muted mb-0">
-Use this block to embed a frontend chat that uses the configured ZMSLLMConnector provider.
-</p>
+<tal:block 
+    tal:define="zmscontext options/zmscontext" 
+    tal:replace="structure python:zmscontext.getBodyContent(request)">
+    Use this block to embed a frontend chat that uses the configured 
+    ZMSLLMConnector provider.
 </tal:block>

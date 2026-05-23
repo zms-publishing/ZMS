@@ -51,6 +51,9 @@ at the top level containing the first choice's message.
 
 Requirements for RAG:
     - pip install sentence-transformers
+
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing    
 """
 
 # Imports.

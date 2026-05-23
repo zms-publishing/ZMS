@@ -1637,3 +1637,108 @@ class ZMSMetaobjManager(object):
         
         return message
 
+
+    def manage_create_default_zpt(self, id, target_id='standard_html', attrs=None, REQUEST=None, RESPONSE=None):
+      """
+      Create and optionally return default standard_html ZPT code.
+      @param id: Meta-object id.
+      @type id: C{str}
+      @param target_id: Target template id (default C{standard_html}).
+      @type target_id: C{str}
+      @param attrs: Optional list of attribute dicts to use instead of fetching from meta-object definition.
+      @type attrs: C{list} | C{None}
+      @param REQUEST: Optional request for language and context (used in template code generation).
+      @type REQUEST: C{ZPublisher.HTTPRequest} | C{None}
+      @param RESPONSE: Optional response for XML output headers (not used).
+      @type RESPONSE: C{ZPublisher.HTTPResponse} | C{None}
+      @return: Generated default ZPT code for the specified template.
+      @rtype: C{str}"""
+
+      # Helper to shorten attribute ids for use as TAL variable names.
+      def shorten_metaobj_attr_id(attr_id):
+        sid = str(attr_id)
+        sid = sid.split('attr_')[-1]
+        sid = sid.split('dc_')[-1]
+        sid = sid.split('/')[-1]
+        return sid
+
+      if attrs is None:
+        attrs = []
+        for attr_id in self.getMetaobjAttrIds(id):
+          attr = self.getMetaobjAttr(id, attr_id)
+          if not attr:
+            continue
+          attrs.append({
+            'id': attr.get('id', attr_id),
+            'type': attr.get('type', 'string'),
+            'repetitive': attr.get('repetitive', 0),
+          })
+
+      ignored_ids = {'standard_html', 'check_constraints'}
+      ignored_types = {'delimiter', 'interface', 'constant'}
+
+      tal_defs = []
+      tal_content = []
+
+      for attr in attrs:
+        attr_id = str(attr.get('id', '')).strip()
+        attr_type = str(attr.get('type', '')).strip()
+        is_repetitive = bool(attr.get('repetitive', 0))
+        if not attr_id or not attr_type:
+          continue
+        if attr_id in ignored_ids or attr_type in ignored_types:
+          continue
+
+        sid = shorten_metaobj_attr_id(attr_id)
+        escaped_attr_id = attr_id.replace("'", "\\'")
+
+        if attr_type == 'url':
+          tal_defs.append("\n\t\t%s python:zmscontext.attr('%s');"%(sid, escaped_attr_id))
+          tal_defs.append("\n\t\t%s_obj python:'{' in %s and zmscontext.getLinkObj(%s,request) or None;"%(sid, sid, sid))
+          tal_defs.append("\n\t\t%s_target python:%s_obj and %s_obj.getHref2IndexHtml(request) or %s;"%(sid, sid, sid, sid))
+        elif is_repetitive:
+          if attr_type != '*':
+            escaped_attr_type = attr_type.replace("'", "\\'")
+            tal_defs.append("\n\t\t%s_list python:zmscontext.filteredChildNodes(request,'%s');"%(sid, escaped_attr_type))
+          else:
+            tal_defs.append("\n\t\t%s_list python:zmscontext.filteredChildNodes(request);"%sid)
+        elif attr_type == 'Script (Python)':
+          tal_defs.append("\n\t\t%s here/%s;"%(sid, escaped_attr_id))
+        else:
+          tal_defs.append("\n\t\t%s python:zmscontext.attr('%s');"%(sid, escaped_attr_id))
+
+        if attr_type == 'image':
+          tal_content.append("\n\t<img class=\"%s\" tal:attributes=\"src python:%s.getHref(request)\" alt=\"Image\" />"%(sid, sid))
+        elif attr_type == 'url':
+          tal_content.append("\n\t<a class=\"%s\" tal:condition=\"%s\" tal:attributes=\"href python:%s_obj and %s_target or %s; target python:%s_obj and '_self' or '_blank';\">Link...</a>"%(sid, sid, sid, sid, sid, sid))
+        elif attr_type == 'file':
+          tal_content.append("\n\t<a class=\"%s\" tal:condition=\"%s\" tal:attributes=\"href python:%s.getHref(request);title python:'Download-File Size: %%s, Type: %%s'%%(%s.getDataSizeStr(),%s.getContentType())\" tal:content=\"python:%s.getFilename()\">Filename</a>"%(sid, sid, sid, sid, sid, sid))
+        elif attr_type == 'richtext':
+          tal_content.append("\n\t<div class=\"%s\" tal:content=\"structure %s\">%s</div>"%(sid, sid, sid))
+        elif attr_type == 'datetime':
+          tal_content.append("\n\t<div class=\"%s\" tal:condition=\"%s\" tal:content=\"python:zmscontext.getLangFmtDate(%s,request.get('lang'))\">%s</div>"%(sid, sid, sid, sid))
+        elif is_repetitive:
+          tal_content.append("\n\t<div class=\"%s repetitive\" tal:condition=\"%s_list\">\n\t\t<tal:block tal:repeat=\"%s_listitem %s_list\" tal:content=\"structure python:%s_listitem.renderShort(request)\">%s</tal:block>\n\t</div>"%(sid, sid, sid, sid, sid, sid))
+        elif attr_type == 'Script (Python)':
+          tal_content.append("\n\t<div class=\"%s\" tal:content=\"structure %s\">%s</div>"%(sid, sid, attr_id))
+        else:
+          tal_content.append("\n\t<div class=\"%s\" tal:content=\"%s\">%s</div>"%(sid, sid, sid))
+
+      comment = '<!-- %s.%s -->'%(id, target_id)
+      default_template = (
+        '<div title="Default-ZPT-Code"\n'
+        '\ttal:define="zmscontext options/zmscontext;\n'
+        '\t\tid python:zmscontext.getId();\n'
+        '\t\tcss_class python:zmscontext.meta_id;%s"\n'
+        '\ttal:attributes="id id;class css_class">%s\n</div>'
+      )%(''.join(tal_defs), ''.join(tal_content))
+      template = '%s\n%s\n%s'%(comment, default_template, comment)
+
+      if RESPONSE is not None:
+        content_type = 'text/plain; charset=utf-8'
+        filename = 'manage_create_default_zpt.txt'
+        RESPONSE.setHeader('Content-Type', content_type)
+        RESPONSE.setHeader('Content-Disposition', 'inline;filename="%s"'%filename)
+        RESPONSE.setHeader('Cache-Control', 'no-cache')
+        RESPONSE.setHeader('Pragma', 'no-cache')
+      return template

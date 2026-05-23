@@ -7,109 +7,14 @@ Provides:
     API calls via ``context.metaobj_manager``.
 
 All tools operate on the metamodel manager reachable via the ZMS acquisition context.
+
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
 """
 
 import json
 
 from Products.zms import zopeutil
-
-
-def _shorten_attr_id(attr_id):
-    """Mirror manage_main.zpt shorten_id() for default template generation."""
-    sid = str(attr_id)
-    sid = sid.split('attr_')[-1]
-    sid = sid.split('dc_')[-1]
-    sid = sid.split('/')[-1]
-    return sid
-
-
-def _build_default_standard_html(meta_id, attrs=None, target_id='standard_html'):
-    """Build a default ZPT template and include bindings for known attributes."""
-    attrs = attrs or []
-    ignored_ids = {'standard_html', 'check_constraints'}
-    ignored_types = {'delimiter', 'interface', 'constant'}
-
-    tal_defs = []
-    tal_content = []
-
-    for attr in attrs:
-        attr_id = str(attr.get('id', '')).strip()
-        attr_type = str(attr.get('type', '')).strip()
-        is_repetitive = bool(attr.get('repetitive', 0))
-        if not attr_id or not attr_type:
-            continue
-        if attr_id in ignored_ids or attr_type in ignored_types:
-            continue
-
-        sid = _shorten_attr_id(attr_id)
-        escaped_attr_id = attr_id.replace("'", "\\'")
-
-        if attr_type == 'url':
-            tal_defs.append(f"\n\t\t{sid} python:zmscontext.attr('{escaped_attr_id}');")
-            tal_defs.append(
-                f"\n\t\t{sid}_obj python:'{{' in {sid} and zmscontext.getLinkObj({sid},request) or None;"
-            )
-            tal_defs.append(
-                f"\n\t\t{sid}_target python:{sid}_obj and {sid}_obj.getHref2IndexHtml(request) or {sid};"
-            )
-        elif is_repetitive:
-            if attr_type != '*':
-                escaped_attr_type = attr_type.replace("'", "\\'")
-                tal_defs.append(
-                    f"\n\t\t{sid}_list python:zmscontext.filteredChildNodes(request,'{escaped_attr_type}');"
-                )
-            else:
-                tal_defs.append(f"\n\t\t{sid}_list python:zmscontext.filteredChildNodes(request);")
-        elif attr_type == 'Script (Python)':
-            tal_defs.append(f"\n\t\t{sid} here/{escaped_attr_id};")
-        else:
-            tal_defs.append(f"\n\t\t{sid} python:zmscontext.attr('{escaped_attr_id}');")
-
-        if attr_type == 'image':
-            tal_content.append(
-                f"\n\t<img class=\"{sid}\" tal:attributes=\"src python:{sid}.getHref(request)\" alt=\"Image\" />"
-            )
-        elif attr_type == 'url':
-            tal_content.append(
-                f"\n\t<a class=\"{sid}\" tal:condition=\"{sid}\" "
-                f"tal:attributes=\"href python:{sid}_obj and {sid}_target or {sid}; "
-                f"target python:{sid}_obj and '_self' or '_blank';\">Link...</a>"
-            )
-        elif attr_type == 'file':
-            tal_content.append(
-                f"\n\t<a class=\"{sid}\" tal:condition=\"{sid}\" "
-                f"tal:attributes=\"href python:{sid}.getHref(request);"
-                f"title python:'Download-File Size: %s, Type: %s'%({sid}.getDataSizeStr(),{sid}.getContentType())\" "
-                f"tal:content=\"python:{sid}.getFilename()\">Filename</a>"
-            )
-        elif attr_type == 'richtext':
-            tal_content.append(f"\n\t<div class=\"{sid}\" tal:content=\"structure {sid}\">{sid}</div>")
-        elif attr_type == 'datetime':
-            tal_content.append(
-                f"\n\t<div class=\"{sid}\" tal:condition=\"{sid}\" "
-                f"tal:content=\"python:zmscontext.getLangFmtDate({sid},request.get('lang'))\">{sid}</div>"
-            )
-        elif is_repetitive:
-            tal_content.append(
-                f"\n\t<div class=\"{sid} repetitive\" tal:condition=\"{sid}_list\">"
-                f"\n\t\t<tal:block tal:repeat=\"{sid}_listitem {sid}_list\" "
-                f"tal:content=\"structure python:{sid}_listitem.renderShort(request)\">{sid}</tal:block>"
-                f"\n\t</div>"
-            )
-        elif attr_type == 'Script (Python)':
-            tal_content.append(f"\n\t<div class=\"{sid}\" tal:content=\"structure {sid}\">{attr_id}</div>")
-        else:
-            tal_content.append(f"\n\t<div class=\"{sid}\" tal:content=\"{sid}\">{sid}</div>")
-
-    comment = f"<!-- {meta_id}.{target_id} -->"
-    default_template = (
-        '<div title="Default-ZPT-Code"\n'
-        '\ttal:define="zmscontext options/zmscontext;\n'
-        '\t\tid python:zmscontext.getId();\n'
-        f"\t\tcss_class python:zmscontext.meta_id;{''.join(tal_defs)}\"\n"
-        f"\ttal:attributes=\"id id;class css_class\">{''.join(tal_content)}\n</div>"
-    )
-    return f"{comment}\n{default_template}\n{comment}"
 
 
 # ---------------------------------------------------------------------------
@@ -595,7 +500,7 @@ def execute_llmtool(name, args, context):
                     0,                # newRepetitive
                     'zpt',            # newType
                     [],               # newKeys
-                    _build_default_standard_html(tid, created_attrs, target_id='standard_html'),
+                    mm.manage_create_default_zpt(tid, target_id='standard_html', attrs=created_attrs),
                     '',               # newDefault
                 )
                 standard_html_added = True
@@ -722,7 +627,7 @@ def execute_llmtool(name, args, context):
                     existing_template = zopeutil.readData(existing_ob, default=existing_template)
                 existing_template = existing_template or ''
 
-            template = _build_default_standard_html(tid, attrs, target_id='standard_html')
+            template = mm.manage_create_default_zpt(tid, target_id='standard_html', attrs=attrs)
             if dry_run:
                 return {
                     'dry_run': True,

@@ -157,6 +157,7 @@ var agentMode = $agent.is(':checked');
 chatHistory.push({role: 'user', content: message});
 chatTurns.push({role: 'user', content: message});
 saveChatHistory();
+var payload = {messages: JSON.stringify(chatHistory), agent_mode: agentMode ? '1' : '0'};
 
 var spinnerId = 'spin-' + Date.now();
 $console.append(renderMessage('user', message, false) + '<div class="llm-reply llm-reply-pending" id="' + spinnerId + '"><i class="fas fa-spinner fa-spin"></i> Waiting…</div>');
@@ -166,7 +167,7 @@ $.ajax({
 method: 'POST',
 url: restBase + '/llm_chat',
 dataType: 'json',
-data: {messages: JSON.stringify(chatHistory), agent_mode: agentMode ? '1' : '0'}
+data: payload
 })
 .done(function(resp) {
 $('#' + spinnerId).remove();
@@ -196,10 +197,45 @@ $console.append(renderMessage('assistant', content, false));
 $console.scrollTop($console[0].scrollHeight);
 })
 .fail(function(jqXHR, textStatus, errorThrown) {
+$.ajax({
+method: 'GET',
+url: restBase + '/llm_chat',
+dataType: 'json',
+data: payload
+})
+.done(function(resp) {
+$('#' + spinnerId).remove();
+if (resp.error) {
+var errText = typeof resp.error === 'object' ? '[' + resp.error.code + '] ' + resp.error.message : String(resp.error);
+chatTurns.push({role: 'assistant', content: errText, error: true});
+saveChatHistory();
+$console.append(renderMessage('assistant', errText, true));
+} else if (resp.turns) {
+var newTurns = resp.turns;
+for (var i = 0; i < newTurns.length; i++) {
+var t = newTurns[i];
+chatTurns.push(t);
+if (t.role === 'assistant' && !t.tool_calls) {
+chatHistory.push({role: 'assistant', content: t.content || ''});
+}
+}
+saveChatHistory();
+$console.append(renderTurns(newTurns));
+} else {
+var content = resp.reply || '';
+chatHistory.push({role: 'assistant', content: content});
+chatTurns.push({role: 'assistant', content: content});
+saveChatHistory();
+$console.append(renderMessage('assistant', content, false));
+}
+$console.scrollTop($console[0].scrollHeight);
+})
+.fail(function() {
 var errText = '[REQUEST_FAILED] Status: ' + textStatus + ', Error: ' + errorThrown;
 chatTurns.push({role: 'assistant', content: errText, error: true});
 saveChatHistory();
 $('#' + spinnerId).removeClass('llm-reply llm-reply-pending').addClass('llm-error').html($('<div/>').text(errText).html());
+});
 });
 }
 

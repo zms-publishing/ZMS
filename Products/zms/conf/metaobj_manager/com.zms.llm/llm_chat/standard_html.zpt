@@ -95,7 +95,20 @@
 					return '<div class="llm-reply"><i id="' + id + '" class="fas fa-copy llm-copy-btn" title="Copy" tabindex="0" role="button" aria-label="Copy reply"></i>' + $('<div/>').text(content).html() + '</div>';
 				}
 
-				function renderToolCall(turn) {
+				function buildToolResultMap(turns) {
+					var map = {};
+					for (var i = 0; i < turns.length; i++) {
+						var t = turns[i];
+						if (t && t.role === 'tool' && t.tool_call_id) {
+							var parsed = t.content;
+							try { parsed = JSON.parse(t.content || '{}'); } catch (e) { }
+							map[t.tool_call_id] = parsed;
+						}
+					}
+					return map;
+				}
+
+				function renderToolCall(turn, toolResultMap) {
 					var tcs = turn.tool_calls || [];
 					var html = '<div class="llm-tool-group">';
 					for (var i = 0; i < tcs.length; i++) {
@@ -104,21 +117,25 @@
 						var argsStr = fn['arguments'] || '{}';
 						var argsObj = {};
 						try { argsObj = JSON.parse(argsStr); } catch (e) { argsObj = argsStr; }
+						var result = toolResultMap && tc.id ? toolResultMap[tc.id] : undefined;
 						html += '<div class="llm-tool-call"><span class="llm-tool-badge"><i class="fas fa-wrench mr-1"></i>' +
 							$('<div/>').text(fn['name'] || 'tool').html() + '</span>' +
-							'<pre class="llm-tool-args">' + $('<div/>').text(JSON.stringify(argsObj, null, 2)).html() + '</pre></div>';
+							'<pre class="llm-tool-args">' + $('<div/>').text(JSON.stringify(argsObj, null, 2)).html() + '</pre>' +
+							(result !== undefined ? '<pre class="llm-tool-result">' + $('<div/>').text(JSON.stringify(result, null, 2)).html() + '</pre>' : '') +
+							'</div>';
 					}
 					html += '</div>';
 					return html;
 				}
 
 				function renderTurns(turns) {
+					var toolResultMap = buildToolResultMap(turns);
 					var html = '';
 					for (var i = 0; i < turns.length; i++) {
 						var t = turns[i];
 						if (t.role === 'user') html += renderMessage('user', t.content || '', false);
 						else if (t.role === 'tool') { }
-						else if (t.tool_calls && t.tool_calls.length) html += renderToolCall(t);
+						else if (t.tool_calls && t.tool_calls.length) html += renderToolCall(t, toolResultMap);
 						else if (t.error) html += renderMessage('assistant', t.content || '', true);
 						else html += renderMessage('assistant', t.content || '', false);
 					}

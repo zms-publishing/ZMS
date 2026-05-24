@@ -56,6 +56,19 @@ For using local Ollama deployment:
 | `llm.api.model` | Model name (e.g., `llama2`, `mistral`, `codellama`) | `llama2` |
 | `llm.num_ctx` | Context window size | `4096` |
 
+> **Agent mode requires a tool-capable model.** Many older models (including `llama2`, `mistral`, `codellama`) do not support Ollama's tool-calling protocol and will return an error like *"does not support tools"* when agent mode is enabled. Use one of the following models instead:
+>
+> | Model | Pull command |
+> |-------|-------------|
+> | `llama3.1` | `ollama pull llama3.1` |
+> | `llama3.2` | `ollama pull llama3.2` |
+> | `llama3.3` | `ollama pull llama3.3` |
+> | `qwen2.5` | `ollama pull qwen2.5` |
+> | `qwen2.5-coder` | `ollama pull qwen2.5-coder` |
+> | `mistral-nemo` | `ollama pull mistral-nemo` |
+>
+> Plain chat (without agent mode) continues to work with any model.
+
 ### RAG Configuration
 
 For using RAG with Qdrant vector database and Ollama:
@@ -97,7 +110,7 @@ llm.store = True  # Enable responses API storage
 # In your ZMS configuration
 llm.provider = ollama
 llm.ollama.host = http://localhost:11434
-llm.api.model = llama2
+llm.api.model = llama3.1  # use a tool-capable model for agent mode
 llm.temperature = 0.7
 llm.num_ctx = 4096
 ```
@@ -454,6 +467,63 @@ docker exec -it ollama ollama pull llama2
 4. Increase `llm.rag.top_k` to retrieve more context
 5. Check Qdrant collection: `curl http://localhost:6333/collections/zms_docs`
 
+## Agentic RAG Indexing with `index_qdrant`
+
+ZMS ships an `index_qdrant` LLM tool that lets the agent crawl and index the entire site content into Qdrant on demand — no separate script or notebook required.
+
+### How it works
+
+When agent mode is enabled (`agent_mode=1` on the `++rest_api/llm_chat` endpoint, or the `llm_chat` block's agent toggle), the LLM can call the `index_qdrant` tool automatically. Simply ask in natural language:
+
+> *"Please index all content of this ZMS site."*
+> *"Update the RAG index."*
+> *"Re-index the site in German."*
+
+The tool will:
+
+1. Query the ZCatalog for all active pages in the tree.
+2. Render each page's body content via `getBodyContent()` — the same HTML a visitor sees.
+3. Strip HTML tags and split the text into overlapping chunks (default 1 200 chars / 200 overlap).
+4. Embed each chunk with the configured `llm.embedding.model` (SentenceTransformer).
+5. Upsert all vectors into Qdrant with rich payload metadata: `path`, `url`, `title`, `lang`, `meta_id`, `chunk_index`.
+6. Reply with a summary: pages indexed, chunks stored, pages skipped.
+
+The tool runs entirely inside the Zope process — no external HTTP calls to ZMS are made.
+
+### Parameters
+
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| `lang` | Index only this language code, e.g. `eng` | all site languages |
+| `collection` | Qdrant collection name | `llm.qdrant.collection` property |
+| `reset` | Drop and recreate the collection before indexing | `true` |
+| `chunk_size` | Maximum characters per chunk | `1200` |
+| `chunk_overlap` | Overlap between consecutive chunks | `200` |
+
+### Prerequisites
+
+- A `ZMSLLMConnector` with `llm.provider = rag` configured (Qdrant host, collection, embedding model).
+- `qdrant-client` and `sentence-transformers` installed in the Zope Python environment:
+  ```bash
+  pip install qdrant-client sentence-transformers
+  ```
+- Qdrant running and reachable at `llm.qdrant.host`.
+
+### Example agent conversation
+
+```
+User:   Please index all content of this ZMS site.
+
+Agent:  [calls index_qdrant()]
+
+Agent:  Done. Indexed 312 pages (1 847 chunks) into collection 'zms_docs'
+        across languages ['eng', 'deu']. 4 pages were skipped (no body content).
+```
+
+After indexing, the RAG provider will automatically use the freshly populated collection for all subsequent questions.
+
+---
+
 ## Best Practices
 
 1. **Use OpenAI for production** if you need reliable, fast responses and can afford the API costs
@@ -466,6 +536,10 @@ docker exec -it ollama ollama pull llama2
 8. **Match embedding models** - always use the same `llm.embedding.model` for ingestion and retrieval
 9. **Tune score threshold** - adjust `llm.rag.score_threshold` based on your data quality
 10. **Enable OpenAI storage** (`llm.store = True`) only if you want to contribute to model training
+11. **Re-index after content changes** - ask the agent to `index_qdrant` whenever significant content has been published so the RAG answers stay current
+12. **Index per language** - on multi-language sites, use the `lang` parameter to index languages separately if you want language-scoped Qdrant collections
+
+
 
 ## Security Considerations
 

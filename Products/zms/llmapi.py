@@ -675,6 +675,65 @@ def get_provider_info(context):
     dict: Provider information including type, model, and endpoint
     """
     provider_type = context.getConfProperty('llm.provider', 'openai').lower()
+
+    def _get_qdrant_collection_info(qdrant_host, collection_name):
+        """Fetch lightweight live collection stats from Qdrant for UI badges."""
+        base = (qdrant_host or 'http://localhost:6333').rstrip('/')
+        info = {
+            'host': base,
+            'collection': collection_name,
+            'exists': False,
+        }
+        try:
+            # List all collections so UI can show quick diagnostics.
+            list_resp = requests.get(f"{base}/collections", timeout=3)
+            if list_resp.ok:
+                list_data = list_resp.json() or {}
+                collections = []
+                result = list_data.get('result') or {}
+                for item in result.get('collections', []):
+                    name = item.get('name')
+                    if name:
+                        collections.append(name)
+                info['available_collections'] = collections
+
+            # Resolve selected collection details.
+            resp = requests.get(f"{base}/collections/{collection_name}", timeout=3)
+            if resp.status_code == 404:
+                info['error'] = f"Collection '{collection_name}' not found."
+                return info
+            if not resp.ok:
+                info['error'] = f"Qdrant returned HTTP {resp.status_code}."
+                return info
+
+            payload = resp.json() or {}
+            result = payload.get('result') or {}
+            config = result.get('config') or {}
+            params = config.get('params') or {}
+            vectors_cfg = params.get('vectors') or {}
+            # vectors config may be a dict (single vector) or map (named vectors).
+            if isinstance(vectors_cfg, dict) and 'size' in vectors_cfg:
+                vector_size = vectors_cfg.get('size')
+                distance = vectors_cfg.get('distance')
+            else:
+                vector_size = None
+                distance = None
+
+            info.update({
+                'exists': True,
+                'status': result.get('status'),
+                'optimizer_status': result.get('optimizer_status'),
+                'points_count': result.get('points_count'),
+                'vectors_count': result.get('vectors_count'),
+                'indexed_vectors_count': result.get('indexed_vectors_count'),
+                'segments_count': result.get('segments_count'),
+                'vector_size': vector_size,
+                'distance': distance,
+            })
+            return info
+        except Exception as exc:
+            info['error'] = str(exc)
+            return info
     
     info = {
         'provider': provider_type,
@@ -700,6 +759,10 @@ def get_provider_info(context):
         info['top_k'] = context.getConfProperty('llm.rag.top_k', '3')
         info['score_threshold'] = context.getConfProperty('llm.rag.score_threshold', '0.0')
         info['rag_timeout'] = context.getConfProperty('llm.rag.timeout', '10')
+        info['qdrant_collection_info'] = _get_qdrant_collection_info(
+            info['qdrant_host'],
+            info['collection']
+        )
     
     return info
 

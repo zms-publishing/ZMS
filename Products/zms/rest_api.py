@@ -248,7 +248,32 @@ class RestApiController(object):
         else:
             message = REQUEST.get('message', '')
             messages = [{'role': 'user', 'content': message}]
+
+        def _extract_latest_user_text(msgs):
+            for m in reversed(msgs):
+                if isinstance(m, dict) and m.get('role') == 'user':
+                    return str(m.get('content') or '')
+            return ''
+
+        def _is_index_qdrant_intent(text):
+            t = (text or '').lower()
+            if not t:
+                return False
+            has_index_verb = ('index' in t) or ('reindex' in t) or ('re-index' in t)
+            has_scope = (
+                ('all content' in t) or
+                ('site content' in t) or
+                ('entire site' in t) or
+                ('whole site' in t) or
+                ('zms site' in t) or
+                ('rag index' in t) or
+                ('qdrant' in t)
+            )
+            return has_index_verb and has_scope
+
         agent_mode = REQUEST.get('agent_mode', '0') in ('1', 'true', 'True')
+        if not agent_mode and _is_index_qdrant_intent(_extract_latest_user_text(messages)):
+            agent_mode = True
         if agent_mode:
             return connector.chat_with_tools(messages, self.context)
         raw = connector.chat(messages)

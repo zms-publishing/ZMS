@@ -83,6 +83,18 @@ $(function() {
 				infoHtml += '<strong>Qdrant:</strong> ' + info.qdrant_host + '<br>';
 				infoHtml += '<strong>Collection:</strong> ' + info.collection + '<br>';
 			}
+			if (info.qdrant_collection_info) {
+				const qc = info.qdrant_collection_info;
+				infoHtml += '<strong>Collection Exists:</strong> ' + (qc.exists ? 'yes' : 'no') + '<br>';
+				if (qc.points_count != null) infoHtml += '<strong>Points:</strong> ' + qc.points_count + '<br>';
+				if (qc.vectors_count != null) infoHtml += '<strong>Vectors:</strong> ' + qc.vectors_count + '<br>';
+				if (qc.vector_size != null) infoHtml += '<strong>Vector Size:</strong> ' + qc.vector_size + '<br>';
+				if (qc.distance) infoHtml += '<strong>Distance:</strong> ' + qc.distance + '<br>';
+				if (qc.available_collections && qc.available_collections.length) {
+					infoHtml += '<strong>Available Collections:</strong> ' + qc.available_collections.join(', ') + '<br>';
+				}
+				if (qc.error) infoHtml += '<strong>Qdrant Error:</strong> ' + qc.error + '<br>';
+			}
 			if (info.has_api_key !== undefined) {
 				infoHtml += '<strong>API Key:</strong> ' + (info.has_api_key ? 'Configured' : 'Not configured') + '<br>';
 			}

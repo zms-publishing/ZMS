@@ -150,6 +150,29 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
         """
         from Products.zms import llmtools
 
+        def _extract_latest_user_text(msgs):
+            for m in reversed(msgs):
+                if isinstance(m, dict) and m.get('role') == 'user':
+                    return str(m.get('content') or '')
+            return ''
+
+        def _is_index_qdrant_intent(text):
+            t = (text or '').lower()
+            if not t:
+                return False
+            # Deterministic fallback for explicit site indexing requests.
+            has_index_verb = ('index' in t) or ('reindex' in t) or ('re-index' in t)
+            has_scope = (
+                ('all content' in t) or
+                ('site content' in t) or
+                ('entire site' in t) or
+                ('whole site' in t) or
+                ('zms site' in t) or
+                ('rag index' in t) or
+                ('qdrant' in t)
+            )
+            return has_index_verb and has_scope
+
         # Normalise messages
         if isinstance(messages, str):
             msgs = [{'role': 'user', 'content': messages}]
@@ -157,6 +180,46 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
             msgs = list(messages)
 
         turns = []  # records for UI / localStorage
+
+        # Some models occasionally answer in plain text instead of issuing a tool call.
+        # For explicit indexing requests, execute the indexer deterministically.
+        latest_user_text = _extract_latest_user_text(msgs)
+        if _is_index_qdrant_intent(latest_user_text):
+            result = llmtools.execute_llmtool('index_qdrant', {}, context)
+            result_str = json.dumps(result)
+            turns.append({
+                'role': 'assistant',
+                'content': '',
+                'tool_calls': [{
+                    'id': 'forced-index-qdrant',
+                    'type': 'function',
+                    'function': {
+                        'name': 'index_qdrant',
+                        'arguments': '{}',
+                    },
+                }],
+            })
+            turns.append({
+                'role': 'tool',
+                'tool_call_id': 'forced-index-qdrant',
+                'name': 'index_qdrant',
+                'content': result_str,
+            })
+            if isinstance(result, dict) and result.get('error'):
+                return {
+                    'reply': f"Indexing failed: {result.get('error')}",
+                    'turns': turns,
+                }
+            return {
+                'reply': (
+                    "Started and completed indexing into Qdrant. "
+                    f"Pages indexed: {result.get('pages_indexed', 0)}, "
+                    f"skipped: {result.get('pages_skipped', 0)}, "
+                    f"total chunks: {result.get('total_chunks', 0)}, "
+                    f"collection: {result.get('collection', '')}."
+                ),
+                'turns': turns,
+            }
 
         for _round in range(max_rounds):
             response = self.chat(msgs, tools=llmtools.LLM_TOOLS, tool_choice='auto')

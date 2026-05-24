@@ -13,8 +13,8 @@ Organization: ZMS Publishing
 """
 
 import json
-
 from Products.zms import zopeutil
+from Products.zms import standard
 
 
 # ---------------------------------------------------------------------------
@@ -377,6 +377,60 @@ LLM_TOOLS = [
             },
         },
     },
+    {
+        "type": "function",
+        "function": {
+            "name": "index_qdrant",
+            "description": (
+                "Index all published ZMS page content into the Qdrant vector database "
+                "so it can be searched by the RAG provider. "
+                "Call this when the user says something like 'index all content', "
+                "'please index the site', or 'update the RAG index'. "
+                "It crawls every page in the ZMS tree, renders the body content, "
+                "splits it into chunks, embeds each chunk with a SentenceTransformer "
+                "model, and upserts the vectors into Qdrant. "
+                "Use the 'lang' parameter to restrict indexing to a single language; "
+                "by default all configured site languages are indexed. "
+                "Set reset=false to append to an existing collection instead of "
+                "rebuilding it from scratch."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "lang": {
+                        "type": "string",
+                        "description": (
+                            "Language code to index, e.g. 'eng' or 'deu'. "
+                            "Omit to index all site languages."
+                        ),
+                    },
+                    "collection": {
+                        "type": "string",
+                        "description": (
+                            "Qdrant collection name. Defaults to the value of "
+                            "llm.qdrant.collection site property (usually 'zms_docs')."
+                        ),
+                    },
+                    "reset": {
+                        "type": "boolean",
+                        "description": (
+                            "When true (default), drop and recreate the collection "
+                            "before indexing so stale entries are removed."
+                        ),
+                    },
+                    "chunk_size": {
+                        "type": "integer",
+                        "description": "Maximum characters per chunk (default 1200).",
+                    },
+                    "chunk_overlap": {
+                        "type": "integer",
+                        "description": "Overlap between consecutive chunks (default 200).",
+                    },
+                },
+                "required": [],
+            },
+        },
+    },
 ]
 
 
@@ -703,8 +757,144 @@ def execute_llmtool(name, args, context):
                 xml = xml[:4000] + '\n... (truncated)'
             return {'xml': xml}
 
+        elif name == 'index_qdrant':
+            return _tool_index_qdrant(args, context)
+
         else:
             return {'error': f"Unknown tool: {name}"}
 
     except Exception as exc:
         return {'error': str(exc)}
+
+
+# ---------------------------------------------------------------------------
+# index_qdrant implementation
+# ---------------------------------------------------------------------------
+
+def _tool_index_qdrant(args, context):
+    """
+    Crawl every ZMS page, render its body content, chunk + embed the text,
+    and upsert all vectors into the configured Qdrant collection.
+
+    Runs fully inside the Zope process — no external HTTP calls required.
+    """
+    import re
+
+    try:
+        from qdrant_client import QdrantClient
+        from qdrant_client.models import Distance, VectorParams, PointStruct
+        from sentence_transformers import SentenceTransformer
+    except ImportError as exc:
+        return {
+            'error': (
+                f"Missing dependency: {exc}. "
+                "Install qdrant-client and sentence-transformers in the Zope Python environment."
+            )
+        }
+
+    # --- configuration -------------------------------------------------------
+    connector = context.getLLMConnector()
+    if connector is None:
+        return {'error': 'No ZMSLLMConnector found. Add one to the ZMS root first.'}
+
+    from urllib.parse import urlparse
+    qdrant_host = connector.getConfProperty('llm.qdrant.host', 'http://localhost:6333')
+    collection  = args.get('collection') or connector.getConfProperty('llm.qdrant.collection', 'zms_docs')
+    embed_model = connector.getConfProperty('llm.embedding.model', 'all-MiniLM-L6-v2')
+    reset       = args.get('reset', True)
+    chunk_size  = int(args.get('chunk_size', 1200))
+    overlap     = int(args.get('chunk_overlap', 200))
+
+    parsed = urlparse(qdrant_host)
+    qdrant = QdrantClient(host=parsed.hostname or 'localhost', port=parsed.port or 6333)
+
+    # --- (re)create collection -----------------------------------------------
+    if reset:
+        try:
+            qdrant.delete_collection(collection_name=collection)
+        except Exception:
+            pass
+        qdrant.create_collection(
+            collection_name=collection,
+            vectors_config=VectorParams(size=384, distance=Distance.COSINE),
+        )
+
+    # --- helpers -------------------------------------------------------------
+    def strip_html(html):
+        text = re.sub(r'<[^>]+>', ' ', html or '')
+        return re.sub(r'\s+', ' ', text).strip()
+
+    def chunk_text(text):
+        chunks, start, step = [], 0, max(chunk_size - overlap, 1)
+        while start < len(text):
+            end = min(start + chunk_size, len(text))
+            chunks.append(text[start:end])
+            if end == len(text):
+                break
+            start += step
+        return chunks
+
+    # --- discover pages ------------------------------------------------------
+    from Products.zms import mock_http
+
+    root = context.getDocumentElement()
+    lang_arg = args.get('lang')
+    langs = [lang_arg] if lang_arg else root.getLangIds()
+
+    records, processed, skipped = [], 0, 0
+
+    for lng in langs:
+        request = mock_http.MockHTTPRequest({'lang': lng})
+        # zcatalog_index returns lightweight brain objects with getPath()
+        brains = root.zcatalog_index({'path':'/'})
+        for brain in brains:
+            try:
+                path = brain.getPath()
+                node = root.unrestrictedTraverse(path)
+                if not getattr(node, 'isPage', lambda: False)():
+                    continue
+                html = node.getBodyContent(request, forced=False)
+                text = strip_html(html)
+                if not text:
+                    skipped += 1
+                    continue
+                title = node.getTitle(request)
+                url   = node.absolute_url()
+                for i, chunk in enumerate(chunk_text(text)):
+                    records.append({
+                        'text':        chunk,
+                        'path':        path,
+                        'url':         url,
+                        'title':       title,
+                        'lang':        lng,
+                        'meta_id':     getattr(node, 'meta_id', ''),
+                        'chunk_index': i,
+                    })
+                processed += 1
+                standard.writeStdout(node, f"Qdrant Indexing: {path} (lang={lng}, chunks={len(records)})")
+            except Exception:
+                standard.writeStdout(node, f"Qdrant Indexing: {path} skipped due to error")
+                skipped += 1
+
+    # --- embed and upsert in batches -----------------------------------------
+    model      = SentenceTransformer(embed_model)
+    batch_size = 64
+    point_id   = 0
+
+    for i in range(0, len(records), batch_size):
+        batch   = records[i:i + batch_size]
+        vectors = model.encode([r['text'] for r in batch]).tolist()
+        points  = [
+            PointStruct(id=point_id + j, vector=vec, payload=rec)
+            for j, (rec, vec) in enumerate(zip(batch, vectors))
+        ]
+        qdrant.upsert(collection_name=collection, points=points)
+        point_id += len(batch)
+
+    return {
+        'collection': collection,
+        'languages':  langs,
+        'pages_indexed': processed,
+        'pages_skipped': skipped,
+        'total_chunks':  point_id,
+    }

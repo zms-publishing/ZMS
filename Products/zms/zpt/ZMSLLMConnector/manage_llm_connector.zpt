@@ -491,7 +491,20 @@
 				}
 			}
 
-			function renderToolCall(turn) {
+			function buildToolResultMap(turns) {
+				var map = {};
+				for (var i = 0; i < turns.length; i++) {
+					var t = turns[i];
+					if (t && t.role === 'tool' && t.tool_call_id) {
+						var parsed = t.content;
+						try { parsed = JSON.parse(t.content || '{}'); } catch(e) {}
+						map[t.tool_call_id] = parsed;
+					}
+				}
+				return map;
+			}
+
+			function renderToolCall(turn, toolResultMap) {
 				var tcs = turn.tool_calls || [];
 				var html = '<div class="llm-tool-group">';
 				for (var i = 0; i < tcs.length; i++) {
@@ -502,6 +515,7 @@
 					var argsObj = {};
 					try { argsObj = JSON.parse(argsStr); } catch(e) { argsObj = argsStr; }
 					var argsDisplay = JSON.stringify(argsObj, null, 2);
+					var result = toolResultMap && tc.id ? toolResultMap[tc.id] : undefined;
 					html += '<div class="llm-tool-call">' +
 						'<span class="llm-tool-badge"><i class="fas fa-wrench mr-1"></i>' +
 						$('<div/>').text(fn['name'] || 'tool').html() + '</span> ' +
@@ -509,7 +523,7 @@
 						'<i class="fas fa-chevron-down"></i></a>' +
 						'<div class="collapse" id="' + tcId + '">' +
 						'<pre class="llm-tool-args">' + $('<div/>').text(argsDisplay).html() + '</pre>' +
-						(turn.result ? '<pre class="llm-tool-result">' + $('<div/>').text(JSON.stringify(turn.result, null, 2)).html() + '</pre>' : '') +
+						(result !== undefined ? '<pre class="llm-tool-result">' + $('<div/>').text(JSON.stringify(result, null, 2)).html() + '</pre>' : '') +
 						'</div></div>';
 				}
 				html += '</div>';
@@ -517,6 +531,7 @@
 			}
 
 			function renderTurns(turns) {
+				var toolResultMap = buildToolResultMap(turns);
 				var html = '';
 				for (var i = 0; i < turns.length; i++) {
 					var t = turns[i];
@@ -525,7 +540,7 @@
 					} else if (t.role === 'tool') {
 						// tool result — attached to the preceding tool_call turn, skip standalone render
 					} else if (t.tool_calls && t.tool_calls.length) {
-						html += renderToolCall(t);
+						html += renderToolCall(t, toolResultMap);
 					} else if (t.error) {
 						html += renderMessage('assistant', t.content, true);
 					} else {
@@ -634,6 +649,22 @@
 						info.provider + ' / ' + info.model;
 					if (info.endpoint) html += ' &mdash; ' + $('<div/>').text(info.endpoint).html();
 					if (info.llm_timeout) html += ' &mdash; Timeout: ' + info.llm_timeout + 's';
+					if (info.qdrant_collection_info) {
+						var qc = info.qdrant_collection_info;
+						html += '<br><strong>Qdrant:</strong> ' + $('<div/>').text(qc.host || info.qdrant_host || '').html();
+						html += ' &mdash; <strong>Collection:</strong> ' + $('<div/>').text(qc.collection || info.collection || '').html();
+						html += ' &mdash; <strong>Exists:</strong> ' + (qc.exists ? 'yes' : 'no');
+						if (qc.points_count != null) html += ' &mdash; <strong>Points:</strong> ' + qc.points_count;
+						if (qc.vectors_count != null) html += ' &mdash; <strong>Vectors:</strong> ' + qc.vectors_count;
+						if (qc.vector_size != null) html += ' &mdash; <strong>Dim:</strong> ' + qc.vector_size;
+						if (qc.distance) html += ' &mdash; <strong>Distance:</strong> ' + $('<div/>').text(qc.distance).html();
+						if (qc.available_collections && qc.available_collections.length) {
+							html += '<br><strong>Collections:</strong> ' + $('<div/>').text(qc.available_collections.join(', ')).html();
+						}
+						if (qc.error) {
+							html += '<br><span class="text-danger"><strong>Qdrant error:</strong> ' + $('<div/>').text(qc.error).html() + '</span>';
+						}
+					}
 					html += '</div>';
 					$('#llm-console').append(html);
 					$('#llm-console').animate({ scrollTop: $('#llm-console')[0].scrollHeight }, 500);

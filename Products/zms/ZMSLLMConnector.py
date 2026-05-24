@@ -130,12 +130,12 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
         """
         Agentic chat loop with ZMS tool calling.
 
-        Sends ``messages`` plus ``LLM_TOOLS`` definitions to the LLM. If the
-        LLM responds with ``tool_calls``, each call is executed via
-        ``llmtools.execute_llmtool()`` against the given ZMS ``context``, the
-        results are appended as ``tool`` role messages, and the conversation
-        continues until the LLM produces a plain text response or ``max_rounds``
-        is reached.
+        Sends ``messages`` plus active tool definitions from
+        ``llmtools.ZMSLLMToolsAdapter`` to the LLM. If the LLM responds with
+        ``tool_calls``, each call is executed through the adapter (custom
+        ``*_llmtools`` profile or built-in fallback), appended as ``tool``
+        role messages, and the conversation continues until the LLM produces a
+        plain text response or ``max_rounds`` is reached.
 
         @param messages: List of ``{"role": ..., "content": ...}`` dicts or a
           plain string (auto-wrapped as user message).
@@ -149,6 +149,7 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
         @rtype: dict
         """
         from Products.zms import llmtools
+        adapter = llmtools.ZMSLLMToolsAdapter(self, context)
 
         def _extract_latest_user_text(msgs):
             for m in reversed(msgs):
@@ -181,11 +182,20 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
 
         turns = []  # records for UI / localStorage
 
+        try:
+            tool_schemas = adapter.get_llmtools()
+        except Exception as exc:
+            return {
+                'error': "LLM tools profile misconfigured: %s" % str(exc),
+                'turns': turns,
+                'reply': '',
+            }
+
         # Some models occasionally answer in plain text instead of issuing a tool call.
         # For explicit indexing requests, execute the indexer deterministically.
         latest_user_text = _extract_latest_user_text(msgs)
         if _is_index_qdrant_intent(latest_user_text):
-            result = llmtools.execute_llmtool('index_qdrant', {}, context)
+            result = adapter.execute_llmtool('index_qdrant', {})
             result_str = json.dumps(result)
             turns.append({
                 'role': 'assistant',
@@ -222,7 +232,7 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
             }
 
         for _round in range(max_rounds):
-            response = self.chat(msgs, tools=llmtools.LLM_TOOLS, tool_choice='auto')
+            response = self.chat(msgs, tools=tool_schemas, tool_choice='auto')
 
             if 'error' in response:
                 err = response['error']
@@ -261,7 +271,7 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
                 except (ValueError, TypeError):
                     args = {}
 
-                result = llmtools.execute_llmtool(tool_name, args, context)
+                result = adapter.execute_llmtool(tool_name, args)
                 result_str = json.dumps(result)
 
                 tool_turn = {
@@ -305,6 +315,19 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
         """
         from Products.zms import llmapi
         return llmapi.get_ollama_models(self)
+
+    # -------------------------------------------------------------------------
+    #  ZMSLLMConnector.getAvailableLLMToolsProfiles
+    # -------------------------------------------------------------------------
+    def getAvailableLLMToolsProfiles(self):
+        """
+        Return available ``*_llmtools`` profile meta-objects.
+
+        Profiles are discovered from installed ZMSLibrary meta-objects and can be
+        selected via ``llm.llmtools.id`` in connector config.
+        """
+        from Products.zms import llmtools
+        return llmtools.get_available_llmtools_profiles(self)
 
     # -------------------------------------------------------------------------
     #  ZMSLLMConnector.getEnabledFeatures
@@ -388,6 +411,7 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
                 'llm.api.key',
                 'llm.api.model',
                 'llm.api.endpoint',
+                'llm.llmtools.id',
                 'llm.ollama.host',
                 'llm.qdrant.host',
                 'llm.qdrant.collection',

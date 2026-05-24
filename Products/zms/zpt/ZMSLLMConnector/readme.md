@@ -44,6 +44,7 @@ All providers normalise responses to the OpenAI `/v1/chat/completions` schema.
 | `llm.api.key` | OpenAI API key | – |
 | `llm.api.model` | Model name | `gpt-4o-mini` |
 | `llm.api.endpoint` | Custom endpoint URL | OpenAI default |
+| `llm.llmtools.id` | Custom `*_llmtools` profile ID (empty = built-in tools) | – |
 | `llm.ollama.host` | Ollama server URL | `http://localhost:11434` |
 | `llm.qdrant.host` | Qdrant server URL | `http://localhost:6333` |
 | `llm.qdrant.collection` | Qdrant collection | `zms_docs` |
@@ -65,6 +66,18 @@ Enable/disable via the **Features** tab:
 | `translate_assist` | LLM-powered translation suggestions in the Translation tab |
 | `metadata_gen` | Auto-generate keywords, abstract, SEO metadata on save |
 | `rag_chat` | Document Q&A chat using RAG (requires Qdrant) |
+
+## Custom LLM tools profile (`*_llmtools`)
+
+To avoid hard-coding all agent tools in core, the connector supports a profile abstraction
+similar to the catalog connector pattern:
+
+1. Create/import a `ZMSLibrary` meta-object whose id ends with `_llmtools`.
+2. Add script `get_llmtools(connector, context)` that returns OpenAI-style tool schemas.
+3. Add optional scripts `llmtool_<name>(connector, context, args)` for execution.
+4. Select this profile in **Configuration → LLM Tools Profile** (`llm.llmtools.id`).
+
+If no profile is selected, ZMS uses the built-in `llmtools.py` toolset.
 
 ## Python API
 

@@ -12,7 +12,9 @@
 	<div id="zmi-tab" tal:define="
 		provider python:here.getConfProperty('llm.provider','openai');
 		model python:here.getConfProperty('llm.api.model','gpt-4o-mini');
-		features python:here.getEnabledFeatures();">
+		features python:here.getEnabledFeatures();
+		llmtools_id python:here.getConfProperty('llm.llmtools.id','');
+		llmtools_profiles python:here.getAvailableLLMToolsProfiles();">
 		<nav aria-label="breadcrumb" tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[{'action':'manage_main','label':here.getLangStr('TAB_LLM')}])">zmi_breadcrumbs</nav>
 		<div tal:content="structure python:here.zmi_manage_tabs_message(here,request)">zmi_manage_tabs_message</div>
 
@@ -98,6 +100,33 @@
 								<option value="ollama"  tal:attributes="selected python:provider=='ollama'">Ollama (local)</option>
 								<option value="rag"     tal:attributes="selected python:provider=='rag'">RAG (Qdrant + Ollama)</option>
 							</select>
+						</div>
+					</div>
+
+					<!-- Agent tools profile -->
+					<div class="form-group row">
+						<label class="col-sm-3 control-label">LLM Tools Profile</label>
+						<div class="col-sm-9">
+							<select class="form-control" name="llm.llmtools.id" id="llmtools-profile">
+								<option value="" tal:attributes="selected python:llmtools_id in ['','builtin']">
+									Built-in core tools (llmtools.py)
+								</option>
+								<option tal:condition="python:llmtools_id and llmtools_id not in [x['id'] for x in llmtools_profiles]"
+									tal:attributes="value llmtools_id; selected python:'selected'"
+									tal:content="python:'%s (missing profile)' % llmtools_id">
+									custom profile
+								</option>
+								<option tal:repeat="profile llmtools_profiles"
+									tal:attributes="value profile/id; selected python:profile['id']==llmtools_id"
+									tal:content="python:'%s.%s' % (profile.get('package',''), profile['id']) if profile.get('package') else profile['id']">
+									profile
+								</option>
+							</select>
+							<small class="form-text text-muted">
+								Uses installed <code>*_llmtools</code> ZMSLibrary meta-objects for custom agentic tools.
+								Contract: implement <code>get_llmtools(connector, context)</code> and optional
+								<code>llmtool_&lt;name&gt;(connector, context, args)</code> scripts.
+							</small>
 						</div>
 					</div>
 
@@ -647,6 +676,7 @@
 				.done(function(info) {
 					var html = '<div class="llm-msg-system"><strong>Provider Info:</strong> ' +
 						info.provider + ' / ' + info.model;
+					if (info.llmtools_profile) html += ' &mdash; Tools: ' + $('<div/>').text(info.llmtools_profile).html();
 					if (info.endpoint) html += ' &mdash; ' + $('<div/>').text(info.endpoint).html();
 					if (info.llm_timeout) html += ' &mdash; Timeout: ' + info.llm_timeout + 's';
 					if (info.qdrant_collection_info) {

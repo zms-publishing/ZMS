@@ -18,7 +18,7 @@ Besides the connector management UI, ZMS ships the metaobject class `llm_chat` s
 - Import or enable the `llm_chat` metaobject from package `com.zms.llm`.
 - Insert an `llm_chat` block into a page.
 
-The block uses the existing `++rest_api/llm_chat` endpoint, supports multi-turn history, optional agent mode (tool-calling via `llmtools`), and stores chat history per block in browser localStorage.
+The block uses the existing `++rest_api/llm_chat` endpoint, supports multi-turn history, optional agent mode (tool-calling via built-in or profile-based `llmtools`), and stores chat history per block in browser localStorage.
 
 ## Configuration Properties
 
@@ -34,6 +34,18 @@ All configuration is done via the **ZMSLLMConnector** object in your ZMS instanc
 | `llm.top_p` | Nucleus sampling 0.0-1.0 | `0.9` |
 | `llm.max_tokens` | Maximum tokens to generate (optional) | (not set) |
 | `llm.num_ctx` | Context window size for Ollama/RAG | `4096` |
+| `llm.llmtools.id` | Custom `*_llmtools` profile id for agent mode (empty = built-in tools) | (not set) |
+
+### Agent tools profile abstraction (`*_llmtools`)
+
+Agent mode can be extended without editing core `llmtools.py`:
+
+1. Install/import a `ZMSLibrary` meta-object whose id ends with `_llmtools`.
+2. Add script `get_llmtools(connector, context)` that returns OpenAI-compatible tool schemas.
+3. Add optional scripts `llmtool_<name>(connector, context, args)` for custom execution.
+4. Select this profile in **ZMSLLMConnector → Configuration → LLM Tools Profile**.
+
+If no profile is selected, ZMS falls back to the built-in core tools.
 
 ### OpenAI Configuration
 

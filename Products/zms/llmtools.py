@@ -2,9 +2,10 @@
 llmtools.py – ZMS tool registry for LLM function/tool calling.
 
 Provides:
-    - ``LLM_TOOLS``: list of OpenAI-format tool schemas (also accepted by Ollama v0.3+).
-    - ``execute_llmtool(name, args, context)``: dispatcher that maps tool names to live ZMS
-    API calls via ``context.metaobj_manager``.
+    - ``LLM_TOOLS``: built-in tool schemas (OpenAI-format, also accepted by Ollama v0.3+).
+    - ``execute_llmtool(name, args, context)``: built-in dispatcher for core ZMS tools.
+    - ``ZMSLLMToolsAdapter``: abstraction layer that can load custom toolsets from
+      ``*_llmtools`` ZMSLibrary meta-objects and dispatch custom ``llmtool_*`` actions.
 
 All tools operate on the metamodel manager reachable via the ZMS acquisition context.
 
@@ -13,6 +14,7 @@ Organization: ZMS Publishing
 """
 
 import json
+import re
 from Products.zms import zopeutil
 from Products.zms import standard
 
@@ -432,6 +434,143 @@ LLM_TOOLS = [
         },
     },
 ]
+
+# Backwards-compatible alias for explicit naming.
+BUILTIN_LLM_TOOLS = LLM_TOOLS
+
+
+def get_available_llmtools_profiles(context):
+    """
+    Return available custom LLM tool profiles (ZMSLibrary meta-objects).
+
+    A profile is any meta-object whose id ends with ``_llmtools`` and whose type
+    is ``ZMSLibrary``. This mirrors the catalog-connector pattern (``*_connector``).
+    """
+    root = context.getRootElement()
+    profiles = []
+    for mid in root.getMetaobjIds():
+        try:
+            metaobj = root.getMetaobj(mid)
+        except Exception:
+            continue
+        if isinstance(metaobj, dict) and metaobj.get('type') == 'ZMSLibrary' and mid.endswith('_llmtools'):
+            profiles.append({
+                'id': mid,
+                'name': metaobj.get('name', mid),
+                'package': metaobj.get('package', ''),
+            })
+    return sorted(profiles, key=lambda x: x['id'])
+
+
+class ZMSLLMToolsAdapter(object):
+    """
+    Resolve active LLM tools profile and dispatch tool calls.
+
+    Contract for custom ``*_llmtools`` meta-object libraries:
+      1. A python/script attribute ``get_llmtools`` returning a list of OpenAI
+         tool schemas (same shape as ``LLM_TOOLS``). Returning
+         ``{"tools": [...]} `` is also accepted.
+      2. Tool executors as python/script attributes named ``llmtool_<name>``.
+         The script is called as ``script(connector, context, args)``.
+    """
+
+    def __init__(self, connector, context):
+        self.connector = connector
+        self.context = context
+        self.root = context.getRootElement()
+
+    def get_profile_id(self):
+        """
+        Return configured LLM tool profile id.
+
+        Empty means: use built-in core tools.
+        """
+        return (self.connector.getConfProperty('llm.llmtools.id', '') or '').strip()
+
+    def get_available_profiles(self):
+        """Return available ``*_llmtools`` profiles."""
+        return get_available_llmtools_profiles(self.context)
+
+    def _get_profile_actions(self, profile_id, pattern=None):
+        """Return script actions from profile meta-object, filtered by regex."""
+        try:
+            metaobj_attrs = self.root.getMetaobjAttrs(profile_id) or []
+        except Exception:
+            raise ValueError("Profile '%s' not found." % profile_id)
+        actions = []
+        for attr in metaobj_attrs:
+            action = self.root.getMetaobjAttr(profile_id, attr.get('id'))
+            if isinstance(action, dict) and action.get('type') in ['py', 'External Method', 'Script (Python)']:
+                actions.append(action)
+        if pattern:
+            actions = [x for x in actions if re.match(pattern, x.get('id', ''))]
+        return actions
+
+    def _get_manifest_action(self, profile_id):
+        """Return the get_llmtools action for a custom profile."""
+        actions = self._get_profile_actions(profile_id, r'^get_llmtools$')
+        return actions[0] if actions else None
+
+    def _validate_tools(self, tools, profile_id):
+        """Validate tools payload shape."""
+        if isinstance(tools, dict):
+            tools = tools.get('tools')
+        if not isinstance(tools, (list, tuple)):
+            raise ValueError(
+                "Profile '%s': get_llmtools must return a list of tool schemas "
+                "or {'tools': [...]}." % profile_id
+            )
+        for tool in tools:
+            if not isinstance(tool, dict):
+                raise ValueError("Profile '%s': invalid tool schema type." % profile_id)
+            fn = tool.get('function') if isinstance(tool.get('function'), dict) else {}
+            if tool.get('type') != 'function' or not fn.get('name'):
+                raise ValueError(
+                    "Profile '%s': each tool must include type='function' and function.name." % profile_id
+                )
+        return list(tools)
+
+    def get_llmtools(self):
+        """
+        Return active tool schemas for current connector/context.
+
+        - If ``llm.llmtools.id`` is empty: return built-in ``LLM_TOOLS``.
+        - If configured: load from profile's ``get_llmtools`` script.
+        """
+        profile_id = self.get_profile_id()
+        if not profile_id:
+            return BUILTIN_LLM_TOOLS
+
+        manifest = self._get_manifest_action(profile_id)
+        if manifest is None:
+            raise ValueError(
+                "Profile '%s' is missing required script 'get_llmtools'." % profile_id
+            )
+        try:
+            tools = manifest['ob'](self.connector, self.context)
+        except Exception as exc:
+            raise ValueError(
+                "Profile '%s' get_llmtools execution failed: %s" % (profile_id, str(exc))
+            )
+        return self._validate_tools(tools, profile_id)
+
+    def execute_llmtool(self, name, args):
+        """
+        Execute tool call against active profile, then fallback to built-in tools.
+        """
+        profile_id = self.get_profile_id()
+        if profile_id:
+            matches = self._get_profile_actions(profile_id, r'^llmtool_%s$' % re.escape(name))
+            if matches:
+                try:
+                    return matches[0]['ob'](self.connector, self.context, args)
+                except Exception as exc:
+                    return {
+                        'error': "Profile '%s' llmtool_%s failed: %s" % (
+                            profile_id, name, str(exc)
+                        )
+                    }
+        return execute_llmtool(name, args, self.context)
 
 
 # ---------------------------------------------------------------------------

@@ -123,7 +123,7 @@
 								</option>
 							</select>
 							<small class="form-text text-muted">
-								Uses installed <code>*_llmtools</code> ZMSLibrary meta-objects for custom agentic tools.
+								Uses installed <code>*_llmtools</code> or <code>com.zms.llmtools.*/*_connector</code> ZMSLibrary profiles for custom agentic tools.
 								Contract: implement <code>get_llmtools(connector, context)</code> and optional
 								<code>llmtool_&lt;name&gt;(connector, context, args)</code> scripts.
 							</small>

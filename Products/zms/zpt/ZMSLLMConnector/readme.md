@@ -72,7 +72,8 @@ Enable/disable via the **Features** tab:
 To avoid hard-coding all agent tools in core, the connector supports a profile abstraction
 similar to the catalog connector pattern:
 
-1. Create/import a `ZMSLibrary` meta-object whose id ends with `_llmtools`.
+1. Create/import a `ZMSLibrary` meta-object whose id either ends with `_llmtools` or
+   ends with `_connector` and belongs to package `com.zms.llmtools.*` (for example `ollama_connector`).
 2. Add script `get_llmtools(connector, context)` that returns OpenAI-style tool schemas.
 3. Add optional scripts `llmtool_<name>(connector, context, args)` for execution.
 4. Select this profile in **Configuration → LLM Tools Profile** (`llm.llmtools.id`).

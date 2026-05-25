@@ -53,12 +53,13 @@ class MockConnector:
 def test_get_available_llmtools_profiles_filters_by_suffix_and_type():
     root = MockRoot(metaobjs={
         'core_llmtools': {'id': 'core_llmtools', 'type': 'ZMSLibrary', 'package': 'com.zms.llm'},
+        'ollama_connector': {'id': 'ollama_connector', 'type': 'ZMSLibrary', 'package': 'com.zms.llmtools.ollama'},
         'ignored_connector': {'id': 'ignored_connector', 'type': 'ZMSLibrary', 'package': 'com.zms.catalog'},
         'bad_llmtools': {'id': 'bad_llmtools', 'type': 'ZMSDocument', 'package': 'com.zms.llm'},
     })
     context = MockContext(root)
     profiles = llmtools.get_available_llmtools_profiles(context)
-    assert [p['id'] for p in profiles] == ['core_llmtools']
+    assert [p['id'] for p in profiles] == ['core_llmtools', 'ollama_connector']
 
 
 def test_adapter_returns_builtin_tools_when_no_profile_is_set():

@@ -14,7 +14,7 @@
 		model python:here.getConfProperty('llm.api.model','gpt-4o-mini');
 		features python:here.getEnabledFeatures();
 		llmtools_id python:here.getConfProperty('llm.llmtools.id','');
-		llmtools_profiles python:here.getAvailableLLMToolsProfiles();">
+		llmtools_connectors python:here.getAvailableLLMToolsConnectors();">
 		<nav aria-label="breadcrumb" tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[{'action':'manage_main','label':here.getLangStr('TAB_LLM')}])">zmi_breadcrumbs</nav>
 		<div tal:content="structure python:here.zmi_manage_tabs_message(here,request)">zmi_manage_tabs_message</div>
 
@@ -103,27 +103,27 @@
 						</div>
 					</div>
 
-					<!-- Agent tools profile -->
+					<!-- Agent tools connector -->
 					<div class="form-group row">
-						<label class="col-sm-3 control-label">LLM Tools Profile</label>
+						<label class="col-sm-3 control-label">LLM Tools</label>
 						<div class="col-sm-9">
-							<select class="form-control" name="llm.llmtools.id" id="llmtools-profile">
+							<select class="form-control" name="llm.llmtools.id" id="llmtools-connector">
 								<option value="" tal:attributes="selected python:llmtools_id in ['','builtin']">
 									Built-in core tools (llmtools.py)
 								</option>
-								<option tal:condition="python:llmtools_id and llmtools_id not in [x['id'] for x in llmtools_profiles]"
+								<option tal:condition="python:llmtools_id and llmtools_id not in [x['id'] for x in llmtools_connectors]"
 									tal:attributes="value llmtools_id; selected python:'selected'"
-									tal:content="python:'%s (missing profile)' % llmtools_id">
-									custom profile
+									tal:content="python:'%s (missing connector)' % llmtools_id">
+									custom connector
 								</option>
-								<option tal:repeat="profile llmtools_profiles"
-									tal:attributes="value profile/id; selected python:profile['id']==llmtools_id"
-									tal:content="python:'%s.%s' % (profile.get('package',''), profile['id']) if profile.get('package') else profile['id']">
-									profile
+								<option tal:repeat="connector llmtools_connectors"
+									tal:attributes="value connector/id; selected python:connector['id']==llmtools_id"
+									tal:content="python:'%s.%s' % (connector.get('package',''), connector['id']) if connector.get('package') else connector['id']">
+									connector
 								</option>
 							</select>
 							<small class="form-text text-muted">
-								Uses installed <code>*_llmtools</code> or <code>com.zms.llmtools.*/*_connector</code> ZMSLibrary profiles for custom agentic tools.
+								Uses installed <code>*_llmtools</code> or <code>com.zms.llmtools.*/*_connector</code> ZMSLibrary connectors for custom agentic tools.
 								Contract: implement <code>get_llmtools(connector, context)</code> and optional
 								<code>llmtool_&lt;name&gt;(connector, context, args)</code> scripts.
 							</small>
@@ -676,7 +676,7 @@
 				.done(function(info) {
 					var html = '<div class="llm-msg-system"><strong>Provider Info:</strong> ' +
 						info.provider + ' / ' + info.model;
-					if (info.llmtools_profile) html += ' &mdash; Tools: ' + $('<div/>').text(info.llmtools_profile).html();
+					if (info.llmtools_connector) html += ' &mdash; Tools: ' + $('<div/>').text(info.llmtools_connector).html();
 					if (info.endpoint) html += ' &mdash; ' + $('<div/>').text(info.endpoint).html();
 					if (info.llm_timeout) html += ' &mdash; Timeout: ' + info.llm_timeout + 's';
 					if (info.qdrant_collection_info) {

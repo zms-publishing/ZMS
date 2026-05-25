@@ -739,7 +739,7 @@ def get_provider_info(context):
         'provider': provider_type,
         'model': context.getConfProperty('llm.api.model', 'not configured'),
         'llm_timeout': context.getConfProperty('llm.timeout', '120'),
-        'llmtools_profile': context.getConfProperty('llm.llmtools.id', '') or 'builtin',
+        'llmtools_connector': context.getConfProperty('llm.llmtools.id', '') or 'builtin',
     }
     
     if provider_type in ('openai', 'github'):

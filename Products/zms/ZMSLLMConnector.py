@@ -448,17 +448,17 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
         return llmapi.get_ollama_models(self)
 
     # -------------------------------------------------------------------------
-    #  ZMSLLMConnector.getAvailableLLMToolsProfiles
+    #  ZMSLLMConnector.getAvailableLLMToolsConnectors
     # -------------------------------------------------------------------------
-    def getAvailableLLMToolsProfiles(self):
+    def getAvailableLLMToolsConnectors(self):
         """
-        Return available ``*_llmtools`` profile meta-objects.
+        Return available ``*_llmtools`` / ``*_connector`` ZMSLibrary meta-objects.
 
-        Profiles are discovered from installed ZMSLibrary meta-objects and can be
+        Connectors are discovered from installed ZMSLibrary meta-objects and can be
         selected via ``llm.llmtools.id`` in connector config.
         """
         from Products.zms import llmtools
-        return llmtools.get_available_llmtools_profiles(self)
+        return llmtools.get_available_llmtools_connectors(self)
 
     # -------------------------------------------------------------------------
     #  ZMSLLMConnector.getEnabledFeatures

@@ -439,17 +439,17 @@ LLM_TOOLS = [
 BUILTIN_LLM_TOOLS = LLM_TOOLS
 
 
-def get_available_llmtools_profiles(context):
+def get_available_llmtools_connectors(context):
     """
-    Return available custom LLM tool profiles (ZMSLibrary meta-objects).
+    Return available custom LLM tools connectors (ZMSLibrary meta-objects).
 
-    A profile is any ``ZMSLibrary`` matching either:
+    A connector is any ``ZMSLibrary`` matching either:
       - id ends with ``_llmtools`` (generic naming), or
       - id ends with ``_connector`` and package starts with ``com.zms.llmtools.``
         (connector-style naming, e.g. ``ollama_connector``).
     """
     root = context.getRootElement()
-    profiles = []
+    connectors = []
     for mid in root.getMetaobjIds():
         try:
             metaobj = root.getMetaobj(mid)
@@ -461,19 +461,19 @@ def get_available_llmtools_profiles(context):
         is_llmtools_named = mid.endswith('_llmtools')
         is_llmtools_connector = mid.endswith('_connector') and package.startswith('com.zms.llmtools.')
         if is_llmtools_named or is_llmtools_connector:
-            profiles.append({
+            connectors.append({
                 'id': mid,
                 'name': metaobj.get('name', mid),
                 'package': package,
             })
-    return sorted(profiles, key=lambda x: x['id'])
+    return sorted(connectors, key=lambda x: x['id'])
 
 
 class ZMSLLMToolsAdapter(object):
     """
-    Resolve active LLM tools profile and dispatch tool calls.
+    Resolve active LLM tools connector and dispatch tool calls.
 
-    Contract for custom LLM tools profile libraries (``*_llmtools`` or
+    Contract for custom LLM tools connector libraries (``*_llmtools`` or
     ``com.zms.llmtools.*/*_connector``):
       1. A python/script attribute ``get_llmtools`` returning a list of OpenAI
          tool schemas (same shape as ``LLM_TOOLS``). Returning
@@ -487,54 +487,54 @@ class ZMSLLMToolsAdapter(object):
         self.context = context
         self.root = context.getRootElement()
 
-    def get_profile_id(self):
+    def get_connector_id(self):
         """
-        Return configured LLM tool profile id.
+        Return configured LLM tools connector id.
 
         Empty means: use built-in core tools.
         """
         return (self.connector.getConfProperty('llm.llmtools.id', '') or '').strip()
 
-    def get_available_profiles(self):
-        """Return available ``*_llmtools`` profiles."""
-        return get_available_llmtools_profiles(self.context)
+    def get_available_connectors(self):
+        """Return available ``*_llmtools`` / ``*_connector`` ZMSLibrary connectors."""
+        return get_available_llmtools_connectors(self.context)
 
-    def _get_profile_actions(self, profile_id, pattern=None):
-        """Return script actions from profile meta-object, filtered by regex."""
+    def _get_connector_actions(self, connector_id, pattern=None):
+        """Return script actions from connector meta-object, filtered by regex."""
         try:
-            metaobj_attrs = self.root.getMetaobjAttrs(profile_id) or []
+            metaobj_attrs = self.root.getMetaobjAttrs(connector_id) or []
         except Exception:
-            raise ValueError("Profile '%s' not found." % profile_id)
+            raise ValueError("Connector '%s' not found." % connector_id)
         actions = []
         for attr in metaobj_attrs:
-            action = self.root.getMetaobjAttr(profile_id, attr.get('id'))
+            action = self.root.getMetaobjAttr(connector_id, attr.get('id'))
             if isinstance(action, dict) and action.get('type') in ['py', 'External Method', 'Script (Python)']:
                 actions.append(action)
         if pattern:
             actions = [x for x in actions if re.match(pattern, x.get('id', ''))]
         return actions
 
-    def _get_manifest_action(self, profile_id):
-        """Return the get_llmtools action for a custom profile."""
-        actions = self._get_profile_actions(profile_id, r'^get_llmtools$')
+    def _get_connector_manifest(self, connector_id):
+        """Return the get_llmtools action for a custom connector."""
+        actions = self._get_connector_actions(connector_id, r'^get_llmtools$')
         return actions[0] if actions else None
 
-    def _validate_tools(self, tools, profile_id):
+    def _validate_tools(self, tools, connector_id):
         """Validate tools payload shape."""
         if isinstance(tools, dict):
             tools = tools.get('tools')
         if not isinstance(tools, (list, tuple)):
             raise ValueError(
-                "Profile '%s': get_llmtools must return a list of tool schemas "
-                "or {'tools': [...]}." % profile_id
+                "Connector '%s': get_llmtools must return a list of tool schemas "
+                "or {'tools': [...]}." % connector_id
             )
         for tool in tools:
             if not isinstance(tool, dict):
-                raise ValueError("Profile '%s': invalid tool schema type." % profile_id)
+                raise ValueError("Connector '%s': invalid tool schema type." % connector_id)
             fn = tool.get('function') if isinstance(tool.get('function'), dict) else {}
             if tool.get('type') != 'function' or not fn.get('name'):
                 raise ValueError(
-                    "Profile '%s': each tool must include type='function' and function.name." % profile_id
+                    "Connector '%s': each tool must include type='function' and function.name." % connector_id
                 )
         return list(tools)
 
@@ -543,39 +543,39 @@ class ZMSLLMToolsAdapter(object):
         Return active tool schemas for current connector/context.
 
         - If ``llm.llmtools.id`` is empty: return built-in ``LLM_TOOLS``.
-        - If configured: load from profile's ``get_llmtools`` script.
+        - If configured: load from connector's ``get_llmtools`` script.
         """
-        profile_id = self.get_profile_id()
-        if not profile_id:
+        connector_id = self.get_connector_id()
+        if not connector_id:
             return BUILTIN_LLM_TOOLS
 
-        manifest = self._get_manifest_action(profile_id)
+        manifest = self._get_connector_manifest(connector_id)
         if manifest is None:
             raise ValueError(
-                "Profile '%s' is missing required script 'get_llmtools'." % profile_id
+                "Connector '%s' is missing required script 'get_llmtools'." % connector_id
             )
         try:
             tools = manifest['ob'](self.connector, self.context)
         except Exception as exc:
             raise ValueError(
-                "Profile '%s' get_llmtools execution failed: %s" % (profile_id, str(exc))
+                "Connector '%s' get_llmtools execution failed: %s" % (connector_id, str(exc))
             )
-        return self._validate_tools(tools, profile_id)
+        return self._validate_tools(tools, connector_id)
 
     def execute_llmtool(self, name, args):
         """
-        Execute tool call against active profile, then fallback to built-in tools.
+        Execute tool call against active connector, then fallback to built-in tools.
         """
-        profile_id = self.get_profile_id()
-        if profile_id:
-            matches = self._get_profile_actions(profile_id, r'^llmtool_%s$' % re.escape(name))
+        connector_id = self.get_connector_id()
+        if connector_id:
+            matches = self._get_connector_actions(connector_id, r'^llmtool_%s$' % re.escape(name))
             if matches:
                 try:
                     return matches[0]['ob'](self.connector, self.context, args)
                 except Exception as exc:
                     return {
-                        'error': "Profile '%s' llmtool_%s failed: %s" % (
-                            profile_id, name, str(exc)
+                        'error': "Connector '%s' llmtool_%s failed: %s" % (
+                            connector_id, name, str(exc)
                         )
                     }
         return execute_llmtool(name, args, self.context)

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Unit tests for llmtools profile abstraction.
+Unit tests for llmtools connector abstraction.
 """
 import os
 import sys
@@ -50,7 +50,7 @@ class MockConnector:
         return self._config.get(key, default)
 
 
-def test_get_available_llmtools_profiles_filters_by_suffix_and_type():
+def test_get_available_llmtools_connectors_filters_by_suffix_and_type():
     root = MockRoot(metaobjs={
         'core_llmtools': {'id': 'core_llmtools', 'type': 'ZMSLibrary', 'package': 'com.zms.llm'},
         'ollama_connector': {'id': 'ollama_connector', 'type': 'ZMSLibrary', 'package': 'com.zms.llmtools.ollama'},
@@ -58,11 +58,11 @@ def test_get_available_llmtools_profiles_filters_by_suffix_and_type():
         'bad_llmtools': {'id': 'bad_llmtools', 'type': 'ZMSDocument', 'package': 'com.zms.llm'},
     })
     context = MockContext(root)
-    profiles = llmtools.get_available_llmtools_profiles(context)
-    assert [p['id'] for p in profiles] == ['core_llmtools', 'ollama_connector']
+    connectors = llmtools.get_available_llmtools_connectors(context)
+    assert [c['id'] for c in connectors] == ['core_llmtools', 'ollama_connector']
 
 
-def test_adapter_returns_builtin_tools_when_no_profile_is_set():
+def test_adapter_returns_builtin_tools_when_no_connector_is_set():
     root = MockRoot()
     context = MockContext(root)
     connector = MockConnector({'llm.llmtools.id': ''})
@@ -72,7 +72,7 @@ def test_adapter_returns_builtin_tools_when_no_profile_is_set():
     assert tools[0]['type'] == 'function'
 
 
-def test_adapter_loads_custom_profile_manifest():
+def test_adapter_loads_custom_connector_manifest():
     expected_tools = [{
         'type': 'function',
         'function': {

@@ -624,6 +624,8 @@ def execute_llmtool(name, args, context):
                     ob_attr = a.get('ob')
                     if ob_attr is not None:
                         custom = zopeutil.readData(ob_attr, default=custom)
+                if isinstance(custom, bytes):
+                    custom = custom.decode('utf-8', errors='replace')
                 attrs.append({
                     'id': a.get('id'),
                     'name': a.get('name', ''),
@@ -826,6 +828,8 @@ def execute_llmtool(name, args, context):
                 existing_ob = existing.get('ob')
                 if existing_ob is not None:
                     existing_template = zopeutil.readData(existing_ob, default=existing_template)
+                if isinstance(existing_template, bytes):
+                    existing_template = existing_template.decode('utf-8', errors='replace')
                 existing_template = existing_template or ''
 
             template = mm.manage_create_default_zpt(tid, target_id='standard_html', attrs=attrs)

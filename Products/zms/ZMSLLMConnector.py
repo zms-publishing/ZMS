@@ -31,6 +31,15 @@ from Products.zms import IZMSConfigurationProvider
 from Products.zms import ZMSItem
 
 
+def _json_dumps_safe(obj, **kwargs):
+    """json.dumps with a fallback that decodes bytes to str."""
+    def _default(o):
+        if isinstance(o, bytes):
+            return o.decode('utf-8', errors='replace')
+        return str(o)
+    return json.dumps(obj, default=_default, **kwargs)
+
+
 @implementer(
     IZMSLLMConnector.IZMSLLMConnector,
     IZMSRepositoryProvider.IZMSRepositoryProvider,
@@ -180,6 +189,19 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
         else:
             msgs = list(messages)
 
+        # Inject system prompt if not already present. This guides the LLM to
+        # give natural language summaries after tool calls instead of re-dumping raw JSON.
+        if not any(m.get('role') == 'system' for m in msgs):
+            msgs.insert(0, {
+                'role': 'system',
+                'content': (
+                    'You are a ZMS CMS assistant with access to tools that query and manage the CMS. '
+                    'When you receive tool results, summarize them in clear, natural language. '
+                    'Describe the structure and key properties in a readable way — do not simply '
+                    'repeat the raw JSON data. Be concise and informative.'
+                ),
+            })
+
         turns = []  # records for UI / localStorage
 
         try:
@@ -196,7 +218,7 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
         latest_user_text = _extract_latest_user_text(msgs)
         if _is_index_qdrant_intent(latest_user_text):
             result = adapter.execute_llmtool('index_qdrant', {})
-            result_str = json.dumps(result)
+            result_str = _json_dumps_safe(result)
             turns.append({
                 'role': 'assistant',
                 'content': '',
@@ -230,6 +252,38 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
                 ),
                 'turns': turns,
             }
+
+        def _describe_tool_result(tool_name, data):
+            """
+            Format a tool result dict as a short readable description for fallback
+            reply paths (models that cannot do round-2 tool result processing).
+            """
+            if not isinstance(data, dict):
+                return str(data)
+            if 'error' in data:
+                return 'Error: %s' % data['error']
+            if tool_name == 'list_content_types':
+                types = data.get('content_types', [])
+                return 'Found %d content type(s): %s' % (
+                    len(types),
+                    ', '.join(t.get('id', '') for t in types[:20]) + ('…' if len(types) > 20 else ''),
+                )
+            if tool_name == 'get_content_type':
+                attrs = data.get('attributes', [])
+                attr_ids = [a.get('id', '') for a in attrs]
+                return (
+                    '**%s** (`%s`, type: `%s`, revision: %s)\n'
+                    '%d attribute(s): %s'
+                ) % (
+                    data.get('name', data.get('id', '?')),
+                    data.get('id', ''),
+                    data.get('type', ''),
+                    data.get('revision', '?'),
+                    len(attr_ids),
+                    ', '.join('`%s`' % a for a in attr_ids),
+                )
+            # Generic fallback: compact JSON block
+            return '```json\n%s\n```' % json.dumps(data, indent=2, ensure_ascii=False)
 
         def _extract_json_objects(text):
             """
@@ -320,10 +374,7 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
                         for t in tool_results:
                             try:
                                 data = json.loads(t.get('content', '{}'))
-                                parts.append('**%s**\n```json\n%s\n```' % (
-                                    t.get('name', 'tool'),
-                                    json.dumps(data, indent=2, ensure_ascii=False),
-                                ))
+                                parts.append(_describe_tool_result(t.get('name', 'tool'), data))
                             except (ValueError, TypeError):
                                 parts.append('**%s**\n%s' % (
                                     t.get('name', 'tool'), t.get('content', ''),
@@ -383,7 +434,7 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
                     turns.append({'role': 'assistant', 'content': formatted})
                     return {'reply': formatted, 'turns': turns}
 
-                result_str = json.dumps(result)
+                result_str = _json_dumps_safe(result)
 
                 tool_turn = {
                     'role': 'tool',
@@ -404,10 +455,7 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
                 for t in tool_results:
                     try:
                         data = json.loads(t.get('content', '{}'))
-                        parts.append('**%s**\n```json\n%s\n```' % (
-                            t.get('name', 'tool'),
-                            json.dumps(data, indent=2, ensure_ascii=False),
-                        ))
+                        parts.append(_describe_tool_result(t.get('name', 'tool'), data))
                     except (ValueError, TypeError):
                         parts.append('**%s**\n%s' % (t.get('name', 'tool'), t.get('content', '')))
                 reply = '\n\n'.join(parts)

@@ -40,10 +40,16 @@ All configuration is done via the **ZMSLLMConnector** object in your ZMS instanc
 
 Agent mode can be extended without editing core `llmtools.py`:
 
-1. Install/import a `ZMSLibrary` meta-object whose id ends with `_llmtools`.
+1. Install/import a `ZMSLibrary` meta-object whose id ends with `_llmtools` (or connector-style `_connector` in package `com.zms.llmtools.*`).
 2. Add script `get_llmtools(connector, context)` that returns OpenAI-compatible tool schemas.
 3. Add optional scripts `llmtool_<name>(connector, context, args)` for custom execution.
 4. Select this profile in **ZMSLLMConnector → Configuration → LLM Tools Profile**.
+
+Connector-style naming is also supported for package-based profiles:
+- id ends with `_connector`
+- package starts with `com.zms.llmtools.`
+
+Example: `com.zms.llmtools.ollama/ollama_connector`.
 
 If no profile is selected, ZMS falls back to the built-in core tools.
 

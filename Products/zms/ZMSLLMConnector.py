@@ -231,32 +231,133 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
                 'turns': turns,
             }
 
+        def _extract_json_objects(text):
+            """
+            Extract all top-level JSON objects from text using balanced-brace
+            scanning. Handles nested objects correctly, unlike simple regexes.
+            """
+            results = []
+            i = 0
+            while i < len(text):
+                if text[i] == '{':
+                    depth = 0
+                    in_str = False
+                    escape = False
+                    start = i
+                    for j in range(i, len(text)):
+                        c = text[j]
+                        if escape:
+                            escape = False
+                        elif c == '\\' and in_str:
+                            escape = True
+                        elif c == '"':
+                            in_str = not in_str
+                        elif not in_str:
+                            if c == '{':
+                                depth += 1
+                            elif c == '}':
+                                depth -= 1
+                                if depth == 0:
+                                    results.append(text[start:j + 1])
+                                    i = j
+                                    break
+                i += 1
+            return results
+
+        def _parse_text_tool_calls(content, known_tools):
+            """
+            Fallback parser for models (e.g. qwen2.5-coder) that write tool calls
+            as plain text / markdown JSON instead of issuing structured tool_calls.
+
+            Uses balanced-brace extraction so nested argument objects like
+            {"name": "get_content_type", "arguments": {"id": "..."}} are captured
+            correctly, avoiding partial matches from non-greedy regexes.
+            """
+            if not content:
+                return []
+            known_names = {t.get('function', {}).get('name') for t in known_tools}
+            candidates = _extract_json_objects(content)
+            parsed = []
+            for i, raw in enumerate(candidates):
+                try:
+                    obj = json.loads(raw)
+                except (ValueError, TypeError):
+                    continue
+                name = obj.get('name') or obj.get('function', {}).get('name')
+                if name not in known_names:
+                    continue
+                args = obj.get('arguments') or obj.get('parameters') or {}
+                if isinstance(args, str):
+                    try:
+                        args = json.loads(args)
+                    except (ValueError, TypeError):
+                        args = {}
+                parsed.append({
+                    'id': f'text_call_{i}_{name}',
+                    'type': 'function',
+                    'function': {
+                        'name': name,
+                        'arguments': json.dumps(args),
+                    },
+                })
+            return parsed
+
         for _round in range(max_rounds):
             response = self.chat(msgs, tools=tool_schemas, tool_choice='auto')
 
             if 'error' in response:
                 err = response['error']
                 err_msg = err.get('message', str(err)) if isinstance(err, dict) else str(err)
+                # If tools already ran in a prior round, the model can't process
+                # the tool-result messages (e.g. qwen2.5-coder doesn't support
+                # multi-turn tool calling). Return collected tool results as reply.
+                if _round > 0 and turns:
+                    tool_results = [
+                        t for t in turns if t.get('role') == 'tool'
+                    ]
+                    if tool_results:
+                        parts = []
+                        for t in tool_results:
+                            try:
+                                data = json.loads(t.get('content', '{}'))
+                                parts.append('**%s**\n```json\n%s\n```' % (
+                                    t.get('name', 'tool'),
+                                    json.dumps(data, indent=2, ensure_ascii=False),
+                                ))
+                            except (ValueError, TypeError):
+                                parts.append('**%s**\n%s' % (
+                                    t.get('name', 'tool'), t.get('content', ''),
+                                ))
+                        reply = '\n\n'.join(parts)
+                        turns.append({'role': 'assistant', 'content': reply})
+                        return {'reply': reply, 'turns': turns}
                 return {'error': err_msg, 'turns': turns, 'reply': ''}
 
             message = response.get('message') or {}
+            raw_content = message.get('content', '')
             tool_calls = message.get('tool_calls') or []
+
+            # Track whether tool calls came from the text fallback parser so we
+            # can degrade gracefully on execution errors without confusing the LLM.
+            text_fallback_used = False
+            if not tool_calls:
+                tool_calls = _parse_text_tool_calls(raw_content, tool_schemas)
+                text_fallback_used = bool(tool_calls)
 
             if not tool_calls:
                 # Final plain-text response
-                reply = message.get('content', '')
-                turns.append({'role': 'assistant', 'content': reply})
-                return {'reply': reply, 'turns': turns}
+                turns.append({'role': 'assistant', 'content': raw_content})
+                return {'reply': raw_content, 'turns': turns}
 
             # Record assistant message with tool calls for UI
             turns.append({
                 'role': 'assistant',
-                'content': message.get('content') or '',
+                'content': raw_content,
                 'tool_calls': tool_calls,
             })
             msgs.append({
                 'role': 'assistant',
-                'content': message.get('content') or '',
+                'content': raw_content,
                 'tool_calls': tool_calls,
             })
 
@@ -272,6 +373,16 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
                     args = {}
 
                 result = adapter.execute_llmtool(tool_name, args)
+
+                # When tool calls were parsed from plain text and the tool
+                # returns an error, the model sent malformed / unencodable args.
+                # Return its original text response as a formatted code block
+                # instead of feeding the error back into the loop.
+                if text_fallback_used and isinstance(result, dict) and result.get('error'):
+                    formatted = '```json\n%s\n```' % raw_content if raw_content else str(result['error'])
+                    turns.append({'role': 'assistant', 'content': formatted})
+                    return {'reply': formatted, 'turns': turns}
+
                 result_str = json.dumps(result)
 
                 tool_turn = {
@@ -282,6 +393,26 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
                 }
                 turns.append(tool_turn)
                 msgs.append(tool_turn)
+
+            # Models that use plain-text tool calls (text_fallback_used) cannot
+            # process tool-result messages in a second round — Ollama's template
+            # parser throws an error on `tool` role messages. Return tool results
+            # directly as formatted JSON without attempting another LLM call.
+            if text_fallback_used:
+                tool_results = [t for t in turns if t.get('role') == 'tool']
+                parts = []
+                for t in tool_results:
+                    try:
+                        data = json.loads(t.get('content', '{}'))
+                        parts.append('**%s**\n```json\n%s\n```' % (
+                            t.get('name', 'tool'),
+                            json.dumps(data, indent=2, ensure_ascii=False),
+                        ))
+                    except (ValueError, TypeError):
+                        parts.append('**%s**\n%s' % (t.get('name', 'tool'), t.get('content', '')))
+                reply = '\n\n'.join(parts)
+                turns.append({'role': 'assistant', 'content': reply})
+                return {'reply': reply, 'turns': turns}
 
         # Exhausted max rounds without a final text reply
         return {

@@ -443,8 +443,10 @@ def get_available_llmtools_profiles(context):
     """
     Return available custom LLM tool profiles (ZMSLibrary meta-objects).
 
-    A profile is any meta-object whose id ends with ``_llmtools`` and whose type
-    is ``ZMSLibrary``. This mirrors the catalog-connector pattern (``*_connector``).
+    A profile is any ``ZMSLibrary`` matching either:
+      - id ends with ``_llmtools`` (generic naming), or
+      - id ends with ``_connector`` and package starts with ``com.zms.llmtools.``
+        (connector-style naming, e.g. ``ollama_connector``).
     """
     root = context.getRootElement()
     profiles = []
@@ -453,11 +455,16 @@ def get_available_llmtools_profiles(context):
             metaobj = root.getMetaobj(mid)
         except Exception:
             continue
-        if isinstance(metaobj, dict) and metaobj.get('type') == 'ZMSLibrary' and mid.endswith('_llmtools'):
+        if not isinstance(metaobj, dict) or metaobj.get('type') != 'ZMSLibrary':
+            continue
+        package = (metaobj.get('package') or '').strip()
+        is_llmtools_named = mid.endswith('_llmtools')
+        is_llmtools_connector = mid.endswith('_connector') and package.startswith('com.zms.llmtools.')
+        if is_llmtools_named or is_llmtools_connector:
             profiles.append({
                 'id': mid,
                 'name': metaobj.get('name', mid),
-                'package': metaobj.get('package', ''),
+                'package': package,
             })
     return sorted(profiles, key=lambda x: x['id'])
 
@@ -466,7 +473,8 @@ class ZMSLLMToolsAdapter(object):
     """
     Resolve active LLM tools profile and dispatch tool calls.
 
-    Contract for custom ``*_llmtools`` meta-object libraries:
+    Contract for custom LLM tools profile libraries (``*_llmtools`` or
+    ``com.zms.llmtools.*/*_connector``):
       1. A python/script attribute ``get_llmtools`` returning a list of OpenAI
          tool schemas (same shape as ``LLM_TOOLS``). Returning
          ``{"tools": [...]} `` is also accepted.

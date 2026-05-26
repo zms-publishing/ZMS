@@ -331,6 +331,16 @@
         
 
         
+            <div class="itemName"><code><a href="#manage_create_default_zpt" class="internal-link" title="zms.ZMSMetaobjManager.ZMSMetaobjManager.manage_create_default_zpt">manage<wbr></wbr>_create<wbr></wbr>_default<wbr></wbr>_zpt</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
             <div class="itemName"><code><a href="#moveMetaobjAttr" class="internal-link" title="zms.ZMSMetaobjManager.ZMSMetaobjManager.moveMetaobjAttr">move<wbr></wbr>Metaobj<wbr></wbr>Attr</a></code>
             </div>
         
@@ -624,7 +634,7 @@
         </div>
 
         <div id="splitTables">
-          <table class="children sortable" id="id41">
+          <table class="children sortable" id="id45">
   
   
   <tr class="method">
@@ -727,6 +737,11 @@
     <td>Method</td>
     <td><code><a href="#manage_changeProperties" class="internal-link" title="zms.ZMSMetaobjManager.ZMSMetaobjManager.manage_changeProperties">manage_change<wbr></wbr>Properties</a></code></td>
     <td>Handle meta-object manager actions from the ZMI properties form.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#manage_create_default_zpt" class="internal-link" title="zms.ZMSMetaobjManager.ZMSMetaobjManager.manage_create_default_zpt">manage<wbr></wbr>_create<wbr></wbr>_default<wbr></wbr>_zpt</a></code></td>
+    <td>Create and optionally return default standard_html ZPT code.</td>
   </tr><tr class="method">
     
     <td>Method</td>
@@ -948,7 +963,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">delMetaobjAttr</span><span class="function-signature">(self, id, attr_id, acquire=False)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L1203">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L1204">
       
       (source)
     </a>
@@ -1332,7 +1347,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_ajaxChangeProperties</span><span class="function-signature">(self, id, REQUEST, RESPONSE=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L1273">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L1274">
       
       (source)
     </a>
@@ -1359,7 +1374,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_changeProperties</span><span class="function-signature">(self, lang, btn=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, key=<span class="rst-variable-quote">'</span><span class="rst-variable-string">all</span><span class="rst-variable-quote">'</span>, REQUEST=None, RESPONSE=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L1317">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L1318">
       
       (source)
     </a>
@@ -1378,6 +1393,33 @@
 </div><div class="basemethod">
   
   
+  <a name="zms.ZMSMetaobjManager.ZMSMetaobjManager.manage_create_default_zpt">
+    
+  </a>
+  <a name="manage_create_default_zpt">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">manage_create_default_zpt</span><span class="function-signature">(self, id, target_id=<span class="rst-variable-quote">'</span><span class="rst-variable-string">standard_html</span><span class="rst-variable-quote">'</span>, attrs=None, REQUEST=None, RESPONSE=None)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L1641">
+      
+      (source)
+    </a>
+    <a class="headerLink" href="#manage_create_default_zpt" title="zms.ZMSMetaobjManager.ZMSMetaobjManager.manage_create_default_zpt">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Create and optionally return default standard_html ZPT code.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Meta-object id.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">target<wbr></wbr>_id:</span><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Target template id (default <tt class="rst-docutils rst-literal">standard_html</tt>).</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">attrs:</span><tt class="rst-docutils rst-literal">list</tt> | <tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc">Optional list of attribute dicts to use instead of fetching from meta-object definition.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">REQUEST:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPRequest</tt> | <tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc">Optional request for language and context (used in template code generation).</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">RESPONSE:</span><tt class="rst-docutils rst-literal">ZPublisher.HTTPResponse</tt> | <tt class="rst-docutils rst-literal">None</tt></td><td class="fieldArgDesc">Optional response for XML output headers (not used).</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils rst-literal">str</tt></td><td class="fieldArgDesc">Generated default ZPT code for the specified template.</td></tr></table></div>
+  </div>
+</div><div class="basemethod">
+  
+  
   <a name="zms.ZMSMetaobjManager.ZMSMetaobjManager.moveMetaobjAttr">
     
   </a>
@@ -1388,7 +1430,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">moveMetaobjAttr</span><span class="function-signature">(self, id, attr_id, pos)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L1245">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSMetaobjManager.py#L1246">
       
       (source)
     </a>

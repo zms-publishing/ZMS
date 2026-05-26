@@ -6,7 +6,7 @@ requires = [
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "ZMS"
+name = "Products.zms"
 dynamic = ["version"]
 description = "ZMS6: Simplified Content Modelling"
 readme = "README.rst"
@@ -64,6 +64,8 @@ dependencies = [
     "xmltodict",
     "ruamel.yaml",
     "Markdown",
+    "htmldiff2",
+    "pdfminer.six"
 ]
 
 [project.optional-dependencies]
@@ -90,7 +92,7 @@ include-package-data = true
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["Products*"]
-namespaces = false
+namespaces = true
 
 [tool.setuptools.package-data]
 "Products.zms" = ["**/*"]

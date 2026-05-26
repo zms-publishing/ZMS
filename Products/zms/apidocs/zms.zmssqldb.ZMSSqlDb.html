@@ -281,6 +281,16 @@
         
 
         
+            <div class="itemName"><code><a href="#getEntityDetailsGridContext" class="internal-link" title="zms.zmssqldb.ZMSSqlDb.getEntityDetailsGridContext">get<wbr></wbr>Entity<wbr></wbr>Details<wbr></wbr>Grid<wbr></wbr>Context</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
             <div class="itemName"><code><a href="#getEntityPK" class="internal-link" title="zms.zmssqldb.ZMSSqlDb.getEntityPK">get<wbr></wbr>Entity<wbr></wbr>PK</a></code>
             </div>
         
@@ -292,6 +302,16 @@
 
         
             <div class="itemName"><code><a href="#getEntityRecordHandler" class="internal-link" title="zms.zmssqldb.ZMSSqlDb.getEntityRecordHandler">get<wbr></wbr>Entity<wbr></wbr>Record<wbr></wbr>Handler</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#getEntityTarget" class="internal-link" title="zms.zmssqldb.ZMSSqlDb.getEntityTarget">get<wbr></wbr>Entity<wbr></wbr>Target</a></code>
             </div>
         
 
@@ -857,7 +877,7 @@
         </div>
 
         <div id="splitTables">
-          <table class="children sortable" id="id177">
+          <table class="children sortable" id="id190">
   
   
   <tr class="method">
@@ -938,6 +958,11 @@
   </tr><tr class="method">
     
     <td>Method</td>
+    <td><code><a href="#getEntityDetailsGridContext" class="internal-link" title="zms.zmssqldb.ZMSSqlDb.getEntityDetailsGridContext">get<wbr></wbr>Entity<wbr></wbr>Details<wbr></wbr>Grid<wbr></wbr>Context</a></code></td>
+    <td>Build the full rendering context for <tt class="rst-docutils rst-literal">manage_zmi_details_grid</tt>.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
     <td><code><a href="#getEntityPK" class="internal-link" title="zms.zmssqldb.ZMSSqlDb.getEntityPK">get<wbr></wbr>Entity<wbr></wbr>PK</a></code></td>
     <td>Return the primary-key column name of an entity.</td>
   </tr><tr class="method">
@@ -945,6 +970,11 @@
     <td>Method</td>
     <td><code><a href="#getEntityRecordHandler" class="internal-link" title="zms.zmssqldb.ZMSSqlDb.getEntityRecordHandler">get<wbr></wbr>Entity<wbr></wbr>Record<wbr></wbr>Handler</a></code></td>
     <td>Build a helper that post-processes rows for export and display.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#getEntityTarget" class="internal-link" title="zms.zmssqldb.ZMSSqlDb.getEntityTarget">get<wbr></wbr>Entity<wbr></wbr>Target</a></code></td>
+    <td>Resolve the effective target entity for relation-like stereotypes.</td>
   </tr><tr class="method">
     
     <td>Method</td>
@@ -1186,7 +1216,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">ajaxGetAutocompleteColumns</span><span class="function-signature">(self, tableName, fmt=None, REQUEST=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L2162">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L2269">
       
       (source)
     </a>
@@ -1213,7 +1243,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">ajaxGetObjOptions</span><span class="function-signature">(self, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L2128">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L2235">
       
       (source)
     </a>
@@ -1240,7 +1270,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">assemble_query_result</span><span class="function-signature">(self, res, encoding=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L406">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L407">
       
       (source)
     </a>
@@ -1267,7 +1297,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">assembleFilter</span><span class="function-signature">(self, l)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L1278">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L1385">
       
       (source)
     </a>
@@ -1294,7 +1324,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">commit</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L309">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L310">
       
       (source)
     </a>
@@ -1323,7 +1353,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">delete_blob</span><span class="function-signature">(self, auth_user, tablename, id, rowid, REQUEST=None, RESPONSE=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L1902">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L2009">
       
       (source)
     </a>
@@ -1350,7 +1380,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">execute</span><span class="function-signature">(self, sql, params=(), max_rows=0, encoding=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L339">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L340">
       
       (source)
     </a>
@@ -1379,7 +1409,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">executeQuery</span><span class="function-signature">(self, sql)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L473">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L474">
       
       (source)
     </a>
@@ -1406,7 +1436,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">filteredChildNodes</span><span class="function-signature">(self, REQUEST={}, meta_types=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L168">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L169">
       
       (source)
     </a>
@@ -1433,7 +1463,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_blob</span><span class="function-signature">(self, tablename, id, rowid, REQUEST=None, RESPONSE=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L2066">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L2173">
       
       (source)
     </a>
@@ -1460,7 +1490,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getDA</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L253">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L254">
       
       (source)
     </a>
@@ -1487,7 +1517,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getEntities</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L969">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L1068">
       
       (source)
     </a>
@@ -1536,7 +1566,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getEntitiesSQLAlchemyDA</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L891">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L990">
       
       (source)
     </a>
@@ -1563,7 +1593,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getEntity</span><span class="function-signature">(self, tableName)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L879">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L950">
       
       (source)
     </a>
@@ -1590,7 +1620,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getEntityColumn</span><span class="function-signature">(self, tableName, columnName, row=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L575">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L642">
       
       (source)
     </a>
@@ -1607,6 +1637,35 @@
 </div><div class="basemethod">
   
   
+  <a name="zms.zmssqldb.ZMSSqlDb.getEntityDetailsGridContext">
+    
+  </a>
+  <a name="getEntityDetailsGridContext">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getEntityDetailsGridContext</span><span class="function-signature">(self, request)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L583">
+      
+      (source)
+    </a>
+    <a class="headerLink" href="#getEntityDetailsGridContext" title="zms.zmssqldb.ZMSSqlDb.getEntityDetailsGridContext">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Build the full rendering context for <tt class="rst-docutils rst-literal">manage_zmi_details_grid</tt>.</p>
+<p>This moves detail-grid preparation logic from TAL into Python so the template focuses on markup only.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">request:</span>ZPublisher.HTTPRequest.HTTPRequest</td><td class="fieldArgDesc">Current request.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer">dict</td><td class="fieldArgDesc">Context dictionary used by <tt class="rst-docutils rst-literal">zmi_details_grid.zpt</tt>.</td></tr></table></div>
+  </div>
+</div><div class="basemethod">
+  
+  
   <a name="zms.zmssqldb.ZMSSqlDb.getEntityPK">
     
   </a>
@@ -1617,7 +1676,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getEntityPK</span><span class="function-signature">(self, tableName)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L507">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L508">
       
       (source)
     </a>
@@ -1643,8 +1702,8 @@
   <div class="functionHeader">
     
     
-    <span class="py-keyword">def</span> <span class="py-defname">getEntityRecordHandler</span><span class="function-signature">(self, tableName, stereotypes=[<wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">*</span><span class="rst-variable-quote">'</span>], colNames=[])</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L522">
+    <span class="py-keyword">def</span> <span class="py-defname">getEntityRecordHandler</span><span class="function-signature">(self, tableName, stereotypes=None, colNames=None)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L523">
       
       (source)
     </a>
@@ -1661,6 +1720,35 @@
 </div><div class="basemethod">
   
   
+  <a name="zms.zmssqldb.ZMSSqlDb.getEntityTarget">
+    
+  </a>
+  <a name="getEntityTarget">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getEntityTarget</span><span class="function-signature">(self, sourceTableName, targetTableName)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L962">
+      
+      (source)
+    </a>
+    <a class="headerLink" href="#getEntityTarget" title="zms.zmssqldb.ZMSSqlDb.getEntityTarget">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Resolve the effective target entity for relation-like stereotypes.</p>
+<p>If the referenced entity is an intersection table, return the opposite foreign-key target. Otherwise return the referenced entity itself.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">source<wbr></wbr>Table<wbr></wbr>Name:</span>str</td><td class="fieldArgDesc">Source entity name.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">target<wbr></wbr>Table<wbr></wbr>Name:</span>str</td><td class="fieldArgDesc">Referenced entity or intersection table name.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer">dict</td><td class="fieldArgDesc">Resolved target entity descriptor.</td></tr></table></div>
+  </div>
+</div><div class="basemethod">
+  
+  
   <a name="zms.zmssqldb.ZMSSqlDb.getFk">
     
   </a>
@@ -1671,7 +1759,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getFk</span><span class="function-signature">(self, tablename, id, name, value, createIfNotExists=True)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L1435">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L1542">
       
       (source)
     </a>
@@ -1698,7 +1786,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getModel</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L197">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L198">
       
       (source)
     </a>
@@ -1725,7 +1813,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getModelContainer</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L182">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L183">
       
       (source)
     </a>
@@ -1752,7 +1840,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_changeConfiguration</span><span class="function-signature">(self, lang, btn=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, key=<span class="rst-variable-quote">'</span><span class="rst-variable-string">all</span><span class="rst-variable-quote">'</span>, REQUEST=None, RESPONSE=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L2193">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L2300">
       
       (source)
     </a>
@@ -1779,7 +1867,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_changeProperties</span><span class="function-signature">(self, lang, REQUEST=None, RESPONSE=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L2087">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L2194">
       
       (source)
     </a>
@@ -1806,7 +1894,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">query</span><span class="function-signature">(self, sql, max_rows=0, encoding=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L451">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L452">
       
       (source)
     </a>
@@ -1833,7 +1921,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">record_encode__</span><span class="function-signature">(self, cols, record, encoding=<span class="rst-variable-quote">'</span><span class="rst-variable-string">utf-8</span><span class="rst-variable-quote">'</span>)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L230">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L231">
       
       (source)
     </a>
@@ -1860,7 +1948,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">recordSet_Delete</span><span class="function-signature">(self, tablename, rowid)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L1825">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L1932">
       
       (source)
     </a>
@@ -1887,7 +1975,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">recordSet_Filter</span><span class="function-signature">(self, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L1307">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L1414">
       
       (source)
     </a>
@@ -1914,7 +2002,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">recordSet_Init</span><span class="function-signature">(self, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L1243">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L1350">
       
       (source)
     </a>
@@ -1941,7 +2029,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">recordSet_Insert</span><span class="function-signature">(self, tablename, values={}, update_intersections=False)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L1517">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L1624">
       
       (source)
     </a>
@@ -1968,7 +2056,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">recordSet_Select</span><span class="function-signature">(self, tablename, select=None, where=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L1193">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L1300">
       
       (source)
     </a>
@@ -1995,7 +2083,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">recordSet_Sort</span><span class="function-signature">(self, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L1401">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L1508">
       
       (source)
     </a>
@@ -2022,7 +2110,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">recordSet_Update</span><span class="function-signature">(self, tablename, rowid, values={}, old_values={}, update_intersections=False)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L1636">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L1743">
       
       (source)
     </a>
@@ -2049,7 +2137,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">recordSet_UpdateIntersections</span><span class="function-signature">(self, tablename, rowid, values={})</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L1757">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L1864">
       
       (source)
     </a>
@@ -2076,7 +2164,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">rollback</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L324">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L325">
       
       (source)
     </a>
@@ -2105,7 +2193,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">set_blob</span><span class="function-signature">(self, auth_user, tablename, id, rowid=None, xml=None, REQUEST=None, RESPONSE=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L1986">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L2093">
       
       (source)
     </a>
@@ -2132,7 +2220,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">setModel</span><span class="function-signature">(self, newModel)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L217">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L218">
       
       (source)
     </a>
@@ -2159,7 +2247,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">sql_quote__</span><span class="function-signature">(self, tablename, columnname, v)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L267">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L268">
       
       (source)
     </a>
@@ -2186,7 +2274,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">substitute_params</span><span class="function-signature">(self, sql, params=())</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L373">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L374">
       
       (source)
     </a>
@@ -2644,7 +2732,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">charset</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L2110">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L2217">
       
       (source)
     </a>
@@ -2671,7 +2759,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">connection_id</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L2109">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L2216">
       
       (source)
     </a>
@@ -2698,7 +2786,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">model</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L210">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L211">
       
       (source)
     </a>
@@ -2725,7 +2813,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">model_xml</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L209">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L210">
       
       (source)
     </a>
@@ -2752,7 +2840,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">table_filter</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L2111">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L2218">
       
       (source)
     </a>
@@ -2780,7 +2868,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">_delete_blob</span><span class="function-signature">(self, tablename, id, rowid)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L1861">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L1968">
       
       (source)
     </a>
@@ -2807,7 +2895,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">_get_blob</span><span class="function-signature">(self, tablename, id, rowid, cache=<span class="rst-variable-quote">'</span><span class="rst-variable-string">public, max-age=3600</span><span class="rst-variable-quote">'</span>, REQUEST=None, RESPONSE=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L2013">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L2120">
       
       (source)
     </a>
@@ -2834,7 +2922,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">_set_blob</span><span class="function-signature">(self, tablename, id, rowid=None, file=None, xml=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L1927">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmssqldb.py#L2034">
       
       (source)
     </a>

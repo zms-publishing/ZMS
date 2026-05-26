@@ -1,0 +1,190 @@
+opensearch_page:
+  access:
+    insert_custom: '{$}'
+  enabled: 1
+  lang_dict:
+    opensearch_page.BTN_SEARCH:
+      eng: Search
+      fra: Recherche
+      ger: Suchen
+      ita: Ricerca
+    opensearch_page.INFO_KEYWORD:
+      eng: Keyword
+      fra: Mot-clé
+      ger: Stichwort
+      ita: Parola chiave
+    opensearch_page.INFO_LOADING:
+      eng: Is loading ...
+      fra: En attendant ...
+      ger: Wird geladen...
+      ita: In attesa ...
+    opensearch_page.INFO_RESULTS:
+      eng: Hits
+      fra: Résultats
+      ger: Treffer
+      ita: Colpi
+    opensearch_page.INFO_RESULTS_FOR:
+      eng: Hits for
+      fra: Les hits pour
+      ger: Treffer für
+      ita: Colpi per
+    opensearch_page.INFO_SEARCH:
+      eng: Search for Keywords
+      fra: Recherche de mots-clés
+      ger: Suche nach Stichworten
+      ita: Ricerca per parole chiave
+    opensearch_page.INFO_UNIBE:
+      eng: Content
+      fra: Contenu
+      ger: Inhalte
+      ita: Contenuto
+    opensearch_page.INFO_UNITEL:
+      eng: Persons
+      fra: Personnes
+      ger: Personen
+      ita: Persone
+    opensearch_page.SEARCH_FOR:
+      eng: Search for
+      fra: Recherche de
+      ger: Suche nach
+      ita: Ricerca di
+    opensearch_page.TOP_RESULTS:
+      eng: Top Hits
+      fra: Meilleurs résultats
+      ger: Top-Treffer
+      ita: Colpo di punta
+    opensearch_page.UNITEL_KEY_EMail:
+      eng: E-Mail
+      fra: E-Mail
+      ger: E-Mail
+      ita: E-Mail
+    opensearch_page.UNITEL_KEY_Institution:
+      eng: Institution
+      fra: Institution
+      ger: Institution
+      ita: Istituzione
+    opensearch_page.UNITEL_KEY_Institutionstelefon:
+      eng: Institution phone
+      fra: Téléphone de l'institution
+      ger: Institutionstelefon
+      ita: Telefono dell'istituzione
+    opensearch_page.UNITEL_KEY_Land:
+      eng: Country
+      fra: Pays
+      ger: Land
+      ita: Paese
+    opensearch_page.UNITEL_KEY_Ort:
+      eng: City
+      fra: Ville
+      ger: Ort
+      ita: Città
+    opensearch_page.UNITEL_KEY_PLZ:
+      eng: ZIP
+      fra: Code postal
+      ger: PLZ
+      ita: CAP
+    opensearch_page.UNITEL_KEY_StrassePostfach:
+      eng: Street / P.O. Box
+      fra: Rue / Boîte postale
+      ger: Strasse / Postfach
+      ita: Strada / Casella postale
+    opensearch_page.UNITEL_KEY_Telefondirekt1:
+      eng: Phone direct
+      fra: Téléphone direct
+      ger: Telefon direkt
+      ita: Telefono diretto
+    opensearch_page.UNITEL_KEY_WWWInstitution:
+      eng: Internet
+      fra: Internet
+      ger: Internet
+      ita: Internet
+  name: Opensearch-Page
+  package: com.zms.catalog.opensearch
+  revision: 1.12.1
+  type: ZMSDocument
+  Attrs:
+    - id: icon_clazz
+      name: Icon (Class)
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: constant
+      custom: fas fa-search text-primary
+    - id: titlealt
+      name: DC.Title.Alt
+      mandatory: 1
+      multilang: 1
+      repetitive: 0
+      type: titlealt
+    - id: title
+      name: DC.Title
+      mandatory: 1
+      multilang: 1
+      repetitive: 0
+      type: title
+    - id: multisite_search
+      name: Multisite-Search
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: boolean
+      default: '1'
+    - id: multisite_exclusions
+      name: Multisite-Exclusions
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: multiautocomplete
+      keys: |-
+        ##
+        master = context.unibe.content
+        zmsclientids = []
+        def getZMSPortalClients(zmsclient):
+        zmsclientids.append(zmsclient.getHome().id)
+        for zmsclientid in zmsclient.getPortalClients():
+        getZMSPortalClients(zmsclientid)
+        zmsclientids.sort()
+        return list(zmsclientids)
+        return [(id,id) for id in getZMSPortalClients(zmsclient=master)]
+    - id: adwords_linked
+      name: Linked Adwords
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: url
+    - id: script.js
+      name: Script (JS)
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: resource
+    - id: style.css
+      name: Style (CSS)
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: resource
+    - id: handlebars.js
+      name: 'Handlebars: JS 4.7.7'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: resource
+    - id: adwords
+      name: Adwords (Toptreffer)
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: adwords
+    - id: opensearch_breadcrumbs_obj_path
+      name: Get Object Path from ZMSIndex as HTML
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: Script (Python)
+    - id: standard_html
+      name: 'Template: Opensearch'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: zpt

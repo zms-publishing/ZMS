@@ -188,6 +188,16 @@
             </div>
         
 
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#normalize_yaml_values" class="internal-link" title="zms._multilangmanager.normalize_yaml_values">normalize<wbr></wbr>_yaml<wbr></wbr>_values</a></code>
+            </div>
+        
+
     </li><li class="private">
         
         
@@ -290,6 +300,16 @@
         
 
         
+            <div class="itemName"><code><a href="zms.IZMSLLMConnector.html" class="internal-link" title="zms.IZMSLLMConnector"><wbr></wbr>IZMSLLMConnector</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
             <div class="itemName"><code><a href="zms.IZMSMetacmdProvider.html" class="internal-link" title="zms.IZMSMetacmdProvider"><wbr></wbr>IZMSMetacmd<wbr></wbr>Provider</a></code>
             </div>
         
@@ -331,6 +351,26 @@
 
         
             <div class="itemName"><code><a href="zms.IZMSWorkflowProvider.html" class="internal-link" title="zms.IZMSWorkflowProvider"><wbr></wbr>IZMSWorkflow<wbr></wbr>Provider</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.llmapi.html" class="internal-link" title="zms.llmapi">llmapi</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.llmtools.html" class="internal-link" title="zms.llmtools">llmtools</a></code>
             </div>
         
 
@@ -511,6 +551,16 @@
 
         
             <div class="itemName"><code><a href="zms.zmslinkelement.html" class="internal-link" title="zms.zmslinkelement">zmslinkelement</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.ZMSLLMConnector.html" class="internal-link" title="zms.ZMSLLMConnector"><wbr></wbr>ZMSLLMConnector</a></code>
             </div>
         
 
@@ -1180,7 +1230,7 @@
         </div>
 
         <div id="splitTables">
-          <table class="children sortable" id="id106">
+          <table class="children sortable" id="id110">
   
   
   <tr class="class">
@@ -1213,6 +1263,11 @@
     <td>Function</td>
     <td><code><a href="#importXml" class="internal-link" title="zms._multilangmanager.importXml">import<wbr></wbr>Xml</a></code></td>
     <td>Import one or many language-dictionary rows from XML or worksheet XML.</td>
+  </tr><tr class="function">
+    
+    <td>Function</td>
+    <td><code><a href="#normalize_yaml_values" class="internal-link" title="zms._multilangmanager.normalize_yaml_values">normalize<wbr></wbr>_yaml<wbr></wbr>_values</a></code></td>
+    <td>Normalize import/_language.yaml to strict YAML by quoting all values.</td>
   </tr><tr class="function private">
     
     <td>Function</td>
@@ -1239,7 +1294,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">exportXml</span><span class="function-signature">(self, ids, REQUEST=None, RESPONSE=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L71">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L106">
       
       (source)
     </a>
@@ -1266,7 +1321,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getDescLangs</span><span class="function-signature">(self, id, langs)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L91">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L126">
       
       (source)
     </a>
@@ -1293,7 +1348,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">importXml</span><span class="function-signature">(self, xml)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L36">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L71">
       
       (source)
     </a>
@@ -1306,6 +1361,33 @@
   <div class="docstring functionBody">
     
     <div><p>Import one or many language-dictionary rows from XML or worksheet XML.</p></div>
+  </div>
+</div><div class="basefunction">
+  
+  
+  <a name="zms._multilangmanager.normalize_yaml_values">
+    
+  </a>
+  <a name="normalize_yaml_values">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">normalize_yaml_values</span><span class="function-signature">(data)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L27">
+      
+      (source)
+    </a>
+    <a class="headerLink" href="#normalize_yaml_values" title="zms._multilangmanager.normalize_yaml_values">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Normalize import/_language.yaml to strict YAML by quoting all values.</p></div>
   </div>
 </div><div class="basefunction private">
   
@@ -1320,7 +1402,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">_importXml</span><span class="function-signature">(self, item)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L26">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_multilangmanager.py#L61">
       
       (source)
     </a>

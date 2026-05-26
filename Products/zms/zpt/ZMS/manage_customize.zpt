@@ -67,8 +67,14 @@
 							<select class="form-control zmi-code" id="conf_opt" name="conf_opt" tal:attributes="onchange python:'self.location.href=\'%s?lang=%s&amp;conf_key=\'+$(this).val()+\'#Custom\''%(request['URL'],request['lang'])">
 								<option></option>
 								<tal:block tal:repeat="res_key res_keys">
-									<tal:block tal:define="global res_item python:[x for x in res if x['key']==res_key][0]">
-										<option tal:attributes="value python:res_item['key']; title python:res_item['desc']; selected python:['','selected'][int(request.get('conf_key')==res_item['key'])]" tal:content="python:res_item['title']">the title</option>
+									<tal:block tal:define="res_item python:[x for x in res if x['key']==res_key][0]">
+										<option tal:attributes="
+												value python:res_item['key']; 
+												title python:res_item['desc']; 
+												selected python:['','selected'][int(request.get('conf_key')==res_item['key'])]" 
+											tal:content="python:res_item['title']">
+											the title
+										</option>
 									</tal:block>
 								</tal:block>
 							</select>
@@ -88,7 +94,7 @@
 								<input class="form-control zmi-code" type="text" id="conf_value" name="conf_value" tal:attributes="type python:['text','password'][int(request.get('conf_key','').endswith('.password'))]; value python:here.getConfProperty(request.get('conf_key'),'')">
 							</tal:block>
 							<tal:block tal:condition="python:request.get('conf_key') in res_keys">
-								<tal:block tal:define="global res_item python:[x for x in res if x['key']==request.get('conf_key')][0]">
+								<tal:block tal:define="res_item python:[x for x in res if x['key']==request.get('conf_key')][0]">
 									<tal:block tal:condition="python:not (res_item['datatype']=='boolean' or 'options' in res_item)">
 										<input class="form-control zmi-code" type="text" id="conf_value" name="conf_value" tal:attributes="type python:['text','password'][int(request.get('conf_key','').endswith('.password'))]; value python:here.getConfProperty(request.get('conf_key'),res_item.get('default',''))">
 									</tal:block>
@@ -99,7 +105,10 @@
 										<select class="form-control" id="conf_value" name="conf_value">
 											<option></option>
 											<tal:block tal:repeat="option res_item/options">
-												<option tal:attributes="value option; selected python:['','selected'][int(here.getConfProperty(request.get('conf_key'),res_item.get('default',''))==option)]" tal:content="option">option</option>
+												<option tal:attributes="
+														value option; 
+														selected python:['','selected'][int(here.getConfProperty(request.get('conf_key'),res_item.get('default',''))==option)]"
+													tal:content="option">option</option>
 											</tal:block>
 										</select>
 									</tal:block>
@@ -129,7 +138,10 @@
 									<a tal:condition="python:conf_key in conf" class="btn btn-secondary" tal:attributes="href python:'manage_customizeSystem?lang=%s&amp;conf_key=%s&btn=Delete&key=Custom#Custom'%(request['lang'],conf_key); title python:'Delete'"><i class="fas fa-times text-danger"></i></a>
 								</td>
 								<td class="systemprop-key">
-									<a class="zmi-code pt-1" tal:attributes="href python:'%s?lang=%s&amp;conf_key=%s#Custom'%(request['URL'],request['lang'],conf_key); title python:'Change'">
+									<a class="zmi-code pt-1" 
+										tal:attributes="
+											href python:'%s?lang=%s&amp;conf_key=%s#Custom'%(request['URL'],request['lang'],conf_key); 
+											title python:{i['key']:i['title'] for i in res}.get(conf_key, 'Change')">
 										<strong tal:content="conf_key">the conf_key</strong>
 										(<tal:block tal:content="python:standard.operator_getattr(standard.operator_gettype(here.getConfProperty(conf_key)),'__name__')"></tal:block>)
 									</a>
@@ -191,21 +203,25 @@
 			<div class="tab-pane fade card" id="Manager" role="tabpanel">
 				<table class="table table-borderless">
 					<tr>
-						<th class="text-muted">Components</th>
-						<th width="5%" style="border-right:1px solid #dfdfdf !important"></th>
-						<th class="text-muted">Configurations</th>
+						<th class="text-muted col-6" 
+							style="border-right:1px solid #dfdfdf !important">
+							Components
+						</th>
+						<th class="text-muted col-6">
+							Configurations
+						</th>
 					</tr>
 					<tr>
-						<td>
+						<td style="border-right:1px solid #dfdfdf !important">
 							<form class="form-horizontal" title="Compontent-Manager" name="ManagerForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
 								<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
 								<input type="hidden" name="key" value="Manager" />
-								<tal:block tal:define="global meta_types python:[x for x in here.filtered_meta_types() if not x['product']=='zms' and x['name'].startswith('ZMS')] + [{'name':x,'action':x,} for x in ['Sequence', 'ZMSIndex', 'ZMSLog', 'ZMSZCatalogAdapter', 'ZMSFilterManager', 'ZMSFormatProvider', 'ZMSFormatProviderAcquired', 'ZMSMetacmdProvider', 'ZMSMetacmdProviderAcquired', 'ZMSWorkflowProvider', 'ZMSWorkflowProviderAcquired', 'ZMSRepositoryManager']]">
+								<tal:block tal:define="global meta_types python:[x for x in here.filtered_meta_types() if not x['product']=='zms' and x['name'].startswith('ZMS')] + [{'name':x,'action':x,} for x in ['Sequence', 'ZMSIndex', 'ZMSLog', 'ZMSLLMConnector', 'ZMSZCatalogAdapter', 'ZMSFilterManager', 'ZMSFormatProvider', 'ZMSFormatProviderAcquired', 'ZMSMetacmdProvider', 'ZMSMetacmdProviderAcquired', 'ZMSWorkflowProvider', 'ZMSWorkflowProviderAcquired', 'ZMSRepositoryManager']]">
 								<div class="form-group mb-4">
 									<label class="d-none" for="meta_type">ZMS base-components</label>
 									<div class="btn-group">
-										<select class="form-control form-control" id="meta_type" name="meta_type" title="Add New ZMS base-components"
-											onchange="if($(this).val().indexOf('manage_add')==0){self.location.href=$(this).val();}else if ($(this).val()!=''){document.getElementById('addMetaTypeBtn').click();}">
+										<select class="form-control" id="meta_type" name="meta_type" 
+											title="Add New ZMS base-components">
 											<option value="">Select type to add...</option>
 											<tal:block tal:repeat="meta_type meta_types"
 												><option tal:condition="python:len(here.objectValues(meta_type['name']))==0"
@@ -213,7 +229,7 @@
 													tal:content="python:here.getZMILangStr(meta_type['name'])">name</option>
 											</tal:block>
 										</select>
-										<button name="btn" type="submit" class="btn btn-secondary btn" value="Add">Add</button>
+										<button name="btn" type="submit" class="btn btn-primary" value="Add">Add</button>
 									</div>
 								</div><!-- .form-group -->
 								<div class="form-group text-truncate" tal:repeat="si python:here.objectValues(['MediaDb']+[x['name'] for x in meta_types])">
@@ -231,27 +247,23 @@
 								</div>
 							</form>
 						</td>
-						<td width="5%" style="border-right:1px solid #dfdfdf !important"></td>
 						<td>
 							<form class="form-horizontal" title="Import Configuration Packages" name="ImportForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
 								<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
 								<input type="hidden" name="key" value="Import" />
 								<div class="form-group row">
 									<label class="col-sm-4 control-label" for="file">Package-File</label>
-									<div class="col-sm-6">
+									<div class="col-sm-8 input-group">
 										<div class="custom-file new">
-											<input class="custom-file-input" type="file" name="file" id="file" size="25" value=""
+											<input class="custom-file-input" type="file" name="file" id="file" value=""
 												onchange="$(this).next().html($(this).val().replace(/^.*(\\|\/|\:)/, ''));" />
-											<label class="custom-file-label" for="file"
-												tal:content="python:here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_FILE')">Choose file
+											<label class="custom-file-label" for="file">
+												<span tal:content="python:here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_FILE')">Choose file</span>
 											</label>
 										</div>
-									</div>
-								</div><!-- .form-group -->
-								<div class="form-group row">
-									<div class="col-sm-4">&nbsp;</div>
-									<div class="col-sm-6">
-										<button name="btn" type="submit" class="btn btn-primary" value="Import">Import</button>
+										<div class="input-group-append">
+											<button name="btn" type="submit" class="btn btn-primary" value="Import">Import</button>
+										</div>
 									</div>
 								</div><!-- .form-group -->
 							</form>
@@ -269,19 +281,19 @@
 											<strong><a href="https://github.com/python-pillow/Pillow" target="_blank">Pillow</a></strong>
 										</label>
 									</div>
-									<div class="col-sm-6" tal:condition="python: pilutil.enabled()">
+									<div class="col-sm-4" tal:condition="python: pilutil.enabled()">
 										<div class="form-group form-inline">
 											<input type="text" id="pil_thumbnail_max" name="pil_thumbnail_max:int"
 												tal:attributes="value python:here.getConfProperty('InstalledProducts.pil.thumbnail.max')"
-												class="form-control form-control-sm mr-3" size="4" style="text-align:right;width:4rem" />
-											<label class="control-label text-left" for="pil_thumbnail_max">
+												class="form-control form-control-sm" size="4" style="text-align:right;width:4rem" />
+											<label class="control-label text-left text-small" for="pil_thumbnail_max">
 												Max. Pixels for Automatic Resizing of High-Res to Base Images
 											</label>
 										</div>
 										<div class="form-group form-inline">
 											<input type="text" id="pil_hires_thumbnail_max" name="pil_hires_thumbnail_max:int"
 												tal:attributes="value python:here.getConfProperty('InstalledProducts.pil.hires.thumbnail.max')"
-												class="form-control form-control-sm mr-3" size="4" style="text-align:right;width:4rem" />
+												class="form-control form-control-sm" size="4" style="text-align:right;width:4rem" />
 											<label class="control-label text-left" for="pil_hires_thumbnail_max">
 												Max. Pixels for Automatic Resizing of Super-Res to High-Res Images
 											</label>
@@ -305,7 +317,9 @@
 						<div class="form-group row">
 							<label class="col-sm-2 control-label" for="mediadb_location">Location</label>
 							<div class="col-sm-10">
-								<input class="form-control" type="text" name="mediadb_location" tal:attributes="value python:'$INSTANCE_HOME/var/%s/mediadb'%here.getHome().id" />
+								<input class="form-control" type="text" name="mediadb_location"
+									tal:define="mediadb_location python:'$INSTANCE_HOME/var/%s/mediadb'%here.getHome().id"
+									tal:attributes="value mediadb_location; placeholder mediadb_location" />
 							</div>
 						</div><!-- .form-group -->
 						<div class="form-group row">
@@ -407,7 +421,7 @@
 									hx-get="manage_customizeInstalledProducts"
 									hx-target="#installed_products"
 									hx-vals='{"pip_cmd": "freeze"}'
-									hx-on:htmx:before-request="document.getElementById('installed_products').innerHTML='<i class=\'fas fa-spinner fa-spin fa-3x text-primary m-1\'></i>'"
+									hx-on:htmx:before-request="document.getElementById('installed_products').innerHTML='<i class=\'fas fa-circle-notch fa-spin fa-3x text-primary m-1\'></i>'"
 									hx-on:htmx:response-error="document.getElementById('installed_products').innerHTML='<div class=\'alert alert-danger mx-0 my-3\'>Error ' + event.detail.xhr.status + ' on loading data ...</div>'"
 									id="pip_cmd1" name="pip_cmd" value="freeze" checked="checked" />
 								<label class="custom-control-label" for="pip_cmd1"><samp>pip freeze --all</samp></label>
@@ -417,7 +431,7 @@
 									hx-get="manage_customizeInstalledProducts"
 									hx-target="#installed_products"
 									hx-vals='{"pip_cmd": "list"}'
-									hx-on:htmx:before-request="document.getElementById('installed_products').innerHTML='<i class=\'fas fa-spinner fa-spin fa-3x text-primary m-1\'></i>'"
+									hx-on:htmx:before-request="document.getElementById('installed_products').innerHTML='<i class=\'fas fa-circle-notch fa-spin fa-3x text-primary m-1\'></i>'"
 									hx-on:htmx:response-error="document.getElementById('installed_products').innerHTML='<div class=\'alert alert-danger mx-0 my-3\'>Error ' + event.detail.xhr.status + ' on loading data ...</div>'"
 									id="pip_cmd2" name="pip_cmd" value="list" />
 								<label class="custom-control-label" for="pip_cmd2"><samp>pip list</samp></label>

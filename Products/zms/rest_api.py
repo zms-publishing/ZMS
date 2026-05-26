@@ -175,6 +175,12 @@ class RestApiController(object):
             if self.ids == ['get_htmldiff']:
                 decoration, data = self.get_htmldiff(self.context, content_type=True)
                 return data
+            elif self.ids == ['llm_chat']:
+                decoration = {'content_type':'application/json'}
+                data = self._handle_llm_chat(REQUEST)
+                REQUEST.RESPONSE.setHeader('Content-Type', decoration['content_type'])
+                REQUEST.RESPONSE.setHeader('Content-Disposition', 'inline;filename="llm_chat.json"')
+                return json.dumps(standard.scalar(data))
             else:
                 return None
         if self.method == 'GET':
@@ -207,6 +213,17 @@ class RestApiController(object):
                 decoration, data = self.body_content(self.context, content_type=True)
             elif self.ids == [] or self.ids == ['get']:
                 decoration, data = self.get(self.context, content_type=True)
+            elif self.ids == ['llm_chat']:
+                data = self._handle_llm_chat(REQUEST)
+                decoration = {'content_type':'application/json'}
+            elif self.ids == ['llm_provider_info']:
+                connector = self.context.getLLMConnector()
+                data = connector.get_provider_info() if connector is not None else {'error': 'No LLM connector configured.'}
+                decoration = {'content_type':'application/json'}
+            elif self.ids == ['llm_ollama_models']:
+                connector = self.context.getLLMConnector()
+                data = connector.get_ollama_models() if connector is not None else {'error': 'No LLM connector configured.', 'models': []}
+                decoration = {'content_type':'application/json'}
             else:
                 data = {'ERROR':'Not Found','context':str(self.context),'path_to_handle':self.path_to_handle,'ids':self.ids}
             ct = decoration['content_type']
@@ -216,6 +233,30 @@ class RestApiController(object):
                 data = json.dumps(standard.scalar(data))
             return data
         return None
+
+    def _handle_llm_chat(self, REQUEST):
+        connector = self.context.getLLMConnector()
+        if connector is None:
+            return {'error': 'No LLM connector configured. Add a ZMSLLMConnector to the ZMS root.'}
+        # Accept either a full messages[] array (multi-turn) or a single message string
+        raw_messages = REQUEST.get('messages', '')
+        if raw_messages:
+            try:
+                messages = json.loads(raw_messages) if isinstance(raw_messages, str) else raw_messages
+            except (ValueError, TypeError):
+                messages = [{'role': 'user', 'content': str(raw_messages)}]
+        else:
+            message = REQUEST.get('message', '')
+            messages = [{'role': 'user', 'content': message}]
+
+        agent_mode = REQUEST.get('agent_mode', '0') in ('1', 'true', 'True')
+        if agent_mode:
+            return connector.chat_with_tools(messages, self.context)
+        raw = connector.chat(messages)
+        if 'error' in raw:
+            return {'error': raw['error']}
+        msg = raw.get('message') or {}
+        return {'reply': msg.get('content', '')}
 
     @api(tag="zmsindex", pattern="/zmsindex", content_type="application/json")
     def zmsindex(self, context):

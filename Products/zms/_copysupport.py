@@ -27,7 +27,7 @@ OP_MOVE = 1 # Constant for move operation
 ################################################################################
 
 def normalize_ids_after_copy(node, id_prefix='e', ids=[]):
-    """ 
+    """  
     The ids of copied objects are normalized to the context-node's id_prefix
     and the ZMS-client's sequence incrementing (acl_sequence).
     After the objects are moved to their new position their ids are normalized,
@@ -35,11 +35,8 @@ def normalize_ids_after_copy(node, id_prefix='e', ids=[]):
     target-context and the next increment of the ZMS-object sequence counter.
 
     @param node: context-node
-    @type node: C{ZMSNode}
     @param id_prefix: id_prefix of context-node
-    @type id_prefix: C{str}
     @param ids: list of ids to be normalized, '*' for all
-    @type ids: C{list}
     @note: This function is called after manage_pasteObjs() has moved the objects.
     """
     request = node.REQUEST

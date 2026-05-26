@@ -1,6 +1,6 @@
 # manage_cleanup_recursive — Listing and Removal of Obsolete Inactive Content
 
-**Version:** 0.8.0  
+**Version:** 0.8.1  
 **Role Required:** ZMSAdministrator  
 **Icon:** <i class="fas fa-trash-alt text-primary"></i> (trash can)
 
@@ -489,5 +489,3 @@ This ensures you don't accidentally delete language-specific versions or global 
    - A page might move from "Grade 2 (Delete)" to "Grade 1 (Check)" if a child was activated
 
 **Solution:** This is normal. Re-run the tool to get current assessment.
-
-

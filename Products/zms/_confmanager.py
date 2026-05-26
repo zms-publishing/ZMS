@@ -61,6 +61,7 @@ from Products.zms import zmslog
 
 
 UNINHERITED_PROPERTIES = ['ASP','Portal']
+_NO_DEFAULT = object()
 
 class ConfDict(object):
 
@@ -230,7 +231,7 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
           filename = file[file.find(':')+1:]
           basepath = repositoryutil.get_system_conf_basepath()
           path = os.path.join(basepath, filename)
-          r = repositoryutil.readRepository(self, path)
+          r = repositoryutil.get_models_from_disk(self, path)
           container_id = filename.split('/')[0]
           container = zopeutil.getObject(self,container_id)
           if container is not None:
@@ -355,7 +356,7 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
           path = os.path.join(basepath, filename)
           if os.path.isdir(path):
               if pattern is None or filename.startswith(pattern[1:-1]):
-                  r = repositoryutil.readRepository(self, path, deep=False)
+                  r = repositoryutil.get_models_from_disk(self, path, deep=False)
                   for k in r:
                       v = r[k]
                       # Get qualified name.
@@ -623,6 +624,9 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
         {'key':'ZMS.repository_manager.__init__.format','title':'Repository format of __init__','desc':'Repository format of __init__','datatype':'string','options':['yaml','py'],'default':'yaml'},
         {'key':'ZReferableItem.validateLinkObj','title':'Auto-correct link-attributes','desc':'Ensure valid link-attributes by parsing and using ZMSIndex for refreshing target urls on rendering','datatype':'boolean','default':1},
         {'key':'ZReferableItem.validateInlineLinkObj','title':'Auto-correct inline-links','desc':'Ensure valid inline-links by text-parsing and using ZMSIndex for refreshing target urls on rendering','datatype':'boolean','default':1},
+        # Note: LLM settings are managed by ZMSLLMConnector (getLLMConnector()).
+        # The entries below are kept only as migration hints; the connector's own
+        # _config dict is the authoritative source of llm.* properties.
       ]
     
     def getConfProperties(self, prefix=None, inherited=False, REQUEST=None):
@@ -697,14 +701,16 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
       params = ('key', 'default', 'REQUEST')
       [operator.setitem(kwargs, params[x], args[x]) for x in range(len(args))]
       key = kwargs['key']
-      default = kwargs.get('default')
+      default = kwargs.get('default', _NO_DEFAULT)
+      default_provided = default is not _NO_DEFAULT
       REQUEST = kwargs.get('REQUEST')
       if REQUEST is not None:
         key = str(base64.b64decode(key),'utf-8')
       if hasattr(OFS.misc_.misc_,'zms'):
         if key in OFS.misc_.misc_.zms['confdict']:
           default = OFS.misc_.misc_.zms['confdict'].get(key)
-      value = default
+          default_provided = True
+      value = [None, default][int(default_provided)]
       confdict = self.getConfProperties()
       if key in confdict:
         value = confdict.get(key)
@@ -713,7 +719,7 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
         if portalMaster is not None:
           value = portalMaster.getConfProperty( key)
         if value is None:
-          if 'default' in kwargs:
+          if default_provided:
             value = default
           else:
             for default in [x for x in self.getConfPropertiesDefaults() if x['key'] == key]:
@@ -721,7 +727,7 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
       return value 
 
 
-    def getConfProperty(self, key, default=None, REQUEST=None):
+    def getConfProperty(self, key, default=_NO_DEFAULT, REQUEST=None):
       """
       Returns property from configuration.
 
@@ -733,6 +739,10 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
       @type REQUEST: ZPublisher.HTTPRequest
       @rtype: C{any}
       """
+      if default is _NO_DEFAULT:
+        if REQUEST is None:
+          return self.get_conf_property(key)
+        return self.get_conf_property(key=key, REQUEST=REQUEST)
       return self.get_conf_property(key, default, REQUEST)
 
 
@@ -1017,7 +1027,8 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
       returns the ZMSSysConf object.
 
       @return: The ZMSSysConf object associated with the current instance.
-      @rtype: ZMSSysConf"""
+      @rtype: ZMSSysConf
+      """
       sys_conf = getattr(self,"sys_conf",None)
       if sys_conf is None:
         sys_conf = _conf.ZMSSysConf()
@@ -1563,8 +1574,26 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
       adapter.initialize()
       return adapter
 
+    def getLLMConnector(self):
+      """
+      Return the LLM connector.
 
-# call this to initialize framework classes, which
+      Walks the breadcrumb path upward to find a ``ZMSLLMConnector`` object.
+      Returns ``None`` if no connector has been added — it must be added manually
+      like other ZMS components (e.g. workflow_manager, ZMSLog).
+
+      @return: The LLM connector object, or None.
+      @rtype: IZMSLLMConnector or None
+      """
+      from Products.zms import IZMSLLMConnector
+      from zope.interface import providedBy
+      path_nodes = self.breadcrumbs_obj_path()
+      path_nodes.reverse()
+      for path_node in path_nodes:
+        for ob in path_node.objectValues():
+          if IZMSLLMConnector.IZMSLLMConnector in list(providedBy(ob)):
+            return ob
+      return None
 # does the right thing with the security assertions.
 InitializeClass(ConfManager)
 

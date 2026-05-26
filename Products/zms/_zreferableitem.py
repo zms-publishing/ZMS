@@ -16,6 +16,13 @@ from Products.zms import standard
 from zope.globalrequest import getRequest
 
 
+_INLINE_LINK_ATTR_RE = re.compile(r'\s(.*?)="(.*?)"')
+_INLINE_LINK_TAGS = (
+  (re.compile(r'<a(.*?)>'), 'href', '<a'),
+  (re.compile(r'<img(.*?)>'), 'src', '<img'),
+)
+
+
 # ----------------------------------------------------------------------------
 # Internal Link Utilities for ZMS Objects
 # ----------------------------------------------------------------------------
@@ -466,12 +473,15 @@ class ZReferableItem(object):
     @return: The validated HTML content with updated internal links.
     @rtype: C{str}
     """
-    for pq in [('<a(.*?)>', 'href'), ('<img(.*?)>', 'src')]:
-      p = pq[0]
-      q = pq[1]
-      r = re.compile(p)
-      for f in r.findall(str(text)):
-        d = dict(re.findall(r'\s(.*?)="(.*?)"', f))
+    text = str(text)
+    if '<a' not in text and '<img' not in text:
+      return text
+    for r, q, marker in _INLINE_LINK_TAGS:
+      if marker not in text:
+        continue
+      p = r.pattern
+      for f in r.findall(text):
+        d = dict(_INLINE_LINK_ATTR_RE.findall(f))
         if 'data-id' in d:
           old = p.replace('(.*?)', f)
           url = d['data-id']
@@ -480,7 +490,6 @@ class ZReferableItem(object):
             d[{'data-url':q}.get(k, k)] = ild[k]
           new = p.replace('(.*?)', ' '.join(['']+['%s="%s"'%(x,d[x]) for x in d]))
           if old != new:
-            # @FIXME UnicodeDecodeError: 'ascii' codec can't decode byte 0x## in position ###: ordinal not in range(128)
             text = text.replace(old, new)
     return text
 

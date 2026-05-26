@@ -86,8 +86,8 @@
 				providers=providers,
 				ignore=here.get_ignore_orphans(),
 				direction=here.get_update_direction(),
-				remote={x:here.remoteFiles(x) for x in providers},
-				local={x:repositoryutil.localFiles(here,x) for x in providers}
+				remote={x:here.get_modelfileset_from_disk(x) for x in providers},
+				local={x:repositoryutil.get_modelfileset_from_zodb(here,x) for x in providers}
 				)">
 			the diff
 		</tal:block>

@@ -33,6 +33,13 @@
 	pageStart python:pageIndex*pageSize;
 	">
 
+<tal:block tal:condition="not: tables">
+	<div class="alert alert-danger" role="alert"
+		tal:content="python:here.getZMILangStr('MSG_DATABASE_ERROR')">
+		Database connection error
+	</div>
+</tal:block>
+
 <tal:block tal:condition="tables">
 
 <tal:block tal:define="global

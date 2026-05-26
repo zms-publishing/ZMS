@@ -1,0 +1,5 @@
+com.zms.calendar:
+  enabled: 1
+  name: com.zms.calendar
+  revision: 0.0.6
+  type: ZMSPackage

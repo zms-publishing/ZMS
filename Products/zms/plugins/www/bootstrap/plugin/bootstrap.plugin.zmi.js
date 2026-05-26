@@ -12,7 +12,7 @@ $ZMI.registerReady(function(){
 			if (manage_menu) {
 				$("#zmi-tab .breadcrumb").each(function() {
 					if ($(".btn-bookmark",this).length==0) {
-						$(this).append('<li class="btn-bookmark"><a href="javascript:;" title="Set Bookmark" class="align-text-top"><i class="far fa-bookmark text-muted"></a><li>');
+						$(this).append('<li class="btn-bookmark ml-1 text-primary"><a href="javascript:;" title="Set Bookmark" class="align-text-top"><i class="far fa-bookmark"></i></a></li>');
 					};
 					var key = "ZMS."+data_root+".bookmarks";
 					var bookmarks = $ZMILocalStorageAPI.get(key,[]);
@@ -39,9 +39,9 @@ $ZMI.registerReady(function(){
 					});
 					var index = bookmarks.indexOf(data_path);
 					if (index >= 0) {
-						$('.fa-bookmark',this).removeClass("far").addClass("fas text-primary");
+						$('.fa-bookmark',this).removeClass("far").addClass("fas");
 					} else {
-						$('.fa-bookmark',this).removeClass("fas text-primary").addClass("far text-muted");
+						$('.fa-bookmark',this).removeClass("fas").addClass("far");
 					}
 				});
 			}
@@ -64,7 +64,7 @@ $ZMI.registerReady(function(){
 						frames[i].zmiHistoryChanged();
 					}
 				}
-			} catch (e) { 
+			} catch (e) {
 			}
 		}
 	});
@@ -124,6 +124,17 @@ $ZMI.registerReady(function(){
 		}
 	});
 
+	// Toggle: LLM
+	$('a#navbar-llm').each(function() {
+		var $a = $(this);
+		if (self.window.parent.frames.length > 1 && typeof self.window.parent != "undefined" && typeof self.window.parent.frames.manage_llm != "undefined") {
+			$a.attr('target','_top');
+		}
+		else {
+			$a.attr('href',$a.attr('href')+'&dtpref_llm=1');
+		}
+	});
+
 	// Toggle: Lang
 	if (manage_menu) {
 		$('.zmi header a.toggle-lang').each(function() {
@@ -165,18 +176,27 @@ $ZMI.registerReady(function(){
 				print_url = url.replace('readme?', 'readme_html?');
 			}
 		}
-		zmiModal(null, {
-			id: 'zmiModalreadme',
-			title: title,
-			body: '<div class="p-3 text-center"><i class="text-primary fas fa-spinner fa-spin fa-3x"></i></div>',
-			modal: 'show'
-		});
 		$.get(url, '', function(data) {
-			$('#zmiModalreadme .modal-body').html(data);
+            // if readme starts with a link, open it in a new tab
+            // otherwise show modal with rendered markdown content
+            const match = data.match(/<p>(https?:\/\/[^\s<"]+)/);
+            const url = match?.[1];
+            if (url) {
+                window.open(url, '_blank');
+            }
+            else {
+                zmiModal(null, {
+                    id: 'zmiModalreadme',
+                    title: title,
+                    body: '<div class="p-3 text-center"><i class="text-primary fas fa-circle-notch fa-spin fa-3x"></i></div>',
+                    modal: 'show'
+                });
+                $('#zmiModalreadme .modal-body').html(data);
+                document.body.style.paddingRight = '0px'; // Fix scrollbar shift when opening modal
+                // Add print button to modal footer
+                $('#zmiModalreadme .modal-footer').html('<a href="'+print_url+'" target="_blank" class="btn btn-secondary" title="Print/HTML"><i class="fas fa-print"></i></a>');
+            }
 		});
-		document.body.style.paddingRight = '0px'; // Fix scrollbar shift when opening modal
-		// Add print button to modal footer
-		$('#zmiModalreadme .modal-footer').html('<a href="'+print_url+'" target="_blank" class="btn btn-secondary" title="Print/HTML"><i class="fas fa-print"></i></a>');
 	});
 
 	// Tooltip
@@ -733,7 +753,7 @@ ZMI.prototype.initInputFields = function(container) {
 					else if (nodeName=="select") {
 						isBlank =  (($("option:selected",$control).length==0)
 							|| ($("option:selected",$control).length==1 && $("option:selected",$control).attr("value")==""))
-							&& !$control.attr("disabled")=="disabled";
+							&& $control.attr("disabled")!="disabled";
 					}
 					if (isBlank) {
 						$controlGroup.addClass("has-error");
@@ -749,7 +769,7 @@ ZMI.prototype.initInputFields = function(container) {
 						if (typeof dataExclude != "undefined") {
 							var excludeList = dataExclude.split(",");
 							var v = $control.val();
-							if ($.inArray(v,excludeList)) {
+							if ($.inArray(v,excludeList) !== -1) {
 								$controlGroup.addClass("has-error");
 							}
 						}

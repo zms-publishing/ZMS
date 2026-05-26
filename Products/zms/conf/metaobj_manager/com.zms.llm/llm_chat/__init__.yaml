@@ -1,0 +1,56 @@
+llm_chat:
+  access:
+    insert_custom: '{$}'
+  enabled: 1
+  name: LLM-Chat
+  package: com.zms.llm
+  revision: 0.0.1
+  type: ZMSObject
+  Attrs:
+    - id: icon_clazz
+      name: Icon (Class)
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: constant
+      custom: fas fa-robot
+    - id: title
+      name: Title
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: string
+      default: AI Assistant
+    - id: placeholder
+      name: Placeholder
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: string
+      default: Ask me anything…
+    - id: welcome_text
+      name: Welcome Text
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: text
+      default: Hello! Ask me a question.
+    - id: agent_mode_supported
+      name: Agent Mode Supported
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: boolean
+      default: 0
+    - id: interface0
+      name: interface0
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: interface
+    - id: standard_html
+      name: 'Template: LLM-Chat'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: zpt

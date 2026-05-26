@@ -35,7 +35,7 @@ class RepositoryUtilTest(ZMSTestCase):
     if not providers:
       return None
 
-    files = repositoryutil.localFiles(self.context, providers[0])
+    files = repositoryutil.get_modelfileset_from_zodb(self.context, providers[0])
     if not files:
       return None
 
@@ -60,41 +60,47 @@ class RepositoryUtilTest(ZMSTestCase):
     self.assertEqual('DemoClass', c.__name__)
     self.assertEqual(42, c().value)
 
-  def test_parseInit(self):
+  def test_read_file_from_disk(self):
     content = "# -*- coding: utf-8 -*-\nmsg = 'äöü'\n"
-    with tempfile.NamedTemporaryFile(mode='wb', delete=False) as f:
+    with tempfile.NamedTemporaryFile(mode='wb', delete=False, suffix='.py') as f:
       f.write(content.encode('utf-8'))
       filepath = f.name
     try:
-      actual = repositoryutil.parseInit(self.context, filepath)
+      dirpath = os.path.dirname(filepath)
+      filename = os.path.basename(filepath)
+      actual = repositoryutil.read_file_from_disk(self.context, dirpath, filename)
       self.assertEqual(content, actual)
     finally:
       if os.path.exists(filepath):
         os.remove(filepath)
 
-  def test_remoteFiles_non_existing_basepath(self):
-    actual = repositoryutil.remoteFiles(self.context, '/path/does/not/exist', deep=True)
+  def test_read_file_from_disk_missing_file(self):
+    actual = repositoryutil.read_file_from_disk(self.context, '/tmp', 'nonexistent_file_12345.txt')
+    self.assertIsNone(actual)
+
+  def test_get_modelfileset_from_disk_non_existing_basepath(self):
+    actual = repositoryutil.get_modelfileset_from_disk(self.context, '/path/does/not/exist', deep=True)
     self.assertEqual({}, actual)
 
-  def test_readRepository_non_existing_basepath(self):
-    actual = repositoryutil.readRepository(self.context, '/path/does/not/exist', deep=True)
+  def test_get_models_from_disk_non_existing_basepath(self):
+    actual = repositoryutil.get_models_from_disk(self.context, '/path/does/not/exist', deep=True)
     self.assertEqual({}, actual)
 
   def test_get_providers(self):
     actual = repositoryutil.get_providers(self.context)
     self.assertIsInstance(actual, list)
 
-  def test_localFiles(self):
+  def test_get_modelfileset_from_zodb(self):
     providers = repositoryutil.get_providers(self.context)
     if not providers:
       self.skipTest('No repository providers available in test fixture')
-    actual = repositoryutil.localFiles(self.context, providers[0])
+    actual = repositoryutil.get_modelfileset_from_zodb(self.context, providers[0])
     self.assertIsInstance(actual, dict)
 
-  def test_init_artefacts(self):
+  def test_create_modelfileset(self):
     o = {}
     init_files = {}
-    actual = repositoryutil.init_artefacts(o, init_files)
+    actual = repositoryutil.create_modelfileset(o, init_files)
     self.assertIsInstance(actual, dict)
     self.assertEqual({}, actual)
 

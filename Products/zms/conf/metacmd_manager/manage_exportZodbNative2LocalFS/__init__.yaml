@@ -1,0 +1,16 @@
+manage_exportZodbNative2LocalFS:
+  acquired: 0
+  action: '%smanage_executeMetacmd?id=manage_exportZodbNative2LocalFS'
+  execution: 0
+  icon_clazz: fas fa-file-export text-danger
+  meta_types:
+    - ZMS
+  name: Export ZODB to LocalFS
+  nodes: '{$}'
+  revision: 5.0.1
+  roles:
+    - ZMSAdministrator
+  title: Export ZODB to LocalFS
+  Impl:
+    - id: manage_exportZodbNative2LocalFS
+      type: External Method

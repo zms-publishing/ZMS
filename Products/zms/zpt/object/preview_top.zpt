@@ -55,8 +55,9 @@
 <header class="navbar navbar-nav navbar-expand navbar-dark flex-row justify-content-between bd-navbar">
 	<tal:block tal:content="structure python:here.zmi_navbar_brand(here,request)">zmi_navbar_brand</tal:block>
 	<div class="float-right">
-		<a tal:attributes="href python:'manage_main?lang=%s'%request.get('lang','ger')" target="_parent">
-			<tal:block tal:content="python:'%s %s %s'%(here.getZMILangStr('BACK'),here.getZMILangStr('TO'),here.display_type())">back to display_type</tal:block>
+		<a target="_parent" tal:attributes="href python:'manage_main?lang=%s'%request.get('lang','ger')" 
+			tal:content="structure python:'%s %s %s'%(here.getZMILangStr('BACK'),here.getZMILangStr('TO'),here.display_type())">
+			back to display_type
 		</a>
 		<a id="preview" href="javascript:;" onclick="open_preview(this);">
 			<tal:block tal:content="python:here.getZMILangStr('TAB_PREVIEW')">preview</tal:block>

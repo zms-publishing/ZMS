@@ -1,0 +1,23 @@
+<tal:block metal:define-macro="toc" tal:omit-tag="">
+	<section class="virtum-toc"
+		tal:define="child_nodes python:[node for node in zmscontext.filteredChildNodes(request, zmscontext.PAGES) if node.attr('attr_dc_type') != 'Resource']"
+		tal:condition="child_nodes">
+		<h3>Continue exploring</h3>
+		<div class="virtum-toc-grid">
+			<a class="virtum-toc-card" href="#" tal:repeat="child_node child_nodes" tal:attributes="href python:child_node.getHref2IndexHtml(request)">
+				<h4 tal:content="python:child_node.getTitle(request)">TITLE</h4>
+				<p tal:on-error="string: <!-- ERROR Description-->"
+					tal:define="description python:child_node.attr('attr_dc_description'); text python:zmscontext.re_sub(r'<[^<]+?>', '', child_node.getBodyContent(request))"
+					tal:content="python:description and description or (len(text) &gt; 16 and '%s ...'%(str(text)[0:180]) or '')">
+					DESCRIPTION
+				</p>
+			</a>
+		</div>
+	</section>
+</tal:block>
+
+<footer class="virtum-footer-panel" 
+	style="width:100%;margin:0;border-top:1px solid #62ff88" 
+	metal:define-macro="footer">
+	<p class="wp-block-paragraph"><span>&copy;</span> <span tal:replace="python:context.ZopeTime().strftime('%Y')">2026</span> <span tal:content="python:zmsclient.getTitlealt(request)">ZMS</span></p>
+</footer>

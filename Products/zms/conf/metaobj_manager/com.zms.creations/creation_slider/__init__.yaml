@@ -1,0 +1,34 @@
+creation_slider:
+  access:
+    insert_custom: '{$}'
+  enabled: 1
+  name: Creation Slider
+  package: com.zms.creations
+  revision: 1.0.0
+  type: ZMSObject
+  Attrs:
+    - id: icon_clazz
+      name: Icon (Class)
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: constant
+      custom: fas fa-chevron-circle-right
+    - id: style.css
+      name: 'Style (CSS)'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: resource
+    - id: items
+      name: Slider Items
+      mandatory: 0
+      multilang: 0
+      repetitive: 1
+      type: creation_slider_item
+    - id: standard_html
+      name: 'Template: Creation Slider'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: zpt

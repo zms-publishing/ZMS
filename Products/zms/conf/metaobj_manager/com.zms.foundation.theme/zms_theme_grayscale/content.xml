@@ -1,0 +1,812 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ZMS uid="uid:2c88a42f-8b7c-410d-a8d5-9bb7194d7110" id_fix="content">
+  <attr_dc_coverage>global.ger</attr_dc_coverage>
+  <created_uid>admin</created_uid>
+  <created_dt>
+2026-03-24T11:30:00+01:00</created_dt>
+  <change_uid><lang>admin</lang></change_uid>
+  <change_dt><lang>
+2026-03-24T11:30:00+01:00</lang></change_dt>
+  <active><lang>1</lang></active>
+  <titlealt><lang><![CDATA[ZMS]]></lang></titlealt>
+  <title><lang><![CDATA[ZMS - The Python CMS]]></lang></title>
+  <attr_dc_description><lang><![CDATA[The Python-based CMS for multilingual, multisite publishing, structured content modelling, and interoperable digital platforms.]]></lang></attr_dc_description>
+  <attr_dc_type><lang>Home</lang></attr_dc_type>
+  <titleimage><lang>
+<data width="2311" height="1042" content_type="image/jpeg" filename="e12/e42/geopark2.jpg"></data></lang></titleimage>
+
+  <ZMSTextarea uid="uid:0fef2861-a0af-4d95-b8d5-f8b987093cc1" id="e1" id_prefix="e">
+    <attr_dc_coverage>global.ger</attr_dc_coverage>
+    <created_uid>admin</created_uid>
+    <created_dt>
+2026-03-24T11:30:00+01:00</created_dt>
+    <change_uid><lang>admin</lang></change_uid>
+    <change_dt><lang>
+2026-03-24T11:30:00+01:00</lang></change_dt>
+    <active><lang>1</lang></active>
+    <format>wysiwyg</format>
+    <text><lang><![CDATA[
+<h2>Why teams choose ZMS</h2>
+<p>ZMS is the Python-based Content Management and E-Publishing System for science, technology and medicine. It combines a simple editorial interface with a flexible content model for websites, documentation portals, institutional platforms and knowledge-driven publishing workflows.</p>
+<p>This demo content is tailored to the Grayscale templateset and highlights the strengths that matter most in professional projects: multilingual delivery, multisite governance, easy content modelling, XML import and export, and open interoperability with surrounding systems.</p>
+]]></lang></text>
+  </ZMSTextarea>
+
+  <ZMSLinkContainer uid="uid:e5547e9d-b757-4923-9acb-894d36d3add0" id="e2" id_prefix="e">
+    <attr_dc_coverage>global.ger</attr_dc_coverage>
+    <created_uid>admin</created_uid>
+    <created_dt>
+2026-03-24T11:31:00+01:00</created_dt>
+    <change_uid><lang>admin</lang></change_uid>
+    <change_dt><lang>
+2026-03-24T11:31:00+01:00</lang></change_dt>
+    <active><lang>1</lang></active>
+    <align>LEFT</align>
+    <ZMSLinkElement uid="uid:119e37e1-1750-4248-a5e2-630aa8fa9654" id="e3" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>admin</created_uid>
+      <created_dt>
+2026-03-24T11:31:00+01:00</created_dt>
+      <change_uid><lang>admin</lang></change_uid>
+      <change_dt><lang>
+2026-03-24T11:31:00+01:00</lang></change_dt>
+      <active><lang>1</lang></active>
+      <titlealt><lang><![CDATA[Overview]]></lang></titlealt>
+      <title><lang><![CDATA[Overview]]></lang></title>
+      <attr_ref>{$__e12__}</attr_ref>
+      <attr_type>replace</attr_type>
+      <align>LEFT</align>
+    </ZMSLinkElement>
+    <ZMSLinkElement uid="uid:3e733d8b-ec41-402e-804b-ad6e2f4e93a6" id="e4" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>admin</created_uid>
+      <created_dt>
+2026-03-24T11:31:00+01:00</created_dt>
+      <change_uid><lang>admin</lang></change_uid>
+      <change_dt><lang>
+2026-03-24T11:31:00+01:00</lang></change_dt>
+      <active><lang>1</lang></active>
+      <titlealt><lang><![CDATA[Multilingual &amp; Multisites]]></lang></titlealt>
+      <title><lang><![CDATA[Multilingual &amp; Multisites]]></lang></title>
+      <attr_ref>{$__e22__}</attr_ref>
+      <attr_type>replace</attr_type>
+      <align>LEFT</align>
+    </ZMSLinkElement>
+    <ZMSLinkElement uid="uid:3b75dfe6-3b75-4f41-b5ec-0c413f013d3d" id="e5" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>admin</created_uid>
+      <created_dt>
+2026-03-24T11:31:00+01:00</created_dt>
+      <change_uid><lang>admin</lang></change_uid>
+      <change_dt><lang>
+2026-03-24T11:31:00+01:00</lang></change_dt>
+      <active><lang>1</lang></active>
+      <titlealt><lang><![CDATA[Easy Content Modelling]]></lang></titlealt>
+      <title><lang><![CDATA[Easy Content Modelling]]></lang></title>
+      <attr_ref>{$__e34__}</attr_ref>
+      <attr_type>replace</attr_type>
+      <align>LEFT</align>
+    </ZMSLinkElement>
+    <ZMSLinkElement uid="uid:5f616512-a884-4dc6-8814-f5216404e298" id="e6" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>admin</created_uid>
+      <created_dt>
+2026-03-24T11:31:00+01:00</created_dt>
+      <change_uid><lang>admin</lang></change_uid>
+      <change_dt><lang>
+2026-03-24T11:31:00+01:00</lang></change_dt>
+      <active><lang>1</lang></active>
+      <titlealt><lang><![CDATA[Interoperability]]></lang></titlealt>
+      <title><lang><![CDATA[Interoperability]]></lang></title>
+      <attr_ref>{$__e45__}</attr_ref>
+      <attr_type>replace</attr_type>
+      <align>LEFT</align>
+    </ZMSLinkElement>
+    <ZMSLinkElement uid="uid:702235f3-a0d0-444a-8b96-71457368e4f1" id="e7" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>admin</created_uid>
+      <created_dt>
+2026-03-24T11:31:00+01:00</created_dt>
+      <change_uid><lang>admin</lang></change_uid>
+      <change_dt><lang>
+2026-03-24T11:31:00+01:00</lang></change_dt>
+      <active><lang>1</lang></active>
+      <titlealt><lang><![CDATA[Get Started]]></lang></titlealt>
+      <title><lang><![CDATA[Get Started]]></lang></title>
+      <attr_ref>{$__e57__}</attr_ref>
+      <attr_type>replace</attr_type>
+      <align>LEFT</align>
+    </ZMSLinkElement>
+  </ZMSLinkContainer>
+
+  <ZMSTextarea uid="uid:c85d90ca-14f0-4600-bb08-d0f6f7e91b95" id="e8" id_prefix="e">
+    <attr_dc_coverage>global.ger</attr_dc_coverage>
+    <created_uid>admin</created_uid>
+    <created_dt>
+2026-03-24T11:32:00+01:00</created_dt>
+    <change_uid><lang>admin</lang></change_uid>
+    <change_dt><lang>
+2026-03-24T11:32:00+01:00</lang></change_dt>
+    <active><lang>1</lang></active>
+    <format>wysiwyg</format>
+    <text><lang><![CDATA[
+<h2>Table of Contents</h2>
+<ol>
+  <li>Overview: the editorial promise of ZMS and the reason it fits demanding publishing projects.</li>
+  <li>Multilingual &amp; Multisites: one platform for many languages, brands, departments and partner organisations.</li>
+  <li>Easy Content Modelling: object-based structures that help teams design content once and publish it consistently.</li>
+  <li>Interoperability: XML import and export, REST access, Python extensibility and clear integration boundaries.</li>
+  <li>Get Started: installation, community, governance and project information.</li>
+</ol>
+<p>The sections below are designed as a promotional website for <strong>ZMS - The Python CMS</strong>. They can be imported directly as a starter site and then adapted to your own messaging, audiences and navigation strategy.</p>
+]]></lang></text>
+  </ZMSTextarea>
+
+  <ZMSFolder uid="uid:1361ec8a-3328-4f63-b03c-2fc7cfd66369" id="e12" id_prefix="e">
+    <attr_dc_coverage>global.ger</attr_dc_coverage>
+    <created_uid>admin</created_uid>
+    <created_dt>
+2026-03-24T11:33:00+01:00</created_dt>
+    <change_uid><lang>admin</lang></change_uid>
+    <change_dt><lang>
+2026-03-24T11:33:00+01:00</lang></change_dt>
+    <active><lang>1</lang></active>
+    <titlealt><lang>Overview</lang></titlealt>
+    <title><lang><![CDATA[Why ZMS is built for complex publishing]]></lang></title>
+    <attr_dc_description><lang><![CDATA[ZMS combines a simple editorial experience with a content architecture that stays maintainable as sites, languages and teams grow.]]></lang></attr_dc_description>
+    <ZMSTextarea uid="uid:c0708bb1-8304-48e9-955b-df357f1642bf" id="e13" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>admin</created_uid>
+      <created_dt>
+2026-03-24T11:33:00+01:00</created_dt>
+      <change_uid><lang>admin</lang></change_uid>
+      <change_dt><lang>
+2026-03-24T11:33:00+01:00</lang></change_dt>
+      <active><lang>1</lang></active>
+      <format>wysiwyg</format>
+      <text><lang><![CDATA[
+<p>ZMS is designed for organisations that need more than a page builder but less ceremony than a highly customised enterprise suite. It focuses on structured content, editorial productivity and long-term maintainability. That makes it a strong fit for research networks, universities, associations, public institutions and specialist knowledge platforms.</p>
+<p>Instead of treating content as isolated pages, ZMS treats it as reusable objects with metadata, workflow and export capabilities. This gives project teams a practical way to manage growth without losing consistency.</p>
+]]></lang></text>
+    </ZMSTextarea>
+    <ZMSGraphic uid="uid:c14da86d-322a-44b8-aa1f-fb19e899c88c" id="e53" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>admin</created_uid>
+      <created_dt>
+2026-03-24T11:33:00+01:00</created_dt>
+      <change_uid><lang>admin</lang></change_uid>
+      <change_dt><lang>
+2026-03-24T11:33:00+01:00</lang></change_dt>
+      <active><lang>1</lang></active>
+      <displaytype>2</displaytype>
+      <img><lang>
+<data width="800" height="473" content_type="image/jpeg" filename="e12/e53/ntpu_computer_center.jpg"></data></lang></img>
+      <img_attrs_spec>alt="Editorial calm and focus with ZMS"</img_attrs_spec>
+      <align>LEFT</align>
+      <text><lang><![CDATA[<p>ZMS helps teams create space for editorial work instead of fighting the CMS.</p>]]></lang></text>
+      <format>wysiwyg</format>
+      <textalign>LEFT</textalign>
+    </ZMSGraphic>
+    <ZMSDocument uid="uid:9f66cfef-cb59-4182-ac84-91681891806b" id="e40" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>admin</created_uid>
+      <created_dt>
+2026-03-24T11:34:00+01:00</created_dt>
+      <change_uid><lang>admin</lang></change_uid>
+      <change_dt><lang>
+2026-03-24T11:34:00+01:00</lang></change_dt>
+      <active><lang>1</lang></active>
+      <titlealt><lang><![CDATA[Editorial Experience]]></lang></titlealt>
+      <title><lang><![CDATA[A CMS that respects editorial workflows]]></lang></title>
+      <attr_dc_description><lang><![CDATA[Editors work with clear content objects, straightforward forms and a publishing process that scales from small teams to distributed organisations.]]></lang></attr_dc_description>
+      <ZMSTextarea uid="uid:daf42c7c-f150-4b58-9d51-a810cbe5e646" id="e41" id_prefix="e">
+        <attr_dc_coverage>global.ger</attr_dc_coverage>
+        <created_uid>admin</created_uid>
+        <created_dt>
+2026-03-24T11:34:00+01:00</created_dt>
+        <change_uid><lang>admin</lang></change_uid>
+        <change_dt><lang>
+2026-03-24T11:34:00+01:00</lang></change_dt>
+        <active><lang>1</lang></active>
+        <format>wysiwyg</format>
+        <text><lang><![CDATA[
+<p>ZMS emphasises a simple editing interface. Editorial users can focus on writing, classifying and updating content without becoming accidental system integrators. Structured objects, metadata and reusable page elements reduce manual duplication and help teams work faster with fewer inconsistencies.</p>
+<p>For project owners, this means shorter onboarding time, less friction in day-to-day publishing and a more reliable editorial outcome across departments and locales.</p>
+]]></lang></text>
+      </ZMSTextarea>
+    </ZMSDocument>
+    <ZMSDocument uid="uid:790c9291-d4be-4e5d-9df8-66a0a4820c35" id="e42" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>admin</created_uid>
+      <created_dt>
+2026-03-24T11:35:00+01:00</created_dt>
+      <change_uid><lang>admin</lang></change_uid>
+      <change_dt><lang>
+2026-03-24T11:35:00+01:00</lang></change_dt>
+      <active><lang>1</lang></active>
+      <titlealt><lang><![CDATA[Open Foundation]]></lang></titlealt>
+      <title><lang><![CDATA[Python-based, open, adaptable]]></lang></title>
+      <titleimage><lang>
+<data width="2311" height="1042" content_type="image/jpeg" filename="e12/e42/geopark2.jpg"></data></lang></titleimage>
+      <attr_dc_description><lang><![CDATA[ZMS runs on Python and is openly developed, giving teams a transparent platform for long-lived web and publishing solutions.]]></lang></attr_dc_description>
+      <ZMSTextarea uid="uid:5d0a0911-9b82-4b94-af8d-1d88fe9d93aa" id="e43" id_prefix="e">
+        <attr_dc_coverage>global.ger</attr_dc_coverage>
+        <created_uid>admin</created_uid>
+        <created_dt>
+2026-03-24T11:35:00+01:00</created_dt>
+        <change_uid><lang>admin</lang></change_uid>
+        <change_dt><lang>
+2026-03-24T11:35:00+01:00</lang></change_dt>
+        <active><lang>1</lang></active>
+        <format>wysiwyg</format>
+        <text><lang><![CDATA[
+<p>ZMS is Python-based and built for extension. Organisations can start with the standard product and then refine workflows, templates, object types or integration points as the platform matures. Because the stack is open and code-centric, it remains inspectable, testable and maintainable over time.</p>
+<p>That combination of openness and editorial pragmatism is one of the reasons ZMS has been used for demanding publishing contexts over many years.</p>
+]]></lang></text>
+      </ZMSTextarea>
+    </ZMSDocument>
+  </ZMSFolder>
+
+  <ZMSFolder uid="uid:6c3dd777-ec8f-411d-902c-f6605ca0c8dd" id="e22" id_prefix="e">
+    <attr_dc_coverage>global.ger</attr_dc_coverage>
+    <created_uid>admin</created_uid>
+    <created_dt>
+2026-03-24T11:36:00+01:00</created_dt>
+    <change_uid><lang>admin</lang></change_uid>
+    <change_dt><lang>
+2026-03-24T11:36:00+01:00</lang></change_dt>
+    <active><lang>1</lang></active>
+    <titlealt><lang>Multilingual &amp; Multisites</lang></titlealt>
+    <title><lang><![CDATA[One platform for many languages, brands and teams]]></lang></title>
+    <attr_dc_description><lang><![CDATA[ZMS supports multilingual content and multisite structures so organisations can manage central governance with local editorial responsibility.]]></lang></attr_dc_description>
+    <ZMSTextarea uid="uid:af598bed-ae55-4a67-b618-c5375e3d8766" id="e23" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>admin</created_uid>
+      <created_dt>
+2026-03-24T11:36:00+01:00</created_dt>
+      <change_uid><lang>admin</lang></change_uid>
+      <change_dt><lang>
+2026-03-24T11:36:00+01:00</lang></change_dt>
+      <active><lang>1</lang></active>
+      <format>wysiwyg</format>
+      <text><lang><![CDATA[
+<p>International organisations rarely publish in just one language or for just one audience. ZMS addresses this directly with multilingual fields, site structures and publication models that make central oversight compatible with local ownership.</p>
+<p>Whether you are managing one global portal with multiple language layers or a family of related institutional sites, ZMS helps you keep design, governance and content logic aligned.</p>
+]]></lang></text>
+    </ZMSTextarea>
+    <ZMSDocument uid="uid:7d7c036b-f675-4922-b193-d00f6c639ea0" id="e25" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>admin</created_uid>
+      <created_dt>
+2026-03-24T11:37:00+01:00</created_dt>
+      <change_uid><lang>admin</lang></change_uid>
+      <change_dt><lang>
+2026-03-24T11:37:00+01:00</lang></change_dt>
+      <active><lang>1</lang></active>
+      <titlealt><lang><![CDATA[Language Variants]]></lang></titlealt>
+      <title><lang><![CDATA[Language-specific content without parallel chaos]]></lang></title>
+      <attr_dc_description><lang><![CDATA[Store language-specific titles, descriptions and body content in one structured system instead of splitting them into disconnected site copies.]]></lang></attr_dc_description>
+      <ZMSTextarea uid="uid:40f59344-b819-4d82-9cd3-1cb0d6b8f4b5" id="e26" id_prefix="e">
+        <attr_dc_coverage>global.ger</attr_dc_coverage>
+        <created_uid>admin</created_uid>
+        <created_dt>
+2026-03-24T11:37:00+01:00</created_dt>
+        <change_uid><lang>admin</lang></change_uid>
+        <change_dt><lang>
+2026-03-24T11:37:00+01:00</lang></change_dt>
+        <active><lang>1</lang></active>
+        <format>wysiwyg</format>
+        <text><lang><![CDATA[
+<p>ZMS allows content values to be language-specific while keeping the underlying information architecture coherent. Editors can maintain translated titles, summaries and bodies in a controlled environment, while project owners still work with one platform, one model and one publication process.</p>
+]]></lang></text>
+      </ZMSTextarea>
+    </ZMSDocument>
+    <ZMSDocument uid="uid:1acc10a8-31c1-4936-afd7-9fbd438adf54" id="e28" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>admin</created_uid>
+      <created_dt>
+2026-03-24T11:38:00+01:00</created_dt>
+      <change_uid><lang>admin</lang></change_uid>
+      <change_dt><lang>
+2026-03-24T11:38:00+01:00</lang></change_dt>
+      <active><lang>1</lang></active>
+      <titlealt><lang><![CDATA[Site Families]]></lang></titlealt>
+      <title><lang><![CDATA[Multisite governance with room for local identity]]></lang></title>
+      <attr_dc_description><lang><![CDATA[Use shared structures and templates across institutions, departments or programmes while still giving each site enough editorial autonomy.]]></lang></attr_dc_description>
+      <ZMSTextarea uid="uid:e160d007-e5ca-4634-921c-9d0c47f8f039" id="e29" id_prefix="e">
+        <attr_dc_coverage>global.ger</attr_dc_coverage>
+        <created_uid>admin</created_uid>
+        <created_dt>
+2026-03-24T11:38:00+01:00</created_dt>
+        <change_uid><lang>admin</lang></change_uid>
+        <change_dt><lang>
+2026-03-24T11:38:00+01:00</lang></change_dt>
+        <active><lang>1</lang></active>
+        <format>wysiwyg</format>
+        <text><lang><![CDATA[
+<p>ZMS is well suited to multisite scenarios: umbrella organisations, collaborative research projects, programme networks and regional branches can share a technical and editorial backbone without flattening their specific audiences or responsibilities.</p>
+]]></lang></text>
+      </ZMSTextarea>
+    </ZMSDocument>
+    <ZMSDocument uid="uid:de7a698f-28b0-4dc1-b34c-cd8256f40e37" id="e30" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>admin</created_uid>
+      <created_dt>
+2026-03-24T11:39:00+01:00</created_dt>
+      <change_uid><lang>admin</lang></change_uid>
+      <change_dt><lang>
+2026-03-24T11:39:00+01:00</lang></change_dt>
+      <active><lang>1</lang></active>
+      <titlealt><lang><![CDATA[Shared Governance]]></lang></titlealt>
+      <title><lang><![CDATA[Central standards, local publishing freedom]]></lang></title>
+      <attr_dc_description><lang><![CDATA[Combine shared taxonomies, metadata and workflows with decentralised editorial work in a way that keeps quality visible.]]></lang></attr_dc_description>
+      <ZMSTextarea uid="uid:5b2aeecb-a1ba-4bc7-87d4-d1712a745fe8" id="e31" id_prefix="e">
+        <attr_dc_coverage>global.ger</attr_dc_coverage>
+        <created_uid>admin</created_uid>
+        <created_dt>
+2026-03-24T11:39:00+01:00</created_dt>
+        <change_uid><lang>admin</lang></change_uid>
+        <change_dt><lang>
+2026-03-24T11:39:00+01:00</lang></change_dt>
+        <active><lang>1</lang></active>
+        <format>wysiwyg</format>
+        <text><lang><![CDATA[
+<p>Because content modelling, metadata and workflow live in the same environment, ZMS helps central teams define standards while allowing distributed editors to publish within a reliable framework. That is especially important for regulated, academic or publicly accountable organisations.</p>
+]]></lang></text>
+      </ZMSTextarea>
+    </ZMSDocument>
+    <ZMSDocument uid="uid:f2b5314c-1406-440d-849f-fd3da40fb078" id="e32" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>admin</created_uid>
+      <created_dt>
+2026-03-24T11:40:00+01:00</created_dt>
+      <change_uid><lang>admin</lang></change_uid>
+      <change_dt><lang>
+2026-03-24T11:40:00+01:00</lang></change_dt>
+      <active><lang>1</lang></active>
+      <titlealt><lang><![CDATA[Metadata Across Languages]]></lang></titlealt>
+      <title><lang><![CDATA[Searchable and structured across language boundaries]]></lang></title>
+      <attr_dc_description><lang><![CDATA[Multilingual publishing becomes more valuable when metadata, classification and structured content remain coherent across the whole platform.]]></lang></attr_dc_description>
+      <ZMSTextarea uid="uid:5e47115c-0862-4396-b7c8-b23a22d5a897" id="e33" id_prefix="e">
+        <attr_dc_coverage>global.ger</attr_dc_coverage>
+        <created_uid>admin</created_uid>
+        <created_dt>
+2026-03-24T11:40:00+01:00</created_dt>
+        <change_uid><lang>admin</lang></change_uid>
+        <change_dt><lang>
+2026-03-24T11:40:00+01:00</lang></change_dt>
+        <active><lang>1</lang></active>
+        <format>wysiwyg</format>
+        <text><lang><![CDATA[
+<p>ZMS is not only about translating visible copy. It also supports the underlying metadata and content structures that make multilingual sites usable, searchable and operationally manageable. This is where many publishing systems become fragile, and where ZMS is particularly strong.</p>
+]]></lang></text>
+      </ZMSTextarea>
+    </ZMSDocument>
+  </ZMSFolder>
+
+  <ZMSFolder uid="uid:0f0d793e-5dad-4c71-a8fb-b5b0a9ec713b" id="e34" id_prefix="e">
+    <attr_dc_coverage>global.ger</attr_dc_coverage>
+    <created_uid>admin</created_uid>
+    <created_dt>
+2026-03-24T11:41:00+01:00</created_dt>
+    <change_uid><lang>admin</lang></change_uid>
+    <change_dt><lang>
+2026-03-24T11:41:00+01:00</lang></change_dt>
+    <active><lang>1</lang></active>
+    <titlealt><lang>Easy Content Modelling</lang></titlealt>
+    <title><lang><![CDATA[Structure content the way your organisation actually works]]></lang></title>
+    <attr_dc_description><lang><![CDATA[ZMS turns content modelling into a practical editorial asset instead of an abstract architecture exercise.]]></lang></attr_dc_description>
+    <ZMSTextarea uid="uid:581c4336-2a80-4409-a8f8-df5b4120cb02" id="e35" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>admin</created_uid>
+      <created_dt>
+2026-03-24T11:41:00+01:00</created_dt>
+      <change_uid><lang>admin</lang></change_uid>
+      <change_dt><lang>
+2026-03-24T11:41:00+01:00</lang></change_dt>
+      <active><lang>1</lang></active>
+      <format>wysiwyg</format>
+      <text><lang><![CDATA[
+<p>ZMS has long positioned itself around simplified content modelling. The key idea is practical: model content in a way that supports editors, information architects and developers at the same time. Good structures should make publishing easier, not heavier.</p>
+<p>That is why ZMS works well when pages need to combine reusable objects, metadata-rich content and clear rendering logic.</p>
+]]></lang></text>
+    </ZMSTextarea>
+    <ZMSDocument uid="uid:a7e11dbf-c853-4889-b3f8-98b2ec3ca677" id="e36" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>admin</created_uid>
+      <created_dt>
+2026-03-24T11:42:00+01:00</created_dt>
+      <change_uid><lang>admin</lang></change_uid>
+      <change_dt><lang>
+2026-03-24T11:42:00+01:00</lang></change_dt>
+      <active><lang>1</lang></active>
+      <titlealt><lang><![CDATA[Model Once]]></lang></titlealt>
+      <title><lang><![CDATA[Model once, reuse everywhere]]></lang></title>
+      <attr_dc_description><lang><![CDATA[Define content types and editorial patterns once, then use them consistently across pages, sections and sites.]]></lang></attr_dc_description>
+      <ZMSTextarea uid="uid:c48eb4fa-eec3-4950-a4da-b0c831c19118" id="e37" id_prefix="e">
+        <attr_dc_coverage>global.ger</attr_dc_coverage>
+        <created_uid>admin</created_uid>
+        <created_dt>
+2026-03-24T11:42:00+01:00</created_dt>
+        <change_uid><lang>admin</lang></change_uid>
+        <change_dt><lang>
+2026-03-24T11:42:00+01:00</lang></change_dt>
+        <active><lang>1</lang></active>
+        <format>wysiwyg</format>
+        <text><lang><![CDATA[
+<p>Instead of rebuilding the same page logic in different corners of a project, ZMS lets teams define object patterns that can be reused. This improves quality, speeds up delivery and lowers the risk that information architecture drifts apart over time.</p>
+]]></lang></text>
+      </ZMSTextarea>
+    </ZMSDocument>
+    <ZMSDocument uid="uid:b317c79c-1dbe-4d1a-bb57-621a2abec3d8" id="e39" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>admin</created_uid>
+      <created_dt>
+2026-03-24T11:43:00+01:00</created_dt>
+      <change_uid><lang>admin</lang></change_uid>
+      <change_dt><lang>
+2026-03-24T11:43:00+01:00</lang></change_dt>
+      <active><lang>1</lang></active>
+      <titlealt><lang><![CDATA[Content Objects]]></lang></titlealt>
+      <title><lang><![CDATA[Page elements become manageable content objects]]></lang></title>
+      <attr_dc_description><lang><![CDATA[Move beyond unstructured rich text by combining text, graphics, links, sets and custom objects in a controllable model.]]></lang></attr_dc_description>
+      <ZMSTextarea uid="uid:ab4a8fd7-c4c7-4a59-b646-f1c6ff48d873" id="e40" id_prefix="e">
+        <attr_dc_coverage>global.ger</attr_dc_coverage>
+        <created_uid>admin</created_uid>
+        <created_dt>
+2026-03-24T11:43:00+01:00</created_dt>
+        <change_uid><lang>admin</lang></change_uid>
+        <change_dt><lang>
+2026-03-24T11:43:00+01:00</lang></change_dt>
+        <active><lang>1</lang></active>
+        <format>wysiwyg</format>
+        <text><lang><![CDATA[
+<p>ZMS supports structured content objects such as rich text, graphics, link collections and sets. This makes page construction more modular and more governable than a one-field page model. Editors gain flexibility, while system owners keep control over what can be created and how it is rendered.</p>
+]]></lang></text>
+      </ZMSTextarea>
+    </ZMSDocument>
+    <ZMSDocument uid="uid:8d6fefef-bdf7-41f4-b8ea-86bbd9d4f084" id="e41" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>admin</created_uid>
+      <created_dt>
+2026-03-24T11:44:00+01:00</created_dt>
+      <change_uid><lang>admin</lang></change_uid>
+      <change_dt><lang>
+2026-03-24T11:44:00+01:00</lang></change_dt>
+      <active><lang>1</lang></active>
+      <titlealt><lang><![CDATA[Editor-Friendly Structures]]></lang></titlealt>
+      <title><lang><![CDATA[Structures that help editors instead of slowing them down]]></lang></title>
+      <attr_dc_description><lang><![CDATA[The best content model is one that remains understandable to editorial teams while still supporting quality and automation.]]></lang></attr_dc_description>
+      <ZMSTextarea uid="uid:59cb01d8-2dc3-4558-b0cf-7f838b238da6" id="e42" id_prefix="e">
+        <attr_dc_coverage>global.ger</attr_dc_coverage>
+        <created_uid>admin</created_uid>
+        <created_dt>
+2026-03-24T11:44:00+01:00</created_dt>
+        <change_uid><lang>admin</lang></change_uid>
+        <change_dt><lang>
+2026-03-24T11:44:00+01:00</lang></change_dt>
+        <active><lang>1</lang></active>
+        <format>wysiwyg</format>
+        <text><lang><![CDATA[
+<p>In ZMS, content modelling is not only for developers. It is a practical tool for editorial clarity. Teams can understand what belongs where, which metadata matter, and how content should be reused. That reduces training effort and makes quality assurance easier.</p>
+]]></lang></text>
+      </ZMSTextarea>
+    </ZMSDocument>
+    <ZMSDocument uid="uid:f0fe45db-c9ca-4444-96f2-4fdf5e6790ad" id="e43" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>admin</created_uid>
+      <created_dt>
+2026-03-24T11:45:00+01:00</created_dt>
+      <change_uid><lang>admin</lang></change_uid>
+      <change_dt><lang>
+2026-03-24T11:45:00+01:00</lang></change_dt>
+      <active><lang>1</lang></active>
+      <titlealt><lang><![CDATA[Evolution]]></lang></titlealt>
+      <title><lang><![CDATA[Grow from prototype to production without rewriting everything]]></lang></title>
+      <attr_dc_description><lang><![CDATA[ZMS supports iterative platform growth, so your content model can mature with the project rather than be frozen too early.]]></lang></attr_dc_description>
+      <ZMSTextarea uid="uid:f0f0a2f3-c04b-4c5d-b457-c91f35058da2" id="e44" id_prefix="e">
+        <attr_dc_coverage>global.ger</attr_dc_coverage>
+        <created_uid>admin</created_uid>
+        <created_dt>
+2026-03-24T11:45:00+01:00</created_dt>
+        <change_uid><lang>admin</lang></change_uid>
+        <change_dt><lang>
+2026-03-24T11:45:00+01:00</lang></change_dt>
+        <active><lang>1</lang></active>
+        <format>wysiwyg</format>
+        <text><lang><![CDATA[
+<p>Projects often start with a limited scope and then expand. Because ZMS is built around modular content structures, teams can refine templates, object types and workflows over time instead of reaching a dead end after the first launch.</p>
+]]></lang></text>
+      </ZMSTextarea>
+    </ZMSDocument>
+  </ZMSFolder>
+
+  <ZMSFolder uid="uid:d522555f-344a-4191-8d83-e99288fd634f" id="e45" id_prefix="e">
+    <attr_dc_coverage>global.ger</attr_dc_coverage>
+    <created_uid>admin</created_uid>
+    <created_dt>
+2026-03-24T11:46:00+01:00</created_dt>
+    <change_uid><lang>admin</lang></change_uid>
+    <change_dt><lang>
+2026-03-24T11:46:00+01:00</lang></change_dt>
+    <active><lang>1</lang></active>
+    <titlealt><lang>Interoperability</lang></titlealt>
+    <title><lang><![CDATA[Open interfaces for real-world platform ecosystems]]></lang></title>
+    <attr_dc_description><lang><![CDATA[ZMS supports XML import and export, Python-based extension and REST-oriented integration patterns for sustainable interoperability.]]></lang></attr_dc_description>
+    <ZMSTextarea uid="uid:bfd9f7d5-0c1f-4dca-a7e4-2a5d6c44d00d" id="e46" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>admin</created_uid>
+      <created_dt>
+2026-03-24T11:46:00+01:00</created_dt>
+      <change_uid><lang>admin</lang></change_uid>
+      <change_dt><lang>
+2026-03-24T11:46:00+01:00</lang></change_dt>
+      <active><lang>1</lang></active>
+      <format>wysiwyg</format>
+      <text><lang><![CDATA[
+<p>ZMS is not intended to trap your content inside a presentation layer. It is built for exchange, automation and extension. This is essential for modern publishing where websites must cooperate with search, archive, repository, CRM, intranet, API and analytics systems.</p>
+]]></lang></text>
+    </ZMSTextarea>
+    <ZMSDocument uid="uid:524a5613-ebfc-4fd7-ab3a-dc809f7be04e" id="e48" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>admin</created_uid>
+      <created_dt>
+2026-03-24T11:47:00+01:00</created_dt>
+      <change_uid><lang>admin</lang></change_uid>
+      <change_dt><lang>
+2026-03-24T11:47:00+01:00</lang></change_dt>
+      <active><lang>1</lang></active>
+      <titlealt><lang><![CDATA[XML Import/Export]]></lang></titlealt>
+      <title><lang><![CDATA[Structured XML import and export]]></lang></title>
+      <attr_dc_description><lang><![CDATA[ZMS includes XML import and export capabilities that support migration, interchange and reproducible publishing pipelines.]]></lang></attr_dc_description>
+      <ZMSTextarea uid="uid:2578065c-42ad-4636-b7f4-e8549a7e5c2b" id="e49" id_prefix="e">
+        <attr_dc_coverage>global.ger</attr_dc_coverage>
+        <created_uid>admin</created_uid>
+        <created_dt>
+2026-03-24T11:47:00+01:00</created_dt>
+        <change_uid><lang>admin</lang></change_uid>
+        <change_dt><lang>
+2026-03-24T11:47:00+01:00</lang></change_dt>
+        <active><lang>1</lang></active>
+        <format>wysiwyg</format>
+        <text><lang><![CDATA[
+<p>Importable XML structures are a core ZMS capability. They make it possible to bootstrap new sites, exchange content with external systems, build migration processes and manage repeatable delivery scenarios. This theme demo itself is delivered that way.</p>
+]]></lang></text>
+      </ZMSTextarea>
+    </ZMSDocument>
+    <ZMSDocument uid="uid:03c33973-3e63-4bf3-a0b0-cce5d7d11f1e" id="e51" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>admin</created_uid>
+      <created_dt>
+2026-03-24T11:48:00+01:00</created_dt>
+      <change_uid><lang>admin</lang></change_uid>
+      <change_dt><lang>
+2026-03-24T11:48:00+01:00</lang></change_dt>
+      <active><lang>1</lang></active>
+      <titlealt><lang><![CDATA[REST &amp; Automation]]></lang></titlealt>
+      <title><lang><![CDATA[REST access and automation-friendly integration]]></lang></title>
+      <attr_dc_description><lang><![CDATA[ZMS can participate in automated workflows and service-oriented architectures instead of becoming a manual island.]]></lang></attr_dc_description>
+      <ZMSTextarea uid="uid:f1188c06-4ef9-44b7-97e5-bfd1d01fba85" id="e52" id_prefix="e">
+        <attr_dc_coverage>global.ger</attr_dc_coverage>
+        <created_uid>admin</created_uid>
+        <created_dt>
+2026-03-24T11:48:00+01:00</created_dt>
+        <change_uid><lang>admin</lang></change_uid>
+        <change_dt><lang>
+2026-03-24T11:48:00+01:00</lang></change_dt>
+        <active><lang>1</lang></active>
+        <format>wysiwyg</format>
+        <text><lang><![CDATA[
+<p>With REST-oriented access patterns and clearly structured content objects, ZMS fits into modern platform landscapes. Teams can automate delivery, synchronise data and connect the CMS to surrounding tools without sacrificing editorial control.</p>
+]]></lang></text>
+      </ZMSTextarea>
+    </ZMSDocument>
+    <ZMSDocument uid="uid:7db73fa9-9792-48d2-b7dd-6c5de574f0af" id="e53" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>admin</created_uid>
+      <created_dt>
+2026-03-24T11:49:00+01:00</created_dt>
+      <change_uid><lang>admin</lang></change_uid>
+      <change_dt><lang>
+2026-03-24T11:49:00+01:00</lang></change_dt>
+      <active><lang>1</lang></active>
+      <titlealt><lang><![CDATA[Python Extension]]></lang></titlealt>
+      <title><lang><![CDATA[Python-native extension points]]></lang></title>
+      <attr_dc_description><lang><![CDATA[Because ZMS is Python-based, developers can build project-specific integrations and workflows in a familiar and durable environment.]]></lang></attr_dc_description>
+      <ZMSTextarea uid="uid:caeb845f-2ff1-414d-bdcc-b416789e88d5" id="e54" id_prefix="e">
+        <attr_dc_coverage>global.ger</attr_dc_coverage>
+        <created_uid>admin</created_uid>
+        <created_dt>
+2026-03-24T11:49:00+01:00</created_dt>
+        <change_uid><lang>admin</lang></change_uid>
+        <change_dt><lang>
+2026-03-24T11:49:00+01:00</lang></change_dt>
+        <active><lang>1</lang></active>
+        <format>wysiwyg</format>
+        <text><lang><![CDATA[
+<p>ZMS is not a sealed black box. Development teams can extend it in Python, align it with institutional processes and keep the implementation close to the rest of their application landscape. That makes customisation more transparent and less risky than ad hoc workarounds.</p>
+]]></lang></text>
+      </ZMSTextarea>
+    </ZMSDocument>
+    <ZMSDocument uid="uid:1eb0abf6-f7ff-48e8-964b-fc0195a86841" id="e55" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>admin</created_uid>
+      <created_dt>
+2026-03-24T11:50:00+01:00</created_dt>
+      <change_uid><lang>admin</lang></change_uid>
+      <change_dt><lang>
+2026-03-24T11:50:00+01:00</lang></change_dt>
+      <active><lang>1</lang></active>
+      <titlealt><lang><![CDATA[Connected Platforms]]></lang></titlealt>
+      <title><lang><![CDATA[Ready for search, archives and platform ecosystems]]></lang></title>
+      <attr_dc_description><lang><![CDATA[Interoperability matters most when content must travel to many destinations and services over time.]]></lang></attr_dc_description>
+      <ZMSTextarea uid="uid:fe304d55-bd4d-4821-8718-39303d96d787" id="e56" id_prefix="e">
+        <attr_dc_coverage>global.ger</attr_dc_coverage>
+        <created_uid>admin</created_uid>
+        <created_dt>
+2026-03-24T11:50:00+01:00</created_dt>
+        <change_uid><lang>admin</lang></change_uid>
+        <change_dt><lang>
+2026-03-24T11:50:00+01:00</lang></change_dt>
+        <active><lang>1</lang></active>
+        <format>wysiwyg</format>
+        <text><lang><![CDATA[
+<p>From search infrastructures and content repositories to partner portals and internal systems, ZMS provides a foundation for connected publishing. The result is not just a website, but a system that can participate in a larger digital operating model.</p>
+]]></lang></text>
+      </ZMSTextarea>
+    </ZMSDocument>
+  </ZMSFolder>
+
+  <ZMSFolder uid="uid:133e9df0-8d20-46cc-b917-8e329b1fdd01" id="e57" id_prefix="e">
+    <attr_dc_coverage>global.ger</attr_dc_coverage>
+    <created_uid>admin</created_uid>
+    <created_dt>
+2026-03-24T11:51:00+01:00</created_dt>
+    <change_uid><lang>admin</lang></change_uid>
+    <change_dt><lang>
+2026-03-24T11:51:00+01:00</lang></change_dt>
+    <active><lang>1</lang></active>
+    <titlealt><lang>Get Started</lang></titlealt>
+    <title><lang><![CDATA[Start your ZMS project]]></lang></title>
+    <attr_dc_description><lang><![CDATA[Installation hints, community touchpoints and project information for teams evaluating or adopting ZMS.]]></lang></attr_dc_description>
+    <ZMSTextarea uid="uid:84ca4fe5-5f89-4bd6-b373-d292377e3544" id="e58" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>admin</created_uid>
+      <created_dt>
+2026-03-24T11:51:00+01:00</created_dt>
+      <change_uid><lang>admin</lang></change_uid>
+      <change_dt><lang>
+2026-03-24T11:51:00+01:00</lang></change_dt>
+      <active><lang>1</lang></active>
+      <format>wysiwyg</format>
+      <text><lang><![CDATA[
+<p>ZMS is available from GitHub and can be installed with standard Python tooling. The product is well suited to teams that want a content platform they can understand, host and extend themselves.</p>
+<p>This section gives you a compact starting point for installation, project orientation and next steps.</p>
+]]></lang></text>
+    </ZMSTextarea>
+    <ZMSDocument uid="uid:cf3f0ed1-8b6f-4683-b905-25c954ef4ffa" id="e60" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>admin</created_uid>
+      <created_dt>
+2026-03-24T11:52:00+01:00</created_dt>
+      <change_uid><lang>admin</lang></change_uid>
+      <change_dt><lang>
+2026-03-24T11:52:00+01:00</lang></change_dt>
+      <active><lang>1</lang></active>
+      <titlealt><lang><![CDATA[Installation]]></lang></titlealt>
+      <title><lang><![CDATA[Install ZMS in a standard Python workflow]]></lang></title>
+      <attr_dc_description><lang><![CDATA[Set up a virtual environment, install ZMS and create an instance with documented commands from the project README.]]></lang></attr_dc_description>
+      <ZMSTextarea uid="uid:3f06d2ce-ef2c-4102-bb50-5580fb84240b" id="e61" id_prefix="e">
+        <attr_dc_coverage>global.ger</attr_dc_coverage>
+        <created_uid>admin</created_uid>
+        <created_dt>
+2026-03-24T11:52:00+01:00</created_dt>
+        <change_uid><lang>admin</lang></change_uid>
+        <change_dt><lang>
+2026-03-24T11:52:00+01:00</lang></change_dt>
+        <active><lang>1</lang></active>
+        <format>wysiwyg</format>
+        <text><lang><![CDATA[
+<p>A typical installation path looks like this:</p>
+<pre><code>cd ~
+python3 -m venv ~/ZMS
+./ZMS/bin/pip install https://github.com/zms-publishing/ZMS/archive/master.zip
+./ZMS/bin/mkwsgiinstance -d ../instance
+./ZMS/bin/runwsgi -v ../instance/etc/zope.ini</code></pre>
+<p>After that, add ZMS through the web interface and continue with your own content model and templates. More detailed instructions are available in the repository documentation.</p>
+<p><a href="https://github.com/zms-publishing/ZMS/">View the source repository</a></p>
+]]></lang></text>
+      </ZMSTextarea>
+    </ZMSDocument>
+    <ZMSDocument uid="uid:e2276378-dfdb-4094-af5e-0c11bd55b995" id="e63" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>admin</created_uid>
+      <created_dt>
+2026-03-24T11:53:00+01:00</created_dt>
+      <change_uid><lang>admin</lang></change_uid>
+      <change_dt><lang>
+2026-03-24T11:53:00+01:00</lang></change_dt>
+      <active><lang>1</lang></active>
+      <titlealt><lang><![CDATA[Community &amp; Contact]]></lang></titlealt>
+      <title><lang><![CDATA[Talk to the project, start a pilot, shape a rollout]]></lang></title>
+      <attr_dc_description><lang><![CDATA[Use this page as a contact destination for project enquiries, evaluations and internal rollout conversations.]]></lang></attr_dc_description>
+      <ZMSTextarea uid="uid:2b57e440-f31b-4116-a8b0-fd018d3100f5" id="e64" id_prefix="e">
+        <attr_dc_coverage>global.ger</attr_dc_coverage>
+        <created_uid>admin</created_uid>
+        <created_dt>
+2026-03-24T11:53:00+01:00</created_dt>
+        <change_uid><lang>admin</lang></change_uid>
+        <change_dt><lang>
+2026-03-24T11:53:00+01:00</lang></change_dt>
+        <active><lang>1</lang></active>
+        <format>wysiwyg</format>
+        <text><lang><![CDATA[
+<p>ZMS is a strong candidate when your team needs a sustainable content platform for multilingual, knowledge-rich or institutionally distributed publishing. Use this page as the starting point for project-specific contact details, internal ownership notes or external calls to action.</p>
+<p>Recommended next steps:</p>
+<ul>
+  <li>define your main content objects and metadata needs,</li>
+  <li>identify target languages and site variants,</li>
+  <li>map required integrations such as search, repositories or APIs,</li>
+  <li>prototype one representative editorial workflow in ZMS.</li>
+</ul>
+]]></lang></text>
+      </ZMSTextarea>
+    </ZMSDocument>
+    <ZMSDocument uid="uid:040dd7e2-1c13-4b9c-ba7f-222c13c7a125" id="e66" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>admin</created_uid>
+      <created_dt>
+2026-03-24T11:54:00+01:00</created_dt>
+      <change_uid><lang>admin</lang></change_uid>
+      <change_dt><lang>
+2026-03-24T11:54:00+01:00</lang></change_dt>
+      <active><lang>1</lang></active>
+      <titlealt><lang><![CDATA[Imprint &amp; Licensing]]></lang></titlealt>
+      <title><lang><![CDATA[Project information, licensing and credits]]></lang></title>
+      <attr_dc_description><lang><![CDATA[ZMS is developed as open-source software and documented publicly through its repository and accompanying project materials.]]></lang></attr_dc_description>
+      <ZMSTextarea uid="uid:8f34284f-b2ca-433d-bfe6-9620f07d5898" id="e67" id_prefix="e">
+        <attr_dc_coverage>global.ger</attr_dc_coverage>
+        <created_uid>admin</created_uid>
+        <created_dt>
+2026-03-24T11:54:00+01:00</created_dt>
+        <change_uid><lang>admin</lang></change_uid>
+        <change_dt><lang>
+2026-03-24T11:54:00+01:00</lang></change_dt>
+        <active><lang>1</lang></active>
+        <format>wysiwyg</format>
+        <text><lang><![CDATA[
+<p>ZMS is developed by the ZMS publishing community. According to the project README, the software is Python-based, openly available on GitHub and released under the GNU General Public License v3.</p>
+<p>Use this page for your site-specific imprint, operator details, project sponsors or legal notices.</p>
+<p><a href="https://github.com/zms-publishing/ZMS/blob/main/README.rst">Open the README</a></p>
+]]></lang></text>
+      </ZMSTextarea>
+    </ZMSDocument>
+    <ZMSDocument uid="uid:f4d6e7b9-313d-49f1-a1e7-d26750fd410c" id="e69" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>admin</created_uid>
+      <created_dt>
+2026-03-24T11:55:00+01:00</created_dt>
+      <change_uid><lang>admin</lang></change_uid>
+      <change_dt><lang>
+2026-03-24T11:55:00+01:00</lang></change_dt>
+      <active><lang>1</lang></active>
+      <titlealt><lang><![CDATA[Privacy]]></lang></titlealt>
+      <title><lang><![CDATA[Data protection and responsible operations]]></lang></title>
+      <attr_dc_description><lang><![CDATA[Use ZMS as part of a platform strategy that keeps ownership, governance and compliance visible instead of opaque.]]></lang></attr_dc_description>
+      <ZMSTextarea uid="uid:090f3202-47ba-4631-8efe-1fda80d98bf4" id="e70" id_prefix="e">
+        <attr_dc_coverage>global.ger</attr_dc_coverage>
+        <created_uid>admin</created_uid>
+        <created_dt>
+2026-03-24T11:55:00+01:00</created_dt>
+        <change_uid><lang>admin</lang></change_uid>
+        <change_dt><lang>
+2026-03-24T11:55:00+01:00</lang></change_dt>
+        <active><lang>1</lang></active>
+        <format>wysiwyg</format>
+        <text><lang><![CDATA[
+<p>ZMS gives organisations a platform they can understand and operate themselves. That supports better governance around hosting, permissions, workflows, metadata and integrations. Use this page to add your own privacy notices, data processing information and operational policies.</p>
+]]></lang></text>
+      </ZMSTextarea>
+    </ZMSDocument>
+  </ZMSFolder>
+</ZMS>

@@ -1,0 +1,607 @@
+/*
+ * ZMS Virtum theme.
+ * Based on design language from WordPress Vitrum theme by Automattic:
+ * https://github.com/Automattic/themes/tree/trunk/vitrum
+ * Original theme license: GNU General Public License v2 or later.
+ */
+
+@font-face {
+	font-family: 'Inter';
+	font-style: normal;
+	font-weight: 400;
+	src: url('../fonts/inter-400-normal.ttf') format('truetype');
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Inter';
+	font-style: normal;
+	font-weight: 600;
+	src: url('../fonts/inter-600-normal.ttf') format('truetype');
+	font-display: swap;
+}
+
+:root {
+	--vt-foreground: #62ff88;
+	--vt-background: #063559;
+	--vt-background-deep: #051c2e;
+	--vt-border: rgba(98, 255, 136, 0.35);
+	--vt-text: #8fffa8;
+	--vt-text-muted: #77ef97;
+	--vt-radius: 0.75rem;
+	--vt-shadow: 0 18px 38px rgba(2, 16, 31, 0.45);
+	--vt-content-width: 1200px;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	margin: 0;
+	font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+	font-size: 1rem;
+	line-height: 1.7;
+	color: var(--vt-text);
+	background:
+		radial-gradient(circle at 12% 8%, rgba(98, 255, 136, 0.12), transparent 32%),
+		radial-gradient(circle at 88% 0%, rgba(98, 255, 136, 0.1), transparent 22%),
+		linear-gradient(180deg, #063559 0%, #063559 100%);
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+}
+
+a {
+	color: inherit;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.24ch;
+}
+
+a:hover,
+a:focus {
+	text-decoration-style: dashed;
+}
+
+.virtum-header {
+	padding: 0 0 4.5rem;
+	background:
+		linear-gradient(140deg, rgba(6, 53, 89, 0.96), rgba(6, 53, 89, 0.86)),
+		radial-gradient(circle at right top, rgba(98, 255, 136, 0.22), transparent 38%),
+		linear-gradient(120deg, #06273e, #0b4266);
+	color: #f5fbff;
+	background-size: cover;
+	background-position: center;
+	border-bottom: 1px solid rgba(98, 255, 136, 0.62);
+}
+
+.virtum-header-bar,
+.virtum-hero,
+.virtum-main,
+.virtum-footer-panel {
+	width: min(var(--vt-content-width), calc(100% - 2.6rem));
+	margin: 0 auto;
+}
+
+.virtum-header-bar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1.5rem;
+	min-height: 5.4rem;
+	border-bottom: 1px solid rgba(98, 255, 136, 0.62);
+}
+
+.site-brand {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.9rem;
+	color: #f5fbff;
+	text-decoration: none;
+}
+
+.site-brand-logo {
+	width: 2.4rem;
+	height: 2.4rem;
+	object-fit: contain;
+	filter: brightness(0) invert(1);
+}
+
+.site-brand-title {
+	font-size: 0.9rem;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	font-weight: 600;
+}
+
+.site-tagline {
+	margin: 0;
+	font-size: 0.95rem;
+	line-height: 1.35;
+	color: var(--vt-foreground);
+	max-width: 17rem;
+	font-weight: 600;
+}
+
+.site-tagline a {
+	color: #fff;
+	margin-left: 0.25rem;
+}
+
+.site-nav-wrap {
+	display: flex;
+	align-items: center;
+	gap: 0.9rem;
+}
+
+.menu-toggle {
+	display: none;
+	background: transparent;
+	border: 1px solid rgba(98, 255, 136, 0.45);
+	color: var(--vt-foreground);
+	border-radius: 999px;
+	padding: 0.35rem 0.9rem;
+	font-size: 0.74rem;
+	font-weight: 600;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+
+.site-nav ul {
+	display: flex;
+	gap: 0.95rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.site-nav a {
+	display: inline-block;
+	padding: 0.3rem 0.45rem;
+	font-size: 0.8rem;
+	font-weight: 600;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	text-decoration: none;
+	color: rgba(245, 251, 255, 0.98);
+}
+
+.site-nav li.active a,
+.site-nav a:hover,
+.site-nav a:focus {
+	color: var(--vt-foreground);
+}
+
+.virtum-hero {
+	margin-top: 5.4rem;
+	max-width: 58rem;
+}
+
+.hero-kicker {
+	margin: 0 0 0.8rem;
+	font-size: 0.76rem;
+	text-transform: uppercase;
+	letter-spacing: 0.22em;
+	font-weight: 600;
+	color: var(--vt-foreground);
+}
+
+.virtum-hero h1 {
+	margin: 0;
+	font-size: clamp(2.4rem, 5vw, 4.7rem);
+	line-height: 1;
+	font-weight: 600;
+	letter-spacing: -0.02em;
+	color: var(--vt-foreground);
+}
+
+.virtum-hero p {
+	margin: 1.35rem 0 0;
+	max-width: 46rem;
+	font-size: clamp(1.05rem, 1.9vw, 1.32rem);
+	color: rgba(143, 255, 168, 0.95);
+}
+
+.hero-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.8rem;
+	margin-top: 2rem;
+}
+
+.btn-primary,
+.btn-outline {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0.72rem 1.15rem;
+	border-radius: 0.32rem;
+	font-size: 0.79rem;
+	font-weight: 600;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	text-decoration: none;
+}
+
+.btn-primary {
+	background: var(--vt-foreground);
+	color: var(--vt-background);
+	border: 2px solid var(--vt-foreground);
+}
+
+.btn-outline {
+	background: transparent;
+	color: var(--vt-foreground);
+	border: 2px solid var(--vt-foreground);
+}
+
+.virtum-main {
+	padding: 4.2rem 0 5rem;
+}
+
+.virtum-columns {
+	display: grid;
+	grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+	gap: clamp(1.2rem, 3vw, 3.2rem);
+	align-items: start;
+}
+
+.virtum-columns h2 {
+	margin: 0;
+	font-size: clamp(1.8rem, 3.6vw, 3rem);
+	line-height: 1.08;
+	letter-spacing: -0.02em;
+	color: var(--vt-foreground);
+}
+
+.virtum-columns p {
+	margin: 0;
+	font-size: 1.07rem;
+	color: var(--vt-text-muted);
+}
+
+.virtum-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 1rem;
+	margin: 3rem 0;
+}
+
+.virtum-card {
+	border: 0;
+	background: transparent;
+	border-radius: 0.35rem;
+	box-shadow: none;
+	overflow: hidden;
+	transition: transform 0.22s ease;
+}
+
+.virtum-card:hover {
+	transform: translateY(-3px);
+}
+
+.virtum-card a {
+	display: block;
+	padding: 0;
+	text-decoration: none;
+}
+
+.virtum-card-media {
+	height: 16.5rem;
+	background:
+		linear-gradient(145deg, rgba(98, 255, 136, 0.65), rgba(6, 53, 89, 0.82)),
+		linear-gradient(120deg, #0f5e7d, #073553);
+	background-size: cover;
+	background-position: center;
+	position: relative;
+}
+
+.virtum-card-media::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(180deg, rgba(6, 53, 89, 0.05), rgba(6, 53, 89, 0.42));
+}
+
+.virtum-card h3,
+.virtum-card p,
+.virtum-card .card-link {
+	padding-left: 0.1rem;
+}
+
+.virtum-card h3 {
+	margin: 0.85rem 0 0;
+	font-size: 1.22rem;
+	font-weight: 600;
+	line-height: 1.2;
+	color: var(--vt-foreground);
+}
+
+.virtum-card p {
+	margin: 0.75rem 0 0;
+	color: rgba(143, 255, 168, 0.88);
+	font-size: 0.96rem;
+}
+
+.card-link {
+	display: inline-block;
+	margin-top: 1.15rem;
+	font-size: 0.78rem;
+	letter-spacing: 0.11em;
+	text-transform: uppercase;
+	font-weight: 600;
+	color: rgba(245, 251, 255, 0.95);
+}
+
+.virtum-content-home,
+.virtum-content-sheet {
+	padding: 2rem 0 0;
+	background: transparent;
+	border: 0;
+	border-top: 1px solid rgba(98, 255, 136, 0.48);
+	border-radius: 0;
+	box-shadow: none;
+}
+
+.virtum-flow {
+	font-size: 1.02rem;
+	color: rgba(143, 255, 168, 0.94);
+}
+
+.virtum-flow h1,
+.virtum-flow h2,
+.virtum-flow h3,
+.virtum-flow h4 {
+	line-height: 1.15;
+	letter-spacing: -0.01em;
+}
+
+.virtum-flow img {
+	border-radius: 0.1rem;
+	box-shadow: 0 14px 32px rgba(5, 28, 46, 0.45);
+}
+
+.virtum-breadcrumb {
+	margin-bottom: 1.3rem;
+}
+
+.virtum-breadcrumb ol {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.55rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	font-size: 0.86rem;
+}
+
+.virtum-breadcrumb li::after {
+	content: '/';
+	margin-left: 0.55rem;
+	color: rgba(143, 255, 168, 0.42);
+}
+
+.virtum-breadcrumb li:last-child::after {
+	content: '';
+	margin: 0;
+}
+
+.virtum-breadcrumb li.active a {
+	font-weight: 600;
+}
+
+.virtum-detail-head h2 {
+	margin: 0;
+	font-size: clamp(2rem, 4vw, 3.5rem);
+	line-height: 1;
+	letter-spacing: -0.02em;
+	color: var(--vt-foreground);
+}
+
+.virtum-detail-head p {
+	margin: 0.85rem 0 2rem;
+	max-width: 48rem;
+	font-size: 1.08rem;
+	color: rgba(143, 255, 168, 0.9);
+}
+
+.teaser-strip {
+	margin-top: 2rem;
+}
+
+.virtum-toc {
+	margin-top: 3rem;
+	padding-top: 1.8rem;
+	border-top: 1px solid rgba(98, 255, 136, 0.38);
+}
+
+.virtum-toc h3 {
+	margin: 0 0 1rem;
+	font-size: 1.28rem;
+	color: var(--vt-foreground);
+}
+
+.virtum-toc-grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 0.85rem;
+}
+
+.virtum-toc-card {
+	display: block;
+	padding: 0.95rem;
+	border: 1px solid rgba(98, 255, 136, 0.28);
+	border-radius: 0.15rem;
+	background: rgba(6, 53, 89, 0.35);
+	text-decoration: none;
+}
+
+.virtum-toc-card h4 {
+	margin: 0;
+	font-size: 1rem;
+	color: var(--vt-foreground);
+}
+
+.virtum-toc-card p {
+	margin: 0.65rem 0 0;
+	font-size: 0.9rem;
+	color: rgba(143, 255, 168, 0.88);
+}
+
+.virtum-footer {
+	padding: 0 0 3rem;
+}
+
+.virtum-footer-panel {
+	padding: 2rem;
+	background: rgba(5, 28, 46, 0.78);
+	color: rgba(245, 251, 255, 0.85);
+	border-radius: 0.2rem;
+	border: 1px solid rgba(98, 255, 136, 0.22);
+}
+
+.virtum-footer-grid {
+	display: grid;
+	grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 1fr);
+	gap: 1.3rem;
+}
+
+.footer-kicker {
+	margin: 0 0 0.4rem;
+	font-size: 0.72rem;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--vt-foreground);
+}
+
+.virtum-footer-panel h3,
+.virtum-footer-panel h4 {
+	margin: 0;
+	font-weight: 600;
+	line-height: 1.2;
+}
+
+.virtum-footer-panel h4 {
+	font-size: 0.88rem;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: rgba(245, 251, 255, 0.68);
+}
+
+.virtum-footer-panel p {
+	margin: 0.9rem 0 0;
+}
+
+.virtum-footer-panel ul {
+	list-style: none;
+	padding: 0;
+	margin: 0.95rem 0 0;
+	display: grid;
+	gap: 0.5rem;
+}
+
+.virtum-footer-panel a {
+	color: rgba(245, 251, 255, 0.9);
+	text-decoration: none;
+}
+
+.virtum-footer-panel a:hover,
+.virtum-footer-panel a:focus {
+	color: var(--vt-foreground);
+}
+
+.virtum-scrolled .virtum-header-bar {
+	background: rgba(5, 28, 46, 0.74);
+	backdrop-filter: blur(8px);
+}
+
+.virtum-footer-bottom {
+	margin: 1.6rem 0 0;
+	padding-top: 1rem;
+	border-top: 1px solid rgba(98, 255, 136, 0.28);
+	font-size: 0.86rem;
+	color: rgba(245, 251, 255, 0.7);
+}
+
+@media (max-width: 1100px) {
+	.virtum-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.virtum-toc-grid,
+	.virtum-footer-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 768px) {
+	.virtum-header {
+		padding-top: 0;
+	}
+
+	.virtum-header-bar {
+		align-items: flex-start;
+		padding-top: 0.95rem;
+		padding-bottom: 0.95rem;
+	}
+
+	.site-tagline {
+		display: none;
+	}
+
+	.menu-toggle {
+		display: inline-flex;
+	}
+
+	.site-nav {
+		display: none;
+		position: absolute;
+		top: calc(100% + 0.3rem);
+		right: 1.3rem;
+		padding: 0.8rem;
+		border-radius: 0.2rem;
+		background: rgba(6, 53, 89, 0.98);
+		border: 1px solid rgba(98, 255, 136, 0.34);
+		min-width: 12rem;
+	}
+
+	.site-nav.open {
+		display: block;
+	}
+
+	.site-nav ul {
+		flex-direction: column;
+		gap: 0.3rem;
+	}
+
+	.site-nav a {
+		padding: 0.5rem 0.45rem;
+	}
+
+	.virtum-hero {
+		margin-top: 3rem;
+	}
+
+	.virtum-main {
+		padding-top: 2.4rem;
+	}
+
+	.virtum-columns,
+	.virtum-grid,
+	.virtum-toc-grid,
+	.virtum-footer-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.virtum-content-home,
+	.virtum-content-sheet,
+	.virtum-footer-panel {
+		padding: 1.2rem 0 0;
+	}
+}

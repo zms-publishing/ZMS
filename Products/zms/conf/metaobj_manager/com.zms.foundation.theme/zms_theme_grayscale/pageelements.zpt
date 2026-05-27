@@ -1,0 +1,64 @@
+<tal:block metal:define-macro="toc" tal:omit-tag="">
+	<section class="toc-panel"
+		tal:define="child_nodes python:[node for node in zmscontext.filteredChildNodes(request, zmscontext.PAGES) if node.attr('attr_dc_type') != 'Resource']"
+		tal:condition="child_nodes">
+		<div class="section-intro">
+			<p class="eyebrow text-primary">Subpages</p>
+			<h3 class="section-heading text-dark">Continue exploring</h3>
+		</div>
+		<div class="row gx-4 gy-4">
+			<div class="col-md-6" tal:repeat="child_node child_nodes">
+				<a class="toc-card h-100" href="#" tal:attributes="href python:child_node.getHref2IndexHtml(request)">
+					<span class="toc-card-icon">
+						<i class="bi" tal:attributes="class python:child_node.meta_id == 'ZMSFolder' and 'bi bi-folder2-open' or 'bi bi-file-earmark-text'"></i>
+					</span>
+					<div>
+						<h4 tal:content="python:child_node.getTitle(request)">TITLE</h4>
+						<p tal:on-error="string: <!-- ERROR Description-->"
+							tal:define="description python:child_node.attr('attr_dc_description'); text python:zmscontext.re_sub(r'<[^<]+?>', '', child_node.getBodyContent(request))"
+							tal:content="python:description and description or (len(text) &gt; 16 and '%s ...'%(str(text)[0:180]) or '')">
+							DESCRIPTION
+						</p>
+					</div>
+				</a>
+			</div>
+		</div>
+	</section>
+</tal:block>
+
+<tal:block metal:define-macro="footer" tal:omit-tag="">
+	<footer class="footer-section">
+		<div class="container px-4 px-lg-5"
+			tal:define="site_nodes python:[node for node in zmsclient.filteredChildNodes(request, zmsroot.PAGES) if node.attr('attr_dc_type') != 'Resource']">
+			<div class="row gx-4 gy-5 gx-lg-5">
+				<div class="col-lg-5">
+					<p class="eyebrow text-primary">Theme Footer</p>
+					<h2 tal:content="python:zmsclient.getTitlealt(request)">ZMS</h2>
+					<p tal:content="python:zmsclient.attr('attr_dc_description') or zmscontext.attr('attr_dc_description') or 'A ZMS site rendered with a Grayscale-inspired visual system.'">
+						A ZMS site rendered with a Grayscale-inspired visual system.
+					</p>
+				</div>
+				<div class="col-sm-6 col-lg-3">
+					<h3>Sections</h3>
+					<ul class="footer-links">
+						<li tal:repeat="node site_nodes"><a href="#" tal:attributes="href python:node.getHref2IndexHtml(request)" tal:content="python:node.getTitlealt(request)">Section</a></li>
+					</ul>
+				</div>
+				<div class="col-sm-6 col-lg-4">
+					<h3>Service</h3>
+					<ul class="footer-links service-links">
+						<li tal:condition="python:search_node is not None"><a href="#" tal:attributes="href python:search_node.getHref2IndexHtml(request)" tal:content="python:zmscontext.getLangStr('SEARCH')">Search</a></li>
+						<li tal:condition="python:contact_node is not None"><a href="#" tal:attributes="href python:contact_node.getHref2IndexHtml(request)" tal:content="python:zmscontext.getLangStr('CONTACT')">Contact</a></li>
+						<li tal:condition="python:privacy_node is not None"><a href="#" tal:attributes="href python:privacy_node.getHref2IndexHtml(request)" tal:content="python:zmscontext.getLangStr('PRIVACY')">Privacy</a></li>
+						<li tal:condition="python:imprint_node is not None"><a href="#" tal:attributes="href python:imprint_node.getHref2IndexHtml(request)" tal:content="python:zmscontext.getLangStr('IMPRINT')">Imprint</a></li>
+						<li tal:condition="python:login_node is not None"><a href="#" tal:attributes="href python:login_node.getHref2IndexHtml(request)">Login</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="footer-bottom d-flex flex-column flex-lg-row justify-content-between gap-3">
+				<p class="mb-0"><span>&copy; </span><span tal:replace="python:context.ZopeTime().strftime('%Y')">2026</span><span> </span><span tal:content="python:zmsclient.getTitlealt(request)">ZMS</span></p>
+				<p class="mb-0 footer-credit">Grayscale-inspired layout adapted for ZMS.</p>
+			</div>
+		</div>
+	</footer>
+</tal:block>

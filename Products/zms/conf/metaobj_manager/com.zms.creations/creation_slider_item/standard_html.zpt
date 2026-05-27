@@ -1,0 +1,34 @@
+<!-- creation_slider_item.standard_html -->
+<tal:block tal:define="
+    zmscontext options/zmscontext;
+    parent python:zmscontext.getParentNode();
+    siblings python:parent and parent.filteredObjChildren('items',request) or [zmscontext];
+    index python:siblings.index(zmscontext);
+    title python:zmscontext.attr('title');
+    description python:zmscontext.attr('description');
+    image python:zmscontext.attr('image');
+    image_url python:image and image.getHref(request) or '';
+    link python:zmscontext.attr('link');
+    link_obj python:link and '{' in link and zmscontext.getLinkObj(link,request) or None;
+    link_url python:link_obj and link_obj.getHref2IndexHtml(request) or link;
+    active_css python:index == 0 and ' creation-slider__slide is-active' or ' creation-slider__slide';
+">
+  <article tal:attributes="class active_css; data-slide-index index; aria-hidden python:index == 0 and 'false' or 'true'">
+    <div class="creation-slider__panel">
+      <div class="creation-slider__copy">
+        <h2 class="creation-slider__title" tal:content="title">Slider title</h2>
+        <p class="creation-slider__description" tal:condition="description" tal:content="description">Slider description</p>
+        <a class="creation-slider__link" tal:condition="link_url" tal:attributes="href link_url">
+          Explore
+          <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="m5.2 13.8 5.8-5.8-5.8-5.8 1.4-1.4L13.8 8l-7.2 7.2z" /></svg>
+        </a>
+      </div>
+      <div class="creation-slider__media">
+        <div class="creation-slider__image" tal:condition="image_url">
+          <img tal:attributes="src image_url; alt title" />
+        </div>
+      </div>
+    </div>
+  </article>
+</tal:block>
+<!-- /creation_slider_item.standard_html -->

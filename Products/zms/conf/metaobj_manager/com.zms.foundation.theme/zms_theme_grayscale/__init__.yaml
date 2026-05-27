@@ -1,0 +1,73 @@
+zms_theme_grayscale:
+  enabled: 0
+  name: zms_theme_grayscale
+  package: com.zms.foundation.theme
+  revision: 0.0.1
+  type: ZMSLibrary
+  Attrs:
+    - id: preview
+      name: Preview (250x174)
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: resource
+    - id: zms_theme_grayscale/standard_html
+      name: standard_html
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: Page Template
+    - id: zms_theme_grayscale/pageelements
+      name: pageelements
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: Page Template
+    - id: zms_theme_grayscale/common/added/web.css
+      name: web.css
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: File
+    - id: zms_theme_grayscale/common/added/web.js
+      name: web.js
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: File
+    - id: zms_theme_grayscale/common/added/zmi.css
+      name: zmi.css
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: File
+    - id: zms_theme_grayscale/common/added/zmi.js
+      name: zmi.js
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: File
+    - id: zms_theme_grayscale/common/css/style.css
+      name: style.css
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: File
+    - id: zms_theme_grayscale/common/img/zmslogo.svg
+      name: zmslogo.svg
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: File
+    - id: zms_theme_grayscale/common/img/favicon.ico
+      name: favicon.ico
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: File
+    - id: zms_theme_grayscale/login_form
+      name: login_form
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: Page Template

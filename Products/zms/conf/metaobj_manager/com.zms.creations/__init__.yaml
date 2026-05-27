@@ -1,0 +1,5 @@
+com.zms.creations:
+  enabled: 1
+  name: com.zms.creations
+  revision: 1.0.0
+  type: ZMSPackage

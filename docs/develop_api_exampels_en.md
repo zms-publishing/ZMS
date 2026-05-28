@@ -113,86 +113,8 @@ The corresponding TAL-code looks like this:
 	})"></nav>
 ```
 
-## 4. set_response_headers_cache()
-In a production enviroment ZMS does not communicate with the web browser by the Zope web server but this is done by a web server application like Apache or nginx. These applications are specialized on scaling, handling the virtual hosts und work as a proxy server. Controlling the caching latency may be an important issue if some documents must be published instantly or to a definied date.
-ZMS allows to set a starting date and an ending date to any item. When rendering a page the item with the closest date defines the maximun duration the document may be published by the caching server or the browser cache. This closest expiry date is written as a parameter into the Zope request object and can be read when the page is rendered by the Zope Page Template (TAL) or any other output codes (Py-Script, DTML) generating the http repsonse.
-To write the expiring time of a web document into the _http header_ as a parameter like `cache-control` the function `set_response_headers_cache()` of the module zms.standard is used. The following TAL-snippet can be added to the end of the standard_html template of the pages and will set cache control parameters to the http header:
 
-```html
-<tal:block 
-	tal:define="standard modules/Products.zms/standard;
-		cache_expire python:standard.set_response_headers_cache(
-			this, 
-			request, 
-			cache_max_age=0, 
-			cache_s_maxage=6*3600
-		)">
-</tal:block>
-```
-The crucial parameters are `cache_max_age` (sets `max-age`) for the latency the browser (as _private proxy_) should save the document and `cache_s_maxage` (sets `s-maxage`) for the (public) proxy cache latency. If the website often publishes documents which are time critical, it will be useful to set the max-age parameter very low so that the browser cache latency is minimized (but do not forget your mobile users and their connectivity costs).
-
-### Instant removal of cache storage
-
-To let the editor manually initialize the removal of a single page or a list of pages from the cache storage a ZMS action _manage_cachepurge_ can be imported into the ZMS configuration. Two ZMS Actions (Purge a single page, Purge a list of pages) will appear in the contextual action menu and triggers an External Python Method named `cache_purge` [1] which controls the final backend job [2] and should be fitted to the system environment. 
-
-[1] External Method cache_purge the ZMS Action needs to trigger the cache purging in the backend; this method just calls the final shell script as a (non-blocking) subprocess :
-```python
-import subprocess, shlex
-import os
-
-def cache_purge(arg):
-    args = ['sudo', '-u', 'nginx', '/usr/local/bin/cache_purge'] + shlex.split(arg)
-    subprocess.check_call(args)
-    return ('Cache Deleted: %s' % arg)
-```
-
-
-[2] Shell scipt for identifying and defeting a cached document: 
-```python
-#!/usr/bin/env python
-
-import os
-from hashlib import md5
-from os import path
-
-"""
-    This script assumes an nginx proxy configuration that looks similar to this:
-    
-    proxy_cache_path /var/cache/nginx levels=2:2 keys_zone=varcachenginx:10m;
-    proxy_cache_key $scheme://$host$request_uri;
-"""
-
-PROXY_CACHE_PATH="/var/cache/nginx"
-
-def proxy_cache_key(url):
-    # This assumes exactly the URL is the cache key for nginx.
-    # If that ever changes, this script needs adaptation.
-    m = md5()
-    m.update(url)
-    return m.hexdigest()
-
-def purge(url):
-    key = proxy_cache_key(url)
-    level1 = key[-2:]
-    level2 = key[-4:-2]
-    potential_cache_file = path.join(PROXY_CACHE_PATH, level1, level2, key)
-    
-    if path.exists(potential_cache_file):
-        os.unlink(potential_cache_file)
-    else:
-        print("File %s for URL %r does not exist" % (potential_cache_file, url))
-
-
-def _main():
-    import sys
-    for url in sys.argv[1:]:
-        purge(url)
-
-if __name__ == '__main__':
-    _main()
-```
-
-## 5. evalMetaobjAttr()
+## 4. evalMetaobjAttr()
 A content model can use primitive _py_-attributes for specific functions. In contrast to the Zope object _Script (Python)_ these primitive attributes are hidden in the ZMS metaobject manager  and preserve a tidy look of your upper Zope folder hierarchy.
 Actually these py-Methods are stored like this (_hint: the Zope ID contains a dot!_):
 `content/metaobj_manager/test.primitive_py`
@@ -230,7 +152,7 @@ _Screen shot: shows the corresponding object setup: the py-attribute code can be
 
 ![evalMetaobjAttr](images/develop_api_evalMetaobjAttr.gif)
 
-## 6. standard_error_message
+## 5. standard_error_message
 The Zope Error Handler expects a Zope object named  _standard_error_message_. This object gets a set of parameters (as defined in (`interfaces.IItem. raise_standardErrorMessage()`) that can be used to control the behaviour on certain types of errors.
 The following picture shows a simple example for redirecting to a special 404-page in case of the error type 'NotFound'; otherwise it return the standard error message:
 
@@ -258,7 +180,7 @@ _Screen shot: shows the effect of the example code. Requesting a not existing UR
 
 ![evalMetaobjAttr](images/develop_api_standard_error_message.gif)
 
-## 7. getObjOptions()
+## 6. getObjOptions()
 The default values of the attribute types _select_ or _multiselect_ can be configured in two ways:
 1. as a return-separated list of terms or
 2. as a python snippet (marked by intial comment literals) that returns a list tuples showing the second value via ZMS-GUI (ZMI) as a label whereas first (invisible) value is actually stored. (To make it work like a key/value dict the tuple construct can be transformed by a list comprehension).
@@ -309,7 +231,7 @@ _Screen shot: the content model uses a select list for declaring the contents ca
 ![getObjOptions](images/develop_api_getObjOptions.gif)
 
 
-## 8. ZMSIndex.catalog()
+## 7. ZMSIndex.catalog()
 The ZMSIndex is a data-efficient catalog of all ZMS objects and their locations in the content tree. Mainly it is used to resolve links by a given object-id. ZMSIndex contains at least 4 data:
 1. ZMS ID ("e"-ID), e.g. `e1758`
 2. ZMS Meta ID, e.g. `ZMSFolder`
@@ -372,7 +294,7 @@ In addition ZMS offers useful API functions to make the code short and use it TA
 1. zmscontext.get_uid(): returns UID of the context object, eg. `uid:d67ef401-db9b-46bd-9108-35f3c8d959a0`
 2. zmscontext.getLinkObj(url): if url written in ZMS-internal url syntax `{$...}`, the targeted object will be returned, eg. this call `zmscontext.getLinkObj('{$uid:d67ef401-db9b-46bd-9108-35f3c8d959a0}')` will return the object. *Hint*: make sure, that the uid follows the syntax like this `'{$%s}'%(uid)` 
 
-## 9. Using the `internal_dict`-Attribute
+## 8. Using the `internal_dict`-Attribute
 The invisible multilingual attribute `internal_dict` is a ZMS-default python dictionary of any content object and can be used to store any additional technical data. A typical use case is adding new CSS-Classes to the body-element of a specific ZMS-GUI node for customizing it's GUI (aka ZMI):
 the ZMS-action *manage_css_classes* can be imported via ZMS configuration and will appear in the contextual action menu. It triggers an External Python Method and adds the key `css_classes` to the internal_dict of the current node. The value can be a list of arbitray CSS-classnames the action will provide to the ZMI as a select list to the ZMS-user, e.g. ZMS-rolenames plus a suffix "_special":
 
@@ -410,7 +332,7 @@ body[data-type='News'] .zmi-action .dropdown-menu a.dropdown-item[title='ZMSFold
 }
 ```
 
-## 10. Products.PluggableAuthService: Acquired ZMS-Logout
+## 9. Products.PluggableAuthService: Acquired ZMS-Logout
 
 By default ZMS utilizes the standard-ZMI-logout method `manage_zmi_logout()`: the endpoint is called when clicking the ZMS-menu item "logout". To customize the logout-procedure with Products.PluggableAuthService (PAS) use the configuration parameter `ZMS.logout.href` for defining your own endpoint.
 

@@ -654,14 +654,6 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
         return self.manage_changeConfig(btn, lang, REQUEST, RESPONSE)
 
 
-# --------------------------------------------------------------------------
-#  Constructor support for registerClass
-# --------------------------------------------------------------------------
-
-manage_addZMSLLMConnectorForm = PageTemplateFile(
-    'zpt/ZMSLLMConnector/manage_add_llm_connector', globals())
-
-
 def manage_addZMSLLMConnector(self, REQUEST, RESPONSE=None):
     """Add a ZMSLLMConnector object."""
     id = REQUEST.get('id', 'llm_connector').strip() or 'llm_connector'

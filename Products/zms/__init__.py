@@ -192,7 +192,7 @@ def initialize(context):
         context.registerClass(
             ZMSLLMConnector.ZMSLLMConnector,
             permission = 'Add ZMSs',
-            constructors = (ZMSLLMConnector.manage_addZMSLLMConnectorForm, ZMSLLMConnector.manage_addZMSLLMConnector),
+          constructors = (ZMSLLMConnector.manage_addZMSLLMConnector, ZMSLLMConnector.manage_addZMSLLMConnector),
             )
         
         # register deprecated classes

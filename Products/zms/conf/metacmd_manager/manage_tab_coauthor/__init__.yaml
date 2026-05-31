@@ -1,0 +1,21 @@
+manage_tab_coauthor:
+  acquired: 0
+  action: '%smanage_executeMetacmd?id=manage_tab_coauthor'
+  description: Auto-Edit and Auto-Translate Node-Content
+  execution: 0
+  icon_clazz: fas fa-user-edit text-primary
+  meta_types:
+    - '*'
+  name: AI-Coauthor
+  nodes: '{$}'
+  package: com.zms.custom.metacmd.tabs
+  revision: 6.0.0
+  roles:
+    - ZMSEditor
+    - ZMSAuthor
+    - ZMSAdministrator
+  stereotype: tab
+  title: Auto-Edit and Auto-Translate Node-Content
+  Impl:
+    - id: manage_tab_coauthor
+      type: External Method

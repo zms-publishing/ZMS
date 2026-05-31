@@ -326,65 +326,35 @@
 
 			<!-- ===== FEATURES TAB ===== -->
 			<div class="tab-pane card fade" id="panel-features" role="tabpanel">
-				<form class="form-horizontal" method="post" action="manage_changeFeatures" id="form-features">
-					<input type="hidden" name="lang" tal:attributes="value python:request.get('lang','eng')" />
-					<input type="hidden" name="btn" value="BTN_SAVE" />
 
-					<div class="alert alert-danger">
-						NOTE: These feature are still work in progress 
-						and not available now. Please ask the developers 
-						if you want to help testing and improving them.
-					</div>
-					<div class="form-group row align-items-start">
-						<div class="col-sm-1 text-right pt-1">
-							<input type="checkbox" class="feature-check" name="feature_rte_assist" value="1"
-								tal:attributes="checked python:features.get('rte_assist',False)" />
-						</div>
-						<label class="col-sm-11">
-							<strong><i class="fas fa-pen-nib mr-1"></i> RTE Writing Assistant</strong><br/>
-							<small class="text-muted">Adds an AI toolbar to the Rich Text Editor (summarize, expand, rephrase, check readability).</small>
-						</label>
-					</div>
+				<div class="alert alert-info m-3" role="alert">
+					HINT: Enable or disable individual AI features for the ZMS editing interface.
+					<br/>Features that require a configured LLM connector will be automatically disabled if no connector is available.
+					<br/>The AI-Lab will be the central hub for all AI-related features, including configuration, monitoring, and experimentation tools. Stay tuned!
+				</div>
+				<div class="card-body col-lg-8 col-xl-6">
+					<p class="font-weight-bold"><i class="fas fa-user-edit mr-1 text-primary fa-2x"></i> AI-Coauthor</p>
+					<p>
+						AI-Coauthor is a content authoring assistant that integrates LLM-powered suggestions directly into the ZMS node editing interface.
+						It provides side-by-side source and target fields for both translation and same-language improvement, allowing authors to review and accept AI-generated changes interactively.	
+					</p>
 
-					<div class="form-group row align-items-start">
-						<div class="col-sm-1 text-right pt-1">
-							<input type="checkbox" class="feature-check" name="feature_translate_assist" value="1"
-								tal:attributes="checked python:features.get('translate_assist',False)" />
-						</div>
-						<label class="col-sm-11">
-							<strong><i class="fas fa-language mr-1"></i> AI-powered Translation Assist</strong><br/>
-							<small class="text-muted">Enhances the Translation tab with LLM suggestions (better scientific terminology than plain MT).</small>
-						</label>
-					</div>
 
-					<div class="form-group row align-items-start">
-						<div class="col-sm-1 text-right pt-1">
-							<input type="checkbox" class="feature-check" name="feature_metadata_gen" value="1"
-								tal:attributes="checked python:features.get('metadata_gen',False)" />
-						</div>
-						<label class="col-sm-11">
-							<strong><i class="fas fa-tags mr-1"></i> Auto Metadata Generation</strong><br/>
-							<small class="text-muted">On content save, suggests keywords, abstracts and SEO metadata for the current document.</small>
-						</label>
-					</div>
+					<p class="font-weight-bold">Preconditions</p>
+					<ul class="mb-2">
+						<li>A configured <strong>ZMSLLMConnector</strong> must be available in the site.</li>
+						<li>The current user needs editorial rights such as ZMSEditor, ZMSAuthor, or ZMSAdministrator.</li>
+						<li>For same-language improvement, the connector must support the <code>metadata_gen</code> feature when metadata completion is desired.</li>
+						<li>Languages are chosen from the node’s translation context and are remembered per session.</li>
+						<li>If no LLM connector is configured, Auto-Editing is disabled and only the standard edit workflow remains available.</li>
+					</ul>
 
-					<div class="form-group row align-items-start">
-						<div class="col-sm-1 text-right pt-1">
-							<input type="checkbox" class="feature-check" name="feature_rag_chat" value="1"
-								tal:attributes="checked python:features.get('rag_chat',False)" />
-						</div>
-						<label class="col-sm-11">
-							<strong><i class="fas fa-database mr-1"></i> RAG Chat (Document Q&amp;A)</strong><br/>
-							<small class="text-muted">Enables retrieval-augmented Q&amp;A over indexed site content via Qdrant vector search. Requires RAG provider.</small>
-						</label>
-					</div>
-
-					<div class="form-group row mt-3">
-						<div class="col-sm-11 offset-sm-1">
-							<button type="submit" class="btn btn-primary" tal:content="structure python:here.getZMILangStr('BTN_SAVE')">Save</button>
-						</div>
-					</div>
-				</form>
+					<p class="font-weight-bold">Installation</p>
+					<p>
+						AI-Coauthor is delivered as part of the ZMS product and can be imported
+						with the <a href="../metacmd_manager/manage_main">ZMS-MetaCommand-Manager</a>. 
+					</p>
+				</div>
 			</div><!-- #panel-features -->
 
 		</div><!-- .tab-content -->

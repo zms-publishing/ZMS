@@ -85,6 +85,35 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
         self.id = id
         self._config = {}
 
+    def _prepare_messages(self, messages, preserve_html=False):
+        """Normalize messages and optionally inject HTML-preservation guidance."""
+        if isinstance(messages, str):
+            msgs = [{'role': 'user', 'content': messages}]
+        else:
+            msgs = list(messages)
+
+        if preserve_html:
+            html_system_prompt = {
+                'role': 'system',
+                'content': (
+                    'Preserve HTML markup exactly when rewriting content. '
+                    'Do not remove HTML elements such as headings, links, lists, tables, emphasis, or wrappers. '
+                    'Keep existing tag names and attributes unless an explicit correction is required. '
+                    'Return HTML content, not markdown.'
+                ),
+            }
+            if not any(isinstance(m, dict) and m.get('role') == 'system' for m in msgs):
+                msgs.insert(0, html_system_prompt)
+        return msgs
+
+    def _as_bool(self, value):
+        """Parse common truthy/falsy values from request-like sources."""
+        if value is None:
+            return False
+        if isinstance(value, bool):
+            return value
+        return str(value).strip().lower() in ('1', 'true', 'yes', 'on')
+
     # -------------------------------------------------------------------------
     #  ZMSLLMConnector.getConfProperty
     # -------------------------------------------------------------------------
@@ -129,13 +158,15 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
         @rtype: dict
         """
         from Products.zms import llmapi
+        preserve_html = self._as_bool(kwargs.pop('preserve_html', False))
+        messages = self._prepare_messages(messages, preserve_html=preserve_html)
         provider = llmapi._get_provider(self)
         return provider.chat(messages, **kwargs)
 
     # -------------------------------------------------------------------------
     #  ZMSLLMConnector.chat_with_tools
     # -------------------------------------------------------------------------
-    def chat_with_tools(self, messages, context, max_rounds=5):
+    def chat_with_tools(self, messages, context, max_rounds=5, preserve_html=False):
         """
         Agentic chat loop with ZMS tool calling.
 
@@ -183,11 +214,8 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
             )
             return has_index_verb and has_scope
 
-        # Normalise messages
-        if isinstance(messages, str):
-            msgs = [{'role': 'user', 'content': messages}]
-        else:
-            msgs = list(messages)
+        # Normalise messages and optionally enforce HTML-preservation behavior.
+        msgs = self._prepare_messages(messages, preserve_html=self._as_bool(preserve_html))
 
         # Inject system prompt if not already present. This guides the LLM to
         # give natural language summaries after tool calls instead of re-dumping raw JSON.

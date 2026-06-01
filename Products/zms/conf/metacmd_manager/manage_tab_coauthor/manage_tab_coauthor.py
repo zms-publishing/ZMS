@@ -479,7 +479,7 @@ def renderGoogleTranslate(request):
 			}
 			
 			// Show progress indicator
-			$('body').append('<div id="translate-progress" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:white;padding:20px;border:2px solid #007bff;border-radius:5px;z-index:10000;"><i class="fas fa-spinner fa-spin"></i> Translating... <span id="progress-counter">0/' + totalFields + '</span></div>');
+			$('body').append('<div id="translate-progress" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:white;padding:20px;border:2px solid #007bff;border-radius:5px;z-index:10000;"><i class="fas fa-spinner fa-spin mr-1"></i> Translating... <span id="progress-counter">0/' + totalFields + '</span></div>');
 			
 			// Process each row
 			$('.form-group-row').each(function() {
@@ -1005,8 +1005,7 @@ def renderStyles():
 			}
 			@media (max-width: 1200px) {
 				.form-group-cell .col-sm-3 {
-					flex: 0 0 100%;
-					max-width: 100%;
+					display:none;
 				}
 				.form-group-cell .col-sm-9 {
 					flex: 0 0 100%;
@@ -1150,7 +1149,7 @@ def renderScripts():
 
 			function showTranslateProgress(text) {
 				$('#translate-progress').remove();
-				$('body').append('<div id="translate-progress" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:white;padding:20px;border:2px solid #007bff;border-radius:5px;z-index:10000;"><i class="fas fa-spinner fa-spin"></i> ' + text + '</div>');
+				$('body').append('<div id="translate-progress" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:white;padding:20px;border:2px solid #007bff;border-radius:5px;z-index:10000;"><i class="fas fa-spinner fa-spin mr-1"></i> ' + text + '</div>');
 			}
 
 			function hideTranslateProgress() {
@@ -1410,7 +1409,9 @@ def renderScripts():
 					method: 'POST',
 					dataType: 'json',
 					data: {
-						message: prompt
+						message: prompt,
+						agent_mode: '0',
+						preserve_html: '1'
 					}
 				}).done(function(response) {
 					hideTranslateProgress();

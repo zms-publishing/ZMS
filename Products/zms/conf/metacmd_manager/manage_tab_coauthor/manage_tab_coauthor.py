@@ -15,7 +15,7 @@ def getAIHelperSettings(zmscontext):
 	"""Return availability flags for AI-assisted translation helpers."""
 	settings = {
 		'ai_enabled': False,
-		'metadata_enabled': False,
+		'metadata_enabled': True,  # Assume metadata generation is enabled if AI is enabled, can be overridden by connector settings
 	}
 	try:
 		connector = zmscontext.getLLMConnector()
@@ -136,7 +136,8 @@ def renderHtml(zmscontext, request, SESSION, fmName='form0'):
 	html.append('</div>')
 	
 	# Google Translate Element
-	html.append(renderGoogleTranslate(request))
+	if request.get('lang1') != request.get('lang2'):
+		html.append(renderGoogleTranslate(request))
 	
 	# Add styles and scripts
 	html.append(renderStyles())
@@ -380,19 +381,6 @@ def renderViewMode(zmscontext, request):
 # ----------------------------------------
 def renderGoogleTranslate(request):
 	"""Render Google Translate widget HTML and JavaScript"""
-	if request.get('lang1') == request.get('lang2'):
-		return '''
-			<script>
-				//<!--  Editing-Mode: Source and target languages are the same.
-				setTimeout(function() {
-				// Reset RTE fields to apply translation
-				if ($('div[id*="zmiRichtextEditor"]:visible').length > 0) {
-						$('.form-richtext-wysiwyg > .col-sm-12 > .btn-group > span.btn').click()
-					}
-				}, 1000);
-			//-->
-			</script>
-		'''
 	return '''
 		<!-- Translation Mode: Google Translate Element -->
 		<div id="google_translate_element" class="d-block px-3" style="margin-top: 16px;"></div>
@@ -551,10 +539,6 @@ def renderGoogleTranslate(request):
 				if ($combo.length) {
 					$combo.val(targetLang);
 					$combo.trigger('change');
-				}
-				// Reset RTE fields to apply translation
-				if ($('div[id*="zmiRichtextEditor"]:visible').length > 0) {
-					$('.form-richtext-wysiwyg > .col-sm-12 > .btn-group > span.btn').click()
 				}
 			}, 1000);
 		});
@@ -1156,6 +1140,9 @@ def renderScripts():
 				$('#translate-progress').remove();
 			}
 
+			// -------------------------------------------------------------------
+			// PROMPT for same-language editing with optional metadata generation
+			// -------------------------------------------------------------------
 			function buildAutoEditPrompt(rows, sourceLang, targetLang, metadataEnabled) {
 				var payload = {
 					source_language: sourceLang,
@@ -1173,6 +1160,37 @@ def renderScripts():
 					})
 				};
 
+				// Add contextual content to payload
+				// This helps the model understand the overall topic and context for better metadata generation
+				// 1. Get whole page content as plain text by REST-API 
+				let contextContent = '';
+				debugger;
+				$.ajax({
+					type: 'GET',
+					url: $ZMI.get_rest_api_url(getTranslateAIConfig().contextUrl) + '/get_body_content',
+					dataType: 'text',
+					data: {
+						lang: getZMILang()
+					},
+					async: false, // Synchronous request to ensure content is loaded before prompt is built
+					success: function(data) {
+						debugger;
+						if (data) {
+							contextContent = data;
+						}
+					},
+					error: function() {
+						console.error('Failed to load page content for AI context.');
+					}
+				});
+				// 2. Remove excessive whitespace, remove html and truncate to fit model limits
+				contextContent = contextContent.replace(/\s+/g, ' ').trim();
+				contextContent = contextContent.replace(/<[^>]*>/g, '');
+				if (contextContent.length > 5000) {
+					contextContent = contextContent.substring(0, 5000);
+				};
+				payload.context_content = contextContent;
+
 				return [
 					'You are a CMS editorial assistant working in same-language editing mode.',
 					'Return only valid JSON and no markdown.',
@@ -1180,9 +1198,11 @@ def renderScripts():
 					'Keep the language exactly as ' + targetLang + '.',
 					'Improve clarity, grammar, style, and consistency without changing the factual meaning.',
 					'Do not invent facts, numbers, names, or claims that are not supported by the input.',
+					'The context_content shall be used to derive missing or weak metadata fields.' +
 					(metadataEnabled
 						? 'Fill missing or weak metadata fields when they can be derived from the existing content.'
 						: 'Do not generate extra metadata beyond clear text improvements.'),
+					'Try to keep the field content of titlealt very concise, ideally 1 word or less than 48 characters.', 
 					'Omit any field that should stay unchanged.',
 					'Ignore file names, media references, and technical values.',
 					'Input JSON:',
@@ -1569,6 +1589,14 @@ def renderScripts():
 						switch_translate_mode('edit');
 					}
 				});
+
+				// Reset all RTE fields to Code View
+				setTimeout(function() {
+				if ($('div[id*="zmiRichtextEditor"]:visible').length > 0) {
+						$('.form-richtext-wysiwyg > .col-sm-12 > .btn-group > span.btn').click()
+					}
+				}, 1000);
+
 				updateAllMaxLengthWarnings();
 			});
 		</script>

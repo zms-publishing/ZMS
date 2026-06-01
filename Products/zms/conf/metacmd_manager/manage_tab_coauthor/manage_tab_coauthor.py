@@ -464,8 +464,8 @@ def renderGoogleTranslate(request):
 				var $rightCell = $row.find('.zmi-translate-right');
 				
 				if ($leftCell.length && $rightCell.length) {
-					var $leftInput = $leftCell.find('input[type="text"], textarea');
-					var $rightInput = $rightCell.find('input[type="text"], textarea');
+					var $leftInput = $leftCell.find('input.form-control.datatype-11, textarea');
+					var $rightInput = $rightCell.find('input.form-control.datatype-11, textarea');
 					
 					if ($leftInput.length && $rightInput.length) {
 						totalFields++;
@@ -489,8 +489,8 @@ def renderGoogleTranslate(request):
 				
 				if ($leftCell.length && $rightCell.length) {
 					// Find input fields
-					var $leftInput = $leftCell.find('input[type="text"], textarea');
-					var $rightInput = $rightCell.find('input[type="text"], textarea');
+					var $leftInput = $leftCell.find('input.form-control.datatype-11, textarea');
+					var $rightInput = $rightCell.find('input.form-control.datatype-11, textarea');
 					
 					if ($leftInput.length && $rightInput.length) {
 						var sourceText = $leftInput.val();
@@ -1117,7 +1117,7 @@ def renderScripts():
 			}
 
 			function getEditableField($cell) {
-				return $cell.find('textarea, input[type="text"]').filter(function() {
+				return $cell.find('textarea, input.form-control.datatype-11').filter(function() {
 					return $(this).closest('.input-group-append, .input-group-prepend').length === 0;
 				}).first();
 			}
@@ -1221,7 +1221,7 @@ def renderScripts():
 				if (!$source || !$source.length) {
 					return;
 				}
-				var isInline = $source.is('input[type="text"]');
+				var isInline = $source.is('input.form-control.datatype-11');
 				var $editor = $source.data('aiSourceEditor');
 				if (!$editor || !$editor.length) {
 					var $wrapper = $('<div class="ai-diff-wrapper ai-source-wrapper"></div>');
@@ -1248,7 +1248,7 @@ def renderScripts():
 
 			function renderAutoEditDiff(row, diffHtml) {
 				var $target = row.targetInput;
-				var isInline = $target.is('input[type="text"]');
+				var isInline = $target.is('input.form-control.datatype-11');
 				var $wrapper = $('<div class="ai-diff-wrapper"></div>');
 				var editorClass = isInline ? 'ai-diff-editor ai-diff-editor-inline' : 'ai-diff-editor';
 				var $editor = $('<div></div>').addClass(editorClass).html(diffHtml || '');
@@ -1299,11 +1299,11 @@ def renderScripts():
 			}
 
 			function commitAutoEditDiffEditors() {
-				$('.zmi-translate-right textarea, .zmi-translate-right input[type="text"]').each(function() {
+				$('.zmi-translate-right textarea, .zmi-translate-right input.form-control.datatype-11').each(function() {
 					var $target = $(this);
 					var $editor = $target.data('aiDiffEditor');
 					if ($editor && $editor.length) {
-						var plainTextMode = $target.is('input[type="text"]');
+						var plainTextMode = $target.is('input.form-control.datatype-11');
 						$target.val(finalizeDiffEditorText($editor, plainTextMode));
 					}
 				});
@@ -1328,7 +1328,7 @@ def renderScripts():
 			}
 
 			function getCurrentRightCellValue($cell) {
-				var $input = $cell.find('textarea, input[type="text"]').filter(function() {
+				var $input = $cell.find('textarea, input.form-control.datatype-11').filter(function() {
 					return $(this).closest('.input-group-append, .input-group-prepend').length === 0;
 				}).first();
 				if (!$input.length) {
@@ -1336,7 +1336,7 @@ def renderScripts():
 				}
 				var $editor = $input.data('aiDiffEditor');
 				if ($editor && $editor.length) {
-					var plainTextMode = $input.is('input[type="text"]');
+					var plainTextMode = $input.is('input.form-control.datatype-11');
 					return finalizeDiffEditorText($editor, plainTextMode);
 				}
 				return $input.val() || '';
@@ -1484,7 +1484,7 @@ def renderScripts():
 					var lang2 = $('select[name="lang2"]').val();
 					$('#translate_lang').val(lang2);
 				});
-				$(document).off('input.aiMaxLength keyup.aiMaxLength paste.aiMaxLength change.aiMaxLength', '.zmi-translate-right textarea, .zmi-translate-right input[type="text"]').on('input.aiMaxLength keyup.aiMaxLength paste.aiMaxLength change.aiMaxLength', '.zmi-translate-right textarea, .zmi-translate-right input[type="text"]', function() {
+				$(document).off('input.aiMaxLength keyup.aiMaxLength paste.aiMaxLength change.aiMaxLength', '.zmi-translate-right textarea, .zmi-translate-right input.form-control.datatype-11').on('input.aiMaxLength keyup.aiMaxLength paste.aiMaxLength change.aiMaxLength', '.zmi-translate-right textarea, .zmi-translate-right input.form-control.datatype-11', function() {
 					var $cell = $(this).closest('td.form-group-cell.zmi-translate-right');
 					if ($cell.length) {
 						updateMaxLengthWarningForCell($cell);

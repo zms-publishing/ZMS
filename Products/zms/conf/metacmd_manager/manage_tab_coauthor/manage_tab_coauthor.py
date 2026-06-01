@@ -3,15 +3,18 @@ from Products.zms import standard
 #################################################
 # Helper Functions
 #################################################
-# 1. renderHtml
-# 2. renderEditMode
-# 3. renderViewMode
-# 4. renderGoogleTranslate
-# 5. renderStyles
-# 6. renderScripts
-# 7. set_language_options
+# 1. get_ai_feature_settings
+# 2. _field_request_proxy
+# 3. _make_field_request
+# 4. render_html
+# 5. render_editmode
+# 6. render_viewmode
+# 7. render_googletranslate
+# 8. render_styles
+# 9. render_scripts
+#10. set_language_options
 
-def getAIHelperSettings(zmscontext):
+def get_ai_feature_settings(zmscontext):
 	"""Return availability flags for AI-assisted translation helpers."""
 	settings = {
 		'ai_enabled': False,
@@ -27,7 +30,7 @@ def getAIHelperSettings(zmscontext):
 	return settings
 
 
-class _FieldRequestProxy(dict):
+class _field_request_proxy(dict):
 	"""Plain request mapping used when rendering isolated field widgets."""
 
 	def __init__(self, request, **overrides):
@@ -45,7 +48,7 @@ class _FieldRequestProxy(dict):
 
 def _make_field_request(request, same_language=False, side='right'):
 	"""Create a per-field request snapshot with optional unique widget suffixes."""
-	field_request = _FieldRequestProxy(request)
+	field_request = _field_request_proxy(request)
 	if same_language and side == 'left':
 		fm_name = field_request.get('fmName', 'form0')
 		el_name = field_request.get('elName', '')
@@ -57,9 +60,9 @@ def _make_field_request(request, same_language=False, side='right'):
 # ----------------------------------------
 # Basic HTML rendering function
 # ----------------------------------------
-def renderHtml(zmscontext, request, SESSION, fmName='form0'):
+def render_html(zmscontext, request, SESSION, fmName='form0'):
 	"""Basic HTML rendering function for the translation interface"""
-	ai_settings = getAIHelperSettings(zmscontext)
+	ai_settings = get_ai_feature_settings(zmscontext)
 	
 	# Set request defaults
 	request.set('lang', 'ger')
@@ -81,11 +84,6 @@ def renderHtml(zmscontext, request, SESSION, fmName='form0'):
 	html.append(zmscontext.zmi_body_header(zmscontext,request))
 	html.append('<div id="zmi-tab">')
 	html.append(zmscontext.zmi_breadcrumbs(zmscontext,request))
-	html.append('<div id="translate-ai-config" data-context-url="%s" data-ai-enabled="%s" data-metadata-enabled="%s"></div>' % (
-		standard.html_quote(zmscontext.absolute_url()),
-		str(bool(ai_settings['ai_enabled'])).lower(),
-		str(bool(ai_settings['metadata_enabled'])).lower(),
-	))
 	html.append('<form class="card form-horizontal translate-forms" action="manage_changeProperties" method="post" enctype="multipart/form-data">')
 	html.append('<input type="hidden" name="preview" value="preview"/>')
 	html.append('<input type="hidden" id="translate_lang" name="lang" value="%s"/>' % request.get('lang2'))
@@ -114,13 +112,20 @@ def renderHtml(zmscontext, request, SESSION, fmName='form0'):
 
 	html.append('</legend>')
 
-	html.append('<div id="manage_tab_coauthor_body" class="card-body p-0 m-0">')
+	html.append('''<div id="manage_tab_coauthor_grid" class="card-body p-0 m-0" 
+			data-context-url="%s" 
+			data-ai-enabled="%s" 
+			data-metadata-enabled="%s">''' % (
+		standard.html_quote(zmscontext.absolute_url()),
+		str(bool(ai_settings['ai_enabled'])).lower(),
+		str(bool(ai_settings['metadata_enabled'])).lower(),
+	))
 
 	# Render based on view mode
 	if translate_mode == 'view':
-		html.append(renderViewMode(zmscontext, request))
+		html.append(render_viewmode(zmscontext, request))
 	else:
-		html.append(renderEditMode(zmscontext, request, ai_settings))
+		html.append(render_editmode(zmscontext, request, ai_settings))
 	
 	html.append('</div>')
 	
@@ -128,6 +133,13 @@ def renderHtml(zmscontext, request, SESSION, fmName='form0'):
 	if translate_mode == 'edit':
 		html.append('''
 			<div class="controls save text-right p-3">
+				<!--! 
+				<dialog id="menulock_btn" class="btn" title="Menu Lock: Stay in the menu after clicking the save button." 
+					onclick="$('#menulock').val($('#menulock').val()==0?1:0);$ZMILocalStorageAPI.set('ZMS.menulock',$('#menulock').val())">
+					<input type="hidden" id="menulock" name="menulock:int" value="0" />
+					<i id="menulock_icon" class="fas fa-thumbtack"></i>
+				</dialog>
+				-->
 				<button type="submit" name="btn" class="btn btn-primary" value="BTN_SAVE">%s</button>
 				<button type="button" class="btn btn-secondary" onclick="window.location.reload();" value="BTN_CANCEL">%s</button>
 			</div>'''%(zmscontext.getZMILangStr('BTN_SAVE'), zmscontext.getZMILangStr('BTN_CANCEL')))
@@ -137,11 +149,11 @@ def renderHtml(zmscontext, request, SESSION, fmName='form0'):
 	
 	# Google Translate Element
 	if request.get('lang1') != request.get('lang2'):
-		html.append(renderGoogleTranslate(request))
+		html.append(render_googletranslate(request))
 	
 	# Add styles and scripts
-	html.append(renderStyles())
-	html.append(renderScripts())
+	html.append(render_styles())
+	html.append(render_scripts())
 	
 	html.append('</body>')
 	html.append('</html>')
@@ -152,7 +164,7 @@ def renderHtml(zmscontext, request, SESSION, fmName='form0'):
 # ----------------------------------------
 # Render edit mode with form fields
 # ----------------------------------------
-def renderEditMode(zmscontext, request, ai_settings=None):
+def render_editmode(zmscontext, request, ai_settings=None):
 	"""Render edit mode with form fields"""
 	ai_settings = ai_settings or {}
 	same_language = request.get('lang1') == request.get('lang2')
@@ -275,7 +287,7 @@ def renderEditMode(zmscontext, request, ai_settings=None):
 # ----------------------------------------
 # Render view mode with rendered content
 # ----------------------------------------
-def renderViewMode(zmscontext, request):
+def render_viewmode(zmscontext, request):
 	"""Render view mode with rendered content side-by-side"""
 	html = []
 	
@@ -379,7 +391,7 @@ def renderViewMode(zmscontext, request):
 # ----------------------------------------
 # Render Google Translate widget
 # ----------------------------------------
-def renderGoogleTranslate(request):
+def render_googletranslate(request):
 	"""Render Google Translate widget HTML and JavaScript"""
 	return '''
 		<!-- Translation Mode: Google Translate Element -->
@@ -551,14 +563,13 @@ def renderGoogleTranslate(request):
 # ----------------------------------------
 # Render CSS styles
 # ----------------------------------------
-def renderStyles():
+def render_styles():
 	"""Render CSS styles"""
 	return '''
 		<style>
 			.zmi #zmi-tab {
 				padding-bottom: 0 !important;
 			}
-
 
 			/* ################################################### */
 			/* Styles for the translate mode toggle buttons */
@@ -864,6 +875,10 @@ def renderStyles():
 				font-size: 0.88rem;
 				line-height: 1.45;
 			}
+			.zmi.ZMSTextarea  div[id^="zmiStandardEditortext"] .ai-diff-editor,
+			.zmi.ZMSTextarea  div[id^="zmiStandardEditortext"] textarea {
+				min-height: calc(100vh - 27rem);
+			}
 			.ai-source-editor {
 				color: #2f3f50;
 			}
@@ -1002,7 +1017,7 @@ def renderStyles():
 # ----------------------------------------
 # Render JavaScript code
 # ----------------------------------------
-def renderScripts():
+def render_scripts():
 	"""Render JavaScript code"""
 	return r'''
 		<script>
@@ -1013,8 +1028,9 @@ def renderScripts():
 				};
 			}
 
-			function getTranslateAIConfig() {
-				var node = document.getElementById('translate-ai-config');
+			function get_ai_feature_settings() {
+				// JS-Incarnation of the server-side logic to retrieve AI feature settings 
+				var node = document.getElementById('manage_tab_coauthor_grid');
 				var dataset = node ? node.dataset : {};
 				return {
 					contextUrl: dataset.contextUrl || '',
@@ -1029,7 +1045,7 @@ def renderScripts():
 
 			function updateAutoActionButton() {
 				var langs = getTranslateLanguages();
-				var config = getTranslateAIConfig();
+				var settings = get_ai_feature_settings();
 				var sameLanguage = langs.lang1 === langs.lang2;
 				var $button = getAutoActionButton();
 				if (!$button.length) {
@@ -1037,10 +1053,10 @@ def renderScripts():
 				}
 				if (sameLanguage) {
 					$button.text('Auto-Editing');
-					$button.attr('title', config.aiEnabled
+					$button.attr('title', settings.aiEnabled
 						? 'Improve text quality and complete missing metadata using the configured LLM service.'
 						: 'Auto-Editing requires a configured ZMSLLMConnector.');
-					$button.prop('disabled', !config.aiEnabled);
+					$button.prop('disabled', !settings.aiEnabled);
 				}
 				else {
 					$button.text('Auto-Translate');
@@ -1164,17 +1180,15 @@ def renderScripts():
 				// This helps the model understand the overall topic and context for better metadata generation
 				// 1. Get whole page content as plain text by REST-API 
 				let contextContent = '';
-				debugger;
 				$.ajax({
 					type: 'GET',
-					url: $ZMI.get_rest_api_url(getTranslateAIConfig().contextUrl) + '/get_body_content',
+					url: $ZMI.get_rest_api_url(get_ai_feature_settings().contextUrl) + '/get_body_content',
 					dataType: 'text',
 					data: {
 						lang: getZMILang()
 					},
 					async: false, // Synchronous request to ensure content is loaded before prompt is built
 					success: function(data) {
-						debugger;
 						if (data) {
 							contextContent = data;
 						}
@@ -1183,9 +1197,10 @@ def renderScripts():
 						console.error('Failed to load page content for AI context.');
 					}
 				});
-				// 2. Remove excessive whitespace, remove html and truncate to fit model limits
+				// 2. Remove excessive whitespace, remove html, replace special characters, and truncate to fit model limits
 				contextContent = contextContent.replace(/\s+/g, ' ').trim();
 				contextContent = contextContent.replace(/<[^>]*>/g, '');
+				contextContent = contextContent.replace(/&[^;]+;/g, ''); // Remove HTML entities
 				if (contextContent.length > 5000) {
 					contextContent = contextContent.substring(0, 5000);
 				};
@@ -1211,10 +1226,10 @@ def renderScripts():
 			}
 
 			function requestHtmlDiff(originalText, changedText) {
-				var config = getTranslateAIConfig();
+				var settings = get_ai_feature_settings();
 				return $.ajax({
 					type: 'POST',
-					url: $ZMI.get_rest_api_url(config.contextUrl) + '/get_htmldiff',
+					url: $ZMI.get_rest_api_url(settings.contextUrl) + '/get_htmldiff',
 					dataType: 'html',
 					data: {
 						lang: getZMILang(),
@@ -1410,8 +1425,8 @@ def renderScripts():
 			}
 
 			function runSameLanguageAutoEdit() {
-				var config = getTranslateAIConfig();
-				if (!config.aiEnabled) {
+				var settings = get_ai_feature_settings();
+				if (!settings.aiEnabled) {
 					alert('Auto-Editing requires a configured ZMSLLMConnector.');
 					return;
 				}
@@ -1422,10 +1437,10 @@ def renderScripts():
 					return;
 				}
 				syncLeftSourceViews(rows);
-				var prompt = buildAutoEditPrompt(rows, langs.lang1, langs.lang2, config.metadataEnabled);
+				var prompt = buildAutoEditPrompt(rows, langs.lang1, langs.lang2, settings.metadataEnabled);
 				showTranslateProgress('Auto-editing content...');
 				$.ajax({
-					url: $ZMI.get_rest_api_url(config.contextUrl) + '/llm_chat',
+					url: $ZMI.get_rest_api_url(settings.contextUrl) + '/llm_chat',
 					method: 'POST',
 					dataType: 'json',
 					data: {
@@ -1664,7 +1679,7 @@ def manage_tab_coauthor(self):
 	fmName = request.get('fmName', 'form0')
 	
 	# Generate and return HTML
-	html = renderHtml(zmscontext, request, SESSION, fmName)
+	html = render_html(zmscontext, request, SESSION, fmName)
 	
 	response.setHeader('Content-Type', 'text/html;charset=utf-8')
 	return html

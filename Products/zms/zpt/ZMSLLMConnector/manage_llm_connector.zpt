@@ -390,7 +390,7 @@
 					<p class="font-weight-bold">
 						Preconditions
 					</p>
-					<ul class="mb-2">
+					<ul class="mb-3">
 						<li>A configured <strong>ZMSLLMConnector</strong> must be available in the site.</li>
 						<li>The current user needs editorial rights such as ZMSEditor, ZMSAuthor, or ZMSAdministrator.</li>
 						<li>For same-language improvement, the connector must support the <em>Metadata Generation</em> feature when metadata completion is desired.</li>

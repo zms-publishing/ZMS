@@ -134,5 +134,6 @@ COPY --chown=zope:zope $BUILD_DIR/zeo.conf etc/zeo.conf
 # locally it is mapped into the container via bindmounts
 # COPY --chown=zope:zope selenium_tests test_output tests ./
 
-ENV HTTP_PORT=${HTTP_PORT:-80}
+ARG HTTP_PORT=80
+ENV HTTP_PORT=$HTTP_PORT
 CMD ["bin/run-zope.sh"]

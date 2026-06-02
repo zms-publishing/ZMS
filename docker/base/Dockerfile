@@ -76,6 +76,7 @@ RUN <<EOR
     ln -s ${VIRTUAL_ENV}/lib/python$BUILD_PYTHON_VERSION/site-packages/ ${VIRTUAL_ENV}/site-packages
 EOR
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+ENV PIP_CACHE_DIR=/home/zope/venv/cache
 
 # Enable caching of pip packages to speed up rebuild times
 # uv follows the new editable spec, even if the package (zms) does not provide a pyproject.toml
@@ -83,28 +84,31 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 # which Zope cannot handle yet
 # @see https://github.com/zopefoundation/Zope/issues/1239
 # uv also cannot install editable eggs from git repos, but I think we don't need that
-# ARG PIP_INSTALL="uv pip install"
+# ARG PIP_INSTALL="uv pip install --cache-dir $PIP_CACHE_DIR"
 # may need to switch back to pip if the pyproject.toml requirement kicks in
-ARG PIP_INSTALL="pip install --config-settings editable_mode=compat"
+ARG PIP_INSTALL="pip install --config-settings editable_mode=compat --cache-dir $PIP_CACHE_DIR"
 
-COPY --chown=zope:zope Products/zms/version.txt Products/zms/version.txt
-COPY --chown=zope:zope requirements*.txt pyproject.toml README.rst ./
-COPY --chown=zope:zope Products Products
-
-ENV PIP_CACHE_DIR=/home/zope/venv/cache
+COPY --chown=zope:zope requirements*.txt src/
 RUN --mount=type=cache,uid=$UID,target=$PIP_CACHE_DIR,sharing=locked <<EOR
     set -ex
 
     if echo ${PIP_INSTALL} | grep -qv "\buv\b"; then
-        $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --upgrade pip wheel setuptools
+        $PIP_INSTALL --upgrade pip wheel setuptools
     fi
     ZOPE_VERSION=$(pip index versions zope 2>/dev/null | head -1 | grep --only-matching --perl-regexp '[\d.]+')
     PIP_INSTALL="$PIP_INSTALL --constraint https://zopefoundation.github.io/Zope/releases/$ZOPE_VERSION/constraints.txt"
 
-    $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --editable .[dev]
-    $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --requirement requirements-full.txt
-    $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --upgrade 'Products.zmsPluggableAuthService[nginx-sso] @ git+https://github.com/sntl-projects/Products.zmsPluggableAuthService.git'
-    $PIP_INSTALL --cache-dir $PIP_CACHE_DIR ZEO
+    $PIP_INSTALL --requirement src/requirements-full.txt
+    $PIP_INSTALL --upgrade 'Products.zmsPluggableAuthService[nginx-sso] @ git+https://github.com/sntl-projects/Products.zmsPluggableAuthService.git'
+    $PIP_INSTALL ZEO
+EOR
+
+COPY --chown=zope:zope pyproject.toml README.rst MANIFEST.in src/
+COPY --chown=zope:zope Products src/Products/
+RUN --mount=type=cache,uid=$UID,target=$PIP_CACHE_DIR,sharing=locked <<EOR
+    set -ex
+
+    cd src; $PIP_INSTALL .
 EOR
 
 # Create Zope Instance

@@ -1,23 +1,25 @@
 <!DOCTYPE html>
-<html lang="en" tal:define="
-	dummy0 python:here.zmi_page_request(here,request);
-	session python:request.SESSION;
-	standard modules/Products.zms/standard;
-	coauthor modules/Products.zms.coauthor;
-	dummy1 python:request.set('fmName',request.get('fmName','form0'));
-	dummy2 python:coauthor.set_language_options(here,request,session);
-	coauthor_mode python:coauthor.get_coauthor_mode(request,session);
-	ai_settings python:coauthor.get_ai_feature_settings(here);
-	same_language python:request.get('lang1')==request.get('lang2');
-	auto_button_label python:same_language and 'Auto-Editing' or 'Auto-Translate';
-	auto_button_title python:same_language and 'Improve text quality and complete missing metadata using the configured LLM service.' or 'Auto-translate from %s to %s'%(request.get('lang1'),request.get('lang2'));
-	button_disabled python:same_language and not ai_settings.get('ai_enabled',False);
-	debug_info python:coauthor.get_debug_info(request,session);
-	objAttrs python:coauthor.get_multilang_objattrs(here)">
+<html lang="en" xmlns:tal="http://xml.zope.org/namespaces/tal" xmlns:metal="http://xml.zope.org/namespaces/metal" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
 <body tal:attributes="class python:here.zmi_body_class(id='manage_coauthor')" hx-boost="true" xmlns:hx-on="https://htmx.org/">
 <header tal:replace="structure python:here.zmi_body_header(here,request)">zmi_body_header</header>
-<div id="zmi-tab">
+<div id="zmi-tab"
+	tal:define="
+		dummy0 python:here.zmi_page_request(here,request);
+		session python:request.SESSION;
+		standard modules/Products.zms/standard;
+		coauthor modules/Products.zms.coauthor;
+		dummy1 python:request.set('fmName',request.get('fmName','form0'));
+		dummy2 python:coauthor.set_language_options(here,request,session);
+		coauthor_mode python:coauthor.get_coauthor_mode(request,session);
+		ai_settings python:coauthor.get_ai_feature_settings(here);
+		same_language python:request.get('lang1')==request.get('lang2');
+		auto_button_label python:same_language and 'Auto-Editing' or 'Auto-Translate';
+		auto_button_title python:same_language and 'Improve text quality and complete missing metadata using the configured LLM service.' or 'Auto-translate from %s to %s'%(request.get('lang1'),request.get('lang2'));
+		button_disabled python:same_language and not ai_settings.get('ai_enabled',False);
+		debug_info python:coauthor.get_debug_info(request,session);
+		objAttrs python:coauthor.get_multilang_objattrs(here)">
+
 	<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
 	<form class="card form-horizontal translate-forms" action="manage_changeProperties" method="post" enctype="multipart/form-data">

@@ -189,6 +189,9 @@
 			})
 		};
 
+		// Add contextual content to payload
+		// This helps the model understand the overall topic and context for better metadata generation
+		// 1. Get whole page content as plain text by REST-API 
 		var contextContent = '';
 		$.ajax({
 			type: 'GET',
@@ -202,6 +205,7 @@
 				}
 			}
 		});
+		// 2. Remove excessive whitespace, remove html, replace special characters, and truncate to fit model limits
 		contextContent = contextContent.replace(/\s+/g, ' ').trim();
 		contextContent = contextContent.replace(/<[^>]*>/g, '');
 		contextContent = contextContent.replace(/&[^;]+;/g, '');
@@ -317,6 +321,42 @@
 		else if ($token.is('del')) {
 			$token.toggleClass('ai-change-restored');
 		}
+		var $cell = $token.closest('td.form-group-cell.zmi-translate-right');
+		if ($cell.length) {
+			updateMaxLengthWarningForCell($cell);
+		}
+	}
+
+	function getTextLengthWithoutHtml(rawValue) {
+		var text = $('<div></div>').html(rawValue || '').text();
+		return text.length;
+	}
+
+	function getCurrentRightCellValue($cell) {
+		var $input = $cell.find('textarea, input.form-control.datatype-11').filter(function() {
+			return $(this).closest('.input-group-append, .input-group-prepend').length === 0;
+		}).first();
+		if (!$input.length) {
+			return '';
+		}
+		var $editor = $input.data('aiDiffEditor');
+		if ($editor && $editor.length) {
+			var plainTextMode = $input.is('input.form-control.datatype-11');
+			return finalizeDiffEditorText($editor, plainTextMode);
+		}
+		return $input.val() || '';
+	}
+
+	function updateMaxLengthWarningForCell($cell) {
+		var rawValue = getCurrentRightCellValue($cell);
+		var textLength = getTextLengthWithoutHtml(rawValue);
+		$cell.toggleClass('warning-maxlength', textLength > 5000);
+	}
+
+	function updateAllMaxLengthWarnings() {
+		$('td.form-group-cell.zmi-translate-right').each(function() {
+			updateMaxLengthWarningForCell($(this));
+		});
 	}
 
 	function applyAutoEditResult(rows, result) {
@@ -519,37 +559,55 @@
 	// }
 
 	$ZMI.registerReady(function() {
-		$('[data-toggle="tooltip"]').tooltip();
-		updateAutoActionButton();
+
+		// Initialize Google Translate Element if needed
 		initGoogleTranslateElementWhenReady();
 
+		// Initialize Bootstrap tooltips
+		$('[data-toggle="tooltip"]').tooltip();
+
+		// Set initial state of auto action button
+		updateAutoActionButton();
+
+		// Initialize event handlers
 		$(document).off('change.coauthorLang').on('change.coauthorLang', 'select.lang[data-lang-key]', function() {
 			switchLanguage($(this).data('lang-key'), $(this).val());
 		});
-
 		$(document).off('click.coauthorMode').on('click.coauthorMode', '[data-coauthor-mode]', function(e) {
 			e.preventDefault();
 			switchCoauthorMode($(this).data('coauthor-mode'));
 		});
-
 		$(document).off('click.coauthorAuto').on('click.coauthorAuto', '[data-coauthor-action="auto-translate"]', function(e) {
 			e.preventDefault();
 			triggerAutoTranslate();
 		});
-
 		$(document).off('click.coauthorRow').on('click.coauthorRow', '.clickable-row[data-url]', function(e) {
-			if ($(e.target).closest('a, button, input, select, textarea, label, .ai-diff-editor').length) {
-				return;
-			}
+			// if ($(e.target).closest('a, button, input, select, textarea, label, .ai-diff-editor').length) {
+			// 	return;
+			// }
 			var url = $(this).data('url');
 			if (url) {
-				window.location.href = url;
+				// Navigate to child node's translate tab in edit mode
+				// Take existing lang and mode parameters from current URL to ensure they are preserved when clicking on rows in view mode
+				// Override mode parameter from data-url-attribute to ensure correct mode when clicking on rows in view mode
+				var urlObj = new URL(url, window.location.origin);
+				var currentUrl = new URL(window.location);
+				var lang1 = currentUrl.searchParams.get('lang1');
+				var lang2 = currentUrl.searchParams.get('lang2');
+				var mode = 'edit';
+				if (lang1) {
+					urlObj.searchParams.set('lang1', lang1);
+				}
+				if (lang2) {
+					urlObj.searchParams.set('lang2', lang2);
+				}
+				urlObj.searchParams.set('coauthor_mode', mode);
+				window.location.href = urlObj.toString();
+				return;
+			} else {
+				// Switch current node to edit mode
+				switchCoauthorMode('edit');
 			}
-		});
-
-		$('form.translate-forms').on('submit', function() {
-			commitAutoEditDiffEditors();
-			$('#translate_lang').val($('select[name="lang2"]').val());
 		});
 
 		$(document).off('click.aiDiffToggle').on('click.aiDiffToggle', '.ai-diff-editor ins, .ai-diff-editor del', function(e) {
@@ -557,12 +615,96 @@
 			e.stopPropagation();
 			toggleDiffToken($(this));
 		});
+		
+		$('form.translate-forms').on('submit', function(e) {
+			commitAutoEditDiffEditors();
+			updateAllMaxLengthWarnings();
+			$('#translate_lang').val($('select[name="lang2"]').val());
 
+		});
+		$(document).off('input.aiMaxLength keyup.aiMaxLength paste.aiMaxLength change.aiMaxLength', '.zmi-translate-right textarea, .zmi-translate-right input.form-control.datatype-11').on('input.aiMaxLength keyup.aiMaxLength paste.aiMaxLength change.aiMaxLength', '.zmi-translate-right textarea, .zmi-translate-right input.form-control.datatype-11', function() {
+			var $cell = $(this).closest('td.form-group-cell.zmi-translate-right');
+			if ($cell.length) {
+				updateMaxLengthWarningForCell($cell);
+			}
+		});
+		
+		// Disable fields in the left column (read-only reference)
 		$('.zmi-translate-left input, .zmi-translate-left textarea, .zmi-translate-left select').prop('disabled', true);
 		$('.zmi-translate-left input, .zmi-translate-left textarea, .zmi-translate-left select').css('background-color', '#f8f9fa');
-
+		
+		// Remove div.contentEditable container-elements to avoid linking into normal ZMI
 		$('.zmi.manage_coauthor div.contentEditable').each(function() {
 			$(this).replaceWith($(this).html());
 		});
+		
+		// Modify breadcrumb links to stay in translate tab
+		var urlParams = new URLSearchParams(window.location.search);
+		var lang1 = urlParams.get('lang1') || $('select[name="lang1"]').val();
+		var lang2 = urlParams.get('lang2') || $('select[name="lang2"]').val();
+		var viewMode = urlParams.get('coauthor_mode') || 'edit';
+		
+		$('ol.breadcrumb li a').each(function() {
+			var $link = $(this);
+			var href = $link.attr('href');
+			
+			// Remove all htmx attributes to prevent htmx interception
+			$link.removeAttr('hx-get')
+				.removeAttr('hx-target')
+				.removeAttr('hx-swap')
+				.removeAttr('hx-push-url')
+				.removeAttr('hx-indicator')
+				.removeAttr('hx-boost');
+			
+			if (href && !href.includes('manage_coauthor')) {
+				// Replace manage_main or any other action with manage_coauthor
+				var newHref = href.replace(/\/manage(_main)?(\?.*)?$/, '/manage_coauthor');
+				newHref += '?lang1=' + lang1 + '&lang2=' + lang2 + '&coauthor_mode=' + viewMode;
+				$link.attr('href', newHref);
+			}
+			
+			// Add click handler to ensure standard navigation
+			$link.off('click').on('click', function(e) {
+				e.stopPropagation();
+				window.location.href = $(this).attr('href');
+				return false;
+			});
+		});
+
+		// Remove htmx-reactions from all tabs and force them to do page reloads
+		$('nav#tabs ul.nav-tabs > li.nav-item > a').each(function() {
+			var $tabLink = $(this);
+			$tabLink.removeAttr('hx-get')
+				.removeAttr('hx-target')
+				.removeAttr('hx-trigger')
+				.removeAttr('hx-swap')
+				.removeAttr('hx-push-url')
+				.removeAttr('hx-indicator')
+				.removeAttr('hx-boost');
+			$tabLink.off('click').on('click', function(e) {
+				e.stopPropagation();
+				window.location.href = $(this).attr('href');
+				return false;
+			});
+		});
+
+
+		// Add coauthor_mode parameter to icon#navbar-sitemap url
+		var $sitemapIcon = $('#navbar-sitemap');
+		var sitemapHref = $sitemapIcon.attr('href');
+		if (sitemapHref && !sitemapHref.includes('coauthor_mode')) {
+			sitemapHref += (sitemapHref.includes('?') ? '&' : '?') + 'lang1=' + lang1 + '&lang2=' + lang2 + '&coauthor_mode=' + viewMode;
+			$sitemapIcon.attr('href', sitemapHref);
+		}
+
+		// Reset all RTE fields to Code View
+		setTimeout(function() {
+		if ($('div[id*="zmiRichtextEditor"]:visible').length > 0) {
+				$('.form-richtext-wysiwyg > .col-sm-12 > .btn-group > span.btn').click()
+			}
+		}, 1000);
+
+		updateAllMaxLengthWarnings();
+
 	});
 })(window, window.jQuery);

@@ -89,12 +89,36 @@ def set_language_options(zmscontext, request, session):
     request.set('lang2_options', lang2_options)
     request.set('lang2_bk', request.get('lang2'))
 
+
 security.declarePublic('get_coauthor_mode')
 def get_coauthor_mode(request, session):
-    """Get and persist the active coauthor mode."""
-    coauthor_mode = request.get('coauthor_mode', session.get('coauthor_mode', 'edit'))
-    session.set('coauthor_mode', coauthor_mode)
-    return coauthor_mode
+    """
+    Get and persist the active coauthor mode (UI controls).
+    
+    Precedence order:
+    1. If request parameter is set to a valid mode, use it, update session, and return it.
+    2. If request parameter is not set, use session value if valid.
+    3. Otherwise, default to 'edit' mode.
+    4. If request parameter is set multiple times, the last one takes precedence (handled by request object).
+    """
+    valid_modes = ['edit', 'view']
+    
+    # Request parameter takes precedence: use it, sync to session, and return
+    request_mode = request.get('coauthor_mode')
+    # Handle case where request_mode is a list (e.g., ['edit', 'edit'])
+    if isinstance(request_mode, list):
+        request_mode = request_mode[0] if request_mode else None
+    if request_mode and request_mode in valid_modes:
+        session.set('coauthor_mode', request_mode)
+        return request_mode
+    
+    # Fall back to session if no valid request parameter
+    session_mode = session.get('coauthor_mode')
+    if session_mode and session_mode in valid_modes:
+        return session_mode
+    
+    # Default mode
+    return 'edit'
 
 
 security.declarePublic('get_debug_info')

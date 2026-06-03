@@ -315,6 +315,16 @@
             </div>
         
 
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_handle_llm_chat" class="internal-link" title="zms.rest_api.RestApiController._handle_llm_chat">_handle<wbr></wbr>_llm<wbr></wbr>_chat</a></code>
+            </div>
+        
+
     </li>
 </ul> 
 
@@ -544,7 +554,7 @@
         </div>
 
         <div id="splitTables">
-          <table class="children sortable" id="id165">
+          <table class="children sortable" id="id168">
   
   
   <tr class="method">
@@ -667,6 +677,11 @@
     <td>Method</td>
     <td><code><a href="#__get_child_nodes" class="internal-link" title="zms.rest_api.RestApiController.__get_child_nodes">__get<wbr></wbr>_child<wbr></wbr>_nodes</a></code></td>
     <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_handle_llm_chat" class="internal-link" title="zms.rest_api.RestApiController._handle_llm_chat">_handle<wbr></wbr>_llm<wbr></wbr>_chat</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
   </tr>
 </table>
           
@@ -769,7 +784,7 @@
     
     @<a href="zms.rest_api.api.html" class="internal-link" title="zms.rest_api.api">api</a>(<wbr></wbr>tag=<span class="rst-variable-quote">'</span><span class="rst-variable-string">version</span><span class="rst-variable-quote">'</span>, <wbr></wbr>pattern=<span class="rst-variable-quote">'</span><span class="rst-variable-string">/{path}/body_content</span><span class="rst-variable-quote">'</span>, <wbr></wbr>method=<span class="rst-variable-quote">'</span><span class="rst-variable-string">GET</span><span class="rst-variable-quote">'</span>, <wbr></wbr>content_type=<span class="rst-variable-quote">'</span><span class="rst-variable-string">text/html</span><span class="rst-variable-quote">'</span>)<br />
     <span class="py-keyword">def</span> <span class="py-defname">body_content</span><span class="function-signature">(self, context)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/rest_api.py#L400">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/rest_api.py#L416">
       
       (source)
     </a>
@@ -796,7 +811,7 @@
     
     @<a href="zms.rest_api.api.html" class="internal-link" title="zms.rest_api.api">api</a>(<wbr></wbr>tag=<span class="rst-variable-quote">'</span><span class="rst-variable-string">content</span><span class="rst-variable-quote">'</span>, <wbr></wbr>pattern=<span class="rst-variable-quote">'</span><span class="rst-variable-string">/{path}</span><span class="rst-variable-quote">'</span>, <wbr></wbr>method=<span class="rst-variable-quote">'</span><span class="rst-variable-string">GET</span><span class="rst-variable-quote">'</span>, <wbr></wbr>content_type=<span class="rst-variable-quote">'</span><span class="rst-variable-string">application/json</span><span class="rst-variable-quote">'</span>)<br />
     <span class="py-keyword">def</span> <span class="py-defname">get</span><span class="function-signature">(self, context)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/rest_api.py#L271">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/rest_api.py#L287">
       
       (source)
     </a>
@@ -823,7 +838,7 @@
     
     @<a href="zms.rest_api.api.html" class="internal-link" title="zms.rest_api.api">api</a>(<wbr></wbr>tag=<span class="rst-variable-quote">'</span><span class="rst-variable-string">content</span><span class="rst-variable-quote">'</span>, <wbr></wbr>pattern=<span class="rst-variable-quote">'</span><span class="rst-variable-string">/{path}/get_body_content</span><span class="rst-variable-quote">'</span>, <wbr></wbr>method=<span class="rst-variable-quote">'</span><span class="rst-variable-string">GET</span><span class="rst-variable-quote">'</span>, <wbr></wbr>content_type=<span class="rst-variable-quote">'</span><span class="rst-variable-string">text/html</span><span class="rst-variable-quote">'</span>)<br />
     <span class="py-keyword">def</span> <span class="py-defname">get_body_content</span><span class="function-signature">(self, context)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/rest_api.py#L275">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/rest_api.py#L291">
       
       (source)
     </a>
@@ -850,7 +865,7 @@
     
     @<a href="zms.rest_api.api.html" class="internal-link" title="zms.rest_api.api">api</a>(<wbr></wbr>tag=<span class="rst-variable-quote">'</span><span class="rst-variable-string">navigation</span><span class="rst-variable-quote">'</span>, <wbr></wbr>pattern=<span class="rst-variable-quote">'</span><span class="rst-variable-string">/{path}/get_child_nodes</span><span class="rst-variable-quote">'</span>, <wbr></wbr>method=<span class="rst-variable-quote">'</span><span class="rst-variable-string">GET</span><span class="rst-variable-quote">'</span>, <wbr></wbr>content_type=<span class="rst-variable-quote">'</span><span class="rst-variable-string">application/json</span><span class="rst-variable-quote">'</span>)<br />
     <span class="py-keyword">def</span> <span class="py-defname">get_child_nodes</span><span class="function-signature">(self, context)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/rest_api.py#L325">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/rest_api.py#L341">
       
       (source)
     </a>
@@ -877,7 +892,7 @@
     
     @<a href="zms.rest_api.api.html" class="internal-link" title="zms.rest_api.api">api</a>(<wbr></wbr>tag=<span class="rst-variable-quote">'</span><span class="rst-variable-string">navigation</span><span class="rst-variable-quote">'</span>, <wbr></wbr>pattern=<span class="rst-variable-quote">'</span><span class="rst-variable-string">/{path}/get_child_nodes/count</span><span class="rst-variable-quote">'</span>, <wbr></wbr>method=<span class="rst-variable-quote">'</span><span class="rst-variable-string">GET</span><span class="rst-variable-quote">'</span>, <wbr></wbr>content_type=<span class="rst-variable-quote">'</span><span class="rst-variable-string">application/json</span><span class="rst-variable-quote">'</span>)<br />
     <span class="py-keyword">def</span> <span class="py-defname">get_child_nodes__count</span><span class="function-signature">(self, context)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/rest_api.py#L320">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/rest_api.py#L336">
       
       (source)
     </a>
@@ -904,7 +919,7 @@
     
     @<a href="zms.rest_api.api.html" class="internal-link" title="zms.rest_api.api">api</a>(<wbr></wbr>tag=<span class="rst-variable-quote">'</span><span class="rst-variable-string">standard</span><span class="rst-variable-quote">'</span>, <wbr></wbr>pattern=<span class="rst-variable-quote">'</span><span class="rst-variable-string">/{path}/get_htmldiff</span><span class="rst-variable-quote">'</span>, <wbr></wbr>method=<span class="rst-variable-quote">'</span><span class="rst-variable-string">POST</span><span class="rst-variable-quote">'</span>, <wbr></wbr>content_type=<span class="rst-variable-quote">'</span><span class="rst-variable-string">text/html</span><span class="rst-variable-quote">'</span>)<br />
     <span class="py-keyword">def</span> <span class="py-defname">get_htmldiff</span><span class="function-signature">(self, context)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/rest_api.py#L428">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/rest_api.py#L444">
       
       (source)
     </a>
@@ -931,7 +946,7 @@
     
     @<a href="zms.rest_api.api.html" class="internal-link" title="zms.rest_api.api">api</a>(<wbr></wbr>tag=<span class="rst-variable-quote">'</span><span class="rst-variable-string">navigation</span><span class="rst-variable-quote">'</span>, <wbr></wbr>pattern=<span class="rst-variable-quote">'</span><span class="rst-variable-string">/{path}/get_parent_nodes</span><span class="rst-variable-quote">'</span>, <wbr></wbr>method=<span class="rst-variable-quote">'</span><span class="rst-variable-string">GET</span><span class="rst-variable-quote">'</span>, <wbr></wbr>content_type=<span class="rst-variable-quote">'</span><span class="rst-variable-string">application/json</span><span class="rst-variable-quote">'</span>)<br />
     <span class="py-keyword">def</span> <span class="py-defname">get_parent_nodes</span><span class="function-signature">(self, context)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/rest_api.py#L306">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/rest_api.py#L322">
       
       (source)
     </a>
@@ -958,7 +973,7 @@
     
     @<a href="zms.rest_api.api.html" class="internal-link" title="zms.rest_api.api">api</a>(<wbr></wbr>tag=<span class="rst-variable-quote">'</span><span class="rst-variable-string">version</span><span class="rst-variable-quote">'</span>, <wbr></wbr>pattern=<span class="rst-variable-quote">'</span><span class="rst-variable-string">/{path}/get_tag</span><span class="rst-variable-quote">'</span>, <wbr></wbr>method=<span class="rst-variable-quote">'</span><span class="rst-variable-string">GET</span><span class="rst-variable-quote">'</span>, <wbr></wbr>content_type=<span class="rst-variable-quote">'</span><span class="rst-variable-string">application/json</span><span class="rst-variable-quote">'</span>)<br />
     <span class="py-keyword">def</span> <span class="py-defname">get_tag</span><span class="function-signature">(self, context)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/rest_api.py#L375">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/rest_api.py#L391">
       
       (source)
     </a>
@@ -985,7 +1000,7 @@
     
     @<a href="zms.rest_api.api.html" class="internal-link" title="zms.rest_api.api">api</a>(<wbr></wbr>tag=<span class="rst-variable-quote">'</span><span class="rst-variable-string">version</span><span class="rst-variable-quote">'</span>, <wbr></wbr>pattern=<span class="rst-variable-quote">'</span><span class="rst-variable-string">/{path}/get_tags</span><span class="rst-variable-quote">'</span>, <wbr></wbr>method=<span class="rst-variable-quote">'</span><span class="rst-variable-string">GET</span><span class="rst-variable-quote">'</span>, <wbr></wbr>content_type=<span class="rst-variable-quote">'</span><span class="rst-variable-string">application/json</span><span class="rst-variable-quote">'</span>)<br />
     <span class="py-keyword">def</span> <span class="py-defname">get_tags</span><span class="function-signature">(self, context)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/rest_api.py#L336">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/rest_api.py#L352">
       
       (source)
     </a>
@@ -1012,7 +1027,7 @@
     
     @<a href="zms.rest_api.api.html" class="internal-link" title="zms.rest_api.api">api</a>(<wbr></wbr>tag=<span class="rst-variable-quote">'</span><span class="rst-variable-string">navigation</span><span class="rst-variable-quote">'</span>, <wbr></wbr>pattern=<span class="rst-variable-quote">'</span><span class="rst-variable-string">/{path}/get_tree_nodes</span><span class="rst-variable-quote">'</span>, <wbr></wbr>method=<span class="rst-variable-quote">'</span><span class="rst-variable-string">GET</span><span class="rst-variable-quote">'</span>, <wbr></wbr>content_type=<span class="rst-variable-quote">'</span><span class="rst-variable-string">application/json</span><span class="rst-variable-quote">'</span>)<br />
     <span class="py-keyword">def</span> <span class="py-defname">get_tree_nodes</span><span class="function-signature">(self, context)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/rest_api.py#L330">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/rest_api.py#L346">
       
       (source)
     </a>
@@ -1039,7 +1054,7 @@
     
     @<a href="zms.rest_api.api.html" class="internal-link" title="zms.rest_api.api">api</a>(<wbr></wbr>tag=<span class="rst-variable-quote">'</span><span class="rst-variable-string">navigation</span><span class="rst-variable-quote">'</span>, <wbr></wbr>pattern=<span class="rst-variable-quote">'</span><span class="rst-variable-string">/{path}/list_child_nodes</span><span class="rst-variable-quote">'</span>, <wbr></wbr>method=<span class="rst-variable-quote">'</span><span class="rst-variable-string">GET</span><span class="rst-variable-quote">'</span>, <wbr></wbr>content_type=<span class="rst-variable-quote">'</span><span class="rst-variable-string">application/json</span><span class="rst-variable-quote">'</span>)<br />
     <span class="py-keyword">def</span> <span class="py-defname">list_child_nodes</span><span class="function-signature">(self, context)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/rest_api.py#L285">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/rest_api.py#L301">
       
       (source)
     </a>
@@ -1066,7 +1081,7 @@
     
     @<a href="zms.rest_api.api.html" class="internal-link" title="zms.rest_api.api">api</a>(<wbr></wbr>tag=<span class="rst-variable-quote">'</span><span class="rst-variable-string">navigation</span><span class="rst-variable-quote">'</span>, <wbr></wbr>pattern=<span class="rst-variable-quote">'</span><span class="rst-variable-string">/{path}/list_parent_nodes</span><span class="rst-variable-quote">'</span>, <wbr></wbr>method=<span class="rst-variable-quote">'</span><span class="rst-variable-string">GET</span><span class="rst-variable-quote">'</span>, <wbr></wbr>content_type=<span class="rst-variable-quote">'</span><span class="rst-variable-string">application/json</span><span class="rst-variable-quote">'</span>)<br />
     <span class="py-keyword">def</span> <span class="py-defname">list_parent_nodes</span><span class="function-signature">(self, context)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/rest_api.py#L280">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/rest_api.py#L296">
       
       (source)
     </a>
@@ -1093,7 +1108,7 @@
     
     @<a href="zms.rest_api.api.html" class="internal-link" title="zms.rest_api.api">api</a>(<wbr></wbr>tag=<span class="rst-variable-quote">'</span><span class="rst-variable-string">navigation</span><span class="rst-variable-quote">'</span>, <wbr></wbr>pattern=<span class="rst-variable-quote">'</span><span class="rst-variable-string">/{path}/list_tree_nodes</span><span class="rst-variable-quote">'</span>, <wbr></wbr>method=<span class="rst-variable-quote">'</span><span class="rst-variable-string">GET</span><span class="rst-variable-quote">'</span>, <wbr></wbr>content_type=<span class="rst-variable-quote">'</span><span class="rst-variable-string">application/json</span><span class="rst-variable-quote">'</span>)<br />
     <span class="py-keyword">def</span> <span class="py-defname">list_tree_nodes</span><span class="function-signature">(self, context)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/rest_api.py#L295">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/rest_api.py#L311">
       
       (source)
     </a>
@@ -1120,7 +1135,7 @@
     
     @<a href="zms.rest_api.api.html" class="internal-link" title="zms.rest_api.api">api</a>(<wbr></wbr>tag=<span class="rst-variable-quote">'</span><span class="rst-variable-string">metamodel</span><span class="rst-variable-quote">'</span>, <wbr></wbr>pattern=<span class="rst-variable-quote">'</span><span class="rst-variable-string">/metaobj_manager</span><span class="rst-variable-quote">'</span>, <wbr></wbr>content_type=<span class="rst-variable-quote">'</span><span class="rst-variable-string">application/json</span><span class="rst-variable-quote">'</span>)<br />
     <span class="py-keyword">def</span> <span class="py-defname">metaobj_manager</span><span class="function-signature">(self, context)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/rest_api.py#L262">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/rest_api.py#L278">
       
       (source)
     </a>
@@ -1147,7 +1162,7 @@
     
     @<a href="zms.rest_api.api.html" class="internal-link" title="zms.rest_api.api">api</a>(<wbr></wbr>tag=<span class="rst-variable-quote">'</span><span class="rst-variable-string">zmsindex</span><span class="rst-variable-quote">'</span>, <wbr></wbr>pattern=<span class="rst-variable-quote">'</span><span class="rst-variable-string">/zmsindex</span><span class="rst-variable-quote">'</span>, <wbr></wbr>content_type=<span class="rst-variable-quote">'</span><span class="rst-variable-string">application/json</span><span class="rst-variable-quote">'</span>)<br />
     <span class="py-keyword">def</span> <span class="py-defname">zmsindex</span><span class="function-signature">(self, context)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/rest_api.py#L254">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/rest_api.py#L270">
       
       (source)
     </a>
@@ -1309,11 +1324,38 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">__get_child_nodes</span><span class="function-signature">(self, context)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/rest_api.py#L311">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/rest_api.py#L327">
       
       (source)
     </a>
     <a class="headerLink" href="#__get_child_nodes" title="zms.rest_api.RestApiController.__get_child_nodes">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="zms.rest_api.RestApiController._handle_llm_chat">
+    
+  </a>
+  <a name="_handle_llm_chat">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">_handle_llm_chat</span><span class="function-signature">(self, REQUEST)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/rest_api.py#L237">
+      
+      (source)
+    </a>
+    <a class="headerLink" href="#_handle_llm_chat" title="zms.rest_api.RestApiController._handle_llm_chat">
       
       
       ¶

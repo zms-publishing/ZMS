@@ -542,8 +542,8 @@ class ZMSLLMToolsAdapter(object):
         """
         Return active tool schemas for current connector/context.
 
-        - If ``llm.llmtools.id`` is empty: return built-in ``LLM_TOOLS``.
-        - If configured: load from connector's ``get_llmtools`` script.
+            - If ``llm.llmtools.id`` is empty: return built-in ``LLM_TOOLS``.
+            - If configured: load from connector's ``get_llmtools`` script.
         """
         connector_id = self.get_connector_id()
         if not connector_id:

@@ -423,6 +423,7 @@ class ZMS(
         'manage_userForm', 'manage_user',
         'manage_importexport', 'manage_import', 'manage_export',
         'manage_executeMetacmd',
+        'manage_coauthor',
         )
     __userAdministratorPermissions__ = (
         'manage_users', 'manage_users_sitemap', 'manage_userProperties', 'manage_roleProperties', 'userdefined_roles',

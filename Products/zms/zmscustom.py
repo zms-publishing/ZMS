@@ -147,6 +147,8 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
       opts.append({'label': 'TAB_EDIT', 'action': 'manage_main'})
       if pc:
         opts.append({'label': 'TAB_PROPERTIES', 'action': 'manage_properties'})
+      if self.getLLMConnector() is not None:
+        opts.append({'label': 'AI-Coauthor', 'action': 'manage_coauthor'})
       opts.append({'label': 'TAB_IMPORTEXPORT', 'action': 'manage_importexport'})
       opts.append({'label': 'TAB_REFERENCES', 'action': 'manage_RefForm'})
       if not self.getAutocommit() or self.getHistory():
@@ -160,7 +162,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
 
     # Management Permissions.
     __viewPermissions__ = (
-        'manage', 'manage_main', 'manage_container', 'manage_workspace', 'manage_menu',
+      'manage', 'manage_main', 'manage_container', 'manage_workspace', 'manage_menu', 'manage_coauthor',
         )
     __authorPermissions__ = (
         'preview_html', 'preview_top_html',
@@ -184,7 +186,9 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
 
 
     # Templates.
+    security.declareProtected('View', 'manage_coauthor')
     manage_properties = PageTemplateFile('zpt/ZMSObject/manage_main', globals())
+    manage_coauthor = PageTemplateFile('zpt/ZMSLLMConnector/manage_coauthor', globals())
     manage_menu = PageTemplateFile('zpt/object/manage_menu', globals())
     metaobj_recordset_main_grid = PageTemplateFile('zpt/ZMSRecordSet/main_grid', globals())
     metaobj_recordset_main = PageTemplateFile('zpt/ZMSRecordSet/main', globals())

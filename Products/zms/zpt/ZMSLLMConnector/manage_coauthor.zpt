@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" tal:define="
+	dummy0 python:here.zmi_page_request(here,request);
+	session python:request.SESSION;
+	standard modules/Products.zms/standard;
+	coauthor modules/Products.zms.coauthor;
+	dummy1 python:request.set('fmName',request.get('fmName','form0'));
+	dummy2 python:coauthor.set_language_options(here,request,session);
+	coauthor_mode python:coauthor.get_coauthor_mode(request,session);
+	ai_settings python:coauthor.get_ai_feature_settings(here);
+	same_language python:request.get('lang1')==request.get('lang2');
+	auto_button_label python:same_language and 'Auto-Editing' or 'Auto-Translate';
+	auto_button_title python:same_language and 'Improve text quality and complete missing metadata using the configured LLM service.' or 'Auto-translate from %s to %s'%(request.get('lang1'),request.get('lang2'));
+	button_disabled python:same_language and not ai_settings.get('ai_enabled',False);
+	debug_info python:coauthor.get_debug_info(request,session);
+	objAttrs python:coauthor.get_multilang_objattrs(here)">
+<head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
+<body tal:attributes="class python:here.zmi_body_class(id='manage_coauthor')" hx-boost="true" xmlns:hx-on="https://htmx.org/">
+<header tal:replace="structure python:here.zmi_body_header(here,request)">zmi_body_header</header>
+<div id="zmi-tab">
+	<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
+
+	<form class="card form-horizontal translate-forms" action="manage_changeProperties" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="preview" value="preview"/>
+		<input type="hidden" id="translate_lang" name="lang" tal:attributes="value python:request.get('lang2')"/>
+
+		<legend>
+			<div class="d-inline-block">
+				Working on Content of Node:
+				<code style="font-size:100%"
+					data-toggle="tooltip"
+					data-placement="bottom"
+					tal:attributes="title debug_info"
+					tal:content="python:'%s [%s]'%(here.meta_id,here.id)">
+					node
+				</code>
+			</div>
+			<div class="coauthor_mode-toggle btn-group btn-group-sm float-right" role="group">
+				<button id="switch_view" type="button"
+					title="View Mode: Rendered HTML in two languages side-by-side"
+					tal:attributes="class python:'btn py-0 px-3%s'%(coauthor_mode=='view' and ' active' or '')"
+					data-coauthor-mode="view">
+					VIEW
+				</button>
+				<button id="switch_edit" type="button"
+					title="Edit Mode: Edit HTML-form of two languages side-by-side"
+					tal:attributes="class python:'btn py-0 px-3%s'%(coauthor_mode=='edit' and ' active' or '')"
+					data-coauthor-mode="edit">
+					EDIT
+				</button>
+			</div>
+		</legend>
+
+		<div id="manage_coauthor_grid" class="card-body p-0 m-0"
+			tal:on-error="structure string:<code>ERROR manage_coauthor_grid</code>"
+			tal:attributes="
+				data-context-url here/absolute_url;
+				data-ai-enabled python:str(standard.pybool(ai_settings.get('ai_enabled'))).lower();
+				data-metadata-enabled python:str(standard.pybool(ai_settings.get('metadata_enabled'))).lower()">
+
+			<!--! LANGUAGE SELECTION TABLE-->
+			<table class="language-selector-header" 
+				tal:on-error="structure string:<code>ERROR language-selector-header</code>">
+				<tr class="notranslate">
+					<td tal:repeat="side_info python:[('left','lang1'),('right','lang2')]" width="50%"
+						tal:attributes="class python:'lang-select-cell zmi-translate-%s'%side_info[0]">
+						<select class="form-control form-control-sm d-inline w-auto lang"
+							tal:on-error="structure string:<code>ERROR language-selector</code>"
+							tal:attributes="
+								name python:side_info[1]; 
+								data-lang-key python:side_info[1]">
+								<option 
+									tal:repeat="opt python:request.get('%s_options'%side_info[1])"
+									tal:attributes="value python:opt[0]; selected python:[None,'selected'][opt[0]==request.get(side_info[1])]"
+									tal:content="python:opt[1]['label']">
+									lang
+								</option>
+						</select>
+						<tal:block tal:condition="python:side_info[0]=='right'">
+							<button type="button"
+								id="translate-auto-action"
+								class="btn btn-sm btn-success form-control-sm w-auto m-1"
+								data-coauthor-action="auto-translate"
+								tal:attributes="
+									title auto_button_title; 
+									disabled python:[None,'disabled'][button_disabled]"
+								tal:content="auto_button_label">Auto-Translate</button>
+						</tal:block>
+					</td>
+				</tr>
+			</table>
+
+			<!--! CONTENT VIEW TABLE-->
+			<table tal:condition="python:coauthor_mode=='view'" class="content-view-table" width="100%"
+				tal:on-error="structure string:<code>ERROR content-view-table</code>">
+				<tr class="clickable-row" valign="top" 
+					tal:attributes="
+						title python:'Switch to Edit %s'%(here.absolute_url());
+						data-url python:'%s/manage_coauthor?coauthor_mode=edit'%(here.absolute_url())">
+					<td tal:repeat="side_info python:[('left','lang1'),('right','lang2')]" width="50%" valign="top"
+						tal:attributes="class python:'form-group-cell zmi-translate-%s %s coauthor_mode-cell'%(side_info[0], side_info[0]=='left' and 'notranslate' or 'translate')">
+						<div tal:attributes="id here/id" class="zmi-translate-element">
+							<div class="zmiRenderShort" 
+								tal:on-error="structure string:<code>ERROR Page Header</code>"
+								tal:attributes="id python:'%s_%s'%(here.id,request.get(side_info[1]))">
+								<tal:block tal:condition="python:here.meta_id not in ['ZMSDocument','ZMSFolder','ZMS']"
+									tal:content="structure python:here.getBodyContent(coauthor.make_field_request(request,lang=request.get(side_info[1])))">
+									body
+								</tal:block>
+								<tal:block tal:condition="python:here.meta_id in ['ZMSDocument','ZMSFolder','ZMS']">
+									<h1 tal:content="python:here.getTitle(coauthor.make_field_request(request,lang=request.get(side_info[1])))">
+										title
+									</h1>
+									<p class="description" 
+										tal:on-error="structure string:<code>ERROR description</code>"
+										tal:content="structure python:here.getDCDescription(coauthor.make_field_request(request,lang=request.get(side_info[1]))).replace('\n','<br />')">
+										description
+									</p>
+								</tal:block>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr tal:repeat="childNode python:[x for x in here.getObjChildren('e', request) if x.isPageElement()]"
+					tal:attributes="
+						data-url python:'%s/manage_coauthor'%(childNode.absolute_url()); 
+						title python:'Switch to View %s'%(childNode.absolute_url())"
+					class="clickable-row" valign="top"
+					tal:on-error="structure string:<code>ERROR Childnode-Iteration</code>">
+					<td tal:repeat="side_info python:[('left','lang1_bk'),('right','lang2_bk')]"
+						tal:attributes="class python:'form-group-cell zmi-translate-%s %s coauthor_mode-cell'%(side_info[0], side_info[0]=='left' and 'notranslate' or 'translate')">
+						<div class="zmiRenderShort"
+							tal:on-error="structure string:<code>ERROR Rendered Content Block</code>"
+							tal:attributes="id python:'%s_%s'%(childNode.id,request.get(side_info[1]))"
+							tal:content="structure python:childNode.renderShort(coauthor.make_field_request(request,lang=request.get(side_info[1])))">
+							child
+						</div>
+					</td>
+				</tr>
+			</table>
+
+			<!--! PROPERTIES TABLE-->
+			<table tal:condition="python:coauthor_mode!='view'" class="properties-table" width="100%"
+				tal:on-error="structure string:<code>ERROR properties-table</code>">
+				<tal:block tal:repeat="metaObjAttr objAttrs">
+					<tr class="form-group-row"
+						tal:define="
+							objattr_id python:metaObjAttr['id']; 
+							objattr_label python:here.getObjAttrLabel(metaObjAttr)"
+						tal:attributes="
+							data-objattr-id objattr_id; 
+							data-objattr-label objattr_label">
+						<td tal:repeat="side_info python:[('left','lang1'),('right','lang2')]" width="50%" valign="top"
+							tal:attributes="
+								class python:'form-group-cell zmi-translate-block zmi-translate-%s'%side_info[0]; 
+								data-objattr-id objattr_id; 
+								data-objattr-label objattr_label; 
+								data-lang python:request.get(side_info[1])">
+							<div class="form-group row" tal:attributes="id python:'tr_%s'%here.getObjAttrName(metaObjAttr,request.get(side_info[1]))">
+								<label tal:attributes="for python:here.getObjAttrName(metaObjAttr,request.get(side_info[1])); class python:'col-sm-3 control-label%s'%(['',' mandatory'][bool(metaObjAttr.get('mandatory'))])">
+									<span tal:content="python:'%s [%s_%s]'%(objattr_label,objattr_id,request.get(side_info[1]))">label</span>
+								</label>
+								<div class="col-sm-9" tal:content="structure python:here.getObjInput(objattr_id, coauthor.make_field_request(request,same_language=same_language,side=side_info[0],lang=request.get(side_info[1])))">input</div>
+							</div>
+						</td>
+					</tr>
+				</tal:block>
+			</table>
+
+		</div>
+
+		<div class="controls save text-right p-3" tal:condition="python:coauthor_mode=='edit'">
+			<button type="submit" name="btn" class="btn btn-primary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+			<button type="button" class="btn btn-secondary" onclick="window.location.reload();" value="BTN_CANCEL" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
+		</div>
+	</form>
+
+	<div id="google_translate_element" class="d-block px-3" style="margin-top: 16px;" tal:condition="python:request.get('lang1') != request.get('lang2')"></div>
+</div><!-- #zmi-tab -->
+
+<footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
+<link rel="stylesheet" type="text/css" href="/++resource++zms_/ZMS/coauthor.css"/>
+<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ZMS/coauthor.js"></script>
+<script tal:condition="python:request.get('lang1') != request.get('lang2')" src="https://translate.google.com/translate_a/element.js"></script>
+</body>
+</html>

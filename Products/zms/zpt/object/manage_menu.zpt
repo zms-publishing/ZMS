@@ -4,7 +4,7 @@
 <body tal:attributes="
 	data-root python:here.getRootElement().getHome().id;
 	data-client python:here.getHome().id;
-	data-translate_mode python:request.get('translate_mode',None);
+	data-coauthor_mode python:request.get('coauthor_mode',None);
 	data-translate_lang1 python:request.get('lang1',None);
 	data-translate_lang2 python:request.get('lang2',None);
 	id python:'zmsid_%s'%(here.id);

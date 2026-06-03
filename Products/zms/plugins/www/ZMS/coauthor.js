@@ -702,7 +702,7 @@
 		if ($('div[id*="zmiRichtextEditor"]:visible').length > 0) {
 				$('.form-richtext-wysiwyg > .col-sm-12 > .btn-group > span.btn').click()
 			}
-		}, 1000);
+		}, 100);
 
 		updateAllMaxLengthWarnings();
 

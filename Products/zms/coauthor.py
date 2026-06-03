@@ -1,5 +1,7 @@
 from AccessControl.SecurityInfo import ModuleSecurityInfo
 
+from Products.zms import standard
+
 security = ModuleSecurityInfo('Products.zms.coauthor')
 
 security.declarePublic('get_ai_feature_settings')
@@ -36,13 +38,22 @@ class _field_request_proxy(dict):
 
 
 security.declarePublic('make_field_request')
-def make_field_request(request, same_language=False, side='right', lang=None):
+def make_field_request(request, same_language=False, side='right', lang=None, context=None):
     """Create a per-field request snapshot with optional unique widget suffixes."""
-    return request # Debug
     field_request = _field_request_proxy(request)
     if lang:
         field_request['lang'] = lang
     if same_language and side == 'left':
+        # Left side in same-language mode must render fields as *_src to avoid
+        # duplicate DOM ids/names, but still resolve values from the real lang.
+        if lang:
+            field_request['lang'] = 'src'
+            if context is not None:
+                try:
+                    context_key = '%s_lang' % standard.id_quote(context.get_oid())
+                    field_request[context_key] = lang
+                except Exception:
+                    pass
         fm_name = field_request.get('fmName', 'form0')
         el_name = field_request.get('elName', '')
         field_request['fmName'] = '%s_src' % fm_name

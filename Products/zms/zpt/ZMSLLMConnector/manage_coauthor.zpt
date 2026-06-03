@@ -162,7 +162,7 @@
 								<label tal:attributes="for python:here.getObjAttrName(metaObjAttr,request.get(side_info[1])); class python:'col-sm-3 control-label%s'%(['',' mandatory'][bool(metaObjAttr.get('mandatory'))])">
 									<span tal:content="python:'%s [%s_%s]'%(objattr_label,objattr_id,request.get(side_info[1]))">label</span>
 								</label>
-								<div class="col-sm-9" tal:content="structure python:here.getObjInput(objattr_id, coauthor.make_field_request(request,same_language=same_language,side=side_info[0],lang=request.get(side_info[1])))">input</div>
+								<div class="col-sm-9" tal:content="structure python:here.getObjInput(objattr_id, coauthor.make_field_request(request,same_language=same_language,side=side_info[0],lang=request.get(side_info[1]),context=here))">input</div>
 							</div>
 						</td>
 					</tr>

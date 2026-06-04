@@ -331,6 +331,9 @@
 				var table_cell_uid;
 				var table_cell_id;
 				var table_cell_offs;
+				var table_undo_stack;
+				var table_redo_stack;
+				var table_undo_limit;
 
 				$(function() {
 					fmName = $('#fmName').text();
@@ -341,9 +344,92 @@
 					table_cell_uid = $('#table_cell_uid').text();
 					table_cell_id = '';
 					table_cell_offs = 2;
+					table_undo_stack = [];
+					table_redo_stack = [];
+					table_undo_limit = 20;
 					$('form[name='+fmName+']').submit(onZMSTableFormSubmit);
 					table_cell_init();
+					$(document).on('keydown.zmstableUndo', onKeyDownZMSTableUndo);
 				});
+
+				function captureTableState() {
+					return {
+						html: $('#table_cell_editor').html(),
+						cols: $('#cols').val(),
+						rows: $('#rows').val(),
+						uid: table_cell_uid
+					};
+				}
+
+				function isSameTableState(stateA, stateB) {
+					if (!stateA || !stateB) {
+						return false;
+					}
+					return stateA.html == stateB.html
+						&& stateA.cols == stateB.cols
+						&& stateA.rows == stateB.rows
+						&& stateA.uid == stateB.uid;
+				}
+
+				function pushUndoState() {
+					var state = captureTableState();
+					var lastState = table_undo_stack.length > 0 ? table_undo_stack[table_undo_stack.length-1] : null;
+					if (isSameTableState(state, lastState)) {
+						return;
+					}
+					table_undo_stack.push(state);
+					if (table_undo_stack.length > table_undo_limit) {
+						table_undo_stack.shift();
+					}
+					table_redo_stack = [];
+				}
+
+				function restoreTableState(state) {
+					if (!state) {
+						return;
+					}
+					$('#table_cell_editor').html(state.html);
+					$('#cols').val(state.cols);
+					$('#rows').val(state.rows);
+					table_cell_uid = state.uid;
+					table_cell_init();
+				}
+
+				function undoTableState() {
+					if (table_undo_stack.length == 0) {
+						return false;
+					}
+					table_redo_stack.push(captureTableState());
+					restoreTableState(table_undo_stack.pop());
+					return false;
+				}
+
+				function redoTableState() {
+					if (table_redo_stack.length == 0) {
+						return false;
+					}
+					table_undo_stack.push(captureTableState());
+					restoreTableState(table_redo_stack.pop());
+					return false;
+				}
+
+				function onKeyDownZMSTableUndo(event) {
+					if (!event || !event.ctrlKey) {
+						return;
+					}
+					if ($(event.target).closest('#div_table_cell_editor').length > 0) {
+						return;
+					}
+					var key = (event.key || '').toLowerCase();
+					if (key == 'z' && !event.shiftKey) {
+						event.preventDefault();
+						undoTableState();
+					}
+					else if (key == 'y' || (key == 'z' && event.shiftKey)) {
+						event.preventDefault();
+						redoTableState();
+					}
+				}
 
 				function onZMSTableFormSubmit() {
 					var xml = '';
@@ -418,6 +504,7 @@
 				}
 
 				function table_cell_change() {
+					pushUndoState();
 					if (typeof richedit_fmt != 'undefined') {
 						if ( $('#format').val()==richedit_fmt) {
 							zmiRichtextOnSubmitEventHandler();
@@ -452,12 +539,87 @@
 				}
 
 				function table_cell_init() {
-					$('form[name="' + fmName + '"] input[type="hidden"]+textarea').change( function () { $(this).parents('.table_cell_editable').addClass('changed').removeClass('changed',1000);});
-					$('form[name="' + fmName + '"] .table_cell_editable').dblclick( function () { table_cell_edit($(this));});
-					$('div[id^=preview_]').attr('contenteditable','').keyup(onKeyUpZMSTableDivContenteditable).blur(onKeyUpZMSTableDivContenteditable).on('contextmenu',function(){onKeyUpZMSTableDivContenteditable});
+					var $textareas = $("form[name="+fmName+"] input[type=hidden]+textarea");
+					$textareas.off('change.zmstable').on('change.zmstable', function () { $(this).parents(".table_cell_editable").addClass('changed').removeClass('changed',1000);});
+					var $editables = $("form[name="+fmName+"] .table_cell_editable");
+					$editables.off('dblclick.zmstable').on('dblclick.zmstable', function () { table_cell_edit($(this));});
+					$('div[id^=preview_]')
+						.off('.zmstable')
+						.attr('contenteditable','')
+						.on('keyup.zmstable', onKeyUpZMSTableDivContenteditable)
+						.on('blur.zmstable', onKeyUpZMSTableDivContenteditable)
+						.on('focus.zmstable', pushUndoState)
+						.on('paste.zmstable', onPasteZMSTableDivContenteditable)
+						.on('contextmenu.zmstable', function(){onKeyUpZMSTableDivContenteditable});
+				}
+
+				function setTableCellValue($tableCell, value) {
+					var $editable = $('.table_cell_editable', $tableCell).first();
+					var $preview = $('div[id^=preview_]', $editable).first();
+					var $textarea = $('textarea', $editable).first();
+					if ($preview.length == 0 || $textarea.length == 0) {
+						return;
+					}
+					$textarea.val(value);
+					$preview.text(value);
+					if (value.length == 0) {
+						$preview.addClass('placeholder');
+					}
+					else {
+						$preview.removeClass('placeholder');
+					}
+				}
+
+				function onPasteZMSTableDivContenteditable(event) {
+					var e = event.originalEvent || event;
+					if (!e || !e.clipboardData) {
+						return;
+					}
+					var text = e.clipboardData.getData('text/plain');
+					if (!text || text.length == 0) {
+						return;
+					}
+					pushUndoState();
+					e.preventDefault();
+					text = text.replace(/\r/g, '');
+					text = text.replace(/\n$/, '');
+					var rows = text.split('\n');
+					var matrix = [];
+					for (var i = 0; i < rows.length; i++) {
+						matrix.push(rows[i].split('\t'));
+					}
+
+					var $startCell = $(this).closest('td.ZMSTable-cell');
+					var $startRow = $startCell.closest('tr');
+					var $dataRows = $('#table_cell_editor > tbody > tr').filter(function() {
+						return this.id != 'colgrouping';
+					});
+					var startRowIndex = $dataRows.index($startRow);
+					var startColIndex = $startRow.children('td.ZMSTable-cell').index($startCell);
+
+					if (startRowIndex < 0 || startColIndex < 0) {
+						setTableCellValue($startCell, text);
+						return;
+					}
+
+					for (var y = 0; y < matrix.length; y++) {
+						var $targetRow = $dataRows.eq(startRowIndex + y);
+						if ($targetRow.length == 0) {
+							break;
+						}
+						var $targetCells = $targetRow.children('td.ZMSTable-cell');
+						for (var x = 0; x < matrix[y].length; x++) {
+							var $targetCell = $targetCells.eq(startColIndex + x);
+							if ($targetCell.length == 0) {
+								break;
+							}
+							setTableCellValue($targetCell, matrix[y][x]);
+						}
+					}
 				}
 
 				function actionBtnClick(el, fct) {
+					pushUndoState();
 					var x = 0;
 					var $td = $(el).closest("td");
 					while ( $td.prev().length > 0) {
@@ -803,7 +965,10 @@
 						<small class="form-text text-muted">HINTS:
 							<span class="badge badge-dark">Click</span> cell to edit,
 							<span class="badge badge-dark">Double-click</span> cell to open WYSIWYG-editor,
-							<span class="badge badge-dark">Right-click</span> to insert, move or delete cells.
+							<span class="badge badge-dark">Right-click</span> to insert, move or delete cells,
+							<span class="badge badge-dark">Ctrl+V</span> to paste ranges from Excel,
+							<span class="badge badge-dark">Ctrl+Z</span> undo,
+							<span class="badge badge-dark">Ctrl+Y / Ctrl+Shift+Z</span> redo.
 						</small>
 					</tal:block>
 				</div>

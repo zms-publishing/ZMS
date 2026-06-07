@@ -205,9 +205,9 @@
 				}
 			}
 		});
-		// 2. Remove excessive whitespace, remove html, replace special characters, and truncate to fit model limits
+		// 2. Remove excessive whitespace, neutralize html delimiters, replace special characters, and truncate to fit model limits
 		contextContent = contextContent.replace(/\s+/g, ' ').trim();
-		contextContent = contextContent.replace(/<[^>]*>/g, '');
+		contextContent = contextContent.replace(/[<>]/g, '');
 		contextContent = contextContent.replace(/&[^;]+;/g, '');
 		if (contextContent.length > 5000) {
 			contextContent = contextContent.substring(0, 5000);

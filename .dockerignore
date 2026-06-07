@@ -2,6 +2,8 @@
 .github
 .ropeproject
 .vscode
+.venv
+venv
 build
 dist
 docker/variants/alpine/var

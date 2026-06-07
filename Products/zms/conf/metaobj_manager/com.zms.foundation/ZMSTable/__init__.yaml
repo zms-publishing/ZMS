@@ -6,22 +6,28 @@ ZMSTable:
     ZMSTable.MSG_ZMSTABLE_EDITOR:
       eng: |-
         <small class="form-text text-muted">HINTS:
-        	<span class="badge badge-dark">Click</span> cell to edit,
-        	<span class="badge badge-dark">Double-click</span> cell to open WYSIWYG-editor,
-        	<span class="badge badge-dark">Right-click</span> to insert, move or delete cells.
+          <span class="ml-1 text-nowrap d-block"><span class="badge badge-dark">Click</span> cell to edit,</span>
+          <span class="ml-1 text-nowrap d-block"><span class="badge badge-dark">Double-click</span> cell to open WYSIWYG-editor,</span>
+          <span class="ml-1 text-nowrap d-block"><span class="badge badge-dark">Right-click</span> to insert, move or delete cells,</span>
+          <span class="ml-1 text-nowrap d-block"><span class="badge badge-dark">Ctrl+V</span> to paste ranges from Excel,</span>
+          <span class="ml-1 text-nowrap d-block"><span class="badge badge-dark">Ctrl+Z</span> undo,</span>
+          <span class="ml-1 text-nowrap d-block"><span class="badge badge-dark">Ctrl+Y / Ctrl+Shift+Z</span> redo.</span>
         </small>
       ger: |-
         <small class="form-text text-muted">HINWEISE:
-        	<span class="badge badge-dark">Klick</span> auf Zelle zum Editieren,
-        	<span class="badge badge-dark">Doppel-Klick</span> auf Zelle zum Öffnen des WYSIWYG-Editors,
-        	<span class="badge badge-dark">Rechts-Klick</span> zum Einfügen, Verschieben oder Löschen von Zellen.
+          <span class="ml-1 text-nowrap d-block"><span class="badge badge-dark">Klick</span> auf Zelle zum Editieren</span>
+          <span class="ml-1 text-nowrap d-block"><span class="badge badge-dark">Doppel-Klick</span> auf Zelle zum Öffnen des WYSIWYG-Editors</span>
+          <span class="ml-1 text-nowrap d-block"><span class="badge badge-dark">Rechts-Klick</span> zum Einfügen, Verschieben oder Löschen von Zellen</span>
+          <span class="ml-1 text-nowrap d-block"><span class="badge badge-dark">Strg+V</span> zum Einfügen von Bereichen aus Excel</span>
+          <span class="ml-1 text-nowrap d-block"><span class="badge badge-dark">Strg+Z</span> Rückgängig</span>
+          <span class="ml-1 text-nowrap d-block"><span class="badge badge-dark">Strg+Y / Strg+Shift+Z</span> Wiederholen</span>
         </small>
     ZMSTable.MSG_ZMSTABLE_TYPE:
       eng: 'Note: Type can not be changed later'
       ger: 'Hinweis: Tabellen-Typ kann nachträglich nicht mehr geändert werden.'
   name: ZMSTable
   package: com.zms.foundation
-  revision: 5.1.2
+  revision: 6.0.0
   type: ZMSObject
   Attrs:
     - id: titlealt

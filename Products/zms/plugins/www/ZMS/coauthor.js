@@ -328,7 +328,7 @@
 	}
 
 	function getTextLengthWithoutHtml(rawValue) {
-		var text = $('<div></div>').html(rawValue || '').text();
+		var text = $('<div></div>').text(rawValue || '').text();
 		return text.length;
 	}
 

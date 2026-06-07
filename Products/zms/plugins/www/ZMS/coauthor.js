@@ -658,9 +658,12 @@
 			
 			if (href && !href.includes('manage_coauthor')) {
 				// Replace manage_main or any other action with manage_coauthor
-				var newHref = href.replace(/\/manage(_main)?(\?.*)?$/, '/manage_coauthor');
-				newHref += '?lang1=' + lang1 + '&lang2=' + lang2 + '&coauthor_mode=' + viewMode;
-				$link.attr('href', newHref);
+				var baseHref = href.replace(/\/manage(_main)?(\?.*)?$/, '/manage_coauthor');
+				var safeUrl = new URL(baseHref, window.location.origin);
+				safeUrl.searchParams.set('lang1', lang1 || '');
+				safeUrl.searchParams.set('lang2', lang2 || '');
+				safeUrl.searchParams.set('coauthor_mode', viewMode || 'edit');
+				$link.attr('href', safeUrl.pathname + safeUrl.search + safeUrl.hash);
 			}
 			
 			// Add click handler to ensure standard navigation
@@ -693,8 +696,11 @@
 		var $sitemapIcon = $('#navbar-sitemap');
 		var sitemapHref = $sitemapIcon.attr('href');
 		if (sitemapHref && !sitemapHref.includes('coauthor_mode')) {
-			sitemapHref += (sitemapHref.includes('?') ? '&' : '?') + 'lang1=' + lang1 + '&lang2=' + lang2 + '&coauthor_mode=' + viewMode;
-			$sitemapIcon.attr('href', sitemapHref);
+			var safeSitemapUrl = new URL(sitemapHref, window.location.origin);
+			safeSitemapUrl.searchParams.set('lang1', lang1 || '');
+			safeSitemapUrl.searchParams.set('lang2', lang2 || '');
+			safeSitemapUrl.searchParams.set('coauthor_mode', viewMode || 'edit');
+			$sitemapIcon.attr('href', safeSitemapUrl.pathname + safeSitemapUrl.search + safeSitemapUrl.hash);
 		}
 
 		// Reset all RTE fields to Code View

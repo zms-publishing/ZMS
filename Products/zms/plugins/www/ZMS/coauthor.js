@@ -20,12 +20,16 @@
 	}
 
 	function initGoogleTranslateElementWhenReady() {
-		if (!$('#google_translate_element').length) {
+		if (!$('#google_translate_element').length || !shouldInitGoogleTranslateElement()) {
 			return;
 		}
 		var retries = 0;
 		var maxRetries = 30;
 		var timer = window.setInterval(function() {
+			if (!shouldInitGoogleTranslateElement()) {
+				window.clearInterval(timer);
+				return;
+			}
 			retries++;
 			if (window.google && window.google.translate) {
 				window.clearInterval(timer);
@@ -43,6 +47,18 @@
 			lang1: $('select[name="lang1"]').val(),
 			lang2: $('select[name="lang2"]').val()
 		};
+	}
+
+	function shouldInitGoogleTranslateElement() {
+		var langs = getTranslateLanguages();
+		var navState = getCoauthorNavState();
+		if (navState.viewMode === 'view') {
+			return false;
+		}
+		if (!langs.lang1 || !langs.lang2 || langs.lang1 === langs.lang2) {
+			return false;
+		}
+		return true;
 	}
 
 	function getAiFeatureSettings() {
@@ -453,6 +469,96 @@
 		window.location.href = url.toString();
 	}
 
+	function buildCoauthorUrl(rawHref, lang1, lang2, viewMode) {
+		if (!rawHref) {
+			return '';
+		}
+		var safeUrl = new URL(rawHref, window.location.origin);
+		if (!/\/manage_coauthor$/.test(safeUrl.pathname)) {
+			if (/\/manage_[^/]+$/.test(safeUrl.pathname)) {
+				safeUrl.pathname = safeUrl.pathname.replace(/\/manage_[^/]+$/, '/manage_coauthor');
+			}
+			else {
+				safeUrl.pathname = safeUrl.pathname.replace(/\/$/, '') + '/manage_coauthor';
+			}
+		}
+		safeUrl.searchParams.set('lang1', lang1 || '');
+		safeUrl.searchParams.set('lang2', lang2 || '');
+		safeUrl.searchParams.set('coauthor_mode', viewMode || 'edit');
+		return safeUrl.pathname + safeUrl.search + safeUrl.hash;
+	}
+
+	function getCoauthorNavState() {
+		var urlParams = new URLSearchParams(window.location.search);
+		var lang1 = urlParams.get('lang1') || $('select[name="lang1"]').val() || '';
+		var lang2 = urlParams.get('lang2') || $('select[name="lang2"]').val() || '';
+		var viewMode = urlParams.get('coauthor_mode') || 'edit';
+		return {
+			lang1: lang1,
+			lang2: lang2,
+			viewMode: viewMode
+		};
+	}
+
+	function normalizeBreadcrumbLinksToCoauthor() {
+		var navState = getCoauthorNavState();
+		$('ol.breadcrumb li a').each(function() {
+			var $link = $(this);
+			var href = $link.attr('href');
+			if (!href || href.includes('manage_coauthor')) {
+				return;
+			}
+			var coauthorHref = buildCoauthorUrl(href, navState.lang1, navState.lang2, navState.viewMode);
+			$link.attr('href', coauthorHref);
+			if ($link.attr('hx-get')) {
+				$link.attr('hx-get', coauthorHref);
+			}
+		});
+	}
+
+	function rewriteBreadcrumbHtmxRequest(evt) {
+		if (!isManageCoauthorPage() || !evt || !evt.detail) {
+			return;
+		}
+		var sourceElt = evt.detail.elt;
+		if (!sourceElt || !sourceElt.closest) {
+			return;
+		}
+		var link = sourceElt.closest('ol.breadcrumb li a');
+		if (!link) {
+			return;
+		}
+		var rawPath = evt.detail.path
+			|| (evt.detail.pathInfo && (evt.detail.pathInfo.requestPath || evt.detail.pathInfo.finalRequestPath))
+			|| link.getAttribute('hx-get')
+			|| link.getAttribute('href');
+		if (!rawPath) {
+			return;
+		}
+		var navState = getCoauthorNavState();
+		var coauthorPath = buildCoauthorUrl(rawPath, navState.lang1, navState.lang2, navState.viewMode);
+		if (evt.detail.path) {
+			evt.detail.path = coauthorPath;
+		}
+		if (evt.detail.pathInfo) {
+			if (evt.detail.pathInfo.requestPath) {
+				evt.detail.pathInfo.requestPath = coauthorPath;
+			}
+			if (evt.detail.pathInfo.finalRequestPath) {
+				evt.detail.pathInfo.finalRequestPath = coauthorPath;
+			}
+		}
+		link.setAttribute('href', coauthorPath);
+		if (link.getAttribute('hx-get')) {
+			link.setAttribute('hx-get', coauthorPath);
+		}
+	}
+
+	if (typeof document !== 'undefined' && !window.__zmsCoauthorHtmxRewriteInstalled) {
+		document.addEventListener('htmx:configRequest', rewriteBreadcrumbHtmxRequest);
+		window.__zmsCoauthorHtmxRewriteInstalled = true;
+	}
+
 	function googleLangCode(lang) {
 		var map = {
 			ger: 'de',
@@ -526,6 +632,9 @@
 	}
 
 	function googleTranslateElementInit() {
+		if (!shouldInitGoogleTranslateElement()) {
+			return;
+		}
 		var langs = getTranslateLanguages();
 		var sourceLang = googleLangCode(langs.lang1);
 		var targetLang = googleLangCode(langs.lang2);
@@ -553,10 +662,10 @@
 		}
 	}
 
-	// if (!isManageCoauthorPage()) {
-	// 	clearGlobalHooks();
-	// 	return;
-	// }
+	if (!isManageCoauthorPage()) {
+		clearGlobalHooks();
+		return;
+	}
 
 	$ZMI.registerReady(function() {
 
@@ -564,7 +673,9 @@
 		initGoogleTranslateElementWhenReady();
 
 		// Initialize Bootstrap tooltips
-		$('[data-toggle="tooltip"]').tooltip();
+		if (typeof $().tooltip === 'function') {
+			$('[data-toggle="tooltip"]').tooltip();
+		}
 
 		// Set initial state of auto action button
 		updateAutoActionButton();
@@ -644,52 +755,9 @@
 		var lang2 = urlParams.get('lang2') || $('select[name="lang2"]').val();
 		var viewMode = urlParams.get('coauthor_mode') || 'edit';
 		
-		$('ol.breadcrumb li a').each(function() {
-			var $link = $(this);
-			var href = $link.attr('href');
-			
-			// Remove all htmx attributes to prevent htmx interception
-			$link.removeAttr('hx-get')
-				.removeAttr('hx-target')
-				.removeAttr('hx-swap')
-				.removeAttr('hx-push-url')
-				.removeAttr('hx-indicator')
-				.removeAttr('hx-boost');
-			
-			if (href && !href.includes('manage_coauthor')) {
-				// Replace manage_main or any other action with manage_coauthor
-				var baseHref = href.replace(/\/manage(_main)?(\?.*)?$/, '/manage_coauthor');
-				var safeUrl = new URL(baseHref, window.location.origin);
-				safeUrl.searchParams.set('lang1', lang1 || '');
-				safeUrl.searchParams.set('lang2', lang2 || '');
-				safeUrl.searchParams.set('coauthor_mode', viewMode || 'edit');
-				$link.attr('href', safeUrl.pathname + safeUrl.search + safeUrl.hash);
-			}
-			
-			// Add click handler to ensure standard navigation
-			$link.off('click').on('click', function(e) {
-				e.stopPropagation();
-				window.location.href = $(this).attr('href');
-				return false;
-			});
-		});
+		normalizeBreadcrumbLinksToCoauthor();
 
-		// Remove htmx-reactions from all tabs and force them to do page reloads
-		$('nav#tabs ul.nav-tabs > li.nav-item > a').each(function() {
-			var $tabLink = $(this);
-			$tabLink.removeAttr('hx-get')
-				.removeAttr('hx-target')
-				.removeAttr('hx-trigger')
-				.removeAttr('hx-swap')
-				.removeAttr('hx-push-url')
-				.removeAttr('hx-indicator')
-				.removeAttr('hx-boost');
-			$tabLink.off('click').on('click', function(e) {
-				e.stopPropagation();
-				window.location.href = $(this).attr('href');
-				return false;
-			});
-		});
+		// Keep default HTMX tab behavior from zmi_tabs.zpt.
 
 
 		// Add coauthor_mode parameter to icon#navbar-sitemap url
@@ -708,7 +776,7 @@
 		if ($('div[id*="zmiRichtextEditor"]:visible').length > 0) {
 				$('.form-richtext-wysiwyg > .col-sm-12 > .btn-group > span.btn').click()
 			}
-		}, 100);
+		}, 500);
 
 		updateAllMaxLengthWarnings();
 

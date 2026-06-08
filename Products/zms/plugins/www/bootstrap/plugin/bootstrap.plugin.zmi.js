@@ -200,7 +200,19 @@ $ZMI.registerReady(function(){
 	});
 
 	// Tooltip
-	$('[data-toggle="tooltip"]').tooltip();
+	if (typeof $.fn.tooltip === 'function') {
+		$('[data-toggle="tooltip"]').tooltip();
+	} else {
+		// Fallback: try to initialize using bootstrap tooltip if jQuery tooltip not available
+		try {
+			const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="tooltip"]'));
+			tooltipTriggerList.map(function (tooltipTriggerEl) {
+				return new bootstrap.Tooltip(tooltipTriggerEl);
+			});
+		} catch (e) {
+			console.warn('Tooltip initialization failed:', e);
+		}
+	}
 
 	// Main Menu Toggle
 	$('.zmi .main-nav li.active a').click(function(event) {
@@ -975,14 +987,19 @@ ZMI.prototype.initInputFields = function(container) {
 				});
 			});
 			// Multiselect
-			$.plugin('multiselect',{
-				files: [
-					$ZMI.getConfProperty('plugin.bootstrap.multiselect.js','/++resource++zms_/bootstrap/plugin/bootstrap.plugin.zmi.multiselect.js')
-				]});
-			$.plugin('multiselect').set({context:context});
-			$.plugin('multiselect').get("select.zmi-select[multiple]:not(.d-none)",function(){
-					$ZMI.multiselect(context);
-				});
+			if (typeof $.plugin === 'function') {
+				$.plugin('multiselect',{
+					files: [
+						$ZMI.getConfProperty('plugin.bootstrap.multiselect.js','/++resource++zms_/bootstrap/plugin/bootstrap.plugin.zmi.multiselect.js')
+					]});
+				$.plugin('multiselect').set({context:context});
+				$.plugin('multiselect').get("select.zmi-select[multiple]:not(.d-none)",function(){
+						$ZMI.multiselect(context);
+					});
+			} else if (typeof $ZMI !== 'undefined' && typeof $ZMI.multiselect === 'function') {
+				// Fallback if $.plugin is missing
+				$ZMI.multiselect(context);
+			}
 			// Activity-Toggle
 			if ($("#zmi-toggle-activity").length==0) {
 				$("#attrActivity",context).each(function() {

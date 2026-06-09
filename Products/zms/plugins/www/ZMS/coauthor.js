@@ -760,19 +760,18 @@
 		// Add coauthor_mode parameter to icon#navbar-sitemap url
 		var $sitemapIcon = $('#navbar-sitemap');
 		var sitemapHref = $sitemapIcon.attr('href');
-		$sitemapIcon.attr('data-href-normal', sitemapHref);
-		if (sitemapHref && !sitemapHref.includes('coauthor_mode')) {
-			var safeSitemapUrl = new URL(sitemapHref, window.location.origin);
-			safeSitemapUrl.searchParams.set('lang1', lang1 || '');
-			safeSitemapUrl.searchParams.set('lang2', lang2 || '');
-			safeSitemapUrl.searchParams.set('coauthor_mode', viewMode || 'edit');
-			$sitemapIcon.attr('href', safeSitemapUrl.pathname + safeSitemapUrl.search + safeSitemapUrl.hash);
-		}
-
-		// @WORK: Restore sitemap-icon when leaving coauthor tab via tab navigation
-		// $('#tabs li a:not([data-action="manage_coauthor"])').on('htmx:click', function(event) {
-		// 	$sitemapIcon.attr('href', $sitemapIcon.attr('data-href-normal'));
-		// });
+		var safeSitemapUrl = new URL(sitemapHref, window.location.origin);
+		safeSitemapUrl.searchParams.set('lang1', lang1 || '');
+		safeSitemapUrl.searchParams.set('lang2', lang2 || '');
+		safeSitemapUrl.searchParams.set('coauthor_mode', viewMode || 'edit');
+		$sitemapIcon.attr('data-href-coauthor', safeSitemapUrl.pathname + safeSitemapUrl.search + safeSitemapUrl.hash);
+		// Add click event listener for using data-href-coauthor as link
+		$sitemapIcon.on('click', function(event) {
+			if (isManageCoauthorPage() && $(this).attr('data-href-coauthor') && window === window.top) {
+				event.preventDefault();
+				window.location.href = $(this).attr('data-href-coauthor');
+			}
+		});
 
 		// Reset all RTE fields to Code View
 		setTimeout(function() {

@@ -2,20 +2,20 @@
 <html lang="en" tal:define="standard modules/Products.zms/standard">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
 <body tal:attributes="
+	id python:'zmsid_%s'%(here.id);
+	class python:here.zmi_body_class(id='manage-menu');
 	data-root python:here.getRootElement().getHome().id;
 	data-client python:here.getHome().id;
 	data-coauthor_mode python:request.get('coauthor_mode',None);
-	data-translate_lang1 python:request.get('lang1',None);
-	data-translate_lang2 python:request.get('lang2',None);
-	id python:'zmsid_%s'%(here.id);
-	class python:here.zmi_body_class(id='manage-menu')">
+	data-coauthor_lang1 python:request.get('lang1',None);
+	data-coauthor_lang2 python:request.get('lang2',None)">
 <header class="navbar navbar-nav navbar-expand navbar-dark flex-row bd-navbar">
 	<ul class="nav navbar-nav navbar-right">
 		<li id="zmi-history" class="dropdown"></li>
 		<li id="zmi-bookmarks" class="dropdown ml-3"></li>
 	</ul>
 	<a class="navbar-brand" target="_blank" title="Zope Container" 
-		style="max-width: 66%;overflow: hidden;white-space: nowrap;"
+		style="max-width:66%;overflow:hidden;white-space:nowrap;"
 		tal:attributes="href python:'../../%s/manage'%here.breadcrumbs_obj_path()[0].getHome().id">
 		.. /
 		<span class="zmi-home-id" tal:content="python:here.breadcrumbs_obj_path()[0].getHome().id">Home-Id</span>
@@ -27,7 +27,8 @@
 
 <footer>
 	<a class="refresh zmi-helper-clickable" title="Click for Refresh" href="javascript:;" 
-		onclick="zmiRefresh()"><i class="fas fa-sync-alt ml-3 mr-2"></i><tal:block tal:content="python:here.getZMILangStr('BTN_UPDATE')">Update</tal:block>
+		onclick="zmiRefresh()"><i class="fas fa-sync-alt ml-3 mr-2"></i>
+		<tal:block tal:content="python:here.getZMILangStr('BTN_UPDATE')">Update</tal:block>
 	</a>
 </footer>
 

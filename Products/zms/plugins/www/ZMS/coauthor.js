@@ -189,6 +189,7 @@
 	}
 
 	function buildAutoEditPrompt(rows, sourceLang, targetLang, metadataEnabled) {
+		var imageContexts = collectImageContexts();
 		var payload = {
 			source_language: sourceLang,
 			target_language: targetLang,
@@ -204,6 +205,15 @@
 				};
 			})
 		};
+		if (imageContexts.length) {
+			payload.images = imageContexts.map(function(image) {
+				return {
+					id: image.attrId,
+					label: image.label,
+					url: image.url
+				};
+			});
+		}
 
 		// Add contextual content to payload
 		// This helps the model understand the overall topic and context for better metadata generation
@@ -237,6 +247,9 @@
 			'Keep the language exactly as ' + targetLang + '.',
 			'Improve clarity, grammar, style, and consistency without changing the factual meaning.',
 			'Do not invent facts, numbers, names, or claims that are not supported by the input.',
+			(imageContexts.length
+				? 'Images are attached to the user message. Use them to improve image-related metadata such as alt text, legend/caption, and description fields when relevant.'
+				: 'No image attachments are available for this request.'),
 			'The context_content shall be used to derive missing or weak metadata fields.' +
 			(metadataEnabled
 				? 'Fill missing or weak metadata fields when they can be derived from the existing content.'
@@ -245,6 +258,124 @@
 			'Input JSON:',
 			JSON.stringify(payload, null, 2)
 		].join('\n');
+	}
+
+	function collectImageContexts() {
+		var images = [];
+		$('.form-group-row').each(function() {
+			var $row = $(this);
+			var attrId = String($row.data('objattr-id') || '').toLowerCase();
+			var looksLikeImageAttr = /image|img|photo|picture|grafik|abbildung/.test(attrId);
+			var $leftCell = $row.find('.zmi-coauthor-block.zmi-coauthor-left');
+			var $img = $leftCell.find('img').filter(function() {
+				var src = $(this).attr('src') || '';
+				if (!src || src.indexOf('data:image/gif') === 0) {
+					return false;
+				}
+				var width = this.naturalWidth || $(this).width() || 0;
+				var height = this.naturalHeight || $(this).height() || 0;
+				return (width >= 64 && height >= 64) || looksLikeImageAttr;
+			}).first();
+			if (!$img.length) {
+				return;
+			}
+			images.push({
+				attrId: $row.data('objattr-id') || '',
+				label: $row.data('objattr-label') || '',
+				url: new URL($img.attr('src'), window.location.origin).toString()
+			});
+		});
+		return images;
+	}
+
+	function blobToDataUrl(blob) {
+		var deferred = $.Deferred();
+		var reader = new FileReader();
+		reader.onload = function() {
+			deferred.resolve(reader.result);
+		};
+		reader.onerror = function() {
+			deferred.reject(new Error('file_reader_error'));
+		};
+		reader.readAsDataURL(blob);
+		return deferred.promise();
+	}
+
+	function fetchImageAsDataUrl(url) {
+		var deferred = $.Deferred();
+		fetch(url, {
+			credentials: 'same-origin'
+		}).then(function(response) {
+			if (!response.ok) {
+				throw new Error('http_' + response.status);
+			}
+			return response.blob();
+		}).then(function(blob) {
+			if (blob.size > 2 * 1024 * 1024) {
+				throw new Error('image_too_large');
+			}
+			return blobToDataUrl(blob);
+		}).then(function(dataUrl) {
+			deferred.resolve(dataUrl);
+		}).catch(function(error) {
+			deferred.reject(error);
+		});
+		return deferred.promise();
+	}
+
+	function buildLlmChatRequestData(prompt) {
+		var deferred = $.Deferred();
+		var imageContexts = collectImageContexts().slice(0, 3);
+		if (!imageContexts.length) {
+			deferred.resolve({ message: prompt });
+			return deferred.promise();
+		}
+
+		var contentParts = [
+			{ type: 'text', text: prompt }
+		];
+		var jobs = [];
+		imageContexts.forEach(function(image, index) {
+			contentParts.push({
+				type: 'text',
+				text: 'Image ' + (index + 1) + ' context: id=' + image.attrId + ', label=' + image.label
+			});
+			var job = $.Deferred();
+			fetchImageAsDataUrl(image.url).done(function(dataUrl) {
+				contentParts.push({
+					type: 'image_url',
+					image_url: {
+						url: dataUrl,
+						detail: 'low'
+					}
+				});
+				job.resolve();
+			}).fail(function() {
+				contentParts.push({
+					type: 'text',
+					text: 'Image not attached (fetch failed). Source URL: ' + image.url
+				});
+				job.resolve();
+			});
+			jobs.push(job.promise());
+		});
+
+		if (!jobs.length) {
+			deferred.resolve({ message: prompt });
+			return deferred.promise();
+		}
+
+		$.when.apply($, jobs).then(function() {
+			deferred.resolve({
+				messages: JSON.stringify([
+					{
+						role: 'user',
+						content: contentParts
+					}
+				])
+			});
+		});
+		return deferred.promise();
 	}
 
 	function requestHtmlDiff(originalText, changedText) {
@@ -450,16 +581,15 @@
 		}
 		var prompt = buildAutoEditPrompt(rows, langs.lang1, langs.lang2, settings.metadataEnabled);
 		showTranslateProgress('Auto-editing content...');
-		$.ajax({
-			url: $ZMI.get_rest_api_url(settings.contextUrl) + '/llm_chat',
-			method: 'POST',
-			dataType: 'json',
-			data: {
-				message: prompt,
-				agent_mode: '0',
-				preserve_html: '1'
-			}
-		}).done(function(response) {
+		buildLlmChatRequestData(prompt).done(function(requestData) {
+			requestData.agent_mode = '0';
+			requestData.preserve_html = '1';
+			$.ajax({
+				url: $ZMI.get_rest_api_url(settings.contextUrl) + '/llm_chat',
+				method: 'POST',
+				dataType: 'json',
+				data: requestData
+			}).done(function(response) {
 			hideTranslateProgress();
 			if (response && response.error) {
 				var errorMessage = typeof response.error === 'string' ? response.error : (response.error.message || 'LLM request failed.');
@@ -474,13 +604,17 @@
 			applyAutoEditResult(rows, parsed).done(function(updated) {
 				alert('Auto-Editing completed for ' + updated + ' field(s).');
 			});
-		}).fail(function(xhr) {
+			}).fail(function(xhr) {
+				hideTranslateProgress();
+				var message = 'Auto-Editing request failed.';
+				if (xhr && xhr.responseJSON && xhr.responseJSON.error) {
+					message = xhr.responseJSON.error.message || xhr.responseJSON.error;
+				}
+				alert(message);
+			});
+		}).fail(function() {
 			hideTranslateProgress();
-			var message = 'Auto-Editing request failed.';
-			if (xhr && xhr.responseJSON && xhr.responseJSON.error) {
-				message = xhr.responseJSON.error.message || xhr.responseJSON.error;
-			}
-			alert(message);
+			alert('Could not prepare image attachments for auto-editing.');
 		});
 	}
 

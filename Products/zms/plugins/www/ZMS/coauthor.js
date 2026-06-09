@@ -158,8 +158,8 @@
 		var rows = [];
 		$('.form-group-row').each(function() {
 			var $row = $(this);
-			var $leftCell = $row.find('.zmi-translate-block.zmi-translate-left');
-			var $rightCell = $row.find('.zmi-translate-block.zmi-translate-right');
+			var $leftCell = $row.find('.zmi-coauthor-block.zmi-coauthor-left');
+			var $rightCell = $row.find('.zmi-coauthor-block.zmi-coauthor-right');
 			var $leftInput = getEditableField($leftCell);
 			var $rightInput = getEditableField($rightCell);
 			if (!$leftInput.length || !$rightInput.length) {
@@ -263,6 +263,14 @@
 
 	function cleanupDiffEditors(rows) {
 		rows.forEach(function(row) {
+			var $source = row.sourceInput;
+			var $existingSource = $source.data('aiSourceEditor');
+			if ($existingSource && $existingSource.length) {
+				$existingSource.closest('.ai-source-wrapper').remove();
+			}
+			$source.removeData('aiSourceEditor');
+			$source.removeClass('d-none ai-diff-source');
+
 			var $target = row.targetInput;
 			var $existingEditor = $target.data('aiDiffEditor');
 			if ($existingEditor && $existingEditor.length) {
@@ -271,6 +279,24 @@
 			$target.removeData('aiDiffEditor');
 			$target.removeClass('d-none ai-diff-source');
 		});
+	}
+
+	function renderAutoEditSource(row) {
+		var $source = row.sourceInput;
+		var isInline = $source.is('input.form-control.datatype-11');
+		var $wrapper = $('<div class="ai-source-wrapper"></div>');
+		var editorClass = isInline ? 'ai-diff-editor ai-source-editor ai-source-editor-inline' : 'ai-diff-editor ai-source-editor';
+		var $editor = $('<div></div>').addClass(editorClass);
+		if (row.isRichtext && !isInline) {
+			$editor.html(row.sourceValue || '');
+		}
+		else {
+			$editor.text(row.sourceValue || '');
+		}
+		$wrapper.append($editor);
+		$source.addClass('d-none ai-diff-source');
+		$source.after($wrapper);
+		$source.data('aiSourceEditor', $editor);
 	}
 
 	function renderAutoEditDiff(row, diffHtml) {
@@ -320,7 +346,7 @@
 	}
 
 	function commitAutoEditDiffEditors() {
-		$('.zmi-translate-right textarea, .zmi-translate-right input.form-control.datatype-11').each(function() {
+		$('.zmi-coauthor-right textarea, .zmi-coauthor-right input.form-control.datatype-11').each(function() {
 			var $target = $(this);
 			var $editor = $target.data('aiDiffEditor');
 			if ($editor && $editor.length) {
@@ -337,7 +363,7 @@
 		else if ($token.is('del')) {
 			$token.toggleClass('ai-change-restored');
 		}
-		var $cell = $token.closest('td.form-group-cell.zmi-translate-right');
+		var $cell = $token.closest('td.form-group-cell.zmi-coauthor-right');
 		if ($cell.length) {
 			updateMaxLengthWarningForCell($cell);
 		}
@@ -370,7 +396,7 @@
 	}
 
 	function updateAllMaxLengthWarnings() {
-		$('td.form-group-cell.zmi-translate-right').each(function() {
+		$('td.form-group-cell.zmi-coauthor-right').each(function() {
 			updateMaxLengthWarningForCell($(this));
 		});
 	}
@@ -386,6 +412,7 @@
 		rows.forEach(function(row) {
 			var suggestion = fields[row.attrId];
 			if (typeof suggestion === 'string' && $.trim(suggestion) !== '') {
+				renderAutoEditSource(row);
 				var job = $.Deferred();
 				requestHtmlDiff(row.targetValue || '', suggestion).done(function(diffHtml) {
 					renderAutoEditDiff(row, diffHtml);
@@ -601,8 +628,8 @@
 		var processedFields = 0;
 		$('.form-group-row').each(function() {
 			var $row = $(this);
-			var $leftInput = getEditableField($row.find('.zmi-translate-left'));
-			var $rightInput = getEditableField($row.find('.zmi-translate-right'));
+			var $leftInput = getEditableField($row.find('.zmi-coauthor-left'));
+			var $rightInput = getEditableField($row.find('.zmi-coauthor-right'));
 			if ($leftInput.length && $rightInput.length) {
 				totalFields++;
 			}
@@ -614,8 +641,8 @@
 		showTranslateProgress('Translating... 0/' + totalFields);
 		$('.form-group-row').each(function() {
 			var $row = $(this);
-			var $leftInput = getEditableField($row.find('.zmi-translate-left'));
-			var $rightInput = getEditableField($row.find('.zmi-translate-right'));
+			var $leftInput = getEditableField($row.find('.zmi-coauthor-left'));
+			var $rightInput = getEditableField($row.find('.zmi-coauthor-right'));
 			if (!$leftInput.length || !$rightInput.length) {
 				return;
 			}
@@ -662,12 +689,22 @@
 		}
 	}
 
+	function enforceStandardRichtextMode() {
+		$('div[id^="zmiRichtextEditor"]').hide();
+		$('div[id^="zmiStandardEditor"]').show();
+		$('.form-richtext-standard .btn-group.float-right > span.btn, .form-richtext-wysiwyg .btn-group.pull-right > span.btn').each(function() {
+			$(this).removeAttr('onclick').css('pointer-events', 'none');
+		});
+	}
+
 	if (!isManageCoauthorPage()) {
 		clearGlobalHooks();
 		return;
 	}
 
 	$ZMI.registerReady(function() {
+
+		enforceStandardRichtextMode();
 
 		// Initialize Google Translate Element if needed
 		initGoogleTranslateElementWhenReady();
@@ -733,16 +770,16 @@
 			$('#translate_lang').val($('select[name="lang2"]').val());
 
 		});
-		$(document).off('input.aiMaxLength keyup.aiMaxLength paste.aiMaxLength change.aiMaxLength', '.zmi-translate-right textarea, .zmi-translate-right input.form-control.datatype-11').on('input.aiMaxLength keyup.aiMaxLength paste.aiMaxLength change.aiMaxLength', '.zmi-translate-right textarea, .zmi-translate-right input.form-control.datatype-11', function() {
-			var $cell = $(this).closest('td.form-group-cell.zmi-translate-right');
+		$(document).off('input.aiMaxLength keyup.aiMaxLength paste.aiMaxLength change.aiMaxLength', '.zmi-coauthor-right textarea, .zmi-coauthor-right input.form-control.datatype-11').on('input.aiMaxLength keyup.aiMaxLength paste.aiMaxLength change.aiMaxLength', '.zmi-coauthor-right textarea, .zmi-coauthor-right input.form-control.datatype-11', function() {
+			var $cell = $(this).closest('td.form-group-cell.zmi-coauthor-right');
 			if ($cell.length) {
 				updateMaxLengthWarningForCell($cell);
 			}
 		});
 		
 		// Disable fields in the left column (read-only reference)
-		$('.zmi-translate-left input, .zmi-translate-left textarea, .zmi-translate-left select').prop('disabled', true);
-		$('.zmi-translate-left input, .zmi-translate-left textarea, .zmi-translate-left select').css('background-color', '#f8f9fa');
+		$('.zmi-coauthor-left input, .zmi-coauthor-left textarea, .zmi-coauthor-left select').prop('disabled', true);
+		$('.zmi-coauthor-left input, .zmi-coauthor-left textarea, .zmi-coauthor-left select').css('background-color', '#f8f9fa');
 		
 		// Remove div.contentEditable container-elements to avoid linking into normal ZMI
 		$('.zmi.manage_coauthor div.contentEditable').each(function() {
@@ -772,13 +809,6 @@
 				window.location.href = $(this).attr('data-href-coauthor');
 			}
 		});
-
-		// Reset all RTE fields to Code View
-		setTimeout(function() {
-		if ($('div[id*="zmiRichtextEditor"]:visible').length > 0) {
-				$('.form-richtext-wysiwyg > .col-sm-12 > .btn-group > span.btn').click()
-			}
-		}, 500);
 
 		updateAllMaxLengthWarnings();
 

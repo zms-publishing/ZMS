@@ -1089,10 +1089,17 @@ ZMI.prototype.initInputFields = function(container) {
 			$ZMI.initUrlInput(this);
 			// Richedit
 			var $richedits = $('div[id^="zmiStandardEditor"]',this);
+			var disableRichtextUi = $('body').hasClass('disable_richtext_ui');
 			if ($richedits.length > 0) {
 				$richedits.each(function() {
 					var elName = $(this).attr("id").substring("zmiStandardEditor".length);
-					zmiRichtextInit(elName);
+					if (!disableRichtextUi) {
+						zmiRichtextInit(elName);
+					}
+					else {
+						$('div#zmiRichtextEditor'+elName).hide();
+						$('div#zmiStandardEditor'+elName).show();
+					}
 					var v = $("#"+elName).val();
 					function matchAll(source, regexp) {
 						var matches = [];

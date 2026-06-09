@@ -181,21 +181,21 @@
 	width: auto;
 	min-width: 9rem;
 }
-.lang-select-cell.zmi-translate-left {
+.lang-select-cell.zmi-coauthor-left {
 	border-right: 1px solid #dee2e6;
 	text-align: right;
 }
-.zmi-translate-element-id {
+.zmi-coauthor-element-id {
 	display: inline-block;
 	float: left;
 	padding: .5rem 1rem;
 	font-weight: bold;
 }
-.zmi-translate-element-id a {
+.zmi-coauthor-element-id a {
 	color: #007bff !important;
 	text-decoration: none;
 }
-.zmi-translate-element-id a:hover {
+.zmi-coauthor-element-id a:hover {
 	text-decoration: underline;
 }
 .lang-select-cell .btn {
@@ -224,10 +224,10 @@
 	padding: 1rem;
 	vertical-align: top;
 }
-.form-group-cell.zmi-translate-left {
+.form-group-cell.zmi-coauthor-left {
 	border-right: 1px solid #dee2e6;
 }
-.properties-table .zmi-translate-block > .form-group.row > div.col-sm-5.col-md-4.col-lg-3 {
+.properties-table .zmi-coauthor-block > .form-group.row > div.col-sm-5.col-md-4.col-lg-3 {
 	/* input-type: date */
 	width:unset !important;
 	max-width:unset !important;
@@ -244,7 +244,7 @@
 .form-group-cell .control-label {
 	font-weight: 600;
 }
-.zmi-translate-right {
+.zmi-coauthor-right {
 	background-color: aliceblue;
 }
 .form-group-cell .control-label.mandatory::after {
@@ -308,6 +308,7 @@
 }
 .ai-source-editor {
 	color: #2f3f50;
+	background: #f8f9fa;
 }
 .ai-diff-editor.ai-diff-editor-inline {
 	min-height: 2.35rem;
@@ -348,8 +349,8 @@
 .ai-diff-editor del:hover {
 	box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.25);
 }
-.form-group-cell.zmi-translate-right.warning-maxlength .col-sm-9:has(>textarea.form-control):before,
-.form-group-cell.zmi-translate-right.warning-maxlength .col-sm-9 div.form-group:has(textarea,input):before {
+.form-group-cell.zmi-coauthor-right.warning-maxlength .col-sm-9:has(>textarea.form-control):before,
+.form-group-cell.zmi-coauthor-right.warning-maxlength .col-sm-9 div.form-group:has(textarea,input):before {
 	content:"Maximum Characters 5000 exeeded: Auto-Translation will be rejected.";
 	display:block;
 	position:absolute;
@@ -363,7 +364,7 @@
 	border:1px solid #f5c6cb;
 	color:#721c24
 }
-.form-group-cell.zmi-translate-right.warning-maxlength .col-sm-9:has(>textarea.form-control):before {
+.form-group-cell.zmi-coauthor-right.warning-maxlength .col-sm-9:has(>textarea.form-control):before {
 	margin:2rem;
 }
 
@@ -371,21 +372,11 @@
 .form-group-cell .zmi-richtext {
 	min-height: 200px;
 }
-.form-group-cell .form-richtext-wysiwyg .col-sm-12 .btn-group.pull-right .btn {
-	display: block !important;
+/* Hide the default rich text editor toolbar since we will be using a custom one for translation forms */
+.form-group-cell .form-group.form-richtext.form-richtext-standard > div:first-child {
+	display:none;
 }
-.form-group-cell .form-richtext-standard > div.col-sm-12:has(.float-left) {
-	white-space:nowrap;
-	max-height:2rem
-}
-.form-group-cell .form-richtext-standard > div.col-sm-12 > .float-right {
-	position:absolute;
-	right:1rem
-}
-.form-group-cell .form-richtext-standard > div.col-sm-12 .btn-secondary:has(.fa-eye-slash) {
-	background-color: transparent;
-}
-.zmi-translate-block .inlinelinks {
+.zmi-coauthor-block .inlinelinks {
 	flex: 0 0 100%;
 	max-width: 100%;
 	margin: .5rem -15px 1rem;
@@ -401,8 +392,8 @@
 	padding-left: 15px;
 	font-weight: normal;
 }
-.zmi-translate-block .inlinelinks:before {
-	content:"\\f0c1";
+.zmi-coauthor-block .inlinelinks:before {
+	content:"\f0c1";
 	font-family:'Font Awesome 5 Free';
 	font-weight:900;
 	margin-right:.3rem;
@@ -425,7 +416,7 @@
 }
 /* Responsive adjustments */
 @media (min-width: 1200px) {
-	.form-group-cell.zmi-translate-right .control-label {
+	.form-group-cell.zmi-coauthor-right .control-label {
 		display:none
 	}
 }

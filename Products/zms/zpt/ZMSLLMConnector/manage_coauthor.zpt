@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:tal="http://xml.zope.org/namespaces/tal" xmlns:metal="http://xml.zope.org/namespaces/metal" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
-<body tal:attributes="class python:here.zmi_body_class(id='manage_coauthor')" hx-boost="true" xmlns:hx-on="https://htmx.org/">
+<body tal:attributes="class python:here.zmi_body_class(id='manage_coauthor disable_richtext_ui')" hx-boost="true" xmlns:hx-on="https://htmx.org/">
 <header tal:replace="structure python:here.zmi_body_header(here,request)">zmi_body_header</header>
 <div id="zmi-tab"
 	tal:define="
@@ -65,7 +65,7 @@
 				tal:on-error="structure string:<code>ERROR language-selector-header</code>">
 				<tr class="notranslate">
 					<td tal:repeat="side_info python:[('left','lang1'),('right','lang2')]" width="50%"
-						tal:attributes="class python:'lang-select-cell zmi-translate-%s'%side_info[0]">
+						tal:attributes="class python:'lang-select-cell zmi-coauthor-%s'%side_info[0]">
 						<select class="form-control form-control-sm d-inline w-auto lang"
 							tal:on-error="structure string:<code>ERROR language-selector</code>"
 							tal:attributes="
@@ -100,8 +100,8 @@
 						title python:'Switch to Edit %s'%(here.absolute_url());
 						data-url python:'%s/manage_coauthor?coauthor_mode=edit'%(here.absolute_url())">
 					<td tal:repeat="side_info python:[('left','lang1'),('right','lang2')]" width="50%" valign="top"
-						tal:attributes="class python:'form-group-cell zmi-translate-%s %s coauthor_mode-cell'%(side_info[0], side_info[0]=='left' and 'notranslate' or 'translate')">
-						<div tal:attributes="id here/id" class="zmi-translate-element">
+						tal:attributes="class python:'form-group-cell zmi-coauthor-%s %s coauthor_mode-cell'%(side_info[0], side_info[0]=='left' and 'notranslate' or 'translate')">
+						<div tal:attributes="id here/id" class="zmi-coauthor-element">
 							<div class="zmiRenderShort" 
 								tal:on-error="structure string:<code>ERROR Page Header</code>"
 								tal:attributes="id python:'%s_%s'%(here.id,request.get(side_info[1]))">
@@ -130,7 +130,7 @@
 					class="clickable-row" valign="top"
 					tal:on-error="structure string:<code>ERROR Childnode-Iteration</code>">
 					<td tal:repeat="side_info python:[('left','lang1_bk'),('right','lang2_bk')]"
-						tal:attributes="class python:'form-group-cell zmi-translate-%s %s coauthor_mode-cell'%(side_info[0], side_info[0]=='left' and 'notranslate' or 'translate')">
+						tal:attributes="class python:'form-group-cell zmi-coauthor-%s %s coauthor_mode-cell'%(side_info[0], side_info[0]=='left' and 'notranslate' or 'translate')">
 						<div class="zmiRenderShort"
 							tal:on-error="structure string:<code>ERROR Rendered Content Block</code>"
 							tal:attributes="id python:'%s_%s'%(childNode.id,request.get(side_info[1]))"
@@ -154,7 +154,7 @@
 							data-objattr-label objattr_label">
 						<td tal:repeat="side_info python:[('left','lang1'),('right','lang2')]" width="50%" valign="top"
 							tal:attributes="
-								class python:'form-group-cell zmi-translate-block zmi-translate-%s'%side_info[0]; 
+								class python:'form-group-cell zmi-coauthor-block zmi-coauthor-%s'%side_info[0]; 
 								data-objattr-id objattr_id; 
 								data-objattr-label objattr_label; 
 								data-lang python:request.get(side_info[1])">

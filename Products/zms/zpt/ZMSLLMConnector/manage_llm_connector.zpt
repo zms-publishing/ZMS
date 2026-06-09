@@ -397,13 +397,6 @@
 						<li>Languages are chosen from the node’s translation context and are remembered per session.</li>
 						<li>If no LLM connector is configured, Auto-Editing is disabled and only the standard edit workflow remains available.</li>
 					</ul>
-					<p class="font-weight-bold">
-						Installation
-					</p>
-					<p>
-						AI-Coauthor is delivered as part of the ZMS product and can be imported
-						with the <a href="../metacmd_manager/manage_main">ZMS-MetaCommand-Manager</a>. 
-					</p>
 
 				</div>
 			</div><!-- #panel-features -->

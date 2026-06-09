@@ -144,17 +144,30 @@ def get_debug_info(request, session):
     )
 
 
-security.declarePublic('get_multilang_objattrs')
-def get_multilang_objattrs(zmscontext):
-    """Return multilingual attributes excluding technical/system ones."""
-    technical_prefixes = ('change_', 'work_', 'attr_active_', 'created_', 'modified_')
+security.declarePublic('get_editable_objattrs')
+def get_editable_objattrs(zmscontext, same_language=False):
+    """Return editable/multilingual attributes excluding technical/system ones."""
+    technical_prefixes = (
+        'change_', 
+        'work_', 
+        'attr_active_', 
+        'created_', 
+        'modified_',
+        'master_',
+        'major_',
+        'minor_',
+        'internal_',
+        'attr_dc_coverage_'
+    )
     technical_attrs = ('uid', 'version', 'preview')
     objattrs = []
     for objattr_id in zmscontext.getObjAttrs():
         if objattr_id.startswith(technical_prefixes) or objattr_id in technical_attrs:
             continue
         metaobj_attr = zmscontext.getObjAttr(objattr_id)
-        if metaobj_attr.get('multilang') in [1, True]:
+        if same_language and metaobj_attr.get('multilang') not in [1, True]:
+            objattrs.append(metaobj_attr)
+        elif not same_language and metaobj_attr.get('multilang') in [1, True]:
             objattrs.append(metaobj_attr)
     return objattrs
 

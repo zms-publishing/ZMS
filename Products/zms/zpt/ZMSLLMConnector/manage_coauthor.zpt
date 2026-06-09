@@ -18,13 +18,14 @@
 		auto_button_title python:same_language and 'Improve text quality and complete missing metadata using the configured LLM service.' or 'Auto-translate from %s to %s'%(request.get('lang1'),request.get('lang2'));
 		button_disabled python:same_language and not ai_settings.get('ai_enabled',False);
 		debug_info python:coauthor.get_debug_info(request,session);
-		objAttrs python:coauthor.get_editable_objattrs(here,same_language=same_language);
+		objAttrs python:coauthor.get_editable_objattrs(here,same_language=bool(same_language));
 	">
 	<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
 	<form class="card form-horizontal translate-forms" action="manage_changeProperties" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="preview" value="preview"/>
 		<input type="hidden" id="translate_lang" name="lang" tal:attributes="value python:request.get('lang2')"/>
+		<input type="hidden" id="same_language" name="same_language" tal:attributes="value python:same_language"/>
 
 		<legend>
 			<div class="d-inline-block">

@@ -165,7 +165,7 @@ def get_editable_objattrs(zmscontext, same_language=False):
         if objattr_id.startswith(technical_prefixes) or objattr_id in technical_attrs:
             continue
         metaobj_attr = zmscontext.getObjAttr(objattr_id)
-        if same_language and metaobj_attr.get('multilang') not in [1, True]:
+        if same_language:
             objattrs.append(metaobj_attr)
         elif not same_language and metaobj_attr.get('multilang') in [1, True]:
             objattrs.append(metaobj_attr)

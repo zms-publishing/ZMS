@@ -174,17 +174,7 @@
         
 
         
-            <div class="itemName"><code><a href="#get_multilang_objattrs" class="internal-link" title="zms.coauthor.get_multilang_objattrs">get<wbr></wbr>_multilang<wbr></wbr>_objattrs</a></code>
-            </div>
-        
-
-    </li><li class="">
-        
-        
-        
-
-        
-            <div class="itemName"><code><a href="#get_viewmode_child_nodes" class="internal-link" title="zms.coauthor.get_viewmode_child_nodes">get<wbr></wbr>_viewmode<wbr></wbr>_child<wbr></wbr>_nodes</a></code>
+            <div class="itemName"><code><a href="#get_editable_objattrs" class="internal-link" title="zms.coauthor.get_editable_objattrs">get<wbr></wbr>_editable<wbr></wbr>_objattrs</a></code>
             </div>
         
 
@@ -1262,7 +1252,7 @@
     
     <td>Function</td>
     <td><code><a href="#get_coauthor_mode" class="internal-link" title="zms.coauthor.get_coauthor_mode">get<wbr></wbr>_coauthor<wbr></wbr>_mode</a></code></td>
-    <td>Get and persist the active coauthor mode.</td>
+    <td>Get and persist the active coauthor mode (UI controls).</td>
   </tr><tr class="function">
     
     <td>Function</td>
@@ -1271,13 +1261,8 @@
   </tr><tr class="function">
     
     <td>Function</td>
-    <td><code><a href="#get_multilang_objattrs" class="internal-link" title="zms.coauthor.get_multilang_objattrs">get<wbr></wbr>_multilang<wbr></wbr>_objattrs</a></code></td>
-    <td>Return multilingual attributes excluding technical/system ones.</td>
-  </tr><tr class="function">
-    
-    <td>Function</td>
-    <td><code><a href="#get_viewmode_child_nodes" class="internal-link" title="zms.coauthor.get_viewmode_child_nodes">get<wbr></wbr>_viewmode<wbr></wbr>_child<wbr></wbr>_nodes</a></code></td>
-    <td>Return page-element child nodes used by coauthor view mode.</td>
+    <td><code><a href="#get_editable_objattrs" class="internal-link" title="zms.coauthor.get_editable_objattrs">get<wbr></wbr>_editable<wbr></wbr>_objattrs</a></code></td>
+    <td>Return editable/multilingual attributes excluding technical/system ones.</td>
   </tr><tr class="function">
     
     <td>Function</td>
@@ -1319,7 +1304,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_ai_feature_settings</span><span class="function-signature">(zmscontext)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/coauthor.py#L6">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/coauthor.py#L8">
       
       (source)
     </a>
@@ -1346,7 +1331,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_coauthor_mode</span><span class="function-signature">(request, session)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/coauthor.py#L91">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/coauthor.py#L105">
       
       (source)
     </a>
@@ -1358,7 +1343,15 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Get and persist the active coauthor mode.</p></div>
+    <div><p>Get and persist the active coauthor mode (UI controls).</p>
+<p>Precedence order:</p>
+<ol class="rst-simple">
+<li>If request parameter is set to a valid mode, use it, update session, and return it.</li>
+<li>If request parameter is not set, use session value if valid.</li>
+<li>Otherwise, default to 'edit' mode.</li>
+<li>If request parameter is set multiple times, the last one takes precedence (handled by request object).</li>
+</ol>
+</div>
   </div>
 </div><div class="basefunction">
   
@@ -1373,7 +1366,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_debug_info</span><span class="function-signature">(request, session)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/coauthor.py#L99">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/coauthor.py#L136">
       
       (source)
     </a>
@@ -1390,21 +1383,21 @@
 </div><div class="basefunction">
   
   
-  <a name="zms.coauthor.get_multilang_objattrs">
+  <a name="zms.coauthor.get_editable_objattrs">
     
   </a>
-  <a name="get_multilang_objattrs">
+  <a name="get_editable_objattrs">
     
   </a>
   <div class="functionHeader">
     
     
-    <span class="py-keyword">def</span> <span class="py-defname">get_multilang_objattrs</span><span class="function-signature">(zmscontext)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/coauthor.py#L111">
+    <span class="py-keyword">def</span> <span class="py-defname">get_editable_objattrs</span><span class="function-signature">(zmscontext, same_language=False)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/coauthor.py#L148">
       
       (source)
     </a>
-    <a class="headerLink" href="#get_multilang_objattrs" title="zms.coauthor.get_multilang_objattrs">
+    <a class="headerLink" href="#get_editable_objattrs" title="zms.coauthor.get_editable_objattrs">
       
       
       ¶
@@ -1412,34 +1405,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Return multilingual attributes excluding technical/system ones.</p></div>
-  </div>
-</div><div class="basefunction">
-  
-  
-  <a name="zms.coauthor.get_viewmode_child_nodes">
-    
-  </a>
-  <a name="get_viewmode_child_nodes">
-    
-  </a>
-  <div class="functionHeader">
-    
-    
-    <span class="py-keyword">def</span> <span class="py-defname">get_viewmode_child_nodes</span><span class="function-signature">(zmscontext, request)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/coauthor.py#L126">
-      
-      (source)
-    </a>
-    <a class="headerLink" href="#get_viewmode_child_nodes" title="zms.coauthor.get_viewmode_child_nodes">
-      
-      
-      ¶
-    </a>
-  </div>
-  <div class="docstring functionBody">
-    
-    <div><p>Return page-element child nodes used by coauthor view mode.</p></div>
+    <div><p>Return editable/multilingual attributes excluding technical/system ones.</p></div>
   </div>
 </div><div class="basefunction">
   
@@ -1453,8 +1419,8 @@
   <div class="functionHeader">
     
     
-    <span class="py-keyword">def</span> <span class="py-defname">make_field_request</span><span class="function-signature">(request, same_language=False, side=<span class="rst-variable-quote">'</span><span class="rst-variable-string">right</span><span class="rst-variable-quote">'</span>, lang=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/coauthor.py#L39">
+    <span class="py-keyword">def</span> <span class="py-defname">make_field_request</span><span class="function-signature">(request, same_language=False, side=<span class="rst-variable-quote">'</span><span class="rst-variable-string">right</span><span class="rst-variable-quote">'</span>, lang=None, context=None)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/coauthor.py#L41">
       
       (source)
     </a>
@@ -1481,7 +1447,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">set_language_options</span><span class="function-signature">(zmscontext, request, session)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/coauthor.py#L53">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/coauthor.py#L66">
       
       (source)
     </a>
@@ -1507,7 +1473,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">security</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/coauthor.py#L3">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/coauthor.py#L5">
       
       (source)
     </a>

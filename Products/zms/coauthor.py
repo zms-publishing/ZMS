@@ -107,10 +107,10 @@ def get_coauthor_mode(request, session):
     Get and persist the active coauthor mode (UI controls).
     
     Precedence order:
-    1. If request parameter is set to a valid mode, use it, update session, and return it.
-    2. If request parameter is not set, use session value if valid.
-    3. Otherwise, default to 'edit' mode.
-    4. If request parameter is set multiple times, the last one takes precedence (handled by request object).
+        1. If request parameter is set to a valid mode, use it, update session, and return it.
+        2. If request parameter is not set, use session value if valid.
+        3. Otherwise, default to 'edit' mode.
+        4. If request parameter is set multiple times, the last one takes precedence (handled by request object).
     """
     valid_modes = ['edit', 'view']
     

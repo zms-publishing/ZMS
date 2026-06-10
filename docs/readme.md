@@ -17,7 +17,7 @@ Configuring ZMS: user management, languages, meta-attributes, content models, se
 Setting up a development environment (including VSCode, ZEO, WebDAV), understanding the ZMS object model, using the ZMS API, path traversal, cache control, extending ZMS with custom content classes, and contributing.
 
 ### E. [Appendices](e_appendices.md)
-Workflow and versioning reference, glossary, external links, and release notes pointers.
+Glossary, external links, and release notes pointers.
 
 ---
 

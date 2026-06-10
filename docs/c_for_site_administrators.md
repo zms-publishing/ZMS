@@ -447,97 +447,143 @@ The Git Bridge uses a minimal command set:
 
 ## 9. LLM / AI Configuration {#llm}
 
-ZMS supports multiple Large Language Model (LLM) providers through a unified connector object `ZMSLLMConnector`. Add it at the ZMS site root and configure the provider type and credentials.
+ZMS now supports multiple Large Language Model (LLM) providers through an abstract interface. This allows you to use different AI backends including OpenAI, local Ollama deployments, and RAG (Retrieval-Augmented Generation) with Qdrant vector database.
 
-### Supported providers
+### Overview
 
-| Provider | Key requirement | Use case |
-|---|---|---|
-| **OpenAI** | API key + internet | Cloud GPT models, production quality |
-| **Ollama** | Local GPU/CPU server | Privacy-sensitive or offline deployments |
-| **RAG (Qdrant + Ollama)** | Qdrant + Ollama | Site-specific question answering |
+The LLM integration provides a chat interface accessible from the ZMS management interface. You can configure different providers based on your needs:
 
-### Configuration properties
+- **OpenAI**: Cloud-based GPT models (requires API key and internet connection)
+- **Ollama**: Local LLM deployment (no API key needed, runs on your infrastructure)
+- **RAG**: Retrieval-Augmented Generation using Qdrant vector database with Ollama
 
-All configuration is done via the `ZMSLLMConnector` object properties.
+### LLM-Chat content block (`llm_chat`)
 
-#### General settings
+Besides the connector management UI, ZMS ships the metaobject class `llm_chat` so you can embed a chat frontend directly in web documents as a normal block element.
+
+- Add a **ZMSLLMConnector** at the site root and configure provider/model as usual.
+- Import or enable the `llm_chat` metaobject from package `com.zms.llm`.
+- Insert an `llm_chat` block into a page.
+
+The block uses the existing `++rest_api/llm_chat` endpoint, supports multi-turn history, optional agent mode (tool-calling via built-in or profile-based `llmtools`), and stores chat history per block in browser localStorage.
+
+### Configuration Properties
+
+All configuration is done via the **ZMSLLMConnector** object in your ZMS instance. You can configure it through the ZMS management interface or by setting properties on the ZMSLLMConnector instance.
+
+#### General Settings
 
 | Property | Description | Default |
-|---|---|---|
+|----------|-------------|---------|
 | `llm.provider` | Provider type: `openai`, `ollama`, or `rag` | `openai` |
-| `llm.api.model` | Model name | `gpt-4o-mini` (OpenAI), `llama2` (Ollama) |
-| `llm.temperature` | Sampling temperature 0.0–2.0 (higher = more creative) | `0.7` |
-| `llm.top_p` | Nucleus sampling 0.0–1.0 | `0.9` |
-| `llm.max_tokens` | Maximum tokens to generate (optional) | *(not set)* |
+| `llm.api.model` | Model name to use | `gpt-4o-mini` (OpenAI), `llama2` (Ollama) |
+| `llm.temperature` | Sampling temperature 0.0-2.0 (higher = more creative) | `0.7` (RAG: `0.1` recommended) |
+| `llm.top_p` | Nucleus sampling 0.0-1.0 | `0.9` |
+| `llm.max_tokens` | Maximum tokens to generate (optional) | (not set) |
 | `llm.num_ctx` | Context window size for Ollama/RAG | `4096` |
+| `llm.llmtools.id` | Custom `*_llmtools` profile id for agent mode (empty = built-in tools) | (not set) |
 
-#### OpenAI configuration
+#### Agent tools profile abstraction (`*_llmtools`)
+
+Agent mode can be extended without editing core `llmtools.py`:
+
+1. Install/import a `ZMSLibrary` meta-object whose id ends with `_llmtools` (or connector-style `_connector` in package `com.zms.llmtools.*`).
+2. Add script `get_llmtools(connector, context)` that returns OpenAI-compatible tool schemas.
+3. Add optional scripts `llmtool_<name>(connector, context, args)` for custom execution.
+4. Select this profile in **ZMSLLMConnector → Configuration → LLM Tools Profile**.
+
+Connector-style naming is also supported for package-based profiles:
+- id ends with `_connector`
+- package starts with `com.zms.llmtools.`
+
+Example: `com.zms.llmtools.ollama/ollama_connector`.
+
+If no profile is selected, ZMS falls back to the built-in core tools.
+
+#### OpenAI Configuration
+
+For using OpenAI's cloud API:
 
 | Property | Description | Default |
-|---|---|---|
-| `llm.api.key` | Your OpenAI API key | *(required)* |
+|----------|-------------|---------|
+| `llm.api.key` | Your OpenAI API key | (required) |
 | `llm.api.endpoint` | Custom endpoint URL | `https://api.openai.com/v1/chat/completions` |
 | `llm.api.model` | Model name | `gpt-4o-mini` |
 | `llm.store` | Enable storage for OpenAI's responses API | `False` |
 
-#### Ollama configuration
+#### Ollama Configuration
+
+For using local Ollama deployment:
 
 | Property | Description | Default |
-|---|---|---|
+|----------|-------------|---------|
 | `llm.ollama.host` | Ollama server URL | `http://localhost:11434` |
-| `llm.api.model` | Model name | `llama2` |
+| `llm.api.model` | Model name (e.g., `llama2`, `mistral`, `codellama`) | `llama2` |
 | `llm.num_ctx` | Context window size | `4096` |
 
-> **Agent mode** requires a tool-capable model. Many older models (`llama2`, `mistral`, `codellama`) do not support Ollama's tool-calling protocol. Use `llama3.1`, `llama3.2`, `llama3.3`, `qwen2.5`, `qwen2.5-coder`, or `mistral-nemo` for agent mode.
+> **Agent mode requires a tool-capable model.** Many older models (including `llama2`, `mistral`, `codellama`) do not support Ollama's tool-calling protocol and will return an error like *"does not support tools"* when agent mode is enabled. Use one of the following models instead:
+>
+> | Model | Pull command |
+> |-------|-------------|
+> | `llama3.1` | `ollama pull llama3.1` |
+> | `llama3.2` | `ollama pull llama3.2` |
+> | `llama3.3` | `ollama pull llama3.3` |
+> | `qwen2.5` | `ollama pull qwen2.5` |
+> | `qwen2.5-coder` | `ollama pull qwen2.5-coder` |
+> | `mistral-nemo` | `ollama pull mistral-nemo` |
+>
+> Plain chat (without agent mode) continues to work with any model.
 
-#### RAG (Qdrant + Ollama) configuration
+#### RAG Configuration
+
+For using RAG with Qdrant vector database and Ollama:
 
 | Property | Description | Default |
-|---|---|---|
+|----------|-------------|---------|
 | `llm.qdrant.host` | Qdrant server URL | `http://localhost:6333` |
 | `llm.qdrant.collection` | Collection name for vector search | `zms_docs` |
 | `llm.ollama.host` | Ollama server URL | `http://localhost:11434` |
 | `llm.api.model` | Model name | `llama2` |
 | `llm.embedding.model` | SentenceTransformer model for embeddings | `all-MiniLM-L6-v2` |
 | `llm.rag.top_k` | Number of documents to retrieve | `16` |
-| `llm.rag.score_threshold` | Minimum similarity score (0.0–1.0) | `0.0` |
+| `llm.rag.score_threshold` | Minimum similarity score (0.0-1.0) | `0.0` |
 | `llm.temperature` | Temperature for RAG responses | `0.1` (recommended) |
+| `llm.num_ctx` | Context window size | `4096` |
 
-RAG requires the `sentence-transformers` package:
-
+**Important**: RAG requires the `sentence-transformers` package:
 ```bash
 pip install sentence-transformers
 ```
 
-### Configuration examples
+### Configuration Examples
 
-#### Example 1: OpenAI (cloud)
+#### Example 1: OpenAI (Cloud)
 
 ```python
+# In your ZMS configuration
 llm.provider = openai
 llm.api.key = sk-your-openai-api-key-here
 llm.api.model = gpt-4o-mini
 llm.temperature = 0.7
 llm.top_p = 0.9
-llm.store = True
+llm.store = True  # Enable responses API storage
 ```
 
-#### Example 2: Ollama (local)
+#### Example 2: Ollama (Local)
 
 ```python
+# In your ZMS configuration
 llm.provider = ollama
 llm.ollama.host = http://localhost:11434
-llm.api.model = llama3.1
+llm.api.model = llama3.1  # use a tool-capable model for agent mode
 llm.temperature = 0.7
 llm.num_ctx = 4096
 ```
 
-For Docker deployments:
-
+For Docker deployments, you might use:
 ```python
 llm.provider = ollama
-llm.ollama.host = http://ollama:11434
+llm.ollama.host = http://ollama:11434  # Docker service name
 llm.api.model = mistral
 llm.temperature = 0.8
 llm.num_ctx = 8192
@@ -546,6 +592,7 @@ llm.num_ctx = 8192
 #### Example 3: RAG with Qdrant
 
 ```python
+# In your ZMS configuration
 llm.provider = rag
 llm.qdrant.host = http://localhost:6333
 llm.qdrant.collection = zms_documentation
@@ -553,18 +600,47 @@ llm.ollama.host = http://localhost:11434
 llm.api.model = llama2
 llm.embedding.model = all-MiniLM-L6-v2
 llm.rag.top_k = 16
-llm.rag.score_threshold = 0.3
-llm.temperature = 0.1
+llm.rag.score_threshold = 0.0
+llm.temperature = 0.1  # Lower temperature for factual answers
 llm.num_ctx = 4096
 ```
 
-### Setting up Ollama
+For Docker Compose setup:
+```python
+llm.provider = rag
+llm.qdrant.host = http://qdrant:6333
+llm.ollama.host = http://ollama:11434
+llm.qdrant.collection = zms_docs
+llm.api.model = llama2
+llm.embedding.model = all-MiniLM-L6-v2
+llm.rag.top_k = 16
+llm.rag.score_threshold = 0.3  # Filter low-quality matches
+llm.temperature = 0.1
+```
 
-1. Install Ollama from <https://ollama.ai>.
-2. Pull a model: `ollama pull llama3.1`
-3. Start the server: `ollama serve`
+**Note**: Make sure to use the same embedding model (`llm.embedding.model`) that was used to ingest your data into Qdrant!
 
-Docker Compose snippet:
+### Setting Up Ollama
+
+#### Installation
+
+1. **Install Ollama**: Visit [https://ollama.ai](https://ollama.ai) and download for your platform
+2. **Pull a model**:
+   ```bash
+   ollama pull llama2
+   # or
+   ollama pull mistral
+   # or
+   ollama pull codellama
+   ```
+3. **Start Ollama**: 
+   ```bash
+   ollama serve
+   ```
+
+#### Docker Setup
+
+Add to your `docker-compose.yml`:
 
 ```yaml
 services:
@@ -576,13 +652,19 @@ services:
       - ollama_data:/root/.ollama
     networks:
       - zms_network
+
 volumes:
   ollama_data:
 ```
 
-### Setting up RAG with Qdrant
+Then pull your desired model:
+```bash
+docker exec -it ollama ollama pull llama2
+```
 
-Docker Compose snippet:
+### Setting Up RAG with Qdrant
+
+#### Docker Compose Setup
 
 ```yaml
 services:
@@ -590,10 +672,12 @@ services:
     image: qdrant/qdrant:latest
     ports:
       - "6333:6333"
+      - "6334:6334"
     volumes:
       - qdrant_storage:/qdrant/storage
     networks:
       - zms_network
+
   ollama:
     image: ollama/ollama:latest
     ports:
@@ -602,114 +686,335 @@ services:
       - ollama_data:/root/.ollama
     networks:
       - zms_network
+
 volumes:
   qdrant_storage:
   ollama_data:
+
 networks:
   zms_network:
 ```
 
-#### Populating Qdrant with embeddings
+#### Populate Qdrant
+
+You'll need to populate your Qdrant collection with embeddings. Here's a Python example:
 
 ```python
 from qdrant_client import QdrantClient
 from qdrant_client.models import Distance, VectorParams, PointStruct
 from sentence_transformers import SentenceTransformer
 
+# Initialize embedding model (use the same as llm.embedding.model)
 model = SentenceTransformer('all-MiniLM-L6-v2')
+
+# Connect to Qdrant
 client = QdrantClient(host="localhost", port=6333)
 
+# Create collection
 client.create_collection(
     collection_name="zms_docs",
     vectors_config=VectorParams(size=384, distance=Distance.COSINE),
 )
 
-documents = ["ZMS is a CMS built on Zope...", "To configure LLM settings..."]
-points = [
-    PointStruct(id=idx, vector=model.encode(doc).tolist(), payload={"text": doc})
-    for idx, doc in enumerate(documents)
+# Add documents with embeddings
+documents = [
+    "ZMS is a content management system...",
+    "To configure LLM settings...",
+    # ... your documents
 ]
+
+points = []
+for idx, doc in enumerate(documents):
+    vector = model.encode(doc).tolist()
+    points.append(
+        PointStruct(
+            id=idx,
+            vector=vector,
+            payload={"text": doc}
+        )
+    )
+
 client.upsert(collection_name="zms_docs", points=points)
 ```
 
-> Always use the same `llm.embedding.model` for ingestion and retrieval.
+### API Usage
 
-### REST API
+#### REST API Endpoint
+
+The LLM chat is available via REST API:
 
 ```
 GET /++rest_api/llm_chat?message=Your+question+here
+```
+
+Response format (OpenAI /v1/chat/completions compatible):
+```json
+{
+  "id": "chatcmpl-abc123",
+  "object": "chat.completion",
+  "created": 1677652288,
+  "model": "gpt-4o-mini",
+  "choices": [{
+    "index": 0,
+    "message": {
+      "role": "assistant",
+      "content": "The AI's response"
+    },
+    "finish_reason": "stop"
+  }],
+  "usage": {
+    "prompt_tokens": 10,
+    "completion_tokens": 20,
+    "total_tokens": 30
+  },
+  "message": {
+    "role": "assistant",
+    "content": "The AI's response"
+  }
+}
+```
+
+Error format:
+```json
+{
+  "error": {
+    "code": "ERROR_CODE",
+    "message": "Error description"
+  }
+}
+```
+
+#### Provider Info Endpoint
+
+Get information about the current provider:
+
+```
 GET /++rest_api/llm_provider_info
 ```
 
-### Python API
+Response:
+```json
+{
+  "provider": "ollama",
+  "model": "llama2",
+  "endpoint": "http://localhost:11434"
+}
+```
+
+#### Python API
+
+You can use the LLM API from Python code:
 
 ```python
 from Products.zms import llmapi
 
+# Send a simple message (string)
 response = llmapi.chat(context, "What is ZMS?")
-if 'error' in response:
-    print(response['error']['message'])
-else:
-    print(response['message']['content'])
 
+# Send a conversation (list of messages)
+messages = [
+    {"role": "system", "content": "You are a helpful assistant."},
+    {"role": "user", "content": "What is ZMS?"}
+]
+response = llmapi.chat(context, messages)
+
+# With additional parameters
+response = llmapi.chat(
+    context, 
+    "Explain ZMS configuration",
+    temperature=0.5,
+    max_tokens=500
+)
+
+# Check for errors
+if 'error' in response:
+    print(f"Error: {response['error']['message']}")
+else:
+    # Access the response content
+    print(f"Response: {response['message']['content']}")
+    # Or using the OpenAI format
+    print(f"Response: {response['choices'][0]['message']['content']}")
+
+# Get provider info
 info = llmapi.get_provider_info(context)
 print(f"Using {info['provider']} with model {info['model']}")
 ```
 
-### LLM chat content block (`llm_chat`)
+### Configuration Parameters Explained
 
-Enable the `llm_chat` metaobject from the package `com.zms.llm` to embed a chat widget directly on content pages. The block communicates with the `++rest_api/llm_chat` endpoint and supports multi-turn history and optional agent mode (tool-calling).
+#### Temperature (`llm.temperature`)
+Controls randomness in responses:
+- **0.0**: Deterministic, always picks most likely tokens
+- **0.7**: Balanced (default for general use)
+- **0.1**: More focused and deterministic (recommended for RAG)
+- **1.5-2.0**: Very creative, more random
 
-### Agentic RAG indexing with `index_qdrant`
+#### Top P (`llm.top_p`)
+Nucleus sampling threshold (0.0-1.0):
+- **0.9**: Default, good balance
+- Lower values = more focused responses
+- Higher values = more diverse responses
 
-ZMS ships an `index_qdrant` LLM tool that lets the agent crawl and index the entire site content into Qdrant on demand. When agent mode is enabled, simply ask in natural language:
+#### Max Tokens (`llm.max_tokens`)
+Maximum length of generated response. Useful to control costs or response length.
 
-> *"Please index all content of this ZMS site."*
+#### Context Window (`llm.num_ctx`)
+Size of context window for Ollama/RAG models:
+- **4096**: Default, good for most use cases
+- **8192** or higher: For longer conversations or documents
 
-The tool:
-1. Queries the ZCatalog for all active pages.
-2. Renders each page's body content via `getBodyContent()`.
-3. Strips HTML and splits text into overlapping chunks (default 1 200 chars / 200 overlap).
-4. Embeds chunks with `llm.embedding.model`.
-5. Upserts vectors into Qdrant with metadata: `path`, `url`, `title`, `lang`, `meta_id`, `chunk_index`.
-6. Returns a summary of pages indexed and chunks stored.
+#### Score Threshold (`llm.rag.score_threshold`)
+Minimum similarity score for RAG document retrieval:
+- **0.0**: Include all retrieved documents (default)
+- **0.3-0.5**: Filter out low-quality matches
+- **0.7+**: Only very relevant documents
 
-| Parameter | Description | Default |
-|---|---|---|
-| `lang` | Index only this language code (e.g. `eng`) | all languages |
-| `collection` | Qdrant collection name | `llm.qdrant.collection` |
-| `reset` | Drop and recreate collection before indexing | `true` |
-| `chunk_size` | Maximum characters per chunk | `1200` |
-| `chunk_overlap` | Overlap between consecutive chunks | `200` |
+#### Top K (`llm.rag.top_k`)
+Number of documents to retrieve for RAG context:
+- **3**: Quick, focused answers
+- **16**: Default, good balance (updated from 3)
+- **30+**: Comprehensive context (may exceed token limits)
 
-Prerequisites: `qdrant-client` and `sentence-transformers` installed; `llm.provider = rag` configured.
+#### Store (`llm.store`)
+When set to `True`, enables OpenAI's responses API storage for model training and fine-tuning.
 
 ### Troubleshooting
 
-| Problem | Solution |
-|---|---|
-| Cannot connect to Ollama | Check `curl http://localhost:11434/api/tags`; verify Docker network |
-| Model not found | `ollama pull <model>` |
-| Invalid OpenAI API key | Verify at <https://platform.openai.com/api-keys>; check for whitespace |
-| Slow Ollama responses | Use a smaller model; reduce `llm.num_ctx`; enable GPU acceleration |
-| RAG returns generic answers | Check Qdrant ingestion; lower `score_threshold`; increase `top_k`; verify embedding model matches |
+#### Connection Errors
 
-### Best practices
+**Problem**: "Cannot connect to Ollama" or "Cannot connect to Qdrant"
 
-1. Use **OpenAI** for production where fast, reliable responses are needed.
-2. Use **Ollama** for development or privacy-sensitive deployments.
-3. Use **RAG** when the LLM must answer questions based on your site documentation.
-4. Set `llm.temperature` to 0.1–0.3 for RAG to ensure factual, grounded responses.
-5. Match `llm.embedding.model` between ingestion and retrieval.
-6. Re-index after significant content changes.
-7. On multilingual sites, use the `lang` parameter to index languages into separate collections.
+**Solutions**:
+1. Check if the service is running: `curl http://localhost:11434/api/tags` (Ollama)
+2. Check Docker containers: `docker ps`
+3. Verify network connectivity between containers
+4. Check firewall settings
 
-### Security considerations
+#### Model Not Found
 
-- Never store API keys in version control — set them via the ZMS properties form or environment variables.
-- Restrict network access to Ollama and Qdrant services to the Zope host.
-- Rotate OpenAI API keys regularly.
-- Be aware that `llm.store = True` sends interaction data to OpenAI for training.
+**Problem**: "Model 'xyz' not found"
+
+**Solution**: Pull the model first:
+```bash
+ollama pull llama2
+# or in Docker
+docker exec -it ollama ollama pull llama2
+```
+
+#### OpenAI API Key Issues
+
+**Problem**: "API key not configured" or "Invalid API key"
+
+**Solutions**:
+1. Set `llm.api.key` property with your OpenAI API key
+2. Verify the key is correct at [https://platform.openai.com/api-keys](https://platform.openai.com/api-keys)
+3. Check for any whitespace in the key
+
+#### Slow Responses
+
+**Problem**: Ollama responses are very slow
+
+**Solutions**:
+1. Use a smaller model (e.g., `llama2:7b` instead of `llama2:13b`)
+2. Increase Docker memory allocation
+3. Use GPU acceleration if available
+4. Consider using OpenAI for faster responses
+5. Reduce `llm.num_ctx` if using very large context windows
+
+#### RAG Not Finding Relevant Documents
+
+**Problem**: RAG returns generic answers or "I don't know"
+
+**Solutions**:
+1. Check that documents are properly ingested in Qdrant
+2. Verify `llm.embedding.model` matches the model used for ingestion
+3. Lower `llm.rag.score_threshold` to include more documents
+4. Increase `llm.rag.top_k` to retrieve more context
+5. Check Qdrant collection: `curl http://localhost:6333/collections/zms_docs`
+
+### Agentic RAG Indexing with `index_qdrant`
+
+ZMS ships an `index_qdrant` LLM tool that lets the agent crawl and index the entire site content into Qdrant on demand — no separate script or notebook required.
+
+#### How it works
+
+When agent mode is enabled (`agent_mode=1` on the `++rest_api/llm_chat` endpoint, or the `llm_chat` block's agent toggle), the LLM can call the `index_qdrant` tool automatically. Simply ask in natural language:
+
+> *"Please index all content of this ZMS site."*
+> *"Update the RAG index."*
+> *"Re-index the site in German."*
+
+The tool will:
+
+1. Query the ZCatalog for all active pages in the tree.
+2. Render each page's body content via `getBodyContent()` — the same HTML a visitor sees.
+3. Strip HTML tags and split the text into overlapping chunks (default 1 200 chars / 200 overlap).
+4. Embed each chunk with the configured `llm.embedding.model` (SentenceTransformer).
+5. Upsert all vectors into Qdrant with rich payload metadata: `path`, `url`, `title`, `lang`, `meta_id`, `chunk_index`.
+6. Reply with a summary: pages indexed, chunks stored, pages skipped.
+
+The tool runs entirely inside the Zope process — no external HTTP calls to ZMS are made.
+
+#### Parameters
+
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| `lang` | Index only this language code, e.g. `eng` | all site languages |
+| `collection` | Qdrant collection name | `llm.qdrant.collection` property |
+| `reset` | Drop and recreate the collection before indexing | `true` |
+| `chunk_size` | Maximum characters per chunk | `1200` |
+| `chunk_overlap` | Overlap between consecutive chunks | `200` |
+
+#### Prerequisites
+
+- A `ZMSLLMConnector` with `llm.provider = rag` configured (Qdrant host, collection, embedding model).
+- `qdrant-client` and `sentence-transformers` installed in the Zope Python environment:
+  ```bash
+  pip install qdrant-client sentence-transformers
+  ```
+- Qdrant running and reachable at `llm.qdrant.host`.
+
+#### Example agent conversation
+
+```
+User:   Please index all content of this ZMS site.
+
+Agent:  [calls index_qdrant()]
+
+Agent:  Done. Indexed 312 pages (1 847 chunks) into collection 'zms_docs'
+        across languages ['eng', 'deu']. 4 pages were skipped (no body content).
+```
+
+After indexing, the RAG provider will automatically use the freshly populated collection for all subsequent questions.
+
+---
+
+### Best Practices
+
+1. **Use OpenAI for production** if you need reliable, fast responses and can afford the API costs
+2. **Use Ollama for development** or when you need privacy and control over your data
+3. **Use RAG** when you need the LLM to answer questions based on your specific documentation
+4. **Monitor costs** when using OpenAI - set up billing alerts
+5. **Test locally first** with Ollama before switching to OpenAI
+6. **Keep models updated** - regularly update Ollama models for improvements
+7. **Use lower temperature (0.1-0.3) for RAG** to ensure factual, grounded responses
+8. **Match embedding models** - always use the same `llm.embedding.model` for ingestion and retrieval
+9. **Tune score threshold** - adjust `llm.rag.score_threshold` based on your data quality
+10. **Enable OpenAI storage** (`llm.store = True`) only if you want to contribute to model training
+11. **Re-index after content changes** - ask the agent to `index_qdrant` whenever significant content has been published so the RAG answers stay current
+12. **Index per language** - on multi-language sites, use the `lang` parameter to index languages separately if you want language-scoped Qdrant collections
+
+
+
+### Security Considerations
+
+- Never commit API keys to version control
+- Use environment variables for sensitive configuration
+- Limit network access to Ollama/Qdrant in production
+- Regularly rotate OpenAI API keys
+- Use HTTPS endpoints when possible
+- Implement rate limiting for the chat endpoint
+- Be aware that `llm.store = True` sends your data to OpenAI for training
 
 ---
 

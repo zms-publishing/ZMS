@@ -41,13 +41,13 @@
 			<div class="coauthor_mode-toggle btn-group btn-group-sm float-right" role="group">
 				<button id="switch_view" type="button"
 					title="View Mode: Rendered HTML in two languages side-by-side"
-					tal:attributes="class python:'btn py-0 px-3%s'%(coauthor_mode=='view' and ' active' or '')"
+					tal:attributes="class python:'coauthor-mode btn py-0 px-3%s'%(coauthor_mode=='view' and ' active' or '')"
 					data-coauthor-mode="view">
 					VIEW
 				</button>
 				<button id="switch_edit" type="button"
 					title="Edit Mode: Edit HTML-form of two languages side-by-side"
-					tal:attributes="class python:'btn py-0 px-3%s'%(coauthor_mode=='edit' and ' active' or '')"
+					tal:attributes="class python:'coauthor-mode btn py-0 px-3%s'%(coauthor_mode=='edit' and ' active' or '')"
 					data-coauthor-mode="edit">
 					EDIT
 				</button>
@@ -81,13 +81,26 @@
 						</select>
 						<tal:block tal:condition="python:side_info[0]=='right'">
 							<button type="button"
-								id="translate-auto-action"
+								id="coauthor-auto-action"
 								class="btn btn-sm btn-success form-control-sm w-auto m-1"
 								data-coauthor-action="auto-translate"
 								tal:attributes="
-									title auto_button_title; 
+									title auto_button_title;
+									data-coauthor-action python:['auto-edit','auto-translate'][not same_language];
 									disabled python:[None,'disabled'][button_disabled]"
-								tal:content="auto_button_label">Auto-Translate</button>
+								tal:content="auto_button_label">
+								Auto-Translate
+							</button>
+							<span class=" ml-1" title="LLM-Connector Configuration Details"
+								tal:define="llmconnector python:here.getLLMConnector()">
+								<a target="_blank" style="text-decoration:none;color:#354f67;"
+									tal:attributes="href python:'%s/manage_main?lang=%s#panel-config'%(llmconnector.absolute_url(), request.get('lang','ger'))"
+									title="Open LLM Connector Configuration">
+									<small style="opacity:0.5" tal:content="python:llmconnector.getConfProperty('llm.provider','')">LLM Provider</small>
+									<small style="opacity:0.5" tal:content="python:llmconnector.getConfProperty('llm.api.model','')">LLM Model</small>
+								</a>
+
+							</span>
 						</tal:block>
 					</td>
 				</tr>

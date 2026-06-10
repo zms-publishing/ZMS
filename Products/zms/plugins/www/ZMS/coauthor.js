@@ -15,7 +15,7 @@
 	function clearGlobalHooks() {
 		try { delete window.switchLanguage; } catch (e) { window.switchLanguage = undefined; }
 		try { delete window.switchCoauthorMode; } catch (e) { window.switchCoauthorMode = undefined; }
-		try { delete window.triggerAutoTranslate; } catch (e) { window.triggerAutoTranslate = undefined; }
+		try { delete window.triggerCoauthorWorking; } catch (e) { window.triggerCoauthorWorking = undefined; }
 		try { delete window.googleTranslateElementInit; } catch (e) { window.googleTranslateElementInit = undefined; }
 	}
 
@@ -72,7 +72,7 @@
 	}
 
 	function getAutoActionButton() {
-		return $('#translate-auto-action');
+		return $('#coauthor-auto-action');
 	}
 
 	function updateAutoActionButton() {
@@ -179,13 +179,13 @@
 		return rows;
 	}
 
-	function showTranslateProgress(text) {
-		$('#translate-progress').remove();
-		$('body').append('<div id="translate-progress" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:white;padding:20px;border:2px solid #007bff;border-radius:5px;z-index:10000;"><i class="fas fa-spinner fa-spin mr-1"></i> ' + text + '</div>');
+	function showCoauthorProgress(text) {
+		$('#coauthor-progress').remove();
+		$('body').append('<div id="coauthor-progress" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:white;padding:20px;border:2px solid #007bff;border-radius:5px;z-index:10000;"><i class="fas fa-spinner fa-spin mr-1"></i> ' + text + '</div>');
 	}
 
-	function hideTranslateProgress() {
-		$('#translate-progress').remove();
+	function hideCoauthorProgress() {
+		$('#coauthor-progress').remove();
 	}
 
 	function buildAutoEditPrompt(rows, sourceLang, targetLang, metadataEnabled) {
@@ -580,7 +580,7 @@
 			return;
 		}
 		var prompt = buildAutoEditPrompt(rows, langs.lang1, langs.lang2, settings.metadataEnabled);
-		showTranslateProgress('Auto-editing content...');
+		showCoauthorProgress('Auto-editing content...');
 		buildLlmChatRequestData(prompt).done(function(requestData) {
 			requestData.agent_mode = '0';
 			requestData.preserve_html = '1';
@@ -590,7 +590,7 @@
 				dataType: 'json',
 				data: requestData
 			}).done(function(response) {
-			hideTranslateProgress();
+			hideCoauthorProgress();
 			if (response && response.error) {
 				var errorMessage = typeof response.error === 'string' ? response.error : (response.error.message || 'LLM request failed.');
 				alert(errorMessage);
@@ -605,7 +605,7 @@
 				alert('Auto-Editing completed for ' + updated + ' field(s).');
 			});
 			}).fail(function(xhr) {
-				hideTranslateProgress();
+				hideCoauthorProgress();
 				var message = 'Auto-Editing request failed.';
 				if (xhr && xhr.responseJSON && xhr.responseJSON.error) {
 					message = xhr.responseJSON.error.message || xhr.responseJSON.error;
@@ -613,7 +613,7 @@
 				alert(message);
 			});
 		}).fail(function() {
-			hideTranslateProgress();
+			hideCoauthorProgress();
 			alert('Could not prepare image attachments for auto-editing.');
 		});
 	}
@@ -772,7 +772,7 @@
 			alert('No translatable fields found.');
 			return;
 		}
-		showTranslateProgress('Translating... 0/' + totalFields);
+		showCoauthorProgress('Translating... 0/' + totalFields);
 		$('.form-group-row').each(function() {
 			var $row = $(this);
 			var $leftInput = getEditableField($row.find('.zmi-coauthor-left'));
@@ -784,9 +784,9 @@
 				$rightInput.val(translatedText);
 				$rightInput.css('background-color', '#ffffcc');
 				processedFields++;
-				showTranslateProgress('Translating... ' + processedFields + '/' + totalFields);
+				showCoauthorProgress('Translating... ' + processedFields + '/' + totalFields);
 				if (processedFields >= totalFields) {
-					hideTranslateProgress();
+					hideCoauthorProgress();
 				}
 			});
 		});
@@ -810,7 +810,7 @@
 		}, 'google_translate_element');
 	}
 
-	function triggerAutoTranslate() {
+	function triggerCoauthorWorking() {
 		var langs = getTranslateLanguages();
 		if (langs.lang1 === langs.lang2) {
 			if (window.confirm('This will improve text quality and complete missing metadata in ' + langs.lang2 + '. Continue?')) {
@@ -855,13 +855,13 @@
 		$(document).off('change.coauthorLang').on('change.coauthorLang', 'select.lang[data-lang-key]', function() {
 			switchLanguage($(this).data('lang-key'), $(this).val());
 		});
-		$(document).off('click.coauthorMode').on('click.coauthorMode', '[data-coauthor-mode]', function(e) {
+		$(document).off('click.coauthorMode').on('click.coauthorMode', 'button.coauthor-mode', function(e) {
 			e.preventDefault();
 			switchCoauthorMode($(this).data('coauthor-mode'));
 		});
-		$(document).off('click.coauthorAuto').on('click.coauthorAuto', '[data-coauthor-action="auto-translate"]', function(e) {
+		$(document).off('click.coauthorAuto').on('click.coauthorAuto', 'button#coauthor-auto-action', function(e) {
 			e.preventDefault();
-			triggerAutoTranslate();
+			triggerCoauthorWorking();
 		});
 		$(document).off('click.coauthorRow').on('click.coauthorRow', '.clickable-row[data-url]', function(e) {
 			// if ($(e.target).closest('a, button, input, select, textarea, label, .ai-diff-editor').length) {

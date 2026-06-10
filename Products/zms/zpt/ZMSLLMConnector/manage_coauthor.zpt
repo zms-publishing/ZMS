@@ -82,7 +82,7 @@
 						<tal:block tal:condition="python:side_info[0]=='right'">
 							<button type="button"
 								id="coauthor-auto-action"
-								class="btn btn-sm btn-success form-control-sm w-auto m-1"
+								class="btn btn-sm btn-success form-control-sm w-auto mx-1"
 								data-coauthor-action="auto-translate"
 								tal:attributes="
 									title auto_button_title;
@@ -91,15 +91,13 @@
 								tal:content="auto_button_label">
 								Auto-Translate
 							</button>
-							<span class=" ml-1" title="LLM-Connector Configuration Details"
+							<span class="ml-1" title="LLM-Provider Info"
 								tal:define="llmconnector python:here.getLLMConnector()">
 								<a target="_blank" style="text-decoration:none;color:#354f67;"
-									tal:attributes="href python:'%s/manage_main?lang=%s#panel-config'%(llmconnector.absolute_url(), request.get('lang','ger'))"
-									title="Open LLM Connector Configuration">
+									tal:attributes="href python:'%s/manage_main?lang=%s#panel-config'%(llmconnector.absolute_url(), request.get('lang','ger'))">
 									<small style="opacity:0.5" tal:content="python:llmconnector.getConfProperty('llm.provider','')">LLM Provider</small>
 									<small style="opacity:0.5" tal:content="python:llmconnector.getConfProperty('llm.api.model','')">LLM Model</small>
 								</a>
-
 							</span>
 						</tal:block>
 					</td>

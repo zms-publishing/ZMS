@@ -11,8 +11,8 @@ Download
 ---------
 
 * Source: https://github.com/zms-publishing/ZMS/
-* Revisions: https://github.com/zms-publishing/ZMS/commits/master
-* Archive: https://github.com/zms-publishing/ZMS/archive/master.zip
+* Revisions: https://github.com/zms-publishing/ZMS/commits/main
+* Archive: https://github.com/zms-publishing/ZMS/archive/refs/heads/main.zip
 
 Installation (GNU/Linux, OSX/Darwin and Windows/WSL)
 ----------------------------------------------------
@@ -30,7 +30,7 @@ $ python3 -m venv ~/ZMS
 
 ::     
 
-$ ./ZMS/bin/pip install https://github.com/zms-publishing/ZMS/archive/master.zip [--upgrade]
+$ ./ZMS/bin/pip install https://github.com/zms-publishing/ZMS/archive/refs/heads/main.zip [--upgrade]
 
 or install from pypi
 

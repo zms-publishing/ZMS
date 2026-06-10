@@ -233,7 +233,7 @@ After restarting, install the VSCode [Remote Workspace](https://marketplace.visu
 ```json
 {
   "name": "Zope-WebDAV Access",
-  "uri": "******localhost:8091/"
+  "uri": "webdav://<user>:<password>@localhost:8091/"
 }
 ```
 

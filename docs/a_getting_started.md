@@ -2,8 +2,6 @@
 
 This chapter guides you through installing ZMS from scratch, creating your first Zope instance, and logging in to the ZMS Management Interface for the first time.
 
-> **See also:** [develop_intro_en.md](develop_intro_en.md) for the full developer-oriented installation walkthrough.
-
 ---
 
 ## Prerequisites

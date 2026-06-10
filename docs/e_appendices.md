@@ -6,8 +6,6 @@ This appendix collects reference material that supports all audience groups: a f
 
 ## Workflow and Versioning {#versioning}
 
-> **Full source document:** [versioning.md](versioning.md)
-
 ### Overview
 
 The two primary tools for content quality assurance in ZMS are *workflow* and *versioning*:
@@ -130,6 +128,63 @@ When the workflow is active, each workflow transition creates a new *patch* vers
 #### Versioning without workflow
 
 Each save creates a new *minor* version. Users can manually review, compare, and restore previous versions from the **History** tab.
+
+In both cases ZMS does not implicitly create a *major* version (like *patch* and *minor*) — it must be done explicitly by a user interaction ("Create Major Version"). Creating a major version prunes all minor and patch history and reduces data storage.
+
+#### Implementation notes (DRAFT)
+
+To implement versioning for a container that holds individually versioned sub-objects, a *version vector* tracks the composite state:
+
+```python
+class VersionedObject:
+    def __init__(self, id):
+        self.id = id
+        self.version = 0
+        self.sub_objects = {}
+        self.change_log = []
+
+    def add_sub_object(self, sub_object):
+        self.sub_objects[sub_object.id] = sub_object
+        self.update_version()
+
+    def update_sub_object(self, sub_object_id, new_version):
+        if sub_object_id in self.sub_objects:
+            self.sub_objects[sub_object_id].version = new_version
+            self.update_version()
+
+    def update_version(self):
+        self.version += 1
+        self.change_log.append(self.get_version_vector())
+
+    def get_version_vector(self):
+        version_vector = {self.id: self.version}
+        for sub_id, sub in self.sub_objects.items():
+            version_vector[sub_id] = sub.version
+        return version_vector
+
+class SubObject:
+    def __init__(self, id):
+        self.id = id
+        self.version = 0
+
+# Usage
+container = VersionedObject('container')
+block1 = SubObject('block1')
+block2 = SubObject('block2')
+container.add_sub_object(block1)
+container.add_sub_object(block2)
+container.update_sub_object('block1', 1)
+container.update_sub_object('block2', 2)
+print(container.get_version_vector())
+# → {'container': 4, 'block1': 1, 'block2': 2}
+```
+
+Key points of this approach:
+
+- **Version Vector Structure** — includes the container version and all sub-object versions.
+- **Composite Versioning** — the container's version reflects the combined state of all its sub-objects.
+- **Change Log** — each `update_version` call appends a snapshot, providing a traceable history.
+- **Incremental Updates** — the container increments whenever any sub-object changes.
 
 ---
 

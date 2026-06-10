@@ -37,7 +37,7 @@ After changing to the `bin`-folder of the installed virtual environment, simply 
 ~$: source activate
 ~$: ./pip install -U pip wheel setuptools
 ~$: ./pip install -r https://raw.githubusercontent.com/zms-publishing/ZMS/main/requirements-full.txt
-~$: ./pip install --use-pep517 --config-settings editable_mode=compat -e git+https://github.com/zms-publishing/ZMS.git@main#egg=ZMS
+~$: ./pip install --use-pep517 --config-settings editable_mode=compat -e git+https://github.com/zms-publishing/ZMS.git@main#egg=Products.zms
 ~$: ./pip install ZEO
 ```
 Hint: This installation is intended to work on the code of ZMS (or Zope or any other site-package) and installs the source-code of ZMS in the _editable-mode_. As _editable_ installed modules appear in the pip-list with it's source link:

@@ -70,7 +70,7 @@ The `launch` section of the workspace file tells VSCode how to start the Python 
 {
   "configurations": [
     {
-      "name": "ZMS5-DEV",
+      "name": "ZMS-DEV",
       "type": "python",
       "request": "launch",
       "program": "~/vpy3/bin/runwsgi",
@@ -158,7 +158,7 @@ trusted-proxy 127.0.0.1
         server $INSTANCE/var/zeosocket
         storage main
         name zeostorage Data.fs
-        client-label zms5_zeo 8080
+        client-label zms_zeo 8080
     </clientstorage>
     mount-point /
 </zodb_db>
@@ -240,6 +240,7 @@ After restarting, install the VSCode [Remote Workspace](https://marketplace.visu
 The Zope object tree then appears as an editable file tree in the VSCode Explorer view.
 
 ![WebDAV editing](images/develop_vscode_webdav.gif)
+
 *WebDAV editing: left screen shows the browser-based ZMI; right screen shows the VSCode editor view of the same Zope object tree*
 
 ---

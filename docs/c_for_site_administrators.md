@@ -135,6 +135,7 @@ ZMS.ZMSTextarea.show_htmlcheck = True
 ```
 
 ![HTML Validity Check](images/edit_gui_textarea_show_htmlcheck.png)
+
 *HTML validity check indicator controlled by `ZMS.ZMSTextarea.show_htmlcheck`*
 
 ### Rich-text editors (RTE)

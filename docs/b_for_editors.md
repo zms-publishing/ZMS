@@ -2,6 +2,9 @@
 
 This chapter is the editorial guide for day-to-day content production in ZMS. It covers navigating the ZMS Management Interface (ZMI), creating and editing pages and content blocks, working with multiple languages, and publishing content through the workflow.
 
+![ZMS GUI](images/edit_gui_start_en.gif)
+*The editing view lists all content blocks on a page. The context menu on the right adds new blocks.*
+
 ---
 
 ## 1. The ZMS Management Interface (ZMI)
@@ -103,9 +106,6 @@ Page-objects are filled sequentially with **content blocks**. Typical built-in b
 - Image / Graphic
 - Table
 - Video embed
-
-![ZMS GUI](images/edit_gui_start_en.gif)
-*The editing view lists all content blocks on a page. The context menu on the right adds new blocks.*
 
 ### Adding a block
 

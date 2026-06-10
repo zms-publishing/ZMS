@@ -145,14 +145,3 @@ Place the file at `/etc/systemd/system/zms.service`, then enable and start it:
 ~$ sudo systemctl enable zms
 ~$ sudo systemctl start zms
 ```
-
----
-
-## Next steps
-
-| Goal | Chapter |
-|---|---|
-| Create and edit content | [B. For Editors](b_for_editors.md) |
-| Configure the site | [C. For Site Administrators](c_for_site_administrators.md) |
-| Extend ZMS with code | [D. For Developers](d_for_developers.md) |
-| Understand versioning and workflow | [E. Appendices](e_appendices.md) |

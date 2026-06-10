@@ -36,8 +36,8 @@ After changing to the `bin`-folder of the installed virtual environment, simply 
 ~$: cd /home/zope/vpy3/bin/
 ~$: source activate
 ~$: ./pip install -U pip wheel setuptools
-~$: ./pip install -r https://raw.githubusercontent.com/zms-publishing/ZMS5/main/requirements-full.txt
-~$: ./pip install --use-pep517 --config-settings editable_mode=compat -e git+https://github.com/zms-publishing/ZMS.git@main#egg=ZMS
+~$: ./pip install -r https://raw.githubusercontent.com/zms-publishing/ZMS/main/requirements-full.txt
+~$: ./pip install --use-pep517 --config-settings editable_mode=compat -e git+https://github.com/zms-publishing/ZMS.git@main#egg=Products.zms
 ~$: ./pip install ZEO
 ```
 Hint: This installation is intended to work on the code of ZMS (or Zope or any other site-package) and installs the source-code of ZMS in the _editable-mode_. As _editable_ installed modules appear in the pip-list with it's source link:
@@ -50,12 +50,12 @@ Package                        Version     Location
 ------------------------------ --------- -----------------------
 AccessControl                  7.2      
 ...
-zExceptions                    5.0      
-ZMS                            5.2.0    /home/zope/src/ZMS
+zExceptions                    6.0      
+ZMS                            6.0.0    /home/zope/src/ZMS
 ZODB                           6.8.0    
-zodbpickle                     4.1.1      
-Zope                           5.13.1   /home/zope/src/Zope/src
-zope.annotation                5.0      
+zodbpickle                     4.3.0      
+Zope                           6.1.0   /home/zope/src/Zope/src
+zope.annotation                6.0      
 ...
 
 ~$:
@@ -64,15 +64,15 @@ zope.annotation                5.0
 
 
 ## 3. Add new Zope instance
-After the ZMS installation the bin-folder of the virtual environment contains a lot of new scipts. Please use `mkwsgiinstance` to generate an new zope-instance, named zms5_dev as an example:
+After the ZMS installation the bin-folder of the virtual environment contains a lot of new scipts. Please use `mkwsgiinstance` to generate an new zope-instance, named zms_dev as an example:
 ```console
-~$: ./mkwsgiinstance -d /home/zope/instance/zms5_dev
+~$: ./mkwsgiinstance -d /home/zope/instance/zms_dev
 ```
 More: https://zope.readthedocs.io/en/latest/operation.html#creating-a-zope-instance
 
 ## 4. Start Zope server (default port 8080)
 ```console
-~$: ./runwsgi -v /home/zope/instance/zms5_dev/etc/zope.ini
+~$: ./runwsgi -v /home/zope/instance/zms_dev/etc/zope.ini
 ```
 More: https://zope.readthedocs.io/en/latest/operation.html#running-zope
 
@@ -119,7 +119,7 @@ Hint: The most important item actually is `python.defaultInterpreterPath` for th
 The section *launch* in the workspace-file tells VSCode how the Python extension will start the debugger. So all relevant paths must be mentioned, especially the starting `programm` and the `env`ironment variables Zope needs for starting a Zope instance. The following example config file assumes that 
 
 1. there is a user `zope` using its home folder as a location for the virtual python (`~/vpy3/`) and the zope instances (`~/instance/`)
-2. the name of the Zope instance is `zms5_dev`
+2. the name of the Zope instance is `zms_dev`
 3. the git-cloned code of Zope and ZMS are placed in a source folder called `~/src`
 
 ```json
@@ -135,15 +135,15 @@ The section *launch* in the workspace-file tells VSCode how the Python extension
 			"args": [
 				"--debug",
 				"--verbose",
-				"~/instance/zms5_dev/etc/zope.ini",
+				"~/instance/zms_dev/etc/zope.ini",
 				"debug-mode=on",
 				// "http_port=8086",
 			],
 			"env": {
 				"PYTHONUNBUFFERED":"1",
-				"CONFIG_FILE": "~/instance/zms5_dev/etc/zope.ini",
-				"INSTANCE_HOME": "~/instance/zms5_dev",
-				"CLIENT_HOME": "~/instance/zms5_dev",
+				"CONFIG_FILE": "~/instance/zms_dev/etc/zope.ini",
+				"INSTANCE_HOME": "~/instance/zms_dev",
+				"CLIENT_HOME": "~/instance/zms_dev",
 				"PYTHON": "~/vpy3/bin/python",
 				"SOFTWARE_HOME": "~/vpy3/bin/"
 			},
@@ -240,17 +240,17 @@ In an [ZEO environment](https://zope.readthedocs.io/en/latest/zopebook/ZEO.html#
 			"args": [
 				"--debug",
 				"--verbose",
-				"~/instance/zms5_dev/etc/zope.ini",
+				"~/instance/zms_dev/etc/zope.ini",
 				"debug-mode=on",
 				"http_port=8086",
 			],
 			"env": {
 				"PYTHONUNBUFFERED":"1",
-				"CONFIG_FILE": "~/instance/zms5_dev/etc/zope.ini",
-				"INSTANCE_HOME": "~/instance/zms5_dev",
-				"CLIENT_HOME": "~/instance/zms5_dev",
+				"CONFIG_FILE": "~/instance/zms_dev/etc/zope.ini",
+				"INSTANCE_HOME": "~/instance/zms_dev",
+				"CLIENT_HOME": "~/instance/zms_dev",
 				"PYTHON": "~/vpy3/bin/python",
-				"SOFTWARE_HOME": "~/vpy37/bin/"
+				"SOFTWARE_HOME": "~/vpy3/bin/"
 			},
 		},
 	]
@@ -322,7 +322,7 @@ As an example the following shell scripts starts ZEO first and then the Zope ins
 ```sh
 #!/bin/bash
 
-instance_dir="/home/zope/instances/zms5_dev"
+instance_dir="/home/zope/instances/zms_dev"
 venv_bin_dir="/home/zope/vpy3/bin"
 
 nohup  $venv_bin_dir/runzeo --configure $instance_dir/etc/zeo.conf 1>/dev/null 2>/dev/null &

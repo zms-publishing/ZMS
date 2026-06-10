@@ -103,8 +103,7 @@ RUN --mount=type=cache,uid=$UID,target=$PIP_CACHE_DIR,sharing=locked <<EOR
     $PIP_INSTALL ZEO
 EOR
 
-COPY --chown=zope:zope pyproject.toml README.rst MANIFEST.in src/
-COPY --chown=zope:zope Products src/Products/
+COPY --chown=zope:zope . src/
 RUN --mount=type=cache,uid=$UID,target=$PIP_CACHE_DIR,sharing=locked <<EOR
     set -ex
 

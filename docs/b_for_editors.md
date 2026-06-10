@@ -71,12 +71,12 @@ Think of a page as a blank sheet of paper. A **Folder** can contain other folder
 
 A practical approach when starting a new website is to first build the folder structure as a mockup. The resulting empty tree already drives the navigation automatically.
 
-![ZMSDocument](images/edit_gui_document.png)
+![ZMSDocument](images/edit_gui_document.png)\
 *Adding a new page: entering bibliographic meta-data (title, short title, description)*
 
 ### Adding a new page
 
-![ZMS context menu – new page](images/edit_gui_contextmenu_page.png)
+![ZMS context menu – new page](images/edit_gui_contextmenu_page.png)\
 *A new document is inserted into the current folder via the context menu.*
 
 1. Navigate to the parent folder where the new page should appear.
@@ -109,7 +109,7 @@ Page-objects are filled sequentially with **content blocks**. Typical built-in b
 
 ### Adding a block
 
-![ZMS context menu – new block](images/edit_gui_contextmenu_block.png)
+![ZMS context menu – new block](images/edit_gui_contextmenu_block.png)\
 *A new content block (e.g. an image) is inserted into the current document via the context menu.*
 
 1. Open the page in the **Editing** tab.
@@ -122,7 +122,7 @@ Page-objects are filled sequentially with **content blocks**. Typical built-in b
 
 Click the block title or the **edit** icon to open its edit form. After making changes, click **Save** to confirm. Use the **drag handles** or **up/down arrows** to reorder blocks within a page.
 
-![ZMSGraphic](images/edit_gui_zmsgraphic.png)
+![ZMSGraphic](images/edit_gui_zmsgraphic.png)\
 *Image block (`ZMSGraphic`): the edit form lets you upload an image in two resolutions (standard and high-resolution), enter a caption, specify a link URL, set WAI/accessibility attributes, and choose image alignment.*
 
 ---
@@ -173,7 +173,7 @@ When a workflow is configured, content moves through a sequence of states:
 
 Each transition can be restricted to specific user roles (see [C. For Site Administrators](c_for_site_administrators.md#workflow)).
 
-![Activity States](images/admin_wf_ac.gif)
+![Activity States](images/admin_wf_ac.gif)\
 *Workflow activity states and transitions*
 
 To publish content:

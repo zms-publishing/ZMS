@@ -239,8 +239,7 @@ After restarting, install the VSCode [Remote Workspace](https://marketplace.visu
 
 The Zope object tree then appears as an editable file tree in the VSCode Explorer view.
 
-![WebDAV editing](images/develop_vscode_webdav.gif)
-
+![WebDAV editing](images/develop_vscode_webdav.gif)\
 *WebDAV editing: left screen shows the browser-based ZMI; right screen shows the VSCode editor view of the same Zope object tree*
 
 ---

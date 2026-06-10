@@ -46,7 +46,7 @@ ZMS uses a **symmetric hierarchical** multilingual model:
 
 Open **Administration → Languages**. The upper section defines available languages and their dependency structure. The lower section provides the **Language Dictionary** — a table of language-neutral keys and their translations.
 
-![Language Configuration](images/admin_languages.gif)
+![Language Configuration](images/admin_languages.gif)\
 *Language configuration: available languages and dependencies (upper); language dictionary (lower)*
 
 ### Language dictionary
@@ -74,7 +74,7 @@ Common defaults include:
 
 Administrators can add further meta-attributes and assign a data type to each. Because any meta-attribute becomes a new data type usable across all content classes, a coherent metadata concept reduces template complexity and supports consistent full-text indexing.
 
-![Administration of Metadata](images/admin_gui_metas1.gif)
+![Administration of Metadata](images/admin_gui_metas1.gif)\
 *Meta-attribute administration*
 
 ---
@@ -96,10 +96,10 @@ ZMS uses a **content model** (also called *schema*) that defines an arbitrary nu
 4. Mark attributes as **multilingual** (globe icon) if they need language-specific values.
 5. After the attribute list is complete, edit the `standard_html` TAL template to render the content. Use the **Refresh** button to generate a prototype TAL snippet from the current attribute schema.
 
-![Content Model Administration](images/admin_contentmodel_carditem.gif)
+![Content Model Administration](images/admin_contentmodel_carditem.gif)\
 *Example: a `carditem` object model with image, text, and URL attributes*
 
-![Nesting Content Objects](images/admin_contentmodel_conventions.gif)
+![Nesting Content Objects](images/admin_contentmodel_conventions.gif)\
 *Nested models: a `card_container` aggregating `carditem` instances*
 
 ### Multilingual attribute labels
@@ -123,7 +123,7 @@ Each format is defined by:
 - Whether it is the default format
 - Whether it forces use of the rich-text editor
 
-![Paragraph Formats](images/admin_contentmodel_paragraph.gif)
+![Paragraph Formats](images/admin_contentmodel_paragraph.gif)\
 *Paragraph format configuration form*
 
 ### Standard (plain-text) editor
@@ -134,8 +134,7 @@ The standard text editor provides a plain-text `<textarea>` input. It is possibl
 ZMS.ZMSTextarea.show_htmlcheck = True
 ```
 
-![HTML Validity Check](images/edit_gui_textarea_show_htmlcheck.png)
-
+![HTML Validity Check](images/edit_gui_textarea_show_htmlcheck.png)\
 *HTML validity check indicator controlled by `ZMS.ZMSTextarea.show_htmlcheck`*
 
 ### Rich-text editors (RTE)
@@ -153,7 +152,7 @@ To add a custom RTE, create a folder at `Products/zms/plugins/rte/MyRTE/` contai
 
 Inline (character) formats add custom `<span>` wrappers or other inline HTML elements inside text blocks. Each format is defined by ID, display name, button icon, wrapping HTML element/attributes, and optional JavaScript event handling.
 
-![Character Formats](images/admin_contentmodel_inlineformats.gif)
+![Character Formats](images/admin_contentmodel_inlineformats.gif)\
 *Inline character-format configuration*
 
 ---
@@ -168,10 +167,10 @@ ZMS integrates with Zope's built-in **ZCatalog** for lightweight full-text searc
 - Index objects are named `catalog_<lang>` (e.g. `catalog_eng`) and are held inside the ZMS `content` object.
 - In a **multisite** hierarchy only the root ZMS catalog collects all index data. Local content classes not inherited from the root must be registered individually in each client's Search configuration. **Important:** attribute schemas defined in sub-sites are ignored for global indexing — all indexed attributes must be declared in the root ZMS object.
 
-![Metadata to be indexed](images/admin_gui_search1.gif)
+![Metadata to be indexed](images/admin_gui_search1.gif)\
 *Selecting content classes and attributes for indexing*
 
-![Indexer Connector](images/admin_gui_search2.gif)
+![Indexer Connector](images/admin_gui_search2.gif)\
 *ZCatalog connector administration*
 
 ### Integrating the search form in your theme
@@ -304,7 +303,7 @@ For large sites or advanced search features (facets, highlighting, PDF indexing)
 zope@server:~$ ~/venv/bin/pip install pdfminer.six
 ```
 
-![Indexing PDF Content](images/SOLR_PDF_Index.gif)
+![Indexing PDF Content](images/SOLR_PDF_Index.gif)\
 *ZMS transfers PDF content by extracting plain text and adding it to the sitemap XML.*
 
 ### Running Solr as a Docker container
@@ -381,10 +380,10 @@ Key properties:
 
 Diff colour conventions: green = new, red = deleted, yellow = modified. The colour perspective inverts between Export and Import modes: in Export mode, new ZODB code is green; in Import mode, newer filesystem code is green.
 
-![Repository Manager](images/admin_repo_view.png)
+![Repository Manager](images/admin_repo_view.png)\
 *Repository Manager: diff view with Export/Import controls*
 
-![ZMSRepositoryManager Properties](images/admin_repo_properties.png)
+![ZMSRepositoryManager Properties](images/admin_repo_properties.png)\
 *Repository Manager properties: System Path supports `$INSTANCE_HOME` path components*
 
 ### 8.2 Git Bridge
@@ -438,10 +437,10 @@ The Git Bridge uses a minimal command set:
 - **Git Pull** — pulls (with checkout) the latest `HEAD` or a specific revision ID; *Hard Reset* forces an overwrite of local changes.
 - **Git Push** — pushes the current state to the main branch with a commit message.
 
-![Git pull menu](images/admin_repo_show_gitpull.png)
+![Git pull menu](images/admin_repo_show_gitpull.png)\
 *Git pull menu: optionally enter a revision ID and enable Hard Reset to force-overwrite local changes.*
 
-![Git push menu](images/admin_repo_show_gitpush.png)
+![Git push menu](images/admin_repo_show_gitpush.png)\
 *Git push menu: enter a commit message before pushing.*
 
 ---
@@ -789,7 +788,7 @@ Activity states are induced by workflow transitions:
 | `AC_COMMIT_REQUESTED` | Commit requested by an editor |
 | `AC_COMMITTED` | Content approved and published |
 
-![Activity States](images/admin_wf_ac.gif)
+![Activity States](images/admin_wf_ac.gif)\
 *Workflow activity states and transitions*
 
 ---
@@ -818,7 +817,7 @@ AC_COMMIT_REQUESTED ─── Commit ─► TR_LEAVE → published
 
 An extended workflow allows shortcuts (e.g. *Commit* directly from `AC_CHANGED`) and additional transitions such as *Reject* or *Rollback*:
 
-![Extended Workflow Model](images/admin_wf_extended.gif)
+![Extended Workflow Model](images/admin_wf_extended.gif)\
 *Extended workflow with reject and express-commit transitions*
 
 Transitions can be restricted to specific user roles (e.g. only a *Manager* can execute *Commit*).

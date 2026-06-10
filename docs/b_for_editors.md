@@ -8,6 +8,16 @@ This chapter is the editorial guide for day-to-day content production in ZMS. It
 
 The ZMI serves two primary purposes: **navigation** and **editing**.
 
+For **navigation**, the ZMI provides:
+1. The top bar — administrative meta-functions
+2. The main menu — a tab menu for switching between editing modes
+3. The breadcrumb navigation — micronavigation showing position in the tree
+4. The sitemap — a full tree view on the left side
+
+For **editing**, the ZMI provides:
+1. The context menu — for adding new content objects and executing actions
+2. Specific input forms — for structured, design-neutral content production
+
 ### 1.1 Top Bar
 
 The top bar is always visible and provides meta-functions that are relevant in any context:
@@ -63,13 +73,27 @@ A practical approach when starting a new website is to first build the folder st
 
 ### Adding a new page
 
+![ZMS context menu – new page](images/edit_gui_contextmenu_page_de.png)
+*A new document is inserted into the current folder via the context menu.*
+
 1. Navigate to the parent folder where the new page should appear.
 2. Open the **context menu** (right-hand pop-up) and select the desired object type (*Folder* or *Document*).
 3. Fill in the required meta-attributes and click **Save**.
 
+When creating a new page, the input form captures the following properties:
+
+- **Short title** (`titlealt`) — a short, technical title used in navigation menus; keep it concise
+- **Title** — the editorial long title displayed in the page body
+- **Description** — a brief summary of the document content (used for search results and meta tags)
+- **Keywords** — used for search indexing
+- **Type** — the content type
+- **Author name**
+
 ---
 
 ## 3. Blocks: Filling Pages with Content
+
+ZMS uses a **design-neutral** approach to content production: editors create a sequential stream of content blocks without directly controlling visual layout. The configured theme handles all rendering and styling. This keeps editorial work focused on structure and meaning rather than presentation.
 
 Page-objects are filled sequentially with **content blocks**. Typical built-in block types include:
 
@@ -85,6 +109,9 @@ Page-objects are filled sequentially with **content blocks**. Typical built-in b
 
 ### Adding a block
 
+![ZMS context menu – new block](images/edit_gui_contextmenu_block_de.png)
+*A new content block (e.g. an image) is inserted into the current document via the context menu.*
+
 1. Open the page in the **Editing** tab.
 2. Click the **context menu** (➕ icon) at the position where the new block should be inserted.
 3. Select the block type from the pop-up list.
@@ -96,7 +123,7 @@ Page-objects are filled sequentially with **content blocks**. Typical built-in b
 Click the block title or the **edit** icon to open its edit form. After making changes, click **Save** to confirm. Use the **drag handles** or **up/down arrows** to reorder blocks within a page.
 
 ![ZMSGraphic](images/edit_gui_zmsgraphic_de.png)
-*Image block: attributes include the image file, legend text, optional link URL, and a high-resolution variant*
+*Image block (`ZMSGraphic`): the edit form lets you upload an image in two resolutions (standard and high-resolution), enter a caption, specify a link URL, set WAI/accessibility attributes, and choose image alignment.*
 
 ---
 
@@ -188,90 +215,3 @@ Bulk import is useful for migrating content from external sources or restoring b
 - Keep block sequences **short and focused**. Use separate documents for long-form content.
 - Check the **Preview** link (top bar) frequently to see how your edits look in the live theme.
 - If a page is not appearing on the live site, check that it has been **committed** and that the `active` flag is set in its properties.
-
----
-
-## Anhang: Redaktionsleitfaden (Deutsch)
-
-Das grafische User-Interface (GUI) von ZMS ist fokussiert auf die redaktionelle Inhalte-Produktion. Um einen gestaltungs-neutralen Content-Strom zu erzeugen, produziert die Redakteurin eine Folge von Content-Blöcken; ein Block kann ein Link, ein Bild, ein Video oder eine andere Content-Klasse sein, die im System konfiguriert ist und im rechtsseitigen Aufklapp-Menü ("Kontext-Menü") gelistet ist.
-
-Ein Content-Block wird hinzugefügt, indem man auf den Namen der Content-Klasse klickt, das anschliessend erscheinende Formular ausfüllt und durch Klick auf den „Speichern"-Button den Vorgang abschliesst.
-
-![ZMS GUI](images/edit_gui_start_en.gif)
-*Das ZMS-GUI zeigt der Redakteurin eine reduzierte Seitenvorschau, in der alle Content-Blöcke gelistet werden. Neue Content-Blöcke werden durch Klick auf den entsprechenden Namen im rechtsseitigen Aufklapp-Menü ergänzt.*
-
-### Bildschirms-Layout (ZMS Management Interface, ZMI)
-
-Das ZMI erfüllt zwei grundlegende Funktionen: schnelles Navigieren und effizientes Bearbeiten. Für die Navigation werden folgende Elemente angeboten:
-
-1. Obere Leiste (administrative Meta-Funktionen)
-2. Hauptmenü (Tab-Menü)
-3. Pfad-Navigation (Micronavigation)
-4. Sitemap (Baum-Navigation)
-
-und für das Bearbeiten:
-
-1. Kontext-Menü (zum Hinzufügen neuer Inhalte und Ausführen von Funktionen)
-2. Spezifische Eingabe-Formulare für die struktur-monotone Content-Produktion
-
-### Obere Leiste
-
-Die obere Leiste stellt übergreifende Funktionen bereit:
-
-1. Anzeige des eingeloggten User-Namens mit Link zum eigenen Profil
-2. Das Sitemap-Icon schaltet die linksseitige Baum-Navigation an und aus
-3. Das Konfigurations-Menü listet Rollen-spezifische Funktionen
-4. Das Flaggen-Icon zeigt die zu produzierenden Sprachvarianten an
-5. Das Globus-Icon zeigt die verfügbaren GUI-Sprachen an
-6. Der „Vorschau"-Link wechselt für das aktuelle Dokument in die Webdesign-Ansicht (Drittsicht)
-7. Der „Live"-Link wechselt auf den Produktiv-Server (falls dieser sich vom Vorschau-Server unterscheidet)
-
-### Hauptmenü
-
-Das Tab-Menü erlaubt den Wechsel unterschiedlicher Bearbeitungs-Modalitäten für den aktuellen Content-Knoten:
-
-| Tab | Funktion |
-|---|---|
-| Bearbeiten | Folge der Content-Blöcke der aktuellen Seite |
-| Eigenschaften | Beschreibende Attribute (Titel, Kurztitel, Beschreibung …) |
-| Import/Export | Daten-Im/Export im XML-Format |
-| Linkquellen | Alle Linkobjekte, die auf den aktuellen Knoten zeigen |
-| History | Änderungen im Zeitverlauf (falls Versionierung aktiviert ist) |
-| Suche | Volltext-Suche über den Dokument-Baum |
-| Aufgaben | Listet alle Dokumente nach ihrem Workflow-Status |
-
-### Pfad-Navigation
-
-Die Pfad- oder Micronavigation befindet sich unter dem Hauptmenü und zeigt, in welcher Tiefe sich der aktuelle Dokument-Knoten befindet – als Liste aller übergeordneten Knoten einschliesslich des Wurzelknotens.
-
-### Sitemap
-
-Der Klick auf das Sitemap-Icon erzeugt auf der linken Bildschirmseite eine Baum-Navigation analog einem Datei-Explorer. Durch Klick auf einen Ordner- oder Dokument-Titel öffnet sich die Hierarchie.
-
-![ZMS GUI](images/edit_gui_sitemap_en.gif)
-*Sitemap-Navigation zum schnellen Browsern durch den Dokument-Baum*
-
-### Kontext-Menü: Content-Objekte anlegen und bearbeiten
-
-ZMS hierarchisiert Inhalte in einem Dokumentbaum analog einem Buch. Der Baum wird aus seitenartigen Content-Objekten (*Dokument*, *Ordner*) aufgebaut. Der eigentliche Inhalt wird als Serie von Content-Blöcken erzeugt (Textabschnitt, Bild, Teaser, Download-Datei). Der Unterschied zwischen *Dokumenten* und *Ordnern*: Ordner können weitere Unterseiten enthalten, während ein Dokument immer das Ende einer Verzweigung im Dokumentbaum darstellt.
-
-![ZMS GUI](images/edit_gui_contextmenu_page_de.png)
-*Ein neues Dokument wird in den aktuellen Ordner über das Kontext-Menü eingefügt.*
-
-Nach Auswahl eines Content-Typs via Kontext-Menü erscheint eine Maske zur Eingabe der Eigenschaften des Dokuments:
-
-- **Kurztitel** – kurzer, technischer Titel für die Navigation
-- **Titel** – redaktioneller Langtitel für den Seitenkörper
-- **Beschreibung** – knappe Zusammenfassung des Dokumentinhalts
-- **Schlagworte**
-- **Typ**
-- **Name des Autors**
-
-![ZMS GUI](images/edit_gui_document_de.png)
-*Beim Einfügen eines neuen Dokuments sind zunächst alle Dokumenteigenschaften zu erfassen, zumindest Kurztitel und Titel.*
-
-![ZMS GUI](images/edit_gui_contextmenu_block_de.png)
-*Ein neues Bild wird in das aktuelle Dokument über das Kontext-Menü eingefügt.*
-
-![ZMS GUI](images/edit_gui_zmsgraphic_de.png)
-*Die Maske für das Bearbeiten eines Bild-Objektes erlaubt das Hochladen eines Bildes in zwei Auflösungen sowie die Erfassung einer Legende, einer URL, von WAI-Attributen und die Ausrichtung des Bildes.*

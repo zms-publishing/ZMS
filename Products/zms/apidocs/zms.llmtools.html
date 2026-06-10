@@ -119,8 +119,21 @@
         
          
 
+        <div class="childrenKindTitle">Classes</div>
+        <ul>
+    
+    <li class="">
         
         
+        
+
+        
+            <div class="itemName"><code><a href="zms.llmtools.ZMSLLMToolsAdapter.html" class="internal-link" title="zms.llmtools.ZMSLLMToolsAdapter"><wbr></wbr>ZMSLLMTools<wbr></wbr>Adapter</a></code>
+            </div>
+        
+
+    </li>
+</ul>
 
         <div class="childrenKindTitle">Functions</div>
         <ul>
@@ -132,6 +145,26 @@
 
         
             <div class="itemName"><code><a href="#execute_llmtool" class="internal-link" title="zms.llmtools.execute_llmtool">execute<wbr></wbr>_llmtool</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#get_available_llmtools_connectors" class="internal-link" title="zms.llmtools.get_available_llmtools_connectors">get<wbr></wbr>_available<wbr></wbr>_llmtools<wbr></wbr>_connectors</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_tool_index_qdrant" class="internal-link" title="zms.llmtools._tool_index_qdrant">_tool<wbr></wbr>_index<wbr></wbr>_qdrant</a></code>
             </div>
         
 
@@ -175,6 +208,16 @@
         <ul>
     
     <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.coauthor.html" class="internal-link" title="zms.coauthor">coauthor</a></code>
+            </div>
+        
+
+    </li><li class="">
         
         
         
@@ -1166,8 +1209,9 @@
           <div><p>llmtools.py – ZMS tool registry for LLM function/tool calling.</p>
 <p>Provides:</p>
 <ul class="rst-simple">
-<li>``LLM_TOOLS``: list of OpenAI-format tool schemas (also accepted by Ollama v0.3+).</li>
-<li>``execute_llmtool(name, args, context)``: dispatcher that maps tool names to live ZMS API calls via ``context.metaobj_manager``.</li>
+<li>``LLM_TOOLS``: built-in tool schemas (OpenAI-format, also accepted by Ollama v0.3+).</li>
+<li>``execute_llmtool(name, args, context)``: built-in dispatcher for core ZMS tools.</li>
+<li>``ZMSLLMToolsAdapter``: abstraction layer that can load custom toolsets from ``*_llmtools`` ZMSLibrary meta-objects and dispatch custom ``llmtool_*`` actions.</li>
 </ul>
 <p>All tools operate on the metamodel manager reachable via the ZMS acquisition context.</p>
 <p>License: GNU General Public License v2 or later, Organization: ZMS Publishing</p>
@@ -1175,19 +1219,34 @@
         </div>
 
         <div id="splitTables">
-          <table class="children sortable" id="id153">
+          <table class="children sortable" id="id155">
   
   
-  <tr class="function">
+  <tr class="class">
+    
+    <td>Class</td>
+    <td><code><a href="zms.llmtools.ZMSLLMToolsAdapter.html" class="internal-link" title="zms.llmtools.ZMSLLMToolsAdapter"><wbr></wbr>ZMSLLMTools<wbr></wbr>Adapter</a></code></td>
+    <td>Resolve active LLM tools connector and dispatch tool calls.</td>
+  </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#execute_llmtool" class="internal-link" title="zms.llmtools.execute_llmtool">execute<wbr></wbr>_llmtool</a></code></td>
     <td>Dispatch a tool call to the corresponding ZMS API.</td>
+  </tr><tr class="function">
+    
+    <td>Function</td>
+    <td><code><a href="#get_available_llmtools_connectors" class="internal-link" title="zms.llmtools.get_available_llmtools_connectors">get<wbr></wbr>_available<wbr></wbr>_llmtools<wbr></wbr>_connectors</a></code></td>
+    <td>Return available custom LLM tools connectors (ZMSLibrary meta-objects).</td>
   </tr><tr class="constant">
     
     <td>Constant</td>
     <td><code><a href="#LLM_TOOLS" class="internal-link" title="zms.llmtools.LLM_TOOLS">LLM<wbr></wbr>_TOOLS</a></code></td>
     <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="function private">
+    
+    <td>Function</td>
+    <td><code><a href="#_tool_index_qdrant" class="internal-link" title="zms.llmtools._tool_index_qdrant">_tool<wbr></wbr>_index<wbr></wbr>_qdrant</a></code></td>
+    <td>Crawl every ZMS page, render its body content, chunk + embed the text, and upsert all vectors into the configured Qdrant collection.</td>
   </tr>
 </table>
           
@@ -1209,7 +1268,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">execute_llmtool</span><span class="function-signature">(name, args, context)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmtools.py#L387">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmtools.py#L588">
       
       (source)
     </a>
@@ -1223,6 +1282,39 @@
     
     <div><p>Dispatch a tool call to the corresponding ZMS API.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">name</span></td><td class="fieldArgDesc">Tool name as returned in the LLM tool_call.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">args</span></td><td class="fieldArgDesc">Dict of parsed arguments from the LLM.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">context</span></td><td class="fieldArgDesc">ZMS acquisition context (must have ``metaobj_manager`` attribute).</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">JSON-serialisable result dict.</td></tr></table></div>
   </div>
+</div><div class="basefunction">
+  
+  
+  <a name="zms.llmtools.get_available_llmtools_connectors">
+    
+  </a>
+  <a name="get_available_llmtools_connectors">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">get_available_llmtools_connectors</span><span class="function-signature">(context)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmtools.py#L442">
+      
+      (source)
+    </a>
+    <a class="headerLink" href="#get_available_llmtools_connectors" title="zms.llmtools.get_available_llmtools_connectors">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Return available custom LLM tools connectors (ZMSLibrary meta-objects).</p>
+<p>A connector is any ``ZMSLibrary`` matching either:</p>
+<ul class="rst-simple">
+<li>id ends with ``_llmtools`` (generic naming), or</li>
+<li>id ends with ``_connector`` and package starts with ``com.zms.llmtools.`` (connector-style naming, e.g. ``ollama_connector``).</li>
+</ul>
+</div>
+  </div>
 </div><div class="baseconstant">
   
   
@@ -1235,7 +1327,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">LLM_TOOLS</span>: <code>list[<wbr></wbr>dict]</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmtools.py#L24">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmtools.py#L26">
       
       (source)
     </a>
@@ -1256,6 +1348,35 @@
                <wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">parameters</span><span class="rst-variable-quote">'</span>: {<wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">type</span><span class="rst-variable-quote">'</span>: <span class="rst-variable-quote">'</span><span class="rst-variable-string">object</span><span class="rst-variable-quote">'</span>,
                               <wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">properties</span><span class="rst-variable-quote">'</span>: {},
 <span class="rst-variable-ellipsis">...</span></code></pre></td></tr></table>
+  </div>
+</div><div class="basefunction private">
+  
+  
+  <a name="zms.llmtools._tool_index_qdrant">
+    
+  </a>
+  <a name="_tool_index_qdrant">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">_tool_index_qdrant</span><span class="function-signature">(args, context)</span>:
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmtools.py#L925">
+      
+      (source)
+    </a>
+    <a class="headerLink" href="#_tool_index_qdrant" title="zms.llmtools._tool_index_qdrant">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Crawl every ZMS page, render its body content, chunk + embed the text, and upsert all vectors into the configured Qdrant collection.</p>
+<p>Runs fully inside the Zope process — no external HTTP calls required.</p>
+</div>
   </div>
 </div>
         </div>

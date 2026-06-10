@@ -235,6 +235,13 @@ class RestApiController(object):
         return None
 
     def _handle_llm_chat(self, REQUEST):
+        def _as_bool(value, default=False):
+            if value is None:
+                return default
+            if isinstance(value, bool):
+                return value
+            return str(value).strip().lower() in ('1', 'true', 'yes', 'on')
+
         connector = self.context.getLLMConnector()
         if connector is None:
             return {'error': 'No LLM connector configured. Add a ZMSLLMConnector to the ZMS root.'}
@@ -249,10 +256,12 @@ class RestApiController(object):
             message = REQUEST.get('message', '')
             messages = [{'role': 'user', 'content': message}]
 
-        agent_mode = REQUEST.get('agent_mode', '0') in ('1', 'true', 'True')
+        preserve_html = _as_bool(REQUEST.get('preserve_html', None), default=False)
+
+        agent_mode = _as_bool(REQUEST.get('agent_mode', '0'), default=False)
         if agent_mode:
-            return connector.chat_with_tools(messages, self.context)
-        raw = connector.chat(messages)
+            return connector.chat_with_tools(messages, self.context, preserve_html=preserve_html)
+        raw = connector.chat(messages, preserve_html=preserve_html)
         if 'error' in raw:
             return {'error': raw['error']}
         msg = raw.get('message') or {}

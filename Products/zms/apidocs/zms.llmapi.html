@@ -283,6 +283,16 @@
         
 
         
+            <div class="itemName"><code><a href="zms.coauthor.html" class="internal-link" title="zms.coauthor">coauthor</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
             <div class="itemName"><code><a href="zms.content_extraction.html" class="internal-link" title="zms.content_extraction">content<wbr></wbr>_extraction</a></code>
             </div>
         
@@ -1291,6 +1301,8 @@
 <li>llm.max_tokens: Maximum tokens to generate (optional)</li>
 <li>llm.num_ctx: Context window size (default: '4096')</li>
 <li>llm.store: Enable storage for 'responses' API (default: False)</li>
+<li>llm.timeout: Timeout for LLM responses in seconds (default: '120')</li>
+<li>llm.rag.timeout: Timeout for RAG retrieval in seconds (default: '10')</li>
 </ul>
 <p>Response format (OpenAI /v1/chat/completions compatible):</p>
 <pre class="rst-literal-block">
@@ -1318,13 +1330,14 @@
 <p>Requirements for RAG:</p>
 <ul class="rst-simple">
 <li>pip install sentence-transformers</li>
+<li>pip install qdrant-client</li>
 </ul>
 <p>License: GNU General Public License v2 or later, Organization: ZMS Publishing</p>
 </div>
         </div>
 
         <div id="splitTables">
-          <table class="children sortable" id="id145">
+          <table class="children sortable" id="id147">
   
   
   <tr class="class">
@@ -1408,7 +1421,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">chat</span><span class="function-signature">(context, messages, **kwargs)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L577">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L585">
       
       (source)
     </a>
@@ -1466,6 +1479,10 @@
 <ul class="rst-simple">
 <li>llm.ollama.host: Ollama server URL (default: 'http://localhost:11434')</li>
 <li>llm.api.model: Model name (default: 'llama2')</li>
+<li>llm.temperature: LLM temperature 0.0-2.0 (default: '0.7')</li>
+<li>llm.top_p: Nucleus sampling 0.0-1.0 (default: '0.9')</li>
+<li>llm.num_ctx: Context window size (default: '4096')</li>
+<li>llm.timeout: Timeout for LLM response in seconds (default: '120')</li>
 </ul>
 </td></tr><tr><td colspan="2"><p>For RAG:</p>
 <ul class="rst-simple">
@@ -1474,6 +1491,8 @@
 <li>llm.ollama.host: Ollama server URL (default: 'http://localhost:11434')</li>
 <li>llm.api.model: Model name (default: 'llama2')</li>
 <li>llm.rag.top_k: Number of documents to retrieve (default: '3')</li>
+<li>llm.rag.score_threshold: Minimum similarity score (0.0-1.0, default: '0.0')</li>
+<li>llm.rag.timeout: Timeout for RAG retrieval in seconds (default: '10')</li>
 </ul>
 </td></tr></table></div>
   </div>
@@ -1490,7 +1509,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_ollama_models</span><span class="function-signature">(context)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L691">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L772">
       
       (source)
     </a>
@@ -1519,7 +1538,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_provider_info</span><span class="function-signature">(context)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L653">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L667">
       
       (source)
     </a>
@@ -1548,7 +1567,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">security</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L69">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L72">
       
       (source)
     </a>
@@ -1576,7 +1595,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">_generate_request_id</span><span class="function-signature">(provider, model, message)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L72">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L75">
       
       (source)
     </a>
@@ -1603,7 +1622,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">_get_provider</span><span class="function-signature">(context)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L553">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L561">
       
       (source)
     </a>
@@ -1633,7 +1652,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">_normalize_response</span><span class="function-signature">(response_data, provider, model, original_message)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L80">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L83">
       
       (source)
     </a>
@@ -1669,7 +1688,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">_EMBEDDING_MODEL_CACHE</span>: <code>dict</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L67">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L70">
       
       (source)
     </a>

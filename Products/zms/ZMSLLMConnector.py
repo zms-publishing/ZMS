@@ -31,6 +31,15 @@ from Products.zms import IZMSConfigurationProvider
 from Products.zms import ZMSItem
 
 
+def _json_dumps_safe(obj, **kwargs):
+    """json.dumps with a fallback that decodes bytes to str."""
+    def _default(o):
+        if isinstance(o, bytes):
+            return o.decode('utf-8', errors='replace')
+        return str(o)
+    return json.dumps(obj, default=_default, **kwargs)
+
+
 @implementer(
     IZMSLLMConnector.IZMSLLMConnector,
     IZMSRepositoryProvider.IZMSRepositoryProvider,
@@ -76,6 +85,35 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
         self.id = id
         self._config = {}
 
+    def _prepare_messages(self, messages, preserve_html=False):
+        """Normalize messages and optionally inject HTML-preservation guidance."""
+        if isinstance(messages, str):
+            msgs = [{'role': 'user', 'content': messages}]
+        else:
+            msgs = list(messages)
+
+        if preserve_html:
+            html_system_prompt = {
+                'role': 'system',
+                'content': (
+                    'Preserve HTML markup exactly when rewriting content. '
+                    'Do not remove HTML elements such as headings, links, lists, tables, emphasis, or wrappers. '
+                    'Keep existing tag names and attributes unless an explicit correction is required. '
+                    'Return HTML content, not markdown.'
+                ),
+            }
+            if not any(isinstance(m, dict) and m.get('role') == 'system' for m in msgs):
+                msgs.insert(0, html_system_prompt)
+        return msgs
+
+    def _as_bool(self, value):
+        """Parse common truthy/falsy values from request-like sources."""
+        if value is None:
+            return False
+        if isinstance(value, bool):
+            return value
+        return str(value).strip().lower() in ('1', 'true', 'yes', 'on')
+
     # -------------------------------------------------------------------------
     #  ZMSLLMConnector.getConfProperty
     # -------------------------------------------------------------------------
@@ -120,22 +158,24 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
         @rtype: dict
         """
         from Products.zms import llmapi
+        preserve_html = self._as_bool(kwargs.pop('preserve_html', False))
+        messages = self._prepare_messages(messages, preserve_html=preserve_html)
         provider = llmapi._get_provider(self)
         return provider.chat(messages, **kwargs)
 
     # -------------------------------------------------------------------------
     #  ZMSLLMConnector.chat_with_tools
     # -------------------------------------------------------------------------
-    def chat_with_tools(self, messages, context, max_rounds=5):
+    def chat_with_tools(self, messages, context, max_rounds=5, preserve_html=False):
         """
         Agentic chat loop with ZMS tool calling.
 
-        Sends ``messages`` plus ``LLM_TOOLS`` definitions to the LLM. If the
-        LLM responds with ``tool_calls``, each call is executed via
-        ``llmtools.execute_llmtool()`` against the given ZMS ``context``, the
-        results are appended as ``tool`` role messages, and the conversation
-        continues until the LLM produces a plain text response or ``max_rounds``
-        is reached.
+        Sends ``messages`` plus active tool definitions from
+        ``llmtools.ZMSLLMToolsAdapter`` to the LLM. If the LLM responds with
+        ``tool_calls``, each call is executed through the adapter (custom
+        ``*_llmtools`` profile or built-in fallback), appended as ``tool``
+        role messages, and the conversation continues until the LLM produces a
+        plain text response or ``max_rounds`` is reached.
 
         @param messages: List of ``{"role": ..., "content": ...}`` dicts or a
           plain string (auto-wrapped as user message).
@@ -149,6 +189,7 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
         @rtype: dict
         """
         from Products.zms import llmtools
+        adapter = llmtools.ZMSLLMToolsAdapter(self, context)
 
         def _extract_latest_user_text(msgs):
             for m in reversed(msgs):
@@ -173,20 +214,39 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
             )
             return has_index_verb and has_scope
 
-        # Normalise messages
-        if isinstance(messages, str):
-            msgs = [{'role': 'user', 'content': messages}]
-        else:
-            msgs = list(messages)
+        # Normalise messages and optionally enforce HTML-preservation behavior.
+        msgs = self._prepare_messages(messages, preserve_html=self._as_bool(preserve_html))
+
+        # Inject system prompt if not already present. This guides the LLM to
+        # give natural language summaries after tool calls instead of re-dumping raw JSON.
+        if not any(m.get('role') == 'system' for m in msgs):
+            msgs.insert(0, {
+                'role': 'system',
+                'content': (
+                    'You are a ZMS CMS assistant with access to tools that query and manage the CMS. '
+                    'When you receive tool results, summarize them in clear, natural language. '
+                    'Describe the structure and key properties in a readable way — do not simply '
+                    'repeat the raw JSON data. Be concise and informative.'
+                ),
+            })
 
         turns = []  # records for UI / localStorage
+
+        try:
+            tool_schemas = adapter.get_llmtools()
+        except Exception as exc:
+            return {
+                'error': "LLM tools profile misconfigured: %s" % str(exc),
+                'turns': turns,
+                'reply': '',
+            }
 
         # Some models occasionally answer in plain text instead of issuing a tool call.
         # For explicit indexing requests, execute the indexer deterministically.
         latest_user_text = _extract_latest_user_text(msgs)
         if _is_index_qdrant_intent(latest_user_text):
-            result = llmtools.execute_llmtool('index_qdrant', {}, context)
-            result_str = json.dumps(result)
+            result = adapter.execute_llmtool('index_qdrant', {})
+            result_str = _json_dumps_safe(result)
             turns.append({
                 'role': 'assistant',
                 'content': '',
@@ -221,32 +281,162 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
                 'turns': turns,
             }
 
+        def _describe_tool_result(tool_name, data):
+            """
+            Format a tool result dict as a short readable description for fallback
+            reply paths (models that cannot do round-2 tool result processing).
+            """
+            if not isinstance(data, dict):
+                return str(data)
+            if 'error' in data:
+                return 'Error: %s' % data['error']
+            if tool_name == 'list_content_types':
+                types = data.get('content_types', [])
+                return 'Found %d content type(s): %s' % (
+                    len(types),
+                    ', '.join(t.get('id', '') for t in types[:20]) + ('…' if len(types) > 20 else ''),
+                )
+            if tool_name == 'get_content_type':
+                attrs = data.get('attributes', [])
+                attr_ids = [a.get('id', '') for a in attrs]
+                return (
+                    '**%s** (`%s`, type: `%s`, revision: %s)\n'
+                    '%d attribute(s): %s'
+                ) % (
+                    data.get('name', data.get('id', '?')),
+                    data.get('id', ''),
+                    data.get('type', ''),
+                    data.get('revision', '?'),
+                    len(attr_ids),
+                    ', '.join('`%s`' % a for a in attr_ids),
+                )
+            # Generic fallback: compact JSON block
+            return '```json\n%s\n```' % json.dumps(data, indent=2, ensure_ascii=False)
+
+        def _extract_json_objects(text):
+            """
+            Extract all top-level JSON objects from text using balanced-brace
+            scanning. Handles nested objects correctly, unlike simple regexes.
+            """
+            results = []
+            i = 0
+            while i < len(text):
+                if text[i] == '{':
+                    depth = 0
+                    in_str = False
+                    escape = False
+                    start = i
+                    for j in range(i, len(text)):
+                        c = text[j]
+                        if escape:
+                            escape = False
+                        elif c == '\\' and in_str:
+                            escape = True
+                        elif c == '"':
+                            in_str = not in_str
+                        elif not in_str:
+                            if c == '{':
+                                depth += 1
+                            elif c == '}':
+                                depth -= 1
+                                if depth == 0:
+                                    results.append(text[start:j + 1])
+                                    i = j
+                                    break
+                i += 1
+            return results
+
+        def _parse_text_tool_calls(content, known_tools):
+            """
+            Fallback parser for models (e.g. qwen2.5-coder) that write tool calls
+            as plain text / markdown JSON instead of issuing structured tool_calls.
+
+            Uses balanced-brace extraction so nested argument objects like
+            {"name": "get_content_type", "arguments": {"id": "..."}} are captured
+            correctly, avoiding partial matches from non-greedy regexes.
+            """
+            if not content:
+                return []
+            known_names = {t.get('function', {}).get('name') for t in known_tools}
+            candidates = _extract_json_objects(content)
+            parsed = []
+            for i, raw in enumerate(candidates):
+                try:
+                    obj = json.loads(raw)
+                except (ValueError, TypeError):
+                    continue
+                name = obj.get('name') or obj.get('function', {}).get('name')
+                if name not in known_names:
+                    continue
+                args = obj.get('arguments') or obj.get('parameters') or {}
+                if isinstance(args, str):
+                    try:
+                        args = json.loads(args)
+                    except (ValueError, TypeError):
+                        args = {}
+                parsed.append({
+                    'id': f'text_call_{i}_{name}',
+                    'type': 'function',
+                    'function': {
+                        'name': name,
+                        'arguments': json.dumps(args),
+                    },
+                })
+            return parsed
+
         for _round in range(max_rounds):
-            response = self.chat(msgs, tools=llmtools.LLM_TOOLS, tool_choice='auto')
+            response = self.chat(msgs, tools=tool_schemas, tool_choice='auto')
 
             if 'error' in response:
                 err = response['error']
                 err_msg = err.get('message', str(err)) if isinstance(err, dict) else str(err)
+                # If tools already ran in a prior round, the model can't process
+                # the tool-result messages (e.g. qwen2.5-coder doesn't support
+                # multi-turn tool calling). Return collected tool results as reply.
+                if _round > 0 and turns:
+                    tool_results = [
+                        t for t in turns if t.get('role') == 'tool'
+                    ]
+                    if tool_results:
+                        parts = []
+                        for t in tool_results:
+                            try:
+                                data = json.loads(t.get('content', '{}'))
+                                parts.append(_describe_tool_result(t.get('name', 'tool'), data))
+                            except (ValueError, TypeError):
+                                parts.append('**%s**\n%s' % (
+                                    t.get('name', 'tool'), t.get('content', ''),
+                                ))
+                        reply = '\n\n'.join(parts)
+                        turns.append({'role': 'assistant', 'content': reply})
+                        return {'reply': reply, 'turns': turns}
                 return {'error': err_msg, 'turns': turns, 'reply': ''}
 
             message = response.get('message') or {}
+            raw_content = message.get('content', '')
             tool_calls = message.get('tool_calls') or []
+
+            # Track whether tool calls came from the text fallback parser so we
+            # can degrade gracefully on execution errors without confusing the LLM.
+            text_fallback_used = False
+            if not tool_calls:
+                tool_calls = _parse_text_tool_calls(raw_content, tool_schemas)
+                text_fallback_used = bool(tool_calls)
 
             if not tool_calls:
                 # Final plain-text response
-                reply = message.get('content', '')
-                turns.append({'role': 'assistant', 'content': reply})
-                return {'reply': reply, 'turns': turns}
+                turns.append({'role': 'assistant', 'content': raw_content})
+                return {'reply': raw_content, 'turns': turns}
 
             # Record assistant message with tool calls for UI
             turns.append({
                 'role': 'assistant',
-                'content': message.get('content') or '',
+                'content': raw_content,
                 'tool_calls': tool_calls,
             })
             msgs.append({
                 'role': 'assistant',
-                'content': message.get('content') or '',
+                'content': raw_content,
                 'tool_calls': tool_calls,
             })
 
@@ -261,8 +451,18 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
                 except (ValueError, TypeError):
                     args = {}
 
-                result = llmtools.execute_llmtool(tool_name, args, context)
-                result_str = json.dumps(result)
+                result = adapter.execute_llmtool(tool_name, args)
+
+                # When tool calls were parsed from plain text and the tool
+                # returns an error, the model sent malformed / unencodable args.
+                # Return its original text response as a formatted code block
+                # instead of feeding the error back into the loop.
+                if text_fallback_used and isinstance(result, dict) and result.get('error'):
+                    formatted = '```json\n%s\n```' % raw_content if raw_content else str(result['error'])
+                    turns.append({'role': 'assistant', 'content': formatted})
+                    return {'reply': formatted, 'turns': turns}
+
+                result_str = _json_dumps_safe(result)
 
                 tool_turn = {
                     'role': 'tool',
@@ -272,6 +472,23 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
                 }
                 turns.append(tool_turn)
                 msgs.append(tool_turn)
+
+            # Models that use plain-text tool calls (text_fallback_used) cannot
+            # process tool-result messages in a second round — Ollama's template
+            # parser throws an error on `tool` role messages. Return tool results
+            # directly as formatted JSON without attempting another LLM call.
+            if text_fallback_used:
+                tool_results = [t for t in turns if t.get('role') == 'tool']
+                parts = []
+                for t in tool_results:
+                    try:
+                        data = json.loads(t.get('content', '{}'))
+                        parts.append(_describe_tool_result(t.get('name', 'tool'), data))
+                    except (ValueError, TypeError):
+                        parts.append('**%s**\n%s' % (t.get('name', 'tool'), t.get('content', '')))
+                reply = '\n\n'.join(parts)
+                turns.append({'role': 'assistant', 'content': reply})
+                return {'reply': reply, 'turns': turns}
 
         # Exhausted max rounds without a final text reply
         return {
@@ -305,6 +522,19 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
         """
         from Products.zms import llmapi
         return llmapi.get_ollama_models(self)
+
+    # -------------------------------------------------------------------------
+    #  ZMSLLMConnector.getAvailableLLMToolsConnectors
+    # -------------------------------------------------------------------------
+    def getAvailableLLMToolsConnectors(self):
+        """
+        Return available ``*_llmtools`` / ``*_connector`` ZMSLibrary meta-objects.
+
+        Connectors are discovered from installed ZMSLibrary meta-objects and can be
+        selected via ``llm.llmtools.id`` in connector config.
+        """
+        from Products.zms import llmtools
+        return llmtools.get_available_llmtools_connectors(self)
 
     # -------------------------------------------------------------------------
     #  ZMSLLMConnector.getEnabledFeatures
@@ -388,6 +618,7 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
                 'llm.api.key',
                 'llm.api.model',
                 'llm.api.endpoint',
+                'llm.llmtools.id',
                 'llm.ollama.host',
                 'llm.qdrant.host',
                 'llm.qdrant.collection',
@@ -449,14 +680,6 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
     def manage_changeProperties(self, btn, lang, REQUEST, RESPONSE=None):
         """Backwards-compatible shim: delegates to manage_changeConfig."""
         return self.manage_changeConfig(btn, lang, REQUEST, RESPONSE)
-
-
-# --------------------------------------------------------------------------
-#  Constructor support for registerClass
-# --------------------------------------------------------------------------
-
-manage_addZMSLLMConnectorForm = PageTemplateFile(
-    'zpt/ZMSLLMConnector/manage_add_llm_connector', globals())
 
 
 def manage_addZMSLLMConnector(self, REQUEST, RESPONSE=None):

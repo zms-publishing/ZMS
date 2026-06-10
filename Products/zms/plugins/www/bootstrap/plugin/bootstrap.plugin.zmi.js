@@ -124,17 +124,6 @@ $ZMI.registerReady(function(){
 		}
 	});
 
-	// Toggle: LLM
-	$('a#navbar-llm').each(function() {
-		var $a = $(this);
-		if (self.window.parent.frames.length > 1 && typeof self.window.parent != "undefined" && typeof self.window.parent.frames.manage_llm != "undefined") {
-			$a.attr('target','_top');
-		}
-		else {
-			$a.attr('href',$a.attr('href')+'&dtpref_llm=1');
-		}
-	});
-
 	// Toggle: Lang
 	if (manage_menu) {
 		$('.zmi header a.toggle-lang').each(function() {
@@ -200,7 +189,19 @@ $ZMI.registerReady(function(){
 	});
 
 	// Tooltip
-	$('[data-toggle="tooltip"]').tooltip();
+	if (typeof $.fn.tooltip === 'function') {
+		$('[data-toggle="tooltip"]').tooltip();
+	} else {
+		// Fallback: try to initialize using bootstrap tooltip if jQuery tooltip not available
+		try {
+			const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="tooltip"]'));
+			tooltipTriggerList.map(function (tooltipTriggerEl) {
+				return new bootstrap.Tooltip(tooltipTriggerEl);
+			});
+		} catch (e) {
+			console.warn('Tooltip initialization failed:', e);
+		}
+	}
 
 	// Main Menu Toggle
 	$('.zmi .main-nav li.active a').click(function(event) {
@@ -975,14 +976,19 @@ ZMI.prototype.initInputFields = function(container) {
 				});
 			});
 			// Multiselect
-			$.plugin('multiselect',{
-				files: [
-					$ZMI.getConfProperty('plugin.bootstrap.multiselect.js','/++resource++zms_/bootstrap/plugin/bootstrap.plugin.zmi.multiselect.js')
-				]});
-			$.plugin('multiselect').set({context:context});
-			$.plugin('multiselect').get("select.zmi-select[multiple]:not(.d-none)",function(){
-					$ZMI.multiselect(context);
-				});
+			if (typeof $.plugin === 'function') {
+				$.plugin('multiselect',{
+					files: [
+						$ZMI.getConfProperty('plugin.bootstrap.multiselect.js','/++resource++zms_/bootstrap/plugin/bootstrap.plugin.zmi.multiselect.js')
+					]});
+				$.plugin('multiselect').set({context:context});
+				$.plugin('multiselect').get("select.zmi-select[multiple]:not(.d-none)",function(){
+						$ZMI.multiselect(context);
+					});
+			} else if (typeof $ZMI !== 'undefined' && typeof $ZMI.multiselect === 'function') {
+				// Fallback if $.plugin is missing
+				$ZMI.multiselect(context);
+			}
 			// Activity-Toggle
 			if ($("#zmi-toggle-activity").length==0) {
 				$("#attrActivity",context).each(function() {
@@ -1072,10 +1078,17 @@ ZMI.prototype.initInputFields = function(container) {
 			$ZMI.initUrlInput(this);
 			// Richedit
 			var $richedits = $('div[id^="zmiStandardEditor"]',this);
+			var disableRichtextUi = $('body').hasClass('disable_richtext_ui');
 			if ($richedits.length > 0) {
 				$richedits.each(function() {
 					var elName = $(this).attr("id").substring("zmiStandardEditor".length);
-					zmiRichtextInit(elName);
+					if (!disableRichtextUi) {
+						zmiRichtextInit(elName);
+					}
+					else {
+						$('div#zmiRichtextEditor'+elName).hide();
+						$('div#zmiStandardEditor'+elName).show();
+					}
 					var v = $("#"+elName).val();
 					function matchAll(source, regexp) {
 						var matches = [];

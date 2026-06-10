@@ -10,13 +10,12 @@ function zmiSelectObject(sender) {
 	let href = $sender.attr("href");
 	let lang = getZMILang();
 	// Check for translation mode
-	let translate_mode = $("body").attr('data-translate_mode');
-	let lang1 = $("body").attr('data-translate_lang1');
-	let lang2 = $("body").attr('data-translate_lang2');
-	if (translate_mode) {
-		// Stick in tanslation tab and create URL like 
-		// ./manage_executeMetacmd?lang=ger&id=manage_tab_translate&lang1=ger&lang2=eng&translate_mode=view
-		href += '/manage_executeMetacmd?lang=' + lang + '&id=manage_tab_translate&lang1=' + lang1 + '&lang2=' + lang2 + '&translate_mode=view';
+	let coauthor_mode = $("body").attr('data-coauthor_mode');
+	let lang1 = $("body").attr('data-coauthor_lang1');
+	let lang2 = $("body").attr('data-coauthor_lang2');
+	if (coauthor_mode) {
+		// Persist in coauthor tab 
+		href += `/manage_coauthor?lang=${lang}&lang1=${lang1}&lang2=${lang2}&coauthor_mode=${coauthor_mode}`;
 		window.parent.manage_main.location.href = href;
 	} else {
 		if (href.startsWith(origin) || href.startsWith('/')) {

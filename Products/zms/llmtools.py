@@ -2,9 +2,10 @@
 llmtools.py – ZMS tool registry for LLM function/tool calling.
 
 Provides:
-    - ``LLM_TOOLS``: list of OpenAI-format tool schemas (also accepted by Ollama v0.3+).
-    - ``execute_llmtool(name, args, context)``: dispatcher that maps tool names to live ZMS
-    API calls via ``context.metaobj_manager``.
+    - ``LLM_TOOLS``: built-in tool schemas (OpenAI-format, also accepted by Ollama v0.3+).
+    - ``execute_llmtool(name, args, context)``: built-in dispatcher for core ZMS tools.
+    - ``ZMSLLMToolsAdapter``: abstraction layer that can load custom toolsets from
+      ``*_llmtools`` ZMSLibrary meta-objects and dispatch custom ``llmtool_*`` actions.
 
 All tools operate on the metamodel manager reachable via the ZMS acquisition context.
 
@@ -13,6 +14,7 @@ Organization: ZMS Publishing
 """
 
 import json
+import re
 from Products.zms import zopeutil
 from Products.zms import standard
 
@@ -433,6 +435,151 @@ LLM_TOOLS = [
     },
 ]
 
+# Backwards-compatible alias for explicit naming.
+BUILTIN_LLM_TOOLS = LLM_TOOLS
+
+
+def get_available_llmtools_connectors(context):
+    """
+    Return available custom LLM tools connectors (ZMSLibrary meta-objects).
+
+    A connector is any ``ZMSLibrary`` matching either:
+      - id ends with ``_llmtools`` (generic naming), or
+      - id ends with ``_connector`` and package starts with ``com.zms.llmtools.``
+        (connector-style naming, e.g. ``ollama_connector``).
+    """
+    root = context.getRootElement()
+    connectors = []
+    for mid in root.getMetaobjIds():
+        try:
+            metaobj = root.getMetaobj(mid)
+        except Exception:
+            continue
+        if not isinstance(metaobj, dict) or metaobj.get('type') != 'ZMSLibrary':
+            continue
+        package = (metaobj.get('package') or '').strip()
+        is_llmtools_named = mid.endswith('_llmtools')
+        is_llmtools_connector = mid.endswith('_connector') and package.startswith('com.zms.llmtools.')
+        if is_llmtools_named or is_llmtools_connector:
+            connectors.append({
+                'id': mid,
+                'name': metaobj.get('name', mid),
+                'package': package,
+            })
+    return sorted(connectors, key=lambda x: x['id'])
+
+
+class ZMSLLMToolsAdapter(object):
+    """
+    Resolve active LLM tools connector and dispatch tool calls.
+
+    Contract for custom LLM tools connector libraries (``*_llmtools`` or
+    ``com.zms.llmtools.*/*_connector``):
+      1. A python/script attribute ``get_llmtools`` returning a list of OpenAI
+         tool schemas (same shape as ``LLM_TOOLS``). Returning
+         ``{"tools": [...]} `` is also accepted.
+      2. Tool executors as python/script attributes named ``llmtool_<name>``.
+         The script is called as ``script(connector, context, args)``.
+    """
+
+    def __init__(self, connector, context):
+        self.connector = connector
+        self.context = context
+        self.root = context.getRootElement()
+
+    def get_connector_id(self):
+        """
+        Return configured LLM tools connector id.
+
+        Empty means: use built-in core tools.
+        """
+        return (self.connector.getConfProperty('llm.llmtools.id', '') or '').strip()
+
+    def get_available_connectors(self):
+        """Return available ``*_llmtools`` / ``*_connector`` ZMSLibrary connectors."""
+        return get_available_llmtools_connectors(self.context)
+
+    def _get_connector_actions(self, connector_id, pattern=None):
+        """Return script actions from connector meta-object, filtered by regex."""
+        try:
+            metaobj_attrs = self.root.getMetaobjAttrs(connector_id) or []
+        except Exception:
+            raise ValueError("Connector '%s' not found." % connector_id)
+        actions = []
+        for attr in metaobj_attrs:
+            action = self.root.getMetaobjAttr(connector_id, attr.get('id'))
+            if isinstance(action, dict) and action.get('type') in ['py', 'External Method', 'Script (Python)']:
+                actions.append(action)
+        if pattern:
+            actions = [x for x in actions if re.match(pattern, x.get('id', ''))]
+        return actions
+
+    def _get_connector_manifest(self, connector_id):
+        """Return the get_llmtools action for a custom connector."""
+        actions = self._get_connector_actions(connector_id, r'^get_llmtools$')
+        return actions[0] if actions else None
+
+    def _validate_tools(self, tools, connector_id):
+        """Validate tools payload shape."""
+        if isinstance(tools, dict):
+            tools = tools.get('tools')
+        if not isinstance(tools, (list, tuple)):
+            raise ValueError(
+                "Connector '%s': get_llmtools must return a list of tool schemas "
+                "or {'tools': [...]}." % connector_id
+            )
+        for tool in tools:
+            if not isinstance(tool, dict):
+                raise ValueError("Connector '%s': invalid tool schema type." % connector_id)
+            fn = tool.get('function') if isinstance(tool.get('function'), dict) else {}
+            if tool.get('type') != 'function' or not fn.get('name'):
+                raise ValueError(
+                    "Connector '%s': each tool must include type='function' and function.name." % connector_id
+                )
+        return list(tools)
+
+    def get_llmtools(self):
+        """
+        Return active tool schemas for current connector/context.
+
+            - If ``llm.llmtools.id`` is empty: return built-in ``LLM_TOOLS``.
+            - If configured: load from connector's ``get_llmtools`` script.
+        """
+        connector_id = self.get_connector_id()
+        if not connector_id:
+            return BUILTIN_LLM_TOOLS
+
+        manifest = self._get_connector_manifest(connector_id)
+        if manifest is None:
+            raise ValueError(
+                "Connector '%s' is missing required script 'get_llmtools'." % connector_id
+            )
+        try:
+            tools = manifest['ob'](self.connector, self.context)
+        except Exception as exc:
+            raise ValueError(
+                "Connector '%s' get_llmtools execution failed: %s" % (connector_id, str(exc))
+            )
+        return self._validate_tools(tools, connector_id)
+
+    def execute_llmtool(self, name, args):
+        """
+        Execute tool call against active connector, then fallback to built-in tools.
+        """
+        connector_id = self.get_connector_id()
+        if connector_id:
+            matches = self._get_connector_actions(connector_id, r'^llmtool_%s$' % re.escape(name))
+            if matches:
+                try:
+                    return matches[0]['ob'](self.connector, self.context, args)
+                except Exception as exc:
+                    return {
+                        'error': "Connector '%s' llmtool_%s failed: %s" % (
+                            connector_id, name, str(exc)
+                        )
+                    }
+        return execute_llmtool(name, args, self.context)
+
 
 # ---------------------------------------------------------------------------
 # Tool executor
@@ -477,6 +624,8 @@ def execute_llmtool(name, args, context):
                     ob_attr = a.get('ob')
                     if ob_attr is not None:
                         custom = zopeutil.readData(ob_attr, default=custom)
+                if isinstance(custom, bytes):
+                    custom = custom.decode('utf-8', errors='replace')
                 attrs.append({
                     'id': a.get('id'),
                     'name': a.get('name', ''),
@@ -679,6 +828,8 @@ def execute_llmtool(name, args, context):
                 existing_ob = existing.get('ob')
                 if existing_ob is not None:
                     existing_template = zopeutil.readData(existing_ob, default=existing_template)
+                if isinstance(existing_template, bytes):
+                    existing_template = existing_template.decode('utf-8', errors='replace')
                 existing_template = existing_template or ''
 
             template = mm.manage_create_default_zpt(tid, target_id='standard_html', attrs=attrs)

@@ -4,7 +4,7 @@ This chapter covers setting up a development environment, understanding the ZMS 
 
 > **See also:**
 > - [develop_intro_en.md](develop_intro_en.md) — full installation walkthrough
-> - [develop_api_exampels_en.md](develop_api_exampels_en.md) — annotated API code examples
+> - [develop_api_examples_en.md](develop_api_exampels_en.md) — annotated API code examples
 > - [develop_cache.md](develop_cache.md) — proxy cache and NGINX control in depth
 > - [admin_intro_en.md](admin_intro_en.md) — configuration menu reference (content model design)
 
@@ -86,7 +86,7 @@ The parent page container keeps an aggregate version vector, incrementing its ve
 
 ## 3. ZMS API Examples
 
-> **Full annotated examples:** [develop_api_exampels_en.md](develop_api_exampels_en.md)
+> **Full annotated examples:** [develop_api_examples_en.md](develop_api_exampels_en.md)
 
 ### 3.1 `renderShort()` — custom ZMI block view
 

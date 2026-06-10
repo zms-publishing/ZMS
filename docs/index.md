@@ -33,7 +33,7 @@ The following source documents remain in `docs/` and are cross-referenced from t
 | [admin_intro_en.md](admin_intro_en.md) | Admins | Configuration menu reference |
 | [admin_solr_en.md](admin_solr_en.md) | Admins | Apache Solr connector setup |
 | [develop_intro_en.md](develop_intro_en.md) | Developers | Installation & environment setup |
-| [develop_api_exampels_en.md](develop_api_exampels_en.md) | Developers | API code examples |
+| [develop_api_examples_en.md](develop_api_exampels_en.md) | Developers | API code examples |
 | [develop_cache.md](develop_cache.md) | Developers | Proxy cache and NGINX control |
 | [llm_configuration.md](llm_configuration.md) | Admins | LLM / AI provider configuration |
 | [versioning.md](versioning.md) | Admins / Devs | Workflow and versioning model |

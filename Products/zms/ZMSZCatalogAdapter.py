@@ -69,10 +69,7 @@ def get_default_data(node):
   d['start_dt'] = get_zoned_dt(node.attr('attr_active_start'))
   d['end_dt'] = get_zoned_dt(node.attr('attr_active_end'))
   d['indexing_dt'] = get_zoned_dt(time.localtime())
-  # Note: sortid refers to the tree and is composed of sort-ids (4 digits each) up to 5 levels.
-  # Ref: https://github.com/idasm-unibe-ch/unibe-cms/issues/1244
-  sortid = ''.join(['%04i'%(e.getSortId()) for e in node.breadcrumbs_obj_path(False)[1:]])
-  d['sortid'] = sortid + ('0' * (20 - len(sortid)))
+  d['sortid'] = '.'.join([f'{e.getSortId():04d}' for e in node.breadcrumbs_obj_path(False)[1:]])
   return d
 
 def get_zoned_dt(struct_dt):

@@ -131,14 +131,14 @@
 				</span>
 				<input type="hidden" name="objectIds:list" tal:attributes="value python:si.id;" />
 				<div class="btn-group">
-					<a class="btn btn-secondary text-truncate text-left" data-turbolinks="false" style="width:14rem"
+					<a class="btn btn-secondary text-truncate text-left" style="width:14rem"
 						title="Configure search-engine connection, define the schema and index the content"
 						tal:attributes="href python:'%s/manage_main'%(si.id)">
 						<i class="fas fa-ban text-danger mr-2" tal:condition="python:si.id not in [x['id'] for x in available]"></i>
 						<i class="fas fa-exchange-alt mr-2" tal:condition="python:si.id in [x['id'] for x in available]"></i>
 						<span tal:content="python:si.id">id</span>
 					</a>
-					<a class="btn btn-secondary" data-turbolinks="false" title="Customize ZMSLibrary" target="_blank"
+					<a class="btn btn-secondary" title="Customize ZMSLibrary" target="_blank"
 						tal:attributes="
 							href python:'%s/metaobj_manager/manage_main?id=%s'%(here.getDocumentElement().absolute_url(), si.id); 
 							title python:'Customize ZMSLibrary %s'%(si.id)">

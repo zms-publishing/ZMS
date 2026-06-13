@@ -15,7 +15,25 @@
 	<input type="hidden" name="id" value="manage_tab_search" />
 	<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
 	<input type="hidden" name="preview" tal:attributes="value python:request['preview']" />
-	<legend tal:content="python:here.getZMILangStr('SEARCH_HEADER')">Search header</legend>
+	<legend style="overflow:hidden;">
+		<span tal:content="python:here.getZMILangStr('SEARCH_HEADER')">Search header</span>
+		<small style="font-weight:normal;float:inline-end;line-height: 1.2rem;text-align: end;" class="zmi-code text-muted">
+			<tal:block tal:condition="python:len(here.getCatalogAdapter().get_connectors())>0">
+				<tal:block 
+					tal:define="
+						connectors python:here.getCatalogAdapter().get_connectors();
+						connectors_str python: ' | '.join([c.id for c in connectors])">
+					<span tal:content="python: 'Avaliable Search Connectors: %s'%(connectors_str)"></span>
+					<span tal:condition="python:here.getConfProperty('zms.search.connector.id') not in [c.id for c in connectors]"
+						title="The search connector has to be configured with 'zms.search.connector.id' in the ZMS configuration."
+						class="text-danger" style="cursor:help;display:inline-block;">
+						Warning: No search connector configured with zms.search.connector.id (default = zcatalog_connector)
+					</span>
+				</tal:block>
+			</tal:block>
+			<tal:block tal:condition="python:len(here.getCatalogAdapter().get_connectors())==0">Warning: No zcatalog connector available</tal:block>
+		</small>
+	</legend>
 	<div class="card-body">
 		<div class="form-group row">
 			<div class="col-md-12">

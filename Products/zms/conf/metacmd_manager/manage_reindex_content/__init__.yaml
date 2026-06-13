@@ -1,0 +1,18 @@
+manage_reindex_content:
+  acquired: 0
+  action: '%smanage_executeMetacmd?id=manage_reindex_content'
+  execution: 0
+  icon_clazz: fas fa-cogs
+  meta_types:
+    - ZMS
+    - ZMSFolder
+  name: Reindex Content Recursively
+  nodes: '{$}'
+  revision: 6.0.0
+  roles:
+    - ZMSAdministrator
+    - ZMSEditor
+  title: Reindex Content Recursively
+  Impl:
+    - id: manage_reindex_content
+      type: External Method

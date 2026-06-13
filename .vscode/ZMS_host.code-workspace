@@ -19,7 +19,7 @@
 	],
 
 	"settings": {
-		"python.defaultInterpreterPath": "/home/zope/vpy313/bin/python",
+		"python.defaultInterpreterPath": "/home/zope/vpy3/bin/python",
 		"window.zoomLevel": 0,
 		"git.ignoreMissingGitWarning": true,
 		"editor.minimap.enabled": false,

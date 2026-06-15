@@ -125,7 +125,7 @@ def manage_reindex_content( self, request=None):
 			
 			// Avoid Auto-Expanding Sitemap in Case of More than 100 Pages to avoid Performance Issues
 			if (parseInt($('#page_count').val()) > 100) {
-				let show_sitemap = confirm('Mind the performance: More than 100 pages! Press cancel for not showing the whole sitemap automatically.');
+				let show_sitemap = confirm('Mind the performance: More than 100 pages! Press cancel for not expanding the whole sitemap automatically.');
 				if (!show_sitemap) {
 					sitemap_max_level = 0; // only show top level to avoid performance issues
 				}

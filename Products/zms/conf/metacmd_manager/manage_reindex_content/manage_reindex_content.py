@@ -10,16 +10,25 @@ def manage_reindex_content( self, request=None):
 			connector_url = connectors[0].absolute_url()
 	except:
 		connector_url = ''
+
+	catalog = self.zcatalog_index
+	catalog_items = catalog({'path':'/%s'%(self.absolute_url(relative=True))})
+	# Number of Pages in Catalog for given path.
+	page_meta_ids = [id for id in self.getMetaobjIds() if self.getMetaobj(id)['type'] in ['ZMSDocument']]
+	pages = [r for r in catalog_items if r['meta_id'] in page_meta_ids]
+	page_count = len(pages)
+
 	html = []
 	html.append('<!DOCTYPE html>')
 	html.append('<html lang="en">')
 	html.append(self.zmi_html_head(self,request))
 	html.append('<body class="%s">'%self.zmi_body_class(id='manage_reindex_content'))
-	html.append(self.zmi_body_header(self,request,options=self.customize_manage_options()))
+	html.append(self.zmi_body_header(self,request))
 	html.append('<div id="zmi-tab">')
 	html.append(self.zmi_breadcrumbs(self,request,extra=[{'label':'Reindex Content','action':'manage_reindex_content'}]))
 	html.append('<form class="form-horizontal card" name="form0" method="post" enctype="multipart/form-data">')
-	html.append('<input type="hidden" name="lang" value="%s"/>'%request['lang'])
+	html.append('<input type="hidden" id="lang" name="lang" value="%s"/>'%request['lang'])
+	html.append('<input type="hidden" id="page_count" name="page_count" value="%s"/>'%page_count)
 	html.append('<legend>Reindex Content Recursively</legend>')
 	html.append('<div class="card-body">')
 	html.append("""
@@ -88,9 +97,9 @@ def manage_reindex_content( self, request=None):
 	html.append('''
 		<script>
 
-		// //////////////////////////////////////////////////////////////////////             
+		// //////////////////////////////////////////////////////////////////////
 		// Sitemap
-		// //////////////////////////////////////////////////////////////////////             
+		// //////////////////////////////////////////////////////////////////////
 
 		function zmiExpandObjectTree(max) {
 			var fn = function() {
@@ -111,7 +120,18 @@ def manage_reindex_content( self, request=None):
 		}
 
 		$(function() {
-			// Sitemap
+
+			let sitemap_max_level = -1; // -1 for unlimited levels
+			
+			// Avoid Auto-Expanding Sitemap in Case of More than 100 Pages to avoid Performance Issues
+			if (parseInt($('#page_count').val()) > 100) {
+				let show_sitemap = confirm('Mind the performance: More than 100 pages! Press cancel for not showing the whole sitemap automatically.');
+				if (!show_sitemap) {
+					sitemap_max_level = 0; // only show top level to avoid performance issues
+				}
+			}
+
+			// Create Sitemap
 			var href = $ZMI.getPhysicalPath();
 			$ZMI.objectTree.init('.zmi-sitemap', href, {
 				params: {'meta_types':'0'},
@@ -120,7 +140,9 @@ def manage_reindex_content( self, request=None):
 					if ($currentNode.length) {
 						$('.zmi-sitemap').html($currentNode);
 					}
-					zmiExpandObjectTree(-1);
+					if (sitemap_max_level !== 0) {
+						zmiExpandObjectTree(sitemap_max_level);
+			 		}
 				},
 				'addPages.callback': function() {
 					console.log('addPages.callback')
@@ -176,6 +198,7 @@ def manage_reindex_content( self, request=None):
 				const success = data.success || 0;
 				const failed = data.failed || 0;
 				$message.text('Catalog entries written: ' + success + ', failed: ' + failed);
+				$message.addClass(success==0 && failed==0 ? 'text-warning' : 'text-success');
 				return {success: success, failed: failed, calls: 1, nodes: 1};
 			};
 
@@ -185,14 +208,17 @@ def manage_reindex_content( self, request=None):
 					const uid = $input.val();
 					const $a = $input.next('a');
 					const messageId = 'progress' + pagecounter;
-					$a.after('<span class="response"><i class="fas fa-spinner fa-spin text-primary my-2"></i><span class="message" id="' + messageId + '"></span></span>');
+					$a.after('<span class="response"><i class="fas fa-spinner fa-spin text-primary mx-2"></i><span id="' + messageId + '"></span></span>');
 					const $message = $('#' + messageId);
 					try {
 						await reindexNode(uid, $message);
 						$message.closest('.response').find('.fa-spinner').remove();
+						$message.addClass('message');
 					} catch (e) {
 						$message.text('Failed: ' + (e.status || '?') + ' ' + (e.statusText || 'request error'));
 						$message.closest('.response').find('.fa-spinner').remove();
+						$message.addClass('message');
+						$message.removeClass('text-success text-warning').addClass('text-danger');
 					}
 					pagecounter++;
 				}
@@ -267,6 +293,15 @@ def manage_reindex_content( self, request=None):
 				text-rendering: auto;
 				-moz-osx-font-smoothing: grayscale;
 				-webkit-font-smoothing: antialiased;
+			}
+			.zmi.manage_reindex_content .response span.message.text-success:before {
+				color:#4CAF50;
+			}
+			.zmi.manage_reindex_content .response span.message.text-warning:before {
+				color:#FFC107;
+			}
+			.zmi.manage_reindex_content .response span.message.text-danger:before {
+				color:#F44336;
 			}
 		/*-->*/
 		</style>

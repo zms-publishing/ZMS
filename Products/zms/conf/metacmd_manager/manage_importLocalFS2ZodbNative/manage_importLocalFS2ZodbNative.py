@@ -166,13 +166,13 @@ def manage_importLocalFS2ZodbNative(self):
     + '<div class="form-group row card-body">' \
     + '<label class="col-sm-2 control-label mandatory"><span>LocalFS Path</span></label>' \
     + '<div class="col-sm-10">' \
-    + '<input class="form-control" id="path" name="path" value="' + request.get('path', self.getINSTANCE_HOME()) + '">' \
+    + '<input class="form-control zmi-code" id="path" name="path" value="' + request.get('path', self.getINSTANCE_HOME()) + '">' \
     + '</div><!-- .col-sm-10 -->' \
     + '</div><!-- .form-group -->' \
     + '<div class="form-group row card-body">' \
     + '<label class="col-sm-2 control-label mandatory"><span>Target ZODB Path</span></label>' \
     + '<div class="col-sm-10">' \
-    + '<input class="form-control" id="zodb_path" name="zodb_path" value="' + request.get('zodb_path', '/'.join(self.getHome().getPhysicalPath())) + '">' \
+    + '<input class="form-control zmi-code text-primary" id="zodb_path" name="zodb_path" value="' + request.get('zodb_path', '/'.join(self.getHome().getPhysicalPath())) + '">' \
     + '</div><!-- .col-sm-10 -->' \
     + '</div><!-- .form-group -->' \
     + '<div class="form-group row card-body">' \

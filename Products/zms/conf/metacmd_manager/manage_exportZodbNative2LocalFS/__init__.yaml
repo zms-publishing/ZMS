@@ -7,7 +7,7 @@ manage_exportZodbNative2LocalFS:
     - ZMS
   name: Export ZODB to LocalFS
   nodes: '{$}'
-  revision: 5.0.2
+  revision: 6.0.0
   roles:
     - ZMSAdministrator
   title: Export ZODB to LocalFS

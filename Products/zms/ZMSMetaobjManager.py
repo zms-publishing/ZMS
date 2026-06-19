@@ -622,7 +622,7 @@ class ZMSMetaobjManager(object):
       if sort == True:
         ids = sorted(ids,key=lambda x:self.display_type(meta_id=x))
       elif sort == False:
-        ids = sorted(ids,key=lambda x:obs[x].get('name',x))
+        ids = sorted(ids,key=lambda x:obs.get(x, {}).get('name', x))
       return ids
 
 

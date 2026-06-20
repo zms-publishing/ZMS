@@ -7,7 +7,7 @@ manage_importLocalFS2ZodbNative:
     - ZMS
   name: Import LocalFS to ZODB
   nodes: '{$}'
-  revision: 6.0.0
+  revision: 6.1.0
   roles:
     - ZMSAdministrator
   title: Import LocalFS to ZODB

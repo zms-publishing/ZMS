@@ -73,7 +73,8 @@ class ReqBuff(object):
       @return: Namespaced buffer key.
       @rtype: C{str}
       """
-      return '%s_%s'%('_'.join(self.getPhysicalPath()), key)
+      path = self.getPhysicalPath()
+      return f"{hash(path)}_{key}"
 
 
     def clearReqBuff(self, prefix='', REQUEST=None):

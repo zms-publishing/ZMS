@@ -28,6 +28,33 @@ from Products.zms import standard
 from zope.globalrequest import getRequest
 
 ram_cache_enabled = False
+ram_cache_key = 'ram_cache'
+
+def get_ram_cache(self, request, buff):
+    cache = None
+    if ram_cache_enabled:
+        cache = getattr(buff, ram_cache_key, None)
+        if cache is None:
+            ram_cache = self.restrictedTraverse(ram_cache_key)
+            cache = ram_cache.ZCacheManager_getCache()
+            setattr(buff, ram_cache_key, cache)
+            set_buff(request, buff)
+    return cache
+
+def get_request(self):
+    return getattr(self, 'REQUEST', getRequest())
+
+buff_key = '__buff__'
+
+def get_buff(request):
+    buff = getattr(request, buff_key, None)
+    if buff is None:
+        buff = Buff()
+        setattr(request, buff_key, buff)
+    return buff
+
+def set_buff(request, buff):
+    setattr(request, buff_key, buff)
 
 class Buff(object):
   """Lightweight attribute container used for request-local buffering."""
@@ -46,7 +73,7 @@ class ReqBuff(object):
       @return: Namespaced buffer key.
       @rtype: C{str}
       """
-      return '%s_%s'%('_'.join(self.getPhysicalPath()[2:]), key)
+      return '%s_%s'%('_'.join(self.getPhysicalPath()), key)
 
 
     def clearReqBuff(self, prefix='', REQUEST=None):
@@ -59,17 +86,18 @@ class ReqBuff(object):
       @type REQUEST: C{object}
       """
       reqBuffId = self.getReqBuffId(prefix)
-      request = getattr(self, 'REQUEST', getRequest())
-      buff = request.get('__buff__', Buff())
+      request = get_request(self)
+      buff = get_buff(request)
       if len(prefix) > 0:
         reqBuffId += '.'
       for key in list(buff.__dict__):
         if key.startswith(reqBuffId):
           delattr(buff, key)
+      set_buff(request, buff)
+      # RAM cache is optional, so we ignore errors if it's not available.
       try:
-        if ram_cache_enabled:
-          ram_cache = self.restrictedTraverse("ram_cache")
-          cache = ram_cache.ZCacheManager_getCache()
+        cache = get_ram_cache(self, request, buff)
+        if cache:
           #print("RAMCacheManager.clear", reqBuffId)
           value = cache.ZCache_set(self, reqBuffId, None)
       except Exception as e:
@@ -86,21 +114,19 @@ class ReqBuff(object):
       @rtype: C{object}
       """
       reqBuffId = self.getReqBuffId(key)
-      request = getattr(self, 'REQUEST', getRequest())
-      if key is None: # For debugging purposes, return whole buffer.
-        return None   # request.get('__buff__',{})
-      buff = request['__buff__']
+      request = get_request(self)
+      buff = get_buff(request)
       value = getattr(buff, reqBuffId)
-      try:
-        if ram_cache_enabled:
-          if value is None:
-            ram_cache = self.restrictedTraverse("ram_cache")
-            cache = ram_cache.ZCacheManager_getCache()
-            value = cache.ZCache_get(self, reqBuffId)
-            #print("RAMCacheManager.get", reqBuffId, value is not None)
-      except Exception as e:
-        #print("RAMCacheManager not available:", e)
-        pass
+      if value is None:
+        # RAM cache is optional, so we ignore errors if it's not available.
+        try:
+          cache = get_ram_cache(self, request, buff)
+          if cache:
+              value = cache.ZCache_get(self, reqBuffId)
+              #print("RAMCacheManager.get", reqBuffId, value is not None)
+        except Exception as e:
+          #print("RAMCacheManager not available:", e)
+          pass
       return value
 
 
@@ -118,18 +144,14 @@ class ReqBuff(object):
       @rtype: C{object}
       """
       reqBuffId = self.getReqBuffId(key)
-      request = getattr(self, 'REQUEST', getRequest())
-      buff = request.get('__buff__', None)
-      if buff is None:
-        buff = Buff()
+      request = get_request(self)
+      buff = get_buff(request)
       setattr(buff, reqBuffId, value)
-      request.set('__buff__', buff)
+      set_buff(request, buff)
+      # RAM cache is optional, so we ignore errors if it's not available.
       try:
-        if ram_cache_enabled:
-          ram_cache = self.restrictedTraverse("ram_cache")
-          cache = ram_cache.ZCacheManager_getCache()
-          old_value = cache.ZCache_get(self, reqBuffId)
-          #print("RAMCacheManager.set", reqBuffId, old_value is not None)
+        cache = get_ram_cache(self, request, buff)
+        if cache:
           value = cache.ZCache_set(self, reqBuffId, value)
       except Exception as e:
         #print("RAMCacheManager not available:", e)

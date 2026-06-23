@@ -36,14 +36,17 @@ def get_ram_cache(self, request, buff):
     if ram_cache_enabled:
         cache = None #getattr(buff, ram_cache_key, None)
         if cache is None:
-            ram_cache = self.restrictedTraverse(ram_cache_key)
+            ram_cache = getattr(self, ram_cache_key)
             cache = ram_cache.ZCacheManager_getCache()
             #setattr(buff, ram_cache_key, cache)
             #set_buff(request, buff)
     return cache
 
 def get_request(self):
-    return getattr(self, 'REQUEST', getRequest())
+    request = getattr(self, 'REQUEST', None)
+    if request: 
+        return request
+    return getRequest()
 
 buff_key = '__buff__'
 

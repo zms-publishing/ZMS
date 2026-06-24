@@ -46,15 +46,11 @@ class DummyCacheable:
     def getPhysicalPath(self):
         return self._ob.getPhysicalPath()
 
-def get_ram_cache(self, request, buff):
+def get_cache(self):
     cache = None
     if ram_cache_enabled:
-        cache = None #getattr(buff, ram_cache_key, None)
-        if cache is None:
-            ram_cache = getattr(self, ram_cache_key)
-            cache = ram_cache.ZCacheManager_getCache()
-            #setattr(buff, ram_cache_key, cache)
-            #set_buff(request, buff)
+        ram_cache = getattr(self, ram_cache_key)
+        cache = ram_cache.ZCacheManager_getCache()
     return cache
 
 def get_request(self):
@@ -114,16 +110,7 @@ class ReqBuff(object):
         if key.startswith(reqBuffId):
           delattr(buff, key)
       set_buff(request, buff)
-      # RAM cache is optional, so we ignore errors if it's not available.
-      try:
-        cache = get_ram_cache(self, request, buff)
-        if cache:
-          #print("RAMCacheManager.clear", key)
-          cacheable = DummyCacheable(self)
-          value = cache.ZCache_set(cacheable, key, None)
-      except Exception as e:
-        print("RAMCacheManager not available:", e)
-        pass
+
 
     def fetchReqBuff(self, key=None, REQUEST=None):
       """
@@ -140,17 +127,19 @@ class ReqBuff(object):
       if not hasattr(buff, reqBuffId):
         # RAM cache is optional, so we ignore errors if it's not available.
         try:
-          cache = get_ram_cache(self, request, buff)
+          cache = get_cache(self)
           if cache:
               cacheable = DummyCacheable(self)
-              value = cache.ZCache_get(cacheable, key)
+              # Note: keywords/view_name can be used for namespacing if needed.
+              value = cache.ZCache_get(cacheable, view_name='shared', keywords={'key': key})
               if value:
                   #print("RAMCacheManager.get", key, value is not None)
+                  # Store the value in the request buffer for future access.
                   setattr(buff, reqBuffId, value)
                   set_buff(request, buff)
                   return value
         except Exception as e:
-          print("RAMCacheManager not available:", e)
+          print("RAMCacheManager not available:", key, e)
           pass
       return getattr(buff, reqBuffId)
 
@@ -175,12 +164,12 @@ class ReqBuff(object):
       set_buff(request, buff)
       # RAM cache is optional, so we ignore errors if it's not available.
       try:
-        cache = get_ram_cache(self, request, buff)
+        cache = get_cache(self)
         if cache:
           cacheable = DummyCacheable(self)
-          cache.ZCache_set(cacheable, value, key)
+          cache.ZCache_set(cacheable, value, view_name='shared', keywords={'key': key})
           #print("RAMCacheManager.set", key, value is not None)
       except Exception as e:
-        print("RAMCacheManager not available:", e)
+        print("RAMCacheManager not available:", key, e)
         pass
       return value

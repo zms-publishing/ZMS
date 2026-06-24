@@ -31,7 +31,6 @@ RUN \
     echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | debconf-set-selections
     apt update
     apt --yes install \
-        sudo \
         docbook-xml \
         docbook-xsl \
         fop \

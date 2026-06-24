@@ -1313,7 +1313,7 @@ $ZMI.objectTree = new ZMIObjectTree();
 ZMIObjectTree.prototype.init = function(s,href,p) {
 	var that = this;
 	that.p = p?p:{};
-	that.p.params = that.p.params?that.p.params:{};
+	that.p.params = that.p.params?that.p.params:{preview:'preview',lang:getZMILang()};
 	// Init preselected active.
 	that.active = [];
 	$(s).html('<i class="fas fa-spinner fa-spin"></i>&nbsp;'+getZMILangStr('MSG_LOADING'));
@@ -1362,7 +1362,7 @@ ZMIObjectTree.prototype.addPages = function(nodes) {
 	};
 	nodes.forEach(node => {
 		var data_id = '{$'+node.uid+'}';
-		var link_url = node.index_html;
+		var link_url = node.index_html.replace('?preview=preview','');
 		var icon = that.metamodel[node.meta_id] ? $ZMI.icon(that.metamodel[node.meta_id].icon_clazz) : $ZMI.icon('far fa-file');
 		var anchor = '';
 		var css = [ node.is_page ? 'is_page' : 'is_page_element' ];

@@ -26,10 +26,25 @@ Organization: ZMS Publishing
 # Imports.
 from Products.zms import standard
 from zope.globalrequest import getRequest
-import time
 
-ram_cache_enabled = False
+ram_cache_enabled = True
 ram_cache_key = 'ram_cache'
+
+class DummyCacheable:
+    def __init__(self, ob):
+        self._ob = ob
+
+    def ZCacheable_getModTime(self, *args, **kwargs):
+        return 0
+
+    def ZCacheable_getIdentifier(self):
+        return "/".join(self._ob.getPhysicalPath())
+
+    def ZCacheable_isCachingEnabled(self):
+        return True
+
+    def getPhysicalPath(self):
+        return self._ob.getPhysicalPath()
 
 def get_ram_cache(self, request, buff):
     cache = None
@@ -103,8 +118,9 @@ class ReqBuff(object):
       try:
         cache = get_ram_cache(self, request, buff)
         if cache:
-          #print("RAMCacheManager.clear", reqBuffId)
-          value = cache.ZCache_set(self, reqBuffId, None)
+          #print("RAMCacheManager.clear", key)
+          cacheable = DummyCacheable(self)
+          value = cache.ZCache_set(cacheable, key, None)
       except Exception as e:
         print("RAMCacheManager not available:", e)
         pass
@@ -126,9 +142,10 @@ class ReqBuff(object):
         try:
           cache = get_ram_cache(self, request, buff)
           if cache:
-              value = cache.ZCache_get(self, reqBuffId)
+              cacheable = DummyCacheable(self)
+              value = cache.ZCache_get(cacheable, key)
               if value:
-                  print("RAMCacheManager.get", reqBuffId, value is not None)
+                  #print("RAMCacheManager.get", key, value is not None)
                   setattr(buff, reqBuffId, value)
                   set_buff(request, buff)
                   return value
@@ -137,9 +154,6 @@ class ReqBuff(object):
           pass
       return getattr(buff, reqBuffId)
 
-
-    def ZCacheable_getModTime(self, *args, **kwargs):
-        return time.time()
 
     def storeReqBuff(self, key, value, REQUEST=None):
       """
@@ -163,8 +177,9 @@ class ReqBuff(object):
       try:
         cache = get_ram_cache(self, request, buff)
         if cache:
-          cache.ZCache_set(self, reqBuffId, value)
-          #print("RAMCacheManager.set", reqBuffId, value is not None)
+          cacheable = DummyCacheable(self)
+          cache.ZCache_set(cacheable, value, key)
+          #print("RAMCacheManager.set", key, value is not None)
       except Exception as e:
         print("RAMCacheManager not available:", e)
         pass

@@ -652,7 +652,9 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
         if portalMaster:
             # merge, portal master first to allow local override
             master_conf = {k:v for k,v in portalMaster.__aq_conf__(deep+1).items() \
-                if k not in UNINHERITED_PROPERTIES and k[:k.find('.')] not in UNINHERITED_PROPERTIES}
+                if not k in UNINHERITED_PROPERTIES \
+                  and not k[:k.find('.')] in UNINHERITED_PROPERTIES \
+                  and not k in ['UniBE.Alias', 'UniBE.Server']}
             aq_conf = {**master_conf, **aq_conf}
         if deep == 0:
           return self.storeReqBuff( reqBuffId, aq_conf)
@@ -687,19 +689,15 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
         if key in OFS.misc_.misc_.zms['confdict']:
           default = OFS.misc_.misc_.zms['confdict'].get(key)
       value = default
-      confdict = self.getConfProperties()
+      confdict = self.getConfProperties(inherited=True)
       if key in confdict:
         value = confdict.get(key)
-      elif key is not None and not key[:key.find('.')] in UNINHERITED_PROPERTIES and not key in ['UniBE.Alias', 'UniBE.Server']:
-        portalMaster = self.getPortalMaster()
-        if portalMaster is not None:
-          value = portalMaster.getConfProperty( key)
-        if value is None:
-          if 'default' in kwargs:
-            value = default
-          else:
-            for default in [x for x in self.default_conf_properties if x['key'] == key]:
-              value = default.get('default', None)
+      else:
+        if 'default' in kwargs:
+          value = default
+        else:
+          for default in [x for x in self.default_conf_properties if x['key'] == key]:
+            value = default.get('default', None)
       return value 
 
 

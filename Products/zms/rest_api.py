@@ -23,7 +23,6 @@ class api(object):
         If there are decorator arguments, the function
         to be decorated is not passed to the constructor!
         """
-        #--print("Inside __init__()", kwargs)
         self.kwargs = kwargs
 
     def __call__(self, f):
@@ -32,12 +31,8 @@ class api(object):
         once, as part of the decoration process! You can only give
         it a single argument, which is the function object.
         """
-        #--print("Inside __call__()")
         def wrapped_f(*args, **kwargs):
-            #--print("Inside wrapped_f()", args, kwargs)
-            #--print("Decorator arguments:", self.kwargs)
             data = f(*args)
-            #--print("After f(*args)")
             decoration = {x for x in kwargs if kwargs.get(x)}
             if decoration:
                 return {x:self.kwargs.get(x) for x in decoration}, data
@@ -137,7 +132,6 @@ def get_attrs(node):
                     data[id if monolang else '%s_%s'%(id,lang)] = get_attr(node,id)
             else:
                 data[id] = get_attr(node,id)
-    # print("data",data)
     return data
 
 
@@ -154,7 +148,6 @@ class RestApiController(object):
             self.ids = [x for x in self.path_to_handle if x != '++rest_api'] # remove ++rest_api as first element
             while self.ids:
                 id = self.ids[0]
-                print(id,context)
                 if id.startswith('uid:'):
                   context = context.getLinkObj('{$%s}'%id)
                 elif id not in context.getPhysicalPath():

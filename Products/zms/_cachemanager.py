@@ -27,6 +27,50 @@ Organization: ZMS Publishing
 from Products.zms import standard
 from zope.globalrequest import getRequest
 
+ram_cache_enabled = True
+ram_cache_key = 'ram_cache'
+
+class DummyCacheable:
+    def __init__(self, ob):
+        self._ob = ob
+
+    def ZCacheable_getModTime(self, *args, **kwargs):
+        return 0
+
+    def ZCacheable_getIdentifier(self):
+        return "/".join(self._ob.getPhysicalPath())
+
+    def ZCacheable_isCachingEnabled(self):
+        return True
+
+    def getPhysicalPath(self):
+        return self._ob.getPhysicalPath()
+
+def get_cache(self):
+    cache = None
+    if ram_cache_enabled:
+        ram_cache = getattr(self, ram_cache_key)
+        cache = ram_cache.ZCacheManager_getCache()
+    return cache
+
+def get_request(self):
+    request = getattr(self, 'REQUEST', None)
+    if request: 
+        return request
+    return getRequest()
+
+buff_key = '__buff__'
+
+def get_buff(request):
+    buff = getattr(request, buff_key, None)
+    if buff is None:
+        buff = Buff()
+        setattr(request, buff_key, buff)
+    return buff
+
+def set_buff(request, buff):
+    setattr(request, buff_key, buff)
+
 class Buff(object):
   """Lightweight attribute container used for request-local buffering."""
   pass
@@ -44,7 +88,8 @@ class ReqBuff(object):
       @return: Namespaced buffer key.
       @rtype: C{str}
       """
-      return '%s_%s'%('_'.join(self.getPhysicalPath()[2:]), key)
+      path = self.getPhysicalPath()
+      return f"{hash(path)}_{key}"
 
 
     def clearReqBuff(self, prefix='', REQUEST=None):
@@ -56,15 +101,16 @@ class ReqBuff(object):
       @param REQUEST: Optional request object.
       @type REQUEST: C{object}
       """
-      request = getattr(self, 'REQUEST', getRequest())
-      buff = request.get('__buff__', Buff())
       reqBuffId = self.getReqBuffId(prefix)
+      request = get_request(self)
+      buff = get_buff(request)
       if len(prefix) > 0:
         reqBuffId += '.'
       for key in list(buff.__dict__):
         if key.startswith(reqBuffId):
           delattr(buff, key)
- 
+      set_buff(request, buff)
+
 
     def fetchReqBuff(self, key=None, REQUEST=None):
       """
@@ -75,11 +121,26 @@ class ReqBuff(object):
       @return: The buffered value.
       @rtype: C{object}
       """
-      request = getattr(self, 'REQUEST', getRequest())
-      if key is None: # For debugging purposes, return whole buffer.
-        return None   # request.get('__buff__',{})
-      buff = request['__buff__']
       reqBuffId = self.getReqBuffId(key)
+      request = get_request(self)
+      buff = get_buff(request)
+      if not hasattr(buff, reqBuffId):
+        # RAM cache is optional, so we ignore errors if it's not available.
+        try:
+          cache = get_cache(self)
+          if cache:
+              cacheable = DummyCacheable(self)
+              # Note: keywords/view_name can be used for namespacing if needed.
+              value = cache.ZCache_get(cacheable, view_name='shared', keywords={'key': key})
+              if value:
+                  #print("RAMCacheManager.get", key, value is not None)
+                  # Store the value in the request buffer for future access.
+                  setattr(buff, reqBuffId, value)
+                  set_buff(request, buff)
+                  return value
+        except Exception as e:
+          print("RAMCacheManager not available:", key, e)
+          pass
       return getattr(buff, reqBuffId)
 
 
@@ -96,11 +157,19 @@ class ReqBuff(object):
       @return: The value that was stored.
       @rtype: C{object}
       """
-      request = getattr(self, 'REQUEST', getRequest())
-      buff = request.get('__buff__', None)
-      if buff is None:
-        buff = Buff()
       reqBuffId = self.getReqBuffId(key)
+      request = get_request(self)
+      buff = get_buff(request)
       setattr(buff, reqBuffId, value)
-      request.set('__buff__', buff)
+      set_buff(request, buff)
+      # RAM cache is optional, so we ignore errors if it's not available.
+      try:
+        cache = get_cache(self)
+        if cache:
+          cacheable = DummyCacheable(self)
+          cache.ZCache_set(cacheable, value, view_name='shared', keywords={'key': key})
+          #print("RAMCacheManager.set", key, value is not None)
+      except Exception as e:
+        print("RAMCacheManager not available:", key, e)
+        pass
       return value

@@ -154,7 +154,6 @@ class RestApiController(object):
             self.ids = [x for x in self.path_to_handle if x != '++rest_api'] # remove ++rest_api as first element
             while self.ids:
                 id = self.ids[0]
-                print(id,context)
                 if id.startswith('uid:'):
                   context = context.getLinkObj('{$%s}'%id)
                 elif id not in context.getPhysicalPath():

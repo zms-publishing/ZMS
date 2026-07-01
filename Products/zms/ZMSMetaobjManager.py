@@ -508,7 +508,34 @@ class ZMSMetaobjManager(object):
       obj.clear_request_context(obj.REQUEST, prefix)
       return v
 
-
+    def __aq_metaobjs__(self, aqs=[]):
+      """
+      Resolve acquired meta-object entries from portal master.
+      """
+      aq_obs = {}
+      if not aqs: return aq_obs
+      unresolved = []
+      for aq in aqs:
+        subobjects = aq.get('subobjects')
+        ob = self.model.get(aq['id'])
+        if ob and not ob.get('acquired') == 1:
+          aq_ob = {'acquired': 1, 'subobjects': subobjects, **ob}
+          aq_obs[id] = aq_ob
+          if aq_ob.get('type') == 'ZMSPackage' and subobjects == 1:
+            package = aq_ob['id']
+            for sub_id, sub_ob in self.model.items():
+              if sub_ob.get('package') == package:
+                aq_sub_ob = {'acquired': 1, **sub_ob}
+                aq_obs[sub_id] = aq_sub_ob
+        else:
+          unresolved.append(aq)
+      if unresolved:
+        portalMaster = self.getPortalMaster()
+        if portalMaster:
+          # merge, portal master first to allow local override
+          aq_obs = {**portalMaster.metaobj_manager.__aq_metaobjs__(unresolved), **aq_obs}
+      return aq_obs
+    
     def __get_metaobjs__(self):
       """
       Return all meta-objects, including acquired entries from portal master.
@@ -523,36 +550,11 @@ class ZMSMetaobjManager(object):
       try: return self.fetchReqBuff(reqBuffId)
       except: pass
       # Get value.
-      obs = {}
-      m = self.model
-      aq_obs = None
-      for id in m:
-        ob = m[id]
-        # handle acquisition
-        if ob.get('acquired', 0) == 1:
-          acquired = 1
-          subobjects = ob.get('subobjects', 1)
-          if aq_obs is None:
-            portalMaster = self.getPortalMaster()
-            if portalMaster is not None:
-              aq_obs = portalMaster.metaobj_manager.__get_metaobjs__()
-          if aq_obs is not None:
-            if id in aq_obs:
-              ob = aq_obs[id].copy()
-            else:
-              ob = {'id':id,'type':'ZMSUnknown'}
-            ob['acquired'] = acquired
-            ob['subobjects'] = subobjects
-            obs[id] =  ob
-            if ob['type'] == 'ZMSPackage' and ob['subobjects'] == 1:
-              for aq_id in aq_obs:
-                ob = aq_obs[aq_id].copy()
-                if ob.get( 'package') == id:
-                  ob['acquired'] = 1
-                  obs[aq_id] =  ob
-        else:
-          obs[id] = ob
-      return self.storeReqBuff( reqBuffId, obs)
+      own_obs = {id: ob for id, ob in self.model.items() if not ob.get('acquired') == 1}
+      aq_obs = [ob for ob in self.model.values() if ob.get('acquired') == 1]
+      master_obs = self.__aq_metaobjs__(aq_obs)
+      total_obs = {**own_obs, **master_obs}
+      return self.storeReqBuff( reqBuffId, total_obs)
 
 
     def __get_metaobj__(self, id):
@@ -620,7 +622,7 @@ class ZMSMetaobjManager(object):
       if sort == True:
         ids = sorted(ids,key=lambda x:self.display_type(meta_id=x))
       elif sort == False:
-        ids = sorted(ids,key=lambda x:obs[x].get('name',x))
+        ids = sorted(ids,key=lambda x:obs.get(x, {}).get('name', x))
       return ids
 
 

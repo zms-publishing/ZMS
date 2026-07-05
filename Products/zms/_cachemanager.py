@@ -145,7 +145,7 @@ class ReqBuff(object):
       if not hasattr(buff, reqBuffId):
         # RAM cache is optional, so we ignore errors if it's not available.
         try:
-          if key in shared_cache_keys:
+          if key in shared_keys:
             cache = get_cache(self)
             if cache:
               cacheable = SharedCacheable(self)
@@ -182,7 +182,7 @@ class ReqBuff(object):
       set_buff(request, buff)
       # RAM cache is optional, so we ignore errors if it's not available.
       try:
-        if key in shared_cache_keys:
+        if key in shared_keys:
           cache = get_cache(self)
           if cache:
             cacheable = SharedCacheable(self)

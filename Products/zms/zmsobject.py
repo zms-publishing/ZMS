@@ -1003,7 +1003,7 @@ class ZMSObject(ZMSItem.ZMSItem,
             declId = self.getTitlealt( REQUEST)
             mapping = standard.dict_list(self.getConfProperty('ZMS.pathhandler.id_quote.mapping', ' _-_/_\'_'))
             declId = standard.id_quote( declId, mapping)
-          declId = standard.url_quote(declId)
+          declId = standard.url_quote(declId, safe='')
       except:
         standard.writeError(self, '[getDeclId]: can\'t get declarative id')
       if len( declId) == 0:

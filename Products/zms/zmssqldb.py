@@ -1037,6 +1037,9 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
               colType = 'text'
             else:
               colType = 'string'
+          elif colDescr.find('SET') >= 0:
+            colType = 'mysqlset'
+            colDescr = 'SET(%s)'%(','.join(list(column.type.values)))
           col = {}
           col['index'] = int(col.get('index', len(cols)))
           col["id"] = colName

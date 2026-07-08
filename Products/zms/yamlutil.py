@@ -93,6 +93,7 @@ def __cleanup(v):
         return err
     
     from ruamel.yaml.scalarstring import LiteralScalarString
+    from ruamel.yaml.scalarstring import DoubleQuotedScalarString
 
     if v:
         if isinstance(v, dict):
@@ -117,4 +118,11 @@ def __cleanup(v):
         # we need to convert it to a string before dumping. 
         elif hasattr(v, 'read') and callable(v.read):
             return str(v.read())
+        # <MyFile> objects have a meta_type attribute, but they don't have a read method.
+        elif hasattr(v, 'meta_type'):
+            try:
+                v = v.getData().decode() if hasattr(v, 'getData') else str(v)
+                v = DoubleQuotedScalarString(v)
+            except Exception:
+                return str(v)
     return v

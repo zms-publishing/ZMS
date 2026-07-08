@@ -1,5 +1,11 @@
+from Products.zms import standard
+
 def manage_test_perf_multisite( self):
   request = self.REQUEST
+  if request.get('shared_cache_id','') == 'shared_cache':
+      value = self.fetchSharedCache('ZMSMetaobjManager.__get_metaobjs__')
+      request.RESPONSE.setHeader('Content-Type','application/json; charset=utf-8')
+      return standard.str_json({'status':'ok','message':'Shared Cache is enabled.','value':value})
   prt = []
   prt.append('<!DOCTYPE html>')
   prt.append('<html lang="en">')
@@ -67,6 +73,9 @@ def manage_test_perf_multisite( self):
       <button id="stop-button" class="btn btn-secondary" disabled="disabled">
         <i class="fas fa-stop"></i>
       </button>
+      <a href="?shared_cache_id=shared_cache" target="_blank">
+        <i class="fas fa-sync"></i> Shared Cache Test
+      </a>
     </div>
   </div><!-- .form-group -->
   """)

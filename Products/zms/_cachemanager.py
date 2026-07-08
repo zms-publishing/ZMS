@@ -130,6 +130,21 @@ class ReqBuff(object):
       set_buff(request, buff)
 
 
+    def fetchSharedCache(self, key):
+      # RAM cache is optional, so we ignore errors if it's not available.
+      try:
+        if key in shared_keys:
+          cache = get_cache(self)
+          if cache:
+            cacheable = SharedCacheable(self)
+            # Note: keywords/view_name can be used for namespacing if needed.
+            return cache.ZCache_get(cacheable, view_name='shared', keywords={'key': key})
+      except Exception as e:
+        print("SharedCache not available:", key, e)
+        pass
+      return None
+
+
     def fetchReqBuff(self, key=None, REQUEST=None):
       """
       Fetch one buffered value from the current request (raises if missing).
@@ -144,21 +159,12 @@ class ReqBuff(object):
       buff = get_buff(request)
       if not hasattr(buff, reqBuffId):
         # RAM cache is optional, so we ignore errors if it's not available.
-        try:
-          if key in shared_keys:
-            cache = get_cache(self)
-            if cache:
-              cacheable = SharedCacheable(self)
-              # Note: keywords/view_name can be used for namespacing if needed.
-              value = cache.ZCache_get(cacheable, view_name='shared', keywords={'key': key})
-              if value:
-                  # Store the value in the request buffer for future access.
-                  setattr(buff, reqBuffId, value)
-                  set_buff(request, buff)
-                  return value
-        except Exception as e:
-          print("SharedCache not available:", key, e)
-          pass
+        value = self.fetchSharedCache(key)
+        if value:
+            # Store the value in the request buffer for future access.
+            setattr(buff, reqBuffId, value)
+            set_buff(request, buff)
+            return value
       return getattr(buff, reqBuffId)
 
 

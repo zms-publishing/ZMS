@@ -54,7 +54,7 @@ def manage_test_perf_multisite( self):
   <div class="form-group row">
     <label class="col-sm-2 control-label">URL</label>
     <div class="col-sm-10">
-      <input class="form-control" id="url" name="url" type="text" value="index_ger.html" />
+      <input class="form-control" id="url" name="url" type="text" value="manage_main" />
       <small class="form-text text-muted">manage_main / index_ger.html / etc.</small>
     </div>
   </div><!-- .form-group -->

@@ -1,0 +1,67 @@
+class:
+  id: infobox
+  type: ZMSObject
+  name: Infobox
+  package: com.zms.custom
+  revision: 0.0.1
+  enabled: 1
+  access:
+    delete_custom: ''
+    delete_deny: []
+    insert_custom: '{$}'
+    insert_deny: []
+  Attrs:
+    title:
+      id: title
+      type: string
+      name: Title
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      default: ''
+      keys: []
+    url:
+      id: url
+      type: url
+      name: Url
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      default: ''
+      keys: []
+    linktext:
+      id: linktext
+      type: string
+      name: Linktext
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      default: Read more...
+      keys: []
+    attr_dc_description:
+      id: attr_dc_description
+      type: text
+      name: Description
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      default: ''
+      keys: []
+    icon_clazz:
+      id: icon_clazz
+      type: constant
+      name: Icon Class
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      custom: fa fa-puzzle-piece
+      keys: []
+    standard_html:
+      id: standard_html
+      type: zpt
+      name: Standard-Template (ZPT)
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      default: ''
+      keys: []

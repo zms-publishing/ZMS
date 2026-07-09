@@ -15,18 +15,21 @@
 	<input type="hidden" name="id" value="manage_tab_search" />
 	<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
 	<input type="hidden" name="preview" tal:attributes="value python:request['preview']" />
+	<input type="hidden" id="zms_search_connector_base_url" name="zms_search_connector_base_url"
+		tal:on-error="string:<!-- ERROR: No search connector found -->"
+		tal:attributes="value python:here.getCatalogAdapter().absolute_url()" />
 	<legend style="overflow:hidden;">
 		<span tal:content="python:here.getZMILangStr('SEARCH_HEADER')">Search header</span>
-		<small style="font-weight:normal;float:inline-end;line-height: 1.2rem;text-align: end;" class="zmi-code text-muted">
+		<small class="zmi-code text-muted"
+			style="font-weight:normal;float:inline-end;line-height:1.2rem;text-align:end;cursor:help;" 
+			title="HINT: The search connector has to be configured with 'zms.search.connector.id' in the ZMS configuration. The contextual search-connector url can be overridden by another conf-property 'zms.search.connector.base_url'">
 			<tal:block tal:condition="python:len(here.getCatalogAdapter().get_connectors())>0">
-				<tal:block 
-					tal:define="
-						connectors python:here.getCatalogAdapter().get_connectors();
-						connectors_str python: ' | '.join([c.id for c in connectors])">
+				<tal:block tal:define="
+					connectors python:here.getCatalogAdapter().get_connectors();
+					connectors_str python: ' | '.join([c.id for c in connectors])">
 					<span tal:content="python: 'Avaliable Search Connectors: %s'%(connectors_str)"></span>
 					<span tal:condition="python:here.getConfProperty('zms.search.connector.id') not in [c.id for c in connectors]"
-						title="The search connector has to be configured with 'zms.search.connector.id' in the ZMS configuration."
-						class="text-danger" style="cursor:help;display:inline-block;">
+						class="text-danger" style="display:inline-block;">
 						Warning: No search connector configured with zms.search.connector.id (default = zcatalog_connector)
 					</span>
 				</tal:block>
@@ -47,7 +50,7 @@
 		</div><!-- .form-group -->
 
 		<div class="form-group row" tal:condition="python:here.getPortalMaster() is not None or len(here.getPortalClients())>0">
-			<div class="control-label col-md-12 pl-4" tal:define="home_id python:here.getHome().id">
+			<div class="control-label col-md-12 pl-4 text-right" tal:define="home_id python:here.getHome().id">
 				<input type="hidden" name="home_id" tal:attributes="value python:request.get('home_id',home_id); data-value home_id" />
 				<input type="checkbox" class="form-check-input" onchange="var $i=$('input[name=home_id]');$i.val(this.checked?$i.attr('data-value'):'');" tal:attributes="checked python:['','checked'][request.get('home_id',home_id)==home_id]" />
 				<label class="form-check-label control-label">

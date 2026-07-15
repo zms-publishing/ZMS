@@ -57,7 +57,7 @@
 						conf_inherited python:here.getConfProperties(inherited=True);
 						conf_keys python:[x for x in conf_inherited if not x.startswith('ZMS.workflow') and not x.startswith('ZMS.version') and not x=='ZMS.log' and not x.startswith('ZMS.security') and not x.startswith('zms.misc') and not x.startswith('ZMS.filter') and not x.startswith('ZMS.custom') and not x.startswith('Portal.') ];
 						dummy0 python:conf_keys.sort();
-						res python:here.getConfPropertiesDefaults();
+						res python:here.default_conf_properties;
 						res_keys python:[x['key'] for x in here.sort_list(res,'title','asc')]">
 					<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
 					<input type="hidden" name="key" value="Custom" />

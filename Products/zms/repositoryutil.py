@@ -234,8 +234,7 @@ def get_models_from_disk(self, basepath, deep=True):
                 traverse(base, filepath, level+1)
             elif not initialized \
                 and name.startswith('__') \
-                and name.split('.')[-2].endswith('__') \
-                and name.split('.')[-1] in ['py', 'yaml']:
+                and (name.endswith('__.py') or name.endswith('__.yaml')):
               filedata = read_file_from_disk(self, path, name)
               d = parse_modelfile(self, path, name, filedata)
               id = d.get('id', path.split(os.sep)[-1])

@@ -592,6 +592,7 @@ class AccessableContainer(AccessableObject):
       standard.writeLog(self, '[synchronizeUsersAccess]')
       root = self.getRootElement()
       userDefs = root.getConfProperty('ZMS.security.users', {})
+      affected_user_ids = set()
 
       def merge_unique(values, extra):
         rtn = list(values)
@@ -617,6 +618,7 @@ class AccessableContainer(AccessableObject):
           roles = [x for x in local_role[1] if x != 'Owner']
           if len(roles) == 0:
             continue
+          affected_user_ids.add(user_id)
           userDef = userDefs.get(user_id, {'nodes':{}})
           nodes = userDef.get('nodes', {})
           nodeDef = nodes.get(nodekey, {})
@@ -631,9 +633,10 @@ class AccessableContainer(AccessableObject):
 
       syncNode(self)
       root.setConfProperty('ZMS.security.users', userDefs)
-      for user_id in self.getSecurityUsers(acquired=True):
+      for user_id in affected_user_ids:
         self.toggleUserActive(user_id)
       self.synchronizeRolesAccess()
+      return affected_user_ids
 
     def grantPublicAccess(self):
       """Grant anonymous and authenticated public access for this container."""

@@ -587,6 +587,54 @@ class AccessableContainer(AccessableObject):
         permissions = standard.concat_list(permissions, role_permissions)
         self.manage_role(role_to_manage=role, permissions=permissions)
 
+    def synchronizeUsersAccess(self):
+      """Synchronize local user role assignments for this container."""
+      standard.writeLog(self, '[synchronizeUsersAccess]')
+      root = self.getRootElement()
+      userDefs = root.getConfProperty('ZMS.security.users', {})
+
+      def merge_unique(values, extra):
+        rtn = list(values)
+        for value in extra:
+          if value not in rtn:
+            rtn.append(value)
+        return rtn
+
+      def syncNode(ob):
+        if not hasattr(ob, 'get_local_roles'):
+          return
+        nodekey = root.getRefObjPath(ob)
+        langs = []
+        if hasattr(ob, 'getLangIds'):
+          try:
+            langs = list(ob.getLangIds())
+          except:
+            langs = []
+        if len(langs) == 0:
+          langs = list(self.getLangIds())
+        for local_role in ob.get_local_roles():
+          user_id = local_role[0]
+          roles = [x for x in local_role[1] if x != 'Owner']
+          if len(roles) == 0:
+            continue
+          userDef = userDefs.get(user_id, {'nodes':{}})
+          nodes = userDef.get('nodes', {})
+          nodeDef = nodes.get(nodekey, {})
+          nodeDef['home_id'] = ob.getHome().id
+          nodeDef['langs'] = nodeDef.get('langs', langs)
+          nodeDef['roles'] = merge_unique(nodeDef.get('roles', []), roles)
+          nodes[nodekey] = nodeDef
+          userDef['nodes'] = nodes
+          userDefs[user_id] = userDef
+        for subob in ob.objectValues(list(ob.dGlobalAttrs)):
+          syncNode(subob)
+
+      syncNode(self)
+      root.setConfProperty('ZMS.security.users', userDefs)
+      for user_id in self.getSecurityUsers(acquired=True):
+        self.toggleUserActive(user_id)
+      self.synchronizeRolesAccess()
+
     def grantPublicAccess(self):
       """Grant anonymous and authenticated public access for this container."""
       standard.writeLog(self, '[grantPublicAccess]')

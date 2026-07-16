@@ -4,7 +4,7 @@ ontology_collection:
   enabled: 1
   name: Ontology-Collection
   package: com.zms.catalog.opensearch
-  revision: 1.12.2
+  revision: 1.12.3
   type: ZMSObject
   Attrs:
     - id: title

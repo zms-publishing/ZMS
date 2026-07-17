@@ -93,7 +93,7 @@ def test_parse_struct_time():
 # ---------------------------------------------------------
 
 def test_cleanup_removes_empty_values():
-    assert yamlutil._yamlutil_cleanup({
+    assert yamlutil._cleanup({
         "a": "",
         "b": None,
         "c": [],
@@ -118,7 +118,7 @@ def test_cleanup_nested():
         ]
     }
 
-    cleaned = yamlutil._yamlutil_cleanup(data)
+    cleaned = yamlutil._cleanup(data)
     assert cleaned == {
         "a": {"y": 1},
         "b": [2]

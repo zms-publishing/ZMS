@@ -10,7 +10,7 @@ from Products.zms import yamlutil
 # ---------------------------------------------------------
 
 def test_load_yaml_success():
-    with patch("yamlutil._load_yaml.__globals__['ruamel']") as ruamel:
+    with patch("Products.zms.yamlutil._load_yaml.__globals__['ruamel']") as ruamel:
         YAML = MagicMock()
         ruamel.yaml = MagicMock(YAML=YAML)
         result, err = yamlutil._load_yaml()
@@ -19,7 +19,7 @@ def test_load_yaml_success():
 
 
 def test_load_yaml_import_error():
-    with patch("ruamel.yaml", side_effect=ImportError):
+    with patch("Products.zms.yamlutil.ruamel.yaml", side_effect=ImportError):
         result, err = yamlutil._load_yaml()
         assert result is None
         assert err == yamlutil.IMPORT_ERROR_MSG
@@ -30,7 +30,7 @@ def test_load_yaml_import_error():
 # ---------------------------------------------------------
 
 def test_dump_import_error():
-    with patch("yamlutil._load_yaml", return_value=(None, yamlutil.IMPORT_ERROR_MSG)):
+    with patch("Products.zms.yamlutil._load_yaml", return_value=(None, yamlutil.IMPORT_ERROR_MSG)):
         assert yamlutil.dump({"a": 1}) == yamlutil.IMPORT_ERROR_MSG
 
 
@@ -39,7 +39,7 @@ def test_dump_struct_time_serialization():
     yaml_instance = MagicMock()
     YAML.return_value = yaml_instance
 
-    with patch("yamlutil._load_yaml", return_value=(YAML, None)):
+    with patch("Products.zms.yamlutil._load_yaml", return_value=(YAML, None)):
         stream = MagicMock()
         yaml_instance.dump = MagicMock()
 
@@ -60,7 +60,7 @@ def test_dump_error_during_serialization():
 
     yaml_instance.dump.side_effect = Exception("boom")
 
-    with patch("yamlutil._load_yaml", return_value=(YAML, None)):
+    with patch("Products.zms.yamlutil._load_yaml", return_value=(YAML, None)):
         result = yamlutil.dump({"a": 1})
         assert "Error during YAML serialization" in result
 
@@ -70,7 +70,7 @@ def test_dump_error_during_serialization():
 # ---------------------------------------------------------
 
 def test_parse_import_error():
-    with patch("yamlutil._load_yaml", return_value=(None, yamlutil.IMPORT_ERROR_MSG)):
+    with patch("Products.zms.yamlutil._load_yaml", return_value=(None, yamlutil.IMPORT_ERROR_MSG)):
         assert yamlutil.parse("a: 1") == yamlutil.IMPORT_ERROR_MSG
 
 
@@ -81,7 +81,7 @@ def test_parse_struct_time():
 
     yaml_instance.load.return_value = {"t": "dummy"}
 
-    with patch("yamlutil._load_yaml", return_value=(YAML, None)):
+    with patch("Products.zms.yamlutil._load_yaml", return_value=(YAML, None)):
         result = yamlutil.parse("t: !struct_time 2024-01-01 12:00:00")
         yaml_instance.constructor.add_constructor.assert_called()
         assert yaml_instance.load.called

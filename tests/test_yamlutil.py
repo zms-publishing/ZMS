@@ -10,16 +10,17 @@ from Products.zms import yamlutil
 # ---------------------------------------------------------
 
 def test_load_yaml_success():
-    with patch("Products.zms.yamlutil._load_yaml.__globals__['ruamel']") as ruamel:
-        YAML = MagicMock()
-        ruamel.yaml = MagicMock(YAML=YAML)
+    YAML = MagicMock()
+    mock_ruamel_yaml = MagicMock(YAML=YAML)
+    
+    with patch.dict('sys.modules', {'ruamel.yaml': mock_ruamel_yaml}):
         result, err = yamlutil._load_yaml()
         assert result is YAML
         assert err is None
 
 
 def test_load_yaml_import_error():
-    with patch("Products.zms.yamlutil.ruamel.yaml", side_effect=ImportError):
+    with patch.dict('sys.modules', {'ruamel.yaml': None}):
         result, err = yamlutil._load_yaml()
         assert result is None
         assert err == yamlutil.IMPORT_ERROR_MSG

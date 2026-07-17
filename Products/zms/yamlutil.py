@@ -118,7 +118,7 @@ def _cleanup(v):
         # we need to convert it to a string before dumping. 
         elif hasattr(v, 'read') and callable(v.read):
             return str(v.read())
-        # <MyFile> objects have a meta_type attribute, but they don't have a read method.
+        # If v is a <MyFile> object with a getData method.
         elif hasattr(v, "getData") and callable(v.getData):
             data = v.getData()
             if isinstance(data, (bytes, bytearray)):

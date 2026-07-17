@@ -119,10 +119,15 @@ def __cleanup(v):
         elif hasattr(v, 'read') and callable(v.read):
             return str(v.read())
         # <MyFile> objects have a meta_type attribute, but they don't have a read method.
-        elif hasattr(v, 'meta_type'):
-            try:
-                v = v.getData().decode() if hasattr(v, 'getData') else str(v)
-                v = DoubleQuotedScalarString(v)
-            except Exception:
-                return str(v)
+        elif hasattr(v, "getData") and callable(v.getData):
+            data = v.getData()
+
+            if isinstance(data, (bytes, bytearray)):
+                v = data.decode(errors="replace")
+            else:
+                v = str(data)
+        else:
+            v = str(v)
+
+        v = DoubleQuotedScalarString(v)
     return v

@@ -1,6 +1,7 @@
 // Hint: To be cached by the browser in sessionStorage
 ZMI.prototype.multiselect = function(context) {
 	let multiselect_index = 0;
+	let title_remove = getZMILangStr('BTN_DELETE');
 	$("select.zmi-select[multiple]:not(.d-none)",context).each(function() {
 		multiselect_index++;
 		var refreshContainer = function($container) {
@@ -31,7 +32,7 @@ ZMI.prototype.multiselect = function(context) {
 		var html = `
 			<div class="zmi-select-container form-inline">
 				<div class="${$select.attr('class').replace('form-control','')}"></div>
-				<div class="btn-group btn-group-sortable mt-2">
+				<div class="btn-group btn-group-sortable mt-1" role="group">
 					<button type="button" ${$select_disabled} 
 						class="btn btn-secondary dropdown-toggle" 
 						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -76,9 +77,9 @@ ZMI.prototype.multiselect = function(context) {
 			$(this).addClass("d-none");
 			var data_value = $(this).attr('data-value');
 			if ( $select_disabled ) {
-				$container.append(`<div class="btn bg-light mt-2" disabled="disabled">${$(this).text()}</div>`);
+				$container.append(`<div class="btn bg-light mt-1 mr-1 pl-1" disabled="disabled" style="cursor:default">${$(this).text()}</div>`);
 			} else {
-				$container.append(`<div class="btn btn-light mt-2" data-value="${data_value}"><a href="javascript:;"><i class="fas fa-times"></i></a> ${$(this).text()}</div>`);
+				$container.append(`<div class="btn btn-light mt-1 mr-1 pl-1" disabled="disabled" style="cursor:default" data-value="${data_value}"><a href="javascript:;"><i class="fas fa-times mx-2" title="${title_remove}"></i></a> ${$(this).text()}</div>`);
 			};
 			$(".btn a:last",$container).click(function() {
 				var $parent = $(this).parent();

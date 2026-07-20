@@ -597,7 +597,7 @@ def get_init_yaml(self, o):
   d = {}
   for k in keys:
     v = o.get(k)
-    nv = yamlutil.__cleanup(v)
+    nv = yamlutil._cleanup(v)
     if nv:
       d[k] = nv
     elif nv in ['0', 0, False]:
@@ -607,7 +607,7 @@ def get_init_yaml(self, o):
     nl = []
     l = o.get(k)
     for i in l:
-      ni = yamlutil.__cleanup(i)
+      ni = yamlutil._cleanup(i)
       if ni:
         if type(ni) is dict:
           # Remove 'ob' from attribute dict (Acquisition-Wrappers are not serializable).

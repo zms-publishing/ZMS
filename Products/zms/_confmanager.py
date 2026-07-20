@@ -630,23 +630,6 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
 
 
 
-    def getReqProperty(self, key, default=None, REQUEST=None):
-      """
-      Returns property from request (used to get zope-request-properties,
-      e.g. SERVER_URL oder AUTHENTICATED_USER).
-      
-      @param key: The key.
-      @type key: C{string}
-      @param default: The default-value.
-      @type default: C{any}
-      @rtype: C{any}
-      """
-      authorized = REQUEST['AUTHENTICATED_USER'].has_role('Authenticated')
-      if not authorized:
-        raise zExceptions.Unauthorized
-      return REQUEST.get(key, default)
-
-
     def get_conf_property(self, *args, **kwargs):
       """
       Return a configuration value, resolving local and inherited defaults.

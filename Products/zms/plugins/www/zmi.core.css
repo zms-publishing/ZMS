@@ -365,7 +365,6 @@ footer .back-to-top.hide {
 	padding:.6rem 0 0 0;
 }
 .zmi nav[role="navigation"] ul.nav.nav-tabs {
-	min-width:1600px;
 	width:100vw;
 	white-space:nowrap;
 }
@@ -2160,6 +2159,9 @@ body.browse_iframe .toggle {
 }
 .zmi .form-horizontal label.control-label span {
 	white-space:nowrap;
+}
+.zmi .form-horizontal .zmi-select-container.form-inline .zmi-select .btn.btn-light > a:hover:has(i.fa-times) {
+	color:#dc3545
 }
 .zmi .form-horizontal .zmi-select-container.form-inline .zmi-select > .btn:last-child {
 	margin-right:0.25rem;

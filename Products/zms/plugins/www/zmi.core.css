@@ -365,7 +365,6 @@ footer .back-to-top.hide {
 	padding:.6rem 0 0 0;
 }
 .zmi nav[role="navigation"] ul.nav.nav-tabs {
-	min-width:1600px;
 	width:100vw;
 	white-space:nowrap;
 }

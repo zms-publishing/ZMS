@@ -2,7 +2,7 @@ body.zmi,
 body.zmi .dropdown-menu,
 body.zmi .btn,
 body.zmi .form-control {
-	font-family: "Helvetica Neue",Arial,sans-serif;
+	font-family: "Helvetica Neue",Arial,sans-serif,"Microsoft YaHei UI";
 	font-size: .867rem !important;
 }
 
@@ -1774,7 +1774,7 @@ table.table-sm td.meta-displaycol {
 }
 table.table-sm td:not(.zmi-datatype-action) .form-control {
 	font-size: .8rem !important;
-	font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+	font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace,"Microsoft YaHei UI";
 }
 table.table-sm tr.row_metadata td, 
 table.table-sm tr.row_insert td {

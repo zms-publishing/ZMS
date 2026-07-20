@@ -76,10 +76,21 @@ ZMI.prototype.multiselect = function(context) {
 		$("a.dropdown-item",$dropdown).click(function() {
 			$(this).addClass("d-none");
 			var data_value = $(this).attr('data-value');
+			var item_text = $(this).text();
 			if ( $select_disabled ) {
-				$container.append(`<div class="btn bg-light mt-1 mr-1 pl-1" disabled="disabled" style="cursor:default">${$(this).text()}</div>`);
+				var $itemDisabled = $('<div class="btn bg-light mt-1 mr-1 pl-1" disabled="disabled" style="cursor:default"></div>');
+				$itemDisabled.text(item_text);
+				$container.append($itemDisabled);
 			} else {
-				$container.append(`<div class="btn btn-light mt-1 mr-1 pl-1" disabled="disabled" style="cursor:default" data-value="${data_value}"><a href="javascript:;"><i class="fas fa-times mx-2" title="${title_remove}"></i></a> ${$(this).text()}</div>`);
+				var $item = $('<div class="btn btn-light mt-1 mr-1 pl-1" disabled="disabled" style="cursor:default"></div>');
+				$item.attr('data-value', data_value);
+				var $removeLink = $('<a href="javascript:;"></a>');
+				var $removeIcon = $('<i class="fas fa-times mx-2"></i>');
+				$removeIcon.attr('title', title_remove);
+				$removeLink.append($removeIcon);
+				$item.append($removeLink);
+				$item.append(document.createTextNode(' ' + item_text));
+				$container.append($item);
 			};
 			$(".btn a:last",$container).click(function() {
 				var $parent = $(this).parent();

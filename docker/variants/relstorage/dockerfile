@@ -16,8 +16,8 @@ RUN apt-get install -y postgresql-client
 EXPOSE 8080
 
 # Set environment variables
-ENV ZOPE_VERSION=6.0
-ENV ZMS_BRANCH=zms6
+ENV ZOPE_VERSION=6.1
+ENV ZMS_BRANCH=main
 # ENV ZMS_BRANCH=main
 ENV VIRTUAL_ENV=/home/zope/venv
 ENV SHELL=/bin/bash
@@ -36,7 +36,7 @@ RUN python3 -m venv venv
 RUN pip install -U pip wheel setuptools
 RUN pip install Zope[wsgi]==$ZOPE_VERSION -c https://zopefoundation.github.io/Zope/releases/$ZOPE_VERSION/constraints.txt
 RUN pip install -r https://raw.githubusercontent.com/zms-publishing/ZMS/main/requirements.txt
-RUN pip install --config-settings editable_mode=compat --no-deps -e git+https://github.com/zms-publishing/ZMS.git@$ZMS_BRANCH#egg=Products.zms
+RUN pip install --config-settings editable_mode=compat --no-deps -e "ZMS @ git+https://github.com/zms-publishing/ZMS.git@${ZMS_BRANCH}"
 RUN pip install RelStorage psycopg2-binary lxml opensearch-py
 
 # Create Zope Instance

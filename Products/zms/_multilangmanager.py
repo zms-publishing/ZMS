@@ -297,6 +297,8 @@ class MultiLanguageManager(object):
 
     def getLanguageLabel(self, id):
       """Return the configured display label for the given language id."""
+      if id == '*':
+        return self.getZMILangStr('ATTR_ALL').capitalize()
       return self.getLang(id).get('label', id)
 
     def getParentLanguages(self, id):

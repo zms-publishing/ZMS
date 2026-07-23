@@ -8,14 +8,16 @@
 	<tal:block 
 		tal:repeat="hit hits"
 		tal:condition="hits" 
-		><article class="collection_item" tal:define="
-			title python:hit['_source']['title']; 
-			description python:hit['_source']['attr_dc_description'];
-			zms_data_id python:'{$%s}'%(hit['_source']['uid']);
-			zms_obj python:zmscontext.getLinkObj(zms_data_id);
-			titleimage_url python:zms_obj.attr('titleimage') and zms_obj.attr('titleimage').getHref(request) or '';
-			title python:zms_obj.attr('seotitle_tag') or title;
-			description python:zms_obj.attr('seometa_tag') or description"
+		><article class="collection_item" 
+			tal:on-error="structure python:'<!-- ERROR: ZMS Object not found for uid %s -->'%hit['_source']['uid']"
+			tal:define="
+				title python:hit['_source']['title']; 
+				description python:hit['_source']['attr_dc_description'];
+				zms_data_id python:'{$%s}'%(hit['_source']['uid']);
+				zms_obj python:zmscontext.getLinkObj(zms_data_id);
+				titleimage_url python:zms_obj.attr('titleimage') and zms_obj.attr('titleimage').getHref(request) or '';
+				title python:zms_obj.attr('seotitle_tag') or title;
+				description python:zms_obj.attr('seometa_tag') or description"
 			tal:attributes="data-index python:repeat['hit'].index"
 			tal:on-error="string:ERROR: ontology_collection.standard_html"
 			><img src="#" tal:condition="titleimage_url" tal:attributes="src titleimage_url" />

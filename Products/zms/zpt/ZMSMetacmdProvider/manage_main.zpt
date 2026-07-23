@@ -202,9 +202,7 @@
 			</div><!-- .form-group -->
 			<label class="col-12 control-label text-left"><span tal:content="python:here.getZMILangStr('OR').lower()">Or</span></label>
 			<div class="form-group col-12 mt-2">
-				<select id="init" name="init" multiple="multiple" class="form-control"
-					onfocus="zmiExpandConfFiles(this,'.metacmd.');$(this).addClass('expand');"
-					onmouseover="zmiExpandConfFiles(this,'.metacmd.')">
+				<select id="init" name="init" multiple="multiple" class="form-control">
 					<option value="">--- <tal:block tal:content="python:here.getZMILangStr('BTN_INIT')">Init</tal:block>... ---</option>
 				</select>
 				<style>
@@ -265,7 +263,7 @@
 				</div><!-- .btn-group -->
 				<div class="btn-group packaging mr-1">
 					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_ACQUIRE')+'...'" onclick="$ZMI.iframe('manage_main_acquire',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')});return false" tal:condition="python:here.getPortalMaster() is not None"><i class="fas fa-share fa-flip-vertical"></i></button>
-					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).attr('title')});return false"><i class="fas fa-upload"></i></button>
+					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiOpenImportConfModal(this);return false"><i class="fas fa-upload"></i></button>
 					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this);return false"><i class="fas fa-download"></i></button>
 				</div><!-- .btn-group -->
 			</th>
@@ -420,6 +418,19 @@ function zmiDeleteObjBtnClick(sender,d) {
 			.append(html)
 			.submit();
 	}
+}
+
+/**
+ * Open import modal and expand configuration selector immediately.
+ */
+function zmiOpenImportConfModal(sender) {
+	zmiModal('#importConf',{title:$(sender).attr('title')});
+	setTimeout(function() {
+		let $init = $('#zmiModalimportConf.modal #init');
+		zmiExpandConfFiles($init.get(0),'.metacmd.');
+		$init.addClass('expand');
+		$('option[value=""]', $init).remove();
+	}, 300);
 }
 
 $(function(){

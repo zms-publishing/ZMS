@@ -689,3 +689,8 @@ def manage_addZMSLLMConnector(self, REQUEST, RESPONSE=None):
     self._setObject(id, connector)
     if RESPONSE is not None:
         return RESPONSE.redirect('%s/manage_main' % self.absolute_url())
+
+
+def containerFilter(container):
+    """Allow adding the connector only within ZMS containers."""
+    return getattr(container, 'meta_type', '').startswith('ZMS')

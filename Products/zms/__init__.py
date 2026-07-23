@@ -194,6 +194,7 @@ def initialize(context):
             ZMSLLMConnector.ZMSLLMConnector,
             permission = 'Add ZMSs',
             constructors = (ZMSLLMConnector.manage_addZMSLLMConnector, ZMSLLMConnector.manage_addZMSLLMConnector),
+            container_filter = ZMSLLMConnector.containerFilter,
             )
         
         # register deprecated classes

@@ -4,7 +4,7 @@ ZMSObjectSet:
   enabled: 0
   name: ZMSObjectSet
   package: com.zms.foundation
-  revision: 5.0.1
+  revision: 5.0.2
   type: ZMSObject
   Attrs:
     - id: icon_clazz
@@ -50,38 +50,36 @@ ZMSObjectSet:
       default: |-
         <!-- effective_standard_html(default) -->
 
-        <tal:block tal:define="zmscontext context">
-
         <script src="/++resource++zms_/jquery/plugin/jquery.plugin.zmi_highlight.js"></script>
         <script>
+        //<![CDATA[
         $(function() {
         	var applyListFilter = function() {
-        			var filter = $('input.filter').val().toLowerCase().trim();
-        			var v = filter;
-        			var regexp = new RegExp('<span class="highlight(.*?)">(.*?)</span>', "gi");
-        			$(".card .card-header.matched").removeClass("matched").each(function() {
-        					var html = $(this).html();
-        					html = html.replace(regexp,'$2');
-        					$(this).html(html);
-        				});
-        			if (v.length>0) {
-        				$(".card .card-header a").each(function() {
-        						if ($(this).text().toLowerCase().indexOf(v)>=0) {
-        							htmlReplace($(this),'('+v+')','<span class="highlight">$1</span>');
-        							$(this).parent(".card-header").addClass("matched");
-        						}
-        					});
+        		var filter = $('input.filter').val().toLowerCase().trim();
+        		var v = filter;
+        		var regexp = new RegExp('<span class="highlight(.*?)">(.*?)</span>', "gi");
+        		$(".card .card-header.matched").removeClass("matched").each(function() {
+        			var html = $(this).html();
+        			html = html.replace(regexp,'$2');
+        			$(this).html(html);
+        		});
+        		if (v.length>0) {
+        			$(".card .card-header a").each(function() {
+        				if ($(this).text().toLowerCase().indexOf(v)>=0) {
+        					htmlReplace($(this),'('+v+')','<span class="highlight">$1</span>');
+        					$(this).parent(".card-header").addClass("matched");
+        				}
+        			});
+        		}
+        		$(".card").each(function() {
+        			if ($(this).text().toLowerCase().indexOf(v)>=0) {
+        				$(this).show();
+        			} else {
+        				$(this).hide();
         			}
-        			$(".card").each(function() {
-        					if ($(this).text().toLowerCase().indexOf(v)>=0) {
-        						$(this).show();
-        					}
-        					else {
-        						$(this).hide();
-        					}
-        				});
-        			$(window).trigger('resize');
-        		};
+        		});
+        		$(window).trigger('resize');
+        	};
         	var t = null;
         	$('input.filter').focus().keyup(function(e) {
         		var that = this;
@@ -91,14 +89,21 @@ ZMSObjectSet:
         		t = setTimeout(applyListFilter, 500);
         	});
         });
+        //]]>
         </script>
 
+        <tal:block tal:define="
+        	zmscontext context;
+        	recordSet python:zmscontext.getSelf().evalMetaobjAttr('recordSet_Prepare')">
         	<form class="form-filter" method="get" tal:attributes="action request/URL">
         		<div class="row">
         			<div class="col-md-12">
         				<div class="input-group">
         					<div class="input-group-prepend">
-        						<span class="input-group-text"><i class="fas fa-filter"></i> <span class="badge badge-pill badge-info">0</span></span>
+        						<span class="input-group-text">
+        							<i class="fas fa-filter"></i>
+        							<span id="record-count" class="badge badge-pill badge-info" tal:content="python:len(list(recordSet))">0</span>
+        						</span>
         					</div>
         					<input type="text" class="form-control filter" name="search" placeholder="Filter"/>
         				</div><!-- .input-group -->
@@ -106,9 +111,9 @@ ZMSObjectSet:
         		</div><!-- .row -->
         	</form>
 
-        	<div class="ZMSObjectSet accordion" tal:define="recordSet python:zmscontext.getSelf().evalMetaobjAttr('recordSet_Prepare')">
+        	<div class="ZMSObjectSet accordion">
         		<div class="card" tal:repeat="record recordSet">
-        			<h3 class="card-header" tal:define="childNode python:zmscontext.operator_getattr(zmscontext,record['__id__'])">
+        			<h3 class="card-header" style="font-size: 1.25rem;" tal:define="childNode python:zmscontext.operator_getattr(zmscontext,record['__id__'])">
         				<a tal:attributes="href python:childNode.getHref2IndexHtml(request,deep=False); class python:childNode.meta_id;" tal:content="python:childNode.getTitle(request)">
         					the title
         				</a>

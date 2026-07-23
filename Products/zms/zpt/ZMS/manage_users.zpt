@@ -73,7 +73,6 @@
 ><!DOCTYPE html>
 <html lang="en" tal:define="standard modules/Products.zms/standard">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
-<!-- body tal:attributes="class python:' '.join(['zmi zms',request['lang'],'users config',here.meta_id])" -->
 <body tal:attributes="class python:here.zmi_body_class(id='users config')">
 
 <header tal:replace="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</header>
@@ -132,10 +131,13 @@ function zmiModalInsertUserOpen(context) {
 <tal:block tal:define="
 	userFolder python:here.getUserFolder();
 	userAdderPlugin python:here.getUserAdderPlugin();
-	userDefs python:here.getSecurityUsers(request.get('show_acquired',False));
+	show_acquired python:request.get('show_acquired', False);
+	refresh_client_assignments python:request.get('btn', '')=='btn-refresh_client_assignments';
+	refresh_client_assignments_result python:refresh_client_assignments and here.getRootElement().refreshClientAssignments() or None;
+	userDefs python:here.getSecurityUsers(show_acquired);
 	roleDefs python:here.getSecurityRoles();
 	userNames python:here.sort_list(list(userDefs));
-	langs_optpl python:[[x,here.getLanguageLabel(x)] for x in here.getLanguages(request)];
+	langs_optpl python:[['*',here.getLanguageLabel('*')]]+[[x,here.getLanguageLabel(x)] for x in here.getLanguages(request)];
 	roles_optpl python:[(x,here.getRoleName(x)) for x in ['ZMSAdministrator','ZMSEditor','ZMSAuthor','ZMSSubscriber','ZMSUserAdministrator']+list(roleDefs)]">
 
 <div class="d-none">
@@ -179,7 +181,7 @@ function zmiModalInsertUserOpen(context) {
 			<input tal:condition="python:not multilang" type="hidden" name="langs:list" tal:attributes="value python:here.getLangIds()[0]">
 			<div tal:condition="python:multilang" class="form-group row">
 				<label for="langs" class="col-sm-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_LANGS')">Languages</span></label>
-				<div class="col-sm-10" tal:content="structure python:here.zmi_input_multiselect(here,name='langs',value=[],lang_str='ATTR_LANGS',options=langs_optpl)">the control</div><!-- .col-sm-10 -->
+				<div class="col-sm-10" tal:content="structure python:here.zmi_input_multiselect(here,name='langs',value=['*'],lang_str='ATTR_LANGS',options=langs_optpl)">the control</div><!-- .col-sm-10 -->
 			</div>
 			<div class="form-group row">
 				<label for="roles" class="col-sm-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ROLES')">Roles</span></label>
@@ -478,7 +480,8 @@ function zmiModalInsertUserOpen(context) {
 					<button type="button" class="btn btn-secondary btn-users_delete" onclick="zmiDeleteObjBtnClick(this,{btn:'BTN_DELETE',key:'obj'})" title="Delete Selected User Profiles"><i class="fas fa-times"></i></button>
 				</div>
 				<div class="btn-group maintainance mr-1">
-					<a class="btn btn-secondary btn-users_acquired" tal:attributes="href python:'?lang=%s&show_acquired:boolean=%s'%(request['lang'],str(not request.get('show_acquired',False))); title python:'show acquired'; class python:'btn '+['btn-secondary','btn-success'][request.get('show_acquired')==True]" tal:condition="python:here.getPortalMaster() is not None"><i class="fas fa-share"></i></a>
+					<a title="Refresh User Assignments to ZMS-Clients" tal:condition="python:here.getPortalMaster() is None" class="btn btn-secondary btn-refresh_client_assignments" tal:attributes="href python:'?lang=%s&btn=btn-refresh_client_assignments'%request['lang']" tal:condition="python:here.getPortalMaster() is None"><i class="fas fa-home"></i></a>
+					<a title="Show acquired users" tal:condition="python:here.getPortalMaster() is not None" class="btn btn-secondary btn-users_acquired" tal:attributes="href python:'?lang=%s&show_acquired:boolean=%s'%(request['lang'],str(not show_acquired)); class python:'btn btn-users_acquired '+['btn-secondary','btn-success'][show_acquired]"><i class="fas fa-share"></i></a>
 					<a class="btn btn-secondary btn-users_sitemap" tal:attributes="href python:'manage_users_sitemap?lang=%s'%request['lang']; title python:here.getZMILangStr('TAB_SITEMAP')"><i class="fas fa-sitemap fa-rotate-90"></i></a>
 					<a class="btn btn-secondary btn-users_filtered" tal:attributes="href python:'?lang=%s&show_filter:boolean=%s'%(request['lang'],str(not request.get('show_filter',False))); class python:'btn '+['btn-secondary','btn-success'][request.get('show_filter')==True]" title="Filter Invalid User Profiles"><i class="fas fa-filter"></i></a>
 					<!--! <a class="btn btn-secondary btn-users_purge alert-danger" tal:condition="python:request['AUTHENTICATED_USER'].has_role('Manager')" tal:attributes="href python:'?lang=%s&btn=Purge'%request['lang']" title="Purge Local Roles (WARNING: Using this function deletes the local roles of users who no longer exist. Click only if you are aware of the consequences.)"><i class="fas fa-eraser"></i></a> -->
@@ -493,7 +496,7 @@ function zmiModalInsertUserOpen(context) {
 		</tr>
 	</thead>
 	<tbody tal:define="
-		securityUsers python:here.getSecurityUsers(request.get('show_acquired',False));
+		securityUsers python:here.getSecurityUsers(show_acquired);
 		userNames python:[x for x in userNames if not securityUsers[x].get('nodes',{})] if request.get('show_filter',False) else userNames;">		
 	<tr tal:repeat="userName userNames" tal:attributes="id userName" class="userName">
 		<td tal:define="
@@ -622,6 +625,7 @@ function zmiModalInsertUserOpen(context) {
 <footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 
 <script>
+//<!--
 	function zmiDeleteObjBtnClick(sender,d) {
 		if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
 			zmiFormSubmit(sender,d);
@@ -709,6 +713,13 @@ function zmiModalInsertUserOpen(context) {
 			return looper;
 		}));
 	}
+
+	$(function() {
+		$('.btn-users_acquired, .btn-refresh_client_assignments').on('click',function() {
+			$(this).html('<i class="fas fa-spinner fa-spin"></i>')
+		})
+	});
+//-->
 </script>
 
 </body>

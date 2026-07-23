@@ -51,7 +51,7 @@ def dump(data):
     yaml.indent(mapping=2, sequence=4, offset=2)
     stream = io.StringIO()
     try:
-        yaml.dump(__cleanup(data), stream)
+        yaml.dump(_cleanup(data), stream)
     except Exception as e:
         return f"Error during YAML serialization: {str(e)}"
     return stream.getvalue()
@@ -79,7 +79,7 @@ def parse(data):
     return yaml.load(data)
 
 
-def __cleanup(v):
+def _cleanup(v):
     """
     Recursively cleans up a dictionary by removing keys with falsy values.
     @param v: Input value, typically a dictionary, list, or scalar.
@@ -93,12 +93,13 @@ def __cleanup(v):
         return err
     
     from ruamel.yaml.scalarstring import LiteralScalarString
+    from ruamel.yaml.scalarstring import DoubleQuotedScalarString
 
     if v:
         if isinstance(v, dict):
             nd = {}
             for k in list(v.keys()):
-                nv = __cleanup(v[k])
+                nv = _cleanup(v[k])
                 if nv:
                     nd[k] = nv
                 elif nv in ['0', 0, False]:
@@ -107,7 +108,7 @@ def __cleanup(v):
         elif isinstance(v, list):
             nl = []
             for i in v:
-                nv = __cleanup(i)
+                nv = _cleanup(i)
                 if nv:
                     nl.append(nv)
             return nl
@@ -117,4 +118,13 @@ def __cleanup(v):
         # we need to convert it to a string before dumping. 
         elif hasattr(v, 'read') and callable(v.read):
             return str(v.read())
+        # If v is a <MyFile> object with a getData method.
+        elif hasattr(v, "getData") and callable(v.getData):
+            data = v.getData()
+            if isinstance(data, (bytes, bytearray)):
+                v = data.decode(errors="replace")
+            else:
+                v = str(data)
+            v = DoubleQuotedScalarString(v)
+
     return v

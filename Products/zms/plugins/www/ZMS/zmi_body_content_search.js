@@ -136,8 +136,8 @@ function zmiBodyContentSearch(q,pageSize,pageIndex,connectorId) {
 	let adapter = $ZMI.getConfProperty('zms.search.adapter.id','zcatalog_adapter');
 	let connector = $ZMI.getConfProperty('zms.search.connector.id','zcatalog_connector');
 	// Check for connector base-url override
-	let connector_base_url = $ZMI.getConfProperty('zms.search.connector.base_url','');
-	if (connector_base_url.length > 0) {
+	let connector_base_url = $ZMI.getConfProperty('zms.search.connector.base_url') || $('#zms_search_connector_base_url').val();
+	if (connector_base_url!==undefined && String(connector_base_url).length > 0) {
 		base_url = connector_base_url;
 	}
 	let url = base_url+'/'+adapter+'/'+connector+'/search_json';

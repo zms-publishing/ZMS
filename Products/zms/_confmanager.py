@@ -630,42 +630,6 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
 
 
 
-    def getReqProperty(self, key, default=None, REQUEST=None):
-      """
-      Returns property from request (used to get zope-request-properties,
-      e.g. SERVER_URL oder AUTHENTICATED_USER).
-      
-      @param key: The key.
-      @type key: C{string}
-      @param default: The default-value.
-      @type default: C{any}
-      @rtype: C{any}
-      """
-      authorized = REQUEST['AUTHENTICATED_USER'].has_role('Authenticated')
-      if not authorized:
-        raise zExceptions.Unauthorized
-      return REQUEST.get(key, default)
-
-
-    def __aq_conf__(self, deep=0):
-        if deep == 0:
-            reqBuffId = 'CacheManager.__aq_conf__'
-            try: return self.fetchReqBuff(reqBuffId)
-            except: pass
-        aq_conf = self.get_conf_properties()
-        portalMaster = self.getPortalMaster()
-        if portalMaster:
-            # merge, portal master first to allow local override
-            master_conf = {k:v for k,v in portalMaster.__aq_conf__(deep+1).items() \
-                if not k in UNINHERITED_PROPERTIES \
-                  and not k[:k.find('.')] in UNINHERITED_PROPERTIES \
-                  and not k in ['UniBE.Alias', 'UniBE.Server']}
-            aq_conf = {**master_conf, **aq_conf}
-        if deep == 0:
-          return self.storeReqBuff( reqBuffId, aq_conf)
-        return aq_conf
-
-
     def get_conf_property(self, *args, **kwargs):
       """
       Return a configuration value, resolving local and inherited defaults.

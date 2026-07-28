@@ -7,7 +7,7 @@ manage_addClient:
     - ZMS
   name: ZMS-Client...
   nodes: '{$}'
-  revision: 5.0.2
+  revision: 6.0.0
   roles:
     - ZMSAdministrator
   stereotype: insert

@@ -35,10 +35,20 @@ def manage_addClient(self):
 		home.manage_addFolder(id=request['id'],title=request['title'])
 		folder_inst = getattr(home,request['id'])
 		request.set('lang_label',self.getLanguageLabel(request['lang']))
-		zms_inst = self.initZMS(folder_inst, 'content', request['titlealt'], request['title'], request['lang'], self.get_manage_lang(), request)
+		zms_inst = self.initZMS(
+						folder_inst, 
+						'content', 
+						request['titlealt'], 
+						request['title'], 
+						request['lang'], 
+						self.get_manage_lang(), 
+						request,
+						minimal_init=True
+						)
 		zms_inst.synchronizePublicAccess()
+		# Set the new client's portal master (parent).
+		# Hint: Registration of new client in the portal is done in initZMS(), now.
 		zms_inst.setConfProperty('Portal.Master',home.id)
-		self.setConfProperty('Portal.Clients',self.getConfProperty('Portal.Clients',[])+[request['id']])
 		# Trigger adding to zmsindex
 		standard.triggerEvent(zms_inst.content,'*.ObjectMoved')
 		message.append(self.getZMILangStr('MSG_INSERTED')%request['id'])

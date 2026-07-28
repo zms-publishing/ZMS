@@ -535,9 +535,9 @@
 					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$ZMI.iframe('manage_main_import',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')});return false"><i class="fas fa-upload"></i></button>
 					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="return zmiExportBtnClick(this);"><i class="fas fa-download"></i></button>
 				</div><!-- .btn-group -->
-				<div class="btn-group filtering">
+				<div class="btn-group filtering" title="Filter object list by entering a name.">
 					<i class="fas fa-filter tablefilter p-2" onclick="$('#tablefilter').focus().addClass('visited')"></i>
-					<input id="tablefilter" name="tablefilter" class="form-control" type="text"  title="Filter object list by entering a name." />
+					<input id="tablefilter" name="tablefilter" class="form-control" type="text" />
 				</div>	
 			</th>
 		</tr>

@@ -44,7 +44,21 @@ class ReqBuff(object):
       @return: Namespaced buffer key.
       @rtype: C{str}
       """
-      return '%s_%s'%('_'.join(self.getPhysicalPath()[2:]), key)
+      namespace = None
+      try:
+        path = self.getPhysicalPath()
+        if isinstance(path, (tuple, list)) and len(path) > 2:
+          namespace = '_'.join([str(x) for x in path[2:]])
+      except RecursionError:
+        # Some proxy/pageelement constellations can recurse while resolving path.
+        namespace = None
+      except Exception:
+        namespace = None
+
+      if not namespace:
+        namespace = '%s_%s' % (self.__class__.__name__, id(self))
+
+      return '%s_%s' % (namespace, key)
 
 
     def clearReqBuff(self, prefix='', REQUEST=None):

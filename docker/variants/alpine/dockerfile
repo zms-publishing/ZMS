@@ -1,7 +1,6 @@
 FROM python:3.14.4-alpine
 ENV ZOPE_VERSION=6.1
 ENV ZMS_BRANCH=main
-# ENV ZMS_BRANCH=main
 
 ENV VIRTUAL_ENV=/home/zope/venv
 ENV SHELL=/bin/bash
@@ -42,7 +41,7 @@ RUN if echo "$ZOPE_VERSION" | grep -q "dev"; then \
     fi
 
 RUN pip install ZEO
-RUN pip install --config-settings editable_mode=compat -e git+https://github.com/zms-publishing/ZMS.git@$ZMS_BRANCH#egg=Products.zms
+RUN pip install --config-settings editable_mode=compat -e "ZMS @ git+https://github.com/zms-publishing/ZMS.git@${ZMS_BRANCH}"
  
 # Create Zope Instance
 RUN mkwsgiinstance -d . -u admin:admin

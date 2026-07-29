@@ -266,6 +266,10 @@
 					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiOpenImportConfModal(this);return false"><i class="fas fa-upload"></i></button>
 					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this);return false"><i class="fas fa-download"></i></button>
 				</div><!-- .btn-group -->
+				<div class="btn-group filtering" title="Filter command list by entering a name.">
+					<i class="fas fa-filter tablefilter p-2" onclick="$('#tablefilter').focus().addClass('visited')"></i>
+					<input id="tablefilter" name="tablefilter" class="form-control" type="text" />
+				</div>	
 			</th>
 		</tr>
 		<tr>
@@ -391,8 +395,8 @@ function zmiExportBtnClick(sender,btn,target) {
 	if (target=="_blank") {
 		var href = $fm.attr('action')+'?lang='+getZMILang()+'&btn='+btn;
 		$('input[name="id"]:text,input[name="ids:list"]:checked',$fm).each(function(){
-				href += '&ids:list='+$(this).val();
-			});
+			href += '&ids:list='+$(this).val();
+		});
 		window.open(href);
 	}
 	else {
@@ -433,11 +437,50 @@ function zmiOpenImportConfModal(sender) {
 	}, 300);
 }
 
+// +++++++++++++++++++++++++++
+// Tablefilter: Command-List
+// Ref: ./ZMS/Products/zms/zpt/ZMSMetamodelProvider/manage_main.zpt
+// +++++++++++++++++++++++++++
+function isModifierKeyPressed(event) {
+	return event.altKey ||
+	event.ctrlKey ||
+	event.metaKey;
+}
+$(document).keypress(function (event) {
+	if (isModifierKeyPressed(event)) {
+		return; // ignore
+	}
+	// Set Focus to Tablefilter only when Modal Dialog is not Shown
+	if (!$('#zmi-modal').hasClass('show')) {
+		$('#tablefilter').focus().addClass('visited');
+	};
+})
+$('#tablefilter').keyup(function (event) {
+	let tablefilter = $(this).val();
+	if (isModifierKeyPressed(event)) {
+		return; // ignore
+	}
+	if (event.which == 13) {
+		// $('table#meta_overview').find("tbody tr").show();
+		event.preventDefault();
+		return; // ignore
+	};
+	/* Filter Table */
+	$('table#meta_commands').find('tbody tr').hide();
+	$('table#meta_commands').find(`tbody tr td.meta-id a:contains(${tablefilter}), tbody tr td.meta-id a[title*="${tablefilter}"]`).closest('tbody tr').show();
+	if (tablefilter.length==0) {
+		$('table#meta_commands').find('tbody tr').show();
+		$('#tablefilter').removeClass('visited');
+	};
+
+});
+
+// Execute on DOM-Ready
 $(function(){
 	zmiModal('#editObj',{title:getZMILangStr('BTN_EDIT'),minWidth:800,remove:true});
 	$('button[name=btn][value=BTN_CLOSE]').click(function() {
-			zmiModal("hide");
-			return false;
+		zmiModal("hide");
+		return false;
 	});
 
 	// Select all items of a package
@@ -451,6 +494,13 @@ $(function(){
 			$(pkg_name_sel).prop('checked',false)
 		};
 	});
+
+	// https://stackoverflow.com/questions/8746882/jquery-contains-selector-uppercase-and-lower-case-issue
+	jQuery.expr[':'].contains = function(a, i, m) {
+		return jQuery(a).text().toUpperCase()
+		.indexOf(m[3].toUpperCase()) >= 0;
+	};
+
 });
 
 //-->

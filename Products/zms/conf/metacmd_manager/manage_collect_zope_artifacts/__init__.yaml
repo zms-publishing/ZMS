@@ -1,0 +1,16 @@
+manage_collect_zope_artifacts:
+  acquired: 0
+  action: '%smanage_executeMetacmd?id=manage_collect_zope_artifacts'
+  execution: 0
+  icon_clazz: fas fa-briefcase
+  meta_types:
+    - ZMS
+  name: Collect Zope Artifacts...
+  nodes: '{$}'
+  revision: 5.0.5
+  roles:
+    - ZMSAdministrator
+  title: Transfer Zope Artifacts to a ZMS Content-Object Library
+  Impl:
+    - id: manage_collect_zope_artifacts
+      type: External Method

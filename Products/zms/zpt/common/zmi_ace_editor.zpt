@@ -1,9 +1,10 @@
-<tal:block tal:define="global
+<tal:block tal:define="
 		zopeutil modules/Products.zms/zopeutil;
 		name python:options.get('name');
 		id python:options.get('id') and options.get('id') or name;
 		ob python:options.get('ob');
 		text python:options.get('text');
+		has_error python:(text is not None and text.find('## Error')>=0) or options.get('has_error',False);
 		text python:text is None and zopeutil.readObject(here,ob.getId()) or text;
 		height python:options.get('height','20em');
 		content_type python:options.get('content_type','dtml')">
@@ -18,14 +19,16 @@
 		<div tal:condition="python:ob is not None"  
 			class="control-label-ace-editor">
 			<a tal:attributes="href python:'%s/manage_main'%ob.absolute_url(); title ob/meta_type" target="_blank">
-				<tal:block tal:content="python:ob.getId()">id<</tal:block>
+				<tal:block tal:content="python:ob.getId()">id</tal:block>
 				<tal:block tal:condition="python:text is not None">(<tal:block tal:content="python:here.getDataSizeStr(len(text))">the size</tal:block>)</tal:block>
 			</a> 
 		</div>
 		<div>
 			<textarea class="form-control-ace-editor" tal:attributes="name name;id id;data-content_type content_type" tal:content="text">the text</textarea>
 		</div>
-		<div tal:attributes="id python:'editor_%s'%id" style="height:92%;width:100%;border:1px solid #ccc;border-radius:4px">
+		<div class="ace_editor"
+			tal:attributes="id python:'editor_%s'%id;class python:has_error and 'alert-danger' or default;" 
+			style="height:92%;width:100%;border:1px solid #ccc;border-radius:4px">
 			ace editor text
 		</div>
 	</div><!-- .form-group -->

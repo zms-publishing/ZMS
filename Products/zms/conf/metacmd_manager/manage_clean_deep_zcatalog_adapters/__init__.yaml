@@ -1,0 +1,18 @@
+manage_clean_deep_zcatalog_adapters:
+  acquired: 0
+  action: '%smanage_executeMetacmd?id=manage_clean_deep_zcatalog_adapters'
+  description: Clean deep ZCatalog Adapters
+  execution: 1
+  icon_clazz: fas fa-cogs
+  meta_types:
+    - ZMS
+  name: Clean deep ZCatalog Adapters
+  nodes: '{$}'
+  package: ch.unibe.maintenance
+  revision: 0.0.0
+  roles:
+    - ZMSAdministrator
+  title: Clean deep ZCatalog Adapters
+  Impl:
+    - id: manage_clean_deep_zcatalog_adapters
+      type: External Method

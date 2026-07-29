@@ -1,0 +1,25 @@
+manage_stereotypes:
+  acquired: 0
+  action: '%smanage_executeMetacmd?id=manage_stereotypes'
+  execution: 0
+  icon_clazz: fas fa-cubes
+  meta_types:
+    - type(ZMSDocument)
+    - type(ZMSObject)
+    - type(ZMSTeaserElement)
+    - type(ZMSRecordSet)
+    - type(ZMSResource)
+    - type(ZMSReference)
+    - type(ZMSLibrary)
+    - type(ZMSPackage)
+    - type(ZMSModule)
+  name: Stereotypes
+  nodes: '{$}'
+  package: com.zms.custom.metacmd.maintenance
+  revision: 4.0.3
+  roles:
+    - ZMSAdministrator
+  title: Change stereotype
+  Impl:
+    - id: manage_stereotypes
+      type: Script (Python)

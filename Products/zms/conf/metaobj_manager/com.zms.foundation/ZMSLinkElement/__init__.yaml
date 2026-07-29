@@ -1,0 +1,113 @@
+ZMSLinkElement:
+  access:
+    insert_custom: '{$}'
+  enabled: 1
+  name: ZMSLinkElement
+  package: com.zms.foundation
+  revision: 5.2.0
+  type: ZMSObject
+  Attrs:
+    - id: icon_clazz
+      name: Icon (Class)
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: constant
+      custom: fas fa-link
+    - id: f_css_defaults
+      name: 'CSS: Default'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: resource
+    - id: titlealt
+      name: DC.Title.Alt
+      mandatory: 1
+      multilang: 1
+      repetitive: 0
+      type: titlealt
+    - id: title
+      name: DC.Title
+      mandatory: 1
+      multilang: 1
+      repetitive: 0
+      type: title
+    - id: inferface0
+      name: inferface0
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: interface
+    - id: attr_ref
+      name: Reference
+      mandatory: 1
+      multilang: 0
+      repetitive: 0
+      type: url
+    - id: attr_type
+      name: Type
+      mandatory: 1
+      multilang: 0
+      repetitive: 0
+      type: select
+      keys:
+        - replace
+        - new
+        - embed
+        - recursive
+        - remote
+        - iframe
+    - id: align
+      name: Align
+      mandatory: 1
+      multilang: 0
+      repetitive: 0
+      type: select
+      keys:
+        - LEFT
+        - LEFT_FLOAT
+        - RIGHT
+        - RIGHT_FLOAT
+        - NONE
+    - id: TAB_METADATA
+      name: TAB_METADATA
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: delimiter
+    - id: attr_dc_description
+      name: DC.Description
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: attr_dc_description
+    - id: attr_dc_creator
+      name: DC.Creator
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: attr_dc_creator
+    - id: attr_url
+      name: 'Alias: Url'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: py
+    - id: attr_abstract
+      name: 'Alias: Abstract'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: py
+    - id: check_constraints
+      name: 'Hook: Check constraints'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: py
+    - id: standard_html
+      name: 'Template: ZMSLinkElement'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: zpt

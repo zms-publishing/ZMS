@@ -5,7 +5,7 @@ This hook updates `Products/zms/version.txt` to `<latest-tag>-<shortsha7>` befor
 Install
 
 ```bash
-cd /path/to/your/ZMS5/.github
+cd /path/to/your/ZMS/.github
 chmod +x .github/scripts/pre-commit-update-version.sh
 ln -sf "$PWD/.github/scripts/pre-commit-update-version.sh" .git/hooks/pre-commit
 ```

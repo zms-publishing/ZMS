@@ -1,4 +1,4 @@
-ARG BUILD_PYTHON_VERSION=3.12
+ARG BUILD_PYTHON_VERSION=3.14
 FROM python:$BUILD_PYTHON_VERSION
 ARG BUILD_PYTHON_VERSION
 
@@ -9,6 +9,11 @@ ENV CI_COMMIT_SHA=$CI_COMMIT_SHA
 
 # Ensure all system packages are up to date
 ENV DEBIAN_FRONTEND=noninteractive
+RUN <<EOR
+    set -eux
+    sed -i 's/^Components: main$/Components: main contrib non-free non-free-firmware/' /etc/apt/sources.list.d/debian.sources
+EOR
+
 RUN \
     --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
@@ -22,8 +27,21 @@ RUN \
     --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     <<EOR
+    set -eux
+    echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | debconf-set-selections
     apt update
-    apt --yes install libldap2-dev libsasl2-dev git
+    apt --yes install \
+        docbook-xml \
+        docbook-xsl \
+        fop \
+        git \
+        libfop-java \
+        libldap2-dev \
+        libsasl2-dev \
+        libxalan2-java \
+        ttf-mscorefonts-installer \
+        xalan \
+        xsltproc
 EOR
 
 # Drop root privileges
@@ -41,7 +59,9 @@ RUN <<EOR
 EOR
 
 # Provide ZEO health check script
-COPY --chown=zope:zope docker/base/zeo_health_check.py /home/zope/bin/zeo_health_check.py
+COPY --chown=zope:zope docker/base/zeo_health_check.py bin/zeo_health_check.py
+# generic run script
+COPY --chown=zope:zope docker/base/run-zope.sh bin/run-zope.sh
 
 # Install uv
 # COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
@@ -56,6 +76,7 @@ RUN <<EOR
     ln -s ${VIRTUAL_ENV}/lib/python$BUILD_PYTHON_VERSION/site-packages/ ${VIRTUAL_ENV}/site-packages
 EOR
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+ENV PIP_CACHE_DIR=/home/zope/venv/cache
 
 # Enable caching of pip packages to speed up rebuild times
 # uv follows the new editable spec, even if the package (zms) does not provide a pyproject.toml
@@ -63,24 +84,30 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 # which Zope cannot handle yet
 # @see https://github.com/zopefoundation/Zope/issues/1239
 # uv also cannot install editable eggs from git repos, but I think we don't need that
-# ARG PIP_INSTALL="uv pip install"
+# ARG PIP_INSTALL="uv pip install --cache-dir $PIP_CACHE_DIR"
 # may need to switch back to pip if the pyproject.toml requirement kicks in
-ARG PIP_INSTALL="pip install --config-settings editable_mode=compat"
+ARG PIP_INSTALL="pip install --config-settings editable_mode=compat --cache-dir $PIP_CACHE_DIR"
 
-COPY --chown=zope:zope Products/zms/version.txt Products/zms/version.txt
-COPY --chown=zope:zope requirements*.txt pyproject.toml README.rst ./
-
-ENV PIP_CACHE_DIR=/home/zope/venv/cache
+COPY --chown=zope:zope requirements*.txt src/
 RUN --mount=type=cache,uid=$UID,target=$PIP_CACHE_DIR,sharing=locked <<EOR
     set -ex
 
     if echo ${PIP_INSTALL} | grep -qv "\buv\b"; then
-        $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --upgrade pip wheel setuptools
+        $PIP_INSTALL --upgrade pip wheel setuptools
     fi
-    $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --editable .[dev]
-    $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --requirement requirements-full.txt
-    $PIP_INSTALL --cache-dir $PIP_CACHE_DIR --upgrade 'Products.zmsPluggableAuthService[nginx-sso] @ git+https://github.com/sntl-projects/Products.zmsPluggableAuthService.git'
-    $PIP_INSTALL --cache-dir $PIP_CACHE_DIR ZEO
+    ZOPE_VERSION=$(pip index versions zope 2>/dev/null | head -1 | grep --only-matching --perl-regexp '[\d.]+')
+    PIP_INSTALL="$PIP_INSTALL --constraint https://zopefoundation.github.io/Zope/releases/$ZOPE_VERSION/constraints.txt"
+
+    $PIP_INSTALL --requirement src/requirements-full.txt
+    $PIP_INSTALL --upgrade 'Products.zmsPluggableAuthService[nginx-sso] @ git+https://github.com/sntl-projects/Products.zmsPluggableAuthService.git'
+    $PIP_INSTALL ZEO
+EOR
+
+COPY --chown=zope:zope . src/
+RUN --mount=type=cache,uid=$UID,target=$PIP_CACHE_DIR,sharing=locked <<EOR
+    set -ex
+
+    cd src; $PIP_INSTALL .
 EOR
 
 # Create Zope Instance
@@ -101,10 +128,11 @@ COPY --chown=zope:zope $BUILD_DIR/zope.ini etc/zope.ini
 COPY --chown=zope:zope $BUILD_DIR/zope.conf etc/zope.conf
 COPY --chown=zope:zope $BUILD_DIR/zeo.conf etc/zeo.conf
 
-COPY --chown=zope:zope Products Products
 # consider if we need the test code to be in the container to run
 # in github actions or similar circumstances
 # locally it is mapped into the container via bindmounts
 # COPY --chown=zope:zope selenium_tests test_output tests ./
 
-CMD ["runwsgi", "--verbose", "etc/zope.ini", "http_port=80"]
+ARG HTTP_PORT=80
+ENV HTTP_PORT=$HTTP_PORT
+CMD ["bin/run-zope.sh"]

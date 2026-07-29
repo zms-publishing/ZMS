@@ -5,9 +5,9 @@
 		basepath python:repositoryutil.get_system_conf_basepath();
 		direction python:'Loading';
 		providers python:[x for x in repositoryutil.get_providers(here) if x.id == request['provider_id']];
-		remote python:{x:repositoryutil.remoteFiles(here,basepath+'/'+x.id) for x in providers};
+		remote python:{x:repositoryutil.get_modelfileset_from_disk(here,basepath+'/'+x.id) for x in providers};
 		ids python:sorted(set([item['id'] for sublist in remote.values() for item in sublist.values()]));
-		local python:{x:repositoryutil.localFiles(here,x,ids=ids) for x in providers};">
+		local python:{x:repositoryutil.get_modelfileset_from_zodb(here,x,ids=ids) for x in providers};">
 	<head>
 		<tal:block tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 		<style>

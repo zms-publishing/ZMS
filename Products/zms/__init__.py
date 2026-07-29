@@ -1,21 +1,36 @@
-################################################################################
-# Initialisation file for the ZMS Product for Zope
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-#
-################################################################################
+"""
+__init__.py - ZMS product initialization module.
+
+This module handles the core initialization of the ZMS (Zope Management System)
+product during Zope startup. It is responsible for:
+  - Registering ZMS content types (ZMS, ZMSCustom, ZMSSqlDb, ZMSLinkContainer,
+    ZMSLinkElement, MediaDb, ZMSAttributeContainer) with the Zope application
+    context to make them available for object instantiation.
+  - Configuring language resources by parsing the C{_language.yaml} import file
+    and automatically generating language-specific JavaScript files
+    (C{i18n/<lang>.js}) for client-side internationalization support.
+  - Setting up session storage infrastructure by ensuring the existence of
+    C{temp_folder} and C{session_data} containers for temporary data storage
+    during user sessions.
+  - Performing automated minification of static assets (JavaScript and CSS files)
+    based on configuration parameters to reduce file sizes and improve
+    performance. This includes generation of hash values for cache-busting.
+  - Registering language dictionaries and configuration dictionaries in the
+    Zope misc container (C{OFS.misc_.misc_.zms}) for global access across
+    the application.
+  - Monkey-patching C{Products.CMFCore.zcml.registerDirectory()} to support
+    directory registration outside of package context, and registering additional
+    file extensions (xlsx, xls, doc, docx, ppt, pptx, svg, etc.) for proper
+    content type handling.
+
+
+Note: The module expects configuration files to be present at specific paths
+within the package home directory, particularly C{version.txt} and
+C{import/_language.yaml}.
+
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
+"""
 
 # Imports.
 from App.Common import package_home
@@ -29,24 +44,23 @@ from Products.zms import _multilangmanager
 from Products.zms import _mediadb
 from Products.zms import _zmsattributecontainer
 from Products.zms import standard
+from Products.zms import yamlutil
 from Products.zms import zms
 from Products.zms import zmscustom
 from Products.zms import zmssqldb
 from Products.zms import zmslinkcontainer
 from Products.zms import zmslinkelement
+from Products.zms import ZMSLLMConnector
+from Products.zms import coauthor
 
+#################################################################################################################
 # ### Allow additional Python modules in restricted context
 # ### Use with:
 # ### import pdb; pdb.set_trace()
 # 
 # from AccessControl import allow_module
 # allow_module('pdb')
-
-"""ZMS Product"""
-# Documentation string.
-__doc__ = """initialization module."""
-# Version string.
-__version__ = '0.1'
+#################################################################################################################
 
 #################################################################################################################
 # FilesystemDirectoryView: Monkey patched Products.CMFCore.zcml
@@ -79,6 +93,10 @@ def registerDirectory(_context, name, directory=None, recursive=False,
         # subdir = str(directory[len(_context.package.__path__[0]) + 1:])
         subdir = str(name)
         filepath = str(directory)
+
+    if not os.path.isdir(filepath):
+        print(f"ERROR [{_context.package.__name__}]:", f"No directory named '{filepath}'")
+        return
 
     reg_key = _generateKey(_context.package.__name__, subdir)
     _directory_regs.append(reg_key)
@@ -172,6 +190,12 @@ def initialize(context):
             constructors = (_zmsattributecontainer.manage_addZMSAttributeContainer, _zmsattributecontainer.manage_addZMSAttributeContainer),
             container_filter = _zmsattributecontainer.containerFilter,
             )
+        context.registerClass(
+            ZMSLLMConnector.ZMSLLMConnector,
+            permission = 'Add ZMSs',
+            constructors = (ZMSLLMConnector.manage_addZMSLLMConnector, ZMSLLMConnector.manage_addZMSLLMConnector),
+            container_filter = ZMSLLMConnector.containerFilter,
+            )
         
         # register deprecated classes
         dummy_constructors = (zmscustom.manage_addZMSCustomForm, zmscustom.manage_addZMSCustom,)
@@ -188,14 +212,14 @@ def initialize(context):
         OFS.misc_.misc_.zms['confdict']=confdict
 
         # register current ZMS product name
-        product_name = 'ZMS5'
+        product_name = 'ZMS'
         try:
             # Try importlib.metadata (Python 3.8+, standard library)
             from importlib.metadata import metadata
             pkg_metadata = metadata('ZMS')
-            description = pkg_metadata.get('summary', 'ZMS5: Simplified Content Modelling')
+            description = pkg_metadata.get('summary', 'ZMS: Simplified Content Modelling')
             if description and description.startswith('ZMS'):
-                base_name = description.split(':')[0].strip()
+                product_name = description.split(':')[0].strip()
         except Exception:
             pass
         OFS.misc_.misc_.zms['confdict']['ZMS.product_name'] = product_name
@@ -295,33 +319,26 @@ def initialize(context):
         zmi_js_hash_fileobj.close()
 
         # automated generation of language JavaScript
-        from xml.dom import minidom
-        filename = os.sep.join([package_home(globals())]+['import', '_language.xml'])
+        filename = os.sep.join([package_home(globals())]+['import', '_language.yaml'])
         standard.writeStdout(context, "automated generation of language JavaScript: %s"%filename)
-        xmldoc = minidom.parse(filename)
-        langs = None
+        with codecs.open(filename, mode='r', encoding='utf-8') as fileobj:
+          # Hint: The _language.yaml file may contain unquoted values with special 
+          # characters that are not valid YAML. To ensure proper parsing, we first 
+          # normalize the YAML content by quoting all values before parsing
+          normalized_yaml = _multilangmanager.normalize_yaml_values(fileobj.read())
+          yaml_data = yamlutil.parse(normalized_yaml)
+        if isinstance(yaml_data, str):
+          raise ValueError(yaml_data)
+
         d = {}
-        for row in xmldoc.getElementsByTagName('Row'):
-          cells = row.getElementsByTagName('Cell')
-          if langs is None:
-            langs = []
-            for cell in cells:
-              data = getData(cell)
-              if data is not None:
-                langs.append(data)
-          else:
-            l = []
-            for cell in cells:
-              data = getData(cell)
-              if cell.attributes.get('ss:Index') is not None:
-                while len(l) < int(cell.attributes['ss:Index'].value) - 1:
-                  l.append(None)
-              l.append(data)
-            if len(l) > 1:
-              k = l[0]
-              d[k] = {}
-              for i in range(len(l)-1):
-                d[k][langs[i]] = l[i+1]
+        langs = []
+        for key, values in yaml_data.items():
+          if not isinstance(values, dict):
+            continue
+          for lang in values.keys():
+            if lang not in langs:
+              langs.append(lang)
+          d[key] = values
 
         # populate language-strings to i18n-js
         path = os.sep.join([package_home(globals())]+['plugins', 'www', 'i18n'])
@@ -335,7 +352,7 @@ def initialize(context):
           for k in d.keys():
             v = d[k].get(lang)
             if v is not None:
-              v = v.replace('\'', '\\\'').replace('\n', '\\n')
+              v = str(v).replace('\'', '\\\'').replace('\n', '\\n')
               fileobj.write(',\'%s\':\''%k)
               fileobj.write(v)
               fileobj.write('\'')

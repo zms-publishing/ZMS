@@ -1,0 +1,18 @@
+manage_repository_gitpush:
+  acquired: 0
+  action: '%smanage_executeMetacmd?id=manage_repository_gitpush'
+  execution: 0
+  icon_clazz: fas fa-forward
+  meta_types:
+    - ZMS
+  name: BTN_GITPUSH
+  nodes: '{$}'
+  package: com.zms.custom.metacmd.gitbridge
+  revision: 5.1.0
+  roles:
+    - ZMSAdministrator
+  stereotype: repository
+  title: Git Push
+  Impl:
+    - id: manage_repository_gitpush
+      type: External Method

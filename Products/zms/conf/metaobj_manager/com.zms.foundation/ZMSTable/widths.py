@@ -17,7 +17,7 @@ try:
 	for row in table:
 		i = 0
 		for cell in row:
-			weight = len(zmscontext.re_sub('<(.*?)>', '',zmscontext.dt_exec(cell.get('content',''))))
+			weight = len(zmscontext.re_sub(r'<(.*?)>', '',zmscontext.dt_exec(cell.get('content',''))))
 			weights[i] = weights[i] + weight
 			i += 1
 	return list([int((x*100.0)/sum(weights)) for x in weights])

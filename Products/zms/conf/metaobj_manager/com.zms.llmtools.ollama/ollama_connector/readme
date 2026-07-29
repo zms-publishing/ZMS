@@ -1,0 +1,12 @@
+Ollama LLMTools Connector
+=========================
+
+This ZMSLibrary profile externalizes LLM tool declarations and executors for
+ZMSLLMConnector agent mode.
+
+Contract implemented for ZMSLLMToolsAdapter:
+1. get_llmtools(connector, context) -> OpenAI/MCP tool schema list
+2. llmtool_<name>(connector, context, args) -> tool result payload
+
+The profile currently proxies all core tools from Products.zms.llmtools so it
+stays aligned with core behavior while remaining replaceable/customizable.

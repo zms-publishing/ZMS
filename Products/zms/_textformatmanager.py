@@ -1,34 +1,29 @@
-################################################################################
-# _textformatmanager.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+_textformatmanager.py - ZMS Text Format Manager for Content Formatting and Rendering
 
+Defines TextFormatObject for text content formatting and rendering.
+It applies format-specific conversion, escaping, and transformation 
+rules to content at display time.
+
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
+"""
 # Product Imports.
 from Products.zms import standard
 from Products.zms import _globals
 from zope.globalrequest import getRequest
 
 class TextFormatObject(object):
+  """Provide text-format helper methods shared by content objects."""
 
-  # ----------------------------------------------------------------------------
-  #  TextFormatObject.getSecNo
-  #
-  #  Returns section-number.
-  # ----------------------------------------------------------------------------
+
   def getSecNo( self):
+    """
+    Return the computed section number for this node.
+
+    Section numbers are generated from headline/page sibling order and cached in
+    the request buffer for repeated lookups.
+    """
     request = getattr(self, 'REQUEST', getRequest())
     sec_no = ''
     #-- [ReqBuff]: Fetch buffered value from Http-Request.
@@ -68,12 +63,10 @@ class TextFormatObject(object):
     return sec_no
 
 
-  # ----------------------------------------------------------------------------
-  #  TextFormatObject.getText
-  #
-  #  Returns text with section-number.
-  # ----------------------------------------------------------------------------
   def getText( self, REQUEST, key='text', encoding='utf-8', errors='strict'):
+    """
+    Return an object text value, optionally prefixed with the section number.
+    """
     s = self.getObjProperty(key, REQUEST)
     if self.isPageElement():
       sec_no = self.getSecNo()
@@ -81,10 +74,13 @@ class TextFormatObject(object):
         s = '%s %s'%(sec_no, s)
     return s
 
-  # ----------------------------------------------------------------------------
-  #  TextFormatObject.renderText:
-  # ----------------------------------------------------------------------------
+
   def renderText( self, format, key, text, REQUEST, id=None, clazz=None):
+    """
+    Render text using the configured text format and optional custom hook.
+
+    Supports markdown conversion and UUID link substitution for markdown output.
+    """
     # Process format.
     if format is not None:
       textformat = self.getTextFormat( format, REQUEST)
@@ -112,4 +108,3 @@ class TextFormatObject(object):
     # Return.
     return text
 
-################################################################################

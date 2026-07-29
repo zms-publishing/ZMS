@@ -1,0 +1,61 @@
+ZMSSysFolder:
+  access:
+    delete:
+      - ZMSAdministrator
+      - ZMSAuthor
+      - ZMSEditor
+    insert:
+      - ZMSAdministrator
+      - ZMSAuthor
+      - ZMSEditor
+    insert_custom: '{$}'
+  enabled: 0
+  name: ZMSSysFolder
+  package: com.zms.foundation
+  revision: 5.0.0
+  type: ZMSDocument
+  Attrs:
+    - id: icon_clazz
+      name: Icon (Class)
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: constant
+      custom: fas fa-folder
+    - id: titlealt
+      name: DC.Title.Alt
+      mandatory: 1
+      multilang: 1
+      repetitive: 0
+      type: titlealt
+    - id: title
+      name: DC.Title
+      mandatory: 1
+      multilang: 1
+      repetitive: 0
+      type: title
+    - id: attr_cacheable
+      name: Cacheable
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: constant
+      custom: '0'
+    - id: TAB_METADATA
+      name: TAB_METADATA
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: delimiter
+    - id: attr_dc_description
+      name: DC.Description
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: attr_dc_description
+    - id: interface0
+      name: interface0
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: interface

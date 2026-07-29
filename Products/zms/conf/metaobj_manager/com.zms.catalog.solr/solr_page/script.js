@@ -29,7 +29,7 @@ $(function() {
 	show_results = async (q, pageIndex) => {
 		$('.search-results').html(hb_spinner_tmpl(q));
 		// debugger;
-		const qurl = `${root_url}/solr_query?q=${q}&pageIndex:int=${pageIndex}`;
+		const qurl = `${root_url}/solr_query?q=${encodeURIComponent(q)}&pageIndex:int=${pageIndex}`;
 		const response = await fetch(qurl);
 		const res = await response.json();
 		const res_processed = postprocess_results(q, res);
@@ -40,7 +40,6 @@ $(function() {
 
 		//# Add pagination ###################
 		var fn = (pageIndex) => {
-			q = encodeURI(decodeURI(q));
 			return `javascript:show_results('${q}',${pageIndex})`
 		};
 		GetPagination(fn, total, 10, pageIndex);
@@ -93,16 +92,16 @@ $(function() {
 
 	//# Execute on submit event
 	$('.search-form form').submit(function() {
-		var q = $('input',this).val();
+		var q = $('input[name="q"]',this).val();
 		winloc.searchParams.set('q', q);
 		history.pushState({}, '', winloc);
 		show_results(q, 0);
 		return false;
 	});
 
-	// POSSIBLE SECURITY ISSUE: auto-execute on ULR parameter
-	if ( winloc.searchParams.get('q', undefined) ) {
-		$('#form-keyword').val(encodeURI(winloc.searchParams.get('q','')));
+	//# Auto-execute search on URL parameter
+	if ( winloc.searchParams.get('q') ) {
+		$('#form-keyword').val(winloc.searchParams.get('q',''));
 		$('.search-form form').trigger('submit');
 	}
 

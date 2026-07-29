@@ -1,21 +1,13 @@
-# -*- coding: utf-8 -*- 
-################################################################################
-# ZMSWorkflowProvider.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+ZMSWorkflowProvider.py - Workflow management provider for ZMS content objects.
+
+This module defines workflow import/export helpers, autocommit behavior, and
+the provider class that coordinates activities and transitions used by the
+ZMS publication lifecycle.
+
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
+"""
 
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -36,6 +28,7 @@ Commit pending changes of all objects.
 def doAutocommit(self, REQUEST): 
   
   ##### Auto-Commit ####
+  """Implement 'doAutocommit'."""
   if len( self.getObjStates()) > 0:
     
     if self.inObjStates(['STATE_DELETED'], REQUEST):
@@ -69,6 +62,7 @@ def doAutocommit(self, REQUEST):
 ZMSWorkflowProvider.exportXml
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def exportXml(self, REQUEST, RESPONSE):
+  """Implement 'exportXml'."""
   value = {}
   value['activities'] = []
   for x in self.getActivityIds():
@@ -112,9 +106,11 @@ class ZMSWorkflowProvider(
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     manage_options_default_action = '../manage_customize'
     def manage_options(self):
+      """Handle the ZMI action 'manage_options'."""
       return [self.operator_setitem( x, 'action', '../'+x['action']) for x in copy.deepcopy(self.aq_parent.manage_options())]
 
     def manage_sub_options(self):
+      """Handle the ZMI action 'manage_sub_options'."""
       return (
         {'label': 'TAB_WORKFLOW','action': 'manage_main'},
         )
@@ -145,6 +141,7 @@ class ZMSWorkflowProvider(
     Constructor.
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def __init__(self, autocommit=1, nodes=['{$}'], activities=[], transitions=[]):
+      """Initialize the instance state."""
       self.id = 'workflow_manager'
       self.autocommit = autocommit
       self.nodes = nodes
@@ -174,6 +171,7 @@ class ZMSWorkflowProvider(
     @see IRepositoryProvider
     """
     def provideRepository(self, r, ids=None):
+      """Implement 'provideRepository'."""
       standard.writeBlock(self, "[provideRepository]: ids=%s"%str(ids))
       r = {}
       id = 'workflow'
@@ -187,6 +185,7 @@ class ZMSWorkflowProvider(
     @see IRepositoryProvider
     """
     def updateRepository(self, r):
+      """Implement 'updateRepository'."""
       id = r['id']
       self.setRevision(r['revision'])
       self.updateRepositoryActivities(r)
@@ -197,6 +196,7 @@ class ZMSWorkflowProvider(
     @see IRepositoryProvider
     """
     def translateRepositoryModel(self, r):
+      """Implement 'translateRepositoryModel'."""
       d = {}
       for k in r:
           v  = r[k]
@@ -213,6 +213,7 @@ class ZMSWorkflowProvider(
     ZMSWorkflowProvider.importXml
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def importXml(self, xml):
+      """Implement 'importXml'."""
       ids = [self.activities[x*2] for x in range(len(self.activities)//2)]
       for id in ids:
         self.delItem(id, 'activities')
@@ -245,9 +246,11 @@ class ZMSWorkflowProvider(
     ZMSWorkflowProvider.revision
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def getRevision(self):
+      """Return revision."""
       return getattr(self, 'revision', '0.0.0')
 
     def setRevision(self, revision):
+      """Set revision."""
       self.revision = revision
 
 
@@ -255,6 +258,7 @@ class ZMSWorkflowProvider(
     ZMSWorkflowProvider.getAutocommit
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def getAutocommit(self):
+      """Return autocommit."""
       return self.autocommit
 
 
@@ -262,6 +266,7 @@ class ZMSWorkflowProvider(
     ZMSWorkflowProvider.getNodes
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def getNodes(self):
+      """Return nodes."""
       return self.nodes
 
 
@@ -269,6 +274,7 @@ class ZMSWorkflowProvider(
     ZMSWorkflowProvider.delItem
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def delItem(self, id, key):
+      """Implement 'delItem'."""
       obs = getattr(self, key, [])
       # Update attribute.
       if id in obs:
@@ -289,6 +295,7 @@ class ZMSWorkflowProvider(
     ZMSWorkflowProvider.moveItem
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def moveItem(self, id, pos, key):
+      """Implement 'moveItem'."""
       obs = getattr(self, key, [])
       # Move.
       i = obs.index(id)
@@ -308,6 +315,7 @@ class ZMSWorkflowProvider(
     Auto-Commit ZMS-tree.
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def doAutocommit(self, lang, REQUEST):
+      """Implement 'doAutocommit'."""
       doAutocommit(self, REQUEST)
 
 
@@ -397,4 +405,3 @@ class ZMSWorkflowProvider(
       message = standard.url_quote(message)
       return RESPONSE.redirect('manage_main?lang=%s&key=%s&manage_tabs_message=%s#%s'%(lang, key, message, key))
 
-################################################################################

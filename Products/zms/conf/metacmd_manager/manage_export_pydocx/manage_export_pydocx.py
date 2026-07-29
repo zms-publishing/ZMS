@@ -238,6 +238,7 @@ def clean_html(html, wrap_trailling_text=False):
 
 	html = re.sub(r'<!.*?->','', html)
 	html = re.sub(r'<style.*?</style>','', html)
+	html = re.sub(r'<script.*?</script>','', html)
 	html = standard.re_sub(r'\n|\t', ' ', html)
 	html = standard.re_sub(r'\s\s', ' ', html)
 	html = html.replace('<span class="unicode">&crarr;</span><br />','')
@@ -527,7 +528,7 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 						'''Convert cell html to docx'''
 						cl_html = clean_html(docx_cell.text, wrap_trailling_text=True)
 						cl_type = cl_html.startswith('[th:') and 'th' or 'td'
-						cl_html = re.sub(r'\[(th|td):\d:\d\] ','',cl_html)
+						cl_html = re.sub(r'\[(th|td):\d*?:\d*?\] ','',cl_html)
 						cl = BeautifulSoup(cl_html, 'html.parser')
 
 						# Clear docx_cell content
@@ -631,7 +632,7 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 					elif element.has_attr('class') and 'handlungsaufforderung' in element['class']:
 						if len([e.name for e in element.children if e.name in ['ul','ol']])>0:
 							add_tagged_content_as_paragraph(docx_doc, element, 'Handlungsaufforderung', c, zmsid)
-							child_tag = [e.name for e in element.children if e.name][0]
+							child_tag = [e.name for e in element.children if e.name in ['ul','ol']][0]
 							# COPY add_list
 							def add_list(docx_obj, element, level=0, c=0):
 								for i, li in enumerate(element.find_all('li', recursive=False)):
@@ -644,7 +645,7 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 									if c==1 and zmsid:
 										prepend_bookmark(p, zmsid)
 									for ul in li.find_all(['ul','ol'], recursive=False):
-										add_list(docx_doc, ul, level+1)
+										add_list(docx_doc, ul, level+1, c=c)
 							add_list(docx_doc, element.find(child_tag), level=1, c=c)
 						else:
 							add_tagged_content_as_paragraph(docx_doc, element, 'Handlungsaufforderung', c, zmsid)
@@ -749,8 +750,8 @@ def add_htmlblock_to_docx(zmscontext, docx_doc, htmlblock, zmsid=None, zmsmetaid
 				# OTHER ELEMENTS
 				# #############################################
 				elif element.name == 'hr':
-					# Omit horizontal rule
-					pass
+					# horizontal rule
+					p = docx_doc.add_paragraph('   ', style='HorizontaleLinie')
 				elif element.name == 'script':
 					# Omit javascript
 					pass
@@ -1025,7 +1026,7 @@ def apply_standard_json_docx(self):
 		blocks.extend(json_block)
 
 		# Check for newer content
-		if pageelement.attr('change_dt') and pageelement.attr('change_dt') >= last_change_dt:
+		if pageelement.attr('change_dt') and last_change_dt!=None and pageelement.attr('change_dt') >= last_change_dt:
 			# Update editorial data
 			last_change_dt = pageelement.attr('change_dt')
 			if pageelement.attr('change_uid'):
@@ -1244,6 +1245,15 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 			doc.add_paragraph(standard.pystr(heading.get('description','')), style='Description')
 
 	# [C] CREATE PAGE CONTENT-BLOCKS
+
+	# Customize Sequencing: 
+	# 1. Page-Type LgRegel starts with LgComment element (if available)
+	if self.meta_id == 'LgRegel':
+		for i, block in enumerate(blocks):
+			if block['meta_id'] == 'LgComment':
+				blocks.insert(0, blocks.pop(i))
+				break
+
 	for block in blocks:
 		v = standard.pystr(block['content'])
 		# #############################################

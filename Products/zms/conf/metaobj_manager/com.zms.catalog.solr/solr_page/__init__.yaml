@@ -1,0 +1,58 @@
+solr_page:
+  access:
+    insert_custom: '{$}'
+  enabled: 1
+  name: Solr-Page
+  package: com.zms.catalog.solr
+  revision: 1.1.1
+  type: ZMSDocument
+  Attrs:
+    - id: icon_clazz
+      name: Icon (Class)
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: constant
+      custom: fas fa-sun text-danger
+    - id: titlealt
+      name: DC.Title.Alt
+      mandatory: 1
+      multilang: 1
+      repetitive: 0
+      type: titlealt
+    - id: title
+      name: DC.Title
+      mandatory: 1
+      multilang: 1
+      repetitive: 0
+      type: title
+    - id: script.js
+      name: Script (JS)
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: resource
+    - id: style.css
+      name: Style (CSS)
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: resource
+    - id: handlebars.js
+      name: 'Handlebars: JS 4.7.7'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: resource
+    - id: solr_breadcrumbs_obj_path
+      name: Get Object Path from ZMSIndex as HTML
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: Script (Python)
+    - id: standard_html
+      name: 'Template: solr'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: zpt

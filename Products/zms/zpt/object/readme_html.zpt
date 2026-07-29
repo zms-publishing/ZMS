@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en" tal:define="standard modules/Products.zms/standard">
+<head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
+<body class="zmi container" tal:content="structure python:here.readme()">
+	<article class="zmi-readme">
+		<h1>README</h1>
+		<p>
+			This ZPT template renders the README content for printing.
+		</p>
+	</article>
+</body>
+</html>

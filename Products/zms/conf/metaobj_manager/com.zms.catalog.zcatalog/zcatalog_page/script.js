@@ -21,6 +21,7 @@ var winloc = new URL(window.location);
 //# ######################################
 $(function() {
 	const root_url=$('form#site-search-content').attr('data-root-url');
+	const lang = $('#lang').attr('value');
 	//# Compile HB templ on docready into global var
 	const hb_results_tmpl = Handlebars.compile( $('#hb_results_html').html() );
 	const hb_spinner_tmpl = Handlebars.compile( $('#hb_spinner_html').html() );
@@ -34,7 +35,7 @@ $(function() {
 		const home_id = $('#home_id').attr('value') || '';
 		const multisite_search = $('#multisite_search').attr('value') || 1;
 		const multisite_exclusions = $('#multisite_exclusions').attr('value') || '';
-		const qurl = `${root_url}/zcatalog_query?q=${q}&pageIndex:int=${pageIndex}&home_id=${home_id}&multisite_search=${multisite_search}&multisite_exclusions=${multisite_exclusions}`;
+		const qurl = `${root_url}/zcatalog_query?q=${encodeURIComponent(q)}&lang=${encodeURIComponent(lang)}&pageIndex:int=${pageIndex}&home_id=${encodeURIComponent(home_id)}&multisite_search=${encodeURIComponent(multisite_search)}&multisite_exclusions=${encodeURIComponent(multisite_exclusions)}`;
 		const response = await fetch(qurl);
 		const res = await response.json();
 		const res_processed = postprocess_results(q, res);
@@ -45,7 +46,6 @@ $(function() {
 
 		//# Add pagination ###################
 		var fn = (pageIndex) => {
-			q = encodeURI(decodeURI(q));
 			return `javascript:show_results('${q}',${pageIndex})`
 		};
 		GetPagination(fn, total, 10, pageIndex);
@@ -66,7 +66,7 @@ $(function() {
 		res.docs.forEach(x => {
 			let source = x;
 			let score = typeof source['score'] !== 'undefined' ? parseFloat(source['score']/100).toFixed(2) : -1;
-			let href = source['loc'] || source['index_html'];
+			let href = source['index_html'] || source['loc'];
 			var hit = { 
 				'path':source['uid'],
 				'href':href.replace(/\?.*$/, ''),
@@ -91,7 +91,7 @@ $(function() {
 	const show_breadcrumbs = (el) => {
 		const lang = $('#lang').attr('value');
 		if ( el.dataset.id.startsWith('uid') ) {
-			$.get(url=`${root_url}/zcatalog_breadcrumbs_obj_path`, 
+			$.get(url=`${root_url}/zcatalog_breadcrumbs_obj_path?lang=${lang}`, 
 				data={ 'id' : el.dataset.id }, 
 				function(data, status) {
 					$(el).html(data);
@@ -102,16 +102,16 @@ $(function() {
 
 	//# Execute on submit event
 	$('.search-form form').submit(function() {
-		var q = decodeURI($('input[name="q"]',this).val());
+		var q = $('input[name="q"]',this).val();
 		winloc.searchParams.set('q', q);
 		history.pushState({}, '', winloc);
 		show_results(q, 0);
 		return false;
 	});
 
-	// POSSIBLE SECURITY ISSUE: auto-execute on ULR parameter
-	if ( winloc.searchParams.get('q', undefined) ) {
-		$('#form-keyword').val(encodeURI(winloc.searchParams.get('q','')));
+	//# Auto-execute search on URL parameter
+	if ( winloc.searchParams.get('q') ) {
+		$('#form-keyword').val(winloc.searchParams.get('q',''));
 		$('.search-form form').trigger('submit');
 	}
 

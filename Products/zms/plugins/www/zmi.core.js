@@ -331,30 +331,6 @@ ZMI.prototype.setCachedValue = function(k,v) {
 }
 
 /**
- * Returns request-property.
- */
-ZMI.prototype.getReqProperty = function(key, defaultValue) {
-	var data  = {};
-	data['key'] = key;
-	if (typeof defaultValue != "undefined") {
-		data['default'] = defaultValue;
-	};
-	var url = this.getPhysicalPath();
-	if (url.indexOf('/content/')>0 || url.slice(-8)=='/content' ) {
-		url = url.substring(0,url.indexOf('/content')+'/content'.length);
-	} else {
-		url='';
-	};
-	var r = $.ajax({
-		url: url+'/getReqProperty',
-		data: data,
-		datatype: 'text',
-		async: false
-		}).responseText;
-	return r;
-}
-
-/**
  *  Returns base-url.
  */
 ZMI.prototype.getBaseUrl = function(key, defaultValue) {

@@ -1,0 +1,21 @@
+manage_cachepurge:
+  acquired: 0
+  action: '%smanage_executeMetacmd?id=manage_cachepurge'
+  execution: 1
+  icon_clazz: fas fa-sync
+  meta_types:
+    - ZMSDocument
+    - ZMSFolder
+    - ZMS
+    - type(ZMSDocument)
+  name: Cache-Purge
+  nodes: '{$}'
+  package: com.zms.custom.cache
+  revision: 5.0.0
+  roles:
+    - ZMSAdministrator
+    - ZMSEditor
+  title: Löscht den Cache Eintrag dieses Dokument-Knotens
+  Impl:
+    - id: manage_cachepurge
+      type: Script (Python)

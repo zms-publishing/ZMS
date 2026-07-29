@@ -33,6 +33,13 @@
 	pageStart python:pageIndex*pageSize;
 	">
 
+<tal:block tal:condition="not: tables">
+	<div class="alert alert-danger" role="alert"
+		tal:content="python:here.getZMILangStr('MSG_DATABASE_ERROR')">
+		Database connection error
+	</div>
+</tal:block>
+
 <tal:block tal:condition="tables">
 
 <tal:block tal:define="global
@@ -101,8 +108,8 @@
 			></a>
 			<div class="btn zmi-changes">
 				<span tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')+' '+here.getLangFmtDate(here.attr('change_dt'))+' '+here.getZMILangStr('BY')+' '+here.attr('change_uid')">change_dt by change_uid</span>
-				<span tal:condition="python:here.attr('readme')" class="zmi-readme text-primary zmi-state"
-					tal:attributes="title here/meta_id; data-readme python:'%s/readme'%here.absolute_url()">
+				<span class="zmi-readme ml-2 text-info" title="SQL-DB Manager"
+					tal:attributes="data-readme python:'%s/%s/readme'%(here.getRootElement().absolute_url(), here.getId())">
 					<i class="far fa-question-circle"></i>
 				</span>
 			</div>

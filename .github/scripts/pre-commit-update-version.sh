@@ -21,18 +21,8 @@ else
   SHORT_SHA="0000000"
 fi
 
-# Convert tag to version string
-# - If TAG is in form YYYY-MM, convert to YYYY.M.1 and append +<shortsha>
-# - Otherwise, keep original tag and append +<shortsha> for PEP 440 compliance
-if [[ "$TAG" =~ ^([0-9]{4})-([0-9]{2})$ ]]; then
-  YEAR="${BASH_REMATCH[1]}"
-  MONTH="${BASH_REMATCH[2]}"
-  # strip leading zero from month (e.g., 09 -> 9)
-  MONTH_NO_LEAD="${MONTH#0}"
-  VERSION_CORE="${YEAR}.${MONTH_NO_LEAD}.1"
-else
-  VERSION_CORE="$TAG"
-fi
+# Use latest tag directly as version core (expected format: semantic version like 5.2.1)
+VERSION_CORE="$TAG"
 
 NEW_VERSION="${VERSION_CORE}+${SHORT_SHA}"
 

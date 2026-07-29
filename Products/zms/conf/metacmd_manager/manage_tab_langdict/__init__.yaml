@@ -1,0 +1,18 @@
+manage_tab_langdict:
+  acquired: 0
+  action: '%smanage_executeMetacmd?id=manage_tab_langdict'
+  execution: 0
+  icon_clazz: fas fa-cogs
+  meta_types:
+    - '*'
+  name: TAB_LANGUAGES
+  nodes: '{$}'
+  package: com.zms.custom.metacmd.tabs
+  revision: 5.0.1
+  roles:
+    - '*'
+  stereotype: tab
+  title: TAB_LANGUAGES
+  Impl:
+    - id: manage_tab_langdict
+      type: Script (Python)

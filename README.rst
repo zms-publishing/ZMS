@@ -11,8 +11,8 @@ Download
 ---------
 
 * Source: https://github.com/zms-publishing/ZMS/
-* Revisions: https://github.com/zms-publishing/ZMS/commits/master
-* Archive: https://github.com/zms-publishing/ZMS/archive/master.zip
+* Revisions: https://github.com/zms-publishing/ZMS/commits/main
+* Archive: https://github.com/zms-publishing/ZMS/archive/refs/heads/main.zip
 
 Installation (GNU/Linux, OSX/Darwin and Windows/WSL)
 ----------------------------------------------------
@@ -30,7 +30,7 @@ $ python3 -m venv ~/ZMS
 
 ::     
 
-$ ./ZMS/bin/pip install https://github.com/zms-publishing/ZMS/archive/master.zip [--upgrade]
+$ ./ZMS/bin/pip install https://github.com/zms-publishing/ZMS/archive/refs/heads/main.zip [--upgrade]
 
 or install from pypi
 
@@ -65,4 +65,4 @@ Users of Microsoft Windows 11 can enable the Windows subsystem for Linux (WSL) f
 
 ____
 
-Copyright (c) 2000-2025 `HOFFMANN+LIEBENBERG <http://www.hoffmannliebenberg.de>`_ in association with `SNTL Publishing <http://www.sntl-publishing.com>`_, Berlin. Code released under the `GNU General Public License v3 <http://www.gnu.org/licenses/gpl.html>`_ license.
+Copyright (c) 2000-2026 `HOFFMANN+LIEBENBERG <http://www.hoffmannliebenberg.de>`_ in association with `SNTL Publishing <http://www.sntl-publishing.com>`_, Berlin. Code released under the `GNU General Public License v3 <http://www.gnu.org/licenses/gpl.html>`_ license.

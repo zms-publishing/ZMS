@@ -1,0 +1,20 @@
+manage_deactivate:
+  acquired: 0
+  action: '%smanage_executeMetacmd?id=manage_deactivate'
+  execution: 1
+  icon_clazz: far fa-square
+  meta_types:
+    - type(ZMSDocument)
+    - type(ZMSObject)
+    - type(ZMSTeaserElement)
+  name: Deactivate
+  nodes: '{$}'
+  revision: 4.0.1
+  roles:
+    - ZMSAdministrator
+    - ZMSEditor
+    - ZMSAuthor
+  title: Deactivate selected content items
+  Impl:
+    - id: manage_deactivate
+      type: Script (Python)

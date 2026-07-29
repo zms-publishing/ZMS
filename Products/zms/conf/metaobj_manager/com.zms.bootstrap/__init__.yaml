@@ -1,0 +1,5 @@
+com.zms.bootstrap:
+  enabled: 1
+  name: com.zms.bootstrap
+  revision: 5.1.4
+  type: ZMSPackage

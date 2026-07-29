@@ -1,0 +1,21 @@
+manage_addMultiUpload:
+  acquired: 0
+  action: '%smanage_executeMetacmd?id=manage_addMultiUpload'
+  execution: 0
+  icon_clazz: fas fa-upload text-danger
+  meta_types:
+    - ZMSDocument
+    - ZMSFolder
+    - ZMS
+  name: Multi-Upload
+  nodes: '{$}'
+  revision: 5.1.1
+  roles:
+    - ZMSAdministrator
+    - ZMSEditor
+    - ZMSAuthor
+  stereotype: insert
+  title: Upload via Multi-Selection of Files
+  Impl:
+    - id: manage_addMultiUpload
+      type: External Method

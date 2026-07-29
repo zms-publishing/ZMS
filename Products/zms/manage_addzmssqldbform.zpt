@@ -5,7 +5,7 @@
 	<form class="form-horizontal" id="form0" name="form0" tal:attributes="action python:'%s/manage_addZMSSqlDb'%request['URL1'][len(request['BASE0']):]" method="post" enctype="multipart/form-data">
 		<input type="hidden" id="lang" name="lang" tal:attributes="value request/lang" />
 		<input type="hidden" id="preview" name="preview" tal:attributes="value request/preview" />
-		<input type="hidden" name="form_id" tal:attributes="value python:DateTime().timeTime()" />
+		<input type="hidden" id="form_id" name="form_id" tal:attributes="value python:DateTime().timeTime()" />
 		<input type="hidden" id="_sort_id" name="_sort_id:int" tal:attributes="value python:request.get('_sort_id',0)" />
 		<input type="hidden" id="id_prefix" name="id_prefix" tal:attributes="value python:request.get('id_prefix','')" />
 		<input type="hidden" id="ZMS_INSERT" name="ZMS_INSERT" tal:condition="python:request.get('ZMS_INSERT')" tal:attributes="value python:request.get('ZMS_INSERT')" />
@@ -23,7 +23,8 @@
 					</button>
 					<div class="dropdown-menu" role="menu">
 						<tal:block tal:repeat="SQLConnectionID python:here.SQLConnectionIDs()">
-								<a class="dropdown-item" href="javascript:;" tal:attributes="onclick python:'javascript:$(\'#connection_id\').val(\'%s\')\073$(\'button:first\',$(this).parents(\'.btn-group\')).html($(this).html())'%SQLConnectionID[1]">
+								<a class="dropdown-item" href="javascript:;" 
+									tal:attributes="onclick python:'javascript:$(\'#connection_id\').val(\'%s\')\073$(\'button:first\',$(this).parents(\'.btn-group\')).html($(this).html())'%SQLConnectionID[1]">
 									<span tal:attributes="data-url python:getattr(here,SQLConnectionID[1]).absolute_url()">
 										<i class="fas fa-database"></i>
 										<tal:block tal:content="python:SQLConnectionID[1]">SQLConnectionID</tal:block>

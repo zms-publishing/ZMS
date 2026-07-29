@@ -123,7 +123,7 @@
 	<legend>
 		<span tal:content="python:here.getZMILangStr('TAB_CHARFORMATS')">Char-Formats</span>
 		<span title="ZMS Format Provider" class="zmi-readme text-info ml-2"
-			tal:attributes="data-readme python:'%s/readme'%here.absolute_url()">
+			tal:attributes="data-readme python:'%s/%s/readme'%(here.getRootElement().absolute_url(), here.getId())">
 			<i class="far fa-question-circle"></i>
 		</span>
 	</legend>

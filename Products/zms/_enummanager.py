@@ -1,51 +1,42 @@
-################################################################################
-# _enummanager.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+_enummanager.py - ZMS Enumeration Manager
 
+This module implements EnumManager, a mixin class that loads enumeration values 
+from XML files in the product import folder. It provides a method getValues
+that reads an XML file corresponding to a given enumeration ID and returns 
+the entries as a list of key/value pairs. The XML files are expected to be
+named in the format 'enum.{id}.xml' and located in the import directory 
+of the product. The module uses the XmlAttrBuilder from the _xmllib module to 
+parse the XML files and extract the enumeration values.
+
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
+"""
 # Imports.
 from App.Common import package_home
 # Product Imports.
 from Products.zms import _xmllib
 
 
-################################################################################
-################################################################################
-###
-###   class EnumManager
-###
-################################################################################
-################################################################################
 class EnumManager(object):
 
-  # ----------------------------------------------------------------------------
-  #  EnumManager.__init__:
-  #
-  #  Constructor
-  # ----------------------------------------------------------------------------
+  """Load enumeration values from XML files in the product import folder."""
+
   def __init__(self):
+    """Initialize the enum manager mixin."""
     pass
     
-  # ----------------------------------------------------------------------------
-  #  EnumManager.getValues:
-  #
-  #  Returns values for enumeration specified by Id.
-  # ----------------------------------------------------------------------------
   getValues__roles__ = None
   def getValues(self, id, path=None):
+    """Return values for the named enumeration.
+
+    @param id: Enumeration identifier.
+    @type id: C{str}
+    @param path: Optional base directory for enum XML files.
+    @type path: C{str}
+    @return: Enumeration entries as a list of key/value pairs.
+    @rtype: C{list}
+    """
     if path is None:
       path = package_home(globals())+'/import/'
     filename = path + 'enum.%s.xml'%id
@@ -60,4 +51,3 @@ class EnumManager(object):
         v.append([i[1], i[0]])
     return v
 
-################################################################################

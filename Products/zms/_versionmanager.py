@@ -1,21 +1,14 @@
-################################################################################
-# _versionmanager.py
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-################################################################################
+"""
+_versionmanager.py - ZMS Version Manager for Content Versioning and Workflow
 
+Provides VersionItem, VersionManagerContainer for version lifecycle handling.
+It centralizes manager methods for version lifecycle handling, version state 
+access, and publication flow, keeping administrative logic in one place and 
+reducing duplication in callers.
+
+License: GNU General Public License v2 or later,
+Organization: ZMS Publishing
+"""
 # Imports.
 from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
@@ -38,6 +31,7 @@ from Products.zms import _zmsattributecontainer
 #  Applies information about user-id and date of change.
 # ------------------------------------------------------------------------------
 def setChangedBy(self, REQUEST, createWorkAttrCntnr=True):
+  """Set changedby."""
   prim_lang = self.getPrimaryLanguage()
   lang = REQUEST.get('lang', prim_lang)
   auth_user = REQUEST.get('AUTHENTICATED_USER', None)
@@ -75,6 +69,7 @@ def setChangedBy(self, REQUEST, createWorkAttrCntnr=True):
 #  Applies information about user-id and date of creation.
 # ------------------------------------------------------------------------------
 def setCreatedBy(self, REQUEST):
+  """Set createdby."""
   auth_user = REQUEST.get('AUTHENTICATED_USER', None)
   if auth_user is not None:
     #-- Set properties.
@@ -89,6 +84,7 @@ def setCreatedBy(self, REQUEST):
 #  Returns name object state in given language.
 # ------------------------------------------------------------------------------
 def getObjStateName(obj_state, lang):
+  """Return objstatename."""
   obj_state_name = obj_state
   if lang is not None:
     obj_state_name += '_'+lang.upper()
@@ -107,6 +103,7 @@ class VersionItem(object):
     # Create a SecurityInfo for this class. We will use this
     # in the rest of our class definition to make security
     # assertions.
+    """Provide helpers for VersionItem."""
     security = ClassSecurityInfo()
 
 
@@ -121,6 +118,7 @@ class VersionItem(object):
     #  Tag object-versions.
     # --------------------------------------------------------------------------
     def tagObjVersions(self, master_version, REQUEST, checkPending=None):
+      """Implement 'tagObjVersions'."""
       standard.writeLog( self, "[tagObjVersions]")
       count = 1
       if checkPending is None:
@@ -177,6 +175,7 @@ class VersionItem(object):
     # --------------------------------------------------------------------------
     def getObjStates(self):
       # Get object-states.
+      """Return objstates."""
       if not hasattr(self, '__work_state__'):
         self.__work_state__ = _globals.MyClass()
       states = getattr(self.__work_state__, 'states', [])
@@ -192,6 +191,7 @@ class VersionItem(object):
     #  VersionItem.getWfStates
     # --------------------------------------------------------------------------
     def getWfStates(self, REQUEST):
+      """Return wfstates."""
       states = self.getObjStates()
       lang = REQUEST.get('lang', None)
       obj_states = []
@@ -216,6 +216,7 @@ class VersionItem(object):
     #  Returns version-nr.
     # --------------------------------------------------------------------------
     def getVersionNr(self, d=None):
+        """Return versionnr."""
         if d is None:
             d= {
                 'master_version': self.attr('master_version'),
@@ -230,6 +231,7 @@ class VersionItem(object):
     #  Returns all version-items.
     # --------------------------------------------------------------------------
     def getVersionItems(self, REQUEST):
+      """Return versionitems."""
       children = []
       if not self.getAutocommit():
         types = self.getMetaobjIds()+['*']
@@ -247,6 +249,7 @@ class VersionItem(object):
     #  Returns true if version-item is modified, false otherwise.
     # --------------------------------------------------------------------------
     def isObjModified(self, REQUEST):
+      """Return whether objmodified."""
       return self.inObjStates( [ 'STATE_NEW', 'STATE_MODIFIED', 'STATE_DELETED'], REQUEST)
 
 
@@ -256,6 +259,7 @@ class VersionItem(object):
     #  Returns true if object has modified children, false otherwise.
     # --------------------------------------------------------------------------
     def syncObjModifiedChildren(self, REQUEST):
+      """Implement 'syncObjModifiedChildren'."""
       obj_state = 'STATE_MODIFIED_OBJS'
       rtnVal = False
       children = self.getVersionItems( REQUEST)
@@ -279,6 +283,7 @@ class VersionItem(object):
     #  Returns true if object has modified children, false otherwise.
     # --------------------------------------------------------------------------
     def hasObjModifiedChildren(self, REQUEST, depth=0):
+      """Return whether objmodifiedchildren."""
       obj_state = 'STATE_MODIFIED_OBJS'
       return self.inObjStates( [ obj_state], REQUEST)
 
@@ -289,6 +294,7 @@ class VersionItem(object):
     #  Resets translation.
     # --------------------------------------------------------------------------
     def resetObjTranslation(self):
+      """Implement 'resetObjTranslation'."""
       prim_lang = self.getPrimaryLanguage()
       for ob in self.getObjVersions():
         for lang in self.getLangIds():
@@ -303,6 +309,7 @@ class VersionItem(object):
     # --------------------------------------------------------------------------
     def initializeWorkVersion(self):
       # States.
+      """Implement 'initializeWorkVersion'."""
       self.__work_state__ = _globals.MyClass()
       # Create new work-version.
       attr_containers = self.objectValues(['ZMSAttributeContainer'])
@@ -324,6 +331,7 @@ class VersionItem(object):
     #  Checks if object can by displayed.
     # --------------------------------------------------------------------------
     def isCommitted(self, REQUEST):
+      """Return whether committed."""
       if standard.isPreviewRequest( REQUEST):
         committed = not self.inObjStates( [ 'STATE_DELETED'], REQUEST)
       else:
@@ -343,6 +351,7 @@ class VersionItem(object):
     #  Sets object-state.
     # --------------------------------------------------------------------------
     def setObjState(self, obj_state, lang):
+      """Set objstate."""
       state = getObjStateName(obj_state, lang)
       states = self.getObjStates()
       if not state in states:
@@ -357,6 +366,7 @@ class VersionItem(object):
     #  Deletes object-state of this object.
     # --------------------------------------------------------------------------
     def delObjStates(self, obj_states=[], REQUEST={}):
+      """Implement 'delObjStates'."""
       prim_lang = self.getPrimaryLanguage()
       lang = REQUEST.get('lang', prim_lang)
       states = self.getObjStates()
@@ -375,6 +385,7 @@ class VersionItem(object):
     #  Resets object-state of this object.
     # --------------------------------------------------------------------------
     def resetObjStates(self, REQUEST=None):
+      """Implement 'resetObjStates'."""
       if REQUEST is None:
         self.version_live_id = self.version_work_id
         self.version_work_id = None
@@ -390,6 +401,7 @@ class VersionItem(object):
     #  Checks if given states are in object-states of this object.
     # --------------------------------------------------------------------------
     def inObjStates(self, obj_states, REQUEST):
+      """Implement 'inObjStates'."""
       states = self.getObjStates()
       states.extend(self.getObjStateNames(REQUEST))
       if len(states) > 0:
@@ -408,6 +420,7 @@ class VersionItem(object):
     #  Checks if given states are in object-states of this object.
     # --------------------------------------------------------------------------
     def filteredObjStates(self, REQUEST):
+      """Implement 'filteredObjStates'."""
       obj_states = []
       states = self.getObjStates()
       if len(states) > 0:
@@ -425,6 +438,7 @@ class VersionItem(object):
     #  Returns a list of normalized object-states (language suffixes stripped off).
     # --------------------------------------------------------------------------
     def getObjStateNames(self, REQUEST):
+      """Return objstatenames."""
       lang = REQUEST.get('lang')
       
       # Current Object.
@@ -449,6 +463,7 @@ class VersionItem(object):
     #  VersionItem.setObjStateNew
     # --------------------------------------------------------------------------
     def setObjStateNew(self, REQUEST, reset=1):
+      """Set objstatenew."""
       obj_state = 'STATE_NEW'
       if reset: self.initializeWorkVersion()
       setChangedBy( self, REQUEST)
@@ -470,6 +485,7 @@ class VersionItem(object):
     #  VersionItem.setObjStateModified
     # --------------------------------------------------------------------------
     def setObjStateModified(self, REQUEST):
+      """Set objstatemodified."""
       obj_state = 'STATE_MODIFIED'
       setChangedBy( self, REQUEST)
       self.getRefToObjs()
@@ -480,6 +496,7 @@ class VersionItem(object):
     #  VersionItem.setObjStateDeleted
     # --------------------------------------------------------------------------
     def setObjStateDeleted(self, REQUEST):
+      """Set objstatedeleted."""
       obj_state = 'STATE_DELETED'
       setChangedBy( self, REQUEST)
       self.setObjState(obj_state, REQUEST['lang'])
@@ -497,6 +514,7 @@ class VersionItem(object):
     #  VersionItem.onChangeObj:
     # --------------------------------------------------------------------------
     def onChangeObj(self, REQUEST, forced=False, do_history=True):
+        """Implement 'onChangeObj'."""
         prim_lang = self.getPrimaryLanguage()
         lang = REQUEST.get('lang', prim_lang)
         
@@ -516,6 +534,7 @@ class VersionItem(object):
     #  VersionItem.commitObjChanges
     # --------------------------------------------------------------------------
     def _commitObjChanges(self, parent, REQUEST, forced=False, do_history=True, do_delete=True):
+      """Implement '_commitObjChanges'."""
       standard.writeLog( self, "[_commitObjChanges]: forced=%s, do_history=%s, do_delete=%s"%(str(forced), str(do_history), str(do_delete)))
       delete = False
       prim_lang = self.getPrimaryLanguage()
@@ -621,6 +640,7 @@ class VersionItem(object):
       return delete
 
     def commitObjChanges(self, parent, REQUEST, forced=False, do_history=True, do_delete=True):
+      """Implement 'commitObjChanges'."""
       t0 = time.time()
       standard.writeLog( self, "[commitObjChanges]: forced=%s, do_history=%s, do_delete=%s"%(str(forced), str(do_history), str(do_delete)))
       delete = self._commitObjChanges( parent, REQUEST, forced, do_history, do_delete)
@@ -650,6 +670,7 @@ class VersionItem(object):
     #  VersionItem.rollbackObjChanges
     # --------------------------------------------------------------------------
     def _rollbackObjChanges(self, parent, REQUEST, forced=0, do_delete=True):
+      """Implement '_rollbackObjChanges'."""
       standard.writeLog( self, "[_rollbackObjChanges]")
       delete = False
       prim_lang = self.getPrimaryLanguage()
@@ -736,6 +757,7 @@ class VersionItem(object):
       return delete
 
     def rollbackObjChanges(self, parent, REQUEST, forced=0, do_delete=True):
+      """Implement 'rollbackObjChanges'."""
       t0 = time.time()
       standard.writeLog( self, "[rollbackObjChanges]: forced=%s, do_delete=%s"%(str(forced), str(do_delete)))
       delete = self._rollbackObjChanges( parent, REQUEST, forced, do_delete)
@@ -757,6 +779,7 @@ class VersionItem(object):
     #  Pack history.
     # --------------------------------------------------------------------------
     def packHistory(self):
+      """Implement 'packHistory'."""
       count = 0
       if not self.getHistory():
         #-- Remove version-attribute-containers.
@@ -789,6 +812,7 @@ class VersionItem(object):
     #  Returns true if history is active, false otherwise.
     # --------------------------------------------------------------------------
     def getHistory( self):
+      """Return history."""
       active = True
       if active:
         active = active and self.getConfProperty('ZMS.Version.active', 0)==1
@@ -888,6 +912,7 @@ class VersionItem(object):
     #  Returns object-history for given version-nr.
     # --------------------------------------------------------------------------
     def getObjHistory(self, version_nr, REQUEST, children=True, deleted=True):
+      """Return objhistory."""
       standard.writeLog( self, '[getObjHistory]: version_nr=%s'%str(version_nr))
       obs = []
       ZMS_VERSION = REQUEST.get( 'ZMS_VERSION_%s'%self.id)
@@ -966,6 +991,7 @@ class VersionItem(object):
     #  version is returned, else the live-version is returned.
     # --------------------------------------------------------------------------
     def getObjVersion(self, REQUEST={}):
+        """Return objversion."""
         try:
             ob = None
             id = REQUEST.get( 'ZMS_VERSION_%s'%self.id, None)
@@ -996,6 +1022,7 @@ class VersionItem(object):
     #  Returns all attribute-containers.
     # --------------------------------------------------------------------------
     def getObjVersions(self):
+      """Return objversions."""
       try:
         obs = []
         for ob in self.objectValues(['ZMSAttributeContainer']):
@@ -1023,6 +1050,7 @@ class VersionItem(object):
     #  Restore object-version.
     # --------------------------------------------------------------------------
     def restoreObjVersion( self, ob_version, REQUEST):
+      """Implement 'restoreObjVersion'."""
       if ob_version is not None and \
          ob_version.id != self.version_work_id:
         REQUEST.set( 'ZMS_VERSION_%s'%self.id, None)
@@ -1087,7 +1115,9 @@ class VersionManagerContainer(object):
     # --------------------------------------------------------------------------
     #  VersionItem.isVersionContainer
     # --------------------------------------------------------------------------
+    """Provide helpers for VersionManagerContainer."""
     def isVersionContainer(self):
+      """Return whether versioncontainer."""
       b = False
       if self.isPage():
         b = self.isPageContainer()
@@ -1102,6 +1132,7 @@ class VersionManagerContainer(object):
     #  VersionManagerContainer.getVersionContainer
     # --------------------------------------------------------------------------
     def getVersionContainer(self):
+      """Return versioncontainer."""
       if self.isVersionContainer() or self.getParentNode() is None:
         return self
       return self.getParentNode().getVersionContainer()
@@ -1117,6 +1148,7 @@ class VersionManagerContainer(object):
     #  VersionManagerContainer.getRecipientWf
     # --------------------------------------------------------------------------
     def getRecipientWf(self, REQUEST=None):
+      """Return recipientwf."""
       raw = self.getConfProperty('zms._versionmanager.getRecipientWf.raw', 0)!=0
       recipient = ''
       name = self.getObjProperty('work_uid', REQUEST)
@@ -1133,6 +1165,7 @@ class VersionManagerContainer(object):
     #  VersionManagerContainer.getRecipientsByRole
     # --------------------------------------------------------------------------
     def getRecipientsByRole(self, roles=['ZMSEditor'], REQUEST=None):
+      """Return recipientsbyrole."""
       raw = self.getConfProperty('zms._versionmanager.getRecipientsByRole.raw', 0)!=0
       recipients = []
       langs = [REQUEST['lang']]
@@ -1166,6 +1199,7 @@ class VersionManagerContainer(object):
     #  Resets information about workflow-events.
     # --------------------------------------------------------------------------
     def resetWfStates(self, REQUEST):
+      """Implement 'resetWfStates'."""
       lang = REQUEST['lang']
       self.delObjStates(self.getWfActivitiesIds(), REQUEST)
       self.autoWfTransition(REQUEST)
@@ -1174,6 +1208,7 @@ class VersionManagerContainer(object):
     #  VersionManagerContainer.autoWfTransition
     # --------------------------------------------------------------------------
     def autoWfTransition(self, REQUEST):
+      """Implement 'autoWfTransition'."""
       standard.writeLog( self, "[autoWfTransition]")
       lang = REQUEST['lang']
       # Enter Container.
@@ -1282,6 +1317,7 @@ class VersionManagerContainer(object):
     #  Commit container.
     # --------------------------------------------------------------------------
     def commitObj(self, REQUEST={}, forced=False, do_history=True):
+      """Implement 'commitObj'."""
       standard.writeLog( self, "[commitObj]: forced=%s, do_history=%s"%(str(forced), str(do_history)))
       zmscontext = self
       prim_lang = self.getPrimaryLanguage()
@@ -1343,6 +1379,7 @@ class VersionManagerContainer(object):
     #  VersionManagerContainer.rollbackObj
     # --------------------------------------------------------------------------
     def rollbackObj(self, REQUEST):
+      """Implement 'rollbackObj'."""
       standard.writeLog( self, "[rollbackObj]")
       zmscontext = self
       
@@ -1362,4 +1399,3 @@ class VersionManagerContainer(object):
 # does the right thing with the security assertions.
 InitializeClass(VersionItem)
 
-################################################################################

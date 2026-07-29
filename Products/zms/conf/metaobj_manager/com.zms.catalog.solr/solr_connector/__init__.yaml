@@ -1,0 +1,119 @@
+solr_connector:
+  enabled: 0
+  lang_dict:
+    solr_connector.BTN_DESTROY:
+      eng: Delete Index
+      ger: Index löschen
+    solr_connector.BTN_SCHEMATIZE:
+      eng: Create Schema (JSON)
+      ger: Schema erzeugen (JSON)
+  name: Solr-Connector
+  package: com.zms.catalog.solr
+  revision: 1.1.1
+  type: ZMSLibrary
+  Attrs:
+    - id: properties
+      name: Property-Definitions (JSON)
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: constant
+      custom: |-
+        [
+          {
+            "id": "solr.url",
+            "type": "string",
+            "label": "URL",
+            "default_value": "http://localhost:8983/solr",
+            "is_target_of": ""
+          },
+          {
+            "id": "solr.core",
+            "type": "string",
+            "label": "Index-Name",
+            "default_value": "",
+            "is_target_of": ""
+          },
+          {
+            "id": "solr.username",
+            "type": "string",
+            "label": "Username",
+            "default_value": "admin",
+            "is_target_of": ""
+          },
+          {
+            "id": "solr.password",
+            "type": "password",
+            "label": "Password",
+            "default_value": "admin",
+            "is_target_of": ""
+          },
+          {
+            "id": "solr.schema",
+            "type": "text",
+            "label": "Schema",
+            "default_value": "{}",
+            "is_target_of": "schematize"
+          },
+          {
+            "id": "solr.parser",
+            "type": "string",
+            "label": "Parser",
+            "default_value": "http://localhost:9998/tika",
+            "is_target_of": ""
+          }
+        ]
+    - id: manage_solr_schematize
+      name: 'Schematize: Generate Schema'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: manage_solr_init
+      name: 'Init: Put Schema'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: manage_solr_objects_add
+      name: 'Objects: Index Solr'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: manage_solr_objects_remove
+      name: 'Objects: Delete Solr'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: manage_solr_objects_clear
+      name: 'Objects: Clear Client from Solr'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: manage_solr_destroy
+      name: 'Destroy: Delete Schema'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: solr_query
+      name: Query
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: solr_suggest
+      name: Suggest
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: readme
+      name: README.md
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: resource

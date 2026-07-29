@@ -5,7 +5,7 @@
 # docstring markup (epytext): http://epydoc.sourceforge.net/epytext.html
 # How to: https://github.com/zms-publishing/ZMS/pull/72
 # ##############
-cd /home/zope/src/zms-publishing/ZMS5
+cd /home/zope/src/zms-publishing/ZMS
 ~/vpy313/bin/pydoctor Products/zms/ \
 	--project-name ZMS \
 	--project-url https://github.com/zms-publishing/ZMS/ \

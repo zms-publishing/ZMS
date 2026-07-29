@@ -1,3 +1,14 @@
+"""
+mock_http.py
+
+Lightweight HTTP request/response test doubles for ZMS.
+
+This module provides minimal mock classes that emulate the parts of
+Zope's request, response, user, and session objects used by tests and helper
+code. It is intended for isolated unit-style execution without a full Zope
+runtime.
+"""
+
 class MockUser:
 
     def __init__(self, id):

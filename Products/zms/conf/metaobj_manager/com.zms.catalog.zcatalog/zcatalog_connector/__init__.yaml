@@ -1,0 +1,62 @@
+zcatalog_connector:
+  enabled: 0
+  lang_dict:
+    zcatalog_connector.BTN_DESTROY:
+      eng: Delete ZCatalog
+      ger: ZCatalog löschen
+  name: ZCatalog-Connector
+  package: com.zms.catalog.zcatalog
+  revision: 1.2.1
+  type: ZMSLibrary
+  Attrs:
+    - id: properties
+      name: Property-Definitions (JSON)
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: constant
+      custom: |-
+        [
+        ]
+    - id: manage_zcatalog_init
+      name: 'Init: Create ZCatalog(s)'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: manage_zcatalog_objects_add
+      name: 'Objects: Catalog to ZCatalog'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: manage_zcatalog_objects_remove
+      name: 'Objects: Uncatalog from ZCatalog'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: manage_zcatalog_objects_clear
+      name: 'Objects: Clear Client from ZCatalog'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: manage_zcatalog_destroy
+      name: 'Destroy: Delete ZCatalog(s)'
+      mandatory: 0
+      multilang: 0
+      repetitive: 0
+      type: External Method
+    - id: zcatalog_query
+      name: Query
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: External Method
+    - id: zcatalog_suggest
+      name: Suggest
+      mandatory: 0
+      multilang: 1
+      repetitive: 0
+      type: External Method

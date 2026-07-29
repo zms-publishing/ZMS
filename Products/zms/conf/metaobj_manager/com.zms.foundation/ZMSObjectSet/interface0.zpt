@@ -25,6 +25,9 @@ tr.inactive > td.data > * {
 body.zmi #metaobj_recordset_main_grid .dropdown-menu {
 	max-width: unset;
 }
+body.zmi .card.input_fields_ZMSObjectSet > #tabProperties {
+	display: none;
+}
 </style>
 
 <tal:block tal:define="global

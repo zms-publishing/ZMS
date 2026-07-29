@@ -4,7 +4,7 @@ ZMSObjectSet:
   enabled: 0
   name: ZMSObjectSet
   package: com.zms.foundation
-  revision: 5.0.2
+  revision: 6.0.0
   type: ZMSObject
   Attrs:
     - id: icon_clazz
@@ -113,8 +113,13 @@ ZMSObjectSet:
 
         	<div class="ZMSObjectSet accordion">
         		<div class="card" tal:repeat="record recordSet">
-        			<h3 class="card-header" style="font-size: 1.25rem;" tal:define="childNode python:zmscontext.operator_getattr(zmscontext,record['__id__'])">
-        				<a tal:attributes="href python:childNode.getHref2IndexHtml(request,deep=False); class python:childNode.meta_id;" tal:content="python:childNode.getTitle(request)">
+        			<h3 class="card-header" style="font-size: 1.25rem;" 
+        				tal:define="
+        					childNode python:zmscontext.operator_getattr(zmscontext,record['__id__']);
+        					childHref python:childNode.getHref2IndexHtml(request,deep=False)">
+        				<a tal:attributes="href python:childHref; class python:childNode.meta_id;" 
+        					tal:content="python:childNode.getTitle(request)"
+        					tal:on-error="structure python:childNode.getTitle(request)">
         					the title
         				</a>
         			</h3><!-- .card-header -->

@@ -83,6 +83,89 @@ function zmiObjectSetPaste(sender) {
 	return _zmiObjectSetExec(sender,'manage_pasteObjs');
 }
 
+function zmiObjectSetBuildGridParams(prefix) {
+	var params = {lang:zmiParams['lang'],AUTHENTICATED_USER:$(".authenticated_user").text()};
+	for (var i in localStorage) {
+		if (i.indexOf(prefix)==0) {
+			console.log("i="+i);
+			params[i.substring(prefix.length)] = localStorage[i];
+		}
+	}
+	// Force to ZMI language
+	params['lang'] = zmiParams['lang'];
+	return params;
+}
+
+function zmiObjectSetAssembleGrid($grid, prefix) {
+	// Assemble info.
+	$(".zmi-info",$grid).each(function() {
+		if (!$(this).hasClass("active")) {
+			$(this).parents("tr").addClass("inactive");
+		}
+	});
+
+	// Assemble update.
+	$(".dropdown-menu a[onclick='[[UPDATE]]']",$grid).each(function() {
+		var $btnGroup = $(this).parents(".btn-group");
+		var id = $("input[name='qindices:list']",$btnGroup).val();
+		var href = id + '/manage_main?lang=' + getZMILang();
+		$(this).attr({href:href,onclick:''});
+	});
+
+	// Assemble insert.
+	var insertHtml = ''
+	insertHtml += '<li class="dropdown-header insert-action"><i class="icon-caret-down fas fa-caret-down"></i> '+getZMILangStr('BTN_INSERT')+'</li>';
+	$("select[name='record_meta_ids:list'] option:selected").each(function() {
+		var $option = $(this);
+		insertHtml += '<a class="dropdown-item" href="javascript:;" onclick="addZMSCustom(0,\''+$option.text().trim()+'\')">'+$option.html().replace(/<[\S\s]*!--/gi,'<').replace(/--[\S\s]*>/gi,'>')+'</a>';
+	});
+	insertHtml += '<li class="dropdown-header insert-action"><i class="icon-caret-down fas fa-caret-down"></i> '+getZMILangStr('ATTR_ACTION')+'</li>';
+	$(".dropdown-menu .fa-plus",$grid).each(function() {
+		$(this).parents(".dropdown-item").replaceWith(insertHtml);
+	});
+
+}
+
+function zmiObjectSetSortHeaderClick(event) {
+	event.preventDefault();
+	var $link = $(event.currentTarget);
+	var href = $link.attr("href") || '';
+	if (href.length==0) {
+		return false;
+	}
+
+	var $grid = $("#metaobj_recordset_main_grid");
+	$(".ZMSRecordSet.main_grid form",$grid).css({'transition':'opacity 1.5s','opacity':'0.25'});
+	if ($("#loading",$grid).length==0) {
+		$grid.prepend("<div id='loading' class='zmi-page text-center' style='width:100%;position:absolute;margin-bottom:0.75em'><i class='text-primary fas fa-circle-notch fa-spin fa-3x'></i></div>");
+	}
+
+	var params = {};
+	try {
+		var sortUrl = new URL(href, window.location.href);
+		sortUrl.searchParams.forEach(function(value, key) {
+			params[key] = value;
+		});
+	}
+	catch (e) {
+		console.log("Could not parse sort-link URL", e);
+	}
+
+	var prefix = $grid.data('zms-prefix');
+	if (typeof prefix=='undefined' || prefix===null) {
+		prefix = $("meta[name=physical_path]").attr("content").split("/");
+		prefix = prefix[prefix.length-1]+".ZMSRecordSet.";
+		$grid.data('zms-prefix',prefix);
+	}
+	params = $.extend({}, zmiObjectSetBuildGridParams(prefix), params);
+
+	$.get("publicRecordSetGrid",params,function(data) {
+		$grid.html(data);
+		zmiObjectSetAssembleGrid($grid,prefix);
+	});
+	return false;
+}
+
 $(function() {
 
 	// always collapse last-modified-accordion
@@ -95,11 +178,14 @@ $(function() {
 	});
 
 	$("#tabProperties").hide();
-	$(".zmi-change-uid").after(' <a href="javascript:;" title="Change Objectset Configuration" onclick="$(\'#tabProperties\').toggle();"><i class="fas fa-cog"></i></a>');
+	$(".zmi-change-uid").after(' <a href="javascript:;" title="Change Objectset Configuration" onclick="$(\'#tabProperties\').slideToggle();"><i class="fas fa-cog"></i></a>');
 
 	// Relocate buttons.
 	var e = $(".controls.save:gt(0)").detach();
 	e.insertAfter(".form-group.coverage");
+
+	$(document).off('click.zmiObjectSetSort','#metaobj_recordset_main_grid table.zmi-sortable th > a');
+	$(document).on('click.zmiObjectSetSort','#metaobj_recordset_main_grid table.zmi-sortable th > a',zmiObjectSetSortHeaderClick);
 
 	$(".ZMSRecordSet form.form-horizontal,.ZMSRecordSet.main_grid > form").each(function() {
 		var prefix = $("meta[name=physical_path]").attr("content").split("/");
@@ -135,52 +221,14 @@ $(function() {
 			}
 		}
 
-		var params = {lang:zmiParams['lang'],AUTHENTICATED_USER:$(".authenticated_user").text()};
-		for (var i in localStorage) {
-			if (i.indexOf(prefix)==0) {
-				console.log("i="+i);
-				params[i.substring(prefix.length)] = localStorage[i];
-			}
-		}
-		// Force to ZMI language
-		params['lang'] = zmiParams['lang'];
+		var params = zmiObjectSetBuildGridParams(prefix);
 
 		$.get("publicRecordSetGrid",params,function(data) {
 			// Assemble grid.
 			var $grid = $("#metaobj_recordset_main_grid");
+			$grid.data('zms-prefix',prefix);
 			$grid.html(data);
-
-			// Assemble info.
-			$(".zmi-info",$grid).each(function() {
-				if (!$(this).hasClass("active")) {
-					$(this).parents("tr").addClass("inactive");
-				}
-			});
-
-			// Assemble update.
-			$(".dropdown-menu a[onclick='[[UPDATE]]']",$grid).each(function() {
-				var $btnGroup = $(this).parents(".btn-group");
-				var id = $("input[name='qindices:list']",$btnGroup).val();
-				var href = id + '/manage_main?lang=' + getZMILang();
-				$(this).attr({href:href,onclick:''});
-			});
-
-			// Assemble insert.
-			var insertHtml = ''
-			insertHtml += '<li class="dropdown-header insert-action"><i class="icon-caret-down fas fa-caret-down"></i> '+getZMILangStr('BTN_INSERT')+'</li>';
-			$("select[name='record_meta_ids:list'] option:selected").each(function() {
-				var $option = $(this);
-				insertHtml += '<a class="dropdown-item" href="javascript:;" onclick="addZMSCustom(0,\''+$option.text().trim()+'\')">'+$option.html().replace(/<[\S\s]*!--/gi,'<').replace(/--[\S\s]*>/gi,'>')+'</a>';
-			});
-			insertHtml += '<li class="dropdown-header insert-action"><i class="icon-caret-down fas fa-caret-down"></i> '+getZMILangStr('ATTR_ACTION')+'</li>';
-			$(".dropdown-menu .fa-plus",$grid).each(function() {
-				$(this).parents(".dropdown-item").replaceWith(insertHtml);
-			});
-
-			$(".ZMSRecordSet.main_grid table.zmi-sortable th a").on("click",function() {
-				$(".ZMSRecordSet.main_grid form").css({'transition':'opacity 1.5s','opacity':'0.25'});
-				$(".ZMSRecordSet.main_grid").prepend( "<div id='loading' class='zmi-page text-center' style='width:100%;position:absolute;margin-bottom:0.75em'><i class='text-primary fas fa-circle-notch fa-spin fa-3x'></i></div>");
-			})
+			zmiObjectSetAssembleGrid($grid,prefix);
 
 		});
 	});

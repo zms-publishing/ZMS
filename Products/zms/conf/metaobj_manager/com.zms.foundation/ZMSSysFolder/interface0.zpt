@@ -33,7 +33,7 @@
 <tr>
 	<th class="zmi-object-check">
 		<div class="btn-group">
-			<button class="btn btn-secondary border-0" onclick="zmiToggleSelectionButtonClick(this);return false"><i class="fas fa-check-square"></i></button>
+			<button class="btn btn-secondary border-0" onclick="event.preventDefault();zmiToggleSelectionButtonClick(this);return false"><i class="fas fa-check-square"></i></button>
 		</div>
 	</th>
 	<tal:block define="columns python:['meta_type','id','get_size','bobobase_modification_time'];

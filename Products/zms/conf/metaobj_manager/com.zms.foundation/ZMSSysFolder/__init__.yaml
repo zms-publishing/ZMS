@@ -12,7 +12,7 @@ ZMSSysFolder:
   enabled: 0
   name: ZMSSysFolder
   package: com.zms.foundation
-  revision: 5.0.0
+  revision: 5.0.1
   type: ZMSDocument
   Attrs:
     - id: icon_clazz

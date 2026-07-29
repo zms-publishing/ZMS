@@ -3,13 +3,16 @@
 from OFS.Folder import Folder
 import os
 import tempfile
+import shutil
 import unittest
 
 # Product imports.
 from tests.zms_test_util import *
 from Products.zms import mock_http
 from Products.zms import repositoryutil
+from Products.zms import standard
 from Products.zms import zms
+from Products.zms import yamlutil
 
 
 # /ZMS5> python3 -m unittest tests.test_repositoryutil.RepositoryUtilTest
@@ -43,6 +46,40 @@ class RepositoryUtilTest(ZMSTestCase):
       if isinstance(v, dict) and 'id' in v:
         return v
     return None
+
+  def _import_model_from_temp_repo(self, model_rel_dir, init_filename, init_content):
+    tmpdir = tempfile.mkdtemp(prefix='zms_repo_test_')
+    try:
+      model_dir = os.path.join(tmpdir, model_rel_dir)
+      os.makedirs(model_dir)
+      with open(os.path.join(model_dir, init_filename), 'w', encoding='utf-8') as f:
+        f.write(init_content)
+
+      models = repositoryutil.get_models_from_disk(self.context, tmpdir, deep=True)
+      translated = self.context.getMetaobjManager().translateRepositoryModel(models)
+      xml = standard.toXmlString(self.context, translated)
+      imported_ids = self.context.getMetaobjManager().importMetaobjXml(xml)
+      return imported_ids
+    finally:
+      shutil.rmtree(tmpdir, ignore_errors=True)
+
+  def _assert_imported_option_semantics(self, meta_id):
+    manager = self.context.getMetaobjManager()
+
+    executable_attr = manager.getMetaobjAttr(meta_id, 'record_meta_ids', sync=False)
+    self.assertIsNotNone(executable_attr)
+    self.assertIsInstance(executable_attr.get('keys'), list)
+    self.assertGreaterEqual(len(executable_attr.get('keys')), 2)
+    self.assertEqual('##', executable_attr['keys'][0])
+    self.assertIn('return l', executable_attr['keys'])
+
+    static_attr = manager.getMetaobjAttr(meta_id, 'record_static_pairs', sync=False)
+    self.assertIsNotNone(static_attr)
+    self.assertEqual(['de', 'German', 'en', 'English'], static_attr.get('keys'))
+
+    # Ensure static key lists are still interpreted as value/display pairs.
+    options = self.context.getObjOptions({'id': 'record_static_pairs', 'options': static_attr['keys']}, self.context.REQUEST)
+    self.assertEqual([['de', 'German'], ['en', 'English']], options)
 
   def test_get_system_conf_basepath(self):
     path = repositoryutil.get_system_conf_basepath()
@@ -142,6 +179,64 @@ class RepositoryUtilTest(ZMSTestCase):
     remote = {}
     actual = repositoryutil.get_diffs(local, remote, ignore=True)
     self.assertFalse(actual)  # identical structures should produce no diffs
+
+  def test_import_metaobj_from_init_py_preserves_executable_and_static_keys(self):
+    meta_id = 'TestRepoInitPyOptions'
+    init_py = (
+      'class %s:\n'
+      '\tid = "%s"\n'
+      '\tname = "%s"\n'
+      '\ttype = "ZMSObject"\n'
+      '\tclass Attrs:\n'
+      '\t\trecord_meta_ids = {"id":"record_meta_ids","name":"Type(s)","mandatory":1,"multilang":0,"repetitive":0,"type":"multiselect",'
+      '"keys":["##","l = []","return l"]}\n'
+      '\t\trecord_static_pairs = {"id":"record_static_pairs","name":"Static pairs","mandatory":0,"multilang":0,"repetitive":0,"type":"multiselect",'
+      '"keys":["de","German","en","English"]}\n'
+    ) % (meta_id, meta_id, meta_id)
+
+    if meta_id in self.context.getMetaobjIds():
+      self.context.getMetaobjManager().delMetaobj(meta_id)
+    self._import_model_from_temp_repo('metaobj_manager/demo/%s' % meta_id, '__init__.py', init_py)
+    self._assert_imported_option_semantics(meta_id)
+
+  def test_import_metaobj_from_init_yaml_preserves_executable_and_static_keys(self):
+    if yamlutil.parse('probe: 1') == yamlutil.IMPORT_ERROR_MSG:
+      self.skipTest('ruamel.yaml not available in test environment')
+
+    meta_id = 'TestRepoInitYamlOptions'
+    init_yaml = (
+      '%s:\n'
+      '  id: %s\n'
+      '  name: %s\n'
+      '  type: ZMSObject\n'
+      '  Attrs:\n'
+      '    - id: record_meta_ids\n'
+      '      name: Type(s)\n'
+      '      mandatory: 1\n'
+      '      multilang: 0\n'
+      '      repetitive: 0\n'
+      '      type: multiselect\n'
+      '      keys: |-\n'
+      '        ##\n'
+      '        l = []\n'
+      '        return l\n'
+      '    - id: record_static_pairs\n'
+      '      name: Static pairs\n'
+      '      mandatory: 0\n'
+      '      multilang: 0\n'
+      '      repetitive: 0\n'
+      '      type: multiselect\n'
+      '      keys:\n'
+      '        - de\n'
+      '        - German\n'
+      '        - en\n'
+      '        - English\n'
+    ) % (meta_id, meta_id, meta_id)
+
+    if meta_id in self.context.getMetaobjIds():
+      self.context.getMetaobjManager().delMetaobj(meta_id)
+    self._import_model_from_temp_repo('metaobj_manager/demo/%s' % meta_id, '__init__.yaml', init_yaml)
+    self._assert_imported_option_semantics(meta_id)
 
 
 if __name__ == "__main__":

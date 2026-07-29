@@ -52,7 +52,7 @@ ZMSObjectSet:
 
         <script src="/++resource++zms_/jquery/plugin/jquery.plugin.zmi_highlight.js"></script>
         <script>
-        //<![CDATA[
+        //<!--
         $(function() {
         	var applyListFilter = function() {
         		var filter = $('input.filter').val().toLowerCase().trim();
@@ -89,7 +89,7 @@ ZMSObjectSet:
         		t = setTimeout(applyListFilter, 500);
         	});
         });
-        //]]>
+        //-->
         </script>
 
         <tal:block tal:define="

@@ -117,15 +117,26 @@ function zmiObjectSetAssembleGrid($grid, prefix) {
 	});
 
 	// Assemble insert.
-	var insertHtml = ''
-	insertHtml += '<li class="dropdown-header insert-action"><i class="icon-caret-down fas fa-caret-down"></i> '+getZMILangStr('BTN_INSERT')+'</li>';
+	var $insertContent = $("<div></div>");
+	$insertContent.append(
+		$('<li class="dropdown-header insert-action"><i class="icon-caret-down fas fa-caret-down"></i> '+getZMILangStr('BTN_INSERT')+'</li>')
+	);
 	$("select[name='record_meta_ids:list'] option:selected").each(function() {
 		var $option = $(this);
-		insertHtml += '<a class="dropdown-item" href="javascript:;" onclick="addZMSCustom(0,\''+$option.text().trim()+'\')">'+$option.html().replace(/<[\S\s]*!--/gi,'<').replace(/--[\S\s]*>/gi,'>')+'</a>';
+		var custom = $option.text().trim();
+		var $item = $('<a class="dropdown-item" href="javascript:;"></a>');
+		$item.text($option.text());
+		$item.on("click", function(event) {
+			event.preventDefault();
+			addZMSCustom(0, custom);
+		});
+		$insertContent.append($item);
 	});
-	insertHtml += '<li class="dropdown-header insert-action"><i class="icon-caret-down fas fa-caret-down"></i> '+getZMILangStr('ATTR_ACTION')+'</li>';
+	$insertContent.append(
+		$('<li class="dropdown-header insert-action"><i class="icon-caret-down fas fa-caret-down"></i> '+getZMILangStr('ATTR_ACTION')+'</li>')
+	);
 	$(".dropdown-menu .fa-plus",$grid).each(function() {
-		$(this).parents(".dropdown-item").replaceWith(insertHtml);
+		$(this).parents(".dropdown-item").replaceWith($insertContent.children().clone(true));
 	});
 
 }

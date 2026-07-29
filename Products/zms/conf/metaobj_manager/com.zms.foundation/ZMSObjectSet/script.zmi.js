@@ -107,8 +107,12 @@ function zmiObjectSetAssembleGrid($grid, prefix) {
 	// Assemble update.
 	$(".dropdown-menu a[onclick='[[UPDATE]]']",$grid).each(function() {
 		var $btnGroup = $(this).parents(".btn-group");
-		var id = $("input[name='qindices:list']",$btnGroup).val();
-		var href = id + '/manage_main?lang=' + getZMILang();
+		var rawId = $("input[name='qindices:list']",$btnGroup).val();
+		if (typeof rawId !== 'string' || !/^[A-Za-z0-9._\/-]+$/.test(rawId)) {
+			return;
+		}
+		var safeId = encodeURIComponent(rawId);
+		var href = safeId + '/manage_main?lang=' + getZMILang();
 		$(this).attr({href:href,onclick:''});
 	});
 

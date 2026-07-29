@@ -22,6 +22,9 @@
 tr.inactive > td.data > * {
 	color:#AAA;
 }
+body.zmi #metaobj_recordset_main_grid .dropdown-menu {
+	max-width: unset;
+}
 </style>
 
 <tal:block tal:define="global
@@ -99,9 +102,7 @@ tr.inactive > td.data > * {
 
 </tal:block>
 
-<tal:block tal:replace="structure string:<form><div><div><div><div>">
-    <!-- Set of ZMI/HTML closing tags-->
-</tal:block>
+<tal:block tal:replace="structure string:<form><div><div><div><div>"><!-- Set of ZMI/HTML closing tags--></tal:block>
 
 <tal:block tal:define="dummy0 python:request.set('ZMS_HIDE_ELEMENTS',request.get('ZMS_HIDE_ELEMENTS',[])+['records'])"></tal:block>
 </tal:block>

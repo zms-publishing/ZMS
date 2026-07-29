@@ -1072,7 +1072,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       return pageext
 
 
-    def getHref2Html(self, fct, pageext, REQUEST):
+    def getHref2Html(self, fct, pageext, REQUEST, resilient=False):
       """
       Build an HTML href for the object or the owning page.
 
@@ -1082,16 +1082,69 @@ class ZMSObject(ZMSItem.ZMSItem,
       @type pageext: C{str}
       @param REQUEST: Current request.
       @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param resilient: Use odd-parent-safe traversal for acquisition edge cases.
+      @type resilient: C{bool}
       @return: Context-aware href.
       @rtype: C{str}
       """
       if not self.isPage():
-        parent = self.getParentNode()
-        pageext = parent.getPageExt(REQUEST)
-        href = parent.getHref2Html( fct, pageext, REQUEST)
-        if href.find('#') > 0:
-          href = href[:href.find('#')]
-        href += '#' + self.id
+        if not resilient:
+          try:
+            parent = self.getParentNode()
+            pageext = parent.getPageExt(REQUEST)
+            href = parent.getHref2Html(fct, pageext, REQUEST, resilient=False)
+            if href.find('#') > 0:
+              href = href[:href.find('#')]
+            href += '#' + self.id
+          except Exception:
+            # Fallback to robust traversal only for problematic acquisition chains.
+            href = self.getHref2Html(fct, pageext, REQUEST, resilient=True)
+        else:
+          parent = self.getParentNode()
+          page_parent = None
+          # Keep traversal bounded and resilient to odd acquisition parents.
+          for _ in range(64):
+            if parent is None or parent is self:
+              break
+            try:
+              if parent.isPage():
+                page_parent = parent
+                break
+            except AttributeError:
+              parent = getattr(parent, 'aq_parent', None)
+              continue
+            except Exception:
+              break
+
+            try:
+              next_parent = parent.getParentNode()
+            except AttributeError:
+              next_parent = getattr(parent, 'aq_parent', None)
+            except Exception:
+              break
+            if next_parent is None or next_parent is parent:
+              break
+            parent = next_parent
+
+          if page_parent is not None:
+            pageext = page_parent.getPageExt(REQUEST)
+            href = page_parent.getDeclUrl(REQUEST) + '/'
+            if REQUEST.get('ZMS_INDEX_HTML', 0)==1 or fct != 'index' or len(page_parent.getLangIds())>1:
+              href += '%s_%s%s'%(fct, REQUEST.get('lang', page_parent.getPrimaryLanguage()), pageext)
+            if REQUEST.get('preview', '')=='preview':
+              href = standard.url_append_params(href, {'preview':'preview'})
+            if href.find('#') > 0:
+              href = href[:href.find('#')]
+            href += '#' + self.id
+          else:
+            href = '#' + self.id
+            if parent is not None:
+              try:
+                base = parent.absolute_url()
+                if base:
+                  href = base.rstrip('/') + '/#' + self.id
+              except Exception:
+                pass
       else:
         href = self.getDeclUrl(REQUEST)+'/'
         # Assemble href.
@@ -1189,7 +1242,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     #++
 
 
-    def getHref2IndexHtml(self, REQUEST, deep=1):
+    def getHref2IndexHtml(self, REQUEST, deep=1, resilient=False):
       """
       Return the default public URL for the object in the current request.
 
@@ -1197,6 +1250,8 @@ class ZMSObject(ZMSItem.ZMSItem,
       @type REQUEST: C{ZPublisher.HTTPRequest}
       @param deep: Traverse into descendant pages when needed.
       @type deep: C{int}
+      @param resilient: Enable odd-parent-safe URL traversal.
+      @type resilient: C{bool}
       @return: Public object URL.
       @rtype: C{str}
       """
@@ -1225,7 +1280,12 @@ class ZMSObject(ZMSItem.ZMSItem,
                       return get_page_with_elements(childNode)
               return node
             ob = get_page_with_elements(self)
-          value = ob.getHref2Html( fct, ob.getPageExt(REQUEST), REQUEST)
+          try:
+            value = ob.getHref2Html(fct, ob.getPageExt(REQUEST), REQUEST, resilient=resilient)
+          except Exception:
+            if resilient:
+              raise
+            value = ob.getHref2Html(fct, ob.getPageExt(REQUEST), REQUEST, resilient=True)
       return value
 
 

@@ -77,7 +77,7 @@ class ReqBuff(object):
       """
       request = getattr(self, 'REQUEST', getRequest())
       if key is None: # For debugging purposes, return whole buffer.
-        return None   # request.get('__buff__',{})
+        return request.get('__buff__',{})
       buff = request['__buff__']
       reqBuffId = self.getReqBuffId(key)
       return getattr(buff, reqBuffId)

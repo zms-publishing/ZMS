@@ -1,0 +1,5 @@
+com.zms.llm:
+  enabled: 1
+  name: com.zms.llm
+  revision: 0.0.1
+  type: ZMSPackage

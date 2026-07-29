@@ -23,7 +23,6 @@ class api(object):
         If there are decorator arguments, the function
         to be decorated is not passed to the constructor!
         """
-        #--print("Inside __init__()", kwargs)
         self.kwargs = kwargs
 
     def __call__(self, f):
@@ -32,12 +31,8 @@ class api(object):
         once, as part of the decoration process! You can only give
         it a single argument, which is the function object.
         """
-        #--print("Inside __call__()")
         def wrapped_f(*args, **kwargs):
-            #--print("Inside wrapped_f()", args, kwargs)
-            #--print("Decorator arguments:", self.kwargs)
             data = f(*args)
-            #--print("After f(*args)")
             decoration = {x for x in kwargs if kwargs.get(x)}
             if decoration:
                 return {x:self.kwargs.get(x) for x in decoration}, data
@@ -137,7 +132,6 @@ def get_attrs(node):
                     data[id if monolang else '%s_%s'%(id,lang)] = get_attr(node,id)
             else:
                 data[id] = get_attr(node,id)
-    # print("data",data)
     return data
 
 
@@ -154,7 +148,6 @@ class RestApiController(object):
             self.ids = [x for x in self.path_to_handle if x != '++rest_api'] # remove ++rest_api as first element
             while self.ids:
                 id = self.ids[0]
-                print(id,context)
                 if id.startswith('uid:'):
                   context = context.getLinkObj('{$%s}'%id)
                 elif id not in context.getPhysicalPath():
@@ -175,6 +168,12 @@ class RestApiController(object):
             if self.ids == ['get_htmldiff']:
                 decoration, data = self.get_htmldiff(self.context, content_type=True)
                 return data
+            elif self.ids == ['llm_chat']:
+                decoration = {'content_type':'application/json'}
+                data = self._handle_llm_chat(REQUEST)
+                REQUEST.RESPONSE.setHeader('Content-Type', decoration['content_type'])
+                REQUEST.RESPONSE.setHeader('Content-Disposition', 'inline;filename="llm_chat.json"')
+                return json.dumps(standard.scalar(data))
             else:
                 return None
         if self.method == 'GET':
@@ -207,6 +206,17 @@ class RestApiController(object):
                 decoration, data = self.body_content(self.context, content_type=True)
             elif self.ids == [] or self.ids == ['get']:
                 decoration, data = self.get(self.context, content_type=True)
+            elif self.ids == ['llm_chat']:
+                data = self._handle_llm_chat(REQUEST)
+                decoration = {'content_type':'application/json'}
+            elif self.ids == ['llm_provider_info']:
+                connector = self.context.getLLMConnector()
+                data = connector.get_provider_info() if connector is not None else {'error': 'No LLM connector configured.'}
+                decoration = {'content_type':'application/json'}
+            elif self.ids == ['llm_ollama_models']:
+                connector = self.context.getLLMConnector()
+                data = connector.get_ollama_models() if connector is not None else {'error': 'No LLM connector configured.', 'models': []}
+                decoration = {'content_type':'application/json'}
             else:
                 data = {'ERROR':'Not Found','context':str(self.context),'path_to_handle':self.path_to_handle,'ids':self.ids}
             ct = decoration['content_type']
@@ -216,6 +226,39 @@ class RestApiController(object):
                 data = json.dumps(standard.scalar(data))
             return data
         return None
+
+    def _handle_llm_chat(self, REQUEST):
+        def _as_bool(value, default=False):
+            if value is None:
+                return default
+            if isinstance(value, bool):
+                return value
+            return str(value).strip().lower() in ('1', 'true', 'yes', 'on')
+
+        connector = self.context.getLLMConnector()
+        if connector is None:
+            return {'error': 'No LLM connector configured. Add a ZMSLLMConnector to the ZMS root.'}
+        # Accept either a full messages[] array (multi-turn) or a single message string
+        raw_messages = REQUEST.get('messages', '')
+        if raw_messages:
+            try:
+                messages = json.loads(raw_messages) if isinstance(raw_messages, str) else raw_messages
+            except (ValueError, TypeError):
+                messages = [{'role': 'user', 'content': str(raw_messages)}]
+        else:
+            message = REQUEST.get('message', '')
+            messages = [{'role': 'user', 'content': message}]
+
+        preserve_html = _as_bool(REQUEST.get('preserve_html', None), default=False)
+
+        agent_mode = _as_bool(REQUEST.get('agent_mode', '0'), default=False)
+        if agent_mode:
+            return connector.chat_with_tools(messages, self.context, preserve_html=preserve_html)
+        raw = connector.chat(messages, preserve_html=preserve_html)
+        if 'error' in raw:
+            return {'error': raw['error']}
+        msg = raw.get('message') or {}
+        return {'reply': msg.get('content', '')}
 
     @api(tag="zmsindex", pattern="/zmsindex", content_type="application/json")
     def zmsindex(self, context):

@@ -9,7 +9,7 @@ function add_new_row(this_btn) {
 	let table_id  = $(this_btn).closest('table').attr('id').split('_').pop();
 	let row_count = $('tbody tr',$(this_btn).closest('table')).length;
 	let new_row_name = `new_row_${table_id}_${row_count}`;
-	let old_id_html = (table_id == 'languages') ? '' : `<input type="hidden" name="old_ids:list" value="new${row_count}">`;
+	let old_id_html = (table_id == 'languages' || table_id == 'tablecolumns') ? '' : `<input type="hidden" name="old_ids:list" value="new${row_count}">`;
 	let new_btn_html = `
 		${old_id_html}
 		<span class="btn btn-secondary mr-1 w-100" style="color:#999"
@@ -108,7 +108,7 @@ function renew_sort_options(this_table) {
 		row_counter++;
 		let sort_options_html = ``;
 		let old_id = $(this).find('td.meta-id input').attr('name');
-		let old_id_html = (table_id == 'languages') ? '' : `<input type="hidden" name="old_ids:list" value="${old_id}">`;
+		let old_id_html = (table_id == 'languages' || table_id == 'tablecolumns') ? '' : `<input type="hidden" name="old_ids:list" value="${old_id}">`;
 		for (let i = 1; i < sort_options_len; i++) {
 			if (i == row_counter) {
 				sort_options_html += `<option value="${i}" selected>${i}</option>`;

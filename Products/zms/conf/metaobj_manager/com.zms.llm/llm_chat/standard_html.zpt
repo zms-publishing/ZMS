@@ -1,0 +1,429 @@
+<tal:block tal:define="zmscontext options/zmscontext;
+	oid python:zmscontext.getId();
+	rest_base python:zmscontext.absolute_url()+'/++rest_api';
+	storage_key python:'zms_llm_chat_%s'%oid;
+	agent_key python:'zms_llm_agent_%s'%oid;
+	title python:zmscontext.attr('title') or 'LLM Chat';
+	placeholder python:zmscontext.attr('placeholder') or 'Ask me anything…';
+	welcome python:zmscontext.attr('welcome_text') or '';
+	agent_mode_supported python:zmscontext.attr('agent_mode_supported') and '1' or ''">
+	<div class="zms-llm-chat"
+		tal:attributes="data-uid oid; data-rest-base rest_base; data-storage-key storage_key; data-agent-key agent_key">
+		<div class="zms-llm-chat-header">
+			<i class="fas fa-robot"></i>
+			<span tal:content="title">LLM Chat</span>
+		</div>
+		<div class="zms-llm-chat-console" tal:attributes="id python:'llm-console-%s'%oid">
+			<div class="zms-llm-chat-welcome" tal:condition="welcome" tal:content="welcome">Hello! Ask me a question.
+			</div>
+		</div>
+		<div class="zms-llm-chat-input-bar">
+			<div class="input-group input-group-sm">
+				<div class="input-group-prepend">
+					<div class="input-group-text zms-llm-agent-toggle"
+						tal:attributes="title python:'Agent Mode is %s supported'%(bool(agent_mode_supported) and '' or 'not')">
+						<input type="checkbox" class="mr-1" tal:attributes="
+							id python:'llm-agent-%s'%oid;
+							disabled python:not bool(agent_mode_supported) and 'disabled' or None" />
+						<label tal:attributes="for python:'llm-agent-%s'%oid" class="mb-0 small"
+							style="cursor:pointer;user-select:none">Agent</label>
+					</div>
+				</div>
+				<textarea class="form-control" rows="1"
+					tal:attributes="id python:'llm-message-%s'%oid; placeholder placeholder"></textarea>
+				<div class="input-group-append">
+					<button class="btn btn-primary" type="button" tal:attributes="id python:'llm-send-%s'%oid"><i
+						class="fas fa-paper-plane"></i></button>
+					<button class="btn btn-secondary" type="button" tal:attributes="id python:'llm-clear-%s'%oid"><i
+						class="fas fa-trash"></i></button>
+				</div>
+				<div class="zms-llm-chat-status" tal:attributes="id python:'llm-status-%s'%oid" aria-live="polite">
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		//<!--
+		$(function () {
+			$('.zms-llm-chat').each(function () {
+				var $root = $(this);
+				if ($root.data('initialized')) {
+					return;
+				}
+				$root.data('initialized', true);
+
+				var uid = String($root.data('uid'));
+				var restBase = String($root.data('rest-base'));
+				var storageKey = String($root.data('storage-key'));
+				var agentKey = String($root.data('agent-key'));
+				var $console = $('#llm-console-' + uid);
+				var $message = $('#llm-message-' + uid);
+				var $send = $('#llm-send-' + uid);
+				var $clear = $('#llm-clear-' + uid);
+				var $agent = $('#llm-agent-' + uid);
+				var $status = $('#llm-status-' + uid);
+
+				var chatHistory = [];
+				var chatTurns = [];
+				var inputHistoryIndex = -1;
+				var inputHistoryDraft = '';
+				var copyButtonSeq = 0;
+				// Keep status feedback short to avoid visual noise while still being readable.
+				var STATUS_TIMEOUT_MS = 1600;
+
+				try {
+					$agent.prop('checked', localStorage.getItem(agentKey) === '1');
+				} catch (e) { }
+
+				$agent.on('change', function () {
+					try { localStorage.setItem(agentKey, this.checked ? '1' : '0'); } catch (e) { }
+				});
+
+				function saveChatHistory() {
+					try { localStorage.setItem(storageKey, JSON.stringify({ history: chatHistory, turns: chatTurns })); } catch (e) { }
+				}
+
+				function renderMessage(role, content, isError) {
+					if (role === 'user') {
+						return '<div class="llm-msg-user">' + $('<div/>').text(content).html() + '</div>';
+					}
+					if (isError) {
+						return '<div class="llm-error">' + $('<div/>').text(content).html() + '</div>';
+					}
+					var id = 'copy-' + uid + '-' + (++copyButtonSeq);
+					return '<div class="llm-reply"><i id="' + id + '" class="fas fa-copy llm-copy-btn" title="Copy" tabindex="0" role="button" aria-label="Copy reply"></i>' + $('<div/>').text(content).html() + '</div>';
+				}
+
+				function buildToolResultMap(turns) {
+					var map = {};
+					for (var i = 0; i < turns.length; i++) {
+						var t = turns[i];
+						if (t && t.role === 'tool' && t.tool_call_id) {
+							var parsed = t.content;
+							try { parsed = JSON.parse(t.content || '{}'); } catch (e) { }
+							map[t.tool_call_id] = parsed;
+						}
+					}
+					return map;
+				}
+
+				function renderToolCall(turn, toolResultMap) {
+					var tcs = turn.tool_calls || [];
+					var html = '<div class="llm-tool-group">';
+					for (var i = 0; i < tcs.length; i++) {
+						var tc = tcs[i];
+						var fn = tc['function'] || {};
+						var argsStr = fn['arguments'] || '{}';
+						var argsObj = {};
+						try { argsObj = JSON.parse(argsStr); } catch (e) { argsObj = argsStr; }
+						var result = toolResultMap && tc.id ? toolResultMap[tc.id] : undefined;
+						html += '<div class="llm-tool-call"><span class="llm-tool-badge"><i class="fas fa-wrench mr-1"></i>' +
+							$('<div/>').text(fn['name'] || 'tool').html() + '</span>' +
+							'<pre class="llm-tool-args">' + $('<div/>').text(JSON.stringify(argsObj, null, 2)).html() + '</pre>' +
+							(result !== undefined ? '<pre class="llm-tool-result">' + $('<div/>').text(JSON.stringify(result, null, 2)).html() + '</pre>' : '') +
+							'</div>';
+					}
+					html += '</div>';
+					return html;
+				}
+
+				function renderTurns(turns) {
+					var toolResultMap = buildToolResultMap(turns);
+					var html = '';
+					for (var i = 0; i < turns.length; i++) {
+						var t = turns[i];
+						if (t.role === 'user') html += renderMessage('user', t.content || '', false);
+						else if (t.role === 'tool') { }
+						else if (t.tool_calls && t.tool_calls.length) html += renderToolCall(t, toolResultMap);
+						else if (t.error) html += renderMessage('assistant', t.content || '', true);
+						else html += renderMessage('assistant', t.content || '', false);
+					}
+					return html;
+				}
+
+				function loadChatHistory() {
+					try {
+						var stored = localStorage.getItem(storageKey);
+						if (!stored) return;
+						var saved = JSON.parse(stored);
+						if (!saved) return;
+						chatHistory = saved.history || [];
+						chatTurns = saved.turns || [];
+						if (chatTurns.length) {
+							$console.html(renderTurns(chatTurns));
+							$console.scrollTop($console[0].scrollHeight);
+						}
+					} catch (e) { }
+				}
+				loadChatHistory();
+
+				function getUserInputHistory() {
+					return chatHistory.filter(function (m) { return m.role === 'user'; });
+				}
+
+				function resetInputHistoryNavigation() {
+					inputHistoryIndex = -1;
+					inputHistoryDraft = '';
+				}
+
+				function setStatus(message, isError) {
+					$status.text(message || '');
+					$status.toggleClass('text-danger', !!isError);
+					$status.toggleClass('text-muted', !isError);
+					if (message) {
+						setTimeout(function () {
+							$status.text('');
+						}, STATUS_TIMEOUT_MS);
+					}
+				}
+
+				function handleChatResponse(resp, spinnerId) {
+					$('#' + spinnerId).remove();
+					if (resp.error) {
+						var errText = typeof resp.error === 'object' ? '[' + resp.error.code + '] ' + resp.error.message : String(resp.error);
+						chatTurns.push({ role: 'assistant', content: errText, error: true });
+						saveChatHistory();
+						$console.append(renderMessage('assistant', errText, true));
+					} else if (resp.turns) {
+						var newTurns = resp.turns;
+						for (var i = 0; i < newTurns.length; i++) {
+							var t = newTurns[i];
+							chatTurns.push(t);
+							if (t.role === 'assistant' && !t.tool_calls) {
+								chatHistory.push({ role: 'assistant', content: t.content || '' });
+							}
+						}
+						saveChatHistory();
+						$console.append(renderTurns(newTurns));
+					} else {
+						var content = resp.reply || '';
+						chatHistory.push({ role: 'assistant', content: content });
+						chatTurns.push({ role: 'assistant', content: content });
+						saveChatHistory();
+						$console.append(renderMessage('assistant', content, false));
+					}
+					$console.scrollTop($console[0].scrollHeight);
+				}
+
+				function sendMessage(message) {
+					if (!message || !message.trim()) return;
+					var agentMode = $agent.is(':checked');
+					chatHistory.push({ role: 'user', content: message });
+					chatTurns.push({ role: 'user', content: message });
+					saveChatHistory();
+					var payload = { messages: JSON.stringify(chatHistory), agent_mode: agentMode ? '1' : '0' };
+
+					var spinnerId = 'spin-' + Date.now();
+					$console.append(renderMessage('user', message, false) + '<div class="llm-reply llm-reply-pending" id="' + spinnerId + '"><i class="fas fa-spinner fa-spin"></i> Waiting…</div>');
+					$console.scrollTop($console[0].scrollHeight);
+
+					$.ajax({
+						method: 'POST',
+						url: restBase + '/llm_chat',
+						dataType: 'json',
+						data: payload
+					})
+						.done(function (resp) {
+							handleChatResponse(resp, spinnerId);
+						})
+						.fail(function (jqXHR, textStatus, errorThrown) {
+							$.ajax({
+								method: 'GET',
+								url: restBase + '/llm_chat',
+								dataType: 'json',
+								data: { messages: payload.messages, agent_mode: payload.agent_mode }
+							})
+								.done(function (resp) {
+									handleChatResponse(resp, spinnerId);
+								})
+								.fail(function (jqXHR2, textStatus2, errorThrown2) {
+									var errText = '[REQUEST_FAILED] POST Status: ' + textStatus + ', Error: ' + errorThrown;
+									errText += ' | GET Status: ' + textStatus2 + ', Error: ' + errorThrown2;
+									chatTurns.push({ role: 'assistant', content: errText, error: true });
+									saveChatHistory();
+									$('#' + spinnerId).removeClass('llm-reply llm-reply-pending').addClass('llm-error').html($('<div/>').text(errText).html());
+								});
+						});
+				}
+
+				$message.on('keydown', function (e) {
+					if (e.which === 13 && !e.shiftKey) {
+						e.preventDefault();
+						sendMessage($(this).val());
+						$(this).val('');
+						resetInputHistoryNavigation();
+						return;
+					}
+					if (e.which === 38 || e.which === 40) {
+						var userEntries = getUserInputHistory();
+						if (!userEntries.length) return;
+						if (e.which === 38) {
+							if (inputHistoryIndex === -1) {
+								inputHistoryDraft = $(this).val();
+								inputHistoryIndex = userEntries.length - 1;
+							} else if (inputHistoryIndex > 0) {
+								inputHistoryIndex -= 1;
+							}
+							$(this).val(userEntries[inputHistoryIndex].content);
+							e.preventDefault();
+						} else if (inputHistoryIndex !== -1) {
+							if (inputHistoryIndex < userEntries.length - 1) {
+								inputHistoryIndex += 1;
+								$(this).val(userEntries[inputHistoryIndex].content);
+							} else {
+								$(this).val(inputHistoryDraft);
+								resetInputHistoryNavigation();
+							}
+							e.preventDefault();
+						}
+					}
+				});
+
+				$send.on('click', function () {
+					var msg = $message.val();
+					sendMessage(msg);
+					$message.val('');
+					resetInputHistoryNavigation();
+				});
+
+				$clear.on('click', function () {
+					chatHistory = [];
+					chatTurns = [];
+					resetInputHistoryNavigation();
+					$console.empty();
+					try { localStorage.removeItem(storageKey); } catch (e) { }
+				});
+
+				$root.on('click', '.llm-copy-btn', function () {
+					var text = $(this).closest('.llm-reply').clone().find('.llm-copy-btn').remove().end().text().trim();
+					if (!navigator.clipboard || !navigator.clipboard.writeText) {
+						var $fallback = $('<textarea class="sr-only"></textarea>').val(text).appendTo('body');
+						$fallback.trigger('focus').trigger('select');
+						setStatus('Clipboard API unavailable. Press Ctrl+C/Cmd+C to copy.', true);
+						setTimeout(function () { $fallback.remove(); }, STATUS_TIMEOUT_MS);
+						return;
+					}
+					navigator.clipboard.writeText(text)
+						.then(function () { setStatus('Copied.'); })
+						.catch(function () { setStatus('Copy failed – please select and copy manually.', true); });
+				});
+				$root.on('keydown', '.llm-copy-btn', function (e) {
+					if (e.which === 13 || e.which === 32) {
+						e.preventDefault();
+						$(this).trigger('click');
+					}
+				});
+			});
+		});
+		//-->
+	</script>
+
+	<style>
+		/*<!--*/
+		.zms-llm-chat {
+			border: 1px solid #dee2e6;
+			border-radius: .25rem;
+			overflow: hidden;
+			background: #fff;
+		}
+
+		.zms-llm-chat .zms-llm-chat-header {
+			background: #f8f9fa;
+			padding: .55rem .75rem;
+			font-weight: 600;
+			border-bottom: 1px solid #dee2e6;
+		}
+
+		.zms-llm-chat .zms-llm-chat-console {
+			min-height: 240px;
+			max-height: 60vh;
+			overflow-y: auto;
+			background: #fafafa;
+		}
+
+		.zms-llm-chat .zms-llm-chat-welcome {
+			padding: .75rem;
+			color: #666;
+			font-size: .9rem;
+			border-bottom: 1px dotted #ddd;
+		}
+
+		.zms-llm-chat .llm-msg-user {
+			color: #444;
+			background: #f5f5f5;
+			font-weight: 600;
+			padding: .55rem .75rem;
+			border-top: 1px solid #e4e4e4;
+		}
+
+		.zms-llm-chat .llm-reply,
+		.zms-llm-chat .llm-error {
+			padding: .5rem .75rem;
+			font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+			white-space: pre-wrap;
+			word-break: break-word;
+		}
+
+		.zms-llm-chat .llm-reply-pending {
+			color: #888;
+			font-style: italic;
+		}
+
+		.zms-llm-chat .llm-error {
+			color: #900;
+		}
+
+		.zms-llm-chat .llm-copy-btn {
+			cursor: pointer;
+			color: #354e66;
+			margin-right: .3rem;
+		}
+
+		.zms-llm-chat .llm-tool-group {
+			padding: .4rem .75rem;
+			border-top: 1px dotted #ddd;
+			background: #fcfcfc;
+		}
+
+		.zms-llm-chat .llm-tool-call {
+			margin-bottom: .4rem;
+		}
+
+		.zms-llm-chat .llm-tool-badge {
+			display: inline-block;
+			font-size: .75rem;
+			padding: .15rem .4rem;
+			border-radius: .2rem;
+			background: #e9ecef;
+			color: #495057;
+		}
+
+		.zms-llm-chat .llm-tool-args {
+			margin: .35rem 0 0;
+			padding: .35rem;
+			background: #fff;
+			border: 1px solid #eee;
+			font-size: .75rem;
+		}
+
+		.zms-llm-chat .zms-llm-chat-input-bar {
+			padding: .5rem;
+			background: #fff;
+			border-top: 1px solid #dee2e6;
+		}
+
+		.zms-llm-chat .zms-llm-chat-status {
+			min-height: 1.1rem;
+			font-size: .75rem;
+			margin-top: .35rem;
+		}
+
+		.zms-llm-chat .zms-llm-agent-toggle {
+			background: #f8f9fa;
+			border-right: 0;
+		}
+
+		/*-->*/
+	</style>
+</tal:block>

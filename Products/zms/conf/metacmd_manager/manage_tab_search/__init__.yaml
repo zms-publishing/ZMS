@@ -8,7 +8,7 @@ manage_tab_search:
   name: TAB_SEARCH
   nodes: '{$}'
   package: com.zms.custom.metacmd.tabs
-  revision: 5.0.2
+  revision: 5.2.0
   roles:
     - '*'
   stereotype: tab

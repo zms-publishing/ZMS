@@ -61,7 +61,7 @@ class ZMSMetamodelProvider(
 
     # Management Permissions.
     __administratorPermissions__ = (
-      'manage_changeProperties', 'manage_ajaxChangeProperties', 'manage_main', 'manage_main_import', 'manage_bigpicture',
+      'manage_changeProperties', 'manage_ajaxChangeProperties', 'manage_create_default_zpt', 'manage_main', 'manage_main_import', 'manage_bigpicture',
       'manage_changeMetaProperties', 'manage_metas',
     )
     __authorPermissions__ = (

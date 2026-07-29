@@ -587,6 +587,62 @@ class AccessableContainer(AccessableObject):
         permissions = standard.concat_list(permissions, role_permissions)
         self.manage_role(role_to_manage=role, permissions=permissions)
 
+
+    def refreshClientAssignments(self):
+      """Validate and correct persisted node home_id mappings on root config."""
+      standard.writeLog(self, '[refreshClientAssignments]')
+      root = self.getRootElement()
+      if self != root:
+        return root.refreshClientAssignments()
+
+      changes = {'users':0, 'roles':0, 'removed_user_nodes':0, 'removed_role_nodes':0}
+
+      def sync_conf_nodes(conf_key, changed_key, removed_key):
+        conf = root.getConfProperty(conf_key, {})
+        if not isinstance(conf, dict):
+          return
+        dirty = False
+        for principal_id in conf:
+          principal_def = conf.get(principal_id, {})
+          if not isinstance(principal_def, dict):
+            continue
+          nodes = principal_def.get('nodes', {})
+          if not isinstance(nodes, dict):
+            continue
+          for nodekey in list(nodes):
+            node = root.getLinkObj(nodekey)
+            if node is None:
+              del nodes[nodekey]
+              changes[removed_key] += 1
+              dirty = True
+              continue
+            node_def = nodes.get(nodekey, {})
+            if not isinstance(node_def, dict):
+              node_def = {}
+              nodes[nodekey] = node_def
+            home_id = node.getHome().id
+            if node_def.get('home_id') != home_id:
+              node_def['home_id'] = home_id
+              changes[changed_key] += 1
+              dirty = True
+        # If any changes were made, update the configuration property.
+        if dirty:
+          root.setConfProperty(conf_key, conf)
+
+      sync_conf_nodes('ZMS.security.users', 'users', 'removed_user_nodes')
+      sync_conf_nodes('ZMS.security.roles', 'roles', 'removed_role_nodes')
+
+      # Return with message.
+      if self.REQUEST is not None and self.REQUEST.get('RESPONSE') is not None:
+        REQUEST = self.REQUEST
+        RESPONSE = REQUEST.get('RESPONSE')
+        target = REQUEST.get('manage_target', 'manage_users')
+        message = 'Refresh-Log: ' + ', '.join([f"{k}={v}" for k, v in changes.items()])
+        target = standard.url_append_params(target, {'lang': REQUEST.get('lang'), 'manage_tabs_message': message })
+        return RESPONSE.redirect(target)
+      return changes
+
+
     def grantPublicAccess(self):
       """Grant anonymous and authenticated public access for this container."""
       standard.writeLog(self, '[grantPublicAccess]')

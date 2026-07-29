@@ -27,6 +27,7 @@ import hashlib
 import inspect
 import io
 import json
+import html
 import logging
 import operator
 import os
@@ -195,7 +196,7 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   ##### Add ZMS ####
   from Products.zms import zms
   content = zms.initZMS(homeElmnt, 'content', titlealt, title, lang, manage_lang, REQUEST)
-  zms.initContent(content, 'content.default.zip', REQUEST)
+  zms.init_content(content, 'content.default.zip', REQUEST)
 
   return content
 
@@ -534,9 +535,24 @@ def guess_content_type(filename, data):
   return mt, enc
 
 
-def html_quote(v, name='(Unknown name)', md={}):
-  """Return HTML-escaped string representation of the given value."""
-  import html
+security.declarePublic('html_quote')
+def html_quote(v, **kwargs):
+  """
+  Return HTML-escaped string representation of the given value.
+  This function is useful for preventing XSS vulnerabilities by escaping 
+  special characters in user input before rendering it in HTML. 
+  It converts characters like <, >, &, and " to their corresponding HTML 
+  entities (&lt;, &gt;, &amp;, and &quot; respectively).
+
+  @param v: The value to be escaped.
+  @type v: string or any object with a string representation.
+  @return: The HTML-escaped string representation of the value.
+  @rtype: C{str}
+
+  Hint: the kwargs are ignored but allow to be passed for compatibility 
+  with other quote functions, like Zope's DocumentTemplate's html_quote, 
+  which may pass additional parameters.
+  """
   if not isinstance(v,str):
     v = str(v)
   return html.escape(v, 1)

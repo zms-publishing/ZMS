@@ -14,6 +14,13 @@ import re
 # Product Imports.
 from Products.zms import standard
 from zope.globalrequest import getRequest
+# import traceback # FOR DEBUGGING PURPOSES ONLY: import traceback to log the call stack of getLinkObj calls, LINE 611+
+
+_INLINE_LINK_ATTR_RE = re.compile(r'\s(.*?)="(.*?)"')
+_INLINE_LINK_TAGS = (
+  (re.compile(r'<a(.*?)>'), 'href', '<a'),
+  (re.compile(r'<img(.*?)>'), 'src', '<img'),
+)
 
 
 # ----------------------------------------------------------------------------
@@ -261,7 +268,7 @@ class ZReferableItem(object):
     @type ob: C{object}
     """
     ref = self.getRefObjPath(ob)
-    standard.writeLog(self, '[registerRefObj]: ref='+ref)
+    # standard.writeLog(self, '[registerRefObj]: ref='+ref)
     ref_by = self.synchronizeRefByObjs()
     if ref not in ref_by:
       ref_by.append(ref)
@@ -275,7 +282,7 @@ class ZReferableItem(object):
     @type ob: C{object}
     """
     ref = self.getRefObjPath(ob)
-    standard.writeLog(self, '[unregisterRefObj]: ref='+ref)
+    # standard.writeLog(self, '[unregisterRefObj]: ref='+ref)
     ref_by = self.synchronizeRefByObjs()
     if ref in ref_by:
       ref_by = [x for x in ref_by if x!=ref]
@@ -328,7 +335,7 @@ class ZReferableItem(object):
       C{None} if no update could be performed.
     @rtype: C{dict} or C{None}
     """
-    standard.writeLog(self, '[changeRefToObjs]')
+    # standard.writeLog(self, '[changeRefToObjs]')
     result = {'changed': [], 'unchanged': [], 'ref_to': None}
     request = self.REQUEST
     req_lang = request.get('lang', self.getPrimaryLanguage())
@@ -420,7 +427,7 @@ class ZReferableItem(object):
     This method stores the current outgoing references in C{self.ref_to} for
     later comparison by L{refreshRefToObjs}.
     """
-    standard.writeLog( self, '[prepareRefreshRefToObjs]')
+    # standard.writeLog( self, '[prepareRefreshRefToObjs]')
     if 'ref_to' not in self.__dict__:
       self.ref_to = self.getRefToObjs()
 
@@ -436,9 +443,9 @@ class ZReferableItem(object):
     standard.writeLog( self, '[refreshRefToObjs]')
     if 'ref_to' in self.__dict__:
       old_ref_to = self.ref_to
-      standard.writeLog( self, '[refreshRefToObjs]: old=%s'%str(old_ref_to))
+      # standard.writeLog( self, '[refreshRefToObjs]: old=%s'%str(old_ref_to))
       new_ref_to = self.getRefToObjs()
-      standard.writeLog( self, '[refreshRefToObjs] new=%s'%str(old_ref_to))
+      # standard.writeLog( self, '[refreshRefToObjs] new=%s'%str(new_ref_to))
       delattr(self, 'ref_to')
       for ref in old_ref_to:
         ref_ob = self.getLinkObj(ref)
@@ -466,12 +473,15 @@ class ZReferableItem(object):
     @return: The validated HTML content with updated internal links.
     @rtype: C{str}
     """
-    for pq in [('<a(.*?)>', 'href'), ('<img(.*?)>', 'src')]:
-      p = pq[0]
-      q = pq[1]
-      r = re.compile(p)
-      for f in r.findall(str(text)):
-        d = dict(re.findall(r'\s(.*?)="(.*?)"', f))
+    text = str(text)
+    if '<a' not in text and '<img' not in text:
+      return text
+    for r, q, marker in _INLINE_LINK_TAGS:
+      if marker not in text:
+        continue
+      p = r.pattern
+      for f in r.findall(text):
+        d = dict(_INLINE_LINK_ATTR_RE.findall(f))
         if 'data-id' in d:
           old = p.replace('(.*?)', f)
           url = d['data-id']
@@ -480,7 +490,6 @@ class ZReferableItem(object):
             d[{'data-url':q}.get(k, k)] = ild[k]
           new = p.replace('(.*?)', ' '.join(['']+['%s="%s"'%(x,d[x]) for x in d]))
           if old != new:
-            # @FIXME UnicodeDecodeError: 'ascii' codec can't decode byte 0x## in position ###: ordinal not in range(128)
             text = text.replace(old, new)
     return text
 
@@ -551,6 +560,7 @@ class ZReferableItem(object):
     @rtype: C{object} or C{None}
     """
     request = getattr(self, 'REQUEST', getRequest())
+    was_buffered = True # Applied for debugging purposes to track if the object was fetched from the request buffer.
     ob = None
     if isInternalLink(url):
       # Params.
@@ -570,6 +580,7 @@ class ZReferableItem(object):
         try:
           ob = self.getDocumentElement().fetchReqBuff(reqBuffId)
         except:
+          was_buffered = False
           if url.find('id:') >= 0:
             catalog = self.getZMSIndex().get_catalog()
             q = catalog({'get_uid':url})
@@ -597,6 +608,29 @@ class ZReferableItem(object):
         ids = self.getPhysicalPath()
         if ob.id not in ids:
           ob.set_request_context(request, ref_params)
+      # # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      # # DEBUG: logging/counting getLinkObj calls
+      # # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      # request.set('getLinkObj_counter', request.get('getLinkObj_counter', 0) + 1)
+      # # show traceback in debugging output to identify which function is  calling getLinkObj and causing multiple calls
+      # traceback_stack = []
+      # for frame in reversed(traceback.extract_stack()[-5:-2]):
+      #   traceback_stack.append('%s:%s:%s' % (str(frame.filename).split('/')[-1], frame.lineno, frame.name))
+      # request.set('count_buffered_getLinkObj_calls', request.get('count_buffered_getLinkObj_calls', 0) + int(was_buffered))
+      # standard.writeStdout(self, '%d. [%s:getLinkObj] %s, Target-ID=%s (%s), URL=%s, was_buffered=%s (%s), ref_params=%s\n...was called from:\n\t%s\n'%(
+      #   request.get('getLinkObj_counter', 0),
+      #   self.meta_id,
+      #   url, 
+      #   ob.id if ob is not None else None,
+      #   ob.meta_id if ob is not None else None,
+      #   ob.absolute_url(relative=1) if ob is not None else None,
+      #   was_buffered,
+      #   request.get('count_buffered_getLinkObj_calls', 0),
+      #   ref_params,
+      #   '\n\t'.join(traceback_stack)
+      #   )
+      # )
+      # # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     return ob
 
 

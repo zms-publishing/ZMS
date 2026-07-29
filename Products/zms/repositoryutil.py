@@ -150,7 +150,7 @@ def get_modelfileset_from_disk(self, basepath, deep=True):
               # Read related file-resources. 
               for file in [x for x in names if x != name and not x.startswith('.')]:
                 filepath = os.path.join(path,file)
-                if os.path.isfile(filepath) and not os.path.islink(filepath):
+                if os.path.isfile(filepath): # and not os.path.islink(filepath):
                     rd = get_file_from_disk(self, base, path, file, id=obj_id)
                     r[rd['filename']] = rd
               initialized = True
@@ -234,8 +234,7 @@ def get_models_from_disk(self, basepath, deep=True):
                 traverse(base, filepath, level+1)
             elif not initialized \
                 and name.startswith('__') \
-                and name.split('.')[-2].endswith('__') \
-                and name.split('.')[-1] in ['py', 'yaml']:
+                and (name.endswith('__.py') or name.endswith('__.yaml')):
               filedata = read_file_from_disk(self, path, name)
               d = parse_modelfile(self, path, name, filedata)
               id = d.get('id', path.split(os.sep)[-1])
@@ -598,7 +597,7 @@ def get_init_yaml(self, o):
   d = {}
   for k in keys:
     v = o.get(k)
-    nv = yamlutil.__cleanup(v)
+    nv = yamlutil._cleanup(v)
     if nv:
       d[k] = nv
     elif nv in ['0', 0, False]:
@@ -608,7 +607,7 @@ def get_init_yaml(self, o):
     nl = []
     l = o.get(k)
     for i in l:
-      ni = yamlutil.__cleanup(i)
+      ni = yamlutil._cleanup(i)
       if ni:
         if type(ni) is dict:
           # Remove 'ob' from attribute dict (Acquisition-Wrappers are not serializable).

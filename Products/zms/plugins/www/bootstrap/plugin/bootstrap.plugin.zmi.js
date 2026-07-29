@@ -12,7 +12,7 @@ $ZMI.registerReady(function(){
 			if (manage_menu) {
 				$("#zmi-tab .breadcrumb").each(function() {
 					if ($(".btn-bookmark",this).length==0) {
-						$(this).append('<li class="btn-bookmark"><a href="javascript:;" title="Set Bookmark" class="align-text-top"><i class="far fa-bookmark text-muted"></a><li>');
+						$(this).append('<li class="btn-bookmark ml-1 text-primary"><a href="javascript:;" title="Set Bookmark" class="align-text-top"><i class="far fa-bookmark"></i></a></li>');
 					};
 					var key = "ZMS."+data_root+".bookmarks";
 					var bookmarks = $ZMILocalStorageAPI.get(key,[]);
@@ -39,9 +39,9 @@ $ZMI.registerReady(function(){
 					});
 					var index = bookmarks.indexOf(data_path);
 					if (index >= 0) {
-						$('.fa-bookmark',this).removeClass("far").addClass("fas text-primary");
+						$('.fa-bookmark',this).removeClass("far").addClass("fas");
 					} else {
-						$('.fa-bookmark',this).removeClass("fas text-primary").addClass("far text-muted");
+						$('.fa-bookmark',this).removeClass("fas").addClass("far");
 					}
 				});
 			}
@@ -64,7 +64,7 @@ $ZMI.registerReady(function(){
 						frames[i].zmiHistoryChanged();
 					}
 				}
-			} catch (e) { 
+			} catch (e) {
 			}
 		}
 	});
@@ -165,22 +165,43 @@ $ZMI.registerReady(function(){
 				print_url = url.replace('readme?', 'readme_html?');
 			}
 		}
-		zmiModal(null, {
-			id: 'zmiModalreadme',
-			title: title,
-			body: '<div class="p-3 text-center"><i class="text-primary fas fa-spinner fa-spin fa-3x"></i></div>',
-			modal: 'show'
-		});
 		$.get(url, '', function(data) {
-			$('#zmiModalreadme .modal-body').html(data);
+            // if readme starts with a link, open it in a new tab
+            // otherwise show modal with rendered markdown content
+            const match = data.match(/<p>(https?:\/\/[^\s<"]+)/);
+            const url = match?.[1];
+            if (url) {
+                window.open(url, '_blank');
+            }
+            else {
+                zmiModal(null, {
+                    id: 'zmiModalreadme',
+                    title: title,
+                    body: '<div class="p-3 text-center"><i class="text-primary fas fa-circle-notch fa-spin fa-3x"></i></div>',
+                    modal: 'show'
+                });
+                $('#zmiModalreadme .modal-body').html(data);
+                document.body.style.paddingRight = '0px'; // Fix scrollbar shift when opening modal
+                // Add print button to modal footer
+                $('#zmiModalreadme .modal-footer').html('<a href="'+print_url+'" target="_blank" class="btn btn-secondary" title="Print/HTML"><i class="fas fa-print"></i></a>');
+            }
 		});
-		document.body.style.paddingRight = '0px'; // Fix scrollbar shift when opening modal
-		// Add print button to modal footer
-		$('#zmiModalreadme .modal-footer').html('<a href="'+print_url+'" target="_blank" class="btn btn-secondary" title="Print/HTML"><i class="fas fa-print"></i></a>');
 	});
 
 	// Tooltip
-	$('[data-toggle="tooltip"]').tooltip();
+	if (typeof $.fn.tooltip === 'function') {
+		$('[data-toggle="tooltip"]').tooltip();
+	} else {
+		// Fallback: try to initialize using bootstrap tooltip if jQuery tooltip not available
+		try {
+			const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="tooltip"]'));
+			tooltipTriggerList.map(function (tooltipTriggerEl) {
+				return new bootstrap.Tooltip(tooltipTriggerEl);
+			});
+		} catch (e) {
+			console.warn('Tooltip initialization failed:', e);
+		}
+	}
 
 	// Main Menu Toggle
 	$('.zmi .main-nav li.active a').click(function(event) {
@@ -733,7 +754,7 @@ ZMI.prototype.initInputFields = function(container) {
 					else if (nodeName=="select") {
 						isBlank =  (($("option:selected",$control).length==0)
 							|| ($("option:selected",$control).length==1 && $("option:selected",$control).attr("value")==""))
-							&& !$control.attr("disabled")=="disabled";
+							&& $control.attr("disabled")!="disabled";
 					}
 					if (isBlank) {
 						$controlGroup.addClass("has-error");
@@ -749,7 +770,7 @@ ZMI.prototype.initInputFields = function(container) {
 						if (typeof dataExclude != "undefined") {
 							var excludeList = dataExclude.split(",");
 							var v = $control.val();
-							if ($.inArray(v,excludeList)) {
+							if ($.inArray(v,excludeList) !== -1) {
 								$controlGroup.addClass("has-error");
 							}
 						}
@@ -955,14 +976,19 @@ ZMI.prototype.initInputFields = function(container) {
 				});
 			});
 			// Multiselect
-			$.plugin('multiselect',{
-				files: [
-					$ZMI.getConfProperty('plugin.bootstrap.multiselect.js','/++resource++zms_/bootstrap/plugin/bootstrap.plugin.zmi.multiselect.js')
-				]});
-			$.plugin('multiselect').set({context:context});
-			$.plugin('multiselect').get("select.zmi-select[multiple]:not(.d-none)",function(){
-					$ZMI.multiselect(context);
-				});
+			if (typeof $.plugin === 'function') {
+				$.plugin('multiselect',{
+					files: [
+						$ZMI.getConfProperty('plugin.bootstrap.multiselect.js','/++resource++zms_/bootstrap/plugin/bootstrap.plugin.zmi.multiselect.js')
+					]});
+				$.plugin('multiselect').set({context:context});
+				$.plugin('multiselect').get("select.zmi-select[multiple]:not(.d-none)",function(){
+						$ZMI.multiselect(context);
+					});
+			} else if (typeof $ZMI !== 'undefined' && typeof $ZMI.multiselect === 'function') {
+				// Fallback if $.plugin is missing
+				$ZMI.multiselect(context);
+			}
 			// Activity-Toggle
 			if ($("#zmi-toggle-activity").length==0) {
 				$("#attrActivity",context).each(function() {
@@ -1052,10 +1078,17 @@ ZMI.prototype.initInputFields = function(container) {
 			$ZMI.initUrlInput(this);
 			// Richedit
 			var $richedits = $('div[id^="zmiStandardEditor"]',this);
+			var disableRichtextUi = $('body').hasClass('disable_richtext_ui');
 			if ($richedits.length > 0) {
 				$richedits.each(function() {
 					var elName = $(this).attr("id").substring("zmiStandardEditor".length);
-					zmiRichtextInit(elName);
+					if (!disableRichtextUi) {
+						zmiRichtextInit(elName);
+					}
+					else {
+						$('div#zmiRichtextEditor'+elName).hide();
+						$('div#zmiStandardEditor'+elName).show();
+					}
 					var v = $("#"+elName).val();
 					function matchAll(source, regexp) {
 						var matches = [];
@@ -1280,7 +1313,7 @@ $ZMI.objectTree = new ZMIObjectTree();
 ZMIObjectTree.prototype.init = function(s,href,p) {
 	var that = this;
 	that.p = p?p:{};
-	that.p.params = that.p.params?that.p.params:{};
+	that.p.params = that.p.params?that.p.params:{preview:'preview',lang:getZMILang()};
 	// Init preselected active.
 	that.active = [];
 	$(s).html('<i class="fas fa-spinner fa-spin"></i>&nbsp;'+getZMILangStr('MSG_LOADING'));
@@ -1329,15 +1362,21 @@ ZMIObjectTree.prototype.addPages = function(nodes) {
 	};
 	nodes.forEach(node => {
 		var data_id = '{$'+node.uid+'}';
-		var link_url = node.index_html;
+		var link_url = node.index_html.replace('?preview=preview','');
 		var icon = that.metamodel[node.meta_id] ? $ZMI.icon(that.metamodel[node.meta_id].icon_clazz) : $ZMI.icon('far fa-file');
 		var anchor = '';
 		var css = [ node.is_page ? 'is_page' : 'is_page_element' ];
 		var callback = that.p['toggleClick.callback'];
-
+		
+		// Skip redirect nodes
 		if ((node.titlealt.toUpperCase().search('REDIRECT') > -1) &&
 			(node.attr_dc_identifier_url_redirect &&
 				node.attr_dc_identifier_url_redirect.trim() != '')) return;
+
+		// Normalize bytestrings
+		if (node.titlealt.startsWith('b\'')) {
+			node.titlealt = 'Code-Block';
+		};
 
 		if (node.meta_id == 'ZMSGraphic' && link_url) {
 			link_url = `<img data-id=&quot;${data_id}&quot; src=&quot;${link_url}&quot;>`;

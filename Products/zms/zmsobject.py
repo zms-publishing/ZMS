@@ -503,7 +503,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       @return: Alternate display title.
       @rtype: C{str}
       """
-      s = self.getObjProperty('titlealt', REQUEST) or self.getObjProperty('titlealt', {'lang':self.getPrimaryLanguage()})
+      s = self.getObjProperty('titlealt', {'lang':REQUEST.get('lang',self.getPrimaryLanguage())})
       if not s:
         s = self.display_type()
       if not s:

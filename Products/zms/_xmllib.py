@@ -810,6 +810,7 @@ def getObjToXml(self, REQUEST, deep=True, base_path='', data2hex=False, multilan
   else:
     xml.append(' id="%s"' % id)
     xml.append(' id_prefix="%s"' % standard.id_prefix(id))
+  xml.append(' path="%s"' % self.getPath())
   xml.append('>\n')
   # [Issue-219] Special content-like conf-properties edited in interfaces (ZMS.interface_permalinks).
   if self.meta_id == 'ZMS':

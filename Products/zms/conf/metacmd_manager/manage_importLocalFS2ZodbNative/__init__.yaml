@@ -1,0 +1,16 @@
+manage_importLocalFS2ZodbNative:
+  acquired: 0
+  action: '%smanage_executeMetacmd?id=manage_importLocalFS2ZodbNative'
+  execution: 0
+  icon_clazz: fas fa-file-import text-success
+  meta_types:
+    - ZMS
+  name: Import LocalFS to ZODB
+  nodes: '{$}'
+  revision: 6.1.0
+  roles:
+    - ZMSAdministrator
+  title: Import LocalFS to ZODB
+  Impl:
+    - id: manage_importLocalFS2ZodbNative
+      type: External Method

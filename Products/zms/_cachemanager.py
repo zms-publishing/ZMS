@@ -24,12 +24,91 @@ License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
 # Imports.
+from AccessControl import ClassSecurityInfo
 from Products.zms import standard
 from zope.globalrequest import getRequest
 
 class Buff(object):
   """Lightweight attribute container used for request-local buffering."""
   pass
+
+class SharedBuff(object):
+    """
+    Shared buffer helpers using a multi-user cache (RAM or Memcache).
+    This allows data persistence across different requests and users.
+    """
+
+    security = ClassSecurityInfo()
+
+    security.declarePublic('get_cache_manager')
+    def get_cache_manager(self, cache_id='zms_cache'):
+        """
+        Fetch the configured Zope Cache Manager.
+        Expects a configuration property 'ZMS.cache.path' pointing to the 
+        manager (e.g., '/zms/my_ram_cache').
+        """
+        cache_path = self.getConfProperty('ZMS.cache.path', None)
+        if cache_path:
+            try:
+                manager = self.unrestrictedTraverse(cache_path)
+                return manager.ZCacheManager_getCache()
+            except:
+                pass
+        return None
+
+    security.declarePublic('fetchSharedBuff')
+    def fetchSharedBuff(self, key):
+        """Fetch a value from the shared global cache."""
+        doc_element = self.getAbsoluteHome().content # or self.getPortalMaster() or self.getDocumentElement()
+        cache = doc_element.get_cache_manager()
+        if cache:
+            # Note: keywords/view_name can be used for namespacing if needed.
+            return cache.ZCache_get(doc_element, view_name='shared', keywords={'key': key})
+        return None
+
+    security.declarePublic('storeSharedBuff')
+    def storeSharedBuff(self, key, value):
+        """Store a value in the shared global cache."""
+        doc_element = self.getAbsoluteHome().content # or self.getPortalMaster() or self.getDocumentElement()
+        cache = doc_element.get_cache_manager()
+        if cache:
+            # We use the DocumentElement (ZMS site root) as the context 
+            # to ensure the cache is shared globally across the entire site.
+            cache.ZCache_set(doc_element, value, view_name='shared', keywords={'key': key})
+        return value
+
+    security.declarePublic('getSharedBuffJSON')
+    def getSharedBuffJSON(self):
+        """
+        Return the contents of the shared cache as a JSON-formatted string.
+        Leverages the internal tracking mechanism of mcdutils using the 
+        DocumentElement as the global context.
+        """
+        import json
+        cache = self.get_cache_manager()
+        data = {}
+        if cache:
+            # Always look at the DocumentElement's path for the global cache
+            doc_element = self.getAbsoluteHome().content # or self.getPortalMaster() or self.getDocumentElement()
+            path = '/'.join(doc_element.getPhysicalPath())
+            tracked_keys = cache.proxy.get(path)
+            
+            if tracked_keys:
+                for k in tracked_keys.keys():
+                    val = cache.proxy.get(k)
+                    data[str(k)] = str(val) if val is not None else "EXPIRED/NONE"
+            
+            if not data:
+                data = {
+                    'info': 'Global cache is empty.',
+                    'path_searched': path,
+                    'manager': str(cache)
+                }
+        else:
+            data = {'error': 'No cache manager found.'}
+            
+        return json.dumps(data, indent=2)
+
 
 class ReqBuff(object):
     """Request-scoped buffer helpers for expensive values computed during one request."""

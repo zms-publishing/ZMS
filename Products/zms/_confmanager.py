@@ -230,7 +230,7 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
           filename = file[file.find(':')+1:]
           basepath = repositoryutil.get_system_conf_basepath()
           path = os.path.join(basepath, filename)
-          r = repositoryutil.readRepository(self, path)
+          r = repositoryutil.get_models_from_disk(self, path)
           container_id = filename.split('/')[0]
           container = zopeutil.getObject(self,container_id)
           if container is not None:
@@ -355,7 +355,7 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
           path = os.path.join(basepath, filename)
           if os.path.isdir(path):
               if pattern is None or filename.startswith(pattern[1:-1]):
-                  r = repositoryutil.readRepository(self, path, deep=False)
+                  r = repositoryutil.get_models_from_disk(self, path, deep=False)
                   for k in r:
                       v = r[k]
                       # Get qualified name.

@@ -117,11 +117,6 @@ body.zmi {
 		animation: loading 2s linear infinite;
 		margin: 0 auto;
 	}
-	/* /GUI hx-loading progress bar */
-
-	a {
-		color: #08c;
-	}
 
 	del {
 		color: #777 !important;
@@ -682,6 +677,7 @@ body.zmi {
 		position: absolute;
 		left: 0;
 	}
+
 	ul.zmi-container {
 		margin: 0;
 		padding: 0;

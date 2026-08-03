@@ -2343,23 +2343,124 @@ body.zmi {
 	/* ++++++++++++++++++++++++++++++++++++++++++++++++++ */
 	/* Sitemap Menu */
 	/* ++++++++++++++++++++++++++++++++++++++++++++++++++ */
-	&.manage-menu .zmi-page {
-		white-space: nowrap;
-		overflow: hidden;
-	}
+	&.manage-menu {
+		background-color: #19232c;
 
-	&.manage-menu header.navbar {
-		overflow: visible;
-	}
+		.zmi-page {
+			white-space: nowrap;
+			overflow: hidden;
+		}
 
-	&.manage-menu .zmi-sitemap {
-		margin-top: 1em;
-	}
+		header.navbar {
+			overflow: visible;
+		}
 
-	&.manage-menu .dropdown-header {
-		color: #999 !important;
-		background-color: transparent !important;
-		border-bottom: 1px solid #666 !important;
+		.zmi-sitemap {
+			margin-top: 1em;
+
+			a,
+			li > span i {
+				color: #ccc;
+			}
+
+			ul.is_page_element,
+			li.is_page_element {
+				display: none;
+			}
+
+			li.inactive > a {
+				color: #888;
+			}
+		}
+
+		.dropdown-header {
+			color: #999 !important;
+			background-color: transparent !important;
+			border-bottom: 1px solid #666 !important;
+		}
+
+		.navbar-brand {
+			font-size: 100% !important;
+		}
+
+		.ZMSDocument .toggle {
+			color: #19232c;
+		}
+
+		.zmi header {
+			background-color: transparent !important;
+		}
+
+		li.active > a,
+		li > a:hover {
+			color: white !important;
+			text-decoration: none;
+		}
+
+		.zmi-helper-clickable {
+			color: #999;
+		}
+
+		li.restricted > a > i {
+			color: orange;
+		}
+
+		.zmi-helper-clickable:hover {
+			color: #fff;
+		}
+
+		.dropdown-menu {
+			filter: Alpha(opacity=90);
+			-moz-opacity: 0.9;
+			opacity: 0.9;
+		}
+
+		#zmi-history .dropdown-item:active,
+		#zmi-bookmarks .dropdown-item:active {
+			color: inherit;
+		}
+
+		#zmi-bookmarks .close {
+			position: absolute;
+			right: 0.5rem;
+		}
+
+		.navbar-inverse .navbar-nav .dropdown-menu > li > a {
+			color: #ffffff !important;
+		}
+
+		.navbar-nav .open .dropdown-menu {
+			background-color: #000;
+		}
+
+		.navbar-nav .dropdown-menu > li > a:hover,
+		.navbar-nav .dropdown-menu > li > a:focus {
+			background-color: #3b5b77 !important;
+		}
+
+		.dropdown-lang .dropdown-menu {
+			background-color: #222;
+			border: 1px solid #888;
+			color: #000;
+			left: -100px;
+			position: absolute;
+			min-width: 110px;
+		}
+
+		.dropdown-lang .dropdown-menu > li > a:focus,
+		.dropdown-lang .dropdown-menu > li > a:hover {
+			background-color: transparent !important;
+			color: #fff !important;
+		}
+
+		#loading,
+		#loading i {
+			color: #cccccc !important;
+		}
+
+		.zmi-helper-clickable.refresh:hover {
+			text-decoration: none !important;
+		}
 	}
 
 	.breadcrumb a[title="Bookmark"] {
@@ -2400,10 +2501,6 @@ body.zmi {
 	.zmi-sitemap li.active > a {
 		font-weight: bold;
 	}
-	&.manage-menu .navbar-brand {
-		font-size: 100% !important;
-	}
-
 	body.browse_iframe .toggle {
 		font-size: 120%;
 		vertical-align: bottom;
@@ -2414,7 +2511,7 @@ body.zmi {
 		cursor: pointer;
 	}
 
-	&.manage-menu .toggle,
+	.zmi.manage-menu .toggle,
 	.zmi-sitemap .toggle {
 		color: #ccc;
 		font-size: 120%;
@@ -2425,103 +2522,6 @@ body.zmi {
 		display: inline-block;
 		cursor: pointer;
 	}
-	&.manage-menu {
-		background-color: #19232c;
-	}
-
-	&.manage-menu .ZMSDocument .toggle {
-		color: #19232c;
-	}
-
-	&.manage-menu .zmi header {
-		background-color: transparent !important;
-	}
-
-	&.manage-menu .zmi-sitemap a,
-	&.manage-menu .zmi-sitemap li > span i {
-		color: #ccc;
-	}
-
-	&.manage-menu .zmi-sitemap ul.is_page_element,
-	&.manage-menu .zmi-sitemap li.is_page_element {
-		display: none;
-	}
-
-	&.manage-menu li.active > a,
-	&.manage-menu li > a:hover {
-		color: white !important;
-		text-decoration: none;
-	}
-
-	&.manage-menu .zmi-sitemap li.inactive > a {
-		color: #888;
-	}
-
-	&.manage-menu .zmi-helper-clickable {
-		color: #999;
-	}
-
-	&.manage-menu li.restricted > a > i {
-		color: orange;
-	}
-
-	&.manage-menu .zmi-helper-clickable:hover {
-		color: #fff;
-	}
-
-	&.manage-menu .dropdown-menu {
-		filter: Alpha(opacity=90);
-		-moz-opacity: 0.9;
-		opacity: 0.9;
-	}
-
-	&.manage-menu #zmi-history .dropdown-item:active,
-	&.manage-menu #zmi-bookmarks .dropdown-item:active {
-		color: inherit;
-	}
-
-	&.manage-menu #zmi-bookmarks .close {
-		position: absolute;
-		right: 0.5rem;
-	}
-
-	&.manage-menu .navbar-inverse .navbar-nav .dropdown-menu > li > a {
-		color: #ffffff !important;
-	}
-
-	&.manage-menu .navbar-nav .open .dropdown-menu {
-		background-color: #000;
-	}
-
-	&.manage-menu .navbar-nav .dropdown-menu > li > a:hover,
-	&.manage-menu .navbar-nav .dropdown-menu > li > a:focus {
-		background-color: #3b5b77 !important;
-	}
-
-	&.manage-menu .dropdown-lang .dropdown-menu {
-		background-color: #222;
-		border: 1px solid #888;
-		color: #000;
-		left: -100px;
-		position: absolute;
-		min-width: 110px;
-	}
-
-	&.manage-menu .dropdown-lang .dropdown-menu > li > a:focus,
-	&.manage-menu .dropdown-lang .dropdown-menu > li > a:hover {
-		background-color: transparent !important;
-		color: #fff !important;
-	}
-
-	&.manage-menu #loading,
-	&.manage-menu #loading i {
-		color: #cccccc !important;
-	}
-
-	&.manage-menu .zmi-helper-clickable.refresh:hover {
-		text-decoration: none !important;
-	}
-
 	.alert {
 		margin: 0 1rem 1rem;
 	}

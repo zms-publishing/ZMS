@@ -39,6 +39,40 @@
 	}
 }
 
+/* ZMS-Buttons: Bootstrap Overrides */
+
+.btn-secondary {
+	color: #333;
+	background-color: #fff;
+	border-color: #ccc;
+}
+
+.btn-secondary:hover a {
+	color: white;
+	text-decoration: none;
+}
+&.config.metas form.card > div.flex-row > .btn-group > .btn.btn-secondary:hover i {
+	color: white !important;
+}
+
+.btn-default:hover {
+	color: #333;
+	background-color: #e6e6e6;
+	border-color: #adadad;
+}
+
+.btn-primary {
+	color: #fff;
+	background-color: #337ab7;
+	border-color: #2e6da4;
+}
+
+.btn-primary:hover {
+	color: #fff;
+	background-color: #286090;
+	border-color: #204d74;
+}
+
 /* ++++++++++++++++++++++++++++++++++++++++++++++++++ */
 /* ROOT body.zmi */
 /* ++++++++++++++++++++++++++++++++++++++++++++++++++ */
@@ -662,36 +696,42 @@ body.zmi {
 		opacity: 0.9;
 	}
 
-	ul.zmi-container .contentEditable {
-		cursor: pointer;
-	}
+	ul.zmi-container {
+		.contentEditable {
+			cursor: pointer;
+		}
 
-	ul.zmi-container li.zmi-item .inactive .contentEditable,
-	ul.zmi-container li.zmi-item .contentEditable.ZMSTeaserContainer .inactive {
-		filter: Alpha(opacity=40);
-		-moz-opacity: 0.4;
-		opacity: 0.4;
+		li.zmi-item {
+			.inactive .contentEditable,
+			.contentEditable.ZMSTeaserContainer .inactive {
+				filter: Alpha(opacity=40);
+				-moz-opacity: 0.4;
+				opacity: 0.4;
+			}
+		}
 	}
 
 	ul.zmi-container .center.zmi-highlight {
 		background-color: rgba(53, 79, 103, 0.15);
 	}
 
-	ul.zmi-container .zmi-item .portalClient .contentEditable {
-		border-top: none !important;
-		font-size: large;
-		padding-left: 1em;
-		color: #6b9eb8;
-		padding-top: 0;
-		margin: 0;
-	}
+	ul.zmi-container .zmi-item .portalClient {
+		.contentEditable {
+			border-top: none !important;
+			font-size: large;
+			padding-left: 1em;
+			color: #6b9eb8;
+			padding-top: 0;
+			margin: 0;
+		}
 
-	ul.zmi-container .zmi-item .portalClient .portalClientId {
-		text-align: right;
-		float: right;
-		margin: 0.6em 0.15em !important;
-		color: #aaa;
-		font-size: 12px;
+		.portalClientId {
+			text-align: right;
+			float: right;
+			margin: 0.6em 0.15em !important;
+			color: #aaa;
+			font-size: 12px;
+		}
 	}
 
 	/* Item Drag or Select */
@@ -772,39 +812,43 @@ body.zmi {
 	}
 
 	/* Showing clientids only to Managers */
-	ul.portalClients.zmi-container .zmi-item .portalClient .portalClientId.zmi-manage-main-change {
-		visibility: hidden;
+	ul.portalClients.zmi-container .zmi-item .portalClient {
+		.portalClientId.zmi-manage-main-change {
+			visibility: hidden;
+		}
+
+		div.ZMS {
+			float: left;
+			position: absolute;
+			padding: 0.35em 0 0 1em;
+			margin-top: 0;
+		}
 	}
 
 	&.Manager ul.portalClients.zmi-container .zmi-item .portalClient .portalClientId.zmi-manage-main-change {
 		visibility: visible;
 	}
 
-	ul.portalClients.zmi-container .zmi-item .portalClient div.ZMS {
-		float: left;
-		position: absolute;
-		padding: 0.35em 0 0 1em;
-		margin-top: 0;
-	}
+	ul.zmi-container {
+		.zmi-item.pageelement .center {
+			background-color: #fff;
 
-	ul.zmi-container .zmi-item.pageelement .center {
-		background-color: #fff;
-	}
+			> * {
+				padding-left: 0.8em;
+			}
+		}
 
-	ul.zmi-container .zmi-item.pageelement .center,
-	ul.zmi-container > .zmi-item > .center {
-		flex-basis: 80%;
-		border-top: 1px dotted #ccc !important;
-		min-height: 4.2rem;
-		overflow-x: hidden;
+		.zmi-item.pageelement .center,
+		> .zmi-item > .center {
+			flex-basis: 80%;
+			border-top: 1px dotted #ccc !important;
+			min-height: 4.2rem;
+			overflow-x: hidden;
+		}
 	}
 
 	ul.zmi-sortable.zmi-container:last-child > li:last-child > div.center {
 		border-bottom: 1px dotted #cccccc;
-	}
-
-	ul.zmi-container .zmi-item.pageelement .center > * {
-		padding-left: 0.8em;
 	}
 
 	&.ZMSTeaserContainer ul.zmi-container .zmi-item.pageelement .center .ZMSTeaserContainer > .ZMSTeaserElement {
@@ -819,22 +863,61 @@ body.zmi {
 	}
 
 	@media (min-width: 768px) {
-		.ZMSRecordSet.main_grid .table-responsive {
-			overflow: visible;
+		.ZMSRecordSet.main_grid {
+			.table-responsive {
+				overflow: visible;
+			}
 		}
 	}
 
-	.preview_on_hover::after {
-		content: "";
-		height: 0;
-		opacity: 0;
-		background-size: 0;
-		background-color: #f5f5f5;
-		box-shadow: none;
-		margin-top: 1.5rem;
+	.preview_on_hover {
+		&::after {
+			content: "";
+			height: 0;
+			opacity: 0;
+			background-size: 0;
+			background-color: #f5f5f5;
+			box-shadow: none;
+			margin-top: 1.5rem;
+		}
+
+		&:hover::after {
+			content: "";
+			width: 20vw;
+			height: 20vw;
+			opacity: 1;
+			display: block;
+			position: absolute;
+			background-image: var(--preview_url);
+			background-size: contain;
+			background-repeat: no-repeat;
+			background-position-y: center;
+			background-position-x: center;
+			background-color: white;
+			border: 1px solid #c0c0c07d;
+			border-radius: 4px;
+			z-index: 1000;
+			margin-left: -10vw;
+			box-shadow: 5px 5px 20px #c0c0c094;
+			transition:
+				opacity 0.75s,
+				height 0.5s,
+				box-shadow 1s,
+				background-color 1s ease;
+		}
+
+		&.preview_text:hover::after {
+			content: attr(data-preview_text);
+			background-image: none;
+			padding: 0.35rem 0.5rem;
+			font-size: smaller;
+			overflow: hidden;
+			overflow-y: scroll;
+			white-space: normal;
+			font-family: "Courier New", Courier, monospace;
+		}
 	}
 
-	.preview_on_hover:hover::after,
 	ul.zmi-container > .zmi-item .right video {
 		content: "";
 		width: 20vw;
@@ -860,16 +943,6 @@ body.zmi {
 			background-color 1s ease;
 	}
 
-	.preview_on_hover.preview_text:hover::after {
-		content: attr(data-preview_text);
-		background-image: none;
-		padding: 0.35rem 0.5rem;
-		font-size: smaller;
-		overflow: hidden;
-		overflow-y: scroll;
-		white-space: normal;
-		font-family: "Courier New", Courier, monospace;
-	}
 	ul.zmi-container > .zmi-item .right video {
 		margin-top: 1.5rem;
 		background-color: transparent;
@@ -877,10 +950,12 @@ body.zmi {
 		box-shadow: none;
 	}
 
-	.zmi-sitemap span.preview_on_hover:hover::after {
-		width: 35vw;
-		height: 35vh;
-		margin: 1rem 0 0 -0.5rem;
+	.zmi-sitemap span.preview_on_hover {
+		&:hover::after {
+			width: 35vw;
+			height: 35vh;
+			margin: 1rem 0 0 -0.5rem;
+		}
 	}
 
 	@media (max-width: 767px) {
@@ -903,11 +978,13 @@ body.zmi {
 			display: none !important;
 		}
 
-		ul.zmi-container .zmi-item.pageelement .center,
-		ul.zmi-container > .zmi-item > .center {
-			flex-basis: 100%;
-			max-width: 100%;
-			overflow-x: hidden;
+		ul.zmi-container {
+			.zmi-item.pageelement .center,
+			> .zmi-item > .center {
+				flex-basis: 100%;
+				max-width: 100%;
+				overflow-x: hidden;
+			}
 		}
 
 		ul.zmi-container > .zmi-item > .right {
@@ -920,38 +997,44 @@ body.zmi {
 			width: 212px !important;
 		}
 	}
-	.zmi-container li.zmi-item .center .contentEditable .contentEditable {
-		padding: 0;
-		margin: 0;
-		border: none !important;
-		min-height: 1em;
+	.zmi-container {
+		li.zmi-item .center .contentEditable .contentEditable {
+			padding: 0;
+			margin: 0;
+			border: none !important;
+			min-height: 1em;
+		}
+
+		.zmi-item .center .contentEditable {
+			h1,
+			h2 {
+				padding: 0.3em 0;
+				margin: 0;
+			}
+		}
 	}
 
-	.zmi-container .zmi-item .center .contentEditable h1,
-	.zmi-container .zmi-item .center .contentEditable h2 {
-		padding: 0.3em 0;
-		margin: 0;
-	}
+	ul.zmi-container {
+		.zmi-item.pageelement .center .contentEditable {
+			padding: 3px 6px 3px 1.5em;
+			overflow: hidden;
+			min-height: inherit;
 
-	ul.zmi-container .zmi-item.pageelement .center .contentEditable {
-		padding: 3px 6px 3px 1.5em;
-		overflow: hidden;
-		min-height: inherit;
-	}
+			.contentEditable {
+				padding: unset;
+			}
 
-	ul.zmi-container .zmi-item.pageelement .center .contentEditable .contentEditable {
-		padding: unset;
-	}
+			* {
+				max-width: 100%;
+			}
+		}
 
-	ul.zmi-container .zmi-item.page .center .contentEditable {
-		padding-top: 0.4rem;
-		padding-left: 1rem;
-		margin: 0;
-		min-height: 4.1rem;
-	}
-
-	ul.zmi-container .zmi-item.pageelement .center .contentEditable * {
-		max-width: 100%;
+		.zmi-item.page .center .contentEditable {
+			padding-top: 0.4rem;
+			padding-left: 1rem;
+			margin: 0;
+			min-height: 4.1rem;
+		}
 	}
 
 	ul.zmi-container .right div input {
@@ -1665,83 +1748,95 @@ body.zmi {
 		height: auto;
 	}
 
-	a.ZMSGraphic_extEdit_action.preview_on_hover:hover::after {
-		width: 80vw;
-		height: 80vh;
-		position: fixed;
-		background-image: inherit;
-		top: 0;
-		left: 0;
-		margin: 10vh 10vw;
+	a.ZMSGraphic_extEdit_action {
+		&.preview_on_hover {
+			&:hover::after {
+				width: 80vw;
+				height: 80vh;
+				position: fixed;
+				background-image: inherit;
+				top: 0;
+				left: 0;
+				margin: 10vh 10vw;
+			}
+
+			&.inherit:hover::after {
+				background-size: inherit;
+			}
+
+			&.contain:hover::after {
+				background-size: contain;
+			}
+		}
+
+		&.changed {
+			img {
+				border-color: #80bdff;
+				outline: 0;
+				box-shadow: 0 0 0 0.2rem rgb(0 123 255 / 25%);
+			}
+
+			&.preview_on_hover:hover::after {
+				content: unset;
+			}
+
+			.zmi-zoom-in {
+				color: transparent;
+			}
+		}
+
+		img {
+			position: absolute;
+			display: block;
+			object-fit: cover;
+			width: 100%;
+			height: 100%;
+			max-width: unset !important;
+			max-height: unset !important;
+			box-shadow: 0 0 1px #000000cc;
+
+			&.deleted {
+				opacity: 0.2;
+			}
+		}
+
+		&.inherit img {
+			object-fit: contain;
+		}
+
+		.zmi-zoom-in {
+			color: white;
+			font-size: 6vw;
+			opacity: 0.5;
+			text-align: center;
+			text-shadow: 0 0 1rem #00000022;
+		}
 	}
 
-	a.ZMSGraphic_extEdit_action.preview_on_hover.inherit:hover::after {
-		background-size: inherit;
-	}
+	.ZMSRecordSet table {
+		a.ZMSGraphic_extEdit_action {
+			img {
+				position: relative;
+				object-fit: cover;
+				width: 100%;
+				margin-left: 0.5rem;
+			}
 
-	a.ZMSGraphic_extEdit_action.preview_on_hover.contain:hover::after {
-		background-size: contain;
-	}
+			&.preview_on_hover:hover::after {
+				width: 68vmin;
+				height: 68vmin;
+				margin: 10vh calc((100vw - 68vmin) / 2);
+			}
+		}
 
-	a.ZMSGraphic_extEdit_action.changed img {
-		border-color: #80bdff;
-		outline: 0;
-		box-shadow: 0 0 0 0.2rem rgb(0 123 255 / 25%);
-	}
-
-	a.ZMSGraphic_extEdit_action.changed.preview_on_hover:hover::after {
-		content: unset;
-	}
-
-	a.ZMSGraphic_extEdit_action.changed .zmi-zoom-in {
-		color: transparent;
-	}
-
-	a.ZMSGraphic_extEdit_action img {
-		position: absolute;
-		display: block;
-		object-fit: cover;
-		width: 100%;
-		height: 100%;
-		max-width: unset !important;
-		max-height: unset !important;
-		box-shadow: 0 0 1px #000000cc;
-	}
-
-	a.ZMSGraphic_extEdit_action.inherit img {
-		object-fit: contain;
-	}
-
-	.ZMSRecordSet table a.ZMSGraphic_extEdit_action img {
-		position: relative;
-		object-fit: cover;
-		width: 100%;
-		margin-left: 0.5rem;
-	}
-
-	.ZMSRecordSet table a.ZMSGraphic_extEdit_action.preview_on_hover:hover::after {
-		width: 68vmin;
-		height: 68vmin;
-		margin: 10vh calc((100vw - 68vmin) / 2);
-	}
-
-	.ZMSRecordSet table .zmi-datatype-image .row,
-	.ZMSRecordSet table .zmi-datatype-image .col-9,
-	.ZMSRecordSet table .zmi-datatype-image .col-3 {
-		padding: 0 !important;
-		margin: 0 !important;
-	}
-
-	a.ZMSGraphic_extEdit_action img.deleted {
-		opacity: 0.2;
-	}
-
-	a.ZMSGraphic_extEdit_action .zmi-zoom-in {
-		color: white;
-		font-size: 6vw;
-		opacity: 0.5;
-		text-align: center;
-		text-shadow: 0 0 1rem #00000022;
+		.zmi-datatype-image {
+			.row,
+			.col-9,
+			.col-3 {
+				padding: 0 !important;
+				margin: 0 !important;
+			}
+		}
 	}
 
 	#ZMSGraphic_extEdit_image {
@@ -1915,39 +2010,7 @@ body.zmi {
 		z-index: 10000;
 	}
 
-	/* ZMS-Buttons */
 
-	.btn-secondary {
-		color: #333;
-		background-color: #fff;
-		border-color: #ccc;
-	}
-
-	.btn-secondary:hover a {
-		color: white;
-		text-decoration: none;
-	}
-	&.config.metas form.card > div.flex-row > .btn-group > .btn.btn-secondary:hover i {
-		color: white !important;
-	}
-
-	.btn-default:hover {
-		color: #333;
-		background-color: #e6e6e6;
-		border-color: #adadad;
-	}
-
-	.btn-primary {
-		color: #fff;
-		background-color: #337ab7;
-		border-color: #2e6da4;
-	}
-
-	.btn-primary:hover {
-		color: #fff;
-		background-color: #286090;
-		border-color: #204d74;
-	}
 	table.table-sm td,
 	table.table-sm th {
 		padding: 0.5rem 0.5rem;
@@ -3624,180 +3687,198 @@ body.zmi {
 	/* ZMSRecordset */
 	/* ++++++++++++++++++++++++++++++++++++++++++++++++++ */
 
-	.ZMSRecordSet.main_grid form table.table {
-		min-height: 10rem;
+	.ZMSRecordSet.main_grid {
+		form table.table {
+			min-height: 10rem;
+		}
+
+		table {
+			> thead > tr > th {
+				background: #607d8ba6;
+				color: white;
+				font-weight: normal !important;
+				max-width: 10%;
+				white-space: nowrap;
+
+				&:first-child {
+					overflow: visible;
+				}
+
+				> a {
+					color: white;
+				}
+			}
+
+			tbody tr td.data {
+				div {
+					--font-size: 13.872px;
+					--line-height: 1.5;
+					--lines-to-show: 2;
+				}
+
+				&:not(.zmi-datatype-url) > div:not(.zmi-image) {
+					-moz-box-sizing: border-box;
+					-webkit-box-sizing: border-box;
+					box-sizing: border-box;
+					display: block;
+					display: -webkit-box;
+					height: calc(var(--line-height) * var(--lines-to-show) * var(--font-size));
+					font-size: var(--font-size);
+					line-height: var(--line-height);
+					-webkit-line-clamp: var(--lines-to-show);
+					-webkit-box-orient: vertical;
+					overflow: hidden;
+					text-overflow: ellipsis;
+				}
+
+				> div.input-group a.btn.btn-secondary {
+					height: calc(1.5em + 0.75rem);
+				}
+
+				> div.zmi-image div.zmi-image-preview {
+					height: 2.25rem;
+					margin: 0;
+					line-height: 1;
+					overflow: hidden;
+				}
+			}
+
+			.zmi-datatype-action {
+				width: 7.5rem;
+			}
+
+			.zmi-datatype-int,
+			tbody tr td.data.zmi-datatype-int div:not(.url) {
+				min-width: unset;
+				width: 3rem;
+				max-width: unset;
+			}
+
+			.zmi-datatype-boolean {
+				max-width: 5rem;
+			}
+
+			td.zmi-datatype-boolean {
+				text-align: center;
+
+				div {
+					width: unset !important;
+				}
+			}
+
+			thead th input.form-control.form-control-sm {
+				max-width: calc(100% - 1rem);
+				color: white;
+				background: transparent;
+				border: none;
+
+				&::placeholder {
+					color: #ffffffb3 !important;
+				}
+			}
+		}
+
+		a.ZMSGraphic_extEdit_action .zmi-zoom-in {
+			position: absolute;
+			text-align: center;
+			font-size: 2rem !important;
+		}
+
+		.btn-group .checkbox.btn.btn-secondary {
+			min-width: 4.25rem;
+
+			span.index {
+				min-width: 1.75rem;
+				display: inline-block;
+				text-align: right !important;
+			}
+		}
+
+		> form:not(.input_fields) {
+			.zmi-datatype-text {
+				max-width: calc(60vw / var(--grid-cols-texttype, 1));
+			}
+
+			.zmi-datatype-date {
+				white-space: nowrap;
+			}
+
+			.zmi-datatype-multiselect {
+				padding-top: 0.25rem;
+
+				> div {
+					overflow: visible !important;
+				}
+
+				.zmi-select-container {
+					display: flex;
+					justify-content: left;
+					flex-wrap: nowrap;
+					flex-direction: row-reverse;
+					gap: 0.25rem;
+					align-items: baseline;
+
+					.zmi-select .btn {
+						margin-top: 0 !important;
+						padding: 0;
+						background: none;
+						border: none;
+					}
+				}
+			}
+		}
 	}
 
-	#zmiModalinsertUser .ZMSRecordSet.main_grid form table.table {
-		min-height: unset;
+	#zmiModalinsertUser .ZMSRecordSet.main_grid {
+		form table.table {
+			min-height: unset;
+		}
+
+		table tbody tr td.data:not(.zmi-datatype-image) div {
+			/* ignore inherited styles */
+			display: contents;
+		}
+
+		.table-responsive {
+			min-height: 8rem;
+		}
 	}
 
-	.ZMSRecordSet.main_grid table > thead > tr > th {
-		background: #607d8ba6;
-		color: white;
-		font-weight: normal !important;
-		max-width: 10%;
-		white-space: nowrap;
-	}
+	.zmi_details_grid .ZMSRecordSet.main_grid table {
+		th i.fas.fa-sort {
+			/* As long as the a-container does not have enough specific url parameters */
+			display: none;
+		}
 
-	.ZMSRecordSet.main_grid table > thead > tr > th:first-child {
-		overflow: visible;
-	}
-
-	.ZMSRecordSet.main_grid table > thead > tr > th > a {
-		color: white;
-	}
-
-	.ZMSRecordSet.main_grid table tbody tr td.data div {
-		--font-size: 13.872px;
-		--line-height: 1.5;
-		--lines-to-show: 2;
-	}
-
-	.ZMSRecordSet.main_grid table tbody tr td.data:not(.zmi-datatype-url) > div:not(.zmi-image) {
-		-moz-box-sizing: border-box;
-		-webkit-box-sizing: border-box;
-		box-sizing: border-box;
-		display: block;
-		display: -webkit-box;
-		height: calc(var(--line-height) * var(--lines-to-show) * var(--font-size));
-		font-size: var(--font-size);
-		line-height: var(--line-height);
-		-webkit-line-clamp: var(--lines-to-show);
-		-webkit-box-orient: vertical;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
-
-	.ZMSRecordSet.main_grid table tbody tr td.data > div.input-group a.btn.btn-secondary {
-		height: calc(1.5em + 0.75rem);
-	}
-
-	.ZMSRecordSet.main_grid table tbody tr td.data > div.zmi-image div.zmi-image-preview {
-		height: 2.25rem;
-		margin: 0;
-		line-height: 1;
-		overflow: hidden;
-	}
-
-	.ZMSRecordSet.main_grid a.ZMSGraphic_extEdit_action .zmi-zoom-in {
-		position: absolute;
-		text-align: center;
-		font-size: 2rem !important;
-	}
-
-	#zmiModalinsertUser .ZMSRecordSet.main_grid table tbody tr td.data:not(.zmi-datatype-image) div {
-		/* ignore inherited styles */
-		display: contents;
-	}
-
-	.ZMSRecordSet.main_grid table .zmi-datatype-action {
-		width: 7.5rem;
-	}
-
-	.ZMSRecordSet.main_grid table .zmi-datatype-int,
-	.ZMSRecordSet.main_grid table tbody tr td.data.zmi-datatype-int div:not(.url) {
-		min-width: unset;
-		width: 3rem;
-		max-width: unset;
-	}
-
-	.ZMSRecordSet.main_grid table .zmi-datatype-boolean {
-		max-width: 5rem;
-	}
-
-	.ZMSRecordSet.main_grid table td.zmi-datatype-boolean {
-		text-align: center;
-	}
-
-	.ZMSRecordSet.main_grid table td.zmi-datatype-boolean div {
-		width: unset !important;
-	}
-
-	.zmi_details_grid .ZMSRecordSet.main_grid table th i.fas.fa-sort {
-		/* As long as the a-container does not have enough specific url parameters */
-		display: none;
-	}
-
-	.zmi_details_grid .ZMSRecordSet.main_grid table .zmi-datatype-int,
-	.zmi_details_grid .ZMSRecordSet.main_grid table tbody tr td.data.zmi-datatype-int div:not(.url) {
-		width: unset;
-	}
-
-	.ZMSRecordSet.main_grid table thead th input.form-control.form-control-sm {
-		max-width: calc(100% - 1rem);
-		color: white;
-		background: transparent;
-		border: none;
-	}
-
-	.ZMSRecordSet.main_grid table thead th input.form-control.form-control-sm::placeholder {
-		color: #ffffffb3 !important;
-	}
-
-	.ZMSRecordSet.main_grid .btn-group .checkbox.btn.btn-secondary {
-		min-width: 4.25rem;
-	}
-
-	.ZMSRecordSet.main_grid .btn-group .checkbox.btn.btn-secondary span.index {
-		min-width: 1.75rem;
-		display: inline-block;
-		text-align: right !important;
-	}
-
-	.ZMSRecordSet.main_grid > form:not(.input_fields) .zmi-datatype-text {
-		max-width: calc(60vw / var(--grid-cols-texttype, 1));
-	}
-
-	.ZMSRecordSet.main_grid > form:not(.input_fields) .zmi-datatype-date {
-		white-space: nowrap;
-	}
-
-	.ZMSRecordSet.main_grid > form:not(.input_fields) .zmi-datatype-multiselect {
-		padding-top: 0.25rem;
-	}
-
-	.ZMSRecordSet.main_grid > form:not(.input_fields) .zmi-datatype-multiselect > div {
-		overflow: visible !important;
+		.zmi-datatype-int,
+		tbody tr td.data.zmi-datatype-int div:not(.url) {
+			width: unset;
+		}
 	}
 
 	.main_grid > form:not(.input_fields) .zmi-datatype-multiselect .dropdown-menu {
 		overflow: overlay;
 	}
 
-	.ZMSRecordSet.main_grid > form:not(.input_fields) .zmi-datatype-multiselect .zmi-select-container {
-		display: flex;
-		justify-content: left;
-		flex-wrap: nowrap;
-		flex-direction: row-reverse;
-		gap: 0.25rem;
-		align-items: baseline;
+	#metaobj_recordset_main_grid .ZMSRecordSet.main_grid {
+		div.table-responsive {
+			min-height: 24em;
+		}
 	}
 
-	.ZMSRecordSet.main_grid > form:not(.input_fields) .zmi-datatype-multiselect .zmi-select-container .zmi-select .btn {
-		margin-top: 0 !important;
-		padding: 0;
-		background: none;
-		border: none;
+	.ZMSSqlDbForm-multiselect {
+		select {
+			min-height: 6.25rem;
+		}
 	}
+	.form-group.row {
+		.ZMSSqlDbForm-multiselect select {
+			min-height: 6.25rem !important;
+		}
 
-	#metaobj_recordset_main_grid .ZMSRecordSet.main_grid div.table-responsive {
-		min-height: 24em;
-	}
-
-	#zmiModalinsertUser .ZMSRecordSet.main_grid .table-responsive {
-		min-height: 8rem;
-	}
-
-	.ZMSSqlDbForm-multiselect select {
-		min-height: 6.25rem;
-	}
-	.form-group.row .ZMSSqlDbForm-multiselect select {
-		min-height: 6.25rem !important;
-	}
-
-	.form-group.row .ZMSSqlDbForm-multimultiselect .input-group .control-group {
-		width: calc(50% - 38.5px);
+		.ZMSSqlDbForm-multimultiselect .input-group .control-group {
+			width: calc(50% - 38.5px);
+		}
 	}
 
 	/* ++++++++++++++++++++++++++++++++++++++++++++++++++ */

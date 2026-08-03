@@ -107,8 +107,7 @@ body.zmi {
 	/* HEADER BAR */
 	/* ++++++++++++++++++++++++++++++++++++++++++++++++++ */
 	header.navbar,
-	header.navbar select.form-control-sm,
-	.zmi-manage_menu #menu_buttons {
+	header.navbar select.form-control-sm {
 		background: #354f67;
 	}
 	header.navbar {
@@ -268,9 +267,6 @@ body.zmi {
 		list-style: none;
 	}
 
-	.zmi-manage_menu #menu_buttons ul.dropdown-menu {
-		background-color: #646d75;
-	}
 	li.dropdown i.fas.fa-bolt:before {
 		content: "Z";
 		font-family: Arial, sans-serif;

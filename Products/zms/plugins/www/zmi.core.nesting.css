@@ -2414,7 +2414,7 @@ body.zmi {
 		cursor: pointer;
 	}
 
-	.zmi.manage-menu .toggle,
+	&.manage-menu .toggle,
 	.zmi-sitemap .toggle {
 		color: #ccc;
 		font-size: 120%;

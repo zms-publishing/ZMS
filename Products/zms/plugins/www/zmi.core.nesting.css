@@ -569,46 +569,74 @@ body.zmi {
 
 	#zmi-tab,
 	#zmiIframeAddDialog {
-		.card .card-header {
-			border: none;
-			border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-		}
+		.card {
+			.card-header {
+				border: none;
+				border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 
-		.card .card-header:not(:first-child) {
-			border-top: 1px solid rgba(0, 0, 0, 0.125);
-		}
+				&:not(:first-child) {
+					border-top: 1px solid rgba(0, 0, 0, 0.125);
+				}
 
-		.card .card-header .zmi-action.btn-group.pull-right {
-			padding-top: 0.25rem;
-		}
+				.zmi-action.btn-group.pull-right {
+					padding-top: 0.25rem;
+				}
 
-		.card .card-header.btn-collapse .zmi-changes {
-			opacity: 0.5;
-			cursor: auto;
-		}
+				&.btn-collapse .zmi-changes {
+					opacity: 0.5;
+					cursor: auto;
+				}
 
-		.card .card-header.btn-collapse > a > i,
-		.card .card-header.btn-collapse > div > a > i {
-			width: 1.25em;
-		}
+				&.btn-collapse > a > i,
+				&.btn-collapse > div > a > i {
+					width: 1.25em;
+				}
 
-		.card .card-header a.card-toggle {
-			color: #354f67a6 !important;
-			font-weight: bold;
-			min-width: 7rem;
-			text-align: left;
-		}
+				a.card-toggle {
+					color: #354f67a6 !important;
+					font-weight: bold;
+					min-width: 7rem;
+					text-align: left;
+				}
 
-		.card .card-header.btn-collapse #zmi-toggle-activity {
-			margin-left: 0.6rem;
-			margin-top: -2px;
-			display: inline-block;
+				&.btn-collapse #zmi-toggle-activity {
+					margin-left: 0.6rem;
+					margin-top: -2px;
+					display: inline-block;
+				}
+			}
 		}
 	}
 
 	#zmi-tab {
-		.card .card-header.btn-collapse {
-			margin-bottom: -1px;
+		.card {
+			.card-header.btn-collapse {
+				margin-bottom: -1px;
+			}
+
+			.card-header {
+				.zmi-state {
+					margin: 0 0.25rem;
+					font-size: inherit;
+					font-family: inherit;
+					font-weight: inherit;
+
+					&.fas:before {
+						font-family: "Font Awesome 5 Free";
+						font-weight: 900;
+					}
+
+					&.far:before {
+						font-family: "Font Awesome 5 Free";
+						font-weight: 400;
+					}
+				}
+
+				span.zmi-state.far:before,
+				span.zmi-state.fas:before {
+					margin-right: 0.2rem;
+				}
+			}
 		}
 	}
 
@@ -622,30 +650,6 @@ body.zmi {
 		#zmi-tab .card .card-header.btn-collapse .zmi-changes,
 		#zmiIframeAddDialog .card .card-header.btn-collapse .zmi-changes {
 			display: none;
-		}
-	}
-
-	#zmi-tab {
-		.card .card-header .zmi-state {
-			margin: 0 0.25rem;
-			font-size: inherit;
-			font-family: inherit;
-			font-weight: inherit;
-		}
-
-		.card .card-header .zmi-state.fas:before {
-			font-family: "Font Awesome 5 Free";
-			font-weight: 900;
-		}
-
-		.card .card-header .zmi-state.far:before {
-			font-family: "Font Awesome 5 Free";
-			font-weight: 400;
-		}
-
-		.card .card-header span.zmi-state.far:before,
-		.card .card-header span.zmi-state.fas:before {
-			margin-right: 0.2rem;
 		}
 	}
 

@@ -88,7 +88,7 @@ def manage_repository_gitpush(self, request=None):
 		html.append('</div><!-- .form-group -->')
 		html.append('<div class="form-group row">')
 		html.append('<div class="controls save">')
-		html.append('<button type="submit" name="btn" class="btn btn-primary" value="BTN_GITPUSH">%s</button>'%(self.getZMILangStr('BTN_GITPUSH')))
+		html.append('<button type="submit" name="btn" class="btn btn-primary" onclick="$(\'i\',this).attr(\'class\',\'fas fa-spinner fa-spin\')" value="BTN_GITPUSH"><i class="fas fa-forward"></i>&nbsp;&nbsp;%s</button>'%(self.getZMILangStr('BTN_GITPUSH')))
 		html.append('<button type="submit" name="btn" class="btn btn-secondary btn-default" value="BTN_CANCEL">%s</button>'%(self.getZMILangStr('BTN_CANCEL')))
 		html.append('</div>')
 		html.append('</div><!-- .form-group -->')

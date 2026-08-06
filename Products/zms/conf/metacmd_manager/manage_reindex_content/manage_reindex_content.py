@@ -2,6 +2,19 @@ from Products.zms import standard
 
 def manage_reindex_content( self, request=None):
 	request = self.REQUEST
+
+	# #########################################################################
+	# Depending on the user role, the reindexing is either limited to the current level or recursive.
+	# #########################################################################
+	auth_user = request.get('AUTHENTICATED_USER')
+	user_roles = []
+	context_roles = []
+	if auth_user is not None:
+		user_roles = self.getUserRoles(auth_user, resolve=False)
+		context_roles = auth_user.getRolesInContext(self)
+	is_admin_like = len([x for x in user_roles if x in ['ZMSAdministrator']]) > 0 or 'Manager' in context_roles
+	is_limited_role = 'ZMSEditor' in user_roles and not is_admin_like
+
 	connector_url = ''
 	try:
 		catalog_adapter = self.getCatalogAdapter()
@@ -31,7 +44,7 @@ def manage_reindex_content( self, request=None):
 	html.append('<form class="form-horizontal card" name="form0" method="post" enctype="multipart/form-data">')
 	html.append('<input type="hidden" id="lang" name="lang" value="%s"/>'%request['lang'])
 	html.append('<input type="hidden" id="page_count" name="page_count" value="%s"/>'%page_count)
-	html.append('<legend>Reindex Content Recursively</legend>')
+	html.append('<legend>Reindex Content %s</legend>'%(not is_limited_role and 'Recursively' or '(Limited to Current Level)'))
 	html.append('<div class="card-body">')
 	html.append("""
 	<div class="form-group zmi-form-container zms4-row mb-0">
@@ -123,10 +136,26 @@ def manage_reindex_content( self, request=None):
 
 		$(function() {
 
+			const restrictToCurrentLevel = %s;
+			let restrictedExpanded = false;
 			let sitemap_max_level = -1; // -1 for unlimited levels
+			if (restrictToCurrentLevel) {
+				sitemap_max_level = 1;
+			}
+
+			const applyRestrictedView = function() {
+				if (!restrictToCurrentLevel) {
+					return;
+				}
+				var $rootNode = $('.zmi-sitemap > ul.zmi-page').first();
+				var $directChildren = $rootNode.find('> li > ul.zmi-page');
+				$directChildren.not('.ZMSFile').remove();
+				$rootNode.find('> li > ul.zmi-page.ZMSFile ul.zmi-page').remove();
+				$('.zmi-sitemap .toggle').remove();
+			};
 			
 			// Avoid Auto-Expanding Sitemap in Case of More than 100 Pages to avoid Performance Issues
-			if (parseInt($('#page_count').val()) > 100) {
+			if (!restrictToCurrentLevel && parseInt($('#page_count').val()) > 100) {
 				let show_sitemap = confirm('Mind the performance: More than 100 pages! Press cancel for not expanding the whole sitemap automatically.');
 				if (!show_sitemap) {
 					sitemap_max_level = 0; // only show top level to avoid performance issues
@@ -142,7 +171,11 @@ def manage_reindex_content( self, request=None):
 					if ($currentNode.length) {
 						$('.zmi-sitemap').html($currentNode);
 					}
-					if (sitemap_max_level !== 0) {
+					if (restrictToCurrentLevel && !restrictedExpanded) {
+						restrictedExpanded = true;
+						zmiExpandObjectTree(sitemap_max_level);
+						window.setTimeout(applyRestrictedView, 300);
+					} else if (sitemap_max_level !== 0) {
 						zmiExpandObjectTree(sitemap_max_level);
 			 		}
 				},
@@ -160,6 +193,9 @@ def manage_reindex_content( self, request=None):
 						var uid = '{'+'$'+phys_path.substring(1).replace(/\/content/gi,'@')+'}'; // $a.attr('data-uid');
 						$a.before('<input name="home_ids:list" type="checkbox" title="'+uid+'" value="'+uid+'" checked="checked" /> ');
 					});
+					if (restrictToCurrentLevel && restrictedExpanded) {
+						applyRestrictedView();
+					}
 				},
 			});
 			$('#zmsindex .zmi-sitemap-container').removeClass('loading');
@@ -268,7 +304,7 @@ def manage_reindex_content( self, request=None):
 			});
 
 		</script>
-		''')
+		'''%(('true' if is_limited_role else 'false')))
 	
 	html.append('''
 		<style>

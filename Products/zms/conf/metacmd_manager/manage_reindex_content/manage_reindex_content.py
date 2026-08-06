@@ -15,6 +15,8 @@ def manage_reindex_content( self, request=None):
 	catalog_items = catalog({'path':'/%s'%(self.absolute_url(relative=True))})
 	# Number of Pages in Catalog for given path.
 	page_meta_ids = [id for id in self.getMetaobjIds() if self.getMetaobj(id)['type'] in ['ZMSDocument']]
+	# more_meta_ids = [id for id in catalog_adapter.getIds() if not str(id).startswith('type')]
+	# page_meta_ids = list(set(page_meta_ids + more_meta_ids))
 	pages = [r for r in catalog_items if r['meta_id'] in page_meta_ids]
 	page_count = len(pages)
 
@@ -73,7 +75,7 @@ def manage_reindex_content( self, request=None):
 		<div class="form-group row">
 		<label class="col-sm-2 control-label">Page Size</label>
 		<div class="col-sm-10">
-			<input class="form-control" id="count" name="count:int" type="text" value="1" />
+			<input class="form-control" id="count" name="count:int" type="text" value="1" disabled="disabled" />
 			<small class="form-text text-muted">API batch size per call (1 = one node per call)</small>
 		</div>
 		</div><!-- .form-group -->
@@ -88,7 +90,7 @@ def manage_reindex_content( self, request=None):
 			</button>
 		</div>
 	</div><!-- .form-group -->
-	"""%standard.html_quote(connector_url))
+	"""%(standard.html_quote(connector_url)))
 
 	html.append('</div><!-- .card-body -->')
 	html.append('</form><!-- .form-horizontal -->')
@@ -134,7 +136,7 @@ def manage_reindex_content( self, request=None):
 			// Create Sitemap
 			var href = $ZMI.getPhysicalPath();
 			$ZMI.objectTree.init('.zmi-sitemap', href, {
-				params: {'meta_types':'0'},
+				params: {'meta_types':'0,ZMSFile'},
 				'init.callback': function() {
 					var $currentNode = $('.zmi-sitemap a[data-uid]:last').closest('ul.zmi-page').first();
 					if ($currentNode.length) {
@@ -302,6 +304,9 @@ def manage_reindex_content( self, request=None):
 			}
 			.zmi.manage_reindex_content .response span.message.text-danger:before {
 				color:#F44336;
+			}
+			.zmi.manage_reindex_content .zmi-sitemap ul.zmi-page .preview_on_hover {
+				display:none;
 			}
 		/*-->*/
 		</style>

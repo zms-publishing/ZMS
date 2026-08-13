@@ -1,8 +1,12 @@
 import argparse
+import logging
 import requests
-import json
+import threading
 from dataclasses import dataclass, field
-from typing import List, Optional
+from typing import List
+
+
+LOGGER = logging.getLogger("Zope")
 
 
 @dataclass
@@ -14,11 +18,12 @@ class ZMINode:
     is_page_element: bool
     children: List["ZMINode"] = field(default_factory=list)
 
-    def dump(self, level=0):
-        indent = "  " * level
-        print(f"{indent}- {self.title} [{self.meta_id}] (uid={self.uid})")
+    def dump(self, level=0, write_line=None):
+        if write_line is None:
+            write_line = print
+        write_line(f"{self.title} [{self.meta_id}] (uid={self.uid})")
         for child in self.children:
-            child.dump(level + 1)
+            child.dump(level + 1, write_line=write_line)
 
 
 class ZMIObjectTreePython:
@@ -74,23 +79,64 @@ class ZMIObjectTreePython:
 
         return node
 
-    def dump_tree(self):
+    def dump_tree(self, write_line=None):
         """
         Gibt die komplette Hierarchie aus.
         """
-        roots = self.load_tree()
-        for root in roots:
-            if root:
-                root.dump()
+        if write_line is None:
+            write_line = print
+        parent_nodes = self._api("get_parent_nodes")
+        for node_data in parent_nodes:
+            self._dump_node_recursive(node_data=node_data, level=0, write_line=write_line)
+
+    def _dump_node_recursive(self, node_data, level, write_line):
+        # Redirect-Nodes überspringen
+        if (
+            node_data.get("titlealt", "").upper().find("REDIRECT") > -1
+            and node_data.get("attr_dc_identifier_url_redirect", "").strip() != ""
+        ):
+            return
+
+        uid = node_data["uid"]
+        title = node_data.get("titlealt", "")
+        meta_id = node_data.get("meta_id", "")
+        write_line(f"[{meta_id}] (uid={uid})")
+
+        child_nodes = self._api(f"{uid}/get_child_nodes")
+        for child in child_nodes:
+            self._dump_node_recursive(node_data=child, level=level + 1, write_line=write_line)
 
 
 def manage_reindex_content_bg( self):
-  request = self.REQUEST
-  tree = ZMIObjectTreePython(
-    base_url = self.getDocumentElement().absolute_url(),
-    lang = "ger"
-  )
-  tree.dump_tree()
+    request = self.REQUEST
+    base_url = self.getDocumentElement().absolute_url()
+    lang = request.get("lang", "ger")
+
+    def _worker():
+        try:
+            log_prefix = f"[{base_url}]"
+            def _write_to_zope_log(line):
+                LOGGER.info("%s %s", log_prefix, line)
+
+            LOGGER.info("%s started", log_prefix)
+            tree = ZMIObjectTreePython(base_url=base_url, lang=lang)
+            tree.dump_tree(write_line=_write_to_zope_log)
+            LOGGER.info("%s finished", log_prefix)
+        except Exception:
+            LOGGER.exception("manage_reindex_content_bg failed")
+
+    thread = threading.Thread(target=_worker, name="manage_reindex_content_bg", daemon=True)
+    thread.start()
+
+    message = "Background Job has Started"
+    target = self.url_append_params(
+        "%s/manage_main" % self.absolute_url(),
+        {
+            "lang": lang,
+            "manage_tabs_message": message,
+        },
+    )
+    return request.response.redirect(target)
 
 def main():
     parser = argparse.ArgumentParser(

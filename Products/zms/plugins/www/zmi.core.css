@@ -3300,6 +3300,7 @@ body.zmi.eng q {
 	padding: 0 0 0 2.5em;
 	font-family: monospace;
 	width: 2.55rem;
+	transition: width 0.5s ease-in-out;
 }
 .zmi #tablefilter:focus {
 	background-color: #f2f2f2;

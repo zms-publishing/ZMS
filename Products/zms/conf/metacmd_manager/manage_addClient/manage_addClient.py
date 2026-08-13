@@ -27,6 +27,11 @@ def manage_addClient(self):
 	html += '<legend>Insert new ZMS-Client</legend>'
 	html += '<div class="card-body">'
 
+	# --- Cancel.
+	# ---------------------------------
+	if request.form.get('btn')=='BTN_CANCEL':
+		request.response.redirect(self.getHome().absolute_url() + '/content/manage')
+
 	# --- Insert client.
 	# ---------------------------------
 	if request.form.get('btn')=='BTN_INSERT':
@@ -35,10 +40,20 @@ def manage_addClient(self):
 		home.manage_addFolder(id=request['id'],title=request['title'])
 		folder_inst = getattr(home,request['id'])
 		request.set('lang_label',self.getLanguageLabel(request['lang']))
-		zms_inst = self.initZMS(folder_inst, 'content', request['titlealt'], request['title'], request['lang'], self.get_manage_lang(), request)
+		zms_inst = self.initZMS(
+						folder_inst, 
+						'content', 
+						request['titlealt'], 
+						request['title'], 
+						request['lang'], 
+						self.get_manage_lang(), 
+						request,
+						minimal_init=True
+						)
 		zms_inst.synchronizePublicAccess()
+		# Set the new client's portal master (parent).
+		# Hint: Registration of new client in the portal is done in initZMS(), now.
 		zms_inst.setConfProperty('Portal.Master',home.id)
-		self.setConfProperty('Portal.Clients',self.getConfProperty('Portal.Clients',[])+[request['id']])
 		# Trigger adding to zmsindex
 		standard.triggerEvent(zms_inst.content,'*.ObjectMoved')
 		message.append(self.getZMILangStr('MSG_INSERTED')%request['id'])
@@ -49,7 +64,7 @@ def manage_addClient(self):
 	else:
 		html += '<div class="form-group row">'
 		html += '<label for="id" class="col-sm-3 control-label mandatory">%s</label>'%(self.getZMILangStr('ATTR_ID'))
-		html += '<div class="col-sm-9"><input class="form-control" list="zmsclientids" name="id" type="text" size="25" value="client0"></div>'
+		html += '<div class="col-sm-9"><input class="form-control" list="zmsclientids" name="id" type="text" size="25" value="client0" /></div>'
 		html += '<datalist id="zmsclientids">'
 		for c in getZMSPortalClients(self.getPortalMaster() or self):
 			html += '<option value="%s">'%(c)
@@ -57,11 +72,11 @@ def manage_addClient(self):
 		html += '</div><!-- .form-group -->'
 		html += '<div class="form-group row">'
 		html += '<label for="titlealt" class="col-sm-3 control-label mandatory">%s</label>'%(self.getZMILangStr('ATTR_TITLEALT'))
-		html += '<div class="col-sm-9"><input class="form-control" name="titlealt" type="text" size="80" value="Client0 home"></div>'
+		html += '<div class="col-sm-9"><input class="form-control" name="titlealt" type="text" size="80" value="Client0 home" /></div>'
 		html += '</div><!-- .form-group -->'
 		html += '<div class="form-group row">'
 		html += '<label for="title" class="col-sm-3 control-label mandatory">%s</label>'%(self.getZMILangStr('ATTR_TITLE'))
-		html += '<div class="col-sm-9"><input class="form-control" name="title" type="text" size="50" value="Client0 - Python-based contentmanagement system for science, technology and medicine"></div>'
+		html += '<div class="col-sm-9"><input class="form-control" name="title" type="text" size="50" value="Client0 - Python-based contentmanagement system for science, technology and medicine" /></div>'
 		html += '</div><!-- .form-group -->'
 		html += '<div class="form-group row">'
 		html += '<label for="titlealt" class="col-sm-3 control-label">%s</label>'%(self.getZMILangStr('TAB_CONFIGURATION'))

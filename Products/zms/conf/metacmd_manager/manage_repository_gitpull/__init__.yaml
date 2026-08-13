@@ -8,7 +8,7 @@ manage_repository_gitpull:
   name: BTN_GITPULL
   nodes: '{$}'
   package: com.zms.custom.metacmd.gitbridge
-  revision: 5.1.1
+  revision: 5.1.2
   roles:
     - ZMSAdministrator
   stereotype: repository

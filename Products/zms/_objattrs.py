@@ -280,7 +280,8 @@ class ObjAttrs(object):
         opts = []
         obj_attropts = obj_attr['options']
         if isinstance(obj_attropts, list):
-          v = '\n'.join([str(obj_attropts[x*2]) for x in range(len(obj_attropts)//2)])
+          v_pairs = '\n'.join([str(obj_attropts[x*2]) for x in range(len(obj_attropts)//2)])
+          v_lines = '\n'.join([str(x) for x in obj_attropts])
           if len(obj_attropts)==2 and self.getLinkObj(obj_attropts[0], REQUEST):
             ob = self.getLinkObj(obj_attropts[0], REQUEST)
             metaObj = self.getMetaobj(ob.meta_id)
@@ -288,14 +289,28 @@ class ObjAttrs(object):
             res = [{'key':x['key'],'value':x.get('value', x.get('value_%s'%REQUEST['lang']))} for x in res]
             res = standard.sort_list(res, 'value', 'asc')
             opts = [[x['key'], x['value']] for x in res]
-          elif v.find('<dtml-') >= 0 or v.startswith('##') or v.find('<tal:') >= 0:
+          elif standard.dt_executable(v_pairs):
             try:
-              opts = standard.dt_exec(self, v)
+              opts = standard.dt_exec(self, v_pairs)
+            except:
+              opts = standard.writeError(self, '[getObjOptions]: key=%s'%obj_attr['id'])
+          elif standard.dt_executable(v_lines):
+            try:
+              opts = standard.dt_exec(self, v_lines)
             except:
               opts = standard.writeError(self, '[getObjOptions]: key=%s'%obj_attr['id'])
           else:
             for i in range(len(obj_attropts)//2):
               opts.append([obj_attropts[i*2], obj_attropts[i*2+1]])
+        elif isinstance(obj_attropts, str):
+          if standard.dt_executable(obj_attropts):
+            try:
+              opts = standard.dt_exec(self, obj_attropts)
+            except:
+              opts = standard.writeError(self, '[getObjOptions]: key=%s'%obj_attr['id'])
+          else:
+            for option in standard.string_list(obj_attropts, trim=False):
+              opts.append([option, option])
         elif isinstance(obj_attropts, dict):
           for k in obj_attropts.keys():
             opts.append([k, obj_attropts[k]])

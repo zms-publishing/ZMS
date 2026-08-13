@@ -6,13 +6,13 @@ manage_reindex_content:
   meta_types:
     - ZMS
     - ZMSFolder
-  name: Reindex Content Recursively
+  name: Reindex Content
   nodes: '{$}'
-  revision: 6.1.0
+  revision: 6.3.0
   roles:
     - ZMSAdministrator
     - ZMSEditor
-  title: Reindex Content Recursively
+  title: Reindex Content
   Impl:
     - id: manage_reindex_content
       type: External Method

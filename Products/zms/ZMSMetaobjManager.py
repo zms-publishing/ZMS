@@ -929,8 +929,8 @@ class ZMSMetaobjManager(object):
       meta_obj = self.getMetaobj(id)
       attrs = meta_obj.get('attrs', meta_obj.get('__obj_attrs__', []))
       for attr in attrs:
-        valid_datatype = attr['type'] in self.valid_datatypes
-        if attr_id == attr['type'] and not valid_datatype:
+        valid_datatype = attr.get('type') in self.valid_datatypes
+        if attr_id == attr.get('type') and not valid_datatype:
           meta_attrs = self.getMetadictAttrs()
           if attr['type'] in meta_attrs:
             attr_type = attr['type']

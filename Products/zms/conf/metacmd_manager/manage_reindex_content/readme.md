@@ -2,30 +2,42 @@
 
 ## Purpose
 
-`manage_reindex_content` helps editors/admins refresh the external content index
-(for example OpenSearch) for selected content nodes in the current context tree.
+manage_reindex_content refreshes the external content index (for example OpenSearch)
+for selected nodes in the current content context.
 
-Use it when search results are outdated, missing, or inconsistent after content
-changes.
+Use it when indexed content is outdated, missing, or inconsistent after edits.
 
+## Role-Based Variants
 
-## How It Works
+### Recursive Variant (Manager, ZMSAdministrator)
 
-1. The sitemap starts at the current context node.
-2. You select the nodes to process via checkboxes.
+- Full object-tree UI is available.
+- Recursive navigation/selection is possible.
+- Intended for broader maintenance and bulk reindexing.
+
+### Current-Level Variant (ZMSEditor)
+
+- Scope is limited to the current node and its direct ZMSFile children.
+- Subdocuments, folders, and any other child types are not shown.
+- Deeper descendants are not available for selection.
+
+## Processing Model
+
+1. The sitemap starts from the current context node.
+2. You select nodes via checkboxes within the visible role-specific scope.
 3. Only checked nodes are reindexed.
-4. Each checked node is processed exactly once.
+4. Each selected node is processed once.
 5. Unchecked nodes are excluded.
 
 The tool sends one reindex request per selected node to the active catalog
-connector (`reindex_page` with `page_size=1`).
+connector (reindex_page with page_size=1).
 
-Hint: If no catalog connector is available, the command will stop with a warning.
+If no catalog connector is available, execution stops with a warning.
 
 ## Usage
 
-1. Open `manage_reindex_content` on the context you want to work on.
-2. Expand the tree and check the nodes you want to reindex.
+1. Open manage_reindex_content on the context you want to reindex.
+2. Select the nodes shown by your role-specific variant.
 3. Click Start.
 4. Monitor progress per node in the tree row.
 

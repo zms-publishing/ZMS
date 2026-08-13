@@ -84,7 +84,7 @@ class ZMIObjectTreePython:
                 root.dump()
 
 
-def manage_reindex_content2( self):
+def manage_reindex_content_bg( self):
   request = self.REQUEST
   tree = ZMIObjectTreePython(
     base_url = self.getDocumentElement().absolute_url(),

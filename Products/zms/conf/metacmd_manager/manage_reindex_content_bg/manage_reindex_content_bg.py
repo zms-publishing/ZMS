@@ -1,12 +1,43 @@
 import argparse
+import fcntl
 import logging
+import os
 import requests
 import threading
+import tempfile
 from dataclasses import dataclass, field
 from typing import List
 
 
 LOGGER = logging.getLogger("Zope")
+RUN_LOCK = threading.Lock()
+RUN_IN_PROGRESS = False
+RUN_LOCK_FD = None
+
+
+def _get_lockfile_path(base_url):
+    safe = "".join(ch if ch.isalnum() else "_" for ch in base_url)
+    return os.path.join(tempfile.gettempdir(), f"zms_manage_reindex_content_bg_{safe}.lock")
+
+
+def _try_acquire_singleflight_lock(base_url):
+    lockfile_path = _get_lockfile_path(base_url)
+    fd = os.open(lockfile_path, os.O_CREAT | os.O_RDWR, 0o644)
+    try:
+        fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        return fd
+    except OSError:
+        os.close(fd)
+        return None
+
+
+def _release_singleflight_lock(fd):
+    if fd is None:
+        return
+    try:
+        fcntl.flock(fd, fcntl.LOCK_UN)
+    finally:
+        os.close(fd)
 
 
 @dataclass
@@ -108,11 +139,40 @@ class ZMIObjectTreePython:
 
 
 def manage_reindex_content_bg( self):
+    global RUN_IN_PROGRESS, RUN_LOCK_FD
     request = self.REQUEST
     base_url = self.getDocumentElement().absolute_url()
     lang = request.get("lang", "ger")
 
+    with RUN_LOCK:
+        if RUN_IN_PROGRESS:
+            LOGGER.info("[%s] concurrent start rejected", base_url)
+            target = self.url_append_params(
+                "%s/manage_main" % self.absolute_url(),
+                {
+                    "lang": lang,
+                    "manage_tabs_message": "Background Job is already running",
+                },
+            )
+            return request.response.redirect(target)
+
+        lock_fd = _try_acquire_singleflight_lock(base_url)
+        if lock_fd is None:
+            LOGGER.info("[%s] concurrent start rejected (process lock held)", base_url)
+            target = self.url_append_params(
+                "%s/manage_main" % self.absolute_url(),
+                {
+                    "lang": lang,
+                    "manage_tabs_message": "Background Job is already running",
+                },
+            )
+            return request.response.redirect(target)
+
+        RUN_LOCK_FD = lock_fd
+        RUN_IN_PROGRESS = True
+
     def _worker():
+        global RUN_IN_PROGRESS, RUN_LOCK_FD
         try:
             log_prefix = f"[{base_url}]"
             def _write_to_zope_log(line):
@@ -124,6 +184,11 @@ def manage_reindex_content_bg( self):
             LOGGER.info("%s finished", log_prefix)
         except Exception:
             LOGGER.exception("manage_reindex_content_bg failed")
+        finally:
+            with RUN_LOCK:
+                _release_singleflight_lock(RUN_LOCK_FD)
+                RUN_LOCK_FD = None
+                RUN_IN_PROGRESS = False
 
     thread = threading.Thread(target=_worker, name="manage_reindex_content_bg", daemon=True)
     thread.start()

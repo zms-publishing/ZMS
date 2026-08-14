@@ -1,12 +1,18 @@
 import argparse
+import ast
 import fcntl
+import json
 import logging
 import os
 import requests
 import threading
 import tempfile
-from dataclasses import dataclass, field
-from typing import List
+import transaction
+from typing import Dict
+import Zope2
+from AccessControl.SecurityManagement import newSecurityManager, noSecurityManager
+from AccessControl.users import system as system_user
+from Testing.makerequest import makerequest
 
 
 LOGGER = logging.getLogger("Zope")
@@ -40,104 +46,252 @@ def _release_singleflight_lock(fd):
 		os.close(fd)
 
 
-
-@dataclass
-class ZMINode:
-	uid: str
-	title: str
-	meta_id: str
-	is_page: bool
-	is_page_element: bool
-	children: List["ZMINode"] = field(default_factory=list)
-
-	def dump(self, level=0, write_line=None):
-		if write_line is None:
-			write_line = print
-		write_line(f"{self.title} [{self.meta_id}] (uid={self.uid})")
-		for child in self.children:
-			child.dump(level + 1, write_line=write_line)
+def _brain_get(brain, key, default=None):
+	try:
+		return brain[key]
+	except Exception:
+		value = getattr(brain, key, default)
+		if callable(value):
+			try:
+				return value()
+			except Exception:
+				return default
+		return value
 
 
-class ZMIObjectTreePython:
-	def __init__(self, base_url, lang="de"):
+def _normalize_uid_token(uid):
+	uid = (uid or "").strip()
+	if not uid:
+		return ""
+	return uid if uid.startswith("uid:") else "uid:%s" % uid
+
+
+def _url_from_path(base_url, node_path):
+	if not node_path:
+		return ""
+	parts = [x for x in node_path.split("/") if x]
+	if "content" in parts:
+		i = parts.index("content")
+		rel = "/".join(parts[i + 1:])
+		return "%s/%s" % (base_url.rstrip("/"), rel) if rel else base_url.rstrip("/")
+	return base_url.rstrip("/")
+
+
+def _resolve_node_by_path(context, path):
+	if not path:
+		return None
+	parts = [x for x in str(path).split("/") if x]
+	root = context.getRootElement()
+	root_parts = [x for x in root.getPhysicalPath() if x]
+	if parts[:len(root_parts)] == root_parts:
+		parts = parts[len(root_parts):]
+	ob = root
+	for item_id in parts:
+		ob = getattr(ob, item_id, None)
+		if ob is None:
+			return None
+	return ob
+
+
+def _resolve_node_for_doc(context, doc, fallback_path=None):
+	data_uid = (doc.get("uid") or "").strip()
+	if data_uid:
+		token = "{$%s}" % data_uid
+		node = context.getLinkObj(token)
+		if node is not None:
+			return node, "getLinkObj(uid)"
+		node = context.findObject(token)
+		if node is not None:
+			return node, "findObject(uid)"
+
+	for candidate in [doc.get("path"), doc.get("loc"), fallback_path]:
+		node = _resolve_node_by_path(context, candidate)
+		if node is not None:
+			return node, "path"
+
+	return None, ""
+
+
+def _normalize_doc_for_indexing(doc):
+	normalized = dict(doc)
+	for key in ("created_dt", "change_dt", "start_dt", "end_dt", "indexing_dt"):
+		value = normalized.get(key)
+		if isinstance(value, str) and " " in value and "T" not in value:
+			normalized[key] = value.replace(" ", "T", 1)
+	return normalized
+
+
+def _open_thread_context(physical_path):
+	app = Zope2.app()
+	app = makerequest(app)
+	app.REQUEST['PARENTS'] = [app]
+	app.REQUEST.set('ZMS_CONTEXT_URL', True)
+	newSecurityManager(None, system_user)
+	traversal_path = '/'.join([x for x in physical_path if x])
+	context = app.unrestrictedTraverse(traversal_path)
+	return app, context
+
+
+def _close_thread_context(app):
+	try:
+		transaction.abort()
+	except Exception:
+		pass
+	try:
+		noSecurityManager()
+	except Exception:
+		pass
+	if app is not None and getattr(app, '_p_jar', None) is not None:
+		app._p_jar.close()
+
+
+class ZMSIndexSchematizedReindexer:
+	def __init__(self, context, base_url, lang="de"):
+		self.context = context
 		self.base_url = base_url.rstrip("/")
 		self.lang = lang
 		self.params = {"preview": "preview", "lang": lang}
 
 	def _api(self, path):
 		url = f"{self.base_url}/++rest_api/{path}"
-		response = requests.get(url, params=self.params)
+		response = requests.get(url, params=self.params, timeout=60)
 		response.raise_for_status()
-		return response.json()
+		try:
+			payload = response.json()
+		except Exception:
+			text = (response.text or "").strip()
+			try:
+				payload = json.loads(text)
+			except Exception:
+				try:
+					payload = ast.literal_eval(text)
+				except Exception:
+					raise ValueError(
+						"Invalid REST payload (status=%s, content-type=%s): %.240s"
+						% (response.status_code, response.headers.get("Content-Type", "?"), text)
+					)
+		if isinstance(payload, dict) and payload.get("ERROR"):
+			raise LookupError(
+				"REST returned ERROR=%s ids=%s path=%s"
+				% (payload.get("ERROR"), payload.get("ids"), payload.get("path_to_handle"))
+			)
+		return payload, url
 
-	def load_tree(self):
-		"""
-		Holt die Wurzelknoten (get_parent_nodes) und baut den kompletten Baum.
-		"""
-		parent_nodes = self._api("get_parent_nodes")
-		root_nodes = []
+	def _iter_index_uids(self, adapter):
+		home_path = "/%s" % self.context.absolute_url(relative=True)
+		brains = self.context.zcatalog_index({"path": home_path})
+		meta_ids = set(self.context.getMetaobjManager().getTypedMetaIds(adapter.getIds()))
+		seen = set()
+		for brain in brains:
+			meta_id = _brain_get(brain, "meta_id", "")
+			if meta_id not in meta_ids:
+				continue
+			uid = _brain_get(brain, "uid", None) or _brain_get(brain, "get_uid", None)
+			node_path = _brain_get(brain, "getPath", None) or _brain_get(brain, "path", None)
+			if not uid or uid in seen:
+				continue
+			seen.add(uid)
+			yield uid, meta_id, node_path
 
-		for node in parent_nodes:
-			root_nodes.append(self._build_node_recursive(node))
-
-		return root_nodes
-
-	def _build_node_recursive(self, node_data):
-		"""
-		Baut einen ZMINode und lädt rekursiv alle Kindknoten.
-		"""
-		if (
-			node_data.get("titlealt", "").upper().find("REDIRECT") > -1
-			and node_data.get("attr_dc_identifier_url_redirect", "").strip() != ""
-		):
-			return None
-
-		node = ZMINode(
-			uid=node_data["uid"],
-			title=node_data.get("titlealt", ""),
-			meta_id=node_data.get("meta_id", ""),
-			is_page=node_data.get("is_page", False),
-			is_page_element=node_data.get("is_page_element", False),
-		)
-
-		child_nodes = self._api(f"{node.uid}/get_child_nodes")
-
-		for child in child_nodes:
-			child_node = self._build_node_recursive(child)
-			if child_node:
-				node.children.append(child_node)
-
-		return node
-
-	def dump_tree(self, write_line=None):
-		"""
-		Gibt die komplette Hierarchie aus.
-		"""
+	def run(self, write_line=None):
 		if write_line is None:
 			write_line = print
-		parent_nodes = self._api("get_parent_nodes")
-		for node_data in parent_nodes:
-			self._dump_node_recursive(node_data=node_data, level=0, write_line=write_line)
 
-	def _dump_node_recursive(self, node_data, level, write_line):
-		if (
-			node_data.get("titlealt", "").upper().find("REDIRECT") > -1
-			and node_data.get("attr_dc_identifier_url_redirect", "").strip() != ""
-		):
-			return
+		adapter = self.context.getCatalogAdapter()
+		connectors = adapter.get_connectors()
+		if not connectors:
+			raise RuntimeError("No catalog connector available")
+		connector = connectors[0]
 
-		uid = node_data["uid"]
-		meta_id = node_data.get("meta_id", "")
-		write_line(f"[{meta_id}] (uid={uid})")
+		stats: Dict[str, int] = {
+			"candidates": 0,
+			"requests": 0,
+			"objects": 0,
+			"success": 0,
+			"failed": 0,
+			"skipped": 0,
+		}
 
-		child_nodes = self._api(f"{uid}/get_child_nodes")
-		for child in child_nodes:
-			self._dump_node_recursive(node_data=child, level=level + 1, write_line=write_line)
+		for uid, meta_id, node_path in self._iter_index_uids(adapter):
+			stats["candidates"] += 1
+			normalized_uid = _normalize_uid_token(uid)
+			node_url = _url_from_path(self.base_url, node_path)
+			try:
+				payload, rest_url = self._api(f"{normalized_uid}/get_indexschematized_content")
+			except Exception as e:
+				msg = str(e)
+				if "REST returned ERROR=Not Found" in msg:
+					stats["skipped"] += 1
+					write_line(
+						"skipped [%s] uid=%s node_path=%s node_url=%s: not found in REST traversal"
+						% (meta_id, normalized_uid, node_path, node_url)
+					)
+				else:
+					stats["failed"] += 1
+					write_line(
+						"failed [%s] uid=%s node_path=%s node_url=%s rest_url=%s: REST error: %s"
+						% (meta_id, normalized_uid, node_path, node_url, f"{self.base_url}/++rest_api/{normalized_uid}/get_indexschematized_content", e)
+					)
+				continue
+
+			stats["requests"] += 1
+			docs = payload.get("docs", [])
+			if not docs:
+				stats["skipped"] += 1
+				write_line(
+					"skipped [%s] uid=%s node_path=%s node_url=%s rest_url=%s: no docs"
+					% (meta_id, normalized_uid, node_path, node_url, rest_url)
+				)
+				continue
+
+			objects = []
+			unresolved = []
+			resolver_stats: Dict[str, int] = {}
+			for data in docs:
+				node, resolver = _resolve_node_for_doc(self.context, data, fallback_path=node_path)
+				if node is None:
+					unresolved.append({
+						"uid": data.get("uid"),
+						"path": data.get("path") or data.get("loc") or node_path,
+					})
+					continue
+				resolver_stats[resolver] = resolver_stats.get(resolver, 0) + 1
+				objects.append((node, _normalize_doc_for_indexing(data)))
+
+			if not objects:
+				stats["skipped"] += 1
+				sample = unresolved[:3]
+				write_line(
+					"skipped [%s] uid=%s node_path=%s node_url=%s rest_url=%s: no resolvable objects (unresolved=%s sample=%s)"
+					% (meta_id, normalized_uid, node_path, node_url, rest_url, len(unresolved), sample)
+				)
+				continue
+
+			try:
+				success, failed = connector.manage_objects_add(objects)
+			except Exception as e:
+				stats["failed"] += len(objects)
+				write_line(
+					"failed [%s] uid=%s node_path=%s node_url=%s rest_url=%s: index add error: %s"
+					% (meta_id, normalized_uid, node_path, node_url, rest_url, e)
+				)
+				continue
+
+			stats["objects"] += len(objects)
+			stats["success"] += int(success or 0)
+			stats["failed"] += int(failed or 0)
+			write_line(
+				"indexed [%s] uid=%s node_path=%s node_url=%s rest_url=%s docs=%s resolved_by=%s success=%s failed=%s"
+				% (meta_id, normalized_uid, node_path, node_url, rest_url, len(objects), resolver_stats, int(success or 0), int(failed or 0))
+			)
+
+		return stats
 
 
 def manage_reindex_content_bg( self):
 	global RUN_IN_PROGRESS, RUN_LOCK_FD
 	request = self.REQUEST
+	physical_path = tuple(self.getPhysicalPath())
 	base_url = self.getDocumentElement().absolute_url()
 	lang = request.get("lang", "ger")
 
@@ -170,6 +324,7 @@ def manage_reindex_content_bg( self):
 
 	def _worker():
 		global RUN_IN_PROGRESS, RUN_LOCK_FD
+		app = None
 		try:
 			log_prefix = f"[{base_url}]"
 
@@ -177,12 +332,15 @@ def manage_reindex_content_bg( self):
 				LOGGER.info("%s %s", log_prefix, line)
 
 			LOGGER.info("%s started", log_prefix)
-			tree = ZMIObjectTreePython(base_url=base_url, lang=lang)
-			tree.dump_tree(write_line=_write_to_zope_log)
+			app, thread_context = _open_thread_context(physical_path)
+			reindexer = ZMSIndexSchematizedReindexer(context=thread_context, base_url=base_url, lang=lang)
+			stats = reindexer.run(write_line=_write_to_zope_log)
+			LOGGER.info("%s summary=%s", log_prefix, stats)
 			LOGGER.info("%s finished", log_prefix)
 		except Exception:
 			LOGGER.exception("manage_reindex_content_bg failed")
 		finally:
+			_close_thread_context(app)
 			with RUN_LOCK:
 				_release_singleflight_lock(RUN_LOCK_FD)
 				RUN_LOCK_FD = None
@@ -204,22 +362,20 @@ def manage_reindex_content_bg( self):
 
 def main():
 	parser = argparse.ArgumentParser(
-		description="Dump ZMI object tree hierarchy via REST API"
+		description="Reindex schematized content through ZMSIndex traversal"
 	)
 	parser.add_argument(
 		"base_url",
-		help="Base REST API URL, e.g. https://example.com/api/path/to/object"
+		help="Base content URL, e.g. https://example.com/content"
 	)
 	parser.add_argument(
 		"--lang",
 		default="de",
-		help="Language parameter for ZMI API (default: de)"
+		help="Language parameter for REST API calls (default: de)"
 	)
 
 	args = parser.parse_args()
-
-	tree = ZMIObjectTreePython(base_url=args.base_url, lang=args.lang)
-	tree.dump_tree()
+	print("Use manage_reindex_content_bg(self) in Zope runtime.")
 
 
 if __name__ == "__main__":

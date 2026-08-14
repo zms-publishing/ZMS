@@ -72,6 +72,11 @@ def get_index_data(node):
     return data
 
 
+def get_indexschematized_data(node, fileparsing=True):
+    objects = node.getCatalogAdapter().get_catalog_objects(node, fileparsing)
+    return [data for _, data in objects]
+
+
 def get_rest_api_url(url):
     if '/content' in url:
         i = url.find('/content')+len('/content')
@@ -182,6 +187,8 @@ class RestApiController(object):
                 decoration, data = self.zmsindex(self.context, content_type=True)
             elif self.ids == [] and self.context.meta_type == 'ZMSMetamodelProvider':
                 decoration, data = self.metaobj_manager(self.context, content_type=True)
+            elif self.ids == ['get_indexschematized_content']:
+                decoration, data = self.get_indexschematized_content(self.context, content_type=True)
             elif self.ids == ['get_body_content']:
                 decoration, data = self.get_body_content(self.context, content_type=True)
             elif self.ids == ['list_parent_nodes']:
@@ -280,6 +287,17 @@ class RestApiController(object):
     @api(tag="content", pattern="/{path}", method="GET", content_type="application/json")
     def get(self, context):
         return get_attrs(context)
+
+    @api(tag="content", pattern="/{path}/get_indexschematized_content", method="GET", content_type="application/json")
+    def get_indexschematized_content(self, context):
+        request = _get_request(context)
+        fileparsing = standard.pybool(request.get('fileparsing', 1))
+        path = '/'.join(context.getPhysicalPath())
+        docs = get_indexschematized_data(context, fileparsing)
+        return {
+            'total': 1,
+            'docs': docs,
+        }
 
     @api(tag="content", pattern="/{path}/get_body_content", method="GET", content_type="text/html")
     def get_body_content(self, context):

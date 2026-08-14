@@ -288,6 +288,11 @@ class RestApiController(object):
     def get(self, context):
         return get_attrs(context)
 
+    @api(tag="content", pattern="/{path}/get_body_content", method="GET", content_type="text/html")
+    def get_body_content(self, context):
+        request = _get_request(context)
+        return context.getBodyContent(request, forced=False)
+
     @api(tag="content", pattern="/{path}/get_indexschematized_content", method="GET", content_type="application/json")
     def get_indexschematized_content(self, context):
         request = _get_request(context)
@@ -298,11 +303,6 @@ class RestApiController(object):
             'total': 1,
             'docs': docs,
         }
-
-    @api(tag="content", pattern="/{path}/get_body_content", method="GET", content_type="text/html")
-    def get_body_content(self, context):
-        request = _get_request(context)
-        return context.getBodyContent(request, forced=False)
 
     @api(tag="navigation", pattern="/{path}/list_parent_nodes", method="GET", content_type="application/json")
     def list_parent_nodes(self, context):

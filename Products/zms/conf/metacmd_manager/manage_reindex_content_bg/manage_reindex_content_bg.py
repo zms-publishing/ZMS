@@ -66,34 +66,41 @@ def _normalize_uid_token(uid):
 	return uid if uid.startswith("uid:") else "uid:%s" % uid
 
 
-def _url_from_path(base_url, node_path):
+def _url_from_path(scope_url, node_path, scope_path=None):
 	if not node_path:
 		return ""
-	parts = [x for x in node_path.split("/") if x]
-	if "content" in parts:
-		i = parts.index("content")
-		rel = "/".join(parts[i + 1:])
-		return "%s/%s" % (base_url.rstrip("/"), rel) if rel else base_url.rstrip("/")
-	return base_url.rstrip("/")
+	parts = [x for x in str(node_path).split("/") if x]
+	scope_parts = [x for x in str(scope_path or "").split("/") if x]
+	if scope_parts and parts[:len(scope_parts)] == scope_parts:
+		rel = "/".join(parts[len(scope_parts):])
+		return "%s/%s" % (scope_url.rstrip("/"), rel) if rel else scope_url.rstrip("/")
+	return scope_url.rstrip("/")
 
 
-def _resolve_node_by_path(context, path):
+def _resolve_node_by_path(context, path, scope_root=None):
 	if not path:
 		return None
 	parts = [x for x in str(path).split("/") if x]
-	root = context.getRootElement()
-	root_parts = [x for x in root.getPhysicalPath() if x]
-	if parts[:len(root_parts)] == root_parts:
-		parts = parts[len(root_parts):]
-	ob = root
-	for item_id in parts:
-		ob = getattr(ob, item_id, None)
-		if ob is None:
-			return None
-	return ob
+	roots = []
+	for root in [scope_root, context.getRootElement(), context.getHome()]:
+		if root is None or root in roots:
+			continue
+		roots.append(root)
+	for root in roots:
+		root_parts = [x for x in root.getPhysicalPath() if x]
+		if parts[:len(root_parts)] != root_parts:
+			continue
+		ob = root
+		for item_id in parts[len(root_parts):]:
+			ob = getattr(ob, item_id, None)
+			if ob is None:
+				break
+		if ob is not None:
+			return ob
+	return None
 
 
-def _resolve_node_for_doc(context, doc, fallback_path=None):
+def _resolve_node_for_doc(context, doc, fallback_path=None, scope_root=None):
 	data_uid = (doc.get("uid") or "").strip()
 	if data_uid:
 		token = "{$%s}" % data_uid
@@ -105,7 +112,7 @@ def _resolve_node_for_doc(context, doc, fallback_path=None):
 			return node, "findObject(uid)"
 
 	for candidate in [doc.get("path"), doc.get("loc"), fallback_path]:
-		node = _resolve_node_by_path(context, candidate)
+		node = _resolve_node_by_path(context, candidate, scope_root=scope_root)
 		if node is not None:
 			return node, "path"
 
@@ -119,6 +126,18 @@ def _normalize_doc_for_indexing(doc):
 		if isinstance(value, str) and " " in value and "T" not in value:
 			normalized[key] = value.replace(" ", "T", 1)
 	return normalized
+
+
+def _get_reindex_scope(context):
+	document_element = context.getDocumentElement()
+	is_portal_master = context == document_element and context.getPortalMaster() is None
+	if is_portal_master:
+		scope_context = context.getHome()
+		scope_mode = "portal-master"
+	else:
+		scope_context = context
+		scope_mode = "recursive"
+	return scope_context, scope_mode
 
 
 def _open_thread_context(physical_path):
@@ -146,9 +165,13 @@ def _close_thread_context(app):
 
 
 class ZMSIndexSchematizedReindexer:
-	def __init__(self, context, base_url, lang="de"):
+	def __init__(self, context, base_url, scope_context=None, scope_mode="recursive", lang="de"):
 		self.context = context
 		self.base_url = base_url.rstrip("/")
+		self.scope_root = scope_context or context
+		self.scope_url = self.scope_root.absolute_url().rstrip("/")
+		self.scope_path = "/%s" % self.scope_root.absolute_url(relative=True)
+		self.scope_mode = scope_mode
 		self.lang = lang
 		self.params = {"preview": "preview", "lang": lang}
 
@@ -178,8 +201,7 @@ class ZMSIndexSchematizedReindexer:
 		return payload, url
 
 	def _iter_index_uids(self, adapter):
-		home_path = "/%s" % self.context.absolute_url(relative=True)
-		brains = self.context.zcatalog_index({"path": home_path})
+		brains = self.context.zcatalog_index({"path": self.scope_path})
 		meta_ids = set(self.context.getMetaobjManager().getTypedMetaIds(adapter.getIds()))
 		seen = set()
 		for brain in brains:
@@ -215,7 +237,7 @@ class ZMSIndexSchematizedReindexer:
 		for uid, meta_id, node_path in self._iter_index_uids(adapter):
 			stats["candidates"] += 1
 			normalized_uid = _normalize_uid_token(uid)
-			node_url = _url_from_path(self.base_url, node_path)
+			node_url = _url_from_path(self.scope_url, node_path, self.scope_path)
 			try:
 				payload, rest_url = self._api(f"{normalized_uid}/get_indexschematized_content")
 			except Exception as e:
@@ -248,7 +270,7 @@ class ZMSIndexSchematizedReindexer:
 			unresolved = []
 			resolver_stats: Dict[str, int] = {}
 			for data in docs:
-				node, resolver = _resolve_node_for_doc(self.context, data, fallback_path=node_path)
+				node, resolver = _resolve_node_for_doc(self.context, data, fallback_path=node_path, scope_root=self.scope_root)
 				if node is None:
 					unresolved.append({
 						"uid": data.get("uid"),
@@ -293,6 +315,7 @@ def manage_reindex_content_bg( self):
 	request = self.REQUEST
 	physical_path = tuple(self.getPhysicalPath())
 	base_url = self.getDocumentElement().absolute_url()
+	scope_context, scope_mode = _get_reindex_scope(self)
 	lang = request.get("lang", "ger")
 
 	with RUN_LOCK:
@@ -333,7 +356,9 @@ def manage_reindex_content_bg( self):
 
 			LOGGER.info("%s started", log_prefix)
 			app, thread_context = _open_thread_context(physical_path)
-			reindexer = ZMSIndexSchematizedReindexer(context=thread_context, base_url=base_url, lang=lang)
+			thread_scope_context = app.unrestrictedTraverse('/'.join([x for x in scope_context.getPhysicalPath() if x]))
+			reindexer = ZMSIndexSchematizedReindexer(context=thread_context, base_url=base_url, scope_context=thread_scope_context, scope_mode=scope_mode, lang=lang)
+			LOGGER.info("%s scope_mode=%s scope_url=%s scope_path=%s", log_prefix, reindexer.scope_mode, reindexer.scope_url, reindexer.scope_path)
 			stats = reindexer.run(write_line=_write_to_zope_log)
 			LOGGER.info("%s summary=%s", log_prefix, stats)
 			LOGGER.info("%s finished", log_prefix)

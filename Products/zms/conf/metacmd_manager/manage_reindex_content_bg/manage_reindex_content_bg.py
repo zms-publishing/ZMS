@@ -119,8 +119,12 @@ def _resolve_node_for_doc(context, doc, fallback_path=None, scope_root=None):
 	return None, ""
 
 
-def _normalize_doc_for_indexing(doc):
+def _normalize_doc_for_indexing(doc, lang=None, primary_lang=None):
 	normalized = dict(doc)
+	if lang and not normalized.get("lang"):
+		normalized["lang"] = lang
+	if not normalized.get("lang") and primary_lang:
+		normalized["lang"] = primary_lang
 	for key in ("created_dt", "change_dt", "start_dt", "end_dt", "indexing_dt"):
 		value = normalized.get(key)
 		if isinstance(value, str) and " " in value and "T" not in value:
@@ -173,11 +177,16 @@ class ZMSIndexSchematizedReindexer:
 		self.scope_path = "/%s" % self.scope_root.absolute_url(relative=True)
 		self.scope_mode = scope_mode
 		self.lang = lang
-		self.params = {"preview": "preview", "lang": lang}
+		self.params = {"preview": "preview"}
 
-	def _api(self, path):
+	def _api(self, path, lang=None):
 		url = f"{self.base_url}/++rest_api/{path}"
-		response = requests.get(url, params=self.params, timeout=60)
+		params = dict(self.params)
+		if lang:
+			params["lang"] = lang
+		elif self.lang:
+			params["lang"] = self.lang
+		response = requests.get(url, params=params, timeout=60)
 		response.raise_for_status()
 		try:
 			payload = response.json()
@@ -234,36 +243,58 @@ class ZMSIndexSchematizedReindexer:
 			"skipped": 0,
 		}
 
+		primary_lang = self.context.getPrimaryLanguage()
+		langs = list(self.context.getLangIds()) or [primary_lang]
+
 		for uid, meta_id, node_path in self._iter_index_uids(adapter):
 			stats["candidates"] += 1
 			normalized_uid = _normalize_uid_token(uid)
 			node_url = _url_from_path(self.scope_url, node_path, self.scope_path)
-			try:
-				payload, rest_url = self._api(f"{normalized_uid}/get_indexschematized_content")
-			except Exception as e:
-				msg = str(e)
-				if "REST returned ERROR=Not Found" in msg:
-					stats["skipped"] += 1
-					write_line(
-						"skipped [%s] uid=%s node_path=%s node_url=%s: not found in REST traversal"
-						% (meta_id, normalized_uid, node_path, node_url)
-					)
-				else:
-					stats["failed"] += 1
-					write_line(
-						"failed [%s] uid=%s node_path=%s node_url=%s rest_url=%s: REST error: %s"
-						% (meta_id, normalized_uid, node_path, node_url, f"{self.base_url}/++rest_api/{normalized_uid}/get_indexschematized_content", e)
-					)
+			rest_url = f"{self.base_url}/++rest_api/{normalized_uid}/get_indexschematized_content"
+			docs = []
+			seen_doc_keys = set()
+			not_found_langs = []
+			rest_errors = []
+			for lang in langs:
+				try:
+					payload, rest_url = self._api(f"{normalized_uid}/get_indexschematized_content", lang=lang)
+				except Exception as e:
+					msg = str(e)
+					if "REST returned ERROR=Not Found" in msg:
+						not_found_langs.append(lang)
+						continue
+					rest_errors.append("%s: %s" % (lang, msg))
+					continue
+
+				stats["requests"] += 1
+				for data in payload.get("docs", []):
+					normalized = _normalize_doc_for_indexing(data, lang=lang, primary_lang=primary_lang)
+					doc_key = (normalized.get("uid"), normalized.get("lang"), normalized.get("id"))
+					if doc_key in seen_doc_keys:
+						continue
+					seen_doc_keys.add(doc_key)
+					docs.append(normalized)
+
+			if rest_errors and not docs:
+				stats["failed"] += 1
+				write_line(
+					"failed [%s] uid=%s node_path=%s node_url=%s rest_url=%s: REST errors: %s"
+					% (meta_id, normalized_uid, node_path, node_url, rest_url, rest_errors[:3])
+				)
 				continue
 
-			stats["requests"] += 1
-			docs = payload.get("docs", [])
 			if not docs:
 				stats["skipped"] += 1
-				write_line(
-					"skipped [%s] uid=%s node_path=%s node_url=%s rest_url=%s: no docs"
-					% (meta_id, normalized_uid, node_path, node_url, rest_url)
-				)
+				if len(not_found_langs) == len(langs):
+					write_line(
+						"skipped [%s] uid=%s node_path=%s node_url=%s: not found in REST traversal (langs=%s)"
+						% (meta_id, normalized_uid, node_path, node_url, not_found_langs)
+					)
+				else:
+					write_line(
+						"skipped [%s] uid=%s node_path=%s node_url=%s rest_url=%s: no docs (langs=%s)"
+						% (meta_id, normalized_uid, node_path, node_url, rest_url, langs)
+					)
 				continue
 
 			objects = []
@@ -278,7 +309,7 @@ class ZMSIndexSchematizedReindexer:
 					})
 					continue
 				resolver_stats[resolver] = resolver_stats.get(resolver, 0) + 1
-				objects.append((node, _normalize_doc_for_indexing(data)))
+				objects.append((node, data))
 
 			if not objects:
 				stats["skipped"] += 1
@@ -303,8 +334,8 @@ class ZMSIndexSchematizedReindexer:
 			stats["success"] += int(success or 0)
 			stats["failed"] += int(failed or 0)
 			write_line(
-				"indexed [%s] uid=%s node_path=%s node_url=%s rest_url=%s docs=%s resolved_by=%s success=%s failed=%s"
-				% (meta_id, normalized_uid, node_path, node_url, rest_url, len(objects), resolver_stats, int(success or 0), int(failed or 0))
+				"indexed [%s] uid=%s node_path=%s node_url=%s rest_url=%s docs=%s langs=%s resolved_by=%s success=%s failed=%s"
+				% (meta_id, normalized_uid, node_path, node_url, rest_url, len(objects), langs, resolver_stats, int(success or 0), int(failed or 0))
 			)
 
 		return stats

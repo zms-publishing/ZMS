@@ -1171,6 +1171,8 @@ def writeError(context, info):
   t, v, tb = sys.exc_info()
   if isinstance(info, bytes):
     info = info.decode('utf-8')
+  if not isinstance(info, str):
+    info = str(info)
   info += '\n'.join(traceback.format_tb(tb))
   try:
     info = "[%s@%s] "%(context.meta_id, '/'.join(context.getPhysicalPath())) + info

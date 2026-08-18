@@ -409,7 +409,11 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
       """Return attr data."""
       request = node.REQUEST
       # Is request['lang'] set?
-      lang = request.get('lang', d.get('lang', node.getPrimaryLanguage()))
+      if 'lang' in request:
+        lang = request['lang']
+      else:
+        lang = d.get('lang', node.getPrimaryLanguage())
+        request.set('lang', lang)
       # Additional defaults.
       d['id'] = '%s_%s'%(node.id,lang)
       d['lang'] = lang

@@ -59,79 +59,6 @@ def _brain_get(brain, key, default=None):
 		return value
 
 
-def _normalize_uid_token(uid):
-	uid = (uid or "").strip()
-	if not uid:
-		return ""
-	return uid if uid.startswith("uid:") else "uid:%s" % uid
-
-
-def _url_from_path(scope_url, node_path, scope_path=None):
-	if not node_path:
-		return ""
-	parts = [x for x in str(node_path).split("/") if x]
-	scope_parts = [x for x in str(scope_path or "").split("/") if x]
-	if scope_parts and parts[:len(scope_parts)] == scope_parts:
-		rel = "/".join(parts[len(scope_parts):])
-		return "%s/%s" % (scope_url.rstrip("/"), rel) if rel else scope_url.rstrip("/")
-	return scope_url.rstrip("/")
-
-
-def _resolve_node_by_path(context, path, scope_root=None):
-	if not path:
-		return None
-	parts = [x for x in str(path).split("/") if x]
-	roots = []
-	for root in [scope_root, context.getRootElement(), context.getHome()]:
-		if root is None or root in roots:
-			continue
-		roots.append(root)
-	for root in roots:
-		root_parts = [x for x in root.getPhysicalPath() if x]
-		if parts[:len(root_parts)] != root_parts:
-			continue
-		ob = root
-		for item_id in parts[len(root_parts):]:
-			ob = getattr(ob, item_id, None)
-			if ob is None:
-				break
-		if ob is not None:
-			return ob
-	return None
-
-
-def _resolve_node_for_doc(context, doc, fallback_path=None, scope_root=None):
-	data_uid = (doc.get("uid") or "").strip()
-	if data_uid:
-		token = "{$%s}" % data_uid
-		node = context.getLinkObj(token)
-		if node is not None:
-			return node, "getLinkObj(uid)"
-		node = context.findObject(token)
-		if node is not None:
-			return node, "findObject(uid)"
-
-	for candidate in [doc.get("path"), doc.get("loc"), fallback_path]:
-		node = _resolve_node_by_path(context, candidate, scope_root=scope_root)
-		if node is not None:
-			return node, "path"
-
-	return None, ""
-
-
-def _normalize_doc_for_indexing(doc, lang=None, primary_lang=None):
-	normalized = dict(doc)
-	if lang and not normalized.get("lang"):
-		normalized["lang"] = lang
-	if not normalized.get("lang") and primary_lang:
-		normalized["lang"] = primary_lang
-	for key in ("created_dt", "change_dt", "start_dt", "end_dt", "indexing_dt"):
-		value = normalized.get(key)
-		if isinstance(value, str) and " " in value and "T" not in value:
-			normalized[key] = value.replace(" ", "T", 1)
-	return normalized
-
-
 def _get_reindex_scope(context):
 	document_element = context.getDocumentElement()
 	is_portal_master = context == document_element and context.getPortalMaster() is None
@@ -224,121 +151,79 @@ class ZMSIndexSchematizedReindexer:
 			seen.add(uid)
 			yield uid, meta_id, node_path
 
-	def run(self, write_line=None):
-		if write_line is None:
-			write_line = print
+def run(self, write_line=None):
+    if write_line is None:
+        write_line = print
 
-		adapter = self.context.getCatalogAdapter()
-		connectors = adapter.get_connectors()
-		if not connectors:
-			raise RuntimeError("No catalog connector available")
-		connector = connectors[0]
+    adapter = self.context.getCatalogAdapter()
+    connectors = adapter.get_connectors()
+    if not connectors:
+        raise RuntimeError("No catalog connector available")
+    connector = connectors[0]
 
-		stats: Dict[str, int] = {
-			"candidates": 0,
-			"requests": 0,
-			"objects": 0,
-			"success": 0,
-			"failed": 0,
-			"skipped": 0,
-		}
+    stats: Dict[str, int] = {
+        "candidates": 0,
+        "requests": 0,
+        "objects": 0,
+        "success": 0,
+        "failed": 0,
+        "skipped": 0,
+    }
 
-		primary_lang = self.context.getPrimaryLanguage()
-		langs = list(self.context.getLangIds()) or [primary_lang]
+    # Iterate over all indexable UIDs
+    for uid, meta_id, node_path in self._iter_index_uids(adapter):
+        stats["candidates"] += 1
 
-		for uid, meta_id, node_path in self._iter_index_uids(adapter):
-			stats["candidates"] += 1
-			normalized_uid = _normalize_uid_token(uid)
-			node_url = _url_from_path(self.scope_url, node_path, self.scope_path)
-			rest_url = f"{self.base_url}/++rest_api/{normalized_uid}/get_indexschematized_content"
-			docs = []
-			seen_doc_keys = set()
-			not_found_langs = []
-			rest_errors = []
-			for lang in langs:
-				try:
-					payload, rest_url = self._api(f"{normalized_uid}/get_indexschematized_content", lang=lang)
-				except Exception as e:
-					msg = str(e)
-					if "REST returned ERROR=Not Found" in msg:
-						not_found_langs.append(lang)
-						continue
-					rest_errors.append("%s: %s" % (lang, msg))
-					continue
+        params = {
+            "uid": uid,
+            "page_size:int": connector.get_page_size() if hasattr(connector, "get_page_size") else 100,
+            "clients:int": 0,
+            "fileparsing:int": 1 if getattr(connector, "fileparsing", False) else 0,
+        }
 
-				stats["requests"] += 1
-				for data in payload.get("docs", []):
-					normalized = _normalize_doc_for_indexing(data, lang=lang, primary_lang=primary_lang)
-					doc_key = (normalized.get("uid"), normalized.get("lang"), normalized.get("id"))
-					if doc_key in seen_doc_keys:
-						continue
-					seen_doc_keys.add(doc_key)
-					docs.append(normalized)
+        write_line(f"Reindexing UID={uid} meta_id={meta_id} path={node_path}")
 
-			if rest_errors and not docs:
-				stats["failed"] += 1
-				write_line(
-					"failed [%s] uid=%s node_path=%s node_url=%s rest_url=%s: REST errors: %s"
-					% (meta_id, normalized_uid, node_path, node_url, rest_url, rest_errors[:3])
-				)
-				continue
+        try:
+            # Perform REST call
+            payload, url = self._api("reindex_page", lang=self.lang)
+            stats["requests"] += 1
 
-			if not docs:
-				stats["skipped"] += 1
-				if len(not_found_langs) == len(langs):
-					write_line(
-						"skipped [%s] uid=%s node_path=%s node_url=%s: not found in REST traversal (langs=%s)"
-						% (meta_id, normalized_uid, node_path, node_url, not_found_langs)
-					)
-				else:
-					write_line(
-						"skipped [%s] uid=%s node_path=%s node_url=%s rest_url=%s: no docs (langs=%s)"
-						% (meta_id, normalized_uid, node_path, node_url, rest_url, langs)
-					)
-				continue
+        except Exception as e:
+            stats["failed"] += 1
+            write_line(f"ERROR calling REST API for uid={uid}: {e}")
+            continue
 
-			objects = []
-			unresolved = []
-			resolver_stats: Dict[str, int] = {}
-			for data in docs:
-				node, resolver = _resolve_node_for_doc(self.context, data, fallback_path=node_path, scope_root=self.scope_root)
-				if node is None:
-					unresolved.append({
-						"uid": data.get("uid"),
-						"path": data.get("path") or data.get("loc") or node_path,
-					})
-					continue
-				resolver_stats[resolver] = resolver_stats.get(resolver, 0) + 1
-				objects.append((node, data))
+        # Handle "cleared" info
+        if "cleared" in payload:
+            write_line(f"Cleared {payload.get('home_id')}: {payload['cleared']}")
 
-			if not objects:
-				stats["skipped"] += 1
-				sample = unresolved[:3]
-				write_line(
-					"skipped [%s] uid=%s node_path=%s node_url=%s rest_url=%s: no resolvable objects (unresolved=%s sample=%s)"
-					% (meta_id, normalized_uid, node_path, node_url, rest_url, len(unresolved), sample)
-				)
-				continue
+        # Process log entries
+        logs = payload.get("log", [])
+        for entry in logs:
+            objects = entry.get("objects", {})
+            max_per_lang = max(objects.values()) if objects else 0
+            stats["objects"] += max_per_lang
+            stats["success"] += entry.get("success", 0)
+            stats["failed"] += entry.get("failed", 0)
 
-			try:
-				success, failed = connector.manage_objects_add(objects)
-			except Exception as e:
-				stats["failed"] += len(objects)
-				write_line(
-					"failed [%s] uid=%s node_path=%s node_url=%s rest_url=%s: index add error: %s"
-					% (meta_id, normalized_uid, node_path, node_url, rest_url, e)
-				)
-				continue
+        # Summary for this UID
+        write_line(
+            f"Success={payload.get('success', 0)} "
+            f"Failed={payload.get('failed', 0)} "
+            f"Objects={stats['objects']}"
+        )
 
-			stats["objects"] += len(objects)
-			stats["success"] += int(success or 0)
-			stats["failed"] += int(failed or 0)
-			write_line(
-				"indexed [%s] uid=%s node_path=%s node_url=%s rest_url=%s docs=%s langs=%s resolved_by=%s success=%s failed=%s"
-				% (meta_id, normalized_uid, node_path, node_url, rest_url, len(objects), langs, resolver_stats, int(success or 0), int(failed or 0))
-			)
+        # Continue with next node if provided
+        next_node = payload.get("next_node")
+        if next_node:
+            write_line(f"Next node: {next_node}")
+            # Replace UID and continue loop
+            continue
 
-		return stats
+        else:
+            write_line("No next node, finished this UID")
+
+    return stats
 
 
 def manage_reindex_content_bg( self):

@@ -15,8 +15,9 @@ The implementation is located in:
 3. A daemon worker thread starts.
 4. The worker opens a fresh Zope app/request/security context.
 5. `ZMSIndexSchematizedReindexer.run()`:
-	 - reads index candidates from `zcatalog_index`
-	 - calls REST endpoint `reindex_node` per UID for paged-processing
+   - reads index candidates from REST tree traversal
+   - only traverses children for nodes with `meta_id == "ZMS"`
+   - calls REST endpoint `reindex_page` per UID for paged-processing
 6. Final statistics are written to the Zope log.
 
 ## Scope Selection Logic
@@ -24,30 +25,28 @@ The implementation is located in:
 The reindex scope depends on the invocation context:
 
 - **Portal master root call** (`self == self.getDocumentElement()` and no `Portal.Master`):
-	- mode: `portal-master`
-	- scope root: `self.getHome()`
-	- effect: reindex full multisite under home folder
+  - mode: `portal-master`
+  - scope root: `self.getHome()`
+  - effect: reindex full multisite under home folder
 - **Any deeper call** (client/document/folder):
-	- mode: `recursive`
-	- scope root: `self`
-	- effect: recursive reindex below the current node only
+  - mode: `recursive`
+  - scope root: `self`
+  - effect: recursive reindex below the current node only
 
 This is computed in `_get_reindex_scope(context)`.
 
 ## API Calls Used
 
-### 1) Internal ZMS Catalog APIs
+### 1) Internal ZMS Catalog APIs (legacy)
 
-The reindexer uses internal APIs to discover candidates and write to search backends.
+The old reindexer used internal APIs to discover candidates and write to search backends:
 
 - `self.context.zcatalog_index({"path": self.scope_path})`
-	- returns catalog brains inside scope path
 - `self.context.getCatalogAdapter()`
-	- obtains adapter to identify relevant indexed meta types
 - `adapter.get_connectors()`
-	- obtains configured connector(s)
 - `connector.reindex_page(uid, page_size)`
-	- reindex page
+
+The new implementation replaces this with REST-only traversal.
 
 ### 2) REST API for Schematized Content
 
@@ -57,8 +56,10 @@ For each candidate UID and each language, the worker calls:
 
 Query parameters:
 
-- `preview=<uid>`
+- `uid=<uid>`
 - `page_size=<page-size>`
+- `clients:int=0`
+- `fileparsing:int=<0-or-1>`
 
 Example:
 
@@ -68,19 +69,19 @@ Expected response:
 
 ```json
 {
-	"success": 3,
-	"failed": 1,
-	"log": [
-        {
-			"index": 0,
-          	"path": "/myzmsx/content/e1/e2",
-          	"meta_id": "ZMSDocument",
-          	"objects": {
-				"lang": 4
-			}
-		}
-	],
-	"next_node": "{$uid:68eeb9a5-c69e-4d0f-8869-b07f07e18d1a}"
+  "success": 3,
+  "failed": 1,
+  "log": [
+    {
+      "index": 0,
+      "path": "/myzmsx/content/e1/e2",
+      "meta_id": "ZMSDocument",
+      "objects": {
+        "lang": 4
+      }
+    }
+  ],
+  "next_node": "{$uid:68eeb9a5-c69e-4d0f-8869-b07f07e18d1a}"
 }
 ```
 

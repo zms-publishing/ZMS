@@ -7,12 +7,7 @@ import os
 import requests
 import threading
 import tempfile
-import transaction
 from typing import Dict
-import Zope2
-from AccessControl.SecurityManagement import newSecurityManager, noSecurityManager
-from AccessControl.users import system as system_user
-from Testing.makerequest import makerequest
 
 
 LOGGER = logging.getLogger("Zope")
@@ -46,19 +41,6 @@ def _release_singleflight_lock(fd):
 		os.close(fd)
 
 
-def _brain_get(brain, key, default=None):
-	try:
-		return brain[key]
-	except Exception:
-		value = getattr(brain, key, default)
-		if callable(value):
-			try:
-				return value()
-			except Exception:
-				return default
-		return value
-
-
 def _get_reindex_scope(context):
 	document_element = context.getDocumentElement()
 	is_portal_master = context == document_element and context.getPortalMaster() is None
@@ -72,6 +54,10 @@ def _get_reindex_scope(context):
 
 
 def _open_thread_context(physical_path):
+	import Zope2
+	from AccessControl.SecurityManagement import noSecurityManager
+	from AccessControl.users import system as system_user
+	from Testing.makerequest import makerequest
 	app = Zope2.app()
 	app = makerequest(app)
 	app.REQUEST['PARENTS'] = [app]
@@ -83,6 +69,8 @@ def _open_thread_context(physical_path):
 
 
 def _close_thread_context(app):
+	import transaction
+	from AccessControl.SecurityManagement import noSecurityManager
 	try:
 		transaction.abort()
 	except Exception:
@@ -96,23 +84,17 @@ def _close_thread_context(app):
 
 
 class ZMSIndexSchematizedReindexer:
-	def __init__(self, context, base_url, scope_context=None, scope_mode="recursive", lang="de"):
+	def __init__(self, context, base_url, scope_context=None, scope_mode="recursive"):
 		self.context = context
 		self.base_url = base_url.rstrip("/")
 		self.scope_root = scope_context or context
 		self.scope_url = self.scope_root.absolute_url().rstrip("/")
 		self.scope_path = "/%s" % self.scope_root.absolute_url(relative=True)
 		self.scope_mode = scope_mode
-		self.lang = lang
-		self.params = {"preview": "preview"}
+		self.connector = connector
 
-	def _api(self, path, lang=None):
-		url = f"{self.base_url}/++rest_api/{path}"
-		params = dict(self.params)
-		if lang:
-			params["lang"] = lang
-		elif self.lang:
-			params["lang"] = self.lang
+	def _api(self, path, **params):
+		url = f"{self.base_url}/{path}"
 		response = requests.get(url, params=params, timeout=60)
 		response.raise_for_status()
 		try:
@@ -136,20 +118,50 @@ class ZMSIndexSchematizedReindexer:
 			)
 		return payload, url
 
-	def _iter_index_uids(self, adapter):
-		brains = self.context.zcatalog_index({"path": self.scope_path})
-		meta_ids = set(self.context.getMetaobjManager().getTypedMetaIds(adapter.getIds()))
+	def _iter_index_uids(self):
+		"""
+		Pure REST-based tree traversal.
+		Retrieves all nodes with meta_id='ZMS' (portal clients)
+		starting from the base_url root.
+		"""
+
+		def fetch_children(path):
+			url = f"{self.base_url}/++rest_api/{path}/list_child_nodes"
+			payload = requests.get(url, timeout=60).json()
+			return payload  # list of nodes with id, meta_id, uid, getPath
+
+		# Start at root path
+		root_path = ""  # means: base_url/++rest_api/list_child_nodes
+		stack = [root_path]
 		seen = set()
-		for brain in brains:
-			meta_id = _brain_get(brain, "meta_id", "")
-			if meta_id not in meta_ids:
+
+		while stack:
+			path = stack.pop()
+
+			try:
+				nodes = fetch_children(path)
+			except Exception as e:
+				LOGGER.error(f"REST error fetching children for {path}: {e}")
 				continue
-			uid = _brain_get(brain, "uid", None) or _brain_get(brain, "get_uid", None)
-			node_path = _brain_get(brain, "getPath", None) or _brain_get(brain, "path", None)
-			if not uid or uid in seen:
-				continue
-			seen.add(uid)
-			yield uid, meta_id, node_path
+
+			for node in nodes:
+				uid = node.get("uid")
+				meta_id = node.get("meta_id")
+				node_path = node.get("getPath")
+
+				if not uid or uid in seen:
+					continue
+				seen.add(uid)
+
+				# Yield only portal clients (meta_id == 'ZMS')
+				if meta_id == "ZMS":
+					yield uid, meta_id, node_path
+
+				# Recurse deeper
+				# Convert physical path into REST path
+				if node_path:
+					rest_path = node_path.lstrip("/")
+					stack.append(rest_path)
 
 def run(self, write_line=None):
     if write_line is None:
@@ -185,7 +197,7 @@ def run(self, write_line=None):
 
         try:
             # Perform REST call
-            payload, url = self._api("reindex_page", lang=self.lang)
+            payload, url = self._api(f"{connector}/reindex_page", **params)
             stats["requests"] += 1
 
         except Exception as e:
@@ -232,7 +244,7 @@ def manage_reindex_content_bg( self):
 	physical_path = tuple(self.getPhysicalPath())
 	base_url = self.getDocumentElement().absolute_url()
 	scope_context, scope_mode = _get_reindex_scope(self)
-	lang = request.get("lang", "ger")
+	connector = request.get("connector", "/zcatalog_adapter/zcatalog_connector/")
 
 	with RUN_LOCK:
 		if RUN_IN_PROGRESS:
@@ -240,7 +252,6 @@ def manage_reindex_content_bg( self):
 			target = self.url_append_params(
 				"%s/manage_main" % self.absolute_url(),
 				{
-					"lang": lang,
 					"manage_tabs_message": "Background Job is already running",
 				},
 			)
@@ -252,7 +263,6 @@ def manage_reindex_content_bg( self):
 			target = self.url_append_params(
 				"%s/manage_main" % self.absolute_url(),
 				{
-					"lang": lang,
 					"manage_tabs_message": "Background Job is already running",
 				},
 			)
@@ -273,7 +283,7 @@ def manage_reindex_content_bg( self):
 			LOGGER.info("%s started", log_prefix)
 			app, thread_context = _open_thread_context(physical_path)
 			thread_scope_context = app.unrestrictedTraverse('/'.join([x for x in scope_context.getPhysicalPath() if x]))
-			reindexer = ZMSIndexSchematizedReindexer(context=thread_context, base_url=base_url, scope_context=thread_scope_context, scope_mode=scope_mode, lang=lang)
+			reindexer = ZMSIndexSchematizedReindexer(context=thread_context, base_url=base_url, scope_context=thread_scope_context, scope_mode=scope_mode, connector=connector)
 			LOGGER.info("%s scope_mode=%s scope_url=%s scope_path=%s", log_prefix, reindexer.scope_mode, reindexer.scope_url, reindexer.scope_path)
 			stats = reindexer.run(write_line=_write_to_zope_log)
 			LOGGER.info("%s summary=%s", log_prefix, stats)
@@ -294,7 +304,6 @@ def manage_reindex_content_bg( self):
 	target = self.url_append_params(
 		"%s/manage_main" % self.absolute_url(),
 		{
-			"lang": lang,
 			"manage_tabs_message": message,
 		},
 	)
@@ -310,9 +319,9 @@ def main():
 		help="Base content URL, e.g. https://example.com/content"
 	)
 	parser.add_argument(
-		"--lang",
-		default="de",
-		help="Language parameter for REST API calls (default: de)"
+		"--connector",
+		default="/zcatalog_adapter/zcatalog_connector/",
+		help="Connector path for REST API calls (default: /zcatalog_adapter/zcatalog_connector/)"
 	)
 
 	args = parser.parse_args()

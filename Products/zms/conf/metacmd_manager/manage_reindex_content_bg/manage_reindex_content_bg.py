@@ -42,7 +42,7 @@ class ZMSIndexSchematizedReindexer:
     def _api(self, path, **params):
         url = f"{self.base_url}/{path.lstrip('/')}"
         response = requests.get(url, params=params, timeout=60)
-        response.raise_for_status())
+        response.raise_for_status()
 
         try:
             return response.json(), response.url
@@ -116,7 +116,7 @@ class ZMSIndexSchematizedReindexer:
             write_line(f"Reindexing UID={uid} meta_id={meta_id} path={node_path}")
 
             params = {
-                "uid": uid,
+                "uid": "{$%s}"%uid,
                 "page_size:int": self.page_size,
                 "clients:int": 0,
                 "fileparsing:int": self.fileparsing,

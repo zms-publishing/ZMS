@@ -5,7 +5,6 @@ import operator
 import os
 import re
 import shutil
-import tempfile
 import urllib
 from Products.zms import standard
 
@@ -313,7 +312,7 @@ def html2docbook(html):
   html = html.replace('\t',' ')
   while html.find('  ')>=0:
     html = html.replace('  ',' ')
-  docbookxml = process_paragraphs(unicode(html).encode('utf-8'))
+  docbookxml = process_paragraphs(html)
   docbookxml = process_images(docbookxml)
   return docbookxml
 

@@ -3,7 +3,6 @@
 import os
 import re
 import shutil
-import tempfile
 from xml.dom import minidom
 from Products.zms import _fileutil
 

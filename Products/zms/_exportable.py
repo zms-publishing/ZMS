@@ -17,7 +17,6 @@ from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
 import codecs
 import copy
-import tempfile
 import os
 import re
 import sys

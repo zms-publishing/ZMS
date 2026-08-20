@@ -12,7 +12,6 @@ Organization: ZMS Publishing
 import ZPublisher.HTTPRequest
 import collections
 import os
-import tempfile
 import zExceptions
 # Product Imports.
 from Products.zms import standard

@@ -5,7 +5,6 @@
 import os
 import re
 import shutil
-import tempfile
 import urllib
 import json
 import requests

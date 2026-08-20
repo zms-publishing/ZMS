@@ -9,7 +9,6 @@ Organization: ZMS Publishing
 """
 # Imports.
 from AccessControl.SecurityInfo import ModuleSecurityInfo
-import tempfile
 # Product Imports.
 from Products.zms import _fileutil
 from Products.zms import standard

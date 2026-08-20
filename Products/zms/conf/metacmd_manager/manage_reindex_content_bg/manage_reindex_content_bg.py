@@ -3,7 +3,7 @@
 Unified ZMS reindexer:
 - Pure REST-based reindexer (no Zope dependencies)
 - Zope external method: manage_reindex_content_bg(self)
-- CLI runner: python reindex.py BASE_URL [--connector ...]
+- CLI runner: python3 manage_reindex_content_bg.py BASE_URL [--connector ...]
 """
 
 import argparse

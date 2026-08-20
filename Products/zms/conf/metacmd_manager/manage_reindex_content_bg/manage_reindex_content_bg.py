@@ -124,6 +124,9 @@ class ZMSIndexSchematizedReindexer:
 
             try:
                 payload, url = self._api(f"{self.connector}/reindex_page", **params)
+                [write_line(f"LOG {x}") for x in payload['log']]
+                stats['success'] += payload['success']
+                stats['failed'] += payload['failed']
                 stats["requests"] += 1
             except Exception as e:
                 stats["failed"] += 1

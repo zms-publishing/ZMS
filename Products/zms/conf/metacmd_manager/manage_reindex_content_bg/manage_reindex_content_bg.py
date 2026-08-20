@@ -60,42 +60,42 @@ class ZMSIndexSchematizedReindexer:
     # REST tree traversal
     # ------------------------------------------------------------------
 
-	def _iter_index_uids(self):
-		def fetch_children(path):
-			rest_path = path.strip("/")
-			url = f"{self.base_url}/++rest_api/{rest_path}/list_child_nodes"
-			response = requests.get(url, timeout=60)
-			response.raise_for_status()
-			return response.json()
+    def _iter_index_uids(self):
+        def fetch_children(path):
+            rest_path = path.strip("/")
+            url = f"{self.base_url}/++rest_api/{rest_path}/list_child_nodes"
+            response = requests.get(url, timeout=60)
+            response.raise_for_status()
+            return response.json()
 
-		stack = [""]
-		seen = set()
+        stack = [""]
+        seen = set()
 
-		while stack:
-			path = stack.pop()
+        while stack:
+            path = stack.pop()
 
-			try:
-				nodes = fetch_children(path)
-			except Exception as e:
-				LOGGER.error(f"REST error fetching children for {path}: {e}")
-				continue
+            try:
+                nodes = fetch_children(path)
+            except Exception as e:
+                LOGGER.error(f"REST error fetching children for {path}: {e}")
+                continue
 
-			for node in nodes:
-				uid = node.get("uid")
-				meta_id = node.get("meta_id")
-				node_path = node.get("getPath")
+            for node in nodes:
+                uid = node.get("uid")
+                meta_id = node.get("meta_id")
+                node_path = node.get("getPath")
 
-				if not uid or uid in seen:
-					continue
-				seen.add(uid)
+                if not uid or uid in seen:
+                    continue
+                seen.add(uid)
 
-				# Nur ZMS-Knoten reindexen
-				if meta_id == "ZMS":
-					yield uid, meta_id, node_path
+                # Nur ZMS-Knoten reindexen
+                if meta_id == "ZMS":
+                    yield uid, meta_id, node_path
 
-					# Nur bei ZMS weiter in die Tiefe gehen
-					if node_path:
-						stack.append(node_path.lstrip("/"))
+                    # Nur bei ZMS weiter in die Tiefe gehen
+                    if node_path:
+                        stack.append(node_path.lstrip("/"))
 
     # ------------------------------------------------------------------
     # Main reindex loop

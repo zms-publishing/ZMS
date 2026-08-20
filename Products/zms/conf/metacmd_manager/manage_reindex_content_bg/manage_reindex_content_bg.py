@@ -42,10 +42,10 @@ class ZMSIndexSchematizedReindexer:
     def _api(self, path, **params):
         url = f"{self.base_url}/{path.lstrip('/')}"
         response = requests.get(url, params=params, timeout=60)
-        response.raise_for_status()
+        response.raise_for_status())
 
         try:
-            return response.json(), url
+            return response.json(), response.url
         except Exception:
             text = (response.text or "").strip()
             try:

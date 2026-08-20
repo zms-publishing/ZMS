@@ -20,7 +20,7 @@ def manage_importDocx( self):
                   rc.append(nd)
         return ''.join(rc).strip()
     result = []
-    tempfolder = tempfile.mkdtemp()
+    tempfolder = standard.getTempFolder()
     f = request['file']
     filename = os.path.join(tempfolder,f.filename)
     _fileutil.exportObj(f,filename)

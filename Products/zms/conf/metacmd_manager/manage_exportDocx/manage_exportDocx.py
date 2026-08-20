@@ -319,7 +319,7 @@ def html2docbook(html):
 
 def manage_exportDocx( self):
   request = self.REQUEST
-  tempfolder = tempfile.mkdtemp()
+  tempfolder = standard.getTempFolder()
   request.set('URL',self.absolute_url())
   env['self'] = self
   env['server_url'] = request['SERVER_URL']

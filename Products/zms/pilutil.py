@@ -74,7 +74,7 @@ def resize(img, size, mode='resize', sffx='_thumbnail', qual=75):
   
   # Save image in temp-folder
   context = img.aq_parent
-  tempfolder = tempfile.mkdtemp()
+  tempfolder = standard.getTempFolder()
   filepath = _fileutil.getOSPath('%s/%s'%(tempfolder, img.filename))
   _fileutil.exportObj(img, filepath)
   
@@ -156,7 +156,7 @@ def crop(img, box, qual=75):
   
   # Save image in temp-folder
   context = img.aq_parent
-  tempfolder = tempfile.mkdtemp()
+  tempfolder = standard.getTempFolder()
   filepath = _fileutil.getOSPath('%s/%s'%(tempfolder, img.filename))
   _fileutil.exportObj(img, filepath)
   
@@ -190,7 +190,7 @@ def rotate(img, direction, qual=75):
   
   # Save image in temp-folder
   context = img.aq_parent
-  tempfolder = tempfile.mkdtemp()
+  tempfolder = standard.getTempFolder()
   filepath = _fileutil.getOSPath('%s/%s'%(tempfolder, img.filename))
   _fileutil.exportObj(img, filepath)
   
@@ -225,7 +225,7 @@ def optimize(img, qual=75):
   
   # Save image in temp-folder
   context = img.aq_parent
-  tempfolder = tempfile.mkdtemp()
+  tempfolder = standard.getTempFolder()
   filepath = _fileutil.getOSPath('%s/%s'%(tempfolder, img.filename))
   _fileutil.exportObj(img, filepath)
   

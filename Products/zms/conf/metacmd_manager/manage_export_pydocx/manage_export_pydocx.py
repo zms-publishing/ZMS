@@ -1366,7 +1366,7 @@ def manage_export_pydocx(self, save_file=True, file_name=None):
 	if save_file:
 		# Save document in temporary directory
 		fn = '%s.docx'%(file_name and file_name or zmscontext.id_quote(zmscontext.getTitlealt(request)))
-		tempfolder = tempfile.mkdtemp()
+		tempfolder = standard.getTempFolder()
 		docx_file_name = os.path.join(tempfolder, fn)
 		doc.save(docx_file_name)
 		

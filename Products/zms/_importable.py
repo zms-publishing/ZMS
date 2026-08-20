@@ -146,7 +146,7 @@ def importFile(self, file, REQUEST, handler):
   standard.writeBlock( self, '[importFile]: filename='+filename)
   
   # Create temporary folder.
-  tempfolder = tempfile.mkdtemp()
+  tempfolder = standard.getTempFolder()
   
   # Save to temporary file.
   filename = os.path.join(tempfolder, _fileutil.extractFilename(filename))

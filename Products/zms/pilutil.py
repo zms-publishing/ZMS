@@ -9,7 +9,6 @@ Organization: ZMS Publishing
 """
 # Imports.
 from AccessControl.SecurityInfo import ModuleSecurityInfo
-import tempfile
 # Product Imports.
 from Products.zms import _fileutil
 from Products.zms import standard
@@ -74,7 +73,7 @@ def resize(img, size, mode='resize', sffx='_thumbnail', qual=75):
   
   # Save image in temp-folder
   context = img.aq_parent
-  tempfolder = tempfile.mkdtemp()
+  tempfolder = standard.getTempFolder()
   filepath = _fileutil.getOSPath('%s/%s'%(tempfolder, img.filename))
   _fileutil.exportObj(img, filepath)
   
@@ -156,7 +155,7 @@ def crop(img, box, qual=75):
   
   # Save image in temp-folder
   context = img.aq_parent
-  tempfolder = tempfile.mkdtemp()
+  tempfolder = standard.getTempFolder()
   filepath = _fileutil.getOSPath('%s/%s'%(tempfolder, img.filename))
   _fileutil.exportObj(img, filepath)
   
@@ -190,7 +189,7 @@ def rotate(img, direction, qual=75):
   
   # Save image in temp-folder
   context = img.aq_parent
-  tempfolder = tempfile.mkdtemp()
+  tempfolder = standard.getTempFolder()
   filepath = _fileutil.getOSPath('%s/%s'%(tempfolder, img.filename))
   _fileutil.exportObj(img, filepath)
   
@@ -225,7 +224,7 @@ def optimize(img, qual=75):
   
   # Save image in temp-folder
   context = img.aq_parent
-  tempfolder = tempfile.mkdtemp()
+  tempfolder = standard.getTempFolder()
   filepath = _fileutil.getOSPath('%s/%s'%(tempfolder, img.filename))
   _fileutil.exportObj(img, filepath)
   

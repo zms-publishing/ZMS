@@ -14,12 +14,13 @@ Organization: ZMS Publishing
 """
 # Imports.
 import os
-import tempfile
 import zExceptions
 # Product Imports.
 from Products.zms import _fileutil
 from Products.zms import standard
 from Products.zms import zopeutil
+
+
 
 def getTransFilename(self, folder, trans):
   """
@@ -59,7 +60,7 @@ def processData(self, processId, data, trans=None):
   @rtype: C{bytes}
   """
   # Create temporary folder.
-  tempfolder = tempfile.mkdtemp()
+  tempfolder = standard.getTempFolder()
   # Save data to file.
   filename = _fileutil.getOSPath('%s/in.dat'%tempfolder)
   _fileutil.exportObj(data, filename)
@@ -319,7 +320,7 @@ class FilterItem(object):
       ob_filter = self.getFilterManager().getFilter(id)
       ob_filter_format = ob_filter.get('format', '')
       # Create temporary folder.
-      tempfolder = tempfile.mkdtemp()
+      tempfolder = standard.getTempFolder()
       ressources = self.exportRessources( tempfolder, REQUEST, from_zms=ob_filter_format=='XHTML', from_home=ob_filter_format=='XHTML')
       # Export data to file.
       if ob_filter_format == 'export':

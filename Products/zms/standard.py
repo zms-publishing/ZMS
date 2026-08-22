@@ -36,6 +36,7 @@ import sys
 import time
 import traceback
 import zExceptions
+import tempfile
 
 # Product Imports.
 from Products.zms import _globals
@@ -2601,6 +2602,15 @@ def getTempFile( context, id):
        b += data.data
        data=data.next
   return b
+
+
+security.declarePublic('getTempFolder')
+def getTempFolder():
+  """Return a temporary working folder below the Zope instance home."""
+  # TODO: use a given path from a ZMS config parameter instead of hardcoded, default may the OS default.
+  tempdir = os.path.join(getINSTANCE_HOME(), 'var', 'tmp')
+  os.makedirs(tempdir, exist_ok=True)
+  return tempfile.mkdtemp(dir=tempdir)
 
 
 security.declarePublic('raiseError')

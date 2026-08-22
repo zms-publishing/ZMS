@@ -17,7 +17,6 @@ from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
 import codecs
 import copy
-import tempfile
 import os
 import re
 import sys
@@ -682,7 +681,7 @@ class Exportable(_filtermanager.FilterItem):
       REQUEST.set('ZMS_HTML_EXPORT', 1)
       
       #-- Create temporary folder.
-      tempfolder = tempfile.mkdtemp()
+      tempfolder = standard.getTempFolder()
       ressources = self.exportRessources( tempfolder, REQUEST, from_zms=self.getLevel()==0, from_home=True)
       
       #-- Download HTML-pages.
@@ -715,7 +714,7 @@ class Exportable(_filtermanager.FilterItem):
       """
 
       #-- Create temporary folder.
-      tempfolder = tempfile.mkdtemp()
+      tempfolder = standard.getTempFolder()
       ressources = self.exportRessources( tempfolder, REQUEST)
       
       #-- Get xml-export.

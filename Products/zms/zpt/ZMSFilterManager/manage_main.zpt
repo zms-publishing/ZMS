@@ -347,14 +347,20 @@
 							</tal:block>
 						</div><i class="fas fa-long-arrow-alt-down center"></i></td></tr>
 						<tr tal:repeat="filterProcess python:here.getFilterProcesses(filterId)">
-							<tal:block tal:define="global process python:here.getProcess(filterProcess['id'])">
+							<tal:block tal:define="
+									process python:here.getProcess(filterProcess['id'])">
 								<td><div class="filterProcess" tal:content="process/name">the process-name</div><i class="fas fa-long-arrow-alt-down center"></i></td>
 								<tal:block tal:condition="python:filterProcess.get('file_filename')">
 									<td><hr/></td>
-									<td><div class="filterProcessFile">
-										<i tal:attributes="class python:standard.getFileTypeIconCSS(filterProcess['file_filename']); title python:filterProcess['file_content_type']"></i>&nbsp;
-										<a tal:attributes="href filterProcess/file_href; title python:'%s (%s)'%(filterProcess['file_filename'], filterProcess['file_content_type'])" 
-											target="_blank" tal:content="filterProcess/file_filename">FILENAME
+									<td><div class="filterProcessFile"
+										tal:define="
+											process_filename python:filterProcess['file_filename'];
+											process_content_type python:filterProcess['file_content_type'];
+											process_href python:filterProcess['file_href'];
+											">
+										<i tal:attributes="class python:standard.getFileTypeIconCSS(process_filename); title python:process_content_type"></i>&nbsp;
+										<a tal:attributes="href process_href; title python:'%s (%s)'%(process_filename, process_content_type)" 
+											target="_blank" tal:content="process_filename">FILENAME
 										</a>
 									</div></td>
 								</tal:block>

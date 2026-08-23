@@ -33,6 +33,7 @@ RUN \
     apt --yes install \
         docbook-xml \
         docbook-xsl \
+        hyphen-de \
         fop \
         git \
         libfop-java \

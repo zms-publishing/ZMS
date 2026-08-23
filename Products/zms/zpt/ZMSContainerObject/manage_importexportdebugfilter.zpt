@@ -67,6 +67,18 @@
 	padding:0 !important;
 }
 </style>
+<script type="text/javascript">
+	// on ready scroll to element-class .filterProcess.active
+	$(document).ready(function() {
+		var $active = $('.filterProcess.active');
+		if ($active.length) {
+			document.documentElement.scrollTop = 154;
+			$('html, body').animate({
+				scrollTop: $active.offset().top - 178
+			}, 1000);
+		}
+	});
+</script>
 
 <tal:block define="global
 		step            python:request.get('step',0);
@@ -84,9 +96,9 @@
 	</tal:block>
 	<tal:block tal:condition="python:step>0 and step <= len(filterProcesses)">
 		<tal:block define="global
-				dummy0 python:request.set('outfilename',here.execProcessFilter(filterProcesses[step-1],request['tempfolder'],request['outfilename'],request));
-				dummy0 python:request.RESPONSE.setHeader('Content-Type','text/html\073charset=%s'%request['ZMS_CHARSET']);
-				"></tal:block>
+			dummy0 python:request.set('outfilename',here.execProcessFilter(filterProcesses[step-1],request['tempfolder'],request['outfilename'],request));
+			dummy0 python:request.RESPONSE.setHeader('Content-Type','text/html\073charset=%s'%request['ZMS_CHARSET']);
+			"></tal:block>
 	</tal:block>
 
 <form class="form-horizontal card" action="manage_importexportDebugFilter">
@@ -97,29 +109,32 @@
 	<input type="hidden" name="tempfolder" tal:attributes="value request/tempfolder"/>
 	<input type="hidden" name="outfilename" tal:attributes="value request/outfilename"/>
 
-	<legend>
-		<span title="Filter Step Count"
-			tal:content="python:here.getZMILangStr('ATTR_EXPORT')+' [%i/%i] '%(step,len(filterProcesses))">
-			Export
-		</span>
-		<span title="Filter Name" class="mx-2" >
-			<i class="fas fa-filter"></i>
-			<tal:block tal:content="filter/name">the filter-name</tal:block>
-		</span>
-		<span title="Output Filename" class="badge badge-light text-monospace mx-2" style="font-size:100%;">
-			<i class="fas fa-folder-open text-info"></i>
-			<tal:block tal:content="request/outfilename">Outfilename</tal:block>
-		</span>
-	</legend>
-
-	<div class="card-body">
+	<div class="sticky-controls">
+		<legend>
+			<span title="Filter Step Count"
+				tal:content="python:here.getZMILangStr('ATTR_EXPORT')+' [%i/%i] '%(step,len(filterProcesses))">
+				Export
+			</span>
+			<span title="Filter Name" class="mx-2" >
+				<i class="fas fa-filter"></i>
+				<tal:block tal:content="filter/name">the filter-name</tal:block>
+			</span>
+			<span title="Output Filename" class="badge badge-light text-monospace mx-2" style="font-size:100%;">
+				<i class="fas fa-folder-open text-info"></i>
+				<tal:block tal:content="request/outfilename">Outfilename</tal:block>
+			</span>
+		</legend>
+		<div class="d-flex flex-row justify-content-between align-items-start p-4">
+			<button title="Execute Next Filter Step" class="btn btn-primary"
+				onclick="$('i',this).attr('class','fas fa-spinner fa-spin mr-1');">
+				<i class="fas fa-forward mr-1"></i> 
+				<tal:block tal:content="python:here.getZMILangStr('BTN_NEXT')">Next</tal:block>
+			</button>
+		</div>
+	</div>
+	<div class="card-body pt-0">
 		<div class="row">
-			<div class="col-6">
-				<button title="Execute Next Filter Step" class="btn btn-primary mt-3">
-					<i class="fas fa-forward"></i> 
-					<tal:block tal:content="python:here.getZMILangStr('BTN_NEXT')">Next</tal:block>
-				</button>
-				<hr/>
+			<div class="col-6  pt-2">
 				<table class="layoutTable">
 					<tr><td><div tal:attributes="class python:' '.join(['filterDelimiter']+[[],['active']][int(step==0)])">
 						<tal:block tal:condition="python:filter['format']=='import'">
@@ -156,15 +171,9 @@
 						</tal:block>
 					</div></td></tr>
 				</table><!-- .layoutTable -->
-				<hr/>
-				<button title="Execute Next Filter Step" class="btn btn-primary">
-					<i class="fas fa-forward"></i> 
-					<tal:block tal:content="python:here.getZMILangStr('BTN_NEXT')">Next</tal:block>
-				</button>
-
 			</div>
 
-			<div class="col-6 pt-4">
+			<div class="col-6 pt-2">
 				<iframe tal:attributes="src python:'%s/manage_remote?path=%s'%(here.zms_log.absolute_url(),request['tempfolder'])" 
 					width="100%" height="600" style="height:100%;min-height:100vh;border: 1px solid #dee2e6;"></iframe>
 			</div>

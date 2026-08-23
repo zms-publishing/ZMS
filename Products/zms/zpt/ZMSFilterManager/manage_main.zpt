@@ -116,7 +116,9 @@
 					<label for="inpDescription" class="col-md-2 control-label"><span tal:content="python:here.getZMILangStr('ATTR_DESCRIPTION')">Description</span></label>
 					<div class="col-md-10"><textarea class="form-control" name="inpDescription" tal:content="python:filter.get('description','')">the description</textarea></div>
 				</div><!-- .form-group -->
-			<legend tal:content="python:'%s - %s'%(here.getZMILangStr('ATTR_PROCESS'),here.getZMILangStr('ATTR_SEQUENCE'))">Process Sequence</legend>
+			<legend tal:content="python:'%s - %s'%(here.getZMILangStr('ATTR_PROCESS'),here.getZMILangStr('ATTR_SEQUENCE'))">
+				Process Sequence
+			</legend>
 			<table class="table table-sm table-striped table-bordered zmi-sortable" id="processsequence"
 				tal:define="filterProcesses python:here.getFilterProcesses(filter['id'])">
 				<tbody>
@@ -129,10 +131,10 @@
 									</select>
 									<div class="input-group-append">
 										<a class="btn btn-secondary" href="javascript:;" 
-											tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'BTN_DELETE\',id:\'%s\',\'index:int\':%i,key:\'attr\'})'%(filter['id'],index); title python:here.getZMILangStr('BTN_DELETE')"
-											><i class="fas fa-times"></i></a>
-										</div>
-										
+											tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'BTN_DELETE\',id:\'%s\',\'index:int\':%i,key:\'attr\'})'%(filter['id'],index); title python:here.getZMILangStr('BTN_DELETE')">
+											<i class="fas fa-times"></i>
+										</a>
+									</div>
 								</div>
 							</td>
 							<td>
@@ -331,50 +333,58 @@
 				<td>
 					<i tal:condition="python:filter.get('acquired')" class="icon-share fas fa-share mr-2" title="acquired"></i>
 					<a href="javascript:;" class="d-inline-block ml-1" style="width:1rem" onclick="$('i',this).toggleClass('fa-chevron-right fa-chevron-down');$(this).siblings('.filterProcesses').toggle('normal');"><i class="fas fa-chevron-right"></i></a>
-					<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],filterId); title python:here.getZMILangStr('BTN_EDIT')+'...'"
-						data-turbolinks="false">
+					<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],filterId); title python:here.getZMILangStr('BTN_EDIT')+'...'">
 						<i class="fas fa-filter"></i>
 						<tal:block tal:content="python:filter.get('name','Missing filter name')">the filter-name</tal:block>
 					</a>
 					<div class="filterProcesses mt-2 ml-3" style="display:none">
 						<table class="layoutTable">
-						<tr><td><div class="filterDelimiter">
-							<tal:block tal:condition="python:filter.get('format','Missing filter format')=='import'">
-								<i tal:attributes="class python:standard.getFileTypeIconCSS(filter['content_type']); title filter/content_type"></i>
-							</tal:block>
-							<tal:block tal:condition="python:filter.get('format','Missing filter format')!='import'">
-								<tal:block tal:content="python:filter.get('format','Missing format')">the format</tal:block>
-							</tal:block>
-						</div><i class="fas fa-long-arrow-alt-down center"></i></td></tr>
-						<tr tal:repeat="filterProcess python:here.getFilterProcesses(filterId)">
-							<tal:block tal:define="
-									process python:here.getProcess(filterProcess['id'])">
-								<td><div class="filterProcess" tal:content="process/name">the process-name</div><i class="fas fa-long-arrow-alt-down center"></i></td>
-								<tal:block tal:condition="python:filterProcess.get('file_filename')">
-									<td><hr/></td>
-									<td><div class="filterProcessFile"
-										tal:define="
-											process_filename python:filterProcess['file_filename'];
-											process_content_type python:filterProcess['file_content_type'];
-											process_href python:filterProcess['file_href'];
-											">
-										<i tal:attributes="class python:standard.getFileTypeIconCSS(process_filename); title python:process_content_type"></i>&nbsp;
-										<a tal:attributes="href process_href; title python:'%s (%s)'%(process_filename, process_content_type)" 
-											target="_blank" tal:content="process_filename">FILENAME
-										</a>
-									</div></td>
+							<tr>
+								<td>
+									<div class="filterDelimiter">
+										<i class="fas fa-upload" tal:condition="python:filter.get('format','Missing filter format')=='import'"></i>
+										<i class="fas fa-download" tal:condition="python:filter.get('format','Missing filter format')!='import'"></i>
+										<span tal:content="python:filter.get('format','Unkown filter format')"></span>
+									</div>
+									<i class="fas fa-long-arrow-alt-down center"></i>
+								</td>
+							</tr>
+							<tr tal:repeat="filterProcess python:here.getFilterProcesses(filterId)">
+								<tal:block tal:define="process python:here.getProcess(filterProcess['id'])">
+									<td>
+										<div class="filterProcess" tal:attributes="onclick python:'window.location.href=\'?lang=%s&id=%s\''%(request['lang'],process['id'])">
+											<a tal:content="process/name"
+												tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],process['id']); title python:here.getZMILangStr('BTN_EDIT')+'...'">
+												the name
+											</a>
+										</div>
+										<i class="fas fa-long-arrow-alt-down center"></i>
+									</td>
+									<tal:block tal:condition="python:filterProcess.get('file_filename')">
+										<td><hr/></td>
+										<td>
+											<a class="filterProcessFile" target="_blank" 
+												tal:attributes="href process_href; title python:'%s (%s)'%(process_filename, process_content_type)" 
+												tal:define="
+													process_filename python:filterProcess['file_filename'];
+													process_content_type python:filterProcess['file_content_type'];
+													process_href python:filterProcess['file_href']">
+												<i tal:attributes="class python:standard.getFileTypeIconCSS(process_filename); title python:process_content_type"></i>&nbsp;
+												<span  tal:content="process_filename">FILENAME</span>
+											</a>
+										</td>
+									</tal:block>
 								</tal:block>
-							</tal:block>
-						</tr>
-						<tr><td><div class="filterDelimiter">
-							<tal:block tal:condition="python:filter.get('format','Missing filter format')=='import'">
-								<i class="fas fa-upload"></i>
-							</tal:block>
-							<tal:block tal:condition="python:filter.get('format','Missing filter format')!='import'">
-								<i class="fas fa-download"></i>
-							</tal:block>
-							<tal:block tal:content="python:filter.get('content_type','Unkown content type')"></tal:block>
-						</div></td></tr>
+							</tr>
+							<tr>
+								<td>
+									<div class="filterDelimiter">
+										<i class="fas fa-upload" tal:condition="python:filter.get('format','Missing filter format')=='import'"></i>
+										<i class="fas fa-download" tal:condition="python:filter.get('format','Missing filter format')!='import'"></i>
+										<span tal:content="python:filter.get('content_type','Unknown content type')"></span>
+									</div>
+								</td>
+							</tr>
 						</table><!-- .layoutTable -->
 					</div><!-- .filterProcesses -->
 				</td>
@@ -403,7 +413,7 @@
 					<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><i class="fas fa-download"></i></span>
 				</div>
 			</th>
-			<th>Process ID</th>
+			<th>ID</th>
 			<th width="100%" tal:content="python:'%s %s'%(here.getZMILangStr('TAB_PREVIEW'), here.getZMILangStr('ATTR_COMMANDLINE'))">Commandline</th>
 		</tr>
 		</thead>
@@ -414,7 +424,10 @@
 					<input type="checkbox" name="ids:list" tal:attributes="value processId">
 				</td>
 				<td style="white-space:nowrap">
-					<div class="processName" tal:attributes="onclick python:'window.location.href=\'?lang=%s&id=%s\''%(request['lang'],processId)">
+					<div class="processName" 
+						tal:attributes="
+							class python:'processName%s'%(request.get('id')==processId and ' active' or '');
+							onclick python:'window.location.href=\'?lang=%s&id=%s\''%(request['lang'],processId)">
 						<a tal:content="python:'%s'%(process.get('name','Name Missing!'))"
 							tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],processId); title python:here.getZMILangStr('BTN_EDIT')+'...'">
 							the name
@@ -445,6 +458,7 @@
 <footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 
 <style>
+/*<!-- */
 	table#processes td {
 		white-space:nowrap;
 		overflow:hidden;
@@ -456,7 +470,6 @@
 	}
 	.filterProcess,
 	.filterDelimiter,
-	.filterProcessFile,
 	.processName {
 		background-color:#D0FFD0;
 		border:1px navy solid;
@@ -475,7 +488,9 @@
 		width:100%;
 		border:1px #337ab7 solid;
 	}
+	.filterProcess:hover,
 	.processName:hover,
+	.processName.active,
 	table#processes tr:has(td a:hover) td .processName {
 		background-color:#337ab7;
 		cursor:pointer;
@@ -487,19 +502,55 @@
 		max-width: 20vw;
 		line-height: 1;
 	}
+	.filterProcess:hover a,
 	.processName:hover a,
+	.processName.active a,
 	table#processes tr:has(td a:hover) td .processName a {
 		color:white;
+		text-decoration:none;
 	}
 	.filterDelimiter {
 		background-color:#D0D0FF;
 	}
 	.filterProcessFile {
+		display:block;
+		position:relative;
 		text-align:left;
-		background-color:white;
+		background-color:#ffffdd;
 		border:1px #CCC solid;
-		padding: .3rem .75rem;
-		width:auto;
+		border-radius:4px;
+		font-weight:normal;
+		padding: 4px 1em 4px 2em;
+		margin: .1em 0 0 0;
+		width: 14em;
+		overflow:hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		color: #212529;
+		text-decoration:none;
+	}
+	.filterProcessFile:hover {
+		color:white;
+		text-decoration:none;
+		background-color: #337ab7;
+		border: 1px #2e6da4 solid;
+		cursor:pointer;
+	}
+	.filterProcessFile i:before {
+		position: absolute !important;
+		display: block;
+		color: #ffffff;
+		background: #869596;
+		height: 1.9rem;
+		width: 1.75rem;
+		text-align: center;
+		border-top-left-radius: 4px;
+		border-bottom-left-radius: 4px;
+		margin: -1.25rem 0 0 -1.75rem;
+		line-height: 2.1;
+	}
+	.filterProcessFile:hover i:before {
+		background-color: #354f67;
 	}
 	.filterProcesses .layoutTable {
 		margin-bottom:1rem;
@@ -565,6 +616,7 @@
 		vertical-align:text-bottom;
 		padding:0 0 0 .25rem;
 	}
+/*-->*/
 </style>
 
 <script>

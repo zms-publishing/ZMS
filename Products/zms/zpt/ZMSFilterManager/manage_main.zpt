@@ -381,7 +381,7 @@
 <form class="form-horizontal card" action="manage_changeProcess" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<legend tal:content="python:here.getZMILangStr('ATTR_PROCESSES')">Processes</legend>
-	<table class="table table-sm table-striped table-bordered zmi-sortable mb-0">
+	<table id="processes" class="table table-sm table-striped table-bordered table-hover zmi-sortable mb-0">
 		<thead>
 		<tr>
 			<th class="meta-sort text-center">
@@ -389,7 +389,7 @@
 					<span class="btn btn-secondary" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this)"><i class="fas fa-check-square"></i></span>
 				</div>
 			</th>
-			<th width="*" style="width:auto;min-width:400px">
+			<th width="*" style="width:auto;white-space:nowrap">
 				<div class="btn-group">
 					<span class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="zmiModal('#insertProcess',{title:$(this).attr('title')})"><i class="fas fa-plus"></i></span>
 					<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:'BTN_DELETE',key:'obj'})"><i class="fas fa-times"></i></span>
@@ -397,6 +397,7 @@
 					<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><i class="fas fa-download"></i></span>
 				</div>
 			</th>
+			<th>Process ID</th>
 			<th width="100%" tal:content="python:'%s %s'%(here.getZMILangStr('TAB_PREVIEW'), here.getZMILangStr('ATTR_COMMANDLINE'))">Commandline</th>
 		</tr>
 		</thead>
@@ -406,19 +407,25 @@
 				<td class="meta-sort text-center">
 					<input type="checkbox" name="ids:list" tal:attributes="value processId">
 				</td>
-				<td style="white-space:nowrap" class="pl-3">
+				<td style="white-space:nowrap">
+					<div class="processName" tal:attributes="onclick python:'window.location.href=\'?lang=%s&id=%s\''%(request['lang'],processId)">
+						<a tal:content="python:'%s'%(process.get('name','Name Missing!'))"
+							tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],processId); title python:here.getZMILangStr('BTN_EDIT')+'...'">
+							the name
+						</a>
+					</div>
+				</td>
+				<td style="white-space:nowrap">
 					<i tal:condition="python:process.get('acquired')" class="icon-share fas fa-share mr-2" title="acquired"></i>
-					<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],processId); title python:here.getZMILangStr('BTN_EDIT')+'...'"
-						data-turbolinks="false">
+					<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],processId); title python:here.getZMILangStr('BTN_EDIT')+'...'">
 						<i tal:condition="python:standard.operator_getattr(here,process['id'],None) is not None" tal:on-error="nothing" tal:attributes="class python:getattr(here,process['id']).zmi_icon"></i>
 						<i tal:condition="python:standard.operator_getattr(here,process['id'],None) is None" class="fas fa-cog"></i>
-						<b class="ml-2 processId" tal:content="process/id">the id</b>
+						<span class="ml-2 processId" tal:content="process/id">the id</span>
 					</a>
-					<span class="processName text-muted ml-2" tal:content="python:'%s'%(process.get('name','Name Missing!'))">the name</span>
 				</td>
 				<td tal:attributes="title python:'PREVIEW\n\n%s'%(standard.string_maxlen(process['command'],980))" style="cursor:help;">
-				<code tal:attributes="onclick python:'window.location.href =\'?lang=%s&id=%s\''%(request['lang'],processId)"
-					tal:content="python:standard.string_maxlen(process['command'],50)">
+					<code tal:attributes="onclick python:'window.location.href =\'?lang=%s&id=%s\''%(request['lang'],processId)"
+						tal:content="python:standard.string_maxlen(process['command'],50)">
 						the command
 					</code>
 				</td>
@@ -432,20 +439,51 @@
 <footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 
 <style>
+	table#processes td {
+		white-space:nowrap;
+		overflow:hidden;
+		text-overflow: ellipsis;
+		vertical-align:middle;
+	}
+	table#processes td a {
+		text-decoration: none !important;
+	}
 	.filterProcess,
 	.filterDelimiter,
-	.filterProcessFile {
+	.filterProcessFile,
+	.processName {
 		background-color:#D0FFD0;
 		border:1px navy solid;
 		border-radius:4px;
 		margin:.1em;
-		max-width:30vw;
 		width:20rem;
+		max-width:30vw;
 		text-align:center;
 		padding:.3rem;
 		overflow:hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
+	}
+	.processName {
+		max-width:20vw;
+		width:100%;
+		border:1px #337ab7 solid;
+	}
+	.processName:hover,
+	table#processes tr:has(td a:hover) td .processName {
+		background-color:#337ab7;
+		cursor:pointer;
+	}
+	.processName a {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		max-width: 20vw;
+		line-height: 1;
+	}
+	.processName:hover a,
+	table#processes tr:has(td a:hover) td .processName a {
+		color:white;
 	}
 	.filterDelimiter {
 		background-color:#D0D0FF;

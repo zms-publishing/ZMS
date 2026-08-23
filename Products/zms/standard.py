@@ -2605,12 +2605,19 @@ def getTempFile( context, id):
 
 
 security.declarePublic('getTempFolder')
-def getTempFolder():
-  """Return a temporary working folder below the Zope instance home."""
-  # TODO: use a given path from a ZMS config parameter instead of hardcoded, default may the OS default.
-  tempdir = os.path.join(getINSTANCE_HOME(), 'var', 'tmp')
-  os.makedirs(tempdir, exist_ok=True)
-  return tempfile.mkdtemp(dir=tempdir)
+def getTempFolder(context):
+  """
+  Return a temporary working filesystem folder
+  and create if not existing.
+  @param context: the context
+  @type context: C{ZMSObject}
+  """
+  tempdir = context.getConfProperty('ZMS.localfs_write.tempfolder', '')
+  if not tempdir:
+    return tempfile.mkdtemp() # use default OS tempfs folder
+  else:
+    os.makedirs(tempdir, exist_ok=True)
+    return tempfile.mkdtemp(dir=tempdir)
 
 
 security.declarePublic('raiseError')

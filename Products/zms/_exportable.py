@@ -681,7 +681,7 @@ class Exportable(_filtermanager.FilterItem):
       REQUEST.set('ZMS_HTML_EXPORT', 1)
       
       #-- Create temporary folder.
-      tempfolder = standard.getTempFolder()
+      tempfolder = standard.getTempFolder(self)
       ressources = self.exportRessources( tempfolder, REQUEST, from_zms=self.getLevel()==0, from_home=True)
       
       #-- Download HTML-pages.
@@ -714,7 +714,7 @@ class Exportable(_filtermanager.FilterItem):
       """
 
       #-- Create temporary folder.
-      tempfolder = standard.getTempFolder()
+      tempfolder = standard.getTempFolder(self)
       ressources = self.exportRessources( tempfolder, REQUEST)
       
       #-- Get xml-export.

@@ -316,9 +316,9 @@ def html2docbook(html):
   docbookxml = process_images(docbookxml)
   return docbookxml
 
-def manage_exportDocx( self):
+def manage_exportDocx(self):
   request = self.REQUEST
-  tempfolder = standard.getTempFolder()
+  tempfolder = standard.getTempFolder(self)
   request.set('URL',self.absolute_url())
   env['self'] = self
   env['server_url'] = request['SERVER_URL']

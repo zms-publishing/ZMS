@@ -213,6 +213,7 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
         {'key':'ZMS.export.pathhandler','title':'Export XHTML with decl. Document Ids','desc':'Please activate this option, if you would like to generate declarative document URLs for static XHTML-Export: /documentname/index_eng.html will be transformed to /documentname.html','datatype':'boolean'},
         {'key':'ZMS.localfs_read','title':'LocalFS read','desc':'List of directories with permission for LocalFS read (semicolon separated).','datatype':'string','default':''},
         {'key':'ZMS.localfs_write','title':'LocalFS write','desc':'List of directories with permission for LocalFS write (semicolon separated).','datatype':'string','default':''},
+        {'key':'ZMS.localfs_write.tempfolder','title':'Temp-Folder','desc':'Overrides default path (e.g., /tmp) for temporary file storage. Useful for container setup, e.g. $INSTANCE_HOME/var/tmp','datatype':'string','default':''},
         {'key':'ZMS.logout.href','title':'Logout URL','desc':'URL for logout from ZMS.','datatype':'string','default':''},
         {'key':'ZMS.register.href','title':'Register URL','desc':'URL for registration for ZMS-permissions.','datatype':'string','default':''},
         {'key':'ZMS.richtext.plugin','title':'Richtext plugin','desc':'Select your preferred richtext plugin','datatype':'string','options':['ckeditor','easymde','simplemde','tinymce'],'default':'ckeditor'},
@@ -227,9 +228,6 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
         {'key':'ZMS.repository_manager.__init__.format','title':'Repository format of __init__','desc':'Repository format of __init__','datatype':'string','options':['yaml','py'],'default':'yaml'},
         {'key':'ZReferableItem.validateLinkObj','title':'Auto-correct link-attributes','desc':'Ensure valid link-attributes by parsing and using ZMSIndex for refreshing target urls on rendering','datatype':'boolean','default':1},
         {'key':'ZReferableItem.validateInlineLinkObj','title':'Auto-correct inline-links','desc':'Ensure valid inline-links by text-parsing and using ZMSIndex for refreshing target urls on rendering','datatype':'boolean','default':1},
-        # Note: LLM settings are managed by ZMSLLMConnector (getLLMConnector()).
-        # The entries below are kept only as migration hints; the connector's own
-        # _config dict is the authoritative source of llm.* properties.
       ]
 
     def importConfPackage(self, file):

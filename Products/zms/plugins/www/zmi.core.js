@@ -182,7 +182,9 @@ $ZMI.registerReady(function(){
 			})
 			.attr( "title", "Click to Edit!\nShift+Click to Properties Menu");
 	}
+});
 
+$(function() {
 	// ZMS plugins
 	if (typeof zmiParams['ZMS_HIGHLIGHT'] != 'undefined' && typeof zmiParams[zmiParams['ZMS_HIGHLIGHT']] != 'undefined') {
 		$.plugin('zmi_highlight',{

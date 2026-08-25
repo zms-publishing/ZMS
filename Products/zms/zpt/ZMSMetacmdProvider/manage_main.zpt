@@ -450,8 +450,8 @@ $(document).keypress(function (event) {
 	if (isModifierKeyPressed(event)) {
 		return; // ignore
 	}
-	// Set Focus to Tablefilter only when Modal Dialog is not Shown
-	if (!$('#zmi-modal').hasClass('show')) {
+    // Set Focus to Tablefilter only when no modal dialog is shown
+	if (!$('.modal.show').length) {
 		$('#tablefilter').focus().addClass('visited');
 	};
 })

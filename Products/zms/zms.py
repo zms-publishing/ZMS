@@ -42,7 +42,9 @@ from App.Common import package_home
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from OFS.Folder import Folder
 import collections
+import hmac
 import os
+import secrets
 import sys
 import time
 import zExceptions
@@ -66,6 +68,11 @@ from Products.zms.zmssqldb import ZMSSqlDb
 from Products.zms.zmstrashcan import ZMSTrashcan
 
 __all__= ['ZMS']
+
+# CSRF protection: session key holding the expected token and form/query
+# field name expected to carry the token back with a submitted form.
+CSRF_SESSION_KEY = '_csrft_'
+CSRF_FORM_KEY = 'csrf_token'
 
 import zope.event
 from zope.container.contained import ObjectAddedEvent
@@ -617,6 +624,29 @@ class ZMS(
       """Return the site's trashcan object."""
       return self.objectValues(['ZMSTrashcan'])[0]
 
+    def getCSRFToken(self, REQUEST=None):
+      """
+      Return the CSRF token stored in the current session, creating it if
+      it does not yet exist. Templates rendering forms should embed this
+      value in a hidden field named C{csrf_token} (see L{CSRF_FORM_KEY}).
+
+      For use in templates e.g.
+      <input type="hidden" name="csrf_token" tal:attributes="value context/getCSRFToken" />).
+      The token is validated in the L{__before_publishing_traverse__} hook.
+
+      @param REQUEST: Active HTTP request.
+      @type REQUEST: ZPublisher.HTTPRequest.HTTPRequest | None
+      @return: CSRF token.
+      @rtype: str
+      """
+      request = REQUEST or self.REQUEST
+      session = request.SESSION
+      token = session.get(CSRF_SESSION_KEY)
+      if not token:
+        token = secrets.token_hex(20)
+        session.set(CSRF_SESSION_KEY, token)
+      return token
+
     def getNewId(self, id_prefix='e'):
       """
       Return a new unique object identifier.
@@ -716,28 +746,49 @@ class ZMS(
             <h2>ZMS Maintenance active</h2>
             <button onclick="history.back()">Go Back</button>
         </tal:block>
+
+      Additionally, this hook validates a CSRF token submitted with a form
+      (GET or POST) against the token stored in the session (see
+      L{getCSRFToken}). Forms that need protection embed a hidden field
+      C{csrf_token} with the token value.
+
+      Like the maintenance mode check, the token is only validated for
+      transactional requests, i.e. requests that actually end up writing to
+      the ZODB. A missing or mismatching token then results in a 503
+      Service Unavailable response.
       """
       path = request.path
       maintenance_conf_key = 'ZMS.mode.maintenance'
       maintenance_mode = bool(self.getConfProperty(maintenance_conf_key, False))
       is_maintenance_mode_change = 'manage_customizeSystem' in path and request.get('conf_key') == maintenance_conf_key
-      # Only allow ZMS.mode.maintenance changes in maintenance mode.
-      if maintenance_mode and not is_maintenance_mode_change:
+      form = request.form
+
+      if (maintenance_mode and not is_maintenance_mode_change) or CSRF_FORM_KEY in form:
         import transaction
         import ZODB.Connection
         t = transaction.get()
-        def maintenance_hook():
+        def maintenance_and_csrf_hook():
           # Check if there are ZODB changes - if there is a ZODB.Connection.Connection resource manager.
           # Transaction._resources contains all resource managers which commit their changes sequentially:
           # https://github.com/zopefoundation/transaction/blob/6d4785159c277067f2ec95158884870a92660220/src/transaction/_transaction.py#L421
           for resource in t._resources:
             if isinstance(resource, ZODB.Connection.Connection):
-              # Reset response content type (WGSIPublisher sets it to "text/plain" per default if unset)
-              # and lock status (the zException does not get mapped correctly)
-              request.response.setHeader('Content-Type', 'text/html;charset=utf-8')
-              request.response.setStatus(503, lock=True)
-              raise zExceptions.HTTPServiceUnavailable('Maintenance')
-        t.addBeforeCommitHook(maintenance_hook)
+              error_value = None
+              if maintenance_mode and not is_maintenance_mode_change:
+                error_value = 'Maintenance'
+              elif CSRF_FORM_KEY in form:
+                session = getattr(request, 'SESSION', None)
+                session_token = session.get(CSRF_SESSION_KEY) if session is not None else None
+                submitted_token = form.get(CSRF_FORM_KEY)
+                if not session_token or not submitted_token or not hmac.compare_digest(str(session_token), str(submitted_token)):
+                  error_value = 'Invalid CSRF token'
+              if error_value:
+                # Reset response content type (WGSIPublisher sets it to "text/plain" per default if unset)
+                # and lock status (the zException does not get mapped correctly)
+                request.response.setHeader('Content-Type', 'text/html;charset=utf-8')
+                request.response.setStatus(503, lock=True)
+                raise zExceptions.HTTPServiceUnavailable(error_value)
+        t.addBeforeCommitHook(maintenance_and_csrf_hook)
 
 ################################################################################
 # Workaround for an incompatibility with zope.browserresource 3.11.0 and newer

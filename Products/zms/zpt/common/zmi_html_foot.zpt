@@ -7,4 +7,5 @@
 		// console.log('common.zmi_html_foot: executed history.replaceState()')
 	};
 </script>
+<script tal:content="python:'\n\t(function(token) {\n\t\tdocument.querySelectorAll(\'form\').forEach(function(form) {\n\t\t\tvar input = form.querySelector(\'input[name=csrf_token]\');\n\t\t\tif (!input) {\n\t\t\t\tinput = document.createElement(\'input\');\n\t\t\t\tinput.type = \'hidden\';\n\t\t\t\tinput.name = \'csrf_token\';\n\t\t\t\tform.appendChild(input);\n\t\t\t}\n\t\t\tinput.value = token;\n\t\t});\n\t})(\'%s\');\n'%(here.getCSRFToken(request))"></script>
 <!-- /common/zmi_html_foot -->

@@ -4,7 +4,21 @@
 <body tal:attributes="class python:here.zmi_body_class(id='importexportdebugfilter')">
 <header tal:replace="structure python:here.zmi_body_header(here,request)">zmi_body_header</header>
 <div id="zmi-tab">
-<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
+<!--! Save export node after initialization for breadcrumb on the further process-steps -->
+<tal:block tal:condition="python:here.getId()!='zms_log'">
+	<tal:block tal:define="global content_uid python:here.get_uid();"
+		tal:content="structure python:here.zmi_breadcrumbs(here,request)">
+		zmi_breadcrumbs
+	</tal:block>
+</tal:block>
+<tal:block tal:condition="python:here.getId()=='zms_log'">
+	<tal:block tal:define="
+		global content_uid python:request.get('content_uid',here.get_uid());
+		content_obj python:here.getLinkObj('{$%s}'%content_uid);"
+		tal:content="structure python:content_obj.zmi_breadcrumbs(here,request)">
+		zmi_breadcrumbs
+	</tal:block>
+</tal:block>
 
 <style>
 /*<!-- */
@@ -138,6 +152,7 @@
 	<input type="hidden" name="step:int" tal:attributes="value python:step+1"/>
 	<input type="hidden" name="tempfolder" tal:attributes="value request/tempfolder"/>
 	<input type="hidden" name="outfilename" tal:attributes="value request/outfilename"/>
+	<input type="hidden" name="content_uid" tal:attributes="value content_uid"/>
 
 	<div class="sticky-controls">
 		<legend>
@@ -196,7 +211,7 @@
 										tal:define="
 											process_filename python:filterProcess['file_filename'];
 											process_content_type python:filterProcess['file_content_type'];
-											process_href python:filterProcess['file_href'];"
+											process_href python:'%s/manage_main'%(filterProcess['file_href']);"
 										tal:attributes="href process_href; title python:'%s (%s)'%(process_filename, process_content_type)">
 										<i tal:attributes="class python:standard.getFileTypeIconCSS(process_filename); title python:process_content_type"></i>
 										<span class="ml-1" tal:content="process_filename">FILENAME</span>

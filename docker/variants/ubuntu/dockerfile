@@ -52,7 +52,6 @@ RUN set -eux; \
         default-libmysqlclient-dev \
         docbook-xml \
         docbook-xsl \
-        hyphen-de \
         fop \
         gcc \
         gettext-base \

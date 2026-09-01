@@ -127,12 +127,18 @@ class ZMSIndexSchematizedReindexer:
         }
 
         for uid, meta_id, node_path in self._iter_index_uids():
+            # Worker-Abbruch prüfen
+            from __main__ import STOP_REQUESTED
+            if STOP_REQUESTED:
+                write_line("Stop requested — aborting reindex")
+                break
+
             stats["candidates"] += 1
             client_path = "{$@%s}" % self._extract_client_path(node_path)
             write_line(f"Reindexing UID={uid} meta_id={meta_id} path={client_path}")
 
             params = {
-                "uid": "{$%s}"%client_path,
+                "uid": "{$%s}" % client_path,
                 "page_size:int": self.page_size,
                 "clients:int": 0,
                 "fileparsing:int": self.fileparsing,
@@ -140,7 +146,8 @@ class ZMSIndexSchematizedReindexer:
 
             try:
                 payload, url = self._api(f"{self.connector}/reindex_page", **params)
-                [write_line(f"LOG {x}") for x in payload['log']]
+                for x in payload['log']:
+                    write_line(f"LOG {x}")
                 stats['success'] += payload['success']
                 stats['failed'] += payload['failed']
                 stats["requests"] += 1
@@ -177,6 +184,7 @@ class ZMSIndexSchematizedReindexer:
 RUN_LOCK = threading.Lock()
 RUN_IN_PROGRESS = False
 RUN_LOCK_FD = None
+STOP_REQUESTED = False
 
 def _get_lockfile_path(base_url):
     safe = "".join(ch if ch.isalnum() else "_" for ch in base_url)
@@ -219,12 +227,16 @@ def manage_reindex_content_bg(self):
     fileparsing = bool(request.get("fileparsing", False))
 
     global RUN_IN_PROGRESS, RUN_LOCK_FD
-
+ 
     with RUN_LOCK:
+        global STOP_REQUESTED
+
         if RUN_IN_PROGRESS:
+            STOP_REQUESTED = True  # laufenden Worker stoppen
+
             target = self.url_append_params(
                 "%s/manage_main" % self.absolute_url(),
-                {"manage_tabs_message": "Background Job is already running"},
+                {"manage_tabs_message": "Background Job was running and has been stopped"},
             )
             return request.response.redirect(target)
 
@@ -240,7 +252,9 @@ def manage_reindex_content_bg(self):
         RUN_IN_PROGRESS = True
 
     def worker():
-        global RUN_IN_PROGRESS, RUN_LOCK_FD
+        global RUN_IN_PROGRESS, RUN_LOCK_FD, STOP_REQUESTED
+        STOP_REQUESTED = False  # reset at start
+
         try:
             LOGGER.info("Starting background reindex job for %s", base_url)
 

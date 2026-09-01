@@ -179,6 +179,7 @@ The script can run standalone without Zope:
 ```
 src/zms/Products/zms/conf/metacmd_manager/manage_reindex_content_bg$ python3 manage_reindex_content_bg.py http://127.0.0.1:8080/myzmsx/content \
     --connector /zcatalog_adapter/zcatalog_connector/ \
+    --uid {$} \
     --page-size 100 \
     --fileparsing
 ```

@@ -29,11 +29,25 @@ class ZMSIndexSchematizedReindexer:
     Works standalone or inside Zope.
     """
 
-    def __init__(self, base_url, connector, page_size=100, fileparsing=False):
+    def __init__(self, base_url, connector, uid='{$}', page_size=100, fileparsing=False):
         self.base_url = base_url.rstrip("/")
         self.connector = connector.strip("/")
+        self.uid = uid
         self.page_size = page_size
         self.fileparsing = 1 if fileparsing else 0
+
+    def _extract_client_path(self, node_path: str) -> str:
+        parts = [p for p in node_path.split("/") if p]
+
+        # trailing "content" entfernen
+        if parts and parts[-1] == "content":
+            parts = parts[:-1]
+
+        # ZMS-Root ist IMMER das erste Segment des node_path
+        if parts:
+            parts = parts[1:]
+
+        return "/".join(parts)
 
     # ------------------------------------------------------------------
     # REST helpers
@@ -61,6 +75,7 @@ class ZMSIndexSchematizedReindexer:
     # ------------------------------------------------------------------
 
     def _iter_index_uids(self):
+
         def fetch_children(path):
             rest_path = path.strip("/")
             url = f"{self.base_url}/++rest_api/{rest_path}/list_child_nodes"
@@ -113,10 +128,11 @@ class ZMSIndexSchematizedReindexer:
 
         for uid, meta_id, node_path in self._iter_index_uids():
             stats["candidates"] += 1
-            write_line(f"Reindexing UID={uid} meta_id={meta_id} path={node_path}")
+            client_path = "{$@%s}" % self._extract_client_path(node_path)
+            write_line(f"Reindexing UID={uid} meta_id={meta_id} path={client_path}")
 
             params = {
-                "uid": "{$%s}"%uid,
+                "uid": "{$%s}"%client_path,
                 "page_size:int": self.page_size,
                 "clients:int": 0,
                 "fileparsing:int": self.fileparsing,
@@ -195,8 +211,10 @@ def manage_reindex_content_bg(self):
     LOGGER = logging.getLogger("Zope")
 
     request = self.REQUEST
-    base_url = self.getDocumentElement().absolute_url()
+    root = self.getRootElement()
+    base_url = root.absolute_url()
     connector = request.get("connector", "/zcatalog_adapter/zcatalog_connector/")
+    uid = request.get("uid", root,getRefObjPath(self.getDocumentElement()))
     page_size = int(request.get("page_size", 100))
     fileparsing = bool(request.get("fileparsing", False))
 
@@ -229,6 +247,7 @@ def manage_reindex_content_bg(self):
             reindexer = ZMSIndexSchematizedReindexer(
                 base_url=base_url,
                 connector=connector,
+                uid=uid,
                 page_size=page_size,
                 fileparsing=fileparsing,
             )
@@ -263,6 +282,7 @@ def main():
     parser = argparse.ArgumentParser(description="Standalone ZMS REST reindexer")
     parser.add_argument("base_url", help="Base URL, e.g. http://127.0.0.1:8080/myzms/content")
     parser.add_argument("--connector", default="/zcatalog_adapter/zcatalog_connector/")
+    parser.add_argument("--uid", help="Start UID, default: start from root {$}", default="{$}")
     parser.add_argument("--page-size", type=int, default=100)
     parser.add_argument("--fileparsing", action="store_true")
     args = parser.parse_args()
@@ -270,6 +290,7 @@ def main():
     reindexer = ZMSIndexSchematizedReindexer(
         base_url=args.base_url,
         connector=args.connector,
+        uid=args.uid,
         page_size=args.page_size,
         fileparsing=args.fileparsing,
     )

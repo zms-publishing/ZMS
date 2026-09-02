@@ -127,11 +127,7 @@ class ZMSIndexSchematizedReindexer:
         }
 
         for uid, meta_id, node_path in self._iter_index_uids():
-            # Worker-Abbruch prüfen
-            global STOP_REQUESTED
-            if STOP_REQUESTED:
-                write_line("Stop requested — aborting reindex")
-                break
+            # TODO: Worker-Abbruch prüfen
 
             stats["candidates"] += 1
             client_path = "{$@%s}" % self._extract_client_path(node_path)
@@ -184,11 +180,43 @@ class ZMSIndexSchematizedReindexer:
 RUN_LOCK = threading.Lock()
 RUN_IN_PROGRESS = False
 RUN_LOCK_FD = None
-STOP_REQUESTED = False
 
 def _get_lockfile_path(base_url):
     safe = "".join(ch if ch.isalnum() else "_" for ch in base_url)
     return os.path.join(tempfile.gettempdir(), f"zms_reindex_{safe}.lock")
+
+import os
+import tempfile
+import fcntl
+
+def _get_lockfile_path(base_url):
+    safe = "".join(ch if ch.isalnum() else "_" for ch in base_url)
+    return os.path.join(tempfile.gettempdir(), f"zms_reindex_{safe}.lock")
+
+def _test_single_flight_locked(base_url):
+    """
+    Check whether a single-flight lock is currently held.
+    Returns the lockfile path if locked, or None if free.
+    """
+    lockfile_path = _get_lockfile_path(base_url)
+
+    # Open or create the lock file
+    fd = os.open(lockfile_path, os.O_CREAT | os.O_RDWR, 0o644)
+
+    try:
+        # Try to acquire exclusive non-blocking lock
+        fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+
+        # Lock acquired → immediately release it again
+        fcntl.flock(fd, fcntl.LOCK_UN)
+        return None # Lock is free
+
+    except OSError:
+        # Lock is held by another process
+        return lockfile_path
+
+    finally:
+        os.close(fd)
 
 def _try_acquire_singleflight_lock(base_url):
     lockfile_path = _get_lockfile_path(base_url)
@@ -225,17 +253,6 @@ def start(self):
     global RUN_IN_PROGRESS, RUN_LOCK_FD
  
     with RUN_LOCK:
-        global STOP_REQUESTED
-
-        if RUN_IN_PROGRESS:
-            STOP_REQUESTED = True  # laufenden Worker stoppen
-
-            target = self.url_append_params(
-                "%s/manage_main" % self.absolute_url(),
-                {"manage_tabs_message": "Background Job was running and has been stopped"},
-            )
-            return request.response.redirect(target)
-
         lock_fd = _try_acquire_singleflight_lock(base_url)
         if lock_fd is None:
             target = self.url_append_params(
@@ -248,8 +265,7 @@ def start(self):
         RUN_IN_PROGRESS = True
 
     def worker():
-        global RUN_IN_PROGRESS, RUN_LOCK_FD, STOP_REQUESTED
-        STOP_REQUESTED = False  # reset at start
+        global RUN_IN_PROGRESS, RUN_LOCK_FD
 
         try:
             LOGGER.info("Starting background reindex job for %s", base_url)
@@ -277,19 +293,19 @@ def start(self):
     thread.start()
 
 def stop(self):
-    global RUN_IN_PROGRESS, RUN_LOCK_FD
- 
-    with RUN_LOCK:
-        global STOP_REQUESTED
+    nessage = "Background Job stop requested"
+    request = self.REQUEST
 
-        if RUN_IN_PROGRESS:
-            STOP_REQUESTED = True  # laufenden Worker stoppen
+    locked = _test_single_flight_locked(self.absolute_url())
+    if locked:
+        _release_singleflight_lock(locked)
+        message = "Background Job was running and has been stopped"
 
-            target = self.url_append_params(
-                "%s/manage_main" % self.absolute_url(),
-                {"manage_tabs_message": "Background Job was running and has been stopped"},
-            )
-            return request.response.redirect(target)
+    target = self.url_append_params(
+        "%s/manage_main" % self.absolute_url(),
+        {"manage_tabs_message": message},
+    )
+    return request.response.redirect(target)
 
 def manage_reindex_content_bg(self):
     """
@@ -298,11 +314,12 @@ def manage_reindex_content_bg(self):
     Zope imports are inside this function.
     """
     from Products.zms import standard
-    
+
     request = self.REQUEST
-    if request.get("action") == "start":
+    btn = request.form.get('btn')
+    if btn == "BTN_START":
         start(self)
-    elif request.get("action") == "stop":
+    elif btn == "BTN_STOP":
         stop(self)
 
     connector_url = ''
@@ -313,6 +330,8 @@ def manage_reindex_content_bg(self):
             connector_url = connectors[0].absolute_url()
     except:
         connector_url = ''
+
+    lockfile_path = _test_single_flight_locked(self.absolute_url())
 
     html = []
     html.append('<!DOCTYPE html>')
@@ -327,7 +346,6 @@ def manage_reindex_content_bg(self):
     html.append('<legend>Background Reindexing</legend>')
     html.append('<div class="card-body">')
     html.append("""
-	<div class="form-group zmi-form-container zms4-row mb-0">
 		<div class="form-group row">
 			<label class="col-sm-2 control-label">Catalog Connector</label>
 			<div class="col-sm-10">
@@ -344,14 +362,13 @@ def manage_reindex_content_bg(self):
 		<div class="form-group row">
 			<label class="col-sm-2 control-label"></label>
 			<div class="col-sm-10">
-				<button id="start-button" class="btn btn-secondary mr-2">
+				<button id="start-button" class="btn btn-secondary mr-2" name="btn" value="BTN_START">
 					<i class="fas fa-play text-success"></i>
 				</button>
-				<button id="stop-button" class="btn btn-secondary">
+				<button id="stop-button" class="btn btn-secondary" name="btn" value="BTN_STOP">
 					<i class="fas fa-stop"></i>
 				</button>
 			</div>
-	</div><!-- .form-group -->
 	"""%(standard.html_quote(connector_url)))
     html.append("""
         </div><!-- .card-body -->

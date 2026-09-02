@@ -128,7 +128,7 @@ class ZMSIndexSchematizedReindexer:
 
         for uid, meta_id, node_path in self._iter_index_uids():
             # Worker-Abbruch prüfen
-            from __main__ import STOP_REQUESTED
+            global STOP_REQUESTED
             if STOP_REQUESTED:
                 write_line("Stop requested — aborting reindex")
                 break
@@ -208,13 +208,7 @@ def _release_singleflight_lock(fd):
     finally:
         os.close(fd)
 
-
-def manage_reindex_content_bg(self):
-    """
-    Zope external method entry point.
-    Uses the REST-only reindexer.
-    Zope imports are inside this function.
-    """
+def start(self):
     import logging
     LOGGER = logging.getLogger("Zope")
 
@@ -282,13 +276,93 @@ def manage_reindex_content_bg(self):
     thread = threading.Thread(target=worker, name="manage_reindex_content_bg", daemon=True)
     thread.start()
 
-    return request.response.redirect(
-        self.url_append_params(
-            "%s/manage_main" % self.absolute_url(),
-            {"manage_tabs_message": "Background Job has Started"},
-        )
-    )
+def stop(self):
+    global RUN_IN_PROGRESS, RUN_LOCK_FD
+ 
+    with RUN_LOCK:
+        global STOP_REQUESTED
 
+        if RUN_IN_PROGRESS:
+            STOP_REQUESTED = True  # laufenden Worker stoppen
+
+            target = self.url_append_params(
+                "%s/manage_main" % self.absolute_url(),
+                {"manage_tabs_message": "Background Job was running and has been stopped"},
+            )
+            return request.response.redirect(target)
+
+def manage_reindex_content_bg(self):
+    """
+    Zope external method entry point.
+    Uses the REST-only reindexer.
+    Zope imports are inside this function.
+    """
+    from Products.zms import standard
+    
+    request = self.REQUEST
+    if request.get("action") == "start":
+        start(self)
+    elif request.get("action") == "stop":
+        stop(self)
+
+    connector_url = ''
+    try:
+        catalog_adapter = self.getCatalogAdapter()
+        connectors = catalog_adapter.get_connectors()
+        if connectors:
+            connector_url = connectors[0].absolute_url()
+    except:
+        connector_url = ''
+
+    html = []
+    html.append('<!DOCTYPE html>')
+    html.append('<html lang="en">')
+    html.append(self.zmi_html_head(self,request))
+    html.append('<body class="%s">'%self.zmi_body_class(id='manage_reindex_content'))
+    html.append(self.zmi_body_header(self,request))
+    html.append('<div id="zmi-tab">')
+    html.append(self.zmi_breadcrumbs(self,request,extra=[{'label':'Reindex Content','action':'manage_reindex_content'}]))
+    html.append('<form class="form-horizontal card" name="form0" method="post" enctype="multipart/form-data">')
+    html.append('<input type="hidden" id="lang" name="lang" value="%s"/>'%request['lang'])
+    html.append('<legend>Background Reindexing</legend>')
+    html.append('<div class="card-body">')
+    html.append("""
+	<div class="form-group zmi-form-container zms4-row mb-0">
+		<div class="form-group row">
+			<label class="col-sm-2 control-label">Catalog Connector</label>
+			<div class="col-sm-10">
+				<input class="form-control" id="catalog_connector_url" name="catalog_connector_url" type="text" value="%s" readonly="readonly" />
+			</div>
+		</div><!-- .form-group -->
+		<div class="form-group row">
+			<label class="col-sm-2 control-label">Page Size</label>
+			<div class="col-sm-10">
+				<input class="form-control" id="count" name="count:int" type="text" value="1" disabled="disabled" />
+				<small class="form-text text-muted">API batch size per call (1 = one node per call)</small>
+			</div>
+		</div><!-- .form-group -->
+		<div class="form-group row">
+			<label class="col-sm-2 control-label"></label>
+			<div class="col-sm-10">
+				<button id="start-button" class="btn btn-secondary mr-2">
+					<i class="fas fa-play text-success"></i>
+				</button>
+				<button id="stop-button" class="btn btn-secondary">
+					<i class="fas fa-stop"></i>
+				</button>
+			</div>
+	</div><!-- .form-group -->
+	"""%(standard.html_quote(connector_url)))
+    html.append("""
+        </div><!-- .card-body -->
+	  </form><!-- .form-horizontal -->
+	</div><!-- #zmi-tab -->
+	""")
+    html.append(self.zmi_body_footer(self,request))
+    html.append('</body>')
+    html.append('</html>')
+
+    return '\n'.join(html)
 
 # ======================================================================
 # 3) CLI RUNNER

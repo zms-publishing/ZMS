@@ -40,15 +40,17 @@ class ZMSIndexSchematizedReindexer:
 	def _extract_client_path(self, node_path: str) -> str:
 		parts = [p for p in node_path.split("/") if p]
 
-		# trailing "content" entfernen
-		if parts and parts[-1] == "content":
-			parts = parts[:-1]
-
-		# ZMS-Root ist IMMER das erste Segment des node_path
+		# The first physical-path segment is the ZMS root object.
 		if parts:
 			parts = parts[1:]
 
-		return "/".join(parts)
+		# Internal references use "@" where a physical path contains "content".
+		if parts and parts[0] == "content":
+			parts = parts[1:]
+		if parts and parts[-1] == "content":
+			parts = parts[:-1]
+		path = "/".join(parts)
+		return path.replace("/content/", "@")
 
 	# ------------------------------------------------------------------
 	# REST helpers
@@ -75,7 +77,7 @@ class ZMSIndexSchematizedReindexer:
 	# REST tree traversal
 	# ------------------------------------------------------------------
 
-	def _iter_index_uids(self):
+	def _iter_index_nodes(self):
 
 		def fetch_children(path):
 			rest_path = path.strip("/")
@@ -101,17 +103,12 @@ class ZMSIndexSchematizedReindexer:
 				meta_id = node.get("meta_id")
 				node_path = node.get("getPath")
 
-				if not uid or uid in seen:
+				if not uid or not node_path or uid in seen:
 					continue
 				seen.add(uid)
 
-				# Nur ZMS-Knoten reindexen
-				if meta_id == "ZMS":
-					yield uid, meta_id, node_path
-
-					# Nur bei ZMS weiter in die Tiefe gehen
-					if node_path:
-						stack.append(node_path.lstrip("/"))
+				yield uid, meta_id, node_path
+				stack.append(node_path.lstrip("/"))
 
 	# ------------------------------------------------------------------
 	# Main reindex loop
@@ -127,7 +124,7 @@ class ZMSIndexSchematizedReindexer:
 			"skipped": 0,
 		}
 
-		for uid, meta_id, node_path in self._iter_index_uids():
+		for uid, meta_id, node_path in self._iter_index_nodes():
 			# TODO: Worker-Abbruch prüfen
 
 			stats["candidates"] += 1
@@ -135,7 +132,7 @@ class ZMSIndexSchematizedReindexer:
 			write_line(f"Reindexing UID={uid} meta_id={meta_id} path={client_path}")
 
 			params = {
-				"uid": "{$%s}" % client_path,
+				"uid": client_path,
 				"page_size:int": self.page_size,
 				"clients:int": 0,
 				"fileparsing:int": self.fileparsing,
@@ -244,7 +241,7 @@ def start(self):
 	catalog_connector = catalog_adapter.get_connectors()[0]
 	connector = request.get("connector", f"/{catalog_adapter.getId()}/{catalog_connector.getId()}/")
 	uid = request.get("uid", root.getRefObjPath(self.getDocumentElement()))
-	page_size = int(request.get("page_size", 100))
+	page_size = int(request.get("page_size", 1))
 	fileparsing = bool(request.get("fileparsing", False))
 
 	global RUN_IN_PROGRESS, RUN_LOCK_FD
@@ -363,7 +360,7 @@ def manage_reindex_content_bg(self):
 				<div class="form-group row">
 					<label class="col-sm-2 control-label">Page Size</label>
 					<div class="col-sm-10">
-						<input class="form-control" id="count" name="count:int" type="text" value="1" disabled="disabled" />
+						<input class="form-control" id="page_size" name="page_size:int" type="number" min="1" value="1" />
 						<small class="form-text text-muted">API batch size per call (1 = one node per call)</small>
 					</div>
 				</div><!-- .form-group -->

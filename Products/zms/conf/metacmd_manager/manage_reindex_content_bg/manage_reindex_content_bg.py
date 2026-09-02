@@ -221,8 +221,10 @@ def manage_reindex_content_bg(self):
     request = self.REQUEST
     root = self.getRootElement()
     base_url = root.absolute_url()
-    connector = request.get("connector", "/zcatalog_adapter/zcatalog_connector/")
-    uid = request.get("uid", root,getRefObjPath(self.getDocumentElement()))
+    catalog_adapter = root.getCatalogAdapter()
+    catalog_connector = catalog_adapter.get_connectors()[0]
+    connector = request.get("connector", f"/{catalog_adapter.getId()}/{catalog_connector.getId()}/")
+    uid = request.get("uid", root.getRefObjPath(self.getDocumentElement()))
     page_size = int(request.get("page_size", 100))
     fileparsing = bool(request.get("fileparsing", False))
 

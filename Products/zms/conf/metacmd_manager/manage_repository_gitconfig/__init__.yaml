@@ -8,7 +8,7 @@ manage_repository_gitconfig:
   name: TAB_CONFIGURATION
   nodes: '{$}'
   package: com.zms.custom.metacmd.gitbridge
-  revision: 5.1.0
+  revision: 5.1.2
   roles:
     - ZMSAdministrator
   stereotype: repository

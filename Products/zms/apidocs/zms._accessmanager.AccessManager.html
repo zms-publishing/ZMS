@@ -357,6 +357,16 @@
         
 
         
+            <div class="itemName"><code><a href="zms._accessmanager.AccessableContainer.html#refreshClientAssignments" class="internal-link" title="zms._accessmanager.AccessableContainer.refreshClientAssignments">refresh<wbr></wbr>Client<wbr></wbr>Assignments</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
             <div class="itemName"><code><a href="zms._accessmanager.AccessableContainer.html#revokePublicAccess" class="internal-link" title="zms._accessmanager.AccessableContainer.revokePublicAccess">revoke<wbr></wbr>Public<wbr></wbr>Access</a></code>
             </div>
         
@@ -704,7 +714,7 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">AccessManager</span>(<a href="zms._accessmanager.AccessableContainer.html" class="internal-link" title="zms._accessmanager.AccessableContainer">AccessableContainer</a>): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L614" class="sourceLink">(source)</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">AccessManager</span>(<a href="zms._accessmanager.AccessableContainer.html" class="internal-link" title="zms._accessmanager.AccessableContainer">AccessableContainer</a>): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L670" class="sourceLink">(source)</a></code></p>
           <p><a href="classIndex.html#zms._accessmanager.AccessManager">View In Hierarchy</a></p>
         </div>
 
@@ -848,6 +858,11 @@
   </tr><tr class="basemethod">
     
     <td>Method</td>
+    <td><code><a href="zms._accessmanager.AccessableContainer.html#refreshClientAssignments" class="internal-link" title="zms._accessmanager.AccessableContainer.refreshClientAssignments">refresh<wbr></wbr>Client<wbr></wbr>Assignments</a></code></td>
+    <td>Validate and correct persisted node home_id mappings on root config.</td>
+  </tr><tr class="basemethod">
+    
+    <td>Method</td>
     <td><code><a href="zms._accessmanager.AccessableContainer.html#revokePublicAccess" class="internal-link" title="zms._accessmanager.AccessableContainer.revokePublicAccess">revoke<wbr></wbr>Public<wbr></wbr>Access</a></code></td>
     <td>Revoke public access and restore restricted permission handling.</td>
   </tr><tr class="basemethod">
@@ -935,7 +950,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">delLocalUser</span><span class="function-signature">(self, id, node)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L1172">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L1228">
       
       (source)
     </a>
@@ -962,7 +977,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">delUser</span><span class="function-signature">(self, id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L1002">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L1058">
       
       (source)
     </a>
@@ -989,7 +1004,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">delUserAttr</span><span class="function-signature">(self, user)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L1011">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L1067">
       
       (source)
     </a>
@@ -1016,7 +1031,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">findUser</span><span class="function-signature">(self, name)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L897">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L953">
       
       (source)
     </a>
@@ -1043,7 +1058,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getRoleName</span><span class="function-signature">(self, role)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L638">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L694">
       
       (source)
     </a>
@@ -1070,7 +1085,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getSearchableAttrs</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L735">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L791">
       
       (source)
     </a>
@@ -1097,7 +1112,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getSecurityRoles</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L653">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L709">
       
       (source)
     </a>
@@ -1124,7 +1139,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getSecurityUsers</span><span class="function-signature">(self, acquired=False)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L675">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L731">
       
       (source)
     </a>
@@ -1151,7 +1166,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getUserAdderPlugin</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L1027">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L1083">
       
       (source)
     </a>
@@ -1178,7 +1193,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getUserAttr</span><span class="function-signature">(self, user, name=None, default=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L974">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L1030">
       
       (source)
     </a>
@@ -1205,7 +1220,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getUserDefinedRoles</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L1052">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L1108">
       
       (source)
     </a>
@@ -1232,7 +1247,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getUserFolder</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L1039">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L1095">
       
       (source)
     </a>
@@ -1259,7 +1274,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getValidUserids</span><span class="function-signature">(self, search_term=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, search_term_param=None, without_node_check=True, exact_match=False)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L759">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L815">
       
       (source)
     </a>
@@ -1286,7 +1301,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">initRoleDefs</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L619">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L675">
       
       (source)
     </a>
@@ -1313,7 +1328,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_roleProperties</span><span class="function-signature">(self, btn, key, lang, REQUEST, RESPONSE=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L1203">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L1259">
       
       (source)
     </a>
@@ -1340,7 +1355,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_userProperties</span><span class="function-signature">(self, btn, key, lang, REQUEST, RESPONSE=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L1297">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L1353">
       
       (source)
     </a>
@@ -1367,7 +1382,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">purgeLocalUsers</span><span class="function-signature">(self, ob=None, valid_userids=[], invalid_userids=[])</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L1058">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L1114">
       
       (source)
     </a>
@@ -1394,7 +1409,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">searchUsers</span><span class="function-signature">(self, search_term=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L710">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L766">
       
       (source)
     </a>
@@ -1421,7 +1436,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">setLocalUser</span><span class="function-signature">(self, id, node, roles, langs)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L1141">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L1197">
       
       (source)
     </a>
@@ -1448,7 +1463,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">setUserAttr</span><span class="function-signature">(self, user, name, value)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L949">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L1005">
       
       (source)
     </a>
@@ -1475,7 +1490,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">toggleUserActive</span><span class="function-signature">(self, id)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L1114">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L1170">
       
       (source)
     </a>
@@ -1501,7 +1516,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_users</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L1198">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L1254">
       
       (source)
     </a>
@@ -1528,7 +1543,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_users_sitemap</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L1199">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_accessmanager.py#L1255">
       
       (source)
     </a>

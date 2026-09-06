@@ -3,11 +3,11 @@
 import os
 import re
 import shutil
-import tempfile
 from xml.dom import minidom
 from Products.zms import _fileutil
+from Products.zms import standard
 
-def manage_importDocx( self):
+def manage_importDocx(self):
   request = self.REQUEST
   
   if request.get('btn')==self.getZMILangStr('BTN_IMPORT'):
@@ -20,7 +20,7 @@ def manage_importDocx( self):
                   rc.append(nd)
         return ''.join(rc).strip()
     result = []
-    tempfolder = tempfile.mkdtemp()
+    tempfolder = standard.getTempFolder(self)
     f = request['file']
     filename = os.path.join(tempfolder,f.filename)
     _fileutil.exportObj(f,filename)

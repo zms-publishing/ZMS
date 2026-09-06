@@ -1071,7 +1071,7 @@ ZMI.prototype.initInputFields = function(container) {
 							s = v.split('fa-')[1];
 						};
 					});
-					window.open('https://fontawesome.com/v5/search?m=free&q=' + s,'Fontawesome-V5','toolbar=no,scrollbars=yes,resizable=yes,top=100,left=100,width=480,height=720');
+					window.open('https://fontawesome.com/v5/search?ic=free-collection&q=' + s,'Fontawesome-V5','toolbar=no,scrollbars=yes,resizable=yes,top=100,left=100,width=480,height=720');
 				});
 			});
 			// Url-Picker

@@ -146,7 +146,7 @@
 									<td tal:attributes="style python:['','padding:0'][int(i!=i2)]"
 										><div tal:condition="python:activityId==activityId2" class="activity" tal:attributes="title python:activity['id']">
 											<a tal:attributes="href python:'?lang=%s&key=workflow_model&id=%s'%(request['lang'],activity['id'])">
-												<i tal:attributes="class python:activity.get('icon_clazz','fas fa-hands-helping')"></i>
+												<i tal:attributes="class python:activity.get('icon_clazz') or None"></i>
 												<tal:block tal:content="python:activity['name']">name</tal:block>
 											</a>
 										</div><tal:block tal:condition="not:python:activityId==activityId2"
@@ -605,6 +605,10 @@
 		border: 1px solid #545b62;
 		background-color: #FFFFE0;
 		width: 160px;
+	}
+	div.activity i,
+	div.transition i {
+		margin-right: .1rem;
 	}
 	div.transition {
 		border: 1px solid navy;

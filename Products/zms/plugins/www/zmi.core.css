@@ -1551,7 +1551,7 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	margin-bottom: unset;
 }
 .zmi .dropdown-menu .dropdown-header {
-	padding: 5px 13px;
+	padding: .3rem .75rem;
 	font-size: inherit;
 	color: #fff !important;
 	background-color: #818EA2;
@@ -1574,6 +1574,8 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 .zmi .dropdown-menu .dropdown-header i,
 .zmi .dropdown-menu a.dropdown-item i {
 	width:1.5rem;
+	text-align: center;
+	padding-right: .5rem;
 }
 .zmi .zms-action:hover .btn i {
 	color: #08c !important;

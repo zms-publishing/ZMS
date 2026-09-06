@@ -1949,7 +1949,7 @@ body.zmi {
 
 	.dropdown-menu {
 		.dropdown-header {
-			padding: 5px 13px;
+			padding: .3rem .75rem;
 			font-size: inherit;
 			color: #fff !important;
 			background-color: #818ea2;
@@ -1961,7 +1961,6 @@ body.zmi {
 
 			i {
 				color: #fff !important;
-				width: 1.5rem;
 			}
 		}
 
@@ -1974,10 +1973,13 @@ body.zmi {
 			&.selected {
 				background-color: rgba(53, 79, 103, 0.15);
 			}
+		}
 
-			i {
-				width: 1.5rem;
-			}
+		.dropdown-header i,
+		a.dropdown-item i {
+			width: 1.5rem;
+			text-align: center;
+			padding-right: .5rem;
 		}
 	}
 

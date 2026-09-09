@@ -1016,7 +1016,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
           colSize = None
           if colDescr.find('INT') >= 0:
             colType = 'int'
-          elif colDescr.find('DATE') >= 0:
+          elif colDescr.find('DATE') >= 0 or colDescr.find('TIMESTAMP') >= 0:
             colType = 'date'
             if colDescr.find('TIME') >= 0:
               colType = 'datetime'
@@ -1183,7 +1183,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
                 colSize = None
                 if colDescr.find('INT') >= 0:
                   colType = 'int'
-                elif colDescr.find('DATE') >= 0:
+                elif colDescr.find('DATE')  >= 0 or colDescr.find('TIMESTAMP') >= 0:
                   colType = 'date'
                   if colDescr.find('TIME') >= 0:
                     colType = 'datetime'

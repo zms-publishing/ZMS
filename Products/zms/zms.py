@@ -580,6 +580,7 @@ class ZMS(
 
     def getRootElement(self):
       """Return the topmost portal master in the current site hierarchy."""
+      #print('[DEBUG] getRootElement', self.getPhysicalPath())
       doc_elmnt = self
       while True:
         portal_mstr = doc_elmnt.getPortalMaster()
@@ -590,28 +591,18 @@ class ZMS(
 
     def getAbsoluteHome(self):
       """Return the home folder of the portal master or the local site."""
-      portalMaster = self.getPortalMaster()
-      if portalMaster:
-        return portalMaster.getAbsoluteHome()
-      return self.getHome()
+      #print('[DEBUG] getAbsoluteHome', self.getPhysicalPath())
+      return self.getRootElement().getHome()
 
     def getHome(self):
       """Return the folder that contains the document element."""
-      docElmnt = self.getDocumentElement()
-      ob = docElmnt
+      #print('[DEBUG] getHome', self.getPhysicalPath())
       try:
-        depth = 0
-        while ob.meta_type != 'Folder':
-          if depth > sys.getrecursionlimit():
-            raise zExceptions.InternalError('Maximum recursion depth exceeded')
-          depth = depth + 1
-          ob = ob.aq_parent
+        path = self.getPhysicalPath()[::-1]
+        home_id = path[path.index('content')+1]
+        return getattr(self, home_id)
       except:
-        try:
-          ob = getattr( docElmnt, docElmnt.absolute_url().split( '/')[-2])
-        except:
-          ob = docElmnt.aq_parent
-      return ob
+        return self.aq_parent 
 
     def getTrashcan(self):
       """Return the site's trashcan object."""
@@ -656,10 +647,9 @@ class ZMS(
       docElmnts = []
       v = self.get_conf_properties().get('Portal.Clients', [])
       if v:
-        home = self.getHome()
         for id in v:
           try:
-            docElmnts.append(getattr(home, id).content)
+            docElmnts.append(getattr(self, id).content)
           except:
             pass
       return docElmnts

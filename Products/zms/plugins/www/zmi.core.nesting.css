@@ -538,20 +538,34 @@ body.zmi {
 		font-size: 1rem;
 	}
 
-	#zmi-tab #Custom.tab-pane table > tbody > tr > td,
-	#zmi-tab #Custom.tab-pane table > tbody > tr > td > a {
-		max-width: 100%;
+	#zmi-tab #Custom.tab-pane table > tbody > tr > td {
 		overflow-x: hidden;
 		text-overflow: ellipsis;
-	}
-
-	#zmi-tab #Custom.tab-pane table > tbody > tr > td > a {
-		display: inline-block;
-		white-space: nowrap;
-	}
-
-	#zmi-tab #Custom.tab-pane table > tbody > tr > td.systemprop-delete {
-		width: 4rem;
+		& > a {
+			overflow-x: hidden;
+			text-overflow: ellipsis;
+			display: inline-block;
+			white-space: nowrap;
+		}
+		&.systemprop-delete {
+			width: 4rem;
+		}
+		&.systemprop-value {
+			width: 100%;
+			& span {
+				overflow: hidden;
+				display: block;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				max-width: 50vw;
+				cursor: pointer;
+				&.multiline{
+					white-space: pre;
+					max-width: none;
+					display: block;
+				}
+			}
+		}
 	}
 
 	/* EO HORIZONTAL SCROLLING MAIN NAVIGATION */

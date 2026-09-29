@@ -33,7 +33,7 @@
 			<input type="hidden" name="lang" tal:attributes="value request/lang" />
 			<input type="hidden" name="preview" tal:attributes="value request/preview" />
 			<div class="card">
-				<div class="card-header attr_last_modified clearfix btn-collapse">
+				<div class="card-header attr_last_modified btn-collapse">
 					<a class="btn card-toggle" data-toggle="collapse" href="#attrActivity" aria-expanded="false"
 						><i class="fas fa-caret-right"></i> <tal:block tal:content="python:here.getZMILangStr('ATTR_ACTIVITY')">Activity</tal:block
 					></a>

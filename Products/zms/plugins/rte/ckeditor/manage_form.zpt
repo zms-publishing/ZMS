@@ -17,7 +17,7 @@
 
 <tal:block tal:condition="python:request.get('f_zmiRichtextOnSubmitEventHandler',True)">
 
-<!-- 
+<!--!
 OBSOLETE:
 Fix for can't edit fields of CKEditor in jQuery UI modal dialog
 @see http://forum.jquery.com/topic/can-t-edit-fields-of-ckeditor-in-jquery-ui-modal-dialog 
@@ -37,8 +37,11 @@ function zmiStandardOnSubmitEventHandler(fm) {
       var instance = CKEDITOR.instances['editor_'+elName];
       if (instance) {
         instance.setData(data,function() {
+          // Do not focus if there are multiple CKEDITOR instances.
+          if (Object.keys(CKEDITOR.instances).length == 1) {
             instance.focus();
-          });
+          }
+        });
       }
     }
   }
@@ -197,8 +200,11 @@ function zmiRichtextSyncDataToView(id) {
   var instance = CKEDITOR.instances['editor_'+id];
   if (instance){
     instance.setData(data,function() {
+      // Do not focus if there are multiple CKEDITOR instances.
+      if (Object.keys(CKEDITOR.instances).length == 1) {
         instance.focus();
-      });
+      }
+    });
   }
 }
 

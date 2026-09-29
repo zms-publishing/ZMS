@@ -63,11 +63,11 @@
 							<div class="col-sm-9 col-md-10 ZMSSqlDbForm-auto" tal:condition="python:not done and metaObjAttr.get('auto') not in ['',None]">
 								<div class="form-control-static" tal:condition="python:metaObjAttr.get('datatype') in ['datetime']">
 									<input type="hidden" tal:attributes="name elName; value python:DateTime(elValue)"/>
-									<tal:block tal:content="python:DateTime(elValue)">the value</tal:block>
+									<input type="text" title="Not editable" class="form-control text-muted" disabled="disabled" tal:attributes="id elName; value python:DateTime(elValue)" />
 								</div>
 								<div class="form-control-static" tal:condition="not:python:metaObjAttr.get('datatype') in ['datetime']">
 									<input type="hidden" tal:attributes="name elName; value elValue"/>
-									<tal:block tal:content="elValue">the value</tal:block>
+									<input type="text" title="Not editable" class="form-control text-muted" disabled="disabled" tal:attributes="id elName; value elValue" />
 								</div>
 								<tal:block tal:define="dummy0 python:done.append(True)"></tal:block>
 							</div>

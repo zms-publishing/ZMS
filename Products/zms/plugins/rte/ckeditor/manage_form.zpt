@@ -36,11 +36,9 @@ function zmiStandardOnSubmitEventHandler(fm) {
       var data = $('#'+elName).val();
       var instance = CKEDITOR.instances['editor_'+elName];
       if (instance) {
-        instance.setData(data,function() {
-          // Do not focus if there are multiple CKEDITOR instances.
-          if (Object.keys(CKEDITOR.instances).length == 1) {
-            instance.focus();
-          }
+          instance.setData(data,function() {
+            setTimeout(() => instance.focus(), 50);
+
         });
       }
     }
@@ -202,7 +200,7 @@ function zmiRichtextSyncDataToView(id) {
     instance.setData(data,function() {
       // Do not focus if there are multiple CKEDITOR instances.
       if (Object.keys(CKEDITOR.instances).length == 1) {
-        instance.focus();
+        setTimeout(() => instance.focus(), 50);
       }
     });
   }

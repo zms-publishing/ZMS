@@ -21,15 +21,15 @@
 	SESSION request/SESSION;
 	dummy0 python:request.set('qsize',request.get('qsize',standard.get_session_value(here,'qsize_%s'%here.id,20)));
 	dummy0 python:request.set('qfilters',request.get('qfilters',standard.get_session_value(here,'qfilters_%s'%here.id,1)));
-	dummy0 python:request.set('qindex',request.get('qindex',standard.get_session_value(here,'qindex_%s'%here.id,-1)));
+	dummy0 python:request.set('qindex',request.get('qindex',-1));
 	dummy0 python:SESSION.set('qsize_%s'%here.id,request.get('qsize'));
 	dummy0 python:SESSION.set('qfilters_%s'%here.id,request.get('qfilters'));
 	dummy0 python:SESSION.set('qindex_%s'%here.id,request.get('qindex'));
 	dummy0 python:here.recordSet_Init(request);
 	dummy0 python:here.recordSet_Filter(request);
 	dummy0 python:here.recordSet_Sort(request);
-	pageSize python:request.get('qsize',20);
-	pageIndex python:request.get('pageIndex',0);
+	pageSize python:int(request.get('qsize',20));
+	pageIndex python:int(request.get('pageIndex',0));
 	pageStart python:pageIndex*pageSize;
 	">
 
@@ -88,6 +88,10 @@
 		<tal:block tal:define="dummy0 python:request.RESPONSE.redirect(here.url_append_params(request['URL'],{
 					'lang':request['lang'],
 					'manage_tabs_message':'<br>'.join(message),
+					'pageIndex':request.get('pageIndex', 0),
+					'qsize':request.get('qsize', 20),
+					'rowid':request.get('rowid', -1),
+					'qindex':request.get('qindex', -1)
 				}))">
 		</tal:block>
 	</tal:block>

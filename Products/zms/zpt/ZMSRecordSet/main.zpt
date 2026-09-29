@@ -1,18 +1,18 @@
 <!-- ZMSRecordSet/main -->
 
 <div class="ZMSRecordSet main" tal:define="global
-		standard modules/Products/zms/standard;
-		meta_id options/meta_id;
-		metaObj python:here.getMetaobj(meta_id);
-		metaObjIds python:here.getMetaobjIds();
-		metaObjAttrIds python:here.getMetaobjAttrIds(metaObj['id']);
-		dummy0 python:request.set('qsize',request.get('qsize',standard.get_session_value(here,'qsize_%s'%here.id,20)));
-		dummy0 python:request.set('qfilters',request.get('qfilters',standard.get_session_value(here,'qfilters_%s'%here.id,1)));
-		dummy0 python:request.set('qindex',request.get('qindex',standard.get_session_value(here,'qindex_%s'%here.id,-1)));
-		dummy0 python:standard.set_session_value(here,'qsize_%s'%here.id,request.get('qsize'));
-		dummy0 python:standard.set_session_value(here,'qfilters_%s'%here.id,request.get('qfilters'));
-		dummy0 python:standard.set_session_value(here,'qindex_%s'%here.id,request.get('qindex'));
-		dummy0 python:here.recordSet_Init(request);">
+	standard modules/Products/zms/standard;
+	meta_id options/meta_id;
+	metaObj python:here.getMetaobj(meta_id);
+	metaObjIds python:here.getMetaobjIds();
+	metaObjAttrIds python:here.getMetaobjAttrIds(metaObj['id']);
+	dummy0 python:request.set('qsize',request.get('qsize',standard.get_session_value(here,'qsize_%s'%here.id,20)));
+	dummy0 python:request.set('qfilters',request.get('qfilters',standard.get_session_value(here,'qfilters_%s'%here.id,1)));
+	dummy0 python:request.set('qindex',request.get('qindex',-1));
+	dummy0 python:standard.set_session_value(here,'qsize_%s'%here.id,request.get('qsize'));
+	dummy0 python:standard.set_session_value(here,'qfilters_%s'%here.id,request.get('qfilters'));
+	dummy0 python:standard.set_session_value(here,'qindex_%s'%here.id,request.get('qindex'));
+	dummy0 python:here.recordSet_Init(request);">
 
 <tal:block tal:replace="nothing">
 -----

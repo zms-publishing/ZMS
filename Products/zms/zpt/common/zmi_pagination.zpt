@@ -4,7 +4,7 @@
 		pageSize options/pageSize;
 		pageIndex options/pageIndex;
 		pageCount python:int(((size-1)/pageSize)+1);
-		url python:here.url_inherit_params(options.get('url',request['URL']),request,exclude=['pageIndex'],sep='&');
+		url python:here.url_inherit_params(options.get('url',request['URL']),request,exclude=['pageIndex','qindex'],sep='&');
 		has_pagination python:size>pageSize;
 		has_pagination_req python:request.set('has_pagination',has_pagination)"
 	tal:condition="has_pagination">

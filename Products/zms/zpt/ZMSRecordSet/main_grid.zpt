@@ -15,7 +15,8 @@
 		total ctx/total;
 		pageStart ctx/pageStart;
 		row_select_name ctx/row_select_name;
-		request_qsize ctx/request_qsize;">
+		request_qsize ctx/request_qsize;
+		pageIndex python:request.get('pageIndex', ctx.get('pageIndex', 0));">
 
 <div class="d-flex justify-content-between pagination-pre">
 	<div class="pull-left" tal:content="structure ctx/pagination">
@@ -105,7 +106,7 @@
 			<tal:block tal:repeat="row ctx/rows"
 				><tr tal:attributes="
 					id python:'tr_%i'%row.get('qindex',-1); 
-					class python:['','zmi-selected'][int(row.get('selected',0)==1)]">
+					class python:(int(row.get('qindex',-1))==int(request.get('qindex', -1))) and 'zmi-selected' or None">
 					<td class="zmi-datatype-action">
 						<div class="btn-group" tal:attributes="title python:row.get('title','')">
 							<span class="checkbox btn btn-secondary text-nowrap">
@@ -121,7 +122,7 @@
 										<tal:block tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</tal:block>
 									</a>
 									<a tal:condition="python:'update' in actions"
-										class="dropdown-item" href="javascript:;" tal:attributes="onclick python:options.get('update', here.getRecordSetMainGridUpdateAction(url=url, lang=request['lang'], qindex=row.get('qindex',-1), params=row.get('params',{})))">
+										class="dropdown-item" href="javascript:;" tal:attributes="onclick python:options.get('update', here.getRecordSetMainGridUpdateAction(url=url, lang=request['lang'], qindex=row.get('qindex',-1), params=dict(row.get('params',{}), **{'pageIndex': pageIndex})))">
 										<i class="fas fa-pencil-alt"></i>
 										<tal:block tal:content="python:here.getZMILangStr('BTN_EDIT')">Edit</tal:block>
 									</a>
@@ -142,8 +143,8 @@
 					</td>
 					<tal:block tal:repeat="metaObjAttr metaObjAttrs"
 						><tal:block tal:define="elName python:metaObjAttr['id'];
-								elValue python:here.operator_getitem(row.get('record',{}),elName,metaObjAttr.get('default'),ignorecase=True);
-								elType python:metaObjAttr.get('type','string')"
+							elValue python:here.operator_getitem(row.get('record',{}),elName,metaObjAttr.get('default'),ignorecase=True);
+							elType python:metaObjAttr.get('type','string')"
 							><td class="data" tal:attributes="class python:'data data-%s zmi-datatype-%s'%(elName, metaObjAttr.get('fk') and 'fk'or elType)"
 								><div tal:attributes="class elType" 
 									><tal:block tal:condition="python:elType=='url'" 

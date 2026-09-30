@@ -166,25 +166,25 @@ $ZMI.registerReady(function(){
 			}
 		}
 		$.get(url, '', function(data) {
-            // if readme starts with a link, open it in a new tab
-            // otherwise show modal with rendered markdown content
-            const match = data.match(/<p>(https?:\/\/[^\s<"]+)/);
-            const url = match?.[1];
-            if (url) {
-                window.open(url, '_blank');
-            }
-            else {
-                zmiModal(null, {
-                    id: 'zmiModalreadme',
-                    title: title,
-                    body: '<div class="p-3 text-center"><i class="text-primary fas fa-circle-notch fa-spin fa-3x"></i></div>',
-                    modal: 'show'
-                });
-                $('#zmiModalreadme .modal-body').html(data);
-                document.body.style.paddingRight = '0px'; // Fix scrollbar shift when opening modal
-                // Add print button to modal footer
-                $('#zmiModalreadme .modal-footer').html('<a href="'+print_url+'" target="_blank" class="btn btn-secondary" title="Print/HTML"><i class="fas fa-print"></i></a>');
-            }
+			// if readme starts with a link, open it in a new tab
+			// otherwise show modal with rendered markdown content
+			const match = data.match(/<p>(https?:\/\/[^\s<"]+)/);
+			const url = match?.[1];
+			if (url) {
+				window.open(url, '_blank');
+			}
+			else {
+				zmiModal(null, {
+					id: 'zmiModalreadme',
+					title: title,
+					body: '<div class="p-3 text-center"><i class="text-primary fas fa-circle-notch fa-spin fa-3x"></i></div>',
+					modal: 'show'
+				});
+				$('#zmiModalreadme .modal-body').html(data);
+				document.body.style.paddingRight = '0px'; // Fix scrollbar shift when opening modal
+				// Add print button to modal footer
+				$('#zmiModalreadme .modal-footer').html('<a href="'+print_url+'" target="_blank" class="btn btn-secondary" title="Print/HTML"><i class="fas fa-print"></i></a>');
+			}
 		});
 	});
 
@@ -259,17 +259,17 @@ $ZMI.registerReady(function(){
 			var qfilters = 0;
 			var d = {}
 			$("*[name^='filter']",$body).each(function() {
-					var nodeName = this.nodeName.toLowerCase();
-					if (nodeName=='input' || nodeName=='select') {
-						var name = $(this).attr("name").replace(/\d/gi,'');
-						if (typeof d[name]=="undefined") {
-							d[name] = 0;
-						}
-						$(this).attr("name",name+d[name]);
-						qfilters = d[name];
-						d[name]++;
+				var nodeName = this.nodeName.toLowerCase();
+				if (nodeName=='input' || nodeName=='select') {
+					var name = $(this).attr("name").replace(/\d/gi,'');
+					if (typeof d[name]=="undefined") {
+						d[name] = 0;
 					}
-				});
+					$(this).attr("name",name+d[name]);
+					qfilters = d[name];
+					d[name]++;
+				}
+			});
 			$("input#qfilters").val(qfilters);
 		};
 		$("select[name^=filterattr]",$body).each(function() {
@@ -421,8 +421,8 @@ $ZMI.registerReady(function(){
 			if ((href==null || typeof href=="undefined") && $("a .fa-pencil-alt",this).length > 0) {
 				return $("a .fa-pencil-alt",this).parents("a")[0].click();
 			}
-			else if ((href==null || typeof href=="undefined")) {
-				href = $('a[target=]',this).attr('href');
+			else if ((href==null || typeof href=="undefined") && $("a[target]",this).length > 0) {
+				href = $('a[target]',this).attr('href');
 			}
 			if (!(href==null || typeof href=="undefined")) {
 				self.location.href = href;
@@ -1071,7 +1071,7 @@ ZMI.prototype.initInputFields = function(container) {
 							s = v.split('fa-')[1];
 						};
 					});
-					window.open('https://fontawesome.com/v5/search?m=free&q=' + s,'Fontawesome-V5','toolbar=no,scrollbars=yes,resizable=yes,top=100,left=100,width=480,height=720');
+					window.open('https://fontawesome.com/v5/search?ic=free-collection&q=' + s,'Fontawesome-V5','toolbar=no,scrollbars=yes,resizable=yes,top=100,left=100,width=480,height=720');
 				});
 			});
 			// Url-Picker

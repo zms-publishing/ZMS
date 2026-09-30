@@ -57,9 +57,6 @@
 			.zmi.repository_manager_main .checkup button#ignore_switch[value="True"]:after {
 				content:"Display New";
 			}
-			.zmi.repository_manager_main .checkup button#ignore_switch.loading:after {
-				content:"Loading" !important;
-			}
 			/*-->*/
 		</style>
 	</head> 
@@ -70,11 +67,19 @@
 			<div class="form-group row">
 				<div class="controls save mr-2">
 					<button type="submit" name="btn" class="btn btn-primary" value="BTN_IMPORT"
+						tal:attributes="disabled python:request['action']=='manage_changeProperties' and 'disabled' or None;
+							title python:request['action']=='manage_changeProperties' and 'Import is still disabled in this mode. Please use the &quot;Import&quot; button in the previous step.' or None"
 						tal:content="python:here.getZMILangStr('BTN_IMPORT')">
 						Import
 					</button>
 					<button type="button" name="ignore" class="btn btn-secondary" id="ignore_switch" value="True"
-						tal:attributes="value python:request.get('ignore','True')"
+						hx-include="closest form"
+						hx-target="body"
+						hx-swap="outerHTML"
+						hx-push-url="true"
+						tal:attributes="value python:request.get('ignore','True');
+							hx-get request/URL;
+							hx-vals python:'{\042ignore\042:\042%s\042,\042provider_id\042:\042%s\042,\042action\042:\042%s\042}'%({'True':'False','False':'True'}.get(request.get('ignore','True'),'False'),request['provider_id'],request['action'])"
 						title="Display new elements of current ZMS source files compared to working content model">
 					</button>
 				</div>
@@ -96,34 +101,6 @@
 					)">
 				the diff
 			</tal:block>
-			<script>
-			//<!--
-				$('#ignore_switch').click(() => {
-					$('#ignore_switch').html('<i class="fas fa-spinner fa-spin mr-2"></i>');
-					$('#ignore_switch').addClass('loading');
-					let url = location.href;
-					if (url.search('ignore=False') > 0) {
-						url = url.replace('ignore=False', 'ignore=True');
-					}
-					else if (url.search('ignore=True') > 0) {
-						url = url.replace('ignore=True', 'ignore=False');
-					}
-					else {
-						url += '&ignore=False';
-					}
-					location.replace(url);
-				});
-
-				// @TODO: "Import" on ZMSMetaobjManager.manage_changeProperties
-				$(function() {
-					if( $('form.checkup').attr('action')=='manage_changeProperties' ) {
-						$('form.checkup button[value="BTN_IMPORT"]')
-							.attr('disabled','disabled')
-							.attr('title','Import is still disabled in this mode. Please use the "Import" button in the previous step.');
-					}
-				});
-			//-->
-			</script>
 		</form>
 		<footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 	</body>

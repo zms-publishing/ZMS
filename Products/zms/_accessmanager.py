@@ -421,6 +421,7 @@ class AccessableObject(object):
       """
       request = self.REQUEST
       RESPONSE = request.RESPONSE
+      SESSION = request.SESSION
       auth_user = request['AUTHENTICATED_USER']
       # update user-attrs for sso-plugin
       name = str(auth_user)
@@ -440,9 +441,13 @@ class AccessableObject(object):
                   self.setUserAttr(auth_user,name,v)
       # manage must not be accessible for Anonymous (cave: <UnrestrictedUser>.has_role()==1 )
       if request['URL0'].find('/manage') >= 0:
-        lower = self.getUserAttr(auth_user,'attrActiveStart','')
-        upper = self.getUserAttr(auth_user,'attrActiveEnd','')
-        if not standard.todayInRange(lower, upper) or ('Anonymous' in request['AUTHENTICATED_USER'].getRolesInContext(request)):
+        user_active = SESSION.get('zmi-user-active',None)
+        if user_active is None:
+          lower = self.getUserAttr(auth_user,'attrActiveStart','')
+          upper = self.getUserAttr(auth_user,'attrActiveEnd','')
+          user_active = standard.todayInRange(lower, upper)
+          SESSION.set('zmi-user-active',user_active)
+        if not user_active or ('Anonymous' in request['AUTHENTICATED_USER'].getRolesInContext(request)):
           import zExceptions
           raise zExceptions.Unauthorized
       # manage may be registrable for Authenticated without permissions

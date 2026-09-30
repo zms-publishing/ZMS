@@ -87,12 +87,7 @@ def manage_repository_gitstatus( self ):
 		html.append('</form><!-- .form-horizontal -->')
 		html.append('</div><!-- .card -->')
 		html.append('</div><!-- #zmi-tab -->')
-
-		try:
-			html.append(self.zmi_body_footer(self,request))
-		except:
-			html.append(self.zmi_body_footer(self,request).encode('utf-8'))
-
+		html.append(self.zmi_body_footer(self,request))
 		html.append('<script>$ZMI.registerReady(function(){ $(\'#tabs_items li a\').removeClass(\'active\');$(\'#tabs_items li[data-action*=\"repository_manager\"] a\').addClass(\'active\'); })</script>')
 		html.append('</body>')
 		html.append('</html>')

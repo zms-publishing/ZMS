@@ -2,6 +2,7 @@
 	pilutil modules/Products.zms/pilutil;
 	fmName options/fmName;
 	elName options/elName;
+	enabled options/enabled;
 	key options/key;
 	value python:options['value'].delegate();
 	can_generate_preview python:pilutil.enabled() and (key.endswith('hires') or key.endswith('superres'));
@@ -100,7 +101,7 @@
 						data-size size;">
 					<input class="custom-file-input" type="file" value=""
 						onchange="$(this).next().html($(this).val().replace(/^.*(\\|\/|\:)/, ''));$(this).next().addClass('new_file');$(this).parent().nextAll().css('visibility','hidden');$(this).parents('.col-10').next('.col-2').css('visibility','hidden');"
-						tal:attributes="id options/elName; name options/elName; maxlength python:options.get('elMaxLength','')" />
+						tal:attributes="id options/elName; name options/elName; maxlength python:options.get('elMaxLength',''); disabled python:not enabled or None" />
 					<label class="custom-file-label"
 						tal:attributes="for options/elName;class python:'custom-file-label%s'%(has_file and ' has_file' or '')"
 						tal:content="python:has_file and title or here.getZMILangStr('ACTION_SELECT')%(here.getZMILangStr('ATTR_FILE'))">
@@ -109,7 +110,8 @@
 				</div>
 
 				<tal:block tal:condition="has_file">
-					<button class="btn btn-secondary split-right dropdown-toggle" data-toggle="dropdown">
+					<button class="btn btn-secondary split-right dropdown-toggle" data-toggle="dropdown"
+						tal:attributes="disabled python:not enabled or None">
 						<span class="caret"></span>
 					</button>
 					<div class="dropdown-menu">
@@ -156,20 +158,26 @@
 					tal:condition="python:key.find('superres')<0 and value.getContentType().find('image')==0">
 					<input type="hidden" tal:attributes="id python:'width_%s'%elName; name python:'width_%s:int'%elName; value python:value.getWidth()"/>
 					<input type="hidden" tal:attributes="id python:'height_%s'%elName; name python:'height_%s:int'%elName; value python:value.getHeight()"/>
-					<a data-turbolinks="false" class="thumbnail ZMSGraphic_extEdit_action preview_on_hover" 
-						tal:define="
-							imageurl python:value.getHref(request);
-							cssimageurl python:'url(\'%s\')'%(imageurl);"
-						tal:attributes="
-							href python:'javascript:ZMSGraphic_extEdit_action(\'%s\',\'%s\',%i)'%(elName,'meta_id=%s&key=%s'%(request.get('ZMS_INSERT',here.meta_id),key),int(pilutil.enabled()));
-							onmouseover python:'javascript:get_img_preview_size_class($(this))';
-							style python:'background-image:%s;;'%(cssimageurl);
-							id python:'img_%s'%elName;
-							data-src python:value.getHref(request)"
-						><img onload="javascript:try{get_img_preview_size_class($(this).parent())}catch{console.log('Waiting for zmi.blob.ZMSGraphic_extEdit.js')}" 
-						tal:attributes="id python:'img_%s'%elName; src python:value.getHref(request)"/>
-						<div class="zmi-zoom-in"><i class="fas fa-search-plus"></i></div>
-					</a>
+					<tal:block tal:condition="not:enabled">
+						<img tal:attributes="id python:'img_%s'%elName; src python:value.getHref(request)"/>
+					</tal:block>
+					<tal:block tal:condition="enabled">
+						<a data-turbolinks="false" class="thumbnail ZMSGraphic_extEdit_action preview_on_hover" 
+							tal:define="
+								imageurl python:value.getHref(request);
+								cssimageurl python:'url(\'%s\')'%(imageurl);"
+							tal:attributes="
+								href python:'javascript:ZMSGraphic_extEdit_action(\'%s\',\'%s\',%i)'%(elName,'meta_id=%s&key=%s'%(request.get('ZMS_INSERT',here.meta_id),key),int(pilutil.enabled()));
+								onmouseover python:'javascript:get_img_preview_size_class($(this))';
+								style python:'background-image:%s;;'%(cssimageurl);
+								id python:'img_%s'%elName;
+								data-src python:value.getHref(request)"
+							><img onload="javascript:try{get_img_preview_size_class($(this).parent())}catch{console.log('Waiting for zmi.blob.ZMSGraphic_extEdit.js')}" 
+								tal:attributes="id python:'img_%s'%elName; src python:value.getHref(request)"/>
+							<div class="zmi-zoom-in"><i class="fas fa-search-plus"></i></div>
+						</a>
+					</tal:block>
+					
 				</div>
 			</tal:block>
 

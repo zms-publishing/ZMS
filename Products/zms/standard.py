@@ -36,6 +36,7 @@ import sys
 import time
 import traceback
 import zExceptions
+import tempfile
 
 # Product Imports.
 from Products.zms import _globals
@@ -707,6 +708,9 @@ def getFileTypeIconCSS(fn):
     'jpg': 'far fa-file-image',
     'jpeg': 'far fa-file-image',
     'gif': 'far fa-file-image',
+    'svg': 'far fa-file-image',
+    'webp': 'far fa-file-image',
+    'avif': 'far fa-file-image',
     'dcm': 'fas fa-file-medical',
     'mp3': 'far fa-file-audio',
     'mpg': 'far fa-file-video',
@@ -720,6 +724,12 @@ def getFileTypeIconCSS(fn):
     'docx': 'far fa-file-word',
     'odt': 'far fa-file-word',
     'xls': 'far fa-file-excel',
+    'xlt': 'far fa-file-excel',
+    'xml': 'far fa-file-code',
+    'xsl': 'far fa-file-code',
+    'xsd': 'far fa-file-code',
+    'dtd': 'far fa-file-code',
+
     'numbers': 'far fa-file-excel',
     'xlsx': 'far fa-file-excel',
     'ods': 'far fa-file-excel',
@@ -1171,6 +1181,8 @@ def writeError(context, info):
   t, v, tb = sys.exc_info()
   if isinstance(info, bytes):
     info = info.decode('utf-8')
+  if not isinstance(info, str):
+    info = str(info)
   info += '\n'.join(traceback.format_tb(tb))
   try:
     info = "[%s@%s] "%(context.meta_id, '/'.join(context.getPhysicalPath())) + info
@@ -2599,6 +2611,22 @@ def getTempFile( context, id):
        b += data.data
        data=data.next
   return b
+
+
+security.declarePublic('getTempFolder')
+def getTempFolder(context):
+  """
+  Return a temporary working filesystem folder
+  and create if not existing.
+  @param context: the context
+  @type context: C{ZMSObject}
+  """
+  tempdir = context.getConfProperty('ZMS.localfs_write.tempfolder', '')
+  if not tempdir:
+    return tempfile.mkdtemp() # use default OS tempfs folder
+  else:
+    os.makedirs(tempdir, exist_ok=True)
+    return tempfile.mkdtemp(dir=tempdir)
 
 
 security.declarePublic('raiseError')

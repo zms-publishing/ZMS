@@ -193,7 +193,7 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST, minimal_init 
       _confmanager.initConf(obj, 'conf:com.zms.catalog.zcatalog')
 
   else:
-    # Acquire the content model and theme from the portal master.
+    # Acquire the content model and theme from the portal parent.
     master = hasattr(self.aq_parent,'content') and (self.aq_parent.content or self.aq_parent.content.getPortalMaster()) or None
     if master:
       obj.setConfProperty('Portal.Master',master.getHome().id)
@@ -205,11 +205,10 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST, minimal_init 
       masterMetaObjs = map(lambda x: master.getMetaobj(x), masterMetaObjIds)
       masterMetaObjPackages = obj.sort_list(obj.distinct_list(map(lambda x: x.get('package'), masterMetaObjs)))
       if len(obj.breadcrumbs_obj_path(True))>1:
-        for client in obj.breadcrumbs_obj_path(True)[1:]:
-          for id in masterMetaObjPackages:
-            if id and id.strip():
-              client.metaobj_manager.acquireMetaobj(id)
-        client.synchronizeObjAttrs()
+        for id in masterMetaObjPackages:
+          if id and id.strip():
+            obj.metaobj_manager.acquireMetaobj(id)
+        obj.synchronizeObjAttrs()
       obj.setConfProperty('ZMS.theme', master.getConfProperty('ZMS.theme'))
 
   obj.getZMSIndex()

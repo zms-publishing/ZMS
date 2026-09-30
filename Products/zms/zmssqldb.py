@@ -1016,7 +1016,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
           colSize = None
           if colDescr.find('INT') >= 0:
             colType = 'int'
-          elif colDescr.find('DATE') >= 0:
+          elif colDescr.find('DATE') >= 0 or colDescr.find('TIMESTAMP') >= 0:
             colType = 'date'
             if colDescr.find('TIME') >= 0:
               colType = 'datetime'
@@ -1183,7 +1183,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
                 colSize = None
                 if colDescr.find('INT') >= 0:
                   colType = 'int'
-                elif colDescr.find('DATE') >= 0:
+                elif colDescr.find('DATE')  >= 0 or colDescr.find('TIMESTAMP') >= 0:
                   colType = 'date'
                   if colDescr.find('TIME') >= 0:
                     colType = 'datetime'
@@ -1988,6 +1988,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       column = self.getEntityColumn( tablename, id)
       blob = column['blob']
       path = blob['path']
+      path = path.replace('$INSTANCE_HOME', standard.getINSTANCE_HOME())
       # Assemble sql-statement
       sqlStatement = []
       sqlStatement.append( 'SELECT '+id+' AS v FROM %s '%tablename)
@@ -2058,6 +2059,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       column = self.getEntityColumn( tablename, id)
       blob = column['blob']
       path = blob['path']
+      path = path.replace('$INSTANCE_HOME', standard.getINSTANCE_HOME())
       if file is None and xml is not None:
         file = standard.parseXmlString( xml)
       # Normalize filename (crop path in local-fs)
@@ -2147,6 +2149,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       column = self.getEntityColumn( tablename, id)
       blob = column['blob']
       path = blob['path']
+      path = path.replace('$INSTANCE_HOME', standard.getINSTANCE_HOME())
       # Assemble sql-statement
       sqlStatement = []
       sqlStatement.append( 'SELECT '+id+' AS v FROM %s '%tablename)

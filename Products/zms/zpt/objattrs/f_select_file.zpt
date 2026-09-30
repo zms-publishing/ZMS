@@ -1,6 +1,7 @@
 <tal:block tal:define="standard modules/Products.zms/standard;
 	fmName options/fmName;
 	elName options/elName;
+	enabled options/enabled;
 	key options/key;
 	value python:options['value'].delegate();">
 
@@ -31,7 +32,7 @@
 						data-size size;">
 					<input class="custom-file-input" type="file" value=""
 						onchange="$(this).next().html($(this).val().replace(/^.*(\\|\/|\:)/, ''));$(this).next().addClass('new_file');$(this).parent().nextAll().css('visibility','hidden');"
-						tal:attributes="id options/elName; name options/elName; maxlength python:options.get('elMaxLength','')" />
+						tal:attributes="id options/elName; name options/elName; maxlength python:options.get('elMaxLength',''); disabled python:not enabled or None" />
 					<label class="custom-file-label"
 						tal:attributes="for options/elName;class python:'custom-file-label%s'%(has_file and ' has_file' or '')"
 						tal:content="python:has_file and title or here.getZMILangStr('ACTION_SELECT')%(here.getZMILangStr('ATTR_FILE'))">
@@ -40,7 +41,8 @@
 				</div>
 
 				<tal:block tal:condition="has_file">
-					<button class="btn btn-secondary split-right dropdown-toggle" data-toggle="dropdown">
+					<button class="btn btn-secondary split-right dropdown-toggle" data-toggle="dropdown"
+						tal:attributes="disabled python:not enabled or None">
 						<span class="caret"></span>
 					</button>
 					<div class="dropdown-menu">

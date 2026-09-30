@@ -3,7 +3,7 @@
 	standard modules/Products.zms/standard;
 	given_id python:request.get('id');
 	metaObjIds python:here.getMetaobjIds();
-	metaObjs python:[here.getMetaobj(x) for x in metaObjIds if (here.getMetaobj(x)['package']==given_id or given_id==None)];
+	metaObjs python:[here.getMetaobj(x) for x in metaObjIds if (here.getMetaobj(x).get('package')==given_id or given_id==None)];
 	given_id_is_metaObj python:metaObjs == [];
 	metaObjs python:given_id_is_metaObj and [here.getMetaobj(given_id)] or metaObjs;
 	sort_on python:(('package', 'cmp', 'asc'),('id','cmp','asc'));"

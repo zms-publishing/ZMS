@@ -39,6 +39,6 @@ def manage_opensearch_objects_add( self, objects):
 		if failed and isinstance(failed,list):
 			standard.writeError( self, "[OpenSearch] Failed to index objects %s" % failed)
 	except Exception as e:
-		standard.writeError( self, e)
+		standard.writeError( self, str(e))
 		return 0, len(sources)
 	return success, failed if isinstance(failed,int) else len(failed)

@@ -2,16 +2,16 @@ manage_reindex_content_bg:
   acquired: 0
   action: '%smanage_executeMetacmd?id=manage_reindex_content_bg'
   execution: 0
-  icon_clazz: fas fa-sync-alt text-primary
+  icon_clazz: fas fa-sync-alt text-danger
   meta_types:
     - ZMS
     - ZMSFolder
-  name: Background Reindexing
+  name: Reindex Content (Background)
   nodes: '{$}'
-  revision: 0.0.6
+  revision: 0.0.7
   roles:
     - ZMSAdministrator
-  title: Background Reindexing
+  title: Reindex All Contents as Background-Process
   Impl:
     - id: manage_reindex_content_bg
       type: External Method

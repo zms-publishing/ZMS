@@ -4,7 +4,6 @@
 	// Helper for Bookmarkable URLs in case of Sitemap Menu Frameset
 	if (window.parent.frames.manage_menu != undefined) {
 		window.parent.history.replaceState('','Main', window.location.href);
-		// console.log('common.zmi_html_foot: executed history.replaceState()')
 	};
 </script>
 <!-- /common/zmi_html_foot -->

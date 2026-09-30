@@ -425,10 +425,26 @@ footer .back-to-top.hide {
 }
 .zmi #zmi-tab #Custom.tab-pane table > tbody > tr > td > a {
 	display: inline-block;
-	white-space:nowrap
+	white-space:nowrap;
 }
 .zmi #zmi-tab #Custom.tab-pane table > tbody > tr > td.systemprop-delete {
-	width: 4rem;;
+	width: 4rem;
+}
+.zmi #zmi-tab #Custom.tab-pane table > tbody > tr > td.systemprop-value {
+	width: 100%;
+}
+.zmi #zmi-tab #Custom.tab-pane table > tbody > tr > td.systemprop-value span {
+	overflow: hidden;
+	display: block;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	max-width: 50vw;
+	cursor: pointer;
+}
+.zmi #zmi-tab #Custom.tab-pane table > tbody > tr > td.systemprop-value span.multiline {
+	white-space: pre;
+	max-width: none;
+	display: block;
 }
 
 /* EO HORIZONTAL SCROLLING MAIN NAVIGATION */

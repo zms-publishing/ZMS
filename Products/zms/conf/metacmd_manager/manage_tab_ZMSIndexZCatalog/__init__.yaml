@@ -9,7 +9,7 @@ manage_tab_ZMSIndexZCatalog:
   name: ZMSIndex
   nodes: '{$}'
   package: com.zms.index
-  revision: 0.0.0
+  revision: 6.0.1
   roles:
     - ZMSAdministrator
   stereotype: tab

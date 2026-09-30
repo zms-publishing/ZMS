@@ -39,6 +39,16 @@
 	}
 }
 
+@keyframes row_blink {
+	0% {
+		box-shadow: none;
+		background-color: rgba(0, 123, 255, .2);
+	}
+	100% {
+		box-shadow: none;
+	}
+}
+
 /* Basic Bootstrap Overrides */
 
 a {
@@ -3738,11 +3748,10 @@ body.zmi {
 	/* ++++++++++++++++++++++++++++++++++++++++++++++++++ */
 
 	.ZMSRecordSet.main_grid {
+
 		form table.table {
 			min-height: 10rem;
-		}
 
-		table {
 			> thead > tr > th {
 				background: #607d8ba6;
 				color: white;
@@ -3757,73 +3766,78 @@ body.zmi {
 				> a {
 					color: white;
 				}
-			}
 
-			tbody tr td.data {
-				div {
-					--font-size: 13.872px;
-					--line-height: 1.5;
-					--lines-to-show: 2;
-				}
+				input.form-control.form-control-sm {
+					max-width: calc(100% - 1rem);
+					color: white;
+					background: transparent;
+					border: none;
 
-				&:not(.zmi-datatype-url) > div:not(.zmi-image) {
-					-moz-box-sizing: border-box;
-					-webkit-box-sizing: border-box;
-					box-sizing: border-box;
-					display: block;
-					display: -webkit-box;
-					height: calc(var(--line-height) * var(--lines-to-show) * var(--font-size));
-					font-size: var(--font-size);
-					line-height: var(--line-height);
-					-webkit-line-clamp: var(--lines-to-show);
-					-webkit-box-orient: vertical;
-					overflow: hidden;
-					text-overflow: ellipsis;
-				}
-
-				> div.input-group a.btn.btn-secondary {
-					height: calc(1.5em + 0.75rem);
-				}
-
-				> div.zmi-image div.zmi-image-preview {
-					height: 2.25rem;
-					margin: 0;
-					line-height: 1;
-					overflow: hidden;
+					&::placeholder {
+						color: #ffffffb3 !important;
+					}
 				}
 			}
 
-			.zmi-datatype-action {
-				width: 7.5rem;
-			}
-
-			.zmi-datatype-int,
-			tbody tr td.data.zmi-datatype-int div:not(.url) {
-				min-width: unset;
-				width: 3rem;
-				max-width: unset;
-			}
-
-			.zmi-datatype-boolean {
-				max-width: 5rem;
-			}
-
-			td.zmi-datatype-boolean {
-				text-align: center;
-
-				div {
-					width: unset !important;
+			tbody tr {
+				&.zmi-selected {
+					animation: row_blink 1s forwards;
 				}
-			}
+				td {
+					&.zmi-datatype-action {
+						width: 7.5rem;
+					}
+					&.data {
+						div {
+							--font-size: 13.872px;
+							--line-height: 1.5;
+							--lines-to-show: 2;
+						}
 
-			thead th input.form-control.form-control-sm {
-				max-width: calc(100% - 1rem);
-				color: white;
-				background: transparent;
-				border: none;
+						&:not(.zmi-datatype-url) > div:not(.zmi-image) {
+							-moz-box-sizing: border-box;
+							-webkit-box-sizing: border-box;
+							box-sizing: border-box;
+							display: block;
+							display: -webkit-box;
+							height: calc(var(--line-height) * var(--lines-to-show) * var(--font-size));
+							font-size: var(--font-size);
+							line-height: var(--line-height);
+							-webkit-line-clamp: var(--lines-to-show);
+							-webkit-box-orient: vertical;
+							overflow: hidden;
+							text-overflow: ellipsis;
+						}
 
-				&::placeholder {
-					color: #ffffffb3 !important;
+						> div.input-group a.btn.btn-secondary {
+							height: calc(1.5em + 0.75rem);
+						}
+
+						> div.zmi-image div.zmi-image-preview {
+							height: 2.25rem;
+							margin: 0;
+							line-height: 1;
+							overflow: hidden;
+						}
+
+						&.zmi-datatype-int,
+						&.zmi-datatype-int div:not(.url) {
+							min-width: unset;
+							width: 3rem;
+							max-width: unset;
+						}
+
+						&.zmi-datatype-boolean {
+							max-width: 5rem;
+						}
+
+						&.zmi-datatype-boolean {
+							text-align: center;
+							div {
+								width: unset !important;
+							}
+						}
+					}
 				}
 			}
 		}

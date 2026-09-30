@@ -4,24 +4,24 @@
 	qindex options/qindex;
 	rowid options/rowid;
 	row options/row;
+	pageIndex python:request.get('pageIndex', 0);
 	encoding python:getattr(here,'charset','utf-8');
 	entity options/entity;
-	primary_key python:here.getEntityPK(entity['id']);
+	primary_key python:here.getEntityPK(entity['id']).lower();
 	input_form python:options.get('input_form',True);
-	request_form_inherit python:['lang','preview','qentity']+options.get('request_form_inherit',[]);">
+	request_form_inherit python:['lang','preview','qentity']+options.get('request_form_inherit',[]);
+	qcharset python:request.get('qcharset',encoding)">
 
 <form class="form-horizontal" id="form0" name="form0" method="post" enctype="multipart/form-data" 
 	tal:omit-tag="not:input_form"
-	tal:attributes="action request/URL"
-	tal:define="global
-		primary_key python:here.getEntityPK(entity['id']).lower();
-		qcharset python:request.get('qcharset','utf-8')">
+	tal:attributes="action request/URL">
 	<tal:block tal:repeat="key python:[x for x in request_form_inherit if x in list(request.keys())]">
 		<input type="hidden" tal:omit-tag="python: not input_form and key in ['lang','preview']" tal:attributes="id key; name key; value python:request[key]" />
 	</tal:block>
 	<input type="hidden" id="action" name="action" tal:attributes="value action" />
 	<input type="hidden" id="qindex" name="qindex:int" tal:attributes="value qindex" />
 	<input type="hidden" id="rowid" name="rowid" tal:attributes="value rowid" />
+	<input type="hidden" id="pageIndex" name="pageIndex" tal:attributes="value pageIndex" />
 	<legend></legend>
 	<div class="card">
 		<div class="card-header btn-collapse">
@@ -63,11 +63,11 @@
 							<div class="col-sm-9 col-md-10 ZMSSqlDbForm-auto" tal:condition="python:not done and metaObjAttr.get('auto') not in ['',None]">
 								<div class="form-control-static" tal:condition="python:metaObjAttr.get('datatype') in ['datetime']">
 									<input type="hidden" tal:attributes="name elName; value python:DateTime(elValue)"/>
-									<tal:block tal:content="python:DateTime(elValue)">the value</tal:block>
+									<input type="text" title="Not editable" class="form-control text-muted" disabled="disabled" tal:attributes="id elName; value python:DateTime(elValue)" />
 								</div>
 								<div class="form-control-static" tal:condition="not:python:metaObjAttr.get('datatype') in ['datetime']">
 									<input type="hidden" tal:attributes="name elName; value elValue"/>
-									<tal:block tal:content="elValue">the value</tal:block>
+									<input type="text" title="Not editable" class="form-control text-muted" disabled="disabled" tal:attributes="id elName; value elValue" />
 								</div>
 								<tal:block tal:define="dummy0 python:done.append(True)"></tal:block>
 							</div>
@@ -125,17 +125,16 @@
 												><i class="fas fa-plus-square"></i></a>
 											<a class="btn btn-secondary" href="javascript:;" tal:attributes="onclick python:'$ZMI.removeFromMultiselect(document.getElementById(\'%s\'))'%elName; title python:here.getZMILangStr('BTN_DELETE');" 
 												><i class="fas fa-minus-square text-danger"></i></a>
-										</div><!-- .btn-group -->
-									</div><!-- .pull-left -->
-									<div class="clearfix"></div><!-- .clearfix -->
+										</div><!--! .btn-group -->
+									</div><!--! .pull-left -->
 								</tal:block>
 								<tal:block tal:condition="not:python:metaObjAttr['multiselect'].get('lazy')">
 									<tal:block tal:content="structure python:here.zmi_input_multiselect(here,name=elName,value=metaObjAttr['value'],lang_str=elLabel,options=metaObjAttr['options'])">the control</tal:block>
 								</tal:block>
 								<tal:block tal:define="dummy0 python:done.append(True)"></tal:block>
-							</div>
+							</div><!--! ZMSSqlDbForm-multiselect -->
 
-							<!-- ##### Multimultiselect ################################################# -->
+							<!--! ##### Multimultiselect ################################################# -->
 							<div class="col-sm-9 col-md-10 ZMSSqlDbForm-multimultiselect" 
 								tal:condition="python:not done and metaObjAttr.get('multimultiselect') not in ['',None]">
 								<tal:block tal:define="global
@@ -161,18 +160,17 @@
 													<tal:block tal:content="structure python:here.zmi_input_select(here,name='%s%i'%(elName,i),value=None,lang_str=item['label'],options=metaObjAttr['multimultiselect']['options'][item['tablename']])">the control</tal:block>
 												</div>
 											</tal:block>
-										</div><!-- .pull-left -->
+										</div><!--! .pull-left -->
 										<span class="btn btn-secondary" tal:attributes="onclick python:'zmiMultimultiselect(\'%s\')'%metaObjAttr['id']"><i class="fas fa-plus"></i></span>
 										<span class="btn btn-secondary" tal:attributes="onclick python:'$ZMI.removeFromMultiselect(document.getElementById(\'%s\'))'%metaObjAttr['id']"><i class="fas fa-minus"></i></span>
-									</div><!-- .input-group -->
+									</div><!--! .input-group -->
 									<div class="control-group">
 										<select class="form-control form-on-submit-selected" tal:attributes="id python:metaObjAttr['id']; name python:'%s:list'%metaObjAttr['id']" multiple="multiple">
 											<tal:block tal:repeat="option metaObjAttr/value">
 												<option selected="selected" tal:attributes="value python:option[0]" selected="selected" tal:content="structure python:option[1]">the option</option>
 											</tal:block>
 										</select>
-									</div><!-- .control-group -->
-									<div class="clearfix"></div><!-- .clearfix -->
+									</div><!--! .control-group -->
 								</tal:block>
 								<tal:block tal:define="dummy0 python:done.append(True)"></tal:block>
 							</div>
@@ -218,10 +216,10 @@
 						Cancel
 					</button>
 				</div>
-			</div><!-- .form-group -->
+			</div><!--! .form-group -->
 
-		</div><!-- card-body -->
-	</div><!-- .card -->
+		</div><!--! card-body -->
+	</div><!--! .card -->
 
 </form><!-- .form-horizontal -->
 

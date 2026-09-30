@@ -3236,7 +3236,18 @@ article.zmi-readme table td {
 	background:none;
 	border:none;
 }
-
+.ZMSRecordSet.main_grid .zmi-selected {
+	animation: row_blink 1s forwards;
+}
+@keyframes row_blink {
+	0% {
+		box-shadow: none;
+		background-color: rgba(0, 123, 255, .2);
+	}
+	100% {
+		box-shadow: none;
+	}
+}
 #metaobj_recordset_main_grid .ZMSRecordSet.main_grid div.table-responsive {
 	min-height: 24em;
 }
@@ -3252,6 +3263,7 @@ article.zmi-readme table td {
 .zmi .form-group.row .ZMSSqlDbForm-multimultiselect .input-group .control-group {
 	width:calc(50% - 38.5px)
 }
+
 
 /* ############################################## */
 /* QUOTE-Formats  ############################### */

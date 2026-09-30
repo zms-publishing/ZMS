@@ -59,7 +59,6 @@
 		</form>
 
 		<div class="ZMSRecordSet main_grid">
-
 			<form class="form-horizontal" id="form0" name="form0" action="manage_changeRecordGrid" method="post" enctype="multipart/form-data">
 				<input type="hidden" id="lang" name="lang" tal:attributes="value python:request['lang']" />
 				<input type="hidden" id="preview" name="preview" tal:attributes="value python:request['preview']" />

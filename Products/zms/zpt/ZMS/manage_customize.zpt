@@ -91,7 +91,12 @@
 						<label class="col-sm-2 control-label" for="conf_value">Value</label>
 						<div class="col-sm-10">
 							<tal:block tal:condition="python:request.get('conf_key') not in res_keys">
-								<input class="form-control zmi-code" type="text" id="conf_value" name="conf_value" tal:attributes="type python:['text','password'][int(request.get('conf_key','').endswith('.password'))]; value python:here.getConfProperty(request.get('conf_key'),'')">
+								<tal:block tal:define="
+									conf_value python:here.getConfProperty(request.get('conf_key'),'');
+									conf_value_is_mutiline python:isinstance(conf_value, str) and '\n' in conf_value">
+								<input tal:condition="python:not conf_value_is_mutiline" class="form-control zmi-code" type="text" id="conf_value" name="conf_value" tal:attributes="type python:['text','password'][int(request.get('conf_key','').endswith('.password'))]; value python:conf_value" />
+								<textarea tal:condition="python:conf_value_is_mutiline" class="form-control zmi-code" id="conf_value" name="conf_value" tal:content="conf_value"></textarea>
+								</tal:block>
 							</tal:block>
 							<tal:block tal:condition="python:request.get('conf_key') in res_keys">
 								<tal:block tal:define="res_item python:[x for x in res if x['key']==request.get('conf_key')][0]">
@@ -138,7 +143,7 @@
 									<a tal:condition="python:conf_key in conf" class="btn btn-secondary" tal:attributes="href python:'manage_customizeSystem?lang=%s&amp;conf_key=%s&btn=Delete&key=Custom#Custom'%(request['lang'],conf_key); title python:'Delete'"><i class="fas fa-times text-danger"></i></a>
 								</td>
 								<td class="systemprop-key">
-									<a class="zmi-code pt-1" 
+									<a class="zmi-code pt-1" target="_self"
 										tal:attributes="
 											href python:'%s?lang=%s&amp;conf_key=%s#Custom'%(request['URL'],request['lang'],conf_key); 
 											title python:{i['key']:i['title'] for i in res}.get(conf_key, 'Change')">
@@ -147,8 +152,16 @@
 									</a>
 								</td>
 								<td class="systemprop-value">
-									<span class="zmi-code pt-1" tal:condition="not:python:conf_key.endswith('.password')" tal:content="python:here.getConfProperty(conf_key)">the conf_value</span>
-									<span class="zmi-code pt-1" tal:condition="python:conf_key.endswith('.password')">******</span>
+									<span class="zmi-code pt-1"
+										tal:define="
+											conf_value python:here.getConfProperty(conf_key);
+											conf_value_is_mutiline python:isinstance(conf_value, str) and '\n' in conf_value"
+										tal:attributes="
+											onclick python:conf_value_is_mutiline and 'this.classList.toggle(\'multiline\')' or None;
+											title python:conf_value_is_mutiline and 'Click to expand/collapse' or None"
+										tal:content="python:conf_key.endswith('.password') and '******' or conf_value">
+										the conf_value
+									</span>
 								</td>
 							</tr>
 						</tbody>	

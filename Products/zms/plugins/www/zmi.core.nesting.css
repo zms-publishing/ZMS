@@ -2942,7 +2942,7 @@ body.zmi {
 	&.zms table.objectItems .zmi-object-size,
 	&.zms table.objectItems .zmi-object-last_modified {
 		text-align: right;
-		max-width: 6rem;
+		max-width: 8rem;
 	}
 
 	.zms4-row {

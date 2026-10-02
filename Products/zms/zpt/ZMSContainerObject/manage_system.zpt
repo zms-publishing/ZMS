@@ -21,7 +21,7 @@
 			<!--! ##### Action-List ##### -->
 			<select class="form-control" id="addItemSelect" name=":action" 
 				tal:attributes="onchange python:'''addItem( elm=this, base_url='%s');;this.selectedIndex = 0;;'''%(request.get('URL1',''))">
-				<option value="manage_workspace" tal:content="python:'----- %s -----'%zmscontext.getZMILangStr('ACTION_INSERT')%zmscontext.display_type()">----- Insert -----</option>
+				<option value="manage_main" class="text-muted"  tal:content="python:zmscontext.getZMILangStr('ACTION_INSERT')%zmscontext.display_type()">----- Insert -----</option>
 				<option
 					tal:repeat="meta_type python:[x for x in zmscontext.sort_list(zmscontext.filtered_meta_types(),'name') if x['name'].find('ZMS')!=0]" 
 					tal:attributes="value python:meta_type['action']; data-dialog python:meta_type['zmi_show_add_dialog']"

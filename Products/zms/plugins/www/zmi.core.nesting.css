@@ -2911,11 +2911,10 @@ body.zmi {
 		float: right;
 		width: fit-content;
 		right: 0;
-		height: 2rem;
-		background: #354f67;
+		height: calc(2rem + 2px);
+		background: #d6dfe5;
 		border-radius: 0;
 		border: 0;
-		color: silver;
 		outline-color: transparent;
 		outline-style: none;
 		cursor: pointer;

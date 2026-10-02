@@ -34,7 +34,7 @@
 			<!--! ##### Object-List ##### -->
 			<tal:block tal:define="items python:zmscontext.manage_get_sortedObjects(sortkey = skey, revkey = rkey)">
 				<tal:block tal:condition="python:len(items)>0">
-					<table class="table table-sm table-striped zopeobjects objectItems">
+					<table class="table table-sm table-striped table-hover zopeobjects objectItems">
 						<thead>
 							<tr>
 								<th class="zmi-object-check">
@@ -51,13 +51,13 @@
 									<tal:block tal:repeat="column python:columns.keys()">
 										<th tal:define="label python:zmscontext.getZMILangStr('ATTR_%s'%columns[column].upper())"
 											tal:attributes="class python:'zmi-object-%s%s'%(columns[column], column=='bobobase_modification_time' and ' d-none d-sm-table-cell' or '')">
-											<i tal:condition="python:skey==column" 
-												tal:attributes="class python:'text-danger fas fa-caret-%s'%(['down','up'][int(rkey=='asc')])"></i>
-											<a class="text-dark" 
-												tal:attributes="
-													href python:zmscontext.url_append_params(zmscontext.absolute_url() + '/manage_main',{'skey':column,'rkey':['asc','desc'][int(rkey=='asc')]}); 
-													title python:'Sort objects by %s'%label"
-												tal:content="label">the label
+											<a tal:attributes="
+												href python:zmscontext.url_append_params(zmscontext.absolute_url() + '/manage_main',{'skey':column,'rkey':['asc','desc'][int(rkey=='asc')]}); 
+												title python:'Sort objects by %s'%label">
+												<span tal:condition="python:column!='meta_type'" tal:content="label">the label</span>
+												<i tal:condition="python:column=='meta_type' and skey!=column" class="fa fa-sort"></i>
+												<i tal:condition="python:skey==column" 
+													tal:attributes="class python:'ml-1 text-danger fas fa-caret-%s'%(['down','up'][int(rkey=='asc')])"></i>
 											</a>
 											<div tal:condition="python:column=='id'" 
 												class="btn-group filtering"
@@ -85,7 +85,7 @@
 								<td class="zmi-object-id">
 									<a target="_blank" tal:on-error="python:'%s (Broken Object!)'%item['id']" 
 										tal:attributes="href python:'%s/manage_workspace'%item['obj'].absolute_url()">
-										<tal:block tal:content="python:item['id']">the id</tal:block>
+										<span tal:content="python:item['id']">the id</span>
 										<tal:block tal:condition="python:item['obj'].title_or_id()">
 											(<tal:block tal:content="python:item['obj'].title_or_id()">the title</tal:block>)
 										</tal:block>
@@ -280,6 +280,34 @@
 	</script>
 	<style>
 	/*<-- COPY OF ZOPEs /++resource++zmi/zmi_base.css */
+
+		#tablefilter {
+			border: none !important;
+			box-shadow: none !important;
+			outline: none !important;
+		}
+
+		table.objectItems tr a {
+			text-decoration:none;
+		}
+		table.objectItems th a {
+			color: #758696;
+		}
+		table.objectItems th a:hover {
+			color: #212529;
+		}
+		table.objectItems td {
+			padding-bottom: .15rem !important;
+		}
+		table.objectItems td > a {
+			color: #6c757dc7;
+		}
+		table.objectItems td > a > span {
+			font-weight:bold;
+		}
+		table.objectItems td > a:hover {
+			color: #0056b3;
+		}
 
 		/* MODAL DIALOG */
 		#zmi-modal main > form > table.table {

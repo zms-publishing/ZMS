@@ -20,11 +20,12 @@
 
 			<!--! ##### Action-List ##### -->
 			<select class="form-control" id="addItemSelect" name=":action" 
-				tal:attributes="onchange python:'location.href=\'%s/\'+this.options[this.selectedIndex].value'%request['URL1']">
+				tal:attributes="onchange python:'''addItem( elm=this, base_url='%s');;this.selectedIndex = 0;;'''%(request.get('URL1',''))">
 				<option value="manage_workspace" tal:content="python:'----- %s -----'%zmscontext.getZMILangStr('ACTION_INSERT')%zmscontext.display_type()">----- Insert -----</option>
 				<option
 					tal:repeat="meta_type python:[x for x in zmscontext.sort_list(zmscontext.filtered_meta_types(),'name') if x['name'].find('ZMS')!=0]" 
-					tal:attributes="value python:meta_type['action']" tal:content="python:meta_type['name']">
+					tal:attributes="value python:meta_type['action']; data-dialog python:meta_type['zmi_show_add_dialog']"
+					tal:content="python:meta_type['name']">
 					the name
 				</option>
 			</select>
@@ -122,6 +123,26 @@
 		</form>
 
 	</div><!-- #zmi-tab -->
+
+	<!-- ZMI-MODAL DIALOG -->
+	<div class="modal fade" id="zmi-modal" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					... Loading Form ...
+				</div>
+				<div class="modal-footer">
+					&nbsp;
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 	<script>
 	//<!--
@@ -156,7 +177,173 @@
 				$('table.objectItems').find("tbody tr td.zmi-object-id a:contains(" + tablefilter + ")").closest('tbody tr').show();
 			});
 		});
+
+		// +++++++++++++++++++++++++++
+		// COPY OF ZOPEs /++resource++zmi/zmi_base.js
+		// +++++++++++++++++++++++++++
+		// [0] HELPERS
+		// Simple Check for Absolute URL
+		function isURL(str) {
+			return /^(?:\w+:)?\/\/\S*$/.test(str);
+		};
+
+		// [1] Add New Object Item (with Modal Dialog)
+		function addItem( elm, base_url ) {
+			var zmi_dialog = elm.options[elm.selectedIndex].getAttribute('data-dialog');
+			// e.g. manage_addProduct/OFSP/folderAdd
+			var url_action =  elm.options[elm.selectedIndex].value;
+			// http://localhost/myfolder/manage_addProduct/OFSP/folderAdd
+			var url_full = base_url + '/' + url_action;
+			var parts = url_action.split('/');
+			// folderAdd
+			var action = parts[parts.length-1];
+			// OFSP
+			var product = parts[parts.length-2];
+			// http://localhost/myfolder/manage_addProduct/OFSP/
+			var modal_form_base = url_full.slice(0, -action.length);
+			var modal_body_url = url_full + '?zmi_dialog=' + zmi_dialog ;
+
+			// Inserting Without Modal Dialog
+			var no_modal_dialog = {
+				'product':[
+					'CMFPlone',
+					'CMFEditions',
+					'zms',
+				]
+			};
+
+			if ( zmi_dialog != 'modal' || $.inArray(product, no_modal_dialog['product']) !== -1 ) {
+				window.location.href = url_full;
+				return
+			}
+
+			// SHOW MODAL DIALOG
+			$('#zmi-modal').modal('show');
+			$('#zmi-modal').modal({ focus: true });
+			$('#zmi-modal .modal-body').attr('data-add_type', action);
+			// Load Modal Form by AJAX
+			$('#zmi-modal .modal-body').load(modal_body_url, function(responseTxt, statusTxt, xhr) {
+				if(statusTxt == "error") {
+					window.location.href = url_full;
+						return;
+				}
+
+				//Modify Form Action for Modal Use
+				$( '#zmi-modal form' ).each( function() {
+					var former_action = $( this ).attr( 'action' );
+					var modal_form_url = isURL(former_action) ? former_action : modal_form_base + former_action;
+					$( this ).attr( 'action', modal_form_url );
+				});
+
+				fix_ancient_modal_gui();
+				fix_modern_modal_gui();
+			});
+			// Clean up Modal DOM on Close
+			$('#zmi-modal').on('hide.bs.modal', function (event) {
+				$('#zmi-modal .modal-header h2').remove();
+				$('#zmi-modal .modal-body').empty();
+			});
+		}
+
+		// [3] GUI FIX FOR MODAL DIALOG: Add Minimal Style Patches to Ancient Zope Forms
+		function fix_ancient_modal_gui() {
+			if ( 0 === $('.modal-body main').length ) {
+				$('.modal-body>form,.modal-body>table,.modal-body>h2,.modal-body>h3,.modal-body>p,.modal-body>i.zmi-help-icon').wrapAll('<main class="container-fluid zmi-patch"></main>');
+				// ADD BOOTSTRAP CLASSES
+				$('.modal-body input[type="text"],.modal-body input[type="file"],.modal-body textarea,.modal-body select').addClass('form-control zmi-patch');
+				$('.modal-body input[type="submit"]').addClass('btn btn-secondary zmi-patch');
+				$('.modal-body textarea[name*=":text"]').addClass('zmi-code');
+				$('.modal-body table').addClass('table zmi-patch');
+			}
+		}
+
+		function fix_modern_modal_gui() {
+			// Shift Title to Modal Header
+			$('#zmi-modal .modal-body h2').detach().prependTo('#zmi-modal .modal-header');
+
+			// Aggregate multiple Help-Paragraphs
+			if ( $('#zmi-modal .modal-body p.form-help').length > 1) {
+				var help_text = $('#zmi-modal .modal-body p.form-help').text();
+				var help_text_html = '<p class="form-help">' + help_text +'</p>';
+				$('#zmi-modal .modal-body p.form-help').remove();
+				if ( 0 === $('.modal-body main').length ) {
+					$('#zmi-modal .modal-body').prepend(help_text_html);
+				} else {
+					$('#zmi-modal .modal-body main').prepend(help_text_html);
+				}
+			}
+			$('#zmi-modal .modal-body p.form-help').before('<i title="Help" class="zmi-help-icon fas fa-question-circle" onclick="$(\'#zmi-modal .form-help\').toggle();$(this).toggleClass(\'active\')"></i>');
+			$('#zmi-modal .modal-body p.form-help').hide();
+		}
+
 	//-->
 	</script>
+	<style>
+	/*<-- COPY OF ZOPEs /++resource++zmi/zmi_base.css */
+
+		/* MODAL DIALOG */
+		#zmi-modal main > form > table.table {
+			margin: 0;
+		}
+		#zmi-modal i.zmi-help-icon {
+			display: block;
+			margin: 0 -1rem 1rem 0;
+			text-align: right;
+		}
+		#zmi-modal i.zmi-help-icon.active {
+			color:#007bff;
+		}
+		#zmi-modal p.form-help {
+			padding: 1rem;
+			border: 1px solid #ced4da;
+			border-radius: 0.4rem;
+			background: #f1f4f7;
+			margin-top: -1rem;
+		}
+		@media (min-width: 576px) {
+			#zmi-modal {
+				padding-left:.5rem;
+			}
+			#zmi-modal .modal-dialog {
+				max-width:-moz-fit-content;
+				max-width: fit-content;
+			}
+			#zmi-modal .modal-body {
+				min-width:500px;
+			}
+			#zmi-modal .modal-body[data-add_type="addIdManager"] {
+				min-width:800px;
+			}
+		}
+		#zmi-modal .modal-header h2.zmi-form-title {
+			font-size: 1.5rem;
+			margin: 2rem 0 1rem;
+			font-weight: 500;
+			line-height: 1.2;
+		}
+		#zmi-modal .zmi-controls .btn.btn-primary,
+		#zmi-modal a.btn.btn-primary,
+		#zmi-modal input.btn.btn-primary,
+		#zmi-modal .btn-primary:not(:disabled):not(.disabled):active {
+			background-color:white !important;
+			color:#6c757d;
+			border-color:#6c757d;
+		}
+		#zmi-modal .zmi-controls .btn.btn-primary:hover,
+		#zmi-modal input.btn.btn-primary:hover {
+			background-color:#e9ecef !important;
+		}
+		#zmi-modal i .btn.btn-primary.form-control-file {
+			border-color:#ced4da;
+		}
+		#zmi-modal .custom-file label.custom-file-label span {
+			max-width: calc(100% - 80px);
+			display:inline-block;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+	/*--> */
+	</style>
 </body>
 </html>

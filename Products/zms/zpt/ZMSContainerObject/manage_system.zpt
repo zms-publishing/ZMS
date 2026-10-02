@@ -29,7 +29,7 @@
 					the name
 				</option>
 			</select>
-			<legend tal:content="python:here.getZMILangStr('TAB_SYSTEM')">System</legend>
+			<legend>Zope System View</legend>
 
 			<!--! ##### Object-List ##### -->
 			<tal:block tal:define="items python:zmscontext.manage_get_sortedObjects(sortkey = skey, revkey = rkey)">

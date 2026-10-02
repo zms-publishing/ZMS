@@ -2,117 +2,376 @@
 <html lang="en" tal:define="standard modules/Products.zms/standard">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
 <body tal:attributes="class python:here.zmi_body_class(id='system')">
-<header tal:replace="structure python:here.zmi_body_header(here,request)">zmi_body_header</header>
-<div id="zmi-tab">
-<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
-<form class="form-horizontal card" method="post" tal:attributes="action python:context.absolute_url()">
-	<input type="hidden" name="lang" tal:attributes="value request/lang"/>
-	<input type="hidden" name="preview" tal:attributes="value request/preview"/>
-<!--
-################################################################################
-##### Action-List
-################################################################################
--->
-<tal:block tal:define="global
-		zmscontext here;
-		SecurityManager modules/AccessControl/getSecurityManager;
-		skey python:request.get('skey', 'id');
-		rkey python:request.get('rkey', '')">
+	<header tal:replace="structure python:here.zmi_body_header(here,request)">zmi_body_header</header>
 
-	<select class="form-control" id="addItemSelect" name=":action" tal:attributes="onchange python:'location.href=\'%s/\'+this.options[this.selectedIndex].value'%request['URL1']">
-		<option value="manage_workspace" tal:content="python:'----- %s -----'%zmscontext.getZMILangStr('ACTION_INSERT')%zmscontext.display_type()">----- Insert -----</option>
-		<tal:block tal:repeat="meta_type python:[x for x in zmscontext.sort_list(zmscontext.filtered_meta_types(),'name') if x['name'].find('ZMS')!=0]">
-			<option tal:attributes="value python:meta_type['action']" tal:content="python:meta_type['name']">the name</option>
-		</tal:block>
-	</select>
-	<legend tal:content="python:here.getZMILangStr('TAB_SYSTEM')">System</legend>
+	<div id="zmi-tab" 
+		tal:define="
+			zmscontext here;
+			SecurityManager modules/AccessControl/getSecurityManager;
+			skey python:request.get('skey', 'id');
+			rkey python:request.get('rkey', 'asc')">
 
+		<nav aria-label="breadcrumb" tal:replace="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</nav>
 
-<!--
-################################################################################
-##### Object-List
-################################################################################
--->
+		<form id="objectItems" name="objectItems" class="form-horizontal card" method="post" action="manage_main" tal:attributes="action python:here.absolute_url() + '/manage_main'">
+			<input type="hidden" name="lang" tal:attributes="value request/lang" />
+			<input type="hidden" name="preview" tal:attributes="value request/preview" />
 
-<tal:block tal:define="global items python:zmscontext.objectItems()">
-<tal:block tal:condition="python:len(items)>0">
-<table class="table table-sm table-striped zopeobjects objectItems">
-<thead>
-<tr>
-	<th class="zmi-object-check">
-		<div class="btn-group">
-			<button class="btn btn-secondary border-0" onclick="zmiToggleSelectionButtonClick(this);return false"><i class="fas fa-check-square"></i></button>
-		</div>
-	</th>
-	<tal:block define="columns python:['meta_type','id','get_size','bobobase_modification_time'];
-			labels python:{'meta_type':'type','id':'name','get_size':'size','bobobase_modification_time':'last_modified'}">
-		<tal:block tal:repeat="column columns">
-			<th tal:define="label python:zmscontext.getZMILangStr('ATTR_%s'%labels[column].upper())"
-				tal:attributes="class python:'zmi-object-%s'%(labels[column])">
-				<i tal:condition="python:skey==column or rkey==column" 
-					tal:attributes="class python:'text-danger fas fa-caret-%s'%(['down','up'][int(rkey==column)])"></i>
-				<a class="text-dark" tal:attributes="href python:zmscontext.url_append_params(request['URL'],{['skey','rkey'][int(skey==column)]:column}); title python:'Sort objects by %s'%label"
-					tal:content="label">the label
-				</a>
-			</th>
-		</tal:block>
-	</tal:block>
-</tr>
-</thead>
-<tbody>
-<tr tal:repeat="item items">
-	<td class="zmi-object-check">
-		<input type="checkbox" name="ids:list" tal:attributes="value python:item[0]"/>
-	</td>
-	<td class="zmi-object-type">
-		<tal:block tal:define="icon python:item[1].zmi_icon"
-			tal:on-error="structure string:<i title='Error: No Icon Found' class='fas fa-exclamation-triangle text-danger'></i>">
-			<i tal:attributes="class icon; title python:item[1].meta_type" />
-		</tal:block>
-	</td>
-	<td class="zmi-object-id">
-		<a target="_blank" tal:on-error="python:'%s (Broken Object!)'%item[0]" 
-			tal:attributes="href python:'%s/manage_workspace'%item[1].absolute_url()">
-			<tal:block tal:content="python:item[0]">the id</tal:block>
-			<tal:block tal:condition="python:item[1].title_or_id()">
-				(<tal:block tal:content="python:item[1].title_or_id()">the title</tal:block>)
+			<!--! ##### Action-List ##### -->
+			<select class="form-control" id="addItemSelect" name=":action" 
+				tal:attributes="onchange python:'''addItem( elm=this, base_url='%s');;this.selectedIndex = 0;;'''%(request.get('URL1',''))">
+				<option value="manage_main" class="text-muted"  tal:content="python:zmscontext.getZMILangStr('ACTION_INSERT')%zmscontext.display_type()">----- Insert -----</option>
+				<option
+					tal:repeat="meta_type python:[x for x in zmscontext.sort_list(zmscontext.filtered_meta_types(),'name') if x['name'].find('ZMS')!=0]" 
+					tal:attributes="value python:meta_type['action']; data-dialog python:meta_type['zmi_show_add_dialog']"
+					tal:content="python:meta_type['name']">
+					the name
+				</option>
+			</select>
+			<legend>Zope System View</legend>
+
+			<!--! ##### Object-List ##### -->
+			<tal:block tal:define="items python:zmscontext.manage_get_sortedObjects(sortkey = skey, revkey = rkey)">
+				<tal:block tal:condition="python:len(items)>0">
+					<table class="table table-sm table-striped table-hover zopeobjects objectItems">
+						<thead>
+							<tr>
+								<th class="zmi-object-check">
+									<div class="btn-group">
+										<button class="btn btn-secondary border-0" onclick="zmiToggleSelectionButtonClick(this);return false"><i class="fas fa-check-square"></i></button>
+									</div>
+								</th>
+								<tal:block define="columns python:{
+									'meta_type':'type',
+									'id':'name',
+									'get_size':'size',
+									'bobobase_modification_time':'last_modified'
+									}">
+									<tal:block tal:repeat="column python:columns.keys()">
+										<th tal:define="label python:zmscontext.getZMILangStr('ATTR_%s'%columns[column].upper())"
+											tal:attributes="class python:'zmi-object-%s%s'%(columns[column], column=='bobobase_modification_time' and ' d-none d-sm-table-cell' or '')">
+											<a tal:attributes="
+												href python:zmscontext.url_append_params(zmscontext.absolute_url() + '/manage_main',{'skey':column,'rkey':['asc','desc'][int(rkey=='asc')]}); 
+												title python:'Sort objects by %s'%label">
+												<span tal:condition="python:column!='meta_type'" tal:content="label">the label</span>
+												<i tal:condition="python:column=='meta_type' and skey!=column" class="fa fa-sort"></i>
+												<i tal:condition="python:skey==column" 
+													tal:attributes="class python:'ml-1 text-danger fas fa-caret-%s'%(['down','up'][int(rkey=='asc')])"></i>
+											</a>
+											<div tal:condition="python:column=='id'" 
+												class="btn-group filtering"
+												style="position: absolute; margin: -.45rem 1rem 0 1rem;"
+												title="Filter object list by entering a name.">
+												<i class="fas fa-filter tablefilter p-2" onclick="$('#tablefilter').focus().addClass('visited')"></i>
+												<input id="tablefilter" name="tablefilter" class="form-control" type="text" />
+											</div>
+										</th>
+									</tal:block>
+								</tal:block>
+							</tr>
+						</thead>
+						<tbody>
+							<tr tal:repeat="item items">
+								<td class="zmi-object-check">
+									<input type="checkbox" name="ids:list" tal:attributes="value python:item['id']"/>
+								</td>
+								<td class="zmi-object-type">
+									<tal:block tal:define="icon python:item['obj'].zmi_icon"
+										tal:on-error="structure string:<i title='Error: No Icon Found' class='fas fa-exclamation-triangle text-danger'></i>">
+										<i tal:attributes="class icon; title python:item['obj'].meta_type" />
+									</tal:block>
+								</td>
+								<td class="zmi-object-id">
+									<a target="_blank" tal:on-error="python:'%s (Broken Object!)'%item['id']" 
+										tal:attributes="href python:'%s/manage_workspace'%item['obj'].absolute_url()">
+										<span tal:content="python:item['id']">the id</span>
+										<tal:block tal:condition="python:item['obj'].title_or_id()">
+											(<tal:block tal:content="python:item['obj'].title_or_id()">the title</tal:block>)
+										</tal:block>
+									</a>
+								</td>
+								<td class="zmi-object-size">
+									<tal:block 
+										tal:condition="python:item['obj'].meta_type!='External Method'" 
+										tal:content="python:zmscontext.getDataSizeStr(item['obj'].get_size())" 
+										tal:on-error="string:get_size is not defined!">the size
+									</tal:block>
+								</td>
+								<td class="zmi-object-date zmi-object-last_modified d-none d-sm-table-cell">
+									<tal:block 
+										tal:content="python:zmscontext.last_modified(item['obj'])" 
+										tal:on-error="string:last_modified is not defined!">the timestamp
+									</tal:block>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="form-group form-inline zmi-controls" tal:condition="not:python:request.get('dontAllowCopyAndPaste')">
+						<div class="pb-4 pl-2">
+							<input class="btn btn-secondary m-1" type="submit" name="manage_renameForm:method" tal:attributes="value python:zmscontext.getZMILangStr('BTN_RENAME')" tal:condition="items"/>
+							<input class="btn btn-secondary m-1" type="submit" name="manage_cutObjects:method" tal:attributes="value python:zmscontext.getZMILangStr('BTN_CUT')" tal:condition="items"/>
+							<input class="btn btn-secondary m-1" type="submit" name="manage_copyObjects:method" tal:attributes="value python:zmscontext.getZMILangStr('BTN_COPY')" tal:condition="items"/>
+							<input class="btn btn-secondary m-1" type="submit" name="manage_pasteObjects:method" tal:attributes="value python:zmscontext.getZMILangStr('BTN_PASTE')" tal:condition="python:here.cb_dataValid()"/>
+							<input class="btn btn-secondary m-1" type="submit" name="manage_delObjects:method" tal:attributes="value python:zmscontext.getZMILangStr('BTN_DELETE')" tal:condition="python:SecurityManager.checkPermission('Delete objects',zmscontext)"/>
+							<input class="btn btn-secondary m-1" type="submit" name="manage_importExportForm:method" value="Import/Export" tal:condition="python:SecurityManager.checkPermission('Import/Export objects',zmscontext)"/>
+						</div>
+					</div>
+				</tal:block>
 			</tal:block>
-		</a>
-	</td>
-	<td class="zmi-object-size">
-		<tal:block 
-			tal:condition="python:item[1].meta_type!='External Method'" 
-			tal:content="python:zmscontext.getDataSizeStr(item[1].get_size())" 
-			tal:on-error="string:get_size is not defined!">the size
-		</tal:block>
-	</td>
-	<td class="zmi-object-date zmi-object-last_modified hidden-xs">
-		<tal:block 
-			tal:content="python:zmscontext.last_modified(zmscontext)" 
-			tal:on-error="string:last_modified is not defined!">the timestamp
-		</tal:block>
-	</td>
-</tr>
-</tbody>
-</table>
-<div class="form-group form-inline zmi-controls" tal:condition="not:python:request.get('dontAllowCopyAndPaste')">
-	<div class="pb-4 pl-2">
-		<input class="btn btn-secondary m-1" type="submit" name="manage_renameForm:method" tal:attributes="value python:zmscontext.getZMILangStr('BTN_RENAME')" tal:condition="items"/>
-		<input class="btn btn-secondary m-1" type="submit" name="manage_cutObjects:method" tal:attributes="value python:zmscontext.getZMILangStr('BTN_CUT')" tal:condition="items"/>
-		<input class="btn btn-secondary m-1" type="submit" name="manage_copyObjects:method" tal:attributes="value python:zmscontext.getZMILangStr('BTN_COPY')" tal:condition="items"/>
-		<input class="btn btn-secondary m-1" type="submit" name="manage_pasteObjects:method" tal:attributes="value python:zmscontext.getZMILangStr('BTN_PASTE')" tal:condition="python:here.cb_dataValid()"/>
-		<input class="btn btn-secondary m-1" type="submit" name="manage_delObjects:method" tal:attributes="value python:zmscontext.getZMILangStr('BTN_DELETE')" tal:condition="python:SecurityManager.checkPermission('Delete objects',zmscontext)"/>
-		<input class="btn btn-secondary m-1" type="submit" name="manage_importExportForm:method" value="Import/Export" tal:condition="python:SecurityManager.checkPermission('Import/Export objects',zmscontext)"/>
+
+		</form>
+
+	</div><!-- #zmi-tab -->
+
+	<!-- ZMI-MODAL DIALOG -->
+	<div class="modal fade" id="zmi-modal" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					... Loading Form ...
+				</div>
+				<div class="modal-footer">
+					&nbsp;
+				</div>
+			</div>
+		</div>
 	</div>
-</div>
-</tal:block>
-</tal:block>
 
-</tal:block>
-</form>
+	<footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
+	<script>
+	//<!--
+		$(function () {
 
-</div><!-- #zmi-tab -->
-<footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
+			// +++++++++++++++++++++++++++
+			// Tablefilter: Object-List
+			// +++++++++++++++++++++++++++
+			function isModifierKeyPressed(event) {
+				return event.altKey ||
+				event.ctrlKey ||
+				event.metaKey;
+			}
+			$(document).keypress(function (event) {
+				if (isModifierKeyPressed(event)) {
+					return; // ignore
+				}
+				// Set Focus to Tablefilter only when no modal dialog is shown
+				if (!$('.modal.show').length) {
+					$('#tablefilter').focus().addClass('visited');
+				};
+			})
+			$('#tablefilter').keyup(function (event) {
+				let tablefilter = $(this).val();
+				if (isModifierKeyPressed(event)) {
+					return; // ignore
+				}
+				if (event.which == 13) {
+					event.preventDefault();
+				};
+				$('table.objectItems').find("tbody tr").hide();
+				$('table.objectItems').find("tbody tr td.zmi-object-id a:contains(" + tablefilter + ")").closest('tbody tr').show();
+			});
+		});
+
+		// +++++++++++++++++++++++++++
+		// COPY OF ZOPEs /++resource++zmi/zmi_base.js
+		// +++++++++++++++++++++++++++
+		// [0] HELPERS
+		// Simple Check for Absolute URL
+		function isURL(str) {
+			return /^(?:\w+:)?\/\/\S*$/.test(str);
+		};
+
+		// [1] Add New Object Item (with Modal Dialog)
+		function addItem( elm, base_url ) {
+			var zmi_dialog = elm.options[elm.selectedIndex].getAttribute('data-dialog');
+			// e.g. manage_addProduct/OFSP/folderAdd
+			var url_action =  elm.options[elm.selectedIndex].value;
+			// http://localhost/myfolder/manage_addProduct/OFSP/folderAdd
+			var url_full = base_url + '/' + url_action;
+			var parts = url_action.split('/');
+			// folderAdd
+			var action = parts[parts.length-1];
+			// OFSP
+			var product = parts[parts.length-2];
+			// http://localhost/myfolder/manage_addProduct/OFSP/
+			var modal_form_base = url_full.slice(0, -action.length);
+			var modal_body_url = url_full + '?zmi_dialog=' + zmi_dialog ;
+
+			// Inserting Without Modal Dialog
+			var no_modal_dialog = {
+				'product':[
+					'CMFPlone',
+					'CMFEditions',
+					'zms',
+				]
+			};
+
+			if ( zmi_dialog != 'modal' || $.inArray(product, no_modal_dialog['product']) !== -1 ) {
+				window.location.href = url_full;
+				return
+			}
+
+			// SHOW MODAL DIALOG
+			$('#zmi-modal').modal('show');
+			$('#zmi-modal').modal({ focus: true });
+			$('#zmi-modal .modal-body').attr('data-add_type', action);
+			// Load Modal Form by AJAX
+			$('#zmi-modal .modal-body').load(modal_body_url, function(responseTxt, statusTxt, xhr) {
+				if(statusTxt == "error") {
+					window.location.href = url_full;
+						return;
+				}
+
+				//Modify Form Action for Modal Use
+				$( '#zmi-modal form' ).each( function() {
+					var former_action = $( this ).attr( 'action' );
+					var modal_form_url = isURL(former_action) ? former_action : modal_form_base + former_action;
+					$( this ).attr( 'action', modal_form_url );
+				});
+
+				fix_ancient_modal_gui();
+				fix_modern_modal_gui();
+			});
+			// Clean up Modal DOM on Close
+			$('#zmi-modal').on('hide.bs.modal', function (event) {
+				$('#zmi-modal .modal-header h2').remove();
+				$('#zmi-modal .modal-body').empty();
+			});
+		}
+
+		// [3] GUI FIX FOR MODAL DIALOG: Add Minimal Style Patches to Ancient Zope Forms
+		function fix_ancient_modal_gui() {
+			if ( 0 === $('.modal-body main').length ) {
+				$('.modal-body>form,.modal-body>table,.modal-body>h2,.modal-body>h3,.modal-body>p,.modal-body>i.zmi-help-icon').wrapAll('<main class="container-fluid zmi-patch"></main>');
+				// ADD BOOTSTRAP CLASSES
+				$('.modal-body input[type="text"],.modal-body input[type="file"],.modal-body textarea,.modal-body select').addClass('form-control zmi-patch');
+				$('.modal-body input[type="submit"]').addClass('btn btn-secondary zmi-patch');
+				$('.modal-body textarea[name*=":text"]').addClass('zmi-code');
+				$('.modal-body table').addClass('table zmi-patch');
+			}
+		}
+
+		function fix_modern_modal_gui() {
+			// Shift Title to Modal Header
+			$('#zmi-modal .modal-body h2').detach().prependTo('#zmi-modal .modal-header');
+
+			// Aggregate multiple Help-Paragraphs
+			if ( $('#zmi-modal .modal-body p.form-help').length > 1) {
+				var help_text = $('#zmi-modal .modal-body p.form-help').text();
+				var help_text_html = '<p class="form-help">' + help_text +'</p>';
+				$('#zmi-modal .modal-body p.form-help').remove();
+				if ( 0 === $('.modal-body main').length ) {
+					$('#zmi-modal .modal-body').prepend(help_text_html);
+				} else {
+					$('#zmi-modal .modal-body main').prepend(help_text_html);
+				}
+			}
+			$('#zmi-modal .modal-body p.form-help').before('<i title="Help" class="zmi-help-icon fas fa-question-circle" onclick="$(\'#zmi-modal .form-help\').toggle();$(this).toggleClass(\'active\')"></i>');
+			$('#zmi-modal .modal-body p.form-help').hide();
+		}
+
+	//-->
+	</script>
+	<style>
+	/*<-- COPY OF ZOPEs /++resource++zmi/zmi_base.css */
+
+		#tablefilter {
+			border: none !important;
+			box-shadow: none !important;
+			outline: none !important;
+		}
+
+		table.objectItems tr a {
+			text-decoration:none;
+		}
+		table.objectItems th a {
+			color: #758696;
+		}
+		table.objectItems th a:hover {
+			color: #212529;
+		}
+		table.objectItems td {
+			padding-bottom: .15rem !important;
+		}
+		table.objectItems td > a {
+			color: #6c757dc7;
+		}
+		table.objectItems td > a > span {
+			font-weight:bold;
+		}
+		table.objectItems td > a:hover {
+			color: #0056b3;
+		}
+
+		/* MODAL DIALOG */
+		#zmi-modal main > form > table.table {
+			margin: 0;
+		}
+		#zmi-modal i.zmi-help-icon {
+			display: block;
+			margin: 0 -1rem 1rem 0;
+			text-align: right;
+		}
+		#zmi-modal i.zmi-help-icon.active {
+			color:#007bff;
+		}
+		#zmi-modal p.form-help {
+			padding: 1rem;
+			border: 1px solid #ced4da;
+			border-radius: 0.4rem;
+			background: #f1f4f7;
+			margin-top: -1rem;
+		}
+		@media (min-width: 576px) {
+			#zmi-modal {
+				padding-left:.5rem;
+			}
+			#zmi-modal .modal-dialog {
+				max-width:-moz-fit-content;
+				max-width: fit-content;
+			}
+			#zmi-modal .modal-body {
+				min-width:500px;
+			}
+			#zmi-modal .modal-body[data-add_type="addIdManager"] {
+				min-width:800px;
+			}
+		}
+		#zmi-modal .modal-header h2.zmi-form-title {
+			font-size: 1.5rem;
+			margin: 2rem 0 1rem;
+			font-weight: 500;
+			line-height: 1.2;
+		}
+		#zmi-modal .zmi-controls .btn.btn-primary,
+		#zmi-modal a.btn.btn-primary,
+		#zmi-modal input.btn.btn-primary,
+		#zmi-modal .btn-primary:not(:disabled):not(.disabled):active {
+			background-color:white !important;
+			color:#6c757d;
+			border-color:#6c757d;
+		}
+		#zmi-modal .zmi-controls .btn.btn-primary:hover,
+		#zmi-modal input.btn.btn-primary:hover {
+			background-color:#e9ecef !important;
+		}
+		#zmi-modal i .btn.btn-primary.form-control-file {
+			border-color:#ced4da;
+		}
+		#zmi-modal .custom-file label.custom-file-label span {
+			max-width: calc(100% - 80px);
+			display:inline-block;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+	/*--> */
+	</style>
 </body>
 </html>

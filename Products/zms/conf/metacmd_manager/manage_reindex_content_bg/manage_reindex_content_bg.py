@@ -14,6 +14,8 @@ import os
 import tempfile
 import fcntl
 import threading
+import uuid
+from datetime import datetime, timezone
 import requests
 
 LOGGER = logging.getLogger("ZMSReindex")
@@ -32,7 +34,7 @@ class ZMSIndexSchematizedReindexer:
 
 	def __init__(self, base_url, connector, uid='{$}', page_size=100, fileparsing=False,
 				 start_path="", start_node=None, cancel_event=None,
-				 cancellation_file=None):
+				 cancellation_file=None, progress_callback=None):
 		self.base_url = base_url.rstrip("/")
 		self.connector = connector.strip("/")
 		self.uid = uid
@@ -42,6 +44,15 @@ class ZMSIndexSchematizedReindexer:
 		self.start_node = start_node
 		self.cancel_event = cancel_event
 		self.cancellation_file = cancellation_file
+		self.progress_callback = progress_callback
+
+	def _report_progress(self, stats, state="running", current_uid=None,
+						 current_path=None):
+		if self.progress_callback is not None:
+			self.progress_callback(
+				stats, state=state, current_uid=current_uid,
+				current_path=current_path,
+			)
 
 	def _stop_requested(self):
 		return (
@@ -147,7 +158,9 @@ class ZMSIndexSchematizedReindexer:
 			"success": 0,
 			"failed": 0,
 			"skipped": 0,
+			"nodes_completed": 0,
 		}
+		self._report_progress(stats)
 
 		for uid, meta_id, node_path in self._iter_index_nodes():
 			if self._stop_requested():
@@ -156,6 +169,10 @@ class ZMSIndexSchematizedReindexer:
 
 			stats["candidates"] += 1
 			client_path = "{$@%s}" % self._extract_client_path(node_path)
+			stats["requests"] += 1
+			self._report_progress(
+				stats, current_uid=uid, current_path=node_path,
+			)
 			write_line(f"Reindexing UID={uid} meta_id={meta_id} path={client_path}")
 
 			params = {
@@ -169,14 +186,24 @@ class ZMSIndexSchematizedReindexer:
 				payload, url = self._api(f"{self.connector}/reindex_page", **params)
 				for x in payload['log']:
 					write_line(f"LOG {x}")
-				stats['success'] += payload['success']
-				stats['failed'] += payload['failed']
-				stats["requests"] += 1
+				logs = payload.get("log", [])
+				stats["success"] += payload.get(
+					"success",
+					sum(entry.get("success", 0) for entry in logs),
+				)
+				stats["failed"] += payload.get(
+					"failed",
+					sum(entry.get("failed", 0) for entry in logs),
+				)
 			except Exception as e:
 				if self._stop_requested():
 					write_line("Stop requested; stopping reindex worker")
 					break
 				stats["failed"] += 1
+				stats["nodes_completed"] += 1
+				self._report_progress(
+					stats, current_uid=uid, current_path=node_path,
+				)
 				write_line(f"ERROR calling REST API for uid={uid}: {e}")
 				continue
 
@@ -184,8 +211,10 @@ class ZMSIndexSchematizedReindexer:
 			for entry in logs:
 				objects = entry.get("objects", {})
 				stats["objects"] += max(objects.values()) if objects else 0
-				stats["success"] += entry.get("success", 0)
-				stats["failed"] += entry.get("failed", 0)
+			stats["nodes_completed"] += 1
+			self._report_progress(
+				stats, current_uid=uid, current_path=node_path,
+			)
 
 			write_line(
 				f"Success={payload.get('success', 0)} "
@@ -202,6 +231,10 @@ class ZMSIndexSchematizedReindexer:
 				write_line("Stop requested; stopping reindex worker")
 				break
 
+		self._report_progress(
+			stats, state="stopped" if self._stop_requested() else "completed",
+			current_uid=None, current_path=None,
+		)
 		return stats
 
 
@@ -227,6 +260,52 @@ def _get_lock_guard_path(base_url):
 
 def _get_cancellation_file_path(base_url):
 	return _get_lockfile_path(base_url) + ".stop"
+
+def _get_status_file_path(base_url):
+	return _get_lockfile_path(base_url) + ".status.json"
+
+def _timestamp():
+	return datetime.now(timezone.utc).isoformat(timespec="seconds")
+
+def _read_status_fd(fd):
+	size = os.fstat(fd).st_size
+	if not size:
+		return None
+	os.lseek(fd, 0, os.SEEK_SET)
+	data = os.read(fd, size)
+	return json.loads(data.decode("utf-8"))
+
+def _read_job_status(base_url):
+	try:
+		fd = os.open(_get_status_file_path(base_url), os.O_RDONLY)
+	except FileNotFoundError:
+		return None
+	try:
+		fcntl.flock(fd, fcntl.LOCK_SH)
+		return _read_status_fd(fd)
+	finally:
+		os.close(fd)
+
+def _update_job_status(base_url, updates, expected_job_id=None, replace=False):
+	status_path = _get_status_file_path(base_url)
+	fd = os.open(status_path, os.O_CREAT | os.O_RDWR, 0o600)
+	try:
+		fcntl.flock(fd, fcntl.LOCK_EX)
+		status = {} if replace else (_read_status_fd(fd) or {})
+		if expected_job_id and status.get("job_id") != expected_job_id:
+			return status
+		status.update(updates)
+		status["updated_at"] = _timestamp()
+		encoded = json.dumps(status, ensure_ascii=False).encode("utf-8")
+		os.lseek(fd, 0, os.SEEK_SET)
+		os.ftruncate(fd, 0)
+		offset = 0
+		while offset < len(encoded):
+			offset += os.write(fd, encoded[offset:])
+		return status
+	finally:
+		fcntl.flock(fd, fcntl.LOCK_UN)
+		os.close(fd)
 
 def _acquire_lock_guard(base_url):
 	fd = os.open(_get_lock_guard_path(base_url), os.O_CREAT | os.O_RDWR, 0o644)
@@ -345,8 +424,31 @@ def start(self):
 		except FileNotFoundError:
 			pass
 
+		job_id = uuid.uuid4().hex
+		initial_status = {
+			"job_id": job_id,
+			"state": "running",
+			"started_at": _timestamp(),
+			"current_uid": None,
+			"current_path": None,
+			"candidates": 0,
+			"nodes_completed": 0,
+			"requests": 0,
+			"objects": 0,
+			"success": 0,
+			"failed": 0,
+			"skipped": 0,
+			"error": None,
+		}
+		try:
+			_update_job_status(base_url, initial_status, replace=True)
+		except Exception:
+			_release_singleflight_lock(lock_fd, base_url)
+			raise
+
 		job = {
 			"base_url": base_url,
+			"job_id": job_id,
 			"lock_fd": lock_fd,
 			"lock_released": False,
 			"cancel_event": threading.Event(),
@@ -358,9 +460,27 @@ def start(self):
 
 	def worker():
 		global RUN_IN_PROGRESS, RUN_LOCK_FD, RUN_JOB
+		stats = {}
 
 		try:
 			LOGGER.info("Starting background reindex job for %s", base_url)
+
+			def update_progress(stats, state="running", current_uid=None,
+								current_path=None):
+				if state == "running" and (
+					job["cancel_event"].is_set()
+					or os.path.exists(cancellation_file)
+				):
+					state = "stopping"
+				updates = dict(stats)
+				updates.update({
+					"state": state,
+					"current_uid": current_uid,
+					"current_path": current_path,
+				})
+				_update_job_status(
+					base_url, updates, expected_job_id=job_id,
+				)
 
 			reindexer = ZMSIndexSchematizedReindexer(
 				base_url=base_url,
@@ -372,15 +492,42 @@ def start(self):
 				start_node=start_node,
 				cancel_event=job["cancel_event"],
 				cancellation_file=cancellation_file,
+				progress_callback=update_progress,
 			)
 
 			stats = reindexer.run(write_line=lambda line: LOGGER.info(line))
 			LOGGER.info("Finished reindex job: %s", stats)
 
-		except Exception:
+		except Exception as error:
 			LOGGER.exception("manage_reindex_content_bg failed")
+			try:
+				_update_job_status(
+					base_url,
+					{
+						**stats,
+						"state": "failed",
+						"current_uid": None,
+						"current_path": None,
+						"error": str(error),
+					},
+					expected_job_id=job_id,
+				)
+			except Exception:
+				LOGGER.exception("Unable to save failed reindex job status")
 		finally:
 			with RUN_LOCK:
+				try:
+					_update_job_status(
+						base_url,
+						{
+							"finished_at": _timestamp(),
+							"current_uid": None,
+							"current_path": None,
+						},
+						expected_job_id=job_id,
+					)
+				except Exception:
+					LOGGER.exception("Unable to save final reindex job status")
 				if RUN_JOB is job:
 					try:
 						os.unlink(cancellation_file)
@@ -393,7 +540,29 @@ def start(self):
 					RUN_IN_PROGRESS = False
 
 	thread = threading.Thread(target=worker, name="manage_reindex_content_bg", daemon=True)
-	thread.start()
+	try:
+		thread.start()
+	except Exception as error:
+		try:
+			_update_job_status(
+				base_url,
+				{
+					"state": "failed",
+					"finished_at": _timestamp(),
+					"error": str(error),
+				},
+				expected_job_id=job_id,
+			)
+		except Exception:
+			LOGGER.exception("Unable to save thread startup failure status")
+		finally:
+			with RUN_LOCK:
+				_release_job_lock(job)
+				if RUN_JOB is job:
+					RUN_JOB = None
+					RUN_LOCK_FD = None
+					RUN_IN_PROGRESS = False
+		raise
 	return "Background Job started"
 
 def stop(self):
@@ -404,6 +573,11 @@ def stop(self):
 		job = RUN_JOB
 		if job is not None and job["base_url"] == base_url:
 			job["cancel_event"].set()
+			_update_job_status(
+				base_url,
+				{"state": "stopping"},
+				expected_job_id=job["job_id"],
+			)
 			_release_job_lock(job)
 			RUN_JOB = None
 			RUN_LOCK_FD = None
@@ -412,6 +586,7 @@ def stop(self):
 
 		if _test_single_flight_locked(base_url):
 			_request_cancellation(base_url)
+			_update_job_status(base_url, {"state": "stopping"})
 			return "Stop requested; the worker will stop after its current REST request"
 		return "No background job is running"
 
@@ -428,6 +603,25 @@ def manage_reindex_content_bg(self):
 	from Products.zms import standard
 
 	request = self.REQUEST
+	if request.get("status") == "1":
+		status = _read_job_status(self.getRootElement().absolute_url())
+		if status is None:
+			status = {
+				"state": "idle",
+				"candidates": 0,
+				"nodes_completed": 0,
+				"requests": 0,
+				"objects": 0,
+				"success": 0,
+				"failed": 0,
+				"skipped": 0,
+			}
+		request.response.setHeader(
+			"Content-Type", "application/json; charset=utf-8",
+		)
+		request.response.setHeader("Cache-Control", "no-store")
+		return json.dumps(status)
+
 	message = None
 	btn = request.form.get('btn')
 	if btn == "BTN_START":
@@ -456,6 +650,7 @@ def manage_reindex_content_bg(self):
 	html.append(self.zmi_breadcrumbs(self,request,extra=[{'label':'Reindex Content','action':'manage_reindex_content'}]))
 	if message:
 		html.append('<div class="alert alert-info" role="alert">%s</div>'%standard.html_quote(message))
+	status_url = self.absolute_url() + "/manage_reindex_content_bg?status=1"
 	html.append("""
 		<form class="form-horizontal card" name="form0" method="post" enctype="multipart/form-data">
 			<input type="hidden" id="lang" name="lang" value="%s"/>
@@ -485,9 +680,77 @@ def manage_reindex_content_bg(self):
 						</button>
 					</div>
 				</div>
+				<pre id="reindex-status" class="zmi-log d-none" role="status" data-status-url="%s" title="Reindex Status"></pre>
 			</div><!-- .card-body -->
 		</form>
-	"""%(request['lang'], standard.html_quote(connector_url)))
+	"""%(request['lang'], standard.html_quote(connector_url), standard.html_quote(status_url)))
+	html.append("""
+		<script>
+		(function () {
+			const panel = document.getElementById('reindex-status');
+			const statusUrl = panel.dataset.statusUrl;
+			let polling = false;
+			let timer = null;
+
+			async function refreshStatus() {
+				if (polling) return;
+				polling = true;
+				try {
+					const response = await fetch(statusUrl, {
+						credentials: 'same-origin',
+						cache: 'no-store',
+						headers: {'Accept': 'application/json'}
+					});
+					if (!response.ok) {
+						throw new Error('HTTP ' + response.status);
+					}
+					const status = await response.json();
+					const lines = [
+						'State: ' + status.state,
+						'Nodes completed: ' + (status.nodes_completed || 0) +
+							' (' + (status.candidates || 0) + ' discovered; total unknown)',
+						'Requests: ' + (status.requests || 0),
+						'Objects: ' + (status.objects || 0),
+						'Success: ' + (status.success || 0) +
+							' / Failed: ' + (status.failed || 0)
+					];
+					if (status.current_path) {
+						lines.push('Current: ' + status.current_path);
+					}
+					if (status.current_uid) {
+						lines.push('UID: ' + status.current_uid);
+					}
+					if (status.updated_at) {
+						lines.push('Updated: ' + status.updated_at);
+					}
+					if (status.error) {
+						lines.push('Error: ' + status.error);
+					}
+					panel.classList.remove('d-none');
+			 		debugger;
+					panel.textContent = lines.join('\\n');
+					panel.className = status.state === 'failed'
+						? 'zmi-log alert alert-danger'
+						: status.state === 'running' || status.state === 'stopping'
+							? 'zmi-log alert alert-info'
+							: 'zmi-log alert alert-secondary';
+					if (status.state !== 'running' && status.state !== 'stopping' && timer) {
+						clearInterval(timer);
+						timer = null;
+					}
+				} catch (error) {
+					panel.textContent = 'Unable to refresh reindex status: ' + error.message;
+					panel.className = 'zmi-log alert alert-warning';
+				} finally {
+					polling = false;
+				}
+			}
+
+			refreshStatus();
+			timer = setInterval(refreshStatus, 2000);
+		})();
+		</script>
+	""")
 	html.append('</div><!-- #zmi-tab -->')
 	html.append(self.zmi_body_footer(self,request))
 	html.append('</body>')

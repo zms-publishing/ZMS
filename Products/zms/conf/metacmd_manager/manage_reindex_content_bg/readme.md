@@ -21,6 +21,7 @@ The implementation consists of:
 - **Paged reindexing** via `reindex_page`
 - **Threaded background worker** inside Zope
 - **Cross‑process locking** to prevent concurrent runs
+- **Shared JSON status record** polled by the ZMI page
 - **CLI tool** for standalone operation
 
 ---
@@ -238,6 +239,24 @@ reports `Background Job is already running`. While the lock is held, the page
 shows the informational status `Background Job is running`.
 
 The actual work happens in the background thread.
+
+### Live status and counters
+
+The worker writes a shared JSON status record in the system temporary directory
+(`zms_reindex_<sanitized-base-url>.lock.status.json`). Reads and writes are
+serialized with `flock` on the status file. This record is separate from the
+run lock and remains after completion so the UI can display the final result.
+The `?status=1` response from this command returns the record as JSON; the ZMI
+page polls it every two seconds. All Zope processes serving this site must see
+the same temporary directory for cross-process status and cancellation to work.
+
+The page displays the current state, current UID and path, requests, completed
+nodes, objects, success and failure counts. `candidates` counts nodes
+encountered so far, not the total number of nodes in the subtree; traversal is
+incremental, so the UI does not claim a completion percentage. Status records include
+`started_at`, `updated_at`, and (after termination) `finished_at`. Connector
+success/failure counts use top-level response values when available, falling
+back to totals from the response log to avoid counting both.
 
 ---
 

@@ -727,7 +727,6 @@ def manage_reindex_content_bg(self):
 						lines.push('Error: ' + status.error);
 					}
 					panel.classList.remove('d-none');
-			 		debugger;
 					panel.textContent = lines.join('\\n');
 					panel.className = status.state === 'failed'
 						? 'zmi-log alert alert-danger'

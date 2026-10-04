@@ -31,7 +31,8 @@ class ZMSIndexSchematizedReindexer:
 	"""
 
 	def __init__(self, base_url, connector, uid='{$}', page_size=100, fileparsing=False,
-				 start_path="", start_node=None):
+				 start_path="", start_node=None, cancel_event=None,
+				 cancellation_file=None):
 		self.base_url = base_url.rstrip("/")
 		self.connector = connector.strip("/")
 		self.uid = uid
@@ -39,6 +40,15 @@ class ZMSIndexSchematizedReindexer:
 		self.fileparsing = 1 if fileparsing else 0
 		self.start_path = start_path.strip("/")
 		self.start_node = start_node
+		self.cancel_event = cancel_event
+		self.cancellation_file = cancellation_file
+
+	def _stop_requested(self):
+		return (
+			(self.cancel_event is not None and self.cancel_event.is_set())
+			or (self.cancellation_file is not None
+				and os.path.exists(self.cancellation_file))
+		)
 
 	def _extract_client_path(self, node_path: str) -> str:
 		parts = [p for p in node_path.split("/") if p]
@@ -100,16 +110,20 @@ class ZMSIndexSchematizedReindexer:
 			seen.add(uid)
 			yield uid, self.start_node.get("meta_id"), node_path
 
-		while stack:
+		while stack and not self._stop_requested():
 			path = stack.pop()
 
 			try:
 				nodes = fetch_children(path)
 			except Exception as e:
+				if self._stop_requested():
+					return
 				LOGGER.error(f"REST error fetching children for {path}: {e}")
 				continue
 
 			for node in nodes:
+				if self._stop_requested():
+					return
 				uid = node.get("uid")
 				meta_id = node.get("meta_id")
 				node_path = node.get("getPath")
@@ -136,7 +150,9 @@ class ZMSIndexSchematizedReindexer:
 		}
 
 		for uid, meta_id, node_path in self._iter_index_nodes():
-			# TODO: Worker-Abbruch prüfen
+			if self._stop_requested():
+				write_line("Stop requested; stopping reindex worker")
+				break
 
 			stats["candidates"] += 1
 			client_path = "{$@%s}" % self._extract_client_path(node_path)
@@ -157,6 +173,9 @@ class ZMSIndexSchematizedReindexer:
 				stats['failed'] += payload['failed']
 				stats["requests"] += 1
 			except Exception as e:
+				if self._stop_requested():
+					write_line("Stop requested; stopping reindex worker")
+					break
 				stats["failed"] += 1
 				write_line(f"ERROR calling REST API for uid={uid}: {e}")
 				continue
@@ -179,6 +198,10 @@ class ZMSIndexSchematizedReindexer:
 			else:
 				write_line("No next node, finished this UID")
 
+			if self._stop_requested():
+				write_line("Stop requested; stopping reindex worker")
+				break
+
 		return stats
 
 
@@ -190,6 +213,7 @@ class ZMSIndexSchematizedReindexer:
 RUN_LOCK = threading.Lock()
 RUN_IN_PROGRESS = False
 RUN_LOCK_FD = None
+RUN_JOB = None
 
 # ----------------------------------------------------------------
 # 2A) ZOPE EXTERNAL-METHOD: Helper functions
@@ -198,48 +222,92 @@ def _get_lockfile_path(base_url):
 	safe = "".join(ch if ch.isalnum() else "_" for ch in base_url)
 	return os.path.join(tempfile.gettempdir(), f"zms_reindex_{safe}.lock")
 
+def _get_lock_guard_path(base_url):
+	return _get_lockfile_path(base_url) + ".guard"
+
+def _get_cancellation_file_path(base_url):
+	return _get_lockfile_path(base_url) + ".stop"
+
+def _acquire_lock_guard(base_url):
+	fd = os.open(_get_lock_guard_path(base_url), os.O_CREAT | os.O_RDWR, 0o644)
+	fcntl.flock(fd, fcntl.LOCK_EX)
+	return fd
+
+def _release_lock_guard(fd):
+	try:
+		fcntl.flock(fd, fcntl.LOCK_UN)
+	finally:
+		os.close(fd)
+
 def _test_single_flight_locked(base_url):
 	"""
 	Check whether a single-flight lock is currently held.
 	Returns the lockfile path if locked, or None if free.
 	"""
 	lockfile_path = _get_lockfile_path(base_url)
-
-	# Open or create the lock file
-	fd = os.open(lockfile_path, os.O_CREAT | os.O_RDWR, 0o644)
-
+	guard_fd = _acquire_lock_guard(base_url)
 	try:
-		# Try to acquire exclusive non-blocking lock
-		fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+		try:
+			fd = os.open(lockfile_path, os.O_RDWR)
+		except FileNotFoundError:
+			return None
 
-		# Lock acquired → immediately release it again
-		fcntl.flock(fd, fcntl.LOCK_UN)
-		return None # Lock is free
+		try:
+			try:
+				fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+			except OSError:
+				return lockfile_path
 
-	except OSError:
-		# Lock is held by another process
-		return lockfile_path
-
+			fcntl.flock(fd, fcntl.LOCK_UN)
+			os.unlink(lockfile_path)
+			return None
+		finally:
+			os.close(fd)
 	finally:
-		os.close(fd)
+		_release_lock_guard(guard_fd)
 
 def _try_acquire_singleflight_lock(base_url):
 	lockfile_path = _get_lockfile_path(base_url)
-	fd = os.open(lockfile_path, os.O_CREAT | os.O_RDWR, 0o644)
+	guard_fd = _acquire_lock_guard(base_url)
 	try:
-		fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
-		return fd
-	except OSError:
-		os.close(fd)
-		return None
+		fd = os.open(lockfile_path, os.O_CREAT | os.O_RDWR, 0o644)
+		try:
+			fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+			return fd
+		except OSError:
+			os.close(fd)
+			return None
+	finally:
+		_release_lock_guard(guard_fd)
 
-def _release_singleflight_lock(fd):
+def _release_singleflight_lock(fd, base_url):
 	if fd is None:
 		return
+	guard_fd = _acquire_lock_guard(base_url)
 	try:
 		fcntl.flock(fd, fcntl.LOCK_UN)
 	finally:
-		os.close(fd)
+		try:
+			os.close(fd)
+			try:
+				os.unlink(_get_lockfile_path(base_url))
+			except FileNotFoundError:
+				pass
+		finally:
+			_release_lock_guard(guard_fd)
+
+def _release_job_lock(job):
+	if job["lock_released"]:
+		return
+	job["lock_released"] = True
+	fd = job["lock_fd"]
+	job["lock_fd"] = None
+	_release_singleflight_lock(fd, job["base_url"])
+
+def _request_cancellation(base_url):
+	cancellation_file = _get_cancellation_file_path(base_url)
+	fd = os.open(cancellation_file, os.O_CREAT | os.O_WRONLY | os.O_TRUNC, 0o644)
+	os.close(fd)
 
 def start(self):
 	import logging
@@ -264,22 +332,32 @@ def start(self):
 	page_size = int(request.get("page_size", 1))
 	fileparsing = bool(request.get("fileparsing", False))
 
-	global RUN_IN_PROGRESS, RUN_LOCK_FD
+	global RUN_IN_PROGRESS, RUN_LOCK_FD, RUN_JOB
  
 	with RUN_LOCK:
 		lock_fd = _try_acquire_singleflight_lock(base_url)
 		if lock_fd is None:
-			target = self.url_append_params(
-				"%s/manage_reindex_content_bg" % self.absolute_url(),
-				{"manage_tabs_message": "Background Job is already running"},
-			)
-			return request.response.redirect(target)
+			return "Background Job is already running"
 
+		cancellation_file = _get_cancellation_file_path(base_url)
+		try:
+			os.unlink(cancellation_file)
+		except FileNotFoundError:
+			pass
+
+		job = {
+			"base_url": base_url,
+			"lock_fd": lock_fd,
+			"lock_released": False,
+			"cancel_event": threading.Event(),
+			"cancellation_file": cancellation_file,
+		}
+		RUN_JOB = job
 		RUN_LOCK_FD = lock_fd
 		RUN_IN_PROGRESS = True
 
 	def worker():
-		global RUN_IN_PROGRESS, RUN_LOCK_FD
+		global RUN_IN_PROGRESS, RUN_LOCK_FD, RUN_JOB
 
 		try:
 			LOGGER.info("Starting background reindex job for %s", base_url)
@@ -292,6 +370,8 @@ def start(self):
 				fileparsing=fileparsing,
 				start_path=start_path,
 				start_node=start_node,
+				cancel_event=job["cancel_event"],
+				cancellation_file=cancellation_file,
 			)
 
 			stats = reindexer.run(write_line=lambda line: LOGGER.info(line))
@@ -301,27 +381,39 @@ def start(self):
 			LOGGER.exception("manage_reindex_content_bg failed")
 		finally:
 			with RUN_LOCK:
-				_release_singleflight_lock(RUN_LOCK_FD)
-				RUN_LOCK_FD = None
-				RUN_IN_PROGRESS = False
+				if RUN_JOB is job:
+					try:
+						os.unlink(cancellation_file)
+					except FileNotFoundError:
+						pass
+				_release_job_lock(job)
+				if RUN_JOB is job:
+					RUN_JOB = None
+					RUN_LOCK_FD = None
+					RUN_IN_PROGRESS = False
 
 	thread = threading.Thread(target=worker, name="manage_reindex_content_bg", daemon=True)
 	thread.start()
+	return "Background Job started"
 
 def stop(self):
-	message = "Background Job stop requested"
-	request = self.REQUEST
+	global RUN_IN_PROGRESS, RUN_LOCK_FD, RUN_JOB
 
-	locked = _test_single_flight_locked(self.absolute_url())
-	if locked:
-		_release_singleflight_lock(locked)
-		message = "Background Job was running and has been stopped"
+	base_url = self.getRootElement().absolute_url()
+	with RUN_LOCK:
+		job = RUN_JOB
+		if job is not None and job["base_url"] == base_url:
+			job["cancel_event"].set()
+			_release_job_lock(job)
+			RUN_JOB = None
+			RUN_LOCK_FD = None
+			RUN_IN_PROGRESS = False
+			return "Background Job stopped; the current REST request may finish"
 
-	target = self.url_append_params(
-		"%s/manage_reindex_content_bg" % self.absolute_url(),
-		{"manage_tabs_message": message},
-	)
-	return request.response.redirect(target)
+		if _test_single_flight_locked(base_url):
+			_request_cancellation(base_url)
+			return "Stop requested; the worker will stop after its current REST request"
+		return "No background job is running"
 
 # ----------------------------------------------------------------
 # 2B) ZOPE EXTERNAL-METHOD: Entry point
@@ -339,11 +431,9 @@ def manage_reindex_content_bg(self):
 	message = None
 	btn = request.form.get('btn')
 	if btn == "BTN_START":
-		start(self)
-		message = "Background Job started"
+		message = start(self)
 	elif btn == "BTN_STOP":
-		stop(self)
-		message = "Background Job stopped"
+		message = stop(self)
 
 	connector_url = ''
 	try:
@@ -354,7 +444,7 @@ def manage_reindex_content_bg(self):
 	except:
 		connector_url = ''
 
-	lockfile_path = _test_single_flight_locked(self.absolute_url())
+	lockfile_path = _test_single_flight_locked(self.getRootElement().absolute_url())
 
 	html = []
 	html.append('<!DOCTYPE html>')
@@ -366,8 +456,6 @@ def manage_reindex_content_bg(self):
 	html.append(self.zmi_breadcrumbs(self,request,extra=[{'label':'Reindex Content','action':'manage_reindex_content'}]))
 	if message:
 		html.append('<div class="alert alert-info" role="alert">%s</div>'%standard.html_quote(message))
-	if lockfile_path:
-		html.append('<div class="alert alert-warning" role="alert">Background Job is already running (lockfile: %s)</div>'%standard.html_quote(lockfile_path))
 	html.append("""
 		<form class="form-horizontal card" name="form0" method="post" enctype="multipart/form-data">
 			<input type="hidden" id="lang" name="lang" value="%s"/>

@@ -47,10 +47,19 @@ The implementation consists of:
 7. Final statistics are logged via Zope’s logger.
 8. Locks are released and the job ends.
 
-The UI immediately redirects with:
+Clicking **Stop** signals the worker to stop before it starts another traversal
+or reindex request and releases the run lock immediately when the stop request
+reaches the process running the worker. A REST request already in progress may
+finish before the worker exits. If the stop request reaches another Zope
+process, it writes a cancellation marker; the worker observes it at its next
+checkpoint and releases its own lock. The per-run `.lock` file is removed when
+the lock is released.
 
-- **“Background Job has Started”**  
-- or **“Background Job is already running”** if a lock is held
+The UI immediately redirects with an informational start/stop message. While a
+job holds the run lock, the page also shows **“Background Job is running”**;
+that status appears immediately after a successful start and is not a warning.
+If a start is attempted while another job is active, the message is
+**“Background Job is already running”**.
 
 ---
 
@@ -163,6 +172,14 @@ Acquired via:
 fcntl.flock(fd, LOCK_EX | LOCK_NB)
 ```
 
+Acquisition, status checks, and removal are serialized by a stable sibling
+`.guard` lockfile. The `.guard` file remains on disk; the per-run `.lock` file
+is removed when the run ends or is stopped.
+
+A sibling `.stop` marker communicates cancellation when the UI request is
+handled by a different Zope process. It is removed when that worker exits or
+when a subsequent run starts.
+
 ### Thread‑Safe Zope Context
 
 The worker:
@@ -215,10 +232,10 @@ CLI logs use `logging.getLogger("ZMSReindex")`.
 
 The external method **never waits** for the job to finish.
 
-It immediately redirects to `manage_main` with one of:
-
-- `Background Job has Started`
-- `Background Job is already running`
+It immediately returns to the UI. A successful start reports
+`Background Job started`; a start attempt while another run holds the lock
+reports `Background Job is already running`. While the lock is held, the page
+shows the informational status `Background Job is running`.
 
 The actual work happens in the background thread.
 

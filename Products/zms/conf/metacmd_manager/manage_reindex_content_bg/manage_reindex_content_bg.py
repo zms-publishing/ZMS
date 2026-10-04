@@ -30,12 +30,15 @@ class ZMSIndexSchematizedReindexer:
 	Works standalone or inside Zope.
 	"""
 
-	def __init__(self, base_url, connector, uid='{$}', page_size=100, fileparsing=False):
+	def __init__(self, base_url, connector, uid='{$}', page_size=100, fileparsing=False,
+				 start_path="", start_node=None):
 		self.base_url = base_url.rstrip("/")
 		self.connector = connector.strip("/")
 		self.uid = uid
 		self.page_size = page_size
 		self.fileparsing = 1 if fileparsing else 0
+		self.start_path = start_path.strip("/")
+		self.start_node = start_node
 
 	def _extract_client_path(self, node_path: str) -> str:
 		parts = [p for p in node_path.split("/") if p]
@@ -86,8 +89,16 @@ class ZMSIndexSchematizedReindexer:
 			response.raise_for_status()
 			return response.json()
 
-		stack = [""]
+		stack = [self.start_path]
 		seen = set()
+
+		if self.start_node is not None:
+			uid = self.start_node.get("uid")
+			node_path = self.start_node.get("getPath")
+			if not uid or not node_path:
+				raise ValueError("Starting context must include uid and getPath")
+			seen.add(uid)
+			yield uid, self.start_node.get("meta_id"), node_path
 
 		while stack:
 			path = stack.pop()
@@ -237,6 +248,15 @@ def start(self):
 	request = self.REQUEST
 	root = self.getRootElement()
 	base_url = root.absolute_url()
+	context_path = tuple(self.getPhysicalPath())
+	start_path = "/".join(str(part) for part in context_path if part)
+	if not start_path:
+		raise ValueError("Unable to determine current context path")
+	start_node = {
+		"uid": self.get_uid(),
+		"meta_id": self.meta_id,
+		"getPath": "/" + start_path,
+	}
 	catalog_adapter = root.getCatalogAdapter()
 	catalog_connector = catalog_adapter.get_connectors()[0]
 	connector = request.get("connector", f"/{catalog_adapter.getId()}/{catalog_connector.getId()}/")
@@ -270,6 +290,8 @@ def start(self):
 				uid=uid,
 				page_size=page_size,
 				fileparsing=fileparsing,
+				start_path=start_path,
+				start_node=start_node,
 			)
 
 			stats = reindexer.run(write_line=lambda line: LOGGER.info(line))

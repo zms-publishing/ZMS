@@ -56,7 +56,10 @@ The UI immediately redirects with:
 
 ## REST Tree Traversal
 
-Traversal starts at the base URL and uses:
+For a ZMI background job, traversal starts with the object on which the command
+was invoked, reindexes that node, and then visits its descendants. The standalone
+CLI continues to start from the base URL root by default. Child nodes are fetched
+through:
 
 ```
 GET {base_url}/++rest_api/{path}/list_child_nodes
@@ -74,8 +77,10 @@ Each node returns:
 
 Traversal rules:
 
-- Only nodes with `meta_id == "ZMS"` are **reindexed**
-- Only ZMS nodes are **descended into**
+- The ZMI job reindexes the invocation context first, then its descendants.
+- The CLI starts from the base URL root; programmatic callers may supply a
+  `start_path`.
+- Each discovered child node is reindexed and traversed.
 - Duplicate UIDs are skipped
 - Errors during traversal are logged but do not stop the job
 

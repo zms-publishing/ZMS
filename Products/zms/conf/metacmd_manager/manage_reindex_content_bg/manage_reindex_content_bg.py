@@ -33,15 +33,18 @@ class ZMSIndexSchematizedReindexer:
 	"""
 
 	def __init__(self, base_url, connector, uid='{$}', page_size=100, fileparsing=False,
-			start_path="", start_node=None, cancel_event=None,
+			start_nodes=None, cancel_event=None,
 			cancellation_file=None, progress_callback=None, meta_ids=None):
 		self.base_url = base_url.rstrip("/")
 		self.connector = connector.strip("/")
 		self.uid = uid
 		self.page_size = page_size
 		self.fileparsing = 1 if fileparsing else 0
-		self.start_path = start_path.strip("/")
-		self.start_node = start_node
+		# List of ZMS clients ({home_id, uid, meta_id, getPath}), each one is
+		# traversed on its own without descending into other clients.
+		# None: traverse the whole site from the root of base_url.
+		self.start_nodes = start_nodes
+		self.traversal_errors = 0
 		self.cancel_event = cancel_event
 		self.cancellation_file = cancellation_file
 		self.progress_callback = progress_callback
@@ -105,7 +108,8 @@ class ZMSIndexSchematizedReindexer:
 	def _meta_id_indexable(self, meta_id):
 		return self.meta_ids is None or meta_id in self.meta_ids
 
-	def _iter_index_nodes(self):
+	def _iter_client_nodes(self, client, seen):
+		"""Yield the indexable nodes of one client (sub-clients are not entered)."""
 
 		def fetch_children(path):
 			rest_path = path.strip("/")
@@ -114,17 +118,17 @@ class ZMSIndexSchematizedReindexer:
 			response.raise_for_status()
 			return response.json()
 
-		stack = [self.start_path]
-		seen = set()
-
-		if self.start_node is not None:
-			uid = self.start_node.get("uid")
-			node_path = self.start_node.get("getPath")
+		if client is None:
+			stack = [""]
+		else:
+			uid = client.get("uid")
+			node_path = client.get("getPath")
 			if not uid or not node_path:
-				raise ValueError("Starting context must include uid and getPath")
+				raise ValueError("Starting node must include uid and getPath")
+			stack = [node_path.strip("/")]
 			seen.add(uid)
-			if self._meta_id_indexable(self.start_node.get("meta_id")):
-				yield uid, self.start_node.get("meta_id"), node_path
+			if self._meta_id_indexable(client.get("meta_id")):
+				yield uid, client.get("meta_id"), node_path
 
 		while stack and not self._stop_requested():
 			path = stack.pop()
@@ -134,6 +138,7 @@ class ZMSIndexSchematizedReindexer:
 			except Exception as e:
 				if self._stop_requested():
 					return
+				self.traversal_errors += 1
 				LOGGER.error(f"REST error fetching children for {path}: {e}")
 				continue
 
@@ -145,6 +150,9 @@ class ZMSIndexSchematizedReindexer:
 				node_path = node.get("getPath")
 
 				if not uid or not node_path or uid in seen:
+					continue
+				# Other ZMS clients are reindexed only if selected themselves
+				if client is not None and meta_id == "ZMS":
 					continue
 				seen.add(uid)
 
@@ -165,13 +173,45 @@ class ZMSIndexSchematizedReindexer:
 			"failed": 0,
 			"skipped": 0,
 			"nodes_completed": 0,
+			"total_clients": len(self.start_nodes) if self.start_nodes else 0,
+			"total_nodes": _sum_expected(self.start_nodes),
+			"completed_clients": [],
+			"failed_clients": [],
 		}
 		self._report_progress(stats)
 
-		for uid, meta_id, node_path in self._iter_index_nodes():
+		clients = self.start_nodes if self.start_nodes else [None]
+		seen = set()
+		stopped = False
+		for client in clients:
+			if self._stop_requested():
+				break
+			errors_before = self.traversal_errors
+			failed_before = stats["failed"]
+			stopped = self._run_client(client, seen, stats, write_line)
+			if stopped:
+				break
+			if client is not None:
+				home_id = client.get("home_id")
+				if self.traversal_errors > errors_before or stats["failed"] > failed_before:
+					stats["failed_clients"].append(home_id)
+				else:
+					stats["completed_clients"].append(home_id)
+				write_line(f"Finished ZMS-node {home_id}")
+				self._report_progress(stats)
+
+		self._report_progress(
+			stats, state="stopped" if self._stop_requested() else "completed",
+			current_uid=None, current_path=None,
+		)
+		return stats
+
+	def _run_client(self, client, seen, stats, write_line):
+		"""Reindex one client; returns True if the run has been stopped."""
+		for uid, meta_id, node_path in self._iter_client_nodes(client, seen):
 			if self._stop_requested():
 				write_line("Stop requested; stopping reindex worker")
-				break
+				return True
 
 			stats["candidates"] += 1
 			client_path = "{$@%s}" % self._extract_client_path(node_path)
@@ -204,7 +244,7 @@ class ZMSIndexSchematizedReindexer:
 			except Exception as e:
 				if self._stop_requested():
 					write_line("Stop requested; stopping reindex worker")
-					break
+					return True
 				stats["failed"] += 1
 				stats["nodes_completed"] += 1
 				self._report_progress(
@@ -235,13 +275,9 @@ class ZMSIndexSchematizedReindexer:
 
 			if self._stop_requested():
 				write_line("Stop requested; stopping reindex worker")
-				break
+				return True
 
-		self._report_progress(
-			stats, state="stopped" if self._stop_requested() else "completed",
-			current_uid=None, current_path=None,
-		)
-		return stats
+		return self._stop_requested()
 
 
 
@@ -394,6 +430,13 @@ def _request_cancellation(base_url):
 	fd = os.open(cancellation_file, os.O_CREAT | os.O_WRONLY | os.O_TRUNC, 0o644)
 	os.close(fd)
 
+def _sum_expected(start_nodes):
+	"""Total of expected nodes, or None if any client count is unknown."""
+	counts = [node.get("expected") for node in start_nodes or []]
+	if not counts or any(count is None for count in counts):
+		return None
+	return sum(counts)
+
 def start(self):
 	import logging
 	LOGGER = logging.getLogger("Zope")
@@ -401,22 +444,50 @@ def start(self):
 	request = self.REQUEST
 	root = self.getRootElement()
 	base_url = root.absolute_url()
-	context_path = tuple(self.getPhysicalPath())
-	start_path = "/".join(str(part) for part in context_path if part)
-	if not start_path:
-		raise ValueError("Unable to determine current context path")
-	start_node = {
-		"uid": self.get_uid(),
-		"meta_id": self.meta_id,
-		"getPath": "/" + start_path,
-	}
+	# Only meta_ids configured in the catalog adapter are reindexed
 	catalog_adapter = root.getCatalogAdapter()
+	meta_ids = self.getMetaobjManager().getTypedMetaIds(catalog_adapter.getIds())
+	try:
+		zmsindex_catalog = self.getZMSIndex().get_catalog()
+	except Exception:
+		zmsindex_catalog = None
+
+	def count_nodes(node):
+		# Expected number of nodes to reindex, taken from the ZMSIndex catalog
+		if zmsindex_catalog is None:
+			return None
+		try:
+			return len(zmsindex_catalog({
+				"path": "/".join(str(part) for part in node.getPhysicalPath()),
+				"meta_id": list(meta_ids),
+			}))
+		except Exception:
+			LOGGER.exception("Unable to count nodes of %s", node.absolute_url())
+			return None
+
+	# ZMS clients selected in the sitemap, e.g. "{$portal/clientA@}"
+	home_ids = request.get("home_ids", [])
+	if isinstance(home_ids, str):
+		home_ids = [home_ids]
+	start_nodes = []
+	for home_id in dict.fromkeys(home_ids):
+		node = self.getLinkObj(home_id)
+		if node is None or getattr(node, "meta_id", None) != "ZMS":
+			LOGGER.warning("Skipping unresolvable ZMS-node %s", home_id)
+			continue
+		start_nodes.append({
+			"home_id": home_id,
+			"uid": node.get_uid(),
+			"meta_id": node.meta_id,
+			"getPath": "/" + "/".join(str(part) for part in node.getPhysicalPath() if part),
+			"expected": count_nodes(node),
+		})
+	if not start_nodes:
+		return "No ZMS-node selected"
 	catalog_connector = catalog_adapter.get_connectors()[0]
 	connector = request.get("connector", f"/{catalog_adapter.getId()}/{catalog_connector.getId()}/")
 	uid = request.get("uid", root.getRefObjPath(self.getDocumentElement()))
 	page_size = int(request.get("page_size", 1))
-	# Only meta_ids configured in the catalog adapter are reindexed
-	meta_ids = self.getMetaobjManager().getTypedMetaIds(catalog_adapter.getIds())
 	fileparsing = bool(request.get("fileparsing", False))
 
 	global RUN_IN_PROGRESS, RUN_LOCK_FD, RUN_JOB
@@ -446,6 +517,10 @@ def start(self):
 			"success": 0,
 			"failed": 0,
 			"skipped": 0,
+			"total_clients": len(start_nodes),
+			"total_nodes": _sum_expected(start_nodes),
+			"completed_clients": [],
+			"failed_clients": [],
 			"error": None,
 		}
 		try:
@@ -496,8 +571,7 @@ def start(self):
 				uid=uid,
 				page_size=page_size,
 				fileparsing=fileparsing,
-				start_path=start_path,
-				start_node=start_node,
+				start_nodes=start_nodes,
 				cancel_event=job["cancel_event"],
 				cancellation_file=cancellation_file,
 				progress_callback=update_progress,
@@ -572,7 +646,7 @@ def start(self):
 					RUN_LOCK_FD = None
 					RUN_IN_PROGRESS = False
 		raise
-	return "Background Job started"
+	return None # "Background Job started"
 
 def stop(self):
 	global RUN_IN_PROGRESS, RUN_LOCK_FD, RUN_JOB
@@ -624,6 +698,10 @@ def manage_reindex_content_bg(self):
 				"success": 0,
 				"failed": 0,
 				"skipped": 0,
+				"total_clients": 0,
+				"total_nodes": None,
+				"completed_clients": [],
+				"failed_clients": [],
 			}
 		request.response.setHeader(
 			"Content-Type", "application/json; charset=utf-8",
@@ -637,6 +715,12 @@ def manage_reindex_content_bg(self):
 		message = start(self)
 	elif btn == "BTN_STOP":
 		message = stop(self)
+	if btn in ("BTN_START", "BTN_STOP") and request.get("control") == "1":
+		request.response.setHeader(
+			"Content-Type", "application/json; charset=utf-8",
+		)
+		request.response.setHeader("Cache-Control", "no-store")
+		return json.dumps({"message": message})
 
 	connector_url = ''
 	try:
@@ -657,14 +741,44 @@ def manage_reindex_content_bg(self):
 	html.append(self.zmi_body_header(self,request))
 	html.append('<div id="zmi-tab">')
 	html.append(self.zmi_breadcrumbs(self,request,extra=[{'label':'Reindex Content','action':'manage_reindex_content'}]))
-	if message:
-		html.append('<div class="alert alert-info" role="alert">%s</div>'%standard.html_quote(message))
 	status_url = self.absolute_url() + "/manage_reindex_content_bg?status=1"
 	html.append("""
 		<form class="form-horizontal card" name="form0" method="post" enctype="multipart/form-data">
 			<input type="hidden" id="lang" name="lang" value="%s"/>
 			<legend>Background Reindexing</legend>
 			<div class="card-body">
+			 	<div class="form-group zmi-form-container zms4-row mb-0">
+					<div class="col-sm-12" data-label="ZMS-Nodes">
+						<div class="zmi-sitemap-controls-container">
+							<div class="btn-group zmi-sitemap-controls">
+								<div title="Expand Object Tree (Hint: Mind System Load in Case!)"
+									class="btn btn-secondary"
+									onclick="return zmiExpandObjectTree(-1);">
+									<i class="fas fa-plus-square"></i>
+								</div>
+								<div title="De-/Select All"
+									onclick="zmiToggleSelectionButtonClick(this)"
+									class="btn btn-secondary">
+									<i class="fas fa-check-square"></i>
+								</div>
+								<div title="Expand/Compress Sitemap View"
+									class="btn btn-secondary" id="zmi-sitemap-expand"
+									onclick="$('.zmi-sitemap-container').toggleClass('full');$('#zmi-sitemap-expand i').toggleClass('fa-expand-arrows-alt fa-compress-arrows-alt')">
+									<i class="fas fa-expand-arrows-alt"></i>
+								</div>
+							</div>
+							<div class="progress">
+								<div class="progress-bar progress-bar-striped"
+									role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%%">
+									<span></span>
+								</div>
+							</div>
+						</div>
+						<div class="zmi-sitemap-container">
+							<div class="zmi-sitemap"><!-- .zmi-sitemap --></div>
+						</div>
+					</div><!-- .col-sm-10 -->
+				</div><!-- .form-group -->
 				<div class="form-group row">
 					<label class="col-sm-2 control-label">Catalog Connector</label>
 					<div class="col-sm-10">
@@ -699,12 +813,109 @@ def manage_reindex_content_bg(self):
 		)
 	)
 	html.append("""
+		<style>
+			.zmi-sitemap li.zmi-reindex-done > a { color: var(--success, #28a745); }
+			.zmi-sitemap li.zmi-reindex-done > a::after {
+				content: " \\2713"; font-weight: bold;
+			}
+			.zmi-sitemap li.zmi-reindex-failed > a { color: var(--danger, #dc3545); }
+		</style>
 		<script>
+
+		// Sitemap-Helper
+		function zmiExpandObjectTree(max) {
+			var fn = function() {
+				var done = false;
+				$(".zmi-sitemap .toggle[title='+']").each(function() {
+					var $toggle = $(this);
+					var $parents = $toggle.parentsUntil(".zmi-sitemap","ul");
+					var $container = $($toggle.parents("li")[0]);
+					var level = $parents.length - 1;
+					if (level < max || -1 == max) {
+						$ZMI.objectTree.toggleClick($toggle,fn);
+						done = true;
+					}
+				});
+			}
+			fn();
+			return false;
+		}
+
+		// Progress bar: determinate if the expected number of nodes is known
+		function zmiSetProgress(status) {
+			var $bar = $(".zmi-sitemap-controls-container .progress .progress-bar");
+			var running = status.state === 'running' || status.state === 'stopping';
+			var total = status.total_nodes;
+			var done = status.nodes_completed || 0;
+			$bar.removeClass('bg-primary bg-success bg-warning bg-danger');
+			if (total) {
+				var perc = Math.min(100, Math.round(done / total * 1000) / 10);
+				if (status.state === 'completed') { perc = 100; }
+				$bar.attr('aria-valuenow', perc).css('width', perc + '%')
+					.find('span').text(perc + '% (' + done + ' / ' + total + ')');
+			} else {
+				$bar.attr('aria-valuenow', running ? 100 : 0)
+					.css('width', running ? '100%' : '0%')
+					.find('span').text(running ? done + ' nodes' : '');
+			}
+			$bar.toggleClass('progress-bar-striped progress-bar-animated', running);
+			$bar.addClass(
+				status.state === 'failed' ? 'bg-danger'
+				: status.state === 'stopped' || status.state === 'stopping' ? 'bg-warning'
+				: status.state === 'completed' ? 'bg-success' : 'bg-primary');
+		}
+
+		// Mark sitemap nodes: ZMS-nodes completed (or failed) so far
+		var reindexDone = [];
+		var reindexFailed = [];
+		function zmiMarkReindexed() {
+			$(".zmi-sitemap input[name='home_ids:list']").each(function() {
+				var $li = $(this).closest("li");
+				var val = $(this).val();
+				$li.toggleClass("zmi-reindex-done", reindexDone.indexOf(val) >= 0);
+				$li.toggleClass("zmi-reindex-failed", reindexFailed.indexOf(val) >= 0);
+			});
+		}
+
+		// On Document Ready
 		(function () {
+
+			// -------------------------------
+			// Initialize Sitemap
+			// -------------------------------
+			var href = $ZMI.get_document_element_url($ZMI.getPhysicalPath());
+			$ZMI.objectTree.init('.zmi-sitemap', href, {
+				params: {'meta_types':'ZMS'},
+				filter: x => x.meta_id === 'ZMS',
+				'init.callback': function() {
+					zmiExpandObjectTree(1);
+				},
+				'addPages.callback': function() {
+					console.log('addPages.callback')
+					$(".zmi-sitemap a:not(.checkboxed)").each(function() {
+						var $a = $(this);
+						var phys_path = $a.attr('href');
+						var href_manage = phys_path + '/manage';
+						$a.addClass("checkboxed")
+							.removeAttr('onclick')
+							.attr('target','_blank')
+							.attr('href',href_manage)
+							.attr('title',href_manage);
+						var uid = '{'+'$'+phys_path.substring(1).replace(/\\/content/gi,'@')+'}'; // $a.attr('data-uid');
+						$a.before('<input name="home_ids:list" type="checkbox" title="'+uid+'" value="'+uid+'" checked="checked" /> ');
+					});
+					zmiMarkReindexed();
+				},
+			});
+
+			// -------------------------------
+			// Handle Status
+			// -------------------------------
 			const panel = document.getElementById('reindex-status');
 			const statusUrl = panel.dataset.statusUrl;
 			let polling = false;
 			let timer = null;
+			let lastMessage = '';
 
 			async function refreshStatus() {
 				if (polling) return;
@@ -719,15 +930,33 @@ def manage_reindex_content_bg(self):
 						throw new Error('HTTP ' + response.status);
 					}
 					const status = await response.json();
-					const lines = [
+					const lines = [];
+					if (lastMessage) {
+						lines.push(lastMessage);
+					}
+					lines.push(
 						'State: ' + status.state,
-						'Nodes processed: ' + (status.nodes_completed || 0) +
-							' (total unknown)',
+						'ZMS-nodes completed: ' + (status.completed_clients || []).length +
+							' / ' + (status.total_clients || 0),
+						'Content nodes processed: ' + (status.nodes_completed || 0) +
+							(status.total_nodes ? ' / ' + status.total_nodes + ' expected' : ' (total unknown)'),
 						'Catalog objects collected: ' + (status.objects || 0) +
 							' (one per node and language, plus file parts)',
 						'Catalog objects added: ' + (status.success || 0) +
 							' / failed: ' + (status.failed || 0)
-					];
+					);
+					zmiSetProgress(status);
+					reindexDone = status.completed_clients || [];
+					reindexFailed = status.failed_clients || [];
+					zmiMarkReindexed();
+					if (reindexDone.length) {
+						lines.push('Completed ZMS-nodes:');
+						reindexDone.forEach(function(id) { lines.push('  ' + id); });
+					}
+					if (reindexFailed.length) {
+						lines.push('ZMS-nodes with errors:');
+						reindexFailed.forEach(function(id) { lines.push('  ' + id); });
+					}
 					if (status.current_path) {
 						lines.push('Current: ' + status.current_path);
 					}
@@ -759,8 +988,47 @@ def manage_reindex_content_bg(self):
 				}
 			}
 
-			refreshStatus();
-			timer = setInterval(refreshStatus, 2000);
+			function startPolling() {
+				if (!timer) {
+					timer = setInterval(refreshStatus, 2000);
+				}
+				refreshStatus();
+			}
+
+			// Submit Start/Stop in the background, so that the sitemap keeps
+			// its expansion and selection (Zope reads form data from POST, not PUT)
+			const form = document.forms['form0'];
+			form.addEventListener('submit', async function(event) {
+				event.preventDefault();
+				const submitter = event.submitter;
+				if (!submitter || !submitter.value) return;
+				const data = new FormData(form);
+				data.set('btn', submitter.value);
+				data.set('control', '1');
+				const buttons = form.querySelectorAll('button[name=btn]');
+				buttons.forEach(b => b.disabled = true);
+				try {
+					const response = await fetch(form.getAttribute('action') || window.location.pathname, {
+						method: 'POST',
+						body: data,
+						credentials: 'same-origin',
+						cache: 'no-store',
+						headers: {'Accept': 'application/json'}
+					});
+					if (!response.ok) {
+						throw new Error('HTTP ' + response.status);
+					}
+					const result = await response.json();
+					lastMessage = result.message || '';
+				} catch (error) {
+					lastMessage = 'Request failed: ' + error.message;
+				} finally {
+					buttons.forEach(b => b.disabled = false);
+				}
+				startPolling();
+			});
+
+			startPolling();
 		})();
 		</script>
 	""")

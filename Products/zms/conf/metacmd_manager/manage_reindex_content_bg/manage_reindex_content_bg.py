@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
 Unified ZMS reindexer:
-- Pure REST-based reindexer (no Zope dependencies)
 - Zope external method: manage_reindex_content_bg(self)
+- REST-based reindexer
 - CLI runner: python3 manage_reindex_content_bg.py BASE_URL [--connector ...]
 """
 
@@ -23,18 +23,18 @@ logging.basicConfig(level=logging.INFO)
 
 
 # ======================================================================
-# 1) PURE REST REINDEXER (Zope-free)
+# 1) REST-based REINDEXER
 # ======================================================================
 
 class ZMSIndexSchematizedReindexer:
 	"""
-	Pure REST-based reindexer.
+	REST-based reindexer.
 	Works standalone or inside Zope.
 	"""
 
 	def __init__(self, base_url, connector, uid='{$}', page_size=100, fileparsing=False,
-				 start_path="", start_node=None, cancel_event=None,
-				 cancellation_file=None, progress_callback=None):
+			start_path="", start_node=None, cancel_event=None,
+			cancellation_file=None, progress_callback=None, meta_ids=None):
 		self.base_url = base_url.rstrip("/")
 		self.connector = connector.strip("/")
 		self.uid = uid
@@ -45,9 +45,10 @@ class ZMSIndexSchematizedReindexer:
 		self.cancel_event = cancel_event
 		self.cancellation_file = cancellation_file
 		self.progress_callback = progress_callback
+		# None: reindex every node; otherwise only nodes with these meta_ids
+		self.meta_ids = None if meta_ids is None else set(meta_ids)
 
-	def _report_progress(self, stats, state="running", current_uid=None,
-						 current_path=None):
+	def _report_progress(self, stats, state="running", current_uid=None, current_path=None):
 		if self.progress_callback is not None:
 			self.progress_callback(
 				stats, state=state, current_uid=current_uid,
@@ -101,6 +102,9 @@ class ZMSIndexSchematizedReindexer:
 	# REST tree traversal
 	# ------------------------------------------------------------------
 
+	def _meta_id_indexable(self, meta_id):
+		return self.meta_ids is None or meta_id in self.meta_ids
+
 	def _iter_index_nodes(self):
 
 		def fetch_children(path):
@@ -119,7 +123,8 @@ class ZMSIndexSchematizedReindexer:
 			if not uid or not node_path:
 				raise ValueError("Starting context must include uid and getPath")
 			seen.add(uid)
-			yield uid, self.start_node.get("meta_id"), node_path
+			if self._meta_id_indexable(self.start_node.get("meta_id")):
+				yield uid, self.start_node.get("meta_id"), node_path
 
 		while stack and not self._stop_requested():
 			path = stack.pop()
@@ -143,7 +148,8 @@ class ZMSIndexSchematizedReindexer:
 					continue
 				seen.add(uid)
 
-				yield uid, meta_id, node_path
+				if self._meta_id_indexable(meta_id):
+					yield uid, meta_id, node_path
 				stack.append(node_path.lstrip("/"))
 
 	# ------------------------------------------------------------------
@@ -409,6 +415,8 @@ def start(self):
 	connector = request.get("connector", f"/{catalog_adapter.getId()}/{catalog_connector.getId()}/")
 	uid = request.get("uid", root.getRefObjPath(self.getDocumentElement()))
 	page_size = int(request.get("page_size", 1))
+	# Only meta_ids configured in the catalog adapter are reindexed
+	meta_ids = self.getMetaobjManager().getTypedMetaIds(catalog_adapter.getIds())
 	fileparsing = bool(request.get("fileparsing", False))
 
 	global RUN_IN_PROGRESS, RUN_LOCK_FD, RUN_JOB
@@ -493,6 +501,7 @@ def start(self):
 				cancel_event=job["cancel_event"],
 				cancellation_file=cancellation_file,
 				progress_callback=update_progress,
+				meta_ids=meta_ids,
 			)
 
 			stats = reindexer.run(write_line=lambda line: LOGGER.info(line))
@@ -683,7 +692,12 @@ def manage_reindex_content_bg(self):
 				<pre id="reindex-status" class="zmi-log d-none" role="status" data-status-url="%s" title="Reindex Status"></pre>
 			</div><!-- .card-body -->
 		</form>
-	"""%(request['lang'], standard.html_quote(connector_url), standard.html_quote(status_url)))
+	"""%(
+			request.get('lang',self.getPrimaryLanguage()),
+			standard.html_quote(connector_url),
+			standard.html_quote(status_url)
+		)
+	)
 	html.append("""
 		<script>
 		(function () {
@@ -770,6 +784,7 @@ def main():
 	parser.add_argument("--uid", help="Start UID, default: start from root {$}", default="{$}")
 	parser.add_argument("--page-size", type=int, default=100)
 	parser.add_argument("--fileparsing", action="store_true")
+	parser.add_argument("--meta-ids", nargs="+", help="Reindex only these meta_ids (default: all nodes)")
 	args = parser.parse_args()
 
 	reindexer = ZMSIndexSchematizedReindexer(
@@ -778,6 +793,7 @@ def main():
 		uid=args.uid,
 		page_size=args.page_size,
 		fileparsing=args.fileparsing,
+		meta_ids=args.meta_ids,
 	)
 
 	print("Starting reindex…")

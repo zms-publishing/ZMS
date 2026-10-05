@@ -64,8 +64,14 @@ Rules:
   `list_child_nodes`), then its descendants. Its UID is registered as seen.
 - **CLI:** no start node is passed, so traversal starts at the root of `base_url`.
   Programmatic callers may pass `start_path` and `start_node` to the class.
-- Every returned child is reindexed (there is no `meta_id` filter) and its
-  `getPath` is pushed on the stack.
+- Every returned child's `getPath` is pushed on the stack, so the whole tree is
+  walked, but only nodes whose `meta_id` is allowed are sent to `reindex_page`:
+  - **ZMI:** the meta ids configured in the catalog adapter
+    (`getTypedMetaIds(catalog_adapter.getIds())`, e.g. pages and `ZMSFile`);
+    blocks such as `ZMSTextarea` are not reindexed. The adapter's custom filter
+    function (e.g. visibility) is still applied by the connector itself.
+  - **CLI:** all nodes, unless `--meta-ids` is given.
+  - Nodes that are walked but not reindexed do not count as `candidates`.
 - Entries without `uid` or `getPath`, and duplicate UIDs, are skipped.
 - A failed `list_child_nodes` request is logged and that branch is skipped; the
   job continues.
@@ -203,7 +209,7 @@ python3 manage_reindex_content_bg.py http://127.0.0.1:8080/myzmsx/content \
 ```
 
 - Options: `--connector`, `--uid` (accepted, not scoping), `--page-size` (default `100`),
-  `--fileparsing`.
+  `--fileparsing`, `--meta-ids`.
 - Traversal starts at the root of the given base URL.
 - Progress lines and the final `Summary:` are printed to stdout.
 - The CLI has no lock, stop marker or status record; stop it with Ctrl‑C.

@@ -2,279 +2,237 @@
 
 ## Purpose
 
-This module implements **asynchronous, paged content reindexing** for ZMS.  
-It uses a **pure REST traversal** to discover ZMS nodes and calls the configured search connector (e.g., OpenSearch) to reindex content in pages.
+`manage_reindex_content_bg.py` reindexes ZMS content for the configured search
+connector (e.g. ZCatalog or OpenSearch) as an **asynchronous background job**.
+It discovers nodes through the ZMS **REST API** and asks the connector to
+reindex each node through its `reindex_page` endpoint.
 
-The implementation consists of:
+The file contains three parts:
 
-- `ZMSIndexSchematizedReindexer` — standalone REST reindexer (no Zope required)
-- `manage_reindex_content_bg` — Zope external method running the reindexer in a background thread
-- CLI runner for local/manual reindexing
+- `ZMSIndexSchematizedReindexer` — REST reindexer; it needs only `requests`, not Zope
+- `start`, `stop` and `manage_reindex_content_bg` — Zope external-method code that runs the
+  reindexer in a background thread, controls it and renders the ZMI page
+- `main()` — command-line runner for standalone use
 
----
-
-## Architecture Overview
-
-### Components
-
-- **REST tree traversal** (`++rest_api/.../list_child_nodes`)
-- **Paged reindexing** via `reindex_page`
-- **Threaded background worker** inside Zope
-- **Cross‑process locking** to prevent concurrent runs
-- **Shared JSON status record** polled by the ZMI page
-- **CLI tool** for standalone operation
+The meta-command is declared in `__init__.yaml` for the meta types `ZMS` and
+`ZMSFolder` and for the role `ZMSAdministrator`.
 
 ---
 
-## High‑Level Flow
+## High‑Level Flow (ZMI)
 
-### Zope Background Job (`manage_reindex_content_bg`)
+1. The user opens **Reindex Content (Background)** on a ZMS node and sets the
+   *Page Size* (default `1`: one node per connector call).
+2. **Start** (`btn=BTN_START`) calls `start(self)`, which:
+   - takes the **current context** as the starting node (physical path, UID, `meta_id`),
+   - resolves the connector from the root's catalog adapter (first connector),
+   - acquires the single‑flight lock (see below); if it is held, the page shows
+     “Background Job is already running”,
+   - creates a fresh status record and starts a **daemon thread**.
+3. The worker thread creates a `ZMSIndexSchematizedReindexer` and runs it. It
+   logs through the `Zope` logger and writes progress to the status record.
+4. When the run ends (completed, stopped or failed) the worker writes the final
+   state, removes the stop marker and releases the lock.
+5. `start` returns only a message; the page is re-rendered directly (no redirect),
+   so the request never waits for the job.
 
-1. User triggers reindexing from Zope UI (`manage_main`) or via code.
-2. A **single‑flight lock** ensures only one job per base URL runs at a time:
-   - in‑process lock (`RUN_LOCK`)
-   - cross‑process lock (`fcntl` lockfile)
-3. A **daemon worker thread** is started.
-4. The worker opens a fresh Zope context:
-   - `Zope2.app()`
-   - `makerequest(app)`
-   - `newSecurityManager(..., system_user)`
-5. The worker instantiates `ZMSIndexSchematizedReindexer`.
-6. `reindexer.run()`:
-   - traverses REST tree
-   - yields only nodes with `meta_id == "ZMS"`
-   - calls `reindex_page` for each UID
-   - aggregates statistics (`success`, `failed`, `objects`, etc.)
-7. Final statistics are logged via Zope’s logger.
-8. Locks are released and the job ends.
-
-Clicking **Stop** signals the worker to stop before it starts another traversal
-or reindex request and releases the run lock immediately when the stop request
-reaches the process running the worker. A REST request already in progress may
-finish before the worker exits. If the stop request reaches another Zope
-process, it writes a cancellation marker; the worker observes it at its next
-checkpoint and releases its own lock. The per-run `.lock` file is removed when
-the lock is released.
-
-The UI immediately redirects with an informational start/stop message. While a
-job holds the run lock, the page also shows **“Background Job is running”**;
-that status appears immediately after a successful start and is not a warning.
-If a start is attempted while another job is active, the message is
-**“Background Job is already running”**.
+The worker does **not** open its own Zope application, request or security
+context, and it does not touch the ZODB. All work happens through HTTP calls
+(`requests.get`) to the site's own `base_url` (`root.absolute_url()`), so the
+REST API and the connector endpoints must be reachable from the Zope server
+itself. These calls carry no credentials.
 
 ---
 
 ## REST Tree Traversal
 
-For a ZMI background job, traversal starts with the object on which the command
-was invoked, reindexes that node, and then visits its descendants. The standalone
-CLI continues to start from the base URL root by default. Child nodes are fetched
-through:
+Traversal is a depth‑first walk using a stack of node paths:
 
 ```
 GET {base_url}/++rest_api/{path}/list_child_nodes
 ```
 
-Each node returns:
+Each child entry provides the fields used:
 
 ```json
-{
-  "uid": "...",
-  "meta_id": "ZMSDocument",
-  "getPath": "/myzms/content/e1/e2"
-}
+{ "uid": "...", "meta_id": "ZMSDocument", "getPath": "/myzms/content/e1/e2" }
 ```
 
-Traversal rules:
+Rules:
 
-- The ZMI job reindexes the invocation context first, then its descendants.
-- The CLI starts from the base URL root; programmatic callers may supply a
-  `start_path`.
-- Each discovered child node is reindexed and traversed.
-- Duplicate UIDs are skipped
-- Errors during traversal are logged but do not stop the job
+- **ZMI:** the invocation context is reindexed first (it is not returned by
+  `list_child_nodes`), then its descendants. Its UID is registered as seen.
+- **CLI:** no start node is passed, so traversal starts at the root of `base_url`.
+  Programmatic callers may pass `start_path` and `start_node` to the class.
+- Every returned child is reindexed (there is no `meta_id` filter) and its
+  `getPath` is pushed on the stack.
+- Entries without `uid` or `getPath`, and duplicate UIDs, are skipped.
+- A failed `list_child_nodes` request is logged and that branch is skipped; the
+  job continues.
+- The constructor argument `uid` (CLI `--uid`, request field `uid`) is accepted
+  but **does not scope** the run; scope comes only from the start node/path.
 
 ---
 
 ## Reindexing API
 
-For each UID, the worker calls:
+For every discovered node the worker calls:
 
 ```
-GET {connector}/reindex_page
+GET {base_url}/{connector}/reindex_page
 ```
 
-Query parameters:
+with the query parameters
 
-| Parameter        | Meaning |
-|------------------|---------|
-| `uid`            | Node UID (connector-specific formatting) |
-| `page_size:int`  | Page size for paged reindexing |
-| `clients:int`    | Always `0` in this implementation |
-| `fileparsing:int`| `0` or `1` depending on CLI/UI flag |
+| Parameter         | Meaning |
+|-------------------|---------|
+| `uid`             | Client path of the node as `{$@<path>}` (see below) |
+| `page_size:int`   | Page size passed to the connector |
+| `clients:int`     | Always `0` |
+| `fileparsing:int` | `1` if file parsing is enabled, else `0` (the ZMI page has no field for it; it can be set with a `fileparsing` request value; CLI: `--fileparsing`) |
 
-Example:
+The `uid` value is built from the node's physical path: the first segment (the
+ZMS root object) and a leading or trailing `content` segment are removed, and
+`/content/` inside the path becomes `@`. For example `/myzms/content/e1/content/e2`
+yields `{$@e1@e2}`.
 
-```
-GET http://127.0.0.1:8080/myzmsx/content/zcatalog_adapter/zcatalog_connector/reindex_page
-    ?uid={$uid:2d5dd14c-4fb0-4e79-8d9b-dd795a65cc0b}
-    &page_size=10
-```
-
-Expected response:
+The connector is expected to answer with JSON like:
 
 ```json
 {
   "success": 3,
   "failed": 1,
-  "log": [
-    {
-      "index": 0,
-      "path": "/myzms/content/e1/e2",
-      "meta_id": "ZMSDocument",
-      "objects": { "lang": 4 }
-    }
-  ],
+  "log": [ { "index": 0, "path": "...", "meta_id": "ZMSDocument",
+             "objects": { "lang": 4 }, "success": 3, "failed": 1 } ],
   "next_node": "{$uid:68eeb9a5-c69e-4d0f-8869-b07f07e18d1a}"
 }
 ```
 
-The reindexer aggregates:
+The payload is parsed as JSON, then via `json.loads`, then `ast.literal_eval`.
+`next_node` is only logged; the worker does not follow it, because the node
+traversal supplies the next node itself.
 
-- number of candidates
-- number of REST requests
-- number of objects processed
-- success/failed counts
+Counters kept per run:
+
+| Counter           | Meaning |
+|-------------------|---------|
+| `candidates`      | Nodes discovered and handed to reindexing so far (not a total) |
+| `requests`        | `reindex_page` calls started |
+| `nodes_completed` | Nodes whose call has finished (successfully or with error) |
+| `objects`         | Sum of the largest per-language object count of each log entry |
+| `success`/`failed`| Connector's top‑level `success`/`failed`, or the sum of the log entries if absent; an exception counts as one failure |
+| `skipped`         | Reserved; currently always `0` |
 
 ---
 
-## Concurrency & Safety
+## Status Record & Polling
 
-### In‑Process Lock
-
-A global Python lock prevents multiple threads inside the same Zope instance:
-
-```python
-RUN_LOCK = threading.Lock()
-RUN_IN_PROGRESS = False
-```
-
-### Cross‑Process Lock
-
-A lockfile prevents multiple Zope processes from running the job simultaneously:
+The worker publishes progress in a JSON file shared by all Zope processes:
 
 ```
-/tmp/zms_reindex_<sanitized-base-url>.lock
+{tempdir}/zms_reindex_<sanitized-base-url>.lock.status.json
 ```
 
-Acquired via:
+It holds `job_id`, `state`, `started_at`, `updated_at`, `finished_at`,
+`current_uid`, `current_path`, the counters above and `error`. Reads take a
+shared `flock`, writes an exclusive one; a stale worker (different `job_id`)
+cannot overwrite a newer run's record. The file is kept after the run so the
+final result stays visible.
 
-```python
-fcntl.flock(fd, LOCK_EX | LOCK_NB)
-```
+States: `idle` (no record), `running`, `stopping`, `stopped`, `completed`, `failed`.
 
-Acquisition, status checks, and removal are serialized by a stable sibling
-`.guard` lockfile. The `.guard` file remains on disk; the per-run `.lock` file
-is removed when the run ends or is stopped.
+The command also answers `manage_reindex_content_bg?status=1` with this record as
+JSON (`Cache-Control: no-store`). The ZMI page shows a status panel and polls that
+URL every two seconds, stopping once the state is no longer `running` or
+`stopping`. Because the node total is unknown during traversal, only counts are
+shown, not a percentage.
 
-A sibling `.stop` marker communicates cancellation when the UI request is
-handled by a different Zope process. It is removed when that worker exits or
-when a subsequent run starts.
+---
 
-### Thread‑Safe Zope Context
+## Stop
 
-The worker:
+**Stop** (`btn=BTN_STOP`) calls `stop(self)`:
 
-- opens a fresh Zope app
-- creates a new request
-- installs a system user security manager
-- aborts transactions after each run
-- closes DB connections cleanly
+- If the job runs in **this Zope process**: its cancel event is set, the status
+  becomes `stopping`, and the run lock is released **immediately**, which removes
+  the lock file. A connector request already in flight may still finish; the
+  worker stops before the next traversal or `reindex_page` request and records
+  `stopped`. A new run can start straight away; its status record is protected
+  from the old worker by the `job_id` check, but one outstanding request of the
+  old run may overlap with it.
+- If the lock is held by **another process**: a `.stop` marker file is created and
+  the status becomes `stopping`. That worker sees the marker at its next
+  checkpoint, ends, and releases its own lock.
+- Otherwise the page reports “No background job is running”.
 
-This ensures the background job does not interfere with the request thread.
+---
+
+## Concurrency & Files
+
+Only one job per `base_url` may run at a time:
+
+- **In‑process:** `RUN_LOCK` (a `threading.Lock`) serializes start/stop/cleanup;
+  `RUN_JOB`, `RUN_LOCK_FD` and `RUN_IN_PROGRESS` track the job of this process.
+- **Cross‑process:** an exclusive `flock` on a run lock file. The kernel releases
+  it if the process dies, so a crash leaves no permanently stuck lock.
+
+Files in the system temporary directory (all processes serving the site must see
+the same directory):
+
+| File | Purpose |
+|------|---------|
+| `zms_reindex_<url>.lock` | Run lock; exists only while a job holds the lock |
+| `zms_reindex_<url>.lock.guard` | Permanent helper lock serializing creation, check and removal of the run lock file, so removal cannot race with a new start |
+| `zms_reindex_<url>.lock.stop` | Cancellation marker for stops from another process |
+| `zms_reindex_<url>.lock.status.json` | Status record |
+
+`<url>` is `root.absolute_url()` with every non‑alphanumeric character replaced
+by `_`. The ZMI page treats a held lock file as “Background Job is running”.
 
 ---
 
 ## CLI Runner
 
-The script can run standalone without Zope:
+The script can run without Zope:
 
 ```
-src/zms/Products/zms/conf/metacmd_manager/manage_reindex_content_bg$ python3 manage_reindex_content_bg.py http://127.0.0.1:8080/myzmsx/content \
+python3 manage_reindex_content_bg.py http://127.0.0.1:8080/myzmsx/content \
     --connector /zcatalog_adapter/zcatalog_connector/ \
-    --uid {$} \
     --page-size 100 \
     --fileparsing
 ```
 
-CLI behavior:
-
-- prints progress to stdout
-- prints final summary
-- uses the same REST traversal and reindexing logic
+- Options: `--connector`, `--uid` (accepted, not scoping), `--page-size` (default `100`),
+  `--fileparsing`.
+- Traversal starts at the root of the given base URL.
+- Progress lines and the final `Summary:` are printed to stdout.
+- The CLI has no lock, stop marker or status record; stop it with Ctrl‑C.
 
 ---
 
 ## Logging
 
-Both Zope and CLI modes log:
-
-- start/end markers
-- each UID being processed
-- REST logs returned by the connector
-- aggregated statistics
-
-Zope logs use `logging.getLogger("Zope")`.  
-CLI logs use `logging.getLogger("ZMSReindex")`.
+- Zope: every progress line goes to the `Zope` logger, including start, the
+  per‑node lines (`Reindexing UID=...`), connector `LOG` entries, `Success=...`,
+  stop notices and the final statistics (or the traceback on failure).
+- CLI: the same lines are printed to stdout.
+- Traversal errors are logged by the `ZMSReindex` logger in both modes.
 
 ---
 
-## Return Behavior of `manage_reindex_content_bg`
+## Troubleshooting
 
-The external method **never waits** for the job to finish.
-
-It immediately returns to the UI. A successful start reports
-`Background Job started`; a start attempt while another run holds the lock
-reports `Background Job is already running`. While the lock is held, the page
-shows the informational status `Background Job is running`.
-
-The actual work happens in the background thread.
-
-### Live status and counters
-
-The worker writes a shared JSON status record in the system temporary directory
-(`zms_reindex_<sanitized-base-url>.lock.status.json`). Reads and writes are
-serialized with `flock` on the status file. This record is separate from the
-run lock and remains after completion so the UI can display the final result.
-The `?status=1` response from this command returns the record as JSON; the ZMI
-page polls it every two seconds. All Zope processes serving this site must see
-the same temporary directory for cross-process status and cancellation to work.
-
-The page displays the current state, current UID and path, requests, completed
-nodes, objects, success and failure counts. `candidates` counts nodes
-encountered so far, not the total number of nodes in the subtree; traversal is
-incremental, so the UI does not claim a completion percentage. Status records include
-`started_at`, `updated_at`, and (after termination) `finished_at`. Connector
-success/failure counts use top-level response values when available, falling
-back to totals from the response log to avoid counting both.
-
----
-
-## Troubleshooting Checklist
-
-1. **Job does not start**  
-   Check lockfile in `/tmp` and Zope logs for lock contention.
-
-2. **No nodes found**  
-   Test REST traversal manually:  
-   `GET base_url/++rest_api//list_child_nodes`
-
-3. **Connector errors**  
-   Inspect connector logs for mapping/bulk/indexing failures.
-
-4. **REST payload errors**  
-   The reindexer attempts JSON → `json.loads` → `ast.literal_eval`.  
-   If all fail, the raw payload is logged.
-
-5. **Performance issues**  
-   Increase `page_size` or disable `fileparsing`.
+1. **“Already running” but nothing runs**
+   Check the lock/status files in the temp directory; a held lock means a live
+   process owns it. Use **Stop**, which also works from another process.
+2. **Job ends immediately / no nodes**
+   Test `GET {base_url}/++rest_api//list_child_nodes`; check for HTTP errors in
+   the `ZMSReindex` log (the calls are unauthenticated).
+3. **Connector errors**
+   Look at the `ERROR calling REST API` lines and the connector logs.
+4. **Invalid REST payload**
+   The first 240 characters of the payload are included in the error.
+5. **Status not updating in the UI**
+   Confirm that all Zope processes use the same temporary directory.
+6. **Performance**
+   Increase *Page Size* or disable file parsing.

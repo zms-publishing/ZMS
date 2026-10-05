@@ -125,7 +125,7 @@ Counters kept per run:
 | `candidates`      | Nodes discovered and handed to reindexing so far (not a total) |
 | `requests`        | `reindex_page` calls started |
 | `nodes_completed` | Nodes whose call has finished (successfully or with error) |
-| `objects`         | Sum of the largest per-language object count of each log entry |
+| `objects`         | Catalog objects the connector collected: sum of the per-language counts of all log entries |
 | `success`/`failed`| Connector's top‑level `success`/`failed`, or the sum of the log entries if absent; an exception counts as one failure |
 | `skipped`         | Reserved; currently always `0` |
 

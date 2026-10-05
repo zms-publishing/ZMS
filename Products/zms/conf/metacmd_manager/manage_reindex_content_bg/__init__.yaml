@@ -8,7 +8,7 @@ manage_reindex_content_bg:
     - ZMSFolder
   name: Reindex Content (Background)
   nodes: '{$}'
-  revision: 0.0.12
+  revision: 0.0.13
   roles:
     - ZMSAdministrator
   title: Reindex All Contents as Background-Process

@@ -216,7 +216,7 @@ class ZMSIndexSchematizedReindexer:
 			logs = payload.get("log", [])
 			for entry in logs:
 				objects = entry.get("objects", {})
-				stats["objects"] += max(objects.values()) if objects else 0
+				stats["objects"] += sum(objects.values())
 			stats["nodes_completed"] += 1
 			self._report_progress(
 				stats, current_uid=uid, current_path=node_path,
@@ -721,12 +721,12 @@ def manage_reindex_content_bg(self):
 					const status = await response.json();
 					const lines = [
 						'State: ' + status.state,
-						'Nodes completed: ' + (status.nodes_completed || 0) +
-							' (' + (status.candidates || 0) + ' discovered; total unknown)',
-						'Requests: ' + (status.requests || 0),
-						'Objects: ' + (status.objects || 0),
-						'Success: ' + (status.success || 0) +
-							' / Failed: ' + (status.failed || 0)
+						'Nodes processed: ' + (status.nodes_completed || 0) +
+							' (total unknown)',
+						'Catalog objects collected: ' + (status.objects || 0) +
+							' (one per node and language, plus file parts)',
+						'Catalog objects added: ' + (status.success || 0) +
+							' / failed: ' + (status.failed || 0)
 					];
 					if (status.current_path) {
 						lines.push('Current: ' + status.current_path);

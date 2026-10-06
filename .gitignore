@@ -12,6 +12,7 @@ Products/zms/overrides.zcml
 
 /.idea/
 /**/BAK/*
+**/var/*
 
 dist/
 build/

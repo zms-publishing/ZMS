@@ -215,3 +215,43 @@ class StartJobTest(unittest.TestCase):
 
   def test_start_without_client(self):
     self.assertEqual('No ZMS-node selected', ZMSZCatalogAdapterQueue.start(self.root, [], key=self.key))
+
+
+class AdapterEndpointsTest(StartJobTest):
+  """Adapter API and the manage_reindex_* endpoints on top of the job."""
+
+  def _request(self, method='POST', **form):
+    request = self.root.REQUEST
+    request.other['REQUEST_METHOD'] = method
+    for k, v in form.items():
+      request.set(k, v)
+    return request
+
+  def test_start_and_status_endpoints(self):
+    import json
+    adapter = self.root.getCatalogAdapter()
+    adapter.get_reindex_job_key = lambda: self.key
+    self.assertEqual('idle', json.loads(adapter.manage_reindex_status(self._request('GET')))['state'])
+    result = json.loads(adapter.manage_reindex_start(self._request(home_ids=['{$}'], page_size='5')))
+    self.assertEqual({'message': None}, result)
+    status = self._wait()
+    self.assertEqual('completed', status['state'])
+    self.assertTrue(status['success'] > 0)
+    self.assertEqual(status['success'], json.loads(adapter.manage_reindex_status(self._request('GET')))['success'])
+
+  def test_state_changes_require_post(self):
+    import json
+    adapter = self.root.getCatalogAdapter()
+    adapter.get_reindex_job_key = lambda: self.key
+    for endpoint in (adapter.manage_reindex_start, adapter.manage_reindex_pause,
+                     adapter.manage_reindex_proceed, adapter.manage_reindex_stop):
+      result = json.loads(endpoint(self._request('GET', home_ids=['{$}'])))
+      self.assertEqual('POST required', result['message'])
+    self.assertEqual('idle', adapter.get_reindex_job_status()['state'])
+
+  def test_control_without_job(self):
+    import json
+    adapter = self.root.getCatalogAdapter()
+    adapter.get_reindex_job_key = lambda: self.key
+    for endpoint in (adapter.manage_reindex_pause, adapter.manage_reindex_proceed, adapter.manage_reindex_stop):
+      self.assertEqual('No background job is running', json.loads(endpoint(self._request()))['message'])

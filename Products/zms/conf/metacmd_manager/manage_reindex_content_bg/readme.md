@@ -1,5 +1,13 @@
 # Content Reindexing (REST‑based) — Background Job & CLI
 
+> **Since 0.2.0** the job (worker thread, lock, status, pause/stop) is implemented
+> in ZMS core (`ZMSZCatalogAdapterQueue`, endpoints `manage_reindex_start|status|pause|proceed|stop`
+> on the catalog adapter). The worker runs in-process with its own ZODB connection and no longer calls
+> the REST API over HTTP. This command is only the UI and delegates to
+> `getCatalogAdapter().start_reindex_job()` etc.; the sections below on HTTP/REST
+> traversal describe the legacy design and the CLI client. Lock and status file names are unchanged.
+
+
 ## Purpose
 
 `manage_reindex_content_bg.py` reindexes ZMS content for the configured search

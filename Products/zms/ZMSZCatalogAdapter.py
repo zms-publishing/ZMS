@@ -13,6 +13,7 @@ Organization: ZMS Publishing
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import contextlib
 import copy
+import json
 import time
 from datetime import datetime, timezone
 import zope.interface
@@ -180,6 +181,8 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     # -----------------------
     __administratorPermissions__ = (
         'manage_changeProperties', 'manage_main',
+        'manage_reindex_start', 'manage_reindex_status', 'manage_reindex_pause',
+        'manage_reindex_proceed', 'manage_reindex_stop',
         )
     __ac_permissions__=(
         ('ZMS Administrator', __administratorPermissions__),
@@ -296,6 +299,81 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
       except:
         standard.writeError( self, "can't reindex_node")
         return False
+
+    # --------------------------------------------------------------------------
+    #  Background reindex job (see ZMSZCatalogAdapterQueue).
+    #  The job key is the root url, so there is one job per ZMS site.
+    # --------------------------------------------------------------------------
+    def get_reindex_job_key(self):
+      """Return the key identifying the reindex job of this site."""
+      return self.getRootElement().absolute_url()
+
+    def start_reindex_job(self, home_ids, connector_id=None, page_size=1, fileparsing=False):
+      """Start the reindex job for the given ZMS clients. Returns None if started, else a message."""
+      from Products.zms import ZMSZCatalogAdapterQueue
+      return ZMSZCatalogAdapterQueue.start(
+        self.getRootElement(), home_ids, key=self.get_reindex_job_key(),
+        connector_id=connector_id, page_size=page_size, fileparsing=fileparsing)
+
+    def get_reindex_job_status(self):
+      """Return the status dict of the reindex job."""
+      from Products.zms import ZMSZCatalogAdapterQueue
+      return ZMSZCatalogAdapterQueue.get_status(self.get_reindex_job_key())
+
+    def pause_reindex_job(self):
+      """Pause the reindex job. Returns a message."""
+      from Products.zms import ZMSZCatalogAdapterQueue
+      return ZMSZCatalogAdapterQueue.pause(self.get_reindex_job_key())
+
+    def proceed_reindex_job(self):
+      """Proceed the paused reindex job. Returns a message."""
+      from Products.zms import ZMSZCatalogAdapterQueue
+      return ZMSZCatalogAdapterQueue.proceed(self.get_reindex_job_key())
+
+    def stop_reindex_job(self):
+      """Stop the reindex job. Returns a message."""
+      from Products.zms import ZMSZCatalogAdapterQueue
+      return ZMSZCatalogAdapterQueue.stop(self.get_reindex_job_key())
+
+    def _reindex_json(self, REQUEST, data):
+      response = REQUEST.RESPONSE
+      response.setHeader('Content-Type', 'application/json; charset=utf-8')
+      response.setHeader('Cache-Control', 'no-store')
+      return json.dumps(data)
+
+    def _reindex_control(self, REQUEST, action):
+      # State changes must not be triggered by GET (links, prefetching).
+      if REQUEST.get('REQUEST_METHOD') != 'POST':
+        REQUEST.RESPONSE.setStatus(405)
+        REQUEST.RESPONSE.setHeader('Allow', 'POST')
+        return self._reindex_json(REQUEST, {'message': 'POST required'})
+      return self._reindex_json(REQUEST, {'message': action()})
+
+    def manage_reindex_status(self, REQUEST):
+      """Return the status of the reindex job as JSON."""
+      return self._reindex_json(REQUEST, self.get_reindex_job_status())
+
+    def manage_reindex_start(self, REQUEST):
+      """Start the reindex job for the selected ZMS clients (home_ids) as JSON message."""
+      def start():
+        return self.start_reindex_job(
+          REQUEST.get('home_ids', []),
+          connector_id=REQUEST.get('connector_id') or None,
+          page_size=max(1, int(REQUEST.get('page_size', 1))),
+          fileparsing=standard.pybool(REQUEST.get('fileparsing', False)))
+      return self._reindex_control(REQUEST, start)
+
+    def manage_reindex_pause(self, REQUEST):
+      """Pause the reindex job."""
+      return self._reindex_control(REQUEST, self.pause_reindex_job)
+
+    def manage_reindex_proceed(self, REQUEST):
+      """Proceed the paused reindex job."""
+      return self._reindex_control(REQUEST, self.proceed_reindex_job)
+
+    def manage_reindex_stop(self, REQUEST):
+      """Stop the reindex job."""
+      return self._reindex_control(REQUEST, self.stop_reindex_job)
 
     # --------------------------------------------------------------------------
     #  ZMSZCatalogAdapter.unindex_nodes

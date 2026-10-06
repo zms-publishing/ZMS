@@ -11,12 +11,7 @@ import ast
 import json
 import logging
 import os
-import tempfile
 import time
-import fcntl
-import threading
-import uuid
-from datetime import datetime, timezone
 import requests
 
 LOGGER = logging.getLogger("ZMSReindex")
@@ -315,153 +310,11 @@ class ZMSIndexSchematizedReindexer:
 # 2) ZOPE EXTERNAL-METHOD
 # ======================================================================
 
-RUN_LOCK = threading.Lock()
-RUN_IN_PROGRESS = False
-RUN_LOCK_FD = None
-RUN_JOB = None
-
 # ----------------------------------------------------------------
-# 2A) ZOPE EXTERNAL-METHOD: Helper functions
+# 2A) ZOPE EXTERNAL-METHOD: Job control
+# The job itself (in-process worker thread, lock, status, pause/stop)
+# is implemented by the catalog adapter, see ZMSZCatalogAdapterQueue.
 # ----------------------------------------------------------------
-def _get_lockfile_path(base_url):
-	safe = "".join(ch if ch.isalnum() else "_" for ch in base_url)
-	return os.path.join(tempfile.gettempdir(), f"zms_reindex_{safe}.lock")
-
-def _get_lock_guard_path(base_url):
-	return _get_lockfile_path(base_url) + ".guard"
-
-def _get_cancellation_file_path(base_url):
-	return _get_lockfile_path(base_url) + ".stop"
-
-def _get_pause_file_path(base_url):
-	return _get_lockfile_path(base_url) + ".pause"
-
-def _get_status_file_path(base_url):
-	return _get_lockfile_path(base_url) + ".status.json"
-
-def _timestamp():
-	return datetime.now(timezone.utc).isoformat(timespec="seconds")
-
-def _read_status_fd(fd):
-	size = os.fstat(fd).st_size
-	if not size:
-		return None
-	os.lseek(fd, 0, os.SEEK_SET)
-	data = os.read(fd, size)
-	return json.loads(data.decode("utf-8"))
-
-def _read_job_status(base_url):
-	try:
-		fd = os.open(_get_status_file_path(base_url), os.O_RDONLY)
-	except FileNotFoundError:
-		return None
-	try:
-		fcntl.flock(fd, fcntl.LOCK_SH)
-		return _read_status_fd(fd)
-	finally:
-		os.close(fd)
-
-def _update_job_status(base_url, updates, expected_job_id=None, replace=False):
-	status_path = _get_status_file_path(base_url)
-	fd = os.open(status_path, os.O_CREAT | os.O_RDWR, 0o600)
-	try:
-		fcntl.flock(fd, fcntl.LOCK_EX)
-		status = {} if replace else (_read_status_fd(fd) or {})
-		if expected_job_id and status.get("job_id") != expected_job_id:
-			return status
-		status.update(updates)
-		status["updated_at"] = _timestamp()
-		encoded = json.dumps(status, ensure_ascii=False).encode("utf-8")
-		os.lseek(fd, 0, os.SEEK_SET)
-		os.ftruncate(fd, 0)
-		offset = 0
-		while offset < len(encoded):
-			offset += os.write(fd, encoded[offset:])
-		return status
-	finally:
-		fcntl.flock(fd, fcntl.LOCK_UN)
-		os.close(fd)
-
-def _acquire_lock_guard(base_url):
-	fd = os.open(_get_lock_guard_path(base_url), os.O_CREAT | os.O_RDWR, 0o644)
-	fcntl.flock(fd, fcntl.LOCK_EX)
-	return fd
-
-def _release_lock_guard(fd):
-	try:
-		fcntl.flock(fd, fcntl.LOCK_UN)
-	finally:
-		os.close(fd)
-
-def _test_single_flight_locked(base_url):
-	"""
-	Check whether a single-flight lock is currently held.
-	Returns the lockfile path if locked, or None if free.
-	"""
-	lockfile_path = _get_lockfile_path(base_url)
-	guard_fd = _acquire_lock_guard(base_url)
-	try:
-		try:
-			fd = os.open(lockfile_path, os.O_RDWR)
-		except FileNotFoundError:
-			return None
-
-		try:
-			try:
-				fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
-			except OSError:
-				return lockfile_path
-
-			fcntl.flock(fd, fcntl.LOCK_UN)
-			os.unlink(lockfile_path)
-			return None
-		finally:
-			os.close(fd)
-	finally:
-		_release_lock_guard(guard_fd)
-
-def _try_acquire_singleflight_lock(base_url):
-	lockfile_path = _get_lockfile_path(base_url)
-	guard_fd = _acquire_lock_guard(base_url)
-	try:
-		fd = os.open(lockfile_path, os.O_CREAT | os.O_RDWR, 0o644)
-		try:
-			fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
-			return fd
-		except OSError:
-			os.close(fd)
-			return None
-	finally:
-		_release_lock_guard(guard_fd)
-
-def _release_singleflight_lock(fd, base_url):
-	if fd is None:
-		return
-	guard_fd = _acquire_lock_guard(base_url)
-	try:
-		fcntl.flock(fd, fcntl.LOCK_UN)
-	finally:
-		try:
-			os.close(fd)
-			try:
-				os.unlink(_get_lockfile_path(base_url))
-			except FileNotFoundError:
-				pass
-		finally:
-			_release_lock_guard(guard_fd)
-
-def _release_job_lock(job):
-	if job["lock_released"]:
-		return
-	job["lock_released"] = True
-	fd = job["lock_fd"]
-	job["lock_fd"] = None
-	_release_singleflight_lock(fd, job["base_url"])
-
-def _request_cancellation(base_url):
-	cancellation_file = _get_cancellation_file_path(base_url)
-	fd = os.open(cancellation_file, os.O_CREAT | os.O_WRONLY | os.O_TRUNC, 0o644)
-	os.close(fd)
 
 def _sum_expected(start_nodes):
 	"""Total of expected nodes, or None if any client count is unknown."""
@@ -471,289 +324,23 @@ def _sum_expected(start_nodes):
 	return sum(counts)
 
 def start(self):
-	import logging
-	LOGGER = logging.getLogger("Zope")
-
 	request = self.REQUEST
-	root = self.getRootElement()
-	base_url = root.absolute_url()
-	# Only meta_ids configured in the catalog adapter are reindexed
-	catalog_adapter = root.getCatalogAdapter()
-	meta_ids = self.getMetaobjManager().getTypedMetaIds(catalog_adapter.getIds())
-	try:
-		zmsindex_catalog = self.getZMSIndex().get_catalog()
-	except Exception:
-		zmsindex_catalog = None
-
-	def count_nodes(node):
-		# Expected number of nodes to reindex, taken from the ZMSIndex catalog
-		if zmsindex_catalog is None:
-			return None
-		try:
-			return len(zmsindex_catalog({
-				"path": "/".join(str(part) for part in node.getPhysicalPath()),
-				"meta_id": list(meta_ids),
-			}))
-		except Exception:
-			LOGGER.exception("Unable to count nodes of %s", node.absolute_url())
-			return None
-
-	# ZMS clients selected in the sitemap, e.g. "{$portal/clientA@}"
 	home_ids = request.get("home_ids", [])
-	if isinstance(home_ids, str):
-		home_ids = [home_ids]
-	start_nodes = []
-	for home_id in dict.fromkeys(home_ids):
-		node = self.getLinkObj(home_id)
-		if node is None or getattr(node, "meta_id", None) != "ZMS":
-			LOGGER.warning("Skipping unresolvable ZMS-node %s", home_id)
-			continue
-		start_nodes.append({
-			"home_id": home_id,
-			"uid": node.get_uid(),
-			"meta_id": node.meta_id,
-			"getPath": "/" + "/".join(str(part) for part in node.getPhysicalPath() if part),
-			"expected": count_nodes(node),
-		})
-	if not start_nodes:
-		return "No ZMS-node selected"
-	catalog_connector = catalog_adapter.get_connectors()[0]
-	connector = request.get("connector", f"/{catalog_adapter.getId()}/{catalog_connector.getId()}/")
-	uid = request.get("uid", root.getRefObjPath(self.getDocumentElement()))
-	page_size = int(request.get("page_size", 1))
-	fileparsing = bool(request.get("fileparsing", False))
-
-	global RUN_IN_PROGRESS, RUN_LOCK_FD, RUN_JOB
- 
-	with RUN_LOCK:
-		lock_fd = _try_acquire_singleflight_lock(base_url)
-		if lock_fd is None:
-			return "Background Job is already running"
-
-		cancellation_file = _get_cancellation_file_path(base_url)
-		pause_file = _get_pause_file_path(base_url)
-		for marker in (cancellation_file, pause_file):
-			try:
-				os.unlink(marker)
-			except FileNotFoundError:
-				pass
-
-		job_id = uuid.uuid4().hex
-		initial_status = {
-			"job_id": job_id,
-			"state": "running",
-			"started_at": _timestamp(),
-			"current_uid": None,
-			"current_path": None,
-			"candidates": 0,
-			"nodes_completed": 0,
-			"requests": 0,
-			"objects": 0,
-			"success": 0,
-			"failed": 0,
-			"skipped": 0,
-			"total_clients": len(start_nodes),
-			"total_nodes": _sum_expected(start_nodes),
-			"completed_clients": [],
-			"failed_clients": [],
-			"current_client": None,
-			"error": None,
-		}
-		try:
-			_update_job_status(base_url, initial_status, replace=True)
-		except Exception:
-			_release_singleflight_lock(lock_fd, base_url)
-			raise
-
-		job = {
-			"base_url": base_url,
-			"job_id": job_id,
-			"lock_fd": lock_fd,
-			"lock_released": False,
-			"cancel_event": threading.Event(),
-			"cancellation_file": cancellation_file,
-			"pause_file": pause_file,
-		}
-		RUN_JOB = job
-		RUN_LOCK_FD = lock_fd
-		RUN_IN_PROGRESS = True
-
-	def worker():
-		global RUN_IN_PROGRESS, RUN_LOCK_FD, RUN_JOB
-		stats = {}
-
-		try:
-			LOGGER.info("Starting background reindex job for %s", base_url)
-
-			def update_progress(stats, state="running", current_uid=None,
-								current_path=None):
-				if state == "running" and (
-					job["cancel_event"].is_set()
-					or os.path.exists(cancellation_file)
-				):
-					state = "stopping"
-				elif state == "running" and os.path.exists(pause_file):
-					state = "pausing"
-				updates = dict(stats)
-				updates.update({
-					"state": state,
-					"current_uid": current_uid,
-					"current_path": current_path,
-				})
-				_update_job_status(
-					base_url, updates, expected_job_id=job_id,
-				)
-
-			reindexer = ZMSIndexSchematizedReindexer(
-				base_url=base_url,
-				connector=connector,
-				uid=uid,
-				page_size=page_size,
-				fileparsing=fileparsing,
-				start_nodes=start_nodes,
-				cancel_event=job["cancel_event"],
-				cancellation_file=cancellation_file,
-				pause_file=pause_file,
-				progress_callback=update_progress,
-				meta_ids=meta_ids,
-			)
-
-			stats = reindexer.run(write_line=lambda line: LOGGER.info(line))
-			LOGGER.info("Finished reindex job: %s", stats)
-
-		except Exception as error:
-			LOGGER.exception("manage_reindex_content_bg failed")
-			try:
-				_update_job_status(
-					base_url,
-					{
-						**stats,
-						"state": "failed",
-						"current_uid": None,
-						"current_path": None,
-						"current_client": None,
-						"error": str(error),
-					},
-					expected_job_id=job_id,
-				)
-			except Exception:
-				LOGGER.exception("Unable to save failed reindex job status")
-		finally:
-			with RUN_LOCK:
-				try:
-					_update_job_status(
-						base_url,
-						{
-							"finished_at": _timestamp(),
-							"current_uid": None,
-							"current_path": None,
-						},
-						expected_job_id=job_id,
-					)
-				except Exception:
-					LOGGER.exception("Unable to save final reindex job status")
-				if RUN_JOB is job:
-					for marker in (cancellation_file, pause_file):
-						try:
-							os.unlink(marker)
-						except FileNotFoundError:
-							pass
-				_release_job_lock(job)
-				if RUN_JOB is job:
-					RUN_JOB = None
-					RUN_LOCK_FD = None
-					RUN_IN_PROGRESS = False
-
-	thread = threading.Thread(target=worker, name="manage_reindex_content_bg", daemon=True)
-	try:
-		thread.start()
-	except Exception as error:
-		try:
-			_update_job_status(
-				base_url,
-				{
-					"state": "failed",
-					"finished_at": _timestamp(),
-					"error": str(error),
-				},
-				expected_job_id=job_id,
-			)
-		except Exception:
-			LOGGER.exception("Unable to save thread startup failure status")
-		finally:
-			with RUN_LOCK:
-				_release_job_lock(job)
-				if RUN_JOB is job:
-					RUN_JOB = None
-					RUN_LOCK_FD = None
-					RUN_IN_PROGRESS = False
-		raise
-	return None # "Background Job started"
-
-def _remove_pause_marker(base_url):
-	try:
-		os.unlink(_get_pause_file_path(base_url))
-	except FileNotFoundError:
-		pass
+	return self.getCatalogAdapter().start_reindex_job(
+		home_ids,
+		connector_id=request.get("connector_id") or None,
+		page_size=max(1, int(request.get("page_size", 1))),
+		fileparsing=bool(request.get("fileparsing", False)),
+	)
 
 def pause(self):
-	base_url = self.getRootElement().absolute_url()
-	with RUN_LOCK:
-		if not _test_single_flight_locked(base_url):
-			return "No background job is running"
-		status = _read_job_status(base_url) or {}
-		state = status.get("state")
-		if state in ("pausing", "paused"):
-			return "Background Job is already paused"
-		if state != "running":
-			return "Background Job cannot be paused (state: %s)" % state
-		fd = os.open(_get_pause_file_path(base_url), os.O_CREAT | os.O_WRONLY | os.O_TRUNC, 0o644)
-		os.close(fd)
-		_update_job_status(
-			base_url, {"state": "pausing"}, expected_job_id=status.get("job_id"),
-		)
-		return "Pause requested; the worker pauses after its current REST request"
+	return self.getCatalogAdapter().pause_reindex_job()
 
 def proceed(self):
-	base_url = self.getRootElement().absolute_url()
-	with RUN_LOCK:
-		if not _test_single_flight_locked(base_url):
-			return "No background job is running"
-		status = _read_job_status(base_url) or {}
-		if status.get("state") not in ("pausing", "paused"):
-			return "Background Job is not paused"
-		_remove_pause_marker(base_url)
-		_update_job_status(
-			base_url, {"state": "running"}, expected_job_id=status.get("job_id"),
-		)
-		return "Background Job proceeds"
+	return self.getCatalogAdapter().proceed_reindex_job()
 
 def stop(self):
-	global RUN_IN_PROGRESS, RUN_LOCK_FD, RUN_JOB
-
-	base_url = self.getRootElement().absolute_url()
-	with RUN_LOCK:
-		job = RUN_JOB
-		if job is not None and job["base_url"] == base_url:
-			_remove_pause_marker(base_url)
-			job["cancel_event"].set()
-			_update_job_status(
-				base_url,
-				{"state": "stopping"},
-				expected_job_id=job["job_id"],
-			)
-			_release_job_lock(job)
-			RUN_JOB = None
-			RUN_LOCK_FD = None
-			RUN_IN_PROGRESS = False
-			return "Background Job stopped; the current REST request may finish"
-
-		if _test_single_flight_locked(base_url):
-			_remove_pause_marker(base_url)
-			_request_cancellation(base_url)
-			_update_job_status(base_url, {"state": "stopping"})
-			return "Stop requested; the worker will stop after its current REST request"
-		return "No background job is running"
+	return self.getCatalogAdapter().stop_reindex_job()
 
 # ----------------------------------------------------------------
 # 2B) ZOPE EXTERNAL-METHOD: Entry point
@@ -769,23 +356,7 @@ def manage_reindex_content_bg(self):
 
 	request = self.REQUEST
 	if request.get("status") == "1":
-		status = _read_job_status(self.getRootElement().absolute_url())
-		if status is None:
-			status = {
-				"state": "idle",
-				"candidates": 0,
-				"nodes_completed": 0,
-				"requests": 0,
-				"objects": 0,
-				"success": 0,
-				"failed": 0,
-				"skipped": 0,
-				"total_clients": 0,
-				"total_nodes": None,
-				"completed_clients": [],
-				"failed_clients": [],
-				"current_client": None,
-			}
+		status = self.getCatalogAdapter().get_reindex_job_status()
 		request.response.setHeader(
 			"Content-Type", "application/json; charset=utf-8",
 		)
@@ -817,8 +388,6 @@ def manage_reindex_content_bg(self):
 			connector_url = connectors[0].absolute_url()
 	except:
 		connector_url = ''
-
-	lockfile_path = _test_single_flight_locked(self.getRootElement().absolute_url())
 
 	html = []
 	html.append('<!DOCTYPE html>')

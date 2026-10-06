@@ -21,10 +21,14 @@ The meta-command is declared in `__init__.yaml` for the meta types `ZMS` and
 
 ## High‑Level Flow (ZMI)
 
-1. The user opens **Reindex Content (Background)** on a ZMS node and sets the
-   *Page Size* (default `1`: one node per connector call).
+1. The user opens **Reindex Content (Background)**, selects the ZMS clients to
+   reindex in the sitemap tree (checkboxes `home_ids:list`, all checked by
+   default) and sets the *Page Size* (default `1`: one node per connector call).
 2. **Start** (`btn=BTN_START`) calls `start(self)`, which:
-   - takes the **current context** as the starting node (physical path, UID, `meta_id`),
+   - resolves each selected `home_ids` value (e.g. `{$portal/clientA@}`) with
+     `getLinkObj` to a ZMS client node (physical path, UID, `meta_id`); values that
+     cannot be resolved are skipped; if nothing is left, “No ZMS-node selected”
+     is shown and no job starts,
    - resolves the connector from the root's catalog adapter (first connector),
    - acquires the single‑flight lock (see below); if it is held, the page shows
      “Background Job is already running”,
@@ -33,8 +37,14 @@ The meta-command is declared in `__init__.yaml` for the meta types `ZMS` and
    logs through the `Zope` logger and writes progress to the status record.
 4. When the run ends (completed, stopped or failed) the worker writes the final
    state, removes the stop marker and releases the lock.
-5. `start` returns only a message; the page is re-rendered directly (no redirect),
-   so the request never waits for the job.
+5. The Start/Pause/Proceed and Stop buttons are submitted by JavaScript (`fetch`, POST with all
+   form data plus `control=1`), so the page is **not reloaded** and the sitemap keeps
+   its expansion and selection. The command answers with JSON `{"message": ...}`;
+   the message (e.g. “Background Job is already running”, “No ZMS-node selected”)
+   is shown as the first line of the status panel, and polling (re)starts. The
+   request never waits for the job. (POST is used because Zope does not parse form
+   data from PUT bodies.) Without `control=1` the page is rendered as before, but
+   without an alert box.
 
 The worker does **not** open its own Zope application, request or security
 context, and it does not touch the ZODB. All work happens through HTTP calls
@@ -60,10 +70,13 @@ Each child entry provides the fields used:
 
 Rules:
 
-- **ZMI:** the invocation context is reindexed first (it is not returned by
-  `list_child_nodes`), then its descendants. Its UID is registered as seen.
-- **CLI:** no start node is passed, so traversal starts at the root of `base_url`.
-  Programmatic callers may pass `start_path` and `start_node` to the class.
+- **ZMI:** the selected ZMS clients are processed one after another. For each
+  client the client node itself is reindexed first (it is not returned by
+  `list_child_nodes`), then its content tree. **Sub-clients (`meta_id` ZMS) are
+  not entered**; they are reindexed only if they are selected themselves.
+- **CLI:** no start nodes are passed, so traversal starts at the root of
+  `base_url` and also enters sub-clients. Programmatic callers may pass a list
+  `start_nodes` of `{home_id, uid, meta_id, getPath}` to the class.
 - Every returned child's `getPath` is pushed on the stack, so the whole tree is
   walked, but only nodes whose `meta_id` is allowed are sent to `reindex_page`:
   - **ZMI:** the meta ids configured in the catalog adapter
@@ -140,20 +153,56 @@ The worker publishes progress in a JSON file shared by all Zope processes:
 ```
 
 It holds `job_id`, `state`, `started_at`, `updated_at`, `finished_at`,
-`current_uid`, `current_path`, the counters above and `error`. Reads take a
+`current_uid`, `current_path`, the counters above, `error` and the client lists
+`total_clients`, `total_nodes`, `current_client` (home id of the ZMS client being processed, `null` otherwise), `completed_clients` and `failed_clients` (home ids, growing as
+each selected ZMS client finishes; a client is “failed” if a branch could not be
+read or a node failed). Reads take a
 shared `flock`, writes an exclusive one; a stale worker (different `job_id`)
 cannot overwrite a newer run's record. The file is kept after the run so the
 final result stays visible.
 
-States: `idle` (no record), `running`, `stopping`, `stopped`, `completed`, `failed`.
+States: `idle` (no record), `running`, `pausing`, `paused`, `stopping`, `stopped`, `completed`, `failed`.
+
+Before the job starts, `start()` asks the ZMSIndex catalog (path and the adapter's
+meta ids, in the request thread) how many nodes each selected client has and
+stores the sum as `total_nodes` (`null` if a count fails). The UI progress bar
+shows `nodes_completed / total_nodes` as a percentage; the count is an estimate
+(it comes from the catalog, not from the traversal), so the bar is capped at 100 %
+and set to 100 % on completion. Without a total (e.g. CLI) the bar is striped and
+animated while running and only shows the processed count. The bar is blue while
+running, orange when stopping/stopped, green when completed and red on failure.
 
 The command also answers `manage_reindex_content_bg?status=1` with this record as
 JSON (`Cache-Control: no-store`). The ZMI page shows a status panel and polls that
 URL every two seconds, stopping once the state is no longer `running` or
-`stopping`. Because the node total is unknown during traversal, only counts are
-shown, not a percentage.
+`stopping`. The panel lists the completed ZMS-nodes, and the page
+marks the matching sitemap entries with the CSS class `zmi-reindex-running` (the client currently processed, only while the job is running/stopping), `zmi-reindex-done`
+(`zmi-reindex-failed` for clients with errors), re-applied on every poll and
+whenever sitemap nodes are loaded.
 
 ---
+
+## Controller: Start, Pause, Proceed, Stop
+
+A small JavaScript `Controller` on the page maps the job state reported by the
+status endpoint to the buttons (as in the ZMS catalog connector page):
+
+| State | Start button | Stop button |
+|-------|--------------|-------------|
+| idle / completed / stopped / failed | ▶ Start (`BTN_START`) | disabled |
+| running | ⏸ Pause (`BTN_PAUSE`) | enabled |
+| pausing / paused | ▶ Proceed (`BTN_PROCEED`) | enabled |
+| stopping | disabled | disabled |
+
+Because the state comes from the server, the buttons are correct after a page
+reload or when another user controls the job.
+
+**Pause** creates the `.pause` marker and sets the state `pausing`. The worker
+checks the marker before each node (and before each client), so the REST request
+in flight finishes first; then it reports `paused` and sleeps, polling the marker
+every 0.5 s. The run lock stays held, so no second job can start. **Proceed**
+removes the marker and the worker continues (`running`). Stop while paused ends
+the job as usual and clears the marker; a new Start also clears stale markers.
 
 ## Stop
 
@@ -189,6 +238,7 @@ the same directory):
 |------|---------|
 | `zms_reindex_<url>.lock` | Run lock; exists only while a job holds the lock |
 | `zms_reindex_<url>.lock.guard` | Permanent helper lock serializing creation, check and removal of the run lock file, so removal cannot race with a new start |
+| `zms_reindex_<url>.lock.pause` | Pause marker; the worker waits while it exists |
 | `zms_reindex_<url>.lock.stop` | Cancellation marker for stops from another process |
 | `zms_reindex_<url>.lock.status.json` | Status record |
 

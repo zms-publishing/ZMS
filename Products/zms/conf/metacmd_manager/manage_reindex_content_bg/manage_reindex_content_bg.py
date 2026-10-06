@@ -12,6 +12,7 @@ import json
 import logging
 import os
 import tempfile
+import time
 import fcntl
 import threading
 import uuid
@@ -33,27 +34,52 @@ class ZMSIndexSchematizedReindexer:
 	"""
 
 	def __init__(self, base_url, connector, uid='{$}', page_size=100, fileparsing=False,
-			start_path="", start_node=None, cancel_event=None,
-			cancellation_file=None, progress_callback=None, meta_ids=None):
+			start_nodes=None, cancel_event=None,
+			cancellation_file=None, progress_callback=None, meta_ids=None,
+			pause_file=None):
 		self.base_url = base_url.rstrip("/")
 		self.connector = connector.strip("/")
 		self.uid = uid
 		self.page_size = page_size
 		self.fileparsing = 1 if fileparsing else 0
-		self.start_path = start_path.strip("/")
-		self.start_node = start_node
+		# List of ZMS clients ({home_id, uid, meta_id, getPath}), each one is
+		# traversed on its own without descending into other clients.
+		# None: traverse the whole site from the root of base_url.
+		self.start_nodes = start_nodes
+		self.traversal_errors = 0
 		self.cancel_event = cancel_event
 		self.cancellation_file = cancellation_file
+		# While this marker file exists, the run waits before the next node
+		self.pause_file = pause_file
+		self._last_position = (None, None)
 		self.progress_callback = progress_callback
 		# None: reindex every node; otherwise only nodes with these meta_ids
 		self.meta_ids = None if meta_ids is None else set(meta_ids)
 
 	def _report_progress(self, stats, state="running", current_uid=None, current_path=None):
+		if state == "running" and current_uid:
+			self._last_position = (current_uid, current_path)
+		elif state == "paused" and not current_uid:
+			current_uid, current_path = self._last_position
 		if self.progress_callback is not None:
 			self.progress_callback(
 				stats, state=state, current_uid=current_uid,
 				current_path=current_path,
 			)
+
+	def _pause_requested(self):
+		return self.pause_file is not None and os.path.exists(self.pause_file)
+
+	def _wait_while_paused(self, stats, write_line):
+		if not self._pause_requested() or self._stop_requested():
+			return
+		write_line("Paused")
+		self._report_progress(stats, state="paused")
+		while self._pause_requested() and not self._stop_requested():
+			time.sleep(0.5)
+		if not self._stop_requested():
+			write_line("Proceeding")
+			self._report_progress(stats)
 
 	def _stop_requested(self):
 		return (
@@ -105,7 +131,8 @@ class ZMSIndexSchematizedReindexer:
 	def _meta_id_indexable(self, meta_id):
 		return self.meta_ids is None or meta_id in self.meta_ids
 
-	def _iter_index_nodes(self):
+	def _iter_client_nodes(self, client, seen):
+		"""Yield the indexable nodes of one client (sub-clients are not entered)."""
 
 		def fetch_children(path):
 			rest_path = path.strip("/")
@@ -114,17 +141,17 @@ class ZMSIndexSchematizedReindexer:
 			response.raise_for_status()
 			return response.json()
 
-		stack = [self.start_path]
-		seen = set()
-
-		if self.start_node is not None:
-			uid = self.start_node.get("uid")
-			node_path = self.start_node.get("getPath")
+		if client is None:
+			stack = [""]
+		else:
+			uid = client.get("uid")
+			node_path = client.get("getPath")
 			if not uid or not node_path:
-				raise ValueError("Starting context must include uid and getPath")
+				raise ValueError("Starting node must include uid and getPath")
+			stack = [node_path.strip("/")]
 			seen.add(uid)
-			if self._meta_id_indexable(self.start_node.get("meta_id")):
-				yield uid, self.start_node.get("meta_id"), node_path
+			if self._meta_id_indexable(client.get("meta_id")):
+				yield uid, client.get("meta_id"), node_path
 
 		while stack and not self._stop_requested():
 			path = stack.pop()
@@ -134,6 +161,7 @@ class ZMSIndexSchematizedReindexer:
 			except Exception as e:
 				if self._stop_requested():
 					return
+				self.traversal_errors += 1
 				LOGGER.error(f"REST error fetching children for {path}: {e}")
 				continue
 
@@ -145,6 +173,9 @@ class ZMSIndexSchematizedReindexer:
 				node_path = node.get("getPath")
 
 				if not uid or not node_path or uid in seen:
+					continue
+				# Other ZMS clients are reindexed only if selected themselves
+				if client is not None and meta_id == "ZMS":
 					continue
 				seen.add(uid)
 
@@ -165,13 +196,52 @@ class ZMSIndexSchematizedReindexer:
 			"failed": 0,
 			"skipped": 0,
 			"nodes_completed": 0,
+			"total_clients": len(self.start_nodes) if self.start_nodes else 0,
+			"total_nodes": _sum_expected(self.start_nodes),
+			"completed_clients": [],
+			"failed_clients": [],
+			"current_client": None,
 		}
 		self._report_progress(stats)
 
-		for uid, meta_id, node_path in self._iter_index_nodes():
+		clients = self.start_nodes if self.start_nodes else [None]
+		seen = set()
+		stopped = False
+		for client in clients:
+			self._wait_while_paused(stats, write_line)
+			if self._stop_requested():
+				break
+			errors_before = self.traversal_errors
+			failed_before = stats["failed"]
+			if client is not None:
+				stats["current_client"] = client.get("home_id")
+				self._report_progress(stats)
+			stopped = self._run_client(client, seen, stats, write_line)
+			if stopped:
+				break
+			if client is not None:
+				home_id = client.get("home_id")
+				if self.traversal_errors > errors_before or stats["failed"] > failed_before:
+					stats["failed_clients"].append(home_id)
+				else:
+					stats["completed_clients"].append(home_id)
+				write_line(f"Finished ZMS-node {home_id}")
+				self._report_progress(stats)
+
+		stats["current_client"] = None
+		self._report_progress(
+			stats, state="stopped" if self._stop_requested() else "completed",
+			current_uid=None, current_path=None,
+		)
+		return stats
+
+	def _run_client(self, client, seen, stats, write_line):
+		"""Reindex one client; returns True if the run has been stopped."""
+		for uid, meta_id, node_path in self._iter_client_nodes(client, seen):
+			self._wait_while_paused(stats, write_line)
 			if self._stop_requested():
 				write_line("Stop requested; stopping reindex worker")
-				break
+				return True
 
 			stats["candidates"] += 1
 			client_path = "{$@%s}" % self._extract_client_path(node_path)
@@ -204,7 +274,7 @@ class ZMSIndexSchematizedReindexer:
 			except Exception as e:
 				if self._stop_requested():
 					write_line("Stop requested; stopping reindex worker")
-					break
+					return True
 				stats["failed"] += 1
 				stats["nodes_completed"] += 1
 				self._report_progress(
@@ -235,13 +305,9 @@ class ZMSIndexSchematizedReindexer:
 
 			if self._stop_requested():
 				write_line("Stop requested; stopping reindex worker")
-				break
+				return True
 
-		self._report_progress(
-			stats, state="stopped" if self._stop_requested() else "completed",
-			current_uid=None, current_path=None,
-		)
-		return stats
+		return self._stop_requested()
 
 
 
@@ -266,6 +332,9 @@ def _get_lock_guard_path(base_url):
 
 def _get_cancellation_file_path(base_url):
 	return _get_lockfile_path(base_url) + ".stop"
+
+def _get_pause_file_path(base_url):
+	return _get_lockfile_path(base_url) + ".pause"
 
 def _get_status_file_path(base_url):
 	return _get_lockfile_path(base_url) + ".status.json"
@@ -394,6 +463,13 @@ def _request_cancellation(base_url):
 	fd = os.open(cancellation_file, os.O_CREAT | os.O_WRONLY | os.O_TRUNC, 0o644)
 	os.close(fd)
 
+def _sum_expected(start_nodes):
+	"""Total of expected nodes, or None if any client count is unknown."""
+	counts = [node.get("expected") for node in start_nodes or []]
+	if not counts or any(count is None for count in counts):
+		return None
+	return sum(counts)
+
 def start(self):
 	import logging
 	LOGGER = logging.getLogger("Zope")
@@ -401,22 +477,50 @@ def start(self):
 	request = self.REQUEST
 	root = self.getRootElement()
 	base_url = root.absolute_url()
-	context_path = tuple(self.getPhysicalPath())
-	start_path = "/".join(str(part) for part in context_path if part)
-	if not start_path:
-		raise ValueError("Unable to determine current context path")
-	start_node = {
-		"uid": self.get_uid(),
-		"meta_id": self.meta_id,
-		"getPath": "/" + start_path,
-	}
+	# Only meta_ids configured in the catalog adapter are reindexed
 	catalog_adapter = root.getCatalogAdapter()
+	meta_ids = self.getMetaobjManager().getTypedMetaIds(catalog_adapter.getIds())
+	try:
+		zmsindex_catalog = self.getZMSIndex().get_catalog()
+	except Exception:
+		zmsindex_catalog = None
+
+	def count_nodes(node):
+		# Expected number of nodes to reindex, taken from the ZMSIndex catalog
+		if zmsindex_catalog is None:
+			return None
+		try:
+			return len(zmsindex_catalog({
+				"path": "/".join(str(part) for part in node.getPhysicalPath()),
+				"meta_id": list(meta_ids),
+			}))
+		except Exception:
+			LOGGER.exception("Unable to count nodes of %s", node.absolute_url())
+			return None
+
+	# ZMS clients selected in the sitemap, e.g. "{$portal/clientA@}"
+	home_ids = request.get("home_ids", [])
+	if isinstance(home_ids, str):
+		home_ids = [home_ids]
+	start_nodes = []
+	for home_id in dict.fromkeys(home_ids):
+		node = self.getLinkObj(home_id)
+		if node is None or getattr(node, "meta_id", None) != "ZMS":
+			LOGGER.warning("Skipping unresolvable ZMS-node %s", home_id)
+			continue
+		start_nodes.append({
+			"home_id": home_id,
+			"uid": node.get_uid(),
+			"meta_id": node.meta_id,
+			"getPath": "/" + "/".join(str(part) for part in node.getPhysicalPath() if part),
+			"expected": count_nodes(node),
+		})
+	if not start_nodes:
+		return "No ZMS-node selected"
 	catalog_connector = catalog_adapter.get_connectors()[0]
 	connector = request.get("connector", f"/{catalog_adapter.getId()}/{catalog_connector.getId()}/")
 	uid = request.get("uid", root.getRefObjPath(self.getDocumentElement()))
 	page_size = int(request.get("page_size", 1))
-	# Only meta_ids configured in the catalog adapter are reindexed
-	meta_ids = self.getMetaobjManager().getTypedMetaIds(catalog_adapter.getIds())
 	fileparsing = bool(request.get("fileparsing", False))
 
 	global RUN_IN_PROGRESS, RUN_LOCK_FD, RUN_JOB
@@ -427,10 +531,12 @@ def start(self):
 			return "Background Job is already running"
 
 		cancellation_file = _get_cancellation_file_path(base_url)
-		try:
-			os.unlink(cancellation_file)
-		except FileNotFoundError:
-			pass
+		pause_file = _get_pause_file_path(base_url)
+		for marker in (cancellation_file, pause_file):
+			try:
+				os.unlink(marker)
+			except FileNotFoundError:
+				pass
 
 		job_id = uuid.uuid4().hex
 		initial_status = {
@@ -446,6 +552,11 @@ def start(self):
 			"success": 0,
 			"failed": 0,
 			"skipped": 0,
+			"total_clients": len(start_nodes),
+			"total_nodes": _sum_expected(start_nodes),
+			"completed_clients": [],
+			"failed_clients": [],
+			"current_client": None,
 			"error": None,
 		}
 		try:
@@ -461,6 +572,7 @@ def start(self):
 			"lock_released": False,
 			"cancel_event": threading.Event(),
 			"cancellation_file": cancellation_file,
+			"pause_file": pause_file,
 		}
 		RUN_JOB = job
 		RUN_LOCK_FD = lock_fd
@@ -480,6 +592,8 @@ def start(self):
 					or os.path.exists(cancellation_file)
 				):
 					state = "stopping"
+				elif state == "running" and os.path.exists(pause_file):
+					state = "pausing"
 				updates = dict(stats)
 				updates.update({
 					"state": state,
@@ -496,10 +610,10 @@ def start(self):
 				uid=uid,
 				page_size=page_size,
 				fileparsing=fileparsing,
-				start_path=start_path,
-				start_node=start_node,
+				start_nodes=start_nodes,
 				cancel_event=job["cancel_event"],
 				cancellation_file=cancellation_file,
+				pause_file=pause_file,
 				progress_callback=update_progress,
 				meta_ids=meta_ids,
 			)
@@ -517,6 +631,7 @@ def start(self):
 						"state": "failed",
 						"current_uid": None,
 						"current_path": None,
+						"current_client": None,
 						"error": str(error),
 					},
 					expected_job_id=job_id,
@@ -538,10 +653,11 @@ def start(self):
 				except Exception:
 					LOGGER.exception("Unable to save final reindex job status")
 				if RUN_JOB is job:
-					try:
-						os.unlink(cancellation_file)
-					except FileNotFoundError:
-						pass
+					for marker in (cancellation_file, pause_file):
+						try:
+							os.unlink(marker)
+						except FileNotFoundError:
+							pass
 				_release_job_lock(job)
 				if RUN_JOB is job:
 					RUN_JOB = None
@@ -572,7 +688,45 @@ def start(self):
 					RUN_LOCK_FD = None
 					RUN_IN_PROGRESS = False
 		raise
-	return "Background Job started"
+	return None # "Background Job started"
+
+def _remove_pause_marker(base_url):
+	try:
+		os.unlink(_get_pause_file_path(base_url))
+	except FileNotFoundError:
+		pass
+
+def pause(self):
+	base_url = self.getRootElement().absolute_url()
+	with RUN_LOCK:
+		if not _test_single_flight_locked(base_url):
+			return "No background job is running"
+		status = _read_job_status(base_url) or {}
+		state = status.get("state")
+		if state in ("pausing", "paused"):
+			return "Background Job is already paused"
+		if state != "running":
+			return "Background Job cannot be paused (state: %s)" % state
+		fd = os.open(_get_pause_file_path(base_url), os.O_CREAT | os.O_WRONLY | os.O_TRUNC, 0o644)
+		os.close(fd)
+		_update_job_status(
+			base_url, {"state": "pausing"}, expected_job_id=status.get("job_id"),
+		)
+		return "Pause requested; the worker pauses after its current REST request"
+
+def proceed(self):
+	base_url = self.getRootElement().absolute_url()
+	with RUN_LOCK:
+		if not _test_single_flight_locked(base_url):
+			return "No background job is running"
+		status = _read_job_status(base_url) or {}
+		if status.get("state") not in ("pausing", "paused"):
+			return "Background Job is not paused"
+		_remove_pause_marker(base_url)
+		_update_job_status(
+			base_url, {"state": "running"}, expected_job_id=status.get("job_id"),
+		)
+		return "Background Job proceeds"
 
 def stop(self):
 	global RUN_IN_PROGRESS, RUN_LOCK_FD, RUN_JOB
@@ -581,6 +735,7 @@ def stop(self):
 	with RUN_LOCK:
 		job = RUN_JOB
 		if job is not None and job["base_url"] == base_url:
+			_remove_pause_marker(base_url)
 			job["cancel_event"].set()
 			_update_job_status(
 				base_url,
@@ -594,6 +749,7 @@ def stop(self):
 			return "Background Job stopped; the current REST request may finish"
 
 		if _test_single_flight_locked(base_url):
+			_remove_pause_marker(base_url)
 			_request_cancellation(base_url)
 			_update_job_status(base_url, {"state": "stopping"})
 			return "Stop requested; the worker will stop after its current REST request"
@@ -624,6 +780,11 @@ def manage_reindex_content_bg(self):
 				"success": 0,
 				"failed": 0,
 				"skipped": 0,
+				"total_clients": 0,
+				"total_nodes": None,
+				"completed_clients": [],
+				"failed_clients": [],
+				"current_client": None,
 			}
 		request.response.setHeader(
 			"Content-Type", "application/json; charset=utf-8",
@@ -635,8 +796,18 @@ def manage_reindex_content_bg(self):
 	btn = request.form.get('btn')
 	if btn == "BTN_START":
 		message = start(self)
+	elif btn == "BTN_PAUSE":
+		message = pause(self)
+	elif btn == "BTN_PROCEED":
+		message = proceed(self)
 	elif btn == "BTN_STOP":
 		message = stop(self)
+	if btn in ("BTN_START", "BTN_PAUSE", "BTN_PROCEED", "BTN_STOP") and request.get("control") == "1":
+		request.response.setHeader(
+			"Content-Type", "application/json; charset=utf-8",
+		)
+		request.response.setHeader("Cache-Control", "no-store")
+		return json.dumps({"message": message})
 
 	connector_url = ''
 	try:
@@ -657,14 +828,44 @@ def manage_reindex_content_bg(self):
 	html.append(self.zmi_body_header(self,request))
 	html.append('<div id="zmi-tab">')
 	html.append(self.zmi_breadcrumbs(self,request,extra=[{'label':'Reindex Content','action':'manage_reindex_content'}]))
-	if message:
-		html.append('<div class="alert alert-info" role="alert">%s</div>'%standard.html_quote(message))
 	status_url = self.absolute_url() + "/manage_reindex_content_bg?status=1"
 	html.append("""
 		<form class="form-horizontal card" name="form0" method="post" enctype="multipart/form-data">
 			<input type="hidden" id="lang" name="lang" value="%s"/>
 			<legend>Background Reindexing</legend>
 			<div class="card-body">
+			 	<div class="form-group zmi-form-container zms4-row mb-0">
+					<div class="col-sm-12" data-label="ZMS-Nodes">
+						<div class="zmi-sitemap-controls-container">
+							<div class="btn-group zmi-sitemap-controls">
+								<div title="Expand Object Tree (Hint: Mind System Load in Case!)"
+									class="btn btn-secondary"
+									onclick="return zmiExpandObjectTree(-1);">
+									<i class="fas fa-plus-square"></i>
+								</div>
+								<div title="De-/Select All"
+									onclick="zmiToggleSelectionButtonClick(this)"
+									class="btn btn-secondary">
+									<i class="fas fa-check-square"></i>
+								</div>
+								<div title="Expand/Compress Sitemap View"
+									class="btn btn-secondary" id="zmi-sitemap-expand"
+									onclick="$('.zmi-sitemap-container').toggleClass('full');$('#zmi-sitemap-expand i').toggleClass('fa-expand-arrows-alt fa-compress-arrows-alt')">
+									<i class="fas fa-expand-arrows-alt"></i>
+								</div>
+							</div>
+							<div class="progress">
+								<div class="progress-bar progress-bar-striped"
+									role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%%">
+									<span></span>
+								</div>
+							</div>
+						</div>
+						<div class="zmi-sitemap-container">
+							<div class="zmi-sitemap"><!-- .zmi-sitemap --></div>
+						</div>
+					</div><!-- .col-sm-10 -->
+				</div><!-- .form-group -->
 				<div class="form-group row">
 					<label class="col-sm-2 control-label">Catalog Connector</label>
 					<div class="col-sm-10">
@@ -681,10 +882,10 @@ def manage_reindex_content_bg(self):
 				<div class="form-group row">
 					<label class="col-sm-2 control-label"></label>
 					<div class="col-sm-10">
-						<button id="start-button" class="btn btn-secondary mr-2" name="btn" value="BTN_START">
+						<button id="start-button" class="btn btn-secondary mr-2" name="btn" value="BTN_START" title="Start">
 							<i class="fas fa-play text-success"></i>
 						</button>
-						<button id="stop-button" class="btn btn-secondary" name="btn" value="BTN_STOP">
+						<button id="stop-button" class="btn btn-secondary" name="btn" value="BTN_STOP" title="Stop" disabled="disabled">
 							<i class="fas fa-stop"></i>
 						</button>
 					</div>
@@ -699,12 +900,170 @@ def manage_reindex_content_bg(self):
 		)
 	)
 	html.append("""
+		<style>
+			.zmi-sitemap li.zmi-reindex-done > a { 
+				color: var(--success, #28a745); 
+			}
+			.zmi-sitemap li.zmi-reindex-done > a::after,
+			.zmi-sitemap li.zmi-reindex-running > a::after {
+				content: "\\f058";
+				font-weight: bold;
+				font-weight: 900;
+				font-family: 'Font Awesome 5 Free';
+				display: inline-block;
+				margin-left: .35rem;
+				font-style: normal;
+				font-variant: normal;
+				text-rendering: auto;
+				-moz-osx-font-smoothing: grayscale;
+				-webkit-font-smoothing: antialiased;
+				line-height:16px;
+			}
+			.zmi-sitemap li.zmi-reindex-failed > a { 
+				color: var(--danger, #dc3545); 
+			}
+			.zmi-sitemap li.zmi-reindex-running > a::after {
+				content: "\\f110";
+				animation: spin 2s linear infinite;
+			}
+			@keyframes spin {
+				0% { transform: rotate(0deg); }
+				100% { transform: rotate(360deg); }
+			}
+		</style>
+
 		<script>
+
+		// Sitemap-Helper
+		function zmiExpandObjectTree(max) {
+			var fn = function() {
+				var done = false;
+				$(".zmi-sitemap .toggle[title='+']").each(function() {
+					var $toggle = $(this);
+					var $parents = $toggle.parentsUntil(".zmi-sitemap","ul");
+					var $container = $($toggle.parents("li")[0]);
+					var level = $parents.length - 1;
+					if (level < max || -1 == max) {
+						$ZMI.objectTree.toggleClick($toggle,fn);
+						done = true;
+					}
+				});
+			}
+			fn();
+			return false;
+		}
+
+		// Progress bar: determinate if the expected number of nodes is known
+		function zmiSetProgress(status) {
+			var $bar = $(".zmi-sitemap-controls-container .progress .progress-bar");
+			var running = status.state === 'running' || status.state === 'stopping' || status.state === 'pausing';
+			var paused = status.state === 'paused';
+			var total = status.total_nodes;
+			var done = status.nodes_completed || 0;
+			$bar.removeClass('bg-primary bg-success bg-warning bg-danger');
+			if (total) {
+				var perc = Math.min(100, Math.round(done / total * 1000) / 10);
+				if (status.state === 'completed') { perc = 100; }
+				$bar.attr('aria-valuenow', perc).css('width', perc + '%')
+					.find('span').text(perc + '% (' + done + ' / ' + total + ')');
+			} else {
+				$bar.attr('aria-valuenow', running || paused ? 100 : 0)
+					.css('width', running || paused ? '100%' : '0%')
+					.find('span').text(running || paused ? done + ' nodes' : '');
+			}
+			$bar.toggleClass('progress-bar-striped', running || paused)
+				.toggleClass('progress-bar-animated', running);
+			$bar.addClass(
+				status.state === 'failed' ? 'bg-danger'
+				: status.state === 'stopped' || status.state === 'stopping' || status.state === 'pausing' || paused ? 'bg-warning'
+				: status.state === 'completed' ? 'bg-success' : 'bg-primary');
+		}
+
+		// Mark sitemap nodes: ZMS-nodes completed (or failed) so far
+		var reindexDone = [];
+		var reindexFailed = [];
+		var reindexRunning = null;
+		function zmiMarkReindexed() {
+			$(".zmi-sitemap input[name='home_ids:list']").each(function() {
+				var $li = $(this).closest("li");
+				var val = $(this).val();
+				$li.toggleClass("zmi-reindex-done", reindexDone.indexOf(val) >= 0);
+				$li.toggleClass("zmi-reindex-failed", reindexFailed.indexOf(val) >= 0);
+				$li.toggleClass("zmi-reindex-running", reindexRunning !== null && reindexRunning === val);
+			});
+		}
+
+		// On Document Ready
 		(function () {
+
+			// -------------------------------
+			// Initialize Sitemap
+			// -------------------------------
+			var href = $ZMI.get_document_element_url($ZMI.getPhysicalPath());
+			$ZMI.objectTree.init('.zmi-sitemap', href, {
+				params: {'meta_types':'ZMS'},
+				filter: x => x.meta_id === 'ZMS',
+				'init.callback': function() {
+					zmiExpandObjectTree(1);
+				},
+				'addPages.callback': function() {
+					console.log('addPages.callback')
+					$(".zmi-sitemap a:not(.checkboxed)").each(function() {
+						var $a = $(this);
+						var phys_path = $a.attr('href');
+						var href_manage = phys_path + '/manage';
+						$a.addClass("checkboxed")
+							.removeAttr('onclick')
+							.attr('target','_blank')
+							.attr('href',href_manage)
+							.attr('title',href_manage);
+						var uid = '{'+'$'+phys_path.substring(1).replace(/\\/content/gi,'@')+'}'; // $a.attr('data-uid');
+						$a.before('<input name="home_ids:list" type="checkbox" title="'+uid+'" value="'+uid+'" checked="checked" /> ');
+					});
+					zmiMarkReindexed();
+				},
+			});
+
+			// -------------------------------
+			// Handle Status
+			// -------------------------------
 			const panel = document.getElementById('reindex-status');
 			const statusUrl = panel.dataset.statusUrl;
 			let polling = false;
 			let timer = null;
+			let lastMessage = '';
+
+			// Controller: encapsulates the Start / Pause / Proceed / Stop interactions.
+			// The button behind #start-button depends on the job state reported by the server.
+			const Controller = () => {
+				const ACTIVE = ['running', 'pausing', 'paused', 'stopping'];
+				const that = {
+					state: 'idle',
+					isActive: () => ACTIVE.indexOf(that.state) >= 0,
+					// Command (btn value) issued by the start button in the current state
+					command: () => {
+						if (that.state === 'running') return 'BTN_PAUSE';
+						if (that.state === 'pausing' || that.state === 'paused') return 'BTN_PROCEED';
+						return 'BTN_START';
+					},
+					render: (state) => {
+						that.state = state || 'idle';
+						const $icon = $('#start-button i');
+						const showPause = that.state === 'running';
+						$icon.toggleClass('fa-pause text-info', showPause)
+							.toggleClass('fa-play text-success', !showPause);
+						$('#start-button')
+							.attr('title', {BTN_PAUSE: 'Pause', BTN_PROCEED: 'Proceed', BTN_START: 'Start'}[that.command()])
+							.prop('disabled', that.state === 'stopping');
+						$('#stop-button')
+							.toggleClass('text-danger', that.isActive())
+							.prop('disabled', !that.isActive() || that.state === 'stopping');
+					}
+				};
+				return that;
+			};
+			const controller = Controller();
+			controller.render('idle');
 
 			async function refreshStatus() {
 				if (polling) return;
@@ -719,15 +1078,39 @@ def manage_reindex_content_bg(self):
 						throw new Error('HTTP ' + response.status);
 					}
 					const status = await response.json();
-					const lines = [
+					const lines = [];
+					if (lastMessage) {
+						lines.push(lastMessage);
+					}
+					lines.push(
 						'State: ' + status.state,
-						'Nodes processed: ' + (status.nodes_completed || 0) +
-							' (total unknown)',
+						'ZMS-nodes completed: ' + (status.completed_clients || []).length +
+							' / ' + (status.total_clients || 0),
+						'Content nodes processed: ' + (status.nodes_completed || 0) +
+							(status.total_nodes ? ' / ' + status.total_nodes + ' expected' : ' (total unknown)'),
 						'Catalog objects collected: ' + (status.objects || 0) +
 							' (one per node and language, plus file parts)',
 						'Catalog objects added: ' + (status.success || 0) +
 							' / failed: ' + (status.failed || 0)
-					];
+					);
+					zmiSetProgress(status);
+					reindexDone = status.completed_clients || [];
+					reindexFailed = status.failed_clients || [];
+					controller.render(status.state);
+					reindexRunning = controller.isActive()
+						? (status.current_client || null) : null;
+					zmiMarkReindexed();
+					if (reindexRunning) {
+						lines.push('Running ZMS-node: ' + reindexRunning);
+					}
+					if (reindexDone.length) {
+						lines.push('Completed ZMS-nodes:');
+						reindexDone.forEach(function(id) { lines.push('  ' + id); });
+					}
+					if (reindexFailed.length) {
+						lines.push('ZMS-nodes with errors:');
+						reindexFailed.forEach(function(id) { lines.push('  ' + id); });
+					}
 					if (status.current_path) {
 						lines.push('Current: ' + status.current_path);
 					}
@@ -744,10 +1127,12 @@ def manage_reindex_content_bg(self):
 					panel.textContent = lines.join('\\n');
 					panel.className = status.state === 'failed'
 						? 'zmi-log alert alert-danger'
-						: status.state === 'running' || status.state === 'stopping'
-							? 'zmi-log alert alert-info'
-							: 'zmi-log alert alert-secondary';
-					if (status.state !== 'running' && status.state !== 'stopping' && timer) {
+						: status.state === 'paused' || status.state === 'pausing'
+							? 'zmi-log alert alert-warning'
+							: controller.isActive()
+								? 'zmi-log alert alert-info'
+								: 'zmi-log alert alert-secondary';
+					if (!controller.isActive() && timer) {
 						clearInterval(timer);
 						timer = null;
 					}
@@ -759,8 +1144,48 @@ def manage_reindex_content_bg(self):
 				}
 			}
 
-			refreshStatus();
-			timer = setInterval(refreshStatus, 2000);
+			function startPolling() {
+				if (!timer) {
+					timer = setInterval(refreshStatus, 2000);
+				}
+				refreshStatus();
+			}
+
+			// Submit Start/Stop in the background, so that the sitemap keeps
+			// its expansion and selection (Zope reads form data from POST, not PUT)
+			const form = document.forms['form0'];
+			form.addEventListener('submit', async function(event) {
+				event.preventDefault();
+				const submitter = event.submitter;
+				if (!submitter || !submitter.value) return;
+				const command = submitter.id === 'start-button' ? controller.command() : submitter.value;
+				const data = new FormData(form);
+				data.set('btn', command);
+				data.set('control', '1');
+				const buttons = form.querySelectorAll('button[name=btn]');
+				buttons.forEach(b => b.disabled = true);
+				try {
+					const response = await fetch(form.getAttribute('action') || window.location.pathname, {
+						method: 'POST',
+						body: data,
+						credentials: 'same-origin',
+						cache: 'no-store',
+						headers: {'Accept': 'application/json'}
+					});
+					if (!response.ok) {
+						throw new Error('HTTP ' + response.status);
+					}
+					const result = await response.json();
+					lastMessage = result.message || '';
+				} catch (error) {
+					lastMessage = 'Request failed: ' + error.message;
+				} finally {
+					controller.render(controller.state);
+				}
+				startPolling();
+			});
+
+			startPolling();
 		})();
 		</script>
 	""")

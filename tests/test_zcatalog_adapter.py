@@ -64,3 +64,22 @@ class ZCatalogAdapterTest(ZMSTestCase):
     self.assertEqual(request_log, set(self.context.REQUEST.get('reindex_node_log') or []))
     self.assertEqual([], self._count_reindex_calls(adapter, self.context, seen=seen))
     self.assertTrue(len(self._count_reindex_calls(adapter, self.context, seen=set())) > 0)
+
+  def test_reindex_nodes_returns_plain_dict(self):
+    from Products.zms.ZMSZCatalogConnector import ZMSZCatalogConnector
+    adapter = self.context.getCatalogAdapter()
+    adapter.setCustomFilterFunction('##\nreturn True')
+    added = []
+
+    class Stub:
+      getCatalogAdapter = lambda self: adapter
+      manage_objects_clear = lambda self, home_id: (0, 0)
+      manage_objects_add = lambda self, objects: (added.extend(objects) or (len(objects), 0))
+    result = ZMSZCatalogConnector.reindex_nodes(Stub(), [self.context], fileparsing=False, langs=['eng'])
+    self.assertEqual(['success', 'failed', 'log'], [k for k in result if k in ('success', 'failed', 'log')])
+    self.assertEqual(len(added), result['success'])
+    self.assertEqual(0, result['failed'])
+    self.assertEqual(0, result['log'][0]['index'])
+    self.assertEqual(self.context.getHome().id, result['home_id'])
+    self.assertEqual(['eng'], list(result['log'][0]['objects']))
+    self.assertTrue(all(d['lang'] == 'eng' for _, d in added))

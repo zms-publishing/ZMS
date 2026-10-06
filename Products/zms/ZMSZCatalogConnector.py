@@ -313,16 +313,18 @@ class ZMSZCatalogConnector(
 
 
     # --------------------------------------------------------------------------
-    #  ZMSZCatalogConnector.reindex_page
+    #  ZMSZCatalogConnector.reindex_nodes
     # --------------------------------------------------------------------------
-    def reindex_page(self, uid, page_size, clients=False, fileparsing=True, REQUEST=None, RESPONSE=None):
-      """ reindex_page """
+    def reindex_nodes(self, nodes, fileparsing=True, langs=None):
+      """
+      Reindex the given nodes in the given languages (default: all languages
+      of each node) and return the result as a plain dict. Independent of
+      REQUEST/RESPONSE, so it can be used by background workers as well.
+      """
       adapter = self.getCatalogAdapter()
-      result = {'success':0,'failed':0,'log':[],'next_node':None}
+      result = {'success':0,'failed':0,'log':[]}
       objects = []
-      log = []
-      nodes, next_node = self.get_next_page(uid, page_size, clients) 
-      for node in nodes:
+      for index, node in enumerate(nodes):
         # Clear client.
         if node.meta_id == 'ZMS':
           home_id = node.getHome().id
@@ -330,18 +332,31 @@ class ZMSZCatalogConnector(
           result['cleared'] = self.manage_objects_clear(home_id)[0]
         # Get catalog objects.
         d = {}
-        for lang in node.getLangIds():
+        for lang in (langs or node.getLangIds()):
           node_objects = adapter.get_catalog_objects(node, fileparsing, lang)
           objects.extend(node_objects)
           d[lang] = len(node_objects)
-        log.append({'index':nodes.index(node),
+        result['log'].append({'index':index,
           'path':'/'.join(node.getPhysicalPath()),
           'meta_id':node.meta_id,
           'objects':d})
       # Add objects.
       result['success'], result['failed'] = self.manage_objects_add(objects)
-      # Return with log and next-node.
-      result['log'], result['next_node'] = log, next_node
+      return result
+
+    # --------------------------------------------------------------------------
+    #  ZMSZCatalogConnector.reindex_page
+    # --------------------------------------------------------------------------
+    def reindex_page(self, uid, page_size, clients=False, fileparsing=True, REQUEST=None, RESPONSE=None):
+      """Thin HTTP wrapper around the reusable reindexing operation.
+
+      This method handles paging and HTTP response formatting only; the
+      reindexing logic lives in ``reindex_nodes`` so it can also be called
+      without a web request, for example by background workers.
+      """
+      nodes, next_node = self.get_next_page(uid, page_size, clients) 
+      result = self.reindex_nodes(nodes, fileparsing)
+      result['next_node'] = next_node
       RESPONSE.setHeader('Cache-Control', 'no-cache')
       RESPONSE.setHeader('Content-Type', 'application/json; charset=utf-8')
       return json.dumps(result,indent=2)

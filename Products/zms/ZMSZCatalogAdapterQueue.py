@@ -592,3 +592,159 @@ def start(context, home_ids, key=None, connector_id=None, page_size=DEFAULT_PAGE
       control.release(lock_fd)
     raise
   return None
+
+
+################################################################################
+#  Passive reindexing (on content change)
+#
+#  In mode "async" (conf property ZMS.CatalogAwareness.mode) the adapter does
+#  not index while the editor waits. reindex_node() only records (path, lang)
+#  in a persistent queue, within the editor's own transaction, so the entry
+#  is committed or rolled back together with the edit. After the commit a
+#  single drainer thread (guarded by a file lock) works off the queue.
+################################################################################
+
+MAX_ATTEMPTS = 3
+DRAIN_BATCH = 25
+QUEUE_ATTR = "_reindex_queue"
+FAILED_ATTR = "_reindex_failed"
+
+
+def _persistent_map(adapter, attr):
+  """Return the OOBTree stored in the adapter, created on first use.
+
+  The tree is a persistent object of its own, so adding entries does not
+  write the adapter and parallel edits of different nodes do not conflict.
+  """
+  from BTrees.OOBTree import OOBTree
+  tree = getattr(adapter, attr, None)
+  if tree is None:
+    tree = OOBTree()
+    setattr(adapter, attr, tree)
+  return tree
+
+
+def pending(adapter):
+  """Return the number of queued (path, lang) entries."""
+  return len(getattr(adapter, QUEUE_ATTR, None) or ())
+
+
+def failed(adapter):
+  """Return the dead letters as {(path, lang): message}."""
+  return dict(getattr(adapter, FAILED_ATTR, None) or {})
+
+
+def enqueue(adapter, node, lang, open_app=None):
+  """Queue the node for reindexing in the given language.
+
+  Every call stores a fresh ticket, so a re-edit while the drainer works on
+  the same entry is never lost: the drainer removes an entry only if the
+  ticket is unchanged.
+  """
+  import transaction
+  queue = _persistent_map(adapter, QUEUE_ATTR)
+  queue[("/".join(node.getPhysicalPath()), lang)] = time.time_ns()
+  txn = transaction.get()
+  if not getattr(txn, "_zms_reindex_kick", False):
+    txn._zms_reindex_kick = True
+    path = adapter.getPhysicalPath()
+    jar = getattr(adapter, "_p_jar", None)
+    request_env = _capture_request_env(adapter.REQUEST)
+    key = adapter.absolute_url() + "#queue"
+
+    def hook(success):
+      if success and jar is not None:
+        kick(jar.db(), path, key, request_env, open_app=open_app)
+    txn.addAfterCommitHook(hook)
+
+
+def kick(db, adapter_path, key, request_env, open_app=None, retry_delay=1.0):
+  """Start the drainer thread; it exits at once if one is already running."""
+  if open_app is None:
+    open_app = lambda: _open_zodb_app(db, request_env)
+  thread = threading.Thread(
+    target=drain, args=(adapter_path, key, open_app, retry_delay),
+    name="zms_reindex_drain", daemon=True)
+  thread.start()
+  return thread
+
+
+def _process(app, adapter, queue, item, ticket, attempts, retry_delay):
+  """Reindex one entry. Returns True when the entry is settled."""
+  import transaction
+  from ZODB.POSException import ConflictError
+  path, lang = item
+  for _ in range(CONFLICT_RETRIES + 1):
+    try:
+      node = app.unrestrictedTraverse(path, None)
+      if node is not None:
+        app.REQUEST.set("lang", lang)
+        if not node.getCatalogAdapter().reindex_node_now(node, seen=set()):
+          raise RuntimeError("reindex_node failed")
+      if queue.get(item) == ticket:
+        del queue[item]
+      transaction.commit()
+      attempts.pop(item, None)
+      return True
+    except ConflictError:
+      transaction.abort()
+      queue = getattr(adapter, QUEUE_ATTR)
+      ticket = queue.get(item, ticket)
+    except Exception as error:
+      transaction.abort()
+      queue = getattr(adapter, QUEUE_ATTR)
+      attempts[item] = attempts.get(item, 0) + 1
+      LOGGER.warning("Reindex of %s (%s) failed, attempt %s", path, lang, attempts[item], exc_info=True)
+      if attempts[item] >= MAX_ATTEMPTS:
+        # Dead letter: keep the entry visible instead of retrying forever.
+        _persistent_map(adapter, FAILED_ATTR)[item] = str(error)
+        if queue.get(item) == ticket:
+          del queue[item]
+        transaction.commit()
+        attempts.pop(item, None)
+        return True
+      time.sleep(retry_delay)
+      return False
+  return False
+
+
+def drain(adapter_path, key, open_app, retry_delay=1.0):
+  """Work off the queue. Only one drainer per site holds the lock."""
+  import transaction
+  control = JobControl(key)
+  lock_fd = None
+  app = close = None
+  attempts = {}
+  try:
+    app, close = open_app()
+    adapter = app.unrestrictedTraverse(adapter_path)
+    while True:
+      with _JOBS_LOCK:
+        lock_fd = control.try_acquire()
+      if lock_fd is None:
+        return
+      try:
+        while True:
+          transaction.abort()
+          queue = getattr(adapter, QUEUE_ATTR, None)
+          items = [(k, queue[k]) for k in list(queue.keys())[:DRAIN_BATCH]] if queue else []
+          if not items:
+            break
+          for item, ticket in items:
+            _process(app, adapter, queue, item, ticket, attempts, retry_delay)
+      finally:
+        control.release(lock_fd)
+        lock_fd = None
+      # An entry added after the last check but before the lock was released
+      # has been skipped by its own kick; look again.
+      transaction.abort()
+      if not getattr(adapter, QUEUE_ATTR, None):
+        return
+  except Exception:
+    LOGGER.exception("Reindex drainer failed")
+  finally:
+    if close:
+      try:
+        close()
+      except Exception:
+        LOGGER.exception("Unable to close drainer connection")

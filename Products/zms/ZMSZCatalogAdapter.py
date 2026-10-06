@@ -253,8 +253,31 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
         request.set('reindex_node_log', seen)
       return seen
 
+    def reindex_mode(self):
+      """Return 'sync' (default) or 'async' (ZMS.CatalogAwareness.mode)."""
+      mode = self.getConfProperty('ZMS.CatalogAwareness.mode', 'sync')
+      return 'async' if mode == 'async' else 'sync'
+
     def reindex_node(self, node, seen=None):
       """Implement 'reindex_node'.
+
+      In mode 'async' the node is only queued (for the request language) and
+      indexed after the commit by a background worker, see ZMSZCatalogAdapterQueue.
+      """
+      if seen is None and self.reindex_mode() == 'async' \
+          and self.getConfProperty('ZMS.CatalogAwareness.active', 1):
+        try:
+          from Products.zms import ZMSZCatalogAdapterQueue
+          ZMSZCatalogAdapterQueue.enqueue(
+            self, node, self.REQUEST.get('lang') or self.getPrimaryLanguage())
+          return True
+        except Exception:
+          standard.writeError(self, "can't enqueue reindex_node")
+          return False
+      return self.reindex_node_now(node, seen)
+
+    def reindex_node_now(self, node, seen=None):
+      """Reindex the node's container pages synchronously.
 
       seen: optional set of paths of already reindexed nodes; it is updated
       in place. Defaults to a per-request set.
@@ -314,6 +337,20 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
       return ZMSZCatalogAdapterQueue.start(
         self.getRootElement(), home_ids, key=self.get_reindex_job_key(),
         connector_id=connector_id, page_size=page_size, fileparsing=fileparsing)
+
+    def get_reindex_queue_status(self):
+      """Return the state of the queue of the passive (on-change) reindexing."""
+      from Products.zms import ZMSZCatalogAdapterQueue
+      return {'mode': self.reindex_mode(),
+        'pending': ZMSZCatalogAdapterQueue.pending(self),
+        'failed': {'%s (%s)' % k: v for k, v in ZMSZCatalogAdapterQueue.failed(self).items()}}
+
+    def kick_reindex_queue(self):
+      """Start the queue worker, e.g. for entries left over after a restart."""
+      from Products.zms import ZMSZCatalogAdapterQueue
+      ZMSZCatalogAdapterQueue.kick(
+        self._p_jar.db(), self.getPhysicalPath(), self.absolute_url() + '#queue',
+        ZMSZCatalogAdapterQueue._capture_request_env(self.REQUEST))
 
     def get_reindex_job_status(self):
       """Return the status dict of the reindex job."""

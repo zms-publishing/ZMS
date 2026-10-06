@@ -285,3 +285,69 @@ class PageFallbackTest(unittest.TestCase):
     self.assertEqual(3, stats['success'])
     self.assertEqual(1, stats['failed'])
     self.assertEqual(4, stats['nodes_completed'])
+
+
+class PassiveQueueTest(StartJobTest):
+  """Mode 'async': reindex_node queues, a worker thread indexes after commit."""
+
+  def _wait_empty(self):
+    import transaction
+    adapter = self.root.getCatalogAdapter()
+    for _ in range(100):
+      transaction.abort()
+      if not ZMSZCatalogAdapterQueue.pending(adapter):
+        time.sleep(0.3)  # the drainer may still hold the lock
+        return
+      time.sleep(0.1)
+    self.fail('queue not drained')
+
+  def test_sync_mode_does_not_queue(self):
+    import transaction
+    adapter = self.root.getCatalogAdapter()
+    adapter.setCustomFilterFunction('##\nreturn True')
+    self.assertTrue(adapter.reindex_node(self.root))
+    self.assertEqual(0, ZMSZCatalogAdapterQueue.pending(adapter))
+
+  def test_async_mode_queues_and_drains_after_commit(self):
+    import transaction
+    adapter = self.root.getCatalogAdapter()
+    adapter.setCustomFilterFunction('##\nreturn True')
+    self.root.setConfProperty('ZMS.CatalogAwareness.mode', 'async')
+    transaction.commit()
+    before = self._indexed()
+    self.assertTrue(adapter.reindex_node(self.root))
+    self.assertEqual(1, ZMSZCatalogAdapterQueue.pending(adapter))
+    self.assertEqual(before, self._indexed())
+    transaction.commit()
+    self._wait_empty()
+    self.assertEqual({}, adapter.get_reindex_queue_status()['failed'])
+
+  def test_rolled_back_edit_is_not_queued(self):
+    import transaction
+    adapter = self.root.getCatalogAdapter()
+    self.root.setConfProperty('ZMS.CatalogAwareness.mode', 'async')
+    transaction.commit()
+    adapter.reindex_node(self.root)
+    transaction.abort()
+    self.assertEqual(0, ZMSZCatalogAdapterQueue.pending(adapter))
+
+  def test_failing_entry_becomes_dead_letter(self):
+    import transaction
+    adapter = self.root.getCatalogAdapter()
+    adapter.setCustomFilterFunction('##\nreturn True')
+    self.root.setConfProperty('ZMS.CatalogAwareness.mode', 'async')
+    transaction.commit()
+    adapter.__class__.reindex_node_now, saved = (lambda self, node, seen=None: False), adapter.__class__.reindex_node_now
+    try:
+      adapter.reindex_node(self.root)
+      transaction.commit()
+      # retry delay of the hook-started drainer is 1s; wait for 3 attempts
+      for _ in range(100):
+        transaction.abort()
+        if adapter.get_reindex_queue_status()['failed']:
+          break
+        time.sleep(0.2)
+    finally:
+      adapter.__class__.reindex_node_now = saved
+    self.assertEqual(1, len(adapter.get_reindex_queue_status()['failed']))
+    self.assertEqual(0, ZMSZCatalogAdapterQueue.pending(adapter))

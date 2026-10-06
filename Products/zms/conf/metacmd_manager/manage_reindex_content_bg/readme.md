@@ -37,7 +37,7 @@ The meta-command is declared in `__init__.yaml` for the meta types `ZMS` and
    logs through the `Zope` logger and writes progress to the status record.
 4. When the run ends (completed, stopped or failed) the worker writes the final
    state, removes the stop marker and releases the lock.
-5. The Start and Stop buttons are submitted by JavaScript (`fetch`, POST with all
+5. The Start/Pause/Proceed and Stop buttons are submitted by JavaScript (`fetch`, POST with all
    form data plus `control=1`), so the page is **not reloaded** and the sitemap keeps
    its expansion and selection. The command answers with JSON `{"message": ...}`;
    the message (e.g. “Background Job is already running”, “No ZMS-node selected”)
@@ -161,7 +161,7 @@ shared `flock`, writes an exclusive one; a stale worker (different `job_id`)
 cannot overwrite a newer run's record. The file is kept after the run so the
 final result stays visible.
 
-States: `idle` (no record), `running`, `stopping`, `stopped`, `completed`, `failed`.
+States: `idle` (no record), `running`, `pausing`, `paused`, `stopping`, `stopped`, `completed`, `failed`.
 
 Before the job starts, `start()` asks the ZMSIndex catalog (path and the adapter's
 meta ids, in the request thread) how many nodes each selected client has and
@@ -181,6 +181,28 @@ marks the matching sitemap entries with the CSS class `zmi-reindex-running` (the
 whenever sitemap nodes are loaded.
 
 ---
+
+## Controller: Start, Pause, Proceed, Stop
+
+A small JavaScript `Controller` on the page maps the job state reported by the
+status endpoint to the buttons (as in the ZMS catalog connector page):
+
+| State | Start button | Stop button |
+|-------|--------------|-------------|
+| idle / completed / stopped / failed | ▶ Start (`BTN_START`) | disabled |
+| running | ⏸ Pause (`BTN_PAUSE`) | enabled |
+| pausing / paused | ▶ Proceed (`BTN_PROCEED`) | enabled |
+| stopping | disabled | disabled |
+
+Because the state comes from the server, the buttons are correct after a page
+reload or when another user controls the job.
+
+**Pause** creates the `.pause` marker and sets the state `pausing`. The worker
+checks the marker before each node (and before each client), so the REST request
+in flight finishes first; then it reports `paused` and sleeps, polling the marker
+every 0.5 s. The run lock stays held, so no second job can start. **Proceed**
+removes the marker and the worker continues (`running`). Stop while paused ends
+the job as usual and clears the marker; a new Start also clears stale markers.
 
 ## Stop
 
@@ -216,6 +238,7 @@ the same directory):
 |------|---------|
 | `zms_reindex_<url>.lock` | Run lock; exists only while a job holds the lock |
 | `zms_reindex_<url>.lock.guard` | Permanent helper lock serializing creation, check and removal of the run lock file, so removal cannot race with a new start |
+| `zms_reindex_<url>.lock.pause` | Pause marker; the worker waits while it exists |
 | `zms_reindex_<url>.lock.stop` | Cancellation marker for stops from another process |
 | `zms_reindex_<url>.lock.status.json` | Status record |
 

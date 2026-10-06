@@ -12,6 +12,7 @@ import json
 import logging
 import os
 import tempfile
+import time
 import fcntl
 import threading
 import uuid
@@ -34,7 +35,8 @@ class ZMSIndexSchematizedReindexer:
 
 	def __init__(self, base_url, connector, uid='{$}', page_size=100, fileparsing=False,
 			start_nodes=None, cancel_event=None,
-			cancellation_file=None, progress_callback=None, meta_ids=None):
+			cancellation_file=None, progress_callback=None, meta_ids=None,
+			pause_file=None):
 		self.base_url = base_url.rstrip("/")
 		self.connector = connector.strip("/")
 		self.uid = uid
@@ -47,16 +49,37 @@ class ZMSIndexSchematizedReindexer:
 		self.traversal_errors = 0
 		self.cancel_event = cancel_event
 		self.cancellation_file = cancellation_file
+		# While this marker file exists, the run waits before the next node
+		self.pause_file = pause_file
+		self._last_position = (None, None)
 		self.progress_callback = progress_callback
 		# None: reindex every node; otherwise only nodes with these meta_ids
 		self.meta_ids = None if meta_ids is None else set(meta_ids)
 
 	def _report_progress(self, stats, state="running", current_uid=None, current_path=None):
+		if state == "running" and current_uid:
+			self._last_position = (current_uid, current_path)
+		elif state == "paused" and not current_uid:
+			current_uid, current_path = self._last_position
 		if self.progress_callback is not None:
 			self.progress_callback(
 				stats, state=state, current_uid=current_uid,
 				current_path=current_path,
 			)
+
+	def _pause_requested(self):
+		return self.pause_file is not None and os.path.exists(self.pause_file)
+
+	def _wait_while_paused(self, stats, write_line):
+		if not self._pause_requested() or self._stop_requested():
+			return
+		write_line("Paused")
+		self._report_progress(stats, state="paused")
+		while self._pause_requested() and not self._stop_requested():
+			time.sleep(0.5)
+		if not self._stop_requested():
+			write_line("Proceeding")
+			self._report_progress(stats)
 
 	def _stop_requested(self):
 		return (
@@ -185,6 +208,7 @@ class ZMSIndexSchematizedReindexer:
 		seen = set()
 		stopped = False
 		for client in clients:
+			self._wait_while_paused(stats, write_line)
 			if self._stop_requested():
 				break
 			errors_before = self.traversal_errors
@@ -214,6 +238,7 @@ class ZMSIndexSchematizedReindexer:
 	def _run_client(self, client, seen, stats, write_line):
 		"""Reindex one client; returns True if the run has been stopped."""
 		for uid, meta_id, node_path in self._iter_client_nodes(client, seen):
+			self._wait_while_paused(stats, write_line)
 			if self._stop_requested():
 				write_line("Stop requested; stopping reindex worker")
 				return True
@@ -307,6 +332,9 @@ def _get_lock_guard_path(base_url):
 
 def _get_cancellation_file_path(base_url):
 	return _get_lockfile_path(base_url) + ".stop"
+
+def _get_pause_file_path(base_url):
+	return _get_lockfile_path(base_url) + ".pause"
 
 def _get_status_file_path(base_url):
 	return _get_lockfile_path(base_url) + ".status.json"
@@ -503,10 +531,12 @@ def start(self):
 			return "Background Job is already running"
 
 		cancellation_file = _get_cancellation_file_path(base_url)
-		try:
-			os.unlink(cancellation_file)
-		except FileNotFoundError:
-			pass
+		pause_file = _get_pause_file_path(base_url)
+		for marker in (cancellation_file, pause_file):
+			try:
+				os.unlink(marker)
+			except FileNotFoundError:
+				pass
 
 		job_id = uuid.uuid4().hex
 		initial_status = {
@@ -542,6 +572,7 @@ def start(self):
 			"lock_released": False,
 			"cancel_event": threading.Event(),
 			"cancellation_file": cancellation_file,
+			"pause_file": pause_file,
 		}
 		RUN_JOB = job
 		RUN_LOCK_FD = lock_fd
@@ -561,6 +592,8 @@ def start(self):
 					or os.path.exists(cancellation_file)
 				):
 					state = "stopping"
+				elif state == "running" and os.path.exists(pause_file):
+					state = "pausing"
 				updates = dict(stats)
 				updates.update({
 					"state": state,
@@ -580,6 +613,7 @@ def start(self):
 				start_nodes=start_nodes,
 				cancel_event=job["cancel_event"],
 				cancellation_file=cancellation_file,
+				pause_file=pause_file,
 				progress_callback=update_progress,
 				meta_ids=meta_ids,
 			)
@@ -619,10 +653,11 @@ def start(self):
 				except Exception:
 					LOGGER.exception("Unable to save final reindex job status")
 				if RUN_JOB is job:
-					try:
-						os.unlink(cancellation_file)
-					except FileNotFoundError:
-						pass
+					for marker in (cancellation_file, pause_file):
+						try:
+							os.unlink(marker)
+						except FileNotFoundError:
+							pass
 				_release_job_lock(job)
 				if RUN_JOB is job:
 					RUN_JOB = None
@@ -655,6 +690,44 @@ def start(self):
 		raise
 	return None # "Background Job started"
 
+def _remove_pause_marker(base_url):
+	try:
+		os.unlink(_get_pause_file_path(base_url))
+	except FileNotFoundError:
+		pass
+
+def pause(self):
+	base_url = self.getRootElement().absolute_url()
+	with RUN_LOCK:
+		if not _test_single_flight_locked(base_url):
+			return "No background job is running"
+		status = _read_job_status(base_url) or {}
+		state = status.get("state")
+		if state in ("pausing", "paused"):
+			return "Background Job is already paused"
+		if state != "running":
+			return "Background Job cannot be paused (state: %s)" % state
+		fd = os.open(_get_pause_file_path(base_url), os.O_CREAT | os.O_WRONLY | os.O_TRUNC, 0o644)
+		os.close(fd)
+		_update_job_status(
+			base_url, {"state": "pausing"}, expected_job_id=status.get("job_id"),
+		)
+		return "Pause requested; the worker pauses after its current REST request"
+
+def proceed(self):
+	base_url = self.getRootElement().absolute_url()
+	with RUN_LOCK:
+		if not _test_single_flight_locked(base_url):
+			return "No background job is running"
+		status = _read_job_status(base_url) or {}
+		if status.get("state") not in ("pausing", "paused"):
+			return "Background Job is not paused"
+		_remove_pause_marker(base_url)
+		_update_job_status(
+			base_url, {"state": "running"}, expected_job_id=status.get("job_id"),
+		)
+		return "Background Job proceeds"
+
 def stop(self):
 	global RUN_IN_PROGRESS, RUN_LOCK_FD, RUN_JOB
 
@@ -662,6 +735,7 @@ def stop(self):
 	with RUN_LOCK:
 		job = RUN_JOB
 		if job is not None and job["base_url"] == base_url:
+			_remove_pause_marker(base_url)
 			job["cancel_event"].set()
 			_update_job_status(
 				base_url,
@@ -675,6 +749,7 @@ def stop(self):
 			return "Background Job stopped; the current REST request may finish"
 
 		if _test_single_flight_locked(base_url):
+			_remove_pause_marker(base_url)
 			_request_cancellation(base_url)
 			_update_job_status(base_url, {"state": "stopping"})
 			return "Stop requested; the worker will stop after its current REST request"
@@ -721,9 +796,13 @@ def manage_reindex_content_bg(self):
 	btn = request.form.get('btn')
 	if btn == "BTN_START":
 		message = start(self)
+	elif btn == "BTN_PAUSE":
+		message = pause(self)
+	elif btn == "BTN_PROCEED":
+		message = proceed(self)
 	elif btn == "BTN_STOP":
 		message = stop(self)
-	if btn in ("BTN_START", "BTN_STOP") and request.get("control") == "1":
+	if btn in ("BTN_START", "BTN_PAUSE", "BTN_PROCEED", "BTN_STOP") and request.get("control") == "1":
 		request.response.setHeader(
 			"Content-Type", "application/json; charset=utf-8",
 		)
@@ -803,10 +882,10 @@ def manage_reindex_content_bg(self):
 				<div class="form-group row">
 					<label class="col-sm-2 control-label"></label>
 					<div class="col-sm-10">
-						<button id="start-button" class="btn btn-secondary mr-2" name="btn" value="BTN_START">
+						<button id="start-button" class="btn btn-secondary mr-2" name="btn" value="BTN_START" title="Start">
 							<i class="fas fa-play text-success"></i>
 						</button>
-						<button id="stop-button" class="btn btn-secondary" name="btn" value="BTN_STOP">
+						<button id="stop-button" class="btn btn-secondary" name="btn" value="BTN_STOP" title="Stop" disabled="disabled">
 							<i class="fas fa-stop"></i>
 						</button>
 					</div>
@@ -877,7 +956,8 @@ def manage_reindex_content_bg(self):
 		// Progress bar: determinate if the expected number of nodes is known
 		function zmiSetProgress(status) {
 			var $bar = $(".zmi-sitemap-controls-container .progress .progress-bar");
-			var running = status.state === 'running' || status.state === 'stopping';
+			var running = status.state === 'running' || status.state === 'stopping' || status.state === 'pausing';
+			var paused = status.state === 'paused';
 			var total = status.total_nodes;
 			var done = status.nodes_completed || 0;
 			$bar.removeClass('bg-primary bg-success bg-warning bg-danger');
@@ -887,14 +967,15 @@ def manage_reindex_content_bg(self):
 				$bar.attr('aria-valuenow', perc).css('width', perc + '%')
 					.find('span').text(perc + '% (' + done + ' / ' + total + ')');
 			} else {
-				$bar.attr('aria-valuenow', running ? 100 : 0)
-					.css('width', running ? '100%' : '0%')
-					.find('span').text(running ? done + ' nodes' : '');
+				$bar.attr('aria-valuenow', running || paused ? 100 : 0)
+					.css('width', running || paused ? '100%' : '0%')
+					.find('span').text(running || paused ? done + ' nodes' : '');
 			}
-			$bar.toggleClass('progress-bar-striped progress-bar-animated', running);
+			$bar.toggleClass('progress-bar-striped', running || paused)
+				.toggleClass('progress-bar-animated', running);
 			$bar.addClass(
 				status.state === 'failed' ? 'bg-danger'
-				: status.state === 'stopped' || status.state === 'stopping' ? 'bg-warning'
+				: status.state === 'stopped' || status.state === 'stopping' || status.state === 'pausing' || paused ? 'bg-warning'
 				: status.state === 'completed' ? 'bg-success' : 'bg-primary');
 		}
 
@@ -952,6 +1033,38 @@ def manage_reindex_content_bg(self):
 			let timer = null;
 			let lastMessage = '';
 
+			// Controller: encapsulates the Start / Pause / Proceed / Stop interactions.
+			// The button behind #start-button depends on the job state reported by the server.
+			const Controller = () => {
+				const ACTIVE = ['running', 'pausing', 'paused', 'stopping'];
+				const that = {
+					state: 'idle',
+					isActive: () => ACTIVE.indexOf(that.state) >= 0,
+					// Command (btn value) issued by the start button in the current state
+					command: () => {
+						if (that.state === 'running') return 'BTN_PAUSE';
+						if (that.state === 'pausing' || that.state === 'paused') return 'BTN_PROCEED';
+						return 'BTN_START';
+					},
+					render: (state) => {
+						that.state = state || 'idle';
+						const $icon = $('#start-button i');
+						const showPause = that.state === 'running';
+						$icon.toggleClass('fa-pause text-info', showPause)
+							.toggleClass('fa-play text-success', !showPause);
+						$('#start-button')
+							.attr('title', {BTN_PAUSE: 'Pause', BTN_PROCEED: 'Proceed', BTN_START: 'Start'}[that.command()])
+							.prop('disabled', that.state === 'stopping');
+						$('#stop-button')
+							.toggleClass('text-danger', that.isActive())
+							.prop('disabled', !that.isActive() || that.state === 'stopping');
+					}
+				};
+				return that;
+			};
+			const controller = Controller();
+			controller.render('idle');
+
 			async function refreshStatus() {
 				if (polling) return;
 				polling = true;
@@ -983,7 +1096,8 @@ def manage_reindex_content_bg(self):
 					zmiSetProgress(status);
 					reindexDone = status.completed_clients || [];
 					reindexFailed = status.failed_clients || [];
-					reindexRunning = (status.state === 'running' || status.state === 'stopping')
+					controller.render(status.state);
+					reindexRunning = controller.isActive()
 						? (status.current_client || null) : null;
 					zmiMarkReindexed();
 					if (reindexRunning) {
@@ -1013,10 +1127,12 @@ def manage_reindex_content_bg(self):
 					panel.textContent = lines.join('\\n');
 					panel.className = status.state === 'failed'
 						? 'zmi-log alert alert-danger'
-						: status.state === 'running' || status.state === 'stopping'
-							? 'zmi-log alert alert-info'
-							: 'zmi-log alert alert-secondary';
-					if (status.state !== 'running' && status.state !== 'stopping' && timer) {
+						: status.state === 'paused' || status.state === 'pausing'
+							? 'zmi-log alert alert-warning'
+							: controller.isActive()
+								? 'zmi-log alert alert-info'
+								: 'zmi-log alert alert-secondary';
+					if (!controller.isActive() && timer) {
 						clearInterval(timer);
 						timer = null;
 					}
@@ -1042,8 +1158,9 @@ def manage_reindex_content_bg(self):
 				event.preventDefault();
 				const submitter = event.submitter;
 				if (!submitter || !submitter.value) return;
+				const command = submitter.id === 'start-button' ? controller.command() : submitter.value;
 				const data = new FormData(form);
-				data.set('btn', submitter.value);
+				data.set('btn', command);
 				data.set('control', '1');
 				const buttons = form.querySelectorAll('button[name=btn]');
 				buttons.forEach(b => b.disabled = true);
@@ -1063,7 +1180,7 @@ def manage_reindex_content_bg(self):
 				} catch (error) {
 					lastMessage = 'Request failed: ' + error.message;
 				} finally {
-					buttons.forEach(b => b.disabled = false);
+					controller.render(controller.state);
 				}
 				startPolling();
 			});

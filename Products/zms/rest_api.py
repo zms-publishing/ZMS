@@ -72,8 +72,9 @@ def get_index_data(node):
     return data
 
 
-def get_indexschematized_data(node, fileparsing=True):
-    objects = node.getCatalogAdapter().get_catalog_objects(node, fileparsing)
+def get_indexschematized_data(node, fileparsing=True, lang=None):
+    lang = lang or _get_request(node).get('lang', None)
+    objects = node.getCatalogAdapter().get_catalog_objects(node, fileparsing, lang)
     return [data for _, data in objects]
 
 

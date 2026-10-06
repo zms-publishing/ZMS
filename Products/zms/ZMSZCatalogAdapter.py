@@ -11,6 +11,7 @@ Organization: ZMS Publishing
 
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
+import contextlib
 import copy
 import time
 from datetime import datetime, timezone
@@ -23,7 +24,41 @@ from Products.zms import IZMSCatalogAdapter, IZMSConfigurationProvider
 from Products.zms import ZMSItem
 
 
-def get_default_data(node):
+_MISSING = object()
+
+
+@contextlib.contextmanager
+def catalog_request_context(node, lang=None):
+  """
+  Temporarily set the indexing context (language, ZMS_CONTEXT_URL) on the
+  node's request and restore the previous request state afterwards.
+
+  Yields the effective language: the given lang, else request['lang'], else
+  the node's primary language. Prevents in-place redirects triggered by
+  attribute rendering from leaking into the response.
+  """
+  request = node.REQUEST
+  if not lang:
+    lang = standard.nvl(request.get('lang'), node.getPrimaryLanguage())
+  saved = {k: request.get(k, _MISSING) for k in ('lang', 'ZMS_CONTEXT_URL')}
+  request.set('lang', lang)
+  request.set('ZMS_CONTEXT_URL', True)
+  try:
+    yield lang
+  finally:
+    for k, v in saved.items():
+      if v is _MISSING:
+        request.other.pop(k, None)
+      else:
+        request.set(k, v)
+    # Prevent in-place redirecting by resetting status code and location header.
+    response = getattr(request, 'RESPONSE', None)
+    if hasattr(response, 'setStatus'):
+      response.setStatus(200)
+      response.setHeader('Location', '')
+
+
+def get_default_data(node, lang=None):
   """
   Extract and prepare default catalog metadata for a ZMS node.
   
@@ -53,7 +88,7 @@ def get_default_data(node):
     - sortid: 15-character tree sort identifier (up to 5 levels, 3 digits each)
   """
   request = node.REQUEST
-  request.set('ZMS_CONTEXT_URL', True)
+  lang = lang or standard.nvl(request.get('lang'), node.getPrimaryLanguage())
   d = {}
   d['uid'] = node.get_uid()
   d['id'] = node.id
@@ -63,7 +98,7 @@ def get_default_data(node):
   d['path'] = '/'.join(node.getPhysicalPath())
   # Todo: Remove preview-parameter.
   d['index_html'] = node.getHref2IndexHtmlInContext(node.getRootElement(), REQUEST=request)
-  d['lang'] = request.get('lang',node.getPrimaryLanguage())
+  d['lang'] = lang
   d['created_dt'] = get_zoned_dt(node.attr('created_dt'))
   d['change_dt'] = get_zoned_dt(node.attr('change_dt')) or d['created_dt']
   d['start_dt'] = get_zoned_dt(node.attr('attr_active_start'))
@@ -405,14 +440,12 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     # --------------------------------------------------------------------------
     #   Get adapter's ids & attributes catalog-data.
     # --------------------------------------------------------------------------
-    def get_attr_data(self, node, d):
+    def get_attr_data(self, node, d, lang=None):
       """Return attr data."""
       request = node.REQUEST
-      # Is request['lang'] set?
-      if 'lang' in request:
-        lang = request['lang']
-      else:
-        lang = d.get('lang', node.getPrimaryLanguage())
+      if not lang:
+        lang = request['lang'] if 'lang' in request else d.get('lang', node.getPrimaryLanguage())
+      if request.get('lang') != lang:
         request.set('lang', lang)
       # Additional defaults.
       d['id'] = '%s_%s'%(node.id,lang)
@@ -443,22 +476,19 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
           else:
             # Add plain text to data.
             d[attr_id] = content_extraction.extract_text_from_html(node, value)
-      # Prevent in-place redirecting by resetting status code and location header.
-      request.RESPONSE.setStatus(200) 
-      request.RESPONSE.setHeader('Location', '')
 
     # --------------------------------------------------------------------------
     #  Get catalog objects data for given node.
     # --------------------------------------------------------------------------
-    def get_catalog_objects_data(self, node, d, fileparsing=True):
+    def get_catalog_objects_data(self, node, d, fileparsing=True, lang=None):
       """Return catalog objects data."""
       request = node.REQUEST
-      lang = standard.nvl(request.get('lang'), node.getPrimaryLanguage())
+      lang = lang or standard.nvl(request.get('lang'), node.getPrimaryLanguage())
       # Additional defaults.
       d['id'] = '%s_%s'%(node.id,lang)
       d['lang'] = lang
       # Get adapter's ids & attributes catalog-data.
-      self.get_attr_data(node, d)
+      self.get_attr_data(node, d, lang)
       # ZMSFile.file to standard_html?
       if fileparsing and node.meta_id == 'ZMSFile':
         get_file(node, d, fileparsing)
@@ -468,24 +498,25 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     # --------------------------------------------------------------------------
     #  Get catalog objects.
     # --------------------------------------------------------------------------
-    def get_catalog_objects(self, node, fileparsing=True):
-      """Return catalog objects."""
+    def get_catalog_objects(self, node, fileparsing=True, lang=None):
+      """Return catalog objects for node in given lang (default: request lang)."""
       objects = []
-      indexable = True
-      # Custom hook:
-      # if catalog_indexable is in node-attributes, then retrieve value for it. 
-      if 'catalog_indexable' in self.getMetaobjAttrIds(node.meta_id):
-        indexable = node.attr('catalog_indexable')
-      if indexable:
+      with catalog_request_context(node, lang) as lang:
+        indexable = True
         # Custom hook:
-        # if catalog_index is in node-attributes, then retrieve value for it. 
-        if 'catalog_index' in self.getMetaobjAttrIds(node.meta_id):
-          for data in node.attr('catalog_index'):
-            objects.append(self.get_catalog_objects_data(node, data, fileparsing))
-        # Catalog only desired typed meta-ids (resolves type(ZMS...)).
-        if self.matches_ids_filter(node):
-          data = get_default_data(node)
-          objects.append(self.get_catalog_objects_data(node, data, fileparsing))
+        # if catalog_indexable is in node-attributes, then retrieve value for it. 
+        if 'catalog_indexable' in self.getMetaobjAttrIds(node.meta_id):
+          indexable = node.attr('catalog_indexable')
+        if indexable:
+          # Custom hook:
+          # if catalog_index is in node-attributes, then retrieve value for it. 
+          if 'catalog_index' in self.getMetaobjAttrIds(node.meta_id):
+            for data in node.attr('catalog_index'):
+              objects.append(self.get_catalog_objects_data(node, data, fileparsing, lang))
+          # Catalog only desired typed meta-ids (resolves type(ZMS...)).
+          if self.matches_ids_filter(node):
+            data = get_default_data(node, lang)
+            objects.append(self.get_catalog_objects_data(node, data, fileparsing, lang))
       return objects
 
     ############################################################################

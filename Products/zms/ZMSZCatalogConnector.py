@@ -331,8 +331,7 @@ class ZMSZCatalogConnector(
         # Get catalog objects.
         d = {}
         for lang in node.getLangIds():
-          REQUEST.set('lang', lang)
-          node_objects = adapter.get_catalog_objects(node, fileparsing)
+          node_objects = adapter.get_catalog_objects(node, fileparsing, lang)
           objects.extend(node_objects)
           d[lang] = len(node_objects)
         log.append({'index':nodes.index(node),

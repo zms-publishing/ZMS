@@ -154,7 +154,7 @@ The worker publishes progress in a JSON file shared by all Zope processes:
 
 It holds `job_id`, `state`, `started_at`, `updated_at`, `finished_at`,
 `current_uid`, `current_path`, the counters above, `error` and the client lists
-`total_clients`, `total_nodes`, `completed_clients` and `failed_clients` (home ids, growing as
+`total_clients`, `total_nodes`, `current_client` (home id of the ZMS client being processed, `null` otherwise), `completed_clients` and `failed_clients` (home ids, growing as
 each selected ZMS client finishes; a client is “failed” if a branch could not be
 read or a node failed). Reads take a
 shared `flock`, writes an exclusive one; a stale worker (different `job_id`)
@@ -176,7 +176,7 @@ The command also answers `manage_reindex_content_bg?status=1` with this record a
 JSON (`Cache-Control: no-store`). The ZMI page shows a status panel and polls that
 URL every two seconds, stopping once the state is no longer `running` or
 `stopping`. The panel lists the completed ZMS-nodes, and the page
-marks the matching sitemap entries with the CSS class `zmi-reindex-done`
+marks the matching sitemap entries with the CSS class `zmi-reindex-running` (the client currently processed, only while the job is running/stopping), `zmi-reindex-done`
 (`zmi-reindex-failed` for clients with errors), re-applied on every poll and
 whenever sitemap nodes are loaded.
 

@@ -177,6 +177,7 @@ class ZMSIndexSchematizedReindexer:
 			"total_nodes": _sum_expected(self.start_nodes),
 			"completed_clients": [],
 			"failed_clients": [],
+			"current_client": None,
 		}
 		self._report_progress(stats)
 
@@ -188,6 +189,9 @@ class ZMSIndexSchematizedReindexer:
 				break
 			errors_before = self.traversal_errors
 			failed_before = stats["failed"]
+			if client is not None:
+				stats["current_client"] = client.get("home_id")
+				self._report_progress(stats)
 			stopped = self._run_client(client, seen, stats, write_line)
 			if stopped:
 				break
@@ -200,6 +204,7 @@ class ZMSIndexSchematizedReindexer:
 				write_line(f"Finished ZMS-node {home_id}")
 				self._report_progress(stats)
 
+		stats["current_client"] = None
 		self._report_progress(
 			stats, state="stopped" if self._stop_requested() else "completed",
 			current_uid=None, current_path=None,
@@ -521,6 +526,7 @@ def start(self):
 			"total_nodes": _sum_expected(start_nodes),
 			"completed_clients": [],
 			"failed_clients": [],
+			"current_client": None,
 			"error": None,
 		}
 		try:
@@ -591,6 +597,7 @@ def start(self):
 						"state": "failed",
 						"current_uid": None,
 						"current_path": None,
+						"current_client": None,
 						"error": str(error),
 					},
 					expected_job_id=job_id,
@@ -702,6 +709,7 @@ def manage_reindex_content_bg(self):
 				"total_nodes": None,
 				"completed_clients": [],
 				"failed_clients": [],
+				"current_client": None,
 			}
 		request.response.setHeader(
 			"Content-Type", "application/json; charset=utf-8",
@@ -814,12 +822,37 @@ def manage_reindex_content_bg(self):
 	)
 	html.append("""
 		<style>
-			.zmi-sitemap li.zmi-reindex-done > a { color: var(--success, #28a745); }
-			.zmi-sitemap li.zmi-reindex-done > a::after {
-				content: " \\2713"; font-weight: bold;
+			.zmi-sitemap li.zmi-reindex-done > a { 
+				color: var(--success, #28a745); 
 			}
-			.zmi-sitemap li.zmi-reindex-failed > a { color: var(--danger, #dc3545); }
+			.zmi-sitemap li.zmi-reindex-done > a::after,
+			.zmi-sitemap li.zmi-reindex-running > a::after {
+				content: "\\f058";
+				font-weight: bold;
+				font-weight: 900;
+				font-family: 'Font Awesome 5 Free';
+				display: inline-block;
+				margin-left: .35rem;
+				font-style: normal;
+				font-variant: normal;
+				text-rendering: auto;
+				-moz-osx-font-smoothing: grayscale;
+				-webkit-font-smoothing: antialiased;
+				line-height:16px;
+			}
+			.zmi-sitemap li.zmi-reindex-failed > a { 
+				color: var(--danger, #dc3545); 
+			}
+			.zmi-sitemap li.zmi-reindex-running > a::after {
+				content: "\\f110";
+				animation: spin 2s linear infinite;
+			}
+			@keyframes spin {
+				0% { transform: rotate(0deg); }
+				100% { transform: rotate(360deg); }
+			}
 		</style>
+
 		<script>
 
 		// Sitemap-Helper
@@ -868,12 +901,14 @@ def manage_reindex_content_bg(self):
 		// Mark sitemap nodes: ZMS-nodes completed (or failed) so far
 		var reindexDone = [];
 		var reindexFailed = [];
+		var reindexRunning = null;
 		function zmiMarkReindexed() {
 			$(".zmi-sitemap input[name='home_ids:list']").each(function() {
 				var $li = $(this).closest("li");
 				var val = $(this).val();
 				$li.toggleClass("zmi-reindex-done", reindexDone.indexOf(val) >= 0);
 				$li.toggleClass("zmi-reindex-failed", reindexFailed.indexOf(val) >= 0);
+				$li.toggleClass("zmi-reindex-running", reindexRunning !== null && reindexRunning === val);
 			});
 		}
 
@@ -948,7 +983,12 @@ def manage_reindex_content_bg(self):
 					zmiSetProgress(status);
 					reindexDone = status.completed_clients || [];
 					reindexFailed = status.failed_clients || [];
+					reindexRunning = (status.state === 'running' || status.state === 'stopping')
+						? (status.current_client || null) : null;
 					zmiMarkReindexed();
+					if (reindexRunning) {
+						lines.push('Running ZMS-node: ' + reindexRunning);
+					}
 					if (reindexDone.length) {
 						lines.push('Completed ZMS-nodes:');
 						reindexDone.forEach(function(id) { lines.push('  ' + id); });

@@ -308,7 +308,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
       """Return the key identifying the reindex job of this site."""
       return self.getRootElement().absolute_url()
 
-    def start_reindex_job(self, home_ids, connector_id=None, page_size=1, fileparsing=False):
+    def start_reindex_job(self, home_ids, connector_id=None, page_size=25, fileparsing=False):
       """Start the reindex job for the given ZMS clients. Returns None if started, else a message."""
       from Products.zms import ZMSZCatalogAdapterQueue
       return ZMSZCatalogAdapterQueue.start(
@@ -359,7 +359,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
         return self.start_reindex_job(
           REQUEST.get('home_ids', []),
           connector_id=REQUEST.get('connector_id') or None,
-          page_size=max(1, int(REQUEST.get('page_size', 1))),
+          page_size=max(1, int(REQUEST.get('page_size', 25))),
           fileparsing=standard.pybool(REQUEST.get('fileparsing', False)))
       return self._reindex_control(REQUEST, start)
 

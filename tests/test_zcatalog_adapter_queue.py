@@ -1,3 +1,4 @@
+import unittest
 # encoding: utf-8
 
 import os
@@ -255,3 +256,32 @@ class AdapterEndpointsTest(StartJobTest):
     adapter.get_reindex_job_key = lambda: self.key
     for endpoint in (adapter.manage_reindex_pause, adapter.manage_reindex_proceed, adapter.manage_reindex_stop):
       self.assertEqual('No background job is running', json.loads(endpoint(self._request()))['message'])
+
+
+class PageFallbackTest(unittest.TestCase):
+
+  def test_failed_page_is_retried_per_node(self):
+    class N:
+      meta_id = 'ZMSDocument'
+      def __init__(self, n): self.n = n
+      def get_uid(self): return str(self.n)
+      def getPhysicalPath(self): return ('', 'x', str(self.n))
+    class Connector:
+      def reindex_nodes(self, nodes, fileparsing=False):
+        if len(nodes) > 1 or nodes[0].n == 2:
+          raise ValueError('boom')
+        return {'success': 1, 'failed': 0, 'log': [{'objects': {'ger': 1}}]}
+    class Control:
+      def stop_requested(self): return False
+      def pause_requested(self): return False
+    nodes = [N(i) for i in range(4)]
+    original = ZMSZCatalogAdapterQueue.iter_nodes
+    ZMSZCatalogAdapterQueue.iter_nodes = lambda node, meta_ids=None: iter(nodes)
+    try:
+      stats = ZMSZCatalogAdapterQueue.run_reindex(
+        Connector(), [{'home_id': 'h', 'node': None}], Control(), page_size=4)
+    finally:
+      ZMSZCatalogAdapterQueue.iter_nodes = original
+    self.assertEqual(3, stats['success'])
+    self.assertEqual(1, stats['failed'])
+    self.assertEqual(4, stats['nodes_completed'])

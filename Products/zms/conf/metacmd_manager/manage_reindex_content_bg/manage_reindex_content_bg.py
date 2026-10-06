@@ -329,7 +329,7 @@ def start(self):
 	return self.getCatalogAdapter().start_reindex_job(
 		home_ids,
 		connector_id=request.get("connector_id") or None,
-		page_size=max(1, int(request.get("page_size", 1))),
+		page_size=max(1, int(request.get("page_size", 25))),
 		fileparsing=bool(request.get("fileparsing", False)),
 	)
 
@@ -444,7 +444,7 @@ def manage_reindex_content_bg(self):
 				<div class="form-group row">
 					<label class="col-sm-2 control-label">Page Size</label>
 					<div class="col-sm-10">
-						<input class="form-control" id="page_size" name="page_size:int" type="number" min="1" value="1" />
+						<input class="form-control" id="page_size" name="page_size:int" type="number" min="1" value="25" />
 						<small class="form-text text-muted">API batch size per call (1 = one node per call)</small>
 					</div>
 				</div><!-- .form-group -->

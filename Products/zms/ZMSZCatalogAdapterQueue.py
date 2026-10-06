@@ -29,6 +29,7 @@ import uuid
 
 LOGGER = logging.getLogger("ZMSReindex")
 
+DEFAULT_PAGE_SIZE = 25
 CONFLICT_RETRIES = 3
 
 # Directory of lock/status/marker files (default: temp dir).
@@ -252,7 +253,7 @@ def _new_stats(start_nodes):
 
 
 def run_reindex(connector, start_nodes, control, progress=None, meta_ids=None,
-                fileparsing=False, page_size=1, commit=None, abort=None):
+                fileparsing=False, page_size=DEFAULT_PAGE_SIZE, commit=None, abort=None):
   """
   Reindex the nodes of the given clients page by page.
 
@@ -304,13 +305,31 @@ def run_reindex(connector, start_nodes, control, progress=None, meta_ids=None,
     uid = page[-1].get_uid()
     path = "/".join(page[-1].getPhysicalPath())
     report(uid=uid, path=path)
+    # A failing page is retried node by node, so one bad node
+    # does not fail the others.
+    parts = [page]
     try:
-      result = reindex_page(page)
+      results = [reindex_page(page)]
     except Exception:
       abort()
-      LOGGER.exception("Reindex failed for page ending at %s", path)
-      stats["failed"] += len(page)
-    else:
+      if len(page) == 1:
+        LOGGER.exception("Reindex failed for %s", path)
+        results = [None]
+      else:
+        LOGGER.warning("Reindex failed for page ending at %s, retrying node by node", path, exc_info=True)
+        parts, results = [], []
+        for node in page:
+          parts.append([node])
+          try:
+            results.append(reindex_page([node]))
+          except Exception:
+            abort()
+            LOGGER.exception("Reindex failed for %s", "/".join(node.getPhysicalPath()))
+            results.append(None)
+    for part, result in zip(parts, results):
+      if result is None:
+        stats["failed"] += len(part)
+        continue
       stats["success"] += result.get("success", 0)
       stats["failed"] += result.get("failed", 0)
       stats["objects"] += sum(sum(e.get("objects", {}).values()) for e in result["log"])
@@ -462,7 +481,7 @@ def _resolve_start_nodes(context, home_ids, meta_ids):
   return start_nodes
 
 
-def start(context, home_ids, key=None, connector_id=None, page_size=1,
+def start(context, home_ids, key=None, connector_id=None, page_size=DEFAULT_PAGE_SIZE,
           fileparsing=False, open_app=None):
   """
   Start a background reindex job for the given ZMS clients (e.g.

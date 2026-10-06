@@ -183,6 +183,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
         'manage_changeProperties', 'manage_main',
         'manage_reindex_start', 'manage_reindex_status', 'manage_reindex_pause',
         'manage_reindex_proceed', 'manage_reindex_stop',
+        'manage_reindex_queue_status', 'manage_reindex_queue_mode',
         )
     __ac_permissions__=(
         ('ZMS Administrator', __administratorPermissions__),
@@ -344,6 +345,27 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
       return {'mode': self.reindex_mode(),
         'pending': ZMSZCatalogAdapterQueue.pending(self),
         'failed': {'%s (%s)' % k: v for k, v in ZMSZCatalogAdapterQueue.failed(self).items()}}
+
+    def manage_reindex_queue_status(self, REQUEST):
+      """Return passive reindex queue status as JSON."""
+      return self._reindex_json(REQUEST, self.get_reindex_queue_status())
+
+    def manage_reindex_queue_mode(self, REQUEST):
+      """Update passive reindex mode. This is a state change, so require POST."""
+      if REQUEST.get('REQUEST_METHOD') != 'POST':
+        REQUEST.RESPONSE.setStatus(405)
+        REQUEST.RESPONSE.setHeader('Allow', 'POST')
+        return self._reindex_json(REQUEST, {'message': 'POST required'})
+      mode = REQUEST.get('queue_mode')
+      if mode not in ('sync', 'async'):
+        return self._reindex_json(REQUEST, {'message': 'Invalid reindex mode'})
+      self.setConfProperty('ZMS.CatalogAwareness.mode', mode)
+      if mode == 'async':
+        self.kick_reindex_queue()
+      return self._reindex_json(REQUEST, {
+        'message': 'On-change reindexing mode set to %s' % mode,
+        'mode': mode,
+      })
 
     def kick_reindex_queue(self):
       """Start the queue worker, e.g. for entries left over after a restart."""
@@ -694,4 +716,3 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
         # Return with message.
         message = standard.url_quote(message)
         return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s#%s'%(lang, message, REQUEST.get('tab')))
-

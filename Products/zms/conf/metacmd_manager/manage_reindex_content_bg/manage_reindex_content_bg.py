@@ -362,6 +362,8 @@ def manage_reindex_content_bg(self):
 		)
 		request.response.setHeader("Cache-Control", "no-store")
 		return json.dumps(status)
+	if request.get("queue_status") == "1":
+		return self.getCatalogAdapter().manage_reindex_queue_status(request)
 
 	message = None
 	btn = request.form.get('btn')
@@ -373,6 +375,8 @@ def manage_reindex_content_bg(self):
 		message = proceed(self)
 	elif btn == "BTN_STOP":
 		message = stop(self)
+	elif btn == "BTN_SET_QUEUE_MODE":
+		return self.getCatalogAdapter().manage_reindex_queue_mode(request)
 	if btn in ("BTN_START", "BTN_PAUSE", "BTN_PROCEED", "BTN_STOP") and request.get("control") == "1":
 		request.response.setHeader(
 			"Content-Type", "application/json; charset=utf-8",
@@ -398,6 +402,8 @@ def manage_reindex_content_bg(self):
 	html.append('<div id="zmi-tab">')
 	html.append(self.zmi_breadcrumbs(self,request,extra=[{'label':'Reindex Content','action':'manage_reindex_content'}]))
 	status_url = self.absolute_url() + "/manage_reindex_content_bg?status=1"
+	queue_status_url = self.absolute_url() + "/manage_reindex_content_bg?queue_status=1"
+	queue_mode = catalog_adapter.reindex_mode()
 	html.append("""
 		<form class="form-horizontal card" name="form0" method="post" enctype="multipart/form-data">
 			<input type="hidden" id="lang" name="lang" value="%s"/>
@@ -459,13 +465,35 @@ def manage_reindex_content_bg(self):
 						</button>
 					</div>
 				</div>
+
 				<pre id="reindex-status" class="zmi-log d-none" role="status" data-status-url="%s" title="Reindex Status"></pre>
+
+				<!-- Save mode for on-change indexing, TO-DO: Transfer to admin UI -->
+				<div class="form-group row mt-5" style="align-items:flex-start">
+					<label class="col-sm-2 control-label pt-2">On-change indexing</label>
+					<div class="col-sm-10">
+						<select class="form-control" id="queue_mode" name="queue_mode">
+							<option value="sync"%s>Synchronous (default)</option>
+							<option value="async"%s>Asynchronous queue</option>
+						</select>
+						<small class="form-text text-muted">Applies to content changes. Asynchronous mode queues the request language after commit.</small>
+						<div id="reindex-queue-status" class="alert alert-info zmi-code mt-2 mx-0" data-status-url="%s" role="status"></div>
+						<ul id="reindex-queue-failed" class="text-danger"></ul>
+						<button id="queue-mode-button" class="btn btn-secondary mt-2" name="btn" value="BTN_SET_QUEUE_MODE" title="Save indexing mode">
+							Save mode
+						</button>
+					</div>
+				</div><!-- .form-group -->
+
 			</div><!-- .card-body -->
 		</form>
 	"""%(
 			request.get('lang',self.getPrimaryLanguage()),
 			standard.html_quote(connector_url),
-			standard.html_quote(status_url)
+			standard.html_quote(status_url),
+			' selected="selected"' if queue_mode == 'sync' else '',
+			' selected="selected"' if queue_mode == 'async' else '',
+			standard.html_quote(queue_status_url),
 		)
 	)
 	html.append("""
@@ -598,6 +626,11 @@ def manage_reindex_content_bg(self):
 			// -------------------------------
 			const panel = document.getElementById('reindex-status');
 			const statusUrl = panel.dataset.statusUrl;
+			const queuePanel = document.getElementById('reindex-queue-status');
+			const queueStatusUrl = queuePanel.dataset.statusUrl;
+			const queueFailed = document.getElementById('reindex-queue-failed');
+			let queueTimer = null;
+			let queueMessage = '';
 			let polling = false;
 			let timer = null;
 			let lastMessage = '';
@@ -633,6 +666,34 @@ def manage_reindex_content_bg(self):
 			};
 			const controller = Controller();
 			controller.render('idle');
+
+			async function refreshQueueStatus() {
+				try {
+					const response = await fetch(queueStatusUrl, {
+						credentials: 'same-origin',
+						cache: 'no-store',
+						headers: {'Accept': 'application/json'}
+					});
+					if (!response.ok) throw new Error('HTTP ' + response.status);
+					const status = await response.json();
+					if (document.activeElement !== document.getElementById('queue_mode')) {
+						document.getElementById('queue_mode').value = status.mode || 'sync';
+					}
+					const failed = Object.entries(status.failed || {});
+					queuePanel.textContent = (queueMessage ? queueMessage + '\\n' : '') +
+						'Mode: ' + status.mode +
+						' | Pending entries: ' + status.pending +
+						' | Failed entries: ' + failed.length;
+					queueFailed.replaceChildren();
+					failed.forEach(([entry, error]) => {
+						const item = document.createElement('li');
+						item.textContent = entry + ': ' + error;
+						queueFailed.appendChild(item);
+					});
+				} catch (error) {
+					queuePanel.textContent = 'Unable to refresh queue status: ' + error.message;
+				}
+			}
 
 			async function refreshStatus() {
 				if (polling) return;
@@ -727,6 +788,7 @@ def manage_reindex_content_bg(self):
 				event.preventDefault();
 				const submitter = event.submitter;
 				if (!submitter || !submitter.value) return;
+				const queueModeChange = submitter.id === 'queue-mode-button';
 				const command = submitter.id === 'start-button' ? controller.command() : submitter.value;
 				const data = new FormData(form);
 				data.set('btn', command);
@@ -745,16 +807,27 @@ def manage_reindex_content_bg(self):
 						throw new Error('HTTP ' + response.status);
 					}
 					const result = await response.json();
-					lastMessage = result.message || '';
+					if (queueModeChange) {
+						queueMessage = result.message || '';
+						await refreshQueueStatus();
+					} else {
+						lastMessage = result.message || '';
+					}
 				} catch (error) {
 					lastMessage = 'Request failed: ' + error.message;
 				} finally {
 					controller.render(controller.state);
 				}
-				startPolling();
+				if (queueModeChange) {
+					buttons.forEach(b => b.disabled = false);
+				} else {
+					startPolling();
+				}
 			});
 
 			startPolling();
+			refreshQueueStatus();
+			queueTimer = setInterval(refreshQueueStatus, 3000);
 		})();
 		</script>
 	""")

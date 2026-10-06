@@ -351,3 +351,22 @@ class PassiveQueueTest(StartJobTest):
       adapter.__class__.reindex_node_now = saved
     self.assertEqual(1, len(adapter.get_reindex_queue_status()['failed']))
     self.assertEqual(0, ZMSZCatalogAdapterQueue.pending(adapter))
+
+  def test_queue_mode_endpoint_and_status(self):
+    import json
+    adapter = self.root.getCatalogAdapter()
+    request = self.root.REQUEST
+    request.other['REQUEST_METHOD'] = 'GET'
+    response = json.loads(adapter.manage_reindex_queue_mode(request))
+    self.assertEqual('POST required', response['message'])
+    self.assertEqual(405, request.RESPONSE.status)
+    request.other['REQUEST_METHOD'] = 'POST'
+    request.set('queue_mode', 'invalid')
+    self.assertEqual('Invalid reindex mode',
+      json.loads(adapter.manage_reindex_queue_mode(request))['message'])
+    request.set('queue_mode', 'sync')
+    result = json.loads(adapter.manage_reindex_queue_mode(request))
+    self.assertEqual('sync', result['mode'])
+    status = json.loads(adapter.manage_reindex_queue_status(request))
+    self.assertEqual('sync', status['mode'])
+    self.assertEqual(0, status['pending'])

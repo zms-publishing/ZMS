@@ -12,14 +12,16 @@
 
 `manage_reindex_content_bg.py` reindexes ZMS content for the configured search
 connector (e.g. ZCatalog or OpenSearch) as an **asynchronous background job**.
-It discovers nodes through the ZMS **REST API** and asks the connector to
-reindex each node through its `reindex_page` endpoint.
+The ZMI bulk job runs in-process through the core catalog adapter. The page
+also exposes the on-change indexing mode (`sync` or `async`), pending queue
+count, and failed queue entries. The REST-based CLI remains available as a
+standalone client.
 
 The file contains three parts:
 
 - `ZMSIndexSchematizedReindexer` — REST reindexer; it needs only `requests`, not Zope
-- `start`, `stop` and `manage_reindex_content_bg` — Zope external-method code that runs the
-  reindexer in a background thread, controls it and renders the ZMI page
+- `start`, `stop` and `manage_reindex_content_bg` — Zope external-method code that delegates
+  bulk job control to the core adapter and renders the ZMI page
 - `main()` — command-line runner for standalone use
 
 The meta-command is declared in `__init__.yaml` for the meta types `ZMS` and

@@ -37,3 +37,30 @@ class ZCatalogAdapterTest(ZMSTestCase):
       self.assertEqual('eng', d['lang'])
       self.assertTrue(d['id'].endswith('_eng'))
     self.assertEqual('eng', request.get('lang'))
+
+  def _count_reindex_calls(self, adapter, node, **kwargs):
+    calls = []
+    adapter.reindex = lambda connector, base, **kw: calls.append(base.getPhysicalPath())
+    adapter.get_connectors = lambda: [object()]
+    adapter.setCustomFilterFunction('##\nreturn True')
+    adapter.reindex_node(node, **kwargs)
+    return calls
+
+  def test_reindex_node_dedup_per_request(self):
+    adapter = self.context.getCatalogAdapter()
+    first = self._count_reindex_calls(adapter, self.context)
+    second = self._count_reindex_calls(adapter, self.context)
+    self.assertTrue(len(first) > 0)
+    self.assertEqual([], second)
+
+  def test_reindex_node_dedup_explicit_seen(self):
+    adapter = self.context.getCatalogAdapter()
+    request_log = set(self.context.REQUEST.get('reindex_node_log') or [])
+    seen = set()
+    first = self._count_reindex_calls(adapter, self.context, seen=seen)
+    self.assertTrue(len(first) > 0)
+    self.assertEqual(len(first), len(seen))
+    # An explicit set does not touch the request-wide state.
+    self.assertEqual(request_log, set(self.context.REQUEST.get('reindex_node_log') or []))
+    self.assertEqual([], self._count_reindex_calls(adapter, self.context, seen=seen))
+    self.assertTrue(len(self._count_reindex_calls(adapter, self.context, seen=set())) > 0)

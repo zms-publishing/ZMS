@@ -233,8 +233,30 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     # --------------------------------------------------------------------------
     #  ZMSZCatalogAdapter.reindex_node
     # --------------------------------------------------------------------------
-    def reindex_node(self, node):
-      """Implement 'reindex_node'."""
+    def _get_reindexed_nodes(self, seen=None):
+      """Return the set of paths of nodes already reindexed in this run.
+
+      An explicitly given set is used as is. Otherwise the set is shared
+      per request, so that repeated calls within one request don't reindex
+      the same node again. This is the only place that touches the request
+      for deduplication.
+      """
+      if seen is not None:
+        return seen
+      request = self.REQUEST
+      seen = request.get('reindex_node_log')
+      if not isinstance(seen, set):
+        seen = set()
+        request.set('reindex_node_log', seen)
+      return seen
+
+    def reindex_node(self, node, seen=None):
+      """Implement 'reindex_node'.
+
+      seen: optional set of paths of already reindexed nodes; it is updated
+      in place. Defaults to a per-request set.
+      """
+      seen = self._get_reindexed_nodes(seen)
       connectors = []
       fileparsing = False
       try:
@@ -256,21 +278,16 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
             for connector in connectors:
               for filtered_container_node in filtered_container_nodes:
                 # Avoid reindexing the same node multiple times.
-                if not hasattr(self.REQUEST, 'reindex_node_log'):
-                  self.REQUEST.set('reindex_node_log', [])
-                if filtered_container_node.id not in self.REQUEST.get('reindex_node_log'):
+                path = '/'.join(filtered_container_node.getPhysicalPath())
+                if path not in seen:
                   self.reindex(connector, filtered_container_node, recursive=False, fileparsing=fileparsing)
-                  # Add reindexed node to log variable.
-                  reindex_node_log = self.REQUEST.get('reindex_node_log')
-                  reindex_node_log.append(filtered_container_node.id)
-                  # Update request variable.
-                  self.REQUEST.set('reindex_node_log', reindex_node_log)
-          elif container_page.getId() not in self.REQUEST.get('reindex_node_log', []):
+                  seen.add(path)
+          elif '/'.join(container_page.getPhysicalPath()) not in seen:
             # Remove from catalog if editing leads to filter-not-matching 
             # and node was not part of current reindexing.
             for connector in connectors:
               connector.manage_objects_remove([container_page])
-          if (node.meta_id =='ZMSFile' and node.getId() not in self.REQUEST.get('reindex_node_log', [])):
+          if (node.meta_id =='ZMSFile' and '/'.join(node.getPhysicalPath()) not in seen):
             # Remove ZMSFile from catalog if editing leads to filter-not-matching 
             # and node was not part of current reindexing.
             for connector in connectors:

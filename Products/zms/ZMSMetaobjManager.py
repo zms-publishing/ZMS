@@ -1421,8 +1421,9 @@ class ZMSMetaobjManager(object):
                     syncZopeMetaobjAttr( self, newValue, savedAttr)
                     if savedAttr.get('ob'):
                       filename = savedAttr['ob'].title
-                      data = bytes(zopeutil.readData(savedAttr['ob']))
-                      newCustom = _blobfields.createBlobField( self, _blobfields.MyFile, {'filename':filename,'data':data})
+                      if zopeutil.readData(savedAttr['ob']):
+                        data = bytes(zopeutil.readData(savedAttr['ob']))
+                        newCustom = _blobfields.createBlobField( self, _blobfields.MyFile, {'filename':filename,'data':data})
             # Change attribute.
             message += self.setMetaobjAttr( id, old_id, attr_id, newName, newMandatory, newMultilang, newRepetitive, newType, newKeys, newCustom, newDefault)
           # Return with message.

@@ -260,9 +260,11 @@
 								<input type="hidden" tal:attributes="name python:'attr_type_%s'%objAttr.get('id'); value objAttr/type"/>
 								<input class="btn btn-file" type="file" tal:attributes="name python:'attr_custom_%s'%objAttr.get('id')"/>
 								<tal:block tal:condition="python:objAttr.get('ob')">
-									<a tal:define="fname python:objAttr['ob'].title"
+									<a tal:define="
+										fname python:objAttr['ob'].title;
+										size python:here.getDataSizeStr(objAttr['ob'].get_size()) if callable(getattr(objAttr['ob'], 'get_size', None)) else ''"
 										tal:attributes="href python:'%s/manage_main'%(objAttr['ob'].absolute_url());
-											title python:'Edit %s [%s]'%(fname,here.getDataSizeStr(objAttr['ob'].get_size()))"
+											title python:'Edit %s [%s]'%(fname,size)"
 										target="_blank" style="text-decoration:none;">
 										<i class="fas fa-file-alt"></i>
 										<tal:block tal:content="fname">FILE NAME</tal:block>

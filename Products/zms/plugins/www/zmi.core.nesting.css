@@ -1429,6 +1429,25 @@ body.zmi {
 	table#meta_overview.table td.meta-id {
 		width: auto !important;
 	}
+	table#meta_overview.table th.meta-count {
+		width: 5rem;
+		& button {
+			width: 4rem;
+		}
+	}
+	
+	table#meta_overview.table td.meta-count {
+		cursor: pointer;
+		text-align: center;
+
+		&.no-data {
+			cursor: not-allowed;
+		}
+		&:hover {
+			background-color: #354f6742;
+			color: #fff;
+		}
+	}
 
 	table#meta_commands.table td.meta-id {
 		max-width: 60vw;

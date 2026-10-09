@@ -50,6 +50,9 @@
 	</div><!-- .inner -->
 </div><!-- #insertObj -->
 
+
+<!--! Section A: #meta_properties / Details of a single meta object. -->
+
 <form tal:condition="python:request.get('id')" class="form-horizontal card" action="manage_changeProperties" method="post" enctype="multipart/form-data">
 <tal:block tal:define="
 	id request/id;
@@ -115,7 +118,7 @@
 				><i class="fas fa-share fa-flip-vertical" title="acquired"></i></a>
 			<a class="btn btn-secondary" target="_blank" value="BTN_SEARCH"
 				tal:attributes="
-					href python:'manage_analyze?lang=%s&id=%s'%(request['lang'],metaObj['id']); 
+					href python:'manage_analyze?lang=%s&id=%s'%(request.get('lang',here.getPrimaryLanguage()),metaObj['id']); 
 					title python:'Click for content analysis of \042%s\042. Please, apply carefully!'%metaObj['id']"
 				><i class="fas fa-search"></i>
 			</a>
@@ -509,6 +512,9 @@
 </tal:block>
 </form>
 
+
+<!--! Section B: #meta_overview / Overview of all meta objects. -->
+
 <form tal:condition="python:not request.get('id')" class="form-horizontal card" action="manage_changeProperties" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 	<legend class="has_tooltip"
@@ -531,16 +537,23 @@
 				<div class="btn-group managing mr-1">
 					<button type="button" class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="zmiModal('#insertObj',{title:$(this).attr('title')});return false"><i class="fas fa-plus"></i></button>
 					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:'BTN_DELETE',key:'obj'});return false"><i class="fas fa-times"></i></button>
-				</div><!-- .btn-group -->
+				</div>
 				<div class="btn-group packaging mr-1">
 					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_ACQUIRE')+'...'" onclick="$ZMI.iframe('manage_main_acquire',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')});return false" tal:condition="python:here.getPortalMaster() is not None"><i class="fas fa-share fa-flip-vertical"></i></button>
 					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$ZMI.iframe('manage_main_import',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')});return false"><i class="fas fa-upload"></i></button>
 					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="return zmiExportBtnClick(this);"><i class="fas fa-download"></i></button>
-				</div><!-- .btn-group -->
+				</div>
 				<div class="btn-group filtering" title="Filter object list by entering a name.">
 					<i class="fas fa-filter tablefilter p-2" onclick="$('#tablefilter').focus().addClass('visited')"></i>
 					<input id="tablefilter" name="tablefilter" class="form-control" type="text" />
 				</div>	
+			</th>
+			<th class="meta-count">
+				<button type="button" class="btn btn-secondary" 
+					title="Count Occurrences of Meta-Classes by ZMS-Index" 
+					onclick="showMetaIdCount(this);return false">
+					Count
+				</button>
 			</th>
 		</tr>
 	</thead>
@@ -548,12 +561,12 @@
 	<tal:block tal:repeat="metaObjPackage python:here.sort_list(metaObjPackages+metaObjPackages2)">
 		<tal:block tal:condition="python:metaObjPackage in metaObjPackages">
 			<tr id="pack_default" class="meta-package"
-				tal:define="global metaObj python:here.getMetaobj(metaObjPackage)"
+				tal:define="metaObj python:here.getMetaobj(metaObjPackage)"
 				tal:attributes="id python:'pack_%s'%(metaObjPackage and metaObjPackage or 'default')">
 				<td style="text-align:center;" class="meta-check">
 					<input tal:condition="python:metaObjPackage" type="checkbox" name="ids:list" tal:attributes="value metaObjPackage"/>
 				</td>
-				<td colspan="2" class="meta-id">
+				<td colspan="3" class="meta-id">
 					<tal:block tal:condition="python:metaObjPackage"
 						><i tal:condition="python:metaObj.get('acquired',None)" class="fas fa-share fa-flip-vertical" title="acquired"></i>
 						<a tal:condition="python:metaObjPackage" data-turbolinks="false"
@@ -607,6 +620,14 @@
 						</span>
 					</span>
 				</td>
+				<td id="meta-count-id" class="meta-count"
+					onclick="window.open(this.getAttribute('data-count-href'), 'Meta-Object Count Details');"
+					tal:attributes="
+						id python:'meta-count-%s'%metaObj['id'];
+						data-count-href python:'manage_analyze?lang=%s&id=%s'%(request.get('lang',here.getPrimaryLanguage()),metaObj['id']); 
+						title python:'Click for content analysis of \042%s\042. Please, apply carefully!'%metaObj['id']">
+					&ndash;
+				</td>
 			</tr>
 		</tal:block>
 		</tal:block>
@@ -623,6 +644,36 @@
 
 <script>
 //<!--
+	/**
+	 * Show meta object count.
+	 * @param e The element that triggered the action.
+	 */
+	function showMetaIdCount(e) {
+		// Show spinner while loading the meta object count.
+		$(e).html('<i class="fas fa-spinner fa-spin"></i>');
+		$.get('manage_analyze?content_type=json',function(data) {
+			// data must be an object with meta object IDs as keys and their counts as values.
+			// if not handle an error:
+			if (typeof data !== 'object') {
+				alert('Error: Invalid response data.');
+				$(e).html('Count');
+				return;
+			}
+			for (var id in data) {
+				$('#meta-count-' + id).text(data[id]);
+				if (data[id] === undefined || data[id] === null) {
+					$('#meta-count-' + id).text('N/A');
+				};
+				if (data[id] == 0) {
+					$('#meta-count-' + id)
+						.addClass('no-data')
+						.removeAttr('onclick')
+						.attr('title','No data available');
+				}
+			}
+			$(e).html('Count');
+		});
+	}
 
 	/**
 	 * Enable Button-Click.

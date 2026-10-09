@@ -1,4 +1,14 @@
-<!DOCTYPE html>
+<tal:block tal:condition="python:request.get('content_type')=='json'"
+><tal:block tal:define="
+	standard modules/Products.zms/standard;
+	meta_ids python:here.getMetaobjIds();
+	obj_counts python:{ meta_id:len(here.getAbsoluteHome().zcatalog_index({'meta_id':meta_id})) for meta_id in meta_ids };
+	set_header python:request.RESPONSE.setHeader('Content-Type','application/json');"
+	tal:content="python:standard.str_json(obj_counts)"
+></tal:block
+></tal:block
+><tal:block tal:condition="python:request.get('content_type')!='json'"
+><!DOCTYPE html>
 <html lang="en" tal:define="
 	dummy0 python:here.zmi_page_request(here,request);
 	zmscontext python:here.getSelf();
@@ -6,7 +16,7 @@
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
 <body tal:attributes="class python:here.zmi_body_class(id='analyze')">
 <form class="form-horizontal card"
-	tal:define="global
+	tal:define="
 		meta_id request/id;
 		res python:here.zcatalog_index({'meta_id':meta_id}); 
 		metaObjIds python:here.getMetaobjIds(); 
@@ -125,6 +135,7 @@
 //-->
 </script>
 <style>
+/*<!--*/
 	.zmi.analyze form.card legend {
 		color:white;
 		background: #354f67;
@@ -160,6 +171,8 @@
 		text-overflow: ellipsis;
 		max-width:33vw;
 	}
+/*-->*/
 </style>
 </body>
 </html>
+</tal:block>

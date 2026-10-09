@@ -1139,6 +1139,26 @@ tr[id*='new_row'] td {
 .zmi table#meta_overview.table td.meta-id {
 	width: auto !important;
 }
+
+.zmi table#meta_overview.table th.meta-count {
+	width: 5rem;
+}
+.zmi table#meta_overview.table th.meta-count button {
+	width: 4rem;
+}
+
+.zmi table#meta_overview.table td.meta-count {
+	cursor: pointer;
+	text-align: center;
+}
+.zmi table#meta_overview.table td.meta-count.no-data {
+	cursor: not-allowed;
+}
+table#meta_overview.table td.meta-count:hover {
+	background-color: #354f6742;
+	color: #fff;
+}
+
 .zmi table#meta_commands.table td.meta-id {
 	max-width:60vw;
 	text-overflow:ellipsis

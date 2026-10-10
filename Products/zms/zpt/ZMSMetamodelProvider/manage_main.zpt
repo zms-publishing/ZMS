@@ -550,7 +550,7 @@
 			</th>
 			<th class="meta-count">
 				<button type="button" class="btn btn-secondary" 
-					title="Count Occurrences of Meta-Classes by ZMS-Index" 
+					title="Count Meta-Object Occurrences Recursively by ZMS-Index" 
 					onclick="showMetaIdCount(this);return false">
 					Count
 				</button>

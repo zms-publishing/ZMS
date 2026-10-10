@@ -95,7 +95,7 @@ def registerDirectory(_context, name, directory=None, recursive=False,
         filepath = str(directory)
 
     if not os.path.isdir(filepath):
-        print(f"ERROR [{_context.package.__name__}]:", f"No directory named '{filepath}'")
+        print(f"Ignore: missing '{filepath}' on registerDirectory for {_context.package.__name__}")
         return
 
     reg_key = _generateKey(_context.package.__name__, subdir)

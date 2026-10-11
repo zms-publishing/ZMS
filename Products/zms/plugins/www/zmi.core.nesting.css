@@ -1443,8 +1443,8 @@ body.zmi {
 		&.no-data {
 			cursor: not-allowed;
 		}
-		&:hover {
-			background-color: #354f6742;
+		&:not(.no-data):hover {
+			background-color: #337ab7;
 			color: #fff;
 		}
 	}

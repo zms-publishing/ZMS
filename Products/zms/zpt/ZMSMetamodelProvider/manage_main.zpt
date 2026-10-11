@@ -116,12 +116,15 @@
 					href python:'%s/metaobj_manager/manage_main?lang=%s&id=%s'%(context.getHome().aq_parent.content.absolute_url(),request['lang'],metaObj['id']);
 					title python:'acquired from: %s (%s)'%(context.getHome().aq_parent.content.id, context.getHome().aq_parent.content.attr('titlealt'))"
 				><i class="fas fa-share fa-flip-vertical" title="acquired"></i></a>
-			<a class="btn btn-secondary" target="_blank" value="BTN_SEARCH"
+			<button class="btn btn-secondary" type="button" value="BTN_SEARCH"
+				title="Click for content analysis. Please, apply carefully!"
+				data-modal-title="Meta-Object Count Details"
+				onclick="$ZMI.iframe('manage_analyze',{id:$(this).attr('data-id'),lang:getZMILang(),filter:$(this).attr('data-path_filter'),limit:500},{iframe:true,height:'600',title:$(this).attr('data-modal-title')});return false" 
 				tal:attributes="
-					href python:'manage_analyze?lang=%s&id=%s'%(request.get('lang',here.getPrimaryLanguage()),metaObj['id']); 
-					title python:'Click for content analysis of \042%s\042. Please, apply carefully!'%metaObj['id']"
-				><i class="fas fa-search"></i>
-			</a>
+					data-id python:metaObj['id'];
+					data-path_filter python:here.getHome().absolute_url_path()">
+				<i class="fas fa-search"></i>
+			</button>
 			<button class="btn btn-secondary" type="button" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$ZMI.iframe('manage_main_import',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')});return false"><i class="fas fa-upload"></i></button>
 			<button class="btn btn-secondary" type="button" name="btn" value="BTN_EXPORT" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')" onclick="return zmiExportBtnClick(this)"><i class="fas fa-download"></i></button>
 		</div>
@@ -549,8 +552,8 @@
 				</div>	
 			</th>
 			<th class="meta-count">
-				<button type="button" class="btn btn-secondary" 
-					title="Count Meta-Object Occurrences Recursively by ZMS-Index" 
+				<button type="button" class="btn btn-primary" 
+					title="Recursively count content-object occurrences" 
 					onclick="showMetaIdCount(this);return false">
 					Count
 				</button>
@@ -611,22 +614,28 @@
 								title python:'acquired from: %s (%s)'%(context.getHome().aq_parent.content.id, context.getHome().aq_parent.content.attr('titlealt'))"
 							><i class="fas fa-share fa-flip-vertical"></i></a>
 						<a title="Enabled" href="javascript:;" onclick="zmiEnabledBtnClick(this)"><i tal:attributes="class python:' '.join(['enabled-toggle']+[['far fa-square'],['far fa-check-square']][metaObj.get('enabled',0) in [1,True]])"></i></a>
-						<a tal:attributes="href python:'manage_analyze?lang=%s&id=%s'%(request['lang'],metaObj['id']); title python:'%s - Click for content analysis...'%metaObj['id']" target="_blank"><i tal:on-error="string:ERROR icon" tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])"></i></a>
-						<i tal:on-error="string:ERROR icon" tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])" style="display:none;"></i>
-						<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id'])"><span tal:on-error="string:ERROR name" tal:replace="metaObj/name">the name</span></a>
-						<span class="meta-id-info">
+
+						<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id'])">
+							<i tal:on-error="string:ERROR icon" 
+								tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])"
+							></i><span tal:on-error="string:ERROR name" style="margin-left: .1rem;" tal:content="metaObj/name">the name</span>
+						</a>
+							<span class="meta-id-info">
 							<tal:block tal:content="revision">the revision</tal:block>
 							(<tal:block tal:content="python:here.getZMILangStr('SOTYPE_%s'%metaObj.get('type','unknown').upper())">the type</tal:block>)
 						</span>
 					</span>
 				</td>
-				<td id="meta-count-id" class="meta-count"
-					onclick="window.open(this.getAttribute('data-count-href'), 'Meta-Object Count Details');"
+				<td id="meta-count-id" class="meta-count no-data" 
+					data-modal-title="Meta-Object Count Details"
+					onclick="$ZMI.iframe('manage_analyze',{id:$(this).attr('data-id'),lang:getZMILang(),filter:$(this).attr('data-path_filter'),limit:500},{iframe:true,height:'600',title:$(this).attr('data-modal-title')});return false" 
 					tal:attributes="
-						id python:'meta-count-%s'%metaObj['id'];
-						data-count-href python:'manage_analyze?lang=%s&id=%s'%(request.get('lang',here.getPrimaryLanguage()),metaObj['id']); 
+						id python:'meta-count-%s'%(metaObj['id']);
+						data-id python:metaObj['id'];
+						data-path_filter python:here.getHome().absolute_url_path();
+						data-modal-title python:'Meta-Object Count Details | %s'%(request.get('lang',here.getPrimaryLanguage())) ;
 						title python:'Click for content analysis of \042%s\042. Please, apply carefully!'%metaObj['id']">
-					&ndash;
+					<span>&ndash;</span>
 				</td>
 			</tr>
 		</tal:block>
@@ -660,9 +669,13 @@
 				return;
 			}
 			for (var id in data) {
-				$('#meta-count-' + id).text(data[id]);
+				$('#meta-count-' + id)
+					.text(data[id])
+					.removeClass('no-data');
 				if (data[id] === undefined || data[id] === null) {
-					$('#meta-count-' + id).text('N/A');
+					$('#meta-count-' + id)
+						.text('N/A')
+						.addClass('no-data');
 				};
 				if (data[id] == 0) {
 					$('#meta-count-' + id)

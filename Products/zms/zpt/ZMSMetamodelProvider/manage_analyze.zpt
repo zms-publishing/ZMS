@@ -317,6 +317,9 @@
 			.text-muted {
 				color: #b3b3b3; /* Override Bootstrap muted color */
 			}
+			tr > :first-child {
+				padding-left:1.25rem
+			}
 			th.meta_id,
 			td.meta_id {
 				width: 20%;

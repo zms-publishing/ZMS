@@ -119,7 +119,7 @@
 			<button class="btn btn-secondary" type="button" value="BTN_SEARCH"
 				title="Click for content analysis. Please, apply carefully!"
 				data-modal-title="Meta-Object Count Details"
-				onclick="$ZMI.iframe('manage_analyze',{id:$(this).attr('data-id'),lang:getZMILang(),filter:$(this).attr('data-path_filter'),limit:500},{iframe:true,height:'600',title:$(this).attr('data-modal-title')});return false" 
+				onclick="$ZMI.iframe('manage_analyze',{id:$(this).attr('data-id'),lang:getZMILang(),filter:$(this).attr('data-path_filter'),limit:500},{iframe:true,height:'600',id:'modal-meta-count',title:$(this).attr('data-modal-title')});return false" 
 				tal:attributes="
 					data-id python:metaObj['id'];
 					data-path_filter python:here.getHome().absolute_url_path()">
@@ -542,6 +542,13 @@
 					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:'BTN_DELETE',key:'obj'});return false"><i class="fas fa-times"></i></button>
 				</div>
 				<div class="btn-group packaging mr-1">
+					<button class="btn btn-secondary" type="button" value="BTN_SEARCH"
+						title="Click for content analysis. Please, apply carefully!"
+						data-modal-title="Meta-Object Count Details"
+						onclick="$ZMI.iframe('manage_analyze',{lang:getZMILang(),filter:$(this).attr('data-path_filter'),limit:500},{iframe:true,height:'600',id:'modal-meta-count',title:$(this).attr('data-modal-title')});return false" 
+						tal:attributes="data-path_filter python:here.getHome().absolute_url_path()">
+						<i class="fas fa-search"></i>
+					</button>
 					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_ACQUIRE')+'...'" onclick="$ZMI.iframe('manage_main_acquire',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')});return false" tal:condition="python:here.getPortalMaster() is not None"><i class="fas fa-share fa-flip-vertical"></i></button>
 					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$ZMI.iframe('manage_main_import',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')});return false"><i class="fas fa-upload"></i></button>
 					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="return zmiExportBtnClick(this);"><i class="fas fa-download"></i></button>
@@ -552,7 +559,7 @@
 				</div>	
 			</th>
 			<th class="meta-count">
-				<button type="button" class="btn btn-primary" 
+				<button type="button" class="btn btn-secondary" 
 					title="Recursively count content-object occurrences" 
 					onclick="showMetaIdCount(this);return false">
 					Count
@@ -628,7 +635,7 @@
 				</td>
 				<td id="meta-count-id" class="meta-count no-data" 
 					data-modal-title="Meta-Object Count Details"
-					onclick="$ZMI.iframe('manage_analyze',{id:$(this).attr('data-id'),lang:getZMILang(),filter:$(this).attr('data-path_filter'),limit:500},{iframe:true,height:'600',title:$(this).attr('data-modal-title')});return false" 
+					onclick="$ZMI.iframe('manage_analyze',{id:$(this).attr('data-id'),lang:getZMILang(),filter:$(this).attr('data-path_filter'),limit:500},{iframe:true,height:'600',id:'modal-meta-count',title:$(this).attr('data-modal-title')});return false" 
 					tal:attributes="
 						id python:'meta-count-%s'%(metaObj['id']);
 						data-id python:metaObj['id'];

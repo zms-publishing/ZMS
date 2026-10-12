@@ -1429,6 +1429,7 @@ body.zmi {
 	table#meta_overview.table td.meta-id {
 		width: auto !important;
 	}
+
 	table#meta_overview.table th.meta-count {
 		width: 5rem;
 		& button {
@@ -1447,6 +1448,10 @@ body.zmi {
 			background-color: #337ab7;
 			color: #fff;
 		}
+	}
+
+	div#modal-meta-count .modal-body {
+		padding: 0;
 	}
 
 	table#meta_commands.table td.meta-id {

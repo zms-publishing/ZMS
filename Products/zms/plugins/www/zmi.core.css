@@ -1139,14 +1139,12 @@ tr[id*='new_row'] td {
 .zmi table#meta_overview.table td.meta-id {
 	width: auto !important;
 }
-
 .zmi table#meta_overview.table th.meta-count {
 	width: 5rem;
 }
 .zmi table#meta_overview.table th.meta-count button {
 	width: 4rem;
 }
-
 .zmi table#meta_overview.table td.meta-count {
 	cursor: pointer;
 	text-align: center;
@@ -1158,7 +1156,9 @@ tr[id*='new_row'] td {
 	background-color: #337ab7;
 	color: #fff;
 }
-
+.zmi div#modal-meta-count .modal-body {
+	padding: 0;
+}
 .zmi table#meta_commands.table td.meta-id {
 	max-width:60vw;
 	text-overflow:ellipsis

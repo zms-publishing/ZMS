@@ -40,24 +40,24 @@
 	<head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
 	<body tal:attributes="class python:here.zmi_body_class(id='analyze')">
 
-		<div class="alert alert-info mb-3"
+		<div class="alert alert-info m-0 rounded-0"
 			tal:condition="python:len(res) > max_objs">
 			There are <strong tal:content="python:'%s %s'%(len(res),meta_id)"></strong> objects in 
 			<strong tal:content="python:path_filter.strip()=='' and 'all clients' or 'clients '+path_filter.strip()"></strong>.
 			Please select a client to limit your search or increase the maximum number of results.
 		</div>
-		<div class="alert alert-warning mb-3"
+		<div class="alert alert-warning m-0 rounded-0"
 			tal:condition="python:len(res) == 0">
 			No results found. Please select a different content object class filter ...
 		</div>
-		<div class="alert alert-success mb-3"
+		<div class="alert alert-success m-0 rounded-0"
 			tal:condition="python:len(res) > 0 and meta_id!='' and (len(res) < max_objs)">
 			Successfully analyzed ...
 		</div>
 
 		<form id="form_analyze_control" class="form-horizontal card">
 			<input type="hidden" name="ZMI_TIME" id="ZMI_TIME" value="" tal:attributes="value python:request.get('ZMI_TIME','')" />
-			<div class="form-inline px-3 pt-3 pb-0">
+			<div class="form-inline px-3 pt-3 pb-0 flex-nowrap alert-info" style="background-color: aliceblue !important;">
 				<select id="meta_id" name="id" class="form-control mr-2">
 					<option value>---Object---</option>
 					<optgroup tal:repeat="package meta_pack" tal:attributes="label package">
@@ -114,11 +114,11 @@
 					<option value="2000">2000</option>
 					<option value="5000">5000</option>
 				</select>
-				<button type="submit" id="do_analyze" class="btn btn-primary mr-2" style="width:7rem;" onclick="show_spinner($(this))">
+				<button type="submit" id="do_analyze" class="btn btn-primary mr-2 text-nowrap" style="width:7rem;" onclick="show_spinner($(this))">
 					<i class="fas fa-search mr-2"></i> Analyze
 				</button>
 			</div>
-			<div class="form-check px-2">
+			<div class="form-check px-2 alert-info" style="background-color: aliceblue !important;">
 				<span class="btn" 
 					title="Show total number of content objects in select box">
 					<input type="checkbox" id="num_objs" name="num_objs" 
@@ -165,7 +165,7 @@
 					></tal:block
 				></tal:block>
 
-				<table class="table table-bordered table-striped mb-0 mt-2">
+				<table class="table table-bordered table-striped m-0">
 					<thead>
 						<tr>
 							<th class="meta_id"

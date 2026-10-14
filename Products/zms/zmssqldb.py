@@ -1428,8 +1428,8 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         for filterStereotype in ['attr', 'op', 'value']:
           requestkey = 'filter%s%i'%(filterStereotype, filterIndex)
           sessionkey = '%s_%s'%(requestkey, self.id)
-          if REQUEST.get('btn') is None:
-            # get value from session 
+          if not zmscustom.is_filter_form_submit(REQUEST):
+            # keep filter: get value from session
             requestvalue = standard.get_session_value(self, sessionkey, '')
             # set request-value
             REQUEST.set(requestkey, requestvalue)

@@ -1422,14 +1422,17 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       @type REQUEST: ZPublisher.HTTPRequest.HTTPRequest
       """
       sqlStatement = REQUEST.get('sqlStatement', [])
-      # init filter from request.
+      btn = REQUEST.get('btn')
+      # Hint: Only the 'refresh'/'reset'-buttons will trigger a change of the 
+      # data-grid filter and the resulting view by zpt/ZMSRecordSet/main_grid.zpt
+      filter_submitted = btn in ('BTN_REFRESH', 'BTN_RESET') or (btn == '' and not REQUEST.get('action'))
       index = 0
       for filterIndex in range(100):
         for filterStereotype in ['attr', 'op', 'value']:
           requestkey = 'filter%s%i'%(filterStereotype, filterIndex)
           sessionkey = '%s_%s'%(requestkey, self.id)
-          if REQUEST.get('btn') is None:
-            # get value from session 
+          if not filter_submitted:
+            # keep filter: get value from session
             requestvalue = standard.get_session_value(self, sessionkey, '')
             # set request-value
             REQUEST.set(requestkey, requestvalue)

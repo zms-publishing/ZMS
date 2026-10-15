@@ -59,6 +59,35 @@ from Products.zms import standard
 from Products.zms import zmscustom
 from Products.zms import zopeutil
 
+# Buttons of the record-set filter form (search / reset). Only they and the
+# filter inputs in the grid header change the filter kept in the session.
+# manage_main also handles inserting, updating and deleting a record (BTN_SAVE,
+# BTN_CANCEL, BTN_DELETE) and the row actions of the grid; such requests keep
+# the filter.
+FILTER_FORM_BUTTONS = ['BTN_REFRESH', 'BTN_RESET']
+
+
+def is_filter_form_submit(REQUEST):
+  """
+  Return whether the request changes the record-set filter.
+
+  That is the case for the search and reset buttons of the filter form and for
+  the filter inputs in the grid header (zpt/ZMSRecordSet/main_grid.zpt): typing
+  there submits the grid form by script with an empty C{btn} and no C{action}.
+  Row actions of the grid (move, delete, duplicate) set C{action} and keep the
+  filter.
+
+  @param REQUEST: Triggering request.
+  @type REQUEST: ZPublisher.HTTPRequest.HTTPRequest
+  @return: C{True} if the filter is to be taken from the request.
+  @rtype: C{bool}
+  """
+  btn = REQUEST.get('btn')
+  if btn in FILTER_FORM_BUTTONS:
+    return True
+  return btn == '' and not REQUEST.get('action')
+
+
 manage_addZMSSqlDbForm = PageTemplateFile('manage_addzmssqldbform', globals()) 
 
 
@@ -1428,7 +1457,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         for filterStereotype in ['attr', 'op', 'value']:
           requestkey = 'filter%s%i'%(filterStereotype, filterIndex)
           sessionkey = '%s_%s'%(requestkey, self.id)
-          if not zmscustom.is_filter_form_submit(REQUEST):
+          if not is_filter_form_submit(REQUEST):
             # keep filter: get value from session
             requestvalue = standard.get_session_value(self, sessionkey, '')
             # set request-value

@@ -8,7 +8,7 @@
 ><!DOCTYPE html>
 <html lang="en" tal:define="zmscontext python:here.getSelf();">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
-<body tal:attributes="class python:here.zmi_body_class(id='metas config metaobj')">
+<body tal:attributes="class python:here.zmi_body_class(id='metas config metaobj')" xmlns:hx-on="https://htmx.org/">
 <header tal:replace="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</header>
 <div id="zmi-tab">
 <tal:block tal:define="
@@ -549,6 +549,7 @@
 						tal:attributes="data-path_filter python:here.getHome().absolute_url_path()">
 						<i class="fas fa-search"></i>
 					</button>
+					<button type="button" class="btn btn-secondary" title="Show Big Picture of all Packages" onclick="window.location.href='manage_bigpicture'"><i class="fas fa-layer-group"></i></button>
 					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_ACQUIRE')+'...'" onclick="$ZMI.iframe('manage_main_acquire',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')});return false" tal:condition="python:here.getPortalMaster() is not None"><i class="fas fa-share fa-flip-vertical"></i></button>
 					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$ZMI.iframe('manage_main_import',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')});return false"><i class="fas fa-upload"></i></button>
 					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="return zmiExportBtnClick(this);"><i class="fas fa-download"></i></button>
@@ -621,11 +622,36 @@
 								title python:'acquired from: %s (%s)'%(context.getHome().aq_parent.content.id, context.getHome().aq_parent.content.attr('titlealt'))"
 							><i class="fas fa-share fa-flip-vertical"></i></a>
 						<a title="Enabled" href="javascript:;" onclick="zmiEnabledBtnClick(this)"><i tal:attributes="class python:' '.join(['enabled-toggle']+[['far fa-square'],['far fa-check-square']][metaObj.get('enabled',0) in [1,True]])"></i></a>
-
-						<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id'])">
+						<a href="#"
+							hx-get="manage_bigpicture" 
+							hx-trigger="mouseover" 
+							hx-target="#bigpicture" 
+							hx-select="main" 
+							hx-swap="innerHTML show:none"
+							hx-boost="false"
+							hx-push-url="false"
+							hx-replace-url="false"
+							hx-history="false"
+							hx-disinherit="*"
+							hx-on::before-request="event.stopPropagation(); var u=this.getAttribute('hx-get'); if (window.lastBigpictureUrl===u) {event.preventDefault();} else {window.lastBigpictureUrl=u;}"
+							hx-on::after-request="event.stopPropagation()"
+							hx-on::before-history-update="event.preventDefault(); event.stopPropagation()"
+							hx-on::history-cache-miss="event.preventDefault(); event.stopPropagation()"
+							hx-on::before-swap="event.stopPropagation()"
+							hx-on::after-swap="event.stopPropagation()"
+							hx-on::after-settle="event.stopPropagation()"
+							onmouseover="showBigpicture(event)" 
+							onmouseout="hideBigpicture()"
+							tal:attributes="
+								title python:'Hover for big picture of %s'%metaObj['id'];
+								href python:'manage_main?lang=%s&id=%s'%(request['lang'],metaObj['id']);
+								hx-get python:'manage_bigpicture?id=%s&lang=%s&content_type=htmx'%(metaObj['id'],request['lang'])">
 							<i tal:on-error="string:ERROR icon" 
 								tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])"
-							></i><span tal:on-error="string:ERROR name" style="margin-left: .1rem;" tal:content="metaObj/name">the name</span>
+							></i>
+						</a>
+						<a tal:attributes="href python:'manage_main?lang=%s&id=%s'%(request['lang'],metaObj['id'])">
+							<span tal:on-error="string:ERROR name" style="margin-left: .1rem;" tal:content="metaObj/name">the name</span>
 						</a>
 							<span class="meta-id-info">
 							<tal:block tal:content="revision">the revision</tal:block>
@@ -655,7 +681,7 @@
 </tal:block>
 
 </div><!-- #zmi-tab -->
-
+<div id="bigpicture" style="position: absolute;display: none; z-index: 1000;"></div>
 <footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 
 <script>
@@ -693,6 +719,22 @@
 			}
 			$(e).html('Count');
 		});
+	}
+
+	/**
+	 * Big picture display.
+	 */
+	function showBigpicture(event) {
+		const bigpicture = document.getElementById('bigpicture');
+		bigpicture.style.display = 'block';
+		bigpicture.style.left = event.pageX + 10 + 'px';
+		bigpicture.style.top = event.pageY + 10 + 'px';
+		// Set URL/location back to the original page without changing the browser history.
+		history.replaceState(null, '', 'manage_main');
+	}
+	function hideBigpicture() {
+		document.getElementById('bigpicture').style.display = 'none';
+		history.replaceState(null, '', 'manage_main');
 	}
 
 	/**

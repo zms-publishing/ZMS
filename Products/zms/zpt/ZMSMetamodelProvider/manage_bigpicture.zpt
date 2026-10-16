@@ -159,9 +159,9 @@
 		/*<!--*/
 			.box {
 				background-color:#eff5f9;
-				border:1px solid #354f67;
+				border:1px solid #354f6799;
 				border-radius:4px;
-				padding:0;
+				padding:0 0 .35rem 0;
 				margin:1rem 0 0 0;
 				text-align:left;
 				position:relative;
@@ -185,14 +185,15 @@
 				text-align: right;
 			}
 			.box div {
-				padding:.15em .5em;
+				padding:.15em .75rem;
 			}
 			.box div * {
 				cursor:default;
 			}
 			.box > .objid {
-				border-bottom:1px solid #354f67;
+				border-bottom:1px solid #354f6799;
 				text-align:center;
+				margin-bottom:.35rem !important;
 			}
 			.box > .objid a {
 				color:#354f67;
@@ -245,18 +246,18 @@
 				z-index:100000;
 			}
 			.box .attr.subobject .ref .cardinality {
-				border-bottom:1px solid #354f67;
+				border-bottom:1px solid #354f6799;
 				padding:0 0 0 5px;
 				min-width:10em;
 			}
 			.box .attr.subobject:hover .cardinality {
-				border-bottom: 3px solid #354f67;
+				border-bottom: 3px solid #354f6799;
 			}
 			.box .attr.subobject .ref .attr {
 				background-color:#FFF;
-				border:1px solid #354f67;
+				border:1px solid #354f6799;
 				border-radius:4px;
-				padding:5px;
+				padding: 0.5rem;
 				min-width:12em;
 				margin-top:0.1em
 			}

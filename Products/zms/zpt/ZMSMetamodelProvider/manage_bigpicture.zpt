@@ -194,6 +194,7 @@
 				border-bottom:1px solid #354f6799;
 				text-align:center;
 				margin-bottom:.35rem !important;
+				padding:.25rem;
 			}
 			.box > .objid a {
 				color:#354f67;
@@ -208,6 +209,7 @@
 				text-align:center;
 				font-style:italic;
 				color:darkgreen;
+				padding:.25rem 0 0 0;
 			}
 			.box .objname {
 				color:#354f67;

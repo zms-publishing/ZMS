@@ -549,7 +549,7 @@
 						tal:attributes="data-path_filter python:here.getHome().absolute_url_path()">
 						<i class="fas fa-search"></i>
 					</button>
-					<button type="button" class="btn btn-secondary" title="Show Model Details of all Packages (Big Picture)" onclick="window.location.href='manage_bigpicture'"><i class="fas fa-layer-group"></i></button>
+					<a class="btn btn-secondary" title="Show Model Details of all Packages (Big Picture)" href="manage_bigpicture" target="_blank"><i class="fas fa-layer-group"></i></a>
 					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_ACQUIRE')+'...'" onclick="$ZMI.iframe('manage_main_acquire',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')});return false" tal:condition="python:here.getPortalMaster() is not None"><i class="fas fa-share fa-flip-vertical"></i></button>
 					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$ZMI.iframe('manage_main_import',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')});return false"><i class="fas fa-upload"></i></button>
 					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="return zmiExportBtnClick(this);"><i class="fas fa-download"></i></button>

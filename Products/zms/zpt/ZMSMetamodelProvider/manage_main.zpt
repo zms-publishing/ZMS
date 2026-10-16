@@ -622,7 +622,7 @@
 								title python:'acquired from: %s (%s)'%(context.getHome().aq_parent.content.id, context.getHome().aq_parent.content.attr('titlealt'))"
 							><i class="fas fa-share fa-flip-vertical"></i></a>
 						<a title="Enabled" href="javascript:;" onclick="zmiEnabledBtnClick(this)"><i tal:attributes="class python:' '.join(['enabled-toggle']+[['far fa-square'],['far fa-check-square']][metaObj.get('enabled',0) in [1,True]])"></i></a>
-						<a href="#"
+						<a href="#" title="Model Preview"
 							hx-get="manage_bigpicture" 
 							hx-trigger="mouseover" 
 							hx-target="#bigpicture" 
@@ -643,7 +643,6 @@
 							onmouseover="showBigpicture(event)" 
 							onmouseout="hideBigpicture()"
 							tal:attributes="
-								title python:'Hover for model details of %s'%metaObj['id'];
 								href python:'manage_main?lang=%s&id=%s'%(request['lang'],metaObj['id']);
 								hx-get python:'manage_bigpicture?id=%s&lang=%s&content_type=htmx'%(metaObj['id'],request['lang'])">
 							<i tal:on-error="string:ERROR icon" 

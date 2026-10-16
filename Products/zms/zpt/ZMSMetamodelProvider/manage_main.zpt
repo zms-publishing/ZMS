@@ -729,6 +729,11 @@
 	 */
 	function showBigpicture(event) {
 		const bigpicture = document.getElementById('bigpicture');
+		// if the element is too close to the bottom edge of the viewport 
+		// add extra space to the footer.
+		if (event.pageY + 300 >  window.innerHeight) {
+			document.querySelector('footer').style.marginTop= 300 + 'px';
+		}
 		bigpicture.style.display = 'block';
 		bigpicture.style.left = event.pageX + 10 + 'px';
 		bigpicture.style.top = event.pageY + 10 + 'px';
@@ -737,6 +742,7 @@
 	}
 	function hideBigpicture() {
 		document.getElementById('bigpicture').style.display = 'none';
+		// Set URL/location back to the original page without changing the browser history.
 		history.replaceState(null, '', 'manage_main');
 	}
 

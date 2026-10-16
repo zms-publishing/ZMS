@@ -14,7 +14,7 @@
 	></tal:block
 ></tal:block
 ><tal:block tal:condition="python:request.get('content_type','html')=='htmx'">
-	<main class="bigpicture-boxes">
+	<main class="zmi_manage_tabs_message">
 		<tal:block tal:repeat="metaObj python:sequence.sort(metaObjs, sort_on, mapping=1)">
 			<tal:block tal:define="box_number repeat/metaObj/number" metal:use-macro="template/macros/box"></tal:block>
 		</tal:block>
@@ -29,7 +29,7 @@
 <form class="form-horizontal card" 
 	tal:attributes="class python:'form-horizontal card %s'%(given_id and 'single-package' or 'all-packages')">
 	<legend class="navbar navbar-nav navbar-expand navbar-dark">
-		<i class="fas fa-layer-group mr-2"></i>
+		<i class="fas fa-print mr-2"></i>
 		<a href="./manage_bigpicture" class="text-light" title="Show all Packages"><span class="d-none d-md-inline">Big Picture of ZMS Meta-Model: </span> All Packages</a>
 		<span tal:condition="not:given_id_is_metaObj" class="text-light font-weight-normal" title="This Package" tal:content="given_id">ZMSPackage-ID</span>
 		<a tal:condition="given_id_is_metaObj" tal:attributes="href python:'./manage_bigpicture?id=%s'%(metaObjs[0].get('package'))" class="text-light" title="Show this Package" tal:content="python:metaObjs[0].get('package')">ZMSPackage-ID</a>
@@ -92,7 +92,7 @@
 						tal:define="n python:metaObj.get('name','');
 							nstr python:here.getZMILangStr(n);
 							tstr python:here.getZMILangStr('TYPE_%s'%n.upper());"
-						tal:content="python:' = %s'%([tstr,nstr][tstr=='TYPE_%s'%(n.upper())])">the name
+						tal:content="python:[tstr,nstr][tstr=='TYPE_%s'%(n.upper())]">the name
 					</span>
 					</a>
 				</div>
@@ -158,15 +158,16 @@
 		<style type="text/css" metal:define-macro="box_style">
 		/*<!--*/
 			.box {
-				background-color:#CFC;
+				background-color:#eff5f9;
 				border:1px solid #354f67;
 				border-radius:4px;
 				padding:0;
-				margin:1em 1em 2em 1em;
+				margin:1rem 0 0 0;
 				text-align:left;
 				position:relative;
 				cursor:auto;
 				width:25em;
+				box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
 			}
 			.box.focused {
 				background-color:#AEE;
@@ -194,11 +195,13 @@
 				text-align:center;
 			}
 			.box > .objid a {
-				color:black;
+				color:#354f67;
 				text-decoration:none;
+				opacity:0.75;
 			}
 			.box > .objid a .objid {
 				font-weight:bold;
+				margin: 0 .2rem;
 			}
 			.box .objtype {
 				text-align:center;
@@ -206,7 +209,7 @@
 				color:darkgreen;
 			}
 			.box .objname {
-				color:darkred;
+				color:#354f67;
 			}
 			.box > .attr {
 				font-size:smaller;
@@ -218,9 +221,10 @@
 				font-weight:bold
 			}
 			.attrType {
-				color:darkgreen;
+				color:#354f67;
 				float:right;
 				margin-left:2rem;
+				opacity:0.75;
 			}
 			.box .attr.subobject {
 				cursor:pointer;
@@ -241,16 +245,16 @@
 				z-index:100000;
 			}
 			.box .attr.subobject .ref .cardinality {
-				border-bottom:1px solid #C00;
+				border-bottom:1px solid #354f67;
 				padding:0 0 0 5px;
 				min-width:10em;
 			}
 			.box .attr.subobject:hover .cardinality {
-				border-bottom: 3px solid #C00;
+				border-bottom: 3px solid #354f67;
 			}
 			.box .attr.subobject .ref .attr {
 				background-color:#FFE;
-				border:1px solid #C00;
+				border:1px solid #354f67;
 				border-radius:4px;
 				padding:5px;
 				min-width:12em;
@@ -279,7 +283,17 @@
 			.tooltip.bs-tooltip-right .arrow:before {
 				border-right-color: #354f67 !important;
 			}
-		/*-->*/
+			.box .objtype, 
+			.box .objname {
+				display:none;
+			}
+			body.zmi table.table-sm td.meta-id > span i:hover {
+				color:#03A9F4;
+			}
+			body.zmi table.table-sm td.meta-id > span:not(.enabled) i:hover {
+				opacity: 1 !important;
+			}
+			/*-->*/
 		</style>
 	</main>
 </form>
@@ -328,14 +342,6 @@
 </script>
 <style>
 /*<!--*/
-	.zmi.bigpicture .box {
-		width:30em;
-		width: max(50vw,30em);
-	}
-	.zmi.bigpicture .box .attr.subobject .ref {
-		left:36em;
-		left:max(50vw,36em);
-	}
 	.zmi.bigpicture form.card legend > a:after {
 		content:"/";
 		display:inline-block;
@@ -407,24 +413,18 @@
 	}
 
 	@media print {
-		form.all-packages #toc.objlist {
-			break-after: page;
-		}
-		ol#toc.objlist {
-			position: relative;
-			border: unset;
-			padding: 2.5em;
-			background:unset;
-			box-shadow: unset;
-			height:unset;
-			overflow-y: unset;
-			left: unset;
-			right:unset;
-			top:unset;
-			bottom: unset;
-		}
-		.box {
+		.box, .box * {
 			page-break-inside: avoid;
+			color:black !important;
+		}
+		.box .attr.subobject .ref .cardinality {
+			border-bottom:1px solid black;
+		}
+		.box .attr.subobject:hover .cardinality {
+			border-bottom: 3px solid black;
+		}
+		.box .attr.subobject .ref .attr {
+			border:1px solid black;
 		}
 		.zmi legend {
 			margin: 0 -20px;
@@ -439,6 +439,41 @@
 			color:black;
 			text-align: left;
 		}
+		nav {
+			display: none;
+		}
+	}
+	.zmi.bigpicture .box {
+		width:30em;
+		width: max(50vw,30em);
+		background-color:#CFC;
+		margin:1em 1em 2em 1em;
+	}
+	.zmi.bigpicture .box .attr.subobject .ref {
+		left:36em;
+		left:max(50vw,36em);
+	}
+	.zmi.bigpicture .box > .objid a {
+		opacity:1;
+	}
+	.zmi.bigpicture .box .objtype {
+		display:block;
+	}
+	.zmi.bigpicture .box .objname {
+		color:darkred;
+		display:inline-block;
+	}
+	.zmi.bigpicture .attrType {
+		color:darkgreen;
+	}
+	.box .attr.subobject .ref .cardinality {
+		border-bottom:1px solid #C00;
+	}
+	.box .attr.subobject:hover .cardinality {
+		border-bottom: 3px solid #C00;
+	}
+	.box .attr.subobject .ref .attr {
+		border:1px solid #C00;
 	}
 /*-->*/
 </style>

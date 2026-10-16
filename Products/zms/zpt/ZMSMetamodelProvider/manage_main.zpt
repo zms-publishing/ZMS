@@ -125,6 +125,7 @@
 					data-path_filter python:here.getHome().absolute_url_path()">
 				<i class="fas fa-search"></i>
 			</button>
+			<a class="btn btn-secondary" title="Show Model Details (Printable)" href="manage_bigpicture" tal:attributes="href python:'manage_bigpicture?id=%s'%(metaObj['id'])" target="_blank"><i class="fas fa-print"></i></a>
 			<button class="btn btn-secondary" type="button" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$ZMI.iframe('manage_main_import',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')});return false"><i class="fas fa-upload"></i></button>
 			<button class="btn btn-secondary" type="button" name="btn" value="BTN_EXPORT" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')" onclick="return zmiExportBtnClick(this)"><i class="fas fa-download"></i></button>
 		</div>
@@ -549,7 +550,7 @@
 						tal:attributes="data-path_filter python:here.getHome().absolute_url_path()">
 						<i class="fas fa-search"></i>
 					</button>
-					<a class="btn btn-secondary" title="Show Model Details of all Packages (Big Picture)" href="manage_bigpicture" target="_blank"><i class="fas fa-layer-group"></i></a>
+					<a class="btn btn-secondary" title="Show Model Details of all Packages (Printable Big Picture)" href="manage_bigpicture" target="_blank"><i class="fas fa-print"></i></a>
 					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_ACQUIRE')+'...'" onclick="$ZMI.iframe('manage_main_acquire',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')});return false" tal:condition="python:here.getPortalMaster() is not None"><i class="fas fa-share fa-flip-vertical"></i></button>
 					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$ZMI.iframe('manage_main_import',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')});return false"><i class="fas fa-upload"></i></button>
 					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="return zmiExportBtnClick(this);"><i class="fas fa-download"></i></button>
@@ -615,14 +616,17 @@
 				</td>
 				<td class="meta-space"></td>
 				<td class="meta-id">
-					<span tal:attributes="id python:metaObj['id'];title python:metaObj['id'];class python:' '.join([[''],['enabled']][metaObj.get('enabled',0) in [1,True]])">
+					<span tal:attributes="
+						id python:metaObj['id'];
+						data-title python:metaObj['id'];
+						class python:' '.join([[''],['enabled']][metaObj.get('enabled',0) in [1,True]])">
 						<a tal:condition="python:metaObj.get('acquired',None)" target="_blank"
 							tal:attributes="
 								href python:'%s/metaobj_manager/manage_main?lang=%s&id=%s'%(context.getHome().aq_parent.content.absolute_url(),request['lang'],metaObj['id']);
 								title python:'acquired from: %s (%s)'%(context.getHome().aq_parent.content.id, context.getHome().aq_parent.content.attr('titlealt'))"
 							><i class="fas fa-share fa-flip-vertical"></i></a>
 						<a title="Enabled" href="javascript:;" onclick="zmiEnabledBtnClick(this)"><i tal:attributes="class python:' '.join(['enabled-toggle']+[['far fa-square'],['far fa-check-square']][metaObj.get('enabled',0) in [1,True]])"></i></a>
-						<a href="#" title="Model Preview"
+						<a href="#" title=""
 							hx-get="manage_bigpicture" 
 							hx-trigger="mouseover" 
 							hx-target="#bigpicture" 

@@ -253,7 +253,7 @@
 				border-bottom: 3px solid #354f67;
 			}
 			.box .attr.subobject .ref .attr {
-				background-color:#FFE;
+				background-color:#FFF;
 				border:1px solid #354f67;
 				border-radius:4px;
 				padding:5px;
@@ -266,22 +266,6 @@
 			}
 			.box .attr.subobject .ref .attr span.attr_type.abstractclass {
 				cursor:default;
-			}
-			.box .attr.subobject:hover .ref .attr {
-				box-shadow:0 6px 16px -3px #0008;
-				background:#C00;
-				color:white;
-				border: 3px solid #C00;
-				transform:scale(1.1)
-			}
-			.tooltip.bs-tooltip-right .tooltip-inner {
-				text-align:left !important;
-				background-color:#354f67;
-				font-family: monospace;
-				font-size:12px;
-			}
-			.tooltip.bs-tooltip-right .arrow:before {
-				border-right-color: #354f67 !important;
 			}
 			.box .objtype, 
 			.box .objname {
@@ -424,6 +408,7 @@
 			border-bottom: 3px solid black;
 		}
 		.box .attr.subobject .ref .attr {
+			background-color:#FFF;
 			border:1px solid black;
 		}
 		.zmi legend {
@@ -453,6 +438,9 @@
 		left:36em;
 		left:max(50vw,36em);
 	}
+	.zmi.bigpicture .box .attr.subobject .ref .attr {
+			background-color:#FFE;
+	}
 	.zmi.bigpicture .box > .objid a {
 		opacity:1;
 	}
@@ -466,14 +454,30 @@
 	.zmi.bigpicture .attrType {
 		color:darkgreen;
 	}
-	.box .attr.subobject .ref .cardinality {
+	.zmi.bigpicture .box .attr.subobject .ref .cardinality {
 		border-bottom:1px solid #C00;
 	}
-	.box .attr.subobject:hover .cardinality {
+	.zmi.bigpicture .box .attr.subobject:hover .cardinality {
 		border-bottom: 3px solid #C00;
 	}
-	.box .attr.subobject .ref .attr {
+	.zmi.bigpicture .box .attr.subobject .ref .attr {
 		border:1px solid #C00;
+	}
+	.zmi.bigpicture .box .attr.subobject:hover .ref .attr {
+		box-shadow:0 6px 16px -3px #0008;
+		background:#C00;
+		color:white;
+		border: 3px solid #C00;
+		transform:scale(1.1)
+	}
+	.tooltip.bs-tooltip-right .tooltip-inner {
+		text-align:left !important;
+		background-color:#354f67;
+		font-family: monospace;
+		font-size:12px;
+	}
+	.tooltip.bs-tooltip-right .arrow:before {
+		border-right-color: #354f67 !important;
 	}
 /*-->*/
 </style>

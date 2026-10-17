@@ -581,8 +581,10 @@
 				<td colspan="3" class="meta-id">
 					<tal:block tal:condition="python:metaObjPackage"
 						><i tal:condition="python:metaObj.get('acquired',None)" class="fas fa-share fa-flip-vertical" title="acquired"></i>
-						<a tal:condition="python:metaObjPackage" data-turbolinks="false"
-							tal:attributes="href python:'manage_bigpicture?lang=%s&id=%s'%(request['lang'],metaObjPackage); title python:'%s - Click for big picture...'%metaObjPackage" target="_blank"
+						<a tal:condition="python:metaObjPackage" target="_blank"
+							tal:attributes="
+								href python:'manage_bigpicture?lang=%s&id=%s'%(request['lang'],metaObjPackage); 
+								title python:'%s - Click for big picture...'%metaObjPackage"
 							><i class="fas fa-briefcase"></i></a>
 						&nbsp;
 						<a tal:omit-tag="python:metaObj.get('acquired',None)"
@@ -627,28 +629,11 @@
 							><i class="fas fa-share fa-flip-vertical"></i></a>
 						<a title="Enabled" href="javascript:;" onclick="zmiEnabledBtnClick(this)"><i tal:attributes="class python:' '.join(['enabled-toggle']+[['far fa-square'],['far fa-check-square']][metaObj.get('enabled',0) in [1,True]])"></i></a>
 						<a href="#" title=""
-							hx-get="manage_bigpicture" 
-							hx-trigger="mouseover" 
-							hx-target="#bigpicture" 
-							hx-select="main" 
-							hx-swap="innerHTML show:none"
-							hx-boost="false"
-							hx-push-url="false"
-							hx-replace-url="false"
-							hx-history="false"
-							hx-disinherit="*"
-							hx-on::before-request="event.stopPropagation(); var u=this.getAttribute('hx-get'); if (window.lastBigpictureUrl===u) {event.preventDefault();} else {window.lastBigpictureUrl=u;}"
-							hx-on::after-request="event.stopPropagation()"
-							hx-on::before-history-update="event.preventDefault(); event.stopPropagation()"
-							hx-on::history-cache-miss="event.preventDefault(); event.stopPropagation()"
-							hx-on::before-swap="event.stopPropagation()"
-							hx-on::after-swap="event.stopPropagation()"
-							hx-on::after-settle="event.stopPropagation()"
-							onmouseover="showBigpicture(event)" 
-							onmouseout="hideBigpicture()"
+							onmouseover="showModelPreview(event)" 
+							onmouseout="hideModelPreview()"
 							tal:attributes="
 								href python:'manage_main?lang=%s&id=%s'%(request['lang'],metaObj['id']);
-								hx-get python:'manage_bigpicture?id=%s&lang=%s&content_type=htmx'%(metaObj['id'],request['lang'])">
+								data-preview-url python:'manage_bigpicture?id=%s&lang=%s&content_type=htmx'%(metaObj['id'],request['lang'])">
 							<i tal:on-error="string:ERROR icon" 
 								tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])"
 							></i>
@@ -684,7 +669,7 @@
 </tal:block>
 
 </div><!-- #zmi-tab -->
-<div id="bigpicture" style="position: absolute;display: none; z-index: 1000;"></div>
+<div id="modelpreview" style="position: absolute;display: none; z-index: 1000;"></div>
 <footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 
 <script>
@@ -725,25 +710,34 @@
 	}
 
 	/**
-	 * Big picture display.
+	 * Model Preview Popup.
 	 */
-	function showBigpicture(event) {
-		const bigpicture = document.getElementById('bigpicture');
+	function showModelPreview(event) {
+		const modelpreview = document.getElementById('modelpreview');
 		// if the element is too close to the bottom edge of the viewport 
 		// add extra space to the footer.
 		if (event.pageY + 300 >  window.innerHeight) {
 			document.querySelector('footer').style.marginTop= 300 + 'px';
 		}
-		bigpicture.style.display = 'block';
-		bigpicture.style.left = event.pageX + 10 + 'px';
-		bigpicture.style.top = event.pageY + 10 + 'px';
-		// Set URL/location back to the original page without changing the browser history.
-		history.replaceState(null, '', 'manage_main');
+		modelpreview.style.display = 'block';
+		modelpreview.style.left = event.pageX + 10 + 'px';
+		modelpreview.style.top = event.pageY + 10 + 'px';
+		// Load preview via fetch (no htmx => no history/URL change).
+		const url = event.currentTarget.getAttribute('data-preview-url');
+		if (window.lastModelPreviewUrl === url) return;
+		window.lastModelPreviewUrl = url;
+		fetch(url, {credentials: 'same-origin'})
+			.then(r => r.text())
+			.then(html => {
+				if (window.lastModelPreviewUrl !== url) return;
+				const doc = new DOMParser().parseFromString(html, 'text/html');
+				const main = doc.querySelector('main');
+				modelpreview.innerHTML = main ? main.innerHTML : html;
+			})
+			.catch(() => { window.lastModelPreviewUrl = null; });
 	}
-	function hideBigpicture() {
-		document.getElementById('bigpicture').style.display = 'none';
-		// Set URL/location back to the original page without changing the browser history.
-		history.replaceState(null, '', 'manage_main');
+	function hideModelPreview() {
+		document.getElementById('modelpreview').style.display = 'none';
 	}
 
 	/**

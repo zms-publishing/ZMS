@@ -7,13 +7,21 @@
 	given_id_is_metaObj python:metaObjs == [];
 	metaObjs python:given_id_is_metaObj and [here.getMetaobj(given_id)] or metaObjs;
 	sort_on python:(('package', 'cmp', 'asc'),('id','cmp','asc'));"
-><tal:block tal:condition="python:request.get('content_type','html')=='json'"
+><!--!
+##############################################
+JSON: Output
+##############################################
+--><tal:block tal:condition="python:request.get('content_type','html')=='json'"
 	><tal:block 
 		tal:define="set_resp_content_type python:request.RESPONSE.setHeader('Content-Type','application/json')"
-		tal:content="python:standard.str_json(metaObjs,encoding='utf-8')"
+		tal:content="python:standard.str_json(metaObjs)"
 	></tal:block
 ></tal:block
-><tal:block tal:condition="python:request.get('content_type','html')=='htmx'">
+><!--!
+##############################################
+HTMX: Preview Single Box HTML Output
+##############################################
+--><tal:block tal:condition="python:request.get('content_type','html')=='htmx'">
 	<main class="zmi_manage_tabs_message">
 		<tal:block tal:repeat="metaObj python:sequence.sort(metaObjs, sort_on, mapping=1)">
 			<tal:block tal:define="box_number repeat/metaObj/number" metal:use-macro="template/macros/box"></tal:block>
@@ -21,7 +29,11 @@
 		<style metal:use-macro="template/macros/box_style"></style>
 	</main>
 </tal:block
-><tal:block tal:condition="python:request.get('content_type','html') not in ['json','htmx']"
+><!--!
+##############################################
+HTML: Big Picture Page
+##############################################
+--><tal:block tal:condition="python:request.get('content_type','html') not in ['json','htmx']"
 ><!DOCTYPE html>
 <html lang="en">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
@@ -40,15 +52,14 @@
 		<ol id="toc" class="objlist">
 			<tal:block tal:repeat="metaObj python:sequence.sort(metaObjs, sort_on, mapping=1)"
 				><tal:block tal:define="
-					id python:metaObj.get('id','');
-					package_id python:metaObj.get('package');
-					objtype python:metaObj.get('type');
-					oname python:metaObj.get('name','');
-					odisplay python:id!=oname and '({})'.format(oname) or '';"
+						id python:metaObj.get('id','');
+						package_id python:metaObj.get('package');
+						objtype python:metaObj.get('type');
+						oname python:metaObj.get('name','');
+						odisplay python:id!=oname and '({})'.format(oname) or '';"
 					tal:condition="python:objtype!='ZMSPackage'">
 					<header class="package_id" role="separator" tal:condition="python:package_id!=request.get('package_id')">
-						<a 
-							tal:attributes="href python:'./manage_bigpicture?id=%s'%(metaObj.get('package'))" 
+						<a tal:attributes="href python:'./manage_bigpicture?id=%s'%(metaObj.get('package'))" 
 							tal:content="python:'ZMSPackage %s'%(metaObj.get('package'))">
 							ZMSPackage-ID
 						</a>
@@ -66,226 +77,16 @@
 	</nav>
 	<main>
 		<tal:block tal:repeat="metaObj python:sequence.sort(metaObjs, sort_on, mapping=1)">
-			<tal:block tal:define="box_number repeat/metaObj/number" metal:use-macro="template/macros/box"></tal:block>
+			<tal:block tal:define="box_number repeat/metaObj/number" 
+				metal:use-macro="template/macros/box">
+			</tal:block>
 		</tal:block>
-		<!--!
-			Macro "box": renders one meta-object box. Expects `metaObj` (dict) and optional `box_number`.
-			Usage: <tal:block metal:use-macro="python:here.metaobj_manager.manage_bigpicture.macros['box']"/>
-			or async via htmx: manage_bigpicture?id=<metaObjId>&content_type=htmx
-		-->
-		<tal:block tal:condition="nothing"><!-- macro definition only -->
-			<div metal:define-macro="box" class="box"
-				tal:define="
-					id metaObj/id;
-					box_number box_number | nothing;
-					metaObjIds python:here.getMetaobjIds();
-					objtype metaObj/type" 
-				tal:attributes="id id"
-				tal:condition="python:objtype!='ZMSPackage'">
-				<p class="box_number" tal:condition="python:request.get('content_type','html')!='htmx' and box_number is not None" tal:content="box_number">1</p>
-				<div class="objtype" tal:content="objtype" title="Object Type">the type</div>
-				<div class="objid">
-					<a title="Edit Model..." target="_blank" tal:attributes="href python:'manage_main?id=%s'%(metaObj['id'])">
-					<i tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])"></i>
-					<span class="objid" tal:content="id">the id</span>
-					<span class="objname" title="Display Name"
-						tal:define="n python:metaObj.get('name','');
-							nstr python:here.getZMILangStr(n);
-							tstr python:here.getZMILangStr('TYPE_%s'%n.upper());"
-						tal:content="python:[tstr,nstr][tstr=='TYPE_%s'%(n.upper())]">the name
-					</span>
-					</a>
-				</div>
-				<tal:block tal:repeat="metaObjAttrId python:here.getMetaobjAttrIds(metaObj['id'])">
-					<tal:block tal:define="global metaObjAttr python:here.getMetaobjAttr(metaObj['id'],metaObjAttrId)">
-						<div tal:attributes="class python:' '.join(['attr']+[[],['subobject']][int(metaObjAttr['type'] in ['*']+metaObjIds)])"
-							tal:condition="python:metaObjAttr['type'] not in ['delimiter','interface']">
-							<span class="attrType" tal:content="metaObjAttr/type" data-html="true" data-placement="right"
-								tal:define="has_defaults python:(metaObjAttr['type'] in ['autocomplete','multiautocomplete','multiselect','select','color','string']) and metaObjAttr.get('keys')"
-								tal:attributes="
-									title python:has_defaults  and '<br>'.join(metaObjAttr.get('keys','')) or None; 
-									style python:has_defaults and 'cursor: pointer' or None;
-									data-toggle python:has_defaults and 'tooltip' or None;"
-								>the type</span>
-							<span class="attrId" tal:content="metaObjAttr/id">the id</span>:
-							<span class="attrName" 
-								tal:condition="python:metaObjAttr['type'] not in ['hint','Image','File','Page Template']"
-								tal:content="structure python:'(%s)'%(metaObjAttr['name'])">the name
-							</span>
-							<div class="ref" tal:condition="python:metaObjAttr['type'] in ['*']+metaObjIds">
-								<table cellspacing="0" cellpadding="0" border="0">
-								<tr valign="top">
-								<td>
-									<div class="cardinality">
-										<tal:block tal:condition="python:metaObjAttr.get('mandatory',False)">1</tal:block>
-										<tal:block tal:condition="python:metaObjAttr.get('repetitive',False)">0..*</tal:block>
-										<tal:block tal:condition="python:not metaObjAttr.get('mandatory',False) and not metaObjAttr.get('repetitive',False)">0..1</tal:block>
-									</div>
-									&nbsp;
-								</td>
-								<td>
-									<div class="attr" tal:condition="python:metaObjAttr['type'] in ['*']">
-										<span class="attr_type" 
-											tal:repeat="attr_type python:metaObjAttr['keys']"
-											tal:attributes="
-												title python:attr_type.startswith('type(') and 'Abstract Class' or 'Click for Scrolling to Class-Definition';
-												class python:'attr_type%s'%(attr_type.startswith('type') and ' abstractclass' or '');
-												onclick python:attr_type.startswith('type') and 'return false' or 'scrollToFocus(\'%s\')'%(attr_type)"
-											tal:content="attr_type">
-											attr_type
-										</span>
-									</div>
-									<div class="attr" tal:condition="python:metaObjAttr['type'] in metaObjIds">
-										<span class="attr_type" 
-											tal:define="attr_type python:str(metaObjAttr['type'])"
-											tal:attributes="
-												title python:attr_type.startswith('type') and 'Abstract Class' or 'Click for Scrolling to Class-Definition';
-												class python:'attr_type%s'%(attr_type.startswith('type(') and ' abstractclass' or '');
-												onclick python:attr_type.startswith('type') and 'return false' or 'scrollToFocus(\'%s\')'%(attr_type)"
-											tal:content="attr_type">
-											attr_type
-										</span>
-									</div>
-								</td>
-								</tr>
-								</table>
-							</div><!-- .ref -->
-						</div><!-- .attr -->
-					</tal:block>
-				</tal:block>
-			</div>
-		</tal:block>
-		<style type="text/css" metal:define-macro="box_style">
-		/*<!--*/
-			.box {
-				background-color:#eff5f9;
-				border:1px solid #354f6799;
-				border-radius:4px;
-				padding:0 0 .35rem 0;
-				margin:1rem 0 0 0;
-				text-align:left;
-				position:relative;
-				cursor:auto;
-				width:25em;
-				box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-			}
-			.box.focused {
-				background-color:#AEE;
-			}
-			p.box_number {
-				width: 2.5rem;
-				display: block;
-				background: #354f67;
-				position: absolute;
-				z-index: 100;
-				margin: 0;
-				border-top-left-radius: 4px;
-				color: white;
-				padding: 0 .5rem;
-				text-align: right;
-			}
-			.box div {
-				padding:.15em .75rem;
-			}
-			.box div * {
-				cursor:default;
-			}
-			.box > .objid {
-				border-bottom:1px solid #354f6799;
-				text-align:center;
-				margin-bottom:.35rem !important;
-				padding:.25rem;
-			}
-			.box > .objid a {
-				color:#354f67;
-				text-decoration:none;
-				opacity:0.75;
-			}
-			.box > .objid a .objid {
-				font-weight:bold;
-				margin: 0 .2rem;
-			}
-			.box .objtype {
-				text-align:center;
-				font-style:italic;
-				color:darkgreen;
-				padding:.25rem 0 0 0;
-			}
-			.box .objname {
-				color:#354f67;
-			}
-			.box > .attr {
-				font-size:smaller;
-				white-space: nowrap;
-				overflow: hidden;
-				text-overflow: ellipsis;
-			}
-			.attrId {
-				font-weight:bold
-			}
-			.attrType {
-				color:#354f67;
-				float:right;
-				margin-left:2rem;
-				opacity:0.75;
-			}
-			.box .attr.subobject {
-				cursor:pointer;
-				background-color:#354f6726;
-			}
-			.box .attr.subobject:hover {
-				cursor:pointer;
-				background-color:#354f6748;
-			}
-			.box .attr.subobject .ref {
-				padding:0;
-				position:absolute;
-				left:30em;
-				margin-top:-2.2em;
-				line-height:1.25;
-			}
-			.box .attr.subobject:hover .ref {
-				z-index:100000;
-			}
-			.box .attr.subobject .ref .cardinality {
-				border-bottom:1px solid #354f6799;
-				padding:0 0 0 5px;
-				min-width:10em;
-			}
-			.box .attr.subobject:hover .cardinality {
-				border-bottom: 3px solid #354f6799;
-			}
-			.box .attr.subobject .ref .attr {
-				background-color:#FFF;
-				border:1px solid #354f6799;
-				border-radius:4px;
-				padding: 0.5rem;
-				min-width:12em;
-				margin-top:0.1em
-			}
-			.box .attr.subobject .ref .attr span.attr_type {
-				display: block;
-				cursor:pointer;
-			}
-			.box .attr.subobject .ref .attr span.attr_type.abstractclass {
-				cursor:default;
-			}
-			.box .objtype, 
-			.box .objname {
-				display:none;
-			}
-			body.zmi table.table-sm td.meta-id > span i:hover {
-				color:#03A9F4;
-			}
-			body.zmi table.table-sm td.meta-id > span:not(.enabled) i:hover {
-				opacity: 1 !important;
-			}
-			/*-->*/
-		</style>
 	</main>
 </form>
 
 <tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
+
+<style metal:use-macro="template/macros/box_style"></style>
 
 <script>
 //<!--
@@ -327,164 +128,386 @@
 	})
 //-->
 </script>
-<style>
+</body>
+</html>
+</tal:block><!--! /HTML -->
+</tal:block><!--! /MAIN -->
+
+
+<tal:block tal:replace="nothing">
+<!--!
+	Macro "box": renders one meta-object box. Expects `metaObj` (dict) and optional `box_number`.
+	Usage: <tal:block metal:use-macro="python:here.metaobj_manager.manage_bigpicture.macros['box']"/>
+	or async via htmx: manage_bigpicture?id=<metaObjId>&content_type=htmx
+-->
+<div metal:define-macro="box" class="box"
+	tal:define="
+		id metaObj/id;
+		box_number box_number | nothing;
+		metaObjIds python:here.getMetaobjIds();
+		objtype metaObj/type" 
+	tal:attributes="id id"
+	tal:condition="python:objtype!='ZMSPackage'">
+	<p class="box_number" tal:condition="python:request.get('content_type','html')!='htmx' and box_number is not None" tal:content="box_number">1</p>
+	<div class="objtype" tal:content="objtype" title="Object Type">the type</div>
+	<div class="objid">
+		<a title="Edit Model..." target="_blank" tal:attributes="href python:'manage_main?id=%s'%(metaObj['id'])">
+		<i tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])"></i>
+		<span class="objid" tal:content="id">the id</span>
+		<span class="objname" title="Display Name"
+			tal:define="n python:metaObj.get('name','');
+				nstr python:here.getZMILangStr(n);
+				tstr python:here.getZMILangStr('TYPE_%s'%n.upper());"
+			tal:content="python:[tstr,nstr][tstr=='TYPE_%s'%(n.upper())]">the name
+		</span>
+		</a>
+	</div>
+	<tal:block tal:repeat="metaObjAttrId python:here.getMetaobjAttrIds(metaObj['id'])">
+		<tal:block tal:define="global metaObjAttr python:here.getMetaobjAttr(metaObj['id'],metaObjAttrId)">
+			<div tal:attributes="class python:' '.join(['attr']+[[],['subobject']][int(metaObjAttr['type'] in ['*']+metaObjIds)])"
+				tal:condition="python:metaObjAttr['type'] not in ['delimiter','interface']">
+				<span class="attrType" tal:content="metaObjAttr/type" data-html="true" data-placement="right"
+					tal:define="has_defaults python:(metaObjAttr['type'] in ['autocomplete','multiautocomplete','multiselect','select','color','string']) and metaObjAttr.get('keys')"
+					tal:attributes="
+						title python:has_defaults  and '<br>'.join(metaObjAttr.get('keys','')) or None; 
+						style python:has_defaults and 'cursor: pointer' or None;
+						data-toggle python:has_defaults and 'tooltip' or None;"
+					>the type</span>
+				<span class="attrId" tal:content="metaObjAttr/id">the id</span>:
+				<span class="attrName" 
+					tal:condition="python:metaObjAttr['type'] not in ['hint','Image','File','Page Template']"
+					tal:content="structure python:'(%s)'%(metaObjAttr['name'])">the name
+				</span>
+				<div class="ref" tal:condition="python:metaObjAttr['type'] in ['*']+metaObjIds">
+					<table cellspacing="0" cellpadding="0" border="0">
+					<tr valign="top">
+					<td>
+						<div class="cardinality">
+							<tal:block tal:condition="python:metaObjAttr.get('mandatory',False)">1</tal:block>
+							<tal:block tal:condition="python:metaObjAttr.get('repetitive',False)">0..*</tal:block>
+							<tal:block tal:condition="python:not metaObjAttr.get('mandatory',False) and not metaObjAttr.get('repetitive',False)">0..1</tal:block>
+						</div>
+						&nbsp;
+					</td>
+					<td>
+						<div class="attr" tal:condition="python:metaObjAttr['type'] in ['*']">
+							<span class="attr_type" 
+								tal:repeat="attr_type python:metaObjAttr['keys']"
+								tal:attributes="
+									title python:attr_type.startswith('type(') and 'Abstract Class' or 'Click for Scrolling to Class-Definition';
+									class python:'attr_type%s'%(attr_type.startswith('type') and ' abstractclass' or '');
+									onclick python:attr_type.startswith('type') and 'return false' or 'scrollToFocus(\'%s\')'%(attr_type)"
+								tal:content="attr_type">
+								attr_type
+							</span>
+						</div>
+						<div class="attr" tal:condition="python:metaObjAttr['type'] in metaObjIds">
+							<span class="attr_type" 
+								tal:define="attr_type python:str(metaObjAttr['type'])"
+								tal:attributes="
+									title python:attr_type.startswith('type') and 'Abstract Class' or 'Click for Scrolling to Class-Definition';
+									class python:'attr_type%s'%(attr_type.startswith('type(') and ' abstractclass' or '');
+									onclick python:attr_type.startswith('type') and 'return false' or 'scrollToFocus(\'%s\')'%(attr_type)"
+								tal:content="attr_type">
+								attr_type
+							</span>
+						</div>
+					</td>
+					</tr>
+					</table>
+				</div><!--! .ref -->
+			</div><!--! .attr -->
+		</tal:block>
+	</tal:block>
+</div>
+
+<!--!
+	Macro 'box_style': 
+	Styling for the boxes plus its navigation
+	for the big picture view.
+-->
+<style type="text/css" metal:define-macro="box_style">
 /*<!--*/
-	.zmi.bigpicture form.card legend > a:after {
-		content:"/";
-		display:inline-block;
-		margin:0 1em;
+	.box {
+		background-color:#eff5f9;
+		border:1px solid #354f6799;
+		border-radius:4px;
+		padding:0 0 .35rem 0;
+		margin:1rem 0 0 0;
+		text-align:left;
+		position:relative;
+		cursor:auto;
+		width:25em;
+		box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
 	}
-	.zmi.bigpicture form.card legend > span {
-		letter-spacing:1px;
+	.box.focused {
+		background-color:#AEE;
 	}
-	.zmi.bigpicture form.card legend,
-	#toggle_menu  {
-		color:white;
+	p.box_number {
+		width: 2.5rem;
+		display: block;
 		background: #354f67;
-		padding:1rem;
-		height:42px;
+		position: absolute;
+		z-index: 100;
+		margin: 0;
+		border-top-left-radius: 4px;
+		color: white;
+		padding: 0 .5rem;
+		text-align: right;
 	}
-	#toggle_menu {
-		position: fixed;
-		width: 42px;
-		top: 0;
-		right: 0;
+	.box div {
+		padding:.15em .75rem;
+	}
+	.box div * {
+		cursor:default;
+	}
+	.box > .objid {
+		border-bottom:1px solid #354f6799;
+		text-align:center;
+		margin-bottom:.35rem !important;
+		padding:.25rem;
+	}
+	.box > .objid a {
+		color:#354f67;
+		text-decoration:none;
+		opacity:0.75;
+	}
+	.box > .objid a .objid {
+		font-weight:bold;
+		margin: 0 .2rem;
+	}
+	.box .objtype {
+		text-align:center;
+		font-style:italic;
+		color:darkgreen;
+		padding:.25rem 0 0 0;
+	}
+	.box .objname {
+		color:#354f67;
+	}
+	.box > .attr {
+		font-size:smaller;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	.attrId {
+		font-weight:bold
+	}
+	.attrType {
+		color:#354f67;
+		float:right;
+		margin-left:2rem;
+		opacity:0.75;
+	}
+	.box .attr.subobject {
 		cursor:pointer;
-		z-index:2;
+		background-color:#354f6726;
 	}
-	@media (max-width: 767px) {
-		#toggle_menu {
-			display:none;
-		}
-		#toc.objlist {
-			display:block !important;
-		}
+	.box .attr.subobject:hover {
+		cursor:pointer;
+		background-color:#354f6748;
 	}
-	#toc.objlist {
-		top: 42px;
-		padding: 1rem 2rem 1.25rem 3rem;
-		background: #e9ecef;
-		width: auto;
-		height: fit-content;
-		z-index:1;
+	.box .attr.subobject .ref {
+		padding:0;
+		position:absolute;
+		left:30em;
+		margin-top:-2.2em;
+		line-height:1.25;
 	}
-	#toc.objlist.scrolled {
-		top: 0;
+	.box .attr.subobject:hover .ref {
+		z-index:100000;
 	}
-	@media screen {
-		form.all-packages #toc.objlist {
-			height: calc(100vh - 42px);
-			overflow-y: scroll;
-			direction: rtl;
-		}
-		form.all-packages #toc.objlist > * {
-			direction: ltr;
-		}
+	.box .attr.subobject .ref .cardinality {
+		border-bottom:1px solid #354f6799;
+		padding:0 0 0 5px;
+		min-width:10em;
 	}
-	#toc.objlist li {
-		line-height: 1.75;
+	.box .attr.subobject:hover .cardinality {
+		border-bottom: 3px solid #354f6799;
 	}
-	#toc.objlist header {
-		margin: 0 -2rem 0 -3rem;
-		padding: .5rem 2rem;
-		background: #cfdae5;
-		font-weight: bold;
-		color: #354f67;
-		font-size: 100%;
+	.box .attr.subobject .ref .attr {
+		background-color:#FFF;
+		border:1px solid #354f6799;
+		border-radius:4px;
+		padding: 0.5rem;
+		min-width:12em;
+		margin-top:0.1em
 	}
-	@media (min-width: 768px) {
-		#toc.objlist {
-			position: fixed;
-			right: 0;
-		}
+	.box .attr.subobject .ref .attr span.attr_type {
+		display: block;
+		cursor:pointer;
+	}
+	.box .attr.subobject .ref .attr span.attr_type.abstractclass {
+		cursor:default;
+	}
+	.box .objtype, 
+	.box .objname {
+		display:none;
+	}
+	body.zmi table.table-sm td.meta-id > span i:hover {
+		color:#03A9F4;
+	}
+	body.zmi table.table-sm td.meta-id > span:not(.enabled) i:hover {
+		opacity: 1 !important;
 	}
 
-	@media print {
-		.box, .box * {
-			page-break-inside: avoid;
-			color:black !important;
+	/* HTML PAGE bigpicture */
+	.zmi.bigpicture {
+		form.card legend > a:after {
+			content:"/";
+			display:inline-block;
+			margin:0 1em;
 		}
-		.box .attr.subobject .ref .cardinality {
-			border-bottom:1px solid black;
+		form.card legend > span {
+			letter-spacing:1px;
 		}
-		.box .attr.subobject:hover .cardinality {
-			border-bottom: 3px solid black;
+		form.card legend,
+		#toggle_menu  {
+			color:white;
+			background: #354f67;
+			padding:1rem;
+			height:42px;
+		}
+		#toggle_menu {
+			position: fixed;
+			width: 42px;
+			top: 0;
+			right: 0;
+			cursor:pointer;
+			z-index:2;
+		}
+		@media (max-width: 767px) {
+			#toggle_menu {
+				display:none;
+			}
+			#toc.objlist {
+				display:block !important;
+			}
+		}
+		#toc.objlist {
+			top: 42px;
+			padding: 1rem 2rem 1.25rem 3rem;
+			background: #e9ecef;
+			width: auto;
+			height: fit-content;
+			z-index:1;
+		}
+		#toc.objlist.scrolled {
+			top: 0;
+		}
+		@media screen {
+			form.all-packages #toc.objlist {
+				height: calc(100vh - 42px);
+				overflow-y: scroll;
+				direction: rtl;
+			}
+			form.all-packages #toc.objlist > * {
+				direction: ltr;
+			}
+		}
+		#toc.objlist li {
+			line-height: 1.75;
+		}
+		#toc.objlist header {
+			margin: 0 -2rem 0 -3rem;
+			padding: .5rem 2rem;
+			background: #cfdae5;
+			font-weight: bold;
+			color: #354f67;
+			font-size: 100%;
+		}
+		@media (min-width: 768px) {
+			#toc.objlist {
+				position: fixed;
+				right: 0;
+			}
+		}
+		@media print {
+			.box, .box * {
+				page-break-inside: avoid;
+				color:black !important;
+			}
+			.box .attr.subobject .ref .cardinality {
+				border-bottom:1px solid black;
+			}
+			.box .attr.subobject:hover .cardinality {
+				border-bottom: 3px solid black;
+			}
+			.box .attr.subobject .ref .attr {
+				background-color:#FFF;
+				border:1px solid black;
+			}
+			.zmi legend {
+				margin: 0 -20px;
+				background:none;
+				width: unset;
+				padding: 5px 35px;
+				height: 42px;
+				color:unset;
+			}
+			p.box_number {
+				background:unset;
+				color:black;
+				text-align: left;
+			}
+			nav {
+				display: none;
+			}
+		}
+		.box {
+			width:30em;
+			width: max(50vw,30em);
+			background-color:#CFC;
+			margin:1em 1em 2em 1em;
+		}
+		.box .attr.subobject .ref {
+			left:36em;
+			left:max(50vw,36em);
 		}
 		.box .attr.subobject .ref .attr {
-			background-color:#FFF;
-			border:1px solid black;
+				background-color:#FFE;
 		}
-		.zmi legend {
-			margin: 0 -20px;
-			background:none;
-			width: unset;
-			padding: 5px 35px;
-			height: 42px;
-			color:unset;
+		.box > .objid a {
+			opacity:1;
 		}
-		p.box_number {
-			background:unset;
-			color:black;
-			text-align: left;
+		.box .objtype {
+			display:block;
 		}
-		nav {
-			display: none;
+		.box .objname {
+			color:darkred;
+			display:inline-block;
 		}
-	}
-	.zmi.bigpicture .box {
-		width:30em;
-		width: max(50vw,30em);
-		background-color:#CFC;
-		margin:1em 1em 2em 1em;
-	}
-	.zmi.bigpicture .box .attr.subobject .ref {
-		left:36em;
-		left:max(50vw,36em);
-	}
-	.zmi.bigpicture .box .attr.subobject .ref .attr {
-			background-color:#FFE;
-	}
-	.zmi.bigpicture .box > .objid a {
-		opacity:1;
-	}
-	.zmi.bigpicture .box .objtype {
-		display:block;
-	}
-	.zmi.bigpicture .box .objname {
-		color:darkred;
-		display:inline-block;
-	}
-	.zmi.bigpicture .attrType {
-		color:darkgreen;
-	}
-	.zmi.bigpicture .box .attr.subobject .ref .cardinality {
-		border-bottom:1px solid #C00;
-	}
-	.zmi.bigpicture .box .attr.subobject:hover .cardinality {
-		border-bottom: 3px solid #C00;
-	}
-	.zmi.bigpicture .box .attr.subobject .ref .attr {
-		border:1px solid #C00;
-	}
-	.zmi.bigpicture .box .attr.subobject:hover .ref .attr {
-		box-shadow:0 6px 16px -3px #0008;
-		background:#C00;
-		color:white;
-		border: 3px solid #C00;
-		transform:scale(1.1)
-	}
-	.tooltip.bs-tooltip-right .tooltip-inner {
-		text-align:left !important;
-		background-color:#354f67;
-		font-family: monospace;
-		font-size:12px;
-	}
-	.tooltip.bs-tooltip-right .arrow:before {
-		border-right-color: #354f67 !important;
+		.attrType {
+			color:darkgreen;
+		}
+		.box .attr.subobject .ref .cardinality {
+			border-bottom:1px solid #C00;
+		}
+		.box .attr.subobject:hover .cardinality {
+			border-bottom: 3px solid #C00;
+		}
+		.box .attr.subobject .ref .attr {
+			border:1px solid #C00;
+		}
+		.box .attr.subobject:hover .ref .attr {
+			box-shadow:0 6px 16px -3px #0008;
+			background:#C00;
+			color:white;
+			border: 3px solid #C00;
+			transform:scale(1.1)
+		}
+		.tooltip.bs-tooltip-right .tooltip-inner {
+			text-align:left !important;
+			background-color:#354f67;
+			font-family: monospace;
+			font-size:12px;
+		}
+		.tooltip.bs-tooltip-right .arrow:before {
+			border-right-color: #354f67 !important;
+		}
 	}
 /*-->*/
 </style>
-</body>
-</html>
-</tal:block>
+
 </tal:block>

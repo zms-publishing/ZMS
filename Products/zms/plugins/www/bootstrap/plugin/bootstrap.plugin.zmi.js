@@ -414,8 +414,8 @@ $ZMI.registerReady(function(){
 		}
 	});
 
-	// Double-Clickable (TODO: to be specified for data grids that lead row-wise to a dataset form!)
-	$('table.table-hover tbody tr')
+	// Double-Clickable (for data grids that lead row-wise to a dataset form!)
+	$('table.table-hover[data-grid-cols] tbody tr')
 		.dblclick( function(evt) {
 			var href = null;
 			if ((href==null || typeof href=="undefined") && $("a .fa-pencil-alt",this).length > 0) {

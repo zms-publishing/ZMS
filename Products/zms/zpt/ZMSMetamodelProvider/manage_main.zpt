@@ -8,7 +8,7 @@
 ><!DOCTYPE html>
 <html lang="en" tal:define="zmscontext python:here.getSelf();">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
-<body tal:attributes="class python:here.zmi_body_class(id='metas config metaobj')">
+<body tal:attributes="class python:here.zmi_body_class(id='metas config metaobj')" xmlns:hx-on="https://htmx.org/">
 <header tal:replace="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</header>
 <div id="zmi-tab">
 <tal:block tal:define="
@@ -125,6 +125,7 @@
 					data-path_filter python:here.getHome().absolute_url_path()">
 				<i class="fas fa-search"></i>
 			</button>
+			<a class="btn btn-secondary" title="Show Model Details (Printable)" href="manage_bigpicture" tal:attributes="href python:'manage_bigpicture?id=%s'%(metaObj['id'])" target="_blank"><i class="fas fa-print"></i></a>
 			<button class="btn btn-secondary" type="button" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$ZMI.iframe('manage_main_import',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')});return false"><i class="fas fa-upload"></i></button>
 			<button class="btn btn-secondary" type="button" name="btn" value="BTN_EXPORT" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')" onclick="return zmiExportBtnClick(this)"><i class="fas fa-download"></i></button>
 		</div>
@@ -549,6 +550,7 @@
 						tal:attributes="data-path_filter python:here.getHome().absolute_url_path()">
 						<i class="fas fa-search"></i>
 					</button>
+					<a class="btn btn-secondary" title="Show Model Details of all Packages (Printable Big Picture)" href="manage_bigpicture" target="_blank"><i class="fas fa-print"></i></a>
 					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_ACQUIRE')+'...'" onclick="$ZMI.iframe('manage_main_acquire',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')});return false" tal:condition="python:here.getPortalMaster() is not None"><i class="fas fa-share fa-flip-vertical"></i></button>
 					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$ZMI.iframe('manage_main_import',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')});return false"><i class="fas fa-upload"></i></button>
 					<button type="button" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="return zmiExportBtnClick(this);"><i class="fas fa-download"></i></button>
@@ -579,8 +581,10 @@
 				<td colspan="3" class="meta-id">
 					<tal:block tal:condition="python:metaObjPackage"
 						><i tal:condition="python:metaObj.get('acquired',None)" class="fas fa-share fa-flip-vertical" title="acquired"></i>
-						<a tal:condition="python:metaObjPackage" data-turbolinks="false"
-							tal:attributes="href python:'manage_bigpicture?lang=%s&id=%s'%(request['lang'],metaObjPackage); title python:'%s - Click for big picture...'%metaObjPackage" target="_blank"
+						<a tal:condition="python:metaObjPackage" target="_blank"
+							tal:attributes="
+								href python:'manage_bigpicture?lang=%s&id=%s'%(request['lang'],metaObjPackage); 
+								title python:'%s - Click for big picture...'%metaObjPackage"
 							><i class="fas fa-briefcase"></i></a>
 						&nbsp;
 						<a tal:omit-tag="python:metaObj.get('acquired',None)"
@@ -614,18 +618,28 @@
 				</td>
 				<td class="meta-space"></td>
 				<td class="meta-id">
-					<span tal:attributes="id python:metaObj['id'];title python:metaObj['id'];class python:' '.join([[''],['enabled']][metaObj.get('enabled',0) in [1,True]])">
+					<span tal:attributes="
+						id python:metaObj['id'];
+						data-title python:metaObj['id'];
+						class python:' '.join([[''],['enabled']][metaObj.get('enabled',0) in [1,True]])">
 						<a tal:condition="python:metaObj.get('acquired',None)" target="_blank"
 							tal:attributes="
 								href python:'%s/metaobj_manager/manage_main?lang=%s&id=%s'%(context.getHome().aq_parent.content.absolute_url(),request['lang'],metaObj['id']);
 								title python:'acquired from: %s (%s)'%(context.getHome().aq_parent.content.id, context.getHome().aq_parent.content.attr('titlealt'))"
 							><i class="fas fa-share fa-flip-vertical"></i></a>
 						<a title="Enabled" href="javascript:;" onclick="zmiEnabledBtnClick(this)"><i tal:attributes="class python:' '.join(['enabled-toggle']+[['far fa-square'],['far fa-check-square']][metaObj.get('enabled',0) in [1,True]])"></i></a>
-
-						<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id'])">
+						<a href="#" title=""
+							onmouseover="showModelPreview(event)" 
+							onmouseout="hideModelPreview()"
+							tal:attributes="
+								href python:'manage_main?lang=%s&id=%s'%(request['lang'],metaObj['id']);
+								data-preview-url python:'manage_bigpicture?id=%s&lang=%s&content_type=htmx'%(metaObj['id'],request['lang'])">
 							<i tal:on-error="string:ERROR icon" 
 								tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])"
-							></i><span tal:on-error="string:ERROR name" style="margin-left: .1rem;" tal:content="metaObj/name">the name</span>
+							></i>
+						</a>
+						<a tal:attributes="href python:'manage_main?lang=%s&id=%s'%(request['lang'],metaObj['id'])">
+							<span tal:on-error="string:ERROR name" style="margin-left: .1rem;" tal:content="metaObj/name">the name</span>
 						</a>
 							<span class="meta-id-info">
 							<tal:block tal:content="revision">the revision</tal:block>
@@ -655,7 +669,7 @@
 </tal:block>
 
 </div><!-- #zmi-tab -->
-
+<div id="modelpreview" style="position: absolute;display: none; z-index: 1000;"></div>
 <footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 
 <script>
@@ -693,6 +707,37 @@
 			}
 			$(e).html('Count');
 		});
+	}
+
+	/**
+	 * Model Preview Popup.
+	 */
+	function showModelPreview(event) {
+		const modelpreview = document.getElementById('modelpreview');
+		// if the element is too close to the bottom edge of the viewport 
+		// add extra space to the footer.
+		if (event.pageY + 300 >  window.innerHeight) {
+			document.querySelector('footer').style.marginTop= 300 + 'px';
+		}
+		modelpreview.style.display = 'block';
+		modelpreview.style.left = event.pageX + 10 + 'px';
+		modelpreview.style.top = event.pageY + 10 + 'px';
+		// Load preview via fetch (no htmx => no history/URL change).
+		const url = event.currentTarget.getAttribute('data-preview-url');
+		if (window.lastModelPreviewUrl === url) return;
+		window.lastModelPreviewUrl = url;
+		fetch(url, {credentials: 'same-origin'})
+			.then(r => r.text())
+			.then(html => {
+				if (window.lastModelPreviewUrl !== url) return;
+				const doc = new DOMParser().parseFromString(html, 'text/html');
+				const main = doc.querySelector('main');
+				modelpreview.innerHTML = main ? main.innerHTML : html;
+			})
+			.catch(() => { window.lastModelPreviewUrl = null; });
+	}
+	function hideModelPreview() {
+		document.getElementById('modelpreview').style.display = 'none';
 	}
 
 	/**

@@ -22,7 +22,7 @@ def manage_repository_gitstatus( self ):
 	else:
 		# --- Display form.
 		# -------------------------
-		base_path = self.getConfProperty('ZMS.conf.path', self.get_conf_basepath(id=''))
+		base_path = self.get_conf_basepath(id='')
 		base_status = ''
 		try:
 			standard.localfs_readPath(base_path)

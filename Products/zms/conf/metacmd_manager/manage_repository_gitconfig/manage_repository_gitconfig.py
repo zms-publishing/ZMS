@@ -12,7 +12,7 @@ def manage_repository_gitconfig(self, request=None):
 	came_from = request.get('came_from',request['HTTP_REFERER'])
 	if came_from.find('?') > 0:
 		came_from = came_from[:came_from.find('?')]
-	base_path = self.getConfProperty('ZMS.conf.path', self.get_conf_basepath(id=''))
+	base_path = self.get_conf_basepath(id='')
 	base_status = ''
 	try:
 		standard.localfs_readPath(base_path)

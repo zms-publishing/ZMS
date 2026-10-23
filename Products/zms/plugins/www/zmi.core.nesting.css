@@ -2715,6 +2715,7 @@ body.zmi {
 
 	.modal .modal-dialog > .modal-content > .modal-body {
 		overflow-x: auto;
+		max-height: 80vh;
 	}
 
 	&.zcatalog.config .modal#connector_results .modal-dialog > .modal-content > .modal-body {
@@ -2737,6 +2738,7 @@ body.zmi {
 			width: 100vw !important;
 			max-width: 100vw;
 			min-height: 100vh;
+			max-height: unset;
 			margin: 0;
 			border: 0;
 			border-radius: 0;

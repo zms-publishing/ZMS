@@ -108,12 +108,14 @@ $(function() {
 	
 	function sendMessage(message) {
 		if (!message.trim()) return;
-		
+
 		// Add a spinner for the pending reply (prepend first so it appears below the message)
 		const spinnerId = 'spinner-' + Date.now();
 		const spinnerHtml = '<div class="reply reply-pending" id="' + spinnerId + '">' +
 			'<i class="fas fa-spinner fa-spin"></i> Waiting for response...' +
 			'</div>';
+		const secondswaitedHtml = '<span class="seconds-waited float-right"></span>';
+
 		$('#console').prepend(spinnerHtml);
 		
 		// Show the message immediately (prepend second so it appears above the spinner)
@@ -152,38 +154,60 @@ $(function() {
 	body.manage-llm-menu {
 		background-color: white !important;
 	}
-	.zmi-llm-chat-container .message {
-		color: #666;
-		background-color: #f5f5f5;
-		font-weight: bold;
-		padding: .75rem .35rem .35rem 2rem;
-		border-top: 1px solid #dee2e6;
-		border-bottom: 1px dotted #ccc;
-		min-height: 50px;
-	}
-	.zmi-llm-chat-container .reply {
-		padding: .5rem .35rem .5rem 2rem;
-		font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
-		white-space: pre-wrap;
-	}
-	.zmi-llm-chat-container .reply i#copyToClipboard {
-		cursor: pointer;
-		color: #354e66;
-		padding-right:.2rem
-	}
-	.zmi-llm-chat-container .reply:hover:has(i:hover),
-	.zmi-llm-chat-container .reply i#copyToClipboard:hover {
-		color: #2196F3;
-	}
-	.zmi-llm-chat-container .reply-pending {
-		color: #666;
-		font-style: italic;
-		opacity: 0.8;
-	}
-	.zmi-llm-chat-container .error {
-		color: #900;
-		font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
-		padding: .5rem .35rem .5rem 2rem;
+	.zmi-llm-chat-container {
+		.message {
+			color: #666;
+			background-color: #f5f5f5;
+			font-weight: bold;
+			padding: .5rem .35rem .5rem 2rem;
+			border-top: 1px solid #dee2e6;
+			border-bottom: 1px dotted #ccc;
+
+			span.seconds-waited {
+				color:silver;
+				font-weight:normal;
+				font-family:monospace;
+				letter-spacing:1px;
+
+				&:before {
+					content: "\f1da";
+					font-family: 'Font Awesome 5 Free';
+					font-weight: bold; 
+					-moz-osx-font-smoothing: grayscale;
+					-webkit-font-smoothing: antialiased;
+					display: inline-block;
+					font-style: normal;
+					font-variant: normal;
+					text-rendering: auto;
+					line-height: 1;
+					width:1.15rem
+				}
+			}
+		}
+		.reply,
+		.error {
+			padding: .5rem .35rem .5rem 2rem;
+			font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+			white-space: pre-wrap;
+
+			i#copyToClipboard {
+				cursor: pointer;
+				color: #354e66;
+				padding-right:.35rem
+			}
+			&:hover:has(i:hover),
+			i#copyToClipboard:hover {
+				color: #2196F3;
+			}
+		}
+		.reply-pending {
+			color: #666;
+			font-style: italic;
+			opacity: 0.8;
+		}
+		.error {
+			color: #900;
+		}
 	}
 /*-->*/
 </style>

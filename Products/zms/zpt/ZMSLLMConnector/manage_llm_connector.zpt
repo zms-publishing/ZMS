@@ -530,9 +530,9 @@
 				}
 			}
 
-			function renderMessage(role, content, isError) {
+			function renderMessage(role, content, isError, responseTime) {
 				if (role === 'user') {
-					return '<div class="llm-msg-user">' + $('<div/>').text(content).html() + '</div>';
+					return '<div class="llm-msg-user">' + $('<div/>').text(content).html() + (responseTime !== undefined ? ' <span class="llm_response_time float-right" title="LLM Response time">' + responseTime + '</span>' : '') + '</div>';
 				} else if (isError) {
 					return '<div class="llm-error">' + $('<div/>').text(content).html() + '</div>';
 				} else {
@@ -587,7 +587,7 @@
 				for (var i = 0; i < turns.length; i++) {
 					var t = turns[i];
 					if (t.role === 'user') {
-						html += renderMessage('user', t.content, false);
+						html += renderMessage('user', t.content, false, t.llm_response_time || 0);
 					} else if (t.role === 'tool') {
 						// tool result — attached to the preceding tool_call turn, skip standalone render
 					} else if (t.tool_calls && t.tool_calls.length) {
@@ -739,15 +739,15 @@
 					${renderMessage('user', message)}
 					<div class="llm-reply llm-reply-pending" id="${spinnerId}">${modeLabel}
 						<i class="fas fa-spinner fa-spin"></i> Waiting…
-						<span id="seconds-waiting">0</span>
+						<span id="llm_response_time" title="LLM Response time">0</span>
 					</div>
 				`);
 				$('#llm-console').animate({ scrollTop: $('#llm-console')[0].scrollHeight }, 500);
 
-				var secondsElapsed = 0;
+				var llm_response_time = 0;
 				var countInterval = setInterval(function() {
-					secondsElapsed++;
-					$('#seconds-waiting').text(secondsElapsed);
+					llm_response_time++;
+					$('#llm_response_time').text(llm_response_time);
 				}, 1000);
 
 				$.ajax({
@@ -759,13 +759,17 @@
 				.done(function(resp) {
 					clearInterval(countInterval);
 					// Remove the spinner and append the waited-seconds after the current message (.llm-msg-user)
-					$('#' + spinnerId).prev().append('<span class="seconds-waited float-right">' + secondsElapsed + '</span>');
+					$('#' + spinnerId).prev().append('<span class="llm_response_time float-right" title="LLM Response time">' + llm_response_time + '</span>');
 					$('#' + spinnerId).remove();
+					// Add the LLM response time to the UI chat history 'chatTurns'
+					if (chatTurns.length > 0 && chatTurns[chatTurns.length - 1].role === 'user') {
+						chatTurns[chatTurns.length - 1].llm_response_time = llm_response_time;
+					}
 					if (resp.error) {
 						var errText = typeof resp.error === 'object'
 							? '[' + resp.error.code + '] ' + resp.error.message
 							: String(resp.error);
-						chatTurns.push({role: 'assistant', content: errText, error: true});
+						chatTurns.push({role: 'assistant', content: errText, error: true, llm_response_time: llm_response_time});
 						saveChatHistory();
 						$('#llm-console').append(renderMessage('assistant', errText, true));
 					} else if (resp.turns) {
@@ -779,7 +783,7 @@
 							}
 						}
 						saveChatHistory();
-						$('#llm-console').append(renderTurns(newTurns));
+						$('#llm-console').append(renderTurns(newTurns, true));
 					} else {
 						// Plain chat mode: single response {reply}
 						var content = resp.reply || '';
@@ -792,7 +796,7 @@
 				})
 				.fail(function(jqXHR, textStatus, errorThrown) {
 					var errText = '[REQUEST_FAILED] ' + textStatus + ': ' + errorThrown;
-					chatTurns.push({role: 'assistant', content: errText, error: true});
+					chatTurns.push({role: 'assistant', content: errText, error: true });
 					saveChatHistory();
 					$('#' + spinnerId).removeClass('llm-reply llm-reply-pending').addClass('llm-error')
 						.html($('<div/>').text(errText).html());
@@ -857,7 +861,7 @@
 			border-top: 1px solid #dee2e6;
 			border-bottom: 1px dotted #ccc;
 
-			span.seconds-waited {
+			span.llm_response_time {
 				display: inline-block;
 				color:silver;
 				font-weight:normal;
@@ -887,22 +891,26 @@
 			font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 			white-space: pre-wrap;
 			word-break: break-word;
-		}
-		.ZMSLLMConnector .llm-reply:last-child {
-			background-color:#e6f0fb;
+
+			&:last-child {
+				background-color:#e6f0fb;
+			}
 		}
 		.ZMSLLMConnector .llm-reply-pending {
 			color: #888;
 			font-style: italic;
 			white-space: nowrap !important;
 			word-break: normal !important;
-		}
-		.ZMSLLMConnector .llm-reply-pending #seconds-waiting {
-			font-style: normal;
-			margin-left: .25rem;
-		}
-		.ZMSLLMConnector .llm-reply-pending #seconds-waiting:after {
-			content: "s";
+
+			#llm_response_time {
+				font-style: normal;
+				font-family: monospace;
+				margin-left: .25rem;
+
+				&:after {
+					content: "s";
+				}
+			}
 		}
 		.ZMSLLMConnector .llm-error {
 			color: #900;

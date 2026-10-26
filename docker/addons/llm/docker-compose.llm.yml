@@ -10,6 +10,9 @@ services:
     container_name: zms_ollama
     ports:
       - "11434:11434"
+    # This is a Docker-managed named volume, not a directory beside this file.
+    # Inspect its host location with: docker volume inspect <project>_ollama_data
+    # On a default Linux Docker installation, it is under /var/lib/docker/volumes/.
     volumes:
       - ollama_data:/root/.ollama
     networks:

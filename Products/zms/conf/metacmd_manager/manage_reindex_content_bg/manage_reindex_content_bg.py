@@ -36,7 +36,7 @@ class ZMSIndexSchematizedReindexer:
 	def __init__(self, base_url, connector, uid='{$}', page_size=100, fileparsing=False,
 			start_nodes=None, cancel_event=None,
 			cancellation_file=None, progress_callback=None, meta_ids=None,
-			pause_file=None):
+			pause_file=None, index_cleaner=None):
 		self.base_url = base_url.rstrip("/")
 		self.connector = connector.strip("/")
 		self.uid = uid
@@ -55,6 +55,10 @@ class ZMSIndexSchematizedReindexer:
 		self.progress_callback = progress_callback
 		# None: reindex every node; otherwise only nodes with these meta_ids
 		self.meta_ids = None if meta_ids is None else set(meta_ids)
+		# Callable(index_home_id) -> number of removed documents; removes the
+		# content of a client (by its indexed 'home_id') from the index.
+		# None: no cleaning.
+		self.index_cleaner = index_cleaner
 
 	def _report_progress(self, stats, state="running", current_uid=None, current_path=None):
 		if state == "running" and current_uid:
@@ -235,8 +239,29 @@ class ZMSIndexSchematizedReindexer:
 		)
 		return stats
 
+	def _clean_client_index(self, client, stats, write_line):
+		"""Remove the whole content of the client from the index (by its home_id).
+		Returns False if the cleaning failed."""
+		if client is None or self.index_cleaner is None:
+			return True
+		index_home_id = client.get("index_home_id")
+		if not index_home_id:
+			write_line(f"ERROR no home_id for cleaning ZMS-node {client.get('home_id')}")
+			stats["failed"] += 1
+			return False
+		try:
+			removed = self.index_cleaner(index_home_id)
+			write_line(f"Cleaned index for home_id={index_home_id}: {removed} documents removed")
+			return True
+		except Exception as e:
+			write_line(f"ERROR cleaning index for home_id={index_home_id}: {e}")
+			stats["failed"] += 1
+			return False
+
 	def _run_client(self, client, seen, stats, write_line):
 		"""Reindex one client; returns True if the run has been stopped."""
+		if not self._clean_client_index(client, stats, write_line):
+			return self._stop_requested()
 		for uid, meta_id, node_path in self._iter_client_nodes(client, seen):
 			self._wait_while_paused(stats, write_line)
 			if self._stop_requested():
@@ -513,6 +538,7 @@ def start(self):
 			"uid": node.get_uid(),
 			"meta_id": node.meta_id,
 			"getPath": "/" + "/".join(str(part) for part in node.getPhysicalPath() if part),
+			"index_home_id": node.getHome().id,
 			"expected": count_nodes(node),
 		})
 	if not start_nodes:
@@ -522,6 +548,21 @@ def start(self):
 	uid = request.get("uid", root.getRefObjPath(self.getDocumentElement()))
 	page_size = int(request.get("page_size", 1))
 	fileparsing = bool(request.get("fileparsing", False))
+
+	try:
+		os_client = catalog_connector.opensearch_get_client(catalog_connector)
+	except Exception:
+		os_client = None
+	index_name = root.getHome().id
+
+	def index_cleaner(index_home_id):
+		# Removes all documents of the client, as in manage_opensearch_objects_clear
+		if os_client is None:
+			raise RuntimeError("OpenSearch client not available")
+		query = {"query": {"query_string": {"query": 'home_id: "%s"' % index_home_id}}}
+		response = os_client.delete_by_query(
+			index=index_name, body=query, refresh=True, conflicts="proceed")
+		return response.get("deleted", 0)
 
 	global RUN_IN_PROGRESS, RUN_LOCK_FD, RUN_JOB
  
@@ -616,6 +657,7 @@ def start(self):
 				pause_file=pause_file,
 				progress_callback=update_progress,
 				meta_ids=meta_ids,
+				index_cleaner=index_cleaner,
 			)
 
 			stats = reindexer.run(write_line=lambda line: LOGGER.info(line))
@@ -824,10 +866,10 @@ def manage_reindex_content_bg(self):
 	html.append('<!DOCTYPE html>')
 	html.append('<html lang="en">')
 	html.append(self.zmi_html_head(self,request))
-	html.append('<body class="%s">'%self.zmi_body_class(id='manage_reindex_content'))
+	html.append('<body class="%s">'%self.zmi_body_class(id='manage_reindex_content_bg'))
 	html.append(self.zmi_body_header(self,request))
 	html.append('<div id="zmi-tab">')
-	html.append(self.zmi_breadcrumbs(self,request,extra=[{'label':'Reindex Content','action':'manage_reindex_content'}]))
+	html.append(self.zmi_breadcrumbs(self,request,extra=[{'label':'Reindex Content (Background)','action':'manage_reindex_content_bg'}]))
 	status_url = self.absolute_url() + "/manage_reindex_content_bg?status=1"
 	html.append("""
 		<form class="form-horizontal card" name="form0" method="post" enctype="multipart/form-data">
@@ -877,6 +919,17 @@ def manage_reindex_content_bg(self):
 					<div class="col-sm-10">
 						<input class="form-control" id="page_size" name="page_size:int" type="number" min="1" value="1" />
 						<small class="form-text text-muted">API batch size per call (1 = one node per call)</small>
+					</div>
+				</div><!-- .form-group -->
+				<div class="form-group row">
+					<label class="col-sm-2 control-label">Parse Binary-Files</label>
+					<div class="col-sm-10">
+						<div class="form-check">
+							<input class="form-check-input" id="fileparsing" name="fileparsing:int" type="checkbox" value="1" />
+						</div>
+						<label class="form-check-label" for="fileparsing">
+							
+						</label>
 					</div>
 				</div><!-- .form-group -->
 				<div class="form-group row">

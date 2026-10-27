@@ -55,9 +55,9 @@ class ZMSIndexSchematizedReindexer:
 		self.progress_callback = progress_callback
 		# None: reindex every node; otherwise only nodes with these meta_ids
 		self.meta_ids = None if meta_ids is None else set(meta_ids)
-		# Callable(index_home_id) -> number of removed documents; removes the
-		# content of a client (by its indexed 'home_id') from the index.
-		# None: no cleaning.
+		# Callable(index_home_id, started_at) -> number of removed documents;
+		# removes the stale documents of a client (by its indexed 'home_id')
+		# with indexing_dt < started_at. None: no cleaning.
 		self.index_cleaner = index_cleaner
 
 	def _report_progress(self, stats, state="running", current_uid=None, current_path=None):
@@ -220,9 +220,13 @@ class ZMSIndexSchematizedReindexer:
 			if client is not None:
 				stats["current_client"] = client.get("home_id")
 				self._report_progress(stats)
+			started_at = _timestamp()
 			stopped = self._run_client(client, seen, stats, write_line)
 			if stopped:
 				break
+			# Only after a fully successful reindex of this client
+			if self.traversal_errors == errors_before and stats["failed"] == failed_before:
+				self._remove_stale_documents(client, started_at, stats, write_line)
 			if client is not None:
 				home_id = client.get("home_id")
 				if self.traversal_errors > errors_before or stats["failed"] > failed_before:
@@ -239,29 +243,27 @@ class ZMSIndexSchematizedReindexer:
 		)
 		return stats
 
-	def _clean_client_index(self, client, stats, write_line):
-		"""Remove the whole content of the client from the index (by its home_id).
-		Returns False if the cleaning failed."""
+	def _remove_stale_documents(self, client, started_at, stats, write_line):
+		"""Remove the documents of the client that were not (re)indexed since
+		started_at (ISO UTC timestamp); the content stays searchable meanwhile."""
 		if client is None or self.index_cleaner is None:
-			return True
+			return
 		index_home_id = client.get("index_home_id")
 		if not index_home_id:
 			write_line(f"ERROR no home_id for cleaning ZMS-node {client.get('home_id')}")
 			stats["failed"] += 1
-			return False
+			return
 		try:
-			removed = self.index_cleaner(index_home_id)
-			write_line(f"Cleaned index for home_id={index_home_id}: {removed} documents removed")
-			return True
+			removed = self.index_cleaner(index_home_id, started_at)
+			write_line(
+				f"Removed {removed} stale documents of home_id={index_home_id} "
+				f"(indexing_dt < {started_at})")
 		except Exception as e:
-			write_line(f"ERROR cleaning index for home_id={index_home_id}: {e}")
+			write_line(f"ERROR removing stale documents of home_id={index_home_id}: {e}")
 			stats["failed"] += 1
-			return False
 
 	def _run_client(self, client, seen, stats, write_line):
 		"""Reindex one client; returns True if the run has been stopped."""
-		if not self._clean_client_index(client, stats, write_line):
-			return self._stop_requested()
 		for uid, meta_id, node_path in self._iter_client_nodes(client, seen):
 			self._wait_while_paused(stats, write_line)
 			if self._stop_requested():
@@ -365,7 +367,7 @@ def _get_status_file_path(base_url):
 	return _get_lockfile_path(base_url) + ".status.json"
 
 def _timestamp():
-	return datetime.now(timezone.utc).isoformat(timespec="seconds")
+	return datetime.now().isoformat(timespec="seconds")
 
 def _read_status_fd(fd):
 	size = os.fstat(fd).st_size
@@ -555,11 +557,16 @@ def start(self):
 		os_client = None
 	index_name = root.getHome().id
 
-	def index_cleaner(index_home_id):
-		# Removes all documents of the client, as in manage_opensearch_objects_clear
+	def index_cleaner(index_home_id, started_at):
+		# Removes the client's documents that were not reindexed since started_at
 		if os_client is None:
 			raise RuntimeError("OpenSearch client not available")
-		query = {"query": {"query_string": {"query": 'home_id: "%s"' % index_home_id}}}
+		query = {"query": {"bool": {
+			"filter": [
+				{"term": {"home_id": index_home_id}},
+				{"range": {"indexing_dt": {"lt": started_at}}},
+			],
+		}}}
 		response = os_client.delete_by_query(
 			index=index_name, body=query, refresh=True, conflicts="proceed")
 		return response.get("deleted", 0)

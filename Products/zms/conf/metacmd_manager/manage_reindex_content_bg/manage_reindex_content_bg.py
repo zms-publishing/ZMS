@@ -244,8 +244,11 @@ class ZMSIndexSchematizedReindexer:
 		return stats
 
 	def _remove_stale_documents(self, client, started_at, stats, write_line):
-		"""Remove the documents of the client that were not (re)indexed since
-		started_at (ISO UTC timestamp); the content stays searchable meanwhile."""
+		"""
+		Remove the documents of the client that were not (re)indexed since
+		started_at (ISO local time, as the indexer's indexing_dt); the content
+		stays searchable meanwhile.
+		"""
 		if client is None or self.index_cleaner is None:
 			return
 		index_home_id = client.get("index_home_id")

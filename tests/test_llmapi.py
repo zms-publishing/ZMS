@@ -7,6 +7,7 @@ Tests llmapi provider logic and ZMSLLMConnector without requiring a full Zope in
 """
 import sys
 import os
+from unittest.mock import Mock, patch
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
@@ -92,7 +93,9 @@ def test_connector_delegates_to_provider():
 def test_provider_selection():
     """Test that the correct provider is selected based on configuration."""
     print("\nTesting provider selection…")
-    from Products.zms.llmapi import _get_provider, OpenAIProvider, OllamaProvider, RAGProvider
+    from Products.zms.llmapi import (
+        _get_provider, AnthropicProvider, OpenAIProvider, OllamaProvider, RAGProvider,
+    )
 
     ctx = MockContext({'llm.provider': 'openai'})
     assert isinstance(_get_provider(ctx), OpenAIProvider)
@@ -101,6 +104,10 @@ def test_provider_selection():
     ctx = MockContext({'llm.provider': 'ollama'})
     assert isinstance(_get_provider(ctx), OllamaProvider)
     print("✓ Ollama provider selected correctly")
+
+    ctx = MockContext({'llm.provider': 'anthropic'})
+    assert isinstance(_get_provider(ctx), AnthropicProvider)
+    print("✓ Anthropic provider selected correctly")
 
     ctx = MockContext({'llm.provider': 'rag'})
     assert isinstance(_get_provider(ctx), RAGProvider)
@@ -131,6 +138,18 @@ def test_provider_info():
     assert info['endpoint'] == 'http://ollama:11434'
     print("✓ Ollama provider info correct")
 
+    ctx = MockContext({
+        'llm.provider': 'anthropic',
+        'llm.api.key': 'anthropic-test-key',
+        'llm.api.model': 'claude-sonnet-4-5',
+    })
+    info = get_provider_info(ctx)
+    assert info['provider'] == 'anthropic'
+    assert info['model'] == 'claude-sonnet-4-5'
+    assert info['endpoint'] == 'https://api.anthropic.com/v1/messages'
+    assert info['has_api_key'] is True
+    print("✓ Anthropic provider info correct")
+
     ctx = MockContext({'llm.provider': 'rag', 'llm.qdrant.host': 'http://qdrant:6333', 'llm.qdrant.collection': 'docs', 'llm.api.model': 'mistral'})
     info = get_provider_info(ctx)
     assert info['provider'] == 'rag'
@@ -155,6 +174,99 @@ def test_configuration_error():
     print("Configuration error tests passed!")
 
 
+def test_anthropic_provider_request_and_response():
+    """Anthropic requests and tool-use responses use the common chat schema."""
+    from Products.zms.llmapi import AnthropicProvider
+
+    ctx = MockContext({
+        'llm.api.key': 'anthropic-test-key',
+        'llm.api.model': 'claude-sonnet-4-5',
+        'llm.temperature': '0.7',
+        'llm.top_p': '0.9',
+    })
+    response = Mock()
+    response.json.return_value = {
+        'id': 'msg_test',
+        'model': 'claude-sonnet-4-5',
+        'content': [
+            {'type': 'text', 'text': 'Reading the page.'},
+            {'type': 'tool_use', 'id': 'toolu_123', 'name': 'get_page', 'input': {'id': 'home'}},
+        ],
+        'stop_reason': 'tool_use',
+        'usage': {'input_tokens': 12, 'output_tokens': 5},
+    }
+
+    with patch('Products.zms.llmapi.requests.post', return_value=response) as post:
+        result = AnthropicProvider(ctx).chat(
+            [{'role': 'system', 'content': 'Be helpful.'}, {'role': 'user', 'content': 'Read home'}],
+            tools=[{
+                'type': 'function',
+                'function': {
+                    'name': 'get_page',
+                    'description': 'Read a page',
+                    'parameters': {'type': 'object', 'properties': {'id': {'type': 'string'}}},
+                },
+            }],
+            tool_choice='auto',
+        )
+
+    args, request = post.call_args
+    assert args[0] == 'https://api.anthropic.com/v1/messages'
+    assert request['headers']['x-api-key'] == 'anthropic-test-key'
+    assert request['headers']['anthropic-version'] == '2023-06-01'
+    assert request['json']['system'] == 'Be helpful.'
+    assert request['json']['max_tokens'] == 4096
+    assert request['json']['temperature'] == 0.7
+    assert 'top_p' not in request['json']
+    assert request['json']['tools'][0]['input_schema']['type'] == 'object'
+    assert request['json']['tool_choice'] == {'type': 'auto'}
+    assert result['message']['content'] == 'Reading the page.'
+    assert result['message']['tool_calls'][0]['id'] == 'toolu_123'
+    assert result['message']['tool_calls'][0]['function']['arguments'] == '{"id": "home"}'
+    assert result['choices'][0]['finish_reason'] == 'tool_calls'
+    assert result['usage'] == {
+        'prompt_tokens': 12,
+        'completion_tokens': 5,
+        'total_tokens': 17,
+    }
+    print("✓ Anthropic request and tool response normalization work correctly")
+
+
+def test_anthropic_tool_result_history():
+    """Anthropic tool call history is reconstructed for subsequent agent turns."""
+    from Products.zms.llmapi import AnthropicProvider
+
+    provider = AnthropicProvider(MockContext())
+    system, messages = provider._prepare_anthropic_messages([
+        {'role': 'assistant', 'content': '', 'tool_calls': [{
+            'id': 'toolu_123',
+            'type': 'function',
+            'function': {'name': 'get_page', 'arguments': '{"id": "home"}'},
+        }]},
+        {'role': 'tool', 'tool_call_id': 'toolu_123', 'name': 'get_page', 'content': '{"title":"Home"}'},
+        {'role': 'assistant', 'content': 'The page is titled Home.'},
+    ])
+    assert system == ''
+    assert messages == [
+        {'role': 'assistant', 'content': [{
+            'type': 'tool_use',
+            'id': 'toolu_123',
+            'name': 'get_page',
+            'input': {'id': 'home'},
+        }]},
+        {'role': 'user', 'content': [{
+            'type': 'tool_result',
+            'tool_use_id': 'toolu_123',
+            'content': '{"title":"Home"}',
+        }]},
+        {'role': 'assistant', 'content': [{
+            'type': 'text',
+            'text': 'The page is titled Home.',
+        }]},
+    ]
+    print("✓ Anthropic tool-result history is translated correctly")
+
+
 if __name__ == '__main__':
     try:
         # ZMSLLMConnector tests
@@ -167,6 +279,8 @@ if __name__ == '__main__':
         test_provider_selection()
         test_provider_info()
         test_configuration_error()
+        test_anthropic_provider_request_and_response()
+        test_anthropic_tool_result_history()
         print("\n" + "=" * 50)
         print("All tests passed! ✓")
         print("=" * 50)

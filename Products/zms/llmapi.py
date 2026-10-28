@@ -5,12 +5,13 @@ All providers follow the OpenAI /v1/chat/completions API schema for consistency.
 
 Supported providers:
     - OpenAI (gpt-4, gpt-3.5-turbo, etc.)
+    - Anthropic Claude
     - Ollama (local deployment)
     - RAG with Qdrant vector database
 
 Configuration properties:
-    - llm.provider: 'openai', 'ollama', or 'rag' (default: 'openai')
-    - llm.api.key: API key for OpenAI (if provider is 'openai')
+    - llm.provider: 'openai', 'anthropic', 'ollama', or 'rag' (default: 'openai')
+    - llm.api.key: API key for OpenAI, Anthropic, or GitHub Models
     - llm.api.model: Model name (default: 'gpt-4o-mini' for OpenAI, 'llama2' for Ollama)
     - llm.api.endpoint: Custom endpoint URL
     - llm.ollama.host: Ollama host (default: 'http://localhost:11434')
@@ -302,6 +303,250 @@ class OpenAIProvider(LLMProvider):
             }
 
 
+class AnthropicProvider(LLMProvider):
+    """Anthropic Claude Messages API provider (normalized to OpenAI format)."""
+
+    def _prepare_anthropic_messages(self, messages):
+        """Translate OpenAI-style conversation history to Anthropic Messages format."""
+        system_parts = []
+        anthropic_messages = []
+        pending_tool_results = []
+
+        def flush_tool_results():
+            if pending_tool_results:
+                anthropic_messages.append({
+                    'role': 'user',
+                    'content': list(pending_tool_results),
+                })
+                pending_tool_results[:] = []
+
+        for message in messages:
+            role = message.get('role')
+            content = message.get('content') or ''
+
+            if role in ('system', 'developer'):
+                if content:
+                    system_parts.append(content if isinstance(content, str) else json.dumps(content))
+                continue
+
+            if role == 'tool':
+                pending_tool_results.append({
+                    'type': 'tool_result',
+                    'tool_use_id': message.get('tool_call_id', ''),
+                    'content': content if isinstance(content, str) else json.dumps(content),
+                })
+                continue
+
+            flush_tool_results()
+            blocks = content if isinstance(content, list) else (
+                [{'type': 'text', 'text': content}] if content else []
+            )
+            blocks = list(blocks)
+            if role == 'assistant':
+                for tool_call in message.get('tool_calls') or []:
+                    function = tool_call.get('function', {})
+                    arguments = function.get('arguments', {})
+                    if isinstance(arguments, str):
+                        try:
+                            arguments = json.loads(arguments)
+                        except (ValueError, TypeError):
+                            arguments = {}
+                    blocks.append({
+                        'type': 'tool_use',
+                        'id': tool_call.get('id', ''),
+                        'name': function.get('name', ''),
+                        'input': arguments if isinstance(arguments, dict) else {},
+                    })
+            if role in ('user', 'assistant') and blocks:
+                anthropic_messages.append({'role': role, 'content': blocks})
+
+        flush_tool_results()
+        return '\n\n'.join(system_parts), anthropic_messages
+
+    @staticmethod
+    def _prepare_anthropic_tools(tools):
+        """Translate OpenAI function tool schemas to Anthropic's tool schema."""
+        anthropic_tools = []
+        for tool in tools:
+            function = tool.get('function', tool)
+            anthropic_tools.append({
+                'name': function.get('name', ''),
+                'description': function.get('description', ''),
+                'input_schema': function.get('parameters', tool.get('input_schema', {
+                    'type': 'object',
+                    'properties': {},
+                })),
+            })
+        return anthropic_tools
+
+    @staticmethod
+    def _prepare_anthropic_tool_choice(tool_choice):
+        if tool_choice == 'auto':
+            return {'type': 'auto'}
+        if tool_choice in ('required', 'any'):
+            return {'type': 'any'}
+        if tool_choice == 'none' or tool_choice is None:
+            return None
+        if isinstance(tool_choice, dict):
+            function = tool_choice.get('function', {})
+            name = function.get('name') or tool_choice.get('name')
+            if name:
+                return {'type': 'tool', 'name': name}
+            if tool_choice.get('type') in ('auto', 'any'):
+                return {'type': tool_choice['type']}
+        return None
+
+    def chat(self, messages, **kwargs):
+        """Send a request to Anthropic's /v1/messages API."""
+        try:
+            api_key = self.context.getConfProperty('llm.api.key')
+            if not api_key:
+                return {
+                    'error': {
+                        'code': 'CONFIGURATION_ERROR',
+                        'message': 'Anthropic API key not configured. Set llm.api.key'
+                    }
+                }
+
+            model = self.context.getConfProperty('llm.api.model', 'claude-sonnet-4-5')
+            endpoint = self.context.getConfProperty(
+                'llm.api.endpoint', 'https://api.anthropic.com/v1/messages'
+            )
+            llm_timeout = int(self.context.getConfProperty('llm.timeout', '120'))
+            messages_array = self._prepare_messages(messages)
+            system, anthropic_messages = self._prepare_anthropic_messages(messages_array)
+
+            configured_max_tokens = self.context.getConfProperty('llm.max_tokens')
+            payload = {
+                'model': model,
+                'messages': anthropic_messages,
+                'max_tokens': int(kwargs.get(
+                    'max_tokens', configured_max_tokens or 4096
+                )),
+            }
+            if system:
+                payload['system'] = system
+
+            # Do not set temperature and top_p simultaneously; Anthropic API expects one or the other
+            # In case of both temperature and top_p being provided, prioritize temperature
+            # In case of model Haiku, Anthropic expects neither temperature nor top_p to be set
+            if model.startswith('claude-haiku'):
+                temperature = None
+                top_p = None
+            else:
+                temperature = kwargs.get('temperature')
+                top_p = kwargs.get('top_p')
+                if temperature is None and top_p is None:
+                    temperature = self.context.getConfProperty('llm.temperature')
+                    top_p = self.context.getConfProperty('llm.top_p')
+                if temperature is not None and temperature != '':
+                    payload['temperature'] = float(temperature)
+                elif top_p is not None and top_p != '':
+                    payload['top_p'] = float(top_p)
+                elif temperature is not None and top_p is None:
+                    payload['temperature'] = float(temperature)
+                elif top_p is not None and temperature is None:
+                    payload['top_p'] = float(top_p)
+                elif top_p and temperature:
+                    # If both temperature and top_p are set, prioritize temperature
+                    payload['temperature'] = float(temperature)
+                else:
+                    # If neither temperature nor top_p is set, use default temperature
+                    payload['temperature'] = float(self.context.getConfProperty('llm.temperature', '0.7'))
+
+            if kwargs.get('tools'):
+                payload['tools'] = self._prepare_anthropic_tools(kwargs['tools'])
+                tool_choice = self._prepare_anthropic_tool_choice(kwargs.get('tool_choice'))
+                if tool_choice:
+                    payload['tool_choice'] = tool_choice
+
+            for key in ('stop_sequences', 'metadata'):
+                if key in kwargs:
+                    payload[key] = kwargs[key]
+
+            response = requests.post(
+                endpoint,
+                headers={
+                    'Content-Type': 'application/json',
+                    'x-api-key': api_key,
+                    'anthropic-version': '2023-06-01',
+                },
+                json=payload,
+                timeout=llm_timeout,
+            )
+            result = response.json()
+
+            if 'error' in result:
+                error = result['error']
+                return {
+                    'error': {
+                        'code': error.get('type', 'ANTHROPIC_ERROR'),
+                        'message': error.get('message', 'Unknown Anthropic API error'),
+                    }
+                }
+
+            content_blocks = result.get('content', [])
+            text = ''.join(
+                block.get('text', '')
+                for block in content_blocks
+                if block.get('type') == 'text'
+            )
+            tool_calls = []
+            for block in content_blocks:
+                if block.get('type') == 'tool_use':
+                    tool_calls.append({
+                        'id': block.get('id', ''),
+                        'type': 'function',
+                        'function': {
+                            'name': block.get('name', ''),
+                            'arguments': json.dumps(block.get('input', {})),
+                        },
+                    })
+
+            message = {'role': 'assistant', 'content': text}
+            if tool_calls:
+                message['tool_calls'] = tool_calls
+            usage = result.get('usage', {})
+            return {
+                'id': _generate_request_id(
+                    'anthropic', model,
+                    messages_array[-1].get('content', '') if messages_array else '',
+                ),
+                'object': 'chat.completion',
+                'created': int(time.time()),
+                'model': model,
+                'choices': [{
+                    'index': 0,
+                    'message': message,
+                    'finish_reason': {
+                        'end_turn': 'stop',
+                        'tool_use': 'tool_calls',
+                        'max_tokens': 'length',
+                    }.get(result.get('stop_reason'), 'stop'),
+                }],
+                'usage': {
+                    'prompt_tokens': usage.get('input_tokens', 0),
+                    'completion_tokens': usage.get('output_tokens', 0),
+                    'total_tokens': usage.get('input_tokens', 0) + usage.get('output_tokens', 0),
+                },
+                'message': message,
+            }
+        except requests.exceptions.RequestException as e:
+            return {
+                'error': {
+                    'code': 'REQUEST_ERROR',
+                    'message': f'Request to Anthropic failed: {str(e)}'
+                }
+            }
+        except Exception as e:
+            return {
+                'error': {
+                    'code': 'INTERNAL_ERROR',
+                    'message': f'Internal error: {str(e)}'
+                }
+            }
+
+
 class OllamaProvider(LLMProvider):
     """Ollama local LLM provider (normalized to OpenAI format)"""
     
@@ -573,6 +818,7 @@ def _get_provider(context):
     providers = {
         'openai': OpenAIProvider,
         'github': OpenAIProvider,  # GitHub Models uses the OpenAI-compatible API
+        'anthropic': AnthropicProvider,
         'ollama': OllamaProvider,
         'rag': RAGProvider,
     }
@@ -634,7 +880,7 @@ def chat(context, messages, **kwargs):
             }
         }
     
-    @note: Configuration - Set llm.provider to one of: 'openai', 'ollama', 'rag'
+    @note: Configuration - Set llm.provider to one of: 'openai', 'anthropic', 'ollama', 'rag'
     
     @note: For OpenAI:
         - llm.api.key: Your OpenAI API key
@@ -751,6 +997,11 @@ def get_provider_info(context):
         info['endpoint'] = context.getConfProperty('llm.api.endpoint', endpoint_default)
         info['has_api_key'] = bool(context.getConfProperty('llm.api.key'))
         info['store_enabled'] = str(context.getConfProperty('llm.store', '')).lower() in ['true', '1', 'yes']
+    elif provider_type == 'anthropic':
+        info['endpoint'] = context.getConfProperty(
+            'llm.api.endpoint', 'https://api.anthropic.com/v1/messages'
+        )
+        info['has_api_key'] = bool(context.getConfProperty('llm.api.key'))
     elif provider_type == 'ollama':
         info['endpoint'] = context.getConfProperty('llm.ollama.host', 'http://localhost:11434')
     elif provider_type == 'rag':

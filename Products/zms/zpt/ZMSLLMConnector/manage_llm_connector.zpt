@@ -47,7 +47,7 @@
 				<div class="card-header d-flex align-items-center justify-content-between">
 					<span>
 						<i class="fas fa-robot mr-2 fa-2x text-primary"></i>
-						<strong tal:content="python:{'openai':'OpenAI','github':'GitHub Models','ollama':'Ollama','rag':'RAG Assistant'}.get(provider,'LLM Chat')">LLM Chat</strong>
+						<strong tal:content="python:{'openai':'OpenAI','anthropic':'Anthropic Claude','github':'GitHub Models','ollama':'Ollama','rag':'RAG Assistant'}.get(provider,'LLM Chat')">LLM Chat</strong>
 						&nbsp;
 						<small class="text-muted" tal:content="python:'(%s)' % model">model</small>
 						&nbsp;
@@ -96,6 +96,7 @@
 						<div class="col-sm-9">
 							<select class="form-control" name="llm.provider" id="llm-provider">
 								<option value="openai"  tal:attributes="selected python:provider=='openai'">OpenAI</option>
+								<option value="anthropic" tal:attributes="selected python:provider=='anthropic'">Anthropic Claude</option>
 								<option value="github"  tal:attributes="selected python:provider=='github'">GitHub Models</option>
 								<option value="ollama"  tal:attributes="selected python:provider=='ollama'">Ollama (local)</option>
 								<option value="rag"     tal:attributes="selected python:provider=='rag'">RAG (Qdrant + Ollama)</option>
@@ -137,7 +138,7 @@
 							<div class="input-group">
 								<input class="form-control zmi-code" type="text" name="llm.api.model" id="llm-model-input"
 									tal:attributes="value python:here.getConfProperty('llm.api.model','gpt-4o-mini')"
-									placeholder="gpt-4o-mini / llama3 / mistral" />
+									placeholder="gpt-4o-mini / claude-sonnet-4-5 / llama3" />
 								<div class="input-group-append" id="ollama-model-picker" style="display:none">
 									<button type="button" class="btn btn-secondary" id="btn-load-models" title="Load available models from Ollama">
 										<i class="fas fa-sync-alt"></i>
@@ -148,7 +149,8 @@
 								</div>
 							</div>
 							<small class="form-text text-muted">
-								OpenAI: gpt-4o-mini, gpt-4, gpt-3.5-turbo &nbsp;|&nbsp;
+								OpenAI: gpt-4o-mini, gpt-4 &nbsp;|&nbsp;
+								Claude: claude-sonnet-4-5, claude-opus-4-1, claude-haiku-5-5 &nbsp;|&nbsp;
 								Ollama: use <i class="fas fa-sync-alt"></i> to load installed models, or run <code>ollama pull &lt;model&gt;</code>
 							</small>
 						</div>
@@ -163,7 +165,7 @@
 						</div>
 					</div>
 
-					<!-- OpenAI / GitHub Models Settings -->
+					<!-- API provider settings -->
 					<fieldset class="provider-section" id="section-openai">
 						<legend class="row my-3" id="section-openai-legend">OpenAI Settings</legend>
 						<div class="form-group row">
@@ -171,11 +173,9 @@
 							<div class="col-sm-9">
 								<input class="form-control zmi-code" type="text" name="llm.api.key" autocomplete="off"
 									tal:attributes="data-api_key_is_available python:bool(here.getConfProperty('llm.api.key'))"
-									placeholder="sk-...  or  github_pat_..." />
-								<small class="form-text text-muted" id="apikey-hint">
-									OpenAI: <code>sk-...</code> key &nbsp;|&nbsp;
-									GitHub Models: Personal Access Token from 
-									<a href="https://github.com/settings/tokens" target="_blank">github.com/settings/tokens</a>
+									placeholder="API key for selected provider" />
+									<small class="form-text text-muted" id="apikey-hint">
+										OpenAI or Anthropic API key, or GitHub Models Personal Access Token.
 								</small>
 							</div>
 						</div>
@@ -277,7 +277,8 @@
 					<!-- Generation Parameters -->
 					<fieldset>
 						<legend class="row my-3">Generation Parameters</legend>
-						<div class="form-group row">
+						<div class="form-group row" 
+							tal:condition="python:here.getConfProperty('llm.api.model','gpt-4o-mini')!='claude-haiku-5-5'">
 							<label class="col-sm-3 control-label">Temperature</label>
 							<div class="col-sm-9">
 								<input class="form-control zmi-code" type="number" name="llm.temperature"
@@ -414,24 +415,35 @@
 			// Provider-section visibility
 			function updateProviderSections() {
 				var p = $('#llm-provider').val() || $('input[name="llm.provider"]').val() || 'openai';
-				var isOpenAI = (p === 'openai' || p === 'github');
-				$('#section-openai').toggle(isOpenAI);
+				var isApiProvider = (p === 'openai' || p === 'github' || p === 'anthropic');
+				$('#section-openai').toggle(isApiProvider);
 				$('#section-ollama').toggle(p === 'ollama' || p === 'rag');
 				$('#section-rag').toggle(p === 'rag');
 				$('#ollama-model-picker').toggle(p === 'ollama' || p === 'rag');
+				var endpointDefaults = {
+					openai: 'https://api.openai.com/v1/chat/completions',
+					github: 'https://models.inference.ai.azure.com/chat/completions',
+					anthropic: 'https://api.anthropic.com/v1/messages'
+				};
+				var $ep = $('#llm-api-endpoint');
+				var knownEndpoints = Object.keys(endpointDefaults).map(function(key) {
+					return endpointDefaults[key];
+				});
+				var currentEndpoint = $ep.val();
+				if (endpointDefaults[p] && (!currentEndpoint || knownEndpoints.indexOf(currentEndpoint) !== -1)) {
+					$ep.val(endpointDefaults[p]);
+				}
 				if (p === 'github') {
 					$('#section-openai-legend').text('GitHub Models Settings');
-					var $ep = $('#llm-api-endpoint');
-					if (!$ep.val()) {
-						$ep.val('https://models.inference.ai.azure.com/chat/completions');
-					}
-					$('#endpoint-hint').text('GitHub Models inference endpoint (pre-filled).');
+					$('#apikey-hint').html('GitHub Models: Personal Access Token from <a href="https://github.com/settings/tokens" target="_blank">github.com/settings/tokens</a>');
+					$('#endpoint-hint').text('GitHub Models inference endpoint.');
+				} else if (p === 'anthropic') {
+					$('#section-openai-legend').text('Anthropic Claude Settings');
+					$('#apikey-hint').text('Anthropic API key from console.anthropic.com.');
+					$('#endpoint-hint').text('Anthropic Messages API endpoint.');
 				} else if (p === 'openai') {
 					$('#section-openai-legend').text('OpenAI Settings');
-					var $ep = $('#llm-api-endpoint');
-					if (!$ep.val()) {
-						$ep.val('https://api.openai.com/v1/chat/completions');
-					}
+					$('#apikey-hint').text('OpenAI API key.');
 					$('#endpoint-hint').text('');
 				}
 			}

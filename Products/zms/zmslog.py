@@ -8,6 +8,8 @@ and provides trace-level introspection.
 License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
+from AccessControl import ClassSecurityInfo
+from AccessControl.class_init import InitializeClass
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import logging
 import os
@@ -34,6 +36,8 @@ def log_time():
 
 class ZMSLog(ZMSItem.ZMSItem):
     """ZMI-accessible log viewer and remote filesystem utility."""
+
+    security = ClassSecurityInfo()
 
     meta_type = 'ZMSLog'
     zmi_icon = "fas fa-bug"
@@ -82,6 +86,7 @@ class ZMSLog(ZMSItem.ZMSItem):
         )
 
 
+    security.declareProtected('ZMS Administrator', 'getLOG')
     def getLOG(self, REQUEST, RESPONSE=None):
       """Stream the active Zope event log file as a plain-text download."""
       filename = self.get_log_filename()
@@ -123,6 +128,7 @@ class ZMSLog(ZMSItem.ZMSItem):
       return _fileutil.getFilePath(path)
 
 
+    security.declareProtected('ZMS Administrator', 'manage_index_html')
     def manage_index_html(self, REQUEST, RESPONSE):
       """Serve a binary file from the remote filesystem as an inline download."""
       path = self.getPath(REQUEST)
@@ -132,6 +138,7 @@ class ZMSLog(ZMSItem.ZMSItem):
         return f.read()
 
 
+    security.declareProtected('ZMS Administrator', 'manage_submit')
     def manage_submit(self, REQUEST, RESPONSE):
       """Handle remote-filesystem actions: execute a shell command or upload a file."""
       path = self.getPath(REQUEST)
@@ -148,3 +155,7 @@ class ZMSLog(ZMSItem.ZMSItem):
       return REQUEST.RESPONSE.redirect(
         standard.url_append_params(REQUEST['HTTP_REFERER'], {'manage_tabs_message': message})
       )
+
+# call this to initialize framework classes, which
+# does the right thing with the security assertions.
+InitializeClass(ZMSLog)

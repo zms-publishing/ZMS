@@ -39,6 +39,8 @@ NOT_PUBLISHABLE = {
         'delProcess',
     ),
     'ZMSLLMConnector': (
+        'chat',
+        'chat_with_tools',
         'updateRepository',
     ),
     'ZMSMetacmdProvider': (
@@ -154,6 +156,13 @@ NOT_PUBLISHABLE = {
         'setEnv',
     ),
     '_mediadb': (
+        'retrieveFile',
+        'retrieveFileStreamIterator',
+        'getFileSize',
+        'targetFile',
+        'readDir',
+        'getParentDir',
+        'getPath',
         'setLocation',
         'storeFile',
     ),
@@ -211,6 +220,11 @@ NOT_PUBLISHABLE = {
         'initProxy',
     ),
     'zmslog': (
+        'readDir',
+        'getParentDir',
+        'getPath',
+        'tail_event_log',
+        'get_log_filename',
         'setProperties',
     ),
     'zmsobject': (
@@ -231,6 +245,13 @@ NOT_PUBLISHABLE = {
     ),
     'zmstrashcan': (
         'run_garbage_collection',
+    ),
+    '_exportable': (
+        'exportExternalResources',
+        'recurse_downloadHtmlPages',
+    ),
+    '_enummanager': (
+        'getValues',
     ),
 }
 

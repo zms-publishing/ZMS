@@ -310,6 +310,16 @@
         
 
         
+            <div class="itemName"><code><a href="#security" class="internal-link" title="zms.zmslog.ZMSLog.security">security</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
             <div class="itemName"><code><a href="#zmi_icon" class="internal-link" title="zms.zmslog.ZMSLog.zmi_icon">zmi<wbr></wbr>_icon</a></code>
             </div>
         
@@ -455,7 +465,7 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSLog</span>(ZMSItem.ZMSItem): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L35" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms.zmslog.ZMSLog.__init__">ZMSLog(copy_to_stdout, logged_entries)</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">ZMSLog</span>(ZMSItem.ZMSItem): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L37" class="sourceLink">(source)</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms.zmslog.ZMSLog.__init__">ZMSLog(copy_to_stdout, logged_entries)</a></code></p>
           <p><a href="classIndex.html#zms.zmslog.ZMSLog">View In Hierarchy</a></p>
         </div>
 
@@ -555,6 +565,11 @@
   </tr><tr class="classvariable">
     
     <td>Class Variable</td>
+    <td><code><a href="#security" class="internal-link" title="zms.zmslog.ZMSLog.security">security</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="classvariable">
+    
+    <td>Class Variable</td>
     <td><code><a href="#zmi_icon" class="internal-link" title="zms.zmslog.ZMSLog.zmi_icon">zmi<wbr></wbr>_icon</a></code></td>
     <td><span class="undocumented">Undocumented</span></td>
   </tr><tr class="instancevariable">
@@ -598,7 +613,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">__init__</span><span class="function-signature">(self, copy_to_stdout=False, logged_entries=[<wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">ERROR</span><span class="rst-variable-quote">'</span>])</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L53">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L57">
       
       (source)
     </a>
@@ -625,7 +640,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_log_filename</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L100">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L105">
       
       (source)
     </a>
@@ -652,7 +667,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getLOG</span><span class="function-signature">(self, REQUEST, RESPONSE=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L85">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L90">
       
       (source)
     </a>
@@ -679,7 +694,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getParentDir</span><span class="function-signature">(self, path)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L121">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L126">
       
       (source)
     </a>
@@ -706,7 +721,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">getPath</span><span class="function-signature">(self, REQUEST)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L108">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L113">
       
       (source)
     </a>
@@ -733,7 +748,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">hasSeverity</span><span class="function-signature">(self, severity)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L68">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L72">
       
       (source)
     </a>
@@ -760,7 +775,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">LOG</span><span class="function-signature">(self, severity, info)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L73">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L77">
       
       (source)
     </a>
@@ -787,7 +802,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_index_html</span><span class="function-signature">(self, REQUEST, RESPONSE)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L126">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L132">
       
       (source)
     </a>
@@ -814,7 +829,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_options</span><span class="function-signature">(self)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L42">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L46">
       
       (source)
     </a>
@@ -841,7 +856,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_submit</span><span class="function-signature">(self, REQUEST, RESPONSE)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L135">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L142">
       
       (source)
     </a>
@@ -868,7 +883,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">readDir</span><span class="function-signature">(self, path)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L116">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L121">
       
       (source)
     </a>
@@ -895,7 +910,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">setProperties</span><span class="function-signature">(self, REQUEST, RESPONSE)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L60">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L64">
       
       (source)
     </a>
@@ -922,7 +937,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">tail_event_log</span><span class="function-signature">(self, linesback=100, returnlist=True)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L94">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L99">
       
       (source)
     </a>
@@ -948,7 +963,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">LOGGER</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L51">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L55">
       
       (source)
     </a>
@@ -975,7 +990,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_main</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L48">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L52">
       
       (source)
     </a>
@@ -1002,7 +1017,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">manage_remote</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L49">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L53">
       
       (source)
     </a>
@@ -1029,11 +1044,38 @@
   <div class="functionHeader">
     
     <span class="py-defname">meta_type</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L38">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L42">
       
       (source)
     </a>
     <a class="headerLink" href="#meta_type" title="zms.zmslog.ZMSLog.meta_type">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseclassvariable">
+  
+  
+  <a name="zms.zmslog.ZMSLog.security">
+    
+  </a>
+  <a name="security">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">security</span> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L40">
+      
+      (source)
+    </a>
+    <a class="headerLink" href="#security" title="zms.zmslog.ZMSLog.security">
       
       
       ¶
@@ -1056,7 +1098,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">zmi_icon</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L39">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L43">
       
       (source)
     </a>
@@ -1083,7 +1125,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">copy_to_stdout</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L56">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L60">
       
       (source)
     </a>
@@ -1110,7 +1152,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">id</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L55">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L59">
       
       (source)
     </a>
@@ -1137,7 +1179,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">logged_entries</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L57">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L61">
       
       (source)
     </a>
@@ -1164,7 +1206,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">tail_event_log_linesback</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L62">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/zmslog.py#L66">
       
       (source)
     </a>

@@ -197,7 +197,17 @@
         <div class="childrenKindTitle">Classes</div>
         <ul>
     
-    <li class=" thisobject">
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.llmapi.AnthropicProvider.html" class="internal-link" title="zms.llmapi.AnthropicProvider"><wbr></wbr>Anthropic<wbr></wbr>Provider</a></code>
+            </div>
+        
+
+    </li><li class=" thisobject">
         
         
         
@@ -368,7 +378,7 @@
         </div>
 
         <div class="extrasDocstring">
-          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">LLMProvider</span>: <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L173" class="sourceLink">(source)</a></code></p><p>Known subclasses: <code><a href="zms.llmapi.OllamaProvider.html" class="internal-link">zms.llmapi.OllamaProvider</a></code>, <code><a href="zms.llmapi.OpenAIProvider.html" class="internal-link">zms.llmapi.OpenAIProvider</a></code>, <code><a href="zms.llmapi.RAGProvider.html" class="internal-link">zms.llmapi.RAGProvider</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms.llmapi.LLMProvider.__init__">LLMProvider(context)</a></code></p>
+          <p class="class-signature"><code><span class="py-keyword">class</span> <span class="py-defname">LLMProvider</span>: <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L174" class="sourceLink">(source)</a></code></p><p>Known subclasses: <code><a href="zms.llmapi.AnthropicProvider.html" class="internal-link">zms.llmapi.AnthropicProvider</a></code>, <code><a href="zms.llmapi.OllamaProvider.html" class="internal-link">zms.llmapi.OllamaProvider</a></code>, <code><a href="zms.llmapi.OpenAIProvider.html" class="internal-link">zms.llmapi.OpenAIProvider</a></code>, <code><a href="zms.llmapi.RAGProvider.html" class="internal-link">zms.llmapi.RAGProvider</a></code></p><p>Constructor: <code><a href="#__init__" class="internal-link" title="zms.llmapi.LLMProvider.__init__">LLMProvider(context)</a></code></p>
           <p><a href="classIndex.html#zms.llmapi.LLMProvider">View In Hierarchy</a></p>
         </div>
 
@@ -421,7 +431,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">__init__</span><span class="function-signature">(self, context)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L176">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L177">
       
       (source)
     </a>
@@ -448,7 +458,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">chat</span><span class="function-signature">(self, messages, **kwargs)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L179">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L180">
       
       (source)
     </a>
@@ -459,7 +469,7 @@
     </a>
   </div>
   <div class="docstring functionBody">
-    <div class="interfaceinfo">overridden in <code><a href="zms.llmapi.OllamaProvider.html" class="internal-link">zms.llmapi.OllamaProvider</a></code>, <code><a href="zms.llmapi.OpenAIProvider.html" class="internal-link">zms.llmapi.OpenAIProvider</a></code>, <code><a href="zms.llmapi.RAGProvider.html" class="internal-link">zms.llmapi.RAGProvider</a></code></div>
+    <div class="interfaceinfo">overridden in <code><a href="zms.llmapi.AnthropicProvider.html" class="internal-link">zms.llmapi.AnthropicProvider</a></code>, <code><a href="zms.llmapi.OllamaProvider.html" class="internal-link">zms.llmapi.OllamaProvider</a></code>, <code><a href="zms.llmapi.OpenAIProvider.html" class="internal-link">zms.llmapi.OpenAIProvider</a></code>, <code><a href="zms.llmapi.RAGProvider.html" class="internal-link">zms.llmapi.RAGProvider</a></code></div>
     <div><p>Send messages to the LLM and get a response.</p>
 <p>Args: messages (list|str): List of message dicts [{"role": "user", "content": "..."}] or a string for simple single-turn conversations **kwargs: Additional provider-specific parameters</p>
 <p>Returns: dict: Response in OpenAI /v1/chat/completions format or error dict</p>
@@ -477,7 +487,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">context</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L177">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L178">
       
       (source)
     </a>
@@ -505,7 +515,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">_prepare_messages</span><span class="function-signature">(self, messages)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L192">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L193">
       
       (source)
     </a>

@@ -1194,11 +1194,12 @@
 
         <div class="moduleDocstring">
           <div><p>ZMSLLMConnector.py - ZMS LLM Connector for AI/LLM Integration</p>
-<p>Provides ZMSLLMConnector as a Zope object that bridges ZMS content management with large language model providers (OpenAI, Ollama, RAG with Qdrant).</p>
+<p>Provides ZMSLLMConnector as a Zope object that bridges ZMS content management with large language model providers (OpenAI, Anthropic Claude, Ollama, and RAG with Qdrant).</p>
 <p>The connector stores its own configuration as ZODB-persisted properties and is retrieved from any ZMS context via getLLMConnector(). It can contain ZMSCustom child objects for richer 3rd-view UI extensions.</p>
 <p>Multiple providers are supported through llmapi.py:</p>
 <ul class="rst-simple">
 <li>OpenAI (gpt-4o-mini, gpt-4, gpt-3.5-turbo, ...)</li>
+<li>Anthropic Claude</li>
 <li>Ollama (local LLM deployment)</li>
 <li>RAG with Qdrant + Ollama (retrieval-augmented generation)</li>
 </ul>
@@ -1251,7 +1252,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">containerFilter</span><span class="function-signature">(container)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSLLMConnector.py#L694">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSLLMConnector.py#L696">
       
       (source)
     </a>
@@ -1278,7 +1279,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">manage_addZMSLLMConnector</span><span class="function-signature">(self, REQUEST, RESPONSE=None)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSLLMConnector.py#L685">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSLLMConnector.py#L687">
       
       (source)
     </a>
@@ -1305,7 +1306,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">_json_dumps_safe</span><span class="function-signature">(obj, **kwargs)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSLLMConnector.py#L34">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSLLMConnector.py#L36">
       
       (source)
     </a>

@@ -45,6 +45,7 @@ import operator
 import os
 import zExceptions
 from zope.interface import implementer, providedBy
+from ZPublisher import zpublish
 # Product imports.
 from .IZMSConfigurationProvider import IZMSConfigurationProvider
 from Products.zms import standard
@@ -616,6 +617,7 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
 
 
 
+    @zpublish(False)
     def delConfProperty(self, key):
       """
       Removes property from configuration.
@@ -628,6 +630,7 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
 
 
 
+    @zpublish(False)
     def get_conf_property(self, *args, **kwargs):
       """
       Return a configuration value, resolving local and inherited defaults.
@@ -672,6 +675,7 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
       return value 
 
 
+    @zpublish(False)
     def getConfProperty(self, key, default=None, REQUEST=None):
       """
       Returns property from configuration.
@@ -687,6 +691,7 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
       return self.get_conf_property(key, default, REQUEST)
 
 
+    @zpublish(False)
     def setConfProperty(self, key, value):
       """
       Sets property into configuration.
@@ -708,6 +713,8 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
       self.__attr_conf_dict__ = d
       self.__attr_conf_dict__ = self.__attr_conf_dict__.copy()
 
+
+    security.declareProtected('ZMS Administrator', 'manage_customizeSystem')
     def manage_customizeSystem(self, btn, key, lang, REQUEST, RESPONSE=None):
       """
       Manage the system customization.

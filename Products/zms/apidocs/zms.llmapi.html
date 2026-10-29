@@ -128,6 +128,16 @@
         
 
         
+            <div class="itemName"><code><a href="zms.llmapi.AnthropicProvider.html" class="internal-link" title="zms.llmapi.AnthropicProvider"><wbr></wbr>Anthropic<wbr></wbr>Provider</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
             <div class="itemName"><code><a href="zms.llmapi.LLMProvider.html" class="internal-link" title="zms.llmapi.LLMProvider"><wbr></wbr>LLMProvider</a></code>
             </div>
         
@@ -1281,13 +1291,14 @@
 <p>Supported providers:</p>
 <ul class="rst-simple">
 <li>OpenAI (gpt-4, gpt-3.5-turbo, etc.)</li>
+<li>Anthropic Claude</li>
 <li>Ollama (local deployment)</li>
 <li>RAG with Qdrant vector database</li>
 </ul>
 <p>Configuration properties:</p>
 <ul class="rst-simple">
-<li>llm.provider: 'openai', 'ollama', or 'rag' (default: 'openai')</li>
-<li>llm.api.key: API key for OpenAI (if provider is 'openai')</li>
+<li>llm.provider: 'openai', 'anthropic', 'ollama', or 'rag' (default: 'openai')</li>
+<li>llm.api.key: API key for OpenAI, Anthropic, or GitHub Models</li>
 <li>llm.api.model: Model name (default: 'gpt-4o-mini' for OpenAI, 'llama2' for Ollama)</li>
 <li>llm.api.endpoint: Custom endpoint URL</li>
 <li>llm.ollama.host: Ollama host (default: 'http://localhost:11434')</li>
@@ -1341,6 +1352,11 @@
   
   
   <tr class="class">
+    
+    <td>Class</td>
+    <td><code><a href="zms.llmapi.AnthropicProvider.html" class="internal-link" title="zms.llmapi.AnthropicProvider"><wbr></wbr>Anthropic<wbr></wbr>Provider</a></code></td>
+    <td>Anthropic Claude Messages API provider (normalized to OpenAI format).</td>
+  </tr><tr class="class">
     
     <td>Class</td>
     <td><code><a href="zms.llmapi.LLMProvider.html" class="internal-link" title="zms.llmapi.LLMProvider"><wbr></wbr>LLMProvider</a></code></td>
@@ -1421,7 +1437,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">chat</span><span class="function-signature">(context, messages, **kwargs)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L585">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L831">
       
       (source)
     </a>
@@ -1468,7 +1484,7 @@
         }
     }
 </pre>
-</td><td class="fieldArgDesc">Response in OpenAI /v1/chat/completions format</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Notes</td></tr><tr><td colspan="2">Configuration - Set llm.provider to one of: 'openai', 'ollama', 'rag'</td></tr><tr><td colspan="2"><p>For OpenAI:</p>
+</td><td class="fieldArgDesc">Response in OpenAI /v1/chat/completions format</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Notes</td></tr><tr><td colspan="2">Configuration - Set llm.provider to one of: 'openai', 'anthropic', 'ollama', 'rag'</td></tr><tr><td colspan="2"><p>For OpenAI:</p>
 <ul class="rst-simple">
 <li>llm.api.key: Your OpenAI API key</li>
 <li>llm.api.model: Model name (default: 'gpt-4o-mini')</li>
@@ -1509,7 +1525,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_ollama_models</span><span class="function-signature">(context)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L772">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L1023">
       
       (source)
     </a>
@@ -1538,7 +1554,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">get_provider_info</span><span class="function-signature">(context)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L667">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L913">
       
       (source)
     </a>
@@ -1567,7 +1583,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">security</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L72">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L73">
       
       (source)
     </a>
@@ -1595,7 +1611,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">_generate_request_id</span><span class="function-signature">(provider, model, message)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L75">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L76">
       
       (source)
     </a>
@@ -1622,7 +1638,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">_get_provider</span><span class="function-signature">(context)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L561">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L806">
       
       (source)
     </a>
@@ -1652,7 +1668,7 @@
     
     
     <span class="py-keyword">def</span> <span class="py-defname">_normalize_response</span><span class="function-signature">(response_data, provider, model, original_message)</span>:
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L83">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L84">
       
       (source)
     </a>
@@ -1688,7 +1704,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">_EMBEDDING_MODEL_CACHE</span>: <code>dict</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L70">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/llmapi.py#L71">
       
       (source)
     </a>

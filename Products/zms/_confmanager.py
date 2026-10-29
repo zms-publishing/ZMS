@@ -256,6 +256,7 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
           self.importConf(f)
 
 
+    @zpublish(False)
     def getConfXmlFile(self, file):
       """
       Resolve a configuration reference to a C{(filename, xmlfile)} pair.
@@ -302,6 +303,7 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
       return filename, xmlfile
 
 
+    security.declareProtected('ZMS Administrator', 'importConf')
     def importConf(self, file, syncIfNecessary=True):
       """
       Imports configuration from the given file and processes 
@@ -552,7 +554,7 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
                   obs.append( ob)
       return obs
 
-    customize_manage_options__roles__ = None
+    security.declarePublic('customize_manage_options')
     def customize_manage_options(self):
       """
       Build and return the ordered list of ZMI management tab descriptors for
@@ -675,7 +677,6 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
       return value 
 
 
-    @zpublish(False)
     def getConfProperty(self, key, default=None, REQUEST=None):
       """
       Returns property from configuration.

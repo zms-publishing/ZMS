@@ -52,6 +52,7 @@ from Products.zms import zmslinkcontainer
 from Products.zms import zmslinkelement
 from Products.zms import ZMSLLMConnector
 from Products.zms import coauthor
+from Products.zms import _zpublish_guard
 
 #################################################################################################################
 # ### Allow additional Python modules in restricted context

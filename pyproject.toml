@@ -78,6 +78,7 @@ dev = [
     "watching_testrunner",
     "pytest",
     "selenium",
+    "SQLAlchemy",
 ]
 
 [project.urls]

@@ -994,13 +994,12 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       @return: List of entity descriptors.
       @rtype: list
       """
-      from sqlalchemy import create_engine
       from sqlalchemy import inspect
       from sqlalchemy import MetaData
       from sqlalchemy import Table
-      da = self.getDA()
-      dsn = da.getProperty('dsn')
-      engine = create_engine(dsn)
+      # Reuse the engine of the connection: a new engine per request keeps its pooled
+      # connection open until the garbage collector removes it.
+      engine = self.getDA().sa_zope_wrapper().engine
       # Create a MetaData instance
       metadata = MetaData()
       # reflect db schema to MetaData

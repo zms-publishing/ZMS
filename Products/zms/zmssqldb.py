@@ -998,7 +998,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       from sqlalchemy import MetaData
       from sqlalchemy import Table
       # Reuse the engine of the connection: a new engine per request keeps its pooled
-      # connection open until the garbage collector removes it (1040 Too many connections).
+      # connection open until the garbage collector removes it.
       engine = self.getDA().sa_zope_wrapper().engine
       # Create a MetaData instance
       metadata = MetaData()

@@ -463,7 +463,9 @@ class MediaDb(
       try:
         location = self.getLocation()
         if not filename.startswith(location):
-          filename = os.path.join(location,filename)
+          filename = os.path.join(str(location), str(os.path.basename(filename)))
+        if not os.path.isfile(filename):
+          raise Exception
         with open(filename, 'rb') as f:
           data = f.read()
       except:

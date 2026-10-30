@@ -5,14 +5,21 @@
  * @see https://github.com/fengyuanchen/jquery-cropper/
  */
 function runPluginCropper(c) {
-	$.plugin('cropper',{
+	// Hint: Load Cropper.js first, jquery-cropper needs window.Cropper when it runs.
+	$.plugin('cropperjs',{
 		files: [
 			'/++resource++zms_/jquery/cropper/cropper.css',
-			'/++resource++zms_/jquery/cropper/cropper.min.js',
+			'/++resource++zms_/jquery/cropper/cropper.min.js'
+		]
+	});
+	$.plugin('cropper',{
+		files: [
 			'/++resource++zms_/jquery/cropper/jquery-cropper.min.js'
 		]
 	});
-	$.plugin('cropper').get('body',c);
+	$.plugin('cropperjs').get('body',function() {
+		$.plugin('cropper').get('body',c);
+	});
 }
 
 var ZMSGraphic_elName = null;

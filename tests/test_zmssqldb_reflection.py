@@ -9,12 +9,11 @@ the garbage collector removes the engine, which exhausts max_connections under
 load (1040 Too many connections).
 
 Only an in-memory SQLite engine is needed, no Zope instance and no database server.
+The test auto-skips if SQLAlchemy is not installed.
 """
 
 import unittest
 from unittest import mock
-
-import sqlalchemy
 
 # Product imports.
 from Products.zms import zmssqldb
@@ -51,6 +50,10 @@ class StubSqlDb:
 class ZMSSqlDbReflectionTest(unittest.TestCase):
 
   def setUp(self):
+    try:
+      import sqlalchemy
+    except ImportError:
+      self.skipTest('SQLAlchemy not installed')
     self.engine = sqlalchemy.create_engine('sqlite://')
     self.addCleanup(self.engine.dispose)
     with self.engine.begin() as connection:

@@ -433,7 +433,8 @@ class MyBlob(object):
                         'bytes %d-%d/%d' % (start, end - 1, self.size))
                     RESPONSE.setStatus(206) # Partial content
 
-                    data = self.data
+                    # Hint: With mediadb the content is not in self.data.
+                    data = self.getData()
                     if isinstance(data,str) or isinstance(data,bytes):
                         RESPONSE.write(data[start:end])
                         return True
@@ -491,7 +492,8 @@ class MyBlob(object):
                             draftprefix, boundary))
                     RESPONSE.setStatus(206) # Partial content
 
-                    data = self.data
+                    # Hint: With mediadb the content is not in self.data.
+                    data = self.getData()
                     # The Pdata map allows us to jump into the Pdata chain
                     # arbitrarily during out-of-order range searching.
                     pdata_map = {}

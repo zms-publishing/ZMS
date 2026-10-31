@@ -62,6 +62,7 @@ from Products.zms import zmslog
 
 
 UNINHERITED_PROPERTIES = ['ASP','Portal']
+PRIVATE_PROPERTIES = ['ZMS.conf','ZMS.security','ZMS.localfs','ZMSRepository','ZMSAdministrator','ZMSFormulator','Google.API']
 
 class ConfDict(object):
 
@@ -615,6 +616,8 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
           l = portalMaster.getConfProperties(prefix,inherited,REQUEST)
           l = [x for x in l if x not in d and x[:x.find('.')] not in UNINHERITED_PROPERTIES]
           d.extend(l)
+      if 'getConfProperties' in str(self.REQUEST.get('ACTUAL_URL', '')):
+        d = {k:v for k,v in d.items() if not any([k.startswith(p) for p in PRIVATE_PROPERTIES])}
       return d
 
 
@@ -657,6 +660,9 @@ class ConfManager(_multilangmanager.MultiLanguageManager):
       REQUEST = kwargs.get('REQUEST')
       if REQUEST is not None:
         key = str(base64.b64decode(key),'utf-8')
+        if 'getConfProperty' in str(self.REQUEST.get('ACTUAL_URL', '')) and \
+          any([key.startswith(p) for p in PRIVATE_PROPERTIES]):
+          return '*****'
       if hasattr(OFS.misc_.misc_,'zms'):
         if key in OFS.misc_.misc_.zms['confdict']:
           default = OFS.misc_.misc_.zms['confdict'].get(key)

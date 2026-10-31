@@ -80,6 +80,7 @@ Organization: ZMS Publishing
 """
 # Imports.
 from OFS.Image import Image, File
+from AccessControl import ClassSecurityInfo
 import ZPublisher.HTTPRequest
 import datetime
 import math
@@ -181,6 +182,9 @@ def cloneobjattr(self, src, dst, obj_attr, lang):
 ################################################################################
 class ObjAttrs(object):
 
+    security = ClassSecurityInfo()
+    
+    security.declareProtected('View', 'ajaxGetObjOptions')
     def ajaxGetObjOptions(self, REQUEST):
       """ ObjAttrs.ajaxGetObjOptions """
       meta_id = REQUEST['obj_id']

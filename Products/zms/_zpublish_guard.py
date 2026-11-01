@@ -119,7 +119,6 @@ NOT_PUBLISHABLE = {
     ),
     'ZMSZCatalogConnector': (
         'updateRepository',
-        'reindex_page',
     ),
     '_accessmanager': (
         'doAddUser',

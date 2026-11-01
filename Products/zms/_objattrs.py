@@ -1093,6 +1093,11 @@ class ObjAttrs(object):
           blob = pilutil.crop( blob, box)
           rtn['height'] = y2-y0
           rtn['width'] = x1-x0
+        for mirror_action, direction in [('mirror', 'h'), ('flip', 'v')]:
+          if mirror_action in action.split(','):
+            blob = pilutil.mirror( blob, direction)
+        if 'rotate90' in action.split(','):
+          blob = pilutil.rotate( blob, -90, expand=True)
         file.manage_upload(blob.getData())
         rtn['filename'] = blob.getFilename()
         rtn['src'] = src

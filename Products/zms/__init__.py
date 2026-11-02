@@ -138,6 +138,33 @@ try:
 except:
   pass
 
+
+from AccessControl.Permissions import access_contents_information
+from AccessControl.SecurityInfo import ClassSecurityInfo
+from ZPublisher import zpublish
+
+security = ClassSecurityInfo()
+
+security.declareObjectProtected(access_contents_information)
+security.setPermissionDefault(access_contents_information,
+                              ('Anonymous', 'Manager'))
+
+from OFS.PropertyManager import PropertyManager
+
+@zpublish(False)
+@security.protected(access_contents_information)
+def getProperty(self, id, d=None):
+    """Get the type of property 'id'.
+
+    Returns None if no such property exists.
+    """
+    if self.hasProperty(id):
+        return getattr(self, id)
+    return d
+
+PropertyManager.getProperty = getProperty
+
+
 ################################################################################
 # Define the initialize() function.
 ################################################################################

@@ -14,7 +14,7 @@ To make Zope running there are some crucial config files needed which usually (c
 3. ./docker/variants/ubuntu/Extensions
 4. ./docker/variants/ubuntu/import
 
-These sources will be copied into the *image* (on building) 
+These sources may be copied into the *image* (on building) 
 ```yaml
 # dockerfile
 COPY ./etc etc
@@ -22,14 +22,12 @@ COPY ./var var
 COPY ./import import
 COPY ./Extensions Extensions
 ```
-or referenced as *volume mounts* from the *container* (on composing):
+or the whole instance folder can be referenced as *volume mount* from the host (on composing). To prevent externalizing the venv  mask it with an anonymous volume so the image's venv is preserved:
 ```yaml
 # docker-compose
     volumes:
-      - ./etc/:/home/zope/etc/
-      - ./var/:/home/zope/var:rw
-      - ./import/:/home/zope/import/
-      - ./Extensions/:/home/zope/Extensions:rw
+      - .:/home/zope:rw
+      - /home/home/venv
 ```
 
 
@@ -82,3 +80,7 @@ docker save -o $path_for_generated_tar_file $image_name
 ```sh
 docker load -i $path_to_image_tar_file
 ```
+
+## Important Note: `configure.zcml` / `overrides.zcml`
+
+Please, make sure, that the pathes in ZMS's zcml-file matches to the container pathes, otherwise Zope will not start.

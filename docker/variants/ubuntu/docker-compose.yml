@@ -13,10 +13,10 @@ x-instance-common: &instance_common
     - zeo
   user: zope
   volumes:
-    - ./etc/:${INSTANCE_DIR}/etc:rw
-    - ./var/:${INSTANCE_DIR}/var:rw
-    - ./import/:${INSTANCE_DIR}/import:rw
-    - ./Extensions/:${INSTANCE_DIR}/Extensions:rw
+    - .:${INSTANCE_DIR}:rw
+    ### Make sure the container does not mount the subfolder ${VENV_DIR} as a volume
+    ### (mask it with an anonymous volume so the image's venv is preserved)
+    - ${VENV_DIR}
     ### For utilizing a local path as SRC_MOUNT
     - ${SRC_MOUNT}/:${SRC_DIR}/:rw
   command: >
@@ -27,6 +27,8 @@ x-instance-common: &instance_common
   networks:
     - zms_network
 
+# IMPORTANT: Create the Network first to make it external
+# > docker network create zms_network
 networks:
   zms_network:
     driver: bridge

@@ -21,11 +21,11 @@ classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Framework :: Zope :: 6",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
     "Operating System :: OS Independent",
     "Environment :: Web Environment",
     "Topic :: Internet :: WWW/HTTP :: Site Management",
@@ -40,7 +40,7 @@ classifiers = [
     "Intended Audience :: Financial and Insurance Industry",
     "License :: OSI Approved :: GNU General Public License (GPL)",
 ]
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = [
     "docutils",
     "configparser",

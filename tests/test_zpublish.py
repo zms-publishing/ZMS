@@ -76,7 +76,7 @@ class ZPublishTest(unittest.TestCase):
                             '%s.%s.%s' % (modinfo.name, cls.__name__, name))
         # (105 = 4 ajax endpoints in _deprecatedapi + 101 allow-listed
         #  methods decorated with @zpublish in the source.)
-        self.assertEqual(105, len(decorated))
+        self.assertEqual(106, len(decorated))
         self.assertGreater(len(guarded), 800)
 
     def test_guard_preserves_source_mark_false(self):

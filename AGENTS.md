@@ -5,7 +5,7 @@
 ZMS is a Python-based Content Management and E-Publishing System built on top of the [Zope](https://zope.dev/) application server. It targets Science, Technology and Medicine (STM) publishing and provides a flexible content model with multilingualism, metadata, XML import/export, workflow, and more.
 
 - **Package name:** `ZMS` (importable as `Products.zms`)
-- **Python:** 3.10–3.14
+- **Python:** 3.11–3.15
 - **Framework:** Zope 6 / WSGI
 - **License:** GPL v3
 

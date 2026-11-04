@@ -23,7 +23,7 @@
 	<div class="card" 
 		tal:condition="python:metaObj.get('type') != 'ZMSRecordSet' or command.lower() != 'insert'"
 		tal:attributes="class python:'card input_fields_%s'%(meta_id)">
-		<div class="card-header attr_last_modified clearfix btn-collapse">
+		<div class="card-header attr_last_modified btn-collapse">
 			<div class="btn-group align-items-center">
 				<a id="zmi-toggle-activity-btn" class="btn card-toggle" data-toggle="collapse" href="#attrActivity"
 					><i class="fas fa-invisible"></i> 

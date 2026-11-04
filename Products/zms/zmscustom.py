@@ -391,7 +391,20 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
 
 
     def getRecordSetMainGridContext(self, options, request):
-      """Build rendering context for C{zpt/ZMSRecordSet/main_grid.zpt}."""
+      """
+      Build rendering context for C{zpt/ZMSRecordSet/main_grid.zpt}.
+
+      @param options: Dictionary of options for rendering the record set main grid.
+      @param request: The current request object.
+      @return: Dictionary containing the context for rendering the record set main grid.
+      @note: The context includes pagination information, filtered and sorted records, 
+      and other options necessary for rendering the main grid. Most important option-keys are:
+        - size: number of dataset-rows (length)
+        - pageSize: amount of data rows per page (default 20)
+        - pageIndex: index-number of current page (starting with 0) 
+        - pageStart: dataset index-number of first data-row on current page
+        - pageEnd:  dataset index-number of last data-row on current page
+      """
       form_action = options.get('form_action', 'manage_changeRecordSet')
       input_target = options.get('input_target', '')
       meta_obj_attr_ids = options.get('metaObjAttrIds', [])
@@ -406,12 +419,14 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
       size = options.get('size', len(filtered_records))
       total = options.get('total', len(records))
 
-      page_size = request.get('qsize', 20)
+      page_size = int(request.get('qsize', 20))
       if page_size <= 0:
         page_size = 20
       page_count = size // page_size
-      page_index = request.get('pageIndex', int(request.get('qindex', -1)) // page_size)
-      page_index = page_index if page_index >= 0 and page_index <= page_count else 0
+      page_row_index = int(request.get('qindex', -1))
+      rowid = request.get('rowid', -1) # Primary key of the data row
+      page_index = int(request.get('pageIndex', int(request.get('qindex', -1)) // page_size))
+      page_index = max(0, min(page_index, page_count))
       page_start = page_index * page_size
       page_end = min(page_start + page_size, size)
       offset = options.get('offset', page_start)
@@ -435,7 +450,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
           'qindex': qindex,
           'record': row_record,
           'value': value,
-          'selected': str(value) == str(request.get('qindex')) or str(value) in selected_values,
+          'selected': (qindex == page_row_index) or (str(value) in selected_values),
           'params': dict(url_params, **row_record.get('params', {})),
           'title': (
             self.getLangFmtDate(row_record.get('_change_dt')) + ' ' +
@@ -468,7 +483,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
         'cols_count': len(meta_obj_attrs) + 1,
         'cols_count_texttype': len([x.get('id', '') for x in meta_obj_attrs if x.get('type', 'string') == 'text']),
         'pagination': self.zmi_pagination(size=size, pageSize=page_size, pageIndex=page_index),
-        'request_qsize': request.get('qsize', 10),
+        'request_qsize': page_size,
         'row_select_name': ['qindices:list', 'qindex'][int('select' in actions)],
       }
 

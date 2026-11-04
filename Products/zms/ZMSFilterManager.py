@@ -13,6 +13,7 @@ Organization: ZMS Publishing
 # Imports.
 from DateTime import DateTime
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
+from ZPublisher import zpublish
 import ZPublisher.HTTPRequest
 import copy
 from zope.interface import implementer
@@ -583,6 +584,7 @@ class ZMSFilterManager(
       return pos
 
 
+    @zpublish
     def manage_changeFilter(self, lang, btn='', key='', REQUEST=None, RESPONSE=None):
       """Handle ZMI actions for filters and filter-process assignments.
 
@@ -776,6 +778,7 @@ class ZMSFilterManager(
       return ''
 
 
+    @zpublish
     def manage_changeProcess(self, lang, btn='', key='', REQUEST=None, RESPONSE=None):
       """Handle ZMI actions for creating, editing, and deleting processes.
 

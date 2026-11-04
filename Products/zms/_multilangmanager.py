@@ -17,6 +17,7 @@ from App.Common import package_home
 import OFS.misc_
 import json
 from zope.interface import implementer
+from ZPublisher import zpublish
 # Product Imports.
 from Products.zms import _fileutil
 from Products.zms import _xmllib
@@ -185,6 +186,7 @@ class MultiLanguageObject(object):
       return value
 
 
+    @zpublish
     def getDescendantLanguages(self, id, REQUEST=None, RESPONSE=None):
       """Return descendant language ids below C{id}, optionally as JSON response."""
       obs = []
@@ -295,6 +297,7 @@ class MultiLanguageManager(object):
       """Return the parent language id for the given language id."""
       return self.getLang(id).get('parent')
 
+    @zpublish
     def getLanguageLabel(self, id):
       """Return the configured display label for the given language id."""
       if id == '*':
@@ -426,6 +429,7 @@ class MultiLanguageManager(object):
       del attr_languages[lang]
       self.setLangs( attr_languages)
 
+    @zpublish
     def manage_changeLanguages(self, lang, btn, REQUEST, RESPONSE):
       """Handle ZMI language management actions (save/delete) and redirect with message."""
 
@@ -475,6 +479,7 @@ class MultiLanguageManager(object):
         message = standard.url_quote(self.getZMILangStr('MSG_CHANGED'))
         return RESPONSE.redirect('manage_customizeLanguagesForm?lang=%s&manage_tabs_message=%s'%(lang, message))
 
+    @zpublish
     def get_lang_dict(self, REQUEST=None):
       """Return merged language dictionary from master, custom config, and metaobj providers."""
       
@@ -538,6 +543,7 @@ class MultiLanguageManager(object):
         lang_list.append(d)
       return lang_list
 
+    @zpublish
     def manage_changeLangDictProperties(self, lang, btn, REQUEST, RESPONSE=None):
         """Handle ZMI language-dictionary actions (save/delete/import/export)."""
         

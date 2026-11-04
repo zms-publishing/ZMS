@@ -7,6 +7,7 @@ It manages activity definitions, transitions, permission checks, and state lifec
 License: GNU General Public License v2 or later,
 Organization: ZMS Publishing
 """
+from ZPublisher import zpublish
 import ZPublisher.HTTPRequest
 import copy
 
@@ -133,6 +134,7 @@ class ZMSWorkflowActivitiesManager(object):
     return {'froms': froms, 'tos': tos, 'idxs': idxs, 'idx': idx}
 
 
+  @zpublish
   def manage_changeActivities(self, lang, btn='', REQUEST=None, RESPONSE=None):
     """Handle add/edit/delete/reorder actions for workflow activities in the ZMI."""
     message = ''

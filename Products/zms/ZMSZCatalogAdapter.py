@@ -11,6 +11,7 @@ Organization: ZMS Publishing
 
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
+from ZPublisher import zpublish
 import copy
 import time
 from datetime import datetime, timezone
@@ -493,6 +494,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     #
     #  Change properties.
     ############################################################################
+    @zpublish
     def manage_changeProperties(self, btn, lang, REQUEST, RESPONSE):
         """ ZMSZCatalogAdapter.manage_changeProperties """
         message = ''

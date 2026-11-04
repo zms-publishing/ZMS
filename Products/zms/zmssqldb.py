@@ -47,6 +47,7 @@ Organization: ZMS Publishing
 # Imports.
 from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
+from ZPublisher import zpublish
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
 import re
@@ -2097,6 +2098,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       return filename
 
     security.declareProtected('View', 'set_blob')
+    @zpublish
     def set_blob( self, auth_user, tablename, id, rowid=None, xml=None, REQUEST=None, RESPONSE=None):
       """
       Store a blob payload after authorizing the remote caller.
@@ -2178,6 +2180,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
 
 
     security.declareProtected('View', 'get_blob')
+    @zpublish
     def get_blob( self, tablename, id, rowid, REQUEST=None, RESPONSE=None):
       """
       Return the raw data payload of a stored blob.
@@ -2199,6 +2202,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       return blob.getData()
 
 
+    @zpublish
     def manage_changeProperties(self, lang, REQUEST=None, RESPONSE=None): 
       """
       Persist SQL database properties and the serialized model definition.
@@ -2240,6 +2244,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       return RESPONSE.redirect('%s?lang=%s&manage_tabs_message=%s&el_data=%s'%(target, lang, message, el_data))
 
 
+    @zpublish
     def ajaxGetObjOptions(self, REQUEST):
       """
       Return autocomplete option labels for a configured entity column.
@@ -2274,6 +2279,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       return '\n'.join(l)
 
     security.declareProtected('View', 'ajaxGetAutocompleteColumns')
+    @zpublish
     def ajaxGetAutocompleteColumns(self, tableName, fmt=None, REQUEST=None):
       """
       Return matching entity column names for autocomplete widgets.
@@ -2305,6 +2311,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         return self.str_json(l)
       return '\n'.join(l)
 
+    @zpublish
     def manage_changeConfiguration(self, lang, btn='', key='all', REQUEST=None, RESPONSE=None):
       """
       Update SQL entity configuration and field metadata from the management UI.

@@ -10,7 +10,7 @@ Organization: ZMS Publishing
 # Imports.
 from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
-from ZPublisher import zpublish, zpublish_marked
+from ZPublisher import zpublish
 import re
 # Product Imports.
 from Products.zms import _fileutil, _globals
@@ -708,14 +708,6 @@ class DeprecatedAPI(object):
     if REQUEST.RESPONSE.getHeader('Location'):
       del REQUEST.RESPONSE.headers['location']
     return xml  
-
-# Deprecated helpers are server-side only: forbid URL publication unless
-# a method is explicitly exempted (the ajaxGet* endpoints are used by the ZMI).
-PUBLISHED_VIA_URL = ('ajaxGetNodes', 'ajaxGetNode', 'ajaxGetParentNodes', 'ajaxGetChildNodes')
-for _name, _func in list(vars(DeprecatedAPI).items()):
-  if callable(_func) and not _name.startswith('__') \
-      and _name not in PUBLISHED_VIA_URL and not zpublish_marked(_func):
-    zpublish(False)(_func)
 
 # call this to initialize framework classes, which
 # does the right thing with the security assertions.

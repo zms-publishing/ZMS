@@ -21,6 +21,7 @@ Organization: ZMS Publishing
 
 # Imports.
 from AccessControl import ClassSecurityInfo
+from ZPublisher import zpublish
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Persistence import Persistent
 from zope.interface import implementer
@@ -611,6 +612,7 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
     # -------------------------------------------------------------------------
     #  ZMSLLMConnector.manage_changeConfig
     # -------------------------------------------------------------------------
+    @zpublish
     def manage_changeConfig(self, btn, lang, REQUEST, RESPONSE=None):
         """Save connector configuration fields from the Config tab form."""
         message = ''
@@ -656,6 +658,7 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
     # -------------------------------------------------------------------------
     #  ZMSLLMConnector.manage_changeFeatures
     # -------------------------------------------------------------------------
+    @zpublish
     def manage_changeFeatures(self, btn, lang, REQUEST, RESPONSE=None):
         """Save feature-flag checkboxes from the Features tab form."""
         message = ''
@@ -679,6 +682,7 @@ class ZMSLLMConnector(ZMSItem.ZMSItem):
     # -------------------------------------------------------------------------
     #  ZMSLLMConnector.manage_changeProperties (kept for backwards compat)
     # -------------------------------------------------------------------------
+    @zpublish
     def manage_changeProperties(self, btn, lang, REQUEST, RESPONSE=None):
         """Backwards-compatible shim: delegates to manage_changeConfig."""
         return self.manage_changeConfig(btn, lang, REQUEST, RESPONSE)

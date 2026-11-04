@@ -15,6 +15,7 @@ Organization: ZMS Publishing
 # Imports.
 from DateTime.DateTime import DateTime
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
+from ZPublisher import zpublish
 from Persistence import Persistent
 from Acquisition import Implicit
 import OFS.SimpleItem, OFS.ObjectManager
@@ -75,6 +76,7 @@ class ZMSItem(
       return os.path.join(pkg_home, 'zpt', class_name, 'readme.md')
 
 
+    @zpublish
     def readme(self, REQUEST=None, RESPONSE=None):
       """Returns readme rendered as HTML"""
       if REQUEST is None:
@@ -151,6 +153,7 @@ class ZMSItem(
           request.set( 'ZMS_ROOT', request['ZMS_ROOT'][len(base):])
           request.set( 'ZMS_COMMON', request['ZMS_COMMON'][len(base):])
     
+    @zpublish
     def zmi_page_request(self, *args, **kwargs):
       """Implement 'zmi_page_request'."""
       request = self.REQUEST
@@ -200,6 +203,7 @@ class ZMSItem(
         request.set( 'lang', self.getLanguage(request))
 
 
+    @zpublish
     def display_icon(self, *args, **kwargs):
       """
       Returns the icon for the object.

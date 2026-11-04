@@ -34,6 +34,7 @@ Organization: ZMS Publishing
 
 # Imports.
 from App.Common import package_home
+from ZPublisher import zpublish, zpublish_marked
 import OFS.misc_
 import codecs
 import os
@@ -52,7 +53,46 @@ from Products.zms import zmslinkcontainer
 from Products.zms import zmslinkelement
 from Products.zms import ZMSLLMConnector
 from Products.zms import coauthor
-from Products.zms import _zpublish_guard
+
+# Imports (zpublish guard).
+import importlib
+import inspect
+import pkgutil
+
+
+def _zpublish_guard():
+    """Default-deny: mark every public method of every class in this package
+    as not publishable via URL (``@zpublish(False)``), unless it carries an
+    explicit ``@zpublish`` mark in the source.
+
+    Zope's ``ZPublisher`` historically publishes every method that has a
+    docstring. Inverting that default makes newly added methods NOT
+    publishable by URL ("secure by default"). Methods that must stay
+    callable via URL are explicitly decorated with ``@zpublish`` (or
+    ``@zpublish(True)``) at their definition.
+
+    ``__call__`` publishing is checked by ``ZPublisher`` with a default of
+    True and stays unaffected; similarly, names beginning with an
+    underscore are not URL-addressable and are skipped.
+    """
+    _pkg_path = (os.path.dirname(os.path.abspath(__file__)),)
+    for modinfo in pkgutil.iter_modules(_pkg_path):
+        module = importlib.import_module('Products.zms.' + modinfo.name)
+        for cls in vars(module).values():
+            if not isinstance(cls, type) or cls.__module__ != module.__name__:
+                continue
+            for name, func in list(vars(cls).items()):
+                if name.startswith('_') or not inspect.isfunction(func):
+                    continue
+                if zpublish_marked(func):
+                    # explicit mark in the source wins
+                    continue
+                zpublish(False)(func)
+
+
+# Apply the guard implicitly when the package is initialized (after all
+# product modules are imported above, so their classes exist).
+_zpublish_guard()
 
 #################################################################################################################
 # ### Allow additional Python modules in restricted context
@@ -141,7 +181,6 @@ except:
 
 from AccessControl.Permissions import access_contents_information
 from AccessControl.SecurityInfo import ClassSecurityInfo
-from ZPublisher import zpublish
 
 security = ClassSecurityInfo()
 
